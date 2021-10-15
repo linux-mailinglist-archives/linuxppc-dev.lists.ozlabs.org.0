@@ -1,71 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FEE42E9B1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 09:08:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F9542EA7D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 09:45:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVy682085z3c9H
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 18:08:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVywt6H6yz3cBS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 18:45:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=MRNT17nF;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aX1ve1EK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::1034;
- helo=mail-pj1-x1034.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429;
+ helo=mail-pf1-x429.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=MRNT17nF; dkim-atps=neutral
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
- [IPv6:2607:f8b0:4864:20::1034])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=aX1ve1EK; dkim-atps=neutral
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
+ [IPv6:2607:f8b0:4864:20::429])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVy4j6w0mz2yZf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 18:07:01 +1100 (AEDT)
-Received: by mail-pj1-x1034.google.com with SMTP id
- lk8-20020a17090b33c800b001a0a284fcc2so8719142pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 00:07:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=Rt3JOPmFioKJ0U/rpemh1kMtUcFX68vPi53Pp4TMywo=;
- b=MRNT17nF+ICp3T6xpkd1jkdOaCyWUJsJbWdgDvznE+kDh3GEPvAaJtZ2TYKcEP5/e8
- i0tKgG2i1Kf176gLSacgeqkgr3xcwKNIQwUB6fDFyVaWiE2gJoz1Q+s+GwfaJj3nWuGf
- XK0noBdGZ+JiRpuxD2O1QG2++5hR6p0njLvjQ=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVywF0zrQz305D
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 18:44:44 +1100 (AEDT)
+Received: by mail-pf1-x429.google.com with SMTP id g14so7718092pfm.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 00:44:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=WC3f9hNJW5T/vDro/czupwKZjfHMDkQPiailQf60oQw=;
+ b=aX1ve1EK4A6duYnoIhYP0cvHIwtyIqbXeRJ9aV/zcMewyy26D8gioM/sAnT9GvUDgm
+ 67dyMaybVNIokptI3sA1n5zxc9JCSW+x4WvYCo9YiDeoCnZ5+LWTub0Tn49xsOsStzHK
+ uZpR7Rtha7TCNCVTKEKqbWwr3g1KZDjtVccfHiPatk9MOurJ7qUF3687L7ydXl9uzr81
+ +X4ZtnezK1+TgBCtwxMuCvyyLehnwSC3wDkrgH+4T1KMcHDRJLVsLOenv31ZKPwGjACo
+ CYsSV6F+98QKZJUWKbnPZaMPLMPzRSbw9xGDS8+RcswCyHT8pBYOLY1fZ4BM2VJY0R2/
+ tFDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=Rt3JOPmFioKJ0U/rpemh1kMtUcFX68vPi53Pp4TMywo=;
- b=BiiiDZUGn70ZTc6pevUve6zTcObR64WS383SztSkFDqy6j7ucMFg9TwHGeVYLcqScI
- mFGGAgs1sXwycMYQmk5TZ0yVZr3IcUZdAioMVaxUgMQ9nB+MqkPRJAn6z+Jyz753BIqZ
- OvAGE9D4NALdryy2YdeM4IPzmRFN1b43Vw67p2yEosSDFXCwJmY1BTaY6KK4bo3+Idf3
- Ruw12tE6CQB3jIVq7OrjXpZIN8RCqWPcjIEv00ivMW/l9ogg2IJo2UVu8NYq5W0pe2kY
- 0DPZCTz/KUHWTsg53Cv5I87JmrvvMgvkcrJsiZ7VXIGZE5kUCgmeZEMuRiOlnl8t4tO1
- 8fQQ==
-X-Gm-Message-State: AOAM532TRkVhogwvuncZR8E49D1deNUdKQ5W1qYAdPmEQ9ZrJJGeK3MB
- NpFjJipaJATtFjUKfPP77Bm8Gb37qGt/ZQ==
-X-Google-Smtp-Source: ABdhPJwfROcdnTwFSLNeGWbanMPt2Tr5hzrPa9SHGQxZmzuL95xXjKfpzt/oSB8QDhZBuzovwOGaKQ==
-X-Received: by 2002:a17:90a:1a02:: with SMTP id 2mr11716576pjk.6.1634281618661; 
- Fri, 15 Oct 2021 00:06:58 -0700 (PDT)
-Received: from linkitivity.lan ([2001:4479:e300:600:757a:8144:2c27:6de9])
- by smtp.gmail.com with ESMTPSA id e14sm3988417pga.23.2021.10.15.00.06.56
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=WC3f9hNJW5T/vDro/czupwKZjfHMDkQPiailQf60oQw=;
+ b=TkLqOnMUkKYJDqxBKfi4cgPZDFcoiU3DbrQ+Pycp4uorlkVYnboc1j5wOte34PKABb
+ IxIJtWR1eiwmexpChP/mt3NHgiPDiS9Dk23FEh/vyAV9i3y3CuN2CPi5guflKuW9CtR1
+ q0Z42yu4V41xuP7RapYuQjmF1w+cOPM3HkXFBmigNXG9jExepRKprksnD7GAvckNuH7c
+ k0hocff9EC4DG/QLZWH8Bv+zaDVUkDqQK2qGShHyR3osE0rEtoRksH782SEXcmc5dvUl
+ 3silxzV5Af7jjVAZXP3DcpM+PTAs4pKWexQeUXqmkyw6D2FgGZU0Jg6wpcCvUfhAFqmG
+ OIpA==
+X-Gm-Message-State: AOAM533yb+auN8RSAAuPdlKkr0AVQXQsOXbpZ8hXUkUwTGe11rJD6CVJ
+ S6uuidOtuW5BatPJ3e7tOrQ=
+X-Google-Smtp-Source: ABdhPJw7Oqku7Cn1mfNRn9Brk31lTTS/eUfER7F5h3UYrT/QwYS6M1l7ZqPbCBTk48STqbopyUgiTg==
+X-Received: by 2002:a65:6499:: with SMTP id e25mr7977557pgv.146.1634283881157; 
+ Fri, 15 Oct 2021 00:44:41 -0700 (PDT)
+Received: from localhost (14-203-144-177.static.tpgi.com.au. [14.203.144.177])
+ by smtp.gmail.com with ESMTPSA id
+ w125sm4285599pfc.66.2021.10.15.00.44.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Oct 2021 00:06:58 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] powerpc/eeh: Use a goto for recovery failures
-Date: Fri, 15 Oct 2021 18:06:28 +1100
-Message-Id: <20211015070628.1331635-2-dja@axtens.net>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211015070628.1331635-1-dja@axtens.net>
-References: <20211015070628.1331635-1-dja@axtens.net>
+ Fri, 15 Oct 2021 00:44:40 -0700 (PDT)
+Date: Fri, 15 Oct 2021 17:44:35 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/mce: check if event info is valid
+To: Ganesh <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20210806132307.367688-1-ganeshgr@linux.ibm.com>
+ <4f9431fd-74b0-2ce4-807e-9796b326d729@linux.ibm.com>
+ <87ily9nii0.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87ily9nii0.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <1634282394.zxx1qfpuu6.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,245 +83,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, oohall@gmail.com,
- Daniel Axtens <dja@axtens.net>
+Cc: mahesh@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Oliver O'Halloran <oohall@gmail.com>
+Excerpts from Michael Ellerman's message of October 7, 2021 10:09 pm:
+> Ganesh <ganeshgr@linux.ibm.com> writes:
+>> On 8/6/21 6:53 PM, Ganesh Goudar wrote:
+>>
+>>> Check if the event info is valid before printing the
+>>> event information. When a fwnmi enabled nested kvm guest
+>>> hits a machine check exception L0 and L2 would generate
+>>> machine check event info, But L1 would not generate any
+>>> machine check event info as it won't go through 0x200
+>>> vector and prints some unwanted message.
+>>>
+>>> To fix this, 'in_use' variable in machine check event info is
+>>> no more in use, rename it to 'valid' and check if the event
+>>> information is valid before logging the event information.
+>>>
+>>> without this patch L1 would print following message for
+>>> exceptions encountered in L2, as event structure will be
+>>> empty in L1.
+>>>
+>>> "Machine Check Exception, Unknown event version 0".
+>>>
+>>> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+>>> ---
+>>
+>> Hi mpe, Any comments on this patch.
+>=20
+> The variable rename is a bit of a distraction.
+>=20
+> But ignoring that, how do we end up processing a machine_check_event
+> that has in_use =3D 0?
+>=20
+> You don't give much detail on what call path you're talking about. I
+> guess we're coming in via the calls in the KVM code?
+>=20
+> In the definition of kvm_vcpu_arch we have:
+>=20
+> 	struct machine_check_event mce_evt; /* Valid if trap =3D=3D 0x200 */
+>=20
+> And you said we're not going via 0x200 in L1. But so shouldn't we be
+> teaching the KVM code not to use mce_evt when trap is not 0x200?
 
-The EEH recovery logic in eeh_handle_normal_event() has some pretty strange
-flow control. If we remove all the actual recovery logic we're left with
-the following skeleton:
+I'm not sure we want the MCE to skip the L1 either. It should match the=20
+L0 hypervisor behaviour as closely as reasonably possible.
 
-	if (result != PCI_ERS_RESULT_DISCONNECT) {
-		...
-	}
+We might have to teach the KVM pseries path to do something about the
+0x200 before the common HV guest exit handler (which is where the L1
+message comes from).
 
-	if (result != PCI_ERS_RESULT_DISCONNECT) {
-		...
-	}
-
-	if (result == PCI_ERS_RESULT_NONE) {
-		...
-	}
-
-	if (result == PCI_ERS_RESULT_CAN_RECOVER) {
-		...
-	}
-
-	if (result == PCI_ERS_RESULT_CAN_RECOVER) {
-		...
-	}
-
-	if (result == PCI_ERS_RESULT_NEED_RESET) {
-		...
-	}
-
-	if ((result == PCI_ERS_RESULT_RECOVERED) ||
-	    (result == PCI_ERS_RESULT_NONE)) {
-		...
-		goto out;
-	}
-
-	/*
-	 * unsuccessful recovery / PCI_ERS_RESULT_DISCONECTED
-	 * handling is here.
-	 */
-	...
-
-	out:
-	...
-
-Most of the "if () { ... }" blocks above change "result" to
-PCI_ERS_RESULT_DISCONNECTED if an error occurs in that recovery step. This
-makes the control flow a bit confusing since it breaks the early-exit
-pattern that is generally used in Linux. In any case we end up handling the
-error in the final else block so why not just jump there directly? Doing so
-also allows us to de-indent a bunch of code.
-
-No functional changes.
-
-Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-[dja: rebase on top of linux-next + my preceeding refactor,
-      move clearing the EEH_DEV_NO_HANDLER bit above the first goto so that
-      it is always clear in the error handler code as it was before.]
-Signed-off-by: Daniel Axtens <dja@axtens.net>
----
- arch/powerpc/kernel/eeh_driver.c | 93 ++++++++++++++++----------------
- 1 file changed, 45 insertions(+), 48 deletions(-)
-
-diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-index cb3ac555c944..b8d5805c446a 100644
---- a/arch/powerpc/kernel/eeh_driver.c
-+++ b/arch/powerpc/kernel/eeh_driver.c
-@@ -905,18 +905,19 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 	}
- #endif /* CONFIG_STACKTRACE */
- 
-+	eeh_for_each_pe(pe, tmp_pe)
-+		eeh_pe_for_each_dev(tmp_pe, edev, tmp)
-+			edev->mode &= ~EEH_DEV_NO_HANDLER;
-+
- 	eeh_pe_update_time_stamp(pe);
- 	pe->freeze_count++;
- 	if (pe->freeze_count > eeh_max_freezes) {
- 		pr_err("EEH: PHB#%x-PE#%x has failed %d times in the last hour and has been permanently disabled.\n",
- 		       pe->phb->global_number, pe->addr,
- 		       pe->freeze_count);
--		result = PCI_ERS_RESULT_DISCONNECT;
--	}
- 
--	eeh_for_each_pe(pe, tmp_pe)
--		eeh_pe_for_each_dev(tmp_pe, edev, tmp)
--			edev->mode &= ~EEH_DEV_NO_HANDLER;
-+		goto recover_failed;
-+	}
- 
- 	/* Walk the various device drivers attached to this slot through
- 	 * a reset sequence, giving each an opportunity to do what it needs
-@@ -928,39 +929,38 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 	 * the error. Override the result if necessary to have partially
- 	 * hotplug for this case.
- 	 */
--	if (result != PCI_ERS_RESULT_DISCONNECT) {
--		pr_warn("EEH: This PCI device has failed %d times in the last hour and will be permanently disabled after %d failures.\n",
--			pe->freeze_count, eeh_max_freezes);
--		pr_info("EEH: Notify device drivers to shutdown\n");
--		eeh_set_channel_state(pe, pci_channel_io_frozen);
--		eeh_set_irq_state(pe, false);
--		eeh_pe_report("error_detected(IO frozen)", pe,
--			      eeh_report_error, &result);
--		if ((pe->type & EEH_PE_PHB) &&
--		    result != PCI_ERS_RESULT_NONE &&
--		    result != PCI_ERS_RESULT_NEED_RESET)
--			result = PCI_ERS_RESULT_NEED_RESET;
--	}
-+	pr_warn("EEH: This PCI device has failed %d times in the last hour and will be permanently disabled after %d failures.\n",
-+		pe->freeze_count, eeh_max_freezes);
-+	pr_info("EEH: Notify device drivers to shutdown\n");
-+	eeh_set_channel_state(pe, pci_channel_io_frozen);
-+	eeh_set_irq_state(pe, false);
-+	eeh_pe_report("error_detected(IO frozen)", pe,
-+		      eeh_report_error, &result);
-+	if (result == PCI_ERS_RESULT_DISCONNECT)
-+		goto recover_failed;
-+
-+	/*
-+	 * Error logged on a PHB are always fences which need a full
-+	 * PHB reset to clear so force that to happen.
-+	 */
-+	if ((pe->type & EEH_PE_PHB) && result != PCI_ERS_RESULT_NONE)
-+		result = PCI_ERS_RESULT_NEED_RESET;
- 
- 	/* Get the current PCI slot state. This can take a long time,
- 	 * sometimes over 300 seconds for certain systems.
- 	 */
--	if (result != PCI_ERS_RESULT_DISCONNECT) {
--		rc = eeh_wait_state(pe, MAX_WAIT_FOR_RECOVERY*1000);
--		if (rc < 0 || rc == EEH_STATE_NOT_SUPPORT) {
--			pr_warn("EEH: Permanent failure\n");
--			result = PCI_ERS_RESULT_DISCONNECT;
--		}
-+	rc = eeh_wait_state(pe, MAX_WAIT_FOR_RECOVERY * 1000);
-+	if (rc < 0 || rc == EEH_STATE_NOT_SUPPORT) {
-+		pr_warn("EEH: Permanent failure\n");
-+		goto recover_failed;
- 	}
- 
- 	/* Since rtas may enable MMIO when posting the error log,
- 	 * don't post the error log until after all dev drivers
- 	 * have been informed.
- 	 */
--	if (result != PCI_ERS_RESULT_DISCONNECT) {
--		pr_info("EEH: Collect temporary log\n");
--		eeh_slot_error_detail(pe, EEH_LOG_TEMP);
--	}
-+	pr_info("EEH: Collect temporary log\n");
-+	eeh_slot_error_detail(pe, EEH_LOG_TEMP);
- 
- 	/* If all device drivers were EEH-unaware, then shut
- 	 * down all of the device drivers, and hope they
-@@ -970,9 +970,8 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 		pr_info("EEH: Reset with hotplug activity\n");
- 		rc = eeh_reset_device(pe, bus, NULL, false);
- 		if (rc) {
--			pr_warn("%s: Unable to reset, err=%d\n",
--				__func__, rc);
--			result = PCI_ERS_RESULT_DISCONNECT;
-+			pr_warn("%s: Unable to reset, err=%d\n", __func__, rc);
-+			goto recover_failed;
- 		}
- 	}
- 
-@@ -980,10 +979,10 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 	if (result == PCI_ERS_RESULT_CAN_RECOVER) {
- 		pr_info("EEH: Enable I/O for affected devices\n");
- 		rc = eeh_pci_enable(pe, EEH_OPT_THAW_MMIO);
-+		if (rc < 0)
-+			goto recover_failed;
- 
--		if (rc < 0) {
--			result = PCI_ERS_RESULT_DISCONNECT;
--		} else if (rc) {
-+		if (rc) {
- 			result = PCI_ERS_RESULT_NEED_RESET;
- 		} else {
- 			pr_info("EEH: Notify device drivers to resume I/O\n");
-@@ -991,15 +990,13 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 				      eeh_report_mmio_enabled, &result);
- 		}
- 	}
--
--	/* If all devices reported they can proceed, then re-enable DMA */
- 	if (result == PCI_ERS_RESULT_CAN_RECOVER) {
- 		pr_info("EEH: Enabled DMA for affected devices\n");
- 		rc = eeh_pci_enable(pe, EEH_OPT_THAW_DMA);
-+		if (rc < 0)
-+			goto recover_failed;
- 
--		if (rc < 0) {
--			result = PCI_ERS_RESULT_DISCONNECT;
--		} else if (rc) {
-+		if (rc) {
- 			result = PCI_ERS_RESULT_NEED_RESET;
- 		} else {
- 			/*
-@@ -1017,16 +1014,15 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 		pr_info("EEH: Reset without hotplug activity\n");
- 		rc = eeh_reset_device(pe, bus, &rmv_data, true);
- 		if (rc) {
--			pr_warn("%s: Cannot reset, err=%d\n",
--				__func__, rc);
--			result = PCI_ERS_RESULT_DISCONNECT;
--		} else {
--			result = PCI_ERS_RESULT_NONE;
--			eeh_set_channel_state(pe, pci_channel_io_normal);
--			eeh_set_irq_state(pe, true);
--			eeh_pe_report("slot_reset", pe, eeh_report_reset,
--				      &result);
-+			pr_warn("%s: Cannot reset, err=%d\n", __func__, rc);
-+			goto recover_failed;
- 		}
-+
-+		result = PCI_ERS_RESULT_NONE;
-+		eeh_set_channel_state(pe, pci_channel_io_normal);
-+		eeh_set_irq_state(pe, true);
-+		eeh_pe_report("slot_reset", pe, eeh_report_reset,
-+			      &result);
- 	}
- 
- 	if ((result == PCI_ERS_RESULT_RECOVERED) ||
-@@ -1057,6 +1053,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 		goto out;
- 	}
- 
-+recover_failed:
- 	/*
- 	 * About 90% of all real-life EEH failures in the field
- 	 * are due to poorly seated PCI cards. Only 10% or so are
--- 
-2.25.1
-
+Thanks,
+Nick
