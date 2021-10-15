@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8942142F76B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 17:53:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 941D142F76F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 17:54:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HW9mH1H8Lz3dr4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 02:53:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HW9n71k70z2xth
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 02:54:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=S1jcNizl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eLpDu04I;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435;
- helo=mail-pf1-x435.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e;
+ helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=S1jcNizl; dkim-atps=neutral
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com
- [IPv6:2607:f8b0:4864:20::435])
+ header.s=20210112 header.b=eLpDu04I; dkim-atps=neutral
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
+ [IPv6:2607:f8b0:4864:20::62e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HW9cb5jlWz3cCD
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 02:46:55 +1100 (AEDT)
-Received: by mail-pf1-x435.google.com with SMTP id k26so8695543pfi.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 08:46:55 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HW9cf2Wpqz3cBT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 02:46:58 +1100 (AEDT)
+Received: by mail-pl1-x62e.google.com with SMTP id y4so6681500plb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 08:46:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=lBfegSip8uJBm6f+7E6aCO88l+bAoSzfsmhWLvtW/G4=;
- b=S1jcNizlBvqaS0nJyeceeBEMqJUWaLUC/HJRo8krv7NUYTQzHQ1AQSEeud6ZxgEd4K
- ss+w7Xn96BW7k6L8RqmNK7ZlWBdflhyWecelIuWrF+q41X12oZSouOUa5nixODFBevg8
- vDcaHOxNd2tklCMyO6/+nwWeUHjIHRKui96tlga7gEPZK3fsW8Gt60qLObwL8TKFtOhl
- 4y/pAC84RgnlxL209bxjGEG2QHwLAbKDCrZqRIXDH9mpO/F6DapUSzcMILuVxiCG38cI
- 5i2z7Alg97rhpECt5SZogcPkBDmWFWxFY0wjXhipYR2n3Co35Ao0QCX5I03v2XSoSR8Q
- a+eA==
+ bh=zu5KRphZeWP1V/tNwiBsxoWshA0nNYHtx7ymVNXLm7o=;
+ b=eLpDu04In0LfoQXdVsRnJpz7POQ3Qj7BMIyZRlL+1DhnruYQly9oAYFTnPrTU2TbzO
+ 5Pi7zsqoiKdUEC2WA9COYtzS57mDbKtU7yBVdhEaTB37Mr99+9r0Of+K9oDqvtXI0nD4
+ iUkYcTrQmVWDQVBUSYn7lztRO0GAW2dxpIlTo90YSDatfYouVJI/fwGP5l3jHVgw1s9S
+ nHhn+mI6XuTe23Hho/0bvLAHbEfmxXKdMereFeu1h5FKXrlBYO3mCk6UkikiSuczNaJO
+ 0Ly+ZUJmknMOmDLAqzP5sJ+Ch6Opxs1KaqCbi+QtGY6muxcKFMMz6x+d4N0HO8MKaiEO
+ IOjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=lBfegSip8uJBm6f+7E6aCO88l+bAoSzfsmhWLvtW/G4=;
- b=hjK66krw66sbQ2yhaDC+xT13mjVaByomLU0VwV3Vpo1BoUDRDuzPmcLv4b1RM3RXN0
- TbAWYjePgccReVOtSf746sKe52+SdsjAyV5zScT5gevUuVPj9LVJCMi5sTNfU1xjcsgR
- wscbD9ntAw0v9f7RwYAJ4zvP/tRD5eunk12dw3z6Yn0T18yNkUWZ3LruZGIAPiEE/2Gd
- IsfUiHYTZBeU7ZX5kCqhs1c68+qM6zvtgLjaPY5oqWBtaFmE5GOOOwG4L1/DT/NE1Yw1
- XEy9BHPX2AqVL3xWP48U6Z1aBIes+njMEb8kDyDHkRYDoRd4+j6lPqUwerR2VGT3qY0b
- NbyQ==
-X-Gm-Message-State: AOAM531Tfgs5F5N0UaBKLDCtFlxwdnvigs+neIXf0DG5nDiwuHBH3Ifb
- NeATma5+7Un+Y7X3k7l2CH3aamni5F0=
-X-Google-Smtp-Source: ABdhPJxlmcBHpz/56IitWZDh8m30rancAl7FBrN323vjKcjTyKipj8MUbDrBfnagBVQNQk2Lya2t4g==
-X-Received: by 2002:a05:6a00:1801:b0:44c:aab8:a5ba with SMTP id
- y1-20020a056a00180100b0044caab8a5bamr12151208pfa.32.1634312813666; 
- Fri, 15 Oct 2021 08:46:53 -0700 (PDT)
+ bh=zu5KRphZeWP1V/tNwiBsxoWshA0nNYHtx7ymVNXLm7o=;
+ b=feCpRzboRFuUivMrphti/UKJYuzU/xk4IvadurJVVmGGI0e2a7w0hdiwylNMSiDi4G
+ znTGuOp+AMavbvroT0p1/AN43IIgmkU1Ai3R+aHAYGd2Zn7puWaRZ1wK2V3+I0+36kpZ
+ Q7zAJkLkfdcGPY35XYdQJ8xAe78vmozHR34UPAWng/jHPm64H3LfOQ9dKJMNs4TPm26g
+ hcSaTPr0lyqBAqs3d3SwUCvorKHrTpygdbEGw0FDuLQL8qmsf8y0LXl1DslRBQFMFb6U
+ AFcfsSyRElHBo8bgTKfiUEwMaoZihNRccDcjWH7MR6JfB0xbzroMXXwWXE9EHCxUpoAu
+ zeDw==
+X-Gm-Message-State: AOAM530t5GHCiw3G29O5CZ3g8o5ldLbQkSPlsI+6O4XrRl+2NjZrakmE
+ wz9Deu0LdMGj3pZWTkNJX+1EnVkIUx8=
+X-Google-Smtp-Source: ABdhPJwTCsXpvTtY4A0he7LwD+EHaLgb1sF6NeKkgmLet/XR9PJxTkvqpJhGu0wuPzwUMwfi3x+9YA==
+X-Received: by 2002:a17:90b:388f:: with SMTP id
+ mu15mr14407385pjb.28.1634312815939; 
+ Fri, 15 Oct 2021 08:46:55 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (14-203-144-177.static.tpgi.com.au.
  [14.203.144.177])
- by smtp.gmail.com with ESMTPSA id y1sm5392092pfo.104.2021.10.15.08.46.51
+ by smtp.gmail.com with ESMTPSA id y1sm5392092pfo.104.2021.10.15.08.46.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Oct 2021 08:46:53 -0700 (PDT)
+ Fri, 15 Oct 2021 08:46:55 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v1 10/11] powerpc/configs/microwatt: add POWER9_CPU
-Date: Sat, 16 Oct 2021 01:46:23 +1000
-Message-Id: <20211015154624.922960-11-npiggin@gmail.com>
+Subject: [PATCH v1 11/11] powerpc/microwatt: Don't select the hash MMU code
+Date: Sat, 16 Oct 2021 01:46:24 +1000
+Message-Id: <20211015154624.922960-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211015154624.922960-1-npiggin@gmail.com>
 References: <20211015154624.922960-1-npiggin@gmail.com>
@@ -86,26 +86,40 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Microwatt implements a subset of ISA v3.0 (which is equivalent to
-the POWER9_CPU option).
+Microwatt is radix-only, so it does not require hash MMU support.
+
+This saves 20kB compressed dtbImage and 56kB vmlinux size.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/configs/microwatt_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/configs/microwatt_defconfig | 1 -
+ arch/powerpc/platforms/microwatt/Kconfig | 1 -
+ 2 files changed, 2 deletions(-)
 
 diff --git a/arch/powerpc/configs/microwatt_defconfig b/arch/powerpc/configs/microwatt_defconfig
-index 9465209b8c5b..6e62966730d3 100644
+index 6e62966730d3..7c8eb29d8afe 100644
 --- a/arch/powerpc/configs/microwatt_defconfig
 +++ b/arch/powerpc/configs/microwatt_defconfig
-@@ -15,6 +15,7 @@ CONFIG_EMBEDDED=y
- # CONFIG_COMPAT_BRK is not set
- # CONFIG_SLAB_MERGE_DEFAULT is not set
- CONFIG_PPC64=y
-+CONFIG_POWER9_CPU=y
- # CONFIG_PPC_KUEP is not set
- # CONFIG_PPC_KUAP is not set
- CONFIG_CPU_LITTLE_ENDIAN=y
+@@ -27,7 +27,6 @@ CONFIG_PPC_MICROWATT=y
+ # CONFIG_PPC_OF_BOOT_TRAMPOLINE is not set
+ CONFIG_CPU_FREQ=y
+ CONFIG_HZ_100=y
+-# CONFIG_PPC_MEM_KEYS is not set
+ # CONFIG_SECCOMP is not set
+ # CONFIG_MQ_IOSCHED_KYBER is not set
+ # CONFIG_COREDUMP is not set
+diff --git a/arch/powerpc/platforms/microwatt/Kconfig b/arch/powerpc/platforms/microwatt/Kconfig
+index 823192e9d38a..5e320f49583a 100644
+--- a/arch/powerpc/platforms/microwatt/Kconfig
++++ b/arch/powerpc/platforms/microwatt/Kconfig
+@@ -5,7 +5,6 @@ config PPC_MICROWATT
+ 	select PPC_XICS
+ 	select PPC_ICS_NATIVE
+ 	select PPC_ICP_NATIVE
+-	select PPC_HASH_MMU_NATIVE if PPC_64S_HASH_MMU
+ 	select PPC_UDBG_16550
+ 	select ARCH_RANDOM
+ 	help
 -- 
 2.23.0
 
