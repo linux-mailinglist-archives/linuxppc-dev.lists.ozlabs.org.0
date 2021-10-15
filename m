@@ -1,42 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC52C42F404
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 15:41:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6EB542F53D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 16:28:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HW6qR2VlHz3c6G
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 00:41:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HW7sR5HDbz3cBc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 01:27:55 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mW0YwkEY;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=robin.murphy@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4HW6p91CgGz3c9q
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 00:39:59 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0BA4D6E;
- Fri, 15 Oct 2021 06:39:56 -0700 (PDT)
-Received: from [10.57.95.157] (unknown [10.57.95.157])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AA6F53F694;
- Fri, 15 Oct 2021 06:39:55 -0700 (PDT)
-Subject: Re: [PATCH] soc: fsl: dpio: protect smp_processor_id when get
- processor id
-To: Meng.Li@windriver.com, Roy.Pledge@nxp.com, leoyang.li@nxp.com,
- ruxandra.radulescu@nxp.com, horia.geanta@nxp.com
-References: <20211015063601.23303-1-Meng.Li@windriver.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Message-ID: <ba116805-8e41-1502-6cd4-acc1d5e5fa41@arm.com>
-Date: Fri, 15 Oct 2021 14:39:50 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f;
+ helo=mail-pf1-x42f.google.com; envelope-from=naveennaidu479@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=mW0YwkEY; dkim-atps=neutral
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
+ [IPv6:2607:f8b0:4864:20::42f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HW7rj023fz2yMV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 01:27:16 +1100 (AEDT)
+Received: by mail-pf1-x42f.google.com with SMTP id m26so8516057pff.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 07:27:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=A1+buzEnWHFfl/ZaWbrWJXy+M9IGPXk9SXcGFxZnAfs=;
+ b=mW0YwkEYI+SkJyiLxlQX3Zdlu5EyWW8zMrdZ1/82zOBc94fM7nZ5imuO8lI0tb5Mlc
+ GJX5XvSWu1L0mHI8nSrIRx+Do7SdcoiQJmua/qyhISbG1tvsgGAtKU2iaSZvTJBb65H4
+ yybCzMgblNgOoHva0cf/tJmCf6kFhrzB7ImRJELkl+97pLZdPXanfD/7ui3T8inIbbwi
+ STKVz/5qY9Dvta4IbwFgUI2HPfp+DgGS87+bamOPu7vRmCtOakuf4SGBbo8DvAGhvNNk
+ uMToZ3PnjDxeoU2qn1wjU0aa9BC12o3ATwUQxwGE8QbXhHsGamQhQZz4miZcGUh7D1CO
+ yNxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=A1+buzEnWHFfl/ZaWbrWJXy+M9IGPXk9SXcGFxZnAfs=;
+ b=0MaI82CDa6HIe7Ev+E/bwbLer6B5cNVm+k+g3rlr8TV+EIsEiJGqn/4ybWwZkA9aAZ
+ zQbHs+c2dCuboLQ3rpUxerms2i/2BvIdjSt+QW38i485vuCd5nUXVuU1meyGWBuPnk65
+ LjIR5C/pDXd9Oj9hzWdX3OrleYI8thrB+gqvBTljBJ61WgJMzID//av7DpfDOtsl00Wt
+ LpuDnVricBCpXQVBI/nc9TQqxvGHzuIDFL9U7gp+ZLsHKhRhHgZX+++/RZwvDBx/yC7g
+ mRBVmczTq2oF+i13gjb372P7b2kv3QuDAVayIKe0ZDBXPAfrtyTNq7Ry+vgRI8wxdQ7d
+ oJ0A==
+X-Gm-Message-State: AOAM530bovujdzD2Aat8rtJxggCfb0a/KyJ65MToVYfiKUNUSmdTgoPo
+ J1cN8Vj4l64W2bdonHb+Ezs=
+X-Google-Smtp-Source: ABdhPJxFKApjvWHOznC1si5BoWluKZQ8jEGESoKMvikMsJGlwrW7cHZUum4j158SdHMlbo9VkZ0e4A==
+X-Received: by 2002:a62:ab17:0:b0:44c:f727:98cd with SMTP id
+ p23-20020a62ab17000000b0044cf72798cdmr12077120pff.35.1634308032813; 
+ Fri, 15 Oct 2021 07:27:12 -0700 (PDT)
+Received: from localhost.localdomain ([2405:204:5414:a8c0:67be:6f68:5d31:1ee2])
+ by smtp.gmail.com with ESMTPSA id ls7sm5408396pjb.16.2021.10.15.07.27.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Oct 2021 07:27:12 -0700 (PDT)
+From: Naveen Naidu <naveennaidu479@gmail.com>
+To: bhelgaas@google.com
+Subject: [PATCH v2 00/24] Unify PCI error response checking
+Date: Fri, 15 Oct 2021 19:56:31 +0530
+Message-Id: <cover.1634300660.git.naveennaidu479@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20211015063601.23303-1-Meng.Li@windriver.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,71 +78,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+Cc: Rob Herring <robh@kernel.org>, linux-hyperv@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org,
+ =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+ linux-rockchip@lists.infradead.org, linux-pci@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, Naveen Naidu <naveennaidu479@gmail.com>,
+ linux-mediatek@lists.infradead.org,
+ linux-kernel-mentees@lists.linuxfoundation.org,
  linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021-10-15 07:36, Meng.Li@windriver.com wrote:
-> From: Meng Li <meng.li@windriver.com>
-> 
-> When enable debug kernel configs,there will be calltrace as below:
-> 
-> BUG: using smp_processor_id() in preemptible [00000000] code: swapper/0/1
-> caller is debug_smp_processor_id+0x20/0x30
-> CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.10.63-yocto-standard #1
-> Hardware name: NXP Layerscape LX2160ARDB (DT)
-> Call trace:
->   dump_backtrace+0x0/0x1a0
->   show_stack+0x24/0x30
->   dump_stack+0xf0/0x13c
->   check_preemption_disabled+0x100/0x110
->   debug_smp_processor_id+0x20/0x30
->   dpaa2_io_query_fq_count+0xdc/0x154
->   dpaa2_eth_stop+0x144/0x314
->   __dev_close_many+0xdc/0x160
->   __dev_change_flags+0xe8/0x220
->   dev_change_flags+0x30/0x70
->   ic_close_devs+0x50/0x78
->   ip_auto_config+0xed0/0xf10
->   do_one_initcall+0xac/0x460
->   kernel_init_freeable+0x30c/0x378
->   kernel_init+0x20/0x128
->   ret_from_fork+0x10/0x38
-> 
-> Because smp_processor_id() should be invoked in preempt disable status.
-> So, add preempt_disable/enable() to protect smp_processor_id().
+An MMIO read from a PCI device that doesn't exist or doesn't respond
+causes a PCI error.  There's no real data to return to satisfy the 
+CPU read, so most hardware fabricates ~0 data.
 
-If preemption doesn't matter anyway, as the comment in the context 
-implies, then it probably makes more sense just to use 
-raw_smp_processor_id() instead.
+This patch series adds PCI_ERROR_RESPONSE definition and other helper
+definition SET_PCI_ERROR_RESPONSE and RESPONSE_IS_PCI_ERROR and uses it
+where appropriate to make these checks consistent and easier to find.
 
-Robin.
+This helps unify PCI error response checking and make error check
+consistent and easier to find.
 
-> Fixes: c89105c9b390 ("staging: fsl-mc: Move DPIO from staging to drivers/soc/fsl")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Meng Li <Meng.Li@windriver.com>
-> ---
->   drivers/soc/fsl/dpio/dpio-service.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/soc/fsl/dpio/dpio-service.c b/drivers/soc/fsl/dpio/dpio-service.c
-> index 19f47ea9dab0..afc3b89b0fc5 100644
-> --- a/drivers/soc/fsl/dpio/dpio-service.c
-> +++ b/drivers/soc/fsl/dpio/dpio-service.c
-> @@ -58,8 +58,11 @@ static inline struct dpaa2_io *service_select_by_cpu(struct dpaa2_io *d,
->   	 * If cpu == -1, choose the current cpu, with no guarantees about
->   	 * potentially being migrated away.
->   	 */
-> -	if (cpu < 0)
-> -		cpu = smp_processor_id();
-> +        if (cpu < 0) {
-> +                preempt_disable();
-> +                cpu = smp_processor_id();
-> +                preempt_enable();
-> +        }
->   
->   	/* If a specific cpu was requested, pick it up immediately */
->   	return dpio_by_cpu[cpu];
-> 
+This series also ensures that the error response fabrication now happens
+in the PCI_OP_READ and PCI_USER_READ_CONFIG. This removes the
+responsibility from controller drivers to do the error response setting. 
+
+Patch 1:
+    - Adds the PCI_ERROR_RESPONSE and other related defintions
+    - All other patches are dependent on this patch. This patch needs to
+      be applied first, before the others
+
+Patch 2:
+    - Error fabrication happens in PCI_OP_READ and PCI_USER_READ_CONFIG
+      whenever the data read via the controller driver fails.
+    - This patch needs to be applied before, Patch 4/24 to Patch 15/24 are
+      applied.
+
+Patch 3:
+    - Uses SET_PCI_ERROR_RESPONSE() when device is not found and
+      RESPONSE_IS_PCI_ERROR() to check hardware read from the hardware.
+
+Patch 4 - 15:
+    - Removes redundant error fabrication that happens in controller 
+      drivers when the read from a PCI device fails.
+    - These patches are dependent on Patch 2/24 of the series.
+    - These can be applied in any order.
+
+Patch 16 - 22:
+    - Uses RESPONSE_IS_PCI_ERROR() to check the reads from hardware
+    - Patches can be applied in any order.
+
+Patch 23 - 24:
+    - Edits the comments to include PCI_ERROR_RESPONSE alsong with
+      0xFFFFFFFF, so that it becomes easier to grep for faulty 
+      hardware reads.
+
+Changelog
+=========
+
+v2:
+    - Instead of using SET_PCI_ERROR_RESPONSE in all controller drivers
+      to fabricate error response, only use them in PCI_OP_READ and
+      PCI_USER_READ_CONFIG
+
+Naveen Naidu (24):
+ [PATCH 1/24] PCI: Add PCI_ERROR_RESPONSE and it's related definitions
+ [PATCH 2/24] PCI: Set error response in config access defines when ops->read() fails
+ [PATCH 3/24] PCI: Unify PCI error response checking
+ [PATCH 4/24] PCI: Remove redundant error fabrication when device read fails
+ [PATCH 5/24] PCI: thunder: Remove redundant error fabrication when device read fails
+ [PATCH 6/24] PCI: iproc: Remove redundant error fabrication when device read fails
+ [PATCH 7/24] PCI: mediatek: Remove redundant error fabrication when device read fails
+ [PATCH 8/24] PCI: exynos: Remove redundant error fabrication when device read fails
+ [PATCH 9/24] PCI: histb: Remove redundant error fabrication when device read fails
+ [PATCH 10/24] PCI: kirin: Remove redundant error fabrication when device read fails
+ [PATCH 11/24] PCI: aardvark: Remove redundant error fabrication when device read fails
+ [PATCH 12/24] PCI: mvebu: Remove redundant error fabrication when device read fails
+ [PATCH 13/24] PCI: altera: Remove redundant error fabrication when device read fails
+ [PATCH 14/24] PCI: rcar: Remove redundant error fabrication when device read fails
+ [PATCH 15/24] PCI: rockchip: Remove redundant error fabrication when device read fails
+ [PATCH 16/24] PCI/ERR: Use RESPONSE_IS_PCI_ERROR() to check read from hardware
+ [PATCH 17/24] PCI: vmd: Use RESPONSE_IS_PCI_ERROR() to check read from hardware
+ [PATCH 18/24] PCI: pciehp: Use RESPONSE_IS_PCI_ERROR() to check read from hardware
+ [PATCH 19/24] PCI/DPC: Use RESPONSE_IS_PCI_ERROR() to check read from hardware
+ [PATCH 20/24] PCI/PME: Use RESPONSE_IS_PCI_ERROR() to check read from hardware
+ [PATCH 21/24] PCI: cpqphp: Use RESPONSE_IS_PCI_ERROR() to check read from hardware
+ [PATCH 22/24] PCI: keystone: Use PCI_ERROR_RESPONSE to specify hardware error
+ [PATCH 23/24] PCI: hv: Use PCI_ERROR_RESPONSE to specify hardware read error
+ [PATCH 24/24] PCI: xgene: Use PCI_ERROR_RESPONSE to specify hardware error
+
+ drivers/pci/access.c                        | 36 ++++++++--------
+ drivers/pci/controller/dwc/pci-exynos.c     |  4 +-
+ drivers/pci/controller/dwc/pci-keystone.c   |  4 +-
+ drivers/pci/controller/dwc/pcie-histb.c     |  4 +-
+ drivers/pci/controller/dwc/pcie-kirin.c     |  4 +-
+ drivers/pci/controller/pci-aardvark.c       | 10 +----
+ drivers/pci/controller/pci-hyperv.c         |  2 +-
+ drivers/pci/controller/pci-mvebu.c          |  8 +---
+ drivers/pci/controller/pci-thunder-ecam.c   | 46 +++++++--------------
+ drivers/pci/controller/pci-thunder-pem.c    |  4 +-
+ drivers/pci/controller/pci-xgene.c          |  8 ++--
+ drivers/pci/controller/pcie-altera.c        |  4 +-
+ drivers/pci/controller/pcie-iproc.c         |  4 +-
+ drivers/pci/controller/pcie-mediatek.c      | 11 +----
+ drivers/pci/controller/pcie-rcar-host.c     |  4 +-
+ drivers/pci/controller/pcie-rockchip-host.c |  4 +-
+ drivers/pci/controller/vmd.c                |  2 +-
+ drivers/pci/hotplug/cpqphp_ctrl.c           |  4 +-
+ drivers/pci/hotplug/pciehp_hpc.c            | 10 ++---
+ drivers/pci/pci.c                           | 10 ++---
+ drivers/pci/pcie/dpc.c                      |  4 +-
+ drivers/pci/pcie/pme.c                      |  4 +-
+ drivers/pci/probe.c                         | 10 ++---
+ include/linux/pci.h                         |  9 ++++
+ 24 files changed, 87 insertions(+), 123 deletions(-)
+
+-- 
+2.25.1
+
