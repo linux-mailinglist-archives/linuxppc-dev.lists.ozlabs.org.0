@@ -1,91 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83FE042F666
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 16:56:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B48E442F67C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 17:01:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HW8Vs0y05z3c8j
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 01:56:53 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fcjwt+tc;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HW8bn16Nnz3cFk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 02:01:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=fcjwt+tc; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=a1n/=pd=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HW8V76v3zz3bhq
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 01:56:15 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19FD3XSs032694; 
- Fri, 15 Oct 2021 10:55:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=XaCiZuw1BubnJr0Z4Dt6ytQJZdkI7+Z5gdfi41cR/cY=;
- b=fcjwt+tc+UDIKN9YVAzZAQZTuneQg9vAWGH9rhETG5+ihVJTX5MGt88A+hd3NxPtMrMp
- sFdWQp0w3myf4fdCWTdKW332DLyiBHshxjdt80tQ+znpzTu/02w2rIutHEJUSasGDS7b
- AxayHJWlwGmtOtJuVzZohVglfOE7N54Nhfo+nP867CWRcYbdjs64H3NeCHL1tXaUiZ5A
- Sofc4EPaAHWHGk+M20qiJLCRFX4XUMKlhmFJZ/+5FYEJD534crPm1iAid6Q1sy+b19QS
- tOMshyS/a14Oync9TB/FrePEs/5J3lnGVNZNdxe0dTIBAe1wZbUh9/DwqslwNZRzSZHB +w== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bps2tqqw4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Oct 2021 10:55:51 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19FElQxQ002686;
- Fri, 15 Oct 2021 14:55:50 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma01dal.us.ibm.com with ESMTP id 3bpsfgwe47-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Oct 2021 14:55:50 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 19FEtmKj51839374
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 15 Oct 2021 14:55:48 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C47567806B;
- Fri, 15 Oct 2021 14:55:48 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 96FAC7805E;
- Fri, 15 Oct 2021 14:55:48 +0000 (GMT)
-Received: from localhost (unknown [9.211.119.24])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 15 Oct 2021 14:55:48 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/smp: do not decrement idle task preempt count in CPU
- offline
-Date: Fri, 15 Oct 2021 09:55:48 -0500
-Message-Id: <20211015145548.2269836-1-nathanl@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HW8bH2wyGz3bhy
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 02:00:43 +1100 (AEDT)
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
+ [66.24.58.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6E0FA61056;
+ Fri, 15 Oct 2021 15:00:37 +0000 (UTC)
+Date: Fri, 15 Oct 2021 11:00:35 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: LKML <linux-kernel@vger.kernel.org>
+Subject: [PATCH] tracing: Have all levels of checks prevent recursion
+Message-ID: <20211015110035.14813389@gandalf.local.home>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: -DMNoWInjHigIxmmdCBPQPlZMJS6fN_z
-X-Proofpoint-ORIG-GUID: -DMNoWInjHigIxmmdCBPQPlZMJS6fN_z
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-15_04,2021-10-14_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 impostorscore=0
- spamscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0 suspectscore=0
- phishscore=0 malwarescore=0 mlxlogscore=978 bulkscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
- definitions=main-2110150089
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,64 +43,227 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: srikar@linux.vnet.ibm.com, peterz@infradead.org,
- linux-kernel@vger.kernel.org, valentin.schneider@arm.com, clg@kaod.org,
- mingo@kernel.org
+Cc: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>, "Peter
+ Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Paul Mackerras <paulus@samba.org>, Jisheng Zhang <jszhang@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Miroslav Benes <mbenes@suse.cz>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Petr Mladek <pmladek@suse.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Jiri Kosina <jikos@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-parisc@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Guo Ren <guoren@kernel.org>, Colin Ian King <colin.king@canonical.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With PREEMPT_COUNT=y, when a CPU is offlined and then onlined again, we
-get:
+From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
 
-BUG: scheduling while atomic: swapper/1/0/0x00000000
-no locks held by swapper/1/0.
-CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.15.0-rc2+ #100
-Call Trace:
- dump_stack_lvl+0xac/0x108
- __schedule_bug+0xac/0xe0
- __schedule+0xcf8/0x10d0
- schedule_idle+0x3c/0x70
- do_idle+0x2d8/0x4a0
- cpu_startup_entry+0x38/0x40
- start_secondary+0x2ec/0x3a0
- start_secondary_prolog+0x10/0x14
+While writing an email explaining the "bit = 0" logic for a discussion on
+making ftrace_test_recursion_trylock() disable preemption, I discovered a
+path that makes the "not do the logic if bit is zero" unsafe.
 
-This is because powerpc's arch_cpu_idle_dead() decrements the idle task's
-preempt count, for reasons explained in commit a7c2bb8279d2 ("powerpc:
-Re-enable preemption before cpu_die()"), specifically "start_secondary()
-expects a preempt_count() of 0."
+The recursion logic is done in hot paths like the function tracer. Thus,
+any code executed causes noticeable overhead. Thus, tricks are done to try
+to limit the amount of code executed. This included the recursion testing
+logic.
 
-However, since commit 2c669ef6979c ("powerpc/preempt: Don't touch the idle
-task's preempt_count during hotplug") and commit f1a0a376ca0c ("sched/core:
-Initialize the idle task with preemption disabled"), that justification no
-longer holds.
+Having recursion testing is important, as there are many paths that can
+end up in an infinite recursion cycle when tracing every function in the
+kernel. Thus protection is needed to prevent that from happening.
 
-The idle task isn't supposed to re-enable preemption, so remove the
-vestigial preempt_enable() from the CPU offline path.
+Because it is OK to recurse due to different running context levels (e.g.
+an interrupt preempts a trace, and then a trace occurs in the interrupt
+handler), a set of bits are used to know which context one is in (normal,
+softirq, irq and NMI). If a recursion occurs in the same level, it is
+prevented*.
 
-Tested with pseries and powernv in qemu, and pseries on PowerVM.
+Then there are infrastructure levels of recursion as well. When more than
+one callback is attached to the same function to trace, it calls a loop
+function to iterate over all the callbacks. Both the callbacks and the
+loop function have recursion protection. The callbacks use the
+"ftrace_test_recursion_trylock()" which has a "function" set of context
+bits to test, and the loop function calls the internal
+trace_test_and_set_recursion() directly, with an "internal" set of bits.
 
-Fixes: 2c669ef6979c ("powerpc/preempt: Don't touch the idle task's preempt_count during hotplug")
-Fixes: f1a0a376ca0c ("sched/core: Initialize the idle task with preemption disabled")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+If an architecture does not implement all the features supported by ftrace
+then the callbacks are never called directly, and the loop function is
+called instead, which will implement the features of ftrace.
+
+Since both the loop function and the callbacks do recursion protection, it
+was seemed unnecessary to do it in both locations. Thus, a trick was made
+to have the internal set of recursion bits at a more significant bit
+location than the function bits. Then, if any of the higher bits were set,
+the logic of the function bits could be skipped, as any new recursion
+would first have to go through the loop function.
+
+This is true for architectures that do not support all the ftrace
+features, because all functions being traced must first go through the
+loop function before going to the callbacks. But this is not true for
+architectures that support all the ftrace features. That's because the
+loop function could be called due to two callbacks attached to the same
+function, but then a recursion function inside the callback could be
+called that does not share any other callback, and it will be called
+directly.
+
+i.e.
+
+ traced_function_1: [ more than one callback tracing it ]
+   call loop_func
+
+ loop_func:
+   trace_recursion set internal bit
+   call callback
+
+ callback:
+   trace_recursion [ skipped because internal bit is set, return 0 ]
+   call traced_function_2
+
+ traced_function_2: [ only traced by above callback ]
+   call callback
+
+ callback:
+   trace_recursion [ skipped because internal bit is set, return 0 ]
+   call traced_function_2
+
+ [ wash, rinse, repeat, BOOM! out of shampoo! ]
+
+Thus, the "bit == 0 skip" trick is not safe, unless the loop function is
+call for all functions.
+
+Since we want to encourage architectures to implement all ftrace features,
+having them slow down due to this extra logic may encourage the
+maintainers to update to the latest ftrace features. And because this
+logic is only safe for them, remove it completely.
+
+ [*] There is on layer of recursion that is allowed, and that is to allow
+     for the transition between interrupt context (normal -> softirq ->
+     irq -> NMI), because a trace may occur before the context update is
+     visible to the trace recursion logic.
+
+Link: https://lore.kernel.org/all/609b565a-ed6e-a1da-f025-166691b5d994@linux.alibaba.com/
+
+Cc: stable@vger.kernel.org
+Fixes: edc15cafcbfa3 ("tracing: Avoid unnecessary multiple recursion checks")
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
 ---
- arch/powerpc/kernel/smp.c | 2 --
- 1 file changed, 2 deletions(-)
+ include/linux/trace_recursion.h | 41 +++++----------------------------
+ 1 file changed, 6 insertions(+), 35 deletions(-)
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 9cc7d3dbf439..605bab448f84 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1730,8 +1730,6 @@ void __cpu_die(unsigned int cpu)
+diff --git a/include/linux/trace_recursion.h b/include/linux/trace_recursion.h
+index a9f9c5714e65..168fdf07419a 100644
+--- a/include/linux/trace_recursion.h
++++ b/include/linux/trace_recursion.h
+@@ -16,23 +16,8 @@
+  *  When function tracing occurs, the following steps are made:
+  *   If arch does not support a ftrace feature:
+  *    call internal function (uses INTERNAL bits) which calls...
+- *   If callback is registered to the "global" list, the list
+- *    function is called and recursion checks the GLOBAL bits.
+- *    then this function calls...
+  *   The function callback, which can use the FTRACE bits to
+  *    check for recursion.
+- *
+- * Now if the arch does not support a feature, and it calls
+- * the global list function which calls the ftrace callback
+- * all three of these steps will do a recursion protection.
+- * There's no reason to do one if the previous caller already
+- * did. The recursion that we are protecting against will
+- * go through the same steps again.
+- *
+- * To prevent the multiple recursion checks, if a recursion
+- * bit is set that is higher than the MAX bit of the current
+- * check, then we know that the check was made by the previous
+- * caller, and we can skip the current check.
+  */
+ enum {
+ 	/* Function recursion bits */
+@@ -40,12 +25,14 @@ enum {
+ 	TRACE_FTRACE_NMI_BIT,
+ 	TRACE_FTRACE_IRQ_BIT,
+ 	TRACE_FTRACE_SIRQ_BIT,
++	TRACE_FTRACE_TRANSITION_BIT,
  
- void arch_cpu_idle_dead(void)
- {
--	sched_preempt_enable_no_resched();
+-	/* INTERNAL_BITs must be greater than FTRACE_BITs */
++	/* Internal use recursion bits */
+ 	TRACE_INTERNAL_BIT,
+ 	TRACE_INTERNAL_NMI_BIT,
+ 	TRACE_INTERNAL_IRQ_BIT,
+ 	TRACE_INTERNAL_SIRQ_BIT,
++	TRACE_INTERNAL_TRANSITION_BIT,
+ 
+ 	TRACE_BRANCH_BIT,
+ /*
+@@ -86,12 +73,6 @@ enum {
+ 	 */
+ 	TRACE_GRAPH_NOTRACE_BIT,
+ 
+-	/*
+-	 * When transitioning between context, the preempt_count() may
+-	 * not be correct. Allow for a single recursion to cover this case.
+-	 */
+-	TRACE_TRANSITION_BIT,
 -
- 	/*
- 	 * Disable on the down path. This will be re-enabled by
- 	 * start_secondary() via start_secondary_resume() below
+ 	/* Used to prevent recursion recording from recursing. */
+ 	TRACE_RECORD_RECURSION_BIT,
+ };
+@@ -132,6 +113,7 @@ enum {
+ 	TRACE_CTX_IRQ,
+ 	TRACE_CTX_SOFTIRQ,
+ 	TRACE_CTX_NORMAL,
++	TRACE_CTX_TRANSITION,
+ };
+ 
+ static __always_inline int trace_get_context_bit(void)
+@@ -165,40 +147,29 @@ static __always_inline int trace_test_and_set_recursion(unsigned long ip, unsign
+ 	unsigned int val = READ_ONCE(current->trace_recursion);
+ 	int bit;
+ 
+-	/* A previous recursion check was made */
+-	if ((val & TRACE_CONTEXT_MASK) > max)
+-		return 0;
+-
+ 	bit = trace_get_context_bit() + start;
+ 	if (unlikely(val & (1 << bit))) {
+ 		/*
+ 		 * It could be that preempt_count has not been updated during
+ 		 * a switch between contexts. Allow for a single recursion.
+ 		 */
+-		bit = TRACE_TRANSITION_BIT;
++		bit = TRACE_CTX_TRANSITION + start;
+ 		if (val & (1 << bit)) {
+ 			do_ftrace_record_recursion(ip, pip);
+ 			return -1;
+ 		}
+-	} else {
+-		/* Normal check passed, clear the transition to allow it again */
+-		val &= ~(1 << TRACE_TRANSITION_BIT);
+ 	}
+ 
+ 	val |= 1 << bit;
+ 	current->trace_recursion = val;
+ 	barrier();
+ 
+-	return bit + 1;
++	return bit;
+ }
+ 
+ static __always_inline void trace_clear_recursion(int bit)
+ {
+-	if (!bit)
+-		return;
+-
+ 	barrier();
+-	bit--;
+ 	trace_recursion_clear(bit);
+ }
+ 
 -- 
 2.31.1
 
