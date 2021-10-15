@@ -2,58 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB7B42F7E9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 18:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A5E42F7FA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 18:18:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HWBGd3hjwz3c9V
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 03:16:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HWBJs0bTjz3cCR
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 03:18:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fUxjpQpK;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=BOf7V74l;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=fUxjpQpK; 
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=desiato.20200630 header.b=BOf7V74l; 
  dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from desiato.infradead.org (desiato.infradead.org
+ [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HWBFx5tRBz2yNY
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 03:15:49 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7296261181
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 16:15:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1634314546;
- bh=J6lMIRppIQQR2yDU8HEFtiobkHUlT4L+X3PXR/XHp8k=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=fUxjpQpKZEMfW+RRIp60SX1iX/UwmX2w7X5lIZEpj7biPSsFXPDMUQafV+MRGFMmQ
- EL8HPMjTiB8NjmWVoshAD7lta4yw5ks7FQ5A97AWaT6RIcAyKWEtDQ6UK7wHLXbbG3
- Z1ztXj9KpCB5OMJzlWulfrEP66XP61txqi1cOfM0ryOvkLKJse4YDrrC9cAeT803ZX
- I1dRqcI6sM7uBu908E4buE0sgeJjzPDGbl1FQ9Mcim+RVQCz+xQivYjOcEswbqaOuG
- 3L1+rjNW2B0Xd0lB3zf/uOnVZtTN0eV7Al82PBbYtkmb3ud3BZvtdUS/bkKYpz+Va3
- 4TlkTUzrYEe4g==
-Received: by mail-ed1-f49.google.com with SMTP id y12so41789782eda.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 09:15:46 -0700 (PDT)
-X-Gm-Message-State: AOAM533AeVWCHlifvGXzO+qahDcSmaxNGD0gNBndUwbPvDg1vUiZtbal
- aQTXWH+xhoTi77K5hd+s71zVrYLtDF9bmQSuDA==
-X-Google-Smtp-Source: ABdhPJwsRQPmyqCZEJ2EspO5jNkdQ+LeDKtD0EmxJMsNFClADPbMWi8f8wb8874t+JF0p3aYra/8VjChk0VBCZZRh6M=
-X-Received: by 2002:a05:6402:84d:: with SMTP id
- b13mr19328337edz.6.1634314544839; 
- Fri, 15 Oct 2021 09:15:44 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HWBJ816F9z2xWc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 03:17:42 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=4G571e+7WIYw8I8DxxzASA83VdzBwRS9bXXbSuaKaJk=; b=BOf7V74lD3FXPUP4kCK2U0TLoV
+ SAznVCk8FeJ+WeewdASQRvl3LuAkpeUPeUYt7Yezk4dwcdYMeynJPLMmXX2ketg/uIbydVfP3fx8i
+ 4IFF/PRVghZskAnfs53YUmskIsiWSmMUiZqjhTPe2PmaC9LPuznv8Q8JxnB/Lk+IXoOffuE21e2zN
+ 4QFyJJFjuCIGlI7Rxldtg9k0stkjBnL/ARkashob96yYMpeLCBfkQx787ELuOwu+KLpO4wtbU8EZc
+ 64hcntxiBp7R1+VdlnNysKcyoHyA19AEgiAw6E5CIm3GsV2jlF1r0Te0gVoh+BTh2SRD+pD6oIJjU
+ sHkd9clg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=worktop.programming.kicks-ass.net)
+ by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1mbPtJ-00A1p8-2k; Fri, 15 Oct 2021 16:17:05 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 02CA79857C7; Fri, 15 Oct 2021 18:17:02 +0200 (CEST)
+Date: Fri, 15 Oct 2021 18:17:02 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH] tracing: Have all levels of checks prevent recursion
+Message-ID: <20211015161702.GF174703@worktop.programming.kicks-ass.net>
+References: <20211015110035.14813389@gandalf.local.home>
 MIME-Version: 1.0
-References: <20211014224201.24027-1-agust@denx.de>
-In-Reply-To: <20211014224201.24027-1-agust@denx.de>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Fri, 15 Oct 2021 11:15:32 -0500
-X-Gmail-Original-Message-ID: <CAL_Jsq+_K9X010eKz0uwGH33h3vwwEE-+f=z9YWEdhji4yHxWg@mail.gmail.com>
-Message-ID: <CAL_Jsq+_K9X010eKz0uwGH33h3vwwEE-+f=z9YWEdhji4yHxWg@mail.gmail.com>
-Subject: Re: [PATCH v2] powerpc/mpc512x: dts: fix PSC node warnings
-To: Anatolij Gustschin <agust@denx.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211015110035.14813389@gandalf.local.home>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,101 +64,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: =?utf-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Paul Mackerras <paulus@samba.org>, Jisheng Zhang <jszhang@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Miroslav Benes <mbenes@suse.cz>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Petr Mladek <pmladek@suse.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Jiri Kosina <jikos@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-parisc@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Guo Ren <guoren@kernel.org>,
+ Colin Ian King <colin.king@canonical.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 14, 2021 at 5:42 PM Anatolij Gustschin <agust@denx.de> wrote:
->
-> Rework PSC node description to fix build warnings like:
-> mpc5121.dtsi:397.13-406.5: Warning (spi_bus_bridge): /soc@80000000/psc@11400: node name for SPI buses should be 'spi'
-> mpc5121.dtsi:409.13-418.5: Warning (spi_bus_bridge): /soc@80000000/psc@11500: node name for SPI buses should be 'spi'
-> mpc5121.dtsi:457.13-466.5: Warning (spi_bus_bridge): /soc@80000000/psc@11900: node name for SPI buses should be 'spi'
+On Fri, Oct 15, 2021 at 11:00:35AM -0400, Steven Rostedt wrote:
+> From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
+> 
+> While writing an email explaining the "bit = 0" logic for a discussion on
 
-Okay, I now see the block supports either spi or serial modes. I would
-handle this a bit differently that doesn't create a bunch of new .dtsi
-files.
+>  	bit = trace_get_context_bit() + start;
 
->
-> Signed-off-by: Anatolij Gustschin <agust@denx.de>
-> ---
-> Changes in v2:
->  - extract PSC nodes to files which can be included
->    separately and extended as needed
->
->  arch/powerpc/boot/dts/ac14xx.dts            | 118 ++++++++--------
->  arch/powerpc/boot/dts/mpc5121-psc0.dtsi     |  16 +++
->  arch/powerpc/boot/dts/mpc5121-psc1.dtsi     |  15 ++
->  arch/powerpc/boot/dts/mpc5121-psc10.dtsi    |  15 ++
->  arch/powerpc/boot/dts/mpc5121-psc11.dtsi    |  15 ++
->  arch/powerpc/boot/dts/mpc5121-psc2.dtsi     |  15 ++
->  arch/powerpc/boot/dts/mpc5121-psc3.dtsi     |  15 ++
->  arch/powerpc/boot/dts/mpc5121-psc4-spi.dtsi |  17 +++
->  arch/powerpc/boot/dts/mpc5121-psc4.dtsi     |  15 ++
->  arch/powerpc/boot/dts/mpc5121-psc5-spi.dtsi |  17 +++
->  arch/powerpc/boot/dts/mpc5121-psc5.dtsi     |  15 ++
->  arch/powerpc/boot/dts/mpc5121-psc6.dtsi     |  15 ++
->  arch/powerpc/boot/dts/mpc5121-psc7.dtsi     |  15 ++
->  arch/powerpc/boot/dts/mpc5121-psc8.dtsi     |  15 ++
->  arch/powerpc/boot/dts/mpc5121-psc9-spi.dtsi |  17 +++
->  arch/powerpc/boot/dts/mpc5121-psc9.dtsi     |  15 ++
->  arch/powerpc/boot/dts/mpc5121.dtsi          | 148 +-------------------
->  arch/powerpc/boot/dts/mpc5121ads.dts        |  42 +++---
->  arch/powerpc/boot/dts/pdm360ng.dts          | 104 +++++++-------
->  19 files changed, 371 insertions(+), 273 deletions(-)
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc0.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc1.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc10.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc11.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc2.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc3.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc4-spi.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc4.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc5-spi.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc5.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc6.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc7.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc8.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc9-spi.dtsi
->  create mode 100644 arch/powerpc/boot/dts/mpc5121-psc9.dtsi
-
-[...]
-
-> diff --git a/arch/powerpc/boot/dts/mpc5121.dtsi b/arch/powerpc/boot/dts/mpc5121.dtsi
-> index 3f66b91a8e3c..21674da8beb1 100644
-> --- a/arch/powerpc/boot/dts/mpc5121.dtsi
-> +++ b/arch/powerpc/boot/dts/mpc5121.dtsi
-> @@ -87,7 +87,7 @@
->                 };
->         };
->
-> -       soc@80000000 {
-> +       soc: soc@80000000 {
->                 compatible = "fsl,mpc5121-immr";
->                 #address-cells = <1>;
->                 #size-cells = <1>;
-> @@ -343,152 +343,6 @@
->                         clock-names = "ipg";
->                 };
->
-> -               /* 512x PSCs are not 52xx PSC compatible */
-> -
-> -               /* PSC0 */
-> -               psc@11000 {
-
-I would just put here 'serial@11000' and 'spi@11000' nodes with both
-nodes set to disabled. Then the board dts just has to change status of
-the the nodes it wants to enable (and add child nodes for spi).
-Overlapping addresses are okay if nodes are disabled.
-
-> -                       compatible = "fsl,mpc5121-psc";
-> -                       reg = <0x11000 0x100>;
-> -                       interrupts = <40 0x8>;
-> -                       fsl,rx-fifo-size = <16>;
-> -                       fsl,tx-fifo-size = <16>;
-> -                       clocks = <&clks MPC512x_CLK_PSC0>,
-> -                                <&clks MPC512x_CLK_PSC0_MCLK>;
-> -                       clock-names = "ipg", "mclk";
-> -               };
+While there, you were also going to update that function to match/use
+get_recursion_context(). Because your version is still branch hell.
