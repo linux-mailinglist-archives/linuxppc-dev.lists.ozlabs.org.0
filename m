@@ -1,65 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E59B42E85E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 07:20:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9870942E86A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 07:38:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVvjC4B35z3c7h
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 16:19:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVw6z1gdDz3c8q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 16:38:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVvhn0DF7z2ypg
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 16:19:35 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HVvhh0J8Lz9sSF;
- Fri, 15 Oct 2021 07:19:32 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id jtk3Nwe2afkT; Fri, 15 Oct 2021 07:19:31 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HVvhg5r1Zz9sSD;
- Fri, 15 Oct 2021 07:19:31 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A27F58B788;
- Fri, 15 Oct 2021 07:19:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id tLs2964MJCL0; Fri, 15 Oct 2021 07:19:31 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.253])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 721608B763;
- Fri, 15 Oct 2021 07:19:30 +0200 (CEST)
-Subject: Re: [PATCH v2 03/13] powerpc: Remove func_descr_t
-To: Daniel Axtens <dja@axtens.net>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Andrew Morton <akpm@linux-foundation.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
- Kees Cook <keescook@chromium.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <cover.1634190022.git.christophe.leroy@csgroup.eu>
- <16eef6afbf7322d0c07760ebf827b8f9f50f7c6e.1634190022.git.christophe.leroy@csgroup.eu>
- <874k9j45fm.fsf@dja-thinkpad.axtens.net>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <b02d5211-2f00-b303-766b-d612c1bd4402@csgroup.eu>
-Date: Fri, 15 Oct 2021 07:19:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVw6X4MSFz2yKQ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 16:38:22 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10137"; a="225317523"
+X-IronPort-AV: E=Sophos;i="5.85,374,1624345200"; d="scan'208";a="225317523"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Oct 2021 22:37:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,374,1624345200"; d="scan'208";a="527858800"
+Received: from lkp-server02.sh.intel.com (HELO 08b2c502c3de) ([10.239.97.151])
+ by fmsmga008.fm.intel.com with ESMTP; 14 Oct 2021 22:37:17 -0700
+Received: from kbuild by 08b2c502c3de with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mbFu8-0007HS-Bq; Fri, 15 Oct 2021 05:37:16 +0000
+Date: Fri, 15 Oct 2021 13:36:52 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS 8f6aca0e0f26eaaee670cd27896993a45cdc8f9e
+Message-ID: <61691374.1sdnIOFLMO+V3hUT%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <874k9j45fm.fsf@dja-thinkpad.axtens.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,167 +49,182 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 8f6aca0e0f26eaaee670cd27896993a45cdc8f9e  powerpc/perf: Fix cycles/instructions as PM_CYC/PM_INST_CMPL in power10
 
+elapsed time: 916m
 
-Le 15/10/2021 à 00:17, Daniel Axtens a écrit :
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> 
->> 'func_descr_t' is redundant with 'struct ppc64_opd_entry'
-> 
-> So, if I understand the overall direction of the series, you're
-> consolidating powerpc around one single type for function descriptors,
-> and then you're creating a generic typedef so that generic code can
-> always do ((func_desc_t)x)->addr to get the address of a function out of
-> a function descriptor regardless of arch. (And regardless of whether the
-> arch uses function descriptors or not.)
+configs tested: 154
+configs skipped: 3
 
-An architecture not using function descriptors won't do much with 
-((func_desc_t *)x)->addr. This is just done to allow building stuff 
-regardless.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I prefer something like
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211014
+mips                     loongson1b_defconfig
+arm                            mmp2_defconfig
+mips                          rb532_defconfig
+arm                          exynos_defconfig
+sh                        edosk7705_defconfig
+arm                            zeus_defconfig
+sh                           se7206_defconfig
+sh                         ap325rxa_defconfig
+powerpc                    socrates_defconfig
+powerpc                       ebony_defconfig
+powerpc                     kmeter1_defconfig
+s390                       zfcpdump_defconfig
+mips                        qi_lb60_defconfig
+arm                  colibri_pxa270_defconfig
+powerpc                     tqm8560_defconfig
+arm                            qcom_defconfig
+arc                      axs103_smp_defconfig
+powerpc                   currituck_defconfig
+mips                  decstation_64_defconfig
+powerpc                     skiroot_defconfig
+xtensa                         virt_defconfig
+mips                         bigsur_defconfig
+arc                              alldefconfig
+m68k                            q40_defconfig
+sh                        edosk7760_defconfig
+mips                malta_qemu_32r6_defconfig
+powerpc                   lite5200b_defconfig
+arm                         orion5x_defconfig
+mips                        workpad_defconfig
+mips                     loongson2k_defconfig
+arc                     haps_hs_smp_defconfig
+m68k                          atari_defconfig
+um                                  defconfig
+sh                      rts7751r2d1_defconfig
+arc                                 defconfig
+riscv                            alldefconfig
+powerpc                      ppc40x_defconfig
+m68k                           sun3_defconfig
+m68k                        stmark2_defconfig
+powerpc                      tqm8xx_defconfig
+powerpc                    adder875_defconfig
+arc                        nsim_700_defconfig
+powerpc                     tqm8541_defconfig
+nios2                         3c120_defconfig
+mips                      fuloong2e_defconfig
+powerpc                        warp_defconfig
+openrisc                    or1ksim_defconfig
+arm                          gemini_defconfig
+powerpc                      pasemi_defconfig
+m68k                         apollo_defconfig
+arm                       imx_v6_v7_defconfig
+sh                            migor_defconfig
+powerpc                     stx_gp3_defconfig
+arm                  colibri_pxa300_defconfig
+s390                          debug_defconfig
+sh                               j2_defconfig
+sh                             espt_defconfig
+mips                        bcm47xx_defconfig
+powerpc                 mpc8560_ads_defconfig
+arm                        vexpress_defconfig
+powerpc                      pmac32_defconfig
+powerpc                 mpc8315_rdb_defconfig
+powerpc                    ge_imp3a_defconfig
+powerpc                     sequoia_defconfig
+m68k                          hp300_defconfig
+sh                          rsk7269_defconfig
+ia64                                defconfig
+powerpc                      arches_defconfig
+riscv                          rv32_defconfig
+sh                        sh7757lcr_defconfig
+arm                  randconfig-c002-20211014
+x86_64               randconfig-c001-20211014
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nds32                             allnoconfig
+arc                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                                defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                             allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a006-20211014
+x86_64               randconfig-a004-20211014
+x86_64               randconfig-a001-20211014
+x86_64               randconfig-a005-20211014
+x86_64               randconfig-a002-20211014
+x86_64               randconfig-a003-20211014
+i386                 randconfig-a003-20211014
+i386                 randconfig-a001-20211014
+i386                 randconfig-a005-20211014
+i386                 randconfig-a004-20211014
+i386                 randconfig-a002-20211014
+i386                 randconfig-a006-20211014
+arc                  randconfig-r043-20211014
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-	if (have_function_descriptors())
-		addr = (func_desc_t *)ptr)->addr;
-	else
-		addr = ptr;
+clang tested configs:
+arm                  randconfig-c002-20211014
+i386                 randconfig-c001-20211014
+s390                 randconfig-c005-20211014
+x86_64               randconfig-c007-20211014
+powerpc              randconfig-c003-20211014
+riscv                randconfig-c006-20211014
+x86_64               randconfig-a012-20211014
+x86_64               randconfig-a015-20211014
+x86_64               randconfig-a016-20211014
+x86_64               randconfig-a014-20211014
+x86_64               randconfig-a011-20211014
+x86_64               randconfig-a013-20211014
+i386                 randconfig-a016-20211014
+i386                 randconfig-a014-20211014
+i386                 randconfig-a011-20211014
+i386                 randconfig-a015-20211014
+i386                 randconfig-a012-20211014
+i386                 randconfig-a013-20211014
+hexagon              randconfig-r041-20211014
+s390                 randconfig-r044-20211014
+riscv                randconfig-r042-20211014
+hexagon              randconfig-r045-20211014
 
-over
-
-	#ifdef HAVE_FUNCTION_DESCRIPTORS
-		addr = (func_desc_t *)ptr)->addr;
-	#else
-		addr = ptr;
-	#endif
-
-> 
-> So:
-> 
->   - why pick ppc64_opd_entry over func_descr_t?
-
-Good question. At the begining it was because it was in UAPI headers, 
-and also because it was the one used in our 
-dereference_function_descriptor().
-
-But at the end maybe that's not the more logical choice. I need to look 
-a bit more.
-
-> 
->   - Why not make our struct just called func_desc_t - why have a
->     ppc64_opd_entry type or a func_descr_t typedef?
-
-Well ... you usually don't flag a struct name with _t, _t will most of 
-the time refer to a typedef.
-
-If I want to avoid typedef (I know they are deprecated in kernel coding 
-stype), it means the name of the struct must be changed in every 
-architecture and it becomes tricky and it adds more churn in them, which 
-is what I want to avoid.
-
-At the end we risk to end-up with a messy set of #ifdefs.
-
-Maybe this can be done as a second step, but I would like to minimise 
-impact in this series and focus on fixing lkdtm.
-
-
-> 
->   - Should this patch wait until after you've made the generic
->     func_desc_t change and move directly to that new interface? (rather
->     than move from func_descr_t -> ppc64_opd_entry -> ...) Or is there a
->     particular reason arch specific code should use an arch-specific
->     struct or named type?
-
-As mentioned in kernel coding style, typedefs reduce readability, see 
-https://www.kernel.org/doc/html/latest/process/coding-style.html#typedefs
-
-But yes, we could make a step in the direction of a common 'struct 
-func_desc'. Let's see if I can do that.
-
-Thanks for your comments.
-
-Christophe
-
-> 
->> Remove it.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   arch/powerpc/include/asm/code-patching.h | 2 +-
->>   arch/powerpc/include/asm/types.h         | 6 ------
->>   arch/powerpc/kernel/signal_64.c          | 8 ++++----
->>   3 files changed, 5 insertions(+), 11 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/include/asm/code-patching.h
->> index 4ba834599c4d..f3445188d319 100644
->> --- a/arch/powerpc/include/asm/code-patching.h
->> +++ b/arch/powerpc/include/asm/code-patching.h
->> @@ -110,7 +110,7 @@ static inline unsigned long ppc_function_entry(void *func)
->>   	 * function's descriptor. The first entry in the descriptor is the
->>   	 * address of the function text.
->>   	 */
->> -	return ((func_descr_t *)func)->entry;
->> +	return ((struct ppc64_opd_entry *)func)->addr;
->>   #else
->>   	return (unsigned long)func;
->>   #endif
->> diff --git a/arch/powerpc/include/asm/types.h b/arch/powerpc/include/asm/types.h
->> index f1630c553efe..97da77bc48c9 100644
->> --- a/arch/powerpc/include/asm/types.h
->> +++ b/arch/powerpc/include/asm/types.h
->> @@ -23,12 +23,6 @@
->>   
->>   typedef __vector128 vector128;
->>   
->> -typedef struct {
->> -	unsigned long entry;
->> -	unsigned long toc;
->> -	unsigned long env;
->> -} func_descr_t;
-> 
-> I was a little concerned about going from a 3-element struct to a
-> 2-element struct (as ppc64_opd_entry doesn't have an element for env) -
-> but we don't seem to take the sizeof this anywhere, nor do we use env
-> anywhere, nor do we do funky macro stuff with it in the signal handling
-> code that might implictly use the 3rd element, so I guess this will
-> work. Still, func_descr_t seems to describe the underlying ABI better
-> than ppc64_opd_entry...
-> 
->>   #endif /* __ASSEMBLY__ */
->>   
->>   #endif /* _ASM_POWERPC_TYPES_H */
->> diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
->> index 1831bba0582e..63ddbe7b108c 100644
->> --- a/arch/powerpc/kernel/signal_64.c
->> +++ b/arch/powerpc/kernel/signal_64.c
->> @@ -933,11 +933,11 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
->>   		 * descriptor is the entry address of signal and the second
->>   		 * entry is the TOC value we need to use.
->>   		 */
->> -		func_descr_t __user *funct_desc_ptr =
->> -			(func_descr_t __user *) ksig->ka.sa.sa_handler;
->> +		struct ppc64_opd_entry __user *funct_desc_ptr =
->> +			(struct ppc64_opd_entry __user *)ksig->ka.sa.sa_handler;
->>   
->> -		err |= get_user(regs->ctr, &funct_desc_ptr->entry);
->> -		err |= get_user(regs->gpr[2], &funct_desc_ptr->toc);
->> +		err |= get_user(regs->ctr, &funct_desc_ptr->addr);
->> +		err |= get_user(regs->gpr[2], &funct_desc_ptr->r2);
-> 
-> Likewise, r2 seems like a worse name than toc. I guess we could clean
-> that up another time though.
-> 
-> Kind regards,
-> Daniel
-> 
->>   	}
->>   
->>   	/* enter the signal handler in native-endian mode */
->> -- 
->> 2.31.1
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
