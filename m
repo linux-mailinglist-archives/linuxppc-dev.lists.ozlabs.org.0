@@ -2,43 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF2242E683
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 04:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C325742E6CD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 04:48:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVqvM6F32z3bWT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 13:28:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVrKq1v9Zz3cFX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 13:47:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132;
+ helo=out30-132.freemail.mail.aliyun.com;
+ envelope-from=xianting.tian@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-132.freemail.mail.aliyun.com
+ (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVqtw2RKqz2xtN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 13:28:06 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6200,9189,10137"; a="208638526"
-X-IronPort-AV: E=Sophos;i="5.85,374,1624345200"; d="scan'208";a="208638526"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2021 19:27:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.85,374,1624345200"; d="scan'208";a="660220393"
-Received: from lkp-server02.sh.intel.com (HELO 08b2c502c3de) ([10.239.97.151])
- by orsmga005.jf.intel.com with ESMTP; 14 Oct 2021 19:27:02 -0700
-Received: from kbuild by 08b2c502c3de with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1mbCw1-000736-CS; Fri, 15 Oct 2021 02:27:01 +0000
-Date: Fri, 15 Oct 2021 10:26:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 6f779e1d359b8d5801f677c1d49dcfa10bf95674
-Message-ID: <6168e6b9.RvqDB+5J277M6kEu%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVrK1228fz2yMg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 13:47:16 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R641e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04423;
+ MF=xianting.tian@linux.alibaba.com; NM=1; PH=DS; RN=10; SR=0;
+ TI=SMTPD_---0Us1cFSh_1634266020; 
+Received: from localhost(mailfrom:xianting.tian@linux.alibaba.com
+ fp:SMTPD_---0Us1cFSh_1634266020) by smtp.aliyun-inc.com(127.0.0.1);
+ Fri, 15 Oct 2021 10:47:01 +0800
+From: Xianting Tian <xianting.tian@linux.alibaba.com>
+To: gregkh@linuxfoundation.org, jirislaby@kernel.org, amit@kernel.org,
+ arnd@arndb.de, osandov@fb.com
+Subject: [PATCH v11 0/3] make hvc pass dma capable memory to its backend
+Date: Fri, 15 Oct 2021 10:46:55 +0800
+Message-Id: <20211015024658.1353987-1-xianting.tian@linux.alibaba.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,127 +48,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Xianting Tian <xianting.tian@linux.alibaba.com>,
+ shile.zhang@linux.alibaba.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 6f779e1d359b8d5801f677c1d49dcfa10bf95674  powerpc/xive: Discard disabled interrupts in get_irqchip_state()
+Dear all,
 
-elapsed time: 728m
+This patch series make hvc framework pass DMA capable memory to
+put_chars() of hvc backend(eg, virtio-console), and revert commit
+c4baad5029 ("virtio-console: avoid DMA from stack”)
 
-configs tested: 99
-configs skipped: 94
+V1
+virtio-console: avoid DMA from vmalloc area
+https://lkml.org/lkml/2021/7/27/494
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+For v1 patch, Arnd Bergmann suggests to fix the issue in the first
+place:
+Make hvc pass DMA capable memory to put_chars()
+The fix suggestion is included in v2.
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm64                               defconfig
-i386                 randconfig-c001-20211014
-arm                            zeus_defconfig
-sh                           se7206_defconfig
-sh                         ap325rxa_defconfig
-arm                            qcom_defconfig
-arc                      axs103_smp_defconfig
-powerpc                   currituck_defconfig
-mips                  decstation_64_defconfig
-powerpc                     skiroot_defconfig
-mips                        workpad_defconfig
-mips                     loongson2k_defconfig
-arc                     haps_hs_smp_defconfig
-m68k                          atari_defconfig
-um                                  defconfig
-powerpc                      tqm8xx_defconfig
-powerpc                    adder875_defconfig
-arc                        nsim_700_defconfig
-powerpc                     tqm8541_defconfig
-nios2                         3c120_defconfig
-mips                      fuloong2e_defconfig
-powerpc                        warp_defconfig
-openrisc                    or1ksim_defconfig
-powerpc                    ge_imp3a_defconfig
-powerpc                   lite5200b_defconfig
-powerpc                     sequoia_defconfig
-arm                  randconfig-c002-20211014
-x86_64               randconfig-c001-20211014
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nds32                             allnoconfig
-nds32                               defconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-i386                                defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a003-20211014
-i386                 randconfig-a001-20211014
-i386                 randconfig-a005-20211014
-i386                 randconfig-a004-20211014
-i386                 randconfig-a002-20211014
-i386                 randconfig-a006-20211014
-x86_64               randconfig-a006-20211014
-x86_64               randconfig-a004-20211014
-x86_64               randconfig-a001-20211014
-x86_64               randconfig-a005-20211014
-x86_64               randconfig-a002-20211014
-x86_64               randconfig-a003-20211014
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
+V2
+[PATCH 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/1/8
+[PATCH 2/2] virtio-console: remove unnecessary kmemdup()
+https://lkml.org/lkml/2021/8/1/9
 
-clang tested configs:
-arm                  randconfig-c002-20211014
-i386                 randconfig-c001-20211014
-s390                 randconfig-c005-20211014
-x86_64               randconfig-c007-20211014
-powerpc              randconfig-c003-20211014
-riscv                randconfig-c006-20211014
-x86_64               randconfig-a012-20211014
-x86_64               randconfig-a015-20211014
-x86_64               randconfig-a016-20211014
-x86_64               randconfig-a014-20211014
-x86_64               randconfig-a011-20211014
-x86_64               randconfig-a013-20211014
-i386                 randconfig-a016-20211014
-i386                 randconfig-a014-20211014
-i386                 randconfig-a011-20211014
-i386                 randconfig-a015-20211014
-i386                 randconfig-a012-20211014
-i386                 randconfig-a013-20211014
-hexagon              randconfig-r041-20211014
-s390                 randconfig-r044-20211014
-riscv                randconfig-r042-20211014
-hexagon              randconfig-r045-20211014
+For v2 patch, Arnd Bergmann suggests to make new buf part of the
+hvc_struct structure, and fix the compile issue.
+The fix suggestion is included in v3.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+V3
+[PATCH v3 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/3/1347
+[PATCH v3 2/2] virtio-console: remove unnecessary kmemdup()
+https://lkml.org/lkml/2021/8/3/1348
+
+For v3 patch, Jiri Slaby suggests to make 'char c[N_OUTBUF]' part of
+hvc_struct, and make 'hp->outbuf' aligned and use struct_size() to
+calculate the size of hvc_struct. The fix suggestion is included in
+v4.
+
+V4
+[PATCH v4 0/2] make hvc pass dma capable memory to its backend
+https://lkml.org/lkml/2021/8/5/1350
+[PATCH v4 1/2] tty: hvc: pass DMA capable memory to put_chars()
+https://lkml.org/lkml/2021/8/5/1351
+[PATCH v4 2/2] virtio-console: remove unnecessary kmemdup()
+https://lkml.org/lkml/2021/8/5/1352
+
+For v4 patch, Arnd Bergmann suggests to introduce another
+array(cons_outbuf[]) for the buffer pointers next to the cons_ops[]
+and vtermnos[] arrays. This fix included in this v5 patch.
+
+V5
+Arnd Bergmann suggests to use "L1_CACHE_BYTES" as dma alignment,
+use 'sizeof(long)' as dma alignment is wrong. fix it in v6.
+
+V6
+It contains coding error, fix it in v7 and it worked normally
+according to test result.
+
+V7
+Greg KH suggests to add test and code review developer,
+Jiri Slaby suggests to use lockless buffer and fix dma alignment
+in separate patch.
+fix above things in v8. 
+
+V8
+This contains coding error when switch to use new buffer. fix it in v9.
+
+V9
+It didn't make things much clearer, it needs add more comments for new added buf.
+Add use lock to protect new added buffer. fix in v10.
+
+V10
+Remove 'char outchar' and its lock from hvc_struct, adjust hvc_struct and use
+pahole to display the struct layout.
+fix it in v11.
+
+********TEST STEPS*********
+1, config guest console=hvc0
+2, start guest
+3, login guest
+    Welcome to Buildroot
+    buildroot login: root
+    # 
+    # cat /proc/cmdline 
+    console=hvc0 root=/dev/vda rw init=/sbin/init
+    #
+
+drivers/tty/hvc/hvc_console.c | 36 ++++++++++++++++++++---------------
+drivers/tty/hvc/hvc_console.h | 21 +++++++++++++++++++-
+drivers/char/virtio_console.c | 12 ++----------
+3 file changed
