@@ -2,78 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FEB42E67D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 04:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF2242E683
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 04:28:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HVqny0XT3z2yY7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 13:23:50 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZHoEbIOM;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HVqvM6F32z3bWT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 13:28:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52b;
- helo=mail-pg1-x52b.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=ZHoEbIOM; dkim-atps=neutral
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com
- [IPv6:2607:f8b0:4864:20::52b])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HVqnG008Fz2xXy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 13:23:12 +1100 (AEDT)
-Received: by mail-pg1-x52b.google.com with SMTP id 66so7218140pgc.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Oct 2021 19:23:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=3M9O7XSoph4svAH5nZJ04xH/DP3a3sIU5ihXxGXcasc=;
- b=ZHoEbIOM2bEgMVGUhbJNjUZ4YyZUu6Pgt80iFL6xmp3QDTrCxz27ls16kQ8qhlA45j
- l/e3vYKK6iLLoz246LoePo9U9SLtgtMqW70HTuQV37COmDhfGk3CHLp15tzK/koSJFIF
- tBdf9bj3Qmqb/zV9crdL/9tLrlZKrDouDRgr9Y6ooCd0B6Tmzmo/C9R6wNJKVGcVLs7n
- fCcE0gXpiagWOJU3O0lz6w7aTdkw5VPxXtlfWVaGH/QYDq7pr4/TKzi4TIDjd+Z7FzYB
- uFrzFJdnVQTg15ddft0Dq+DkAK579EUHM9Fl6Ws1m2RVzSGd6m6Gf/9hTx1n+qYWt8Go
- Bncg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=3M9O7XSoph4svAH5nZJ04xH/DP3a3sIU5ihXxGXcasc=;
- b=PH6+0EbVkd/g+HgyO+DqmTaoaYHbdNRPjHmzXbKRxSRpcP2fHyC6INONZcVu4lH3YN
- BAWyuw0Z+NoeVV9HV/zLtq9AlLTeYcRBwV543dQEUoNlQJ2r7Tl4Spy2C1BnuXueg24a
- v7JcHS/OXSLk586LvS4yacMne9iv2B7CqrYzcrrN7uBbliV9fOlh0eiPNJWKr3ho+s8/
- 3wy9JXM/yfepAuz9Uc2vfOObIUrBUB7579YBsyw+/T/bCxIXDR3xBJk1lahY07rs4xZD
- WFrDd+DQ9h4ny9gyf0BCPivCcHxmoFsQW1q2GUbYGGwhrFXdrFp7aiwnBFMK3pMjPxDv
- DyWA==
-X-Gm-Message-State: AOAM533xfSVop+BP3LNnnbQ12OvPi0tSowHN5oS2J6Pq4A4XEtkT/6gD
- iWAm4V2ccyoT9/pPyJfl0F4=
-X-Google-Smtp-Source: ABdhPJxOlWOOgYYmyYuVxUvgD8RqatJ6qu59HWcI+qiH2UryvxaZcqbC9wQO6rsGR9v+SIc92Y5Yhw==
-X-Received: by 2002:a05:6a00:856:b0:44c:f184:9320 with SMTP id
- q22-20020a056a00085600b0044cf1849320mr8671829pfk.81.1634264589786; 
- Thu, 14 Oct 2021 19:23:09 -0700 (PDT)
-Received: from localhost (14-203-144-177.static.tpgi.com.au. [14.203.144.177])
- by smtp.gmail.com with ESMTPSA id
- oc8sm3843637pjb.15.2021.10.14.19.23.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Oct 2021 19:23:09 -0700 (PDT)
-Date: Fri, 15 Oct 2021 12:23:04 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2] KVM: PPC: Defer vtime accounting 'til after IRQ
- handling
-To: kvm-ppc@vger.kernel.org, Laurent Vivier <lvivier@redhat.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20211007142856.41205-1-lvivier@redhat.com>
- <875yu17rxk.fsf@mpe.ellerman.id.au>
- <d7f59d0e-eac2-7978-4067-9258c8b1aefe@redhat.com>
-In-Reply-To: <d7f59d0e-eac2-7978-4067-9258c8b1aefe@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HVqtw2RKqz2xtN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Oct 2021 13:28:06 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10137"; a="208638526"
+X-IronPort-AV: E=Sophos;i="5.85,374,1624345200"; d="scan'208";a="208638526"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Oct 2021 19:27:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,374,1624345200"; d="scan'208";a="660220393"
+Received: from lkp-server02.sh.intel.com (HELO 08b2c502c3de) ([10.239.97.151])
+ by orsmga005.jf.intel.com with ESMTP; 14 Oct 2021 19:27:02 -0700
+Received: from kbuild by 08b2c502c3de with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mbCw1-000736-CS; Fri, 15 Oct 2021 02:27:01 +0000
+Date: Fri, 15 Oct 2021 10:26:01 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 6f779e1d359b8d5801f677c1d49dcfa10bf95674
+Message-ID: <6168e6b9.RvqDB+5J277M6kEu%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Message-Id: <1634263564.zfj0ajf8eh.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,117 +50,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kurz <groug@kaod.org>, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Laurent Vivier's message of October 13, 2021 7:30 pm:
-> On 13/10/2021 01:18, Michael Ellerman wrote:
->> Laurent Vivier <lvivier@redhat.com> writes:
->>> Commit 112665286d08 moved guest_exit() in the interrupt protected
->>> area to avoid wrong context warning (or worse), but the tick counter
->>> cannot be updated and the guest time is accounted to the system time.
->>>
->>> To fix the problem port to POWER the x86 fix
->>> 160457140187 ("Defer vtime accounting 'til after IRQ handling"):
->>>
->>> "Defer the call to account guest time until after servicing any IRQ(s)
->>>   that happened in the guest or immediately after VM-Exit.  Tick-based
->>>   accounting of vCPU time relies on PF_VCPU being set when the tick IRQ
->>>   handler runs, and IRQs are blocked throughout the main sequence of
->>>   vcpu_enter_guest(), including the call into vendor code to actually
->>>   enter and exit the guest."
->>>
->>> Fixes: 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest =
-context before enabling irqs")
->>> Cc: npiggin@gmail.com
->>> Cc: <stable@vger.kernel.org> # 5.12
->>> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
->>> ---
->>>
->>> Notes:
->>>      v2: remove reference to commit 61bd0f66ff92
->>>          cc stable 5.12
->>>          add the same comment in the code as for x86
->>>
->>>   arch/powerpc/kvm/book3s_hv.c | 24 ++++++++++++++++++++----
->>>   1 file changed, 20 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.=
-c
->>> index 2acb1c96cfaf..a694d1a8f6ce 100644
->>> --- a/arch/powerpc/kvm/book3s_hv.c
->>> +++ b/arch/powerpc/kvm/book3s_hv.c
->> ...
->>> @@ -4506,13 +4514,21 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu=
-, u64 time_limit,
->>>  =20
->>>   	srcu_read_unlock(&kvm->srcu, srcu_idx);
->>>  =20
->>> +	context_tracking_guest_exit();
->>> +
->>>   	set_irq_happened(trap);
->>>  =20
->>>   	kvmppc_set_host_core(pcpu);
->>>  =20
->>> -	guest_exit_irqoff();
->>> -
->>>   	local_irq_enable();
->>> +	/*
->>> +	 * Wait until after servicing IRQs to account guest time so that any
->>> +	 * ticks that occurred while running the guest are properly accounted
->>> +	 * to the guest.  Waiting until IRQs are enabled degrades the accurac=
-y
->>> +	 * of accounting via context tracking, but the loss of accuracy is
->>> +	 * acceptable for all known use cases.
->>> +	 */
->>> +	vtime_account_guest_exit();
->>=20
->> This pops a warning for me, running guest(s) on Power8:
->>  =20
->>    [  270.745303][T16661] ------------[ cut here ]------------
->>    [  270.745374][T16661] WARNING: CPU: 72 PID: 16661 at arch/powerpc/ke=
-rnel/time.c:311 vtime_account_kernel+0xe0/0xf0
->=20
-> Thank you, I missed that...
->=20
-> My patch is wrong, I have to add vtime_account_guest_exit() before the lo=
-cal_irq_enable().
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 6f779e1d359b8d5801f677c1d49dcfa10bf95674  powerpc/xive: Discard disabled interrupts in get_irqchip_state()
 
-I thought so because if we take an interrupt after exiting the guest that=20
-should be accounted to kernel not guest.
+elapsed time: 728m
 
->=20
-> arch/powerpc/kernel/time.c
->=20
->   305 static unsigned long vtime_delta(struct cpu_accounting_data *acct,
->   306                                  unsigned long *stime_scaled,
->   307                                  unsigned long *steal_time)
->   308 {
->   309         unsigned long now, stime;
->   310
->   311         WARN_ON_ONCE(!irqs_disabled());
-> ...
->=20
-> But I don't understand how ticks can be accounted now if irqs are still d=
-isabled.
->=20
-> Not sure it is as simple as expected...
+configs tested: 99
+configs skipped: 94
 
-I don't know all the timer stuff too well. The=20
-!CONFIG_VIRT_CPU_ACCOUNTING case is relying on PF_VCPU to be set when=20
-the host timer interrupt runs irqtime_account_process_tick runs so it
-can accumulate that tick to the guest?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-That probably makes sense then, but it seems like we need that in a
-different place. Timer interrupts are not guaranteed to be the first one
-to occur when interrupts are enabled.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+i386                 randconfig-c001-20211014
+arm                            zeus_defconfig
+sh                           se7206_defconfig
+sh                         ap325rxa_defconfig
+arm                            qcom_defconfig
+arc                      axs103_smp_defconfig
+powerpc                   currituck_defconfig
+mips                  decstation_64_defconfig
+powerpc                     skiroot_defconfig
+mips                        workpad_defconfig
+mips                     loongson2k_defconfig
+arc                     haps_hs_smp_defconfig
+m68k                          atari_defconfig
+um                                  defconfig
+powerpc                      tqm8xx_defconfig
+powerpc                    adder875_defconfig
+arc                        nsim_700_defconfig
+powerpc                     tqm8541_defconfig
+nios2                         3c120_defconfig
+mips                      fuloong2e_defconfig
+powerpc                        warp_defconfig
+openrisc                    or1ksim_defconfig
+powerpc                    ge_imp3a_defconfig
+powerpc                   lite5200b_defconfig
+powerpc                     sequoia_defconfig
+arm                  randconfig-c002-20211014
+x86_64               randconfig-c001-20211014
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nds32                             allnoconfig
+nds32                               defconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                                defconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a003-20211014
+i386                 randconfig-a001-20211014
+i386                 randconfig-a005-20211014
+i386                 randconfig-a004-20211014
+i386                 randconfig-a002-20211014
+i386                 randconfig-a006-20211014
+x86_64               randconfig-a006-20211014
+x86_64               randconfig-a004-20211014
+x86_64               randconfig-a001-20211014
+x86_64               randconfig-a005-20211014
+x86_64               randconfig-a002-20211014
+x86_64               randconfig-a003-20211014
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-Maybe a new tick_account_guest_exit() and move PF_VCPU clearing to that
-for tick based accounting. Call it after local_irq_enable and call the
-vtime accounting before it. Would that work?
+clang tested configs:
+arm                  randconfig-c002-20211014
+i386                 randconfig-c001-20211014
+s390                 randconfig-c005-20211014
+x86_64               randconfig-c007-20211014
+powerpc              randconfig-c003-20211014
+riscv                randconfig-c006-20211014
+x86_64               randconfig-a012-20211014
+x86_64               randconfig-a015-20211014
+x86_64               randconfig-a016-20211014
+x86_64               randconfig-a014-20211014
+x86_64               randconfig-a011-20211014
+x86_64               randconfig-a013-20211014
+i386                 randconfig-a016-20211014
+i386                 randconfig-a014-20211014
+i386                 randconfig-a011-20211014
+i386                 randconfig-a015-20211014
+i386                 randconfig-a012-20211014
+i386                 randconfig-a013-20211014
+hexagon              randconfig-r041-20211014
+s390                 randconfig-r044-20211014
+riscv                randconfig-r042-20211014
+hexagon              randconfig-r045-20211014
 
-Thanks,
-Nick
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
