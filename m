@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1D142FAF4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 20:26:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831D042FB97
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Oct 2021 21:01:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HWF8K4vNZz3cCY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 05:26:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HWFwz1Kh2z3cJK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 06:01:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,26 +15,27 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HWF7v6DDkz3bP7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 05:25:47 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HWFwV29xzz3c58
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 06:00:58 +1100 (AEDT)
 Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
  [66.24.58.225])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id CB69B60FF2;
- Fri, 15 Oct 2021 18:25:42 +0000 (UTC)
-Date: Fri, 15 Oct 2021 14:25:41 -0400
+ by mail.kernel.org (Postfix) with ESMTPSA id DCAA061041;
+ Fri, 15 Oct 2021 19:00:51 +0000 (UTC)
+Date: Fri, 15 Oct 2021 15:00:50 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Subject: Re: [PATCH] tracing: Have all levels of checks prevent recursion
-Message-ID: <20211015142541.4badd8a9@gandalf.local.home>
-In-Reply-To: <20211015142033.72605b47@gandalf.local.home>
+Message-ID: <20211015150050.3310b3bf@gandalf.local.home>
+In-Reply-To: <20211015182459.GL174703@worktop.programming.kicks-ass.net>
 References: <20211015110035.14813389@gandalf.local.home>
  <20211015161702.GF174703@worktop.programming.kicks-ass.net>
  <20211015133504.6c0a9fcc@gandalf.local.home>
  <20211015135806.72d1af23@gandalf.local.home>
  <20211015180429.GK174703@worktop.programming.kicks-ass.net>
  <20211015142033.72605b47@gandalf.local.home>
+ <20211015182459.GL174703@worktop.programming.kicks-ass.net>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -69,98 +70,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 15 Oct 2021 14:20:33 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
+On Fri, 15 Oct 2021 20:24:59 +0200
+Peter Zijlstra <peterz@infradead.org> wrote:
 
-> > I think having one copy of that in a header is better than having 3
-> > copies. But yes, something along them lines.  
+> > @@ -206,11 +206,7 @@ DEFINE_OUTPUT_COPY(__output_copy_user, arch_perf_out_copy_user)
+> >  static inline int get_recursion_context(int *recursion)
+> >  {
+> >  	unsigned int pc = preempt_count();  
 > 
-> I was just about to ask you about this patch ;-)
+> Although I think we can do without that ^ line as well :-)
 
-Except it doesn't build :-p (need to move the inlined function down a bit)
+Ah, I could have sworn I deleted it. Oh well, will make a proper patch set.
 
-diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-index 4d244e295e85..b32e3dabe28b 100644
---- a/include/linux/preempt.h
-+++ b/include/linux/preempt.h
-@@ -77,6 +77,27 @@
- /* preempt_count() and related functions, depends on PREEMPT_NEED_RESCHED */
- #include <asm/preempt.h>
- 
-+/**
-+ * interrupt_context_level - return interrupt context level
-+ *
-+ * Returns the current interrupt context level.
-+ *  0 - normal context
-+ *  1 - softirq context
-+ *  2 - hardirq context
-+ *  3 - NMI context
-+ */
-+static __always_inline unsigned char interrupt_context_level(void)
-+{
-+	unsigned long pc = preempt_count();
-+	unsigned char level = 0;
-+
-+	level += !!(pc & (NMI_MASK));
-+	level += !!(pc & (NMI_MASK | HARDIRQ_MASK));
-+	level += !!(pc & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_OFFSET));
-+
-+	return level;
-+}
-+
- #define nmi_count()	(preempt_count() & NMI_MASK)
- #define hardirq_count()	(preempt_count() & HARDIRQ_MASK)
- #ifdef CONFIG_PREEMPT_RT
-diff --git a/include/linux/trace_recursion.h b/include/linux/trace_recursion.h
-index 41f5bfd9e93f..018a04381556 100644
---- a/include/linux/trace_recursion.h
-+++ b/include/linux/trace_recursion.h
-@@ -118,12 +118,7 @@ enum {
- 
- static __always_inline int trace_get_context_bit(void)
- {
--	unsigned long pc = preempt_count();
--	unsigned char bit = 0;
--
--	bit += !!(pc & (NMI_MASK));
--	bit += !!(pc & (NMI_MASK | HARDIRQ_MASK));
--	bit += !!(pc & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_OFFSET));
-+	unsigned char bit = interrupt_context_level();
- 
- 	return TRACE_CTX_NORMAL - bit;
- }
-diff --git a/kernel/events/internal.h b/kernel/events/internal.h
-index 228801e20788..c91711f20cf8 100644
---- a/kernel/events/internal.h
-+++ b/kernel/events/internal.h
-@@ -206,11 +206,7 @@ DEFINE_OUTPUT_COPY(__output_copy_user, arch_perf_out_copy_user)
- static inline int get_recursion_context(int *recursion)
- {
- 	unsigned int pc = preempt_count();
--	unsigned char rctx = 0;
--
--	rctx += !!(pc & (NMI_MASK));
--	rctx += !!(pc & (NMI_MASK | HARDIRQ_MASK));
--	rctx += !!(pc & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_OFFSET));
-+	unsigned char rctx = interrupt_context_level();
- 
- 	if (recursion[rctx])
- 		return -1;
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 15d4380006e3..f6520d0a4c8c 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -3167,12 +3167,7 @@ static __always_inline int
- trace_recursive_lock(struct ring_buffer_per_cpu *cpu_buffer)
- {
- 	unsigned int val = cpu_buffer->current_context;
--	unsigned long pc = preempt_count();
--	int bit = 0;
--
--	bit += !!(pc & (NMI_MASK));
--	bit += !!(pc & (NMI_MASK | HARDIRQ_MASK));
--	bit += !!(pc & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_OFFSET));
-+	int bit = interrupt_context_level();
- 
- 	bit = RB_CTX_NORMAL - bit;
- 
+Thanks!
+
+-- Steve
+
+
+> 
+> > -	unsigned char rctx = 0;
