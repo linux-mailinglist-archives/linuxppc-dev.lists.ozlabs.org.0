@@ -1,59 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5E742FF4C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 01:59:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BF742FF54
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 02:02:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HWNY02pTJz3c7t
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 10:59:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HWNby24Wvz3f8K
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 11:02:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=0i4mMLZD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lAd5BhR7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=kbusch@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=0i4mMLZD; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=lAd5BhR7; 
  dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HWNPX1mg7z306l
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 10:53:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
- Reply-To:Content-Type:Content-ID:Content-Description;
- bh=OEudjQURI1tjI6DN2XbbpoNvfS6WRIGCcJ/ZL9K/jW0=; b=0i4mMLZDva/pK7opYP5oiPP3fv
- rQ5uBC0tGPAZX1/i/6SCFM7QhjhhhwAbuLFbiv/1f5wb0lapDOFHvxZvxtSMncixscY8/BqQSkmHR
- bKufKXpomn+5Yt6hm7SI2U9JkzvsrqfhY87yB6+iGoFmOvdJBFKy++RKFa2jbpnEvtU/qeCq8RCeX
- E1A3LHGJOU8cUFmZUHPIFWQtnl8JnCheJuo9YAIxyhYZ8WZAAsNq9omJMDUKNdlNj8ckazv7XBMVp
- mh+OlppW3pioNclIkbHstsm1EwaGp1IDGWQEb8jm1JZqdCFS8tbGBnG1UoMmly0+bewl7yE/bHwXJ
- s5LUHtJQ==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1mbWzt-009C3L-EQ; Fri, 15 Oct 2021 23:52:21 +0000
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: axboe@kernel.dk, geoff@infradead.org, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, jim@jtan.com,
- minchan@kernel.org, ngupta@vflare.org, senozhatsky@chromium.org,
- richard@nod.at, miquel.raynal@bootlin.com, vigneshr@ti.com,
- dan.j.williams@intel.com, vishal.l.verma@intel.com, dave.jiang@intel.com,
- ira.weiny@intel.com, kbusch@kernel.org, hch@lst.de, sagi@grimberg.me
-Subject: [PATCH 13/13] mtd/ubi/block: add error handling support for add_disk()
-Date: Fri, 15 Oct 2021 16:52:19 -0700
-Message-Id: <20211015235219.2191207-14-mcgrof@kernel.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20211015235219.2191207-1-mcgrof@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HWNb90FR8z3f4l
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Oct 2021 11:01:25 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 18BA3611C3;
+ Sat, 16 Oct 2021 00:01:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1634342482;
+ bh=zERYufNJ1MZk5CclnMi+gL/h2WeGYYoy9Om0aXiHGLA=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=lAd5BhR7dX0bhUFdgALWUXGCQ+v5W0tvJIwfUWbRKvGKqR2h6V0I6ukKcRF5Dj+Nw
+ 0dFWCYUmBg7S2Rodk9yCf0H1+kehM9Vr5MyDW3E957s4BJA3cyS4uAhz4e17bCP29s
+ II0rzTuzcoBkDSvXr4ZGRWsUKw8yktjg7TyZT5pwSjCguTcC1658+kFky8M1STBicA
+ 7fLq43tAQkTcs+sDRgIw1Gv5v7j5U3hjGyPw8mDDVxsn00Q51dQWLT/IESbUsSNm65
+ nxOHSWjB0mZ+Ve03BmVAuGYwTgnYAMB4qLl+33yxh5AlIshuEdLL26zAeBOF+sdd/j
+ wOOh/LnbCmJTQ==
+Date: Fri, 15 Oct 2021 18:01:18 -0600
+From: Keith Busch <kbusch@kernel.org>
+To: Luis Chamberlain <mcgrof@kernel.org>
+Subject: Re: [PATCH 02/13] nvme-multipath: add error handling support for
+ add_disk()
+Message-ID: <20211016000118.GA50317@C02WT3WMHTD6>
 References: <20211015235219.2191207-1-mcgrof@kernel.org>
+ <20211015235219.2191207-3-mcgrof@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211015235219.2191207-3-mcgrof@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,47 +59,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-nvme@lists.infradead.org, linux-block@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, linux-mtd@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: nvdimm@lists.linux.dev, vigneshr@ti.com, linux-nvme@lists.infradead.org,
+ paulus@samba.org, miquel.raynal@bootlin.com, ira.weiny@intel.com, hch@lst.de,
+ dave.jiang@intel.com, sagi@grimberg.me, minchan@kernel.org,
+ vishal.l.verma@intel.com, ngupta@vflare.org, linux-block@vger.kernel.org,
+ dan.j.williams@intel.com, axboe@kernel.dk, geoff@infradead.org,
+ linux-kernel@vger.kernel.org, jim@jtan.com, senozhatsky@chromium.org,
+ richard@nod.at, linux-mtd@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We never checked for errors on add_disk() as this function
-returned void. Now that this is fixed, use the shiny new
-error handling.
+On Fri, Oct 15, 2021 at 04:52:08PM -0700, Luis Chamberlain wrote:
+> We never checked for errors on add_disk() as this function
+> returned void. Now that this is fixed, use the shiny new
+> error handling.
+> 
+> Since we now can tell for sure when a disk was added, move
+> setting the bit NVME_NSHEAD_DISK_LIVE only when we did
+> add the disk successfully.
+> 
+> Nothing to do here as the cleanup is done elsewhere. We take
+> care and use test_and_set_bit() because it is protects against
+> two nvme paths simultaneously calling device_add_disk() on the
+> same namespace head.
 
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
----
- drivers/mtd/ubi/block.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Looks good, thank you.
 
-diff --git a/drivers/mtd/ubi/block.c b/drivers/mtd/ubi/block.c
-index e003b4b44ffa..062e6c2c45f5 100644
---- a/drivers/mtd/ubi/block.c
-+++ b/drivers/mtd/ubi/block.c
-@@ -447,12 +447,18 @@ int ubiblock_create(struct ubi_volume_info *vi)
- 	list_add_tail(&dev->list, &ubiblock_devices);
- 
- 	/* Must be the last step: anyone can call file ops from now on */
--	add_disk(dev->gd);
-+	ret = add_disk(dev->gd);
-+	if (ret)
-+		goto out_destroy_wq;
-+
- 	dev_info(disk_to_dev(dev->gd), "created from ubi%d:%d(%s)",
- 		 dev->ubi_num, dev->vol_id, vi->name);
- 	mutex_unlock(&devices_mutex);
- 	return 0;
- 
-+out_destroy_wq:
-+	list_del(&dev->list);
-+	destroy_workqueue(dev->wq);
- out_remove_minor:
- 	idr_remove(&ubiblock_minor_idr, gd->first_minor);
- out_cleanup_disk:
--- 
-2.30.2
-
+Reviewed-by: Keith Busch <kbusch@kernel.org>
