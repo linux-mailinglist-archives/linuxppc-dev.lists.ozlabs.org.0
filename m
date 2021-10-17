@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 231054308A5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 14:28:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9EA4308A9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 14:29:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HXK780HQ3z3cB3
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 23:28:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HXK7b0Ct8z3cNW
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 23:29:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
@@ -14,22 +14,22 @@ Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HXK6g4Ztkz2yYd
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HXK6g4rfnz2yZf
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Oct 2021 23:28:27 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HXK6b2fk7z4xqM;
- Sun, 17 Oct 2021 23:28:23 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HXK6c3Tp6z4xqS;
+ Sun, 17 Oct 2021 23:28:24 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Cédric Le Goater <clg@kaod.org>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20211011070203.99726-1-clg@kaod.org>
-References: <20211011070203.99726-1-clg@kaod.org>
-Subject: Re: [PATCH] powerpc/xive: Discard disabled interrupts in
- get_irqchip_state()
-Message-Id: <163447368300.1156783.15492137091707859947.b4-ty@ellerman.id.au>
-Date: Sun, 17 Oct 2021 23:28:03 +1100
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20211015133929.832061-1-mpe@ellerman.id.au>
+References: <20211015133929.832061-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH 1/2] KVM: PPC: Book3S HV: Fix stack handling in
+ idle_kvm_start_guest()
+Message-Id: <163447368720.1156783.501192294196883402.b4-ty@ellerman.id.au>
+Date: Sun, 17 Oct 2021 23:28:07 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,28 +44,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable@vger.kernel.org
+Cc: npiggin@gmail.com, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 11 Oct 2021 09:02:03 +0200, Cédric Le Goater wrote:
-> When an interrupt is passed through, the KVM XIVE device calls the
-> set_vcpu_affinity() handler which raises the P bit to mask the
-> interrupt and to catch any in-flight interrupts while routing the
-> interrupt to the guest.
+On Sat, 16 Oct 2021 00:39:28 +1100, Michael Ellerman wrote:
+> In commit 10d91611f426 ("powerpc/64s: Reimplement book3s idle code in
+> C") kvm_start_guest() became idle_kvm_start_guest(). The old code
+> allocated a stack frame on the emergency stack, but didn't use the
+> frame to store anything, and also didn't store anything in its caller's
+> frame.
 > 
-> On the guest side, drivers (like some Intels) can request at probe
-> time some MSIs and call synchronize_irq() to check that there are no
-> in flight interrupts. This will call the XIVE get_irqchip_state()
-> handler which will always return true as the interrupt P bit has been
-> set on the host side and lock the CPU in an infinite loop.
+> idle_kvm_start_guest() on the other hand is written more like a normal C
+> function, it creates a frame on entry, and also stores CR/LR into its
+> callers frame (per the ABI). The problem is that there is no caller
+> frame on the emergency stack.
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/xive: Discard disabled interrupts in get_irqchip_state()
-      https://git.kernel.org/powerpc/c/6f779e1d359b8d5801f677c1d49dcfa10bf95674
+[1/2] KVM: PPC: Book3S HV: Fix stack handling in idle_kvm_start_guest()
+      https://git.kernel.org/powerpc/c/9b4416c5095c20e110c82ae602c254099b83b72f
+[2/2] KVM: PPC: Book3S HV: Make idle_kvm_start_guest() return 0 if it went to guest
+      https://git.kernel.org/powerpc/c/cdeb5d7d890e14f3b70e8087e745c4a6a7d9f337
 
 cheers
