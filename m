@@ -2,100 +2,166 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914BC4302D7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Oct 2021 15:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F88C4306A8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 06:34:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HWkvR6FK0z3cFV
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 00:46:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HX6cD6X7Yz3cBT
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 15:34:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j2QKXF76;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2021-07-09 header.b=H4YzXCCR;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=hLHte+W6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ smtp.mailfrom=oracle.com (client-ip=205.220.165.32;
+ helo=mx0a-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=j2QKXF76; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2021-07-09 header.b=H4YzXCCR; 
+ dkim=pass (1024-bit key;
+ unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
+ header.b=hLHte+W6; dkim-atps=neutral
+X-Greylist: delayed 8013 seconds by postgrey-1.36 at boromir;
+ Sun, 17 Oct 2021 15:34:07 AEDT
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com
+ [205.220.165.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HWktf4bMrz2xtv
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Oct 2021 00:46:02 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19GDh3DM020464; 
- Sat, 16 Oct 2021 09:45:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=k/UssDw6/7/RWox/ShF0pmVAYapRprpN+DgE7UCp+X8=;
- b=j2QKXF76axu5vb91IoxTmJaJUFlwqLpAXqnXdxRZ7+vc77683JkCp8Wlyq8bAs1cajVC
- HJe5LBHwXlLeky3ngf9RVfepgUxSvfBzvWfrOkmVwYiv1bOXqXA1GwJfSVwGN3nuedr8
- +j4H5w8NP+RD3o1JYOnzLG5Tee1yVcJsYRjIk4zD+FFoxD0E6xr36Y2EQBwZ8z8LidJF
- LlpruuFtWBcIvIhGj18qIV/N5AlF5xQku+eDOFXO4ElVlX43bYN1ga87eEF9v5bE58uc
- dlzicsUny+YfaPvVvO5v7wxcxqIhtsH/uP0D/PF0EdVjxgAgdoMWBNI2X34uhfad4RJc 5A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bqyuyr19h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 16 Oct 2021 09:45:59 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19GDiS6N026406;
- Sat, 16 Oct 2021 09:45:58 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bqyuyr19a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 16 Oct 2021 09:45:58 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19GDc093021037;
- Sat, 16 Oct 2021 13:45:57 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma03wdc.us.ibm.com with ESMTP id 3bqpc9cy7b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 16 Oct 2021 13:45:57 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 19GDjuf836307392
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 16 Oct 2021 13:45:56 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BCD5C7805C;
- Sat, 16 Oct 2021 13:45:56 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DD5C67805E;
- Sat, 16 Oct 2021 13:45:55 +0000 (GMT)
-Received: from localhost (unknown [9.211.42.218])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Sat, 16 Oct 2021 13:45:55 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 19/52] KVM: PPC: Book3S HV P9: Reduce mtmsrd
- instructions required to save host SPRs
-In-Reply-To: <20211004160049.1338837-20-npiggin@gmail.com>
-References: <20211004160049.1338837-1-npiggin@gmail.com>
- <20211004160049.1338837-20-npiggin@gmail.com>
-Date: Sat, 16 Oct 2021 10:45:52 -0300
-Message-ID: <87r1clw0a7.fsf@linux.ibm.com>
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HX6bM1MWlz2ymk
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Oct 2021 15:34:05 +1100 (AEDT)
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19H0BvYr025619; 
+ Sun, 17 Oct 2021 02:20:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : content-type :
+ mime-version; s=corp-2021-07-09;
+ bh=tbkvnCYVfUDGqV8nFgCZ1sDd5jjsxUXIvwnzHJnNUrc=;
+ b=H4YzXCCRRr5LQzlOAlqFBFXQ9LVQ5QRQZX9JbcnHKvN7XIHSNzvcOjXbt1hrKyDitHu4
+ H0o7/H9/sk1W0AKyn8suSGufmDU3cJ8XLMyZuv6+m0px5QYEi/k+Fytbaqz7JxLDHods
+ LUEDqyfE5kDCMzgUsrYyY72/ctIEE1I2NkuVeLznOuSMScFzeOhSByc4/88VjGwr4mtT
+ QH6gPlmicdyVJa5cjUIrcbf1JYtLrFaDQr2uvoyuLUXdL8ymiIrCWwQE5SzxNlxptSKG
+ bgvE1grDk92VQx2uoC+owZ8DvU9DzmFnpfEutLnpSLri2errdyq1cbK+r+flamLJ4vO8 8Q== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by mx0b-00069f02.pphosted.com with ESMTP id 3bqqjc9q81-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 17 Oct 2021 02:20:21 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 19H2GeMG044387;
+ Sun, 17 Oct 2021 02:20:20 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com
+ (mail-co1nam11lp2172.outbound.protection.outlook.com [104.47.56.172])
+ by aserp3030.oracle.com with ESMTP id 3bqmsbk60j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 17 Oct 2021 02:20:19 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=djgkqQMeT29SvKvBcek27TQaWZHtNhkA9Ssv7+NBdRxIC4xb9iydSaxs/CZgpbuobwsCaN4fQEkeAUgaDuwCwoj+aQsoUJ0sJ2BiwrOs67fIrklgLDm0koMGmFpy3n900gBcsA9ggDxGTBaPECvSV4b1vUgj5l33PmXNJcrvtaEGUV8aSCYzC62+mWfYm5QhidHGA9fK/uvR4AWyNjrwS6asIdaaWMiGceeuH4J33iJ8j4+XreSlck0imcUN2qqbSw7+dKKryqSRogW8f29xzBb6J7ecx4s0+1Th8U8spTXMk/h4askhAM0GhLX1D4ZwgleVF5S+nxEitSTNXMislw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tbkvnCYVfUDGqV8nFgCZ1sDd5jjsxUXIvwnzHJnNUrc=;
+ b=Uh/RThgbXnyDcQJIUXwH1SKPKaORv7kECqJsXkpbaYbUjvsHQr85UWVLS1LTNdjpgWB97VLTZmwQOx/s9buauS2LNND4od71vaydlzE97c8o6TvVkG0HOqcTRlcXiINFODNBM2E4MUZ100ksbvw5FdPOzKkE2zK3GtNRKkQkJOvmAKxg1xgsj5yOE0QZTU++ekUf4u/euD/Szl2a0tUDncWWZWna0b/E+DbOOLj2eQcNsugoBhvbBkNiVuGC/wKr7IlL/HezV2+77BRdXJZAMYNYqijUF1Il3TOC3TDyeE7GXemzZ358VDp3m6iD/odJERo0eepbOmpyo2F+2CSY1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tbkvnCYVfUDGqV8nFgCZ1sDd5jjsxUXIvwnzHJnNUrc=;
+ b=hLHte+W6I5POm1d7dZChhEx6aM9bc8t622qgGHLpwPPBDcyfaWvPMYU6Be2BPJhg0Qb7SgjnkkcHWC7MqRtA7BJwPc+zI8JranyZF0e0qfhdr7m4JCOEi1gHhPC8HtaLywUuJkQOZeMUdHGju7UGvlcRc2X/ldTbEnrSJaYJxfY=
+Authentication-Results: ellerman.id.au; dkim=none (message not signed)
+ header.d=none;ellerman.id.au; dmarc=none action=none header.from=oracle.com;
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by PH0PR10MB4805.namprd10.prod.outlook.com (2603:10b6:510:3b::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.16; Sun, 17 Oct
+ 2021 02:20:17 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::a457:48f2:991f:c349]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::a457:48f2:991f:c349%9]) with mapi id 15.20.4608.018; Sun, 17 Oct 2021
+ 02:20:17 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] ibmvscsi: use GFP_KERNEL with dma_alloc_coherent in
+ initialize_event_pool
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1mtn8gzra.fsf@ca-mkp.ca.oracle.com>
+References: <1547089149-20577-1-git-send-email-tyreld@linux.vnet.ibm.com>
+ <bbab1043-ee3a-6d5b-7ff5-ea5ed84e9fb8@linux.ibm.com>
+ <878ryuykd3.fsf@mpe.ellerman.id.au>
+Date: Sat, 16 Oct 2021 22:20:14 -0400
+In-Reply-To: <878ryuykd3.fsf@mpe.ellerman.id.au> (Michael Ellerman's message
+ of "Fri, 15 Oct 2021 15:36:56 +1100")
 Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 8QOUa6ifNdhmphrp4rHEQWvsxXtxPpAv
-X-Proofpoint-GUID: xpki4e9ZWkLiJ7qmmSDZI8HZiLYWhAzP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-16_04,2021-10-14_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- bulkscore=0 mlxlogscore=760 spamscore=0 suspectscore=0 priorityscore=1501
- clxscore=1015 mlxscore=0 phishscore=0 adultscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110160089
+X-ClientProxiedBy: SN7PR04CA0054.namprd04.prod.outlook.com
+ (2603:10b6:806:120::29) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
+MIME-Version: 1.0
+Received: from ca-mkp.ca.oracle.com (138.3.201.5) by
+ SN7PR04CA0054.namprd04.prod.outlook.com (2603:10b6:806:120::29) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.15 via Frontend
+ Transport; Sun, 17 Oct 2021 02:20:17 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: ac1c3ea5-04a6-483b-0494-08d99114a927
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4805:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <PH0PR10MB4805D9D52807C2CDC09657508EBB9@PH0PR10MB4805.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2276;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /07EDdbih/dLGgc4ErNQI0/o8FbLvEyLjqIPiCQ8DcWGX0sep/GlN+LVbQHQ2Ze7hNWtSxm4F58zGqNGSxyL4qEp3RFrpSzNJkg1Vv+aVZ8gkqxy78NFqxCjO3RGhmtN8GV795FgyBp0TqJ9bMHsfsjZ2ls0YcCjInJs9jZmfrybU+vPMLihdCCeHQ3+xr3Vh1AOImycSB1IkrCr5p0bo0/VT905lFlRo5lAfMyT8qMbPu4kU0dT/zfgnXpjOgSukxWoHUg3v0WM+iR7r/8YlPzmcvOXwLsSKiIME/hTt8rDUp79Q/IF2S9mpm54+ZMUhvqKhB6hhLtynfActpu/JO+DOZ4fPp1hNvtnFUYPHt3LUTwjm1JBZSfOziYiYjt1heGQ4HKPAZWh4BzaVjooP+KWh9TFYBySkNSnQhqfHMsVmw1eQkh7/d68Fu63ppjn3rOY+rkK1mofADp+9OO98jAM29KxuinyOKTFkbrsIP2hmaKG+DcjABCn4UtmuF8DdUJ9h+CIjWLcE5s3lyDyQLyhAGIRJHLGP2Sveu1Ib+8YZYhNFao1oZYRjQ5RP5AghUlON/OYjNHwCYayY5ftszO9b5oed8yMLzZoSkdZTD51DYdx0WR7GK71neKisOy2M8tR29U1WaHdnQqm/hjoxO8ohgMeL1dCmhHE18rDPWiuPicHSxATDbaRkk46hVNcA5F5IHBttymw8BSQpHqHRA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB4759.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(366004)(508600001)(7696005)(36916002)(66476007)(316002)(956004)(38100700002)(52116002)(4326008)(8936002)(6916009)(6666004)(66946007)(558084003)(2906002)(38350700002)(66556008)(55016002)(26005)(186003)(83380400001)(5660300002)(8676002)(86362001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Uv1hx9aeTS+AL2ycqzdpfrqu1N6co33yJfAPf0MMbhK8VBXnoGRJ073BZ1av?=
+ =?us-ascii?Q?YqGnxekBvBtZBf1dFZt41XApkU9WpWZzs/U8no3zQE9/4QQgR9rmZwjMokOZ?=
+ =?us-ascii?Q?msPNmGG1/wW2lOb/pPZRMLESk5ZqIAa8YT3gjCnV1lfVRbEq+KHF/g95driw?=
+ =?us-ascii?Q?fBLIJO2Ia43evHAYtnOLI+xjLi99G1z2Fyf/0EQ/SMrPQhNoIaIWVJDDe7ia?=
+ =?us-ascii?Q?U0wlWaYuZhdb8ldzpZGKos4r6J+WiivaroyCT/l0E/0ceDvnDMT2ojk55guh?=
+ =?us-ascii?Q?Y5zbfJnbmP1Gt7wCFsN2UFBpUK5mlYcR/Nfl0LgNEO4dv7fkmGezWCcB6eLE?=
+ =?us-ascii?Q?psNnSIOOhgQYk0jVfpe1Yokkq10qR/CHpvza1LOmxcf9cd8VTgh39Kb6mXye?=
+ =?us-ascii?Q?iG1MNNJkOPYk0Ub6oYXDVWoAklBV2lvrmF633sn5jYXtJAyUYo6wTG2rVjpd?=
+ =?us-ascii?Q?XJ/Far4ganhrBF4HixdY952ybJRg+YS9+phHQUk35PpyX8rn/T3VqjJJSz5o?=
+ =?us-ascii?Q?R6j7QYiTZdVe51meb1khOF4vjOxTPzXFqgJ8AbSQhFR9dGDWlZtFFRFsGr60?=
+ =?us-ascii?Q?DoEmUpYvAVToCrw23Dv5Qq1QsX2EvhxkaLjjKtLWfQDtFlT+plBoJBGddywX?=
+ =?us-ascii?Q?ted42XXagd+P4SvVWeQ8r6F77sHRepcpoICTmzQ2qpTsPnFexbXTcy1l3QeU?=
+ =?us-ascii?Q?KHMzcxkpBdIoqK+q89IoS7SRiqIHwA3hFe/x4KJ3OOLlon8eGGIONA5BCHIM?=
+ =?us-ascii?Q?PEY3namB39bD8WlyxtX7eT0gXj6t2CromLyYG9aDr+phNzKF2BDs3R4V9mbN?=
+ =?us-ascii?Q?xCdHTOUJaSvFMqJ5SXWgR3O58uY9U1p8HSqljc+LXKkFqHV8rswjqKF17087?=
+ =?us-ascii?Q?PXgtb3kcpe80WNj/Nj1mudPzmXyOSM6+BE3RR3hwPqfv7OEa/fpnqc2h2h3j?=
+ =?us-ascii?Q?tsYAP74+2paUDPM35M4D6PSvIsodraiIvHRuYUOWpYODDPgiHHeguip5IqzY?=
+ =?us-ascii?Q?+V3+xVSrPYsAKK6wUuxF91r8L4/fCfjL67ZoL4hmxnYNyFq92JAOPpT5fOx1?=
+ =?us-ascii?Q?ynCwUZFgzejxb7MUphnzmb1eyLGAmRfaQp/yqhRklp4phefgZzA6zJ6HQWKA?=
+ =?us-ascii?Q?B0qCmbVVivhgktcNN5vHMEHXqFJzu/B6854pKoeMbPy1gdNs4GWYODlXKiOR?=
+ =?us-ascii?Q?wjPM9U65QabDJSBzmMU32zlP6eI/iirCLAqIiTooGKXLu2r5LFaA+kdRZv2X?=
+ =?us-ascii?Q?tWZXWv4mYqsz9LAAK0KO1HtNnCAjBFoIpk7yd9pT5dTN1Ze+Ea/o2Y4GhAPC?=
+ =?us-ascii?Q?i6GkTfzG0aFFQqPsq8aiBioF?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac1c3ea5-04a6-483b-0494-08d99114a927
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2021 02:20:17.3841 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aoMOmGdSMvbbHg8ThO4EOzfUPLF64JVHrdg31hgmEh2u2+bekIitmgewloMeP2GgBUvbtLd4MDQsc4QfiTUUJK8cy46X3cHwe131rJYRY2A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4805
+X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10139
+ signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ adultscore=0 malwarescore=0
+ phishscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
+ definitions=main-2110170014
+X-Proofpoint-GUID: mnZbgqIjbvbIvyf9Te2UXGBB_lM8OXir
+X-Proofpoint-ORIG-GUID: mnZbgqIjbvbIvyf9Te2UXGBB_lM8OXir
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,227 +173,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, linux-scsi@vger.kernel.org,
+ martin.petersen@oracle.com, james.bottomley@hansenpartnership.com,
+ tyreld@linux.vnet.ibm.com, brking@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
 
-> This reduces the number of mtmsrd required to enable facility bits when
-> saving/restoring registers, by having the KVM code set all bits up front
-> rather than using individual facility functions that set their particular
-> MSR bits.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Michael,
 
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
+> It's marked "Changes Requested" here:
 
-Aside: at msr_check_and_set what's with MSR_VSX always being implicitly
-set whenever MSR_FP is set? I get that it depends on MSR_FP, but if FP
-always implies VSX, then you could stop setting MSR_VSX in this patch.
+Not sure why.
 
-> ---
->  arch/powerpc/include/asm/switch_to.h  |  2 +
->  arch/powerpc/kernel/process.c         | 28 +++++++++++++
->  arch/powerpc/kvm/book3s_hv.c          | 59 ++++++++++++++++++---------
->  arch/powerpc/kvm/book3s_hv_p9_entry.c |  1 +
->  4 files changed, 71 insertions(+), 19 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/switch_to.h b/arch/powerpc/include/asm/switch_to.h
-> index 9d1fbd8be1c7..e8013cd6b646 100644
-> --- a/arch/powerpc/include/asm/switch_to.h
-> +++ b/arch/powerpc/include/asm/switch_to.h
-> @@ -112,6 +112,8 @@ static inline void clear_task_ebb(struct task_struct *t)
->  #endif
->  }
->
-> +void kvmppc_save_user_regs(void);
-> +
->  extern int set_thread_tidr(struct task_struct *t);
->
->  #endif /* _ASM_POWERPC_SWITCH_TO_H */
-> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-> index 50436b52c213..3fca321b820d 100644
-> --- a/arch/powerpc/kernel/process.c
-> +++ b/arch/powerpc/kernel/process.c
-> @@ -1156,6 +1156,34 @@ static inline void save_sprs(struct thread_struct *t)
->  #endif
->  }
->
-> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-> +void kvmppc_save_user_regs(void)
-> +{
-> +	unsigned long usermsr;
-> +
-> +	if (!current->thread.regs)
-> +		return;
-> +
-> +	usermsr = current->thread.regs->msr;
-> +
-> +	if (usermsr & MSR_FP)
-> +		save_fpu(current);
-> +
-> +	if (usermsr & MSR_VEC)
-> +		save_altivec(current);
-> +
-> +#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-> +	if (usermsr & MSR_TM) {
-> +		current->thread.tm_tfhar = mfspr(SPRN_TFHAR);
-> +		current->thread.tm_tfiar = mfspr(SPRN_TFIAR);
-> +		current->thread.tm_texasr = mfspr(SPRN_TEXASR);
-> +		current->thread.regs->msr &= ~MSR_TM;
-> +	}
-> +#endif
-> +}
-> +EXPORT_SYMBOL_GPL(kvmppc_save_user_regs);
-> +#endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
-> +
->  static inline void restore_sprs(struct thread_struct *old_thread,
->  				struct thread_struct *new_thread)
->  {
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index fca89ed2244f..16365c0e9872 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -4140,6 +4140,7 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
->  	struct p9_host_os_sprs host_os_sprs;
->  	s64 dec;
->  	u64 tb, next_timer;
-> +	unsigned long msr;
->  	int trap;
->
->  	WARN_ON_ONCE(vcpu->arch.ceded);
-> @@ -4151,8 +4152,23 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
->  	if (next_timer < time_limit)
->  		time_limit = next_timer;
->
-> +	vcpu->arch.ceded = 0;
-> +
->  	save_p9_host_os_sprs(&host_os_sprs);
->
-> +	/* MSR bits may have been cleared by context switch */
-> +	msr = 0;
-> +	if (IS_ENABLED(CONFIG_PPC_FPU))
-> +		msr |= MSR_FP;
-> +	if (cpu_has_feature(CPU_FTR_ALTIVEC))
-> +		msr |= MSR_VEC;
-> +	if (cpu_has_feature(CPU_FTR_VSX))
-> +		msr |= MSR_VSX;
-> +	if (cpu_has_feature(CPU_FTR_TM) ||
-> +	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST))
-> +		msr |= MSR_TM;
-> +	msr = msr_check_and_set(msr);
-> +
->  	kvmppc_subcore_enter_guest();
->
->  	vc->entry_exit_map = 1;
-> @@ -4161,12 +4177,13 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
->  	vcpu_vpa_increment_dispatch(vcpu);
->
->  	if (cpu_has_feature(CPU_FTR_TM) ||
-> -	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST))
-> +	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST)) {
->  		kvmppc_restore_tm_hv(vcpu, vcpu->arch.shregs.msr, true);
-> +		msr = mfmsr(); /* TM restore can update msr */
-> +	}
->
->  	switch_pmu_to_guest(vcpu, &host_os_sprs);
->
-> -	msr_check_and_set(MSR_FP | MSR_VEC | MSR_VSX);
->  	load_fp_state(&vcpu->arch.fp);
->  #ifdef CONFIG_ALTIVEC
->  	load_vr_state(&vcpu->arch.vr);
-> @@ -4275,7 +4292,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
->
->  	restore_p9_host_os_sprs(vcpu, &host_os_sprs);
->
-> -	msr_check_and_set(MSR_FP | MSR_VEC | MSR_VSX);
->  	store_fp_state(&vcpu->arch.fp);
->  #ifdef CONFIG_ALTIVEC
->  	store_vr_state(&vcpu->arch.vr);
-> @@ -4825,19 +4841,24 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
->  	unsigned long user_tar = 0;
->  	unsigned int user_vrsave;
->  	struct kvm *kvm;
-> +	unsigned long msr;
->
->  	if (!vcpu->arch.sane) {
->  		run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
->  		return -EINVAL;
->  	}
->
-> +	/* No need to go into the guest when all we'll do is come back out */
-> +	if (signal_pending(current)) {
-> +		run->exit_reason = KVM_EXIT_INTR;
-> +		return -EINTR;
-> +	}
-> +
-> +#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->  	/*
->  	 * Don't allow entry with a suspended transaction, because
->  	 * the guest entry/exit code will lose it.
-> -	 * If the guest has TM enabled, save away their TM-related SPRs
-> -	 * (they will get restored by the TM unavailable interrupt).
->  	 */
-> -#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->  	if (cpu_has_feature(CPU_FTR_TM) && current->thread.regs &&
->  	    (current->thread.regs->msr & MSR_TM)) {
->  		if (MSR_TM_ACTIVE(current->thread.regs->msr)) {
-> @@ -4845,12 +4866,6 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
->  			run->fail_entry.hardware_entry_failure_reason = 0;
->  			return -EINVAL;
->  		}
-> -		/* Enable TM so we can read the TM SPRs */
-> -		mtmsr(mfmsr() | MSR_TM);
-> -		current->thread.tm_tfhar = mfspr(SPRN_TFHAR);
-> -		current->thread.tm_tfiar = mfspr(SPRN_TFIAR);
-> -		current->thread.tm_texasr = mfspr(SPRN_TEXASR);
-> -		current->thread.regs->msr &= ~MSR_TM;
->  	}
->  #endif
->
-> @@ -4865,18 +4880,24 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
->
->  	kvmppc_core_prepare_to_enter(vcpu);
->
-> -	/* No need to go into the guest when all we'll do is come back out */
-> -	if (signal_pending(current)) {
-> -		run->exit_reason = KVM_EXIT_INTR;
-> -		return -EINTR;
-> -	}
-> -
->  	kvm = vcpu->kvm;
->  	atomic_inc(&kvm->arch.vcpus_running);
->  	/* Order vcpus_running vs. mmu_ready, see kvmppc_alloc_reset_hpt */
->  	smp_mb();
->
-> -	flush_all_to_thread(current);
-> +	msr = 0;
-> +	if (IS_ENABLED(CONFIG_PPC_FPU))
-> +		msr |= MSR_FP;
-> +	if (cpu_has_feature(CPU_FTR_ALTIVEC))
-> +		msr |= MSR_VEC;
-> +	if (cpu_has_feature(CPU_FTR_VSX))
-> +		msr |= MSR_VSX;
-> +	if (cpu_has_feature(CPU_FTR_TM) ||
-> +	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST))
-> +		msr |= MSR_TM;
-> +	msr = msr_check_and_set(msr);
-> +
-> +	kvmppc_save_user_regs();
->
->  	/* Save userspace EBB and other register values */
->  	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
-> diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-> index a7f63082b4e3..fb9cb34445ea 100644
-> --- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
-> +++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-> @@ -224,6 +224,7 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
->  		vc->tb_offset_applied = vc->tb_offset;
->  	}
->
-> +	/* Could avoid mfmsr by passing around, but probably no big deal */
->  	msr = mfmsr();
->
->  	host_hfscr = mfspr(SPRN_HFSCR);
+Applied to 5.16/scsi-staging, thanks!
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
