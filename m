@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5B04308F4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 14:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E5A4308F2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 14:40:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HXKPb1KnRz3dhv
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 23:41:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HXKNx3wCNz306R
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 23:40:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HXKMV37PFz3cDq
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Oct 2021 23:39:34 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HXKMQ18FPz3cJL
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Oct 2021 23:39:29 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HXKM31ywGz9sSh;
- Sun, 17 Oct 2021 14:39:11 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4HXKM20tl1z9sSf;
+ Sun, 17 Oct 2021 14:39:10 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id v8OuPocdFoYJ; Sun, 17 Oct 2021 14:39:11 +0200 (CEST)
+ with ESMTP id 0m8HvtckcNmc; Sun, 17 Oct 2021 14:39:10 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HXKM00NMNz9sSj;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HXKM00MBBz9sSh;
  Sun, 17 Oct 2021 14:39:08 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DD2268B773;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D759C8B76D;
  Sun, 17 Oct 2021 14:39:07 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id WuIjW5Q_6MW1; Sun, 17 Oct 2021 14:39:07 +0200 (CEST)
+ with ESMTP id Fp-u5xrsWwc0; Sun, 17 Oct 2021 14:39:07 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.38])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B4D858B763;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CC92D8B775;
  Sun, 17 Oct 2021 14:39:06 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19HCcseW2946737
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19HCcsDE2946741
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Sun, 17 Oct 2021 14:38:54 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19HCcsgK2946736;
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19HCcs7Y2946740;
  Sun, 17 Oct 2021 14:38:54 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
@@ -55,18 +55,17 @@ To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
  Kees Cook <keescook@chromium.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v3 02/12] powerpc: Use 'struct func_desc' instead of 'struct
- ppc64_opd_entry'
-Date: Sun, 17 Oct 2021 14:38:15 +0200
-Message-Id: <4a912da3c89569bf5bff897d2588538e74198f35.1634457599.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 03/12] powerpc: Remove 'struct ppc64_opd_entry'
+Date: Sun, 17 Oct 2021 14:38:16 +0200
+Message-Id: <762a0b82c9ab2237e997bbca9e3e00b4ee252130.1634457599.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1634457599.git.christophe.leroy@csgroup.eu>
 References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1634474303; l=2500; s=20211009;
- h=from:subject:message-id; bh=Iq40Rens/Xlw+IOo3EjhmDf6EixeHqq4/73sqQ/rn00=;
- b=bFTTEPFTyPUbLUNDWYUikgpTMofF9s8jmOcHYA5FpiENJIGyyPWx3D0Jb2x4aB4FkKNAmxnk23tm
- OhnGUhzgAaj2KUJ9d4nwSYNAY7ffBnu3famcwWf2auDGpqwCWKRC
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1634474303; l=1246; s=20211009;
+ h=from:subject:message-id; bh=cdAL80ErIMmXRf+JJL9Gjp/nbRDpVkJwSA6Jlk61p0c=;
+ b=FwGFZOrbhzBN25AWz3/Cbforw9tI8VDFVU8fesA2eFA8+s3xwnoPd/dk4wtZ9HrQeRbBYaYv3V6V
+ zU8l5qrAD7VkV6DQ5LZl5V6Q9KG0zM+znTULRvBkj9vH5iwRggU0
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -83,81 +82,46 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
  linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Daniel Axtens <dja@axtens.net>
+ Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-'struct ppc64_opd_entry' is somehow redundant with 'struct func_desc',
-the later is more correct/complete as it includes the third
-field which is unused.
+'struct ppc64_opd_entry' doesn't belong to uapi/asm/elf.h
 
-So use 'struct func_desc' instead of 'struct ppc64_opd_entry'
+It was initially in module_64.c and commit 2d291e902791 ("Fix compile
+failure with non modular builds") moved it into asm/elf.h
+
+But it was by mistake added outside of __KERNEL__ section,
+therefore commit c3617f72036c ("UAPI: (Scripted) Disintegrate
+arch/powerpc/include/asm") moved it to uapi/asm/elf.h
+
+Now that it is not used anymore by the kernel, remove it.
 
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Daniel Axtens <dja@axtens.net>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/sections.h |  4 ++--
- arch/powerpc/kernel/module_64.c     | 10 +++++-----
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ arch/powerpc/include/uapi/asm/elf.h | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
-index 6e4af4492a14..abd2e5213197 100644
---- a/arch/powerpc/include/asm/sections.h
-+++ b/arch/powerpc/include/asm/sections.h
-@@ -74,10 +74,10 @@ static inline int overlaps_kernel_text(unsigned long start, unsigned long end)
- #undef dereference_function_descriptor
- static inline void *dereference_function_descriptor(void *ptr)
- {
--	struct ppc64_opd_entry *desc = ptr;
-+	struct func_desc *desc = ptr;
- 	void *p;
+diff --git a/arch/powerpc/include/uapi/asm/elf.h b/arch/powerpc/include/uapi/asm/elf.h
+index 860c59291bfc..308857123a08 100644
+--- a/arch/powerpc/include/uapi/asm/elf.h
++++ b/arch/powerpc/include/uapi/asm/elf.h
+@@ -289,12 +289,4 @@ typedef elf_fpreg_t elf_vsrreghalf_t32[ELF_NVSRHALFREG];
+ /* Keep this the last entry.  */
+ #define R_PPC64_NUM		253
  
--	if (!get_kernel_nofault(p, (void *)&desc->funcaddr))
-+	if (!get_kernel_nofault(p, (void *)&desc->addr))
- 		ptr = p;
- 	return ptr;
- }
-diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-index 6baa676e7cb6..a89da0ee25e2 100644
---- a/arch/powerpc/kernel/module_64.c
-+++ b/arch/powerpc/kernel/module_64.c
-@@ -64,19 +64,19 @@ static unsigned int local_entry_offset(const Elf64_Sym *sym)
- #else
- 
- /* An address is address of the OPD entry, which contains address of fn. */
--typedef struct ppc64_opd_entry func_desc_t;
-+typedef struct func_desc func_desc_t;
- 
- static func_desc_t func_desc(unsigned long addr)
- {
--	return *(struct ppc64_opd_entry *)addr;
-+	return *(struct func_desc *)addr;
- }
- static unsigned long func_addr(unsigned long addr)
- {
--	return func_desc(addr).funcaddr;
-+	return func_desc(addr).addr;
- }
- static unsigned long stub_func_addr(func_desc_t func)
- {
--	return func.funcaddr;
-+	return func.addr;
- }
- static unsigned int local_entry_offset(const Elf64_Sym *sym)
- {
-@@ -187,7 +187,7 @@ static int relacmp(const void *_x, const void *_y)
- static unsigned long get_stubs_size(const Elf64_Ehdr *hdr,
- 				    const Elf64_Shdr *sechdrs)
- {
--	/* One extra reloc so it's always 0-funcaddr terminated */
-+	/* One extra reloc so it's always 0-addr terminated */
- 	unsigned long relocs = 1;
- 	unsigned i;
- 
+-/* There's actually a third entry here, but it's unused */
+-struct ppc64_opd_entry
+-{
+-	unsigned long funcaddr;
+-	unsigned long r2;
+-};
+-
+-
+ #endif /* _UAPI_ASM_POWERPC_ELF_H */
 -- 
 2.31.1
 
