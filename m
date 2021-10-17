@@ -2,33 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D86DC4308B8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 14:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D16A4308B3
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 14:33:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HXKFv2GcVz3cH6
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 23:34:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HXKDc0Rs4z3cP7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 23:33:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HXKCq2sctz2yZv
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Oct 2021 23:32:55 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HXKCn35hbz2yYd
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Oct 2021 23:32:53 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HXKCp5LM9z4xqV;
- Sun, 17 Oct 2021 23:32:54 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HXKCl3Qcxz4xbL;
+ Sun, 17 Oct 2021 23:32:51 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Kai Song <songkai01@inspur.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20211009041630.4135-1-songkai01@inspur.com>
-References: <20211009041630.4135-1-songkai01@inspur.com>
-Subject: Re: [PATCH] powerpc/eeh: Fix docstrings in eeh.c
-Message-Id: <163447392810.1159469.11303329795231824264.b4-ty@ellerman.id.au>
-Date: Sun, 17 Oct 2021 23:32:08 +1100
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, mpe@ellerman.id.au
+In-Reply-To: <20211007075121.28497-1-atrajeev@linux.vnet.ibm.com>
+References: <20211007075121.28497-1-atrajeev@linux.vnet.ibm.com>
+Subject: Re: [V2] powerpc/perf: Fix cycles/instructions as PM_CYC/PM_INST_CMPL
+ in power10
+Message-Id: <163447392991.1159469.14557180203895744207.b4-ty@ellerman.id.au>
+Date: Sun, 17 Oct 2021 23:32:09 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,28 +43,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org, oohall@gmail.com, linux-kernel@vger.kernel.org,
- dja@axtens.net
+Cc: kjain@linux.ibm.com, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 9 Oct 2021 12:16:30 +0800, Kai Song wrote:
-> We fix the following warnings when building kernel with W=1:
-> arch/powerpc/kernel/eeh.c:598: warning: Function parameter or member 'function' not described in 'eeh_pci_enable'
-> arch/powerpc/kernel/eeh.c:774: warning: Function parameter or member 'edev' not described in 'eeh_set_dev_freset'
-> arch/powerpc/kernel/eeh.c:774: warning: expecting prototype for eeh_set_pe_freset(). Prototype was for eeh_set_dev_freset() instead
-> arch/powerpc/kernel/eeh.c:814: warning: Function parameter or member 'include_passed' not described in 'eeh_pe_reset_full'
-> arch/powerpc/kernel/eeh.c:944: warning: Function parameter or member 'ops' not described in 'eeh_init'
-> arch/powerpc/kernel/eeh.c:1451: warning: Function parameter or member 'include_passed' not described in 'eeh_pe_reset'
-> arch/powerpc/kernel/eeh.c:1526: warning: Function parameter or member 'func' not described in 'eeh_pe_inject_err'
-> arch/powerpc/kernel/eeh.c:1526: warning: Excess function parameter 'function' described in 'eeh_pe_inject_err'
+On Thu, 7 Oct 2021 13:21:21 +0530, Athira Rajeev wrote:
+> From: Athira Rajeev <atrajeev@linux.vnet.ibm.cm>
+> 
+> In power9 and before platforms, the default event used for cyles and
+> instructions is PM_CYC (0x0001e) and PM_INST_CMPL (0x00002) respectively.
+> These events uses two programmable PMCs and by default will count
+> irrespective of the run latch state. But since it is using programmable
+> PMCs, these events will cause multiplexing with basic event set supported
+> by perf stat. Hence in power10, performance monitoring unit (PMU) driver
+> uses performance monitor counter 5 (PMC5) and performance monitor counter6
+> (PMC6) for counting instructions and cycles.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/eeh: Fix docstrings in eeh.c
-      https://git.kernel.org/powerpc/c/b616230e2325e5560330c40172a4d4e4c5da2c59
+[1/1] powerpc/perf: Fix cycles/instructions as PM_CYC/PM_INST_CMPL in power10
+      https://git.kernel.org/powerpc/c/8f6aca0e0f26eaaee670cd27896993a45cdc8f9e
 
 cheers
