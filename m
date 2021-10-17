@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3824308E0
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 14:40:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D7F430911
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 14:45:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HXKN0579Cz3cZZ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 23:40:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HXKTk5LZ2z3fJC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 23:44:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HXKMC4s7rz3c9m
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Oct 2021 23:39:19 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HXKNB6dStz3ckD
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Oct 2021 23:40:10 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HXKM01TkJz9sSs;
- Sun, 17 Oct 2021 14:39:08 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4HXKMD1Tc9z9sSq;
+ Sun, 17 Oct 2021 14:39:20 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id bpg5qEYLlL8e; Sun, 17 Oct 2021 14:39:08 +0200 (CEST)
+ with ESMTP id nlwBg3321UPU; Sun, 17 Oct 2021 14:39:20 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HXKLz4ZRSz9sS8;
- Sun, 17 Oct 2021 14:39:07 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HXKM03Bw2z9sS8;
+ Sun, 17 Oct 2021 14:39:08 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8188B8B78C;
- Sun, 17 Oct 2021 14:39:07 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 560D78B763;
+ Sun, 17 Oct 2021 14:39:08 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id sH-JDEFLyFzO; Sun, 17 Oct 2021 14:39:07 +0200 (CEST)
+ with ESMTP id coCs4OD-_eZ8; Sun, 17 Oct 2021 14:39:08 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.38])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B77DF8B76C;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DF1228B78B;
  Sun, 17 Oct 2021 14:39:06 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19HCcuWR2946769
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19HCcuNA2946773
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Sun, 17 Oct 2021 14:38:56 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19HCcucn2946768;
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19HCcuEt2946772;
  Sun, 17 Oct 2021 14:38:56 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
@@ -55,17 +55,17 @@ To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
  Kees Cook <keescook@chromium.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v3 10/12] lkdtm: Really write into kernel text in WRITE_KERN
-Date: Sun, 17 Oct 2021 14:38:23 +0200
-Message-Id: <3ccab3dde1c8acf3125e82fb990896d7ef6e97b2.1634457599.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 11/12] lkdtm: Fix execute_[user]_location()
+Date: Sun, 17 Oct 2021 14:38:24 +0200
+Message-Id: <d4688c2af08dda706d3b6786ae5ec5a74e6171f1.1634457599.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1634457599.git.christophe.leroy@csgroup.eu>
 References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1634474303; l=1853; s=20211009;
- h=from:subject:message-id; bh=z/aB80p6e37+wi5UDvnOtBLSSHNpIOGfxrnndLg8VIY=;
- b=Px+gsW011PRuWOnjqESl3pfyPGj/ZhyqXgdIS/jDGEt/WN3PB85BYmlvCTyk7p0qsAkwzG8fRyQw
- l9SbETxzBXeFHFqQem6xvCZKenPq5Mac0bg3cL0iZTc6QIexrMIu
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1634474303; l=3309; s=20211009;
+ h=from:subject:message-id; bh=sfbflkA2bmAlwjw54HOBXpCt422Ocrx9KRquDGa0AKo=;
+ b=Jd107R/KDsGnmwf94jDv7xR779WrLBRdkmpLX1ePk3u4m4wQ8a2tNxepz/wLysCe0wlQ/G3ZZzRV
+ XevFB2saCO3lkMRJj3XLILNll/5AYwMJVssgYsiqtOM74eFojPRy
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -87,57 +87,102 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-WRITE_KERN is supposed to overwrite some kernel text, namely
-do_overwritten() function.
+execute_location() and execute_user_location() intent
+to copy do_nothing() text and execute it at a new location.
+However, at the time being it doesn't copy do_nothing() function
+but do_nothing() function descriptor which still points to the
+original text. So at the end it still executes do_nothing() at
+its original location allthough using a copied function descriptor.
 
-But at the time being it overwrites do_overwritten() function
-descriptor, not function text.
+So, fix that by really copying do_nothing() text and build a new
+function descriptor by copying do_nothing() function descriptor and
+updating the target address with the new location.
 
-Fix it by dereferencing the function descriptor to obtain
-function text pointer.
+Also fix the displayed addresses by dereferencing do_nothing()
+function descriptor.
 
-And make do_overwritten() noinline so that it is really
-do_overwritten() which is called by lkdtm_WRITE_KERN().
-
-Acked-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/misc/lkdtm/perms.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/misc/lkdtm/perms.c | 37 ++++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-index 60b3b2fe929d..035fcca441f0 100644
+index 035fcca441f0..1cf24c4a79e9 100644
 --- a/drivers/misc/lkdtm/perms.c
 +++ b/drivers/misc/lkdtm/perms.c
-@@ -10,6 +10,7 @@
- #include <linux/mman.h>
- #include <linux/uaccess.h>
- #include <asm/cacheflush.h>
-+#include <asm/sections.h>
- 
- /* Whether or not to fill the target memory area with do_nothing(). */
- #define CODE_WRITE	true
-@@ -37,7 +38,7 @@ static noinline void do_nothing(void)
+@@ -44,19 +44,34 @@ static noinline void do_overwritten(void)
+ 	return;
  }
  
- /* Must immediately follow do_nothing for size calculuations to work out. */
--static void do_overwritten(void)
-+static noinline void do_overwritten(void)
++static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
++{
++	if (!have_function_descriptors())
++		return dst;
++
++	memcpy(fdesc, do_nothing, sizeof(*fdesc));
++	fdesc->addr = (unsigned long)dst;
++	barrier();
++
++	return fdesc;
++}
++
+ static noinline void execute_location(void *dst, bool write)
  {
- 	pr_info("do_overwritten wasn't overwritten!\n");
- 	return;
-@@ -113,8 +114,9 @@ void lkdtm_WRITE_KERN(void)
- 	size_t size;
- 	volatile unsigned char *ptr;
+-	void (*func)(void) = dst;
++	void (*func)(void);
++	func_desc_t fdesc;
++	void *do_nothing_text = dereference_function_descriptor(do_nothing);
  
--	size = (unsigned long)do_overwritten - (unsigned long)do_nothing;
--	ptr = (unsigned char *)do_overwritten;
-+	size = (unsigned long)dereference_function_descriptor(do_overwritten) -
-+	       (unsigned long)dereference_function_descriptor(do_nothing);
-+	ptr = dereference_function_descriptor(do_overwritten);
+-	pr_info("attempting ok execution at %px\n", do_nothing);
++	pr_info("attempting ok execution at %px\n", do_nothing_text);
+ 	do_nothing();
  
- 	pr_info("attempting bad %zu byte write at %px\n", size, ptr);
- 	memcpy((void *)ptr, (unsigned char *)do_nothing, size);
+ 	if (write == CODE_WRITE) {
+-		memcpy(dst, do_nothing, EXEC_SIZE);
++		memcpy(dst, do_nothing_text, EXEC_SIZE);
+ 		flush_icache_range((unsigned long)dst,
+ 				   (unsigned long)dst + EXEC_SIZE);
+ 	}
+-	pr_info("attempting bad execution at %px\n", func);
++	pr_info("attempting bad execution at %px\n", dst);
++	func = setup_function_descriptor(&fdesc, dst);
+ 	func();
+ 	pr_err("FAIL: func returned\n");
+ }
+@@ -66,16 +81,19 @@ static void execute_user_location(void *dst)
+ 	int copied;
+ 
+ 	/* Intentionally crossing kernel/user memory boundary. */
+-	void (*func)(void) = dst;
++	void (*func)(void);
++	func_desc_t fdesc;
++	void *do_nothing_text = dereference_function_descriptor(do_nothing);
+ 
+-	pr_info("attempting ok execution at %px\n", do_nothing);
++	pr_info("attempting ok execution at %px\n", do_nothing_text);
+ 	do_nothing();
+ 
+-	copied = access_process_vm(current, (unsigned long)dst, do_nothing,
++	copied = access_process_vm(current, (unsigned long)dst, do_nothing_text,
+ 				   EXEC_SIZE, FOLL_WRITE);
+ 	if (copied < EXEC_SIZE)
+ 		return;
+-	pr_info("attempting bad execution at %px\n", func);
++	pr_info("attempting bad execution at %px\n", dst);
++	func = setup_function_descriptor(&fdesc, dst);
+ 	func();
+ 	pr_err("FAIL: func returned\n");
+ }
+@@ -153,7 +171,8 @@ void lkdtm_EXEC_VMALLOC(void)
+ 
+ void lkdtm_EXEC_RODATA(void)
+ {
+-	execute_location(lkdtm_rodata_do_nothing, CODE_AS_IS);
++	execute_location(dereference_function_descriptor(lkdtm_rodata_do_nothing),
++			 CODE_AS_IS);
+ }
+ 
+ void lkdtm_EXEC_USERSPACE(void)
 -- 
 2.31.1
 
