@@ -2,82 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384FB43131E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 11:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6E44313D0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 11:49:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HXrqZ4p7Bz3c5G
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 20:17:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HXsXw172Pz2ywX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 20:49:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=SIY6SmxS;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=aj+6l2L+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
- helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=SIY6SmxS; dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
- [IPv6:2607:f8b0:4864:20::1036])
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=desiato.20200630 header.b=aj+6l2L+; 
+ dkim-atps=neutral
+Received: from desiato.infradead.org (desiato.infradead.org
+ [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HXrpr4QBrz2y6B
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Oct 2021 20:16:35 +1100 (AEDT)
-Received: by mail-pj1-x1036.google.com with SMTP id gn3so6240233pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Oct 2021 02:16:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=bk4CmdQz8HPJtWkdQrroAn/KfmHvlYv0QT69F5KgUYY=;
- b=SIY6SmxSooe6c5+WSnMw0wpVs8QY7NiY+XZuBJ+D71+hWvHEdC2Vbwe6t160uJL/aH
- SxAjedhuo7/GPRc5DJ/SEAzpZfnAKWBOZFVYti9AdvfYsJcQ4rL3+DM2dFweZBuHNa2+
- +plqntehvZ9SJWnhWeMNJxgbPzWwOsSXBy+aWPK6JCymQrSbx9dlArY4Er+FBijnqB2+
- KaAdeks2O345KWfd39ueUFOjpMJSBOKHlggozA8hAbjjoen/SEHYJ6ZGB4a5AA4ymoTX
- S+O+sY98XhFR6qaduHBAgc9j1zJ+556dXM7nA9EQbpd+M4xKLyV6Ni7/OoKNvSsZa2tY
- Ga4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=bk4CmdQz8HPJtWkdQrroAn/KfmHvlYv0QT69F5KgUYY=;
- b=zm+zOqmH5HjiX+X0WZfvhs4mzIYPrPTkPQHqnDPJPl5tVr+0l9T2AiT8VhIkUg8vs1
- LqaJoTzaoL94Wr22ffFeSmSUlbOXLhl7w66ncn1Vf61jV1O5munEdc/6r8q+5LbpR+/X
- ZyI0nryyMaLcsp5vQE3LzEpY1xI/zQpLuuYCE40Q9yGjuTPEoZ/frAXIUaarNEVcq43Z
- 0ur+Jf7fXrKO7T15/Kj/ZRSFmpPfXpMBTeoLYj/p2t9+aCnPxzuO/3RxlqNA3MElAdLU
- sv8UILxmMpFmmPBn3HuTfqVp+kYJwvusj/Vt/eu5AMu+nL8PLd5iYngaW9iZaPI/XtTW
- d5Kw==
-X-Gm-Message-State: AOAM532dHfsGl8kbUCr6JlsS43ZziYb5BONzjbGBB4MbfLI9mIwslBbI
- OxkR75MepP0ITtgTtqeuCJQ=
-X-Google-Smtp-Source: ABdhPJzhlLMrCQ4LZ3XWVQonDSXYo92dxUzu1RcvXP5BET6OhlsHPRAv2Q264erQZkrgYN002t+nDA==
-X-Received: by 2002:a17:90a:2c02:: with SMTP id
- m2mr17579869pjd.109.1634548591342; 
- Mon, 18 Oct 2021 02:16:31 -0700 (PDT)
-Received: from localhost ([58.171.214.181])
- by smtp.gmail.com with ESMTPSA id rj2sm13068038pjb.32.2021.10.18.02.16.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Oct 2021 02:16:31 -0700 (PDT)
-Date: Mon, 18 Oct 2021 19:16:25 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 07/12] asm-generic: Define 'func_desc_t' to commonly
- describe function descriptors
-To: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, 
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Helge Deller <deller@gmx.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, Kees Cook <keescook@chromium.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
- <a33107c5b82580862510cc20af0d61e33a2b841d.1634457599.git.christophe.leroy@csgroup.eu>
- <1634538449.eah9b31bbz.astroid@bobo.none>
- <802b3ff9-8ada-b45b-2b69-b6a23f0c3664@csgroup.eu>
-In-Reply-To: <802b3ff9-8ada-b45b-2b69-b6a23f0c3664@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HXsX86w8Hz2xsy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Oct 2021 20:48:56 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=54V1KnQoB6CDT102wu6F0M83i4Ai4wrcXeBm3THLwu4=; b=aj+6l2L+bEScCV3CfEXP+uvaMu
+ jErIR9Py+fscLbiqDt5e048vdPHkQuepfbpyy8PD9OEYEjBzipbDqwdWyscNUauhnhvZCSmo9hsBF
+ akIbMNiUHz/DRDjr6g+Fgb/DbLxT7xBg4u1LbI63SOZB5YYk6DYceJvRIQlwzXId9F6aE3c8kN9mm
+ 36j4f9+VFNeI6ejRAngTrZNsObQF2gp1qu7KyRWlyDHiB0yuYCngFKZUTy1/Ly9ET6BbJCfQhfZ+E
+ zn9mOvu6rvSJWgIJCgjI1/vZYsHJOcsn49S8jHVKn/L2DdGOzdJglzpYDC9EFU+n3Ry8rVjD66Ax4
+ Ev5FQh0g==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1mcPFo-00AWdP-Fu; Mon, 18 Oct 2021 09:48:24 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D5BDF300242;
+ Mon, 18 Oct 2021 11:48:22 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id B17B62013A69E; Mon, 18 Oct 2021 11:48:22 +0200 (CEST)
+Date: Mon, 18 Oct 2021 11:48:22 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v3 0/4] Add mem_hops field in perf_mem_data_src structure
+Message-ID: <YW1C5okzq/1BSLQy@hirez.programming.kicks-ass.net>
+References: <20211006140654.298352-1-kjain@linux.ibm.com>
+ <20211007064933.GK174703@worktop.programming.kicks-ass.net>
+ <87pms3c7w5.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1634546857.xamu59z8sr.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87pms3c7w5.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,69 +73,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: mark.rutland@arm.com, atrajeev@linux.vnet.ibm.com, ak@linux.intel.com,
+ daniel@iogearbox.net, rnsastry@linux.ibm.com,
+ alexander.shishkin@linux.intel.com, Kajol Jain <kjain@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, acme@kernel.org, ast@kernel.org,
+ linux-perf-users@vger.kernel.org, yao.jin@linux.intel.com, mingo@redhat.com,
+ paulus@samba.org, maddy@linux.ibm.com, jolsa@kernel.org, namhyung@kernel.org,
+ songliubraving@fb.com, linuxppc-dev@lists.ozlabs.org,
+ kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of October 18, 2021 5:07 pm:
->=20
->=20
-> Le 18/10/2021 =C3=A0 08:29, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Excerpts from Christophe Leroy's message of October 17, 2021 10:38 pm:
->>> We have three architectures using function descriptors, each with its
->>> own type and name.
->>>
->>> Add a common typedef that can be used in generic code.
->>>
->>> Also add a stub typedef for architecture without function descriptors,
->>> to avoid a forest of #ifdefs.
->>>
->>> It replaces the similar 'func_desc_t' previously defined in
->>> arch/powerpc/kernel/module_64.c
->>>
->>> Reviewed-by: Kees Cook <keescook@chromium.org>
->>> Acked-by: Arnd Bergmann <arnd@arndb.de>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> ---
->>=20
->> [...]
->>=20
->>> diff --git a/include/asm-generic/sections.h b/include/asm-generic/secti=
-ons.h
->>> index a918388d9bf6..33b51efe3a24 100644
->>> --- a/include/asm-generic/sections.h
->>> +++ b/include/asm-generic/sections.h
->>> @@ -63,6 +63,9 @@ extern __visible const void __nosave_begin, __nosave_=
-end;
->>>   #else
->>>   #define dereference_function_descriptor(p) ((void *)(p))
->>>   #define dereference_kernel_function_descriptor(p) ((void *)(p))
->>> +typedef struct {
->>> +	unsigned long addr;
->>> +} func_desc_t;
->>>   #endif
->>>  =20
->>=20
->> I think that deserves a comment. If it's just to allow ifdef to be
->> avoided, I guess that's okay with a comment. Would be nice if you could
->> cause it to generate a link time error if it was ever used like
->> undefined functions, but I guess you can't. It's not a necessity though.
->>=20
->=20
-> I tried to explain it in the commit message, but I can add a comment=20
-> here in addition for sure.
+On Mon, Oct 18, 2021 at 02:46:18PM +1100, Michael Ellerman wrote:
+> Peter Zijlstra <peterz@infradead.org> writes:
+> > On Wed, Oct 06, 2021 at 07:36:50PM +0530, Kajol Jain wrote:
+> >
+> >> Kajol Jain (4):
+> >>   perf: Add comment about current state of PERF_MEM_LVL_* namespace and
+> >>     remove an extra line
+> >>   perf: Add mem_hops field in perf_mem_data_src structure
+> >>   tools/perf: Add mem_hops field in perf_mem_data_src structure
+> >>   powerpc/perf: Fix data source encodings for L2.1 and L3.1 accesses
+> >> 
+> >>  arch/powerpc/perf/isa207-common.c     | 26 +++++++++++++++++++++-----
+> >>  arch/powerpc/perf/isa207-common.h     |  2 ++
+> >>  include/uapi/linux/perf_event.h       | 19 ++++++++++++++++---
+> >>  tools/include/uapi/linux/perf_event.h | 19 ++++++++++++++++---
+> >>  tools/perf/util/mem-events.c          | 20 ++++++++++++++++++--
+> >>  5 files changed, 73 insertions(+), 13 deletions(-)
+> >
+> > Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> >
+> > How do we want this routed? Shall I take it, or does Michael want it in
+> > the Power tree?
+> 
+> It's mostly non-powerpc, so I think you should take it.
+> 
+> There's a slim chance we could end up with a conflict in the powerpc
+> part, but that's no big deal.
 
-Thanks.
-
->=20
-> By the way, it IS used in powerpc's module_64.c:
-
-Ah yes of course. I guess the point is function descriptors don't exist=20
-so it should not be used (in general). powerpc module code knows what it
-is doing, I guess it's okay for it to use it.
-
-Thanks,
-Nick
+Sure thing, into perf/core it goes. Thanks!
