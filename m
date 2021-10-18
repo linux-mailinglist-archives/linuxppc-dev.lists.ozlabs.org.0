@@ -2,71 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E841430B2D
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Oct 2021 19:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A80430D64
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 03:18:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HXRbt72lCz3bmS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 04:20:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HXfCK2DG8z3bW5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 12:18:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HXRbM6cvzz2yY7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Oct 2021 04:20:13 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HXRbF62kYz9sSf;
- Sun, 17 Oct 2021 19:20:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id UU0pFAL3_At5; Sun, 17 Oct 2021 19:20:09 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HXRbF4sf6z9sSH;
- Sun, 17 Oct 2021 19:20:09 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8A7FE8B76C;
- Sun, 17 Oct 2021 19:20:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id d2p_rn7meVln; Sun, 17 Oct 2021 19:20:09 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.38])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3416F8B763;
- Sun, 17 Oct 2021 19:20:09 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19HHJuwJ2995765
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Sun, 17 Oct 2021 19:19:56 +0200
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19HHJqeL2995764;
- Sun, 17 Oct 2021 19:19:52 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Andrew Morton <akpm@linux-foundation.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
- Kees Cook <keescook@chromium.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [RFC PATCH] lkdtm: Replace lkdtm_rodata_do_nothing() by do_nothing()
-Date: Sun, 17 Oct 2021 19:19:47 +0200
-Message-Id: <fe36bf23fb14e7eff92a95a1092ed38edb01d5f5.1634491011.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.31.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HXfBr27SDz2xt7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Oct 2021 12:18:08 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10140"; a="208255308"
+X-IronPort-AV: E=Sophos;i="5.85,380,1624345200"; d="scan'208";a="208255308"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Oct 2021 18:17:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,380,1624345200"; d="scan'208";a="443216153"
+Received: from lkp-server02.sh.intel.com (HELO 08b2c502c3de) ([10.239.97.151])
+ by orsmga006.jf.intel.com with ESMTP; 17 Oct 2021 18:17:03 -0700
+Received: from kbuild by 08b2c502c3de with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mcHGw-000ApA-IL; Mon, 18 Oct 2021 01:17:02 +0000
+Date: Mon, 18 Oct 2021 09:16:48 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 6c44be1b8e2d8c0161ac39d5d39ea4dff39da71c
+Message-ID: <616ccb00.FWzE58xyhyRUhA6j%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1634491186; l=4650; s=20211009;
- h=from:subject:message-id; bh=Gwq3WsZiMgEzCWeCZvvJz2QFh6/yASMBkt0EwoqhfqU=;
- b=tNEufT0EvPpoA817u75WWILDHvNRtl8NSHiO7I4zTt1LQhPaOg9RzOWV74NlxFf0C2nuxBLt9G3g
- 3Yo7SMx+CM6PPLrmoIohglXpAMq3LzxPHBKWOMPxySmIxlVza90N
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,136 +50,261 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All EXEC tests are based on running a copy of do_nothing()
-except lkdtm_EXEC_RODATA which uses a different function
-called lkdtm_rodata_do_nothing().
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 6c44be1b8e2d8c0161ac39d5d39ea4dff39da71c  powerpc/smp: do not decrement idle task preempt count in CPU offline
 
-On architectures using function descriptors, EXEC tests are
-performed using execute_location() which is a function
-that most of the time copies do_nothing() at the tested
-location then duplicates do_nothing() function descriptor
-and updates it with the address of the copy of do_nothing().
+elapsed time: 2077m
 
-But for EXEC_RODATA test, execute_location() uses
-lkdtm_rodata_do_nothing() which is already in rodata section
-at build time instead of using a copy of do_nothing(). However
-it still uses the function descriptor of do_nothing(). There
-is a risk that running lkdtm_rodata_do_nothing() with the
-function descriptor of do_thing() is wrong.
+configs tested: 233
+configs skipped: 111
 
-To remove the above risk, change the approach and do the same
-as for other EXEC tests: use a copy of do_nothing(). The copy
-cannot be done during the test because RODATA area is write
-protected. Do the copy during init, before RODATA becomes
-write protected.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+h8300                       h8s-sim_defconfig
+arc                     haps_hs_smp_defconfig
+powerpc                     tqm5200_defconfig
+sh                             sh03_defconfig
+sh                  sh7785lcr_32bit_defconfig
+arm                         axm55xx_defconfig
+sh                          landisk_defconfig
+arm                           tegra_defconfig
+arm                        oxnas_v6_defconfig
+arm                         orion5x_defconfig
+arm                       imx_v4_v5_defconfig
+arm                           corgi_defconfig
+xtensa                    xip_kc705_defconfig
+csky                             alldefconfig
+sh                   sh7770_generic_defconfig
+powerpc                      ppc40x_defconfig
+sh                                  defconfig
+riscv                            alldefconfig
+mips                        maltaup_defconfig
+arm                          collie_defconfig
+sparc                               defconfig
+riscv                    nommu_k210_defconfig
+nios2                         10m50_defconfig
+mips                          rb532_defconfig
+arc                          axs103_defconfig
+nds32                               defconfig
+arm                      pxa255-idp_defconfig
+powerpc                     stx_gp3_defconfig
+mips                         cobalt_defconfig
+powerpc                       ebony_defconfig
+s390                             alldefconfig
+sh                        dreamcast_defconfig
+openrisc                 simple_smp_defconfig
+powerpc                           allnoconfig
+arm                           h5000_defconfig
+arm                       multi_v4t_defconfig
+arm                        multi_v7_defconfig
+sh                        edosk7705_defconfig
+sh                          sdk7786_defconfig
+m68k                       bvme6000_defconfig
+arm                     am200epdkit_defconfig
+powerpc                      chrp32_defconfig
+sh                          rsk7264_defconfig
+arm                            mmp2_defconfig
+m68k                         amcore_defconfig
+sparc64                          alldefconfig
+xtensa                  nommu_kc705_defconfig
+mips                     loongson1b_defconfig
+mips                           xway_defconfig
+ia64                        generic_defconfig
+mips                        workpad_defconfig
+powerpc                 xes_mpc85xx_defconfig
+powerpc                      ppc6xx_defconfig
+h8300                               defconfig
+ia64                      gensparse_defconfig
+powerpc                     tqm8541_defconfig
+arm                          pxa3xx_defconfig
+powerpc                 mpc8540_ads_defconfig
+sh                           se7780_defconfig
+arc                         haps_hs_defconfig
+arm                        keystone_defconfig
+arm                  colibri_pxa270_defconfig
+arm                          moxart_defconfig
+m68k                        m5307c3_defconfig
+m68k                          sun3x_defconfig
+powerpc                     sequoia_defconfig
+sh                         ap325rxa_defconfig
+sh                           se7751_defconfig
+m68k                        m5272c3_defconfig
+arm                           viper_defconfig
+sparc64                             defconfig
+riscv                             allnoconfig
+mips                            e55_defconfig
+powerpc                     kmeter1_defconfig
+powerpc                          allyesconfig
+powerpc                    adder875_defconfig
+nds32                             allnoconfig
+arm                             mxs_defconfig
+ia64                          tiger_defconfig
+powerpc                 mpc836x_rdk_defconfig
+arm                         hackkit_defconfig
+powerpc                 mpc8560_ads_defconfig
+mips                     cu1000-neo_defconfig
+m68k                           sun3_defconfig
+m68k                          hp300_defconfig
+powerpc                   bluestone_defconfig
+powerpc                    mvme5100_defconfig
+arm                          ep93xx_defconfig
+s390                          debug_defconfig
+nios2                         3c120_defconfig
+mips                malta_qemu_32r6_defconfig
+arc                    vdk_hs38_smp_defconfig
+arm                            hisi_defconfig
+arc                           tb10x_defconfig
+powerpc                    sam440ep_defconfig
+sh                 kfr2r09-romimage_defconfig
+powerpc                     powernv_defconfig
+arc                      axs103_smp_defconfig
+mips                          rm200_defconfig
+x86_64                              defconfig
+h8300                            allyesconfig
+powerpc                    ge_imp3a_defconfig
+powerpc                 linkstation_defconfig
+ia64                            zx1_defconfig
+sh                          lboxre2_defconfig
+powerpc                      pcm030_defconfig
+powerpc                   microwatt_defconfig
+alpha                               defconfig
+sh                            shmin_defconfig
+arm                            zeus_defconfig
+arm                         s5pv210_defconfig
+mips                             allmodconfig
+m68k                                defconfig
+powerpc                     ep8248e_defconfig
+sh                     magicpanelr2_defconfig
+ia64                                defconfig
+powerpc                     rainier_defconfig
+powerpc                       holly_defconfig
+mips                        nlm_xlr_defconfig
+powerpc                     ksi8560_defconfig
+arm                          pxa910_defconfig
+riscv                               defconfig
+microblaze                      mmu_defconfig
+s390                       zfcpdump_defconfig
+mips                     loongson2k_defconfig
+mips                      malta_kvm_defconfig
+arm                           stm32_defconfig
+powerpc                 mpc836x_mds_defconfig
+sh                          kfr2r09_defconfig
+powerpc                     mpc5200_defconfig
+powerpc                      arches_defconfig
+powerpc                  storcenter_defconfig
+arm                        cerfcube_defconfig
+arm                         assabet_defconfig
+arm                          pcm027_defconfig
+sh                         microdev_defconfig
+powerpc                     taishan_defconfig
+powerpc                     mpc512x_defconfig
+powerpc                 mpc834x_mds_defconfig
+sh                        sh7757lcr_defconfig
+powerpc                     asp8347_defconfig
+sparc                       sparc64_defconfig
+mips                     decstation_defconfig
+powerpc                    gamecube_defconfig
+mips                           ip32_defconfig
+mips                            gpr_defconfig
+powerpc                      ep88xc_defconfig
+arm                         shannon_defconfig
+arm                         cm_x300_defconfig
+sh                            titan_defconfig
+m68k                          multi_defconfig
+mips                           gcw0_defconfig
+powerpc                  iss476-smp_defconfig
+sh                        edosk7760_defconfig
+sh                        sh7763rdp_defconfig
+arm                           u8500_defconfig
+powerpc                  mpc866_ads_defconfig
+arc                 nsimosci_hs_smp_defconfig
+powerpc                 mpc837x_rdb_defconfig
+powerpc                      tqm8xx_defconfig
+arm                       mainstone_defconfig
+sh                          r7785rp_defconfig
+arm                  randconfig-c002-20211017
+i386                 randconfig-c001-20211017
+x86_64               randconfig-c001-20211017
+ia64                             allmodconfig
+ia64                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                                defconfig
+parisc                           allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                             allyesconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+x86_64               randconfig-a006-20211016
+x86_64               randconfig-a004-20211016
+x86_64               randconfig-a001-20211016
+x86_64               randconfig-a005-20211016
+x86_64               randconfig-a002-20211016
+x86_64               randconfig-a003-20211016
+x86_64               randconfig-a012-20211017
+x86_64               randconfig-a015-20211017
+x86_64               randconfig-a016-20211017
+x86_64               randconfig-a014-20211017
+x86_64               randconfig-a011-20211017
+x86_64               randconfig-a013-20211017
+i386                 randconfig-a016-20211017
+i386                 randconfig-a014-20211017
+i386                 randconfig-a011-20211017
+i386                 randconfig-a015-20211017
+i386                 randconfig-a012-20211017
+i386                 randconfig-a013-20211017
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                            allyesconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+mips                 randconfig-c004-20211017
+arm                  randconfig-c002-20211017
+i386                 randconfig-c001-20211017
+s390                 randconfig-c005-20211017
+x86_64               randconfig-c007-20211017
+powerpc              randconfig-c003-20211017
+riscv                randconfig-c006-20211017
+x86_64               randconfig-a006-20211017
+x86_64               randconfig-a004-20211017
+x86_64               randconfig-a001-20211017
+x86_64               randconfig-a005-20211017
+x86_64               randconfig-a002-20211017
+x86_64               randconfig-a003-20211017
+i386                 randconfig-a003-20211017
+i386                 randconfig-a001-20211017
+i386                 randconfig-a005-20211017
+i386                 randconfig-a004-20211017
+i386                 randconfig-a002-20211017
+i386                 randconfig-a006-20211017
+hexagon              randconfig-r041-20211017
+hexagon              randconfig-r045-20211017
+
 ---
-This applies on top of series v3 "Fix LKDTM for PPC64/IA64/PARISC"
-
- drivers/misc/lkdtm/Makefile | 11 -----------
- drivers/misc/lkdtm/lkdtm.h  |  3 ---
- drivers/misc/lkdtm/perms.c  |  9 +++++++--
- drivers/misc/lkdtm/rodata.c | 11 -----------
- 4 files changed, 7 insertions(+), 27 deletions(-)
- delete mode 100644 drivers/misc/lkdtm/rodata.c
-
-diff --git a/drivers/misc/lkdtm/Makefile b/drivers/misc/lkdtm/Makefile
-index e2984ce51fe4..3d45a2b3007d 100644
---- a/drivers/misc/lkdtm/Makefile
-+++ b/drivers/misc/lkdtm/Makefile
-@@ -6,21 +6,10 @@ lkdtm-$(CONFIG_LKDTM)		+= bugs.o
- lkdtm-$(CONFIG_LKDTM)		+= heap.o
- lkdtm-$(CONFIG_LKDTM)		+= perms.o
- lkdtm-$(CONFIG_LKDTM)		+= refcount.o
--lkdtm-$(CONFIG_LKDTM)		+= rodata_objcopy.o
- lkdtm-$(CONFIG_LKDTM)		+= usercopy.o
- lkdtm-$(CONFIG_LKDTM)		+= stackleak.o
- lkdtm-$(CONFIG_LKDTM)		+= cfi.o
- lkdtm-$(CONFIG_LKDTM)		+= fortify.o
- lkdtm-$(CONFIG_PPC_BOOK3S_64)	+= powerpc.o
- 
--KASAN_SANITIZE_rodata.o		:= n
- KASAN_SANITIZE_stackleak.o	:= n
--KCOV_INSTRUMENT_rodata.o	:= n
--CFLAGS_REMOVE_rodata.o		+= $(CC_FLAGS_LTO)
--
--OBJCOPYFLAGS :=
--OBJCOPYFLAGS_rodata_objcopy.o	:= \
--			--rename-section .noinstr.text=.rodata,alloc,readonly,load,contents
--targets += rodata.o rodata_objcopy.o
--$(obj)/rodata_objcopy.o: $(obj)/rodata.o FORCE
--	$(call if_changed,objcopy)
-diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
-index 188bd0fd6575..905555d4c2cf 100644
---- a/drivers/misc/lkdtm/lkdtm.h
-+++ b/drivers/misc/lkdtm/lkdtm.h
-@@ -137,9 +137,6 @@ void lkdtm_REFCOUNT_SUB_AND_TEST_SATURATED(void);
- void lkdtm_REFCOUNT_TIMING(void);
- void lkdtm_ATOMIC_TIMING(void);
- 
--/* rodata.c */
--void lkdtm_rodata_do_nothing(void);
--
- /* usercopy.c */
- void __init lkdtm_usercopy_init(void);
- void __exit lkdtm_usercopy_exit(void);
-diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-index 2c6aba3ff32b..9b951ca48363 100644
---- a/drivers/misc/lkdtm/perms.c
-+++ b/drivers/misc/lkdtm/perms.c
-@@ -27,6 +27,7 @@ static const unsigned long rodata = 0xAA55AA55;
- 
- /* This is marked __ro_after_init, so it should ultimately be .rodata. */
- static unsigned long ro_after_init __ro_after_init = 0x55AA5500;
-+static u8 rodata_area[EXEC_SIZE] __ro_after_init;
- 
- /*
-  * This just returns to the caller. It is designed to be copied into
-@@ -193,8 +194,7 @@ void lkdtm_EXEC_VMALLOC(void)
- 
- void lkdtm_EXEC_RODATA(void)
- {
--	execute_location(dereference_function_descriptor(lkdtm_rodata_do_nothing),
--			 CODE_AS_IS);
-+	execute_location(rodata_area, CODE_AS_IS);
- }
- 
- void lkdtm_EXEC_USERSPACE(void)
-@@ -269,4 +269,9 @@ void __init lkdtm_perms_init(void)
- {
- 	/* Make sure we can write to __ro_after_init values during __init */
- 	ro_after_init |= 0xAA;
-+
-+	memcpy(rodata_area, dereference_function_descriptor(do_nothing),
-+	       EXEC_SIZE);
-+	flush_icache_range((unsigned long)rodata_area,
-+			   (unsigned long)rodata_area + EXEC_SIZE);
- }
-diff --git a/drivers/misc/lkdtm/rodata.c b/drivers/misc/lkdtm/rodata.c
-deleted file mode 100644
-index baacb876d1d9..000000000000
---- a/drivers/misc/lkdtm/rodata.c
-+++ /dev/null
-@@ -1,11 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * This includes functions that are meant to live entirely in .rodata
-- * (via objcopy tricks), to validate the non-executability of .rodata.
-- */
--#include "lkdtm.h"
--
--void noinstr lkdtm_rodata_do_nothing(void)
--{
--	/* Does nothing. We just want an architecture agnostic "return". */
--}
--- 
-2.31.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
