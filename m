@@ -2,80 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B413431094
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 08:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8968343111D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 09:08:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HXn7P2xhnz308h
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 17:30:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HXnz36tJ6z3cH9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 18:08:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=EaHY4+nx;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MnNlhCJy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530;
- helo=mail-pg1-x530.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=EaHY4+nx; dkim-atps=neutral
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
- [IPv6:2607:f8b0:4864:20::530])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=MnNlhCJy; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HXn6l53Dtz2xX5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Oct 2021 17:30:07 +1100 (AEDT)
-Received: by mail-pg1-x530.google.com with SMTP id c4so8006117pgv.11
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Oct 2021 23:30:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=SrZhhuie2LYb+DH8DnKTrW/zbTOuYNfpSWs+Jg+B7ZI=;
- b=EaHY4+nxzBbXnw4re2cGF5gs8wOdjWhvwRQb3eDdLNljCkNp8D3Cdglit6b/DEdvI2
- ey56INCUK8p9wnePBtmhufxokbGfkq/bNQtz2eGE9C1+N1+IZcLiivrjaHi+fbFyw9Sm
- CIG7/CN1JQ+NPRu8XrkCHXO75w/J8IzbZLZsXNgIgGrssc22eKmoEH650zN1aNt6fb/E
- RQyug5mhR8JxjCa8hxG/oKYeTCXUcl0CnsOg/Ox97LP7sL0xsADVjLigIWesCf7KolDZ
- X9a2zF1I9AHYK6mcfZmGIOyZknnbra8wW42jtGvX7ZmhL6HnsRn8jCA4kg5Bq6CKLMz9
- Bq+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=SrZhhuie2LYb+DH8DnKTrW/zbTOuYNfpSWs+Jg+B7ZI=;
- b=Z7Bsloalz97vkGTMdsygiZB0C8yLg/1NVgtYPFSbd5ymPIWnSPBxONeLQcD687JM5p
- shEugBKzDH3nx0EYShulrAov4wLu6QgyFnsu1NaxR8t/vpHtSOSHOa+iX92D7sNJhOSh
- u9RzvAtLWb5Iac1lnGdbnWpKyOvw0RTyffTvSGdMyat4DmPV30V7XzG7LCS4AwA7ip22
- BbRiTI8I63M4JZHmZhfW7Fj0Njt+rbR8J+P4Pikq73O3YQymwXPh/0vlJxipmnByFyop
- j5xmD2spWlG2ONnmT66b94FTh7AxyNlw4zwXjpWX27DkwKsjmQSxu6rbKM4w/wlynfF+
- teLQ==
-X-Gm-Message-State: AOAM5307y4SS/1oc3OslYW+gpOy83wp/KoX/bG0VGA8zSLrUHAFSEpCf
- 16D5289PVBmmS/Q9dVqObS39MwPjP4XncA==
-X-Google-Smtp-Source: ABdhPJzH86hY+t32jbrJWE1dxVltQNRhTT8NQFAijIbO8sR0zCmyZjDW9Fs93D5vJD/a+7+qImFigg==
-X-Received: by 2002:aa7:86d9:0:b0:44d:a354:b803 with SMTP id
- h25-20020aa786d9000000b0044da354b803mr15773350pfo.21.1634538604529; 
- Sun, 17 Oct 2021 23:30:04 -0700 (PDT)
-Received: from localhost ([1.128.244.1])
- by smtp.gmail.com with ESMTPSA id a12sm18027761pjq.16.2021.10.17.23.30.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Oct 2021 23:30:04 -0700 (PDT)
-Date: Mon, 18 Oct 2021 16:29:57 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 07/12] asm-generic: Define 'func_desc_t' to commonly
- describe function descriptors
-To: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, 
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Helge Deller <deller@gmx.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, Kees Cook <keescook@chromium.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
- <a33107c5b82580862510cc20af0d61e33a2b841d.1634457599.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <a33107c5b82580862510cc20af0d61e33a2b841d.1634457599.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HXnxs062Yz2yNp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Oct 2021 18:07:28 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19I4pE9d014606; 
+ Mon, 18 Oct 2021 03:07:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=vbrSzoBt7X4TL99HrXT0Mtl3aZl0ABB0RSF7M+qQSl8=;
+ b=MnNlhCJy33wIAyc/XjCsTkALtUOBz9rQ7S3l38ftwFqXIVNVMZwGQpsqr7tmlDmHBNIJ
+ iWy/MhQS83u2wHCaEquxE7nfxGX2BeHPf1/VmjTsD96QWIr82LnuAOlW7v6qlKFIHYsQ
+ kGww69Mnmvgn7CXQcSVlaXC9p9UZ3DmtGG6nu1cZ+eJvL9Ogg98DQBtKPdL9MLQEc5JO
+ IzM6SfAcKojvakJLA1tdWSE4Xeb0r9W+IF6lhMqFXDSu91In0OdDWZuZtnCKOjuE5rUM
+ CmU96UVxo4n4uVslABT0YN3C2yF9XNE9T2Rkz3iH4h5Uat58bpXqx61LwQwdtJ3CsZLm aQ== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bs28xj72f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Oct 2021 03:07:17 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19I71joI023363;
+ Mon, 18 Oct 2021 07:07:15 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03ams.nl.ibm.com with ESMTP id 3bqpc9b6pd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Oct 2021 07:07:15 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 19I77C2w51380588
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 18 Oct 2021 07:07:12 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4063BAE04D;
+ Mon, 18 Oct 2021 07:07:12 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE62EAE045;
+ Mon, 18 Oct 2021 07:07:07 +0000 (GMT)
+Received: from [9.43.101.92] (unknown [9.43.101.92])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 18 Oct 2021 07:07:07 +0000 (GMT)
+Message-ID: <cb0dba37-f3e4-acd7-444f-01a6dc737919@linux.ibm.com>
+Date: Mon, 18 Oct 2021 12:37:06 +0530
 MIME-Version: 1.0
-Message-Id: <1634538449.eah9b31bbz.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.0
+Subject: Re: [PATCH] powerpc/kexec_file: Add of_node_put() before goto
+Content-Language: en-US
+To: Wan Jiabing <wanjiabing@vivo.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Rob Herring <robh@kernel.org>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20211018015418.10182-1-wanjiabing@vivo.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <20211018015418.10182-1-wanjiabing@vivo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: bJ4ZEjuBgK1SpSvn5A6XlfYvhsN2CbRR
+X-Proofpoint-GUID: bJ4ZEjuBgK1SpSvn5A6XlfYvhsN2CbRR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-18_02,2021-10-14_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0
+ mlxlogscore=999 impostorscore=0 lowpriorityscore=0 spamscore=0
+ clxscore=1011 mlxscore=0 phishscore=0 priorityscore=1501 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110180043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,52 +108,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: kael_w@yeah.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of October 17, 2021 10:38 pm:
-> We have three architectures using function descriptors, each with its
-> own type and name.
->=20
-> Add a common typedef that can be used in generic code.
->=20
-> Also add a stub typedef for architecture without function descriptors,
-> to avoid a forest of #ifdefs.
->=20
-> It replaces the similar 'func_desc_t' previously defined in
-> arch/powerpc/kernel/module_64.c
->=20
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+
+On 18/10/21 7:24 am, Wan Jiabing wrote:
+> Fix following coccicheck warning:
+> ./arch/powerpc/kexec/file_load_64.c:698:1-22: WARNING: Function
+> for_each_node_by_type should have of_node_put() before goto
+> 
+> Early exits from for_each_node_by_type should decrement the
+> node reference counter.
+> 
+> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+
+Thanks for fixing this!
+
+Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+
 > ---
-
-[...]
-
-> diff --git a/include/asm-generic/sections.h b/include/asm-generic/section=
-s.h
-> index a918388d9bf6..33b51efe3a24 100644
-> --- a/include/asm-generic/sections.h
-> +++ b/include/asm-generic/sections.h
-> @@ -63,6 +63,9 @@ extern __visible const void __nosave_begin, __nosave_en=
-d;
->  #else
->  #define dereference_function_descriptor(p) ((void *)(p))
->  #define dereference_kernel_function_descriptor(p) ((void *)(p))
-> +typedef struct {
-> +	unsigned long addr;
-> +} func_desc_t;
->  #endif
-> =20
-
-I think that deserves a comment. If it's just to allow ifdef to be=20
-avoided, I guess that's okay with a comment. Would be nice if you could=20
-cause it to generate a link time error if it was ever used like
-undefined functions, but I guess you can't. It's not a necessity though.
-
-Thanks,
-Nick
+>   arch/powerpc/kexec/file_load_64.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+> index 5056e175ca2c..b4981b651d9a 100644
+> --- a/arch/powerpc/kexec/file_load_64.c
+> +++ b/arch/powerpc/kexec/file_load_64.c
+> @@ -700,6 +700,7 @@ static int update_usable_mem_fdt(void *fdt, struct crash_mem *usable_mem)
+>   		if (ret) {
+>   			pr_err("Failed to set linux,usable-memory property for %s node",
+>   			       dn->full_name);
+> +			of_node_put(dn);
+>   			goto out;
+>   		}
+>   	}
+> 
