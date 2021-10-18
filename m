@@ -2,54 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E004315D3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 12:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DB8431819
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 13:50:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HXtD76Wlqz3c5k
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 21:20:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HXwDj4jLlz2yxj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 22:50:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=DzL9pIaL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mYHQhAfP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=DzL9pIaL; dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HXtCT0BWrz2yPw
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Oct 2021 21:19:31 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 7CAE31FD79;
- Mon, 18 Oct 2021 10:19:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1634552366; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=iOXmerCnaJwQcxrGTYNbpRPalnhSmqAzz0pWYAYZ5Qo=;
- b=DzL9pIaLMpfOUDOV24COilkbRbw4Zz03OVIMeFIvKy0jrLRIjKjUVrYo1E6xQSlaoJiMkr
- ivmVDcSbU982BGrV4FEhvOUv2sbqZmkoH5LdMylpFwi3HCkh9B0ni8TIAluXo2q8Ds/4G7
- mK11rHw/9kXtIiS4yQX063c9dKeL93w=
-Received: from suse.cz (unknown [10.100.216.66])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=mYHQhAfP; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 136C9A3BCD;
- Mon, 18 Oct 2021 10:19:23 +0000 (UTC)
-Date: Mon, 18 Oct 2021 12:19:20 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [PATCH] tracing: Have all levels of checks prevent recursion
-Message-ID: <YW1KKCFallDG+E01@alley>
-References: <20211015110035.14813389@gandalf.local.home>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HXwCy6lQ5z2yPc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Oct 2021 22:50:06 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19IBTM3i022775; 
+ Mon, 18 Oct 2021 07:49:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=jHctD2q+d+t0P2Bbjs3aTZrPD92riqxObcXyejoGBG0=;
+ b=mYHQhAfPQcL6fXlwR28V+ubQfC0g6aCM+VylAgHnbtSibLhoW0Ymbbp3Ikw1a7EHLVxj
+ sRar+L5qGIMjpB+GvpCl/vy5RH27iU96oDOKkHVvgHDbXeF7KkBLG7JKVaYWqpLdXlsL
+ gq08vSc1XHHX5tm2dhhc3MIe6RNSmnCzXvqckG/LI8vbKdpz+FQB9myT090AU9hey71T
+ N+wRcp3+GqM5GPpRkz+F1afNKQfJaX4gt+wX0fWLTu8MR3pbQCSPnuha0/8qF3fGq2IW
+ tPLckmtvGfLOU9BibCSTHriiJpdl4mmsrgBoDzmtviVnQUu6iGTCV0uJ9JX3SYern5ta xA== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bs59b45nu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Oct 2021 07:49:56 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19IBlX63014023;
+ Mon, 18 Oct 2021 11:49:55 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma06ams.nl.ibm.com with ESMTP id 3bqp0jds8r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Oct 2021 11:49:54 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 19IBnpFQ3080764
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 18 Oct 2021 11:49:51 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BE74B52059;
+ Mon, 18 Oct 2021 11:49:51 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.79.190.48])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 0AB4E5204E;
+ Mon, 18 Oct 2021 11:49:49 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org
+Subject: [V4 0/2] tools/perf: Add instruction and data address registers to
+ extended regs in powerpc
+Date: Mon, 18 Oct 2021 17:19:46 +0530
+Message-Id: <20211018114948.16830-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.33.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: NyBCIZGg-t0Z6LADqoZfXxTah2IsfQ5y
+X-Proofpoint-GUID: NyBCIZGg-t0Z6LADqoZfXxTah2IsfQ5y
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211015110035.14813389@gandalf.local.home>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-18_03,2021-10-14_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 mlxscore=0
+ phishscore=0 adultscore=0 clxscore=1011 priorityscore=1501 suspectscore=0
+ malwarescore=0 spamscore=0 bulkscore=0 lowpriorityscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
+ definitions=main-2110180071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,125 +95,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?utf-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>,
- "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Paul Mackerras <paulus@samba.org>, Jisheng Zhang <jszhang@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
- linux-riscv@lists.infradead.org, Miroslav Benes <mbenes@suse.cz>,
- Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Jiri Kosina <jikos@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-parisc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Guo Ren <guoren@kernel.org>, Colin Ian King <colin.king@canonical.com>,
+Cc: maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
+ linux-perf-users@vger.kernel.org, kjain@linux.ibm.com,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri 2021-10-15 11:00:35, Steven Rostedt wrote:
-> From: "Steven Rostedt (VMware)" <rostedt@goodmis.org>
-> 
-> While writing an email explaining the "bit = 0" logic for a discussion on
-> making ftrace_test_recursion_trylock() disable preemption, I discovered a
-> path that makes the "not do the logic if bit is zero" unsafe.
-> 
-> Since we want to encourage architectures to implement all ftrace features,
-> having them slow down due to this extra logic may encourage the
-> maintainers to update to the latest ftrace features. And because this
-> logic is only safe for them, remove it completely.
-> 
->  [*] There is on layer of recursion that is allowed, and that is to allow
->      for the transition between interrupt context (normal -> softirq ->
->      irq -> NMI), because a trace may occur before the context update is
->      visible to the trace recursion logic.
-> 
-> diff --git a/include/linux/trace_recursion.h b/include/linux/trace_recursion.h
-> index a9f9c5714e65..168fdf07419a 100644
-> --- a/include/linux/trace_recursion.h
-> +++ b/include/linux/trace_recursion.h
-> @@ -165,40 +147,29 @@ static __always_inline int trace_test_and_set_recursion(unsigned long ip, unsign
->  	unsigned int val = READ_ONCE(current->trace_recursion);
->  	int bit;
->  
-> -	/* A previous recursion check was made */
-> -	if ((val & TRACE_CONTEXT_MASK) > max)
-> -		return 0;
+Patch set adds PMU registers namely Sampled Instruction Address Register
+(SIAR) and Sampled Data Address Register (SDAR) as part of extended regs
+in PowerPC. These registers provides the instruction/data address and
+adding these to extended regs helps in debug purposes.
 
-@max parameter is no longer used.
+Patch 1/2 refactors the existing macro definition of
+PERF_REG_PMU_MASK_300 and PERF_REG_PMU_MASK_31 to make it more
+readable.
+Patch 2/2 includes perf tools side changes to add the SPRs to
+sample_reg_mask to use with -I? option.
 
-> -
->  	bit = trace_get_context_bit() + start;
->  	if (unlikely(val & (1 << bit))) {
->  		/*
->  		 * It could be that preempt_count has not been updated during
->  		 * a switch between contexts. Allow for a single recursion.
->  		 */
-> -		bit = TRACE_TRANSITION_BIT;
-> +		bit = TRACE_CTX_TRANSITION + start;
+Changelog:
+Change from v3 -> v4:
+- Spilt tools side patches separately since kernel side
+  changes are in powerpc/next. There is no code wise changes
+  from v3.
+  Link to previous version:
+  https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=265811&state=*
 
-I just want to be sure that I understand it correctly.
+  Kernel patches are taken to powerpc/next:
+  [1/4] powerpc/perf: Refactor the code definition of perf reg extended mask
+  https://git.kernel.org/powerpc/c/02b182e67482d9167a13a0ff19b55037b70b21ad
+  [3/4] powerpc/perf: Expose instruction and data address registers as part of extended regs
+  https://git.kernel.org/powerpc/c/29908bbf7b8960d261dfdd428bbaa656275e80f3
 
-The transition bit is the same for all contexts. It will allow one
-recursion only in one context.
+Change from v2 -> v3:
+Addressed review comments from Michael Ellerman
+- Fixed the macro definition to use "unsigned long long"
+  which otherwise will cause build error with perf on
+  32-bit.
+- Added Reviewed-by from Daniel Axtens for patch3.
 
-IMHO, the same problem (not-yet-updated preempt_count) might happen
-in any transition between contexts: normal -> soft IRQ -> IRQ -> NMI.
+Change from v1 -> v2:
+Addressed review comments from Michael Ellerman
+- Refactored the perf reg extended mask value macros for
+  PERF_REG_PMU_MASK_300 and PERF_REG_PMU_MASK_31 to
+  make it more readable. Also moved PERF_REG_EXTENDED_MAX
+  along with enum definition similar to PERF_REG_POWERPC_MAX.
 
-Well, I am not sure what exacly it means "preempt_count has not been
-updated during a switch between contexts."
+Athira Rajeev (2):
+  tools/perf: Refactor the code definition of perf reg extended mask in
+    tools side header file
+  tools/perf: Add perf tools support to expose instruction and data
+    address registers as part of extended regs
 
-   Is it that a function in the interrupt entry code is traced before
-   preempt_count is updated?
+ .../arch/powerpc/include/uapi/asm/perf_regs.h | 28 ++++++++++++-------
+ tools/perf/arch/powerpc/include/perf_regs.h   |  2 ++
+ tools/perf/arch/powerpc/util/perf_regs.c      |  2 ++
+ 3 files changed, 22 insertions(+), 10 deletions(-)
 
-   Or that an interrupt entry is interrupted by a higher level
-   interrupt, e.g. IRQ entry code interrupted by NMI?
+-- 
+2.33.0
 
-
-I guess that it is the first case. It would mean that the above
-function allows one mistake (one traced funtion in an interrupt entry
-code before the entry code updates preempt_count).
-
-Do I get it correctly?
-Is this what we want?
-
-
-Could we please update the comment? I mean to say if it is a race
-or if we trace a function that should not get traced.
-
->  		if (val & (1 << bit)) {
->  			do_ftrace_record_recursion(ip, pip);
->  			return -1;
->  		}
-> -	} else {
-> -		/* Normal check passed, clear the transition to allow it again */
-> -		val &= ~(1 << TRACE_TRANSITION_BIT);
->  	}
->  
->  	val |= 1 << bit;
->  	current->trace_recursion = val;
->  	barrier();
->  
-> -	return bit + 1;
-> +	return bit;
->  }
->  
->  static __always_inline void trace_clear_recursion(int bit)
->  {
-> -	if (!bit)
-> -		return;
-> -
->  	barrier();
-> -	bit--;
->  	trace_recursion_clear(bit);
->  }
-
-Otherwise, the change looks great. It simplifies that logic a lot.
-I think that I start understanding it ;-)
-
-Best Regards,
-Petr
