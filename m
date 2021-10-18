@@ -1,62 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D49430E65
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 05:40:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8C0430E6D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 05:47:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HXjMF10jzz305C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 14:40:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HXjVV4lCKz2ypf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 14:46:58 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JMHchNrz;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.42;
- helo=out30-42.freemail.mail.aliyun.com;
- envelope-from=yun.wang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-42.freemail.mail.aliyun.com
- (out30-42.freemail.mail.aliyun.com [115.124.30.42])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HXjLl4RYPz2ymr
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Oct 2021 14:40:15 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R531e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04426; MF=yun.wang@linux.alibaba.com;
- NM=1; PH=DS; RN=31; SR=0; TI=SMTPD_---0UsUN0R9_1634528397; 
-Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com
- fp:SMTPD_---0UsUN0R9_1634528397) by smtp.aliyun-inc.com(127.0.0.1);
- Mon, 18 Oct 2021 11:39:58 +0800
-Subject: [PATCH v4 2/2] ftrace: do CPU checking after preemption disabled
-From: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
-To: Guo Ren <guoren@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Ingo Molnar <mingo@redhat.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>,
- Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
- Joe Lawrence <joe.lawrence@redhat.com>,
- Colin Ian King <colin.king@canonical.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Nicholas Piggin <npiggin@gmail.com>, Jisheng Zhang <jszhang@kernel.org>,
- linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, live-patching@vger.kernel.org
-References: <32a36348-69ee-6464-390c-3a8d6e9d2b53@linux.alibaba.com>
-Message-ID: <bae9073b-6949-d396-69c9-89353c3516ff@linux.alibaba.com>
-Date: Mon, 18 Oct 2021 11:39:56 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HXjTr2VV1z2yQL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Oct 2021 14:46:24 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=JMHchNrz; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HXjTn3q3Hz4xbb;
+ Mon, 18 Oct 2021 14:46:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1634528783;
+ bh=GOtut4lMGzs2qzyZ65KTwOJYjfGYz9zHALN0yg+X+/Q=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=JMHchNrzOTUkxCl+BdvdSLLICSmbzkyyoAk3TULnCBr5nWi7Qav68ikqmpNA8rSlN
+ q/+QyOJdg0KqaVGZiB7ia0Jf7FecSBTxKmLqGHFsTA90U12o8ls6IHTtYbjlS43kLa
+ RvSnCRdg6zdwnSNjT6pO0CaT9srSHvuPj+qQal12hLND5/9J0E1NkU2ijFCILwsRdg
+ tTx0vOKUNO3woGskvM4XkJthoy7NNdvY63goNxz+vYZp3FAmQuf6dNYE1b5C+wP0XV
+ EPuKlQA4j0iKD/y1z+/fSAGSCpPFTy8L7v8XiVzj7tRrdprQoF7XgiWs61y8xjt+gS
+ 0kdLnDUYVGkSg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Peter Zijlstra <peterz@infradead.org>, Kajol Jain <kjain@linux.ibm.com>
+Subject: Re: [PATCH v3 0/4] Add mem_hops field in perf_mem_data_src structure
+In-Reply-To: <20211007064933.GK174703@worktop.programming.kicks-ass.net>
+References: <20211006140654.298352-1-kjain@linux.ibm.com>
+ <20211007064933.GK174703@worktop.programming.kicks-ass.net>
+Date: Mon, 18 Oct 2021 14:46:18 +1100
+Message-ID: <87pms3c7w5.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <32a36348-69ee-6464-390c-3a8d6e9d2b53@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,61 +60,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: mark.rutland@arm.com, atrajeev@linux.vnet.ibm.com, ak@linux.intel.com,
+ daniel@iogearbox.net, rnsastry@linux.ibm.com,
+ alexander.shishkin@linux.intel.com, linux-kernel@vger.kernel.org,
+ acme@kernel.org, ast@kernel.org, linux-perf-users@vger.kernel.org,
+ yao.jin@linux.intel.com, mingo@redhat.com, paulus@samba.org,
+ maddy@linux.ibm.com, jolsa@kernel.org, namhyung@kernel.org,
+ songliubraving@fb.com, linuxppc-dev@lists.ozlabs.org,
+ kan.liang@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With CONFIG_DEBUG_PREEMPT we observed reports like:
+Peter Zijlstra <peterz@infradead.org> writes:
+> On Wed, Oct 06, 2021 at 07:36:50PM +0530, Kajol Jain wrote:
+>
+>> Kajol Jain (4):
+>>   perf: Add comment about current state of PERF_MEM_LVL_* namespace and
+>>     remove an extra line
+>>   perf: Add mem_hops field in perf_mem_data_src structure
+>>   tools/perf: Add mem_hops field in perf_mem_data_src structure
+>>   powerpc/perf: Fix data source encodings for L2.1 and L3.1 accesses
+>> 
+>>  arch/powerpc/perf/isa207-common.c     | 26 +++++++++++++++++++++-----
+>>  arch/powerpc/perf/isa207-common.h     |  2 ++
+>>  include/uapi/linux/perf_event.h       | 19 ++++++++++++++++---
+>>  tools/include/uapi/linux/perf_event.h | 19 ++++++++++++++++---
+>>  tools/perf/util/mem-events.c          | 20 ++++++++++++++++++--
+>>  5 files changed, 73 insertions(+), 13 deletions(-)
+>
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+>
+> How do we want this routed? Shall I take it, or does Michael want it in
+> the Power tree?
 
-  BUG: using smp_processor_id() in preemptible
-  caller is perf_ftrace_function_call+0x6f/0x2e0
-  CPU: 1 PID: 680 Comm: a.out Not tainted
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x8d/0xcf
-   check_preemption_disabled+0x104/0x110
-   ? optimize_nops.isra.7+0x230/0x230
-   ? text_poke_bp_batch+0x9f/0x310
-   perf_ftrace_function_call+0x6f/0x2e0
-   ...
-   __text_poke+0x5/0x620
-   text_poke_bp_batch+0x9f/0x310
+It's mostly non-powerpc, so I think you should take it.
 
-This telling us the CPU could be changed after task is preempted, and
-the checking on CPU before preemption will be invalid.
+There's a slim chance we could end up with a conflict in the powerpc
+part, but that's no big deal.
 
-Since now ftrace_test_recursion_trylock() will help to disable the
-preemption, this patch just do the checking after trylock() to address
-the issue.
-
-CC: Steven Rostedt <rostedt@goodmis.org>
-Reported-by: Abaci <abaci@linux.alibaba.com>
-Signed-off-by: Michael Wang <yun.wang@linux.alibaba.com>
----
- kernel/trace/trace_event_perf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/kernel/trace/trace_event_perf.c b/kernel/trace/trace_event_perf.c
-index 6aed10e..fba8cb7 100644
---- a/kernel/trace/trace_event_perf.c
-+++ b/kernel/trace/trace_event_perf.c
-@@ -441,13 +441,13 @@ void perf_trace_buf_update(void *record, u16 type)
- 	if (!rcu_is_watching())
- 		return;
-
--	if ((unsigned long)ops->private != smp_processor_id())
--		return;
--
- 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
- 	if (bit < 0)
- 		return;
-
-+	if ((unsigned long)ops->private != smp_processor_id())
-+		goto out;
-+
- 	event = container_of(ops, struct perf_event, ftrace_ops);
-
- 	/*
--- 
-1.8.3.1
-
+cheers
