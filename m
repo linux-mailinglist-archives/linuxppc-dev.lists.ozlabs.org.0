@@ -2,51 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF385432901
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 23:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 604F5432965
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Oct 2021 23:55:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HY8w71Yctz3cBS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 08:22:15 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jkM+1QBL;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HY9fm5hFgz30JK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 08:55:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gustavoars@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=jkM+1QBL; 
- dkim-atps=neutral
+ envelope-from=srs0=wa11=pg=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HY8vS3Zrqz2yV4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 08:21:40 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 08D676113D;
- Mon, 18 Oct 2021 21:21:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1634592097;
- bh=r+U+HRVQuA0YbQnhsffBIKTPjNzgnGyVqS2dVQNn2D0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=jkM+1QBLNmmr2PR2zw2SC8iGjREGbYOVerrkSYv8jxLrqA9IIHJg+L/VcMTBqG8hh
- huAmTTF47wai2Ksr+eiVkQgaVJXGZASCP0F/JIkO4EM9DVuXLchxXbF41zo1naYbNx
- JXYUgmJ4QuUfYnGD1HBMdVuKulpF4MuJYhKj+SnFw6F5O7dycf75FOu5OcnxlFnQa6
- X6UGocjlHew9R39KPk3JbWDddBMFKJjbBmWHhC3MtkXTIaOFGvkPtDXgZtmY5vsV3D
- tdZyp1/wtkTwabinzQahybxs1JiXRYZCtYO/3jbIGJPAk5B/pbC/dw+sGQSlhMVzB0
- rj/96f25tNgvA==
-Date: Mon, 18 Oct 2021 16:26:12 -0500
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: Re: [PATCH][next] powerpc/vas: Fix potential NULL pointer dereference
-Message-ID: <20211018212612.GA1237121@embeddedor>
-References: <20211015050345.GA1161918@embeddedor>
- <97c42e43-15b9-5db6-d460-dbb16f31954d@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HY9fK3Kv8z2yn5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 08:55:21 +1100 (AEDT)
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
+ [66.24.58.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4E68B610A1;
+ Mon, 18 Oct 2021 21:55:16 +0000 (UTC)
+Date: Mon, 18 Oct 2021 17:55:14 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] tracing: Have all levels of checks prevent recursion
+Message-ID: <20211018175505.3e19155a@gandalf.local.home>
+In-Reply-To: <20211018154412.09fcad3c@gandalf.local.home>
+References: <20211018154412.09fcad3c@gandalf.local.home>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <97c42e43-15b9-5db6-d460-dbb16f31954d@linux.ibm.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,65 +45,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Haren Myneni <haren@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>,
+ "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Paul Mackerras <paulus@samba.org>, Jisheng Zhang <jszhang@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Miroslav Benes <mbenes@suse.cz>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Petr Mladek <pmladek@suse.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Jiri Kosina <jikos@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Guo Ren <guoren@kernel.org>,
+ Colin Ian King <colin.king@canonical.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 18, 2021 at 02:09:31PM -0700, Tyrel Datwyler wrote:
-> On 10/14/21 10:03 PM, Gustavo A. R. Silva wrote:
-> > (!ptr && !ptr->foo) strikes again. :)
-> > 
-> > The expression (!ptr && !ptr->foo) is bogus and in case ptr is NULL,
-> > it leads to a NULL pointer dereference: ptr->foo.
-> > 
-> > Fix this by converting && to ||
-> > 
-> > This issue was detected with the help of Coccinelle, and audited and
-> > fixed manually.
-> > 
-> > Fixes: 1a0d0d5ed5e3 ("powerpc/vas: Add platform specific user window operations")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Looking at the usage pattern it is obvious that if we determine !ptr attempting
-> to also confirm !ptr->ops is going to blow up.
-> 
-> LGTM.
-> 
-> Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+On Mon, 18 Oct 2021 15:44:12 -0400
+Steven Rostedt <rostedt@goodmis.org> (by way of Steven Rostedt
+<rostedt@goodmis.org>) wrote:
 
-Thanks, Tyrel.
---
-Gustavo
+> [
+>    Linus,
+>      I have patches that clean this up that are not marked for stable, but
+>      will depend on this patch. As I already have commits in my next queue,
+>      I can do one of the following:
+> 
+>     1. Cherry pick this from my urgent tree, and build everything on top.
+>     2. Add this on top of the mainline tag my next branch is based on and
+>        merge it.
+>     3. Add this to my next branch, and have it go in at the next merge
+>        window.
 
-> 
-> > ---
-> >  arch/powerpc/platforms/book3s/vas-api.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
-> > index 30172e52e16b..4d82c92ddd52 100644
-> > --- a/arch/powerpc/platforms/book3s/vas-api.c
-> > +++ b/arch/powerpc/platforms/book3s/vas-api.c
-> > @@ -303,7 +303,7 @@ static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
-> >  		return -EINVAL;
-> >  	}
-> > 
-> > -	if (!cp_inst->coproc->vops && !cp_inst->coproc->vops->open_win) {
-> > +	if (!cp_inst->coproc->vops || !cp_inst->coproc->vops->open_win) {
-> >  		pr_err("VAS API is not registered\n");
-> >  		return -EACCES;
-> >  	}
-> > @@ -373,7 +373,7 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
-> >  		return -EINVAL;
-> >  	}
-> > 
-> > -	if (!cp_inst->coproc->vops && !cp_inst->coproc->vops->paste_addr) {
-> > +	if (!cp_inst->coproc->vops || !cp_inst->coproc->vops->paste_addr) {
-> >  		pr_err("%s(): VAS API is not registered\n", __func__);
-> >  		return -EACCES;
-> >  	}
-> > 
-> 
+Hmm, I take this back. Although the clean up affects the same code block,
+the updates don't actually conflict. (Although, if I do update the comment
+that Petr asked, that will conflict. But nothing you can't handle ;-)
+
+I'll start running this change through my tests and post it separately.
+
+-- Steve
+
+
+
+> ]
+
