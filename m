@@ -2,144 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79CA3432C0F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 05:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30405432CE4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 06:47:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HYJZD0DxTz3cPP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 14:07:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HYLnN4mCGz3cQY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 15:47:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=UmeFKIpB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LZbidHJ+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=windriver.com (client-ip=205.220.178.238;
- helo=mx0b-0064b401.pphosted.com;
- envelope-from=prvs=5926316744=meng.li@windriver.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=windriver.com header.i=@windriver.com
- header.a=rsa-sha256 header.s=PPS06212021 header.b=UmeFKIpB; 
- dkim-atps=neutral
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com
- [205.220.178.238])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=LZbidHJ+; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HYJYM6VVQz2yQ8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 14:06:30 +1100 (AEDT)
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
- by mx0a-0064b401.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19J2ZK1r025234; 
- Tue, 19 Oct 2021 03:06:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
- h=from : to : cc :
- subject : date : message-id : content-type : mime-version; s=PPS06212021;
- bh=fE0lxglUEH2rUj09qhmKPE0wUI444bua2uVZXrL+j+o=;
- b=UmeFKIpBPddPjfivmcLUky7Y1hKGVcfJFjjSECBYnXKM4ndBBjec4XxL83m8Rh3eF9ee
- cKmvG3POfn/6MOB4bn9aE1x6N5OxHIs7dAAxzNF8yqbP62UE3agVO8n6Gx+y6Vo32rZj
- B8QS/lUcfz+aLE6n+hHfZyGrHTnrET0B+IMsMn+2+rGBkn2XTJbquwBWHlNIRa/a0nDN
- sYBKBV/tsO4wuhnyesv4Qt/BF9qJ93NqrAKIjTTOtewRPKDQcGNkqC/c5TtDiULNgAeO
- S8wr1gmlb3229r60wKxzERYR+5Juz4wuUe+h23M6lZsF9y3GLOlAa9jVpZu48meuVKPJ AA== 
-Received: from nam12-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam12lp2042.outbound.protection.outlook.com [104.47.66.42])
- by mx0a-0064b401.pphosted.com with ESMTP id 3bs9apgk9v-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HYLmd0Wc3z2ynS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 15:46:24 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19J0lkBd030356; 
+ Tue, 19 Oct 2021 00:46:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=F3NvIPovc58gvUpLCRwP+4Md0M1oXII9/E8QXzN7mWs=;
+ b=LZbidHJ+StCsuocwR0KDtqy1lUQt/+ZKv8a1lnZmkccWPjtNmDbDzBwkEzlQt4eY7fnm
+ 1yidhqQZgAAnEgDR45o6FE2wLkSHVZQOWIB6btsqR3jXpZir/713WRgTWtWgX7MrGVnr
+ v4SHavS/arMwVvOZTLwSM8PpeasQCpbFknfQUiAX9xruwmd8LRoPUzbEaf0D/XAyVOPW
+ dhRGpOv5vB5WJbNHEc2vnxzW57KMjC0PapqrZloWQSoo7YRC7dfDVxGL74+kUocaoQiO
+ pSctcxCl+xmFZCiTUX2OX/LCjfC9oEB9Dsbp/mJIcOo0PWxlS2JutQnB4B6Tes416T+/ /A== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bsksruab7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Oct 2021 03:06:21 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ofKgJjgoavR45NPAc2+ph8NGPEVikX+xuAQYtbTNXRuX4YeD1VwFXH4eGiQpYHRHt8K+ebYOlstOnhXT2zJ4YlcW3lnWHbtGk3ITpwzkR8+Wi169zR505wPJfPyRFwiVz/w5a+NS6c+ytxqEUSNcU35jy4jj/Sqw4jKb7HgaOMQKLrRWir2hVCPr5xTNgjsW/7BQbnI3qGpB36U7t72Tz4blzvUW0nmFe05FJYQdWXPox9wlnQh4iYvqg96P5beyOXDeRPgYPQorGflk4cmpE2LdPfdyPDcekItnaSENvtkXfDSn033XKAVHCsHbDOhmo1bhb9mWMyKLwnGvjEqW/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fE0lxglUEH2rUj09qhmKPE0wUI444bua2uVZXrL+j+o=;
- b=lSe+UuL4QRRVuM6b3sFLBZMT7kYZTAYPK6AeNUCaL2FcwzEDkOJEkfsPd6smDaGqYLOBSJ+pI0f6LzKFqQutyWJL1ZtHRtpERYpH8XxmZb1iUHn4GEzEJJrz6QuXweUdIdS/gQpKrE8fu+/PPKeWG2nXxgj3/XgBmiK/t6+QInwDJn1x4pZrSIVVIGwbY6HCGO63u/RE2rtcmB7GNJv8eoku8uFTD+snkuR9dlOVloYh7vlkvtp8nDzAoiFvtRAwawe/AVt6Y3zwxUmPtciFeLPsZ1eEzmRSKhMBUyrmTbFSOSMkAw5XJGwqcluqP+OBn3yZrObejxnxyYYp+WrkRQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Authentication-Results: nxp.com; dkim=none (message not signed)
- header.d=none;nxp.com; dmarc=none action=none header.from=windriver.com;
-Received: from PH0PR11MB5191.namprd11.prod.outlook.com (2603:10b6:510:3e::24)
- by PH0PR11MB5927.namprd11.prod.outlook.com (2603:10b6:510:14e::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.16; Tue, 19 Oct
- 2021 03:06:18 +0000
-Received: from PH0PR11MB5191.namprd11.prod.outlook.com
- ([fe80::c11a:b99e:67ce:4a14]) by PH0PR11MB5191.namprd11.prod.outlook.com
- ([fe80::c11a:b99e:67ce:4a14%8]) with mapi id 15.20.4608.018; Tue, 19 Oct 2021
- 03:06:18 +0000
-From: Meng.Li@windriver.com
-To: Roy.Pledge@nxp.com, leoyang.li@nxp.com, youri.querry_1@nxp.com
-Subject: [PATCH] driver: soc: dpio: use the whole functions to protect
- critical zone
-Date: Tue, 19 Oct 2021 11:05:55 +0800
-Message-Id: <20211019030555.29461-1-Meng.Li@windriver.com>
-X-Mailer: git-send-email 2.17.1
-Content-Type: text/plain
-X-ClientProxiedBy: HK2PR0401CA0012.apcprd04.prod.outlook.com
- (2603:1096:202:2::22) To PH0PR11MB5191.namprd11.prod.outlook.com
- (2603:10b6:510:3e::24)
+ Tue, 19 Oct 2021 00:46:05 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19J4hrO1030769;
+ Tue, 19 Oct 2021 04:46:03 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma03ams.nl.ibm.com with ESMTP id 3bqpc9mxga-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Oct 2021 04:46:03 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 19J4k0v263766790
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 Oct 2021 04:46:01 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B3369A405B;
+ Tue, 19 Oct 2021 04:46:00 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD3F0A405C;
+ Tue, 19 Oct 2021 04:45:58 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Tue, 19 Oct 2021 04:45:58 +0000 (GMT)
+Date: Tue, 19 Oct 2021 10:15:57 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/smp: do not decrement idle task preempt count
+ in CPU offline
+Message-ID: <20211019044557.GK2004@linux.vnet.ibm.com>
+References: <20211015173902.2278118-1-nathanl@linux.ibm.com>
 MIME-Version: 1.0
-Received: from pek-mli1-d2.wrs.com (60.247.85.82) by
- HK2PR0401CA0012.apcprd04.prod.outlook.com (2603:1096:202:2::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.17 via Frontend
- Transport; Tue, 19 Oct 2021 03:06:16 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b8c57d1f-0c5c-47d9-2dec-08d992ad6b8f
-X-MS-TrafficTypeDiagnostic: PH0PR11MB5927:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <PH0PR11MB5927F0825FD1AB1693F9A742F1BD9@PH0PR11MB5927.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:989;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sEOraeYWAhbYB+XAitQCrMFnHV/mNImGRUDWc2jO+dMxsGwU+P1FIAJSKkQeswcX+t9NbhpItkRI7XN9nq+2GdDgQUaZyAidEiCtFsHN8xb8IP2vE3uAL5tpES2K8pemX5KFzldrNnkGHZaADRCTxDJeNPOJx2ZiESm0de76KqRCfABaaTvqZRhoOAeZOVUzA2V6Ygb+kUCSz4T4opEPrGsnjP9TJHdo/iuTCSg3DajZZlRKlDPGZ5gc1RcGbAWrwq8CYxs82JdNqvsQELpXznNPECOGU1p8Xkxd7SpwcLTqkrgIDUozba+i7E2eGOdsFPDdjubL9nrtFCAxBIXzbYz/mbEh+4Efb4/iQ/ZusYpekDHezWnxSYMgeHuiRWuODwg2Y6WC8Ttx9nADmFoDYUgDV1shgrDyDFyti2/2Ss1IdSqCnukLQMGOtfV2rDffbn1MIXH7Lg5UDPwbrcq+Y2gWB3A6/tjjSD9wzB34dIvN0NlawZGH761opyVrbWXWC6Ix592rgeLb3bvmkd0qndKd+C3QqoYARVvjL47aAZL002s4It06c9nUXYs/ol2C2wmCAztr/Fyg26ZN54QVcKFiDeYxJPoUej04lynZiASeLtl+k517aOQFFblrr8EKARjOwPsR1U2McvyHJi+jcPP1/vd2UgSYN3p9VxNFEz83t4IxU0mpgmMO3vL86Un/CuAfmA1EM9zGOU2g6fA2Ug==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR11MB5191.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(2906002)(86362001)(9686003)(8936002)(6506007)(38100700002)(8676002)(52116002)(2616005)(107886003)(38350700002)(1076003)(6666004)(6512007)(956004)(4326008)(508600001)(26005)(316002)(186003)(5660300002)(36756003)(66556008)(6486002)(66476007)(66946007)(83380400001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4DdH4d4qSYeYXitr2lhPMriqwmatpMoztSziDi0RcESMW+0FxlRRKhgLdUcf?=
- =?us-ascii?Q?3qD2S5idXDNiGU748SuS4cbtO7BCGee8wHqhAKFcKqlJLmQQavOksbPMkZWH?=
- =?us-ascii?Q?uvE8A4RtgR3ZcepYWnbi6dyy4JlY8lzu9xZqi8o5vnlLI1X+mHECUgRDQ3/i?=
- =?us-ascii?Q?lCvGPHyCiq5l2OSM9NKa8N6spV+96v2X2RMsVKMU/e6Iw7L+CyPJW+SfBKO/?=
- =?us-ascii?Q?n/IRkg7DBhkROP2eKQEkmF8MxfeWW3aEJN8xlLyEpgTD6+iiZnO0pOTgq1xG?=
- =?us-ascii?Q?UglPG0tF9TZtHJ2nkChLm/M1UbLYRXRIMnjD01BGAc9uB+v365B42A4DUr4g?=
- =?us-ascii?Q?QyPKG1/OJFDjQIf7o8ID7OhQnGXA2bCyoeSHmxexLhwWvKn5vvrh/nK8f/3+?=
- =?us-ascii?Q?0QUWAUjkMxzKV5Io81HYfJunSI73+vdk6c1JlVfAM1hyJsB4GhGvKFA9lc9z?=
- =?us-ascii?Q?QEAhNM11N1K8WSFOzE6Sc1oVFD5B8v2TpEo3d5Kbsm5aa2B6Q+qeSbr8IvgY?=
- =?us-ascii?Q?AEv22wggUGxjLa9N0zXrYrzqbP0Q2tZGRp7/ObuGh/e6TAgQ59JQvgoAaCza?=
- =?us-ascii?Q?mf0CN68/B8U9o36EUr96yt34Qua2T5tXlrStx4eecF3hOuuPhfyoEcM/EivZ?=
- =?us-ascii?Q?ovgvka8Vyd+LU+rNf7ODsAiqoX3gzu5qD28FYBzqgpIjL6zSIpRulhJbJ5SW?=
- =?us-ascii?Q?EAZrMXrSEIAwwdHes0bua+bUjYTJIIw/X6Y1h+aNyCNp2KBQAh38fPv1tXx5?=
- =?us-ascii?Q?4PFNQnihiOPszsGBp8gwET7ytFYeNrD3UEi3yuhVF5IehLPG5VcYd3Un2P8s?=
- =?us-ascii?Q?2GsvN26+ssJ0JaqKY73cq6WLpc+OzXaEbZ7xtmp+POi/CU9tT+mOAtzk5pf8?=
- =?us-ascii?Q?yWCbb6O7nJNvgTTvSVM1RhJENYC4mnBHRw6FJbEQh57WPiaJIjogPYJ+QRAN?=
- =?us-ascii?Q?SVtOjRdmcZINMfACOTH+YK2or00M9D5jbDTwO0B1Yt60m5MWZ0EVgEqR8miU?=
- =?us-ascii?Q?MG2brYqkfU2Cps9/LdQAodng1NvUKJHJqYYNRsnB6oR39pihRZfRObiCSPay?=
- =?us-ascii?Q?2+hYTupE+QPWt0W7/gtx1PoqvCg4BZR9tAFyRI3U/DUGOnOBwbsTotOuJzSl?=
- =?us-ascii?Q?qosL8trBEzjcqz0G7YVR2ZZ8ldIpQb+pCaF3LpyDQtRGio6OCtEoIBBAwNzz?=
- =?us-ascii?Q?BL6nh4i6KOsUwul0u28SKqa+VjOSXwqXvmXtJwLpIpLIrY53vKPmXihz7ezW?=
- =?us-ascii?Q?LoyYB76EY3tW9/zUDG97CYNp4xuqkf/1rspYspm32P85KD5QYV0ecrLBSQAA?=
- =?us-ascii?Q?eyjVKrkKQ1xqU5DX4Oud0BuJ?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b8c57d1f-0c5c-47d9-2dec-08d992ad6b8f
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5191.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2021 03:06:18.2672 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HrRQMHjeiuQU8wcDXQVDf85l45Onm6L7gyPeqTVkamA0cRooCrC95vD056dO2gQLjeVVhtgGmgRIq74TVoaeKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5927
-X-Proofpoint-GUID: atanGH9l_5FrpMRtRI_FRs-tf4CTVbUM
-X-Proofpoint-ORIG-GUID: atanGH9l_5FrpMRtRI_FRs-tf4CTVbUM
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20211015173902.2278118-1-nathanl@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: QyzmVIuTEKulrvgkkm_j2sQprhgxj-6Z
+X-Proofpoint-ORIG-GUID: QyzmVIuTEKulrvgkkm_j2sQprhgxj-6Z
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
  definitions=2021-10-18_07,2021-10-18_01,2020-04-07_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 malwarescore=0
- phishscore=0 spamscore=0 mlxscore=0 priorityscore=1501 clxscore=1011
- impostorscore=0 bulkscore=0 mlxlogscore=259 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110190016
+ clxscore=1011 impostorscore=0
+ spamscore=0 mlxscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0
+ priorityscore=1501 mlxlogscore=999 suspectscore=0 phishscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
+ definitions=main-2110190026
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -151,92 +99,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: meng.li@windriver.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: peterz@infradead.org, linux-kernel@vger.kernel.org, mingo@kernel.org,
+ clg@kaod.org, linuxppc-dev@lists.ozlabs.org, valentin.schneider@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Meng Li <Meng.Li@windriver.com>
+* Nathan Lynch <nathanl@linux.ibm.com> [2021-10-15 12:39:02]:
 
-In orininal code, use 2 function spin_lock() and local_irq_save() to
-protect the critical zone. But when enable the kernel debug config,
-there are below inconsistent lock state detected.
-================================
-WARNING: inconsistent lock state
-5.10.63-yocto-standard #1 Not tainted
---------------------------------
-inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-lock_torture_wr/226 [HC0[0]:SC1[5]:HE1:SE0] takes:
-ffff002005b2dd80 (&p->access_spinlock){+.?.}-{3:3}, at: qbman_swp_enqueue_multiple_mem_back+0x44/0x270
-{SOFTIRQ-ON-W} state was registered at:
-  lock_acquire.part.0+0xf8/0x250
-  lock_acquire+0x68/0x84
-  _raw_spin_lock+0x68/0x90
-  qbman_swp_enqueue_multiple_mem_back+0x44/0x270
-  ......
-  cryptomgr_test+0x38/0x60
-  kthread+0x158/0x164
-  ret_from_fork+0x10/0x38
-irq event stamp: 4498
-hardirqs last  enabled at (4498): [<ffff800010fcf980>] _raw_spin_unlock_irqrestore+0x90/0xb0
-hardirqs last disabled at (4497): [<ffff800010fcffc4>] _raw_spin_lock_irqsave+0xd4/0xe0
-softirqs last  enabled at (4458): [<ffff8000100108c4>] __do_softirq+0x674/0x724
-softirqs last disabled at (4465): [<ffff80001005b2a4>] __irq_exit_rcu+0x190/0x19c
+> With PREEMPT_COUNT=y, when a CPU is offlined and then onlined again, we
+> get:
+> 
+> BUG: scheduling while atomic: swapper/1/0/0x00000000
+> no locks held by swapper/1/0.
+> CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.15.0-rc2+ #100
+> Call Trace:
+>  dump_stack_lvl+0xac/0x108
+>  __schedule_bug+0xac/0xe0
+>  __schedule+0xcf8/0x10d0
+>  schedule_idle+0x3c/0x70
+>  do_idle+0x2d8/0x4a0
+>  cpu_startup_entry+0x38/0x40
+>  start_secondary+0x2ec/0x3a0
+>  start_secondary_prolog+0x10/0x14
+> 
+> This is because powerpc's arch_cpu_idle_dead() decrements the idle task's
+> preempt count, for reasons explained in commit a7c2bb8279d2 ("powerpc:
+> Re-enable preemption before cpu_die()"), specifically "start_secondary()
+> expects a preempt_count() of 0."
+> 
+> However, since commit 2c669ef6979c ("powerpc/preempt: Don't touch the idle
+> task's preempt_count during hotplug") and commit f1a0a376ca0c ("sched/core:
+> Initialize the idle task with preemption disabled"), that justification no
+> longer holds.
+> 
+> The idle task isn't supposed to re-enable preemption, so remove the
+> vestigial preempt_enable() from the CPU offline path.
+> 
+> Tested with pseries and powernv in qemu, and pseries on PowerVM.
+> 
+> Fixes: 2c669ef6979c ("powerpc/preempt: Don't touch the idle task's preempt_count during hotplug")
+> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+> Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
-       CPU0
-       ----
-  lock(&p->access_spinlock);
-  <Interrupt>
-    lock(&p->access_spinlock);
- *** DEADLOCK ***
+Looks good to me.
 
-So, in order to avoid deadlock, use the whole functinos
-spin_lock_irqsave/spin_unlock_irqrestore() to protect critical zone.
+Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-Fixes: 3b2abda7d28c ("soc: fsl: dpio: Replace QMAN array mode with ring mode enqueue")
-Cc: stable@vger.kernel.org
-Signed-off-by: Meng Li <Meng.Li@windriver.com>
----
- drivers/soc/fsl/dpio/qbman-portal.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+> ---
+> 
+> Notes:
+>     Changes since v1:
+>     
+>     - remove incorrect Fixes: tag, add Valentin's r-b.
+> 
+>  arch/powerpc/kernel/smp.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> index 9cc7d3dbf439..605bab448f84 100644
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -1730,8 +1730,6 @@ void __cpu_die(unsigned int cpu)
+> 
+>  void arch_cpu_idle_dead(void)
+>  {
+> -	sched_preempt_enable_no_resched();
+> -
+>  	/*
+>  	 * Disable on the down path. This will be re-enabled by
+>  	 * start_secondary() via start_secondary_resume() below
+> -- 
+> 2.31.1
+> 
 
-diff --git a/drivers/soc/fsl/dpio/qbman-portal.c b/drivers/soc/fsl/dpio/qbman-portal.c
-index 845e91416b58..a56dbe4de34f 100644
---- a/drivers/soc/fsl/dpio/qbman-portal.c
-+++ b/drivers/soc/fsl/dpio/qbman-portal.c
-@@ -785,8 +785,7 @@ int qbman_swp_enqueue_multiple_mem_back(struct qbman_swp *s,
- 	int i, num_enqueued = 0;
- 	unsigned long irq_flags;
- 
--	spin_lock(&s->access_spinlock);
--	local_irq_save(irq_flags);
-+	spin_lock_irqsave(&s->access_spinlock, irq_flags);
- 
- 	half_mask = (s->eqcr.pi_ci_mask>>1);
- 	full_mask = s->eqcr.pi_ci_mask;
-@@ -797,8 +796,7 @@ int qbman_swp_enqueue_multiple_mem_back(struct qbman_swp *s,
- 		s->eqcr.available = qm_cyc_diff(s->eqcr.pi_ring_size,
- 					eqcr_ci, s->eqcr.ci);
- 		if (!s->eqcr.available) {
--			local_irq_restore(irq_flags);
--			spin_unlock(&s->access_spinlock);
-+			spin_unlock_irqrestore(&s->access_spinlock, irq_flags);
- 			return 0;
- 		}
- 	}
-@@ -837,8 +835,7 @@ int qbman_swp_enqueue_multiple_mem_back(struct qbman_swp *s,
- 	dma_wmb();
- 	qbman_write_register(s, QBMAN_CINH_SWP_EQCR_PI,
- 				(QB_RT_BIT)|(s->eqcr.pi)|s->eqcr.pi_vb);
--	local_irq_restore(irq_flags);
--	spin_unlock(&s->access_spinlock);
-+	spin_unlock_irqrestore(&s->access_spinlock, irq_flags);
- 
- 	return num_enqueued;
- }
 -- 
-2.17.1
-
+Thanks and Regards
+Srikar Dronamraju
