@@ -1,58 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D11E4330FA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 10:23:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739CD4331CA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 11:06:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HYRZY4LFVz3cRY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 19:23:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HYSX70S3pz3cRk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 20:05:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=l4FKT1JS;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=l4FKT1JS; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HYRZ71qXkz2yMV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 19:22:37 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HYRZ1331Gz9sTD;
- Tue, 19 Oct 2021 10:22:33 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id vyGHeFQ50GL3; Tue, 19 Oct 2021 10:22:33 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HYRZ11rn3z9sTB;
- Tue, 19 Oct 2021 10:22:33 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2508E8B778;
- Tue, 19 Oct 2021 10:22:33 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 8GyFeGGdsjcw; Tue, 19 Oct 2021 10:22:33 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.83])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B8E678B763;
- Tue, 19 Oct 2021 10:22:32 +0200 (CEST)
-Subject: Re: [PATCH v1 09/11] powerpc/64s: Make hash MMU code build
- configurable
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20211015154624.922960-1-npiggin@gmail.com>
- <20211015154624.922960-10-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <eb342e34-8a97-a7f1-ee56-c8874b1bcd85@csgroup.eu>
-Date: Tue, 19 Oct 2021 10:05:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HYSWJ2G61z2yZt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 20:05:15 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19J8EYgZ013370; 
+ Tue, 19 Oct 2021 05:05:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=SCIEWVKZuamm49VdqwyTvfZAYh8WUwopsMuglIc9zhc=;
+ b=l4FKT1JS/bB/yQ9jfT0ta0Lfjp2V0rLacx+5P6wM7I7nfqHfhlwL6pmQB+I9K0iz6yKQ
+ lkQUaMdeNTTz+SuumNhoEF9Kh6iKPx0SX3r15A4MR7GrGhRIpMqo5bJBf+D3DFJxuOv8
+ kRT/bT4QZrd0zihA6ocHjPeecJhiV8h2jIvj/E2ZgEnIAeMR6zSG3tOy6Uyhvo8TnxhN
+ u44IOiXpti9AJWKRr9joZwk2BjsMD595nNHHWxdmsDKhSklMk2ASvSnkpD5fHH/GZJCO
+ rn3jKTPrlHDR0GWy6MjailA8/DRJF7N2fYl59Q4JkEkmiTBkvBDL93gfZruyiSA66ogI hA== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3bsqrdv75b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Oct 2021 05:05:07 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19J93o1w013073;
+ Tue, 19 Oct 2021 09:05:05 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03ams.nl.ibm.com with ESMTP id 3bqpc9qtu3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Oct 2021 09:05:05 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 19J9525923920898
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 Oct 2021 09:05:02 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2C0BA4C058;
+ Tue, 19 Oct 2021 09:05:02 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EB35A4C040;
+ Tue, 19 Oct 2021 09:05:01 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.184.6])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 19 Oct 2021 09:05:01 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/pseries/mobility: ignore ibm, platform-facilities
+ updates
+To: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20211018163424.2491472-1-nathanl@linux.ibm.com>
+ <6de8b295-112f-651e-a18e-3ab3e499ad69@linux.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <6f72adc9-d28c-beeb-e21f-4a468d2bf0e3@linux.ibm.com>
+Date: Tue, 19 Oct 2021 11:05:01 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <20211015154624.922960-10-npiggin@gmail.com>
+In-Reply-To: <6de8b295-112f-651e-a18e-3ab3e499ad69@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: i8qGlSLNpumP0w1BwQcDAWU3ebSc5qMm
+X-Proofpoint-GUID: i8qGlSLNpumP0w1BwQcDAWU3ebSc5qMm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-18_07,2021-10-18_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 suspectscore=0
+ bulkscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
+ adultscore=0 mlxlogscore=999 clxscore=1011 spamscore=0 malwarescore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110190055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,237 +105,228 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: cheloha@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 15/10/2021 à 17:46, Nicholas Piggin a écrit :
-> Introduce a new option CONFIG_PPC_64S_HASH_MMU which allows the 64s hash
-> MMU code to be compiled out if radix is selected and the minimum
-> supported CPU type is POWER9 or higher, and KVM is not selected.
+Le 19/10/2021 à 00:37, Tyrel Datwyler a écrit :
+> On 10/18/21 9:34 AM, Nathan Lynch wrote:
+>> On VMs with NX encryption, compression, and/or RNG offload, these
+>> capabilities are described by nodes in the ibm,platform-facilities device
+>> tree hierarchy:
+>>
+>>    $ tree -d /sys/firmware/devicetree/base/ibm,platform-facilities/
+>>    /sys/firmware/devicetree/base/ibm,platform-facilities/
+>>    ├── ibm,compression-v1
+>>    ├── ibm,random-v1
+>>    └── ibm,sym-encryption-v1
+>>
+>>    3 directories
+>>
+>> The acceleration functions that these nodes describe are not disrupted by
+>> live migration, not even temporarily.
+>>
+>> But the post-migration ibm,update-nodes sequence firmware always sends
+>> "delete" messages for this hierarchy, followed by an "add" directive to
+>> reconstruct it via ibm,configure-connector (log with debugging statements
+>> enabled in mobility.c):
+>>
+>>    mobility: removing node /ibm,platform-facilities/ibm,random-v1:4294967285
+>>    mobility: removing node /ibm,platform-facilities/ibm,compression-v1:4294967284
+>>    mobility: removing node /ibm,platform-facilities/ibm,sym-encryption-v1:4294967283
+>>    mobility: removing node /ibm,platform-facilities:4294967286
+>>    ...
+>>    mobility: added node /ibm,platform-facilities:4294967286
 > 
-> This saves 128kB kernel image size (90kB text) on powernv_defconfig
-> minus KVM, 350kB on pseries_defconfig minus KVM, 40kB on a tiny config.
+> It always bothered me that the update from firmware here was an delete/add at
+> the entire '/ibm,platform-facilities' node level instead of update properties
+> calls. When I asked about it years ago the claim was it was just easier to pass
+> an entire sub-tree as a single node add.
+> 
+>>
+>> Note we receive a single "add" message for the entire hierarchy, and what
+>> we receive from the ibm,configure-connector sequence is the top-level
+>> platform-facilities node along with its three children. The debug message
+>> simply reports the parent node and not the whole subtree.
+>>
+>> Also, significantly, the nodes added are almost completely equivalent to
+>> the ones removed; even phandles are unchanged. ibm,shared-interrupt-pool in
+>> the leaf nodes is the only property I've observed to differ, and Linux does
+>> not use that. So in practice, the sum of update messages Linux receives for
+>> this hierarchy is equivalent to minor property updates.
+> 
+> The two props I would think maybe we would need to be most be concerned about
+> ensuring don't change are "ibm,resource-id" which gets used in the vio bus code
+> when configuring platform facilities nodes, and 'ibm,max-sync-cop' used by the
+> pseries-nx driver.
+> 
+>>
+>> We succeed in removing the original hierarchy from the device tree. But the
+>> drivers bound to the leaf nodes are ignorant of this, and do not relinquish
+>> their references. The leaf nodes, still reachable through sysfs, of course
+>> still refer to the now-freed ibm,platform-facilities parent node, which
+>> makes use-after-free possible:
+> 
+> It is actually more subtle then the drivers themselves being ignorant. They
+> could register node update notifiers, but the real problem here is that the vio
+> bus device itself takes a reference to each child node registered to the bus.
+> I'm not sure we really want to unbind/rebind drivers as a result of LPM, but it
+> would be generic to the vio bus instead of updating each driver to ensure its
+> handling it device node references properly.
+> 
+>>
+>>    refcount_t: addition on 0; use-after-free.
+>>    WARNING: CPU: 3 PID: 1706 at lib/refcount.c:25 refcount_warn_saturate+0x164/0x1f0
+>>    refcount_warn_saturate+0x160/0x1f0 (unreliable)
+>>    kobject_get+0xf0/0x100
+>>    of_node_get+0x30/0x50
+>>    of_get_parent+0x50/0xb0
+>>    of_fwnode_get_parent+0x54/0x90
+>>    fwnode_count_parents+0x50/0x150
+>>    fwnode_full_name_string+0x30/0x110
+>>    device_node_string+0x49c/0x790
+>>    vsnprintf+0x1c0/0x4c0
+>>    sprintf+0x44/0x60
+>>    devspec_show+0x34/0x50
+>>    dev_attr_show+0x40/0xa0
+>>    sysfs_kf_seq_show+0xbc/0x200
+>>    kernfs_seq_show+0x44/0x60
+>>    seq_read_iter+0x2a4/0x740
+>>    kernfs_fop_read_iter+0x254/0x2e0
+>>    new_sync_read+0x120/0x190
+>>    vfs_read+0x1d0/0x240
+>>
+>> Moreover, the "new" replacement subtree is not correctly added to the
+>> device tree, resulting in ibm,platform-facilities parent node without the
+>> appropriate leaf nodes, and broken symlinks in the sysfs device hierarchy:
+>>
+>>    $ tree -d /sys/firmware/devicetree/base/ibm,platform-facilities/
+>>    /sys/firmware/devicetree/base/ibm,platform-facilities/
+>>
+>>    0 directories
+>>
+>>    $ cd /sys/devices/vio ; find . -xtype l -exec file {} +
+>>    ./ibm,sym-encryption-v1/of_node: broken symbolic link to
+>>      ../../../firmware/devicetree/base/ibm,platform-facilities/ibm,sym-encryption-v1
+>>    ./ibm,random-v1/of_node:         broken symbolic link to
+>>      ../../../firmware/devicetree/base/ibm,platform-facilities/ibm,random-v1
+>>    ./ibm,compression-v1/of_node:    broken symbolic link to
+>>      ../../../firmware/devicetree/base/ibm,platform-facilities/ibm,compression-v1
+>>
+>> This is because add_dt_node() -> dlpar_attach_node() attaches only the
+>> parent node returned from configure-connector, ignoring any children. This
+>> should be corrected for the general case, but fixing that won't help with
+>> the stale OF node references, which is the more urgent problem.
+> 
+> I don't follow. If the code path you mention is truly broken in the way you say
+> then DLPAR operations involving nodes with child nodes should also be broken.
+> Last I had seen was that sysfs adds of the new nodes got renamed because the old
+> nodes still existed as a result of there reference count not going to zero. Has
+> this behavior changed, or am I misremembering the observed behavior?
+> 
+>>
+>> One way to address that would be to make the drivers respond to node
+>> removal notifications, so that node references can be dropped
+>> appropriately. But this would likely force the drivers to disrupt active
+>> clients for no useful purpose: equivalent nodes are immediately re-added.
+>> And recall that the acceleration capabilities described by the nodes remain
+>> available throughout the whole process.
+> 
+> See my comments above about its the vio bus more at fault here then the drivers
+> themselves. I'm inclined to agree though that disrupting active operations with
+> a driver unbind/rebind is a little extreme.
+> 
+> This also brings me back to firmware removing and re-adding the whole
+> '/ibm,platform-facilities' node instead of simply updating changed properties
+> could avoid this whole fiasco.
+> 
+>>
+>> The solution I believe to be robust for this situation is to convert
+>> remove+add of a node with an unchanged phandle to an update of the node's
+>> properties in the Linux device tree structure. That would involve changing
+>> and adding a fair amount of code, and may take several iterations to land.
+>>
+>> Until that can be realized we have a confirmed use-after-free and the
+>> possibility of memory corruption. So add a limited workaround that
+>> discriminates on the node type, ignoring adds and removes. This should be
+>> amenable to backporting in the meantime.
+> 
+> The reality is that '/ibm,platform-facilities' and 'cache' nodes are the only
+> LPM scoped device tree nodes that allow node delete/add. So, as a one-off
+> workaround to deal with what I consider a bad firmware approach I think this is
+> probably the best approach barring getting firmware to move to an update
+> properties approach.
 
-This patch is huge, it could be split in several smaller patches ?
-
-I'm sure at least the Kconfig stuff can be do as a second step. In first 
-step just make CONFIG_PPC_64S_HASH_MMU always y.
-
-I'm wondering if we could also reduce the amount of #ifdefs in C files, 
-by using IS_ENABLED() and/or stubs defined in H files.
+I do agree, this is probably the best option until the firmware is moving to an 
+update notification.
 
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   arch/powerpc/Kconfig                          |  1 +
->   arch/powerpc/include/asm/book3s/64/mmu.h      | 22 ++++++++++++++++++-
->   .../include/asm/book3s/64/tlbflush-hash.h     |  7 ++++++
->   arch/powerpc/include/asm/book3s/pgtable.h     |  4 ++++
->   arch/powerpc/include/asm/mmu.h                | 14 +++++++++---
->   arch/powerpc/include/asm/mmu_context.h        |  2 ++
->   arch/powerpc/include/asm/paca.h               |  8 +++++++
->   arch/powerpc/kernel/asm-offsets.c             |  2 ++
->   arch/powerpc/kernel/dt_cpu_ftrs.c             |  8 ++++++-
->   arch/powerpc/kernel/entry_64.S                |  4 ++--
->   arch/powerpc/kernel/exceptions-64s.S          | 16 ++++++++++++++
->   arch/powerpc/kernel/mce.c                     |  2 +-
->   arch/powerpc/kernel/mce_power.c               | 10 ++++++---
->   arch/powerpc/kernel/paca.c                    | 18 ++++++---------
->   arch/powerpc/kernel/process.c                 | 13 ++++++-----
->   arch/powerpc/kernel/prom.c                    |  2 ++
->   arch/powerpc/kernel/setup_64.c                |  4 ++++
->   arch/powerpc/kexec/core_64.c                  |  4 ++--
->   arch/powerpc/kexec/ranges.c                   |  4 ++++
->   arch/powerpc/kvm/Kconfig                      |  1 +
->   arch/powerpc/mm/book3s64/Makefile             | 17 ++++++++------
->   arch/powerpc/mm/book3s64/hash_utils.c         | 10 ---------
->   .../{hash_hugetlbpage.c => hugetlbpage.c}     |  6 +++++
->   arch/powerpc/mm/book3s64/mmu_context.c        | 16 ++++++++++++++
->   arch/powerpc/mm/book3s64/pgtable.c            | 12 ++++++++++
->   arch/powerpc/mm/book3s64/radix_pgtable.c      |  4 ++++
->   arch/powerpc/mm/copro_fault.c                 |  2 ++
->   arch/powerpc/mm/pgtable.c                     | 10 ++++++---
->   arch/powerpc/platforms/Kconfig.cputype        | 21 +++++++++++++++++-
->   arch/powerpc/platforms/cell/Kconfig           |  1 +
->   arch/powerpc/platforms/maple/Kconfig          |  1 +
->   arch/powerpc/platforms/microwatt/Kconfig      |  2 +-
->   arch/powerpc/platforms/pasemi/Kconfig         |  1 +
->   arch/powerpc/platforms/powermac/Kconfig       |  1 +
->   arch/powerpc/platforms/powernv/Kconfig        |  2 +-
->   arch/powerpc/platforms/powernv/idle.c         |  2 ++
->   arch/powerpc/platforms/powernv/setup.c        |  2 ++
->   arch/powerpc/platforms/pseries/lpar.c         | 11 ++++++++--
->   arch/powerpc/platforms/pseries/lparcfg.c      |  2 +-
->   arch/powerpc/platforms/pseries/mobility.c     |  6 +++++
->   arch/powerpc/platforms/pseries/ras.c          |  2 ++
->   arch/powerpc/platforms/pseries/reconfig.c     |  2 ++
->   arch/powerpc/platforms/pseries/setup.c        |  6 +++--
->   arch/powerpc/xmon/xmon.c                      |  8 +++++--
->   44 files changed, 233 insertions(+), 60 deletions(-)
->   rename arch/powerpc/mm/book3s64/{hash_hugetlbpage.c => hugetlbpage.c} (95%)
+> An audit of the drivers is probably still a valid exercise to ensure any device
+> tree props they care about they pick up a new value should it change.
 > 
-
-> diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
-> index 8abe8e42e045..0f89fcab834d 100644
-> --- a/arch/powerpc/include/asm/mmu.h
-> +++ b/arch/powerpc/include/asm/mmu.h
-> @@ -157,7 +157,7 @@ DECLARE_PER_CPU(int, next_tlbcam_idx);
->   
->   enum {
->   	MMU_FTRS_POSSIBLE =
-> -#if defined(CONFIG_PPC_BOOK3S_64) || defined(CONFIG_PPC_BOOK3S_604)
-> +#if defined(CONFIG_PPC_BOOK3S_604)
->   		MMU_FTR_HPTE_TABLE |
->   #endif
->   #ifdef CONFIG_PPC_8xx
-> @@ -184,15 +184,18 @@ enum {
->   		MMU_FTR_USE_TLBRSRV | MMU_FTR_USE_PAIRED_MAS |
->   #endif
->   #ifdef CONFIG_PPC_BOOK3S_64
-> +		MMU_FTR_KERNEL_RO |
-> +#ifdef CONFIG_PPC_64S_HASH_MMU
->   		MMU_FTR_NO_SLBIE_B | MMU_FTR_16M_PAGE | MMU_FTR_TLBIEL |
->   		MMU_FTR_LOCKLESS_TLBIE | MMU_FTR_CI_LARGE_PAGE |
->   		MMU_FTR_1T_SEGMENT | MMU_FTR_TLBIE_CROP_VA |
-> -		MMU_FTR_KERNEL_RO | MMU_FTR_68_BIT_VA |
-> +		MMU_FTR_68_BIT_VA | MMU_FTR_HPTE_TABLE |
->   #endif
->   #ifdef CONFIG_PPC_RADIX_MMU
->   		MMU_FTR_TYPE_RADIX |
->   		MMU_FTR_GTSE |
->   #endif /* CONFIG_PPC_RADIX_MMU */
-> +#endif
->   #ifdef CONFIG_PPC_KUAP
->   	MMU_FTR_BOOK3S_KUAP |
->   #endif /* CONFIG_PPC_KUAP */
-> @@ -223,6 +226,11 @@ enum {
->   #ifdef CONFIG_E500
->   #define MMU_FTRS_ALWAYS		MMU_FTR_TYPE_FSL_E
->   #endif
-> +#ifdef CONFIG_PPC_BOOK3S_64
-> +#if defined(CONFIG_PPC_RADIX_MMU) && !defined(CONFIG_PPC_64S_HASH_MMU)
-> +#define MMU_FTRS_ALWAYS		MMU_FTR_TYPE_RADIX
-> +#endif
-> +#endif
-
-Should you also set MMU_FTR_HPTE_TABLE in MMU_FTRS_ALWAYS when HAS_MMU 
-&& !RADIX ?
-
->   
->   #ifndef MMU_FTRS_ALWAYS
->   #define MMU_FTRS_ALWAYS		0
-> @@ -329,7 +337,7 @@ static __always_inline bool radix_enabled(void)
->   	return mmu_has_feature(MMU_FTR_TYPE_RADIX);
->   }
->   
-> -static inline bool early_radix_enabled(void)
-> +static __always_inline bool early_radix_enabled(void)
->   {
->   	return early_mmu_has_feature(MMU_FTR_TYPE_RADIX);
->   }
-
-> diff --git a/arch/powerpc/mm/book3s64/mmu_context.c b/arch/powerpc/mm/book3s64/mmu_context.c
-> index c10fc8a72fb3..642cabc25e99 100644
-> --- a/arch/powerpc/mm/book3s64/mmu_context.c
-> +++ b/arch/powerpc/mm/book3s64/mmu_context.c
-> @@ -31,6 +31,7 @@ static int alloc_context_id(int min_id, int max_id)
->   	return ida_alloc_range(&mmu_context_ida, min_id, max_id, GFP_KERNEL);
->   }
->   
-> +#ifdef CONFIG_PPC_64S_HASH_MMU
->   void hash__reserve_context_id(int id)
->   {
->   	int result = ida_alloc_range(&mmu_context_ida, id, id, GFP_KERNEL);
-> @@ -50,7 +51,9 @@ int hash__alloc_context_id(void)
->   	return alloc_context_id(MIN_USER_CONTEXT, max);
->   }
->   EXPORT_SYMBOL_GPL(hash__alloc_context_id);
-> +#endif
->   
-> +#ifdef CONFIG_PPC_64S_HASH_MMU
->   static int realloc_context_ids(mm_context_t *ctx)
->   {
->   	int i, id;
-> @@ -144,12 +147,15 @@ static int hash__init_new_context(struct mm_struct *mm)
->   	return index;
->   }
->   
-> +void slb_setup_new_exec(void);
-> +
->   void hash__setup_new_exec(void)
->   {
->   	slice_setup_new_exec();
->   
->   	slb_setup_new_exec();
->   }
-> +#endif
->   
->   static int radix__init_new_context(struct mm_struct *mm)
->   {
-> @@ -175,7 +181,9 @@ static int radix__init_new_context(struct mm_struct *mm)
->   	 */
->   	asm volatile("ptesync;isync" : : : "memory");
->   
-> +#ifdef CONFIG_PPC_64S_HASH_MMU
->   	mm->context.hash_context = NULL;
-> +#endif
->   
->   	return index;
->   }
-> @@ -186,8 +194,10 @@ int init_new_context(struct task_struct *tsk, struct mm_struct *mm)
->   
->   	if (radix_enabled())
->   		index = radix__init_new_context(mm);
-> +#ifdef CONFIG_PPC_64S_HASH_MMU
->   	else
->   		index = hash__init_new_context(mm);
-> +#endif
-
-I really dislike #ifdef nested in if/else.
-
-Can you do something like
-
-	if (radix_enabled()
-		index = radix__init_new_context(mm);
-	else if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
-		index = hash__init_new_context(mm);
-
-
->   
->   	if (index < 0)
->   		return index;
-> @@ -211,6 +221,7 @@ void __destroy_context(int context_id)
->   }
->   EXPORT_SYMBOL_GPL(__destroy_context);
->   
-> +#ifdef CONFIG_PPC_64S_HASH_MMU
->   static void destroy_contexts(mm_context_t *ctx)
->   {
->   	int index, context_id;
-> @@ -222,6 +233,7 @@ static void destroy_contexts(mm_context_t *ctx)
->   	}
->   	kfree(ctx->hash_context);
->   }
-> +#endif
->   
->   static void pmd_frag_destroy(void *pmd_frag)
->   {
-> @@ -274,7 +286,11 @@ void destroy_context(struct mm_struct *mm)
->   		process_tb[mm->context.id].prtb0 = 0;
->   	else
->   		subpage_prot_free(mm);
-> +#ifdef CONFIG_PPC_64S_HASH_MMU
->   	destroy_contexts(&mm->context);
-> +#else
-> +	ida_free(&mmu_context_ida, mm->context.id);
-
-Is that correct ? Was it done somewhere else before ?
-
-> +#endif
->   	mm->context.id = MMU_NO_CONTEXT;
->   }
->   
+> -Tyrel
+> 
+>>
+>> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+>> Fixes: 410bccf97881 ("powerpc/pseries: Partition migration in the kernel")
+>> Cc: stable@vger.kernel.org
+>> ---
+>>   arch/powerpc/platforms/pseries/mobility.c | 34 +++++++++++++++++++++++
+>>   1 file changed, 34 insertions(+)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
+>> index e83e0891272d..210a37a065fb 100644
+>> --- a/arch/powerpc/platforms/pseries/mobility.c
+>> +++ b/arch/powerpc/platforms/pseries/mobility.c
+>> @@ -63,6 +63,27 @@ static int mobility_rtas_call(int token, char *buf, s32 scope)
+>>   
+>>   static int delete_dt_node(struct device_node *dn)
+>>   {
+>> +	struct device_node *pdn;
+>> +	bool is_platfac;
+>> +
+>> +	pdn = of_get_parent(dn);
+>> +	is_platfac = of_node_is_type(dn, "ibm,platform-facilities") ||
+>> +		     of_node_is_type(pdn, "ibm,platform-facilities");
+>> +	of_node_put(pdn);
+>> +
+>> +	/*
+>> +	 * The drivers that bind to nodes in the platform-facilities
+>> +	 * hierarchy don't support node removal, and the removal directive
+>> +	 * from firmware is always followed by an add of an equivalent
+>> +	 * node. The capability (e.g. RNG, encryption, compression)
+>> +	 * represented by the node is never interrupted by the migration.
+>> +	 * So ignore changes to this part of the tree.
+>> +	 */
+>> +	if (is_platfac) {
+>> +		pr_notice("ignoring remove operation for %pOFfp\n", dn);
+>> +		return 0;
+>> +	}
+>> +
+>>   	pr_debug("removing node %pOFfp\n", dn);
+>>   	dlpar_detach_node(dn);
+>>   	return 0;
+>> @@ -222,6 +243,19 @@ static int add_dt_node(struct device_node *parent_dn, __be32 drc_index)
+>>   	if (!dn)
+>>   		return -ENOENT;
+>>   
+>> +	/*
+>> +	 * Since delete_dt_node() ignores this node type, this is the
+>> +	 * necessary counterpart. We also know that a platform-facilities
+>> +	 * node returned from dlpar_configure_connector() has children
+>> +	 * attached, and dlpar_attach_node() only adds the parent, leaking
+>> +	 * the children. So ignore these on the add side for now.
+>> +	 */
+>> +	if (of_node_is_type(dn, "ibm,platform-facilities")) {
+>> +		pr_notice("ignoring add operation for %pOF\n", dn);
+>> +		dlpar_free_cc_nodes(dn);
+>> +		return 0;
+>> +	}
+>> +
+>>   	rc = dlpar_attach_node(dn, parent_dn);
+>>   	if (rc)
+>>   		dlpar_free_cc_nodes(dn);
+>>
+> 
 
