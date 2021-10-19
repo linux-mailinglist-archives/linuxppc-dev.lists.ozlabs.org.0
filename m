@@ -1,99 +1,123 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739CD4331CA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 11:06:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 821344331E0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 11:10:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HYSX70S3pz3cRk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 20:05:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HYSdd72Psz2xtN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 20:10:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=l4FKT1JS;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=cHOCmyDn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=l4FKT1JS; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.13.82; helo=eur01-he1-obe.outbound.protection.outlook.com;
+ envelope-from=ioana.ciornei@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=cHOCmyDn; 
+ dkim-atps=neutral
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr130082.outbound.protection.outlook.com [40.107.13.82])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HYSWJ2G61z2yZt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 20:05:15 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19J8EYgZ013370; 
- Tue, 19 Oct 2021 05:05:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=SCIEWVKZuamm49VdqwyTvfZAYh8WUwopsMuglIc9zhc=;
- b=l4FKT1JS/bB/yQ9jfT0ta0Lfjp2V0rLacx+5P6wM7I7nfqHfhlwL6pmQB+I9K0iz6yKQ
- lkQUaMdeNTTz+SuumNhoEF9Kh6iKPx0SX3r15A4MR7GrGhRIpMqo5bJBf+D3DFJxuOv8
- kRT/bT4QZrd0zihA6ocHjPeecJhiV8h2jIvj/E2ZgEnIAeMR6zSG3tOy6Uyhvo8TnxhN
- u44IOiXpti9AJWKRr9joZwk2BjsMD595nNHHWxdmsDKhSklMk2ASvSnkpD5fHH/GZJCO
- rn3jKTPrlHDR0GWy6MjailA8/DRJF7N2fYl59Q4JkEkmiTBkvBDL93gfZruyiSA66ogI hA== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3bsqrdv75b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Oct 2021 05:05:07 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19J93o1w013073;
- Tue, 19 Oct 2021 09:05:05 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma03ams.nl.ibm.com with ESMTP id 3bqpc9qtu3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Oct 2021 09:05:05 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 19J9525923920898
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Oct 2021 09:05:02 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2C0BA4C058;
- Tue, 19 Oct 2021 09:05:02 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EB35A4C040;
- Tue, 19 Oct 2021 09:05:01 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.184.6])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 19 Oct 2021 09:05:01 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/pseries/mobility: ignore ibm, platform-facilities
- updates
-To: Tyrel Datwyler <tyreld@linux.ibm.com>,
- Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20211018163424.2491472-1-nathanl@linux.ibm.com>
- <6de8b295-112f-651e-a18e-3ab3e499ad69@linux.ibm.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-Message-ID: <6f72adc9-d28c-beeb-e21f-4a468d2bf0e3@linux.ibm.com>
-Date: Tue, 19 Oct 2021 11:05:01 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
-MIME-Version: 1.0
-In-Reply-To: <6de8b295-112f-651e-a18e-3ab3e499ad69@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HYScC6fYGz2xYK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 20:09:30 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JpO2t4ezZANCWYCrscvCv57rmbYZ2ngY4xWOQQxoI32NDa/ai3RueL5GhLsCNeT1VlALf4QPsJ1fyMY/MS44Me7KYCPqi4BfqQavdpvABcN5GchFNYzTW7uN212TFW4nS519PYDCqmuJPWehvp0jK040pavLDU9BKyZuISaTd67/MWNjF9mAHmfPdEsrRrUuEdo23nkswGaEvQHa+ZagwjXoKq8IniPuiMgTx6USavLFVM35acLFPxoqrLT2tweNUfV/rv3gWiItMXuAw+OvzEPMeR7lBicbDLiLeGi89GNtIG+G328wE/DmJXEXk6kdJjhaFpOVdjVkfU8OdQOrQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jhxbw6Pt3z+5vWZPxHSP5RhDz+PF10LIbYwsyvR4YKI=;
+ b=ABdN2zKBOSsSlhpfccKwS9s8snQNUgqkSOBQ46ahj+pUT+vEBnvWMvb1WkhbYuIqN1eTI+3aTR6YsY81kZwFrKrPQrTVdXFqI+WpQDmq4xvjlxEjTNz2HfaYgTHELXZlo6eymoW6dkuL18DZqAmHkForsCN1h4uL+XWonetL/f3M4w6G2Yqbf2QyOU7Vc0S8FTKtfLGJKk63QRn2t4FM+9edzNkS7by/D6juX1NNMaAu3fyiNvC4CX1TZgLeFNSjf+xiENfaVRLJkNSxDnbkbXaH4GJxFlIe80z7iNGVJy+XWW5WpiYJNnSh4IxLff9ji+q8XICnne04/LXBUQZstQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jhxbw6Pt3z+5vWZPxHSP5RhDz+PF10LIbYwsyvR4YKI=;
+ b=cHOCmyDn73eaAYs2LSHqFgUyeYraOK3U44BCGPk+Jt2HWMCL4uYM3W3Qp8cvkjhnDBgdmzEAPpj8F4hVSxA/e9D7dwMq97dKtIyErT1jdWumciKUnLMZmfg2Fle+lOkOqNyN/I1A6KO5fnjfKV5kbpgzqVMNjPTy/wp34A/GDN0=
+Authentication-Results: canonical.com; dkim=none (message not signed)
+ header.d=none;canonical.com; dmarc=none action=none header.from=nxp.com;
+Received: from AM4PR0401MB2308.eurprd04.prod.outlook.com
+ (2603:10a6:200:4f::13) by AM8PR04MB7266.eurprd04.prod.outlook.com
+ (2603:10a6:20b:1d6::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.16; Tue, 19 Oct
+ 2021 09:09:12 +0000
+Received: from AM4PR0401MB2308.eurprd04.prod.outlook.com
+ ([fe80::6476:5ddb:7bf2:e726]) by AM4PR0401MB2308.eurprd04.prod.outlook.com
+ ([fe80::6476:5ddb:7bf2:e726%8]) with mapi id 15.20.4608.018; Tue, 19 Oct 2021
+ 09:09:12 +0000
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
+To: tim.gardner@canonical.com
+Subject: Re: [PATCH][linux-next] soc: fsl: dpio: Unsigned compared against 0 in
+Date: Tue, 19 Oct 2021 12:08:55 +0300
+Message-Id: <20211019090855.246625-1-ioana.ciornei@nxp.com>
+X-Mailer: git-send-email 2.33.1
+In-Reply-To: <20211018160541.13512-1-tim.gardner@canonical.com>
+References: <20211018160541.13512-1-tim.gardner@canonical.com>
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: i8qGlSLNpumP0w1BwQcDAWU3ebSc5qMm
-X-Proofpoint-GUID: i8qGlSLNpumP0w1BwQcDAWU3ebSc5qMm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-18_07,2021-10-18_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0
- bulkscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
- adultscore=0 mlxlogscore=999 clxscore=1011 spamscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110190055
+Content-Type: text/plain
+X-ClientProxiedBy: AM4PR0902CA0023.eurprd09.prod.outlook.com
+ (2603:10a6:200:9b::33) To AM4PR0401MB2308.eurprd04.prod.outlook.com
+ (2603:10a6:200:4f::13)
+MIME-Version: 1.0
+Received: from yoga-910.localhost (188.25.174.251) by
+ AM4PR0902CA0023.eurprd09.prod.outlook.com (2603:10a6:200:9b::33) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.16 via Frontend
+ Transport; Tue, 19 Oct 2021 09:09:11 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 1341da8a-4728-4144-3ca0-08d992e01db5
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7266:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM8PR04MB7266D6D8B7196FF352E61178E0BD9@AM8PR04MB7266.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: GcY4nMPqJleA99mnqQ9GAKCaZn8aFWkfYC33KgNNcrS/8owE98otv4H5YAZarNQTGICz0mxts/0e1ZxSJJkLoiGLjEYvgtcxBRQfyCwN2Ipm15Pk29PQd7TJMeN96I+QlPPS9qeiYYL8qbxYb/al6UQ/sYJ02wwqUU0NqqVL1Jf0Bz0yW7tabJC0KQ9dnvUQtqochYNPrpd1Lb/XtrGe3XUw2Z4OqQ8a+zoyKRS0veu5UNgkXO9D31O45TlhwbhEgYzGRqeHZNk9fJOMrujYzu48Wf4aexw8wEaUoDt/g9MUjWaWgh373QRE3jDORgfy3KW6PaxDGsUmtoBmzkMJUOTjTtxFwtkkFIdRoQ7M6SQBUkXEzLWuhfZ7wHzZGihSQScQChC/HemPi/i5wvarVUuVl4j8ZPz8C1nXMN/e3RB6KtyshsXfQUhMKdK5MOQtiuqhoEufJZBQtxBtITnz2Ob9F3EyJLzzCBo9LYo+z87jUFNGJrkRhcu9SHdPmo5BFfcFTTEdL2H5ujA9ugv7TvZQHAr2VFB+uNjmph2Tcb/gFmd+zFQP82hDI6Cj0jYXcRXt5ovcQPWpnxVfGhz8/lyGRbMl2+9fXHD3LcyZn+sSOREQkMfH7Qm59x20WUc+J43DasHo+bB8MbY3lTph+zNGiaxELmbguSuI6JWHwz64bxDWfu/KARsYAjiVKw6YnN3IpMYfBz4QfeZcccY5gw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM4PR0401MB2308.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(366004)(1076003)(44832011)(6666004)(38100700002)(508600001)(8676002)(2616005)(66946007)(83380400001)(52116002)(956004)(38350700002)(26005)(4326008)(36756003)(6486002)(6506007)(316002)(66556008)(8936002)(5660300002)(66476007)(6916009)(186003)(6512007)(86362001)(2906002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?JCg3tNHaRltfhgtiI3Aq9u8xbzJjunQX3bb9a8jzRsGprbmVOJBJx8C9A+vp?=
+ =?us-ascii?Q?5twjeClsW9j4Cdeu4F0FugTeEioHewDdIcERpOOkf6Ja/4vZyeYauO89YYBY?=
+ =?us-ascii?Q?FgD7Xj/a4OmhvtcCY23eCrml1I/kz5UzdAjUvMkWeEpFVqdn38CWLYaSALGL?=
+ =?us-ascii?Q?1jVlopbShUvkQHHE9Jn6t7457BlViRxsgcggX3g+invXpUb4wAjI0TXmkqS9?=
+ =?us-ascii?Q?fcyUMaEMzgDpOMmtVqpiwpnG8ghNDg+4WfW5AOgUiAVIUmpNSQduvZi2U2AV?=
+ =?us-ascii?Q?xFHqrSxa3wh6P86UWeuSBlCQYOLUi4iu7u+owElgPDgk2qq4Z8iSp7B8i4q/?=
+ =?us-ascii?Q?CP2Lk0AeAlLjYvh4vtgbnM6rgN+a1XBRtBmSQ5lLP8rk4DpXWHT7n4738ABs?=
+ =?us-ascii?Q?sB2Vg3Gx9fY7IfnrhdIDByjtplAKw0v0oj3NmspGeq77z3zCLSH330/ll6VP?=
+ =?us-ascii?Q?pACfT7xEpPW56noWbrljxtodCSv6g0p6zpXCq9n+iWMNfvSwj+cvHq6oLWU+?=
+ =?us-ascii?Q?Fy6xVyi/5yfwxUhzDb1R4k4EZQbqrC4F3/CJYCy1//ha1cEtpQ2eOSAPB942?=
+ =?us-ascii?Q?SZrwWYEzzGbe9Ex5lxVmnm/e4oCIZEW4Lz6KVr61e6iX593hg5XCZ2JPxE/S?=
+ =?us-ascii?Q?ii5VhiKMpvaZd9mVRmP7cg9smi6/zdJmVADfziuwyNaOWEeNw3fdD1T6Yqvj?=
+ =?us-ascii?Q?14gn1SMHz7pDNx9h7osQd/59eTsZ1tDXuDzoHyvODlHIJ+XgPr9FKB+ubh3j?=
+ =?us-ascii?Q?odfOAuIbuPSrfzvKl1Zio+atgcpJvgH/qVk05J9q/DxTcuI6M7YpxPo38Cz1?=
+ =?us-ascii?Q?WOgKkq2yRsO7qTUXdr747PTmEnrmwrp8RYLvj5dw7gDLJsryAe4iidHh4BbR?=
+ =?us-ascii?Q?X44Mfp2SMaY7AZrBNQcoB9UGNLjbcr33TAzVTts6qK8bGHkUCTWrMj7tNYR0?=
+ =?us-ascii?Q?78DJyihlYt2axwgJGhgo5Yn4BQRqtfBl8r+wQXWAJe/3VKq46flCL4dKSVQb?=
+ =?us-ascii?Q?OZGPuGGj0T4WGy0hzbPO9mSOirOdU2B55E9Akeh1GK2kSubTuk4W0kmpVGzA?=
+ =?us-ascii?Q?aENS6Yy+o/Xzq22LcG2WyBhkK20kVPEfLkXsP/niWfQcaBFTuW9hmrCciMws?=
+ =?us-ascii?Q?b1SOf4nAYvrKXx2YUfv9wZ4DqfDKUmNdl0QT38IEe+nh3gm7ri7al+r/m92X?=
+ =?us-ascii?Q?Qk5J6aAtljnnyBq3STZnux6vFBTi79GvhqNSR/B/HGaQShM7CI9ShFhj1W6o?=
+ =?us-ascii?Q?aJqlOoHvlUlav9o5W+C3riHYdpqvzOk/5NIxElQFWFEeJ1c1/2tqWvJ74bFe?=
+ =?us-ascii?Q?f3QHKCeQPJgkLdOaQydbfDsp?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1341da8a-4728-4144-3ca0-08d992e01db5
+X-MS-Exchange-CrossTenant-AuthSource: AM4PR0401MB2308.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2021 09:09:12.1580 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TZ0YMOGvKSgVxduENi6mgbij0kAHrx4m/7lF6Dqs61RMW9cD2Y+3gnbE7/1945zsAKW4Tbu3aH7URSGzacv9ZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7266
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,228 +129,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cheloha@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, leoyang.li@nxp.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 19/10/2021 à 00:37, Tyrel Datwyler a écrit :
-> On 10/18/21 9:34 AM, Nathan Lynch wrote:
->> On VMs with NX encryption, compression, and/or RNG offload, these
->> capabilities are described by nodes in the ibm,platform-facilities device
->> tree hierarchy:
->>
->>    $ tree -d /sys/firmware/devicetree/base/ibm,platform-facilities/
->>    /sys/firmware/devicetree/base/ibm,platform-facilities/
->>    ├── ibm,compression-v1
->>    ├── ibm,random-v1
->>    └── ibm,sym-encryption-v1
->>
->>    3 directories
->>
->> The acceleration functions that these nodes describe are not disrupted by
->> live migration, not even temporarily.
->>
->> But the post-migration ibm,update-nodes sequence firmware always sends
->> "delete" messages for this hierarchy, followed by an "add" directive to
->> reconstruct it via ibm,configure-connector (log with debugging statements
->> enabled in mobility.c):
->>
->>    mobility: removing node /ibm,platform-facilities/ibm,random-v1:4294967285
->>    mobility: removing node /ibm,platform-facilities/ibm,compression-v1:4294967284
->>    mobility: removing node /ibm,platform-facilities/ibm,sym-encryption-v1:4294967283
->>    mobility: removing node /ibm,platform-facilities:4294967286
->>    ...
->>    mobility: added node /ibm,platform-facilities:4294967286
 > 
-> It always bothered me that the update from firmware here was an delete/add at
-> the entire '/ibm,platform-facilities' node level instead of update properties
-> calls. When I asked about it years ago the claim was it was just easier to pass
-> an entire sub-tree as a single node add.
+> Subject: [PATCH][linux-next] soc: fsl: dpio: Unsigned compared against 0 in
 > 
->>
->> Note we receive a single "add" message for the entire hierarchy, and what
->> we receive from the ibm,configure-connector sequence is the top-level
->> platform-facilities node along with its three children. The debug message
->> simply reports the parent node and not the whole subtree.
->>
->> Also, significantly, the nodes added are almost completely equivalent to
->> the ones removed; even phandles are unchanged. ibm,shared-interrupt-pool in
->> the leaf nodes is the only property I've observed to differ, and Linux does
->> not use that. So in practice, the sum of update messages Linux receives for
->> this hierarchy is equivalent to minor property updates.
+> Coverity complains of unsigned compare against 0. There are 2 cases in
+> this function:
 > 
-> The two props I would think maybe we would need to be most be concerned about
-> ensuring don't change are "ibm,resource-id" which gets used in the vio bus code
-> when configuring platform facilities nodes, and 'ibm,max-sync-cop' used by the
-> pseries-nx driver.
+> 1821        itp = (irq_holdoff * 1000) / p->desc->qman_256_cycles_per_ns;
 > 
->>
->> We succeed in removing the original hierarchy from the device tree. But the
->> drivers bound to the leaf nodes are ignorant of this, and do not relinquish
->> their references. The leaf nodes, still reachable through sysfs, of course
->> still refer to the now-freed ibm,platform-facilities parent node, which
->> makes use-after-free possible:
+> CID 121131 (#1 of 1): Unsigned compared against 0 (NO_EFFECT)
+> unsigned_compare: This less-than-zero comparison of an unsigned value is never true. itp < 0U.
+> 1822        if (itp < 0 || itp > 4096) {
+> 1823                max_holdoff = (p->desc->qman_256_cycles_per_ns * 4096) / 1000;
+> 1824                pr_err("irq_holdoff must be between 0..%dus\n", max_holdoff);
+> 1825                return -EINVAL;
+> 1826        }
+> 1827
+>     	unsigned_compare: This less-than-zero comparison of an unsigned value is never true. irq_threshold < 0U.
+> 1828        if (irq_threshold >= p->dqrr.dqrr_size || irq_threshold < 0) {
+> 1829                pr_err("irq_threshold must be between 0..%d\n",
+> 1830                       p->dqrr.dqrr_size - 1);
+> 1831                return -EINVAL;
+> 1832        }
 > 
-> It is actually more subtle then the drivers themselves being ignorant. They
-> could register node update notifiers, but the real problem here is that the vio
-> bus device itself takes a reference to each child node registered to the bus.
-> I'm not sure we really want to unbind/rebind drivers as a result of LPM, but it
-> would be generic to the vio bus instead of updating each driver to ensure its
-> handling it device node references properly.
+> Fix this by checking for 0. Also fix a minor comment typo.
 > 
->>
->>    refcount_t: addition on 0; use-after-free.
->>    WARNING: CPU: 3 PID: 1706 at lib/refcount.c:25 refcount_warn_saturate+0x164/0x1f0
->>    refcount_warn_saturate+0x160/0x1f0 (unreliable)
->>    kobject_get+0xf0/0x100
->>    of_node_get+0x30/0x50
->>    of_get_parent+0x50/0xb0
->>    of_fwnode_get_parent+0x54/0x90
->>    fwnode_count_parents+0x50/0x150
->>    fwnode_full_name_string+0x30/0x110
->>    device_node_string+0x49c/0x790
->>    vsnprintf+0x1c0/0x4c0
->>    sprintf+0x44/0x60
->>    devspec_show+0x34/0x50
->>    dev_attr_show+0x40/0xa0
->>    sysfs_kf_seq_show+0xbc/0x200
->>    kernfs_seq_show+0x44/0x60
->>    seq_read_iter+0x2a4/0x740
->>    kernfs_fop_read_iter+0x254/0x2e0
->>    new_sync_read+0x120/0x190
->>    vfs_read+0x1d0/0x240
->>
->> Moreover, the "new" replacement subtree is not correctly added to the
->> device tree, resulting in ibm,platform-facilities parent node without the
->> appropriate leaf nodes, and broken symlinks in the sysfs device hierarchy:
->>
->>    $ tree -d /sys/firmware/devicetree/base/ibm,platform-facilities/
->>    /sys/firmware/devicetree/base/ibm,platform-facilities/
->>
->>    0 directories
->>
->>    $ cd /sys/devices/vio ; find . -xtype l -exec file {} +
->>    ./ibm,sym-encryption-v1/of_node: broken symbolic link to
->>      ../../../firmware/devicetree/base/ibm,platform-facilities/ibm,sym-encryption-v1
->>    ./ibm,random-v1/of_node:         broken symbolic link to
->>      ../../../firmware/devicetree/base/ibm,platform-facilities/ibm,random-v1
->>    ./ibm,compression-v1/of_node:    broken symbolic link to
->>      ../../../firmware/devicetree/base/ibm,platform-facilities/ibm,compression-v1
->>
->> This is because add_dt_node() -> dlpar_attach_node() attaches only the
->> parent node returned from configure-connector, ignoring any children. This
->> should be corrected for the general case, but fixing that won't help with
->> the stale OF node references, which is the more urgent problem.
-> 
-> I don't follow. If the code path you mention is truly broken in the way you say
-> then DLPAR operations involving nodes with child nodes should also be broken.
-> Last I had seen was that sysfs adds of the new nodes got renamed because the old
-> nodes still existed as a result of there reference count not going to zero. Has
-> this behavior changed, or am I misremembering the observed behavior?
-> 
->>
->> One way to address that would be to make the drivers respond to node
->> removal notifications, so that node references can be dropped
->> appropriately. But this would likely force the drivers to disrupt active
->> clients for no useful purpose: equivalent nodes are immediately re-added.
->> And recall that the acceleration capabilities described by the nodes remain
->> available throughout the whole process.
-> 
-> See my comments above about its the vio bus more at fault here then the drivers
-> themselves. I'm inclined to agree though that disrupting active operations with
-> a driver unbind/rebind is a little extreme.
-> 
-> This also brings me back to firmware removing and re-adding the whole
-> '/ibm,platform-facilities' node instead of simply updating changed properties
-> could avoid this whole fiasco.
-> 
->>
->> The solution I believe to be robust for this situation is to convert
->> remove+add of a node with an unchanged phandle to an update of the node's
->> properties in the Linux device tree structure. That would involve changing
->> and adding a fair amount of code, and may take several iterations to land.
->>
->> Until that can be realized we have a confirmed use-after-free and the
->> possibility of memory corruption. So add a limited workaround that
->> discriminates on the node type, ignoring adds and removes. This should be
->> amenable to backporting in the meantime.
-> 
-> The reality is that '/ibm,platform-facilities' and 'cache' nodes are the only
-> LPM scoped device tree nodes that allow node delete/add. So, as a one-off
-> workaround to deal with what I consider a bad firmware approach I think this is
-> probably the best approach barring getting firmware to move to an update
-> properties approach.
+> Fixes ed1d2143fee53755ec601eb4d48a337a93933f71 ("soc: fsl: dpio: add support for
+> irq coalescing per software portal")
 
-I do agree, this is probably the best option until the firmware is moving to an 
-update notification.
+I think this should be formatted as following:
+
+Fixes: ed1d2143fee5 ("soc: fsl: dpio: add support for irq coalescing per software portal")
 
 > 
-> An audit of the drivers is probably still a valid exercise to ensure any device
-> tree props they care about they pick up a new value should it change.
+> Cc: Roy Pledge <Roy.Pledge@nxp.com>
+> Cc: Li Yang <leoyang.li@nxp.com>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Signed-off-by: Tim Gardner <tim.gardner@canonical.com>
+> ---
 > 
-> -Tyrel
+> I'm not 100% sure this is the right way to fix the warning, but according to the
+> pr_err() comments these values should never be 0.
+
+These threshold values can be 0, the pr_err comment tries to say that those are
+the ranges, 0 and the maximum included.
+
 > 
->>
->> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
->> Fixes: 410bccf97881 ("powerpc/pseries: Partition migration in the kernel")
->> Cc: stable@vger.kernel.org
->> ---
->>   arch/powerpc/platforms/pseries/mobility.c | 34 +++++++++++++++++++++++
->>   1 file changed, 34 insertions(+)
->>
->> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
->> index e83e0891272d..210a37a065fb 100644
->> --- a/arch/powerpc/platforms/pseries/mobility.c
->> +++ b/arch/powerpc/platforms/pseries/mobility.c
->> @@ -63,6 +63,27 @@ static int mobility_rtas_call(int token, char *buf, s32 scope)
->>   
->>   static int delete_dt_node(struct device_node *dn)
->>   {
->> +	struct device_node *pdn;
->> +	bool is_platfac;
->> +
->> +	pdn = of_get_parent(dn);
->> +	is_platfac = of_node_is_type(dn, "ibm,platform-facilities") ||
->> +		     of_node_is_type(pdn, "ibm,platform-facilities");
->> +	of_node_put(pdn);
->> +
->> +	/*
->> +	 * The drivers that bind to nodes in the platform-facilities
->> +	 * hierarchy don't support node removal, and the removal directive
->> +	 * from firmware is always followed by an add of an equivalent
->> +	 * node. The capability (e.g. RNG, encryption, compression)
->> +	 * represented by the node is never interrupted by the migration.
->> +	 * So ignore changes to this part of the tree.
->> +	 */
->> +	if (is_platfac) {
->> +		pr_notice("ignoring remove operation for %pOFfp\n", dn);
->> +		return 0;
->> +	}
->> +
->>   	pr_debug("removing node %pOFfp\n", dn);
->>   	dlpar_detach_node(dn);
->>   	return 0;
->> @@ -222,6 +243,19 @@ static int add_dt_node(struct device_node *parent_dn, __be32 drc_index)
->>   	if (!dn)
->>   		return -ENOENT;
->>   
->> +	/*
->> +	 * Since delete_dt_node() ignores this node type, this is the
->> +	 * necessary counterpart. We also know that a platform-facilities
->> +	 * node returned from dlpar_configure_connector() has children
->> +	 * attached, and dlpar_attach_node() only adds the parent, leaking
->> +	 * the children. So ignore these on the add side for now.
->> +	 */
->> +	if (of_node_is_type(dn, "ibm,platform-facilities")) {
->> +		pr_notice("ignoring add operation for %pOF\n", dn);
->> +		dlpar_free_cc_nodes(dn);
->> +		return 0;
->> +	}
->> +
->>   	rc = dlpar_attach_node(dn, parent_dn);
->>   	if (rc)
->>   		dlpar_free_cc_nodes(dn);
->>
+> ---
+>  drivers/soc/fsl/dpio/qbman-portal.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
+> diff --git a/drivers/soc/fsl/dpio/qbman-portal.c b/drivers/soc/fsl/dpio/qbman-portal.c
+> index d3c58df6240d..b768a14bb271 100644
+> --- a/drivers/soc/fsl/dpio/qbman-portal.c
+> +++ b/drivers/soc/fsl/dpio/qbman-portal.c
+> @@ -1816,16 +1816,16 @@ int qbman_swp_set_irq_coalescing(struct qbman_swp *p, u32 irq_threshold,
+>  	u32 itp, max_holdoff;
+>  
+>  	/* Convert irq_holdoff value from usecs to 256 QBMAN clock cycles
+> -	 * increments. This depends to the QBMAN internal frequency.
+> +	 * increments. This depends on the QBMAN internal frequency.
+>  	 */
+>  	itp = (irq_holdoff * 1000) / p->desc->qman_256_cycles_per_ns;
+> -	if (itp < 0 || itp > 4096) {
+> +	if (!itp || itp > 4096) {
+>  		max_holdoff = (p->desc->qman_256_cycles_per_ns * 4096) / 1000;
+>  		pr_err("irq_holdoff must be between 0..%dus\n", max_holdoff);
+>  		return -EINVAL;
+>  	}
+>  
+> -	if (irq_threshold >= p->dqrr.dqrr_size || irq_threshold < 0) {
+> +	if (irq_threshold >= p->dqrr.dqrr_size || !irq_threshold) {
+>  		pr_err("irq_threshold must be between 0..%d\n",
+>  		       p->dqrr.dqrr_size - 1);
+>  		return -EINVAL;
+> 
+
+These 'value < 0' checks should be removed all together. Somehow I missed that
+those are unsigned values.
+
+Anyhow, thanks a lot that you spotted this.
+
+Could you please sent the v2 towards the net-next tree since that's the tree
+that adds the fixed patch?
+
+Thanks.
+
+-Ioana
 
