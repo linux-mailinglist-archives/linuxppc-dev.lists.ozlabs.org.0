@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491FB432FB8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 09:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 226DC432FA9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 09:36:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HYQZG5nyRz3fj6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 18:37:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HYQXF405bz3fQv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 18:35:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,51 +16,51 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HYQQx31c1z3dcL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 18:31:21 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HYQQZ6z9zz3dZ7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 18:31:02 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HYQPY2HVDz9sT5;
- Tue, 19 Oct 2021 09:30:09 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4HYQPT1bhwz9sSy;
+ Tue, 19 Oct 2021 09:30:05 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Fv-MPlPslamJ; Tue, 19 Oct 2021 09:30:09 +0200 (CEST)
+ with ESMTP id VpZCWy4vA14R; Tue, 19 Oct 2021 09:30:05 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HYQP80BFFz9sT6;
- Tue, 19 Oct 2021 09:29:48 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HYQP76jrzz9sT5;
+ Tue, 19 Oct 2021 09:29:47 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E55878B775;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D89788B77A;
  Tue, 19 Oct 2021 09:29:47 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id kVuUxg9R5CBz; Tue, 19 Oct 2021 09:29:47 +0200 (CEST)
+ with ESMTP id geo6tS1kxhkX; Tue, 19 Oct 2021 09:29:47 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.71])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 49C6E8B779;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 49C4D8B775;
  Tue, 19 Oct 2021 09:29:47 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19J7Te4U3188470
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19J7TexR3188474
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 19 Oct 2021 09:29:40 +0200
+ Tue, 19 Oct 2021 09:29:41 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19J7TeS93188469;
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19J7TenP3188473;
  Tue, 19 Oct 2021 09:29:40 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v3 18/22] powerpc/kuap: Wire-up KUAP on 44x
-Date: Tue, 19 Oct 2021 09:29:29 +0200
-Message-Id: <7d6c3f1978a26feada74b084f651e8cf1e3b3a47.1634627931.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 19/22] powerpc/kuap: Wire-up KUAP on 40x
+Date: Tue, 19 Oct 2021 09:29:30 +0200
+Message-Id: <aaefa91897ddc42ac11019dc0e1d1a525bd08e90.1634627931.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1634627931.git.christophe.leroy@csgroup.eu>
 References: <cover.1634627931.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1634628571; l=2044; s=20211009;
- h=from:subject:message-id; bh=qnWgsTBhp2/xbFG2w1Xw3W4LrJUJu4X5eUtc2j1aZqA=;
- b=ZSnO6WtCIUURl8ZRfSOeDtNBputZGtGCW2IibNcHOLAWZTEXzy8wzxjCGt3xkEi4Y+o/fKjn1+ig
- u6VFWJDZB+w0DtZ7YETJ5N04EOWc/1nkeweuYwj3KaYXrPalTY4B
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1634628571; l=2653; s=20211009;
+ h=from:subject:message-id; bh=lokrLs3DZDqJaYcqtprZW1ISKkGum5yW6sw3BWrgy7s=;
+ b=+QZqSDpvSNmtGimfYAfH/kpLL/FdrUbaLObbbdD+Px9juRcFRY7ppsYvnKwWn1rzi7wGOetm305n
+ 9AmtxPYqAro3vaOLyuQLK1AYNTLRY3vW0s3Ic8emKPEoJ6G3rF8w
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -80,75 +80,87 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds KUAP support to 44x. This is done by checking
-the content of SPRN_PID at the time it is read and written
-into SPRN_MMUCR.
+This adds KUAP support to 40x. This is done by checking
+the content of SPRN_PID at the time user pgtable is loaded.
+
+40x doesn't have KUEP, but KUAP implies KUEP because when the
+PID doesn't match the page's PID, the page cannot be read nor
+executed.
+
+So KUEP is now automatically selected when KUAP is selected and
+disabled when KUAP is disabled.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/head_44x.S         | 16 ++++++++++++++++
- arch/powerpc/platforms/Kconfig.cputype |  1 +
- 2 files changed, 17 insertions(+)
+ arch/powerpc/kernel/head_40x.S         | 8 ++++++++
+ arch/powerpc/mm/nohash/kup.c           | 2 ++
+ arch/powerpc/platforms/Kconfig.cputype | 7 +++++--
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_44x.S b/arch/powerpc/kernel/head_44x.S
-index 916f7e91c6de..b73a56466903 100644
---- a/arch/powerpc/kernel/head_44x.S
-+++ b/arch/powerpc/kernel/head_44x.S
-@@ -334,6 +334,10 @@ interrupt_base:
- 	mfspr	r12,SPRN_MMUCR
- 	mfspr   r13,SPRN_PID		/* Get PID */
- 	rlwimi	r12,r13,0,24,31		/* Set TID */
-+#ifdef CONFIG_PPC_KUAP
-+	cmpwi	r13,0
-+	beq	2f			/* KUAP Fault */
-+#endif
- 
- 4:
- 	mtspr	SPRN_MMUCR,r12
-@@ -444,6 +448,10 @@ interrupt_base:
- 	mfspr	r12,SPRN_MMUCR
- 	mfspr   r13,SPRN_PID		/* Get PID */
- 	rlwimi	r12,r13,0,24,31		/* Set TID */
-+#ifdef CONFIG_PPC_KUAP
-+	cmpwi	r13,0
-+	beq	2f			/* KUAP Fault */
-+#endif
- 
- 4:
- 	mtspr	SPRN_MMUCR,r12
-@@ -572,6 +580,10 @@ finish_tlb_load_44x:
- 3:	mfspr	r11,SPRN_SPRG3
+diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
+index 7d72ee5ab387..87d322dbed94 100644
+--- a/arch/powerpc/kernel/head_40x.S
++++ b/arch/powerpc/kernel/head_40x.S
+@@ -297,6 +297,10 @@ _ASM_NOKPROBE_SYMBOL(\name\()_virt)
+ 3:
+ 	mfspr	r11,SPRN_SPRG_THREAD
  	lwz	r11,PGDIR(r11)
- 	mfspr   r12,SPRN_PID		/* Get PID */
 +#ifdef CONFIG_PPC_KUAP
-+	cmpwi	r12,0
-+	beq	2f			/* KUAP Fault */
++	rlwinm.	r9, r9, 0, 0xff
++	beq	5f			/* Kuap fault */
 +#endif
- 4:	mtspr	SPRN_MMUCR,r12		/* Set MMUCR */
- 
- 	/* Mask of required permission bits. Note that while we
-@@ -669,6 +681,10 @@ finish_tlb_load_44x:
- 3:	mfspr	r11,SPRN_SPRG_THREAD
+ 4:
+ 	tophys(r11, r11)
+ 	rlwimi	r11, r10, 12, 20, 29	/* Create L1 (pgdir/pmd) address */
+@@ -377,6 +381,10 @@ _ASM_NOKPROBE_SYMBOL(\name\()_virt)
+ 3:
+ 	mfspr	r11,SPRN_SPRG_THREAD
  	lwz	r11,PGDIR(r11)
- 	mfspr   r12,SPRN_PID		/* Get PID */
 +#ifdef CONFIG_PPC_KUAP
-+	cmpwi	r12,0
-+	beq	2f			/* KUAP Fault */
++	rlwinm.	r9, r9, 0, 0xff
++	beq	5f			/* Kuap fault */
 +#endif
- 4:	mtspr	SPRN_MMUCR,r12		/* Set MMUCR */
- 
- 	/* Make up the required permissions */
+ 4:
+ 	tophys(r11, r11)
+ 	rlwimi	r11, r10, 12, 20, 29	/* Create L1 (pgdir/pmd) address */
+diff --git a/arch/powerpc/mm/nohash/kup.c b/arch/powerpc/mm/nohash/kup.c
+index eaea52231dd6..552becf90e97 100644
+--- a/arch/powerpc/mm/nohash/kup.c
++++ b/arch/powerpc/mm/nohash/kup.c
+@@ -19,6 +19,8 @@ EXPORT_SYMBOL(disable_kuap_key);
+ void setup_kuap(bool disabled)
+ {
+ 	if (disabled) {
++		if (IS_ENABLED(CONFIG_40x))
++			disable_kuep = true;
+ 		if (smp_processor_id() == boot_cpuid)
+ 			static_branch_enable(&disable_kuap_key);
+ 		return;
 diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index fad34f28bd3a..e989eeca4c7e 100644
+index e989eeca4c7e..3ea415bcf9b8 100644
 --- a/arch/powerpc/platforms/Kconfig.cputype
 +++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -64,6 +64,7 @@ config 44x
- 	select PHYS_64BIT
- 	select PPC_HAVE_KUEP
- 	select PPC_KUEP
+@@ -54,6 +54,9 @@ config 40x
+ 	select PPC_UDBG_16550
+ 	select 4xx_SOC
+ 	select HAVE_PCI
 +	select PPC_HAVE_KUAP
++	select PPC_HAVE_KUEP
++	select PPC_KUEP if PPC_KUAP
  
- endchoice
+ config 44x
+ 	bool "AMCC 44x, 46x or 47x"
+@@ -401,9 +404,9 @@ config PPC_HAVE_KUEP
+ 	bool
+ 
+ config PPC_KUEP
+-	bool "Kernel Userspace Execution Prevention"
++	bool "Kernel Userspace Execution Prevention" if !40x
+ 	depends on PPC_HAVE_KUEP
+-	default y
++	default y if !40x
+ 	help
+ 	  Enable support for Kernel Userspace Execution Prevention (KUEP)
  
 -- 
 2.31.1
