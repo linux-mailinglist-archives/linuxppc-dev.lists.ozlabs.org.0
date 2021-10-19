@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FC0432FB2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 09:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE50432FC1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 09:39:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HYQYp1lfMz3fdq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 18:37:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HYQbq3MC6z3fwQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 18:39:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,51 +16,51 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HYQQr6s1Rz3ddm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 18:31:16 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HYQRB1y03z3dk8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 18:31:33 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HYQPX0vjBz9sT3;
- Tue, 19 Oct 2021 09:30:08 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4HYQPc4Tsbz9sT8;
+ Tue, 19 Oct 2021 09:30:12 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id ClQwzmzuWV85; Tue, 19 Oct 2021 09:30:08 +0200 (CEST)
+ with ESMTP id zuHGbhO-EJRS; Tue, 19 Oct 2021 09:30:12 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HYQP76Rljz9sT2;
- Tue, 19 Oct 2021 09:29:47 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HYQP80RWgz9sT9;
+ Tue, 19 Oct 2021 09:29:48 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D2A3A8B776;
- Tue, 19 Oct 2021 09:29:47 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 043E18B763;
+ Tue, 19 Oct 2021 09:29:48 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id x20PHmnVlYkK; Tue, 19 Oct 2021 09:29:47 +0200 (CEST)
+ with ESMTP id TkfKt71o4sAY; Tue, 19 Oct 2021 09:29:47 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.71])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3DEB98B77E;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4B5DF8B783;
  Tue, 19 Oct 2021 09:29:47 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19J7TeHc3188450
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19J7Tef73188454
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Tue, 19 Oct 2021 09:29:40 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19J7TerE3188449;
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19J7Te6b3188453;
  Tue, 19 Oct 2021 09:29:40 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v3 13/22] powerpc/nohash: Move setup_kuap out of 8xx.c
-Date: Tue, 19 Oct 2021 09:29:24 +0200
-Message-Id: <ae35eec3426509efc2b8ae69586c822e2fe2642a.1634627931.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 14/22] powerpc/config: Add CONFIG_BOOKE_OR_40x
+Date: Tue, 19 Oct 2021 09:29:25 +0200
+Message-Id: <9a3dbd60924cb25c9f944d3d8205ac5a0d15e229.1634627931.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1634627931.git.christophe.leroy@csgroup.eu>
 References: <cover.1634627931.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1634628571; l=3000; s=20211009;
- h=from:subject:message-id; bh=Hji1miVNHdvEZizCh9uJhgbSdfX32ZLNLNDU7Hks+u8=;
- b=RtQ34sRxrwiU2Y4vsL/W8RQfETz0T7VV4xFWsXIA7v7PiQi/MfJKn44Y+z2AVWrLUl2Jm/tmRJkF
- ANd8fE38B+XuN2iy9+Y7Sau4giodzTcjK7RW36ENN1o7jAowC2bm
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1634628571; l=8018; s=20211009;
+ h=from:subject:message-id; bh=1Cw3QH00ASPbJBhjRcKszQEbKu/Y3BjKY0NQ+aOncTs=;
+ b=m+Ob9gM6N9p+hAMdPKf5p/DC0Wq5IjTVbjzyhDcWLfvlobtWfiBQp/XKqWOdifpvbwkaKBSCrJBX
+ dty+s0QmC8W/v89nDvlQ/90hJAkmjQRHXBYICoQpKUUqMdkmMqjV
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -80,113 +80,226 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In order to reuse it on booke/4xx, move KUAP
-setup routine out of 8xx.c
+We have many functionnalities common to 40x and BOOKE, it leads to
+many places with #if defined(CONFIG_BOOKE) || defined(CONFIG_40x).
 
-Make them usable on SMP by removing the __init tag
-as it is called for each CPU.
-
-And use __prevent_user_access() instead of hard
-coding initial lock.
+We are going to add a few more with KUAP for booke/40x, so create
+a new symbol which is defined when either BOOKE or 40x is defined.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/mm/nohash/8xx.c    | 21 ---------------------
- arch/powerpc/mm/nohash/Makefile |  2 +-
- arch/powerpc/mm/nohash/kup.c    | 31 +++++++++++++++++++++++++++++++
- 3 files changed, 32 insertions(+), 22 deletions(-)
- create mode 100644 arch/powerpc/mm/nohash/kup.c
+ arch/powerpc/include/asm/hw_irq.h      | 8 ++++----
+ arch/powerpc/include/asm/irq.h         | 2 +-
+ arch/powerpc/include/asm/ptrace.h      | 2 +-
+ arch/powerpc/include/asm/reg.h         | 4 ++--
+ arch/powerpc/kernel/asm-offsets.c      | 2 +-
+ arch/powerpc/kernel/entry_32.S         | 2 +-
+ arch/powerpc/kernel/irq.c              | 2 +-
+ arch/powerpc/kernel/kgdb.c             | 4 ++--
+ arch/powerpc/kernel/setup.h            | 2 +-
+ arch/powerpc/kernel/setup_32.c         | 2 +-
+ arch/powerpc/kernel/time.c             | 2 +-
+ arch/powerpc/platforms/Kconfig.cputype | 5 +++++
+ 12 files changed, 21 insertions(+), 16 deletions(-)
 
-diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
-index 36010d1c0bc4..27f9186ae374 100644
---- a/arch/powerpc/mm/nohash/8xx.c
-+++ b/arch/powerpc/mm/nohash/8xx.c
-@@ -8,11 +8,7 @@
-  */
+diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
+index 21cc571ea9c2..276e9dd7348b 100644
+--- a/arch/powerpc/include/asm/hw_irq.h
++++ b/arch/powerpc/include/asm/hw_irq.h
+@@ -61,7 +61,7 @@
  
- #include <linux/memblock.h>
--#include <linux/mmu_context.h>
- #include <linux/hugetlb.h>
--#include <asm/fixmap.h>
--#include <asm/code-patching.h>
--#include <asm/inst.h>
+ static inline void __hard_irq_enable(void)
+ {
+-	if (IS_ENABLED(CONFIG_BOOKE) || IS_ENABLED(CONFIG_40x))
++	if (IS_ENABLED(CONFIG_BOOKE_OR_40x))
+ 		wrtee(MSR_EE);
+ 	else if (IS_ENABLED(CONFIG_PPC_8xx))
+ 		wrtspr(SPRN_EIE);
+@@ -73,7 +73,7 @@ static inline void __hard_irq_enable(void)
  
- #include <mm/mmu_decl.h>
+ static inline void __hard_irq_disable(void)
+ {
+-	if (IS_ENABLED(CONFIG_BOOKE) || IS_ENABLED(CONFIG_40x))
++	if (IS_ENABLED(CONFIG_BOOKE_OR_40x))
+ 		wrtee(0);
+ 	else if (IS_ENABLED(CONFIG_PPC_8xx))
+ 		wrtspr(SPRN_EID);
+@@ -85,7 +85,7 @@ static inline void __hard_irq_disable(void)
  
-@@ -212,23 +208,6 @@ void __init setup_initial_memory_limit(phys_addr_t first_memblock_base,
- 	memblock_set_current_limit(min_t(u64, first_memblock_size, SZ_32M));
+ static inline void __hard_EE_RI_disable(void)
+ {
+-	if (IS_ENABLED(CONFIG_BOOKE) || IS_ENABLED(CONFIG_40x))
++	if (IS_ENABLED(CONFIG_BOOKE_OR_40x))
+ 		wrtee(0);
+ 	else if (IS_ENABLED(CONFIG_PPC_8xx))
+ 		wrtspr(SPRN_NRI);
+@@ -97,7 +97,7 @@ static inline void __hard_EE_RI_disable(void)
+ 
+ static inline void __hard_RI_enable(void)
+ {
+-	if (IS_ENABLED(CONFIG_BOOKE) || IS_ENABLED(CONFIG_40x))
++	if (IS_ENABLED(CONFIG_BOOKE_OR_40x))
+ 		return;
+ 
+ 	if (IS_ENABLED(CONFIG_PPC_8xx))
+diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
+index 2b3278534bc1..13f0409dd617 100644
+--- a/arch/powerpc/include/asm/irq.h
++++ b/arch/powerpc/include/asm/irq.h
+@@ -36,7 +36,7 @@ extern int distribute_irqs;
+ 
+ struct pt_regs;
+ 
+-#if defined(CONFIG_BOOKE) || defined(CONFIG_40x)
++#ifdef CONFIG_BOOKE_OR_40x
+ /*
+  * Per-cpu stacks for handling critical, debug and machine check
+  * level interrupts.
+diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
+index 6e560f035614..42f89e2d8f04 100644
+--- a/arch/powerpc/include/asm/ptrace.h
++++ b/arch/powerpc/include/asm/ptrace.h
+@@ -291,7 +291,7 @@ static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
+ 
+ static inline bool cpu_has_msr_ri(void)
+ {
+-	return !IS_ENABLED(CONFIG_BOOKE) && !IS_ENABLED(CONFIG_40x);
++	return !IS_ENABLED(CONFIG_BOOKE_OR_40x);
  }
  
--#ifdef CONFIG_PPC_KUAP
--struct static_key_false disable_kuap_key;
--EXPORT_SYMBOL(disable_kuap_key);
--
--void setup_kuap(bool disabled)
--{
--	if (disabled) {
--		static_branch_enable(&disable_kuap_key);
--		return;
--	}
--
--	pr_info("Activating Kernel Userspace Access Protection\n");
--
--	mtspr(SPRN_MD_AP, MD_APG_KUAP);
--}
--#endif
--
- int pud_clear_huge(pud_t *pud)
- {
- 	 return 0;
-diff --git a/arch/powerpc/mm/nohash/Makefile b/arch/powerpc/mm/nohash/Makefile
-index 0424f6ce5bd8..2ffca5f8a169 100644
---- a/arch/powerpc/mm/nohash/Makefile
-+++ b/arch/powerpc/mm/nohash/Makefile
-@@ -2,7 +2,7 @@
+ static inline bool regs_is_unrecoverable(struct pt_regs *regs)
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index e9d27265253b..50478738c8f1 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -18,9 +18,9 @@
+ #include <asm/feature-fixups.h>
  
- ccflags-$(CONFIG_PPC64)	:= $(NO_MINIMAL_TOC)
- 
--obj-y				+= mmu_context.o tlb.o tlb_low.o
-+obj-y				+= mmu_context.o tlb.o tlb_low.o kup.o
- obj-$(CONFIG_PPC_BOOK3E_64)  	+= tlb_low_64e.o book3e_pgtable.o
- obj-$(CONFIG_40x)		+= 40x.o
- obj-$(CONFIG_44x)		+= 44x.o
-diff --git a/arch/powerpc/mm/nohash/kup.c b/arch/powerpc/mm/nohash/kup.c
-new file mode 100644
-index 000000000000..eaea52231dd6
---- /dev/null
-+++ b/arch/powerpc/mm/nohash/kup.c
-@@ -0,0 +1,31 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * This file contains the routines for initializing kernel userspace protection
-+ */
-+
-+#include <linux/export.h>
-+#include <linux/init.h>
-+#include <linux/jump_label.h>
-+#include <linux/printk.h>
-+#include <linux/smp.h>
-+
-+#include <asm/kup.h>
-+#include <asm/smp.h>
-+
-+#ifdef CONFIG_PPC_KUAP
-+struct static_key_false disable_kuap_key;
-+EXPORT_SYMBOL(disable_kuap_key);
-+
-+void setup_kuap(bool disabled)
-+{
-+	if (disabled) {
-+		if (smp_processor_id() == boot_cpuid)
-+			static_branch_enable(&disable_kuap_key);
-+		return;
-+	}
-+
-+	pr_info("Activating Kernel Userspace Access Protection\n");
-+
-+	__prevent_user_access(KUAP_READ_WRITE);
-+}
+ /* Pickup Book E specific registers. */
+-#if defined(CONFIG_BOOKE) || defined(CONFIG_40x)
++#ifdef CONFIG_BOOKE_OR_40x
+ #include <asm/reg_booke.h>
+-#endif /* CONFIG_BOOKE || CONFIG_40x */
 +#endif
+ 
+ #ifdef CONFIG_FSL_EMB_PERFMON
+ #include <asm/reg_fsl_emb.h>
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index 256aa669cf80..40a631ae5ba5 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -56,7 +56,7 @@
+ #endif
+ 
+ #ifdef CONFIG_PPC32
+-#if defined(CONFIG_BOOKE) || defined(CONFIG_40x)
++#ifdef CONFIG_BOOKE_OR_40x
+ #include "head_booke.h"
+ #endif
+ #endif
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index cf3cc0e52d07..62c244ffa489 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -105,7 +105,7 @@ transfer_to_syscall:
+ 	stw	r11, 0(r1)
+ 	mflr	r12
+ 	stw	r12, _LINK(r1)
+-#if defined(CONFIG_BOOKE) || defined(CONFIG_40x)
++#ifdef CONFIG_BOOKE_OR_40x
+ 	rlwinm	r9,r9,0,14,12		/* clear MSR_WE (necessary?) */
+ #endif
+ 	lis	r12,STACK_FRAME_REGS_MARKER@ha /* exception frame marker */
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index c4f1d6b7d992..8207f97d51e8 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -811,7 +811,7 @@ void __init init_IRQ(void)
+ 		ppc_md.init_IRQ();
+ }
+ 
+-#if defined(CONFIG_BOOKE) || defined(CONFIG_40x)
++#ifdef CONFIG_BOOKE_OR_40x
+ void   *critirq_ctx[NR_CPUS] __read_mostly;
+ void    *dbgirq_ctx[NR_CPUS] __read_mostly;
+ void *mcheckirq_ctx[NR_CPUS] __read_mostly;
+diff --git a/arch/powerpc/kernel/kgdb.c b/arch/powerpc/kernel/kgdb.c
+index bdee7262c080..9f8d0fa7b718 100644
+--- a/arch/powerpc/kernel/kgdb.c
++++ b/arch/powerpc/kernel/kgdb.c
+@@ -48,7 +48,7 @@ static struct hard_trap_info
+ 	{ 0x0800, 0x08 /* SIGFPE */  },		/* fp unavailable */
+ 	{ 0x0900, 0x0e /* SIGALRM */ },		/* decrementer */
+ 	{ 0x0c00, 0x14 /* SIGCHLD */ },		/* system call */
+-#if defined(CONFIG_40x) || defined(CONFIG_BOOKE)
++#ifdef CONFIG_BOOKE_OR_40x
+ 	{ 0x2002, 0x05 /* SIGTRAP */ },		/* debug */
+ #if defined(CONFIG_FSL_BOOKE)
+ 	{ 0x2010, 0x08 /* SIGFPE */  },		/* spe unavailable */
+@@ -67,7 +67,7 @@ static struct hard_trap_info
+ 	{ 0x2010, 0x08 /* SIGFPE */  },		/* fp unavailable */
+ 	{ 0x2020, 0x08 /* SIGFPE */  },		/* ap unavailable */
+ #endif
+-#else /* ! (defined(CONFIG_40x) || defined(CONFIG_BOOKE)) */
++#else /* !CONFIG_BOOKE_OR_40x */
+ 	{ 0x0d00, 0x05 /* SIGTRAP */ },		/* single-step */
+ #if defined(CONFIG_PPC_8xx)
+ 	{ 0x1000, 0x04 /* SIGILL */  },		/* software emulation */
+diff --git a/arch/powerpc/kernel/setup.h b/arch/powerpc/kernel/setup.h
+index 84058bbc8fe9..93f22da12abe 100644
+--- a/arch/powerpc/kernel/setup.h
++++ b/arch/powerpc/kernel/setup.h
+@@ -29,7 +29,7 @@ void setup_tlb_core_data(void);
+ static inline void setup_tlb_core_data(void) { }
+ #endif
+ 
+-#if defined(CONFIG_PPC_BOOK3E) || defined(CONFIG_BOOKE) || defined(CONFIG_40x)
++#ifdef CONFIG_BOOKE_OR_40x
+ void exc_lvl_early_init(void);
+ #else
+ static inline void exc_lvl_early_init(void) { }
+diff --git a/arch/powerpc/kernel/setup_32.c b/arch/powerpc/kernel/setup_32.c
+index 7ec5c47fce0e..15e7386584f9 100644
+--- a/arch/powerpc/kernel/setup_32.c
++++ b/arch/powerpc/kernel/setup_32.c
+@@ -175,7 +175,7 @@ void __init emergency_stack_init(void)
+ }
+ #endif
+ 
+-#if defined(CONFIG_BOOKE) || defined(CONFIG_40x)
++#ifdef CONFIG_BOOKE_OR_40x
+ void __init exc_lvl_early_init(void)
+ {
+ 	unsigned int i, hw_cpu;
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 934d8ae66cc6..f7bb2866a1c4 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -738,7 +738,7 @@ static int __init get_freq(char *name, int cells, unsigned long *val)
+ 
+ static void start_cpu_decrementer(void)
+ {
+-#if defined(CONFIG_BOOKE) || defined(CONFIG_40x)
++#ifdef CONFIG_BOOKE_OR_40x
+ 	unsigned int tcr;
+ 
+ 	/* Clear any pending timer interrupts */
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 68361ab7078d..f58f9edf9b28 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -280,6 +280,11 @@ config BOOKE
+ 	depends on E500 || 44x || PPC_BOOK3E
+ 	default y
+ 
++config BOOKE_OR_40x
++	bool
++	depends on BOOKE || 40x
++	default y
++
+ config FSL_BOOKE
+ 	bool
+ 	depends on E500 && PPC32
 -- 
 2.31.1
 
