@@ -1,93 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30405432CE4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 06:47:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DD6432E79
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 08:42:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HYLnN4mCGz3cQY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 15:47:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HYPLD6Fydz3cRP
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 17:42:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LZbidHJ+;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=teDjFL9l;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=LZbidHJ+; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=teDjFL9l; dkim-atps=neutral
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HYPKX4BbWz2yPY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 17:41:34 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out2.suse.de (Postfix) with ESMTP id AA04B1FD8D;
+ Tue, 19 Oct 2021 06:41:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1634625687; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=yiCf/K6bKrAWm+H5GwYg06T7whuQxu5z+Eyutq5ePEE=;
+ b=teDjFL9lr91NMRNc6Iv52QSxJj4QGuwwqDT3OOPMzK0CBm/3l5zawNGoKRXzDeN51cXEJP
+ MSlwF/JcwJeOLxY3hgNh8mmlyB20AXu0yYaXblNFINe8pkmoTcCpXT4iQCyA+bOZUlhR5W
+ yl7nzpiJ+YDINXRghZ+OA0t106VXXYU=
+Received: from suse.cz (unknown [10.100.216.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HYLmd0Wc3z2ynS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 15:46:24 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19J0lkBd030356; 
- Tue, 19 Oct 2021 00:46:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=F3NvIPovc58gvUpLCRwP+4Md0M1oXII9/E8QXzN7mWs=;
- b=LZbidHJ+StCsuocwR0KDtqy1lUQt/+ZKv8a1lnZmkccWPjtNmDbDzBwkEzlQt4eY7fnm
- 1yidhqQZgAAnEgDR45o6FE2wLkSHVZQOWIB6btsqR3jXpZir/713WRgTWtWgX7MrGVnr
- v4SHavS/arMwVvOZTLwSM8PpeasQCpbFknfQUiAX9xruwmd8LRoPUzbEaf0D/XAyVOPW
- dhRGpOv5vB5WJbNHEc2vnxzW57KMjC0PapqrZloWQSoo7YRC7dfDVxGL74+kUocaoQiO
- pSctcxCl+xmFZCiTUX2OX/LCjfC9oEB9Dsbp/mJIcOo0PWxlS2JutQnB4B6Tes416T+/ /A== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bsksruab7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Oct 2021 00:46:05 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19J4hrO1030769;
- Tue, 19 Oct 2021 04:46:03 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma03ams.nl.ibm.com with ESMTP id 3bqpc9mxga-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Oct 2021 04:46:03 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 19J4k0v263766790
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Oct 2021 04:46:01 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B3369A405B;
- Tue, 19 Oct 2021 04:46:00 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CD3F0A405C;
- Tue, 19 Oct 2021 04:45:58 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Tue, 19 Oct 2021 04:45:58 +0000 (GMT)
-Date: Tue, 19 Oct 2021 10:15:57 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [PATCH v2] powerpc/smp: do not decrement idle task preempt count
- in CPU offline
-Message-ID: <20211019044557.GK2004@linux.vnet.ibm.com>
-References: <20211015173902.2278118-1-nathanl@linux.ibm.com>
+ by relay2.suse.de (Postfix) with ESMTPS id 0F30AA3B81;
+ Tue, 19 Oct 2021 06:41:26 +0000 (UTC)
+Date: Tue, 19 Oct 2021 08:41:23 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH] tracing: Have all levels of checks prevent recursion
+Message-ID: <YW5ok3CfNoRMfVQ5@alley>
+References: <20211015110035.14813389@gandalf.local.home>
+ <YW1KKCFallDG+E01@alley>
+ <20211018220203.064a42ed@gandalf.local.home>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211015173902.2278118-1-nathanl@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: QyzmVIuTEKulrvgkkm_j2sQprhgxj-6Z
-X-Proofpoint-ORIG-GUID: QyzmVIuTEKulrvgkkm_j2sQprhgxj-6Z
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-18_07,2021-10-18_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 impostorscore=0
- spamscore=0 mlxscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0
- priorityscore=1501 mlxlogscore=999 suspectscore=0 phishscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
- definitions=main-2110190026
+In-Reply-To: <20211018220203.064a42ed@gandalf.local.home>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,81 +63,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: peterz@infradead.org, linux-kernel@vger.kernel.org, mingo@kernel.org,
- clg@kaod.org, linuxppc-dev@lists.ozlabs.org, valentin.schneider@arm.com
+Cc: =?utf-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>,
+ "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Paul Mackerras <paulus@samba.org>, Jisheng Zhang <jszhang@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Miroslav Benes <mbenes@suse.cz>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Jiri Kosina <jikos@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-parisc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Guo Ren <guoren@kernel.org>, Colin Ian King <colin.king@canonical.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Nathan Lynch <nathanl@linux.ibm.com> [2021-10-15 12:39:02]:
-
-> With PREEMPT_COUNT=y, when a CPU is offlined and then onlined again, we
-> get:
+On Mon 2021-10-18 22:02:03, Steven Rostedt wrote:
+> On Mon, 18 Oct 2021 12:19:20 +0200
+> Petr Mladek <pmladek@suse.com> wrote:
 > 
-> BUG: scheduling while atomic: swapper/1/0/0x00000000
-> no locks held by swapper/1/0.
-> CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.15.0-rc2+ #100
-> Call Trace:
->  dump_stack_lvl+0xac/0x108
->  __schedule_bug+0xac/0xe0
->  __schedule+0xcf8/0x10d0
->  schedule_idle+0x3c/0x70
->  do_idle+0x2d8/0x4a0
->  cpu_startup_entry+0x38/0x40
->  start_secondary+0x2ec/0x3a0
->  start_secondary_prolog+0x10/0x14
+> > > -
+> > >  	bit = trace_get_context_bit() + start;
+> > >  	if (unlikely(val & (1 << bit))) {
+> > >  		/*
+> > >  		 * It could be that preempt_count has not been updated during
+> > >  		 * a switch between contexts. Allow for a single recursion.
+> > >  		 */
+> > > -		bit = TRACE_TRANSITION_BIT;
+> > > +		bit = TRACE_CTX_TRANSITION + start;  
+> >
 > 
-> This is because powerpc's arch_cpu_idle_dead() decrements the idle task's
-> preempt count, for reasons explained in commit a7c2bb8279d2 ("powerpc:
-> Re-enable preemption before cpu_die()"), specifically "start_secondary()
-> expects a preempt_count() of 0."
+> [..]
 > 
-> However, since commit 2c669ef6979c ("powerpc/preempt: Don't touch the idle
-> task's preempt_count during hotplug") and commit f1a0a376ca0c ("sched/core:
-> Initialize the idle task with preemption disabled"), that justification no
-> longer holds.
+> > Could we please update the comment? I mean to say if it is a race
+> > or if we trace a function that should not get traced.
 > 
-> The idle task isn't supposed to re-enable preemption, so remove the
-> vestigial preempt_enable() from the CPU offline path.
+> What do you think of this change?
 > 
-> Tested with pseries and powernv in qemu, and pseries on PowerVM.
+> diff --git a/include/linux/trace_recursion.h b/include/linux/trace_recursion.h
+> index 1d8cce02c3fb..24f284eb55a7 100644
+> --- a/include/linux/trace_recursion.h
+> +++ b/include/linux/trace_recursion.h
+> @@ -168,8 +168,12 @@ static __always_inline int trace_test_and_set_recursion(unsigned long ip, unsign
+>  	bit = trace_get_context_bit() + start;
+>  	if (unlikely(val & (1 << bit))) {
+>  		/*
+> -		 * It could be that preempt_count has not been updated during
+> -		 * a switch between contexts. Allow for a single recursion.
+> +		 * If an interrupt occurs during a trace, and another trace
+> +		 * happens in that interrupt but before the preempt_count is
+> +		 * updated to reflect the new interrupt context, then this
+> +		 * will think a recursion occurred, and the event will be dropped.
+> +		 * Let a single instance happen via the TRANSITION_BIT to
+> +		 * not drop those events.
+>  		 */
+>  		bit = TRACE_TRANSITION_BIT;
+>  		if (val & (1 << bit)) {
 > 
-> Fixes: 2c669ef6979c ("powerpc/preempt: Don't touch the idle task's preempt_count during hotplug")
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-> Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-
-Looks good to me.
-
-Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-
-> ---
-> 
-> Notes:
->     Changes since v1:
->     
->     - remove incorrect Fixes: tag, add Valentin's r-b.
-> 
->  arch/powerpc/kernel/smp.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index 9cc7d3dbf439..605bab448f84 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -1730,8 +1730,6 @@ void __cpu_die(unsigned int cpu)
-> 
->  void arch_cpu_idle_dead(void)
->  {
-> -	sched_preempt_enable_no_resched();
-> -
->  	/*
->  	 * Disable on the down path. This will be re-enabled by
->  	 * start_secondary() via start_secondary_resume() below
-> -- 
-> 2.31.1
 > 
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+Looks good to me. Thanks for the update.
+
+Feel free to postpone this change. I do not want to complicate
+upstreaming the fix for stable. I am sorry if I already
+complicated it.
+
+Best Regards,
+Petr
