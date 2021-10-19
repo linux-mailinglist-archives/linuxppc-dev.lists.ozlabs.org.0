@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA62432F91
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 09:32:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 772F6432F72
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 09:30:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HYQRk2xNDz3dpJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 18:32:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HYQPr0MZmz2yHL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 18:30:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,53 +14,54 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HYQPk4FRNz3cPP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 18:30:18 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HYQPM6M4Xz2ybK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 18:29:57 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HYQPH1qqZz9sSq;
- Tue, 19 Oct 2021 09:29:55 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4HYQPB5fcpz9sTF;
+ Tue, 19 Oct 2021 09:29:50 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 2jbC-2c9jPIW; Tue, 19 Oct 2021 09:29:55 +0200 (CEST)
+ with ESMTP id WquU9dAx2nlo; Tue, 19 Oct 2021 09:29:50 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HYQP70Bv6z9sSp;
- Tue, 19 Oct 2021 09:29:47 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HYQP63Kc3z9sSg;
+ Tue, 19 Oct 2021 09:29:46 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E5C6E8B77E;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C9A28B783;
  Tue, 19 Oct 2021 09:29:46 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id SW140AOcC3df; Tue, 19 Oct 2021 09:29:46 +0200 (CEST)
+ with ESMTP id BdpzqitU36mz; Tue, 19 Oct 2021 09:29:46 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.71])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1BA918B779;
- Tue, 19 Oct 2021 09:29:46 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0CC018B763;
+ Tue, 19 Oct 2021 09:29:45 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19J7Tc1I3188426
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19J7TdLa3188430
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Tue, 19 Oct 2021 09:29:39 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19J7Tcot3188425;
- Tue, 19 Oct 2021 09:29:38 +0200
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19J7TdX83188429;
+ Tue, 19 Oct 2021 09:29:39 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v3 07/22] powerpc/32s: Save content of sr0 to avoid 'mfsr'
-Date: Tue, 19 Oct 2021 09:29:18 +0200
-Message-Id: <b02baf2ed8f09bad910dfaeeb7353b2ae6830525.1634627931.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 08/22] powerpc/kuep: Remove 'nosmep' boot time parameter
+ except for book3s/64
+Date: Tue, 19 Oct 2021 09:29:19 +0200
+Message-Id: <4c36df18b41c988c4512f45d96220486adbe4c99.1634627931.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1634627931.git.christophe.leroy@csgroup.eu>
 References: <cover.1634627931.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1634628570; l=6500; s=20211009;
- h=from:subject:message-id; bh=IjtW0jnmN2CsgyTMQSJUpGmi8Te8USjw8DHA07uZXVI=;
- b=n/aYVIRedCOvtxERPgP9gbFP36PZ9gU/sIFKXloipiV1kauvle3+yEEmVAgwnC9oXGsgDCsUhYMq
- v4jXb54ODXVSFsCifQwldwAY4xZftL5AyCqVZv8f/54WTXGHIccM
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1634628570; l=4988; s=20211009;
+ h=from:subject:message-id; bh=+P62v5BiDAD1R+baOefF09ATbKIzIrfwmFnTJsM1zDE=;
+ b=bWSBxwYTfKV7LhvvHrjDwoAqYK0QFjZkN6WtOm6JxUc6EQK4IKNtjLniA0npJr7A8ls1YqTWRZrf
+ vnGvu81bCZqhyv0N2t0PL81NGPYuKcVu55pT6PwD91SP4hhwd++T
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -80,207 +81,160 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Calling 'mfsr' to get the content of segment registers is heavy,
-in addition it requires clearing of the 'reserved' bits.
+Deactivating KUEP at boot time is unrelevant for PPC32 and BOOK3E/64.
 
-In order to avoid this operation, save it in mm context and in
-thread struct.
+Remove it.
 
-The saved sr0 is the one used by kernel, this means that on
-locking entry it can be used as is.
-
-For unlocking, the only thing to do is to clear SR_NX.
-
-This improves null_syscall selftest by 12 cycles, ie 4%.
+It allows to refactor setup_kuep() via a __weak function
+that only PPC64s will overide for now.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/book3s/32/mmu-hash.h |  5 +++++
- arch/powerpc/include/asm/processor.h          |  9 +++++++++
- arch/powerpc/kernel/asm-offsets.c             |  1 +
- arch/powerpc/kernel/entry_32.S                |  8 +++-----
- arch/powerpc/mm/book3s32/kuap.c               |  5 ++++-
- arch/powerpc/mm/book3s32/kuep.c               |  1 +
- arch/powerpc/mm/book3s32/mmu_context.c        | 15 +++++++--------
- arch/powerpc/mm/mmu_context.c                 |  3 +++
- 8 files changed, 33 insertions(+), 14 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |  2 +-
+ arch/powerpc/include/asm/kup.h                  |  5 -----
+ arch/powerpc/mm/book3s32/Makefile               |  1 -
+ arch/powerpc/mm/book3s32/kuep.c                 | 13 -------------
+ arch/powerpc/mm/init-common.c                   | 15 +++++++++++++++
+ arch/powerpc/mm/nohash/44x.c                    | 10 ----------
+ arch/powerpc/mm/nohash/8xx.c                    |  7 -------
+ 7 files changed, 16 insertions(+), 37 deletions(-)
+ delete mode 100644 arch/powerpc/mm/book3s32/kuep.c
 
-diff --git a/arch/powerpc/include/asm/book3s/32/mmu-hash.h b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-index e2f7ccc13edb..7be27862329f 100644
---- a/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-+++ b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-@@ -175,9 +175,14 @@ struct hash_pte {
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 43dc35fe5bc0..fce1c13ce642 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -3354,7 +3354,7 @@
+ 			Disable SMAP (Supervisor Mode Access Prevention)
+ 			even if it is supported by processor.
  
- typedef struct {
- 	unsigned long id;
-+	unsigned long sr0;
- 	void __user *vdso;
- } mm_context_t;
+-	nosmep		[X86,PPC]
++	nosmep		[X86,PPC64s]
+ 			Disable SMEP (Supervisor Mode Execution Prevention)
+ 			even if it is supported by processor.
  
-+#ifdef CONFIG_PPC_KUEP
-+#define INIT_MM_CONTEXT(mm) .context.sr0 = SR_NX
-+#endif
-+
- void update_bats(void);
- static inline void cleanup_cpu_mmu_context(void) { }
+diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+index 94734a8eb54d..fa8513b7acca 100644
+--- a/arch/powerpc/include/asm/kup.h
++++ b/arch/powerpc/include/asm/kup.h
+@@ -33,12 +33,7 @@ extern bool disable_kuap;
+ #include <linux/pgtable.h>
  
-diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-index f348e564f7dd..e64ec54398c6 100644
---- a/arch/powerpc/include/asm/processor.h
-+++ b/arch/powerpc/include/asm/processor.h
-@@ -157,6 +157,7 @@ struct thread_struct {
- #ifdef CONFIG_PPC_BOOK3S_32
- 	unsigned long	r0, r3, r4, r5, r6, r8, r9, r11;
- 	unsigned long	lr, ctr;
-+	unsigned long	sr0;
- #endif
- #endif /* CONFIG_PPC32 */
- 	/* Debug Registers */
-@@ -276,6 +277,12 @@ struct thread_struct {
- #define SPEFSCR_INIT
- #endif
- 
-+#ifdef CONFIG_PPC_BOOK3S_32
-+#define SR0_INIT	.sr0 = IS_ENABLED(CONFIG_PPC_KUEP) ? SR_NX : 0,
-+#else
-+#define SR0_INIT
-+#endif
-+
- #if defined(CONFIG_PPC_BOOK3S_32) && defined(CONFIG_PPC_KUAP)
- #define INIT_THREAD { \
- 	.ksp = INIT_SP, \
-@@ -283,6 +290,7 @@ struct thread_struct {
- 	.kuap = ~0UL, /* KUAP_NONE */ \
- 	.fpexc_mode = MSR_FE0 | MSR_FE1, \
- 	SPEFSCR_INIT \
-+	SR0_INIT \
- }
- #elif defined(CONFIG_PPC32)
- #define INIT_THREAD { \
-@@ -290,6 +298,7 @@ struct thread_struct {
- 	.pgdir = swapper_pg_dir, \
- 	.fpexc_mode = MSR_FE0 | MSR_FE1, \
- 	SPEFSCR_INIT \
-+	SR0_INIT \
- }
- #else
- #define INIT_THREAD  { \
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index e563d3222d69..256aa669cf80 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -141,6 +141,7 @@ int main(void)
- 	OFFSET(THR11, thread_struct, r11);
- 	OFFSET(THLR, thread_struct, lr);
- 	OFFSET(THCTR, thread_struct, ctr);
-+	OFFSET(THSR0, thread_struct, sr0);
- #endif
- #ifdef CONFIG_SPE
- 	OFFSET(THREAD_EVR0, thread_struct, evr[0]);
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 4ba6a8c43475..cf3cc0e52d07 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -76,15 +76,13 @@ _ASM_NOKPROBE_SYMBOL(prepare_transfer_to_handler)
- #if defined(CONFIG_PPC_KUEP) && defined(CONFIG_PPC_BOOK3S_32)
- 	.globl	__kuep_lock
- __kuep_lock:
--	mfsr    r9,0
--	rlwinm  r9,r9,0,8,3
--	oris    r9,r9,SR_NX@h
-+	lwz	r9, THREAD+THSR0(r2)
- 	update_user_segments_by_4 r9, r10, r11, r12
- 	blr
- 
- __kuep_unlock:
--	mfsr    r9,0
--	rlwinm  r9,r9,0,8,2
-+	lwz	r9, THREAD+THSR0(r2)
-+	rlwinm  r9,r9,0,~SR_NX
- 	update_user_segments_by_4 r9, r10, r11, r12
- 	blr
- 
-diff --git a/arch/powerpc/mm/book3s32/kuap.c b/arch/powerpc/mm/book3s32/kuap.c
-index 0f920f09af57..28676cabb005 100644
---- a/arch/powerpc/mm/book3s32/kuap.c
-+++ b/arch/powerpc/mm/book3s32/kuap.c
-@@ -20,8 +20,11 @@ EXPORT_SYMBOL(kuap_unlock_all_ool);
- 
- void setup_kuap(bool disabled)
- {
--	if (!disabled)
-+	if (!disabled) {
- 		kuap_lock_all_ool();
-+		init_mm.context.sr0 |= SR_KS;
-+		current->thread.sr0 |= SR_KS;
-+	}
- 
- 	if (smp_processor_id() != boot_cpuid)
- 		return;
-diff --git a/arch/powerpc/mm/book3s32/kuep.c b/arch/powerpc/mm/book3s32/kuep.c
-index bac1420d028b..78fc48eee510 100644
---- a/arch/powerpc/mm/book3s32/kuep.c
-+++ b/arch/powerpc/mm/book3s32/kuep.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- 
-+#include <asm/code-patching.h>
- #include <asm/kup.h>
- #include <asm/smp.h>
- 
-diff --git a/arch/powerpc/mm/book3s32/mmu_context.c b/arch/powerpc/mm/book3s32/mmu_context.c
-index e2708e387dc3..269a3eb25a73 100644
---- a/arch/powerpc/mm/book3s32/mmu_context.c
-+++ b/arch/powerpc/mm/book3s32/mmu_context.c
-@@ -69,6 +69,12 @@ EXPORT_SYMBOL_GPL(__init_new_context);
- int init_new_context(struct task_struct *t, struct mm_struct *mm)
- {
- 	mm->context.id = __init_new_context();
-+	mm->context.sr0 = CTX_TO_VSID(mm->context.id, 0);
-+
-+	if (!kuep_is_disabled())
-+		mm->context.sr0 |= SR_NX;
-+	if (!kuap_is_disabled())
-+		mm->context.sr0 |= SR_KS;
- 
- 	return 0;
- }
-@@ -108,20 +114,13 @@ void __init mmu_context_init(void)
- void switch_mmu_context(struct mm_struct *prev, struct mm_struct *next, struct task_struct *tsk)
- {
- 	long id = next->context.id;
--	unsigned long val;
- 
- 	if (id < 0)
- 		panic("mm_struct %p has no context ID", next);
- 
- 	isync();
- 
--	val = CTX_TO_VSID(id, 0);
--	if (!kuep_is_disabled())
--		val |= SR_NX;
--	if (!kuap_is_disabled())
--		val |= SR_KS;
+ void setup_kup(void);
 -
--	update_user_segments(val);
-+	update_user_segments(next->context.sr0);
+-#ifdef CONFIG_PPC_KUEP
+ void setup_kuep(bool disabled);
+-#else
+-static inline void setup_kuep(bool disabled) { }
+-#endif /* CONFIG_PPC_KUEP */
  
- 	if (IS_ENABLED(CONFIG_BDI_SWITCH))
- 		abatron_pteptrs[1] = next->pgd;
-diff --git a/arch/powerpc/mm/mmu_context.c b/arch/powerpc/mm/mmu_context.c
-index 74246536b832..e618d5442a28 100644
---- a/arch/powerpc/mm/mmu_context.c
-+++ b/arch/powerpc/mm/mmu_context.c
-@@ -18,6 +18,9 @@ static inline void switch_mm_pgdir(struct task_struct *tsk,
+ #ifdef CONFIG_PPC_KUAP
+ void setup_kuap(bool disabled);
+diff --git a/arch/powerpc/mm/book3s32/Makefile b/arch/powerpc/mm/book3s32/Makefile
+index 15f4773643d2..50dd8f6bdf46 100644
+--- a/arch/powerpc/mm/book3s32/Makefile
++++ b/arch/powerpc/mm/book3s32/Makefile
+@@ -9,5 +9,4 @@ endif
+ obj-y += mmu.o mmu_context.o
+ obj-$(CONFIG_PPC_BOOK3S_603) += nohash_low.o
+ obj-$(CONFIG_PPC_BOOK3S_604) += hash_low.o tlb.o
+-obj-$(CONFIG_PPC_KUEP) += kuep.o
+ obj-$(CONFIG_PPC_KUAP) += kuap.o
+diff --git a/arch/powerpc/mm/book3s32/kuep.c b/arch/powerpc/mm/book3s32/kuep.c
+deleted file mode 100644
+index 78fc48eee510..000000000000
+--- a/arch/powerpc/mm/book3s32/kuep.c
++++ /dev/null
+@@ -1,13 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-
+-#include <asm/code-patching.h>
+-#include <asm/kup.h>
+-#include <asm/smp.h>
+-
+-void setup_kuep(bool disabled)
+-{
+-	if (smp_processor_id() != boot_cpuid)
+-		return;
+-
+-	pr_info("Activating Kernel Userspace Execution Prevention\n");
+-}
+diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
+index b4f3437aee38..b22e0649e2d3 100644
+--- a/arch/powerpc/mm/init-common.c
++++ b/arch/powerpc/mm/init-common.c
+@@ -20,6 +20,7 @@
+ #include <linux/pgtable.h>
+ #include <asm/pgalloc.h>
+ #include <asm/kup.h>
++#include <asm/smp.h>
+ 
+ phys_addr_t memstart_addr __ro_after_init = (phys_addr_t)~0ull;
+ EXPORT_SYMBOL_GPL(memstart_addr);
+@@ -33,6 +34,9 @@ bool disable_kuap = !IS_ENABLED(CONFIG_PPC_KUAP);
+ 
+ static int __init parse_nosmep(char *p)
  {
- 	/* 32-bit keeps track of the current PGDIR in the thread struct */
- 	tsk->thread.pgdir = mm->pgd;
-+#ifdef CONFIG_PPC_BOOK3S_32
-+	tsk->thread.sr0 = mm->context.sr0;
-+#endif
++	if (!IS_ENABLED(CONFIG_PPC_BOOKS_64))
++		return 0;
++
+ 	disable_kuep = true;
+ 	pr_warn("Disabling Kernel Userspace Execution Prevention\n");
+ 	return 0;
+@@ -47,6 +51,17 @@ static int __init parse_nosmap(char *p)
  }
- #elif defined(CONFIG_PPC_BOOK3E_64)
- static inline void switch_mm_pgdir(struct task_struct *tsk,
+ early_param("nosmap", parse_nosmap);
+ 
++void __weak setup_kuep(bool disabled)
++{
++	if (!IS_ENABLED(CONFIG_PPC_KUEP) || disabled)
++		return;
++
++	if (smp_processor_id() != boot_cpuid)
++		return;
++
++	pr_info("Activating Kernel Userspace Execution Prevention\n");
++}
++
+ void setup_kup(void)
+ {
+ 	setup_kuap(disable_kuap);
+diff --git a/arch/powerpc/mm/nohash/44x.c b/arch/powerpc/mm/nohash/44x.c
+index ceb290df1fb5..796c824acc8c 100644
+--- a/arch/powerpc/mm/nohash/44x.c
++++ b/arch/powerpc/mm/nohash/44x.c
+@@ -240,13 +240,3 @@ void __init mmu_init_secondary(int cpu)
+ 	}
+ }
+ #endif /* CONFIG_SMP */
+-
+-#ifdef CONFIG_PPC_KUEP
+-void setup_kuep(bool disabled)
+-{
+-	if (smp_processor_id() != boot_cpuid)
+-		return;
+-
+-	pr_info("Activating Kernel Userspace Execution Prevention\n");
+-}
+-#endif
+diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+index e878e8124ee6..36010d1c0bc4 100644
+--- a/arch/powerpc/mm/nohash/8xx.c
++++ b/arch/powerpc/mm/nohash/8xx.c
+@@ -212,13 +212,6 @@ void __init setup_initial_memory_limit(phys_addr_t first_memblock_base,
+ 	memblock_set_current_limit(min_t(u64, first_memblock_size, SZ_32M));
+ }
+ 
+-#ifdef CONFIG_PPC_KUEP
+-void setup_kuep(bool disabled)
+-{
+-	pr_info("Activating Kernel Userspace Execution Prevention\n");
+-}
+-#endif
+-
+ #ifdef CONFIG_PPC_KUAP
+ struct static_key_false disable_kuap_key;
+ EXPORT_SYMBOL(disable_kuap_key);
 -- 
 2.31.1
 
