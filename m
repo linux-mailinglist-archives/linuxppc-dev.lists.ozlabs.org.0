@@ -2,94 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2914340BF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Oct 2021 23:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D38E43418E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 00:44:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HYnM639VRz3cNj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 08:44:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HYphr5wN8z3bmk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 09:44:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WNeQzbh0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=taEdq55I;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=WNeQzbh0; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=taEdq55I; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HYnLP6nsdz2xrS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Oct 2021 08:43:41 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19JKL1eF024193; 
- Tue, 19 Oct 2021 17:43:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=T42hVe3dUb7v8yZEJlZDA2n9K+Z8kkG+cF8aEFAYY/E=;
- b=WNeQzbh0Ix4r8JLYeAYvdjF28GbSU+cZJKe2hJZZYa+nxKDlQj8zCoTsflw0A9dY67fn
- Q5D0I9/0D+YfKvUjbc3itXpcHoDUgRg3xcWASo3ssfMNTIf1u6812xQ0U99IawUdbZkA
- Zsj/B6O3osdkpUjXkHS4ax1vxv7evPuAdyrBTrNqb3KSuus/Q6inMk3s4EO/upilyBpU
- 7plMC5QcN2+7VS4GBKafmQ6yKeh/Ng+j0AqeJtJuA3pI25XQX7D6HnONyOkBVCRk93PF
- Uy4BJjAurSK/+5oeecAveKa8v5sY9Y+sJCBCIbscT1gpClrX8POCTGmWQ07Kgzd7zANl qw== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bt2stmvpq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Oct 2021 17:43:35 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19JLRNjH000517;
- Tue, 19 Oct 2021 21:43:35 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma03dal.us.ibm.com with ESMTP id 3bqpcbfpgu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Oct 2021 21:43:35 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 19JLhXFe38470070
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Oct 2021 21:43:33 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C80D2AC064;
- Tue, 19 Oct 2021 21:43:33 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 97FDEAC065;
- Tue, 19 Oct 2021 21:43:33 +0000 (GMT)
-Received: from localhost (unknown [9.211.47.38])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 19 Oct 2021 21:43:33 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Laurent Dufour <ldufour@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries/mobility: ignore
- ibm,platform-facilities updates
-In-Reply-To: <6f72adc9-d28c-beeb-e21f-4a468d2bf0e3@linux.ibm.com>
-References: <20211018163424.2491472-1-nathanl@linux.ibm.com>
- <6de8b295-112f-651e-a18e-3ab3e499ad69@linux.ibm.com>
- <6f72adc9-d28c-beeb-e21f-4a468d2bf0e3@linux.ibm.com>
-Date: Tue, 19 Oct 2021 16:43:33 -0500
-Message-ID: <87wnm8y9kq.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HYphC4NQDz2yNv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Oct 2021 09:44:11 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3854361154;
+ Tue, 19 Oct 2021 22:44:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1634683448;
+ bh=/g+wgF+JF3O4Y6H7+V152kAnH9oMhD3tFztz/AZaDXg=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=taEdq55I88noCQArDJFBVRb0y+GQm4nLIF+JwfjphkxyTiBMTKaqaVO1LMP9l6ipk
+ 4xcojsdBrhqBwSlCLOoC0rFkNH5do224KYikvGw/YgXbOOUG/LlgwrLUAOxjU2648E
+ FByVYoLxGsqr66Oyr72t+89CrEGLH7+J62Xy8LLgTjjBeQS8te+R29y0rTaJBjOqp5
+ CUMVsVLQb8lX/+nf714wjxSPC226yspKH3RO87A9Oj9n/TSyaJKuNbeUez6meaXdTM
+ /io3xit3dWXLz/TUpP3Ut6yydOTJ9rHukCFP10z1FZeJqbn5tgrojmQW2aynd9qglr
+ lUXhh4/tVJqyw==
+Date: Tue, 19 Oct 2021 17:44:06 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Naveen Naidu <naveennaidu479@gmail.com>
+Subject: Re: [PATCH 1/6] PCI/AER: Enable COR/UNCOR error reporting in
+ set_device_error_reporting()
+Message-ID: <20211019224406.GA2414443@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Ht3QMpjglxJmJTzMl0ObBYq2CdO8ZHRQ
-X-Proofpoint-ORIG-GUID: Ht3QMpjglxJmJTzMl0ObBYq2CdO8ZHRQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-19_02,2021-10-19_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015
- priorityscore=1501 bulkscore=0 impostorscore=0 mlxscore=0 suspectscore=0
- phishscore=0 mlxlogscore=999 malwarescore=0 spamscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2109230001
- definitions=main-2110190124
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b583172ece1fb1dab3d75c6007ec8c443323158d.1633369560.git.naveennaidu479@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,27 +57,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cheloha@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: tsbogend@alpha.franken.de, linux-pci@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, oohall@gmail.com,
+ bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel-mentees@lists.linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Laurent Dufour <ldufour@linux.ibm.com> writes:
-> Le 19/10/2021 =C3=A0 00:37, Tyrel Datwyler a =C3=A9crit=C2=A0:
->> On 10/18/21 9:34 AM, Nathan Lynch wrote:
->> The reality is that '/ibm,platform-facilities' and 'cache' nodes are the=
- only
->> LPM scoped device tree nodes that allow node delete/add. So, as a one-off
->> workaround to deal with what I consider a bad firmware approach I think =
-this is
->> probably the best approach barring getting firmware to move to an update
->> properties approach.
->
-> I do agree, this is probably the best option until the firmware is moving=
- to an=20
-> update notification.
+On Mon, Oct 04, 2021 at 11:29:27PM +0530, Naveen Naidu wrote:
+> The (PCIe r5.0, sec 7.6.4.3, Table 7-101) and  (PCIe r5.0, sec 7.8.4.6,
+> Table 7-104) 
 
-Just to be clear, my proposal is to carry this hack until *Linux* can
-be changed to better support the current firmware behavior. There's
-little point in trying to get firmware to change now.
+s/7.6.4.3/7.8.4.3/
+
+Cite it like this:
+
+  Per PCIe r5.0, sec 7.8.4.3 and sec 7.8.4.6, the default values ...
+
+> states that the default values for the Uncorrectable Error
+> Mask and Correctable Error Mask should be 0b. But the current code does
+> not set the default value of these registers when the PCIe bus loads the
+> AER service driver.
+
+The defaults specified here are for hardware designers -- this is what
+the registers must contain after power-up or reset.  This section of
+the spec isn't telling us what the OS is required to write.
+
+If we want to clear these masks, I think we have to:
+
+  1) Analyze every other place that writes the masks to make sure we
+  don't break any of them.  There aren't very many, and most of them
+  are in drivers, which would be after the aer_probe() path.  There
+  might be a conflict with program_hpx_type2(), though.
+
+  2) Make it dependent on pcie_aer_is_native().  Ownership of the AER
+  capability can be retained by the platform, in which case the OS
+  shouldn't touch it.
+
+> Enable reporting of all correctable and uncorrectable errors during
+> aer_probe()
+> 
+> Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
+> ---
+>  drivers/pci/pcie/aer.c | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 9784fdcf3006..88c4ca6098fb 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -1212,6 +1212,7 @@ static int set_device_error_reporting(struct pci_dev *dev, void *data)
+>  {
+>  	bool enable = *((bool *)data);
+>  	int type = pci_pcie_type(dev);
+> +	int aer = dev->aer_cap;
+>  
+>  	if ((type == PCI_EXP_TYPE_ROOT_PORT) ||
+>  	    (type == PCI_EXP_TYPE_RC_EC) ||
+> @@ -1223,8 +1224,18 @@ static int set_device_error_reporting(struct pci_dev *dev, void *data)
+>  			pci_disable_pcie_error_reporting(dev);
+>  	}
+>  
+> -	if (enable)
+> +	if (enable) {
+> +
+> +		/* Enable reporting of all uncorrectable errors */
+> +		/* Uncorrectable Error Mask - turned on bits disable errors */
+> +		pci_write_config_dword(dev, aer + PCI_ERR_UNCOR_MASK, 0);
+> +
+> +		/* Enable reporting of all correctable errors */
+> +		/* Correctable Error Mask - turned on bits disable errors */
+> +		pci_write_config_dword(dev, aer + PCI_ERR_COR_MASK, 0);
+> +
+>  		pcie_set_ecrc_checking(dev);
+> +	}
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.25.1
+> 
+> _______________________________________________
+> Linux-kernel-mentees mailing list
+> Linux-kernel-mentees@lists.linuxfoundation.org
+> https://lists.linuxfoundation.org/mailman/listinfo/linux-kernel-mentees
