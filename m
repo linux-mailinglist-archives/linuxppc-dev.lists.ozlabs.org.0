@@ -1,81 +1,125 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB37434803
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 11:35:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF87443483D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 11:47:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HZ58109mGz2yRS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 20:35:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HZ5Q546QFz30RH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 20:47:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZuTXYVNi;
+	dkim=pass (1024-bit key; unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com header.b=A/wQ6h5z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c;
- helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=ZuTXYVNi; dkim-atps=neutral
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
- [IPv6:2607:f8b0:4864:20::42c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=vivo.com (client-ip=40.107.130.132;
+ helo=apc01-hk2-obe.outbound.protection.outlook.com;
+ envelope-from=wanjiabing@vivo.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com
+ header.b=A/wQ6h5z; dkim-atps=neutral
+Received: from APC01-HK2-obe.outbound.protection.outlook.com
+ (mail-eopbgr1300132.outbound.protection.outlook.com [40.107.130.132])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HZ57L1Tf4z2yPG
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Oct 2021 20:35:09 +1100 (AEDT)
-Received: by mail-pf1-x42c.google.com with SMTP id q19so2443621pfl.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Oct 2021 02:35:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=I0ZEoxf+qBRrE4EbV2DUTK2XydFaBZKQRHBZdtXWdAI=;
- b=ZuTXYVNiTIfLkbMl6G+ZXFJwDD8iEeOO9ZL4ZcQyMqRWdw3D7oXfxTqhZu/j2em3IB
- 8XMj9jq6yg0zME0rR8hUAhM3GVP6qjMkBR/U0bWPyFxHPi4Bl3LjCwENvAE4tSlun/7s
- wAswkg2Fb758WbOyD/QGu+6mmtOMB0rUYBQrIchpHr/xBPfFtW+cgFCNpVlNDm0Pc0/D
- 647q2HD2sssL8dBVZrR8mSrz7Ppp1aE2hvbseyVM1/CHzkcKI58Q+9MYdVfCXxlJF7tA
- YcWLsyttuR6cOiJNaBX/B9Y5SMfzDcRSs6QnscagOXbbCHGHR/zmQZbaf2E8wrlJy6ep
- jTGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=I0ZEoxf+qBRrE4EbV2DUTK2XydFaBZKQRHBZdtXWdAI=;
- b=zzSMWZYOL+FqcE7N21ofquq/3ItPOXbC8Z8uRoaty2nZlRr81/WqsYMXDA2LqoWrkL
- 1fYLpXMl1ZAw17O06FhrMjWvCFIi2k1lveKnFckFoHUnWayZRks+oWcOzoQfsnxlOvem
- WOBymcyc0kKVuWUoTyCSnR4BchkSFr3rpCihH5/G+h+fBLY7+NabuCHjzCNcyX7/pu5t
- dPtJQBjhc4PMp5L2381zzAWSBuJl3PK6OdmflUZh/mOyxHbO+6h81oIfW+MU23yPnWXt
- hYcpzaJF6UkiQkbpeZ71J2Uh10q0tPTqGy3W1JZ0Zy+/gdYAb8+p83yza/eQQemj4QXB
- df8Q==
-X-Gm-Message-State: AOAM533A3YvU2fth/FNAqT9/CL+QWKkxQebm7JaKCovVGGt7SZNko7aF
- ewjXrnn3cRwxKcstToM1Y+U=
-X-Google-Smtp-Source: ABdhPJxNP0G5kSvi88Ytp53fs3hL1SswaI+tfU2GpY8sqcprGF19p7VNXQeDBZIyuq+qhdAciF8y4Q==
-X-Received: by 2002:a05:6a00:9a2:b0:44c:b979:afe3 with SMTP id
- u34-20020a056a0009a200b0044cb979afe3mr5194704pfg.61.1634722505179; 
- Wed, 20 Oct 2021 02:35:05 -0700 (PDT)
-Received: from localhost (14-203-144-177.static.tpgi.com.au. [14.203.144.177])
- by smtp.gmail.com with ESMTPSA id
- oc8sm1978993pjb.15.2021.10.20.02.35.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Oct 2021 02:35:04 -0700 (PDT)
-Date: Wed, 20 Oct 2021 19:35:00 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2] KVM: PPC: Defer vtime accounting 'til after IRQ
- handling
-To: kvm-ppc@vger.kernel.org, Laurent Vivier <lvivier@redhat.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20211007142856.41205-1-lvivier@redhat.com>
- <875yu17rxk.fsf@mpe.ellerman.id.au>
- <d7f59d0e-eac2-7978-4067-9258c8b1aefe@redhat.com>
- <1634263564.zfj0ajf8eh.astroid@bobo.none>
- <2a13119c-ccec-1dd5-8cf6-da07a9d8fe6f@redhat.com>
-In-Reply-To: <2a13119c-ccec-1dd5-8cf6-da07a9d8fe6f@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HZ5PD6c6Wz2yLv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Oct 2021 20:47:05 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MYLYptUtaketm/58abn+E6HMDK5s3PvFuZ8wN2HNDqWagHj+pBYA0UpODYePuhC9sNLQ9sfw7JUx7F5ULZcNinJwUD4KnI/w9PlfwsKfk/x+nwLQjDZF1UrSydxjwFEjGXQhDe47gp2/vx1f75MoeBPq3IlcWFgTVM0K7jl9LxHqanjEu8v/Y18z++e2s56+H4Qh3FxAA/4LNJeQWrLHcFvPcSFyrQpy3YIMUS70fGABJgjA76dscb0Wt3BPGizRpmIZobVXEo91YOPZNMKv/CsxSYuO1PnzSLNkPdj+gu6Hh6D/nyuKzN90yoKk4FXDcJxExjRmIby0qjLFsSBDTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yp7+v1Z5fpq+28LU14WutBeNjTzq9AsbOmyoS6FDwVg=;
+ b=TKY7xwMDR77Fs7oVnGLwjamugfTKV27uJh3cvtIDwZN9qHMVuTgoS2CQe7btcqa5GQ5eQB4xsrhe3cL7CajyZKTYA4/yYInEuy8WO71o9lJlk0OStftlwA6tu2dGdxSooWC87nZTQmhS44wg/2VNd4Nn1RdxFXxSKVFXi8oepWnixlqoNoXZj6owXtJbem6z/J2NMpE3Fn0Sx1gAEjZdvjESXATwhn2CxewEAi1KIEYOiUho1FNcurrSxDpUGpXsEy4qBSmXdYZWzchc3kClTilmWsUydwUhwOhvcDdLM38cE832DyZ4vJO0HccUx/g6++R0doXPEKtn7rEV6YJtig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com; 
+ s=selector2-vivo0-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yp7+v1Z5fpq+28LU14WutBeNjTzq9AsbOmyoS6FDwVg=;
+ b=A/wQ6h5z8g2d/vdfIsyZd64rR1Hy30Ofuc14qUGOtiPg7/iBeALlUPBKejPJqhpNo91JTDjAOs2c8lH3DA50wZmkStkua5GMhluAuHXniFYlinyMDnUAq5uD/6W53PoWUDMVPSsVP18I8SeCTqytLVGGp+5paOm5D9u8A2x9BRs=
+Authentication-Results: ellerman.id.au; dkim=none (message not signed)
+ header.d=none;ellerman.id.au; dmarc=none action=none header.from=vivo.com;
+Received: from SG2PR06MB3367.apcprd06.prod.outlook.com (2603:1096:4:78::19) by
+ SG2PR06MB2858.apcprd06.prod.outlook.com (2603:1096:4:1b::10) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4608.18; Wed, 20 Oct 2021 09:46:42 +0000
+Received: from SG2PR06MB3367.apcprd06.prod.outlook.com
+ ([fe80::fc12:4e1b:cc77:6c0]) by SG2PR06MB3367.apcprd06.prod.outlook.com
+ ([fe80::fc12:4e1b:cc77:6c0%6]) with mapi id 15.20.4628.016; Wed, 20 Oct 2021
+ 09:46:42 +0000
+From: Wan Jiabing <wanjiabing@vivo.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [PATCH] PCI/hotplug: Remove unneeded of_node_put() in pnv_php
+Date: Wed, 20 Oct 2021 05:46:04 -0400
+Message-Id: <20211020094604.2106-1-wanjiabing@vivo.com>
+X-Mailer: git-send-email 2.20.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: HK2PR02CA0129.apcprd02.prod.outlook.com
+ (2603:1096:202:16::13) To SG2PR06MB3367.apcprd06.prod.outlook.com
+ (2603:1096:4:78::19)
 MIME-Version: 1.0
-Message-Id: <1634722472.k7vwa86otu.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Received: from localhost.localdomain (203.90.234.87) by
+ HK2PR02CA0129.apcprd02.prod.outlook.com (2603:1096:202:16::13) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4608.16 via Frontend Transport; Wed, 20 Oct 2021 09:46:41 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: c7be830c-042f-4b98-45c2-08d993ae8570
+X-MS-TrafficTypeDiagnostic: SG2PR06MB2858:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <SG2PR06MB2858897E79643157A0C00C1AABBE9@SG2PR06MB2858.apcprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1079;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: UVgfnhQ3SwNIXgQAjAqEMR+KaJ7jc9EEfbLOaREhYju9NwcEmpXo8rqjefdt8qS17H0VnMSJlqZDssZP5n8X++NBI6VUWy7lQVo83PGR7X/DpdYQkVp/PKgQonejdUBVFEhZDRXB0aj2MA+5HLOcZXCbGAOBDCzI7HWUqQ0ZVErMy8hlHfEWnQe/sVb2V7tcSl2q/eGBpuX6dPh6iMUCp0kbGsrSXE5KjhTNSrhHH6UjfLvf2xhbDOEdKds3EWv4jOpvP1YfTlZybD7YWVzASXwa1SaeVPE6D8ElXTMoyEWeOJWEJ+Z4wIfzJna7tKTMttt/y01RH/LoZjnGm9PPQgmUYMcL0fHCPo/pCz0vj6g0Tvypg40sJ8aoYyJXNUJ4bEznbW5qQ9vF62Y7npFusuBx40vCGo82JZI8FIkF8WwJ4Bn5msmJgtiUWEb4/78isYC8Ve3WrhCRuv7GNoMg1gCvrGkJUg6qKAUNtk6QnLgGC+ecvm3OBZDyvSb9Nh0+JNNRJXe8bqQ1Tn+3B5UrOtAn6gKS1gdzzbe7oG1NeHuNQe5iqG06WuSjKYNtAmYVizeyLshFYQuYD2XPPpgRE+my3CujnyLDQXxMwBDgMkbUT//uisK0PhONcjbstV4FUwJBfEvEZl7ehGz8J74cb7c9V2hYJJ6n0c+OS3aQvnpxfctbo8aWbbJYfnEoIWBcq5TlcaAD1kvrXzFbSoZDqQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SG2PR06MB3367.apcprd06.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(366004)(38350700002)(38100700002)(66556008)(66476007)(36756003)(4326008)(26005)(8936002)(1076003)(107886003)(2616005)(508600001)(86362001)(956004)(6512007)(6506007)(83380400001)(52116002)(66946007)(6486002)(316002)(5660300002)(4744005)(6666004)(110136005)(2906002)(186003)(8676002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mGiPirVU+UFwHvLM4sKbk0KR1zxvLAHWCKR5LsahkpdVnusmJTiyV6lFu0y9?=
+ =?us-ascii?Q?ZgF+aS45xNdqtMutFahyFgxVEQTdr4y9Z2o8ub4Zdr9SoPiJLTFmw5WgYtfH?=
+ =?us-ascii?Q?ltDeV76c8m8dL2elWgVRKGnXAY39NUskTKzD9YI7YH3x/5NlBeIzu06heyAJ?=
+ =?us-ascii?Q?MlLr46xjb25KGqM2F/kHi2Qd9jSFkMz9odpg6qljA4/iUcingkQKiT4yjTx6?=
+ =?us-ascii?Q?uRY5RS4bV9KtMjsCUfEss/6l9jwv0uLNkDaoWB8gyIuGb1A5an7xdWhkQLrw?=
+ =?us-ascii?Q?/hT2c2eJVWKQbN2b+4sEnWRaK6+JH/uP7EvzHnb5pgccZbh9rPClCrftQGNf?=
+ =?us-ascii?Q?pmaH3SDFbrt1zTSGuLa2mGGpcGm5jQBRTHRyWvrzYi0x4DFFZhTrdIXv1D50?=
+ =?us-ascii?Q?VQl4OCGTgUcqEBo5vVhvTqe8rxJW3oxumSZFoqfw/I6ecMqzTjRPYxEvu8EN?=
+ =?us-ascii?Q?//GkkQ6RzCteqbhtZwEFHUGmyXhMC2XbkxG7eMOkwLzu/PIQxN7zTE6AZls2?=
+ =?us-ascii?Q?o54LDn0MJqIsGv3wFFJhEbR0CGAN97FLHHLv/kUH/J7jhv3WnJt+ElYoIKEi?=
+ =?us-ascii?Q?nsEesnxYQdcl/OZcDbWymZjzPi/9symTA8z5CBebMffsjBkccy5F8xn5SaH8?=
+ =?us-ascii?Q?aC+kj3jDUdiymR44EibT9P+o3iPP6KBnWKkuYPIrIytnABqdOw1yzrb331Y5?=
+ =?us-ascii?Q?yvpM3AkbXIxLYm9yxnUQU0ChyhVvInd+QBbbe3R3fB3Qz0QwM/txZNeOpBge?=
+ =?us-ascii?Q?FFx2uUqD8p+54T8/V17OhEEPULMRQCvUAL5WgZcvK2jW7ftqwXk0+N50Vu4C?=
+ =?us-ascii?Q?oLT3YS+j0YZuwBIlELPQm83KDReQZVoCtEWhJDW1V7m4dJ+tjPZEDrZzOTS4?=
+ =?us-ascii?Q?R0XcSwATlp2aK0IiEnB7W5hd3HSRfE/X9Y5uzM7TVSM4sKBF2g9/VLxRmJ+T?=
+ =?us-ascii?Q?dt2rTIm8tzxZiPMff1C7rTVHZcnO/xIwDFSucvQmaCNY0gWp2TKAqUgeD849?=
+ =?us-ascii?Q?VedK9sI2bD+BF1Qvtf/lSJgtlyeUyNn2aaRTIKFlo4/mBM1IQ6YGHQTT9Q5q?=
+ =?us-ascii?Q?aly3kVtn6IKeicPWi83OaSj6cGyz5qH+DG3kLt8NlTFUZAxyEOqYI98MMTFJ?=
+ =?us-ascii?Q?iuGMSx8QivHwI8FUkO+TyeoufwH7k0nKLLBo4N4COzZSR4GgSXQ0C6cMG/o4?=
+ =?us-ascii?Q?LfIC0FqaSKOOuIqkd2wy6c0+wRRPsghzZwl3V/NH4mBxIdAHTEPIqHdCeVPJ?=
+ =?us-ascii?Q?/dhqKDVgHf0DV4yx88UcQp3041lwDaoMdxbhvBdvuLN38bulBw0rDdPH1S93?=
+ =?us-ascii?Q?QYmGO/E617c+JNCV/EDgisWW?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c7be830c-042f-4b98-45c2-08d993ae8570
+X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB3367.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2021 09:46:42.5124 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 11126903@vivo.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SG2PR06MB2858
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,135 +131,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kurz <groug@kaod.org>, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: kael_w@yeah.net, Wan Jiabing <wanjiabing@vivo.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Laurent Vivier's message of October 20, 2021 4:29 pm:
-> On 15/10/2021 04:23, Nicholas Piggin wrote:
->> Excerpts from Laurent Vivier's message of October 13, 2021 7:30 pm:
->>> On 13/10/2021 01:18, Michael Ellerman wrote:
->>>> Laurent Vivier <lvivier@redhat.com> writes:
->>>>> Commit 112665286d08 moved guest_exit() in the interrupt protected
->>>>> area to avoid wrong context warning (or worse), but the tick counter
->>>>> cannot be updated and the guest time is accounted to the system time.
->>>>>
->>>>> To fix the problem port to POWER the x86 fix
->>>>> 160457140187 ("Defer vtime accounting 'til after IRQ handling"):
->>>>>
->>>>> "Defer the call to account guest time until after servicing any IRQ(s=
-)
->>>>>    that happened in the guest or immediately after VM-Exit.  Tick-bas=
-ed
->>>>>    accounting of vCPU time relies on PF_VCPU being set when the tick =
-IRQ
->>>>>    handler runs, and IRQs are blocked throughout the main sequence of
->>>>>    vcpu_enter_guest(), including the call into vendor code to actuall=
-y
->>>>>    enter and exit the guest."
->>>>>
->>>>> Fixes: 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit gues=
-t context before enabling irqs")
->>>>> Cc: npiggin@gmail.com
->>>>> Cc: <stable@vger.kernel.org> # 5.12
->>>>> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
->>>>> ---
->>>>>
->>>>> Notes:
->>>>>       v2: remove reference to commit 61bd0f66ff92
->>>>>           cc stable 5.12
->>>>>           add the same comment in the code as for x86
->>>>>
->>>>>    arch/powerpc/kvm/book3s_hv.c | 24 ++++++++++++++++++++----
->>>>>    1 file changed, 20 insertions(+), 4 deletions(-)
->>>>>
->>>>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_h=
-v.c
->>>>> index 2acb1c96cfaf..a694d1a8f6ce 100644
->>>>> --- a/arch/powerpc/kvm/book3s_hv.c
->>>>> +++ b/arch/powerpc/kvm/book3s_hv.c
->>>> ...
->>>>> @@ -4506,13 +4514,21 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vc=
-pu, u64 time_limit,
->>>>>   =20
->>>>>    	srcu_read_unlock(&kvm->srcu, srcu_idx);
->>>>>   =20
->>>>> +	context_tracking_guest_exit();
->>>>> +
->>>>>    	set_irq_happened(trap);
->>>>>   =20
->>>>>    	kvmppc_set_host_core(pcpu);
->>>>>   =20
->>>>> -	guest_exit_irqoff();
->>>>> -
->>>>>    	local_irq_enable();
->>>>> +	/*
->>>>> +	 * Wait until after servicing IRQs to account guest time so that an=
-y
->>>>> +	 * ticks that occurred while running the guest are properly account=
-ed
->>>>> +	 * to the guest.  Waiting until IRQs are enabled degrades the accur=
-acy
->>>>> +	 * of accounting via context tracking, but the loss of accuracy is
->>>>> +	 * acceptable for all known use cases.
->>>>> +	 */
->>>>> +	vtime_account_guest_exit();
->>>>
->>>> This pops a warning for me, running guest(s) on Power8:
->>>>   =20
->>>>     [  270.745303][T16661] ------------[ cut here ]------------
->>>>     [  270.745374][T16661] WARNING: CPU: 72 PID: 16661 at arch/powerpc=
-/kernel/time.c:311 vtime_account_kernel+0xe0/0xf0
->>>
->>> Thank you, I missed that...
->>>
->>> My patch is wrong, I have to add vtime_account_guest_exit() before the =
-local_irq_enable().
->>=20
->> I thought so because if we take an interrupt after exiting the guest tha=
-t
->> should be accounted to kernel not guest.
->>=20
->>>
->>> arch/powerpc/kernel/time.c
->>>
->>>    305 static unsigned long vtime_delta(struct cpu_accounting_data *acc=
-t,
->>>    306                                  unsigned long *stime_scaled,
->>>    307                                  unsigned long *steal_time)
->>>    308 {
->>>    309         unsigned long now, stime;
->>>    310
->>>    311         WARN_ON_ONCE(!irqs_disabled());
->>> ...
->>>
->>> But I don't understand how ticks can be accounted now if irqs are still=
- disabled.
->>>
->>> Not sure it is as simple as expected...
->>=20
->> I don't know all the timer stuff too well. The
->> !CONFIG_VIRT_CPU_ACCOUNTING case is relying on PF_VCPU to be set when
->> the host timer interrupt runs irqtime_account_process_tick runs so it
->> can accumulate that tick to the guest?
->>=20
->> That probably makes sense then, but it seems like we need that in a
->> different place. Timer interrupts are not guaranteed to be the first one
->> to occur when interrupts are enabled.
->>=20
->> Maybe a new tick_account_guest_exit() and move PF_VCPU clearing to that
->> for tick based accounting. Call it after local_irq_enable and call the
->> vtime accounting before it. Would that work?
->=20
-> Hi Nick,
->=20
-> I think I will not have the time to have a look to fix that?
->=20
-> Could you try?
+Fix following coccicheck warning:
+./drivers/pci/hotplug/pnv_php.c:161:2-13: ERROR: probable double put.
 
-Hey Laurent, sure I can take a look at it.
+Device node iterators put the previous value of the index variable, so
+an explicit put causes a double put.
 
-Thanks,
-Nick
+Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+---
+ drivers/pci/hotplug/pnv_php.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index f4c2e6e01be0..f3da4f95d73f 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -158,7 +158,6 @@ static void pnv_php_detach_device_nodes(struct device_node *parent)
+ 	for_each_child_of_node(parent, dn) {
+ 		pnv_php_detach_device_nodes(dn);
+ 
+-		of_node_put(dn);
+ 		of_detach_node(dn);
+ 	}
+ }
+-- 
+2.20.1
+
