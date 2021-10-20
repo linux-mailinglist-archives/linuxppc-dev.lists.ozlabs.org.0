@@ -1,61 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B477434300
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 03:35:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4538243430C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 03:43:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HYtVJ4nKlz3cQp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 12:35:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HYtff6yPcz3cSM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 12:43:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.219.48; helo=mail-qv1-f48.google.com;
- envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com
- [209.85.219.48])
+ smtp.mailfrom=gmail.com (client-ip=209.85.160.180;
+ helo=mail-qt1-f180.google.com; envelope-from=pku.leo@gmail.com;
+ receiver=<UNKNOWN>)
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com
+ [209.85.160.180])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HYtTs6KQqz2yRS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Oct 2021 12:35:27 +1100 (AEDT)
-Received: by mail-qv1-f48.google.com with SMTP id z3so1164748qvl.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 18:35:27 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HYtfD0MGkz2yWL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Oct 2021 12:42:42 +1100 (AEDT)
+Received: by mail-qt1-f180.google.com with SMTP id w2so1777787qtn.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 18:42:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=RUYSv1Ml+e5O/S44qXhwpad8q6ZJhXnlabD5d8PHlfE=;
- b=AUYNU9EnYfhG353UnbJALRcw1HHC23/2vvGsNN/BdSealy6ulCkTSikez+mXX/5N5U
- DlYRbvsWYRifDdANABfVMkHe1ms3Ru8Uika9MDsWt8Un0/mRRPR7tEMuF08x88148QXd
- FAQmmITkazbcYMPDMgkQgl6FhAD+ucc3TlMcd6+jcI8q18TEzIrMjhtBnFSoK4nDM/Sr
- XSrfHwACDVhM0S8vbFE4obCwDSzlJbakgJKR+pY5tONJNztZV9zt9FwmXPc7iH9t90vO
- vQdJGiC/1TpzqCshkesGlkHdK07gDEct1L9avNBUV/zBmqDY3edovE+3GJZ9Y2VvQQ1C
- VApQ==
-X-Gm-Message-State: AOAM532r1q7QVEZ3Zm8ba0MsQIar2xZgTF6bKt7p3LI05vy9IXigf3/6
- ZwzGd1O3KRGbuFK2yV8aaZQFIurXHDQ=
-X-Google-Smtp-Source: ABdhPJxZBP7ZzKEEDAyFBDtwI7KHg6Vau0RPIptlTXIXKHE+KHFqQoGObxKk9UIWB56fMuiVARiu0g==
-X-Received: by 2002:ad4:5966:: with SMTP id eq6mr3423643qvb.64.1634693719099; 
- Tue, 19 Oct 2021 18:35:19 -0700 (PDT)
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com.
- [209.85.222.175])
- by smtp.gmail.com with ESMTPSA id n20sm407512qkk.63.2021.10.19.18.35.18
+ bh=phuizum7Jvmwq/i5uKXc0tZWrbM+XXyJMZ25fUOpTLs=;
+ b=0D22pzHvHBDBwDaGLJ4q4JHnV9zlNRjTkRu4Kc5jlM0UNQ+tC4Xk+poOZmundcaANj
+ y4j+3Z7y3GDwEvyC2+s6y1L99R1kZq6+ApeoWh3EzTbFl5aUheC+aemmAVc2O8EygCXJ
+ vM0FocvRMBugCx2upEwME0lqQjRByAOrhgsgq0GcmNtFRvY3dXIiEGinTAY+LhFEGEdC
+ 9WxHBYb/M8cBix0UNZJPAbCvJlPQqYowox8f5Ne3jHlNsobrwu/7d3UQ3CvXI30fHcVb
+ AAn131fKf68X6OMk5v7Q8SR6O4OVz/ceou6TEiGrWaEk/1y0eTeflrtIr2S3078Wnf6C
+ ZZRw==
+X-Gm-Message-State: AOAM531QjXfWGj7UCaGUNHBIQgOPN84M78L234PDMkHlQB3P0v6AGyN3
+ Q/IFFZuVIVk+XcgKqF8B3uq/92TahRw=
+X-Google-Smtp-Source: ABdhPJxajQ+Nzpy+/3pTV7V8l11UlD9HzCI8ibv4Wr+a4q9zKOY9a2TVodYzELJj54Wq24+6rq/cbw==
+X-Received: by 2002:ac8:578c:: with SMTP id v12mr3888257qta.400.1634694158979; 
+ Tue, 19 Oct 2021 18:42:38 -0700 (PDT)
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com.
+ [209.85.160.170])
+ by smtp.gmail.com with ESMTPSA id y22sm366687qkj.93.2021.10.19.18.42.38
  for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Oct 2021 18:35:18 -0700 (PDT)
-Received: by mail-qk1-f175.google.com with SMTP id p4so1813157qki.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 18:35:18 -0700 (PDT)
-X-Received: by 2002:a37:c12:: with SMTP id 18mr3064225qkm.12.1634693718152;
- Tue, 19 Oct 2021 18:35:18 -0700 (PDT)
+ Tue, 19 Oct 2021 18:42:38 -0700 (PDT)
+Received: by mail-qt1-f170.google.com with SMTP id r17so1697760qtx.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Oct 2021 18:42:38 -0700 (PDT)
+X-Received: by 2002:a05:622a:1050:: with SMTP id
+ f16mr3965552qte.127.1634694158181; 
+ Tue, 19 Oct 2021 18:42:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211019023241.17466-1-Meng.Li@windriver.com>
-In-Reply-To: <20211019023241.17466-1-Meng.Li@windriver.com>
+References: <20211019030555.29461-1-Meng.Li@windriver.com>
+In-Reply-To: <20211019030555.29461-1-Meng.Li@windriver.com>
 From: Li Yang <leoyang.li@nxp.com>
-Date: Tue, 19 Oct 2021 20:35:06 -0500
-X-Gmail-Original-Message-ID: <CADRPPNRVAqptuD_cf+vtcD4UBbL+2uT0fjnw14QS=8_tpt1bjQ@mail.gmail.com>
-Message-ID: <CADRPPNRVAqptuD_cf+vtcD4UBbL+2uT0fjnw14QS=8_tpt1bjQ@mail.gmail.com>
-Subject: Re: [PATCH v2] soc: fsl: dpio: instead smp_processor_id with
- raw_smp_processor_id
+Date: Tue, 19 Oct 2021 20:42:27 -0500
+X-Gmail-Original-Message-ID: <CADRPPNSuZ9Jidm7tg+BTu_iwbxHE8i+1J3wkPLF0CZuGNd3RDg@mail.gmail.com>
+Message-ID: <CADRPPNSuZ9Jidm7tg+BTu_iwbxHE8i+1J3wkPLF0CZuGNd3RDg@mail.gmail.com>
+Subject: Re: [PATCH] driver: soc: dpio: use the whole functions to protect
+ critical zone
 To: Meng.Li@windriver.com
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -69,81 +71,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ioana Ciocoi Radulescu <ruxandra.radulescu@nxp.com>,
- Horia Geanta <horia.geanta@nxp.com>, Roy Pledge <Roy.Pledge@nxp.com>,
- lkml <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Youri Querry <youri.querry_1@nxp.com>,
  "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
+ <linux-arm-kernel@lists.infradead.org>, lkml <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 18, 2021 at 9:46 PM <Meng.Li@windriver.com> wrote:
+On Mon, Oct 18, 2021 at 10:07 PM <Meng.Li@windriver.com> wrote:
 >
 > From: Meng Li <Meng.Li@windriver.com>
 >
-> When enable debug kernel configs,there will be calltrace as below:
+> In orininal code, use 2 function spin_lock() and local_irq_save() to
+> protect the critical zone. But when enable the kernel debug config,
+> there are below inconsistent lock state detected.
+> ================================
+> WARNING: inconsistent lock state
+> 5.10.63-yocto-standard #1 Not tainted
+> --------------------------------
+> inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+> lock_torture_wr/226 [HC0[0]:SC1[5]:HE1:SE0] takes:
+> ffff002005b2dd80 (&p->access_spinlock){+.?.}-{3:3}, at: qbman_swp_enqueue_multiple_mem_back+0x44/0x270
+> {SOFTIRQ-ON-W} state was registered at:
+>   lock_acquire.part.0+0xf8/0x250
+>   lock_acquire+0x68/0x84
+>   _raw_spin_lock+0x68/0x90
+>   qbman_swp_enqueue_multiple_mem_back+0x44/0x270
+>   ......
+>   cryptomgr_test+0x38/0x60
+>   kthread+0x158/0x164
+>   ret_from_fork+0x10/0x38
+> irq event stamp: 4498
+> hardirqs last  enabled at (4498): [<ffff800010fcf980>] _raw_spin_unlock_irqrestore+0x90/0xb0
+> hardirqs last disabled at (4497): [<ffff800010fcffc4>] _raw_spin_lock_irqsave+0xd4/0xe0
+> softirqs last  enabled at (4458): [<ffff8000100108c4>] __do_softirq+0x674/0x724
+> softirqs last disabled at (4465): [<ffff80001005b2a4>] __irq_exit_rcu+0x190/0x19c
 >
-> BUG: using smp_processor_id() in preemptible [00000000] code: swapper/0/1
-> caller is debug_smp_processor_id+0x20/0x30
-> CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.10.63-yocto-standard #1
-> Hardware name: NXP Layerscape LX2160ARDB (DT)
-> Call trace:
->  dump_backtrace+0x0/0x1a0
->  show_stack+0x24/0x30
->  dump_stack+0xf0/0x13c
->  check_preemption_disabled+0x100/0x110
->  debug_smp_processor_id+0x20/0x30
->  dpaa2_io_query_fq_count+0xdc/0x154
->  dpaa2_eth_stop+0x144/0x314
->  __dev_close_many+0xdc/0x160
->  __dev_change_flags+0xe8/0x220
->  dev_change_flags+0x30/0x70
->  ic_close_devs+0x50/0x78
->  ip_auto_config+0xed0/0xf10
->  do_one_initcall+0xac/0x460
->  kernel_init_freeable+0x30c/0x378
->  kernel_init+0x20/0x128
->  ret_from_fork+0x10/0x38
+> other info that might help us debug this:
+>  Possible unsafe locking scenario:
+>        CPU0
+>        ----
+>   lock(&p->access_spinlock);
+>   <Interrupt>
+>     lock(&p->access_spinlock);
+>  *** DEADLOCK ***
 >
-> Based on comment in the context, it doesn't matter whether
-> preemption is disable or not. So, instead smp_processor_id()
+> So, in order to avoid deadlock, use the whole functinos
 
-s/instead/replace/g
+s/functinos/functions/
 
-> with raw_smp_processor_id() to avoid above call trace.
+> spin_lock_irqsave/spin_unlock_irqrestore() to protect critical zone.
 >
-> v2:
-> Remove the preempt_disable/enable() protection, instead smp_processor_id
-> with raw_smp_processor_id.
-
-The revision history information should go after the "---" below.
-
->
-> Fixes: c89105c9b390 ("staging: fsl-mc: Move DPIO from staging to drivers/soc/fsl")
+> Fixes: 3b2abda7d28c ("soc: fsl: dpio: Replace QMAN array mode with ring mode enqueue")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Meng Li <Meng.Li@windriver.com>
 
-I helped to fix the issues I mentioned.  Applied for fix.  Thanks.
+Applied for fix.  Thanks.
 
 > ---
->  drivers/soc/fsl/dpio/dpio-service.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/soc/fsl/dpio/qbman-portal.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
 >
-> diff --git a/drivers/soc/fsl/dpio/dpio-service.c b/drivers/soc/fsl/dpio/dpio-service.c
-> index 19f47ea9dab0..3050a534d42c 100644
-> --- a/drivers/soc/fsl/dpio/dpio-service.c
-> +++ b/drivers/soc/fsl/dpio/dpio-service.c
-> @@ -59,7 +59,7 @@ static inline struct dpaa2_io *service_select_by_cpu(struct dpaa2_io *d,
->          * potentially being migrated away.
->          */
->         if (cpu < 0)
-> -               cpu = smp_processor_id();
-> +               cpu = raw_smp_processor_id();
+> diff --git a/drivers/soc/fsl/dpio/qbman-portal.c b/drivers/soc/fsl/dpio/qbman-portal.c
+> index 845e91416b58..a56dbe4de34f 100644
+> --- a/drivers/soc/fsl/dpio/qbman-portal.c
+> +++ b/drivers/soc/fsl/dpio/qbman-portal.c
+> @@ -785,8 +785,7 @@ int qbman_swp_enqueue_multiple_mem_back(struct qbman_swp *s,
+>         int i, num_enqueued = 0;
+>         unsigned long irq_flags;
 >
->         /* If a specific cpu was requested, pick it up immediately */
->         return dpio_by_cpu[cpu];
+> -       spin_lock(&s->access_spinlock);
+> -       local_irq_save(irq_flags);
+> +       spin_lock_irqsave(&s->access_spinlock, irq_flags);
+>
+>         half_mask = (s->eqcr.pi_ci_mask>>1);
+>         full_mask = s->eqcr.pi_ci_mask;
+> @@ -797,8 +796,7 @@ int qbman_swp_enqueue_multiple_mem_back(struct qbman_swp *s,
+>                 s->eqcr.available = qm_cyc_diff(s->eqcr.pi_ring_size,
+>                                         eqcr_ci, s->eqcr.ci);
+>                 if (!s->eqcr.available) {
+> -                       local_irq_restore(irq_flags);
+> -                       spin_unlock(&s->access_spinlock);
+> +                       spin_unlock_irqrestore(&s->access_spinlock, irq_flags);
+>                         return 0;
+>                 }
+>         }
+> @@ -837,8 +835,7 @@ int qbman_swp_enqueue_multiple_mem_back(struct qbman_swp *s,
+>         dma_wmb();
+>         qbman_write_register(s, QBMAN_CINH_SWP_EQCR_PI,
+>                                 (QB_RT_BIT)|(s->eqcr.pi)|s->eqcr.pi_vb);
+> -       local_irq_restore(irq_flags);
+> -       spin_unlock(&s->access_spinlock);
+> +       spin_unlock_irqrestore(&s->access_spinlock, irq_flags);
+>
+>         return num_enqueued;
+>  }
 > --
 > 2.17.1
 >
