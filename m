@@ -2,73 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999F9435207
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 19:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE4043515C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 19:35:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HZJ7n1RVrz30RC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 04:51:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HZHn92Rgtz3c5f
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 04:35:09 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kAInaLaM;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xmission.com (client-ip=166.70.13.231;
- helo=out01.mta.xmission.com; envelope-from=ebiederm@xmission.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
-Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HZJ7H50r6z2xtP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 04:50:51 +1100 (AEDT)
-Received: from in01.mta.xmission.com ([166.70.13.51]:55338)
- by out01.mta.xmission.com with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1mdFS2-00EuET-9k; Wed, 20 Oct 2021 11:32:30 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95]:47416
- helo=email.xmission.com)
- by in01.mta.xmission.com with esmtpsa (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1mdFS0-009qGU-Te; Wed, 20 Oct 2021 11:32:29 -0600
-From: ebiederm@xmission.com (Eric W. Biederman)
-To: <linux-kernel@vger.kernel.org>
-Date: Wed, 20 Oct 2021 12:32:20 -0500
-Message-ID: <87y26nmwkb.fsf@disp2133>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=kAInaLaM; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HZHmQ5lTPz2xt1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 04:34:30 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19KGpd3a026681; 
+ Wed, 20 Oct 2021 13:34:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ysXRIWmjWphjDITdTxf/YEnu3zprC2ODZVHoDw9T4pc=;
+ b=kAInaLaM8mdVQX/nM8tWZrNo9qVMacgrc3PQCeFUtHkMIdAgrmqsG0i5La6DkHW05D97
+ 8lUlvRMhSZ9xY6p/AAAQXX3To9jZ/mwXpVAe+87bRoodtNSgF85XSiaxFdxjBlX/r7Lq
+ B77qTg1VrDhBsvjc417e+NYvmzkbeLowDeLXmIn64iZ2pFmWfIz1E2WIfecuQv4uyPzp
+ 3JeHDXvLy9gePXRkQh5gTs3HgnAWddDYnN8qz4r73xMxSpWwtWGzSHtw4wRveJaEelqR
+ +9lk9PGqv0/HSXnac2ItUYFfL1E9iubE/yJ4Xf6RKpr4zfQ56kr+AXhqxaJoBigd9Fyp sg== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3btpg71q1b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 20 Oct 2021 13:34:25 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19KHHWun028239;
+ Wed, 20 Oct 2021 17:34:24 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma03dal.us.ibm.com with ESMTP id 3bqpcc65ct-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 20 Oct 2021 17:34:24 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 19KHYMsX34472378
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 20 Oct 2021 17:34:22 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9C468C605A;
+ Wed, 20 Oct 2021 17:34:22 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9BE03C605B;
+ Wed, 20 Oct 2021 17:34:21 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.65.235.71])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed, 20 Oct 2021 17:34:21 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/pseries/mobility: ignore ibm, platform-facilities
+ updates
+To: Nathan Lynch <nathanl@linux.ibm.com>
+References: <20211018163424.2491472-1-nathanl@linux.ibm.com>
+ <6de8b295-112f-651e-a18e-3ab3e499ad69@linux.ibm.com>
+ <87zgr4y9x4.fsf@linux.ibm.com>
+ <669cb321-7e7f-e45b-a7a1-7002d8371080@linux.ibm.com>
+ <87r1cfy9m8.fsf@linux.ibm.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <718b4eb3-f001-d5c3-c238-69f49f750ec5@linux.ibm.com>
+Date: Wed, 20 Oct 2021 10:34:20 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1mdFS0-009qGU-Te; ; ; mid=<87y26nmwkb.fsf@disp2133>; ; ;
- hst=in01.mta.xmission.com; ; ; ip=68.227.160.95; ; ; frm=ebiederm@xmission.com;
- ; ; spf=neutral
-X-XM-AID: U2FsdGVkX1+QTFOF+6WLUwS/6b+bA87HzOEzbRhNKPA=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa06.xmission.com
-X-Spam-Level: *
-X-Spam-Status: No, score=1.3 required=8.0 tests=ALL_TRUSTED,BAYES_50,
- DCC_CHECK_NEGATIVE,XMNoVowels autolearn=disabled version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
- *      [score: 0.4995]
- *  1.5 XMNoVowels Alpha-numberic number with no vowels
- * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
- *      [sa06 1397; Body=1 Fuz1=1 Fuz2=1]
-X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: *;<linux-kernel@vger.kernel.org>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 757 ms - load_scoreonly_sql: 0.06 (0.0%),
- signal_user_changed: 12 (1.5%), b_tie_ro: 10 (1.3%), parse: 1.10
- (0.1%), extract_message_metadata: 4.5 (0.6%), get_uri_detail_list: 2.1
- (0.3%), tests_pri_-1000: 7 (1.0%), tests_pri_-950: 1.30 (0.2%),
- tests_pri_-900: 1.11 (0.1%), tests_pri_-90: 238 (31.4%), check_bayes:
- 237 (31.2%), b_tokenize: 14 (1.9%), b_tok_get_all: 12 (1.6%),
- b_comp_prob: 2.9 (0.4%), b_tok_touch_all: 203 (26.8%), b_finish: 0.95
- (0.1%), tests_pri_0: 469 (61.9%), check_dkim_signature: 0.62 (0.1%),
- check_dkim_adsp: 2.9 (0.4%), poll_dns_idle: 0.98 (0.1%), tests_pri_10:
- 3.3 (0.4%), tests_pri_500: 11 (1.5%), rewrite_mail: 0.00 (0.0%)
-Subject: [PATCH 00/20] exit cleanups 
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+In-Reply-To: <87r1cfy9m8.fsf@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: INZNRBEI4ZJQvmLwD-sIGWV_g4BAD7fC
+X-Proofpoint-ORIG-GUID: INZNRBEI4ZJQvmLwD-sIGWV_g4BAD7fC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-20_05,2021-10-20_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 impostorscore=0
+ clxscore=1015 bulkscore=0 phishscore=0 priorityscore=1501 spamscore=0
+ suspectscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110200098
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,114 +107,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-xtensa@linux-xtensa.org,
- linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>,
- Paul Mackerras <paulus@samba.org>, H Peter Anvin <hpa@zytor.com>,
- sparclinux@vger.kernel.org, Vincent Chen <deanbo422@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-sh@vger.kernel.org, Christian Borntraeger <borntraeger@de.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, Jonas Bonn <jonas@southpole.se>,
- Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
- Al Viro <viro@ZenIV.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Stafford Horne <shorne@gmail.com>, Chris Zankel <chris@zankel.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Hu <nickhu@andestech.com>, linuxppc-dev@lists.ozlabs.org,
- Oleg Nesterov <oleg@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Maciej Rozycki <macro@orcam.me.uk>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- David Miller <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
+Cc: cheloha@linux.ibm.com, ldufour@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 10/20/21 8:54 AM, Nathan Lynch wrote:
+> Tyrel Datwyler <tyreld@linux.ibm.com> writes:
+>> On 10/19/21 2:36 PM, Nathan Lynch wrote:
+>>> Tyrel Datwyler <tyreld@linux.ibm.com> writes:
+>>>> On 10/18/21 9:34 AM, Nathan Lynch wrote:
+>>>>> On VMs with NX encryption, compression, and/or RNG offload, these
+>>>>> capabilities are described by nodes in the ibm,platform-facilities device
+>>>>> tree hierarchy:
+>>>>>
+>>>>>   $ tree -d /sys/firmware/devicetree/base/ibm,platform-facilities/
+>>>>>   /sys/firmware/devicetree/base/ibm,platform-facilities/
+>>>>>   ├── ibm,compression-v1
+>>>>>   ├── ibm,random-v1
+>>>>>   └── ibm,sym-encryption-v1
+>>>>>
+>>>>>   3 directories
+>>>>>
+>>>>> The acceleration functions that these nodes describe are not disrupted by
+>>>>> live migration, not even temporarily.
+>>>>>
+>>>>> But the post-migration ibm,update-nodes sequence firmware always sends
+>>>>> "delete" messages for this hierarchy, followed by an "add" directive to
+>>>>> reconstruct it via ibm,configure-connector (log with debugging statements
+>>>>> enabled in mobility.c):
+>>>>>
+>>>>>   mobility: removing node /ibm,platform-facilities/ibm,random-v1:4294967285
+>>>>>   mobility: removing node /ibm,platform-facilities/ibm,compression-v1:4294967284
+>>>>>   mobility: removing node /ibm,platform-facilities/ibm,sym-encryption-v1:4294967283
+>>>>>   mobility: removing node /ibm,platform-facilities:4294967286
+>>>>>   ...
+>>>>>   mobility: added node /ibm,platform-facilities:4294967286
+>>>>
+>>>> It always bothered me that the update from firmware here was an delete/add at
+>>>> the entire '/ibm,platform-facilities' node level instead of update properties
+>>>> calls. When I asked about it years ago the claim was it was just easier to pass
+>>>> an entire sub-tree as a single node add.
+>>>
+>>> Yes, I believe this is for ease of implementation on their part.
+>>
+>> I'd still argue that a full node removal or addition is a platform
+>> reconfiguration on par with a hotplug operation.
+> 
+> Well... I think we might be better served by a slightly more flexible
+> view of things :-) These are just a series of messages from firmware
+> that should be considered as a whole, and they don't dictate exactly
+> what the OS must do to its own data structures. Nothing mandates that
+> the OS immediately and literally apply the changes as they are
+> individually reported by the update-nodes sequence.
 
-While looking at some issues related to the exit path in the kernel I
-found several instances where the code is not using the existing
-abstractions properly.
+Agree to disagree. Not saying we can do much about it here, but I think being
+flexible leads to scope creep down the road that may eventually complicate
+things worse. A node removal doesn't guarantee an immediate node addition. So we
+are just papering over the issue with a plan to paper over it some more in a
+more complicated fashion.
 
-This set of changes introduces force_fatal_sig a way of sending
-a signal and not allowing it to be caught, and corrects the
-misuse of the existing abstractions that I found.
+> 
+> Anyway, whether the firmware behavior is reasonable is sort of beside
+> the point since we're stuck with it.
 
-A lot of the misuse of the existing abstractions are silly things such
-as doing something after calling a no return function, rolling BUG by
-hand, doing more work than necessary to terminate a kernel thread, or
-calling do_exit(SIGKILL) instead of calling force_sig(SIGKILL).
+I'm aware. Moaning for the sake of moaning about it.
 
-It is my plan after sending all of these changes out for review to place
-them in a topic branch for sending Linus.  Especially for the changes
-that depend upon the new helper force_fatal_sig this is important.
+> 
+> 
+>>>>> This is because add_dt_node() -> dlpar_attach_node() attaches only the
+>>>>> parent node returned from configure-connector, ignoring any children. This
+>>>>> should be corrected for the general case, but fixing that won't help with
+>>>>> the stale OF node references, which is the more urgent problem.
+>>>>
+>>>> I don't follow. If the code path you mention is truly broken in the way you say
+>>>> then DLPAR operations involving nodes with child nodes should also be
+>>>> broken.
+>>>
+>>> Hmm I don't know of any kernel-based DLPAR workflow that attaches
+>>> sub-trees i.e. parent + children. Processor addition attaches CPU nodes
+>>> and possibly cache nodes, but they have sibling relationships. If you're
+>>> thinking of I/O adapters, the DT updates are (still!) driven from user
+>>> space. As undesirable as that is, that use case actually works correctly
+>>> AFAIK.
+>>>
+>>> What happens for the platfac LPM scenario is that
+>>> dlpar_configure_connector() returns the node pointer for the root
+>>> ibm,platform-facilities node, with children attached. That node pointer
+>>> is passed from add_dt_node() -> dlpar_attach_node() -> of_attach_node()
+>>> -> __of_attach_node(), where its child and sibling fields are
+>>> overwritten in the process of attaching it to the tree.
+>>
+>> Well it worked back in 2013 when I got all the in kernel device tree update
+>> stuff working. Looks like I missed this one which now explains one area where
+>> platform-facilities update originally went to shit.
+>>
+>> commit 6162dbe49a451f96431a23b4821f05e3bd925bc1
+>> Author: Grant Likely <grant.likely@linaro.org>
+>> Date:   Wed Jul 16 08:48:46 2014 -0600
+>>
+>>     of: Make sure attached nodes don't carry along extra children
+>>
+>>     The child pointer does not get cleared when attaching new nodes which
+>>     could cause the tree to be inconsistent. Clear the child pointer in
+>>     __of_attach_node() to be absolutely sure that the structure remains in a
+>>     consistent layout.
+>>
+>>     Signed-off-by: Grant Likely <grant.likely@linaro.org>
+>>
+>> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+>> index c875787fa394..b96d83100987 100644
+>> --- a/drivers/of/dynamic.c
+>> +++ b/drivers/of/dynamic.c
+>> @@ -98,6 +98,7 @@ int of_property_notify(int action, struct device_node *np,
+>>
+>>  void __of_attach_node(struct device_node *np)
+>>  {
+>> +       np->child = NULL;
+>>         np->sibling = np->parent->child;
+>>         np->allnext = np->parent->allnext;
+>>         np->parent->allnext = np;
+>>
+>> Not sure what the reasoning was here since this prevents attaching a node that
+>> is a sub tree. Either need to revert that, rewrite dlpar_attach_node to iterate
+>> over the sub-tree, or probably best rewrite dlpar_configure_connector to use a
+>> of_changeset instead.
+> 
+> Good find. I'd guess that adding a subtree used to sort of work, except
+> that children of np were not added to the allnext list, which would
+> effectively hide them from some lookups.
 
-Eric W. Biederman (20):
-      exit/doublefault: Remove apparently bogus comment about rewind_stack_do_exit
-      exit: Remove calls of do_exit after noreturn versions of die
-      reboot: Remove the unreachable panic after do_exit in reboot(2)
-      signal/sparc32: Remove unreachable do_exit in do_sparc_fault
-      signal/mips: Update (_save|_restore)_fp_context to fail with -EFAULT
-      signal/sh: Use force_sig(SIGKILL) instead of do_group_exit(SIGKILL)
-      signal/powerpc: On swapcontext failure force SIGSEGV
-      signal/sparc: In setup_tsb_params convert open coded BUG into BUG
-      signal/vm86_32: Replace open coded BUG_ON with an actual BUG_ON
-      signal/vm86_32: Properly send SIGSEGV when the vm86 state cannot be saved.
-      signal/s390: Use force_sigsegv in default_trap_handler
-      exit/kthread: Have kernel threads return instead of calling do_exit
-      signal: Implement force_fatal_sig
-      exit/syscall_user_dispatch: Send ordinary signals on failure
-      signal/sparc32: Exit with a fatal signal when try_to_clear_window_buffer fails
-      signal/sparc32: In setup_rt_frame and setup_fram use force_fatal_sig
-      signal/x86: In emulate_vsyscall force a signal instead of calling do_exit
-      exit/rtl8723bs: Replace the macro thread_exit with a simple return 0
-      exit/rtl8712: Replace the macro thread_exit with a simple return 0
-      exit/r8188eu: Replace the macro thread_exit with a simple return 0
+Pretty sure allnodes/allnext list is a relic of the past. It guaranteed depth
+first traversal after boot, but dynamic nodes broke that guarantee. It was
+removed because you can make the same traversal via the parent<->child lists.
 
- arch/mips/kernel/r2300_fpu.S                       |  4 ++--
- arch/mips/kernel/syscall.c                         |  9 --------
- arch/nds32/kernel/traps.c                          |  2 +-
- arch/nds32/mm/fault.c                              |  6 +----
- arch/openrisc/kernel/traps.c                       |  2 +-
- arch/openrisc/mm/fault.c                           |  4 +---
- arch/powerpc/kernel/signal_32.c                    |  6 +++--
- arch/powerpc/kernel/signal_64.c                    |  9 +++++---
- arch/s390/include/asm/kdebug.h                     |  2 +-
- arch/s390/kernel/dumpstack.c                       |  2 +-
- arch/s390/kernel/traps.c                           |  2 +-
- arch/s390/mm/fault.c                               |  2 --
- arch/sh/kernel/cpu/fpu.c                           | 10 +++++----
- arch/sh/kernel/traps.c                             |  2 +-
- arch/sh/mm/fault.c                                 |  2 --
- arch/sparc/kernel/signal_32.c                      |  4 ++--
- arch/sparc/kernel/windows.c                        |  6 +++--
- arch/sparc/mm/fault_32.c                           |  1 -
- arch/sparc/mm/tsb.c                                |  2 +-
- arch/x86/entry/vsyscall/vsyscall_64.c              |  3 ++-
- arch/x86/kernel/doublefault_32.c                   |  3 ---
- arch/x86/kernel/signal.c                           |  6 ++++-
- arch/x86/kernel/vm86_32.c                          |  8 +++----
- arch/xtensa/kernel/traps.c                         |  2 +-
- arch/xtensa/mm/fault.c                             |  3 +--
- drivers/firmware/stratix10-svc.c                   |  4 ++--
- drivers/soc/ti/wkup_m3_ipc.c                       |  2 +-
- drivers/staging/r8188eu/core/rtw_cmd.c             |  2 +-
- drivers/staging/r8188eu/core/rtw_mp.c              |  2 +-
- drivers/staging/r8188eu/include/osdep_service.h    |  2 --
- drivers/staging/rtl8712/osdep_service.h            |  1 -
- drivers/staging/rtl8712/rtl8712_cmd.c              |  2 +-
- drivers/staging/rtl8723bs/core/rtw_cmd.c           |  2 +-
- drivers/staging/rtl8723bs/core/rtw_xmit.c          |  2 +-
- drivers/staging/rtl8723bs/hal/rtl8723bs_xmit.c     |  2 +-
- .../rtl8723bs/include/osdep_service_linux.h        |  2 --
- fs/ocfs2/journal.c                                 |  5 +----
- include/linux/sched/signal.h                       |  1 +
- kernel/entry/syscall_user_dispatch.c               | 12 ++++++----
- kernel/kthread.c                                   |  2 +-
- kernel/reboot.c                                    |  1 -
- kernel/signal.c                                    | 26 ++++++++++++++--------
- net/batman-adv/tp_meter.c                          |  2 +-
- 43 files changed, 83 insertions(+), 91 deletions(-)
+> 
+> Regardless, yes, the pseries code needs to change to attach and detach
+> nodes individually. I don't think the OF core supports more complex
+> changes.
+> 
 
-Eric
+Indeed. I clearly capitalized on the behavior at the time while missing the
+intended usage.
+
+-Tyrel
+
+
+
