@@ -1,81 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C1C4351B3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 19:45:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F077435300
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Oct 2021 20:48:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HZJ1434KMz2yLZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 04:45:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HZKQ1562Vz3c72
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 05:48:41 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X8tKojH7;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xmission.com (client-ip=166.70.13.233;
- helo=out03.mta.xmission.com; envelope-from=ebiederm@xmission.com;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 738 seconds by postgrey-1.36 at boromir;
- Thu, 21 Oct 2021 04:45:01 AEDT
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HZJ0Y5ynpz2xRp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 04:45:01 +1100 (AEDT)
-Received: from in02.mta.xmission.com ([166.70.13.52]:52780)
- by out03.mta.xmission.com with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1mdFe6-002tLR-A8; Wed, 20 Oct 2021 11:44:58 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95]:47894
- helo=localhost.localdomain)
- by in02.mta.xmission.com with esmtpsa (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1mdFe3-001NdN-Te; Wed, 20 Oct 2021 11:44:57 -0600
-From: "Eric W. Biederman" <ebiederm@xmission.com>
-To: linux-kernel@vger.kernel.org
-Date: Wed, 20 Oct 2021 12:43:53 -0500
-Message-Id: <20211020174406.17889-7-ebiederm@xmission.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <87y26nmwkb.fsf@disp2133>
-References: <87y26nmwkb.fsf@disp2133>
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=X8tKojH7; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HZKPL4Q4rz2xv0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 05:48:06 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 58C8A610D0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Oct 2021 18:48:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1634755683;
+ bh=n8VrOe4I2yKWKENo2xOz+GrW26l+tosuZNQ1rYD5gKE=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=X8tKojH7Z8fdPyVTk4z+AoVAS3a9h5oYDEVDa7uI3b3vQWDC0RDkopnsSuFW09wMx
+ S5ymoCHlxw+BZDcfi8a/SbXyaru92R/D/4JVacWcGVpk2lCHkMZKGKNpRCcpV4amQE
+ 0SC95mBmBf+xrbZsPKYOZ3Tw+i6Awvb4CDoD4fADso7xeFCGtNQbQjFeERWiYt5J4a
+ XviC1MWcQkWkyhnJbBbb7MhB9KdUgixAetlN+ZjGulMI+TYlz6yOX8pi/IJu8QIrAm
+ DPTPSRiUO2vc4Q2/LyUL9rJoQfRdVbdcu/SicgghaP/nLNsd5aIhVOahGYlBk3gw4h
+ jokZEwKpwMQ/g==
+Received: by mail-wr1-f41.google.com with SMTP id r10so273179wra.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Oct 2021 11:48:03 -0700 (PDT)
+X-Gm-Message-State: AOAM532Izt7zxxvzCH2EiOrM8D4J9xFqEu2GoIyAwpPXRU9RA4qIlX6q
+ X2LGDJQA6R1endHT/2x81EhuqemR5el0NrCW/g==
+X-Google-Smtp-Source: ABdhPJyDkQcU37hcsbyKe6namKZuEksRA+CPb1y/N+dx0XKOp77yba3905ZumF5lcfjyaXaZElnjUUGJ+2NqhJwXc9g=
+X-Received: by 2002:aa7:cd0a:: with SMTP id b10mr942298edw.164.1634755670808; 
+ Wed, 20 Oct 2021 11:47:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-XM-SPF: eid=1mdFe3-001NdN-Te; ; ;
- mid=<20211020174406.17889-7-ebiederm@xmission.com>; ; ;
- hst=in02.mta.xmission.com; ; ; ip=68.227.160.95; ; ; frm=ebiederm@xmission.com;
- ; ; spf=neutral
-X-XM-AID: U2FsdGVkX19Emo7IPRF0mj2xClpddKvdhPaEtu2o4MA=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa06.xmission.com
-X-Spam-Level: **
-X-Spam-Status: No, score=2.0 required=8.0 tests=ALL_TRUSTED,BAYES_50,
- DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,XMNoVowels,XMSubLong
- autolearn=disabled version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
- *      [score: 0.5000] *  0.7 XMSubLong Long Subject
- *  1.5 XMNoVowels Alpha-numberic number with no vowels
- *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
- * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
- *      [sa06 1397; Body=1 Fuz1=1 Fuz2=1]
-X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: **;linux-kernel@vger.kernel.org
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 1674 ms - load_scoreonly_sql: 0.04 (0.0%),
- signal_user_changed: 13 (0.8%), b_tie_ro: 12 (0.7%), parse: 0.88
- (0.1%), extract_message_metadata: 25 (1.5%), get_uri_detail_list: 2.2
- (0.1%), tests_pri_-1000: 24 (1.4%), tests_pri_-950: 1.31 (0.1%),
- tests_pri_-900: 1.04 (0.1%), tests_pri_-90: 83 (4.9%), check_bayes: 78
- (4.7%), b_tokenize: 8 (0.5%), b_tok_get_all: 8 (0.5%), b_comp_prob:
- 2.3 (0.1%), b_tok_touch_all: 57 (3.4%), b_finish: 1.02 (0.1%),
- tests_pri_0: 286 (17.1%), check_dkim_signature: 0.54 (0.0%),
- check_dkim_adsp: 14 (0.9%), poll_dns_idle: 1222 (73.0%), tests_pri_10:
- 2.3 (0.1%), tests_pri_500: 1234 (73.8%), rewrite_mail: 0.00 (0.0%)
-Subject: [PATCH 07/20] signal/powerpc: On swapcontext failure force SIGSEGV
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
+References: <20211006164332.1981454-1-robh@kernel.org>
+In-Reply-To: <20211006164332.1981454-1-robh@kernel.org>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 20 Oct 2021 13:47:39 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLg1=T52MqhsGgmAcRueC_nJdivGg4h+M2Bd8W3fyHCmg@mail.gmail.com>
+Message-ID: <CAL_JsqLg1=T52MqhsGgmAcRueC_nJdivGg4h+M2Bd8W3fyHCmg@mail.gmail.com>
+Subject: Re: [PATCH 00/12] DT: CPU h/w id parsing clean-ups and cacheinfo id
+ support
+To: Russell King <linux@armlinux.org.uk>, James Morse <james.morse@arm.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Guo Ren <guoren@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ X86 ML <x86@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,77 +73,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Kees Cook <keescook@chromium.org>,
- linuxppc-dev@lists.ozlabs.org, Oleg Nesterov <oleg@redhat.com>,
- Paul Mackerras <paulus@samba.org>, "Eric W. Biederman" <ebiederm@xmission.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Al Viro <viro@ZenIV.linux.org.uk>
+Cc: devicetree@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
+ Scott Branden <sbranden@broadcom.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ SH-Linux <linux-sh@vger.kernel.org>, Ray Jui <rjui@broadcom.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org, Openrisc <openrisc@lists.librecores.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Borislav Petkov <bp@alien8.de>,
+ "maintainer:BROADCOM BCM7XXX ARM ARCHITECTURE"
+ <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Frank Rowand <frowand.list@gmail.com>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If the register state may be partial and corrupted instead of calling
-do_exit, call force_sigsegv(SIGSEGV).  Which properly kills the
-process with SIGSEGV and does not let any more userspace code execute,
-instead of just killing one thread of the process and potentially
-confusing everything.
+On Wed, Oct 6, 2021 at 11:43 AM Rob Herring <robh@kernel.org> wrote:
+>
+> The first 10 patches add a new function, of_get_cpu_hwid(), which parses
+> CPU DT node 'reg' property, and then use it to replace all the open
+> coded versions of parsing CPU node 'reg' properties.
+>
+> The last 2 patches add support for populating the cacheinfo 'id' on DT
+> platforms. The minimum associated CPU hwid is used for the id. The id is
+> optional, but necessary for resctrl which is being adapted for Arm MPAM.
+>
+> Tested on arm64. Compile tested on arm, x86 and powerpc.
+>
+> Rob
+>
+> Rob Herring (12):
+>   of: Add of_get_cpu_hwid() to read hardware ID from CPU nodes
+>   ARM: Use of_get_cpu_hwid()
+>   ARM: broadcom: Use of_get_cpu_hwid()
+>   arm64: Use of_get_cpu_hwid()
+>   csky: Use of_get_cpu_hwid()
+>   openrisc: Use of_get_cpu_hwid()
+>   powerpc: Use of_get_cpu_hwid()
+>   riscv: Use of_get_cpu_hwid()
+>   sh: Use of_get_cpu_hwid()
+>   x86: dt: Use of_get_cpu_hwid()
+>   cacheinfo: Allow for >32-bit cache 'id'
+>   cacheinfo: Set cache 'id' based on DT data
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-History-tree: git://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git
-Fixes: 756f1ae8a44e ("PPC32: Rework signal code and add a swapcontext system call.")
-Fixes: 04879b04bf50 ("[PATCH] ppc64: VMX (Altivec) support & signal32 rework, from Ben Herrenschmidt")
-Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
----
- arch/powerpc/kernel/signal_32.c | 6 ++++--
- arch/powerpc/kernel/signal_64.c | 9 ++++++---
- 2 files changed, 10 insertions(+), 5 deletions(-)
+I've fixed up the openrisc error and applied 1-10 to the DT tree.
 
-diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
-index 0608581967f0..666f3da41232 100644
---- a/arch/powerpc/kernel/signal_32.c
-+++ b/arch/powerpc/kernel/signal_32.c
-@@ -1062,8 +1062,10 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
- 	 * or if another thread unmaps the region containing the context.
- 	 * We kill the task with a SIGSEGV in this situation.
- 	 */
--	if (do_setcontext(new_ctx, regs, 0))
--		do_exit(SIGSEGV);
-+	if (do_setcontext(new_ctx, regs, 0)) {
-+		force_sigsegv(SIGSEGV);
-+		return -EFAULT;
-+	}
- 
- 	set_thread_flag(TIF_RESTOREALL);
- 	return 0;
-diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index 1831bba0582e..d8de622c9e4a 100644
---- a/arch/powerpc/kernel/signal_64.c
-+++ b/arch/powerpc/kernel/signal_64.c
-@@ -703,15 +703,18 @@ SYSCALL_DEFINE3(swapcontext, struct ucontext __user *, old_ctx,
- 	 * We kill the task with a SIGSEGV in this situation.
- 	 */
- 
--	if (__get_user_sigset(&set, &new_ctx->uc_sigmask))
--		do_exit(SIGSEGV);
-+	if (__get_user_sigset(&set, &new_ctx->uc_sigmask)) {
-+		force_sigsegv(SIGSEGV);
-+		return -EFAULT;
-+	}
- 	set_current_blocked(&set);
- 
- 	if (!user_read_access_begin(new_ctx, ctx_size))
- 		return -EFAULT;
- 	if (__unsafe_restore_sigcontext(current, NULL, 0, &new_ctx->uc_mcontext)) {
- 		user_read_access_end();
--		do_exit(SIGSEGV);
-+		force_sigsegv(SIGSEGV);
-+		return -EFAULT;
- 	}
- 	user_read_access_end();
- 
--- 
-2.20.1
+The cacheinfo part is going to need some more work. I've found I will
+need the cache affinity (of possible cpus) as well, so I plan to also
+store the affinity instead of looping thru caches and cpus again.
 
+Rob
