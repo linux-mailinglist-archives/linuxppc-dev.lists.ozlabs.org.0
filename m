@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC3243583B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 03:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBAA43583F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 03:29:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HZVHV3pz4z303f
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 12:28:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HZVJB21X7z3cD1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 12:29:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HYfFdUOL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rpeBmLsZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,34 +17,34 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=HYfFdUOL; 
+ header.s=k20201202 header.b=rpeBmLsZ; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HZVGs2mqQz2yHw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 12:28:05 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 10C33610D0;
- Thu, 21 Oct 2021 01:28:01 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HZVHL0lQtz305p
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 12:28:29 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7DB096113D;
+ Thu, 21 Oct 2021 01:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1634779682;
- bh=581D5arqTdICaxjPymvl/NeoZRuwRu4qgW9ioIvz0pA=;
+ s=k20201202; t=1634779707;
+ bh=zXzVqviu456oLsjo8YgHnuRG56yXJnGa0hkVNOri25c=;
  h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=HYfFdUOLbIbTRC5R74jDV06L85sng277gtjuYVk7lWQC/lhKvcWc2ipBS3m89EiBU
- W94lNQM8jkuVIZee/uDff4yYuH1mbb5dNn5D7ldlusXiMy4BnXI11vJVXZb/y1+l+i
- UabtyFWkDR4QnUPvVZQ+MVxfZm/Zlqu6koy7Af8/wb4EdnHS5lPDOoty8dZkQ3xrsZ
- WHncjxH5nyVClzzGpBGIrUiEFQ626FpucYnLUuJMfvjy0rJ61B17bPkeDMc3+pfXdT
- iGg7Jy1inIkQRUbadjB7uwMIyJ7dOGdyzo1ztoUqd7L0ItcoKNILWhu2a0LbSDB4Kt
- w/klqSqaCmEZQ==
-Date: Wed, 20 Oct 2021 20:28:00 -0500
+ b=rpeBmLsZBoUvQBodjY8byNtkpiGhQgb70QT2QZlPyznPRYSO8nIWLqfGpRXWEUfX8
+ H5tTPW6iKEaatxMBLoFfk5AviyEy83dm7feYrN3UbqQOKHflEYUiW5T56RsApYhUrZ
+ VVsxxI72/M9sWX9D1CbQtWoNh2OjEYY9g9xC3dj/4NPMnb9oFLyQVyveJG1D+9BKVQ
+ ITj/buz4k470ST+0bGqaDGnwvyufHyCy5dAGeRI3j4jHB2OKldS2TkCJtemfBwo1JD
+ 8mjCCe7a6AeJyO7GNGFLpOwxFLsC3WtwZ8Vta0Sw1uhTSBA5PDKdj2eFr0aNkZaiql
+ X2D2rPtakt6gQ==
+Date: Wed, 20 Oct 2021 20:28:26 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Naveen Naidu <naveennaidu479@gmail.com>
-Subject: Re: [PATCH v4 3/8] PCI/DPC: Initialize info->id in dpc_process_error()
-Message-ID: <20211021012800.GA2656128@bhelgaas>
+Subject: Re: [PATCH v4 1/8] PCI/AER: Remove ID from aer_agent_string[]
+Message-ID: <20211021012826.GA2655655@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5ebe87f18339d7567c1d91203e7c5d31f4e65c52.1633453452.git.naveennaidu479@gmail.com>
+In-Reply-To: <22b2dae2a6ac340d9d45c28481d746ec1064cd6c.1633453452.git.naveennaidu479@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,59 +63,82 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 05, 2021 at 10:48:10PM +0530, Naveen Naidu wrote:
-> In the dpc_process_error() path, info->id isn't initialized before being
-> passed to aer_print_error(). In the corresponding AER path, it is
-> initialized in aer_isr_one_error().
+On Tue, Oct 05, 2021 at 10:48:08PM +0530, Naveen Naidu wrote:
+> Currently, we do not print the "id" field in the AER error logs. Yet the
+> aer_agent_string[] has the word "id" in it. The AER error log looks
+> like:
 > 
-> The error message shown during Coverity Scan is:
+>   pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver ID)
 > 
->   Coverity #1461602
->   CID 1461602 (#1 of 1): Uninitialized scalar variable (UNINIT)
->   8. uninit_use_in_call: Using uninitialized value info.id when calling aer_print_error.
+> Without the "id" field in the error log, The aer_agent_string[]
+> (eg: "Receiver ID") does not make sense. A user reading the
+> aer_agent_string[] in the log, might inadvertently look for an "id"
+> field and not finding it might lead to confusion.
 > 
-> Initialize the "info->id" before passing it to aer_print_error()
+> Remove the "ID" from the aer_agent_string[].
 > 
-> Fixes: 8aefa9b0d910 ("PCI/DPC: Print AER status in DPC event handling")
+> The following are sample dummy errors inject via aer-inject.
+
+I like this, and the problem it fixes was my fault because
+these "ID" strings should have been removed by 010caed4ccb6.
+
+If it's straightforward enough, it would be nice to have the
+aer-inject command line here in the commit log to make it easier
+for people to play with this.
+
+> Before
+> =======
+> 
+> In 010caed4ccb6 ("PCI/AER: Decode Error Source Requester ID"),
+> the "id" field was removed from the AER error logs, so currently AER
+> logs look like:
+> 
+>   pcieport 0000:00:03.0: AER: Corrected error received: 0000:00:03:0
+>   pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver ID) <--- no id field
+>   pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000
+>   pcieport 0000:00:03.0:    [ 6] BadTLP
+> 
+> After
+> ======
+> 
+>   pcieport 0000:00:03.0: AER: Corrected error received: 0000:00:03.0
+>   pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver)
+>   pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000
+>   pcieport 0000:00:03.0:    [ 6] BadTLP
+> 
 > Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
 > ---
->  drivers/pci/pcie/dpc.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/pci/pcie/aer.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 > 
-> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-> index c556e7beafe3..df3f3a10f8bc 100644
-> --- a/drivers/pci/pcie/dpc.c
-> +++ b/drivers/pci/pcie/dpc.c
-> @@ -262,14 +262,14 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 9784fdcf3006..241ff361b43c 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -516,10 +516,10 @@ static const char *aer_uncorrectable_error_string[] = {
+>  };
 >  
->  void dpc_process_error(struct pci_dev *pdev)
->  {
-> -	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
-> +	u16 cap = pdev->dpc_cap, status, reason, ext_reason;
->  	struct aer_err_info info;
+>  static const char *aer_agent_string[] = {
+> -	"Receiver ID",
+> -	"Requester ID",
+> -	"Completer ID",
+> -	"Transmitter ID"
+> +	"Receiver",
+> +	"Requester",
+> +	"Completer",
+> +	"Transmitter"
+>  };
 >  
->  	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
-> -	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
-> +	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &info.id);
+>  #define aer_stats_dev_attr(name, stats_array, strings_array,		\
+> @@ -703,7 +703,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+>  	const char *level;
 >  
->  	pci_info(pdev, "containment event, status:%#06x source:%#06x\n",
-> -		 status, source);
-> +		 status, info.id);
->  
->  	reason = (status & PCI_EXP_DPC_STATUS_TRIGGER_RSN) >> 1;
-
-Per PCIe r5.0, sec 7.9.15.5, the Source ID is defined only when the
-Trigger Reason indicates ERR_NONFATAL or ERR_FATAL.  So I think we
-need to extract this reason before reading PCI_EXP_DPC_SOURCE_ID,
-e.g.,
-
-  reason = (status & PCI_EXP_DPC_STATUS_TRIGGER_RSN) >> 1;
-  if (reason == 1 || reason == 2)
-    pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &info.id);
-  else
-    info.id = 0;
-
->  	ext_reason = (status & PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT) >> 5;
+>  	if (!info->status) {
+> -		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent ID)\n",
+> +		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent)\n",
+>  			aer_error_severity_string[info->severity]);
+>  		goto out;
+>  	}
 > -- 
 > 2.25.1
 > 
