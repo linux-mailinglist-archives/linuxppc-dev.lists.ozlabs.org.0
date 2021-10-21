@@ -2,74 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000AB436868
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 18:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 128324368A1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 19:03:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HZtqf2Yn9z3c87
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 03:54:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HZv2f3LwWz3cH0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 04:03:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=F5RVO766;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xyyonz57;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534;
- helo=mail-pg1-x534.google.com; envelope-from=naveennaidu479@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=F5RVO766; dkim-atps=neutral
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com
- [IPv6:2607:f8b0:4864:20::534])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Xyyonz57; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HZtpy3Db6z2xX6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 03:53:45 +1100 (AEDT)
-Received: by mail-pg1-x534.google.com with SMTP id r2so836177pgl.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 09:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=OlNOkFhzU3j5XM9ZPcyVDkeJMjH142Uqr0gwlxi3bRA=;
- b=F5RVO766FluIl4AToZJDQXmFsz16TOfeR7UbrhvTAIJUkO7hxlIfOQUoMjb75kUCJF
- MVbV3rFlfwOn1fWzB0kel2RZgGB/ug+w5h+EIcUOPxTxWZ6XhPPcT1fUzRqdTP0sc3YH
- pa7f0k1fokCzZ2ATX4pPZcjGocYjRUCljb0rUvMrEEP8CTZZalHAsXJDfsPhKUaWF74f
- U/m1gMCbv69Ob6kvEGgWZg/gweXrLoUpz06n9Y/VbKNdLNh3WueHuiokW2ubnPnkiyem
- AoyYHComkiqxLJRMIz0fXglYOOTvJArUNTKaoNTd2PWGFggTyJ0Iq1UVo3kqPVowRlMS
- Sing==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=OlNOkFhzU3j5XM9ZPcyVDkeJMjH142Uqr0gwlxi3bRA=;
- b=NBlpg5V+peF9dYz/z73yJvKnqVFG1ycVGCUAftvlF1pGqP9V/uqO2qZB0v8Cd3ZmCD
- HZZkWoGoIUvmGdSii/tzae1Rinkqi2+k0WwywErD+cM67Dua6Hw0b2HxlX3rM4iSssGm
- PLw6ik6pjbn5ocYaAerdPsn7piBzkkqCMX/+1KfgRbqscXMRPZUuj/O5kHgTCHVFSFar
- xjuXMOM5EN84Tqa+UsS5wmTLbygpurXbsghdsS9v5Z4JM1e4mN7q41a2a+wFxlr6xHG6
- fsnh603Cp0oZ7mdz1IXLGRb7fH1UGwMOa0kDE8Ney27SpSm1OCqUhk5TtdOugA8wOTxl
- h/+Q==
-X-Gm-Message-State: AOAM530mtYjJTTTRuuJMgiblFS1hCA2CFp4Uog+ozQ7W1JnFLEw9beml
- ah/Tt/emPAcow3yImtWao8E=
-X-Google-Smtp-Source: ABdhPJzmj35HHVG/6CI1U59JcAVVWqK32Kb2AQrdfLKvvjhRvJ2S69LK41LYA5SFNSc3yXRLlJ4kTQ==
-X-Received: by 2002:a63:b007:: with SMTP id h7mr5193594pgf.443.1634835222405; 
- Thu, 21 Oct 2021 09:53:42 -0700 (PDT)
-Received: from theprophet ([2406:7400:63:29a4:d874:a949:6890:f95f])
- by smtp.gmail.com with ESMTPSA id r31sm10005050pjg.28.2021.10.21.09.53.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Oct 2021 09:53:41 -0700 (PDT)
-Date: Thu, 21 Oct 2021 22:23:30 +0530
-From: Naveen Naidu <naveennaidu479@gmail.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Subject: Re: [PATCH v4 5/8] PCI/DPC: Converge EDR and DPC Path of clearing
- AER registers
-Message-ID: <20211021165330.lcqajtwej4s7oadt@theprophet>
-References: <0a443323ab64ba8c0fc6caa03ca56ecd4d038ea3.1633453452.git.naveennaidu479@gmail.com>
- <20211021020934.GA2658296@bhelgaas>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HZv214fSBz2xtS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 04:03:21 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A62BE60EE2;
+ Thu, 21 Oct 2021 17:03:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1634835799;
+ bh=B5+0YtWgFx3cwkpdx53nV32lUMPe1xDJn8DztZUQl1Y=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=Xyyonz57q+VC6AulUjuxzm5GVacDuwF/SWFrIIy1oyhcEWlWzz0fDjyhBIugxo64R
+ yuratoCdQT/0lD8MIDXnT8BOVxcxRqOnIxl8wEp8xfdL3yMmdiDNfYTNKfqlNFHa2k
+ OWbZnk9ef67pawSzmSFlo9b+Myo9IJLUcrvVAfEs3U94qC+ErD7iyFigPGDtbQuoHs
+ 3Rjbu8/eVJabqEygcflgyBUs/2YBU/BaVDnZQK+VY7T8DWSs0zCQBpsux/oa3OCdIS
+ fx/S2DOMasq75Ss7qlE/JOigKOXP9YZlRLw4gLWpFEAgLT52Lu1TCiX3KwUgDmrete
+ xXGf7/+8TZ8+A==
+Date: Thu, 21 Oct 2021 12:03:17 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Naveen Naidu <naveennaidu479@gmail.com>
+Subject: Re: [PATCH v4 1/8] PCI/AER: Remove ID from aer_agent_string[]
+Message-ID: <20211021170317.GA2700910@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211021020934.GA2658296@bhelgaas>
+In-Reply-To: <20211021163021.r4ekhfol42ftw5zw@theprophet>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,126 +56,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oza Pawandeep <poza@codeaurora.org>, linux-pci@vger.kernel.org,
- Sinan Kaya <okaya@kernel.org>, linux-kernel@vger.kernel.org,
- Keith Busch <kbusch@kernel.org>, oohall@gmail.com, bhelgaas@google.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel-mentees@lists.linuxfoundation.org
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, oohall@gmail.com,
+ bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel-mentees@lists.linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 20/10, Bjorn Helgaas wrote:
-> [+cc Keith, Sinan, Oza]
-> 
-> On Tue, Oct 05, 2021 at 10:48:12PM +0530, Naveen Naidu wrote:
-> > In the EDR path, AER registers are cleared *after* DPC error event is
-> > processed. The process stack in EDR is:
+On Thu, Oct 21, 2021 at 10:00:21PM +0530, Naveen Naidu wrote:
+> On 20/10, Bjorn Helgaas wrote:
+> > On Tue, Oct 05, 2021 at 10:48:08PM +0530, Naveen Naidu wrote:
+> > > Currently, we do not print the "id" field in the AER error logs. Yet the
+> > > aer_agent_string[] has the word "id" in it. The AER error log looks
+> > > like:
+> > > 
+> > >   pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver ID)
+> > > 
+> > > Without the "id" field in the error log, The aer_agent_string[]
+> > > (eg: "Receiver ID") does not make sense. A user reading the
+> > > aer_agent_string[] in the log, might inadvertently look for an "id"
+> > > field and not finding it might lead to confusion.
+> > > 
+> > > Remove the "ID" from the aer_agent_string[].
+> > > 
+> > > The following are sample dummy errors inject via aer-inject.
 > > 
-> >   edr_handle_event()
-> >     dpc_process_error()
-> >     pci_aer_raw_clear_status()
-> >     pcie_do_recovery()
+> > I like this, and the problem it fixes was my fault because
+> > these "ID" strings should have been removed by 010caed4ccb6.
 > > 
-> > But in DPC path, AER status registers are cleared *while* processing
-> > the error. The process stack in DPC is:
-> > 
-> >   dpc_handler()
-> >     dpc_process_error()
-> >       pci_aer_clear_status()
-> >     pcie_do_recovery()
+> > If it's straightforward enough, it would be nice to have the
+> > aer-inject command line here in the commit log to make it easier
+> > for people to play with this.
+> >
 > 
-> These are accurate but they both include dpc_process_error(), so we
-> need a hint to show why the one here is different from the one in the
-> EDR path, e.g.,
+> Thank you for the review. Do you mean something like:
 > 
->   dpc_handler
->     dpc_process_error
->       if (reason == 0)
->         pci_aer_clear_status    # uncorrectable errors only
->     pcie_do_recovery
+> The following sample dummy errors are injected via aer-inject via the
+> following steps:
 > 
-> > In EDR path, AER status registers are cleared irrespective of whether
-> > the error was an RP PIO or unmasked uncorrectable error. But in DPC, the
-> > AER status registers are cleared only when it's an unmasked uncorrectable
-> > error.
-> > 
-> > This leads to two different behaviours for the same task (handling of
-> > DPC errors) in FFS systems and when native OS has control.
+>   1. The steps to compile the aer-inject tool is mentioned in (Section
+>      4. Software error inject) of the document [1]
 > 
-> FFS?
->
-
-Firmware First Systems
-
-> I'd really like to have a specific example of how a user would observe
-> this difference.  I know you probably don't have two systems to
-> compare like that, but maybe we can work it out manually.
+>      [1]: https://www.kernel.org/doc/Documentation/PCI/pcieaer-howto.txt
 > 
-
-Apologies again! Reading through the code again and the specification, I
-realize that my understanding was very incorrect at the time of making
-this patch. I grossly oversimplified EDR and DPC when I was learning
-about it.
-
-I'll drop this patch when I send the v5 for the series.
-
-Apologies again ^^'
-
-> I guess you're saying the problem is in the native DPC handling, and
-> we don't clear the AER status registers for ERR_NONFATAL,
-> ERR_NONFATAL, etc., right?
+>      Make sure to place the aer-inject executable at the home directory
+>      of the qemu system or at any other place.
 > 
-
-But yes, I did have this question though (I wasn't able to find the
-answers to it when reading the spec). Why do we not clear the entire
-ERR_NONFATAL and ERR_FATAL registers in the DPC path just like EDR does
-using the pci_aer_raw_clear_status() before going to pcie_do_recovery()
-
-I am sure I might have missed something in the spec. I guess I'll
-look/re-read these bits again.
-
-Thanks for the review :)
-
-> I think the current behavior is from 8aefa9b0d910 ("PCI/DPC: Print AER
-> status in DPC event handling"), where Keith explicitly mentions those
-> cases.  The commit log here should connect back to that and explain
-> whether something has changed.
+>   2. Emulate a PCIE architecture using qemu, A sample looks like
+>      following:
+>      
+> 		qemu-system-x86_64 -kernel ../linux/arch/x86_64/boot/bzImage \
+>         -initrd  buildroot-build/images/rootfs.cpio.gz \
+>         -append "console=ttyS0"  \
+>         -enable-kvm -nographic \
+>         -M q35 \
+>         -device pcie-root-port,bus=pcie.0,id=rp1,slot=1 \
+>         -device pcie-pci-bridge,id=br1,bus=rp1 \
+>         -device e1000,bus=br1,addr=8
+>        
+>     Note that the PCIe features are available only when using the 
+>     'q35' Machine [2]
+>     [2]: https://github.com/qemu/qemu/blob/master/docs/pcie.txt
 > 
-> I cc'd Keith and the reviewers of that change in case any of them have
-> time to dig into this again.
+>   3. Once the qemu system starts up, create a sample aer-file or use any
+>      example aer file from [3]
 > 
-> > Bring the same semantics for clearing the AER status register in EDR
-> > path and DPC path.
-> > 
-> > Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
-> > ---
-> >  drivers/pci/pcie/dpc.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-> > index faf4a1e77fab..68899a3db126 100644
-> > --- a/drivers/pci/pcie/dpc.c
-> > +++ b/drivers/pci/pcie/dpc.c
-> > @@ -288,7 +288,6 @@ void dpc_process_error(struct pci_dev *pdev)
-> >  		 dpc_get_aer_uncorrect_severity(pdev, &info) &&
-> >  		 aer_get_device_error_info(pdev, &info)) {
-> >  		aer_print_error(pdev, &info);
-> > -		pci_aer_clear_status(pdev);
-> >  	}
-> >  }
-> >  
-> > @@ -297,6 +296,7 @@ static irqreturn_t dpc_handler(int irq, void *context)
-> >  	struct pci_dev *pdev = context;
-> >  
-> >  	dpc_process_error(pdev);
-> > +	pci_aer_clear_status(pdev);
-> >  
-> >  	/* We configure DPC so it only triggers on ERR_FATAL */
-> >  	pcie_do_recovery(pdev, pci_channel_io_frozen, dpc_reset_link);
-> > -- 
-> > 2.25.1
-> > 
-> > _______________________________________________
-> > Linux-kernel-mentees mailing list
-> > Linux-kernel-mentees@lists.linuxfoundation.org
-> > https://lists.linuxfoundation.org/mailman/listinfo/linux-kernel-mentees
+>      [3]:
+>      https://git.kernel.org/pub/scm/linux/kernel/git/gong.chen/aer-inject.git/tree/examples
+> 
+>   4. Inject any aer-error using
+>       
+>       ./aer-inject aer-file
+> 
+> This does look a tad bit longer for a commit log so I am unsure if you
+> would like to have it there. If you are okay with it, I would be happy
+> to add it to that :)
+
+Yes, that's kind of long.  Something like this
+https://git.kernel.org/linus/d95f20c4f070 would be enough for the
+commit log, especially since you've now provided all the details in
+the email thread, where we can find them via the Link: tag.
+
+Bjorn
