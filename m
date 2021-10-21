@@ -2,49 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCBAA43583F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 03:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B07E435842
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 03:32:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HZVJB21X7z3cD1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 12:29:14 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rpeBmLsZ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HZVN95TTGz2yb9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 12:32:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=rpeBmLsZ; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HZVHL0lQtz305p
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 12:28:29 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7DB096113D;
- Thu, 21 Oct 2021 01:28:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1634779707;
- bh=zXzVqviu456oLsjo8YgHnuRG56yXJnGa0hkVNOri25c=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=rpeBmLsZBoUvQBodjY8byNtkpiGhQgb70QT2QZlPyznPRYSO8nIWLqfGpRXWEUfX8
- H5tTPW6iKEaatxMBLoFfk5AviyEy83dm7feYrN3UbqQOKHflEYUiW5T56RsApYhUrZ
- VVsxxI72/M9sWX9D1CbQtWoNh2OjEYY9g9xC3dj/4NPMnb9oFLyQVyveJG1D+9BKVQ
- ITj/buz4k470ST+0bGqaDGnwvyufHyCy5dAGeRI3j4jHB2OKldS2TkCJtemfBwo1JD
- 8mjCCe7a6AeJyO7GNGFLpOwxFLsC3WtwZ8Vta0Sw1uhTSBA5PDKdj2eFr0aNkZaiql
- X2D2rPtakt6gQ==
-Date: Wed, 20 Oct 2021 20:28:26 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Naveen Naidu <naveennaidu479@gmail.com>
-Subject: Re: [PATCH v4 1/8] PCI/AER: Remove ID from aer_agent_string[]
-Message-ID: <20211021012826.GA2655655@bhelgaas>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HZVMh2Hblz2xKY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 12:32:14 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10143"; a="226381222"
+X-IronPort-AV: E=Sophos;i="5.87,168,1631602800"; d="scan'208";a="226381222"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Oct 2021 18:31:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,168,1631602800"; d="scan'208";a="491578658"
+Received: from lkp-server02.sh.intel.com (HELO 08b2c502c3de) ([10.239.97.151])
+ by fmsmga007.fm.intel.com with ESMTP; 20 Oct 2021 18:31:09 -0700
+Received: from kbuild by 08b2c502c3de with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mdMvF-000Dpn-6N; Thu, 21 Oct 2021 01:31:09 +0000
+Date: Thu, 21 Oct 2021 09:30:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 787252a10d9422f3058df9a4821f389e5326c440
+Message-ID: <6170c2b5.WOxevoZYGi3ccYTs%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <22b2dae2a6ac340d9d45c28481d746ec1064cd6c.1633453452.git.naveennaidu479@gmail.com>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,93 +50,165 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, oohall@gmail.com,
- bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel-mentees@lists.linuxfoundation.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Oct 05, 2021 at 10:48:08PM +0530, Naveen Naidu wrote:
-> Currently, we do not print the "id" field in the AER error logs. Yet the
-> aer_agent_string[] has the word "id" in it. The AER error log looks
-> like:
-> 
->   pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver ID)
-> 
-> Without the "id" field in the error log, The aer_agent_string[]
-> (eg: "Receiver ID") does not make sense. A user reading the
-> aer_agent_string[] in the log, might inadvertently look for an "id"
-> field and not finding it might lead to confusion.
-> 
-> Remove the "ID" from the aer_agent_string[].
-> 
-> The following are sample dummy errors inject via aer-inject.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 787252a10d9422f3058df9a4821f389e5326c440  powerpc/smp: do not decrement idle task preempt count in CPU offline
 
-I like this, and the problem it fixes was my fault because
-these "ID" strings should have been removed by 010caed4ccb6.
+elapsed time: 729m
 
-If it's straightforward enough, it would be nice to have the
-aer-inject command line here in the commit log to make it easier
-for people to play with this.
+configs tested: 137
+configs skipped: 97
 
-> Before
-> =======
-> 
-> In 010caed4ccb6 ("PCI/AER: Decode Error Source Requester ID"),
-> the "id" field was removed from the AER error logs, so currently AER
-> logs look like:
-> 
->   pcieport 0000:00:03.0: AER: Corrected error received: 0000:00:03:0
->   pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver ID) <--- no id field
->   pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000
->   pcieport 0000:00:03.0:    [ 6] BadTLP
-> 
-> After
-> ======
-> 
->   pcieport 0000:00:03.0: AER: Corrected error received: 0000:00:03.0
->   pcieport 0000:00:03.0: PCIe Bus Error: severity=Corrected, type=Data Link Layer, (Receiver)
->   pcieport 0000:00:03.0:   device [1b36:000c] error status/mask=00000040/0000e000
->   pcieport 0000:00:03.0:    [ 6] BadTLP
-> 
-> Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
-> ---
->  drivers/pci/pcie/aer.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 9784fdcf3006..241ff361b43c 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -516,10 +516,10 @@ static const char *aer_uncorrectable_error_string[] = {
->  };
->  
->  static const char *aer_agent_string[] = {
-> -	"Receiver ID",
-> -	"Requester ID",
-> -	"Completer ID",
-> -	"Transmitter ID"
-> +	"Receiver",
-> +	"Requester",
-> +	"Completer",
-> +	"Transmitter"
->  };
->  
->  #define aer_stats_dev_attr(name, stats_array, strings_array,		\
-> @@ -703,7 +703,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
->  	const char *level;
->  
->  	if (!info->status) {
-> -		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent ID)\n",
-> +		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent)\n",
->  			aer_error_severity_string[info->severity]);
->  		goto out;
->  	}
-> -- 
-> 2.25.1
-> 
-> _______________________________________________
-> Linux-kernel-mentees mailing list
-> Linux-kernel-mentees@lists.linuxfoundation.org
-> https://lists.linuxfoundation.org/mailman/listinfo/linux-kernel-mentees
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+i386                 randconfig-c001-20211019
+nios2                         3c120_defconfig
+sparc                            alldefconfig
+m68k                         amcore_defconfig
+arm                      pxa255-idp_defconfig
+powerpc                     taishan_defconfig
+arc                          axs103_defconfig
+powerpc                     mpc5200_defconfig
+m68k                        mvme16x_defconfig
+openrisc                            defconfig
+h8300                     edosk2674_defconfig
+powerpc                 mpc834x_itx_defconfig
+mips                     decstation_defconfig
+sh                             espt_defconfig
+arc                           tb10x_defconfig
+arm                         palmz72_defconfig
+arm                             ezx_defconfig
+h8300                            alldefconfig
+sh                            hp6xx_defconfig
+powerpc                  mpc885_ads_defconfig
+mips                           ip27_defconfig
+powerpc                      mgcoge_defconfig
+powerpc                      obs600_defconfig
+powerpc                  iss476-smp_defconfig
+mips                      maltaaprp_defconfig
+nds32                             allnoconfig
+arm                         s3c6400_defconfig
+powerpc                   lite5200b_defconfig
+sh                           se7712_defconfig
+arm                        vexpress_defconfig
+riscv                    nommu_k210_defconfig
+sh                 kfr2r09-romimage_defconfig
+arm64                               defconfig
+m68k                       bvme6000_defconfig
+arm                        keystone_defconfig
+h8300                               defconfig
+mips                         rt305x_defconfig
+mips                        workpad_defconfig
+arm                          gemini_defconfig
+arm                             mxs_defconfig
+arm                        mini2440_defconfig
+mips                      maltasmvp_defconfig
+mips                             allyesconfig
+arm                            mps2_defconfig
+powerpc                     ppa8548_defconfig
+arm                  randconfig-c002-20211019
+x86_64               randconfig-c001-20211019
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                                defconfig
+m68k                             allmodconfig
+nios2                               defconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allmodconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                              debian-10.3
+arc                              allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a004-20211020
+i386                 randconfig-a003-20211020
+i386                 randconfig-a002-20211020
+i386                 randconfig-a005-20211020
+i386                 randconfig-a006-20211020
+i386                 randconfig-a001-20211020
+x86_64               randconfig-a015-20211019
+x86_64               randconfig-a012-20211019
+x86_64               randconfig-a016-20211019
+x86_64               randconfig-a014-20211019
+x86_64               randconfig-a013-20211019
+x86_64               randconfig-a011-20211019
+i386                 randconfig-a014-20211019
+i386                 randconfig-a016-20211019
+i386                 randconfig-a011-20211019
+i386                 randconfig-a015-20211019
+i386                 randconfig-a012-20211019
+i386                 randconfig-a013-20211019
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+
+clang tested configs:
+arm                  randconfig-c002-20211019
+mips                 randconfig-c004-20211019
+i386                 randconfig-c001-20211019
+s390                 randconfig-c005-20211019
+x86_64               randconfig-c007-20211019
+riscv                randconfig-c006-20211019
+powerpc              randconfig-c003-20211019
+x86_64               randconfig-a004-20211019
+x86_64               randconfig-a006-20211019
+x86_64               randconfig-a005-20211019
+x86_64               randconfig-a001-20211019
+x86_64               randconfig-a002-20211019
+x86_64               randconfig-a003-20211019
+i386                 randconfig-a001-20211019
+i386                 randconfig-a003-20211019
+i386                 randconfig-a004-20211019
+i386                 randconfig-a005-20211019
+i386                 randconfig-a002-20211019
+i386                 randconfig-a006-20211019
+x86_64               randconfig-a013-20211020
+x86_64               randconfig-a015-20211020
+x86_64               randconfig-a011-20211020
+x86_64               randconfig-a014-20211020
+x86_64               randconfig-a016-20211020
+x86_64               randconfig-a012-20211020
+riscv                randconfig-r042-20211020
+s390                 randconfig-r044-20211020
+hexagon              randconfig-r045-20211020
+hexagon              randconfig-r041-20211020
+hexagon              randconfig-r041-20211019
+hexagon              randconfig-r045-20211019
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
