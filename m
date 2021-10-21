@@ -1,72 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E22E436D8B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 00:36:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7F1436D8D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 00:36:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hb2Q041VFz3cXw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 09:36:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hb2Qk4hfXz3dcP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 09:36:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qLUwkJ79;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qt/SUvbG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
- helo=mail-pj1-x1031.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a;
+ helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=qLUwkJ79; dkim-atps=neutral
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
- [IPv6:2607:f8b0:4864:20::1031])
+ header.s=20210112 header.b=qt/SUvbG; dkim-atps=neutral
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hb2Hn4mp4z3cCw
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 09:30:45 +1100 (AEDT)
-Received: by mail-pj1-x1031.google.com with SMTP id
- o4-20020a17090a3d4400b001a1c8344c3fso2144401pjf.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 15:30:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hb2Hr6cZJz3cNP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 09:30:48 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id t11so1388824plq.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 15:30:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=/TWT/1VO2cM4mkWhFKaRQ6kP++Q2gMqGBqdMOR/cLj0=;
- b=qLUwkJ79BykCBrX6zupRfcreZvk/y4xOgPLjzNz2s1EDZUovQspDAAnvsQenOfrT9C
- MF1yymFxFBPsX7LyPboK+qeiLZdHiMKsfVtY8Rati7PgCUz9mINAHGy34krj9wxE94ZC
- bdoQukuDCxW6rhhQhacqaMQ7dKEiIgkhdal2udW77qtbi3olIFwtlY00N+j/tagR+ifW
- bPudfa1reJZjKhXzr3TJn8nYBeqFLlVVbBCAJZnD94cQioQI1Jxp9ogztZRqdQOWBovX
- Ybv9LVE2Zz2T8Ekphzfo+B4W9kmvIJvjRJd0iCMF1qm6ZQ8d0ZwjaT+xAxDzuKr7SXAE
- 7TMw==
+ bh=k7Tkq5sXkw4cpQUD/GPghO3VPNRygmiIp7/r25/whiQ=;
+ b=qt/SUvbGtdZEm+wLLJxBbHLBtOeihVnfrGrTORuKXq2ZouvirE/3iJFW2EDh7MoPxh
+ u4MMO/U9cW+OfAG93KoYx2toxsC7JBUUwPX2ScWkPgJUe3jnVpF1ZQGWBdjF0/xnen4A
+ 6al964On93lxnniNmrxTOvYVYPNDaqx8MLXXyq5PpAFsAlckTNWTgUh/OAO2eq6LfbVg
+ 2GqkFw98p7uVFue2HhRM+EatupjggcnN5OdKtPFMFlIHvAGQgvW0hwSs7qdjNdxV/gj6
+ M6QyNLZyGIIwyqDGYVTPZVJKPTbTHGBja/e80SaGwCM2T1L6t9S7JkTQR/Tjaqjoj/Sa
+ OGgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=/TWT/1VO2cM4mkWhFKaRQ6kP++Q2gMqGBqdMOR/cLj0=;
- b=HaxeiGAedaHu9YkHZd6J7d9dxzstsnB1eztCbFeUUt7NogKSxycInlUC8Ay+W7tubB
- xgqHrzsiIqDB496zuZ2yQ/oA1uotOieQ0fYRdgMwB9IZvHAjFMNwKnngjahXNx1w5/XG
- cysOM9jqYJ6PBZgEEosU2dy0IKDxs3ybrric0AInS1kUBW6wj0+N2z69j2NgwOPvxh6j
- tMHiX53XjuH0v+qvGWdzH1CYDjOIwlvysY9E6cGFiUGkSZH5ZN7HO189AtudMbGgsDSj
- q11j/O+AJPQnlT+5Tf5PA4g2ZfYq6pj8p7EUvVfM3+/TnjFb9vr67rgfYjlpAPc6Abqo
- TOrQ==
-X-Gm-Message-State: AOAM533+vCApBL4qbVo+356qez58mH9pHF3ZOEa28Uu5QKapwsIf3DVF
- 483o0PXW1UyjfsyoechPRxYIORkya3E=
-X-Google-Smtp-Source: ABdhPJxiJAj4so8lbFC1yfqHPcpxizaXJRLkgSxVrhopEEy6bpd98AF/tqLCRLFTcvKJzhB9R3SNfw==
-X-Received: by 2002:a17:902:9a43:b0:13f:8f31:101c with SMTP id
- x3-20020a1709029a4300b0013f8f31101cmr7805719plv.76.1634855443573; 
- Thu, 21 Oct 2021 15:30:43 -0700 (PDT)
+ bh=k7Tkq5sXkw4cpQUD/GPghO3VPNRygmiIp7/r25/whiQ=;
+ b=ONq7JO2dN5uhRiJhR2vfgOkiJMq0LTa018XFZrkCk90/gtUC8iPMdW2/djvdJtsHi5
+ Z9nf+SHW7u5vju/U+PuW8btai0x4rdB46G+CyCA7eDoBlYheXhYKy3E5kpP2IxbiA4Di
+ JxbOo3TM+nMblDD1ogFrs82GVcMoVvGBagAZXVb5ItBQEj610RQq2ZSBmtXX2rgGFGGa
+ fQm2xWyzLMqW+6kep2nbiil6i9fMciv4ObiAWpR10s7sXikqnjrbNnQU7y39VkzsMD3y
+ 0DdR084eFfPXLa3wxiwI2jgu73VMA/z4tEJuKHCeUto4VX9u6Ez+H/0HIYnbXnBlLVWu
+ +OiQ==
+X-Gm-Message-State: AOAM533yQ8d8F9UytgPckAJr5tT7x9lN3XALrLAcAsfqtWoq4AA9MF4x
+ WlEiULtDoK8Qf4OnGoFWyM5uAvozTiw=
+X-Google-Smtp-Source: ABdhPJwjO9evg40scPGSangzz3g6FnYzVXLq1Evz9hKcUBC/xYmQTMyRef+Um9toA1sRzJgsk+kinA==
+X-Received: by 2002:a17:90b:17d0:: with SMTP id
+ me16mr10113532pjb.152.1634855446421; 
+ Thu, 21 Oct 2021 15:30:46 -0700 (PDT)
 Received: from bobo.ibm.com (14-203-144-177.static.tpgi.com.au.
  [14.203.144.177])
- by smtp.gmail.com with ESMTPSA id e6sm7205716pfm.212.2021.10.21.15.30.41
+ by smtp.gmail.com with ESMTPSA id e6sm7205716pfm.212.2021.10.21.15.30.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Oct 2021 15:30:43 -0700 (PDT)
+ Thu, 21 Oct 2021 15:30:46 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 08/18] powerpc/64s: Make flush_and_reload_slb a no-op when
- radix is enabled
-Date: Fri, 22 Oct 2021 08:30:03 +1000
-Message-Id: <20211021223013.2641952-9-npiggin@gmail.com>
+Subject: [PATCH v3 09/18] powerpc/64s: move page size definitions from hash
+ specific file
+Date: Fri, 22 Oct 2021 08:30:04 +1000
+Message-Id: <20211021223013.2641952-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211021223013.2641952-1-npiggin@gmail.com>
 References: <20211021223013.2641952-1-npiggin@gmail.com>
@@ -88,39 +87,56 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The radix test can exclude slb_flush_all_realmode() from being called
-because flush_and_reload_slb() is only expected to flush ERAT when
-called by flush_erat(), which is only on pre-ISA v3.0 CPUs that do not
-support radix.
-
-This helps the later change to make hash support configurable to not
-introduce runtime changes to radix mode behaviour.
+The radix code uses some of the psize variables. Move the common
+ones from hash_utils.c to pgtable.c.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/mce_power.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/mm/book3s64/hash_utils.c | 5 -----
+ arch/powerpc/mm/book3s64/pgtable.c    | 7 +++++++
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
-index c2f55fe7092d..cf5263b648fc 100644
---- a/arch/powerpc/kernel/mce_power.c
-+++ b/arch/powerpc/kernel/mce_power.c
-@@ -80,12 +80,12 @@ static bool mce_in_guest(void)
- #ifdef CONFIG_PPC_BOOK3S_64
- void flush_and_reload_slb(void)
- {
--	/* Invalidate all SLBs */
--	slb_flush_all_realmode();
--
- 	if (early_radix_enabled())
- 		return;
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index ffc52ff0b3f0..1cd28e3cd3b5 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -99,8 +99,6 @@
+  */
  
-+	/* Invalidate all SLBs */
-+	slb_flush_all_realmode();
+ static unsigned long _SDR1;
+-struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT];
+-EXPORT_SYMBOL_GPL(mmu_psize_defs);
+ 
+ u8 hpte_page_sizes[1 << LP_BITS];
+ EXPORT_SYMBOL_GPL(hpte_page_sizes);
+@@ -114,9 +112,6 @@ EXPORT_SYMBOL_GPL(mmu_linear_psize);
+ int mmu_virtual_psize = MMU_PAGE_4K;
+ int mmu_vmalloc_psize = MMU_PAGE_4K;
+ EXPORT_SYMBOL_GPL(mmu_vmalloc_psize);
+-#ifdef CONFIG_SPARSEMEM_VMEMMAP
+-int mmu_vmemmap_psize = MMU_PAGE_4K;
+-#endif
+ int mmu_io_psize = MMU_PAGE_4K;
+ int mmu_kernel_ssize = MMU_SEGSIZE_256M;
+ EXPORT_SYMBOL_GPL(mmu_kernel_ssize);
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index 049843c8c875..06565b452cbc 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -22,6 +22,13 @@
+ 
+ #include "internal.h"
+ 
++struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT];
++EXPORT_SYMBOL_GPL(mmu_psize_defs);
 +
- 	/*
- 	 * This probably shouldn't happen, but it may be possible it's
- 	 * called in early boot before SLB shadows are allocated.
++#ifdef CONFIG_SPARSEMEM_VMEMMAP
++int mmu_vmemmap_psize = MMU_PAGE_4K;
++#endif
++
+ unsigned long __pmd_frag_nr;
+ EXPORT_SYMBOL(__pmd_frag_nr);
+ unsigned long __pmd_frag_size_shift;
 -- 
 2.23.0
 
