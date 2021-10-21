@@ -2,91 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0384E4364F9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 17:02:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 081C443651C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 17:09:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HZrLW3glzz3c9t
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 02:02:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HZrVB3B7fz3c74
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 02:09:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=Dj2oeub0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=k+99nwmD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canonical.com (client-ip=185.125.188.123;
- helo=smtp-relay-internal-1.canonical.com;
- envelope-from=krzysztof.kozlowski@canonical.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
+ helo=mail-pf1-x434.google.com; envelope-from=naveennaidu479@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=canonical.com header.i=@canonical.com
- header.a=rsa-sha256 header.s=20210705 header.b=Dj2oeub0; 
- dkim-atps=neutral
-Received: from smtp-relay-internal-1.canonical.com
- (smtp-relay-internal-1.canonical.com [185.125.188.123])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=k+99nwmD; dkim-atps=neutral
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HZrKt0fvqz2yHW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 02:01:52 +1100 (AEDT)
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 536A03F4BA
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 15:01:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1634828506;
- bh=ZUIZEJuyKtv0ydIDTpE9Z2jbuj2YrNWtkrCDhtR1+Bo=;
- h=To:References:From:Subject:Message-ID:Date:MIME-Version:
- In-Reply-To:Content-Type;
- b=Dj2oeub0qrnlPBEoiba5dzCTx6xXY/L9VGX4qXtQoX6UFfHOX+HYIIVzaKRtl2VNB
- G513+dfHzK7qWw866DVxqImjFAml9Jmji9kXa9Y511/XgAR3E6Wt9dq2fT1teb6sYa
- 8Pb2LT3sc90NRCWIlUHbkodx0Ag2qoRbg584OBzl1U1PIZ0NOGNmaKufmqvzRCXxGU
- p6bqvYhXCh6syNkzUUxZeBnAJGSOXdmYix77Y8bYijjfijsGNzsjpEdYfwFybELKCW
- OW7YtWsnHwMX5rALPtZJBIoy5Evn32YQzV58ZGee0+5NYclyzuA0zp/CMsIcp5zZNG
- Cw4kXQLG5Txpw==
-Received: by mail-lj1-f198.google.com with SMTP id
- f6-20020a2e9e86000000b00211349f9ce3so129856ljk.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 08:01:46 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HZrTT1W9fz2yZf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 02:08:27 +1100 (AEDT)
+Received: by mail-pf1-x434.google.com with SMTP id y7so904586pfg.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 08:08:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=l//N2yjQPwL5Ut6gR7Id3QDkJj4qUz5hOkWw1Y1cnLc=;
+ b=k+99nwmDy9pwVyDey675D/OeF6zbd73Y1s2uZR6WXZADWwNUhCQO+ZGEh+HLNI3lfV
+ M/Kf0rYS7sJJnHnoVY+B7/kE4zZAM0u36uLUB8v0pMU5V/7Eq5r/XGgyXWVr9eRBp8+F
+ NOuU/xIbPzXhWqSbhZlpR8RVr64q0dOVdXYf7D9ZekmEpGC4yCrQb7D9fboynvl+34+e
+ oqYUC+uV6q2gtmqvYVS7zWMtNH/zpjhCk9UMidN0n6fGCMYZQgpbMCJieEG3GSfGHVje
+ 75vLEBhqJpaEZRiNRY6EyakC2UjUcSrrxI9rnYaJ3zp3htOuoo+MEH6hHFHnbwIYUxG4
+ 48jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:to:references:from:subject:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=ZUIZEJuyKtv0ydIDTpE9Z2jbuj2YrNWtkrCDhtR1+Bo=;
- b=2+aMjAjFejRhvp84SAjayAO8WZZjEIyEWUV5bolQwEl/EAs5errgOdp2FKrr4xWS5F
- Nvdl/UaYbaaZKT3mua9g9eJIlT9CP59VHxsSW+2BmOS9UpK8nYLVDp2e3WfvNVrpsY5q
- yw0vmlxHd3K+A8Mqyipfh4XlDlJDJIq7KMIFni/6rioDxnXWMJo+HGouE8OrSKcXhUJz
- mDwhk1x9FhNeeRL8vX10L1/1ACfqKusWELR1si+S+JSKlSNlOVHZUVFXP+wdnJYzKVzE
- Q5NlEPZgbgqTpj/t0qsH8eWTUnWpvP1WG3n1x5Sgdqi5wHA39WqRjXSxoUuAgqsmoACS
- 9y1Q==
-X-Gm-Message-State: AOAM533xrQe13JwgUr7r4aDPaXhWBJiTnewTwGcMDO3msiDWtJVKEPwO
- VVZuFjIOQOBqz/ZfKc0yuoUW3ybbVyBOi2BnLjXoipM6uGuPTtmZCUwsladYl+LZbjfzMN6NP0d
- p0XuZs2CNhwZL81VTf4gmSZTWOQvYLpuvkrTNNxZsXIw=
-X-Received: by 2002:a2e:a552:: with SMTP id e18mr6501952ljn.78.1634828504173; 
- Thu, 21 Oct 2021 08:01:44 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJypsn4LIHCjKo6yG+8tIz9jVFOAoJjFIkmV8XNjxayXwvBQoZuBQPGrSGfQWZCl7vxCZOJmUg==
-X-Received: by 2002:a2e:a552:: with SMTP id e18mr6501834ljn.78.1634828503359; 
- Thu, 21 Oct 2021 08:01:43 -0700 (PDT)
-Received: from [192.168.3.161] (89-77-68-124.dynamic.chello.pl. [89.77.68.124])
- by smtp.gmail.com with ESMTPSA id k21sm613963ljn.126.2021.10.21.08.01.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Oct 2021 08:01:42 -0700 (PDT)
-To: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
- linuxppc-dev@lists.ozlabs.org
-References: <YUpIqytZqpohq4EM@mussarela>
- <1632500323.sp1p885nv8.naveen@linux.ibm.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-Subject: Re: coherency issue observed after hotplug on POWER8
-Message-ID: <42491f5a-593b-535c-b28c-41fbdbb43f99@canonical.com>
-Date: Thu, 21 Oct 2021 17:01:42 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ bh=l//N2yjQPwL5Ut6gR7Id3QDkJj4qUz5hOkWw1Y1cnLc=;
+ b=2MYHxU3RTls8SPx+Yn+XBHhs2ZClmf7qrKarVEQkBppdeAtf4Rz4M96z9Pl7OO4zYg
+ P3iXQDz8yaCpApsf0YptXmJiLcU928b60nvIb7JCKEe6tTxWJTECZdKPCg1M+78x22Jj
+ i1WolagfIsAorxlZZ1NCqZ5Exe416uB1dZtx4RRC6l9gSDsDjPMdAwPQT4RXpf1xuIln
+ gkBPr0tqILZJN7ZI7VSyqVqwLuLs9iFVmD59K2rKPWYeVasO+AIBajFaCVaBvTOV8Idf
+ 8tcS2tEM8RvCqcSD2AYpCf5QDDcD9N6PWLlMZbfZn0pQL7XdX5bAbYigB1CSDWbkmCw1
+ N6kw==
+X-Gm-Message-State: AOAM5325pwZQBZkdYz/vFAxHvSlOFgw3JBFDUcW7qgMRE+74EsYqixdE
+ RBCX8FhgZ26WCvE/G0j7vbE=
+X-Google-Smtp-Source: ABdhPJxzAt/sLs2vPoeeMO8ZPLkWPQjz3XF0ai/VhySWL3UT37B9wdYgmFaV/orMaolXHHmCu+HwcA==
+X-Received: by 2002:a63:af09:: with SMTP id w9mr4779992pge.323.1634828904829; 
+ Thu, 21 Oct 2021 08:08:24 -0700 (PDT)
+Received: from localhost.localdomain ([2406:7400:63:29a4:d874:a949:6890:f95f])
+ by smtp.gmail.com with ESMTPSA id
+ c9sm5508027pgq.58.2021.10.21.08.08.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 21 Oct 2021 08:08:24 -0700 (PDT)
+From: Naveen Naidu <naveennaidu479@gmail.com>
+To: bhelgaas@google.com
+Subject: [PATCH v3 00/25] Unify PCI error response checking
+Date: Thu, 21 Oct 2021 20:37:25 +0530
+Message-Id: <cover.1634825082.git.naveennaidu479@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <1632500323.sp1p885nv8.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -99,43 +78,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+ linux-hyperv@vger.kernel.org, Heiko Stuebner <heiko@sntech.de>,
+ linux-pci@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
+ Binghui Wang <wangbinghui@hisilicon.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Amey Narkhede <ameynarkhede03@gmail.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ Toan Le <toan@os.amperecomputing.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Nirmal Patel <nirmal.patel@linux.intel.com>,
+ Marek Vasut <marek.vasut+renesas@gmail.com>, Rob Herring <robh@kernel.org>,
+ Wei Liu <wei.liu@kernel.org>, linux-samsung-soc@vger.kernel.org,
+ Marc Zyngier <maz@kernel.org>, Naveen Naidu <naveennaidu479@gmail.com>,
+ Joyce Ooi <joyce.ooi@intel.com>, Dexuan Cui <decui@microsoft.com>,
+ Kishon Vijay Abraham I <kishon@ti.com>,
+ Jianjun Wang <jianjun.wang@mediatek.com>, linux-rockchip@lists.infradead.org,
+ "maintainer:BROADCOM IPROC ARM ARCHITECTURE"
+ <bcm-kernel-feedback-list@broadcom.com>,
+ Jonathan Derrick <jonathan.derrick@linux.dev>,
+ Xiaowei Song <songxiaowei@hisilicon.com>,
+ linux-kernel-mentees@lists.linuxfoundation.org,
+ Robert Richter <rric@kernel.org>, Sean V Kelley <sean.v.kelley@intel.com>,
+ Ray Jui <rjui@broadcom.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+ Ryder Lee <ryder.lee@mediatek.com>, linux-mediatek@lists.infradead.org,
+ skhan@linuxfoundation.org, Matthias Brugger <matthias.bgg@gmail.com>,
+ Stephen Hemminger <sthemmin@microsoft.com>,
+ linux-arm-kernel@lists.infradead.org, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ Scott Branden <sbranden@broadcom.com>, linuxppc-dev@lists.ozlabs.org,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+ linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ Lukas Wunner <lukas@wunner.de>, Jingoo Han <jingoohan1@gmail.com>,
+ Shawn Guo <shawn.guo@linaro.org>,
+ =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 24/09/2021 19:17, Naveen N. Rao wrote:
-> Hi Cascardo,
-> Thanks for reporting this.
-> 
-> 
-> Thadeu Lima de Souza Cascardo wrote:
->> Hi, there.
->>
->> We have been investigating an issue we have observed on POWER8 POWERNV systems.
->> When running the kernel selftests reuseport_bpf_cpu after a CPU hotplug, we see
->> crashes, in different forms. [1]
-> 
-> Just to re-confirm: you are only seeing this on P8 powernv, and not in a 
-> P8 guest/LPAR? I haven't been able to reproduce this on a firestone -- 
-> can you share more details about your power8 machine?
-> 
-> Also, do you only see this with ubuntu kernels, or are you also able to 
-> reproduce this with the upstream tree?
+An MMIO read from a PCI device that doesn't exist or doesn't respond
+causes a PCI error.  There's no real data to return to satisfy the 
+CPU read, so most hardware fabricates ~0 data.
 
-Let me just covert this part of your email:
+This patch series adds PCI_ERROR_RESPONSE definition and other helper
+definition SET_PCI_ERROR_RESPONSE and RESPONSE_IS_PCI_ERROR and uses it
+where appropriate to make these checks consistent and easier to find.
 
-Upstream trees (5.11, 5.13, 5.14). See also:
-https://bugs.launchpad.net/ubuntu-power-systems/+bug/1927076/comments/28
+This helps unify PCI error response checking and make error check
+consistent and easier to find.
 
-I could not reproduce it on Power8 LPAR. Neither on Power9 QEMU guest.
+This series also ensures that the error response fabrication now happens
+in the PCI_OP_READ and PCI_USER_READ_CONFIG. This removes the
+responsibility from controller drivers to do the error response setting. 
 
-Reproduced on few machines:
-IBM, POWER8NVL, 8335-GTB
-POWER8, 8001-22C and 8335-GTA
+Patch 1:
+    - Adds the PCI_ERROR_RESPONSE and other related defintions
+    - All other patches are dependent on this patch. This patch needs to
+      be applied first, before the others
 
-lspcpu for the last one:
-https://bugs.launchpad.net/ubuntu-power-systems/+bug/1927076/comments/15
+Patch 2:
+    - Error fabrication happens in PCI_OP_READ and PCI_USER_READ_CONFIG
+      whenever the data read via the controller driver fails.
+    - This patch needs to be applied before, Patch 4/24 to Patch 15/24 are
+      applied.
 
+Patch 3:
+    - Uses SET_PCI_ERROR_RESPONSE() when device is not found 
 
-Best regards,
-Krzysztof
+Patch 4 - 15:
+    - Removes redundant error fabrication that happens in controller 
+      drivers when the read from a PCI device fails.
+    - These patches are dependent on Patch 2/24 of the series.
+    - These can be applied in any order.
+
+Patch 16 - 22:
+    - Uses RESPONSE_IS_PCI_ERROR() to check the reads from hardware
+    - Patches can be applied in any order.
+
+Patch 23 - 25:
+    - Edits the comments to include PCI_ERROR_RESPONSE alsong with
+      0xFFFFFFFF, so that it becomes easier to grep for faulty 
+      hardware reads.
+
+Changelog
+=========
+v3:
+   - Change RESPONSE_IS_PCI_ERROR macro definition
+   - Fix the macros, Add () around macro parameters
+   - Fix alignment issue in Patch 2/24
+   - Add proper receipients for all the patches
+
+v2:
+    - Instead of using SET_PCI_ERROR_RESPONSE in all controller drivers
+      to fabricate error response, only use them in PCI_OP_READ and
+      PCI_USER_READ_CONFIG
+
+Naveen Naidu (25):
+  [Patch 1/25] PCI: Add PCI_ERROR_RESPONSE and it's related definitions
+  [Patch 2/25] PCI: Set error response in config access defines when ops->read() fails
+  [Patch 3/25] PCI: Use SET_PCI_ERROR_RESPONSE() when device not found
+  [Patch 4/25] PCI: Remove redundant error fabrication when device read fails
+  [Patch 5/25] PCI: thunder: Remove redundant error fabrication when device read fails
+  [Patch 6/25] PCI: iproc: Remove redundant error fabrication when device read fails
+  [Patch 7/25] PCI: mediatek: Remove redundant error fabrication when device read fails
+  [Patch 8/25] PCI: exynos: Remove redundant error fabrication when device read fails
+  [Patch 9/25] PCI: histb: Remove redundant error fabrication when device read fails
+  [Patch 10/25] PCI: kirin: Remove redundant error fabrication when device read fails
+  [Patch 11/25] PCI: aardvark: Remove redundant error fabrication when device read fails
+  [Patch 12/25] PCI: mvebu: Remove redundant error fabrication when device read fails
+  [Patch 13/25] PCI: altera: Remove redundant error fabrication when device read fails
+  [Patch 14/25] PCI: rcar: Remove redundant error fabrication when device read fails
+  [Patch 15/25] PCI: rockchip: Remove redundant error fabrication when device read fails
+  [Patch 16/25] PCI/ERR: Use RESPONSE_IS_PCI_ERROR() to check read from hardware
+  [Patch 17/25] PCI: vmd: Use RESPONSE_IS_PCI_ERROR() to check read from hardware
+  [Patch 18/25] PCI: pciehp: Use RESPONSE_IS_PCI_ERROR() to check read from hardware
+  [Patch 19/25] PCI/DPC: Use RESPONSE_IS_PCI_ERROR() to check read from hardware
+  [Patch 20/25] PCI/PME: Use RESPONSE_IS_PCI_ERROR() to check read from hardware
+  [Patch 21/25] PCI: cpqphp: Use RESPONSE_IS_PCI_ERROR() to check read from hardware
+  [Patch 22/25] PCI: Use PCI_ERROR_RESPONSE to specify hardware error
+  [Patch 23/25] PCI: keystone: Use PCI_ERROR_RESPONSE to specify hardware error
+  [Patch 24/25] PCI: hv: Use PCI_ERROR_RESPONSE to specify hardware read error
+  [Patch 25/25] PCI: xgene: Use PCI_ERROR_RESPONSE to specify hardware error
+
+ drivers/pci/access.c                        | 32 +++++++-------
+ drivers/pci/controller/dwc/pci-exynos.c     |  4 +-
+ drivers/pci/controller/dwc/pci-keystone.c   |  4 +-
+ drivers/pci/controller/dwc/pcie-histb.c     |  4 +-
+ drivers/pci/controller/dwc/pcie-kirin.c     |  4 +-
+ drivers/pci/controller/pci-aardvark.c       | 10 +----
+ drivers/pci/controller/pci-hyperv.c         |  2 +-
+ drivers/pci/controller/pci-mvebu.c          |  8 +---
+ drivers/pci/controller/pci-thunder-ecam.c   | 46 +++++++--------------
+ drivers/pci/controller/pci-thunder-pem.c    |  4 +-
+ drivers/pci/controller/pci-xgene.c          |  8 ++--
+ drivers/pci/controller/pcie-altera.c        |  4 +-
+ drivers/pci/controller/pcie-iproc.c         |  4 +-
+ drivers/pci/controller/pcie-mediatek.c      | 11 +----
+ drivers/pci/controller/pcie-rcar-host.c     |  4 +-
+ drivers/pci/controller/pcie-rockchip-host.c |  4 +-
+ drivers/pci/controller/vmd.c                |  2 +-
+ drivers/pci/hotplug/cpqphp_ctrl.c           |  4 +-
+ drivers/pci/hotplug/pciehp_hpc.c            | 10 ++---
+ drivers/pci/pci.c                           | 10 ++---
+ drivers/pci/pcie/dpc.c                      |  4 +-
+ drivers/pci/pcie/pme.c                      |  4 +-
+ drivers/pci/probe.c                         | 10 ++---
+ include/linux/pci.h                         |  9 ++++
+ 24 files changed, 85 insertions(+), 121 deletions(-)
+
+-- 
+2.25.1
+
