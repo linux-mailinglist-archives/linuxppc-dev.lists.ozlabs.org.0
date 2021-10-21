@@ -2,36 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7157435FFA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 13:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C83A543605C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 13:33:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HZl8x2d4Nz3c7Q
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 22:08:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HZljC2P7lz3c9Q
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 22:33:19 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=deHlduqH;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
  [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HZl8X3nTNz2yZf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 22:08:28 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HZlhb41Jtz2yZv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 22:32:47 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=deHlduqH; 
+ dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HZl8W4ks0z4xbL;
- Thu, 21 Oct 2021 22:08:27 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20211020094826.3222052-1-mpe@ellerman.id.au>
-References: <20211020094826.3222052-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/idle: Don't corrupt back chain when going idle
-Message-Id: <163481446090.3437586.5094721778895983974.b4-ty@ellerman.id.au>
-Date: Thu, 21 Oct 2021 22:07:40 +1100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HZlhZ1ydbz4xbT;
+ Thu, 21 Oct 2021 22:32:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1634815966;
+ bh=TBgYNuOR6CivwRz9RieGT4fDeQjeQcdqKnl/zYLrtt4=;
+ h=From:To:Cc:Subject:Date:From;
+ b=deHlduqHZl1OYycNUVspKOnHKFxOZwIQkbO65ZeKH3QRUrU+IICG8q34Dzb/9j4sI
+ UvGnGvHtkfdWeVJXDIrkwO5xxQB/XHS4GQ0et0fr/OGW6LiSfEhW0xxrx1PqM71+Yl
+ WQyp9j6EAcv7VcLH/ZDaOXgRVDEak+RJqR42MlwvzVskntIun8C3tzbliSBgb78mXW
+ sN3pxd5+CgVrajcsfO3qboebfh4rhuXMq+UiDaPajFrIJ560vs9KWH+HddZaCDLIw9
+ Z/SRh8IisjyGa7KxZG+Y/v3hPn1RSEKUOZuCG7OMeS7ns84naYsB1ZUgbarwJ7QtAZ
+ J7AYrZaO5fw2Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.15-5 tag
+Date: Thu, 21 Oct 2021 22:32:45 +1100
+Message-ID: <877de6d34y.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,27 +57,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com, kvm-ppc@vger.kernel.org
+Cc: nathanl@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 20 Oct 2021 20:48:26 +1100, Michael Ellerman wrote:
-> In isa206_idle_insn_mayloss() we store various registers into the stack
-> red zone, which is allowed.
-> 
-> However inside the IDLE_STATE_ENTER_SEQ_NORET macro we save r2 again,
-> to 0(r1), which corrupts the stack back chain.
-> 
-> We used to do the same in isa206_idle_insn_mayloss() itself, but we
-> fixed that in 73287caa9210 ("powerpc64/idle: Fix SP offsets when saving
-> GPRs"), however we missed that the macro also corrupts the back chain.
-> 
-> [...]
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-Applied to powerpc/fixes.
+Hi Linus,
 
-[1/1] powerpc/idle: Don't corrupt back chain when going idle
-      https://git.kernel.org/powerpc/c/496c5fe25c377ddb7815c4ce8ecfb676f051e9b6
+Please pull some more powerpc fixes for 5.15:
 
-cheers
+The following changes since commit cdeb5d7d890e14f3b70e8087e745c4a6a7d9f337:
+
+  KVM: PPC: Book3S HV: Make idle_kvm_start_guest() return 0 if it went to guest (2021-10-16 00:40:03 +1100)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.15-5
+
+for you to fetch changes up to 787252a10d9422f3058df9a4821f389e5326c440:
+
+  powerpc/smp: do not decrement idle task preempt count in CPU offline (2021-10-20 21:38:01 +1100)
+
+- ------------------------------------------------------------------
+powerpc fixes for 5.15 #5
+
+Fix a bug exposed by a previous fix, where running guests with certain SMT topologies
+could crash the host on Power8.
+
+Fix atomic sleep warnings when re-onlining CPUs, when PREEMPT is enabled.
+
+Thanks to: Nathan Lynch, Srikar Dronamraju, Valentin Schneider.
+
+- ------------------------------------------------------------------
+Michael Ellerman (1):
+      powerpc/idle: Don't corrupt back chain when going idle
+
+Nathan Lynch (1):
+      powerpc/smp: do not decrement idle task preempt count in CPU offline
+
+
+ arch/powerpc/kernel/idle_book3s.S | 10 ++++++----
+ arch/powerpc/kernel/smp.c         |  2 --
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmFxT3IACgkQUevqPMjh
+pYD0Mg//fh9BEVcfCtGJskqpbppkLJL8Pk/npKdiXZ1//ESTnSSXp0SfjHwnKW8H
+R+FYUomAdB4pis6lfUUlVFHcADPrf1C55IF6f4pP7mLWGKuscMTjDRmgBOkgEreY
+pciP+aGkNWu6Lmzoz1ZEqYr1mZW6TX3/Os9BabFUNze4gzTT6Y4U+/QOYrt5VQZB
+SAnzyfjOq0c9HDP3OFVn9xUGkOpikRA2rT/0lKVFs5CPkqmLv82i/slz9SwE96kX
+Zfi9CCJ3ule0RgysYg33QpAzZfQiLATAJBLk+Wlyl9SAFQ8w+cOhFtJmHryGFPz5
+n5JopbE2lECJxw5fhasLwraDZzTd84xHvx1xpl2nIQEzrRlpV+Kq2c7SEbNROakL
+rp/xmnBjfo9wMVwjo7x20arqj+o5XBs7yW04gMXV5yJVMUjgn288LAZzTe9nNegk
+drzfrVHyvNKCoEWZr0egUDazSuh1kiWC9srmZ3IB2Cx2AGXYvXk+MsftoIqP8Nu6
+gs9+NRwNiroaX3aujlcZHC4J7QwGMUZo6Dvs2e0VX+kvGlvnrP8+7pQ0eSoSJlVv
+DfeTZa630yD0TdPVqWXHHeOUqbza/bpeHUxdFwSYdlr4DLrr3XkfaO/VQ6XJmTHa
+9aZq3y7ALgQGvXHUIJYH4upZYoK1BhNqCJ0A2w+8uqKlunlXx8w=
+=ES/7
+-----END PGP SIGNATURE-----
