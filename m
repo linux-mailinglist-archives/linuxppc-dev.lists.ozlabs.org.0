@@ -1,57 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35660435A26
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 07:04:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1819A435A44
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 07:20:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HZb4N64nwz3c7q
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 16:04:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HZbQg3yJ9z3c6D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 16:20:11 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=BEI9e8mq;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::834;
+ helo=mail-qt1-x834.google.com; envelope-from=joel.stan@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
+ header.s=google header.b=BEI9e8mq; dkim-atps=neutral
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com
+ [IPv6:2607:f8b0:4864:20::834])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HZb3z13Dfz2xrD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 16:03:56 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HZb3s2tNkz9sSQ;
- Thu, 21 Oct 2021 07:03:53 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id i3A5h3hdkNDG; Thu, 21 Oct 2021 07:03:53 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HZb3s1tQjz9sSN;
- Thu, 21 Oct 2021 07:03:53 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 25DA38B80E;
- Thu, 21 Oct 2021 07:03:53 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id LoacUJDuppY3; Thu, 21 Oct 2021 07:03:53 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.204.154])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D11F38B764;
- Thu, 21 Oct 2021 07:03:52 +0200 (CEST)
-Subject: Re: [PATCH v2 12/16] powerpc/64e: remove mmu_linear_psize
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20211021035417.2157804-1-npiggin@gmail.com>
- <20211021035417.2157804-13-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <dc126027-0ad2-e643-748c-2035b6fff8e7@csgroup.eu>
-Date: Thu, 21 Oct 2021 07:03:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HZbQ21ntdz2yb3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 16:19:36 +1100 (AEDT)
+Received: by mail-qt1-x834.google.com with SMTP id r17so5107912qtx.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Oct 2021 22:19:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=3n0qFCHlKLqFgecNBS7D37VmfKYsuSHhAvp64zbJfz0=;
+ b=BEI9e8mq7vkncy20gcG5cd6EW0hL6oG7oDiaRauUGaVv02XQbLfpjkZD1Pp99sodrU
+ pTk/eOfJ3h23rWsFKc6KNrpslVrxjR6jO2phPjEtgaKet67KAc65szZdProxXPVbpD4k
+ qvvmo55M4kJDu8XDpzKOAq2u6Hxxe+boQgWJo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=3n0qFCHlKLqFgecNBS7D37VmfKYsuSHhAvp64zbJfz0=;
+ b=2tJEi/BKMSlLIYpnfNMkZBT0E2Ce+wfMak5U3SYNgibzTRnTOQVUv99xkguVQKFhNe
+ s4AVL6suOnU9AChjCO/z7S/Fq7PRZS03wSyyszFBs3TGyAbbhqLezpfA4bcu2czHzGns
+ C0SvnvFBkAtjB7m0sung4H88IB4HoUUEpARRoKrhKVrXJoOcI382lxxvgNePi0ajY3g4
+ oeCkGvdw28tVz2N0fXvK5VniAxa+MEHW4EzlaGqzTbYLNRlGGtNoLOsIL0PMGr7UYTMG
+ AQCl7ggS3f6EKvTqycyoFe8B4dC8NSu+M/dovE/wZUIkn93ze9Vk3iz32XkHtY2HcZeh
+ YdDg==
+X-Gm-Message-State: AOAM5304qNgpdsoDjCw3EdF6/GugQuTczxkv7bvbVNeTcRcHnqtAUB5r
+ 1QFGob3O5gtcSHVwKYCtTeXd3bLIvFrC+DLvpmY=
+X-Google-Smtp-Source: ABdhPJz+U83SzdfeqgZ7DbM1TSNZb6571iqAp9L6zVOsr5nj4egTMEF0eCUA/8YVg3dGKoq43xtBuSKgdvhl+3KcPK8=
+X-Received: by 2002:a05:622a:307:: with SMTP id
+ q7mr3780845qtw.25.1634793572491; 
+ Wed, 20 Oct 2021 22:19:32 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20211021035417.2157804-13-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
-Content-Transfer-Encoding: 8bit
+References: <20211021035417.2157804-1-npiggin@gmail.com>
+ <20211021035417.2157804-17-npiggin@gmail.com>
+In-Reply-To: <20211021035417.2157804-17-npiggin@gmail.com>
+From: Joel Stanley <joel@jms.id.au>
+Date: Thu, 21 Oct 2021 05:19:20 +0000
+Message-ID: <CACPK8XfuR6QqyP-Bj8S6APbVNugTJLZuARfNHN6Knqe+-MeKSA@mail.gmail.com>
+Subject: Re: [PATCH v2 16/16] powerpc/microwatt: Don't select the hash MMU code
+To: Nicholas Piggin <npiggin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,87 +72,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 21/10/2021 à 05:54, Nicholas Piggin a écrit :
-> mmu_linear_psize is only set at boot once on 64e, is not necessarily
-> the correct size of the linear map pages, and is never used anywhere
-> except memremap_compat_align.
-> 
-> Remove mmu_linear_psize and hard code the 1GB value instead in
-> memremap_compat_align.
-> 
+On Thu, 21 Oct 2021 at 04:04, Nicholas Piggin <npiggin@gmail.com> wrote:
+>
+> Microwatt is radix-only, so it does not require hash MMU support.
+>
+> This saves 20kB compressed dtbImage and 56kB vmlinux size.
+>
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   arch/powerpc/mm/ioremap.c    | 6 +++++-
->   arch/powerpc/mm/nohash/tlb.c | 9 ---------
->   2 files changed, 5 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
-> index 57342154d2b0..730c3bbe4759 100644
-> --- a/arch/powerpc/mm/ioremap.c
-> +++ b/arch/powerpc/mm/ioremap.c
-> @@ -109,12 +109,16 @@ void __iomem *do_ioremap(phys_addr_t pa, phys_addr_t offset, unsigned long size,
->   */
->   unsigned long memremap_compat_align(void)
->   {
-> +#ifdef CONFIG_PPC_BOOK3E_64
+>  arch/powerpc/configs/microwatt_defconfig | 1 -
+>  arch/powerpc/platforms/microwatt/Kconfig | 1 -
+>  2 files changed, 2 deletions(-)
+>
+> diff --git a/arch/powerpc/configs/microwatt_defconfig b/arch/powerpc/configs/microwatt_defconfig
+> index 6e62966730d3..7c8eb29d8afe 100644
+> --- a/arch/powerpc/configs/microwatt_defconfig
+> +++ b/arch/powerpc/configs/microwatt_defconfig
+> @@ -27,7 +27,6 @@ CONFIG_PPC_MICROWATT=y
+>  # CONFIG_PPC_OF_BOOT_TRAMPOLINE is not set
+>  CONFIG_CPU_FREQ=y
+>  CONFIG_HZ_100=y
+> -# CONFIG_PPC_MEM_KEYS is not set
+>  # CONFIG_SECCOMP is not set
+>  # CONFIG_MQ_IOSCHED_KYBER is not set
+>  # CONFIG_COREDUMP is not set
 
-I don't think this function really belongs to ioremap.c
+We still end up with CONFIG_PPC_64S_HASH_MMU=y in the config as it
+defaults to y.
 
-Could avoid the #ifdef by going in:
+We should disable in the defconfig it so your new changes are tested
+by that defconfig:
 
-arch/powerpc/mm/nohash/book3e_pgtable.c
++# CONFIG_PPC_64S_HASH_MMU is not set
 
-and
+I boot tested your series on Microwatt with microwatt_defconfig (with
+and without that option set) and ppc64le_defconfig.
 
-arch/powerpc/mm/book3s64/pgtable.c
+Cheers,
 
-> +	// 1GB maximum possible size of the linear mapping.
-> +	return max(SUBSECTION_SIZE, 1UL << 30);
+Joel
 
-Use SZ_1G
-
-> +#else
->   	unsigned int shift = mmu_psize_defs[mmu_linear_psize].shift;
->   
->   	if (radix_enabled())
->   		return SUBSECTION_SIZE;
->   	return max(SUBSECTION_SIZE, 1UL << shift);
-> -
-> +#endif
->   }
->   EXPORT_SYMBOL_GPL(memremap_compat_align);
->   #endif
-> diff --git a/arch/powerpc/mm/nohash/tlb.c b/arch/powerpc/mm/nohash/tlb.c
-> index 5872f69141d5..8c1523ae7f7f 100644
-> --- a/arch/powerpc/mm/nohash/tlb.c
-> +++ b/arch/powerpc/mm/nohash/tlb.c
-> @@ -150,7 +150,6 @@ static inline int mmu_get_tsize(int psize)
->    */
->   #ifdef CONFIG_PPC64
->   
-> -int mmu_linear_psize;		/* Page size used for the linear mapping */
->   int mmu_pte_psize;		/* Page size used for PTE pages */
->   int mmu_vmemmap_psize;		/* Page size used for the virtual mem map */
->   int book3e_htw_mode;		/* HW tablewalk?  Value is PPC_HTW_* */
-> @@ -655,14 +654,6 @@ static void early_init_this_mmu(void)
->   
->   static void __init early_init_mmu_global(void)
->   {
-> -	/* XXX This will have to be decided at runtime, but right
-> -	 * now our boot and TLB miss code hard wires it. Ideally
-> -	 * we should find out a suitable page size and patch the
-> -	 * TLB miss code (either that or use the PACA to store
-> -	 * the value we want)
-> -	 */
-> -	mmu_linear_psize = MMU_PAGE_1G;
-> -
->   	/* XXX This should be decided at runtime based on supported
->   	 * page sizes in the TLB, but for now let's assume 16M is
->   	 * always there and a good fit (which it probably is)
-> 
+> diff --git a/arch/powerpc/platforms/microwatt/Kconfig b/arch/powerpc/platforms/microwatt/Kconfig
+> index 823192e9d38a..5e320f49583a 100644
+> --- a/arch/powerpc/platforms/microwatt/Kconfig
+> +++ b/arch/powerpc/platforms/microwatt/Kconfig
+> @@ -5,7 +5,6 @@ config PPC_MICROWATT
+>         select PPC_XICS
+>         select PPC_ICS_NATIVE
+>         select PPC_ICP_NATIVE
+> -       select PPC_HASH_MMU_NATIVE if PPC_64S_HASH_MMU
+>         select PPC_UDBG_16550
+>         select ARCH_RANDOM
+>         help
+> --
+> 2.23.0
+>
