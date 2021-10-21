@@ -2,93 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D612443615B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 14:19:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 015D4436327
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 15:35:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HZmkG3PVkz3c8k
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 23:19:18 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OMHIsnK/;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HZpPf1Hy2z3cG5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 00:35:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ smtp.mailfrom=xmission.com (client-ip=166.70.13.233;
+ helo=out03.mta.xmission.com; envelope-from=ebiederm@xmission.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=OMHIsnK/; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HZmjS34dyz2ymt
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 23:18:35 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19LC4iiM019432; 
- Thu, 21 Oct 2021 08:18:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=ArBB2jA0N+riRdv2ps0NK45owFipAJ5pf1YGcH6n8Ek=;
- b=OMHIsnK/W4efrd9GADImVH4HRsqr6BTbuX27VyvIj8WfGSWkG8exHBGFiSqSulMYkAVe
- A+7lhRTU9b8fT6aDUuZeh/PSRMvPh2m2TG+ZzC5uRHmBLarDdd2GnkC5vGSC07FjK2b4
- 6l0QWTwz8ajddJ+gQjq2Y81u/5sRWtoEkcqWFXOYeVwtFw5Vtj6Y48VVsF8XnPqsfbKX
- jGqqo/V9eOh6EFMzyKIgpjXarNowtUiXe+Q2cmz0b8CftP6boiL9GgYgl8pjaB2xcd03
- ncKVQ/wF4fjQjj8u1JIyuYj5o1TPvwANlBZvyOsQh+KxUsrl8nPsAIl+haQ3rs9wMu7w ew== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3btthkrg4h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Oct 2021 08:18:28 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19LCC2Qt018133;
- Thu, 21 Oct 2021 12:18:27 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma01wdc.us.ibm.com with ESMTP id 3bqpccbj22-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 Oct 2021 12:18:27 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 19LCIQmA42991898
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 21 Oct 2021 12:18:27 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D07B1124052;
- Thu, 21 Oct 2021 12:18:26 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 70261124053;
- Thu, 21 Oct 2021 12:18:26 +0000 (GMT)
-Received: from localhost (unknown [9.211.47.38])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 21 Oct 2021 12:18:26 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Daniel Axtens <dja@axtens.net>
-Subject: Re: [PATCH v2] powerpc/pseries/mobility: ignore ibm,
- platform-facilities updates
-In-Reply-To: <87zgr3expl.fsf@dja-thinkpad.axtens.net>
-References: <20211020194703.2613093-1-nathanl@linux.ibm.com>
- <87zgr3expl.fsf@dja-thinkpad.axtens.net>
-Date: Thu, 21 Oct 2021 07:18:25 -0500
-Message-ID: <87o87iy3ji.fsf@linux.ibm.com>
+Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HZpP66gzwz2xr0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 00:34:31 +1100 (AEDT)
+Received: from in02.mta.xmission.com ([166.70.13.52]:40512)
+ by out03.mta.xmission.com with esmtps (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
+ (envelope-from <ebiederm@xmission.com>)
+ id 1mdYD5-005DQ9-NZ; Thu, 21 Oct 2021 07:34:19 -0600
+Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95]:46380
+ helo=email.xmission.com)
+ by in02.mta.xmission.com with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
+ (envelope-from <ebiederm@xmission.com>)
+ id 1mdYD4-003epC-7e; Thu, 21 Oct 2021 07:34:19 -0600
+From: ebiederm@xmission.com (Eric W. Biederman)
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+References: <87y26nmwkb.fsf@disp2133> <877de7jrev.fsf@disp2133>
+ <CAMuHMdURxrdjsXq7+q-AWTwxVUdmddOj2vvNHv6M=WtsU5nRvg@mail.gmail.com>
+Date: Thu, 21 Oct 2021 08:33:51 -0500
+In-Reply-To: <CAMuHMdURxrdjsXq7+q-AWTwxVUdmddOj2vvNHv6M=WtsU5nRvg@mail.gmail.com>
+ (Geert Uytterhoeven's message of "Thu, 21 Oct 2021 10:09:46 +0200")
+Message-ID: <87tuhaijsw.fsf@disp2133>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: d7dluQRoRKntzFCDSG1esBwVowyeuVU4
-X-Proofpoint-GUID: d7dluQRoRKntzFCDSG1esBwVowyeuVU4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-21_02,2021-10-21_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1011
- mlxscore=0 suspectscore=0 bulkscore=0 phishscore=0 spamscore=0
- impostorscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110210064
+Content-Type: text/plain
+X-XM-SPF: eid=1mdYD4-003epC-7e; ; ; mid=<87tuhaijsw.fsf@disp2133>; ; ;
+ hst=in02.mta.xmission.com; ; ; ip=68.227.160.95; ; ; frm=ebiederm@xmission.com;
+ ; ; spf=neutral
+X-XM-AID: U2FsdGVkX1+Mpe2HbWR2YDGhZ3vVJNTbKaHiNpeOXoM=
+X-SA-Exim-Connect-IP: 68.227.160.95
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa05.xmission.com
+X-Spam-Level: ***
+X-Spam-Status: No, score=3.5 required=8.0 tests=ALL_TRUSTED,BAYES_50,
+ DCC_CHECK_NEGATIVE,TR_Symld_Words,T_TM2_M_HEADER_IN_MSG,
+ T_TooManySym_01,T_TooManySym_02,T_TooManySym_03,XMNoVowels,XMSubLong
+ autolearn=disabled version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+ *      [score: 0.4995]
+ *  1.5 XMNoVowels Alpha-numberic number with no vowels
+ *  0.7 XMSubLong Long Subject
+ *  1.5 TR_Symld_Words too many words that have symbols inside
+ *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+ * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+ *      [sa05 1397; Body=1 Fuz1=1 Fuz2=1]
+ *  0.0 T_TooManySym_02 5+ unique symbols in subject
+ *  0.0 T_TooManySym_01 4+ unique symbols in subject
+ *  0.0 T_TooManySym_03 6+ unique symbols in subject
+X-Spam-DCC: XMission; sa05 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ***;Geert Uytterhoeven <geert@linux-m68k.org>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 897 ms - load_scoreonly_sql: 0.07 (0.0%),
+ signal_user_changed: 12 (1.4%), b_tie_ro: 10 (1.2%), parse: 1.14
+ (0.1%), extract_message_metadata: 14 (1.6%), get_uri_detail_list: 1.00
+ (0.1%), tests_pri_-1000: 27 (3.0%), tests_pri_-950: 1.31 (0.1%),
+ tests_pri_-900: 1.10 (0.1%), tests_pri_-90: 286 (31.9%), check_bayes:
+ 285 (31.7%), b_tokenize: 12 (1.3%), b_tok_get_all: 8 (0.9%),
+ b_comp_prob: 2.2 (0.3%), b_tok_touch_all: 260 (28.9%), b_finish: 0.94
+ (0.1%), tests_pri_0: 537 (59.9%), check_dkim_signature: 0.61 (0.1%),
+ check_dkim_adsp: 3.0 (0.3%), poll_dns_idle: 1.00 (0.1%), tests_pri_10:
+ 3.2 (0.4%), tests_pri_500: 10 (1.2%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH 21/20] signal: Replace force_sigsegv(SIGSEGV) with
+ force_fatal_sig(SIGSEGV)
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,105 +93,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, cheloha@linux.ibm.com, ldufour@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>, Linux-sh list <linux-sh@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ Greentime Hu <green.hu@gmail.com>, H Peter Anvin <hpa@zytor.com>,
+ sparclinux <sparclinux@vger.kernel.org>, Vincent Chen <deanbo422@gmail.com>,
+ Linux-Arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Openrisc <openrisc@lists.librecores.org>,
+ Borislav Petkov <bp@alien8.de>, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Chris Zankel <chris@zankel.net>,
+ Jonas Bonn <jonas@southpole.se>, Nick Hu <nickhu@andestech.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ David Miller <davem@davemloft.net>, Maciej Rozycki <macro@orcam.me.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Daniel Axtens <dja@axtens.net> writes:
->> On VMs with NX encryption, compression, and/or RNG offload, these
->> capabilities are described by nodes in the ibm,platform-facilities device
->> tree hierarchy:
->>
->>   $ tree -d /sys/firmware/devicetree/base/ibm,platform-facilities/
->>   /sys/firmware/devicetree/base/ibm,platform-facilities/
->>   =E2=94=9C=E2=94=80=E2=94=80 ibm,compression-v1
->>   =E2=94=9C=E2=94=80=E2=94=80 ibm,random-v1
->>   =E2=94=94=E2=94=80=E2=94=80 ibm,sym-encryption-v1
->>
->>   3 directories
->>
->> The acceleration functions that these nodes describe are not disrupted by
->> live migration, not even temporarily.
->>
->> But the post-migration ibm,update-nodes sequence firmware always sends
->> "delete" messages for this hierarchy, followed by an "add" directive to
->> reconstruct it via ibm,configure-connector (log with debugging statements
->> enabled in mobility.c):
->>
->>   mobility: removing node /ibm,platform-facilities/ibm,random-v1:4294967=
-285
->>   mobility: removing node /ibm,platform-facilities/ibm,compression-v1:42=
-94967284
->>   mobility: removing node /ibm,platform-facilities/ibm,sym-encryption-v1=
-:4294967283
->>   mobility: removing node /ibm,platform-facilities:4294967286
->>   ...
->>   mobility: added node /ibm,platform-facilities:4294967286
->>
->> Note we receive a single "add" message for the entire hierarchy, and what
->> we receive from the ibm,configure-connector sequence is the top-level
->> platform-facilities node along with its three children. The debug message
->> simply reports the parent node and not the whole subtree.
+Geert Uytterhoeven <geert@linux-m68k.org> writes:
+
+> Hi Eric,
 >
-> If I understand correctly, (and again, this is not my area at all!) we
-> still have to go out to the firmware and call the
-> ibm,configure-connector sequence in order to figure out that the node
-> we're supposed to add is the ibm,platform-facilites node, right? We
-> can't save enough information at delete time to avoid the trip out to
-> firmware?
+> Patch 21/20?
 
-That is right... but maybe I don't understand your angle here. Unsure
-what avoiding the configure-connector sequence for the nodes would buy
-us.
+In reviewing another part of the patchset Linus asked if force_sigsegv
+could go away.  It can't completely but I can get this far.
+
+Given that it is just a cleanup it makes most sense to me as an
+additional patch on top of what is already here.
 
 
->> Until that can be realized we have a confirmed use-after-free and the
->> possibility of memory corruption. So add a limited workaround that
->> discriminates on the node type, ignoring adds and removes. This should be
->> amenable to backporting in the meantime.
+> On Wed, Oct 20, 2021 at 11:52 PM Eric W. Biederman
+> <ebiederm@xmission.com> wrote:
+>> Now that force_fatal_sig exists it is unnecessary and a bit confusing
+>> to use force_sigsegv in cases where the simpler force_fatal_sig is
+>> wanted.  So change every instance we can to make the code clearer.
+>>
+>> Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
 >
-> Yeah it's an unpleasant situation to find ourselves in. It's a bit icky
-> but as I think you said in a previous email, at least this isn't worse:
-> in the common case it should now succeed and and if properties change
-> significantly it will still fail.
+>>  arch/m68k/kernel/traps.c        | 2 +-
 >
-> My one question (from more of a security point of view) is:
->  1) Say you start using the facilities with a particular set of
->     parameters.
->
->  2) Say you then get migrated and the parameters change.
->
->  3) If you keep using the platform facilities as if the original
->     properties are still valid, can this cause any Interesting,
->     unexpected or otherwise Bad consequences? Are we going to end up
->     (for example) scribbling over random memory somehow?
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-If drivers are safely handling errors from H_COP_OP etc, then no. (I
-know, this looks like a Well That Would Be a Driver Bug dismissal, but
-that's not my attitude.) And again this is a case where the change
-cannot make things worse.
+Thank you.
 
-In the current design of the pseries LPM implementation, user space and
-other normal system activity resume as soon as we return from the
-stop_machine() call which suspends the partition, executing concurrently
-with any device tree updates. So even if we had code in place to
-correctly resolve the DT changes and the drivers were able to respond to
-the changes, there would still be a window of exposure to the kind of
-problem you describe: the changed characteristics, if any, of the
-destination obtain as soon as execution resumes, regardless of when the
-OS initiates the update-nodes sequence.
-
-The way out of that mess is to use the Linux suspend framework, or
-otherwise prevent user space from executing until the destination
-system's characteristics have been appropriately propagated out to the
-necessary drivers etc. I'm trying to get there.
-
-
-> Apart from that, the code seems to do what it says, it seems to solve a
-> real problem, the error and memory handling makes sense, you _put the DT
-> nodes that you _get, the comments are helpful and descriptive, and it
-> passes the automated tests on patchwork/snowpatch.
-
-I appreciate your review!
+Eric
