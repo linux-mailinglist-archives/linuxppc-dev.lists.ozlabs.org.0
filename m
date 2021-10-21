@@ -1,58 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6FAB436BF4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 22:21:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F7A436D7B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 00:31:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HZzQK21Wwz3c7B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 07:21:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hb2Jh3N7tz3bWb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 09:31:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XWhJ08GG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WRrA0gRt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c;
+ helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=XWhJ08GG; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=WRrA0gRt; dkim-atps=neutral
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
+ [IPv6:2607:f8b0:4864:20::42c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HZsq00tl8z2yp8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 03:08:44 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1AEFD611CB;
- Thu, 21 Oct 2021 16:08:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1634832521;
- bh=3wcwNbtDNknQedZoy24cZfK1CiOqshIYIk3e2c4B9Rw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=XWhJ08GGIqTZw+TvT/nMCDAy7quf2FJv33jj0Ily06vxkI8rUxTQELDkeHb0u+NFl
- MD0Lx9+x7lhMM3GIAZfA1T2u0eNmQAG1bqpXTvz67evSI6p28cRymuvwfzx0MmCdPZ
- Eu9kyx0IRx+BQHrjfg6pUkXIBKHVfUT3rJ6PyHjkKsGXSiMQ2s0MWrlq5f/6WPUXfA
- 12KC4ZTUvETH0cKn32kcKsPv7RGUIftWATLF8XYn+cHxWi3nvl7PC2jb98L+8EJMFN
- xtCzC0AmpDoL2r37xWXDC3EUt/EyyEmL8iLEASXb2kkCdjx5XS/xqqOzJAGW3sGtIs
- FzUF2rqmMe78Q==
-Received: by pali.im (Postfix)
- id D8DB085E; Thu, 21 Oct 2021 18:08:38 +0200 (CEST)
-Date: Thu, 21 Oct 2021 18:08:38 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Naveen Naidu <naveennaidu479@gmail.com>
-Subject: Re: [PATCH v3 01/25] PCI: Add PCI_ERROR_RESPONSE and it's related
- definitions
-Message-ID: <20211021160838.r7t7fmmeseaecfac@pali>
-References: <cover.1634825082.git.naveennaidu479@gmail.com>
- <f7960a4dee0e417eedd7d2e031d04ac9016c6686.1634825082.git.naveennaidu479@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hb2HV0GqNz2ypB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 09:30:28 +1100 (AEDT)
+Received: by mail-pf1-x42c.google.com with SMTP id k26so1931534pfi.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 15:30:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=kkXfWM4ukPTvxog525D3Mv8pZSjQv4ISNH6GrUMfEAU=;
+ b=WRrA0gRtqgXRAxZYXtR80PPOoeLf0SpphqnEKSbjTek+SmE12esoeZdNcfw8NcQjbt
+ KZUXnR/qyC9CMh4JhEqCmGFbkq2clftiS/SGyw4zhV5BErQcMois5fslPQe7M2hix82H
+ 9zIVBTnvBTe+7Tstzp20EFoQahNZDbytMKK8V/fz8t6GHFo2MNEg0CDXxirby06A9S7q
+ ego3iPVEZn8EpfUM1Q5y1eetoRgmyd9thS6MMandxpHiyJafWzelOJT4uuRqjgORuJ55
+ IkcjKcra5DUEhtSlTZs/MCyCPl6cyIz5+XVhk62znB+3pM+kucSMv7yYUFpA+kmhnupJ
+ EEmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=kkXfWM4ukPTvxog525D3Mv8pZSjQv4ISNH6GrUMfEAU=;
+ b=5m7TOIYwllHxj44J9Tp5E4JsY7TGS5V4D1ovuTw4rxG8xdRE+6wHxKi4UOUFMpTWyB
+ t9Jy751xWpfKRzo7Q85Zw/2yvw1Jtc0eLI+0v3DsgVfurTA20WMBjVdND29IMxcn/9Jn
+ 5Vufk+x++x8Ho2fxtfcQRDSrgySiyltrVt+2cCWOcBJ5M2/7oodNz8lhGX/2TDeQEQ7W
+ qEJeDtoFEo/6JMCytNwS6CNeHURhzwkeFaIQgGQ3WO/CMm1SJDSXcMjgj6pJTwl3D7/L
+ 30gFgDN9W1UOaCCN7qTS8SaC147FZCShhEYhee3rT+6Ffg57I83LPp2sdCSTB0eNBF12
+ 7/uA==
+X-Gm-Message-State: AOAM532kE163hSXu3lRghVXot4cBqi6zDYhqwYPxygHmxHtpWuvM3Voi
+ hufYlCpzxNtYrvaYR351spVK3toih4U=
+X-Google-Smtp-Source: ABdhPJzNXSMLiKKdF8OJEBUx5gh88M59+oVOESosHAk5N0sF4IQB6Lk57/SwTdJb1tagyY49h1U42A==
+X-Received: by 2002:a63:1717:: with SMTP id x23mr6477142pgl.182.1634855423465; 
+ Thu, 21 Oct 2021 15:30:23 -0700 (PDT)
+Received: from bobo.ibm.com (14-203-144-177.static.tpgi.com.au.
+ [14.203.144.177])
+ by smtp.gmail.com with ESMTPSA id e6sm7205716pfm.212.2021.10.21.15.30.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 21 Oct 2021 15:30:23 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 00/18] powerpc: Make hash MMU code build configurable
+Date: Fri, 22 Oct 2021 08:29:55 +1000
+Message-Id: <20211021223013.2641952-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f7960a4dee0e417eedd7d2e031d04ac9016c6686.1634825082.git.naveennaidu479@gmail.com>
-User-Agent: NeoMutt/20180716
-X-Mailman-Approved-At: Fri, 22 Oct 2021 07:20:04 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,82 +78,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
- linux-hyperv@vger.kernel.org, Heiko Stuebner <heiko@sntech.de>,
- linux-pci@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
- Binghui Wang <wangbinghui@hisilicon.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Amey Narkhede <ameynarkhede03@gmail.com>, Oliver O'Halloran <oohall@gmail.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Toan Le <toan@os.amperecomputing.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Nirmal Patel <nirmal.patel@linux.intel.com>,
- Marek Vasut <marek.vasut+renesas@gmail.com>, Rob Herring <robh@kernel.org>,
- Wei Liu <wei.liu@kernel.org>, linux-samsung-soc@vger.kernel.org,
- Stephen Hemminger <sthemmin@microsoft.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Joyce Ooi <joyce.ooi@intel.com>, Dexuan Cui <decui@microsoft.com>,
- Jianjun Wang <jianjun.wang@mediatek.com>, linux-rockchip@lists.infradead.org,
- "maintainer:BROADCOM IPROC ARM ARCHITECTURE"
- <bcm-kernel-feedback-list@broadcom.com>,
- Jonathan Derrick <jonathan.derrick@linux.dev>,
- Xiaowei Song <songxiaowei@hisilicon.com>,
- linux-kernel-mentees@lists.linuxfoundation.org,
- Robert Richter <rric@kernel.org>, Sean V Kelley <sean.v.kelley@intel.com>,
- Ray Jui <rjui@broadcom.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Ryder Lee <ryder.lee@mediatek.com>, linux-mediatek@lists.infradead.org,
- skhan@linuxfoundation.org, bhelgaas@google.com,
- linux-arm-kernel@lists.infradead.org, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
- Scott Branden <sbranden@broadcom.com>, Jingoo Han <jingoohan1@gmail.com>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- Lukas Wunner <lukas@wunner.de>, Marc Zyngier <maz@kernel.org>,
- Shawn Guo <shawn.guo@linaro.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thursday 21 October 2021 20:37:26 Naveen Naidu wrote:
-> An MMIO read from a PCI device that doesn't exist or doesn't respond
-> causes a PCI error.  There's no real data to return to satisfy the
-> CPU read, so most hardware fabricates ~0 data.
-> 
-> Add a PCI_ERROR_RESPONSE definition for that and use it where
-> appropriate to make these checks consistent and easier to find.
-> 
-> Also add helper definitions SET_PCI_ERROR_RESPONSE and
-> RESPONSE_IS_PCI_ERROR to make the code more readable.
-> 
-> Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-> Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
+Now that there's a platform that can make good use of it, here's
+a series that can prevent the hash MMU code being built for 64s
+platforms that don't need it.
 
-Reviewed-by: Pali Rohár <pali@kernel.org>
+Since v2:
+- Split MMU_FTR_HPTE_TABLE clearing for radix boot into its own patch.
+- Remove memremap_compat_align from other sub archs entirely.
+- Flip patch order of the 2 main patches to put Kconfig change first.
+- Fixed Book3S/32 xmon segment dumping bug.
+- Removed a few more ifdefs, changed numbers to use SZ_ definitions,
+  etc.
+- Fixed microwatt defconfig so it should actually disable hash MMU now.
 
-> ---
->  include/linux/pci.h | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index cd8aa6fce204..689c8277c584 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -154,6 +154,15 @@ enum pci_interrupt_pin {
->  /* The number of legacy PCI INTx interrupts */
->  #define PCI_NUM_INTX	4
->  
-> +/*
-> + * Reading from a device that doesn't respond typically returns ~0.  A
-> + * successful read from a device may also return ~0, so you need additional
-> + * information to reliably identify errors.
-> + */
-> +#define PCI_ERROR_RESPONSE     (~0ULL)
-> +#define SET_PCI_ERROR_RESPONSE(val)    (*(val) = ((typeof(*(val))) PCI_ERROR_RESPONSE))
-> +#define RESPONSE_IS_PCI_ERROR(val) ((val) == ((typeof(val)) PCI_ERROR_RESPONSE))
-> +
->  /*
->   * pci_power_t values must match the bits in the Capabilities PME_Support
->   * and Control/Status PowerState fields in the Power Management capability.
-> -- 
-> 2.25.1
-> 
+Since v1:
+- Split out most of the Kconfig change from the conditional compilation
+  changes.
+- Split out several more changes into preparatory patches.
+- Reduced some ifdefs.
+- Caught a few missing hash bits: pgtable dump, lkdtm,
+  memremap_compat_align.
+
+Since RFC:
+- Split out large code movement from other changes.
+- Used mmu ftr test constant folding rather than adding new constant
+  true/false for radix_enabled().
+- Restore tlbie trace point that had to be commented out in the
+  previous.
+- Avoid minor (probably unreachable) behaviour change in machine check
+  handler when hash was not compiled.
+- Fix microwatt updates so !HASH is not enforced.
+- Rebase, build fixes.
+
+Thanks,
+Nick
+
+Nicholas Piggin (18):
+  powerpc: Remove unused FW_FEATURE_NATIVE references
+  powerpc: Rename PPC_NATIVE to PPC_HASH_MMU_NATIVE
+  powerpc/pseries: Stop selecting PPC_HASH_MMU_NATIVE
+  powerpc/64s: Move and rename do_bad_slb_fault as it is not hash
+    specific
+  powerpc/pseries: move pseries_lpar_register_process_table() out from
+    hash specific code
+  powerpc/pseries: lparcfg don't include slb_size line in radix mode
+  powerpc/64s: move THP trace point creation out of hash specific file
+  powerpc/64s: Make flush_and_reload_slb a no-op when radix is enabled
+  powerpc/64s: move page size definitions from hash specific file
+  powerpc/64s: Rename hash_hugetlbpage.c to hugetlbpage.c
+  powerpc/64: pcpu setup avoid reading mmu_linear_psize on 64e or radix
+  powerpc: make memremap_compat_align 64s-only
+  powerpc/64e: remove mmu_linear_psize
+  powerpc/64s: Clear MMU_FTR_HPTE_TABLE when booting in radix
+  powerpc/64s: Make hash MMU support configurable
+  powerpc/64s: Move hash MMU support code under CONFIG_PPC_64S_HASH_MMU
+  powerpc/configs/microwatt: add POWER9_CPU
+  powerpc/microwatt: Don't select the hash MMU code
+
+ arch/powerpc/Kconfig                          |   5 +-
+ arch/powerpc/configs/microwatt_defconfig      |   3 +-
+ arch/powerpc/include/asm/book3s/64/mmu.h      |  19 ++-
+ .../include/asm/book3s/64/tlbflush-hash.h     |   7 ++
+ arch/powerpc/include/asm/book3s/64/tlbflush.h |   4 -
+ arch/powerpc/include/asm/book3s/pgtable.h     |   4 +
+ arch/powerpc/include/asm/firmware.h           |   8 --
+ arch/powerpc/include/asm/interrupt.h          |   2 +-
+ arch/powerpc/include/asm/mmu.h                |  16 ++-
+ arch/powerpc/include/asm/mmu_context.h        |   2 +
+ arch/powerpc/include/asm/paca.h               |   8 ++
+ arch/powerpc/kernel/asm-offsets.c             |   2 +
+ arch/powerpc/kernel/dt_cpu_ftrs.c             |  14 ++-
+ arch/powerpc/kernel/entry_64.S                |   4 +-
+ arch/powerpc/kernel/exceptions-64s.S          |  20 +++-
+ arch/powerpc/kernel/mce.c                     |   2 +-
+ arch/powerpc/kernel/mce_power.c               |  16 ++-
+ arch/powerpc/kernel/paca.c                    |  18 ++-
+ arch/powerpc/kernel/process.c                 |  13 +-
+ arch/powerpc/kernel/prom.c                    |   2 +
+ arch/powerpc/kernel/setup_64.c                |  26 +++-
+ arch/powerpc/kexec/core_64.c                  |   4 +-
+ arch/powerpc/kexec/ranges.c                   |   4 +
+ arch/powerpc/kvm/Kconfig                      |   1 +
+ arch/powerpc/mm/book3s64/Makefile             |  19 +--
+ arch/powerpc/mm/book3s64/hash_native.c        | 104 ----------------
+ arch/powerpc/mm/book3s64/hash_pgtable.c       |   1 -
+ arch/powerpc/mm/book3s64/hash_utils.c         | 111 +++++++++++++++++-
+ .../{hash_hugetlbpage.c => hugetlbpage.c}     |   2 +
+ arch/powerpc/mm/book3s64/mmu_context.c        |  34 +++++-
+ arch/powerpc/mm/book3s64/pgtable.c            |  28 +++++
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |   4 +
+ arch/powerpc/mm/book3s64/slb.c                |  16 ---
+ arch/powerpc/mm/book3s64/trace.c              |   8 ++
+ arch/powerpc/mm/copro_fault.c                 |   2 +
+ arch/powerpc/mm/fault.c                       |  17 +++
+ arch/powerpc/mm/init_64.c                     |  14 ++-
+ arch/powerpc/mm/ioremap.c                     |  20 ----
+ arch/powerpc/mm/nohash/tlb.c                  |   9 --
+ arch/powerpc/mm/pgtable.c                     |   9 +-
+ arch/powerpc/mm/ptdump/Makefile               |   2 +-
+ arch/powerpc/platforms/52xx/Kconfig           |   2 +-
+ arch/powerpc/platforms/Kconfig                |   4 +-
+ arch/powerpc/platforms/Kconfig.cputype        |  29 ++++-
+ arch/powerpc/platforms/cell/Kconfig           |   3 +-
+ arch/powerpc/platforms/chrp/Kconfig           |   2 +-
+ arch/powerpc/platforms/embedded6xx/Kconfig    |   2 +-
+ arch/powerpc/platforms/maple/Kconfig          |   3 +-
+ arch/powerpc/platforms/microwatt/Kconfig      |   1 -
+ arch/powerpc/platforms/pasemi/Kconfig         |   3 +-
+ arch/powerpc/platforms/powermac/Kconfig       |   3 +-
+ arch/powerpc/platforms/powernv/Kconfig        |   2 +-
+ arch/powerpc/platforms/powernv/idle.c         |   2 +
+ arch/powerpc/platforms/powernv/setup.c        |   2 +
+ arch/powerpc/platforms/pseries/Kconfig        |   1 -
+ arch/powerpc/platforms/pseries/lpar.c         |  67 ++++++-----
+ arch/powerpc/platforms/pseries/lparcfg.c      |   5 +-
+ arch/powerpc/platforms/pseries/mobility.c     |   6 +
+ arch/powerpc/platforms/pseries/ras.c          |   2 +
+ arch/powerpc/platforms/pseries/reconfig.c     |   2 +
+ arch/powerpc/platforms/pseries/setup.c        |   6 +-
+ arch/powerpc/xmon/xmon.c                      |   8 +-
+ drivers/misc/lkdtm/Makefile                   |   2 +-
+ drivers/misc/lkdtm/core.c                     |   2 +-
+ 64 files changed, 474 insertions(+), 289 deletions(-)
+ rename arch/powerpc/mm/book3s64/{hash_hugetlbpage.c => hugetlbpage.c} (99%)
+ create mode 100644 arch/powerpc/mm/book3s64/trace.c
+
+-- 
+2.23.0
+
