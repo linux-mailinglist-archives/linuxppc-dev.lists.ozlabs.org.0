@@ -2,86 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015D4436327
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 15:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0384E4364F9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Oct 2021 17:02:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HZpPf1Hy2z3cG5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 00:35:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HZrLW3glzz3c9t
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 02:02:27 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=Dj2oeub0;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xmission.com (client-ip=166.70.13.233;
- helo=out03.mta.xmission.com; envelope-from=ebiederm@xmission.com;
- receiver=<UNKNOWN>)
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+ smtp.mailfrom=canonical.com (client-ip=185.125.188.123;
+ helo=smtp-relay-internal-1.canonical.com;
+ envelope-from=krzysztof.kozlowski@canonical.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=canonical.com header.i=@canonical.com
+ header.a=rsa-sha256 header.s=20210705 header.b=Dj2oeub0; 
+ dkim-atps=neutral
+Received: from smtp-relay-internal-1.canonical.com
+ (smtp-relay-internal-1.canonical.com [185.125.188.123])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HZpP66gzwz2xr0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 00:34:31 +1100 (AEDT)
-Received: from in02.mta.xmission.com ([166.70.13.52]:40512)
- by out03.mta.xmission.com with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1mdYD5-005DQ9-NZ; Thu, 21 Oct 2021 07:34:19 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95]:46380
- helo=email.xmission.com)
- by in02.mta.xmission.com with esmtpsa (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1mdYD4-003epC-7e; Thu, 21 Oct 2021 07:34:19 -0600
-From: ebiederm@xmission.com (Eric W. Biederman)
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-References: <87y26nmwkb.fsf@disp2133> <877de7jrev.fsf@disp2133>
- <CAMuHMdURxrdjsXq7+q-AWTwxVUdmddOj2vvNHv6M=WtsU5nRvg@mail.gmail.com>
-Date: Thu, 21 Oct 2021 08:33:51 -0500
-In-Reply-To: <CAMuHMdURxrdjsXq7+q-AWTwxVUdmddOj2vvNHv6M=WtsU5nRvg@mail.gmail.com>
- (Geert Uytterhoeven's message of "Thu, 21 Oct 2021 10:09:46 +0200")
-Message-ID: <87tuhaijsw.fsf@disp2133>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HZrKt0fvqz2yHW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 02:01:52 +1100 (AEDT)
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 536A03F4BA
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 15:01:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1634828506;
+ bh=ZUIZEJuyKtv0ydIDTpE9Z2jbuj2YrNWtkrCDhtR1+Bo=;
+ h=To:References:From:Subject:Message-ID:Date:MIME-Version:
+ In-Reply-To:Content-Type;
+ b=Dj2oeub0qrnlPBEoiba5dzCTx6xXY/L9VGX4qXtQoX6UFfHOX+HYIIVzaKRtl2VNB
+ G513+dfHzK7qWw866DVxqImjFAml9Jmji9kXa9Y511/XgAR3E6Wt9dq2fT1teb6sYa
+ 8Pb2LT3sc90NRCWIlUHbkodx0Ag2qoRbg584OBzl1U1PIZ0NOGNmaKufmqvzRCXxGU
+ p6bqvYhXCh6syNkzUUxZeBnAJGSOXdmYix77Y8bYijjfijsGNzsjpEdYfwFybELKCW
+ OW7YtWsnHwMX5rALPtZJBIoy5Evn32YQzV58ZGee0+5NYclyzuA0zp/CMsIcp5zZNG
+ Cw4kXQLG5Txpw==
+Received: by mail-lj1-f198.google.com with SMTP id
+ f6-20020a2e9e86000000b00211349f9ce3so129856ljk.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 08:01:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:to:references:from:subject:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=ZUIZEJuyKtv0ydIDTpE9Z2jbuj2YrNWtkrCDhtR1+Bo=;
+ b=2+aMjAjFejRhvp84SAjayAO8WZZjEIyEWUV5bolQwEl/EAs5errgOdp2FKrr4xWS5F
+ Nvdl/UaYbaaZKT3mua9g9eJIlT9CP59VHxsSW+2BmOS9UpK8nYLVDp2e3WfvNVrpsY5q
+ yw0vmlxHd3K+A8Mqyipfh4XlDlJDJIq7KMIFni/6rioDxnXWMJo+HGouE8OrSKcXhUJz
+ mDwhk1x9FhNeeRL8vX10L1/1ACfqKusWELR1si+S+JSKlSNlOVHZUVFXP+wdnJYzKVzE
+ Q5NlEPZgbgqTpj/t0qsH8eWTUnWpvP1WG3n1x5Sgdqi5wHA39WqRjXSxoUuAgqsmoACS
+ 9y1Q==
+X-Gm-Message-State: AOAM533xrQe13JwgUr7r4aDPaXhWBJiTnewTwGcMDO3msiDWtJVKEPwO
+ VVZuFjIOQOBqz/ZfKc0yuoUW3ybbVyBOi2BnLjXoipM6uGuPTtmZCUwsladYl+LZbjfzMN6NP0d
+ p0XuZs2CNhwZL81VTf4gmSZTWOQvYLpuvkrTNNxZsXIw=
+X-Received: by 2002:a2e:a552:: with SMTP id e18mr6501952ljn.78.1634828504173; 
+ Thu, 21 Oct 2021 08:01:44 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJypsn4LIHCjKo6yG+8tIz9jVFOAoJjFIkmV8XNjxayXwvBQoZuBQPGrSGfQWZCl7vxCZOJmUg==
+X-Received: by 2002:a2e:a552:: with SMTP id e18mr6501834ljn.78.1634828503359; 
+ Thu, 21 Oct 2021 08:01:43 -0700 (PDT)
+Received: from [192.168.3.161] (89-77-68-124.dynamic.chello.pl. [89.77.68.124])
+ by smtp.gmail.com with ESMTPSA id k21sm613963ljn.126.2021.10.21.08.01.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Oct 2021 08:01:42 -0700 (PDT)
+To: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+ Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <YUpIqytZqpohq4EM@mussarela>
+ <1632500323.sp1p885nv8.naveen@linux.ibm.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Subject: Re: coherency issue observed after hotplug on POWER8
+Message-ID: <42491f5a-593b-535c-b28c-41fbdbb43f99@canonical.com>
+Date: Thu, 21 Oct 2021 17:01:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1mdYD4-003epC-7e; ; ; mid=<87tuhaijsw.fsf@disp2133>; ; ;
- hst=in02.mta.xmission.com; ; ; ip=68.227.160.95; ; ; frm=ebiederm@xmission.com;
- ; ; spf=neutral
-X-XM-AID: U2FsdGVkX1+Mpe2HbWR2YDGhZ3vVJNTbKaHiNpeOXoM=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa05.xmission.com
-X-Spam-Level: ***
-X-Spam-Status: No, score=3.5 required=8.0 tests=ALL_TRUSTED,BAYES_50,
- DCC_CHECK_NEGATIVE,TR_Symld_Words,T_TM2_M_HEADER_IN_MSG,
- T_TooManySym_01,T_TooManySym_02,T_TooManySym_03,XMNoVowels,XMSubLong
- autolearn=disabled version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
- *      [score: 0.4995]
- *  1.5 XMNoVowels Alpha-numberic number with no vowels
- *  0.7 XMSubLong Long Subject
- *  1.5 TR_Symld_Words too many words that have symbols inside
- *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
- * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
- *      [sa05 1397; Body=1 Fuz1=1 Fuz2=1]
- *  0.0 T_TooManySym_02 5+ unique symbols in subject
- *  0.0 T_TooManySym_01 4+ unique symbols in subject
- *  0.0 T_TooManySym_03 6+ unique symbols in subject
-X-Spam-DCC: XMission; sa05 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ***;Geert Uytterhoeven <geert@linux-m68k.org>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 897 ms - load_scoreonly_sql: 0.07 (0.0%),
- signal_user_changed: 12 (1.4%), b_tie_ro: 10 (1.2%), parse: 1.14
- (0.1%), extract_message_metadata: 14 (1.6%), get_uri_detail_list: 1.00
- (0.1%), tests_pri_-1000: 27 (3.0%), tests_pri_-950: 1.31 (0.1%),
- tests_pri_-900: 1.10 (0.1%), tests_pri_-90: 286 (31.9%), check_bayes:
- 285 (31.7%), b_tokenize: 12 (1.3%), b_tok_get_all: 8 (0.9%),
- b_comp_prob: 2.2 (0.3%), b_tok_touch_all: 260 (28.9%), b_finish: 0.94
- (0.1%), tests_pri_0: 537 (59.9%), check_dkim_signature: 0.61 (0.1%),
- check_dkim_adsp: 3.0 (0.3%), poll_dns_idle: 1.00 (0.1%), tests_pri_10:
- 3.2 (0.4%), tests_pri_500: 10 (1.2%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH 21/20] signal: Replace force_sigsegv(SIGSEGV) with
- force_fatal_sig(SIGSEGV)
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
+In-Reply-To: <1632500323.sp1p885nv8.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,57 +99,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, Linux-sh list <linux-sh@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Greentime Hu <green.hu@gmail.com>, H Peter Anvin <hpa@zytor.com>,
- sparclinux <sparclinux@vger.kernel.org>, Vincent Chen <deanbo422@gmail.com>,
- Linux-Arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
- Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Openrisc <openrisc@lists.librecores.org>,
- Borislav Petkov <bp@alien8.de>, Al Viro <viro@zeniv.linux.org.uk>,
- Andy Lutomirski <luto@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, Chris Zankel <chris@zankel.net>,
- Jonas Bonn <jonas@southpole.se>, Nick Hu <nickhu@andestech.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- David Miller <davem@davemloft.net>, Maciej Rozycki <macro@orcam.me.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Geert Uytterhoeven <geert@linux-m68k.org> writes:
-
-> Hi Eric,
->
-> Patch 21/20?
-
-In reviewing another part of the patchset Linus asked if force_sigsegv
-could go away.  It can't completely but I can get this far.
-
-Given that it is just a cleanup it makes most sense to me as an
-additional patch on top of what is already here.
-
-
-> On Wed, Oct 20, 2021 at 11:52 PM Eric W. Biederman
-> <ebiederm@xmission.com> wrote:
->> Now that force_fatal_sig exists it is unnecessary and a bit confusing
->> to use force_sigsegv in cases where the simpler force_fatal_sig is
->> wanted.  So change every instance we can to make the code clearer.
+On 24/09/2021 19:17, Naveen N. Rao wrote:
+> Hi Cascardo,
+> Thanks for reporting this.
+> 
+> 
+> Thadeu Lima de Souza Cascardo wrote:
+>> Hi, there.
 >>
->> Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
->
->>  arch/m68k/kernel/traps.c        | 2 +-
->
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+>> We have been investigating an issue we have observed on POWER8 POWERNV systems.
+>> When running the kernel selftests reuseport_bpf_cpu after a CPU hotplug, we see
+>> crashes, in different forms. [1]
+> 
+> Just to re-confirm: you are only seeing this on P8 powernv, and not in a 
+> P8 guest/LPAR? I haven't been able to reproduce this on a firestone -- 
+> can you share more details about your power8 machine?
+> 
+> Also, do you only see this with ubuntu kernels, or are you also able to 
+> reproduce this with the upstream tree?
 
-Thank you.
+Let me just covert this part of your email:
 
-Eric
+Upstream trees (5.11, 5.13, 5.14). See also:
+https://bugs.launchpad.net/ubuntu-power-systems/+bug/1927076/comments/28
+
+I could not reproduce it on Power8 LPAR. Neither on Power9 QEMU guest.
+
+Reproduced on few machines:
+IBM, POWER8NVL, 8335-GTB
+POWER8, 8001-22C and 8335-GTA
+
+lspcpu for the last one:
+https://bugs.launchpad.net/ubuntu-power-systems/+bug/1927076/comments/15
+
+
+Best regards,
+Krzysztof
