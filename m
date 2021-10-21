@@ -2,70 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B3A436D81
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 00:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B434436D82
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 00:34:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hb2Ls5n4qz3cQM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 09:33:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hb2Mk39Gjz2y7H
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 09:34:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nKC9ANVx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gUQvizF4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534;
- helo=mail-pg1-x534.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
+ helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=nKC9ANVx; dkim-atps=neutral
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com
- [IPv6:2607:f8b0:4864:20::534])
+ header.s=20210112 header.b=gUQvizF4; dkim-atps=neutral
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hb2Hb4XSYz2yZf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 09:30:35 +1100 (AEDT)
-Received: by mail-pg1-x534.google.com with SMTP id t184so1561258pgd.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 15:30:35 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hb2Hd75Ywz3c5m
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 09:30:37 +1100 (AEDT)
+Received: by mail-pj1-x102f.google.com with SMTP id
+ oa12-20020a17090b1bcc00b0019f715462a8so1628133pjb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 15:30:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=4s9pmP0tnVNJToxJmcbHZ0PhUVJ8d2vdAap4hxBxZhY=;
- b=nKC9ANVxG4IJWlXTZPzwEBe/LGiEl6UZkppL3Xf+iEIFb5wmXIY52CK9mG4AfZ+jXD
- FKK/YxQumEVj31Ck1yl4IyMlHpiZIsPAR47VaXn84Lf3KJJWCbzK8trcqi316caOQSpN
- YUCmQbjr3EuhAVU2qKrfFg3Oy3cd60xahkoE6MnYQNr77GHpazkj9kIoHp3s3f66L1iL
- FSFU1GQvybWxKWui/lwPIYWqJal/4zfspyPghhi6kYRYD/sQDmduKHpui0/e8fW/N2k5
- FxfUfk9cHPxOaJdtJxRjXjQ5D8/daftjn1v44GDZgOkmpjEsliPhMhAM9k6dds19KZmy
- 2yUw==
+ bh=WCoLPL0394EyEbAAqA4/lqZq2wRN2EeHKApovTkjBY0=;
+ b=gUQvizF4df9QlhzfjxF4KABR5RXlKaLro+zdqPQYC2FQocU0kgmY7JwPA4Lk8uLJHp
+ 5F8+U8ot+SRtpYG8f8fyoc9pW1kW1TzUpUAOaOhb3wOktyxspUBr/Iq/+2avNdLSIxbD
+ V9qSzozboSYuV3OrFCKIOh6SVVxyjFK2GT9caDUzvkIkoe2YbOdArMn95v4qo6yVas1z
+ 5ADz+ZNGeCxgJDszZQ4+f595zf1ALZJzjy6qq+035/wvwK5GFbViVF82mdFyHo8tJdyp
+ QVleOV93Xu0usMztLxjzruXxu4V52X+TwX0G2UNVyIRpVUt6BHEHJNCoFMnUsn1IiQiU
+ G1/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=4s9pmP0tnVNJToxJmcbHZ0PhUVJ8d2vdAap4hxBxZhY=;
- b=HdvuBIuIswiLi+73czU7JWfcNwO20kFSmW9PWsTxq9+Ch6seb2G5UEqECDnv3BBgA9
- 5AMokhxwPjb8dfx+jmbe34aPKmRKeIwfK6M1aEabkya3l3HSt1B5zqp4nvadrTqx18oE
- qJIL5QZv6slDgf+M19nMVHF4cEobU525ShO5uH7YBKG4SXGKnOmtQCKIY6pJ5JrN9JM9
- 9OvXSCwRD1ITcxG39UCrKBre0sYlrBSJuKsxXWA77B9ap/ZMpKZP2gaea75RTC3mWBVP
- CxMuQBhMV8XlCmfZlpLyznUlalcRP78lbxgwzvjqv6gHm1On9YUtmsPvljakhQvSVC62
- ATxg==
-X-Gm-Message-State: AOAM5301WzH7yVIv3JorhyGc05oIBCa+84tlN4B5JWnioMBo+6G17qnu
- f6LnUS4EiF8VadmOQjcpTYReKNrSEYU=
-X-Google-Smtp-Source: ABdhPJy7W+3aqNm1FDOb/HQpe+zlKWeHPTzt/H10Bci1uyEzVNPZa5eIrpJwb21KqCUUl+zKAonD7A==
-X-Received: by 2002:a62:9291:0:b0:44d:5715:4775 with SMTP id
- o139-20020a629291000000b0044d57154775mr8937193pfd.58.1634855433410; 
- Thu, 21 Oct 2021 15:30:33 -0700 (PDT)
+ bh=WCoLPL0394EyEbAAqA4/lqZq2wRN2EeHKApovTkjBY0=;
+ b=rB9WPBx5MP8OahesHoZ2YbWhGvlIsZsv1xc7MuqrZt+rRDEzS9JRxF7GuCrPXEiAlB
+ sp12ZQ07Sey61FhUNzD+nNgkEjTWomEApRzpEI4SxzTe0d4ZTTcjzrY62rKpQTY8pzqb
+ 5BV2WscfckmBhfgv5F97O9KisLQJpoviC79IvnaWvt3RgHw7WwnUlG0RuSpXKwLKOzfz
+ Jqyh7+HNHfGHtAEFyewRnIObqTupR45SR6zGxmLptvIartt6Yc/aC6CR5vcmSI3X3eay
+ 32rfO/hKeCAcT1PD0boJUms0SftLGtAJ8IyUsHd24cd2ldxuaxMvPwJqCC87NE2pfmzh
+ r8IQ==
+X-Gm-Message-State: AOAM531XIieGTMRoL7UN/AAZiamVhkW+8hICFLxLZxseZb7SqGBWSpsZ
+ PC2A7cE+YHj21WkgFpLknEhShyYo1gs=
+X-Google-Smtp-Source: ABdhPJzl63nVoXBwcloVw/+7dRLXDhvmeQBciSGxq5sehyRaQEpKe8eVWB3rByzWmVJQHuf6f1g6+Q==
+X-Received: by 2002:a17:903:32cf:b0:13f:d59:7a4c with SMTP id
+ i15-20020a17090332cf00b0013f0d597a4cmr7776527plr.78.1634855435853; 
+ Thu, 21 Oct 2021 15:30:35 -0700 (PDT)
 Received: from bobo.ibm.com (14-203-144-177.static.tpgi.com.au.
  [14.203.144.177])
- by smtp.gmail.com with ESMTPSA id e6sm7205716pfm.212.2021.10.21.15.30.31
+ by smtp.gmail.com with ESMTPSA id e6sm7205716pfm.212.2021.10.21.15.30.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Oct 2021 15:30:33 -0700 (PDT)
+ Thu, 21 Oct 2021 15:30:35 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 04/18] powerpc/64s: Move and rename do_bad_slb_fault as it
- is not hash specific
-Date: Fri, 22 Oct 2021 08:29:59 +1000
-Message-Id: <20211021223013.2641952-5-npiggin@gmail.com>
+Subject: [PATCH v3 05/18] powerpc/pseries: move
+ pseries_lpar_register_process_table() out from hash specific code
+Date: Fri, 22 Oct 2021 08:30:00 +1000
+Message-Id: <20211021223013.2641952-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211021223013.2641952-1-npiggin@gmail.com>
 References: <20211021223013.2641952-1-npiggin@gmail.com>
@@ -87,107 +88,87 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-slb.c is hash-specific SLB management, but do_bad_slb_fault deals with
-segment interrupts that occur with radix MMU as well.
----
- arch/powerpc/include/asm/interrupt.h |  2 +-
- arch/powerpc/kernel/exceptions-64s.S |  4 ++--
- arch/powerpc/mm/book3s64/slb.c       | 16 ----------------
- arch/powerpc/mm/fault.c              | 17 +++++++++++++++++
- 4 files changed, 20 insertions(+), 19 deletions(-)
+This reduces ifdefs in a later change making hash support configurable.
 
-diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-index a1d238255f07..3487aab12229 100644
---- a/arch/powerpc/include/asm/interrupt.h
-+++ b/arch/powerpc/include/asm/interrupt.h
-@@ -564,7 +564,7 @@ DECLARE_INTERRUPT_HANDLER(kernel_bad_stack);
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/platforms/pseries/lpar.c | 56 +++++++++++++--------------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index 3df6bdfea475..06d6a824c0dc 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -712,6 +712,34 @@ void vpa_init(int cpu)
  
- /* slb.c */
- DECLARE_INTERRUPT_HANDLER_RAW(do_slb_fault);
--DECLARE_INTERRUPT_HANDLER(do_bad_slb_fault);
-+DECLARE_INTERRUPT_HANDLER(do_bad_segment_interrupt);
+ #ifdef CONFIG_PPC_BOOK3S_64
  
- /* hash_utils.c */
- DECLARE_INTERRUPT_HANDLER_RAW(do_hash_fault);
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index eaf1f72131a1..046c99e31d01 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -1430,7 +1430,7 @@ MMU_FTR_SECTION_ELSE
- ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
- 	std	r3,RESULT(r1)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
--	bl	do_bad_slb_fault
-+	bl	do_bad_segment_interrupt
- 	b	interrupt_return_srr
- 
- 
-@@ -1510,7 +1510,7 @@ MMU_FTR_SECTION_ELSE
- ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
- 	std	r3,RESULT(r1)
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
--	bl	do_bad_slb_fault
-+	bl	do_bad_segment_interrupt
- 	b	interrupt_return_srr
- 
- 
-diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
-index f0037bcc47a0..31f4cef3adac 100644
---- a/arch/powerpc/mm/book3s64/slb.c
-+++ b/arch/powerpc/mm/book3s64/slb.c
-@@ -868,19 +868,3 @@ DEFINE_INTERRUPT_HANDLER_RAW(do_slb_fault)
- 		return err;
- 	}
- }
--
--DEFINE_INTERRUPT_HANDLER(do_bad_slb_fault)
--{
--	int err = regs->result;
--
--	if (err == -EFAULT) {
--		if (user_mode(regs))
--			_exception(SIGSEGV, regs, SEGV_BNDERR, regs->dar);
--		else
--			bad_page_fault(regs, SIGSEGV);
--	} else if (err == -EINVAL) {
--		unrecoverable_exception(regs);
--	} else {
--		BUG();
--	}
--}
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index a8d0ce85d39a..53ddcae0ac9e 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -35,6 +35,7 @@
- #include <linux/kfence.h>
- #include <linux/pkeys.h>
- 
-+#include <asm/asm-prototypes.h>
- #include <asm/firmware.h>
- #include <asm/interrupt.h>
- #include <asm/page.h>
-@@ -620,4 +621,20 @@ DEFINE_INTERRUPT_HANDLER(do_bad_page_fault_segv)
- {
- 	bad_page_fault(regs, SIGSEGV);
- }
-+
-+DEFINE_INTERRUPT_HANDLER(do_bad_segment_interrupt)
++static int pseries_lpar_register_process_table(unsigned long base,
++			unsigned long page_size, unsigned long table_size)
 +{
-+	int err = regs->result;
++	long rc;
++	unsigned long flags = 0;
 +
-+	if (err == -EFAULT) {
-+		if (user_mode(regs))
-+			_exception(SIGSEGV, regs, SEGV_BNDERR, regs->dar);
-+		else
-+			bad_page_fault(regs, SIGSEGV);
-+	} else if (err == -EINVAL) {
-+		unrecoverable_exception(regs);
-+	} else {
++	if (table_size)
++		flags |= PROC_TABLE_NEW;
++	if (radix_enabled()) {
++		flags |= PROC_TABLE_RADIX;
++		if (mmu_has_feature(MMU_FTR_GTSE))
++			flags |= PROC_TABLE_GTSE;
++	} else
++		flags |= PROC_TABLE_HPT_SLB;
++	for (;;) {
++		rc = plpar_hcall_norets(H_REGISTER_PROC_TBL, flags, base,
++					page_size, table_size);
++		if (!H_IS_LONG_BUSY(rc))
++			break;
++		mdelay(get_longbusy_msecs(rc));
++	}
++	if (rc != H_SUCCESS) {
++		pr_err("Failed to register process table (rc=%ld)\n", rc);
 +		BUG();
 +	}
++	return rc;
 +}
- #endif
++
+ static long pSeries_lpar_hpte_insert(unsigned long hpte_group,
+ 				     unsigned long vpn, unsigned long pa,
+ 				     unsigned long rflags, unsigned long vflags,
+@@ -1680,34 +1708,6 @@ static int pseries_lpar_resize_hpt(unsigned long shift)
+ 	return 0;
+ }
+ 
+-static int pseries_lpar_register_process_table(unsigned long base,
+-			unsigned long page_size, unsigned long table_size)
+-{
+-	long rc;
+-	unsigned long flags = 0;
+-
+-	if (table_size)
+-		flags |= PROC_TABLE_NEW;
+-	if (radix_enabled()) {
+-		flags |= PROC_TABLE_RADIX;
+-		if (mmu_has_feature(MMU_FTR_GTSE))
+-			flags |= PROC_TABLE_GTSE;
+-	} else
+-		flags |= PROC_TABLE_HPT_SLB;
+-	for (;;) {
+-		rc = plpar_hcall_norets(H_REGISTER_PROC_TBL, flags, base,
+-					page_size, table_size);
+-		if (!H_IS_LONG_BUSY(rc))
+-			break;
+-		mdelay(get_longbusy_msecs(rc));
+-	}
+-	if (rc != H_SUCCESS) {
+-		pr_err("Failed to register process table (rc=%ld)\n", rc);
+-		BUG();
+-	}
+-	return rc;
+-}
+-
+ void __init hpte_init_pseries(void)
+ {
+ 	mmu_hash_ops.hpte_invalidate	 = pSeries_lpar_hpte_invalidate;
 -- 
 2.23.0
 
