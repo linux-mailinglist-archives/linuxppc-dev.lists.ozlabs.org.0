@@ -2,61 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12DE436EDE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 02:35:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B103436EE4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 02:37:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hb5381zl9z3cRj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 11:35:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hb56W5DC3z3cS0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 11:37:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.160.173;
- helo=mail-qt1-f173.google.com; envelope-from=pku.leo@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.160.172;
+ helo=mail-qt1-f172.google.com; envelope-from=pku.leo@gmail.com;
  receiver=<UNKNOWN>)
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com
- [209.85.160.173])
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com
+ [209.85.160.172])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hb52g508Pz2ynD
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 11:34:33 +1100 (AEDT)
-Received: by mail-qt1-f173.google.com with SMTP id z24so2155134qtv.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 17:34:33 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hb5666xsZz2ynD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 11:37:34 +1100 (AEDT)
+Received: by mail-qt1-f172.google.com with SMTP id w2so2223333qtn.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 17:37:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=5pLuQaUGEsRYwpc0MMQlI/U5wBA+N3te0wyegZPV6Y4=;
- b=meUSnA/QbQcXEqejKCLdRIyP5KQJQKJsB/ZqX5iBIJ3rG5wlqm5YMAtxM54xLu7HBU
- QtV8KKWzc+BY8VXHsmV/XIb3RQfCd606Y0akmcoW/jeeEy2k+sIuPaK2klqN3ITCxeZe
- Z8MT8CBf5qSk2MOBKTDYq42qHKd9A3Y6xL/y1jYv/NkaO6axwGcTg/AQ4y+J+eny7Yeh
- GcKyN8Go4dL0RXdv7W1ZcgvDAYhVGhCbMDKmV3D6pX8bmGaEVJ8mHiyPU3sMgPEKrSuk
- QWP2dahYHTCOt5xVaNlpp2ZWeC/R0y27rZNX048v+yr3N9luc5Z3Grbk+pIa0pXP8rtT
- /7gQ==
-X-Gm-Message-State: AOAM531sSa6SEDdn053cjsxa8LNFEOVva7l1rdGPbV2ptNU/3zXnmsEF
- NNwA8xYOlyzBD0CvZPAt9abtXekU4zQ=
-X-Google-Smtp-Source: ABdhPJxHhbkLwFN5AGzvAcXdtI//uIyuuGLvFPZMdh9qbjVmAso5c1/Sm/QFu5ch2JnzDv1HwmLx/g==
-X-Received: by 2002:a05:622a:1aa6:: with SMTP id
- s38mr9604738qtc.52.1634862870902; 
- Thu, 21 Oct 2021 17:34:30 -0700 (PDT)
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com.
- [209.85.222.177])
- by smtp.gmail.com with ESMTPSA id 31sm3374885qtb.85.2021.10.21.17.34.30
+ bh=k8cCGwIM+MEipkZPPkMbL/O4ATGbMjxLb4ByRgUs5DA=;
+ b=mTC692fkoZcs1u3xzHHh+rY0rjLTgK/hAQy15olLy2ZlHGHdXXDsnXcYb4Ne5YZOyO
+ 1sKeqvAmHT6gW64yzrV/NihyeYlt4O3qjIBzumWZAVBOwWTl5qoVXnj+FqaViMV3noI2
+ 0BDEo+eB7XuQ8jGPvfv5h1d/ngx6aT8waafogjsH20RcKJbgBA1RltkAP+CopK9yXn4q
+ PsN6epox9aqqkZDKFmQcQ7O/HE9tEhTWjoT9t2AJg4/+5G/09+OtNFrVkcaFTku/jlKB
+ cuTNKqKY1XTIOsd0TeCED6nYQvLpTFG/5OpeOk29NYiQ0ODapdmCs18QcYUUkpLE5YOl
+ xe9A==
+X-Gm-Message-State: AOAM531p8YcdTlIE4ih4vD5fQesl7J57MF5O25Fl1TNOEdvYhRtTA2qa
+ RE8Zj1kOHJuz0/JRL+nSfQOJBf/1LOI=
+X-Google-Smtp-Source: ABdhPJyaSpJGPa4qDdB2u+krVAKdUD6UsIWnMfLlAAxk10VkqokoCY0lwP6FLGDZrLXoq9ePAFLSLA==
+X-Received: by 2002:ac8:5ad4:: with SMTP id d20mr10114661qtd.58.1634863052241; 
+ Thu, 21 Oct 2021 17:37:32 -0700 (PDT)
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com.
+ [209.85.160.175])
+ by smtp.gmail.com with ESMTPSA id m6sm3226250qkh.69.2021.10.21.17.37.31
  for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Oct 2021 17:34:30 -0700 (PDT)
-Received: by mail-qk1-f177.google.com with SMTP id j12so3218911qkk.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 17:34:30 -0700 (PDT)
-X-Received: by 2002:a37:db02:: with SMTP id e2mr7461283qki.436.1634862869999; 
- Thu, 21 Oct 2021 17:34:29 -0700 (PDT)
+ Thu, 21 Oct 2021 17:37:32 -0700 (PDT)
+Received: by mail-qt1-f175.google.com with SMTP id o12so2173342qtq.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 17:37:31 -0700 (PDT)
+X-Received: by 2002:ac8:74c7:: with SMTP id j7mr9593942qtr.118.1634863051346; 
+ Thu, 21 Oct 2021 17:37:31 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210908071631.660-1-caihuoqing@baidu.com>
-In-Reply-To: <20210908071631.660-1-caihuoqing@baidu.com>
+ <20210908071631.660-2-caihuoqing@baidu.com>
+In-Reply-To: <20210908071631.660-2-caihuoqing@baidu.com>
 From: Li Yang <leoyang.li@nxp.com>
-Date: Thu, 21 Oct 2021 19:34:18 -0500
-X-Gmail-Original-Message-ID: <CADRPPNSkyJxJSuRwgc4fGLPwTtsMC5YBy2yg7HN2WmGj2utdbA@mail.gmail.com>
-Message-ID: <CADRPPNSkyJxJSuRwgc4fGLPwTtsMC5YBy2yg7HN2WmGj2utdbA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] soc: fsl: guts: Make use of the helper function
+Date: Thu, 21 Oct 2021 19:37:20 -0500
+X-Gmail-Original-Message-ID: <CADRPPNT-ZGsn_04J8tLuyACqpdtSE0b8qg0dC7jPgTZcMhx26g@mail.gmail.com>
+Message-ID: <CADRPPNT-ZGsn_04J8tLuyACqpdtSE0b8qg0dC7jPgTZcMhx26g@mail.gmail.com>
+Subject: Re: [PATCH 2/2] soc: fsl: rcpm: Make use of the helper function
  devm_platform_ioremap_resource()
 To: Cai Huoqing <caihuoqing@baidu.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -79,7 +79,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 8, 2021 at 2:19 AM Cai Huoqing <caihuoqing@baidu.com> wrote:
+On Wed, Sep 8, 2021 at 2:20 AM Cai Huoqing <caihuoqing@baidu.com> wrote:
 >
 > Use the devm_platform_ioremap_resource() helper instead of
 > calling platform_get_resource() and devm_ioremap_resource()
@@ -90,31 +90,34 @@ On Wed, Sep 8, 2021 at 2:19 AM Cai Huoqing <caihuoqing@baidu.com> wrote:
 Applied for next.  Thanks.
 
 > ---
->  drivers/soc/fsl/guts.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  drivers/soc/fsl/rcpm.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
 >
-> diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
-> index d5e9a5f2c087..072473a16f4d 100644
-> --- a/drivers/soc/fsl/guts.c
-> +++ b/drivers/soc/fsl/guts.c
-> @@ -140,7 +140,6 @@ static int fsl_guts_probe(struct platform_device *pdev)
+> diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
+> index 90d3f4060b0c..3d0cae30c769 100644
+> --- a/drivers/soc/fsl/rcpm.c
+> +++ b/drivers/soc/fsl/rcpm.c
+> @@ -146,7 +146,6 @@ static const struct dev_pm_ops rcpm_pm_ops = {
+>  static int rcpm_probe(struct platform_device *pdev)
 >  {
->         struct device_node *np = pdev->dev.of_node;
->         struct device *dev = &pdev->dev;
-> -       struct resource *res;
->         const struct fsl_soc_die_attr *soc_die;
->         const char *machine;
->         u32 svr;
-> @@ -152,8 +151,7 @@ static int fsl_guts_probe(struct platform_device *pdev)
+>         struct device   *dev = &pdev->dev;
+> -       struct resource *r;
+>         struct rcpm     *rcpm;
+>         int ret;
 >
->         guts->little_endian = of_property_read_bool(np, "little-endian");
+> @@ -154,11 +153,7 @@ static int rcpm_probe(struct platform_device *pdev)
+>         if (!rcpm)
+>                 return -ENOMEM;
 >
-> -       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       guts->regs = devm_ioremap_resource(dev, res);
-> +       guts->regs = devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(guts->regs))
->                 return PTR_ERR(guts->regs);
->
+> -       r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -       if (!r)
+> -               return -ENODEV;
+> -
+> -       rcpm->ippdexpcr_base = devm_ioremap_resource(&pdev->dev, r);
+> +       rcpm->ippdexpcr_base = devm_platform_ioremap_resource(pdev, 0);
+>         if (IS_ERR(rcpm->ippdexpcr_base)) {
+>                 ret =  PTR_ERR(rcpm->ippdexpcr_base);
+>                 return ret;
 > --
 > 2.25.1
 >
