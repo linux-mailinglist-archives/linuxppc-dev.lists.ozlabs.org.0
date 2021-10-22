@@ -1,78 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56CC4378D3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 16:12:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E33437953
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 16:50:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HbRBH3cXrz3cVC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 01:12:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HbS1l6dNVz3cLq
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 01:50:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256 header.s=badeba3b8450 header.b=DRKlzadM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YKLENyQn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de
- (client-ip=212.227.15.18; helo=mout.gmx.net; envelope-from=deller@gmx.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=pc@us.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256
- header.s=badeba3b8450 header.b=DRKlzadM; 
- dkim-atps=neutral
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HbR9X2Wt0z3089
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Oct 2021 01:11:41 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=badeba3b8450; t=1634911859;
- bh=vujfeMuBrUuuTlmusG8h3g2DSrTlcZ4DkGKFVEwSHo8=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=DRKlzadMhWGJc6+kIDLJqK2HyeSjNBUSf1mDOOko6uonxZ0XmJB8LuqPk9IMxhT8M
- HIqwI3mRdATBCHY1fj3XMJF5gOStLBLTnYLND5AKIIgLBMkVk7r9JkQSvx7m2rBwzz
- qBwn2oMcnq/az6+XktN0KJ06q9jYgHWf5OpZFbqs=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.180.101]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M8ygO-1ma5Ej23fi-0063uT; Fri, 22
- Oct 2021 16:10:59 +0200
-Message-ID: <f76f2e53-f179-ebcb-0b29-7d76588b5ee0@gmx.de>
-Date: Fri, 22 Oct 2021 16:10:35 +0200
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=YKLENyQn; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HbS0x3XrFz3bhZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Oct 2021 01:49:20 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19MEhsQW013081; 
+ Fri, 22 Oct 2021 10:49:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=pp1; bh=TEPexc0EIZ4Z+OaeW4Tzh2mukw+KksGqC/YhfdvcLCo=;
+ b=YKLENyQnbMJtiZ3rqaIw/d+s/CGwy+DEXffM9niDdOO16RBGJ1LOf8ehlUzS2ZnmTShQ
+ 9xxPbgNro7+vZD8vPbKhp9Gd3+buWY6zbCNKxvRMZt2q1vcAU6+/9sjiByNEET5vx9GQ
+ JGlNtdhxTUF8PhN/jVoLyVVIYCl0n3jwWEVOb9A7VjXao5J36AzV0vHdnwUwGjHmRr5+
+ 2NSln6yZdKThXe91z32Hu2FsmWy+1MzcTCfWaSM6H1cAo/xhjlIee16Rn75ruXxA0Cr0
+ UKCInYIX7/kET9W0GsHupae+21I3uvBLhtKWqnOjrI8BqPRnqy1PnIKlYijxikoU4gIj TQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bub820u4r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Oct 2021 10:49:15 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19MEl1vO004133;
+ Fri, 22 Oct 2021 10:49:15 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bub820u4c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Oct 2021 10:49:15 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19MEhXxb031528;
+ Fri, 22 Oct 2021 14:49:14 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma04wdc.us.ibm.com with ESMTP id 3bqpcd560g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Oct 2021 14:49:14 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 19MEnDJf37290410
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 22 Oct 2021 14:49:13 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 27188112066;
+ Fri, 22 Oct 2021 14:49:13 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 497A4112064;
+ Fri, 22 Oct 2021 14:49:12 +0000 (GMT)
+Received: from li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com (unknown
+ [9.77.149.232]) by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Fri, 22 Oct 2021 14:49:12 +0000 (GMT)
+Date: Fri, 22 Oct 2021 09:49:10 -0500
+From: "Paul A. Clarke" <pc@us.ibm.com>
+To: Kajol Jain <kjain@linux.ibm.com>
+Subject: Re: [PATCH v2] perf vendor events power10: Add metric events json
+ file for power10 platform
+Message-ID: <20211022144910.GC104437@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
+References: <20211022062505.78767-1-kjain@linux.ibm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211022062505.78767-1-kjain@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 3k0moNWnLZ7_NCB5vHY00g8CIcYyfaXm
+X-Proofpoint-GUID: Hmv41urIYVIJIABcHddEkknU-ImLLF10
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
-Content-Language: en-US
-To: Arnd Bergmann <arnd@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>
-References: <20211022120058.1031690-1-arnd@kernel.org>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <20211022120058.1031690-1-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dvfUKgNArSXkFOAG642hgJ+NCLPr8U/Y8j+xJ1cQSnJMG5ZBohE
- QE2JEVtTuIGyPxJoOhxNwRi2TZMmV+qSU2CTm2McWAyp78m/oxb+M58kNTRiBV33w10sD5D
- 7H8nzoEjQciUx/DgmJRFUBdM7EOS5w9m1l7wUOpRxFMMj3HFdu/A8SsEErkNaeN/hre3VcI
- jOYRTyGpLJLcsNHPAzvaw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+8KKO5IzmXY=:+EDVQ7Ok1o3Qrd4rtP8JMi
- hp7fzbyfCYNV+gmUYZ7KPY8CSspGQhOCLYUfMQg63Fg3zw/tAgKL8z4EGwSSkA5vxsd4D4KAt
- uEsk3qRKLxWx9o4w42Ks2qLDVDljrNK/bMLijcHMypY+gfHUEZr36NHaLXqfyH4iu/LRq5Yp+
- 5moR/+czjF1Pqo98Feey2kHZGdU1NzxchIpX3o9jd/TxXKIK/mmtr8Y5zMfydgUWVBiwMlHnv
- NFecSphiKkbJjS5Rv2qp8tFzvbim0ipOOEjvAEeMhujOSW+erDaaQLyNhFYf4PM1quFWZ4PTM
- Qj8EMQLwfwBXniieaeM2Oq3BhCn98aDuNeVHg8fQemLy3VkL9OYNdiOJNW0ygEr+Zl6rc21Xr
- nq7pcaNirjSuxtL7E0btufN+o2o1YT88sD7JSseStRLVarDd5apzkLeOfyCaNlOLygk5n9Zly
- Dvn+lhLx5uOEL4BDa6Ll1i+FZ32UJOgVo5oG3m6HY+I7c1nsntFTeFuihtUWJt5kjQyYuxIMn
- pKiXJXBsESLNzV27GMWQEhWfNKalv4bj/QZBnZiPaXYuJzsLk5cqfcDjNPFKaSb7iiC5OcM7I
- 7jZbByEk9440BcVPgZNMMR6oYubohe3HnvP3mERCBrkkZXD8BupgMoSrDD/bX5/rFjIcXfU3y
- pWcxqER92o9VNyWWrOQvUEcM2Bj+QzUPBUB+RueQQuCf/OvJOifQw528iG9RV9eEITZApQanL
- O7Fw7rxyBKeFJqorHUfDLpmkhvcqtKIq3O43JoahJ+hNutLd87K3+TizSSHyGlU2odQkdxKSy
- fT22d1J+mFduKw1Ssc85F2jb0n9HhNu4J12zXa2ZKv9raFrjQDeUbpn+OWT2pyKKT6AToeadW
- m7+ewFLs/hQ2/CrgTg/Z6/vOB802X9KRNUnUvZlxkxtwKFMiPFjWEGugt5MmvjMXo8/aZT0bs
- 0d+ou9U/9rlQj9nKffCRIfHfQyCbwnd4d8xhEiignDSIS69LFcp19P1cHL2y1yo52fuxg4Ptm
- EgZWn5ONJU4+3e1+oPW0XE+dRWqHZvqvyaAPo6xZVahZFepQ2PBGftdXtX3hW3T9iVYOi0w3c
- VU94PjQPIv/rnM=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-22_04,2021-10-22_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ bulkscore=0 impostorscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ adultscore=0 mlxscore=0 clxscore=1015 lowpriorityscore=0 mlxlogscore=999
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110220083
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,411 +107,817 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>, linux-ia64@vger.kernel.org,
- Vasily Gorbik <gor@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, openrisc@lists.librecores.org,
- Paul Mackerras <paulus@samba.org>, linux-parisc@vger.kernel.org,
- Waiman Long <longman@redhat.com>, Stafford Horne <shorne@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Heiko Carstens <hca@linux.ibm.com>
+Cc: maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, acme@kernel.org,
+ linux-perf-users@vger.kernel.org, atrajeev@linux.vnet.ibm.com,
+ jolsa@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/22/21 13:59, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> parisc, ia64 and powerpc32 are the only remaining architectures that
-> provide custom arch_{spin,read,write}_lock_flags() functions, which are
-> meant to re-enable interrupts while waiting for a spinlock.
->
-> However, none of these can actually run into this codepath, because
-> it is only called on architectures without CONFIG_GENERIC_LOCKBREAK,
-> or when CONFIG_DEBUG_LOCK_ALLOC is set without CONFIG_LOCKDEP, and none
-> of those combinations are possible on the three architectures.
->
-> Going back in the git history, it appears that arch/mn10300 may have
-> been able to run into this code path, but there is a good chance that
-> it never worked. On the architectures that still exist, it was
-> already impossible to hit back in 2008 after the introduction of
-> CONFIG_GENERIC_LOCKBREAK, and possibly earlier.
->
-> As this is all dead code, just remove it and the helper functions built
-> around it. For arch/ia64, the inline asm could be cleaned up, but
-> it seems safer to leave it untouched.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Thanks for the changes!
+More nits below (many left over from prior review)...
 
-Acked-by: Helge Deller <deller@gmx.de>  # parisc
-
-Helge
-
+On Fri, Oct 22, 2021 at 11:55:05AM +0530, Kajol Jain wrote:
+> Add pmu metric json file for power10 platform.
+> 
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 > ---
->  arch/ia64/include/asm/spinlock.h           | 23 ++++++----------------
->  arch/openrisc/include/asm/spinlock.h       |  3 ---
->  arch/parisc/include/asm/spinlock.h         | 15 --------------
->  arch/powerpc/include/asm/simple_spinlock.h | 21 --------------------
->  arch/s390/include/asm/spinlock.h           |  8 --------
->  include/linux/lockdep.h                    | 17 ----------------
->  include/linux/rwlock.h                     | 15 --------------
->  include/linux/rwlock_api_smp.h             |  6 ++----
->  include/linux/spinlock.h                   | 13 ------------
->  include/linux/spinlock_api_smp.h           |  9 ---------
->  include/linux/spinlock_up.h                |  1 -
->  kernel/locking/spinlock.c                  |  3 +--
->  12 files changed, 9 insertions(+), 125 deletions(-)
->
-> diff --git a/arch/ia64/include/asm/spinlock.h b/arch/ia64/include/asm/sp=
-inlock.h
-> index 864775970c50..0e5c1ad3239c 100644
-> --- a/arch/ia64/include/asm/spinlock.h
-> +++ b/arch/ia64/include/asm/spinlock.h
-> @@ -124,18 +124,13 @@ static __always_inline void arch_spin_unlock(arch_=
-spinlock_t *lock)
->  	__ticket_spin_unlock(lock);
->  }
->
-> -static __always_inline void arch_spin_lock_flags(arch_spinlock_t *lock,
-> -						  unsigned long flags)
-> -{
-> -	arch_spin_lock(lock);
-> -}
-> -#define arch_spin_lock_flags	arch_spin_lock_flags
-> -
->  #ifdef ASM_SUPPORTED
->
->  static __always_inline void
-> -arch_read_lock_flags(arch_rwlock_t *lock, unsigned long flags)
-> +arch_read_lock(arch_rwlock_t *lock)
->  {
-> +	unsigned long flags =3D 0;
-> +
->  	__asm__ __volatile__ (
->  		"tbit.nz p6, p0 =3D %1,%2\n"
->  		"br.few 3f\n"
-> @@ -157,13 +152,8 @@ arch_read_lock_flags(arch_rwlock_t *lock, unsigned =
-long flags)
->  		: "p6", "p7", "r2", "memory");
->  }
->
-> -#define arch_read_lock_flags arch_read_lock_flags
-> -#define arch_read_lock(lock) arch_read_lock_flags(lock, 0)
-> -
->  #else /* !ASM_SUPPORTED */
->
-> -#define arch_read_lock_flags(rw, flags) arch_read_lock(rw)
-> -
->  #define arch_read_lock(rw)								\
->  do {											\
->  	arch_rwlock_t *__read_lock_ptr =3D (rw);						\
-> @@ -186,8 +176,10 @@ do {								\
->  #ifdef ASM_SUPPORTED
->
->  static __always_inline void
-> -arch_write_lock_flags(arch_rwlock_t *lock, unsigned long flags)
-> +arch_write_lock(arch_rwlock_t *lock)
->  {
-> +	unsigned long flags =3D 0;
-> +
->  	__asm__ __volatile__ (
->  		"tbit.nz p6, p0 =3D %1, %2\n"
->  		"mov ar.ccv =3D r0\n"
-> @@ -210,9 +202,6 @@ arch_write_lock_flags(arch_rwlock_t *lock, unsigned =
-long flags)
->  		: "ar.ccv", "p6", "p7", "r2", "r29", "memory");
->  }
->
-> -#define arch_write_lock_flags arch_write_lock_flags
-> -#define arch_write_lock(rw) arch_write_lock_flags(rw, 0)
-> -
->  #define arch_write_trylock(rw)							\
->  ({										\
->  	register long result;							\
-> diff --git a/arch/openrisc/include/asm/spinlock.h b/arch/openrisc/includ=
-e/asm/spinlock.h
-> index a8940bdfcb7e..264944a71535 100644
-> --- a/arch/openrisc/include/asm/spinlock.h
-> +++ b/arch/openrisc/include/asm/spinlock.h
-> @@ -19,9 +19,6 @@
->
->  #include <asm/qrwlock.h>
->
-> -#define arch_read_lock_flags(lock, flags) arch_read_lock(lock)
-> -#define arch_write_lock_flags(lock, flags) arch_write_lock(lock)
-> -
->  #define arch_spin_relax(lock)	cpu_relax()
->  #define arch_read_relax(lock)	cpu_relax()
->  #define arch_write_relax(lock)	cpu_relax()
-> diff --git a/arch/parisc/include/asm/spinlock.h b/arch/parisc/include/as=
-m/spinlock.h
-> index fa5ee8a45dbd..a6e5d66a7656 100644
-> --- a/arch/parisc/include/asm/spinlock.h
-> +++ b/arch/parisc/include/asm/spinlock.h
-> @@ -23,21 +23,6 @@ static inline void arch_spin_lock(arch_spinlock_t *x)
->  			continue;
->  }
->
-> -static inline void arch_spin_lock_flags(arch_spinlock_t *x,
-> -					unsigned long flags)
-> -{
-> -	volatile unsigned int *a;
-> -
-> -	a =3D __ldcw_align(x);
-> -	while (__ldcw(a) =3D=3D 0)
-> -		while (*a =3D=3D 0)
-> -			if (flags & PSW_SM_I) {
-> -				local_irq_enable();
-> -				local_irq_disable();
-> -			}
-> -}
-> -#define arch_spin_lock_flags arch_spin_lock_flags
-> -
->  static inline void arch_spin_unlock(arch_spinlock_t *x)
->  {
->  	volatile unsigned int *a;
-> diff --git a/arch/powerpc/include/asm/simple_spinlock.h b/arch/powerpc/i=
-nclude/asm/simple_spinlock.h
-> index 8985791a2ba5..7ae6aeef8464 100644
-> --- a/arch/powerpc/include/asm/simple_spinlock.h
-> +++ b/arch/powerpc/include/asm/simple_spinlock.h
-> @@ -123,27 +123,6 @@ static inline void arch_spin_lock(arch_spinlock_t *=
-lock)
->  	}
->  }
->
-> -static inline
-> -void arch_spin_lock_flags(arch_spinlock_t *lock, unsigned long flags)
-> -{
-> -	unsigned long flags_dis;
-> -
-> -	while (1) {
-> -		if (likely(__arch_spin_trylock(lock) =3D=3D 0))
-> -			break;
-> -		local_save_flags(flags_dis);
-> -		local_irq_restore(flags);
-> -		do {
-> -			HMT_low();
-> -			if (is_shared_processor())
-> -				splpar_spin_yield(lock);
-> -		} while (unlikely(lock->slock !=3D 0));
-> -		HMT_medium();
-> -		local_irq_restore(flags_dis);
-> -	}
-> -}
-> -#define arch_spin_lock_flags arch_spin_lock_flags
-> -
->  static inline void arch_spin_unlock(arch_spinlock_t *lock)
->  {
->  	__asm__ __volatile__("# arch_spin_unlock\n\t"
-> diff --git a/arch/s390/include/asm/spinlock.h b/arch/s390/include/asm/sp=
-inlock.h
-> index ef59588a3042..888a2f1c9ee3 100644
-> --- a/arch/s390/include/asm/spinlock.h
-> +++ b/arch/s390/include/asm/spinlock.h
-> @@ -67,14 +67,6 @@ static inline void arch_spin_lock(arch_spinlock_t *lp=
-)
->  		arch_spin_lock_wait(lp);
->  }
->
-> -static inline void arch_spin_lock_flags(arch_spinlock_t *lp,
-> -					unsigned long flags)
-> -{
-> -	if (!arch_spin_trylock_once(lp))
-> -		arch_spin_lock_wait(lp);
-> -}
-> -#define arch_spin_lock_flags	arch_spin_lock_flags
-> -
->  static inline int arch_spin_trylock(arch_spinlock_t *lp)
->  {
->  	if (!arch_spin_trylock_once(lp))
-> diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-> index 9fe165beb0f9..467b94257105 100644
-> --- a/include/linux/lockdep.h
-> +++ b/include/linux/lockdep.h
-> @@ -481,23 +481,6 @@ do {								\
->
->  #endif /* CONFIG_LOCK_STAT */
->
-> -#ifdef CONFIG_LOCKDEP
-> -
-> -/*
-> - * On lockdep we dont want the hand-coded irq-enable of
-> - * _raw_*_lock_flags() code, because lockdep assumes
-> - * that interrupts are not re-enabled during lock-acquire:
-> - */
-> -#define LOCK_CONTENDED_FLAGS(_lock, try, lock, lockfl, flags) \
-> -	LOCK_CONTENDED((_lock), (try), (lock))
-> -
-> -#else /* CONFIG_LOCKDEP */
-> -
-> -#define LOCK_CONTENDED_FLAGS(_lock, try, lock, lockfl, flags) \
-> -	lockfl((_lock), (flags))
-> -
-> -#endif /* CONFIG_LOCKDEP */
-> -
->  #ifdef CONFIG_PROVE_LOCKING
->  extern void print_irqtrace_events(struct task_struct *curr);
->  #else
-> diff --git a/include/linux/rwlock.h b/include/linux/rwlock.h
-> index 7ce9a51ae5c0..2c0ad417ce3c 100644
-> --- a/include/linux/rwlock.h
-> +++ b/include/linux/rwlock.h
-> @@ -30,31 +30,16 @@ do {								\
->
->  #ifdef CONFIG_DEBUG_SPINLOCK
->   extern void do_raw_read_lock(rwlock_t *lock) __acquires(lock);
-> -#define do_raw_read_lock_flags(lock, flags) do_raw_read_lock(lock)
->   extern int do_raw_read_trylock(rwlock_t *lock);
->   extern void do_raw_read_unlock(rwlock_t *lock) __releases(lock);
->   extern void do_raw_write_lock(rwlock_t *lock) __acquires(lock);
-> -#define do_raw_write_lock_flags(lock, flags) do_raw_write_lock(lock)
->   extern int do_raw_write_trylock(rwlock_t *lock);
->   extern void do_raw_write_unlock(rwlock_t *lock) __releases(lock);
->  #else
-> -
-> -#ifndef arch_read_lock_flags
-> -# define arch_read_lock_flags(lock, flags)	arch_read_lock(lock)
-> -#endif
-> -
-> -#ifndef arch_write_lock_flags
-> -# define arch_write_lock_flags(lock, flags)	arch_write_lock(lock)
-> -#endif
-> -
->  # define do_raw_read_lock(rwlock)	do {__acquire(lock); arch_read_lock(&=
-(rwlock)->raw_lock); } while (0)
-> -# define do_raw_read_lock_flags(lock, flags) \
-> -		do {__acquire(lock); arch_read_lock_flags(&(lock)->raw_lock, *(flags)=
-); } while (0)
->  # define do_raw_read_trylock(rwlock)	arch_read_trylock(&(rwlock)->raw_l=
-ock)
->  # define do_raw_read_unlock(rwlock)	do {arch_read_unlock(&(rwlock)->raw=
-_lock); __release(lock); } while (0)
->  # define do_raw_write_lock(rwlock)	do {__acquire(lock); arch_write_lock=
-(&(rwlock)->raw_lock); } while (0)
-> -# define do_raw_write_lock_flags(lock, flags) \
-> -		do {__acquire(lock); arch_write_lock_flags(&(lock)->raw_lock, *(flags=
-)); } while (0)
->  # define do_raw_write_trylock(rwlock)	arch_write_trylock(&(rwlock)->raw=
-_lock)
->  # define do_raw_write_unlock(rwlock)	do {arch_write_unlock(&(rwlock)->r=
-aw_lock); __release(lock); } while (0)
->  #endif
-> diff --git a/include/linux/rwlock_api_smp.h b/include/linux/rwlock_api_s=
-mp.h
-> index abfb53ab11be..f1db6f17c4fb 100644
-> --- a/include/linux/rwlock_api_smp.h
-> +++ b/include/linux/rwlock_api_smp.h
-> @@ -157,8 +157,7 @@ static inline unsigned long __raw_read_lock_irqsave(=
-rwlock_t *lock)
->  	local_irq_save(flags);
->  	preempt_disable();
->  	rwlock_acquire_read(&lock->dep_map, 0, 0, _RET_IP_);
-> -	LOCK_CONTENDED_FLAGS(lock, do_raw_read_trylock, do_raw_read_lock,
-> -			     do_raw_read_lock_flags, &flags);
-> +	LOCK_CONTENDED(lock, do_raw_read_trylock, do_raw_read_lock);
->  	return flags;
->  }
->
-> @@ -184,8 +183,7 @@ static inline unsigned long __raw_write_lock_irqsave=
-(rwlock_t *lock)
->  	local_irq_save(flags);
->  	preempt_disable();
->  	rwlock_acquire(&lock->dep_map, 0, 0, _RET_IP_);
-> -	LOCK_CONTENDED_FLAGS(lock, do_raw_write_trylock, do_raw_write_lock,
-> -			     do_raw_write_lock_flags, &flags);
-> +	LOCK_CONTENDED(lock, do_raw_write_trylock, do_raw_write_lock);
->  	return flags;
->  }
->
-> diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
-> index c04e99edfe92..40e467cdee2d 100644
-> --- a/include/linux/spinlock.h
-> +++ b/include/linux/spinlock.h
-> @@ -176,7 +176,6 @@ do {									\
->
->  #ifdef CONFIG_DEBUG_SPINLOCK
->   extern void do_raw_spin_lock(raw_spinlock_t *lock) __acquires(lock);
-> -#define do_raw_spin_lock_flags(lock, flags) do_raw_spin_lock(lock)
->   extern int do_raw_spin_trylock(raw_spinlock_t *lock);
->   extern void do_raw_spin_unlock(raw_spinlock_t *lock) __releases(lock);
->  #else
-> @@ -187,18 +186,6 @@ static inline void do_raw_spin_lock(raw_spinlock_t =
-*lock) __acquires(lock)
->  	mmiowb_spin_lock();
->  }
->
-> -#ifndef arch_spin_lock_flags
-> -#define arch_spin_lock_flags(lock, flags)	arch_spin_lock(lock)
-> -#endif
-> -
-> -static inline void
-> -do_raw_spin_lock_flags(raw_spinlock_t *lock, unsigned long *flags) __ac=
-quires(lock)
-> -{
-> -	__acquire(lock);
-> -	arch_spin_lock_flags(&lock->raw_lock, *flags);
-> -	mmiowb_spin_lock();
-> -}
-> -
->  static inline int do_raw_spin_trylock(raw_spinlock_t *lock)
->  {
->  	int ret =3D arch_spin_trylock(&(lock)->raw_lock);
-> diff --git a/include/linux/spinlock_api_smp.h b/include/linux/spinlock_a=
-pi_smp.h
-> index 6b8e1a0b137b..51fa0dab68c4 100644
-> --- a/include/linux/spinlock_api_smp.h
-> +++ b/include/linux/spinlock_api_smp.h
-> @@ -108,16 +108,7 @@ static inline unsigned long __raw_spin_lock_irqsave=
-(raw_spinlock_t *lock)
->  	local_irq_save(flags);
->  	preempt_disable();
->  	spin_acquire(&lock->dep_map, 0, 0, _RET_IP_);
-> -	/*
-> -	 * On lockdep we dont want the hand-coded irq-enable of
-> -	 * do_raw_spin_lock_flags() code, because lockdep assumes
-> -	 * that interrupts are not re-enabled during lock-acquire:
-> -	 */
-> -#ifdef CONFIG_LOCKDEP
->  	LOCK_CONTENDED(lock, do_raw_spin_trylock, do_raw_spin_lock);
-> -#else
-> -	do_raw_spin_lock_flags(lock, &flags);
-> -#endif
->  	return flags;
->  }
->
-> diff --git a/include/linux/spinlock_up.h b/include/linux/spinlock_up.h
-> index 0ac9112c1bbe..16521074b6f7 100644
-> --- a/include/linux/spinlock_up.h
-> +++ b/include/linux/spinlock_up.h
-> @@ -62,7 +62,6 @@ static inline void arch_spin_unlock(arch_spinlock_t *l=
-ock)
->  #define arch_spin_is_locked(lock)	((void)(lock), 0)
->  /* for sched/core.c and kernel_lock.c: */
->  # define arch_spin_lock(lock)		do { barrier(); (void)(lock); } while (0=
-)
-> -# define arch_spin_lock_flags(lock, flags)	do { barrier(); (void)(lock)=
-; } while (0)
->  # define arch_spin_unlock(lock)	do { barrier(); (void)(lock); } while (=
-0)
->  # define arch_spin_trylock(lock)	({ barrier(); (void)(lock); 1; })
->  #endif /* DEBUG_SPINLOCK */
-> diff --git a/kernel/locking/spinlock.c b/kernel/locking/spinlock.c
-> index c5830cfa379a..b562f9289372 100644
-> --- a/kernel/locking/spinlock.c
-> +++ b/kernel/locking/spinlock.c
-> @@ -378,8 +378,7 @@ unsigned long __lockfunc _raw_spin_lock_irqsave_nest=
-ed(raw_spinlock_t *lock,
->  	local_irq_save(flags);
->  	preempt_disable();
->  	spin_acquire(&lock->dep_map, subclass, 0, _RET_IP_);
-> -	LOCK_CONTENDED_FLAGS(lock, do_raw_spin_trylock, do_raw_spin_lock,
-> -				do_raw_spin_lock_flags, &flags);
-> +	LOCK_CONTENDED(lock, do_raw_spin_trylock, do_raw_spin_lock);
->  	return flags;
->  }
->  EXPORT_SYMBOL(_raw_spin_lock_irqsave_nested);
->
+> Changelog v1 -> v2:
+> - Did some nit changes in BriefDescription field
+>   as suggested by Paul A. Clarke
+> 
+> - Link to the v1 patch: https://lkml.org/lkml/2021/10/6/131
+> 
+>  .../arch/powerpc/power10/metrics.json         | 676 ++++++++++++++++++
+>  1 file changed, 676 insertions(+)
+>  create mode 100644 tools/perf/pmu-events/arch/powerpc/power10/metrics.json
+> 
+> diff --git a/tools/perf/pmu-events/arch/powerpc/power10/metrics.json b/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
+> new file mode 100644
+> index 000000000000..8adab5cd9934
+> --- /dev/null
+> +++ b/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
+> @@ -0,0 +1,676 @@
+> +[
+> +    {
+> +        "BriefDescription": "Percentage of cycles that are run cycles",
+> +        "MetricExpr": "PM_RUN_CYC / PM_CYC * 100",
+> +        "MetricGroup": "General",
+> +        "MetricName": "RUN_CYCLES_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per completed instruction",
+> +        "MetricExpr": "PM_CYC / PM_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "CYCLES_PER_INSTRUCTION"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled for any reason",
+> +        "MetricExpr": "PM_DISP_STALL_CYC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled because there was a flush",
+> +        "MetricExpr": "PM_DISP_STALL_FLUSH / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_FLUSH_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled because the MMU was handling a translation miss",
+> +        "MetricExpr": "PM_DISP_STALL_TRANSLATION / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_TRANSLATION_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled waiting to resolve an instruction ERAT miss",
+> +        "MetricExpr": "PM_DISP_STALL_IERAT_ONLY_MISS / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_IERAT_ONLY_MISS_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled waiting to resolve an instruction TLB miss",
+> +        "MetricExpr": "PM_DISP_STALL_ITLB_MISS / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_ITLB_MISS_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled due to an icache miss",
+> +        "MetricExpr": "PM_DISP_STALL_IC_MISS / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_IC_MISS_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled while the instruction was fetched from the local L2",
+> +        "MetricExpr": "PM_DISP_STALL_IC_L2 / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_IC_L2_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled while the instruction was fetched from the local L3",
+> +        "MetricExpr": "PM_DISP_STALL_IC_L3 / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_IC_L3_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled while the instruction was fetched from any source beyond the local L3",
+> +        "MetricExpr": "PM_DISP_STALL_IC_L3MISS / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_IC_L3MISS_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled due to an icache miss after a branch mispredict",
+> +        "MetricExpr": "PM_DISP_STALL_BR_MPRED_ICMISS / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_BR_MPRED_ICMISS_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled while instruction was fetched from the local L2 after suffering a branch mispredict",
+> +        "MetricExpr": "PM_DISP_STALL_BR_MPRED_IC_L2 / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_BR_MPRED_IC_L2_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled while instruction was fetched from the local L3 after suffering a branch mispredict",
+> +        "MetricExpr": "PM_DISP_STALL_BR_MPRED_IC_L3 / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_BR_MPRED_IC_L3_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled while instruction was fetched from any source beyond the local L3 after suffering a branch mispredict",
+> +        "MetricExpr": "PM_DISP_STALL_BR_MPRED_IC_L3MISS / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_BR_MPRED_IC_L3MISS_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled due to a branch mispredict",
+> +        "MetricExpr": "PM_DISP_STALL_BR_MPRED / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_BR_MPRED_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch for any reason",
+> +        "MetricExpr": "PM_DISP_STALL_HELD_CYC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_HELD_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch because of a synchronizing instruction that requires the ICT to be empty before dispatch",
+> +        "MetricExpr": "PM_DISP_STALL_HELD_SYNC_CYC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISP_HELD_STALL_SYNC_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch while waiting on the scoreboard",
+> +        "MetricExpr": "PM_DISP_STALL_HELD_SCOREBOARD_CYC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISP_HELD_STALL_SCOREBOARD_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch due to issue queue full",
+> +        "MetricExpr": "PM_DISP_STALL_HELD_ISSQ_FULL_CYC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISP_HELD_STALL_ISSQ_FULL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch because the mapper/SRB was full",
+> +        "MetricExpr": "PM_DISP_STALL_HELD_RENAME_CYC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_HELD_RENAME_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch because the STF mapper/SRB was full",
+> +        "MetricExpr": "PM_DISP_STALL_HELD_STF_MAPPER_CYC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_HELD_STF_MAPPER_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch because the XVFC mapper/SRB was full",
+> +        "MetricExpr": "PM_DISP_STALL_HELD_XVFC_MAPPER_CYC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_HELD_XVFC_MAPPER_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch for any other reason",
+> +        "MetricExpr": "PM_DISP_STALL_HELD_OTHER_CYC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_HELD_OTHER_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction has been dispatched but not issued for any reason",
+> +        "MetricExpr": "PM_ISSUE_STALL / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "ISSUE_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting to be finished in one of the execution units",
+> +        "MetricExpr": "PM_EXEC_STALL / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "EXECUTION_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction spent executing an NTC instruction that gets flushed some time after dispatch",
+> +        "MetricExpr": "PM_EXEC_STALL_NTC_FLUSH / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "NTC_FLUSH_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTF instruction finishes at dispatch",
+> +        "MetricExpr": "PM_EXEC_STALL_FIN_AT_DISP / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "FIN_AT_DISP_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is executing in the branch unit",
+> +        "MetricExpr": "PM_EXEC_STALL_BRU / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "BRU_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is a simple fixed point instruction that is executing in the LSU",
+> +        "MetricExpr": "PM_EXEC_STALL_SIMPLE_FX / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "SIMPLE_FX_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is executing in the VSU",
+> +        "MetricExpr": "PM_EXEC_STALL_VSU / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "VSU_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting to be finished in one of the execution units",
+> +        "MetricExpr": "PM_EXEC_STALL_TRANSLATION / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "TRANSLATION_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is a load or store that suffered a translation miss",
+> +        "MetricExpr": "PM_EXEC_STALL_DERAT_ONLY_MISS / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DERAT_ONLY_MISS_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is recovering from a TLB miss",
+> +        "MetricExpr": "PM_EXEC_STALL_DERAT_DTLB_MISS / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DERAT_DTLB_MISS_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is executing in the LSU",
+> +        "MetricExpr": "PM_EXEC_STALL_LSU / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "LSU_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is a load that is executing in the LSU",
+> +        "MetricExpr": "PM_EXEC_STALL_LOAD / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "LOAD_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from either the local L2 or local L3",
+> +        "MetricExpr": "PM_EXEC_STALL_DMISS_L2L3 / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DMISS_L2L3_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from either the local L2 or local L3, with an RC dispatch conflict",
+> +        "MetricExpr": "PM_EXEC_STALL_DMISS_L2L3_CONFLICT / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DMISS_L2L3_CONFLICT_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from either the local L2 or local L3, without an RC dispatch conflict",
+> +        "MetricExpr": "PM_EXEC_STALL_DMISS_L2L3_NOCONFLICT / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DMISS_L2L3_NOCONFLICT_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from a source beyond the local L2 and local L3",
+> +        "MetricExpr": "PM_EXEC_STALL_DMISS_L3MISS / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DMISS_L3MISS_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from a neighbor chiplet's L2 or L3 in the same chip",
+> +        "MetricExpr": "PM_EXEC_STALL_DMISS_L21_L31 / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DMISS_L21_L31_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from L4, local memory or OpenCapp chip",
 
+What is "OpenCapp"?  Is is different from OpenCAPI?
+
+> +        "MetricExpr": "PM_EXEC_STALL_DMISS_LMEM / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DMISS_LMEM_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from a remote chip (cache, L4, memory or OpenCapp) in the same group",
+> +        "MetricExpr": "PM_EXEC_STALL_DMISS_OFF_CHIP / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DMISS_OFF_CHIP_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from a distant chip (cache, L4, memory or OpenCapp chip)",
+> +        "MetricExpr": "PM_EXEC_STALL_DMISS_OFF_NODE / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DMISS_OFF_NODE_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is executing a TLBIEL instruction",
+> +        "MetricExpr": "PM_EXEC_STALL_TLBIEL / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "TLBIEL_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is finishing a load after its data has been reloaded from a data source beyond the local L1, OR when the LSU is processing an L1-hit, OR when the NTF instruction merged with another load in the LMQ",
+> +        "MetricExpr": "PM_EXEC_STALL_LOAD_FINISH / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "LOAD_FINISH_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is a store that is executing in the LSU",
+> +        "MetricExpr": "PM_EXEC_STALL_STORE / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "STORE_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is in the store unit outside of handling store misses or other special store operations",
+
+Is "store unit" not the same as "LSU" ?  Use "LSU" uniformly if appropriate:
+s/store unit/LSU/
+
+> +        "MetricExpr": "PM_EXEC_STALL_STORE_PIPE / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "STORE_PIPE_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is a store whose cache line was not resident in the L1 and had to wait for allocation of the missing line into the L1",
+> +        "MetricExpr": "PM_EXEC_STALL_STORE_MISS / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "STORE_MISS_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is a TLBIE instruction waiting for a response from the L2",
+> +        "MetricExpr": "PM_EXEC_STALL_TLBIE / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "TLBIE_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is executing a PTESYNC instruction",
+> +        "MetricExpr": "PM_EXEC_STALL_PTESYNC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "PTESYNC_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction cannot complete because the thread was blocked",
+> +        "MetricExpr": "PM_CMPL_STALL / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "COMPLETION_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction cannot complete because it was interrupted by ANY exception",
+> +        "MetricExpr": "PM_CMPL_STALL_EXCEPTION / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "EXCEPTION_COMPLETION_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is stuck at finish waiting for the non-speculative finish of either a STCX instruction waiting for its result or a load waiting for non-critical sectors of data and ECC",
+> +        "MetricExpr": "PM_CMPL_STALL_MEM_ECC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "MEM_ECC_COMPLETION_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction cannot complete the instruction is a STCX instruction waiting for resolution from the nest",
+
+Need to reword this, I think.  I propose "Average cycles per instruction
+when the NTC instruction is a STCX instruction waiting for resolution
+from the nest", which follows the form used by HWSYNC_COMPLETION_STALL_CPI,
+below.
+
+> +        "MetricExpr": "PM_CMPL_STALL_STCX / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "STCX_COMPLETION_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is a LWSYNC instruction waiting to complete",
+> +        "MetricExpr": "PM_CMPL_STALL_LWSYNC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "LWSYNC_COMPLETION_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction is a HWSYNC instruction stuck at finish waiting for a response from the L2",
+> +        "MetricExpr": "PM_CMPL_STALL_HWSYNC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "HWSYNC_COMPLETION_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction required special handling before completion",
+> +        "MetricExpr": "PM_CMPL_STALL_SPECIAL / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "SPECIAL_COMPLETION_STALL_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when dispatch was stalled because fetch was being held, so there was nothing in the pipeline for this thread",
+> +        "MetricExpr": "PM_DISP_STALL_FETCH / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_FETCH_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch because of power management",
+> +        "MetricExpr": "PM_DISP_STALL_HELD_HALT_CYC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "CPI",
+> +        "MetricName": "DISPATCHED_HELD_HALT_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of flushes per completed run instruction",
+
+s/per completed run instruction/per instruction/
+
+> +        "MetricExpr": "PM_FLUSH / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "Others",
+> +        "MetricName": "FLUSH_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of flushes due to a branch mispredict per instruction",
+> +        "MetricExpr": "PM_FLUSH_MPRED / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "Others",
+> +        "MetricName": "BR_MPRED_FLUSH_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of branch mispredictions per completed run instruction",
+
+s/per completed run instruction/per instruction/
+
+> +        "MetricExpr": "PM_BR_MPRED_CMPL / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "Others",
+> +        "MetricName": "BRANCH_MISPREDICTION_RATE"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of finished loads that missed in the L1",
+> +        "MetricExpr": "PM_LD_MISS_L1 / PM_LD_REF_L1 * 100",
+> +        "MetricGroup": "Others",
+> +        "MetricName": "L1_LD_MISS_RATIO",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of completed run instructions that were loads that missed the L1",
+
+s/completed run instructions/instructions/
+
+> +        "MetricExpr": "PM_LD_MISS_L1 / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "Others",
+> +        "MetricName": "L1_LD_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of instructions when the DPTEG required for the load/store instruction in execution was missing from the TLB",
+> +        "MetricExpr": "PM_DTLB_MISS / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "Others",
+> +        "MetricName": "DTLB_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of instructions dispatched per instruction completed",
+> +        "MetricExpr": "PM_INST_DISP / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "DISPATCH_PER_INST_CMPL"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of completed run instructions that were a demand load that did not hit in the L1 or L2",
+
+s/completed run instructions/instructions/
+
+> +        "MetricExpr": "PM_DATA_FROM_L2MISS / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "General",
+> +        "MetricName": "L2_LD_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of completed run instructions that were demand fetches that missed the L1 instruction cache",
+
+s/completed run instructions/instructions/
+s/instruction cache/icache/ to be consistent with the rest of the file
+
+> +        "MetricExpr": "PM_L1_ICACHE_MISS / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "Instruction_Misses",
+> +        "MetricName": "L1_INST_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of completed run instructions that were demand fetches that reloaded from beyond the L3 instruction cache",
+
+s/completed run instructions/instructions/
+s/instruction cache/icache/ to be consistent with the rest of the file
+
+> +        "MetricExpr": "PM_INST_FROM_L3MISS / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "General",
+> +        "MetricName": "L3_INST_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of completed instructions per cycle",
+> +        "MetricExpr": "PM_INST_CMPL / PM_CYC",
+> +        "MetricGroup": "General",
+> +        "MetricName": "IPC"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of cycles per completed instruction group",
+> +        "MetricExpr": "PM_CYC / PM_1PLUS_PPC_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "CYCLES_PER_COMPLETED_INSTRUCTIONS_SET"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of cycles when at least 1 instruction dispatched",
+> +        "MetricExpr": "PM_1PLUS_PPC_DISP / PM_RUN_CYC * 100",
+> +        "MetricGroup": "General",
+> +        "MetricName": "CYCLES_ATLEAST_ONE_INST_DISPATCHED",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of finished loads per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_LD_REF_L1 / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "LOADS_PER_INST"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of finished stores per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_ST_FIN / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "STORES_PER_INST"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of demand loads that reloaded from beyond the L2 per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_DATA_FROM_L2MISS / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "dL1_Reloads",
+> +        "MetricName": "DL1_RELOAD_FROM_L2_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of demand loads that reloaded from beyond the L3 per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_DATA_FROM_L3MISS / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "dL1_Reloads",
+> +        "MetricName": "DL1_RELOAD_FROM_L3_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of DERAT misses with 4k page size per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_DERAT_MISS_4K / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "Translation",
+> +        "MetricName": "DERAT_4K_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of DERAT misses with 64k page size per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_DERAT_MISS_64K / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "Translation",
+> +        "MetricName": "DERAT_64K_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of run cycles per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_RUN_CYC / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "RUN_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of DERAT misses per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_DERAT_MISS / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "Translation",
+> +        "MetricName": "DERAT_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of completed run instructions per run cycle",
+
+s/completed run instructions/instructions/
+
+> +        "MetricExpr": "PM_RUN_INST_CMPL / PM_RUN_CYC",
+> +        "MetricGroup": "General",
+> +        "MetricName": "RUN_IPC"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of instructions completed per instruction group",
+
+s/completed//
+
+> +        "MetricExpr": "PM_RUN_INST_CMPL / PM_1PLUS_PPC_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "AVERAGE_COMPLETED_INSTRUCTION_SET_SIZE"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of finished instructions per completed run instructions",
+
+s/completed run instructions/instruction/
+
+> +        "MetricExpr": "PM_INST_FIN / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "INST_FIN_PER_CMPL"
+> +    },
+> +    {
+> +        "BriefDescription": "Average cycles per instruction when the NTF instruction is completing and the finish was overlooked",
+> +        "MetricExpr": "PM_EXEC_STALL_UNKNOWN / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "EXEC_STALL_UNKOWN_CPI"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of finished branches that were taken",
+> +        "MetricExpr": "PM_BR_TAKEN_CMPL / PM_BR_FIN * 100",
+> +        "MetricGroup": "General",
+> +        "MetricName": "TAKEN_BRANCHES",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of completed run instructions that were a demand load that did not hit in the L1, L2, or the L3",
+
+s/completed run instructions/instructions/
+
+> +        "MetricExpr": "PM_DATA_FROM_L3MISS / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "General",
+> +        "MetricName": "L3_LD_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of finished branches per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_BR_FIN / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "BRANCHES_PER_INST"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of instructions finished in the LSU per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_LSU_FIN / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "LSU_PER_INST"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of instructions finished in the VSU per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_VSU_FIN / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "VSU_PER_INST"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of TLBIE instructions finished in the LSU per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_TLBIE_FIN / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "TLBIE_PER_INST"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of STCX instructions finshed per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_STCX_FIN / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "STXC_PER_INST"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of LARX instructions finshed per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_LARX_FIN / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "LARX_PER_INST"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of PTESYNC instructions finshed per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_PTESYNC_FIN / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "PTESYNC_PER_INST"
+> +    },
+> +    {
+> +        "BriefDescription": "Average number of simple fixed-point instructions finshed in the store unit per completed run instruction",
+
+s/completed run instruction/instruction/
+s/store unit/LSU/
+
+> +        "MetricExpr": "PM_FX_LSU_FIN / PM_RUN_INST_CMPL",
+> +        "MetricGroup": "General",
+> +        "MetricName": "FX_PER_INST"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of demand load misses that reloaded the L1 cache",
+> +        "MetricExpr": "PM_LD_DEMAND_MISS_L1 / PM_LD_MISS_L1 * 100",
+> +        "MetricGroup": "General",
+> +        "MetricName": "DL1_MISS_RELOADS",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of demand load misses that reloaded from beyond the local L2",
+> +        "MetricExpr": "PM_DATA_FROM_L2MISS / PM_LD_DEMAND_MISS_L1 * 100",
+> +        "MetricGroup": "dL1_Reloads",
+> +        "MetricName": "DL1_RELOAD_FROM_L2_MISS",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of demand load misses that reloaded from beyond the local L3",
+> +        "MetricExpr": "PM_DATA_FROM_L3MISS / PM_LD_DEMAND_MISS_L1 * 100",
+> +        "MetricGroup": "dL1_Reloads",
+> +        "MetricName": "DL1_RELOAD_FROM_L3_MISS",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of cycles stalled due to the NTC instruction waiting for a load miss to resolve from a source beyond the local L2 and local L3",
+> +        "MetricExpr": "DMISS_L3MISS_STALL_CPI / RUN_CPI * 100",
+> +        "MetricGroup": "General",
+> +        "MetricName": "DCACHE_MISS_CPI",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of DERAT misses with 2M page size per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_DERAT_MISS_2M / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "Translation",
+> +        "MetricName": "DERAT_2M_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of DERAT misses with 16M page size per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_DERAT_MISS_16M / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "Translation",
+> +        "MetricName": "DERAT_16M_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "DERAT miss ratio for 4K page size",
+> +        "MetricExpr": "PM_DERAT_MISS_4K / PM_DERAT_MISS",
+> +        "MetricGroup": "Translation",
+> +        "MetricName": "DERAT_4K_MISS_RATIO"
+> +    },
+> +    {
+> +        "BriefDescription": "DERAT miss ratio for 2M page size",
+> +        "MetricExpr": "PM_DERAT_MISS_2M / PM_DERAT_MISS",
+> +        "MetricGroup": "Translation",
+> +        "MetricName": "DERAT_2M_MISS_RATIO"
+> +    },
+> +    {
+> +        "BriefDescription": "DERAT miss ratio for 16M page size",
+> +        "MetricExpr": "PM_DERAT_MISS_16M / PM_DERAT_MISS",
+> +        "MetricGroup": "Translation",
+> +        "MetricName": "DERAT_16M_MISS_RATIO"
+> +    },
+> +    {
+> +        "BriefDescription": "DERAT miss ratio for 64K page size",
+> +        "MetricExpr": "PM_DERAT_MISS_64K / PM_DERAT_MISS",
+> +        "MetricGroup": "Translation",
+> +        "MetricName": "DERAT_64K_MISS_RATIO"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of DERAT misses that resulted in TLB reloads",
+> +        "MetricExpr": "PM_DTLB_MISS / PM_DERAT_MISS * 100",
+> +        "MetricGroup": "Translation",
+> +        "MetricName": "DERAT_MISS_RELOAD",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of icache misses that were reloaded from beyond the local L3",
+> +        "MetricExpr": "PM_INST_FROM_L3MISS / PM_L1_ICACHE_MISS * 100",
+> +        "MetricGroup": "Instruction_Misses",
+> +        "MetricName": "INST_FROM_L3_MISS",
+> +        "ScaleUnit": "1%"
+> +    },
+> +    {
+> +        "BriefDescription": "Percentage of icache reloads from the beyond the L3 per completed run instruction",
+
+s/completed run instruction/instruction/
+
+> +        "MetricExpr": "PM_INST_FROM_L3MISS / PM_RUN_INST_CMPL * 100",
+> +        "MetricGroup": "Instruction_Misses",
+> +        "MetricName": "INST_FROM_L3_MISS_RATE",
+> +        "ScaleUnit": "1%"
+> +    }
+> +]
+> -- 
+
+PC
