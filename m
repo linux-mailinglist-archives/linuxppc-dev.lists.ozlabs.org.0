@@ -1,60 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1A84374E7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 11:40:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA654374F9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 11:43:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HbK851bNQz3cRh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 20:40:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HbKDP1xgzz3cSJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 20:43:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HbK7h1l4dz305p
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 20:39:40 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HbK7X4Dqsz9sSZ;
- Fri, 22 Oct 2021 11:39:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id ED0utl9MtJQ0; Fri, 22 Oct 2021 11:39:36 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HbK7X2xhNz9sSX;
- Fri, 22 Oct 2021 11:39:36 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D17388B816;
- Fri, 22 Oct 2021 11:39:35 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id rLLb7zBVSMvy; Fri, 22 Oct 2021 11:39:35 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.57])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 24F998B764;
- Fri, 22 Oct 2021 11:39:34 +0200 (CEST)
-Subject: Re: [PATCH v3 16/18] powerpc/64s: Move hash MMU support code under
- CONFIG_PPC_64S_HASH_MMU
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20211021223013.2641952-1-npiggin@gmail.com>
- <20211021223013.2641952-17-npiggin@gmail.com>
- <cfd73dd0-a7a2-b8b3-34d8-5a225758b056@csgroup.eu>
- <1634895021.4d2890ma8z.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <a5c2c57f-a1b6-e0da-92fe-29c8b432c95b@csgroup.eu>
-Date: Fri, 22 Oct 2021 11:39:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HbKCz4wSTz3bj5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 20:43:25 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10144"; a="216185348"
+X-IronPort-AV: E=Sophos;i="5.87,172,1631602800"; d="scan'208";a="216185348"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2021 02:42:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,172,1631602800"; d="scan'208";a="663114745"
+Received: from lkp-server02.sh.intel.com (HELO 08b2c502c3de) ([10.239.97.151])
+ by orsmga005.jf.intel.com with ESMTP; 22 Oct 2021 02:42:04 -0700
+Received: from kbuild by 08b2c502c3de with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mdr3r-000FYU-Lo; Fri, 22 Oct 2021 09:42:03 +0000
+Date: Fri, 22 Oct 2021 17:41:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 2974d421aac1374d3269fe4f1fba2068aa33134d
+Message-ID: <61728754.g17dq5/NxAqULkvY%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <1634895021.4d2890ma8z.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,74 +50,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 2974d421aac1374d3269fe4f1fba2068aa33134d  powerpc/32: Don't use a struct based type for pte_t
 
+elapsed time: 1247m
 
-Le 22/10/2021 à 11:34, Nicholas Piggin a écrit :
-> Excerpts from Christophe Leroy's message of October 22, 2021 5:18 pm:
->>
->>
->> Le 22/10/2021 à 00:30, Nicholas Piggin a écrit :
+configs tested: 103
+configs skipped: 3
 
->>> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
->>> index 7d556b5513e4..57d2d797c4f6 100644
->>> --- a/arch/powerpc/mm/book3s64/pgtable.c
->>> +++ b/arch/powerpc/mm/book3s64/pgtable.c
->>> @@ -535,7 +535,7 @@ static int __init pgtable_debugfs_setup(void)
->>>    }
->>>    arch_initcall(pgtable_debugfs_setup);
->>>    
->>> -#ifdef CONFIG_ZONE_DEVICE
->>> +#if defined(CONFIG_ZONE_DEVICE) && defined(ARCH_HAS_MEMREMAP_COMPAT_ALIGN)
->>
->> Patch 12 does
->>
->> 	select ARCH_HAS_MEMREMAP_COMPAT_ALIGN	if PPC_BOOK3S_64
-> 
-> Ah, I meant to change that to PPC_64S_HASH_MMU.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-You did it later yes.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211021
+arm                         hackkit_defconfig
+sh                           se7343_defconfig
+arm                        neponset_defconfig
+sh                     sh7710voipgw_defconfig
+m68k                        stmark2_defconfig
+arm                            qcom_defconfig
+mips                        omega2p_defconfig
+arm                     am200epdkit_defconfig
+arm                         assabet_defconfig
+sh                        sh7785lcr_defconfig
+arc                     nsimosci_hs_defconfig
+mips                           ip28_defconfig
+mips                      malta_kvm_defconfig
+parisc                generic-32bit_defconfig
+arm                          iop32x_defconfig
+arm                          moxart_defconfig
+arc                     haps_hs_smp_defconfig
+sh                           se7751_defconfig
+mips                          rb532_defconfig
+openrisc                 simple_smp_defconfig
+arm                  randconfig-c002-20211021
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a013-20211021
+x86_64               randconfig-a015-20211021
+x86_64               randconfig-a011-20211021
+x86_64               randconfig-a014-20211021
+x86_64               randconfig-a016-20211021
+x86_64               randconfig-a012-20211021
+i386                 randconfig-a012-20211021
+i386                 randconfig-a013-20211021
+i386                 randconfig-a011-20211021
+i386                 randconfig-a016-20211021
+i386                 randconfig-a015-20211021
+i386                 randconfig-a014-20211021
+arc                  randconfig-r043-20211021
+riscv                randconfig-r042-20211021
+s390                 randconfig-r044-20211021
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
 
-What I meant is that as you are in book3s64/pgtable.c, you are sure that 
-ARCH_HAS_MEMREMAP_COMPAT_ALIGN is selected so you don't need to check.
+clang tested configs:
+x86_64               randconfig-a002-20211021
+x86_64               randconfig-a004-20211021
+x86_64               randconfig-a005-20211021
+x86_64               randconfig-a001-20211021
+x86_64               randconfig-a006-20211021
+x86_64               randconfig-a003-20211021
+i386                 randconfig-a004-20211021
+i386                 randconfig-a003-20211021
+i386                 randconfig-a002-20211021
+i386                 randconfig-a005-20211021
+i386                 randconfig-a001-20211021
+i386                 randconfig-a006-20211021
+hexagon              randconfig-r045-20211021
+hexagon              randconfig-r041-20211021
 
-> 
->>
->> So this change is not needed
->>
->>>    /*
->>>     * Override the generic version in mm/memremap.c.
->>>     *
->>
->>> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
->>> index dd8241c009e5..30f764476c30 100644
->>> --- a/arch/powerpc/xmon/xmon.c
->>> +++ b/arch/powerpc/xmon/xmon.c
->>> @@ -1160,9 +1160,11 @@ cmds(struct pt_regs *excp)
->>>    			show_tasks();
->>>    			break;
->>>    #ifdef CONFIG_PPC_BOOK3S
->>> +#if defined(CONFIG_PPC32) || defined(CONFIG_PPC_64S_HASH_MMU)
->>
->> I think you'll get a build failure here.
->>
->> dump_segments() is defined only with CONFIG_PPC_BOOK3S_64 and
->> CONFIG_PPC_BOOK3S_32, see
->>
->> https://elixir.bootlin.com/linux/v5.15-rc5/source/arch/powerpc/xmon/xmon.c#L3745
->>
->> and
->>
->> https://elixir.bootlin.com/linux/v5.15-rc5/source/arch/powerpc/xmon/xmon.c#L3784
-> 
-> AFAIKS it is okay because it still has ifdef BOOK3S?
-> 
-
-Ah, I missed it.
-
-But why keep a double ifdef ? instead of just :
-
-	#if defined(CONFIG_PPC_BOOK3S_32) || defined(CONFIG_PPC_64S_HASH_MMU)
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
