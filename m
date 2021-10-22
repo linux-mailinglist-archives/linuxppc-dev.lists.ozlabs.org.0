@@ -1,75 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771844374BF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 11:31:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF03D4374CC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 11:35:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HbJxZ0Ndcz3cTH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 20:30:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HbK2B1BZpz3cND
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 20:34:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=bPdiZnym;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=X82YCoA8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b;
- helo=mail-pf1-x42b.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c;
+ helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=bPdiZnym; dkim-atps=neutral
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
- [IPv6:2607:f8b0:4864:20::42b])
+ header.s=20210112 header.b=X82YCoA8; dkim-atps=neutral
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
+ [IPv6:2607:f8b0:4864:20::62c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HbJwv4Qvxz2ywK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 20:30:22 +1100 (AEDT)
-Received: by mail-pf1-x42b.google.com with SMTP id f11so3069972pfc.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 02:30:22 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HbK1X2l5kz2yxB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 20:34:23 +1100 (AEDT)
+Received: by mail-pl1-x62c.google.com with SMTP id e10so2302089plh.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 02:34:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:references:in-reply-to:mime-version:message-id
  :content-transfer-encoding;
- bh=y+3XJCBQZO05zmAzAE0qZdto5aQaryuy8ArBAo5K6us=;
- b=bPdiZnymUheBRVxYTP17MvFMxLJLDEICuwRm7D90G8TgI6dGISb3CAukKrLZ/H1BUt
- db3ecz5u8gJh1fn7xtNP4XcF31cc0yL3BzecK4ogQwWG5oJOkw82cDHsu0mbdRUg4/cG
- OgatM8Jn7CTJSH1mqHH2hi/YSR+Pxdzix6cvucXo2A7pCjjF1SlJqdp8bstTN4zxIXLP
- rBHkuTRSNfcdex07751yd2Ott/3NxqpjWiEYsuyVEs3UWuyZ0ymh1UqaAztSQ7oog7Vb
- GXcnAjhd4aY3egmJonE2yGVtTJNUxuQPXnJNLWKmBvTz3Q9rQK16LjJJLjNPCFpvSh79
- 7y6g==
+ bh=FEYJA+JgesKMvIFk98+1owqNBy+DCB2ByIkvT+99u1k=;
+ b=X82YCoA8B5sYVdpDNDCOBBZR48NLT7gZgl7DQPv+H/YE1L1YJuR5orFkf36mWw+Yp6
+ RMWEbyrOqstRs6wrpgI9RAnt5Kk77jaI3ds9+60zP/rFdVN+h7nzb/PwWHbhPEGgIZgC
+ LWhQrrBWsBn7conKGy2zGHojoXi5OWShndIeLOWEFiXSLImAcVxjE3lchA3uF/IG1qM4
+ ZKjZE8lEP6iUHXsPTTKZZCKDbqLxP39cmBwYr+6uFqGc7k29vvCUU0FE+FCEeOqe35ky
+ NQY7iWPi/b2rAs1bX9LALJihkOVGx48FVViHRL6w1YU1Splv9nkOVRSLThqXyaGVFSZZ
+ +e8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=y+3XJCBQZO05zmAzAE0qZdto5aQaryuy8ArBAo5K6us=;
- b=nKQ2f4CdqfTA82LC/daRpcx204EQOrDsXQ2aktCQREUd8as1QNgT5lZFWM2Z3cSWCP
- gJYfnhB8wDzDXBmriv7UlYCjHiXm7KaBYSBtWQk9RRYod4FY515SMUQPP0OgWK+tRNTm
- gFXF6Oo3Y5XOLs2ocI5bUA+1Idtyq+uijmnFRMnZvi1tih2DzpxbdU8RRw0mH7bj4bks
- z/biPrmLsGI8wa7ovFUc2fUj3N2Lzduv3l7nAzyhSJTIXUIECZDqXj3ONvHrrELdiaXp
- GFkMy++7zia6/K7/QpC7EOnkuTXBzVd6/DjoS96hwFjOnrtbrNrhtx06cio9bnGu4qlz
- frhw==
-X-Gm-Message-State: AOAM531C1vn97ueUB/rxRsy2/IEkt2zJrba27mZEHF5WcYr3K/YnyOW6
- hrEV5W1C9akZn7vw0vGyrHg=
-X-Google-Smtp-Source: ABdhPJzFG3JUmZV3Wvmt26mdQYRshftPb+GqjosMGQJVBj+Zb49p375+Kc64qL9C1eS1c+wGC57afg==
-X-Received: by 2002:a05:6a00:230e:b0:44c:4f2d:9b00 with SMTP id
- h14-20020a056a00230e00b0044c4f2d9b00mr11164126pfh.24.1634895018821; 
- Fri, 22 Oct 2021 02:30:18 -0700 (PDT)
+ bh=FEYJA+JgesKMvIFk98+1owqNBy+DCB2ByIkvT+99u1k=;
+ b=W4UXmHjMEjk0K2b7LeDEq8wrkC/2u4nS+KEUoGMopdOgkbSxgIX4S+Fgmz21RoRWdM
+ W4UxS/R1ID8foyWfQfPgPB3y/0K4wiYX0L7H2g4AASOyH2esFZDELQFBRUKzrzB1eAFw
+ kt5p3jsbIsDRGx5jnl65JM/YtqEGljBUF3lCj6tzUOUFqrnLqzFjXKTDzdChMu9L2LaA
+ oQuxDMDHcsMdsYONGqySqc+QExvFMh7C6Mw1Tul00b6DD9yX4Uz4/8nN8/BV0VRTzaua
+ WVdI202+xNbqw35pel14E3fPSqTxXuqRwEeo2LonQvIt2tfMuK1zI3lWnvl0kV4vRWnm
+ dtRw==
+X-Gm-Message-State: AOAM532GIVUo5vPFzvtVqsPywj9q4gfdHD9HD4yI3MLh9dNz+O+leE0/
+ XV0cVakTb6bPIPKl6K1TnbGD4FI1FUSI1A==
+X-Google-Smtp-Source: ABdhPJyie+T7EhdOrlO/KmdC0ZOU26k+SKYF2KJDurYz/VocdvUzNYnqW0d84JrHE6NQHDheVpGeRw==
+X-Received: by 2002:a17:90a:e57:: with SMTP id
+ p23mr12918809pja.154.1634895260120; 
+ Fri, 22 Oct 2021 02:34:20 -0700 (PDT)
 Received: from localhost ([118.208.159.180])
- by smtp.gmail.com with ESMTPSA id u193sm7468190pgc.34.2021.10.22.02.30.17
+ by smtp.gmail.com with ESMTPSA id lw14sm9781294pjb.34.2021.10.22.02.34.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Oct 2021 02:30:18 -0700 (PDT)
-Date: Fri, 22 Oct 2021 19:30:13 +1000
+ Fri, 22 Oct 2021 02:34:19 -0700 (PDT)
+Date: Fri, 22 Oct 2021 19:34:15 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 15/18] powerpc/64s: Make hash MMU support configurable
+Subject: Re: [PATCH v3 16/18] powerpc/64s: Move hash MMU support code under
+ CONFIG_PPC_64S_HASH_MMU
 To: Christophe Leroy <christophe.leroy@csgroup.eu>,
  linuxppc-dev@lists.ozlabs.org
 References: <20211021223013.2641952-1-npiggin@gmail.com>
- <20211021223013.2641952-16-npiggin@gmail.com>
- <7e10f779-e968-e723-cdbc-4510acdf64a8@csgroup.eu>
-In-Reply-To: <7e10f779-e968-e723-cdbc-4510acdf64a8@csgroup.eu>
+ <20211021223013.2641952-17-npiggin@gmail.com>
+ <cfd73dd0-a7a2-b8b3-34d8-5a225758b056@csgroup.eu>
+In-Reply-To: <cfd73dd0-a7a2-b8b3-34d8-5a225758b056@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1634894498.go7wwenl1p.astroid@bobo.none>
+Message-Id: <1634895021.4d2890ma8z.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,115 +88,147 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of October 22, 2021 5:02 pm:
+Excerpts from Christophe Leroy's message of October 22, 2021 5:18 pm:
 >=20
 >=20
 > Le 22/10/2021 =C3=A0 00:30, Nicholas Piggin a =C3=A9crit=C2=A0:
->> This adds Kconfig selection which allows 64s hash MMU support to be
->> disabled. It can be disabled if radix support is enabled, the minimum
->> supported CPU type is POWER9 (or higher), and KVM is not selected.
+>> Compiling out hash support code when CONFIG_PPC_64S_HASH_MMU=3Dn saves
+>> 128kB kernel image size (90kB text) on powernv_defconfig minus KVM,
+>> 350kB on pseries_defconfig minus KVM, 40kB on a tiny config.
 >>=20
 >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >> ---
->>   arch/powerpc/Kconfig                     |  3 ++-
->>   arch/powerpc/include/asm/mmu.h           | 16 ++++++++++---
->>   arch/powerpc/kernel/dt_cpu_ftrs.c        | 14 ++++++++----
->>   arch/powerpc/kvm/Kconfig                 |  1 +
->>   arch/powerpc/mm/init_64.c                | 15 +++++++++---
->>   arch/powerpc/platforms/Kconfig.cputype   | 29 ++++++++++++++++++++++--
->>   arch/powerpc/platforms/cell/Kconfig      |  1 +
->>   arch/powerpc/platforms/maple/Kconfig     |  1 +
->>   arch/powerpc/platforms/microwatt/Kconfig |  2 +-
->>   arch/powerpc/platforms/pasemi/Kconfig    |  1 +
->>   arch/powerpc/platforms/powermac/Kconfig  |  1 +
->>   arch/powerpc/platforms/powernv/Kconfig   |  2 +-
->>   12 files changed, 71 insertions(+), 15 deletions(-)
+>>   arch/powerpc/Kconfig                          |  2 +-
+>>   arch/powerpc/include/asm/book3s/64/mmu.h      | 19 +++++++++--
+>>   .../include/asm/book3s/64/tlbflush-hash.h     |  7 ++++
+>>   arch/powerpc/include/asm/book3s/pgtable.h     |  4 +++
+>>   arch/powerpc/include/asm/mmu_context.h        |  2 ++
+>>   arch/powerpc/include/asm/paca.h               |  8 +++++
+>>   arch/powerpc/kernel/asm-offsets.c             |  2 ++
+>>   arch/powerpc/kernel/entry_64.S                |  4 +--
+>>   arch/powerpc/kernel/exceptions-64s.S          | 16 +++++++++
+>>   arch/powerpc/kernel/mce.c                     |  2 +-
+>>   arch/powerpc/kernel/mce_power.c               | 10 ++++--
+>>   arch/powerpc/kernel/paca.c                    | 18 ++++------
+>>   arch/powerpc/kernel/process.c                 | 13 +++----
+>>   arch/powerpc/kernel/prom.c                    |  2 ++
+>>   arch/powerpc/kernel/setup_64.c                |  5 +++
+>>   arch/powerpc/kexec/core_64.c                  |  4 +--
+>>   arch/powerpc/kexec/ranges.c                   |  4 +++
+>>   arch/powerpc/mm/book3s64/Makefile             | 15 ++++----
+>>   arch/powerpc/mm/book3s64/hugetlbpage.c        |  2 ++
+>>   arch/powerpc/mm/book3s64/mmu_context.c        | 34 +++++++++++++++----
+>>   arch/powerpc/mm/book3s64/pgtable.c            |  2 +-
+>>   arch/powerpc/mm/book3s64/radix_pgtable.c      |  4 +++
+>>   arch/powerpc/mm/copro_fault.c                 |  2 ++
+>>   arch/powerpc/mm/ptdump/Makefile               |  2 +-
+>>   arch/powerpc/platforms/powernv/idle.c         |  2 ++
+>>   arch/powerpc/platforms/powernv/setup.c        |  2 ++
+>>   arch/powerpc/platforms/pseries/lpar.c         | 11 ++++--
+>>   arch/powerpc/platforms/pseries/lparcfg.c      |  2 +-
+>>   arch/powerpc/platforms/pseries/mobility.c     |  6 ++++
+>>   arch/powerpc/platforms/pseries/ras.c          |  2 ++
+>>   arch/powerpc/platforms/pseries/reconfig.c     |  2 ++
+>>   arch/powerpc/platforms/pseries/setup.c        |  6 ++--
+>>   arch/powerpc/xmon/xmon.c                      |  8 +++--
+>>   drivers/misc/lkdtm/Makefile                   |  2 +-
+>>   drivers/misc/lkdtm/core.c                     |  2 +-
+>>   35 files changed, 177 insertions(+), 51 deletions(-)
 >>=20
 >=20
->> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platf=
-orms/Kconfig.cputype
->> index a208997ade88..1cf254a5d5d4 100644
->> --- a/arch/powerpc/platforms/Kconfig.cputype
->> +++ b/arch/powerpc/platforms/Kconfig.cputype
+>> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/inc=
+lude/asm/book3s/64/mmu.h
+>> index c02f42d1031e..d94ebae386b6 100644
+>> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
+>> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+>> @@ -233,7 +245,8 @@ static inline void setup_initial_memory_limit(phys_a=
+ddr_t first_memblock_base,
+>>   	 * know which translations we will pick. Hence go with hash
+>>   	 * restrictions.
+>>   	 */
+>> -	return hash__setup_initial_memory_limit(first_memblock_base,
+>> +	if (!radix_enabled())
+>> +		return hash__setup_initial_memory_limit(first_memblock_base,
+>>   					   first_memblock_size);
 >=20
->> @@ -364,6 +371,17 @@ config SPE
->>  =20
->>   	  If in doubt, say Y here.
->>  =20
->> +config PPC_64S_HASH_MMU
->> +	bool "Hash MMU Support"
->> +	depends on PPC_BOOK3S_64
->> +	select PPC_MM_SLICES
->> +	default y
->> +	help
->> +	  Enable support for the Power ISA Hash style MMU. This is implemented
->> +	  by all IBM Power and other Book3S CPUs.
->> +
->> +	  If you're unsure, say Y.
->> +
->>   config PPC_RADIX_MMU
->>   	bool "Radix MMU Support"
->>   	depends on PPC_BOOK3S_64
->> @@ -374,9 +392,10 @@ config PPC_RADIX_MMU
->>   	  is only implemented by IBM Power9 CPUs, if you don't have one of th=
-em
->>   	  you can probably disable this.
->>  =20
->> -config PPC_RADIX_MMU_DEFAULT
->> +config PPC_RADIX_MMU_DEFAULT_OPTION
->>   	bool "Default to using the Radix MMU when possible"
->>   	depends on PPC_RADIX_MMU
->> +	depends on PPC_64S_HASH_MMU
->>   	default y
->>   	help
->>   	  When the hardware supports the Radix MMU, default to using it unles=
-s
->> @@ -387,6 +406,12 @@ config PPC_RADIX_MMU_DEFAULT
->>  =20
->>   	  If you're unsure, say Y.
->>  =20
->> +config PPC_RADIX_MMU_DEFAULT
->> +	bool
->> +	depends on PPC_BOOK3S_64
->> +	depends on PPC_RADIX_MMU_DEFAULT_OPTION || !PPC_64S_HASH_MMU
->> +	default y
->> +
->=20
-> Why do you need that PPC_RADIX_MMU_DEFAULT_OPTION ?
->=20
-> What about
->=20
-> 	config PPC_RADIX_MMU_DEFAULT
-> 		bool "Default to using the Radix MMU when possible" if PPC_64S_HASH_MMU
-> 		depends on PPC_RADIX_MMU
-> 		depends on PPC_BOOK3S_64
-> 		default y
+> It is a void function, using return is not correct.
 
-That's what I was trying to do I guess, I forget about the if clause on=20
-the bool option.
+I guess for this case I can fix as I go.
 
->> diff --git a/arch/powerpc/platforms/cell/Kconfig b/arch/powerpc/platform=
-s/cell/Kconfig
->> index db4465c51b56..faa894714a2a 100644
->> --- a/arch/powerpc/platforms/cell/Kconfig
->> +++ b/arch/powerpc/platforms/cell/Kconfig
->> @@ -8,6 +8,7 @@ config PPC_CELL_COMMON
->>   	select PPC_DCR_MMIO
->>   	select PPC_INDIRECT_PIO
->>   	select PPC_INDIRECT_MMIO
->> +	select PPC_64S_HASH_MMU
+>> @@ -112,8 +112,15 @@ static inline void hash__flush_tlb_kernel_range(uns=
+igned long start,
+>>  =20
+>>   struct mmu_gather;
+>>   extern void hash__tlb_flush(struct mmu_gather *tlb);
+>> +extern void flush_tlb_pmd_range(struct mm_struct *mm, pmd_t *pmd,
+>> +				unsigned long addr);
 >=20
-> Is this one (and the others) needed ?
->=20
-> Because it PPC_64S_HASH_MMU is 'default y', selection shouldn't be=20
-> needed I think.
->=20
-> Did you check with savedefconfig ?
+> 'extern' is superflous
 
-The platform ones maybe aren't needed but it's because the cpu type=20
-support selects hash (I don't want it to be configurable even if it=20
-defaults to y). But it probably makes better sense to select this with=20
-CPU type support rather than platform.
+Ditto.
+
+>> @@ -144,12 +147,21 @@ static int hash__init_new_context(struct mm_struct=
+ *mm)
+>>   	return index;
+>>   }
+>>  =20
+>> +void slb_setup_new_exec(void);
+>=20
+> Include arch/powerpc/mm/book3s64/internal.h instead
+
+Will do.
+
+>> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s=
+64/pgtable.c
+>> index 7d556b5513e4..57d2d797c4f6 100644
+>> --- a/arch/powerpc/mm/book3s64/pgtable.c
+>> +++ b/arch/powerpc/mm/book3s64/pgtable.c
+>> @@ -535,7 +535,7 @@ static int __init pgtable_debugfs_setup(void)
+>>   }
+>>   arch_initcall(pgtable_debugfs_setup);
+>>  =20
+>> -#ifdef CONFIG_ZONE_DEVICE
+>> +#if defined(CONFIG_ZONE_DEVICE) && defined(ARCH_HAS_MEMREMAP_COMPAT_ALI=
+GN)
+>=20
+> Patch 12 does
+>=20
+> 	select ARCH_HAS_MEMREMAP_COMPAT_ALIGN	if PPC_BOOK3S_64
+
+Ah, I meant to change that to PPC_64S_HASH_MMU.
+
+>=20
+> So this change is not needed
+>=20
+>>   /*
+>>    * Override the generic version in mm/memremap.c.
+>>    *
+>=20
+>> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+>> index dd8241c009e5..30f764476c30 100644
+>> --- a/arch/powerpc/xmon/xmon.c
+>> +++ b/arch/powerpc/xmon/xmon.c
+>> @@ -1160,9 +1160,11 @@ cmds(struct pt_regs *excp)
+>>   			show_tasks();
+>>   			break;
+>>   #ifdef CONFIG_PPC_BOOK3S
+>> +#if defined(CONFIG_PPC32) || defined(CONFIG_PPC_64S_HASH_MMU)
+>=20
+> I think you'll get a build failure here.
+>=20
+> dump_segments() is defined only with CONFIG_PPC_BOOK3S_64 and=20
+> CONFIG_PPC_BOOK3S_32, see
+>=20
+> https://elixir.bootlin.com/linux/v5.15-rc5/source/arch/powerpc/xmon/xmon.=
+c#L3745
+>=20
+> and
+>=20
+> https://elixir.bootlin.com/linux/v5.15-rc5/source/arch/powerpc/xmon/xmon.=
+c#L3784
+
+AFAIKS it is okay because it still has ifdef BOOK3S?
 
 Thanks,
 Nick
+
