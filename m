@@ -1,65 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B103436EE4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 02:37:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7641437066
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 05:13:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hb56W5DC3z3cS0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 11:37:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hb8ZN2KmZz3cBt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 14:13:48 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=cYDUUwCi;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.160.172;
- helo=mail-qt1-f172.google.com; envelope-from=pku.leo@gmail.com;
- receiver=<UNKNOWN>)
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com
- [209.85.160.172])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=cYDUUwCi; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hb5666xsZz2ynD
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 11:37:34 +1100 (AEDT)
-Received: by mail-qt1-f172.google.com with SMTP id w2so2223333qtn.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 17:37:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=k8cCGwIM+MEipkZPPkMbL/O4ATGbMjxLb4ByRgUs5DA=;
- b=mTC692fkoZcs1u3xzHHh+rY0rjLTgK/hAQy15olLy2ZlHGHdXXDsnXcYb4Ne5YZOyO
- 1sKeqvAmHT6gW64yzrV/NihyeYlt4O3qjIBzumWZAVBOwWTl5qoVXnj+FqaViMV3noI2
- 0BDEo+eB7XuQ8jGPvfv5h1d/ngx6aT8waafogjsH20RcKJbgBA1RltkAP+CopK9yXn4q
- PsN6epox9aqqkZDKFmQcQ7O/HE9tEhTWjoT9t2AJg4/+5G/09+OtNFrVkcaFTku/jlKB
- cuTNKqKY1XTIOsd0TeCED6nYQvLpTFG/5OpeOk29NYiQ0ODapdmCs18QcYUUkpLE5YOl
- xe9A==
-X-Gm-Message-State: AOAM531p8YcdTlIE4ih4vD5fQesl7J57MF5O25Fl1TNOEdvYhRtTA2qa
- RE8Zj1kOHJuz0/JRL+nSfQOJBf/1LOI=
-X-Google-Smtp-Source: ABdhPJyaSpJGPa4qDdB2u+krVAKdUD6UsIWnMfLlAAxk10VkqokoCY0lwP6FLGDZrLXoq9ePAFLSLA==
-X-Received: by 2002:ac8:5ad4:: with SMTP id d20mr10114661qtd.58.1634863052241; 
- Thu, 21 Oct 2021 17:37:32 -0700 (PDT)
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com.
- [209.85.160.175])
- by smtp.gmail.com with ESMTPSA id m6sm3226250qkh.69.2021.10.21.17.37.31
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Oct 2021 17:37:32 -0700 (PDT)
-Received: by mail-qt1-f175.google.com with SMTP id o12so2173342qtq.7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 17:37:31 -0700 (PDT)
-X-Received: by 2002:ac8:74c7:: with SMTP id j7mr9593942qtr.118.1634863051346; 
- Thu, 21 Oct 2021 17:37:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hb8Yb6Pjlz2yPT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 14:13:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+ :Reply-To:Content-ID:Content-Description;
+ bh=W0LD9iPvxxhEJ3MC2BpmyEY64d7qaINAGgTsXYSy428=; b=cYDUUwCiDlFw5AzyRMN9tlggeH
+ 9bieqFxqnVXkwZshKFtrCWiWTRj42Do3v3duec5Oh2NeBr/KtY2JFs19YrFYe0pjKgkjitbcJVU74
+ 3L08/bDkVn1tUvxtnfojRZTI4YQuqf0qGPiYnvURf63sODp5N4b02/KHuPw9GCLRd3M6EmVk8Ojgu
+ oBS83rFU7lxFzpRkPtkVGxQiFpQdqzIyU3p0je/yXb3QsaRNe4eexfYRYdsHlsX8Pbp3yHsoQjWpz
+ Wurr52oXnhVFBC7Wm/ZyMZRdkLB1Q5ijXqsDPwyM11+aSkVj9GJTqnh7As2hIZpDy+Zf5omesnM5z
+ tH6JZAqw==;
+Received: from [2602:306:c5a2:a380:b27b:25ff:fe2c:51a8]
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1mdkxM-00DffH-LH; Fri, 22 Oct 2021 03:11:19 +0000
+Subject: Re: [PATCH 00/13] block: add_disk() error handling stragglers
+To: Luis Chamberlain <mcgrof@kernel.org>
+References: <20211015235219.2191207-1-mcgrof@kernel.org>
+ <a31970d6-8631-9d9d-a36f-8f4fcebfb1e6@infradead.org>
+ <YW2duaTqf3qUbTIm@bombadil.infradead.org>
+From: Geoff Levand <geoff@infradead.org>
+Message-ID: <24bc86d0-9d8d-8c8a-7f74-a87f9089342b@infradead.org>
+Date: Thu, 21 Oct 2021 20:10:49 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-References: <20210908071631.660-1-caihuoqing@baidu.com>
- <20210908071631.660-2-caihuoqing@baidu.com>
-In-Reply-To: <20210908071631.660-2-caihuoqing@baidu.com>
-From: Li Yang <leoyang.li@nxp.com>
-Date: Thu, 21 Oct 2021 19:37:20 -0500
-X-Gmail-Original-Message-ID: <CADRPPNT-ZGsn_04J8tLuyACqpdtSE0b8qg0dC7jPgTZcMhx26g@mail.gmail.com>
-Message-ID: <CADRPPNT-ZGsn_04J8tLuyACqpdtSE0b8qg0dC7jPgTZcMhx26g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] soc: fsl: rcpm: Make use of the helper function
- devm_platform_ioremap_resource()
-To: Cai Huoqing <caihuoqing@baidu.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <YW2duaTqf3qUbTIm@bombadil.infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,53 +66,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- lkml <linux-kernel@vger.kernel.org>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
+Cc: nvdimm@lists.linux.dev, vigneshr@ti.com, linux-nvme@lists.infradead.org,
+ paulus@samba.org, miquel.raynal@bootlin.com, ira.weiny@intel.com, hch@lst.de,
+ dave.jiang@intel.com, sagi@grimberg.me, minchan@kernel.org,
+ vishal.l.verma@intel.com, ngupta@vflare.org, linux-block@vger.kernel.org,
+ kbusch@kernel.org, dan.j.williams@intel.com, axboe@kernel.dk,
+ linux-kernel@vger.kernel.org, jim@jtan.com, senozhatsky@chromium.org,
+ richard@nod.at, linux-mtd@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Sep 8, 2021 at 2:20 AM Cai Huoqing <caihuoqing@baidu.com> wrote:
->
-> Use the devm_platform_ioremap_resource() helper instead of
-> calling platform_get_resource() and devm_ioremap_resource()
-> separately
->
-> Signed-off-by: Cai Huoqing <caihuoqing@baidu.com>
+Hi Luis,
 
-Applied for next.  Thanks.
+On 10/18/21 9:15 AM, Luis Chamberlain wrote:
+> On Sun, Oct 17, 2021 at 08:26:33AM -0700, Geoff Levand wrote:
+>> Hi Luis,
+>>
+>> On 10/15/21 4:52 PM, Luis Chamberlain wrote:
+>>> This patch set consists of al the straggler drivers for which we have
+>>> have no patch reviews done for yet. I'd like to ask for folks to please
+>>> consider chiming in, specially if you're the maintainer for the driver.
+>>> Additionally if you can specify if you'll take the patch in yourself or
+>>> if you want Jens to take it, that'd be great too.
+>>
+>> Do you have a git repo with the patch set applied that I can use to test with?
+> 
+> Sure, although the second to last patch is in a state of flux given
+> the ataflop driver currently is broken and so we're seeing how to fix
+> that first:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux-next.git/log/?h=20211011-for-axboe-add-disk-error-handling
 
-> ---
->  drivers/soc/fsl/rcpm.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
->
-> diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
-> index 90d3f4060b0c..3d0cae30c769 100644
-> --- a/drivers/soc/fsl/rcpm.c
-> +++ b/drivers/soc/fsl/rcpm.c
-> @@ -146,7 +146,6 @@ static const struct dev_pm_ops rcpm_pm_ops = {
->  static int rcpm_probe(struct platform_device *pdev)
->  {
->         struct device   *dev = &pdev->dev;
-> -       struct resource *r;
->         struct rcpm     *rcpm;
->         int ret;
->
-> @@ -154,11 +153,7 @@ static int rcpm_probe(struct platform_device *pdev)
->         if (!rcpm)
->                 return -ENOMEM;
->
-> -       r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       if (!r)
-> -               return -ENODEV;
-> -
-> -       rcpm->ippdexpcr_base = devm_ioremap_resource(&pdev->dev, r);
-> +       rcpm->ippdexpcr_base = devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(rcpm->ippdexpcr_base)) {
->                 ret =  PTR_ERR(rcpm->ippdexpcr_base);
->                 return ret;
-> --
-> 2.25.1
->
+That branch has so many changes applied on top of the base v5.15-rc4
+that the patches I need to apply to test on PS3 with don't apply.
+
+Do you have something closer to say v5.15-rc5?  Preferred would be
+just your add_disk() error handling patches plus what they depend
+on.
+
+Thanks.
+
+-Geoff
