@@ -2,71 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE05437198
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 08:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6064371BF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 08:26:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HbDZX545cz3cPd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 17:14:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HbDrM6wymz3cQY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 17:26:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=NNYRAzdD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dW/ig0OY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::531;
- helo=mail-pg1-x531.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=NNYRAzdD; dkim-atps=neutral
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com
- [IPv6:2607:f8b0:4864:20::531])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=dW/ig0OY; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HbDYq1CtCz3c4y
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 17:13:34 +1100 (AEDT)
-Received: by mail-pg1-x531.google.com with SMTP id 75so2425341pga.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 23:13:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=QuxoVBvy5FuHHbrHueXUtDozauit6ARHYTxvHMGO8i4=;
- b=NNYRAzdDW247+NPQE6fxQKRyYmCcSmBKHKcTjop1h0JGU0b9S22tZi/htl4147IKO0
- skcB80f5t5KGLPs/ODxwGodYlebyfwetUDeQ0z9S9LEGkbomeuFhVL9lYHjX7PtM/cOy
- PJliVZBNZWhxw10UwRe7K3GrwiCKZrl9m/GnF4KvcCsebjutj3KgWat0ufUKcgPUD9ec
- TjOQDZsVdr0PQ3qqLIYwUZp66cfHB1IrHq/v/IoWbci1dexTrayktsUreHv9CpcjIiCy
- 0RUj7dEqBSlfQVpGnEc+J6Q5uoPn9Qbe4QK1J7yGFFpSxck7xQNFkei7DMP1VEwPfFEa
- G8Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=QuxoVBvy5FuHHbrHueXUtDozauit6ARHYTxvHMGO8i4=;
- b=bQUVsmL0z+F9A7EZdr3+YcpUfLDia5YsaWsqVg4y5J597Ab2m90UqWgKV4lPuGgnxv
- Gm9GsTKulHMTv6ZO+sFd0dZR7RUPWMHgdz/Av0IbM1AJFcEuen7h0KIXWILNLpVU0uRs
- JVQcT1zPLtWIPy68RaoGtHtCCW7IalXAvMwU48Gll7nLPaDnV8MlY0jGDHclW/DlrJQy
- MEC+sOWT9B/OgA7kOr87WJlAVKgq5RdtFu2mKq0JvtSKkJ59jdG/05RKKPyxM29feOSp
- 7seSnSvVxNxcwO8rzrsXY1t7n6PKYAg5qAcEfkl5kJSyDGc9bJcr2iYcWiJDMjR946t4
- t/3w==
-X-Gm-Message-State: AOAM532MnO8kfZ8SkJzpxYlCU3wp1gPel6p+OWFvrwmdFD9vJt2InGrs
- 5jmXYVuNS5tUEXE4f7jYAuHqcn1uwMw=
-X-Google-Smtp-Source: ABdhPJyQm2I1kDbde1eXBfPE7yYVR+cuZGLnpHFqVLc4S3vaHLVNOyKz9wEO3U2cYjEh1en3UoqMXw==
-X-Received: by 2002:a63:6845:: with SMTP id d66mr7925797pgc.374.1634883208768; 
- Thu, 21 Oct 2021 23:13:28 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (14-203-144-177.static.tpgi.com.au.
- [14.203.144.177])
- by smtp.gmail.com with ESMTPSA id r25sm6887355pge.61.2021.10.21.23.13.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Oct 2021 23:13:28 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc: flexible GPR range save/restore macros
-Date: Fri, 22 Oct 2021 16:13:22 +1000
-Message-Id: <20211022061322.2671178-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HbDqd0BS7z2yN6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 17:25:32 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19M5rYrw021030; 
+ Fri, 22 Oct 2021 02:25:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=MYoFe0O+9RMmv+sgHYKF/i0+OL+n/sQU5rYFK6jnbu4=;
+ b=dW/ig0OYwYk7KI5DrKv+MLu44BuvVM5UnEVEeZOZ4S2WfWGEbtXy9Ou1ELMr2pQ1inOB
+ 3vycqg3OOpv+LTZgsxzG6vnw/lbN3/IAdHEAHv0Ih8jpnye+91/ucz3F/YzkewzpO01q
+ ZW74SCy1wDJ8N7bM+V3XOXh+jRx9sv1xej/H0lKvOjsSGmPWzRdgkOLdCR73OpPmJhQK
+ E5kPPhqu+uUlXzFH00NwhRWnpaQ2xzQZl32niN/GPEDPMhFLOAnQR790WdauYdPMiVVE
+ 53DlXkOiNtRKsfbA5shN+b/G6OlTcUy3RFRBKySsQyrCzIvfVs3ExQm9KqyHIbMp4LQe 4g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bukh4ve0x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Oct 2021 02:25:28 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19M6M5RR013735;
+ Fri, 22 Oct 2021 02:25:27 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3bukh4ve0f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Oct 2021 02:25:27 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19M6EUmQ027219;
+ Fri, 22 Oct 2021 06:25:25 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma04ams.nl.ibm.com with ESMTP id 3bqpcbda4n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Oct 2021 06:25:24 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 19M6PLjB45154638
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 22 Oct 2021 06:25:21 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 268124203F;
+ Fri, 22 Oct 2021 06:25:21 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2451742064;
+ Fri, 22 Oct 2021 06:25:17 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown
+ [9.43.7.61]) by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 22 Oct 2021 06:25:16 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: acme@kernel.org
+Subject: [PATCH v2] perf vendor events power10: Add metric events json file
+ for power10 platform
+Date: Fri, 22 Oct 2021 11:55:05 +0530
+Message-Id: <20211022062505.78767-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: j3M2R4l1L5IzkqWHlTYQFFAGhxxJgk5n
+X-Proofpoint-ORIG-GUID: 7FCqS_kXm4QJn73OkKhptJee2sDW2wbM
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-22_01,2021-10-21_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0
+ adultscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0
+ mlxlogscore=999 spamscore=0 phishscore=0 suspectscore=0 clxscore=1011
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110220031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,634 +105,710 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: atrajeev@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, pc@us.ibm.com,
+ kjain@linux.ibm.com, jolsa@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Introduce macros that operate on a (start, end) range of GPRs, which
-reduces lines of code and need to do mental arithmetic while reading the
-code.
+Add pmu metric json file for power10 platform.
 
-Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
-Since v1:
-- Removed unused OP_REG_IDX macro
-- Commented OP_REG macro
+Changelog v1 -> v2:
+- Did some nit changes in BriefDescription field
+  as suggested by Paul A. Clarke
 
- arch/powerpc/boot/crt0.S                      | 31 +++++++------
- arch/powerpc/crypto/md5-asm.S                 | 10 ++---
- arch/powerpc/crypto/sha1-powerpc-asm.S        |  6 +--
- arch/powerpc/include/asm/ppc_asm.h            | 43 ++++++++++++-------
- arch/powerpc/kernel/entry_32.S                | 23 ++++------
- arch/powerpc/kernel/exceptions-64e.S          | 14 ++----
- arch/powerpc/kernel/exceptions-64s.S          |  6 +--
- arch/powerpc/kernel/head_32.h                 |  3 +-
- arch/powerpc/kernel/head_booke.h              |  3 +-
- arch/powerpc/kernel/interrupt_64.S            | 34 ++++++---------
- arch/powerpc/kernel/optprobes_head.S          |  4 +-
- arch/powerpc/kernel/tm.S                      | 15 ++-----
- .../powerpc/kernel/trace/ftrace_64_mprofile.S | 15 +++----
- arch/powerpc/kvm/book3s_hv_rmhandlers.S       |  5 +--
- .../lib/test_emulate_step_exec_instr.S        |  8 ++--
- 15 files changed, 94 insertions(+), 126 deletions(-)
+- Link to the v1 patch: https://lkml.org/lkml/2021/10/6/131
 
-diff --git a/arch/powerpc/boot/crt0.S b/arch/powerpc/boot/crt0.S
-index 1d83966f5ef6..e8f10a599659 100644
---- a/arch/powerpc/boot/crt0.S
-+++ b/arch/powerpc/boot/crt0.S
-@@ -226,16 +226,19 @@ p_base:	mflr	r10		/* r10 now points to runtime addr of p_base */
- #ifdef __powerpc64__
- 
- #define PROM_FRAME_SIZE 512
--#define SAVE_GPR(n, base)       std     n,8*(n)(base)
--#define REST_GPR(n, base)       ld      n,8*(n)(base)
--#define SAVE_2GPRS(n, base)     SAVE_GPR(n, base); SAVE_GPR(n+1, base)
--#define SAVE_4GPRS(n, base)     SAVE_2GPRS(n, base); SAVE_2GPRS(n+2, base)
--#define SAVE_8GPRS(n, base)     SAVE_4GPRS(n, base); SAVE_4GPRS(n+4, base)
--#define SAVE_10GPRS(n, base)    SAVE_8GPRS(n, base); SAVE_2GPRS(n+8, base)
--#define REST_2GPRS(n, base)     REST_GPR(n, base); REST_GPR(n+1, base)
--#define REST_4GPRS(n, base)     REST_2GPRS(n, base); REST_2GPRS(n+2, base)
--#define REST_8GPRS(n, base)     REST_4GPRS(n, base); REST_4GPRS(n+4, base)
--#define REST_10GPRS(n, base)    REST_8GPRS(n, base); REST_2GPRS(n+8, base)
-+
-+.macro OP_REGS op, width, start, end, base, offset
-+	.Lreg=\start
-+	.rept (\end - \start + 1)
-+	\op	.Lreg,\offset+\width*.Lreg(\base)
-+	.Lreg=.Lreg+1
-+	.endr
-+.endm
-+
-+#define SAVE_GPRS(start, end, base)	OP_REGS std, 8, start, end, base, 0
-+#define REST_GPRS(start, end, base)	OP_REGS ld, 8, start, end, base, 0
-+#define SAVE_GPR(n, base)		SAVE_GPRS(n, n, base)
-+#define REST_GPR(n, base)		REST_GPRS(n, n, base)
- 
- /* prom handles the jump into and return from firmware.  The prom args pointer
-    is loaded in r3. */
-@@ -246,9 +249,7 @@ prom:
- 	stdu	r1,-PROM_FRAME_SIZE(r1) /* Save SP and create stack space */
- 
- 	SAVE_GPR(2, r1)
--	SAVE_GPR(13, r1)
--	SAVE_8GPRS(14, r1)
--	SAVE_10GPRS(22, r1)
-+	SAVE_GPRS(13, 31, r1)
- 	mfcr    r10
- 	std     r10,8*32(r1)
- 	mfmsr   r10
-@@ -283,9 +284,7 @@ prom:
- 
- 	/* Restore other registers */
- 	REST_GPR(2, r1)
--	REST_GPR(13, r1)
--	REST_8GPRS(14, r1)
--	REST_10GPRS(22, r1)
-+	REST_GPRS(13, 31, r1)
- 	ld      r10,8*32(r1)
- 	mtcr	r10
- 
-diff --git a/arch/powerpc/crypto/md5-asm.S b/arch/powerpc/crypto/md5-asm.S
-index 948d100a2934..fa6bc440cf4a 100644
---- a/arch/powerpc/crypto/md5-asm.S
-+++ b/arch/powerpc/crypto/md5-asm.S
-@@ -38,15 +38,11 @@
- 
- #define INITIALIZE \
- 	PPC_STLU r1,-INT_FRAME_SIZE(r1); \
--	SAVE_8GPRS(14, r1);		/* push registers onto stack	*/ \
--	SAVE_4GPRS(22, r1);						   \
--	SAVE_GPR(26, r1)
-+	SAVE_GPRS(14, 26, r1)		/* push registers onto stack	*/
- 
- #define FINALIZE \
--	REST_8GPRS(14, r1);		/* pop registers from stack	*/ \
--	REST_4GPRS(22, r1);						   \
--	REST_GPR(26, r1);						   \
--	addi	r1,r1,INT_FRAME_SIZE;
-+	REST_GPRS(14, 26, r1);		/* pop registers from stack	*/ \
-+	addi	r1,r1,INT_FRAME_SIZE
- 
- #ifdef __BIG_ENDIAN__
- #define LOAD_DATA(reg, off) \
-diff --git a/arch/powerpc/crypto/sha1-powerpc-asm.S b/arch/powerpc/crypto/sha1-powerpc-asm.S
-index 23e248beff71..f0d5ed557ab1 100644
---- a/arch/powerpc/crypto/sha1-powerpc-asm.S
-+++ b/arch/powerpc/crypto/sha1-powerpc-asm.S
-@@ -125,8 +125,7 @@
- 
- _GLOBAL(powerpc_sha_transform)
- 	PPC_STLU r1,-INT_FRAME_SIZE(r1)
--	SAVE_8GPRS(14, r1)
--	SAVE_10GPRS(22, r1)
-+	SAVE_GPRS(14, 31, r1)
- 
- 	/* Load up A - E */
- 	lwz	RA(0),0(r3)	/* A */
-@@ -184,7 +183,6 @@ _GLOBAL(powerpc_sha_transform)
- 	stw	RD(0),12(r3)
- 	stw	RE(0),16(r3)
- 
--	REST_8GPRS(14, r1)
--	REST_10GPRS(22, r1)
-+	REST_GPRS(14, 31, r1)
- 	addi	r1,r1,INT_FRAME_SIZE
- 	blr
-diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-index 1c538a9a11e0..fe6cb940d136 100644
---- a/arch/powerpc/include/asm/ppc_asm.h
-+++ b/arch/powerpc/include/asm/ppc_asm.h
-@@ -16,30 +16,41 @@
- 
- #define SZL			(BITS_PER_LONG/8)
- 
-+/*
-+ * This expands to a sequence of operations with reg incrementing from
-+ * start to end inclusive, of this form:
-+ *
-+ *   op  reg, (offset + (width * reg))(base)
-+ *
-+ * Note that offset is not the offset of the first operation unless start
-+ * is zero (or width is zero).
-+ */
-+.macro OP_REGS op, width, start, end, base, offset
-+	.Lreg=\start
-+	.rept (\end - \start + 1)
-+	\op	.Lreg, \offset + \width * .Lreg(\base)
-+	.Lreg=.Lreg+1
-+	.endr
-+.endm
-+
- /*
-  * Macros for storing registers into and loading registers from
-  * exception frames.
-  */
- #ifdef __powerpc64__
--#define SAVE_GPR(n, base)	std	n,GPR0+8*(n)(base)
--#define REST_GPR(n, base)	ld	n,GPR0+8*(n)(base)
--#define SAVE_NVGPRS(base)	SAVE_8GPRS(14, base); SAVE_10GPRS(22, base)
--#define REST_NVGPRS(base)	REST_8GPRS(14, base); REST_10GPRS(22, base)
-+#define SAVE_GPRS(start, end, base)	OP_REGS std, 8, start, end, base, GPR0
-+#define REST_GPRS(start, end, base)	OP_REGS ld, 8, start, end, base, GPR0
-+#define SAVE_NVGPRS(base)		SAVE_GPRS(14, 31, base)
-+#define REST_NVGPRS(base)		REST_GPRS(14, 31, base)
- #else
--#define SAVE_GPR(n, base)	stw	n,GPR0+4*(n)(base)
--#define REST_GPR(n, base)	lwz	n,GPR0+4*(n)(base)
--#define SAVE_NVGPRS(base)	stmw	13, GPR0+4*13(base)
--#define REST_NVGPRS(base)	lmw	13, GPR0+4*13(base)
-+#define SAVE_GPRS(start, end, base)	OP_REGS stw, 4, start, end, base, GPR0
-+#define REST_GPRS(start, end, base)	OP_REGS lwz, 4, start, end, base, GPR0
-+#define SAVE_NVGPRS(base)		stmw	13, GPR0+4*13(base)
-+#define REST_NVGPRS(base)		lmw	13, GPR0+4*13(base)
- #endif
- 
--#define SAVE_2GPRS(n, base)	SAVE_GPR(n, base); SAVE_GPR(n+1, base)
--#define SAVE_4GPRS(n, base)	SAVE_2GPRS(n, base); SAVE_2GPRS(n+2, base)
--#define SAVE_8GPRS(n, base)	SAVE_4GPRS(n, base); SAVE_4GPRS(n+4, base)
--#define SAVE_10GPRS(n, base)	SAVE_8GPRS(n, base); SAVE_2GPRS(n+8, base)
--#define REST_2GPRS(n, base)	REST_GPR(n, base); REST_GPR(n+1, base)
--#define REST_4GPRS(n, base)	REST_2GPRS(n, base); REST_2GPRS(n+2, base)
--#define REST_8GPRS(n, base)	REST_4GPRS(n, base); REST_4GPRS(n+4, base)
--#define REST_10GPRS(n, base)	REST_8GPRS(n, base); REST_2GPRS(n+8, base)
-+#define SAVE_GPR(n, base)		SAVE_GPRS(n, n, base)
-+#define REST_GPR(n, base)		REST_GPRS(n, n, base)
- 
- #define SAVE_FPR(n, base)	stfd	n,8*TS_FPRWIDTH*(n)(base)
- #define SAVE_2FPRS(n, base)	SAVE_FPR(n, base); SAVE_FPR(n+1, base)
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 61fdd53cdd9a..c62dd9815965 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -90,8 +90,7 @@ transfer_to_syscall:
- 	stw	r12,8(r1)
- 	stw	r2,_TRAP(r1)
- 	SAVE_GPR(0, r1)
--	SAVE_4GPRS(3, r1)
--	SAVE_2GPRS(7, r1)
-+	SAVE_GPRS(3, 8, r1)
- 	addi	r2,r10,-THREAD
- 	SAVE_NVGPRS(r1)
- 
-@@ -139,7 +138,7 @@ syscall_exit_finish:
- 	mtxer	r5
- 	lwz	r0,GPR0(r1)
- 	lwz	r3,GPR3(r1)
--	REST_8GPRS(4,r1)
-+	REST_GPRS(4, 11, r1)
- 	lwz	r12,GPR12(r1)
- 	b	1b
- 
-@@ -232,9 +231,9 @@ fast_exception_return:
- 	beq	3f			/* if not, we've got problems */
- #endif
- 
--2:	REST_4GPRS(3, r11)
-+2:	REST_GPRS(3, 6, r11)
- 	lwz	r10,_CCR(r11)
--	REST_2GPRS(1, r11)
-+	REST_GPRS(1, 2, r11)
- 	mtcr	r10
- 	lwz	r10,_LINK(r11)
- 	mtlr	r10
-@@ -298,16 +297,14 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
- 	 * the reliable stack unwinder later on. Clear it.
- 	 */
- 	stw	r0,8(r1)
--	REST_4GPRS(7, r1)
--	REST_2GPRS(11, r1)
-+	REST_GPRS(7, 12, r1)
- 
- 	mtcr	r3
- 	mtlr	r4
- 	mtctr	r5
- 	mtspr	SPRN_XER,r6
- 
--	REST_4GPRS(2, r1)
--	REST_GPR(6, r1)
-+	REST_GPRS(2, 6, r1)
- 	REST_GPR(0, r1)
- 	REST_GPR(1, r1)
- 	rfi
-@@ -341,8 +338,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
- 	lwz	r6,_CCR(r1)
- 	li	r0,0
- 
--	REST_4GPRS(7, r1)
--	REST_2GPRS(11, r1)
-+	REST_GPRS(7, 12, r1)
- 
- 	mtlr	r3
- 	mtctr	r4
-@@ -354,7 +350,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
- 	 */
- 	stw	r0,8(r1)
- 
--	REST_4GPRS(2, r1)
-+	REST_GPRS(2, 5, r1)
- 
- 	bne-	cr1,1f /* emulate stack store */
- 	mtcr	r6
-@@ -430,8 +426,7 @@ _ASM_NOKPROBE_SYMBOL(interrupt_return)
- 	bne	interrupt_return;					\
- 	lwz	r0,GPR0(r1);						\
- 	lwz	r2,GPR2(r1);						\
--	REST_4GPRS(3, r1);						\
--	REST_2GPRS(7, r1);						\
-+	REST_GPRS(3, 8, r1);						\
- 	lwz	r10,_XER(r1);						\
- 	lwz	r11,_CTR(r1);						\
- 	mtspr	SPRN_XER,r10;						\
-diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
-index 711c66b76df1..67dc4e3179a0 100644
---- a/arch/powerpc/kernel/exceptions-64e.S
-+++ b/arch/powerpc/kernel/exceptions-64e.S
-@@ -198,8 +198,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_EMB_HV)
- 
- 	stdcx.	r0,0,r1		/* to clear the reservation */
- 
--	REST_4GPRS(2, r1)
--	REST_4GPRS(6, r1)
-+	REST_GPRS(2, 9, r1)
- 
- 	ld	r10,_CTR(r1)
- 	ld	r11,_XER(r1)
-@@ -375,9 +374,7 @@ ret_from_mc_except:
- exc_##n##_common:							    \
- 	std	r0,GPR0(r1);		/* save r0 in stackframe */	    \
- 	std	r2,GPR2(r1);		/* save r2 in stackframe */	    \
--	SAVE_4GPRS(3, r1);		/* save r3 - r6 in stackframe */    \
--	SAVE_2GPRS(7, r1);		/* save r7, r8 in stackframe */	    \
--	std	r9,GPR9(r1);		/* save r9 in stackframe */	    \
-+	SAVE_GPRS(3, 9, r1);		/* save r3 - r9 in stackframe */    \
- 	std	r10,_NIP(r1);		/* save SRR0 to stackframe */	    \
- 	std	r11,_MSR(r1);		/* save SRR1 to stackframe */	    \
- 	beq	2f;			/* if from kernel mode */	    \
-@@ -1061,9 +1058,7 @@ bad_stack_book3e:
- 	std	r11,_ESR(r1)
- 	std	r0,GPR0(r1);		/* save r0 in stackframe */	    \
- 	std	r2,GPR2(r1);		/* save r2 in stackframe */	    \
--	SAVE_4GPRS(3, r1);		/* save r3 - r6 in stackframe */    \
--	SAVE_2GPRS(7, r1);		/* save r7, r8 in stackframe */	    \
--	std	r9,GPR9(r1);		/* save r9 in stackframe */	    \
-+	SAVE_GPRS(3, 9, r1);		/* save r3 - r9 in stackframe */    \
- 	ld	r3,PACA_EXGEN+EX_R10(r13);/* get back r10 */		    \
- 	ld	r4,PACA_EXGEN+EX_R11(r13);/* get back r11 */		    \
- 	mfspr	r5,SPRN_SPRG_GEN_SCRATCH;/* get back r13 XXX can be wrong */ \
-@@ -1077,8 +1072,7 @@ bad_stack_book3e:
- 	std	r10,_LINK(r1)
- 	std	r11,_CTR(r1)
- 	std	r12,_XER(r1)
--	SAVE_10GPRS(14,r1)
--	SAVE_8GPRS(24,r1)
-+	SAVE_GPRS(14, 31, r1)
- 	lhz	r12,PACA_TRAP_SAVE(r13)
- 	std	r12,_TRAP(r1)
- 	addi	r11,r1,INT_FRAME_SIZE
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index eaf1f72131a1..277eccf0f086 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -574,8 +574,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
- 	ld	r10,IAREA+EX_CTR(r13)
- 	std	r10,_CTR(r1)
- 	std	r2,GPR2(r1)		/* save r2 in stackframe	*/
--	SAVE_4GPRS(3, r1)		/* save r3 - r6 in stackframe   */
--	SAVE_2GPRS(7, r1)		/* save r7, r8 in stackframe	*/
-+	SAVE_GPRS(3, 8, r1)		/* save r3 - r8 in stackframe   */
- 	mflr	r9			/* Get LR, later save to stack	*/
- 	ld	r2,PACATOC(r13)		/* get kernel TOC into r2	*/
- 	std	r9,_LINK(r1)
-@@ -693,8 +692,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
- 	mtlr	r9
- 	ld	r9,_CCR(r1)
- 	mtcr	r9
--	REST_8GPRS(2, r1)
--	REST_4GPRS(10, r1)
-+	REST_GPRS(2, 13, r1)
- 	REST_GPR(0, r1)
- 	/* restore original r1. */
- 	ld	r1,GPR1(r1)
-diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
-index 6b1ec9e3541b..25887303651a 100644
---- a/arch/powerpc/kernel/head_32.h
-+++ b/arch/powerpc/kernel/head_32.h
-@@ -115,8 +115,7 @@ _ASM_NOKPROBE_SYMBOL(\name\()_virt)
- 	stw	r10,8(r1)
- 	li	r10, \trapno
- 	stw	r10,_TRAP(r1)
--	SAVE_4GPRS(3, r1)
--	SAVE_2GPRS(7, r1)
-+	SAVE_GPRS(3, 8, r1)
- 	SAVE_NVGPRS(r1)
- 	stw	r2,GPR2(r1)
- 	stw	r12,_NIP(r1)
-diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
-index e5503420b6c6..0ae26396639d 100644
---- a/arch/powerpc/kernel/head_booke.h
-+++ b/arch/powerpc/kernel/head_booke.h
-@@ -87,8 +87,7 @@ END_BTB_FLUSH_SECTION
- 	stw	r10, 8(r1)
- 	li	r10, \trapno
- 	stw	r10,_TRAP(r1)
--	SAVE_4GPRS(3, r1)
--	SAVE_2GPRS(7, r1)
-+	SAVE_GPRS(3, 8, r1)
- 	SAVE_NVGPRS(r1)
- 	stw	r2,GPR2(r1)
- 	stw	r12,_NIP(r1)
-diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
-index ec950b08a8dc..2ad223597ca2 100644
---- a/arch/powerpc/kernel/interrupt_64.S
-+++ b/arch/powerpc/kernel/interrupt_64.S
-@@ -162,10 +162,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
- 	 * The value of AMR only matters while we're in the kernel.
- 	 */
- 	mtcr	r2
--	ld	r2,GPR2(r1)
--	ld	r3,GPR3(r1)
--	ld	r13,GPR13(r1)
--	ld	r1,GPR1(r1)
-+	REST_GPRS(2, 3, r1)
-+	REST_GPR(13, r1)
-+	REST_GPR(1, r1)
- 	RFSCV_TO_USER
- 	b	.	/* prevent speculative execution */
- 
-@@ -183,9 +182,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
- 	mtctr	r3
- 	mtlr	r4
- 	mtspr	SPRN_XER,r5
--	REST_10GPRS(2, r1)
--	REST_2GPRS(12, r1)
--	ld	r1,GPR1(r1)
-+	REST_GPRS(2, 13, r1)
-+	REST_GPR(1, r1)
- 	RFI_TO_USER
- .Lsyscall_vectored_\name\()_rst_end:
- 
-@@ -374,10 +372,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
- 	 * The value of AMR only matters while we're in the kernel.
- 	 */
- 	mtcr	r2
--	ld	r2,GPR2(r1)
--	ld	r3,GPR3(r1)
--	ld	r13,GPR13(r1)
--	ld	r1,GPR1(r1)
-+	REST_GPRS(2, 3, r1)
-+	REST_GPR(13, r1)
-+	REST_GPR(1, r1)
- 	RFI_TO_USER
- 	b	.	/* prevent speculative execution */
- 
-@@ -388,8 +385,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
- 	mtctr	r3
- 	mtspr	SPRN_XER,r4
- 	ld	r0,GPR0(r1)
--	REST_8GPRS(4, r1)
--	ld	r12,GPR12(r1)
-+	REST_GPRS(4, 12, r1)
- 	b	.Lsyscall_restore_regs_cont
- .Lsyscall_rst_end:
- 
-@@ -518,17 +514,14 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
- 	ld	r6,_XER(r1)
- 	li	r0,0
- 
--	REST_4GPRS(7, r1)
--	REST_2GPRS(11, r1)
--	REST_GPR(13, r1)
-+	REST_GPRS(7, 13, r1)
- 
- 	mtcr	r3
- 	mtlr	r4
- 	mtctr	r5
- 	mtspr	SPRN_XER,r6
- 
--	REST_4GPRS(2, r1)
--	REST_GPR(6, r1)
-+	REST_GPRS(2, 6, r1)
- 	REST_GPR(0, r1)
- 	REST_GPR(1, r1)
- 	.ifc \srr,srr
-@@ -625,8 +618,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
- 	ld	r6,_CCR(r1)
- 	li	r0,0
- 
--	REST_4GPRS(7, r1)
--	REST_2GPRS(11, r1)
-+	REST_GPRS(7, 12, r1)
- 
- 	mtlr	r3
- 	mtctr	r4
-@@ -638,7 +630,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
- 	 */
- 	std	r0,STACK_FRAME_OVERHEAD-16(r1)
- 
--	REST_4GPRS(2, r1)
-+	REST_GPRS(2, 5, r1)
- 
- 	bne-	cr1,1f /* emulate stack store */
- 	mtcr	r6
-diff --git a/arch/powerpc/kernel/optprobes_head.S b/arch/powerpc/kernel/optprobes_head.S
-index 19ea3312403c..5c7f0b4b784b 100644
---- a/arch/powerpc/kernel/optprobes_head.S
-+++ b/arch/powerpc/kernel/optprobes_head.S
-@@ -10,8 +10,8 @@
- #include <asm/asm-offsets.h>
- 
- #ifdef CONFIG_PPC64
--#define SAVE_30GPRS(base) SAVE_10GPRS(2,base); SAVE_10GPRS(12,base); SAVE_10GPRS(22,base)
--#define REST_30GPRS(base) REST_10GPRS(2,base); REST_10GPRS(12,base); REST_10GPRS(22,base)
-+#define SAVE_30GPRS(base) SAVE_GPRS(2, 31, base)
-+#define REST_30GPRS(base) REST_GPRS(2, 31, base)
- #define TEMPLATE_FOR_IMM_LOAD_INSNS	nop; nop; nop; nop; nop
- #else
- #define SAVE_30GPRS(base) stmw	r2, GPR2(base)
-diff --git a/arch/powerpc/kernel/tm.S b/arch/powerpc/kernel/tm.S
-index 2b91f233b05d..3beecc32940b 100644
---- a/arch/powerpc/kernel/tm.S
-+++ b/arch/powerpc/kernel/tm.S
-@@ -226,11 +226,8 @@ _GLOBAL(tm_reclaim)
- 
- 	/* Sync the userland GPRs 2-12, 14-31 to thread->regs: */
- 	SAVE_GPR(0, r7)				/* user r0 */
--	SAVE_GPR(2, r7)				/* user r2 */
--	SAVE_4GPRS(3, r7)			/* user r3-r6 */
--	SAVE_GPR(8, r7)				/* user r8 */
--	SAVE_GPR(9, r7)				/* user r9 */
--	SAVE_GPR(10, r7)			/* user r10 */
-+	SAVE_GPRS(2, 6, r7)			/* user r2-r6 */
-+	SAVE_GPRS(8, 10, r7)			/* user r8-r10 */
- 	ld	r3, GPR1(r1)			/* user r1 */
- 	ld	r4, GPR7(r1)			/* user r7 */
- 	ld	r5, GPR11(r1)			/* user r11 */
-@@ -445,12 +442,8 @@ restore_gprs:
- 	ld	r6, THREAD_TM_PPR(r3)
- 
- 	REST_GPR(0, r7)				/* GPR0 */
--	REST_2GPRS(2, r7)			/* GPR2-3 */
--	REST_GPR(4, r7)				/* GPR4 */
--	REST_4GPRS(8, r7)			/* GPR8-11 */
--	REST_2GPRS(12, r7)			/* GPR12-13 */
--
--	REST_NVGPRS(r7)				/* GPR14-31 */
-+	REST_GPRS(2, 4, r7)			/* GPR2-4 */
-+	REST_GPRS(8, 31, r7)			/* GPR8-31 */
- 
- 	/* Load up PPR and DSCR here so we don't run with user values for long */
- 	mtspr	SPRN_DSCR, r5
-diff --git a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-index f9fd5f743eba..d636fc755f60 100644
---- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-+++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-@@ -41,15 +41,14 @@ _GLOBAL(ftrace_regs_caller)
- 
- 	/* Save all gprs to pt_regs */
- 	SAVE_GPR(0, r1)
--	SAVE_10GPRS(2, r1)
-+	SAVE_GPRS(2, 11, r1)
- 
- 	/* Ok to continue? */
- 	lbz	r3, PACA_FTRACE_ENABLED(r13)
- 	cmpdi	r3, 0
- 	beq	ftrace_no_trace
- 
--	SAVE_10GPRS(12, r1)
--	SAVE_10GPRS(22, r1)
-+	SAVE_GPRS(12, 31, r1)
- 
- 	/* Save previous stack pointer (r1) */
- 	addi	r8, r1, SWITCH_FRAME_SIZE
-@@ -108,10 +107,8 @@ ftrace_regs_call:
- #endif
- 
- 	/* Restore gprs */
--	REST_GPR(0,r1)
--	REST_10GPRS(2,r1)
--	REST_10GPRS(12,r1)
--	REST_10GPRS(22,r1)
-+	REST_GPR(0, r1)
-+	REST_GPRS(2, 31, r1)
- 
- 	/* Restore possibly modified LR */
- 	ld	r0, _LINK(r1)
-@@ -157,7 +154,7 @@ _GLOBAL(ftrace_caller)
- 	stdu	r1, -SWITCH_FRAME_SIZE(r1)
- 
- 	/* Save all gprs to pt_regs */
--	SAVE_8GPRS(3, r1)
-+	SAVE_GPRS(3, 10, r1)
- 
- 	lbz	r3, PACA_FTRACE_ENABLED(r13)
- 	cmpdi	r3, 0
-@@ -194,7 +191,7 @@ ftrace_call:
- 	mtctr	r3
- 
- 	/* Restore gprs */
--	REST_8GPRS(3,r1)
-+	REST_GPRS(3, 10, r1)
- 
- 	/* Restore callee's TOC */
- 	ld	r2, 24(r1)
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index eb776d0c5d8e..28be10db895d 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -2711,8 +2711,7 @@ kvmppc_bad_host_intr:
- 	std	r0, GPR0(r1)
- 	std	r9, GPR1(r1)
- 	std	r2, GPR2(r1)
--	SAVE_4GPRS(3, r1)
--	SAVE_2GPRS(7, r1)
-+	SAVE_GPRS(3, 8, r1)
- 	srdi	r0, r12, 32
- 	clrldi	r12, r12, 32
- 	std	r0, _CCR(r1)
-@@ -2735,7 +2734,7 @@ kvmppc_bad_host_intr:
- 	ld	r9, HSTATE_SCRATCH2(r13)
- 	ld	r12, HSTATE_SCRATCH0(r13)
- 	GET_SCRATCH0(r0)
--	SAVE_4GPRS(9, r1)
-+	SAVE_GPRS(9, 12, r1)
- 	std	r0, GPR13(r1)
- 	SAVE_NVGPRS(r1)
- 	ld	r5, HSTATE_CFAR(r13)
-diff --git a/arch/powerpc/lib/test_emulate_step_exec_instr.S b/arch/powerpc/lib/test_emulate_step_exec_instr.S
-index 9ef941d958d8..5473f9d03df3 100644
---- a/arch/powerpc/lib/test_emulate_step_exec_instr.S
-+++ b/arch/powerpc/lib/test_emulate_step_exec_instr.S
-@@ -37,7 +37,7 @@ _GLOBAL(exec_instr)
- 	 * The stack pointer (GPR1) and the thread pointer (GPR13) are not
- 	 * saved as these should not be modified anyway.
- 	 */
--	SAVE_2GPRS(2, r1)
-+	SAVE_GPRS(2, 3, r1)
- 	SAVE_NVGPRS(r1)
- 
- 	/*
-@@ -75,8 +75,7 @@ _GLOBAL(exec_instr)
- 
- 	/* Load GPRs from pt_regs */
- 	REST_GPR(0, r31)
--	REST_10GPRS(2, r31)
--	REST_GPR(12, r31)
-+	REST_GPRS(2, 12, r31)
- 	REST_NVGPRS(r31)
- 
- 	/* Placeholder for the test instruction */
-@@ -99,8 +98,7 @@ _GLOBAL(exec_instr)
- 	subi	r3, r3, GPR0
- 	SAVE_GPR(0, r3)
- 	SAVE_GPR(2, r3)
--	SAVE_8GPRS(4, r3)
--	SAVE_GPR(12, r3)
-+	SAVE_GPRS(4, 12, r3)
- 	SAVE_NVGPRS(r3)
- 
- 	/* Save resulting LR to pt_regs */
+ .../arch/powerpc/power10/metrics.json         | 676 ++++++++++++++++++
+ 1 file changed, 676 insertions(+)
+ create mode 100644 tools/perf/pmu-events/arch/powerpc/power10/metrics.json
+
+diff --git a/tools/perf/pmu-events/arch/powerpc/power10/metrics.json b/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
+new file mode 100644
+index 000000000000..8adab5cd9934
+--- /dev/null
++++ b/tools/perf/pmu-events/arch/powerpc/power10/metrics.json
+@@ -0,0 +1,676 @@
++[
++    {
++        "BriefDescription": "Percentage of cycles that are run cycles",
++        "MetricExpr": "PM_RUN_CYC / PM_CYC * 100",
++        "MetricGroup": "General",
++        "MetricName": "RUN_CYCLES_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Average cycles per completed instruction",
++        "MetricExpr": "PM_CYC / PM_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "CYCLES_PER_INSTRUCTION"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled for any reason",
++        "MetricExpr": "PM_DISP_STALL_CYC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled because there was a flush",
++        "MetricExpr": "PM_DISP_STALL_FLUSH / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_FLUSH_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled because the MMU was handling a translation miss",
++        "MetricExpr": "PM_DISP_STALL_TRANSLATION / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_TRANSLATION_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled waiting to resolve an instruction ERAT miss",
++        "MetricExpr": "PM_DISP_STALL_IERAT_ONLY_MISS / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_IERAT_ONLY_MISS_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled waiting to resolve an instruction TLB miss",
++        "MetricExpr": "PM_DISP_STALL_ITLB_MISS / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_ITLB_MISS_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled due to an icache miss",
++        "MetricExpr": "PM_DISP_STALL_IC_MISS / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_IC_MISS_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled while the instruction was fetched from the local L2",
++        "MetricExpr": "PM_DISP_STALL_IC_L2 / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_IC_L2_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled while the instruction was fetched from the local L3",
++        "MetricExpr": "PM_DISP_STALL_IC_L3 / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_IC_L3_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled while the instruction was fetched from any source beyond the local L3",
++        "MetricExpr": "PM_DISP_STALL_IC_L3MISS / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_IC_L3MISS_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled due to an icache miss after a branch mispredict",
++        "MetricExpr": "PM_DISP_STALL_BR_MPRED_ICMISS / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_BR_MPRED_ICMISS_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled while instruction was fetched from the local L2 after suffering a branch mispredict",
++        "MetricExpr": "PM_DISP_STALL_BR_MPRED_IC_L2 / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_BR_MPRED_IC_L2_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled while instruction was fetched from the local L3 after suffering a branch mispredict",
++        "MetricExpr": "PM_DISP_STALL_BR_MPRED_IC_L3 / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_BR_MPRED_IC_L3_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled while instruction was fetched from any source beyond the local L3 after suffering a branch mispredict",
++        "MetricExpr": "PM_DISP_STALL_BR_MPRED_IC_L3MISS / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_BR_MPRED_IC_L3MISS_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled due to a branch mispredict",
++        "MetricExpr": "PM_DISP_STALL_BR_MPRED / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_BR_MPRED_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch for any reason",
++        "MetricExpr": "PM_DISP_STALL_HELD_CYC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_HELD_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch because of a synchronizing instruction that requires the ICT to be empty before dispatch",
++        "MetricExpr": "PM_DISP_STALL_HELD_SYNC_CYC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISP_HELD_STALL_SYNC_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch while waiting on the scoreboard",
++        "MetricExpr": "PM_DISP_STALL_HELD_SCOREBOARD_CYC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISP_HELD_STALL_SCOREBOARD_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch due to issue queue full",
++        "MetricExpr": "PM_DISP_STALL_HELD_ISSQ_FULL_CYC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISP_HELD_STALL_ISSQ_FULL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch because the mapper/SRB was full",
++        "MetricExpr": "PM_DISP_STALL_HELD_RENAME_CYC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_HELD_RENAME_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch because the STF mapper/SRB was full",
++        "MetricExpr": "PM_DISP_STALL_HELD_STF_MAPPER_CYC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_HELD_STF_MAPPER_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch because the XVFC mapper/SRB was full",
++        "MetricExpr": "PM_DISP_STALL_HELD_XVFC_MAPPER_CYC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_HELD_XVFC_MAPPER_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch for any other reason",
++        "MetricExpr": "PM_DISP_STALL_HELD_OTHER_CYC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_HELD_OTHER_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction has been dispatched but not issued for any reason",
++        "MetricExpr": "PM_ISSUE_STALL / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "ISSUE_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting to be finished in one of the execution units",
++        "MetricExpr": "PM_EXEC_STALL / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "EXECUTION_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction spent executing an NTC instruction that gets flushed some time after dispatch",
++        "MetricExpr": "PM_EXEC_STALL_NTC_FLUSH / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "NTC_FLUSH_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTF instruction finishes at dispatch",
++        "MetricExpr": "PM_EXEC_STALL_FIN_AT_DISP / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "FIN_AT_DISP_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is executing in the branch unit",
++        "MetricExpr": "PM_EXEC_STALL_BRU / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "BRU_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is a simple fixed point instruction that is executing in the LSU",
++        "MetricExpr": "PM_EXEC_STALL_SIMPLE_FX / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "SIMPLE_FX_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is executing in the VSU",
++        "MetricExpr": "PM_EXEC_STALL_VSU / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "VSU_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting to be finished in one of the execution units",
++        "MetricExpr": "PM_EXEC_STALL_TRANSLATION / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "TRANSLATION_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is a load or store that suffered a translation miss",
++        "MetricExpr": "PM_EXEC_STALL_DERAT_ONLY_MISS / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DERAT_ONLY_MISS_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is recovering from a TLB miss",
++        "MetricExpr": "PM_EXEC_STALL_DERAT_DTLB_MISS / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DERAT_DTLB_MISS_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is executing in the LSU",
++        "MetricExpr": "PM_EXEC_STALL_LSU / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "LSU_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is a load that is executing in the LSU",
++        "MetricExpr": "PM_EXEC_STALL_LOAD / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "LOAD_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from either the local L2 or local L3",
++        "MetricExpr": "PM_EXEC_STALL_DMISS_L2L3 / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DMISS_L2L3_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from either the local L2 or local L3, with an RC dispatch conflict",
++        "MetricExpr": "PM_EXEC_STALL_DMISS_L2L3_CONFLICT / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DMISS_L2L3_CONFLICT_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from either the local L2 or local L3, without an RC dispatch conflict",
++        "MetricExpr": "PM_EXEC_STALL_DMISS_L2L3_NOCONFLICT / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DMISS_L2L3_NOCONFLICT_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from a source beyond the local L2 and local L3",
++        "MetricExpr": "PM_EXEC_STALL_DMISS_L3MISS / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DMISS_L3MISS_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from a neighbor chiplet's L2 or L3 in the same chip",
++        "MetricExpr": "PM_EXEC_STALL_DMISS_L21_L31 / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DMISS_L21_L31_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from L4, local memory or OpenCapp chip",
++        "MetricExpr": "PM_EXEC_STALL_DMISS_LMEM / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DMISS_LMEM_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from a remote chip (cache, L4, memory or OpenCapp) in the same group",
++        "MetricExpr": "PM_EXEC_STALL_DMISS_OFF_CHIP / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DMISS_OFF_CHIP_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is waiting for a load miss to resolve from a distant chip (cache, L4, memory or OpenCapp chip)",
++        "MetricExpr": "PM_EXEC_STALL_DMISS_OFF_NODE / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DMISS_OFF_NODE_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is executing a TLBIEL instruction",
++        "MetricExpr": "PM_EXEC_STALL_TLBIEL / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "TLBIEL_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is finishing a load after its data has been reloaded from a data source beyond the local L1, OR when the LSU is processing an L1-hit, OR when the NTF instruction merged with another load in the LMQ",
++        "MetricExpr": "PM_EXEC_STALL_LOAD_FINISH / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "LOAD_FINISH_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is a store that is executing in the LSU",
++        "MetricExpr": "PM_EXEC_STALL_STORE / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "STORE_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is in the store unit outside of handling store misses or other special store operations",
++        "MetricExpr": "PM_EXEC_STALL_STORE_PIPE / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "STORE_PIPE_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is a store whose cache line was not resident in the L1 and had to wait for allocation of the missing line into the L1",
++        "MetricExpr": "PM_EXEC_STALL_STORE_MISS / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "STORE_MISS_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is a TLBIE instruction waiting for a response from the L2",
++        "MetricExpr": "PM_EXEC_STALL_TLBIE / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "TLBIE_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is executing a PTESYNC instruction",
++        "MetricExpr": "PM_EXEC_STALL_PTESYNC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "PTESYNC_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction cannot complete because the thread was blocked",
++        "MetricExpr": "PM_CMPL_STALL / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "COMPLETION_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction cannot complete because it was interrupted by ANY exception",
++        "MetricExpr": "PM_CMPL_STALL_EXCEPTION / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "EXCEPTION_COMPLETION_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is stuck at finish waiting for the non-speculative finish of either a STCX instruction waiting for its result or a load waiting for non-critical sectors of data and ECC",
++        "MetricExpr": "PM_CMPL_STALL_MEM_ECC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "MEM_ECC_COMPLETION_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction cannot complete the instruction is a STCX instruction waiting for resolution from the nest",
++        "MetricExpr": "PM_CMPL_STALL_STCX / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "STCX_COMPLETION_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is a LWSYNC instruction waiting to complete",
++        "MetricExpr": "PM_CMPL_STALL_LWSYNC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "LWSYNC_COMPLETION_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction is a HWSYNC instruction stuck at finish waiting for a response from the L2",
++        "MetricExpr": "PM_CMPL_STALL_HWSYNC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "HWSYNC_COMPLETION_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction required special handling before completion",
++        "MetricExpr": "PM_CMPL_STALL_SPECIAL / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "SPECIAL_COMPLETION_STALL_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when dispatch was stalled because fetch was being held, so there was nothing in the pipeline for this thread",
++        "MetricExpr": "PM_DISP_STALL_FETCH / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_FETCH_CPI"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTC instruction was held at dispatch because of power management",
++        "MetricExpr": "PM_DISP_STALL_HELD_HALT_CYC / PM_RUN_INST_CMPL",
++        "MetricGroup": "CPI",
++        "MetricName": "DISPATCHED_HELD_HALT_CPI"
++    },
++    {
++        "BriefDescription": "Percentage of flushes per completed run instruction",
++        "MetricExpr": "PM_FLUSH / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "Others",
++        "MetricName": "FLUSH_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of flushes due to a branch mispredict per instruction",
++        "MetricExpr": "PM_FLUSH_MPRED / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "Others",
++        "MetricName": "BR_MPRED_FLUSH_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of branch mispredictions per completed run instruction",
++        "MetricExpr": "PM_BR_MPRED_CMPL / PM_RUN_INST_CMPL",
++        "MetricGroup": "Others",
++        "MetricName": "BRANCH_MISPREDICTION_RATE"
++    },
++    {
++        "BriefDescription": "Percentage of finished loads that missed in the L1",
++        "MetricExpr": "PM_LD_MISS_L1 / PM_LD_REF_L1 * 100",
++        "MetricGroup": "Others",
++        "MetricName": "L1_LD_MISS_RATIO",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of completed run instructions that were loads that missed the L1",
++        "MetricExpr": "PM_LD_MISS_L1 / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "Others",
++        "MetricName": "L1_LD_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of instructions when the DPTEG required for the load/store instruction in execution was missing from the TLB",
++        "MetricExpr": "PM_DTLB_MISS / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "Others",
++        "MetricName": "DTLB_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Average number of instructions dispatched per instruction completed",
++        "MetricExpr": "PM_INST_DISP / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "DISPATCH_PER_INST_CMPL"
++    },
++    {
++        "BriefDescription": "Percentage of completed run instructions that were a demand load that did not hit in the L1 or L2",
++        "MetricExpr": "PM_DATA_FROM_L2MISS / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "General",
++        "MetricName": "L2_LD_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of completed run instructions that were demand fetches that missed the L1 instruction cache",
++        "MetricExpr": "PM_L1_ICACHE_MISS / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "Instruction_Misses",
++        "MetricName": "L1_INST_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of completed run instructions that were demand fetches that reloaded from beyond the L3 instruction cache",
++        "MetricExpr": "PM_INST_FROM_L3MISS / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "General",
++        "MetricName": "L3_INST_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Average number of completed instructions per cycle",
++        "MetricExpr": "PM_INST_CMPL / PM_CYC",
++        "MetricGroup": "General",
++        "MetricName": "IPC"
++    },
++    {
++        "BriefDescription": "Average number of cycles per completed instruction group",
++        "MetricExpr": "PM_CYC / PM_1PLUS_PPC_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "CYCLES_PER_COMPLETED_INSTRUCTIONS_SET"
++    },
++    {
++        "BriefDescription": "Percentage of cycles when at least 1 instruction dispatched",
++        "MetricExpr": "PM_1PLUS_PPC_DISP / PM_RUN_CYC * 100",
++        "MetricGroup": "General",
++        "MetricName": "CYCLES_ATLEAST_ONE_INST_DISPATCHED",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Average number of finished loads per completed run instruction",
++        "MetricExpr": "PM_LD_REF_L1 / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "LOADS_PER_INST"
++    },
++    {
++        "BriefDescription": "Average number of finished stores per completed run instruction",
++        "MetricExpr": "PM_ST_FIN / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "STORES_PER_INST"
++    },
++    {
++        "BriefDescription": "Percentage of demand loads that reloaded from beyond the L2 per completed run instruction",
++        "MetricExpr": "PM_DATA_FROM_L2MISS / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "dL1_Reloads",
++        "MetricName": "DL1_RELOAD_FROM_L2_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of demand loads that reloaded from beyond the L3 per completed run instruction",
++        "MetricExpr": "PM_DATA_FROM_L3MISS / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "dL1_Reloads",
++        "MetricName": "DL1_RELOAD_FROM_L3_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of DERAT misses with 4k page size per completed run instruction",
++        "MetricExpr": "PM_DERAT_MISS_4K / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "Translation",
++        "MetricName": "DERAT_4K_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of DERAT misses with 64k page size per completed run instruction",
++        "MetricExpr": "PM_DERAT_MISS_64K / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "Translation",
++        "MetricName": "DERAT_64K_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Average number of run cycles per completed run instruction",
++        "MetricExpr": "PM_RUN_CYC / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "RUN_CPI"
++    },
++    {
++        "BriefDescription": "Percentage of DERAT misses per completed run instruction",
++        "MetricExpr": "PM_DERAT_MISS / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "Translation",
++        "MetricName": "DERAT_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Average number of completed run instructions per run cycle",
++        "MetricExpr": "PM_RUN_INST_CMPL / PM_RUN_CYC",
++        "MetricGroup": "General",
++        "MetricName": "RUN_IPC"
++    },
++    {
++        "BriefDescription": "Average number of instructions completed per instruction group",
++        "MetricExpr": "PM_RUN_INST_CMPL / PM_1PLUS_PPC_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "AVERAGE_COMPLETED_INSTRUCTION_SET_SIZE"
++    },
++    {
++        "BriefDescription": "Average number of finished instructions per completed run instructions",
++        "MetricExpr": "PM_INST_FIN / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "INST_FIN_PER_CMPL"
++    },
++    {
++        "BriefDescription": "Average cycles per instruction when the NTF instruction is completing and the finish was overlooked",
++        "MetricExpr": "PM_EXEC_STALL_UNKNOWN / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "EXEC_STALL_UNKOWN_CPI"
++    },
++    {
++        "BriefDescription": "Percentage of finished branches that were taken",
++        "MetricExpr": "PM_BR_TAKEN_CMPL / PM_BR_FIN * 100",
++        "MetricGroup": "General",
++        "MetricName": "TAKEN_BRANCHES",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of completed run instructions that were a demand load that did not hit in the L1, L2, or the L3",
++        "MetricExpr": "PM_DATA_FROM_L3MISS / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "General",
++        "MetricName": "L3_LD_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Average number of finished branches per completed run instruction",
++        "MetricExpr": "PM_BR_FIN / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "BRANCHES_PER_INST"
++    },
++    {
++        "BriefDescription": "Average number of instructions finished in the LSU per completed run instruction",
++        "MetricExpr": "PM_LSU_FIN / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "LSU_PER_INST"
++    },
++    {
++        "BriefDescription": "Average number of instructions finished in the VSU per completed run instruction",
++        "MetricExpr": "PM_VSU_FIN / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "VSU_PER_INST"
++    },
++    {
++        "BriefDescription": "Average number of TLBIE instructions finished in the LSU per completed run instruction",
++        "MetricExpr": "PM_TLBIE_FIN / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "TLBIE_PER_INST"
++    },
++    {
++        "BriefDescription": "Average number of STCX instructions finshed per completed run instruction",
++        "MetricExpr": "PM_STCX_FIN / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "STXC_PER_INST"
++    },
++    {
++        "BriefDescription": "Average number of LARX instructions finshed per completed run instruction",
++        "MetricExpr": "PM_LARX_FIN / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "LARX_PER_INST"
++    },
++    {
++        "BriefDescription": "Average number of PTESYNC instructions finshed per completed run instruction",
++        "MetricExpr": "PM_PTESYNC_FIN / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "PTESYNC_PER_INST"
++    },
++    {
++        "BriefDescription": "Average number of simple fixed-point instructions finshed in the store unit per completed run instruction",
++        "MetricExpr": "PM_FX_LSU_FIN / PM_RUN_INST_CMPL",
++        "MetricGroup": "General",
++        "MetricName": "FX_PER_INST"
++    },
++    {
++        "BriefDescription": "Percentage of demand load misses that reloaded the L1 cache",
++        "MetricExpr": "PM_LD_DEMAND_MISS_L1 / PM_LD_MISS_L1 * 100",
++        "MetricGroup": "General",
++        "MetricName": "DL1_MISS_RELOADS",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of demand load misses that reloaded from beyond the local L2",
++        "MetricExpr": "PM_DATA_FROM_L2MISS / PM_LD_DEMAND_MISS_L1 * 100",
++        "MetricGroup": "dL1_Reloads",
++        "MetricName": "DL1_RELOAD_FROM_L2_MISS",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of demand load misses that reloaded from beyond the local L3",
++        "MetricExpr": "PM_DATA_FROM_L3MISS / PM_LD_DEMAND_MISS_L1 * 100",
++        "MetricGroup": "dL1_Reloads",
++        "MetricName": "DL1_RELOAD_FROM_L3_MISS",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of cycles stalled due to the NTC instruction waiting for a load miss to resolve from a source beyond the local L2 and local L3",
++        "MetricExpr": "DMISS_L3MISS_STALL_CPI / RUN_CPI * 100",
++        "MetricGroup": "General",
++        "MetricName": "DCACHE_MISS_CPI",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of DERAT misses with 2M page size per completed run instruction",
++        "MetricExpr": "PM_DERAT_MISS_2M / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "Translation",
++        "MetricName": "DERAT_2M_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of DERAT misses with 16M page size per completed run instruction",
++        "MetricExpr": "PM_DERAT_MISS_16M / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "Translation",
++        "MetricName": "DERAT_16M_MISS_RATE",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "DERAT miss ratio for 4K page size",
++        "MetricExpr": "PM_DERAT_MISS_4K / PM_DERAT_MISS",
++        "MetricGroup": "Translation",
++        "MetricName": "DERAT_4K_MISS_RATIO"
++    },
++    {
++        "BriefDescription": "DERAT miss ratio for 2M page size",
++        "MetricExpr": "PM_DERAT_MISS_2M / PM_DERAT_MISS",
++        "MetricGroup": "Translation",
++        "MetricName": "DERAT_2M_MISS_RATIO"
++    },
++    {
++        "BriefDescription": "DERAT miss ratio for 16M page size",
++        "MetricExpr": "PM_DERAT_MISS_16M / PM_DERAT_MISS",
++        "MetricGroup": "Translation",
++        "MetricName": "DERAT_16M_MISS_RATIO"
++    },
++    {
++        "BriefDescription": "DERAT miss ratio for 64K page size",
++        "MetricExpr": "PM_DERAT_MISS_64K / PM_DERAT_MISS",
++        "MetricGroup": "Translation",
++        "MetricName": "DERAT_64K_MISS_RATIO"
++    },
++    {
++        "BriefDescription": "Percentage of DERAT misses that resulted in TLB reloads",
++        "MetricExpr": "PM_DTLB_MISS / PM_DERAT_MISS * 100",
++        "MetricGroup": "Translation",
++        "MetricName": "DERAT_MISS_RELOAD",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of icache misses that were reloaded from beyond the local L3",
++        "MetricExpr": "PM_INST_FROM_L3MISS / PM_L1_ICACHE_MISS * 100",
++        "MetricGroup": "Instruction_Misses",
++        "MetricName": "INST_FROM_L3_MISS",
++        "ScaleUnit": "1%"
++    },
++    {
++        "BriefDescription": "Percentage of icache reloads from the beyond the L3 per completed run instruction",
++        "MetricExpr": "PM_INST_FROM_L3MISS / PM_RUN_INST_CMPL * 100",
++        "MetricGroup": "Instruction_Misses",
++        "MetricName": "INST_FROM_L3_MISS_RATE",
++        "ScaleUnit": "1%"
++    }
++]
 -- 
-2.23.0
+2.26.2
 
