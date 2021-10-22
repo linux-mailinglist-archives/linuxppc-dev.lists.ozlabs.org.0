@@ -1,56 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044BB436EBD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 02:19:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C96436ED5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 02:27:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hb4jf3q7Hz3c8j
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 11:19:50 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=RNbeQsbH;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hb4tN2kV3z3cRH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Oct 2021 11:27:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.219.45; helo=mail-qv1-f45.google.com;
+ envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com
+ [209.85.219.45])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hb4hz4mpDz2xXL
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 11:19:15 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=RNbeQsbH; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hb4hx73Wmz4xfH;
- Fri, 22 Oct 2021 11:19:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1634861954;
- bh=t4tC2wY2mkf3s1U2MpUSmL1j57aZ2E4tZL9X1YWIqVg=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=RNbeQsbH+ODB4Y22fFSEuzLP6VZK8osooAOvO8/pCC2iRmKU+RkD+upB+Fv7eMSGn
- Whf26NqOXZ2z+m5pW/EXwSR8leBFje+7Uujl+YdtND3drwPGTWeAC2i9SqlSEs5CKu
- CHLtO/Mh0YNbK1e4WbwJzVbbgWaxZuWk3gp3+zBT6m6iW2lI+SmBqBFyOmpK+m6kNB
- RS0qIi9a/7LsexDEOXs1h4TOhX7AGHqLumJRdaEElq2yNvcowqzamvtBDzEwGm/5jd
- mvkz/7vE84UhH+SSpwg/AlGvECjWkkLeFrO2Rhm0afSK3OOO4IBAJc1hvFTGc77AMp
- zNscUzkhDwzlQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nathan Lynch <nathanl@linux.ibm.com>, Athira Rajeev
- <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V2] powerpc/perf: Enable PMU counters post partition
- migration if PMU is active
-In-Reply-To: <87lf2mxpov.fsf@linux.ibm.com>
-References: <1626006357-1611-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <87lf2mxpov.fsf@linux.ibm.com>
-Date: Fri, 22 Oct 2021 11:19:10 +1100
-Message-ID: <874k99di81.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hb4sv3tT7z2yV5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Oct 2021 11:26:58 +1100 (AEDT)
+Received: by mail-qv1-f45.google.com with SMTP id v10so1499438qvb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 17:26:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=HnL8LEaWnSsWA9HfguV8dZWptDtYCS/c4aEJvvgRowc=;
+ b=yySIZ5u8vTQEmAFEsA9Zcjx+/qHUQCdAk+lIkTe2OoeRu06O8ALrJp/Lm5+RRv6VoJ
+ KiS/qplxv3LUSDplcM9E75DKcXVoYjfu+1vyIfYntN5eUqr5/xnEMNYJJ8PiJfWojk1E
+ wXJUiv+UfN4AJAbxjReqFY5YISATvzEWVKMxMAcXouCWi6me0WskqvFr/VDc2jGwZiLB
+ mhbRzw4tTTOWTAQs7q7oFMf5vnsxJ5KuxKQ9/VNr8keCxgJhk2OCEhjP7iBuJ8+qT+Xd
+ 0x0e2euW19hEVGlT81rp/8YXsNynDq22mKixzjTnxB9oLqSybzIma9l7sfPxBSMtQlsV
+ 5xKw==
+X-Gm-Message-State: AOAM532o8yUF8SLI3FXkLYHzprVUPYX28jEGsgaRpljOmSwSlgnrgK6D
+ 8/bSYkLEW5cGVw37nlu+QYFJY1naRZo=
+X-Google-Smtp-Source: ABdhPJxnWRm2+PS0+vtdznz4Wz3Nnba6uZwvUUGwz01laBwzFGsQ7dxv/YciptwMX0CBuwrnyBeBIA==
+X-Received: by 2002:a05:6214:1c8a:: with SMTP id
+ ib10mr4838393qvb.46.1634862415494; 
+ Thu, 21 Oct 2021 17:26:55 -0700 (PDT)
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com.
+ [209.85.222.177])
+ by smtp.gmail.com with ESMTPSA id w11sm3869823qta.50.2021.10.21.17.26.54
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Oct 2021 17:26:55 -0700 (PDT)
+Received: by mail-qk1-f177.google.com with SMTP id j12so3205409qkk.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Oct 2021 17:26:54 -0700 (PDT)
+X-Received: by 2002:a37:bd7:: with SMTP id 206mr7129325qkl.297.1634862414371; 
+ Thu, 21 Oct 2021 17:26:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <b12e8c5c5d6ab3061d9504de8fbaefcad6bbc385.1629321668.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <b12e8c5c5d6ab3061d9504de8fbaefcad6bbc385.1629321668.git.christophe.jaillet@wanadoo.fr>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Thu, 21 Oct 2021 19:26:42 -0500
+X-Gmail-Original-Message-ID: <CADRPPNTHKuV9eernJS6ZV_+i-xtPXHQnS64GSx=ubwWE+nbLYw@mail.gmail.com>
+Message-ID: <CADRPPNTHKuV9eernJS6ZV_+i-xtPXHQnS64GSx=ubwWE+nbLYw@mail.gmail.com>
+Subject: Re: [PATCH] soc: fsl: guts: Fix a resource leak in the error handling
+ path of 'fsl_guts_probe()'
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,51 +70,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>, rnsastry@linux.ibm.com
+Cc: kernel-janitors@vger.kernel.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ lkml <linux-kernel@vger.kernel.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Lynch <nathanl@linux.ibm.com> writes:
-> Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
->> During Live Partition Migration (LPM), it is observed that perf
->> counter values reports zero post migration completion. However
->> 'perf stat' with workload continues to show counts post migration
->> since PMU gets disabled/enabled during sched switches. But incase
->> of system/cpu wide monitoring, zero counts were reported with 'perf
->> stat' after migration completion.
->>
->> Example:
->>  ./perf stat -e r1001e -I 1000
->>            time             counts unit events
->>      1.001010437         22,137,414      r1001e
->>      2.002495447         15,455,821      r1001e
->> <<>> As seen in next below logs, the counter values shows zero
->>         after migration is completed.
->> <<>>
->>     86.142535370    129,392,333,440      r1001e
->>     87.144714617                  0      r1001e
->>     88.146526636                  0      r1001e
->>     89.148085029                  0      r1001e
+On Wed, Aug 18, 2021 at 4:23 PM Christophe JAILLET
+<christophe.jaillet@wanadoo.fr> wrote:
 >
-> Confirmed in my environment:
->
->     51.099987985            300,338      cache-misses
->     52.101839374            296,586      cache-misses
->     53.116089796            263,150      cache-misses
->     54.117949249            232,290      cache-misses
->     55.602029375     68,700,421,711      cache-misses
->     56.610073969                  0      cache-misses
->     57.614732000                  0      cache-misses
->
-> I wonder what it means that there is a very unlikely huge value before
-> the counter stops working -- I believe your example has this phenomenon
-> too.
+> If an error occurs after 'of_find_node_by_path()', the reference taken for
+> 'root' will never be released and some memory will leak.
 
-AFAICS the patch is not reading the PMC values before the migration, so
-I suspect we're losing some counts just before the migration and then
-the delta is going negative somewhere, leading to an implausibly large
-count.
+Thanks for finding this.  This truly is a problem.
 
-cheers
+>
+> Instead of adding an error handling path and modifying all the
+> 'return -SOMETHING' into 'goto errorpath', use 'devm_add_action_or_reset()'
+> to release the reference when needed.
+>
+> Simplify the remove function accordingly.
+>
+> As an extra benefit, the 'root' global variable can now be removed as well.
+>
+> Fixes: 3c0d64e867ed ("soc: fsl: guts: reuse machine name from device tree")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> Compile tested only
+> ---
+>  drivers/soc/fsl/guts.c | 16 ++++++++++++++--
+>  1 file changed, 14 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
+> index d5e9a5f2c087..4d9476c7b87c 100644
+> --- a/drivers/soc/fsl/guts.c
+> +++ b/drivers/soc/fsl/guts.c
+> @@ -28,7 +28,6 @@ struct fsl_soc_die_attr {
+>  static struct guts *guts;
+>  static struct soc_device_attribute soc_dev_attr;
+>  static struct soc_device *soc_dev;
+> -static struct device_node *root;
+>
+>
+>  /* SoC die attribute definition for QorIQ platform */
+> @@ -136,14 +135,23 @@ static u32 fsl_guts_get_svr(void)
+>         return svr;
+>  }
+>
+> +static void fsl_guts_put_root(void *data)
+> +{
+> +       struct device_node *root = data;
+> +
+> +       of_node_put(root);
+> +}
+> +
+>  static int fsl_guts_probe(struct platform_device *pdev)
+>  {
+>         struct device_node *np = pdev->dev.of_node;
+>         struct device *dev = &pdev->dev;
+> +       struct device_node *root;
+>         struct resource *res;
+>         const struct fsl_soc_die_attr *soc_die;
+>         const char *machine;
+>         u32 svr;
+> +       int ret;
+>
+>         /* Initialize guts */
+>         guts = devm_kzalloc(dev, sizeof(*guts), GFP_KERNEL);
+> @@ -159,6 +167,10 @@ static int fsl_guts_probe(struct platform_device *pdev)
+>
+>         /* Register soc device */
+>         root = of_find_node_by_path("/");
+> +       ret = devm_add_action_or_reset(dev, fsl_guts_put_root, root);
+> +       if (ret)
+> +               return ret;
+
+We probably only need to hold the reference when we do get "machine"
+from the device tree, otherwise we can put it directly.
+
+Or maybe we just maintain a local copy of string machine which means
+we can release the reference right away?
+
+> +
+>         if (of_property_read_string(root, "model", &machine))
+>                 of_property_read_string_index(root, "compatible", 0, &machine);
+>         if (machine)
+> @@ -197,7 +209,7 @@ static int fsl_guts_probe(struct platform_device *pdev)
+>  static int fsl_guts_remove(struct platform_device *dev)
+>  {
+>         soc_device_unregister(soc_dev);
+> -       of_node_put(root);
+> +
+>         return 0;
+>  }
+>
+> --
+> 2.30.2
+>
