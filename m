@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB33343838A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 13:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D9C43838B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 13:48:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HbzxP3DRrz2yg6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 22:48:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hbzxr3TNyz3cnl
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 22:48:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,45 +16,45 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hbzwd6z7Fz2y7X
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Oct 2021 22:47:29 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hbzwk2CSBz2ybH
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Oct 2021 22:47:34 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4HbzwR5skWz9s2m;
- Sat, 23 Oct 2021 13:47:19 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4HbzwS2rbzz9s31;
+ Sat, 23 Oct 2021 13:47:20 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Atumr5lw9Xft; Sat, 23 Oct 2021 13:47:19 +0200 (CEST)
+ with ESMTP id JBZ3xh0Fk6TR; Sat, 23 Oct 2021 13:47:20 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.87])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (Client did not present a certificate)
- by pegase1.c-s.fr (Postfix) with ESMTPS id 4HbzwQ1r3Rz9s2p;
+ by pegase1.c-s.fr (Postfix) with ESMTPS id 4HbzwQ3QH1z9s2q;
  Sat, 23 Oct 2021 13:47:18 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19NBlIDo441162
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19NBlI0S441166
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Sat, 23 Oct 2021 13:47:18 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19NBlIRh441161;
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19NBlIDO441165;
  Sat, 23 Oct 2021 13:47:18 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 02/10] powerpc/book3e: Fix set_memory_x() and
- set_memory_nx()
-Date: Sat, 23 Oct 2021 13:47:07 +0200
-Message-Id: <7e7b0688c907e54f3b11ddfb9a8f44511d475fd7.1634983809.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 03/10] powerpc/booke: Disable STRICT_KERNEL_RWX,
+ DEBUG_PAGEALLOC and KFENCE
+Date: Sat, 23 Oct 2021 13:47:08 +0200
+Message-Id: <8963b2a1fd432bc41f55af992987411c2733e59f.1634983809.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <33e7fe0f6134c58e044eb63d3925cd34aa120104.1634983809.git.christophe.leroy@csgroup.eu>
 References: <33e7fe0f6134c58e044eb63d3925cd34aa120104.1634983809.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1634989633; l=5432; s=20211009;
- h=from:subject:message-id; bh=aw7AJGUNr1UZ0CV6bC7n9nXgecjhLnIy+PjN/EOKvLo=;
- b=YghZT5PWAsz76S+rkZS+jqVHHuZpesDTJ2OXMyYGw50dR+WYSdU/Td9H0IadlDKLLDjps/lrMHdW
- JI/nj7heD7DGVk8GKk8MkS0QtpGqtVGjH0bjFsLJfxFoxDf6eoVr
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1634989633; l=2137; s=20211009;
+ h=from:subject:message-id; bh=oWEDR8tps25yLNVilcNXK/8PTGoHv275uQ/WOazr/Kc=;
+ b=CgI+FR9p5oDfTAtqK56zZahIVkya8d2XOd/cNaqDmSO+FkBpDlbM/9HDL8noc5L70InaD/h2O5xB
+ ZAzrSCjpALWa6YV+/Rx9dE6T5VGTDqjGWslzOfZwkG2s37f1B7Tl
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -74,147 +74,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-set_memory_x() calls pte_mkexec() which sets _PAGE_EXEC.
-set_memory_nx() calls pte_exprotec() which clears _PAGE_EXEC.
+fsl_booke and 44x are not able to map kernel linear memory with
+pages, so they can't support DEBUG_PAGEALLOC and KFENCE, and
+STRICT_KERNEL_RWX is also a problem for now.
 
-Book3e has 2 bits, UX and SX, which defines the exec rights
-resp. for user (PR=1) and for kernel (PR=0).
+Enable those only on book3s (both 32 and 64 except KFENCE), 8xx and 40x.
 
-_PAGE_EXEC is defined as UX only.
-
-An executable kernel page is set with either _PAGE_KERNEL_RWX
-or _PAGE_KERNEL_ROX, which both have SX set and UX cleared.
-
-So set_memory_nx() call for an executable kernel page does
-nothing because UX is already cleared.
-
-And set_memory_x() on a non-executable kernel page makes it
-executable for the user and keeps it non-executable for kernel.
-
-Also, pte_exec() always returns 'false' on kernel pages, because
-it checks _PAGE_EXEC which doesn't include SX, so for instance
-the W+X check doesn't work.
-
-To fix this:
-- change tlb_low_64e.S to use _PAGE_BAP_UX instead of _PAGE_USER
-- sets both UX and SX in _PAGE_EXEC so that pte_user() returns
-true whenever one of the two bits is set and pte_exprotect()
-clears both bits.
-- Define a book3e specific version of pte_mkexec() which sets
-either SX or UX based on UR.
-
-Fixes: 1f9ad21c3b38 ("powerpc/mm: Implement set_memory() routines")
+Fixes: 88df6e90fa97 ("[POWERPC] DEBUG_PAGEALLOC for 32-bit")
+Fixes: 95902e6c8864 ("powerpc/mm: Implement STRICT_KERNEL_RWX on PPC32")
+Fixes: 90cbac0e995d ("powerpc: Enable KFENCE for PPC32")
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v2: New
+v2: No change
 ---
- arch/powerpc/include/asm/nohash/32/pgtable.h |  2 ++
- arch/powerpc/include/asm/nohash/pte-book3e.h | 18 ++++++++++++++----
- arch/powerpc/mm/nohash/tlb_low_64e.S         |  8 ++++----
- 3 files changed, 20 insertions(+), 8 deletions(-)
+ arch/powerpc/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
-index ac0a5ff48c3a..d6ba821a56ce 100644
---- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-@@ -193,10 +193,12 @@ static inline pte_t pte_wrprotect(pte_t pte)
- }
- #endif
- 
-+#ifndef pte_mkexec
- static inline pte_t pte_mkexec(pte_t pte)
- {
- 	return __pte(pte_val(pte) | _PAGE_EXEC);
- }
-+#endif
- 
- #define pmd_none(pmd)		(!pmd_val(pmd))
- #define	pmd_bad(pmd)		(pmd_val(pmd) & _PMD_BAD)
-diff --git a/arch/powerpc/include/asm/nohash/pte-book3e.h b/arch/powerpc/include/asm/nohash/pte-book3e.h
-index 813918f40765..f798640422c2 100644
---- a/arch/powerpc/include/asm/nohash/pte-book3e.h
-+++ b/arch/powerpc/include/asm/nohash/pte-book3e.h
-@@ -48,7 +48,7 @@
- #define _PAGE_WRITETHRU	0x800000 /* W: cache write-through */
- 
- /* "Higher level" linux bit combinations */
--#define _PAGE_EXEC		_PAGE_BAP_UX /* .. and was cache cleaned */
-+#define _PAGE_EXEC		(_PAGE_BAP_SX | _PAGE_BAP_UX) /* .. and was cache cleaned */
- #define _PAGE_RW		(_PAGE_BAP_SW | _PAGE_BAP_UW) /* User write permission */
- #define _PAGE_KERNEL_RW		(_PAGE_BAP_SW | _PAGE_BAP_SR | _PAGE_DIRTY)
- #define _PAGE_KERNEL_RO		(_PAGE_BAP_SR)
-@@ -93,11 +93,11 @@
- /* Permission masks used to generate the __P and __S table */
- #define PAGE_NONE	__pgprot(_PAGE_BASE)
- #define PAGE_SHARED	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_RW)
--#define PAGE_SHARED_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_RW | _PAGE_EXEC)
-+#define PAGE_SHARED_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_RW | _PAGE_BAP_UX)
- #define PAGE_COPY	__pgprot(_PAGE_BASE | _PAGE_USER)
--#define PAGE_COPY_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_EXEC)
-+#define PAGE_COPY_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_BAP_UX)
- #define PAGE_READONLY	__pgprot(_PAGE_BASE | _PAGE_USER)
--#define PAGE_READONLY_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_EXEC)
-+#define PAGE_READONLY_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_BAP_UX)
- 
- #ifndef __ASSEMBLY__
- static inline pte_t pte_mkprivileged(pte_t pte)
-@@ -113,6 +113,16 @@ static inline pte_t pte_mkuser(pte_t pte)
- }
- 
- #define pte_mkuser pte_mkuser
-+
-+static inline pte_t pte_mkexec(pte_t pte)
-+{
-+	if (pte_val(pte) & _PAGE_BAP_UR)
-+		return __pte((pte_val(pte) & ~_PAGE_BAP_SX) | _PAGE_BAP_UX);
-+	else
-+		return __pte((pte_val(pte) & ~_PAGE_BAP_UX) | _PAGE_BAP_SX);
-+}
-+#define pte_mkexec pte_mkexec
-+
- #endif /* __ASSEMBLY__ */
- 
- #endif /* __KERNEL__ */
-diff --git a/arch/powerpc/mm/nohash/tlb_low_64e.S b/arch/powerpc/mm/nohash/tlb_low_64e.S
-index bf24451f3e71..9235e720e357 100644
---- a/arch/powerpc/mm/nohash/tlb_low_64e.S
-+++ b/arch/powerpc/mm/nohash/tlb_low_64e.S
-@@ -222,7 +222,7 @@ tlb_miss_kernel_bolted:
- 
- tlb_miss_fault_bolted:
- 	/* We need to check if it was an instruction miss */
--	andi.	r10,r11,_PAGE_EXEC|_PAGE_BAP_SX
-+	andi.	r10,r11,_PAGE_BAP_UX|_PAGE_BAP_SX
- 	bne	itlb_miss_fault_bolted
- dtlb_miss_fault_bolted:
- 	tlb_epilog_bolted
-@@ -239,7 +239,7 @@ itlb_miss_fault_bolted:
- 	srdi	r15,r16,60		/* get region */
- 	bne-	itlb_miss_fault_bolted
- 
--	li	r11,_PAGE_PRESENT|_PAGE_EXEC	/* Base perm */
-+	li	r11,_PAGE_PRESENT|_PAGE_BAP_UX	/* Base perm */
- 
- 	/* We do the user/kernel test for the PID here along with the RW test
- 	 */
-@@ -614,7 +614,7 @@ itlb_miss_fault_e6500:
- 
- 	/* We do the user/kernel test for the PID here along with the RW test
- 	 */
--	li	r11,_PAGE_PRESENT|_PAGE_EXEC	/* Base perm */
-+	li	r11,_PAGE_PRESENT|_PAGE_BAP_UX	/* Base perm */
- 	oris	r11,r11,_PAGE_ACCESSED@h
- 
- 	cmpldi	cr0,r15,0			/* Check for user region */
-@@ -734,7 +734,7 @@ normal_tlb_miss_done:
- 
- normal_tlb_miss_access_fault:
- 	/* We need to check if it was an instruction miss */
--	andi.	r10,r11,_PAGE_EXEC
-+	andi.	r10,r11,_PAGE_BAP_UX
- 	bne	1f
- 	ld	r14,EX_TLB_DEAR(r12)
- 	ld	r15,EX_TLB_ESR(r12)
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index ba5b66189358..6b9f523882c5 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -138,7 +138,7 @@ config PPC
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
+ 	select ARCH_HAS_SET_MEMORY
+-	select ARCH_HAS_STRICT_KERNEL_RWX	if ((PPC_BOOK3S_64 || PPC32) && !HIBERNATION)
++	select ARCH_HAS_STRICT_KERNEL_RWX	if (PPC_BOOK3S || PPC_8xx || 40x) && !HIBERNATION
+ 	select ARCH_HAS_STRICT_MODULE_RWX	if ARCH_HAS_STRICT_KERNEL_RWX && !PPC_BOOK3S_32
+ 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UACCESS_FLUSHCACHE
+@@ -150,7 +150,7 @@ config PPC
+ 	select ARCH_OPTIONAL_KERNEL_RWX		if ARCH_HAS_STRICT_KERNEL_RWX
+ 	select ARCH_STACKWALK
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+-	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC32 || PPC_BOOK3S_64
++	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC_BOOK3S || PPC_8xx || 40x
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_CMPXCHG_LOCKREF		if PPC64
+ 	select ARCH_USE_MEMTEST
+@@ -190,7 +190,7 @@ config PPC
+ 	select HAVE_ARCH_JUMP_LABEL_RELATIVE
+ 	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
+ 	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <= 14
+-	select HAVE_ARCH_KFENCE			if PPC32
++	select HAVE_ARCH_KFENCE			if PPC_BOOK3S_32 || PPC_8xx || 40x
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_MMAP_RND_BITS
+ 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
 -- 
 2.31.1
 
