@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A002B43838D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 13:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 934C743838E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 13:49:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hbzyt2FyVz3cXB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 22:49:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HbzzL0W9fz3dkT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 22:49:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,45 +16,45 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hbzwt4mk7z306D
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Oct 2021 22:47:42 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hbzwz0zRfz2yP7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Oct 2021 22:47:47 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4HbzwV21Sqz9s2p;
- Sat, 23 Oct 2021 13:47:22 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4HbzwW1m9Sz9s2t;
+ Sat, 23 Oct 2021 13:47:23 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id w8fx2wUrTG9R; Sat, 23 Oct 2021 13:47:22 +0200 (CEST)
+ with ESMTP id b9j-txkBeket; Sat, 23 Oct 2021 13:47:23 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.87])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (Client did not present a certificate)
- by pegase1.c-s.fr (Postfix) with ESMTPS id 4HbzwS1JL0z9s2t;
+ by pegase1.c-s.fr (Postfix) with ESMTPS id 4HbzwS30HBz9s2q;
  Sat, 23 Oct 2021 13:47:20 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19NBlKVA441175
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19NBlKfL441179
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Sat, 23 Oct 2021 13:47:20 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19NBlKm8441174;
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19NBlKvV441178;
  Sat, 23 Oct 2021 13:47:20 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 05/10] powerpc/fsl_booke: Take exec flag into account when
- setting TLBCAMs
-Date: Sat, 23 Oct 2021 13:47:10 +0200
-Message-Id: <2c353fbcf1bbc58d86a83702b7e1dc40cd4c1a54.1634983809.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 06/10] powerpc/fsl_booke: Enable reloading of TLBCAM
+ without switching to AS1
+Date: Sat, 23 Oct 2021 13:47:11 +0200
+Message-Id: <ba02555bb912382b729c3b3dad4575bc84246a72.1634983809.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <33e7fe0f6134c58e044eb63d3925cd34aa120104.1634983809.git.christophe.leroy@csgroup.eu>
 References: <33e7fe0f6134c58e044eb63d3925cd34aa120104.1634983809.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 X-Developer-Signature: v=1; a=ed25519-sha256; t=1634989633; l=1787; s=20211009;
- h=from:subject:message-id; bh=YcaMwN9UxVgjTjrSjvUWKUNwwVAmqI4JndBhByZLFcE=;
- b=QzGucBzCDseKrig+gASnjPB3MC8dnTvPGA/erWZIv7cL3K9Nr565Q8AJs6r8YJJnO4hsDG0ZHT95
- aEsKUQnTBnDgij2VUZyqk/YA8ndWKP2r+QlH3ynvh+O3+xDu5oJc
+ h=from:subject:message-id; bh=hnT3Htr9Kbjvusle9HHm9twnh707ikQ9q4C7xZV0VCI=;
+ b=mm0VTjxyZnHkEiWZ+UfNvUF40XqaZ5duwP80HNQAODJ3/i8DY17prjHTMvw8+JpJBbaw6hckZ/vg
+ gCByfb4hCmio4ULga6Spb/rAb8anoe7M+UHDAtUZucZlJ/cjgjgh
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -74,46 +74,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Don't force MAS3_SX and MAS3_UX at all time. Take into account the
-exec flag.
+Avoid switching to AS1 when reloading TLBCAM after init for
+STRICT_KERNEL_RWX.
 
-While at it, fix a couple of closeby style problems (indent with space
-and unnecessary parenthesis), it keeps more readability.
+When we setup AS1 we expect the entire accessible memory to be mapped
+through one entry, this is not the case anymore at the end of init.
+
+We are not changing the size of TLBCAMs, only flags, so no need to
+switch to AS1.
+
+So change loadcam_multi() to not switch to AS1 when the given
+temporary tlb entry in 0.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v2: Use the new _PAGE_EXEC to check executability of flags instead of _PAGE_BAP_SX (Error reported by robot with tqm8541_defconfig)
+v2: No change
 ---
- arch/powerpc/mm/nohash/fsl_book3e.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ arch/powerpc/mm/nohash/tlb_low.S | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/mm/nohash/fsl_book3e.c b/arch/powerpc/mm/nohash/fsl_book3e.c
-index 03dacbe940e5..2668bb06e4fa 100644
---- a/arch/powerpc/mm/nohash/fsl_book3e.c
-+++ b/arch/powerpc/mm/nohash/fsl_book3e.c
-@@ -122,15 +122,18 @@ static void settlbcam(int index, unsigned long virt, phys_addr_t phys,
- 	TLBCAM[index].MAS2 |= (flags & _PAGE_GUARDED) ? MAS2_G : 0;
- 	TLBCAM[index].MAS2 |= (flags & _PAGE_ENDIAN) ? MAS2_E : 0;
+diff --git a/arch/powerpc/mm/nohash/tlb_low.S b/arch/powerpc/mm/nohash/tlb_low.S
+index 5add4a51e51f..dd39074de9af 100644
+--- a/arch/powerpc/mm/nohash/tlb_low.S
++++ b/arch/powerpc/mm/nohash/tlb_low.S
+@@ -369,7 +369,7 @@ _GLOBAL(_tlbivax_bcast)
+  * extern void loadcam_entry(unsigned int index)
+  *
+  * Load TLBCAM[index] entry in to the L2 CAM MMU
+- * Must preserve r7, r8, r9, r10 and r11
++ * Must preserve r7, r8, r9, r10, r11, r12
+  */
+ _GLOBAL(loadcam_entry)
+ 	mflr	r5
+@@ -401,7 +401,7 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_BIG_PHYS)
+  *
+  * r3 = first entry to write
+  * r4 = number of entries to write
+- * r5 = temporary tlb entry
++ * r5 = temporary tlb entry (0 means no switch to AS1)
+  */
+ _GLOBAL(loadcam_multi)
+ 	mflr	r8
+@@ -409,6 +409,8 @@ _GLOBAL(loadcam_multi)
+ 	mfmsr	r11
+ 	andi.	r11,r11,MSR_IS
+ 	bne	10f
++	mr.	r12, r5
++	beq	10f
  
--	TLBCAM[index].MAS3 = (phys & MAS3_RPN) | MAS3_SX | MAS3_SR;
--	TLBCAM[index].MAS3 |= ((flags & _PAGE_RW) ? MAS3_SW : 0);
-+	TLBCAM[index].MAS3 = (phys & MAS3_RPN) | MAS3_SR;
-+	TLBCAM[index].MAS3 |= (flags & _PAGE_RW) ? MAS3_SW : 0;
- 	if (mmu_has_feature(MMU_FTR_BIG_PHYS))
- 		TLBCAM[index].MAS7 = (u64)phys >> 32;
+ 	/*
+ 	 * Set up temporary TLB entry that is the same as what we're
+@@ -446,6 +448,8 @@ _GLOBAL(loadcam_multi)
+ 	/* Don't return to AS=0 if we were in AS=1 at function start */
+ 	andi.	r11,r11,MSR_IS
+ 	bne	3f
++	cmpwi	r12, 0
++	beq	3f
  
- 	/* Below is unlikely -- only for large user pages or similar */
- 	if (pte_user(__pte(flags))) {
--	   TLBCAM[index].MAS3 |= MAS3_UX | MAS3_UR;
--	   TLBCAM[index].MAS3 |= ((flags & _PAGE_RW) ? MAS3_UW : 0);
-+		TLBCAM[index].MAS3 |= MAS3_UR;
-+		TLBCAM[index].MAS3 |= (flags & _PAGE_EXEC) ? MAS3_UX : 0;
-+		TLBCAM[index].MAS3 |= (flags & _PAGE_RW) ? MAS3_UW : 0;
-+	} else {
-+		TLBCAM[index].MAS3 |= (flags & _PAGE_EXEC) ? MAS3_SX : 0;
- 	}
- 
- 	tlbcam_addrs[index].start = virt;
+ 	/* Return to AS=0 and clear the temporary entry */
+ 	mfmsr	r6
 -- 
 2.31.1
 
