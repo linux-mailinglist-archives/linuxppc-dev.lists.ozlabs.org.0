@@ -2,60 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD9E438441
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 18:05:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D535A4385CC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Oct 2021 00:21:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hc5fq5nP4z2yP7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Oct 2021 03:05:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HcG0Z1Nyfz2yb9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Oct 2021 09:21:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YcA0X7ZJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=AKYXuEhi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=YcA0X7ZJ; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hc5f64F4Wz2xXC
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Oct 2021 03:05:18 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4A8826112D
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Oct 2021 16:05:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1635005115;
- bh=a0FullCysk1UJY/SuwNW+JkwKz1DX5zFsZR7u65jCCk=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=YcA0X7ZJT9KPq++0vy4Zc9YPjW55ngCXT3XYqy0oc0V32YWSyFzKjWH46Wfk6JUB6
- PCIDwfEBeDkcsFDGtdhqthdSSccuQ4eBo6P/LqmrXl9bChhrw5voAlYoYh7iNIzAji
- I/i5bgtEUMvO3AEqG3qlH4MZ1DNT15pXqUIREZ0Yj9fWIMtdEKWa5Dl0hx2Av4mXBx
- aZYfYYaL5Ja4lDViVX9MnZlv3E1cOX3kebEmYI6h4HSEkK5Cu3dI3EbNPUElSQ0S/m
- arVBv2qit0AEO2JDL2ItsVAj0xcsKg0bg0oX/nPHGUknfGsiTy2YfqGtAARZUCZBYT
- WlW6qCwcUiNFA==
-Received: by mail-wm1-f46.google.com with SMTP id
- j2-20020a1c2302000000b0032ca9b0a057so1618574wmj.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Oct 2021 09:05:15 -0700 (PDT)
-X-Gm-Message-State: AOAM5322i49CQRsgvR3w3lruELuav8sUNtDDhn23Y5cp4F6U0ZJHJDpL
- IwAIPOkuKs7dsA3guJABiAbjNMGwHIG5EZFqGbY=
-X-Google-Smtp-Source: ABdhPJzw9bHMXdBR8sTpnXzuM1z62QqWWvXCArLgXmJmvR/CFzjvKRNvYnRPFIYed1aqogH5ms1MCPnMvzTwp0uq874=
-X-Received: by 2002:a05:600c:4f42:: with SMTP id
- m2mr36618604wmq.82.1635005113773; 
- Sat, 23 Oct 2021 09:05:13 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HcFzt6DHjz2xfw
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Oct 2021 09:21:14 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=AKYXuEhi; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HcFzr5PCyz4xbG;
+ Sun, 24 Oct 2021 09:21:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1635027673;
+ bh=CyGPrXGC/BO/kmWOs4JBU+cAZa2HwgeWDXAjesvA/TU=;
+ h=From:To:Cc:Subject:Date:From;
+ b=AKYXuEhitEFVf7S4wVt8aFRIEg9IQwaJH1OXh2DoXqVg+92QCqOAx4/E6aXcs/sVd
+ 3eJwOHYL8LlPUH0Hag2IH0mSkD5MWwltFkMGv1aF5R06UKAY17xH0bjs+RfrQPofXi
+ Lh220aFjvRiTh0YAwHRb6CTpU2MXPf6aiRhDhdhwXBDsyN3sJ4eVxgD03zuSJooBsG
+ zUjd3m0cDeaQX3OOtiw5V56uojSQhlGcUCUyvVVUMoM42b45gZ2FTE0mloEETbD7rK
+ TuIKgDjBjaTvjRrI49YY8KMzNWXwHMDKFjvKzcFt+V9fPPDwz8St1pHBkFuC9z7hWk
+ nAPv0gJJ86Liw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: gregkh@linuxfoundation.org
+Subject: Stable backport request
+Date: Sun, 24 Oct 2021 09:21:09 +1100
+Message-ID: <87zgqzbcx6.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20211022120058.1031690-1-arnd@kernel.org>
- <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
-In-Reply-To: <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Sat, 23 Oct 2021 18:04:57 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
-Message-ID: <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
-Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
-To: Waiman Long <longman@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,44 +57,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Paul Mackerras <paulus@samba.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Will Deacon <will@kernel.org>, Jonas Bonn <jonas@southpole.se>,
- linux-s390 <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Helge Deller <deller@gmx.de>, Christian Borntraeger <borntraeger@de.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Boqun Feng <boqun.feng@gmail.com>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Openrisc <openrisc@lists.librecores.org>, Stafford Horne <shorne@gmail.com>,
- Parisc List <linux-parisc@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Oct 23, 2021 at 3:37 AM Waiman Long <longman@redhat.com> wrote:
->> On 10/22/21 7:59 AM, Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > As this is all dead code, just remove it and the helper functions built
-> > around it. For arch/ia64, the inline asm could be cleaned up, but
-> > it seems safer to leave it untouched.
-> >
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> Does that mean we can also remove the GENERIC_LOCKBREAK config option
-> from the Kconfig files as well?
+Hi Greg,
 
- I couldn't figure this out.
+Please backport the following commit to v5.4 and v5.10:
 
-What I see is that the only architectures setting GENERIC_LOCKBREAK are
-nds32, parisc, powerpc, s390, sh and sparc64, while the only architectures
-implementing arch_spin_is_contended() are arm32, csky and ia64.
+  73287caa9210ded6066833195f4335f7f688a46b
+  ("powerpc64/idle: Fix SP offsets when saving GPRs")
 
-The part I don't understand is whether the option actually does anything
-useful any more after commit d89c70356acf ("locking/core: Remove break_lock
-field when CONFIG_GENERIC_LOCKBREAK=y").
 
-      Arnd
+And please backport the following commits to v5.4, v5.10 and v5.14:
+
+  9b4416c5095c20e110c82ae602c254099b83b72f
+  ("KVM: PPC: Book3S HV: Fix stack handling in idle_kvm_start_guest()")
+
+  cdeb5d7d890e14f3b70e8087e745c4a6a7d9f337
+  ("KVM: PPC: Book3S HV: Make idle_kvm_start_guest() return 0 if it went to guest")
+
+  496c5fe25c377ddb7815c4ce8ecfb676f051e9b6
+  ("powerpc/idle: Don't corrupt back chain when going idle")
+
+
+cheers
