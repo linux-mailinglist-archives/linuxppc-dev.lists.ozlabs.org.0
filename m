@@ -2,82 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD2824383A4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 14:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD9E438441
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 18:05:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hc0fM1bHdz2ywm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Oct 2021 23:20:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hc5fq5nP4z2yP7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Oct 2021 03:05:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=bkv/35zd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YcA0X7ZJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::533;
- helo=mail-pg1-x533.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com
- header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=bkv/35zd; dkim-atps=neutral
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=YcA0X7ZJ; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hc0dj1vMgz2xDJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Oct 2021 23:19:33 +1100 (AEDT)
-Received: by mail-pg1-x533.google.com with SMTP id q187so5923725pgq.2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Oct 2021 05:19:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20210112.gappssmtp.com; s=20210112;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :references:from:in-reply-to:content-transfer-encoding;
- bh=uUj/UmbqffvACL7tOtdMDB3X8UAvhuf3C7F1Bn0Mt+4=;
- b=bkv/35zdaEXHCWNhvhzAQTP/NH/y6tVP5dbeZ44VU/gllpSD9PXB7GjBPCIl3dMMFP
- uCuMkgP3kxXL59D3cx4jEbZZ2+4kE3OjyHrABeNhF8jh7JSJP39evw+Y30fE0+sOxYzi
- CO0paMeuSiO/Z3aJrq/tF9/vUUYDOTB1v8aGf3gGt5ejOrG7KMVdvHbxLsnrGcuBQxNT
- RXJ1MeGIumiACF3VsCHn8RWINfhv/NxtGBB31f3q1PZ6zMbvHwFECVErXimo5cqcrK5e
- 6hXmOTuGFkCutz+Dqn/hB7bJCw4r7+mL8Xl1GtEPQSXtUuvj+02tUiYqLbOVYJuXLbCd
- ALVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:references:from:in-reply-to
- :content-transfer-encoding;
- bh=uUj/UmbqffvACL7tOtdMDB3X8UAvhuf3C7F1Bn0Mt+4=;
- b=2cxZUXa/RS+YiMIEZF15HBfiqyYqLvJLESDFhn/eVEWbmfTIv/2yIBX9rAzTO3Hh3L
- p0v5C8uuvY+6vwNrKChXif8DUla+cZQmYCsXVq/zWtt5WWJFglAsPNOnc2Bvi1G5s2Ky
- eEbzM5jDDJb044ZIKZWYtLLkMDPUS2J849EB08XMXu4w53c31UHVC88qBnnIb/tU5Trv
- e+fKN9e9+nBrBotsJWcaarn7oWcgxeEdWUFjqI3weeikvaJcDi6LDIJiQyL3SpiXGvdq
- a8w1zHAhiFE0RjO5RCdLvZ/RK7jKfFjQavFUr+GNXzl09KGRY/ORlqYJloCnjWvQ8wV1
- deuQ==
-X-Gm-Message-State: AOAM5303ZzMYInQoSzNAHnHuAlhKzdLi7CXr9Ade2Y0CBupg7iUb/nQ3
- J/djQopYwdHEhzoZ8dma3cK2cA==
-X-Google-Smtp-Source: ABdhPJzk0ZrMmBTWkGnRF+EguttGjUodKvlG9OnXkRfkML/SruVALPXU+eaRKk7+Z7XNxSapxupL5A==
-X-Received: by 2002:a05:6a00:80c:b0:44d:90ef:e90c with SMTP id
- m12-20020a056a00080c00b0044d90efe90cmr6108141pfk.33.1634991567172; 
- Sat, 23 Oct 2021 05:19:27 -0700 (PDT)
-Received: from [192.168.10.153] (124-171-108-209.dyn.iinet.net.au.
- [124.171.108.209])
- by smtp.gmail.com with ESMTPSA id t11sm14170177pfj.173.2021.10.23.05.19.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 23 Oct 2021 05:19:26 -0700 (PDT)
-Message-ID: <3d1dcfa3-23a7-cb7f-8671-2198861987e6@ozlabs.ru>
-Date: Sat, 23 Oct 2021 23:18:23 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hc5f64F4Wz2xXC
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Oct 2021 03:05:18 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4A8826112D
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Oct 2021 16:05:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1635005115;
+ bh=a0FullCysk1UJY/SuwNW+JkwKz1DX5zFsZR7u65jCCk=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=YcA0X7ZJT9KPq++0vy4Zc9YPjW55ngCXT3XYqy0oc0V32YWSyFzKjWH46Wfk6JUB6
+ PCIDwfEBeDkcsFDGtdhqthdSSccuQ4eBo6P/LqmrXl9bChhrw5voAlYoYh7iNIzAji
+ I/i5bgtEUMvO3AEqG3qlH4MZ1DNT15pXqUIREZ0Yj9fWIMtdEKWa5Dl0hx2Av4mXBx
+ aZYfYYaL5Ja4lDViVX9MnZlv3E1cOX3kebEmYI6h4HSEkK5Cu3dI3EbNPUElSQ0S/m
+ arVBv2qit0AEO2JDL2ItsVAj0xcsKg0bg0oX/nPHGUknfGsiTy2YfqGtAARZUCZBYT
+ WlW6qCwcUiNFA==
+Received: by mail-wm1-f46.google.com with SMTP id
+ j2-20020a1c2302000000b0032ca9b0a057so1618574wmj.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Oct 2021 09:05:15 -0700 (PDT)
+X-Gm-Message-State: AOAM5322i49CQRsgvR3w3lruELuav8sUNtDDhn23Y5cp4F6U0ZJHJDpL
+ IwAIPOkuKs7dsA3guJABiAbjNMGwHIG5EZFqGbY=
+X-Google-Smtp-Source: ABdhPJzw9bHMXdBR8sTpnXzuM1z62QqWWvXCArLgXmJmvR/CFzjvKRNvYnRPFIYed1aqogH5ms1MCPnMvzTwp0uq874=
+X-Received: by 2002:a05:600c:4f42:: with SMTP id
+ m2mr36618604wmq.82.1635005113773; 
+ Sat, 23 Oct 2021 09:05:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:94.0) Gecko/20100101
- Thunderbird/94.0
-Subject: Re: [PATCH] powerpc: Enhance pmem DMA bypass handling
-Content-Language: en-US
-To: Brian King <brking@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20211021174449.120875-1-brking@linux.vnet.ibm.com>
- <84b82d2b-1263-39bb-d966-b432af530ca8@ozlabs.ru>
- <e4120ddc-8cac-c722-2379-ecc44bd9ef89@linux.vnet.ibm.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <e4120ddc-8cac-c722-2379-ecc44bd9ef89@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20211022120058.1031690-1-arnd@kernel.org>
+ <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
+In-Reply-To: <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
+From: Arnd Bergmann <arnd@kernel.org>
+Date: Sat, 23 Oct 2021 18:04:57 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
+Message-ID: <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
+Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
+To: Waiman Long <longman@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,93 +67,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-ia64@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Paul Mackerras <paulus@samba.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Will Deacon <will@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+ linux-s390 <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Helge Deller <deller@gmx.de>, Christian Borntraeger <borntraeger@de.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Openrisc <openrisc@lists.librecores.org>, Stafford Horne <shorne@gmail.com>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, Oct 23, 2021 at 3:37 AM Waiman Long <longman@redhat.com> wrote:
+>> On 10/22/21 7:59 AM, Arnd Bergmann wrote:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> >
+> > As this is all dead code, just remove it and the helper functions built
+> > around it. For arch/ia64, the inline asm could be cleaned up, but
+> > it seems safer to leave it untouched.
+> >
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+> Does that mean we can also remove the GENERIC_LOCKBREAK config option
+> from the Kconfig files as well?
 
+ I couldn't figure this out.
 
-On 23/10/2021 07:18, Brian King wrote:
-> On 10/22/21 7:24 AM, Alexey Kardashevskiy wrote:
->>
->>
->> On 22/10/2021 04:44, Brian King wrote:
->>> If ibm,pmemory is installed in the system, it can appear anywhere
->>> in the address space. This patch enhances how we handle DMA for devices when
->>> ibm,pmemory is present. In the case where we have enough DMA space to
->>> direct map all of RAM, but not ibm,pmemory, we use direct DMA for
->>> I/O to RAM and use the default window to dynamically map ibm,pmemory.
->>> In the case where we only have a single DMA window, this won't work, > so if the window is not big enough to map the entire address range,
->>> we cannot direct map.
->>
->> but we want the pmem range to be mapped into the huge DMA window too if we can, why skip it?
-> 
-> This patch should simply do what the comment in this commit mentioned below suggests, which says that
-> ibm,pmemory can appear anywhere in the address space. If the DMA window is large enough
-> to map all of MAX_PHYSMEM_BITS, we will indeed simply do direct DMA for everything,
-> including the pmem. If we do not have a big enough window to do that, we will do
-> direct DMA for DRAM and dynamic mapping for pmem.
+What I see is that the only architectures setting GENERIC_LOCKBREAK are
+nds32, parisc, powerpc, s390, sh and sparc64, while the only architectures
+implementing arch_spin_is_contended() are arm32, csky and ia64.
 
+The part I don't understand is whether the option actually does anything
+useful any more after commit d89c70356acf ("locking/core: Remove break_lock
+field when CONFIG_GENERIC_LOCKBREAK=y").
 
-Right, and this is what we do already, do not we? I missing something here.
-
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/arch/powerpc/platforms/pseries/iommu.c?id=bf6e2d562bbc4d115cf322b0bca57fe5bbd26f48
-> 
-> 
-> Thanks,
-> 
-> Brian
-> 
-> 
->>
->>
->>>
->>> Signed-off-by: Brian King <brking@linux.vnet.ibm.com>
->>> ---
->>>    arch/powerpc/platforms/pseries/iommu.c | 19 ++++++++++---------
->>>    1 file changed, 10 insertions(+), 9 deletions(-)
->>>
->>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
->>> index 269f61d519c2..d9ae985d10a4 100644
->>> --- a/arch/powerpc/platforms/pseries/iommu.c
->>> +++ b/arch/powerpc/platforms/pseries/iommu.c
->>> @@ -1092,15 +1092,6 @@ static phys_addr_t ddw_memory_hotplug_max(void)
->>>        phys_addr_t max_addr = memory_hotplug_max();
->>>        struct device_node *memory;
->>>    -    /*
->>> -     * The "ibm,pmemory" can appear anywhere in the address space.
->>> -     * Assuming it is still backed by page structs, set the upper limit
->>> -     * for the huge DMA window as MAX_PHYSMEM_BITS.
->>> -     */
->>> -    if (of_find_node_by_type(NULL, "ibm,pmemory"))
->>> -        return (sizeof(phys_addr_t) * 8 <= MAX_PHYSMEM_BITS) ?
->>> -            (phys_addr_t) -1 : (1ULL << MAX_PHYSMEM_BITS);
->>> -
->>>        for_each_node_by_type(memory, "memory") {
->>>            unsigned long start, size;
->>>            int n_mem_addr_cells, n_mem_size_cells, len;
->>> @@ -1341,6 +1332,16 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->>>         */
->>>        len = max_ram_len;
->>>        if (pmem_present) {
->>> +        if (default_win_removed) {
->>> +            /*
->>> +             * If we only have one DMA window and have pmem present,
->>> +             * then we need to be able to map the entire address
->>> +             * range in order to be able to do direct DMA to RAM.
->>> +             */
->>> +            len = order_base_2((sizeof(phys_addr_t) * 8 <= MAX_PHYSMEM_BITS) ?
->>> +                    (phys_addr_t) -1 : (1ULL << MAX_PHYSMEM_BITS));
->>> +        }
->>> +
->>>            if (query.largest_available_block >=
->>>                (1ULL << (MAX_PHYSMEM_BITS - page_shift)))
->>>                len = MAX_PHYSMEM_BITS;
->>>
->>
-> 
-> 
-
--- 
-Alexey
+      Arnd
