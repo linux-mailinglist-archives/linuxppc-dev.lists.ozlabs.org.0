@@ -1,89 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45024393C3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Oct 2021 12:33:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35774394A5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Oct 2021 13:19:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HdB9w43dpz2ymr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Oct 2021 21:33:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HdCCS3d2bz2yMN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Oct 2021 22:19:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=yL9PvYco;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=gGAl0Rug;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=X9Ouwhtq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=66.111.4.25;
- helo=out1-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm3 header.b=yL9PvYco; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm1 header.b=gGAl0Rug; 
- dkim-atps=neutral
-X-Greylist: delayed 446 seconds by postgrey-1.36 at boromir;
- Mon, 25 Oct 2021 21:32:27 AEDT
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com
- [66.111.4.25])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HdB972q7bz2xRq
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Oct 2021 21:32:27 +1100 (AEDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.nyi.internal (Postfix) with ESMTP id 619B15C015B;
- Mon, 25 Oct 2021 06:24:57 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute4.internal (MEProxy); Mon, 25 Oct 2021 06:24:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding; s=fm3; bh=xIB7YiLKZ9FcfAdGjaDCq1/ll3
- +RJoG2srq5m4FT1VI=; b=yL9PvYcoQPAlnqmsGE8Lq726c349cCcGX7yt9x3fgF
- 3zp7qFvwE7dP6CaO4/B4Afx1rJWS73e9tODOGXcTTx4WK53tfdzWiTHREKnoXCip
- ZZJTC7LCWudkkAtn1PfrMHncDJ8sDV6VagQW5qBj04CuKK6EQ8IXhCUJ7l23+pyd
- pmKTZhN0xG6P2CVs4v8Jjf9xh4He/FKg5+tdT1Qv4//aGFloSBZEpqVNeRkwlxiY
- UzorWVroAFiiBa94BkxlEtPI+X3rmav8CPymnbEgflARcg1nkQ5LMWcmBYYSBls8
- 4FS45QOjAUjlR+D+k1V695C1cdd+s8guwEyliA2p2E9A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:date:from
- :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=xIB7YiLKZ9FcfAdGj
- aDCq1/ll3+RJoG2srq5m4FT1VI=; b=gGAl0RugRLSBXEujS+yWMwwRotYpR/zBx
- B050xC0xS6OveBc+WdGfL3xdyh5qIVZnQWQp21IcBkMNnqp4O5K/xc7c6p0l3LA7
- Z/tbLUd7iswUVO3Dsgr7ginMns/yC7IhX8Bs1Kj4nREvPyK3rk5ml/FRuhoTG+pA
- FMu6xvNeZfqqPS8/agigyUyAUiEWB+i1lfaX+kt1F081oMSK5MjPwqaSAB8s1t8h
- wJFjgdj37plfF598qPANjqj+1wKnBFiRvkEdc5FDIrXMgVw55W33uholzMn0ptNs
- 2hs2aajhpBk28pT8FlA95uDHUp0zGue2vPT3EPj5lb1ZxOq3hxQlw==
-X-ME-Sender: <xms:-IV2YULZ7IL_s_NWAFlxlIX10yIfZgrJr_chpSDskpnVMURUKHR9yA>
- <xme:-IV2YULp11blKT4FTvkx4Fnue49lzust0FJWEUFOwpap00pj2AM5iInYL8F91mC75
- c1RBS-oqs8tb5Ki4w>
-X-ME-Received: <xmr:-IV2YUv1tzFRwnQSM5z38QpA5mk1Uv9RB4XNkw0Fm1vo4kQ4dbRv_jCTTuh_0gJJEuacBODOzjfeVPCwJoLIK1nS4-Z2Lf4mJDunmxIeIdLX_Uyk6vDtjfZwfQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddrvdefhedgvdeiucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdlfedtmdenucfjughrpefhvf
- fufffkofgggfestdekredtredttdenucfhrhhomheptfhushhsvghllhcuvehurhhrvgih
- uceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnhepleegle
- efvdffkeegveefleevfedtieelgfdugeekueehhfevgfffkeeugfffkeefnecuvehluhhs
- thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruh
- hsshgvlhhlrdgttg
-X-ME-Proxy: <xmx:-IV2YRY_vOFfVv6dDDl-W3K51QmWcJECHts91njOw8BYXywZq_k8Nw>
- <xmx:-IV2YbZkYLa-SVGgoDVnWPJ6LkImB99plwBUyifGtpBk0omDipJPmA>
- <xmx:-IV2YdABNW4DmM2WJ4Q8QHgWiPmuCkCKu_OblIGQKrC5tvNvEt0RcA>
- <xmx:-YV2YcBQNNvsKHEoILjiC6I46Nyd51Kw5Q5IvOMbijk1m0rfKpwaxw>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 Oct 2021 06:24:55 -0400 (EDT)
-From: Russell Currey <ruscur@russell.cc>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] selftests/powerpc: Use date instead of EPOCHSECONDS in
- mitigation-patching.sh
-Date: Mon, 25 Oct 2021 20:24:36 +1000
-Message-Id: <20211025102436.19177-1-ruscur@russell.cc>
-X-Mailer: git-send-email 2.33.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HdCBr3WXnz2xXV
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Oct 2021 22:19:00 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=X9Ouwhtq; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HdCBq0gMqz4xZ1;
+ Mon, 25 Oct 2021 22:18:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1635160739;
+ bh=q2w+1Ixl2mryFLxgvQRnX8bXQAX4fFunUvPWxhDUOcQ=;
+ h=From:To:Cc:Subject:Date:From;
+ b=X9OuwhtqadHhk7tjAZIg6c6ioV4Xduz445XgQXBPGVu9ijCScrlkNdlND6fYEHv9F
+ K1YPjkiba1QM3n7v+xDUxaNp4orCLXweMmMoGDtjrrV0VwevbEe/4z/gVIxivINVi1
+ JDIyNbOEWf52IWim9R3zSY2OPJWlHy7pnWRdYVAciz+N50g7puFU+zOzjj1WN69U+I
+ 0deHyhlgfz0v8TwGC0fNxGYoA38x3tojyhCHZcb2xkOBWrS7ItS/y0IEeg9uwtaS66
+ Eh3KNmSYIFYjnWAh2hfwh14tyfjIdrEu9vIv5auqqM0byqn/mPBvvtSJftuAsZo0rh
+ 8lm1AZVwpJmVw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: oss-security@lists.openwall.com
+Subject: Linux kernel: powerpc: KVM guest can trigger host crash on Power8 
+Date: Mon, 25 Oct 2021 22:18:54 +1100
+Message-ID: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,46 +56,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Russell Currey <ruscur@russell.cc>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The EPOCHSECONDS environment variable was added in bash 5.0 (released
-2019).  Some distributions of the "stable" and "long-term" variety ship
-older versions of bash than this, so swap to using the date command
-instead.
+The Linux kernel for powerpc since v5.2 has a bug which allows a
+malicious KVM guest to crash the host, when the host is running on
+Power8.
 
-"%s" was added to coreutils `date` in 1993 so we should be good, but who
-knows, it is a GNU extension and not part of the POSIX spec for `date`.
+Only machines using Linux as the hypervisor, aka. KVM, powernv or bare
+metal, are affected by the bug. Machines running PowerVM are not
+affected.
 
-Signed-off-by: Russell Currey <ruscur@russell.cc>
----
- .../testing/selftests/powerpc/security/mitigation-patching.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The bug was introduced in:
 
-diff --git a/tools/testing/selftests/powerpc/security/mitigation-patching.sh b/tools/testing/selftests/powerpc/security/mitigation-patching.sh
-index 00197acb7ff1..b0b20e0b4e30 100755
---- a/tools/testing/selftests/powerpc/security/mitigation-patching.sh
-+++ b/tools/testing/selftests/powerpc/security/mitigation-patching.sh
-@@ -13,7 +13,7 @@ function do_one
- 
-     orig=$(cat "$mitigation")
- 
--    start=$EPOCHSECONDS
-+    start=$(date +%s)
-     now=$start
- 
-     while [[ $((now-start)) -lt "$TIMEOUT" ]]
-@@ -21,7 +21,7 @@ function do_one
-         echo 0 > "$mitigation"
-         echo 1 > "$mitigation"
- 
--        now=$EPOCHSECONDS
-+        now=$(date +%s)
-     done
- 
-     echo "$orig" > "$mitigation"
--- 
-2.33.1
+    10d91611f426 ("powerpc/64s: Reimplement book3s idle code in C")
 
+Which was first released in v5.2.
+
+The upstream fix is:
+
+  cdeb5d7d890e ("KVM: PPC: Book3S HV: Make idle_kvm_start_guest() return 0 if it went to guest")
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=cdeb5d7d890e14f3b70e8087e745c4a6a7d9f337
+
+Which will be included in the v5.16 release.
+
+Note to backporters, the following commits are required:
+
+  73287caa9210ded6066833195f4335f7f688a46b
+  ("powerpc64/idle: Fix SP offsets when saving GPRs")
+
+  9b4416c5095c20e110c82ae602c254099b83b72f
+  ("KVM: PPC: Book3S HV: Fix stack handling in idle_kvm_start_guest()")
+
+  cdeb5d7d890e14f3b70e8087e745c4a6a7d9f337
+  ("KVM: PPC: Book3S HV: Make idle_kvm_start_guest() return 0 if it went to guest")
+
+  496c5fe25c377ddb7815c4ce8ecfb676f051e9b6
+  ("powerpc/idle: Don't corrupt back chain when going idle")
+
+
+I have a test case to trigger the bug, which I can share privately with
+anyone who would like to test the fix.
+
+cheers
