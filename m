@@ -1,57 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76809439B01
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Oct 2021 17:59:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE92439C24
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Oct 2021 18:55:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HdKQq2Lt9z2ywG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 02:59:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HdLgX0Lggz2yQK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 03:55:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=QXT6Sw24;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ArdZ9P7f;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e;
+ helo=mail-pl1-x62e.google.com; envelope-from=minchan.kim@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=QXT6Sw24; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=ArdZ9P7f; dkim-atps=neutral
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
+ [IPv6:2607:f8b0:4864:20::62e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HdKQ55YCKz2xDk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 02:59:07 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
- MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=5y7mYSiruE0cjysowYo7+0jNcIRmxjtJRrRLlmuIF+o=; b=QXT6Sw24DXrC/psY8+sN1Li2XS
- X1huPXRn/qDo1HnmsuBUFcbunf0kWqQXlhN+z6chxaTIdt8hxz9nWytKt2DlAZ5gzqr1qxaxImfyf
- PxnxGk7tzyTkUTccZB0NvwsVeqKo3xbXVggsekcvOCJAaHSupHm5jwR4CeHW+ehwW4L/YkVFA7fxw
- xncOolmkjmCZPKRfNvPHankG+wrRBFDL01kPxYO/ulAIE2zRZqyKIYT1QqWJIWw4STAH9KhE78KS8
- Vh7eDzj6hKkoRmOoOldUn6jqiCS3HVz1L+ZoY+GXq/eWoCJ5nYU9/tuL8umRjUTHSIFqo/FGLINHE
- DhnolPJw==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1mf2Mu-00GwhK-7N; Mon, 25 Oct 2021 15:58:36 +0000
-Date: Mon, 25 Oct 2021 08:58:36 -0700
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Geoff Levand <geoff@infradead.org>
-Subject: Re: [PATCH 00/13] block: add_disk() error handling stragglers
-Message-ID: <YXbULG63hZcBdoQD@bombadil.infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HdLfp4FVxz2xYX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 03:55:12 +1100 (AEDT)
+Received: by mail-pl1-x62e.google.com with SMTP id t21so8357690plr.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Oct 2021 09:55:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=34KqGsADswDnjonTJQq114bRqQgkKcPCrw08YN12k1U=;
+ b=ArdZ9P7fyJ7zJHFYx1+AQE02HbDLJAUvr4erZl2mwbBhtH4+TimE4u+ugqvNFdwh8d
+ 3/k33Em4/TsoIsweBaglse1QZQgHs7wcFn8ECUkcngi4ODPtbQO4Nm9N6HsFFQgfLYjO
+ RePbywXUgZ4jXqcZxI7CJfFNDy98/HjjX5D5DC2BF8G+I/IOB9VG5SIpJ3tDITv0dJRl
+ sUJ6d+ibD4KBuChDdczeAcIBzNl30xwnxblX9PJBRPoGnixLoKyw7+/sPO6a5ErIzVMp
+ go4JYUYLmAuef1oHBLR/IOfONu/74SlIlF3dwUs57Wqyht+Hr5rXw+CnNSGJhGpEkKIr
+ iTbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to;
+ bh=34KqGsADswDnjonTJQq114bRqQgkKcPCrw08YN12k1U=;
+ b=I/l6rU4x0uxf5A34Y22sGGvodOxe9T5sDqhxEM4yeWRduiat86MSpL6mw4EJ03eYfs
+ Txn/FUsqeZxQeKf3wS6WyyCg48kmISqO2uA4Nn9gokZSNYkWroeal079ytakVjRRJEcE
+ qITAsJn6OZaZTnInhsH4rwgKwZcLk005uhBWy3FQdBDpU3HG8OuqIBEMPxZzyKWGRJ6W
+ QkwKytk61V5IhDZNmmmmxwhrPJSkfm7Mjq0kYC8M79C76iPyJ77eYptHMHRGUERy50x1
+ Qk1X26JoL/5HF9gyrBs8n84/tAB5LO9A1J/8CjW2unJ+6gXno3xSDP8TKkMKCt/lquD5
+ XhHg==
+X-Gm-Message-State: AOAM532cRxKNTbmCNdiiQpx2Ap3zkytbyQIcIAL2VrkXKRPkkL+BLsDn
+ bHOU3hr2u2iFMD56oehl75Q=
+X-Google-Smtp-Source: ABdhPJwnOC5S77AdBEAZhaiGNLZ1LAMQYdWuNPBpW15141iALB0JrDnj2gFivuKTGQtzXuB/cou/UQ==
+X-Received: by 2002:a17:90b:1b49:: with SMTP id
+ nv9mr21773068pjb.134.1635180906379; 
+ Mon, 25 Oct 2021 09:55:06 -0700 (PDT)
+Received: from google.com ([2620:15c:211:201:676:677c:1b95:77a5])
+ by smtp.gmail.com with ESMTPSA id c15sm9853456pfv.66.2021.10.25.09.55.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 25 Oct 2021 09:55:05 -0700 (PDT)
+Date: Mon, 25 Oct 2021 09:55:04 -0700
+From: Minchan Kim <minchan@kernel.org>
+To: Luis Chamberlain <mcgrof@kernel.org>
+Subject: Re: [PATCH 08/13] zram: add error handling support for add_disk()
+Message-ID: <YXbhaO5QAOi96E8j@google.com>
 References: <20211015235219.2191207-1-mcgrof@kernel.org>
- <a31970d6-8631-9d9d-a36f-8f4fcebfb1e6@infradead.org>
- <YW2duaTqf3qUbTIm@bombadil.infradead.org>
- <24bc86d0-9d8d-8c8a-7f74-a87f9089342b@infradead.org>
+ <20211015235219.2191207-9-mcgrof@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <24bc86d0-9d8d-8c8a-7f74-a87f9089342b@infradead.org>
+In-Reply-To: <20211015235219.2191207-9-mcgrof@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,47 +83,19 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: nvdimm@lists.linux.dev, vigneshr@ti.com, linux-nvme@lists.infradead.org,
  paulus@samba.org, miquel.raynal@bootlin.com, ira.weiny@intel.com, hch@lst.de,
- dave.jiang@intel.com, sagi@grimberg.me, minchan@kernel.org,
- vishal.l.verma@intel.com, ngupta@vflare.org, linux-block@vger.kernel.org,
- kbusch@kernel.org, dan.j.williams@intel.com, axboe@kernel.dk,
+ dave.jiang@intel.com, sagi@grimberg.me, vishal.l.verma@intel.com,
+ ngupta@vflare.org, linux-block@vger.kernel.org, kbusch@kernel.org,
+ dan.j.williams@intel.com, axboe@kernel.dk, geoff@infradead.org,
  linux-kernel@vger.kernel.org, jim@jtan.com, senozhatsky@chromium.org,
  richard@nod.at, linux-mtd@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 21, 2021 at 08:10:49PM -0700, Geoff Levand wrote:
-> Hi Luis,
+On Fri, Oct 15, 2021 at 04:52:14PM -0700, Luis Chamberlain wrote:
+> We never checked for errors on add_disk() as this function
+> returned void. Now that this is fixed, use the shiny new
+> error handling.
 > 
-> On 10/18/21 9:15 AM, Luis Chamberlain wrote:
-> > On Sun, Oct 17, 2021 at 08:26:33AM -0700, Geoff Levand wrote:
-> >> Hi Luis,
-> >>
-> >> On 10/15/21 4:52 PM, Luis Chamberlain wrote:
-> >>> This patch set consists of al the straggler drivers for which we have
-> >>> have no patch reviews done for yet. I'd like to ask for folks to please
-> >>> consider chiming in, specially if you're the maintainer for the driver.
-> >>> Additionally if you can specify if you'll take the patch in yourself or
-> >>> if you want Jens to take it, that'd be great too.
-> >>
-> >> Do you have a git repo with the patch set applied that I can use to test with?
-> > 
-> > Sure, although the second to last patch is in a state of flux given
-> > the ataflop driver currently is broken and so we're seeing how to fix
-> > that first:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux-next.git/log/?h=20211011-for-axboe-add-disk-error-handling
-> 
-> That branch has so many changes applied on top of the base v5.15-rc4
-> that the patches I need to apply to test on PS3 with don't apply.
-> 
-> Do you have something closer to say v5.15-rc5?  Preferred would be
-> just your add_disk() error handling patches plus what they depend
-> on.
-
-If you just want to test the ps3 changes, I've put this branch together
-just for yo, its based on v5.15-rc6:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git/log/?h=20211025-ps3-add-disk
-
-  Luis
+> Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Acked-by: Minchan Kim <minchan@kernel.org>
