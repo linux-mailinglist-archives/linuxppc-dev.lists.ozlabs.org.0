@@ -2,74 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE92439C24
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Oct 2021 18:55:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D4F439C94
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Oct 2021 19:02:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HdLgX0Lggz2yQK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 03:55:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HdLpc6jJfz305v
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 04:02:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ArdZ9P7f;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=B/oKHfT/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e;
- helo=mail-pl1-x62e.google.com; envelope-from=minchan.kim@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a;
+ helo=mail-pl1-x62a.google.com; envelope-from=naveennaidu479@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=ArdZ9P7f; dkim-atps=neutral
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
- [IPv6:2607:f8b0:4864:20::62e])
+ header.s=20210112 header.b=B/oKHfT/; dkim-atps=neutral
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HdLfp4FVxz2xYX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 03:55:12 +1100 (AEDT)
-Received: by mail-pl1-x62e.google.com with SMTP id t21so8357690plr.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Oct 2021 09:55:12 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HdLnz5JzQz2xC7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 04:01:26 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id n12so3692351plc.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Oct 2021 10:01:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=sender:date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=34KqGsADswDnjonTJQq114bRqQgkKcPCrw08YN12k1U=;
- b=ArdZ9P7fyJ7zJHFYx1+AQE02HbDLJAUvr4erZl2mwbBhtH4+TimE4u+ugqvNFdwh8d
- 3/k33Em4/TsoIsweBaglse1QZQgHs7wcFn8ECUkcngi4ODPtbQO4Nm9N6HsFFQgfLYjO
- RePbywXUgZ4jXqcZxI7CJfFNDy98/HjjX5D5DC2BF8G+I/IOB9VG5SIpJ3tDITv0dJRl
- sUJ6d+ibD4KBuChDdczeAcIBzNl30xwnxblX9PJBRPoGnixLoKyw7+/sPO6a5ErIzVMp
- go4JYUYLmAuef1oHBLR/IOfONu/74SlIlF3dwUs57Wqyht+Hr5rXw+CnNSGJhGpEkKIr
- iTbA==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=8HZsp9BvdntOEBLsd033W6ZW3RXr9hJrrgi/DSIEiZc=;
+ b=B/oKHfT/wUi2uwyEuNgWcKyEN7bNb1zznXch9q1rURws+JRljbJEIPz0+rgscXU0+Y
+ SCs5Z+HviUmO/AG6Z/ANiKZe4sA5pzDCa+CIEjE3N5dq9PnkcFuiSkw3lDaQaV/ep//u
+ ML0AA4vKJiuK7hluPphy+3uxXyhhohyLOWd/UXwTy3rPg2TO7smbF3Fwk9xJQHUp31bm
+ LBfNWATE8ZnQ0WXPUVZXg8XJ+cEYa++C35DWFIZz9KbWcTReIP/lY78+rYfYbXko3beJ
+ y/jCN5CcI/o3LdBpkqsUiU46xGnE0j44QUDcKmtzvDotdBtawKt/3XJNuzWrpRHLrlmY
+ C2gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :references:mime-version:content-disposition:in-reply-to;
- bh=34KqGsADswDnjonTJQq114bRqQgkKcPCrw08YN12k1U=;
- b=I/l6rU4x0uxf5A34Y22sGGvodOxe9T5sDqhxEM4yeWRduiat86MSpL6mw4EJ03eYfs
- Txn/FUsqeZxQeKf3wS6WyyCg48kmISqO2uA4Nn9gokZSNYkWroeal079ytakVjRRJEcE
- qITAsJn6OZaZTnInhsH4rwgKwZcLk005uhBWy3FQdBDpU3HG8OuqIBEMPxZzyKWGRJ6W
- QkwKytk61V5IhDZNmmmmxwhrPJSkfm7Mjq0kYC8M79C76iPyJ77eYptHMHRGUERy50x1
- Qk1X26JoL/5HF9gyrBs8n84/tAB5LO9A1J/8CjW2unJ+6gXno3xSDP8TKkMKCt/lquD5
- XhHg==
-X-Gm-Message-State: AOAM532cRxKNTbmCNdiiQpx2Ap3zkytbyQIcIAL2VrkXKRPkkL+BLsDn
- bHOU3hr2u2iFMD56oehl75Q=
-X-Google-Smtp-Source: ABdhPJwnOC5S77AdBEAZhaiGNLZ1LAMQYdWuNPBpW15141iALB0JrDnj2gFivuKTGQtzXuB/cou/UQ==
-X-Received: by 2002:a17:90b:1b49:: with SMTP id
- nv9mr21773068pjb.134.1635180906379; 
- Mon, 25 Oct 2021 09:55:06 -0700 (PDT)
-Received: from google.com ([2620:15c:211:201:676:677c:1b95:77a5])
- by smtp.gmail.com with ESMTPSA id c15sm9853456pfv.66.2021.10.25.09.55.05
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=8HZsp9BvdntOEBLsd033W6ZW3RXr9hJrrgi/DSIEiZc=;
+ b=KQsoJC/zOIFIlHO/xvK5pbtTX6RBqx5gPH7IBqX4YKa4PQz216D/QboTrx++CWwYfr
+ 9t6VGwIBqwrduwV4IvgvWioP9t22jU8rfBCo/+CRfO8xsFp7BIAs5RYKbdmVoIPeGti9
+ PapwkBgl2uYZtVCa4JFZGamfjyNJOFZtxEa81E9mEFxJZ6yfsYpNs6+n43qlWglBI561
+ 4p8REIAyVyqhfgPmP0qTmCm01DuR3S1rn3Sw6RPTUbCImIrFeqlD3+fUznPGSauWHeGw
+ GFOyR2xEotmsMecWdE5nCxI/0j3b3wY/HC4HVtZU4uGj4Z99q5rWoiEWUIHzgYSmlvDn
+ EJpQ==
+X-Gm-Message-State: AOAM530DZQpxBaxpdpN19SHNrrkDywugYs8z5vhdH88TuW/dOK/0JB3G
+ SXWLAmLshh2vHrQJmLws9crijUoAEhjSVA==
+X-Google-Smtp-Source: ABdhPJwUXQUjwnugVGLJbHKCyPdLUZ/UBQqXh8Cy82r1VP1k13Hq1CAUhdRWR7+Izqw0iqyEfe89ug==
+X-Received: by 2002:a17:90a:2c9:: with SMTP id
+ d9mr22098933pjd.73.1635181283642; 
+ Mon, 25 Oct 2021 10:01:23 -0700 (PDT)
+Received: from localhost.localdomain ([2406:7400:63:df8b:7255:8580:2394:764c])
+ by smtp.gmail.com with ESMTPSA id
+ g18sm5100858pfj.67.2021.10.25.10.01.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Oct 2021 09:55:05 -0700 (PDT)
-Date: Mon, 25 Oct 2021 09:55:04 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: Luis Chamberlain <mcgrof@kernel.org>
-Subject: Re: [PATCH 08/13] zram: add error handling support for add_disk()
-Message-ID: <YXbhaO5QAOi96E8j@google.com>
-References: <20211015235219.2191207-1-mcgrof@kernel.org>
- <20211015235219.2191207-9-mcgrof@kernel.org>
+ Mon, 25 Oct 2021 10:01:23 -0700 (PDT)
+From: Naveen Naidu <naveennaidu479@gmail.com>
+To: bhelgaas@google.com,
+	ruscur@russell.cc,
+	oohall@gmail.com
+Subject: [PATCH v5 0/5] Fix long standing AER Error Handling Issues
+Date: Mon, 25 Oct 2021 22:30:59 +0530
+Message-Id: <cover.1635179600.git.naveennaidu479@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211015235219.2191207-9-mcgrof@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,21 +81,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, vigneshr@ti.com, linux-nvme@lists.infradead.org,
- paulus@samba.org, miquel.raynal@bootlin.com, ira.weiny@intel.com, hch@lst.de,
- dave.jiang@intel.com, sagi@grimberg.me, vishal.l.verma@intel.com,
- ngupta@vflare.org, linux-block@vger.kernel.org, kbusch@kernel.org,
- dan.j.williams@intel.com, axboe@kernel.dk, geoff@infradead.org,
- linux-kernel@vger.kernel.org, jim@jtan.com, senozhatsky@chromium.org,
- richard@nod.at, linux-mtd@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: Oza Pawandeep <poza@codeaurora.org>, linux-pci@vger.kernel.org,
+ Sinan Kaya <okaya@kernel.org>, linux-kernel@vger.kernel.org,
+ Naveen Naidu <naveennaidu479@gmail.com>, skhan@linuxfoundation.org,
+ Keith Busch <kbusch@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel-mentees@lists.linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 15, 2021 at 04:52:14PM -0700, Luis Chamberlain wrote:
-> We never checked for errors on add_disk() as this function
-> returned void. Now that this is fixed, use the shiny new
-> error handling.
-> 
-> Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
-Acked-by: Minchan Kim <minchan@kernel.org>
+This patch series aims at fixing some of the AER error handling issues
+we have.
+
+Currently we have the following issues: 
+  
+  1. Confusing message in aer_print_error()
+  2. aer_err_info not being initialized completely in DPC path before 
+     we print the AER logs
+  3. A bug [1] in clearing of AER registers in the native AER path
+
+[1] https://lore.kernel.org/linux-pci/20151229155822.GA17321@localhost/
+
+The patch series fixes the above things.
+
+PATCH 1: 
+  - Fixes the first issue
+  - This patch is independent of other patches and can be applied
+    seperately
+
+PATCH 2 - 3:
+  - Fixes the second issue
+  - Patch 3 is depended on Patch 2 in the series
+
+PATCH 4
+  - Fixes the bug in clearing of AER registers which leades to
+    AER message spew [1]
+
+PATCH 5:
+  - Adds extra information (devctl register) in AER error logs.
+  - Patch 5 depends on Patch 4 of the series
+
+Thanks,
+Naveen Naidu
+
+Changelog
+=========
+v5:
+    - Edit the commit message of Patch 1 and Patch 5 to include how to
+      test the AER messages using aer-inject.
+    - Edit Patch 3 to initialize info.id depending on the trigger
+      reason.
+    - Drop few patches (v4 4/8, 5/8 7/8) since they were wrong.
+
+v4:
+    - Fix logical error in 6/8, in the previous version of the patch set
+      there was a bug, in how I added the devices to the queue.
+
+v3:
+    - Edit the commit messages to be in imperative style and split the
+      commits to be more atomic.
+
+v2:
+    - Add [PATCH 7] which includes the device control register 
+      information in AER error logs.
+
+Naveen Naidu (5):
+  [PATCH v5 1/5] PCI/AER: Remove ID from aer_agent_string[]
+  [PATCH v5 2/5] PCI: Cleanup struct aer_err_info
+  [PATCH v5 3/5] PCI/DPC: Initialize info.id in dpc_process_error()
+  [PATCH v5 4/5] PCI/AER: Clear error device AER registers in aer_irq()
+  [PATCH v5 5/5] PCI/AER: Include DEVCTL in aer_print_error()
+
+ drivers/pci/pci.h      |  23 +++-
+ drivers/pci/pcie/aer.c | 269 ++++++++++++++++++++++++++++-------------
+ drivers/pci/pcie/dpc.c |  16 ++-
+ 3 files changed, 214 insertions(+), 94 deletions(-)
+
+-- 
+2.25.1
+
