@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8177B43B35B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 15:46:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E7C43B35E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 15:49:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HdtQJ3gntz30J3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 00:46:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HdtTQ0yRBz3bjC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 00:48:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,45 +14,45 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HdtPq4193z2yLJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 00:45:48 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HdtSz0fjRz2yLv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 00:48:34 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4HdtPj2vm6z9s33;
- Tue, 26 Oct 2021 15:45:45 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4HdtSv29bWz9s33;
+ Tue, 26 Oct 2021 15:48:31 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id OIkVzqmB5DZX; Tue, 26 Oct 2021 15:45:45 +0200 (CEST)
+ with ESMTP id jEubgNQj05Kl; Tue, 26 Oct 2021 15:48:31 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.149])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (Client did not present a certificate)
- by pegase1.c-s.fr (Postfix) with ESMTPS id 4HdtPj1Brcz9s2p;
- Tue, 26 Oct 2021 15:45:45 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTPS id 4HdtSs65MJz9s2p;
+ Tue, 26 Oct 2021 15:48:29 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19QDjisC008082
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19QDmTSo008371
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 26 Oct 2021 15:45:44 +0200
+ Tue, 26 Oct 2021 15:48:29 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19QDjGSL008051;
- Tue, 26 Oct 2021 15:45:16 +0200
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19QDmTEb008370;
+ Tue, 26 Oct 2021 15:48:29 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/boot: Set LANG=C in wrapper script
-Date: Tue, 26 Oct 2021 15:45:15 +0200
-Message-Id: <3e19eba55da250b6cdb4753b6eb0a1fbc44365e6.1635255903.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v3] powerpc/boot: Set LC_ALL=C in wrapper script
+Date: Tue, 26 Oct 2021 15:48:29 +0200
+Message-Id: <a9ff3bc98035f63b122c051f02dc47c7aed10430.1635256089.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1635255914; l=2415; s=20211009;
- h=from:subject:message-id; bh=KCIcUl2jQvofbybmMV+kTeemiMBLMWNPIfXhCCAegRg=;
- b=0WJty1Wmf+LkGiOF2a/cnffT6sfLzHFArT7vpI9/NSOzN20U720vJMb5V02TrCDWGN9qvKKQXtJV
- GHtdvNibDpiHQ0REp1tySTR9aCCIbkfs5AmeJCfEikbeSbmCjTqa
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1635256108; l=2449; s=20211009;
+ h=from:subject:message-id; bh=xZ0rGjGP56sOdSPMSs1kgCpiDc1GM8DbeevvhKq0/uE=;
+ b=Z6mpj2Pdaog41vslEG+aG0Glmbja4AIHN4KNRNegZIhSvulWH0b0+YxZESRB38O7+h8pcjoseybB
+ xsrpqvRBDIzhGd5dpG3sqXAewXx0CmSmsyOZ07EpKG6FkFATAWe4
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -113,6 +113,7 @@ output expected by the script:
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
+v3: Also change patch's subject:
 v2: Use LC_ALL=C per Segher
 ---
  arch/powerpc/boot/wrapper | 2 ++
