@@ -1,71 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5DA43B334
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 15:32:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8177B43B35B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 15:46:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hdt5w19h7z3bgl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 00:32:04 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux-powerpc-org.20210112.gappssmtp.com header.i=@linux-powerpc-org.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=n1oz3mV0;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HdtQJ3gntz30J3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 00:46:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux-powerpc.org (client-ip=2a00:1450:4864:20::334;
- helo=mail-wm1-x334.google.com; envelope-from=kda@linux-powerpc.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linux-powerpc-org.20210112.gappssmtp.com
- header.i=@linux-powerpc-org.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=n1oz3mV0; dkim-atps=neutral
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com
- [IPv6:2a00:1450:4864:20::334])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hdt5D1Y20z2yKZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 00:31:26 +1100 (AEDT)
-Received: by mail-wm1-x334.google.com with SMTP id
- b82-20020a1c8055000000b0032ccc728d63so915281wmd.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 06:31:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-powerpc-org.20210112.gappssmtp.com; s=20210112;
- h=from:to:subject:date:message-id;
- bh=I+8uG2FYNkIrEOafWWHp60ANglgogN/grWleNrBH//s=;
- b=n1oz3mV0zFfTwE2xtJtRGCdRN6v/EQ2rXC16mfBzgNM5YRTlkwVrcKYRSgvTc7pHVt
- h5ZCvMPGILB5mZJ8Uj4PXFE6sg7BGhIcKL8VFU4z5fbnfwkfkJRWC26waFCoIR9nqZXx
- 1NBR0LeaOvpYC875TP1Ea2CyOogtEzGGK+8DOdjBPl/YFDd2QR7/MKMBm3neOKynaftJ
- wvEhBTLN5gCNFd8rNugxY+eZYyfHr91JYpPu23+S71x+rZMDrWWidVnbadzXkB8tr6CS
- T6vLqtbfESf4r4oz9qidTgB2mmfxllp8NWcwbN1vzshJu+E4RETKgY9iF4MtWdIUoM7C
- 4lWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:subject:date:message-id;
- bh=I+8uG2FYNkIrEOafWWHp60ANglgogN/grWleNrBH//s=;
- b=Q5rM/0zQOKPcotlS0Xve/lx+GiHhbAJPwugQo6Mjt5ScyWpqh1SQbhn+ONK4qxO+Yh
- HFUwvL9jjRTvmzslrOGC2xPIccWUup8ffpAt8MeaGTwtd9yup5h1SVgygyaYEZ2FnR/s
- YXS1t3GpRbIZj/KIn0ELnC4r5iCy9Pe9wawTjh01Xzm5Ub420Kref8ZoczWsO9+DeFiM
- v/6MYhbncB7iZJFw5mypM5EmJwP3XliCMvCH4bHBbwmjBjlpq7XXevSxMYs3RF2YYxzh
- aP5G+dGV5Qi4T8fFISP+H/9JUWgs3iLSamhBqeS7XrxotkNbS0cgwrvOOgryEgCtkkYW
- 1CSA==
-X-Gm-Message-State: AOAM533elj1ZZr7S/44rynMZWZ+ewVkM95jidDpgVuOlx9hiKyzR8OOn
- 0A9m9rB9DMuTxHBFRzBSRALMp3kiYyiClk8xy18=
-X-Google-Smtp-Source: ABdhPJyNURqbYwLmXGBclRu1AV4Q1tZ2fF6rlBeiHQdHrDZ7CScOmBux/B34lfFa8elomcQa2sDa/g==
-X-Received: by 2002:a1c:750b:: with SMTP id o11mr27632285wmc.5.1635255080726; 
- Tue, 26 Oct 2021 06:31:20 -0700 (PDT)
-Received: from localhost.localdomain ([5.35.48.193])
- by smtp.gmail.com with ESMTPSA id m9sm2219192wrx.39.2021.10.26.06.31.20
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 26 Oct 2021 06:31:20 -0700 (PDT)
-From: Denis Kirjanov <kda@linux-powerpc.org>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/xmon: fix task state output
-Date: Tue, 26 Oct 2021 16:31:08 +0300
-Message-Id: <20211026133108.7113-1-kda@linux-powerpc.org>
-X-Mailer: git-send-email 2.16.4
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HdtPq4193z2yLJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 00:45:48 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+ by localhost (Postfix) with ESMTP id 4HdtPj2vm6z9s33;
+ Tue, 26 Oct 2021 15:45:45 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id OIkVzqmB5DZX; Tue, 26 Oct 2021 15:45:45 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.149])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (Client did not present a certificate)
+ by pegase1.c-s.fr (Postfix) with ESMTPS id 4HdtPj1Brcz9s2p;
+ Tue, 26 Oct 2021 15:45:45 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19QDjisC008082
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Tue, 26 Oct 2021 15:45:44 +0200
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19QDjGSL008051;
+ Tue, 26 Oct 2021 15:45:16 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2] powerpc/boot: Set LANG=C in wrapper script
+Date: Tue, 26 Oct 2021 15:45:15 +0200
+Message-Id: <3e19eba55da250b6cdb4753b6eb0a1fbc44365e6.1635255903.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1635255914; l=2415; s=20211009;
+ h=from:subject:message-id; bh=KCIcUl2jQvofbybmMV+kTeemiMBLMWNPIfXhCCAegRg=;
+ b=0WJty1Wmf+LkGiOF2a/cnffT6sfLzHFArT7vpI9/NSOzN20U720vJMb5V02TrCDWGN9qvKKQXtJV
+ GHtdvNibDpiHQ0REp1tySTR9aCCIbkfs5AmeJCfEikbeSbmCjTqa
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,34 +67,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-p_state is unsigned since the commit 2f064a59a11f
+While trying to build a simple Image for ACADIA platform, I got the
+following error:
 
-The patch also uses TASK_RUNNING instead of null.
+	  WRAP    arch/powerpc/boot/simpleImage.acadia
+	INFO: Uncompressed kernel (size 0x6ae7d0) overlaps the address of the wrapper(0x400000)
+	INFO: Fixing the link_address of wrapper to (0x700000)
+	powerpc64-linux-gnu-ld : mode d'émulation non reconnu : -T
+	Émulations prises en charge : elf64ppc elf32ppc elf32ppclinux elf32ppcsim elf64lppc elf32lppc elf32lppclinux elf32lppcsim
+	make[1]: *** [arch/powerpc/boot/Makefile:424 : arch/powerpc/boot/simpleImage.acadia] Erreur 1
+	make: *** [arch/powerpc/Makefile:285 : simpleImage.acadia] Erreur 2
 
-Fixes: 2f064a59a11f ("sched: Change task_struct::state")
-Signed-off-by: Denis Kirjanov <kda@linux-powerpc.org>
+Trying again with V=1 shows the following command
+
+	powerpc64-linux-gnu-ld -m -T arch/powerpc/boot/zImage.lds -Ttext 0x700000 --no-dynamic-linker -o arch/powerpc/boot/simpleImage.acadia -Map wrapper.map arch/powerpc/boot/fixed-head.o arch/powerpc/boot/simpleboot.o ./zImage.3278022.o arch/powerpc/boot/wrapper.a
+
+The argument of '-m' is missing.
+
+This is due to the wrapper script calling 'objdump -p vmlinux' and
+looking for 'file format', whereas the output of objdump is:
+
+	vmlinux:     format de fichier elf32-powerpc
+
+	En-tête de programme:
+	    LOAD off    0x00010000 vaddr 0xc0000000 paddr 0x00000000 align 2**16
+	         filesz 0x0069e1d4 memsz 0x006c128c flags rwx
+	    NOTE off    0x0064591c vaddr 0xc063591c paddr 0x0063591c align 2**2
+	         filesz 0x00000054 memsz 0x00000054 flags ---
+
+Add LC_ALL=C at the beginning of the wrapper script in order to get the
+output expected by the script:
+
+	vmlinux:     file format elf32-powerpc
+
+	Program Header:
+	    LOAD off    0x00010000 vaddr 0xc0000000 paddr 0x00000000 align 2**16
+	         filesz 0x0069e1d4 memsz 0x006c128c flags rwx
+	    NOTE off    0x0064591c vaddr 0xc063591c paddr 0x0063591c align 2**2
+	         filesz 0x00000054 memsz 0x00000054 flags ---
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/xmon/xmon.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+v2: Use LC_ALL=C per Segher
+---
+ arch/powerpc/boot/wrapper | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index dd8241c009e5..8b28ff9d98d1 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -3264,8 +3264,7 @@ static void show_task(struct task_struct *volatile tsk)
- 	 * appropriate for calling from xmon. This could be moved
- 	 * to a common, generic, routine used by both.
- 	 */
--	state = (p_state == 0) ? 'R' :
--		(p_state < 0) ? 'U' :
-+	state = (p_state == TASK_RUNNING) ? 'R' :
- 		(p_state & TASK_UNINTERRUPTIBLE) ? 'D' :
- 		(p_state & TASK_STOPPED) ? 'T' :
- 		(p_state & TASK_TRACED) ? 'C' :
+diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+index 1cd82564c996..9184eda780fd 100755
+--- a/arch/powerpc/boot/wrapper
++++ b/arch/powerpc/boot/wrapper
+@@ -26,6 +26,8 @@
+ # Stop execution if any command fails
+ set -e
+ 
++export LC_ALL=C
++
+ # Allow for verbose output
+ if [ "$V" = 1 ]; then
+     set -x
 -- 
-2.16.4
+2.31.1
 
