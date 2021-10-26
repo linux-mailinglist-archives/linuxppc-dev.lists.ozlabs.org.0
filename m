@@ -2,53 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2BCE43BD4F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 00:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B8643BE1F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 01:48:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hf69S3Xbxz2ywv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 09:35:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hf7nd5gkbz3bT7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 10:48:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U7GGPV0a;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=yFhDg/St;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gustavoars@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::62b;
+ helo=mail-pl1-x62b.google.com; envelope-from=palmer@dabbelt.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=U7GGPV0a; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=dabbelt-com.20210112.gappssmtp.com
+ header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256
+ header.s=20210112 header.b=yFhDg/St; dkim-atps=neutral
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
+ [IPv6:2607:f8b0:4864:20::62b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hf68s4C3fz2x98
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 09:35:25 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B1B1861078;
- Tue, 26 Oct 2021 22:35:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1635287722;
- bh=F7c4FLOG/JXpD5fMAX/T0ZjE8OJGkErTGZeG75EeKr0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=U7GGPV0a/Y0GUtoRJFPI+7hug+nZfuTykCoG6S301E2bNQWk77gwDGwnS0od4vXjG
- 6eMUZO782AO5h4UEW9A0dbIW15ABmnbs91m9QqrjGHXyRITRll2SfCbz2MpjdX8irx
- KKj1kK03Fta62LWrP9FAztnV/3OoSDWNniishGobnNo9N8hjntmc2TTHj+oZyAh2oY
- 5cyQ5OYdTGHK9y06i04G9bDCWxXXw9Ck/MwbFpFf9bQ6Yaag3bFkDWpVt5oRUJzucc
- nTzvn/rMoYcS7NCRt3QE/D8uK0pI2PA8PrSUWB3/iUuPJraxRc2riY7cukPSW6WHtZ
- VhClmkjPry6Bg==
-Date: Tue, 26 Oct 2021 17:40:16 -0500
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH][next] powerpc/vas: Fix potential NULL pointer dereference
-Message-ID: <20211026224016.GA1488461@embeddedor>
-References: <20211015050345.GA1161918@embeddedor>
- <97c42e43-15b9-5db6-d460-dbb16f31954d@linux.ibm.com>
- <20211026184201.GB1457721@embeddedor>
- <87h7d3beqq.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87h7d3beqq.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hf7mw1Rmhz2xYP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 10:48:15 +1100 (AEDT)
+Received: by mail-pl1-x62b.google.com with SMTP id n11so701880plf.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 16:48:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
+ h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+ :content-transfer-encoding;
+ bh=njkqslFi81CJdgjpKZ7lE+Q4NAM4QezMjn79c9rwW5I=;
+ b=yFhDg/St14S+JDyXq1zwYeKBE7rKhdYF5Zw3ZgGu4s1uaqfuZ0/bYQX1NECpjNzGq4
+ wAM2ynstuBaRQAZx5AXhAWAKiSpv5XwruTRmn0f6EDokEdhN1eeLaYi7lJs7mDbopAaz
+ 7sCQUnYsUbUJ5YFDwl1acbZCre3GkfxoIzyZBoJ2YDbnxCbe9j6X+eFDAjWcZI/Po8Do
+ EykTs0QggjLE4JX+GkQ6825B038xMW+JIUUeBtpKTyevs0tgoDRRWRi/vHX8g2B34AyJ
+ GZTz43gHVYLExc9thO9e6wAs1nLbTFz1Xvs2R6LkqhyTk4Id1tTnoJC5bOz/lNb0aCGu
+ KmKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+ :mime-version:content-transfer-encoding;
+ bh=njkqslFi81CJdgjpKZ7lE+Q4NAM4QezMjn79c9rwW5I=;
+ b=x36zWWdaDAQMcCmlWqdIcZbHbLQ5rejOuTyIRDsUxEZcJgCGrfDwYQZAIo4a5iEpsv
+ wT7mtYiBXE1K9Tm3UScERBHsV+4tz+1MZmyzk2/ijrx38/Xvycfa1dDDGYqqlcGz5pV2
+ Q2DWQyGvqJ/lgdPZMktI7lRwhlEV6beaWGv7hguzXLwjjElTQPn6AQj+6JjSdm7Yaaa+
+ sBdRuLBa2y4renHO+9kTVQaekPh8BCV9Zj5C9MBvRXc6/JUmt30wGLHWQNWZCiUYyyUj
+ MEBzJ/saXlcsTk5uSojBi1A0Swr8GQ1KdUR4ybV8JzMIAcLcZ0SMqUWxu1nygAQuFMD3
+ 48Eg==
+X-Gm-Message-State: AOAM531T1mSLwW0iwhQuP2HN6/W0dosQGqz8EZPJMROORt4995BFgMFO
+ 7ahReEKISC1jyFj3vIcrhXTfKQ==
+X-Google-Smtp-Source: ABdhPJyuv44a0itknKhOqmu4SkSph1yjSLOlDm2TgYU9DxwigHNlYFAslzREtZoefsT/F90ImhvUvQ==
+X-Received: by 2002:a17:90a:4b85:: with SMTP id
+ i5mr2110945pjh.25.1635292091032; 
+ Tue, 26 Oct 2021 16:48:11 -0700 (PDT)
+Received: from localhost ([2620:0:1000:5e10:676c:ab93:f48d:23ae])
+ by smtp.gmail.com with ESMTPSA id i5sm20437959pgo.36.2021.10.26.16.48.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 26 Oct 2021 16:48:10 -0700 (PDT)
+Date: Tue, 26 Oct 2021 16:48:10 -0700 (PDT)
+X-Google-Original-Date: Tue, 26 Oct 2021 16:24:16 PDT (-0700)
+Subject: Re: [PATCH 0/2] ftrace: make sure preemption disabled on recursion
+ testing
+In-Reply-To: <8c7de46d-9869-aa5e-2bb9-5dbc2eda395e@linux.alibaba.com>
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: yun.wang@linux.alibaba.com
+Message-ID: <mhng-95994d12-e1d9-43b3-bef0-c5c844ffcf86@palmerdabbelt-glaptop>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,30 +83,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Haren Myneni <haren@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Paul Mackerras <paulus@samba.org>, linux-hardening@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: peterz@infradead.org, Paul Walmsley <paul.walmsley@sifive.com>,
+ James.Bottomley@HansenPartnership.com, guoren@kernel.org, jszhang@kernel.org,
+ hpa@zytor.com, live-patching@vger.kernel.org, linux-riscv@lists.infradead.org,
+ mbenes@suse.cz, paulus@samba.org, joe.lawrence@redhat.com, deller@gmx.de,
+ x86@kernel.org, linux-csky@vger.kernel.org, mingo@redhat.com, pmladek@suse.com,
+ aou@eecs.berkeley.edu, jikos@kernel.org, rostedt@goodmis.org, bp@alien8.de,
+ npiggin@gmail.com, jpoimboe@redhat.com, tglx@linutronix.de,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ mhiramat@kernel.org, colin.king@canonical.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 27, 2021 at 09:30:53AM +1100, Michael Ellerman wrote:
-[..]
-> > I think I'll take this in my tree.
-> 
-> I've already put it in powerpc/next:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?h=next&id=61cb9ac66b30374c7fd8a8b2a3c4f8f432c72e36
+On Mon, 11 Oct 2021 22:39:16 PDT (-0700), yun.wang@linux.alibaba.com wrote:
+> The testing show that perf_ftrace_function_call() are using
+> smp_processor_id() with preemption enabled, all the checking
+> on CPU could be wrong after preemption, PATCH 1/2 will fix
+> that.
+>
+> Besides, as Peter point out, the testing of recursion within
+> the section between ftrace_test_recursion_trylock()/_unlock()
+> pair also need the preemption disabled as the documentation
+> explained, PATCH 2/2 will make sure on that.
+>
+> Michael Wang (2):
+>   ftrace: disable preemption on the testing of recursion
+>   ftrace: prevent preemption in perf_ftrace_function_call()
+>
+>  arch/csky/kernel/probes/ftrace.c     |  2 --
+>  arch/parisc/kernel/ftrace.c          |  2 --
+>  arch/powerpc/kernel/kprobes-ftrace.c |  2 --
+>  arch/riscv/kernel/probes/ftrace.c    |  2 --
+>  arch/x86/kernel/kprobes/ftrace.c     |  2 --
+>  include/linux/trace_recursion.h      | 10 +++++++++-
+>  kernel/livepatch/patch.c             |  6 ------
+>  kernel/trace/trace_event_perf.c      | 17 +++++++++++++----
+>  kernel/trace/trace_functions.c       |  5 -----
+>  9 files changed, 22 insertions(+), 26 deletions(-)
 
-Oh, great. :)
-
-> If you need to pick it up as well for some reason that's fine.
-
-I just didn't  want it to get lost somehow. I'll drop it from tree now.
-
-Thanks
---
-Gustavo
-
-
+Acked-by: Palmer Dabbelt <palmerdabbelt@google.com> # RISC-V
