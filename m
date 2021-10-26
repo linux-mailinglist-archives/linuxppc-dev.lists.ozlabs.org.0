@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FCF743ABC7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 07:41:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78BBD43ABC9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 07:41:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hdgfr0lpDz3cRh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 16:41:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HdggH2sF2z3cZ7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 16:41:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,44 +16,45 @@ Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hdgf34yQ6z2yNK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 16:40:43 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hdgf73hvPz2ygC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 16:40:47 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4Hdgdv3dL1z9s2h;
- Tue, 26 Oct 2021 07:40:35 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4Hdgdx05SXz9s2c;
+ Tue, 26 Oct 2021 07:40:37 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id oK8Dew_cmP2o; Tue, 26 Oct 2021 07:40:35 +0200 (CEST)
+ with ESMTP id nTdqXsaS_IFf; Tue, 26 Oct 2021 07:40:36 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.120])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (Client did not present a certificate)
- by pegase1.c-s.fr (Postfix) with ESMTPS id 4Hdgds5yWWz9s2c;
- Tue, 26 Oct 2021 07:40:33 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTPS id 4Hdgdt4lNyz9s2Z;
+ Tue, 26 Oct 2021 07:40:34 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19Q5eWDB009296
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19Q5eWDD009296
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Tue, 26 Oct 2021 07:40:32 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19Q5dYJd009221;
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19Q5dYDH009223;
  Tue, 26 Oct 2021 07:39:34 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 2/3] powerpc/book3e: Fix set_memory_x() and set_memory_nx()
-Date: Tue, 26 Oct 2021 07:39:25 +0200
-Message-Id: <c41100f9c144dc5b62e5a751b810190c6b5d42fd.1635226743.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH 3/3] powerpc/fsl_booke: Fix setting of exec flag when setting
+ TLBCAMs
+Date: Tue, 26 Oct 2021 07:39:26 +0200
+Message-Id: <91a0235e7f2a85308b84aa5b9efd8d022e2b899a.1635226743.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <922bdab3a220781bae2360ff3dd5adb7fe4d34f1.1635226743.git.christophe.leroy@csgroup.eu>
 References: <922bdab3a220781bae2360ff3dd5adb7fe4d34f1.1635226743.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1635226765; l=6098; s=20211009;
- h=from:subject:message-id; bh=1riwwbR06o9amXeJ6wfXfSdrJyRfamK4RU6JX6FKJ1A=;
- b=Obbjs7DemNOnlLcTUMbVICYPkLMHio0FA3haNcNSO7PHgzZC1bGNir7TZXTJS04Yv2Hq8Fv58YFJ
- IjfAeWLRBSncUmcwvyXt6ttTccFbPRI6oWNijAL7Xahnx4XX1Dwa
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1635226765; l=2254; s=20211009;
+ h=from:subject:message-id; bh=mlyzfvjRXxkYi+2e5tBzRwK0k4zoe1IKELEmwYcewh4=;
+ b=VOr3lqCSDWdJgt8Vw5ctneuqorXwQBvtEGfT9dC9TLBpNUhFQewIMxGLljm+t7EJamhMCQVqEjsu
+ cfY9b/VhDDJr2E1Rx3wUUt1IoM0m1ezUzqAI+mfnExa0ZP0FUFwW
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -68,170 +69,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-set_memory_x() calls pte_mkexec() which sets _PAGE_EXEC.
-set_memory_nx() calls pte_exprotec() which clears _PAGE_EXEC.
+Building tqm8541_defconfig results in:
 
-Book3e has 2 bits, UX and SX, which defines the exec rights
-resp. for user (PR=1) and for kernel (PR=0).
+	arch/powerpc/mm/nohash/fsl_book3e.c: In function 'settlbcam':
+	arch/powerpc/mm/nohash/fsl_book3e.c:126:40: error: '_PAGE_BAP_SX' undeclared (first use in this function)
+	  126 |         TLBCAM[index].MAS3 |= (flags & _PAGE_BAP_SX) ? MAS3_SX : 0;
+	      |                                        ^~~~~~~~~~~~
+	arch/powerpc/mm/nohash/fsl_book3e.c:126:40: note: each undeclared identifier is reported only once for each function it appears in
+	make[3]: *** [scripts/Makefile.build:277: arch/powerpc/mm/nohash/fsl_book3e.o] Error 1
+	make[2]: *** [scripts/Makefile.build:540: arch/powerpc/mm/nohash] Error 2
+	make[1]: *** [scripts/Makefile.build:540: arch/powerpc/mm] Error 2
+	make: *** [Makefile:1868: arch/powerpc] Error 2
 
-_PAGE_EXEC is defined as UX only.
+This is because _PAGE_BAP_SX is not defined when using 32 bits PTE.
 
-An executable kernel page is set with either _PAGE_KERNEL_RWX
-or _PAGE_KERNEL_ROX, which both have SX set and UX cleared.
+Now that _PAGE_EXEC contains both _PAGE_BAP_SX and _PAGE_BAP_UX, it can be used instead.
 
-So set_memory_nx() call for an executable kernel page does
-nothing because UX is already cleared.
-
-And set_memory_x() on a non-executable kernel page makes it
-executable for the user and keeps it non-executable for kernel.
-
-Also, pte_exec() always returns 'false' on kernel pages, because
-it checks _PAGE_EXEC which doesn't include SX, so for instance
-the W+X check doesn't work.
-
-To fix this:
-- change tlb_low_64e.S to use _PAGE_BAP_UX instead of _PAGE_USER
-- sets both UX and SX in _PAGE_EXEC so that pte_user() returns
-true whenever one of the two bits is set and pte_exprotect()
-clears both bits.
-- Define a book3e specific version of pte_mkexec() which sets
-either SX or UX based on UR.
-
-Fixes: 1f9ad21c3b38 ("powerpc/mm: Implement set_memory() routines")
+Reported-by: kernel test robot <lkp@intel.com>
+Fixes: 01116e6e98b0 ("powerpc/fsl_booke: Take exec flag into account when setting TLBCAMs")
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v3: Removed pte_mkexec() from nohash/64/pgtable.h
-v2: New
----
- arch/powerpc/include/asm/nohash/32/pgtable.h |  2 ++
- arch/powerpc/include/asm/nohash/64/pgtable.h |  5 -----
- arch/powerpc/include/asm/nohash/pte-book3e.h | 18 ++++++++++++++----
- arch/powerpc/mm/nohash/tlb_low_64e.S         |  8 ++++----
- 4 files changed, 20 insertions(+), 13 deletions(-)
+ arch/powerpc/mm/nohash/fsl_book3e.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
-index 11c6849f7864..b67742e2a9b2 100644
---- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-@@ -193,10 +193,12 @@ static inline pte_t pte_wrprotect(pte_t pte)
- }
- #endif
+diff --git a/arch/powerpc/mm/nohash/fsl_book3e.c b/arch/powerpc/mm/nohash/fsl_book3e.c
+index 978e0bcdfa2c..b231a54f540c 100644
+--- a/arch/powerpc/mm/nohash/fsl_book3e.c
++++ b/arch/powerpc/mm/nohash/fsl_book3e.c
+@@ -123,7 +123,6 @@ static void settlbcam(int index, unsigned long virt, phys_addr_t phys,
+ 	TLBCAM[index].MAS2 |= (flags & _PAGE_ENDIAN) ? MAS2_E : 0;
  
-+#ifndef pte_mkexec
- static inline pte_t pte_mkexec(pte_t pte)
- {
- 	return __pte(pte_val(pte) | _PAGE_EXEC);
- }
-+#endif
+ 	TLBCAM[index].MAS3 = (phys & MAS3_RPN) | MAS3_SR;
+-	TLBCAM[index].MAS3 |= (flags & _PAGE_BAP_SX) ? MAS3_SX : 0;
+ 	TLBCAM[index].MAS3 |= (flags & _PAGE_RW) ? MAS3_SW : 0;
+ 	if (mmu_has_feature(MMU_FTR_BIG_PHYS))
+ 		TLBCAM[index].MAS7 = (u64)phys >> 32;
+@@ -133,6 +132,8 @@ static void settlbcam(int index, unsigned long virt, phys_addr_t phys,
+ 		TLBCAM[index].MAS3 |= MAS3_UR;
+ 		TLBCAM[index].MAS3 |= (flags & _PAGE_EXEC) ? MAS3_UX : 0;
+ 		TLBCAM[index].MAS3 |= (flags & _PAGE_RW) ? MAS3_UW : 0;
++	} else {
++		TLBCAM[index].MAS3 |= (flags & _PAGE_EXEC) ? MAS3_SX : 0;
+ 	}
  
- #define pmd_none(pmd)		(!pmd_val(pmd))
- #define	pmd_bad(pmd)		(pmd_val(pmd) & _PMD_BAD)
-diff --git a/arch/powerpc/include/asm/nohash/64/pgtable.h b/arch/powerpc/include/asm/nohash/64/pgtable.h
-index d081704b13fb..9d2905a47410 100644
---- a/arch/powerpc/include/asm/nohash/64/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/64/pgtable.h
-@@ -118,11 +118,6 @@ static inline pte_t pte_wrprotect(pte_t pte)
- 	return __pte(pte_val(pte) & ~_PAGE_RW);
- }
- 
--static inline pte_t pte_mkexec(pte_t pte)
--{
--	return __pte(pte_val(pte) | _PAGE_EXEC);
--}
--
- #define PMD_BAD_BITS		(PTE_TABLE_SIZE-1)
- #define PUD_BAD_BITS		(PMD_TABLE_SIZE-1)
- 
-diff --git a/arch/powerpc/include/asm/nohash/pte-book3e.h b/arch/powerpc/include/asm/nohash/pte-book3e.h
-index 813918f40765..f798640422c2 100644
---- a/arch/powerpc/include/asm/nohash/pte-book3e.h
-+++ b/arch/powerpc/include/asm/nohash/pte-book3e.h
-@@ -48,7 +48,7 @@
- #define _PAGE_WRITETHRU	0x800000 /* W: cache write-through */
- 
- /* "Higher level" linux bit combinations */
--#define _PAGE_EXEC		_PAGE_BAP_UX /* .. and was cache cleaned */
-+#define _PAGE_EXEC		(_PAGE_BAP_SX | _PAGE_BAP_UX) /* .. and was cache cleaned */
- #define _PAGE_RW		(_PAGE_BAP_SW | _PAGE_BAP_UW) /* User write permission */
- #define _PAGE_KERNEL_RW		(_PAGE_BAP_SW | _PAGE_BAP_SR | _PAGE_DIRTY)
- #define _PAGE_KERNEL_RO		(_PAGE_BAP_SR)
-@@ -93,11 +93,11 @@
- /* Permission masks used to generate the __P and __S table */
- #define PAGE_NONE	__pgprot(_PAGE_BASE)
- #define PAGE_SHARED	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_RW)
--#define PAGE_SHARED_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_RW | _PAGE_EXEC)
-+#define PAGE_SHARED_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_RW | _PAGE_BAP_UX)
- #define PAGE_COPY	__pgprot(_PAGE_BASE | _PAGE_USER)
--#define PAGE_COPY_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_EXEC)
-+#define PAGE_COPY_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_BAP_UX)
- #define PAGE_READONLY	__pgprot(_PAGE_BASE | _PAGE_USER)
--#define PAGE_READONLY_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_EXEC)
-+#define PAGE_READONLY_X	__pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_BAP_UX)
- 
- #ifndef __ASSEMBLY__
- static inline pte_t pte_mkprivileged(pte_t pte)
-@@ -113,6 +113,16 @@ static inline pte_t pte_mkuser(pte_t pte)
- }
- 
- #define pte_mkuser pte_mkuser
-+
-+static inline pte_t pte_mkexec(pte_t pte)
-+{
-+	if (pte_val(pte) & _PAGE_BAP_UR)
-+		return __pte((pte_val(pte) & ~_PAGE_BAP_SX) | _PAGE_BAP_UX);
-+	else
-+		return __pte((pte_val(pte) & ~_PAGE_BAP_UX) | _PAGE_BAP_SX);
-+}
-+#define pte_mkexec pte_mkexec
-+
- #endif /* __ASSEMBLY__ */
- 
- #endif /* __KERNEL__ */
-diff --git a/arch/powerpc/mm/nohash/tlb_low_64e.S b/arch/powerpc/mm/nohash/tlb_low_64e.S
-index bf24451f3e71..9235e720e357 100644
---- a/arch/powerpc/mm/nohash/tlb_low_64e.S
-+++ b/arch/powerpc/mm/nohash/tlb_low_64e.S
-@@ -222,7 +222,7 @@ tlb_miss_kernel_bolted:
- 
- tlb_miss_fault_bolted:
- 	/* We need to check if it was an instruction miss */
--	andi.	r10,r11,_PAGE_EXEC|_PAGE_BAP_SX
-+	andi.	r10,r11,_PAGE_BAP_UX|_PAGE_BAP_SX
- 	bne	itlb_miss_fault_bolted
- dtlb_miss_fault_bolted:
- 	tlb_epilog_bolted
-@@ -239,7 +239,7 @@ itlb_miss_fault_bolted:
- 	srdi	r15,r16,60		/* get region */
- 	bne-	itlb_miss_fault_bolted
- 
--	li	r11,_PAGE_PRESENT|_PAGE_EXEC	/* Base perm */
-+	li	r11,_PAGE_PRESENT|_PAGE_BAP_UX	/* Base perm */
- 
- 	/* We do the user/kernel test for the PID here along with the RW test
- 	 */
-@@ -614,7 +614,7 @@ itlb_miss_fault_e6500:
- 
- 	/* We do the user/kernel test for the PID here along with the RW test
- 	 */
--	li	r11,_PAGE_PRESENT|_PAGE_EXEC	/* Base perm */
-+	li	r11,_PAGE_PRESENT|_PAGE_BAP_UX	/* Base perm */
- 	oris	r11,r11,_PAGE_ACCESSED@h
- 
- 	cmpldi	cr0,r15,0			/* Check for user region */
-@@ -734,7 +734,7 @@ normal_tlb_miss_done:
- 
- normal_tlb_miss_access_fault:
- 	/* We need to check if it was an instruction miss */
--	andi.	r10,r11,_PAGE_EXEC
-+	andi.	r10,r11,_PAGE_BAP_UX
- 	bne	1f
- 	ld	r14,EX_TLB_DEAR(r12)
- 	ld	r15,EX_TLB_ESR(r12)
+ 	tlbcam_addrs[index].start = virt;
 -- 
 2.31.1
 
