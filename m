@@ -2,59 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D08E43AC97
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 09:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FECC43AE5E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 10:52:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HdjVR12kSz2yyK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 18:04:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hdlty3Tqxz3bY9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 19:52:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
+ helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
+ receiver=<UNKNOWN>)
+X-Greylist: delayed 192 seconds by postgrey-1.36 at boromir;
+ Tue, 26 Oct 2021 19:51:43 AEDT
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
+ [130.133.4.66])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HdjTw2DGtz2xXb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 18:03:45 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HdjTq17Gtz9sTG;
- Tue, 26 Oct 2021 09:03:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id IrCSORaDI6P7; Tue, 26 Oct 2021 09:03:43 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HdjTp6nkvz9sT7;
- Tue, 26 Oct 2021 09:03:42 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D35F58B76D;
- Tue, 26 Oct 2021 09:03:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id dVt7rmxv6bai; Tue, 26 Oct 2021 09:03:42 +0200 (CEST)
-Received: from [192.168.203.120] (unknown [192.168.203.120])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 550668B763;
- Tue, 26 Oct 2021 09:03:42 +0200 (CEST)
-Message-ID: <40347194-fcc6-307b-0ddd-c8a221424dd4@csgroup.eu>
-Date: Tue, 26 Oct 2021 09:03:41 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HdltR6bWdz2y0C
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 19:51:43 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+ by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
+ tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1mfI87-003mEw-Nv; Tue, 26 Oct 2021 10:48:23 +0200
+Received: from p57bd9736.dip0.t-ipconnect.de ([87.189.151.54]
+ helo=[192.168.178.81]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
+ with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+ (envelope-from <glaubitz@physik.fu-berlin.de>)
+ id 1mfI87-0045AS-GO; Tue, 26 Oct 2021 10:48:23 +0200
+Message-ID: <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
+Date: Tue, 26 Oct 2021 10:48:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.2.0
-Subject: Re: [PATCH v2 02/10] powerpc/book3e: Fix set_memory_x() and
- set_memory_nx()
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <33e7fe0f6134c58e044eb63d3925cd34aa120104.1634983809.git.christophe.leroy@csgroup.eu>
- <7e7b0688c907e54f3b11ddfb9a8f44511d475fd7.1634983809.git.christophe.leroy@csgroup.eu>
- <5794f254-0523-7f2f-f9e7-ff64a7fe400d@csgroup.eu>
-In-Reply-To: <5794f254-0523-7f2f-f9e7-ff64a7fe400d@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: mpe@ellerman.id.au
+References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
+Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
+Content-Language: en-US
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+In-Reply-To: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.151.54
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,173 +57,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: oss-security@lists.openwall.com,
+ "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Michael!
 
+> The Linux kernel for powerpc since v5.2 has a bug which allows a
+> malicious KVM guest to crash the host, when the host is running on
+> Power8.
+> 
+> Only machines using Linux as the hypervisor, aka. KVM, powernv or bare
+> metal, are affected by the bug. Machines running PowerVM are not
+> affected.
+> 
+> The bug was introduced in:
+> 
+>     10d91611f426 ("powerpc/64s: Reimplement book3s idle code in C")
+> 
+> Which was first released in v5.2.
+> 
+> The upstream fix is:
+> 
+>   cdeb5d7d890e ("KVM: PPC: Book3S HV: Make idle_kvm_start_guest() return 0 if it went to guest")
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=cdeb5d7d890e14f3b70e8087e745c4a6a7d9f337
+> 
+> Which will be included in the v5.16 release.
 
-Le 25/10/2021 à 23:53, Christophe Leroy a écrit :
-> 
-> 
-> On 23/10/2021 13:47, Christophe Leroy wrote:
->> set_memory_x() calls pte_mkexec() which sets _PAGE_EXEC.
->> set_memory_nx() calls pte_exprotec() which clears _PAGE_EXEC.
->>
->> Book3e has 2 bits, UX and SX, which defines the exec rights
->> resp. for user (PR=1) and for kernel (PR=0).
->>
->> _PAGE_EXEC is defined as UX only.
->>
->> An executable kernel page is set with either _PAGE_KERNEL_RWX
->> or _PAGE_KERNEL_ROX, which both have SX set and UX cleared.
->>
->> So set_memory_nx() call for an executable kernel page does
->> nothing because UX is already cleared.
->>
->> And set_memory_x() on a non-executable kernel page makes it
->> executable for the user and keeps it non-executable for kernel.
->>
->> Also, pte_exec() always returns 'false' on kernel pages, because
->> it checks _PAGE_EXEC which doesn't include SX, so for instance
->> the W+X check doesn't work.
->>
->> To fix this:
->> - change tlb_low_64e.S to use _PAGE_BAP_UX instead of _PAGE_USER
->> - sets both UX and SX in _PAGE_EXEC so that pte_user() returns
->> true whenever one of the two bits is set and pte_exprotect()
->> clears both bits.
->> - Define a book3e specific version of pte_mkexec() which sets
->> either SX or UX based on UR.
->>
->> Fixes: 1f9ad21c3b38 ("powerpc/mm: Implement set_memory() routines")
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->> v2: New
-> 
-> pte_mkexec() in nohash/64/pgtable.h conflicts with the one in 
-> nohash/pte_book3e.h
-> 
-> Should guard it with  #ifndef pte_mkexec(), but as pte_book3e is the 
-> only user in 64 bits, then just remove it from there.
-> 
-> Send v3 with only that change compared to v2.
+I have tested these patches against 5.14 but it seems the problem [1] still remains for me
+for big-endian guests. I built a patched kernel yesterday, rebooted the KVM server and let
+the build daemons do their work over night.
 
-Series v1 was merged into next so I submitted followup series with the 
-three fixes.
+When I got up this morning, I noticed the machine was down, so I checked the serial console
+via IPMI and saw the same messages again as reported in [1]:
 
-Christophe
+[41483.963562] watchdog: BUG: soft lockup - CPU#104 stuck for 25521s! [migration/104:175]
+[41507.963307] watchdog: BUG: soft lockup - CPU#104 stuck for 25544s! [migration/104:175]
+[41518.311200] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[41518.311216] rcu:     136-...0: (135 ticks this GP) idle=242/1/0x4000000000000000 softirq=32031/32033 fqs=2729959 
+[41547.962882] watchdog: BUG: soft lockup - CPU#104 stuck for 25581s! [migration/104:175]
+[41571.962627] watchdog: BUG: soft lockup - CPU#104 stuck for 25603s! [migration/104:175]
+[41581.330530] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[41581.330546] rcu:     136-...0: (135 ticks this GP) idle=242/1/0x4000000000000000 softirq=32031/32033 fqs=2736378 
+[41611.962202] watchdog: BUG: soft lockup - CPU#104 stuck for 25641s! [migration/104:175]
+[41635.961947] watchdog: BUG: soft lockup - CPU#104 stuck for 25663s! [migration/104:175]
+[41644.349859] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[41644.349876] rcu:     136-...0: (135 ticks this GP) idle=242/1/0x4000000000000000 softirq=32031/32033 fqs=2742753 
+[41671.961564] watchdog: BUG: soft lockup - CPU#104 stuck for 25697s! [migration/104:175]
+[41695.961309] watchdog: BUG: soft lockup - CPU#104 stuck for 25719s! [migration/104:175]
+[41707.369190] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[41707.369206] rcu:     136-...0: (135 ticks this GP) idle=242/1/0x4000000000000000 softirq=32031/32033 fqs=2749151 
+[41735.960884] watchdog: BUG: soft lockup - CPU#104 stuck for 25756s! [migration/104:175]
+[41759.960629] watchdog: BUG: soft lockup - CPU#104 stuck for 25778s! [migration/104:175]
+[41770.388520] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[41770.388548] rcu:     136-...0: (135 ticks this GP) idle=242/1/0x4000000000000000 softirq=32031/32033 fqs=2755540 
+[41776.076307] rcu: rcu_sched kthread timer wakeup didn't happen for 1423 jiffies! g49897 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
+[41776.076327] rcu:     Possible timer handling issue on cpu=32 timer-softirq=1056014
+[41776.076336] rcu: rcu_sched kthread starved for 1424 jiffies! g49897 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=32
+[41776.076350] rcu:     Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
+[41776.076360] rcu: RCU grace-period kthread stack dump:
+[41776.076434] rcu: Stack dump where RCU GP kthread last ran:
+[41783.960374] watchdog: BUG: soft lockup - CPU#104 stuck for 25801s! [migration/104:175]
+[41807.960119] watchdog: BUG: soft lockup - CPU#104 stuck for 25823s! [migration/104:175]
+[41831.959864] watchdog: BUG: soft lockup - CPU#104 stuck for 25846s! [migration/104:175]
+[41833.407851] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[41833.407868] rcu:     136-...0: (135 ticks this GP) idle=242/1/0x4000000000000000 softirq=32031/32033 fqs=2760381 
+[41863.959524] watchdog: BUG: soft lockup - CPU#104 stuck for 25875s! [migration/104:175]
 
-> 
-> Christophe
-> 
->> ---
->>   arch/powerpc/include/asm/nohash/32/pgtable.h |  2 ++
->>   arch/powerpc/include/asm/nohash/pte-book3e.h | 18 ++++++++++++++----
->>   arch/powerpc/mm/nohash/tlb_low_64e.S         |  8 ++++----
->>   3 files changed, 20 insertions(+), 8 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h 
->> b/arch/powerpc/include/asm/nohash/32/pgtable.h
->> index ac0a5ff48c3a..d6ba821a56ce 100644
->> --- a/arch/powerpc/include/asm/nohash/32/pgtable.h
->> +++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
->> @@ -193,10 +193,12 @@ static inline pte_t pte_wrprotect(pte_t pte)
->>   }
->>   #endif
->> +#ifndef pte_mkexec
->>   static inline pte_t pte_mkexec(pte_t pte)
->>   {
->>       return __pte(pte_val(pte) | _PAGE_EXEC);
->>   }
->> +#endif
->>   #define pmd_none(pmd)        (!pmd_val(pmd))
->>   #define    pmd_bad(pmd)        (pmd_val(pmd) & _PMD_BAD)
->> diff --git a/arch/powerpc/include/asm/nohash/pte-book3e.h 
->> b/arch/powerpc/include/asm/nohash/pte-book3e.h
->> index 813918f40765..f798640422c2 100644
->> --- a/arch/powerpc/include/asm/nohash/pte-book3e.h
->> +++ b/arch/powerpc/include/asm/nohash/pte-book3e.h
->> @@ -48,7 +48,7 @@
->>   #define _PAGE_WRITETHRU    0x800000 /* W: cache write-through */
->>   /* "Higher level" linux bit combinations */
->> -#define _PAGE_EXEC        _PAGE_BAP_UX /* .. and was cache cleaned */
->> +#define _PAGE_EXEC        (_PAGE_BAP_SX | _PAGE_BAP_UX) /* .. and was 
->> cache cleaned */
->>   #define _PAGE_RW        (_PAGE_BAP_SW | _PAGE_BAP_UW) /* User write 
->> permission */
->>   #define _PAGE_KERNEL_RW        (_PAGE_BAP_SW | _PAGE_BAP_SR | 
->> _PAGE_DIRTY)
->>   #define _PAGE_KERNEL_RO        (_PAGE_BAP_SR)
->> @@ -93,11 +93,11 @@
->>   /* Permission masks used to generate the __P and __S table */
->>   #define PAGE_NONE    __pgprot(_PAGE_BASE)
->>   #define PAGE_SHARED    __pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_RW)
->> -#define PAGE_SHARED_X    __pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_RW 
->> | _PAGE_EXEC)
->> +#define PAGE_SHARED_X    __pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_RW 
->> | _PAGE_BAP_UX)
->>   #define PAGE_COPY    __pgprot(_PAGE_BASE | _PAGE_USER)
->> -#define PAGE_COPY_X    __pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_EXEC)
->> +#define PAGE_COPY_X    __pgprot(_PAGE_BASE | _PAGE_USER | _PAGE_BAP_UX)
->>   #define PAGE_READONLY    __pgprot(_PAGE_BASE | _PAGE_USER)
->> -#define PAGE_READONLY_X    __pgprot(_PAGE_BASE | _PAGE_USER | 
->> _PAGE_EXEC)
->> +#define PAGE_READONLY_X    __pgprot(_PAGE_BASE | _PAGE_USER | 
->> _PAGE_BAP_UX)
->>   #ifndef __ASSEMBLY__
->>   static inline pte_t pte_mkprivileged(pte_t pte)
->> @@ -113,6 +113,16 @@ static inline pte_t pte_mkuser(pte_t pte)
->>   }
->>   #define pte_mkuser pte_mkuser
->> +
->> +static inline pte_t pte_mkexec(pte_t pte)
->> +{
->> +    if (pte_val(pte) & _PAGE_BAP_UR)
->> +        return __pte((pte_val(pte) & ~_PAGE_BAP_SX) | _PAGE_BAP_UX);
->> +    else
->> +        return __pte((pte_val(pte) & ~_PAGE_BAP_UX) | _PAGE_BAP_SX);
->> +}
->> +#define pte_mkexec pte_mkexec
->> +
->>   #endif /* __ASSEMBLY__ */
->>   #endif /* __KERNEL__ */
->> diff --git a/arch/powerpc/mm/nohash/tlb_low_64e.S 
->> b/arch/powerpc/mm/nohash/tlb_low_64e.S
->> index bf24451f3e71..9235e720e357 100644
->> --- a/arch/powerpc/mm/nohash/tlb_low_64e.S
->> +++ b/arch/powerpc/mm/nohash/tlb_low_64e.S
->> @@ -222,7 +222,7 @@ tlb_miss_kernel_bolted:
->>   tlb_miss_fault_bolted:
->>       /* We need to check if it was an instruction miss */
->> -    andi.    r10,r11,_PAGE_EXEC|_PAGE_BAP_SX
->> +    andi.    r10,r11,_PAGE_BAP_UX|_PAGE_BAP_SX
->>       bne    itlb_miss_fault_bolted
->>   dtlb_miss_fault_bolted:
->>       tlb_epilog_bolted
->> @@ -239,7 +239,7 @@ itlb_miss_fault_bolted:
->>       srdi    r15,r16,60        /* get region */
->>       bne-    itlb_miss_fault_bolted
->> -    li    r11,_PAGE_PRESENT|_PAGE_EXEC    /* Base perm */
->> +    li    r11,_PAGE_PRESENT|_PAGE_BAP_UX    /* Base perm */
->>       /* We do the user/kernel test for the PID here along with the RW 
->> test
->>        */
->> @@ -614,7 +614,7 @@ itlb_miss_fault_e6500:
->>       /* We do the user/kernel test for the PID here along with the RW 
->> test
->>        */
->> -    li    r11,_PAGE_PRESENT|_PAGE_EXEC    /* Base perm */
->> +    li    r11,_PAGE_PRESENT|_PAGE_BAP_UX    /* Base perm */
->>       oris    r11,r11,_PAGE_ACCESSED@h
->>       cmpldi    cr0,r15,0            /* Check for user region */
->> @@ -734,7 +734,7 @@ normal_tlb_miss_done:
->>   normal_tlb_miss_access_fault:
->>       /* We need to check if it was an instruction miss */
->> -    andi.    r10,r11,_PAGE_EXEC
->> +    andi.    r10,r11,_PAGE_BAP_UX
->>       bne    1f
->>       ld    r14,EX_TLB_DEAR(r12)
->>       ld    r15,EX_TLB_ESR(r12)
->>
+It seems that in this case, it was the testsuite of the git package [2] that triggered the bug. As you
+can see from the overview, the git package has been in the building state for 8 hours meaning the
+build server crashed and is no longer giving feedback to the database.
+
+Adrian
+
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=206669
+> [2] https://buildd.debian.org/status/package.php?p=git&suite=experimental
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
