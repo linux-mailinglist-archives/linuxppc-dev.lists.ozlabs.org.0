@@ -1,61 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E7C43B35E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 15:49:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD97C43B430
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 16:30:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HdtTQ0yRBz3bjC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 00:48:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HdvPl5Stzz30CK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 01:30:51 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20210112.gappssmtp.com header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=sANo+1Tn;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HdtSz0fjRz2yLv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 00:48:34 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
- by localhost (Postfix) with ESMTP id 4HdtSv29bWz9s33;
- Tue, 26 Oct 2021 15:48:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id jEubgNQj05Kl; Tue, 26 Oct 2021 15:48:31 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.149])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=paul-moore.com
+ (client-ip=2a00:1450:4864:20::52c; helo=mail-ed1-x52c.google.com;
+ envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=paul-moore-com.20210112.gappssmtp.com
+ header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256
+ header.s=20210112 header.b=sANo+1Tn; dkim-atps=neutral
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com
+ [IPv6:2a00:1450:4864:20::52c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (Client did not present a certificate)
- by pegase1.c-s.fr (Postfix) with ESMTPS id 4HdtSs65MJz9s2p;
- Tue, 26 Oct 2021 15:48:29 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19QDmTSo008371
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 26 Oct 2021 15:48:29 +0200
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19QDmTEb008370;
- Tue, 26 Oct 2021 15:48:29 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v3] powerpc/boot: Set LC_ALL=C in wrapper script
-Date: Tue, 26 Oct 2021 15:48:29 +0200
-Message-Id: <a9ff3bc98035f63b122c051f02dc47c7aed10430.1635256089.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.31.1
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HdvP25wcBz2yLv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 01:30:12 +1100 (AEDT)
+Received: by mail-ed1-x52c.google.com with SMTP id w15so14395539edc.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 07:30:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=wJSGFytkkdPheB+wlk955znZt0m/KBc4qQJPUDxpyPw=;
+ b=sANo+1Tne2i5Hv2mCCMeAhl0VxMgfF0YX0e60QWrmhXe7LzpBaTDBClGhYRoPML4ny
+ 8/JThRqJbNcFapRZxTpVFWFr1v1j5kG/XahTeep8+Z8b5dzqWGXzy/e0NlbjQsaK8G3N
+ +t+Rkzg7Yec+g1gcMvi050G26Vy4x71gampIaLNpfrrzjNhSl3vjGAvCpP59o6CL7O8d
+ CTxMaMYSwl/rLKRCRf7jPCpT/78zTXYeiRQ4G3AJfQ5CZJd/hGBHzTubFtHOCQHaIr2h
+ 548O9lotYZRkdLgU+SQsYZHEGA89qKQ/ontY01cGfo5wFOY+MSMI7bU5naRy5xvB609Z
+ 609w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=wJSGFytkkdPheB+wlk955znZt0m/KBc4qQJPUDxpyPw=;
+ b=ug0+NFgt3M8d+nDd/NrqPG7JqDa63ejILjqqwDB+dpdqfIyvDfTTKzB3s4+tNO6XgS
+ oaJxQRLRAcjwEpNzcEPkDp2NOsOTKnXcRXCe6rVhtiNlPHj1uHyuL7XwpkaeHmwYVxD+
+ OgbUaW+sTpN0isu1V+oQJCzlaE3VFH5z0jmACgofe4pzFJG7Attq+FDT3WlUpJzrssJN
+ 4dFzwFFU2OuJPb4HiLrE7mQMIAJa+M5BkKxN4V2Hr61PFl+cfsdwZ3Pf6haFpfr2R+Y1
+ rTv4amnB/HzDFgyvh1VnKiJAdO6SdrYCqltX1FmhFqPVU9RpL5uWEITlA0osdmBbLF4/
+ ErvQ==
+X-Gm-Message-State: AOAM5339qZJobxH305YUskxftVlcA3ssKnuklbHY0uJmqmvqppaCmI1/
+ 8WMcseNzPPrkYnvU5Evq5ParBkzXeiwKHsSJdmQ4
+X-Google-Smtp-Source: ABdhPJzAsQP0OAB+yYut6tHR+uRO8G4JL5eHkcZxmzYtC/7OerWPHYb1y9xLveuncd1s4fZzTrey1LV3hCwICiSozeI=
+X-Received: by 2002:a17:907:7601:: with SMTP id
+ jx1mr31210516ejc.69.1635258482206; 
+ Tue, 26 Oct 2021 07:28:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1635256108; l=2449; s=20211009;
- h=from:subject:message-id; bh=xZ0rGjGP56sOdSPMSs1kgCpiDc1GM8DbeevvhKq0/uE=;
- b=Z6mpj2Pdaog41vslEG+aG0Glmbja4AIHN4KNRNegZIhSvulWH0b0+YxZESRB38O7+h8pcjoseybB
- xsrpqvRBDIzhGd5dpG3sqXAewXx0CmSmsyOZ07EpKG6FkFATAWe4
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+References: <20211026133147.35d19e00@canb.auug.org.au>
+ <87k0i0awdl.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87k0i0awdl.fsf@mpe.ellerman.id.au>
+From: Paul Moore <paul@paul-moore.com>
+Date: Tue, 26 Oct 2021 10:27:51 -0400
+Message-ID: <CAHC9VhTj7gn3iAOYctVRKvv_Bk1iQMrmkA8FVJtYzdvBjqFmvg@mail.gmail.com>
+Subject: Re: linux-next: manual merge of the audit tree with the powerpc tree
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,71 +77,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Richard Guy Briggs <rgb@redhat.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While trying to build a simple Image for ACADIA platform, I got the
-following error:
+On Tue, Oct 26, 2021 at 6:55 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> > Hi all,
+> >
+> > Today's linux-next merge of the audit tree got conflicts in:
+> >
+> >   arch/powerpc/kernel/audit.c
+> >   arch/powerpc/kernel/compat_audit.c
+> >
+> > between commit:
+> >
+> >   566af8cda399 ("powerpc/audit: Convert powerpc to AUDIT_ARCH_COMPAT_GENERIC")
+> >
+> > from the powerpc tree and commits:
+> >
+> >   42f355ef59a2 ("audit: replace magic audit syscall class numbers with macros")
+> >   1c30e3af8a79 ("audit: add support for the openat2 syscall")
+> >
+> > from the audit tree.
+>
+> Thanks.
+>
+> I guess this is OK, unless the audit folks disagree. I could revert the
+> powerpc commit and try it again later.
+>
+> If I don't hear anything I'll leave it as-is.
 
-	  WRAP    arch/powerpc/boot/simpleImage.acadia
-	INFO: Uncompressed kernel (size 0x6ae7d0) overlaps the address of the wrapper(0x400000)
-	INFO: Fixing the link_address of wrapper to (0x700000)
-	powerpc64-linux-gnu-ld : mode d'émulation non reconnu : -T
-	Émulations prises en charge : elf64ppc elf32ppc elf32ppclinux elf32ppcsim elf64lppc elf32lppc elf32lppclinux elf32lppcsim
-	make[1]: *** [arch/powerpc/boot/Makefile:424 : arch/powerpc/boot/simpleImage.acadia] Erreur 1
-	make: *** [arch/powerpc/Makefile:285 : simpleImage.acadia] Erreur 2
+Hi Michael,
 
-Trying again with V=1 shows the following command
+Last I recall from the powerpc/audit thread there were still some
+issues with audit working properly in your testing, has that been
+resolved?  If nothing else, -rc7 seems a bit late for this to hit
+-next for me to feel comfortable about this.
 
-	powerpc64-linux-gnu-ld -m -T arch/powerpc/boot/zImage.lds -Ttext 0x700000 --no-dynamic-linker -o arch/powerpc/boot/simpleImage.acadia -Map wrapper.map arch/powerpc/boot/fixed-head.o arch/powerpc/boot/simpleboot.o ./zImage.3278022.o arch/powerpc/boot/wrapper.a
-
-The argument of '-m' is missing.
-
-This is due to the wrapper script calling 'objdump -p vmlinux' and
-looking for 'file format', whereas the output of objdump is:
-
-	vmlinux:     format de fichier elf32-powerpc
-
-	En-tête de programme:
-	    LOAD off    0x00010000 vaddr 0xc0000000 paddr 0x00000000 align 2**16
-	         filesz 0x0069e1d4 memsz 0x006c128c flags rwx
-	    NOTE off    0x0064591c vaddr 0xc063591c paddr 0x0063591c align 2**2
-	         filesz 0x00000054 memsz 0x00000054 flags ---
-
-Add LC_ALL=C at the beginning of the wrapper script in order to get the
-output expected by the script:
-
-	vmlinux:     file format elf32-powerpc
-
-	Program Header:
-	    LOAD off    0x00010000 vaddr 0xc0000000 paddr 0x00000000 align 2**16
-	         filesz 0x0069e1d4 memsz 0x006c128c flags rwx
-	    NOTE off    0x0064591c vaddr 0xc063591c paddr 0x0063591c align 2**2
-	         filesz 0x00000054 memsz 0x00000054 flags ---
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v3: Also change patch's subject:
-v2: Use LC_ALL=C per Segher
----
- arch/powerpc/boot/wrapper | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-index 1cd82564c996..9184eda780fd 100755
---- a/arch/powerpc/boot/wrapper
-+++ b/arch/powerpc/boot/wrapper
-@@ -26,6 +26,8 @@
- # Stop execution if any command fails
- set -e
- 
-+export LC_ALL=C
-+
- # Allow for verbose output
- if [ "$V" = 1 ]; then
-     set -x
 -- 
-2.31.1
-
+paul moore
+www.paul-moore.com
