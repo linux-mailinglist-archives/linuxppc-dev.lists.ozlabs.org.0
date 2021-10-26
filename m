@@ -1,51 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FECC43AE5E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 10:52:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E21C43AF2E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 11:36:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hdlty3Tqxz3bY9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 19:52:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HdmsV0xWKz305J
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 20:35:58 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=rw+fG9VA;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qgOIyawz;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
- helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 192 seconds by postgrey-1.36 at boromir;
- Tue, 26 Oct 2021 19:51:43 AEDT
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
- [130.133.4.66])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ envelope-from=mbenes@suse.cz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256
+ header.s=susede2_rsa header.b=rw+fG9VA; 
+ dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=qgOIyawz; 
+ dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hdmrp2Dlzz2xt1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 20:35:21 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out1.suse.de (Postfix) with ESMTP id CD07021957;
+ Tue, 26 Oct 2021 09:35:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+ t=1635240917; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=0B4KOzLh0SzQ324Nbkzza+/yS3xupOET/Cg+lBufZUI=;
+ b=rw+fG9VAu+8kRC9wTlBf3rcyz3Kf3ZCAjBJINdd8QZW/j3p+2ahcfvCnSj8OuOuJqkx02V
+ GTi8IJ3HcUBXayzm3HUW+kf8zSfRse0QcnIbB2v1NyPMTBdz9wPJ0PnGR36r6X7vSW0okN
+ kRpnoYVmTXHa91qm+5pJr77RUdNgugk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+ s=susede2_ed25519; t=1635240917;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=0B4KOzLh0SzQ324Nbkzza+/yS3xupOET/Cg+lBufZUI=;
+ b=qgOIyawzyHE9pTOjD50nMXsKDtve0Cel3ya97cAgrn/VbL62UicJFGeCHbZLrb2CyTyimO
+ 0vfvl2IWd2suabBg==
+Received: from pobox.suse.cz (pobox.suse.cz [10.100.2.14])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HdltR6bWdz2y0C
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 19:51:43 +1100 (AEDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
- by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
- tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
- (envelope-from <glaubitz@zedat.fu-berlin.de>)
- id 1mfI87-003mEw-Nv; Tue, 26 Oct 2021 10:48:23 +0200
-Received: from p57bd9736.dip0.t-ipconnect.de ([87.189.151.54]
- helo=[192.168.178.81]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
- with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
- (envelope-from <glaubitz@physik.fu-berlin.de>)
- id 1mfI87-0045AS-GO; Tue, 26 Oct 2021 10:48:23 +0200
-Message-ID: <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
-Date: Tue, 26 Oct 2021 10:48:23 +0200
+ by relay2.suse.de (Postfix) with ESMTPS id 06EF6A3B83;
+ Tue, 26 Oct 2021 09:35:16 +0000 (UTC)
+Date: Tue, 26 Oct 2021 11:35:16 +0200 (CEST)
+From: Miroslav Benes <mbenes@suse.cz>
+To: =?ISO-2022-JP?Q?=1B$B2&lV=1B=28J?= <yun.wang@linux.alibaba.com>
+Subject: Re: [PATCH v5 1/2] ftrace: disable preemption when recursion
+ locked
+In-Reply-To: <333cecfe-3045-8e0a-0c08-64ff590845ab@linux.alibaba.com>
+Message-ID: <alpine.LSU.2.21.2110261128120.28494@pobox.suse.cz>
+References: <3ca92dc9-ea04-ddc2-71cd-524bfa5a5721@linux.alibaba.com>
+ <333cecfe-3045-8e0a-0c08-64ff590845ab@linux.alibaba.com>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-To: mpe@ellerman.id.au
-References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
-Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
-Content-Language: en-US
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.151.54
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,87 +76,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: oss-security@lists.openwall.com,
- "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
+Cc: "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Guo Ren <guoren@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Joe Lawrence <joe.lawrence@redhat.com>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, Petr Mladek <pmladek@suse.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Jiri Kosina <jikos@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>,
+ Steven Rostedt <rostedt@goodmis.org>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Paul Mackerras <paulus@samba.org>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael!
+Hi,
 
-> The Linux kernel for powerpc since v5.2 has a bug which allows a
-> malicious KVM guest to crash the host, when the host is running on
-> Power8.
+> diff --git a/include/linux/trace_recursion.h b/include/linux/trace_recursion.h
+> index abe1a50..2bc1522 100644
+> --- a/include/linux/trace_recursion.h
+> +++ b/include/linux/trace_recursion.h
+> @@ -135,6 +135,9 @@ static __always_inline int trace_get_context_bit(void)
+>  # define do_ftrace_record_recursion(ip, pip)	do { } while (0)
+>  #endif
 > 
-> Only machines using Linux as the hypervisor, aka. KVM, powernv or bare
-> metal, are affected by the bug. Machines running PowerVM are not
-> affected.
+> +/*
+> + * Preemption is promised to be disabled when return bit > 0.
+> + */
+>  static __always_inline int trace_test_and_set_recursion(unsigned long ip, unsigned long pip,
+>  							int start)
+>  {
+> @@ -162,11 +165,17 @@ static __always_inline int trace_test_and_set_recursion(unsigned long ip, unsign
+>  	current->trace_recursion = val;
+>  	barrier();
 > 
-> The bug was introduced in:
+> +	preempt_disable_notrace();
+> +
+>  	return bit;
+>  }
 > 
->     10d91611f426 ("powerpc/64s: Reimplement book3s idle code in C")
-> 
-> Which was first released in v5.2.
-> 
-> The upstream fix is:
-> 
->   cdeb5d7d890e ("KVM: PPC: Book3S HV: Make idle_kvm_start_guest() return 0 if it went to guest")
->   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=cdeb5d7d890e14f3b70e8087e745c4a6a7d9f337
-> 
-> Which will be included in the v5.16 release.
+> +/*
+> + * Preemption will be enabled (if it was previously enabled).
+> + */
+>  static __always_inline void trace_clear_recursion(int bit)
+>  {
+> +	preempt_enable_notrace();
+>  	barrier();
+>  	trace_recursion_clear(bit);
+>  }
 
-I have tested these patches against 5.14 but it seems the problem [1] still remains for me
-for big-endian guests. I built a patched kernel yesterday, rebooted the KVM server and let
-the build daemons do their work over night.
+The two comments should be updated too since Steven removed the "bit == 0" 
+trick.
 
-When I got up this morning, I noticed the machine was down, so I checked the serial console
-via IPMI and saw the same messages again as reported in [1]:
+> @@ -178,7 +187,7 @@ static __always_inline void trace_clear_recursion(int bit)
+>   * tracing recursed in the same context (normal vs interrupt),
+>   *
+>   * Returns: -1 if a recursion happened.
+> - *           >= 0 if no recursion
+> + *           > 0 if no recursion.
+>   */
+>  static __always_inline int ftrace_test_recursion_trylock(unsigned long ip,
+>  							 unsigned long parent_ip)
 
-[41483.963562] watchdog: BUG: soft lockup - CPU#104 stuck for 25521s! [migration/104:175]
-[41507.963307] watchdog: BUG: soft lockup - CPU#104 stuck for 25544s! [migration/104:175]
-[41518.311200] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-[41518.311216] rcu:     136-...0: (135 ticks this GP) idle=242/1/0x4000000000000000 softirq=32031/32033 fqs=2729959 
-[41547.962882] watchdog: BUG: soft lockup - CPU#104 stuck for 25581s! [migration/104:175]
-[41571.962627] watchdog: BUG: soft lockup - CPU#104 stuck for 25603s! [migration/104:175]
-[41581.330530] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-[41581.330546] rcu:     136-...0: (135 ticks this GP) idle=242/1/0x4000000000000000 softirq=32031/32033 fqs=2736378 
-[41611.962202] watchdog: BUG: soft lockup - CPU#104 stuck for 25641s! [migration/104:175]
-[41635.961947] watchdog: BUG: soft lockup - CPU#104 stuck for 25663s! [migration/104:175]
-[41644.349859] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-[41644.349876] rcu:     136-...0: (135 ticks this GP) idle=242/1/0x4000000000000000 softirq=32031/32033 fqs=2742753 
-[41671.961564] watchdog: BUG: soft lockup - CPU#104 stuck for 25697s! [migration/104:175]
-[41695.961309] watchdog: BUG: soft lockup - CPU#104 stuck for 25719s! [migration/104:175]
-[41707.369190] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-[41707.369206] rcu:     136-...0: (135 ticks this GP) idle=242/1/0x4000000000000000 softirq=32031/32033 fqs=2749151 
-[41735.960884] watchdog: BUG: soft lockup - CPU#104 stuck for 25756s! [migration/104:175]
-[41759.960629] watchdog: BUG: soft lockup - CPU#104 stuck for 25778s! [migration/104:175]
-[41770.388520] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-[41770.388548] rcu:     136-...0: (135 ticks this GP) idle=242/1/0x4000000000000000 softirq=32031/32033 fqs=2755540 
-[41776.076307] rcu: rcu_sched kthread timer wakeup didn't happen for 1423 jiffies! g49897 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
-[41776.076327] rcu:     Possible timer handling issue on cpu=32 timer-softirq=1056014
-[41776.076336] rcu: rcu_sched kthread starved for 1424 jiffies! g49897 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=32
-[41776.076350] rcu:     Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
-[41776.076360] rcu: RCU grace-period kthread stack dump:
-[41776.076434] rcu: Stack dump where RCU GP kthread last ran:
-[41783.960374] watchdog: BUG: soft lockup - CPU#104 stuck for 25801s! [migration/104:175]
-[41807.960119] watchdog: BUG: soft lockup - CPU#104 stuck for 25823s! [migration/104:175]
-[41831.959864] watchdog: BUG: soft lockup - CPU#104 stuck for 25846s! [migration/104:175]
-[41833.407851] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-[41833.407868] rcu:     136-...0: (135 ticks this GP) idle=242/1/0x4000000000000000 softirq=32031/32033 fqs=2760381 
-[41863.959524] watchdog: BUG: soft lockup - CPU#104 stuck for 25875s! [migration/104:175]
+And this change would not be correct now.
 
-It seems that in this case, it was the testsuite of the git package [2] that triggered the bug. As you
-can see from the overview, the git package has been in the building state for 8 hours meaning the
-build server crashed and is no longer giving feedback to the database.
-
-Adrian
-
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=206669
-> [2] https://buildd.debian.org/status/package.php?p=git&suite=experimental
-
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Regards
+Miroslav
