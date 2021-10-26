@@ -2,51 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD53E43B9B5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 20:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B444A43BBB8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Oct 2021 22:39:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hf0td4dR4z2yZx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 05:37:45 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g30x3pZv;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hf3bH4kxqz3bYL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 07:39:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gustavoars@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=g30x3pZv; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hf0sz5nLXz2xCd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 05:37:11 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D25DF60E05;
- Tue, 26 Oct 2021 18:37:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1635273428;
- bh=1xQXVhbF8/BGLuvjiPQZc83KtW2+s7akCS60PQNrPZg=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=g30x3pZvp/LbCs0Ax/nHYsd74I1JEAOKbTMArMvXnNkfibGEYWkLJSFx4Zytob6Bl
- F1iMT7y2fiD6zrj/XCf6jOAgGtDVvBg5gxOJcaZMoMO6MCAm4MmSWUh7cNAbG0hsWp
- ki9rEZgjxnq43vVD/BUU2qEJX3Evz4S9ttVDkFK5xVQsAiZq/r0lA/ptW4GANCPQmO
- raVqRcux30VB2ahlzI9+PnTXjazdX0SySkBbWjXHYc1MDw4zw2Xo5ABQvPpKr6Afoi
- koSXsza+Ospt210rf7g2WHLxvkljZOkaszX1Tkkr38o4AWaSI2FRkH0Wty5/q27pIJ
- iGjvwPiqXqKPQ==
-Date: Tue, 26 Oct 2021 13:42:01 -0500
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: Re: [PATCH][next] powerpc/vas: Fix potential NULL pointer dereference
-Message-ID: <20211026184201.GB1457721@embeddedor>
-References: <20211015050345.GA1161918@embeddedor>
- <97c42e43-15b9-5db6-d460-dbb16f31954d@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hf3Zt1Lq9z2xXB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 07:39:16 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10149"; a="216920028"
+X-IronPort-AV: E=Sophos;i="5.87,184,1631602800"; d="scan'208";a="216920028"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Oct 2021 13:38:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,184,1631602800"; d="scan'208";a="529364272"
+Received: from lkp-server01.sh.intel.com (HELO 072b454ebba8) ([10.239.97.150])
+ by orsmga001.jf.intel.com with ESMTP; 26 Oct 2021 13:38:12 -0700
+Received: from kbuild by 072b454ebba8 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mfTD1-0000RK-RR; Tue, 26 Oct 2021 20:38:11 +0000
+Date: Wed, 27 Oct 2021 04:37:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS 319fa1a52e438a6e028329187783a25ad498c4e6
+Message-ID: <61786723.nEMxSN3YgtXN1iA3%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <97c42e43-15b9-5db6-d460-dbb16f31954d@linux.ibm.com>
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,37 +49,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Haren Myneni <haren@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- linux-hardening@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Oct 18, 2021 at 02:09:31PM -0700, Tyrel Datwyler wrote:
-> On 10/14/21 10:03 PM, Gustavo A. R. Silva wrote:
-> > (!ptr && !ptr->foo) strikes again. :)
-> > 
-> > The expression (!ptr && !ptr->foo) is bogus and in case ptr is NULL,
-> > it leads to a NULL pointer dereference: ptr->foo.
-> > 
-> > Fix this by converting && to ||
-> > 
-> > This issue was detected with the help of Coccinelle, and audited and
-> > fixed manually.
-> > 
-> > Fixes: 1a0d0d5ed5e3 ("powerpc/vas: Add platform specific user window operations")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Looking at the usage pattern it is obvious that if we determine !ptr attempting
-> to also confirm !ptr->ops is going to blow up.
-> 
-> LGTM.
-> 
-> Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 319fa1a52e438a6e028329187783a25ad498c4e6  powerpc/pseries/mobility: ignore ibm, platform-facilities updates
 
-I think I'll take this in my tree.
+elapsed time: 1963m
 
-Thanks, Tyrel.
---
-Gustavo
+configs tested: 64
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+sparc                               defconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a002-20211024
+x86_64               randconfig-a004-20211024
+x86_64               randconfig-a005-20211024
+x86_64               randconfig-a006-20211024
+x86_64               randconfig-a001-20211024
+x86_64               randconfig-a003-20211024
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64                               rhel-8.3
+
+clang tested configs:
+x86_64               randconfig-a002-20211025
+x86_64               randconfig-a004-20211025
+x86_64               randconfig-a005-20211025
+x86_64               randconfig-a006-20211025
+x86_64               randconfig-a001-20211025
+x86_64               randconfig-a003-20211025
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
