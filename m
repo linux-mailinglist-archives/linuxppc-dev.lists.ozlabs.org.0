@@ -1,64 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEA043D6FD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 00:54:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E785443D6FF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 00:55:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfkXW64ygz3dhK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 09:54:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfkYC6C9hz3djj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 09:55:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LxdZEWQx;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BbS8+/zx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::234;
- helo=mail-lj1-x234.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::134;
+ helo=mail-lf1-x134.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=LxdZEWQx; dkim-atps=neutral
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com
- [IPv6:2a00:1450:4864:20::234])
+ header.s=20210112 header.b=BbS8+/zx; dkim-atps=neutral
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com
+ [IPv6:2a00:1450:4864:20::134])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhP76QwFz2xXs;
- Thu, 28 Oct 2021 08:18:03 +1100 (AEDT)
-Received: by mail-lj1-x234.google.com with SMTP id l2so6983440lji.6;
- Wed, 27 Oct 2021 14:18:03 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhP90mNMz2xXs;
+ Thu, 28 Oct 2021 08:18:05 +1100 (AEDT)
+Received: by mail-lf1-x134.google.com with SMTP id bi35so8956098lfb.9;
+ Wed, 27 Oct 2021 14:18:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=TugVlbRXpFiQ9yttEJ2CYhwYKdBA8PSz6pBjqNjtqe8=;
- b=LxdZEWQx3suPqkadhSlrIg8Y/wBbCgZ19oaPbtBfHJRBGXgu8OvRhmKtGBeiAtGOi+
- liDoShgJoGfChatXJvVHlGfhJqZTZfaSa614IMYrTFjYDb/peXO5oxQ8SJntz+ROu8lH
- ob1M7/DUPmtXRrZcD8cMolSz0IhB48FDFGrv8rmurlnFUtz5GHTwT3bfswp5rSRPgw7Q
- Bzriun3on2U4+nPpGH/7v8uRLlN52ALrwjKmwn0fNW7IfodPJ5+z4OBz44Q0tz7qr3AI
- hQkqoobZyhuG5/zdS6+8c5M7BaM8ouPopuZJKxbxjokH3QVc4vnRaK15kTyz9igV7eYm
- 7uUg==
+ bh=O+IvQoJf2OjzCPAk90L+IlIvsTQGqRsS8A3mVG9thss=;
+ b=BbS8+/zxVJ00rr3ixtYTd3bTdxqjkUjnBr55DaOxzJArvyNX4521PAqPigYX/BjB1N
+ aGylVDFiYrs5wRaWuZx6L52it/PPywema7yDnahBHenwiuFnc4S3m//ivsOGtXuUlPNB
+ ubXOhenNVEu1KXB2mXMptIWVwaeJRf3hxW3c8R68HPPg3pjoH3MM7xhUxuphpty83aFx
+ DGHamMHIXY7/zgP3wsKkRhZ7yEHgmahY/byikn8BiZjEw2DWUQkjcB5nYo+Xgh+eH8p4
+ oVpJycq4ZWi1GYj36y1/HBYlXfcjUxN5WpbpwFTT0cF/PRko7dGul5P66XpFeKCAINSY
+ 8XVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=TugVlbRXpFiQ9yttEJ2CYhwYKdBA8PSz6pBjqNjtqe8=;
- b=jEEwRe/afoFt7uZPmH7IDqdSwe/JkpfMbHcMNDmHKD0if7BLcGhAnwqvW4HQLMRFRh
- OXfH5iduepSx3m2XY1JlfkaX33bpfM8lOoQmMkeOmWFdzcSrty1ulsR+83xMwNrhJjnd
- KUZ2YiITJIVOsqvjO37V17v2mJ9gv7V1q1rPpC2QQDIjdyF8F4pPPY0MilgiAwYUs7PH
- Sf3eZ49AfBgw5hc9xwtptHEsKJygtAXifTV+QcJsPLVTh/CpjIQSqyntwQN2mKETCYCh
- w/EWRPU+vre3L5WlM7+jrdgOW21skYmWO0Dw+OUkDDEGBQxHFb+hiwmwYlyvaflaBARK
- T1qA==
-X-Gm-Message-State: AOAM532JSL3TEteIUwC6zb61eFoBXUTcl3dV9Qo7vOBB7w/URgJpZVOe
- +frtPfK25gu7vBGEOq0nvrc=
-X-Google-Smtp-Source: ABdhPJzuqmviV3vutEjHAVvh6ry+9Hwrmd//Nm2QPeCY1TzVEUwjdrrEOpdr1ds5exnt/bZhRUUrMg==
-X-Received: by 2002:a2e:a5c8:: with SMTP id n8mr301030ljp.307.1635369480150;
- Wed, 27 Oct 2021 14:18:00 -0700 (PDT)
+ bh=O+IvQoJf2OjzCPAk90L+IlIvsTQGqRsS8A3mVG9thss=;
+ b=hbxORGkR5dsSPISY5QH8p9HcFT+sqqHsvxTsvxODXzyFSrehJRvQFuKdsU1DBm3Zng
+ gyeHxzaanEv9vHFTe8H3Q7hoXUeM58UD9sDQDMOi7kGaMR2hcFRpmV3Wi+MifDP57O49
+ BYJewx5kUO2OIIF5UGIshtW6hSylE7mpcIeDnkCplqiCaJI12h1jHHzLbTkArbc45rW9
+ LeB2YgoGCQxBDMLJQj+J6Kj765rxeBFO0y7fh4VQ8Z6nDKxZZWwQMQmx6WAb1hydWdNY
+ C1sgk3HqD6dntw8SYHelg8l9I3gVo7a7EW8Cz5HVg/aUEbrLCNPvlvQQRZjzez9vt2/I
+ CiLg==
+X-Gm-Message-State: AOAM5329+MO030bQgwyKQPMx5vj1D3z+8QnVXEdoZKj6+RtE6eHOtvW0
+ HQzRi1ElDR5MjDD/OQupxSA=
+X-Google-Smtp-Source: ABdhPJxyJaCNELbykyJ8mI+u0lU4wtjMFWua0Lm4EEmjlSiKb32hiTjDEQ+OHhGC/feOlGuy6qCfSA==
+X-Received: by 2002:ac2:4285:: with SMTP id m5mr140041lfh.86.1635369481970;
+ Wed, 27 Oct 2021 14:18:01 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru.
  [46.138.41.28])
- by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.17.58
+ by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 14:17:59 -0700 (PDT)
+ Wed, 27 Oct 2021 14:18:01 -0700 (PDT)
 From: Dmitry Osipenko <digetx@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
  Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
@@ -68,9 +68,10 @@ To: Thierry Reding <thierry.reding@gmail.com>,
  Daniel Lezcano <daniel.lezcano@linaro.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v2 04/45] reboot: Correct typo in a comment
-Date: Thu, 28 Oct 2021 00:16:34 +0300
-Message-Id: <20211027211715.12671-5-digetx@gmail.com>
+Subject: [PATCH v2 05/45] reboot: Warn if restart handler has duplicated
+ priority
+Date: Thu, 28 Oct 2021 00:16:35 +0300
+Message-Id: <20211027211715.12671-6-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -127,26 +128,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Correct s/implemenations/implementations/ in <reboot.h>.
+Add sanity check which ensures that there are no two restart handlers
+registered with the same priority. Normally it's a direct sign of a
+problem if two handlers use the same priority.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- include/linux/reboot.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/reboot.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/reboot.h b/include/linux/reboot.h
-index af907a3d68d1..7c288013a3ca 100644
---- a/include/linux/reboot.h
-+++ b/include/linux/reboot.h
-@@ -63,7 +63,7 @@ struct pt_regs;
- extern void machine_crash_shutdown(struct pt_regs *);
- 
- /*
-- * Architecture independent implemenations of sys_reboot commands.
-+ * Architecture independent implementations of sys_reboot commands.
+diff --git a/kernel/reboot.c b/kernel/reboot.c
+index efb40d095d1e..d39e599c3c99 100644
+--- a/kernel/reboot.c
++++ b/kernel/reboot.c
+@@ -182,7 +182,20 @@ static ATOMIC_NOTIFIER_HEAD(restart_handler_list);
   */
+ int register_restart_handler(struct notifier_block *nb)
+ {
+-	return atomic_notifier_chain_register(&restart_handler_list, nb);
++	int ret;
++
++	ret = atomic_notifier_chain_register(&restart_handler_list, nb);
++	if (ret)
++		return ret;
++
++	/*
++	 * Handler must have unique priority. Otherwise invocation order is
++	 * determined by the registration order, which is presumed to be
++	 * unreliable.
++	 */
++	WARN_ON(!atomic_notifier_has_unique_priority(&restart_handler_list, nb));
++
++	return 0;
+ }
+ EXPORT_SYMBOL(register_restart_handler);
  
- extern void kernel_restart_prepare(char *cmd);
 -- 
 2.33.1
 
