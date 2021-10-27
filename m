@@ -2,71 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E758343CC04
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 16:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 940E143CC95
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 16:42:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfW9q5bJJz307g
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:22:39 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aZB0T1FF;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfWct3Hrtz3c6R
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:42:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
- helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=aZB0T1FF; dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
- [IPv6:2607:f8b0:4864:20::431])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=libc.org
+ (client-ip=216.12.86.13; helo=brightrain.aerifal.cx;
+ envelope-from=dalias@libc.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 907 seconds by postgrey-1.36 at boromir;
+ Thu, 28 Oct 2021 01:42:16 AEDT
+Received: from brightrain.aerifal.cx (brightrain.aerifal.cx [216.12.86.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfW9454Y6z2yHW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 01:21:59 +1100 (AEDT)
-Received: by mail-pf1-x431.google.com with SMTP id y7so2871073pfg.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 07:21:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=LcgMg779T/gdBXlrNU3YHrX7Gk6gacaR5KBJWJtm+pg=;
- b=aZB0T1FFZxSGyIpj59SsCIORPIGrEoeVOClNLIUCiUOsG5zahPLh7gqzsZH/29YSPU
- C7+5bsEj80wNpWA5naRezLjvxAifOnrOsScbYdvczPPmY0CIj7bTgPvZt17L8o8lqq/p
- fVT87s96rdixTjLDQ2F5MfYqhemxGZyJUnxj/OFZ1dmAqnGR51QhkCSG/x1Ncvzs8sp9
- MJTisyKwWzCzSjBmf1VpUTNKHeR/6d0DyiQ9hfOGH+j9iAk+Yh6hUzuRnOusxD+PmdXm
- Vta71sU1BItic0lHoRmoc97RnlWO0esPgWRA9CIskTN5a+J4cOvJWsIsKDfprIJIG3Dh
- Os7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=LcgMg779T/gdBXlrNU3YHrX7Gk6gacaR5KBJWJtm+pg=;
- b=cTKhfDlUli97kcxDA8lCdQsm0N6enB1rxL7HyApH+p4ppqFGJtxSr47iYZEf+ZWnJv
- ujONeenFBQUfHA+BuaJT8Kfmq0FwhKUxDeq6J82bMdItbjibYvz48+Q/cpumiVcR7cwr
- nmRP32hNLekDuTe5x0+GAxoi5umokZKn9l7CDSlW96xqGmmDNaMzFEltF+zy1OCt32kH
- m7r2h85i4TAroOrNBN06FOX68uLmYMUY18NCcYU8x5ygdrGf1HijbxEigooPYaRjIewT
- 4D4MRNRnIYoQ/zf9LKRMT6soMI2/pgG9l9SnRtudvvdskdg2lcP8lY8vuhVMix/+ZyJE
- VqNA==
-X-Gm-Message-State: AOAM532U+/pN9fzgKZverbVCYp01f1LswPjj+RCEdUaH1lH2gOffWOlF
- VoqbVv0ug0lDH6FkAfcrnWPHJ76bli8=
-X-Google-Smtp-Source: ABdhPJy+gtXfVi2Tyiqe+BeTvidQTvDcUYUelFUBl7Qe7/pxsIKAYTZ/yS6QFsJsrvKFw03g9IHYjA==
-X-Received: by 2002:a63:9308:: with SMTP id b8mr24176255pge.104.1635344516390; 
- Wed, 27 Oct 2021 07:21:56 -0700 (PDT)
-Received: from bobo.ibm.com ([118.208.159.180])
- by smtp.gmail.com with ESMTPSA id d14sm159979pfu.124.2021.10.27.07.21.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 07:21:56 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] KVM: PPC: Tick accounting should defer vtime accounting
- 'til after IRQ handling
-Date: Thu, 28 Oct 2021 00:21:50 +1000
-Message-Id: <20211027142150.3711582-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfWcS5h2yz2xrx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 01:42:15 +1100 (AEDT)
+Date: Wed, 27 Oct 2021 10:26:54 -0400
+From: Rich Felker <dalias@libc.org>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 09/12] sh: Use of_get_cpu_hwid()
+Message-ID: <20211027142651.GW7074@brightrain.aerifal.cx>
+References: <20211006164332.1981454-1-robh@kernel.org>
+ <20211006164332.1981454-10-robh@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211006164332.1981454-10-robh@kernel.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,127 +43,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Vivier <lvivier@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
- stable@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
+ Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ Stafford Horne <shorne@gmail.com>, Jonas Bonn <jonas@southpole.se>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ bcm-kernel-feedback-list@broadcom.com,
+ Catalin Marinas <catalin.marinas@arm.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ devicetree@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>,
+ Ray Jui <rjui@broadcom.com>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Scott Branden <sbranden@broadcom.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Frank Rowand <frowand.list@gmail.com>, James Morse <james.morse@arm.com>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Laurent Vivier <lvivier@redhat.com>
+On Wed, Oct 06, 2021 at 11:43:29AM -0500, Rob Herring wrote:
+> Replace open coded parsing of CPU nodes' 'reg' property with
+> of_get_cpu_hwid().
+> 
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: linux-sh@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  arch/sh/boards/of-generic.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/sh/boards/of-generic.c b/arch/sh/boards/of-generic.c
+> index 921d76fc3358..f7f3e618e85b 100644
+> --- a/arch/sh/boards/of-generic.c
+> +++ b/arch/sh/boards/of-generic.c
+> @@ -62,9 +62,8 @@ static void sh_of_smp_probe(void)
+>  	init_cpu_possible(cpumask_of(0));
+>  
+>  	for_each_of_cpu_node(np) {
+> -		const __be32 *cell = of_get_property(np, "reg", NULL);
+> -		u64 id = -1;
+> -		if (cell) id = of_read_number(cell, of_n_addr_cells(np));
+> +		u64 id = of_get_cpu_hwid(np, 0);
+> +
+>  		if (id < NR_CPUS) {
+>  			if (!method)
+>  				of_property_read_string(np, "enable-method", &method);
+> -- 
+> 2.30.2
 
-Commit 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest
-context before enabling irqs") moved guest_exit() into the interrupt
-protected area to avoid wrong context warning (or worse). The problem is
-that tick-based time accounting has not yet been updated at this point
-(because it depends on the timer interrupt firing), so the guest time
-gets incorrectly accounted to system time.
-
-To fix the problem, follow the x86 fix in commit 160457140187 ("Defer
-vtime accounting 'til after IRQ handling"), and allow host IRQs to run
-before accounting the guest exit time.
-
-In the case vtime accounting is enabled, this is not required because TB
-is used directly for accounting.
-
-Before this patch, with CONFIG_TICK_CPU_ACCOUNTING=y in the host and a
-guest running a kernel compile, the 'guest' fields of /proc/stat are
-stuck at zero. With the patch they can be observed increasing roughly as
-expected.
-
-Fixes: e233d54d4d97 ("KVM: booke: use __kvm_guest_exit")
-Fixes: 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest context before enabling irqs")
-Cc: <stable@vger.kernel.org> # 5.12
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-[np: only required for tick accounting, add Book3E fix, tweak changelog]
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-Since v2:
-- I took over the patch with Laurent's blessing.
-- Changed to avoid processing IRQs if we do have vtime accounting
-  enabled.
-- Changed so in either case the accounting is called with irqs disabled.
-- Added similar Book3E fix.
-- Rebased on upstream, tested, observed bug and confirmed fix.
-
- arch/powerpc/kvm/book3s_hv.c | 30 ++++++++++++++++++++++++++++--
- arch/powerpc/kvm/booke.c     | 16 +++++++++++++++-
- 2 files changed, 43 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 2acb1c96cfaf..7b74fc0a986b 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3726,7 +3726,20 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
- 
- 	kvmppc_set_host_core(pcpu);
- 
--	guest_exit_irqoff();
-+	context_tracking_guest_exit();
-+	if (!vtime_accounting_enabled_this_cpu()) {
-+		local_irq_enable();
-+		/*
-+		 * Service IRQs here before vtime_account_guest_exit() so any
-+		 * ticks that occurred while running the guest are accounted to
-+		 * the guest. If vtime accounting is enabled, accounting uses
-+		 * TB rather than ticks, so it can be done without enabling
-+		 * interrupts here, which has the problem that it accounts
-+		 * interrupt processing overhead to the host.
-+		 */
-+		local_irq_disable();
-+	}
-+	vtime_account_guest_exit();
- 
- 	local_irq_enable();
- 
-@@ -4510,7 +4523,20 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 
- 	kvmppc_set_host_core(pcpu);
- 
--	guest_exit_irqoff();
-+	context_tracking_guest_exit();
-+	if (!vtime_accounting_enabled_this_cpu()) {
-+		local_irq_enable();
-+		/*
-+		 * Service IRQs here before vtime_account_guest_exit() so any
-+		 * ticks that occurred while running the guest are accounted to
-+		 * the guest. If vtime accounting is enabled, accounting uses
-+		 * TB rather than ticks, so it can be done without enabling
-+		 * interrupts here, which has the problem that it accounts
-+		 * interrupt processing overhead to the host.
-+		 */
-+		local_irq_disable();
-+	}
-+	vtime_account_guest_exit();
- 
- 	local_irq_enable();
- 
-diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
-index 977801c83aff..8c15c90dd3a9 100644
---- a/arch/powerpc/kvm/booke.c
-+++ b/arch/powerpc/kvm/booke.c
-@@ -1042,7 +1042,21 @@ int kvmppc_handle_exit(struct kvm_vcpu *vcpu, unsigned int exit_nr)
- 	}
- 
- 	trace_kvm_exit(exit_nr, vcpu);
--	guest_exit_irqoff();
-+
-+	context_tracking_guest_exit();
-+	if (!vtime_accounting_enabled_this_cpu()) {
-+		local_irq_enable();
-+		/*
-+		 * Service IRQs here before vtime_account_guest_exit() so any
-+		 * ticks that occurred while running the guest are accounted to
-+		 * the guest. If vtime accounting is enabled, accounting uses
-+		 * TB rather than ticks, so it can be done without enabling
-+		 * interrupts here, which has the problem that it accounts
-+		 * interrupt processing overhead to the host.
-+		 */
-+		local_irq_disable();
-+	}
-+	vtime_account_guest_exit();
- 
- 	local_irq_enable();
- 
--- 
-2.23.0
-
+Acked-by: Rich Felker <dalias@libc.org>
