@@ -1,76 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A391143C232
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 07:28:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7557843C23D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 07:30:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfHJy4DH0z2ywV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 16:28:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfHMB2Pd8z2yHq
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 16:29:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DKLLQhcK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=d6Pvp9N3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::531;
- helo=mail-pg1-x531.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429;
+ helo=mail-pf1-x429.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=DKLLQhcK; dkim-atps=neutral
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com
- [IPv6:2607:f8b0:4864:20::531])
+ header.s=20210112 header.b=d6Pvp9N3; dkim-atps=neutral
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
+ [IPv6:2607:f8b0:4864:20::429])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfHJK45MZz2xBK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 16:27:29 +1100 (AEDT)
-Received: by mail-pg1-x531.google.com with SMTP id t7so1800314pgl.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 22:27:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfHLY2YtZz2xBK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 16:29:25 +1100 (AEDT)
+Received: by mail-pf1-x429.google.com with SMTP id f11so1623936pfc.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 22:29:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=9D0jLcun5ZI/bsr3yVL8rMxMwaY+QBa0l9tUPSjC5Ic=;
- b=DKLLQhcKNjwLGV9V9wxHi8sbMog3PFM0+oJJv5PFBiwmfr4CSc0pIV4UPEaDKiCTIb
- nMA7FmGnMOsw46OKf8crmsgplNRbFiBPdPVhsPWMJb/Xatlciigk3LN7wBBjtFMfi9av
- UOzcvnJbM0yTAlIET399TbY4lbyv1yvg01wn6+RZ8EioeYnaYnNcbox+N9q8MVfr7LIu
- 40cEXqx/FczKurHIfbUVWzjgjQNre+oCcZhhb8PSr3uNiKqSYWY2/G+PpLviqztogYYf
- /9muwFoLb6NPLQFZotAbNgbQFrvvMSlezFhCCqwxCM/Q4+XxtqnCE90ca+UC790xexek
- Gfsg==
+ bh=a8WSOzj1MWLZ9ryB+mKVNmqwR1w0Z1GneNSMv2kxLvQ=;
+ b=d6Pvp9N3bU3KAw+w8sFFKSGOF7jxzENTW9h0PzsWY8ocwNUW5WSTq9IBSYhHlt3LC5
+ PYEE/lT6//9B8suGcKWff966A4rOvIrSKamSwxElNYpzZMEup7IEutWtcqNKQ+fejB85
+ cz6E7eav4iKDgsz3acjiuT63G+vIPacIC0uL4i4W/0iatJuxV+coczNx2q1ZvJZH+VpX
+ ocGwwr1COq+4zhcecVO6OVwZxteGF+S02qxIZmaYy+As2lTWcev/eOo6LPM4OLLnuHnp
+ DchInHBsEqXITPcDR9HevCZIfAUAZm9mELoHD6shgHQI9l8aRjVDG9UXWT8aY4xsFiAv
+ f+qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=9D0jLcun5ZI/bsr3yVL8rMxMwaY+QBa0l9tUPSjC5Ic=;
- b=vqqYEIaptLJrrgBpvyCtE5THrL5leg4pZIAiCyjqg3QVSuYPPlTGJ4Tt3WyMMkjhX2
- XQuD/DMdOi9zct2cWJEwtyZwlnOU88BPAqjNkEHImlYsnrjcsRwUyjmAJvvIA/YGL9DW
- bEEfB+uY/IpZsDP1dUqhGeb4j+28X68CA0NtrU9wK442d/Y6rDqTWMzsq1ojZb18e4NG
- KKCNOaid8uJRnB9/mEnGdXMyTtOaB8PGEgTqAsyYNpfkX6AtMN89zSAw+KiVqoJCmUYV
- eggjSCe4jtz3gseDt4icMdruutNxwW4IRcUmPRNvJ3gJIGlus3PZNZhc5bdZU06vZCrA
- 140w==
-X-Gm-Message-State: AOAM531kvP3NUpdX/MvebVY4/VDwXCdcTXKKr1C0GaGk99RtdjgOoaPd
- caOs09okG0OI2myZRHywFVk2XYgv61s=
-X-Google-Smtp-Source: ABdhPJzWmWPSrKnARMzyMIyeaD5QJbZyMkxotLqOWj6Hc8eByAPiUIWGXRDwa5xQXW2nY9etIsh5mA==
-X-Received: by 2002:a63:18d:: with SMTP id 135mr22540659pgb.78.1635312446590; 
- Tue, 26 Oct 2021 22:27:26 -0700 (PDT)
+ bh=a8WSOzj1MWLZ9ryB+mKVNmqwR1w0Z1GneNSMv2kxLvQ=;
+ b=zu/0c1KpcpXLhR6PWha+V7aYJiGaRJ/CdFez5XKqfTp8dL3ohsPXaVBxMw1yPjtWU/
+ h0+A1V63FTm0puZXubDBLIMdewPo4gFBz7y/OCyO6nWtGR5r7ViRDs1Ti+1s0dEFYm5W
+ qnK8VQ5+3adcmLGvp6mr/cS7WFUTO+pxwadbhVX49tXUGcdlIJhnOFh98lrW5q7FVtkC
+ 2cjVq0lcDzwqI3fwQYTcUgQf95p/uELbzPfUo+wUwsztZMyaGN3x9D2jJx+kAXoT6f2M
+ /Fin9Xh1cEjb9Lj4YQOha1vG0fUUulvKF5d41nCMT6p0nywbO2yGAr7bY+4c+Qynckoz
+ MCNQ==
+X-Gm-Message-State: AOAM531p9hkLDW/vi2sHK7i6NR9WhxXcvd4UHCbUOJJsIdU4Lv87AdUM
+ Oigq+NxXzq2WuRcP7+S2Mxq5SQrslZg=
+X-Google-Smtp-Source: ABdhPJyK3RNGOyYxDpCY+K3M4pGu+jcVvzgFEEVCBx7V+UNhwJOAX/pwEBfyTTZwTCEAnVnSxHQ/aw==
+X-Received: by 2002:a63:618d:: with SMTP id v135mr15087878pgb.79.1635312561906; 
+ Tue, 26 Oct 2021 22:29:21 -0700 (PDT)
 Received: from localhost ([118.208.159.180])
- by smtp.gmail.com with ESMTPSA id h10sm2599610pfc.104.2021.10.26.22.27.25
+ by smtp.gmail.com with ESMTPSA id g25sm8227545pfh.216.2021.10.26.22.29.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Oct 2021 22:27:26 -0700 (PDT)
-Date: Wed, 27 Oct 2021 15:27:21 +1000
+ Tue, 26 Oct 2021 22:29:21 -0700 (PDT)
+Date: Wed, 27 Oct 2021 15:29:16 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/3] powerpc/book3e: Fix set_memory_x() and set_memory_nx()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>
-References: <922bdab3a220781bae2360ff3dd5adb7fe4d34f1.1635226743.git.christophe.leroy@csgroup.eu>
- <c41100f9c144dc5b62e5a751b810190c6b5d42fd.1635226743.git.christophe.leroy@csgroup.eu>
- <1635309296.3vv9pb80wz.astroid@bobo.none>
- <063e72e1-fc05-7783-9f42-f681dd08a4b2@csgroup.eu>
-In-Reply-To: <063e72e1-fc05-7783-9f42-f681dd08a4b2@csgroup.eu>
+Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ mpe@ellerman.id.au
+References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
+ <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
+In-Reply-To: <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
 MIME-Version: 1.0
-Message-Id: <1635312355.da7w1oggf1.astroid@bobo.none>
+Message-Id: <1635312497.knx718t0h2.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,71 +81,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: oss-security@lists.openwall.com,
+ "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of October 27, 2021 2:55 pm:
+Excerpts from John Paul Adrian Glaubitz's message of October 26, 2021 6:48 =
+pm:
+> Hi Michael!
 >=20
->=20
-> Le 27/10/2021 =C3=A0 06:44, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Excerpts from Christophe Leroy's message of October 26, 2021 3:39 pm:
->>> set_memory_x() calls pte_mkexec() which sets _PAGE_EXEC.
->>> set_memory_nx() calls pte_exprotec() which clears _PAGE_EXEC.
->>>
->>> Book3e has 2 bits, UX and SX, which defines the exec rights
->>> resp. for user (PR=3D1) and for kernel (PR=3D0).
->>>
->>> _PAGE_EXEC is defined as UX only.
->>>
->>> An executable kernel page is set with either _PAGE_KERNEL_RWX
->>> or _PAGE_KERNEL_ROX, which both have SX set and UX cleared.
->>>
->>> So set_memory_nx() call for an executable kernel page does
->>> nothing because UX is already cleared.
->>>
->>> And set_memory_x() on a non-executable kernel page makes it
->>> executable for the user and keeps it non-executable for kernel.
->>>
->>> Also, pte_exec() always returns 'false' on kernel pages, because
->>> it checks _PAGE_EXEC which doesn't include SX, so for instance
->>> the W+X check doesn't work.
->>>
->>> To fix this:
->>> - change tlb_low_64e.S to use _PAGE_BAP_UX instead of _PAGE_USER
->>> - sets both UX and SX in _PAGE_EXEC so that pte_user() returns
->>> true whenever one of the two bits is set
+>> The Linux kernel for powerpc since v5.2 has a bug which allows a
+>> malicious KVM guest to crash the host, when the host is running on
+>> Power8.
 >>=20
->> I don't understand this change. Which pte_user() returns true after
->> this change? Or do you mean pte_exec()?
->=20
-> Oops, yes, I mean pte_exec()
->=20
-> Unless I have to re-spin, can Michael eventually fix that typo while=20
-> applying ?
->=20
+>> Only machines using Linux as the hypervisor, aka. KVM, powernv or bare
+>> metal, are affected by the bug. Machines running PowerVM are not
+>> affected.
 >>=20
->> Does this filter through in some cases at least for kernel executable
->> PTEs will get both bits set? Seems cleaner to distinguish user and
->> kernel exec for that but maybe it's a lot of churn?
+>> The bug was introduced in:
+>>=20
+>>     10d91611f426 ("powerpc/64s: Reimplement book3s idle code in C")
+>>=20
+>> Which was first released in v5.2.
+>>=20
+>> The upstream fix is:
+>>=20
+>>   cdeb5d7d890e ("KVM: PPC: Book3S HV: Make idle_kvm_start_guest() return=
+ 0 if it went to guest")
+>>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/com=
+mit/?id=3Dcdeb5d7d890e14f3b70e8087e745c4a6a7d9f337
+>>=20
+>> Which will be included in the v5.16 release.
 >=20
-> Didn't understand what you mean.
+> I have tested these patches against 5.14 but it seems the problem [1] sti=
+ll remains for me
+> for big-endian guests. I built a patched kernel yesterday, rebooted the K=
+VM server and let
+> the build daemons do their work over night.
 >=20
-> I did it like that to be able to continue using _PAGE_EXEC for checking=20
-> executability regardless of whether this is user or kernel, and then=20
-> continue using the generic nohash pte_exec() helper.
+> When I got up this morning, I noticed the machine was down, so I checked =
+the serial console
+> via IPMI and saw the same messages again as reported in [1]:
 >=20
-> Other solution would be to get rid of _PAGE_EXEC completely for book3e=20
-> and implement both pte_exec() and pte_mkexec() with _PAGE_BAP_UX and=20
-> _PAGE_BAP_SX, but I'm not sure it is worth the churn as you say. It=20
-> would also mean different helpers for book3s/32 when it is using 32 bits=20
-> PTE (CONFIG_PTE_64BIT=3Dn)
+> [41483.963562] watchdog: BUG: soft lockup - CPU#104 stuck for 25521s! [mi=
+gration/104:175]
+> [41507.963307] watchdog: BUG: soft lockup - CPU#104 stuck for 25544s! [mi=
+gration/104:175]
+> [41518.311200] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+> [41518.311216] rcu:     136-...0: (135 ticks this GP) idle=3D242/1/0x4000=
+000000000000 softirq=3D32031/32033 fqs=3D2729959=20
+> [41547.962882] watchdog: BUG: soft lockup - CPU#104 stuck for 25581s! [mi=
+gration/104:175]
+> [41571.962627] watchdog: BUG: soft lockup - CPU#104 stuck for 25603s! [mi=
+gration/104:175]
+> [41581.330530] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+> [41581.330546] rcu:     136-...0: (135 ticks this GP) idle=3D242/1/0x4000=
+000000000000 softirq=3D32031/32033 fqs=3D2736378=20
+> [41611.962202] watchdog: BUG: soft lockup - CPU#104 stuck for 25641s! [mi=
+gration/104:175]
+> [41635.961947] watchdog: BUG: soft lockup - CPU#104 stuck for 25663s! [mi=
+gration/104:175]
+> [41644.349859] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+> [41644.349876] rcu:     136-...0: (135 ticks this GP) idle=3D242/1/0x4000=
+000000000000 softirq=3D32031/32033 fqs=3D2742753=20
+> [41671.961564] watchdog: BUG: soft lockup - CPU#104 stuck for 25697s! [mi=
+gration/104:175]
+> [41695.961309] watchdog: BUG: soft lockup - CPU#104 stuck for 25719s! [mi=
+gration/104:175]
+> [41707.369190] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+> [41707.369206] rcu:     136-...0: (135 ticks this GP) idle=3D242/1/0x4000=
+000000000000 softirq=3D32031/32033 fqs=3D2749151=20
+> [41735.960884] watchdog: BUG: soft lockup - CPU#104 stuck for 25756s! [mi=
+gration/104:175]
+> [41759.960629] watchdog: BUG: soft lockup - CPU#104 stuck for 25778s! [mi=
+gration/104:175]
+> [41770.388520] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+> [41770.388548] rcu:     136-...0: (135 ticks this GP) idle=3D242/1/0x4000=
+000000000000 softirq=3D32031/32033 fqs=3D2755540=20
+> [41776.076307] rcu: rcu_sched kthread timer wakeup didn't happen for 1423=
+ jiffies! g49897 f0x0 RCU_GP_WAIT_FQS(5) ->state=3D0x402
+> [41776.076327] rcu:     Possible timer handling issue on cpu=3D32 timer-s=
+oftirq=3D1056014
+> [41776.076336] rcu: rcu_sched kthread starved for 1424 jiffies! g49897 f0=
+x0 RCU_GP_WAIT_FQS(5) ->state=3D0x402 ->cpu=3D32
+> [41776.076350] rcu:     Unless rcu_sched kthread gets sufficient CPU time=
+, OOM is now expected behavior.
+> [41776.076360] rcu: RCU grace-period kthread stack dump:
+> [41776.076434] rcu: Stack dump where RCU GP kthread last ran:
+> [41783.960374] watchdog: BUG: soft lockup - CPU#104 stuck for 25801s! [mi=
+gration/104:175]
+> [41807.960119] watchdog: BUG: soft lockup - CPU#104 stuck for 25823s! [mi=
+gration/104:175]
+> [41831.959864] watchdog: BUG: soft lockup - CPU#104 stuck for 25846s! [mi=
+gration/104:175]
+> [41833.407851] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+> [41833.407868] rcu:     136-...0: (135 ticks this GP) idle=3D242/1/0x4000=
+000000000000 softirq=3D32031/32033 fqs=3D2760381=20
+> [41863.959524] watchdog: BUG: soft lockup - CPU#104 stuck for 25875s! [mi=
+gration/104:175]
 
-That's basically what I mean. And _PAGE_KERNEL_ROX etc would then not=20
-set the UX bit. But at least for now it seems to be an improvement.
+I don't suppose you were able to get any more of the log saved? (The=20
+first error messages that happened might be interesting)
 
 Thanks,
 Nick
-
-
