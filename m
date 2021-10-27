@@ -2,62 +2,106 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BFD43C466
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 09:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3977E43C4E3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 10:16:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfLXP3g5Zz2yg1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 18:53:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfM2l0tMDz3051
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 19:15:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MKMYT2z6;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=MKMYT2z6; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfLWz65mCz2xDl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 18:52:46 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HfLWv2XvYz9sSp;
- Wed, 27 Oct 2021 09:52:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 3nELBF9Gp1kl; Wed, 27 Oct 2021 09:52:43 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HfLWv1S8Vz9sSX;
- Wed, 27 Oct 2021 09:52:43 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1DAB48B76D;
- Wed, 27 Oct 2021 09:52:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id XQM_XwLyO2yc; Wed, 27 Oct 2021 09:52:43 +0200 (CEST)
-Received: from [192.168.203.162] (unknown [192.168.203.162])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9660C8B763;
- Wed, 27 Oct 2021 09:52:42 +0200 (CEST)
-Message-ID: <f5824237-4fd4-ca87-afe7-620a23d84824@csgroup.eu>
-Date: Wed, 27 Oct 2021 09:52:42 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfM1v61W2z2xF5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 19:15:15 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19R6NiM8010667; 
+ Wed, 27 Oct 2021 08:15:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=REmhyH977aSmduvzyGxYccWFWjTuSZ1JicmOk/oQceU=;
+ b=MKMYT2z6MlwPcZHvZSd5i+XWdYQXu3GGx1slmn2CRaDPz4Bzu3sRGEVhSrIpOdEsNin8
+ ojkT0fdQ6Opkpq8JF8p9hg6Q/wj4++owaSjPDoEh16iO8Kg4HfJtWjqpkABK2jnUVCZr
+ 2z9hJmY5LRTy1Y2GW18mtiZ5oCkoHj5M+4SKDdk79G6HNVUXVvIi/5322hH0AXOoUSR6
+ DejcbJTrdpw3wsjWVSFRQ1r5t6aoOp3sgSPMJ43Jt+CJhDo6amcZns/9Mm7QCFG7a34M
+ iZjar7Ke5PF8WWt0SNkU2ss4ZYz+G2ClZcAbzP4SsSYttlbJvabJ0/Hp30rplXmppc9I 6Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3by1f8218e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Oct 2021 08:15:05 +0000
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19R7eHIs025849;
+ Wed, 27 Oct 2021 08:15:05 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3by1f8216t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Oct 2021 08:15:05 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19R8BnFI009930;
+ Wed, 27 Oct 2021 08:15:01 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 3bx4edvsqt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Oct 2021 08:15:00 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 19R8Ew8S53477732
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 27 Oct 2021 08:14:58 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0972DAE056;
+ Wed, 27 Oct 2021 08:14:58 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BFE69AE045;
+ Wed, 27 Oct 2021 08:14:57 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.77.240])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 27 Oct 2021 08:14:57 +0000 (GMT)
+Subject: Re: [PATCH 1/2] powerpc/watchdog: prevent printk and send IPI while
+ holding the wd lock
+To: Nicholas Piggin <npiggin@gmail.com>, benh@kernel.crashing.org,
+ mpe@ellerman.id.au, paulus@samba.org
+References: <20211026162740.16283-1-ldufour@linux.ibm.com>
+ <20211026162740.16283-2-ldufour@linux.ibm.com>
+ <1635303699.wgz87uxy4c.astroid@bobo.none>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <33e15005-d342-5270-9b9d-64750f8794a7@linux.ibm.com>
+Date: Wed, 27 Oct 2021 10:14:57 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: instruction storage exception handling
-Content-Language: fr-FR
-To: Nicholas Piggin <npiggin@gmail.com>,
- Jacques de Laval <jacques.delaval@protonmail.com>,
- Scott Wood <oss@buserror.net>
-References: <uqZVxyE3l9oalZp_hyXFJvdH-ADNTvpOuQeoNGyqrUcoNgh9afea1-FzfZKMgiaF5WxY4kdMQlJYzmjvdQ2E2joF86-mEcaxdifht9z8NA0=@protonmail.com>
- <1635306738.0z8wt7619v.astroid@bobo.none>
- <1f5c24de-6bba-d6c0-5b8e-3522f25158f6@csgroup.eu>
- <1635312278.p87nvl11rv.astroid@bobo.none>
- <4ee635f5-7a67-bac5-2ad2-616c1aaa95b6@csgroup.eu>
- <1635318932.od1ierwsis.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <1635318932.od1ierwsis.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <1635303699.wgz87uxy4c.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: AcoByQLg3K9eWGmLBkq27NYptffJ_uUy
+X-Proofpoint-ORIG-GUID: GoL5SOeyY_mqUWxSmD4LKnruQMbJag3W
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-10-27_02,2021-10-26_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ impostorscore=0 clxscore=1015 priorityscore=1501 mlxlogscore=999
+ adultscore=0 suspectscore=0 malwarescore=0 spamscore=0 mlxscore=0
+ phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2110270048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,178 +113,173 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 27/10/2021 à 09:47, Nicholas Piggin a écrit :
-> Excerpts from Christophe Leroy's message of October 27, 2021 3:51 pm:
+Le 27/10/2021 à 05:29, Nicholas Piggin a écrit :
+> Excerpts from Laurent Dufour's message of October 27, 2021 2:27 am:
+>> When handling the Watchdog interrupt, long processing should not be done
+>> while holding the __wd_smp_lock. This prevents the other CPUs to grab it
+>> and to process Watchdog timer interrupts. Furhtermore, this could lead to
+>> the following situation:
 >>
->>
->> Le 27/10/2021 à 07:25, Nicholas Piggin a écrit :
->>> Excerpts from Christophe Leroy's message of October 27, 2021 3:00 pm:
->>>>
->>>>
->>>> Le 27/10/2021 à 06:10, Nicholas Piggin a écrit :
->>>>> Excerpts from Jacques de Laval's message of October 26, 2021 6:07 am:
->>>>>> Hi,
->>>>>>
->>>>>> We are trying to upgrade kernel from 5.10 to 5.14.11. We have a Freescale/NXP
->>>>>> T1023 SOC with two e5500 cores, and are running in 32-bit mode:
->>>>>>
->>>>>> 	CONFIG_PPC32=y
->>>>>> 	# CONFIG_PPC64 is not set
->>>>>>
->>>>>> 	#
->>>>>> 	# Processor support
->>>>>> 	#
->>>>>> 	# CONFIG_PPC_BOOK3S_32 is not set
->>>>>> 	CONFIG_PPC_85xx=y
->>>>>> 	# CONFIG_PPC_8xx is not set
->>>>>> 	# CONFIG_40x is not set
->>>>>> 	# CONFIG_44x is not set
->>>>>> 	CONFIG_GENERIC_CPU=y
->>>>>> 	# CONFIG_E5500_CPU is not set
->>>>>> 	# CONFIG_E6500_CPU is not set
->>>>>> 	CONFIG_E500=y
->>>>>> 	CONFIG_PPC_E500MC=y
->>>>>> 	CONFIG_PPC_FPU_REGS=y
->>>>>> 	CONFIG_PPC_FPU=y
->>>>>> 	CONFIG_FSL_EMB_PERFMON=y
->>>>>> 	CONFIG_FSL_EMB_PERF_EVENT=y
->>>>>> 	CONFIG_FSL_EMB_PERF_EVENT_E500=y
->>>>>> 	CONFIG_BOOKE=y
->>>>>> 	CONFIG_FSL_BOOKE=y
->>>>>> 	CONFIG_PPC_FSL_BOOK3E=y
->>>>>> 	CONFIG_PTE_64BIT=y
->>>>>> 	CONFIG_PHYS_64BIT=y
->>>>>> 	CONFIG_PPC_MMU_NOHASH=y
->>>>>> 	CONFIG_PPC_BOOK3E_MMU=y
->>>>>> 	# CONFIG_PMU_SYSFS is not set
->>>>>> 	CONFIG_SMP=y
->>>>>> 	CONFIG_NR_CPUS=2
->>>>>> 	CONFIG_PPC_DOORBELL=y
->>>>>> 	# end of Processor support
->>>>>>
->>>>>> We compile using 32-bit Bootlin PPC toolchain:
->>>>>>
->>>>>> 	powerpc-e500mc glibc bleeding-edge 2020.08-1.
->>>>>>
->>>>>> When booting, and starting PID 1 we sometimes get a hang. Nothing but our init
->>>>>> process is running, and for debugging purposes our init currently looks like
->>>>>> this:
->>>>>>
->>>>>> 	int main(int argc, char *argv[]){
->>>>>> 		for (int i = 0; ; i++) {
->>>>>> 			FILE *fp = fopen("/dev/kmsg", "w");
->>>>>> 			if (fp) {
->>>>>> 				fprintf(fp, "%d\n", i);
->>>>>> 				fclose(fp);
->>>>>> 			}
->>>>>> 			sleep(1);
->>>>>> 		}
->>>>>> 		return 0;
->>>>>> 	}
->>>>>>
->>>>>> When the hangup occur we don't get any output at all from our PID 1.
->>>>>> The last output is from the kernel:
->>>>>>
->>>>>> 	Run /sbin/init as init process
->>>>>> 	  with arguments:
->>>>>> 	    /sbin/init
->>>>>> 	  with environment:
->>>>>> 	    HOME=/
->>>>>> 	    TERM=linux
->>>>>> 	    kgdboc=ttyS0,115200
->>>>>>
->>>>>> When issuing a backtrace on all active cpus we can see that the kernel is
->>>>>> handling an instruction storage exception:
->>>>>>
->>>>>> 	sysrq: Show backtrace of all active CPUs
->>>>>> 	sysrq: CPU0:
->>>>>> 	CPU: 0 PID: 1 Comm: init Not tainted 5.14.11 #1
->>>>>> 	NIP:  c02aac78 LR: c02aac2c CTR: 00000000
->>>>>> 	REGS: c1907d40 TRAP: 0500   Not tainted  (5.14.11)
->>>>>> 	MSR:  00029002 <CE,EE,ME>  CR: 82244284  XER: 20000000
->>>>>> 	GPR00: 0000000f c1907e20 c1910000 0065a000 000001d0 01100cca c1907e84 0000000c
->>>>>> 	GPR08: d39a8000 000001d3 0000000c c1907f10 42244284 00000000 00740514 bfb71670
->>>>>> 	GPR16: 007040e6 00701418 b7c1a5f0 00702f18 00000000 bfb71690 0000fff1 b7c1c478
->>>>>> 	GPR24: 00708558 00701698 d3994040 00029002 c1907f20 0065a238 00000355 d39a2790
->>>>>> 	NIP [c02aac78] handle_mm_fault+0xf8/0x11f0
->>>>>> 	LR [c02aac2c] handle_mm_fault+0xac/0x11f0
->>>>>> 	Call Trace:
->>>>>> 	[c1907e20] [c02aac10] handle_mm_fault+0x90/0x11f0 (unreliable)
->>>>>> 	[c1907ec0] [c003078c] ___do_page_fault+0x26c/0x780
->>>>>> 	[c1907ef0] [c0030cd4] do_page_fault+0x34/0x100
->>>>>> 	[c1907f10] [c0000988] InstructionStorage+0x108/0x120
->>>>>> 	--- interrupt: 400 at 0x65a238
->>>>>> 	NIP:  0065a238 LR: 0052f26c CTR: 0052f260
->>>>>> 	REGS: c1907f20 TRAP: 0400   Not tainted  (5.14.11)
->>>>>> 	MSR:  0002d002 <CE,EE,PR,ME>  CR: 42242284  XER: 00000000
->>>>>> 	GPR00: b7be9914 bfb71620 b7c203a0 8c008000 0070400d b7c182a0 000b8260 0052f260
->>>>>> 	GPR08: 0047d448 0052f260 0000000a 00000003 42242284 00000000 00740514 bfb71670
->>>>>> 	GPR16: 007040e6 00701418 b7c1a5f0 00702f18 00000000 bfb71690 0000fff1 b7c1c478
->>>>>> 	GPR24: 00708558 00701698 00700000 00000015 b7c1c2b0 00707e20 b7c1b8a8 bfb71660
->>>>>> 	NIP [0065a238] 0x65a238
->>>>>> 	LR [0052f26c] 0x52f26c
->>>>>> 	--- interrupt: 400
->>>>>> 	Instruction dump:
->>>>>> 	60a500c0 811f0020 57aa6cfa 813f0000 57a30026 809f004c 81080024 7d29e850
->>>>>> 	90a1002c 5529a33e 93c10038 7d244a14 <90610034> 7d485215 91210030 41c203dc
->>>>>>
->>>>>> We have also observed that the CPU is continuously servicing the same interrupt
->>>>>> (north of 140k times per sec), it is not deadlocked.
->>>>>>
->>>>>> We have not yet been able to reproduce this behavior under QEMU system
->>>>>> emulation.
->>>>>>
->>>>>> When bisecting between 5.10 and 5.14.11 we can see that this behavior started
->>>>>> with commit a01a3f2ddbcda83e8572787c0ec1dcbeba86915a:
->>>>>>
->>>>>> 	powerpc: remove arguments from fault handler functions
->>>>>
->>>>> Thank you for the excellent work to investigate and report this.
->>>>>
->>>>>>
->>>>>> Our best guess that the instruction storage exception is not properly handled
->>>>>> and the kernel is never able to recover from the page fault, but we don't
->>>>>> really know how to proceed. Does anyone have any suggestions or insights?
->>>>>
->>>>> Before my patch, zero was passed to the page fault error code, after
->>>>> my patch it passes the contents of ESR SPR.
->>>>>
->>>>> It looks like the BookE instruction access interrupt does not set ESR
->>>>> (except for BO interrupts maybe?) so you're getting what was in the ESR
->>>>> register from a previous interrupt, and maybe if that was a store then
->>>>> access_error won't cause a segfault because is_exec is true so that
->>>>> test bails out early, then it might just keep retrying the interrupt.
->>>>>
->>>>> That could explain why you don't always see the same thing.
->>>>>
->>>>> Now previous code still saved ESR in regs->esr/dsisr for some reason.
->>>>> I can't quite see why that should have been necessary though. Does
->>
->> According to the e500 Reference Manual, on ISI:
->>
->> BO is set if the instruction fetch caused a byte-ordering exception;
->> otherwise cleared. *All* other defined ESR bits are *cleared*.
+>> CPU x detect lockup on CPU y and grab the __wd_smp_lock
+>>        in watchdog_smp_panic()
+>> CPU y caught the watchdog interrupt and try to grab the __wd_smp_lock
+>>        in soft_nmi_interrupt()
+>> CPU x wait for CPU y to catch the IPI for 1s in __smp_send_nmi_ipi()
 > 
-> You're right. In that case it shouldn't change anything unless there
-> was a BO fault. I'm not sure what the problem is then. Guessing based
-> on the NIP and instructions, it looks like it's probably got the correct
-> user address that it's storing into vmf on the stack, so it has got past
-> the access checks so my theory would be wrong anyway.
+> CPU y should get the IPI here if it's a NMI IPI (which will be true for
+>> = POWER9 64s).
 > 
-> Must be something simple but I can't see it yet.
+> That said, not all platforms support it and the console lock problem
+> seems real, so okay.
 > 
+>> CPU x will timeout and so has spent 1s waiting while holding the
+>>        __wd_smp_lock.
+>>
+>> A deadlock may also happen between the __wd_smp_lock and the console_owner
+>> 'lock' this way:
+>> CPU x grab the console_owner
+>> CPU y grab the __wd_smp_lock
+>> CPU x catch the watchdog timer interrupt and needs to grab __wd_smp_lock
+>> CPU y wants to print something and wait for console_owner
+>> -> deadlock
+>>
+>> Doing all the long processing without holding the _wd_smp_lock prevents
+>> these situations.
+> 
+> The intention was to avoid logs getting garbled e.g., if multiple
+> different CPUs fire at once.
+> 
+> I wonder if instead we could deal with that by protecting the IPI
+> sending and printing stuff with a trylock, and if you don't get the
+> trylock then just return, and you'll come back with the next timer
+> interrupt.
 
-Anyway, I think it is still worth doing the check with setting 0 in 
-_ESR(r11), maybe the Reference Manual is wrong.
+That sounds a bit risky to me, especially on large system when system goes 
+wrong, all the CPU may try lock here.
+Furthermore, now operation done under the lock protection are quite fast, there 
+is no more spinning like the delay loop done when sending an IPI.
 
-So Jacques, please do the test anyway if you can.
+Protecting the IPI sending is a nightmare, if the target CPU is later play with 
+the lock we are taking during the IPI processing, furthermore, if the target CPU 
+is not responding the sending CPU is waiting for 1s, which slows all the system 
+due to the lock held.
+Since I do a copy of the pending CPU mask and clear it under the lock 
+protection, the IPI sending is safe while done without holding the lock.
 
-Thanks
-Christophe
+Regarding the interleaved traces, I don't think this has to be managed down 
+here, but rather in the printk/console path.
+
+Cheers,
+Laurent.
+
+> 
+> Thanks,
+> Nick
+> 
+>>
+>> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+>> ---
+>>   arch/powerpc/kernel/watchdog.c | 31 +++++++++++++++++--------------
+>>   1 file changed, 17 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
+>> index f9ea0e5357f9..bc7411327066 100644
+>> --- a/arch/powerpc/kernel/watchdog.c
+>> +++ b/arch/powerpc/kernel/watchdog.c
+>> @@ -149,6 +149,8 @@ static void set_cpu_stuck(int cpu, u64 tb)
+>>   
+>>   static void watchdog_smp_panic(int cpu, u64 tb)
+>>   {
+>> +	cpumask_t cpus_pending_copy;
+>> +	u64 last_reset_tb_copy;
+>>   	unsigned long flags;
+>>   	int c;
+>>   
+>> @@ -161,29 +163,32 @@ static void watchdog_smp_panic(int cpu, u64 tb)
+>>   	if (cpumask_weight(&wd_smp_cpus_pending) == 0)
+>>   		goto out;
+>>   
+>> +	cpumask_copy(&cpus_pending_copy, &wd_smp_cpus_pending);
+>> +	last_reset_tb_copy = wd_smp_last_reset_tb;
+>> +
+>> +	/* Take the stuck CPUs out of the watch group */
+>> +	set_cpumask_stuck(&wd_smp_cpus_pending, tb);
+>> +
+>> +	wd_smp_unlock(&flags);
+>> +
+>>   	pr_emerg("CPU %d detected hard LOCKUP on other CPUs %*pbl\n",
+>> -		 cpu, cpumask_pr_args(&wd_smp_cpus_pending));
+>> +		 cpu, cpumask_pr_args(&cpus_pending_copy));
+>>   	pr_emerg("CPU %d TB:%lld, last SMP heartbeat TB:%lld (%lldms ago)\n",
+>> -		 cpu, tb, wd_smp_last_reset_tb,
+>> -		 tb_to_ns(tb - wd_smp_last_reset_tb) / 1000000);
+>> +		 cpu, tb, last_reset_tb_copy,
+>> +		 tb_to_ns(tb - last_reset_tb_copy) / 1000000);
+>>   
+>>   	if (!sysctl_hardlockup_all_cpu_backtrace) {
+>>   		/*
+>>   		 * Try to trigger the stuck CPUs, unless we are going to
+>>   		 * get a backtrace on all of them anyway.
+>>   		 */
+>> -		for_each_cpu(c, &wd_smp_cpus_pending) {
+>> +		for_each_cpu(c, &cpus_pending_copy) {
+>>   			if (c == cpu)
+>>   				continue;
+>>   			smp_send_nmi_ipi(c, wd_lockup_ipi, 1000000);
+>>   		}
+>>   	}
+>>   
+>> -	/* Take the stuck CPUs out of the watch group */
+>> -	set_cpumask_stuck(&wd_smp_cpus_pending, tb);
+>> -
+>> -	wd_smp_unlock(&flags);
+>> -
+>>   	if (sysctl_hardlockup_all_cpu_backtrace)
+>>   		trigger_allbutself_cpu_backtrace();
+>>   
+>> @@ -204,6 +209,8 @@ static void wd_smp_clear_cpu_pending(int cpu, u64 tb)
+>>   			unsigned long flags;
+>>   
+>>   			wd_smp_lock(&flags);
+>> +			cpumask_clear_cpu(cpu, &wd_smp_cpus_stuck);
+>> +			wd_smp_unlock(&flags);
+>>   
+>>   			pr_emerg("CPU %d became unstuck TB:%lld\n",
+>>   				 cpu, tb);
+>> @@ -212,9 +219,6 @@ static void wd_smp_clear_cpu_pending(int cpu, u64 tb)
+>>   				show_regs(regs);
+>>   			else
+>>   				dump_stack();
+>> -
+>> -			cpumask_clear_cpu(cpu, &wd_smp_cpus_stuck);
+>> -			wd_smp_unlock(&flags);
+>>   		}
+>>   		return;
+>>   	}
+>> @@ -267,6 +271,7 @@ DEFINE_INTERRUPT_HANDLER_NMI(soft_nmi_interrupt)
+>>   			return 0;
+>>   		}
+>>   		set_cpu_stuck(cpu, tb);
+>> +		wd_smp_unlock(&flags);
+>>   
+>>   		pr_emerg("CPU %d self-detected hard LOCKUP @ %pS\n",
+>>   			 cpu, (void *)regs->nip);
+>> @@ -277,8 +282,6 @@ DEFINE_INTERRUPT_HANDLER_NMI(soft_nmi_interrupt)
+>>   		print_irqtrace_events(current);
+>>   		show_regs(regs);
+>>   
+>> -		wd_smp_unlock(&flags);
+>> -
+>>   		if (sysctl_hardlockup_all_cpu_backtrace)
+>>   			trigger_allbutself_cpu_backtrace();
+>>   
+>> -- 
+>> 2.33.1
+>>
+>>
+
