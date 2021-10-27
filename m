@@ -1,64 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E90E043D723
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:05:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E84543D728
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:06:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfkn55tz1z3fjx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:05:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfknp70rBz3fmt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:06:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nyjF7CMT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IOOovw4H;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12b;
- helo=mail-lf1-x12b.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12c;
+ helo=mail-lf1-x12c.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=nyjF7CMT; dkim-atps=neutral
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com
- [IPv6:2a00:1450:4864:20::12b])
+ header.s=20210112 header.b=IOOovw4H; dkim-atps=neutral
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com
+ [IPv6:2a00:1450:4864:20::12c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhPm6YK6z30Pj;
- Thu, 28 Oct 2021 08:18:36 +1100 (AEDT)
-Received: by mail-lf1-x12b.google.com with SMTP id bi35so8958476lfb.9;
- Wed, 27 Oct 2021 14:18:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhPq1d27z3015;
+ Thu, 28 Oct 2021 08:18:39 +1100 (AEDT)
+Received: by mail-lf1-x12c.google.com with SMTP id u21so8957370lff.8;
+ Wed, 27 Oct 2021 14:18:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=4OWbCpLiTrW70NMTPpPUNVkhVF3RKPzG5GTofMVph+0=;
- b=nyjF7CMTiXZTknDCkjxSlwBlmez3wFeA+zehsvTRn8HWRCKWBbu+VeqUVL44ms69wV
- nnBlf5yP21RTavxXaqxcjkZ3KCf591eZC6XUlLgNrDZoqwAeG0e8waWDmBuDqGJPa/ia
- TWGnRhqwCJRO6ZHGrxxDEuuBCRuC8gitnwXoBy6yPn2yaI52p7BdBoMEudji1fyrvZ7s
- jQQkx67Vh3JRx01BzNxvLauTbUeZkFSOIEd8jQMxIMky+FUXABFowKrpCYCop+RjKrYK
- 44VAj9OlGjdC9id5DEzvny9pb4y7eTDKQL+s4i3zBATQTR5zvjDC+NzhG9GB4CVWfx2z
- vHjQ==
+ bh=rTg0c6UJkUtA3xox9iyqZdpwaCfteR79knUJVekTw18=;
+ b=IOOovw4HthrHOXjOs46Y3yITm9+R54zah3HqdDtgfe0CoTVx3Ny/qQfSWJECq3va5v
+ POFxHfUV4nFfAVF/2xQmQF0GAuAxqBjz1BtRvOKx4MR0EfN6IoGEZZUqz+WUpBWyPywt
+ GrOnqTwA95eu+J8qffyJd/WsYZnQLcqOy0MiUotidUtoWBtzitEMBsbvSCmIUhOFOmfU
+ TN0N1IIFJs2PwhqjyrirBl5OZM0AJ4ETZ7OvQijCQBnaCq4fjrrAiLoAARG8gCOMWpFL
+ isJ90k/kflRmNXJGxu4rOU7Ttcg3V2boCXpvP5Lo62Urd2fuc4VonqYdYqPHg73Ap8Wn
+ SfNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=4OWbCpLiTrW70NMTPpPUNVkhVF3RKPzG5GTofMVph+0=;
- b=C2bEXauE+KzIwq22ikTAKMI6jvy3O31APCMEv44zLBdXWpsaiufCXALiUewjfdPPXF
- jCxR4i2fjdtweTMi+LgsutbMZQjtG5vd3mTuibgjbPfpttR2Y3h0zCWR/USj1cLEr+Df
- 1d/XXuvJ3uhaejU9bD/knZuRfvU4+CMaoio1b2FjHcmvqpwrTV66sCW6xjOwjsDOXA2N
- 4NUxcmlt9gkyoZ2rEQHlpp4g/7cRmxVwwU6TECivEivg1VutJ+lYDUXOQmroa3iTx/fW
- d/IUpVz9FkyV1m5eDwUa3lz/KhxvkSbp7exlwcZanMsYnxS/gB0SLXfcCh/xOpHedzZR
- gFvA==
-X-Gm-Message-State: AOAM531iKjwcwEVyysXJ+u2BWNL+PTds/F1orHNnB7UtuM39ewcAqLVo
- IO+rkiyPj6/NErIzAvTpVnY=
-X-Google-Smtp-Source: ABdhPJy61JBdPHWehe+0JZDFDtaEYRkwyYUuH0JZUFf3l53X5Ds5OQvvxR8PRHj15LQUp0FSRiIF9w==
-X-Received: by 2002:ac2:53a5:: with SMTP id j5mr141454lfh.130.1635369513848;
- Wed, 27 Oct 2021 14:18:33 -0700 (PDT)
+ bh=rTg0c6UJkUtA3xox9iyqZdpwaCfteR79knUJVekTw18=;
+ b=Fo3E6iDotk4uVqvaFPa3EXzQnwlcPYHY5leThyoHRZURQ9ABWgD7r1B/XfhzKCWkAh
+ DFgFR4CGjZ3rI40SCRRO6Q2OM3se6/Iruwt/GzyHu3JqKJomoMLUR/urPhV6Osj0unda
+ 68sSSPpS3SX/AYLfS0dM0gR96gd+lKd9FdjUAjVgQkM2Af0TiJyU77ucAZOwHNXGhPvB
+ w2Gh1bC7QuqTxRcvnccOeq7YjLPFKGb5xiB9kZGoC1RUOCVhzdb2zRMZxLwtGogaiKHz
+ fGoSAgz8Eg4Rsy2+FfAyrDO8cCk8PP3R50rBTpAR2FNEW9R3TMheNYZfpmrp5PVTtJAh
+ 7yxA==
+X-Gm-Message-State: AOAM531Ce5pRElzBLWz+W9sBPyvINTsJKeicAbKLwxJIeouQE/kK3gY5
+ n3Pcpcr94GKjbHfe2J3oI+0=
+X-Google-Smtp-Source: ABdhPJxFzFVD2w1ioavz6oJ1REfrGLdo1ULxWozIc4isKil/5p3npr9c6ZJggbEvwegyiOXfsqbr2g==
+X-Received: by 2002:a05:6512:3699:: with SMTP id
+ d25mr132127lfs.380.1635369515664; 
+ Wed, 27 Oct 2021 14:18:35 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru.
  [46.138.41.28])
- by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.32
+ by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 14:18:33 -0700 (PDT)
+ Wed, 27 Oct 2021 14:18:35 -0700 (PDT)
 From: Dmitry Osipenko <digetx@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
  Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
@@ -68,9 +69,9 @@ To: Thierry Reding <thierry.reding@gmail.com>,
  Daniel Lezcano <daniel.lezcano@linaro.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v2 22/45] memory: emif: Use kernel_can_power_off()
-Date: Thu, 28 Oct 2021 00:16:52 +0300
-Message-Id: <20211027211715.12671-23-digetx@gmail.com>
+Subject: [PATCH v2 23/45] ACPI: power: Switch to power-handler API
+Date: Thu, 28 Oct 2021 00:16:53 +0300
+Message-Id: <20211027211715.12671-24-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -127,27 +128,87 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Replace legacy pm_power_off with kernel_can_power_off() helper that
-is aware about chained power-off handlers.
+Switch to power-handler API that replaces legacy pm_power_off callbacks.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/memory/emif.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/sleep.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/memory/emif.c b/drivers/memory/emif.c
-index 762d0c0f0716..cab10d5274a0 100644
---- a/drivers/memory/emif.c
-+++ b/drivers/memory/emif.c
-@@ -630,7 +630,7 @@ static irqreturn_t emif_threaded_isr(int irq, void *dev_id)
- 		dev_emerg(emif->dev, "SDRAM temperature exceeds operating limit.. Needs shut down!!!\n");
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 3023224515ab..41b3ea867f8f 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -47,19 +47,11 @@ static void acpi_sleep_tts_switch(u32 acpi_state)
+ 	}
+ }
  
- 		/* If we have Power OFF ability, use it, else try restarting */
--		if (pm_power_off) {
-+		if (kernel_can_power_off()) {
- 			kernel_power_off();
- 		} else {
- 			WARN(1, "FIXME: NO pm_power_off!!! trying restart\n");
+-static int tts_notify_reboot(struct notifier_block *this,
+-			unsigned long code, void *x)
++static void tts_reboot_prepare(struct reboot_prep_data *data)
+ {
+ 	acpi_sleep_tts_switch(ACPI_STATE_S5);
+-	return NOTIFY_DONE;
+ }
+ 
+-static struct notifier_block tts_notifier = {
+-	.notifier_call	= tts_notify_reboot,
+-	.next		= NULL,
+-	.priority	= 0,
+-};
+-
+ static int acpi_sleep_prepare(u32 acpi_state)
+ {
+ #ifdef CONFIG_ACPI_SLEEP
+@@ -1016,7 +1008,7 @@ static void acpi_sleep_hibernate_setup(void)
+ static inline void acpi_sleep_hibernate_setup(void) {}
+ #endif /* !CONFIG_HIBERNATION */
+ 
+-static void acpi_power_off_prepare(void)
++static void acpi_power_off_prepare(struct power_off_prep_data *data)
+ {
+ 	/* Prepare to power off the system */
+ 	acpi_sleep_prepare(ACPI_STATE_S5);
+@@ -1024,7 +1016,7 @@ static void acpi_power_off_prepare(void)
+ 	acpi_os_wait_events_complete();
+ }
+ 
+-static void acpi_power_off(void)
++static void acpi_power_off(struct power_off_data *data)
+ {
+ 	/* acpi_sleep_prepare(ACPI_STATE_S5) should have already been called */
+ 	pr_debug("%s called\n", __func__);
+@@ -1032,6 +1024,11 @@ static void acpi_power_off(void)
+ 	acpi_enter_sleep_state(ACPI_STATE_S5);
+ }
+ 
++static struct power_handler acpi_power_handler = {
++	.power_off_priority = POWEROFF_PRIO_FIRMWARE,
++	.reboot_prepare_cb = tts_reboot_prepare,
++};
++
+ int __init acpi_sleep_init(void)
+ {
+ 	char supported[ACPI_S_STATE_COUNT * 3 + 1];
+@@ -1048,8 +1045,8 @@ int __init acpi_sleep_init(void)
+ 
+ 	if (acpi_sleep_state_supported(ACPI_STATE_S5)) {
+ 		sleep_states[ACPI_STATE_S5] = 1;
+-		pm_power_off_prepare = acpi_power_off_prepare;
+-		pm_power_off = acpi_power_off;
++		acpi_power_handler.power_off_cb = acpi_power_off;
++		acpi_power_handler.power_off_prepare_cb = acpi_power_off_prepare;
+ 	} else {
+ 		acpi_no_s5 = true;
+ 	}
+@@ -1065,6 +1062,6 @@ int __init acpi_sleep_init(void)
+ 	 * Register the tts_notifier to reboot notifier list so that the _TTS
+ 	 * object can also be evaluated when the system enters S5.
+ 	 */
+-	register_reboot_notifier(&tts_notifier);
++	register_power_handler(&acpi_power_handler);
+ 	return 0;
+ }
 -- 
 2.33.1
 
