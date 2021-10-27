@@ -1,64 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6C443D763
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:15:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6021A43D764
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:16:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfl0X5q88z3fQt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:15:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfl1F1gGXz3dr7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:16:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kPE91xXN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TlGsLZtc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::236;
- helo=mail-lj1-x236.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22a;
+ helo=mail-lj1-x22a.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=kPE91xXN; dkim-atps=neutral
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com
- [IPv6:2a00:1450:4864:20::236])
+ header.s=20210112 header.b=TlGsLZtc; dkim-atps=neutral
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com
+ [IPv6:2a00:1450:4864:20::22a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhQL41Xqz3bNB;
- Thu, 28 Oct 2021 08:19:06 +1100 (AEDT)
-Received: by mail-lj1-x236.google.com with SMTP id i26so5091531ljg.7;
- Wed, 27 Oct 2021 14:19:06 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhQN2sGSz3bXv;
+ Thu, 28 Oct 2021 08:19:08 +1100 (AEDT)
+Received: by mail-lj1-x22a.google.com with SMTP id u5so6968007ljo.8;
+ Wed, 27 Oct 2021 14:19:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=Mu7tO95vXROZ9xbCJkoDzGl64HT6xR31EdIoyaMnKtk=;
- b=kPE91xXN+stBc0ha+PSjaOkkNGKlDTid0pZMJS4/z0xuWbbpv+/mX7oe8gzrFGsnxt
- knUKantyHU6PWIePiCnlFQ4UN8ZQdQP1oXKoJzSLIKv1lTDAhiLZjpDPc+aijhkrEZAj
- Xd8HN8BgZu0o5hpIxMQVtpuABAaRE4DHHXJZzo4Dy3xXk62gjG4MyDoYUHzKrSYuupRB
- lCz2OE27nWCjWUb+PHoI0yIS0mi3esed5R8cO+FhwY/2Rv4/jyVsNkj3xtgaoN5/YStc
- dCcP9WUacf6ElBGM42XMwNMMkAZqDoGVD/aHJJj9Cz/Tk9wj2JFlAJdIXkKMwT6cvxA3
- e31g==
+ bh=3OlHSqJ+90NzTUoF0ScIJd6Gu2h2samNuNJcsiL1Jk8=;
+ b=TlGsLZtcrVzUb7sAOhif3p7pVw8LafC2xLy1EDPy1NIwJl5MQQvmHy2JQZYszcOE8Z
+ bpdCDmyEM5D03Couzbs3VVZUIdamWSCPF0yzl5vvizBqtDssLI1790jRM+TPIcawNrlD
+ 8STEeq0OEOHvy2rX7OXiOWUq9V+Wbq3xZg3vhjF/dealnvdRkEuGDx5b0mmtoBXsa4Tg
+ 7gFUHQvvLRw3QjAUV5dCuqij4emeiEy4r7tFICkEZrQaaXXABdfN2M8h/mxrxQbImqYG
+ GaGzMOCXHjG+QuAc4Dq0gK0PotuHucIYhVqvi35iVuJc+hGZhg1h00rdw0kra8k/EpLO
+ luJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=Mu7tO95vXROZ9xbCJkoDzGl64HT6xR31EdIoyaMnKtk=;
- b=l6W3VYHwiWQFc5RKBFNChkQCP8p1bFRTGmYN9aC475KXbayeW04gLTsaJbPDM2NQVN
- 68ujK6D+DCQtvh0V6rnWD3H61FWqMCv2G0SZClRwACKB3GfpwU2zf/X/S2cIxxzFk7gN
- HWafDQJDjsGoe9tbvm6Jp1gibF8esdSkFCULsSb2v3ekm4ipPDd1OyEWnLqwA+ZXRwHb
- EN7IdvLkl7ly1800W6H/czy3EVWy4aIFv7k6HLmIeydCwSTHC8bAZFgk7Q00WkRzuMr2
- +/FNosPQbpSeD7iJMsuKf/WLa8Oqx+kB3TxLGSY5cwu/8aBuQjoBg648A2cusVhnTG+5
- e+fA==
-X-Gm-Message-State: AOAM5305U6PJ4QMqcml+smnMe8Bh0RdIne9hBJKXQQpv+OJK/Uh/pZSU
- RVRlatbdSFkokg5WewawGww=
-X-Google-Smtp-Source: ABdhPJx+pRFjcRYPR1om8nKBpIgAHoRaPbEg7vS4nL7YKN3yH6zq2Ajomu3cvpnY+yAbJLhjtqI1TQ==
-X-Received: by 2002:a2e:bb98:: with SMTP id y24mr344716lje.168.1635369543476; 
- Wed, 27 Oct 2021 14:19:03 -0700 (PDT)
+ bh=3OlHSqJ+90NzTUoF0ScIJd6Gu2h2samNuNJcsiL1Jk8=;
+ b=x/i60N2Ub75A2VthO8+wkvj3upfyxcYQu6ODflL0gD7QVFQmeFwFgK1uHBLz1nx2WH
+ rZYdI2fDZq0ImfmJStBVQ+OsuJQ3xabwI648xkXEVZOtA4njvgB36gvFOy8o6R3Ej9nW
+ DTStP9hQVgsRMgZMay2V7wb92CQu2tJWDR5LuVa4g3V79kl7jpW8obSJUpJmKl8mG2X6
+ 0quuwIB4bDvKxuVN+oHVeP4FS19ipm/tVOqnKDvIiygsZ1lr9COovw7d+oc7z9xAo+FP
+ Mzn954cqehPvaqj1GWLF9k2nymlk/0ojmy+PW08G++DUpIA93l4wwfbCtFHNawWV+5n+
+ mCpQ==
+X-Gm-Message-State: AOAM5314lytw9+4FuSUfP25tcrj8xo+I3NElYli3zyFB/i4H9+rzDRwC
+ Gp7u4Jp2QH58KrwbvTf6dFM=
+X-Google-Smtp-Source: ABdhPJzDbMhKltt/cJ4cLHVC7lvSJKFFWBp4i2pL/KBXA4D8sI4Ihh3wNKVdm9xKvnEcHeY8d+ELCw==
+X-Received: by 2002:a2e:b0e2:: with SMTP id h2mr336408ljl.522.1635369545290;
+ Wed, 27 Oct 2021 14:19:05 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru.
  [46.138.41.28])
- by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.19.01
+ by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.19.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 14:19:03 -0700 (PDT)
+ Wed, 27 Oct 2021 14:19:05 -0700 (PDT)
 From: Dmitry Osipenko <digetx@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
  Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
@@ -68,10 +68,10 @@ To: Thierry Reding <thierry.reding@gmail.com>,
  Daniel Lezcano <daniel.lezcano@linaro.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v2 38/45] mfd: max77620: Use
- devm_register_simple_power_off_handler()
-Date: Thu, 28 Oct 2021 00:17:08 +0300
-Message-Id: <20211027211715.12671-39-digetx@gmail.com>
+Subject: [PATCH v2 39/45] mfd: dm355evm_msp: Use
+ devm_register_trivial_power_off_handler()
+Date: Thu, 28 Oct 2021 00:17:09 +0300
+Message-Id: <20211027211715.12671-40-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -128,71 +128,79 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use devm_register_simple_power_off_handler() that replaces global
+Use devm_register_trivial_power_off_handler() that replaces global
 pm_power_off variable and allows to register multiple power-off handlers.
-
-Nexus 7 Android tablet can be powered off using MAX77663 PMIC and using
-a special bootloader command. At first the bootloader option should be
-tried, it will have a higher priority than of PMIC that uses default
-priority.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/mfd/max77620.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ drivers/mfd/dm355evm_msp.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mfd/max77620.c b/drivers/mfd/max77620.c
-index fec2096474ad..29487ccc191a 100644
---- a/drivers/mfd/max77620.c
-+++ b/drivers/mfd/max77620.c
-@@ -31,11 +31,10 @@
+diff --git a/drivers/mfd/dm355evm_msp.c b/drivers/mfd/dm355evm_msp.c
+index 54fb6cbd2aa0..5ee830f65589 100644
+--- a/drivers/mfd/dm355evm_msp.c
++++ b/drivers/mfd/dm355evm_msp.c
+@@ -8,6 +8,7 @@
  #include <linux/init.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
+ #include <linux/mutex.h>
+ #include <linux/platform_device.h>
 +#include <linux/reboot.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
- 
--static struct max77620_chip *max77620_scratch;
--
- static const struct resource gpio_resources[] = {
- 	DEFINE_RES_IRQ(MAX77620_IRQ_TOP_GPIO),
- };
-@@ -483,13 +482,13 @@ static int max77620_read_es_version(struct max77620_chip *chip)
- 	return ret;
+ #include <linux/clk.h>
+ #include <linux/module.h>
+ #include <linux/err.h>
+@@ -375,11 +376,10 @@ static void dm355evm_power_off(void)
+ 	dm355evm_command(MSP_COMMAND_POWEROFF);
  }
  
--static void max77620_pm_power_off(void)
-+static void max77620_pm_power_off(void *data)
+-static int dm355evm_msp_remove(struct i2c_client *client)
++static void dm355evm_msp_remove(void *data)
  {
--	struct max77620_chip *chip = max77620_scratch;
-+	struct max77620_chip *chip = data;
- 
- 	regmap_update_bits(chip->rmap, MAX77620_REG_ONOFFCNFG1,
--			   MAX77620_ONOFFCNFG1_SFT_RST,
--			   MAX77620_ONOFFCNFG1_SFT_RST);
-+				   MAX77620_ONOFFCNFG1_SFT_RST,
-+				   MAX77620_ONOFFCNFG1_SFT_RST);
+-	pm_power_off = NULL;
++	/* FIXME remove children ... */
+ 	msp430 = NULL;
+-	return 0;
  }
  
- static int max77620_probe(struct i2c_client *client,
-@@ -566,9 +565,13 @@ static int max77620_probe(struct i2c_client *client,
- 	}
+ static int
+@@ -392,6 +392,11 @@ dm355evm_msp_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 		return -EBUSY;
+ 	msp430 = client;
  
- 	pm_off = of_device_is_system_power_controller(client->dev.of_node);
--	if (pm_off && !pm_power_off) {
--		max77620_scratch = chip;
--		pm_power_off = max77620_pm_power_off;
-+	if (pm_off) {
-+		ret = devm_register_simple_power_off_handler(chip->dev,
-+							     max77620_pm_power_off,
-+							     chip);
-+		if (ret < 0)
-+			dev_err(chip->dev,
-+				"Failed to register power-off handler: %d\n", ret);
- 	}
++	status = devm_add_action_or_reset(&client->dev, dm355evm_msp_remove,
++					  NULL);
++	if (status < 0)
++		goto fail;
++
+ 	/* display revision status; doubles as sanity check */
+ 	status = dm355evm_msp_read(DM355EVM_MSP_FIRMREV);
+ 	if (status < 0)
+@@ -416,13 +421,15 @@ dm355evm_msp_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 		goto fail;
+ 
+ 	/* PM hookup */
+-	pm_power_off = dm355evm_power_off;
++	status = devm_register_trivial_power_off_handler(&client->dev,
++							 dm355evm_power_off);
++	if (status)
++		dev_err(&client->dev, "failed to register power-off handler: %d",
++			status);
  
  	return 0;
+ 
+ fail:
+-	/* FIXME remove children ... */
+-	dm355evm_msp_remove(client);
+ 	return status;
+ }
+ 
+@@ -436,7 +443,6 @@ static struct i2c_driver dm355evm_msp_driver = {
+ 	.driver.name	= "dm355evm_msp",
+ 	.id_table	= dm355evm_msp_ids,
+ 	.probe		= dm355evm_msp_probe,
+-	.remove		= dm355evm_msp_remove,
+ };
+ 
+ static int __init dm355evm_msp_init(void)
 -- 
 2.33.1
 
