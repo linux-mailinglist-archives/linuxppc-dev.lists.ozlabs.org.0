@@ -2,64 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E84543D728
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF3F643D72B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:06:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfknp70rBz3fmt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:06:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfkpX4Xw1z3fqM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:06:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IOOovw4H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aSBcb4MO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12c;
- helo=mail-lf1-x12c.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22a;
+ helo=mail-lj1-x22a.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=IOOovw4H; dkim-atps=neutral
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com
- [IPv6:2a00:1450:4864:20::12c])
+ header.s=20210112 header.b=aSBcb4MO; dkim-atps=neutral
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com
+ [IPv6:2a00:1450:4864:20::22a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhPq1d27z3015;
- Thu, 28 Oct 2021 08:18:39 +1100 (AEDT)
-Received: by mail-lf1-x12c.google.com with SMTP id u21so8957370lff.8;
- Wed, 27 Oct 2021 14:18:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhPs1gTdz305T;
+ Thu, 28 Oct 2021 08:18:41 +1100 (AEDT)
+Received: by mail-lj1-x22a.google.com with SMTP id 205so6951274ljf.9;
+ Wed, 27 Oct 2021 14:18:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=rTg0c6UJkUtA3xox9iyqZdpwaCfteR79knUJVekTw18=;
- b=IOOovw4HthrHOXjOs46Y3yITm9+R54zah3HqdDtgfe0CoTVx3Ny/qQfSWJECq3va5v
- POFxHfUV4nFfAVF/2xQmQF0GAuAxqBjz1BtRvOKx4MR0EfN6IoGEZZUqz+WUpBWyPywt
- GrOnqTwA95eu+J8qffyJd/WsYZnQLcqOy0MiUotidUtoWBtzitEMBsbvSCmIUhOFOmfU
- TN0N1IIFJs2PwhqjyrirBl5OZM0AJ4ETZ7OvQijCQBnaCq4fjrrAiLoAARG8gCOMWpFL
- isJ90k/kflRmNXJGxu4rOU7Ttcg3V2boCXpvP5Lo62Urd2fuc4VonqYdYqPHg73Ap8Wn
- SfNw==
+ bh=RsN03A/v4Sm7hW8tBAQNfAIwim2Ix+phU87uldQTcUU=;
+ b=aSBcb4MObsGcKwVtxhkQi6r6MrllJ5Wvhx4AXr7+3ZZIOmNeNayjB4H7wS3yJIQaI0
+ vfLkw8dEY0bAB5FpyHupYLxHHW8temP9OImGFFR4LDmE7/mvPRk5uTYf1q52vThLv1Ot
+ CBrv1hpmeU5p/gGow8523dqz9J8N1faFeN/IXFxxWyp7mhT8fq2Z7acBEZ06y9nx6CF2
+ oI6Bf+jKcKCu1O6+i0B6l4EesA9cDqHIJQrezIg8dnd+TlutJ/VurnoBCjdUW8FVuBfF
+ rgIrNrWNCUTYVjuoeGUx+HMg9DODFrvmZsdKkZzK15Dx1U5yq0D3h61n1EAZrJfufwr8
+ qWRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=rTg0c6UJkUtA3xox9iyqZdpwaCfteR79knUJVekTw18=;
- b=Fo3E6iDotk4uVqvaFPa3EXzQnwlcPYHY5leThyoHRZURQ9ABWgD7r1B/XfhzKCWkAh
- DFgFR4CGjZ3rI40SCRRO6Q2OM3se6/Iruwt/GzyHu3JqKJomoMLUR/urPhV6Osj0unda
- 68sSSPpS3SX/AYLfS0dM0gR96gd+lKd9FdjUAjVgQkM2Af0TiJyU77ucAZOwHNXGhPvB
- w2Gh1bC7QuqTxRcvnccOeq7YjLPFKGb5xiB9kZGoC1RUOCVhzdb2zRMZxLwtGogaiKHz
- fGoSAgz8Eg4Rsy2+FfAyrDO8cCk8PP3R50rBTpAR2FNEW9R3TMheNYZfpmrp5PVTtJAh
- 7yxA==
-X-Gm-Message-State: AOAM531Ce5pRElzBLWz+W9sBPyvINTsJKeicAbKLwxJIeouQE/kK3gY5
- n3Pcpcr94GKjbHfe2J3oI+0=
-X-Google-Smtp-Source: ABdhPJxFzFVD2w1ioavz6oJ1REfrGLdo1ULxWozIc4isKil/5p3npr9c6ZJggbEvwegyiOXfsqbr2g==
-X-Received: by 2002:a05:6512:3699:: with SMTP id
- d25mr132127lfs.380.1635369515664; 
- Wed, 27 Oct 2021 14:18:35 -0700 (PDT)
+ bh=RsN03A/v4Sm7hW8tBAQNfAIwim2Ix+phU87uldQTcUU=;
+ b=iokJEWJI3jf9YIcDzikTBsTfADt8TlWqf4glINuPpz+XdBwQxG1Nj+yPotNSqsAZH7
+ GVXf3dGRSRBdOb3h5HhH9YqGYJVL9vRaUqk36TTo+q4umsmM2JiHLqx4CC0o3aiGUdiT
+ mMOzqASk1uXTOVrDf1IU6f+j40+tEMCJLUE/msH8tsSD4/EW/f3W90v86EYZ0xbaAYu6
+ YBmXQ9VVidYEodfhaXbIkZcqVgqp1VUb3Mdheyk3rdJw6ZFVlgwGf+0lf0QDMdk1IhuA
+ tv/iNOt3oWWpt1F5qvwfd7nVrsnmgUBY3773wcISvYf02tW0GV1ntn0F54pDCJcmEiej
+ AI0w==
+X-Gm-Message-State: AOAM533CDoxsT144rIJdYoijzIRWzLnUnjfAxVz92ZsaLzqVgm4MwJFW
+ ViGz7jy26IySE3IF77oPWGY=
+X-Google-Smtp-Source: ABdhPJwvRw65HVRl6UYG4kSDngjOw+VDWoznyGC0SQFAdeVNXxGihIuJGUkpMtbqNUFYMuUZsUPclw==
+X-Received: by 2002:a2e:3e08:: with SMTP id l8mr351596lja.194.1635369517590;
+ Wed, 27 Oct 2021 14:18:37 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru.
  [46.138.41.28])
- by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.33
+ by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 14:18:35 -0700 (PDT)
+ Wed, 27 Oct 2021 14:18:37 -0700 (PDT)
 From: Dmitry Osipenko <digetx@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
  Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
@@ -69,9 +68,10 @@ To: Thierry Reding <thierry.reding@gmail.com>,
  Daniel Lezcano <daniel.lezcano@linaro.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v2 23/45] ACPI: power: Switch to power-handler API
-Date: Thu, 28 Oct 2021 00:16:53 +0300
-Message-Id: <20211027211715.12671-24-digetx@gmail.com>
+Subject: [PATCH v2 24/45] regulator: pfuze100: Use
+ devm_register_power_handler()
+Date: Thu, 28 Oct 2021 00:16:54 +0300
+Message-Id: <20211027211715.12671-25-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -128,87 +128,107 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Switch to power-handler API that replaces legacy pm_power_off callbacks.
+Use devm_register_power_handler() that replaces global pm_power_off_prepare
+variable and allows to register multiple power-off handlers.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/acpi/sleep.c | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ drivers/regulator/pfuze100-regulator.c | 39 ++++++++++----------------
+ 1 file changed, 15 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index 3023224515ab..41b3ea867f8f 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -47,19 +47,11 @@ static void acpi_sleep_tts_switch(u32 acpi_state)
- 	}
+diff --git a/drivers/regulator/pfuze100-regulator.c b/drivers/regulator/pfuze100-regulator.c
+index d60d7d1b7fa2..73d5baf9d3ea 100644
+--- a/drivers/regulator/pfuze100-regulator.c
++++ b/drivers/regulator/pfuze100-regulator.c
+@@ -10,6 +10,7 @@
+ #include <linux/of_device.h>
+ #include <linux/regulator/of_regulator.h>
+ #include <linux/platform_device.h>
++#include <linux/reboot.h>
+ #include <linux/regulator/driver.h>
+ #include <linux/regulator/machine.h>
+ #include <linux/regulator/pfuze100.h>
+@@ -76,6 +77,7 @@ struct pfuze_chip {
+ 	struct pfuze_regulator regulator_descs[PFUZE100_MAX_REGULATOR];
+ 	struct regulator_dev *regulators[PFUZE100_MAX_REGULATOR];
+ 	struct pfuze_regulator *pfuze_regulators;
++	struct power_handler power_handler;
+ };
+ 
+ static const int pfuze100_swbst[] = {
+@@ -569,10 +571,10 @@ static inline struct device_node *match_of_node(int index)
+ 	return pfuze_matches[index].of_node;
  }
  
--static int tts_notify_reboot(struct notifier_block *this,
--			unsigned long code, void *x)
-+static void tts_reboot_prepare(struct reboot_prep_data *data)
- {
- 	acpi_sleep_tts_switch(ACPI_STATE_S5);
--	return NOTIFY_DONE;
- }
- 
--static struct notifier_block tts_notifier = {
--	.notifier_call	= tts_notify_reboot,
--	.next		= NULL,
--	.priority	= 0,
--};
+-static struct pfuze_chip *syspm_pfuze_chip;
 -
- static int acpi_sleep_prepare(u32 acpi_state)
+-static void pfuze_power_off_prepare(void)
++static void pfuze_power_off_prepare(struct power_off_prep_data *data)
  {
- #ifdef CONFIG_ACPI_SLEEP
-@@ -1016,7 +1008,7 @@ static void acpi_sleep_hibernate_setup(void)
- static inline void acpi_sleep_hibernate_setup(void) {}
- #endif /* !CONFIG_HIBERNATION */
- 
--static void acpi_power_off_prepare(void)
-+static void acpi_power_off_prepare(struct power_off_prep_data *data)
- {
- 	/* Prepare to power off the system */
- 	acpi_sleep_prepare(ACPI_STATE_S5);
-@@ -1024,7 +1016,7 @@ static void acpi_power_off_prepare(void)
- 	acpi_os_wait_events_complete();
- }
- 
--static void acpi_power_off(void)
-+static void acpi_power_off(struct power_off_data *data)
- {
- 	/* acpi_sleep_prepare(ACPI_STATE_S5) should have already been called */
- 	pr_debug("%s called\n", __func__);
-@@ -1032,6 +1024,11 @@ static void acpi_power_off(void)
- 	acpi_enter_sleep_state(ACPI_STATE_S5);
- }
- 
-+static struct power_handler acpi_power_handler = {
-+	.power_off_priority = POWEROFF_PRIO_FIRMWARE,
-+	.reboot_prepare_cb = tts_reboot_prepare,
-+};
++	struct pfuze_chip *syspm_pfuze_chip = data->cb_data;
 +
- int __init acpi_sleep_init(void)
- {
- 	char supported[ACPI_S_STATE_COUNT * 3 + 1];
-@@ -1048,8 +1045,8 @@ int __init acpi_sleep_init(void)
+ 	dev_info(syspm_pfuze_chip->dev, "Configure standby mode for power off");
  
- 	if (acpi_sleep_state_supported(ACPI_STATE_S5)) {
- 		sleep_states[ACPI_STATE_S5] = 1;
--		pm_power_off_prepare = acpi_power_off_prepare;
--		pm_power_off = acpi_power_off;
-+		acpi_power_handler.power_off_cb = acpi_power_off;
-+		acpi_power_handler.power_off_prepare_cb = acpi_power_off_prepare;
- 	} else {
- 		acpi_no_s5 = true;
+ 	/* Switch from default mode: APS/APS to APS/Off */
+@@ -611,24 +613,24 @@ static void pfuze_power_off_prepare(void)
+ 
+ static int pfuze_power_off_prepare_init(struct pfuze_chip *pfuze_chip)
+ {
++	int err;
++
+ 	if (pfuze_chip->chip_id != PFUZE100) {
+ 		dev_warn(pfuze_chip->dev, "Requested pm_power_off_prepare handler for not supported chip\n");
+ 		return -ENODEV;
  	}
-@@ -1065,6 +1062,6 @@ int __init acpi_sleep_init(void)
- 	 * Register the tts_notifier to reboot notifier list so that the _TTS
- 	 * object can also be evaluated when the system enters S5.
- 	 */
--	register_reboot_notifier(&tts_notifier);
-+	register_power_handler(&acpi_power_handler);
+ 
+-	if (pm_power_off_prepare) {
+-		dev_warn(pfuze_chip->dev, "pm_power_off_prepare is already registered.\n");
+-		return -EBUSY;
+-	}
++	pfuze_chip->power_handler.power_off_prepare_cb = pfuze_power_off_prepare;
++	pfuze_chip->power_handler.cb_data = pfuze_chip;
+ 
+-	if (syspm_pfuze_chip) {
+-		dev_warn(pfuze_chip->dev, "syspm_pfuze_chip is already set.\n");
+-		return -EBUSY;
++	err = devm_register_power_handler(pfuze_chip->dev,
++					  &pfuze_chip->power_handler);
++	if (err) {
++		dev_err(pfuze_chip->dev,
++			"failed to register power handler: %d\n", err);
++		return err;
+ 	}
+ 
+-	syspm_pfuze_chip = pfuze_chip;
+-	pm_power_off_prepare = pfuze_power_off_prepare;
+-
  	return 0;
  }
+ 
+@@ -837,23 +839,12 @@ static int pfuze100_regulator_probe(struct i2c_client *client,
+ 	return 0;
+ }
+ 
+-static int pfuze100_regulator_remove(struct i2c_client *client)
+-{
+-	if (syspm_pfuze_chip) {
+-		syspm_pfuze_chip = NULL;
+-		pm_power_off_prepare = NULL;
+-	}
+-
+-	return 0;
+-}
+-
+ static struct i2c_driver pfuze_driver = {
+ 	.driver = {
+ 		.name = "pfuze100-regulator",
+ 		.of_match_table = pfuze_dt_ids,
+ 	},
+ 	.probe = pfuze100_regulator_probe,
+-	.remove = pfuze100_regulator_remove,
+ };
+ module_i2c_driver(pfuze_driver);
+ 
 -- 
 2.33.1
 
