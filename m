@@ -2,51 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8953F43BED0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 03:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D7243BF3C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 03:55:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hf9dN3ds6z2ypL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 12:11:52 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KtTiqffv;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfBc85ZF2z2xXB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 12:55:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132;
+ helo=out30-132.freemail.mail.aliyun.com;
+ envelope-from=yun.wang@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-132.freemail.mail.aliyun.com
+ (out30-132.freemail.mail.aliyun.com [115.124.30.132])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hf9cm3wM1z2xVt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 12:11:20 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=KtTiqffv; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hf9cm1Wd2z4xbW;
- Wed, 27 Oct 2021 12:11:20 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1635297080;
- bh=I3Ag9NoPyPnvqS/AhH06q+iM0kEFuT48hNrE1E088vQ=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=KtTiqffvf7wsJxcwV+p+kntC3Cy9YyjexeiXB1IUgzz9Hmm/wOGQ3AAlfmpp9harF
- xLgJGzPTSGdGkGlufnv0DNnfnX8MZ/mhszerQF/NRj/zg4Zx3e65cSAhuoStZmVNri
- bFjCgeGbH0exCoU3CGKEDSVX6Ts01lysKx1fqdQ/dBhVt3zQMni4d/zqcH2wSB3nCL
- KS+LltQvL8N8nsordTQH2ljpI8yRhY4RbCIZhNrYuturV9KmkuEwqDoLyaiZ/hcI25
- fYF25WGH+Ynu1UHzNvCaOvUjrmoEd5TOUf6H27xMfOxB7RpWsKzDfEdHku+bCO+32M
- ow3TGyu3+Ywvw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Denis Kirjanov <kda@linux-powerpc.org>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/xmon: fix task state output
-In-Reply-To: <20211026133108.7113-1-kda@linux-powerpc.org>
-References: <20211026133108.7113-1-kda@linux-powerpc.org>
-Date: Wed, 27 Oct 2021 12:11:15 +1100
-Message-ID: <87bl3bb7bg.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfBbj5bcfz2xBm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 12:55:23 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R441e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04423; MF=yun.wang@linux.alibaba.com;
+ NM=1; PH=DS; RN=30; SR=0; TI=SMTPD_---0UtpFhNO_1635299711; 
+Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com
+ fp:SMTPD_---0UtpFhNO_1635299711) by smtp.aliyun-inc.com(127.0.0.1);
+ Wed, 27 Oct 2021 09:55:13 +0800
+Subject: Re: [PATCH v5 1/2] ftrace: disable preemption when recursion locked
+To: Steven Rostedt <rostedt@goodmis.org>
+References: <3ca92dc9-ea04-ddc2-71cd-524bfa5a5721@linux.alibaba.com>
+ <333cecfe-3045-8e0a-0c08-64ff590845ab@linux.alibaba.com>
+ <alpine.LSU.2.21.2110261128120.28494@pobox.suse.cz>
+ <18ba2a71-e12d-33f7-63fe-2857b2db022c@linux.alibaba.com>
+ <20211026080117.366137a5@gandalf.local.home>
+From: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
+Message-ID: <3d897161-7b74-944a-f2a0-07311436fbd9@linux.alibaba.com>
+Date: Wed, 27 Oct 2021 09:54:13 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20211026080117.366137a5@gandalf.local.home>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,45 +54,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Guo Ren <guoren@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, live-patching@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Miroslav Benes <mbenes@suse.cz>,
+ Joe Lawrence <joe.lawrence@redhat.com>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Petr Mladek <pmladek@suse.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Jiri Kosina <jikos@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Denis Kirjanov <kda@linux-powerpc.org> writes:
-> p_state is unsigned since the commit 2f064a59a11f
->
-> The patch also uses TASK_RUNNING instead of null.
->
-> Fixes: 2f064a59a11f ("sched: Change task_struct::state")
-> Signed-off-by: Denis Kirjanov <kda@linux-powerpc.org>
-> ---
->  arch/powerpc/xmon/xmon.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> index dd8241c009e5..8b28ff9d98d1 100644
-> --- a/arch/powerpc/xmon/xmon.c
-> +++ b/arch/powerpc/xmon/xmon.c
-> @@ -3264,8 +3264,7 @@ static void show_task(struct task_struct *volatile tsk)
->  	 * appropriate for calling from xmon. This could be moved
->  	 * to a common, generic, routine used by both.
->  	 */
-> -	state = (p_state == 0) ? 'R' :
-> -		(p_state < 0) ? 'U' :
 
-I guess 'U' meant 'unknown'? I always thought it meant uninterruptible,
-but obviously that is 'D'.
 
-> +	state = (p_state == TASK_RUNNING) ? 'R' :
->  		(p_state & TASK_UNINTERRUPTIBLE) ? 'D' :
->  		(p_state & TASK_STOPPED) ? 'T' :
->  		(p_state & TASK_TRACED) ? 'C' :
+On 2021/10/26 下午8:01, Steven Rostedt wrote:
+> On Tue, 26 Oct 2021 17:48:10 +0800
+> 王贇 <yun.wang@linux.alibaba.com> wrote:
+> 
+>>> The two comments should be updated too since Steven removed the "bit == 0" 
+>>> trick.  
+>>
+>> Could you please give more hint on how will it be correct?
+>>
+>> I get the point that bit will no longer be 0, there are only -1 or > 0 now
+>> so trace_test_and_set_recursion() will disable preemption on bit > 0 and
+>> trace_clear_recursion() will enabled it since it should only be called when
+>> bit > 0 (I remember we could use a WARN_ON here now :-P).
+>>
+>>>   
+>>>> @@ -178,7 +187,7 @@ static __always_inline void trace_clear_recursion(int bit)
+>>>>   * tracing recursed in the same context (normal vs interrupt),
+>>>>   *
+>>>>   * Returns: -1 if a recursion happened.
+>>>> - *           >= 0 if no recursion
+>>>> + *           > 0 if no recursion.
+>>>>   */
+>>>>  static __always_inline int ftrace_test_recursion_trylock(unsigned long ip,
+>>>>  							 unsigned long parent_ip)  
+>>>
+>>> And this change would not be correct now.  
+>>
+>> I thought it will no longer return 0 so I change it to > 0, isn't that correct?
+> 
+> No it is not. I removed the bit + 1 return value, which means it returns the
+> actual bit now. Which is 0 or more.
 
-I think a better cleanup would be to use task_is_running(),
-task_is_traced(), task_is_stopped(). That way we're insulated somewhat
-from any future changes.
+Ah, the return is bit not val, I must be drunk...
 
-That would add additional READ_ONCE()s of the state, but I don't think
-we care, the task should not be running if the system is in xmon.
+My apologize for the stupid comments... I'll send a v6 for this patch
+only to fix that, please let me know if this is not a good way to fix
+few lines of comments.
 
-cheers
+Regards,
+Michael Wang
+
+> 
+> -- Steve
+> 
