@@ -1,65 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5055B43D75E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:13:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E86F43D760
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:14:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfkyQ18PNz3gWX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:13:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfkz70Y7xz3gb2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:14:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fdXEajT5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WISWhItq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::132;
- helo=mail-lf1-x132.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::135;
+ helo=mail-lf1-x135.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=fdXEajT5; dkim-atps=neutral
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com
- [IPv6:2a00:1450:4864:20::132])
+ header.s=20210112 header.b=WISWhItq; dkim-atps=neutral
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com
+ [IPv6:2a00:1450:4864:20::135])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhQF1fFDz30Pj;
- Thu, 28 Oct 2021 08:19:01 +1100 (AEDT)
-Received: by mail-lf1-x132.google.com with SMTP id j2so9016972lfg.3;
- Wed, 27 Oct 2021 14:19:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhQH5FKWz30RH;
+ Thu, 28 Oct 2021 08:19:03 +1100 (AEDT)
+Received: by mail-lf1-x135.google.com with SMTP id u21so8959377lff.8;
+ Wed, 27 Oct 2021 14:19:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=/Hqy/1scbv2xgSJ+Pfjnwd9vR5EU0n/d3WfB2tugTgE=;
- b=fdXEajT5ReWU0k76RL+UMQexWX6+dI9dqZX5MdJXsVZcuokskYVO71+oKjzDY4A2wc
- hJ1YtaH4eNeZaWabxSPD6IdHvppV9tDUjSfbiCZ9pzJbnyd1ILGvgPlaBo02Y2jjZnzD
- JbO/7oiPSFxLAQwFLHGGO2Gfwy8dZZlQdidry7vBInQu2wS67Np/bBN1rUC/SIaULQAp
- mZSgP8kJbrDoclvDh2sRCaJ+wiPArCAPZMKwm6/7+fwfn1T4SmuQIaJDkhw4NUU2izwl
- 4ikxIWp8MhgEKidppyJcozjOV5jYdL31Pn9EYMxWJrcs7VGZ0QCvDnuFIw51Kr2focF2
- kW1g==
+ bh=/EvvYGeTVCQImKsIJ5eG/5fF3PWyG/w2giRYqfawyD8=;
+ b=WISWhItqSg2B7RF+VMq4lOAEaPJboj2meAQ+IB5/V1NHbNJFBmj5XS0xlb4zCXSKCT
+ 6NsXWHZYq9LRGS+jBn6SfWgsJR2EyLsQBWeeDJtEZfPXB1ZJ5N3cxcINwqw5WxZcKDSN
+ DIvIUkbk9mQPYxMXhFN2I7TObVzLJ8eVxU8hzEXgYSzj8Cm7i8BXlPfHwlq3yNPgneQb
+ CHkJFZxdfY5RLlI3BGfXo88fraOgWdNEzamQkJbIJD18e+/pItOdQTQl7YVu3LpCjfDV
+ vOVdkFjMAfH4ytXgGRWsun/uVtAnjn/uKIwgKMmU3X2UQuuCd1+gugzIIN8JE0FZ4XsA
+ 8FgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=/Hqy/1scbv2xgSJ+Pfjnwd9vR5EU0n/d3WfB2tugTgE=;
- b=sqJNjqFXKBnPnyDH/MKJM7Y+QgjyBbPqjz+LeHyJJWprKnPOHHR4Ahyl3bPwpTgtW/
- 2b6EJvRe6uiK0qi+g8QFeFLequsJ10/Salp9msgImy6NpPObyv/1BG9ixZ0T3brmwrbg
- YxSsBzbaV4XnAeiTtq6FEU9C/KOEGCtKGryYCZWIXK/prwd5NhMZQSyefWMQZw8ssnbs
- NIBEU3uVkQ9jEKNr42q9OyaVbC0WX4LDP1MNitdD0PxOAK1jbpIhWmq6kLDzQSswoueQ
- DJ7zcFthTQe19Cibtwne2WvDrySUJch3WQmqjqJbHGUvDmCuB/fAt6Qa8DhZlzwQ0ZyA
- Y+VA==
-X-Gm-Message-State: AOAM5318TIpP0DZCmKWp2XeDP6e54OdML7l/dPK0HXBxbt17AFWxA7B2
- dQlkfuUMUGaX9m2FpwbJHmw=
-X-Google-Smtp-Source: ABdhPJxErOfbgWaHoJDyROU+wtxCyzAJwEEk/21TSkl3Wl7+6OTCwc5MbFi2KTtZM0ExVMRMX2XJDw==
-X-Received: by 2002:a05:6512:344a:: with SMTP id
- j10mr78084lfr.653.1635369538003; 
- Wed, 27 Oct 2021 14:18:58 -0700 (PDT)
+ bh=/EvvYGeTVCQImKsIJ5eG/5fF3PWyG/w2giRYqfawyD8=;
+ b=xZkvAakMG4JYwJ7G4v3nIOdqz0ao+8mZ7CoyJzJM/Oim/v9EgthnI6rLXjvx05+9tm
+ owdRt/LvBUvmbdl82LfLq35ytuVoxSAhZu+pzYumXS6iC/kONylZL/WQwT4RnOhEk5lK
+ 41Yf06HThRwg39NSjOO+N2qy4mEEHr2zoKo7sZj018vBHOQugcP7ttKsMD1K1jg4uuXw
+ 1KT0MEQhVF1jZdiv/htQ9BI7SKhmFwzNZtuPAOJfB5tzDJ4v1BFhk2gaUXxiBNGp7fs4
+ D3txhTioXQ8WmSiSzeti5n9bhu4VsOC9p1zqcxq0+8sTREdytntjUzs83n4HkjivLy4v
+ hCSg==
+X-Gm-Message-State: AOAM530xEwDhakMvPlB690KY4Z2iiy9c8f1GnGgd3feIvkoRjYgPiZ2C
+ fGxgfI0Ik/KJKvmEo89iVsk=
+X-Google-Smtp-Source: ABdhPJxRCjxAoGlWdRIW6Oj8xz2ri71YJVQnEgFasE3kMNBOfZWQ65DiEYFCvQ3qjpKPcAaJZhmXrA==
+X-Received: by 2002:ac2:4c08:: with SMTP id t8mr95028lfq.281.1635369539813;
+ Wed, 27 Oct 2021 14:18:59 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru.
  [46.138.41.28])
- by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.56
+ by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 14:18:57 -0700 (PDT)
+ Wed, 27 Oct 2021 14:18:59 -0700 (PDT)
 From: Dmitry Osipenko <digetx@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
  Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
@@ -69,10 +68,10 @@ To: Thierry Reding <thierry.reding@gmail.com>,
  Daniel Lezcano <daniel.lezcano@linaro.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v2 35/45] mfd: max8907: Use
+Subject: [PATCH v2 36/45] mfd: tps6586x: Use
  devm_register_simple_power_off_handler()
-Date: Thu, 28 Oct 2021 00:17:05 +0300
-Message-Id: <20211027211715.12671-36-digetx@gmail.com>
+Date: Thu, 28 Oct 2021 00:17:06 +0300
+Message-Id: <20211027211715.12671-37-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -134,64 +133,63 @@ pm_power_off variable and allows to register multiple power-off handlers.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/mfd/max8907.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ drivers/mfd/tps6586x.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mfd/max8907.c b/drivers/mfd/max8907.c
-index 41f566e6a096..58699510311b 100644
---- a/drivers/mfd/max8907.c
-+++ b/drivers/mfd/max8907.c
-@@ -16,6 +16,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
+diff --git a/drivers/mfd/tps6586x.c b/drivers/mfd/tps6586x.c
+index c9303d3d6602..9033ed936d1e 100644
+--- a/drivers/mfd/tps6586x.c
++++ b/drivers/mfd/tps6586x.c
+@@ -22,6 +22,7 @@
+ #include <linux/err.h>
+ #include <linux/i2c.h>
+ #include <linux/platform_device.h>
 +#include <linux/reboot.h>
  #include <linux/regmap.h>
- #include <linux/slab.h>
+ #include <linux/of.h>
  
-@@ -174,9 +175,10 @@ static const struct regmap_irq_chip max8907_rtc_irq_chip = {
- 	.num_irqs = ARRAY_SIZE(max8907_rtc_irqs),
+@@ -461,9 +462,10 @@ static const struct regmap_config tps6586x_regmap_config = {
+ 	.cache_type = REGCACHE_RBTREE,
  };
  
--static struct max8907 *max8907_pm_off;
--static void max8907_power_off(void)
-+static void max8907_power_off(void *data)
+-static struct device *tps6586x_dev;
+-static void tps6586x_power_off(void)
++static void tps6586x_power_off(void *data)
  {
-+	struct max8907 *max8907_pm_off = data;
++	struct device *tps6586x_dev = data;
 +
- 	regmap_update_bits(max8907_pm_off->regmap_gen, MAX8907_REG_RESET_CNFG,
- 			MAX8907_MASK_POWER_OFF, MAX8907_MASK_POWER_OFF);
- }
-@@ -214,6 +216,17 @@ static int max8907_i2c_probe(struct i2c_client *i2c,
- 		goto err_regmap_gen;
+ 	if (tps6586x_clr_bits(tps6586x_dev, TPS6586X_SUPPLYENE, EXITSLREQ_BIT))
+ 		return;
+ 
+@@ -540,6 +542,16 @@ static int tps6586x_i2c_probe(struct i2c_client *client,
+ 		return ret;
  	}
  
-+	if (pm_off) {
-+		ret = devm_register_simple_power_off_handler(&i2c->dev,
-+							     max8907_power_off,
-+							     max8907);
++	if (pdata->pm_off) {
++		ret = devm_register_simple_power_off_handler(&client->dev,
++							     tps6586x_power_off,
++							     &client->dev);
 +		if (ret) {
-+			dev_err(&i2c->dev,
++			dev_err(&client->dev,
 +				"failed to register power-off handler: %d\n", ret);
 +			return ret;
 +		}
 +	}
-+
- 	max8907->i2c_rtc = i2c_new_dummy_device(i2c->adapter, MAX8907_RTC_I2C_ADDR);
- 	if (IS_ERR(max8907->i2c_rtc)) {
- 		ret = PTR_ERR(max8907->i2c_rtc);
-@@ -260,11 +273,6 @@ static int max8907_i2c_probe(struct i2c_client *i2c,
- 		goto err_add_devices;
+ 
+ 	if (client->irq) {
+ 		ret = tps6586x_irq_init(tps6586x, client->irq,
+@@ -564,11 +576,6 @@ static int tps6586x_i2c_probe(struct i2c_client *client,
+ 		goto err_add_devs;
  	}
  
--	if (pm_off && !pm_power_off) {
--		max8907_pm_off = max8907;
--		pm_power_off = max8907_power_off;
+-	if (pdata->pm_off && !pm_power_off) {
+-		tps6586x_dev = &client->dev;
+-		pm_power_off = tps6586x_power_off;
 -	}
 -
  	return 0;
  
- err_add_devices:
+ err_add_devs:
 -- 
 2.33.1
 
