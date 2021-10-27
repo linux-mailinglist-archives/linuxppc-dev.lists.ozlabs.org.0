@@ -2,48 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F4043C796
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 12:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBFFC43C797
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 12:23:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfPsw0SCCz3bjG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 21:23:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfPtL6ZWdz3cDr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 21:23:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=linux-m68k.org
  (client-ip=2a02:1800:120:4::f00:d; helo=newton.telenet-ops.be;
  envelope-from=geert@linux-m68k.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 455 seconds by postgrey-1.36 at boromir;
- Wed, 27 Oct 2021 21:23:06 AEDT
 Received: from newton.telenet-ops.be (newton.telenet-ops.be
  [IPv6:2a02:1800:120:4::f00:d])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfPsQ6kRTz2xX5
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfPsR0Lrcz2xXD
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 21:23:06 +1100 (AEDT)
-Received: from xavier.telenet-ops.be (xavier.telenet-ops.be
- [IPv6:2a02:1800:120:4::f00:14])
- by newton.telenet-ops.be (Postfix) with ESMTPS id 4HfPhM6TLmzMr5fj
+Received: from andre.telenet-ops.be (andre.telenet-ops.be
+ [IPv6:2a02:1800:120:4::f00:15])
+ by newton.telenet-ops.be (Postfix) with ESMTPS id 4HfPhM1jymzMr5fh
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 12:15:15 +0200 (CEST)
 Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:441:6c1a:bc30:46e])
- by xavier.telenet-ops.be with bizsmtp
- id AyFF260052hfXWm01yFFKF; Wed, 27 Oct 2021 12:15:15 +0200
+ by andre.telenet-ops.be with bizsmtp
+ id AyFE260042hfXWm01yFEen; Wed, 27 Oct 2021 12:15:14 +0200
 Received: from rox.of.borg ([192.168.97.57])
  by ramsan.of.borg with esmtps (TLS1.3) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
  (envelope-from <geert@linux-m68k.org>)
- id 1mffiU-008HRd-Op; Wed, 27 Oct 2021 11:59:30 +0200
+ id 1mffiU-008HRd-LB; Wed, 27 Oct 2021 11:59:30 +0200
 Received: from geert by rox.of.borg with local (Exim 4.93)
  (envelope-from <geert@linux-m68k.org>)
- id 1mfdkV-00DitM-UB; Wed, 27 Oct 2021 09:53:27 +0200
+ id 1mfdzN-00DkK9-St; Wed, 27 Oct 2021 10:08:49 +0200
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH] serial: cpm_uart: Protect udbg definitions by
- CONFIG_SERIAL_CPM_CONSOLE
-Date: Wed, 27 Oct 2021 09:53:26 +0200
-Message-Id: <20211027075326.3270785-1-geert@linux-m68k.org>
+To: Li Yang <leoyang.li@nxp.com>, Felipe Balbi <balbi@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH] usb: gadget: Mark USB_FSL_QE broken on 64-bit
+Date: Wed, 27 Oct 2021 10:08:49 +0200
+Message-Id: <20211027080849.3276289-1-geert@linux-m68k.org>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,55 +55,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, linuxppc-dev@lists.ozlabs.org,
- linux-serial@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- linux-kernel@vger.kernel.org
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, linux-usb@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If CONFIG_CONSOLE_POLL=y, and CONFIG_SERIAL_CPM=m (hence
-CONFIG_SERIAL_CPM_CONSOLE=n):
+On 64-bit:
 
-    drivers/tty/serial/cpm_uart/cpm_uart_core.c:1109:12: warning: ‘udbg_cpm_getc’ defined but not used [-Wunused-function]
-     1109 | static int udbg_cpm_getc(void)
-	  |            ^~~~~~~~~~~~~
-    drivers/tty/serial/cpm_uart/cpm_uart_core.c:1095:13: warning: ‘udbg_cpm_putc’ defined but not used [-Wunused-function]
-     1095 | static void udbg_cpm_putc(char c)
-	  |             ^~~~~~~~~~~~~
+    drivers/usb/gadget/udc/fsl_qe_udc.c: In function ‘qe_ep0_rx’:
+    drivers/usb/gadget/udc/fsl_qe_udc.c:842:13: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
+      842 |     vaddr = (u32)phys_to_virt(in_be32(&bd->buf));
+	  |             ^
+    In file included from drivers/usb/gadget/udc/fsl_qe_udc.c:41:
+    drivers/usb/gadget/udc/fsl_qe_udc.c:843:28: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+      843 |     frame_set_data(pframe, (u8 *)vaddr);
+	  |                            ^
 
-Fix this by making the udbg definitions depend on
-CONFIG_SERIAL_CPM_CONSOLE, in addition to CONFIG_CONSOLE_POLL.
+The driver assumes physical and virtual addresses are 32-bit, hence it
+cannot work on 64-bit platforms.
 
-Fixes: a60526097f42eb98 ("tty: serial: cpm_uart: Add udbg support for enabling xmon")
 Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 ---
 One more casualty of CONFIG_WERROR=y.
-http://kisskb.ellerman.id.au/kisskb/buildresult/14652935/
+http://kisskb.ellerman.id.au/kisskb/buildresult/14652936/
 ---
- drivers/tty/serial/cpm_uart/cpm_uart_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/gadget/udc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-index c719aa2b18328321..d6d3db9c3b1f83ab 100644
---- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-+++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-@@ -1090,6 +1090,7 @@ static void cpm_put_poll_char(struct uart_port *port,
- 	cpm_uart_early_write(pinfo, ch, 1, false);
- }
- 
-+#ifdef CONFIG_SERIAL_CPM_CONSOLE
- static struct uart_port *udbg_port;
- 
- static void udbg_cpm_putc(char c)
-@@ -1114,6 +1115,7 @@ static int udbg_cpm_getc(void)
- 		cpu_relax();
- 	return c;
- }
-+#endif /* CONFIG_SERIAL_CPM_CONSOLE */
- 
- #endif /* CONFIG_CONSOLE_POLL */
- 
+diff --git a/drivers/usb/gadget/udc/Kconfig b/drivers/usb/gadget/udc/Kconfig
+index 8c614bb86c665c77..69394dc1cdfb6436 100644
+--- a/drivers/usb/gadget/udc/Kconfig
++++ b/drivers/usb/gadget/udc/Kconfig
+@@ -330,6 +330,7 @@ config USB_AMD5536UDC
+ config USB_FSL_QE
+ 	tristate "Freescale QE/CPM USB Device Controller"
+ 	depends on FSL_SOC && (QUICC_ENGINE || CPM)
++	depends on !64BIT || BROKEN
+ 	help
+ 	   Some of Freescale PowerPC processors have a Full Speed
+ 	   QE/CPM2 USB controller, which support device mode with 4
 -- 
 2.25.1
 
