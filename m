@@ -2,64 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE0043D761
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6C443D763
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:15:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfkzr02W1z3gdv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:14:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfl0X5q88z3fQt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:15:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=EBSN3i6p;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kPE91xXN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12d;
- helo=mail-lf1-x12d.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::236;
+ helo=mail-lj1-x236.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=EBSN3i6p; dkim-atps=neutral
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com
- [IPv6:2a00:1450:4864:20::12d])
+ header.s=20210112 header.b=kPE91xXN; dkim-atps=neutral
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com
+ [IPv6:2a00:1450:4864:20::236])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhQJ529nz3051;
- Thu, 28 Oct 2021 08:19:04 +1100 (AEDT)
-Received: by mail-lf1-x12d.google.com with SMTP id u21so8959530lff.8;
- Wed, 27 Oct 2021 14:19:04 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhQL41Xqz3bNB;
+ Thu, 28 Oct 2021 08:19:06 +1100 (AEDT)
+Received: by mail-lj1-x236.google.com with SMTP id i26so5091531ljg.7;
+ Wed, 27 Oct 2021 14:19:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=IkN5RxNvfWU6udxIv0HqPwHPsreqVVHZYAiW4uOSdQE=;
- b=EBSN3i6pBzJ/QX6b7hWJ61FbfkEkrcOrflTwto+4KX4or46ACVz9Tr/1pugxTtiHmi
- G7CMVOoidyYK0g+Vg4pJnm/bKfolm8lIe6sk0vITgUl/0On7GAe1avC+nPdsUhal8n/2
- 2LfBGzyZF4kisF1H8Fy3oqJJlA7mP+5FCx9jGZBePen+YJxCg52jU7glSS7bDwelermJ
- QOk39GQqnkcumTBHd2mHERoDOJXwlx4KsuyCu/MObr6DT96WNWvs0v/iyAkBnjjhRCxD
- gw7GTseQp5qiH+atTqu6Rg9n+NmY0IzLKdyAE4sSGNY6W234A5z05GeGyvCsr57AR1H6
- zVgw==
+ bh=Mu7tO95vXROZ9xbCJkoDzGl64HT6xR31EdIoyaMnKtk=;
+ b=kPE91xXN+stBc0ha+PSjaOkkNGKlDTid0pZMJS4/z0xuWbbpv+/mX7oe8gzrFGsnxt
+ knUKantyHU6PWIePiCnlFQ4UN8ZQdQP1oXKoJzSLIKv1lTDAhiLZjpDPc+aijhkrEZAj
+ Xd8HN8BgZu0o5hpIxMQVtpuABAaRE4DHHXJZzo4Dy3xXk62gjG4MyDoYUHzKrSYuupRB
+ lCz2OE27nWCjWUb+PHoI0yIS0mi3esed5R8cO+FhwY/2Rv4/jyVsNkj3xtgaoN5/YStc
+ dCcP9WUacf6ElBGM42XMwNMMkAZqDoGVD/aHJJj9Cz/Tk9wj2JFlAJdIXkKMwT6cvxA3
+ e31g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=IkN5RxNvfWU6udxIv0HqPwHPsreqVVHZYAiW4uOSdQE=;
- b=BCogQMYftUqqKJgI8aJEJHx/AcaTwYF9C8luYsWjtXZI5ueWhngUZiOizHXBWEHdYJ
- bQqmSsT5UJ0heB3/JE4JBgQt4FNV53q6Woo5oKCpYwjcy5fehMjZEbGeqOOcGahSjU5+
- BLa36NkikFaLl/RlGkqVsD3ykde3zKnxetIoCN8eiQXOnnAVIJxa6QoWGlrVWGv2Au9X
- /WU2Uq+ukFxnQ3x9eG5qO4hq4tLRWgPn0xQrt3fQUxrr4UyDCYBu0Zqa3lEQv+nsbBHW
- OIXadXWffd6ZFhED4PLgxG9rxB4XwjMP4G/xbT2ELbbPB4vPgbeNXRSKWDa4giAnNdBl
- mvxA==
-X-Gm-Message-State: AOAM530use5/XeQyWVCg0dMCtFJ/N43WBZ8w7E/I4F5+xJ4OTHyy8+H0
- u0Ib3LVDckBR8huqBZaRFJ8=
-X-Google-Smtp-Source: ABdhPJxsr/pRUcPc/yvXJw9vQsQsBRCfPMRUucvUkltufw5utcaA8e0PD5R7U1W5XHhl0HmaGsY5xg==
-X-Received: by 2002:a05:6512:aca:: with SMTP id
- n10mr150724lfu.66.1635369541621; 
- Wed, 27 Oct 2021 14:19:01 -0700 (PDT)
+ bh=Mu7tO95vXROZ9xbCJkoDzGl64HT6xR31EdIoyaMnKtk=;
+ b=l6W3VYHwiWQFc5RKBFNChkQCP8p1bFRTGmYN9aC475KXbayeW04gLTsaJbPDM2NQVN
+ 68ujK6D+DCQtvh0V6rnWD3H61FWqMCv2G0SZClRwACKB3GfpwU2zf/X/S2cIxxzFk7gN
+ HWafDQJDjsGoe9tbvm6Jp1gibF8esdSkFCULsSb2v3ekm4ipPDd1OyEWnLqwA+ZXRwHb
+ EN7IdvLkl7ly1800W6H/czy3EVWy4aIFv7k6HLmIeydCwSTHC8bAZFgk7Q00WkRzuMr2
+ +/FNosPQbpSeD7iJMsuKf/WLa8Oqx+kB3TxLGSY5cwu/8aBuQjoBg648A2cusVhnTG+5
+ e+fA==
+X-Gm-Message-State: AOAM5305U6PJ4QMqcml+smnMe8Bh0RdIne9hBJKXQQpv+OJK/Uh/pZSU
+ RVRlatbdSFkokg5WewawGww=
+X-Google-Smtp-Source: ABdhPJx+pRFjcRYPR1om8nKBpIgAHoRaPbEg7vS4nL7YKN3yH6zq2Ajomu3cvpnY+yAbJLhjtqI1TQ==
+X-Received: by 2002:a2e:bb98:: with SMTP id y24mr344716lje.168.1635369543476; 
+ Wed, 27 Oct 2021 14:19:03 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru.
  [46.138.41.28])
- by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.59
+ by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.19.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 14:19:01 -0700 (PDT)
+ Wed, 27 Oct 2021 14:19:03 -0700 (PDT)
 From: Dmitry Osipenko <digetx@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
  Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
@@ -69,10 +68,10 @@ To: Thierry Reding <thierry.reding@gmail.com>,
  Daniel Lezcano <daniel.lezcano@linaro.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v2 37/45] mfd: tps65910: Use
+Subject: [PATCH v2 38/45] mfd: max77620: Use
  devm_register_simple_power_off_handler()
-Date: Thu, 28 Oct 2021 00:17:07 +0300
-Message-Id: <20211027211715.12671-38-digetx@gmail.com>
+Date: Thu, 28 Oct 2021 00:17:08 +0300
+Message-Id: <20211027211715.12671-39-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -132,54 +131,68 @@ Sender: "Linuxppc-dev"
 Use devm_register_simple_power_off_handler() that replaces global
 pm_power_off variable and allows to register multiple power-off handlers.
 
+Nexus 7 Android tablet can be powered off using MAX77663 PMIC and using
+a special bootloader command. At first the bootloader option should be
+tried, it will have a higher priority than of PMIC that uses default
+priority.
+
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/mfd/tps65910.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/mfd/max77620.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/mfd/tps65910.c b/drivers/mfd/tps65910.c
-index 6e105cca27d4..8fab30dc84e5 100644
---- a/drivers/mfd/tps65910.c
-+++ b/drivers/mfd/tps65910.c
-@@ -16,6 +16,7 @@
- #include <linux/irq.h>
- #include <linux/irqdomain.h>
- #include <linux/mfd/core.h>
+diff --git a/drivers/mfd/max77620.c b/drivers/mfd/max77620.c
+index fec2096474ad..29487ccc191a 100644
+--- a/drivers/mfd/max77620.c
++++ b/drivers/mfd/max77620.c
+@@ -31,11 +31,10 @@
+ #include <linux/init.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
 +#include <linux/reboot.h>
  #include <linux/regmap.h>
- #include <linux/mfd/tps65910.h>
- #include <linux/of.h>
-@@ -429,9 +430,9 @@ struct tps65910_board *tps65910_parse_dt(struct i2c_client *client,
+ #include <linux/slab.h>
+ 
+-static struct max77620_chip *max77620_scratch;
+-
+ static const struct resource gpio_resources[] = {
+ 	DEFINE_RES_IRQ(MAX77620_IRQ_TOP_GPIO),
+ };
+@@ -483,13 +482,13 @@ static int max77620_read_es_version(struct max77620_chip *chip)
+ 	return ret;
  }
- #endif
  
--static struct i2c_client *tps65910_i2c_client;
--static void tps65910_power_off(void)
-+static void tps65910_power_off(void *data)
+-static void max77620_pm_power_off(void)
++static void max77620_pm_power_off(void *data)
  {
-+	struct i2c_client *tps65910_i2c_client = data;
- 	struct tps65910 *tps65910;
+-	struct max77620_chip *chip = max77620_scratch;
++	struct max77620_chip *chip = data;
  
- 	tps65910 = dev_get_drvdata(&tps65910_i2c_client->dev);
-@@ -503,9 +504,15 @@ static int tps65910_i2c_probe(struct i2c_client *i2c,
- 	tps65910_ck32k_init(tps65910, pmic_plat_data);
- 	tps65910_sleepinit(tps65910, pmic_plat_data);
+ 	regmap_update_bits(chip->rmap, MAX77620_REG_ONOFFCNFG1,
+-			   MAX77620_ONOFFCNFG1_SFT_RST,
+-			   MAX77620_ONOFFCNFG1_SFT_RST);
++				   MAX77620_ONOFFCNFG1_SFT_RST,
++				   MAX77620_ONOFFCNFG1_SFT_RST);
+ }
  
--	if (pmic_plat_data->pm_off && !pm_power_off) {
--		tps65910_i2c_client = i2c;
--		pm_power_off = tps65910_power_off;
-+	if (pmic_plat_data->pm_off) {
-+		ret = devm_register_simple_power_off_handler(&i2c->dev,
-+							     tps65910_power_off,
-+							     i2c);
-+		if (ret) {
-+			dev_err(&i2c->dev,
-+				"failed to register power-off handler: %d\n", ret);
-+			return ret;
-+		}
+ static int max77620_probe(struct i2c_client *client,
+@@ -566,9 +565,13 @@ static int max77620_probe(struct i2c_client *client,
  	}
  
- 	ret = devm_mfd_add_devices(tps65910->dev, -1,
+ 	pm_off = of_device_is_system_power_controller(client->dev.of_node);
+-	if (pm_off && !pm_power_off) {
+-		max77620_scratch = chip;
+-		pm_power_off = max77620_pm_power_off;
++	if (pm_off) {
++		ret = devm_register_simple_power_off_handler(chip->dev,
++							     max77620_pm_power_off,
++							     chip);
++		if (ret < 0)
++			dev_err(chip->dev,
++				"Failed to register power-off handler: %d\n", ret);
+ 	}
+ 
+ 	return 0;
 -- 
 2.33.1
 
