@@ -1,102 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253B243D5C9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 23:31:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B416843D6F5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 00:52:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfhhv0CwDz3c9h
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 08:31:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfkTk4124z3cR1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 09:52:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rQMvZke4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=a1C0lJ0g;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=brking@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::131;
+ helo=mail-lf1-x131.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=rQMvZke4; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=a1C0lJ0g; dkim-atps=neutral
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com
+ [IPv6:2a00:1450:4864:20::131])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hfhh51vNwz2yms
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 08:31:00 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19RJLhc4022319; 
- Wed, 27 Oct 2021 21:30:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=ivxB8loxYZdIrg7LsJUfCGTu+Q4idweB8bUXOVGhsuM=;
- b=rQMvZke4LUHJ7lbcmm5IH3aHQi/dhpMFN4b25ahnE1cPsW+sr0ReMTEn68Y7/K2iulnO
- KIsNSKjtnRGCf0201JWRCfdWov9eoqd947Q7OS3wwpC6r0C5y5hoFwEgDICrYHKIu+xU
- krhtysd6mWu2XYLjuJECIPQRaJ46cZ6/N2YnC7If5uyb+aWS3C/I3tbrsiO8I5EHZpGj
- 6d7FY1QDOKwnX98/+G5VN3Ef897mIjwhehlO9h6VqytzVDT28nhQxPMlMLHrHzGr2jF1
- o+BfIsQzIQe9HP6gfHiFzpAYfvvcOD/6llOMwrJ0zm30iX0gs3QTt05eKr5JX42xPeNq gQ== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3bycv0tb0c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 27 Oct 2021 21:30:57 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19RLBwqi017731;
- Wed, 27 Oct 2021 21:30:52 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma01wdc.us.ibm.com with ESMTP id 3bx4egbe41-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 27 Oct 2021 21:30:52 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 19RLUosH53215688
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 27 Oct 2021 21:30:51 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DF60DC605B;
- Wed, 27 Oct 2021 21:30:50 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9C0CEC6062;
- Wed, 27 Oct 2021 21:30:50 +0000 (GMT)
-Received: from [9.211.97.158] (unknown [9.211.97.158])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 27 Oct 2021 21:30:50 +0000 (GMT)
-Message-ID: <2075ad89-09d5-6906-f8fe-83a2347bbe9d@linux.vnet.ibm.com>
-Date: Wed, 27 Oct 2021 16:30:49 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH] powerpc: Enhance pmem DMA bypass handling
-Content-Language: en-US
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
-References: <20211021174449.120875-1-brking@linux.vnet.ibm.com>
- <84b82d2b-1263-39bb-d966-b432af530ca8@ozlabs.ru>
- <e4120ddc-8cac-c722-2379-ecc44bd9ef89@linux.vnet.ibm.com>
- <3d1dcfa3-23a7-cb7f-8671-2198861987e6@ozlabs.ru>
- <f9af9834-797f-cd69-bbcf-3663ce375c72@linux.vnet.ibm.com>
- <a2537ac0-cee3-31d3-73da-7d9de860f602@ozlabs.ru>
-From: Brian King <brking@linux.vnet.ibm.com>
-In-Reply-To: <a2537ac0-cee3-31d3-73da-7d9de860f602@ozlabs.ru>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: O29gLj1jAWjW4nrh9g4cbJG7YiXC7pPp
-X-Proofpoint-ORIG-GUID: O29gLj1jAWjW4nrh9g4cbJG7YiXC7pPp
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhP54fFcz2xDH;
+ Thu, 28 Oct 2021 08:18:01 +1100 (AEDT)
+Received: by mail-lf1-x131.google.com with SMTP id j2so9012433lfg.3;
+ Wed, 27 Oct 2021 14:18:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=HanWLUgUF9ofZz0QDrpGI0FWc48M0ufWpqHp0nt1b2E=;
+ b=a1C0lJ0gvckIcvrduJKizBVznyKnv2//TCPoPAKkXD5DGkkQrqb/ViKHcln36NfZVY
+ ISxWYKFK39QVsDuVPSlu1LT5SZ/nBBGFDz/uufiZqdO/sZQ/qKfQbI2KUPqf8Q5RxkHA
+ MqrWECpWx+g/FtcgYyau3zztbhU+vtw2w2aCc+udZXZ6rXXp+WIwUtGzuFURsYXqbmre
+ UplyFnSR1G34j0+8EfYoJdUe8oXvIadmEQEw4Cs4f6QOILfUENf3Exk7blXkIQnIkrzz
+ fkcmzAmhEcuM9KSNxc0P3MxX2C8tZcNnFx2+J321vEf5QsS8Rq276nN8ZpOlB8JNgrdd
+ UeOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=HanWLUgUF9ofZz0QDrpGI0FWc48M0ufWpqHp0nt1b2E=;
+ b=MwfqU6T6s4oWi0Ri8ZHj9n2h49jdhhw8Ar191HfcTg1c+ZY1B0vCMvS0lqERx/bgnI
+ mMM832kTr2nTUkxnmmjXmeQTse2aKFvAOU5pYr0dT+SDM7oXEhDLSSlKZqvbc2wfUAHe
+ lIpdlJb+unCp76gaKQJKmhCDSntFxubbuE/jn+/K3B/Y861UyuN4+eCmvzhiTXoGkLZq
+ xsbzFzjLnb+t9g1/Y8D3Lhk5x6xfz34WNc6XrxKY9R+sVdHCZh+WSwXhOZfUVYJn0ki2
+ CpLM/nrnkP37+UImhM9T2cKRIsKVB3vOylHA07Hz8d6hOeef+HRQH29HfSB+EzGV+Pe5
+ wWUw==
+X-Gm-Message-State: AOAM531I/ykWlgXBetaCUuSRcdeC7a33Dmv4QUTY7cDtgXw4gDnGbpUM
+ Md8k3Wf6+8hc9rBR2wEiaAA=
+X-Google-Smtp-Source: ABdhPJwziuHQfMqUpY6gmZyMY580K8cBL+Vix4M/+v/UKEXvEr1gkREZREaCQS2oC15RMdaQR1Q4+A==
+X-Received: by 2002:a05:6512:31a:: with SMTP id
+ t26mr121977lfp.280.1635369472536; 
+ Wed, 27 Oct 2021 14:17:52 -0700 (PDT)
+Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru.
+ [46.138.41.28])
+ by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.17.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 27 Oct 2021 14:17:52 -0700 (PDT)
+From: Dmitry Osipenko <digetx@gmail.com>
+To: Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Guenter Roeck <linux@roeck-us.net>, Russell King <linux@armlinux.org.uk>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH v2 00/45] Introduce power-off+restart call chain API
+Date: Thu, 28 Oct 2021 00:16:30 +0300
+Message-Id: <20211027211715.12671-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-27_06,2021-10-26_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 clxscore=1015
- phishscore=0 malwarescore=0 mlxscore=0 adultscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2110270120
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 28 Oct 2021 09:51:48 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,192 +87,223 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Tomer Maimon <tmaimon77@gmail.com>, Santosh Shilimkar <ssantosh@kernel.org>,
+ linux-sh@vger.kernel.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-acpi@vger.kernel.org,
+ Tali Perry <tali.perry1@gmail.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
+ Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
+ Greg Ungerer <gerg@linux-m68k.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Benjamin Fair <benjaminfair@google.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Tony Lindgren <tony@atomide.com>, Chen-Yu Tsai <wens@csie.org>,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, xen-devel@lists.xenproject.org,
+ linux-mips@vger.kernel.org, Len Brown <lenb@kernel.org>,
+ Albert Ou <aou@eecs.berkeley.edu>, linux-pm@vger.kernel.org,
+ =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+ Vladimir Zapolskiy <vz@mleia.com>, linux-m68k@lists.linux-m68k.org,
+ Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-omap@vger.kernel.org,
+ Nancy Yuen <yuenn@google.com>, linux-arm-kernel@lists.infradead.org,
+ Juergen Gross <jgross@suse.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Nick Hu <nickhu@andestech.com>, Avi Fishman <avifishman70@gmail.com>,
+ Patrick Venture <venture@google.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Guo Ren <guoren@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+ Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/26/21 12:39 AM, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 10/26/21 01:40, Brian King wrote:
->> On 10/23/21 7:18 AM, Alexey Kardashevskiy wrote:
->>>
->>>
->>> On 23/10/2021 07:18, Brian King wrote:
->>>> On 10/22/21 7:24 AM, Alexey Kardashevskiy wrote:
->>>>>
->>>>>
->>>>> On 22/10/2021 04:44, Brian King wrote:
->>>>>> If ibm,pmemory is installed in the system, it can appear anywhere
->>>>>> in the address space. This patch enhances how we handle DMA for devices when
->>>>>> ibm,pmemory is present. In the case where we have enough DMA space to
->>>>>> direct map all of RAM, but not ibm,pmemory, we use direct DMA for
->>>>>> I/O to RAM and use the default window to dynamically map ibm,pmemory.
->>>>>> In the case where we only have a single DMA window, this won't work, > so if the window is not big enough to map the entire address range,
->>>>>> we cannot direct map.
->>>>>
->>>>> but we want the pmem range to be mapped into the huge DMA window too if we can, why skip it?
->>>>
->>>> This patch should simply do what the comment in this commit mentioned below suggests, which says that
->>>> ibm,pmemory can appear anywhere in the address space. If the DMA window is large enough
->>>> to map all of MAX_PHYSMEM_BITS, we will indeed simply do direct DMA for everything,
->>>> including the pmem. If we do not have a big enough window to do that, we will do
->>>> direct DMA for DRAM and dynamic mapping for pmem.
->>>
->>>
->>> Right, and this is what we do already, do not we? I missing something here.
->>
->> The upstream code does not work correctly that I can see. If I boot an upstream kernel
->> with an nvme device and vpmem assigned to the LPAR, and enable dev_dbg in arch/powerpc/platforms/pseries/iommu.c,
->> I see the following in the logs:
->>
->> [    2.157549] nvme 0121:50:00.0: ibm,query-pe-dma-windows(53) 500000 8000000 20000121 returned 0
->> [    2.157561] nvme 0121:50:00.0: Skipping ibm,pmemory
->> [    2.157567] nvme 0121:50:00.0: can't map partition max 0x8000000000000 with 16777216 65536-sized pages
->> [    2.170150] nvme 0121:50:00.0: ibm,create-pe-dma-window(54) 500000 8000000 20000121 10 28 returned 0 (liobn = 0x70000121 starting addr = 8000000 0)
->> [    2.170170] nvme 0121:50:00.0: created tce table LIOBN 0x70000121 for /pci@800000020000121/pci1014,683@0
->> [    2.356260] nvme 0121:50:00.0: node is /pci@800000020000121/pci1014,683@0
->>
->> This means we are heading down the leg in enable_ddw where we do not set direct_mapping to true. We use
->> create the DDW window, but don't do any direct DMA. This is because the window is not large enough to
->> map 2PB of memory, which is what ddw_memory_hotplug_max returns without my patch. 
->>
->> With my patch applied, I get this in the logs:
->>
->> [    2.204866] nvme 0121:50:00.0: ibm,query-pe-dma-windows(53) 500000 8000000 20000121 returned 0
->> [    2.204875] nvme 0121:50:00.0: Skipping ibm,pmemory
->> [    2.205058] nvme 0121:50:00.0: ibm,create-pe-dma-window(54) 500000 8000000 20000121 10 21 returned 0 (liobn = 0x70000121 starting addr = 8000000 0)
->> [    2.205068] nvme 0121:50:00.0: created tce table LIOBN 0x70000121 for /pci@800000020000121/pci1014,683@0
->> [    2.215898] nvme 0121:50:00.0: iommu: 64-bit OK but direct DMA is limited by 800000200000000
->>
-> 
-> 
-> ah I see. then...
-> 
-> 
->>
->> Thanks,
->>
->> Brian
->>
->>
->>>
->>>>
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/arch/powerpc/platforms/pseries/iommu.c?id=bf6e2d562bbc4d115cf322b0bca57fe5bbd26f48
->>>>
->>>>
->>>> Thanks,
->>>>
->>>> Brian
->>>>
->>>>
->>>>>
->>>>>
->>>>>>
->>>>>> Signed-off-by: Brian King <brking@linux.vnet.ibm.com>
->>>>>> ---
->>>>>>    arch/powerpc/platforms/pseries/iommu.c | 19 ++++++++++---------
->>>>>>    1 file changed, 10 insertions(+), 9 deletions(-)
->>>>>>
->>>>>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
->>>>>> index 269f61d519c2..d9ae985d10a4 100644
->>>>>> --- a/arch/powerpc/platforms/pseries/iommu.c
->>>>>> +++ b/arch/powerpc/platforms/pseries/iommu.c
->>>>>> @@ -1092,15 +1092,6 @@ static phys_addr_t ddw_memory_hotplug_max(void)
->>>>>>        phys_addr_t max_addr = memory_hotplug_max();
->>>>>>        struct device_node *memory;
->>>>>>    -    /*
->>>>>> -     * The "ibm,pmemory" can appear anywhere in the address space.
->>>>>> -     * Assuming it is still backed by page structs, set the upper limit
->>>>>> -     * for the huge DMA window as MAX_PHYSMEM_BITS.
->>>>>> -     */
->>>>>> -    if (of_find_node_by_type(NULL, "ibm,pmemory"))
->>>>>> -        return (sizeof(phys_addr_t) * 8 <= MAX_PHYSMEM_BITS) ?
->>>>>> -            (phys_addr_t) -1 : (1ULL << MAX_PHYSMEM_BITS);
->>>>>> -
->>>>>>        for_each_node_by_type(memory, "memory") {
->>>>>>            unsigned long start, size;
->>>>>>            int n_mem_addr_cells, n_mem_size_cells, len;
->>>>>> @@ -1341,6 +1332,16 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->>>>>>         */
->>>>>>        len = max_ram_len;
->>>>>>        if (pmem_present) {
->>>>>> +        if (default_win_removed) {
->>>>>> +            /*
->>>>>> +             * If we only have one DMA window and have pmem present,
->>>>>> +             * then we need to be able to map the entire address
->>>>>> +             * range in order to be able to do direct DMA to RAM.
->>>>>> +             */
->>>>>> +            len = order_base_2((sizeof(phys_addr_t) * 8 <= MAX_PHYSMEM_BITS) ?
->>>>>> +                    (phys_addr_t) -1 : (1ULL << MAX_PHYSMEM_BITS));
-> 
-> 
-> ... len = (sizeof(phys_addr_t) * 8 <= MAX_PHYSMEM_BITS) ? 31 :
-> MAX_PHYSMEM_BITS  ?
-> 
-> Or actually simply drop this hunk and only leave the first one and add
-> this instead:
-> 
-> 
-> diff --git a/arch/powerpc/platforms/pseries/iommu.c
-> b/arch/powerpc/platforms/pseries/iommu.c
-> index 591ec9e94edb..68bfcd2227d9 100644
-> --- a/arch/powerpc/platforms/pseries/iommu.c
-> +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -1518,7 +1518,7 @@ static bool enable_ddw(struct pci_dev *dev, struct
-> device_node *pdn)
->          * as RAM, then we failed to create a window to cover persistent
->          * memory and need to set the DMA limit.
->          */
-> -       if (pmem_present && ddw_enabled && direct_mapping && len ==
-> max_ram_len)
-> +       if (pmem_present && ddw_enabled && direct_mapping)
-> 
-> ?
+Problem
+-------
 
+SoC devices require power-off call chaining functionality from kernel.
+We have a widely used restart chaining provided by restart notifier API,
+but nothing for power-off.
 
-So, this would change the handling of devices that have a single window when pmem
-is present. With your proposed change, we would then direct map for DRAM
-and attempt to use whatever TCE space is left to do the dynamic mapping
-when DMA'ing to the pmem, all from a single window. We don't account for this
-in the code from what I can see, so we could get into the scenario where we have
-a DMA window just large enough to map all of DRAM, we direct map that, and then
-have nothing left over for the pmem.
+Solution
+--------
 
-I would actually like to get this working, as it would be helpful for the performance
-of SR-IOV devices when pmem is present. However, I think we'd need to ensure we
-have at least a certain amount of reserved DMA space for the dynamic mapping
-before we do. There might be other things to consider as well...
+Introduce new API that provides both restart and power-off call chains.
 
-Should we handle that as a further enhancement in a future patch, and move forward with this
-as a bug fix?
+Why combine restart with power-off? Because drivers often do both.
+More practical to have API that provides both under the same roof.
 
-Thanks,
+The new API is designed with simplicity and extensibility in mind.
+It's built upon the existing restart and reboot APIs. The simplicity
+is in new helper functions that are convenient for drivers. The
+extensibility is in the design that doesn't hardcode callback
+arguments, making easy to add new parameters and remove old.
 
-Brian
+This is a third attempt to introduce the new API. First was made by
+Guenter Roeck back in 2014, second was made by Thierry Reding in 2017.
+In fact the work didn't stop and recently arm_pm_restart() was removed
+from v5.14 kernel, which was a part of preparatory work started by
+Guenter Roeck. I took into account experience and ideas from the
+previous attempts, extended and polished them.
 
-> 
-> Thanks,
-> 
-> 
-> 
->>>>>> +        }
->>>>>> +
->>>>>>            if (query.largest_available_block >=
->>>>>>                (1ULL << (MAX_PHYSMEM_BITS - page_shift)))
->>>>>>                len = MAX_PHYSMEM_BITS;
->>>>>>
->>>>>
->>>>
->>>>
->>>
->>
->>
-> 
+Adoption plan
+-------------
 
+This patchset introduces the new API. It also converts multiple drivers
+and arch code to the new API to demonstrate how it all looks in practice.
+
+The plan is:
+
+1. Merge new API (patches 1-8). This API will co-exist with the old APIs.
+
+2. Convert arch code to do_kernel_power_off() (patches 9-21).
+
+3. Convert drivers and platform code to the new API.
+
+4. Remove obsolete pm_power_off and pm_power_off_prepare variables.
+
+5. Make restart-notifier API private to kernel/reboot.c once no users left.
+
+Results
+-------
+
+1. Devices can be powered off properly.
+
+2. Global variables are removed from drivers.
+
+3. Global pm_power_off and pm_power_off_prepare callback variables are
+removed once all users are converted to the new API. The latter callback
+is removed by patch #25 of this series.
+
+4. Ambiguous call chain ordering is prohibited. See patch #5 which adds
+verification of restart handlers priorities, ensuring that they are unique.
+
+Changelog:
+
+v2: - Replaced standalone power-off call chain demo-API with the combined
+      power-off+restart API because this is what drivers want. It's a more
+      comprehensive solution.
+
+    - Converted multiple drivers and arch code to the new API. Suggested by
+      Andy Shevchenko. I skimmed through the rest of drivers, verifying that
+      new API suits them. The rest of the drivers will be converted once we
+      will settle on the new API, otherwise will be too many patches here.
+
+    - v2 API doesn't expose notifier to users and require handlers to
+      have unique priority. Suggested by Guenter Roeck.
+
+    - v2 API has power-off chaining disabled by default and require
+      drivers to explicitly opt-in to the chaining. This preserves old
+      behaviour for existing drivers once they are converted to the new
+      API.
+
+Dmitry Osipenko (45):
+  notifier: Remove extern annotation from function prototypes
+  notifier: Add blocking_notifier_call_chain_empty()
+  notifier: Add atomic/blocking_notifier_has_unique_priority()
+  reboot: Correct typo in a comment
+  reboot: Warn if restart handler has duplicated priority
+  reboot: Warn if unregister_restart_handler() fails
+  reboot: Remove extern annotation from function prototypes
+  kernel: Add combined power-off+restart handler call chain API
+  xen/x86: Use do_kernel_power_off()
+  ARM: Use do_kernel_power_off()
+  arm64: Use do_kernel_power_off()
+  csky: Use do_kernel_power_off()
+  ia64: Use do_kernel_power_off()
+  mips: Use do_kernel_power_off()
+  nds32: Use do_kernel_power_off()
+  parisc: Use do_kernel_power_off()
+  powerpc: Use do_kernel_power_off()
+  riscv: Use do_kernel_power_off()
+  sh: Use do_kernel_power_off()
+  x86: Use do_kernel_power_off()
+  m68k: Switch to new power-handler API
+  memory: emif: Use kernel_can_power_off()
+  ACPI: power: Switch to power-handler API
+  regulator: pfuze100: Use devm_register_power_handler()
+  reboot: Remove pm_power_off_prepare()
+  soc/tegra: pmc: Utilize power-handler API to power off Nexus 7
+    properly
+  mfd: ntxec: Use devm_register_power_handler()
+  mfd: rn5t618: Use devm_register_power_handler()
+  mfd: acer-a500: Use devm_register_power_handler()
+  mfd: ene-kb3930: Use devm_register_power_handler()
+  mfd: axp20x: Use register_simple_power_off_handler()
+  mfd: retu: Use devm_register_simple_power_off_handler()
+  mfd: rk808: Use devm_register_simple_power_off_handler()
+  mfd: palmas: Use devm_register_simple_power_off_handler()
+  mfd: max8907: Use devm_register_simple_power_off_handler()
+  mfd: tps6586x: Use devm_register_simple_power_off_handler()
+  mfd: tps65910: Use devm_register_simple_power_off_handler()
+  mfd: max77620: Use devm_register_simple_power_off_handler()
+  mfd: dm355evm_msp: Use devm_register_trivial_power_off_handler()
+  mfd: twl4030: Use devm_register_trivial_power_off_handler()
+  mfd: ab8500: Use devm_register_trivial_power_off_handler()
+  reset: ath79: Use devm_register_simple_restart_handler()
+  reset: intel-gw: Use devm_register_simple_restart_handler()
+  reset: lpc18xx: Use devm_register_prioritized_restart_handler()
+  reset: npcm: Use devm_register_prioritized_restart_handler()
+
+ arch/arm/kernel/reboot.c               |   4 +-
+ arch/arm64/kernel/process.c            |   3 +-
+ arch/csky/kernel/power.c               |   6 +-
+ arch/ia64/kernel/process.c             |   4 +-
+ arch/m68k/emu/natfeat.c                |   3 +-
+ arch/m68k/include/asm/machdep.h        |   1 -
+ arch/m68k/kernel/process.c             |   5 +-
+ arch/m68k/kernel/setup_mm.c            |   1 -
+ arch/m68k/kernel/setup_no.c            |   1 -
+ arch/m68k/mac/config.c                 |   4 +-
+ arch/mips/kernel/reset.c               |   3 +-
+ arch/nds32/kernel/process.c            |   3 +-
+ arch/parisc/kernel/process.c           |   4 +-
+ arch/powerpc/kernel/setup-common.c     |   4 +-
+ arch/powerpc/xmon/xmon.c               |   3 +-
+ arch/riscv/kernel/reset.c              |  12 +-
+ arch/sh/kernel/reboot.c                |   3 +-
+ arch/x86/kernel/reboot.c               |   4 +-
+ arch/x86/xen/enlighten_pv.c            |   4 +-
+ drivers/acpi/sleep.c                   |  25 +-
+ drivers/memory/emif.c                  |   2 +-
+ drivers/mfd/ab8500-sysctrl.c           |  17 +-
+ drivers/mfd/acer-ec-a500.c             |  52 +--
+ drivers/mfd/axp20x.c                   |  22 +-
+ drivers/mfd/dm355evm_msp.c             |  20 +-
+ drivers/mfd/ene-kb3930.c               |  45 +-
+ drivers/mfd/max77620.c                 |  21 +-
+ drivers/mfd/max8907.c                  |  22 +-
+ drivers/mfd/ntxec.c                    |  50 +-
+ drivers/mfd/palmas.c                   |  24 +-
+ drivers/mfd/retu-mfd.c                 |  31 +-
+ drivers/mfd/rk808.c                    |  23 +-
+ drivers/mfd/rn5t618.c                  |  56 +--
+ drivers/mfd/tps6586x.c                 |  21 +-
+ drivers/mfd/tps65910.c                 |  17 +-
+ drivers/mfd/twl4030-power.c            |  10 +-
+ drivers/regulator/pfuze100-regulator.c |  39 +-
+ drivers/reset/reset-ath79.c            |  15 +-
+ drivers/reset/reset-intel-gw.c         |  13 +-
+ drivers/reset/reset-lpc18xx.c          |  14 +-
+ drivers/reset/reset-npcm.c             |  14 +-
+ drivers/soc/tegra/pmc.c                |  54 ++-
+ include/linux/mfd/axp20x.h             |   1 +
+ include/linux/notifier.h               |  37 +-
+ include/linux/pm.h                     |   1 -
+ include/linux/reboot.h                 | 216 ++++++++-
+ kernel/notifier.c                      |  88 ++++
+ kernel/power/hibernate.c               |   2 +-
+ kernel/reboot.c                        | 615 ++++++++++++++++++++++++-
+ 49 files changed, 1209 insertions(+), 430 deletions(-)
 
 -- 
-Brian King
-Power Linux I/O
-IBM Linux Technology Center
+2.33.1
 
