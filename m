@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 418AE43D74D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:11:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C6343D755
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:11:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfkvY0kJ2z3fD7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:11:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfkwG0Khfz3fDy
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:11:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=RZvyurGZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=P2SMTBdU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12b;
- helo=mail-lf1-x12b.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12a;
+ helo=mail-lf1-x12a.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=RZvyurGZ; dkim-atps=neutral
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com
- [IPv6:2a00:1450:4864:20::12b])
+ header.s=20210112 header.b=P2SMTBdU; dkim-atps=neutral
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com
+ [IPv6:2a00:1450:4864:20::12a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhQ54g92z2yxm;
- Thu, 28 Oct 2021 08:18:53 +1100 (AEDT)
-Received: by mail-lf1-x12b.google.com with SMTP id j2so9016444lfg.3;
- Wed, 27 Oct 2021 14:18:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhQ81JP3z30Pj;
+ Thu, 28 Oct 2021 08:18:56 +1100 (AEDT)
+Received: by mail-lf1-x12a.google.com with SMTP id b32so5811547lfv.0;
+ Wed, 27 Oct 2021 14:18:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=MQWhTF0wBI+IugzPE3ghLHT129hypIGKpejDwrM3hyE=;
- b=RZvyurGZNweTiQS39Ean2OjgLccYrK032pC/dpD5TIetEdWActoZDZ0pbxUwZ65EB3
- f6HHqHOjaIJRkLRbNXFH+a9dD2g5xu+MxS8srOD+UoT89FXGbOpnIpBzsogwI4SrHnvI
- Xp4OXB4rFx2UJNCOe+1ontZRmKhqDl18fc0h55fLU7qhbVovqyZfQtN1oE2ZBblN4A6p
- LG+FlNBhlZ+ejJ/tR/o9Ca2I3+iU/ni7hPa9YCzdcCgi2bkMHewfSz0zfMDsoGnOZiG5
- WYH0N8y7+ABYK8jopd3eQsXttqeRRQN+xpWJ5QIjK2cUfd8tbZPE8negDAsL0a+gaJ2V
- fJ3A==
+ bh=3tizDJEeWC2iLbZdJm6My4oRtC+CKaYmiKRSIM6veO0=;
+ b=P2SMTBdUazDV2Wnt33aO9FM2Ioz84SezmWonZoC9di4gBNxmpSDTZT6tEbAs+vJh3H
+ Fl3mZiziafsNnSwbT1iMyr0r9bKbxSiHP3xJiOBIo4ewxSS3FiLigSFoEgJOcOsMECFU
+ Ealy6ndYpUfciCkbDSvwvbDJBaKQyOcr0jiZpeL2e0iKkV4AQLDVCHRPOCPCDpkazzgq
+ BERHUZw176GWVNNNOqpmpYaLAn7f4joDeIeKRo11vDGHWht2ujkzv0CrGvSNdzJe9tR3
+ GFiFAzCfeg61A5JBu27BdMdrz99RW2oVhEudj/a2XZux9KH22qJjawF87cCiFM6fKipn
+ F+kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=MQWhTF0wBI+IugzPE3ghLHT129hypIGKpejDwrM3hyE=;
- b=twNpGcd3IH3RbByh7Giy5qSi7v+FkOIC7k/Tbs2VLGYlzmv+bLGirF9S/jMiWRiKxw
- nR6Y4Hy/aOZhZBqB8+8WhWHsknMpmAte9Bz7OGZ9saRL/rxznp6wIYP+ATVuGHSzd6ey
- UmhkjrBITIrbSpNs5USLI7zq2u+67/hhJwa77vvnoO02PSArmg7c3EmkWTEAcaVVXDq3
- G7SF4LKrlf9FvUlAdyz0+W8oAIFe7cyngXf34D7BPMje+2za8t9kHdbBVIvo5Bm/oSku
- syOBvDEGITjy2Q/9KTyIv8fnrjGGN2+6jWv3jSj0XsAuFFU69ciBFxiHa8LHcd51VULr
- dEQA==
-X-Gm-Message-State: AOAM533NVyqEHoerkUy50TGIyCp+cFs3adM3absUu6fNwZPyxl3OgkA+
- 3+/8V1id9oAb5sPu+qF8BJw=
-X-Google-Smtp-Source: ABdhPJyooWx5IN/z+hq1uWs5thGA811Cpi77JA6dUlt/XGnE5KIxJDhql9o1FzopBJlB1UrwswiMLg==
-X-Received: by 2002:a05:6512:3f04:: with SMTP id
- y4mr131405lfa.180.1635369530580; 
- Wed, 27 Oct 2021 14:18:50 -0700 (PDT)
+ bh=3tizDJEeWC2iLbZdJm6My4oRtC+CKaYmiKRSIM6veO0=;
+ b=5skTFr/1dxHAn21RRQ5b/HxEiwefgClDp5TJUQATcN7kQ1mdY8ry7MEuE09fHQ2pEV
+ 1jr+TopRAryWVlyO3WRQgKszECP8+w6cvnyUDnbOKFiJcwH8gLDdWam6ObsNY+IWO18u
+ V8uLd5SZWb0MWiaXXde+mfo22aNIMINX9OKWsvR6vHqBgohNyd3rhd6Cifd6IkQjozz3
+ kXECrQOaKHCYzdQLdL1LRRONix2OQpqfPbMgFohdVs6Ni41VYjtCXBOSwr0Hq0f+H8Ab
+ EjdZgRy5aIeql6JHEsRunJpOSPJF5ukfFm+OUuHnP81epXApqmDqSK8KDim6T3lH7+nm
+ lvSA==
+X-Gm-Message-State: AOAM531sy9yGF9yghFczOTFeMnBzFy/8MqKVPiIdFT1Fnv25T07N0kRq
+ v4NviKraGY/iNWhk2iQlpvQ=
+X-Google-Smtp-Source: ABdhPJw7dGE4iKe+cyeyTSJFUn+l5q/Abxrr3B6KYrOVBl1p66aP04j6vH2fcBbUhHRs8nFJgDlWqw==
+X-Received: by 2002:a05:6512:1095:: with SMTP id
+ j21mr134174lfg.274.1635369532441; 
+ Wed, 27 Oct 2021 14:18:52 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru.
  [46.138.41.28])
- by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.48
+ by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 14:18:50 -0700 (PDT)
+ Wed, 27 Oct 2021 14:18:52 -0700 (PDT)
 From: Dmitry Osipenko <digetx@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
  Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
@@ -69,9 +69,10 @@ To: Thierry Reding <thierry.reding@gmail.com>,
  Daniel Lezcano <daniel.lezcano@linaro.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v2 31/45] mfd: axp20x: Use register_simple_power_off_handler()
-Date: Thu, 28 Oct 2021 00:17:01 +0300
-Message-Id: <20211027211715.12671-32-digetx@gmail.com>
+Subject: [PATCH v2 32/45] mfd: retu: Use
+ devm_register_simple_power_off_handler()
+Date: Thu, 28 Oct 2021 00:17:02 +0300
+Message-Id: <20211027211715.12671-33-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -128,82 +129,101 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use register_simple_power_off_handler() that replaces global pm_power_off
-variable and allows to register multiple power-off handlers.
+Use devm_register_simple_power_off_handler() that replaces global
+pm_power_off variable and allows to register multiple power-off handlers.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/mfd/axp20x.c       | 22 +++++++++++-----------
- include/linux/mfd/axp20x.h |  1 +
- 2 files changed, 12 insertions(+), 11 deletions(-)
+ drivers/mfd/retu-mfd.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
-index 8161a5dc68e8..db31fdb169e4 100644
---- a/drivers/mfd/axp20x.c
-+++ b/drivers/mfd/axp20x.c
-@@ -24,6 +24,7 @@
+diff --git a/drivers/mfd/retu-mfd.c b/drivers/mfd/retu-mfd.c
+index c748fd29a220..d18f05c1f095 100644
+--- a/drivers/mfd/retu-mfd.c
++++ b/drivers/mfd/retu-mfd.c
+@@ -22,6 +22,7 @@
+ #include <linux/slab.h>
+ #include <linux/mutex.h>
  #include <linux/module.h>
- #include <linux/of_device.h>
- #include <linux/pm_runtime.h>
 +#include <linux/reboot.h>
  #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- 
-@@ -823,9 +824,10 @@ static const struct mfd_cell axp813_cells[] = {
- 	},
+ #include <linux/mfd/core.h>
+ #include <linux/mfd/retu.h>
+@@ -81,9 +82,6 @@ static struct regmap_irq_chip retu_irq_chip = {
+ 	.ack_base	= RETU_REG_IDR,
  };
  
--static struct axp20x_dev *axp20x_pm_power_off;
--static void axp20x_power_off(void)
-+static void axp20x_power_off(void *data)
- {
-+	struct axp20x_dev *axp20x_pm_power_off = data;
-+
- 	if (axp20x_pm_power_off->variant == AXP288_ID)
- 		return;
+-/* Retu device registered for the power off. */
+-static struct retu_dev *retu_pm_power_off;
+-
+ static const struct resource tahvo_usb_res[] = {
+ 	{
+ 		.name	= "tahvo-usb",
+@@ -165,12 +163,12 @@ int retu_write(struct retu_dev *rdev, u8 reg, u16 data)
+ }
+ EXPORT_SYMBOL_GPL(retu_write);
  
-@@ -1000,10 +1002,12 @@ int axp20x_device_probe(struct axp20x_dev *axp20x)
+-static void retu_power_off(void)
++static void retu_power_off(void *data)
+ {
+-	struct retu_dev *rdev = retu_pm_power_off;
++	struct retu_dev *rdev = data;
+ 	int reg;
+ 
+-	mutex_lock(&retu_pm_power_off->mutex);
++	mutex_lock(&rdev->mutex);
+ 
+ 	/* Ignore power button state */
+ 	regmap_read(rdev->regmap, RETU_REG_CC1, &reg);
+@@ -183,7 +181,7 @@ static void retu_power_off(void)
+ 	for (;;)
+ 		cpu_relax();
+ 
+-	mutex_unlock(&retu_pm_power_off->mutex);
++	mutex_unlock(&rdev->mutex);
+ }
+ 
+ static int retu_regmap_read(void *context, const void *reg, size_t reg_size,
+@@ -261,6 +259,17 @@ static int retu_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
+ 		 (ret & RETU_REG_ASICR_VILMA) ? rdat->companion_name : "",
+ 		 (ret >> 4) & 0x7, ret & 0xf);
+ 
++	if (i2c->addr == 1) {
++		ret = devm_register_simple_power_off_handler(&i2c->dev,
++							     retu_power_off,
++							     rdev);
++		if (ret) {
++			dev_err(rdev->dev,
++				"could not register power-off handler: %d\n", ret);
++			return ret;
++		}
++	}
++
+ 	/* Mask all interrupts. */
+ 	ret = retu_write(rdev, rdat->irq_chip->mask_base, 0xffff);
+ 	if (ret < 0)
+@@ -279,10 +288,6 @@ static int retu_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
  		return ret;
  	}
  
--	if (!pm_power_off) {
--		axp20x_pm_power_off = axp20x;
--		pm_power_off = axp20x_power_off;
+-	if (i2c->addr == 1 && !pm_power_off) {
+-		retu_pm_power_off = rdev;
+-		pm_power_off	  = retu_power_off;
 -	}
-+	axp20x->power_handler =
-+		register_simple_power_off_handler(axp20x_power_off, axp20x);
-+
-+	if (IS_ERR(axp20x->power_handler))
-+		dev_err(axp20x->dev, "failed to register power-off handler: %pe",
-+			axp20x->power_handler);
  
- 	dev_info(axp20x->dev, "AXP20X driver loaded\n");
- 
-@@ -1013,11 +1017,7 @@ EXPORT_SYMBOL(axp20x_device_probe);
- 
- void axp20x_device_remove(struct axp20x_dev *axp20x)
- {
--	if (axp20x == axp20x_pm_power_off) {
--		axp20x_pm_power_off = NULL;
--		pm_power_off = NULL;
--	}
--
-+	unregister_simple_power_off_handler(axp20x->power_handler);
- 	mfd_remove_devices(axp20x->dev);
- 	regmap_del_irq_chip(axp20x->irq, axp20x->regmap_irqc);
+ 	return 0;
  }
-diff --git a/include/linux/mfd/axp20x.h b/include/linux/mfd/axp20x.h
-index 9ab0e2fca7ea..49319a0ac369 100644
---- a/include/linux/mfd/axp20x.h
-+++ b/include/linux/mfd/axp20x.h
-@@ -643,6 +643,7 @@ struct axp20x_dev {
- 	const struct mfd_cell           *cells;
- 	const struct regmap_config	*regmap_cfg;
- 	const struct regmap_irq_chip	*regmap_irq_chip;
-+	struct power_handler		*power_handler;
- };
+@@ -291,10 +296,6 @@ static int retu_remove(struct i2c_client *i2c)
+ {
+ 	struct retu_dev *rdev = i2c_get_clientdata(i2c);
  
- /* generic helper function for reading 9-16 bit wide regs */
+-	if (retu_pm_power_off == rdev) {
+-		pm_power_off	  = NULL;
+-		retu_pm_power_off = NULL;
+-	}
+ 	mfd_remove_devices(rdev->dev);
+ 	regmap_del_irq_chip(i2c->irq, rdev->irq_data);
+ 
 -- 
 2.33.1
 
