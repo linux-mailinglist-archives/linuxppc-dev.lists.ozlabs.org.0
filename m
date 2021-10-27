@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71AF743C12A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 06:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D362543C147
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 06:24:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfFcD2TLLz2yK4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 15:11:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfFvY5Tyqz2yLm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 15:24:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gtuR5WRU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hvkT3zgV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,56 +18,59 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=gtuR5WRU; dkim-atps=neutral
+ header.s=20210112 header.b=hvkT3zgV; dkim-atps=neutral
 Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
  [IPv6:2607:f8b0:4864:20::1033])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfFbZ6VN1z2xDl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 15:10:32 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id gn3so1110460pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 21:10:32 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfFtw5Q2Pz2xMw
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 15:23:50 +1100 (AEDT)
+Received: by mail-pj1-x1033.google.com with SMTP id
+ nn3-20020a17090b38c300b001a03bb6c4ebso1120323pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Oct 2021 21:23:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=P7OYnjKQKjcAl/FGEdyrmIgHkGBoYkgVaZRZWjIGp1U=;
- b=gtuR5WRUo4FVv5+FPc2OOT8nWetzPwILmKD9GxUkIn62YBrThyuQRnakB2mU8Vl1mK
- eF11nevRpcsWtkyYMAitpdsmjeWTaYbdwbmL2F3yFZ/IENG8tkF6lYkjGOZzA3ayKhIj
- 3DwwC8tnZ95D49lFDNpScVKdcA0YKMjkAugrSSp6mLEz/+knn6C0bN7InVtiiatPBZJL
- 46vTpTkkieIR1ZM2A3uBsRANwOOqgmXxiqPeN/ihlxo+gTXye5/+ogVnDe9BbozsVjT3
- /EhdlCtKwsEAf162OVD12XkKzMoyj3kdGa4R8XSwyPF2UMlLs99lftsD+WyiP21Ow9E8
- Etdg==
+ bh=Ul79m/M1HnPNYtc1PDlNeFGvkwGm8q9L++VHfOLlPQo=;
+ b=hvkT3zgVsdaXITUAj/SHNqsk6b2ykzu8zCNZSa582mw2xlpWGrCCEnqudMvBK62WF/
+ 66Nli4Ca2KEWEEp5IzyqTM4uM/zKotYwneHNjVREkOVVnMVWR/toZB7GM3bGuMGpnj45
+ NsYKBXinzxnQphPmjGffTj6/19cWrOg1+Mo/6P3j8YVxOTVKcd47YVQIX+y/Z+Lt8xIO
+ v5Wlvj2PB0qGkKKLyREH0K+vMAPU7IhjNlzW1IRO85VgHP5zu64TumKzoUmtUQ429J5A
+ oTj/UEmGvw4ZjNQhRsyBHT0ZK+n3DwKXQV7mc08qMKg4hOtRN4GHIHRMc74BNNrW8tBs
+ rUhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=P7OYnjKQKjcAl/FGEdyrmIgHkGBoYkgVaZRZWjIGp1U=;
- b=wpwRNZkoG2UHNM6FldrNvuvgV2LRqGCNvA58GJGhpUUqaPocz6oO9B55oyUTCU5JWK
- PW/haLNnYjU4fRNO8u8sUuNefzuiAgqtynSRDx75G9LqsOiEZZHah01uJL9HJS+Y2+QN
- mfey2EDPus9VyTH3oEVMRQLnrAIIkWfP6DfiXx/CKVka7TI4vQ6h2VoBGEBXVCl2zkqv
- EnjVPQQyjwzx5+6camdVR87GyaR+ttTBdVYBBLqTQopNO9yQEM9wzBkno4gGC3Hn6OKH
- S7S6J1y4UP4ZckYwYIFhkF63ZzKHQ1eDmRlw8gcDpnStZH6yJ34+gmmr5RXrvWI7dpAN
- QY5w==
-X-Gm-Message-State: AOAM531nLcvYos4Stear5PpZocrZNLvfpn/C7Yfp4tR/WtRGinTw6ds/
- xIPTG1dCjXayJMs40enarqDQNtAV+Bw=
-X-Google-Smtp-Source: ABdhPJzZciwaQXrpTFgyyqcEawNFmGIZH09wfO4m+/yBJ7eZNH8Bg4awGIihEbFqWjKbsiNGFr49EA==
-X-Received: by 2002:a17:902:cacb:b0:140:4649:6720 with SMTP id
- y11-20020a170902cacb00b0014046496720mr18459052pld.4.1635307830722; 
- Tue, 26 Oct 2021 21:10:30 -0700 (PDT)
+ bh=Ul79m/M1HnPNYtc1PDlNeFGvkwGm8q9L++VHfOLlPQo=;
+ b=knkmyetErQsUaQjlrdcbJ2338dorBZ4/15bXGjWSZxs5sQOblm1i9QRSr1HBjqiKEo
+ 0r4YuaukLNW14EhClqIu9fKPJaHFDeVCSEtZsXIPpa1qasgM1RPT4WE17cP1S6lU1Qhk
+ JUqZaT10H6+a5bhDQfv1P1BcMOiO5pZQ8A5qhEqFm9PwGowZh+ezHnzDwABuIcBy/rGE
+ njheUmvDh77M/RFU7i0/VO+RhL2Jrx/LS+EHUKUPjzwGwxR9A0xO7kMZZEzVkP7N5gUv
+ PIg+10mK3/hY7S0/k98QWJ2/VYZkv8XEcM4zlXyhYmedGanHUG7sx2Qov7keV7/qROGn
+ YK+w==
+X-Gm-Message-State: AOAM533CchH3+NOwe+umJ75QLAC4r/fAN2cZijr/5oj427I0vWis4rQI
+ ZAPGlLrXKOm3rd0xI6bqYJU=
+X-Google-Smtp-Source: ABdhPJxpvRtQI7yeOQF4rsiQq+b8i4vacZR4d+WonEWc+QGL2QkDqCfwsUop3NlUEzAw5ELyxi21fg==
+X-Received: by 2002:a17:902:758c:b0:141:4c99:22b3 with SMTP id
+ j12-20020a170902758c00b001414c9922b3mr8967343pll.40.1635308628373; 
+ Tue, 26 Oct 2021 21:23:48 -0700 (PDT)
 Received: from localhost ([118.208.159.180])
- by smtp.gmail.com with ESMTPSA id u10sm9810670pfk.211.2021.10.26.21.10.29
+ by smtp.gmail.com with ESMTPSA id 8sm2251659pjt.46.2021.10.26.21.23.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Oct 2021 21:10:30 -0700 (PDT)
-Date: Wed, 27 Oct 2021 14:10:25 +1000
+ Tue, 26 Oct 2021 21:23:47 -0700 (PDT)
+Date: Wed, 27 Oct 2021 14:23:42 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: instruction storage exception handling
-To: Jacques de Laval <jacques.delaval@protonmail.com>, "To: Scott Wood"
- <oss@buserror.net>
-References: <uqZVxyE3l9oalZp_hyXFJvdH-ADNTvpOuQeoNGyqrUcoNgh9afea1-FzfZKMgiaF5WxY4kdMQlJYzmjvdQ2E2joF86-mEcaxdifht9z8NA0=@protonmail.com>
-In-Reply-To: <uqZVxyE3l9oalZp_hyXFJvdH-ADNTvpOuQeoNGyqrUcoNgh9afea1-FzfZKMgiaF5WxY4kdMQlJYzmjvdQ2E2joF86-mEcaxdifht9z8NA0=@protonmail.com>
+Subject: Re: [PATCH 1/3] powerpc/nohash: Fix __ptep_set_access_flags() and
+ ptep_set_wrprotect()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
+References: <922bdab3a220781bae2360ff3dd5adb7fe4d34f1.1635226743.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <922bdab3a220781bae2360ff3dd5adb7fe4d34f1.1635226743.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Message-Id: <1635306738.0z8wt7619v.astroid@bobo.none>
+Message-Id: <1635308538.6vye6lbbh8.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,187 +84,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Jacques de Laval's message of October 26, 2021 6:07 am:
-> Hi,
+Excerpts from Christophe Leroy's message of October 26, 2021 3:39 pm:
+> Commit 26973fa5ac0e ("powerpc/mm: use pte helpers in generic code")
+> changed those two functions to use pte helpers to determine which
+> bits to clear and which bits to set.
 >=20
-> We are trying to upgrade kernel from 5.10 to 5.14.11. We have a Freescale=
-/NXP
-> T1023 SOC with two e5500 cores, and are running in 32-bit mode:
+> This change was based on the assumption that bits to be set/cleared
+> are always the same and can be determined by applying the pte
+> manipulation helpers on __pte(0).
 >=20
-> 	CONFIG_PPC32=3Dy
-> 	# CONFIG_PPC64 is not set
+> But on platforms like book3e, the bits depend on whether the page
+> is a user page or not.
 >=20
-> 	#
-> 	# Processor support
-> 	#
-> 	# CONFIG_PPC_BOOK3S_32 is not set
-> 	CONFIG_PPC_85xx=3Dy
-> 	# CONFIG_PPC_8xx is not set
-> 	# CONFIG_40x is not set
-> 	# CONFIG_44x is not set
-> 	CONFIG_GENERIC_CPU=3Dy
-> 	# CONFIG_E5500_CPU is not set
-> 	# CONFIG_E6500_CPU is not set
-> 	CONFIG_E500=3Dy
-> 	CONFIG_PPC_E500MC=3Dy
-> 	CONFIG_PPC_FPU_REGS=3Dy
-> 	CONFIG_PPC_FPU=3Dy
-> 	CONFIG_FSL_EMB_PERFMON=3Dy
-> 	CONFIG_FSL_EMB_PERF_EVENT=3Dy
-> 	CONFIG_FSL_EMB_PERF_EVENT_E500=3Dy
-> 	CONFIG_BOOKE=3Dy
-> 	CONFIG_FSL_BOOKE=3Dy
-> 	CONFIG_PPC_FSL_BOOK3E=3Dy
-> 	CONFIG_PTE_64BIT=3Dy
-> 	CONFIG_PHYS_64BIT=3Dy
-> 	CONFIG_PPC_MMU_NOHASH=3Dy
-> 	CONFIG_PPC_BOOK3E_MMU=3Dy
-> 	# CONFIG_PMU_SYSFS is not set
-> 	CONFIG_SMP=3Dy
-> 	CONFIG_NR_CPUS=3D2
-> 	CONFIG_PPC_DOORBELL=3Dy
-> 	# end of Processor support
+> For the time being it more or less works because of _PAGE_EXEC being
+> used for user pages only and exec right being set at all time on
+> kernel page. But following patch will clean that and output of
+> pte_mkexec() will depend on the page being a user or kernel page.
 >=20
-> We compile using 32-bit Bootlin PPC toolchain:
->=20
-> 	powerpc-e500mc glibc bleeding-edge 2020.08-1.
->=20
-> When booting, and starting PID 1 we sometimes get a hang. Nothing but our=
- init
-> process is running, and for debugging purposes our init currently looks l=
-ike
-> this:
->=20
-> 	int main(int argc, char *argv[]){
-> 		for (int i =3D 0; ; i++) {
-> 			FILE *fp =3D fopen("/dev/kmsg", "w");
-> 			if (fp) {
-> 				fprintf(fp, "%d\n", i);
-> 				fclose(fp);
-> 			}
-> 			sleep(1);
-> 		}
-> 		return 0;
-> 	}
->=20
-> When the hangup occur we don't get any output at all from our PID 1.
-> The last output is from the kernel:
->=20
-> 	Run /sbin/init as init process
-> 	  with arguments:
-> 	    /sbin/init
-> 	  with environment:
-> 	    HOME=3D/
-> 	    TERM=3Dlinux
-> 	    kgdboc=3DttyS0,115200
->=20
-> When issuing a backtrace on all active cpus we can see that the kernel is
-> handling an instruction storage exception:
->=20
-> 	sysrq: Show backtrace of all active CPUs
-> 	sysrq: CPU0:
-> 	CPU: 0 PID: 1 Comm: init Not tainted 5.14.11 #1
-> 	NIP:  c02aac78 LR: c02aac2c CTR: 00000000
-> 	REGS: c1907d40 TRAP: 0500   Not tainted  (5.14.11)
-> 	MSR:  00029002 <CE,EE,ME>  CR: 82244284  XER: 20000000
-> 	GPR00: 0000000f c1907e20 c1910000 0065a000 000001d0 01100cca c1907e84 00=
-00000c
-> 	GPR08: d39a8000 000001d3 0000000c c1907f10 42244284 00000000 00740514 bf=
-b71670
-> 	GPR16: 007040e6 00701418 b7c1a5f0 00702f18 00000000 bfb71690 0000fff1 b7=
-c1c478
-> 	GPR24: 00708558 00701698 d3994040 00029002 c1907f20 0065a238 00000355 d3=
-9a2790
-> 	NIP [c02aac78] handle_mm_fault+0xf8/0x11f0
-> 	LR [c02aac2c] handle_mm_fault+0xac/0x11f0
-> 	Call Trace:
-> 	[c1907e20] [c02aac10] handle_mm_fault+0x90/0x11f0 (unreliable)
-> 	[c1907ec0] [c003078c] ___do_page_fault+0x26c/0x780
-> 	[c1907ef0] [c0030cd4] do_page_fault+0x34/0x100
-> 	[c1907f10] [c0000988] InstructionStorage+0x108/0x120
-> 	--- interrupt: 400 at 0x65a238
-> 	NIP:  0065a238 LR: 0052f26c CTR: 0052f260
-> 	REGS: c1907f20 TRAP: 0400   Not tainted  (5.14.11)
-> 	MSR:  0002d002 <CE,EE,PR,ME>  CR: 42242284  XER: 00000000
-> 	GPR00: b7be9914 bfb71620 b7c203a0 8c008000 0070400d b7c182a0 000b8260 00=
-52f260
-> 	GPR08: 0047d448 0052f260 0000000a 00000003 42242284 00000000 00740514 bf=
-b71670
-> 	GPR16: 007040e6 00701418 b7c1a5f0 00702f18 00000000 bfb71690 0000fff1 b7=
-c1c478
-> 	GPR24: 00708558 00701698 00700000 00000015 b7c1c2b0 00707e20 b7c1b8a8 bf=
-b71660
-> 	NIP [0065a238] 0x65a238
-> 	LR [0052f26c] 0x52f26c
-> 	--- interrupt: 400
-> 	Instruction dump:
-> 	60a500c0 811f0020 57aa6cfa 813f0000 57a30026 809f004c 81080024 7d29e850
-> 	90a1002c 5529a33e 93c10038 7d244a14 <90610034> 7d485215 91210030 41c203d=
-c
->=20
-> We have also observed that the CPU is continuously servicing the same int=
-errupt
-> (north of 140k times per sec), it is not deadlocked.
->=20
-> We have not yet been able to reproduce this behavior under QEMU system
-> emulation.
->=20
-> When bisecting between 5.10 and 5.14.11 we can see that this behavior sta=
-rted
-> with commit a01a3f2ddbcda83e8572787c0ec1dcbeba86915a:
->=20
-> 	powerpc: remove arguments from fault handler functions
+> Instead of trying to make an even more complicated helper where bits
+> would become dependent on the final pte value, come back to a more
+> static situation like before commit 26973fa5ac0e ("powerpc/mm: use
+> pte helpers in generic code"), by introducing an 8xx specific
+> version of __ptep_set_access_flags() and ptep_set_wrprotect().
 
-Thank you for the excellent work to investigate and report this.
-
->=20
-> Our best guess that the instruction storage exception is not properly han=
-dled
-> and the kernel is never able to recover from the page fault, but we don't
-> really know how to proceed. Does anyone have any suggestions or insights?
-
-Before my patch, zero was passed to the page fault error code, after
-my patch it passes the contents of ESR SPR.
-
-It looks like the BookE instruction access interrupt does not set ESR=20
-(except for BO interrupts maybe?) so you're getting what was in the ESR
-register from a previous interrupt, and maybe if that was a store then
-access_error won't cause a segfault because is_exec is true so that
-test bails out early, then it might just keep retrying the interrupt.
-
-That could explain why you don't always see the same thing.
-
-Now previous code still saved ESR in regs->esr/dsisr for some reason.
-I can't quite see why that should have been necessary though. Does
-this patch solve it for you?
+What is this actually fixing? Does it change anything itself, or
+just a preparation patch?
 
 Thanks,
 Nick
---
 
-
-diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_bo=
-oke.h
-index e5503420b6c6..0e7cdc8716eb 100644
---- a/arch/powerpc/kernel/head_booke.h
-+++ b/arch/powerpc/kernel/head_booke.h
-@@ -467,10 +467,11 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
-=20
- #define INSTRUCTION_STORAGE_EXCEPTION					      \
- 	START_EXCEPTION(InstructionStorage)				      \
--	NORMAL_EXCEPTION_PROLOG(0x400, INST_STORAGE);		      \
--	mfspr	r5,SPRN_ESR;		/* Grab the ESR and save it */	      \
-+	NORMAL_EXCEPTION_PROLOG(0x400, INST_STORAGE);			      \
-+	li	r5,0;							      \
-+	mfspr	r5,SPRN_ESR;		/* Store 0 in regs->esr (dsisr) */    \
- 	stw	r5,_ESR(r11);						      \
--	stw	r12, _DEAR(r11);	/* Pass SRR0 as arg2 */		      \
-+	stw	r12, _DEAR(r11);	/* Set regs->dear (dar) */	      \
- 	prepare_transfer_to_handler;					      \
- 	bl	do_page_fault;						      \
- 	b	interrupt_return
+>=20
+> Fixes: 26973fa5ac0e ("powerpc/mm: use pte helpers in generic code")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+> v3: No change
+> v2: New
+> ---
+>  arch/powerpc/include/asm/nohash/32/pgtable.h | 17 +++++++--------
+>  arch/powerpc/include/asm/nohash/32/pte-8xx.h | 22 ++++++++++++++++++++
+>  2 files changed, 30 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/=
+include/asm/nohash/32/pgtable.h
+> index 34ce50da1850..11c6849f7864 100644
+> --- a/arch/powerpc/include/asm/nohash/32/pgtable.h
+> +++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
+> @@ -306,30 +306,29 @@ static inline pte_t ptep_get_and_clear(struct mm_st=
+ruct *mm, unsigned long addr,
+>  }
+> =20
+>  #define __HAVE_ARCH_PTEP_SET_WRPROTECT
+> +#ifndef ptep_set_wrprotect
+>  static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned lon=
+g addr,
+>  				      pte_t *ptep)
+>  {
+> -	unsigned long clr =3D ~pte_val(pte_wrprotect(__pte(~0)));
+> -	unsigned long set =3D pte_val(pte_wrprotect(__pte(0)));
+> -
+> -	pte_update(mm, addr, ptep, clr, set, 0);
+> +	pte_update(mm, addr, ptep, _PAGE_RW, 0, 0);
+>  }
+> +#endif
+> =20
+> +#ifndef __ptep_set_access_flags
+>  static inline void __ptep_set_access_flags(struct vm_area_struct *vma,
+>  					   pte_t *ptep, pte_t entry,
+>  					   unsigned long address,
+>  					   int psize)
+>  {
+> -	pte_t pte_set =3D pte_mkyoung(pte_mkdirty(pte_mkwrite(pte_mkexec(__pte(=
+0)))));
+> -	pte_t pte_clr =3D pte_mkyoung(pte_mkdirty(pte_mkwrite(pte_mkexec(__pte(=
+~0)))));
+> -	unsigned long set =3D pte_val(entry) & pte_val(pte_set);
+> -	unsigned long clr =3D ~pte_val(entry) & ~pte_val(pte_clr);
+> +	unsigned long set =3D pte_val(entry) &
+> +			    (_PAGE_DIRTY | _PAGE_ACCESSED | _PAGE_RW | _PAGE_EXEC);
+>  	int huge =3D psize > mmu_virtual_psize ? 1 : 0;
+> =20
+> -	pte_update(vma->vm_mm, address, ptep, clr, set, huge);
+> +	pte_update(vma->vm_mm, address, ptep, 0, set, huge);
+> =20
+>  	flush_tlb_page(vma, address);
+>  }
+> +#endif
+> =20
+>  static inline int pte_young(pte_t pte)
+>  {
+> diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/=
+include/asm/nohash/32/pte-8xx.h
+> index fcc48d590d88..1a89ebdc3acc 100644
+> --- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> +++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+> @@ -136,6 +136,28 @@ static inline pte_t pte_mkhuge(pte_t pte)
+> =20
+>  #define pte_mkhuge pte_mkhuge
+> =20
+> +static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long=
+ addr, pte_t *p,
+> +				     unsigned long clr, unsigned long set, int huge);
+> +
+> +static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned lon=
+g addr, pte_t *ptep)
+> +{
+> +	pte_update(mm, addr, ptep, 0, _PAGE_RO, 0);
+> +}
+> +#define ptep_set_wrprotect ptep_set_wrprotect
+> +
+> +static inline void __ptep_set_access_flags(struct vm_area_struct *vma, p=
+te_t *ptep,
+> +					   pte_t entry, unsigned long address, int psize)
+> +{
+> +	unsigned long set =3D pte_val(entry) & (_PAGE_DIRTY | _PAGE_ACCESSED | =
+_PAGE_EXEC);
+> +	unsigned long clr =3D ~pte_val(entry) & _PAGE_RO;
+> +	int huge =3D psize > mmu_virtual_psize ? 1 : 0;
+> +
+> +	pte_update(vma->vm_mm, address, ptep, clr, set, huge);
+> +
+> +	flush_tlb_page(vma, address);
+> +}
+> +#define __ptep_set_access_flags __ptep_set_access_flags
+> +
+>  static inline unsigned long pgd_leaf_size(pgd_t pgd)
+>  {
+>  	if (pgd_val(pgd) & _PMD_PAGE_8M)
+> --=20
+> 2.31.1
+>=20
+>=20
