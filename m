@@ -2,75 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15BBC43CBE9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 16:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E758343CC04
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 16:22:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfW6T6HZMz3c4h
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:19:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfW9q5bJJz307g
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:22:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20210112.gappssmtp.com header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=WO/8J0WH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aZB0T1FF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=paul-moore.com
- (client-ip=2a00:1450:4864:20::532; helo=mail-ed1-x532.google.com;
- envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
+ helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=paul-moore-com.20210112.gappssmtp.com
- header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=WO/8J0WH; dkim-atps=neutral
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com
- [IPv6:2a00:1450:4864:20::532])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=aZB0T1FF; dkim-atps=neutral
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
+ [IPv6:2607:f8b0:4864:20::431])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfW5n3btyz2yHJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 01:19:07 +1100 (AEDT)
-Received: by mail-ed1-x532.google.com with SMTP id z20so10671618edi.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 07:19:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=A7VSAROM1Lq92tsQzcvA0FV6paOOKRRSG0CkqXmrfHY=;
- b=WO/8J0WHy3bqbZ8bWtK8os21bmAyrg+d4GoI0FdQVNmBnedrhDrQwHoExDY2HYNc56
- wuGhdsWbyO6HMLfe7SEFEzeORWHjKA3PZMg0C1afDFnRQUD4ZqFUyBM5nPwZFehS7m/X
- W/E1Vfn3gFK5Z6fjNK0H27jiZurO+y4SQwZaV5JTnwtZ2OLx5cmApkpw8B1O6X9Xo+om
- 726nvMv4VOVc1TVOL4hZMFRAdnEIUsRQn11GxzVLikDaXwVX/sMLg1dKx8sp7Q28O1DL
- OhJN2gwLwq3QBfaJBJecj9D85HBBgpvARrJFIHfm0cmYWs/UjVH5m3m/ip7qm2ysF2c5
- YYDA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfW9454Y6z2yHW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 01:21:59 +1100 (AEDT)
+Received: by mail-pf1-x431.google.com with SMTP id y7so2871073pfg.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 07:21:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=LcgMg779T/gdBXlrNU3YHrX7Gk6gacaR5KBJWJtm+pg=;
+ b=aZB0T1FFZxSGyIpj59SsCIORPIGrEoeVOClNLIUCiUOsG5zahPLh7gqzsZH/29YSPU
+ C7+5bsEj80wNpWA5naRezLjvxAifOnrOsScbYdvczPPmY0CIj7bTgPvZt17L8o8lqq/p
+ fVT87s96rdixTjLDQ2F5MfYqhemxGZyJUnxj/OFZ1dmAqnGR51QhkCSG/x1Ncvzs8sp9
+ MJTisyKwWzCzSjBmf1VpUTNKHeR/6d0DyiQ9hfOGH+j9iAk+Yh6hUzuRnOusxD+PmdXm
+ Vta71sU1BItic0lHoRmoc97RnlWO0esPgWRA9CIskTN5a+J4cOvJWsIsKDfprIJIG3Dh
+ Os7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=A7VSAROM1Lq92tsQzcvA0FV6paOOKRRSG0CkqXmrfHY=;
- b=5cAn3eRXWp50A7qZoiN3wg4Qc9mYoebfj6IkKcTu6B4GqvteEd9HGcVhyI+fDufCmx
- InXdiCRtj1+r3M+HetU8zzvmYAITMsvL9uImUy5wvMdZ3sn0S5lUjugVgQRTrDThwrdN
- RlRpIMYk9L758YjekS20ZbMfrh7BQUe+M54sLX4UkMUwxT2BACZdloyOVzoFg2ecXRsD
- dYsF+dD7TELytNNI4jTzsdU2VsfPtDztxpFTm/K+QutH5EJahBoSHlt6AY4hqP2SE72P
- SOb7AGBAgyPXYt1kiFYA6QKqT6XvXaOq4O6wtvZg5rdWvs35gFM9zPx3/PL0Z2O8UYiZ
- sxYw==
-X-Gm-Message-State: AOAM532/EzBx3CSueNDhY22xfuOOANMWemlW5i2bqakwGiNsMJeVF2Gm
- MgeWnaq4ewbP6Q4L/Bk8OyOX5MoQRTINJrcokC9z
-X-Google-Smtp-Source: ABdhPJx/AVRgyCKdtHofrLmeNbJZOE7jZKTiy9OBTXYs7O2Og+i8eOPvBwKXpaar1l0AT/K2AG1HPgfhyoHnEQ1j4vY=
-X-Received: by 2002:a17:906:919:: with SMTP id
- i25mr38774337ejd.171.1635344330893; 
- Wed, 27 Oct 2021 07:18:50 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=LcgMg779T/gdBXlrNU3YHrX7Gk6gacaR5KBJWJtm+pg=;
+ b=cTKhfDlUli97kcxDA8lCdQsm0N6enB1rxL7HyApH+p4ppqFGJtxSr47iYZEf+ZWnJv
+ ujONeenFBQUfHA+BuaJT8Kfmq0FwhKUxDeq6J82bMdItbjibYvz48+Q/cpumiVcR7cwr
+ nmRP32hNLekDuTe5x0+GAxoi5umokZKn9l7CDSlW96xqGmmDNaMzFEltF+zy1OCt32kH
+ m7r2h85i4TAroOrNBN06FOX68uLmYMUY18NCcYU8x5ygdrGf1HijbxEigooPYaRjIewT
+ 4D4MRNRnIYoQ/zf9LKRMT6soMI2/pgG9l9SnRtudvvdskdg2lcP8lY8vuhVMix/+ZyJE
+ VqNA==
+X-Gm-Message-State: AOAM532U+/pN9fzgKZverbVCYp01f1LswPjj+RCEdUaH1lH2gOffWOlF
+ VoqbVv0ug0lDH6FkAfcrnWPHJ76bli8=
+X-Google-Smtp-Source: ABdhPJy+gtXfVi2Tyiqe+BeTvidQTvDcUYUelFUBl7Qe7/pxsIKAYTZ/yS6QFsJsrvKFw03g9IHYjA==
+X-Received: by 2002:a63:9308:: with SMTP id b8mr24176255pge.104.1635344516390; 
+ Wed, 27 Oct 2021 07:21:56 -0700 (PDT)
+Received: from bobo.ibm.com ([118.208.159.180])
+ by smtp.gmail.com with ESMTPSA id d14sm159979pfu.124.2021.10.27.07.21.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 27 Oct 2021 07:21:56 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3] KVM: PPC: Tick accounting should defer vtime accounting
+ 'til after IRQ handling
+Date: Thu, 28 Oct 2021 00:21:50 +1000
+Message-Id: <20211027142150.3711582-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-References: <20211026133147.35d19e00@canb.auug.org.au>
- <87k0i0awdl.fsf@mpe.ellerman.id.au>
- <CAHC9VhTj7gn3iAOYctVRKvv_Bk1iQMrmkA8FVJtYzdvBjqFmvg@mail.gmail.com>
- <87tuh2aepp.fsf@mpe.ellerman.id.au>
- <2012df5e-62ec-06fb-9f4d-e27dde184a3f@csgroup.eu>
-In-Reply-To: <2012df5e-62ec-06fb-9f4d-e27dde184a3f@csgroup.eu>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 27 Oct 2021 10:18:40 -0400
-Message-ID: <CAHC9VhRHs8Lx8+v+LHmJByxO_m330sfLWRsGDsFtQxyQ1860eg@mail.gmail.com>
-Subject: Re: linux-next: manual merge of the audit tree with the powerpc tree
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,79 +78,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- Richard Guy Briggs <rgb@redhat.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: Laurent Vivier <lvivier@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 27, 2021 at 7:41 AM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
-> Le 27/10/2021 =C3=A0 13:29, Michael Ellerman a =C3=A9crit :
-> > Paul Moore <paul@paul-moore.com> writes:
-> >> On Tue, Oct 26, 2021 at 6:55 AM Michael Ellerman <mpe@ellerman.id.au> =
-wrote:
-> >>> Stephen Rothwell <sfr@canb.auug.org.au> writes:
-> >>>> Hi all,
-> >>>>
-> >>>> Today's linux-next merge of the audit tree got conflicts in:
-> >>>>
-> >>>>    arch/powerpc/kernel/audit.c
-> >>>>    arch/powerpc/kernel/compat_audit.c
-> >>>>
-> >>>> between commit:
-> >>>>
-> >>>>    566af8cda399 ("powerpc/audit: Convert powerpc to AUDIT_ARCH_COMPA=
-T_GENERIC")
-> >>>>
-> >>>> from the powerpc tree and commits:
-> >>>>
-> >>>>    42f355ef59a2 ("audit: replace magic audit syscall class numbers w=
-ith macros")
-> >>>>    1c30e3af8a79 ("audit: add support for the openat2 syscall")
-> >>>>
-> >>>> from the audit tree.
-> >>>
-> >>> Thanks.
-> >>>
-> >>> I guess this is OK, unless the audit folks disagree. I could revert t=
-he
-> >>> powerpc commit and try it again later.
-> >>>
-> >>> If I don't hear anything I'll leave it as-is.
-> >>
-> >> Hi Michael,
-> >>
-> >> Last I recall from the powerpc/audit thread there were still some
-> >> issues with audit working properly in your testing, has that been
-> >> resolved?
-> >
-> > No.
-> >
-> > There's one test failure both before and after the conversion to use th=
-e
-> > generic code.
-> >
-> >> If nothing else, -rc7 seems a bit late for this to hit -next for me to
-> >> feel comfortable about this.
-> >
-> > OK. I'll revert the patch in my tree.
->
-> But it's been in the pipe since end of August and no one reported any
-> issue other issue than the pre-existing one, so what's the new issue
-> that prevents us to merge it two monthes later, and how do we walk
-> forward then ?
+From: Laurent Vivier <lvivier@redhat.com>
 
-We work to resolve the test failure, it's that simple.  I haven't seen
-the failure so I haven't been much help to do any sort of root cause
-digging on the problem, it would be helpful if those who are seeing
-the problem could dig into the failure and report back on what they
-find.  That is what has been missing and why I never ACK'd or merged
-the powerpc audit code.
+Commit 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest
+context before enabling irqs") moved guest_exit() into the interrupt
+protected area to avoid wrong context warning (or worse). The problem is
+that tick-based time accounting has not yet been updated at this point
+(because it depends on the timer interrupt firing), so the guest time
+gets incorrectly accounted to system time.
 
---=20
-paul moore
-www.paul-moore.com
+To fix the problem, follow the x86 fix in commit 160457140187 ("Defer
+vtime accounting 'til after IRQ handling"), and allow host IRQs to run
+before accounting the guest exit time.
+
+In the case vtime accounting is enabled, this is not required because TB
+is used directly for accounting.
+
+Before this patch, with CONFIG_TICK_CPU_ACCOUNTING=y in the host and a
+guest running a kernel compile, the 'guest' fields of /proc/stat are
+stuck at zero. With the patch they can be observed increasing roughly as
+expected.
+
+Fixes: e233d54d4d97 ("KVM: booke: use __kvm_guest_exit")
+Fixes: 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest context before enabling irqs")
+Cc: <stable@vger.kernel.org> # 5.12
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+[np: only required for tick accounting, add Book3E fix, tweak changelog]
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+Since v2:
+- I took over the patch with Laurent's blessing.
+- Changed to avoid processing IRQs if we do have vtime accounting
+  enabled.
+- Changed so in either case the accounting is called with irqs disabled.
+- Added similar Book3E fix.
+- Rebased on upstream, tested, observed bug and confirmed fix.
+
+ arch/powerpc/kvm/book3s_hv.c | 30 ++++++++++++++++++++++++++++--
+ arch/powerpc/kvm/booke.c     | 16 +++++++++++++++-
+ 2 files changed, 43 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 2acb1c96cfaf..7b74fc0a986b 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -3726,7 +3726,20 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
+ 
+ 	kvmppc_set_host_core(pcpu);
+ 
+-	guest_exit_irqoff();
++	context_tracking_guest_exit();
++	if (!vtime_accounting_enabled_this_cpu()) {
++		local_irq_enable();
++		/*
++		 * Service IRQs here before vtime_account_guest_exit() so any
++		 * ticks that occurred while running the guest are accounted to
++		 * the guest. If vtime accounting is enabled, accounting uses
++		 * TB rather than ticks, so it can be done without enabling
++		 * interrupts here, which has the problem that it accounts
++		 * interrupt processing overhead to the host.
++		 */
++		local_irq_disable();
++	}
++	vtime_account_guest_exit();
+ 
+ 	local_irq_enable();
+ 
+@@ -4510,7 +4523,20 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 
+ 	kvmppc_set_host_core(pcpu);
+ 
+-	guest_exit_irqoff();
++	context_tracking_guest_exit();
++	if (!vtime_accounting_enabled_this_cpu()) {
++		local_irq_enable();
++		/*
++		 * Service IRQs here before vtime_account_guest_exit() so any
++		 * ticks that occurred while running the guest are accounted to
++		 * the guest. If vtime accounting is enabled, accounting uses
++		 * TB rather than ticks, so it can be done without enabling
++		 * interrupts here, which has the problem that it accounts
++		 * interrupt processing overhead to the host.
++		 */
++		local_irq_disable();
++	}
++	vtime_account_guest_exit();
+ 
+ 	local_irq_enable();
+ 
+diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
+index 977801c83aff..8c15c90dd3a9 100644
+--- a/arch/powerpc/kvm/booke.c
++++ b/arch/powerpc/kvm/booke.c
+@@ -1042,7 +1042,21 @@ int kvmppc_handle_exit(struct kvm_vcpu *vcpu, unsigned int exit_nr)
+ 	}
+ 
+ 	trace_kvm_exit(exit_nr, vcpu);
+-	guest_exit_irqoff();
++
++	context_tracking_guest_exit();
++	if (!vtime_accounting_enabled_this_cpu()) {
++		local_irq_enable();
++		/*
++		 * Service IRQs here before vtime_account_guest_exit() so any
++		 * ticks that occurred while running the guest are accounted to
++		 * the guest. If vtime accounting is enabled, accounting uses
++		 * TB rather than ticks, so it can be done without enabling
++		 * interrupts here, which has the problem that it accounts
++		 * interrupt processing overhead to the host.
++		 */
++		local_irq_disable();
++	}
++	vtime_account_guest_exit();
+ 
+ 	local_irq_enable();
+ 
+-- 
+2.23.0
+
