@@ -2,43 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 214F743BFC4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 04:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D8A43BFCF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 04:29:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfCHX7170z3cBZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 13:26:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfCLw2s1Qz30RK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 13:29:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=up5n=pp=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.130;
+ helo=out30-130.freemail.mail.aliyun.com;
+ envelope-from=yun.wang@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-130.freemail.mail.aliyun.com
+ (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfCH413v3z2xCy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 13:26:08 +1100 (AEDT)
-Received: from rorschach.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 33D9B6023F;
- Wed, 27 Oct 2021 02:26:02 +0000 (UTC)
-Date: Tue, 26 Oct 2021 22:26:00 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfCLV36JQz2xCR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 13:29:05 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R151e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04423; MF=yun.wang@linux.alibaba.com;
+ NM=1; PH=DS; RN=30; SR=0; TI=SMTPD_---0Utq-lV5_1635301725; 
+Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com
+ fp:SMTPD_---0Utq-lV5_1635301725) by smtp.aliyun-inc.com(127.0.0.1);
+ Wed, 27 Oct 2021 10:28:47 +0800
 Subject: Re: [PATCH v5 1/2] ftrace: disable preemption when recursion locked
-Message-ID: <20211026222600.7899126f@rorschach.local.home>
-In-Reply-To: <3d897161-7b74-944a-f2a0-07311436fbd9@linux.alibaba.com>
+To: Steven Rostedt <rostedt@goodmis.org>
 References: <3ca92dc9-ea04-ddc2-71cd-524bfa5a5721@linux.alibaba.com>
  <333cecfe-3045-8e0a-0c08-64ff590845ab@linux.alibaba.com>
  <alpine.LSU.2.21.2110261128120.28494@pobox.suse.cz>
  <18ba2a71-e12d-33f7-63fe-2857b2db022c@linux.alibaba.com>
  <20211026080117.366137a5@gandalf.local.home>
  <3d897161-7b74-944a-f2a0-07311436fbd9@linux.alibaba.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ <20211026222600.7899126f@rorschach.local.home>
+From: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
+Message-ID: <f1bea3e5-005a-3109-d95c-d754530baeb2@linux.alibaba.com>
+Date: Wed, 27 Oct 2021 10:28:45 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20211026222600.7899126f@rorschach.local.home>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,20 +75,30 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 27 Oct 2021 09:54:13 +0800
-=E7=8E=8B=E8=B4=87 <yun.wang@linux.alibaba.com> wrote:
 
-> My apologize for the stupid comments... I'll send a v6 for this patch
-> only to fix that, please let me know if this is not a good way to fix
-> few lines of comments.
 
-Actually, please resend both patches, as a new patch set, on its own thread.
+On 2021/10/27 上午10:26, Steven Rostedt wrote:
+> On Wed, 27 Oct 2021 09:54:13 +0800
+> 王贇 <yun.wang@linux.alibaba.com> wrote:
+> 
+>> My apologize for the stupid comments... I'll send a v6 for this patch
+>> only to fix that, please let me know if this is not a good way to fix
+>> few lines of comments.
+> 
+> Actually, please resend both patches, as a new patch set, on its own thread.
+> 
+> Just replying here won't trigger my patchwork scripts.
+> 
+> And also, if you don't include the other patch, the scripts will drop
+> it.
 
-Just replying here won't trigger my patchwork scripts.
+Got it~
 
-And also, if you don't include the other patch, the scripts will drop
-it.
+Regards,
+Michael Wang
 
-Thanks,
-
--- Steve
+> 
+> Thanks,
+> 
+> -- Steve
+> 
