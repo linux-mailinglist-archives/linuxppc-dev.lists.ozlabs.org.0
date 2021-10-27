@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113CC43D6E8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 00:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D7E43D6EE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 00:48:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfkMZ6mMKz3clp
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 09:46:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfkNv4j32z3cC3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 09:47:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,22 +17,21 @@ Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfkLH4k4qz3bWq
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 09:45:43 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfkLK3Pqcz3bWq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 09:45:45 +1100 (AEDT)
 Received: by luna.linkmauve.fr (Postfix, from userid 1000)
- id F2808F40CA4; Thu, 28 Oct 2021 00:35:23 +0200 (CEST)
+ id DBA10F40CA5; Thu, 28 Oct 2021 00:35:24 +0200 (CEST)
 From: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
 To: Alexandre Belloni <alexandre.belloni@bootlin.com>,
  Alessandro Zummo <a.zummo@towertech.it>
-Subject: [PATCH v2 3/5] powerpc: wii.dts: Expose HW_SRNPROT on this platform
-Date: Thu, 28 Oct 2021 00:35:13 +0200
-Message-Id: <20211027223516.2031-4-linkmauve@linkmauve.fr>
+Subject: [PATCH v2 4/5] powerpc: gamecube_defconfig: Enable the RTC driver
+Date: Thu, 28 Oct 2021 00:35:14 +0200
+Message-Id: <20211027223516.2031-5-linkmauve@linkmauve.fr>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027223516.2031-1-linkmauve@linkmauve.fr>
 References: <20211014220524.9988-1-linkmauve@linkmauve.fr>
  <20211027223516.2031-1-linkmauve@linkmauve.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -55,33 +54,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This Hollywood register isn’t properly understood, but can allow or
-reject access to the SRAM, which we need to set for RTC usage if it
-isn’t previously set correctly beforehand.
-
-See https://wiibrew.org/wiki/Hardware/Hollywood_Registers#HW_SRNPROT
+This selects the rtc-gamecube driver, which provides a real-time clock
+on this platform.
 
 Signed-off-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
 ---
- arch/powerpc/boot/dts/wii.dts | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/configs/gamecube_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/boot/dts/wii.dts b/arch/powerpc/boot/dts/wii.dts
-index c5720fdd0686..34d9732d5910 100644
---- a/arch/powerpc/boot/dts/wii.dts
-+++ b/arch/powerpc/boot/dts/wii.dts
-@@ -175,6 +175,11 @@ PIC1: pic1@d800030 {
- 			interrupts = <14>;
- 		};
- 
-+		srnprot@d800060 {
-+			compatible = "nintendo,hollywood-srnprot";
-+			reg = <0x0d800060 0x4>;
-+		};
-+
- 		GPIO: gpio@d8000c0 {
- 			#gpio-cells = <2>;
- 			compatible = "nintendo,hollywood-gpio";
+diff --git a/arch/powerpc/configs/gamecube_defconfig b/arch/powerpc/configs/gamecube_defconfig
+index 24c0e0ea5aeb..91a1b99f4e8f 100644
+--- a/arch/powerpc/configs/gamecube_defconfig
++++ b/arch/powerpc/configs/gamecube_defconfig
+@@ -68,7 +68,7 @@ CONFIG_SND_SEQUENCER=y
+ CONFIG_SND_SEQUENCER_OSS=y
+ # CONFIG_USB_SUPPORT is not set
+ CONFIG_RTC_CLASS=y
+-CONFIG_RTC_DRV_GENERIC=y
++CONFIG_RTC_DRV_GAMECUBE=y
+ CONFIG_EXT2_FS=y
+ CONFIG_EXT4_FS=y
+ CONFIG_ISO9660_FS=y
 -- 
 2.33.1
 
