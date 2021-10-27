@@ -2,64 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3240E43D700
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 00:55:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB51D43D701
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 00:56:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfkYx0xllz3cQj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 09:55:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfkZf4B16z3ds1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 09:56:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=M6DsUnX+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=FUIf1ArH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::136;
- helo=mail-lf1-x136.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22b;
+ helo=mail-lj1-x22b.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=M6DsUnX+; dkim-atps=neutral
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com
- [IPv6:2a00:1450:4864:20::136])
+ header.s=20210112 header.b=FUIf1ArH; dkim-atps=neutral
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com
+ [IPv6:2a00:1450:4864:20::22b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhPC3Jt5z2xDH;
- Thu, 28 Oct 2021 08:18:07 +1100 (AEDT)
-Received: by mail-lf1-x136.google.com with SMTP id c28so8885301lfv.13;
- Wed, 27 Oct 2021 14:18:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhPF5vBSz2xF0;
+ Thu, 28 Oct 2021 08:18:09 +1100 (AEDT)
+Received: by mail-lj1-x22b.google.com with SMTP id i26so5087840ljg.7;
+ Wed, 27 Oct 2021 14:18:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=iOJthmuPEC7IB5L8OM1uajmE3s/Ei+DiZXNIsEtdoSk=;
- b=M6DsUnX+Dqnnl5/0WkKsChXFOe/dRyATOHCL/N/d/DYRaMuFNhNXN2y8l/5KKDdvO8
- HePUBv3ijZ6wA1hQMS8r/8Dy8p8fDstfsgPNvYzogEnoiN08aVSWSCzuevGifeB4Cbsl
- JU+F7xYiyB1f3JwKGti4sTNyf7tgTKcPyJdN2KeBPBno+Y11B21cmAzeN1UTCPeELLZl
- qo9vl+NLInil/J95xFZK38OdgQBYthlLceqQb/6Zg0gcqPneeFesfA544/Mc5a4V8TTa
- vBfOArxwV6NLDS9FtxVb4oHCbiHa9QgKi34nHbfFFiWQfKG+GQY4kpTfJykuXmLPssEZ
- NnyA==
+ bh=YMqE3plwxFsGF2jAAFpub/HIgtQoag7R/7s0kLQElmo=;
+ b=FUIf1ArHmNaCMJZ4bSQxWbL5JCSm2CJKzXGlBqJrWaAR8tSPTufWS8xOyLSwSu1PM5
+ 2liVJ/5r60CrtJJr5DfBlw1KykabxABPWMHDsuYjgXtr14EcQg2JUBTjbQBqUDOiqreb
+ QGWgVclCqks9knb00wTu5MnkQu4fzkoUJI9+ACesDxpbb8YGJKMHlYbydkINuBcjzEjx
+ IFIHDVdQgtIeC1A4mREDvIovPg1tG0nOTZB7ncUf8fLjV8foPKyZUn+53/McMAaFU2Ip
+ XymrGCj037mcVReap7wcm8US/GqkUtNAHHKTZ6VwLbtZ8u26dh3C526wfrT0Bgbs2S/w
+ m+/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=iOJthmuPEC7IB5L8OM1uajmE3s/Ei+DiZXNIsEtdoSk=;
- b=kok1bYhmwqq7QqnpxCN0o2S2HP2xtuvqknQ5d+dt1GvIlWi/upgZbkYnI4+qP4Dzrr
- O6Q5o4wV0a+ZtaTMi+FtZn9WAK0CAymWKVZFRLlNrGeWkQW89AWk4gxTpIjkHmlbEysk
- sPRUgEphdkH6qccIHzbVG5HDcdBkN+NZWXLZYUwUCyYMMTIvJdvC74ifN758c54nvF06
- qtpi5Acrk33WBDU6TH0+fbt6LWmVZVnNnfWZUp7bE7fXRK2XMvzoiRwqycDNWuxcLqxc
- TKOqsjoW8cf5ZtV+fzfGclGsTnCZyRMKwTTEQaG3wH6LL1Tb8tuvBma+WXaLzPVLvHB0
- 5Z7A==
-X-Gm-Message-State: AOAM530Id2ceZjN3lcrxCwBBdxKfYB0nIbRSs4BbhjiUxORG6AxiVnkh
- YE/h0mrjF54qSsQEMc634IY=
-X-Google-Smtp-Source: ABdhPJySbOm+27yOjORJjCzB1RrKvb62o79gukvdjDZzwYphfPzvlvqWgT3cY5UK3KGllNbg7CmL+w==
-X-Received: by 2002:a05:6512:344a:: with SMTP id
- j10mr74981lfr.653.1635369483872; 
- Wed, 27 Oct 2021 14:18:03 -0700 (PDT)
+ bh=YMqE3plwxFsGF2jAAFpub/HIgtQoag7R/7s0kLQElmo=;
+ b=t5Zw14WK5bzTftXpW5ZG2U01R6ccCQTm7cL2XWGRkS123BvkRgY3biDzmPiqeUihZQ
+ IKCnfAuG/NbhZHD6v4wS+a5sg1nfr7kugRAtfnp004N5qWMBi9IsOeTN22r4EaTD1ZqT
+ xdORTGtW495Xl5ewQdiXzWRM89lgvQntST3dxdjwGJrRKLanX7ygIiJWvvmopm7vnjMD
+ AJsnSTzhgQZZWhmD1szpng4uIQYtaBWhJN7i+zn8W789zrtmWeu292nwOHe+5+QY5HRe
+ qlljddxk2co+t3+t6BPd+NAKixzAttfaeRNpovpCS5HXdNVFN9C/aUyPNBBYSW2gjKD1
+ tdVw==
+X-Gm-Message-State: AOAM530jSyuDvZVKBMiEySkqZRapJ3xdcrs8gHD/njpbetotA2q6h5pK
+ LyTHY8IK69n6Lx18NkxDOyA=
+X-Google-Smtp-Source: ABdhPJwf9klS71294z2BVTXZCugJ9JFGgS+3s6bIBq/C8DIXy9Ezc+U1oWDuHg++RtezU/Ib7TxqLQ==
+X-Received: by 2002:a2e:2f19:: with SMTP id v25mr310304ljv.281.1635369485711; 
+ Wed, 27 Oct 2021 14:18:05 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru.
  [46.138.41.28])
- by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.02
+ by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 14:18:03 -0700 (PDT)
+ Wed, 27 Oct 2021 14:18:05 -0700 (PDT)
 From: Dmitry Osipenko <digetx@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
  Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
@@ -69,9 +68,10 @@ To: Thierry Reding <thierry.reding@gmail.com>,
  Daniel Lezcano <daniel.lezcano@linaro.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v2 06/45] reboot: Warn if unregister_restart_handler() fails
-Date: Thu, 28 Oct 2021 00:16:36 +0300
-Message-Id: <20211027211715.12671-7-digetx@gmail.com>
+Subject: [PATCH v2 07/45] reboot: Remove extern annotation from function
+ prototypes
+Date: Thu, 28 Oct 2021 00:16:37 +0300
+Message-Id: <20211027211715.12671-8-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -128,27 +128,90 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Emit warning if unregister_restart_handler() fails since it never should
-fail. This will ease further API development by catching mistakes early.
+There is no need to annotate function prototypes with 'extern', it makes
+code less readable. Remove unnecessary annotations from <reboot.h>.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- kernel/reboot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/reboot.h | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index d39e599c3c99..291d44082f42 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -210,7 +210,7 @@ EXPORT_SYMBOL(register_restart_handler);
-  */
- int unregister_restart_handler(struct notifier_block *nb)
- {
--	return atomic_notifier_chain_unregister(&restart_handler_list, nb);
-+	return WARN_ON(atomic_notifier_chain_unregister(&restart_handler_list, nb));
- }
- EXPORT_SYMBOL(unregister_restart_handler);
+diff --git a/include/linux/reboot.h b/include/linux/reboot.h
+index 7c288013a3ca..b7fa25726323 100644
+--- a/include/linux/reboot.h
++++ b/include/linux/reboot.h
+@@ -40,36 +40,36 @@ extern int reboot_cpu;
+ extern int reboot_force;
  
+ 
+-extern int register_reboot_notifier(struct notifier_block *);
+-extern int unregister_reboot_notifier(struct notifier_block *);
++int register_reboot_notifier(struct notifier_block *);
++int unregister_reboot_notifier(struct notifier_block *);
+ 
+-extern int devm_register_reboot_notifier(struct device *, struct notifier_block *);
++int devm_register_reboot_notifier(struct device *, struct notifier_block *);
+ 
+-extern int register_restart_handler(struct notifier_block *);
+-extern int unregister_restart_handler(struct notifier_block *);
+-extern void do_kernel_restart(char *cmd);
++int register_restart_handler(struct notifier_block *);
++int unregister_restart_handler(struct notifier_block *);
++void do_kernel_restart(char *cmd);
+ 
+ /*
+  * Architecture-specific implementations of sys_reboot commands.
+  */
+ 
+-extern void migrate_to_reboot_cpu(void);
+-extern void machine_restart(char *cmd);
+-extern void machine_halt(void);
+-extern void machine_power_off(void);
++void migrate_to_reboot_cpu(void);
++void machine_restart(char *cmd);
++void machine_halt(void);
++void machine_power_off(void);
+ 
+-extern void machine_shutdown(void);
++void machine_shutdown(void);
+ struct pt_regs;
+-extern void machine_crash_shutdown(struct pt_regs *);
++void machine_crash_shutdown(struct pt_regs *);
+ 
+ /*
+  * Architecture independent implementations of sys_reboot commands.
+  */
+ 
+-extern void kernel_restart_prepare(char *cmd);
+-extern void kernel_restart(char *cmd);
+-extern void kernel_halt(void);
+-extern void kernel_power_off(void);
++void kernel_restart_prepare(char *cmd);
++void kernel_restart(char *cmd);
++void kernel_halt(void);
++void kernel_power_off(void);
+ 
+ extern int C_A_D; /* for sysctl */
+ void ctrl_alt_del(void);
+@@ -77,15 +77,15 @@ void ctrl_alt_del(void);
+ #define POWEROFF_CMD_PATH_LEN	256
+ extern char poweroff_cmd[POWEROFF_CMD_PATH_LEN];
+ 
+-extern void orderly_poweroff(bool force);
+-extern void orderly_reboot(void);
++void orderly_poweroff(bool force);
++void orderly_reboot(void);
+ void hw_protection_shutdown(const char *reason, int ms_until_forced);
+ 
+ /*
+  * Emergency restart, callable from an interrupt handler.
+  */
+ 
+-extern void emergency_restart(void);
++void emergency_restart(void);
+ #include <asm/emergency-restart.h>
+ 
+ #endif /* _LINUX_REBOOT_H */
 -- 
 2.33.1
 
