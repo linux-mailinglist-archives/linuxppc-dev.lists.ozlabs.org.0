@@ -1,64 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E7B43D740
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:09:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B7643D748
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:09:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfksR2bF2z3f6y
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:09:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfkt81YLCz3f8G
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:09:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JvBjth71;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IWwdEP2z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22e;
- helo=mail-lj1-x22e.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12c;
+ helo=mail-lf1-x12c.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=JvBjth71; dkim-atps=neutral
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com
- [IPv6:2a00:1450:4864:20::22e])
+ header.s=20210112 header.b=IWwdEP2z; dkim-atps=neutral
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com
+ [IPv6:2a00:1450:4864:20::12c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhQ04HDLz2yHW;
- Thu, 28 Oct 2021 08:18:48 +1100 (AEDT)
-Received: by mail-lj1-x22e.google.com with SMTP id k13so6922070ljj.12;
- Wed, 27 Oct 2021 14:18:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhQ16lFJz2yHW;
+ Thu, 28 Oct 2021 08:18:49 +1100 (AEDT)
+Received: by mail-lf1-x12c.google.com with SMTP id u11so9041843lfs.1;
+ Wed, 27 Oct 2021 14:18:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=XVkgO3q8+3iXvnI8C7YHW1hpsebxqvqNvVwPho8vSws=;
- b=JvBjth71MhsyIm0JdpPylPRsS4KUFW6BneSIAqxDXDzbFjW9Bt93MWfm5UnDUVT+LY
- PN2DoVOg4LkGHqR46okUaH0xtknlZuN7sz1m2rXWFP+8ycrv0mDE2+lXOLhNQyopT3Vb
- C9HJqmEvn5NNTeFE+Yqt8PhYhqF5nNL7X6uD9nn3NzyyFpNh4ofur6IOki9Q5zCOptdK
- PNXfyjJD/8x2BE3QO9lZ5RaDpWCetJjHnzeJvzuWrsMKLwqp5dFqdwNw5X1p5tIb9H77
- X9gwILOKempj602Hj9wd8g1ui3+PA2eteBB91Roi8uzQIKwV7mQ4s5O8fFD8fUrtUyG6
- Kjfw==
+ bh=VpMTaQaJ0cjNLgvNqh3di7liIGTew7KcJqDZRitT+Gs=;
+ b=IWwdEP2zbLaLlU4mCU5s8PpqrkaIWlck+oA3xnCuAzsOirLY91m5COquObIzRO/SOa
+ ZZIFcDLGTP22p0/7Hcw3xr55ftJZWhQ4nU6sBNGCfWjV2gTeJrHUPc9jLo/fr5xO0l0l
+ 0SNS1n6R63fMlbNJFT3gbKkQCc0Ia7/EAvKfYLtASP95KzfXrWNNTSb1yRqxn8x5d6xD
+ hciHreIyBYgx6dcdUlzTSBb07ys9RFpq3Y5/l5Vd2vvkqxnAXOO/WD9ek4xsO4aDTsfM
+ H41ne9Olkj2NqvJkNPysdfnoteByPeCFY3T52VBJFYJ9FKDG6+cEspYVw2UY7y4ppIDD
+ pOHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=XVkgO3q8+3iXvnI8C7YHW1hpsebxqvqNvVwPho8vSws=;
- b=WFhCNGbzE55028OLkpFxcDbsV9dvC3ezU+EZVdT/eDi7ApFu/p2WHIA9kkD1HPo6m7
- SUu/f2XjPtiMxkSu4ANJPjcs9uxLL0fHs+9eMVsyg+xDJg6ks9T/Y0lRqxEYrHxDVxel
- 5TloeT19O2BN9hLd0NaJJX/QfkBHlWBtRCX56x7dBEM5O8/IeEzmj+tKKNnqm3wrn3Px
- dhue1uw+Nt7N01oFdV0bfrRBg+6k3msBF6ZxN7PN0p8NaYmucUY7Q9vkD2fDBlvPzfQD
- LapQ+9mRpwjcD0KGE1oU7BRNEk7ELoFsWOU0s6V9GQp/F6xyivnClA/SVzRgQMch4Tit
- WTDg==
-X-Gm-Message-State: AOAM530D7y94XZlRuG4ZMvzn3JNlo+geKOeN8kZqH9r6WbCiLHyCmOaB
- j5hJmHpj2Wj6G8ZplJw+r5s=
-X-Google-Smtp-Source: ABdhPJyyXdjb3N9Ed9Jr705ZzPzIsFRHZUJ+KOYE2dHtjD39JQsr/OWSSeXdN0P7Zob21uOYhbWDdA==
-X-Received: by 2002:a2e:9b55:: with SMTP id o21mr306486ljj.141.1635369524980; 
- Wed, 27 Oct 2021 14:18:44 -0700 (PDT)
+ bh=VpMTaQaJ0cjNLgvNqh3di7liIGTew7KcJqDZRitT+Gs=;
+ b=QtFHDBkSHYl89FcfErk7tR4OfMveW3LubeP5vzU+AGokqQfuSJPK/NX0S8JiSFcTyV
+ xqTcQtZzNY0K0uy/vB+U3zKqpq0mkekCXv2Duuh/D8a8Rd+V1k1LFn8sXpPyNtZhY12T
+ 9cbX9q24/0CqW3IeMxg81nr7q5SEMEXQqPsjkCIMnc3p9rXhTw+iPvnAp4zhQzrOuTB9
+ n8kCB0ueuLHtEqwl+8aZeanYXppE9JyT7MvhP8nK9AXZysP+aAa+M8jSU8Uw+KjDorXX
+ YnsaQ2lm4toYdWMNsDqARe+tZtd99oz8I66UOF8pOazKYuqK5O3xMU5Ujjjg0W+a9OvG
+ uXfQ==
+X-Gm-Message-State: AOAM5330fZKnh+ieCckVIjjyOE5Qxsg9upPsH4tQyItN2ELlfXx6MSyX
+ KwUdnfBvNicHTEbxmaxyXTe0rK+vRmQ=
+X-Google-Smtp-Source: ABdhPJys0u/+wFsWDr/9j4b/C5x8WEos0EuABuOI0MYqETh3mbRQO/mjL91g1gnGx/4TO6/Fje2n8g==
+X-Received: by 2002:ac2:4c9a:: with SMTP id d26mr128014lfl.344.1635369526848; 
+ Wed, 27 Oct 2021 14:18:46 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru.
  [46.138.41.28])
- by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.43
+ by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 14:18:44 -0700 (PDT)
+ Wed, 27 Oct 2021 14:18:46 -0700 (PDT)
 From: Dmitry Osipenko <digetx@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
  Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
@@ -68,9 +68,9 @@ To: Thierry Reding <thierry.reding@gmail.com>,
  Daniel Lezcano <daniel.lezcano@linaro.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v2 28/45] mfd: rn5t618: Use devm_register_power_handler()
-Date: Thu, 28 Oct 2021 00:16:58 +0300
-Message-Id: <20211027211715.12671-29-digetx@gmail.com>
+Subject: [PATCH v2 29/45] mfd: acer-a500: Use devm_register_power_handler()
+Date: Thu, 28 Oct 2021 00:16:59 +0300
+Message-Id: <20211027211715.12671-30-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -133,125 +133,109 @@ provides restart-handler support, i.e. all in one API.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/mfd/rn5t618.c | 56 ++++++++++++++++---------------------------
- 1 file changed, 21 insertions(+), 35 deletions(-)
+ drivers/mfd/acer-ec-a500.c | 52 ++++++++++++++------------------------
+ 1 file changed, 19 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/mfd/rn5t618.c b/drivers/mfd/rn5t618.c
-index 384acb459427..12d7b2339bbe 100644
---- a/drivers/mfd/rn5t618.c
-+++ b/drivers/mfd/rn5t618.c
-@@ -84,9 +84,6 @@ static const struct regmap_irq_chip rc5t619_irq_chip = {
- 	.mask_invert = true,
+diff --git a/drivers/mfd/acer-ec-a500.c b/drivers/mfd/acer-ec-a500.c
+index 80c2fdd14fc4..fc864abc0049 100644
+--- a/drivers/mfd/acer-ec-a500.c
++++ b/drivers/mfd/acer-ec-a500.c
+@@ -31,8 +31,6 @@ enum {
+ 	REG_COLD_REBOOT = 0x55,
  };
  
--static struct i2c_client *rn5t618_pm_power_off;
--static struct notifier_block rn5t618_restart_handler;
+-static struct i2c_client *a500_ec_client_pm_off;
 -
- static int rn5t618_irq_init(struct rn5t618 *rn5t618)
+ static int a500_ec_read(void *context, const void *reg_buf, size_t reg_size,
+ 			void *val_buf, size_t val_sizel)
  {
- 	const struct regmap_irq_chip *irq_chip = NULL;
-@@ -115,7 +112,9 @@ static int rn5t618_irq_init(struct rn5t618 *rn5t618)
- 	return ret;
- }
+@@ -104,32 +102,35 @@ static const struct regmap_bus a500_ec_regmap_bus = {
+ 	.max_raw_read = 2,
+ };
  
--static void rn5t618_trigger_poweroff_sequence(bool repower)
-+static void
-+rn5t618_trigger_poweroff_sequence(struct i2c_client *rn5t618_pm_power_off,
-+				  bool repower)
+-static void a500_ec_poweroff(void)
++static void a500_ec_power_off_handler(struct power_off_data *data)
  {
- 	int ret;
- 
-@@ -151,25 +150,31 @@ static void rn5t618_trigger_poweroff_sequence(bool repower)
- 	dev_alert(&rn5t618_pm_power_off->dev, "Failed to shutdown (err = %d)\n", ret);
- }
- 
--static void rn5t618_power_off(void)
-+static void rn5t618_power_off(struct power_off_data *data)
- {
--	rn5t618_trigger_poweroff_sequence(false);
+-	i2c_smbus_write_word_data(a500_ec_client_pm_off,
+-				  REG_SHUTDOWN, CMD_SHUTDOWN);
 +	struct i2c_client *client = data->cb_data;
 +
-+	rn5t618_trigger_poweroff_sequence(client, false);
++	i2c_smbus_write_word_data(client, REG_SHUTDOWN, CMD_SHUTDOWN);
+ 
+ 	mdelay(A500_EC_POWER_CMD_TIMEOUT);
  }
  
--static int rn5t618_restart(struct notifier_block *this,
--			    unsigned long mode, void *cmd)
-+static void rn5t618_restart(struct restart_data *data)
+-static int a500_ec_restart_notify(struct notifier_block *this,
+-				  unsigned long reboot_mode, void *data)
++static void a500_ec_restart_handler(struct restart_data *data)
  {
--	rn5t618_trigger_poweroff_sequence(true);
+-	if (reboot_mode == REBOOT_WARM)
+-		i2c_smbus_write_word_data(a500_ec_client_pm_off,
 +	struct i2c_client *client = data->cb_data;
 +
-+	rn5t618_trigger_poweroff_sequence(client, true);
++	if (data->mode == REBOOT_WARM)
++		i2c_smbus_write_word_data(client,
+ 					  REG_WARM_REBOOT, CMD_WARM_REBOOT);
+ 	else
+-		i2c_smbus_write_word_data(a500_ec_client_pm_off,
++		i2c_smbus_write_word_data(client,
+ 					  REG_COLD_REBOOT, CMD_COLD_REBOOT);
  
- 	/*
- 	 * Re-power factor detection on PMIC side is not instant. 1ms
- 	 * proved to be enough time until reset takes effect.
- 	 */
- 	mdelay(1);
+ 	mdelay(A500_EC_POWER_CMD_TIMEOUT);
 -
 -	return NOTIFY_DONE;
  }
  
-+static struct power_handler rn5t618_power_handler = {
-+	.restart_cb = rn5t618_restart,
+-static struct notifier_block a500_ec_restart_handler = {
+-	.notifier_call = a500_ec_restart_notify,
+-	.priority = 200,
++static struct power_handler a500_ec_power_handler = {
++	.restart_cb = a500_ec_restart_handler,
 +	.restart_priority = RESTART_PRIO_HIGH,
-+};
 +
- static const struct of_device_id rn5t618_of_match[] = {
- 	{ .compatible = "ricoh,rn5t567", .data = (void *)RN5T567 },
- 	{ .compatible = "ricoh,rn5t618", .data = (void *)RN5T618 },
-@@ -221,38 +226,20 @@ static int rn5t618_i2c_probe(struct i2c_client *i2c)
- 		return ret;
++	.power_off_cb = a500_ec_power_off_handler,
++	.power_off_priority = POWEROFF_PRIO_HIGH,
+ };
+ 
+ static const struct mfd_cell a500_ec_cells[] = {
+@@ -156,26 +157,12 @@ static int a500_ec_probe(struct i2c_client *client)
  	}
  
--	rn5t618_pm_power_off = i2c;
--	if (of_device_is_system_power_controller(i2c->dev.of_node)) {
--		if (!pm_power_off)
--			pm_power_off = rn5t618_power_off;
--		else
--			dev_warn(&i2c->dev, "Poweroff callback already assigned\n");
--	}
-+	if (of_device_is_system_power_controller(i2c->dev.of_node))
-+		rn5t618_power_handler.power_off_cb = rn5t618_power_off;
+ 	if (of_device_is_system_power_controller(client->dev.of_node)) {
+-		a500_ec_client_pm_off = client;
++		a500_ec_power_handler.cb_data = client;
  
--	rn5t618_restart_handler.notifier_call = rn5t618_restart;
--	rn5t618_restart_handler.priority = 192;
-+	rn5t618_power_handler.cb_data = i2c;
- 
--	ret = register_restart_handler(&rn5t618_restart_handler);
-+	ret = devm_register_power_handler(&i2c->dev, &rn5t618_power_handler);
- 	if (ret) {
--		dev_err(&i2c->dev, "cannot register restart handler, %d\n", ret);
-+		dev_err(&i2c->dev, "failed to register power handler: %d\n", ret);
- 		return ret;
- 	}
- 
- 	return rn5t618_irq_init(priv);
- }
- 
--static int rn5t618_i2c_remove(struct i2c_client *i2c)
--{
--	if (i2c == rn5t618_pm_power_off) {
--		rn5t618_pm_power_off = NULL;
--		pm_power_off = NULL;
--	}
+-		err = register_restart_handler(&a500_ec_restart_handler);
++		err = devm_register_power_handler(&client->dev,
++						  &a500_ec_power_handler);
+ 		if (err)
+ 			return err;
 -
--	unregister_restart_handler(&rn5t618_restart_handler);
+-		if (!pm_power_off)
+-			pm_power_off = a500_ec_poweroff;
+-	}
 -
 -	return 0;
 -}
 -
- static int __maybe_unused rn5t618_i2c_suspend(struct device *dev)
- {
- 	struct rn5t618 *priv = dev_get_drvdata(dev);
-@@ -284,7 +271,6 @@ static struct i2c_driver rn5t618_i2c_driver = {
- 		.pm = &rn5t618_i2c_dev_pm_ops,
- 	},
- 	.probe_new = rn5t618_i2c_probe,
--	.remove = rn5t618_i2c_remove,
- };
+-static int a500_ec_remove(struct i2c_client *client)
+-{
+-	if (of_device_is_system_power_controller(client->dev.of_node)) {
+-		if (pm_power_off == a500_ec_poweroff)
+-			pm_power_off = NULL;
+-
+-		unregister_restart_handler(&a500_ec_restart_handler);
+ 	}
  
- module_i2c_driver(rn5t618_i2c_driver);
+ 	return 0;
+@@ -193,7 +180,6 @@ static struct i2c_driver a500_ec_driver = {
+ 		.of_match_table = a500_ec_match,
+ 	},
+ 	.probe_new = a500_ec_probe,
+-	.remove = a500_ec_remove,
+ };
+ module_i2c_driver(a500_ec_driver);
+ 
 -- 
 2.33.1
 
