@@ -2,60 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A6543C005
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 04:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FD243C06E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 04:56:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfCTd3LN0z3cPF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 13:35:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfCxw5K0Gz2y7J
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 13:56:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.133;
- helo=out30-133.freemail.mail.aliyun.com;
- envelope-from=yun.wang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-133.freemail.mail.aliyun.com
- (out30-133.freemail.mail.aliyun.com [115.124.30.133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=up5n=pp=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfCT31G9Yz304x
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 13:34:46 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R921e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04423; MF=yun.wang@linux.alibaba.com;
- NM=1; PH=DS; RN=30; SR=0; TI=SMTPD_---0UtpxLpr_1635302077; 
-Received: from testdeMacBook-Pro.local(mailfrom:yun.wang@linux.alibaba.com
- fp:SMTPD_---0UtpxLpr_1635302077) by smtp.aliyun-inc.com(127.0.0.1);
- Wed, 27 Oct 2021 10:34:39 +0800
-Subject: [PATCH v6 2/2] ftrace: do CPU checking after preemption disabled
-From: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
-To: Guo Ren <guoren@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Ingo Molnar <mingo@redhat.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>,
- Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
- Joe Lawrence <joe.lawrence@redhat.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Nicholas Piggin <npiggin@gmail.com>, Jisheng Zhang <jszhang@kernel.org>,
- linux-csky@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, live-patching@vger.kernel.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfCxV6d2Kz2xB0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 13:55:58 +1100 (AEDT)
+Received: from rorschach.local.home (cpe-66-24-58-225.stny.res.rr.com
+ [66.24.58.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 03365610C7;
+ Wed, 27 Oct 2021 02:55:53 +0000 (UTC)
+Date: Tue, 26 Oct 2021 22:55:52 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: =?UTF-8?B?546L6LSH?= <yun.wang@linux.alibaba.com>
+Subject: Re: [PATCH v6 1/2] ftrace: disable preemption when recursion locked
+Message-ID: <20211026225552.72a7ee79@rorschach.local.home>
+In-Reply-To: <78c95844-16b7-8904-b48d-3b2ccd76a352@linux.alibaba.com>
 References: <df8e9b3e-504c-635d-4e92-99cdf9f05479@linux.alibaba.com>
-Message-ID: <444d3576-4160-be9e-36c0-8061bf1242fb@linux.alibaba.com>
-Date: Wed, 27 Oct 2021 10:34:37 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
+ <78c95844-16b7-8904-b48d-3b2ccd76a352@linux.alibaba.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <df8e9b3e-504c-635d-4e92-99cdf9f05479@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,61 +46,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, "James E.J.
+ Bottomley" <James.Bottomley@HansenPartnership.com>, Guo Ren <guoren@kernel.org>,
+ Jisheng Zhang <jszhang@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ live-patching@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Miroslav Benes <mbenes@suse.cz>, Joe Lawrence <joe.lawrence@redhat.com>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, Petr Mladek <pmladek@suse.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Jiri Kosina <jikos@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With CONFIG_DEBUG_PREEMPT we observed reports like:
+On Wed, 27 Oct 2021 10:34:13 +0800
+=E7=8E=8B=E8=B4=87 <yun.wang@linux.alibaba.com> wrote:
 
-  BUG: using smp_processor_id() in preemptible
-  caller is perf_ftrace_function_call+0x6f/0x2e0
-  CPU: 1 PID: 680 Comm: a.out Not tainted
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x8d/0xcf
-   check_preemption_disabled+0x104/0x110
-   ? optimize_nops.isra.7+0x230/0x230
-   ? text_poke_bp_batch+0x9f/0x310
-   perf_ftrace_function_call+0x6f/0x2e0
-   ...
-   __text_poke+0x5/0x620
-   text_poke_bp_batch+0x9f/0x310
+> +/*
+> + * Preemption will be enabled (if it was previously enabled).
+> + */
+>  static __always_inline void trace_clear_recursion(int bit)
+>  {
+> +	WARN_ON_ONCE(bit < 0);
 
-This telling us the CPU could be changed after task is preempted, and
-the checking on CPU before preemption will be invalid.
+Can you send a v7 without the WARN_ON.
 
-Since now ftrace_test_recursion_trylock() will help to disable the
-preemption, this patch just do the checking after trylock() to address
-the issue.
+This is an extremely hot path, and this will cause noticeable overhead.
 
-CC: Steven Rostedt <rostedt@goodmis.org>
-Reported-by: Abaci <abaci@linux.alibaba.com>
-Signed-off-by: Michael Wang <yun.wang@linux.alibaba.com>
----
- kernel/trace/trace_event_perf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+If something were to call this with bit < 0, then it would crash and
+burn rather quickly.
 
-diff --git a/kernel/trace/trace_event_perf.c b/kernel/trace/trace_event_perf.c
-index 6aed10e..fba8cb7 100644
---- a/kernel/trace/trace_event_perf.c
-+++ b/kernel/trace/trace_event_perf.c
-@@ -441,13 +441,13 @@ void perf_trace_buf_update(void *record, u16 type)
- 	if (!rcu_is_watching())
- 		return;
+-- Steve
 
--	if ((unsigned long)ops->private != smp_processor_id())
--		return;
--
- 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
- 	if (bit < 0)
- 		return;
 
-+	if ((unsigned long)ops->private != smp_processor_id())
-+		goto out;
-+
- 	event = container_of(ops, struct perf_event, ftrace_ops);
-
- 	/*
--- 
-1.8.3.1
-
+> +
+> +	preempt_enable_notrace();
+>  	barrier();
+>  	trace_recursion_clear(bit);
+>  }
