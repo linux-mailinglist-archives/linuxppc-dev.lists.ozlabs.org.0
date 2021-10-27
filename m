@@ -2,58 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE2D43C8BE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 13:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D962B43C925
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 14:02:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfRc60Hvnz2yyK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 22:41:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfS3s5Xcnz2yxL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Oct 2021 23:02:17 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JQ5dRRYa;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfRbc48Xpz2xvL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 22:41:13 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HfRbV2BBhz9sSg;
- Wed, 27 Oct 2021 13:41:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 1CyGxDHopVgI; Wed, 27 Oct 2021 13:41:10 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HfRbV1Hjrz9sRr;
- Wed, 27 Oct 2021 13:41:10 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 16CD68B778;
- Wed, 27 Oct 2021 13:41:10 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 4A3tr9kP0AiX; Wed, 27 Oct 2021 13:41:10 +0200 (CEST)
-Received: from [192.168.232.182] (unknown [192.168.232.182])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 720E18B776;
- Wed, 27 Oct 2021 13:41:09 +0200 (CEST)
-Message-ID: <2012df5e-62ec-06fb-9f4d-e27dde184a3f@csgroup.eu>
-Date: Wed, 27 Oct 2021 13:41:09 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfS3K4gNGz2xvf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 23:01:49 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=JQ5dRRYa; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HfS3D6fVvz4xbG;
+ Wed, 27 Oct 2021 23:01:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1635336108;
+ bh=eZo4L/VYResFxnSjYMuAe6p73rb/55QbmAx/d4+9tG4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=JQ5dRRYao96n2QjnD9F5FAugsZopemn7Y8YqAmL2meL1PnI4mYsKSjfuExzvZpuA5
+ fo98C/+hhHVxXiymFsgVUaNNU2OXZOe+c6bLZFJtrn3hoVRsK8UVbP9gK878GEbfPD
+ VDvIrUapL3PKDDjCdUgv6N8Ux67vWT8CizDcTwrTHynUtV9jf15u69Gl+rLY036ixg
+ zeY96EVJi9rErgfmwBI6fcGPd1tomYN/VkCpDGNVYTfs0wOrl9IkcGEvhuiGpQKYnb
+ nfU4vnXu2gWqpvtG5V7u9/EXKXYSjwtZbh/n8+Hk2z9uQ9E8oJ+OXVuNanRAXRdn+r
+ +hzmwqKHzlS9Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
+In-Reply-To: <YXbAPIm47WwpYYup@hirez.programming.kicks-ass.net>
+References: <20211022120058.1031690-1-arnd@kernel.org>
+ <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
+ <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
+ <YXZ/iLB7BvZtzDMp@hirez.programming.kicks-ass.net>
+ <CAK8P3a2Luz7sd5cM1OdZhYCs_UPzo+2qVQYSZPfR2QN+0DkyRg@mail.gmail.com>
+ <YXbAPIm47WwpYYup@hirez.programming.kicks-ass.net>
+Date: Wed, 27 Oct 2021 23:01:41 +1100
+Message-ID: <87r1c6ad7e.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: linux-next: manual merge of the audit tree with the powerpc tree
-Content-Language: fr-FR
-To: Michael Ellerman <mpe@ellerman.id.au>, Paul Moore <paul@paul-moore.com>
-References: <20211026133147.35d19e00@canb.auug.org.au>
- <87k0i0awdl.fsf@mpe.ellerman.id.au>
- <CAHC9VhTj7gn3iAOYctVRKvv_Bk1iQMrmkA8FVJtYzdvBjqFmvg@mail.gmail.com>
- <87tuh2aepp.fsf@mpe.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <87tuh2aepp.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,67 +63,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Richard Guy Briggs <rgb@redhat.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: linux-ia64@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Paul Mackerras <paulus@samba.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Will Deacon <will@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+ linux-s390 <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Helge Deller <deller@gmx.de>, Christian Borntraeger <borntraeger@de.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Openrisc <openrisc@lists.librecores.org>, Stafford Horne <shorne@gmail.com>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Peter Zijlstra <peterz@infradead.org> writes:
+> On Mon, Oct 25, 2021 at 03:06:24PM +0200, Arnd Bergmann wrote:
+>> On Mon, Oct 25, 2021 at 11:57 AM Peter Zijlstra <peterz@infradead.org> wrote:
+>> > On Sat, Oct 23, 2021 at 06:04:57PM +0200, Arnd Bergmann wrote:
+>> > > On Sat, Oct 23, 2021 at 3:37 AM Waiman Long <longman@redhat.com> wrote:
+>> > > >> On 10/22/21 7:59 AM, Arnd Bergmann wrote:
+>> > > > > From: Arnd Bergmann <arnd@arndb.de>
+>> > > > >
+>> > > > > As this is all dead code, just remove it and the helper functions built
+>> > > > > around it. For arch/ia64, the inline asm could be cleaned up, but
+>> > > > > it seems safer to leave it untouched.
+>> > > > >
+>> > > > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>> > > >
+>> > > > Does that mean we can also remove the GENERIC_LOCKBREAK config option
+>> > > > from the Kconfig files as well?
+>> > >
+>> > >  I couldn't figure this out.
+>> > >
+>> > > What I see is that the only architectures setting GENERIC_LOCKBREAK are
+>> > > nds32, parisc, powerpc, s390, sh and sparc64, while the only architectures
+>> > > implementing arch_spin_is_contended() are arm32, csky and ia64.
+>> > >
+>> > > The part I don't understand is whether the option actually does anything
+>> > > useful any more after commit d89c70356acf ("locking/core: Remove break_lock
+>> > > field when CONFIG_GENERIC_LOCKBREAK=y").
+>> >
+>> > Urgh, what a mess.. AFAICT there's still code in
+>> > kernel/locking/spinlock.c that relies on it. Specifically when
+>> > GENERIC_LOCKBREAK=y we seem to create _lock*() variants that are
+>> > basically TaS locks which drop preempt/irq disable while spinning.
+>> >
+>> > Anybody having this on and not having native TaS locks is in for a rude
+>> > surprise I suppose... sparc64 being the obvious candidate there :/
+>> 
+>> Is this a problem on s390 and powerpc, those two being the ones
+>> that matter in practice?
+>> 
+>> On s390, we pick between the cmpxchg() based directed-yield when
+>> running on virtualized CPUs, and a normal qspinlock when running on a
+>> dedicated CPU.
+>> 
+>> On PowerPC, we pick at compile-time between either the qspinlock
+>> (default-enabled on Book3S-64, i.e. all server chips) or a ll/sc based
+>> spinlock plus vm_yield() (default on embedded and 32-bit mac).
+>
+> Urgh, yeah, so this crud undermines the whole point of having a fair
+> lock. I'm thinking s390 and Power want to have this fixed.
 
+Our Kconfig has:
 
-Le 27/10/2021 à 13:29, Michael Ellerman a écrit :
-> Paul Moore <paul@paul-moore.com> writes:
->> On Tue, Oct 26, 2021 at 6:55 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>> Stephen Rothwell <sfr@canb.auug.org.au> writes:
->>>> Hi all,
->>>>
->>>> Today's linux-next merge of the audit tree got conflicts in:
->>>>
->>>>    arch/powerpc/kernel/audit.c
->>>>    arch/powerpc/kernel/compat_audit.c
->>>>
->>>> between commit:
->>>>
->>>>    566af8cda399 ("powerpc/audit: Convert powerpc to AUDIT_ARCH_COMPAT_GENERIC")
->>>>
->>>> from the powerpc tree and commits:
->>>>
->>>>    42f355ef59a2 ("audit: replace magic audit syscall class numbers with macros")
->>>>    1c30e3af8a79 ("audit: add support for the openat2 syscall")
->>>>
->>>> from the audit tree.
->>>
->>> Thanks.
->>>
->>> I guess this is OK, unless the audit folks disagree. I could revert the
->>> powerpc commit and try it again later.
->>>
->>> If I don't hear anything I'll leave it as-is.
->>
->> Hi Michael,
->>
->> Last I recall from the powerpc/audit thread there were still some
->> issues with audit working properly in your testing, has that been
->> resolved?
-> 
-> No.
-> 
-> There's one test failure both before and after the conversion to use the
-> generic code.
-> 
->> If nothing else, -rc7 seems a bit late for this to hit -next for me to
->> feel comfortable about this.
-> 
-> OK. I'll revert the patch in my tree.
-> 
+  config GENERIC_LOCKBREAK
+  	bool
+  	default y
+  	depends on SMP && PREEMPTION
 
-But it's been in the pipe since end of August and no one reported any 
-issue other issue than the pre-existing one, so what's the new issue 
-that prevents us to merge it two monthes later, and how do we walk 
-forward then ?
+And we have exactly one defconfig that enables both SMP and PREEMPT,
+arch/powerpc/configs/85xx/ge_imp3a_defconfig, which is some ~10 year old
+PCI card embedded thing I've never heard of. High chance anyone who has
+those is not running upstream kernels on them.
 
-Thanks
-Christophe
+So I think we'd be happy for you rip GENERIC_LOCKBREAK out, it's almost
+entirely unused on powerpc anyway.
+
+cheers
