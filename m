@@ -2,63 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B7643D748
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B39E243D74C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 01:10:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfkt81YLCz3f8G
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:09:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfktr43RFz3gCt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 10:10:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IWwdEP2z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nj5zb43O;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12c;
- helo=mail-lf1-x12c.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::132;
+ helo=mail-lf1-x132.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=IWwdEP2z; dkim-atps=neutral
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com
- [IPv6:2a00:1450:4864:20::12c])
+ header.s=20210112 header.b=nj5zb43O; dkim-atps=neutral
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com
+ [IPv6:2a00:1450:4864:20::132])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhQ16lFJz2yHW;
- Thu, 28 Oct 2021 08:18:49 +1100 (AEDT)
-Received: by mail-lf1-x12c.google.com with SMTP id u11so9041843lfs.1;
- Wed, 27 Oct 2021 14:18:49 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfhQ42FMDz2yMc;
+ Thu, 28 Oct 2021 08:18:52 +1100 (AEDT)
+Received: by mail-lf1-x132.google.com with SMTP id bp15so9015045lfb.4;
+ Wed, 27 Oct 2021 14:18:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=VpMTaQaJ0cjNLgvNqh3di7liIGTew7KcJqDZRitT+Gs=;
- b=IWwdEP2zbLaLlU4mCU5s8PpqrkaIWlck+oA3xnCuAzsOirLY91m5COquObIzRO/SOa
- ZZIFcDLGTP22p0/7Hcw3xr55ftJZWhQ4nU6sBNGCfWjV2gTeJrHUPc9jLo/fr5xO0l0l
- 0SNS1n6R63fMlbNJFT3gbKkQCc0Ia7/EAvKfYLtASP95KzfXrWNNTSb1yRqxn8x5d6xD
- hciHreIyBYgx6dcdUlzTSBb07ys9RFpq3Y5/l5Vd2vvkqxnAXOO/WD9ek4xsO4aDTsfM
- H41ne9Olkj2NqvJkNPysdfnoteByPeCFY3T52VBJFYJ9FKDG6+cEspYVw2UY7y4ppIDD
- pOHg==
+ bh=umNH2+YT7M6ZKcjQGvjjohnKVEe/3rK29YQH+BDj6i4=;
+ b=nj5zb43OqtwdizDOJ4YZ+fYZadM1gdDKmRqYZUCoy6YYJ9FK+h8NFV8Fm4J2Ku+dUO
+ VD1iu0fINLYL61cuY7tNDYLtDDcpQWTMBS3LiXmrEVigOlROqEfbjJpsrnK8lw9w6k0A
+ Q5RVvk+HURAmLxg4yngnt6lHHBxEc4oSlIcG3ZpIBx+R3YAOuuSSdjMf/vRVMuvqCw1Z
+ E8uGSsJkZ6VWq/NOLfLD+OAnXKEDLZsNGIWjcaZrIrkicK6f30puV4871fbRXrX4aoDM
+ yS04DJACEKWBr3KF/AjOj2De3JGJ2p+GHt74NSrUBKQDPvr858UletsNh5sICSkmVEWD
+ 3KsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=VpMTaQaJ0cjNLgvNqh3di7liIGTew7KcJqDZRitT+Gs=;
- b=QtFHDBkSHYl89FcfErk7tR4OfMveW3LubeP5vzU+AGokqQfuSJPK/NX0S8JiSFcTyV
- xqTcQtZzNY0K0uy/vB+U3zKqpq0mkekCXv2Duuh/D8a8Rd+V1k1LFn8sXpPyNtZhY12T
- 9cbX9q24/0CqW3IeMxg81nr7q5SEMEXQqPsjkCIMnc3p9rXhTw+iPvnAp4zhQzrOuTB9
- n8kCB0ueuLHtEqwl+8aZeanYXppE9JyT7MvhP8nK9AXZysP+aAa+M8jSU8Uw+KjDorXX
- YnsaQ2lm4toYdWMNsDqARe+tZtd99oz8I66UOF8pOazKYuqK5O3xMU5Ujjjg0W+a9OvG
- uXfQ==
-X-Gm-Message-State: AOAM5330fZKnh+ieCckVIjjyOE5Qxsg9upPsH4tQyItN2ELlfXx6MSyX
- KwUdnfBvNicHTEbxmaxyXTe0rK+vRmQ=
-X-Google-Smtp-Source: ABdhPJys0u/+wFsWDr/9j4b/C5x8WEos0EuABuOI0MYqETh3mbRQO/mjL91g1gnGx/4TO6/Fje2n8g==
-X-Received: by 2002:ac2:4c9a:: with SMTP id d26mr128014lfl.344.1635369526848; 
- Wed, 27 Oct 2021 14:18:46 -0700 (PDT)
+ bh=umNH2+YT7M6ZKcjQGvjjohnKVEe/3rK29YQH+BDj6i4=;
+ b=KbzDHquHOT+KXB9LpyLrUMFQnWYKdnmsSsWC8oTSoMLtRxi6jmrAIAfjb6uf2Y1k0F
+ IGUtwU2637d5mnZo0JZYHU3p5m4/2KQfD/WU4M+5AXpDJXxl+4PKnUn16iWULb/leINK
+ KpRkfVx/eFZo36K/39+GKUO3rlopQE8obppEJKGceJ9U9AgxZTp5QlNqFksyILOqs5+p
+ y5l9lNI0ai0O0ls6Cxh7MMXgAe0hvm6wC+w93aItkuRtPaPV4dSTHbRMw9HubhNQdMBc
+ kzsMdl51v/oVL6Kq/CXRmuT6xueUmAfroWrlxzwI17gGURp0q9ehp/Y/FuOVgrCSR9YO
+ gN8Q==
+X-Gm-Message-State: AOAM532PkTKSfIpbmCUaJugLvvQfT3FFFaPWiCR76Qe+UHSqh1a1kc1a
+ f1N5GeuvZr+ozDF5DEla+fc=
+X-Google-Smtp-Source: ABdhPJyzuSZuOYHEQbprBgwtJMyx5L9tc7ERtjIIXrEKG72XHaUi8WMWlLHXLzXgCVfDIwEbrdMbVw==
+X-Received: by 2002:a05:6512:38d0:: with SMTP id
+ p16mr83922lft.483.1635369528748; 
+ Wed, 27 Oct 2021 14:18:48 -0700 (PDT)
 Received: from localhost.localdomain (46-138-41-28.dynamic.spd-mgts.ru.
  [46.138.41.28])
- by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.45
+ by smtp.gmail.com with ESMTPSA id d7sm104336ljl.18.2021.10.27.14.18.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 14:18:46 -0700 (PDT)
+ Wed, 27 Oct 2021 14:18:48 -0700 (PDT)
 From: Dmitry Osipenko <digetx@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
  Jonathan Hunter <jonathanh@nvidia.com>, Lee Jones <lee.jones@linaro.org>,
@@ -68,9 +69,9 @@ To: Thierry Reding <thierry.reding@gmail.com>,
  Daniel Lezcano <daniel.lezcano@linaro.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v2 29/45] mfd: acer-a500: Use devm_register_power_handler()
-Date: Thu, 28 Oct 2021 00:16:59 +0300
-Message-Id: <20211027211715.12671-30-digetx@gmail.com>
+Subject: [PATCH v2 30/45] mfd: ene-kb3930: Use devm_register_power_handler()
+Date: Thu, 28 Oct 2021 00:17:00 +0300
+Message-Id: <20211027211715.12671-31-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211027211715.12671-1-digetx@gmail.com>
 References: <20211027211715.12671-1-digetx@gmail.com>
@@ -133,109 +134,102 @@ provides restart-handler support, i.e. all in one API.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/mfd/acer-ec-a500.c | 52 ++++++++++++++------------------------
- 1 file changed, 19 insertions(+), 33 deletions(-)
+ drivers/mfd/ene-kb3930.c | 45 ++++++++++++++--------------------------
+ 1 file changed, 15 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/mfd/acer-ec-a500.c b/drivers/mfd/acer-ec-a500.c
-index 80c2fdd14fc4..fc864abc0049 100644
---- a/drivers/mfd/acer-ec-a500.c
-+++ b/drivers/mfd/acer-ec-a500.c
-@@ -31,8 +31,6 @@ enum {
- 	REG_COLD_REBOOT = 0x55,
+diff --git a/drivers/mfd/ene-kb3930.c b/drivers/mfd/ene-kb3930.c
+index 1b73318d1f1f..6a3c5f48e5e1 100644
+--- a/drivers/mfd/ene-kb3930.c
++++ b/drivers/mfd/ene-kb3930.c
+@@ -31,10 +31,9 @@ struct kb3930 {
+ 	struct i2c_client *client;
+ 	struct regmap *ram_regmap;
+ 	struct gpio_descs *off_gpios;
++	struct power_handler power_handler;
  };
  
--static struct i2c_client *a500_ec_client_pm_off;
+-static struct kb3930 *kb3930_power_off;
 -
- static int a500_ec_read(void *context, const void *reg_buf, size_t reg_size,
- 			void *val_buf, size_t val_sizel)
- {
-@@ -104,32 +102,35 @@ static const struct regmap_bus a500_ec_regmap_bus = {
- 	.max_raw_read = 2,
- };
+ #define EC_GPIO_WAVE		0
+ #define EC_GPIO_OFF_MODE	1
  
--static void a500_ec_poweroff(void)
-+static void a500_ec_power_off_handler(struct power_off_data *data)
- {
--	i2c_smbus_write_word_data(a500_ec_client_pm_off,
--				  REG_SHUTDOWN, CMD_SHUTDOWN);
-+	struct i2c_client *client = data->cb_data;
-+
-+	i2c_smbus_write_word_data(client, REG_SHUTDOWN, CMD_SHUTDOWN);
- 
- 	mdelay(A500_EC_POWER_CMD_TIMEOUT);
+@@ -60,21 +59,19 @@ static void kb3930_off(struct kb3930 *ddata, int off_mode)
+ 	}
  }
  
--static int a500_ec_restart_notify(struct notifier_block *this,
--				  unsigned long reboot_mode, void *data)
-+static void a500_ec_restart_handler(struct restart_data *data)
+-static int kb3930_restart(struct notifier_block *this,
+-			  unsigned long mode, void *cmd)
++static void kb3930_restart(struct restart_data *data)
  {
--	if (reboot_mode == REBOOT_WARM)
--		i2c_smbus_write_word_data(a500_ec_client_pm_off,
-+	struct i2c_client *client = data->cb_data;
-+
-+	if (data->mode == REBOOT_WARM)
-+		i2c_smbus_write_word_data(client,
- 					  REG_WARM_REBOOT, CMD_WARM_REBOOT);
- 	else
--		i2c_smbus_write_word_data(a500_ec_client_pm_off,
-+		i2c_smbus_write_word_data(client,
- 					  REG_COLD_REBOOT, CMD_COLD_REBOOT);
- 
- 	mdelay(A500_EC_POWER_CMD_TIMEOUT);
--
+-	kb3930_off(kb3930_power_off, EC_OFF_MODE_REBOOT);
 -	return NOTIFY_DONE;
++	struct kb3930 *ddata = data->cb_data;
++
++	kb3930_off(ddata, EC_OFF_MODE_REBOOT);
  }
  
--static struct notifier_block a500_ec_restart_handler = {
--	.notifier_call = a500_ec_restart_notify,
--	.priority = 200,
-+static struct power_handler a500_ec_power_handler = {
-+	.restart_cb = a500_ec_restart_handler,
-+	.restart_priority = RESTART_PRIO_HIGH,
-+
-+	.power_off_cb = a500_ec_power_off_handler,
-+	.power_off_priority = POWEROFF_PRIO_HIGH,
- };
+-static void kb3930_pm_power_off(void)
++static void kb3930_power_off(struct power_off_data *data)
+ {
+-	kb3930_off(kb3930_power_off, EC_OFF_MODE_POWER);
+-}
++	struct kb3930 *ddata = data->cb_data;
  
- static const struct mfd_cell a500_ec_cells[] = {
-@@ -156,26 +157,12 @@ static int a500_ec_probe(struct i2c_client *client)
+-static struct notifier_block kb3930_restart_nb = {
+-	.notifier_call = kb3930_restart,
+-};
++	kb3930_off(ddata, EC_OFF_MODE_POWER);
++}
+ 
+ static const struct mfd_cell ariel_ec_cells[] = {
+ 	{ .name = "dell-wyse-ariel-led", },
+@@ -131,7 +128,6 @@ static int kb3930_probe(struct i2c_client *client)
+ 	if (!ddata)
+ 		return -ENOMEM;
+ 
+-	kb3930_power_off = ddata;
+ 	ddata->client = client;
+ 	i2c_set_clientdata(client, ddata);
+ 
+@@ -169,24 +165,14 @@ static int kb3930_probe(struct i2c_client *client)
  	}
  
- 	if (of_device_is_system_power_controller(client->dev.of_node)) {
--		a500_ec_client_pm_off = client;
-+		a500_ec_power_handler.cb_data = client;
- 
--		err = register_restart_handler(&a500_ec_restart_handler);
-+		err = devm_register_power_handler(&client->dev,
-+						  &a500_ec_power_handler);
- 		if (err)
- 			return err;
--
+ 	if (ddata->off_gpios) {
+-		register_restart_handler(&kb3930_restart_nb);
 -		if (!pm_power_off)
--			pm_power_off = a500_ec_poweroff;
+-			pm_power_off = kb3930_pm_power_off;
 -	}
--
++		ddata->power_handler.cb_data = ddata;
++		ddata->power_handler.restart_cb = kb3930_restart;
++		ddata->power_handler.power_off_cb = kb3930_power_off;
+ 
 -	return 0;
 -}
 -
--static int a500_ec_remove(struct i2c_client *client)
+-static int kb3930_remove(struct i2c_client *client)
 -{
--	if (of_device_is_system_power_controller(client->dev.of_node)) {
--		if (pm_power_off == a500_ec_poweroff)
--			pm_power_off = NULL;
+-	struct kb3930 *ddata = i2c_get_clientdata(client);
 -
--		unregister_restart_handler(&a500_ec_restart_handler);
+-	if (ddata->off_gpios) {
+-		if (pm_power_off == kb3930_pm_power_off)
+-			pm_power_off = NULL;
+-		unregister_restart_handler(&kb3930_restart_nb);
++		ret = devm_register_power_handler(dev, &ddata->power_handler);
++		if (ret)
++			return ret;
  	}
+-	kb3930_power_off = NULL;
  
  	return 0;
-@@ -193,7 +180,6 @@ static struct i2c_driver a500_ec_driver = {
- 		.of_match_table = a500_ec_match,
- 	},
- 	.probe_new = a500_ec_probe,
--	.remove = a500_ec_remove,
- };
- module_i2c_driver(a500_ec_driver);
+ }
+@@ -199,7 +185,6 @@ MODULE_DEVICE_TABLE(of, kb3930_dt_ids);
  
+ static struct i2c_driver kb3930_driver = {
+ 	.probe_new = kb3930_probe,
+-	.remove = kb3930_remove,
+ 	.driver = {
+ 		.name = "ene-kb3930",
+ 		.of_match_table = kb3930_dt_ids,
 -- 
 2.33.1
 
