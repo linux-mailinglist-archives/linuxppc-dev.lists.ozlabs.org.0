@@ -2,76 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A0043DAEE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 07:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E97B43DAF0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 08:00:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfvyj2hTfz3bnC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 16:59:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfvzP73DSz3cD3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 17:00:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dabbelt-com.20210112.gappssmtp.com header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=vYjyS+8E;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=a1iu/fP5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::102d;
- helo=mail-pj1-x102d.google.com; envelope-from=palmer@dabbelt.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::234;
+ helo=mail-lj1-x234.google.com; envelope-from=salvatore.bonaccorso@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=dabbelt-com.20210112.gappssmtp.com
- header.i=@dabbelt-com.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=vYjyS+8E; dkim-atps=neutral
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
- [IPv6:2607:f8b0:4864:20::102d])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=a1iu/fP5; dkim-atps=neutral
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com
+ [IPv6:2a00:1450:4864:20::234])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfksM2v6gz3f6V
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 10:09:11 +1100 (AEDT)
-Received: by mail-pj1-x102d.google.com with SMTP id
- t5-20020a17090a4e4500b001a0a284fcc2so6408408pjl.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 16:09:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
- h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
- :content-transfer-encoding;
- bh=XJfFTW9EjYJeHoclf1SeEwj25PLenE7ts5EFTr8vzec=;
- b=vYjyS+8EH3CfIBezSrdmSEFFSJc1bpK8IsDLNwp4SIdgzIr0qhB73jSdQ+tZtt+gKe
- gLRCAnofL8DMkcE7vLBKcZfntvEYsCybXJMFIekVgyaoqoB4d2yoy2/fxl6NKOgXIYmd
- GMEiLNFKg0iVmrnBvlpV4pv/PV+nqVeQwlB1PLBrwM8b8vjtjZjGvc3MJRrAfuUoDBNo
- ViaF9lo0gQuECLSnf0dUVzQmZPRvjI+cvfCWgH2cYeMbb2VhrXJlj9sEs5Y4vYC263de
- h2wbGwEHNdbZkGS/4AP/MxQ7HKYBbqiVTjD7lo6//33sqHBHnP35ISg1TmvMKaMznq9A
- cKAw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfsGr50VBz2xCh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 14:58:10 +1100 (AEDT)
+Received: by mail-lj1-x234.google.com with SMTP id s19so8280723ljj.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 20:58:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=Rd6zCtdbs2Rh9eLyPdLWC7QfjiBZneX2Pqf4p8XquB4=;
+ b=a1iu/fP5TzuYTFr++xaSjuv7mLYIpvIUVBZDRjlHZlOzxUsN707HqC5FDhk0OodcZE
+ F/XsII69uyg7tO3/kalMXCbRv0TbJpKo0YseDHSn1yZn62m5fZJjFJBX5RnlOCqMquJf
+ 07q3e1Ypq8n6CuqFgQdhMRa30oYO1W75wiOGTkE/rLiHoSPngE17V6JkWgXhnpMnRUZd
+ +HQiKDKUo580k8iqy4jh7UyfS7qglWurwDFz6MT4sS6k7YgZMjQOhcsIodiiZYhka1zn
+ z48AeHxhtIJLm5JBln9aZclXOeaEVaOD3juzI/xEjUANJcFrUITHbMaUk29JDHkHT5hx
+ f3sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
- :mime-version:content-transfer-encoding;
- bh=XJfFTW9EjYJeHoclf1SeEwj25PLenE7ts5EFTr8vzec=;
- b=cwgi+iPhrxPPl3u0Wso+Ggb42hLbkSA8DzrgDWfCNk1+K9CoRa3rPQsTW3fim1SvEu
- Wx/xi9EU539GJbWYxFp5QCBEBvzyUhY3swzNPz62kO8OO2Z5BaMdmHM+CX0ZMl/sWq1A
- YCOGVPx8+lw07GV+0xd1BvLEbfFfvgGh/qiGx8m9oIluJUly2J8YnY2vzsYxbF7xqx++
- MNGqWVhVIRaicH+kVCQDmgSV7hpKzScPRjTxSysRf8lCfvpJNvdfFdtVQWrIJ8sfabBA
- 7ayZ97yqGV/Vd4CMFYTbga2iNkzfJgen0iSSkFdqE5AoqpSpUBXXjUPRLztYIhO3qcN0
- IUug==
-X-Gm-Message-State: AOAM531INMJ8dz/zgCiJ2rViQ+PxF9CCLsPNukRTJGPu73/W7WBsQlIV
- t+G3mmaMp7eUwfSNuvy785AEMA==
-X-Google-Smtp-Source: ABdhPJxUJYglQ4uyqyrvUHQJ2HBzLbAnkI4OfP0sJtC8YPLND6BbQ0gKrpcxmED13rpzsyQoceaG3g==
-X-Received: by 2002:a17:903:246:b0:13f:2ff9:8b93 with SMTP id
- j6-20020a170903024600b0013f2ff98b93mr652035plh.54.1635376148047; 
- Wed, 27 Oct 2021 16:09:08 -0700 (PDT)
-Received: from localhost ([2620:0:1000:5e10:60fc:a50:6d27:9fd3])
- by smtp.gmail.com with ESMTPSA id bg15sm739067pjb.15.2021.10.27.16.09.07
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to;
+ bh=Rd6zCtdbs2Rh9eLyPdLWC7QfjiBZneX2Pqf4p8XquB4=;
+ b=AgFGDFX5CQKTPemMVd4t3yww15docBW7nnxZF4lIlZsD8fWuxJRkIqKHf/Caix2m6o
+ mwVGa7Eznl3ZKMeIPLSY137xVFPzvicDGa+wDGe0l/8N9f5G81b1imtNvk5KrJQgronX
+ v8PKTVoX/XptbuvUXAwxCde0kqBbqorwkqEpkIDVdFHyp0eFyKBnpVlKTmKUzGU6tU1g
+ Mgn6Lcp8+/qSXtukeux7XYzJlGPSKcoD3oEQc4/lDiOsGzceCVvs8NtdL/xxrGl0mNhP
+ vfhCV+2ConCDzG3drDVuF8PjvUMqmBiQRrV2AZK3WJhfe2jD7dp1g23n985Hmep8RMw0
+ EkMQ==
+X-Gm-Message-State: AOAM530L+wBRLFIInEsghFqffQmvO6pFkARlgTapUAItSUbSqeIhLNue
+ bbImg8SxsnWws+HUd6aeSRo=
+X-Google-Smtp-Source: ABdhPJws+hi+VGk4x9F3GsElqwOzk1Tf9/PmXVzVvbGPqLyjMn0UCHa/LfOj0e4muFxGG+LIRvWXzw==
+X-Received: by 2002:a2e:a78e:: with SMTP id c14mr2101680ljf.208.1635393487069; 
+ Wed, 27 Oct 2021 20:58:07 -0700 (PDT)
+Received: from elende (elende.valinor.li. [2a01:4f9:6a:1c47::2])
+ by smtp.gmail.com with ESMTPSA id s16sm4939lfr.29.2021.10.27.20.58.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 16:09:07 -0700 (PDT)
-Date: Wed, 27 Oct 2021 16:09:07 -0700 (PDT)
-X-Google-Original-Date: Wed, 27 Oct 2021 16:09:01 PDT (-0700)
-Subject: Re: [PATCH v2 18/45] riscv: Use do_kernel_power_off()
-In-Reply-To: <20211027211715.12671-19-digetx@gmail.com>
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: digetx@gmail.com
-Message-ID: <mhng-fd8f451c-4860-4b0c-a155-6f65891cd276@palmerdabbelt-glaptop>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ Wed, 27 Oct 2021 20:58:06 -0700 (PDT)
+Date: Thu, 28 Oct 2021 05:58:05 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [oss-security] Linux kernel: powerpc: KVM guest can trigger host
+ crash on Power8
+Message-ID: <YXofzUCGm3N7lfNf@elende.valinor.li>
+References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
 X-Mailman-Approved-At: Thu, 28 Oct 2021 16:58:51 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -84,70 +81,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ulf.hansson@linaro.org, dalias@libc.org, linux-ia64@vger.kernel.org,
- tmaimon77@gmail.com, ssantosh@kernel.org, rafael@kernel.org,
- boris.ostrovsky@oracle.com, catalin.marinas@arm.com, linus.walleij@linaro.org,
- dave.hansen@linux.intel.com, x86@kernel.org, tali.perry1@gmail.com,
- James.Bottomley@HansenPartnership.com, thierry.reding@gmail.com,
- guoren@kernel.org, pavel@ucw.cz, hpa@zytor.com,
- linux-riscv@lists.infradead.org, deanbo422@gmail.com, will@kernel.org,
- gerg@linux-m68k.org, sstabellini@kernel.org, benjaminfair@google.com,
- ysato@users.sourceforge.jp, krzysztof.kozlowski@canonical.com,
- linux-sh@vger.kernel.org, lee.jones@linaro.org, deller@gmx.de,
- daniel.lezcano@linaro.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org,
- jonathanh@nvidia.com, tony@atomide.com, wens@csie.org, mingo@redhat.com,
- geert@linux-m68k.org, xen-devel@lists.xenproject.org,
- linux-mips@vger.kernel.org, linux@roeck-us.net, lenb@kernel.org,
- aou@eecs.berkeley.edu, linux-omap@vger.kernel.org, j.neuschaefer@gmx.net,
- vz@mleia.com, linux-acpi@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- broonie@kernel.org, bp@alien8.de, green.hu@gmail.com,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra@vger.kernel.org,
- tglx@linutronix.de, andriy.shevchenko@linux.intel.com, yuenn@google.com,
- linux-arm-kernel@lists.infradead.org, jgross@suse.com,
- tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, nickhu@andestech.com,
- avifishman70@gmail.com, venture@google.com, linux-pm@vger.kernel.org,
- lgirdwood@gmail.com, linux-kernel@vger.kernel.org, p.zabel@pengutronix.de,
- paulus@samba.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- openbmc@lists.ozlabs.org, funaho@jurai.org
+Cc: oss-security@lists.openwall.com, linuxppc-dev@lists.ozlabs.org,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 27 Oct 2021 14:16:48 PDT (-0700), digetx@gmail.com wrote:
-> Kernel now supports chained power-off handlers. Use do_kernel_power_off()
-> that invokes chained power-off handlers. It also invokes legacy
-> pm_power_off() for now, which will be removed once all drivers will
-> be converted to the new power-off API.
->
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-> ---
->  arch/riscv/kernel/reset.c | 12 ++++--------
->  1 file changed, 4 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/riscv/kernel/reset.c b/arch/riscv/kernel/reset.c
-> index 9c842c41684a..912288572226 100644
-> --- a/arch/riscv/kernel/reset.c
-> +++ b/arch/riscv/kernel/reset.c
-> @@ -23,16 +23,12 @@ void machine_restart(char *cmd)
->
->  void machine_halt(void)
->  {
-> -	if (pm_power_off != NULL)
-> -		pm_power_off();
-> -	else
-> -		default_power_off();
-> +	do_kernel_power_off();
-> +	default_power_off();
->  }
->
->  void machine_power_off(void)
->  {
-> -	if (pm_power_off != NULL)
-> -		pm_power_off();
-> -	else
-> -		default_power_off();
-> +	do_kernel_power_off();
-> +	default_power_off();
->  }
+Hi,
 
-Acked-by: Palmer Dabbelt <palmer@dabbelt.com>
+On Mon, Oct 25, 2021 at 10:18:54PM +1100, Michael Ellerman wrote:
+> The Linux kernel for powerpc since v5.2 has a bug which allows a
+> malicious KVM guest to crash the host, when the host is running on
+> Power8.
+> 
+> Only machines using Linux as the hypervisor, aka. KVM, powernv or bare
+> metal, are affected by the bug. Machines running PowerVM are not
+> affected.
+> 
+> The bug was introduced in:
+> 
+>     10d91611f426 ("powerpc/64s: Reimplement book3s idle code in C")
+> 
+> Which was first released in v5.2.
+> 
+> The upstream fix is:
+> 
+>   cdeb5d7d890e ("KVM: PPC: Book3S HV: Make idle_kvm_start_guest() return 0 if it went to guest")
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=cdeb5d7d890e14f3b70e8087e745c4a6a7d9f337
+> 
+> Which will be included in the v5.16 release.
+> 
+> Note to backporters, the following commits are required:
+> 
+>   73287caa9210ded6066833195f4335f7f688a46b
+>   ("powerpc64/idle: Fix SP offsets when saving GPRs")
+> 
+>   9b4416c5095c20e110c82ae602c254099b83b72f
+>   ("KVM: PPC: Book3S HV: Fix stack handling in idle_kvm_start_guest()")
+> 
+>   cdeb5d7d890e14f3b70e8087e745c4a6a7d9f337
+>   ("KVM: PPC: Book3S HV: Make idle_kvm_start_guest() return 0 if it went to guest")
+> 
+>   496c5fe25c377ddb7815c4ce8ecfb676f051e9b6
+>   ("powerpc/idle: Don't corrupt back chain when going idle")
+> 
+> 
+> I have a test case to trigger the bug, which I can share privately with
+> anyone who would like to test the fix.
+
+The issue has been assigned CVE-2021-43056.
+
+Regards,
+Salvatore
