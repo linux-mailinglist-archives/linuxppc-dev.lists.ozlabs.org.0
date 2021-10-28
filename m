@@ -2,37 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E397043D887
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 03:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B05BA43D8C6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 03:43:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfny959H8z3bmS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 12:28:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HfpHL3yB1z2ymg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 12:43:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=fMzW0XOd;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=SZXOqEdN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=40.107.102.50;
- helo=nam04-dm6-obe.outbound.protection.outlook.com;
+ smtp.mailfrom=nvidia.com (client-ip=40.107.244.62;
+ helo=nam12-mw2-obe.outbound.protection.outlook.com;
  envelope-from=apopple@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256
- header.s=selector2 header.b=fMzW0XOd; 
+ header.s=selector2 header.b=SZXOqEdN; 
  dkim-atps=neutral
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam08on2050.outbound.protection.outlook.com [40.107.102.50])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12on2062.outbound.protection.outlook.com [40.107.244.62])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfnxM0LCZz2x9B
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 12:27:46 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HfpGX50rRz2xg3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 12:42:41 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=S7/CbHHrAHY4xHdxxIAjsxJ+wTXMUTD95BG6MOLsMZUlzaha+ZDHMRFvM2GIuGDc8jfB+vVKoE7/2ONOZW60LeqyzgazfOKsr5I81sy5ADeus+iSP022BFWk5//KejHNwGBT7c3mMio192ah7FaTzJUNZHOXW472Bs3abwDQwn7nPutKmbQmudePUikd3MIoLHXGoKl5pc4T6Q6vnyotF769znqfUA7ZXOp5dlquZK7JN4fdipOVf6oMI9mrzPdLUsaRb8M8sLwYcdlClnt0obm1JH+c7y3B4SrjWMm+xCO28J/XIw19HPAuNNsONZ3tUNN42Le/HXPOY7VDaq3BbA==
+ b=IaBAtG63pdonStE4jA+59iL3mSMrDC/rZNO/JmNxGmMucWNzVymyPU4lFG8yzR2wzETSu27tqvAvs/zphW9UfzOh/P7BM/4diWja4FOTxDB4PSWWZWbsxYOoZ1bICbugPy+yY1O7t0bp5QrV+Pe6Nr8H9kH9Dnl1nO2f3BXLKY/WxKrQW4fsKpcwJjstdvwVeFhwStM16+Hmez7L8nlXn8uC35QWj5P6fQQ5EhgBebsmhfp1BzWyUZeR2yxnLQiNO/RJ94Jp1PxPV7eosU38cV5/t2Qisfv/FR/+lugXWbe8cxsOaQNsFZpQAKfNyRON/M3dWJrxcQvofRncQRrQ6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zeDSaVZu7SpBRH4t8WvPfUTxkwmTudj7wiROmHXcUxk=;
- b=A6992NjeQ8zLaSkxX05goNANprxRPjWgbO1f9cZVGuDfl7E+n1FfpG4/tiApSGAZ8bIzt3jvuiunw5NCOR3Myh1Q4p/Ivc24oFCBFzeUg7SBbLH9RwaLUe6tl9Khqew6V9/h4bbDb0RBJbAcJp7NTuZ6fSmgevOEGeXQ4vFX2WD3QyZYUOHAPxhn9e1qKC5ltRdX7uwudbHKpozWfzs4oUxifqBfq4g3fM/m7g1vl5895uv0eKKiY2zH4QSeRyIHtIWZ4nRcujgUUXFedeMKe3VK7lYgcTVzlYmVD5VeeFnqPD5piX4gz+d1/aZ7ZCz91mQb2J4goO21UmfdZyvenA==
+ bh=+d09nf4a7SDDL//LtreYFMLMIq6n5ZeGv3R+6J/YVHk=;
+ b=dcNyB9VeRzU1htTuoUsno4LNiYFzoRVcS9wzMfq2R1iBp0K9kozWHfnaCZAMFttdrnt1zkc1weGiNopQu/AyOjgo7xgA6gO5fsPCcziMLsn5+KG+JVa4zw8iCQaTpPI0c5baZ5Z6I2htqhufZ93Q/loVogCZsC5+XQBvDNF48Jt2a0AFJ4SvMVNkHQsbSdx2f9J9k9ZRGGoHLUSU3pHGuJXWYQbg82O7wUt4+2u9OLXyxHzLS02Qlm/BHpEMmOjYZgoNHscQkTw64yzR3gjdvzkBlFaIj+4anEMGkd/6o9wp1W7Rxhbu+wI31NGkq2a652tXXUWOH6umbl+XBa1Z0A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.112.34) smtp.rcpttodomain=lists.freedesktop.org
  smtp.mailfrom=nvidia.com; dmarc=pass (p=quarantine sp=quarantine pct=100)
@@ -40,18 +40,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zeDSaVZu7SpBRH4t8WvPfUTxkwmTudj7wiROmHXcUxk=;
- b=fMzW0XOdFDfs9GFPB7LdffsyN3OmtpqdaPBuUoGuRDevDZqPRLGB0yUdENHiWuJ5NCVbR7KHvoU/NL++5TmRBe718K7Z1s2Dsd3ww86+j1r5xAFjRA6i2fuylJ7YTB2OxVJ35/XWiwZntzBzZkCUd+S7kA7WBX0bFC4WRHJWanxapzbtu8kzhaI3egrRIJUE4V6Da6s7Ya73I0AJksJW9oItzeQnIxfZiVfbDDLTo72u24Dch8OPGei11NJI8u9h2e3AFfmq5x+SOdDAX5CFhYGdsxTN8/qw2/ZIL2x9RkMNT5ruUOtqkiREvylzbJEnwongyyFx9+ZOL6vkgFueOA==
-Received: from DM5PR06CA0030.namprd06.prod.outlook.com (2603:10b6:3:5d::16) by
- CH2PR12MB3782.namprd12.prod.outlook.com (2603:10b6:610:23::28) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4649.14; Thu, 28 Oct 2021 01:27:24 +0000
-Received: from DM6NAM11FT067.eop-nam11.prod.protection.outlook.com
- (2603:10b6:3:5d:cafe::db) by DM5PR06CA0030.outlook.office365.com
- (2603:10b6:3:5d::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.15 via Frontend
- Transport; Thu, 28 Oct 2021 01:27:24 +0000
+ bh=+d09nf4a7SDDL//LtreYFMLMIq6n5ZeGv3R+6J/YVHk=;
+ b=SZXOqEdN6BruJclJpMTyUEHKByNuwhGhb1hn5kfP7eCbj/hr2R5ePxFidbjtwW+uuZEDsSfxx+gQ2oxu1TjfTVrHiDEfIvVzYKykjerR4CDRBslBk2d9/6w0tOYV+19Q5ugRRB/P6sQGtdjEgkkf1sBTfeIbKAjwj+0PCztLaEnOEXk+lmC/ZZIGT4l5NRmXVbAO1vapQbEAFV1gyKmEzMdt5kPYQaUpCXAP+/T4KLERfqGsZpjZECQ9/mJmNLZAeTRB7yH2pW6ewk7yPT5cFdg+n8LbQJ25hOuU/cw88pYC2sXYmdKSzPcdDuwE1zOTLPkWeEFwrUoGFjQ0baQDUg==
+Received: from BN9PR03CA0788.namprd03.prod.outlook.com (2603:10b6:408:13f::13)
+ by BN9PR12MB5098.namprd12.prod.outlook.com (2603:10b6:408:137::8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.14; Thu, 28 Oct
+ 2021 01:42:22 +0000
+Received: from BN8NAM11FT030.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:13f:cafe::6b) by BN9PR03CA0788.outlook.office365.com
+ (2603:10b6:408:13f::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.14 via Frontend
+ Transport; Thu, 28 Oct 2021 01:42:22 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.112.34)
  smtp.mailfrom=nvidia.com; lists.freedesktop.org; dkim=none (message not
  signed) header.d=none;lists.freedesktop.org; dmarc=pass action=none
@@ -60,50 +60,50 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.112.34 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.112.34; helo=mail.nvidia.com;
 Received: from mail.nvidia.com (216.228.112.34) by
- DM6NAM11FT067.mail.protection.outlook.com (10.13.172.76) with Microsoft SMTP
+ BN8NAM11FT030.mail.protection.outlook.com (10.13.177.146) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.4649.14 via Frontend Transport; Thu, 28 Oct 2021 01:27:23 +0000
-Received: from nvdebian.localnet (172.20.187.5) by HQMAIL107.nvidia.com
+ 15.20.4649.14 via Frontend Transport; Thu, 28 Oct 2021 01:42:22 +0000
+Received: from nvdebian.localnet (172.20.187.6) by HQMAIL107.nvidia.com
  (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1497.18; Thu, 28 Oct
- 2021 01:27:19 +0000
+ 2021 01:42:17 +0000
 From: Alistair Popple <apopple@nvidia.com>
-To: <akpm@linux-foundation.org>, Ralph Campbell <rcampbell@nvidia.com>
+To: <akpm@linux-foundation.org>, Felix Kuehling <felix.kuehling@amd.com>
 Subject: Re: [PATCH] mm/migrate.c: Remove MIGRATE_PFN_LOCKED
-Date: Thu, 28 Oct 2021 12:27:17 +1100
-Message-ID: <2564177.V13TkMiDjn@nvdebian>
-In-Reply-To: <f92e2dfe-f033-9b09-e83c-203052b491e1@nvidia.com>
+Date: Thu, 28 Oct 2021 12:42:15 +1100
+Message-ID: <2096706.TdNOD7Y7u4@nvdebian>
+In-Reply-To: <14d807ba-04f8-49cb-8094-bde1032f1eaf@amd.com>
 References: <20211025041608.289017-1-apopple@nvidia.com>
- <f92e2dfe-f033-9b09-e83c-203052b491e1@nvidia.com>
+ <14d807ba-04f8-49cb-8094-bde1032f1eaf@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
-X-Originating-IP: [172.20.187.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
+X-Originating-IP: [172.20.187.6]
+X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
  HQMAIL107.nvidia.com (172.20.187.13)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 872876ee-ae33-4e26-2a6b-08d999b21822
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3782:
-X-Microsoft-Antispam-PRVS: <CH2PR12MB37825D4DE245EC748763A514DF869@CH2PR12MB3782.namprd12.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: e57ad655-fd03-4260-47cf-08d999b42fbf
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5098:
+X-Microsoft-Antispam-PRVS: <BN9PR12MB5098CDCC60C85A982C685871DF869@BN9PR12MB5098.namprd12.prod.outlook.com>
 X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: PnAFK9NyPO+UIoxcVwvk3ds3DO4FeMSLfPb9OrNdH0oN8W6kpeieo26JWTXAHZtwpftmSQoixCmp/thMkCTbvy9RatHb+PlE7PYgRd3e5/m5GTI+3CsVWnBhHedAvPHU2QSDW8607PH0km7kuKR/YF17LSrnxsGHyDfTKB1/9YJr5mPg+FhXQ8aOEwvsF/8fGd/j7tswYjifwVvtbcbcP0Odq9ceT02UPYTEX5NpbgOf9OUUyPN2lrXCga/9+vFICKLRQhTVAJ9gJ1doD84VaqWHKwEGI2EGeKcCsMVkV0UslKpFzUMZQZA/I6sMGLIefhAAlVOnHUNY4XQ7cZQlOtj8+6Tod9NjJsVVDavxR/6JRsqz4BeO+PH+MPsN1Xh2AInvXiRlgU2lkDqSRSZE7BT6F6esV4w2WwIbCvg6f2lJOsxz9c1o+D+ut6GBA+F79vndooJ7f01GWd3kUoTUFaVk7w+v5LSgXgJuVnpv5UKaNk8RH6yGTERIvRvFVgmP+Q+L0gAWxSPzzc6KHm8mt5vFWcnbNIK/S7jSKJfSO+1v/FLdnjR6EMOHClcw4q5CETD8ZNtnRKBdP00RLTg+LQ7pwd2uWz1jAahBPDsuXW4ulGg6LU8LGbKevZIxUbWgO2wXIOx4tNPBckZv2uU0JDtZOYQUDSQiu4e+Syp63EGlOoQVwz31C+6XYO4tv/i8Z2fYvpHDjUomAuvTGxvFvlE355Zq0rYGCiyycttbDtM=
+X-Microsoft-Antispam-Message-Info: 8HPTQPORq26BjLI0H6xCRAbh7vruEJDmd8id5ijgqJ+N2Wy8AVMoOcgN+LrJ95lIMszC/trldQdc4v3y0vJaIe7PWtucYWP3qDuZekUQrWWmK9KDYJmDVYJued8LHvDdc4jxAAe7/xfXa2Hc4SXmPVJ4FrNIPRcthLzLA16htQ0a921JwE3RdpoBxR3juANTtrrmpgMQ8lBXsjWcSFLldCjBwzW/FwBKn/TN0GFIMPxMyYABJtfEZsBuudp4DZr2Neb4ZQS6wDy1x6B/YcktGWx2YVdxB65uxfwKk4sYQKOaPuBxH/KquvQXKeQF7IRTCQY4pPWD5lVmfFgeg9GpOlJ8CiK/qtZP/UXqbZnlof1seRSNDZ8tE/9OBC9yzHsjj34cHmzUhXLmPXW4FltV6ZsvfdQmGNfvdeTc+7LdHIKMawPxCxG1H7z4mLos2eSw/Gxthzn+RgCwpzi9ExHLiyx9WVvJzAqbid/x4CtFSUY/FaeV6Fmx6A1nr5yDdIgpDwTwAG6wYM7MgxehSp8xS0zG+uqpbprhGc+frRdcXNnwLyHuyi+bsNLEdnhXr4/8nCTDoJXpQfH0/CuDlyp+dJyPI7gv6EY4AwqHxGehLvkjV+aECwSSN8/GANOMkqmUaECTcfuSvGQ7UyODrknrdmlwxBa9jACfbffRPxz0xgYa7J8QfYhzCzeG0UrgET89t/cO1afGMS1GU+y+X2KQeokb5mNHsNtYyiJGyBepYdo=
 X-Forefront-Antispam-Report: CIP:216.228.112.34; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:schybrid03.nvidia.com; CAT:NONE;
- SFS:(4636009)(46966006)(36840700001)(110136005)(356005)(33716001)(53546011)(508600001)(82310400003)(8936002)(7416002)(54906003)(9686003)(9576002)(7636003)(36860700001)(4326008)(2906002)(426003)(26005)(70586007)(16526019)(186003)(6636002)(70206006)(86362001)(8676002)(83380400001)(336012)(5660300002)(316002)(47076005)(39026012);
+ SFS:(4636009)(46966006)(36840700001)(4326008)(4001150100001)(5660300002)(9576002)(356005)(33716001)(54906003)(8676002)(316002)(9686003)(7636003)(2906002)(30864003)(8936002)(83380400001)(86362001)(186003)(70586007)(26005)(508600001)(82310400003)(16526019)(426003)(110136005)(336012)(7416002)(36860700001)(47076005)(70206006)(39026012);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2021 01:27:23.6187 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 872876ee-ae33-4e26-2a6b-08d999b21822
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2021 01:42:22.2104 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e57ad655-fd03-4260-47cf-08d999b42fbf
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.112.34];
  Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT067.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM11FT030.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB3782
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5098
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,18 +115,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: amd-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org,
- Felix.Kuehling@amd.com, linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- linux-mm@kvack.org, jglisse@redhat.com, dri-devel@lists.freedesktop.org,
- ziy@nvidia.com, jhubbard@nvidia.com, alexander.deucher@amd.com,
- linuxppc-dev@lists.ozlabs.org, hch@lst.de, bskeggs@redhat.com
+Cc: rcampbell@nvidia.com, amd-gfx@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org, jglisse@redhat.com,
+ kvm-ppc@vger.kernel.org, ziy@nvidia.com, jhubbard@nvidia.com,
+ alexander.deucher@amd.com, linuxppc-dev@lists.ozlabs.org, hch@lst.de,
+ bskeggs@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tuesday, 26 October 2021 11:57:06 AM AEDT Ralph Campbell wrote:
-> 
-> On 10/24/21 21:16, Alistair Popple wrote:
+On Wednesday, 27 October 2021 3:09:57 AM AEDT Felix Kuehling wrote:
+> Am 2021-10-25 um 12:16 a.m. schrieb Alistair Popple:
 > > MIGRATE_PFN_LOCKED is used to indicate to migrate_vma_prepare() that a
 > > source page was already locked during migrate_vma_collect(). If it
 > > wasn't then the a second attempt is made to lock the page. However if
@@ -139,58 +139,181 @@ On Tuesday, 26 October 2021 11:57:06 AM AEDT Ralph Campbell wrote:
 > >
 > > Signed-off-by: Alistair Popple <apopple@nvidia.com>
 > 
-> You can add:
-> Reviewed-by: Ralph Campbell <rcampbell@nvidia.com>
+> It makes sense to me. Do you have any empirical data on how much more
+> likely migrations are going to fail with this change due to contested
+> page locks?
 
-Thanks!
+Thanks Felix. I do not have any empirical data on this but I've mostly seen
+migrations fail due to the reference count check failing rather than failure to
+lock the page. Even then it's mostly been due to thrashing on the same page, so
+I would be surprised if this change made any noticeable difference.
 
-> >   
-> >   		/*
-> >   		 * Optimize for the common case where page is only mapped once
+> Either way, the patch is
+> 
+> Acked-by: Felix Kuehling <Felix.Kuehling@amd.com>
+> 
+> 
+> > ---
+> >  Documentation/vm/hmm.rst                 |   2 +-
+> >  arch/powerpc/kvm/book3s_hv_uvmem.c       |   4 +-
+> >  drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |   2 -
+> >  drivers/gpu/drm/nouveau/nouveau_dmem.c   |   4 +-
+> >  include/linux/migrate.h                  |   1 -
+> >  lib/test_hmm.c                           |   5 +-
+> >  mm/migrate.c                             | 145 +++++------------------
+> >  7 files changed, 35 insertions(+), 128 deletions(-)
+> >
+> > diff --git a/Documentation/vm/hmm.rst b/Documentation/vm/hmm.rst
+> > index a14c2938e7af..f2a59ed82ed3 100644
+> > --- a/Documentation/vm/hmm.rst
+> > +++ b/Documentation/vm/hmm.rst
+> > @@ -360,7 +360,7 @@ between device driver specific code and shared common code:
+> >     system memory page, locks the page with ``lock_page()``, and fills in the
+> >     ``dst`` array entry with::
+> >  
+> > -     dst[i] = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
+> > +     dst[i] = migrate_pfn(page_to_pfn(dpage));
+> >  
+> >     Now that the driver knows that this page is being migrated, it can
+> >     invalidate device private MMU mappings and copy device private memory
+> > diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > index a7061ee3b157..28c436df9935 100644
+> > --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > @@ -560,7 +560,7 @@ static int __kvmppc_svm_page_out(struct vm_area_struct *vma,
+> >  				  gpa, 0, page_shift);
+> >  
+> >  	if (ret == U_SUCCESS)
+> > -		*mig.dst = migrate_pfn(pfn) | MIGRATE_PFN_LOCKED;
+> > +		*mig.dst = migrate_pfn(pfn);
+> >  	else {
+> >  		unlock_page(dpage);
+> >  		__free_page(dpage);
+> > @@ -774,7 +774,7 @@ static int kvmppc_svm_page_in(struct vm_area_struct *vma,
+> >  		}
+> >  	}
+> >  
+> > -	*mig.dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
+> > +	*mig.dst = migrate_pfn(page_to_pfn(dpage));
+> >  	migrate_vma_pages(&mig);
+> >  out_finalize:
+> >  	migrate_vma_finalize(&mig);
+> > diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> > index 4a16e3c257b9..41d9417f182b 100644
+> > --- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> > +++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> > @@ -300,7 +300,6 @@ svm_migrate_copy_to_vram(struct amdgpu_device *adev, struct svm_range *prange,
+> >  			migrate->dst[i] = svm_migrate_addr_to_pfn(adev, dst[i]);
+> >  			svm_migrate_get_vram_page(prange, migrate->dst[i]);
+> >  			migrate->dst[i] = migrate_pfn(migrate->dst[i]);
+> > -			migrate->dst[i] |= MIGRATE_PFN_LOCKED;
+> >  			src[i] = dma_map_page(dev, spage, 0, PAGE_SIZE,
+> >  					      DMA_TO_DEVICE);
+> >  			r = dma_mapping_error(dev, src[i]);
+> > @@ -580,7 +579,6 @@ svm_migrate_copy_to_ram(struct amdgpu_device *adev, struct svm_range *prange,
+> >  			      dst[i] >> PAGE_SHIFT, page_to_pfn(dpage));
+> >  
+> >  		migrate->dst[i] = migrate_pfn(page_to_pfn(dpage));
+> > -		migrate->dst[i] |= MIGRATE_PFN_LOCKED;
+> >  		j++;
+> >  	}
+> >  
+> > diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> > index 92987daa5e17..3828aafd3ac4 100644
+> > --- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> > +++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+> > @@ -166,7 +166,7 @@ static vm_fault_t nouveau_dmem_fault_copy_one(struct nouveau_drm *drm,
+> >  		goto error_dma_unmap;
+> >  	mutex_unlock(&svmm->mutex);
+> >  
+> > -	args->dst[0] = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
+> > +	args->dst[0] = migrate_pfn(page_to_pfn(dpage));
+> >  	return 0;
+> >  
+> >  error_dma_unmap:
+> > @@ -602,7 +602,7 @@ static unsigned long nouveau_dmem_migrate_copy_one(struct nouveau_drm *drm,
+> >  		((paddr >> PAGE_SHIFT) << NVIF_VMM_PFNMAP_V0_ADDR_SHIFT);
+> >  	if (src & MIGRATE_PFN_WRITE)
+> >  		*pfn |= NVIF_VMM_PFNMAP_V0_W;
+> > -	return migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
+> > +	return migrate_pfn(page_to_pfn(dpage));
+> >  
+> >  out_dma_unmap:
+> >  	dma_unmap_page(dev, *dma_addr, PAGE_SIZE, DMA_BIDIRECTIONAL);
+> > diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+> > index c8077e936691..479b861ae490 100644
+> > --- a/include/linux/migrate.h
+> > +++ b/include/linux/migrate.h
+> > @@ -119,7 +119,6 @@ static inline int migrate_misplaced_page(struct page *page,
+> >   */
+> >  #define MIGRATE_PFN_VALID	(1UL << 0)
+> >  #define MIGRATE_PFN_MIGRATE	(1UL << 1)
+> > -#define MIGRATE_PFN_LOCKED	(1UL << 2)
+> >  #define MIGRATE_PFN_WRITE	(1UL << 3)
+> >  #define MIGRATE_PFN_SHIFT	6
+> >  
+> > diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+> > index c259842f6d44..e2ce8f9b7605 100644
+> > --- a/lib/test_hmm.c
+> > +++ b/lib/test_hmm.c
+> > @@ -613,8 +613,7 @@ static void dmirror_migrate_alloc_and_copy(struct migrate_vma *args,
+> >  		 */
+> >  		rpage->zone_device_data = dmirror;
+> >  
+> > -		*dst = migrate_pfn(page_to_pfn(dpage)) |
+> > -			    MIGRATE_PFN_LOCKED;
+> > +		*dst = migrate_pfn(page_to_pfn(dpage));
+> >  		if ((*src & MIGRATE_PFN_WRITE) ||
+> >  		    (!spage && args->vma->vm_flags & VM_WRITE))
+> >  			*dst |= MIGRATE_PFN_WRITE;
+> > @@ -1137,7 +1136,7 @@ static vm_fault_t dmirror_devmem_fault_alloc_and_copy(struct migrate_vma *args,
+> >  		lock_page(dpage);
+> >  		xa_erase(&dmirror->pt, addr >> PAGE_SHIFT);
+> >  		copy_highpage(dpage, spage);
+> > -		*dst = migrate_pfn(page_to_pfn(dpage)) | MIGRATE_PFN_LOCKED;
+> > +		*dst = migrate_pfn(page_to_pfn(dpage));
+> >  		if (*src & MIGRATE_PFN_WRITE)
+> >  			*dst |= MIGRATE_PFN_WRITE;
+> >  	}
+> > diff --git a/mm/migrate.c b/mm/migrate.c
+> > index a6a7743ee98f..915e969811d0 100644
+> > --- a/mm/migrate.c
+> > +++ b/mm/migrate.c
+> > @@ -2369,7 +2369,6 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+> >  		 * can't be dropped from it).
+> >  		 */
+> >  		get_page(page);
+> > -		migrate->cpages++;
+> >  
+> >  		/*
+> >  		 * Optimize for the common case where page is only mapped once
 > > @@ -2379,7 +2378,7 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-> >   		if (trylock_page(page)) {
-> >   			pte_t swp_pte;
-> >   
+> >  		if (trylock_page(page)) {
+> >  			pte_t swp_pte;
+> >  
 > > -			mpfn |= MIGRATE_PFN_LOCKED;
 > > +			migrate->cpages++;
-> >   			ptep_get_and_clear(mm, addr, ptep);
-> 
-> I was looking at try_to_migrate_one() and looking at the differences with
-> the code here to insert the migration PTE and noticed that instead of
-> ptet_get_and_clear() it has:
-> 	pteval = ptep_clear_flush(vma, address, pvmw.pte);
-> 
-> 	/* Move the dirty bit to the page. Now the pte is gone. */
-> 	if (pte_dirty(pteval))
-> 		set_page_dirty(page);
-> 	update_hiwater_rss(mm);
-> 
-> I know that is pre-existing, probably a separate patch if it is an issue.
-
-I don't think it is an issue today because migrate_vma only supports private,
-non-shared pages. At some point though it may be extended to support
-file-backed pages and this would be easy to miss so will put a patch together.
-
-> >   
-> >   			/* Setup special migration page table entry */
+> >  			ptep_get_and_clear(mm, addr, ptep);
+> >  
+> >  			/* Setup special migration page table entry */
 > > @@ -2413,6 +2412,9 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
-> >   
-> >   			if (pte_present(pte))
-> >   				unmapped++;
+> >  
+> >  			if (pte_present(pte))
+> >  				unmapped++;
 > > +		} else {
 > > +			put_page(page);
 > > +			mpfn = 0;
-> >   		}
-> >   
-> >   next:
+> >  		}
+> >  
+> >  next:
 > > @@ -2517,15 +2519,17 @@ static bool migrate_vma_check_page(struct page *page)
-> >   }
-> >   
-> >   /*
+> >  }
+> >  
+> >  /*
 > > - * migrate_vma_prepare() - lock pages and isolate them from the lru
 > > + * migrate_vma_unmap() - replace page mapping with special migration pte entry
-> >    * @migrate: migrate struct containing all migration information
-> >    *
+> >   * @migrate: migrate struct containing all migration information
+> >   *
 > > - * This locks pages that have been collected by migrate_vma_collect(). Once each
 > > - * page is locked it is isolated from the lru (for non-device pages). Finally,
 > > - * the ref taken by migrate_vma_collect() is dropped, as locked pages cannot be
@@ -201,24 +324,24 @@ file-backed pages and this would be easy to miss so will put a patch together.
 > > + *
 > > + * This is the last step before we call the device driver callback to allocate
 > > + * destination memory and copy contents of original page over to new page.
-> >    */
+> >   */
 > > -static void migrate_vma_prepare(struct migrate_vma *migrate)
 > > +static void migrate_vma_unmap(struct migrate_vma *migrate)
-> >   {
-> >   	const unsigned long npages = migrate->npages;
-> >   	const unsigned long start = migrate->start;
+> >  {
+> >  	const unsigned long npages = migrate->npages;
+> >  	const unsigned long start = migrate->start;
 > > @@ -2534,32 +2538,12 @@ static void migrate_vma_prepare(struct migrate_vma *migrate)
-> >   
-> >   	lru_add_drain();
-> >   
+> >  
+> >  	lru_add_drain();
+> >  
 > > -	for (i = 0; (i < npages) && migrate->cpages; i++) {
 > > +	for (i = 0; i < npages; i++) {
-> >   		struct page *page = migrate_pfn_to_page(migrate->src[i]);
+> >  		struct page *page = migrate_pfn_to_page(migrate->src[i]);
 > > -		bool remap = true;
-> >   
-> >   		if (!page)
-> >   			continue;
-> >   
+> >  
+> >  		if (!page)
+> >  			continue;
+> >  
 > > -		if (!(migrate->src[i] & MIGRATE_PFN_LOCKED)) {
 > > -			/*
 > > -			 * Because we are migrating several pages there can be
@@ -238,13 +361,13 @@ file-backed pages and this would be easy to miss so will put a patch together.
 > > -			migrate->src[i] |= MIGRATE_PFN_LOCKED;
 > > -		}
 > > -
-> >   		/* ZONE_DEVICE pages are not on LRU */
-> >   		if (!is_zone_device_page(page)) {
-> >   			if (!PageLRU(page) && allow_drain) {
+> >  		/* ZONE_DEVICE pages are not on LRU */
+> >  		if (!is_zone_device_page(page)) {
+> >  			if (!PageLRU(page) && allow_drain) {
 > > @@ -2569,16 +2553,9 @@ static void migrate_vma_prepare(struct migrate_vma *migrate)
-> >   			}
-> >   
-> >   			if (isolate_lru_page(page)) {
+> >  			}
+> >  
+> >  			if (isolate_lru_page(page)) {
 > > -				if (remap) {
 > > -					migrate->src[i] &= ~MIGRATE_PFN_MIGRATE;
 > > -					migrate->cpages--;
@@ -258,13 +381,13 @@ file-backed pages and this would be easy to miss so will put a patch together.
 > > +				migrate->src[i] &= ~MIGRATE_PFN_MIGRATE;
 > > +				migrate->cpages--;
 > > +				restore++;
-> >   				continue;
-> >   			}
-> >   
+> >  				continue;
+> >  			}
+> >  
 > > @@ -2586,80 +2563,20 @@ static void migrate_vma_prepare(struct migrate_vma *migrate)
-> >   			put_page(page);
-> >   		}
-> >   
+> >  			put_page(page);
+> >  		}
+> >  
 > > -		if (!migrate_vma_check_page(page)) {
 > > -			if (remap) {
 > > -				migrate->src[i] &= ~MIGRATE_PFN_MIGRATE;
@@ -281,7 +404,7 @@ file-backed pages and this would be easy to miss so will put a patch together.
 > > -				migrate->cpages--;
 > > +		if (page_mapped(page))
 > > +			try_to_migrate(page, 0);
-> >   
+> >  
 > > -				if (!is_zone_device_page(page))
 > > -					putback_lru_page(page);
 > > -				else
@@ -290,7 +413,7 @@ file-backed pages and this would be easy to miss so will put a patch together.
 > > +			if (!is_zone_device_page(page)) {
 > > +				get_page(page);
 > > +				putback_lru_page(page);
-> >   			}
+> >  			}
 > > -		}
 > > -	}
 > > -
@@ -299,7 +422,7 @@ file-backed pages and this would be easy to miss so will put a patch together.
 > > -
 > > -		if (!page || (migrate->src[i] & MIGRATE_PFN_MIGRATE))
 > > -			continue;
-> >   
+> >  
 > > -		remove_migration_pte(page, migrate->vma, addr, page);
 > > -
 > > -		migrate->src[i] = 0;
@@ -333,13 +456,13 @@ file-backed pages and this would be easy to miss so will put a patch together.
 > > +			migrate->src[i] &= ~MIGRATE_PFN_MIGRATE;
 > > +			migrate->cpages--;
 > > +			restore++;
-> >   			continue;
+> >  			continue;
 > > -
 > > -		if (page_mapped(page)) {
 > > -			try_to_migrate(page, 0);
 > > -			if (page_mapped(page))
 > > -				goto restore;
-> >   		}
+> >  		}
 > > -
 > > -		if (migrate_vma_check_page(page))
 > > -			continue;
@@ -348,43 +471,43 @@ file-backed pages and this would be easy to miss so will put a patch together.
 > > -		migrate->src[i] &= ~MIGRATE_PFN_MIGRATE;
 > > -		migrate->cpages--;
 > > -		restore++;
-> >   	}
-> >   
-> >   	for (addr = start, i = 0; i < npages && restore; addr += PAGE_SIZE, i++) {
+> >  	}
+> >  
+> >  	for (addr = start, i = 0; i < npages && restore; addr += PAGE_SIZE, i++) {
 > > @@ -2672,12 +2589,8 @@ static void migrate_vma_unmap(struct migrate_vma *migrate)
-> >   
-> >   		migrate->src[i] = 0;
-> >   		unlock_page(page);
+> >  
+> >  		migrate->src[i] = 0;
+> >  		unlock_page(page);
 > > +		put_page(page);
-> >   		restore--;
+> >  		restore--;
 > > -
 > > -		if (is_zone_device_page(page))
 > > -			put_page(page);
 > > -		else
 > > -			putback_lru_page(page);
-> >   	}
-> >   }
-> >   
+> >  	}
+> >  }
+> >  
 > > @@ -2700,8 +2613,8 @@ static void migrate_vma_unmap(struct migrate_vma *migrate)
-> >    * it for all those entries (ie with MIGRATE_PFN_VALID and MIGRATE_PFN_MIGRATE
-> >    * flag set).  Once these are allocated and copied, the caller must update each
-> >    * corresponding entry in the dst array with the pfn value of the destination
+> >   * it for all those entries (ie with MIGRATE_PFN_VALID and MIGRATE_PFN_MIGRATE
+> >   * flag set).  Once these are allocated and copied, the caller must update each
+> >   * corresponding entry in the dst array with the pfn value of the destination
 > > - * page and with the MIGRATE_PFN_VALID and MIGRATE_PFN_LOCKED flags set
 > > - * (destination pages must have their struct pages locked, via lock_page()).
 > > + * page and with MIGRATE_PFN_VALID. Destination pages must be locked via
 > > + * lock_page().
-> >    *
-> >    * Note that the caller does not have to migrate all the pages that are marked
-> >    * with MIGRATE_PFN_MIGRATE flag in src array unless this is a migration from
+> >   *
+> >   * Note that the caller does not have to migrate all the pages that are marked
+> >   * with MIGRATE_PFN_MIGRATE flag in src array unless this is a migration from
 > > @@ -2770,8 +2683,6 @@ int migrate_vma_setup(struct migrate_vma *args)
-> >   
-> >   	migrate_vma_collect(args);
-> >   
+> >  
+> >  	migrate_vma_collect(args);
+> >  
 > > -	if (args->cpages)
 > > -		migrate_vma_prepare(args);
-> >   	if (args->cpages)
-> >   		migrate_vma_unmap(args);
-> >   
+> >  	if (args->cpages)
+> >  		migrate_vma_unmap(args);
+> >  
 > 
 
 
