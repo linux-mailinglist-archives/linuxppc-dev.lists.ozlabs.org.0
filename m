@@ -1,39 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB2D43E262
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 15:36:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A25A43E2B1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 15:52:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg65p3ftMz3cCT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 00:36:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg6Sk3b6xz3cCw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 00:52:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=tr8k=pq=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
+ helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
+ receiver=<UNKNOWN>)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
+ [130.133.4.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg65P3T8Sz2xXm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 00:35:53 +1100 (AEDT)
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id AFF5261038;
- Thu, 28 Oct 2021 13:35:49 +0000 (UTC)
-Date: Thu, 28 Oct 2021 09:35:47 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v1 0/5] Implement livepatch on PPC32
-Message-ID: <20211028093547.48c69dfe@gandalf.local.home>
-In-Reply-To: <cover.1635423081.git.christophe.leroy@csgroup.eu>
-References: <cover.1635423081.git.christophe.leroy@csgroup.eu>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg6SJ4rlTz2yPc
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 00:52:15 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+ by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
+ tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1mg5pE-002d7a-BY; Thu, 28 Oct 2021 15:52:12 +0200
+Received: from p57bd9736.dip0.t-ipconnect.de ([87.189.151.54]
+ helo=[192.168.178.81]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
+ with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+ (envelope-from <glaubitz@physik.fu-berlin.de>)
+ id 1mg5pE-000z7J-5L; Thu, 28 Oct 2021 15:52:12 +0200
+Message-ID: <159047aa-6cbd-420f-0589-9dc6a43e2b23@physik.fu-berlin.de>
+Date: Thu, 28 Oct 2021 15:52:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
+Content-Language: en-US
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: mpe@ellerman.id.au
+References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
+ <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
+In-Reply-To: <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.151.54
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,70 +56,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>,
- Jiri Kosina <jikos@kernel.org>, linux-kernel@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, Josh Poimboeuf <jpoimboe@redhat.com>,
- live-patching@vger.kernel.org, "Naveen
- N . Rao" <naveen.n.rao@linux.vnet.ibm.com>, Miroslav Benes <mbenes@suse.cz>,
+Cc: oss-security@lists.openwall.com,
+ "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 28 Oct 2021 14:24:00 +0200
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+Hello!
 
-> This series implements livepatch on PPC32.
-> 
-> This is largely copied from what's done on PPC64.
-> 
-> Christophe Leroy (5):
->   livepatch: Fix build failure on 32 bits processors
->   powerpc/ftrace: No need to read LR from stack in _mcount()
->   powerpc/ftrace: Add module_trampoline_target() for PPC32
->   powerpc/ftrace: Activate HAVE_DYNAMIC_FTRACE_WITH_REGS on PPC32
->   powerpc/ftrace: Add support for livepatch to PPC32
-> 
->  arch/powerpc/Kconfig                  |   2 +-
->  arch/powerpc/include/asm/livepatch.h  |   4 +-
->  arch/powerpc/kernel/module_32.c       |  33 +++++
->  arch/powerpc/kernel/trace/ftrace.c    |  53 +++-----
->  arch/powerpc/kernel/trace/ftrace_32.S | 187 ++++++++++++++++++++++++--
->  kernel/livepatch/core.c               |   4 +-
->  6 files changed, 230 insertions(+), 53 deletions(-)
-> 
+An update to this post with oss-security CC'ed.
 
-This is great that you are doing this, but I wonder if it would even be
-easier, and more efficient, if you could implement
-HAVE_DYNAMIC_FTRACE_WITH_ARGS?
+On 10/26/21 10:48, John Paul Adrian Glaubitz wrote:
+> I have tested these patches against 5.14 but it seems the problem [1] still remains for me
+> for big-endian guests. I built a patched kernel yesterday, rebooted the KVM server and let
+> the build daemons do their work over night.
 
-Then you don't need to save all regs for live kernel patching. And I am
-also working on function tracing with arguments with this too.
+I have done thorough testing and I'm no longer seeing the problem with the patched kernel.
 
-That is, to call a generic ftrace callback, you need to save all the args
-that are stored in registers to prevent the callback from clobbering them.
-As live kernel patching only needs to have the arguments of the functions,
-you save time from having to save the other regs as well.
+I am not sure what triggered my previous crash but I don't think it's related to this
+particular bug. I will keep monitoring the server in any case and open a new bug report
+in case I'm running into similar issues.
 
-The callbacks now have "struct ftrace_regs" instead of pt_regs, because it
-will allow non ftrace_regs_caller functions to access the arguments if it
-is supported.
+Thanks,
+Adrian
 
-Look at how x86_64 implements this. It should be possible to do this for
-all other archs as well.
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
-Also note, by doing this, we can then get rid of the ftrace_graph_caller,
-and have function graph tracer be a function tracing callback, as it will
-allow ftrace_graph_caller to have access to the stack and the return as
-well.
-
-If you need any more help or information to do this, I'd be happy to assist
-you.
-
-Note, you can implement this first, (I looked over the patches and they
-seem fine) and then update both ppc64 and ppc32 to implement
-DYNAMIC_FTRACE_WITH_ARGS.
-
-Cheers,
-
--- Steve
