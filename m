@@ -1,72 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A18C43E0F7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 14:26:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2614C43E118
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 14:40:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg4YK09XBz3dd4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 23:26:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg4sn00fKz3c6f
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 23:40:45 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AX9Vw8LX;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AX9Vw8LX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=redhat.com (client-ip=216.205.24.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=lvivier@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=AX9Vw8LX; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=AX9Vw8LX; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg4WC5cTJz30Pj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 23:24:39 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Hg4Vq43CJz9sTB;
- Thu, 28 Oct 2021 14:24:19 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 4QgjcO61GqGT; Thu, 28 Oct 2021 14:24:19 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Hg4Vl5ZYfz9sT4;
- Thu, 28 Oct 2021 14:24:15 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A7F578B790;
- Thu, 28 Oct 2021 14:24:15 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id hRVvgn6jIpfN; Thu, 28 Oct 2021 14:24:15 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.214])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2768B8B787;
- Thu, 28 Oct 2021 14:24:15 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19SCO8hL194404
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Thu, 28 Oct 2021 14:24:08 +0200
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19SCO8T4194403;
- Thu, 28 Oct 2021 14:24:08 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Josh Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>,
- Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
- Joe Lawrence <joe.lawrence@redhat.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>,
- "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: [PATCH v1 5/5] powerpc/ftrace: Add support for livepatch to PPC32
-Date: Thu, 28 Oct 2021 14:24:05 +0200
-Message-Id: <b73d053c145245499511c4827890c9411c8b3a5a.1635423081.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1635423081.git.christophe.leroy@csgroup.eu>
-References: <cover.1635423081.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg4s31lvLz2xYD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 23:40:05 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1635424801;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=BilMP89d5ejwGExRisJLsaqgEV5K1hYN/wwdRA5k/bw=;
+ b=AX9Vw8LX7atLr3QjzuVpfzeVUtjav32uDSMWbvzOTmhkRJ+1tx4kyF5hLW1IV5wQiu2A7z
+ dS70CO5q3kNx/PxqAF5WyQc5pDIfsYHTTXtwk1O5x2D72HxnFYgpQTl1B54WeDYfLn62R3
+ ym0zGWHN1SUebHnqFGAY//+1aw3aZro=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1635424801;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=BilMP89d5ejwGExRisJLsaqgEV5K1hYN/wwdRA5k/bw=;
+ b=AX9Vw8LX7atLr3QjzuVpfzeVUtjav32uDSMWbvzOTmhkRJ+1tx4kyF5hLW1IV5wQiu2A7z
+ dS70CO5q3kNx/PxqAF5WyQc5pDIfsYHTTXtwk1O5x2D72HxnFYgpQTl1B54WeDYfLn62R3
+ ym0zGWHN1SUebHnqFGAY//+1aw3aZro=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-325-yOyhxR2eNCmF6pao28URVQ-1; Thu, 28 Oct 2021 08:39:59 -0400
+X-MC-Unique: yOyhxR2eNCmF6pao28URVQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ l187-20020a1c25c4000000b0030da46b76daso2599927wml.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 05:39:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=BilMP89d5ejwGExRisJLsaqgEV5K1hYN/wwdRA5k/bw=;
+ b=ZwCAORZM5/ThSw0d4fzJyll/x4WrqRifVi4Q1gak8duRsxHrPG/mBYL3nfiZhzUtQI
+ SwFjUHfF09QZNAQrJ5mi0PsjEms74E8EHnhLqm6NmXTXsrvKdrLbz6PIF2fIbtjZFogz
+ Sv+vLV00/oIVv2W0a22EGmIRpppfLrHHzEXB3QHMmHqHoATn60ZzG5lILz3y6ajmF+I+
+ F3GRNWzShq7BkiAFP1oJJXpT/Gf0quPB6jHS4faKa6mGoS/Wjarg9lGXYJHpddz/JhZS
+ z23VuygDS7BRBlk1VrGXqZn9nrY49Du6E7tcG7iUfTMiNkOe7DvH2ZAsubFvMjuNej09
+ LSGg==
+X-Gm-Message-State: AOAM533a2OdlKBwDappozQsx7jxbEwW+aLN2XRDrQ7Pv2Yh6xKZJejF0
+ JeYJGNbSMPlLfvZExEgztN+K72Vj9MZ0CE8VN2WIaPPNt94WVneDB2dexrI/QEzvoraC7v+jbdj
+ lcOBpbkvgjVFfiNlSdcUB/wvhAQ==
+X-Received: by 2002:a1c:a5c7:: with SMTP id o190mr4091575wme.186.1635424798268; 
+ Thu, 28 Oct 2021 05:39:58 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxpBmS3oMhxO4yW4Qb9VQGEeYaL6u24h46UykydIOpW7bcXe3uHXi4ooalXiK9fBVtsvOBkuw==
+X-Received: by 2002:a1c:a5c7:: with SMTP id o190mr4091549wme.186.1635424798001; 
+ Thu, 28 Oct 2021 05:39:58 -0700 (PDT)
+Received: from [192.168.100.42] ([82.142.14.190])
+ by smtp.gmail.com with ESMTPSA id h14sm6603444wmq.34.2021.10.28.05.39.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 28 Oct 2021 05:39:57 -0700 (PDT)
+Message-ID: <641e823b-ed22-1e3f-6ce5-eeb09e8f947f@redhat.com>
+Date: Thu, 28 Oct 2021 14:39:56 +0200
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1635423844; l=4541; s=20211009;
- h=from:subject:message-id; bh=mq9s4eHxuC1bZRD9QPlTzVCTZ9AR7dRdociEo6K2Lk8=;
- b=j+JHR6B2ZEwqQWAnOV0uTfyLqlr5amNNwi/eJ4/n12jOw/uATyRW/aATB/XM/+lO+dvC+/5f8MKM
- fXjpDKInCAeWNeUrGa0hM5UiPsE4kZY5ryjW8SDTUhUSRZ/TBYXP
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v3] KVM: PPC: Tick accounting should defer vtime
+ accounting 'til after IRQ handling
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20211027142150.3711582-1-npiggin@gmail.com>
+From: Laurent Vivier <lvivier@redhat.com>
+In-Reply-To: <20211027142150.3711582-1-npiggin@gmail.com>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=lvivier@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,154 +109,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: live-patching@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is heavily copied from PPC64. Not much to say about it.
+On 27/10/2021 16:21, Nicholas Piggin wrote:
+> From: Laurent Vivier <lvivier@redhat.com>
+> 
+> Commit 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest
+> context before enabling irqs") moved guest_exit() into the interrupt
+> protected area to avoid wrong context warning (or worse). The problem is
+> that tick-based time accounting has not yet been updated at this point
+> (because it depends on the timer interrupt firing), so the guest time
+> gets incorrectly accounted to system time.
+> 
+> To fix the problem, follow the x86 fix in commit 160457140187 ("Defer
+> vtime accounting 'til after IRQ handling"), and allow host IRQs to run
+> before accounting the guest exit time.
+> 
+> In the case vtime accounting is enabled, this is not required because TB
+> is used directly for accounting.
+> 
+> Before this patch, with CONFIG_TICK_CPU_ACCOUNTING=y in the host and a
+> guest running a kernel compile, the 'guest' fields of /proc/stat are
+> stuck at zero. With the patch they can be observed increasing roughly as
+> expected.
+> 
+> Fixes: e233d54d4d97 ("KVM: booke: use __kvm_guest_exit")
+> Fixes: 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest context before enabling irqs")
+> Cc: <stable@vger.kernel.org> # 5.12
+> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+> [np: only required for tick accounting, add Book3E fix, tweak changelog]
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> Since v2:
+> - I took over the patch with Laurent's blessing.
+> - Changed to avoid processing IRQs if we do have vtime accounting
+>    enabled.
+> - Changed so in either case the accounting is called with irqs disabled.
+> - Added similar Book3E fix.
+> - Rebased on upstream, tested, observed bug and confirmed fix.
+> 
+>   arch/powerpc/kvm/book3s_hv.c | 30 ++++++++++++++++++++++++++++--
+>   arch/powerpc/kvm/booke.c     | 16 +++++++++++++++-
+>   2 files changed, 43 insertions(+), 3 deletions(-)
+> 
 
-Livepatch sample modules all work.
+Tested-by: Laurent Vivier <lvivier@redhat.com>
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/Kconfig                  |  2 +-
- arch/powerpc/include/asm/livepatch.h  |  4 +-
- arch/powerpc/kernel/trace/ftrace_32.S | 69 +++++++++++++++++++++++++++
- 3 files changed, 72 insertions(+), 3 deletions(-)
+Checked with mpstat that time is accounted to %guest while a stress-ng test is running in 
+the guest. Checked there is no warning in the host kernellogs.
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index f66eb1984b00..eceee3b814b9 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -230,7 +230,7 @@ config PPC
- 	select HAVE_KPROBES_ON_FTRACE
- 	select HAVE_KRETPROBES
- 	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION
--	select HAVE_LIVEPATCH			if HAVE_DYNAMIC_FTRACE_WITH_REGS && PPC64
-+	select HAVE_LIVEPATCH			if HAVE_DYNAMIC_FTRACE_WITH_REGS
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
- 	select HAVE_OPTPROBES
-diff --git a/arch/powerpc/include/asm/livepatch.h b/arch/powerpc/include/asm/livepatch.h
-index 4fe018cc207b..daf24d837241 100644
---- a/arch/powerpc/include/asm/livepatch.h
-+++ b/arch/powerpc/include/asm/livepatch.h
-@@ -23,8 +23,8 @@ static inline void klp_arch_set_pc(struct ftrace_regs *fregs, unsigned long ip)
- static inline unsigned long klp_get_ftrace_location(unsigned long faddr)
- {
- 	/*
--	 * Live patch works only with -mprofile-kernel on PPC. In this case,
--	 * the ftrace location is always within the first 16 bytes.
-+	 * Live patch works on PPC32 and only with -mprofile-kernel on PPC64. In
-+	 * both cases, the ftrace location is always within the first 16 bytes.
- 	 */
- 	return ftrace_location_range(faddr, faddr + 16);
- }
-diff --git a/arch/powerpc/kernel/trace/ftrace_32.S b/arch/powerpc/kernel/trace/ftrace_32.S
-index 0a02c0cb12d9..2545d6bb9f02 100644
---- a/arch/powerpc/kernel/trace/ftrace_32.S
-+++ b/arch/powerpc/kernel/trace/ftrace_32.S
-@@ -10,6 +10,7 @@
- #include <asm/ftrace.h>
- #include <asm/export.h>
- #include <asm/ptrace.h>
-+#include <asm/bug.h>
- 
- _GLOBAL(mcount)
- _GLOBAL(_mcount)
-@@ -83,6 +84,9 @@ _GLOBAL(ftrace_regs_caller)
- 	lis	r3,function_trace_op@ha
- 	lwz	r5,function_trace_op@l(r3)
- 
-+#ifdef CONFIG_LIVEPATCH
-+	mr	r14,r7		/* remember old NIP */
-+#endif
- 	/* Calculate ip from nip-4 into r3 for call below */
- 	subi    r3, r7, MCOUNT_INSN_SIZE
- 
-@@ -107,6 +111,9 @@ ftrace_regs_call:
- 	/* Load ctr with the possibly modified NIP */
- 	lwz	r3, _NIP(r1)
- 	mtctr	r3
-+#ifdef CONFIG_LIVEPATCH
-+	cmpw	r14, r3		/* has NIP been altered? */
-+#endif
- 
- 	/* Restore gprs */
- 	lmw	r2, GPR2(r1)
-@@ -118,8 +125,70 @@ ftrace_regs_call:
- 	/* Pop our stack frame */
- 	addi r1, r1, INT_FRAME_SIZE
- 
-+#ifdef CONFIG_LIVEPATCH
-+        /* Based on the cmpw above, if the NIP was altered handle livepatch */
-+	bne-	livepatch_handler
-+#endif
- 	b	ftrace_caller_common
- 
-+#ifdef CONFIG_LIVEPATCH
-+	/*
-+	 * This function runs in the mcount context, between two functions. As
-+	 * such it can only clobber registers which are volatile and used in
-+	 * function linkage.
-+	 *
-+	 * We get here when a function A, calls another function B, but B has
-+	 * been live patched with a new function C.
-+	 *
-+	 * On entry:
-+	 *  - we have no stack frame and can not allocate one
-+	 *  - LR points back to the original caller (in A)
-+	 *  - CTR holds the new NIP in C
-+	 *  - r0, r11 & r12 are free
-+	 */
-+livepatch_handler:
-+	/* Allocate 2 x 8 bytes */
-+	lwz	r11, TI_livepatch_sp+THREAD(r2)
-+	addi	r11, r11, 16
-+	stw	r11, TI_livepatch_sp+THREAD(r2)
-+
-+	/* Save real LR on livepatch stack */
-+	mflr	r12
-+	stw	r12, -16(r11)
-+
-+	/* Store stack end marker */
-+	lis     r12, STACK_END_MAGIC@h
-+	ori     r12, r12, STACK_END_MAGIC@l
-+	stw	r12, -4(r11)
-+
-+	/* Branch to ctr */
-+	bctrl
-+
-+	/*
-+	 * Now we are returning from the patched function to the original
-+	 * caller A. We are free to use r11 and r12.
-+	 */
-+
-+	lwz	r11, TI_livepatch_sp+THREAD(r2)
-+
-+	/* Check stack marker hasn't been trashed */
-+	lwz	r12, -4(r11)
-+	subis	r12, r12, STACK_END_MAGIC@h
-+1:	twnei	r12, STACK_END_MAGIC@l
-+	EMIT_BUG_ENTRY 1b, __FILE__, __LINE__ - 1, 0
-+
-+	/* Restore LR from livepatch stack */
-+	lwz	r12, -16(r11)
-+	mtlr	r12
-+
-+	/* Pop livepatch stack frame */
-+	subi	r11, r11, 16
-+	stw	r11, TI_livepatch_sp+THREAD(r2)
-+
-+	/* Return to original caller of live patched function */
-+	blr
-+#endif /* CONFIG_LIVEPATCH */
-+
- #ifdef CONFIG_FUNCTION_GRAPH_TRACER
- _GLOBAL(ftrace_graph_caller)
- 	stwu	r1,-48(r1)
--- 
-2.31.1
+Thanks,
+Laurent
 
