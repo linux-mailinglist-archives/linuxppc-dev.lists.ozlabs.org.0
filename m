@@ -1,84 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E5443E120
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 14:43:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F8643E140
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 14:49:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg4wp5WZXz3c74
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 23:43:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg53k5bthz3c4c
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 23:49:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=EC2UF6U3;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EP5WEdOq;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EP5WEdOq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429;
- helo=mail-pf1-x429.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=lvivier@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=EC2UF6U3; dkim-atps=neutral
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
- [IPv6:2607:f8b0:4864:20::429])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=EP5WEdOq; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=EP5WEdOq; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg4w51Rqwz2xYD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 23:42:45 +1100 (AEDT)
-Received: by mail-pf1-x429.google.com with SMTP id p40so1010520pfh.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 05:42:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=6PQW6JWfPIbBP7t63aTZtmVRFnuuhsz/GQNcoYw32N8=;
- b=EC2UF6U3fkt4UEJqrqOJ1nUJ9djgfmmtGIq0i9owv1f3QBn32OxbgQvb+7w1JqBpUC
- MlkWt3RmjuByiUyJ8dlsN+DhiIASfBz3xNBc4hAyeHZRNSlH5MJGHYwZCLCqWYfD4nn0
- Or2Cp26q2oYYm0ZqCDTSlqiCIP/M1APTvqwMErR6Sb1OOSJB02h18JlS+2qYsOzRlw91
- obvu2fPkdtfz13dcKgdnAer0tZIPE3R+1+9KDZskvnN4v3tfmCIoje6Yp6EluBHodrH+
- 1OGhXRpe5VxZvfxBDFhnchZurlBDStazC21VTowm/6muZcMIxLR74bJ0TiFuaxdb6dk9
- clmQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg53133Hbz2xDf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 23:48:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1635425320;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=c6G/II7fL4gELJ4h9W5hS038cvePCeWjBA3QvVbg4gs=;
+ b=EP5WEdOqMzdD/IC7MJCdHtDGS2+7ZuQtE8o+3NYYsPfvYIYI+FV9GBH4muxkm1v1HE7qJV
+ tq34T4mK6Iww/XclmaERkUjBSfxjo922JputyFEe42xxoFc9GlImSyG9HtCLOByD2Xexw/
+ Vwo/YbiD7V43xqvros1h5pEZ5fXGm8g=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1635425320;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=c6G/II7fL4gELJ4h9W5hS038cvePCeWjBA3QvVbg4gs=;
+ b=EP5WEdOqMzdD/IC7MJCdHtDGS2+7ZuQtE8o+3NYYsPfvYIYI+FV9GBH4muxkm1v1HE7qJV
+ tq34T4mK6Iww/XclmaERkUjBSfxjo922JputyFEe42xxoFc9GlImSyG9HtCLOByD2Xexw/
+ Vwo/YbiD7V43xqvros1h5pEZ5fXGm8g=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-402-QiZ3Mr6BPZiEyRhY5Ru2TQ-1; Thu, 28 Oct 2021 08:48:38 -0400
+X-MC-Unique: QiZ3Mr6BPZiEyRhY5Ru2TQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ c6-20020adfe706000000b00168acf1bcd5so2099161wrm.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 05:48:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=6PQW6JWfPIbBP7t63aTZtmVRFnuuhsz/GQNcoYw32N8=;
- b=ZF3TQFgbxfPol8BOBVbYP2CvQY0mizKHUjcidt2IEBS1i+iCYv6WZIlTiEu90mS/3m
- 5As3JeS/CDb8floT+u/A2kT8c2BZ+v+Oo7cy7iSBrpLzRW2rBTiMigs8LWBHdGDsrwAe
- eEEaMc9g05xwn4/t7oaMqzlG02RLgxUBXdBOSNf7HJYU4ux59aY9nT/dpxZu+w9xo2DW
- f/y4IGKzci7dttzUNRdmxStrMzbzZAEYuTRf4G6s664Etp9dCl6W0k/HNk4AxvT+V7KA
- dp2gUam6fsHHmq5abLsGoAxM8eQhNjKl3kTT3RO9x+T3EyXPynzR91mXnHSlJcqe/fjb
- 8AKg==
-X-Gm-Message-State: AOAM532+pKFAb/D8ClZ0hGLAavIY47/9vWDxTgBQ+E6FvKYRkSdhK/wO
- Pds9M+bUSUtJfB/QkakyfA8=
-X-Google-Smtp-Source: ABdhPJwUcbNbEfODglMisuwSzHSt0l9qk8xpDd1tOj2SPz1hxqRsuLOQ4/AEWbRBdv+ctyc9WM+gnQ==
-X-Received: by 2002:a05:6a00:1995:b0:47c:1f59:a27a with SMTP id
- d21-20020a056a00199500b0047c1f59a27amr4011588pfl.36.1635424961684; 
- Thu, 28 Oct 2021 05:42:41 -0700 (PDT)
-Received: from localhost ([118.208.159.180])
- by smtp.gmail.com with ESMTPSA id t14sm2716101pga.62.2021.10.28.05.42.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Oct 2021 05:42:41 -0700 (PDT)
-Date: Thu, 28 Oct 2021 22:42:36 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: instruction storage exception handling
-To: Jacques de Laval <jacques.delaval@protonmail.com>
-References: <uqZVxyE3l9oalZp_hyXFJvdH-ADNTvpOuQeoNGyqrUcoNgh9afea1-FzfZKMgiaF5WxY4kdMQlJYzmjvdQ2E2joF86-mEcaxdifht9z8NA0=@protonmail.com>
- <1635306738.0z8wt7619v.astroid@bobo.none>
- <1f5c24de-6bba-d6c0-5b8e-3522f25158f6@csgroup.eu>
- <1635312278.p87nvl11rv.astroid@bobo.none>
- <4ee635f5-7a67-bac5-2ad2-616c1aaa95b6@csgroup.eu>
- <1635318932.od1ierwsis.astroid@bobo.none>
- <f5824237-4fd4-ca87-afe7-620a23d84824@csgroup.eu>
- <V0kJsLgxvO-1SWRhS-9Nbx1E6oXO6IAJDAYBUA_kieAbf5J8MOnrRzdAiCSl2KoRjztnI3LitFLsJstAOVnWZ-4PBzWmrpTiqIYnU7TRXyo=@protonmail.com>
- <1635389034.knz9p2g41k.astroid@bobo.none>
- <VFoVC_F_r-pD62fs3PMz16KfdtzX-4Sa6QajxxabOAnilDnV_olPSFbVVmYsWUeH4BUxcI7YaJ4RnKKhdqhqOLEopCeFZrqEcjJLyJlyX_I=@protonmail.com>
- <1635413197.83rhc4s3fc.astroid@bobo.none>
-In-Reply-To: <1635413197.83rhc4s3fc.astroid@bobo.none>
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=c6G/II7fL4gELJ4h9W5hS038cvePCeWjBA3QvVbg4gs=;
+ b=5eo8+dTV++SyAuNbA3VSiRkaRwt+Fdqd+Oms9yd+fk4IKzvqYs36mnuwYsitieiYF4
+ 38SE9t2hagBu77FiuAT2K7eEcZUr55uQaWHNgxB2MEz5dZwnID5zMXBJNszAMumBMIZX
+ y0piGbE4GysYsFWBxnPPzCvoJ0FXOGQeSGlHi/U0skVqIzUYyoAEcj4wfq106ihupr3b
+ MwtbOEkkIJLtF0B6G66C3/s6/XCAopQjCkG9gis7kev8zLRKFwNwHyIkpacx+htVKOYm
+ UK6v6sxp8uv54aHgQxqmRL7jBE5LSrJsu/umXw3lEmZD0nZIBAP4olx3LKCLCVoLj4Ds
+ 5W6A==
+X-Gm-Message-State: AOAM533wkQwirU3qKZOI5aZ8yYT+6O+su1or+X6FCeb5FJqlD7R0j8Lo
+ O7jUrqAebVSuTkd8r4/ZTIXntBuh05gELD2n6Kb8oVmnflOx1flzOe/O+2hRwq0r/eFT/wM8fcG
+ siduNqKRJesfzEpn4fxlQfsLeHA==
+X-Received: by 2002:a5d:494d:: with SMTP id r13mr5398474wrs.222.1635425316779; 
+ Thu, 28 Oct 2021 05:48:36 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyphiwbppA55lbN7UG/B24xFETMuoF0a3jMrnz/JMYxTCVZ3HDSz8H33Rx9vifqKN9gv1eqlg==
+X-Received: by 2002:a5d:494d:: with SMTP id r13mr5398447wrs.222.1635425316564; 
+ Thu, 28 Oct 2021 05:48:36 -0700 (PDT)
+Received: from [192.168.100.42] ([82.142.14.190])
+ by smtp.gmail.com with ESMTPSA id p188sm2565459wmp.30.2021.10.28.05.48.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 28 Oct 2021 05:48:36 -0700 (PDT)
+Message-ID: <3d621619-e6b2-9388-06dd-0ea4cc805ed7@redhat.com>
+Date: Thu, 28 Oct 2021 14:48:35 +0200
 MIME-Version: 1.0
-Message-Id: <1635423479.x693enqtx2.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v3] KVM: PPC: Tick accounting should defer vtime
+ accounting 'til after IRQ handling
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20211027142150.3711582-1-npiggin@gmail.com>
+From: Laurent Vivier <lvivier@redhat.com>
+In-Reply-To: <20211027142150.3711582-1-npiggin@gmail.com>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=lvivier@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,167 +109,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Scott Wood <oss@buserror.net>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nicholas Piggin's message of October 28, 2021 7:35 pm:
-> Excerpts from Jacques de Laval's message of October 28, 2021 7:08 pm:
->> On Thursday, October 28th, 2021 at 5:01 AM, Nicholas Piggin <npiggin@gma=
-il.com> wrote:
->>> Excerpts from Jacques de Laval's message of October 27, 2021 10:03 pm:
->>>
->>> > On Wednesday, October 27th, 2021 at 9:52 AM, Christophe Leroy christo=
-phe.leroy@csgroup.eu wrote:
->>> >
->>> > > Le 27/10/2021 =C3=A0 09:47, Nicholas Piggin a =C3=A9crit :
->>> > >
->>> > > > You're right. In that case it shouldn't change anything unless th=
-ere
->>> > > >
->>> > > > was a BO fault. I'm not sure what the problem is then. Guessing b=
-ased
->>> > > >
->>> > > > on the NIP and instructions, it looks like it's probably got the =
-correct
->>> > > >
->>> > > > user address that it's storing into vmf on the stack, so it has g=
-ot past
->>> > > >
->>> > > > the access checks so my theory would be wrong anyway.
->>> > > >
->>> > > > Must be something simple but I can't see it yet.
->>> > >
->>> > > Anyway, I think it is still worth doing the check with setting 0 in
->>> > >
->>> > > _ESR(r11), maybe the Reference Manual is wrong.
->>> > >
->>> > > So Jacques, please do the test anyway if you can.
->>> > >
->>> > > Thanks
->>> > >
->>> > > Christophe
->>> >
->>> > I tested with the last patch from Nicholas, and with that I can not
->>> >
->>> > reproduce the issue, so it seems like that solves it for my case and =
-setup
->>> >
->>> > at least.
->>> >
->>> > Big thanks Christophe and Nicholas for looking in to this!
->>>
->>> Thanks for reporting and testing. We can certainly send this patch
->>>
->>> upstream to fix the regression, but I'm still not exactly sure what is
->>>
->>> going on. If it is an errata or part of specification we missed that
->>>
->>> could explain it but it would be good to understand and comment it.
->>>
->>> If you have time to test again with only the following patch applied,
->>>
->>> it might give a better clue. This patch should keep running but it
->>>
->>> would print some dmesg output.
->>>
->>> Thanks,
->>>
->>> Nick
->>>
->>> diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
->>>
->>> index a8d0ce85d39a..cf56f23ff90a 100644
->>>
->>> --- a/arch/powerpc/mm/fault.c
->>>
->>> +++ b/arch/powerpc/mm/fault.c
->>>
->>> @@ -548,6 +548,12 @@ static __always_inline void __do_page_fault(struct=
- pt_regs *regs)
->>>
->>> DEFINE_INTERRUPT_HANDLER(do_page_fault)
->>>
->>> {
->>>
->>> -   if (TRAP(regs) =3D=3D INTERRUPT_INST_STORAGE) {
->>>
->>> -         if (regs->dsisr !=3D 0) {
->>>
->>>
->>> -         	printk("ISI pc:%lx msr:%lx dsisr:%lx ESR:%lx\\n", regs->nip,=
- regs->msr, regs->dsisr, mfspr(SPRN_ESR));
->>>
->>>
->>> -         	regs->dsisr =3D 0; // fix?
->>>
->>>
->>> -         }
->>>
->>>
->>> -   }
->>>
->>>     __do_page_fault(regs);
->>>
->>>     }
->>>
->>=20
->> As expected it keeps running. The output, and number of prints is natura=
-lly
->> a bit different from time to time, but dsisr/ESR is always 0x800000.
->>=20
->> Here's a representative output from one run:
->>=20
->> 	ISI pc:b789e6c0 msr:2d002 dsisr:800000 ESR:800000
->> 	ISI pc:b7884220 msr:2d002 dsisr:800000 ESR:800000
->> 	ISI pc:b78c18a4 msr:2d002 dsisr:800000 ESR:800000
->> 	ISI pc:55a238 msr:2f902 dsisr:800000 ESR:800000
->> 	ISI pc:412380 msr:2f902 dsisr:800000 ESR:800000
->> 	ISI pc:3aabe0 msr:2f902 dsisr:800000 ESR:800000
->> 	ISI pc:47a0e0 msr:2f902 dsisr:800000 ESR:800000
->> 	ISI pc:443290 msr:2f902 dsisr:800000 ESR:800000
->> 	ISI pc:43b350 msr:2d002 dsisr:800000 ESR:800000
->=20
-> Great, thanks for testing that is interesting.
->=20
-> Looking a bit more,
->=20
-> https://www.nxp.com/files-static/32bit/doc/ref_manual/EREF_RM.pdf
->=20
-> This is the manual for e500 family including e5500.
->=20
-> Table 8-4. Interrupt Summary by IVOR shows ISI interrupt as affecting=20
-> ESR register with [PT], this means the PT bit may be set. There is no
-> BO bit specified here.
->=20
-> The architecture (and this manual) says that if an interrupt type=20
-> affects one of the ESR bits then all others are cleared. However if
-> we look at the 4.8.7 Exception Syndrome Register (ESR) definition,
-> the PT bit is specified with <E.PT>. This means it is implemented if
-> the processor supports the E.PT extension.
->=20
-> According to this table, the e5500 does not support E.PT.
-> https://www.linux-kvm.org/page/E500_virtual_CPU_specification
->=20
-> So it seems possible that a processor which does not support E.PT and=20
-> therefore ISI will never set any bits in ESR, will not zero the ESR
-> when it takes an ISI intrrupt, without violating the specification.
->=20
-> It looks like that is what is happening here, ESR is being left from
-> a previous store DSI.
+On 27/10/2021 16:21, Nicholas Piggin wrote:
+> From: Laurent Vivier <lvivier@redhat.com>
+> 
+> Commit 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest
+> context before enabling irqs") moved guest_exit() into the interrupt
+> protected area to avoid wrong context warning (or worse). The problem is
+> that tick-based time accounting has not yet been updated at this point
+> (because it depends on the timer interrupt firing), so the guest time
+> gets incorrectly accounted to system time.
+> 
+> To fix the problem, follow the x86 fix in commit 160457140187 ("Defer
+> vtime accounting 'til after IRQ handling"), and allow host IRQs to run
+> before accounting the guest exit time.
+> 
+> In the case vtime accounting is enabled, this is not required because TB
+> is used directly for accounting.
+> 
+> Before this patch, with CONFIG_TICK_CPU_ACCOUNTING=y in the host and a
+> guest running a kernel compile, the 'guest' fields of /proc/stat are
+> stuck at zero. With the patch they can be observed increasing roughly as
+> expected.
+> 
+> Fixes: e233d54d4d97 ("KVM: booke: use __kvm_guest_exit")
+> Fixes: 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest context before enabling irqs")
+> Cc: <stable@vger.kernel.org> # 5.12
+> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+> [np: only required for tick accounting, add Book3E fix, tweak changelog]
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> Since v2:
+> - I took over the patch with Laurent's blessing.
+> - Changed to avoid processing IRQs if we do have vtime accounting
+>    enabled.
+> - Changed so in either case the accounting is called with irqs disabled.
+> - Added similar Book3E fix.
+> - Rebased on upstream, tested, observed bug and confirmed fix.
+> 
+>   arch/powerpc/kvm/book3s_hv.c | 30 ++++++++++++++++++++++++++++--
+>   arch/powerpc/kvm/booke.c     | 16 +++++++++++++++-
+>   2 files changed, 43 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 2acb1c96cfaf..7b74fc0a986b 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -3726,7 +3726,20 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
+>   
+>   	kvmppc_set_host_core(pcpu);
+>   
+> -	guest_exit_irqoff();
+> +	context_tracking_guest_exit();
+> +	if (!vtime_accounting_enabled_this_cpu()) {
+> +		local_irq_enable();
+> +		/*
+> +		 * Service IRQs here before vtime_account_guest_exit() so any
+> +		 * ticks that occurred while running the guest are accounted to
+> +		 * the guest. If vtime accounting is enabled, accounting uses
+> +		 * TB rather than ticks, so it can be done without enabling
+> +		 * interrupts here, which has the problem that it accounts
+> +		 * interrupt processing overhead to the host.
+> +		 */
+> +		local_irq_disable();
+> +	}
+> +	vtime_account_guest_exit();
+>   
+>   	local_irq_enable();
+>   
+> @@ -4510,7 +4523,20 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+>   
+>   	kvmppc_set_host_core(pcpu);
+>   
+> -	guest_exit_irqoff();
+> +	context_tracking_guest_exit();
+> +	if (!vtime_accounting_enabled_this_cpu()) {
+> +		local_irq_enable();
+> +		/*
+> +		 * Service IRQs here before vtime_account_guest_exit() so any
+> +		 * ticks that occurred while running the guest are accounted to
+> +		 * the guest. If vtime accounting is enabled, accounting uses
+> +		 * TB rather than ticks, so it can be done without enabling
+> +		 * interrupts here, which has the problem that it accounts
+> +		 * interrupt processing overhead to the host.
+> +		 */
+> +		local_irq_disable();
+> +	}
+> +	vtime_account_guest_exit();
+>   
+>   	local_irq_enable();
+>   
+> diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
+> index 977801c83aff..8c15c90dd3a9 100644
+> --- a/arch/powerpc/kvm/booke.c
+> +++ b/arch/powerpc/kvm/booke.c
+> @@ -1042,7 +1042,21 @@ int kvmppc_handle_exit(struct kvm_vcpu *vcpu, unsigned int exit_nr)
+>   	}
+>   
+>   	trace_kvm_exit(exit_nr, vcpu);
+> -	guest_exit_irqoff();
+> +
+> +	context_tracking_guest_exit();
+> +	if (!vtime_accounting_enabled_this_cpu()) {
+> +		local_irq_enable();
+> +		/*
+> +		 * Service IRQs here before vtime_account_guest_exit() so any
+> +		 * ticks that occurred while running the guest are accounted to
+> +		 * the guest. If vtime accounting is enabled, accounting uses
+> +		 * TB rather than ticks, so it can be done without enabling
+> +		 * interrupts here, which has the problem that it accounts
+> +		 * interrupt processing overhead to the host.
+> +		 */
+> +		local_irq_disable();
+> +	}
+> +	vtime_account_guest_exit();
+>   
+>   	local_irq_enable();
+>   
+> 
 
-Actually it could be another explanation, it takes a instruction=20
-TLB error interrupt first which always sets no ESR bits, and then
-it jumps to the ISI handler without clearing ESR.
-
-I have not actually worked out why it is causing an infinite loop,
-it doesn't seem to be the main fault handler, maybe it is some
-low level TLB or PTE code, I can't get a kernel to boot under
-quemu due to some bug, but a 64-bit kernel does not cause the problem if=20
-you manually add ESR_DST into dsisr on instruction faults. Don't really
-need to know that exactly though, it's clearly a bug.
+I'm wondering if we should put the context_tracking_guest_exit() just after the 
+"srcu_read_unlock(&vc->kvm->srcu, srcu_idx);" as it was before 61bd0f66ff92 ("KVM: PPC: 
+Book3S HV: Fix guest time accounting with VIRT_CPU_ACCOUNTING_GEN")?
 
 Thanks,
-Nick
+Laurent
+
