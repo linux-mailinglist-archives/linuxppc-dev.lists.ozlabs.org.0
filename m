@@ -2,94 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F4143E6B5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 18:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B82EB43F280
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 00:13:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HgBbd25Wnz3cQJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 03:58:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HgKb84lXVz3c4y
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 09:13:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aqeEOID1;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=L/mPDwtH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hegdevasant@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::42a;
+ helo=mail-pf1-x42a.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=aqeEOID1; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=L/mPDwtH; dkim-atps=neutral
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
+ [IPv6:2607:f8b0:4864:20::42a])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HgBZX5HYqz2xB1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 03:57:56 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19SFl9vZ008345; 
- Thu, 28 Oct 2021 16:57:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=c0JbqTpFjhGSp79mAPo+AdUKlu4drc5njvF9ZCKAiAA=;
- b=aqeEOID1RmW6Vkx1PlH97SLS6OpdQ+x5uPv4FGQ3Xpon9T9LxEPGQTlf3cS40lr9gkcD
- p49gheHPBzqLXQgWVNQJqltw+dwFu+PD/DRMUU/aLOSNOvsfWvJrgp87Rt9r6PVcE/3t
- 1I2yrkyC1vldwAL27h6euZiAe3asf3yVa2x81oPG53mIw/4CasnHQpmuze5lrWkADHaG
- dXoTsJuo7QjLpRXP2p87+klBnE5wq/BwIlf5K1Tx6pxqDS/yWoSDpocnoZawlf6XR6lN
- MKzNYnuxbH/wb4HLktM0sbC5ElTbs4NN5iNB6I3RRmtMxiQB4BB2lVw90U87C1AI/D33 1A== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3byxtd9km6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Oct 2021 16:57:53 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19SGlrL6014195;
- Thu, 28 Oct 2021 16:57:50 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04ams.nl.ibm.com with ESMTP id 3bx4eeb9qe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Oct 2021 16:57:50 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 19SGvmXI54067588
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 28 Oct 2021 16:57:48 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 279BE5204E;
- Thu, 28 Oct 2021 16:57:48 +0000 (GMT)
-Received: from [9.43.16.206] (unknown [9.43.16.206])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 78BFF5204F;
- Thu, 28 Oct 2021 16:57:47 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/powernv/prd: Unregister OPAL_MSG_PRD2 notifier
- during module unload
-To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org
-References: <20210928120933.196571-1-hegdevasant@linux.vnet.ibm.com>
- <87r1d5mg1a.fsf@linkitivity.dja.id.au>
-From: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
-Message-ID: <b4b9310e-76a6-4d29-0cba-af7ae7ab7945@linux.vnet.ibm.com>
-Date: Thu, 28 Oct 2021 22:27:46 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HgKZQ73hjz2yfn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 09:13:17 +1100 (AEDT)
+Received: by mail-pf1-x42a.google.com with SMTP id m26so7307499pff.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 15:13:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=JY/JyRDyIX2LVwFej2/Bk3hlisTkPZwUj1V2NIryitk=;
+ b=L/mPDwtH9beUldT7eJbyxxbplEf+hrQPQxP0W+/2y/pgNGH8zHsr38buofvs78ySIz
+ AB0UlqIDx3bM3td/eaqlL3bkNgoO5m7OH4IQCyV+WdPGBDxvF2uEIJ2txttYZCn5XLXW
+ 1M0Ygk/afTknKc6GxU6sc8OAW1b7PjJ9KYN4c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=JY/JyRDyIX2LVwFej2/Bk3hlisTkPZwUj1V2NIryitk=;
+ b=OBJtWvfj2GDa/fjxA2XhvlWjGkqtVaPGJOItPbmvQ1sLKzVtCSV/WXOBQOyD/URrwy
+ MS/ozUGs35bQcznYbaHpkWTTmRqJhH1CrlgNkABMEd32PVC/j3tnuBW3ibIgSbG5r+eG
+ IQLQllKq+BPQBWnUu1jNk1dlstB82iekvE1s6VVKXSY7+tkbaiwEA/UFERN4BMoZPGFb
+ BOwHtQXDXqM0oNWsEsoOFO40SiQt6jZyStlh93tf4yQHtcDl1qQe1pQ+EFJM0/NrMtMB
+ hBN9Su1JChY106TXZnkewlL4b1p/qoQVnQEKdn45G4A8p5HsL6pWc8Prg1AtaCc11nKK
+ wVbQ==
+X-Gm-Message-State: AOAM531i0JdcivBDhTYpCOgJaMiuqKAkoBHIV5+fccibRFj9dKC0GlbA
+ 7xY14RmW7+nZ5Nqxg0UHjMKpZA==
+X-Google-Smtp-Source: ABdhPJw8dqTeDgguS3A5rbtFFAfXJN/hsg8s/ozO6HA5kbAPT5uPQ9W0CXeH41Dtih/HFKe6GKwhfg==
+X-Received: by 2002:a63:1a0e:: with SMTP id a14mr5310626pga.195.1635459193808; 
+ Thu, 28 Oct 2021 15:13:13 -0700 (PDT)
+Received: from localhost ([2001:4479:e000:e400:d67a:2cc4:2c16:9b6])
+ by smtp.gmail.com with ESMTPSA id z22sm4947606pfe.1.2021.10.28.15.13.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Oct 2021 15:13:13 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/32e: Ignore ESR in instruction storage
+ interrupt handler
+In-Reply-To: <20211028133043.4159501-1-npiggin@gmail.com>
+References: <20211028133043.4159501-1-npiggin@gmail.com>
+Date: Fri, 29 Oct 2021 09:13:10 +1100
+Message-ID: <87ee84g5mx.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-In-Reply-To: <87r1d5mg1a.fsf@linkitivity.dja.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: a1SAejAtsjXnktVQHvlgFUUDioYaSt-g
-X-Proofpoint-GUID: a1SAejAtsjXnktVQHvlgFUUDioYaSt-g
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-28_04,2021-10-26_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015
- mlxscore=0 priorityscore=1501 phishscore=0 impostorscore=0
- lowpriorityscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
- malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2110280089
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,24 +75,131 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Jacques de Laval <jacques.delaval@protonmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/1/21 11:40 AM, Daniel Axtens wrote:
-> Hi Vasant,
-> 
->> Commit 587164cd, introduced new opal message type (OPAL_MSG_PRD2) and added
->> opal notifier. But I missed to unregister the notifier during module unload
->> path. This results in below call trace if you try to unload and load
->> opal_prd module.
->>
->> Fixes: 587164cd ("powerpc/powernv: Add new opal message type")
-> 
-> In reviewing this patch, I've become a bit worried the underlying patch
-> has another issue that we should fix.
+Hi Nick,
 
-Thanks for the review. I have addressed below comments in v2.
+> A e5500 machine running a 32-bit kernel sometimes hangs at boot,
+> seemingly going into an infinite loop of instruction storage interrupts.
+> The ESR SPR has a value of 0x800000 (store) when this happens, which is
+> likely set by a previous store. An instruction TLB miss interrupt would
+> then leave ESR unchanged, and if no PTE exists it calls directly to the
+> instruction storage interrupt handler without changing ESR.
 
--Vasant
+I hadn't heard of the ESR before and your patch just uses the acronym:
+apparently it is the Exception Syndrome Register. In ISA 2.07 it's in
+Section 7.2.13 of Book III-E. (e5500 implements 2.06 but I assume it's
+roughly the same there.)
 
+The ISA says that ESR_ST is set for the following types of exception:
+ - Alignment
+ - Data Storage
+ - Data TLB
+ - LRAT Error
+
+So it makes sense to assume that it was not set by the instruction
+storage exception. (I see you have a discussion as to how that might
+occur in
+https://lore.kernel.org/linuxppc-dev/1635413197.83rhc4s3fc.astroid@bobo.none/#t
+and you concluded that in the comment you add that we arrive here via
+the TLB handler jumping to the ISI.)
+
+> access_error() does not cause a segfault due to a store to a read-only
+> vma because is_exec is true. Most subsequent fault handling does not
+> check for a write fault on a read-only vma, and might do strange things
+> like create a writeable PTE or call page_mkwrite on a read only vma or
+> file. It's not clear what happens here to cause the infinite faulting in
+> this case, a fault handler failure or low level PTE or TLB handling.
+
+I'm just trying to unpick this:
+
+ - INSTRUCTION_STORAGE_EXCEPTION ends up branching to do_page_fault ->
+   __do_page_fault -> ___do_page_fault
+
+ - ___do_page_fault has is_exec = true because the exception is a
+   instruction storage interrupt
+
+ - ___do_page_fault also decides that is_write = true because the
+   ESR_DST bit is set.
+
+This puts us in a bad position because we're taking some information
+from the current exception and some information from a previous
+exception, so it makes sense that things would go wrong from here!
+
+> In any case this can be fixed by having the instruction storage
+> interrupt zero regs->dsisr rather than storing the ESR value to it.
+
+Is it valid to just ignore the contents of ESR for an Instruction
+Storage exception?
+
+The 2.07 ISA at least says that the following ESR bits can be set by an
+Instruction Storage exception:
+ - Byte Ordering
+ - TLB Inelligible
+ - Page Table
+
+It sounds from
+
+> + * In any case, do_page_fault for BOOK3E does not use ESR and always expects
+> + * dsisr to be 0. ESR_DST from a prior store in particular would confuse fault
+> + * handling.
+
+that we don't actually ever check any of those three bits in the
+do_page_fault path. reg_booke.h defines ESR_BO but the definition is
+never used, and there is no ESR_TLBI or ESR_PT constant defined.
+
+So much as it seems a bit dodgy to me, I guess it is right to say that
+we're not changing behaviour by setting dsisr to 0 and just ignoring
+those 3 bits? Should we document that in the comment?
+
+I probably would have masked ESR_DST but I guess extra bit-twiddling in
+an interrupt path when zeroing would do is probably not worth it for
+theoretical correctness?
+
+Kind regards,
+Daniel
+
+> Link: https://lore.kernel.org/linuxppc-dev/1635306738.0z8wt7619v.astroid@bobo.none/
+> Fixes: a01a3f2ddbcd ("powerpc: remove arguments from fault handler functions")
+> Reported-by: Jacques de Laval <jacques.delaval@protonmail.com>
+> Tested-by: Jacques de Laval <jacques.delaval@protonmail.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/kernel/head_booke.h | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head_booke.h
+> index e5503420b6c6..ef8d1b1c234e 100644
+> --- a/arch/powerpc/kernel/head_booke.h
+> +++ b/arch/powerpc/kernel/head_booke.h
+> @@ -465,12 +465,21 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
+>  	bl	do_page_fault;						      \
+>  	b	interrupt_return
+>  
+> +/*
+> + * Instruction TLB Error interrupt handlers may call InstructionStorage
+> + * directly without clearing ESR, so the ESR at this point may be left over
+> + * from a prior interrupt.
+> + *
+> + * In any case, do_page_fault for BOOK3E does not use ESR and always expects
+> + * dsisr to be 0. ESR_DST from a prior store in particular would confuse fault
+> + * handling.
+> + */
+>  #define INSTRUCTION_STORAGE_EXCEPTION					      \
+>  	START_EXCEPTION(InstructionStorage)				      \
+> -	NORMAL_EXCEPTION_PROLOG(0x400, INST_STORAGE);		      \
+> -	mfspr	r5,SPRN_ESR;		/* Grab the ESR and save it */	      \
+> +	NORMAL_EXCEPTION_PROLOG(0x400, INST_STORAGE);			      \
+> +	li	r5,0;			/* Store 0 in regs->esr (dsisr) */    \
+>  	stw	r5,_ESR(r11);						      \
+> -	stw	r12, _DEAR(r11);	/* Pass SRR0 as arg2 */		      \
+> +	stw	r12, _DEAR(r11);	/* Set regs->dear (dar) to SRR0 */    \
+>  	prepare_transfer_to_handler;					      \
+>  	bl	do_page_fault;						      \
+>  	b	interrupt_return
+> -- 
+> 2.23.0
