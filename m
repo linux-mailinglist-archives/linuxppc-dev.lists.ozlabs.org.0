@@ -2,73 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CD543DEAF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 12:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 267B543DFE7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 13:19:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg1kg456Yz3c6l
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 21:19:23 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oxgzxeTr;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg34L0cycz3cXD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 22:19:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
- helo=mail-pj1-x1035.google.com; envelope-from=cgel.zte@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=oxgzxeTr; dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
- [IPv6:2607:f8b0:4864:20::1035])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg1jx0j0gz2xCt
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 21:18:42 +1100 (AEDT)
-Received: by mail-pj1-x1035.google.com with SMTP id
- nn3-20020a17090b38c300b001a03bb6c4ebso4313810pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 03:18:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=AtRMwbZy5HFLEPgyWN1+wEtHlSPg79vWQXM45h0t10c=;
- b=oxgzxeTrN+TYAcnoVkWvO74cRWoGFvMFKYQDZ8W6fMJQeyG7t4p+JZkYdbKNn43Fs8
- ezL2e29zimjGZ9gGRseCM3rLlNAM4ozEZKEzpxVJ6K6TF/s6DcrJ2COcVz0QsAgqHGxb
- pNk2hj7W3wdZkMtQJj3zxNBtmSO2sWz02V4br3wRzpjtmV/5cQzOTQrFOXPmM4r0ys46
- rrTtLNzJAXNr+ixnmyitix+R/PbtCBGsSBm2YBsq6Z4QaQ+lhdTNzTNl7jDzUtQfub01
- aIT6YZJsDLaPmR5JITYPAcgfwbkXHvHWkgIlWY0jtOG7GjuX0j/ARb2i3WNUD9y64elM
- 3YGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=AtRMwbZy5HFLEPgyWN1+wEtHlSPg79vWQXM45h0t10c=;
- b=2B0qWcJRW9iRcXHz0/WOlNbrA0svp41VTlR4hQhhnH6oNs0ENNnOCKUWquNNCCCOh5
- RXh78YDxAmdHlGhUv9dJX065bTt7HrHCzfdc7RVws0b70YIbCvvhattam8cYVofu5A2G
- zox/cE97fFPEiIwqHWuvxTbLOIRQvhQmuon2cgN8CrPKd9rz0RY1FdQLsw9MJbO12VKo
- wWAQRptvuVIMcl6+maR801++joQi47hyKoJJ1URkDlRtvuLlvbSXOMYhR6egko71pJdr
- 45RCB/X6I2cqgukXBfTJH7tL8DDR70lkYVshYWk0rwhnssPV6bOpXScpsjvg4wCjJjrG
- NQBA==
-X-Gm-Message-State: AOAM531iRyhGw5MKTJzP8BUuUUNz2pVJtErG52btw7j4To4fod6xVWCC
- bjtz9wBx3+jZ4gFA6Ox1V20/hJWknsU=
-X-Google-Smtp-Source: ABdhPJz7xIwmNa3Y3CFRxLmGY5vvdUVSMta4nlpfTYIzMnKDtZuK8/U1rVWjSsZ+c9d0o4i9zUx6WQ==
-X-Received: by 2002:a17:90a:7a81:: with SMTP id q1mr33172pjf.1.1635416321121; 
- Thu, 28 Oct 2021 03:18:41 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
- by smtp.gmail.com with ESMTPSA id g13sm3167115pfv.20.2021.10.28.03.18.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Oct 2021 03:18:40 -0700 (PDT)
-From: cgel.zte@gmail.com
-X-Google-Original-From: yao.jing2@zte.com.cn
-To: tyreld@linux.ibm.com
-Subject: [PATCH] drivers: scsi: replace snprintf in show functions with
- sysfs_emit
-Date: Thu, 28 Oct 2021 10:18:22 +0000
-Message-Id: <20211028101822.14278-1-yao.jing2@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg2hC1lPjz2xZL;
+ Thu, 28 Oct 2021 22:02:17 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10150"; a="230235267"
+X-IronPort-AV: E=Sophos;i="5.87,189,1631602800"; d="scan'208";a="230235267"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2021 04:01:11 -0700
+X-IronPort-AV: E=Sophos;i="5.87,189,1631602800"; d="scan'208";a="447649034"
+Received: from smile.fi.intel.com ([10.237.72.184])
+ by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2021 04:00:54 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+ (envelope-from <andriy.shevchenko@linux.intel.com>)
+ id 1mg395-001jY2-If; Thu, 28 Oct 2021 14:00:31 +0300
+Date: Thu, 28 Oct 2021 14:00:31 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Dmitry Osipenko <digetx@gmail.com>
+Subject: Re: [PATCH v2 03/45] notifier: Add
+ atomic/blocking_notifier_has_unique_priority()
+Message-ID: <YXqCz/utp2DFJJ45@smile.fi.intel.com>
+References: <20211027211715.12671-1-digetx@gmail.com>
+ <20211027211715.12671-4-digetx@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211027211715.12671-4-digetx@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Mailman-Approved-At: Thu, 28 Oct 2021 22:18:33 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,80 +55,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jing Yao <yao.jing2@zte.com.cn>, martin.petersen@oracle.com,
- linux-scsi@vger.kernel.org, jejb@linux.ibm.com, linux-kernel@vger.kernel.org,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- Zeal Robot <zealci@zte.com.cn>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
+ linux-ia64@vger.kernel.org, Tomer Maimon <tmaimon77@gmail.com>,
+ Santosh Shilimkar <ssantosh@kernel.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Tali Perry <tali.perry1@gmail.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Thierry Reding <thierry.reding@gmail.com>, Guo Ren <guoren@kernel.org>,
+ Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
+ Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Benjamin Fair <benjaminfair@google.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+ linux-sh@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+ Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Jonathan Hunter <jonathanh@nvidia.com>, Tony Lindgren <tony@atomide.com>,
+ Chen-Yu Tsai <wens@csie.org>, Ingo Molnar <mingo@redhat.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org,
+ linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+ Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
+ linux-pm@vger.kernel.org,
+ Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+ Vladimir Zapolskiy <vz@mleia.com>, linux-acpi@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, Mark Brown <broonie@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-omap@vger.kernel.org,
+ Nancy Yuen <yuenn@google.com>, linux-arm-kernel@lists.infradead.org,
+ Juergen Gross <jgross@suse.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Nick Hu <nickhu@andestech.com>, Avi Fishman <avifishman70@gmail.com>,
+ Patrick Venture <venture@google.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ openbmc@lists.ozlabs.org, Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Jing Yao <yao.jing2@zte.com.cn>
+On Thu, Oct 28, 2021 at 12:16:33AM +0300, Dmitry Osipenko wrote:
+> Add atomic/blocking_notifier_has_unique_priority() helpers which return
+> true if given handler has unique priority.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Jing Yao <yao.jing2@zte.com.cn>
----
- drivers/scsi/ibmvscsi/ibmvfc.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+...
 
-diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index d0eab5700dc5..9f20fefc2c02 100644
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -3403,7 +3403,7 @@ static ssize_t ibmvfc_show_host_partition_name(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
-+	return sysfs_emit(buf, PAGE_SIZE, "%s\n",
- 			vhost->login_buf->resp.partition_name);
- }
- 
-@@ -3413,7 +3413,7 @@ static ssize_t ibmvfc_show_host_device_name(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
-+	return sysfs_emit(buf, PAGE_SIZE, "%s\n",
- 			vhost->login_buf->resp.device_name);
- }
- 
-@@ -3423,7 +3423,7 @@ static ssize_t ibmvfc_show_host_loc_code(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
-+	return sysfs_emit(buf, PAGE_SIZE, "%s\n",
- 			vhost->login_buf->resp.port_loc_code);
- }
- 
-@@ -3433,7 +3433,7 @@ static ssize_t ibmvfc_show_host_drc_name(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
-+	return sysfs_emit(buf, PAGE_SIZE, "%s\n",
- 			vhost->login_buf->resp.drc_name);
- }
- 
-@@ -3442,7 +3442,7 @@ static ssize_t ibmvfc_show_host_npiv_version(struct device *dev,
- {
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
--	return snprintf(buf, PAGE_SIZE, "%d\n", be32_to_cpu(vhost->login_buf->resp.version));
-+	return sysfs_emit(buf, PAGE_SIZE, "%d\n", be32_to_cpu(vhost->login_buf->resp.version));
- }
- 
- static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
-@@ -3450,7 +3450,7 @@ static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
- {
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
--	return snprintf(buf, PAGE_SIZE, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
-+	return sysfs_emit(buf, PAGE_SIZE, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
- }
- 
- /**
+> +/**
+> + *	atomic_notifier_has_unique_priority - Checks whether notifier's priority is unique
+> + *	@nh: Pointer to head of the atomic notifier chain
+> + *	@n: Entry in notifier chain to check
+> + *
+> + *	Checks whether there is another notifier in the chain with the same priority.
+> + *	Must be called in process context.
+> + *
+> + *	Returns true if priority is unique, false otherwise.
+
+Why this indentation?
+
+> + */
+> +bool atomic_notifier_has_unique_priority(struct atomic_notifier_head *nh,
+> +		struct notifier_block *n)
+> +{
+> +	struct notifier_block **nl = &nh->head;
+> +	unsigned long flags;
+> +	bool ret = true;
+> +
+> +	spin_lock_irqsave(&nh->lock, flags);
+> +
+> +	while ((*nl) != NULL && (*nl)->priority >= n->priority) {
+
+' != NULL' is redundant.
+
+> +		if ((*nl)->priority == n->priority && (*nl) != n) {
+> +			ret = false;
+> +			break;
+> +		}
+> +
+> +		nl = &((*nl)->next);
+> +	}
+> +
+> +	spin_unlock_irqrestore(&nh->lock, flags);
+> +
+> +	return ret;
+> +}
+
+...
+
+> +	/*
+> +	 * This code gets used during boot-up, when task switching is
+> +	 * not yet working and interrupts must remain disabled.  At
+
+One space is enough.
+
+> +	 * such times we must not call down_write().
+> +	 */
+
+> +	while ((*nl) != NULL && (*nl)->priority >= n->priority) {
+
+' != NULL' is not needed.
+
+> +		if ((*nl)->priority == n->priority && (*nl) != n) {
+> +			ret = false;
+> +			break;
+> +		}
+> +
+> +		nl = &((*nl)->next);
+> +	}
+
 -- 
-2.25.1
+With Best Regards,
+Andy Shevchenko
+
 
