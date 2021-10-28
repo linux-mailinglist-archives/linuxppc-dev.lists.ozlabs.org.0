@@ -1,55 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AEFA43DFEC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 13:20:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D54C43E013
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 13:34:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg35d2XtTz2ybB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 22:20:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg3P5290lz3bsp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 22:34:17 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QKN5eSRV;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
- helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
- receiver=<UNKNOWN>)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
- [130.133.4.66])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg3594Hjgz2xDf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 22:20:28 +1100 (AEDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
- by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
- tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
- (envelope-from <glaubitz@zedat.fu-berlin.de>)
- id 1mg3SJ-0015Nf-7W; Thu, 28 Oct 2021 13:20:23 +0200
-Received: from p57bd9736.dip0.t-ipconnect.de ([87.189.151.54]
- helo=[192.168.178.81]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
- with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
- (envelope-from <glaubitz@physik.fu-berlin.de>)
- id 1mg3SJ-000hgv-0z; Thu, 28 Oct 2021 13:20:23 +0200
-Message-ID: <87b1404f-7805-da29-4899-6ab9459e5364@physik.fu-berlin.de>
-Date: Thu, 28 Oct 2021 13:20:22 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg3NV4n0Zz2y7V
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 22:33:46 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=QKN5eSRV; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hg3NT1vVDz4xcC;
+ Thu, 28 Oct 2021 22:33:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1635420825;
+ bh=dNBPnTjY2RMV8vvPnvLBDtkCIfy9AbEEaneixRpTWmc=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=QKN5eSRVBHfkEVM+nW8dztlahss6nugvVcm+BHbwJvsfUP1RrZks+nKGq+w9SVCXi
+ IBGf3YlJVUxZ7Z/7voMkve5GpvRlSTAWUfzHAaBepeCYuxM0FJM8YQKR9CDGUR8VXA
+ Kvvc4E0MrkkSjimdujKUvxAuuYaqdrxDeUstDKVuPNZqscEWsLDmCcxtqhKqYUTch2
+ ZE0nJ+ITYzmjyCOmWUJB2vfZyN49u8NstOABAeO6A9HBiYK+NyOtQ0IwA+ogfUa8SX
+ yG2dVSt46VCKd801nWUzc9s8e2Cc6ZOv7N5Cfrma634+jaQQepiWAwTt3hRIV7PIGj
+ VI25QXhJZKZbA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin
+ <npiggin@gmail.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH 2/3] powerpc/book3e: Fix set_memory_x() and set_memory_nx()
+In-Reply-To: <063e72e1-fc05-7783-9f42-f681dd08a4b2@csgroup.eu>
+References: <922bdab3a220781bae2360ff3dd5adb7fe4d34f1.1635226743.git.christophe.leroy@csgroup.eu>
+ <c41100f9c144dc5b62e5a751b810190c6b5d42fd.1635226743.git.christophe.leroy@csgroup.eu>
+ <1635309296.3vv9pb80wz.astroid@bobo.none>
+ <063e72e1-fc05-7783-9f42-f681dd08a4b2@csgroup.eu>
+Date: Thu, 28 Oct 2021 22:33:40 +1100
+Message-ID: <871r459yej.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
- <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
- <878ryfavaz.fsf@mpe.ellerman.id.au>
- <04864fe5-fdd0-74b2-2bad-0303e4c2b15a@physik.fu-berlin.de>
- <874k92bubv.fsf@mpe.ellerman.id.au>
- <c21c7a0e-95f1-e6d2-a04c-fb99d801e8da@physik.fu-berlin.de>
- <878rydac0d.fsf@mpe.ellerman.id.au>
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <878rydac0d.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.151.54
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,47 +64,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael!
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 27/10/2021 =C3=A0 06:44, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> Excerpts from Christophe Leroy's message of October 26, 2021 3:39 pm:
+>>> set_memory_x() calls pte_mkexec() which sets _PAGE_EXEC.
+>>> set_memory_nx() calls pte_exprotec() which clears _PAGE_EXEC.
+>>>
+>>> Book3e has 2 bits, UX and SX, which defines the exec rights
+>>> resp. for user (PR=3D1) and for kernel (PR=3D0).
+>>>
+>>> _PAGE_EXEC is defined as UX only.
+>>>
+>>> An executable kernel page is set with either _PAGE_KERNEL_RWX
+>>> or _PAGE_KERNEL_ROX, which both have SX set and UX cleared.
+>>>
+>>> So set_memory_nx() call for an executable kernel page does
+>>> nothing because UX is already cleared.
+>>>
+>>> And set_memory_x() on a non-executable kernel page makes it
+>>> executable for the user and keeps it non-executable for kernel.
+>>>
+>>> Also, pte_exec() always returns 'false' on kernel pages, because
+>>> it checks _PAGE_EXEC which doesn't include SX, so for instance
+>>> the W+X check doesn't work.
+>>>
+>>> To fix this:
+>>> - change tlb_low_64e.S to use _PAGE_BAP_UX instead of _PAGE_USER
+>>> - sets both UX and SX in _PAGE_EXEC so that pte_user() returns
+>>> true whenever one of the two bits is set
+>>=20
+>> I don't understand this change. Which pte_user() returns true after
+>> this change? Or do you mean pte_exec()?
+>
+> Oops, yes, I mean pte_exec()
+>
+> Unless I have to re-spin, can Michael eventually fix that typo while=20
+> applying ?
 
-On 10/28/21 08:39, Michael Ellerman wrote:
->>> No, I will try that now.
-> 
-> That completed fine on my BE VM here.
-> 
-> I ran these in two tmux windows:
->   $ sbuild -d sid --arch=powerpc --no-arch-all gcc-11_11.2.0-10.dsc
->   $ sbuild -d sid --arch=ppc64 --no-arch-all gcc-11_11.2.0-10.dsc
-> 
-> 
-> The VM has 32 CPUs, with 4 threads per core:
-> 
->   $ ppc64_cpu --info
->   Core   0:    0*    1*    2*    3*
->   Core   1:    4*    5*    6*    7*
->   Core   2:    8*    9*   10*   11*
->   Core   3:   12*   13*   14*   15*
->   Core   4:   16*   17*   18*   19*
->   Core   5:   20*   21*   22*   23*
->   Core   6:   24*   25*   26*   27*
->   Core   7:   28*   29*   30*   31*
+I did.
 
-It seems I also can no longer reproduce the issue, even when building the most problematic
-packages and I think we should consider it fixed for now. I will keep monitoring the server,
-of course, and will let you know in case the problem shows again.
-
-Thanks a lot again for fixing this issue!
-
-Adrian
-
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+cheers
