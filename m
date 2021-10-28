@@ -2,74 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E9D43D94F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 04:25:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6797643D99E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 05:02:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HfqDH1bCRz3c70
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 13:25:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hfr272MySz3c6N
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 14:02:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=EqwXy5n9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AeGIXUGw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
- helo=mail-pj1-x1033.google.com; envelope-from=cgel.zte@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
+ helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=EqwXy5n9; dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
+ header.s=20210112 header.b=AeGIXUGw; dkim-atps=neutral
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HfqCW4nMZz2yQy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 13:25:10 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id
- nn3-20020a17090b38c300b001a03bb6c4ebso3526899pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 19:25:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hfr1Y5KlPz2xXD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 14:01:35 +1100 (AEDT)
+Received: by mail-pj1-x102a.google.com with SMTP id v10so3006345pjr.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Oct 2021 20:01:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=5GRC3oKU5t8MNbDIRrWo3mHgF77PLmBHPiD3xo6WI7U=;
- b=EqwXy5n9i8RiU1Vqj5mkd6XKFXv/7pY4aSKYpOAzquPYCEy3yMTtku9UkfYIVBtyYK
- 9+AzS1vhmGcTxOt56eLm3ysI8mBYn7XgwsbTeaLuOBI4UctuckQbRHz/8WaZ85CP231X
- fwUbh5i8MWFMzXBeOl6BavkZuzxO4vOsyDhKidTYhxRly+qPrnNtxChJDle40rRcyclD
- cJzNhCFliUnPwUx7OisY/NxQehcMQvtP+oJh+QjpnYJbBOMdM1D496JuP72FSAoLC4xj
- V/XUcLyUFQaCHL+VYPW57va/GfcqBQtrVyJiNkEUfLmwj2o85jIzaoT1/IMKWwxECb6U
- INcw==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=IGv+MeBuCnq8G6v+2GUvGt6iWZH+HN78+ayRIKdS9G0=;
+ b=AeGIXUGwuX1rT8el/Fd0kkjlahZ0JX+ZaMwGmjwrTUH+EcObDGenKAy2LvjdNvGyWV
+ +SfPwpjwVICBWI+MfFhFcxEw/tnq3Z9Rw6nWHJt5hSz9Wlc9AgV/4UZi+GqALHJAzWsy
+ 3CjUuHTYq52kubMyChnuX/RIeXMeKA0beKO+MlPSwqyH6NIjTYRt8R2AOq9H7LKK9VwV
+ oXvW+psuxxWp8LJeQbS6KDgqLdED1auIyveF6Y5LiewWSdVk/wZ27nvWI49QUkwWWOJv
+ zA7IDo4Wd6gdv5m3t1dYJa4b7WCnz1zYMpfOgjWAwYBii6aUaIKVEUtle51MBhXtQcIE
+ 8hug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=5GRC3oKU5t8MNbDIRrWo3mHgF77PLmBHPiD3xo6WI7U=;
- b=DVvID9FAPEjqX6CUOMNhhBgFDsC5uO1Sk107Dp96TWPEjxtmLhGHEAMdkIjmxl1X38
- qsyzbpVPO1NmxlSDHebGZlkj4iX4/yNECzKOCTxm5JoanyKXhSfUYeWep3VO+fa5be7I
- 5YI5YonYhm+okt/2BZrWc/+jpWq8WNBr5q9r6mUmNq2w/7HurvXyWZsUw2sOEadzGt9D
- R3it8PWH0bcwdgvO6EFqr/xcwLhOmkrxQixDSUFeMB64xyBQVMAFBoAEVeyVU71iYY1k
- xgr7pHPDw1T9Vs58/VjTDc/3coLDeo4iK1Udjuqyty3mcmI017HZOc/lzPhmWvls/P4d
- 0I2w==
-X-Gm-Message-State: AOAM531AoITKhV6sqQB/rqaOvJ5vbIqCObsAiExe45+okLYwAQwvt/AU
- ZObgB/bPNXuihSwQC27hb/DlD3MvINU=
-X-Google-Smtp-Source: ABdhPJyaUMQa33s9XhiwDfXb5v0/Ivv7x0V/Uwo58Yx3uqZUxdP2E0LU5ZcBtVYvQUYiZ7PK9AgPdQ==
-X-Received: by 2002:a17:902:9348:b0:141:5862:28b4 with SMTP id
- g8-20020a170902934800b00141586228b4mr1352384plp.17.1635387908677; 
- Wed, 27 Oct 2021 19:25:08 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
- by smtp.gmail.com with ESMTPSA id c8sm1224790pfv.150.2021.10.27.19.25.06
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=IGv+MeBuCnq8G6v+2GUvGt6iWZH+HN78+ayRIKdS9G0=;
+ b=yLhC3iIgngb9K89hKCyeE2lx1DWktj8jJ6qPGlYOVKERlLJm6fxdnga5hAjLVsuc40
+ /zYHa1JWDw+W1AMF9nhDpZE/t4z0IUxQxBrFbcuPdn3wviiex6qbxz6oTrJmLxunCJ8E
+ DtJAWudE5gEQp/51uM8eK4S7oe438Vh8bUtsqR+D2r8dTO0PJP2vQEdJ0TZB8gBQpbcH
+ k9+6TEzR5acj8HovHW9QUo0rgWfOSctuxjPS1F00d9u7BS3ZruiWbQYoaIc4bJNR/f1V
+ 8PzGiLQOHDSjX6sb60y14LeEoGKjzz8fSHxqErwHyRU7eHaKJA7c9PunW2l4Lt2wtzeX
+ KLOQ==
+X-Gm-Message-State: AOAM530lgzi82o05qTCIKgjkSiRYw+kpFZ8WilAn3mjxskX3IlwqzX53
+ wrrTjAkwcvRPlNgLUsgbUdI=
+X-Google-Smtp-Source: ABdhPJzN88H7qw012JR2oUKmHlv0iqCzpRL9O72cKgh47JHoWaxQbtdW5NkEiZoOovT0U5RB5cppcQ==
+X-Received: by 2002:a17:90a:5d01:: with SMTP id
+ s1mr9325305pji.194.1635390093463; 
+ Wed, 27 Oct 2021 20:01:33 -0700 (PDT)
+Received: from localhost ([118.208.159.180])
+ by smtp.gmail.com with ESMTPSA id x5sm1322015pfh.153.2021.10.27.20.01.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Oct 2021 19:25:08 -0700 (PDT)
-From: cgel.zte@gmail.com
-X-Google-Original-From: deng.changcheng@zte.com.cn
-To: tyreld@linux.ibm.com
-Subject: [PATCH] scsi: ibmvfc: replace scnprintf in show functions with
- sysfs_emit
-Date: Thu, 28 Oct 2021 02:24:59 +0000
-Message-Id: <20211028022459.9076-1-deng.changcheng@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+ Wed, 27 Oct 2021 20:01:33 -0700 (PDT)
+Date: Thu, 28 Oct 2021 13:01:27 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: instruction storage exception handling
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Jacques de Laval
+ <jacques.delaval@protonmail.com>
+References: <uqZVxyE3l9oalZp_hyXFJvdH-ADNTvpOuQeoNGyqrUcoNgh9afea1-FzfZKMgiaF5WxY4kdMQlJYzmjvdQ2E2joF86-mEcaxdifht9z8NA0=@protonmail.com>
+ <1635306738.0z8wt7619v.astroid@bobo.none>
+ <1f5c24de-6bba-d6c0-5b8e-3522f25158f6@csgroup.eu>
+ <1635312278.p87nvl11rv.astroid@bobo.none>
+ <4ee635f5-7a67-bac5-2ad2-616c1aaa95b6@csgroup.eu>
+ <1635318932.od1ierwsis.astroid@bobo.none>
+ <f5824237-4fd4-ca87-afe7-620a23d84824@csgroup.eu>
+ <V0kJsLgxvO-1SWRhS-9Nbx1E6oXO6IAJDAYBUA_kieAbf5J8MOnrRzdAiCSl2KoRjztnI3LitFLsJstAOVnWZ-4PBzWmrpTiqIYnU7TRXyo=@protonmail.com>
+In-Reply-To: <V0kJsLgxvO-1SWRhS-9Nbx1E6oXO6IAJDAYBUA_kieAbf5J8MOnrRzdAiCSl2KoRjztnI3LitFLsJstAOVnWZ-4PBzWmrpTiqIYnU7TRXyo=@protonmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <1635389034.knz9p2g41k.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,89 +88,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org, jejb@linux.ibm.com,
- linux-kernel@vger.kernel.org, Changcheng Deng <deng.changcheng@zte.com.cn>,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- Zeal Robot <zealci@zte.com.cn>
+Cc: Scott Wood <oss@buserror.net>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Changcheng Deng <deng.changcheng@zte.com.cn>
+Excerpts from Jacques de Laval's message of October 27, 2021 10:03 pm:
+> On Wednesday, October 27th, 2021 at 9:52 AM, Christophe Leroy <christophe=
+.leroy@csgroup.eu> wrote:
+>=20
+>> Le 27/10/2021 =C3=A0 09:47, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>
+>> > You're right. In that case it shouldn't change anything unless there
+>> >
+>> > was a BO fault. I'm not sure what the problem is then. Guessing based
+>> >
+>> > on the NIP and instructions, it looks like it's probably got the corre=
+ct
+>> >
+>> > user address that it's storing into vmf on the stack, so it has got pa=
+st
+>> >
+>> > the access checks so my theory would be wrong anyway.
+>> >
+>> > Must be something simple but I can't see it yet.
+>>
+>> Anyway, I think it is still worth doing the check with setting 0 in
+>>
+>> _ESR(r11), maybe the Reference Manual is wrong.
+>>
+>> So Jacques, please do the test anyway if you can.
+>>
+>> Thanks
+>>
+>> Christophe
+>=20
+> I tested with the last patch from Nicholas, and with that I can not
+> reproduce the issue, so it seems like that solves it for my case and setu=
+p
+> at least.
+>=20
+> Big thanks Christophe and Nicholas for looking in to this!
 
-Fix the coccicheck warning:
-WARNING: use scnprintf or sprintf
+Thanks for reporting and testing. We can certainly send this patch=20
+upstream to fix the regression, but I'm still not exactly sure what is=20
+going on. If it is an errata or part of specification we missed that=20
+could explain it but it would be good to understand and comment it.
 
-Use sysfs_emit instead of scnprintf or sprintf makes more sense.
+If you have time to test again with only the following patch applied,
+it might give a better clue. This patch should keep running but it
+would print some dmesg output.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Changcheng Deng <deng.changcheng@zte.com.cn>
----
- drivers/scsi/ibmvscsi/ibmvfc.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+Thanks,
+Nick
 
-diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index a4b0a12f8a97..7f39a965677b 100644
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -3402,8 +3402,7 @@ static ssize_t ibmvfc_show_host_partition_name(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
--			vhost->login_buf->resp.partition_name);
-+	return sysfs_emit(buf, "%s\n", vhost->login_buf->resp.partition_name);
- }
- 
- static ssize_t ibmvfc_show_host_device_name(struct device *dev,
-@@ -3412,8 +3411,7 @@ static ssize_t ibmvfc_show_host_device_name(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
--			vhost->login_buf->resp.device_name);
-+	return sysfs_emit(buf, "%s\n", vhost->login_buf->resp.device_name);
- }
- 
- static ssize_t ibmvfc_show_host_loc_code(struct device *dev,
-@@ -3422,8 +3420,7 @@ static ssize_t ibmvfc_show_host_loc_code(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
--			vhost->login_buf->resp.port_loc_code);
-+	return sysfs_emit(buf, "%s\n", vhost->login_buf->resp.port_loc_code);
- }
- 
- static ssize_t ibmvfc_show_host_drc_name(struct device *dev,
-@@ -3432,8 +3429,7 @@ static ssize_t ibmvfc_show_host_drc_name(struct device *dev,
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
--			vhost->login_buf->resp.drc_name);
-+	return sysfs_emit(buf, "%s\n", vhost->login_buf->resp.drc_name);
- }
- 
- static ssize_t ibmvfc_show_host_npiv_version(struct device *dev,
-@@ -3441,7 +3437,7 @@ static ssize_t ibmvfc_show_host_npiv_version(struct device *dev,
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index a8d0ce85d39a..cf56f23ff90a 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -548,6 +548,12 @@ static __always_inline void __do_page_fault(struct pt_=
+regs *regs)
+=20
+ DEFINE_INTERRUPT_HANDLER(do_page_fault)
  {
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
--	return snprintf(buf, PAGE_SIZE, "%d\n", be32_to_cpu(vhost->login_buf->resp.version));
-+	return sysfs_emit(buf, "%d\n", be32_to_cpu(vhost->login_buf->resp.version));
++	if (TRAP(regs) =3D=3D INTERRUPT_INST_STORAGE) {
++		if (regs->dsisr !=3D 0) {
++			printk("ISI pc:%lx msr:%lx dsisr:%lx ESR:%lx\n", regs->nip, regs->msr, =
+regs->dsisr, mfspr(SPRN_ESR));
++			regs->dsisr =3D 0; // fix?
++		}
++	}
+ 	__do_page_fault(regs);
  }
- 
- static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
-@@ -3449,7 +3445,7 @@ static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
- {
- 	struct Scsi_Host *shost = class_to_shost(dev);
- 	struct ibmvfc_host *vhost = shost_priv(shost);
--	return snprintf(buf, PAGE_SIZE, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
-+	return sysfs_emit(buf, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
- }
- 
- /**
--- 
-2.25.1
-
+=20
