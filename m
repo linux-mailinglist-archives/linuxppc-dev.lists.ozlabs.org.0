@@ -2,54 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A7F443DFE6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 13:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92CD543DEAF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 12:19:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg33s19Dlz3cSJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 22:19:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg1kg456Yz3c6l
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 21:19:23 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oxgzxeTr;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.47; helo=mail-ot1-f47.google.com;
- envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com
- [209.85.210.47])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
+ helo=mail-pj1-x1035.google.com; envelope-from=cgel.zte@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=oxgzxeTr; dkim-atps=neutral
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
+ [IPv6:2607:f8b0:4864:20::1035])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg1Hq0MXFz2xB0;
- Thu, 28 Oct 2021 20:59:33 +1100 (AEDT)
-Received: by mail-ot1-f47.google.com with SMTP id
- v2-20020a05683018c200b0054e3acddd91so7801416ote.8; 
- Thu, 28 Oct 2021 02:59:33 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg1jx0j0gz2xCt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 21:18:42 +1100 (AEDT)
+Received: by mail-pj1-x1035.google.com with SMTP id
+ nn3-20020a17090b38c300b001a03bb6c4ebso4313810pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 03:18:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AtRMwbZy5HFLEPgyWN1+wEtHlSPg79vWQXM45h0t10c=;
+ b=oxgzxeTrN+TYAcnoVkWvO74cRWoGFvMFKYQDZ8W6fMJQeyG7t4p+JZkYdbKNn43Fs8
+ ezL2e29zimjGZ9gGRseCM3rLlNAM4ozEZKEzpxVJ6K6TF/s6DcrJ2COcVz0QsAgqHGxb
+ pNk2hj7W3wdZkMtQJj3zxNBtmSO2sWz02V4br3wRzpjtmV/5cQzOTQrFOXPmM4r0ys46
+ rrTtLNzJAXNr+ixnmyitix+R/PbtCBGsSBm2YBsq6Z4QaQ+lhdTNzTNl7jDzUtQfub01
+ aIT6YZJsDLaPmR5JITYPAcgfwbkXHvHWkgIlWY0jtOG7GjuX0j/ARb2i3WNUD9y64elM
+ 3YGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=YApfc+rtORQHprN7aKpnZNhl8TPl/VtOJQI8beQJmCY=;
- b=8MrmBuOG93ON7qNOvv6U3K5j6+oEy7n0688i1vz9dBmNcvMJPOgUYPE035yOnwTta2
- dQ1NctqY/H0eFvqXIv0FZt8E51M/9DAxHBxhfOkgKSvCz093D4LyktGwPyRpuaCnQopI
- M5EJPaPfAWlq6LrHEal1VAy32WbubnBeAd5KdHMI65HpJMyhvAZCV3Bu80r2eFFqY7ST
- fu12FTmbp0dj01dpdHbPv1Ow52XXim+0xnamoZwWXIkqwJCQHUAnLZc5jWNZ9app9HZs
- 4kBEKb2VR658c2oKrwrBklqxtCsgYVB6YtKtayW6nqk6c9FgX1nH/D9xJWD8ar3mxCqv
- JTow==
-X-Gm-Message-State: AOAM531Zt4SdxAmlphYKVkhiNzWf3Vah5pJENSwMIy3vFEtmUkVLNWjE
- Ct/xLpYDP9n0YdAtb98BVgXqop2x2oCE1SQ15+E=
-X-Google-Smtp-Source: ABdhPJzD4cm7tn60vkyopY5CUMxUc9huwAUhS0IgxTyGcJq7Km0Bm+8fuUNsdZomFIBYzzQsRecVralPmU+TS+34zNY=
-X-Received: by 2002:a9d:65c1:: with SMTP id z1mr2427957oth.198.1635415170827; 
- Thu, 28 Oct 2021 02:59:30 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AtRMwbZy5HFLEPgyWN1+wEtHlSPg79vWQXM45h0t10c=;
+ b=2B0qWcJRW9iRcXHz0/WOlNbrA0svp41VTlR4hQhhnH6oNs0ENNnOCKUWquNNCCCOh5
+ RXh78YDxAmdHlGhUv9dJX065bTt7HrHCzfdc7RVws0b70YIbCvvhattam8cYVofu5A2G
+ zox/cE97fFPEiIwqHWuvxTbLOIRQvhQmuon2cgN8CrPKd9rz0RY1FdQLsw9MJbO12VKo
+ wWAQRptvuVIMcl6+maR801++joQi47hyKoJJ1URkDlRtvuLlvbSXOMYhR6egko71pJdr
+ 45RCB/X6I2cqgukXBfTJH7tL8DDR70lkYVshYWk0rwhnssPV6bOpXScpsjvg4wCjJjrG
+ NQBA==
+X-Gm-Message-State: AOAM531iRyhGw5MKTJzP8BUuUUNz2pVJtErG52btw7j4To4fod6xVWCC
+ bjtz9wBx3+jZ4gFA6Ox1V20/hJWknsU=
+X-Google-Smtp-Source: ABdhPJz7xIwmNa3Y3CFRxLmGY5vvdUVSMta4nlpfTYIzMnKDtZuK8/U1rVWjSsZ+c9d0o4i9zUx6WQ==
+X-Received: by 2002:a17:90a:7a81:: with SMTP id q1mr33172pjf.1.1635416321121; 
+ Thu, 28 Oct 2021 03:18:41 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+ by smtp.gmail.com with ESMTPSA id g13sm3167115pfv.20.2021.10.28.03.18.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Oct 2021 03:18:40 -0700 (PDT)
+From: cgel.zte@gmail.com
+X-Google-Original-From: yao.jing2@zte.com.cn
+To: tyreld@linux.ibm.com
+Subject: [PATCH] drivers: scsi: replace snprintf in show functions with
+ sysfs_emit
+Date: Thu, 28 Oct 2021 10:18:22 +0000
+Message-Id: <20211028101822.14278-1-yao.jing2@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-9-digetx@gmail.com>
-In-Reply-To: <20211027211715.12671-9-digetx@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 28 Oct 2021 11:59:18 +0200
-Message-ID: <CAJZ5v0gpu2ezMhWr=grg6M8aWAx58DQozbXHoZaiPqUaZxJi4Q@mail.gmail.com>
-Subject: Re: [PATCH v2 08/45] kernel: Add combined power-off+restart handler
- call chain API
-To: Dmitry Osipenko <digetx@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Thu, 28 Oct 2021 22:18:33 +1100
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,251 +80,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Tomer Maimon <tmaimon77@gmail.com>,
- Santosh Shilimkar <ssantosh@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- the arch/x86 maintainers <x86@kernel.org>, Tali Perry <tali.perry1@gmail.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Thierry Reding <thierry.reding@gmail.com>, Guo Ren <guoren@kernel.org>,
- Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
- Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Benjamin Fair <benjaminfair@google.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Linux-sh list <linux-sh@vger.kernel.org>, Lee Jones <lee.jones@linaro.org>,
- Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Jonathan Hunter <jonathanh@nvidia.com>, Tony Lindgren <tony@atomide.com>,
- Chen-Yu Tsai <wens@csie.org>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org,
- linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
- Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
- Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
- =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
- Vladimir Zapolskiy <vz@mleia.com>,
- ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
- linux-m68k@lists.linux-m68k.org, Mark Brown <broonie@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- linux-tegra <linux-tegra@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Nancy Yuen <yuenn@google.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Avi Fishman <avifishman70@gmail.com>, Patrick Venture <venture@google.com>,
- Linux PM <linux-pm@vger.kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, openbmc@lists.ozlabs.org,
- Joshua Thompson <funaho@jurai.org>
+Cc: Jing Yao <yao.jing2@zte.com.cn>, martin.petersen@oracle.com,
+ linux-scsi@vger.kernel.org, jejb@linux.ibm.com, linux-kernel@vger.kernel.org,
+ paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
+ Zeal Robot <zealci@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Oct 27, 2021 at 11:18 PM Dmitry Osipenko <digetx@gmail.com> wrote:
->
-> SoC platforms often have multiple options of how to perform system's
-> power-off and restart operations. Meanwhile today's kernel is limited to
-> a single option. Add combined power-off+restart handler call chain API,
-> which is inspired by the restart API. The new API provides both power-off
-> and restart functionality.
->
-> The old pm_power_off method will be kept around till all users are
-> converted to the new API.
->
-> Current restart API will be replaced by the new unified API since
-> new API is its superset. The restart functionality of the power-handler
-> API is built upon the existing restart-notifier APIs.
->
-> In order to ease conversion to the new API, convenient helpers are added
-> for the common use-cases. They will reduce amount of boilerplate code and
-> remove global variables. These helpers preserve old behaviour for cases
-> where only one power-off handler is executed, this is what existing
-> drivers want, and thus, they could be easily converted to the new API.
-> Users of the new API should explicitly enable power-off chaining by
-> setting corresponding flag of the power_handler structure.
->
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-> ---
->  include/linux/reboot.h   | 176 +++++++++++-
->  kernel/power/hibernate.c |   2 +-
->  kernel/reboot.c          | 601 ++++++++++++++++++++++++++++++++++++++-
->  3 files changed, 768 insertions(+), 11 deletions(-)
->
-> diff --git a/include/linux/reboot.h b/include/linux/reboot.h
-> index b7fa25726323..0ec835338c27 100644
-> --- a/include/linux/reboot.h
-> +++ b/include/linux/reboot.h
-> @@ -8,10 +8,16 @@
->
->  struct device;
->
-> -#define SYS_DOWN       0x0001  /* Notify of system down */
-> -#define SYS_RESTART    SYS_DOWN
-> -#define SYS_HALT       0x0002  /* Notify of system halt */
-> -#define SYS_POWER_OFF  0x0003  /* Notify of system power off */
-> +enum reboot_prepare_mode {
-> +       SYS_DOWN = 1,           /* Notify of system down */
-> +       SYS_RESTART = SYS_DOWN,
-> +       SYS_HALT,               /* Notify of system halt */
-> +       SYS_POWER_OFF,          /* Notify of system power off */
-> +};
-> +
-> +#define RESTART_PRIO_RESERVED          0
-> +#define RESTART_PRIO_DEFAULT           128
-> +#define RESTART_PRIO_HIGH              192
->
->  enum reboot_mode {
->         REBOOT_UNDEFINED = -1,
-> @@ -49,6 +55,167 @@ int register_restart_handler(struct notifier_block *);
->  int unregister_restart_handler(struct notifier_block *);
->  void do_kernel_restart(char *cmd);
->
-> +/*
-> + * Unified poweroff + restart API.
-> + */
-> +
-> +#define POWEROFF_PRIO_RESERVED         0
-> +#define POWEROFF_PRIO_PLATFORM         1
-> +#define POWEROFF_PRIO_DEFAULT          128
-> +#define POWEROFF_PRIO_HIGH             192
-> +#define POWEROFF_PRIO_FIRMWARE         224
+From: Jing Yao <yao.jing2@zte.com.cn>
 
-Also I'm wondering why these particular numbers were chosen, here and above?
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Jing Yao <yao.jing2@zte.com.cn>
+---
+ drivers/scsi/ibmvscsi/ibmvfc.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-> +
-> +enum poweroff_mode {
-> +       POWEROFF_NORMAL = 0,
-> +       POWEROFF_PREPARE,
-> +};
-> +
-> +struct power_off_data {
-> +       void *cb_data;
-> +};
-> +
-> +struct power_off_prep_data {
-> +       void *cb_data;
-> +};
-> +
-> +struct restart_data {
-> +       void *cb_data;
-> +       const char *cmd;
-> +       enum reboot_mode mode;
-> +};
-> +
-> +struct reboot_prep_data {
-> +       void *cb_data;
-> +       const char *cmd;
-> +       enum reboot_prepare_mode mode;
-> +};
-> +
-> +struct power_handler_private_data {
-> +       struct notifier_block reboot_prep_nb;
-> +       struct notifier_block power_off_nb;
-> +       struct notifier_block restart_nb;
-> +       void (*trivial_power_off_cb)(void);
-> +       void (*simple_power_off_cb)(void *data);
-> +       void *simple_power_off_cb_data;
-> +       bool registered;
-> +};
-> +
-> +/**
-> + * struct power_handler - Machine power-off + restart handler
-> + *
-> + * Describes power-off and restart handlers which are invoked by kernel
-> + * to power off or restart this machine.  Supports prioritized chaining for
-> + * both restart and power-off handlers.  Callback's priority must be unique.
-> + * Intended to be used by device drivers that are responsible for restarting
-> + * and powering off hardware which kernel is running on.
-> + *
-> + * Struct power_handler can be static.  Members of this structure must not be
-> + * altered while handler is registered.
-> + *
-> + * Fill the structure members and pass it to register_power_handler().
-> + */
-> +struct power_handler {
-> +       /**
-> +        * @cb_data:
-> +        *
-> +        * User data included in callback's argument.
-> +        */
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index d0eab5700dc5..9f20fefc2c02 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -3403,7 +3403,7 @@ static ssize_t ibmvfc_show_host_partition_name(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
++	return sysfs_emit(buf, PAGE_SIZE, "%s\n",
+ 			vhost->login_buf->resp.partition_name);
+ }
+ 
+@@ -3413,7 +3413,7 @@ static ssize_t ibmvfc_show_host_device_name(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
++	return sysfs_emit(buf, PAGE_SIZE, "%s\n",
+ 			vhost->login_buf->resp.device_name);
+ }
+ 
+@@ -3423,7 +3423,7 @@ static ssize_t ibmvfc_show_host_loc_code(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
++	return sysfs_emit(buf, PAGE_SIZE, "%s\n",
+ 			vhost->login_buf->resp.port_loc_code);
+ }
+ 
+@@ -3433,7 +3433,7 @@ static ssize_t ibmvfc_show_host_drc_name(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
++	return sysfs_emit(buf, PAGE_SIZE, "%s\n",
+ 			vhost->login_buf->resp.drc_name);
+ }
+ 
+@@ -3442,7 +3442,7 @@ static ssize_t ibmvfc_show_host_npiv_version(struct device *dev,
+ {
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+-	return snprintf(buf, PAGE_SIZE, "%d\n", be32_to_cpu(vhost->login_buf->resp.version));
++	return sysfs_emit(buf, PAGE_SIZE, "%d\n", be32_to_cpu(vhost->login_buf->resp.version));
+ }
+ 
+ static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
+@@ -3450,7 +3450,7 @@ static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
+ {
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+-	return snprintf(buf, PAGE_SIZE, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
++	return sysfs_emit(buf, PAGE_SIZE, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
+ }
+ 
+ /**
+-- 
+2.25.1
 
-And here I would document the structure fields in the main kerneldoc
-comment above.
-
-As is, it is a bit hard to grasp the whole definition.
-
-> +       void *cb_data;
-> +
-> +       /**
-> +        * @power_off_cb:
-> +        *
-> +        * Callback that should turn off machine.  Inactive if NULL.
-> +        */
-> +       void (*power_off_cb)(struct power_off_data *data);
-> +
-> +       /**
-> +        * @power_off_prepare_cb:
-> +        *
-> +        * Power-off preparation callback.  All power-off preparation callbacks
-> +        * are invoked before @restart_cb.  Inactive if NULL.
-> +        */
-> +       void (*power_off_prepare_cb)(struct power_off_prep_data *data);
-> +
-> +       /**
-> +        * @power_off_priority:
-> +        *
-> +        * Power-off callback priority, must be unique.  Zero value is
-> +        * reassigned to default priority.  Inactive if @power_off_cb is NULL.
-> +        */
-> +       int power_off_priority;
-> +
-> +       /**
-> +        * @power_off_chaining_allowed:
-> +        *
-> +        * False if callbacks execution should stop when @power_off_cb fails
-> +        * to power off machine.  True if further lower priority power-off
-> +        * callback should be executed.
-> +        */
-> +       bool power_off_chaining_allowed;
-> +
-> +       /**
-> +        * @restart_cb:
-> +        *
-> +        * Callback that should reboot machine.  Inactive if NULL.
-> +        */
-> +       void (*restart_cb)(struct restart_data *data);
-> +
-> +       /**
-> +        * @restart_priority:
-> +        *
-> +        * Restart callback priority, must be unique.  Zero value is reassigned
-> +        * to default priority.  Inactive if @restart_cb is NULL.
-> +        */
-> +       int restart_priority;
-> +
-> +       /**
-> +        * @reboot_prepare_cb:
-> +        *
-> +        * Reboot preparation callback.  All reboot preparation callbacks are
-> +        * invoked before @restart_cb.  Inactive if NULL.
-> +        */
-> +       void (*reboot_prepare_cb)(struct reboot_prep_data *data);
-> +
-> +       /**
-> +        * @priv:
-> +        *
-> +        * Internal data.  Shouldn't be touched.
-> +        */
-> +       const struct power_handler_private_data priv;
-> +};
