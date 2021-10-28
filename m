@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5381043DFE2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 13:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A7F443DFE6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 13:19:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg33N1xK3z3c95
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 22:18:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hg33s19Dlz3cSJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Oct 2021 22:19:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.46; helo=mail-ot1-f46.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.47; helo=mail-ot1-f47.google.com;
  envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com
- [209.85.210.46])
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com
+ [209.85.210.47])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg18v2gcnz2xsm;
- Thu, 28 Oct 2021 20:53:35 +1100 (AEDT)
-Received: by mail-ot1-f46.google.com with SMTP id
- l10-20020a056830154a00b00552b74d629aso7821640otp.5; 
- Thu, 28 Oct 2021 02:53:35 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hg1Hq0MXFz2xB0;
+ Thu, 28 Oct 2021 20:59:33 +1100 (AEDT)
+Received: by mail-ot1-f47.google.com with SMTP id
+ v2-20020a05683018c200b0054e3acddd91so7801416ote.8; 
+ Thu, 28 Oct 2021 02:59:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=uz31be5RzrXoa4uAxe1xyKZoIQd0wtsVVy1gZjyOGeo=;
- b=8CTWfOMjyticC6TV9KEBDU0ipU61Evh13UFCRbMCRayjM1jl+AdYN79qBm8Cg7qrCv
- CTy1QvZHh2FxgGuX23zRWyPLExiZ+sMEUK0h4d5QTIgRpWx0Kk1rBBQKXRhZY73DYeK0
- pMYhFLgzljXa/YZd183WGNXN2iq/5uSOZwXLaERgRkxtUveJG8r5wMHU2jhmo/6yyCqw
- y6iJJbSSu6VzKMbHmX6zh9FjYHVbOke7V9+v3SpxGRIWoC+V3TyUEO+V3hENstFnMl1f
- CXMegNKrNzcXmFT5NCPB7KbZa7lx/YSsdXxPbEAfE+haaJDTLj81gv6aSV9TDAP2PiLb
- my7Q==
-X-Gm-Message-State: AOAM530COCxapY82Zg2f6+Ydv355JiH0Xxsvj+tRoX8T/TZ6CeripZRx
- o6oYbf8cSiBB5LqDyyfBwQd52cpFNE66K6e57OI=
-X-Google-Smtp-Source: ABdhPJzOhFRTFEQQ+n5tEP/bBwTFb0889hJMVw20FWNyFAcerxAE3whFQ+5AhX1ip3T9ogNIhdu7wA8+/uN9VNCEoX8=
-X-Received: by 2002:a9d:65c1:: with SMTP id z1mr2411564oth.198.1635414812552; 
- Thu, 28 Oct 2021 02:53:32 -0700 (PDT)
+ bh=YApfc+rtORQHprN7aKpnZNhl8TPl/VtOJQI8beQJmCY=;
+ b=8MrmBuOG93ON7qNOvv6U3K5j6+oEy7n0688i1vz9dBmNcvMJPOgUYPE035yOnwTta2
+ dQ1NctqY/H0eFvqXIv0FZt8E51M/9DAxHBxhfOkgKSvCz093D4LyktGwPyRpuaCnQopI
+ M5EJPaPfAWlq6LrHEal1VAy32WbubnBeAd5KdHMI65HpJMyhvAZCV3Bu80r2eFFqY7ST
+ fu12FTmbp0dj01dpdHbPv1Ow52XXim+0xnamoZwWXIkqwJCQHUAnLZc5jWNZ9app9HZs
+ 4kBEKb2VR658c2oKrwrBklqxtCsgYVB6YtKtayW6nqk6c9FgX1nH/D9xJWD8ar3mxCqv
+ JTow==
+X-Gm-Message-State: AOAM531Zt4SdxAmlphYKVkhiNzWf3Vah5pJENSwMIy3vFEtmUkVLNWjE
+ Ct/xLpYDP9n0YdAtb98BVgXqop2x2oCE1SQ15+E=
+X-Google-Smtp-Source: ABdhPJzD4cm7tn60vkyopY5CUMxUc9huwAUhS0IgxTyGcJq7Km0Bm+8fuUNsdZomFIBYzzQsRecVralPmU+TS+34zNY=
+X-Received: by 2002:a9d:65c1:: with SMTP id z1mr2427957oth.198.1635415170827; 
+ Thu, 28 Oct 2021 02:59:30 -0700 (PDT)
 MIME-Version: 1.0
 References: <20211027211715.12671-1-digetx@gmail.com>
  <20211027211715.12671-9-digetx@gmail.com>
 In-Reply-To: <20211027211715.12671-9-digetx@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 28 Oct 2021 11:53:20 +0200
-Message-ID: <CAJZ5v0jMdSjmkswzu18LSxcNk+k92Oz5XFFXmu-h=W8aPP4Oig@mail.gmail.com>
+Date: Thu, 28 Oct 2021 11:59:18 +0200
+Message-ID: <CAJZ5v0gpu2ezMhWr=grg6M8aWAx58DQozbXHoZaiPqUaZxJi4Q@mail.gmail.com>
 Subject: Re: [PATCH v2 08/45] kernel: Add combined power-off+restart handler
  call chain API
 To: Dmitry Osipenko <digetx@gmail.com>
@@ -101,9 +101,8 @@ Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
  Linux ARM <linux-arm-kernel@lists.infradead.org>,
  Juergen Gross <jgross@suse.com>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Nick Hu <nickhu@andestech.com>, Avi Fishman <avifishman70@gmail.com>,
- Patrick Venture <venture@google.com>, Linux PM <linux-pm@vger.kernel.org>,
- Liam Girdwood <lgirdwood@gmail.com>,
+ Avi Fishman <avifishman70@gmail.com>, Patrick Venture <venture@google.com>,
+ Linux PM <linux-pm@vger.kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
  Palmer Dabbelt <palmer@dabbelt.com>, Philipp Zabel <p.zabel@pengutronix.de>,
  Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
@@ -181,6 +180,9 @@ On Wed, Oct 27, 2021 at 11:18 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 > +#define POWEROFF_PRIO_DEFAULT          128
 > +#define POWEROFF_PRIO_HIGH             192
 > +#define POWEROFF_PRIO_FIRMWARE         224
+
+Also I'm wondering why these particular numbers were chosen, here and above?
+
 > +
 > +enum poweroff_mode {
 > +       POWEROFF_NORMAL = 0,
@@ -232,9 +234,78 @@ On Wed, Oct 27, 2021 at 11:18 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 > + * Fill the structure members and pass it to register_power_handler().
 > + */
 > +struct power_handler {
+> +       /**
+> +        * @cb_data:
+> +        *
+> +        * User data included in callback's argument.
+> +        */
 
-The name of this structure is too generic IMV.  There are many things
-that it might apply to in principle.
+And here I would document the structure fields in the main kerneldoc
+comment above.
 
-What about calling power_off_handler or sys_off_handler as it need not
-be about power at all?
+As is, it is a bit hard to grasp the whole definition.
+
+> +       void *cb_data;
+> +
+> +       /**
+> +        * @power_off_cb:
+> +        *
+> +        * Callback that should turn off machine.  Inactive if NULL.
+> +        */
+> +       void (*power_off_cb)(struct power_off_data *data);
+> +
+> +       /**
+> +        * @power_off_prepare_cb:
+> +        *
+> +        * Power-off preparation callback.  All power-off preparation callbacks
+> +        * are invoked before @restart_cb.  Inactive if NULL.
+> +        */
+> +       void (*power_off_prepare_cb)(struct power_off_prep_data *data);
+> +
+> +       /**
+> +        * @power_off_priority:
+> +        *
+> +        * Power-off callback priority, must be unique.  Zero value is
+> +        * reassigned to default priority.  Inactive if @power_off_cb is NULL.
+> +        */
+> +       int power_off_priority;
+> +
+> +       /**
+> +        * @power_off_chaining_allowed:
+> +        *
+> +        * False if callbacks execution should stop when @power_off_cb fails
+> +        * to power off machine.  True if further lower priority power-off
+> +        * callback should be executed.
+> +        */
+> +       bool power_off_chaining_allowed;
+> +
+> +       /**
+> +        * @restart_cb:
+> +        *
+> +        * Callback that should reboot machine.  Inactive if NULL.
+> +        */
+> +       void (*restart_cb)(struct restart_data *data);
+> +
+> +       /**
+> +        * @restart_priority:
+> +        *
+> +        * Restart callback priority, must be unique.  Zero value is reassigned
+> +        * to default priority.  Inactive if @restart_cb is NULL.
+> +        */
+> +       int restart_priority;
+> +
+> +       /**
+> +        * @reboot_prepare_cb:
+> +        *
+> +        * Reboot preparation callback.  All reboot preparation callbacks are
+> +        * invoked before @restart_cb.  Inactive if NULL.
+> +        */
+> +       void (*reboot_prepare_cb)(struct reboot_prep_data *data);
+> +
+> +       /**
+> +        * @priv:
+> +        *
+> +        * Internal data.  Shouldn't be touched.
+> +        */
+> +       const struct power_handler_private_data priv;
+> +};
