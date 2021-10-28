@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6364243F439
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 03:04:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C719743F43A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 03:04:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HgPMZ1r0Mz3cYF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 12:04:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HgPNK4kWrz3c85
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 12:04:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fN/sghTD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=A2gDnKnX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::231;
- helo=mail-lj1-x231.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::234;
+ helo=mail-lj1-x234.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=fN/sghTD; dkim-atps=neutral
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com
- [IPv6:2a00:1450:4864:20::231])
+ header.s=20210112 header.b=A2gDnKnX; dkim-atps=neutral
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com
+ [IPv6:2a00:1450:4864:20::234])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HgKFY65pNz2xr5;
- Fri, 29 Oct 2021 08:58:39 +1100 (AEDT)
-Received: by mail-lj1-x231.google.com with SMTP id e2so13100020ljg.13;
- Thu, 28 Oct 2021 14:58:39 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HgKGx5HBsz2yQ9;
+ Fri, 29 Oct 2021 08:59:53 +1100 (AEDT)
+Received: by mail-lj1-x234.google.com with SMTP id d23so11819175ljj.10;
+ Thu, 28 Oct 2021 14:59:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=subject:to:cc:references:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=c23uil5g78FyKWMRLgZ6hSpJ/5dZjfgZdNOr6DwhpW8=;
- b=fN/sghTD1TZsVWGg7UdNVpmnpsJmxwTIReywOn3iS879FfwyrwTro/6JMf4MaGrEqh
- 0NHbUx8tMPVCykH7rLffN6x80gPATjYeRH0X7Rke1JX3QXf40ikAhOl25K5S1BWImyNK
- Ws74ZKNhvY45yMsuq3FCKQn2UeHbmrvMca8cD6CCJ0R2lYcZYJkrBjgifHSN/5oWm7n1
- lFtQ6NQQUb7L/5VMhM9mJogVid13IyjOv29tIrHnCgMGRUpYmk/I5bl/5lJ21eD61OSt
- uVSSMkzEczkDy+3W/RlWkglTIAMMvdWcaEVw6izXBz+EOktxUqL8EL8FpyIQN0i0+0ax
- cKtg==
+ bh=7iQ4oU5lLihLvwqt++KnGQLKBiUKhW8mB9CMlvRrAlo=;
+ b=A2gDnKnXbVmAEWSfC30h5AU4KgqctGREzx+w+qi3liDGTlzRRXf3E1jZyML8gNPqGK
+ Li6mIZ0lXuGBdwOE60K0G95Tgukhjr9rRKc5cXQiD0w/VxhtL95meDusnxyabh4+EWGW
+ r0TYt6OWs+PjfxzqoZ6eJ3DrcMZlu658BTNljXfs4JxLykUHrLNYB1GLE4vhnXR1mGD/
+ zsbBpAOKKFkkKsVx+h1bPiV6KMSfM+yc+Xd2DvoUE9RQ/ZfhiCHVvnICfk2iVe468EjX
+ DSGsN20SLeM1V9+yNC6BNE7z4vvudCJzb443pi2WeFnCmYQbcFE9zeHCdAOjGieXrkv9
+ /UcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=c23uil5g78FyKWMRLgZ6hSpJ/5dZjfgZdNOr6DwhpW8=;
- b=bCNhG3T9/2OyDfeCbCXT43EuzWZhaESnOOSh3vZNo+4U9mSX8Bzn//UwATnJkVNUMi
- +3t8qSSJBzbcShlnTixogAT3jd6Lo4IH2qALZ/DS7h20v4PFfdOK8KSLvaeq0BaaPtwa
- hr346eyU2EVWmO3rhROrHVCF6qD2krqtTse6kLqzyCYRuwBR4mVUwWEeSRiL/gW0uDZb
- 9VWDwmCWncW4TLxw3KHlatZ2LN9mZizAb06ntGLNPXVVkUOMcLLBoJn8VOsxqiv0CLb6
- UcQkbSvWfqQHU42LNWZO9uq1r9/vzUSoDst1MdrKAf/UuIRLl1dsx2cyM/ebwG2ye33N
- luuA==
-X-Gm-Message-State: AOAM532betUl6ySuTO25Jo2UGze52idwQ6qDwcEIly9GtznpuQDprS7a
- fFSpo80dpxuYY9Xgq+sdPXs=
-X-Google-Smtp-Source: ABdhPJwU+yd9K4RKqPYJGKdWrmOtthi6PCwOlEc1MXGCnrTPBunu0coGknm3bBb5A7s1sx8AG2GBkw==
-X-Received: by 2002:a2e:b88f:: with SMTP id r15mr7402126ljp.157.1635458314886; 
- Thu, 28 Oct 2021 14:58:34 -0700 (PDT)
+ bh=7iQ4oU5lLihLvwqt++KnGQLKBiUKhW8mB9CMlvRrAlo=;
+ b=qdABN48AKR/UHxFdoPTxahYDaFB2X3pK/u96xGmQmkmVN2Unjg2arBSiVUi+5R7QLX
+ MZ3MV+GwpURHUCNBsWj9ESS3wCZs9vy8OgtWEVQzyC1LhaxhniIB0SabR1r9va5g5T+y
+ EM7rajBX3+r0Plsw1xyOTw5cYrqKhExPsh0YTot5B+BILRDNHzr5ztmdn1HKixzB1KXC
+ EEtrBhqTXAvjJqt0N+uH7fBME0fZnTCnIXNp5JkkUjjCSSTWGYh6NQ+S6AbX7Kk0hEhH
+ +WSgcYCjsN61bzcLwxWDpnzfKTVsunZG7l6JsiXHwg5BBU8DrSz+npEpxQ/YbHjJ/LDZ
+ h7Ig==
+X-Gm-Message-State: AOAM530ViSTv3QBxAo4+pxWBmtMP61SmwMJkL2EZ3SZBuDahLnPgDaNx
+ JenFD3PKdwVFG3Md+7ObYoU=
+X-Google-Smtp-Source: ABdhPJxS5C9pTHHcX2SeZO1OzU/OwueG01d90Y/t9QArtk4xiAh7ZBD5U7QFitj+IF+gde/bz4TCKA==
+X-Received: by 2002:a2e:9d93:: with SMTP id c19mr7265789ljj.363.1635458389307; 
+ Thu, 28 Oct 2021 14:59:49 -0700 (PDT)
 Received: from [192.168.2.145] (46-138-44-18.dynamic.spd-mgts.ru.
  [46.138.44.18])
- by smtp.googlemail.com with ESMTPSA id t17sm248350ljc.136.2021.10.28.14.58.32
+ by smtp.googlemail.com with ESMTPSA id e12sm398160ljp.30.2021.10.28.14.59.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Oct 2021 14:58:34 -0700 (PDT)
+ Thu, 28 Oct 2021 14:59:49 -0700 (PDT)
 Subject: Re: [PATCH v2 08/45] kernel: Add combined power-off+restart handler
  call chain API
 To: "Rafael J. Wysocki" <rafael@kernel.org>
@@ -67,8 +67,8 @@ References: <20211027211715.12671-1-digetx@gmail.com>
  <20211027211715.12671-9-digetx@gmail.com>
  <CAJZ5v0gpu2ezMhWr=grg6M8aWAx58DQozbXHoZaiPqUaZxJi4Q@mail.gmail.com>
 From: Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <28560da7-8ab6-3bd5-b4d6-e34b21a9bbb0@gmail.com>
-Date: Fri, 29 Oct 2021 00:58:32 +0300
+Message-ID: <31547403-969e-91a9-0792-6fd657b78503@gmail.com>
+Date: Fri, 29 Oct 2021 00:59:46 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
@@ -139,70 +139,30 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 28.10.2021 12:59, Rafael J. Wysocki пишет:
->> +#define RESTART_PRIO_RESERVED          0
->> +#define RESTART_PRIO_DEFAULT           128
->> +#define RESTART_PRIO_HIGH              192
->>
->>  enum reboot_mode {
->>         REBOOT_UNDEFINED = -1,
->> @@ -49,6 +55,167 @@ int register_restart_handler(struct notifier_block *);
->>  int unregister_restart_handler(struct notifier_block *);
->>  void do_kernel_restart(char *cmd);
->>
->> +/*
->> + * Unified poweroff + restart API.
+>> +/**
+>> + * struct power_handler - Machine power-off + restart handler
+>> + *
+>> + * Describes power-off and restart handlers which are invoked by kernel
+>> + * to power off or restart this machine.  Supports prioritized chaining for
+>> + * both restart and power-off handlers.  Callback's priority must be unique.
+>> + * Intended to be used by device drivers that are responsible for restarting
+>> + * and powering off hardware which kernel is running on.
+>> + *
+>> + * Struct power_handler can be static.  Members of this structure must not be
+>> + * altered while handler is registered.
+>> + *
+>> + * Fill the structure members and pass it to register_power_handler().
 >> + */
->> +
->> +#define POWEROFF_PRIO_RESERVED         0
->> +#define POWEROFF_PRIO_PLATFORM         1
->> +#define POWEROFF_PRIO_DEFAULT          128
->> +#define POWEROFF_PRIO_HIGH             192
->> +#define POWEROFF_PRIO_FIRMWARE         224
-> Also I'm wondering why these particular numbers were chosen, here and above?
+>> +struct power_handler {
+>> +       /**
+>> +        * @cb_data:
+>> +        *
+>> +        * User data included in callback's argument.
+>> +        */
+> And here I would document the structure fields in the main kerneldoc
+> comment above.
+> 
+> As is, it is a bit hard to grasp the whole definition.
+> 
 
-These values are chosen based on priorities that drivers already use. I looked thorough them all and ended with this scheme that fulfills the needs of the current API users.
-
-I'll add these comments in v3:
-
-/*
- * Standard restart priority levels. Intended to be set in the
- * sys_off_handler.restart_priority field.
- *
- * Use `RESTART_PRIO_XXX +- prio` style for additional levels.
- *
- * RESTART_PRIO_RESERVED:	Falls back to RESTART_PRIO_DEFAULT.
- *				Drivers may leave priority initialized
- *				to zero, to auto-set it to the default level.
- *
- * RESTART_PRIO_DEFAULT:	Use this for generic handler.
- *
- * RESTART_PRIO_HIGH:		Use this if you have multiple handlers and
- *				this handler has higher priority than the
- *				default handler.
- */
-
-/*
- * Standard power-off priority levels. Intended to be set in the
- * sys_off_handler.power_off_priority field.
- *
- * Use `POWEROFF_PRIO_XXX +- prio` style for additional levels.
- *
- * POWEROFF_PRIO_RESERVED:	Falls back to POWEROFF_PRIO_DEFAULT.
- *				Drivers may leave priority initialized
- *				to zero, to auto-set it to the default level.
- *
- * POWEROFF_PRIO_PLATFORM:	Intended to be used by platform-level handler.
- *				Has lowest priority since device drivers are
- *				expected to take over platform handler which
- *				doesn't allow further callback chaining.
- *
- * POWEROFF_PRIO_DEFAULT:	Use this for generic handler.
- *
- * POWEROFF_PRIO_HIGH:		Use this if you have multiple handlers and
- *				this handler has higher priority than the
- *				default handler.
- *
- * POWEROFF_PRIO_FIRMWARE:	Use this if handler uses firmware call.
- *				Has highest priority since firmware is expected
- *				to know best how to power-off hardware properly.
- */
+I'll move the comments in v3, thanks.
