@@ -1,51 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C2B84405A8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Oct 2021 01:06:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED87E4405B4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Oct 2021 01:14:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HgyjG2BBNz3cGG
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Oct 2021 10:06:26 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=sCy+c1GA;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hgytr6Sgjz3cHP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Oct 2021 10:14:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.219.47; helo=mail-qv1-f47.google.com;
+ envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com
+ [209.85.219.47])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HgyhZ5SW5z2y0C
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Oct 2021 10:05:50 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=sCy+c1GA; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HgyhW5mcyz4xYy;
- Sat, 30 Oct 2021 10:05:47 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1635548748;
- bh=H3cNjv6S5SciLLsrPMuk8KteiaFhIW5t5HuD1Q1taKM=;
- h=From:To:Cc:Subject:Date:From;
- b=sCy+c1GA60HRLWDpa6tUPXmA2gNBmLdlBXBilnDNlW1u6bNmiWBm7S5C+pscj4nqY
- pT5xYF/Q6aMmUUpuHUsBzeB5aKuYPUZsasCiwTP+r5aqWzFbsKJ+eJIpLiEWkrwYsz
- 7N6u8aXibcaNkdNQRYndCdypYYo48CpNscDCtQK7QWnkX1DeIkOVI9OOMWcAFlwlPX
- jD1YFUf4Y3GPfdE+qcsJdx6MtEtkmxeBQrxhd7EOXf43kAnhr7STeSr0mZmWsufaRY
- wp3FX5W+GJtPyNgmugrYK6+dOnvzCw99l5by722iqpcmQ/Pd0lx99Iv/o5l7SQBxmi
- XV1iXL3vyDw/Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.15-6 tag
-Date: Sat, 30 Oct 2021 10:05:46 +1100
-Message-ID: <87pmrn8m9h.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HgytL2mvBz2ynS
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Oct 2021 10:14:16 +1100 (AEDT)
+Received: by mail-qv1-f47.google.com with SMTP id b11so3980280qvm.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 16:14:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=BDRvnZUE4sqi81I5tqAPBqMdjUr4Q5ab25TOPbUu00E=;
+ b=KgHuOp9CZSPZjAySf8Id55ysspajfzPHhNxxbBwiIEz1RlxsgSbJBFFW9jtsqiHwoV
+ jMAgp6JMFcuGCzFuZiY6DJagCSPWLpnGVPUiow8Uhhgv09Xt3q6zvRWCKxKZv3RXsxQ0
+ 6b56OqfxVup/ismI4g5di52H7WrgzrsO1ZoVbvazzog2zOBQcIwIfVybPD8l72EgF6lk
+ U+QWWFNCoYd8vuKIVbzq4IgycmgqPlacv1p+CnuXjUSbqYsXkD02ZaDnvjjc/u0JvTr0
+ +1smr4Id8VP7bi/Ll81hZf1YZs35cyaCHgvU29TK4tlOkD0uSQQIfwFQ6yiAeFI4mEXx
+ GGCg==
+X-Gm-Message-State: AOAM532y5ERA9pvQhtLH+GHronkBtA69aYJjLbErsQ0SeJVs/hNe2YYv
+ pacvgGPmm+5UHRcbmxwUaWqE50hBf+I=
+X-Google-Smtp-Source: ABdhPJxGOQTZnMcWCeU5elfg5NE7WQTIS9vVZknsCSgE+J7JGyPU9Mer3e7FFb9dgRYrP2dO68CJzg==
+X-Received: by 2002:a0c:d60d:: with SMTP id c13mr13772296qvj.26.1635549253377; 
+ Fri, 29 Oct 2021 16:14:13 -0700 (PDT)
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com.
+ [209.85.160.181])
+ by smtp.gmail.com with ESMTPSA id w185sm4916460qkd.30.2021.10.29.16.14.12
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 29 Oct 2021 16:14:13 -0700 (PDT)
+Received: by mail-qt1-f181.google.com with SMTP id 19so9036597qtt.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 16:14:12 -0700 (PDT)
+X-Received: by 2002:ac8:5706:: with SMTP id 6mr15076793qtw.95.1635549252466;
+ Fri, 29 Oct 2021 16:14:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <MWHPR2201MB152074F47BF142189365627B91879@MWHPR2201MB1520.namprd22.prod.outlook.com>
+ <MWHPR2201MB1520D45396628364E91A1FA691879@MWHPR2201MB1520.namprd22.prod.outlook.com>
+In-Reply-To: <MWHPR2201MB1520D45396628364E91A1FA691879@MWHPR2201MB1520.namprd22.prod.outlook.com>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Fri, 29 Oct 2021 18:14:01 -0500
+X-Gmail-Original-Message-ID: <CADRPPNSrhiwr8jmBb2h4cFYqHtuDKK8rL0i6Bkg7+xEyXJPATA@mail.gmail.com>
+Message-ID: <CADRPPNSrhiwr8jmBb2h4cFYqHtuDKK8rL0i6Bkg7+xEyXJPATA@mail.gmail.com>
+Subject: Re: bug: usb: gadget: FSL_UDC_CORE Corrupted request list leads to
+ unrecoverable loop.
+To: Eugene Bordenkircher <Eugene_Bordenkircher@selinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,59 +71,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "balbi@kernel.org" <balbi@kernel.org>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On Fri, Oct 29, 2021 at 4:27 PM Eugene Bordenkircher
+<Eugene_Bordenkircher@selinc.com> wrote:
+>
+> Typing Greg's email correct this time.  My apologies.
+>
+> Eugene
+>
+> -----Original Message-----
+> From: Eugene Bordenkircher
+> Sent: Friday, October 29, 2021 10:14 AM
+> To: linux-usb@vger.kernel.org; linuxppc-dev@lists.ozlabs.org
+> Cc: leoyang.li@nxp.com; balbi@kernel.org; gregkh@linuxfoundataion.org
+> Subject: bug: usb: gadget: FSL_UDC_CORE Corrupted request list leads to u=
+nrecoverable loop.
+>
+> Hello all,
+>
+> We've discovered a situation where the FSL udc driver (drivers/usb/gadget=
+/udc/fsl_udc_core.c) will enter a loop iterating over the request queue, bu=
+t the queue has been corrupted at some point so it loops infinitely.  I bel=
+ieve we have narrowed into the offending code, but we are in need of assist=
+ance trying to find an appropriate fix for the problem.  The identified cod=
+e appears to be in all versions of the Linux kernel the driver exists in.
+>
+> The problem appears to be when handling a USB_REQ_GET_STATUS request.  Th=
+e driver gets this request and then calls the ch9getstatus() function.  In =
+this function, it starts a request by "borrowing" the per device status_req=
+, filling it in, and then queuing it with a call to list_add_tail() to add =
+the request to the endpoint queue.  Right before it exits the function howe=
+ver, it's calling ep0_prime_status(), which is filling out that same status=
+_req structure and then queuing it with another call to list_add_tail() to =
+add the request to the endpoint queue.  This adds two instances of the exac=
+t same LIST_HEAD to the endpoint queue, which breaks the list since the pre=
+v and next pointers end up pointing to the wrong things.  This ends up caus=
+ing a hard loop the next time nuke() gets called, which happens on the next=
+ setup IRQ.
+>
 
-Hi Linus,
+I agree with you that this looks problematic.  This is probably
+introduced by f79a60b8785 "usb: fsl_udc_core: prime status stage once
+data stage has primed" that it didn't consider that the status_req has
+been re-used for the DATA phase.
 
-Please pull the final set of powerpc fixes for 5.15:
+I think the proper fix should be having a separate request allocated
+for the data phase after the above change.
 
-The following changes since commit 787252a10d9422f3058df9a4821f389e5326c440:
-
-  powerpc/smp: do not decrement idle task preempt count in CPU offline (2021-10-20 21:38:01 +1100)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.15-6
-
-for you to fetch changes up to d853adc7adf601d7d6823afe3ed396065a3e08d1:
-
-  powerpc/pseries/iommu: Create huge DMA window if no MMIO32 is present (2021-10-25 11:41:15 +1100)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.15 #6
-
-Three commits fixing some issues introduced with the recent IOMMU changes we merged.
-
-Thanks to: Alexey Kardashevskiy
-
-- ------------------------------------------------------------------
-Alexey Kardashevskiy (3):
-      powerpc/pseries/iommu: Use correct vfree for it_map
-      powerpc/pseries/iommu: Check if the default window in use before removing it
-      powerpc/pseries/iommu: Create huge DMA window if no MMIO32 is present
-
-
- arch/powerpc/platforms/pseries/iommu.c | 27 ++++++++++----------
- 1 file changed, 14 insertions(+), 13 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmF8fhoACgkQUevqPMjh
-pYAoaRAAps3wmmCXKdVbFvqKTFzcRFiWoFa0r2c6SykG7hvo6y1r3avF5PhXU5ry
-OshoMcw+ZPFeH/Jc7VB/i7a9nQZSlf1k3Z9SaM+WVOgqFUhbE6OjC1r2VfRgo2lY
-8QFmlLesNNx5dg+NXcunFD7Z7ydQopCR9QprlpWq2ZAxcIf9z7PP/SNlfxzCMo0d
-0zYBfchkHAsg4C3/c6CjIr6lmbuPvlX3YoSyiOb9MBuAZB+fA6jNxqsW8GWbLYOA
-XNCFQ+1vqv5cwrjlo1nKCLQjYi/9MnF7/SLPeIHA/MYQBF7iuAeOCDo2ldgzKtAO
-uwSDrNiuGBya2QMU6ulnbHlropmg4NdtCp9i0jcztbDWRZl+dmJ88LqI5jE43JOF
-pgaf25jTw80yCrwxBFxfGwAesQPAxWMAV5SmqilArNu8ctCThRVeyYxIeFXpoZBA
-Gl54/3VX6lXGF0Myf1gHdu5Qqkj6W/PlOwmr/WcQLRthHhIaVnW/Y0VlWqQ1FA3e
-SsPf5XfP5VsqTXSos+t8FR9kpFaxOOC8C3Qo6bTbGYdd/dNx37AqXAK9B7vlgm3I
-ufLg5t6bx9DWLx8i+tNOqG7owY4PfwnBDgxLl9dsP41srWPdgP81/IsHnevSYis8
-QrSBgPE3+elkr2V8tRR9Eco3bYwPQDBSdMqTksfnkMJ+t1jinz0=
-=l0Ac
------END PGP SIGNATURE-----
+> I'm not sure what the appropriate fix to this problem is, mostly due to m=
+y lack of expertise in USB and this driver stack.  The code has been this w=
+ay in the kernel for a very long time, which suggests that it has been work=
+ing, unless USB_REQ_GET_STATUS requests are never made.  This further sugge=
+sts that there is something else going on that I don't understand.  Deletin=
+g the call to ep0_prime_status() and the following ep0stall() call appears,=
+ on the surface, to get the device working again, but may have side effects=
+ that I'm not seeing.
+>
+> I'm hopeful someone in the community can help provide some information on=
+ what I may be missing or help come up with a solution to the problem.  A b=
+ig thank you to anyone who would like to help out.
+>
+> Eugene
