@@ -1,72 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E27440423
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 22:32:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2B84405A8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Oct 2021 01:06:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HgvJ115C2z3bT7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Oct 2021 07:32:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HgyjG2BBNz3cGG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Oct 2021 10:06:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=RCw3Iivy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=sCy+c1GA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52b;
- helo=mail-ed1-x52b.google.com; envelope-from=andy.shevchenko@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=RCw3Iivy; dkim-atps=neutral
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com
- [IPv6:2a00:1450:4864:20::52b])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HgvHN1Z4lz2yHH
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Oct 2021 07:32:14 +1100 (AEDT)
-Received: by mail-ed1-x52b.google.com with SMTP id h7so43080082ede.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 13:32:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=ozNhOMYHhRS66Zjk0oh8InVNhdkPNj4ByxHFQ8rkaUk=;
- b=RCw3Iivy1snzcZ919MyW/R1XUhrFMj1e/VuOf6L3q0VvuplLCn6XUmySNM+UDUxoJ5
- LZl0p4GKBFe0B9/BsG5ZE+EidRP0fxRxvZSZjyQP/062kOz6n+qZgdrvSvYvb24AyNPv
- TKtuUYCXBSeCRMRiW7404PnxmIuqWIEoME3cJfWsqza0wFDfF3/lM959E8ogIhnkWQ58
- FfFtnST+shH/+pOJWCUlXWELAyhswIJTWg4Er40sCS4I6bmhilkc4bkn7YGyl2iBc5oU
- kr84n03lUtZ3AHvJI3AUQYGh4L6FoIPRVQPLiSX8FdrGjrxFbBdQL9kh0mEbLP/Ov8el
- jgzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=ozNhOMYHhRS66Zjk0oh8InVNhdkPNj4ByxHFQ8rkaUk=;
- b=Ed1i2bQiT2eXUWCSvV9oc4hd/IgbrEabciXYTpn2lyIBc8uZcgZNsFv23b3lkN738A
- h6RnjVl5sF35TgJPao8KGWE95HbqZUXuxQu3kMuUa2iWwRDe4jl2mc+ixwIZ7aAty003
- zh0mm5SPWUeASdBzyOXBCAJ9fArnldLyK/q2Mw1nEe8VIrmkWdWwemn56lesZLH4c59h
- UJhUOGqsjtzST3PTkU8hQPrSqjzfqpUZUunKDZeOvOkrXSU8Yv4V2oAIjjaV7t0H9DYq
- WU5UT+ovbWeB9ayQIbNjdzyH49ULBsONkV7yLtQqK5uZSYzTw76szgNfn9iVgAb9nIHX
- J7wg==
-X-Gm-Message-State: AOAM533YO7wU4RiWmfbYxBRusnr/xwfLp+wdesUl6la2BFxZ5y4PQ/t5
- 1RO53A+ZQ9qfxk3JJsi6BnK6uOcRww3ajr1+scU=
-X-Google-Smtp-Source: ABdhPJztI2Nd1ffMSi/k8qSjj7eVlfXQjs6tyYTMz/oVQicYetCA3AeEFeXv38o7aYUiOvlGfDuxFe3ZaQ5X3kpoDdo=
-X-Received: by 2002:aa7:ca07:: with SMTP id y7mr17607050eds.107.1635539527085; 
- Fri, 29 Oct 2021 13:32:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HgyhZ5SW5z2y0C
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Oct 2021 10:05:50 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=sCy+c1GA; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HgyhW5mcyz4xYy;
+ Sat, 30 Oct 2021 10:05:47 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1635548748;
+ bh=H3cNjv6S5SciLLsrPMuk8KteiaFhIW5t5HuD1Q1taKM=;
+ h=From:To:Cc:Subject:Date:From;
+ b=sCy+c1GA60HRLWDpa6tUPXmA2gNBmLdlBXBilnDNlW1u6bNmiWBm7S5C+pscj4nqY
+ pT5xYF/Q6aMmUUpuHUsBzeB5aKuYPUZsasCiwTP+r5aqWzFbsKJ+eJIpLiEWkrwYsz
+ 7N6u8aXibcaNkdNQRYndCdypYYo48CpNscDCtQK7QWnkX1DeIkOVI9OOMWcAFlwlPX
+ jD1YFUf4Y3GPfdE+qcsJdx6MtEtkmxeBQrxhd7EOXf43kAnhr7STeSr0mZmWsufaRY
+ wp3FX5W+GJtPyNgmugrYK6+dOnvzCw99l5by722iqpcmQ/Pd0lx99Iv/o5l7SQBxmi
+ XV1iXL3vyDw/Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.15-6 tag
+Date: Sat, 30 Oct 2021 10:05:46 +1100
+Message-ID: <87pmrn8m9h.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20211027153354.81129-1-andriy.shevchenko@linux.intel.com>
- <YXwZihLk1njsBNT4@smile.fi.intel.com>
- <c0524c86-fc7e-632a-8b2a-862695529115@csgroup.eu>
-In-Reply-To: <c0524c86-fc7e-632a-8b2a-862695529115@csgroup.eu>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 29 Oct 2021 23:31:30 +0300
-Message-ID: <CAHp75VeB8Dmr6Hrupb1Hj=D=oG1zPyJrhCXu37QtXHNNKdNvZg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] soc: fsl: Replace kernel.h with the necessary
- inclusions
-To: LEROY Christophe <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,45 +57,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>
+Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 29, 2021 at 10:04 PM LEROY Christophe
-<christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 29/10/2021 =C3=A0 17:55, Andy Shevchenko a =C3=A9crit :
-> > On Wed, Oct 27, 2021 at 06:33:54PM +0300, Andy Shevchenko wrote:
-> >> When kernel.h is used in the headers it adds a lot into dependency hel=
-l,
-> >> especially when there are circular dependencies are involved.
-> >>
-> >> Replace kernel.h inclusion with the list of what is really being used.
-> >
-> > Seems nobody from PPC took this patch.
-> > Any idea who can take it?
-> >
->
-> You have to check in MAINTAINERS file in the root directory of kernel
-> sources: https://github.com/linuxppc/linux/blob/master/MAINTAINERS
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-Actually for these files get_maintainer.pl showed nothing.
-I have chosen PPC maintainers manually.
+Hi Linus,
 
-> That's Michael who takes them. But you have to allow him enough time for =
-it.
+Please pull the final set of powerpc fixes for 5.15:
 
-Thanks!
+The following changes since commit 787252a10d9422f3058df9a4821f389e5326c440:
 
-I wrote that message because I have got a notification from checkpatch
-that it should go somewhere else.
+  powerpc/smp: do not decrement idle task preempt count in CPU offline (2021-10-20 21:38:01 +1100)
 
---=20
-With Best Regards,
-Andy Shevchenko
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.15-6
+
+for you to fetch changes up to d853adc7adf601d7d6823afe3ed396065a3e08d1:
+
+  powerpc/pseries/iommu: Create huge DMA window if no MMIO32 is present (2021-10-25 11:41:15 +1100)
+
+- ------------------------------------------------------------------
+powerpc fixes for 5.15 #6
+
+Three commits fixing some issues introduced with the recent IOMMU changes we merged.
+
+Thanks to: Alexey Kardashevskiy
+
+- ------------------------------------------------------------------
+Alexey Kardashevskiy (3):
+      powerpc/pseries/iommu: Use correct vfree for it_map
+      powerpc/pseries/iommu: Check if the default window in use before removing it
+      powerpc/pseries/iommu: Create huge DMA window if no MMIO32 is present
+
+
+ arch/powerpc/platforms/pseries/iommu.c | 27 ++++++++++----------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmF8fhoACgkQUevqPMjh
+pYAoaRAAps3wmmCXKdVbFvqKTFzcRFiWoFa0r2c6SykG7hvo6y1r3avF5PhXU5ry
+OshoMcw+ZPFeH/Jc7VB/i7a9nQZSlf1k3Z9SaM+WVOgqFUhbE6OjC1r2VfRgo2lY
+8QFmlLesNNx5dg+NXcunFD7Z7ydQopCR9QprlpWq2ZAxcIf9z7PP/SNlfxzCMo0d
+0zYBfchkHAsg4C3/c6CjIr6lmbuPvlX3YoSyiOb9MBuAZB+fA6jNxqsW8GWbLYOA
+XNCFQ+1vqv5cwrjlo1nKCLQjYi/9MnF7/SLPeIHA/MYQBF7iuAeOCDo2ldgzKtAO
+uwSDrNiuGBya2QMU6ulnbHlropmg4NdtCp9i0jcztbDWRZl+dmJ88LqI5jE43JOF
+pgaf25jTw80yCrwxBFxfGwAesQPAxWMAV5SmqilArNu8ctCThRVeyYxIeFXpoZBA
+Gl54/3VX6lXGF0Myf1gHdu5Qqkj6W/PlOwmr/WcQLRthHhIaVnW/Y0VlWqQ1FA3e
+SsPf5XfP5VsqTXSos+t8FR9kpFaxOOC8C3Qo6bTbGYdd/dNx37AqXAK9B7vlgm3I
+ufLg5t6bx9DWLx8i+tNOqG7owY4PfwnBDgxLl9dsP41srWPdgP81/IsHnevSYis8
+QrSBgPE3+elkr2V8tRR9Eco3bYwPQDBSdMqTksfnkMJ+t1jinz0=
+=l0Ac
+-----END PGP SIGNATURE-----
