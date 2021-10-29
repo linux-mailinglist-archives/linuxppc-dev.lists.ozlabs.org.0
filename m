@@ -1,83 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8382143F441
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 03:06:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F4443F3FC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 02:36:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HgPQW2RC5z2xth
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 12:06:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HgNlk1srqz3bnP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 11:36:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=or9I8eXm;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iIYU/DIx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12a;
- helo=mail-lf1-x12a.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e;
+ helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=or9I8eXm; dkim-atps=neutral
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com
- [IPv6:2a00:1450:4864:20::12a])
+ header.s=20210112 header.b=iIYU/DIx; dkim-atps=neutral
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
+ [IPv6:2607:f8b0:4864:20::102e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HgMF46yBkz2xWt;
- Fri, 29 Oct 2021 10:28:22 +1100 (AEDT)
-Received: by mail-lf1-x12a.google.com with SMTP id j9so16972406lfu.7;
- Thu, 28 Oct 2021 16:28:22 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HgNl14WXhz2ywf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 11:35:56 +1100 (AEDT)
+Received: by mail-pj1-x102e.google.com with SMTP id
+ n36-20020a17090a5aa700b0019fa884ab85so9246216pji.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Oct 2021 17:35:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=subject:from:to:cc:references:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=g1ASowQL1SYh3xyvjjnrsnFWzhxhuZ1FkP7TdHa31mE=;
- b=or9I8eXmdc6hOUu3ilMz+ymgHlGQQmwFfcjANI787MFy3461r29Qlx4Drko3A82jiZ
- /Dxbh+rXJkVd+vSmZQz7ByF21FNMWE7Msuh2tmQH7FzEaAaJykw/79BGIIrJtKwboRDm
- 04V8OvO+c+XCXlI7f4QRPE7cqx6GZulezk5I+0MnmugoyzWrW9wGp3T/sQ+0YL50opsM
- PEj+17btedXyPtu3l7DUltlj+rCIDD63O2gZoZwfDEKUeboD39P9kLuxM5uqsYcKe9n/
- MuNWRD7sUlbhLEou6B/xsQNLsenMP/929SI9uvSZZXHuqFx/YvhRAZPMrz7X4+YxCerI
- /TgQ==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=E4pGtECdhwt8OtT2ngqN26PWhFeuiws8t3kYQYNcqJ0=;
+ b=iIYU/DIxptGc5/pseofBUrAkvt9GDbEh23gs9KsEwm8k0cQ6A+PbHw2Jrjyy7u2c1j
+ z9ObztzNbIHQB9bPMVhO3Sn24rBJEt+np3JaQ1hXlauyOIl13xfVVWMa6s4ZCIL6v9WW
+ dYpRiTrC3ZmhR1CO+XLqX1LJjZs6l9hfLM3l1U1t8DQxrw0r1AUcdyl/Gi4rBSjCRWvA
+ mp6GNCWKpCKGgUzlcL45N7VDf6WYp4PdvMcD4ZRLQ4SZz2b0Zmsy21YHISndPKA0CoBW
+ qdgRgEOG66a5llPd5/ZePuME7BRjHVHLR/NKz9XvJYGwqjDEdS4qrO2PGzrXk4VccDMb
+ wAkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:from:to:cc:references:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=g1ASowQL1SYh3xyvjjnrsnFWzhxhuZ1FkP7TdHa31mE=;
- b=Szsy6q+ssq/t+ZDRFuqF4BRfcyGJzMU648rypYnAOW6FMF009zaIfynFMP71d++r3J
- GilZ455IIebYQUWgNfEYRnBDzw4JeqziWKYcxlmRnmnJiJEJx5u9lZJPEq/NAA3tcJcc
- 47bxMOqRWKzbw2akk93hpnqY1npd1MKnzU/gnbF9I/oaf6meMRR4znDWk+imw+NqCUhD
- d3BsDBzM4emnEofSE/YCZ4TssE9PCeReLWAf6WWdRCX4iu0WFOCJu4vlKHTaMU/VGf6y
- OcrkTPclyPzIZjxLL6CJpqxyx6OxKqdRJdfMrgznUQzu5LsFEhc7vLwxUBXYGg9FR3qw
- bRJQ==
-X-Gm-Message-State: AOAM533aA9tXpxbIEB0DgyHlI9WNHIoprKXbZDBC1I0KuP7Dvtiwn3AM
- VAR4MCLHONLvzbauLIoFetQ=
-X-Google-Smtp-Source: ABdhPJwV2hV4le461ll7P/MiVtzPzva4GF7PaVejAVvhmYPc9uewsxLl7FIVcxk+rSnnrtvlDg/jfg==
-X-Received: by 2002:a19:760a:: with SMTP id c10mr6627861lff.302.1635463695803; 
- Thu, 28 Oct 2021 16:28:15 -0700 (PDT)
-Received: from [192.168.2.145] (46-138-44-18.dynamic.spd-mgts.ru.
- [46.138.44.18])
- by smtp.googlemail.com with ESMTPSA id bn3sm414682ljb.7.2021.10.28.16.28.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Oct 2021 16:28:15 -0700 (PDT)
-Subject: Re: [PATCH v2 03/45] notifier: Add
- atomic/blocking_notifier_has_unique_priority()
-From: Dmitry Osipenko <digetx@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-4-digetx@gmail.com>
- <YXqCz/utp2DFJJ45@smile.fi.intel.com>
- <c5fb7590-03a7-0eea-4040-07472a5c9710@gmail.com>
-Message-ID: <8a9c4a9a-ea0d-4bc9-cf57-9bd99b211d47@gmail.com>
-Date: Fri, 29 Oct 2021 02:28:13 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=E4pGtECdhwt8OtT2ngqN26PWhFeuiws8t3kYQYNcqJ0=;
+ b=6NnSpgC6EgJb9H7zT3lPcQKCnzvkQ8meRGrbRPXfyNXKG69DarFlQAJqlmGk3cEdXd
+ VdBb9Q/Mht7HfmIqQ9p2NTEe6ilQA1mr3rwVmp5oqsX2WtD7ZtSskkUfC81WPk0yGFLt
+ OBRu7pqOrM3186nqy923ip4aJHVtVZN2zrMlQzaEgGCFyAZevNtjB2NT0NY9XLk7Y/Pw
+ 3GgYla5OLme+K5K22fMLFwwg3N/k215tnx6IkwCFo5wWUTqR2yw4Vk63RUG+DMcjfD9p
+ EdZ2zSqKgtxSizvdImQse+tf3rWz3auOKp3oo43nzjLidarVBaLjCSwbThUdjeoh+Trt
+ KVnQ==
+X-Gm-Message-State: AOAM530s3AcBMg/eqYFSVnB6x3bW/do6299ExAPdeTlT0USPqmikW65S
+ tEa7RTzyFKOs6sz50VhCCdgiUToBXZ4=
+X-Google-Smtp-Source: ABdhPJzhM9pPrymQRAwuzTvuFultc21B0+v8z3K8T9mud89lprYQp4NnRsvDWMV60HSJGm2pWOFvxQ==
+X-Received: by 2002:a17:90b:789:: with SMTP id
+ l9mr16397192pjz.19.1635467753497; 
+ Thu, 28 Oct 2021 17:35:53 -0700 (PDT)
+Received: from localhost ([118.208.159.180])
+ by smtp.gmail.com with ESMTPSA id m10sm8775953pjs.21.2021.10.28.17.35.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Oct 2021 17:35:52 -0700 (PDT)
+Date: Fri, 29 Oct 2021 10:35:47 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3] KVM: PPC: Tick accounting should defer vtime
+ accounting 'til after IRQ handling
+To: linuxppc-dev@lists.ozlabs.org, Laurent Vivier <lvivier@redhat.com>
+References: <20211027142150.3711582-1-npiggin@gmail.com>
+ <3d621619-e6b2-9388-06dd-0ea4cc805ed7@redhat.com>
+In-Reply-To: <3d621619-e6b2-9388-06dd-0ea4cc805ed7@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <c5fb7590-03a7-0eea-4040-07472a5c9710@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Fri, 29 Oct 2021 12:02:21 +1100
+Message-Id: <1635467173.n25qd43d5m.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,60 +83,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Tomer Maimon <tmaimon77@gmail.com>,
- Santosh Shilimkar <ssantosh@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- Tali Perry <tali.perry1@gmail.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Thierry Reding <thierry.reding@gmail.com>, Guo Ren <guoren@kernel.org>,
- Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
- Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Benjamin Fair <benjaminfair@google.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- linux-sh@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
- Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Jonathan Hunter <jonathanh@nvidia.com>, Tony Lindgren <tony@atomide.com>,
- Chen-Yu Tsai <wens@csie.org>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org,
- linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
- Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
- linux-pm@vger.kernel.org,
- =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>,
- Vladimir Zapolskiy <vz@mleia.com>, linux-acpi@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, Mark Brown <broonie@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, linux-omap@vger.kernel.org,
- Nancy Yuen <yuenn@google.com>, linux-arm-kernel@lists.infradead.org,
- Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Nick Hu <nickhu@andestech.com>, Avi Fishman <avifishman70@gmail.com>,
- Patrick Venture <venture@google.com>, Liam Girdwood <lgirdwood@gmail.com>,
- linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Philipp Zabel <p.zabel@pengutronix.de>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- openbmc@lists.ozlabs.org, Joshua Thompson <funaho@jurai.org>
+Cc: stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-29.10.2021 00:32, Dmitry Osipenko пишет:
->>> +	/*
->>> +	 * This code gets used during boot-up, when task switching is
->>> +	 * not yet working and interrupts must remain disabled.  At
->> One space is enough.
-> This comment is replicated multiple times over this source file. You can
-> find it before each down_write(). I borrowed the text as-is, for
-> consistency.
+Excerpts from Laurent Vivier's message of October 28, 2021 10:48 pm:
+> On 27/10/2021 16:21, Nicholas Piggin wrote:
+>> From: Laurent Vivier <lvivier@redhat.com>
+>>=20
+>> Commit 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest
+>> context before enabling irqs") moved guest_exit() into the interrupt
+>> protected area to avoid wrong context warning (or worse). The problem is
+>> that tick-based time accounting has not yet been updated at this point
+>> (because it depends on the timer interrupt firing), so the guest time
+>> gets incorrectly accounted to system time.
+>>=20
+>> To fix the problem, follow the x86 fix in commit 160457140187 ("Defer
+>> vtime accounting 'til after IRQ handling"), and allow host IRQs to run
+>> before accounting the guest exit time.
+>>=20
+>> In the case vtime accounting is enabled, this is not required because TB
+>> is used directly for accounting.
+>>=20
+>> Before this patch, with CONFIG_TICK_CPU_ACCOUNTING=3Dy in the host and a
+>> guest running a kernel compile, the 'guest' fields of /proc/stat are
+>> stuck at zero. With the patch they can be observed increasing roughly as
+>> expected.
+>>=20
+>> Fixes: e233d54d4d97 ("KVM: booke: use __kvm_guest_exit")
+>> Fixes: 112665286d08 ("KVM: PPC: Book3S HV: Context tracking exit guest c=
+ontext before enabling irqs")
+>> Cc: <stable@vger.kernel.org> # 5.12
+>> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+>> [np: only required for tick accounting, add Book3E fix, tweak changelog]
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>> Since v2:
+>> - I took over the patch with Laurent's blessing.
+>> - Changed to avoid processing IRQs if we do have vtime accounting
+>>    enabled.
+>> - Changed so in either case the accounting is called with irqs disabled.
+>> - Added similar Book3E fix.
+>> - Rebased on upstream, tested, observed bug and confirmed fix.
+>>=20
+>>   arch/powerpc/kvm/book3s_hv.c | 30 ++++++++++++++++++++++++++++--
+>>   arch/powerpc/kvm/booke.c     | 16 +++++++++++++++-
+>>   2 files changed, 43 insertions(+), 3 deletions(-)
+>>=20
+>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+>> index 2acb1c96cfaf..7b74fc0a986b 100644
+>> --- a/arch/powerpc/kvm/book3s_hv.c
+>> +++ b/arch/powerpc/kvm/book3s_hv.c
+>> @@ -3726,7 +3726,20 @@ static noinline void kvmppc_run_core(struct kvmpp=
+c_vcore *vc)
+>>  =20
+>>   	kvmppc_set_host_core(pcpu);
+>>  =20
+>> -	guest_exit_irqoff();
+>> +	context_tracking_guest_exit();
+>> +	if (!vtime_accounting_enabled_this_cpu()) {
+>> +		local_irq_enable();
+>> +		/*
+>> +		 * Service IRQs here before vtime_account_guest_exit() so any
+>> +		 * ticks that occurred while running the guest are accounted to
+>> +		 * the guest. If vtime accounting is enabled, accounting uses
+>> +		 * TB rather than ticks, so it can be done without enabling
+>> +		 * interrupts here, which has the problem that it accounts
+>> +		 * interrupt processing overhead to the host.
+>> +		 */
+>> +		local_irq_disable();
+>> +	}
+>> +	vtime_account_guest_exit();
+>>  =20
+>>   	local_irq_enable();
+>>  =20
+>> @@ -4510,7 +4523,20 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, =
+u64 time_limit,
+>>  =20
+>>   	kvmppc_set_host_core(pcpu);
+>>  =20
+>> -	guest_exit_irqoff();
+>> +	context_tracking_guest_exit();
+>> +	if (!vtime_accounting_enabled_this_cpu()) {
+>> +		local_irq_enable();
+>> +		/*
+>> +		 * Service IRQs here before vtime_account_guest_exit() so any
+>> +		 * ticks that occurred while running the guest are accounted to
+>> +		 * the guest. If vtime accounting is enabled, accounting uses
+>> +		 * TB rather than ticks, so it can be done without enabling
+>> +		 * interrupts here, which has the problem that it accounts
+>> +		 * interrupt processing overhead to the host.
+>> +		 */
+>> +		local_irq_disable();
+>> +	}
+>> +	vtime_account_guest_exit();
+>>  =20
+>>   	local_irq_enable();
+>>  =20
+>> diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
+>> index 977801c83aff..8c15c90dd3a9 100644
+>> --- a/arch/powerpc/kvm/booke.c
+>> +++ b/arch/powerpc/kvm/booke.c
+>> @@ -1042,7 +1042,21 @@ int kvmppc_handle_exit(struct kvm_vcpu *vcpu, uns=
+igned int exit_nr)
+>>   	}
+>>  =20
+>>   	trace_kvm_exit(exit_nr, vcpu);
+>> -	guest_exit_irqoff();
+>> +
+>> +	context_tracking_guest_exit();
+>> +	if (!vtime_accounting_enabled_this_cpu()) {
+>> +		local_irq_enable();
+>> +		/*
+>> +		 * Service IRQs here before vtime_account_guest_exit() so any
+>> +		 * ticks that occurred while running the guest are accounted to
+>> +		 * the guest. If vtime accounting is enabled, accounting uses
+>> +		 * TB rather than ticks, so it can be done without enabling
+>> +		 * interrupts here, which has the problem that it accounts
+>> +		 * interrupt processing overhead to the host.
+>> +		 */
+>> +		local_irq_disable();
+>> +	}
+>> +	vtime_account_guest_exit();
+>>  =20
+>>   	local_irq_enable();
+>>  =20
+>>=20
+>=20
+> I'm wondering if we should put the context_tracking_guest_exit() just aft=
+er the=20
+> "srcu_read_unlock(&vc->kvm->srcu, srcu_idx);" as it was before 61bd0f66ff=
+92 ("KVM: PPC:=20
+> Book3S HV: Fix guest time accounting with VIRT_CPU_ACCOUNTING_GEN")?
 
-Actually, it should be down_read() here since there are no writes. I'll
-correct it in v3.
+For the run_single_vcpu path, I _think_ it shouldn't matter. It's mostly=20
+just fixing up low level powerpc details.
+
+But actually I wonder whether we should move the guest context entirely=20
+inside the SRCU lock because it's a high level host locking primitive.
+
+For the kvmppc_run_core path, we are actually taking the vc->lock spin=20
+lock as well. Arguably it's waiting for secondary threads in the guest
+but I think changing to host context as soon as possible could make
+sense. If we don't have an actual bug identified it could wait for next
+merge perhaps.
+
+Thanks,
+Nick
+>=20
