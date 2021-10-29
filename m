@@ -2,104 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B61743FC0F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 14:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D509C43FC60
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 14:33:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hgh8V0vwzz3c9V
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 23:10:34 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SvZfeDpd;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HghgK62VFz2ypT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Oct 2021 23:33:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
+ helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=SvZfeDpd; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
+ [130.133.4.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hgh7k33yQz2yRX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 23:09:53 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 19TAN19a030866
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 12:09:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=4rhLYIQm1qjQi/xho3RVYnzt3dh0lbqFZ87IpaUCr0g=;
- b=SvZfeDpdmT5dEImPnLg8HZCWofOzTnU+JdzwE3SoCHGgHEAdosIndATbXuG2OSCZwYOm
- Kbx6o4TsR7toYgbNB8xX2dmpblzs/xEEdJxtrsAAzfVAUDEu4I7/SpdAC0WW/pu6iz7s
- qpxDYfdMmjVV/R2+7BeLKOZWOXdEuqAyvAfLmMlSuoaZTTrkSMhvstB1e1Bvxh5kCPZV
- DB2UEXHr329iCH9xjFDIrk7271eLYri4Ntp8AFTP3fTv3Ohk2xru9fGrSnw0b+ei8qqj
- VsDcJBgPXrJ6zDkxZCpVxyEyPoU5d8g3x6NZZdZMTu41SOtwfLGlQSlGFAItuIm9G3av EA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3c0f5et090-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 12:09:48 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 19TBi7Li011625
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 12:09:48 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3c0f5et08h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 29 Oct 2021 12:09:48 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 19TC964w009077;
- Fri, 29 Oct 2021 12:09:46 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06ams.nl.ibm.com with ESMTP id 3bx4f22ra2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 29 Oct 2021 12:09:46 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 19TC3WKt59900256
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 29 Oct 2021 12:03:32 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2354C42049;
- Fri, 29 Oct 2021 12:09:44 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 00D1742041;
- Fri, 29 Oct 2021 12:09:44 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.154.66])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 29 Oct 2021 12:09:43 +0000 (GMT)
-Subject: Re: [PATCH 2/2] powerpc/watchdog: Avoid holding wd_smp_lock over
- printk and smp_send_nmi_ipi
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20211029083908.87931-1-npiggin@gmail.com>
- <20211029083908.87931-2-npiggin@gmail.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-Message-ID: <ee3c5caa-472b-45e9-aa5b-51f56438675b@linux.ibm.com>
-Date: Fri, 29 Oct 2021 14:09:43 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hghfq5Qk1z2yHX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Oct 2021 23:33:22 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+ by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
+ tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1mgR4L-002StF-4G; Fri, 29 Oct 2021 14:33:13 +0200
+Received: from p57bd9736.dip0.t-ipconnect.de ([87.189.151.54]
+ helo=[192.168.178.81]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
+ with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+ (envelope-from <glaubitz@physik.fu-berlin.de>)
+ id 1mgR4K-0038ad-Qd; Fri, 29 Oct 2021 14:33:13 +0200
+Message-ID: <1d02b53d-cb39-38bb-8ce2-9a92cc97e729@physik.fu-berlin.de>
+Date: Fri, 29 Oct 2021 14:33:12 +0200
 MIME-Version: 1.0
-In-Reply-To: <20211029083908.87931-2-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: iBUgmzjZmTmTzW8Xns95PQ5scPdN09qt
-X-Proofpoint-ORIG-GUID: W5lg6lvhqcesGoO3HyIsUTx966aVHYYD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-10-29_02,2021-10-29_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 impostorscore=0
- spamscore=0 adultscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501
- clxscore=1015 suspectscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2110290071
+To: Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>
+References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
+ <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
+ <878ryfavaz.fsf@mpe.ellerman.id.au>
+ <04864fe5-fdd0-74b2-2bad-0303e4c2b15a@physik.fu-berlin.de>
+ <874k92bubv.fsf@mpe.ellerman.id.au>
+ <c21c7a0e-95f1-e6d2-a04c-fb99d801e8da@physik.fu-berlin.de>
+ <878rydac0d.fsf@mpe.ellerman.id.au>
+ <87b1404f-7805-da29-4899-6ab9459e5364@physik.fu-berlin.de>
+ <9ed788c0-b99b-f327-0814-a2d92db6bd8b@physik.fu-berlin.de>
+ <1635467831.en5s268a3l.astroid@bobo.none>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+In-Reply-To: <1635467831.en5s268a3l.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.151.54
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,212 +64,182 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 29/10/2021 à 10:39, Nicholas Piggin a écrit :
-> There is a deadlock with the console_owner lock and the wd_smp_lock:
-> 
-> CPU x takes the console_owner lock
-> CPU y takes a watchdog timer interrupt and takes __wd_smp_lock
-> CPU x takes a watchdog timer interrupt and spins on __wd_smp_lock
-> CPU y detects a deadlock, tries to print something and spins on console_owner
-> -> deadlock
-> 
-> Change the watchdog locking scheme so wd_smp_lock protects the watchdog
-> internal data, but "reporting" (printing, issuing NMI IPIs, taking any
-> action outside of watchdog) uses a non-waiting exclusion. If a CPU detects
-> a problem but can not take the reporting lock, it just returns because
-> something else is already reporting. It will try again at some point.
-> 
-> Typically hard lockup watchdog report usefulness is not impacted due to
-> failure to spewing a large enough amount of data in as short a time as
-> possible, but by messages getting garbled.
-> 
-> Laurent debugged this and found the deadlock, and this patch is based on
-> his general approach to avoid expensive operations while holding the lock.
-> With the addition of the reporting exclusion.
-> 
-> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-> [np: rework to add reporting exclusion update changelog]
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   arch/powerpc/kernel/watchdog.c | 76 ++++++++++++++++++++++++++--------
->   1 file changed, 59 insertions(+), 17 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
-> index 4bb7c8e371a2..69a475aa0f44 100644
-> --- a/arch/powerpc/kernel/watchdog.c
-> +++ b/arch/powerpc/kernel/watchdog.c
-> @@ -85,10 +85,32 @@ static DEFINE_PER_CPU(u64, wd_timer_tb);
->   
->   /* SMP checker bits */
->   static unsigned long __wd_smp_lock;
-> +static unsigned long __wd_reporting;
->   static cpumask_t wd_smp_cpus_pending;
->   static cpumask_t wd_smp_cpus_stuck;
->   static u64 wd_smp_last_reset_tb;
->   
-> +/*
-> + * Try to take the exclusive watchdog action / NMI IPI / printing lock.
-> + * wd_smp_lock must be held. If this fails, we should return and wait
-> + * for the watchdog to kick in again (or another CPU to trigger it).
-> + */
-> +static bool wd_try_report(void)
-> +{
-> +	if (__wd_reporting)
-> +		return false;
-> +	__wd_reporting = 1;
-> +	return true;
-> +}
-> +
-> +/* End printing after successful wd_try_report. wd_smp_lock not required. */
-> +static void wd_end_reporting(void)
-> +{
-> +	smp_mb(); /* End printing "critical section" */
-> +	WARN_ON_ONCE(__wd_reporting == 0);
-> +	WRITE_ONCE(__wd_reporting, 0);
-> +}
-> +
->   static inline void wd_smp_lock(unsigned long *flags)
->   {
->   	/*
-> @@ -131,10 +153,10 @@ static void wd_lockup_ipi(struct pt_regs *regs)
->   	/* Do not panic from here because that can recurse into NMI IPI layer */
->   }
->   
-> -static void set_cpumask_stuck(const struct cpumask *cpumask, u64 tb)
-> +static void set_cpu_stuck(int cpu, u64 tb)
->   {
-> -	cpumask_or(&wd_smp_cpus_stuck, &wd_smp_cpus_stuck, cpumask);
-> -	cpumask_andnot(&wd_smp_cpus_pending, &wd_smp_cpus_pending, cpumask);
-> +	cpumask_set_cpu(cpu, &wd_smp_cpus_stuck);
-> +	cpumask_clear_cpu(cpu, &wd_smp_cpus_pending);
->   	if (cpumask_empty(&wd_smp_cpus_pending)) {
->   		wd_smp_last_reset_tb = tb;
->   		cpumask_andnot(&wd_smp_cpus_pending,
-> @@ -142,10 +164,6 @@ static void set_cpumask_stuck(const struct cpumask *cpumask, u64 tb)
->   				&wd_smp_cpus_stuck);
->   	}
->   }
-> -static void set_cpu_stuck(int cpu, u64 tb)
-> -{
-> -	set_cpumask_stuck(cpumask_of(cpu), tb);
-> -}
->   
->   static void watchdog_smp_panic(int cpu, u64 tb)
->   {
-> @@ -160,6 +178,9 @@ static void watchdog_smp_panic(int cpu, u64 tb)
->   		goto out;
->   	if (cpumask_weight(&wd_smp_cpus_pending) == 0)
->   		goto out;
-> +	if (!wd_try_report())
-> +		goto out;
-> +	wd_smp_unlock(&flags);
->   
->   	pr_emerg("CPU %d detected hard LOCKUP on other CPUs %*pbl\n",
->   		 cpu, cpumask_pr_args(&wd_smp_cpus_pending));
-> @@ -172,24 +193,32 @@ static void watchdog_smp_panic(int cpu, u64 tb)
->   		 * Try to trigger the stuck CPUs, unless we are going to
->   		 * get a backtrace on all of them anyway.
->   		 */
-> -		for_each_cpu(c, &wd_smp_cpus_pending) {
-> +		for_each_online_cpu(c) {
->   			if (c == cpu)
->   				continue;
-> +			if (!cpumask_test_cpu(cpu, &wd_smp_cpus_pending))
-                                               ^ c
-cpu is the reporting CPU, c is the target here.
+Hi Nicholas!
 
-> +				continue;
-> +			wd_smp_lock(&flags);
-> +			if (!cpumask_test_cpu(cpu, &wd_smp_cpus_pending)) {
-                                               ^ again c
-> +				wd_smp_unlock(&flags);
-> +				continue;
-> +			}
-> +			/* Take the stuck CPU out of the watch group */
-> +			set_cpu_stuck(cpu, tb);
-                                       ^ c
-> +			wd_smp_unlock(&flags);
-> +
->   			smp_send_nmi_ipi(c, wd_lockup_ipi, 1000000);
->   		}
->   	}
->   
-> -	/* Take the stuck CPUs out of the watch group */
-> -	set_cpumask_stuck(&wd_smp_cpus_pending, tb);
-> -
-> -	wd_smp_unlock(&flags);
-> -
->   	if (sysctl_hardlockup_all_cpu_backtrace)
->   		trigger_allbutself_cpu_backtrace();
->   
->   	if (hardlockup_panic)
->   		nmi_panic(NULL, "Hard LOCKUP");
->   
-> +	wd_end_reporting();
-> +
->   	return;
->   
->   out:
-> @@ -203,8 +232,6 @@ static void wd_smp_clear_cpu_pending(int cpu, u64 tb)
->   			struct pt_regs *regs = get_irq_regs();
->   			unsigned long flags;
->   
-> -			wd_smp_lock(&flags);
-> -
->   			pr_emerg("CPU %d became unstuck TB:%lld\n",
->   				 cpu, tb);
->   			print_irqtrace_events(current);
-> @@ -213,6 +240,7 @@ static void wd_smp_clear_cpu_pending(int cpu, u64 tb)
->   			else
->   				dump_stack();
->   
-> +			wd_smp_lock(&flags);
->   			cpumask_clear_cpu(cpu, &wd_smp_cpus_stuck);
->   			wd_smp_unlock(&flags);
->   		} else {
-> @@ -291,8 +319,17 @@ DEFINE_INTERRUPT_HANDLER_NMI(soft_nmi_interrupt)
->   			wd_smp_unlock(&flags);
->   			return 0;
->   		}
-> +		if (!wd_try_report()) {
-> +			wd_smp_unlock(&flags);
-> +			/* Couldn't report, try again in 100ms */
-> +			mtspr(SPRN_DEC, 100 * tb_ticks_per_usec * 1000);
-> +			return 0;
-> +		}
-> +
->   		set_cpu_stuck(cpu, tb);
->   
-> +		wd_smp_unlock(&flags);
-> +
->   		pr_emerg("CPU %d self-detected hard LOCKUP @ %pS\n",
->   			 cpu, (void *)regs->nip);
->   		pr_emerg("CPU %d TB:%lld, last heartbeat TB:%lld (%lldms ago)\n",
-> @@ -302,14 +339,19 @@ DEFINE_INTERRUPT_HANDLER_NMI(soft_nmi_interrupt)
->   		print_irqtrace_events(current);
->   		show_regs(regs);
->   
-> -		wd_smp_unlock(&flags);
-> -
->   		if (sysctl_hardlockup_all_cpu_backtrace)
->   			trigger_allbutself_cpu_backtrace();
->   
->   		if (hardlockup_panic)
->   			nmi_panic(regs, "Hard LOCKUP");
-> +
-> +		wd_end_reporting();
->   	}
-> +	/*
-> +	 * We are okay to change DEC in soft_nmi_interrupt because the masked
-> +	 * handler has marked a DEC as pending, so the timer interrupt will be
-> +	 * replayed as soon as local irqs are enabled again.
-> +	 */
->   	if (wd_panic_timeout_tb < 0x7fffffff)
->   		mtspr(SPRN_DEC, wd_panic_timeout_tb);
->   
-> 
+On 10/29/21 02:41, Nicholas Piggin wrote:
+> Soft lockup should mean it's taking timer interrupts still, just not=20
+> scheduling. Do you have the hard lockup detector enabled as well? Is
+> there anything stuck spinning on another CPU?
+
+I haven't enabled it. But looking at the documentation [1] it seems we co=
+uld
+use it to print a backtrace once the lockup occurs.
+
+> Do you have the full dmesg / kernel log for this boot?
+
+I do, uploaded the messages file here: https://people.debian.org/~glaubit=
+z/messages-kvm-lockup.gz
+
+Also, I noticed there is actually a backtrace:
+
+Oct 25 17:02:31 watson kernel: [14104.902061]   (detected by 80, t=3D5252=
+ jiffies, g=3D49897, q=3D37)
+Oct 25 17:02:31 watson kernel: [14104.902072] Sending NMI from CPU 80 to =
+CPUs 136:
+Oct 25 17:02:31 watson kernel: [14108.253972] Modules linked in: dm_mod(E=
+) vhost_net(E) vhost(E) vhost_iotlb(E) tap(E) tun(E) kvm_hv(E) kvm_pr(E) =
+kvm(E) xt_CHECKSUM(E) xt_MASQUERADE(E) xt_conntrack(E) ipt_REJECT(E) nf_r=
+eject_ipv4(E) xt_tcpudp(E) nft_compat(E) nft_chain_nat(E) nf_nat(E) nf_co=
+nntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nft_counter(E) nf_tables(E=
+) nfnetlink(E) bridge(E) stp(E) llc(E) xfs(E) ecb(E) xts(E) sg(E) ctr(E) =
+vmx_crypto(E) gf128mul(E) ipmi_powernv(E) powernv_rng(E) ipmi_devintf(E) =
+rng_core(E) ipmi_msghandler(E) powernv_op_panel(E) ib_iser(E) rdma_cm(E) =
+iw_cm(E) ib_cm(E) ib_core(E) iscsi_tcp(E) libiscsi_tcp(E) sunrpc(E) libis=
+csi(E) drm(E) scsi_transport_iscsi(E) fuse(E) drm_panel_orientation_quirk=
+s(E) configfs(E) ip_tables(E) x_tables(E) autofs4(E) ext4(E) crc16(E) mbc=
+ache(E) jbd2(E) sr_mod(E) sd_mod(E) ses(E) cdrom(E) enclosure(E) t10_pi(E=
+) crc_t10dif(E) scsi_transport_sas(E) crct10dif_generic(E) crct10dif_comm=
+on(E) btrfs(E) blake2b_generic(E) zstd_compress(E) raid10(E) raid456(E)
+Oct 25 17:02:31 watson kernel: [14108.254101]  async_raid6_recov(E) async=
+_memcpy(E) async_pq(E) async_xor(E) async_tx(E) xor(E) raid6_pq(E) libcrc=
+32c(E) crc32c_generic(E) raid1(E) raid0(E) multipath(E) linear(E) md_mod(=
+E) xhci_pci(E) xhci_hcd(E) e1000e(E) usbcore(E) ptp(E) pps_core(E) ipr(E)=
+ usb_common(E)
+Oct 25 17:02:31 watson kernel: [14108.254139] CPU: 104 PID: 175 Comm: mig=
+ration/104 Tainted: G            E     5.14.0-0.bpo.2-powerpc64le #1  Deb=
+ian 5.14.9-2~bpo11+2
+Oct 25 17:02:31 watson kernel: [14108.254146] Stopper: multi_cpu_stop+0x0=
+/0x240 <- migrate_swap+0xf8/0x240
+Oct 25 17:02:31 watson kernel: [14108.254160] NIP:  c0000000001f6a58 LR: =
+c00000000026b734 CTR: c00000000026b5c0
+Oct 25 17:02:31 watson kernel: [14108.254163] REGS: c000001001237970 TRAP=
+: 0900   Tainted: G            E      (5.14.0-0.bpo.2-powerpc64le Debian =
+5.14.9-2~bpo11+2)
+Oct 25 17:02:31 watson kernel: [14108.254168] MSR:  9000000000009033 <SF,=
+HV,EE,ME,IR,DR,RI,LE>  CR: 28002442  XER: 20000000
+Oct 25 17:02:31 watson kernel: [14108.254183] CFAR: c00000000026b730 IRQM=
+ASK: 0=20
+Oct 25 17:02:31 watson kernel: [14108.254183] GPR00: c00000000026b32c c00=
+0001001237c10 c00000000166ce00 c000000000d02c30=20
+Oct 25 17:02:31 watson kernel: [14108.254183] GPR04: c000001806433198 c00=
+0001806433198 0000000000000000 000000005687ca06=20
+Oct 25 17:02:31 watson kernel: [14108.254183] GPR08: c0000017fc8948a0 c00=
+00017fc894780 0000000000000004 c00800000a80e378=20
+Oct 25 17:02:31 watson kernel: [14108.254183] GPR12: 0000000000000000 c00=
+00017ffff5a00 c000000000173ec8 c00000000194c080=20
+Oct 25 17:02:31 watson kernel: [14108.254183] GPR16: 0000000000000000 000=
+0000000000000 0000000000000000 0000000000000000=20
+Oct 25 17:02:31 watson kernel: [14108.254183] GPR20: 0000000000000000 c00=
+0001806433170 0000000000000000 0000000000000001=20
+Oct 25 17:02:31 watson kernel: [14108.254183] GPR24: 0000000000000002 000=
+0000000000003 0000000000000000 c000000000d02c30=20
+Oct 25 17:02:31 watson kernel: [14108.254183] GPR28: 0000000000000001 c00=
+0001806433170 c000001806433194 0000000000000001=20
+Oct 25 17:02:31 watson kernel: [14108.254240] NIP [c0000000001f6a58] rcu_=
+momentary_dyntick_idle+0x48/0x60
+Oct 25 17:02:31 watson kernel: [14108.254245] LR [c00000000026b734] multi=
+_cpu_stop+0x174/0x240
+Oct 25 17:02:31 watson kernel: [14108.254251] Call Trace:
+Oct 25 17:02:31 watson kernel: [14108.254253] [c000001001237c10] [c000001=
+001237c80] 0xc000001001237c80 (unreliable)
+Oct 25 17:02:31 watson kernel: [14108.254260] [c000001001237c80] [c000000=
+00026b32c] cpu_stopper_thread+0x16c/0x280
+Oct 25 17:02:31 watson kernel: [14108.254267] [c000001001237d40] [c000000=
+00017ad4c] smpboot_thread_fn+0x1ec/0x260
+Oct 25 17:02:31 watson kernel: [14108.254273] [c000001001237da0] [c000000=
+00017403c] kthread+0x17c/0x190
+Oct 25 17:02:31 watson kernel: [14108.254280] [c000001001237e10] [c000000=
+00000cf64] ret_from_kernel_thread+0x5c/0x64
+Oct 25 17:02:31 watson kernel: [14108.254287] Instruction dump:
+Oct 25 17:02:31 watson kernel: [14108.254289] 394a7aa4 39297980 7cc751ae =
+e94d0030 7d295214 39090120 7c0004ac 39400004=20
+Oct 25 17:02:31 watson kernel: [14108.254301] 7ce04028 7cea3a14 7ce0412d =
+40c2fff4 <7c0004ac> 70e90002 4c820020 0fe00000=20
+Oct 25 17:02:31 watson kernel: [14110.585275] CPU 136 didn't respond to b=
+acktrace IPI, inspecting paca.
+Oct 25 17:02:31 watson kernel: [14110.585279] irq_soft_mask: 0x03 in_mce:=
+ 0 in_nmi: 0 current: 1813 (CPU 12/KVM)
+Oct 25 17:02:31 watson kernel: [14110.585284] Back trace of paca->saved_r=
+1 (0xc00000180640f4c0) (possibly stale):
+Oct 25 17:02:31 watson kernel: [14110.585286] Call Trace:
+Oct 25 17:02:31 watson kernel: [14110.585378] task:rcu_sched       state:=
+R  running task     stack:    0 pid:   13 ppid:     2 flags:0x00000800
+Oct 25 17:02:31 watson kernel: [14110.585386] Call Trace:
+Oct 25 17:02:31 watson kernel: [14110.585388] [c00000000e0978d0] [c000000=
+0001f71c0] rcu_implicit_dynticks_qs+0x0/0x370 (unreliable)
+Oct 25 17:02:31 watson kernel: [14110.585399] [c00000000e097ac0] [c000000=
+00001b264] __switch_to+0x1d4/0x2e0
+Oct 25 17:02:31 watson kernel: [14110.585407] [c00000000e097b30] [c000000=
+000cb9838] __schedule+0x2f8/0xbb0
+Oct 25 17:02:31 watson kernel: [14110.585416] [c00000000e097c00] [c000000=
+000cba334] __cond_resched+0x64/0x90
+Oct 25 17:02:31 watson kernel: [14110.585424] [c00000000e097c30] [c000000=
+0001f8670] force_qs_rnp+0xe0/0x2e0
+Oct 25 17:02:31 watson kernel: [14110.585433] [c00000000e097cd0] [c000000=
+0001fc8a8] rcu_gp_kthread+0x9c8/0xc90
+Oct 25 17:02:31 watson kernel: [14110.585442] [c00000000e097da0] [c000000=
+00017403c] kthread+0x17c/0x190
+Oct 25 17:02:31 watson kernel: [14110.585450] [c00000000e097e10] [c000000=
+00000cf64] ret_from_kernel_thread+0x5c/0x64
+Oct 25 17:02:31 watson kernel: [14110.585462] Sending NMI from CPU 80 to =
+CPUs 32:
+Oct 25 17:02:31 watson kernel: [14110.585469] NMI backtrace for cpu 32
+Oct 25 17:02:31 watson kernel: [14110.585473] CPU: 32 PID: 1289 Comm: in:=
+imklog Tainted: G            EL    5.14.0-0.bpo.2-powerpc64le #1  Debian =
+5.14.9-2~bpo11+2
+Oct 25 17:02:31 watson kernel: [14110.585477] NIP:  00007fff92bc3bbc LR: =
+00007fff92bc5e90 CTR: 00007fff92bc5bf0
+Oct 25 17:02:31 watson kernel: [14110.585480] REGS: c00000001c9bfe80 TRAP=
+: 0500   Tainted: G            EL     (5.14.0-0.bpo.2-powerpc64le Debian =
+5.14.9-2~bpo11+2)
+Oct 25 17:02:31 watson kernel: [14110.585483] MSR:  900000000280f033 <SF,=
+HV,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 48004802  XER: 00000000
+Oct 25 17:02:31 watson kernel: [14110.585496] CFAR: 00007fff92bc3c34 IRQM=
+ASK: 0=20
+Oct 25 17:02:31 watson kernel: [14110.585496] GPR00: 0000000000000000 000=
+07fff9220d940 00007fff92d37100 000000000000000c=20
+Oct 25 17:02:31 watson kernel: [14110.585496] GPR04: 00007fff9222f928 000=
+07fff84000060 00007fff84097800 00007fff84000900=20
+Oct 25 17:02:31 watson kernel: [14110.585496] GPR08: 00007fff840008d0 000=
+07fff84000050 00007fff8408f3a0 0000000000000007=20
+Oct 25 17:02:31 watson kernel: [14110.585496] GPR12: 0000000028004802 000=
+07fff92236810 00007fff84097af0 0000000000000000=20
+Oct 25 17:02:31 watson kernel: [14110.585496] GPR16: 00007fff93040000 000=
+07fff92f54478 0000000000000000 00007fff9222f160=20
+Oct 25 17:02:31 watson kernel: [14110.585496] GPR20: 00007fff9222f810 000=
+07fff9220e4f0 0000000000000008 00007fff927156b0=20
+Oct 25 17:02:31 watson kernel: [14110.585496] GPR24: 00007fff92715638 000=
+07fff927304f8 0000000000001fa0 0000000000000000=20
+Oct 25 17:02:31 watson kernel: [14110.585496] GPR28: 00007fff9220e529 000=
+000000000006f 00007fff84000020 0000000000000030=20
+Oct 25 17:02:31 watson kernel: [14110.585530] NIP [00007fff92bc3bbc] 0x7f=
+ff92bc3bbc
+Oct 25 17:02:31 watson kernel: [14110.585534] LR [00007fff92bc5e90] 0x7ff=
+f92bc5e90
+
+> Could you try a sysrq+w to get a trace of blocked tasks?
+
+Not sure how to send a magic sysrequest over the IPMI serial console. Any=
+ idea?
+
+> Are you able to shut down the guests and exit qemu normally?
+
+Not after the crash. I have to hard-reboot the whole machine.
+
+Adrian
+
+> [1] https://www.kernel.org/doc/html/latest/admin-guide/lockup-watchdogs=
+=2Ehtml
+
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
