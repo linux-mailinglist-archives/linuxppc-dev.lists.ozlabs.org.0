@@ -2,59 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D93A440672
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Oct 2021 02:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA8C44077E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Oct 2021 06:46:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hh0lD6LGsz3c8Z
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Oct 2021 11:38:16 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MS0bUS8F;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hh6G85MH9z3cPr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Oct 2021 15:46:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=MS0bUS8F; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hh0kc3dFWz2ynb
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Oct 2021 11:37:44 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 3B90360FDA;
- Sat, 30 Oct 2021 00:37:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1635554262;
- bh=r3m2FVq7BhuGzRfAuuSmyY4HfzTqxyCYFTzcnnOSg5k=;
- h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
- b=MS0bUS8F7YW6kEc+MtrI3ZHVQsvczwJfwI+49QkR+5EcMTFLWJdEfE2PizW20YpQn
- Kn8sEm8RnwQ+NtOxpOSqC1laVDHcTsX5Tuf7R8Hucjcle92jMfnnAyw7FkSk5K/dRo
- vP4qBo96Or+VLgqGlUmrBNrpjhRZwOXVhEDEyixLQ7G0FIrUJApxsQ+bRV80096+tX
- kiYs+gvVYKXTqKmBp0poEQRmf6bvJUSQFIqj82brH/yKOdTXFJKecSpzHenoActbkd
- GdAiSi5QL5SxvaUI10UJ6Apm9eNUvWMZ7x9WJhpDSyDS1Z8uAqdkWG/0ugn/1joAdu
- fPjVMy08XnDuQ==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain
- [127.0.0.1])
- by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 3508160A1B;
- Sat, 30 Oct 2021 00:37:42 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.15-6 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87pmrn8m9h.fsf@mpe.ellerman.id.au>
-References: <87pmrn8m9h.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87pmrn8m9h.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
- tags/powerpc-5.15-6
-X-PR-Tracked-Commit-Id: d853adc7adf601d7d6823afe3ed396065a3e08d1
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 119c85055d867b9588263bca59794c872ef2a30e
-Message-Id: <163555426221.1437.3431670468046588542.pr-tracker-bot@kernel.org>
-Date: Sat, 30 Oct 2021 00:37:42 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hh6Fk3jbfz2yKK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Oct 2021 15:46:31 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Hh6Fc6J51z9sST;
+ Sat, 30 Oct 2021 06:46:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id n86lCrBIDXgC; Sat, 30 Oct 2021 06:46:28 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Hh6Fc5JQhz9sSM;
+ Sat, 30 Oct 2021 06:46:28 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9D2628B768;
+ Sat, 30 Oct 2021 06:46:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id S1NDqDmCduDo; Sat, 30 Oct 2021 06:46:28 +0200 (CEST)
+Received: from [192.168.233.13] (unknown [192.168.233.13])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 427A28B763;
+ Sat, 30 Oct 2021 06:46:28 +0200 (CEST)
+Message-ID: <064efc28-eb86-b729-0bb0-b1f5ed5bbf60@csgroup.eu>
+Date: Sat, 30 Oct 2021 06:46:28 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v1 1/1] soc: fsl: Replace kernel.h with the necessary
+ inclusions
+Content-Language: fr-FR
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+References: <20211027153354.81129-1-andriy.shevchenko@linux.intel.com>
+ <YXwZihLk1njsBNT4@smile.fi.intel.com>
+ <c0524c86-fc7e-632a-8b2a-862695529115@csgroup.eu>
+ <CAHp75VeB8Dmr6Hrupb1Hj=D=oG1zPyJrhCXu37QtXHNNKdNvZg@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <CAHp75VeB8Dmr6Hrupb1Hj=D=oG1zPyJrhCXu37QtXHNNKdNvZg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,21 +66,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sat, 30 Oct 2021 10:05:46 +1100:
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.15-6
+Le 29/10/2021 à 22:31, Andy Shevchenko a écrit :
+> On Fri, Oct 29, 2021 at 10:04 PM LEROY Christophe
+> <christophe.leroy@csgroup.eu> wrote:
+>>
+>>
+>>
+>> Le 29/10/2021 à 17:55, Andy Shevchenko a écrit :
+>>> On Wed, Oct 27, 2021 at 06:33:54PM +0300, Andy Shevchenko wrote:
+>>>> When kernel.h is used in the headers it adds a lot into dependency hell,
+>>>> especially when there are circular dependencies are involved.
+>>>>
+>>>> Replace kernel.h inclusion with the list of what is really being used.
+>>>
+>>> Seems nobody from PPC took this patch.
+>>> Any idea who can take it?
+>>>
+>>
+>> You have to check in MAINTAINERS file in the root directory of kernel
+>> sources: https://github.com/linuxppc/linux/blob/master/MAINTAINERS
+> 
+> Actually for these files get_maintainer.pl showed nothing.
+> I have chosen PPC maintainers manually.
+> 
+>> That's Michael who takes them. But you have to allow him enough time for it.
+> 
+> Thanks!
+> 
+> I wrote that message because I have got a notification from checkpatch
+> that it should go somewhere else.
+> 
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/119c85055d867b9588263bca59794c872ef2a30e
+That means that Michael considered it is not for him.
 
-Thank you!
+And I think the reason is that in MAINTAINERS you have:
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+FREESCALE QUICC ENGINE LIBRARY
+M:	Qiang Zhao <qiang.zhao@nxp.com>
+L:	linuxppc-dev@lists.ozlabs.org
+S:	Maintained
+F:	drivers/soc/fsl/qe/
+F:	include/soc/fsl/*qe*.h
+F:	include/soc/fsl/*ucc*.h
+
+
+FREESCALE SOC DRIVERS
+M:	Li Yang <leoyang.li@nxp.com>
+L:	linuxppc-dev@lists.ozlabs.org
+L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+S:	Maintained
+F:	Documentation/devicetree/bindings/misc/fsl,dpaa2-console.yaml
+F:	Documentation/devicetree/bindings/soc/fsl/
+F:	drivers/soc/fsl/
+F:	include/linux/fsl/
+
+Sorry I overlooked your patch.
+
+Christophe
