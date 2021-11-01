@@ -1,78 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02669441F85
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Nov 2021 18:44:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 595B34424CB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 01:35:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HjgQX5tK9z3c6P
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 04:44:36 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=UoyF+Ni8;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=DqbJRBkx;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HjrXn2JL7z3036
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 11:35:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=UoyF+Ni8; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=DqbJRBkx; 
- dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HjgPB25Qjz2yKF
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 04:43:26 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 7D07A2192D;
- Mon,  1 Nov 2021 17:43:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1635788603; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=lP5c+H138B3wgl7YTrlSXRTuTQvNqJou0t/Lpm7B9tI=;
- b=UoyF+Ni8K06wrh5r4zwleJoAdQN+YagumzEPYoqVTrWmlOyk2FaJPgckDw+B/j7lNWhSs6
- AphV0mfYDNS0zVboWzOuTNIM0habS9RRtmul/MFRMu1aacc2AX2uQHY+C1BBSP5InbAuu7
- hm+E0SiwYoyR6LJg4k+jR0BU5SAaZvE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1635788603;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=lP5c+H138B3wgl7YTrlSXRTuTQvNqJou0t/Lpm7B9tI=;
- b=DqbJRBkxoKcLaIp6oL88Q8lS9PyhIOalxPOjOmH/qLsDTxZht1STHLQaypKX96owmjUThj
- L4UVBApdiPpIYBDg==
-Received: from kunlun.suse.cz (unknown [10.100.128.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 6C401A3B88;
- Mon,  1 Nov 2021 17:43:23 +0000 (UTC)
-Date: Mon, 1 Nov 2021 18:43:22 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
-Message-ID: <20211101174322.GN11195@kunlun.suse.cz>
-References: <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
- <878ryfavaz.fsf@mpe.ellerman.id.au>
- <04864fe5-fdd0-74b2-2bad-0303e4c2b15a@physik.fu-berlin.de>
- <874k92bubv.fsf@mpe.ellerman.id.au>
- <c21c7a0e-95f1-e6d2-a04c-fb99d801e8da@physik.fu-berlin.de>
- <878rydac0d.fsf@mpe.ellerman.id.au>
- <87b1404f-7805-da29-4899-6ab9459e5364@physik.fu-berlin.de>
- <9ed788c0-b99b-f327-0814-a2d92db6bd8b@physik.fu-berlin.de>
- <1635467831.en5s268a3l.astroid@bobo.none>
- <1d02b53d-cb39-38bb-8ce2-9a92cc97e729@physik.fu-berlin.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HjYl90Tpgz2xF5;
+ Tue,  2 Nov 2021 00:28:36 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A1A3160551;
+ Mon,  1 Nov 2021 13:28:22 +0000 (UTC)
+Date: Mon, 1 Nov 2021 13:28:19 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Dmitry Osipenko <digetx@gmail.com>
+Subject: Re: [PATCH v2 11/45] arm64: Use do_kernel_power_off()
+Message-ID: <YX/rc872EIlC+QGE@arm.com>
+References: <20211027211715.12671-1-digetx@gmail.com>
+ <20211027211715.12671-12-digetx@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1d02b53d-cb39-38bb-8ce2-9a92cc97e729@physik.fu-berlin.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20211027211715.12671-12-digetx@gmail.com>
+X-Mailman-Approved-At: Tue, 02 Nov 2021 11:35:15 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,35 +42,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
+ linux-ia64@vger.kernel.org, Tomer Maimon <tmaimon77@gmail.com>,
+ Santosh Shilimkar <ssantosh@kernel.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Tali Perry <tali.perry1@gmail.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Thierry Reding <thierry.reding@gmail.com>, Guo Ren <guoren@kernel.org>,
+ Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
+ Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Benjamin Fair <benjaminfair@google.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+ linux-sh@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+ Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Jonathan Hunter <jonathanh@nvidia.com>, Tony Lindgren <tony@atomide.com>,
+ Chen-Yu Tsai <wens@csie.org>, Ingo Molnar <mingo@redhat.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org,
+ linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+ Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
+ linux-omap@vger.kernel.org,
+ Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+ Vladimir Zapolskiy <vz@mleia.com>, linux-acpi@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, Mark Brown <broonie@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Nancy Yuen <yuenn@google.com>, linux-arm-kernel@lists.infradead.org,
+ Juergen Gross <jgross@suse.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Nick Hu <nickhu@andestech.com>, Avi Fishman <avifishman70@gmail.com>,
+ Patrick Venture <venture@google.com>, linux-pm@vger.kernel.org,
+ Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, openbmc@lists.ozlabs.org,
+ Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Oct 29, 2021 at 02:33:12PM +0200, John Paul Adrian Glaubitz wrote:
-> Hi Nicholas!
+On Thu, Oct 28, 2021 at 12:16:41AM +0300, Dmitry Osipenko wrote:
+> Kernel now supports chained power-off handlers. Use do_kernel_power_off()
+> that invokes chained power-off handlers. It also invokes legacy
+> pm_power_off() for now, which will be removed once all drivers will
+> be converted to the new power-off API.
 > 
-> On 10/29/21 02:41, Nicholas Piggin wrote:
-> > Soft lockup should mean it's taking timer interrupts still, just not 
-> > scheduling. Do you have the hard lockup detector enabled as well? Is
-> > there anything stuck spinning on another CPU?
-> 
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 
-> 
-> > Could you try a sysrq+w to get a trace of blocked tasks?
-> 
-> Not sure how to send a magic sysrequest over the IPMI serial console. Any idea?
-
-As on any serial console sending break should be equivalent to the magic
-sysrq key combo.
-
-https://tldp.org/HOWTO/Remote-Serial-Console-HOWTO/security-sysrq.html
-
-With ipmitool break is sent by typing ~B
-
-https://linux.die.net/man/1/ipmitool
-
-Thanks
-
-Michal
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
