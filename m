@@ -1,68 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC81D441CD9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Nov 2021 15:51:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A8F441F1D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Nov 2021 18:21:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hjbb25jbCz2yfc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 01:51:42 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=nLv/ytfi;
-	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=iyf/3iVA;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hjfvh3NJ3z2yQC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 04:21:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=mbenes@suse.cz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256
- header.s=susede2_rsa header.b=nLv/ytfi; 
- dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=iyf/3iVA; 
- dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HjbZJ3Mpxz2xXW
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 01:51:03 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 3667E212C4;
- Mon,  1 Nov 2021 14:50:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
- t=1635778259; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=S57HysUOBDmaPPkxy9xFNLNnV0qtuzg356ms8vO+zDs=;
- b=nLv/ytfioPKJ2E5inNqVfktlCIOh/RPq/TlUvEwD1rgVLFbnikQWvgIYm0r/+YenHEb510
- +FNTcadrc/mOf1cy8uwCKQFzWvFzNJzejuqTos3otALVjlqAO/6KIk7tU5rWWsiWl115uS
- 1Bxs+rsKmQbL/dmXmw8WUxxmkKl2z7U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
- s=susede2_ed25519; t=1635778259;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=S57HysUOBDmaPPkxy9xFNLNnV0qtuzg356ms8vO+zDs=;
- b=iyf/3iVAxxHKP+6EEdNXf4jPP4/47uaCQuTqXGFTdNiJUg/ClccGZ5pHL+GGYn0EppdCQC
- bsi3/nLwLHHiOmCg==
-Received: from pobox.suse.cz (pobox.suse.cz [10.100.2.14])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
+ helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
+ receiver=<UNKNOWN>)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
+ [130.133.4.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 8FBF4A3B83;
- Mon,  1 Nov 2021 14:50:58 +0000 (UTC)
-Date: Mon, 1 Nov 2021 15:50:58 +0100 (CET)
-From: Miroslav Benes <mbenes@suse.cz>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v1 0/5] Implement livepatch on PPC32
-In-Reply-To: <cover.1635423081.git.christophe.leroy@csgroup.eu>
-Message-ID: <alpine.LSU.2.21.2111011541380.22397@pobox.suse.cz>
-References: <cover.1635423081.git.christophe.leroy@csgroup.eu>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HjfvB5F2gz2xXt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 04:20:54 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+ by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
+ tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1mhazK-001Rtp-Nm; Mon, 01 Nov 2021 18:20:50 +0100
+Received: from ipservice-092-213-028-039.092.213.pools.vodafone-ip.de
+ ([92.213.28.39] helo=[192.168.178.67])
+ by inpost2.zedat.fu-berlin.de (Exim 4.94) with esmtpsa (TLS1.2)
+ tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+ (envelope-from <glaubitz@physik.fu-berlin.de>)
+ id 1mhazK-002G9M-H1; Mon, 01 Nov 2021 18:20:50 +0100
+Message-ID: <fd7dbee5-464e-1063-d51c-85f2f2429019@physik.fu-berlin.de>
+Date: Mon, 1 Nov 2021 18:20:49 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
+Content-Language: en-US
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
+ <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
+ <878ryfavaz.fsf@mpe.ellerman.id.au>
+ <04864fe5-fdd0-74b2-2bad-0303e4c2b15a@physik.fu-berlin.de>
+ <874k92bubv.fsf@mpe.ellerman.id.au>
+ <c21c7a0e-95f1-e6d2-a04c-fb99d801e8da@physik.fu-berlin.de>
+ <878rydac0d.fsf@mpe.ellerman.id.au>
+ <73c55cc9-369e-8989-4f6c-6801ce6a4d64@physik.fu-berlin.de>
+ <87k0hs8iyq.fsf@mpe.ellerman.id.au>
+ <8759057e-170c-3972-997f-a63d88b0e94c@physik.fu-berlin.de>
+In-Reply-To: <8759057e-170c-3972-997f-a63d88b0e94c@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 92.213.28.39
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,48 +65,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>,
- Jiri Kosina <jikos@kernel.org>, linux-kernel@vger.kernel.org,
- Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>,
- Josh Poimboeuf <jpoimboe@redhat.com>, live-patching@vger.kernel.org,
- "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+Cc: "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Hi Michael!
 
-On Thu, 28 Oct 2021, Christophe Leroy wrote:
+On 11/1/21 08:37, John Paul Adrian Glaubitz wrote:
+> I made another experiment and upgraded the host to 5.15-rc7 which contains your
+> fixes and made the guests build gcc-10. Interestingly, this time, the gcc-10
+> build crashed the guest but didn't manage to crash the host. I will update the
+> guest to 5.15-rc7 now as well and see how that goes.
 
-> This series implements livepatch on PPC32.
-> 
-> This is largely copied from what's done on PPC64.
-> 
-> Christophe Leroy (5):
->   livepatch: Fix build failure on 32 bits processors
->   powerpc/ftrace: No need to read LR from stack in _mcount()
->   powerpc/ftrace: Add module_trampoline_target() for PPC32
->   powerpc/ftrace: Activate HAVE_DYNAMIC_FTRACE_WITH_REGS on PPC32
->   powerpc/ftrace: Add support for livepatch to PPC32
-> 
->  arch/powerpc/Kconfig                  |   2 +-
->  arch/powerpc/include/asm/livepatch.h  |   4 +-
->  arch/powerpc/kernel/module_32.c       |  33 +++++
->  arch/powerpc/kernel/trace/ftrace.c    |  53 +++-----
->  arch/powerpc/kernel/trace/ftrace_32.S | 187 ++++++++++++++++++++++++--
->  kernel/livepatch/core.c               |   4 +-
->  6 files changed, 230 insertions(+), 53 deletions(-)
+OK, so I'm definitely able to crash the 5.15 kernel as well:
 
-thanks for the patch set!
+[57031.404944] watchdog: BUG: soft lockup - CPU#24 stuck for 14957s! [migration/24:14]
+[57035.420898] watchdog: BUG: soft lockup - CPU#48 stuck for 14961s! [CPU 17/KVM:1815]
+[57047.456761] watchdog: BUG: soft lockup - CPU#152 stuck for 14841s! [CPU 13/KVM:1811]
+[57055.404670] watchdog: BUG: soft lockup - CPU#24 stuck for 14979s! [migration/24:14]
+[57059.420624] watchdog: BUG: soft lockup - CPU#48 stuck for 14983s! [CPU 17/KVM:1815]
+[57064.064573] rcu: INFO: rcu_sched self-detected stall on CPU
+[57064.064584] rcu:     48-....: (3338577 ticks this GP) idle=9f3/1/0x4000000000000002 softirq=77540/77540 fqs=15421 
+[57064.064598] rcu: rcu_sched kthread timer wakeup didn't happen for 3988041 jiffies! g125265 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x200
+[57064.064606] rcu:     Possible timer handling issue on cpu=136 timer-softirq=313650
+[57064.064611] rcu: rcu_sched kthread starved for 3988042 jiffies! g125265 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x200 ->cpu=136
+[57064.064618] rcu:     Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
+[57064.064624] rcu: RCU grace-period kthread stack dump:
+[57064.064665] rcu: Stack dump where RCU GP kthread last ran:
+[57071.456487] watchdog: BUG: soft lockup - CPU#152 stuck for 14863s! [CPU 13/KVM:1811]
+[57079.404396] watchdog: BUG: soft lockup - CPU#24 stuck for 15002s! [migration/24:14]
 
-I wondered whether the reliability of stack traces also applies to PPC32. 
-This was obviously resolved by accdd093f260 ("powerpc: Activate 
-HAVE_RELIABLE_STACKTRACE for all").
+And the gcc-10 testsuite is able to trigger the crash very reliably.
 
-Did the patch set pass the selftests in 
-tools/testing/selftests/livepatch/ ?
+Adrian
 
-Regards
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
-Miroslav
