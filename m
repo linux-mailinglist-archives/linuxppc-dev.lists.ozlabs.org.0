@@ -1,44 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A8F441F1D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Nov 2021 18:21:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 636FE441F7E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Nov 2021 18:43:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hjfvh3NJ3z2yQC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 04:21:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HjgPg2Y23z2ywm
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 04:43:51 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=JLgNFWOy;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=RyfWIzCB;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
- helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
- receiver=<UNKNOWN>)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
- [130.133.4.66])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
+ envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
+ header.s=susede2_rsa header.b=JLgNFWOy; 
+ dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=RyfWIzCB; 
+ dkim-atps=neutral
+X-Greylist: delayed 426 seconds by postgrey-1.36 at boromir;
+ Tue, 02 Nov 2021 04:43:13 AEDT
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HjgNx5pZRz2xDv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 04:43:13 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out2.suse.de (Postfix) with ESMTP id D96DD1FD6F;
+ Mon,  1 Nov 2021 17:36:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1635788162; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=b3egb8Tn3hseoFHFGSeI77MtXHmQdw6ZfWwaFfXGbas=;
+ b=JLgNFWOyXLVvjwu+DpgdJ/N3n42n6to1Byh6BKfLjBT+eATUILAxjcXMmaE0+dpbfyVlY+
+ wZ5tnPteScsxKLe6zhFtZGVDUJKU+6OCM00PtbkKLr69BMKEnZumUMFCZ1HFAIt+VzvfdO
+ So4/z4olyYQE+UOSvcSpmpLKMqlqRmA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1635788162;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=b3egb8Tn3hseoFHFGSeI77MtXHmQdw6ZfWwaFfXGbas=;
+ b=RyfWIzCBF5XLkKdCHS91dH8jWyX6KuYxXNjWz5IYlzsLaGVIV3W6EaJe7epCUUrGjHvDgm
+ KSQBa2SBhnDmcbDg==
+Received: from kunlun.suse.cz (unknown [10.100.128.76])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HjfvB5F2gz2xXt
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 04:20:54 +1100 (AEDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
- by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
- tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
- (envelope-from <glaubitz@zedat.fu-berlin.de>)
- id 1mhazK-001Rtp-Nm; Mon, 01 Nov 2021 18:20:50 +0100
-Received: from ipservice-092-213-028-039.092.213.pools.vodafone-ip.de
- ([92.213.28.39] helo=[192.168.178.67])
- by inpost2.zedat.fu-berlin.de (Exim 4.94) with esmtpsa (TLS1.2)
- tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
- (envelope-from <glaubitz@physik.fu-berlin.de>)
- id 1mhazK-002G9M-H1; Mon, 01 Nov 2021 18:20:50 +0100
-Message-ID: <fd7dbee5-464e-1063-d51c-85f2f2429019@physik.fu-berlin.de>
-Date: Mon, 1 Nov 2021 18:20:49 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
+ by relay2.suse.de (Postfix) with ESMTPS id BCB2AA3B81;
+ Mon,  1 Nov 2021 17:36:02 +0000 (UTC)
+Date: Mon, 1 Nov 2021 18:36:01 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
-Content-Language: en-US
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
+Message-ID: <20211101173601.GM11195@kunlun.suse.cz>
 References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
  <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
  <878ryfavaz.fsf@mpe.ellerman.id.au>
@@ -46,14 +67,14 @@ References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
  <874k92bubv.fsf@mpe.ellerman.id.au>
  <c21c7a0e-95f1-e6d2-a04c-fb99d801e8da@physik.fu-berlin.de>
  <878rydac0d.fsf@mpe.ellerman.id.au>
- <73c55cc9-369e-8989-4f6c-6801ce6a4d64@physik.fu-berlin.de>
- <87k0hs8iyq.fsf@mpe.ellerman.id.au>
- <8759057e-170c-3972-997f-a63d88b0e94c@physik.fu-berlin.de>
-In-Reply-To: <8759057e-170c-3972-997f-a63d88b0e94c@physik.fu-berlin.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 92.213.28.39
+ <87b1404f-7805-da29-4899-6ab9459e5364@physik.fu-berlin.de>
+ <9ed788c0-b99b-f327-0814-a2d92db6bd8b@physik.fu-berlin.de>
+ <8123f71a-3db3-0a5d-c1b0-59dce2df154c@physik.fu-berlin.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8123f71a-3db3-0a5d-c1b0-59dce2df154c@physik.fu-berlin.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,39 +92,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael!
+Hello,
 
-On 11/1/21 08:37, John Paul Adrian Glaubitz wrote:
-> I made another experiment and upgraded the host to 5.15-rc7 which contains your
-> fixes and made the guests build gcc-10. Interestingly, this time, the gcc-10
-> build crashed the guest but didn't manage to crash the host. I will update the
-> guest to 5.15-rc7 now as well and see how that goes.
+On Thu, Oct 28, 2021 at 04:15:19PM +0200, John Paul Adrian Glaubitz wrote:
+> Hi!
+> 
+> On 10/28/21 16:05, John Paul Adrian Glaubitz wrote:
+> > The following packages were being built at the same time:
+> > 
+> > - guest 1: virtuoso-opensource and openturns
+> > - guest 2: llvm-toolchain-13
+> > 
+> > I really did a lot of testing today with no issues and just after I sent my report
+> > to oss-security that the machine seems to be stable again, the issue showed up :(.
+> 
+> Do you know whether IPMI features any sort of monitoring for capturing the output
+> of the serial console non-interactively? This way I would be able to capture the
+> crash besides what I have seen above.
 
-OK, so I'm definitely able to crash the 5.15 kernel as well:
+I am pretty sure you can run something like
 
-[57031.404944] watchdog: BUG: soft lockup - CPU#24 stuck for 14957s! [migration/24:14]
-[57035.420898] watchdog: BUG: soft lockup - CPU#48 stuck for 14961s! [CPU 17/KVM:1815]
-[57047.456761] watchdog: BUG: soft lockup - CPU#152 stuck for 14841s! [CPU 13/KVM:1811]
-[57055.404670] watchdog: BUG: soft lockup - CPU#24 stuck for 14979s! [migration/24:14]
-[57059.420624] watchdog: BUG: soft lockup - CPU#48 stuck for 14983s! [CPU 17/KVM:1815]
-[57064.064573] rcu: INFO: rcu_sched self-detected stall on CPU
-[57064.064584] rcu:     48-....: (3338577 ticks this GP) idle=9f3/1/0x4000000000000002 softirq=77540/77540 fqs=15421 
-[57064.064598] rcu: rcu_sched kthread timer wakeup didn't happen for 3988041 jiffies! g125265 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x200
-[57064.064606] rcu:     Possible timer handling issue on cpu=136 timer-softirq=313650
-[57064.064611] rcu: rcu_sched kthread starved for 3988042 jiffies! g125265 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x200 ->cpu=136
-[57064.064618] rcu:     Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
-[57064.064624] rcu: RCU grace-period kthread stack dump:
-[57064.064665] rcu: Stack dump where RCU GP kthread last ran:
-[57071.456487] watchdog: BUG: soft lockup - CPU#152 stuck for 14863s! [CPU 13/KVM:1811]
-[57079.404396] watchdog: BUG: soft lockup - CPU#24 stuck for 15002s! [migration/24:14]
+script ipmitool
 
-And the gcc-10 testsuite is able to trigger the crash very reliably.
+to capture output indefinitely, and the same inside screen on a remote
+machine.
 
-Adrian
+Thanks
 
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+Michal
