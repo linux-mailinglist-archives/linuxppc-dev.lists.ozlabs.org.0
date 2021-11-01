@@ -1,60 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9672344124D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Nov 2021 04:13:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 311A04413ED
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Nov 2021 07:54:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HjJ5V3LZxz305v
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Nov 2021 14:13:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HjP0S0yM2z2yPs
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Nov 2021 17:54:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WTZ2r/aq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Px1NyT7n;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=WTZ2r/aq; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HjGPr2Kjhz2xrq;
- Mon,  1 Nov 2021 12:57:36 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B1FF3610E8;
- Mon,  1 Nov 2021 01:57:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1635731852;
- bh=fuaUan8WpsO3AU0Pd876OqdiQB5S59Rz/RFmfxHCqFo=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=WTZ2r/aqsZBJ/SEMp/W5aRRvu0wWWG+qZmM8hZPwjrObwwMpW1TgXwf1zWnw0Qa9i
- Zv/YGYWGYxl7myNvWxfw0CIgJUc9b2/XePq2AH0H37XLuqx44GHHVjgkb3ys6UwuYH
- QFUJSlyCI2x3AldpppHi6cKlbUrpf5epTIwYkQ0LyIddZNVrNNmKUj9pq1nkh3vhav
- ePFznWLS5KXHwuBhRZexeraVkFwzXRLP/38HX/OFwy/5mrR8Hs9LdC9PbwjoOwqbNV
- ADgrJu7beLvyyJTcpsvn3lAsea5miSCymSsM2dL/H4uMyDHc1oqmdVcUWCHL7cYIF+
- w+SQ6/88DMfNA==
-Received: by mail-yb1-f179.google.com with SMTP id j75so13148874ybj.6;
- Sun, 31 Oct 2021 18:57:32 -0700 (PDT)
-X-Gm-Message-State: AOAM530Jui5my/rFpnYzEYKCBtDN6oW2HBXIpubAwUmzgZSWoDfCwjVY
- d1fqV2DlMnUcQKb0rEuTiF9BLqJ/k/G5PHoFTcA=
-X-Google-Smtp-Source: ABdhPJwLzr48xvkbPUYNSwW4wG4jcRHULAsaxHDgvLOaeOhiDi1MY+7mZCeP1WaifSe+QfUYgjKQrdu4XIYT2pTMgvI=
-X-Received: by 2002:ab0:6883:: with SMTP id t3mr16913634uar.66.1635731841194; 
- Sun, 31 Oct 2021 18:57:21 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HjNzm1rNVz2xXt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Nov 2021 17:53:56 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Px1NyT7n; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HjNzk2gCCz4xbd;
+ Mon,  1 Nov 2021 17:53:52 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1635749634;
+ bh=AFOKTYaT07wRuxTdOPz9+5nLId5YC/MScL0BPQYwcAg=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Px1NyT7nsDeJYqwA4v7iC7FbytwBQ8GRGzUia+pwam9cMseUtTstKqUXL07+YVD3N
+ k7iVGT29EsBgj7Axe9Z6jWp4afZUpyNk63R3JKch9Ag0qSCaa10FXze+9vV66Q8gYW
+ 2jw2uInX75bLt0cqU/S5zunKS5uk2SilJhI8Yud6yIkoGlpWPo1CrYsQ4Hb2m6IThg
+ qyPK9d05rprcP5DPcMjxFd5gK7ji/B3YeKTogm274x4xNbeIKRIcCdq1HCslOMaHA4
+ gspDDPJ2A6xQ1O6XHdWQ0Op9yla+fJlnRXIuvSvKAZJDpwAePYeiXclZPdTtBKQxig
+ pNyv79c565MCQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
+In-Reply-To: <73c55cc9-369e-8989-4f6c-6801ce6a4d64@physik.fu-berlin.de>
+References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
+ <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
+ <878ryfavaz.fsf@mpe.ellerman.id.au>
+ <04864fe5-fdd0-74b2-2bad-0303e4c2b15a@physik.fu-berlin.de>
+ <874k92bubv.fsf@mpe.ellerman.id.au>
+ <c21c7a0e-95f1-e6d2-a04c-fb99d801e8da@physik.fu-berlin.de>
+ <878rydac0d.fsf@mpe.ellerman.id.au>
+ <73c55cc9-369e-8989-4f6c-6801ce6a4d64@physik.fu-berlin.de>
+Date: Mon, 01 Nov 2021 17:53:49 +1100
+Message-ID: <87k0hs8iyq.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-13-digetx@gmail.com>
-In-Reply-To: <20211027211715.12671-13-digetx@gmail.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Mon, 1 Nov 2021 09:57:10 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTT+EsLt+pnYyTw_B0C8isho=E4tfOWROe9h-GZpYjET=w@mail.gmail.com>
-Message-ID: <CAJF2gTT+EsLt+pnYyTw_B0C8isho=E4tfOWROe9h-GZpYjET=w@mail.gmail.com>
-Subject: Re: [PATCH v2 12/45] csky: Use do_kernel_power_off()
-To: Dmitry Osipenko <digetx@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Mon, 01 Nov 2021 14:13:00 +1100
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,100 +66,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Tomer Maimon <tmaimon77@gmail.com>,
- Santosh Shilimkar <ssantosh@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- Tali Perry <tali.perry1@gmail.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Thierry Reding <thierry.reding@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
- Greg Ungerer <gerg@linux-m68k.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Benjamin Fair <benjaminfair@google.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- linux-sh@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
- Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Jonathan Hunter <jonathanh@nvidia.com>, Tony Lindgren <tony@atomide.com>,
- Chen-Yu Tsai <wens@csie.org>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org,
- linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
- Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
- linux-omap@vger.kernel.org,
- =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
- Vladimir Zapolskiy <vz@mleia.com>, linux-acpi@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, Mark Brown <broonie@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Nancy Yuen <yuenn@google.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Nick Hu <nickhu@andestech.com>, Avi Fishman <avifishman70@gmail.com>,
- Patrick Venture <venture@google.com>, linux-pm@vger.kernel.org,
- Liam Girdwood <lgirdwood@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- openbmc@lists.ozlabs.org, Joshua Thompson <funaho@jurai.org>
+Cc: "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Only for this patch, Acked-by: Guo Ren <guoren@kernel.org>
+John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> writes:
+> Hi Michael!
+>
+> On 10/28/21 08:39, Michael Ellerman wrote:
+>> That completed fine on my BE VM here.
+>> 
+>> I ran these in two tmux windows:
+>>   $ sbuild -d sid --arch=powerpc --no-arch-all gcc-11_11.2.0-10.dsc
+>>   $ sbuild -d sid --arch=ppc64 --no-arch-all gcc-11_11.2.0-10.dsc
+>
+> Could you try gcc-10 instead? It's testsuite has crashed the host for me
+> with a patched kernel twice now.
+>
+> $ dget -u https://deb.debian.org/debian/pool/main/g/gcc-10/gcc-10_10.3.0-12.dsc
+> $ sbuild -d sid --arch=powerpc --no-arch-all gcc-10_10.3.0-12.dsc
+> $ sbuild -d sid --arch=ppc64 --no-arch-all gcc-10_10.3.0-12.dsc
 
-On Thu, Oct 28, 2021 at 5:18 AM Dmitry Osipenko <digetx@gmail.com> wrote:
->
-> Kernel now supports chained power-off handlers. Use do_kernel_power_off()
-> that invokes chained power-off handlers. It also invokes legacy
-> pm_power_off() for now, which will be removed once all drivers will
-> be converted to the new power-off API.
->
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
-> ---
->  arch/csky/kernel/power.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/csky/kernel/power.c b/arch/csky/kernel/power.c
-> index 923ee4e381b8..86ee202906f8 100644
-> --- a/arch/csky/kernel/power.c
-> +++ b/arch/csky/kernel/power.c
-> @@ -9,16 +9,14 @@ EXPORT_SYMBOL(pm_power_off);
->  void machine_power_off(void)
->  {
->         local_irq_disable();
-> -       if (pm_power_off)
-> -               pm_power_off();
-> +       do_kernel_power_off();
->         asm volatile ("bkpt");
->  }
->
->  void machine_halt(void)
->  {
->         local_irq_disable();
-> -       if (pm_power_off)
-> -               pm_power_off();
-> +       do_kernel_power_off();
->         asm volatile ("bkpt");
->  }
->
-> --
-> 2.33.1
->
+Sure, will give that a try.
+
+I was able to crash my machine over the weekend, building openjdk, but I
+haven't been able to reproduce it for ~24 hours now (I didn't change
+anything).
 
 
--- 
-Best Regards
- Guo Ren
+Can you try running your guests with no SMT threads?
 
-ML: https://lore.kernel.org/linux-csky/
+I think one of your guests was using:
+
+  -smp 32,sockets=1,dies=1,cores=8,threads=4
+
+Can you change that to:
+
+  -smp 8,sockets=1,dies=1,cores=8,threads=1
+
+
+And something similar for the other guest(s).
+
+If the system is stable with those settings that would be useful
+information, and would also mean you could use the system without it
+crashing semi regularly.
+
+cheers
