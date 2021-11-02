@@ -2,72 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0763A442A68
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 10:29:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE8C442D20
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:49:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk4PD6XPbz2yn2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 20:29:52 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oQz9U7Ur;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7Vd3wDnz30CK
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 22:49:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=oQz9U7Ur; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk4NT4t46z2xC6
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 20:29:13 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 31C1360EB4
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 09:29:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1635845351;
- bh=93tw3U443kXMlW/yBy41IUQ2nG8pgtNMm7i1J5sgLaM=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=oQz9U7UrsF1HMwTNwPhXZ2g/MYmg2rEo7i72W6L2uEiV/PzHGQueRSL+eMQJtOppc
- 3HN/EuUYRjRcZ488TSql1mr/9sSehe10H8dywIzWDbob7UTWPgbeGDQNPGQeVY3cDW
- nijFNt2vynnY79LC1JPE8GJ0o524fULZp3tlaJ0ADc+11fW9tz6BNx6OEYgiu8ibBN
- p/laiOmwxn0f4VOSrqgBR7shfSMqjN8ASe4cDceuTvlpfXCxCvIIvrR0vOhDWrbOv8
- Ck2n6nhAE0lF7GIf0fV/I55BRzsEss6X+8AqeoQQshfbc71P5GM38woznl2a8iNlkK
- X713pEafrMoJA==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 295BA60F23; Tue,  2 Nov 2021 09:29:11 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 214913] [xfstests generic/051] BUG: Kernel NULL pointer
- dereference on read at 0x00000108 NIP [c0000000000372e4]
- tm_cgpr_active+0x14/0x40
-Date: Tue, 02 Nov 2021 09:29:10 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: zlang@redhat.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-214913-206035-PvOd02WG45@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-214913-206035@https.bugzilla.kernel.org/>
-References: <bug-214913-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7G15273z3bhg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:38:49 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hk7G148Xjz4xdc;
+ Tue,  2 Nov 2021 22:38:49 +1100 (AEDT)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: kvm-ppc@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20211004145749.1331331-1-npiggin@gmail.com>
+References: <20211004145749.1331331-1-npiggin@gmail.com>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: H_ENTER filter out reserved HPTE[B]
+ value
+Message-Id: <163584789016.1845480.2757100550456404160.b4-ty@ellerman.id.au>
+Date: Tue, 02 Nov 2021 21:11:30 +1100
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,15 +48,23 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D214913
+On Tue, 5 Oct 2021 00:57:49 +1000, Nicholas Piggin wrote:
+> The HPTE B field is a 2-bit field with values 0b10 and 0b11 reserved.
+> This field is also taken from the HPTE and used when KVM executes
+> TLBIEs to set the B field of those instructions.
+> 
+> Disallow the guest setting B to a reserved value with H_ENTER by
+> rejecting it. This is the same approach already taken for rejecting
+> reserved (unsupported) LLP values. This prevents the guest from being
+> able to induce the host to execute TLBIE with reserved values, which
+> is not known to be a problem with current processors but in theory it
+> could prevent the TLBIE from working correctly in a future processor.
+> 
+> [...]
 
---- Comment #1 from Zorro Lang (zlang@redhat.com) ---
-Created attachment 299403
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D299403&action=3Dedit
-.config file
+Applied to powerpc/next.
 
---=20
-You may reply to this email to add a comment.
+[1/1] KVM: PPC: Book3S HV: H_ENTER filter out reserved HPTE[B] value
+      https://git.kernel.org/powerpc/c/322fda0405fecaaa540b0fa90393830aaadaf420
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+cheers
