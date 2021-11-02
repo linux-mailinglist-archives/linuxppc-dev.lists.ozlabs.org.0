@@ -2,81 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D801443204
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 16:49:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DBA443447
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 18:05:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HkDq31jbSz2yYS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Nov 2021 02:49:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HkGVR1XQwz2yg3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Nov 2021 04:05:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fG+fkNhe;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=4YYLRJWX;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=cU09DI26;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=fG+fkNhe; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=4YYLRJWX; 
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=cU09DI26; 
  dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HkDpJ4Kgrz2xg6
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Nov 2021 02:48:40 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 08C8221639;
- Tue,  2 Nov 2021 15:48:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1635868117; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oei/Vl5aP6rLS5lpkscnCj7v3fQPmBAplgA77ous6I0=;
- b=fG+fkNhe+opTnWtTwExBlRfQQ5FwT4IL1gPoGT003O+Znid881GXyGqNs5Cb/ragtUjOTi
- i5h6K7N2uD5ltOsceWk0PNAQEEWpk8WwA2aR/GN5VNEhVSqVo4DZqbxmB1/wiXPnD2Ln4m
- 01YVaHoZz75c7R7AqFSWuqhnZbOsgrU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1635868117;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oei/Vl5aP6rLS5lpkscnCj7v3fQPmBAplgA77ous6I0=;
- b=4YYLRJWXJ2hzMXIMmn16h4unrWb0o+SGJ4x9td4PVUBwPshf1IevATEyDey2PO9rT736kj
- oF0RmhpOBpaBasCA==
-Received: from kunlun.suse.cz (unknown [10.100.128.76])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id DED99A3B8D;
- Tue,  2 Nov 2021 15:48:36 +0000 (UTC)
-Date: Tue, 2 Nov 2021 16:48:35 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: KVM on POWER8 host lock up since 10d91611f426 ("powerpc/64s:
- Reimplement book3s idle code in C")
-Message-ID: <20211102154835.GQ11195@kunlun.suse.cz>
-References: <20200830201145.GA29521@kitsune.suse.cz>
- <1598835313.5688ngko4f.astroid@bobo.none>
- <20200831091523.GC29521@kitsune.suse.cz>
- <87y2lv1430.fsf@mpe.ellerman.id.au>
- <1599484062.vgmycu6q5i.astroid@bobo.none>
- <20201016201410.GH29778@kitsune.suse.cz>
- <1603066878.gtbyofrzyo.astroid@bobo.none>
- <1603082970.5545yt7raj.astroid@bobo.none>
- <20210114124023.GL6564@kitsune.suse.cz>
- <1610628922.o1ihbt98xg.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HkGTh51lHz2xF4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Nov 2021 04:04:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=3bBcvFcyfbMgkxTabHoDugt0QDDF2AsVik61xYhcvY8=; b=cU09DI26n/HuOfXSGqvnoYXccm
+ btgFjQftFTj8uFw/bdPpySJs8e+7RKCufouvPj8a9PRomwNJZ3mL7eaNJtneuS1VWToYH1yLqjBv3
+ m89b5NUiMX3cVF/rKxoTsV8LwGO8QEm/5XlTbBHx1DxbIwX0xAm8IdwOBHVoMxAqZi3cy2/MNriKS
+ iDCYoYwhK8cO4awe/SWrQE/T8ddEIozAommDi/x5RAG4+JdgOojsx3aHaZEyweML/LrElyOIzTu2F
+ 95JZDncYEgYlEMqo7AMW2+I/jpyu82tBawT5t7eMueYiE+khoi9NEjHbk0Y0jwGwUSoFnlgMokg/R
+ ig+ZPcrg==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
+ (Red Hat Linux)) id 1mhxCQ-002RP3-6N; Tue, 02 Nov 2021 17:03:50 +0000
+Date: Tue, 2 Nov 2021 10:03:50 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH 03/13] nvdimm/btt: do not call del_gendisk() if not needed
+Message-ID: <YYFvdiOYoqRPx8JE@bombadil.infradead.org>
+References: <20211015235219.2191207-1-mcgrof@kernel.org>
+ <20211015235219.2191207-4-mcgrof@kernel.org>
+ <CAPcyv4gU0q=UhDhGoDjK1mwS8WNcWYUXgEb7Rd8Amqr1XFs6ow@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1610628922.o1ihbt98xg.astroid@bobo.none>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAPcyv4gU0q=UhDhGoDjK1mwS8WNcWYUXgEb7Rd8Amqr1XFs6ow@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,124 +62,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ro@suse.de, linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
- Hari Bathini <hbathini@linux.ibm.com>
+Cc: Linux NVDIMM <nvdimm@lists.linux.dev>, vigneshr@ti.com,
+ linux-nvme@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
+ miquel.raynal@bootlin.com, "Weiny, Ira" <ira.weiny@intel.com>,
+ Christoph Hellwig <hch@lst.de>, Dave Jiang <dave.jiang@intel.com>,
+ Sagi Grimberg <sagi@grimberg.me>, Minchan Kim <minchan@kernel.org>,
+ Vishal L Verma <vishal.l.verma@intel.com>, Nitin Gupta <ngupta@vflare.org>,
+ linux-block@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Geoff Levand <geoff@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Jim Paris <jim@jtan.com>, senozhatsky@chromium.org,
+ Richard Weinberger <richard@nod.at>, linux-mtd@lists.infradead.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 14, 2021 at 11:08:03PM +1000, Nicholas Piggin wrote:
-> Excerpts from Michal Suchánek's message of January 14, 2021 10:40 pm:
-> > On Mon, Oct 19, 2020 at 02:50:51PM +1000, Nicholas Piggin wrote:
-> >> Excerpts from Nicholas Piggin's message of October 19, 2020 11:00 am:
-> >> > Excerpts from Michal Suchánek's message of October 17, 2020 6:14 am:
-> >> >> On Mon, Sep 07, 2020 at 11:13:47PM +1000, Nicholas Piggin wrote:
-> >> >>> Excerpts from Michael Ellerman's message of August 31, 2020 8:50 pm:
-> >> >>> > Michal Suchánek <msuchanek@suse.de> writes:
-> >> >>> >> On Mon, Aug 31, 2020 at 11:14:18AM +1000, Nicholas Piggin wrote:
-> >> >>> >>> Excerpts from Michal Suchánek's message of August 31, 2020 6:11 am:
-> >> >>> >>> > Hello,
-> >> >>> >>> > 
-> >> >>> >>> > on POWER8 KVM hosts lock up since commit 10d91611f426 ("powerpc/64s:
-> >> >>> >>> > Reimplement book3s idle code in C").
-> >> >>> >>> > 
-> >> >>> >>> > The symptom is host locking up completely after some hours of KVM
-> >> >>> >>> > workload with messages like
-> >> >>> >>> > 
-> >> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
-> >> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 71
-> >> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
-> >> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 71
-> >> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn't grab cpu 47
-> >> >>> >>> > 
-> >> >>> >>> > printed before the host locks up.
-> >> >>> >>> > 
-> >> >>> >>> > The machines run sandboxed builds which is a mixed workload resulting in
-> >> >>> >>> > IO/single core/mutiple core load over time and there are periods of no
-> >> >>> >>> > activity and no VMS runnig as well. The VMs are shortlived so VM
-> >> >>> >>> > setup/terdown is somewhat excercised as well.
-> >> >>> >>> > 
-> >> >>> >>> > POWER9 with the new guest entry fast path does not seem to be affected.
-> >> >>> >>> > 
-> >> >>> >>> > Reverted the patch and the followup idle fixes on top of 5.2.14 and
-> >> >>> >>> > re-applied commit a3f3072db6ca ("powerpc/powernv/idle: Restore IAMR
-> >> >>> >>> > after idle") which gives same idle code as 5.1.16 and the kernel seems
-> >> >>> >>> > stable.
-> >> >>> >>> > 
-> >> >>> >>> > Config is attached.
-> >> >>> >>> > 
-> >> >>> >>> > I cannot easily revert this commit, especially if I want to use the same
-> >> >>> >>> > kernel on POWER8 and POWER9 - many of the POWER9 fixes are applicable
-> >> >>> >>> > only to the new idle code.
-> >> >>> >>> > 
-> >> >>> >>> > Any idea what can be the problem?
-> >> >>> >>> 
-> >> >>> >>> So hwthread_state is never getting back to to HWTHREAD_IN_IDLE on
-> >> >>> >>> those threads. I wonder what they are doing. POWER8 doesn't have a good
-> >> >>> >>> NMI IPI and I don't know if it supports pdbg dumping registers from the
-> >> >>> >>> BMC unfortunately.
-> >> >>> >>
-> >> >>> >> It may be possible to set up fadump with a later kernel version that
-> >> >>> >> supports it on powernv and dump the whole kernel.
-> >> >>> > 
-> >> >>> > Your firmware won't support it AFAIK.
-> >> >>> > 
-> >> >>> > You could try kdump, but if we have CPUs stuck in KVM then there's a
-> >> >>> > good chance it won't work :/
-> >> >>> 
-> >> >>> I haven't had any luck yet reproducing this still. Testing with sub 
-> >> >>> cores of various different combinations, etc. I'll keep trying though.
-> >> >> 
-> >> >> Hello,
-> >> >> 
-> >> >> I tried running some KVM guests to simulate the workload and what I get
-> >> >> is guests failing to start with a rcu stall. Tried both 5.3 and 5.9
-> >> >> kernel and qemu 4.2.1 and 5.1.0
-> >> >> 
-> >> >> To start some guests I run
-> >> >> 
-> >> >> for i in $(seq 0 9) ; do /opt/qemu/bin/qemu-system-ppc64 -m 2048 -accel kvm -smp 8 -kernel /boot/vmlinux -initrd /boot/initrd -nodefaults -nographic -serial mon:telnet::444$i,server,wait & done
-> >> >> 
-> >> >> To simulate some workload I run
-> >> >> 
-> >> >> xz -zc9T0 < /dev/zero > /dev/null &
-> >> >> while true; do
-> >> >>     killall -STOP xz; sleep 1; killall -CONT xz; sleep 1;
-> >> >> done &
-> >> >> 
-> >> >> on the host and add a job that executes this to the ramdisk. However, most
-> >> >> guests never get to the point where the job is executed.
-> >> >> 
-> >> >> Any idea what might be the problem?
-> >> > 
-> >> > I would say try without pv queued spin locks (but if the same thing is 
-> >> > happening with 5.3 then it must be something else I guess). 
-> >> > 
-> >> > I'll try to test a similar setup on a POWER8 here.
-> >> 
-> >> Couldn't reproduce the guest hang, they seem to run fine even with 
-> >> queued spinlocks. Might have a different .config.
-> >> 
-> >> I might have got a lockup in the host (although different symptoms than 
-> >> the original report). I'll look into that a bit further.
-> > 
-> > Hello,
-> > 
-> > any progress on this?
+On Sun, Oct 31, 2021 at 10:47:22AM -0700, Dan Williams wrote:
+> On Fri, Oct 15, 2021 at 4:53 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
+> >
+> > We know we don't need del_gendisk() if we haven't added
+> > the disk, so just skip it. This should fix a bug on older
+> > kernels, as del_gendisk() became able to deal with
+> > disks not added only recently, after the patch titled
+> > "block: add flag for add_disk() completion notation".
 > 
-> No progress, I still wasn't able to reproduce, and it fell off the 
-> radar sorry.
+> Perhaps put this in:
 > 
-> I expect hwthred_state must be getting corrupted somewhere or a
-> secondary thread getting stuck but I couldn't see where. I try pick
-> it up again thanks for the reminder.
+>     commit $abbrev_commit ("block: add flag for add_disk() completion notation")
+> 
+> ...format, but I can't seem to find that commit?
 
-Hello,
+Indeed, that patch got dropped and it would seem Christoph preferred
+a simpler approach with the new disk_live()
 
-the fixes pointed out in
-https://lore.kernel.org/linuxppc-dev/87pmrtbbdt.fsf@mpe.ellerman.id.au/T/#u
-resolve the problem.
+commit 40b3a52ffc5bc3b5427d5d35b035cfb19d03fdd6
+Author: Christoph Hellwig <hch@lst.de>
+Date:   Wed Aug 18 16:45:32 2021 +0200
 
-Thanks
+    block: add a sanity check for a live disk in del_gendisk
 
-Michal
+> If you're touching the changelog how about one that clarifies the
+> impact and drops "we"?
+> "del_gendisk() is not required if the disk has not been added. On
+> kernels prior to commit $abbrev_commit ("block: add flag for
+> add_disk() completion notation")
+> it is mandatory to not call del_gendisk() if the underlying device has
+> not been through device_add()."
+> 
+> Fixes: 41cd8b70c37a ("libnvdimm, btt: add support for blk integrity")
+> 
+> With that you can add:
+> 
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+
+You got it.
+
+  Luis
