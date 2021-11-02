@@ -2,63 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D8F443C03
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Nov 2021 04:50:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 887C4443C04
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Nov 2021 04:51:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HkXq82V2kz2yHM
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Nov 2021 14:50:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HkXqs39Snz307L
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Nov 2021 14:51:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=libero.it header.i=@libero.it header.a=rsa-sha256 header.s=s2021 header.b=ci3bXMdb;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=U5KqNpjE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=libero.it (client-ip=213.209.10.18; helo=libero.it;
- envelope-from=riccardo.mottola@libero.it; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=libero.it header.i=@libero.it header.a=rsa-sha256
- header.s=s2021 header.b=ci3bXMdb; dkim-atps=neutral
-X-Greylist: delayed 288 seconds by postgrey-1.36 at boromir;
- Wed, 03 Nov 2021 09:52:53 AEDT
-Received: from libero.it (smtp-18.italiaonline.it [213.209.10.18])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::72c;
+ helo=mail-qk1-x72c.google.com; envelope-from=konstantin@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=google header.b=U5KqNpjE; 
+ dkim-atps=neutral
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com
+ [IPv6:2607:f8b0:4864:20::72c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HkQCn4Yg4z2x9H
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Nov 2021 09:52:53 +1100 (AEDT)
-Received: from [192.168.1.141] ([151.55.67.244])
- by smtp-18.iol.local with ESMTPA
- id i2XXmYuFxqopDi2XXm4DI9; Tue, 02 Nov 2021 23:45:59 +0100
-x-libjamoibt: 1601
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
- t=1635893159; bh=n25qprc1vBQw2XQ1xr6s6M2oqoLOM/DqwqlWHE3WbWU=;
- h=From;
- b=ci3bXMdbIWl8LLsSi3OlJcHVxJaFzCPn1KX3SKjS3rj9Bx3ICU1YHrc8TcoV5CalK
- 8nfeml/2PHwT7uGtmdVPmXW7YUp7vguze2keMfzco+dLpGMUlNLAqxgCpwnsvUswXR
- gprphOSgxm4RdNl7nMndCnUhQ8tfN+cJIsJJQ0jLJRw+JbNBDRng8zXw33rypjYNa5
- qhL6rVqG6tFR1tc8VEwS1NV3D9c2fK5PJn5r0TXkrRDvgt7pMm1oYn4pYX7RymRQxb
- sthLT/bVwmw9iZa92KM6NGH7c8lG+eZWWGn9jhj4wKdFpixx8iglLxRisJ90y6wvMo
- lKrmAICgdYxqg==
-X-CNFS-Analysis: v=2.4 cv=BPB2EHcG c=1 sm=1 tr=0 ts=6181bfa7 cx=a_exe
- a=oX9FqNkp6CM1qvU8Uz8rYA==:117 a=oX9FqNkp6CM1qvU8Uz8rYA==:17
- a=IkcTkHD0fZMA:10 a=k-Fpjo6v-nz4wkhcExAA:9 a=QEXdDO2ut3YA:10
-Subject: Re: Fwd: Fwd: X stopped working with 5.14 on iBook
-To: "Christopher M. Riedl" <cmr@bluescreens.de>,
- Finn Thain <fthain@linux-m68k.org>, "Christopher M. Riedl"
- <cmr@linux.ibm.com>
-References: <CFFNC8MZ20HR.13XRVPWSKVLE0@wrwlf0000>
-From: Riccardo Mottola <riccardo.mottola@libero.it>
-Message-ID: <b58d306e-661f-760f-502a-23432b359762@libero.it>
-Date: Tue, 2 Nov 2021 23:45:58 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:60.0) Gecko/20100101
- SeaMonkey/2.53.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HkRbP6g5qz2xDg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Nov 2021 10:54:55 +1100 (AEDT)
+Received: by mail-qk1-x72c.google.com with SMTP id bl12so657188qkb.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Nov 2021 16:54:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linuxfoundation.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=vO4VYxq+eHBQA81nhSLqjjWx4ejJxUAVva8AW+ugOmE=;
+ b=U5KqNpjEoUdbE0harjvjuk7Wlf4afX5oJF/IyOrXC00KM9K81x6cMAEls2W9npMvIc
+ mtSVZzpwU+17GCnCzEZN5wmZthd88Q8xjeoNLjgLHeo60bXM6ZeyG7QaqK5nCMrvpJ1+
+ wnXlQPyOFCOnN5+T9ku9C42I+b7twvEynRtqE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=vO4VYxq+eHBQA81nhSLqjjWx4ejJxUAVva8AW+ugOmE=;
+ b=lT+58L4Iz/OHr5QXfFVPWoECieA77iQZBsHbetiNAn0Qn2o0nXSETkf5peTzvFEhfr
+ M+lfurrP/b16rlHory+VCMlF1fsc72fM1LmIC4JjtSQCwTRD/I5fIRWuEAAtBkrWeU8j
+ XeTgRr347Mhbi+0jdhx6sUAdVyN3yQFuHJNg2jmpJS3UHDZ3g44bJ91/7bEjEPwdIPrL
+ lnzBO9yyRJWsJT3PwSnx/YGBX1fShm2FnGSraZMrcCLXmDdgWEQv4wt3yqoID0JVVfFs
+ JRHCIjSZe3JxFNiXkmJJ6KszlgGwJklY6byBBpwttSXSYJKLlB/K4jjv6Ye2py/4WHxx
+ q/2g==
+X-Gm-Message-State: AOAM533jdXvODHj+5N98cfXdEoJua1Ge4a8O6FLhG/U8mMPp9A1jFagJ
+ XAJ3uTCz9h9SC6fhdvGyVMNDGw==
+X-Google-Smtp-Source: ABdhPJzJxXzVTns+6QyDP8omHnk0ZTd2wBsDt10QQMCuSgPa/2MtGgPlh6hCKicu7D00A2X/6jZinw==
+X-Received: by 2002:a05:620a:2585:: with SMTP id
+ x5mr31299231qko.378.1635897291380; 
+ Tue, 02 Nov 2021 16:54:51 -0700 (PDT)
+Received: from meerkat.local
+ (bras-base-mtrlpq5031w-grc-32-216-209-220-181.dsl.bell.ca. [216.209.220.181])
+ by smtp.gmail.com with ESMTPSA id h14sm421680qth.23.2021.11.02.16.54.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Nov 2021 16:54:51 -0700 (PDT)
+Date: Tue, 2 Nov 2021 19:54:49 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2 RESEND] powerpc/audit: Convert powerpc to
+ AUDIT_ARCH_COMPAT_GENERIC
+Message-ID: <20211102235449.rwtbgmddkzdaodhv@meerkat.local>
+References: <a4b3951d1191d4183d92a07a6097566bde60d00a.1629812058.git.christophe.leroy@csgroup.eu>
+ <163584790624.1845480.1785827913484538939.b4-ty@ellerman.id.au>
+ <CAHC9VhROvSQHVQ6Wo8zHND1rGm+r6dGJur69B65sJ9JwNvMDpQ@mail.gmail.com>
+ <87a6im87tq.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <CFFNC8MZ20HR.13XRVPWSKVLE0@wrwlf0000>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4xfNTb3Hv8e6QPs22aiGgn7143MVgpjUfdvTWSGtVrRvGLXvmGOwamFBD1lb3fJ+T4J1JLQ/NDI6ApJ/S/4E04OofUs49PYERV1CwKPS1LFyZfoJuU/LmG
- zZbVvsgYOECB2fLHCdPgU0OsQuMp7QvK7MyZR9BWZO6BQhsmDyA+Hs9Z3o3/M1/Ao/RUnJGfywj/Gm5QWSa+pwV7ttf2fhV/2vfZ/2WG5s0mgh5syuryZiL5
- au+lHHh8qwY7/wV0y8U1h/sQf+TiD6z0p4Lw5knfddnGPFFsDHHzkdCuoOlAesl0qb0aKRP4HbmCsRFrqyFbdGKuyu5OSx044Ozzcu+yZcjWyf2Nz0eyYjkv
- TyRCc2mh
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87a6im87tq.fsf@mpe.ellerman.id.au>
 X-Mailman-Approved-At: Wed, 03 Nov 2021 14:49:57 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,28 +85,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stan Johnson <stanley.johnson.001@protonmail.com>,
+Cc: Paul Moore <paul@paul-moore.com>, patch-notifications@ellerman.id.au,
+ linux-kernel@vger.kernel.org, linux-audit@redhat.com,
+ Paul Mackerras <paulus@samba.org>, Eric Paris <eparis@redhat.com>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi All,
+On Wed, Nov 03, 2021 at 10:18:57AM +1100, Michael Ellerman wrote:
+> It's not in next, that notification is from the b4 thanks script, which
+> didn't notice that the commit has since been reverted.
 
+Yeah... I'm not sure how to catch that, but I'm open to suggestions.
 
-Christopher M. Riedl wrote:
-> Stan also tested a PowerMac G3 system and found that the regression is
-> not
-> present there. Thus far, only PowerMac G4 systems are known to be
-> affected
-> (Stan's Cube and Riccardo's PowerBook).
-
-I actually tested right now on an iBook G3 kernel 5.14.12-1 of 2021-14 
-from Debian and X does not start on it anyway, with the same behaviour 
-on the G4.
-During the weekend I did test on an iMac G5 and it works.
-
-I don't know how Stan tested - but at least for me issue seems to be 
-both G3 and G4.
-
-Riccardo
+-K
