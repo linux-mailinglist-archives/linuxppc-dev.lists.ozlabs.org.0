@@ -1,36 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84CD442CFD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:42:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A54A442D1D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:49:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7Lh45xxz3f9x
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 22:42:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7VB3867z3gHv
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 22:49:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7Fh2Dp8z2y7J
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:38:32 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7G103Rwz2ymF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:38:49 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hk7Fh1NTkz4xd4;
- Tue,  2 Nov 2021 22:38:32 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hk7G06CDYz4xdb;
+ Tue,  2 Nov 2021 22:38:48 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-In-Reply-To: <c904599f33aaf6bb7ee2836a9ff8368509e0d78d.1631887042.git.christophe.leroy@csgroup.eu>
-References: <c904599f33aaf6bb7ee2836a9ff8368509e0d78d.1631887042.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2] powerpc/32: Don't use a struct based type for pte_t
-Message-Id: <163584791399.1845480.3255775736155038063.b4-ty@ellerman.id.au>
-Date: Tue, 02 Nov 2021 21:11:53 +1100
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20211020194703.2613093-1-nathanl@linux.ibm.com>
+References: <20211020194703.2613093-1-nathanl@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/pseries/mobility: ignore ibm,
+ platform-facilities updates
+Message-Id: <163584791481.1845480.2183906050275560636.b4-ty@ellerman.id.au>
+Date: Tue, 02 Nov 2021 21:11:54 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,26 +43,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: tyreld@linux.ibm.com, cheloha@linux.ibm.com, ldufour@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 17 Sep 2021 15:57:31 +0200, Christophe Leroy wrote:
-> Long time ago we had a config item called STRICT_MM_TYPECHECKS
-> to build the kernel with pte_t defined as a structure in order
-> to perform additional build checks or build it with pte_t
-> defined as a simple type in order to get simpler generated code.
+On Wed, 20 Oct 2021 14:47:03 -0500, Nathan Lynch wrote:
+> On VMs with NX encryption, compression, and/or RNG offload, these
+> capabilities are described by nodes in the ibm,platform-facilities device
+> tree hierarchy:
 > 
-> Commit 670eea924198 ("powerpc/mm: Always use STRICT_MM_TYPECHECKS")
-> made the struct based definition the only one, considering that the
-> generated code was similar in both cases.
+>   $ tree -d /sys/firmware/devicetree/base/ibm,platform-facilities/
+>   /sys/firmware/devicetree/base/ibm,platform-facilities/
+>   ├── ibm,compression-v1
+>   ├── ibm,random-v1
+>   └── ibm,sym-encryption-v1
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/32: Don't use a struct based type for pte_t
-      https://git.kernel.org/powerpc/c/c7d19189d7241e135cd2e450a7fbc77cb7bd40ee
+[1/1] powerpc/pseries/mobility: ignore ibm, platform-facilities updates
+      https://git.kernel.org/powerpc/c/319fa1a52e438a6e028329187783a25ad498c4e6
 
 cheers
