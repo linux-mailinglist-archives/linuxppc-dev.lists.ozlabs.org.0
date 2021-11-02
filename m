@@ -2,76 +2,106 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8058E442CB8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:36:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C074442D59
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 13:00:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7CS31RJz2yYS
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 22:36:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7kl3l4xz3cbN
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 23:00:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=UoRxzPpY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aXFb4D42;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52d;
- helo=mail-pg1-x52d.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=UoRxzPpY; dkim-atps=neutral
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com
- [IPv6:2607:f8b0:4864:20::52d])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=aXFb4D42; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7Bk6YZMz2xD8
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:35:56 +1100 (AEDT)
-Received: by mail-pg1-x52d.google.com with SMTP id s136so19880676pgs.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Nov 2021 04:35:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=gWUbQ0ngiipLMAY2ygC113pJXGGPZ3VIQ15r0hKIpEc=;
- b=UoRxzPpYUeZyTcdv7hiiaQOXY0wgp7bncPUDMUpPG9LzJBWuPg424RxrcX/xAFzWcU
- 7l4imTKtNT9y+6KhX4t4/fXwK6LvVEvgHkf2GePtwZ5AfpyC1KCqxqkwvz2EqFEnLTrs
- +vwYylUin2JOJ2h4vbERYEHe1GI5M2V9sGUl/V8PaMPRYmyRgiSCuHroTdk9fTcQJWai
- X/Rg1bFJh08eAGOgGMes7gLfAQjyMG2ciBRQJmWD+06mXdRbfvUVOywQBCZ2gIwAJEqL
- oq1agf2W0ntcVyzXXUCfbDZylRw5OzJ4Of4XDZA1Nr8XkNPA6qLhTgT4B0dBP/Vkioth
- DHJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=gWUbQ0ngiipLMAY2ygC113pJXGGPZ3VIQ15r0hKIpEc=;
- b=mQ2OQHb7GYUophIjFnyDuFhTI1rUhnZnujYj3k/JDdATX32+sVmN3aMcfnbaLeYeNM
- 9GX1lZK240mUkoljNBRAFEOGqolN7+f/Pb3smyrSFDO3fx81aFF67aZNMDgNB7Q20JHW
- NC8Fu/Y6esmhYzwVNfpCnhVrJzuAMOtk1pcZpQPDVlvw1DGy+AHObVuA1y+8vlFHkaWN
- AKFCdypD+ITPANpliGk/raTPBINHHHBCOl3bhWnxQHHtBjGdBP9IMui0DUFAN9b8uj0C
- 6Zfn6LC9RI6GyRqY3kKekzpgy5tV/KObaCaHI1le9H88NzdhCQNIsPXdtBjnrXnMtqED
- sHiA==
-X-Gm-Message-State: AOAM5325lR5hyrfcE2Xnv+rpMs3LcWOyI1YG57uB3cZW4DnxQitafMnb
- kAcAC6Udk37X3twQ1j7L2Ac=
-X-Google-Smtp-Source: ABdhPJxj0C1biRs/Bp2SIFbgNQerZbEIJ+1DR+1Z/mksyuMVXzOQKawMHqWKkD4ke9E1mLceSkRDNw==
-X-Received: by 2002:a63:9a12:: with SMTP id o18mr27230405pge.419.1635852953580; 
- Tue, 02 Nov 2021 04:35:53 -0700 (PDT)
-Received: from localhost (60-241-46-56.tpgi.com.au. [60.241.46.56])
- by smtp.gmail.com with ESMTPSA id t8sm16616416pgk.66.2021.11.02.04.35.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Nov 2021 04:35:53 -0700 (PDT)
-Date: Tue, 02 Nov 2021 21:35:47 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [V3] powerpc/perf: Enable PMU counters post partition migration
- if PMU is active
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>
-References: <20211029030510.58797-1-atrajeev@linux.vnet.ibm.com>
- <1635487923.hwdpof7s4v.astroid@bobo.none>
- <87sfwk7z0m.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87sfwk7z0m.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7jw5ZSVz2xrP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:59:32 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1A2AjDJ9013720; 
+ Tue, 2 Nov 2021 11:59:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=K2cJNQ+EKDSFAkBiJMmqtiJ5pH0mLiIJH97QopMAXik=;
+ b=aXFb4D42euNiN/sHycQaHWfZhMaWcvdmuiuMUdgvdK6shIhjxd0M4yMVp4rhJl8mYqlv
+ s5TuKAJ7H574B5dbIjoMojqktCfqE/dv7ajMpIUsBuNOzO9qg5XQCaGU3Ll3cRNvyAB0
+ xnm6nyrA9jwkH3TQvt03XbRp9bzyfgoQWFKMa7PQQMR9enwhWu3vCvGagPG3ZYDPyEqE
+ 43+FqlD0oYvZ0k0DTKQTW0xz6D1cmYtkc/jhq/h7lZZMkG6+lFr+7k0nBwCtl9yTIDca
+ 5R8ehzsX58yWPSnvDp3X2fwcVFozhzKsoO8B8EoqSAWs3WDzmIVsENLCVo48t08nllBc aQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3c32jp369j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Nov 2021 11:59:09 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1A2BpNQn011525;
+ Tue, 2 Nov 2021 11:59:09 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3c32jp368h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Nov 2021 11:59:08 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1A2BwnSv010236;
+ Tue, 2 Nov 2021 11:59:06 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04fra.de.ibm.com with ESMTP id 3c0wpb1m9j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Nov 2021 11:59:06 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1A2Bx3hc15335728
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 2 Nov 2021 11:59:04 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D7DB14C059;
+ Tue,  2 Nov 2021 11:59:03 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 51A794C046;
+ Tue,  2 Nov 2021 11:59:03 +0000 (GMT)
+Received: from localhost (unknown [9.43.68.191])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  2 Nov 2021 11:59:03 +0000 (GMT)
+Date: Tue, 02 Nov 2021 17:29:02 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/bpf: fix write protecting JIT code
+To: ast@kernel.org, christophe.leroy@csgroup.eu, Daniel Borkmann
+ <daniel@iogearbox.net>,
+ Hari Bathini <hbathini@linux.ibm.com>, jniethe5@gmail.com,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <20211025055649.114728-1-hbathini@linux.ibm.com>
+ <1635142354.46h6w5c2rx.naveen@linux.ibm.com>
+ <c8d7390b-c07c-75cd-e9e9-4b8f0b786cc6@iogearbox.net>
+ <87zgqs8upq.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87zgqs8upq.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1635852231.aebe6lt6u4.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
+User-Agent: astroid/v0.16-1-g4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1635854227.x13v13l6az.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 3Obt2H3OnEADXCDZNsGtkT5ZTe4QcLUD
+X-Proofpoint-ORIG-GUID: WwFZpJM367dIuy28z4OWZMTgWEtv8ABy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-02_07,2021-11-02_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0
+ priorityscore=1501 mlxscore=0 impostorscore=0 suspectscore=0
+ mlxlogscore=999 lowpriorityscore=0 bulkscore=0 clxscore=1015 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111020068
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,55 +113,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, kjain@linux.ibm.com, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, rnsastry@linux.ibm.com
+Cc: songliubraving@fb.com, netdev@vger.kernel.org, john.fastabend@gmail.com,
+ kpsingh@kernel.org, stable@vger.kernel.org, andrii@kernel.org,
+ paulus@samba.org, yhs@fb.com, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kafai@fb.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of October 29, 2021 11:15 pm:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->> Excerpts from Athira Rajeev's message of October 29, 2021 1:05 pm:
->>> @@ -631,12 +632,18 @@ static int pseries_migrate_partition(u64 handle)
->>>  	if (ret)
->>>  		return ret;
->>> =20
->>> +	/* Disable PMU before suspend */
->>> +	on_each_cpu(&mobility_pmu_disable, NULL, 0);
+Michael Ellerman wrote:
+> Daniel Borkmann <daniel@iogearbox.net> writes:
+>> On 10/25/21 8:15 AM, Naveen N. Rao wrote:
+>>> Hari Bathini wrote:
+>>>> Running program with bpf-to-bpf function calls results in data access
+>>>> exception (0x300) with the below call trace:
+>>>>
+>>>> =C2=A0=C2=A0=C2=A0 [c000000000113f28] bpf_int_jit_compile+0x238/0x750 =
+(unreliable)
+>>>> =C2=A0=C2=A0=C2=A0 [c00000000037d2f8] bpf_check+0x2008/0x2710
+>>>> =C2=A0=C2=A0=C2=A0 [c000000000360050] bpf_prog_load+0xb00/0x13a0
+>>>> =C2=A0=C2=A0=C2=A0 [c000000000361d94] __sys_bpf+0x6f4/0x27c0
+>>>> =C2=A0=C2=A0=C2=A0 [c000000000363f0c] sys_bpf+0x2c/0x40
+>>>> =C2=A0=C2=A0=C2=A0 [c000000000032434] system_call_exception+0x164/0x33=
+0
+>>>> =C2=A0=C2=A0=C2=A0 [c00000000000c1e8] system_call_vectored_common+0xe8=
+/0x278
+>>>>
+>>>> as bpf_int_jit_compile() tries writing to write protected JIT code
+>>>> location during the extra pass.
+>>>>
+>>>> Fix it by holding off write protection of JIT code until the extra
+>>>> pass, where branch target addresses fixup happens.
+>>>>
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: 62e3d4210ac9 ("powerpc/bpf: Write protect JIT code")
+>>>> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+>>>> ---
+>>>> =C2=A0arch/powerpc/net/bpf_jit_comp.c | 2 +-
+>>>> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>>>=20
+>>> Thanks for the fix!
+>>>=20
+>>> Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 >>
->> Why was this moved out of stop machine and to an IPI?
->>
->> My concern would be, what are the other CPUs doing at this time? Is it=20
->> possible they could take interrupts and schedule? Could that mess up the
->> perf state here?
+>> LGTM, I presume this fix will be routed via Michael.
 >=20
-> pseries_migrate_partition() is called directly from migration_store(),
-> which is the sysfs store function, which can be called concurrently by
-> different CPUs.
+> Thanks for reviewing, I've picked it up.
 >=20
-> It's also potentially called from rtas_syscall_dispatch_ibm_suspend_me(),
-> from sys_rtas(), again with no locking.
+>> BPF selftests have plenty of BPF-to-BPF calls in there, too bad this was
+>> caught so late. :/
 >=20
-> So we could have two CPUs calling into here at the same time, which
-> might not crash, but is unlikely to work well.
+> Yeah :/
 >=20
-> I think the lack of locking might have been OK in the past because only
-> one CPU will successfully get the other CPUs to call do_join() in
-> pseries_suspend(). But I could be wrong.
->=20
-> Anyway, now that we're mutating the PMU state before suspending we need
-> to be more careful. So I think we need a lock around the whole sequence.
+> STRICT_KERNEL_RWX is not on by default in all our defconfigs, so that's
+> probably why no one caught it.
 
-My concern is still that we wouldn't necessarily have the other CPUs=20
-under control at that point even if we serialize the migrate path.
-They could take interrupts, possibly call into perf subsystem after
-the mobility_pmu_disable (e.g., via syscall or context switch) which=20
-might mess things up.
+Yeah, sorry - we should have caught this sooner.
 
-I think the stop machine is a reasonable place for the code in this=20
-case. It's a low level disabling of hardware facility and saving off=20
-registers.
+>=20
+> I used to run the BPF selftests but they stopped building for me a while
+> back, I'll see if I can get them going again.
+
+Ravi had started looking into getting the selftests working well before=20
+he left. I will take a look at this.
+
 
 Thanks,
-Nick
+Naveen
 
