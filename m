@@ -2,33 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A79F9442D35
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:51:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A71CB442D1C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:49:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7XL4Jztz3f33
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 22:51:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7Tl4NFJz3gBw
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 22:48:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7G62MvDz3c4x
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:38:54 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7G02N8cz30Qx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:38:48 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hk7G54Thjz4xdl;
- Tue,  2 Nov 2021 22:38:53 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hk7G00XhGz4xdZ;
+ Tue,  2 Nov 2021 22:38:48 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20211027072410.40950-1-ruscur@russell.cc>
-References: <20211027072410.40950-1-ruscur@russell.cc>
-Subject: Re: [PATCH] powerpc/security: Use a mutex for interrupt exit code
- patching
-Message-Id: <163584792339.1845480.1083493723225070083.b4-ty@ellerman.id.au>
-Date: Tue, 02 Nov 2021 21:12:03 +1100
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20211014024424.528848-1-mpe@ellerman.id.au>
+References: <20211014024424.528848-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/dcr: Use cmplwi instead of 3-argument cmpli
+Message-Id: <163584792457.1845480.16320937670703968873.b4-ty@ellerman.id.au>
+Date: Tue, 02 Nov 2021 21:12:04 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,25 +42,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com
+Cc: ndesaulniers@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 27 Oct 2021 17:24:10 +1000, Russell Currey wrote:
-> The mitigation-patching.sh script in the powerpc selftests toggles
-> all mitigations on and off simultaneously, revealing that rfi_flush
-> and stf_barrier cannot safely operate at the same time due to races
-> in updating the static key.
+On Thu, 14 Oct 2021 13:44:24 +1100, Michael Ellerman wrote:
+> In dcr-low.S we use cmpli with three arguments, instead of four
+> arguments as defined in the ISA:
 > 
-> On some systems, the static key code throws a warning and the kernel
-> remains functional.  On others, the kernel will hang or crash.
+> 	cmpli	cr0,r3,1024
+> 
+> This appears to be a PPC440-ism, looking at the "PPC440x5 CPU Core
+> User’s Manual" it shows cmpli having no L field, but implied to be 0 due
+> to the core being 32-bit. It mentions that the ISA defines four
+> arguments and recommends using cmplwi.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/security: Use a mutex for interrupt exit code patching
-      https://git.kernel.org/powerpc/c/3c12b4df8d5e026345a19886ae375b3ebc33c0b6
+[1/1] powerpc/dcr: Use cmplwi instead of 3-argument cmpli
+      https://git.kernel.org/powerpc/c/fef071be57dc43679a32d5b0e6ee176d6f12e9f2
 
 cheers
