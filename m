@@ -1,36 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595B34424CB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 01:35:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD62442565
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 02:58:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HjrXn2JL7z3036
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 11:35:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HjtN24md7z3036
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:58:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HjYl90Tpgz2xF5;
- Tue,  2 Nov 2021 00:28:36 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A1A3160551;
- Mon,  1 Nov 2021 13:28:22 +0000 (UTC)
-Date: Mon, 1 Nov 2021 13:28:19 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Dmitry Osipenko <digetx@gmail.com>
-Subject: Re: [PATCH v2 11/45] arm64: Use do_kernel_power_off()
-Message-ID: <YX/rc872EIlC+QGE@arm.com>
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-12-digetx@gmail.com>
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
+ envelope-from=heying24@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HjtMX5Xxcz2xWj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 12:57:41 +1100 (AEDT)
+Received: from dggeme758-chm.china.huawei.com (unknown [172.30.72.56])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4HjtFw0PM5zbhNk;
+ Tue,  2 Nov 2021 09:52:52 +0800 (CST)
+Received: from huawei.com (10.67.174.47) by dggeme758-chm.china.huawei.com
+ (10.3.19.104) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.15; Tue, 2
+ Nov 2021 09:57:35 +0800
+From: He Ying <heying24@huawei.com>
+To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
+ <akpm@linux-foundation.org>, <npiggin@gmail.com>,
+ <aneesh.kumar@linux.ibm.com>
+Subject: [PATCH] powerpc: Fix reference leak of node np in opal_lpc_init
+Date: Mon, 1 Nov 2021 21:59:18 -0400
+Message-ID: <20211102015918.134647-1-heying24@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211027211715.12671-12-digetx@gmail.com>
-X-Mailman-Approved-At: Tue, 02 Nov 2021 11:35:15 +1100
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.47]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggeme758-chm.china.huawei.com (10.3.19.104)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,59 +49,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Tomer Maimon <tmaimon77@gmail.com>,
- Santosh Shilimkar <ssantosh@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- Tali Perry <tali.perry1@gmail.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Thierry Reding <thierry.reding@gmail.com>, Guo Ren <guoren@kernel.org>,
- Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
- Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Benjamin Fair <benjaminfair@google.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- linux-sh@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
- Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Jonathan Hunter <jonathanh@nvidia.com>, Tony Lindgren <tony@atomide.com>,
- Chen-Yu Tsai <wens@csie.org>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org,
- linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
- Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
- linux-omap@vger.kernel.org,
- Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
- Vladimir Zapolskiy <vz@mleia.com>, linux-acpi@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, Mark Brown <broonie@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Nancy Yuen <yuenn@google.com>, linux-arm-kernel@lists.infradead.org,
- Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Nick Hu <nickhu@andestech.com>, Avi Fishman <avifishman70@gmail.com>,
- Patrick Venture <venture@google.com>, linux-pm@vger.kernel.org,
- Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, openbmc@lists.ozlabs.org,
- Joshua Thompson <funaho@jurai.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 28, 2021 at 12:16:41AM +0300, Dmitry Osipenko wrote:
-> Kernel now supports chained power-off handlers. Use do_kernel_power_off()
-> that invokes chained power-off handlers. It also invokes legacy
-> pm_power_off() for now, which will be removed once all drivers will
-> be converted to the new power-off API.
-> 
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+When breaking from for_each_compatible_node body, we increase the
+reference of node np. Then calling isa_bridge_init_non_pci()
+will assign np to isa_bridge_devnode. It looks good. However,
+other error paths in the code should put the node np back to avoid
+the reference leak. Fix the problem by adding missing
+of_node_put().
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: He Ying <heying24@huawei.com>
+---
+ arch/powerpc/kernel/isa-bridge.c          | 10 +++++++++-
+ arch/powerpc/platforms/powernv/opal-lpc.c |  6 +++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/kernel/isa-bridge.c b/arch/powerpc/kernel/isa-bridge.c
+index 39c625737c09..bcf1d6024f9e 100644
+--- a/arch/powerpc/kernel/isa-bridge.c
++++ b/arch/powerpc/kernel/isa-bridge.c
+@@ -192,14 +192,17 @@ void __init isa_bridge_init_non_pci(struct device_node *np)
+ 	u64 cbase, pbase, size = 0;
+ 
+ 	/* If we already have an ISA bridge, bail off */
+-	if (isa_bridge_devnode != NULL)
++	if (isa_bridge_devnode != NULL) {
++		of_node_put(np);
+ 		return;
++	}
+ 
+ 	pna = of_n_addr_cells(np);
+ 	if (of_property_read_u32(np, "#address-cells", &na) ||
+ 	    of_property_read_u32(np, "#size-cells", &ns)) {
+ 		pr_warn("ISA: Non-PCI bridge %pOF is missing address format\n",
+ 			np);
++		of_node_put(np);
+ 		return;
+ 	}
+ 
+@@ -207,6 +210,7 @@ void __init isa_bridge_init_non_pci(struct device_node *np)
+ 	if (na != 2 || ns != 1) {
+ 		pr_warn("ISA: Non-PCI bridge %pOF has unsupported address format\n",
+ 			np);
++		of_node_put(np);
+ 		return;
+ 	}
+ 	rs = na + ns + pna;
+@@ -216,6 +220,7 @@ void __init isa_bridge_init_non_pci(struct device_node *np)
+ 	if (ranges == NULL || rlen < rs) {
+ 		pr_warn("ISA: Non-PCI bridge %pOF has absent or invalid ranges\n",
+ 			np);
++		of_node_put(np);
+ 		return;
+ 	}
+ 
+@@ -233,6 +238,7 @@ void __init isa_bridge_init_non_pci(struct device_node *np)
+ 	if (!size || !pbasep) {
+ 		pr_warn("ISA: Non-PCI bridge %pOF has no usable IO range\n",
+ 			np);
++		of_node_put(np);
+ 		return;
+ 	}
+ 
+@@ -246,6 +252,7 @@ void __init isa_bridge_init_non_pci(struct device_node *np)
+ 	if (pbase == OF_BAD_ADDR) {
+ 		pr_warn("ISA: Non-PCI bridge %pOF failed to translate IO base\n",
+ 			np);
++		of_node_put(np);
+ 		return;
+ 	}
+ 
+@@ -253,6 +260,7 @@ void __init isa_bridge_init_non_pci(struct device_node *np)
+ 	if ((cbase & ~PAGE_MASK) || (pbase & ~PAGE_MASK)) {
+ 		pr_warn("ISA: Non-PCI bridge %pOF has non aligned IO range\n",
+ 			np);
++		of_node_put(np);
+ 		return;
+ 	}
+ 
+diff --git a/arch/powerpc/platforms/powernv/opal-lpc.c b/arch/powerpc/platforms/powernv/opal-lpc.c
+index 1e5d51db40f8..5647752b2d6a 100644
+--- a/arch/powerpc/platforms/powernv/opal-lpc.c
++++ b/arch/powerpc/platforms/powernv/opal-lpc.c
+@@ -398,8 +398,11 @@ void __init opal_lpc_init(void)
+ 		opal_lpc_chip_id = of_get_ibm_chip_id(np);
+ 		break;
+ 	}
+-	if (opal_lpc_chip_id < 0)
++	if (opal_lpc_chip_id < 0) {
++		if (np)
++			of_node_put(np);
+ 		return;
++	}
+ 
+ 	/* Does it support direct mapping ? */
+ 	if (of_get_property(np, "ranges", NULL)) {
+@@ -407,6 +410,7 @@ void __init opal_lpc_init(void)
+ 			opal_lpc_chip_id);
+ 		isa_bridge_init_non_pci(np);
+ 	} else {
++		of_node_put(np);
+ 		pr_info("OPAL: Found non-mapped LPC bus on chip %d\n",
+ 			opal_lpc_chip_id);
+ 
+-- 
+2.17.1
+
