@@ -1,33 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2097E442D1B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:48:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE70442D1A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:48:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7TJ6z1wz3g67
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 22:48:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7St2JQSz3g4G
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 22:48:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7Fz3fkNz3bP7
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:38:47 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7Fy750sz2ywW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:38:46 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hk7Fz2mcmz4xdY;
- Tue,  2 Nov 2021 22:38:47 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hk7Fy46FQz4xdW;
+ Tue,  2 Nov 2021 22:38:46 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: paulus@samba.org, Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20211027061646.540708-1-mpe@ellerman.id.au>
-References: <20211027061646.540708-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] MAINTAINERS: Update powerpc KVM entry
-Message-Id: <163584792793.1845480.13540784301137496504.b4-ty@ellerman.id.au>
+To: Denis Kirjanov <kda@linux-powerpc.org>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20211026133108.7113-1-kda@linux-powerpc.org>
+References: <20211026133108.7113-1-kda@linux-powerpc.org>
+Subject: Re: [PATCH] powerpc/xmon: fix task state output
+Message-Id: <163584792720.1845480.16587603542850268738.b4-ty@ellerman.id.au>
 Date: Tue, 02 Nov 2021 21:12:07 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -43,26 +42,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org, pbonzini@redhat.com, npiggin@gmail.com,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 27 Oct 2021 17:16:46 +1100, Michael Ellerman wrote:
-> Paul is no longer handling patches for kvmppc.
+On Tue, 26 Oct 2021 16:31:08 +0300, Denis Kirjanov wrote:
+> p_state is unsigned since the commit 2f064a59a11f
 > 
-> Instead we'll treat them as regular powerpc patches, taking them via the
-> powerpc tree, using the topic/ppc-kvm branch when necessary.
+> The patch also uses TASK_RUNNING instead of null.
 > 
-> Also drop the web reference, it doesn't have any information
-> specifically relevant to powerpc KVM.
 > 
-> [...]
 
 Applied to powerpc/next.
 
-[1/1] MAINTAINERS: Update powerpc KVM entry
-      https://git.kernel.org/powerpc/c/19b27f37ca97d1e42453b9e48af1cccb296f6965
+[1/1] powerpc/xmon: fix task state output
+      https://git.kernel.org/powerpc/c/b1f896ce3542eb2eede5949ee2e481526fae1108
 
 cheers
