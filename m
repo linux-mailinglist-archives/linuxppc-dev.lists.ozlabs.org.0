@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99136442D39
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:51:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD274442D3C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:52:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7Xn3jFTz3gkB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 22:51:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7YD4w0dz3cYN
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 22:52:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
@@ -14,22 +14,22 @@ Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7G65lVpz3c6W
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:38:54 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7G80BGQz2ynk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:38:56 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hk7G64xjtz4xdm;
- Tue,  2 Nov 2021 22:38:54 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hk7G73Wdkz4xdn;
+ Tue,  2 Nov 2021 22:38:55 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20211025102436.19177-1-ruscur@russell.cc>
-References: <20211025102436.19177-1-ruscur@russell.cc>
-Subject: Re: [PATCH] selftests/powerpc: Use date instead of EPOCHSECONDS in
- mitigation-patching.sh
-Message-Id: <163584792057.1845480.15822844076288003416.b4-ty@ellerman.id.au>
-Date: Tue, 02 Nov 2021 21:12:00 +1100
+To: Scott Wood <oss@buserror.net>, Michael Ellerman <mpe@ellerman.id.au>, Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20211021105657.72572-1-u.kleine-koenig@pengutronix.de>
+References: <20211021105657.72572-1-u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] powerpc: mpc8349emitx: Make mcu_gpiochip_remove() return
+ void
+Message-Id: <163584792173.1845480.8901860932693104869.b4-ty@ellerman.id.au>
+Date: Tue, 02 Nov 2021 21:12:01 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,24 +44,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ kernel@pengutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 25 Oct 2021 20:24:36 +1000, Russell Currey wrote:
-> The EPOCHSECONDS environment variable was added in bash 5.0 (released
-> 2019).  Some distributions of the "stable" and "long-term" variety ship
-> older versions of bash than this, so swap to using the date command
-> instead.
+On Thu, 21 Oct 2021 12:56:57 +0200, Uwe Kleine-König wrote:
+> Up to now mcu_gpiochip_remove() returns zero unconditionally. Make it
+> return void instead which makes it easier to see in the callers that
+> there is no error to handle.
 > 
-> "%s" was added to coreutils `date` in 1993 so we should be good, but who
-> knows, it is a GNU extension and not part of the POSIX spec for `date`.
+> Also the return value of i2c remove callbacks is ignored anyway.
+> 
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] selftests/powerpc: Use date instead of EPOCHSECONDS in mitigation-patching.sh
-      https://git.kernel.org/powerpc/c/cb662608e546d755e3e1b51b30a269459323bf24
+[1/1] powerpc: mpc8349emitx: Make mcu_gpiochip_remove() return void
+      https://git.kernel.org/powerpc/c/5d354dc35ebb0b224d627264c60f60dbda3a1bc3
 
 cheers
