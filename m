@@ -1,36 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 794A3442CE6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:39:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10DA442CF5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 12:42:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7Gj3R9gz3cW6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 22:39:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hk7Kh4MJhz2ywG
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Nov 2021 22:42:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7FX4yjGz2xBq
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:38:24 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hk7Ff6Cmbz2yQw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Nov 2021 22:38:30 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hk7FX39fHz4xcC;
- Tue,  2 Nov 2021 22:38:24 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hk7Ff57Nhz4xct;
+ Tue,  2 Nov 2021 22:38:30 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>
-In-Reply-To: <316c543b8906712c108985c8463eec09c8db577b.1629732542.git.christophe.leroy@csgroup.eu>
-References: <316c543b8906712c108985c8463eec09c8db577b.1629732542.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/32: Don't use lmw/stmw for saving/restoring non
- volatile regs
-Message-Id: <163584790541.1845480.12718539739212562295.b4-ty@ellerman.id.au>
-Date: Tue, 02 Nov 2021 21:11:45 +1100
+In-Reply-To: <c3f9ec9950394ef939014f7934268e6ee30ca04f.1630398566.git.christophe.leroy@csgroup.eu>
+References: <c3f9ec9950394ef939014f7934268e6ee30ca04f.1630398566.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/time: Remove generic_suspend_{dis/en}able_irqs()
+Message-Id: <163584790697.1845480.13077572464095477965.b4-ty@ellerman.id.au>
+Date: Tue, 02 Nov 2021 21:11:46 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,22 +49,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 23 Aug 2021 15:29:12 +0000 (UTC), Christophe Leroy wrote:
-> Instructions lmw/stmw are interesting for functions that are rarely
-> used and not in the cache, because only one instruction is to be
-> copied into the instruction cache instead of 19. However those
-> instruction are less performant than 19x raw lwz/stw as they require
-> synchronisation plus one additional cycle.
+On Tue, 31 Aug 2021 08:29:35 +0000 (UTC), Christophe Leroy wrote:
+> Commit d75d68cfef49 ("powerpc: Clean up obsolete code relating to
+> decrementer and timebase") made generic_suspend_enable_irqs() and
+> generic_suspend_disable_irqs() static.
 > 
-> SAVE_NVGPRS / REST_NVGPRS are used in only a few places which are
-> mostly in interrupts entries/exits and in task switch so they are
-> likely already in the cache.
+> Fold them into their only caller.
+> 
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/32: Don't use lmw/stmw for saving/restoring non volatile regs
-      https://git.kernel.org/powerpc/c/a85c728cb5e12216c19ae5878980c2cbbbf8616d
+[1/1] powerpc/time: Remove generic_suspend_{dis/en}able_irqs()
+      https://git.kernel.org/powerpc/c/e606a2f46c72ec399bb9be194f6df95ea8ec3b1b
 
 cheers
