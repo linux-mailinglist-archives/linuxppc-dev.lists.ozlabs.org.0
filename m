@@ -2,55 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87549443983
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Nov 2021 00:19:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9428443A4F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Nov 2021 01:11:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HkQpX3T2Lz2xsg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Nov 2021 10:19:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HkRyv5xgkz2ynj
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Nov 2021 11:11:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CPycaGj8;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=H3i3P/pa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HkQnt3Jd1z2xBl
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Nov 2021 10:18:58 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=CPycaGj8; 
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=H3i3P/pa; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HkQnt2VGhz4xbC;
- Wed,  3 Nov 2021 10:18:58 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1635895138;
- bh=YFiZDGWUC1/1vtgCtfKwz+BIRJgxcnCFDDMQt4TIZ2A=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=CPycaGj8D5pOC4yfecRW+Ke8e5re9XWdhjA65Qiq8chCXBm3ZYrhm93zLw7ZbC3zA
- QapfvYm0yp2EYcSi1/9oXEq+IvKwtW+G+X0nFTHE1jqIaIT9dlt3l8YcrdaEW2ZoPw
- EsUBNhd77eObxHsm3TUjXmADxgCSCwEs+uLekAX08vCAR0HEWsCs3wJrLiJL/F/28g
- UGeGrOz6nYuyjwlsSEy2o5iL8Sp+dcMy2i0r7swWhgKjjs7k8buxQK8YFpNhfsfYcE
- AHLnlV+df3R8pm0+Z45YaFRQWEaSrMNsH9plxeUD14bDkA9xVIrJYZcqwrgx0Q1Xw1
- n9lTkWgpbnz7w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Paul Moore <paul@paul-moore.com>, patch-notifications@ellerman.id.au
-Subject: Re: [PATCH v2 RESEND] powerpc/audit: Convert powerpc to
- AUDIT_ARCH_COMPAT_GENERIC
-In-Reply-To: <CAHC9VhROvSQHVQ6Wo8zHND1rGm+r6dGJur69B65sJ9JwNvMDpQ@mail.gmail.com>
-References: <a4b3951d1191d4183d92a07a6097566bde60d00a.1629812058.git.christophe.leroy@csgroup.eu>
- <163584790624.1845480.1785827913484538939.b4-ty@ellerman.id.au>
- <CAHC9VhROvSQHVQ6Wo8zHND1rGm+r6dGJur69B65sJ9JwNvMDpQ@mail.gmail.com>
-Date: Wed, 03 Nov 2021 10:18:57 +1100
-Message-ID: <87a6im87tq.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HkRyB1Wnnz2xCt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Nov 2021 11:11:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=yiusFCW+f2K0ALHpFvDau6vHV1OaeV9ZhqUB3iArawg=; b=H3i3P/paQQyo18OlORiZcA7r0B
+ +YeBijwe8hPcFbRYtNWNI45FDMMZfW/e+XSx3ky8cIP05TeFW7ANNvmd2mXLMMS1Hpd8Whbj/eFkR
+ YJ6ioeR4dr2sSK/1ZBz9e9oL4+vZ58EfniVNDcH6MOJpxCIDCJCdCT6gMEkUhPNykHGaUpKYFoabq
+ uRbBazNnswQdE+yh5dAF23euhaKmAjo8bP3mbyVGVyzuCH8O4220oZ8CgOWZ2loc663vkvM1HXMXJ
+ oShxcfv3/5JtGpMI5NgD+OVwGQzz98d/FK/iYltgZ8Sg2iZLeqC5rPjCc0JFrrlCa7XAjTTR8n4+B
+ oTCJo9mw==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
+ (Red Hat Linux)) id 1mi3rO-003aHh-An; Wed, 03 Nov 2021 00:10:34 +0000
+Date: Tue, 2 Nov 2021 17:10:34 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH 06/13] nvdimm/blk: avoid calling del_gendisk() on early
+ failures
+Message-ID: <YYHTejXKvsGoDlOa@bombadil.infradead.org>
+References: <20211015235219.2191207-1-mcgrof@kernel.org>
+ <20211015235219.2191207-7-mcgrof@kernel.org>
+ <CAPcyv4j+xLT=5RUodHWgnPjNq6t5OcmX1oM2zK2ML0U+OS_16Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4j+xLT=5RUodHWgnPjNq6t5OcmX1oM2zK2ML0U+OS_16Q@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,36 +63,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linux-audit@redhat.com,
- Paul Mackerras <paulus@samba.org>, Eric Paris <eparis@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Linux NVDIMM <nvdimm@lists.linux.dev>, vigneshr@ti.com,
+ linux-nvme@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
+ miquel.raynal@bootlin.com, "Weiny, Ira" <ira.weiny@intel.com>,
+ Christoph Hellwig <hch@lst.de>, Dave Jiang <dave.jiang@intel.com>,
+ Sagi Grimberg <sagi@grimberg.me>, Minchan Kim <minchan@kernel.org>,
+ Vishal L Verma <vishal.l.verma@intel.com>, Nitin Gupta <ngupta@vflare.org>,
+ linux-block@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Geoff Levand <geoff@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Jim Paris <jim@jtan.com>, senozhatsky@chromium.org,
+ Richard Weinberger <richard@nod.at>, linux-mtd@lists.infradead.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Paul Moore <paul@paul-moore.com> writes:
-> On Tue, Nov 2, 2021 at 7:38 AM Michael Ellerman
-> <patch-notifications@ellerman.id.au> wrote:
->>
->> On Tue, 24 Aug 2021 13:36:13 +0000 (UTC), Christophe Leroy wrote:
->> > Commit e65e1fc2d24b ("[PATCH] syscall class hookup for all normal
->> > targets") added generic support for AUDIT but that didn't include
->> > support for bi-arch like powerpc.
->> >
->> > Commit 4b58841149dc ("audit: Add generic compat syscall support")
->> > added generic support for bi-arch.
->> >
->> > [...]
->>
->> Applied to powerpc/next.
->>
->> [1/1] powerpc/audit: Convert powerpc to AUDIT_ARCH_COMPAT_GENERIC
->>       https://git.kernel.org/powerpc/c/566af8cda399c088763d07464463dc871c943b54
->
-> Did the test failure discussed earlier in this thread ever get
-> resolved?  If not, this really shouldn't be in linux-next IMO.
+On Fri, Oct 15, 2021 at 05:13:48PM -0700, Dan Williams wrote:
+> On Fri, Oct 15, 2021 at 4:53 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
+> >
+> > If nd_integrity_init() fails we'd get del_gendisk() called,
+> > but that's not correct as we should only call that if we're
+> > done with device_add_disk(). Fix this by providing unwinding
+> > prior to the devm call being registered and moving the devm
+> > registration to the very end.
+> >
+> > This should fix calling del_gendisk() if nd_integrity_init()
+> > fails. I only spotted this issue through code inspection. It
+> > does not fix any real world bug.
+> >
+> 
+> Just fyi, I'm preparing patches to delete this driver completely as it
+> is unused by any shipping platform. I hope to get that removal into
+> v5.16.
 
-It's not in next, that notification is from the b4 thanks script, which
-didn't notice that the commit has since been reverted.
+Curious if are you going to nuking it on v5.16? Otherwise it would stand
+in the way of the last few patches to add __must_check for the final
+add_disk() error handling changes.
 
-cheers
+  Luis
