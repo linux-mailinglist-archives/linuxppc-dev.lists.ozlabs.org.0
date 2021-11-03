@@ -2,67 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A705444385
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Nov 2021 15:28:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C3284447EB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Nov 2021 19:08:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HkpzL34cYz303F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 01:28:30 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=hPdDISF7;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=M/L7iHHf;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hkvrj0P23z2yZt
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 05:08:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=hPdDISF7; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=M/L7iHHf; 
- dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=nefkom.net (client-ip=212.18.0.9; helo=mail-out.m-online.net;
+ envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+X-Greylist: delayed 411 seconds by postgrey-1.36 at boromir;
+ Thu, 04 Nov 2021 05:07:39 AEDT
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hkpxw2Glhz2xCN
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 01:27:16 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 005D21FD39;
- Wed,  3 Nov 2021 14:27:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1635949633; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WjVRAY/znLnXw9klPTASWRvUFX89s7VJBB58DLKxfUQ=;
- b=hPdDISF7zAFlR3D1VghEwmjLHCyJzAEZGI0T8s7i9kBvzyNFjrw+frUJBJfEZeC8Ip0b2k
- 9CYntkKVcibvtIt4bOiDd2rt7wfUJMSf6sMOczsmStyf+tPif9oe5fW8uRhLvXi6kodmy2
- B8ic5OKRxc3H7Yhx3sv/wI4gfMCqG1w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1635949633;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WjVRAY/znLnXw9klPTASWRvUFX89s7VJBB58DLKxfUQ=;
- b=M/L7iHHfkmz+2rw50TnNglTComYCUk4dpfnWf3iG+LhOoQW3W2vt25Q5xGT8rHAr1z6NTC
- faUcUhialZOVm3AQ==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
- by relay2.suse.de (Postfix) with ESMTP id D155AA3B92;
- Wed,  3 Nov 2021 14:27:12 +0000 (UTC)
-From: Michal Suchanek <msuchanek@suse.de>
-To: keyrings@vger.kernel.org
-Subject: [PATCH 3/3] powerpc/kexec_file: Add KEXEC_SIG support.
-Date: Wed,  3 Nov 2021 15:27:08 +0100
-Message-Id: <ba7ffddf9e15288baeae6c2099e573509321738c.1635948742.git.msuchanek@suse.de>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1635948742.git.msuchanek@suse.de>
-References: <cover.1635948742.git.msuchanek@suse.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HkvrC2Sqrz2xBx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 05:07:38 +1100 (AEDT)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+ by mail-out.m-online.net (Postfix) with ESMTP id 4Hkvh91D9vz1qwH4;
+ Wed,  3 Nov 2021 19:00:41 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+ by mail.m-online.net (Postfix) with ESMTP id 4Hkvh90hDVz1qqkJ;
+ Wed,  3 Nov 2021 19:00:41 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
+ port 10024)
+ with ESMTP id rbHPHfyVOdeV; Wed,  3 Nov 2021 19:00:40 +0100 (CET)
+X-Auth-Info: Rhg4tcukREDcGWTT1dcSoVRACLjvHFiHKvFs4+W11sECoukhHBeyyZumnJsIfZWU
+Received: from igel.home (ppp-46-244-172-4.dynamic.mnet-online.de
+ [46.244.172.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.mnet-online.de (Postfix) with ESMTPSA;
+ Wed,  3 Nov 2021 19:00:40 +0100 (CET)
+Received: by igel.home (Postfix, from userid 1000)
+ id 7B2052C0F33; Wed,  3 Nov 2021 09:51:51 +0100 (CET)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Finn Thain <fthain@linux-m68k.org>
+Subject: Re: Fwd: Fwd: X stopped working with 5.14 on iBook
+References: <6919111c-02fa-c6b9-bb05-04161e52f340@yahoo.com>
+ <27ad38f3-c1a8-ac5c-8467-f311b5882a00@yahoo.com>
+ <d5d0b396-7408-bdae-cf50-4b5f4e7b3184@csgroup.eu>
+ <48c3ed15-2ecf-cc12-c287-2b61457f5fb__21333.0969143257$1635819996$gmane$org@nippy.intranet>
+X-Yow: I love ROCK 'N ROLL!  I memorized the all WORDS to ``WIPE-OUT'' in
+ 1965!!
+Date: Wed, 03 Nov 2021 09:51:51 +0100
+In-Reply-To: <48c3ed15-2ecf-cc12-c287-2b61457f5fb__21333.0969143257$1635819996$gmane$org@nippy.intranet>
+ (Finn Thain's message of "Tue, 2 Nov 2021 13:20:21 +1100 (AEDT)")
+Message-ID: <87cznh39lk.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,85 +66,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, linux-s390@vger.kernel.org,
- Vasily Gorbik <gor@linux.ibm.com>,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- Heiko Carstens <hca@linux.ibm.com>, Jessica Yu <jeyu@kernel.org>,
- linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org,
- Frank van der Linden <fllinden@amazon.com>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: "Christopher M. Riedl" <cmr@linux.ibm.com>,
+ Stan Johnson <stanley.johnson.001@protonmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Riccardo Mottola <riccardo.mottola@libero.it>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the module verifier for the kernel image verification.
+On Nov 02 2021, Finn Thain wrote:
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
----
- arch/powerpc/Kconfig        | 11 +++++++++++
- arch/powerpc/kexec/elf_64.c | 14 ++++++++++++++
- 2 files changed, 25 insertions(+)
+> After many builds and tests, Stan and I were able to determine that this 
+> regression only affects builds with CONFIG_USER_NS=y. That is,
+>
+> d3ccc9781560  + CONFIG_USER_NS=y  -->  fail
+> d3ccc9781560  + CONFIG_USER_NS=n  -->  okay
+> d3ccc9781560~ + CONFIG_USER_NS=y  -->  okay
+> d3ccc9781560~ + CONFIG_USER_NS=n  -->  okay
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 743c9783c64f..27bffafa9e79 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -558,6 +558,17 @@ config KEXEC_FILE
- config ARCH_HAS_KEXEC_PURGATORY
- 	def_bool KEXEC_FILE
- 
-+config KEXEC_SIG
-+	bool "Verify kernel signature during kexec_file_load() syscall"
-+	depends on KEXEC_FILE && MODULE_SIG_FORMAT
-+	help
-+	  This option makes kernel signature verification mandatory for
-+	  the kexec_file_load() syscall.
-+
-+	  In addition to that option, you need to enable signature
-+	  verification for the corresponding kernel image type being
-+	  loaded in order for this to work.
-+
- config PPC64_BUILD_ELF_V2_ABI
- 	bool
- 
-diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-index eeb258002d1e..e8dff6b23ac5 100644
---- a/arch/powerpc/kexec/elf_64.c
-+++ b/arch/powerpc/kexec/elf_64.c
-@@ -23,6 +23,7 @@
- #include <linux/of_fdt.h>
- #include <linux/slab.h>
- #include <linux/types.h>
-+#include <linux/verification.h>
- 
- static void *elf64_load(struct kimage *image, char *kernel_buf,
- 			unsigned long kernel_len, char *initrd,
-@@ -151,7 +152,20 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 	return ret ? ERR_PTR(ret) : NULL;
- }
- 
-+#ifdef CONFIG_KEXEC_SIG
-+int elf64_verify_sig(const char *kernel, unsigned long length)
-+{
-+	size_t kernel_len = length;
-+
-+	return verify_appended_signature(kernel, &kernel_len, VERIFY_USE_PLATFORM_KEYRING,
-+					 "kexec_file");
-+}
-+#endif /* CONFIG_KEXEC_SIG */
-+
- const struct kexec_file_ops kexec_elf64_ops = {
- 	.probe = kexec_elf_probe,
- 	.load = elf64_load,
-+#ifdef CONFIG_KEXEC_SIG
-+	.verify_sig = elf64_verify_sig,
-+#endif
- };
+On my iBook G4, X is working alright with 5.15 and CONFIG_USER_NS=y.
+
+Andreas.
+
 -- 
-2.31.1
-
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
