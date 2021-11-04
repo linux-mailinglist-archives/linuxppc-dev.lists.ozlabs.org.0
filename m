@@ -2,73 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE36A444EB2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 07:18:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D580444EC1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 07:20:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HlD315D0gz2ywf
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 17:18:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HlD6D6vZRz2ywZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 17:20:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=b7L7/Tpz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MFQUNQ+G;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634;
- helo=mail-pl1-x634.google.com; envelope-from=davidcomponentone@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=b7L7/Tpz; dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HlD2J1JxGz2xgN
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 17:17:25 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id u17so5542108plg.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Nov 2021 23:17:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=qwY/0Yret/ZeU+RSixeWoCXh4kAArCYXsS+DBE2iOpM=;
- b=b7L7/Tpz1l/HxDPeN39J9BMcBjMJwNyQ/xfaESAkuJ4b9f8p2/XbcsNDU5693ndSId
- WEYzqyFy8I6fSDQcl1pD8kFsvySUaedoqOEjWXx0FVRUkdwwi95TmLyBOdB0KgQeKilq
- e10V6iLB67OtwudJy5YWsAdvLmn4pt2i0ee/Xj/3lwdpgDH10tdSMRkgfslGMvURgLNy
- cQnp5we2TjPYoKHjr/ClxG+RESgKks0lBKJcUVt0wf3ZrvOqiz/Ln7utxCtBKMzXJ1EC
- iewav8hFSyuofy1lTTYo9qqF0EPGS8xo9DBpxrIHutJmYLkmX2OeSZxxWBVsgJjbP5i8
- lLeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=qwY/0Yret/ZeU+RSixeWoCXh4kAArCYXsS+DBE2iOpM=;
- b=nO5Zpso0xwdB5b6/4XxhKeI0E603n1qKItOTWUBYayVyvhP8++ySKfvf9i4FfQDNLd
- iubG7YEEHgQQICEhJU36HNw1Pc2t5VC+plB9po/wtHdycDkiCKjT5x6M9UrUSwE13lvn
- Qi43cNq4zxE0tFW1iKvV19mhIC4PvPH7rI6Zj1xV3HWT77AqaOT3gx6qbyBWLcUjDg+p
- 99VrgqgJZOkPd2UfrR5siPREW/bsLzsTBudeJKfTk9Uj0Vkl0vtvil1XUpfb4f1GnOa8
- 29m2DWtg1VJB91cMLodfQE2WhbHStidFse0nSdScMggnNbbi6XIopcnt1NJBBMVbXFsI
- l2JQ==
-X-Gm-Message-State: AOAM5317D5pQuc5FgxDDRAneYVUvdTaG8WllOvpKj+hNMdB6dV+6pElM
- hLQj8EYlMqHe/uvgPUyMR3M=
-X-Google-Smtp-Source: ABdhPJyJuRHN9mD8kGYSac3FNpwwDOidKHwy/xInjRGJxG7R0xX2xZ2j2x96d36H2Lo6RqJecqNk8w==
-X-Received: by 2002:a17:90a:f182:: with SMTP id
- bv2mr19780432pjb.139.1636006641455; 
- Wed, 03 Nov 2021 23:17:21 -0700 (PDT)
-Received: from debian11-dev-61.localdomain (192.243.120.180.16clouds.com.
- [192.243.120.180])
- by smtp.gmail.com with ESMTPSA id a10sm3193010pgw.25.2021.11.03.23.17.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Nov 2021 23:17:21 -0700 (PDT)
-From: davidcomponentone@gmail.com
-X-Google-Original-From: yang.guang5@zte.com.cn
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc: use swap() to make code cleaner
-Date: Thu,  4 Nov 2021 14:17:09 +0800
-Message-Id: <20211104061709.1505592-1-yang.guang5@zte.com.cn>
-X-Mailer: git-send-email 2.30.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HlD5c3Pr6z2x9V
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 17:20:20 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=MFQUNQ+G; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HlD5b0n9Vz4xd3;
+ Thu,  4 Nov 2021 17:20:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1636006820;
+ bh=2SNIkm5qUho28abvnF4QlEf2hkq7CW4M7metdPf2QTM=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=MFQUNQ+GP+C2P8TdN24VsueDWWzioLH7ID41VsHLgoF4lV/ZgG1BH+54S0a0PBK5s
+ SBmj55YPAPd5xVBnZXzYT5Zq27Ai9HugvEYmm2R9LEUyEGe18udAGaTOQp29tK9/tV
+ 3Bl5hVL/+btrOxlHrR8KWTFNCp88NeY+wI9ZJx/kwIFFl+OJcVLBbnO8BAC1REG1O9
+ c8AOsJkIIwF2zMn4S44Ib0uYE4DkT+/UtNsDMzazfo5eumt3SZwRPy1t7Cm507Igzi
+ aJQJZIi86WiA1MC0PD6xdkRk30kamaOYWVWZgh3pX4eI87VgXDR2LkxIFQIn61bgUA
+ xKvtn6zIKQ1vA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Subject: Re: [PATCH v2 RESEND] powerpc/audit: Convert powerpc to
+ AUDIT_ARCH_COMPAT_GENERIC
+In-Reply-To: <20211102235449.rwtbgmddkzdaodhv@meerkat.local>
+References: <a4b3951d1191d4183d92a07a6097566bde60d00a.1629812058.git.christophe.leroy@csgroup.eu>
+ <163584790624.1845480.1785827913484538939.b4-ty@ellerman.id.au>
+ <CAHC9VhROvSQHVQ6Wo8zHND1rGm+r6dGJur69B65sJ9JwNvMDpQ@mail.gmail.com>
+ <87a6im87tq.fsf@mpe.ellerman.id.au>
+ <20211102235449.rwtbgmddkzdaodhv@meerkat.local>
+Date: Thu, 04 Nov 2021 17:20:18 +1100
+Message-ID: <871r3w8msd.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,48 +63,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sfr@canb.auug.org.au, sxwjean@gmail.com, Zeal Robot <zealci@zte.com.cn>,
- davidcomponentone@gmail.com, linux-kernel@vger.kernel.org, nathan@kernel.org,
- yang.guang5@zte.com.cn, paulus@samba.org, aneesh.kumar@linux.ibm.com,
+Cc: Paul Moore <paul@paul-moore.com>, patch-notifications@ellerman.id.au,
+ linux-kernel@vger.kernel.org, linux-audit@redhat.com,
+ Paul Mackerras <paulus@samba.org>, Eric Paris <eparis@redhat.com>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Yang Guang <yang.guang5@zte.com.cn>
+Konstantin Ryabitsev <konstantin@linuxfoundation.org> writes:
+> On Wed, Nov 03, 2021 at 10:18:57AM +1100, Michael Ellerman wrote:
+>> It's not in next, that notification is from the b4 thanks script, which
+>> didn't notice that the commit has since been reverted.
+>
+> Yeah... I'm not sure how to catch that, but I'm open to suggestions.
 
-Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
-opencoding it.
+I think that's probably the first time I've had a commit and a revert of
+the commit in the same batch of thanks mails.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
----
- arch/powerpc/kernel/fadump.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+And the notification is not wrong, the commit was applied with that SHA,
+it is in the tree.
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index b7ceb041743c..5b40e2d46090 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1265,7 +1265,6 @@ static void fadump_release_reserved_area(u64 start, u64 end)
- static void sort_and_merge_mem_ranges(struct fadump_mrange_info *mrange_info)
- {
- 	struct fadump_memory_range *mem_ranges;
--	struct fadump_memory_range tmp_range;
- 	u64 base, size;
- 	int i, j, idx;
- 
-@@ -1281,9 +1280,7 @@ static void sort_and_merge_mem_ranges(struct fadump_mrange_info *mrange_info)
- 				idx = j;
- 		}
- 		if (idx != i) {
--			tmp_range = mem_ranges[idx];
--			mem_ranges[idx] = mem_ranges[i];
--			mem_ranges[i] = tmp_range;
-+			swap(mem_ranges[idx], mem_ranges[i]);
- 		}
- 	}
- 
--- 
-2.30.2
+So I'm not sure it's very common to have a commit & a revert in the tree
+at the same time.
 
+
+On the other hand being able to generate a mail for an arbitrary revert
+would be helpful, ie. independent of any thanks state.
+
+eg, picking a random commit from the past:
+
+  e95ad5f21693 ("powerpc/head_check: Fix shellcheck errors")
+
+
+If I revert that in my tree today, it'd be cool if I could run something
+that would detect the revert, backtrack to the reverted commit, extract
+the message-id from the Link: tag, and generate a reply to the original
+submission noting that it's now been reverted.
+
+In fact we could write a bot to do that across all commits ever ...
+
+cheers
