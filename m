@@ -1,75 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334214456FD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 17:15:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D5644575E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 17:40:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HlTHn11SSz3cjr
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 03:15:01 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=VtXG9k4u;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HlTsY2gCsz3bXV
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 03:40:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629;
- helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=VtXG9k4u; dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
- [IPv6:2607:f8b0:4864:20::629])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HlTCW1xJyz2yLv
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 03:11:19 +1100 (AEDT)
-Received: by mail-pl1-x629.google.com with SMTP id p18so7944658plf.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Nov 2021 09:11:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=H9AXcbG4KSZwIU2h/S5yrB5tF1pdeiOAyNFrjQoVYOw=;
- b=VtXG9k4uaqwx8y1e/yGAyLaesDUKbnuRRIDdgwwr1LN6UIpe6VT9YOgutqANFY0I+f
- lr/DoqnVW0XnBdm1Lf5zFfxHkYRgsEtVkPBSWPZoLuVWS0+GGakddnxvfeMB3rRT7HOm
- dLrCCsR17saCFTZ6VK6lhdc+BDLa7cLFa4v+H/EIzUfOxN9w/UglM0hfGwBiMiU8YfI4
- UWdXNMjXMmQZNUO9ruZ6rFynl8d6Sv6HJXpCCwmYJFiSpuJCsAwF741JmGqQ1D+bzrts
- uaq+tIMkiXR7WJKF61j/XzLcJVN7TPg1eQtVGJ+6hQ2Q2TJII43bMXcnTTfcMkhUjMR3
- hytw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=H9AXcbG4KSZwIU2h/S5yrB5tF1pdeiOAyNFrjQoVYOw=;
- b=J4S3GJ8MB5/khdsUh6NzfKg0MJ8etgB5uzbq0vY0Fka0WEzVTPOF1NTleAayWdMC2L
- Mhgsa3uZo4DzeO1v4ccU9VngEdiizT6oHm9d/MGqL2RxirOR+aFwSAS/+z7Zo/Lyk7N0
- 3sy9+T7wm7WyiH52OK5KpVXzjb2O6AbnFLw+NirxQ7/0BTy9Zz54JuVmGL8suwfJa4nt
- WEP96Z5JDnIZeMaM8FLWmgz/0Acp+J5pTkIkcemGwLt9r0+x+RnCUPrn3R6CtalOUiGD
- FwcWow7Y7j9c6HN7h0PWrWSbjrHe7wVxvuit9OU0RAGXXvenWlghtDRZapG5brO1UlHe
- XShw==
-X-Gm-Message-State: AOAM531IT4I2alup07gL2S5L3NrceZzbmo0cBV9FlRhMbB9NBit2VmJ9
- xnS37q9m/RidipP/ICiDKnOrl2qPvIM=
-X-Google-Smtp-Source: ABdhPJz9ZepEr7VEkQXQeEkvS33rO6Y+F7Ts2zU2xsp+WMGPmTTP//wVAmg3nJ5RLS4FDTtS0jLx5g==
-X-Received: by 2002:a17:90b:2252:: with SMTP id
- hk18mr11710723pjb.218.1636042274303; 
- Thu, 04 Nov 2021 09:11:14 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (60-241-46-56.tpgi.com.au. [60.241.46.56])
- by smtp.gmail.com with ESMTPSA id
- h3sm5897890pfi.207.2021.11.04.09.11.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Nov 2021 09:11:14 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 5/5] powerpc/watchdog: Remove backtrace print from unstuck
- message
-Date: Fri,  5 Nov 2021 02:10:57 +1000
-Message-Id: <20211104161057.1255659-6-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20211104161057.1255659-1-npiggin@gmail.com>
-References: <20211104161057.1255659-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HlTs34CwJz2xtK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 03:40:20 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4HlTrt5QXgz9sSw;
+ Thu,  4 Nov 2021 17:40:14 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id XvoEAsy_BhrJ; Thu,  4 Nov 2021 17:40:14 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HlTrn0xn4z9sSl;
+ Thu,  4 Nov 2021 17:40:09 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0BC078B781;
+ Thu,  4 Nov 2021 17:40:09 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id qwL6sSqOlkTV; Thu,  4 Nov 2021 17:40:08 +0100 (CET)
+Received: from [192.168.233.108] (po17922.idsi0.si.c-s.fr [192.168.233.108])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AB3DD8B763;
+ Thu,  4 Nov 2021 17:40:08 +0100 (CET)
+Message-ID: <a1e6c282-c8fd-9671-5df6-cd7ca06fdbb3@csgroup.eu>
+Date: Thu, 4 Nov 2021 17:40:08 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: Fwd: Fwd: X stopped working with 5.14 on iBook
+Content-Language: fr-FR
+To: Finn Thain <fthain@linux-m68k.org>,
+ "Christopher M. Riedl" <cmr@linux.ibm.com>
+References: <6919111c-02fa-c6b9-bb05-04161e52f340@yahoo.com>
+ <27ad38f3-c1a8-ac5c-8467-f311b5882a00@yahoo.com>
+ <d5d0b396-7408-bdae-cf50-4b5f4e7b3184@csgroup.eu>
+ <48c3ed15-2ecf-cc12-c287-2b61457f5fb@nippy.intranet>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <48c3ed15-2ecf-cc12-c287-2b61457f5fb@nippy.intranet>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,42 +66,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Dufour <ldufour@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Stan Johnson <stanley.johnson.001@protonmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Riccardo Mottola <riccardo.mottola@libero.it>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The watchdog unstuck message can't be serialised with other watchdog
-messages because that might prevent watchdog reporting. This removes
-the big backtrace from the unstuck message, which can get mixed with
-other messages and confuse logs, and just prints a single line.
 
-Signed-of-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/watchdog.c | 6 ------
- 1 file changed, 6 deletions(-)
 
-diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
-index 2444cd10b61a..5f69ba4de1f3 100644
---- a/arch/powerpc/kernel/watchdog.c
-+++ b/arch/powerpc/kernel/watchdog.c
-@@ -242,16 +242,10 @@ static void wd_smp_clear_cpu_pending(int cpu)
- {
- 	if (!cpumask_test_cpu(cpu, &wd_smp_cpus_pending)) {
- 		if (unlikely(cpumask_test_cpu(cpu, &wd_smp_cpus_stuck))) {
--			struct pt_regs *regs = get_irq_regs();
- 			unsigned long flags;
- 
- 			pr_emerg("CPU %d became unstuck TB:%lld\n",
- 				 cpu, get_tb());
--			print_irqtrace_events(current);
--			if (regs)
--				show_regs(regs);
--			else
--				dump_stack();
- 
- 			wd_smp_lock(&flags);
- 			cpumask_clear_cpu(cpu, &wd_smp_cpus_stuck);
--- 
-2.23.0
+Le 02/11/2021 à 03:20, Finn Thain a écrit :
+> Hi Christopher,
+> 
+> After many builds and tests, Stan and I were able to determine that this
+> regression only affects builds with CONFIG_USER_NS=y. That is,
+> 
+> d3ccc9781560  + CONFIG_USER_NS=y  -->  fail
+> d3ccc9781560  + CONFIG_USER_NS=n  -->  okay
+> d3ccc9781560~ + CONFIG_USER_NS=y  -->  okay
+> d3ccc9781560~ + CONFIG_USER_NS=n  -->  okay
+> 
+> Stan also tested a PowerMac G3 system and found that the regression is not
+> present there. Thus far, only PowerMac G4 systems are known to be affected
+> (Stan's Cube and Riccardo's PowerBook).
+> 
+> I asked Stan to try v5.15-rc after reverting commit d3ccc9781560.
+> Unexpectedly, this build had the same issue. So, it appears there are
+> multiple bad commits that produce this Xorg failure, of which d3ccc9781560
+> is just the first.
+> 
+> But there's no easy way to identify the other bad commits using bisection.
+> So I've addressed this message to you. Can you help fix this regression?
+> 
+
+I'm wondering if this commit is really the cause of the problem.
+
+Are you using GCC 11 ?
+
+If yes, I think it could be a false positive, fixed by 
+https://github.com/linuxppc/linux/commit/7315e457d6bc
+
+Can you try with GCC 10 or older ?
+
+Can you cherry pick 7315e457d6bc ("powerpc/uaccess: Fix __get_user() 
+with CONFIG_CC_HAS_ASM_GOTO_OUTPUT") on top of d3ccc9781560 and see what 
+happens ?
+
+Thanks
+Christophe
 
