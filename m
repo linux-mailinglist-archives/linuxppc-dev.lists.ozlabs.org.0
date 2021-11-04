@@ -1,61 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5FD4450D5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 10:02:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF0144516B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 11:07:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HlHhP2jX1z3bNB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 20:02:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HlK7t1BJhz2ynX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 21:07:38 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=isvl7dbJ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nefkom.net (client-ip=212.18.0.9; helo=mail-out.m-online.net;
- envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HlHgy698Hz2xXD
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 20:01:49 +1100 (AEDT)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
- by mail-out.m-online.net (Postfix) with ESMTP id 4HlHgs5zzgz1qwdy;
- Thu,  4 Nov 2021 10:01:45 +0100 (CET)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
- by mail.m-online.net (Postfix) with ESMTP id 4HlHgs5Ww7z1qqkd;
- Thu,  4 Nov 2021 10:01:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
- port 10024)
- with ESMTP id jpwjYGu3dAku; Thu,  4 Nov 2021 10:01:45 +0100 (CET)
-X-Auth-Info: hyN1qwWjSmTAlG7ZQTf0EJhBUN/TZW9TZLOoU0wDUmhOxAyRZRTFUt080OYgCtSS
-Received: from igel.home (ppp-46-244-165-151.dynamic.mnet-online.de
- [46.244.165.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.mnet-online.de (Postfix) with ESMTPSA;
- Thu,  4 Nov 2021 10:01:45 +0100 (CET)
-Received: by igel.home (Postfix, from userid 1000)
- id 79AC22C17B5; Thu,  4 Nov 2021 10:01:44 +0100 (CET)
-From: Andreas Schwab <schwab@linux-m68k.org>
-To: Stanley Johnson <stanley.johnson.001@protonmail.com>
-Subject: Re: Fwd: Fwd: X stopped working with 5.14 on iBook
-References: <6919111c-02fa-c6b9-bb05-04161e52f340@yahoo.com>
- <27ad38f3-c1a8-ac5c-8467-f311b5882a00@yahoo.com>
- <d5d0b396-7408-bdae-cf50-4b5f4e7b3184@csgroup.eu>
- <48c3ed15-2ecf-cc12-c287-2b61457f5fb__21333.0969143257$1635819996$gmane$org@nippy.intranet>
- <87cznh39lk.fsf@igel.home>
- <3723058-87f1-cba7-c8ad-ac8dc5722abe@linux-m68k.org>
- <m0OyfpLa146ICa5BY-R6updiBgoAJmoZY4ywxwIMXAXKPzX6HQrpXInpO7V28XnYOm87T4pTbY4VTmJxeY2c_L4u7s4D84cvxQ3Ab-D86_M=@protonmail.com>
-X-Yow: I just got my PRINCE bumper sticker..
- But now I can't remember WHO he is...
-Date: Thu, 04 Nov 2021 10:01:44 +0100
-In-Reply-To: <m0OyfpLa146ICa5BY-R6updiBgoAJmoZY4ywxwIMXAXKPzX6HQrpXInpO7V28XnYOm87T4pTbY4VTmJxeY2c_L4u7s4D84cvxQ3Ab-D86_M=@protonmail.com>
- (Stanley Johnson's message of "Thu, 04 Nov 2021 02:00:22 +0000")
-Message-ID: <87fsscjnuv.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HlK7C0qqTz2xvc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 21:07:03 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=isvl7dbJ; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HlK770t1Gz4xbw;
+ Thu,  4 Nov 2021 21:06:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+ s=201702; t=1636020421;
+ bh=awT5bBlE5ynUwEEralGSrwt9ezjdXHOlQ81tJVY4khE=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=isvl7dbJmKRaelsWXioQXmkjf4E7VBe87nOvKSM2A6rlPyoqNTtwQqcf287ZgGi8H
+ TFhLjw3sPDYTJL6e2ZohJjVRbBVkZZLCZDQC8XcxIb0Okb/JkQlzHswyIzekKwttgE
+ 9XibYyZ9jvue+BTa2Ndb9qxKcmLlquDKBI+cLmS1IipOQpovJTRU5XSevFvvhE4C10
+ S9RzEvj7SvIxomSXbDfalToOdErzRNwvpj2kawa8oBSRckss2kMCrHYIeavbWcBlZH
+ 6quyoZQzg4oGvcBQcyCb6+zw4ZrFjZi7lF0N6mRhX4qV5BqCusjTKyR3UtotIu32t1
+ tzL5isucUalcw==
+Date: Thu, 4 Nov 2021 21:06:56 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: davidcomponentone@gmail.com
+Subject: Re: [PATCH] powerpc: use swap() to make code cleaner
+Message-ID: <20211104210637.3c424bcc@elm.ozlabs.ibm.com>
+In-Reply-To: <20211104061709.1505592-1-yang.guang5@zte.com.cn>
+References: <20211104061709.1505592-1-yang.guang5@zte.com.cn>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; boundary="Sig_/R16OcEvAD708zS6cRq.O30G";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,18 +59,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Christopher M. Riedl" <cmr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Riccardo Mottola <riccardo.mottola@libero.it>,
- Finn Thain <fthain@linux-m68k.org>
+Cc: sfr@canb.auug.org.au, sxwjean@gmail.com, Zeal Robot <zealci@zte.com.cn>,
+ linux-kernel@vger.kernel.org, nathan@kernel.org, yang.guang5@zte.com.cn,
+ paulus@samba.org, aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I don't use debian.
+--Sig_/R16OcEvAD708zS6cRq.O30G
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Andreas.
+Hi,
 
--- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+On Thu,  4 Nov 2021 14:17:09 +0800 davidcomponentone@gmail.com wrote:
+>
+> From: Yang Guang <yang.guang5@zte.com.cn>
+>=20
+> Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
+> opencoding it.
+
+So if swap() is in the above include file, then you should include it.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/R16OcEvAD708zS6cRq.O30G
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmGDsMAACgkQAVBC80lX
+0GzJQQgAg/kH3K8D26DLC1G83icbaaUB7A770GEvFjsQW+93XumOEFQQ/PW9y9Qj
+SAWzu/UnEGWzoNcxNtrc5zB0IgOHqpg32KkwjK2R46p2h/SogfaWVXD3POrLwMMg
+w1l2V/36ORlDTbURwwBuPU/790L7ZY8q82Xhhu6AMWcB4Za7TerOrrOhi4+uVP4w
+fpCAP+6KFhUyHwIvS/uK7AH7BwEugJSjk07b4A6hGwlx/AoloQFIkdmTXZ1jLHkS
+AVEeq7x2dD18junmwjmXJe09HLEAuqNccA3uRLCS8gL+3tq4iPTc4+bg5lslznis
+sjJ0cFMBlDbJSaG9hiEwa1IqoOHMvg==
+=h+K3
+-----END PGP SIGNATURE-----
+
+--Sig_/R16OcEvAD708zS6cRq.O30G--
