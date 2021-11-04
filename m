@@ -2,54 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC7F445B11
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 21:27:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1570D445BCA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 22:45:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HlZtW12MQz305L
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 07:26:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hlccy6Lfqz2yxL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 08:45:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Xtfe0ALb;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=xYAjZ8zs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HlZsr56klz2yHH
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 07:26:24 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=Xtfe0ALb; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=korg header.b=xYAjZ8zs; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HlZsn3FBVz4xbw;
- Fri,  5 Nov 2021 07:26:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
- s=201702; t=1636057583;
- bh=yVowgcppiLdZ5nfNTWkKT+Wc+vgom5rf57+IrITpfXM=;
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HlccL5chCz2xWx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 08:44:49 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6E73D6120F;
+ Thu,  4 Nov 2021 21:44:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+ s=korg; t=1636062286;
+ bh=j99yLbawhP8nS65VSNwoVEG61+ELDW3rr3unGR3UBCg=;
  h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=Xtfe0ALbfmODWt5cHe5930QdFUdhDRbBF9ufK6G0vU+mvL8hOCkwFyUJgRfgDh37j
- u7mritS9hej67J/M554bX/humcIaDgRIeeupz3nT62IVfylBSSwvJ6K+akc7HrtdzS
- ZiQVdzoJX4K7z8v4qwk52K0B/fe0WbzVP1a9JefJhAnjr+xWGYypxftbtut4363on6
- TX205sp/pH4R5F8ZsqKbT9S3yjDxoXEVNrL65pErXJ5H1bN3lR/VWs5IYQrx1HvE/c
- CEja97zz+CHgvCEVpkkqATQgdcrW7Hiy/9ub+fEXJXkW+gMiNZyHOoU33nhAeMSOvs
- ekfLZ28Rsh3Zg==
-Date: Fri, 5 Nov 2021 07:26:18 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH] powerpc: use swap() to make code cleaner
-Message-ID: <20211105072618.4afd84a9@canb.auug.org.au>
-In-Reply-To: <20211104113351.GK614@gate.crashing.org>
-References: <20211104061709.1505592-1-yang.guang5@zte.com.cn>
- <20211104210637.3c424bcc@elm.ozlabs.ibm.com>
- <20211104113351.GK614@gate.crashing.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/O=.71vhxXSmXnHrfLh68vph";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+ b=xYAjZ8zs9+oJOMxv1KXwonQ+aKbWfMmO7HfIsxDFjLoqTAj3LyGtnvu5GAHO6i8F6
+ tTLnvU37UqoYDFqxPz0RM33U6DPFdsgJFgmUGeovTBXOeZZ1uqUtmKClxR9BsD+2R8
+ BoNWN1J1HRZWj563lpDBMFRDadPRbxs05FsdJ6oM=
+Date: Thu, 4 Nov 2021 14:44:42 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Daniel Axtens <dja@axtens.net>
+Subject: Re: [PATCH v3 2/4] mm: Make generic arch_is_kernel_initmem_freed()
+ do what it says
+Message-Id: <20211104144442.7130ae4a104fca70623a2d1a@linux-foundation.org>
+In-Reply-To: <87ilyhmd26.fsf@linkitivity.dja.id.au>
+References: <9ecfdee7dd4d741d172cb93ff1d87f1c58127c9a.1633001016.git.christophe.leroy@csgroup.eu>
+ <1d40783e676e07858be97d881f449ee7ea8adfb1.1633001016.git.christophe.leroy@csgroup.eu>
+ <87ilyhmd26.fsf@linkitivity.dja.id.au>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,66 +59,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sxwjean@gmail.com, aneesh.kumar@linux.ibm.com,
- Zeal Robot <zealci@zte.com.cn>, davidcomponentone@gmail.com,
- linux-kernel@vger.kernel.org, nathan@kernel.org, yang.guang5@zte.com.cn,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Kefeng Wang <wangkefeng.wang@huawei.com>, arnd@arndb.de,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/O=.71vhxXSmXnHrfLh68vph
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On Fri, 01 Oct 2021 17:14:41 +1000 Daniel Axtens <dja@axtens.net> wrote:
 
-Hi Segher,
+> >  #ifdef __KERNEL__
+> > +/*
+> > + * Check if an address is part of freed initmem. After initmem is freed,
+> > + * memory can be allocated from it, and such allocations would then have
+> > + * addresses within the range [_stext, _end].
+> > + */
+> > +#ifndef arch_is_kernel_initmem_freed
+> > +static int arch_is_kernel_initmem_freed(unsigned long addr)
+> > +{
+> > +	if (system_state < SYSTEM_FREEING_INITMEM)
+> > +		return 0;
+> > +
+> > +	return init_section_contains((void *)addr, 1);
+> 
+> Is init_section_contains sufficient here?
+> 
+> include/asm-generic/sections.h says:
+>  * [__init_begin, __init_end]: contains .init.* sections, but .init.text.*
+>  *                   may be out of this range on some architectures.
+>  * [_sinittext, _einittext]: contains .init.text.* sections
+> 
+> init_section_contains only checks __init_*:
+> static inline bool init_section_contains(void *virt, size_t size)
+> {
+> 	return memory_contains(__init_begin, __init_end, virt, size);
+> }
+> 
+> Do we need to check against _sinittext and _einittext?
+> 
+> Your proposed generic code will work for powerpc and s390 because those
+> archs only test against __init_* anyway. I don't know if any platform
+> actually does place .init.text outside of __init_begin=>__init_end, but
+> the comment seems to suggest that they could.
+> 
 
-On Thu, 4 Nov 2021 06:33:51 -0500 Segher Boessenkool <segher@kernel.crashin=
-g.org> wrote:
->
-> On Thu, Nov 04, 2021 at 09:06:56PM +1100, Stephen Rothwell wrote:
-> > On Thu,  4 Nov 2021 14:17:09 +0800 davidcomponentone@gmail.com wrote: =
-=20
-> > > From: Yang Guang <yang.guang5@zte.com.cn>
-> > >=20
-> > > Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
-> > > opencoding it. =20
-> >=20
-> > So if swap() is in the above include file, then you should include it. =
-=20
->=20
-> It is included from kernel.h already (which is included from delay.h).
-
-And that becomes a pain when include files get "cleaned up". :-(
-
-$ grep kernel.h include/linux/delay.h
-$
-
-See commit
-
-  300424acf349 ("include/linux/delay.h: replace kernel.h with the necessary=
- inclusions")
-
-currently pending the Andrew Morton's patch queue (the above is a
-linux-next commit).
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/O=.71vhxXSmXnHrfLh68vph
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmGEQeoACgkQAVBC80lX
-0GwV+Af/QfgNuHshpM97/m+EA6krcPslVh80rCHog7q7R2NBlPt0mHLz115zVfdS
-0YvSRA/fUS8LUkDii8JRTxwjvUjXPuPOF9ldSQTH5ACmCYqkruGIiCsDSzkvE+Lf
-/lR3W6/ifGUa2b0sDNQANtNwXCy1O6Vu6sYM2PO9FzZdK8+kEwl+JUfYJEtwHBfq
-yL2lP/hZiqj/M+huaFEgr+gMTdQhPOsPDFNfPrJkvXE9f7/XDHt8WYXt4t/Ni9EC
-bL+nOCdxxargQ+UZmF1pbkx4SbBJY9Xwh2MuAi09QRzyWIFwxoLjvdSGIkkB5HK0
-VqZnLGtsn8w1kvLg3+fGk/NF4mFdVw==
-=U0JT
------END PGP SIGNATURE-----
-
---Sig_/O=.71vhxXSmXnHrfLh68vph--
+Christophe?
