@@ -1,73 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7384444E75
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 06:45:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9530444E8D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 06:55:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HlCKj4YJGz2ypR
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 16:45:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HlCYD3Vh1z2ywf
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 16:55:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Pqsw36ve;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=V423I4Gi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Pqsw36ve; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HlCJw2SHrz2xDk
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 16:45:04 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPS id F11D360EBB
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 05:45:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1636004701;
- bh=FIPo7Sgm1lRV3K43lft2TmZ3a61vXAO4P5QeVTMj11w=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=Pqsw36venI386mmbXSDard/KB0ITcBD7Z4gfDeD6iNUYai6itQdjLoI8eVtKrB4Fv
- kKWRkKi4/G+cTRbxcGyyyQ+UuG2PtDbYruvzR2WuICoyt7emjI88l96GItA6rASEIJ
- vRFn7n+Yv6l9iu8Y0Sem/yYF/jWvSTbaiO0DZy3Pm11d4OTR9Ks6AuKXvJaDYuIOlS
- GK0VABKyg0kinaYBDYe0/u+2MRKSQ1pFh2TyT6zX9bb7u6hhQk6e/BSIGFMlKdJlK2
- o3DDdJiBn3SRFG0/gj9SLfgHh/kjHA68GOa6VhPQ6cmERz87Hy1tbOCOcl0Gtf0YUZ
- R8UXBc2odUCJg==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id DCDB361106; Thu,  4 Nov 2021 05:45:00 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 214913] [xfstests generic/051] BUG: Kernel NULL pointer
- dereference on read at 0x00000108 NIP [c0000000000372e4]
- tm_cgpr_active+0x14/0x40
-Date: Thu, 04 Nov 2021 05:45:00 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: ASSIGNED
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status cc
-Message-ID: <bug-214913-206035-sxytMN7GrZ@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-214913-206035@https.bugzilla.kernel.org/>
-References: <bug-214913-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HlCXZ5srtz2xt5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 16:55:10 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=V423I4Gi; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HlCXZ0pSZz4xd4;
+ Thu,  4 Nov 2021 16:55:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1636005310;
+ bh=wMqJrgnonfWvo7biaNiSDQLOEo+k1KW9ztBsmOM5h4Q=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=V423I4GiTYJ/27XLpVXCiPAvzZODDiRXTaQWnkE6bnjpBCqgYNyl7rDvQCYl83bq7
+ FFFg9JwEqIbB7L6Jqdm4OEX84AK0jaaGrNBKlLuC+5gP9hE2bL08SGUocwsMNE+wjl
+ 3TKyExziekhl1bhLt9VlgGyxPLgI4pV+j62/e8NG4ToCO8VMPXHBytdo8TCP22Cb5f
+ BUqH7gUciQAvliV4Qs6Z1wK858MMlgKi8Bc9X6WApSBj+5LsnHvWAzaUKkaUYGFzxK
+ pQXJpI2zL/iaJuicf6GVRVfr6MhW3WeYDeK72UXSYWbdGtyqfWCBip7CtZUYqu2SNJ
+ TgfV7kLvehMCQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nathan Lynch <nathanl@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [V3] powerpc/perf: Enable PMU counters post partition migration
+ if PMU is active
+In-Reply-To: <8735odx7us.fsf@linux.ibm.com>
+References: <20211029030510.58797-1-atrajeev@linux.vnet.ibm.com>
+ <1635487923.hwdpof7s4v.astroid@bobo.none>
+ <87sfwk7z0m.fsf@mpe.ellerman.id.au>
+ <1635852231.aebe6lt6u4.astroid@bobo.none> <8735odx7us.fsf@linux.ibm.com>
+Date: Thu, 04 Nov 2021 16:55:07 +1100
+Message-ID: <877ddo8nyc.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,27 +62,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kjain@linux.ibm.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+ maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D214913
+Nathan Lynch <nathanl@linux.ibm.com> writes:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>> Excerpts from Michael Ellerman's message of October 29, 2021 11:15 pm:
+>>> Nicholas Piggin <npiggin@gmail.com> writes:
+>>>> Excerpts from Athira Rajeev's message of October 29, 2021 1:05 pm:
+>>>>> @@ -631,12 +632,18 @@ static int pseries_migrate_partition(u64 handle)
+>>>>>  	if (ret)
+>>>>>  		return ret;
+>>>>>  
+>>>>> +	/* Disable PMU before suspend */
+>>>>> +	on_each_cpu(&mobility_pmu_disable, NULL, 0);
+>>>>
+>>>> Why was this moved out of stop machine and to an IPI?
+>>>>
+>>>> My concern would be, what are the other CPUs doing at this time? Is it 
+>>>> possible they could take interrupts and schedule? Could that mess up the
+>>>> perf state here?
+>>> 
+>>> pseries_migrate_partition() is called directly from migration_store(),
+>>> which is the sysfs store function, which can be called concurrently by
+>>> different CPUs.
+>>> 
+>>> It's also potentially called from rtas_syscall_dispatch_ibm_suspend_me(),
+>>> from sys_rtas(), again with no locking.
+>>> 
+>>> So we could have two CPUs calling into here at the same time, which
+>>> might not crash, but is unlikely to work well.
+>>> 
+>>> I think the lack of locking might have been OK in the past because only
+>>> one CPU will successfully get the other CPUs to call do_join() in
+>>> pseries_suspend(). But I could be wrong.
+>>> 
+>>> Anyway, now that we're mutating the PMU state before suspending we need
+>>> to be more careful. So I think we need a lock around the whole
+>>> sequence.
+>
+> Regardless of the outcome here, generally agreed that some serialization
+> should be imposed in this path. The way the platform works (and some
+> extra measures by the drmgr utility) make it so that this code isn't
+> entered concurrently in usual operation, but it's possible to make it
+> happen if you are root.
 
-Michael Ellerman (michael@ellerman.id.au) changed:
+Yeah I agree it's unlikely to be a problem in practice.
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|NEW                         |ASSIGNED
-                 CC|                            |michael@ellerman.id.au
+> A file-static mutex should be OK.
 
---- Comment #2 from Michael Ellerman (michael@ellerman.id.au) ---
-Thanks for the report, I agree this looks like a powerpc bug not an XFS bug.
+Ack.
 
-I won't have time to look at this until next week probably, unless someone
-beats me to it.
+>> My concern is still that we wouldn't necessarily have the other CPUs 
+>> under control at that point even if we serialize the migrate path.
+>> They could take interrupts, possibly call into perf subsystem after
+>> the mobility_pmu_disable (e.g., via syscall or context switch) which 
+>> might mess things up.
+>>
+>> I think the stop machine is a reasonable place for the code in this 
+>> case. It's a low level disabling of hardware facility and saving off 
+>> registers.
+>
+> That makes sense, but I can't help feeling concerned still. For this to
+> be safe, power_pmu_enable() and power_pmu_disable() must never sleep or
+> re-enable interrupts or send IPIs. I don't see anything obviously unsafe
+> right now, but is that already part of their contract? Is there much
+> risk they could change in the future to violate those constraints?
+>
+> That aside, the proposed change seems like we would be hacking around a
+> more generic perf/pmu limitation in a powerpc-specific way. I see the
+> same behavior on x86 across suspend/resume.
+>
+> # perf stat -a -e cache-misses -I 1000 & sleep 2 ; systemctl suspend ; sleep 20 ; kill $(jobs -p)
+> [1] 189806
+> #           time             counts unit events
+>      1.000501710          9,983,649      cache-misses
+>      2.002620321         14,131,072      cache-misses
+>      3.004579071         23,010,971      cache-misses
+>      9.971854783 140,737,491,680,853      cache-misses
+>     10.982669250                  0      cache-misses
+>     11.984660498                  0      cache-misses
+>     12.986648392                  0      cache-misses
+>     13.988561766                  0      cache-misses
+>     14.992670615                  0      cache-misses
+>     15.994938111                  0      cache-misses
+>     16.996703952                  0      cache-misses
+>     17.999092812                  0      cache-misses
+>     19.000602677                  0      cache-misses
+>     20.003272216                  0      cache-misses
+>     21.004770295                  0      cache-misses
+> # uname -r
+> 5.13.19-100.fc33.x86_64
 
---=20
-You may reply to this email to add a comment.
+That is interesting.
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Athira, I guess we should bring that to the perf maintainers and see if
+there's any interest in solving the issue in a generic fashion.
+
+cheers
