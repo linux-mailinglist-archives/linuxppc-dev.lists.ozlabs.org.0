@@ -1,61 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2E5445072
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 09:37:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5FD4450D5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 10:02:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HlH7X5w6dz3c4X
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 19:37:12 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=L2hIUVZJ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HlHhP2jX1z3bNB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 20:02:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dkim=fail reason="signature verification failed" (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=L2hIUVZJ; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=nefkom.net (client-ip=212.18.0.9; helo=mail-out.m-online.net;
+ envelope-from=whitebox@nefkom.net; receiver=<UNKNOWN>)
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HlH5C41d0z2yyf
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 19:35:11 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3EF7961216;
- Thu,  4 Nov 2021 08:35:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1636014908;
- bh=McY9gQ8BqcMk7vs9Z3yJmIcYKviY8ebHfiIPLxeEYfg=;
- h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=L2hIUVZJC5ixiAN4OCUcLRhkNCWwGRCwv5ZsXPbX0UpJkgBT2HwOuX+Yqla3g61dm
- KhM1aP0lHGRwM7wo7C3IWrIUPTQjVy+DIzARDcFt7LyWvMfe2tvxaqCPOo/uXCZWj/
- 6uz6VABI2LcN4iXF5cAdroklb+0OlCvodXhIgDbU=
-Subject: Patch "mm/zsmalloc: Prepare to variable MAX_PHYSMEM_BITS" has been
- added to the 4.14-stable tree
-To: arnd@arndb.de, benh@kernel.crashing.org, bp@suse.de, f.fainelli@gmail.com,
- gregkh@linuxfoundation.org, hpa@zytor.com, kirill.shutemov@linux.intel.com,
- linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
- linux-mm@kvack.org, linux-snps-arc@lists.infradead.org, linux@armlinux.org.uk,
- linuxppc-dev@lists.ozlabs.org, luto@amacapital.net, minchan@kernel.org,
- mingo@kernel.org, mingo@redhat.com, mpe@ellerman.id.au, ngupta@vflare.org,
- paulus@samba.org, peterz@infradead.org, ralf@linux-mips.org,
- rppt@linux.ibm.com, sashal@kernel.org, sergey.senozhatsky.work@gmail.com,
- stefan@agner.ch, tglx@linutronix.de, torvalds@linux-foundation.org,
- tsbogend@alpha.franken.de, vgupta@synopsys.com, x86@kernel.org
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 04 Nov 2021 09:34:58 +0100
-In-Reply-To: <20211103205704.374734-2-f.fainelli@gmail.com>
-Message-ID: <163601489811148@kroah.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HlHgy698Hz2xXD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 20:01:49 +1100 (AEDT)
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+ by mail-out.m-online.net (Postfix) with ESMTP id 4HlHgs5zzgz1qwdy;
+ Thu,  4 Nov 2021 10:01:45 +0100 (CET)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
+ by mail.m-online.net (Postfix) with ESMTP id 4HlHgs5Ww7z1qqkd;
+ Thu,  4 Nov 2021 10:01:45 +0100 (CET)
+X-Virus-Scanned: amavisd-new at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new,
+ port 10024)
+ with ESMTP id jpwjYGu3dAku; Thu,  4 Nov 2021 10:01:45 +0100 (CET)
+X-Auth-Info: hyN1qwWjSmTAlG7ZQTf0EJhBUN/TZW9TZLOoU0wDUmhOxAyRZRTFUt080OYgCtSS
+Received: from igel.home (ppp-46-244-165-151.dynamic.mnet-online.de
+ [46.244.165.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.mnet-online.de (Postfix) with ESMTPSA;
+ Thu,  4 Nov 2021 10:01:45 +0100 (CET)
+Received: by igel.home (Postfix, from userid 1000)
+ id 79AC22C17B5; Thu,  4 Nov 2021 10:01:44 +0100 (CET)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Stanley Johnson <stanley.johnson.001@protonmail.com>
+Subject: Re: Fwd: Fwd: X stopped working with 5.14 on iBook
+References: <6919111c-02fa-c6b9-bb05-04161e52f340@yahoo.com>
+ <27ad38f3-c1a8-ac5c-8467-f311b5882a00@yahoo.com>
+ <d5d0b396-7408-bdae-cf50-4b5f4e7b3184@csgroup.eu>
+ <48c3ed15-2ecf-cc12-c287-2b61457f5fb__21333.0969143257$1635819996$gmane$org@nippy.intranet>
+ <87cznh39lk.fsf@igel.home>
+ <3723058-87f1-cba7-c8ad-ac8dc5722abe@linux-m68k.org>
+ <m0OyfpLa146ICa5BY-R6updiBgoAJmoZY4ywxwIMXAXKPzX6HQrpXInpO7V28XnYOm87T4pTbY4VTmJxeY2c_L4u7s4D84cvxQ3Ab-D86_M=@protonmail.com>
+X-Yow: I just got my PRINCE bumper sticker..
+ But now I can't remember WHO he is...
+Date: Thu, 04 Nov 2021 10:01:44 +0100
+In-Reply-To: <m0OyfpLa146ICa5BY-R6updiBgoAJmoZY4ywxwIMXAXKPzX6HQrpXInpO7V28XnYOm87T4pTbY4VTmJxeY2c_L4u7s4D84cvxQ3Ab-D86_M=@protonmail.com>
+ (Stanley Johnson's message of "Thu, 04 Nov 2021 02:00:22 +0000")
+Message-ID: <87fsscjnuv.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,120 +67,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable-commits@vger.kernel.org
+Cc: "Christopher M. Riedl" <cmr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Riccardo Mottola <riccardo.mottola@libero.it>,
+ Finn Thain <fthain@linux-m68k.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+I don't use debian.
 
-This is a note to let you know that I've just added the patch titled
+Andreas.
 
-    mm/zsmalloc: Prepare to variable MAX_PHYSMEM_BITS
-
-to the 4.14-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     mm-zsmalloc-prepare-to-variable-max_physmem_bits.patch
-and it can be found in the queue-4.14 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
-
-
-From foo@baz Thu Nov  4 09:33:05 AM CET 2021
-From: Florian Fainelli <f.fainelli@gmail.com>
-Date: Wed,  3 Nov 2021 13:57:03 -0700
-Subject: mm/zsmalloc: Prepare to variable MAX_PHYSMEM_BITS
-To: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Nitin Gupta <ngupta@vflare.org>, Minchan Kim <minchan@kernel.org>, Andy Lutomirski <luto@amacapital.net>, Borislav Petkov <bp@suse.de>, Linus Torvalds <torvalds@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>, Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, linux-mm@kvack.org, Ingo Molnar <mingo@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>, Vineet Gupta <vgupta@synopsys.com>, Russell King <linux@armlinux.org.uk>, Ralf Baechle <ralf@linux-mips.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)), Arnd Bergmann <arnd@arndb.de>, Stefan Agner <stefan@agn
- er.ch>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Mike Rapoport <rppt@linux.ibm.com>, linux-snps-arc@lists.infradead.org (open list:SYNOPSYS ARC ARCHITECTURE), linux-arm-kernel@lists.infradead.org (moderated list:ARM PORT), linux-mips@linux-mips.org (open list:MIPS), linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)), linux-arch@vger.kernel.org (open list:GENERIC INCLUDE/ASM HEADER FILES)
-Message-ID: <20211103205704.374734-2-f.fainelli@gmail.com>
-
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-
-commit 02390b87a9459937cdb299e6b34ff33992512ec7 upstream
-
-With boot-time switching between paging mode we will have variable
-MAX_PHYSMEM_BITS.
-
-Let's use the maximum variable possible for CONFIG_X86_5LEVEL=y
-configuration to define zsmalloc data structures.
-
-The patch introduces MAX_POSSIBLE_PHYSMEM_BITS to cover such case.
-It also suits well to handle PAE special case.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Nitin Gupta <ngupta@vflare.org>
-Acked-by: Minchan Kim <minchan@kernel.org>
-Cc: Andy Lutomirski <luto@amacapital.net>
-Cc: Borislav Petkov <bp@suse.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-mm@kvack.org
-Link: http://lkml.kernel.org/r/20180214111656.88514-3-kirill.shutemov@linux.intel.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/x86/include/asm/pgtable-3level_types.h |    1 +
- arch/x86/include/asm/pgtable_64_types.h     |    2 ++
- mm/zsmalloc.c                               |   13 +++++++------
- 3 files changed, 10 insertions(+), 6 deletions(-)
-
---- a/arch/x86/include/asm/pgtable-3level_types.h
-+++ b/arch/x86/include/asm/pgtable-3level_types.h
-@@ -44,5 +44,6 @@ typedef union {
-  */
- #define PTRS_PER_PTE	512
- 
-+#define MAX_POSSIBLE_PHYSMEM_BITS	36
- 
- #endif /* _ASM_X86_PGTABLE_3LEVEL_DEFS_H */
---- a/arch/x86/include/asm/pgtable_64_types.h
-+++ b/arch/x86/include/asm/pgtable_64_types.h
-@@ -40,6 +40,8 @@ typedef struct { pteval_t pte; } pte_t;
- #define P4D_SIZE	(_AC(1, UL) << P4D_SHIFT)
- #define P4D_MASK	(~(P4D_SIZE - 1))
- 
-+#define MAX_POSSIBLE_PHYSMEM_BITS	52
-+
- #else /* CONFIG_X86_5LEVEL */
- 
- /*
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -83,18 +83,19 @@
-  * This is made more complicated by various memory models and PAE.
-  */
- 
--#ifndef MAX_PHYSMEM_BITS
--#ifdef CONFIG_HIGHMEM64G
--#define MAX_PHYSMEM_BITS 36
--#else /* !CONFIG_HIGHMEM64G */
-+#ifndef MAX_POSSIBLE_PHYSMEM_BITS
-+#ifdef MAX_PHYSMEM_BITS
-+#define MAX_POSSIBLE_PHYSMEM_BITS MAX_PHYSMEM_BITS
-+#else
- /*
-  * If this definition of MAX_PHYSMEM_BITS is used, OBJ_INDEX_BITS will just
-  * be PAGE_SHIFT
-  */
--#define MAX_PHYSMEM_BITS BITS_PER_LONG
-+#define MAX_POSSIBLE_PHYSMEM_BITS BITS_PER_LONG
- #endif
- #endif
--#define _PFN_BITS		(MAX_PHYSMEM_BITS - PAGE_SHIFT)
-+
-+#define _PFN_BITS		(MAX_POSSIBLE_PHYSMEM_BITS - PAGE_SHIFT)
- 
- /*
-  * Memory for allocating for handle keeps object position by
-
-
-Patches currently in stable-queue which might be from f.fainelli@gmail.com are
-
-queue-4.14/mm-zsmalloc-prepare-to-variable-max_physmem_bits.patch
-queue-4.14/arch-pgtable-define-max_possible_physmem_bits-where-needed.patch
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
