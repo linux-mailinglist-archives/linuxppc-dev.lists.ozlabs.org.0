@@ -2,54 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A782F444E9C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 07:04:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE36A444EB2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 07:18:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HlCl94jtBz2ypT
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 17:04:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HlD315D0gz2ywf
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 17:18:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EmbGkDhX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=b7L7/Tpz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HlCkY1yt8z2xCN
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 17:03:49 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634;
+ helo=mail-pl1-x634.google.com; envelope-from=davidcomponentone@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=EmbGkDhX; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=b7L7/Tpz; dkim-atps=neutral
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
+ [IPv6:2607:f8b0:4864:20::634])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HlCkX4GkPz4xcG;
- Thu,  4 Nov 2021 17:03:47 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1636005829;
- bh=p/s4JP6PbvtWu7khsyF8vJ6QmABC6L59+cG94M8kDLc=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=EmbGkDhXHcKUm2lpYjR8DUXtGW9HMpO2NjVP3Q9G8oRoGvIfTQ6U1PfO0ey0OP0Xd
- ny5VwgSYcgfRia/ufrmRTdJDeeljrp4voPBfH5YNZV09/GCFoP/KLGmUHW/H/HX7pb
- v0YO1hbpvsqXajkmj4txxqkW9VKPyiUPR23rlm5U0qYNZfCKBs7yw4wG2u9aIH9xgF
- Hxmo3FzPOgF0Jc18QSXTbexj0F0RJRdhXimP92F+gpmjBS04H/mbUGu4QtsGbEbMqC
- 4CAd7PFmlLbyoUpYGFDVfB+pRROSgHCIcrrwyQk8RkND8E4q/l4On9EiHHjLyX3XyJ
- UDQrDE7+Ea4DA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, leoyang.li@nxp.com,
- tyreld@linux.ibm.com
-Subject: Re: [PATCH 2/2] soc: fsl: guts: Add a missing memory allocation
- failure check
-In-Reply-To: <4890990418ecbcfb8921efe8adb2019a03e5a1c1.1635969326.git.christophe.jaillet@wanadoo.fr>
-References: <1063e5a4738d897adcaffce2ab8e4e45f07998ff.1635969326.git.christophe.jaillet@wanadoo.fr>
- <4890990418ecbcfb8921efe8adb2019a03e5a1c1.1635969326.git.christophe.jaillet@wanadoo.fr>
-Date: Thu, 04 Nov 2021 17:03:47 +1100
-Message-ID: <874k8s8njw.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HlD2J1JxGz2xgN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 17:17:25 +1100 (AEDT)
+Received: by mail-pl1-x634.google.com with SMTP id u17so5542108plg.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Nov 2021 23:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=qwY/0Yret/ZeU+RSixeWoCXh4kAArCYXsS+DBE2iOpM=;
+ b=b7L7/Tpz1l/HxDPeN39J9BMcBjMJwNyQ/xfaESAkuJ4b9f8p2/XbcsNDU5693ndSId
+ WEYzqyFy8I6fSDQcl1pD8kFsvySUaedoqOEjWXx0FVRUkdwwi95TmLyBOdB0KgQeKilq
+ e10V6iLB67OtwudJy5YWsAdvLmn4pt2i0ee/Xj/3lwdpgDH10tdSMRkgfslGMvURgLNy
+ cQnp5we2TjPYoKHjr/ClxG+RESgKks0lBKJcUVt0wf3ZrvOqiz/Ln7utxCtBKMzXJ1EC
+ iewav8hFSyuofy1lTTYo9qqF0EPGS8xo9DBpxrIHutJmYLkmX2OeSZxxWBVsgJjbP5i8
+ lLeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=qwY/0Yret/ZeU+RSixeWoCXh4kAArCYXsS+DBE2iOpM=;
+ b=nO5Zpso0xwdB5b6/4XxhKeI0E603n1qKItOTWUBYayVyvhP8++ySKfvf9i4FfQDNLd
+ iubG7YEEHgQQICEhJU36HNw1Pc2t5VC+plB9po/wtHdycDkiCKjT5x6M9UrUSwE13lvn
+ Qi43cNq4zxE0tFW1iKvV19mhIC4PvPH7rI6Zj1xV3HWT77AqaOT3gx6qbyBWLcUjDg+p
+ 99VrgqgJZOkPd2UfrR5siPREW/bsLzsTBudeJKfTk9Uj0Vkl0vtvil1XUpfb4f1GnOa8
+ 29m2DWtg1VJB91cMLodfQE2WhbHStidFse0nSdScMggnNbbi6XIopcnt1NJBBMVbXFsI
+ l2JQ==
+X-Gm-Message-State: AOAM5317D5pQuc5FgxDDRAneYVUvdTaG8WllOvpKj+hNMdB6dV+6pElM
+ hLQj8EYlMqHe/uvgPUyMR3M=
+X-Google-Smtp-Source: ABdhPJyJuRHN9mD8kGYSac3FNpwwDOidKHwy/xInjRGJxG7R0xX2xZ2j2x96d36H2Lo6RqJecqNk8w==
+X-Received: by 2002:a17:90a:f182:: with SMTP id
+ bv2mr19780432pjb.139.1636006641455; 
+ Wed, 03 Nov 2021 23:17:21 -0700 (PDT)
+Received: from debian11-dev-61.localdomain (192.243.120.180.16clouds.com.
+ [192.243.120.180])
+ by smtp.gmail.com with ESMTPSA id a10sm3193010pgw.25.2021.11.03.23.17.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Nov 2021 23:17:21 -0700 (PDT)
+From: davidcomponentone@gmail.com
+X-Google-Original-From: yang.guang5@zte.com.cn
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc: use swap() to make code cleaner
+Date: Thu,  4 Nov 2021 14:17:09 +0800
+Message-Id: <20211104061709.1505592-1-yang.guang5@zte.com.cn>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,72 +80,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Cc: sfr@canb.auug.org.au, sxwjean@gmail.com, Zeal Robot <zealci@zte.com.cn>,
+ davidcomponentone@gmail.com, linux-kernel@vger.kernel.org, nathan@kernel.org,
+ yang.guang5@zte.com.cn, paulus@samba.org, aneesh.kumar@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
-> If 'devm_kstrdup()' fails, we should return -ENOMEM.
->
-> While at it, move the 'of_node_put()' call in the error handling path and
-> after the 'machine' has been copied.
-> Better safe than sorry.
->
-> Suggested-by: Tyrel Datwyler <tyreld@linux.ibm.com>
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> Not sure of which Fixes tag to add. Should be a6fc3b698130, but since
-> another commit needs to be reverted for this patch to make sense, I'm
-> unsure of what to do. :(
-> So, none is given.
+From: Yang Guang <yang.guang5@zte.com.cn>
 
-I think it's still correct to add:
+Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
+opencoding it.
 
-  Fixes: a6fc3b698130 ("soc: fsl: add GUTS driver for QorIQ platforms")
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
+---
+ arch/powerpc/kernel/fadump.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-That is where the bug was introduced, and adding the tag creates a link
-between the fix and the bug, which is what we want.
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index b7ceb041743c..5b40e2d46090 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -1265,7 +1265,6 @@ static void fadump_release_reserved_area(u64 start, u64 end)
+ static void sort_and_merge_mem_ranges(struct fadump_mrange_info *mrange_info)
+ {
+ 	struct fadump_memory_range *mem_ranges;
+-	struct fadump_memory_range tmp_range;
+ 	u64 base, size;
+ 	int i, j, idx;
+ 
+@@ -1281,9 +1280,7 @@ static void sort_and_merge_mem_ranges(struct fadump_mrange_info *mrange_info)
+ 				idx = j;
+ 		}
+ 		if (idx != i) {
+-			tmp_range = mem_ranges[idx];
+-			mem_ranges[idx] = mem_ranges[i];
+-			mem_ranges[i] = tmp_range;
++			swap(mem_ranges[idx], mem_ranges[i]);
+ 		}
+ 	}
+ 
+-- 
+2.30.2
 
-The fact that it also requires the revert in order to apply is kind of
-orthogonal, it means an automated backport of this commit will probably
-fail, but that's OK it just means someone might have to do it manually.
-
-There is some use of "Depends-on:" to flag a commit that is depended on,
-but you can't use that in a patch submission because you don't know the
-SHA of the parent commit.
-
-Possibly whoever applies this can add a Depends-on: pointing to patch 1.
-
-cheers
-
-> ---
->  drivers/soc/fsl/guts.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
-> index af7741eafc57..5ed2fc1c53a0 100644
-> --- a/drivers/soc/fsl/guts.c
-> +++ b/drivers/soc/fsl/guts.c
-> @@ -158,9 +158,14 @@ static int fsl_guts_probe(struct platform_device *pdev)
->  	root = of_find_node_by_path("/");
->  	if (of_property_read_string(root, "model", &machine))
->  		of_property_read_string_index(root, "compatible", 0, &machine);
-> -	of_node_put(root);
-> -	if (machine)
-> +	if (machine) {
->  		soc_dev_attr.machine = devm_kstrdup(dev, machine, GFP_KERNEL);
-> +		if (!soc_dev_attr.machine) {
-> +			of_node_put(root);
-> +			return -ENOMEM;
-> +		}
-> +	}
-> +	of_node_put(root);
->  
->  	svr = fsl_guts_get_svr();
->  	soc_die = fsl_soc_die_match(svr, fsl_soc_die);
-> -- 
-> 2.30.2
