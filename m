@@ -1,57 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D580444EC1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 07:20:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5AA444FFE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 09:15:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HlD6D6vZRz2ywZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 17:20:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HlGfv1vjXz2yxW
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Nov 2021 19:15:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MFQUNQ+G;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fud3ZWon;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HlD5c3Pr6z2x9V
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 17:20:20 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=MFQUNQ+G; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Fud3ZWon; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HlD5b0n9Vz4xd3;
- Thu,  4 Nov 2021 17:20:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1636006820;
- bh=2SNIkm5qUho28abvnF4QlEf2hkq7CW4M7metdPf2QTM=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=MFQUNQ+GP+C2P8TdN24VsueDWWzioLH7ID41VsHLgoF4lV/ZgG1BH+54S0a0PBK5s
- SBmj55YPAPd5xVBnZXzYT5Zq27Ai9HugvEYmm2R9LEUyEGe18udAGaTOQp29tK9/tV
- 3Bl5hVL/+btrOxlHrR8KWTFNCp88NeY+wI9ZJx/kwIFFl+OJcVLBbnO8BAC1REG1O9
- c8AOsJkIIwF2zMn4S44Ib0uYE4DkT+/UtNsDMzazfo5eumt3SZwRPy1t7Cm507Igzi
- aJQJZIi86WiA1MC0PD6xdkRk30kamaOYWVWZgh3pX4eI87VgXDR2LkxIFQIn61bgUA
- xKvtn6zIKQ1vA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Subject: Re: [PATCH v2 RESEND] powerpc/audit: Convert powerpc to
- AUDIT_ARCH_COMPAT_GENERIC
-In-Reply-To: <20211102235449.rwtbgmddkzdaodhv@meerkat.local>
-References: <a4b3951d1191d4183d92a07a6097566bde60d00a.1629812058.git.christophe.leroy@csgroup.eu>
- <163584790624.1845480.1785827913484538939.b4-ty@ellerman.id.au>
- <CAHC9VhROvSQHVQ6Wo8zHND1rGm+r6dGJur69B65sJ9JwNvMDpQ@mail.gmail.com>
- <87a6im87tq.fsf@mpe.ellerman.id.au>
- <20211102235449.rwtbgmddkzdaodhv@meerkat.local>
-Date: Thu, 04 Nov 2021 17:20:18 +1100
-Message-ID: <871r3w8msd.fsf@mpe.ellerman.id.au>
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HlGfC16lXz2xtS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 19:15:15 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPS id 216C9611C3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Nov 2021 08:15:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1636013712;
+ bh=A3/+WeZg7JRdSQJMXTtCaKEOdiZ/cGNfQPwi4Skve8A=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=Fud3ZWonQl4j8BVVzO57aZIK9Pax1l0V0g5dgKgcy3sjKJ26/YIDghALSBgAd7/XP
+ NO/+JHfbC9ZGsfetK5tEO08gs07RANUwaXjePt6cu6hTYJg4MJreqFSPBv7P6g9bq8
+ 2KJmDnJzwmt5orYes7vDNvFTpl2JJxFlz6pFnKARAKYEUKFmFPW29l+YmX7Ys70Qbb
+ xd2oZyk3si7fIteCK6RyQxTLIb9IOoVz0lOnAhv8tKjOZaNIF880azy/zwa00Vc5d4
+ BE0KjXeAlU9MyGbCrSFjQ7C/RkVwJ4HX2Pip5woRMl742ldWE9zjRbg41LOwNimPdG
+ 8lWD/aRf0i3EA==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id 0CD0360F48; Thu,  4 Nov 2021 08:15:12 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 214913] [xfstests generic/051] BUG: Kernel NULL pointer
+ dereference on read at 0x00000108 NIP [c0000000000372e4]
+ tm_cgpr_active+0x14/0x40
+Date: Thu, 04 Nov 2021 08:15:11 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: hramrach@gmail.com
+X-Bugzilla-Status: ASSIGNED
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-214913-206035-zdCB9J6zCu@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-214913-206035@https.bugzilla.kernel.org/>
+References: <bug-214913-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,44 +79,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Moore <paul@paul-moore.com>, patch-notifications@ellerman.id.au,
- linux-kernel@vger.kernel.org, linux-audit@redhat.com,
- Paul Mackerras <paulus@samba.org>, Eric Paris <eparis@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Konstantin Ryabitsev <konstantin@linuxfoundation.org> writes:
-> On Wed, Nov 03, 2021 at 10:18:57AM +1100, Michael Ellerman wrote:
->> It's not in next, that notification is from the b4 thanks script, which
->> didn't notice that the commit has since been reverted.
->
-> Yeah... I'm not sure how to catch that, but I'm open to suggestions.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D214913
 
-I think that's probably the first time I've had a commit and a revert of
-the commit in the same batch of thanks mails.
+Michal Suchanek (hramrach@gmail.com) changed:
 
-And the notification is not wrong, the commit was applied with that SHA,
-it is in the tree.
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |hramrach@gmail.com
 
-So I'm not sure it's very common to have a commit & a revert in the tree
-at the same time.
+--- Comment #3 from Michal Suchanek (hramrach@gmail.com) ---
+What CPU is this?
 
+Does it go away if you boot with ppc_tm=3Doff
 
-On the other hand being able to generate a mail for an arbitrary revert
-would be helpful, ie. independent of any thanks state.
+--=20
+You may reply to this email to add a comment.
 
-eg, picking a random commit from the past:
-
-  e95ad5f21693 ("powerpc/head_check: Fix shellcheck errors")
-
-
-If I revert that in my tree today, it'd be cool if I could run something
-that would detect the revert, backtrack to the reverted commit, extract
-the message-id from the Link: tag, and generate a reply to the original
-submission noting that it's now been reverted.
-
-In fact we could write a bot to do that across all commits ever ...
-
-cheers
+You are receiving this mail because:
+You are watching the assignee of the bug.=
