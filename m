@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B71446675
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 16:50:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7015844667D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 16:51:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hm4hv6HJsz3cYs
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 02:50:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hm4kB2hNFz3cbF
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 02:51:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=r0S0hC2Z;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=SOZuh1jg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,60 +18,60 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=alexandre.ghiti@canonical.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=canonical.com header.i=@canonical.com
- header.a=rsa-sha256 header.s=20210705 header.b=r0S0hC2Z; 
+ header.a=rsa-sha256 header.s=20210705 header.b=SOZuh1jg; 
  dkim-atps=neutral
 Received: from smtp-relay-internal-0.canonical.com
  (smtp-relay-internal-0.canonical.com [185.125.188.122])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hm4hH10Byz2xXW
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 02:49:51 +1100 (AEDT)
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hm4jT2qZFz2yPk
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 02:50:53 +1100 (AEDT)
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id C71AC4002C
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 15:49:48 +0000 (UTC)
+ by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id B533340029
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 15:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1636127388;
- bh=O16OdHn+GTs4ijs6PH3u89m4wmvvKfK54fa2lozmRZs=;
+ s=20210705; t=1636127450;
+ bh=0bEssfmXxHPGUprNSso7Mjq6wm8EF4TYvKsU8/02BBE=;
  h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
  MIME-Version;
- b=r0S0hC2Zdk6ru6tVnHqGcTCQi7SyiqqVbaxA6dPaSmnq7hoRbJcMR67I0/jYyjZFI
- zHYFmUggBccXzEp7vt6bVrH3n2GruBDxcBiAECvfpAjD4yvO6vZjwRMYjdDggz9uy6
- 42FcfzyE1c06aGcd34GO9Ads4f/Th++H5DXuoneZFOpFoG1aBPAMwWackJWsjiYapp
- R+UVy3NcsKPa04yec7OPXeqmFYYjKs7zIYguLHEJOiPd4nhIzZURxa8KvftMfKvSCL
- dJjrzaYtqVFWkU0P2+2o5E4Co6BRJKZGE9d/xAj0HPieSX0NU8p+Zcsnv2NibzM5xj
- xxyIN9oY7Xcsg==
-Received: by mail-wm1-f72.google.com with SMTP id
- m1-20020a1ca301000000b003231d5b3c4cso5860950wme.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Nov 2021 08:49:48 -0700 (PDT)
+ b=SOZuh1jgruWyhKpzphF4MfDp205NeFT1DMV+YGxF2o/S9etbRrImfXNt5guybkFyH
+ 4AlK3s2JOtOOf+efGDSRBcw12wAWvzdUQCr4eYrKZ91f0A8NYddClRMwISpanPH9JP
+ QYZU6XGymXTDUtZwys835HDoSMyqrXrSLTRgdAmCrOOAwfXr5MlVhMlfA1/UHzI1Ux
+ MDutFTSLvX1CMJBAQNTFTcy1dq/2SUAdOj9ewsvp46QdRi7QEjZwbTyF5OuQp2n/QP
+ rriJNj5/WVrysKjrVOoYl4wHdkhp7mwnKSiaJhvQ5ylzbv6JoHZMRahRFVuqJ7Q/fa
+ Twmj4VXhAB4qw==
+Received: by mail-wm1-f69.google.com with SMTP id
+ m1-20020a1ca301000000b003231d5b3c4cso5862282wme.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Nov 2021 08:50:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=O16OdHn+GTs4ijs6PH3u89m4wmvvKfK54fa2lozmRZs=;
- b=hzdaq3z1lh6e8kEkUQf68sCn4DueLYuHfxcH9h8FsBvYirOtXREHhDEZHskrorKZzY
- yzr2wzXjqIBrORhv1Rc0BMVbHM+4TllYmh+ga4ZVgidUS21fmO/6ipxis2n2lSwK294W
- Gn+pReqk7oDruuE1VO6sosepMA6rtlfKvHHyj3qSI3Q/kt0m6AHRjUcxgDMDirey4WsK
- 9w0Y/DFdvlKuxm5gGEQQYJOp8K2Qalk8JXQfvtO+p3QFvSM09tNsabY3sydcXLfcrC1m
- iNqEcMi+wl6SJiiiTKQRQmC1M+mz3KiBj53QeeApimeWckVaMxiO851osV1leYMez4mT
- lXlQ==
-X-Gm-Message-State: AOAM53248NzfVffSkeuEBX3TLwzI/yS8ToF6OghR4/OfJGxTibzs0ddS
- mhmYpsyl1RrCbejTcbFAxuLU65lpZ/GIUubq50V7Qiiuo21gCzX8sVVGOAz5uSaKgevYiC+R/qV
- 7sVETufHXZzJMnybJVRmo66nVRr2KZKoozzW/2njIBzc=
-X-Received: by 2002:a5d:4a0a:: with SMTP id m10mr51023046wrq.221.1636127388423; 
- Fri, 05 Nov 2021 08:49:48 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwY603x0zr+Chuyb1t2ADL8WGsBiGEq/MpdSLq2l9mjdNq6e20HunukFRMlsP5KMMQo9T/EOQ==
-X-Received: by 2002:a5d:4a0a:: with SMTP id m10mr51023001wrq.221.1636127388217; 
- Fri, 05 Nov 2021 08:49:48 -0700 (PDT)
+ bh=0bEssfmXxHPGUprNSso7Mjq6wm8EF4TYvKsU8/02BBE=;
+ b=AhTG3gq00+sm3rKf4zq8Ho979FrY8kwMfjViQNcMpEGOh+cbHaXZ1k6q2QUY0dkcmw
+ U9Q/osaa9fT7y3JgDO0HlQ2tcrwWOLZTOzTwIM2aUDFf2cK83DRde/t6bn9TFa3L48if
+ McyMyPa1XxLcwXEHMWawiKMAofUBWR8YSLRGEvjk1easQsebIDO4KgWSVHsLR4NZezIT
+ ZgWzQoPz6/IOcwhiWHXj4cJCMbKTZ8Hj8bzEgsRMZck9BlxfJzG7DN5x3me5EuTxxx0l
+ LTrGJrn6AfqbUkj+jxkxKGr+DTxVjWque03/3BO+kWQcQoDM1fjziLEj9Pn9089Ogs4M
+ 3h4g==
+X-Gm-Message-State: AOAM530IYVvW4+XiBRnkU1dsXZhVUZSWG+ZYGvxX1X8EERn3AIzjiuSo
+ cR6I9UsAgeY/vQNWaTeYU4NBqHtd09FhEp0A6BumUSyXRow/UP1CZcJn+3OC7Q9HhxaRhBijeIh
+ vqNz4WKnP+9Fbl6Y9VGD1h8MAXpwQ+i9in7aFWWPOFGM=
+X-Received: by 2002:a5d:468f:: with SMTP id u15mr60369044wrq.171.1636127449752; 
+ Fri, 05 Nov 2021 08:50:49 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyP30QeivC6b36TFL+IkuxX7YAofe7sXVJxsbORnG4EhnoSVTTf2FUxAHUW+sOGX9Deb4eenw==
+X-Received: by 2002:a5d:468f:: with SMTP id u15mr60368997wrq.171.1636127449594; 
+ Fri, 05 Nov 2021 08:50:49 -0700 (PDT)
 Received: from localhost.localdomain (lfbn-lyo-1-470-249.w2-7.abo.wanadoo.fr.
  [2.7.60.249])
- by smtp.gmail.com with ESMTPSA id o25sm8150426wms.17.2021.11.05.08.49.47
+ by smtp.gmail.com with ESMTPSA id h27sm13219037wmc.43.2021.11.05.08.50.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Nov 2021 08:49:47 -0700 (PDT)
+ Fri, 05 Nov 2021 08:50:49 -0700 (PDT)
 From: Alexandre Ghiti <alexandre.ghiti@canonical.com>
 To: Steve French <sfrench@samba.org>, Jonathan Corbet <corbet@lwn.net>,
  David Howells <dhowells@redhat.com>, Russell King <linux@armlinux.org.uk>,
@@ -93,9 +93,9 @@ To: Steve French <sfrench@samba.org>, Jonathan Corbet <corbet@lwn.net>,
  linux-cachefs@redhat.com, linux-arm-kernel@lists.infradead.org,
  linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  linux-sh@vger.kernel.org, linux-power@fi.rohmeurope.com
-Subject: [PATCH 6/7] include: mfd: Remove leftovers from bd70528 watchdog
-Date: Fri,  5 Nov 2021 16:43:33 +0100
-Message-Id: <20211105154334.1841927-7-alexandre.ghiti@canonical.com>
+Subject: [PATCH 7/7] arch: Remove leftovers from prism54 wireless driver
+Date: Fri,  5 Nov 2021 16:43:34 +0100
+Message-Id: <20211105154334.1841927-8-alexandre.ghiti@canonical.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20211105154334.1841927-1-alexandre.ghiti@canonical.com>
 References: <20211105154334.1841927-1-alexandre.ghiti@canonical.com>
@@ -119,45 +119,76 @@ Sender: "Linuxppc-dev"
 
 This driver was removed so remove all references to it.
 
-Fixes: 52a5502507bc ("watchdog: bd70528 drop bd70528 support")
+Fixes: d249ff28b1d8 ("intersil: remove obsolete prism54 wireless driver")
 Signed-off-by: Alexandre Ghiti <alexandre.ghiti@canonical.com>
 ---
- include/linux/mfd/rohm-bd70528.h | 24 ------------------------
- 1 file changed, 24 deletions(-)
+ arch/mips/configs/ip27_defconfig        | 1 -
+ arch/mips/configs/malta_defconfig       | 1 -
+ arch/mips/configs/malta_kvm_defconfig   | 1 -
+ arch/mips/configs/maltaup_xpa_defconfig | 1 -
+ arch/powerpc/configs/pmac32_defconfig   | 1 -
+ 5 files changed, 5 deletions(-)
 
-diff --git a/include/linux/mfd/rohm-bd70528.h b/include/linux/mfd/rohm-bd70528.h
-index 4a5966475a35..297a4a84fff5 100644
---- a/include/linux/mfd/rohm-bd70528.h
-+++ b/include/linux/mfd/rohm-bd70528.h
-@@ -362,28 +362,4 @@ enum {
- #define BD70528_MASK_BUCK_RAMP 0x10
- #define BD70528_SIFT_BUCK_RAMP 4
- 
--#if IS_ENABLED(CONFIG_BD70528_WATCHDOG)
--
--int bd70528_wdt_set(struct rohm_regmap_dev *data, int enable, int *old_state);
--void bd70528_wdt_lock(struct rohm_regmap_dev *data);
--void bd70528_wdt_unlock(struct rohm_regmap_dev *data);
--
--#else /* CONFIG_BD70528_WATCHDOG */
--
--static inline int bd70528_wdt_set(struct rohm_regmap_dev *data, int enable,
--				  int *old_state)
--{
--	return 0;
--}
--
--static inline void bd70528_wdt_lock(struct rohm_regmap_dev *data)
--{
--}
--
--static inline void bd70528_wdt_unlock(struct rohm_regmap_dev *data)
--{
--}
--
--#endif /* CONFIG_BD70528_WATCHDOG */
--
- #endif /* __LINUX_MFD_BD70528_H__ */
+diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
+index 638d7cf5ef01..821630ac1be7 100644
+--- a/arch/mips/configs/ip27_defconfig
++++ b/arch/mips/configs/ip27_defconfig
+@@ -223,7 +223,6 @@ CONFIG_TMD_HERMES=m
+ CONFIG_NORTEL_HERMES=m
+ CONFIG_P54_COMMON=m
+ CONFIG_P54_PCI=m
+-CONFIG_PRISM54=m
+ CONFIG_LIBERTAS=m
+ CONFIG_LIBERTAS_THINFIRM=m
+ CONFIG_MWL8K=m
+diff --git a/arch/mips/configs/malta_defconfig b/arch/mips/configs/malta_defconfig
+index 9cb2cf2595e0..3321bb576944 100644
+--- a/arch/mips/configs/malta_defconfig
++++ b/arch/mips/configs/malta_defconfig
+@@ -302,7 +302,6 @@ CONFIG_HOSTAP_FIRMWARE=y
+ CONFIG_HOSTAP_FIRMWARE_NVRAM=y
+ CONFIG_HOSTAP_PLX=m
+ CONFIG_HOSTAP_PCI=m
+-CONFIG_PRISM54=m
+ CONFIG_LIBERTAS=m
+ CONFIG_INPUT_MOUSEDEV=y
+ CONFIG_MOUSE_PS2_ELANTECH=y
+diff --git a/arch/mips/configs/malta_kvm_defconfig b/arch/mips/configs/malta_kvm_defconfig
+index 5924e48fd3ec..009b30372226 100644
+--- a/arch/mips/configs/malta_kvm_defconfig
++++ b/arch/mips/configs/malta_kvm_defconfig
+@@ -310,7 +310,6 @@ CONFIG_HOSTAP_FIRMWARE=y
+ CONFIG_HOSTAP_FIRMWARE_NVRAM=y
+ CONFIG_HOSTAP_PLX=m
+ CONFIG_HOSTAP_PCI=m
+-CONFIG_PRISM54=m
+ CONFIG_LIBERTAS=m
+ CONFIG_INPUT_MOUSEDEV=y
+ CONFIG_SERIAL_8250=y
+diff --git a/arch/mips/configs/maltaup_xpa_defconfig b/arch/mips/configs/maltaup_xpa_defconfig
+index c0d3156ef640..e214e136101c 100644
+--- a/arch/mips/configs/maltaup_xpa_defconfig
++++ b/arch/mips/configs/maltaup_xpa_defconfig
+@@ -309,7 +309,6 @@ CONFIG_HOSTAP_FIRMWARE=y
+ CONFIG_HOSTAP_FIRMWARE_NVRAM=y
+ CONFIG_HOSTAP_PLX=m
+ CONFIG_HOSTAP_PCI=m
+-CONFIG_PRISM54=m
+ CONFIG_LIBERTAS=m
+ CONFIG_INPUT_MOUSEDEV=y
+ CONFIG_MOUSE_PS2_ELANTECH=y
+diff --git a/arch/powerpc/configs/pmac32_defconfig b/arch/powerpc/configs/pmac32_defconfig
+index 7aefac5afab0..13885ec563d1 100644
+--- a/arch/powerpc/configs/pmac32_defconfig
++++ b/arch/powerpc/configs/pmac32_defconfig
+@@ -169,7 +169,6 @@ CONFIG_USB_USBNET=m
+ CONFIG_B43=m
+ CONFIG_B43LEGACY=m
+ CONFIG_P54_COMMON=m
+-CONFIG_PRISM54=m
+ CONFIG_INPUT_EVDEV=y
+ # CONFIG_KEYBOARD_ATKBD is not set
+ # CONFIG_MOUSE_PS2 is not set
 -- 
 2.32.0
 
