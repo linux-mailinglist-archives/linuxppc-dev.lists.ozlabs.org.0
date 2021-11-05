@@ -1,76 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE272445D7F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 02:46:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBFE1445D83
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 02:48:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HljzZ50C0z30KC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 12:46:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hlk1543PPz30RK
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 12:48:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YKgDWMAd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YG8/+XaV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e;
+ helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=YKgDWMAd; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
+ header.s=20210112 header.b=YG8/+XaV; dkim-atps=neutral
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
+ [IPv6:2607:f8b0:4864:20::42e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hljyt4bKkz2xY8
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 12:46:13 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id n8so10146841plf.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Nov 2021 18:46:13 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hlk0Q0lN2z2xtw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 12:47:33 +1100 (AEDT)
+Received: by mail-pf1-x42e.google.com with SMTP id x64so7521110pfd.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Nov 2021 18:47:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=q8L8GH/JMzzDmLk0WBkvV88hAQVWV9eUSTZD2DY+EmI=;
- b=YKgDWMAdfyzqGyeZMYTsFJFtuji9utA1G6SwrxqJRYqBtNJ3Gy5BEmdMvAjF65ofpB
- Gtq0QljKSCcFPDJmFNTYpIfMk2ew03WTHOrIiwM07mPjeEVOjbqPVed6o+sO7MwYTJq1
- 4YsU73CHUlKFt/+ovXOVK+N6DF/ZHkfO4CJRzPFGS9VBHdRgN7vLsP4OYIAhvYFnIKOM
- 6IVednZ380/cmeVEsRz3VsHekDkbjOEgQPkmO48MnEDtF/uJ8ueOGreE3DaVlZbGwbRQ
- RYMq407YSICIX7E7aL7P8WK0oUxLdu11asuPew/la/oooFxsEgYbQa1wTC8ezASstrbz
- j4iA==
+ bh=RYQvW3gYgNWZLXwXv6LJCFArVSQe9BKw3ODOnU+eVTA=;
+ b=YG8/+XaVLw3Zk8a10TbDgqc/6xZyU/v16HuLL1Q0ISzN5D43c4ckOzoSOycGfw9lLL
+ uCp6qVFuyYwCQJI1VAjfFiGDoiuolUtRFWcflIFeif0iXCQIOz0wyTq6IZsuxExh6zUt
+ tJ0bw1N7uZkkH+y3x31xsueM4cMlJB0BBSoBI1aAnPREHUvCnsrJfEiQzgOaAd0TieQw
+ xHPlHik9jdLXdWr8E5rX+rlu2xQrzdzoJJwyY3/eLcAxuUqASqdyv86qsw2LJF8HVVt2
+ wH/4N6EDE+IO+n5LhbR0hnC/UTV97jAtBjUPxNYBSkqQ0vkHpsDvHdYhO88HyU2KE3KH
+ 59tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=q8L8GH/JMzzDmLk0WBkvV88hAQVWV9eUSTZD2DY+EmI=;
- b=6NhfghjtB8oy1XSuuCdDM6Uc25997jgGDGwbDLFMs4l3vGuNDGLdWbUGy0YD+MWJV4
- 8wZccOmi5F3s7GQ6wQjiykZCrfKfHQA4DvnPr4Jbd2esRaZ6xYX6KXAm4SRxj2j24VMO
- em35W+6yesFwrXF79LOrL7rs2jnCTpg0RFk1mbHlmiTBGgnp1QeJnwWPbLbr/pfDgtIj
- 64GdwHp5Ku3IGFaYmDlgbrJru9svpj8rcSBAhmDtj7Dr42Tx6wqi3/YWiVSrXvi43H9c
- Tmnd19x8/KheyapK++fTTFSJcg57YdtDNnWMEL4CClMXvtstvP7PSxUOZpKqp0v03J2S
- Sk9w==
-X-Gm-Message-State: AOAM533PvufhgJ4Pa/NHxD/VUFNHNsyI7lye6qcIsncGlyY/e1zNNr3B
- rqHw6Dz1+l+8iRbvYl6wlkZl1/S7SAc=
-X-Google-Smtp-Source: ABdhPJztcYVZNmmgG8QpKah0l2UiJEhcsetCF0bqrJptUA83sjMnuUCfcsbzJVrqJ1jELZ0sUxtY9w==
-X-Received: by 2002:a17:90b:4f45:: with SMTP id
- pj5mr10254434pjb.70.1636076770641; 
- Thu, 04 Nov 2021 18:46:10 -0700 (PDT)
+ bh=RYQvW3gYgNWZLXwXv6LJCFArVSQe9BKw3ODOnU+eVTA=;
+ b=cajOPvIKUhcWZ7TebFEBj4fi6fC6BTJ/IrCXNtbOkDao3bMwR6X97QmIXf4JjvkUlH
+ SZjW/xuoqrA0au79lKcWHNeE2APHGY/xbq2BzZZ4Su0BAzwhc66TcVprtKeSelylXre5
+ mS3UXDCP+4mALyBtA8eziNA9BvZskj2l/ljkjErBWiCWMyzFT8qy0if8Eat6R7LNiqHU
+ 8RbpVO8JQzfDjevnq0ydHGs5vsZkNd+KR66KjgZADmR4PE0XktAuGusqrNEZTVyk3cK6
+ rH8igKww8EhB4lz/YzvefX+GtsBPvETpsUQxoikdIYg7b5x56N3B6BwcJ7JTgv24yQ30
+ ezFQ==
+X-Gm-Message-State: AOAM532lYXcdjn99SCIb9icLANaG9wgHHqEdjYLC2hBlaRgi2lKDI5bX
+ 7/yGMfFo9XHL3JggVjIX4yY=
+X-Google-Smtp-Source: ABdhPJytuFT8ksE98hkXQDdKSkJq/n00qK8+qkf7Me1/Ho9Pkj0Sv4VcSk0BY5NyYB28K24l2JTAJw==
+X-Received: by 2002:a05:6a00:1593:b0:492:67eb:355f with SMTP id
+ u19-20020a056a00159300b0049267eb355fmr15414673pfk.32.1636076851947; 
+ Thu, 04 Nov 2021 18:47:31 -0700 (PDT)
 Received: from localhost (60-241-46-56.tpgi.com.au. [60.241.46.56])
- by smtp.gmail.com with ESMTPSA id u38sm788813pfg.0.2021.11.04.18.46.09
+ by smtp.gmail.com with ESMTPSA id i68sm5716293pfc.158.2021.11.04.18.47.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Nov 2021 18:46:10 -0700 (PDT)
-Date: Fri, 05 Nov 2021 11:46:04 +1000
+ Thu, 04 Nov 2021 18:47:31 -0700 (PDT)
+Date: Fri, 05 Nov 2021 11:47:26 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [V3] powerpc/perf: Enable PMU counters post partition migration
- if PMU is active
-To: Nathan Lynch <nathanl@linux.ibm.com>
-References: <20211029030510.58797-1-atrajeev@linux.vnet.ibm.com>
- <1635487923.hwdpof7s4v.astroid@bobo.none>
- <87sfwk7z0m.fsf@mpe.ellerman.id.au>
- <1635852231.aebe6lt6u4.astroid@bobo.none> <8735odx7us.fsf@linux.ibm.com>
-In-Reply-To: <8735odx7us.fsf@linux.ibm.com>
+Subject: Re: KVM on POWER8 host lock up since 10d91611f426 ("powerpc/64s:
+ Reimplement book3s idle code in C")
+To: Michal =?iso-8859-1?q?Such=E1nek?= <msuchanek@suse.de>
+References: <20200830201145.GA29521@kitsune.suse.cz>
+ <1598835313.5688ngko4f.astroid@bobo.none>
+ <20200831091523.GC29521@kitsune.suse.cz> <87y2lv1430.fsf@mpe.ellerman.id.au>
+ <1599484062.vgmycu6q5i.astroid@bobo.none>
+ <20201016201410.GH29778@kitsune.suse.cz>
+ <1603066878.gtbyofrzyo.astroid@bobo.none>
+ <1603082970.5545yt7raj.astroid@bobo.none>
+ <20210114124023.GL6564@kitsune.suse.cz>
+ <1610628922.o1ihbt98xg.astroid@bobo.none>
+ <20211102154835.GQ11195@kunlun.suse.cz>
+In-Reply-To: <20211102154835.GQ11195@kunlun.suse.cz>
 MIME-Version: 1.0
-Message-Id: <1636075766.ibq0u4kvet.astroid@bobo.none>
+Message-Id: <1636076786.9byigbkr8k.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,99 +90,167 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, rnsastry@linux.ibm.com,
- kjain@linux.ibm.com, maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: ro@suse.de, linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nathan Lynch's message of November 4, 2021 7:11 am:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->> Excerpts from Michael Ellerman's message of October 29, 2021 11:15 pm:
->>> Nicholas Piggin <npiggin@gmail.com> writes:
->>>> Excerpts from Athira Rajeev's message of October 29, 2021 1:05 pm:
->>>>> @@ -631,12 +632,18 @@ static int pseries_migrate_partition(u64 handle=
-)
->>>>>  	if (ret)
->>>>>  		return ret;
->>>>> =20
->>>>> +	/* Disable PMU before suspend */
->>>>> +	on_each_cpu(&mobility_pmu_disable, NULL, 0);
->>>>
->>>> Why was this moved out of stop machine and to an IPI?
->>>>
->>>> My concern would be, what are the other CPUs doing at this time? Is it=
-=20
->>>> possible they could take interrupts and schedule? Could that mess up t=
-he
->>>> perf state here?
->>>=20
->>> pseries_migrate_partition() is called directly from migration_store(),
->>> which is the sysfs store function, which can be called concurrently by
->>> different CPUs.
->>>=20
->>> It's also potentially called from rtas_syscall_dispatch_ibm_suspend_me(=
-),
->>> from sys_rtas(), again with no locking.
->>>=20
->>> So we could have two CPUs calling into here at the same time, which
->>> might not crash, but is unlikely to work well.
->>>=20
->>> I think the lack of locking might have been OK in the past because only
->>> one CPU will successfully get the other CPUs to call do_join() in
->>> pseries_suspend(). But I could be wrong.
->>>=20
->>> Anyway, now that we're mutating the PMU state before suspending we need
->>> to be more careful. So I think we need a lock around the whole
->>> sequence.
+Excerpts from Michal Such=C3=A1nek's message of November 3, 2021 1:48 am:
+> On Thu, Jan 14, 2021 at 11:08:03PM +1000, Nicholas Piggin wrote:
+>> Excerpts from Michal Such=C3=A1nek's message of January 14, 2021 10:40 p=
+m:
+>> > On Mon, Oct 19, 2020 at 02:50:51PM +1000, Nicholas Piggin wrote:
+>> >> Excerpts from Nicholas Piggin's message of October 19, 2020 11:00 am:
+>> >> > Excerpts from Michal Such=C3=A1nek's message of October 17, 2020 6:=
+14 am:
+>> >> >> On Mon, Sep 07, 2020 at 11:13:47PM +1000, Nicholas Piggin wrote:
+>> >> >>> Excerpts from Michael Ellerman's message of August 31, 2020 8:50 =
+pm:
+>> >> >>> > Michal Such=C3=A1nek <msuchanek@suse.de> writes:
+>> >> >>> >> On Mon, Aug 31, 2020 at 11:14:18AM +1000, Nicholas Piggin wrot=
+e:
+>> >> >>> >>> Excerpts from Michal Such=C3=A1nek's message of August 31, 20=
+20 6:11 am:
+>> >> >>> >>> > Hello,
+>> >> >>> >>> >=20
+>> >> >>> >>> > on POWER8 KVM hosts lock up since commit 10d91611f426 ("pow=
+erpc/64s:
+>> >> >>> >>> > Reimplement book3s idle code in C").
+>> >> >>> >>> >=20
+>> >> >>> >>> > The symptom is host locking up completely after some hours =
+of KVM
+>> >> >>> >>> > workload with messages like
+>> >> >>> >>> >=20
+>> >> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn=
+'t grab cpu 47
+>> >> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn=
+'t grab cpu 71
+>> >> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn=
+'t grab cpu 47
+>> >> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn=
+'t grab cpu 71
+>> >> >>> >>> > 2020-08-30T10:51:31+00:00 obs-power8-01 kernel: KVM: couldn=
+'t grab cpu 47
+>> >> >>> >>> >=20
+>> >> >>> >>> > printed before the host locks up.
+>> >> >>> >>> >=20
+>> >> >>> >>> > The machines run sandboxed builds which is a mixed workload=
+ resulting in
+>> >> >>> >>> > IO/single core/mutiple core load over time and there are pe=
+riods of no
+>> >> >>> >>> > activity and no VMS runnig as well. The VMs are shortlived =
+so VM
+>> >> >>> >>> > setup/terdown is somewhat excercised as well.
+>> >> >>> >>> >=20
+>> >> >>> >>> > POWER9 with the new guest entry fast path does not seem to =
+be affected.
+>> >> >>> >>> >=20
+>> >> >>> >>> > Reverted the patch and the followup idle fixes on top of 5.=
+2.14 and
+>> >> >>> >>> > re-applied commit a3f3072db6ca ("powerpc/powernv/idle: Rest=
+ore IAMR
+>> >> >>> >>> > after idle") which gives same idle code as 5.1.16 and the k=
+ernel seems
+>> >> >>> >>> > stable.
+>> >> >>> >>> >=20
+>> >> >>> >>> > Config is attached.
+>> >> >>> >>> >=20
+>> >> >>> >>> > I cannot easily revert this commit, especially if I want to=
+ use the same
+>> >> >>> >>> > kernel on POWER8 and POWER9 - many of the POWER9 fixes are =
+applicable
+>> >> >>> >>> > only to the new idle code.
+>> >> >>> >>> >=20
+>> >> >>> >>> > Any idea what can be the problem?
+>> >> >>> >>>=20
+>> >> >>> >>> So hwthread_state is never getting back to to HWTHREAD_IN_IDL=
+E on
+>> >> >>> >>> those threads. I wonder what they are doing. POWER8 doesn't h=
+ave a good
+>> >> >>> >>> NMI IPI and I don't know if it supports pdbg dumping register=
+s from the
+>> >> >>> >>> BMC unfortunately.
+>> >> >>> >>
+>> >> >>> >> It may be possible to set up fadump with a later kernel versio=
+n that
+>> >> >>> >> supports it on powernv and dump the whole kernel.
+>> >> >>> >=20
+>> >> >>> > Your firmware won't support it AFAIK.
+>> >> >>> >=20
+>> >> >>> > You could try kdump, but if we have CPUs stuck in KVM then ther=
+e's a
+>> >> >>> > good chance it won't work :/
+>> >> >>>=20
+>> >> >>> I haven't had any luck yet reproducing this still. Testing with s=
+ub=20
+>> >> >>> cores of various different combinations, etc. I'll keep trying th=
+ough.
+>> >> >>=20
+>> >> >> Hello,
+>> >> >>=20
+>> >> >> I tried running some KVM guests to simulate the workload and what =
+I get
+>> >> >> is guests failing to start with a rcu stall. Tried both 5.3 and 5.=
+9
+>> >> >> kernel and qemu 4.2.1 and 5.1.0
+>> >> >>=20
+>> >> >> To start some guests I run
+>> >> >>=20
+>> >> >> for i in $(seq 0 9) ; do /opt/qemu/bin/qemu-system-ppc64 -m 2048 -=
+accel kvm -smp 8 -kernel /boot/vmlinux -initrd /boot/initrd -nodefaults -no=
+graphic -serial mon:telnet::444$i,server,wait & done
+>> >> >>=20
+>> >> >> To simulate some workload I run
+>> >> >>=20
+>> >> >> xz -zc9T0 < /dev/zero > /dev/null &
+>> >> >> while true; do
+>> >> >>     killall -STOP xz; sleep 1; killall -CONT xz; sleep 1;
+>> >> >> done &
+>> >> >>=20
+>> >> >> on the host and add a job that executes this to the ramdisk. Howev=
+er, most
+>> >> >> guests never get to the point where the job is executed.
+>> >> >>=20
+>> >> >> Any idea what might be the problem?
+>> >> >=20
+>> >> > I would say try without pv queued spin locks (but if the same thing=
+ is=20
+>> >> > happening with 5.3 then it must be something else I guess).=20
+>> >> >=20
+>> >> > I'll try to test a similar setup on a POWER8 here.
+>> >>=20
+>> >> Couldn't reproduce the guest hang, they seem to run fine even with=20
+>> >> queued spinlocks. Might have a different .config.
+>> >>=20
+>> >> I might have got a lockup in the host (although different symptoms th=
+an=20
+>> >> the original report). I'll look into that a bit further.
+>> >=20
+>> > Hello,
+>> >=20
+>> > any progress on this?
+>>=20
+>> No progress, I still wasn't able to reproduce, and it fell off the=20
+>> radar sorry.
+>>=20
+>> I expect hwthred_state must be getting corrupted somewhere or a
+>> secondary thread getting stuck but I couldn't see where. I try pick
+>> it up again thanks for the reminder.
 >=20
-> Regardless of the outcome here, generally agreed that some serialization
-> should be imposed in this path. The way the platform works (and some
-> extra measures by the drmgr utility) make it so that this code isn't
-> entered concurrently in usual operation, but it's possible to make it
-> happen if you are root.
+> Hello,
 >=20
-> A file-static mutex should be OK.
+> the fixes pointed out in
+> https://lore.kernel.org/linuxppc-dev/87pmrtbbdt.fsf@mpe.ellerman.id.au/T/=
+#u
+> resolve the problem.
 >=20
->> My concern is still that we wouldn't necessarily have the other CPUs=20
->> under control at that point even if we serialize the migrate path.
->> They could take interrupts, possibly call into perf subsystem after
->> the mobility_pmu_disable (e.g., via syscall or context switch) which=20
->> might mess things up.
->>
->> I think the stop machine is a reasonable place for the code in this=20
->> case. It's a low level disabling of hardware facility and saving off=20
->> registers.
+> Thanks
 >=20
-> That makes sense, but I can't help feeling concerned still. For this to
-> be safe, power_pmu_enable() and power_pmu_disable() must never sleep or
-> re-enable interrupts or send IPIs. I don't see anything obviously unsafe
-> right now, but is that already part of their contract?
+> Michal
 
-Yes that would have to be. That's much the same as an IPI handler. Maybe=20
-stop machine has a few other things to worry about but I'm not sure that
-would get in the way. Just have a note in the implementation or name to
-remind it is stop machine context. =20
-
-> Is there much
-> risk they could change in the future to violate those constraints?
-
-My guess is if it needed to do anything much more complicated then you
-would want to shut down perf more completely in a way that other APIs
-know about.
-
->=20
-> That aside, the proposed change seems like we would be hacking around a
-> more generic perf/pmu limitation in a powerpc-specific way. I see the
-> same behavior on x86 across suspend/resume.
-
-Arguably it's fixing up a x86 suspend/resume bug that might be fixed
-in the same way as this -- presumably it's not restoring PMU registers
-at resume.
-
-But if they did something generic in perf core, this code could be
-changed over to use it quite easily I would hope.  But pinging the
-other perf devs to check would be a good idea.
+Hey Michal, great thanks for testing. Sorry I couldn't fix it, but a=20
+good result in the end.
 
 Thanks,
 Nick
