@@ -1,70 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933A84463E7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 14:14:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8BA9446424
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 14:29:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hm1FF3Z4Tz307g
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 00:14:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hm1Zs42gKz3bnC
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 00:29:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gZlL3n9d;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rpqjS5Jw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JZhklTR2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=gZlL3n9d; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=rpqjS5Jw; 
- dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
+ helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=JZhklTR2; dkim-atps=neutral
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
+ [IPv6:2607:f8b0:4864:20::1030])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hm1DZ3rwgz2y7W
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 00:14:06 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 6DE281FD37;
- Fri,  5 Nov 2021 13:14:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1636118043; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=GJZ3yTXhrzi4whvrAIl3BNUnX0rED/L5GxqfhBDh6mo=;
- b=gZlL3n9dgK20NLv/q4Tjf8za+Zyb+vEPJJUCccpbyATFt+Y7qamzrZHILKT9OUJ1BDOpPE
- 6AUtJ39tV5G5CkBXkovM3M0AimFa/4v0orHsoAiPnLPL+Vrp3xHSbaFeI/V2Mvx06BDd4U
- xagoOQY0ft2lt1LbyFCz+E2f+cfSCJs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1636118043;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=GJZ3yTXhrzi4whvrAIl3BNUnX0rED/L5GxqfhBDh6mo=;
- b=rpqjS5Jwt1qeWSytrXnsbDBHXb+K6Ov6jka10AwhMpvrngwpe4rn1SqFeZHtW9mE0QF0xO
- 5yTO9V5A3dK305DQ==
-Received: from kunlun.suse.cz (unknown [10.100.128.76])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id DA9E12C144;
- Fri,  5 Nov 2021 13:14:02 +0000 (UTC)
-Date: Fri, 5 Nov 2021 14:14:01 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Daniel Axtens <dja@axtens.net>
-Subject: Re: [PATCH 0/3] KEXEC_SIG with appended signature
-Message-ID: <20211105131401.GL11195@kunlun.suse.cz>
-References: <cover.1635948742.git.msuchanek@suse.de>
- <87czneeurr.fsf@dja-thinkpad.axtens.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hm1Z81fmKz2yb3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 00:29:17 +1100 (AEDT)
+Received: by mail-pj1-x1030.google.com with SMTP id np3so3073091pjb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Nov 2021 06:29:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=tkzd+bIqTU/2ckKL+WwS9XY/phC337MT6nzd1eNVJkE=;
+ b=JZhklTR21HQDd9UkS8zFXgrv8FTi4Wm9xpqn/3mGqoX3z0Sf1EgOyYatqi4vZBaoLs
+ 10Oy7QZ1zSlOFQw539uOz87fb3uTnHrQA9KARRX3C9BjV+sbH7KVRnicjRanIR4CJL22
+ 0pziPEDmMTGULpP1+7p6D9FgrF66vBgvxkv6GT9odO0bA6fJeFgNWhktf0RV2NyfG6rK
+ fFD2+xO880J6XjfTUbrpg02MfCdr/y9+toJxr92m6Wg8Yf8QSrZg6/5SqxbLlwqdVWoO
+ iXeeDuci83D1Sc0UFyVzrT+HemTND1U39RCZdh1BA5xBp0i7iPy/sc35SJw5yjPjONJ3
+ LucQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=tkzd+bIqTU/2ckKL+WwS9XY/phC337MT6nzd1eNVJkE=;
+ b=KqPgbjoPoCKs8FxK37RbfoH+I8DOOKOfJclNevdT4ZgzktnWSUI7PS/NZJba6r8e2C
+ KeamuVhv3/NlyicAtaastuYN//9D26f3TjeYCp6Qj3HI4Rn+83ilUCV+XwGtTI1lJcYP
+ OX2BX1iKiuOgNtSdlCkXfy7f0tRRwd9IC2l9lS7gBvozwqV3d7azkMuQSg11y/RD2OCz
+ g3OdTZbOLBRLeHbaJCax7hxDzYDZhMsjRPeiC/Bg6spROfd3xN8cekUK5nAXE6y3k0pn
+ w7od3g1h6h2N/dJJyv2XI8gfbz+JywNPL61R7qHDWDdUuy0nr6/dpXbAll5PEFwdoBZU
+ jREQ==
+X-Gm-Message-State: AOAM533XOPL2h2j83V9NpcW/Hs/CwldWYQwT/mBp4Ev5zFiK9Zskl+I+
+ yjqNv0aM0+YB4wcimi1UozWNilWk4zM=
+X-Google-Smtp-Source: ABdhPJzgThvy7ocqHcgD/b/BFf0sl2ytvkvlg5lb1WEB/ASM0hOWKybrRS73zTRlnZw+e0ENPeqgbA==
+X-Received: by 2002:a17:903:234b:b0:141:bdfa:e9be with SMTP id
+ c11-20020a170903234b00b00141bdfae9bemr41553487plh.36.1636118955534; 
+ Fri, 05 Nov 2021 06:29:15 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (60-241-46-56.tpgi.com.au. [60.241.46.56])
+ by smtp.gmail.com with ESMTPSA id
+ v1sm7898456pfu.208.2021.11.05.06.29.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 05 Nov 2021 06:29:15 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pseries: Fix numa FORM2 parsing fallback code
+Date: Fri,  5 Nov 2021 23:29:09 +1000
+Message-Id: <20211105132909.1582449-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87czneeurr.fsf@dja-thinkpad.axtens.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,39 +79,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Rob Herring <robh@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- Luis Chamberlain <mcgrof@kernel.org>, keyrings@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Frank van der Linden <fllinden@amazon.com>,
- Jessica Yu <jeyu@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Christian Borntraeger <borntraeger@de.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 05, 2021 at 09:55:52PM +1100, Daniel Axtens wrote:
-> Michal Suchanek <msuchanek@suse.de> writes:
-> 
-> > S390 uses appended signature for kernel but implements the check
-> > separately from module loader.
-> >
-> > Support for secure boot on powerpc with appended signature is planned -
-> > grub patches submitted upstream but not yet merged.
-> 
-> Power Non-Virtualised / OpenPower already supports secure boot via kexec
-> with signature verification via IMA. I think you have now sent a
-> follow-up series that merges some of the IMA implementation, I just
-> wanted to make sure it was clear that we actually already have support
+In case the FORM2 distance table from firmware is not the expected size,
+there is fallback code that just populates the lookup table as local vs
+remote.
 
-So is IMA_KEXEC and KEXEC_SIG redundant?
+However it then continues on to use the distance table. Fix.
 
-I see some architectures have both. I also see there is a lot of overlap
-between the IMA framework and the KEXEC_SIG and MODULE_SIg.
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Fixes: 1c6b5a7e7405 ("powerpc/pseries: Add support for FORM2 associativity")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/mm/numa.c | 29 +++++++++++++----------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
-Thanks
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index 6f14c8fb6359..0789cde7f658 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -380,6 +380,7 @@ static void initialize_form2_numa_distance_lookup_table(void)
+ 	const __be32 *numa_lookup_index;
+ 	int numa_dist_table_length;
+ 	int max_numa_index, distance_index;
++	bool good = true;
+ 
+ 	if (firmware_has_feature(FW_FEATURE_OPAL))
+ 		root = of_find_node_by_path("/ibm,opal");
+@@ -407,30 +408,26 @@ static void initialize_form2_numa_distance_lookup_table(void)
+ 
+ 	if (numa_dist_table_length != max_numa_index * max_numa_index) {
+ 		WARN(1, "Wrong NUMA distance information\n");
+-		/* consider everybody else just remote. */
+-		for (i = 0;  i < max_numa_index; i++) {
+-			for (j = 0; j < max_numa_index; j++) {
+-				int nodeA = numa_id_index_table[i];
+-				int nodeB = numa_id_index_table[j];
+-
+-				if (nodeA == nodeB)
+-					numa_distance_table[nodeA][nodeB] = LOCAL_DISTANCE;
+-				else
+-					numa_distance_table[nodeA][nodeB] = REMOTE_DISTANCE;
+-			}
+-		}
++		good = false;
+ 	}
+-
+ 	distance_index = 0;
+ 	for (i = 0;  i < max_numa_index; i++) {
+ 		for (j = 0; j < max_numa_index; j++) {
+ 			int nodeA = numa_id_index_table[i];
+ 			int nodeB = numa_id_index_table[j];
+-
+-			numa_distance_table[nodeA][nodeB] = numa_dist_table[distance_index++];
+-			pr_debug("dist[%d][%d]=%d ", nodeA, nodeB, numa_distance_table[nodeA][nodeB]);
++			int dist;
++
++			if (good)
++				dist = numa_dist_table[distance_index++];
++			else if (nodeA == nodeB)
++				dist = LOCAL_DISTANCE;
++			else
++				dist = REMOTE_DISTANCE;
++			numa_distance_table[nodeA][nodeB] = dist;
++			pr_debug("dist[%d][%d]=%d ", nodeA, nodeB, dist);
+ 		}
+ 	}
++
+ 	of_node_put(root);
+ }
+ 
+-- 
+2.23.0
 
-Michal
