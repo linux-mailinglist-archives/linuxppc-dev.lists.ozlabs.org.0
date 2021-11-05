@@ -1,105 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856974466D9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 17:18:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BCA446710
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 17:32:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hm5Jz35Whz3c4p
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 03:18:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hm5dm4cDDz3c6f
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 03:32:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iP88iPRS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qM/fG2i6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=jlayton@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=iP88iPRS; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=qM/fG2i6; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hm5JF6jNyz2ync
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 03:17:33 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1A5G7lS5004616
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 5 Nov 2021 16:17:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=6Gh8iDrLZvLI7qFoN9vMuQnOEQJZE93/S5lJvvLWQHc=;
- b=iP88iPRSwZ3ChWqPL5Ns6l3PDGHF0IGJ3yrtfE5rCpaD1aNCL/ofVSE+Dj2jSUuaoCM/
- 6Nug9UMRGSGTiQ2rcmRijNFU2Y2wVt40JlHH2kz9WKdN8yG28Sa9Awr4nQEBK7yaevrs
- S8mAnafdRrIC2Fpbgvvs/c7bnXY/ERykUHF1xDjiu2/+yQAsiM5vqNI5XBe56ajJBQ2b
- 8paXH3HWO7VG/RrfRj5HT67X8BTA3zi406zchBmY4no1B8xqUZv8QP6WXp2luaYT5P7G
- Ad+d6f3pPaEGWZw0+R+V63FapUUpqNdMzE9SGwr2sx0GGK4ne2F6m1ym6kM/sM3sc9kT XA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3c55cb3tu0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Nov 2021 16:17:30 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1A5G2xov019193
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 5 Nov 2021 16:17:30 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3c55cb3tth-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Nov 2021 16:17:30 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1A5GDkUj003002;
- Fri, 5 Nov 2021 16:17:28 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03ams.nl.ibm.com with ESMTP id 3c4t4kxefd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Nov 2021 16:17:28 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 1A5GAwPB56099136
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 5 Nov 2021 16:10:58 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EAD3C4C059;
- Fri,  5 Nov 2021 16:17:25 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C81EF4C058;
- Fri,  5 Nov 2021 16:17:25 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.172.6])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  5 Nov 2021 16:17:25 +0000 (GMT)
-Subject: Re: [PATCH v2 2/5] powerpc/watchdog: Tighten non-atomic
- read-modify-write access
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20211104161057.1255659-1-npiggin@gmail.com>
- <20211104161057.1255659-3-npiggin@gmail.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-Message-ID: <9ec54cd9-37fc-3f09-212b-42fee6664a2e@linux.ibm.com>
-Date: Fri, 5 Nov 2021 17:17:25 +0100
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.14.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hm5d72KJkz2yb9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 03:32:11 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5AD3960ED7;
+ Fri,  5 Nov 2021 16:32:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1636129928;
+ bh=dqYO0XzUwPNOkJ5l8PyhvzZqAKwTOsnYGLx7c5aZVRQ=;
+ h=Subject:From:To:Date:In-Reply-To:References:From;
+ b=qM/fG2i6LOkcRxe8dKJqlyHOGZYXZJLw+Di6HZONjtJHOuMTNuHd0DfcnS6C27jxX
+ 6wronV4yauGcwwCatN3CBOwcBJvw3PjqIIq0pTYXTIMjp8ywCjwi2h7qBWswegtCkw
+ h0rY0njZkuw3TS/krXJz5XKmW9MxQOlDmC7X8AkLB4ZqswZa2ykIr+WQY90Do/hT55
+ xfU31PI8fArm349i5UTD866xEr6od957ENnw+p0qnIGBY7i+hpTwX6k3UFnTzvtAYy
+ 6N0V54hRfOQ6+JMuiMW2tDqYlI0Z2itR/5nK04Q696SkZJCr6oWz3J9RIgKkA4dxZy
+ aqjQjBVo+gRKw==
+Message-ID: <7921f7c5e6e72f1eb4fa39d6a7c4d5d42380d000.camel@kernel.org>
+Subject: Re: [PATCH 4/7] arch: Remove leftovers from mandatory file locking
+From: Jeff Layton <jlayton@kernel.org>
+To: Alexandre Ghiti <alexandre.ghiti@canonical.com>, Steve French
+ <sfrench@samba.org>, Jonathan Corbet <corbet@lwn.net>, David Howells
+ <dhowells@redhat.com>, Russell King <linux@armlinux.org.uk>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Michael Ellerman
+ <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, Matti
+ Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lee Jones
+ <lee.jones@linaro.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Arnd Bergmann <arnd@arndb.de>, Ronnie Sahlberg <lsahlber@redhat.com>, 
+ Guenter Roeck <linux@roeck-us.net>, Wim Van Sebroeck
+ <wim@linux-watchdog.org>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, Luis
+ Chamberlain <mcgrof@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
+ linux-cifs@vger.kernel.org,  samba-technical@lists.samba.org,
+ linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
+ linux-cachefs@redhat.com,  linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org,  linuxppc-dev@lists.ozlabs.org,
+ linux-sh@vger.kernel.org,  linux-power@fi.rohmeurope.com
+Date: Fri, 05 Nov 2021 12:32:05 -0400
+In-Reply-To: <20211105154334.1841927-5-alexandre.ghiti@canonical.com>
+References: <20211105154334.1841927-1-alexandre.ghiti@canonical.com>
+ <20211105154334.1841927-5-alexandre.ghiti@canonical.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+User-Agent: Evolution 3.42.1 (3.42.1-1.fc35) 
 MIME-Version: 1.0
-In-Reply-To: <20211104161057.1255659-3-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: CdQPdueN3sSFiekufnPWQL26COwQzF7c
-X-Proofpoint-ORIG-GUID: pc0slpwuysNNqGziLfxfZ3ivmAlRxuL_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-05_02,2021-11-03_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- adultscore=0 mlxlogscore=999 suspectscore=0 bulkscore=0 spamscore=0
- priorityscore=1501 clxscore=1015 impostorscore=0 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2111050091
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,109 +80,52 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 04/11/2021 à 17:10, Nicholas Piggin a écrit :
-> Most updates to wd_smp_cpus_pending are under lock except the watchdog
-> interrupt bit clear.
+On Fri, 2021-11-05 at 16:43 +0100, Alexandre Ghiti wrote:
+> This config was removed so remove all references to it.
 > 
-> This can race with non-atomic RMW updates to the mask under lock, which
-> can happen in two instances:
-> 
-> Firstly, if another CPU detects this one is stuck, removes it from the
-> mask, mask becomes empty and is re-filled with non-atomic stores. This
-> is okay because it would re-fill the mask with this CPU's bit clear
-> anyway (because this CPU is now stuck), so it doesn't matter that the
-> bit clear update got "lost". Add a comment for this.
-> 
-> Secondly, if another CPU detects a different CPU is stuck and removes it
-> from the pending mask with a non-atomic store to bytes which also
-> include the bit of this CPU. This case can result in the bit clear being
-> lost and the end result being the bit is set. This should be so rare it
-> hardly matters, but to make things simpler to reason about just avoid
-> the non-atomic access for that case.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-Reviewed-by: Laurent Dufour <ldufour@linux.ibm.com>
-
+> Fixes: f7e33bdbd6d1 ("fs: remove mandatory file locking support")
+> Signed-off-by: Alexandre Ghiti <alexandre.ghiti@canonical.com>
 > ---
->   arch/powerpc/kernel/watchdog.c | 36 ++++++++++++++++++++++++----------
->   1 file changed, 26 insertions(+), 10 deletions(-)
+>  arch/mips/configs/decstation_64_defconfig  | 1 -
+>  arch/mips/configs/decstation_defconfig     | 1 -
+>  arch/mips/configs/decstation_r4k_defconfig | 1 -
+>  3 files changed, 3 deletions(-)
 > 
-> diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
-> index be80071336a4..1d2623230297 100644
-> --- a/arch/powerpc/kernel/watchdog.c
-> +++ b/arch/powerpc/kernel/watchdog.c
-> @@ -131,10 +131,10 @@ static void wd_lockup_ipi(struct pt_regs *regs)
->   	/* Do not panic from here because that can recurse into NMI IPI layer */
->   }
->   
-> -static void set_cpumask_stuck(const struct cpumask *cpumask, u64 tb)
-> +static bool set_cpu_stuck(int cpu, u64 tb)
->   {
-> -	cpumask_or(&wd_smp_cpus_stuck, &wd_smp_cpus_stuck, cpumask);
-> -	cpumask_andnot(&wd_smp_cpus_pending, &wd_smp_cpus_pending, cpumask);
-> +	cpumask_set_cpu(cpu, &wd_smp_cpus_stuck);
-> +	cpumask_clear_cpu(cpu, &wd_smp_cpus_pending);
->   	/*
->   	 * See wd_smp_clear_cpu_pending()
->   	 */
-> @@ -144,11 +144,9 @@ static void set_cpumask_stuck(const struct cpumask *cpumask, u64 tb)
->   		cpumask_andnot(&wd_smp_cpus_pending,
->   				&wd_cpus_enabled,
->   				&wd_smp_cpus_stuck);
-> +		return true;
->   	}
-> -}
-> -static void set_cpu_stuck(int cpu, u64 tb)
-> -{
-> -	set_cpumask_stuck(cpumask_of(cpu), tb);
-> +	return false;
->   }
->   
->   static void watchdog_smp_panic(int cpu, u64 tb)
-> @@ -177,15 +175,17 @@ static void watchdog_smp_panic(int cpu, u64 tb)
->   		 * get a backtrace on all of them anyway.
->   		 */
->   		for_each_cpu(c, &wd_smp_cpus_pending) {
-> +			bool empty;
->   			if (c == cpu)
->   				continue;
-> +			/* Take the stuck CPUs out of the watch group */
-> +			empty = set_cpu_stuck(c, tb);
->   			smp_send_nmi_ipi(c, wd_lockup_ipi, 1000000);
-> +			if (empty)
-> +				break;
->   		}
->   	}
->   
-> -	/* Take the stuck CPUs out of the watch group */
-> -	set_cpumask_stuck(&wd_smp_cpus_pending, tb);
-> -
->   	wd_smp_unlock(&flags);
->   
->   	if (sysctl_hardlockup_all_cpu_backtrace)
-> @@ -232,6 +232,22 @@ static void wd_smp_clear_cpu_pending(int cpu, u64 tb)
->   		return;
->   	}
->   
-> +	/*
-> +	 * All other updates to wd_smp_cpus_pending are performed under
-> +	 * wd_smp_lock. All of them are atomic except the case where the
-> +	 * mask becomes empty and is reset. This will not happen here because
-> +	 * cpu was tested to be in the bitmap (above), and a CPU only clears
-> +	 * its own bit. _Except_ in the case where another CPU has detected a
-> +	 * hard lockup on our CPU and takes us out of the pending mask. So in
-> +	 * normal operation there will be no race here, no problem.
-> +	 *
-> +	 * In the lockup case, this atomic clear-bit vs a store that refills
-> +	 * other bits in the accessed word wll not be a problem. The bit clear
-> +	 * is atomic so it will not cause the store to get lost, and the store
-> +	 * will never set this bit so it will not overwrite the bit clear. The
-> +	 * only way for a stuck CPU to return to the pending bitmap is to
-> +	 * become unstuck itself.
-> +	 */
->   	cpumask_clear_cpu(cpu, &wd_smp_cpus_pending);
->   
->   	/*
-> 
+> diff --git a/arch/mips/configs/decstation_64_defconfig b/arch/mips/configs/decstation_64_defconfig
+> index 85f1955b4b00..e2ed105f8c97 100644
+> --- a/arch/mips/configs/decstation_64_defconfig
+> +++ b/arch/mips/configs/decstation_64_defconfig
+> @@ -144,7 +144,6 @@ CONFIG_EXT2_FS_SECURITY=y
+>  CONFIG_EXT3_FS=y
+>  CONFIG_EXT3_FS_POSIX_ACL=y
+>  CONFIG_EXT3_FS_SECURITY=y
+> -# CONFIG_MANDATORY_FILE_LOCKING is not set
+>  CONFIG_ISO9660_FS=y
+>  CONFIG_JOLIET=y
+>  CONFIG_PROC_KCORE=y
+> diff --git a/arch/mips/configs/decstation_defconfig b/arch/mips/configs/decstation_defconfig
+> index 30a6eafdb1d0..7e987d6f5e34 100644
+> --- a/arch/mips/configs/decstation_defconfig
+> +++ b/arch/mips/configs/decstation_defconfig
+> @@ -140,7 +140,6 @@ CONFIG_EXT2_FS_SECURITY=y
+>  CONFIG_EXT3_FS=y
+>  CONFIG_EXT3_FS_POSIX_ACL=y
+>  CONFIG_EXT3_FS_SECURITY=y
+> -# CONFIG_MANDATORY_FILE_LOCKING is not set
+>  CONFIG_ISO9660_FS=y
+>  CONFIG_JOLIET=y
+>  CONFIG_PROC_KCORE=y
+> diff --git a/arch/mips/configs/decstation_r4k_defconfig b/arch/mips/configs/decstation_r4k_defconfig
+> index e2b58dbf4aa9..6df5f6f2ac8e 100644
+> --- a/arch/mips/configs/decstation_r4k_defconfig
+> +++ b/arch/mips/configs/decstation_r4k_defconfig
+> @@ -140,7 +140,6 @@ CONFIG_EXT2_FS_SECURITY=y
+>  CONFIG_EXT3_FS=y
+>  CONFIG_EXT3_FS_POSIX_ACL=y
+>  CONFIG_EXT3_FS_SECURITY=y
+> -# CONFIG_MANDATORY_FILE_LOCKING is not set
+>  CONFIG_ISO9660_FS=y
+>  CONFIG_JOLIET=y
+>  CONFIG_PROC_KCORE=y
 
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
