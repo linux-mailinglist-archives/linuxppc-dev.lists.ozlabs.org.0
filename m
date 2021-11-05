@@ -2,63 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60E8446691
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 16:57:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B3B4466B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 17:06:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hm4s50g6Zz3c7R
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 02:57:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hm53b1XSFz3bhx
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 03:06:35 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lTPAp5KG;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.133; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hm4rY5KH0z2ymy
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 02:57:00 +1100 (AEDT)
-Received: from mail-wm1-f43.google.com ([209.85.128.43]) by
- mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MuVOM-1mS2xu0pOc-00rUce for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Nov
- 2021 16:56:56 +0100
-Received: by mail-wm1-f43.google.com with SMTP id
- j128-20020a1c2386000000b003301a98dd62so9859634wmj.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Nov 2021 08:56:55 -0700 (PDT)
-X-Gm-Message-State: AOAM530ED9MDazUXaEAGyjY080oue+e0O85VfMQ45Eb6yHGvjLTwchvA
- 9aSDhzYfP4YYi97EuDZB5r/OU6F+uDSG+wYT2do=
-X-Google-Smtp-Source: ABdhPJxk4OCRMtLkil/Eyj8Bt7IiEC6cv8x2wWvEo25EBDjZmSRZavU4Cmw8YwQkdpld9oVGpzqUDybBNFF63jz+S4E=
-X-Received: by 2002:a1c:2382:: with SMTP id j124mr20339339wmj.35.1636127805532; 
- Fri, 05 Nov 2021 08:56:45 -0700 (PDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=lTPAp5KG; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hm52q3B11z2ync
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 03:05:54 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1A5Fk6dr018640
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 5 Nov 2021 16:05:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=zpLYG08mPEICb80ybYyYbj72/6pHO4z4LDYzdScq+RY=;
+ b=lTPAp5KGwOmzkNGd23JmzGXZ4WK/gWcrB1ruIiTDV5dzn2Pi2nw1ZXvfspIHSR68AJup
+ 9s/5CiSsIQEg849ZE2z3FYYwAbnM6nctSgSx1+d4Dk3deT+A7/LNXwMd4k5vGkdxqWrt
+ HkCUA/z/viq4py2uvI4528Y0GqdE9i4Rp/TliNCWxkQPZC9PhwYwaFeJEvCYPeBfQyfD
+ xAjWTsLiNQ8nlBwI8d8zdSKCX8qmI63ZkaWYW7OpliVkewp22G+afymYMafksElc7wX+
+ rMoKEvSLlUgYbgPn8BxA7gnOsXW+2/i2plIepWilEWouHEkE27pJhMQWeYRo0HwdtKnI 3Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3c57hxrfcg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Nov 2021 16:05:50 +0000
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1A5FlTlC028176
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 5 Nov 2021 16:05:49 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3c57hxrfc1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 05 Nov 2021 16:05:49 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1A5FwFL3022391;
+ Fri, 5 Nov 2021 16:05:48 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma01dal.us.ibm.com with ESMTP id 3c4t3xgeqq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 05 Nov 2021 16:05:48 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1A5G5lnF44892592
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 5 Nov 2021 16:05:47 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB0E612405C;
+ Fri,  5 Nov 2021 16:05:47 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A3A1C124058;
+ Fri,  5 Nov 2021 16:05:46 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.43.4.166])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri,  5 Nov 2021 16:05:46 +0000 (GMT)
+X-Mailer: emacs 28.0.50 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/pseries: Fix numa FORM2 parsing fallback code
+In-Reply-To: <20211105132909.1582449-1-npiggin@gmail.com>
+References: <20211105132909.1582449-1-npiggin@gmail.com>
+Date: Fri, 05 Nov 2021 21:35:43 +0530
+Message-ID: <87bl2yegfc.fsf@linux.ibm.com>
 MIME-Version: 1.0
-References: <20211105154334.1841927-1-alexandre.ghiti@canonical.com>
-In-Reply-To: <20211105154334.1841927-1-alexandre.ghiti@canonical.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Fri, 5 Nov 2021 16:56:29 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2AnLJgGNBFvjUQqXd-Az9vjgE7yJQXGDwCav5E0btSsg@mail.gmail.com>
-Message-ID: <CAK8P3a2AnLJgGNBFvjUQqXd-Az9vjgE7yJQXGDwCav5E0btSsg@mail.gmail.com>
-Subject: Re: [PATCH 0/7] Cleanup after removal of configs
-To: Alexandre Ghiti <alexandre.ghiti@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:UzqQb44A3teG2MIJ8bwO8z7Wu5nlhjN0gFP23Qf1+ekiHIAP1F7
- 16AnZTlmhi99jaXtc9vKwVJDXMQJurRfs97VoVznU69l547J7UqM/TWNahG5ONvTZpx/vQN
- RJAJ1mhw7fINtGKRkjUdWKICnzOQjKGFbEgDI34NZf3Fwvp3CwqEPjajO/jA/kpxr5FjRgo
- 3Js1GNfKxAfQGJApLf/fA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+Qq26743S7A=:kyX6X5nhFiG4mPVWULQq83
- o92yJGgrwBofi+qgOHHjfJBWKV4fOAVP/HQS2VPw0IvI4gfwW5X8CGU6+/ptoO5PVSXgViWD9
- 8rjMzXafWKKINZpCj21zvr36KwtJrB0Dz03lCPclwFUygTpfHbIn1HYaRLRq9qvGfvzwRgP6r
- eluslMn+IqHf+MqfEhxjcm0bq4ZAGU4/N8asF1/npglasRkNIs4bK2ctMCatK8V0KsGngoSUv
- O002V4H4mDkhl+KvMqKaN8OZ5vs/tlbbZ0wMu2+lsS5scrD+pYExWFd7lRER39fJfK5QKdhbR
- +46m/+N6VZCZKeizVq4uvRwM+YoKrjuJNhmCV/P27qzxMMBnsgeLgUSTQyos+N0c5+6kqCb8x
- VqmTqYDF23SIDcnFhDq/YSoV2t0hSw6IoY3piezTK2DbfoXDSkqpWT9yydy3eGMnje1eSyYRj
- LU+otdZs763HVqR6MvhA82hBI3b9OBVQFe+FcrpBmhh2qTbh1eeIJ5Uc1Yf2tJnlUtg4z8V1h
- UYSbI75RwX2Wp/z4I5V0BbM2l0ngJUAj4OQNg+PLkHWvHs7ISvzqmncD/zd3Tfl5FEs8yCqLh
- 4XIrWx171483xKMWAgD0ebW+19AWeFEoD0zpgRhsygpxYCEYKTC3ax23T/3AcQO9Jf2KgJHnc
- pQg98EDCP6lh5Dt3pRqjE+poYZCCirD8AQJIBFiBP++q/iEEuU+Gl0rZUxGRrKY95AO37v86m
- Gf/utxwuiL6t/5CZcnhdSURgjBsv/zp/NRWVDj+VWGu0CWKhSpaMw4/u76jZlxZjPIaBIqNrk
- ebEhKbD/OptyVcVt+u8rCRGf0GcHi/EMBZLFvG05H3TSfrQjtc=
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: XPREEyts8BdYRUuiAGVPfqDiz6vN8zEK
+X-Proofpoint-ORIG-GUID: IhBcY4_xwYCuV6Amu6YrfQxDnjbk8St1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-05_02,2021-11-03_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0
+ impostorscore=0 lowpriorityscore=0 spamscore=0 phishscore=0 clxscore=1011
+ priorityscore=1501 suspectscore=0 malwarescore=0 mlxscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111050091
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,52 +104,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- David Howells <dhowells@redhat.com>, Paul Mackerras <paulus@samba.org>,
- samba-technical@lists.samba.org, Lee Jones <lee.jones@linaro.org>,
- linux-cifs@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Jonathan Corbet <corbet@lwn.net>, Linux-sh list <linux-sh@vger.kernel.org>,
- Russell King <linux@armlinux.org.uk>, linux-cachefs@redhat.com,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Guenter Roeck <linux@roeck-us.net>,
- Arnd Bergmann <arnd@arndb.de>, Wim Van Sebroeck <wim@linux-watchdog.org>,
- Kalle Valo <kvalo@codeaurora.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Ronnie Sahlberg <lsahlber@redhat.com>, Steve French <sfrench@samba.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Jeff Layton <jlayton@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-power@fi.rohmeurope.com
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 5, 2021 at 4:43 PM Alexandre Ghiti
-<alexandre.ghiti@canonical.com> wrote:
+Nicholas Piggin <npiggin@gmail.com> writes:
+
+> In case the FORM2 distance table from firmware is not the expected size,
+> there is fallback code that just populates the lookup table as local vs
+> remote.
 >
-> While bumping from 5.13 to 5.15, I found that a few deleted configs had
-> left some pieces here and there: this patchset cleans that.
+> However it then continues on to use the distance table. Fix.
 >
-> Alexandre Ghiti (7):
->   Documentation, arch: Remove leftovers from fscache/cachefiles
->     histograms
->   Documentation, arch: Remove leftovers from raw device
->   Documentation, arch: Remove leftovers from CIFS_WEAK_PW_HASH
->   arch: Remove leftovers from mandatory file locking
->   Documentation, arch, fs: Remove leftovers from fscache object list
->   include: mfd: Remove leftovers from bd70528 watchdog
->   arch: Remove leftovers from prism54 wireless driver
 
-Looks all good to me, thanks a lot for the cleanup!
+Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-For arch/arm/configs:
-
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-
-assuming this goes through someone else's tree. Let me know if you need me
-to pick up the patches in the asm-generic tree for cross-architecture work.
-
-         Arnd
+> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Fixes: 1c6b5a7e7405 ("powerpc/pseries: Add support for FORM2 associativity")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/mm/numa.c | 29 +++++++++++++----------------
+>  1 file changed, 13 insertions(+), 16 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+> index 6f14c8fb6359..0789cde7f658 100644
+> --- a/arch/powerpc/mm/numa.c
+> +++ b/arch/powerpc/mm/numa.c
+> @@ -380,6 +380,7 @@ static void initialize_form2_numa_distance_lookup_table(void)
+>  	const __be32 *numa_lookup_index;
+>  	int numa_dist_table_length;
+>  	int max_numa_index, distance_index;
+> +	bool good = true;
+>  
+>  	if (firmware_has_feature(FW_FEATURE_OPAL))
+>  		root = of_find_node_by_path("/ibm,opal");
+> @@ -407,30 +408,26 @@ static void initialize_form2_numa_distance_lookup_table(void)
+>  
+>  	if (numa_dist_table_length != max_numa_index * max_numa_index) {
+>  		WARN(1, "Wrong NUMA distance information\n");
+> -		/* consider everybody else just remote. */
+> -		for (i = 0;  i < max_numa_index; i++) {
+> -			for (j = 0; j < max_numa_index; j++) {
+> -				int nodeA = numa_id_index_table[i];
+> -				int nodeB = numa_id_index_table[j];
+> -
+> -				if (nodeA == nodeB)
+> -					numa_distance_table[nodeA][nodeB] = LOCAL_DISTANCE;
+> -				else
+> -					numa_distance_table[nodeA][nodeB] = REMOTE_DISTANCE;
+> -			}
+> -		}
+> +		good = false;
+>  	}
+> -
+>  	distance_index = 0;
+>  	for (i = 0;  i < max_numa_index; i++) {
+>  		for (j = 0; j < max_numa_index; j++) {
+>  			int nodeA = numa_id_index_table[i];
+>  			int nodeB = numa_id_index_table[j];
+> -
+> -			numa_distance_table[nodeA][nodeB] = numa_dist_table[distance_index++];
+> -			pr_debug("dist[%d][%d]=%d ", nodeA, nodeB, numa_distance_table[nodeA][nodeB]);
+> +			int dist;
+> +
+> +			if (good)
+> +				dist = numa_dist_table[distance_index++];
+> +			else if (nodeA == nodeB)
+> +				dist = LOCAL_DISTANCE;
+> +			else
+> +				dist = REMOTE_DISTANCE;
+> +			numa_distance_table[nodeA][nodeB] = dist;
+> +			pr_debug("dist[%d][%d]=%d ", nodeA, nodeB, dist);
+>  		}
+>  	}
+> +
+>  	of_node_put(root);
+>  }
+>  
+> -- 
+> 2.23.0
