@@ -2,54 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3A3446253
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 11:42:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F7FF44626E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 11:56:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hlxsq61C8z3c4X
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 21:42:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hly9w70HYz307W
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 21:56:36 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=EFNE6b2w;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=87.98.187.244;
- helo=10.mo552.mail-out.ovh.net; envelope-from=clg@kaod.org;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::633;
+ helo=mail-pl1-x633.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
-Received: from 10.mo552.mail-out.ovh.net (10.mo552.mail-out.ovh.net
- [87.98.187.244])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=EFNE6b2w; dkim-atps=neutral
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
+ [IPv6:2607:f8b0:4864:20::633])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HlxsN6hBLz2xX8
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 21:42:14 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.138.22])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 4FE8022C6D;
- Fri,  5 Nov 2021 10:26:43 +0000 (UTC)
-Received: from kaod.org (37.59.142.100) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Fri, 5 Nov
- 2021 11:26:42 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-100R00346f708bf-d9a1-4797-b728-acac7d58eb05,
- ACBEE74C211706A3681C4B00B96A7A61B931BAD7) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 11/11] powerpc/smp: Add a doorbell=off kernel parameter
-Date: Fri, 5 Nov 2021 11:26:36 +0100
-Message-ID: <20211105102636.1016378-12-clg@kaod.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20211105102636.1016378-1-clg@kaod.org>
-References: <20211105102636.1016378-1-clg@kaod.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hly9D4LCxz2yQw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 21:55:59 +1100 (AEDT)
+Received: by mail-pl1-x633.google.com with SMTP id u11so10863134plf.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Nov 2021 03:55:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=7fdsM52daXciJqnyU5/OzVCaVhDKnkuUr417/ZYsvNw=;
+ b=EFNE6b2w+3luKQ+85xyK/0sEBmwzOUa7Vv/yzXOCuyMM+atPYW4qW18bcKfqFUct38
+ P7fjJPzHA2fblddnmcuJCjTHn+yrLSk2tgPRRg7axeQ0wcS/yhzxV+smfQI3wRzP9EOd
+ VmB9G17c2IpvCQYT9NzttCjp42sdLKog7sNIQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=7fdsM52daXciJqnyU5/OzVCaVhDKnkuUr417/ZYsvNw=;
+ b=jdHMW4OqFCn33+5iYbXknkUxeAKbwWyY8PjQrWY9fi8J3QOv/FhQqZJhibwTsZgX7H
+ bGeV6TUUz8fNRzk5fXyWouAASI9yB0wD/0B0IzKTkGkHuF3iYqUhOg1jNw1FxvxSWPz7
+ epuqAvixNK52nDlJ04FIx/fEq4pnuPEg8oKkPQQWDNCXCa/GNDhysKjzASe39b03l9yf
+ PEHHJRDgh3q/6ksLtDMWSu+X9WqAn7l6rWeuPMKxcKN3JkJoWCnyZNoiam8PnoL6Ua4i
+ xG/2ciZp0wZNAXyaZvRan0dpTz57lbaDRPtuRLVjtGCmLea8bE9z5WqEeQP5tW+uow6p
+ u/mw==
+X-Gm-Message-State: AOAM532t4KOJDsCXd15B57UkW+QM1N1umFDjgBvSRPzC1vRJZOPVYRhz
+ PGzCUKh80ycRCj3PZyhJKtqC/g==
+X-Google-Smtp-Source: ABdhPJwCTOEks/HqEB3MsjkY3hl6kqZcTdp01TkyVsdwZ6RzuTp6/FHOriFqQpl7OvwI6sbG3UD4OA==
+X-Received: by 2002:a17:90a:bb14:: with SMTP id
+ u20mr20557433pjr.139.1636109756579; 
+ Fri, 05 Nov 2021 03:55:56 -0700 (PDT)
+Received: from localhost ([2001:4479:e000:e400:c94c:529e:ffcd:fff0])
+ by smtp.gmail.com with ESMTPSA id q6sm7423217pfk.115.2021.11.05.03.55.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 05 Nov 2021 03:55:56 -0700 (PDT)
+From: Daniel Axtens <dja@axtens.net>
+To: Michal Suchanek <msuchanek@suse.de>, keyrings@vger.kernel.org
+Subject: Re: [PATCH 0/3] KEXEC_SIG with appended signature
+In-Reply-To: <cover.1635948742.git.msuchanek@suse.de>
+References: <cover.1635948742.git.msuchanek@suse.de>
+Date: Fri, 05 Nov 2021 21:55:52 +1100
+Message-ID: <87czneeurr.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.100]
-X-ClientProxiedBy: DAG2EX1.mxp5.local (172.16.2.11) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 6f8b580a-678f-45ae-b9f9-6c0c74bdc4a9
-X-Ovh-Tracer-Id: 495958910588980189
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: 0
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrtdeigdduhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvufffkffojghfgggtgfhisehtkeertdertdejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepheehfeegjeeitdfffeetjeduveejueefuefgtdefueelueetveeliefhhffgtdelnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheptghlgheskhgrohgurdhorhhg
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,121 +75,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Rob Herring <robh@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Frank van der Linden <fllinden@amazon.com>, Jessica Yu <jeyu@kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On processors with a XIVE interrupt controller (POWER9 and above), the
-kernel can use either doorbells or XIVE to generate CPU IPIs. Sending
-doorbell is generally preferred to using the XIVE IC because it is
-faster. There are cases where we want to avoid doorbells and use XIVE
-only, for debug or performance. Only useful on POWER9 and above.
+Michal Suchanek <msuchanek@suse.de> writes:
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
- arch/powerpc/include/asm/dbell.h                |  1 +
- arch/powerpc/kernel/dbell.c                     | 17 +++++++++++++++++
- arch/powerpc/platforms/powernv/smp.c            |  7 +++++--
- arch/powerpc/platforms/pseries/smp.c            |  3 +++
- Documentation/admin-guide/kernel-parameters.txt | 10 ++++++++++
- 5 files changed, 36 insertions(+), 2 deletions(-)
+> S390 uses appended signature for kernel but implements the check
+> separately from module loader.
+>
+> Support for secure boot on powerpc with appended signature is planned -
+> grub patches submitted upstream but not yet merged.
 
-diff --git a/arch/powerpc/include/asm/dbell.h b/arch/powerpc/include/asm/dbell.h
-index 3e9da22a2779..07775aa3e81b 100644
---- a/arch/powerpc/include/asm/dbell.h
-+++ b/arch/powerpc/include/asm/dbell.h
-@@ -90,6 +90,7 @@ static inline void ppc_msgsync(void)
- #endif /* CONFIG_PPC_BOOK3S */
- 
- extern void doorbell_exception(struct pt_regs *regs);
-+extern bool doorbell_disabled;
- 
- static inline void ppc_msgsnd(enum ppc_dbell type, u32 flags, u32 tag)
- {
-diff --git a/arch/powerpc/kernel/dbell.c b/arch/powerpc/kernel/dbell.c
-index 5545c9cd17c1..681ee4775629 100644
---- a/arch/powerpc/kernel/dbell.c
-+++ b/arch/powerpc/kernel/dbell.c
-@@ -38,6 +38,23 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(doorbell_exception)
- 
- 	set_irq_regs(old_regs);
- }
-+
-+bool doorbell_disabled;
-+
-+static int __init doorbell_cmdline(char *arg)
-+{
-+	if (!arg)
-+		return -EINVAL;
-+
-+	if (strncmp(arg, "off", 3) == 0) {
-+		pr_info("Doorbell disabled on kernel command line\n");
-+		doorbell_disabled = true;
-+	}
-+
-+	return 0;
-+}
-+__setup("doorbell=", doorbell_cmdline);
-+
- #else /* CONFIG_SMP */
- DEFINE_INTERRUPT_HANDLER_ASYNC(doorbell_exception)
- {
-diff --git a/arch/powerpc/platforms/powernv/smp.c b/arch/powerpc/platforms/powernv/smp.c
-index cbb67813cd5d..1311bda9446a 100644
---- a/arch/powerpc/platforms/powernv/smp.c
-+++ b/arch/powerpc/platforms/powernv/smp.c
-@@ -338,10 +338,13 @@ static void __init pnv_smp_probe(void)
- 		ic_cause_ipi = smp_ops->cause_ipi;
- 		WARN_ON(!ic_cause_ipi);
- 
--		if (cpu_has_feature(CPU_FTR_ARCH_300))
-+		if (cpu_has_feature(CPU_FTR_ARCH_300)) {
-+			if (doorbell_disabled)
-+				return;
- 			smp_ops->cause_ipi = doorbell_global_ipi;
--		else
-+		} else {
- 			smp_ops->cause_ipi = pnv_cause_ipi;
-+		}
- 	}
- }
- 
-diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platforms/pseries/smp.c
-index f47429323eee..3bc9e6aaf645 100644
---- a/arch/powerpc/platforms/pseries/smp.c
-+++ b/arch/powerpc/platforms/pseries/smp.c
-@@ -229,6 +229,9 @@ static __init void pSeries_smp_probe(void)
- 			return;
- 	}
- 
-+	if (doorbell_disabled)
-+		return;
-+
- 	/*
- 	 * Under PowerVM, FSCR[MSGP] is enabled as guest vCPU siblings are
- 	 * gang scheduled on the same physical core, so doorbells are always
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 10fa093251e8..2e1284febe39 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1041,6 +1041,16 @@
- 			The filter can be disabled or changed to another
- 			driver later using sysfs.
- 
-+	doorbell=off	[PPC]
-+			On processors with a XIVE interrupt controller
-+			(POWER9 and above), the kernel can use either
-+			doorbells or XIVE to generate CPU IPIs.	Sending
-+			doorbell is generally preferred to using the XIVE
-+			IC because it is faster. There are cases where
-+			we want to avoid doorbells and use XIVE only,
-+			for debug or performance. Only useful on
-+			POWER9 and above.
-+
- 	driver_async_probe=  [KNL]
- 			List of driver names to be probed asynchronously.
- 			Format: <driver_name1>,<driver_name2>...
--- 
-2.31.1
+Power Non-Virtualised / OpenPower already supports secure boot via kexec
+with signature verification via IMA. I think you have now sent a
+follow-up series that merges some of the IMA implementation, I just
+wanted to make sure it was clear that we actually already have support
+for this in the kernel, it's just grub that is getting new support.
 
+> This is an attempt at unified appended signature verification.
+
+I am always in favour of fewer reimplementations of the same feature in
+the kernel :)
+
+Regards,
+Daniel
+
+>
+> Thanks
+>
+> Michal
+>
+> Michal Suchanek (3):
+>   s390/kexec_file: Don't opencode appended signature verification.
+>   module: strip the signature marker in the verification function.
+>   powerpc/kexec_file: Add KEXEC_SIG support.
+>
+>  arch/powerpc/Kconfig                  | 11 +++++++
+>  arch/powerpc/kexec/elf_64.c           | 14 +++++++++
+>  arch/s390/kernel/machine_kexec_file.c | 42 +++------------------------
+>  include/linux/verification.h          |  3 ++
+>  kernel/module-internal.h              |  2 --
+>  kernel/module.c                       | 11 +++----
+>  kernel/module_signing.c               | 32 ++++++++++++++------
+>  7 files changed, 59 insertions(+), 56 deletions(-)
+>
+> -- 
+> 2.31.1
