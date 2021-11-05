@@ -1,72 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0EE445EDF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 04:51:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AD4445EE0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 04:52:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HlmlQ35zCz301j
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 14:51:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hlmm74W3fz2ymg
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 14:52:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gWvwH233;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Bezl5dgu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e;
- helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
+ helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=gWvwH233; dkim-atps=neutral
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
- [IPv6:2607:f8b0:4864:20::102e])
+ header.s=20210112 header.b=Bezl5dgu; dkim-atps=neutral
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
+ [IPv6:2607:f8b0:4864:20::1030])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hlmkk5x8xz2xtw
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 14:50:53 +1100 (AEDT)
-Received: by mail-pj1-x102e.google.com with SMTP id
- gx15-20020a17090b124f00b001a695f3734aso2488409pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Nov 2021 20:50:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hlmkl1ZPxz2xtw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 14:50:55 +1100 (AEDT)
+Received: by mail-pj1-x1030.google.com with SMTP id
+ o6-20020a17090a0a0600b001a64b9a11aeso2488872pjo.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Nov 2021 20:50:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=a9ktfIBPTIRNYfZsBFN5A8xWgwK5plAOwbdw0XcPlFE=;
- b=gWvwH233AI53D5it0HsAj+auWiUQP1Fjrq7i/gXJT52ymdEC+hmnE0mSFL36Yx9no7
- m0vyQYyN3/rCrapheRr0fM6kExe3INWYMRGUgJwI9bQNCk1vjQfWjkYEqaK1dQ1+xNxh
- 9/Z93vt4hBDqJU5Cf265WM4xWM42NlnUURUnnGDup7cKypFdajqi479dmhx46pP6b9lP
- azq1Sh5ble820Aca/u9YnYxX27CqMukXbjUR8XNHopCTvo7i+LCEbTJt3e0VV5NnnwSR
- Wk40vMMV934j9QKbgSJ9q5OmS88u3hpROi48iGPdCZi+uvSbNrsf5xcVyFG8mWqqWRbY
- 7YzQ==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=w1qoMbDr+sdyPtmsxdT5TLHlTpk2WPuA7Fji3juVDGY=;
+ b=Bezl5dgunI32HXF9j+O9V9UkpzYyuCKFtqNYHyMk6KWg5tXn/nyXPBN0OFlZAPgM6X
+ 5iS5Kqm6LZmjVtJyiecIF2erTMIT7RIaA09qSpxjgF5r0VH8kX5GF+SCodEPd+TbjO0l
+ HeV5JWrrf0V84w2ALkQAojjqJio8MsKCxjh3xuy/ueqoX98tg4M/Tq+8nSNxi0tWAJGt
+ WostPpgxQ1SIY0NKnk7Y8CIo40M1/EDHuCHElnAFB+luV8S0nbUUG6E17OeyPx+Ev5iv
+ 1lGqjCUcO4cri7RryZWRe6igSgjxa349nhQV14J6iWdRfW/pffhiY4MY0v67KGCsOyqj
+ lEQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=a9ktfIBPTIRNYfZsBFN5A8xWgwK5plAOwbdw0XcPlFE=;
- b=diuMqO8KZBLKAlFl7cpnI6sepeCxURxw+sOQ+I4L7M0LV5WNHkV7mp4B//WsuzCxyb
- bxqglq8VQtf6cROLw+pYkufiGmUlBodQC11a7OrS1FnP+LkgOw/y/FBS70rRBW2/NXtD
- vR3rI7enVMI1NPw3Om8vO48ibchFyIAem2rbgCkHt7ZdYD0gRoZqErURVk1NKgm6HBQm
- PHiGTM9dPGB6Aj0nKx14wpxzdab/W/6uUDIfDlnwkCOfVLtyLMZ7sSoB0nF9uZoz4d3i
- vqyhKL5/US0V0bfIYEj/N03ERHj4J6OUlgth1XhJfubT3z1efAp1U0yogUwzMHr2imTf
- i7sQ==
-X-Gm-Message-State: AOAM530/6msNB6lxyt8MAk0TcTEPb5kyaeyvTBYLFexF9M2MhBUGMvts
- oMLkpEFJR3Tg1d3gFLbZKFjPHeBSDXQ=
-X-Google-Smtp-Source: ABdhPJwBnDbZUIhmr3NBLyMqrLI959OEmIO56Yf/8hOcF3npBF3qrKns7W258xn4UkuO+mLLagpHHg==
-X-Received: by 2002:a17:90b:3509:: with SMTP id
- ls9mr27289629pjb.99.1636084250534; 
- Thu, 04 Nov 2021 20:50:50 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=w1qoMbDr+sdyPtmsxdT5TLHlTpk2WPuA7Fji3juVDGY=;
+ b=KHxh9VEEOJmijD2Yo7O1Iw9H7+LRX0W8RMDnv5ZFqibIth7nEJnZYkovrc05qTCUyg
+ WQwfLUuDVEwEM0i9xiTJ5auzOUEFpLP1V4WToFDq8DeE9osDdqTol0gEn4Zh+jVGPC1D
+ QuqvdG3veNqROOnRhmVBzoffGu4IpxYLfbwDemIII8c91N0s3CJmv17d2pvty8YeNMu8
+ r1fPN1P+KlcVdYWZ18bf9yaubweao0NPlCD55APnB7H8nCSSSChdREh48zHwhzdRMcB3
+ Rdg5QyYGBwY0+WLrp40/XgSptWF6Pzl/zE5iVPO2HPHQ8zd/drjcQ7s/MMwtlSKl8yjk
+ 5iWw==
+X-Gm-Message-State: AOAM533rpXSfB4EvslZJB/fwl9VeUUhQqtzYv2Rm5PPMU5jRp7n5HxQi
+ /7r+SmVZ0BCqsRD0u9g5pEnPKczsCoA=
+X-Google-Smtp-Source: ABdhPJzKTuvBrs2ROgz4rSSsm05aYxe+RIuBC8ieDC6fCPhy4zeo+9DgWVbx3lhI5+zPK9XyHwiTHg==
+X-Received: by 2002:a17:902:8bc4:b029:12b:8470:e29e with SMTP id
+ r4-20020a1709028bc4b029012b8470e29emr49328890plo.2.1636084252637; 
+ Thu, 04 Nov 2021 20:50:52 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (60-241-46-56.tpgi.com.au. [60.241.46.56])
  by smtp.gmail.com with ESMTPSA id
- q9sm6496222pfj.88.2021.11.04.20.50.48
+ q9sm6496222pfj.88.2021.11.04.20.50.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Nov 2021 20:50:50 -0700 (PDT)
+ Thu, 04 Nov 2021 20:50:52 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/2] powerpc: remove cpu_online_cores_map function
-Date: Fri,  5 Nov 2021 13:50:41 +1000
-Message-Id: <20211105035042.1398309-1-npiggin@gmail.com>
+Subject: [PATCH 2/2] powerpc: select CPUMASK_OFFSTACK if NR_CPUS >= 8192
+Date: Fri,  5 Nov 2021 13:50:42 +1000
+Message-Id: <20211105035042.1398309-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20211105035042.1398309-1-npiggin@gmail.com>
+References: <20211105035042.1398309-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,127 +87,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This function builds the cores online map with on-stack cpumasks which
-can cause high stack usage with large NR_CPUS.
-
-It is not used in any performance sensitive paths, so instead just check
-for first thread sibling.
+Some core kernel code starts to go beyond the 2048 byte stack size
+warning at NR_CPUS=8192, so select CPUMASK_OFFSTACK in that case.
+x86 does similarly for very large NR_CPUS.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/cputhreads.h     | 33 -----------------------
- arch/powerpc/platforms/powernv/idle.c     | 10 +++----
- arch/powerpc/platforms/powernv/opal-imc.c |  6 ++---
- 3 files changed, 8 insertions(+), 41 deletions(-)
+ arch/powerpc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/include/asm/cputhreads.h b/arch/powerpc/include/asm/cputhreads.h
-index b167186aaee4..f26c430f3982 100644
---- a/arch/powerpc/include/asm/cputhreads.h
-+++ b/arch/powerpc/include/asm/cputhreads.h
-@@ -32,44 +32,11 @@ extern cpumask_t threads_core_mask;
- #define threads_core_mask	(*get_cpu_mask(0))
- #endif
- 
--/* cpu_thread_mask_to_cores - Return a cpumask of one per cores
-- *                            hit by the argument
-- *
-- * @threads:	a cpumask of online threads
-- *
-- * This function returns a cpumask which will have one online cpu's
-- * bit set for each core that has at least one thread set in the argument.
-- *
-- * This can typically be used for things like IPI for tlb invalidations
-- * since those need to be done only once per core/TLB
-- */
--static inline cpumask_t cpu_thread_mask_to_cores(const struct cpumask *threads)
--{
--	cpumask_t	tmp, res;
--	int		i, cpu;
--
--	cpumask_clear(&res);
--	for (i = 0; i < NR_CPUS; i += threads_per_core) {
--		cpumask_shift_left(&tmp, &threads_core_mask, i);
--		if (cpumask_intersects(threads, &tmp)) {
--			cpu = cpumask_next_and(-1, &tmp, cpu_online_mask);
--			if (cpu < nr_cpu_ids)
--				cpumask_set_cpu(cpu, &res);
--		}
--	}
--	return res;
--}
--
- static inline int cpu_nr_cores(void)
- {
- 	return nr_cpu_ids >> threads_shift;
- }
- 
--static inline cpumask_t cpu_online_cores_map(void)
--{
--	return cpu_thread_mask_to_cores(cpu_online_mask);
--}
--
- #ifdef CONFIG_SMP
- int cpu_core_index_of_thread(int cpu);
- int cpu_first_thread_of_core(int core);
-diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index e3ffdc8e8567..70da314fd2d7 100644
---- a/arch/powerpc/platforms/powernv/idle.c
-+++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -146,9 +146,13 @@ EXPORT_SYMBOL_GPL(pnv_get_supported_cpuidle_states);
- static void pnv_fastsleep_workaround_apply(void *info)
- 
- {
-+	int cpu = smp_processor_id();
- 	int rc;
- 	int *err = info;
- 
-+	if (cpu_first_thread_sibling(cpu) != cpu)
-+		return;
-+
- 	rc = opal_config_cpu_idle_state(OPAL_CONFIG_IDLE_FASTSLEEP,
- 					OPAL_CONFIG_IDLE_APPLY);
- 	if (rc)
-@@ -175,7 +179,6 @@ static ssize_t store_fastsleep_workaround_applyonce(struct device *dev,
- 		struct device_attribute *attr, const char *buf,
- 		size_t count)
- {
--	cpumask_t primary_thread_mask;
- 	int err;
- 	u8 val;
- 
-@@ -200,10 +203,7 @@ static ssize_t store_fastsleep_workaround_applyonce(struct device *dev,
- 	power7_fastsleep_workaround_exit = false;
- 
- 	cpus_read_lock();
--	primary_thread_mask = cpu_online_cores_map();
--	on_each_cpu_mask(&primary_thread_mask,
--				pnv_fastsleep_workaround_apply,
--				&err, 1);
-+	on_each_cpu(pnv_fastsleep_workaround_apply, &err, 1);
- 	cpus_read_unlock();
- 	if (err) {
- 		pr_err("fastsleep_workaround_applyonce change failed while running pnv_fastsleep_workaround_apply");
-diff --git a/arch/powerpc/platforms/powernv/opal-imc.c b/arch/powerpc/platforms/powernv/opal-imc.c
-index 05d3832019b9..3fea5da6d1b3 100644
---- a/arch/powerpc/platforms/powernv/opal-imc.c
-+++ b/arch/powerpc/platforms/powernv/opal-imc.c
-@@ -200,13 +200,13 @@ static void disable_nest_pmu_counters(void)
- 
- static void disable_core_pmu_counters(void)
- {
--	cpumask_t cores_map;
- 	int cpu, rc;
- 
- 	cpus_read_lock();
- 	/* Disable the IMC Core functions */
--	cores_map = cpu_online_cores_map();
--	for_each_cpu(cpu, &cores_map) {
-+	for_each_online_cpu(cpu) {
-+		if (cpu_first_thread_sibling(cpu) != cpu)
-+			continue;
- 		rc = opal_imc_counters_stop(OPAL_IMC_COUNTERS_CORE,
- 					    get_hard_smp_processor_id(cpu));
- 		if (rc)
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index ba5b66189358..b8f6185d3998 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -163,6 +163,7 @@ config PPC
+ 	select BINFMT_ELF
+ 	select BUILDTIME_TABLE_SORT
+ 	select CLONE_BACKWARDS
++	select CPUMASK_OFFSTACK			if NR_CPUS >= 8192
+ 	select DCACHE_WORD_ACCESS		if PPC64 && CPU_LITTLE_ENDIAN
+ 	select DMA_OPS_BYPASS			if PPC64
+ 	select DMA_OPS				if PPC64
 -- 
 2.23.0
 
