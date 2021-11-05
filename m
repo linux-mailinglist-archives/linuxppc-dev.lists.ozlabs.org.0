@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CAD44665B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 16:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EBA7446665
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Nov 2021 16:48:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hm4dd0kZdz3cNW
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 02:47:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hm4fn1MG6z3cRv
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 02:48:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=b2IuWcWI;
+	dkim=pass (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=Upx0ShCj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,60 +18,62 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=alexandre.ghiti@canonical.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=canonical.com header.i=@canonical.com
- header.a=rsa-sha256 header.s=20210705 header.b=b2IuWcWI; 
+ header.a=rsa-sha256 header.s=20210705 header.b=Upx0ShCj; 
  dkim-atps=neutral
 Received: from smtp-relay-internal-1.canonical.com
  (smtp-relay-internal-1.canonical.com [185.125.188.123])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hm4cx2CPZz2xY8
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 02:46:57 +1100 (AEDT)
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hm4f60ljGz2xvc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 02:47:57 +1100 (AEDT)
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 0163B3F1D6
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 15:46:55 +0000 (UTC)
+ by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id B04F03F1E0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Nov 2021 15:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1636127215;
- bh=AZ2gloRjaGSelBDHUs66L2AD8OBUvTDJdaiIuuRPNLk=;
+ s=20210705; t=1636127275;
+ bh=BQNpoEejJgdqfTjT6uEW5F1j+u2r6UT1ueKsgaIRjOY=;
  h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
  MIME-Version;
- b=b2IuWcWIAN9Z3pMXCpGu2IYiQPmVUMkfEReeKtu7Vqa+0tYDC2e/Kxjj8zWY8NlFS
- eIWV/S4ayn1Z9IgZqEutIvXxfHxJTBRu8bOH0TbfCYGmj6RDR1NUWqsKtZ0DOqX5CI
- SWCUL9/C3ahApYNA5t9X4uORwHYi3pK4hmZxGlXk9yNDjSb9Jw2s+jvUB3tzw87Z0c
- mJ9vA3XCYntZq3N5GnCNUhdnyZK4UNvi2k7k88X+91UarJQkp9usrHFkuMdlYQMmW8
- Mv+Y5zU00Kod9+/WK+19OIubdY/oFNE2TCH0pe03IQd/ypJ6jBbtEp2zp1GoXYQ+2p
- TzhMiz/8QTTaQ==
-Received: by mail-ed1-f71.google.com with SMTP id
- r25-20020a05640216d900b003dca3501ab4so9201832edx.15
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Nov 2021 08:46:54 -0700 (PDT)
+ b=Upx0ShCjT3EXsVVy8zr7CWqv8fL3ebiVYSbXObh/K6mcF91CLHYPgpU4GI30nJhdq
+ Ou0L2Hi7/5nFHpPUF4NDz3b36PJYy9N7kGH/agytG5EGRmdMc7LWjJY0z70O1m5MOj
+ Q8nfG1uBzjJqX7pkfSDzd2TntZykr4Or6dkmNobD2cxlBzC3fJYoSDA9KDff8pEEGr
+ IJ32kFRDcEQQjWmIgbsStXLOvrI9MsCrx99d40OTD/M0Gw2ftW/q/WZYCkXzGrKiL9
+ hNmG2R/HRdkE86EaQtrU33DnqCRmODoXDZYDTSZ0Gdo4iFzcdD4NfgH3Hjf10fhM1M
+ G4K7YqaU9yZ6Q==
+Received: by mail-wr1-f71.google.com with SMTP id
+ v17-20020adfedd1000000b0017c5e737b02so2454513wro.18
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Nov 2021 08:47:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=AZ2gloRjaGSelBDHUs66L2AD8OBUvTDJdaiIuuRPNLk=;
- b=yk0l3S+QX6g6Ayz2kkMXeGC6WNdOOh8bQZOs0FksnR2lwtBkCt5bDE+aCgv50HGnon
- K/6WKrWlCbk8Fxjn4+fIGTYl0og5AnEGVZT7xOeJd6iUaytzDhZlpbM0Q8OISkP1EITq
- 8/3WYgE+DfNvQam0LdrudM+VCwEsVVRNSx4h3qs+fISG92PKhwXFPanukh2Pt95OQyf6
- 9NuVVZOVE55l9YVsVI/k5zhSyiU/tCBCHTJlFtYo9judd7LXznE0bA5r/SkRvgHBpYLT
- Oh04VdH1dgdHnqHc5278YaYe6ZI9FwxrHkCA40EMeYpkM4jtOyJfinWBf5ESV9GMZCCl
- 5Hog==
-X-Gm-Message-State: AOAM531Xkpv5FObiHVIfBUThRRptaoclV8p5cb+dL6wP9siEZbMVXzw3
- RsNtOkKdzXLbnSWUyAUTb6ktJYknlc+V3tdcc5SyKeAZZ3g5aCZB/oM0tzeGeEAikpaVao5OGVl
- MrPjGdEgQtHxcKo0oVhNTkpzfhiKQsghQ+glUxurdC7A=
-X-Received: by 2002:a5d:648e:: with SMTP id o14mr36228288wri.69.1636127203642; 
- Fri, 05 Nov 2021 08:46:43 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJz5k996q02AvLPMDT6zp/eTqKcLpYZhxXm5GjlYrXrZ8v9D6rr2qQHoIq1Cs+RM4w+4Mx4VtA==
-X-Received: by 2002:a5d:648e:: with SMTP id o14mr36228265wri.69.1636127203485; 
- Fri, 05 Nov 2021 08:46:43 -0700 (PDT)
+ bh=BQNpoEejJgdqfTjT6uEW5F1j+u2r6UT1ueKsgaIRjOY=;
+ b=Cew2s0CMpCu4mu4/Su/7eufbZknT4DfocszsXZu0s9XAFnHNXh8kQN+0Yx9KkCgezu
+ qi3jvqw6yzplzy6VUG1rmfH4+hlgHC+kRpOGxyzsqLwvVAXV5g2Bgd4vuprlwtl+oyd3
+ iOOoWHxic9Dqg3MKnGWhEzzlN4mwtsWceNOe4ujjN5uEO2IifTFKRAFFK0oTZT3cDcvW
+ 2N8g2JscU4HMuS8ap1c7Ums5/qKvn7v7ALT2A5YisS/s1nKdLWDUXUyTzJrrRp2nZ0fn
+ XUpcrbpj4wO1yJs1ZdLIL7UUkV132xK2k8dyR+BL0xSPoOZKngceUetEXHr298dTQcLb
+ /wsA==
+X-Gm-Message-State: AOAM531n6XsUvfwceS+qbbxipAaRlU+gZMlJ6QpITLJ5qeoMLUJGWDZH
+ ASpxIu89jlbYHUG0Smm7gA15rQOZXWZEcZIjpifDY8AXoJYkxReJUMPVHGy4rxoPb08BeR88Uj8
+ oDHnXax2uz8JboYlwNssvT2c9xp+UlJqKMJfxmnnX6VI=
+X-Received: by 2002:a05:600c:430c:: with SMTP id
+ p12mr32522650wme.127.1636127265139; 
+ Fri, 05 Nov 2021 08:47:45 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyqsDazjeBLc3GzOdhywA22fmz71ZuD2zXBh7/jcJh3Kp1/GITAo9FHVASySm/M442PUPtjWg==
+X-Received: by 2002:a05:600c:430c:: with SMTP id
+ p12mr32522621wme.127.1636127264973; 
+ Fri, 05 Nov 2021 08:47:44 -0700 (PDT)
 Received: from localhost.localdomain (lfbn-lyo-1-470-249.w2-7.abo.wanadoo.fr.
  [2.7.60.249])
- by smtp.gmail.com with ESMTPSA id 6sm8070834wma.48.2021.11.05.08.46.42
+ by smtp.gmail.com with ESMTPSA id o8sm8452479wrm.67.2021.11.05.08.47.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Nov 2021 08:46:43 -0700 (PDT)
+ Fri, 05 Nov 2021 08:47:44 -0700 (PDT)
 From: Alexandre Ghiti <alexandre.ghiti@canonical.com>
 To: Steve French <sfrench@samba.org>, Jonathan Corbet <corbet@lwn.net>,
  David Howells <dhowells@redhat.com>, Russell King <linux@armlinux.org.uk>,
@@ -93,10 +95,9 @@ To: Steve French <sfrench@samba.org>, Jonathan Corbet <corbet@lwn.net>,
  linux-cachefs@redhat.com, linux-arm-kernel@lists.infradead.org,
  linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  linux-sh@vger.kernel.org, linux-power@fi.rohmeurope.com
-Subject: [PATCH 3/7] Documentation,
- arch: Remove leftovers from CIFS_WEAK_PW_HASH
-Date: Fri,  5 Nov 2021 16:43:30 +0100
-Message-Id: <20211105154334.1841927-4-alexandre.ghiti@canonical.com>
+Subject: [PATCH 4/7] arch: Remove leftovers from mandatory file locking
+Date: Fri,  5 Nov 2021 16:43:31 +0100
+Message-Id: <20211105154334.1841927-5-alexandre.ghiti@canonical.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20211105154334.1841927-1-alexandre.ghiti@canonical.com>
 References: <20211105154334.1841927-1-alexandre.ghiti@canonical.com>
@@ -120,225 +121,50 @@ Sender: "Linuxppc-dev"
 
 This config was removed so remove all references to it.
 
-Fixes: 76a3c92ec9e0 ("cifs: remove support for NTLM and weaker authentication algorithms")
+Fixes: f7e33bdbd6d1 ("fs: remove mandatory file locking support")
 Signed-off-by: Alexandre Ghiti <alexandre.ghiti@canonical.com>
 ---
- Documentation/admin-guide/cifs/usage.rst    | 7 +++----
- arch/arm/configs/cm_x300_defconfig          | 1 -
- arch/arm/configs/ezx_defconfig              | 1 -
- arch/arm/configs/imote2_defconfig           | 1 -
- arch/arm/configs/nhk8815_defconfig          | 1 -
- arch/arm/configs/pxa_defconfig              | 1 -
- arch/mips/configs/fuloong2e_defconfig       | 1 -
- arch/mips/configs/malta_qemu_32r6_defconfig | 1 -
- arch/mips/configs/maltaaprp_defconfig       | 1 -
- arch/mips/configs/maltasmvp_defconfig       | 1 -
- arch/mips/configs/maltasmvp_eva_defconfig   | 1 -
- arch/mips/configs/maltaup_defconfig         | 1 -
- arch/mips/configs/nlm_xlp_defconfig         | 1 -
- arch/mips/configs/nlm_xlr_defconfig         | 1 -
- arch/powerpc/configs/ppc6xx_defconfig       | 1 -
- arch/sh/configs/titan_defconfig             | 1 -
- 16 files changed, 3 insertions(+), 19 deletions(-)
+ arch/mips/configs/decstation_64_defconfig  | 1 -
+ arch/mips/configs/decstation_defconfig     | 1 -
+ arch/mips/configs/decstation_r4k_defconfig | 1 -
+ 3 files changed, 3 deletions(-)
 
-diff --git a/Documentation/admin-guide/cifs/usage.rst b/Documentation/admin-guide/cifs/usage.rst
-index f170d8820258..3766bf8a1c20 100644
---- a/Documentation/admin-guide/cifs/usage.rst
-+++ b/Documentation/admin-guide/cifs/usage.rst
-@@ -734,10 +734,9 @@ SecurityFlags		Flags which control security negotiation and
- 			using weaker password hashes is 0x37037 (lanman,
- 			plaintext, ntlm, ntlmv2, signing allowed).  Some
- 			SecurityFlags require the corresponding menuconfig
--			options to be enabled (lanman and plaintext require
--			CONFIG_CIFS_WEAK_PW_HASH for example).  Enabling
--			plaintext authentication currently requires also
--			enabling lanman authentication in the security flags
-+			options to be enabled.  Enabling plaintext
-+			authentication currently requires also enabling
-+			lanman authentication in the security flags
- 			because the cifs module only supports sending
- 			laintext passwords using the older lanman dialect
- 			form of the session setup SMB.  (e.g. for authentication
-diff --git a/arch/arm/configs/cm_x300_defconfig b/arch/arm/configs/cm_x300_defconfig
-index 502a9d870ca4..45769d0ddd4e 100644
---- a/arch/arm/configs/cm_x300_defconfig
-+++ b/arch/arm/configs/cm_x300_defconfig
-@@ -146,7 +146,6 @@ CONFIG_NFS_V3_ACL=y
- CONFIG_NFS_V4=y
- CONFIG_ROOT_NFS=y
- CONFIG_CIFS=m
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_PARTITION_ADVANCED=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_ISO8859_1=m
-diff --git a/arch/arm/configs/ezx_defconfig b/arch/arm/configs/ezx_defconfig
-index a49e699e52de..ec84d80096b1 100644
---- a/arch/arm/configs/ezx_defconfig
-+++ b/arch/arm/configs/ezx_defconfig
-@@ -314,7 +314,6 @@ CONFIG_NFSD_V3_ACL=y
- CONFIG_SMB_FS=m
- CONFIG_CIFS=m
- CONFIG_CIFS_STATS=y
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_CODEPAGE_437=m
-diff --git a/arch/arm/configs/imote2_defconfig b/arch/arm/configs/imote2_defconfig
-index 118c4c927f26..6db871d4e077 100644
---- a/arch/arm/configs/imote2_defconfig
-+++ b/arch/arm/configs/imote2_defconfig
-@@ -288,7 +288,6 @@ CONFIG_NFSD_V3_ACL=y
- CONFIG_SMB_FS=m
- CONFIG_CIFS=m
- CONFIG_CIFS_STATS=y
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_CODEPAGE_437=m
-diff --git a/arch/arm/configs/nhk8815_defconfig b/arch/arm/configs/nhk8815_defconfig
-index 23595fc5a29a..907d6512821a 100644
---- a/arch/arm/configs/nhk8815_defconfig
-+++ b/arch/arm/configs/nhk8815_defconfig
-@@ -127,7 +127,6 @@ CONFIG_NFS_FS=y
- CONFIG_NFS_V3_ACL=y
- CONFIG_ROOT_NFS=y
- CONFIG_CIFS=m
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ASCII=y
- CONFIG_NLS_ISO8859_1=y
-diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
-index 58f4834289e6..dedaaae3d0d8 100644
---- a/arch/arm/configs/pxa_defconfig
-+++ b/arch/arm/configs/pxa_defconfig
-@@ -699,7 +699,6 @@ CONFIG_NFSD_V3_ACL=y
- CONFIG_NFSD_V4=y
- CONFIG_CIFS=m
- CONFIG_CIFS_STATS=y
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_DEFAULT="utf8"
-diff --git a/arch/mips/configs/fuloong2e_defconfig b/arch/mips/configs/fuloong2e_defconfig
-index 5c24ac7fdf56..ba47c5e929b7 100644
---- a/arch/mips/configs/fuloong2e_defconfig
-+++ b/arch/mips/configs/fuloong2e_defconfig
-@@ -206,7 +206,6 @@ CONFIG_NFSD_V3_ACL=y
- CONFIG_NFSD_V4=y
- CONFIG_CIFS=m
- CONFIG_CIFS_STATS2=y
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_CIFS_DEBUG2=y
-diff --git a/arch/mips/configs/malta_qemu_32r6_defconfig b/arch/mips/configs/malta_qemu_32r6_defconfig
-index 614af02d83e6..6fb9bc29f4a0 100644
---- a/arch/mips/configs/malta_qemu_32r6_defconfig
-+++ b/arch/mips/configs/malta_qemu_32r6_defconfig
-@@ -165,7 +165,6 @@ CONFIG_TMPFS=y
- CONFIG_NFS_FS=y
- CONFIG_ROOT_NFS=y
- CONFIG_CIFS=m
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_CODEPAGE_437=m
-diff --git a/arch/mips/configs/maltaaprp_defconfig b/arch/mips/configs/maltaaprp_defconfig
-index 9c051f8fd330..eb72df528243 100644
---- a/arch/mips/configs/maltaaprp_defconfig
-+++ b/arch/mips/configs/maltaaprp_defconfig
-@@ -166,7 +166,6 @@ CONFIG_TMPFS=y
- CONFIG_NFS_FS=y
- CONFIG_ROOT_NFS=y
- CONFIG_CIFS=m
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_CODEPAGE_437=m
-diff --git a/arch/mips/configs/maltasmvp_defconfig b/arch/mips/configs/maltasmvp_defconfig
-index 2e90d97551d6..1fb40d310f49 100644
---- a/arch/mips/configs/maltasmvp_defconfig
-+++ b/arch/mips/configs/maltasmvp_defconfig
-@@ -167,7 +167,6 @@ CONFIG_TMPFS=y
- CONFIG_NFS_FS=y
- CONFIG_ROOT_NFS=y
- CONFIG_CIFS=m
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_CODEPAGE_437=m
-diff --git a/arch/mips/configs/maltasmvp_eva_defconfig b/arch/mips/configs/maltasmvp_eva_defconfig
-index d1f7fdb27284..75cb778c6149 100644
---- a/arch/mips/configs/maltasmvp_eva_defconfig
-+++ b/arch/mips/configs/maltasmvp_eva_defconfig
-@@ -169,7 +169,6 @@ CONFIG_TMPFS=y
- CONFIG_NFS_FS=y
- CONFIG_ROOT_NFS=y
- CONFIG_CIFS=m
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_CODEPAGE_437=m
-diff --git a/arch/mips/configs/maltaup_defconfig b/arch/mips/configs/maltaup_defconfig
-index 48e5bd492452..7b4f247dc60c 100644
---- a/arch/mips/configs/maltaup_defconfig
-+++ b/arch/mips/configs/maltaup_defconfig
-@@ -165,7 +165,6 @@ CONFIG_TMPFS=y
- CONFIG_NFS_FS=y
- CONFIG_ROOT_NFS=y
- CONFIG_CIFS=m
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
- CONFIG_NLS_CODEPAGE_437=m
-diff --git a/arch/mips/configs/nlm_xlp_defconfig b/arch/mips/configs/nlm_xlp_defconfig
-index c97f00ece828..1c8b73d03263 100644
---- a/arch/mips/configs/nlm_xlp_defconfig
-+++ b/arch/mips/configs/nlm_xlp_defconfig
-@@ -459,7 +459,6 @@ CONFIG_NFSD=m
- CONFIG_NFSD_V3_ACL=y
- CONFIG_NFSD_V4=y
- CONFIG_CIFS=m
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_UPCALL=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
-diff --git a/arch/mips/configs/nlm_xlr_defconfig b/arch/mips/configs/nlm_xlr_defconfig
-index 60ea102783d9..11acfc173058 100644
---- a/arch/mips/configs/nlm_xlr_defconfig
-+++ b/arch/mips/configs/nlm_xlr_defconfig
-@@ -411,7 +411,6 @@ CONFIG_NFSD=m
- CONFIG_NFSD_V3_ACL=y
- CONFIG_NFSD_V4=y
- CONFIG_CIFS=m
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_UPCALL=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
-diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index 6697c5e6682f..bb549cb1c3e3 100644
---- a/arch/powerpc/configs/ppc6xx_defconfig
-+++ b/arch/powerpc/configs/ppc6xx_defconfig
-@@ -1022,7 +1022,6 @@ CONFIG_NFSD=m
- CONFIG_NFSD_V3_ACL=y
- CONFIG_NFSD_V4=y
- CONFIG_CIFS=m
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_CIFS_UPCALL=y
- CONFIG_CIFS_XATTR=y
- CONFIG_CIFS_POSIX=y
-diff --git a/arch/sh/configs/titan_defconfig b/arch/sh/configs/titan_defconfig
-index ba887f1351be..cd5c58916c65 100644
---- a/arch/sh/configs/titan_defconfig
-+++ b/arch/sh/configs/titan_defconfig
-@@ -242,7 +242,6 @@ CONFIG_NFSD=y
- CONFIG_NFSD_V3=y
- CONFIG_SMB_FS=m
- CONFIG_CIFS=m
--CONFIG_CIFS_WEAK_PW_HASH=y
- CONFIG_PARTITION_ADVANCED=y
- CONFIG_NLS_CODEPAGE_437=m
- CONFIG_NLS_ASCII=m
+diff --git a/arch/mips/configs/decstation_64_defconfig b/arch/mips/configs/decstation_64_defconfig
+index 85f1955b4b00..e2ed105f8c97 100644
+--- a/arch/mips/configs/decstation_64_defconfig
++++ b/arch/mips/configs/decstation_64_defconfig
+@@ -144,7 +144,6 @@ CONFIG_EXT2_FS_SECURITY=y
+ CONFIG_EXT3_FS=y
+ CONFIG_EXT3_FS_POSIX_ACL=y
+ CONFIG_EXT3_FS_SECURITY=y
+-# CONFIG_MANDATORY_FILE_LOCKING is not set
+ CONFIG_ISO9660_FS=y
+ CONFIG_JOLIET=y
+ CONFIG_PROC_KCORE=y
+diff --git a/arch/mips/configs/decstation_defconfig b/arch/mips/configs/decstation_defconfig
+index 30a6eafdb1d0..7e987d6f5e34 100644
+--- a/arch/mips/configs/decstation_defconfig
++++ b/arch/mips/configs/decstation_defconfig
+@@ -140,7 +140,6 @@ CONFIG_EXT2_FS_SECURITY=y
+ CONFIG_EXT3_FS=y
+ CONFIG_EXT3_FS_POSIX_ACL=y
+ CONFIG_EXT3_FS_SECURITY=y
+-# CONFIG_MANDATORY_FILE_LOCKING is not set
+ CONFIG_ISO9660_FS=y
+ CONFIG_JOLIET=y
+ CONFIG_PROC_KCORE=y
+diff --git a/arch/mips/configs/decstation_r4k_defconfig b/arch/mips/configs/decstation_r4k_defconfig
+index e2b58dbf4aa9..6df5f6f2ac8e 100644
+--- a/arch/mips/configs/decstation_r4k_defconfig
++++ b/arch/mips/configs/decstation_r4k_defconfig
+@@ -140,7 +140,6 @@ CONFIG_EXT2_FS_SECURITY=y
+ CONFIG_EXT3_FS=y
+ CONFIG_EXT3_FS_POSIX_ACL=y
+ CONFIG_EXT3_FS_SECURITY=y
+-# CONFIG_MANDATORY_FILE_LOCKING is not set
+ CONFIG_ISO9660_FS=y
+ CONFIG_JOLIET=y
+ CONFIG_PROC_KCORE=y
 -- 
 2.32.0
 
