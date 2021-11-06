@@ -2,62 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9174E446BC3
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 02:22:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22546446BEF
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 02:40:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HmKPV02lJz30G6
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 12:22:54 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail header.b=C99TVb5B;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HmKnc0pGxz3cSv
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 12:40:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=protonmail.com (client-ip=185.70.40.138;
- helo=mail-40138.protonmail.ch;
- envelope-from=stanley.johnson.001@protonmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256
- header.s=protonmail header.b=C99TVb5B; 
- dkim-atps=neutral
-X-Greylist: delayed 111119 seconds by postgrey-1.36 at boromir;
- Sat, 06 Nov 2021 12:22:18 AEDT
-Received: from mail-40138.protonmail.ch (mail-40138.protonmail.ch
- [185.70.40.138])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HmKNp4flpz2yPk
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 12:22:18 +1100 (AEDT)
-Date: Sat, 06 Nov 2021 01:22:09 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
- s=protonmail; t=1636161732;
- bh=7eU3DoswAZXqswYK2fLMeKsAh2dqaI4/VsbH34QzPT4=;
- h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
- b=C99TVb5BZTmdsAagNPaW896/zCrnu642vTdRDqzLdE46nK5yeGZEqpxZfP9CxrglS
- Pf7N8NfZ1nH3rLku2OCkPA3D6qLKWL0WsZBtP9vslpiTNN4R/Ck5YXrm4GzwS6cC0M
- 4JpeZ5F2Crt5zlK+JeCjnxVF0I8/WMcfFDQs2Ot0=
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-From: Stanley Johnson <stanley.johnson.001@protonmail.com>
-Subject: Re: Fwd: Fwd: X stopped working with 5.14 on iBook
-Message-ID: <FEtBUOuFPMN4zJy4bIOqz6C4xoliCbTxS7VtMKD6UZkbvEbycUceRgGAd7e9-trRdwVN3hWAbQi0qrNx8Zgn8niTQf2KPVdw-W35czDIaeQ=@protonmail.com>
-In-Reply-To: <79ae1f49-f6b1-e9ad-977d-0cc7e553c7b9@csgroup.eu>
-References: <6919111c-02fa-c6b9-bb05-04161e52f340@yahoo.com>
- <27ad38f3-c1a8-ac5c-8467-f311b5882a00@yahoo.com>
- <d5d0b396-7408-bdae-cf50-4b5f4e7b3184@csgroup.eu>
- <48c3ed15-2ecf-cc12-c287-2b61457f5fb@nippy.intranet>
- <a1e6c282-c8fd-9671-5df6-cd7ca06fdbb3@csgroup.eu>
- <de4b689-236e-505e-2632-6ce89110a1e9@linux-m68k.org>
- <79ae1f49-f6b1-e9ad-977d-0cc7e553c7b9@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HmKmj1bPyz2yWG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 12:39:26 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10159"; a="231958302"
+X-IronPort-AV: E=Sophos;i="5.87,212,1631602800"; d="scan'208";a="231958302"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2021 18:38:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,212,1631602800"; d="scan'208";a="668413071"
+Received: from lkp-server02.sh.intel.com (HELO c20d8bc80006) ([10.239.97.151])
+ by orsmga005.jf.intel.com with ESMTP; 05 Nov 2021 18:38:21 -0700
+Received: from kbuild by c20d8bc80006 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mjAey-0008V0-Ts; Sat, 06 Nov 2021 01:38:20 +0000
+Date: Sat, 06 Nov 2021 09:37:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:topic/ppc-kvm] BUILD SUCCESS
+ 235cee162459d96153d63651ce7ff51752528c96
+Message-ID: <6185dc71.+dtZhYlmXVUR1PHz%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="b1_RUJVVrvqX9gCVMlnLve6ggGJNFxp2CHilPPqHdALn0"
-X-Spam-Status: No, score=-0.7 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
- DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
- FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT shortcircuit=no
- autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
- mailout.protonmail.ch
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,122 +50,222 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Stanley Johnson <stanley.johnson.001@protonmail.com>
-Cc: "Christopher M. Riedl" <cmr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Riccardo Mottola <riccardo.mottola@libero.it>,
- Finn Thain <fthain@linux-m68k.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
+branch HEAD: 235cee162459d96153d63651ce7ff51752528c96  KVM: PPC: Tick accounting should defer vtime accounting 'til after IRQ handling
 
---b1_RUJVVrvqX9gCVMlnLve6ggGJNFxp2CHilPPqHdALn0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+elapsed time: 5687m
 
-> ...
-> I think I found the issue.
-> __get_user_sigset() is wrong for 32 bits.
-> Could you change its content to return __get_user((u64)&dst->sig[0],
-> (u64 __user *)&src->sig[0]);
-> If it works, for the mainline also change unsafe_get_user_sigset()
-> Christophe
+configs tested: 193
+configs skipped: 93
 
-Christophe,
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Using the attached patches and git commands provided by Finn (thanks!), her=
-e are the results:
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211101
+powerpc              randconfig-c003-20211101
+powerpc                          allyesconfig
+powerpc                     powernv_defconfig
+arm                        shmobile_defconfig
+mips                            ar7_defconfig
+powerpc                   currituck_defconfig
+sh                          landisk_defconfig
+mips                          malta_defconfig
+powerpc                     tqm8555_defconfig
+arm                        cerfcube_defconfig
+mips                        bcm63xx_defconfig
+powerpc                      bamboo_defconfig
+powerpc                      katmai_defconfig
+mips                 decstation_r4k_defconfig
+powerpc                        icon_defconfig
+arc                        nsimosci_defconfig
+sh                ecovec24-romimage_defconfig
+powerpc                     kmeter1_defconfig
+m68k                        m5307c3_defconfig
+mips                           mtx1_defconfig
+mips                malta_qemu_32r6_defconfig
+powerpc                     ep8248e_defconfig
+sh                  sh7785lcr_32bit_defconfig
+h8300                       h8s-sim_defconfig
+powerpc                 mpc8540_ads_defconfig
+powerpc                 mpc837x_mds_defconfig
+arm                       spear13xx_defconfig
+arm                        mvebu_v7_defconfig
+mips                      loongson3_defconfig
+mips                      maltasmvp_defconfig
+m68k                        stmark2_defconfig
+arc                          axs103_defconfig
+arm                          pxa3xx_defconfig
+sh                             sh03_defconfig
+powerpc                     taishan_defconfig
+ia64                      gensparse_defconfig
+arm                      jornada720_defconfig
+mips                   sb1250_swarm_defconfig
+powerpc                   bluestone_defconfig
+arm                          moxart_defconfig
+s390                             allmodconfig
+riscv                             allnoconfig
+powerpc                    sam440ep_defconfig
+m68k                          atari_defconfig
+arm                            mmp2_defconfig
+mips                        jmr3927_defconfig
+arm                             ezx_defconfig
+arc                        vdk_hs38_defconfig
+powerpc                 mpc8272_ads_defconfig
+mips                           xway_defconfig
+sh                        apsh4ad0a_defconfig
+xtensa                  audio_kc705_defconfig
+powerpc                      pcm030_defconfig
+arm                       versatile_defconfig
+arm                           tegra_defconfig
+riscv                               defconfig
+mips                           gcw0_defconfig
+arm                           corgi_defconfig
+sh                            shmin_defconfig
+arm                         s3c2410_defconfig
+powerpc                      ppc6xx_defconfig
+powerpc                      acadia_defconfig
+arm                        oxnas_v6_defconfig
+powerpc                      tqm8xx_defconfig
+m68k                          hp300_defconfig
+parisc                generic-64bit_defconfig
+arm                  colibri_pxa270_defconfig
+xtensa                           alldefconfig
+arm                        spear6xx_defconfig
+mips                             allmodconfig
+powerpc                         wii_defconfig
+mips                        vocore2_defconfig
+sh                     magicpanelr2_defconfig
+s390                          debug_defconfig
+powerpc                 mpc834x_itx_defconfig
+arm                           h5000_defconfig
+arc                              alldefconfig
+sh                            hp6xx_defconfig
+m68k                            q40_defconfig
+arm                       aspeed_g5_defconfig
+sh                            titan_defconfig
+mips                       capcella_defconfig
+powerpc                     tqm8548_defconfig
+arm                         cm_x300_defconfig
+powerpc                 linkstation_defconfig
+sh                           se7712_defconfig
+mips                          ath79_defconfig
+mips                      maltaaprp_defconfig
+sh                          lboxre2_defconfig
+sh                           se7206_defconfig
+powerpc                 mpc8313_rdb_defconfig
+s390                             alldefconfig
+ia64                            zx1_defconfig
+powerpc                      ep88xc_defconfig
+arm                           spitz_defconfig
+sh                           se7705_defconfig
+m68k                       m5475evb_defconfig
+powerpc                      cm5200_defconfig
+arm                        mvebu_v5_defconfig
+microblaze                      mmu_defconfig
+powerpc                    gamecube_defconfig
+sh                           se7780_defconfig
+mips                     decstation_defconfig
+arm                          ep93xx_defconfig
+powerpc                   microwatt_defconfig
+arm                         orion5x_defconfig
+arm                  randconfig-c002-20211101
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                              debian-10.3
+mips                             allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a012-20211101
+x86_64               randconfig-a015-20211101
+x86_64               randconfig-a016-20211101
+x86_64               randconfig-a013-20211101
+x86_64               randconfig-a011-20211101
+x86_64               randconfig-a014-20211101
+i386                 randconfig-a016-20211101
+i386                 randconfig-a014-20211101
+i386                 randconfig-a015-20211101
+i386                 randconfig-a013-20211101
+i386                 randconfig-a011-20211101
+i386                 randconfig-a012-20211101
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+x86_64                           allyesconfig
 
-$ git reset --hard
-$ git checkout d3ccc9781560
-$ git am ../__get_user_sigset_cast.patch
-$ cp ../dot-config-pmac-5.12.0-rc3-00034-gd3ccc9781560-USER_NS .config
-$ make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc-linux-gnu- -j4 clean olddefco=
-nfig vmlinux
-$ grep USER_NS .config
-CONFIG_USER_NS=3Dy
-$ strings vmlinux | grep Linux.version
-Linux version 5.12.0-rc3-pmac-00035-g77e46218520e (johnson@ThinkPad) (power=
-pc-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils fo=
-r Debian) 2.37) #146 SMP Fri Nov 5 18:57:46 MDT 2021
+clang tested configs:
+mips                 randconfig-c004-20211101
+arm                  randconfig-c002-20211101
+i386                 randconfig-c001-20211101
+s390                 randconfig-c005-20211101
+powerpc              randconfig-c003-20211101
+riscv                randconfig-c006-20211101
+x86_64               randconfig-c007-20211101
+mips                 randconfig-c004-20211102
+arm                  randconfig-c002-20211102
+i386                 randconfig-c001-20211102
+s390                 randconfig-c005-20211102
+powerpc              randconfig-c003-20211102
+riscv                randconfig-c006-20211102
+x86_64               randconfig-c007-20211102
+x86_64               randconfig-a004-20211101
+x86_64               randconfig-a006-20211101
+x86_64               randconfig-a001-20211101
+x86_64               randconfig-a002-20211101
+x86_64               randconfig-a003-20211101
+x86_64               randconfig-a005-20211101
+i386                 randconfig-a005-20211101
+i386                 randconfig-a001-20211101
+i386                 randconfig-a003-20211101
+i386                 randconfig-a004-20211101
+i386                 randconfig-a006-20211101
+i386                 randconfig-a002-20211101
+hexagon              randconfig-r041-20211101
+hexagon              randconfig-r045-20211101
 
-With this kernel, X works.
-
-Trying mainline:
-$ git reset --hard
-$ git checkout v5.15
-$ git am ../__get_user_sigset_cast_5.15.patch
-$ cp ../dot-config-powermac-5.14 .config
-$ ./scripts/config -e USER_NS
-$ make ARCH=3Dpowerpc CROSS_COMPILE=3Dpowerpc-linux-gnu- -j4 clean olddefco=
-nfig vmlinux
-$ grep USER_NS .config
-CONFIG_USER_NS=3Dy
-$ strings vmlinux | grep Linux.version
-Linux version 5.15.0-pmac-00001-gbc0bc813b6ac (johnson@ThinkPad) (powerpc-l=
-inux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for De=
-bian) 2.37) #147 SMP Fri Nov 5 19:17:01 MDT 2021
-
-With this kernel, X also works.
-
-So it appears that your change has fixed the problem, at least on the G4 Cu=
-be; thanks!
-
--Stan
-
---b1_RUJVVrvqX9gCVMlnLve6ggGJNFxp2CHilPPqHdALn0
-Content-Type: application/octet-stream; name=__get_user_sigset_cast.patch
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename=__get_user_sigset_cast.patch
-
-RnJvbSBhNmNkZDNlOWExMGQyOWRmMzhmYzZjODQ0NTE3YWIyOGQ2OTYxMjI3IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQ0KRnJvbTogQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBj
-c2dyb3VwLmV1Pg0KRGF0ZTogU2F0LCA2IE5vdiAyMDIxIDEwOjM2OjUyICsxMTAwDQpTdWJqZWN0
-OiBbUEFUQ0hdIFJlOiBGd2Q6IEZ3ZDogWCBzdG9wcGVkIHdvcmtpbmcgd2l0aCA1LjE0IG9uIGlC
-b29rDQoNCkkgdGhpbmsgSSBmb3VuZCB0aGUgaXNzdWUuDQoNCl9fZ2V0X3VzZXJfc2lnc2V0KCkg
-aXMgd3JvbmcgZm9yIDMyIGJpdHMuDQoNCkNvdWxkIHlvdSBjaGFuZ2UgaXRzIGNvbnRlbnQgIHRv
-IHJldHVybiBfX2dldF91c2VyKCoodTY0KikmZHN0LT5zaWdbMF0sICh1NjQNCl9fdXNlciAqKSZz
-cmMtPnNpZ1swXSk7DQoNCklmIGl0IHdvcmtzLCBmb3IgdGhlIG1haW5saW5lIGFsc28gY2hhbmdl
-IHVuc2FmZV9nZXRfdXNlcl9zaWdzZXQoKQ0KDQpDaHJpc3RvcGhlDQoNCmRpZmYgLS1naXQgYS9h
-cmNoL3Bvd2VycGMva2VybmVsL3NpZ25hbC5oIGIvYXJjaC9wb3dlcnBjL2tlcm5lbC9zaWduYWwu
-aA0KaW5kZXggMTM5Mzg3NmYzODE0Li5kNGQxNzNhNzA5MTMgMTAwNjQ0DQotLS0gYS9hcmNoL3Bv
-d2VycGMva2VybmVsL3NpZ25hbC5oDQorKysgYi9hcmNoL3Bvd2VycGMva2VybmVsL3NpZ25hbC5o
-DQpAQCAtMjMsNyArMjMsNyBAQCBzdGF0aWMgaW5saW5lIGludCBfX2dldF91c2VyX3NpZ3NldChz
-aWdzZXRfdCAqZHN0LCBjb25zdCBzaWdzZXRfdCBfX3VzZXIgKnNyYykNCiB7DQogCUJVSUxEX0JV
-R19PTihzaXplb2Yoc2lnc2V0X3QpICE9IHNpemVvZih1NjQpKTsNCiANCi0JcmV0dXJuIF9fZ2V0
-X3VzZXIoZHN0LT5zaWdbMF0sICh1NjQgX191c2VyICopJnNyYy0+c2lnWzBdKTsNCisJcmV0dXJu
-IF9fZ2V0X3VzZXIoKih1NjQqKSZkc3QtPnNpZ1swXSwgKHU2NCBfX3VzZXIgKikmc3JjLT5zaWdb
-MF0pOw0KIH0NCiANCiAjaWZkZWYgQ09ORklHX1ZTWA0K
-
---b1_RUJVVrvqX9gCVMlnLve6ggGJNFxp2CHilPPqHdALn0
-Content-Type: application/octet-stream; name=__get_user_sigset_cast_5.15.patch
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename=__get_user_sigset_cast_5.15.patch
-
-RnJvbSA1ZjgwZDQ5ODRmNjJmNjBhNGJlYTc0OGU4NTA4ZDFiYWExNzFjMGE1IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQ0KRnJvbTogQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBj
-c2dyb3VwLmV1Pg0KRGF0ZTogU2F0LCA2IE5vdiAyMDIxIDEwOjM2OjUyICsxMTAwDQpTdWJqZWN0
-OiBbUEFUQ0hdIEZ3ZDogRndkOiBYIHN0b3BwZWQgd29ya2luZyB3aXRoIDUuMTQgb24gaUJvb2sN
-Cg0KSSB0aGluayBJIGZvdW5kIHRoZSBpc3N1ZS4NCg0KX19nZXRfdXNlcl9zaWdzZXQoKSBpcyB3
-cm9uZyBmb3IgMzIgYml0cy4NCg0KQ291bGQgeW91IGNoYW5nZSBpdHMgY29udGVudCAgdG8gcmV0
-dXJuIF9fZ2V0X3VzZXIoKih1NjQqKSZkc3QtPnNpZ1swXSwgKHU2NA0KX191c2VyICopJnNyYy0+
-c2lnWzBdKTsNCg0KSWYgaXQgd29ya3MsIGZvciB0aGUgbWFpbmxpbmUgYWxzbyBjaGFuZ2UgdW5z
-YWZlX2dldF91c2VyX3NpZ3NldCgpDQoNCkNocmlzdG9waGUNCg0KZGlmZiAtLWdpdCBhL2FyY2gv
-cG93ZXJwYy9rZXJuZWwvc2lnbmFsLmggYi9hcmNoL3Bvd2VycGMva2VybmVsL3NpZ25hbC5oDQpp
-bmRleCAxZjA3MzE3OTY0ZTQuLmFiYThhOWU3NTFlOCAxMDA2NDQNCi0tLSBhL2FyY2gvcG93ZXJw
-Yy9rZXJuZWwvc2lnbmFsLmgNCisrKyBiL2FyY2gvcG93ZXJwYy9rZXJuZWwvc2lnbmFsLmgNCkBA
-IC0yMywxMCArMjMsMTAgQEAgc3RhdGljIGlubGluZSBpbnQgX19nZXRfdXNlcl9zaWdzZXQoc2ln
-c2V0X3QgKmRzdCwgY29uc3Qgc2lnc2V0X3QgX191c2VyICpzcmMpDQogew0KIAlCVUlMRF9CVUdf
-T04oc2l6ZW9mKHNpZ3NldF90KSAhPSBzaXplb2YodTY0KSk7DQogDQotCXJldHVybiBfX2dldF91
-c2VyKGRzdC0+c2lnWzBdLCAodTY0IF9fdXNlciAqKSZzcmMtPnNpZ1swXSk7DQorCXJldHVybiBf
-X2dldF91c2VyKCoodTY0KikmZHN0LT5zaWdbMF0sICh1NjQgX191c2VyICopJnNyYy0+c2lnWzBd
-KTsNCiB9DQogI2RlZmluZSB1bnNhZmVfZ2V0X3VzZXJfc2lnc2V0KGRzdCwgc3JjLCBsYWJlbCkg
-XA0KLQl1bnNhZmVfZ2V0X3VzZXIoKGRzdCktPnNpZ1swXSwgKHU2NCBfX3VzZXIgKikmKHNyYykt
-PnNpZ1swXSwgbGFiZWwpDQorCXVuc2FmZV9nZXRfdXNlcigqKHU2NCopJihkc3QpLT5zaWdbMF0s
-ICh1NjQgX191c2VyICopJihzcmMpLT5zaWdbMF0sIGxhYmVsKQ0KIA0KICNpZmRlZiBDT05GSUdf
-VlNYDQogZXh0ZXJuIHVuc2lnbmVkIGxvbmcgY29weV92c3hfdG9fdXNlcih2b2lkIF9fdXNlciAq
-dG8sDQo=
-
---b1_RUJVVrvqX9gCVMlnLve6ggGJNFxp2CHilPPqHdALn0--
-
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
