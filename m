@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8732446D95
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 12:18:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E18446DB4
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 12:49:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HmZcX5xrQz3c7Z
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 22:18:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HmbJ74Lpwz3bXv
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Nov 2021 22:49:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,30 +15,29 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HmZc16ZqRz2y7H
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 22:17:53 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HmbHj4T99z2xt5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Nov 2021 22:48:49 +1100 (AEDT)
 Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
  [51.254.78.96])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id BD2F160ED5;
- Sat,  6 Nov 2021 11:17:50 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 480FD60E05;
+ Sat,  6 Nov 2021 11:48:47 +0000 (UTC)
 Received: from sofa.misterjones.org ([185.219.108.64]
  helo=wait-a-minute.misterjones.org)
  by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <maz@kernel.org>)
- id 1mjJhk-003oLQ-Fj; Sat, 06 Nov 2021 11:17:48 +0000
-Date: Sat, 06 Nov 2021 11:17:41 +0000
-Message-ID: <87o86xednu.wl-maz@kernel.org>
+ id 1mjKBg-003oWA-Ui; Sat, 06 Nov 2021 11:48:45 +0000
+Date: Sat, 06 Nov 2021 11:48:39 +0000
+Message-ID: <87mtmhec88.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH 1/5] KVM: Move wiping of the kvm->vcpus array to common
- code
-In-Reply-To: <YYWQHBwD4nBLo9qi@google.com>
+Subject: Re: [PATCH 5/5] KVM: Convert the kvm->vcpus array to a xarray
+In-Reply-To: <YYWSUJ1qzhfqjQow@google.com>
 References: <20211105192101.3862492-1-maz@kernel.org>
- <20211105192101.3862492-2-maz@kernel.org>
- <YYWQHBwD4nBLo9qi@google.com>
+ <20211105192101.3862492-6-maz@kernel.org>
+ <YYWSUJ1qzhfqjQow@google.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
  (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -83,42 +82,58 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 05 Nov 2021 20:12:12 +0000,
+On Fri, 05 Nov 2021 20:21:36 +0000,
 Sean Christopherson <seanjc@google.com> wrote:
 > 
 > On Fri, Nov 05, 2021, Marc Zyngier wrote:
-> > All architectures have similar loops iterating over the vcpus,
-> > freeing one vcpu at a time, and eventually wiping the reference
-> > off the vcpus array. They are also inconsistently taking
-> > the kvm->lock mutex when wiping the references from the array.
+> > At least on arm64 and x86, the vcpus array is pretty huge (512 entries),
+> > and is mostly empty in most cases (running 512 vcpu VMs is not that
+> > common). This mean that we end-up with a 4kB block of unused memory
+> > in the middle of the kvm structure.
 > 
-> ...
-> 
-> > +void kvm_destroy_vcpus(struct kvm *kvm)
-> > +{
-> > +	unsigned int i;
-> > +	struct kvm_vcpu *vcpu;
-> > +
-> > +	kvm_for_each_vcpu(i, vcpu, kvm)
-> > +		kvm_vcpu_destroy(vcpu);
-> > +
-> > +	mutex_lock(&kvm->lock);
-> 
-> But why is kvm->lock taken here?  Unless I'm overlooking an arch,
-> everyone calls this from kvm_arch_destroy_vm(), in which case this
-> is the only remaining reference to @kvm.  And if there's some magic
-> path for which that's not true, I don't see how it can possibly be
-> safe to call kvm_vcpu_destroy() without holding kvm->lock, or how
-> this would guarantee that all vCPUs have actually been destroyed
-> before nullifying the array.
+> Heh, x86 is now up to 1024 entries.
 
-I asked myself the same question two years ago, and couldn't really
-understand the requirement. However, x86 does just that, so I
-preserved the behaviour.
+Humph. I don't want to know whether people are actually using that in
+practice. The only time I create VMs with 512 vcpus is to check
+whether it still works...
 
-If you too believe that this is just wrong, I'm happy to drop the
-locking altogether. If that breaks someone's flow, they'll shout soon
-enough.
+>  
+> > Instead of wasting away this memory, let's use an xarray instead,
+> > which gives us almost the same flexibility as a normal array, but
+> > with a reduced memory usage with smaller VMs.
+> > 
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > ---
+> > @@ -693,7 +694,7 @@ static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
+> >  
+> >  	/* Pairs with smp_wmb() in kvm_vm_ioctl_create_vcpu.  */
+> >  	smp_rmb();
+> > -	return kvm->vcpus[i];
+> > +	return xa_load(&kvm->vcpu_array, i);
+> >  }
+> 
+> It'd be nice for this series to convert kvm_for_each_vcpu() to use
+> xa_for_each() as well.  Maybe as a patch on top so that potential
+> explosions from that are isolated from the initiali conversion?
+> 
+> Or maybe even use xa_for_each_range() to cap at online_vcpus?
+> That's technically a functional change, but IMO it's easier to
+> reason about iterating over a snapshot of vCPUs as opposed to being
+> able to iterate over vCPUs as their being added.  In practice I
+> doubt it matters.
+> 
+> #define kvm_for_each_vcpu(idx, vcpup, kvm) \
+> 	xa_for_each_range(&kvm->vcpu_array, idx, vcpup, 0, atomic_read(&kvm->online_vcpus))
+>
+
+I think that's already the behaviour of this iterator (we stop at the
+first empty slot capped to online_vcpus. The only change in behaviour
+is that vcpup currently holds a pointer to the last vcpu in no empty
+slot has been encountered. xa_for_each{,_range}() would set the
+pointer to NULL at all times.
+
+I doubt anyone relies on that, but it is probably worth eyeballing
+some of the use cases...
 
 Thanks,
 
