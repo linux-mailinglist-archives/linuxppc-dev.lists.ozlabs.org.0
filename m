@@ -2,84 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9685B447595
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Nov 2021 21:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D01EC447640
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Nov 2021 23:19:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HnQQw3xXBz2yyj
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 07:12:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HnTFD5C9Yz2yPg
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 09:19:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Kz4LsYWH;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=DKLtpSmb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12f;
- helo=mail-lf1-x12f.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::42a;
+ helo=mail-pf1-x42a.google.com; envelope-from=dja@axtens.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Kz4LsYWH; dkim-atps=neutral
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com
- [IPv6:2a00:1450:4864:20::12f])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=DKLtpSmb; dkim-atps=neutral
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
+ [IPv6:2607:f8b0:4864:20::42a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HnM5b1wV4z2xWj;
- Mon,  8 Nov 2021 04:42:41 +1100 (AEDT)
-Received: by mail-lf1-x12f.google.com with SMTP id bi35so30928495lfb.9;
- Sun, 07 Nov 2021 09:42:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=yp6jZ6b/7UxZJRYtTwXk1ZheTwTRVWw2YizZoWEGBFY=;
- b=Kz4LsYWHF1VLAkkHNhWuY0M4e42sK4F6sbepl/m1LlUZc7d3ve0+PCaFGV/EW5J0Qp
- q3gOw3u9HDrcvbcy0ihsCdfp4jZucUbKQSHRkLa1MP7e5ywuxBNTRkBRVQjdXS9WYB4a
- 75JZ2tni2XNEB9cE2UtRo1WCAu8alZQtGLiKAGmbi/fYYSN/XzQ2AMB855RVvlrPgYwR
- rhnxfzYw0xMwDEQtzpN4vSGSTSGsur7/4vd8RZnKhOdoVQg9OK2TefhJzCLnTq9oEqOU
- +An3rMVrqt5asX/Z17ZvVIT93/IFfnrUb7jTwuCOBo+NhYvWwEU+N1HBtnKoiVp4DFnC
- c3Yw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HnTDT433Fz2xCB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Nov 2021 09:19:03 +1100 (AEDT)
+Received: by mail-pf1-x42a.google.com with SMTP id g11so14236612pfv.7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Nov 2021 14:19:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=vvhHrDlviXEtiu42f9Ed4TiIZsHPlHHchTgbcPhjOC4=;
+ b=DKLtpSmbwJwijOvRDAEnE4ouv7I+PdkspcRptedwiQW+s7ock1jLZ//bfUU3KqVhBO
+ bBQUAl9KcJ1Q6mAns3nLRjQIQf8hjG69ijlsXDi7sqJ5OokTU1fTXsCKgltrRRuLpfRp
+ 92fkj1s+7TZaU7a4cKiYGeze0dqq2qCOcVosc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=yp6jZ6b/7UxZJRYtTwXk1ZheTwTRVWw2YizZoWEGBFY=;
- b=5qNJmrzP7O1Y187wGK37XLn8+6+F8hEBxI3ffwQPRCgCAo4POprSV8N5KajLuk8oQi
- XZaJz0QTut9LB9xVEVcngLHhf5qyZEHgb/T5Vt0OwNDaf/66hFgr+ENgRogP7bX3VKht
- K9W4PzWWRX2WO2SVdfhddPZ7lZdCctRGEsXrjyXzobLakiEdwf4xf2CdKeMf9/H9G/AA
- F2a46NrCRwWK4DKjLYGUway+JzCttI/P8Z7UGmh6kpjp1We0N2W1w4d6hO1wo9puyM9S
- /7Sk8Zc1fubCPC/IHBGfO3xnOKBzm17lRtyN3q+R4FYM0s7+MqDaJBh/oOg58YMeayjs
- JZDg==
-X-Gm-Message-State: AOAM532eQrodXOPQXGuEkoi2CVfJNzpWR8DqrKRxcdkJW3Zys/pbNrQX
- 74pQDheYBUiD9+lGZ3vGTL8=
-X-Google-Smtp-Source: ABdhPJxbnSyAP7uVMoABCneWUE/0znULgGMoNtn8dVGgMW1HOHcNNIL0n14F/iW1e4ue0spHO1DEGA==
-X-Received: by 2002:ac2:4c55:: with SMTP id o21mr18358331lfk.527.1636306956359; 
- Sun, 07 Nov 2021 09:42:36 -0800 (PST)
-Received: from [192.168.2.145] (79-139-182-132.dynamic.spd-mgts.ru.
- [79.139.182.132])
- by smtp.googlemail.com with ESMTPSA id o1sm1351686ljg.130.2021.11.07.09.42.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 07 Nov 2021 09:42:35 -0800 (PST)
-Subject: Re: [PATCH v2 27/45] mfd: ntxec: Use devm_register_power_handler()
-To: Guenter Roeck <linux@roeck-us.net>,
- =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-28-digetx@gmail.com> <YYbqlmOM95q7Hbjo@latitude>
- <be0c74c6-05a9-cad5-c285-6626d05f8860@gmail.com>
- <9a22c22d-94b1-f519-27a2-ae0b8bbf6e99@roeck-us.net>
- <658cf796-e3b1-f816-1e15-9e9e08b8ade0@gmail.com>
- <5a17fee3-4214-c2b9-abc1-ab9d6071591b@roeck-us.net>
-From: Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <c0b52994-51f5-806b-b07e-3e70d8217ffc@gmail.com>
-Date: Sun, 7 Nov 2021 20:42:33 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version:content-transfer-encoding;
+ bh=vvhHrDlviXEtiu42f9Ed4TiIZsHPlHHchTgbcPhjOC4=;
+ b=vjBspCioYMxhECpw184qXcDshL/0IBTE7bq3nG/FWz9Z8686705NPwhUctPl6I1/nE
+ HIvzwyPciUDKnkL6aSnPM2onfgNqDcpKSSUKzVmmhAPchDkyZpJFQCWVTgtlV2BnT8+c
+ CQHy/KgwKbxXWS6yHbcEFxviGCUaE3bNaT9iEIC81EFnGsSrj4rzpVF8gjOYhs/+DaDr
+ J+Y7lbusRwalu4vhKcQGFGvY9k6NAWm7cGXztgk329Wk4j3lFaqB4Ip2hlqhj698Z33/
+ AqwrsUNoZ1VqQ0zycq5ZcsaRl2SIai+Qm9X4SQ0hDCpwvmQO1QYAzmKIXGsUNUpzG+Qd
+ brcA==
+X-Gm-Message-State: AOAM533y8hrT7hGWWl+9dyb2epPq6VhUuyCIimRGVFoPMLxDMTHIHio/
+ ng7iuagvcFFtjPLBcHW+0XavBA==
+X-Google-Smtp-Source: ABdhPJxfFXdXIw4YX3AftpaKpLmcq1g8ANa0foPZPl3tIwJBZSTL0sL86tkEOb1z5QnEzVlr5Hl6Bw==
+X-Received: by 2002:a05:6a00:8c4:b0:44c:9827:16cc with SMTP id
+ s4-20020a056a0008c400b0044c982716ccmr76290901pfu.7.1636323540309; 
+ Sun, 07 Nov 2021 14:19:00 -0800 (PST)
+Received: from localhost ([2001:4479:e000:e400:9243:f22c:33ee:c8cf])
+ by smtp.gmail.com with ESMTPSA id d17sm13127106pfo.40.2021.11.07.14.18.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 07 Nov 2021 14:18:59 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, Mimi Zohar
+ <zohar@linux.ibm.com>
+Subject: Re: [PATCH 0/3] KEXEC_SIG with appended signature
+In-Reply-To: <20211105131401.GL11195@kunlun.suse.cz>
+References: <cover.1635948742.git.msuchanek@suse.de>
+ <87czneeurr.fsf@dja-thinkpad.axtens.net>
+ <20211105131401.GL11195@kunlun.suse.cz>
+Date: Mon, 08 Nov 2021 09:18:56 +1100
+Message-ID: <87a6ifehin.fsf@dja-thinkpad.axtens.net>
 MIME-Version: 1.0
-In-Reply-To: <5a17fee3-4214-c2b9-abc1-ab9d6071591b@roeck-us.net>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Mon, 08 Nov 2021 07:09:47 +1100
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,121 +80,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
- Thomas Gleixner <tglx@linutronix.de>, Tomer Maimon <tmaimon77@gmail.com>,
- Santosh Shilimkar <ssantosh@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- Tali Perry <tali.perry1@gmail.com>, Thierry Reding <thierry.reding@gmail.com>,
- Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-ia64@vger.kernel.org,
- linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
- Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Benjamin Fair <benjaminfair@google.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Jonathan Hunter <jonathanh@nvidia.com>, Tony Lindgren <tony@atomide.com>,
- Chen-Yu Tsai <wens@csie.org>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org,
- linux-mips@vger.kernel.org, Len Brown <lenb@kernel.org>,
- Albert Ou <aou@eecs.berkeley.edu>, linux-omap@vger.kernel.org,
- Vladimir Zapolskiy <vz@mleia.com>, linux-acpi@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, Mark Brown <broonie@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra@vger.kernel.org,
- Lee Jones <lee.jones@linaro.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Nancy Yuen <yuenn@google.com>, linux-arm-kernel@lists.infradead.org,
- Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Nick Hu <nickhu@andestech.com>, Avi Fishman <avifishman70@gmail.com>,
- Patrick Venture <venture@google.com>, linux-pm@vger.kernel.org,
- Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, openbmc@lists.ozlabs.org,
- Joshua Thompson <funaho@jurai.org>
+Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Rob Herring <robh@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, keyrings@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Frank van der Linden <fllinden@amazon.com>,
+ Jessica Yu <jeyu@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Christian Borntraeger <borntraeger@de.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-07.11.2021 20:32, Guenter Roeck пишет:
-> On 11/7/21 9:16 AM, Dmitry Osipenko wrote:
->> 07.11.2021 20:08, Guenter Roeck пишет:
->>> On 11/7/21 8:53 AM, Dmitry Osipenko wrote:
->>>> 06.11.2021 23:54, Jonathan Neuschäfer пишет:
->>>>> Hi,
->>>>>
->>>>> On Thu, Oct 28, 2021 at 12:16:57AM +0300, Dmitry Osipenko wrote:
->>>>>> Use devm_register_power_handler() that replaces global pm_power_off
->>>>>> variable and allows to register multiple power-off handlers. It also
->>>>>> provides restart-handler support, i.e. all in one API.
->>>>>>
->>>>>> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
->>>>>> ---
->>>>>
->>>>> When I boot with (most of) this patchset applied, I get the warning at
->>>>> kernel/reboot.c:187:
->>>>>
->>>>>      /*
->>>>>       * Handler must have unique priority. Otherwise call order is
->>>>>       * determined by registration order, which is unreliable.
->>>>>       */
->>>>>      WARN_ON(!atomic_notifier_has_unique_priority(&restart_handler_list,
->>>>>
->>>>> nb));
->>>>>
->>>>> As the NTXEC driver doesn't specify a priority, I think this is an
->>>>> issue
->>>>> to be fixed elsewhere.
->>>>>
->>>>> Other than that, it works and looks good, as far as I can tell.
->>>>>
->>>>>
->>>>> For this patch:
->>>>>
->>>>> Reviewed-by: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
->>>>> Tested-by: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
->>>>
->>>> Thank you. You have conflicting restart handlers, apparently NTXEC
->>>> driver should have higher priority than the watchdog driver. It should
->>>> be a common problem for the watchdog drivers, I will lower watchdog's
->>>> default priority to fix it.
->>>>
->>>
->>> The watchdog subsystem already uses "0" as default priority, which was
->>> intended as priority of last resort for restart handlers. I do not see
->>> a reason to change that.
->>
->> Right, I meant that watchdog drivers which use restart handler set the
->> level to the default 128 [1]. Although, maybe it's a problem only for
->> i.MX drivers in practice, I'll take a closer look at the other drivers.
->>
-> 
-> They don't have to do that. The default is priority 0. It is the decision
-> of the driver author to set the watchdog's restart priority. So it is wrong
-> to claim that this would be "a common problem for the watchdog drivers",
-> because it isn't. Presumably there was a reason for the driver author
-> to select the default priority of 128. If there is a platform which has
-> a better means to restart the system, it should select a priority of
-> 129 or higher instead of affecting _all_ platforms using the imx watchdog
-> to reset the system.
-> 
-> Sure, you can negotiate that with the driver author, but the default should
-> really be to change the priority for less affected platforms.
+Michal Such=C3=A1nek <msuchanek@suse.de> writes:
 
-Yes, looks like there is no common problem for watchdog drivers.
-Initially I was recalling that watchdog core uses 128 by default and
-typed the message without verifying it. I see now that it's incorrect,
-my bad.
+> On Fri, Nov 05, 2021 at 09:55:52PM +1100, Daniel Axtens wrote:
+>> Michal Suchanek <msuchanek@suse.de> writes:
+>>=20
+>> > S390 uses appended signature for kernel but implements the check
+>> > separately from module loader.
+>> >
+>> > Support for secure boot on powerpc with appended signature is planned -
+>> > grub patches submitted upstream but not yet merged.
+>>=20
+>> Power Non-Virtualised / OpenPower already supports secure boot via kexec
+>> with signature verification via IMA. I think you have now sent a
+>> follow-up series that merges some of the IMA implementation, I just
+>> wanted to make sure it was clear that we actually already have support
+>
+> So is IMA_KEXEC and KEXEC_SIG redundant?
+>
+> I see some architectures have both. I also see there is a lot of overlap
+> between the IMA framework and the KEXEC_SIG and MODULE_SIg.
 
-EC drivers tend to use higher priority in general. Jonathan, could you
-please confirm that NTXEC driver is a more preferable restart method
-than the watchdog?
+
+Mimi would be much better placed than me to answer this.
+
+The limits of my knowledge are basically that signature verification for
+modules and kexec kernels can be enforced by IMA policies.
+
+For example a secure booted powerpc kernel with module support will have
+the following IMA policy set at the arch level:
+
+"appraise func=3DKEXEC_KERNEL_CHECK appraise_flag=3Dcheck_blacklist apprais=
+e_type=3Dimasig|modsig",
+(in arch/powerpc/kernel/ima_arch.c)
+
+Module signature enforcement can be set with either IMA (policy like
+"appraise func=3DMODULE_CHECK appraise_flag=3Dcheck_blacklist appraise_type=
+=3Dimasig|modsig" )
+or with CONFIG_MODULE_SIG_FORCE/module.sig_enforce=3D1.
+
+Sometimes this leads to arguably unexpected interactions - for example
+commit fa4f3f56ccd2 ("powerpc/ima: Fix secure boot rules in ima arch
+policy"), so it might be interesting to see if we can make things easier
+to understand.  I suspect another amusing interaction is that if the IMA
+verification is used, the signature could be in an xattr rather than an
+appended signature.
+
+Kind regards,
+Daniel
+
