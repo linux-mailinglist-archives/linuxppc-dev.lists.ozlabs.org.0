@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF564481A8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 15:25:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D05E4481F3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 15:36:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HntgJ0bTLz3c8J
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 01:25:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HntwL3v2fz2yqC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 01:36:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=BzFVBEJo;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=Upd25Hzf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,40 +17,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
- header.s=dkim header.b=BzFVBEJo; dkim-atps=neutral
+ header.s=dkim header.b=Upd25Hzf; dkim-atps=neutral
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hntfg4FWyz2xXy
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 01:24:43 +1100 (AEDT)
-Received: from zn.tnic (p200300ec2f33110093973d8dfcf40fd9.dip0.t-ipconnect.de
- [IPv6:2003:ec:2f33:1100:9397:3d8d:fcf4:fd9])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hntvg0HQ9z2ym7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 01:35:58 +1100 (AEDT)
+Received: from zn.tnic (p200300ec2f331100b486bab6e60d7aaf.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f33:1100:b486:bab6:e60d:7aaf])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D54F61EC04EE;
- Mon,  8 Nov 2021 15:24:40 +0100 (CET)
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1A75E1EC01FC;
+ Mon,  8 Nov 2021 15:35:56 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
- t=1636381481;
+ t=1636382156;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
- bh=oQBbYlaqexu4t08cRZdDH3XaT2khXLTGUfDdhXY+o6w=;
- b=BzFVBEJotdv+x1wk5r7BVthkB7IfDjFkcs3Qa23VnQgw6n7GoUvAnfTwnsI1XwsFUQ2pfc
- wTEtmUg2zpiIKZgiV8GtlPXLXcMCnwwX7vbzvuM7Jd46qSvtVDp/eqlUHv6UrUSSdUIxSB
- fTiz2Hj9eXxtQyoPpRyOqBuxOD7Awrk=
-Date: Mon, 8 Nov 2021 15:24:39 +0100
+ bh=B6oOQ1q4gjLTOu5usgfET43xDRmf4tLazw1TZ6CRXFw=;
+ b=Upd25HzfEqhrG5TAXmV4X7VLTXjG+2mbIZvAcNaA5XdFGwWxC22cjGdH367SqKuC2YI35V
+ XePkT+plNO8Rcdx9qRLbflORPHDjzc4q/HfinrM2oVoUmKJ3f3FbXqZbeiIVI7zzNRafCc
+ NDGlsVX5pxz7i7hCYlNzvvCrAxbHbAs=
+Date: Mon, 8 Nov 2021 15:35:50 +0100
 From: Borislav Petkov <bp@alien8.de>
-To: Alan Stern <stern@rowland.harvard.edu>
+To: Alan Stern <stern@rowland.harvard.edu>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
 Subject: Re: [PATCH v0 00/42] notifiers: Return an error when callback is
  already registered
-Message-ID: <YYkzJ3+faVga2Tl3@zn.tnic>
+Message-ID: <YYk1xi3eJdMJdjHC@zn.tnic>
 References: <20211108101157.15189-1-bp@alien8.de>
  <20211108101924.15759-1-bp@alien8.de>
  <20211108141703.GB1666297@rowland.harvard.edu>
+ <YYkzJ3+faVga2Tl3@zn.tnic>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20211108141703.GB1666297@rowland.harvard.edu>
+In-Reply-To: <YYkzJ3+faVga2Tl3@zn.tnic>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,22 +87,60 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 08, 2021 at 09:17:03AM -0500, Alan Stern wrote:
-> What reason is there for moving the check into the callers?  It seems 
-> like pointless churn.  Why not add the error return code, change the 
-> WARN to pr_warn, and leave the callers as they are?  Wouldn't that end 
-> up having exactly the same effect?
-> 
-> For that matter, what sort of remedial action can a caller take if the 
-> return code is -EEXIST?  Is there any point in forcing callers to check 
-> the return code if they can't do anything about it?
+On Mon, Nov 08, 2021 at 03:24:39PM +0100, Borislav Petkov wrote:
+> I guess I can add another indirection to notifier_chain_register() and
+> avoid touching all the call sites.
 
-See my reply to Geert from just now:
+IOW, something like this below.
 
-https://lore.kernel.org/r/YYkyUEqcsOwQMb1S@zn.tnic
+This way I won't have to touch all the callsites and the registration
+routines would still return a proper value instead of returning 0
+unconditionally.
 
-I guess I can add another indirection to notifier_chain_register() and
-avoid touching all the call sites.
+---
+diff --git a/kernel/notifier.c b/kernel/notifier.c
+index b8251dc0bc0f..04f08b2ef17f 100644
+--- a/kernel/notifier.c
++++ b/kernel/notifier.c
+@@ -19,14 +19,12 @@ BLOCKING_NOTIFIER_HEAD(reboot_notifier_list);
+  *	are layered on top of these, with appropriate locking added.
+  */
+ 
+-static int notifier_chain_register(struct notifier_block **nl,
+-		struct notifier_block *n)
++static int __notifier_chain_register(struct notifier_block **nl,
++				     struct notifier_block *n)
+ {
+ 	while ((*nl) != NULL) {
+-		if (unlikely((*nl) == n)) {
+-			WARN(1, "double register detected");
+-			return 0;
+-		}
++		if (unlikely((*nl) == n))
++			return -EEXIST;
+ 		if (n->priority > (*nl)->priority)
+ 			break;
+ 		nl = &((*nl)->next);
+@@ -36,6 +34,18 @@ static int notifier_chain_register(struct notifier_block **nl,
+ 	return 0;
+ }
+ 
++static int notifier_chain_register(struct notifier_block **nl,
++				   struct notifier_block *n)
++{
++	int ret = __notifier_chain_register(nl, n);
++
++	if (ret == -EEXIST)
++		WARN(1, "double register of notifier callback %ps detected",
++			n->notifier_call);
++
++	return ret;
++}
++
+ static int notifier_chain_unregister(struct notifier_block **nl,
+ 		struct notifier_block *n)
+ {
+
 
 -- 
 Regards/Gruss,
