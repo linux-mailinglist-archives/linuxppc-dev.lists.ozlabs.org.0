@@ -2,83 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E35D449D40
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 21:50:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B186449D42
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 21:51:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hp3Ck42LDz3cQZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 07:50:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hp3DX6TTVz3cWG
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 07:51:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aZVzW8uI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WP+TzDRR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22f;
- helo=mail-lj1-x22f.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=imbrenda@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=aZVzW8uI; dkim-atps=neutral
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com
- [IPv6:2a00:1450:4864:20::22f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=WP+TzDRR; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hnpwy1915z2ybK;
- Mon,  8 Nov 2021 22:36:48 +1100 (AEDT)
-Received: by mail-lj1-x22f.google.com with SMTP id z8so6055780ljz.9;
- Mon, 08 Nov 2021 03:36:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=X+QlLlo/0/3EVdBxA2kw9RSD+7dI68j0akmWtlfHVoc=;
- b=aZVzW8uInA8LU/x+WSDcs8GL423pa/2TbHlNFMZCd9U6UTTINhRxHwWgMG+VIGRFXX
- YHsHS1Zp8SLg7g0I8x9US08hxM80ZghlJabXZBFwbjt/NZTi8D93A6u3DdWQsriGAEMv
- bFmB7LTf3DQwVbSm6WogHRt9oYdTZJJwV6Cdja/STeDW7/10QbzkyuPD5z+/FAuGPwej
- XDOG6vFO/moWThDJAR559rbcfRfK+AgOLrilun42rQLGkujwn1pckpcm4TgSB3WIb1LP
- WWP0u+S7lmnv27N0vKhUH9Av/RJV5C0NJsxi8Lo9cU/Zh/pB4HH/qd8XqYWZNDXsqTHX
- YlNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=X+QlLlo/0/3EVdBxA2kw9RSD+7dI68j0akmWtlfHVoc=;
- b=S5oH82LbFn09nv2Co2uaAbMurDkHXrpDxEFontqbncndENAlRoOjAArHAGZ1yS+BqN
- E92EJP4pVfEjXoYPgVoA/ltMjT4bQ9yReGN7Rrhb1qg+u9aQy4UxnQYqIPyMBn0Iu+tZ
- 1klVZ/GI8ApxTlpJhmpaSiVG1RWOoYBIkDki4PUh66jMzboVuhaPZXTzcNV0JlHdZpha
- uktSJer0uNRw2Bamo6by5KGkq8GAHW6e8NuEJJ16BisiC7uZD0r+15xpDDcoT8nIxYte
- iC3GxZRdsMecH9mR1fYoyvkhYEKqmB78G9nbRddpF0DVNrN96c6eArstz/7Srn22m8iu
- 3s2w==
-X-Gm-Message-State: AOAM5337BZABqXaqLf5vEBV/qsblbh6GzSGXpgcs1LCKbyhnyl/VxS5Q
- TBI8zbAo9DtQNrTMtviO9vY=
-X-Google-Smtp-Source: ABdhPJzzWZ+q13ptoCU5JHKLBozyl2qyG0di7fj7GC0x6tQVXWEZ5utjk3vHuuOVClKYY3WCOwTKiw==
-X-Received: by 2002:a2e:bd88:: with SMTP id o8mr69963654ljq.197.1636371404363; 
- Mon, 08 Nov 2021 03:36:44 -0800 (PST)
-Received: from [192.168.2.145] (79-139-188-96.dynamic.spd-mgts.ru.
- [79.139.188.96])
- by smtp.googlemail.com with ESMTPSA id q6sm1523591ljh.1.2021.11.08.03.36.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Nov 2021 03:36:44 -0800 (PST)
-Subject: Re: [PATCH v2 27/45] mfd: ntxec: Use devm_register_power_handler()
-To: =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-28-digetx@gmail.com> <YYbqlmOM95q7Hbjo@latitude>
- <be0c74c6-05a9-cad5-c285-6626d05f8860@gmail.com>
- <9a22c22d-94b1-f519-27a2-ae0b8bbf6e99@roeck-us.net>
- <658cf796-e3b1-f816-1e15-9e9e08b8ade0@gmail.com>
- <5a17fee3-4214-c2b9-abc1-ab9d6071591b@roeck-us.net>
- <c0b52994-51f5-806b-b07e-3e70d8217ffc@gmail.com> <YYkIeBSCFka9yrqC@latitude>
-From: Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <04103df3-1ef4-b560-a5cb-fa51737d28ad@gmail.com>
-Date: Mon, 8 Nov 2021 14:36:42 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HnsCS2jXxz2xZm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 00:19:31 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1A8BVjpj011343; 
+ Mon, 8 Nov 2021 13:19:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=tO9J68T6dugNoJpwwppvs8tTbmLbm1qXxehdAk72Ho0=;
+ b=WP+TzDRRMReG4jzSp7eYxKF34sAiWzTg3/K51yZZWnoC4UG+A68sL17lkAJke64Xf3zh
+ 4gllDBYaxPKDWizcW0dfeogzo34TK+N6Qq50Je3TmEHceQY+GVITtbfUXCn8/6gScsdk
+ M4lfEFokv1F7jERNt8AGkF+Qu28oIseWdDn8wtpxWHTJtKTKErumZuiVbiSBGi6thNS6
+ v25hGMoCsHLeAHUoiLEQlutbChm11BVW/oKvVdCP/OkSP67Tyxkb0FYm6D8QABXjS0Ai
+ 4CfmY9p+dlgN3CVpJAjdLD9F7J3EsKIpd5jM7Uk2mfUIubwVeDs1GFGcUC71bRC2XhKN 4A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3c67qcf1ek-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Nov 2021 13:19:19 +0000
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1A8D1a3e001140;
+ Mon, 8 Nov 2021 13:19:19 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3c67qcf1e0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Nov 2021 13:19:18 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1A8DDjd7024378;
+ Mon, 8 Nov 2021 13:19:17 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06ams.nl.ibm.com with ESMTP id 3c5gyj6f48-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 08 Nov 2021 13:19:16 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1A8DJDUw60162454
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 8 Nov 2021 13:19:13 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6F9B34205C;
+ Mon,  8 Nov 2021 13:19:13 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 41AF942072;
+ Mon,  8 Nov 2021 13:19:12 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.145.11.147])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  8 Nov 2021 13:19:12 +0000 (GMT)
+Date: Mon, 8 Nov 2021 13:12:02 +0100
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH 1/5] KVM: Move wiping of the kvm->vcpus array to common
+ code
+Message-ID: <20211108131202.774812b9@p-imbrenda>
+In-Reply-To: <20211105192101.3862492-2-maz@kernel.org>
+References: <20211105192101.3862492-1-maz@kernel.org>
+ <20211105192101.3862492-2-maz@kernel.org>
+Organization: IBM
+X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <YYkIeBSCFka9yrqC@latitude>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8mYXWMdMPVgpwC7GFr3_KXd1sKvdMkVU
+X-Proofpoint-ORIG-GUID: XztAnVpBiEcmznvaQpyKQ2UrXf-dxOyV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-08_05,2021-11-08_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0
+ adultscore=0 impostorscore=0 malwarescore=0 suspectscore=0 mlxlogscore=999
+ clxscore=1011 priorityscore=1501 spamscore=0 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111080082
 X-Mailman-Approved-At: Tue, 09 Nov 2021 07:49:14 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -91,62 +111,267 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Tomer Maimon <tmaimon77@gmail.com>,
- Santosh Shilimkar <ssantosh@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- Tali Perry <tali.perry1@gmail.com>, Thierry Reding <thierry.reding@gmail.com>,
- Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
- Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
- Greg Ungerer <gerg@linux-m68k.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Benjamin Fair <benjaminfair@google.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- linux-sh@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
- Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Jonathan Hunter <jonathanh@nvidia.com>, Tony Lindgren <tony@atomide.com>,
- Chen-Yu Tsai <wens@csie.org>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org,
- linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
- Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
- linux-omap@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>,
- linux-acpi@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- linux-tegra@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Nancy Yuen <yuenn@google.com>, linux-arm-kernel@lists.infradead.org,
- Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Nick Hu <nickhu@andestech.com>, Avi Fishman <avifishman70@gmail.com>,
- Patrick Venture <venture@google.com>, linux-pm@vger.kernel.org,
- Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, openbmc@lists.ozlabs.org,
- Joshua Thompson <funaho@jurai.org>
+Cc: Juergen Gross <jgross@suse.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>, Anup Patel <anup.patel@wdc.com>,
+ Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Sean Christopherson <seanjc@google.com>, Huacai Chen <chenhuacai@kernel.org>,
+ David Hildenbrand <david@redhat.com>, linux-mips@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Atish Patra <atish.patra@wdc.com>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, James Morse <james.morse@arm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kernel-team@android.com,
+ linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu,
+ Suzuki K Poulose <suzuki.poulose@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-08.11.2021 14:22, Jonathan Neuschäfer пишет:
-> On Sun, Nov 07, 2021 at 08:42:33PM +0300, Dmitry Osipenko wrote:
-> [...]
->> EC drivers tend to use higher priority in general. Jonathan, could you
->> please confirm that NTXEC driver is a more preferable restart method
->> than the watchdog?
+On Fri,  5 Nov 2021 19:20:57 +0000
+Marc Zyngier <maz@kernel.org> wrote:
+
+> All architectures have similar loops iterating over the vcpus,
+> freeing one vcpu at a time, and eventually wiping the reference
+> off the vcpus array. They are also inconsistently taking
+> the kvm->lock mutex when wiping the references from the array.
 > 
-> Yes. The original firmware uses the NTXEC to restart, and it works well,
-> so I do think it's preferable.
+> Make this code common, which will simplify further changes.
+> 
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
 
-Thank you, then I'll update the NTXEC patch like this:
+no objections
 
-https://github.com/grate-driver/linux/commit/22da3d91f1734d9a0ed036220ad4ea28465af988
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+
+> ---
+>  arch/arm64/kvm/arm.c       | 10 +---------
+>  arch/mips/kvm/mips.c       | 21 +--------------------
+>  arch/powerpc/kvm/powerpc.c | 10 +---------
+>  arch/riscv/kvm/vm.c        | 10 +---------
+>  arch/s390/kvm/kvm-s390.c   | 18 +-----------------
+>  arch/x86/kvm/x86.c         |  9 +--------
+>  include/linux/kvm_host.h   |  2 +-
+>  virt/kvm/kvm_main.c        | 20 ++++++++++++++++++--
+>  8 files changed, 25 insertions(+), 75 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index f5490afe1ebf..75bb7215da03 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -175,19 +175,11 @@ vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+>   */
+>  void kvm_arch_destroy_vm(struct kvm *kvm)
+>  {
+> -	int i;
+> -
+>  	bitmap_free(kvm->arch.pmu_filter);
+>  
+>  	kvm_vgic_destroy(kvm);
+>  
+> -	for (i = 0; i < KVM_MAX_VCPUS; ++i) {
+> -		if (kvm->vcpus[i]) {
+> -			kvm_vcpu_destroy(kvm->vcpus[i]);
+> -			kvm->vcpus[i] = NULL;
+> -		}
+> -	}
+> -	atomic_set(&kvm->online_vcpus, 0);
+> +	kvm_destroy_vcpus(kvm);
+>  }
+>  
+>  int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+> index 562aa878b266..ceacca74f808 100644
+> --- a/arch/mips/kvm/mips.c
+> +++ b/arch/mips/kvm/mips.c
+> @@ -171,25 +171,6 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>  	return 0;
+>  }
+>  
+> -void kvm_mips_free_vcpus(struct kvm *kvm)
+> -{
+> -	unsigned int i;
+> -	struct kvm_vcpu *vcpu;
+> -
+> -	kvm_for_each_vcpu(i, vcpu, kvm) {
+> -		kvm_vcpu_destroy(vcpu);
+> -	}
+> -
+> -	mutex_lock(&kvm->lock);
+> -
+> -	for (i = 0; i < atomic_read(&kvm->online_vcpus); i++)
+> -		kvm->vcpus[i] = NULL;
+> -
+> -	atomic_set(&kvm->online_vcpus, 0);
+> -
+> -	mutex_unlock(&kvm->lock);
+> -}
+> -
+>  static void kvm_mips_free_gpa_pt(struct kvm *kvm)
+>  {
+>  	/* It should always be safe to remove after flushing the whole range */
+> @@ -199,7 +180,7 @@ static void kvm_mips_free_gpa_pt(struct kvm *kvm)
+>  
+>  void kvm_arch_destroy_vm(struct kvm *kvm)
+>  {
+> -	kvm_mips_free_vcpus(kvm);
+> +	kvm_destroy_vcpus(kvm);
+>  	kvm_mips_free_gpa_pt(kvm);
+>  }
+>  
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 35e9cccdeef9..492e4a4121cb 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -463,9 +463,6 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>  
+>  void kvm_arch_destroy_vm(struct kvm *kvm)
+>  {
+> -	unsigned int i;
+> -	struct kvm_vcpu *vcpu;
+> -
+>  #ifdef CONFIG_KVM_XICS
+>  	/*
+>  	 * We call kick_all_cpus_sync() to ensure that all
+> @@ -476,14 +473,9 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
+>  		kick_all_cpus_sync();
+>  #endif
+>  
+> -	kvm_for_each_vcpu(i, vcpu, kvm)
+> -		kvm_vcpu_destroy(vcpu);
+> +	kvm_destroy_vcpus(kvm);
+>  
+>  	mutex_lock(&kvm->lock);
+> -	for (i = 0; i < atomic_read(&kvm->online_vcpus); i++)
+> -		kvm->vcpus[i] = NULL;
+> -
+> -	atomic_set(&kvm->online_vcpus, 0);
+>  
+>  	kvmppc_core_destroy_vm(kvm);
+>  
+> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
+> index 26399df15b63..6af6cde295eb 100644
+> --- a/arch/riscv/kvm/vm.c
+> +++ b/arch/riscv/kvm/vm.c
+> @@ -46,15 +46,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>  
+>  void kvm_arch_destroy_vm(struct kvm *kvm)
+>  {
+> -	int i;
+> -
+> -	for (i = 0; i < KVM_MAX_VCPUS; ++i) {
+> -		if (kvm->vcpus[i]) {
+> -			kvm_vcpu_destroy(kvm->vcpus[i]);
+> -			kvm->vcpus[i] = NULL;
+> -		}
+> -	}
+> -	atomic_set(&kvm->online_vcpus, 0);
+> +	kvm_destroy_vcpus(kvm);
+>  }
+>  
+>  int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index c6257f625929..7af53b8788fa 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+> @@ -2819,27 +2819,11 @@ void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
+>  	free_page((unsigned long)(vcpu->arch.sie_block));
+>  }
+>  
+> -static void kvm_free_vcpus(struct kvm *kvm)
+> -{
+> -	unsigned int i;
+> -	struct kvm_vcpu *vcpu;
+> -
+> -	kvm_for_each_vcpu(i, vcpu, kvm)
+> -		kvm_vcpu_destroy(vcpu);
+> -
+> -	mutex_lock(&kvm->lock);
+> -	for (i = 0; i < atomic_read(&kvm->online_vcpus); i++)
+> -		kvm->vcpus[i] = NULL;
+> -
+> -	atomic_set(&kvm->online_vcpus, 0);
+> -	mutex_unlock(&kvm->lock);
+> -}
+> -
+>  void kvm_arch_destroy_vm(struct kvm *kvm)
+>  {
+>  	u16 rc, rrc;
+>  
+> -	kvm_free_vcpus(kvm);
+> +	kvm_destroy_vcpus(kvm);
+>  	sca_dispose(kvm);
+>  	kvm_s390_gisa_destroy(kvm);
+>  	/*
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index c1c4e2b05a63..498a43126615 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -11302,15 +11302,8 @@ static void kvm_free_vcpus(struct kvm *kvm)
+>  		kvm_clear_async_pf_completion_queue(vcpu);
+>  		kvm_unload_vcpu_mmu(vcpu);
+>  	}
+> -	kvm_for_each_vcpu(i, vcpu, kvm)
+> -		kvm_vcpu_destroy(vcpu);
+> -
+> -	mutex_lock(&kvm->lock);
+> -	for (i = 0; i < atomic_read(&kvm->online_vcpus); i++)
+> -		kvm->vcpus[i] = NULL;
+>  
+> -	atomic_set(&kvm->online_vcpus, 0);
+> -	mutex_unlock(&kvm->lock);
+> +	kvm_destroy_vcpus(kvm);
+>  }
+>  
+>  void kvm_arch_sync_events(struct kvm *kvm)
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 60a35d9fe259..36967291b8c6 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -725,7 +725,7 @@ static inline struct kvm_vcpu *kvm_get_vcpu_by_id(struct kvm *kvm, int id)
+>  		if (WARN_ON_ONCE(!memslot->npages)) {			\
+>  		} else
+>  
+> -void kvm_vcpu_destroy(struct kvm_vcpu *vcpu);
+> +void kvm_destroy_vcpus(struct kvm *kvm);
+>  
+>  void vcpu_load(struct kvm_vcpu *vcpu);
+>  void vcpu_put(struct kvm_vcpu *vcpu);
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 3f6d450355f0..d83553eeea21 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -435,7 +435,7 @@ static void kvm_vcpu_init(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned id)
+>  	vcpu->last_used_slot = 0;
+>  }
+>  
+> -void kvm_vcpu_destroy(struct kvm_vcpu *vcpu)
+> +static void kvm_vcpu_destroy(struct kvm_vcpu *vcpu)
+>  {
+>  	kvm_dirty_ring_free(&vcpu->dirty_ring);
+>  	kvm_arch_vcpu_destroy(vcpu);
+> @@ -450,7 +450,23 @@ void kvm_vcpu_destroy(struct kvm_vcpu *vcpu)
+>  	free_page((unsigned long)vcpu->run);
+>  	kmem_cache_free(kvm_vcpu_cache, vcpu);
+>  }
+> -EXPORT_SYMBOL_GPL(kvm_vcpu_destroy);
+> +
+> +void kvm_destroy_vcpus(struct kvm *kvm)
+> +{
+> +	unsigned int i;
+> +	struct kvm_vcpu *vcpu;
+> +
+> +	kvm_for_each_vcpu(i, vcpu, kvm)
+> +		kvm_vcpu_destroy(vcpu);
+> +
+> +	mutex_lock(&kvm->lock);
+> +	for (i = 0; i < atomic_read(&kvm->online_vcpus); i++)
+> +		kvm->vcpus[i] = NULL;
+> +
+> +	atomic_set(&kvm->online_vcpus, 0);
+> +	mutex_unlock(&kvm->lock);
+> +}
+> +EXPORT_SYMBOL_GPL(kvm_destroy_vcpus);
+>  
+>  #if defined(CONFIG_MMU_NOTIFIER) && defined(KVM_ARCH_WANT_MMU_NOTIFIER)
+>  static inline struct kvm *mmu_notifier_to_kvm(struct mmu_notifier *mn)
 
