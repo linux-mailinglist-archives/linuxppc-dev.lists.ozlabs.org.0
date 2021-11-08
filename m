@@ -1,30 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F5F44790F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 05:03:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65FF0447912
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 05:04:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HnctJ5G4qz3c61
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 15:03:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hnctl2qzCz3cNH
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 15:04:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
  envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Received: from ozlabs.ru (unknown [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Hncsv5FDTz2xWc
+ by lists.ozlabs.org (Postfix) with ESMTP id 4Hncsv6WPqz2yNK
  for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Nov 2021 15:03:31 +1100 (AEDT)
 Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 3CD778004F;
- Sun,  7 Nov 2021 23:03:26 -0500 (EST)
+ by ozlabs.ru (Postfix) with ESMTP id 7053C80C59;
+ Sun,  7 Nov 2021 23:03:28 -0500 (EST)
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel 0/3] powerpc/pseries/ddw: Fixes for persistent memory
- case
-Date: Mon,  8 Nov 2021 15:03:16 +1100
-Message-Id: <20211108040320.3857636-1-aik@ozlabs.ru>
+Subject: [PATCH kernel 1/3] powerpc/pseries/ddw: Revert "Extend upper limit
+ for huge DMA window for persistent memory"
+Date: Mon,  8 Nov 2021 15:03:17 +1100
+Message-Id: <20211108040320.3857636-2-aik@ozlabs.ru>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20211108040320.3857636-1-aik@ozlabs.ru>
+References: <20211108040320.3857636-1-aik@ozlabs.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -45,24 +47,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This reverts commit 54fc3c681ded9437e4548e2501dc1136b23cfa9a
+which does not allow 1:1 mapping even for the system RAM which
+is usually possible.
 
-This is based on sha1
-f855455dee0b Michael Ellerman "Automatic merge of 'next' into merge (2021-11-05 22:19)".
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+ arch/powerpc/platforms/pseries/iommu.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-Please comment. Thanks.
-
-
-
-Alexey Kardashevskiy (3):
-  powerpc/pseries/ddw: Revert "Extend upper limit for huge DMA window
-    for persistent memory"
-  powerpc/pseries/ddw: simplify enable_ddw()
-  powerpc/pseries/ddw: Do not try direct mapping with persistent memory
-    and one window
-
- arch/powerpc/platforms/pseries/iommu.c | 26 ++++++++------------------
- 1 file changed, 8 insertions(+), 18 deletions(-)
-
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index 49b401536d29..64385d6f33c2 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -1094,15 +1094,6 @@ static phys_addr_t ddw_memory_hotplug_max(void)
+ 	phys_addr_t max_addr = memory_hotplug_max();
+ 	struct device_node *memory;
+ 
+-	/*
+-	 * The "ibm,pmemory" can appear anywhere in the address space.
+-	 * Assuming it is still backed by page structs, set the upper limit
+-	 * for the huge DMA window as MAX_PHYSMEM_BITS.
+-	 */
+-	if (of_find_node_by_type(NULL, "ibm,pmemory"))
+-		return (sizeof(phys_addr_t) * 8 <= MAX_PHYSMEM_BITS) ?
+-			(phys_addr_t) -1 : (1ULL << MAX_PHYSMEM_BITS);
+-
+ 	for_each_node_by_type(memory, "memory") {
+ 		unsigned long start, size;
+ 		int n_mem_addr_cells, n_mem_size_cells, len;
 -- 
 2.30.2
 
