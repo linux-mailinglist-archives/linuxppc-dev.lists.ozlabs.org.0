@@ -1,74 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45994480C1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 15:03:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822DB4480F6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 15:07:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HntBc5W56z3bmx
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 01:03:52 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jGfpwYs0;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HntH33D6wz3c91
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 01:07:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
- helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=jGfpwYs0; dkim-atps=neutral
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
+ smtp.mailfrom=gmail.com (client-ip=209.85.222.52; helo=mail-ua1-f52.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com
+ [209.85.222.52])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hnt9x6g58z2yb6
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 01:03:15 +1100 (AEDT)
-Received: by mail-pg1-x532.google.com with SMTP id r28so15242916pga.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Nov 2021 06:03:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=vfKWO8T5GZBGCrDfYUdrnOtGOmW0SuMF01lP0DpObiQ=;
- b=jGfpwYs08KKxrd7D08rE9LOqvG/ixeTYRPjNh+t46FPhGEgPfVRb1rKcuW/6eF5np3
- r0k0/ToM450hxcXkIhE81k32btTnALSo0IXALeS44gqNdQ1rkekZbdM1RIv5t3q9nmCc
- FR9XfC3+VTQl0boI8hBDEjnxLqCYJ7RQGKlhGPjdpBqtfXWnmTqsGvqFxaoea8PbQlok
- dGFu1EQ5HCqSO39di2brROkq3Z0GTqS22JOZgoyCy15+617xGxke7MW6IdQlfh/jyKks
- TcNqHOybH0QAU8m2dgcL8oWdLbB5MGyGjMSIv3GOHRFB6BSpz2i2aG8QgluB3fm4Xns5
- 32mg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HntGb4LSTz2ybD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 01:07:19 +1100 (AEDT)
+Received: by mail-ua1-f52.google.com with SMTP id ay21so31622366uab.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Nov 2021 06:07:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=vfKWO8T5GZBGCrDfYUdrnOtGOmW0SuMF01lP0DpObiQ=;
- b=UjodrWFRpfm7d1d4aNBmTbPwsoM+NK3mQOE6EelWQBJe8sI10zc6Nu9HMmdwcTgDKx
- F0/Yi7x9ouzS1o7xDJrNZNVFOo8M3YvCWfXszbbN0GRCKMcNEl6QEeZ0+/tmAtBey6U+
- tSm/4OxNqzFUU7R5AlE9aAvBWreZedtTISumF58/JtHeLJKjDmKkCutKfsZhEmjSmLtn
- QRY6+LpOrrKRJN4iShwZsipIyloUS73+kgUwkimIN29xwZ+mb4Z8Ot2JJjIodxIP8GUH
- gMRZRr+18UMaWwd13sANMmS7FLv1r+QJaoR+JASKEubxlDGu8Kg58rwQ3L0IVe44i2oY
- 6rhQ==
-X-Gm-Message-State: AOAM532L3xs5iqspv2z7eea5xpk87I0T81rOdw2S+xVYFn8zqvy1wUKE
- 6VwmmuQYZleSXKYG/VDF4RJ2JiGjw0k=
-X-Google-Smtp-Source: ABdhPJwnxiSm9/+HFHpLjV0HJxXxAauulQWBQNAwpwvgGf5jyx+Cojv+R3sw/shoJUn8tWo+i3z8Qg==
-X-Received: by 2002:a63:e755:: with SMTP id j21mr64357pgk.235.1636380192518;
- Mon, 08 Nov 2021 06:03:12 -0800 (PST)
-Received: from localhost (60-241-46-56.tpgi.com.au. [60.241.46.56])
- by smtp.gmail.com with ESMTPSA id e15sm15621744pfc.134.2021.11.08.06.03.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Nov 2021 06:03:11 -0800 (PST)
-Date: Tue, 09 Nov 2021 00:03:06 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/64s: introduce CONFIG_MAXSMP to test very large
- SMP
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-References: <20211105041132.1443767-1-npiggin@gmail.com>
- <87pmrb6ws6.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87pmrb6ws6.fsf@mpe.ellerman.id.au>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=srssYsTsVb5ivMDmTAt6Y7lXgP/lHHGiJX97jzZpFII=;
+ b=Ts6f/MlOnmmjyptE/fTxBdmb8sqCwXwwu/vctDrKGYM1/SzhXV/V/bOZ+WHRg/WopK
+ T2Crb122bBytfc4TG2dz7aJylGGL0OpeWdGtuMHu4XRLiPw9UUdkXkOM0H3Vsn+EyyQJ
+ 7mNtm4soAL5ka9Ty+idpXejOSSYFwmQxDqxGZVT1X3huxg/CJRQqB3GFkMKVVbQJdmIt
+ MVYLrlTQw+5JgxLPx8RUnQDkLJ9eUZwWQQVPTDIcy185AEuwAIvb4VgzVGBOtAtlF6DU
+ X0pv3nXPRB75Wo/StSBVEUhatOY41wjqaTt+FYm0ErxGAxGqTYvPe3/1Lmj4Y2dAEgBY
+ fvwg==
+X-Gm-Message-State: AOAM531npOqNVf7cU42FikFNG3smo+B5CUAMe9fRFWL00dVCDbXIh0uG
+ S3eBIZbVOQhFbClpu3uZ3Cd4tQOVrgo86W8M
+X-Google-Smtp-Source: ABdhPJzBUGNByefDM7t3UBaEFltui041vmJuuxs4gifD4yJKDe2qqlJm9QxsPkLrr1O9GlAQbmoNCQ==
+X-Received: by 2002:ab0:6883:: with SMTP id t3mr201818uar.66.1636380436000;
+ Mon, 08 Nov 2021 06:07:16 -0800 (PST)
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com.
+ [209.85.221.180])
+ by smtp.gmail.com with ESMTPSA id bk3sm443137vkb.33.2021.11.08.06.07.14
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 08 Nov 2021 06:07:15 -0800 (PST)
+Received: by mail-vk1-f180.google.com with SMTP id p22so6555533vke.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Nov 2021 06:07:14 -0800 (PST)
+X-Received: by 2002:a05:6122:1350:: with SMTP id
+ f16mr21288847vkp.26.1636380434409; 
+ Mon, 08 Nov 2021 06:07:14 -0800 (PST)
 MIME-Version: 1.0
-Message-Id: <1636379634.t1oqdo5jl5.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
+References: <20211108101157.15189-1-bp@alien8.de>
+ <20211108101157.15189-43-bp@alien8.de>
+In-Reply-To: <20211108101157.15189-43-bp@alien8.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 8 Nov 2021 15:07:03 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWH+txiSP_d7Jc4f_bU8Lf9iWpT4E3o5o7BJr-YdA6-VA@mail.gmail.com>
+Message-ID: <CAMuHMdWH+txiSP_d7Jc4f_bU8Lf9iWpT4E3o5o7BJr-YdA6-VA@mail.gmail.com>
+Subject: Re: [PATCH v0 42/42] notifier: Return an error when callback is
+ already registered
+To: Borislav Petkov <bp@alien8.de>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -81,56 +72,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux-sh list <linux-sh@vger.kernel.org>, linux-iio@vger.kernel.org,
+ "open list:REMOTE PROCESSOR \(REMOTEPROC\) SUBSYSTEM"
+ <linux-remoteproc@vger.kernel.org>, linux-hyperv@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ netdev <netdev@vger.kernel.org>, Ayush Sawal <ayush.sawal@chelsio.com>,
+ sparclinux <sparclinux@vger.kernel.org>, linux-clk <linux-clk@vger.kernel.org>,
+ linux-leds <linux-leds@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, scsi <linux-scsi@vger.kernel.org>,
+ Rohit Maheshwari <rohitm@chelsio.com>, linux-staging@lists.linux.dev,
+ bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
+ openipmi-developer@lists.sourceforge.net, xen-devel@lists.xenproject.org,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Arnd Bergmann <arnd@arndb.de>, Linux PM list <linux-pm@vger.kernel.org>,
+ Intel Graphics Development <intel-gfx@lists.freedesktop.org>,
+ Vinay Kumar Yadav <vinay.yadav@chelsio.com>,
+ linux-um <linux-um@lists.infradead.org>, Steven Rostedt <rostedt@goodmis.org>,
+ rcu@vger.kernel.org,
+ Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+ linux-tegra <linux-tegra@vger.kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, intel-gvt-dev@lists.freedesktop.org,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, linux-edac@vger.kernel.org,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ USB list <linux-usb@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+ Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+ alpha <linux-alpha@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of November 8, 2021 3:28 pm:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->> Similarly to x86, add MAXSMP that should help flush out problems with
->> vary large SMP and other values associated with very big systems.
->>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>  arch/powerpc/Kconfig                   | 8 ++++++++
->>  arch/powerpc/platforms/Kconfig.cputype | 5 +++--
->>  2 files changed, 11 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index b8f6185d3998..d585fcfa456f 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -64,6 +64,13 @@ config NEED_PER_CPU_EMBED_FIRST_CHUNK
->>  config NEED_PER_CPU_PAGE_FIRST_CHUNK
->>  	def_bool y if PPC64
->> =20
->> +config MAXSMP
->> +	bool "Enable Maximum number of SMP Processors and NUMA Nodes"
->> +	depends on SMP && DEBUG_KERNEL && PPC_BOOK3S_64
->> +	help
->> +	  Enable maximum number of CPUS and NUMA Nodes for this architecture.
->> +	  If unsure, say N.
->=20
-> As evidenced by the kernel robot report, I think we need to exclude this
-> from allyesconfig.
->=20
-> Because our max is 16K, larger than the 8K on x86, we are going to be
-> constantly hitting stack usage errors in driver code. Getting those
-> fixed tends to take time, because the driver authors don't see the
-> warnings when they build for other arches, and because the fixes go via
-> driver trees.
+Hi Borislav,
 
-Yeah I realised after I hit send. Surprisingly there weren't too many
-but agree going ahead of x86 would always come with annoyances and at
-least would have to fix existing tree.
+On Mon, Nov 8, 2021 at 11:13 AM Borislav Petkov <bp@alien8.de> wrote:
+> From: Borislav Petkov <bp@suse.de>
+>
+> The notifier registration routine doesn't return a proper error value
+> when a callback has already been registered, leading people to track
+> whether that registration has happened at the call site:
+>
+>   https://lore.kernel.org/amd-gfx/20210512013058.6827-1-mukul.joshi@amd.c=
+om/
+>
+> Which is unnecessary.
+>
+> Return -EEXIST to signal that case so that callers can act accordingly.
+> Enforce callers to check the return value, leading to loud screaming
+> during build:
+>
+>   arch/x86/kernel/cpu/mce/core.c: In function =E2=80=98mce_register_decod=
+e_chain=E2=80=99:
+>   arch/x86/kernel/cpu/mce/core.c:167:2: error: ignoring return value of \
+>    =E2=80=98blocking_notifier_chain_register=E2=80=99, declared with attr=
+ibute warn_unused_result [-Werror=3Dunused-result]
+>     blocking_notifier_chain_register(&x86_mce_decoder_chain, nb);
+>   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> Drop the WARN too, while at it.
+>
+> Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+> Signed-off-by: Borislav Petkov <bp@suse.de>
 
-> Making MAXSMP depend on !COMPILE_TEST should do the trick.
+Thanks for your patch!
 
-I'll do that. Or maybe make it 8192 if COMPILE_TEST otherwise 16384.
+> --- a/include/linux/notifier.h
+> +++ b/include/linux/notifier.h
+> @@ -141,13 +141,13 @@ extern void srcu_init_notifier_head(struct srcu_not=
+ifier_head *nh);
+>
+>  #ifdef __KERNEL__
+>
+> -extern int atomic_notifier_chain_register(struct atomic_notifier_head *n=
+h,
+> +extern int __must_check atomic_notifier_chain_register(struct atomic_not=
+ifier_head *nh,
+>                 struct notifier_block *nb);
+> -extern int blocking_notifier_chain_register(struct blocking_notifier_hea=
+d *nh,
+> +extern int __must_check blocking_notifier_chain_register(struct blocking=
+_notifier_head *nh,
+>                 struct notifier_block *nb);
+> -extern int raw_notifier_chain_register(struct raw_notifier_head *nh,
+> +extern int __must_check raw_notifier_chain_register(struct raw_notifier_=
+head *nh,
+>                 struct notifier_block *nb);
+> -extern int srcu_notifier_chain_register(struct srcu_notifier_head *nh,
+> +extern int __must_check srcu_notifier_chain_register(struct srcu_notifie=
+r_head *nh,
+>                 struct notifier_block *nb);
 
-The reason for 16K is if we bump the deault at some point we might go to=20
-8K, in which case it would be good to have a test above it to catch
-marginal cases.
+I think the addition of __must_check is overkill, leading to the
+addition of useless error checks and message printing.  Many callers
+call this where it cannot fail, and where nothing can be done in the
+very unlikely event that the call would ever start to fail.
 
-Thanks,
-Nick
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
