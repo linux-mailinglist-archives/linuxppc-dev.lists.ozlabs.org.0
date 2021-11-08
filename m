@@ -1,82 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E0F449D3F
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 21:49:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E35D449D40
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 21:50:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hp3C06jdsz3c6G
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 07:49:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hp3Ck42LDz3cQZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 07:50:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256 header.s=badeba3b8450 header.b=Iil8zKbQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aZVzW8uI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=gmx.net
- (client-ip=212.227.17.22; helo=mout.gmx.net;
- envelope-from=j.neuschaefer@gmx.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256
- header.s=badeba3b8450 header.b=Iil8zKbQ; 
- dkim-atps=neutral
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22f;
+ helo=mail-lj1-x22f.google.com; envelope-from=digetx@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=aZVzW8uI; dkim-atps=neutral
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com
+ [IPv6:2a00:1450:4864:20::22f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hnpgd0Y0zz2yNT;
- Mon,  8 Nov 2021 22:25:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=badeba3b8450; t=1636370563;
- bh=K79wqPStqcTfK5nLIvxLt2yDFN8raIwyDHqiPgY+PHc=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
- b=Iil8zKbQDwR3Nlg+ymOUpymQS9X1Mc+jbLXtA+yVF4SDdcwftUD6iVyibZ6wTz7fb
- Qc0Hcteal9dThlbJ/iNZLRdm5NTkZeKDClDySSPytppBB80v28nV6u18LsDpLiHQir
- Ny1SVC50YGwrAIYi9pHquhjsrGZ1aixItLj5nI/g=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from longitude ([5.146.194.160]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MBDj4-1msKD70Bvq-00CkHo; Mon, 08
- Nov 2021 12:22:43 +0100
-Date: Mon, 8 Nov 2021 12:22:32 +0100
-From: Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-To: Dmitry Osipenko <digetx@gmail.com>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hnpwy1915z2ybK;
+ Mon,  8 Nov 2021 22:36:48 +1100 (AEDT)
+Received: by mail-lj1-x22f.google.com with SMTP id z8so6055780ljz.9;
+ Mon, 08 Nov 2021 03:36:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=X+QlLlo/0/3EVdBxA2kw9RSD+7dI68j0akmWtlfHVoc=;
+ b=aZVzW8uInA8LU/x+WSDcs8GL423pa/2TbHlNFMZCd9U6UTTINhRxHwWgMG+VIGRFXX
+ YHsHS1Zp8SLg7g0I8x9US08hxM80ZghlJabXZBFwbjt/NZTi8D93A6u3DdWQsriGAEMv
+ bFmB7LTf3DQwVbSm6WogHRt9oYdTZJJwV6Cdja/STeDW7/10QbzkyuPD5z+/FAuGPwej
+ XDOG6vFO/moWThDJAR559rbcfRfK+AgOLrilun42rQLGkujwn1pckpcm4TgSB3WIb1LP
+ WWP0u+S7lmnv27N0vKhUH9Av/RJV5C0NJsxi8Lo9cU/Zh/pB4HH/qd8XqYWZNDXsqTHX
+ YlNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=X+QlLlo/0/3EVdBxA2kw9RSD+7dI68j0akmWtlfHVoc=;
+ b=S5oH82LbFn09nv2Co2uaAbMurDkHXrpDxEFontqbncndENAlRoOjAArHAGZ1yS+BqN
+ E92EJP4pVfEjXoYPgVoA/ltMjT4bQ9yReGN7Rrhb1qg+u9aQy4UxnQYqIPyMBn0Iu+tZ
+ 1klVZ/GI8ApxTlpJhmpaSiVG1RWOoYBIkDki4PUh66jMzboVuhaPZXTzcNV0JlHdZpha
+ uktSJer0uNRw2Bamo6by5KGkq8GAHW6e8NuEJJ16BisiC7uZD0r+15xpDDcoT8nIxYte
+ iC3GxZRdsMecH9mR1fYoyvkhYEKqmB78G9nbRddpF0DVNrN96c6eArstz/7Srn22m8iu
+ 3s2w==
+X-Gm-Message-State: AOAM5337BZABqXaqLf5vEBV/qsblbh6GzSGXpgcs1LCKbyhnyl/VxS5Q
+ TBI8zbAo9DtQNrTMtviO9vY=
+X-Google-Smtp-Source: ABdhPJzzWZ+q13ptoCU5JHKLBozyl2qyG0di7fj7GC0x6tQVXWEZ5utjk3vHuuOVClKYY3WCOwTKiw==
+X-Received: by 2002:a2e:bd88:: with SMTP id o8mr69963654ljq.197.1636371404363; 
+ Mon, 08 Nov 2021 03:36:44 -0800 (PST)
+Received: from [192.168.2.145] (79-139-188-96.dynamic.spd-mgts.ru.
+ [79.139.188.96])
+ by smtp.googlemail.com with ESMTPSA id q6sm1523591ljh.1.2021.11.08.03.36.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 08 Nov 2021 03:36:44 -0800 (PST)
 Subject: Re: [PATCH v2 27/45] mfd: ntxec: Use devm_register_power_handler()
-Message-ID: <YYkIeBSCFka9yrqC@latitude>
+To: =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>
 References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-28-digetx@gmail.com>
- <YYbqlmOM95q7Hbjo@latitude>
+ <20211027211715.12671-28-digetx@gmail.com> <YYbqlmOM95q7Hbjo@latitude>
  <be0c74c6-05a9-cad5-c285-6626d05f8860@gmail.com>
  <9a22c22d-94b1-f519-27a2-ae0b8bbf6e99@roeck-us.net>
  <658cf796-e3b1-f816-1e15-9e9e08b8ade0@gmail.com>
  <5a17fee3-4214-c2b9-abc1-ab9d6071591b@roeck-us.net>
- <c0b52994-51f5-806b-b07e-3e70d8217ffc@gmail.com>
+ <c0b52994-51f5-806b-b07e-3e70d8217ffc@gmail.com> <YYkIeBSCFka9yrqC@latitude>
+From: Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <04103df3-1ef4-b560-a5cb-fa51737d28ad@gmail.com>
+Date: Mon, 8 Nov 2021 14:36:42 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="SrzUzzmYivmDpJiW"
-Content-Disposition: inline
-In-Reply-To: <c0b52994-51f5-806b-b07e-3e70d8217ffc@gmail.com>
-X-Provags-ID: V03:K1:7qbQ+qoRzv7lpS+bZXlBkiHc8d3ndyzVjxZiUEx4fWU8LOwR4tV
- sJ6wX31cULMNt4suZs8Fc9nNWwTvT28rf28Ux8jItr0YArRnxNHgajX8j3pR27WJ8X4+rN1
- P6mwBUOnAtBBxh5xjfJsjiXu6SboLYbT6DrsS8jQkTim87V5oSocZwSYV15yBIZybWDcxi2
- yhhXSfTVo1fjkR9G3NiNg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:yjkPkKMrbPg=:X1ZiIBM9wmN7jnP9s16Cfb
- sBqYerCPdYu35MyKm/gIqDt8Gw/FOK/47i1VNVZ2GZyzu2N+w6bq5umB4vcv2LdlVvVXasJFU
- hHItgn4p2+gcrIXW8dm47/l7t1HQaw7UgtUqyeXqDu69ghAqCYZXx0eX60EUrsUOpoEgYDyVn
- oP9a1XYVWqB1j9J0R0WURMEfCLIEiPQoq7Rbx4EPDsJbUZtdggotJ5Zu652F4YThXYIsp6IMf
- gllsRU1HwQ6JjxuK8cXPPYaD+LLKehorJRlrq+y8qXUM6ylWXrOoGKNZLGsZkAONax4WYMqIW
- d3FGkGXLV4f+esApgI7PsCMvrwTK22lrWu5ViPmU4x2nHZP+ZTPAZuJtgSimwyu20amazZwYK
- Z4vpwY5CSzJZCDfMI5DZ0Ptk/Ztz1Q6g/A3jF9otZwKjtdDGI+4EVCvameWf3xn488EZ8v6YU
- At13Fas5vppLSoa/xpMWgEaXqdhRWW3BWFKDkwwIzAy8iepAVZKdxWuiNZ5V838e4pssIjwOP
- b9I/WUoeoSIjaVUx2uwI4jdditk+sE4UWUM/0QolX7ispKs/G3XyXxRQRgZ6B7X3V60FM1FjB
- RAlEp0a5931lWVr5xqZfoR1dAUpRgm1O9Vjh40HLSfiunbwWOc0bQ0ONdbOPoSLykjVMQhxlP
- xtpeZidtvOHYL9oWOJQZIFjHLJGmJNbSfzBBXrzNQMUN8I0KHFPgGMy1RqdguPf3PUJKELugu
- Nk3jRxSbdt395Sseo31kU92jjNpYb9PTuVNaM1aWS4Q4yTc9cIXxk1+LRFP9bIgg/V6iwob0M
- 2xQWxNH/EiCfUWEHwJvuTGBqhgThj/glAo/CZxZAe/L3n3D6849ukZO9fYf8H8Nk2y5a5UHWh
- pvbdLd9gXcXQ6r/K+x80Dm4oeeZ7NvEbfgA19DwbuESar56ohW+JqsXIhz3AyR62ShQOe3+FE
- 5fRkZdNNItdvlDY7CkW9kJ0ItIF7cQw1aNvt9OvV6ho/I2LuKv3w1ibUywvt8uxjpQ795s++f
- LtodIi5u3n67HADZypUokVR2nausSwp0lMroUVKyNyJ3Q2D2RhV5rxgHndlU1/Jjw3Lcz380m
- nnoGWxFp59yGiw=
+In-Reply-To: <YYkIeBSCFka9yrqC@latitude>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Tue, 09 Nov 2021 07:49:14 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -114,13 +116,11 @@ Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
  Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org,
  linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
  Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
- linux-omap@vger.kernel.org,
- Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
- Vladimir Zapolskiy <vz@mleia.com>, linux-acpi@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, Mark Brown <broonie@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>,
+ linux-omap@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>,
+ linux-acpi@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ linux-tegra@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Nancy Yuen <yuenn@google.com>, linux-arm-kernel@lists.infradead.org,
  Juergen Gross <jgross@suse.com>,
@@ -136,42 +136,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+08.11.2021 14:22, Jonathan Neuschäfer пишет:
+> On Sun, Nov 07, 2021 at 08:42:33PM +0300, Dmitry Osipenko wrote:
+> [...]
+>> EC drivers tend to use higher priority in general. Jonathan, could you
+>> please confirm that NTXEC driver is a more preferable restart method
+>> than the watchdog?
+> 
+> Yes. The original firmware uses the NTXEC to restart, and it works well,
+> so I do think it's preferable.
 
---SrzUzzmYivmDpJiW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thank you, then I'll update the NTXEC patch like this:
 
-On Sun, Nov 07, 2021 at 08:42:33PM +0300, Dmitry Osipenko wrote:
-[...]
-> EC drivers tend to use higher priority in general. Jonathan, could you
-> please confirm that NTXEC driver is a more preferable restart method
-> than the watchdog?
+https://github.com/grate-driver/linux/commit/22da3d91f1734d9a0ed036220ad4ea28465af988
 
-Yes. The original firmware uses the NTXEC to restart, and it works well,
-so I do think it's preferable.
-
-
-Best regards,
-Jonathan
-
---SrzUzzmYivmDpJiW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEvHAHGBBjQPVy+qvDCDBEmo7zX9sFAmGJCE4ACgkQCDBEmo7z
-X9vVoBAAyZoJJUbTWWKI6c/HY4wq3sRDukultq5nSNIOH4RAFsTFD2FbiBB7LDaG
-v/9oOqoTUDuR3AkaHFnk5+h5gLRqeePoH1KU8fa7bc7NPatTUVt54SqhQSRfUfrF
-+0eRt3WHt2lZpZjaY8kj/vz5AkubzCmwVqSKoLUdCW/qi+UphZHp75E2XXypK/o3
-dt1dmPA1D0pXB1WdwLSZjtCn5lIOucdssKLl1UyXQzFmuKBPkjOcuuQqwm5Ietoz
-T4EEl/js2iIbui0e5ml9611nZoTLhVYMkxRcLi7gRHWTn9NmVzzJdubJH6Ajwp8E
-M9TOi2NtYbSk+pGvTwawfKaw+aROUuKqGOGc+9TFeu+V5pCMAIZ1wybNExZph5jp
-/o58QQUdszFwjMq7A4zdXSufKug8CpsYILhtcSx57wtGJ/OW7ZDtmX679x4jAvgX
-XeMWuW8x08UFauDBHsvw9aIIgKg7ZlJ+bQ5WdgtsiuXrZEEbTNbW1kjbKAvHS9dP
-o3MB/Lbi/rN/448ImnHtShmihh7ug6s+oUDbW6wFzCFvcfLbOs/Sfz35f5wNTHQW
-ReNPRgH+pTvzZvulDdrSA6GAnH8mfFE7IkC/3BP6BJE28ug1GvJrRtvylwp29ZW/
-Qu0z+FCaFjPu5yOr8rspC9YUdGolKnMg1msMwjgbe58vH9+EDDQ=
-=fkgc
------END PGP SIGNATURE-----
-
---SrzUzzmYivmDpJiW--
