@@ -1,43 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63F044999D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 17:23:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF404499DB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 17:30:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HnxJ35HP8z3c9t
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 03:23:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HnxRr2GrXz3c83
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 03:30:32 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=dkim header.b=pBzIQNPg;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=mnkb=p3=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=alien8.de (client-ip=2a01:4f8:190:11c2::b:1457;
+ helo=mail.skyhub.de; envelope-from=bp@alien8.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256
+ header.s=dkim header.b=pBzIQNPg; dkim-atps=neutral
+Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HnxHY10V7z2yQH
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 03:23:21 +1100 (AEDT)
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com
- [66.24.58.225])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HnxRD0bVbz2yZC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 03:29:59 +1100 (AEDT)
+Received: from zn.tnic (p200300ec2f331100181cb4ce2fe9e1de.dip0.t-ipconnect.de
+ [IPv6:2003:ec:2f33:1100:181c:b4ce:2fe9:e1de])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E868D61284;
- Mon,  8 Nov 2021 16:23:14 +0000 (UTC)
-Date: Mon, 8 Nov 2021 11:23:13 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Borislav Petkov <bp@alien8.de>
+ by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 652D11EC0512;
+ Mon,  8 Nov 2021 17:29:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+ t=1636388997;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+ bh=OSbzA4U/ida8aXvLATS9A1smiSvQH5VirglC+wMEOMM=;
+ b=pBzIQNPgz9f6MnJz8NuSpWeZa+X2KJ2EY1gkFfqIgUOOdk5ooj7nS3SZlOvvPfnLO1w7js
+ 1rE5oU8U3sZ2kD0zZzsPOjz5Rjy821j5ugVLv+TE7mQzDtZGil7p5QTxNJmqJYfQhl3i/U
+ 43Oeu8iAMBrtl8n9GGHPMyt/ODoo1Kk=
+Date: Mon, 8 Nov 2021 17:29:55 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Steven Rostedt <rostedt@goodmis.org>
 Subject: Re: [PATCH v0 00/42] notifiers: Return an error when callback is
  already registered
-Message-ID: <20211108112313.73d0727e@gandalf.local.home>
-In-Reply-To: <YYk1xi3eJdMJdjHC@zn.tnic>
+Message-ID: <YYlQg+OvUpUL630W@zn.tnic>
 References: <20211108101157.15189-1-bp@alien8.de>
  <20211108101924.15759-1-bp@alien8.de>
  <20211108141703.GB1666297@rowland.harvard.edu>
  <YYkzJ3+faVga2Tl3@zn.tnic> <YYk1xi3eJdMJdjHC@zn.tnic>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ <20211108112313.73d0727e@gandalf.local.home>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20211108112313.73d0727e@gandalf.local.home>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,22 +88,16 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 8 Nov 2021 15:35:50 +0100
-Borislav Petkov <bp@alien8.de> wrote:
+On Mon, Nov 08, 2021 at 11:23:13AM -0500, Steven Rostedt wrote:
+> Question, how often does this warning trigger? Is it common to see in
+> development?
 
-> On Mon, Nov 08, 2021 at 03:24:39PM +0100, Borislav Petkov wrote:
-> > I guess I can add another indirection to notifier_chain_register() and
-> > avoid touching all the call sites.  
-> 
-> IOW, something like this below.
-> 
-> This way I won't have to touch all the callsites and the registration
-> routines would still return a proper value instead of returning 0
-> unconditionally.
+Yeah, haven't seen it myself yet.
 
-I prefer this method.
+But we hashed it out over IRC. :-)
 
-Question, how often does this warning trigger? Is it common to see in
-development?
+-- 
+Regards/Gruss,
+    Boris.
 
--- Steve
+https://people.kernel.org/tglx/notes-about-netiquette
