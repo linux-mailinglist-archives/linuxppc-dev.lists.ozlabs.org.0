@@ -2,64 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717EC447B5E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 08:48:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23912447BBB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 09:23:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hnjs12lMFz3c6D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 18:48:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HnkfH0RsKz305X
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Nov 2021 19:23:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.160.176;
- helo=mail-qt1-f176.google.com; envelope-from=geert.uytterhoeven@gmail.com;
- receiver=<UNKNOWN>)
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com
- [209.85.160.176])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HnjrV4vNtz2xLJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Nov 2021 18:47:36 +1100 (AEDT)
-Received: by mail-qt1-f176.google.com with SMTP id s20so6254115qtk.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Nov 2021 23:47:36 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=niQCVpji9nu8a8Mfie3ofua8MkF1HzpLuS22ys5pvwg=;
- b=2V5oX6J28mJTPJRSccx4EBI3HSoXQM6udfUHSNyJ5TDPPrNRL2V1Z6fxaID61oHmUy
- TwdrqaY4nQEyOTdmHOn7jG2oK2HArRs/IkuyajEI8IWLLAa9yUZ/pntOH48vk3ngdhZY
- SLyAs+YaPsoO1JGM3BvCCyWv3s+9Felc/p2K8uVclwoCIYKxjUHrLlNSv2BW/bSKznOJ
- oQo9TNrGaJn/x+vZ6brEo/7fGhNRTIGQle0BvBFFU63Tc4uIQCY1h8Frk226DxkCOB1z
- sttYZzQQxugoAFUGjH7UHbvTP0Fc7jNE6CAiJKElc3IYyt7EbBSDW6ooQvWYRqpNyFVR
- g3iQ==
-X-Gm-Message-State: AOAM5322GNITMJj7xwMOp4yQwZ2G7GP/z23ae2FdYsYhXeAesaoCDp8K
- 7USKUmBiRDiNvFeNqCG0F93AdEfoQ/yjWg==
-X-Google-Smtp-Source: ABdhPJyCg6vpgTpxqL6ILZEIh0Iz/b1gpV+sZMyynTi5u8i96hKvUl4z2RIRe17y2oyEoB/Uvb+KnA==
-X-Received: by 2002:ac8:7fc1:: with SMTP id b1mr82262824qtk.369.1636357652691; 
- Sun, 07 Nov 2021 23:47:32 -0800 (PST)
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com.
- [209.85.219.49])
- by smtp.gmail.com with ESMTPSA id n3sm9753665qkp.112.2021.11.07.23.47.32
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 07 Nov 2021 23:47:32 -0800 (PST)
-Received: by mail-qv1-f49.google.com with SMTP id d6so11420202qvb.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 07 Nov 2021 23:47:32 -0800 (PST)
-X-Received: by 2002:a05:6102:3a07:: with SMTP id
- b7mr71214037vsu.35.1636357641114; 
- Sun, 07 Nov 2021 23:47:21 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hnkdm4zmmz2y8R
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Nov 2021 19:23:24 +1100 (AEDT)
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
+ [51.254.78.96])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 972326124D;
+ Mon,  8 Nov 2021 08:23:21 +0000 (UTC)
+Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <maz@kernel.org>)
+ id 1mjzvz-0046FA-EY; Mon, 08 Nov 2021 08:23:19 +0000
 MIME-Version: 1.0
-References: <20211108004524.29465-1-digetx@gmail.com>
- <20211108004524.29465-22-digetx@gmail.com>
-In-Reply-To: <20211108004524.29465-22-digetx@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 8 Nov 2021 08:47:10 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXpW0389_uJR2xg+HCstXanutPxrcRdvgu8kxH1J9T++w@mail.gmail.com>
-Message-ID: <CAMuHMdXpW0389_uJR2xg+HCstXanutPxrcRdvgu8kxH1J9T++w@mail.gmail.com>
-Subject: Re: [PATCH v3 21/25] m68k: Switch to new sys-off handler API
-To: Dmitry Osipenko <digetx@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Date: Mon, 08 Nov 2021 08:23:19 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH 5/5] KVM: Convert the kvm->vcpus array to a xarray
+In-Reply-To: <87mtmhec88.wl-maz@kernel.org>
+References: <20211105192101.3862492-1-maz@kernel.org>
+ <20211105192101.3862492-6-maz@kernel.org> <YYWSUJ1qzhfqjQow@google.com>
+ <87mtmhec88.wl-maz@kernel.org>
+User-Agent: Roundcube Webmail/1.4.11
+Message-ID: <8400fc5dfa13c89c8786bfc809011a54@kernel.org>
+X-Sender: maz@kernel.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 51.254.78.96
+X-SA-Exim-Rcpt-To: seanjc@google.com, kvm@vger.kernel.org,
+ linux-mips@vger.kernel.org, kvmarm@lists.cs.columbia.edu,
+ linuxppc-dev@lists.ozlabs.org, chenhuacai@kernel.org,
+ aleksandar.qemu.devel@gmail.com, anup.patel@wdc.com, atish.patra@wdc.com,
+ borntraeger@de.ibm.com, frankja@linux.ibm.com, david@redhat.com,
+ imbrenda@linux.ibm.com, pbonzini@redhat.com, jgross@suse.com,
+ npiggin@gmail.com, paulus@samba.org, mpe@ellerman.id.au, james.morse@arm.com,
+ suzuki.poulose@arm.com, alexandru.elisei@arm.com, kernel-team@android.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,68 +66,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Santosh Shilimkar <ssantosh@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Thierry Reding <thierry.reding@gmail.com>, Guo Ren <guoren@kernel.org>,
- Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
- Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>,
- the arch/x86 maintainers <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Jonathan Hunter <jonathanh@nvidia.com>, linux-acpi@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, linux-parisc@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>, xen-devel@lists.xenproject.org,
- linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
- Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
- Lee Jones <lee.jones@linaro.org>, linux-m68k@lists.linux-m68k.org,
- Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- linux-tegra@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, Nick Hu <nickhu@andestech.com>,
- linux-pm@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Joshua Thompson <funaho@jurai.org>
+Cc: Juergen Gross <jgross@suse.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>, Anup Patel <anup.patel@wdc.com>,
+ Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Huacai Chen <chenhuacai@kernel.org>, David Hildenbrand <david@redhat.com>,
+ linux-mips@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Atish Patra <atish.patra@wdc.com>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, James Morse <james.morse@arm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kernel-team@android.com,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ kvmarm@lists.cs.columbia.edu, Suzuki K Poulose <suzuki.poulose@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 8, 2021 at 1:48 AM Dmitry Osipenko <digetx@gmail.com> wrote:
-> Kernel now supports chained power-off handlers. Use
-> register_power_off_handler() that registers power-off handlers and
-> do_kernel_power_off() that invokes chained power-off handlers. Legacy
-> pm_power_off() will be removed once all drivers will be converted to
-> the new power-off API.
->
-> Normally arch code should adopt only the do_kernel_power_off() at first,
-> but m68k is a special case because it uses pm_power_off() "inside out",
-> i.e. pm_power_off() invokes machine_power_off() [in fact it does nothing],
-> while it's machine_power_off() that should invoke the pm_power_off(), and
-> thus, we can't convert platforms to the new API separately. There are only
-> two platforms changed here, so it's not a big deal.
->
-> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+On 2021-11-06 11:48, Marc Zyngier wrote:
+> On Fri, 05 Nov 2021 20:21:36 +0000,
+> Sean Christopherson <seanjc@google.com> wrote:
+>> 
+>> On Fri, Nov 05, 2021, Marc Zyngier wrote:
+>> > At least on arm64 and x86, the vcpus array is pretty huge (512 entries),
+>> > and is mostly empty in most cases (running 512 vcpu VMs is not that
+>> > common). This mean that we end-up with a 4kB block of unused memory
+>> > in the middle of the kvm structure.
+>> 
+>> Heh, x86 is now up to 1024 entries.
+> 
+> Humph. I don't want to know whether people are actually using that in
+> practice. The only time I create VMs with 512 vcpus is to check
+> whether it still works...
+> 
+>> 
+>> > Instead of wasting away this memory, let's use an xarray instead,
+>> > which gives us almost the same flexibility as a normal array, but
+>> > with a reduced memory usage with smaller VMs.
+>> >
+>> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+>> > ---
+>> > @@ -693,7 +694,7 @@ static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
+>> >
+>> >  	/* Pairs with smp_wmb() in kvm_vm_ioctl_create_vcpu.  */
+>> >  	smp_rmb();
+>> > -	return kvm->vcpus[i];
+>> > +	return xa_load(&kvm->vcpu_array, i);
+>> >  }
+>> 
+>> It'd be nice for this series to convert kvm_for_each_vcpu() to use
+>> xa_for_each() as well.  Maybe as a patch on top so that potential
+>> explosions from that are isolated from the initiali conversion?
+>> 
+>> Or maybe even use xa_for_each_range() to cap at online_vcpus?
+>> That's technically a functional change, but IMO it's easier to
+>> reason about iterating over a snapshot of vCPUs as opposed to being
+>> able to iterate over vCPUs as their being added.  In practice I
+>> doubt it matters.
+>> 
+>> #define kvm_for_each_vcpu(idx, vcpup, kvm) \
+>> 	xa_for_each_range(&kvm->vcpu_array, idx, vcpup, 0, 
+>> atomic_read(&kvm->online_vcpus))
+>> 
+> 
+> I think that's already the behaviour of this iterator (we stop at the
+> first empty slot capped to online_vcpus. The only change in behaviour
+> is that vcpup currently holds a pointer to the last vcpu in no empty
+> slot has been encountered. xa_for_each{,_range}() would set the
+> pointer to NULL at all times.
+> 
+> I doubt anyone relies on that, but it is probably worth eyeballing
+> some of the use cases...
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+This turned out to be an interesting exercise, as we always use an
+int for the index, and the xarray iterators insist on an unsigned
+long (and even on a pointer to it). On the other hand, I couldn't
+spot any case where we'd rely on the last value of the vcpu pointer.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+I'll repost the series once we have a solution for patch #4, and
+we can then decide whether we want the iterator churn.
+-- 
+Jazz is not dead. It just smells funny...
