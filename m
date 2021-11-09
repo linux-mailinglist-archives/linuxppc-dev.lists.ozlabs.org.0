@@ -1,72 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C3A44A70D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 07:52:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA9B44AB7A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 11:28:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HpJZN736vz3c69
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 17:52:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HpPMh48SJz2yPq
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 21:28:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Z7qmG+Xp;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d+yZQWo0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f;
- helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Z7qmG+Xp; dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
- [IPv6:2607:f8b0:4864:20::42f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=d+yZQWo0; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HpJYh16ZDz2x9Z
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 17:51:52 +1100 (AEDT)
-Received: by mail-pf1-x42f.google.com with SMTP id x131so13385300pfc.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Nov 2021 22:51:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=E2gPNceil4c2ICMleLexggXCMkrway+bPo4BYF6dfBI=;
- b=Z7qmG+XpoxlpkM+e+KjwzB0LC91MRepwOErbM+vmMmtKPMhWlKUQbVzoK9qpHaa7/a
- fYmC9XxgHFRWGUkk1jugvTOBxqzNI+oal8xjmrgvcqQ1KerKSsHoE/175pWfu+yaOXFG
- NZGdFXGZ9KdGTr8HbRKObbx5QB8iwIlcHJujAFIXu9IY+SqM5WvS6yZOuETdHt98Kxkq
- iTeTglzllcVhcGkccZYhaupGXWuRwdKmMUvGdQXoSfOPGzNkJ8i6RhFbddZBZEAHFYfY
- V3GHarCMjy8A4AKkcgsA5FabhDpYIzVKeSUVBF/rgfJIzLMj9uCVeenW+zc1QCblFtv4
- 8eFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=E2gPNceil4c2ICMleLexggXCMkrway+bPo4BYF6dfBI=;
- b=WgG1yVKQ8tq8Dj+QZHaunrDBhCEYqMWAg5scbnLD3P1a+QE46Ijxop5GHjqBveogOD
- DD9REoPwDgplFx16CscaWuS7o8TL+LdovWjpoVcofVb3rVSZJNx+cg0sNkytuq7QhcXH
- ygoRrpfJrlNvEfj2IQWZQuXh/6Oo2H73oWPnTCX0NPUnFLt6SpVrtokELcEG8Gi3VyXp
- VbDKs5AG/h55xtz0BQIBuAgJpor5aLxlUrivwFoJtje5P5Aid9bQO6vlmmBBW3ilzsxa
- XcKEl6QJ9O5eunUhslFWGBk4ewFfxIHP7gTS3YFYHFBu9AERU1eCb8cIptT78TTmq5/l
- l2Jg==
-X-Gm-Message-State: AOAM531pGs5s26ICdSR0jPwy6PQ3muzaiBFiHRPBc3RJp/IyBws2WKEE
- Bo3hJIqZgDjn/3g3Zmu3zs+fOlnPR48=
-X-Google-Smtp-Source: ABdhPJxUzu00RR6rxUab2ewUysMy2ymdjspfoN2cDYxLL5pPBlDEbSlwfTYqnuIv/ooOo9IEwrpNuA==
-X-Received: by 2002:a63:954d:: with SMTP id t13mr4236628pgn.179.1636440708952; 
- Mon, 08 Nov 2021 22:51:48 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (60-241-46-56.tpgi.com.au. [60.241.46.56])
- by smtp.gmail.com with ESMTPSA id
- w192sm12465956pfd.21.2021.11.08.22.51.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Nov 2021 22:51:48 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc/64s: introduce CONFIG_MAXSMP to test very large SMP
-Date: Tue,  9 Nov 2021 16:51:31 +1000
-Message-Id: <20211109065131.2041720-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HpPLw0kNKz2xYd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 21:27:51 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1A99jlf3030803
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 9 Nov 2021 10:27:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=30k9F9XF+vAZBXR8R/UJgLYFepBFMffrlRhIhA3wD8c=;
+ b=d+yZQWo0S2G0VUpxIOsVCGzMjK0otds2LYAZf3vjc48TBLh/U6qliUa1xbn08+cU2kCj
+ 8yUpOhF92tgz3YnU4Rc3ztIbhoZ/OPMYO9eFu/ZQpuoq6km8ARwhij81rwS4+2pnuJIl
+ oQV/3wIzSr945XANSRYyGAzJZTMdpFrXHm6PdAEfXjBl2zUdG9fpeDJPjXnmdbTX4uFh
+ YxiRf2+Mk+DO1BKfhLhU1J1B5jwb0MvhKiKRyBD9LfAJWYrIdyXFU7MkxX/jMVl7xxh1
+ kgyo5BN06G1p3hn0N56XE0Oziy5Fr63pe7ebppSkcfyNrWR8RtwFNzacw3xCMlu2u4EF lA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3c7m1p4gqt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Nov 2021 10:27:48 +0000
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1A99eIZl013299
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 9 Nov 2021 10:27:47 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3c7m1p4gq9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Nov 2021 10:27:47 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1A9ARBlZ011718;
+ Tue, 9 Nov 2021 10:27:45 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma01fra.de.ibm.com with ESMTP id 3c5hb9mq2w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Nov 2021 10:27:45 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 1A9AL6pJ61866248
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 9 Nov 2021 10:21:06 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D9A0AA4062;
+ Tue,  9 Nov 2021 10:27:42 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AF6D1A4054;
+ Tue,  9 Nov 2021 10:27:42 +0000 (GMT)
+Received: from [9.144.158.191] (unknown [9.144.158.191])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  9 Nov 2021 10:27:42 +0000 (GMT)
+Message-ID: <ab4b5c42-02ea-2a54-4491-530fa54b120e@linux.ibm.com>
+Date: Tue, 9 Nov 2021 11:27:42 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.0
+Subject: Re: [PATCH] powerpc/pseries: use slab context cpumask allocation in
+ CPU hotplug init
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20211105132923.1582514-1-npiggin@gmail.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <20211105132923.1582514-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: G55h4QIRuFvSHrkZjMysCa00zVvVX5F-
+X-Proofpoint-ORIG-GUID: 6qx-KQX2yPrW893JehYNJrY6WvwM4KWm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-09_03,2021-11-08_02,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ adultscore=0 mlxlogscore=999 bulkscore=0 lowpriorityscore=0 spamscore=0
+ suspectscore=0 phishscore=0 impostorscore=0 malwarescore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
+ definitions=main-2111090057
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,74 +110,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Similarly to x86, add MAXSMP that should help flush out problems with
-vary large SMP and other values associated with very big systems.
+Le 05/11/2021 à 14:29, Nicholas Piggin a écrit :
+> Slab is up at this point, using the bootmem allocator triggers a
+> warning. Switch to using the regular cpumask allocator.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> 
+> This only matters when CONFIG_CPUMASK_OFFNODE=y, which has not been
+> possible before on powerpc.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-Since v1:
-- Reduce MAXSMP NR_CPUS to 8192 if COMPILE_TEST, to reduce compile errors
-  that aren't caught by existing x86 builds.
+Thanks Nick,
 
-Thanks,
-Nick
+Reviewed-by: Laurent Dufour <ldufour@linux.ibm.com>
 
- arch/powerpc/Kconfig                   | 8 ++++++++
- arch/powerpc/platforms/Kconfig.cputype | 9 +++++++--
- 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index b8f6185d3998..d585fcfa456f 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -64,6 +64,13 @@ config NEED_PER_CPU_EMBED_FIRST_CHUNK
- config NEED_PER_CPU_PAGE_FIRST_CHUNK
- 	def_bool y if PPC64
- 
-+config MAXSMP
-+	bool "Enable Maximum number of SMP Processors and NUMA Nodes"
-+	depends on SMP && DEBUG_KERNEL && PPC_BOOK3S_64
-+	help
-+	  Enable maximum number of CPUS and NUMA Nodes for this architecture.
-+	  If unsure, say N.
-+
- config NR_IRQS
- 	int "Number of virtual interrupt numbers"
- 	range 32 1048576
-@@ -666,6 +673,7 @@ config NUMA
- 
- config NODES_SHIFT
- 	int
-+	default "10" if MAXSMP
- 	default "8" if PPC64
- 	default "4"
- 	depends on NUMA
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index a208997ade88..14c275e0ff93 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -475,9 +475,14 @@ config SMP
- 
- 	  If you don't know what to do here, say N.
- 
-+# MAXSMP sets 8192 if COMPILE_TEST because that's what x86 has flushed out.
-+# Exceeding that will cause a lot of compile errors. Have to deal with those
-+# first.
- config NR_CPUS
--	int "Maximum number of CPUs (2-8192)" if SMP
--	range 2 8192 if SMP
-+	int "Maximum number of CPUs (2-8192)" if SMP && !MAXSMP
-+	range 2 16384 if SMP
-+	default 16384 if MAXSMP && !COMPILE_TEST
-+	default 8192 if MAXSMP && COMPILE_TEST
- 	default "1" if !SMP
- 	default "32" if PPC64
- 	default "4"
--- 
-2.23.0
+> Thanks,
+> Nick
+> 
+>   arch/powerpc/platforms/pseries/hotplug-cpu.c | 9 +++++----
+>   1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> index d646c22e94ab..78a70ba60d24 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+> @@ -1016,12 +1016,13 @@ static int __init pseries_cpu_hotplug_init(void)
+>   	/* Processors can be added/removed only on LPAR */
+>   	if (firmware_has_feature(FW_FEATURE_LPAR)) {
+>   		for_each_node(node) {
+> -			alloc_bootmem_cpumask_var(&node_recorded_ids_map[node]);
+> +			if (!alloc_cpumask_var_node(&node_recorded_ids_map[node],
+> +						    GFP_KERNEL, node))
+> +				return -ENOMEM;
+>   
+>   			/* Record ids of CPU added at boot time */
+> -			cpumask_or(node_recorded_ids_map[node],
+> -				   node_recorded_ids_map[node],
+> -				   cpumask_of_node(node));
+> +			cpumask_copy(node_recorded_ids_map[node],
+> +				     cpumask_of_node(node));
+>   		}
+>   
+>   		of_reconfig_notifier_register(&pseries_smp_nb);
+> 
 
