@@ -2,56 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF5A44B0FA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 17:16:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7FEC44B19F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 17:59:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HpY5X3F4hz3c5J
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 03:16:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HpZ2n4TV7z3c5D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 03:59:29 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rwjrjNIT;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=rwjrjNIT; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HpY561dxsz2yK3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 03:16:25 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HpY5231hlz9sSH;
- Tue,  9 Nov 2021 17:16:22 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id iSolt3Cnnlbv; Tue,  9 Nov 2021 17:16:22 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HpY522GgQz9sSG;
- Tue,  9 Nov 2021 17:16:22 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3C79E8B77A;
- Tue,  9 Nov 2021 17:16:22 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Vx5fyIRzu-tL; Tue,  9 Nov 2021 17:16:22 +0100 (CET)
-Received: from [192.168.233.192] (unknown [192.168.233.192])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0939B8B767;
- Tue,  9 Nov 2021 17:16:21 +0100 (CET)
-Message-ID: <c363e53c-cba5-5711-e8c4-6d74c44f99be@csgroup.eu>
-Date: Tue, 9 Nov 2021 17:16:23 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HpZ2527HBz2xVt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 03:58:53 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 93DC0611AF;
+ Tue,  9 Nov 2021 16:58:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1636477129;
+ bh=WiI7yiSsRyGyxbH0M5tEnpuJ2pCthlZoRHEJQiwJXHM=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=rwjrjNITo8A74sOBNwFp7ddx6D88aNYNGeIWRE178PEaprjfU7cpkyf+GDManuJEv
+ 13FTDmQsolCNxzMrEIxf5iKFaLd1kHsYyGlpfKOZfhNr2E+fBdQxMis1KVPYfT5ee3
+ 2QqkOv3lVj/szLGdo6wrg6UUTDsDLcpo3jwym70c+/aqVYcfk5IVIWzvRvtzw9tCom
+ ks2KMjmt7/XwE0Hg0csvj4shtSjVAoTMOZBSvw6ez60wpHYc3o7dr/4TWcJGEnE+Kp
+ ZCWqTJqZ25AUSrs/nOn/oHd5XM3rTzYKYmyYb2v4DARXaEhQRzkMfmdZon+Uzgwx9Q
+ 1NMqS6kUcruFQ==
+Date: Tue, 9 Nov 2021 10:58:48 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: Re: [PASEMI] Nemo board doesn't recognize any ATA disks with the
+ pci-v5.16 updates
+Message-ID: <20211109165848.GA1155989@bhelgaas>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v2] powerpc/64s: introduce CONFIG_MAXSMP to test very
- large SMP
-Content-Language: fr-FR
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20211109065131.2041720-1-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20211109065131.2041720-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ee3884db-da17-39e3-4010-bcc8f878e2f6@xenosoft.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,82 +57,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Darren Stevens <darren@stevens-zone.net>,
+ mad skateman <madskateman@gmail.com>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ Olof Johansson <olof@lixom.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ "bhelgaas@google.com >> Bjorn Helgaas" <bhelgaas@google.com>,
+ Matthew Leaman <matthew@a-eon.biz>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, Nov 09, 2021 at 04:10:14PM +0100, Christian Zigotzky wrote:
+> On 09 November 2021 at 03:45 pm, Christian Zigotzky wrote:
+> > Hello,
+> >
+> > The Nemo board [1] doesn't recognize any ATA disks with the pci-v5.16
+> updates [2].
+> >
+> > Error messages:
+> >
+> > ata4.00: gc timeout cmd 0xec
+> > ata4.00: failed to IDENTIFY (I/O error, error_mask=0x4)
+> > ata1.00: gc timeout cmd 0xec
+> > ata1.00: failed to IDENTIFY (I/O error, error_mask=0x4)
+> > ata3.00: gc timeout cmd 0xec
+> > ata3.00: failed to IDENTIFY (I/O error, error_mask=0x4)
+> >
+> > I was able to revert the new pci-v5.16 updates [2]. After a new compiling,
+> the kernel recognize all ATA disks correctly.
+> >
+> > Could you please check the pci-v5.16 updates [2]?
+> >
+> > Please find attached the kernel config.
+> >
+> > Thanks,
+> > Christian
+> >
+> > [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
+> > [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0c5c62ddf88c34bc83b66e4ac9beb2bb0e1887d4
 
+Sorry for the breakage, and thank you very much for the report.  Can
+you please collect the complete dmesg logs before and after the
+pci-v5.16 changes and the "sudo lspci -vv" output from before the
+changes?
 
-Le 09/11/2021 à 07:51, Nicholas Piggin a écrit :
-> Similarly to x86, add MAXSMP that should help flush out problems with
-> vary large SMP and other values associated with very big systems.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> Since v1:
-> - Reduce MAXSMP NR_CPUS to 8192 if COMPILE_TEST, to reduce compile errors
->    that aren't caught by existing x86 builds.
-> 
-> Thanks,
-> Nick
-> 
->   arch/powerpc/Kconfig                   | 8 ++++++++
->   arch/powerpc/platforms/Kconfig.cputype | 9 +++++++--
->   2 files changed, 15 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index b8f6185d3998..d585fcfa456f 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -64,6 +64,13 @@ config NEED_PER_CPU_EMBED_FIRST_CHUNK
->   config NEED_PER_CPU_PAGE_FIRST_CHUNK
->   	def_bool y if PPC64
->   
-> +config MAXSMP
-> +	bool "Enable Maximum number of SMP Processors and NUMA Nodes"
-> +	depends on SMP && DEBUG_KERNEL && PPC_BOOK3S_64
-> +	help
-> +	  Enable maximum number of CPUS and NUMA Nodes for this architecture.
-> +	  If unsure, say N.
-> +
->   config NR_IRQS
->   	int "Number of virtual interrupt numbers"
->   	range 32 1048576
-> @@ -666,6 +673,7 @@ config NUMA
->   
->   config NODES_SHIFT
->   	int
-> +	default "10" if MAXSMP
->   	default "8" if PPC64
->   	default "4"
->   	depends on NUMA
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-> index a208997ade88..14c275e0ff93 100644
-> --- a/arch/powerpc/platforms/Kconfig.cputype
-> +++ b/arch/powerpc/platforms/Kconfig.cputype
-> @@ -475,9 +475,14 @@ config SMP
->   
->   	  If you don't know what to do here, say N.
->   
-> +# MAXSMP sets 8192 if COMPILE_TEST because that's what x86 has flushed out.
-> +# Exceeding that will cause a lot of compile errors. Have to deal with those
-> +# first.
->   config NR_CPUS
-> -	int "Maximum number of CPUs (2-8192)" if SMP
-> -	range 2 8192 if SMP
-> +	int "Maximum number of CPUs (2-8192)" if SMP && !MAXSMP
-> +	range 2 16384 if SMP
-> +	default 16384 if MAXSMP && !COMPILE_TEST
-> +	default 8192 if MAXSMP && COMPILE_TEST
+You can attach them at https://bugzilla.kernel.org if you don't have
+a better place to put them.
 
-You can do less complex. First hit becomes the default, so you can do:
+You could attach the kernel config there, too, since it didn't make it
+to the mailing list (vger may discard them -- see
+http://vger.kernel.org/majordomo-info.html).
 
-	default 8192 if MAXSMP && COMPILE_TEST
-	default 16384 if MAXSMP
+Bjorn
 
-So when everything is fixed, you just have to drop first line.
-
->   	default "1" if !SMP
->   	default "32" if PPC64
->   	default "4"
-> 
