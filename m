@@ -1,71 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2968E44A5B3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 05:14:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CE6644A5B5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 05:14:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HpF3k0kFJz3cQg
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 15:14:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HpF4S1Km4z3clm
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 15:14:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PuGtZqMw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=U7/JfyAq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
- helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e;
+ helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=PuGtZqMw; dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
+ header.s=20210112 header.b=U7/JfyAq; dkim-atps=neutral
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
+ [IPv6:2607:f8b0:4864:20::62e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HpF0r1lq6z2yfb
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 15:11:40 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id q17so6479390plr.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Nov 2021 20:11:40 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HpF0v5Nhxz2ywT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 15:11:43 +1100 (AEDT)
+Received: by mail-pl1-x62e.google.com with SMTP id k4so18550173plx.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Nov 2021 20:11:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=mQV34cqT+5uDm9EJBkW1FMD8FZHvkjExjjx6fGh4VcI=;
- b=PuGtZqMwxMh0+H4n4RjIwW9lQofP3rBqYcZPzRlmtg5myURTIFMdz51vwCAFrIbqY8
- QPh0UD2hNz9wrRQZtP461Drmx2InZpT9Z6tCBquaDFXKfprTLzqTd5wcOzR+2zRS8p27
- NtjExZPcjGXr2nVKJ/oL9pDh7WJhtaLZHZRzNmlU5Z2WxfD727+G/cM/rCQlODspu9BT
- j+ecvhrqXbqaoZtab0vhJVfZx0HESqUL/bRGppziK98CuBRmw6Ym6KfBNEjO1Ay3QUCz
- nTlWCwZURw33CEcBEtBQFUsKHi8ZpypiTGVVXHaE5N0mSSMVvWiNR/hTEKzV+DS0VFe6
- 8lXA==
+ bh=aQc0DqPPO6kMsrpf1a2eMeG1Oqju7se8HtSuYmathZ0=;
+ b=U7/JfyAqiO2MKMCYeQeqbbijFBcQVa5T0EkptTY/YLTW8QWwlexKfEOnJ2omEegvxB
+ uF1/wE3YW1h247SpMruInOTDxwNMEHNxRUM8ZwHj2wTdxRKoG/gi5vhVbwzr4AR5BUIA
+ TYAJHzhWN5PU5gktO9OyGWzMn74UepthW2QsG30UPTkL3g+BF53XW2m/LIEqD2I96WAW
+ xgbt/dMqW6IQ8BU/BqiZ4glQm3cFt7qyiLtWRvORZ3DXfSaifWFIfeBi23oSWLSqgIHe
+ e6abn8XTCHj+m4MpBFH2mmclMDomCC25gGe8Vrd/npO31J7O4U9IUPbRVWrbsuGbRQU0
+ t+8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=mQV34cqT+5uDm9EJBkW1FMD8FZHvkjExjjx6fGh4VcI=;
- b=f2ZyyVKelvLXeJrGac+oMAnXr8hyNdbzvCf8HESo8mVk53QdvXR1xPwlzvKcwBqGqD
- Vo3m25KzQ+wzsLNt/i8B29srnJVK7XwsmvIW6Z4rYJ5OjX8lmePgt8OgRb3EBKT8+yht
- d8gc7ZcfUbdIdNYf7e2xCD3o03/TYwkZro5BN+AeSbb6gOzcBNt6YdjTW3/P6vGvuPjt
- tlunKgjtT/3HZfIczYVvPAtvfBrK+FXODLRf1t/Sa2XKDpOe0ahgc53TujfWvs80LVOh
- ubdvncRsTvJa6h4nIr90IeHOmPkqf+B+c91mgAYUlRAJWxr9mz0ZkHg14aa/Iic8xkJr
- i3ow==
-X-Gm-Message-State: AOAM531JoUIX6mGgn8dxGKEKmOdUpep4IvCi0+rsgvuoOFG3HflnfSiZ
- MprAXjvaPKzHdq51Y8LHQGg=
-X-Google-Smtp-Source: ABdhPJwDNNVbeTXijVR6cgCKYSwC1U11bBHeS8R6qI10SX3+oy3npTCbjjCi57dE0IP/EzyNCeXUhw==
-X-Received: by 2002:a17:90b:4a89:: with SMTP id
- lp9mr3951797pjb.6.1636431097931; 
- Mon, 08 Nov 2021 20:11:37 -0800 (PST)
+ bh=aQc0DqPPO6kMsrpf1a2eMeG1Oqju7se8HtSuYmathZ0=;
+ b=t/4Bj9Gf7JqgfU9RIsXvoHJSYlRqKAr7ch0jl9ej6QDt5f8/54lJgAXxtQ0KkRN5mn
+ +zfsLR5uA/0az+onYh2XHiYzKpIFjCwy0jDNbl0Gdh7BMW5sIZLEzJx+LSrhG5FVHdvZ
+ Q0MYRn5xUgpvfyqUXlLocsQx7t6R+824/LNzYN8Sqhod3RFi/e1v0Xhf4G/KXim5pXc6
+ NvwN5oPJ+mgtYxMy3mUJPOauPZKujC1SfyZan3htDyjFDacd1DAg26USWcxCR38+nnzS
+ bvyseezRKlJhcE8ZlkoSElW3hPU07/uKrfw5hJDBMIbUit47H5Go4s49gAdKpFE3BZsN
+ Uo1A==
+X-Gm-Message-State: AOAM531on9vS3ZOlcUk63h69Q+Kki5l21HF8Zuuq/ZArdMEzGmU3ics4
+ r9gR1X/jjJJLsNACL9Zqmcw=
+X-Google-Smtp-Source: ABdhPJw5RAMBfn9DIjw2V4w3ZE2Oc2Ma5DmxWxSIog1/aLYNvg78RdgoN/I55DMnJioBaGhBoQdvSg==
+X-Received: by 2002:a17:90a:b382:: with SMTP id
+ e2mr3827572pjr.119.1636431101310; 
+ Mon, 08 Nov 2021 20:11:41 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (60-241-46-56.tpgi.com.au. [60.241.46.56])
  by smtp.gmail.com with ESMTPSA id
- o19sm18278063pfu.56.2021.11.08.20.11.35
+ o19sm18278063pfu.56.2021.11.08.20.11.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Nov 2021 20:11:37 -0800 (PST)
+ Mon, 08 Nov 2021 20:11:41 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v5 3/4] lazy tlb: shoot lazies,
- a non-refcounting lazy tlb option
-Date: Tue,  9 Nov 2021 14:11:18 +1000
-Message-Id: <20211109041119.1972927-4-npiggin@gmail.com>
+Subject: [PATCH v5 4/4] powerpc/64s: enable MMU_LAZY_TLB_SHOOTDOWN
+Date: Tue,  9 Nov 2021 14:11:19 +1000
+Message-Id: <20211109041119.1972927-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211109041119.1972927-1-npiggin@gmail.com>
 References: <20211109041119.1972927-1-npiggin@gmail.com>
@@ -89,122 +88,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On big systems, the mm refcount can become highly contented when doing
-a lot of context switching with threaded applications (particularly
-switching between the idle thread and an application thread).
+On a 16-socket 192-core POWER8 system, a context switching benchmark
+with as many software threads as CPUs (so each switch will go in and
+out of idle), upstream can achieve a rate of about 1 million context
+switches per second, due to contention on the mm refcount.
 
-Abandoning lazy tlb slows switching down quite a bit in the important
-user->idle->user cases, so instead implement a non-refcounted scheme
-that causes __mmdrop() to IPI all CPUs in the mm_cpumask and shoot down
-any remaining lazy ones.
-
-Shootdown IPIs are some concern, but they have not been observed to be
-a big problem with this scheme (the powerpc implementation generated
-314 additional interrupts on a 144 CPU system during a kernel compile).
-There are a number of strategies that could be employed to reduce IPIs
-if they turn out to be a problem for some workload.
+powerpc/64s meets the prerequisites for CONFIG_MMU_LAZY_TLB_SHOOTDOWN,
+so enable the option. This increases the above benchmark to 118 million.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/Kconfig  | 15 +++++++++++++++
- kernel/fork.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 66 insertions(+)
+ arch/powerpc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 73d98edc5cdc..2b70a9e7b142 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -444,6 +444,21 @@ config ARCH_WANT_IRQS_OFF_ACTIVATE_MM
- # already).
- config MMU_LAZY_TLB_REFCOUNT
- 	def_bool y
-+	depends on !MMU_LAZY_TLB_SHOOTDOWN
-+
-+# This option allows MMU_LAZY_TLB_REFCOUNT=n. It ensures no CPUs are using an
-+# mm as a lazy tlb beyond its last reference count, by shooting down these
-+# users before the mm is deallocated. __mmdrop() first IPIs all CPUs that may
-+# be using the mm as a lazy tlb, so that they may switch themselves to using
-+# init_mm for their active mm. mm_cpumask(mm) is used to determine which CPUs
-+# may be using mm as a lazy tlb mm.
-+#
-+# To implement this, an arch *must*:
-+# - At the time of the final mmdrop of the mm, ensure mm_cpumask(mm) contains
-+#   at least all possible CPUs in which the mm is lazy.
-+# - It must meet the requirements for MMU_LAZY_TLB_REFCOUNT=n (see above).
-+config MMU_LAZY_TLB_SHOOTDOWN
-+	bool
- 
- config ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	bool
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 38681ad44c76..a7da9b0bc402 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -686,6 +686,53 @@ static void check_mm(struct mm_struct *mm)
- #define allocate_mm()	(kmem_cache_alloc(mm_cachep, GFP_KERNEL))
- #define free_mm(mm)	(kmem_cache_free(mm_cachep, (mm)))
- 
-+static void do_shoot_lazy_tlb(void *arg)
-+{
-+	struct mm_struct *mm = arg;
-+
-+	if (current->active_mm == mm) {
-+		WARN_ON_ONCE(current->mm);
-+		current->active_mm = &init_mm;
-+		switch_mm(mm, &init_mm, current);
-+	}
-+}
-+
-+static void do_check_lazy_tlb(void *arg)
-+{
-+	struct mm_struct *mm = arg;
-+
-+	WARN_ON_ONCE(current->active_mm == mm);
-+}
-+
-+static void shoot_lazy_tlbs(struct mm_struct *mm)
-+{
-+	if (IS_ENABLED(CONFIG_MMU_LAZY_TLB_SHOOTDOWN)) {
-+		/*
-+		 * IPI overheads have not found to be expensive, but they could
-+		 * be reduced in a number of possible ways, for example (in
-+		 * roughly increasing order of complexity):
-+		 * - A batch of mms requiring IPIs could be gathered and freed
-+		 *   at once.
-+		 * - CPUs could store their active mm somewhere that can be
-+		 *   remotely checked without a lock, to filter out
-+		 *   false-positives in the cpumask.
-+		 * - After mm_users or mm_count reaches zero, switching away
-+		 *   from the mm could clear mm_cpumask to reduce some IPIs
-+		 *   (some batching or delaying would help).
-+		 * - A delayed freeing and RCU-like quiescing sequence based on
-+		 *   mm switching to avoid IPIs completely.
-+		 */
-+		on_each_cpu_mask(mm_cpumask(mm), do_shoot_lazy_tlb, (void *)mm, 1);
-+		if (IS_ENABLED(CONFIG_DEBUG_VM))
-+			on_each_cpu(do_check_lazy_tlb, (void *)mm, 1);
-+	} else {
-+		/*
-+		 * In this case, lazy tlb mms are refounted and would not reach
-+		 * __mmdrop until all CPUs have switched away and mmdrop()ed.
-+		 */
-+	}
-+}
-+
- /*
-  * Called when the last reference to the mm
-  * is dropped: either by a lazy thread or by
-@@ -695,6 +742,10 @@ void __mmdrop(struct mm_struct *mm)
- {
- 	BUG_ON(mm == &init_mm);
- 	WARN_ON_ONCE(mm == current->mm);
-+
-+	/* Ensure no CPUs are using this as their lazy tlb mm */
-+	shoot_lazy_tlbs(mm);
-+
- 	WARN_ON_ONCE(mm == current->active_mm);
- 	mm_free_pgd(mm);
- 	destroy_context(mm);
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index ba5b66189358..8a584414ef67 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -249,6 +249,7 @@ config PPC
+ 	select IRQ_FORCED_THREADING
+ 	select MMU_GATHER_PAGE_SIZE
+ 	select MMU_GATHER_RCU_TABLE_FREE
++	select MMU_LAZY_TLB_SHOOTDOWN		if PPC_BOOK3S_64
+ 	select MODULES_USE_ELF_RELA
+ 	select NEED_DMA_MAP_STATE		if PPC64 || NOT_COHERENT_CACHE
+ 	select NEED_SG_DMA_LENGTH
 -- 
 2.23.0
 
