@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE74344B707
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 23:29:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B2C44B71B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 23:29:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HpjM14MhTz3fB0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 09:29:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HpjMk3Gpkz3cQP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 09:29:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=deVZpO2s;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s7/zkFjb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,37 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=deVZpO2s; 
+ header.s=k20201202 header.b=s7/zkFjb; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HpjFg5x1wz3dkF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 09:24:23 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 49EBC61B43;
- Tue,  9 Nov 2021 22:24:20 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HpjFk2xPGz3ccZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 09:24:26 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1421461361;
+ Tue,  9 Nov 2021 22:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1636496661;
- bh=uhUFfBpuoDu4WC0xjH4CkbA2dKcnwk3j6VeoLLPXras=;
+ s=k20201202; t=1636496664;
+ bh=0IqvRS0IJRKnNqDAY5t3blXGq9LRZKZOmBpJ5DNEVc4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=deVZpO2sBLJl09CpO1vz2YT0UGv2RH9MdqpB96KajZMe6h0HGhjX0c2kLnWm0nWjs
- eJeL2ZjLKssfDb1+S59os2ycPn/hIpdKCz19yEcGiQIThkSNGi+vKeHW2t+8bxshmA
- vbnYpIVHkd0ni/JxSnaVTL+3Vl0lgGE4BZY3VGoetbr1UR5V64PIBYpHkjQHDZi64m
- TQVQ/gxpUYHRNMryMkhzhwtb7jO0Eva+x5rJuGTeCbsEZz/RuWEvAuJTaaoUJXuZTj
- +CwznAmjJ3CmHwsXx3XYxASBH2HnHRP9CK/XVqhCSiS8pJRm5Unp9B5bmwxr6cr7Yk
- 0rcAMovPTo5Mw==
+ b=s7/zkFjb7udB7zgqtMmrb7KJpepkjch9bLKZR26xpfq/T+cpSJKGT/LtsUtb2e1Qx
+ hjOGLwImEDmCD5ZiHen6/blfQCDrEtuD2NlDvcC0unuqU2t2EDleTA+v0eD5EWaHT3
+ X1JGJz7k1i/OXpY+M92lAZDFUgWgHqrxo0lnrjpsK/4dENeKWtHut61LK2/UWqUe87
+ jlJPg0a2gmg+85JiwYX7N9JFhJMcD6eyA2dnzbxHjeJBwhhKdZvgvA4Lzoa64Zz7X7
+ jjeF5kXu4f1oWRVPKXbN/2ihn3yY5JJyke5cTnVQgBzlhZezMowDgkspqC82Sg118z
+ tj/s+UHQ/N7eg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 11/13] powerpc/5200: dts: fix memory node unit name
-Date: Tue,  9 Nov 2021 17:24:02 -0500
-Message-Id: <20211109222405.1236040-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 13/13] powerpc/dcr: Use cmplwi instead of
+ 3-argument cmpli
+Date: Tue,  9 Nov 2021 17:24:04 -0500
+Message-Id: <20211109222405.1236040-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211109222405.1236040-1-sashal@kernel.org>
 References: <20211109222405.1236040-1-sashal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -60,198 +62,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Rob Herring <robh@kernel.org>,
- pawel.moll@arm.com, ijc+devicetree@hellion.org.uk, devicetree@vger.kernel.org,
- robh+dt@kernel.org, paulus@samba.org, galak@codeaurora.org,
- mark.rutland@arm.com, Anatolij Gustschin <agust@denx.de>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
+ paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Anatolij Gustschin <agust@denx.de>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit aed2886a5e9ffc8269a4220bff1e9e030d3d2eb1 ]
+[ Upstream commit fef071be57dc43679a32d5b0e6ee176d6f12e9f2 ]
 
-Fixes build warnings:
-Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
+In dcr-low.S we use cmpli with three arguments, instead of four
+arguments as defined in the ISA:
 
-Signed-off-by: Anatolij Gustschin <agust@denx.de>
-Reviewed-by: Rob Herring <robh@kernel.org>
+	cmpli	cr0,r3,1024
+
+This appears to be a PPC440-ism, looking at the "PPC440x5 CPU Core
+User’s Manual" it shows cmpli having no L field, but implied to be 0 due
+to the core being 32-bit. It mentions that the ISA defines four
+arguments and recommends using cmplwi.
+
+It also corresponds to the old POWER instruction set, which had no L
+field there, a reserved bit instead.
+
+dcr-low.S is only built 32-bit, because it is only built when
+DCR_NATIVE=y, which is only selected by 40x and 44x. Looking at the
+generated code (with gcc/gas) we see cmplwi as expected.
+
+Although gas is happy with the 3-argument version when building for
+32-bit, the LLVM assembler is not and errors out with:
+
+  arch/powerpc/sysdev/dcr-low.S:27:10: error: invalid operand for instruction
+   cmpli 0,%r3,1024; ...
+           ^
+
+Switch to the cmplwi extended opcode, which avoids any confusion when
+reading the ISA, fixes the issue with the LLVM assembler, and also means
+the code could be built 64-bit in future (though that's very unlikely).
+
+Reported-by: Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20211013220532.24759-4-agust@denx.de
+BugLink: https://github.com/ClangBuiltLinux/linux/issues/1419
+Link: https://lore.kernel.org/r/20211014024424.528848-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/boot/dts/charon.dts    | 2 +-
- arch/powerpc/boot/dts/digsy_mtc.dts | 2 +-
- arch/powerpc/boot/dts/lite5200.dts  | 2 +-
- arch/powerpc/boot/dts/lite5200b.dts | 2 +-
- arch/powerpc/boot/dts/media5200.dts | 2 +-
- arch/powerpc/boot/dts/mpc5200b.dtsi | 2 +-
- arch/powerpc/boot/dts/o2d.dts       | 2 +-
- arch/powerpc/boot/dts/o2d.dtsi      | 2 +-
- arch/powerpc/boot/dts/o2dnt2.dts    | 2 +-
- arch/powerpc/boot/dts/o3dnt.dts     | 2 +-
- arch/powerpc/boot/dts/pcm032.dts    | 2 +-
- arch/powerpc/boot/dts/tqm5200.dts   | 2 +-
- 12 files changed, 12 insertions(+), 12 deletions(-)
+ arch/powerpc/sysdev/dcr-low.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/boot/dts/charon.dts b/arch/powerpc/boot/dts/charon.dts
-index 0e00e508eaa6a..1c8fe20752e6a 100644
---- a/arch/powerpc/boot/dts/charon.dts
-+++ b/arch/powerpc/boot/dts/charon.dts
-@@ -39,7 +39,7 @@
- 		};
- 	};
+diff --git a/arch/powerpc/sysdev/dcr-low.S b/arch/powerpc/sysdev/dcr-low.S
+index e687bb2003ff0..5589fbe48bbdc 100644
+--- a/arch/powerpc/sysdev/dcr-low.S
++++ b/arch/powerpc/sysdev/dcr-low.S
+@@ -15,7 +15,7 @@
+ #include <asm/export.h>
  
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x08000000>;	// 128MB
- 	};
-diff --git a/arch/powerpc/boot/dts/digsy_mtc.dts b/arch/powerpc/boot/dts/digsy_mtc.dts
-index 955bff629df3c..bf511255f3ae8 100644
---- a/arch/powerpc/boot/dts/digsy_mtc.dts
-+++ b/arch/powerpc/boot/dts/digsy_mtc.dts
-@@ -20,7 +20,7 @@
- 	model = "intercontrol,digsy-mtc";
- 	compatible = "intercontrol,digsy-mtc";
- 
--	memory {
-+	memory@0 {
- 		reg = <0x00000000 0x02000000>;	// 32MB
- 	};
- 
-diff --git a/arch/powerpc/boot/dts/lite5200.dts b/arch/powerpc/boot/dts/lite5200.dts
-index 179a1785d6454..18d137a3393f0 100644
---- a/arch/powerpc/boot/dts/lite5200.dts
-+++ b/arch/powerpc/boot/dts/lite5200.dts
-@@ -36,7 +36,7 @@
- 		};
- 	};
- 
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x04000000>;	// 64MB
- 	};
-diff --git a/arch/powerpc/boot/dts/lite5200b.dts b/arch/powerpc/boot/dts/lite5200b.dts
-index 5abb46c5cc951..29419cf81e044 100644
---- a/arch/powerpc/boot/dts/lite5200b.dts
-+++ b/arch/powerpc/boot/dts/lite5200b.dts
-@@ -35,7 +35,7 @@
- 		led4 { gpios = <&gpio_simple 2 1>; };
- 	};
- 
--	memory {
-+	memory@0 {
- 		reg = <0x00000000 0x10000000>;	// 256MB
- 	};
- 
-diff --git a/arch/powerpc/boot/dts/media5200.dts b/arch/powerpc/boot/dts/media5200.dts
-index b5413cb85f134..3d57463bc49da 100644
---- a/arch/powerpc/boot/dts/media5200.dts
-+++ b/arch/powerpc/boot/dts/media5200.dts
-@@ -36,7 +36,7 @@
- 		};
- 	};
- 
--	memory {
-+	memory@0 {
- 		reg = <0x00000000 0x08000000>;	// 128MB RAM
- 	};
- 
-diff --git a/arch/powerpc/boot/dts/mpc5200b.dtsi b/arch/powerpc/boot/dts/mpc5200b.dtsi
-index 969b2200b2f97..ecfba675b5611 100644
---- a/arch/powerpc/boot/dts/mpc5200b.dtsi
-+++ b/arch/powerpc/boot/dts/mpc5200b.dtsi
-@@ -37,7 +37,7 @@
- 		};
- 	};
- 
--	memory: memory {
-+	memory: memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x04000000>;	// 64MB
- 	};
-diff --git a/arch/powerpc/boot/dts/o2d.dts b/arch/powerpc/boot/dts/o2d.dts
-index 9f6dd4d889b32..5a676e8141caf 100644
---- a/arch/powerpc/boot/dts/o2d.dts
-+++ b/arch/powerpc/boot/dts/o2d.dts
-@@ -16,7 +16,7 @@
- 	model = "ifm,o2d";
- 	compatible = "ifm,o2d";
- 
--	memory {
-+	memory@0 {
- 		reg = <0x00000000 0x08000000>;  // 128MB
- 	};
- 
-diff --git a/arch/powerpc/boot/dts/o2d.dtsi b/arch/powerpc/boot/dts/o2d.dtsi
-index cf073e693f24d..1b4df5f64b580 100644
---- a/arch/powerpc/boot/dts/o2d.dtsi
-+++ b/arch/powerpc/boot/dts/o2d.dtsi
-@@ -23,7 +23,7 @@
- 	model = "ifm,o2d";
- 	compatible = "ifm,o2d";
- 
--	memory {
-+	memory@0 {
- 		reg = <0x00000000 0x04000000>;	// 64MB
- 	};
- 
-diff --git a/arch/powerpc/boot/dts/o2dnt2.dts b/arch/powerpc/boot/dts/o2dnt2.dts
-index a0f5b97a4f06e..5184c461a205f 100644
---- a/arch/powerpc/boot/dts/o2dnt2.dts
-+++ b/arch/powerpc/boot/dts/o2dnt2.dts
-@@ -16,7 +16,7 @@
- 	model = "ifm,o2dnt2";
- 	compatible = "ifm,o2d";
- 
--	memory {
-+	memory@0 {
- 		reg = <0x00000000 0x08000000>;  // 128MB
- 	};
- 
-diff --git a/arch/powerpc/boot/dts/o3dnt.dts b/arch/powerpc/boot/dts/o3dnt.dts
-index acce49326491b..045b901719245 100644
---- a/arch/powerpc/boot/dts/o3dnt.dts
-+++ b/arch/powerpc/boot/dts/o3dnt.dts
-@@ -16,7 +16,7 @@
- 	model = "ifm,o3dnt";
- 	compatible = "ifm,o2d";
- 
--	memory {
-+	memory@0 {
- 		reg = <0x00000000 0x04000000>;  // 64MB
- 	};
- 
-diff --git a/arch/powerpc/boot/dts/pcm032.dts b/arch/powerpc/boot/dts/pcm032.dts
-index 96b139bf50e9c..ac3f53c1a1f5b 100644
---- a/arch/powerpc/boot/dts/pcm032.dts
-+++ b/arch/powerpc/boot/dts/pcm032.dts
-@@ -26,7 +26,7 @@
- 	model = "phytec,pcm032";
- 	compatible = "phytec,pcm032";
- 
--	memory {
-+	memory@0 {
- 		reg = <0x00000000 0x08000000>;	// 128MB
- 	};
- 
-diff --git a/arch/powerpc/boot/dts/tqm5200.dts b/arch/powerpc/boot/dts/tqm5200.dts
-index 1db07f6cf133c..68b9e8240fb5b 100644
---- a/arch/powerpc/boot/dts/tqm5200.dts
-+++ b/arch/powerpc/boot/dts/tqm5200.dts
-@@ -36,7 +36,7 @@
- 		};
- 	};
- 
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x00000000 0x04000000>;	// 64MB
- 	};
+ #define DCR_ACCESS_PROLOG(table) \
+-	cmpli	cr0,r3,1024;	 \
++	cmplwi	cr0,r3,1024;	 \
+ 	rlwinm  r3,r3,4,18,27;   \
+ 	lis     r5,table@h;      \
+ 	ori     r5,r5,table@l;   \
 -- 
 2.33.0
 
