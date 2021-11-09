@@ -1,55 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B8944A1D7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 02:11:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8EE44A429
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 02:44:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hp90Y6HK7z3c73
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 12:11:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hp9kV3QLDz304n
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 12:44:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=r4UUyTsz;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F6JCqZrg;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=C7V2o6i0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hp8zy37cQz2xBk
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 12:10:38 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=r4UUyTsz; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=longman@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=F6JCqZrg; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=C7V2o6i0; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hp8zy15kWz4xcM;
- Tue,  9 Nov 2021 12:10:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1636420238;
- bh=dwMkpmwkn1OnwCTziIkJycYTtCFDHFcf9cyX+wheMbM=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=r4UUyTsz1RjfgUre4cJ3yI5ZsW/2AqwhAww9im868qHeYyCExWkD08ZQuNykj6FBj
- ZJfrkWGHhutC4a65bdU5uQXUd+0L7PolaM6PcTExT0E//qPD3W3IqWuNOpkH6XSfqM
- EJTAhoOs+ayRxhvx8gKgWNTlFMfg2Hp+JjnwWDD+Z2wlfajdg8T8So0ffZIDDQi7dt
- gbE7yPBrnZqHvN04ODZj2dkQCnKJMfwhBWjFiJGqyFMB3Ea930qxbbPxTuFE1CVsuW
- vYjksc8SRQ/AUWWYTWelYEyVcsiYHkiFV8cu1YPaBZ+tlN9ZfYqGDnvT9ouNyWsFQ6
- Mfb+1w/bgCYuA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/pseries: Fix numa FORM2 parsing fallback code
-In-Reply-To: <1636379534.jahqi8gtfo.astroid@bobo.none>
-References: <20211105132909.1582449-1-npiggin@gmail.com>
- <87sfw76x5a.fsf@mpe.ellerman.id.au>
- <1636379534.jahqi8gtfo.astroid@bobo.none>
-Date: Tue, 09 Nov 2021 12:10:37 +1100
-Message-ID: <87sfw6m8vm.fsf@mpe.ellerman.id.au>
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hp9jj5jlfz2yJV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 12:43:18 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1636422195;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mZnoXi+ZjFblymkkEDtIcvCWkMos1RRB5u7b5/Z9MGY=;
+ b=F6JCqZrg1topBsp4lqkK6/kmXfkiP12qMtPLV+1lRvcomNgDjBXUevlluofK3m8+oELHMS
+ 1RYM+kQ1HAmATemMFS0/Zwqu9ET990oE/XVGifowh464+YHsoCr/WAZoCfWY6x6+1XLkqz
+ 4X2X0jwO8bc1dOBlanVbl6RiA5pVXZU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1636422196;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mZnoXi+ZjFblymkkEDtIcvCWkMos1RRB5u7b5/Z9MGY=;
+ b=C7V2o6i0pcWefYm5x6ugIq8lO2yU0ATIQCW/zT7uJ1vw7MQKWaERhV3Wp2enJH4nGIBYTT
+ ih6MurBRKqk3tsxyIcNFMXBmFjafBbjft5Fac1yen9ihi5yTIHH0F8GpOe6sNR0dU63U2v
+ OGCIu7glL45n8e4k2tP/+pfbUk/Pg2I=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-326-oFKyZnhZOM2q1dbJgZ4mKA-1; Mon, 08 Nov 2021 20:43:11 -0500
+X-MC-Unique: oFKyZnhZOM2q1dbJgZ4mKA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3DA42802C91;
+ Tue,  9 Nov 2021 01:43:09 +0000 (UTC)
+Received: from [10.22.16.6] (unknown [10.22.16.6])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 93D3E5D9DE;
+ Tue,  9 Nov 2021 01:43:05 +0000 (UTC)
+Message-ID: <b74cd85b-098f-6454-e8a9-7df03c2ae6cc@redhat.com>
+Date: Mon, 8 Nov 2021 20:43:04 -0500
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH] powerpc/pseries/cpuhp: Use alloc_cpumask_var() in
+ pseries_cpu_hotplug_init()
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+References: <20211108164751.65565-1-longman@redhat.com>
+ <87y25ym96i.fsf@mpe.ellerman.id.au>
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <87y25ym96i.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,103 +94,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Cc: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>,
+ Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Excerpts from Michael Ellerman's message of November 8, 2021 3:20 pm:
->> Nicholas Piggin <npiggin@gmail.com> writes:
->>> In case the FORM2 distance table from firmware is not the expected size,
->>> there is fallback code that just populates the lookup table as local vs
->>> remote.
->>>
->>> However it then continues on to use the distance table. Fix.
->>>
->>> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>> Fixes: 1c6b5a7e7405 ("powerpc/pseries: Add support for FORM2 associativity")
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>> ---
->>>  arch/powerpc/mm/numa.c | 29 +++++++++++++----------------
->>>  1 file changed, 13 insertions(+), 16 deletions(-)
->>>
->>> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
->>> index 6f14c8fb6359..0789cde7f658 100644
->>> --- a/arch/powerpc/mm/numa.c
->>> +++ b/arch/powerpc/mm/numa.c
->>> @@ -380,6 +380,7 @@ static void initialize_form2_numa_distance_lookup_table(void)
->>>  	const __be32 *numa_lookup_index;
->>>  	int numa_dist_table_length;
->>>  	int max_numa_index, distance_index;
->>> +	bool good = true;
->> 
->> numa_dist_table is a pointer, so couldn't we just set it to NULL if the
->> info it's pointing at is invalid?
+On 11/8/21 20:04, Michael Ellerman wrote:
+> Waiman Long <longman@redhat.com> writes:
+>> It was found that the following warning message could be printed out when
+>> booting the kernel on PowerPC systems that support LPAR:
+>>
+>> [    0.129584] WARNING: CPU: 0 PID: 1 at mm/memblock.c:1451 memblock_alloc_internal+0x5c/0x104
+>> [    0.129593] Modules linked in:
+>> [    0.129598] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.14.0-11.el9.ppc64le+debug #1
+>> [    0.129605] NIP:  c000000002040134 LR: c00000000204011c CTR: c0000000020241a8
+>> [    0.129610] REGS: c000000005637760 TRAP: 0700   Not tainted  (5.14.0-11.el9.ppc64le+debug)
+>> [    0.129616] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 48000222  XER: 00000002
+>> [    0.129635] CFAR: c0000000004d1cf4 IRQMASK: 0
+>> [    0.129635] GPR00: c00000000204011c c000000005637a00 c000000002c94d00 0000000000000001
+>> [    0.129635] GPR04: 0000000000000080 0000000000000000 0000000000000000 ffffffffffffffff
+>> [    0.129635] GPR08: 0000000000000000 0000000000000003 c00000000205ac64 0000000000080000
+>> [    0.129635] GPR12: 0000000000000000 c0000000049d0000 c000000000013078 0000000000000000
+>> [    0.129635] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>> [    0.129635] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>> [    0.129635] GPR24: c000000002003808 c00000000146f7b8 0000000000000000 0000000000000100
+>> [    0.129635] GPR28: c000000002d7cf80 0000000000000000 0000000000000008 0000000000000000
+>> [    0.129710] NIP [c000000002040134] memblock_alloc_internal+0x5c/0x104
+>> [    0.129717] LR [c00000000204011c] memblock_alloc_internal+0x44/0x104
+>> [    0.129723] Call Trace:
+>> [    0.129726] [c000000005637a00] [c000000005637a40] 0xc000000005637a40 (unreliable)
+>> [    0.129735] [c000000005637a60] [c0000000020404d8] memblock_alloc_try_nid+0x94/0xcc
+>> [    0.129743] [c000000005637af0] [c00000000205ac64] alloc_bootmem_cpumask_var+0x4c/0x9c
+>> [    0.129751] [c000000005637b60] [c0000000020242e0] __machine_initcall_pseries_pseries_cpu_hotplug_init+0x138/0x1d8
+>> [    0.129760] [c000000005637bf0] [c000000000012404] do_one_initcall+0xa4/0x4f0
+>> [    0.129768] [c000000005637cd0] [c000000002005358] do_initcalls+0x140/0x18c
+>> [    0.129776] [c000000005637d80] [c0000000020055b8] kernel_init_freeable+0x178/0x1d0
+>> [    0.129783] [c000000005637db0] [c0000000000130a0] kernel_init+0x30/0x190
+>> [    0.129790] [c000000005637e10] [c00000000000cef4] ret_from_kernel_thread+0x5c/0x64
+>>
+>> The warning is printed in memblock_alloc_internal() because the slab
+>> has been initialized when the initcalls are being processed. To
+>> avoid the warning, change alloc_bootmem_cpumask_var() call in
+>> pseries_cpu_hotplug_init() to alloc_cpumask_var() instead. Also
+>> change cpumask_or() to cpumask_copy() or we will have to use
+>> zalloc_cpumask_var().
+>>
+>> Fixes: bd1dd4c5f528 ("powerpc/pseries: Prevent free CPU ids being reused on another node")
+>> Signed-off-by: Waiman Long <longman@redhat.com>
+>> ---
+>>   arch/powerpc/platforms/pseries/hotplug-cpu.c | 8 ++++----
+>>   1 file changed, 4 insertions(+), 4 deletions(-)
 >
-> Yeah probably could just do that.
+> This looks similar to the patch Nick sent recently:
 >
->> 
->>>  
->>>  	if (firmware_has_feature(FW_FEATURE_OPAL))
->>>  		root = of_find_node_by_path("/ibm,opal");
->>> @@ -407,30 +408,26 @@ static void initialize_form2_numa_distance_lookup_table(void)
->>>  
->>>  	if (numa_dist_table_length != max_numa_index * max_numa_index) {
->>>  		WARN(1, "Wrong NUMA distance information\n");
->>> -		/* consider everybody else just remote. */
->>> -		for (i = 0;  i < max_numa_index; i++) {
->>> -			for (j = 0; j < max_numa_index; j++) {
->>> -				int nodeA = numa_id_index_table[i];
->>> -				int nodeB = numa_id_index_table[j];
->>> -
->>> -				if (nodeA == nodeB)
->>> -					numa_distance_table[nodeA][nodeB] = LOCAL_DISTANCE;
->>> -				else
->>> -					numa_distance_table[nodeA][nodeB] = REMOTE_DISTANCE;
->>> -			}
->>> -		}
->>> +		good = false;
->> 
->> ie.		numa_dist_table = NULL;
->> 
->>>  	}
->>> -
->>>  	distance_index = 0;
->>>  	for (i = 0;  i < max_numa_index; i++) {
->>>  		for (j = 0; j < max_numa_index; j++) {
->>>  			int nodeA = numa_id_index_table[i];
->>>  			int nodeB = numa_id_index_table[j];
->>> -
->>> -			numa_distance_table[nodeA][nodeB] = numa_dist_table[distance_index++];
->>> -			pr_debug("dist[%d][%d]=%d ", nodeA, nodeB, numa_distance_table[nodeA][nodeB]);
->>> +			int dist;
->>> +
->>> +			if (good)
->> 
->> 			if (numa_dist_table)
->> 
->>> +				dist = numa_dist_table[distance_index++];
->>> +			else if (nodeA == nodeB)
->>> +				dist = LOCAL_DISTANCE;
->>> +			else
->>> +				dist = REMOTE_DISTANCE;
->>> +			numa_distance_table[nodeA][nodeB] = dist;
->>> +			pr_debug("dist[%d][%d]=%d ", nodeA, nodeB, dist);
->>>  		}
->>>  	}
->>> +
->>>  	of_node_put(root);
->>>  }
->> 
->> 
->> But maybe before we do that we can rename it, because it is really easy
->> to confuse numa_dist_table and numa_distance_table if you don't look
->> closely.
->
-> Maybe dt_form2_distances?
+>    https://lore.kernel.org/linuxppc-dev/20211105132923.1582514-1-npiggin@gmail.com/
 
-Or just "form2_distances", it's only a local so the fact that it's from
-the dt is clear enough I think.
+I was not aware of Nick's patch. Since a fix is pending, I am 
+withdrawing mime.
 
-cheers
+Cheers,
+Longman
+
