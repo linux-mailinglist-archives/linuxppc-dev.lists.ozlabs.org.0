@@ -2,97 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB0EE44A47D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 03:14:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9712C44A5AD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 05:12:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HpBQ95vd1z3c4x
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 13:14:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HpF1L3d1rz2yyK
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 15:12:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=S3KjmnIU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=btRaMQ2e;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a;
+ helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=S3KjmnIU; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=btRaMQ2e; dkim-atps=neutral
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HpBPR5H3Gz2xYG
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 13:14:19 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1A91GXSJ028772
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 9 Nov 2021 02:14:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=q5TeIWSTRYG3weUupKLv6n2aZWs5fkC9ZgM8PJ+IctQ=;
- b=S3KjmnIU410WTGAbu9HEBF1JIIWdaJyhBpfD3jFE5HFx09Mp5Yindfq46KDGrwgY/dGQ
- UVazRlrxaIs2ZDodzQSmjgrdRSCmxnDHT5KkjoXLaky/lqgeSgfbXfvO73L+EnfhEdeX
- t10oH+miPm2/DG7OsSfjBQTDhaqM2qlXKq3bpBjkMIQbhKEtHM3NRLfNpGiOStS2Ntl7
- XGknmMAbE1xAAn/q3/2sZ5eOkNM62Dyxuxhmp0Z6pamOmDikF7ZJdvjF4bA1uBjeUMwW
- aMDht6hNeoxtd27tpIMkArfaO6FHfdQioelJl4UccqYD3DK/8an1aVQyIrroZberCwi4 PQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3c7f6as25e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Nov 2021 02:14:17 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1A92AM3F022929
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 9 Nov 2021 02:14:16 GMT
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3c7f6as256-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Nov 2021 02:14:16 +0000
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1A92CoPr004111;
- Tue, 9 Nov 2021 02:14:15 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma02wdc.us.ibm.com with ESMTP id 3c5hbatusj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Nov 2021 02:14:15 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1A92EEVK42664214
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Nov 2021 02:14:14 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8B04BAE062;
- Tue,  9 Nov 2021 02:14:14 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3495AAE060;
- Tue,  9 Nov 2021 02:14:14 +0000 (GMT)
-Received: from localhost (unknown [9.211.44.202])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  9 Nov 2021 02:14:13 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/pseries: use slab context cpumask allocation in
- CPU hotplug init
-In-Reply-To: <20211105132923.1582514-1-npiggin@gmail.com>
-References: <20211105132923.1582514-1-npiggin@gmail.com>
-Date: Mon, 08 Nov 2021 20:14:13 -0600
-Message-ID: <87y25yhy8a.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HpF0j25Kfz2yJF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 15:11:31 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id y1so18534598plk.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Nov 2021 20:11:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=tWf+4vpjI63IfEWJIwFv/TcCQdIY6ThOZqM9mQL4Tqw=;
+ b=btRaMQ2euXTUxldbQKN5q2eVaVQvSdjaaWV6GHN8vp+MyYyBjYjokLcFHTrw3xzDPf
+ RcF87ShSFj4X4XEjcM7qWXpCosb1TI36LHureb+2KE9PfTWJgRZJYw+o+0Rwc3fp7O+i
+ NxFzhqXjAmXphsjhkzCv7zWKvkXp3JCa9MqqBeXDsZ3vih7xkYxkJJl5zx6Fygir42r3
+ mo2Ht5le7PHxW90Re76WocWyBmYCfbjjGN0/kuiaV9pon1bmmYC6jPgPQ0/7JcmgnCdz
+ d+Lq/qdUAkS7j5alOj7wvnTyRgVjfUPbZ5P238EM82PVKl8sg3AJEDXRGa4GoErAtEMV
+ zQ/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=tWf+4vpjI63IfEWJIwFv/TcCQdIY6ThOZqM9mQL4Tqw=;
+ b=ymZZm8afuNfaPLqo3tBnfdoQf29igv3YVXTOvPBmpRBqLJcuV7hGEf6q5AxuiML43y
+ M1lMouoARpQUxf5RkrtdxAJgTzwnk6oq8UFqpYkv43Hajeo1won5B+cADdvN/gdiCzhJ
+ SAvbQmKeYFSxst8/wuz+Nw4AhI32yjF+ZuxUwVr5+6g73K49lTvk7fCd5hCQk10xm3KW
+ DUckPE4zbx76kn+Mu69ZYwhsmBIwI7aBCVzIfsrXEBUifeFfBF5mvFxKdA1rutIhoEmZ
+ CM158NYM1/1bLSJv6epsf/LhdwyrJG2a+49UP2Hvzpa4kTkLbBGBUMu3SmofffNopHn4
+ Gy0g==
+X-Gm-Message-State: AOAM533ov8moWjn59+LVJHAIlDXdA0nIE1XlVGwd2tLRUyKk5L1cDzZB
+ mt+NvynSuK+XiT0KtwUBTWc=
+X-Google-Smtp-Source: ABdhPJw7KmJE+JgNaACYg61LiuSpQutSiLoP+i59GyP/VmW6RGfabTNzDl7BLHP+jIuxyLD+CAjYiA==
+X-Received: by 2002:a17:90a:aa0e:: with SMTP id
+ k14mr3984913pjq.88.1636431087956; 
+ Mon, 08 Nov 2021 20:11:27 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com (60-241-46-56.tpgi.com.au. [60.241.46.56])
+ by smtp.gmail.com with ESMTPSA id
+ o19sm18278063pfu.56.2021.11.08.20.11.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Nov 2021 20:11:27 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v5 0/4] shoot lazy tlbs
+Date: Tue,  9 Nov 2021 14:11:15 +1000
+Message-Id: <20211109041119.1972927-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IOiXSbxs1SNPsz3-hJuZ6lz24ocF7iri
-X-Proofpoint-GUID: 905VeKp1zIHa_uYjforMK_zI6nELPf9M
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-08_07,2021-11-08_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0
- adultscore=0 malwarescore=0 bulkscore=0 impostorscore=0 mlxscore=0
- spamscore=0 mlxlogscore=999 priorityscore=1501 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2111090007
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,51 +79,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ldufour@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Andy Lutomirski <luto@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> Slab is up at this point, using the bootmem allocator triggers a
-> warning. Switch to using the regular cpumask allocator.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Since v4, this fixes a kthread_use_mm refcounting bug and adds some
+comments in code and changelogs around the kthread_use_mm change in
+patch 1 (due to akpm's comment -- thanks).
 
-Reviewed-by: Nathan Lynch <nathanl@linux.ibm.com>
+It also adds and improves comments in code, changelogs, and Kconfig
+options. The overall design is unchanged though. Please merge.
 
-> ---
->
-> This only matters when CONFIG_CPUMASK_OFFNODE=y, which has not been
-> possible before on powerpc.
->
-> Thanks,
-> Nick
->
->  arch/powerpc/platforms/pseries/hotplug-cpu.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> index d646c22e94ab..78a70ba60d24 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> @@ -1016,12 +1016,13 @@ static int __init pseries_cpu_hotplug_init(void)
->  	/* Processors can be added/removed only on LPAR */
->  	if (firmware_has_feature(FW_FEATURE_LPAR)) {
->  		for_each_node(node) {
-> -			alloc_bootmem_cpumask_var(&node_recorded_ids_map[node]);
-> +			if (!alloc_cpumask_var_node(&node_recorded_ids_map[node],
-> +						    GFP_KERNEL, node))
-> +				return -ENOMEM;
->  
->  			/* Record ids of CPU added at boot time */
-> -			cpumask_or(node_recorded_ids_map[node],
-> -				   node_recorded_ids_map[node],
-> -				   cpumask_of_node(node));
-> +			cpumask_copy(node_recorded_ids_map[node],
-> +				     cpumask_of_node(node));
->  		}
->  
->  		of_reconfig_notifier_register(&pseries_smp_nb);
+This series has suffered some issues getting agreement, so I would
+like to address a few sticking points or misconceptions up front,
+which hopefully can result in constructive disagreement and actual
+actionable feedback.
 
+* That the lazy mm scheme is complicated or bug prone.
+
+  This is not true, the concept is trivial and core code is extremely
+  simple and basically unchanged since Linus' active_mm email 20 years
+  ago in 2.3 days.
+
+  This series leaves the lazy tlb switching and ->active_mm semantics
+  entirely unchanged. It does change the refcounting, but the effects
+  are hidden under wrappers. It does not add anything new for code
+  outside those few places to think about except that they must specify
+  _lazy_mm when refcounting this particular type of reference. This
+  is not much of a problem since lazy mm references never "escape"
+  from specific switching sequences and become hard to track. Refs
+  that go into the wider world are always normal ones (i.e., created
+  by explicit mmgrab or kthread_use_mm).
+
+* That membarrier code is complicated
+
+  This is true. My series changes exactly nothing to do with
+  membarriers. My series is entirely about lazy mm, which has been
+  virtually unchanged for many years before membarrier.
+  membarrier code takes advantage of memory ordering in scheduler
+  switch code that lazy mm refcounting was providing, so this series
+  adds one commented smp_mb() ifdef there to replace the refcount op
+  being removed. That does not affect the ability to change membarrier
+  code in future because the refcounted path has to be accounted for
+  here anyway.
+
+  In other words, any changes to membarrier code which deal with the
+  refcounted lazy mm path that exists today, then dealing with the non
+  refcounted option is trivial.
+
+* That active_mm should be removed from core code.
+
+  I don't know how to address this other than it's not a good or well
+  thought out idea. This is not happening and is certainly not related
+  to my series which does not change ->active_mm semantics at all.
+
+* That this series provides an option for archs to enable which result
+  in stale ->active_mm pointers, whereby it is up to the arch to
+  ensure nothing dereferences those pointers.
+
+  This is FUD. It has always been false. Archs that enable
+  MMU_LAZY_TLB_SHOOTDOWN never ever have stale ->active_mm pointers,
+  ever. If active_mm is non-NULL, then that gives exactly the same
+  guarantees as you have today.
+
+* That performance of IPIs or other things is a problem.
+
+  I posted actual numbers showing this was not a concern, and listed
+  some options that could reduce them further if needed. No numbers
+  were ever posted to support the other side of the argument.
+
+* That the series is a powerpc specific thing.
+
+  Untrue. I have trivial sparc and alpha conversions as the first two
+  things I looked at which I have SMP qemu environments for.
+
+* That this series somehow prevents future changes or improvements.
+
+  It doesn't.
+
+* That the series is very complex, code is bad or has problems.
+
+  Look at the patches. They seem pretty small and simple to me. I am
+  happy to address specific issues that are pointed out though, and
+  have done so.
+
+* That x86 is relevant here.
+
+  This patch does not touch or affect x86 in any way. x86 has gone off
+  and done its own horrendously complicated and under-documented thing
+  with active_mm and the lazy mm concept. But that has been entirely
+  hidden from core code by the arch context switching hooks. Core code
+  continues to operate on the concept of ->mm and ->active_mm, and this
+  series does not change that at all. x86 is no more or less divorced
+  from that after the series.
+
+  Nothing the series does constrains x86 or changes to it in future. The
+  option can not be used immediately by x86, but there is no reason x86
+  could not be adapted to use it, or change their scheme to something
+  else entirely. Where code can be adapted to be shared or made usable by
+  x86, I have no problem with doing that.
+
+If I've missed something or I've got anything wrong with the above,
+I'm happy to hear it.
+
+Thanks,
+Nick
+
+Nicholas Piggin (4):
+  lazy tlb: introduce lazy mm refcount helper functions
+  lazy tlb: allow lazy tlb mm refcounting to be configurable
+  lazy tlb: shoot lazies, a non-refcounting lazy tlb option
+  powerpc/64s: enable MMU_LAZY_TLB_SHOOTDOWN
+
+ Documentation/vm/active_mm.rst       |  6 ++++
+ arch/Kconfig                         | 32 +++++++++++++++++
+ arch/arm/mach-rpc/ecard.c            |  2 +-
+ arch/powerpc/Kconfig                 |  1 +
+ arch/powerpc/kernel/smp.c            |  2 +-
+ arch/powerpc/mm/book3s64/radix_tlb.c |  4 +--
+ fs/exec.c                            |  2 +-
+ include/linux/sched/mm.h             | 20 +++++++++++
+ kernel/cpu.c                         |  2 +-
+ kernel/exit.c                        |  2 +-
+ kernel/fork.c                        | 51 ++++++++++++++++++++++++++++
+ kernel/kthread.c                     | 21 +++++++-----
+ kernel/sched/core.c                  | 35 +++++++++++++------
+ kernel/sched/sched.h                 |  4 ++-
+ 14 files changed, 158 insertions(+), 26 deletions(-)
+
+-- 
+2.23.0
 
