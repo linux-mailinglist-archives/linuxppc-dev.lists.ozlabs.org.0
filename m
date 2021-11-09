@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47EED44B67E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 23:24:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DB644B688
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Nov 2021 23:25:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HpjFq1XKhz3dmt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 09:24:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HpjGT52LCz2yPd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 09:25:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nlv2kwzX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eUUlI54h;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,34 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=nlv2kwzX; 
+ header.s=k20201202 header.b=eUUlI54h; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HpjCN39Kjz3dZ0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 09:22:24 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 095BC619EE;
- Tue,  9 Nov 2021 22:22:21 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HpjDF3CH5z3c7Q
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 09:23:09 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0093261AE1;
+ Tue,  9 Nov 2021 22:23:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1636496542;
- bh=/RrkNP1mweEqJHXVFvaw6CXmmdqymn7tQQkmFxwBSc0=;
+ s=k20201202; t=1636496587;
+ bh=wnExJy9/nndD9vHwqpC9KLvlyOYpt/Izvjf+xuRNYmE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=nlv2kwzXGCSwzo2P+v7p1q4XnWHseF3jyfSuDYl2ZSut0svC6sF1wHy4ihmYFue8S
- 8p1rt2U0+t/1nEnToR/qDuKK78KjwiQpcNI53EQvmaEnuO9qIIjaixqZ5gck29evKk
- /2/rleGhaVV3TWUdqtiP7pE0zBV4dncmMyEZdd8OgcoY6liNEPpecUAmkN7sd/i3F4
- 35sliLyqvK1AgFoNn7kDSP0nSVJ7JDVUcTnsKjtYbj+KidiBcwDMXP7mMubrp0Il9Z
- ad76mhDN9ur5mbSmuT/b9/pNtTt358aao6KLiXFjH3a+1vqN1H2kC6SxtJDoytpply
- 6RYcKfu3mad/A==
+ b=eUUlI54hzMeAulXX5NsKxzd8xttK594sAEgOY8QHFZZlYOCod7Y7F4PFuAcW3blnW
+ hemkSzMEF05StHV3hTyV79UHqVC9K1ayvCE1V2uCAPernWTtaGjvtGaARtLid+TuUZ
+ hzPfHu/kaMqr2F8Che4VmKPuyIkbwP0idgdx4RaV/cRyvPD9wG8WLZSlWuiyhz9xDe
+ byvEmaQiOcxUNRrDGr5Md9pegLSGKcWWQTztFq2IXBwtTRovr7urENqcVFv9IwBwPH
+ ts+VAF8qKw5wjBuShKO5LYxFC9Ilw3Bs0H3eXkk3Yczza17xtUokd0GD8qBYb2R1XP
+ JRAzJvxpgEX2w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 50/50] powerpc/8xx: Fix Oops with
- STRICT_KERNEL_RWX without DEBUG_RODATA_TEST
-Date: Tue,  9 Nov 2021 17:21:03 -0500
-Message-Id: <20211109222103.1234885-50-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 28/30] powerpc/5200: dts: fix memory node unit name
+Date: Tue,  9 Nov 2021 17:22:22 -0500
+Message-Id: <20211109222224.1235388-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211109222103.1234885-1-sashal@kernel.org>
-References: <20211109222103.1234885-1-sashal@kernel.org>
+In-Reply-To: <20211109222224.1235388-1-sashal@kernel.org>
+References: <20211109222224.1235388-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,72 +60,198 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, paulus@samba.org,
- gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Rob Herring <robh@kernel.org>,
+ pawel.moll@arm.com, ijc+devicetree@hellion.org.uk, devicetree@vger.kernel.org,
+ robh+dt@kernel.org, paulus@samba.org, galak@codeaurora.org,
+ mark.rutland@arm.com, Anatolij Gustschin <agust@denx.de>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Anatolij Gustschin <agust@denx.de>
 
-[ Upstream commit c12ab8dbc492b992e1ea717db933cee568780c47 ]
+[ Upstream commit aed2886a5e9ffc8269a4220bff1e9e030d3d2eb1 ]
 
-Until now, all tests involving CONFIG_STRICT_KERNEL_RWX were done with
-DEBUG_RODATA_TEST to check the result. But now that
-CONFIG_STRICT_KERNEL_RWX is selected by default, it came without
-CONFIG_DEBUG_RODATA_TEST and led to the following Oops
+Fixes build warnings:
+Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
 
-[    6.830908] Freeing unused kernel image (initmem) memory: 352K
-[    6.840077] BUG: Unable to handle kernel data access on write at 0xc1285200
-[    6.846836] Faulting instruction address: 0xc0004b6c
-[    6.851745] Oops: Kernel access of bad area, sig: 11 [#1]
-[    6.857075] BE PAGE_SIZE=16K PREEMPT CMPC885
-[    6.861348] SAF3000 DIE NOTIFICATION
-[    6.864830] CPU: 0 PID: 1 Comm: swapper Not tainted 5.15.0-rc5-s3k-dev-02255-g2747d7b7916f #451
-[    6.873429] NIP:  c0004b6c LR: c0004b60 CTR: 00000000
-[    6.878419] REGS: c902be60 TRAP: 0300   Not tainted  (5.15.0-rc5-s3k-dev-02255-g2747d7b7916f)
-[    6.886852] MSR:  00009032 <EE,ME,IR,DR,RI>  CR: 53000335  XER: 8000ff40
-[    6.893564] DAR: c1285200 DSISR: 82000000
-[    6.893564] GPR00: 0c000000 c902bf20 c20f4000 08000000 00000001 04001f00 c1800000 00000035
-[    6.893564] GPR08: ff0001ff c1280000 00000002 c0004b60 00001000 00000000 c0004b1c 00000000
-[    6.893564] GPR16: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-[    6.893564] GPR24: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 c1060000
-[    6.932034] NIP [c0004b6c] kernel_init+0x50/0x138
-[    6.936682] LR [c0004b60] kernel_init+0x44/0x138
-[    6.941245] Call Trace:
-[    6.943653] [c902bf20] [c0004b60] kernel_init+0x44/0x138 (unreliable)
-[    6.950022] [c902bf30] [c001122c] ret_from_kernel_thread+0x5c/0x64
-[    6.956135] Instruction dump:
-[    6.959060] 48ffc521 48045469 4800d8cd 3d20c086 89295fa0 2c090000 41820058 480796c9
-[    6.966890] 4800e48d 3d20c128 39400002 3fe0c106 <91495200> 3bff8000 4806fa1d 481f7d75
-[    6.974902] ---[ end trace 1e397bacba4aa610 ]---
-
-0xc1285200 corresponds to 'system_state' global var that the kernel is trying to set to
-SYSTEM_RUNNING. This var is above the RO/RW limit so it shouldn't Oops.
-
-It oopses because the dirty bit is missing.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Anatolij Gustschin <agust@denx.de>
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/3d5800b0bbcd7b19761b98f50421358667b45331.1635520232.git.christophe.leroy@csgroup.eu
+Link: https://lore.kernel.org/r/20211013220532.24759-4-agust@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/head_8xx.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/boot/dts/charon.dts    | 2 +-
+ arch/powerpc/boot/dts/digsy_mtc.dts | 2 +-
+ arch/powerpc/boot/dts/lite5200.dts  | 2 +-
+ arch/powerpc/boot/dts/lite5200b.dts | 2 +-
+ arch/powerpc/boot/dts/media5200.dts | 2 +-
+ arch/powerpc/boot/dts/mpc5200b.dtsi | 2 +-
+ arch/powerpc/boot/dts/o2d.dts       | 2 +-
+ arch/powerpc/boot/dts/o2d.dtsi      | 2 +-
+ arch/powerpc/boot/dts/o2dnt2.dts    | 2 +-
+ arch/powerpc/boot/dts/o3dnt.dts     | 2 +-
+ arch/powerpc/boot/dts/pcm032.dts    | 2 +-
+ arch/powerpc/boot/dts/tqm5200.dts   | 2 +-
+ 12 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index ce5fd93499a74..896a1f8d3e6ac 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -788,7 +788,7 @@ _GLOBAL(mmu_pin_tlb)
- 	cmplw	r6, r9
- 	bdnzt	lt, 2b
+diff --git a/arch/powerpc/boot/dts/charon.dts b/arch/powerpc/boot/dts/charon.dts
+index 408b486b13dff..cd589539f313f 100644
+--- a/arch/powerpc/boot/dts/charon.dts
++++ b/arch/powerpc/boot/dts/charon.dts
+@@ -35,7 +35,7 @@
+ 		};
+ 	};
  
--4:	LOAD_REG_IMMEDIATE(r8, 0xf0 | _PAGE_SPS | _PAGE_SH | _PAGE_PRESENT)
-+4:	LOAD_REG_IMMEDIATE(r8, 0xf0 | _PAGE_DIRTY | _PAGE_SPS | _PAGE_SH | _PAGE_PRESENT)
- 2:	ori	r0, r6, MD_EVALID
- 	mtspr	SPRN_MD_CTR, r5
- 	mtspr	SPRN_MD_EPN, r0
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x08000000>;	// 128MB
+ 	};
+diff --git a/arch/powerpc/boot/dts/digsy_mtc.dts b/arch/powerpc/boot/dts/digsy_mtc.dts
+index 0e5e9d3acf79f..19a14e62e65f4 100644
+--- a/arch/powerpc/boot/dts/digsy_mtc.dts
++++ b/arch/powerpc/boot/dts/digsy_mtc.dts
+@@ -16,7 +16,7 @@
+ 	model = "intercontrol,digsy-mtc";
+ 	compatible = "intercontrol,digsy-mtc";
+ 
+-	memory {
++	memory@0 {
+ 		reg = <0x00000000 0x02000000>;	// 32MB
+ 	};
+ 
+diff --git a/arch/powerpc/boot/dts/lite5200.dts b/arch/powerpc/boot/dts/lite5200.dts
+index cb2782dd6132c..e7b194775d783 100644
+--- a/arch/powerpc/boot/dts/lite5200.dts
++++ b/arch/powerpc/boot/dts/lite5200.dts
+@@ -32,7 +32,7 @@
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x04000000>;	// 64MB
+ 	};
+diff --git a/arch/powerpc/boot/dts/lite5200b.dts b/arch/powerpc/boot/dts/lite5200b.dts
+index 2b86c81f90485..547cbe726ff23 100644
+--- a/arch/powerpc/boot/dts/lite5200b.dts
++++ b/arch/powerpc/boot/dts/lite5200b.dts
+@@ -31,7 +31,7 @@
+ 		led4 { gpios = <&gpio_simple 2 1>; };
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		reg = <0x00000000 0x10000000>;	// 256MB
+ 	};
+ 
+diff --git a/arch/powerpc/boot/dts/media5200.dts b/arch/powerpc/boot/dts/media5200.dts
+index 61cae9dcddef4..f3188018faceb 100644
+--- a/arch/powerpc/boot/dts/media5200.dts
++++ b/arch/powerpc/boot/dts/media5200.dts
+@@ -32,7 +32,7 @@
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		reg = <0x00000000 0x08000000>;	// 128MB RAM
+ 	};
+ 
+diff --git a/arch/powerpc/boot/dts/mpc5200b.dtsi b/arch/powerpc/boot/dts/mpc5200b.dtsi
+index 648fe31795f49..8b796f3b11da7 100644
+--- a/arch/powerpc/boot/dts/mpc5200b.dtsi
++++ b/arch/powerpc/boot/dts/mpc5200b.dtsi
+@@ -33,7 +33,7 @@
+ 		};
+ 	};
+ 
+-	memory: memory {
++	memory: memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x04000000>;	// 64MB
+ 	};
+diff --git a/arch/powerpc/boot/dts/o2d.dts b/arch/powerpc/boot/dts/o2d.dts
+index 24a46f65e5299..e0a8d3034417f 100644
+--- a/arch/powerpc/boot/dts/o2d.dts
++++ b/arch/powerpc/boot/dts/o2d.dts
+@@ -12,7 +12,7 @@
+ 	model = "ifm,o2d";
+ 	compatible = "ifm,o2d";
+ 
+-	memory {
++	memory@0 {
+ 		reg = <0x00000000 0x08000000>;  // 128MB
+ 	};
+ 
+diff --git a/arch/powerpc/boot/dts/o2d.dtsi b/arch/powerpc/boot/dts/o2d.dtsi
+index 6661955a2be47..b55a9e5bd828c 100644
+--- a/arch/powerpc/boot/dts/o2d.dtsi
++++ b/arch/powerpc/boot/dts/o2d.dtsi
+@@ -19,7 +19,7 @@
+ 	model = "ifm,o2d";
+ 	compatible = "ifm,o2d";
+ 
+-	memory {
++	memory@0 {
+ 		reg = <0x00000000 0x04000000>;	// 64MB
+ 	};
+ 
+diff --git a/arch/powerpc/boot/dts/o2dnt2.dts b/arch/powerpc/boot/dts/o2dnt2.dts
+index eeba7f5507d5d..c2eedbd1f5fcb 100644
+--- a/arch/powerpc/boot/dts/o2dnt2.dts
++++ b/arch/powerpc/boot/dts/o2dnt2.dts
+@@ -12,7 +12,7 @@
+ 	model = "ifm,o2dnt2";
+ 	compatible = "ifm,o2d";
+ 
+-	memory {
++	memory@0 {
+ 		reg = <0x00000000 0x08000000>;  // 128MB
+ 	};
+ 
+diff --git a/arch/powerpc/boot/dts/o3dnt.dts b/arch/powerpc/boot/dts/o3dnt.dts
+index fd00396b0593e..e4c1bdd412716 100644
+--- a/arch/powerpc/boot/dts/o3dnt.dts
++++ b/arch/powerpc/boot/dts/o3dnt.dts
+@@ -12,7 +12,7 @@
+ 	model = "ifm,o3dnt";
+ 	compatible = "ifm,o2d";
+ 
+-	memory {
++	memory@0 {
+ 		reg = <0x00000000 0x04000000>;  // 64MB
+ 	};
+ 
+diff --git a/arch/powerpc/boot/dts/pcm032.dts b/arch/powerpc/boot/dts/pcm032.dts
+index c259c6b3ac5ab..5674f978b9830 100644
+--- a/arch/powerpc/boot/dts/pcm032.dts
++++ b/arch/powerpc/boot/dts/pcm032.dts
+@@ -22,7 +22,7 @@
+ 	model = "phytec,pcm032";
+ 	compatible = "phytec,pcm032";
+ 
+-	memory {
++	memory@0 {
+ 		reg = <0x00000000 0x08000000>;	// 128MB
+ 	};
+ 
+diff --git a/arch/powerpc/boot/dts/tqm5200.dts b/arch/powerpc/boot/dts/tqm5200.dts
+index 9ed0bc78967e1..5bb25a9e40a01 100644
+--- a/arch/powerpc/boot/dts/tqm5200.dts
++++ b/arch/powerpc/boot/dts/tqm5200.dts
+@@ -32,7 +32,7 @@
+ 		};
+ 	};
+ 
+-	memory {
++	memory@0 {
+ 		device_type = "memory";
+ 		reg = <0x00000000 0x04000000>;	// 64MB
+ 	};
 -- 
 2.33.0
 
