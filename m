@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6E244CA99
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 21:26:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CCBD44CA9C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 21:27:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqGbK3VGXz3cZW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 07:26:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HqGbn0fm4z3cmJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 07:27:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -14,21 +14,21 @@ Authentication-Results: lists.ozlabs.org;
  (client-ip=217.140.110.172; helo=foss.arm.com;
  envelope-from=valentin.schneider@arm.com; receiver=<UNKNOWN>)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4HqGZ144PBz2yHq
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 07:25:29 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4HqGZ33kLhz2yPg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 07:25:31 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 88E0C1435;
- Wed, 10 Nov 2021 12:25:27 -0800 (PST)
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 05175143B;
+ Wed, 10 Nov 2021 12:25:30 -0800 (PST)
 Received: from e113632-lin.cambridge.arm.com (e113632-lin.cambridge.arm.com
  [10.1.196.57])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5863A3F5A1;
- Wed, 10 Nov 2021 12:25:25 -0800 (PST)
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BEBB43F5A1;
+ Wed, 10 Nov 2021 12:25:27 -0800 (PST)
 From: Valentin Schneider <valentin.schneider@arm.com>
 To: linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
  linuxppc-dev@lists.ozlabs.org, linux-kbuild@vger.kernel.org
-Subject: [PATCH v2 2/5] preempt/dynamic: Introduce preempt mode accessors
-Date: Wed, 10 Nov 2021 20:24:45 +0000
-Message-Id: <20211110202448.4054153-3-valentin.schneider@arm.com>
+Subject: [PATCH v2 3/5] powerpc: Use preemption model accessors
+Date: Wed, 10 Nov 2021 20:24:46 +0000
+Message-Id: <20211110202448.4054153-4-valentin.schneider@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211110202448.4054153-1-valentin.schneider@arm.com>
 References: <20211110202448.4054153-1-valentin.schneider@arm.com>
@@ -56,73 +56,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CONFIG_PREEMPT{_NONE, _VOLUNTARY} designate either:
-o The build-time preemption model when !PREEMPT_DYNAMIC
-o The default boot-time preemption model when PREEMPT_DYNAMIC
+Per PREEMPT_DYNAMIC, checking CONFIG_PREEMPT doesn't tell you the actual
+preemption model of the live kernel. Use the newly-introduced accessors
+instead.
 
-IOW, using those on PREEMPT_DYNAMIC kernels is meaningless - the actual
-model could have been set to something else by the "preempt=foo" cmdline
-parameter.
+sched_init() -> preempt_dynamic_init() happens way before IRQs are set up,
+so this should be fine.
 
-Introduce a set of helpers to determine the actual preemption mode used by
-the live kernel.
-
-Suggested-by: Marco Elver <elver@google.com>
 Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 ---
- include/linux/sched.h | 16 ++++++++++++++++
- kernel/sched/core.c   | 11 +++++++++++
- 2 files changed, 27 insertions(+)
+ arch/powerpc/kernel/interrupt.c | 2 +-
+ arch/powerpc/kernel/traps.c     | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 5f8db54226af..0640d5622496 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2073,6 +2073,22 @@ static inline void cond_resched_rcu(void)
- #endif
- }
- 
-+#ifdef CONFIG_PREEMPT_DYNAMIC
-+
-+extern bool is_preempt_none(void);
-+extern bool is_preempt_voluntary(void);
-+extern bool is_preempt_full(void);
-+
-+#else
-+
-+#define is_preempt_none() IS_ENABLED(CONFIG_PREEMPT_NONE)
-+#define is_preempt_voluntary() IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY)
-+#define is_preempt_full() IS_ENABLED(CONFIG_PREEMPT)
-+
-+#endif
-+
-+#define is_preempt_rt() IS_ENABLED(CONFIG_PREEMPT_RT)
-+
- /*
-  * Does a critical section need to be broken due to another
-  * task waiting?: (technically does not depend on CONFIG_PREEMPTION,
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 97047aa7b6c2..9db7f77e53c3 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -6638,6 +6638,17 @@ static void __init preempt_dynamic_init(void)
- 	}
- }
- 
-+#define PREEMPT_MODE_ACCESSOR(mode) \
-+	bool is_preempt_##mode(void)						 \
-+	{									 \
-+		WARN_ON_ONCE(preempt_dynamic_mode == preempt_dynamic_undefined); \
-+		return preempt_dynamic_mode == preempt_dynamic_##mode;		 \
-+	}
-+
-+PREEMPT_MODE_ACCESSOR(none)
-+PREEMPT_MODE_ACCESSOR(voluntary)
-+PREEMPT_MODE_ACCESSOR(full)
-+
- #else /* !CONFIG_PREEMPT_DYNAMIC */
- 
- static inline void preempt_dynamic_init(void) { }
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index de10a2697258..c56c10b59be3 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -552,7 +552,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
+ 		/* Returning to a kernel context with local irqs enabled. */
+ 		WARN_ON_ONCE(!(regs->msr & MSR_EE));
+ again:
+-		if (IS_ENABLED(CONFIG_PREEMPT)) {
++		if (is_preempt_full()) {
+ 			/* Return to preemptible kernel context */
+ 			if (unlikely(current_thread_info()->flags & _TIF_NEED_RESCHED)) {
+ 				if (preempt_count() == 0)
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index aac8c0412ff9..1cb31bbdc925 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -265,7 +265,7 @@ static int __die(const char *str, struct pt_regs *regs, long err)
+ 	printk("%s PAGE_SIZE=%luK%s%s%s%s%s%s %s\n",
+ 	       IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) ? "LE" : "BE",
+ 	       PAGE_SIZE / 1024, get_mmu_str(),
+-	       IS_ENABLED(CONFIG_PREEMPT) ? " PREEMPT" : "",
++	       is_preempt_full() ? " PREEMPT" : "",
+ 	       IS_ENABLED(CONFIG_SMP) ? " SMP" : "",
+ 	       IS_ENABLED(CONFIG_SMP) ? (" NR_CPUS=" __stringify(NR_CPUS)) : "",
+ 	       debug_pagealloc_enabled() ? " DEBUG_PAGEALLOC" : "",
 -- 
 2.25.1
 
