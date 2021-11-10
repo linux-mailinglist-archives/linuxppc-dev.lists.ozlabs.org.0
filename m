@@ -1,74 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ABF744B98A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 01:05:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5613544B996
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 01:30:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HplV02bwsz305v
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 11:05:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hpm2f16Gbz3c7X
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 11:30:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=HI320WgY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HoUfE9FM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=out1-smtp.messagingengine.com (client-ip=66.111.4.25;
- helo=out1-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
+ helo=mail-pg1-x533.google.com; envelope-from=cgel.zte@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm1 header.b=HI320WgY; 
- dkim-atps=neutral
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com
- [66.111.4.25])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=HoUfE9FM; dkim-atps=neutral
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HplTM3jR5z2yV5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 11:04:37 +1100 (AEDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailout.nyi.internal (Postfix) with ESMTP id B08FA5C01B5;
- Tue,  9 Nov 2021 19:04:35 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute5.internal (MEProxy); Tue, 09 Nov 2021 19:04:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:date:from:message-id:subject:to
- :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm1; bh=pxYQptxKAANotcVk8750InSOMFKmeE5dNUCPfDenwBA=; b=HI320WgY
- mHuVSK3efM0vTvk6r9P1KKQseNrpR5JhgtWMMeYDRj/8mOQ78oH4GrzbwzuDE7VI
- 48UXSrjmvniZ/UM4V+mP8nJOrF4MZUZZw87kel1nztKMMLOg4eLu9wlG7Gq1Nq8o
- ls9Vb+PZIIGCtykdDGymGiPoCuoiosCbEupSE/NXLWfAPFbAZtgIYQ9Dm/offBYB
- nX8doTIWwu3lMsFcFb5PW7LzIaReglmAWbduBhcxniMdT6vqxmfSvlwYvHqk7p+9
- qPZE6kDW125HUSbMdNKxuocQIT+r3d9DtaMsnVRFisIKDMfmHKlGqJsfkzyi2vKs
- Fv/K4I/i7fskAA==
-X-ME-Sender: <xms:kQyLYfuTNn4JmykkG_4LJurGr5GPNYY_WFRs82F77XIu1nqN_3Ku-A>
- <xme:kQyLYQegiiM-xyEyQNVTatUMR3DkNqQSYmqMMNn56TjDwqJPPbaVmxIk5KNBOOUYL
- xRkX_jtPpvxNpD6wQ8>
-X-ME-Received: <xmr:kQyLYSzFoD1dF66FN-1eiPbwy1j5H57sXKXPakBB_HdOFzjxSre68pPu-q9UrHd8UXUH4iX2T9uGetungZKCjSn3k3p_BUVMfGw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddrudehgddufecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpefvkffhufffsedttdertddttddtnecuhfhrohhmpefhihhnnhcuvfhhrghinhcu
- oehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtthgvrhhnpe
- ekfeeukeelhfekudehheeglefgfeevffeglefhvdehheehtddvleegveefffetvdenucff
- ohhmrghinhepkhgvrhhnvghlrdhorhhgpdhprhhothhonhhmrghilhdrtghomhenucevlh
- hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinhes
- lhhinhhugidqmheikehkrdhorhhg
-X-ME-Proxy: <xmx:kQyLYePnDODpgsejDPvJ-BRHTorjW0ZAiSaEXjWACg26zsVMfnMM2Q>
- <xmx:kQyLYf9xXNkntgAonxrXDU1HseNkTC5KZlX9PrNAWq8-zEegHuUUNQ>
- <xmx:kQyLYeU_wlTXmpVqTDF2lhAsYfcujJ8OESz8wEASZXSHtKthjyTWFQ>
- <xmx:kwyLYbbsmwWbmIqz0mbQhnVXEpMn1vc2JsTpcp-gmc_2zd0Vt3efuw>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 9 Nov 2021 19:04:30 -0500 (EST)
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>
-Message-Id: <08bbe7240b384016e0b2912ecf3bf5e2d25ef2c6.1636501628.git.fthain@linux-m68k.org>
-From: Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH] powerpc: Fix sigset_t copy
-Date: Wed, 10 Nov 2021 10:47:08 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hpm1w3qWgz2xZm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 11:29:22 +1100 (AEDT)
+Received: by mail-pg1-x533.google.com with SMTP id r28so657973pga.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Nov 2021 16:29:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AEzErmitUUc1WCRwF90GY08l0xszb/xghqlykO8h5XQ=;
+ b=HoUfE9FMPs9FbWg+kuLPHy/L4ScIui5grCU8JXDkrj4jNnMmSBVDJH9ybI+5cI5KyM
+ kiyqA9oGfmaiIp0bg7woJAxlerKajDVP0Qk/XBfycWTsDVEnm1Ig5L4uf/WmUu841bRT
+ aNkR/veAg2w3ULbimJTbQGJEpcF5Bo9bGvdaS3Hf7dsxkwwBaE7ip0vnfwZv8XFHmCcc
+ e57WL3zXoxDqavdn1mSjovQXAXN0QC3Tk6KmEJPh+BtWVmMDtqURDnpB9os97UMcTwr0
+ BAlnEEVb28PTC+hW82HQT5m9w4tC7U+/pinOH0TFk24abX3MYyx4ZcJMfaNlYxmeY9Q0
+ km0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AEzErmitUUc1WCRwF90GY08l0xszb/xghqlykO8h5XQ=;
+ b=Q6H6Pv1xCdvmqG5JRLGlbXN9qJrQM2Dv0lOfl4cvKttAcjmIYtC+3XZ5JEw0Llxkjw
+ IyScWRTUYVgehC7kNKkMC3KPy39YEJYehdQG33SupvS2sSpk6KQh5D8T+DVRYdt3ENxG
+ f0pvQbzGpR/B8TkSbCsbmpwdyAuP7jMWL6ltMMaLrgqj1UQZ6OrW5sXc2ZJD/XtZr7uX
+ q0ykTbfFZVcMz7xLbzkKYDvzkxpqGcPn8lxVwLZNjkpzvaU44oxEmYZDHaFASxCXpQAQ
+ 2ljQhCFeMEUWV3CVZ41hdOxMkQW2Wc8UCCWgjxIc2RUjZL/V7fviHhuDWcOmZh0nstvn
+ /iqw==
+X-Gm-Message-State: AOAM533I/RFEF4ju1j+mAjvb+7uqf1tw8yRpn/HkpCs8hW+CwGuZQ+eM
+ 0tp/Y2CPAN5dk03pzdE+VJc=
+X-Google-Smtp-Source: ABdhPJye/VUSnlCLCAknWO+RWaynEg+Kow/VhPktmT23o2DuN4Tmpy6jXdqg82E0C967zkissHr4bg==
+X-Received: by 2002:a05:6a00:1a50:b0:49f:fc2a:fa9f with SMTP id
+ h16-20020a056a001a5000b0049ffc2afa9fmr8630020pfv.43.1636504159274; 
+ Tue, 09 Nov 2021 16:29:19 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+ by smtp.gmail.com with ESMTPSA id f185sm9515716pfg.39.2021.11.09.16.29.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Nov 2021 16:29:18 -0800 (PST)
+From: cgel.zte@gmail.com
+X-Google-Original-From: ye.guojin@zte.com.cn
+To: nicoleotsuka@gmail.com
+Subject: [PATCH] ASoC: imx-hdmi: add put_device() after
+ of_find_device_by_node()
+Date: Wed, 10 Nov 2021 00:29:10 +0000
+Message-Id: <20211110002910.134915-1-ye.guojin@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,60 +80,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- "Christopher M. Riedl" <cmr@bluescreens.de>
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com,
+ s.hauer@pengutronix.de, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz,
+ broonie@kernel.org, linux-imx@nxp.com, kernel@pengutronix.de,
+ Ye Guojin <ye.guojin@zte.com.cn>, shawnguo@kernel.org, shengjiu.wang@gmail.com,
+ Zeal Robot <zealci@zte.com.cn>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Ye Guojin <ye.guojin@zte.com.cn>
 
-The conversion from __copy_from_user() to __get_user() introduced a
-regression in __get_user_sigset() in v5.13. The bug was subsequently
-copied and pasted in unsafe_get_user_sigset().
+This was found by coccicheck:
+./sound/soc/fsl/imx-hdmi.c,209,1-7,ERROR  missing put_device; call
+of_find_device_by_node on line 119, but without a corresponding object
+release within this function.
 
-The regression was reported by users of the Xorg packages distributed in
-Debian/powerpc --
-
-    "The symptoms are that the fb screen goes blank, with the backlight
-    remaining on and no errors logged in /var/log; wdm (or startx) run
-    with no effect (I tried logging in in the blind, with no effect).
-    And they are hard to kill, requiring 'kill -KILL ...'"
-
-Fix the regression by casting the __get_user() assignment lvalue to u64
-so that the entire struct gets copied.
-
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Christopher M. Riedl <cmr@bluescreens.de>
-Link: https://lore.kernel.org/linuxppc-dev/FEtBUOuFPMN4zJy4bIOqz6C4xoliCbTxS7VtMKD6UZkbvEbycUceRgGAd7e9-trRdwVN3hWAbQi0qrNx8Zgn8niTQf2KPVdw-W35czDIaeQ=@protonmail.com/
-Fixes: 887f3ceb51cd ("powerpc/signal32: Convert do_setcontext[_tm]() to user access block")
-Fixes: d3ccc9781560 ("powerpc/signal: Use __get_user() to copy sigset_t")
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Ye Guojin <ye.guojin@zte.com.cn>
 ---
-Christophe, I hope this change is the one you wanted to see upstream (?).
-If it is acceptable please add your signed-off-by tag.
----
- arch/powerpc/kernel/signal.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/fsl/imx-hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/kernel/signal.h b/arch/powerpc/kernel/signal.h
-index 1f07317964e4..44e736b88e91 100644
---- a/arch/powerpc/kernel/signal.h
-+++ b/arch/powerpc/kernel/signal.h
-@@ -23,10 +23,10 @@ static inline int __get_user_sigset(sigset_t *dst, const sigset_t __user *src)
- {
- 	BUILD_BUG_ON(sizeof(sigset_t) != sizeof(u64));
+diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
+index f10359a28800..929f69b758af 100644
+--- a/sound/soc/fsl/imx-hdmi.c
++++ b/sound/soc/fsl/imx-hdmi.c
+@@ -145,6 +145,8 @@ static int imx_hdmi_probe(struct platform_device *pdev)
+ 	data->dai.capture_only = false;
+ 	data->dai.init = imx_hdmi_init;
  
--	return __get_user(dst->sig[0], (u64 __user *)&src->sig[0]);
-+	return __get_user(*(u64 *)&dst->sig[0], (u64 __user *)&src->sig[0]);
- }
- #define unsafe_get_user_sigset(dst, src, label) \
--	unsafe_get_user((dst)->sig[0], (u64 __user *)&(src)->sig[0], label)
-+	unsafe_get_user(*(u64 *)&(dst)->sig[0], (u64 __user *)&(src)->sig[0], label)
- 
- #ifdef CONFIG_VSX
- extern unsigned long copy_vsx_to_user(void __user *to,
++	put_device(&cpu_pdev->dev);
++
+ 	if (of_node_name_eq(cpu_np, "sai")) {
+ 		data->cpu_priv.sysclk_id[1] = FSL_SAI_CLK_MAST1;
+ 		data->cpu_priv.sysclk_id[0] = FSL_SAI_CLK_MAST1;
 -- 
-2.26.3
+2.25.1
 
