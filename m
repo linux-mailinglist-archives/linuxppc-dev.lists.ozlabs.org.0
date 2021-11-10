@@ -1,64 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E171844C87E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 20:08:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 707AA44C8A3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 20:10:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqDrs634xz3c6j
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 06:08:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HqDvS2854z3c7Q
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 06:10:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.222.49; helo=mail-ua1-f49.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com
- [209.85.222.49])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HqDrR2gYbz2xDT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 06:07:49 +1100 (AEDT)
-Received: by mail-ua1-f49.google.com with SMTP id ay21so6909440uab.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 11:07:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=JVkOVIMojOtjUqioksXn7GnT56ja9tgOLgQ+4277MEE=;
- b=uDx8NkfBxkkmGO2o51X/55tu3JhsUQTDFivtUxA01PNKnp/8NdoHGSenWY74x0/SsE
- uI+wLMAKXb8xKCzwUSL6pD+MxvHDqjGnmguZqcQ0sZWaGEKAXg+eEUHzrEnUyRoh0A3p
- YavhGVGEsdDscHcHbwZUCDyFNpE4r0M9XMfNISeMGtQGaK5v1FUtEWvtJ18I6Bi4g2FN
- 5ghnEVGyUkz5HbbI1fTFOXSlUkrbnuHpLb0rh8+ZKARfjGBUDEvWkJVaNZyuVTJ1pmhj
- ONOZJI3t1AkargILWSloDG0W2JxYiiaue29/9HU2i5tAs/4NU/2GUFe/H0Br8LgACZ1R
- I74A==
-X-Gm-Message-State: AOAM530Hg/Y+s/bijUGqIUXkWHXVH4oXu/AstXO6X+5DI2aZPpbRWiIm
- SiwCMLhuoDTZLfamesqRDSXJOeFHeKrRHg==
-X-Google-Smtp-Source: ABdhPJxwychUBp7BMLdYUL82kp+mptFdWE+UV53HDXI5gl16psotS/xWZEIp+dXXpHXMaja/Y804pg==
-X-Received: by 2002:a67:782:: with SMTP id 124mr1711372vsh.24.1636571265923;
- Wed, 10 Nov 2021 11:07:45 -0800 (PST)
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com.
- [209.85.222.52])
- by smtp.gmail.com with ESMTPSA id g187sm539782vsc.10.2021.11.10.11.07.45
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Nov 2021 11:07:45 -0800 (PST)
-Received: by mail-ua1-f52.google.com with SMTP id b17so7067002uas.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 11:07:45 -0800 (PST)
-X-Received: by 2002:a05:6102:2910:: with SMTP id
- cz16mr2351290vsb.9.1636571265036; 
- Wed, 10 Nov 2021 11:07:45 -0800 (PST)
-MIME-Version: 1.0
-References: <ef59d6fd3b2201b912d5eaa7f7a037d8f9adb744.1636561068.git.geert+renesas@glider.be>
- <ddcfa4b9-f7f4-04f5-89f2-b04c284e1945@prevas.dk>
-In-Reply-To: <ddcfa4b9-f7f4-04f5-89f2-b04c284e1945@prevas.dk>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 10 Nov 2021 20:07:33 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdX_h9Tz8C-2SYyrS_G5BBbBNctqRA1mgKbhmYJxWzF-hg@mail.gmail.com>
-Message-ID: <CAMuHMdX_h9Tz8C-2SYyrS_G5BBbBNctqRA1mgKbhmYJxWzF-hg@mail.gmail.com>
-Subject: Re: [PATCH/RFC] of: Shrink struct of_device_id
-To: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HqDtz5t2Xz2xBP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 06:10:03 +1100 (AEDT)
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
+ [51.254.78.96])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 994E5610FF;
+ Wed, 10 Nov 2021 19:10:01 +0000 (UTC)
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <maz@kernel.org>)
+ id 1mksyt-004g31-A9; Wed, 10 Nov 2021 19:09:59 +0000
+Date: Wed, 10 Nov 2021 19:09:58 +0000
+Message-ID: <87sfw3969l.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PASEMI] Nemo board doesn't recognize any ATA disks with the
+ pci-v5.16 updates
+In-Reply-To: <20211110184106.GA1251058@bhelgaas>
+References: <78308692-02e6-9544-4035-3171a8e1e6d4@xenosoft.de>
+ <20211110184106.GA1251058@bhelgaas>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: helgaas@kernel.org, chzigotzky@xenosoft.de,
+ bhelgaas@google.com, alyssa@rosenzweig.io, lorenzo.pieralisi@arm.com,
+ robh@kernel.org, matthew@a-eon.biz, darren@stevens-zone.net,
+ madskateman@gmail.com, rtd2@xtra.co.nz, info@xenosoft.de, axboe@kernel.dk,
+ damien.lemoal@opensource.wdc.com, kw@linux.com, arnd@arndb.de,
+ robert@swiecki.net, olof@lixom.net, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,69 +64,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- Frank Rowand <frowand.list@gmail.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: axboe@kernel.dk, Rob Herring <robh@kernel.org>, lorenzo.pieralisi@arm.com,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, Arnd Bergmann <arnd@arndb.de>, kw@linux.com,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ damien.lemoal@opensource.wdc.com, Olof Johansson <olof@lixom.net>,
+ Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>,
+ "bhelgaas@google.com >> Bjorn Helgaas" <bhelgaas@google.com>,
+ robert@swiecki.net, Matthew Leaman <matthew@a-eon.biz>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rasmus,
+HI all,
 
-On Wed, Nov 10, 2021 at 5:51 PM Rasmus Villemoes
-<rasmus.villemoes@prevas.dk> wrote:
-> On 10/11/2021 17.23, Geert Uytterhoeven wrote:
-> > Currently struct of_device_id is 196 (32-bit) or 200 (64-bit) bytes
-> > large.  It contains fixed-size strings for a name, a type, and a
-> > compatible value, but the first two are barely used.
-> > OF device ID tables contain multiple entries, plus an empty sentinel
-> > entry.
-> >
-> > Statistics for my current kernel source tree:
-> >   - 4487 tables with 16836 entries (3367200 bytes)
-> >   - 176 names (average 6.7 max 23 chars)
-> >   - 66 types (average 5.1 max 21 chars)
-> >   - 12192 compatible values (average 18.0 max 45 chars)
-> > Taking into account the minimum needed size to store the strings, only
-> > 6.9% of the allocated space is used...
-> >
-> > Reduce kernel size by reducing the sizes of the fixed strings by one
-> > half.
->
-> Tried something like this 2.5 years ago:
-> https://lore.kernel.org/lkml/20190425203101.9403-1-linux@rasmusvillemoes.dk/
+On Wed, 10 Nov 2021 18:41:06 +0000,
+Bjorn Helgaas <helgaas@kernel.org> wrote:
+> 
+> On Wed, Nov 10, 2021 at 07:07:24PM +0100, Christian Zigotzky wrote:
+> > On 09 November 2021 at 03:45 pm, Christian Zigotzky wrote:
+> > > Hello,
+> > >
+> > > The Nemo board [1] doesn't recognize any ATA disks with the pci-v5.16
+> > updates [2].
+> > >
+> > > Error messages:
+> > >
+> > > ata4.00: gc timeout cmd 0xec
+> > > ata4.00: failed to IDENTIFY (I/O error, error_mask=0x4)
+> > > ata1.00: gc timeout cmd 0xec
+> > > ata1.00: failed to IDENTIFY (I/O error, error_mask=0x4)
+> > > ata3.00: gc timeout cmd 0xec
+> > > ata3.00: failed to IDENTIFY (I/O error, error_mask=0x4)
+> > >
+> > > I was able to revert the new pci-v5.16 updates [2]. After a new
+> > compiling, the kernel recognize all ATA disks correctly.
+> > >
+> > > Could you please check the pci-v5.16 updates [2]?
+> > >
+> > > Please find attached the kernel config.
+> > >
+> > > Thanks,
+> > > Christian
+> > >
+> > > [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
+> > > [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0c5c62ddf88c34bc83b66e4ac9beb2bb0e1887d4
+> > 
+> > Hi All,
+> > 
+> > Many thanks for your nice responses.
+> > 
+> > I bisected today [1]. 0412841812265734c306ba5ef8088bcb64d5d3bd (of/irq:
+> > Allow matching of an interrupt-map local to an interrupt controller) [2] is
+> > the first bad commit.
+> > 
+> > I was able to revert the first bad commit [1]. After a new compiling, the
+> > kernel detects all ATA disks without any problems.
+> > 
+> > I created a patch for an easy reverting the bad commit [1]. With this patch
+> > we can do further our kernel tests.
+> > 
+> > Could you please check the first bad commit [2]?
+> > 
+> > Thanks,
+> > Christian
+> > 
+> > [1] https://forum.hyperion-entertainment.com/viewtopic.php?p=54398#p54398
+> > [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0412841812265734c306ba5ef8088bcb64d5d3bd
+> > 
+> > [+ Marc Zyngier, Alyssa Rosenzweig, Lorenzo Pieralisi, and Rob Herring
+> > because of the first bad commit]
+> 
+> Thank you very much for the bisection and for also testing the revert!
+> 
+> It's easy enough to revert 041284181226 ("of/irq: Allow matching of an
+> interrupt-map local to an interrupt controller"), and it seems like
+> that's what we need to do.  I have it tentatively queued up.
+> 
+> That commit was part of the new support for the Apple M1 PCIe
+> interface, and I don't know what effect a revert will have on that
+> support.  Marc, Alyssa?
 
-I wasn't aware of that.  I reworked some code which used multiple
-of_find_compatible_node() calls before, and noticed the end result
-had grown a lot due to the sheer size of of_device_id
-("[PATCH] soc: renesas: Consolidate product register handling",
- https://lore.kernel.org/all/057721f46c7499de4133135488f0f3da7fb39265.1636570669.git.geert+renesas@glider.be).
+It is going to badly break the M1 support, as we won't be able to take
+interrupts to detect that the PCIe link is up.
 
-> I think that there might be some not-in-tree code that relies on the
-> existing layout. I considered adding a CONFIG_ knob, either for these
-> sizes in particular, or more generally a def_bool y "CONFIG_LEGACY"
-> which embedded folks that build the entire distro from source and don't
-> have any legacy things can turn off, and then get more sensible defaults
-> all around.
+Before we apply a full blown revert and decide that this isn't
+workable (and revert the whole M1 PCIe series, because they are
+otherwise somewhat pointless), I'd like to understand *what* breaks
+exactly.
 
-Most of that should have been gone since the #ifdef KERNEL was removed
-from include/linux/mod_devicetable.h in commit 6543becf26fff612
-("mod/file2alias: make modalias generation safe for cross compiling").
-Of course you can never know for sure...
+Christian, could you point me to the full DT that this machine uses?
+This would help understanding what goes wrong, and cook something for
+you to test.
 
-Gr{oetje,eeting}s,
+Thanks,
 
-                        Geert
+	M.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-- 
+Without deviation from the norm, progress is not possible.
