@@ -1,71 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5613544B996
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 01:30:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CB944B9A5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 01:38:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hpm2f16Gbz3c7X
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 11:30:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HpmDc5rwGz3cPJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 11:38:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HoUfE9FM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ad7CPz9u;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
- helo=mail-pg1-x533.google.com; envelope-from=cgel.zte@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034;
+ helo=mail-pj1-x1034.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=HoUfE9FM; dkim-atps=neutral
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
+ header.s=20210112 header.b=ad7CPz9u; dkim-atps=neutral
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hpm1w3qWgz2xZm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 11:29:22 +1100 (AEDT)
-Received: by mail-pg1-x533.google.com with SMTP id r28so657973pga.0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Nov 2021 16:29:22 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HpmCG2Hg7z2xZm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 11:37:29 +1100 (AEDT)
+Received: by mail-pj1-x1034.google.com with SMTP id
+ gx15-20020a17090b124f00b001a695f3734aso113669pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Nov 2021 16:37:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=AEzErmitUUc1WCRwF90GY08l0xszb/xghqlykO8h5XQ=;
- b=HoUfE9FMPs9FbWg+kuLPHy/L4ScIui5grCU8JXDkrj4jNnMmSBVDJH9ybI+5cI5KyM
- kiyqA9oGfmaiIp0bg7woJAxlerKajDVP0Qk/XBfycWTsDVEnm1Ig5L4uf/WmUu841bRT
- aNkR/veAg2w3ULbimJTbQGJEpcF5Bo9bGvdaS3Hf7dsxkwwBaE7ip0vnfwZv8XFHmCcc
- e57WL3zXoxDqavdn1mSjovQXAXN0QC3Tk6KmEJPh+BtWVmMDtqURDnpB9os97UMcTwr0
- BAlnEEVb28PTC+hW82HQT5m9w4tC7U+/pinOH0TFk24abX3MYyx4ZcJMfaNlYxmeY9Q0
- km0g==
+ bh=fUIfZeEsg24Rg3Y3hTLTmej9xOdZZZMHYvHW6g9p1g0=;
+ b=ad7CPz9u6la29AC50n6shC17hTRQ10Sah6lYgrN5npyWLV5sYsQYCRCBw4I7l+DMoy
+ 7OY7UvY5Qzz+X65dzKc4JxGTrqFNGLiPS66vemeXEJLFqB1wB5Xx0HgZ6Bo54OPPvby8
+ jpg5Iz+vNIvweJmyavU9utyfNsdLiGF2xdpQPX8/ntJR0VByMh5j9uTa8nq5O5tGO253
+ 06XTKifezw923vRWr3kut0LTLXYPZsjU0zLso1Zpf9MazDqVdC8dguHzzouRUYrD0bD2
+ 0HJS6BrLou8s1a3aKdm/YaLBeIs4/PL1YSM5Zausg/406au+EE/0Ko4ecqTJzxYTtFup
+ NLhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=AEzErmitUUc1WCRwF90GY08l0xszb/xghqlykO8h5XQ=;
- b=Q6H6Pv1xCdvmqG5JRLGlbXN9qJrQM2Dv0lOfl4cvKttAcjmIYtC+3XZ5JEw0Llxkjw
- IyScWRTUYVgehC7kNKkMC3KPy39YEJYehdQG33SupvS2sSpk6KQh5D8T+DVRYdt3ENxG
- f0pvQbzGpR/B8TkSbCsbmpwdyAuP7jMWL6ltMMaLrgqj1UQZ6OrW5sXc2ZJD/XtZr7uX
- q0ykTbfFZVcMz7xLbzkKYDvzkxpqGcPn8lxVwLZNjkpzvaU44oxEmYZDHaFASxCXpQAQ
- 2ljQhCFeMEUWV3CVZ41hdOxMkQW2Wc8UCCWgjxIc2RUjZL/V7fviHhuDWcOmZh0nstvn
- /iqw==
-X-Gm-Message-State: AOAM533I/RFEF4ju1j+mAjvb+7uqf1tw8yRpn/HkpCs8hW+CwGuZQ+eM
- 0tp/Y2CPAN5dk03pzdE+VJc=
-X-Google-Smtp-Source: ABdhPJye/VUSnlCLCAknWO+RWaynEg+Kow/VhPktmT23o2DuN4Tmpy6jXdqg82E0C967zkissHr4bg==
-X-Received: by 2002:a05:6a00:1a50:b0:49f:fc2a:fa9f with SMTP id
- h16-20020a056a001a5000b0049ffc2afa9fmr8630020pfv.43.1636504159274; 
- Tue, 09 Nov 2021 16:29:19 -0800 (PST)
-Received: from localhost.localdomain ([193.203.214.57])
- by smtp.gmail.com with ESMTPSA id f185sm9515716pfg.39.2021.11.09.16.29.15
+ bh=fUIfZeEsg24Rg3Y3hTLTmej9xOdZZZMHYvHW6g9p1g0=;
+ b=xI7wMb3A3yuzp+z9V0JZXNVSZQ/U353ERzhowsPEYZ3I4cj+luIml81oC/DgFWmwLW
+ CUvSvM7nijinLPKuYzvacFNhd35+pz0LXuAEwemzJGLsNnzzOpDPT6vjGA+LXU/9c4Ow
+ /WYf9MS1wWIsUY/vgA1a9nBLaPmlplIFo/9/tFKESH5fKatmrGKUBqmDZQZgENVkiq9/
+ Xpxh31EaDfVAqPVkij+kmwn5GmQfFz2bYZNFiBdlb/GgQjpDLY1DsCtAz/EpD2m2yI0Y
+ NmCH2HqkrOGrOehErPdnfuKyyd147Bbt5sFJZFEU+W6CYPzOCke5W6p6kFU4m9bORtJk
+ bYew==
+X-Gm-Message-State: AOAM531qc+8ffy9Z5PjQX3iTLEFbkiQou0LBsUcBQR9NcGSBgoqpROWE
+ p+896YFAHcu+yeQlvAqyWDHbCvXDdB7B9g==
+X-Google-Smtp-Source: ABdhPJwZ7IOpjLDoeXzp0xOz0cHT3kFaoYzRBe0WP7Qkpe7fzxHLTwt5ccIWeSCzpCyQHZHR55MTVg==
+X-Received: by 2002:a17:90b:1d8f:: with SMTP id
+ pf15mr8413519pjb.180.1636504642741; 
+ Tue, 09 Nov 2021 16:37:22 -0800 (PST)
+Received: from tee480.ozlabs.ibm.com
+ (159-196-117-139.9fc475.syd.nbn.aussiebb.net. [159.196.117.139])
+ by smtp.gmail.com with ESMTPSA id t21sm15854074pgo.12.2021.11.09.16.37.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Nov 2021 16:29:18 -0800 (PST)
-From: cgel.zte@gmail.com
-X-Google-Original-From: ye.guojin@zte.com.cn
-To: nicoleotsuka@gmail.com
-Subject: [PATCH] ASoC: imx-hdmi: add put_device() after
- of_find_device_by_node()
-Date: Wed, 10 Nov 2021 00:29:10 +0000
-Message-Id: <20211110002910.134915-1-ye.guojin@zte.com.cn>
+ Tue, 09 Nov 2021 16:37:22 -0800 (PST)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v7 0/5] Use per-CPU temporary mappings for patching on Radix
+ MMU
+Date: Wed, 10 Nov 2021 11:37:12 +1100
+Message-Id: <20211110003717.1150965-1-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -80,42 +81,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com,
- s.hauer@pengutronix.de, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz,
- broonie@kernel.org, linux-imx@nxp.com, kernel@pengutronix.de,
- Ye Guojin <ye.guojin@zte.com.cn>, shawnguo@kernel.org, shengjiu.wang@gmail.com,
- Zeal Robot <zealci@zte.com.cn>, linux-arm-kernel@lists.infradead.org
+Cc: Jordan Niethe <jniethe5@gmail.com>, cmr@bluescreens.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Ye Guojin <ye.guojin@zte.com.cn>
+This is a revision of Chris' series to introduces a per cpu temporary mm to be
+used for patching with strict rwx on radix mmus.
 
-This was found by coccicheck:
-./sound/soc/fsl/imx-hdmi.c,209,1-7,ERROR  missing put_device; call
-of_find_device_by_node on line 119, but without a corresponding object
-release within this function.
+The previous version of the series is here:
+https://lore.kernel.org/linuxppc-dev/20210911022904.30962-1-cmr@bluescreens.de/
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Ye Guojin <ye.guojin@zte.com.cn>
----
- sound/soc/fsl/imx-hdmi.c | 2 ++
- 1 file changed, 2 insertions(+)
+v7: - introduce helper functions for clearing and restoring breakpoint
+      registers when using the temporary mm
+    - use a new patch_instruction_mm() function instead of needing repeated
+      conditionals and a struct to save state to work within
+      do_patch_instruction() 
+    - include a ptesync after setting the pte
 
-diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
-index f10359a28800..929f69b758af 100644
---- a/sound/soc/fsl/imx-hdmi.c
-+++ b/sound/soc/fsl/imx-hdmi.c
-@@ -145,6 +145,8 @@ static int imx_hdmi_probe(struct platform_device *pdev)
- 	data->dai.capture_only = false;
- 	data->dai.init = imx_hdmi_init;
- 
-+	put_device(&cpu_pdev->dev);
-+
- 	if (of_node_name_eq(cpu_np, "sai")) {
- 		data->cpu_priv.sysclk_id[1] = FSL_SAI_CLK_MAST1;
- 		data->cpu_priv.sysclk_id[0] = FSL_SAI_CLK_MAST1;
+Christopher M. Riedl (4):
+  powerpc/64s: Introduce temporary mm for Radix MMU
+  powerpc: Rework and improve STRICT_KERNEL_RWX patching
+  powerpc: Use WARN_ON and fix check in poking_init
+  powerpc/64s: Initialize and use a temporary mm for patching on Radix
+
+Jordan Niethe (1):
+  powerpc: Allow clearing and restoring registers independent of saved
+    breakpoint state
+
+ arch/powerpc/include/asm/debug.h |   2 +
+ arch/powerpc/kernel/process.c    |  36 ++++++-
+ arch/powerpc/lib/code-patching.c | 162 +++++++++++++++++++++++++++----
+ 3 files changed, 176 insertions(+), 24 deletions(-)
+
 -- 
 2.25.1
 
