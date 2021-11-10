@@ -1,115 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F94544BAC4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 05:01:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4DA44BBEA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 08:02:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HprkL1LD3z30R2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 15:01:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hpwlw1L5yz300S
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 18:02:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=wdc.com header.i=@wdc.com header.a=rsa-sha256 header.s=dkim.wdc.com header.b=rQFHfSVc;
-	dkim=pass (2048-bit key; unprotected) header.d=opensource.wdc.com header.i=@opensource.wdc.com header.a=rsa-sha256 header.s=dkim header.b=RYPFs49v;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oIuqIzxh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=opensource.wdc.com (client-ip=216.71.153.141;
- helo=esa3.hgst.iphmx.com;
- envelope-from=prvs=941a94e4b=damien.lemoal@opensource.wdc.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d;
+ helo=mail-pj1-x102d.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=wdc.com header.i=@wdc.com header.a=rsa-sha256
- header.s=dkim.wdc.com header.b=rQFHfSVc; 
- dkim=pass (2048-bit key;
- unprotected) header.d=opensource.wdc.com header.i=@opensource.wdc.com
- header.a=rsa-sha256 header.s=dkim header.b=RYPFs49v; 
- dkim-atps=neutral
-X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir;
- Wed, 10 Nov 2021 14:53:26 AEDT
-Received: from esa3.hgst.iphmx.com (esa3.hgst.iphmx.com [216.71.153.141])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=oIuqIzxh; dkim-atps=neutral
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
+ [IPv6:2607:f8b0:4864:20::102d])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HprYL04Lsz2xZp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 14:53:25 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
- t=1636516404; x=1668052404;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=DuAMezrT6YElGWjfcaouVYsLWg9EC32l6gp1Eic4vso=;
- b=rQFHfSVcWxj4GY0RnXMxT4IKVFTqEoM3kTV2xKMSMPUJMd/jXjy5bPGJ
- VQkYrvVNB9UXoGCvZUE31vB/HGicXZo+MdeyawiR7+J3oOE62sAvOWI2y
- 26ftoAC9soekOPI37JynxwAzfnC82GKK7FBtEK2cqznOVEod5TrtW3t+2
- CxdVbuspChwJOzDmin7QInShuR0MQE1IFB76ppX2/0DrwFiLyRDo9pe1o
- yo1P/X5fXUVKfFrWSIWwsGT6knZK8Ng+lo+aolJ2G771kRuwifjh9qGWL
- mOw44AJD6kVGaX5+K8J85GQiHfmj+uz1w0ejhaSOp0P9a85ZYzUA0sYw7 w==;
-X-IronPort-AV: E=Sophos;i="5.87,222,1631548800"; d="scan'208";a="189995489"
-Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com)
- ([199.255.45.14])
- by ob1.hgst.iphmx.com with ESMTP; 10 Nov 2021 11:52:14 +0800
-IronPort-SDR: d+9iVRCnkHxspzrKEkcjgyPGadPDg2Ek2NBLgvyZTtV9d8Z/ADr0+S20W0llHJs6ILIOZlynSc
- MHDI2qiwAudzXazSIofRVqKEsSsukSuDSybJazx6StWKF9N+DOvcsp/sjbGfOrxssYQY3Icu0s
- Qg0X9Qe7UXGwNUiPsaK5iBPlSaADAc/yOv/J+Cusx5fclQyT4ZKRx3WQjpIwWncIQBqbnqIXfd
- /+GW991jUlD5Bh3kADbVfUzzDckfDBNaX1H1N7sos1uxNW3V++cCBCtycrb2uua9Q4esHsYznA
- znpZ3SiDXXImlmYv1tGUqw9f
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
- by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Nov 2021 19:27:27 -0800
-IronPort-SDR: g9YX+qKOQKgjQ9Ab9mpQVdWG1i/+vsxL85zDvdiLxFz7aYz1xQHqY9ZBKPWm7vnKF+hjddO4I0
- bsWF/+OmZ5TbvuDAX2P+gmX28r4XvshjmRtC98ksKPEyMIdAxAnlcpj/jAwcog+YQ0wTEB7PsT
- BUUQI91PdZcDyXZ4VKb6RFJIduJoWLtoB0DE7jCfosMx5Y8Wf2gvkVxmJtwc85Z3BMd2B7HVXR
- gcpk7Byv+94u5E/2s9+viHgJlpK9+7cvZomT6stWarw67RifAptcGB7dS5D22dDAI+zkMZF/Ph
- cyY=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
- by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Nov 2021 19:52:17 -0800
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
- by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4HprX007Wcz1RtW0
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Nov 2021 19:52:16 -0800 (PST)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
- reason="pass (just generated, assumed good)"
- header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
- opensource.wdc.com; h=content-transfer-encoding:content-type
- :in-reply-to:organization:from:references:to:content-language
- :subject:user-agent:mime-version:date:message-id; s=dkim; t=
- 1636516335; x=1639108336; bh=DuAMezrT6YElGWjfcaouVYsLWg9EC32l6gp
- 1Eic4vso=; b=RYPFs49vzwxp0oMnq9sUK738LPySWseLC0OQhhJx9NJE9pX+fW1
- Z4y1vbS8Fvx9NlZUIwa0t5kBjprR71owWAt7cBpZEmENXFZAyM67IUiq4s2HNaF2
- IP6w6CBgXm0Pk1Fw2HWof88vKqv9lkniSyE86S84Bz8Etx6uEC5QIxCdfHOggBSr
- WHS9p6I5VljdjdGxdAt7epr/7Q/Ljsl0aXMUEkMYxPn+7dyxJj+cCJFRPXmqVGZI
- wkS+vxL9lZslFy2SMxGPKCGfc5wdQb0j+t0EUs4bEx9v9RMf7NGhoiNd0IYzkeiv
- HFToCGtzQkUwZucbvsuhL29MlGPVuOUy0qQ==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
- by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new,
- port 10026)
- with ESMTP id tqvobb8gv_tB for <linuxppc-dev@lists.ozlabs.org>;
- Tue,  9 Nov 2021 19:52:15 -0800 (PST)
-Received: from [10.89.81.216] (c02drav6md6t.dhcp.fujisawa.hgst.com
- [10.89.81.216])
- by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4HprWw57j3z1RtVl;
- Tue,  9 Nov 2021 19:52:12 -0800 (PST)
-Message-ID: <1400f0f2-9247-6540-2685-be257d9ef243@opensource.wdc.com>
-Date: Wed, 10 Nov 2021 12:52:09 +0900
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HpwlF4SXSz2xX1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 18:02:15 +1100 (AEDT)
+Received: by mail-pj1-x102d.google.com with SMTP id
+ w33-20020a17090a6ba400b001a722a06212so1234877pjj.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Nov 2021 23:02:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=iEQw175G/AjEScvmrBEopwSyooATcYYTR6Pr8u+AOkU=;
+ b=oIuqIzxhjArgPzikHG1UhQ1J/ib22YGFL+AcWj/4N8h0kjH51CPz2D1TP6zYYGEl8c
+ mZyTgHzhPikW0tx9GII/HtXK9z7w843KkX24hl4plXoG/MirRJf2Ycl58+7uYgSHuV32
+ saoG8UVyWo/XJvISAfLRkh/EZqu2mVFFxgs2+6ebZIuO5IR9Rn5wpXCbGmk7xTvMo8Kj
+ tc5IIb8v9E9DzgZqpt0I/mdeOFUJ8/K8lplycOzxle43AFnrRmH8hlxHwGv838rkBxTG
+ YTm3I1SD1MoBbGMBNRTyggdMzF6E7dodEf898zmaN9r4COlIgN2LLvx5QNcO33pY87iR
+ ZXEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=iEQw175G/AjEScvmrBEopwSyooATcYYTR6Pr8u+AOkU=;
+ b=v7gqgXcVcRXIRA1eFD3oVvEVGAgK/O2bUZvukve6c64+btijHj3GgiCDXugqiAc6RP
+ PKcCzI0M6p2ZrS0qLWarcGrLsBe6U6mf2HuLMoBBVe5qQXvlnL4OkTUlpuyPe5N8fFjB
+ NRv34NIaYE8LE645EmDrkg7u/viZ5R+RkTy10znDTKB33uTafnUYfn3I6/uE6RU60zEA
+ XtnxBJdBAdF1XV/miK4VaLZCggPtOuGF8TJFpyFI+vmuDuxI4JenaCWrO2rl6avFxTCT
+ mCb2Ik95/iSsyZV5wmCYX+7lefoABmsyiZVLR2c1xXhaA+3zKv6pvu3IkOQ5G2sAJTxy
+ fuGg==
+X-Gm-Message-State: AOAM532KDiTCH0fEt0r1skEhF+qTod8OdjQXJMDmhGp6QOjKVLHmwdt2
+ xBB6e957wWfEPYXfu5pi4lE=
+X-Google-Smtp-Source: ABdhPJy2VeJrQarfOSDuQ3JSBZM57QB5t37a3Ed6VgrGVP1Jn2JgAqcY9YIxtuKnEqEek0ype+LXKA==
+X-Received: by 2002:a17:90a:ec05:: with SMTP id
+ l5mr14634284pjy.68.1636527731991; 
+ Tue, 09 Nov 2021 23:02:11 -0800 (PST)
+Received: from localhost (60-241-46-56.tpgi.com.au. [60.241.46.56])
+ by smtp.gmail.com with ESMTPSA id v22sm21371041pff.93.2021.11.09.23.02.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Nov 2021 23:02:11 -0800 (PST)
+Date: Wed, 10 Nov 2021 17:02:06 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v1] powerpc/64s: Get LPID bit width from device tree
+To: Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20211109060716.1977825-1-npiggin@gmail.com>
+ <87lf1xowmu.fsf@linux.ibm.com>
+In-Reply-To: <87lf1xowmu.fsf@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.3.0
-Subject: Re: [PASEMI] Nemo board doesn't recognize any ATA disks with the
- pci-v5.16 updates
-Content-Language: en-US
-To: =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
- Bjorn Helgaas <helgaas@kernel.org>
-References: <ee3884db-da17-39e3-4010-bcc8f878e2f6@xenosoft.de>
- <20211109165848.GA1155989@bhelgaas> <YYr4x1xWfptXRmqt@rocinante>
-From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital
-In-Reply-To: <YYr4x1xWfptXRmqt@rocinante>
+Message-Id: <1636526558.bfnkmjwf41.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Wed, 10 Nov 2021 15:00:36 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -121,131 +82,215 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, Darren Stevens <darren@stevens-zone.net>,
- mad skateman <madskateman@gmail.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- Olof Johansson <olof@lixom.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Christian Zigotzky <chzigotzky@xenosoft.de>,
- "bhelgaas@google.com >> Bjorn Helgaas" <bhelgaas@google.com>,
- Matthew Leaman <matthew@a-eon.biz>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021/11/10 7:40, Krzysztof Wilczy=C5=84ski wrote:
-> [+CC Adding Jens and Damien to get their opinion about the problem at h=
-and]
+Excerpts from Fabiano Rosas's message of November 10, 2021 7:19 am:
+> Nicholas Piggin <npiggin@gmail.com> writes:
 >=20
-> Hello Jens and Damien,
->=20
-> Sorry to bother both of you, but we are having a problem that most
-> definitely requires someone with an extensive expertise in storage,
-> as per the quoted message from Christian below:
->=20
->>>> The Nemo board [1] doesn't recognize any ATA disks with the pci-v5.1=
-6
->>>> updates [2].
->>>>
->>>> Error messages:
->>>>
->>>> ata4.00: gc timeout cmd 0xec
->>>> ata4.00: failed to IDENTIFY (I/O error, error_mask=3D0x4)
->>>> ata1.00: gc timeout cmd 0xec
->>>> ata1.00: failed to IDENTIFY (I/O error, error_mask=3D0x4)
->>>> ata3.00: gc timeout cmd 0xec
->>>> ata3.00: failed to IDENTIFY (I/O error, error_mask=3D0x4)
-
-IDENTIFY is the first command sent to a device when it is being probed. T=
-his
-means that at least the AHCI (is it AHCI ?) adapter found the ports and d=
-rives
-connected. But the qc timeout indicates that there is no response from th=
-e
-drive. This could be due to interrupts not being received for the command
-completion. One thing to try would be to increase the identify command ti=
-meout
-to see things simply got slow (for whatever reason) or if indeed there is=
- no
-response at all. Note that after the first timeout, normally the port is =
-reset
-and the command retried. That does not seem to be the case here. Weird...
-
-Maybe try something like this:
-
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 1d4a6f1e88cd..16e105bcb899 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -79,7 +79,7 @@ enum {
-  * take an exceptionally long time to recover from reset.
-  */
- static const unsigned long ata_eh_reset_timeouts[] =3D {
--       10000,  /* most drives spin up by 10sec */
-+       30000,  /* most drives spin up by 10sec */
-        10000,  /* > 99% working drives spin up before 20sec */
-        35000,  /* give > 30 secs of idleness for outlier devices */
-         5000,  /* and sweet one last chance */
-
-Also note that I posted a patch a couple of days ago fixing a qc timeout =
-for
-read log commands during device probe. This is not what you are hitting h=
-ere
-though. I have not yet sent this to Linus.
-
-https://lore.kernel.org/linux-ide/20211105073106.422623-1-damien.lemoal@o=
-pensource.wdc.com/
-
-
-
->=20
-> The error message is also not very detailed and we aren't really sure w=
-hat
-> the issue coming from the PCI sub-system might be causing or leading to
-> this.
->=20
->>>>
->>>> I was able to revert the new pci-v5.16 updates [2]. After a new comp=
-iling,
->>>> the kernel recognize all ATA disks correctly.
->>>>
->>>> Could you please check the pci-v5.16 updates [2]?
->>>>
->>>> Please find attached the kernel config.
->>>>
->>>> Thanks,
->>>> Christian
->>>>
->>>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
->>>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.g=
-it/commit/?id=3D0c5c62ddf88c34bc83b66e4ac9beb2bb0e1887d4
+>> Allow the LPID bit width and partition table size to be set at runtime
+>> from the device tree.
 >>
->> Sorry for the breakage, and thank you very much for the report.  Can
->> you please collect the complete dmesg logs before and after the
->> pci-v5.16 changes and the "sudo lspci -vv" output from before the
->> changes?
+>> Move the PID bit width detection into the same place.
 >>
->> You can attach them at https://bugzilla.kernel.org if you don't have
->> a better place to put them.
+>> KVM does not support using the extra bits yet, this is mainly required
+>> to get the PTCR register values correct.
 >>
->> You could attach the kernel config there, too, since it didn't make it
->> to the mailing list (vger may discard them -- see
->> http://vger.kernel.org/majordomo-info.html).
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>  arch/powerpc/include/asm/book3s/64/mmu.h  |  9 ++---
+>>  arch/powerpc/include/asm/kvm_book3s_asm.h |  6 +++-
+>>  arch/powerpc/include/asm/reg.h            |  2 --
+>>  arch/powerpc/mm/book3s64/pgtable.c        |  5 ---
+>>  arch/powerpc/mm/book3s64/radix_pgtable.c  | 13 +------
+>>  arch/powerpc/mm/init_64.c                 | 44 +++++++++++++++++++++++
+>>  6 files changed, 55 insertions(+), 24 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/inc=
+lude/asm/book3s/64/mmu.h
+>> index c02f42d1031e..8c500dd6fee4 100644
+>> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
+>> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+>> @@ -62,6 +62,9 @@ extern struct patb_entry *partition_tb;
+>>  #define PRTS_MASK	0x1f		/* process table size field */
+>>  #define PRTB_MASK	0x0ffffffffffff000UL
+>>
+>> +/* Number of supported LPID bits */
+>> +extern unsigned int mmu_lpid_bits;
+>> +
+>>  /* Number of supported PID bits */
+>>  extern unsigned int mmu_pid_bits;
+>>
+>> @@ -76,10 +79,8 @@ extern unsigned long __ro_after_init radix_mem_block_=
+size;
+>>  #define PRTB_SIZE_SHIFT	(mmu_pid_bits + 4)
+>>  #define PRTB_ENTRIES	(1ul << mmu_pid_bits)
+>>
+>> -/*
+>> - * Power9 currently only support 64K partition table size.
+>> - */
+>> -#define PATB_SIZE_SHIFT	16
+>> +#define PATB_SIZE_SHIFT	(mmu_lpid_bits + 4)
+>> +#define PATB_ENTRIES	(1ul << mmu_lpid_bits)
+>>
+>>  typedef unsigned long mm_context_id_t;
+>>  struct spinlock;
+>> diff --git a/arch/powerpc/include/asm/kvm_book3s_asm.h b/arch/powerpc/in=
+clude/asm/kvm_book3s_asm.h
+>> index b6d31bff5209..4d93e09a1ab9 100644
+>> --- a/arch/powerpc/include/asm/kvm_book3s_asm.h
+>> +++ b/arch/powerpc/include/asm/kvm_book3s_asm.h
+>> @@ -15,7 +15,11 @@
+>>  #define XICS_IPI		2	/* interrupt source # for IPIs */
+>>
+>>  /* LPIDs we support with this build -- runtime limit may be lower */
+>> -#define KVMPPC_NR_LPIDS			(LPID_RSVD + 1)
+>> +#define KVMPPC_NR_LPIDS		(1ul << 12)
+>> +
+>> +/* Reserved LPID for partn switching */
+>> +#define   LPID_RSVD_POWER7	((1ul << 10) - 1)
+>> +#define   LPID_RSVD		(KVMPPC_NR_LPIDS - 1)
+>>
+>>  /* Maximum number of threads per physical core */
+>>  #define MAX_SMT_THREADS		8
+>> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/r=
+eg.h
+>> index e9d27265253b..30983f2fd6a4 100644
+>> --- a/arch/powerpc/include/asm/reg.h
+>> +++ b/arch/powerpc/include/asm/reg.h
+>> @@ -474,8 +474,6 @@
+>>  #ifndef SPRN_LPID
+>>  #define SPRN_LPID	0x13F	/* Logical Partition Identifier */
+>>  #endif
+>> -#define   LPID_RSVD_POWER7	0x3ff	/* Reserved LPID for partn switching *=
+/
+>> -#define   LPID_RSVD		0xfff	/* Reserved LPID for partn switching */
+>>  #define	SPRN_HMER	0x150	/* Hypervisor maintenance exception reg */
+>>  #define   HMER_DEBUG_TRIG	(1ul << (63 - 17)) /* Debug trigger */
+>>  #define	SPRN_HMEER	0x151	/* Hyp maintenance exception enable reg */
+>> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s=
+64/pgtable.c
+>> index 9e16c7b1a6c5..13d1fbddecb9 100644
+>> --- a/arch/powerpc/mm/book3s64/pgtable.c
+>> +++ b/arch/powerpc/mm/book3s64/pgtable.c
+>> @@ -207,17 +207,12 @@ void __init mmu_partition_table_init(void)
+>>  	unsigned long patb_size =3D 1UL << PATB_SIZE_SHIFT;
+>>  	unsigned long ptcr;
+>>
+>> -	BUILD_BUG_ON_MSG((PATB_SIZE_SHIFT > 36), "Partition table size too lar=
+ge.");
+>>  	/* Initialize the Partition Table with no entries */
+>>  	partition_tb =3D memblock_alloc(patb_size, patb_size);
+>>  	if (!partition_tb)
+>>  		panic("%s: Failed to allocate %lu bytes align=3D0x%lx\n",
+>>  		      __func__, patb_size, patb_size);
+>>
+>> -	/*
+>> -	 * update partition table control register,
+>> -	 * 64 K size.
+>> -	 */
+>>  	ptcr =3D __pa(partition_tb) | (PATB_SIZE_SHIFT - 12);
+>>  	set_ptcr_when_no_uv(ptcr);
+>>  	powernv_set_nmmu_ptcr(ptcr);
+>> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/=
+book3s64/radix_pgtable.c
+>> index ae20add7954a..1c855434f8dc 100644
+>> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+>> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+>> @@ -33,7 +33,6 @@
+>>
+>>  #include <trace/events/thp.h>
+>>
+>> -unsigned int mmu_pid_bits;
+>>  unsigned int mmu_base_pid;
+>>  unsigned long radix_mem_block_size __ro_after_init;
+>>
+>> @@ -357,18 +356,13 @@ static void __init radix_init_pgtable(void)
+>>  						-1, PAGE_KERNEL));
+>>  	}
+>>
+>> -	/* Find out how many PID bits are supported */
+>>  	if (!cpu_has_feature(CPU_FTR_HVMODE) &&
+>>  			cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
+>>  		/*
+>>  		 * Older versions of KVM on these machines perfer if the
+>>  		 * guest only uses the low 19 PID bits.
+>>  		 */
+>> -		if (!mmu_pid_bits)
+>> -			mmu_pid_bits =3D 19;
+>> -	} else {
+>> -		if (!mmu_pid_bits)
+>> -			mmu_pid_bits =3D 20;
+>> +		mmu_pid_bits =3D 19;
+>>  	}
+>>  	mmu_base_pid =3D 1;
+>>
+>> @@ -449,11 +443,6 @@ static int __init radix_dt_scan_page_sizes(unsigned=
+ long node,
+>>  	if (type =3D=3D NULL || strcmp(type, "cpu") !=3D 0)
+>>  		return 0;
+>>
+>> -	/* Find MMU PID size */
+>> -	prop =3D of_get_flat_dt_prop(node, "ibm,mmu-pid-bits", &size);
+>> -	if (prop && size =3D=3D 4)
+>> -		mmu_pid_bits =3D be32_to_cpup(prop);
+>> -
+>>  	/* Grab page size encodings */
+>>  	prop =3D of_get_flat_dt_prop(node, "ibm,processor-radix-AP-encodings",=
+ &size);
+>>  	if (!prop)
+>> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+>> index 386be136026e..7d5a6cb7c76d 100644
+>> --- a/arch/powerpc/mm/init_64.c
+>> +++ b/arch/powerpc/mm/init_64.c
+>> @@ -370,6 +370,9 @@ void register_page_bootmem_memmap(unsigned long sect=
+ion_nr,
+>>  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+>>
+>>  #ifdef CONFIG_PPC_BOOK3S_64
+>> +unsigned int mmu_lpid_bits;
+>> +unsigned int mmu_pid_bits;
+>> +
+>>  static bool disable_radix =3D !IS_ENABLED(CONFIG_PPC_RADIX_MMU_DEFAULT)=
+;
+>>
+>>  static int __init parse_disable_radix(char *p)
+>> @@ -437,12 +440,53 @@ static void __init early_check_vec5(void)
+>>  	}
+>>  }
+>>
+>> +static int __init dt_scan_mmu_pid_width(unsigned long node,
+>> +					   const char *uname, int depth,
+>> +					   void *data)
+>> +{
+>> +	int size =3D 0;
+>> +	const __be32 *prop;
+>> +	const char *type =3D of_get_flat_dt_prop(node, "device_type", NULL);
+>> +
+>> +	/* We are scanning "cpu" nodes only */
+>> +	if (type =3D=3D NULL || strcmp(type, "cpu") !=3D 0)
+>> +		return 0;
+>> +
+>> +	/* Find MMU LPID, PID register size */
+>> +	prop =3D of_get_flat_dt_prop(node, "ibm,mmu-lpid-bits", &size);
+>> +	if (prop && size =3D=3D 4)
+>> +		mmu_lpid_bits =3D be32_to_cpup(prop);
+>> +
+>> +	prop =3D of_get_flat_dt_prop(node, "ibm,mmu-pid-bits", &size);
+>> +	if (prop && size =3D=3D 4)
+>> +		mmu_pid_bits =3D be32_to_cpup(prop);
+>> +
+>> +	if (!mmu_pid_bits && !mmu_lpid_bits)
+>> +		return 0;
 >=20
-> Bjorn and I looked at which commits that went with a recent Pull Reques=
-t
-> from us might be causing this, but we are a little bit at loss, and wer=
-e
-> hoping that you could give us a hand in troubleshooting this.
->=20
-> Thank you in advance!
->=20
-> 	Krzysztof
->=20
->=20
+> What if only one of the properties is present?
 
+Ah that may be a problem because the below fallback would not set the=20
+other one that was not found (e.g., some firmware might only give us
+ibm,mmu-pid-bits because that was defined earlier).
 
---=20
-Damien Le Moal
-Western Digital Research
+I will respin.
+
+Thanks,
+Nick
