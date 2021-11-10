@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CCBD44CA9C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 21:27:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F96844CA9E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 21:27:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqGbn0fm4z3cmJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 07:27:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HqGcM363Zz3dct
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 07:27:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -14,21 +14,21 @@ Authentication-Results: lists.ozlabs.org;
  (client-ip=217.140.110.172; helo=foss.arm.com;
  envelope-from=valentin.schneider@arm.com; receiver=<UNKNOWN>)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4HqGZ33kLhz2yPg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 07:25:31 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4HqGZ61Rp1z2ywZ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 07:25:33 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 05175143B;
- Wed, 10 Nov 2021 12:25:30 -0800 (PST)
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 78FE01474;
+ Wed, 10 Nov 2021 12:25:32 -0800 (PST)
 Received: from e113632-lin.cambridge.arm.com (e113632-lin.cambridge.arm.com
  [10.1.196.57])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BEBB43F5A1;
- Wed, 10 Nov 2021 12:25:27 -0800 (PST)
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3B4283F5A1;
+ Wed, 10 Nov 2021 12:25:30 -0800 (PST)
 From: Valentin Schneider <valentin.schneider@arm.com>
 To: linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
  linuxppc-dev@lists.ozlabs.org, linux-kbuild@vger.kernel.org
-Subject: [PATCH v2 3/5] powerpc: Use preemption model accessors
-Date: Wed, 10 Nov 2021 20:24:46 +0000
-Message-Id: <20211110202448.4054153-4-valentin.schneider@arm.com>
+Subject: [PATCH v2 4/5] kscan: Use preemption model accessors
+Date: Wed, 10 Nov 2021 20:24:47 +0000
+Message-Id: <20211110202448.4054153-5-valentin.schneider@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211110202448.4054153-1-valentin.schneider@arm.com>
 References: <20211110202448.4054153-1-valentin.schneider@arm.com>
@@ -60,41 +60,31 @@ Per PREEMPT_DYNAMIC, checking CONFIG_PREEMPT doesn't tell you the actual
 preemption model of the live kernel. Use the newly-introduced accessors
 instead.
 
-sched_init() -> preempt_dynamic_init() happens way before IRQs are set up,
-so this should be fine.
-
 Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
 ---
- arch/powerpc/kernel/interrupt.c | 2 +-
- arch/powerpc/kernel/traps.c     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ kernel/kcsan/kcsan_test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index de10a2697258..c56c10b59be3 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -552,7 +552,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
- 		/* Returning to a kernel context with local irqs enabled. */
- 		WARN_ON_ONCE(!(regs->msr & MSR_EE));
- again:
--		if (IS_ENABLED(CONFIG_PREEMPT)) {
-+		if (is_preempt_full()) {
- 			/* Return to preemptible kernel context */
- 			if (unlikely(current_thread_info()->flags & _TIF_NEED_RESCHED)) {
- 				if (preempt_count() == 0)
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index aac8c0412ff9..1cb31bbdc925 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -265,7 +265,7 @@ static int __die(const char *str, struct pt_regs *regs, long err)
- 	printk("%s PAGE_SIZE=%luK%s%s%s%s%s%s %s\n",
- 	       IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) ? "LE" : "BE",
- 	       PAGE_SIZE / 1024, get_mmu_str(),
--	       IS_ENABLED(CONFIG_PREEMPT) ? " PREEMPT" : "",
-+	       is_preempt_full() ? " PREEMPT" : "",
- 	       IS_ENABLED(CONFIG_SMP) ? " SMP" : "",
- 	       IS_ENABLED(CONFIG_SMP) ? (" NR_CPUS=" __stringify(NR_CPUS)) : "",
- 	       debug_pagealloc_enabled() ? " DEBUG_PAGEALLOC" : "",
+diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
+index dc55fd5a36fc..14d811eb9a21 100644
+--- a/kernel/kcsan/kcsan_test.c
++++ b/kernel/kcsan/kcsan_test.c
+@@ -1005,13 +1005,13 @@ static const void *nthreads_gen_params(const void *prev, char *desc)
+ 	else
+ 		nthreads *= 2;
+ 
+-	if (!IS_ENABLED(CONFIG_PREEMPT) || !IS_ENABLED(CONFIG_KCSAN_INTERRUPT_WATCHER)) {
++	if (!is_preempt_full() || !IS_ENABLED(CONFIG_KCSAN_INTERRUPT_WATCHER)) {
+ 		/*
+ 		 * Without any preemption, keep 2 CPUs free for other tasks, one
+ 		 * of which is the main test case function checking for
+ 		 * completion or failure.
+ 		 */
+-		const long min_unused_cpus = IS_ENABLED(CONFIG_PREEMPT_NONE) ? 2 : 0;
++		const long min_unused_cpus = is_preempt_none() ? 2 : 0;
+ 		const long min_required_cpus = 2 + min_unused_cpus;
+ 
+ 		if (num_online_cpus() < min_required_cpus) {
 -- 
 2.25.1
 
