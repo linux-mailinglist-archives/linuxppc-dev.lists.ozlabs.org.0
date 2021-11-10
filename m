@@ -2,97 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03C544C85B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 20:02:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E171844C87E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 20:08:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqDkc4jV9z3bN8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 06:02:48 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Vm4pO5Qa;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HqDrs634xz3c6j
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 06:08:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Vm4pO5Qa; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.222.49; helo=mail-ua1-f49.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com
+ [209.85.222.49])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HqDjn6pbgz2xgb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 06:02:04 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AAIlE6s010235; 
- Wed, 10 Nov 2021 19:01:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=bEZobj7RwXt/DUC6+of4EuWiJDtav/P0WFoz/EtcnkY=;
- b=Vm4pO5QaYv4/aMQnSVjO5Rd7tj5PQ52jtdbPIUM9deKXujK1BNX8RASDAVqsHYTSyS5O
- mvplDyd9TEaX9H1RFWStWnq2WdexlGnAQjxmOuUcZ+qlhCOoPmhpsoWD60/ZdqWxvD8Y
- 0b8BQvpKtoNIdWc4GjQgqIWOMw5iZJZI4qX9MGgCrfUQBxnLHNERYxglVuNL00XIcSCH
- bSDyWBILQEC3juLhR4J2eZBdEmnlkIwXJZ8eNRm0nonZ3EnGKFreVfcKkHfgD2r/uK9N
- U8XIXUCD7GLtdZ+Qwa+wsSPYsZAByZur7yKI3HONFRSYltwFpV03VweTJ07Dkv/E3yse lw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3c8knu891q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Nov 2021 19:01:56 +0000
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AAInxnq015955;
- Wed, 10 Nov 2021 19:01:56 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3c8knu8914-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Nov 2021 19:01:56 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AAIv76i032251;
- Wed, 10 Nov 2021 19:01:54 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma04ams.nl.ibm.com with ESMTP id 3c5hbanup3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Nov 2021 19:01:53 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 1AAItAvr62783946
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Nov 2021 18:55:10 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 28BEDAE06E;
- Wed, 10 Nov 2021 19:01:50 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E052BAE065;
- Wed, 10 Nov 2021 19:01:47 +0000 (GMT)
-Received: from hbathini-workstation.ibm.com.com (unknown [9.43.105.81])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 10 Nov 2021 19:01:47 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] ppc64/fadump: fix inaccurate CPU state info in vmcore
- generated with panic
-Date: Thu, 11 Nov 2021 00:31:43 +0530
-Message-Id: <20211110190143.186346-1-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HqDrR2gYbz2xDT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 06:07:49 +1100 (AEDT)
+Received: by mail-ua1-f49.google.com with SMTP id ay21so6909440uab.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 11:07:49 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=JVkOVIMojOtjUqioksXn7GnT56ja9tgOLgQ+4277MEE=;
+ b=uDx8NkfBxkkmGO2o51X/55tu3JhsUQTDFivtUxA01PNKnp/8NdoHGSenWY74x0/SsE
+ uI+wLMAKXb8xKCzwUSL6pD+MxvHDqjGnmguZqcQ0sZWaGEKAXg+eEUHzrEnUyRoh0A3p
+ YavhGVGEsdDscHcHbwZUCDyFNpE4r0M9XMfNISeMGtQGaK5v1FUtEWvtJ18I6Bi4g2FN
+ 5ghnEVGyUkz5HbbI1fTFOXSlUkrbnuHpLb0rh8+ZKARfjGBUDEvWkJVaNZyuVTJ1pmhj
+ ONOZJI3t1AkargILWSloDG0W2JxYiiaue29/9HU2i5tAs/4NU/2GUFe/H0Br8LgACZ1R
+ I74A==
+X-Gm-Message-State: AOAM530Hg/Y+s/bijUGqIUXkWHXVH4oXu/AstXO6X+5DI2aZPpbRWiIm
+ SiwCMLhuoDTZLfamesqRDSXJOeFHeKrRHg==
+X-Google-Smtp-Source: ABdhPJxwychUBp7BMLdYUL82kp+mptFdWE+UV53HDXI5gl16psotS/xWZEIp+dXXpHXMaja/Y804pg==
+X-Received: by 2002:a67:782:: with SMTP id 124mr1711372vsh.24.1636571265923;
+ Wed, 10 Nov 2021 11:07:45 -0800 (PST)
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com.
+ [209.85.222.52])
+ by smtp.gmail.com with ESMTPSA id g187sm539782vsc.10.2021.11.10.11.07.45
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 10 Nov 2021 11:07:45 -0800 (PST)
+Received: by mail-ua1-f52.google.com with SMTP id b17so7067002uas.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 11:07:45 -0800 (PST)
+X-Received: by 2002:a05:6102:2910:: with SMTP id
+ cz16mr2351290vsb.9.1636571265036; 
+ Wed, 10 Nov 2021 11:07:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dVA5KCPvJ-y42pJmqGpX9HvO0DPWluEC
-X-Proofpoint-ORIG-GUID: tVXYrv7PPEyMBfa1q6vuqAIRR0ffE7ev
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-10_07,2021-11-08_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 priorityscore=1501
- malwarescore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
- mlxlogscore=860 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2111100092
+References: <ef59d6fd3b2201b912d5eaa7f7a037d8f9adb744.1636561068.git.geert+renesas@glider.be>
+ <ddcfa4b9-f7f4-04f5-89f2-b04c284e1945@prevas.dk>
+In-Reply-To: <ddcfa4b9-f7f4-04f5-89f2-b04c284e1945@prevas.dk>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 10 Nov 2021 20:07:33 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdX_h9Tz8C-2SYyrS_G5BBbBNctqRA1mgKbhmYJxWzF-hg@mail.gmail.com>
+Message-ID: <CAMuHMdX_h9Tz8C-2SYyrS_G5BBbBNctqRA1mgKbhmYJxWzF-hg@mail.gmail.com>
+Subject: Re: [PATCH/RFC] of: Shrink struct of_device_id
+To: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,110 +70,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hari Bathini <hbathini@linux.ibm.com>, sourabhjain@linux.ibm.com,
- mahesh@linux.ibm.com, npiggin@gmail.com
+Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ Frank Rowand <frowand.list@gmail.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In panic path, fadump is triggered via a panic notifier function.
-Before calling panic notifier functions, smp_send_stop() gets called,
-which stops all CPUs except the panic'ing CPU. Commit 8389b37dffdc
-("powerpc: stop_this_cpu: remove the cpu from the online map.") and
-again commit bab26238bbd4 ("powerpc: Offline CPU in stop_this_cpu()")
-started marking CPUs as offline while stopping them. So, if a kernel
-has either of the above commits, vmcore captured with fadump via panic
-path would show only the panic'ing CPU as online. Sample output of
-crash-utility with such vmcore:
+Hi Rasmus,
 
-  # crash vmlinux vmcore
-  ...
-        KERNEL: vmlinux
-      DUMPFILE: vmcore  [PARTIAL DUMP]
-          CPUS: 1
-          DATE: Wed Nov 10 09:56:34 EST 2021
-        UPTIME: 00:00:42
-  LOAD AVERAGE: 2.27, 0.69, 0.24
-         TASKS: 183
-      NODENAME: XXXXXXXXX
-       RELEASE: 5.15.0+
-       VERSION: #974 SMP Wed Nov 10 04:18:19 CST 2021
-       MACHINE: ppc64le  (2500 Mhz)
-        MEMORY: 8 GB
-         PANIC: "Kernel panic - not syncing: sysrq triggered crash"
-           PID: 3394
-       COMMAND: "bash"
-          TASK: c0000000150a5f80  [THREAD_INFO: c0000000150a5f80]
-           CPU: 1
-         STATE: TASK_RUNNING (PANIC)
+On Wed, Nov 10, 2021 at 5:51 PM Rasmus Villemoes
+<rasmus.villemoes@prevas.dk> wrote:
+> On 10/11/2021 17.23, Geert Uytterhoeven wrote:
+> > Currently struct of_device_id is 196 (32-bit) or 200 (64-bit) bytes
+> > large.  It contains fixed-size strings for a name, a type, and a
+> > compatible value, but the first two are barely used.
+> > OF device ID tables contain multiple entries, plus an empty sentinel
+> > entry.
+> >
+> > Statistics for my current kernel source tree:
+> >   - 4487 tables with 16836 entries (3367200 bytes)
+> >   - 176 names (average 6.7 max 23 chars)
+> >   - 66 types (average 5.1 max 21 chars)
+> >   - 12192 compatible values (average 18.0 max 45 chars)
+> > Taking into account the minimum needed size to store the strings, only
+> > 6.9% of the allocated space is used...
+> >
+> > Reduce kernel size by reducing the sizes of the fixed strings by one
+> > half.
+>
+> Tried something like this 2.5 years ago:
+> https://lore.kernel.org/lkml/20190425203101.9403-1-linux@rasmusvillemoes.dk/
 
-  crash> p -x __cpu_online_mask
-  __cpu_online_mask = $1 = {
-    bits = {0x2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}
-  }
-  crash>
-  crash>
-  crash> p -x __cpu_active_mask
-  __cpu_active_mask = $2 = {
-    bits = {0xff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}
-  }
-  crash>
+I wasn't aware of that.  I reworked some code which used multiple
+of_find_compatible_node() calls before, and noticed the end result
+had grown a lot due to the sheer size of of_device_id
+("[PATCH] soc: renesas: Consolidate product register handling",
+ https://lore.kernel.org/all/057721f46c7499de4133135488f0f3da7fb39265.1636570669.git.geert+renesas@glider.be).
 
-While this has been the case since fadump was introduced, the issue
-was not identified for two probable reasons:
+> I think that there might be some not-in-tree code that relies on the
+> existing layout. I considered adding a CONFIG_ knob, either for these
+> sizes in particular, or more generally a def_bool y "CONFIG_LEGACY"
+> which embedded folks that build the entire distro from source and don't
+> have any legacy things can turn off, and then get more sensible defaults
+> all around.
 
-  - In general, the bulk of the vmcores analyzed were from crash
-    due to exception.
+Most of that should have been gone since the #ifdef KERNEL was removed
+from include/linux/mod_devicetable.h in commit 6543becf26fff612
+("mod/file2alias: make modalias generation safe for cross compiling").
+Of course you can never know for sure...
 
-  - The above did change since commit 8341f2f222d7 ("sysrq: Use
-    panic() to force a crash") started using panic() instead of
-    deferencing NULL pointer to force a kernel crash. But then
-    commit de6e5d38417e ("powerpc: smp_send_stop do not offline
-    stopped CPUs") stopped marking CPUs as offline till kernel
-    commit bab26238bbd4 ("powerpc: Offline CPU in stop_this_cpu()")
-    reverted that change.
+Gr{oetje,eeting}s,
 
-To avoid vmcore from showing only one CPU as online in panic path,
-skip marking non panic'ing CPUs as offline while stopping them
-during fadump crash.
+                        Geert
 
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
----
- arch/powerpc/kernel/smp.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index c23ee842c4c3..20555d5d5966 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -61,6 +61,7 @@
- #include <asm/cpu_has_feature.h>
- #include <asm/ftrace.h>
- #include <asm/kup.h>
-+#include <asm/fadump.h>
- 
- #ifdef DEBUG
- #include <asm/udbg.h>
-@@ -626,7 +627,8 @@ static void nmi_stop_this_cpu(struct pt_regs *regs)
- 	/*
- 	 * IRQs are already hard disabled by the smp_handle_nmi_ipi.
- 	 */
--	set_cpu_online(smp_processor_id(), false);
-+	if (!(oops_in_progress && should_fadump_crash()))
-+		set_cpu_online(smp_processor_id(), false);
- 
- 	spin_begin();
- 	while (1)
-@@ -650,7 +652,8 @@ static void stop_this_cpu(void *dummy)
- 	 * to know other CPUs are offline before it breaks locks to flush
- 	 * printk buffers, in case we panic()ed while holding the lock.
- 	 */
--	set_cpu_online(smp_processor_id(), false);
-+	if (!(oops_in_progress && should_fadump_crash()))
-+		set_cpu_online(smp_processor_id(), false);
- 
- 	spin_begin();
- 	while (1)
--- 
-2.31.1
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
