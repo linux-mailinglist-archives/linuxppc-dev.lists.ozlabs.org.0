@@ -2,85 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A682144CB57
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 22:36:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0434644CB58
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Nov 2021 22:37:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqJ7v4wp4z2yfm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 08:36:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HqJ8f6xDqz308G
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 08:37:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lD15/Vjq;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=swiecki.net header.i=@swiecki.net header.a=rsa-sha256 header.s=google header.b=BT8mtsii;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12e;
- helo=mail-lf1-x12e.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=swiecki.net (client-ip=2607:f8b0:4864:20::22c;
+ helo=mail-oi1-x22c.google.com; envelope-from=robert@swiecki.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=lD15/Vjq; dkim-atps=neutral
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com
- [IPv6:2a00:1450:4864:20::12e])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=swiecki.net header.i=@swiecki.net header.a=rsa-sha256
+ header.s=google header.b=BT8mtsii; dkim-atps=neutral
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com
+ [IPv6:2607:f8b0:4864:20::22c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hq5X95bxRz2xCG;
- Thu, 11 Nov 2021 00:38:15 +1100 (AEDT)
-Received: by mail-lf1-x12e.google.com with SMTP id p16so6110310lfa.2;
- Wed, 10 Nov 2021 05:38:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=WtBceGsuNkvJWXKObFPMz3/faWDyi74JI/F+pRXLbvs=;
- b=lD15/VjqUInHM3dZidzqbDMtU49DALHBS4Ay1C40nUi5lxcF7BMQ5EnHXXzG4e6Wu9
- KEtaN/+P0k1Njtg3ToWP1/KM8wIXtXfb2GMI1jVOw30JDescBKoGZyWGQkHaeFFMF1Cx
- 557WfM+CudsCe0rfY4tn9Qu/fZ6FXK7hdk9Wu9dTaZ71QukQt6Mf26SjkHrJIeq+MupJ
- /vckqogxswS5UmhYqlk9vNHYa1S8ChRuc7OrOB+B+82hPJEZwrpCBIceX5S6KM+5NMWF
- FSm1MYMPHMKiWtHmf2u4gxwpqn+oAaxX8rT7fWDE5HDvTnS5+IytbAjE77fEnTdMp1QG
- 4sBQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hq9cb0vMTz2xWt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 03:42:20 +1100 (AEDT)
+Received: by mail-oi1-x22c.google.com with SMTP id bk14so6322154oib.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 08:42:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swiecki.net; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=H7hoGwWJnykyOW04HONpzk1mM5tsbdn8LVftPEXQKdQ=;
+ b=BT8mtsiiqINuoDDAmo6vdWY1e8h1ko5qEt1PbcTIBNaZFn1DpT6ijehrEQkOX3MjDj
+ qLkNL4BMHorAyNxhg9Fe/6g6Eia6nzuZmLzARCGsCRT7b6BDOstUOHROfey5a5ZpW0YE
+ hra/OLlN7fxeD7ynN++DFNF4486LEcv3hVu70=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=WtBceGsuNkvJWXKObFPMz3/faWDyi74JI/F+pRXLbvs=;
- b=vE7CEUEkioGMWDnpxnrl8ts2TtZT9gPmFxJdqsVvbPFSVAZjMxYtSMnON9Uckyh3DS
- P3Ae456fDjTsm5oxkfVCIMMngMEvHqfU+tUNIA5QciQw161CpAPrFkctQQ+XPVeT7GFS
- JcCFyH/PPGk5X4H2apxMxByFciY181j4MHsyq0MtUW8CSifEiX2pvF2xcxAwMPhoZLF9
- J19eMRePg96xaNFNIZm+HNhXNilOqXiAsuj+jokNHlVmbmI6AD0iNepPt+VBC+7kP6gk
- EtzfmE3ymbm7Ea7Uefs7AW4HP0Wh77UugMPAmeIUR6QrJAlIftg3Au6SkFNUsSqoVjEs
- /O5Q==
-X-Gm-Message-State: AOAM5302G/dQOrxm23FgTwM4NDfN2E8K63Mx2xou/WO9GG/k2qIaGc4m
- su+RMRT8mea0gWOXVzOLsAg=
-X-Google-Smtp-Source: ABdhPJxBHb2JNLIS70NEJi27Oqj8IHGODoK0u1oyS1uV5awJ6mpkyMTiHwL65DF0nZiuWJMJYZ6aSw==
-X-Received: by 2002:a05:6512:c02:: with SMTP id
- z2mr14599668lfu.445.1636551490068; 
- Wed, 10 Nov 2021 05:38:10 -0800 (PST)
-Received: from [192.168.2.145] (79-139-177-117.dynamic.spd-mgts.ru.
- [79.139.177.117])
- by smtp.googlemail.com with ESMTPSA id z25sm60391lja.99.2021.11.10.05.38.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Nov 2021 05:38:09 -0800 (PST)
-Subject: Re: [PATCH v2 27/45] mfd: ntxec: Use devm_register_power_handler()
-To: =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>
-References: <20211027211715.12671-1-digetx@gmail.com>
- <20211027211715.12671-28-digetx@gmail.com> <YYbqlmOM95q7Hbjo@latitude>
- <be0c74c6-05a9-cad5-c285-6626d05f8860@gmail.com>
- <9a22c22d-94b1-f519-27a2-ae0b8bbf6e99@roeck-us.net>
- <658cf796-e3b1-f816-1e15-9e9e08b8ade0@gmail.com>
- <5a17fee3-4214-c2b9-abc1-ab9d6071591b@roeck-us.net>
- <c0b52994-51f5-806b-b07e-3e70d8217ffc@gmail.com> <YYkIeBSCFka9yrqC@latitude>
- <04103df3-1ef4-b560-a5cb-fa51737d28ad@gmail.com> <YYuia9KFdi+ETT+I@latitude>
-From: Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <ceefc854-5d15-b73c-0135-c1cbbbb473b7@gmail.com>
-Date: Wed, 10 Nov 2021 16:38:07 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=H7hoGwWJnykyOW04HONpzk1mM5tsbdn8LVftPEXQKdQ=;
+ b=MRf4agsK6OY4oqU6vFzTQ34zYZ5Ot5ByVmq+USGFEOSBZatqWsXUiADLbwo3kzlvRh
+ Km4VEO5YWzSFkR9Of1C+fWL08IiZjg7pyjKIKc7pTdI54MD5jKYgWIrZEb/Filire+co
+ TtQ3zr7H7+mB6tM8//Ge56yWLM+l2Np3Nur2d1qCDoS4Vq7B/rXI8faVGhUDleohs+Np
+ QlLLu66QLMkatp5YbsVEcv9sReQIypW/CynjW2GJZuL48sHL9qaR4nk5k4DSi/RA/Lm/
+ iEgrdvokBGXG7tmcQoYqTC/mofWNwQneNbM8PfRATj5EFLeQg2x4+lzw3yhHNnR0K9T4
+ J+bw==
+X-Gm-Message-State: AOAM533lPRNL9jsGhmpY2++gWa209iGIC303iayGpLTfPdVqyaZ4NRYt
+ rw3gAOSZGm3pDSYlaZRctmnwfQvh8rvZX9o9eVJ6jA==
+X-Google-Smtp-Source: ABdhPJxHHhtgU+Bhr9WOpU8WHUSBmqUhvLThAvCpG3Ve7RGaZhDbrfL8cmNUq4AZv6A5628GWedL6+IBaMnKIKm5fwA=
+X-Received: by 2002:aca:d989:: with SMTP id q131mr382945oig.167.1636562536292; 
+ Wed, 10 Nov 2021 08:42:16 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <YYuia9KFdi+ETT+I@latitude>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <ee3884db-da17-39e3-4010-bcc8f878e2f6@xenosoft.de>
+ <20211109165848.GA1155989@bhelgaas> <YYr4x1xWfptXRmqt@rocinante>
+ <CAK8P3a3fB7KmqWcaenn04WMps=jucV8wOZs=AZcNFHR+o+Bvyg@mail.gmail.com>
+ <YYsB2DAtZjtNFVhZ@rocinante>
+In-Reply-To: <YYsB2DAtZjtNFVhZ@rocinante>
+From: =?UTF-8?B?Um9iZXJ0IMWad2nEmWNraQ==?= <robert@swiecki.net>
+Date: Wed, 10 Nov 2021 17:42:05 +0100
+Message-ID: <CAP145pjASrLsjgD-nnJWKj7W0i7Q9PJ4tTS2SzD7Qg6TO6Aa0A@mail.gmail.com>
+Subject: Re: [PASEMI] Nemo board doesn't recognize any ATA disks with the
+ pci-v5.16 updates
+To: =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Thu, 11 Nov 2021 08:35:52 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -93,88 +75,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Tomer Maimon <tmaimon77@gmail.com>,
- Santosh Shilimkar <ssantosh@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- Tali Perry <tali.perry1@gmail.com>, Thierry Reding <thierry.reding@gmail.com>,
- Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
- Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
- Greg Ungerer <gerg@linux-m68k.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Benjamin Fair <benjaminfair@google.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- linux-sh@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
- Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Jonathan Hunter <jonathanh@nvidia.com>, Tony Lindgren <tony@atomide.com>,
- Chen-Yu Tsai <wens@csie.org>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, xen-devel@lists.xenproject.org,
- linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
- Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
- linux-omap@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>,
- linux-acpi@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- linux-tegra@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Nancy Yuen <yuenn@google.com>, linux-arm-kernel@lists.infradead.org,
- Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Nick Hu <nickhu@andestech.com>, Avi Fishman <avifishman70@gmail.com>,
- Patrick Venture <venture@google.com>, linux-pm@vger.kernel.org,
- Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, openbmc@lists.ozlabs.org,
- Joshua Thompson <funaho@jurai.org>
+Cc: Jens Axboe <axboe@kernel.dk>, Darren Stevens <darren@stevens-zone.net>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, Arnd Bergmann <arnd@arndb.de>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+ "bhelgaas@google.com >> Bjorn Helgaas" <bhelgaas@google.com>,
+ Bjorn Helgaas <helgaas@kernel.org>, mad skateman <madskateman@gmail.com>,
+ Christian Zigotzky <chzigotzky@xenosoft.de>, Olof Johansson <olof@lixom.net>,
+ Matthew Leaman <matthew@a-eon.biz>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-10.11.2021 13:43, Jonathan Neuschäfer пишет:
-> On Mon, Nov 08, 2021 at 02:36:42PM +0300, Dmitry Osipenko wrote:
->> 08.11.2021 14:22, Jonathan Neuschäfer пишет:
->>> On Sun, Nov 07, 2021 at 08:42:33PM +0300, Dmitry Osipenko wrote:
->>> [...]
->>>> EC drivers tend to use higher priority in general. Jonathan, could you
->>>> please confirm that NTXEC driver is a more preferable restart method
->>>> than the watchdog?
->>>
->>> Yes. The original firmware uses the NTXEC to restart, and it works well,
->>> so I do think it's preferable.
->>
->> Thank you, then I'll update the NTXEC patch like this:
->>
->> https://github.com/grate-driver/linux/commit/22da3d91f1734d9a0ed036220ad4ea28465af988
-> 
-> I tested again, but sys_off_handler_reboot called a bogus pointer
-> (probably reboot_prepare_cb). I think it was left uninitialized in
-> ntxec_probe, which uses devm_kmalloc. I guess we could switch it to
-> devm_kzalloc:
-> 
-> diff --git a/drivers/mfd/ntxec.c b/drivers/mfd/ntxec.c
-> index 1f55dfce14308..30364beb4b1d0 100644
-> --- a/drivers/mfd/ntxec.c
-> +++ b/drivers/mfd/ntxec.c
-> @@ -144,7 +144,7 @@ static int ntxec_probe(struct i2c_client *client)
->  	const struct mfd_cell *subdevs;
->  	size_t n_subdevs;
->  
-> -	ec = devm_kmalloc(&client->dev, sizeof(*ec), GFP_KERNEL);
-> +	ec = devm_kzalloc(&client->dev, sizeof(*ec), GFP_KERNEL);
->  	if (!ec)
->  		return -ENOMEM;
->  
-> 
-> 
-> With that done, it works flawlessly.
+> [+CC Adding Robert for visibility]
+>
+> Hi Arnd,
+>
+> Thank you looking at this!  Much appreciated.
+>
+> > > > You could attach the kernel config there, too, since it didn't make it
+> > > > to the mailing list (vger may discard them -- see
+> > > > http://vger.kernel.org/majordomo-info.html).
+> > >
+> > > Bjorn and I looked at which commits that went with a recent Pull Request
+> > > from us might be causing this, but we are a little bit at loss, and were
+> > > hoping that you could give us a hand in troubleshooting this.
+> >
+> > For reference, these are the patches in that branch that touch any
+> > interesting files,
+> > as most of the contents are for pci-controller drivers that are not used on
+> > powerpc at all:
+> >
+> > $ git log --no-merges --oneline 512b7931ad05..dda4b381f05d
+> > arch/powerpc/ drivers/of/  drivers/pci/*.[ch]  include/linux/
+> > acd61ffb2f16 PCI: Add ACS quirk for Pericom PI7C9X2G switches
+> > 978fd0056e19 PCI: of: Allow matching of an interrupt-map local to a PCI device
+> > 041284181226 of/irq: Allow matching of an interrupt-map local to an
+> > interrupt controller
+> > 0ab8d0f6ae3f irqdomain: Make of_phandle_args_to_fwspec() generally available
+> > 5ec0a6fcb60e PCI: Do not enable AtomicOps on VFs
+> > 7a41ae80bdcb PCI: pci-bridge-emul: Fix emulation of W1C bits
+> > fd1ae23b495b PCI: Prefer 'unsigned int' over bare 'unsigned'
+> > ff5d3bb6e16d PCI: Remove redundant 'rc' initialization
+> > 3331325c6347 PCI/VPD: Use pci_read_vpd_any() in pci_vpd_size()
+> > e1b0d0bb2032 PCI: Re-enable Downstream Port LTR after reset or hotplug
+> > ac8e3cef588c PCI/sysfs: Explicitly show first MSI IRQ for 'irq'
+> > 88dee3b0efe4 PCI: Remove unused pci_pool wrappers
+> > b5f9c644eb1b PCI: Remove struct pci_dev->driver
+> > 2a4d9408c9e8 PCI: Use to_pci_driver() instead of pci_dev->driver
+> > 4141127c44a9 powerpc/eeh: Use to_pci_driver() instead of pci_dev->driver
+> > f9a6c8ad4922 PCI/ERR: Reduce compile time for CONFIG_PCIEAER=n
+> > 43e85554d4ed xen/pcifront: Use to_pci_driver() instead of pci_dev->driver
+> > 34ab316d7287 xen/pcifront: Drop pcifront_common_process() tests of pcidev, pdrv
+> > 9f37ab0412eb PCI/switchtec: Add check of event support
+> > 5a72431ec318 powerpc/eeh: Use dev_driver_string() instead of struct
+> > pci_dev->driver->name
+> > ae232f0970ea PCI: Drop pci_device_probe() test of !pci_dev->driver
+> > 097d9d414433 PCI: Drop pci_device_remove() test of pci_dev->driver
+> > 8e9028b3790d PCI: Return NULL for to_pci_driver(NULL)
+> > 357df2fc0066 PCI: Use unsigned to match sscanf("%x") in pci_dev_str_match_path()
+> > bf2928c7a284 PCI/VPD: Add pci_read/write_vpd_any()
+> > b2105b9f39b5 PCI: Correct misspelled and remove duplicated words
+> > 7c3855c423b1 PCI: Coalesce host bridge contiguous apertures
+> > e0f7b1922358 PCI: Use kstrtobool() directly, sans strtobool() wrapper
+> > 36f354ec7bf9 PCI/sysfs: Return -EINVAL consistently from "store" functions
+> > 95e83e219d68 PCI/sysfs: Check CAP_SYS_ADMIN before parsing user input
+> > af9d82626c8f PCI/ACPI: Remove OSC_PCI_SUPPORT_MASKS and OSC_PCI_CONTROL_MASKS
+> > 9a0a1417d3bb PCI: Tidy comments
+> > 06dc660e6eb8 PCI: Rename pcibios_add_device() to pcibios_device_add()
+> > e3f4bd3462f6 PCI: Mark Atheros QCA6174 to avoid bus reset
+> > 3a19407913e8 PCI/P2PDMA: Apply bus offset correctly in DMA address calculation
+> >
+> > Out of these, I agree that most of them seem harmless, these would
+> > be the ones I'd try to look at more closely, or maybe revert for testing:
+> >
+> > 978fd0056e19 PCI: of: Allow matching of an interrupt-map local to a PCI device
+> > 041284181226 of/irq: Allow matching of an interrupt-map local to an
+> > interrupt controller
+> > e1b0d0bb2032 PCI: Re-enable Downstream Port LTR after reset or hotplug
+> > 7c3855c423b1 PCI: Coalesce host bridge contiguous apertures
+> > 3a19407913e8 PCI/P2PDMA: Apply bus offset correctly in DMA address calculation
+>
+> Robert would you be able build a kernel without the patches Arnd singled
+> out as potential curlprits?  Might be expidite some troubleshooting saving
+> a lot of time doing bisect.
+>
+> I wonder if this will help you with the following problem:
+>   https://lore.kernel.org/linux-pci/CAP145pjO9zdGgutHP=of0H+L1=nSz097zf73i7ZYm2-NWuwHhQ@mail.gmail.com/
 
-Good catch, thank you! I'll correct this patch and add yours t-b.
+Thanks.
 
+I tried removing all of those (latest 5), and I had Windows/qemu boot
+hangs with all of them removed.
+
+But I cannot say for sure, because I did quite a mess with my
+kernel/qemu setup, but with this code
+https://github.com/torvalds/linux/commit/cb690f5238d71f543f4ce874aa59237cf53a877c
+and with patch https://lkml.org/lkml/2021/11/9/836 my qemu/Win11 seems
+to be booting again (even if dmesg is filled with pci-related errors
+around initialization timeouts)
+
+I think I'll try to concentrate on helping with the pic code in this
+thread: https://lkml.org/lkml/2021/11/10/684 - and once it works well
+with the host kernel, I'll try to figure out whether anything still
+troubles the vfio/kvm code.
+
+PS: I assumed you asked me to test it wrt my troubles with qemu/vfio/kvm/Win11.
