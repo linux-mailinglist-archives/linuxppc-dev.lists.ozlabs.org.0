@@ -2,78 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89AEA44D09D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 05:07:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E20C644D111
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 05:56:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqSph3Ttzz3bN8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 15:07:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HqTvC5yCHz2yb5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 15:56:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lS36aFbk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qCM/P8yF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72e;
- helo=mail-qk1-x72e.google.com; envelope-from=frowand.list@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=lS36aFbk; dkim-atps=neutral
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com
- [IPv6:2607:f8b0:4864:20::72e])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HqSnw20VMz2yHC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 15:06:26 +1100 (AEDT)
-Received: by mail-qk1-x72e.google.com with SMTP id i9so4678384qki.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Nov 2021 20:06:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=OLcFQVtD+zrg7PXIBfRA8cAQH7T7V2/4cfVGtfrxAq8=;
- b=lS36aFbkIRhJuC6Cd/AAaIIRXR6DpEI+MiQBTh+HAqDGQ7SJt2kOk9H7OefPb7ebNK
- 3aaMIjZ2VlWMsGo6UecehmNcDjgJPL0cuqd0Umndtlo7lzpVLJosTFKfQ5jLQmWN+gWR
- Jr5xvZvaie2aDWnjNWXbAbJGgix5rr9ARnzYKIC+eLHLu1eICDbrqm5BMAU1FSKAGoDN
- 49GzgVLS1AtMP3yl2OZ0HlByk+DJfaIP8+CSdmBdJiTSYsNiET6sL5V9FzCrGaRLtDUg
- DNpaMHeGFR8f41ArSJvrUf5szRHojZN4RxBZV/DP/lerAQFp9+r2/Xy1TUACK3rmOSMW
- l+9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=OLcFQVtD+zrg7PXIBfRA8cAQH7T7V2/4cfVGtfrxAq8=;
- b=WCn12j0cfNKUBZNSnODvjZnDilMuvyyqR26PJ6RGnyLlxWn7jRPSL8eRJTouHPigZq
- FsPWZPTWKLKoqT3vXqlm/lAMBv9reMaf4LZsIWmXfh/G61ZN6xiy1siKcmCP6wK1DWBY
- mNlxTFc2qSgisMMibw8RsFVLyHSURaMW30i939Bdb/+e3Wee3F45tiiQpVQcVsTbD4jG
- SaoJw04QMKgHiMtNZwm5PLJshGR4SdsXK5YDaVMDHeB60zIzw7/MJ5DPaxhbPATtp7Y5
- kc+wZLOGqVwTyOXB1EF+4cAr4GdyDA88dqXvt4By7UL7qt4oByxKF2VwcGK0/x4MH3xL
- TdKg==
-X-Gm-Message-State: AOAM532wd1mlWNQyorSitMiPDwzhR8nSLiBFO9ryz3A25Gyw13Cq14pG
- /F7qY7XNerZ7QpZUxgFLM0o=
-X-Google-Smtp-Source: ABdhPJwy1jkciX4+znRvqnHrGi5juDKLXSdn6bNl6om1ZBoExEpt68bOz9etkvnkVJVIPj1CjWlbwA==
-X-Received: by 2002:a37:5804:: with SMTP id m4mr3775483qkb.137.1636603582779; 
- Wed, 10 Nov 2021 20:06:22 -0800 (PST)
-Received: from [192.168.43.249] (mobile-166-172-188-236.mycingular.net.
- [166.172.188.236])
- by smtp.gmail.com with ESMTPSA id p5sm1084681qtw.69.2021.11.10.20.06.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Nov 2021 20:06:22 -0800 (PST)
-Subject: Re: [PATCH/RFC] of: Shrink struct of_device_id
-To: Geert Uytterhoeven <geert+renesas@glider.be>,
- Rob Herring <robh+dt@kernel.org>
-References: <ef59d6fd3b2201b912d5eaa7f7a037d8f9adb744.1636561068.git.geert+renesas@glider.be>
-From: Frank Rowand <frowand.list@gmail.com>
-Message-ID: <9e20f1b0-3fc4-920a-dff4-1227f72207cf@gmail.com>
-Date: Wed, 10 Nov 2021 23:06:20 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HqTtY0hvgz2yLd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 15:55:33 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=qCM/P8yF; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HqTtS41wYz4xbs;
+ Thu, 11 Nov 2021 15:55:28 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1636606530;
+ bh=GCVMUlmIvsbs8ofijos/QMPB8fyrPXIzfNWltTIec0g=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=qCM/P8yF3p0irn0/dtMmMfI4uHveOGQ7sKdYMeoJlHGC+sdX0SFPl62PUHPn9j0SI
+ ZeMkNjKtdrSCztYOPnsyKYRXWVKeFrbJfAAjy/vPI041IpnfL4sckQWiUQnh6usAE6
+ 8asvi/faiow9Hp5v1LHlZ5ypCQXvaoMC3pL1IXS7dZFbja0g6QGpd5tiqlm3nFjmYv
+ RqSoIkIE7GocK03amwDHrCBn/C6gtLIclVwHYImcfNhqGNffJQn8I4TUN09I6fgPU7
+ T+Mr3pthkmMKgPX1W7PTOo2yGb2pFppAbTtgUBckS8uUZ4fPawjUYKcF6MFZnddv9J
+ yYHCHuxVNMvVA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Valentin Schneider <valentin.schneider@arm.com>,
+ linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] powerpc: Use preemption model accessors
+In-Reply-To: <20211110202448.4054153-4-valentin.schneider@arm.com>
+References: <20211110202448.4054153-1-valentin.schneider@arm.com>
+ <20211110202448.4054153-4-valentin.schneider@arm.com>
+Date: Thu, 11 Nov 2021 15:55:27 +1100
+Message-ID: <87o86rmgu8.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <ef59d6fd3b2201b912d5eaa7f7a037d8f9adb744.1636561068.git.geert+renesas@glider.be>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,85 +61,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Marco Elver <elver@google.com>, Michal Marek <michal.lkml@markovi.net>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Frederic Weisbecker <frederic@kernel.org>, Mike Galbraith <efault@gmx.de>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Paul Mackerras <paulus@samba.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Geert,
+Valentin Schneider <valentin.schneider@arm.com> writes:
+> Per PREEMPT_DYNAMIC, checking CONFIG_PREEMPT doesn't tell you the actual
+> preemption model of the live kernel. Use the newly-introduced accessors
+> instead.
+>
+> sched_init() -> preempt_dynamic_init() happens way before IRQs are set up,
+> so this should be fine.
 
-On 11/10/21 11:23 AM, Geert Uytterhoeven wrote:
-> Currently struct of_device_id is 196 (32-bit) or 200 (64-bit) bytes
-> large.  It contains fixed-size strings for a name, a type, and a
-> compatible value, but the first two are barely used.
-> OF device ID tables contain multiple entries, plus an empty sentinel
-> entry.
-> 
-> Statistics for my current kernel source tree:
->   - 4487 tables with 16836 entries (3367200 bytes)
->   - 176 names (average 6.7 max 23 chars)
->   - 66 types (average 5.1 max 21 chars)
->   - 12192 compatible values (average 18.0 max 45 chars)
-> Taking into account the minimum needed size to store the strings, only
-> 6.9% of the allocated space is used...
+Despite the name interrupt_exit_kernel_prepare() is called before IRQs
+are setup, traps and page faults are "interrupts" here.
 
-I like the idea of using less memory (and thank you for the above data!),
-but I do not like the implementation, which reduces the size (of name at
-least - I didn't check each field) to less than what the standard allows.
+So I'm not sure about adding that call there, because it will trigger a
+WARN if called early in boot, which will trigger a trap and depending on
+the context we may not survive.
 
-I have an idea of another way to accomplish the same goal, but I need to
-dig a bit to make sure I'm not shooting myself in the foot.
+I'd be happier if we can make it a build-time check.
 
--Frank
+cheers
 
-> 
-> Reduce kernel size by reducing the sizes of the fixed strings by one
-> half.
-> 
-> This reduces the size of an ARM multi_v7_defconfig kernel by ca. 400
-> KiB.  For a typical kernel supporting a single board, you can expect to
-> save 50-100 KiB.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
-> Notes:
->   - While gcc complains if the non-NUL characters in a string do not fit
->     in the available space, it does not complain if there is no space to
->     store the string's NUL-terminator.  However, that should be caught
->     during testing, as the affected entry won't ever match.  The kernel
->     won't crash, as such strings will still be terminated by the
->     sentinel in the table.
-> 
->   - We could save even more by converting the strings from fixed-size
->     arrays to pointers, at the expense of making it harder to mark
->     entries __init.  Given most drivers support binding and unbinding
->     and thus cannot use __init for of_device_id tables, perhaps that's
->     the way to go?
-> 
-> Thanks for your comments!
-> ---
->  include/linux/mod_devicetable.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
-> index ae2e75d15b219920..2bb2558d52d30d2b 100644
-> --- a/include/linux/mod_devicetable.h
-> +++ b/include/linux/mod_devicetable.h
-> @@ -266,9 +266,9 @@ struct sdw_device_id {
->   * Struct used for matching a device
->   */
->  struct of_device_id {
-> -	char	name[32];
-> -	char	type[32];
-> -	char	compatible[128];
-> +	char	name[24];
-> +	char	type[24];
-> +	char	compatible[48];
->  	const void *data;
->  };
->  
-> 
-
+> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+> index de10a2697258..c56c10b59be3 100644
+> --- a/arch/powerpc/kernel/interrupt.c
+> +++ b/arch/powerpc/kernel/interrupt.c
+> @@ -552,7 +552,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
+>  		/* Returning to a kernel context with local irqs enabled. */
+>  		WARN_ON_ONCE(!(regs->msr & MSR_EE));
+>  again:
+> -		if (IS_ENABLED(CONFIG_PREEMPT)) {
+> +		if (is_preempt_full()) {
+>  			/* Return to preemptible kernel context */
+>  			if (unlikely(current_thread_info()->flags & _TIF_NEED_RESCHED)) {
+>  				if (preempt_count() == 0)
+> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+> index aac8c0412ff9..1cb31bbdc925 100644
+> --- a/arch/powerpc/kernel/traps.c
+> +++ b/arch/powerpc/kernel/traps.c
+> @@ -265,7 +265,7 @@ static int __die(const char *str, struct pt_regs *regs, long err)
+>  	printk("%s PAGE_SIZE=%luK%s%s%s%s%s%s %s\n",
+>  	       IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) ? "LE" : "BE",
+>  	       PAGE_SIZE / 1024, get_mmu_str(),
+> -	       IS_ENABLED(CONFIG_PREEMPT) ? " PREEMPT" : "",
+> +	       is_preempt_full() ? " PREEMPT" : "",
+>  	       IS_ENABLED(CONFIG_SMP) ? " SMP" : "",
+>  	       IS_ENABLED(CONFIG_SMP) ? (" NR_CPUS=" __stringify(NR_CPUS)) : "",
+>  	       debug_pagealloc_enabled() ? " DEBUG_PAGEALLOC" : "",
+> -- 
+> 2.25.1
