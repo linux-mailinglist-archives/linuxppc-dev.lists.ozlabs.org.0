@@ -2,79 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4A3044D05F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 04:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 629D044D07B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 04:43:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqRsY4h3Qz2yNw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 14:24:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HqSGp1nqyz2ynQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 14:42:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256 header.s=badeba3b8450 header.b=GFs1PIWa;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256 header.s=badeba3b8450 header.b=FCiuetgn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de
- (client-ip=212.227.15.19; helo=mout.gmx.net; envelope-from=efault@gmx.de;
+ (client-ip=212.227.17.20; helo=mout.gmx.net; envelope-from=efault@gmx.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256
- header.s=badeba3b8450 header.b=GFs1PIWa; 
+ header.s=badeba3b8450 header.b=FCiuetgn; 
  dkim-atps=neutral
-X-Greylist: delayed 350 seconds by postgrey-1.36 at boromir;
- Thu, 11 Nov 2021 14:23:57 AEDT
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+X-Greylist: delayed 344 seconds by postgrey-1.36 at boromir;
+ Thu, 11 Nov 2021 14:42:20 AEDT
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HqRrs4G2sz2xD4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 14:23:56 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HqSG44drWz2yLd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 14:42:19 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=badeba3b8450; t=1636601026;
- bh=YnlTNGIxb0TctMcI3romfUmhYM4cIj46dGXd8nNdiFA=;
+ s=badeba3b8450; t=1636602131;
+ bh=+K8Pws57ECthHaz3IU9isSEu+78rlyPTi2Ia/AIqnIU=;
  h=X-UI-Sender-Class:Subject:From:To:Cc:Date:In-Reply-To:References;
- b=GFs1PIWaoPFvfJuMkNDqxLiHysbQY7Cvh+RoX1AUe9hLmuN5+gNV8r4/wlSu3cuwA
- EcN5Wjg/lRiqcAAHFMzHj3B/4bVSnE4NYaDgcb2Dm/RyEJrqc7yr0uOtoGAxE1HkuW
- cOTjoyaXqx8FEQ9qA63qlfmzJq8C6bb+zAjeP7wg=
+ b=FCiuetgnLa/x7DM4vjWBavRjUDvC3jyL6gH632P/g6igd3MeraG2UHEwe8F/BMObq
+ uzh8Li+kLd8983P3hjTT5loRxyFQfPTNCFuqkc+aaWpsRG7kRSK5fJsEWy5qtbarsg
+ ejxnme3kXXhP3vNQjo++uM9YvH+E3KR8EI2kLGt0=
 X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from homer.fritz.box ([212.114.172.107]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MNswE-1n4sv12HCy-00OFiG; Thu, 11
- Nov 2021 04:17:03 +0100
-Message-ID: <a7c704c2ae77e430d7f0657c5db664f877263830.camel@gmx.de>
+Received: from homer.fritz.box ([212.114.172.107]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MV67y-1nAxUc3DDa-00S6B4; Thu, 11
+ Nov 2021 04:35:44 +0100
+Message-ID: <803a905890530ea1b86db6ac45bd1fd940cf0ac3.camel@gmx.de>
 Subject: Re: [PATCH v2 2/5] preempt/dynamic: Introduce preempt mode accessors
 From: Mike Galbraith <efault@gmx.de>
 To: Valentin Schneider <valentin.schneider@arm.com>, 
  linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
  linuxppc-dev@lists.ozlabs.org, linux-kbuild@vger.kernel.org
-Date: Thu, 11 Nov 2021 04:16:58 +0100
-In-Reply-To: <20211110202448.4054153-3-valentin.schneider@arm.com>
+Date: Thu, 11 Nov 2021 04:35:39 +0100
+In-Reply-To: <a7c704c2ae77e430d7f0657c5db664f877263830.camel@gmx.de>
 References: <20211110202448.4054153-1-valentin.schneider@arm.com>
  <20211110202448.4054153-3-valentin.schneider@arm.com>
+ <a7c704c2ae77e430d7f0657c5db664f877263830.camel@gmx.de>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.42.0 
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:qdKVFo3qUd8POKOz+yc+x/4T44OcjnJV/MAWTG4EkF4hhUSRvqQ
- mUzoLUU1fEtSpidfUhv0y/XvxJ05PaVaIwghabR3cN0QZU3PllhBeGse5gsbZgORgHk0G65
- 0YJqU3vKLoBpBV4AOyPaB7kj4As5svKEGAxE1eDJ/pETDTeSYlv4D6x0KqsCLgCRqrsRB1M
- cPmkHNhgrsUG08c9itIpA==
+X-Provags-ID: V03:K1:m5Cbra52DdXMAE7H+VG8AT7kX3qlvfgdfpx6gGyNLbPdqVV0j9i
+ pqzgjniLDEtfh+GNR7V7YSZ1CReg05G3m1fkgnm9KcORv5LF22UU7ZiSxoWjxnlG4T3f68i
+ XuDCvFG+2//qny6q6ZpXwZsJrPVLYHdDi/3SO9LVn3FgF7eJmr1NNUTbMSzhK4R5tO9M4Az
+ tNyjyk0ii+TyMFksaQtAA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+xPP1Sj2YFQ=:eWs1GGdYK2j+HQaBQjoXBU
- rf/delMG0YupqzC2CLszXMgdLzETGClyJM8+8T9dXqzW6KfE2AsikdyW6pmbL60n22RFN+YY0
- ckyY31NxQfXa20bUILKXLOUslcaqrak5pVPrx6ZurUwN7hzNj1EG/C9Cvgu/NLf2Vq6LEqfJ2
- C0BofSs3Npd4Ggsf6kKJBxjFyqdtC9RkWlEGSsUnHsVeOgadwiqnhz1vpIB4I7kbq8neCGa/q
- kq7V60TxwuaSPaqlIeSfu1SkD98LQqwSI8WGAZGaH25oOOi29hdaGEjLEqsqiP5OAwFy0lVm+
- FWvkYrpE9jSzikxgI4XlQdxFQ+d5WyoI9V7nwcBA0JwSIdOJd03aoW7jQjz8mGOT35AOK0U8W
- g0mWUk1WPht7A8lVSRsUOgmmks86xPa8U0QSZwv2VPl1FQMmjPG8Rtf7R2wTcAYXGx+RQA1Z7
- sjfuSgOJkKIMtmUX9vpynhR82pDbim6OAbrQrLzYyaVTHLWR9oqeQZQHmR2Dd2HPf4gfY87Mq
- LV1DNT/Rc0HUxtsuU16uNn6mGBEF4lRiuMXGzUu3BZ1aMqOWdbo2zjrqM0vfJffY2RBgkpcs4
- qb8dcnzGbWY3b9SmYyTr4rDZjpAf7ntLivMzUFEXp3y4B7YFsPngxRPl2DXwmoS1Vb5UQaLOR
- 3Pk+G1Xsh800xGAKAexcD7TaUrFEb3OQbxXiSwit9WUxyjusP92V/IZHbRi/YjsASNGo2M7Py
- +1suOROHnmwWp74ASFwoRd2QpFqSeQ3Z4O3rVwUTefr8aaG7ftDP5nAnDkhCnp5TQUxQHENdc
- JPqLbTITf0ynSgb32qwh0dKpMf84GgOnPLU30zVJaWZfAIo+GzZa5Tt7OeuxsnKp9Z20SbAvl
- vFm2fSONnErnNY3Pmm80/pI9v33a0HcF+rvjpsQrF9TG7/yNwAeq9Im/V67cjbNZRymx/MmX6
- eqAod80sAC85RpijZMQFEdjBItAGcUNUKxiot14ZJBFXzAi7liOPvK2IU1ydOTKxRpAQpXpof
- 0RwlA6xu3QizS6irwlh7Xvsd5J6gqNBd6YwnHoQ7kUKVc3A4sG4ApNRAgXAMP/pZn8UV9ckgb
- DlW7OLqM24piiE=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:6RhPmCEBFAE=:X1rxfzt21njscpLPt4/dzj
+ 3MSb4cxGTjXFNzurzQx8Jbg5p5ZF0s93KAI0OtwH8X9oXOChTv3TIOucFbSv/dfJZuOfcLGdL
+ JCKJEqUWEHU2evoq7dt7Z1rSCUI9M9L62q6oxjO42Gg+KTyhLrGBcyOlWVKtg+etv/zQFk4j1
+ bNcS7IpoIbtLgKJ8dCHC0YNIIte2NpqmS5NaX4CRfZTEzwNObLCUv3fwe16D91X2bBHuYDkDU
+ iTNYp+f0IMG4sWrT4oPJ7HOSbYdqZtx/YHNw08vCmtNPRX+hAZ631ytQ8+O/QNzzUc1CAsqSU
+ saiyASNozQhe8AO96rzwmd7YintFc+bAbvgjxXyfYpwrZJaj+Pkflk42pLpL2OEFMwnDukPTy
+ zdB4+t4j6ID5HbcMiL1Md4PsFJceTGPA/ktZz7u7vt7ZyPfc6jYwQ/OnuwlKNURiZ1NT9yixW
+ 7uXj1SLuo1tCkaNby7SuX1ai+p6xXmpVCxDn4GodvsfjrlU0+JjgMP91lUvka+2O2McMFsd7V
+ F978o9frPrITzD6okvz1qPgwfpzd2J+76waT2sW7FOBLO0+zZaNdgcTes0xsEP7vAvs08aNqZ
+ cflFHQhde3nU6OfejtJAhJY05A3qZtT7cKvGVgocG9rjyiI5Lr5T+3b6mz4JvbMQbLgM6MXNo
+ B5rxQWcf3A9Oq6nuuHFYtE4js5JIn5TZROQpLzqMMeCUsx4QuPPha30AFdaEaImrrBXAWQlFR
+ BQAdxdv+1cU3He4KK/1gEpCv8igMJkWxXprimZQrqilQZUiq3HMMyoti7CLr98zrtb/ilFuX7
+ F93HSUfeGr5J4HUuzyLSH/neRUNeY7bbILuJl6DnjAGAg3IoAksHHNt09i97ttBtbPDqmuhAV
+ I47rnXVKGlkhpdYp+K1YE7NUfzEpBXubvyAEmtdnumeMjK3dT+hrC1suOmTuzWeGSZbakPqDE
+ q1mG9L3nF1U797FG4OI2UVGY5ZIpIegg/apTX3Oa/6LDfgrbhMHWAKxbDv34GASquiu49pVMV
+ R921TgULFvJEsP+dQ5Op0MoIvvMRSPOyQY2dKZTMHRGl28xNn8yAg05Fg/G2U2wLgGZImvtN0
+ ULbaqMOcll2EB4=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,31 +98,38 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2021-11-10 at 20:24 +0000, Valentin Schneider wrote:
+On Thu, 2021-11-11 at 04:16 +0100, Mike Galbraith wrote:
+> On Wed, 2021-11-10 at 20:24 +0000, Valentin Schneider wrote:
+> >
+> > diff --git a/include/linux/sched.h b/include/linux/sched.h
+> > index 5f8db54226af..0640d5622496 100644
+> > --- a/include/linux/sched.h
+> > +++ b/include/linux/sched.h
+> > @@ -2073,6 +2073,22 @@ static inline void cond_resched_rcu(void)
+> > =C2=A0#endif
+> > =C2=A0}
+> > =C2=A0
+> > +#ifdef CONFIG_PREEMPT_DYNAMIC
+> > +
+> > +extern bool is_preempt_none(void);
+> > +extern bool is_preempt_voluntary(void);
+> > +extern bool is_preempt_full(void);
+> > +
+> > +#else
+> > +
+> > +#define is_preempt_none() IS_ENABLED(CONFIG_PREEMPT_NONE)
+> > +#define is_preempt_voluntary()
+> > IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY)
+> > +#define is_preempt_full() IS_ENABLED(CONFIG_PREEMPT)
 >
-> diff --git a/include/linux/sched.h b/include/linux/sched.h
-> index 5f8db54226af..0640d5622496 100644
-> --- a/include/linux/sched.h
-> +++ b/include/linux/sched.h
-> @@ -2073,6 +2073,22 @@ static inline void cond_resched_rcu(void)
-> =C2=A0#endif
-> =C2=A0}
-> =C2=A0
-> +#ifdef CONFIG_PREEMPT_DYNAMIC
-> +
-> +extern bool is_preempt_none(void);
-> +extern bool is_preempt_voluntary(void);
-> +extern bool is_preempt_full(void);
-> +
-> +#else
-> +
-> +#define is_preempt_none() IS_ENABLED(CONFIG_PREEMPT_NONE)
-> +#define is_preempt_voluntary() IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY)
-> +#define is_preempt_full() IS_ENABLED(CONFIG_PREEMPT)
+> I think that should be IS_ENABLED(CONFIG_PREEMPTION), see
+> c1a280b68d4e.
+>
+> Noticed while applying the series to an RT tree, where tglx
+> has done that replacement to the powerpc spot your next patch
+> diddles.
 
-I think that should be IS_ENABLED(CONFIG_PREEMPTION), see c1a280b68d4e.
-
-Noticed while applying the series to an RT tree, where tglx
-has done that replacement to the powerpc spot your next patch diddles.
+Damn, then comes patch 5 properly differentiating PREEMPT/PREEMPT_RT.
 
 	-Mike
+
