@@ -1,54 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2A844D1D9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 07:14:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3152344D251
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 08:14:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqWds45fKz3bYD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 17:14:41 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iRcZnouK;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HqXyG0tFvz305F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 18:13:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HqWdC1ry3z2xDw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 17:14:07 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=iRcZnouK; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HqWdB651pz4xbP;
- Thu, 11 Nov 2021 17:14:06 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1636611246;
- bh=+ODjIM4WjRGzW6IhwoVL0vrTWXdfpn6YDAgGPZV0whM=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=iRcZnouKrYR6G04Ane3rSIhRG53vbGeF05/6klGMMPwe2o0SllEICL5EEYX6/krdw
- o/aZsn98Ah+sWAPxymRR/trw16OHOVO0i+RH6Kkv+9nH0LDfZfvb+HghE4/h7nS/MS
- hp2xiQroMWkO29YEZg+mm6KJDEHuC+biSJbbxit2PX3wA50PC0OXZuPBHjhktfqdHu
- LM4eKfg0g8gaAroxoLn9jGi1c2PgS2MXJDR+WlLn4wG2elKsKG24zV/cTjYoEKCtQS
- Ua1R4g+fYK4d6rAK2Rx5rbJxmv5Roty9MIUEts9VF2QbV9K7DxkCMn9vWgJ7j2d0zo
- +IOJYul6XJ/aA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] ppc64/fadump: fix inaccurate CPU state info in vmcore
- generated with panic
-In-Reply-To: <20211110190143.186346-1-hbathini@linux.ibm.com>
-References: <20211110190143.186346-1-hbathini@linux.ibm.com>
-Date: Thu, 11 Nov 2021 17:14:03 +1100
-Message-ID: <87lf1vmd78.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HqXxm3cP9z2xLJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 18:13:32 +1100 (AEDT)
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
+ [51.254.78.96])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4057E6128E;
+ Thu, 11 Nov 2021 07:13:29 +0000 (UTC)
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <maz@kernel.org>)
+ id 1ml4H0-004lwb-Vj; Thu, 11 Nov 2021 07:13:27 +0000
+Date: Thu, 11 Nov 2021 07:13:26 +0000
+Message-ID: <87r1bn88rt.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: Re: [PASEMI] Nemo board doesn't recognize any ATA disks with the
+ pci-v5.16 updates
+In-Reply-To: <8cc64c3b-b0c0-fb41-9836-2e5e6a4459d1@xenosoft.de>
+References: <78308692-02e6-9544-4035-3171a8e1e6d4@xenosoft.de>
+ <20211110184106.GA1251058@bhelgaas> <87sfw3969l.wl-maz@kernel.org>
+ <8cc64c3b-b0c0-fb41-9836-2e5e6a4459d1@xenosoft.de>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: chzigotzky@xenosoft.de, helgaas@kernel.org,
+ bhelgaas@google.com, alyssa@rosenzweig.io, lorenzo.pieralisi@arm.com,
+ robh@kernel.org, matthew@a-eon.biz, darren@stevens-zone.net,
+ madskateman@gmail.com, rtd2@xtra.co.nz, info@xenosoft.de, axboe@kernel.dk,
+ damien.lemoal@opensource.wdc.com, kw@linux.com, arnd@arndb.de,
+ robert@swiecki.net, olof@lixom.net, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,116 +65,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hari Bathini <hbathini@linux.ibm.com>, sourabhjain@linux.ibm.com,
- mahesh@linux.ibm.com, npiggin@gmail.com
+Cc: axboe@kernel.dk, Rob Herring <robh@kernel.org>, lorenzo.pieralisi@arm.com,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, Arnd Bergmann <arnd@arndb.de>, kw@linux.com,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ damien.lemoal@opensource.wdc.com, Olof Johansson <olof@lixom.net>,
+ Darren Stevens <darren@stevens-zone.net>, Bjorn Helgaas <helgaas@kernel.org>,
+ mad skateman <madskateman@gmail.com>,
+ "bhelgaas@google.com >> Bjorn Helgaas" <bhelgaas@google.com>,
+ robert@swiecki.net, Matthew Leaman <matthew@a-eon.biz>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hari Bathini <hbathini@linux.ibm.com> writes:
-> In panic path, fadump is triggered via a panic notifier function.
-> Before calling panic notifier functions, smp_send_stop() gets called,
-> which stops all CPUs except the panic'ing CPU. Commit 8389b37dffdc
-> ("powerpc: stop_this_cpu: remove the cpu from the online map.") and
-> again commit bab26238bbd4 ("powerpc: Offline CPU in stop_this_cpu()")
-> started marking CPUs as offline while stopping them. So, if a kernel
-> has either of the above commits, vmcore captured with fadump via panic
-> path would show only the panic'ing CPU as online. Sample output of
-> crash-utility with such vmcore:
->
->   # crash vmlinux vmcore
->   ...
->         KERNEL: vmlinux
->       DUMPFILE: vmcore  [PARTIAL DUMP]
->           CPUS: 1
->           DATE: Wed Nov 10 09:56:34 EST 2021
->         UPTIME: 00:00:42
->   LOAD AVERAGE: 2.27, 0.69, 0.24
->          TASKS: 183
->       NODENAME: XXXXXXXXX
->        RELEASE: 5.15.0+
->        VERSION: #974 SMP Wed Nov 10 04:18:19 CST 2021
->        MACHINE: ppc64le  (2500 Mhz)
->         MEMORY: 8 GB
->          PANIC: "Kernel panic - not syncing: sysrq triggered crash"
->            PID: 3394
->        COMMAND: "bash"
->           TASK: c0000000150a5f80  [THREAD_INFO: c0000000150a5f80]
->            CPU: 1
->          STATE: TASK_RUNNING (PANIC)
->
->   crash> p -x __cpu_online_mask
->   __cpu_online_mask = $1 = {
->     bits = {0x2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}
->   }
->   crash>
->   crash>
->   crash> p -x __cpu_active_mask
->   __cpu_active_mask = $2 = {
->     bits = {0xff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}
->   }
->   crash>
->
-> While this has been the case since fadump was introduced, the issue
-> was not identified for two probable reasons:
->
->   - In general, the bulk of the vmcores analyzed were from crash
->     due to exception.
->
->   - The above did change since commit 8341f2f222d7 ("sysrq: Use
->     panic() to force a crash") started using panic() instead of
->     deferencing NULL pointer to force a kernel crash. But then
->     commit de6e5d38417e ("powerpc: smp_send_stop do not offline
->     stopped CPUs") stopped marking CPUs as offline till kernel
->     commit bab26238bbd4 ("powerpc: Offline CPU in stop_this_cpu()")
->     reverted that change.
->
-> To avoid vmcore from showing only one CPU as online in panic path,
-> skip marking non panic'ing CPUs as offline while stopping them
-> during fadump crash.
+On Thu, 11 Nov 2021 05:24:52 +0000,
+Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> 
+> On 10 November 2021 at 08:09 pm, Marc Zyngier wrote:
+> > HI all,
+> > 
+> > On Wed, 10 Nov 2021 18:41:06 +0000,
+> > Bjorn Helgaas <helgaas@kernel.org> wrote:
+> >> On Wed, Nov 10, 2021 at 07:07:24PM +0100, Christian Zigotzky wrote:
+> >>> On 09 November 2021 at 03:45 pm, Christian Zigotzky wrote:
+> >>>> Hello,
+> >>>> 
+> >>>> The Nemo board [1] doesn't recognize any ATA disks with the pci-v5.16
+> >>> updates [2].
+> >>>> Error messages:
+> >>>> 
+> >>>> ata4.00: gc timeout cmd 0xec
+> >>>> ata4.00: failed to IDENTIFY (I/O error, error_mask=0x4)
+> >>>> ata1.00: gc timeout cmd 0xec
+> >>>> ata1.00: failed to IDENTIFY (I/O error, error_mask=0x4)
+> >>>> ata3.00: gc timeout cmd 0xec
+> >>>> ata3.00: failed to IDENTIFY (I/O error, error_mask=0x4)
+> >>>> 
+> >>>> I was able to revert the new pci-v5.16 updates [2]. After a new
+> >>> compiling, the kernel recognize all ATA disks correctly.
+> >>>> Could you please check the pci-v5.16 updates [2]?
+> >>>> 
+> >>>> Please find attached the kernel config.
+> >>>> 
+> >>>> Thanks,
+> >>>> Christian
+> >>>> 
+> >>>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
+> >>>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0c5c62ddf88c34bc83b66e4ac9beb2bb0e1887d4
+> >>> Hi All,
+> >>> 
+> >>> Many thanks for your nice responses.
+> >>> 
+> >>> I bisected today [1]. 0412841812265734c306ba5ef8088bcb64d5d3bd (of/irq:
+> >>> Allow matching of an interrupt-map local to an interrupt controller) [2] is
+> >>> the first bad commit.
+> >>> 
+> >>> I was able to revert the first bad commit [1]. After a new compiling, the
+> >>> kernel detects all ATA disks without any problems.
+> >>> 
+> >>> I created a patch for an easy reverting the bad commit [1]. With this patch
+> >>> we can do further our kernel tests.
+> >>> 
+> >>> Could you please check the first bad commit [2]?
+> >>> 
+> >>> Thanks,
+> >>> Christian
+> >>> 
+> >>> [1] https://forum.hyperion-entertainment.com/viewtopic.php?p=54398#p54398
+> >>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0412841812265734c306ba5ef8088bcb64d5d3bd
+> >>> 
+> >>> [+ Marc Zyngier, Alyssa Rosenzweig, Lorenzo Pieralisi, and Rob Herring
+> >>> because of the first bad commit]
+> >> Thank you very much for the bisection and for also testing the revert!
+> >> 
+> >> It's easy enough to revert 041284181226 ("of/irq: Allow matching of an
+> >> interrupt-map local to an interrupt controller"), and it seems like
+> >> that's what we need to do.  I have it tentatively queued up.
+> >> 
+> >> That commit was part of the new support for the Apple M1 PCIe
+> >> interface, and I don't know what effect a revert will have on that
+> >> support.  Marc, Alyssa?
+> > It is going to badly break the M1 support, as we won't be able to take
+> > interrupts to detect that the PCIe link is up.
+> > 
+> > Before we apply a full blown revert and decide that this isn't
+> > workable (and revert the whole M1 PCIe series, because they are
+> > otherwise somewhat pointless), I'd like to understand *what* breaks
+> > exactly.
+> > 
+> > Christian, could you point me to the full DT that this machine uses?
+> > This would help understanding what goes wrong, and cook something for
+> > you to test.
+> > 
+> > Thanks,
+> > 
+> > 	M.
+> > 
+> Hello Marc,
+> 
+> Here you are:
+> https://forum.hyperion-entertainment.com/viewtopic.php?p=54406#p54406
 
-Is this really worth the added complexity/bug surface?
+This is not what I asked. I need the actual source file, or at the
+very least the compiled object (the /sys/firmware/fdt file, for
+example). Not an interpretation that I can't feed to the kernel.
 
-Why does it matter if the vmcore shows only one CPU online?
+Without this, I can't debug your problem.
 
+> We are very happy to have the patch for reverting the bad commit
+> because we want to test the new PASEMI i2c driver with support for the
+> Apple M1 [1] on our Nemo boards.
 
-> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-> index c23ee842c4c3..20555d5d5966 100644
-> --- a/arch/powerpc/kernel/smp.c
-> +++ b/arch/powerpc/kernel/smp.c
-> @@ -61,6 +61,7 @@
->  #include <asm/cpu_has_feature.h>
->  #include <asm/ftrace.h>
->  #include <asm/kup.h>
-> +#include <asm/fadump.h>
->  
->  #ifdef DEBUG
->  #include <asm/udbg.h>
-> @@ -626,7 +627,8 @@ static void nmi_stop_this_cpu(struct pt_regs *regs)
->  	/*
->  	 * IRQs are already hard disabled by the smp_handle_nmi_ipi.
->  	 */
-> -	set_cpu_online(smp_processor_id(), false);
-> +	if (!(oops_in_progress && should_fadump_crash()))
-> +		set_cpu_online(smp_processor_id(), false);
->  
->  	spin_begin();
->  	while (1)
-> @@ -650,7 +652,8 @@ static void stop_this_cpu(void *dummy)
->  	 * to know other CPUs are offline before it breaks locks to flush
->  	 * printk buffers, in case we panic()ed while holding the lock.
->  	 */
-> -	set_cpu_online(smp_processor_id(), false);
-> +	if (!(oops_in_progress && should_fadump_crash()))
-> +		set_cpu_online(smp_processor_id(), false);
+You can revert the patch on your own. At this stage, we're not blindly
+reverting things in the tree, but instead trying to understand what
+is happening on your particular system.
 
-The comment talks about printk_safe_flush_on_panic(), and this change
-would presumably break that. Except that printk_safe_flush_on_panic() no
-longer exists.
+Thanks,
 
-So do we need to set the CPU online here at all?
+	M.
 
-ie. could we revert bab26238bbd4 ("powerpc: Offline CPU in stop_this_cpu()")
-now that printk_safe_flush_on_panic() no longer exists?
-
-cheers
+-- 
+Without deviation from the norm, progress is not possible.
