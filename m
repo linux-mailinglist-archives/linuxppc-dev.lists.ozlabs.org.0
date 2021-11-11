@@ -2,75 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA80944D3D3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 10:12:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A72F44D42A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 10:37:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqbZg5Yx1z3c4y
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 20:12:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hqc7R27hhz3bjC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 20:37:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=WV4O0X4u;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=UpJAsHH3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::331;
- helo=mail-wm1-x331.google.com; envelope-from=elver@google.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::32f;
+ helo=mail-ot1-x32f.google.com; envelope-from=elver@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=WV4O0X4u; dkim-atps=neutral
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com
- [IPv6:2a00:1450:4864:20::331])
+ header.s=20210112 header.b=UpJAsHH3; dkim-atps=neutral
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com
+ [IPv6:2607:f8b0:4864:20::32f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HqbYz3jf8z2xC2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 20:11:33 +1100 (AEDT)
-Received: by mail-wm1-x331.google.com with SMTP id
- f7-20020a1c1f07000000b0032ee11917ceso3956547wmf.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 01:11:33 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hqc6l138Kz2yNp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 20:36:30 +1100 (AEDT)
+Received: by mail-ot1-x32f.google.com with SMTP id
+ w6-20020a9d77c6000000b0055e804fa524so8096100otl.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 01:36:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=RJN505w6CL42PiEBXtyIsEZEsP4VhYdScJ4DvF6IvUE=;
- b=WV4O0X4udKGv3mXB+Hyjn+Y0JK+NaM83No3U8ONvBfm9JnOz7BosU+qPGnOX9b7h6a
- viRTnicfbRqxuku9BNAtdIx3oK590XlPQBEkrBTm62zhnZE1IJsEA1FQP58xcf2TNLzX
- jyL2Aq1TA5p1/bMTJey4kNHPHCP9uZhAk4E2PU2VC+70VuJQ8z5K4t9dt3Eiyc6++s15
- bKWtIr5Dq33i55/WXa0Vo+Bqxk31w5GQA4XHVaKSeX1M0i/ya66UgTtwxMST8st7S11r
- pAnYVnVLMQXG/FNCi/rsCpVlkSXbcQrNBPgjwm4AmtvqLHhqkMOMTUPM4WPEx6+vHrpA
- fyKg==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=FQNotspdE85/ckyfVd22yizASeOICaHxBSL2D6Rwwpw=;
+ b=UpJAsHH3wXt4nQODZVjA9FrGKUqqDF32IatYTS1SYxwoDbaRut+X6zfgkOHGkn0yt0
+ CNegVOkjnK2sjy9Nms1243+zJFMjwFxKJ0owcLdYwK4/PjI+gpArN+24oajV3xi/bhAy
+ y4ZTyZR4eWiJ2OqOTzZEw2+igo64Nc8xI9URhaWwqZL/ND7O6tYzZtsA/GOBw2sWuoEm
+ +sywwDbjeG7T5ZEbZY9f9HgkehvolqW8JKcnjE2AosQdOyQoLdVupvgtXCV4bh2itKzF
+ r4pIhz+pgijcQhHbDC5rWqcGvaxt/0sD85qniaK0p3CW+j8Sz9/u8rlcxct8jbsPhSNe
+ rQ8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=RJN505w6CL42PiEBXtyIsEZEsP4VhYdScJ4DvF6IvUE=;
- b=dxTcwJc06lowSSADK0U52cSaF7c6QFNZVXikaRkxS97w4nkab4BeD0gk6jce+REOSY
- r1+ASQpULa3rW0pKQGnqGIpLOKQdrT2VN6H1Cs4e082912Oor/95c34KyDg+Rg9N8+tY
- A4t5scISbplB/xEQ1JgXcT5Iha1qshPfT0otv29CrQUmLlxb5EdrHXu6OBOcBV9h3RRC
- qK+1NfBEpRt5QoWOC5T0w9ZpfjP1gQCcg1naVDdBtlFmeOsa0HYk/TP4MzoadagQyMPC
- NDiJjTsVRBCKtlDoGmEwEb+3IHByrPf7rPYUvHNbRX06pDfbeJngWDZILDedVduqUcnf
- 93KQ==
-X-Gm-Message-State: AOAM530RWzvfqEA79KmT/R0Hpr86aV5VRJaDH9xIN6WDs27nPpGGXf7i
- broXILPNm+Mb7xaH1HINbRfqhA==
-X-Google-Smtp-Source: ABdhPJzkZFauMx8KH0DEgUcMSakcoswH2SNKj7IhgTRnKWp9Auzdv8qBuhpD4B2Wlp1Wmez/UFj7Vw==
-X-Received: by 2002:a1c:a9c6:: with SMTP id s189mr6684146wme.38.1636621889057; 
- Thu, 11 Nov 2021 01:11:29 -0800 (PST)
-Received: from elver.google.com ([2a00:79e0:15:13:fd21:69cc:1f2b:9812])
- by smtp.gmail.com with ESMTPSA id s13sm8531050wmc.47.2021.11.11.01.11.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 11 Nov 2021 01:11:28 -0800 (PST)
-Date: Thu, 11 Nov 2021 10:11:21 +0100
-From: Marco Elver <elver@google.com>
-To: Valentin Schneider <valentin.schneider@arm.com>
-Subject: Re: [PATCH v2 4/5] kscan: Use preemption model accessors
-Message-ID: <YYzeOQNFmuieCk3T@elver.google.com>
-References: <20211110202448.4054153-1-valentin.schneider@arm.com>
- <20211110202448.4054153-5-valentin.schneider@arm.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=FQNotspdE85/ckyfVd22yizASeOICaHxBSL2D6Rwwpw=;
+ b=7dqEWJGRzFLfIVyrKnfTOh/usDXTnGCpki8kXgUUwsKOj33jn9R8OyBY1/ENFxnqYl
+ kdZEww7UbBwui7J0MU60dWQ9DqcP/nYAc0l10229z0JoP7lETUYJgt+xap8ktHVXCecu
+ 0xxe+OXeiMTWT1nYQhq/fcVg1CJ+Im88UiZVczadhXVCzWXl9YecdNSVvicE74ngyTHB
+ dQNmW0hQP1XxDdHPpyu2+3iiC02xgxJS12yh6pWy6dmbnvNyZ+RGta11gSmZr4tHgg7B
+ vrftBuya19EVyI4Igj17J0N+xJJ9VdcIuNohGMcjn8+gHmy3wWd+mjCAQy/WqfNU5UEV
+ uzgA==
+X-Gm-Message-State: AOAM531TcEsLmAj6/058yQ5cXCNtQ0bplpPCB0H3Zqb2cgkeWql1DGb4
+ AGnFpjqiMLmaHT/8l4je2kiszWKxqLpaYqBGJQYcMw==
+X-Google-Smtp-Source: ABdhPJyQO1Ypmss7F9JtBJvfyJ2T6gA/zHz3aGDcxE2LvRHMlB0JEESu8sJ8bZ99S47xs/37ijAQqTB+ACr333KyuJw=
+X-Received: by 2002:a9d:77d1:: with SMTP id w17mr4791136otl.329.1636623388618; 
+ Thu, 11 Nov 2021 01:36:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211110202448.4054153-5-valentin.schneider@arm.com>
-User-Agent: Mutt/2.0.5 (2021-01-21)
+References: <20211110202448.4054153-1-valentin.schneider@arm.com>
+ <20211110202448.4054153-3-valentin.schneider@arm.com>
+ <a7c704c2ae77e430d7f0657c5db664f877263830.camel@gmx.de>
+ <803a905890530ea1b86db6ac45bd1fd940cf0ac3.camel@gmx.de>
+ <a7febd8825a2ab99bd1999664c6d4aa618b49442.camel@gmx.de>
+In-Reply-To: <a7febd8825a2ab99bd1999664c6d4aa618b49442.camel@gmx.de>
+From: Marco Elver <elver@google.com>
+Date: Thu, 11 Nov 2021 10:36:17 +0100
+Message-ID: <CANpmjNPeRwupeg=S8yGGUracoehSUbS-Fkfb8juv5mYN36uiqg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] preempt/dynamic: Introduce preempt mode accessors
+To: Mike Galbraith <efault@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,53 +80,71 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Michal Marek <michal.lkml@markovi.net>, linux-kbuild@vger.kernel.org,
  Peter Zijlstra <peterz@infradead.org>,
- Frederic Weisbecker <frederic@kernel.org>, Mike Galbraith <efault@gmx.de>,
+ Frederic Weisbecker <frederic@kernel.org>,
  Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, Paul Mackerras <paulus@samba.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masahiro Yamada <masahiroy@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>,
+ kasan-dev@googlegroups.com, Ingo Molnar <mingo@kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Valentin Schneider <valentin.schneider@arm.com>,
  Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Subject s/kscan/kcsan/
+On Thu, 11 Nov 2021 at 04:47, Mike Galbraith <efault@gmx.de> wrote:
+>
+> On Thu, 2021-11-11 at 04:35 +0100, Mike Galbraith wrote:
+> > On Thu, 2021-11-11 at 04:16 +0100, Mike Galbraith wrote:
+> > > On Wed, 2021-11-10 at 20:24 +0000, Valentin Schneider wrote:
+> > > >
+> > > > diff --git a/include/linux/sched.h b/include/linux/sched.h
+> > > > index 5f8db54226af..0640d5622496 100644
+> > > > --- a/include/linux/sched.h
+> > > > +++ b/include/linux/sched.h
+> > > > @@ -2073,6 +2073,22 @@ static inline void cond_resched_rcu(void)
+> > > >  #endif
+> > > >  }
+> > > >
+> > > > +#ifdef CONFIG_PREEMPT_DYNAMIC
+> > > > +
+> > > > +extern bool is_preempt_none(void);
+> > > > +extern bool is_preempt_voluntary(void);
+> > > > +extern bool is_preempt_full(void);
+> > > > +
+> > > > +#else
+> > > > +
+> > > > +#define is_preempt_none() IS_ENABLED(CONFIG_PREEMPT_NONE)
+> > > > +#define is_preempt_voluntary()
+> > > > IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY)
+> > > > +#define is_preempt_full() IS_ENABLED(CONFIG_PREEMPT)
+> > >
+> > > I think that should be IS_ENABLED(CONFIG_PREEMPTION), see
+> > > c1a280b68d4e.
+> > >
+> > > Noticed while applying the series to an RT tree, where tglx
+> > > has done that replacement to the powerpc spot your next patch
+> > > diddles.
+> >
+> > Damn, then comes patch 5 properly differentiating PREEMPT/PREEMPT_RT.
+>
+> So I suppose the powerpc spot should remain CONFIG_PREEMPT and become
+> CONFIG_PREEMPTION when the RT change gets merged, because that spot is
+> about full preemptibility, not a distinct preemption model.
+>
+> That's rather annoying :-/
 
-On Wed, Nov 10, 2021 at 08:24PM +0000, Valentin Schneider wrote:
-> Per PREEMPT_DYNAMIC, checking CONFIG_PREEMPT doesn't tell you the actual
-> preemption model of the live kernel. Use the newly-introduced accessors
-> instead.
-> 
-> Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+I guess the question is if is_preempt_full() should be true also if
+is_preempt_rt() is true?
 
-Reviewed-by: Marco Elver <elver@google.com>
+Not sure all cases are happy with that, e.g. the kernel/trace/trace.c
+case, which wants to print the precise preemption level.
 
-Though it currently doesn't compile as a module due to missing
-EXPORT_SYMBOL of is_preempt*().
+To avoid confusion, I'd introduce another helper that says true if the
+preemption level is "at least full", currently that'd be "full or rt".
+Something like is_preempt_full_or_rt() (but might as well write
+"is_preempt_full() || is_preempt_rt()"), or is_preemption() (to match
+that Kconfig variable, although it's slightly confusing). The
+implementation of that helper can just be a static inline function
+returning "is_preempt_full() || is_preempt_rt()".
 
-> ---
->  kernel/kcsan/kcsan_test.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
-> index dc55fd5a36fc..14d811eb9a21 100644
-> --- a/kernel/kcsan/kcsan_test.c
-> +++ b/kernel/kcsan/kcsan_test.c
-> @@ -1005,13 +1005,13 @@ static const void *nthreads_gen_params(const void *prev, char *desc)
->  	else
->  		nthreads *= 2;
->  
-> -	if (!IS_ENABLED(CONFIG_PREEMPT) || !IS_ENABLED(CONFIG_KCSAN_INTERRUPT_WATCHER)) {
-> +	if (!is_preempt_full() || !IS_ENABLED(CONFIG_KCSAN_INTERRUPT_WATCHER)) {
->  		/*
->  		 * Without any preemption, keep 2 CPUs free for other tasks, one
->  		 * of which is the main test case function checking for
->  		 * completion or failure.
->  		 */
-> -		const long min_unused_cpus = IS_ENABLED(CONFIG_PREEMPT_NONE) ? 2 : 0;
-> +		const long min_unused_cpus = is_preempt_none() ? 2 : 0;
->  		const long min_required_cpus = 2 + min_unused_cpus;
->  
->  		if (num_online_cpus() < min_required_cpus) {
-> -- 
-> 2.25.1
+Would that help?
