@@ -2,69 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC9E44D438
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 10:40:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AEB444D4F2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 11:21:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqcCY2MPxz3c4h
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 20:40:41 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=gkiWiOX8;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hqd6R103fz3cBH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 21:21:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::333;
- helo=mail-ot1-x333.google.com; envelope-from=elver@google.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=gkiWiOX8; dkim-atps=neutral
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com
- [IPv6:2607:f8b0:4864:20::333])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HqcBv6ySmz2x9H
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 20:40:05 +1100 (AEDT)
-Received: by mail-ot1-x333.google.com with SMTP id
- h16-20020a9d7990000000b0055c7ae44dd2so8034591otm.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 01:40:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=6/bKopAPmkHa57hfJnxgSr31+HwEgFYE/Py/TQAdG68=;
- b=gkiWiOX8zlm9XT8Og6moU9xIJyu8+w/wkXHcSyju6P6MfcJ+1eMp46rl/6GcYATuSD
- 2lPIpohCRFh7xvqOYiub6Ne4RHSEdGx9iFmYpyAsiq3v8QkHfNUJorlkCpu59ecFoyDX
- 5cQ+gXFtQLFy6nzBtySiGlpS4F3A0n+VJS6gxzp6HcokIb00BTd0Hc6kjoNNwCCC2c/w
- ZdaDUyw/oqZOrPVWQ0w/HvLeXtkQbp1Qk8FLjaPH5u8mH1zES5uW7Hh7l8usP8LoHwFM
- rbM/lILsGVEEwAsxpEXLBi0WLmXQFnRPjUj7OPMUk81PvcRFPIE0OTrfSX25AJlr9m4G
- 0XHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=6/bKopAPmkHa57hfJnxgSr31+HwEgFYE/Py/TQAdG68=;
- b=UvZQQEc0sGlfxGGfNais79/z8hJT6PPKMFoEJqKjt6358ShJoOXKoyZXjzf7EEMNpN
- /kWpbh9agF4eheBv+e4xaDumwLbqmxw88J/DzYYmdfFURLTKTzQAUt3O+fZbLRQg5k0f
- RFMJzoFw6c/V4dFPWhKCjrdHHdLnLj8s89TraMOtP7wNR3/M2n0cX0V/6r8r/EtOjHdw
- c1PJywzCcKbuxxwF7H3Tu4FMJUBwGx8r3aepV7t4teZcWcypg8vcL2HbJom42tccOI2d
- tPidOdCvObXLmMFNUE3fMzDH9dSUEPZytJXgcaIoIrsgsVyBI2kAKM7ETiB4dkPS5I3i
- OTww==
-X-Gm-Message-State: AOAM531UzvJcHUkeCgYbuigvzXTbkmcUPQmqx7E57r0mtKSfUj7FH3uu
- Mxn17Z9oULoEk4FQZHg91T31+BIjGPFSeMUlyWF1A7DvU6U=
-X-Google-Smtp-Source: ABdhPJwHNib4Izwq5VRvwx+F+i/iw/cbi3VPdxj/5KCILWR5ZipAgx6octOLOllqAzJpni78t8/MutpmCyKpGH1Zi1I=
-X-Received: by 2002:a9d:77d1:: with SMTP id w17mr4805850otl.329.1636623600901; 
- Thu, 11 Nov 2021 01:40:00 -0800 (PST)
-MIME-Version: 1.0
-References: <20211110202448.4054153-1-valentin.schneider@arm.com>
- <20211110202448.4054153-5-valentin.schneider@arm.com>
- <YYzeOQNFmuieCk3T@elver.google.com>
-In-Reply-To: <YYzeOQNFmuieCk3T@elver.google.com>
-From: Marco Elver <elver@google.com>
-Date: Thu, 11 Nov 2021 10:39:49 +0100
-Message-ID: <CANpmjNPvYZSSLnsg_BGfzb=Yu4bTvCp+N14FHcJfUDjDgzrywg@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] kscan: Use preemption model accessors
-To: Valentin Schneider <valentin.schneider@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hqd5w24GLz2xXC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 21:20:52 +1100 (AEDT)
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
+ [51.254.78.96])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 7651761268;
+ Thu, 11 Nov 2021 10:20:49 +0000 (UTC)
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <maz@kernel.org>)
+ id 1ml7CJ-004nqD-6t; Thu, 11 Nov 2021 10:20:47 +0000
+Date: Thu, 11 Nov 2021 10:20:46 +0000
+Message-ID: <87pmr7803l.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: Re: [PASEMI] Nemo board doesn't recognize any ATA disks with the
+ pci-v5.16 updates
+In-Reply-To: <f40294c6-a088-af53-eeea-4dfbd255c5c9@xenosoft.de>
+References: <78308692-02e6-9544-4035-3171a8e1e6d4@xenosoft.de>
+ <20211110184106.GA1251058@bhelgaas> <87sfw3969l.wl-maz@kernel.org>
+ <8cc64c3b-b0c0-fb41-9836-2e5e6a4459d1@xenosoft.de>
+ <87r1bn88rt.wl-maz@kernel.org>
+ <f40294c6-a088-af53-eeea-4dfbd255c5c9@xenosoft.de>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: chzigotzky@xenosoft.de, helgaas@kernel.org,
+ bhelgaas@google.com, alyssa@rosenzweig.io, lorenzo.pieralisi@arm.com,
+ robh@kernel.org, matthew@a-eon.biz, darren@stevens-zone.net,
+ madskateman@gmail.com, rtd2@xtra.co.nz, info@xenosoft.de, axboe@kernel.dk,
+ damien.lemoal@opensource.wdc.com, kw@linux.com, arnd@arndb.de,
+ robert@swiecki.net, olof@lixom.net, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,53 +67,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Marek <michal.lkml@markovi.net>, linux-kbuild@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Frederic Weisbecker <frederic@kernel.org>, Mike Galbraith <efault@gmx.de>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, Paul Mackerras <paulus@samba.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masahiro Yamada <masahiroy@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>,
- Dmitry Vyukov <dvyukov@google.com>
+Cc: axboe@kernel.dk, Rob Herring <robh@kernel.org>, lorenzo.pieralisi@arm.com,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, Arnd Bergmann <arnd@arndb.de>, kw@linux.com,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ damien.lemoal@opensource.wdc.com, Olof Johansson <olof@lixom.net>,
+ Darren Stevens <darren@stevens-zone.net>, Bjorn Helgaas <helgaas@kernel.org>,
+ mad skateman <madskateman@gmail.com>,
+ "bhelgaas@google.com >> Bjorn Helgaas" <bhelgaas@google.com>,
+ robert@swiecki.net, Matthew Leaman <matthew@a-eon.biz>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 11 Nov 2021 at 10:11, Marco Elver <elver@google.com> wrote:
->
-> Subject s/kscan/kcsan/
->
-> On Wed, Nov 10, 2021 at 08:24PM +0000, Valentin Schneider wrote:
-> > Per PREEMPT_DYNAMIC, checking CONFIG_PREEMPT doesn't tell you the actual
-> > preemption model of the live kernel. Use the newly-introduced accessors
-> > instead.
-> >
-> > Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
->
-> Reviewed-by: Marco Elver <elver@google.com>
->
-> Though it currently doesn't compile as a module due to missing
-> EXPORT_SYMBOL of is_preempt*().
->
-> > ---
-> >  kernel/kcsan/kcsan_test.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
-> > index dc55fd5a36fc..14d811eb9a21 100644
-> > --- a/kernel/kcsan/kcsan_test.c
-> > +++ b/kernel/kcsan/kcsan_test.c
-> > @@ -1005,13 +1005,13 @@ static const void *nthreads_gen_params(const void *prev, char *desc)
-> >       else
-> >               nthreads *= 2;
-> >
-> > -     if (!IS_ENABLED(CONFIG_PREEMPT) || !IS_ENABLED(CONFIG_KCSAN_INTERRUPT_WATCHER)) {
-> > +     if (!is_preempt_full() || !IS_ENABLED(CONFIG_KCSAN_INTERRUPT_WATCHER)) {
+On Thu, 11 Nov 2021 07:47:08 +0000,
+Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> 
+> On 11 November 2021 at 08:13 am, Marc Zyngier wrote:
+> > On Thu, 11 Nov 2021 05:24:52 +0000,
+> > Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> >> Hello Marc,
+> >> 
+> >> Here you are:
+> >> https://forum.hyperion-entertainment.com/viewtopic.php?p=54406#p54406
+> > This is not what I asked. I need the actual source file, or at the
+> > very least the compiled object (the /sys/firmware/fdt file, for
+> > example). Not an interpretation that I can't feed to the kernel.
+> > 
+> > Without this, I can't debug your problem.
+> > 
+> >> We are very happy to have the patch for reverting the bad commit
+> >> because we want to test the new PASEMI i2c driver with support for the
+> >> Apple M1 [1] on our Nemo boards.
+> > You can revert the patch on your own. At this stage, we're not blindly
+> > reverting things in the tree, but instead trying to understand what
+> > is happening on your particular system.
+> > 
+> > Thanks,
+> > 
+> > 	M.
+> > 
+> I added a download link for the fdt file to the post [1]. Please read
+> also Darren's comments in this post.
 
-In case you introduce the 5th helper I suggested
-(is_preempt_full_or_rt() or whatever you'll call it), this one can be
-switched, because this check really does want to know if "at least
-full preemption" and not "precisely full preemption".
+Thanks for that. The DT looks absolutely bonkers, no wonder that
+things break with something like that.
+
+But Darren's comments made me jump a bit, and I quote them here for
+everyone to see:
+
+<quote>
+[...]
+
+The dtb passed by the CFE firmware has a number of issues, which up till
+now have been fixed by use of patches applied to the mainline kernel.
+This occasionally causes problems with changes made to mainline.
+
+[...]
+</quote>
+
+Am I right in understanding that the upstream kernel does not support
+the machine out of the box, and that you actually have to apply out of
+tree patches to make it work? That these patches have to do with the
+IRQ routing?
+
+If so, I wonder why upstream should revert a patch to work on a system
+that isn't supported upstream the first place. I will still try and
+come up with a solution for you. But asking for the revert of a patch
+on these grounds is not, IMHO, acceptable. Also, please provide these
+patches on the list so that I can help you to some extend (and I mean
+*on the list*, not on a random forum that collects my information).
 
 Thanks,
--- Marco
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
