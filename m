@@ -1,80 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4BA244D50F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 11:34:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593A444D535
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 11:42:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqdPM5LRfz3c8j
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 21:34:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hqdb01LS7z2yZt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 21:42:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256 header.s=badeba3b8450 header.b=R6tRD/0B;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KjU/logh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de
- (client-ip=212.227.15.19; helo=mout.gmx.net; envelope-from=efault@gmx.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256
- header.s=badeba3b8450 header.b=R6tRD/0B; 
- dkim-atps=neutral
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HqdZK3wMKz2xXm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 21:42:01 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=KjU/logh; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HqdNg4Jntz2x9C
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 21:33:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=badeba3b8450; t=1636626768;
- bh=uMU1373AJ5b0uKpR/RatT/DkoeOsKokoX2iJcNWel8U=;
- h=X-UI-Sender-Class:Subject:From:To:Cc:Date:In-Reply-To:References;
- b=R6tRD/0BVuDwwwdLGMrLggr5YULeD4oqnyRIH5CNFpi7zf0fPlL8KdTd3DubtpxnF
- TCwvVXpzfm2wa4sNntEzGf5Ae2LdEy2TBUjwjRohKn0yaY/wU4L2pSvAIIE7YIHfzw
- IcKO+1MHeHt3cuvhrv0WSMsYPannhyTsciJc0Z1k=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from homer.fritz.box ([212.114.172.107]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M7b2d-1mmUIP1zLR-0083Gp; Thu, 11
- Nov 2021 11:32:48 +0100
-Message-ID: <26fd47db11763a9c79662a66eed2dbdbcbedaa8a.camel@gmx.de>
-Subject: Re: [PATCH v2 2/5] preempt/dynamic: Introduce preempt mode accessors
-From: Mike Galbraith <efault@gmx.de>
-To: Marco Elver <elver@google.com>
-Date: Thu, 11 Nov 2021 11:32:40 +0100
-In-Reply-To: <CANpmjNPeRwupeg=S8yGGUracoehSUbS-Fkfb8juv5mYN36uiqg@mail.gmail.com>
-References: <20211110202448.4054153-1-valentin.schneider@arm.com>
- <20211110202448.4054153-3-valentin.schneider@arm.com>
- <a7c704c2ae77e430d7f0657c5db664f877263830.camel@gmx.de>
- <803a905890530ea1b86db6ac45bd1fd940cf0ac3.camel@gmx.de>
- <a7febd8825a2ab99bd1999664c6d4aa618b49442.camel@gmx.de>
- <CANpmjNPeRwupeg=S8yGGUracoehSUbS-Fkfb8juv5mYN36uiqg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.0 
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HqdZG6D6Dz4xbs;
+ Thu, 11 Nov 2021 21:41:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1636627318;
+ bh=508EvATBTUgT4RP3xXzYmoION19rKtHl4Vb8VbpgFcg=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=KjU/loghlYKgeXGMgRsQcvBlJT2wAzx01jngbO03grjmezF9Edk9AuQQ9u6sAhZGd
+ Yh9KagEEh0lxDO4a/XUOp44KsYVSFeOAXfxz4NS83dahQWVoQINILeuYbulXUlHs+o
+ /fMyqNTvw2miRz5hcSc8x/AUvbTOxrmIxD5HFNL0xK6FfyIM9FP/Jjd11CJSE363Hm
+ 8RuxV1LpQCV5TWLOaau3TPIjkMEAfz9Q7M+1ikYVAq8xTR83O4o5YBuGjH9W3DkaB2
+ pFraFA9N0MD7/mUPm8Fc01FhQQRvE57OKyLOH7Ad9erEgIaI1cQdmm+fuRalzTweqe
+ KXQnm7k2Szflw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 11/11] powerpc/smp: Add a doorbell=off kernel parameter
+In-Reply-To: <20211105102636.1016378-12-clg@kaod.org>
+References: <20211105102636.1016378-1-clg@kaod.org>
+ <20211105102636.1016378-12-clg@kaod.org>
+Date: Thu, 11 Nov 2021 21:41:58 +1100
+Message-ID: <87fss3m0sp.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:uuwX788BL/oP1FC37c/JIA2AX9+HNeNHkFeDgDrreyZCxwfBg0P
- B+LG2N6R4OuzGdOAYShamBgnrdfwteiTsZbAt3bWKAG4xA8ILr8IE8V8eRKdYmsI+QT4ieO
- hSGLZCIAvzMybM5e4d039bw+2e9jg0wvFDF+Hvd9V0aPc42JqL2Hq55llwqtmw1QBPduxu9
- rFSdKtZIpm4OcQmGqQUXQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:tJHMHumK5Ow=:WzGr7EVNBA75U29zZgCq9T
- SH5u6IUYmUgYVPKQC6dyltXmdR8eq//e3pTu2OzThSYmBIu9/NaxZ2/IA2sKuJiyK+yFTzrz5
- I/HO/mwgHzqLmwD/0DWQMgoQhcJpYCfbUYZYKy2TLdqLRVhNV1A2Cjk2BZZuEU4Do2CUwT/eM
- wIpShikX11920Uxw/YETz5drZBAPyyvz9zJqk/yQ+rc1KXFv2e0FBOJfDN6wEd+Gvq5+cjGLR
- dyGZUYeYODZMUpuAR85mw6IR2cGW64i+9ROqZnuoDJdUJwBRt+1vI6UopW20ZAPB/6XSgIzoh
- 6Qs6/0y24T0Er4XHnZTI2cxFbzvUnZKvsR4fvInhTvyNC83jalZoD1Bj1iMtAIY+QIVXLv36B
- EXoxruXp/NcOvv19ewBKC9sC3iOmUxILYXSVj8UevLj7pjHUJ3Uu5EXqdLz7yT23WIbN3WDig
- CeBx418hv8rdQKUQbvsxRGQUbuKhDkKh3z5e8gLXQqFumqYJGhKfmjmdMWSfA6zHwzaA59KS3
- LPz6U15vXGZ6c/2oKKQqPRWTF8pS9TwACFE/m96KICA5cmF1WA6aV3ryOGXmsyVWSFunp1Xnj
- xZzIm3kkyWYtZ0Fn92uNtY2TecsMSPaxL8sNQjbv8mkMzJwFpskie7EeHrKwBKM6jqtyHqD5B
- 8kyqZ6IMr+cytx1g56gpncODPICpz4oRGhGVvF7pwteqmz4jEZ9JWbf/4vegn1Ak3iF3gPZMy
- vSQ6BrmBGzZc7t2mMtOXTWPCVApr4Q+uOifNKAEMe241zzCFDUvW+pOFXeUVLEaDU43IwDudY
- 6MCeRNbQctVEBAKnkUQS0Il/dZw5JazqlnaS+aeeYHa8AwzmoqazLXcfq6OuwXJ8SEE1xj9M/
- BkhTYFoSE4jk6klAhutpMoNIKHo1L6ZYEQkj4ZQVR1vsW4SJax+xiSDDvdlUzRIU4LLOgYA/V
- aHo+bkLFBdQ+afhD7Hf65ElPd7tZCgK4bAQL3A2Yjp/2g4iJo39sib4bpoEylT0GjY2v0SLhz
- KqXTT4atTgR1C/Gw4S5+sH+Xz7Kwu/yZKR3BWH3smtCZrUkBNdhxpFKI6IXxJdOHsdn7oGbho
- RB/Uuzm8D7VlZw=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,86 +61,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Marek <michal.lkml@markovi.net>, linux-kbuild@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, Ingo Molnar <mingo@kernel.org>,
- Paul Mackerras <paulus@samba.org>, Steven Rostedt <rostedt@goodmis.org>,
- Masahiro Yamada <masahiroy@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Valentin Schneider <valentin.schneider@arm.com>,
- Dmitry Vyukov <dvyukov@google.com>
+Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2021-11-11 at 10:36 +0100, Marco Elver wrote:
-> On Thu, 11 Nov 2021 at 04:47, Mike Galbraith <efault@gmx.de> wrote:
-> >
-> > On Thu, 2021-11-11 at 04:35 +0100, Mike Galbraith wrote:
-> > > On Thu, 2021-11-11 at 04:16 +0100, Mike Galbraith wrote:
-> > > > On Wed, 2021-11-10 at 20:24 +0000, Valentin Schneider wrote:
-> > > > >
-> > > > > diff --git a/include/linux/sched.h b/include/linux/sched.h
-> > > > > index 5f8db54226af..0640d5622496 100644
-> > > > > --- a/include/linux/sched.h
-> > > > > +++ b/include/linux/sched.h
-> > > > > @@ -2073,6 +2073,22 @@ static inline void cond_resched_rcu(void)
-> > > > > =C2=A0#endif
-> > > > > =C2=A0}
-> > > > >
-> > > > > +#ifdef CONFIG_PREEMPT_DYNAMIC
-> > > > > +
-> > > > > +extern bool is_preempt_none(void);
-> > > > > +extern bool is_preempt_voluntary(void);
-> > > > > +extern bool is_preempt_full(void);
-> > > > > +
-> > > > > +#else
-> > > > > +
-> > > > > +#define is_preempt_none() IS_ENABLED(CONFIG_PREEMPT_NONE)
-> > > > > +#define is_preempt_voluntary()
-> > > > > IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY)
-> > > > > +#define is_preempt_full() IS_ENABLED(CONFIG_PREEMPT)
-> > > >
-> > > > I think that should be IS_ENABLED(CONFIG_PREEMPTION), see
-> > > > c1a280b68d4e.
-> > > >
-> > > > Noticed while applying the series to an RT tree, where tglx
-> > > > has done that replacement to the powerpc spot your next patch
-> > > > diddles.
-> > >
-> > > Damn, then comes patch 5 properly differentiating PREEMPT/PREEMPT_RT=
-.
-> >
-> > So I suppose the powerpc spot should remain CONFIG_PREEMPT and become
-> > CONFIG_PREEMPTION when the RT change gets merged, because that spot is
-> > about full preemptibility, not a distinct preemption model.
-> >
-> > That's rather annoying :-/
+C=C3=A9dric Le Goater <clg@kaod.org> writes:
+> On processors with a XIVE interrupt controller (POWER9 and above), the
+> kernel can use either doorbells or XIVE to generate CPU IPIs. Sending
+> doorbell is generally preferred to using the XIVE IC because it is
+> faster. There are cases where we want to avoid doorbells and use XIVE
+> only, for debug or performance. Only useful on POWER9 and above.
+
+How much do we want this?
+
+Kernel command line args are a bit of a pain, they tend to be poorly
+tested, because someone has to explicitly enable them at boot time, and
+then reboot to test the other case.
+
+When would we want to enable this? Can we make the kernel smarter about
+when to use doorbells and make it automated?
+
+Could we make it a runtime switch?
+
+cheers
+
 >
-> I guess the question is if is_preempt_full() should be true also if
-> is_preempt_rt() is true?
-
-That's what CONFIG_PREEMPTION is.  More could follow, but it was added
-to allow multiple models to say "preemptible".
-
-> Not sure all cases are happy with that, e.g. the kernel/trace/trace.c
-> case, which wants to print the precise preemption level.
-
-Yeah, that's the "annoying" bit, needing one oddball model accessor
-that isn't about a particular model.
-
-> To avoid confusion, I'd introduce another helper that says true if the
-> preemption level is "at least full", currently that'd be "full or rt".
-> Something like is_preempt_full_or_rt() (but might as well write
-> "is_preempt_full() || is_preempt_rt()"), or is_preemption() (to match
-> that Kconfig variable, although it's slightly confusing). The
-> implementation of that helper can just be a static inline function
-> returning "is_preempt_full() || is_preempt_rt()".
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
+>  arch/powerpc/include/asm/dbell.h                |  1 +
+>  arch/powerpc/kernel/dbell.c                     | 17 +++++++++++++++++
+>  arch/powerpc/platforms/powernv/smp.c            |  7 +++++--
+>  arch/powerpc/platforms/pseries/smp.c            |  3 +++
+>  Documentation/admin-guide/kernel-parameters.txt | 10 ++++++++++
+>  5 files changed, 36 insertions(+), 2 deletions(-)
 >
-> Would that help?
-
-Yeah, as it sits two accessors are needed, one that says PREEMPT the
-other PREEMPTION, spelling optional.
-
-	-Mike
+> diff --git a/arch/powerpc/include/asm/dbell.h b/arch/powerpc/include/asm/=
+dbell.h
+> index 3e9da22a2779..07775aa3e81b 100644
+> --- a/arch/powerpc/include/asm/dbell.h
+> +++ b/arch/powerpc/include/asm/dbell.h
+> @@ -90,6 +90,7 @@ static inline void ppc_msgsync(void)
+>  #endif /* CONFIG_PPC_BOOK3S */
+>=20=20
+>  extern void doorbell_exception(struct pt_regs *regs);
+> +extern bool doorbell_disabled;
+>=20=20
+>  static inline void ppc_msgsnd(enum ppc_dbell type, u32 flags, u32 tag)
+>  {
+> diff --git a/arch/powerpc/kernel/dbell.c b/arch/powerpc/kernel/dbell.c
+> index 5545c9cd17c1..681ee4775629 100644
+> --- a/arch/powerpc/kernel/dbell.c
+> +++ b/arch/powerpc/kernel/dbell.c
+> @@ -38,6 +38,23 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(doorbell_exception)
+>=20=20
+>  	set_irq_regs(old_regs);
+>  }
+> +
+> +bool doorbell_disabled;
+> +
+> +static int __init doorbell_cmdline(char *arg)
+> +{
+> +	if (!arg)
+> +		return -EINVAL;
+> +
+> +	if (strncmp(arg, "off", 3) =3D=3D 0) {
+> +		pr_info("Doorbell disabled on kernel command line\n");
+> +		doorbell_disabled =3D true;
+> +	}
+> +
+> +	return 0;
+> +}
+> +__setup("doorbell=3D", doorbell_cmdline);
+> +
+>  #else /* CONFIG_SMP */
+>  DEFINE_INTERRUPT_HANDLER_ASYNC(doorbell_exception)
+>  {
+> diff --git a/arch/powerpc/platforms/powernv/smp.c b/arch/powerpc/platform=
+s/powernv/smp.c
+> index cbb67813cd5d..1311bda9446a 100644
+> --- a/arch/powerpc/platforms/powernv/smp.c
+> +++ b/arch/powerpc/platforms/powernv/smp.c
+> @@ -338,10 +338,13 @@ static void __init pnv_smp_probe(void)
+>  		ic_cause_ipi =3D smp_ops->cause_ipi;
+>  		WARN_ON(!ic_cause_ipi);
+>=20=20
+> -		if (cpu_has_feature(CPU_FTR_ARCH_300))
+> +		if (cpu_has_feature(CPU_FTR_ARCH_300)) {
+> +			if (doorbell_disabled)
+> +				return;
+>  			smp_ops->cause_ipi =3D doorbell_global_ipi;
+> -		else
+> +		} else {
+>  			smp_ops->cause_ipi =3D pnv_cause_ipi;
+> +		}
+>  	}
+>  }
+>=20=20
+> diff --git a/arch/powerpc/platforms/pseries/smp.c b/arch/powerpc/platform=
+s/pseries/smp.c
+> index f47429323eee..3bc9e6aaf645 100644
+> --- a/arch/powerpc/platforms/pseries/smp.c
+> +++ b/arch/powerpc/platforms/pseries/smp.c
+> @@ -229,6 +229,9 @@ static __init void pSeries_smp_probe(void)
+>  			return;
+>  	}
+>=20=20
+> +	if (doorbell_disabled)
+> +		return;
+> +
+>  	/*
+>  	 * Under PowerVM, FSCR[MSGP] is enabled as guest vCPU siblings are
+>  	 * gang scheduled on the same physical core, so doorbells are always
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentat=
+ion/admin-guide/kernel-parameters.txt
+> index 10fa093251e8..2e1284febe39 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -1041,6 +1041,16 @@
+>  			The filter can be disabled or changed to another
+>  			driver later using sysfs.
+>=20=20
+> +	doorbell=3Doff	[PPC]
+> +			On processors with a XIVE interrupt controller
+> +			(POWER9 and above), the kernel can use either
+> +			doorbells or XIVE to generate CPU IPIs.	Sending
+> +			doorbell is generally preferred to using the XIVE
+> +			IC because it is faster. There are cases where
+> +			we want to avoid doorbells and use XIVE only,
+> +			for debug or performance. Only useful on
+> +			POWER9 and above.
+> +
+>  	driver_async_probe=3D  [KNL]
+>  			List of driver names to be probed asynchronously.
+>  			Format: <driver_name1>,<driver_name2>...
+> --=20
+> 2.31.1
