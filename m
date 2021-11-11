@@ -1,83 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D9144D595
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 12:11:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A19E844D5C5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 12:24:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqfDT6YCmz3bP7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 22:11:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256 header.s=badeba3b8450 header.b=UTUxLOk/;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HqfWN3cjtz3c6p
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 22:24:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de
- (client-ip=212.227.15.15; helo=mout.gmx.net; envelope-from=efault@gmx.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256
- header.s=badeba3b8450 header.b=UTUxLOk/; 
- dkim-atps=neutral
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HqfCk4pxXz2yXv
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 22:10:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=badeba3b8450; t=1636629001;
- bh=jZ8l3uLh6D2hc2aCIqbUyH09CmUhgtayHxcRx2JWf8g=;
- h=X-UI-Sender-Class:Subject:From:To:Cc:Date:In-Reply-To:References;
- b=UTUxLOk/EUKRKJlgq2IC2DMMyf3u+gSF1X4iNSzZrwQUm/mWj++60N1YMQt0V0DbR
- 9g5fX/fhLmCrYvf47tgYeOrj72JVcYLVAra5wBeOJ/6o+6HwHizvXPToVdVpMEC5+E
- I0vcGbnYnx+tw9OZQsxB+1CNGN1TEkvINZbKeqkQ=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from homer.fritz.box ([212.114.172.107]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MTzf6-1nByG23evC-00R0Xc; Thu, 11
- Nov 2021 12:10:00 +0100
-Message-ID: <85ac7c9ccb578155738f2dfdfb74904e677f0141.camel@gmx.de>
-Subject: Re: [PATCH v2 2/5] preempt/dynamic: Introduce preempt mode accessors
-From: Mike Galbraith <efault@gmx.de>
-To: Valentin Schneider <valentin.schneider@arm.com>, Marco Elver
- <elver@google.com>
-Date: Thu, 11 Nov 2021 12:09:58 +0100
-In-Reply-To: <8735o3rmej.mognet@arm.com>
-References: <20211110202448.4054153-1-valentin.schneider@arm.com>
- <20211110202448.4054153-3-valentin.schneider@arm.com>
- <a7c704c2ae77e430d7f0657c5db664f877263830.camel@gmx.de>
- <803a905890530ea1b86db6ac45bd1fd940cf0ac3.camel@gmx.de>
- <a7febd8825a2ab99bd1999664c6d4aa618b49442.camel@gmx.de>
- <CANpmjNPeRwupeg=S8yGGUracoehSUbS-Fkfb8juv5mYN36uiqg@mail.gmail.com>
- <26fd47db11763a9c79662a66eed2dbdbcbedaa8a.camel@gmx.de>
- <8735o3rmej.mognet@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.0 
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:b6XWn7xnRrqcRL+59pdpMav+X0ElAqBwSTXFfB30ZrRhE9+Q/tG
- CnbC0FkUyt1tYIRBSNU00o5E7fcsZssc2k3TxttlXIFQhvAM3fvI1lrqbzAKCMOOwI9Q8fw
- kPr6lCNsVKp/0xk3UQQH3k9wNNFvmPeRiyyvNvKBLQQPCSM1RnjJ1f8gd1mgJhSxluULckZ
- +u6IUecArxEcMKflkVYQg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:kKs/s/Utpbw=:rs2TwhUKxUtsfSh7oaDZOd
- kWP0wsK+RiTr3S3cI89LbH37yGehAJDxd+UmrxX7F2Dr7zWNOJJ/flI6MDo79C61PdDatSrkV
- BKCJsHAikUNHd0PJF+FM98W6ZWv4hXSnhYme0WolG/bzZDz/cZ8VI45UtAYhrzu380Uf8pqN+
- FqALEu9owqsnWXbZ1Y7ArYTShNwCc5bsTbxNhm46NSd0E019pZBssjrA64MXeSyUWaGVX4vP2
- KITWr8s6Kv6lXhEpjgNmwGUiSYis3+5DD6KDtbrcOYcsbR8Gr27XDFOKyaO17MxlInwT0C0l1
- 6rmWymDW2wHfE/n+Z2+OKc9rbiXx2Y+2mjg/mTd7LrruDOLc/Yzd/DxACcaAGq84sMdpUZk6H
- EyXFXJyaHl/OjyfKJREMhVgUI1xjOj+8tYKhu1ILIJPNwCc7XpM87t9JibebEgQLcs5TN/pso
- GIW6KPxMjlltmLjGagm8mYz72DOaE0UYUzmBo9gD/PntpGyBRzf6li84fjHbaAXH0FmAcj85k
- +4LYiTaLgfKpCEkzRh5vfks5CY8oKAGLZogjk0JzcwWpIhtqbT8tNlgYR3JSqgVXcpGdw2l04
- EZrRU2b1/U1X7hT5ZsvZHE8ZKa9yxmHVYgvhAXWzzgVzxTWYwq3CabjjQqDfCNVu8E/KQdWix
- 4b3WPH0vIMXYSRVuVAIZ0tl3Aj1H06dUL555NbHH9FBZuRyd7cVRl9BqTEnhyyqUJtN2Gkwot
- Lt9H1u+f2hBQH1ZuFK0FJj2hnu8y+HFcZH4WTSGX4aljbJvIzbyU8qIckDfTo20PMnmsIqG6b
- vzhDSbHEz0sQIbjqHTpbyVmFw3/MkoLLB4DTf6OcFhdLFzISbnLhHe/vI6QJnTfSaoQVRuMkp
- fIIsik53Mlh+8g0YaGF5NNtZBgyAKiUr6LoiPgFK3/UyovlleIrFcBF/XnLdx4pyVt/PzuTPW
- R7cLhx/3xx5AAeJOZ5+T7cDQjG4hQOv1aopgPGhydICpoFVSsOEu1LsUAYLGjZE8muXa5GgTo
- 2l1d9OhK9jOO0v8/R2t7flnoK6XK1XJgh0y6/F0NtUX4UYYBcWPSuK8SqIRyzOo96TOwuMmHy
- jlsP5A/KKvnNWI=
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HqfVy0wghz2xDD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 22:24:09 +1100 (AEDT)
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
+ [51.254.78.96])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 3173D61107;
+ Thu, 11 Nov 2021 11:24:07 +0000 (UTC)
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <maz@kernel.org>)
+ id 1ml8BZ-004oS1-11; Thu, 11 Nov 2021 11:24:05 +0000
+Date: Thu, 11 Nov 2021 11:24:04 +0000
+Message-ID: <87o86r7x63.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: Re: [PASEMI] Nemo board doesn't recognize any ATA disks with the
+ pci-v5.16 updates
+In-Reply-To: <c93c7f72-6e46-797b-bee3-c9ae3b444f60@xenosoft.de>
+References: <78308692-02e6-9544-4035-3171a8e1e6d4@xenosoft.de>
+ <20211110184106.GA1251058@bhelgaas> <87sfw3969l.wl-maz@kernel.org>
+ <8cc64c3b-b0c0-fb41-9836-2e5e6a4459d1@xenosoft.de>
+ <87r1bn88rt.wl-maz@kernel.org>
+ <f40294c6-a088-af53-eeea-4dfbd255c5c9@xenosoft.de>
+ <87pmr7803l.wl-maz@kernel.org>
+ <c93c7f72-6e46-797b-bee3-c9ae3b444f60@xenosoft.de>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: chzigotzky@xenosoft.de, helgaas@kernel.org,
+ bhelgaas@google.com, alyssa@rosenzweig.io, lorenzo.pieralisi@arm.com,
+ robh@kernel.org, matthew@a-eon.biz, darren@stevens-zone.net,
+ madskateman@gmail.com, rtd2@xtra.co.nz, info@xenosoft.de, axboe@kernel.dk,
+ damien.lemoal@opensource.wdc.com, kw@linux.com, arnd@arndb.de,
+ robert@swiecki.net, olof@lixom.net, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,33 +69,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Marek <michal.lkml@markovi.net>, linux-kbuild@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, Paul Mackerras <paulus@samba.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masahiro Yamada <masahiroy@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>,
- Dmitry Vyukov <dvyukov@google.com>
+Cc: axboe@kernel.dk, Rob Herring <robh@kernel.org>, lorenzo.pieralisi@arm.com,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, Arnd Bergmann <arnd@arndb.de>, kw@linux.com,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ damien.lemoal@opensource.wdc.com, Olof Johansson <olof@lixom.net>,
+ Darren Stevens <darren@stevens-zone.net>, Bjorn Helgaas <helgaas@kernel.org>,
+ mad skateman <madskateman@gmail.com>,
+ "bhelgaas@google.com >> Bjorn Helgaas" <bhelgaas@google.com>,
+ robert@swiecki.net, Matthew Leaman <matthew@a-eon.biz>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2021-11-11 at 10:56 +0000, Valentin Schneider wrote:
-> On 11/11/21 11:32, Mike Galbraith wrote:
-> > On Thu, 2021-11-11 at 10:36 +0100, Marco Elver wrote:
-> > > I guess the question is if is_preempt_full() should be true also if
-> > > is_preempt_rt() is true?
-> >
-> > That's what CONFIG_PREEMPTION is.=C2=A0 More could follow, but it was =
-added
-> > to allow multiple models to say "preemptible".
-> >
->
-> That's what I was gonna say, but you can have CONFIG_PREEMPTION while be=
-ing
-> is_preempt_none() due to PREEMPT_DYNAMIC...
+On Thu, 11 Nov 2021 10:44:30 +0000,
+Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> 
+> On 11 November 2021 at 11:20 am, Marc Zyngier wrote:
+> > On Thu, 11 Nov 2021 07:47:08 +0000,
+> > Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> >> On 11 November 2021 at 08:13 am, Marc Zyngier wrote:
+> >>> On Thu, 11 Nov 2021 05:24:52 +0000,
+> >>> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
+> >>>> Hello Marc,
+> >>>> 
+> >>>> Here you are:
+> >>>> https://forum.hyperion-entertainment.com/viewtopic.php?p=54406#p54406
+> >>> This is not what I asked. I need the actual source file, or at the
+> >>> very least the compiled object (the /sys/firmware/fdt file, for
+> >>> example). Not an interpretation that I can't feed to the kernel.
+> >>> 
+> >>> Without this, I can't debug your problem.
+> >>> 
+> >>>> We are very happy to have the patch for reverting the bad commit
+> >>>> because we want to test the new PASEMI i2c driver with support for the
+> >>>> Apple M1 [1] on our Nemo boards.
+> >>> You can revert the patch on your own. At this stage, we're not blindly
+> >>> reverting things in the tree, but instead trying to understand what
+> >>> is happening on your particular system.
+> >>> 
+> >>> Thanks,
+> >>> 
+> >>> 	M.
+> >>> 
+> >> I added a download link for the fdt file to the post [1]. Please read
+> >> also Darren's comments in this post.
+> > 
+> > Am I right in understanding that the upstream kernel does not support
+> > the machine out of the box, and that you actually have to apply out of
+> > tree patches to make it work?
+> No, you aren't right. The upstream kernel supports the Nemo board out
+> of the box. [1]
 
-Ah, right.. this is gonna take some getting used to.
+That's not the way I interpret Darren's comments, but you surely know
+better than I do.
 
-	-Mike
+I'll try to come up with something for you to test shortly.
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
