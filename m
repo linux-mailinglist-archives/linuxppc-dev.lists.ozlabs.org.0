@@ -2,69 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B0244D2AB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 08:48:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6E3A44D38E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 09:55:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HqYk85t5wz3c4n
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 18:48:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HqbBr3N4Xz3058
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Nov 2021 19:55:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=sr5PccJo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hKMluJXv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.52;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::32e;
+ helo=mail-wm1-x32e.google.com; envelope-from=elver@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=sr5PccJo; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [85.215.255.52])
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=hKMluJXv; dkim-atps=neutral
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com
+ [IPv6:2a00:1450:4864:20::32e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HqYjP3q03z2yP5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 18:47:51 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1636616830;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
- From:Subject:Sender;
- bh=dCmpd2O/lGDrnDqSWWki/3bwgrWmS+xqwxY6BMuXy6s=;
- b=sr5PccJoWnb4Rw2L9QcLOJKHdMfBGKrx2uRQ4xWCx5ymmA9SzDZlt/LjTKnwjTWXf+
- mj1tso+ghtaMBeCGHLjECJihzfLBk56O4CAH7AiZ3235IP5BbDnWQs091RN0rtekKfHg
- q/5ZEc22ClJJVD05ks4vcKEcUzENnAvBxHriR/OPgeHVrfnqwRDJ5jifrlqWVZUlRwtN
- DeiP/WoOuXepqYRvgxuXlk/IqnI0TrwKRU+gdyB4oHoJL0gtgth9SKm6CZ+Zk/8Irljs
- ThSD9HlXQYeN+F+wTYF2uHI+TfHJoNNR1mEhIbnah2ILbYk9xdZGbN5lzK31RngbzWLt
- bfZQ==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhWI9Q+uux5TZjyZDAcEWxCgiq/uQ=="
-X-RZG-CLASS-ID: mo00
-Received: from cc-build-machine.a-eon.tld
- by smtp.strato.de (RZmta 47.34.5 AUTH)
- with ESMTPSA id N03801xAB7l8H1o
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Thu, 11 Nov 2021 08:47:08 +0100 (CET)
-Subject: Re: [PASEMI] Nemo board doesn't recognize any ATA disks with the
- pci-v5.16 updates
-To: Marc Zyngier <maz@kernel.org>
-References: <78308692-02e6-9544-4035-3171a8e1e6d4@xenosoft.de>
- <20211110184106.GA1251058@bhelgaas> <87sfw3969l.wl-maz@kernel.org>
- <8cc64c3b-b0c0-fb41-9836-2e5e6a4459d1@xenosoft.de>
- <87r1bn88rt.wl-maz@kernel.org>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <f40294c6-a088-af53-eeea-4dfbd255c5c9@xenosoft.de>
-Date: Thu, 11 Nov 2021 08:47:08 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HqbB62gHjz2xB1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 19:54:20 +1100 (AEDT)
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 67-20020a1c1946000000b0030d4c90fa87so3889749wmz.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Nov 2021 00:54:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=C2pRx3VrkRvZzvTAGodY7FBYbqa7VwcKa7WgFhF9R6k=;
+ b=hKMluJXv3cyn/6Ynmj9veQdzGcfSmCSFG579re0rSO1tRqLHpBWJu9Fwffh1MImSiV
+ 9lVDbZ+PTmFa5VLZtW+4dmbkNJhCiV6Mn31mAn/sv9C2ywUe+5Zi9nw1sKPf3D79mJuH
+ Xu78Qr/gH0FY/7l8aYSagKd3qmz9gYzLZ62FAXcMZVNkqPtXOBh3x22yTvvJpgfPc81T
+ ek0wMLCyit/12eBl70fjor1e4lUxm8HvOdo/uiRyMJ+z0uM+jdn8tMtRpiqnoCejQ6s1
+ 9Mxz0cBVuYZN6jSzMhjTX2uPJYFwb+XZ+JH+qIGcAEGf2NQ1Qs5ojQHmD9vsEWdGVZcM
+ GY/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=C2pRx3VrkRvZzvTAGodY7FBYbqa7VwcKa7WgFhF9R6k=;
+ b=HZNiHt50XT7QI4GBbn2EeAIJBsp5tGB14SBYRuDcb1A83JHr+PLPtY5WAdnD6zm+gu
+ aLNP2r/2s+ivu+CFD+Ee/hvI7KkUMhM8wADNRSgyqZS+sUUwbRzq3stR5FLMk9isl4h2
+ xaLk7/lwWResp5OJsXJQUfDUiu2PXlekZNHZ7NtNVM2IAm5KgC7L8rTl4VQVzaJnvfML
+ p1YesrW9UX/GYK6qQxvvPCdGIpxttYxl4H41eGzOeJTOFAZzWvQrcYV5kJ2z/lbvI+lG
+ tlXD4XGwmoetcINVmtPRbDsMBr94FI/JFcbvSmIFFCUopCKj7XM90iaBN3eMghwW4Znt
+ HlmA==
+X-Gm-Message-State: AOAM5338sCrUdy04r6CrzlWWwIet8hqSzK7yZdCk3c8VDbUk4oNvrWme
+ FcN3z3mfjPwi7JGzpb3R7TP8iQ==
+X-Google-Smtp-Source: ABdhPJxEBRNPec/bxvLCqnLUS7WDbPiOxrRwFfQ0JkP8imwe8zHRLQn9sFwrFH2xKqmya9LJVZJJMA==
+X-Received: by 2002:a05:600c:4f8a:: with SMTP id
+ n10mr6436687wmq.54.1636620852405; 
+ Thu, 11 Nov 2021 00:54:12 -0800 (PST)
+Received: from elver.google.com ([2a00:79e0:15:13:fd21:69cc:1f2b:9812])
+ by smtp.gmail.com with ESMTPSA id l2sm8637092wmq.42.2021.11.11.00.54.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Nov 2021 00:54:11 -0800 (PST)
+Date: Thu, 11 Nov 2021 09:54:05 +0100
+From: Marco Elver <elver@google.com>
+To: Valentin Schneider <valentin.schneider@arm.com>
+Subject: Re: [PATCH v2 2/5] preempt/dynamic: Introduce preempt mode accessors
+Message-ID: <YYzaLTtf1tFbqDSn@elver.google.com>
+References: <20211110202448.4054153-1-valentin.schneider@arm.com>
+ <20211110202448.4054153-3-valentin.schneider@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <87r1bn88rt.wl-maz@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: de-DE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211110202448.4054153-3-valentin.schneider@arm.com>
+User-Agent: Mutt/2.0.5 (2021-01-21)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,128 +83,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: axboe@kernel.dk, Rob Herring <robh@kernel.org>, lorenzo.pieralisi@arm.com,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Arnd Bergmann <arnd@arndb.de>, kw@linux.com,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- damien.lemoal@opensource.wdc.com, Olof Johansson <olof@lixom.net>,
- Darren Stevens <darren@stevens-zone.net>, Bjorn Helgaas <helgaas@kernel.org>,
- mad skateman <madskateman@gmail.com>,
- "bhelgaas@google.com >> Bjorn Helgaas" <bhelgaas@google.com>,
- robert@swiecki.net, Matthew Leaman <matthew@a-eon.biz>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: Michal Marek <michal.lkml@markovi.net>, linux-kbuild@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>,
+ Frederic Weisbecker <frederic@kernel.org>, Mike Galbraith <efault@gmx.de>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, Paul Mackerras <paulus@samba.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Masahiro Yamada <masahiroy@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>,
+ Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11 November 2021 at 08:13 am, Marc Zyngier wrote:
-> On Thu, 11 Nov 2021 05:24:52 +0000,
-> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
->> On 10 November 2021 at 08:09 pm, Marc Zyngier wrote:
->>> HI all,
->>>
->>> On Wed, 10 Nov 2021 18:41:06 +0000,
->>> Bjorn Helgaas <helgaas@kernel.org> wrote:
->>>> On Wed, Nov 10, 2021 at 07:07:24PM +0100, Christian Zigotzky wrote:
->>>>> On 09 November 2021 at 03:45 pm, Christian Zigotzky wrote:
->>>>>> Hello,
->>>>>>
->>>>>> The Nemo board [1] doesn't recognize any ATA disks with the pci-v5.16
->>>>> updates [2].
->>>>>> Error messages:
->>>>>>
->>>>>> ata4.00: gc timeout cmd 0xec
->>>>>> ata4.00: failed to IDENTIFY (I/O error, error_mask=0x4)
->>>>>> ata1.00: gc timeout cmd 0xec
->>>>>> ata1.00: failed to IDENTIFY (I/O error, error_mask=0x4)
->>>>>> ata3.00: gc timeout cmd 0xec
->>>>>> ata3.00: failed to IDENTIFY (I/O error, error_mask=0x4)
->>>>>>
->>>>>> I was able to revert the new pci-v5.16 updates [2]. After a new
->>>>> compiling, the kernel recognize all ATA disks correctly.
->>>>>> Could you please check the pci-v5.16 updates [2]?
->>>>>>
->>>>>> Please find attached the kernel config.
->>>>>>
->>>>>> Thanks,
->>>>>> Christian
->>>>>>
->>>>>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
->>>>>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0c5c62ddf88c34bc83b66e4ac9beb2bb0e1887d4
->>>>> Hi All,
->>>>>
->>>>> Many thanks for your nice responses.
->>>>>
->>>>> I bisected today [1]. 0412841812265734c306ba5ef8088bcb64d5d3bd (of/irq:
->>>>> Allow matching of an interrupt-map local to an interrupt controller) [2] is
->>>>> the first bad commit.
->>>>>
->>>>> I was able to revert the first bad commit [1]. After a new compiling, the
->>>>> kernel detects all ATA disks without any problems.
->>>>>
->>>>> I created a patch for an easy reverting the bad commit [1]. With this patch
->>>>> we can do further our kernel tests.
->>>>>
->>>>> Could you please check the first bad commit [2]?
->>>>>
->>>>> Thanks,
->>>>> Christian
->>>>>
->>>>> [1] https://forum.hyperion-entertainment.com/viewtopic.php?p=54398#p54398
->>>>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0412841812265734c306ba5ef8088bcb64d5d3bd
->>>>>
->>>>> [+ Marc Zyngier, Alyssa Rosenzweig, Lorenzo Pieralisi, and Rob Herring
->>>>> because of the first bad commit]
->>>> Thank you very much for the bisection and for also testing the revert!
->>>>
->>>> It's easy enough to revert 041284181226 ("of/irq: Allow matching of an
->>>> interrupt-map local to an interrupt controller"), and it seems like
->>>> that's what we need to do.  I have it tentatively queued up.
->>>>
->>>> That commit was part of the new support for the Apple M1 PCIe
->>>> interface, and I don't know what effect a revert will have on that
->>>> support.  Marc, Alyssa?
->>> It is going to badly break the M1 support, as we won't be able to take
->>> interrupts to detect that the PCIe link is up.
->>>
->>> Before we apply a full blown revert and decide that this isn't
->>> workable (and revert the whole M1 PCIe series, because they are
->>> otherwise somewhat pointless), I'd like to understand *what* breaks
->>> exactly.
->>>
->>> Christian, could you point me to the full DT that this machine uses?
->>> This would help understanding what goes wrong, and cook something for
->>> you to test.
->>>
->>> Thanks,
->>>
->>> 	M.
->>>
->> Hello Marc,
->>
->> Here you are:
->> https://forum.hyperion-entertainment.com/viewtopic.php?p=54406#p54406
-> This is not what I asked. I need the actual source file, or at the
-> very least the compiled object (the /sys/firmware/fdt file, for
-> example). Not an interpretation that I can't feed to the kernel.
->
-> Without this, I can't debug your problem.
->
->> We are very happy to have the patch for reverting the bad commit
->> because we want to test the new PASEMI i2c driver with support for the
->> Apple M1 [1] on our Nemo boards.
-> You can revert the patch on your own. At this stage, we're not blindly
-> reverting things in the tree, but instead trying to understand what
-> is happening on your particular system.
->
-> Thanks,
->
-> 	M.
->
-I added a download link for the fdt file to the post [1]. Please read 
-also Darren's comments in this post.
+On Wed, Nov 10, 2021 at 08:24PM +0000, Valentin Schneider wrote:
+[...]
+> +#ifdef CONFIG_PREEMPT_DYNAMIC
+> +
+> +extern bool is_preempt_none(void);
+> +extern bool is_preempt_voluntary(void);
+> +extern bool is_preempt_full(void);
+> +
+> +#else
+> +
+> +#define is_preempt_none() IS_ENABLED(CONFIG_PREEMPT_NONE)
+> +#define is_preempt_voluntary() IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY)
+> +#define is_preempt_full() IS_ENABLED(CONFIG_PREEMPT)
+> +
+> +#endif
+> +
+> +#define is_preempt_rt() IS_ENABLED(CONFIG_PREEMPT_RT)
+> +
 
-Thanks
+Can these callables be real functions in all configs, making the
+!DYNAMIC ones just static inline bool ones? That'd catch invalid use in
+#if etc. in all configs.
 
-[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=54406#p54406
+>  /*
+>   * Does a critical section need to be broken due to another
+>   * task waiting?: (technically does not depend on CONFIG_PREEMPTION,
+> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> index 97047aa7b6c2..9db7f77e53c3 100644
+> --- a/kernel/sched/core.c
+> +++ b/kernel/sched/core.c
+> @@ -6638,6 +6638,17 @@ static void __init preempt_dynamic_init(void)
+>  	}
+>  }
+>  
+> +#define PREEMPT_MODE_ACCESSOR(mode) \
+> +	bool is_preempt_##mode(void)						 \
+> +	{									 \
+> +		WARN_ON_ONCE(preempt_dynamic_mode == preempt_dynamic_undefined); \
+> +		return preempt_dynamic_mode == preempt_dynamic_##mode;		 \
+> +	}
+
+This needs an EXPORT_SYMBOL, so it's usable from modules like the
+kcsan_test module.
