@@ -2,73 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A2D44E54E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Nov 2021 12:01:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C1C44E5CE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Nov 2021 12:54:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HrFxw29T5z3c91
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Nov 2021 22:01:08 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=rPJXglKC;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HrH7r0W4Hz3cCs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Nov 2021 22:54:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=85.215.255.81;
- helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=rPJXglKC; 
- dkim-atps=neutral
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de
- [85.215.255.81])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HrFxF0wDNz2xBx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Nov 2021 22:00:30 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1636714823;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
- From:Subject:Sender;
- bh=pIgmmX2bC3EX44bW2c5iZqPR05KitHfzE33dDVBbknM=;
- b=rPJXglKCY4Um/cMy4SmA/CGb4+8TvRsts3nEHlV2ipxfVhEfWB4JMbAMlH/GIQUKue
- 9NwnWszF3wV7T4WCAelxD38moiYjFAkB78eJxmFJVu4X+UVSjTdKNGOpRxPQV779hEFR
- c2fNTvPZZ5ZahRjFW1BMThJR3KzaQx3ztLmVOIwIiVPUfCVZwbGlg10Hp3MPTGPZEUkd
- J7LXyWYrq6nQwigyFID80Uc1m78VDjE2t41zlVE6zUCdYtBPLp+f5/Y715xM5rclLy8S
- +zEuuL1dDWV5s1wdVmMgpAiP5Ru9o7A+4+BOHTnhwC1/3F56kHkcSzhHHPEzDYSrP5tc
- QjQA==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPgGI+hs5tAvjn+88DfkT7ELd1ArCg=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPV6:2a02:8109:89c0:ebfc:e52a:1ea0:c574:c7ab]
- by smtp.strato.de (RZmta 47.34.5 AUTH)
- with ESMTPSA id N03801xACB0MSqc
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Fri, 12 Nov 2021 12:00:22 +0100 (CET)
-Message-ID: <c9cac845-c196-9ea4-0df5-91acd1fb84f5@xenosoft.de>
-Date: Fri, 12 Nov 2021 12:00:21 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.3.0
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4HrH7N32k5z2xCc
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Nov 2021 22:54:23 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 1ACBnjBf016776;
+ Fri, 12 Nov 2021 05:49:45 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 1ACBnfPp016770;
+ Fri, 12 Nov 2021 05:49:41 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Fri, 12 Nov 2021 05:49:41 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Olof Johansson <olof@lixom.net>
 Subject: Re: [PASEMI] Nemo board doesn't recognize any ATA disks with the
  pci-v5.16 updates
-Content-Language: de-DE
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Marc Zyngier <maz@kernel.org>
-References: <3eedbe78-1fbd-4763-a7f3-ac5665e76a4a@xenosoft.de>
- <15731ad7-83ff-c7ef-e4a1-8b11814572c2@xenosoft.de>
- <17e37b22-5839-0e3a-0dbf-9c676adb0dec@xenosoft.de>
- <3b210c92-4be6-ce49-7512-bb194475eeab@xenosoft.de>
- <78308692-02e6-9544-4035-3171a8e1e6d4@xenosoft.de>
- <87mtma8udh.wl-maz@kernel.org>
- <c95c9b58-347e-d159-3a82-bf5f9dbf91ac@xenosoft.de>
- <1e2dc4c6-f286-f16b-4546-5cf2b1ca3123@xenosoft.de>
-In-Reply-To: <1e2dc4c6-f286-f16b-4546-5cf2b1ca3123@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Message-ID: <20211112114941.GK614@gate.crashing.org>
+References: <78308692-02e6-9544-4035-3171a8e1e6d4@xenosoft.de>
+ <20211110184106.GA1251058@bhelgaas> <87sfw3969l.wl-maz@kernel.org>
+ <8cc64c3b-b0c0-fb41-9836-2e5e6a4459d1@xenosoft.de>
+ <87r1bn88rt.wl-maz@kernel.org>
+ <f40294c6-a088-af53-eeea-4dfbd255c5c9@xenosoft.de>
+ <87pmr7803l.wl-maz@kernel.org>
+ <CAOesGMgHfsFKWOXNOMghO3Xqj2y8M5XA8GjVV5ciOT0A4b+wdg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOesGMgHfsFKWOXNOMghO3Xqj2y8M5XA8GjVV5ciOT0A4b+wdg@mail.gmail.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,169 +53,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: axboe@kernel.dk, Rob Herring <robh@kernel.org>, lorenzo.pieralisi@arm.com,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Arnd Bergmann <arnd@arndb.de>, kw@linux.com,
+Cc: Jens Axboe <axboe@kernel.dk>, Rob Herring <robh@kernel.org>,
+ Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+ mad skateman <madskateman@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ kw@linux.com, Marc Zyngier <maz@kernel.org>, damien.lemoal@opensource.wdc.com,
+ Christian Zigotzky <chzigotzky@xenosoft.de>,
+ Darren Stevens <darren@stevens-zone.net>, Bjorn Helgaas <helgaas@kernel.org>,
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
  "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- damien.lemoal@opensource.wdc.com, Olof Johansson <olof@lixom.net>,
- Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>,
  "bhelgaas@google.com >> Bjorn Helgaas" <bhelgaas@google.com>,
- robert@swiecki.net, Matthew Leaman <matthew@a-eon.biz>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+ Matthew Leaman <matthew@a-eon.biz>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, robert@swiecki.net,
  Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12 November 2021 at 11:11 am, Christian Zigotzky wrote:
-> On 12 November 2021 at 10:40 am, Christian Zigotzky wrote:
->> On 11 November 2021 at 06:39 pm, Marc Zyngier wrote:
->>> On Wed, 10 Nov 2021 18:07:24 +0000,
->>> Christian Zigotzky <chzigotzky@xenosoft.de> wrote:
->>>> On 09 November 2021 at 03:45 pm, Christian Zigotzky wrote:
->>>>> Hello,
->>>>>
->>>>> The Nemo board [1] doesn't recognize any ATA disks with the
->>>> pci-v5.16 updates [2].
->>>>> Error messages:
->>>>>
->>>>> ata4.00: gc timeout cmd 0xec
->>>>> ata4.00: failed to IDENTIFY (I/O error, error_mask=0x4)
->>>>> ata1.00: gc timeout cmd 0xec
->>>>> ata1.00: failed to IDENTIFY (I/O error, error_mask=0x4)
->>>>> ata3.00: gc timeout cmd 0xec
->>>>> ata3.00: failed to IDENTIFY (I/O error, error_mask=0x4)
->>>>>
->>>>> I was able to revert the new pci-v5.16 updates [2]. After a new
->>>> compiling, the kernel recognize all ATA disks correctly.
->>>>> Could you please check the pci-v5.16 updates [2]?
->>>>>
->>>>> Please find attached the kernel config.
->>>>>
->>>>> Thanks,
->>>>> Christian
->>>>>
->>>>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
->>>>> [2]
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0c5c62ddf88c34bc83b66e4ac9beb2bb0e1887d4 
->>>>
->>>>
->>>> Hi All,
->>>>
->>>> Many thanks for your nice responses.
->>>>
->>>> I bisected today [1]. 0412841812265734c306ba5ef8088bcb64d5d3bd
->>>> (of/irq: Allow matching of an interrupt-map local to an interrupt
->>>> controller) [2] is the first bad commit.
->>> Can you please give the following hack a go and post the result
->>> (including the full dmesg)?
->>>
->>> Thanks,
->>>
->>>     M.
->>> diff --git a/drivers/of/irq.c b/drivers/of/irq.c
->>> index 32be5a03951f..8cf0cc9b7caf 100644
->>> --- a/drivers/of/irq.c
->>> +++ b/drivers/of/irq.c
->>> @@ -156,14 +156,15 @@ int of_irq_parse_raw(const __be32 *addr, 
->>> struct of_phandle_args *out_irq)
->>>         /* Now start the actual "proper" walk of the interrupt tree */
->>>       while (ipar != NULL) {
->>> +        bool intc = of_property_read_bool(ipar, 
->>> "interrupt-controller");
->>> +
->>>           /*
->>>            * Now check if cursor is an interrupt-controller and
->>>            * if it is then we are done, unless there is an
->>>            * interrupt-map which takes precedence.
->>>            */
->>>           imap = of_get_property(ipar, "interrupt-map", &imaplen);
->>> -        if (imap == NULL &&
->>> -            of_property_read_bool(ipar, "interrupt-controller")) {
->>> +        if (imap == NULL && intc) {
->>>               pr_debug(" -> got it !\n");
->>>               return 0;
->>>           }
->>> @@ -244,8 +245,14 @@ int of_irq_parse_raw(const __be32 *addr, struct 
->>> of_phandle_args *out_irq)
->>>                 pr_debug(" -> imaplen=%d\n", imaplen);
->>>           }
->>> -        if (!match)
->>> +        if (!match) {
->>> +            if (intc) {
->>> +                pr_info("%pOF interrupt-map failed, using 
->>> interrupt-controller\n", ipar);
->>> +                return 0;
->>> +            }
->>> +
->>>               goto fail;
->>> +        }
->>>             /*
->>>            * Successfully parsed an interrrupt-map translation; copy 
->>> new
->>>
->> The detecting of the ATA disks works with this patch! Well done! 
->> Thanks a lot!
->>
-> Sorry, I have read the patch more carefully and I have seen that it is 
-> an analyse patch. It's not a fix. I was too quick with my joy.
->
-> - Christian
-OK, perhaps a fix after all.
+On Thu, Nov 11, 2021 at 02:21:46PM -0800, Olof Johansson wrote:
+> On Thu, Nov 11, 2021 at 2:20 AM Marc Zyngier <maz@kernel.org> wrote:
+> > Am I right in understanding that the upstream kernel does not support
+> > the machine out of the box, and that you actually have to apply out of
+> > tree patches to make it work? That these patches have to do with the
+> > IRQ routing?
+> 
+> To my knowledge that has never been needed -- that the base platform
+> support is all there.
+> 
+> This is an old platform, and just like with the power macs, the
+> devicetree is indeed supplied from firmware, and as such not easily
+> patchable like with ARM platforms.
+> 
+> Last time this was an issue (to my memory) was when they enabled
+> automatic little endian switching in the boot path, that caused some
+> issues with a (bad) phandle pointer that had gone undiscovered for 10+
+> years.
+> 
+> > If so, I wonder why upstream should revert a patch to work on a system
+> > that isn't supported upstream the first place. I will still try and
+> > come up with a solution for you. But asking for the revert of a patch
+> > on these grounds is not, IMHO, acceptable. Also, please provide these
+> > patches on the list so that I can help you to some extend (and I mean
+> > *on the list*, not on a random forum that collects my information).
+> 
+> Early fixups of DT is the way to go here, if needed -- we do it on
+> some other platforms. That can happen in-kernel, and keep the new
+> functionality. For that we'd need to figure out what's actually wrong
+> with the DT as such right now.
 
-if (imap == NULL && intc) // If the return value isn't NULL then there 
-isn't an interrupt-map. That means, this part was successfully (&&) and 
-"intc" will evaluated (Testing of interrupt-controller). OK, perhaps it 
-is a fix after all.
+Yup.  The scheme we have now (copy all info from OF, and then take over
+everything at once) is not ideal at all, but treating OF systems just
+like "bare" systems has advantages as well, including making it easier
+to fix up the device tree if it has problems.  This is much superior to
+changing all consumers (drivers etc.) to deal with the broken device
+trees, so we should do it much more often :-)
 
-Output:
 
-[    0.072659] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.072682] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.072701] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.072720] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.072741] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.072762] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.072784] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.072805] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.072824] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.072843] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.072861] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.072929] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073167] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073191] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073211] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073232] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073252] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073272] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073292] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073319] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073339] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073371] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073392] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073412] OF: /pxp@0,e0000000 interrupt-map failed, using 
-interrupt-controller
-[    0.073426] PCI: Probing PCI hardware done
+Segher
