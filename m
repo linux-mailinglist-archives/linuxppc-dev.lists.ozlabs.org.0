@@ -1,46 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9BA44F142
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Nov 2021 05:42:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D9544F1B6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Nov 2021 07:01:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HrjVq0y9xz3cDB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Nov 2021 15:42:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HrlGD0j5dz301B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Nov 2021 17:01:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cdjrlc.com (client-ip=59.36.128.82; helo=smtpbg604.qq.com;
+ smtp.mailfrom=cdjrlc.com (client-ip=113.96.223.105; helo=smtpbg587.qq.com;
  envelope-from=wangborong@cdjrlc.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 66 seconds by postgrey-1.36 at boromir;
- Sat, 13 Nov 2021 15:42:15 AEDT
-Received: from smtpbg604.qq.com (smtpbg604.qq.com [59.36.128.82])
+X-Greylist: delayed 97 seconds by postgrey-1.36 at boromir;
+ Sat, 13 Nov 2021 17:01:29 AEDT
+Received: from smtpbg587.qq.com (smtpbg587.qq.com [113.96.223.105])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HrjVH2Kr8z2xsj
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Nov 2021 15:42:14 +1100 (AEDT)
-X-QQ-mid: bizesmtp41t1636778421tkvo9okg
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HrlFj2fTdz2xXm
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Nov 2021 17:01:27 +1100 (AEDT)
+X-QQ-mid: bizesmtp45t1636783146tdepwoms
 Received: from localhost.localdomain (unknown [125.69.41.88])
  by esmtp6.qq.com (ESMTP) with 
- id ; Sat, 13 Nov 2021 12:40:20 +0800 (CST)
-X-QQ-SSF: 01000000000000C0F000C00A0000000
-X-QQ-FEAT: FXvDfBZI5O4ZPSh7w95J4xYXfclSDsGXKPecStb0FuWMtQfjyoscsC5z5WinO
- umbYfA61YWKdGgpiBBmiedBniwB+lCgl8na3yUuzDGhVjcOy4GA9JFfRKO/Y5WBc/ODX9pb
- XJuHfcCAEpyRoBZl4GgUqWphQKOwwtQYi56K6hzis3TEGy3x7ta9TSnnmIP1uYI61j71WVw
- Vw8ql8us1UXgRMeWxRUGXsXfKkjOc5P0SH2GmWomPzN+1/Wdaio8eSnv2FYIj/TIwGru1f3
- qoFBTDJqRJqxeXEajHfrpoxYprzUQOH1HOlH/8o7QM/K6A4iH5bp9SLvZYVmLckDD0leYmd
- zG/4UV7wbUuqmP1PSiSfazf9D7jmdQGgj8oU1Wy
+ id ; Sat, 13 Nov 2021 13:59:05 +0800 (CST)
+X-QQ-SSF: 01000000000000C0F000B00A0000000
+X-QQ-FEAT: B0D4DPF8NcThOjwWqVcGFATOcwUCVabIoSnFsXK16GjD1pduTZuEyipegriBQ
+ gbIHGoqY6r3zC+4cPd8mntnUsAWP7HU9vGE+nTTycKKNmlthVeWxNkd7oGlkrz/7oruXp1F
+ ONVEVm4yT9WA7gvXxDCrbpqXdZy06ZIDI1m1LQnJHCQYnQsYblD6jnIh5AypDdlzNeua2os
+ R2cP+mZ3fjVtqFFDqWZbW8cvZ7XyaksOO5wn+LjZf7DTB/gjiUWef63AYkwV6aCbBKNQrUd
+ Qf7EEIQYFTYzGvJn3s5daYyFdeNo6c/4In9Pj8tIQcmUJAtYPqOCig00TCs8KnspWx6Lp6d
+ NJnrFiJzWqBUUu+xBxZ/RTfmRUf/ex97/4DXrWv
 X-QQ-GoodBg: 0
 From: Jason Wang <wangborong@cdjrlc.com>
-To: benh@kernel.crashing.org
-Subject: [PATCH] mm: Remove a repeated word in a comment
-Date: Sat, 13 Nov 2021 12:40:18 +0800
-Message-Id: <20211113044018.130835-1-wangborong@cdjrlc.com>
+To: leoyang.li@nxp.com
+Subject: [PATCH] soc: fsl: qe: Fix typo in a comment
+Date: Sat, 13 Nov 2021 13:59:00 +0800
+Message-Id: <20211113055900.212568-1-wangborong@cdjrlc.com>
 X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam4
+Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam3
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,65 +52,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- wangborong@cdjrlc.com
+Cc: Jason Wang <wangborong@cdjrlc.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ qiang.zhao@nxp.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The double word `up' in a comment is repeated, thus one of
-them should be removed.
+The double `is' in a comment is repeated, thus one of them
+should be removed.
 
 Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
 ---
- drivers/macintosh/mediabay.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/soc/fsl/qe/qe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/macintosh/mediabay.c b/drivers/macintosh/mediabay.c
-index eab7e83c11c4..ec23094263e7 100644
---- a/drivers/macintosh/mediabay.c
-+++ b/drivers/macintosh/mediabay.c
-@@ -129,7 +129,7 @@ enum {
- /*
-  * Functions for polling content of media bay
+diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
+index 4d38c80f8be8..b3c226eb5292 100644
+--- a/drivers/soc/fsl/qe/qe.c
++++ b/drivers/soc/fsl/qe/qe.c
+@@ -147,7 +147,7 @@ EXPORT_SYMBOL(qe_issue_cmd);
+  * memory mapped space.
+  * The BRG clock is the QE clock divided by 2.
+  * It was set up long ago during the initial boot phase and is
+- * is given to us.
++ * given to us.
+  * Baud rate clocks are zero-based in the driver code (as that maps
+  * to port numbers). Documentation uses 1-based numbering.
   */
-- 
-+
- static u8
- ohare_mb_content(struct media_bay_info *bay)
- {
-@@ -331,12 +331,12 @@ static void keylargo_mb_un_reset_ide(struct media_bay_info* bay)
+@@ -421,7 +421,7 @@ static void qe_upload_microcode(const void *base,
  
- static inline void set_mb_power(struct media_bay_info* bay, int onoff)
- {
--	/* Power up up and assert the bay reset line */
-+	/* Power up and assert the bay reset line */
- 	if (onoff) {
- 		bay->ops->power(bay, 1);
- 		bay->state = mb_powering_up;
- 		pr_debug("mediabay%d: powering up\n", bay->index);
--	} else { 
-+	} else {
- 		/* Make sure everything is powered down & disabled */
- 		bay->ops->power(bay, 0);
- 		bay->state = mb_powering_down;
-@@ -577,7 +577,7 @@ static int media_bay_attach(struct macio_dev *mdev,
- 		macio_release_resources(mdev);
- 		return -ENOMEM;
- 	}
+ 	for (i = 0; i < be32_to_cpu(ucode->count); i++)
+ 		iowrite32be(be32_to_cpu(code[i]), &qe_immr->iram.idata);
 -	
 +
- 	i = media_bay_count++;
- 	bay = &media_bays[i];
- 	bay->mdev = mdev;
-@@ -745,7 +745,7 @@ static int __init media_bay_init(void)
- 	if (!machine_is(powermac))
- 		return 0;
- 
--	macio_register_driver(&media_bay_driver);	
-+	macio_register_driver(&media_bay_driver);
- 
- 	return 0;
+ 	/* Set I-RAM Ready Register */
+ 	iowrite32be(QE_IRAM_READY, &qe_immr->iram.iready);
  }
 -- 
 2.33.0
