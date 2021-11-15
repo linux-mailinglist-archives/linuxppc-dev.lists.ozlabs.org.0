@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A6644FFC6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 09:09:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A97C3450051
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 09:53:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ht20S3kzWz2ywv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 19:09:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ht2zk4Z2lz307x
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 19:53:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,51 +14,51 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ht2015d6Xz2x9F
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Nov 2021 19:09:05 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ht2zJ3zNKz2xDM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Nov 2021 19:53:31 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Ht1zy2wDzz9sSH;
- Mon, 15 Nov 2021 09:09:02 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4Ht2zF0qR0z9sSH;
+ Mon, 15 Nov 2021 09:53:29 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 534-YWwFuTM5; Mon, 15 Nov 2021 09:09:02 +0100 (CET)
+ with ESMTP id whCArfjl7wVR; Mon, 15 Nov 2021 09:53:29 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Ht1zy21SVz9sS8;
- Mon, 15 Nov 2021 09:09:02 +0100 (CET)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Ht2zD726Yz9sSB;
+ Mon, 15 Nov 2021 09:53:28 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 310398B767;
- Mon, 15 Nov 2021 09:09:02 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D817C8B767;
+ Mon, 15 Nov 2021 09:53:28 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Y4-LfATikjwy; Mon, 15 Nov 2021 09:09:02 +0100 (CET)
+ with ESMTP id kuNXKDjQbMwa; Mon, 15 Nov 2021 09:53:28 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0714A8B763;
- Mon, 15 Nov 2021 09:09:02 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AB2368B763;
+ Mon, 15 Nov 2021 09:53:28 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 1AF88qax124551
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 1AF8rJTO135062
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Mon, 15 Nov 2021 09:08:52 +0100
+ Mon, 15 Nov 2021 09:53:19 +0100
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 1AF88qag124549;
- Mon, 15 Nov 2021 09:08:52 +0100
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 1AF8rDA2135046;
+ Mon, 15 Nov 2021 09:53:13 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/8xx: Fix pinned TLBs with CONFIG_STRICT_KERNEL_RWX
-Date: Mon, 15 Nov 2021 09:08:36 +0100
-Message-Id: <a21e9a057fe2d247a535aff0d157a54eefee017a.1636963688.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/signal32: Fix sigset_t copy
+Date: Mon, 15 Nov 2021 09:52:55 +0100
+Message-Id: <99ef38d61c0eb3f79c68942deb0c35995a93a777.1636966353.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1636963711; l=3023; s=20211009;
- h=from:subject:message-id; bh=QjlloAOT34rm4P6Ampq2mLsAuz/+XGuRRPRzFfnQoTk=;
- b=5lgyXXPQdqZtbMlt0p/+CZjTUCoK4TKZPSW7w7xxVCi2qshKJ5tS5sRrKDCIW2hmkNLhFkVYglv7
- 7KrLpwo9DQ+PSMdwTmkEaSioaAhoD6USyD6lxxIckN/UW0FZinc5
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1636966371; l=2320; s=20211009;
+ h=from:subject:message-id; bh=fZPpiXO4Sl6nxpscgwKm8fGE1QxieiimfErqhQs2Q+0=;
+ b=TT/pMU/Kq2uF3azjX28nUSpUIgSMS0xTw5bIAlmU6r8XXTX6cgtMMfJeiBoecUExwC+wtaPTO6QR
+ ZcZmSuwmCCg5PGuf9U6ykT6ALCuF0Ceo3fSyyQ8fVhj/5gwRtMVM
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -73,92 +73,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Stan Johnson <userm57@yahoo.com>, Finn Thain <fthain@linux-m68k.org>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ "Christopher M . Riedl" <cmr@bluescreens.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As spotted and explained in commit c12ab8dbc492 ("powerpc/8xx: Fix
-Oops with STRICT_KERNEL_RWX without DEBUG_RODATA_TEST"), the selection
-of STRICT_KERNEL_RWX without selecting DEBUG_RODATA_TEST has spotted
-the lack of the DIRTY bit in the pinned kernel data TLBs.
+The conversion from __copy_from_user() to __get_user() by
+commit d3ccc9781560 ("powerpc/signal: Use __get_user() to copy
+sigset_t") introduced a regression in __get_user_sigset() for
+powerpc/32. The bug was subsequently moved into
+unsafe_get_user_sigset().
 
-This problem should have been detected a lot earlier if things had
-been working as expected. But due to an incredible level of chance or
-mishap, this went undetected because of a set of bugs: In fact the
-DTLBs were not pinned, because instead of setting the reserve bit
-in MD_CTR, it was set in MI_CTR that is the register for ITLBs.
+The bug is due to the copied 64 bit value being truncated to
+32 bits while being assigned to dst->sig[0]
 
-But then, another huge bug was there: the physical address was
-reset to 0 at the boundary between RO and RW areas, leading to the
-same physical space being mapped at both 0xc0000000 and 0xc8000000.
-This had by miracle no consequence until now because the entry was
-not really pinned so it was overwritten soon enough to go undetected.
+The regression was reported by users of the Xorg packages distributed in
+Debian/powerpc --
 
-Of course, now that we really pin the DTLBs, it must be fixed as well.
+    "The symptoms are that the fb screen goes blank, with the backlight
+    remaining on and no errors logged in /var/log; wdm (or startx) run
+    with no effect (I tried logging in in the blind, with no effect).
+    And they are hard to kill, requiring 'kill -KILL ...'"
 
-Depends-on: c12ab8dbc492 ("powerpc/8xx: Fix Oops with STRICT_KERNEL_RWX without DEBUG_RODATA_TEST")
-Fixes: f76c8f6d257c ("powerpc/8xx: Add function to set pinned TLBs")
+Fix the regression by copying each word of the sigset, not only the
+first one.
+
+__get_user_sigset() was tentatively optimised to copy 64 bits at once
+in order to minimise KUAP unlock/lock impact, but the unsafe variant
+doesn't suffer that, so it can just copy words.
+
+Cc: Christopher M. Riedl <cmr@bluescreens.de>
+Fixes: 887f3ceb51cd ("powerpc/signal32: Convert do_setcontext[_tm]() to user access block")
 Cc: stable@vger.kernel.org
+Reported-by: Finn Thain <fthain@linux-m68k.org>
+Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/head_8xx.S | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/powerpc/kernel/signal.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 2d596881b70e..0d073b9fd52c 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -733,6 +733,7 @@ _GLOBAL(mmu_pin_tlb)
- #ifdef CONFIG_PIN_TLB_DATA
- 	LOAD_REG_IMMEDIATE(r6, PAGE_OFFSET)
- 	LOAD_REG_IMMEDIATE(r7, MI_SVALID | MI_PS8MEG | _PMD_ACCESSED)
-+	li	r8, 0
- #ifdef CONFIG_PIN_TLB_IMMR
- 	li	r0, 3
- #else
-@@ -741,26 +742,26 @@ _GLOBAL(mmu_pin_tlb)
- 	mtctr	r0
- 	cmpwi	r4, 0
- 	beq	4f
--	LOAD_REG_IMMEDIATE(r8, 0xf0 | _PAGE_RO | _PAGE_SPS | _PAGE_SH | _PAGE_PRESENT)
- 	LOAD_REG_ADDR(r9, _sinittext)
+diff --git a/arch/powerpc/kernel/signal.h b/arch/powerpc/kernel/signal.h
+index 1f07317964e4..618aeccdf691 100644
+--- a/arch/powerpc/kernel/signal.h
++++ b/arch/powerpc/kernel/signal.h
+@@ -25,8 +25,14 @@ static inline int __get_user_sigset(sigset_t *dst, const sigset_t __user *src)
  
- 2:	ori	r0, r6, MD_EVALID
-+	ori	r12, r8, 0xf0 | _PAGE_RO | _PAGE_SPS | _PAGE_SH | _PAGE_PRESENT
- 	mtspr	SPRN_MD_CTR, r5
- 	mtspr	SPRN_MD_EPN, r0
- 	mtspr	SPRN_MD_TWC, r7
--	mtspr	SPRN_MD_RPN, r8
-+	mtspr	SPRN_MD_RPN, r12
- 	addi	r5, r5, 0x100
- 	addis	r6, r6, SZ_8M@h
- 	addis	r8, r8, SZ_8M@h
- 	cmplw	r6, r9
- 	bdnzt	lt, 2b
--
--4:	LOAD_REG_IMMEDIATE(r8, 0xf0 | _PAGE_DIRTY | _PAGE_SPS | _PAGE_SH | _PAGE_PRESENT)
-+4:
- 2:	ori	r0, r6, MD_EVALID
-+	ori	r12, r8, 0xf0 | _PAGE_DIRTY | _PAGE_SPS | _PAGE_SH | _PAGE_PRESENT
- 	mtspr	SPRN_MD_CTR, r5
- 	mtspr	SPRN_MD_EPN, r0
- 	mtspr	SPRN_MD_TWC, r7
--	mtspr	SPRN_MD_RPN, r8
-+	mtspr	SPRN_MD_RPN, r12
- 	addi	r5, r5, 0x100
- 	addis	r6, r6, SZ_8M@h
- 	addis	r8, r8, SZ_8M@h
-@@ -781,7 +782,7 @@ _GLOBAL(mmu_pin_tlb)
- #endif
- #if defined(CONFIG_PIN_TLB_IMMR) || defined(CONFIG_PIN_TLB_DATA)
- 	lis	r0, (MD_RSV4I | MD_TWAM)@h
--	mtspr	SPRN_MI_CTR, r0
-+	mtspr	SPRN_MD_CTR, r0
- #endif
- 	mtspr	SPRN_SRR1, r10
- 	mtspr	SPRN_SRR0, r11
+ 	return __get_user(dst->sig[0], (u64 __user *)&src->sig[0]);
+ }
+-#define unsafe_get_user_sigset(dst, src, label) \
+-	unsafe_get_user((dst)->sig[0], (u64 __user *)&(src)->sig[0], label)
++#define unsafe_get_user_sigset(dst, src, label) do {			\
++	sigset_t *__dst = dst;						\
++	const sigset_t __user *__src = src;				\
++	int i;								\
++									\
++	for (i = 0; i < _NSIG_WORDS; i++)				\
++		unsafe_get_user(__dst->sig[i], &__src->sig[i], label);	\
++} while (0)
+ 
+ #ifdef CONFIG_VSX
+ extern unsigned long copy_vsx_to_user(void __user *to,
 -- 
 2.31.1
 
