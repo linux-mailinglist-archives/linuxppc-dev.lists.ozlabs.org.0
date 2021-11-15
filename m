@@ -1,67 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97C3450051
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 09:53:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2B84500DB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 10:07:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ht2zk4Z2lz307x
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 19:53:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ht3Ht57v5z2yb3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 20:07:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=leemhuis.info (client-ip=2a01:488:42:1000:50ed:8234::;
+ helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info;
+ receiver=<UNKNOWN>)
+X-Greylist: delayed 1857 seconds by postgrey-1.36 at boromir;
+ Mon, 15 Nov 2021 20:07:30 AEDT
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de
+ [IPv6:2a01:488:42:1000:50ed:8234::])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ht2zJ3zNKz2xDM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Nov 2021 19:53:31 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Ht2zF0qR0z9sSH;
- Mon, 15 Nov 2021 09:53:29 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id whCArfjl7wVR; Mon, 15 Nov 2021 09:53:29 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Ht2zD726Yz9sSB;
- Mon, 15 Nov 2021 09:53:28 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D817C8B767;
- Mon, 15 Nov 2021 09:53:28 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id kuNXKDjQbMwa; Mon, 15 Nov 2021 09:53:28 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AB2368B763;
- Mon, 15 Nov 2021 09:53:28 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 1AF8rJTO135062
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Mon, 15 Nov 2021 09:53:19 +0100
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 1AF8rDA2135046;
- Mon, 15 Nov 2021 09:53:13 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/signal32: Fix sigset_t copy
-Date: Mon, 15 Nov 2021 09:52:55 +0100
-Message-Id: <99ef38d61c0eb3f79c68942deb0c35995a93a777.1636966353.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.31.1
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ht3HQ1BhFz2xCc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Nov 2021 20:07:27 +1100 (AEDT)
+Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74]
+ helo=[192.168.66.200]); authenticated
+ by wp530.webpack.hosteurope.de running ExIM with esmtpsa
+ (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ id 1mmXTQ-0005F5-Gz; Mon, 15 Nov 2021 09:36:20 +0100
+Message-ID: <bb5c5d0f-2ae7-8426-0021-baeca8f7dd11@leemhuis.info>
+Date: Mon, 15 Nov 2021 09:36:19 +0100
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1636966371; l=2320; s=20211009;
- h=from:subject:message-id; bh=fZPpiXO4Sl6nxpscgwKm8fGE1QxieiimfErqhQs2Q+0=;
- b=TT/pMU/Kq2uF3azjX28nUSpUIgSMS0xTw5bIAlmU6r8XXTX6cgtMMfJeiBoecUExwC+wtaPTO6QR
- ZcZmSuwmCCg5PGuf9U6ykT6ALCuF0Ceo3fSyyQ8fVhj/5gwRtMVM
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: bug: usb: gadget: FSL_UDC_CORE Corrupted request list leads to
+ unrecoverable loop.
+Content-Language: en-BS
+To: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "Eugene_Bordenkircher@selinc.com" <Eugene_Bordenkircher@selinc.com>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>
+References: <MWHPR2201MB152074F47BF142189365627B91879@MWHPR2201MB1520.namprd22.prod.outlook.com>
+ <2c275adc278477e1e512ea6ecc0c1f4dcc46969d.camel@infinera.com>
+ <6659a2c7fd9fffac766b8389244e5885ccbd38bd.camel@infinera.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <6659a2c7fd9fffac766b8389244e5885ccbd38bd.camel@infinera.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de; regressions@leemhuis.info; 1636967250;
+ 3c99804b; 
+X-HE-SMSGID: 1mmXTQ-0005F5-Gz
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,68 +60,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stan Johnson <userm57@yahoo.com>, Finn Thain <fthain@linux-m68k.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- "Christopher M . Riedl" <cmr@bluescreens.de>, linuxppc-dev@lists.ozlabs.org
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "balbi@kernel.org" <balbi@kernel.org>,
+ "leoyang.li@nxp.com" <leoyang.li@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The conversion from __copy_from_user() to __get_user() by
-commit d3ccc9781560 ("powerpc/signal: Use __get_user() to copy
-sigset_t") introduced a regression in __get_user_sigset() for
-powerpc/32. The bug was subsequently moved into
-unsafe_get_user_sigset().
+Hi, this is your Linux kernel regression tracker speaking.
 
-The bug is due to the copied 64 bit value being truncated to
-32 bits while being assigned to dst->sig[0]
+This looks stalled, as afaics nothing to get this regression fixed
+happened since below mail. How can we things rolling again?
 
-The regression was reported by users of the Xorg packages distributed in
-Debian/powerpc --
+Eugene, were you able to look into the patch from Joakim?
 
-    "The symptoms are that the fb screen goes blank, with the backlight
-    remaining on and no errors logged in /var/log; wdm (or startx) run
-    with no effect (I tried logging in in the blind, with no effect).
-    And they are hard to kill, requiring 'kill -KILL ...'"
+Or did I miss anything and some progress to fix this was made elsewhere?
+Please let me know if that's the case.
 
-Fix the regression by copying each word of the sigset, not only the
-first one.
+Ciao, Thorsten (carrying his Linux kernel regression tracker hat)
 
-__get_user_sigset() was tentatively optimised to copy 64 bits at once
-in order to minimise KUAP unlock/lock impact, but the unsafe variant
-doesn't suffer that, so it can just copy words.
+P.S.: As a Linux kernel regression tracker I'm getting a lot of reports
+on my table. I can only look briefly into most of them. Unfortunately
+therefore I sometimes will get things wrong or miss something important.
+I hope that's not the case here; if you think it is, don't hesitate to
+tell me about it in a public reply. That's in everyone's interest, as
+what I wrote above might be misleading to everyone reading this; any
+suggestion I gave they thus might sent someone reading this down the
+wrong rabbit hole, which none of us wants.
 
-Cc: Christopher M. Riedl <cmr@bluescreens.de>
-Fixes: 887f3ceb51cd ("powerpc/signal32: Convert do_setcontext[_tm]() to user access block")
-Cc: stable@vger.kernel.org
-Reported-by: Finn Thain <fthain@linux-m68k.org>
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/signal.h | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+P.P.S.: Feel free to ignore the following lines, they are only meant for
+regzbot, my Linux kernel regression tracking bot
+(https://linux-regtracking.leemhuis.info/regzbot/):
 
-diff --git a/arch/powerpc/kernel/signal.h b/arch/powerpc/kernel/signal.h
-index 1f07317964e4..618aeccdf691 100644
---- a/arch/powerpc/kernel/signal.h
-+++ b/arch/powerpc/kernel/signal.h
-@@ -25,8 +25,14 @@ static inline int __get_user_sigset(sigset_t *dst, const sigset_t __user *src)
- 
- 	return __get_user(dst->sig[0], (u64 __user *)&src->sig[0]);
- }
--#define unsafe_get_user_sigset(dst, src, label) \
--	unsafe_get_user((dst)->sig[0], (u64 __user *)&(src)->sig[0], label)
-+#define unsafe_get_user_sigset(dst, src, label) do {			\
-+	sigset_t *__dst = dst;						\
-+	const sigset_t __user *__src = src;				\
-+	int i;								\
-+									\
-+	for (i = 0; i < _NSIG_WORDS; i++)				\
-+		unsafe_get_user(__dst->sig[i], &__src->sig[i], label);	\
-+} while (0)
- 
- #ifdef CONFIG_VSX
- extern unsigned long copy_vsx_to_user(void __user *to,
--- 
-2.31.1
+#regzbot poke
 
+On 02.11.21 22:15, Joakim Tjernlund wrote:
+> On Sat, 2021-10-30 at 14:20 +0000, Joakim Tjernlund wrote:
+>> On Fri, 2021-10-29 at 17:14 +0000, Eugene Bordenkircher wrote:
+>
+>>> We've discovered a situation where the FSL udc driver (drivers/usb/gadget/udc/fsl_udc_core.c) will enter a loop iterating over the request queue, but the queue has been corrupted at some point so it loops infinitely.  I believe we have narrowed into the offending code, but we are in need of assistance trying to find an appropriate fix for the problem.  The identified code appears to be in all versions of the Linux kernel the driver exists in.
+>>>
+>>> The problem appears to be when handling a USB_REQ_GET_STATUS request.  The driver gets this request and then calls the ch9getstatus() function.  In this function, it starts a request by "borrowing" the per device status_req, filling it in, and then queuing it with a call to list_add_tail() to add the request to the endpoint queue.  Right before it exits the function however, it's calling ep0_prime_status(), which is filling out that same status_req structure and then queuing it with another call to list_add_tail() to add the request to the endpoint queue.  This adds two instances of the exact same LIST_HEAD to the endpoint queue, which breaks the list since the prev and next pointers end up pointing to the wrong things.  This ends up causing a hard loop the next time nuke() gets called, which happens on the next setup IRQ.
+>>>
+>>> I'm not sure what the appropriate fix to this problem is, mostly due to my lack of expertise in USB and this driver stack.  The code has been this way in the kernel for a very long time, which suggests that it has been working, unless USB_REQ_GET_STATUS requests are never made.  This further suggests that there is something else going on that I don't understand.  Deleting the call to ep0_prime_status() and the following ep0stall() call appears, on the surface, to get the device working again, but may have side effects that I'm not seeing.
+>>>
+>>> I'm hopeful someone in the community can help provide some information on what I may be missing or help come up with a solution to the problem.  A big thank you to anyone who would like to help out.
+>>>
+>>> Eugene
+>>
+>> Run into this to a while ago. Found the bug and a few more fixes.
+>> This is against 4.19 so you may have to tweak them a bit.
+>> Feel free to upstream them.
+>>
+>>  Jocke 
+> 
+> Curious, did my patches help? Good to known once we upgrade as well.
+> 
+>  Jocke
