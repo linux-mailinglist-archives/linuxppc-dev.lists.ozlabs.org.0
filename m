@@ -1,15 +1,15 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2352545131F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 20:47:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA64B451322
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 20:48:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HtKTj08Fzz3bnJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 06:47:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HtKWD1f4tz3c54
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 06:48:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sent.com header.i=@sent.com header.a=rsa-sha256 header.s=fm2 header.b=xB60fto7;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=ARzj9GHt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sent.com header.i=@sent.com header.a=rsa-sha256 header.s=fm2 header.b=0KSmGcem;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=AG6W7724;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,68 +19,68 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=sent.com header.i=@sent.com header.a=rsa-sha256
- header.s=fm2 header.b=xB60fto7; 
+ header.s=fm2 header.b=0KSmGcem; 
  dkim=pass (2048-bit key;
  unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm1 header.b=ARzj9GHt; 
+ header.a=rsa-sha256 header.s=fm1 header.b=AG6W7724; 
  dkim-atps=neutral
 Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com
  [66.111.4.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HtKSB1Kdyz2yHP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HtKSB1Gmpz2yHC
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 06:46:01 +1100 (AEDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailnew.nyi.internal (Postfix) with ESMTP id 49F79580604;
- Mon, 15 Nov 2021 14:37:51 -0500 (EST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailnew.nyi.internal (Postfix) with ESMTP id 490E5580631;
+ Mon, 15 Nov 2021 14:37:52 -0500 (EST)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute3.internal (MEProxy); Mon, 15 Nov 2021 14:37:51 -0500
+ by compute6.internal (MEProxy); Mon, 15 Nov 2021 14:37:52 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sent.com; h=from
  :to:cc:subject:date:message-id:in-reply-to:references:reply-to
- :mime-version:content-transfer-encoding; s=fm2; bh=AnymEuCYCocHA
- Ds+cC0A+imh3dmQP2pOP/ONvg/OKOg=; b=xB60fto7b9p9zKYRdTNdwVmSChO8D
- SsoFs9Iaft6I6qyt8nf1cWMRPpERDLgYtJOY0e4P4TglBSN2AD5X5hepF72gu8A9
- 3bvt5vdgmvsE1/Rmxdq98v6ijYxlrVXB08X4oJCo6XWKh+j/x3mT3xJBTVhK9UTt
- gwPKsITbiYfpYQR72+sVMrihaWedOfxpwppqGJoxAVxys5BWkP3r8uWtHMgsBZEP
- L8ilWVDaa5mKsOtUesoBnZRwPXg4inqJjIUHFvHiZH7aFIfqcT+9zn68o17HRl4t
- cso1oqksai7tfAsNxYbjKiE9enRRMgsV4ASU/j9Z362aYKw93iODw8t0w==
+ :mime-version:content-transfer-encoding; s=fm2; bh=YFFMYVihWiPWk
+ tyuxrOQDQ9eoOlotAMNNpVZGNCElO4=; b=0KSmGcem0XSmBLi02KfOtT89MOTZm
+ Z4IwFx+QEXZqMm9++dx+bVPqeYflclLgTijihCkbG3s6+Eky5F2lf6aFaXEqLRHD
+ QXWVVps72mZG/SDaBR48uA/py4FZ/lrH/C8H4IYNePPY1SMkE7zG7RLQBeJ6iOgb
+ NWmjiIROVXymlsb3OlpA9NcHUZYGin1/sGkSx5cV33lSBFFerYaA4a042ztvizP9
+ lYIZ/7miQQEPhi3OzlywV4dxvBWTb/4LVxVzhZqHze5C2nL8kZ0+Szraiw+sWqSL
+ YhaD1bH8jWoPpwRqkwRJkpLfmSo75LU4pv8XDfIkpXx9LtFqufoufdDtA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:content-transfer-encoding:date:from
  :in-reply-to:message-id:mime-version:references:reply-to:subject
  :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm1; bh=AnymEuCYCocHADs+cC0A+imh3dmQP2pOP/ONvg/OKOg=; b=ARzj9GHt
- 89g8ElhfXy2AeWhnjWydjJMa7fp8+4jCzsf+jp8rv0KH7rW7KKKl40wkQOQP06K3
- sop3YEKBNBAa2jUfpJo9pZ5EXaNJDa8zswYcftk3XMqBYiSXrHSa066NfWqNn1Zw
- 96W9bSlWUscrUpyoAwaJMRaf23fi7ZvWYnEN9xPvIO48sq/n6KAOCEpZN2Rd3MeP
- 9YghOUKXbxaU+2GuzQ/JKc6O2blT1W9oJ5qdLMt1YGGj6temHwPaGPTJ0jVGypV3
- djHnqcVbuQ/oN//2e48ZaqMMYe18Fm+pc0vyoOAp66vhtkFhOqx5WInoUtNJLyTX
- Vb0drxpdVv3WIg==
-X-ME-Sender: <xms:D7eSYepi9_Z8uf-YaHwqRwLRPKfy8_CJW2g9ecIlmuCKhdZavlICEg>
- <xme:D7eSYcp14c186VrFe3DZgntVxmtYeZCcVNEh5-NBfBfe2e5nELed8sVqHe72rpUXU
- XvaoGjEFFbgF0eo_Q>
-X-ME-Received: <xmr:D7eSYTP7avKM76qeEnjbyf3F9-6N7NXUyyLCQRFSS4ZKQoxTp6EMnMvUHusYBIy8Gnf1HltY>
+ fm1; bh=YFFMYVihWiPWktyuxrOQDQ9eoOlotAMNNpVZGNCElO4=; b=AG6W7724
+ w7Vhj06SHRZjFE5aU+pnidCinTGfjv2nhxJZ6TS6uRSphj9r4DRwfRzwtAlwiyIu
+ bfcqb9UuKAeHnI7c65ujBBKh4zFj/kh8Lv5pexFDa4EtIURbKPur0FTkBPl2Qzag
+ dfp0NU1PZ+tTPSTFvTb40cpl9zNtKGA4Vv5Mtqxs4NqEQE7zaPJsCcFtjyYVOnMJ
+ CM4rCwlCYtDhE/5L2eyV2fVmI2iPcdD994UiDrGP05p3G3gzrFnzL74Bm7/4In48
+ NG1l/W0XuYMPkAR0fI4Haw8j13qj2IUs7iW/Dp20cmR+VZ7XEeUkvCxrdv08tiJU
+ JTsrAy3/AJdG6A==
+X-ME-Sender: <xms:D7eSYR6F2OCY0aXFjolRkyiLBwUm32hkrpDW71yH2l3z9yq8yQcirQ>
+ <xme:D7eSYe69Z0e0J9imxreIuQ7ljrcXkMShhzOi7Hiyiin8CWsdHLManl2sSfm1bZoL7
+ 353LyVjCu3k_AXYlw>
+X-ME-Received: <xmr:D7eSYYcKmA6JuI4rVsFCUxaAaWia70Hkyp3ZR9MO9sMh6Mmwt0A2cv0pf2oFWt0QncpB6bI9>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddrfedtgddutddtucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
  cujfgurhephffvufffkffojghfrhgggfestdhqredtredttdenucfhrhhomhepkghiucgj
  rghnuceoiihirdihrghnsehsvghnthdrtghomheqnecuggftrfgrthhtvghrnhepieejue
  dvueduuefhgefhheeiuedvtedvuefgieegveetueeiueehtdegudehfeelnecuvehluhhs
- thgvrhfuihiivgepudenucfrrghrrghmpehmrghilhhfrhhomhepiihirdihrghnsehsvg
+ thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepiihirdihrghnsehsvg
  hnthdrtghomh
-X-ME-Proxy: <xmx:D7eSYd4yJGehSQMDMdWB_xRmvIPDOk3IdN66w9wppYPuVduHoVtIyw>
- <xmx:D7eSYd7gCBUQmT2CMLvfkRawMDbo81AJQ-SFsg-Cja9aKjU1iUGJ9g>
- <xmx:D7eSYdjOXUCZtIHGbIbHMr9SQgmvy-WOZndHNEJ1sY9TXOEVGqurhQ>
- <xmx:D7eSYSHHQ-Is8qJNgu2aA7Y43q2g-vUX36d-mkxiqCvX19_ozECB1g>
+X-ME-Proxy: <xmx:D7eSYaIxidt93JQnvs-8VA9VlQE9H9wWsjtj_jteON4m098vlZF6Fw>
+ <xmx:D7eSYVJynTUv1E1Gn2kLXcxam7_4OfTH85AuqAk3OrDZU0k1gkO-rQ>
+ <xmx:D7eSYTz1PUmixsZoMw4rWRLueT399yXJBV5agTa10jzreI5ii-_DkA>
+ <xmx:ELeSYeX-tSoOAwwfRfuGF2owt7JF4z9ZpWx6we5_tg1jp0WhR_Q9Jg>
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 15 Nov 2021 14:37:50 -0500 (EST)
+ 15 Nov 2021 14:37:51 -0500 (EST)
 From: Zi Yan <zi.yan@sent.com>
 To: David Hildenbrand <david@redhat.com>,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 3/3] arch: powerpc: adjust fadump alignment to be
- pageblock aligned.
-Date: Mon, 15 Nov 2021 14:37:24 -0500
-Message-Id: <20211115193725.737539-4-zi.yan@sent.com>
+Subject: [RFC PATCH 3/3] arch: powerpc: adjust fadump alignment to pageblock
+ aligned.
+Date: Mon, 15 Nov 2021 14:37:25 -0500
+Message-Id: <20211115193725.737539-5-zi.yan@sent.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211115193725.737539-1-zi.yan@sent.com>
 References: <20211115193725.737539-1-zi.yan@sent.com>
@@ -108,8 +108,7 @@ Sender: "Linuxppc-dev"
 
 From: Zi Yan <ziy@nvidia.com>
 
-CMA only requires pageblock alignment now. Change CMA alignment in
-fadump too.
+CMA only requires pageblock alignment. Change fadump too.
 
 Signed-off-by: Zi Yan <ziy@nvidia.com>
 ---
