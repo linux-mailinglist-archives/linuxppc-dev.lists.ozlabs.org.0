@@ -2,53 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2B84500DB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 10:07:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF1414500D5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 10:06:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ht3Ht57v5z2yb3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 20:07:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ht3G74fVNz304R
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Nov 2021 20:06:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=leemhuis.info (client-ip=2a01:488:42:1000:50ed:8234::;
- helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 1857 seconds by postgrey-1.36 at boromir;
- Mon, 15 Nov 2021 20:07:30 AEDT
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de
- [IPv6:2a01:488:42:1000:50ed:8234::])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ht3HQ1BhFz2xCc
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Nov 2021 20:07:27 +1100 (AEDT)
-Received: from ip4d173d4a.dynamic.kabel-deutschland.de ([77.23.61.74]
- helo=[192.168.66.200]); authenticated
- by wp530.webpack.hosteurope.de running ExIM with esmtpsa
- (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- id 1mmXTQ-0005F5-Gz; Mon, 15 Nov 2021 09:36:20 +0100
-Message-ID: <bb5c5d0f-2ae7-8426-0021-baeca8f7dd11@leemhuis.info>
-Date: Mon, 15 Nov 2021 09:36:19 +0100
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ht3Fh055bz2xCc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Nov 2021 20:05:58 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Ht3Fb4jLKz9sSH;
+ Mon, 15 Nov 2021 10:05:55 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 23Jkjqa8PDsV; Mon, 15 Nov 2021 10:05:55 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Ht3Fb3Ts8z9sSB;
+ Mon, 15 Nov 2021 10:05:55 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 631328B767;
+ Mon, 15 Nov 2021 10:05:55 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id vYt0LtQYyl6m; Mon, 15 Nov 2021 10:05:55 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4092D8B763;
+ Mon, 15 Nov 2021 10:05:55 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 1AF95jiL136901
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Mon, 15 Nov 2021 10:05:45 +0100
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 1AF95jhV136900;
+ Mon, 15 Nov 2021 10:05:45 +0100
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/book3e: Fix TLBCAM preset at boot
+Date: Mon, 15 Nov 2021 10:05:32 +0100
+Message-Id: <d319f2a9367d4d08fd2154e506101bd5f100feeb.1636967119.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: bug: usb: gadget: FSL_UDC_CORE Corrupted request list leads to
- unrecoverable loop.
-Content-Language: en-BS
-To: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "Eugene_Bordenkircher@selinc.com" <Eugene_Bordenkircher@selinc.com>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>
-References: <MWHPR2201MB152074F47BF142189365627B91879@MWHPR2201MB1520.namprd22.prod.outlook.com>
- <2c275adc278477e1e512ea6ecc0c1f4dcc46969d.camel@infinera.com>
- <6659a2c7fd9fffac766b8389244e5885ccbd38bd.camel@infinera.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <6659a2c7fd9fffac766b8389244e5885ccbd38bd.camel@infinera.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de; regressions@leemhuis.info; 1636967250;
- 3c99804b; 
-X-HE-SMSGID: 1mmXTQ-0005F5-Gz
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1636967130; l=2048; s=20211009;
+ h=from:subject:message-id; bh=UkVSGT3r0lZYtsOemswUnqSkhTNjQKOQEhjWVTHKcoY=;
+ b=8aZCsj5qx3yqs8pm5bTdJlxec2S/WaewNn8VpChIp91Dq0ejGnqCK3vY/gKfU/cg6oRPYKsFaIEL
+ Tvd5OowBDD4qJaSlagvZn8Sxia6cy7PKKLLHhbe7XP61ljJck8V/
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,60 +73,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "balbi@kernel.org" <balbi@kernel.org>,
- "leoyang.li@nxp.com" <leoyang.li@nxp.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Christian Zigotzky <chzigotzky@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi, this is your Linux kernel regression tracker speaking.
+Commit 52bda69ae8b5 ("powerpc/fsl_booke: Tell map_mem_in_cams() if
+init is done") was supposed to just add an additional parameter to
+map_mem_in_cams() and always set it to 'true' at that time.
 
-This looks stalled, as afaics nothing to get this regression fixed
-happened since below mail. How can we things rolling again?
+But a few call sites were messed up. Fix them.
 
-Eugene, were you able to look into the patch from Joakim?
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Fixes: 52bda69ae8b5 ("powerpc/fsl_booke: Tell map_mem_in_cams() if init is done")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/mm/nohash/kaslr_booke.c | 2 +-
+ arch/powerpc/mm/nohash/tlb.c         | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Or did I miss anything and some progress to fix this was made elsewhere?
-Please let me know if that's the case.
+diff --git a/arch/powerpc/mm/nohash/kaslr_booke.c b/arch/powerpc/mm/nohash/kaslr_booke.c
+index 8fc49b1b4a91..6ec978967da0 100644
+--- a/arch/powerpc/mm/nohash/kaslr_booke.c
++++ b/arch/powerpc/mm/nohash/kaslr_booke.c
+@@ -314,7 +314,7 @@ static unsigned long __init kaslr_choose_location(void *dt_ptr, phys_addr_t size
+ 		pr_warn("KASLR: No safe seed for randomizing the kernel base.\n");
+ 
+ 	ram = min_t(phys_addr_t, __max_low_memory, size);
+-	ram = map_mem_in_cams(ram, CONFIG_LOWMEM_CAM_NUM, true, false);
++	ram = map_mem_in_cams(ram, CONFIG_LOWMEM_CAM_NUM, true, true);
+ 	linear_sz = min_t(unsigned long, ram, SZ_512M);
+ 
+ 	/* If the linear size is smaller than 64M, do not randmize */
+diff --git a/arch/powerpc/mm/nohash/tlb.c b/arch/powerpc/mm/nohash/tlb.c
+index 89353d4f5604..647bf454a0fa 100644
+--- a/arch/powerpc/mm/nohash/tlb.c
++++ b/arch/powerpc/mm/nohash/tlb.c
+@@ -645,7 +645,7 @@ static void early_init_this_mmu(void)
+ 
+ 		if (map)
+ 			linear_map_top = map_mem_in_cams(linear_map_top,
+-							 num_cams, true, true);
++							 num_cams, false, true);
+ 	}
+ #endif
+ 
+@@ -766,7 +766,7 @@ void setup_initial_memory_limit(phys_addr_t first_memblock_base,
+ 		num_cams = (mfspr(SPRN_TLB1CFG) & TLBnCFG_N_ENTRY) / 4;
+ 
+ 		linear_sz = map_mem_in_cams(first_memblock_size, num_cams,
+-					    false, true);
++					    true, true);
+ 
+ 		ppc64_rma_size = min_t(u64, linear_sz, 0x40000000);
+ 	} else
+-- 
+2.31.1
 
-Ciao, Thorsten (carrying his Linux kernel regression tracker hat)
-
-P.S.: As a Linux kernel regression tracker I'm getting a lot of reports
-on my table. I can only look briefly into most of them. Unfortunately
-therefore I sometimes will get things wrong or miss something important.
-I hope that's not the case here; if you think it is, don't hesitate to
-tell me about it in a public reply. That's in everyone's interest, as
-what I wrote above might be misleading to everyone reading this; any
-suggestion I gave they thus might sent someone reading this down the
-wrong rabbit hole, which none of us wants.
-
-P.P.S.: Feel free to ignore the following lines, they are only meant for
-regzbot, my Linux kernel regression tracking bot
-(https://linux-regtracking.leemhuis.info/regzbot/):
-
-#regzbot poke
-
-On 02.11.21 22:15, Joakim Tjernlund wrote:
-> On Sat, 2021-10-30 at 14:20 +0000, Joakim Tjernlund wrote:
->> On Fri, 2021-10-29 at 17:14 +0000, Eugene Bordenkircher wrote:
->
->>> We've discovered a situation where the FSL udc driver (drivers/usb/gadget/udc/fsl_udc_core.c) will enter a loop iterating over the request queue, but the queue has been corrupted at some point so it loops infinitely.  I believe we have narrowed into the offending code, but we are in need of assistance trying to find an appropriate fix for the problem.  The identified code appears to be in all versions of the Linux kernel the driver exists in.
->>>
->>> The problem appears to be when handling a USB_REQ_GET_STATUS request.  The driver gets this request and then calls the ch9getstatus() function.  In this function, it starts a request by "borrowing" the per device status_req, filling it in, and then queuing it with a call to list_add_tail() to add the request to the endpoint queue.  Right before it exits the function however, it's calling ep0_prime_status(), which is filling out that same status_req structure and then queuing it with another call to list_add_tail() to add the request to the endpoint queue.  This adds two instances of the exact same LIST_HEAD to the endpoint queue, which breaks the list since the prev and next pointers end up pointing to the wrong things.  This ends up causing a hard loop the next time nuke() gets called, which happens on the next setup IRQ.
->>>
->>> I'm not sure what the appropriate fix to this problem is, mostly due to my lack of expertise in USB and this driver stack.  The code has been this way in the kernel for a very long time, which suggests that it has been working, unless USB_REQ_GET_STATUS requests are never made.  This further suggests that there is something else going on that I don't understand.  Deleting the call to ep0_prime_status() and the following ep0stall() call appears, on the surface, to get the device working again, but may have side effects that I'm not seeing.
->>>
->>> I'm hopeful someone in the community can help provide some information on what I may be missing or help come up with a solution to the problem.  A big thank you to anyone who would like to help out.
->>>
->>> Eugene
->>
->> Run into this to a while ago. Found the bug and a few more fixes.
->> This is against 4.19 so you may have to tweak them a bit.
->> Feel free to upstream them.
->>
->>  Jocke 
-> 
-> Curious, did my patches help? Good to known once we upgrade as well.
-> 
->  Jocke
