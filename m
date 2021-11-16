@@ -2,84 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E907453813
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 17:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBAC453829
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 17:58:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HtsV12HRGz2yn3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 03:49:29 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jJN3kVw3;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jJN3kVw3;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HtshQ5TT7z3bfv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 03:58:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=jJN3kVw3; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=jJN3kVw3; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HtsTF595Mz2yMx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Nov 2021 03:48:47 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1637081323;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Cg0A/Tqzd8C8bvQHxDRqW8bNEhwYvKBZVV4KLqiN8xQ=;
- b=jJN3kVw3+ON2ldh0vqS6JajVRz/XTjiOc/pK69L6risdwCZhzNEwfYKhlduGkswFZsnRxK
- fEfliXmNAzNYGTSshiEw5tuMvO+MOrVi7aJWL8E3/sRHp8AH4VA3jofAEgsnMSDoKuPpNz
- cuvn2NjMtOYrmpafaZLQBDNWHmnlhmU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1637081323;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Cg0A/Tqzd8C8bvQHxDRqW8bNEhwYvKBZVV4KLqiN8xQ=;
- b=jJN3kVw3+ON2ldh0vqS6JajVRz/XTjiOc/pK69L6risdwCZhzNEwfYKhlduGkswFZsnRxK
- fEfliXmNAzNYGTSshiEw5tuMvO+MOrVi7aJWL8E3/sRHp8AH4VA3jofAEgsnMSDoKuPpNz
- cuvn2NjMtOYrmpafaZLQBDNWHmnlhmU=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-186-p3SenisWPY62m1a-Emj8qQ-1; Tue, 16 Nov 2021 11:48:39 -0500
-X-MC-Unique: p3SenisWPY62m1a-Emj8qQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Htsgx4yzzz2yNG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Nov 2021 03:58:05 +1100 (AEDT)
+Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
+ [51.254.78.96])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4F53487D542;
- Tue, 16 Nov 2021 16:48:37 +0000 (UTC)
-Received: from [10.39.192.245] (unknown [10.39.192.245])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 757005FC13;
- Tue, 16 Nov 2021 16:48:20 +0000 (UTC)
-Message-ID: <58fcf40e-75f5-f092-5aee-29d018f6bf67@redhat.com>
-Date: Tue, 16 Nov 2021 17:48:19 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 4/5] KVM: x86: Use kvm_get_vcpu() instead of open-coded
- access
-Content-Language: en-US
-To: Sean Christopherson <seanjc@google.com>
-References: <20211105192101.3862492-1-maz@kernel.org>
- <20211105192101.3862492-5-maz@kernel.org> <YYWOKTYHhJywwCRk@google.com>
- <330eb780-1963-ac1f-aaad-908346112f28@redhat.com>
- <YZPXU3eBT8j0fUPs@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <YZPXU3eBT8j0fUPs@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+ by mail.kernel.org (Postfix) with ESMTPSA id C8B7761407;
+ Tue, 16 Nov 2021 16:58:02 +0000 (UTC)
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <maz@kernel.org>)
+ id 1mn1mS-005tJK-Px; Tue, 16 Nov 2021 16:58:00 +0000
+Date: Tue, 16 Nov 2021 16:58:00 +0000
+Message-ID: <874k8c82cn.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH] powerpc/xive: Change IRQ domain to a tree domain
+In-Reply-To: <20211116134022.420412-1-clg@kaod.org>
+References: <20211116134022.420412-1-clg@kaod.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: clg@kaod.org, linuxppc-dev@lists.ozlabs.org,
+ mpe@ellerman.id.au, groug@kaod.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,41 +58,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>, Anup Patel <anup.patel@wdc.com>,
- Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>, Marc Zyngier <maz@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>, David Hildenbrand <david@redhat.com>,
- linux-mips@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
- Atish Patra <atish.patra@wdc.com>,
- Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
- Paul Mackerras <paulus@samba.org>, James Morse <james.morse@arm.com>,
- kernel-team@android.com, Claudio Imbrenda <imbrenda@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu,
- Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Greg Kurz <groug@kaod.org>,
+ stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/16/21 17:07, Sean Christopherson wrote:
->>>           if (!kvm_arch_has_assigned_device(kvm) ||
->>>               !irq_remapping_cap(IRQ_POSTING_CAP) ||
->>> -           !kvm_vcpu_apicv_active(kvm->vcpus[0]))
->>> +           !irqchip_in_kernel(kvm) || !enable_apicv)
->>>                   return 0;
->>>
->>>           idx = srcu_read_lock(&kvm->irq_srcu);
->> What happens then if pi_pre_block is called and the IRTE denotes a posted
->> interrupt?
->>
->> I might be wrong, but it seems to me that you have to change all of the
->> occurrences this way.  As soon as enable_apicv is set, you need to go
->> through the POSTED_INTR_WAKEUP_VECTOR just in case.
-> Sorry, I didn't grok that at all.  All occurences of what?
+On Tue, 16 Nov 2021 13:40:22 +0000,
+C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+>=20
+> Commit 4f86a06e2d6e ("irqdomain: Make normal and nomap irqdomains
+> exclusive") introduced an IRQ_DOMAIN_FLAG_NO_MAP flag to isolate the
+> 'nomap' domains still in use under the powerpc arch. With this new
+> flag, the revmap_tree of the IRQ domain is not used anymore. This
+> change broke the support of shared LSIs [1] in the XIVE driver because
+> it was relying on a lookup in the revmap_tree to query previously
+> mapped interrupts.
 
-Of the !assigned-device || !VTd-PI || !kvm_vcpu_apicv_active(vcpu) 
-checks.  This way, CPUs are woken up correctly even if you have 
-!kvm_vcpu_apicv_active(vcpu) but the IRTE is a posted-interrupt one.
+Just a lookup? Surely there is more to it, no?
 
-Paolo
+> Linux now creates two distinct IRQ mappings on the
+> same HW IRQ which can lead to unexpected behavior in the drivers.
+>=20
+> The XIVE IRQ domain is not a direct mapping domain and its HW IRQ
+> interrupt number space is rather large : 1M/socket on POWER9 and
+> POWER10, change the XIVE driver to use a 'tree' domain type instead.
+>=20
+> [1] For instance, a linux KVM guest with virtio-rng and virtio-balloon
+>     devices.
+>=20
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: stable@vger.kernel.org # v5.14+
+> Fixes: 4f86a06e2d6e ("irqdomain: Make normal and nomap irqdomains exclusi=
+ve")
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
+>=20
+>  Marc,
+>=20
+>  The Fixes tag is there because the patch in question revealed that
+>  something was broken in XIVE. genirq is not in cause. However, I
+>  don't know for PS3 and Cell. May be less critical for now.
 
+Depends if they expect something that a no-map domain cannot provide.
+
+> =20
+>  arch/powerpc/sysdev/xive/common.c | 3 +--
+>  arch/powerpc/sysdev/xive/Kconfig  | 1 -
+>  2 files changed, 1 insertion(+), 3 deletions(-)
+>=20
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive=
+/common.c
+> index fed6fd16c8f4..9d0f0fe25598 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -1536,8 +1536,7 @@ static const struct irq_domain_ops xive_irq_domain_=
+ops =3D {
+> =20
+>  static void __init xive_init_host(struct device_node *np)
+>  {
+> -	xive_irq_domain =3D irq_domain_add_nomap(np, XIVE_MAX_IRQ,
+> -					       &xive_irq_domain_ops, NULL);
+> +	xive_irq_domain =3D irq_domain_add_tree(np, &xive_irq_domain_ops, NULL);
+>  	if (WARN_ON(xive_irq_domain =3D=3D NULL))
+>  		return;
+>  	irq_set_default_host(xive_irq_domain);
+> diff --git a/arch/powerpc/sysdev/xive/Kconfig b/arch/powerpc/sysdev/xive/=
+Kconfig
+> index 97796c6b63f0..785c292d104b 100644
+> --- a/arch/powerpc/sysdev/xive/Kconfig
+> +++ b/arch/powerpc/sysdev/xive/Kconfig
+> @@ -3,7 +3,6 @@ config PPC_XIVE
+>  	bool
+>  	select PPC_SMP_MUXED_IPI
+>  	select HARDIRQS_SW_RESEND
+> -	select IRQ_DOMAIN_NOMAP
+> =20
+>  config PPC_XIVE_NATIVE
+>  	bool
+
+As long as this works, I'm happy with one less no-map user.
+
+Acked-by: Marc Zyngier <maz@kernel.org>
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
