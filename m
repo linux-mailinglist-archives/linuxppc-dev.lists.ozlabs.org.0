@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F2F451DE4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 01:31:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07CE1451EFE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 01:35:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HtRny5PGDz2yHP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 11:31:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HtRtb742mz304j
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 11:35:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=jkN0+anU;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=kRgsOovb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::434;
- helo=mail-pf1-x434.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62c;
+ helo=mail-pl1-x62c.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=jkN0+anU; dkim-atps=neutral
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
- [IPv6:2607:f8b0:4864:20::434])
+ header.s=google header.b=kRgsOovb; dkim-atps=neutral
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
+ [IPv6:2607:f8b0:4864:20::62c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HtRnH5S8Bz2xX8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 11:31:13 +1100 (AEDT)
-Received: by mail-pf1-x434.google.com with SMTP id x131so16472167pfc.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Nov 2021 16:31:13 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HtRsy0Gxbz2xrl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 11:35:17 +1100 (AEDT)
+Received: by mail-pl1-x62c.google.com with SMTP id t21so15875925plr.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Nov 2021 16:35:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to;
- bh=zUAbk3pYDxq1bSuJItD74NAh/MbYUz0fiMi2jjsqIPc=;
- b=jkN0+anUkVZEafZbns3mnQH3BOzdPE6stTt8SrDHZFGkz5SQGDyxTuScjmOkAtjtG9
- AT2XFauNYqbJ3Hv+WUTHMAUTNsTes+od+8KqsU/GEVyVgjrYYw/xt4G0TAF8HM1LcPVm
- 2WJe85H3kQUjZSV8Rb5yVnjCooZk+xWNu9wek=
+ bh=6YrJDwz5lHylUrRKBiCCXn7XIadwbTCaDNmr8F8Qv+s=;
+ b=kRgsOovbagRO/7210nSyOKEBlmhfA5hNYfPQV4k7lydus9N2uNl5Vt0UygZC7jGLy1
+ CcSKdAOPN7CAjIaxG2Nk7LhNoTdTNyUIV57l7UZ/U0TQtm7n+dBKTmv+GCqWpklKxw86
+ 72xq1Tvc+lxHwltemgeZ72MdiUZIJVqjFa0RI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=zUAbk3pYDxq1bSuJItD74NAh/MbYUz0fiMi2jjsqIPc=;
- b=Y1WEOCkcg7gq/m6D9Q8zHBwfbcaCLQREn4xOpRpLmY4gvWTUGPn3LzlqQwBCY0m2UF
- uzSUyUD3R2tlU7ej0DixlrB46SYmglQh20obkVc6bZ4mW7ic0GFRCc7Oe6n70f0gBSBN
- RrFMLSBJ7eSf7tZrasS61DOUWE3K8+vD7MrTr1eXIdD2jwlW/PVonGQgkNtWkFvgRH9m
- JyK3NfuLfXTMBBsei8hmPy54IqhFBL/MmjmeLeLR+wiFNq+AbKexCmM8rMgnG8XRYE4w
- hUZtqYT1f+/m+l4RTmFyhKo2Sp+LNGs81NrEYgk6T10mq/1QMuvMoumGdwutOzQFoaWc
- wikQ==
-X-Gm-Message-State: AOAM533wGqaxU54iRsML8p4+WfnianMYbEohgFxNsQcbC8qBJQ1ZO7Am
- skchCKDXmac2lUV/Zz059CDkFg==
-X-Google-Smtp-Source: ABdhPJxDrEb7NedduOiss/lXzBJfLpYZT+5k0kObH71YXHTZztaI+VVMmjTV988TJQv8GS02GfUMPA==
-X-Received: by 2002:a05:6a00:1945:b0:44c:a955:35ea with SMTP id
- s5-20020a056a00194500b0044ca95535eamr36094903pfk.85.1637022670112; 
- Mon, 15 Nov 2021 16:31:10 -0800 (PST)
+ bh=6YrJDwz5lHylUrRKBiCCXn7XIadwbTCaDNmr8F8Qv+s=;
+ b=3cWvYyMWq0FwumcHC/7suNwMeybHzualYQMbAfe4O+3LUq7fAJc6HPqT+virXvf9OG
+ GXi7KYHEFtsFBgObczQV2HylLkv3gCRVkNdjFCDdwFuqR+bCTf8AspMBPHQN+QTO40g+
+ IC7fjogA2W86MeOhmh/WVuOZFgjvQKr/orVw33EmOGxNrmwIFL8cFQjMFqRlH5Ja7u2J
+ 9em6HpdtbntIYkWQ+hWpJHPfDlASwbYCLmStiAbXj8ENwzZNSKMDeSMSbjvwO26EzBSg
+ 86gTNNBkKyh3DCr0UTJhFs52cM2828y2W/M0jxm2xLyLsWbJuugOBys/df3/bWzgpF8d
+ ZmQA==
+X-Gm-Message-State: AOAM532z8nEspJ2nLOApYerjn4db6jq/TjgBu80/NXiUBga7gZi3KVeC
+ /hqOm4TXOxysswMysMaUjlzUTQ==
+X-Google-Smtp-Source: ABdhPJy9iYaBB3Pj/LejC8q7/hsST+5gxO7ABIHhxz3+lYk9ZK6BkrL6e9tXPNM1m5lGV6jB9/FWOw==
+X-Received: by 2002:a17:90a:c398:: with SMTP id
+ h24mr3495024pjt.73.1637022914921; 
+ Mon, 15 Nov 2021 16:35:14 -0800 (PST)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id h21sm12755848pgk.74.2021.11.15.16.31.09
+ by smtp.gmail.com with ESMTPSA id s21sm16292860pfk.3.2021.11.15.16.35.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Nov 2021 16:31:09 -0800 (PST)
-Date: Mon, 15 Nov 2021 16:31:09 -0800
+ Mon, 15 Nov 2021 16:35:14 -0800 (PST)
+Date: Mon, 15 Nov 2021 16:35:14 -0800
 From: Kees Cook <keescook@chromium.org>
 To: Marco Elver <elver@google.com>
 Subject: Re: Build regressions/improvements in v5.16-rc1
-Message-ID: <202111151624.91EDCFF7@keescook>
+Message-ID: <202111151633.DE719CE@keescook>
 References: <20211115155105.3797527-1-geert@linux-m68k.org>
  <CAMuHMdUCsyUxaEf1Lz7+jMnur4ECwK+JoXQqmOCkRKqXdb1hTQ@mail.gmail.com>
  <YZKOce4XhAU49+Yn@elver.google.com>
@@ -119,17 +119,19 @@ On Mon, Nov 15, 2021 at 05:44:33PM +0100, Marco Elver wrote:
 > Kees, wasn't that what [1] was meant to fix?
 > [1] https://lkml.kernel.org/r/20211006181544.1670992-1-keescook@chromium.org
 
-[1] fixed the ones I found when scanning for __write_overflow(). [2]
-fixed some others, so it's possible there are yet more to fix?
+Ah, I found it:
 
-Taking a look at Linus's tree, though, the "263" and "277" lines don't
-line up correctly. I'll go see if I can reproduce this. Is this with
-W=1?
+http://kisskb.ellerman.id.au/kisskb/buildresult/14660585/log/
 
--Kees
+it's actually:
 
-[2] https://www.ozlabs.org/~akpm/mmotm/broken-out/kasan-test-consolidate-workarounds-for-unwanted-__alloc_size-protection.patch
+    inlined from 'kasan_memcmp' at /kisskb/src/lib/test_kasan.c:897:2:
 
+and
+
+    inlined from 'kasan_memchr' at /kisskb/src/lib/test_kasan.c:872:2:
+
+I can send a patch doing the same as what [1] does for these cases too.
 
 -- 
 Kees Cook
