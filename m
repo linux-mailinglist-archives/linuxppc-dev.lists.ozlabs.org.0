@@ -1,39 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BBD4452EA7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 11:05:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C61452E35
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 10:39:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HthWs3S0mz2yP0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 21:05:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Htgy547Brz307x
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 20:39:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=elvis.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de;
- envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
-X-Greylist: delayed 2936 seconds by postgrey-1.36 at boromir;
- Tue, 16 Nov 2021 21:05:06 AEDT
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
- by lists.ozlabs.org (Postfix) with ESMTP id 4HthWQ2VtDz2xCt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 21:05:05 +1100 (AEDT)
-Received: from uucp (helo=alpha)
- by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
- id 1mmuZJ-0006sq-00; Tue, 16 Nov 2021 10:15:57 +0100
-Received: by alpha.franken.de (Postfix, from userid 1000)
- id 5D232C2D9C; Tue, 16 Nov 2021 10:15:42 +0100 (CET)
-Date: Tue, 16 Nov 2021 10:15:42 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: Build regressions/improvements in v5.16-rc1
-Message-ID: <20211116091542.GA21775@alpha.franken.de>
-References: <20211115155105.3797527-1-geert@linux-m68k.org>
- <CAMuHMdUCsyUxaEf1Lz7+jMnur4ECwK+JoXQqmOCkRKqXdb1hTQ@mail.gmail.com>
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Htgxh1mMlz2xC6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 20:39:19 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10169"; a="297081778"
+X-IronPort-AV: E=Sophos;i="5.87,238,1631602800"; d="scan'208";a="297081778"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Nov 2021 01:38:11 -0800
+X-IronPort-AV: E=Sophos;i="5.87,238,1631602800"; d="scan'208";a="494394187"
+Received: from smile.fi.intel.com ([10.237.72.184])
+ by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Nov 2021 01:38:09 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+ (envelope-from <andriy.shevchenko@linux.intel.com>)
+ id 1mmuuf-007NGY-M1; Tue, 16 Nov 2021 11:38:01 +0200
+Date: Tue, 16 Nov 2021 11:38:01 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Leo Li <leoyang.li@nxp.com>
+Subject: Re: [PATCH v2 3/3] soc: fsl: Replace kernel.h with the necessary
+ inclusions
+Message-ID: <YZN7+UlXtJi8/i1L@smile.fi.intel.com>
+References: <20211110105952.62013-1-andriy.shevchenko@linux.intel.com>
+ <20211110105952.62013-3-andriy.shevchenko@linux.intel.com>
+ <YZJExzxJ4j8g6jEY@smile.fi.intel.com>
+ <AS8PR04MB8946B4800AE34258F7F2BA688F989@AS8PR04MB8946.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdUCsyUxaEf1Lz7+jMnur4ECwK+JoXQqmOCkRKqXdb1hTQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <AS8PR04MB8946B4800AE34258F7F2BA688F989@AS8PR04MB8946.eurprd04.prod.outlook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,53 +56,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- linux-pci <linux-pci@vger.kernel.org>,
- DRI Development <dri-devel@lists.freedesktop.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>, Stan Skowronek <stan@corellium.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, Helge Deller <deller@gmx.de>,
- kasan-dev <kasan-dev@googlegroups.com>,
- Sergio Paracuellos <sergio.paracuellos@gmail.com>,
- Anton Altaparmakov <anton@tuxera.com>,
- linux-arm-msm <linux-arm-msm@vger.kernel.org>,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- Nick Terrell <terrelln@fb.com>, Joey Gouly <joey.gouly@arm.com>,
- =?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@collabora.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Parisc List <linux-parisc@vger.kernel.org>,
- linux-ntfs-dev@lists.sourceforge.net, Hector Martin <marcan@marcan.st>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Rob Clark <robdclark@gmail.com>,
- Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 15, 2021 at 05:12:50PM +0100, Geert Uytterhoeven wrote:
-> >   + error: modpost: "mips_cm_is64" [drivers/pci/controller/pcie-mt7621.ko] undefined!:  => N/A
-> >   + error: modpost: "mips_cm_lock_other" [drivers/pci/controller/pcie-mt7621.ko] undefined!:  => N/A
-> >   + error: modpost: "mips_cm_unlock_other" [drivers/pci/controller/pcie-mt7621.ko] undefined!:  => N/A
-> >   + error: modpost: "mips_cpc_base" [drivers/pci/controller/pcie-mt7621.ko] undefined!:  => N/A
-> >   + error: modpost: "mips_gcr_base" [drivers/pci/controller/pcie-mt7621.ko] undefined!:  => N/A
+On Mon, Nov 15, 2021 at 10:24:36PM +0000, Leo Li wrote:
+> > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Sent: Monday, November 15, 2021 5:30 AM
+> > On Wed, Nov 10, 2021 at 12:59:52PM +0200, Andy Shevchenko wrote:
+
+...
+
+> > > v2: updated Cc list based on previous changes to MAINTAINERS
+> > 
+> > Any comments on this, please?
+> > 
+> > I really want to decrease amount of kernel.h usage in the common headers.
+> > So others won't copy'n'paste bad example.
 > 
-> mips-allmodconfig
-
-there is a patchset fixing this
-
-https://lore.kernel.org/all/20211115070809.15529-1-sergio.paracuellos@gmail.com/
-
-> > 3 warning regressions:
-> >   + <stdin>: warning: #warning syscall futex_waitv not implemented [-Wcpp]:  => 1559:2
+> There seems to be no problem with the patch although I didn't get time to really compile with it applied.
 > 
-> powerpc, m68k, mips, s390, parisc (and probably more)
+> Will pick them up later after build test.
 
-I've queued a patch to fix this for mips.
+Thank you!
 
-Thomas.
+Note, it has two fixes against MAINTAINERS which may be sent, I believe,
+sooner than later to Linus.
 
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+With Best Regards,
+Andy Shevchenko
+
+
