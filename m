@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F624536DE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 17:06:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B2A4536E1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 17:06:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HtrX65Jktz3dbY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 03:06:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HtrXZ38mqz3dgS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 03:06:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,27 +15,26 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HtrTq5Sv3z2yJv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Nov 2021 03:04:15 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HtrTr20bFz2yNC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Nov 2021 03:04:16 +1100 (AEDT)
 Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
  [51.254.78.96])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 4F46C61A0C;
+ by mail.kernel.org (Postfix) with ESMTPSA id D593061AA5;
  Tue, 16 Nov 2021 16:04:14 +0000 (UTC)
 Received: from sofa.misterjones.org ([185.219.108.64] helo=why.lan)
  by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <maz@kernel.org>)
- id 1mn0wO-005sTB-Fm; Tue, 16 Nov 2021 16:04:12 +0000
+ id 1mn0wP-005sTB-06; Tue, 16 Nov 2021 16:04:13 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvm@vger.kernel.org, linux-mips@vger.kernel.org,
  kvmarm@lists.cs.columbia.edu, linuxppc-dev@lists.ozlabs.org,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 4/7] KVM: x86: Use kvm_get_vcpu() instead of open-coded
- access
-Date: Tue, 16 Nov 2021 16:04:00 +0000
-Message-Id: <20211116160403.4074052-5-maz@kernel.org>
+Subject: [PATCH v2 5/7] KVM: Convert the kvm->vcpus array to a xarray
+Date: Tue, 16 Nov 2021 16:04:01 +0000
+Message-Id: <20211116160403.4074052-6-maz@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211116160403.4074052-1-maz@kernel.org>
 References: <20211116160403.4074052-1-maz@kernel.org>
@@ -79,27 +78,105 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As we are about to change the way vcpus are allocated, mandate
-the use of kvm_get_vcpu() instead of open-coding the access.
+At least on arm64 and x86, the vcpus array is pretty huge (up to
+1024 entries on x86) and is mostly empty in the majority of the cases
+(running 1k vcpu VMs is not that common).
+
+This mean that we end-up with a 4kB block of unused memory in the
+middle of the kvm structure.
+
+Instead of wasting away this memory, let's use an xarray instead,
+which gives us almost the same flexibility as a normal array, but
+with a reduced memory usage with smaller VMs.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/x86/kvm/vmx/posted_intr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/kvm_host.h |  5 +++--
+ virt/kvm/kvm_main.c      | 15 +++++++++------
+ 2 files changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/posted_intr.c b/arch/x86/kvm/vmx/posted_intr.c
-index 5f81ef092bd4..82a49720727d 100644
---- a/arch/x86/kvm/vmx/posted_intr.c
-+++ b/arch/x86/kvm/vmx/posted_intr.c
-@@ -272,7 +272,7 @@ int pi_update_irte(struct kvm *kvm, unsigned int host_irq, uint32_t guest_irq,
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 9a8c997ff9bc..df1b2b183d94 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -29,6 +29,7 @@
+ #include <linux/refcount.h>
+ #include <linux/nospec.h>
+ #include <linux/notifier.h>
++#include <linux/xarray.h>
+ #include <asm/signal.h>
  
- 	if (!kvm_arch_has_assigned_device(kvm) ||
- 	    !irq_remapping_cap(IRQ_POSTING_CAP) ||
--	    !kvm_vcpu_apicv_active(kvm->vcpus[0]))
-+	    !kvm_vcpu_apicv_active(kvm_get_vcpu(kvm, 0)))
- 		return 0;
+ #include <linux/kvm.h>
+@@ -552,7 +553,7 @@ struct kvm {
+ 	struct mutex slots_arch_lock;
+ 	struct mm_struct *mm; /* userspace tied to this vm */
+ 	struct kvm_memslots __rcu *memslots[KVM_ADDRESS_SPACE_NUM];
+-	struct kvm_vcpu *vcpus[KVM_MAX_VCPUS];
++	struct xarray vcpu_array;
  
- 	idx = srcu_read_lock(&kvm->irq_srcu);
+ 	/* Used to wait for completion of MMU notifiers.  */
+ 	spinlock_t mn_invalidate_lock;
+@@ -701,7 +702,7 @@ static inline struct kvm_vcpu *kvm_get_vcpu(struct kvm *kvm, int i)
+ 
+ 	/* Pairs with smp_wmb() in kvm_vm_ioctl_create_vcpu.  */
+ 	smp_rmb();
+-	return kvm->vcpus[i];
++	return xa_load(&kvm->vcpu_array, i);
+ }
+ 
+ #define kvm_for_each_vcpu(idx, vcpup, kvm) \
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 73811c3829a2..9a7bce944427 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -458,7 +458,7 @@ void kvm_destroy_vcpus(struct kvm *kvm)
+ 
+ 	kvm_for_each_vcpu(i, vcpu, kvm) {
+ 		kvm_vcpu_destroy(vcpu);
+-		kvm->vcpus[i] = NULL;
++		xa_erase(&kvm->vcpu_array, i);
+ 	}
+ 
+ 	atomic_set(&kvm->online_vcpus, 0);
+@@ -1063,6 +1063,7 @@ static struct kvm *kvm_create_vm(unsigned long type)
+ 	mutex_init(&kvm->slots_arch_lock);
+ 	spin_lock_init(&kvm->mn_invalidate_lock);
+ 	rcuwait_init(&kvm->mn_memslots_update_rcuwait);
++	xa_init(&kvm->vcpu_array);
+ 
+ 	INIT_LIST_HEAD(&kvm->devices);
+ 
+@@ -3658,7 +3659,10 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, u32 id)
+ 	}
+ 
+ 	vcpu->vcpu_idx = atomic_read(&kvm->online_vcpus);
+-	BUG_ON(kvm->vcpus[vcpu->vcpu_idx]);
++	r = xa_insert(&kvm->vcpu_array, vcpu->vcpu_idx, vcpu, GFP_KERNEL_ACCOUNT);
++	BUG_ON(r == -EBUSY);
++	if (r)
++		goto unlock_vcpu_destroy;
+ 
+ 	/* Fill the stats id string for the vcpu */
+ 	snprintf(vcpu->stats_id, sizeof(vcpu->stats_id), "kvm-%d/vcpu-%d",
+@@ -3668,15 +3672,14 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, u32 id)
+ 	kvm_get_kvm(kvm);
+ 	r = create_vcpu_fd(vcpu);
+ 	if (r < 0) {
++		xa_erase(&kvm->vcpu_array, vcpu->vcpu_idx);
+ 		kvm_put_kvm_no_destroy(kvm);
+ 		goto unlock_vcpu_destroy;
+ 	}
+ 
+-	kvm->vcpus[vcpu->vcpu_idx] = vcpu;
+-
+ 	/*
+-	 * Pairs with smp_rmb() in kvm_get_vcpu.  Write kvm->vcpus
+-	 * before kvm->online_vcpu's incremented value.
++	 * Pairs with smp_rmb() in kvm_get_vcpu.  Store the vcpu
++	 * pointer before kvm->online_vcpu's incremented value.
+ 	 */
+ 	smp_wmb();
+ 	atomic_inc(&kvm->online_vcpus);
 -- 
 2.30.2
 
