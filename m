@@ -1,79 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC263452E7B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 10:54:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B250D452F0D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 11:27:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HthH56MgTz2yPV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 20:54:25 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Q2m9wr07;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=KINLNJfe;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Htj1T433Sz307W
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 21:27:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=Q2m9wr07; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=KINLNJfe; 
- dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HthGN456bz2xCt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 20:53:48 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 16C571FCA1;
- Tue, 16 Nov 2021 09:53:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1637056425; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=azHxUlp7eftIgl7ApLEwnDINMXn9JJLFBwD7Z57SAgQ=;
- b=Q2m9wr07PDaEXaud0/LtukS0HCwwywTfPMF0rKllod/N64xbz2mpm6MDl2P5NTwEY0twUZ
- O6vEjSh3IjY9J7OppM4ctzYjpzqQ/LXprPEEFIVuj5R+WqD9OFOSaoSEQcWhmA2YYpG0AS
- unJWKSgUOm8wiglA4ByVaucdi/2DyYk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1637056425;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=azHxUlp7eftIgl7ApLEwnDINMXn9JJLFBwD7Z57SAgQ=;
- b=KINLNJfebQBbmgPSqWqudrOsi4+MVXUUF/ABJA+deXpmn4oOVvs4jUuzBW74ioBB3MOxjJ
- 6adSRb/kSbPBf3DA==
-Received: from kunlun.suse.cz (unknown [10.100.128.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=46.105.54.81;
+ helo=smtpout3.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
+ receiver=<UNKNOWN>)
+Received: from smtpout3.mo529.mail-out.ovh.net
+ (smtpout3.mo529.mail-out.ovh.net [46.105.54.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id D42A4A3B83;
- Tue, 16 Nov 2021 09:53:44 +0000 (UTC)
-Date: Tue, 16 Nov 2021 10:53:43 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Nayna <nayna@linux.vnet.ibm.com>
-Subject: Re: [PATCH 0/3] KEXEC_SIG with appended signature
-Message-ID: <20211116095343.GG34414@kunlun.suse.cz>
-References: <cover.1635948742.git.msuchanek@suse.de>
- <87czneeurr.fsf@dja-thinkpad.axtens.net>
- <20211105131401.GL11195@kunlun.suse.cz>
- <87a6ifehin.fsf@dja-thinkpad.axtens.net>
- <20211108120500.GO11195@kunlun.suse.cz>
- <56d2ae87-b9bf-c9fc-1395-db4769a424ea@linux.vnet.ibm.com>
- <20211112083055.GA34414@kunlun.suse.cz>
- <8cd90fea-05c9-b5f9-5e0c-84f98b2f55cd@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Htj124yrCz2xBZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 21:27:16 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.4.240])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id E001BCBCDEA1;
+ Tue, 16 Nov 2021 11:27:10 +0100 (CET)
+Received: from kaod.org (37.59.142.101) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Tue, 16 Nov
+ 2021 11:27:10 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-101G00488e9d7c1-0317-46b2-b738-c13bf1602699,
+ BFAEB7FE3C4E2C4D96001007C3BA12B7689A693E) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <50482eb9-389c-0114-ba21-988f1fce493c@kaod.org>
+Date: Tue, 16 Nov 2021 11:27:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8cd90fea-05c9-b5f9-5e0c-84f98b2f55cd@linux.vnet.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH 16/39] irqdomain: Make normal and nomap irqdomains
+ exclusive
+Content-Language: en-US
+To: Marc Zyngier <maz@kernel.org>
+References: <20210520163751.27325-1-maz@kernel.org>
+ <20210520163751.27325-17-maz@kernel.org>
+ <1fe9d629-0f5f-4807-b97c-77b3b3c7de72@kaod.org>
+ <87a6i48pp5.wl-maz@kernel.org>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <87a6i48pp5.wl-maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.101]
+X-ClientProxiedBy: DAG5EX1.mxp5.local (172.16.2.41) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: a0750013-07d5-4706-bb9b-93a98d531333
+X-Ovh-Tracer-Id: 9763241045856979750
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrfedvgdduhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfgjtgfgihesthejredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpefhhfelgeeukedtteffvdffueeiuefgkeekleehleetfedtgfetffefheeugeelheenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehgrhhouhhgsehkrghougdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,97 +66,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Rob Herring <robh@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
- David Howells <dhowells@redhat.com>,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- Luis Chamberlain <mcgrof@kernel.org>, keyrings@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Frank van der Linden <fllinden@amazon.com>,
- Jessica Yu <jeyu@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
- buendgen@de.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>, linux-kernel@vger.kernel.org,
+ Greg Kurz <groug@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 15, 2021 at 06:53:53PM -0500, Nayna wrote:
+Hello Marc,
+
+>> This patch is breaking the POWER9/POWER10 XIVE driver (these are not
+>> old PPC systems :) on machines sharing the same LSI HW IRQ. For instance,
+>> a linux KVM guest with a virtio-rng and a virtio-balloon device. In that
+>> case, Linux creates two distinct IRQ mappings which can lead to some
+>> unexpected behavior.
 > 
-> On 11/12/21 03:30, Michal Suchánek wrote:
-> > Hello,
-> > 
-> > On Thu, Nov 11, 2021 at 05:26:41PM -0500, Nayna wrote:
-> > > On 11/8/21 07:05, Michal Suchánek wrote:
-> > > > Hello,
-> > > > 
-
-> > > > The other part is that distributions apply 'lockdown' patches that change
-> > > > the security policy depending on secure boot status which were rejected
-> > > > by upstream which only hook into the _SIG options, and not into the IMA_
-> > > > options. Of course, I expect this to change when the IMA options are
-> > > > universally available across architectures and the support picked up by
-> > > > distributions.
-> > > > 
-> > > > Which brings the third point: IMA features vary across architectures,
-> > > > and KEXEC_SIG is more common than IMA_KEXEC.
-> > > > 
-> > > > config/arm64/default:CONFIG_HAVE_IMA_KEXEC=y
-> > > > config/ppc64le/default:CONFIG_HAVE_IMA_KEXEC=y
-> > > > 
-> > > > config/arm64/default:CONFIG_KEXEC_SIG=y
-> > > > config/s390x/default:CONFIG_KEXEC_SIG=y
-> > > > config/x86_64/default:CONFIG_KEXEC_SIG=y
-> > > > 
-> > > > KEXEC_SIG makes it much easier to get uniform features across
-> > > > architectures.
-> > > Architectures use KEXEC_SIG vs IMA_KEXEC based on their requirement.
-> > > IMA_KEXEC is for the kernel images signed using sign-file (appended
-> > > signatures, not PECOFF), provides measurement along with verification, and
-> > That's certainly not the case. S390 uses appended signatures with
-> > KEXEC_SIG, arm64 uses PECOFF with both KEXEC_SIG and IMA_KEXEC.
+> Either the irq domain translates, or it doesn't. If the driver creates
+> a nomap domain, and yet expects some sort of translation to happen,
+> then the driver is fundamentally broken. And even without that: how do
+> you end-up with a single HW interrupt having two mappings?
 > 
-> Yes, S390 uses appended signature, but they also do not support
-> measurements.
+>> A fix to go forward would be to change the XIVE IRQ domain to use a
+>> 'Tree' domain for reverse mapping and not the 'No Map' domain mapping.
+>> I will keep you updated for XIVE.
 > 
-> On the other hand for arm64/x86, PECOFF works only with KEXEC_SIG. Look at
-> the KEXEC_IMAGE_VERIFY_SIG config dependencies in arch/arm64/Kconfig and
-> KEXEC_BZIMAGE_VERIFY_SIG config dependencies in arch/x86/Kconfig. Now, if
-> KEXEC_SIG is not enabled, then IMA appraisal policies are enforced if secure
-> boot is enabled, refer to security/integrity/ima_efi.c . IMA would fail
-> verification if kernel is not signed with module sig appended signatures or
-> signature verification fails.
-> 
-> In short, IMA is used to enforce the existence of a policy if secure boot is
-> enabled. If they don't support module sig appended signatures, by definition
-> it fails. Thus PECOFF doesn't work with both KEXEC_SIG and IMA_KEXEC, but
-> only with KEXEC_SIG.
+> I bet there is a bit more to it. From what you are saying above,
+> something rather ungodly is happening in the XIVE code.
 
-Then IMA_KEXEC is a no-go. It is not supported on all architectures and
-it principially cannot be supported because it does not support PECOFF
-which is needed to boot the kernel on EFI platforms. To get feature
-parity across architectures KEXEC_SIG is required.
+It's making progress.
 
-> > 
-> > > is tied to secureboot state of the system at boot time.
-> > In distrubutions it's also the case with KEXEC_SIG, it's only upstream
-> > where this is different. I don't know why Linux upstream has rejected
-> > this support for KEXEC_SIG.
-> > 
-> > Anyway, sounds like the difference is that IMA provides measurement but
-> > if you don't use it it does not makes any difference except more comlex
-> > code.
-> I am unsure what do you mean by "complex code" here. Can you please
-> elaborate ? IMA policies support for secureboot already exists and can be
-> used as it is without adding any extra work as in
-> arch/powerpc/kernel/ima_arch.c.
+This change in irq_find_mapping() is what 'breaks' XIVE :
 
-The code exists but using it to replace KEXEC_SIG also requires
-understanding the code and the implications of using it. At a glance the
-IMA codebase is much bigger and more convoluted compared to KEXEC_SIG
-and MODULE_SIG.
+   +       if (irq_domain_is_nomap(domain)) {
+   +               if (hwirq < domain->revmap_size) {
+   +                      data = irq_domain_get_irq_data(domain, hwirq);
+   +                      if (data && data->hwirq == hwirq)
+   +                               return hwirq;
+   +               }
+   +
+   +               return 0;
 
-Thanks
 
-Michal
+With the introduction of IRQ_DOMAIN_FLAG_NO_MAP, the revmap_tree lookup
+is skipped and the previously mapped IRQ is not found. XIVE was relying
+on a side effect of irq_domain_set_mapping() which is not true anymore.
+
+I guess the easiest fix for 5.14 and 5.15 (in which was introduced MSI
+domains) is to change the XIVE IRQ domain to a domain tree. Since the HW
+can handle 1MB interrupts, this looks like a better choice for the driver.
+
+Thanks,
+
+C.
