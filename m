@@ -2,72 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07CE1451EFE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 01:35:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B08452942
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 05:51:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HtRtb742mz304j
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 11:35:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HtYY432Cbz3bjG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 15:51:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=kRgsOovb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZBoYc9/D;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62c;
- helo=mail-pl1-x62c.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=kRgsOovb; dkim-atps=neutral
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
- [IPv6:2607:f8b0:4864:20::62c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ZBoYc9/D; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HtRsy0Gxbz2xrl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 11:35:17 +1100 (AEDT)
-Received: by mail-pl1-x62c.google.com with SMTP id t21so15875925plr.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Nov 2021 16:35:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=6YrJDwz5lHylUrRKBiCCXn7XIadwbTCaDNmr8F8Qv+s=;
- b=kRgsOovbagRO/7210nSyOKEBlmhfA5hNYfPQV4k7lydus9N2uNl5Vt0UygZC7jGLy1
- CcSKdAOPN7CAjIaxG2Nk7LhNoTdTNyUIV57l7UZ/U0TQtm7n+dBKTmv+GCqWpklKxw86
- 72xq1Tvc+lxHwltemgeZ72MdiUZIJVqjFa0RI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=6YrJDwz5lHylUrRKBiCCXn7XIadwbTCaDNmr8F8Qv+s=;
- b=3cWvYyMWq0FwumcHC/7suNwMeybHzualYQMbAfe4O+3LUq7fAJc6HPqT+virXvf9OG
- GXi7KYHEFtsFBgObczQV2HylLkv3gCRVkNdjFCDdwFuqR+bCTf8AspMBPHQN+QTO40g+
- IC7fjogA2W86MeOhmh/WVuOZFgjvQKr/orVw33EmOGxNrmwIFL8cFQjMFqRlH5Ja7u2J
- 9em6HpdtbntIYkWQ+hWpJHPfDlASwbYCLmStiAbXj8ENwzZNSKMDeSMSbjvwO26EzBSg
- 86gTNNBkKyh3DCr0UTJhFs52cM2828y2W/M0jxm2xLyLsWbJuugOBys/df3/bWzgpF8d
- ZmQA==
-X-Gm-Message-State: AOAM532z8nEspJ2nLOApYerjn4db6jq/TjgBu80/NXiUBga7gZi3KVeC
- /hqOm4TXOxysswMysMaUjlzUTQ==
-X-Google-Smtp-Source: ABdhPJy9iYaBB3Pj/LejC8q7/hsST+5gxO7ABIHhxz3+lYk9ZK6BkrL6e9tXPNM1m5lGV6jB9/FWOw==
-X-Received: by 2002:a17:90a:c398:: with SMTP id
- h24mr3495024pjt.73.1637022914921; 
- Mon, 15 Nov 2021 16:35:14 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id s21sm16292860pfk.3.2021.11.15.16.35.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Nov 2021 16:35:14 -0800 (PST)
-Date: Mon, 15 Nov 2021 16:35:14 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Marco Elver <elver@google.com>
-Subject: Re: Build regressions/improvements in v5.16-rc1
-Message-ID: <202111151633.DE719CE@keescook>
-References: <20211115155105.3797527-1-geert@linux-m68k.org>
- <CAMuHMdUCsyUxaEf1Lz7+jMnur4ECwK+JoXQqmOCkRKqXdb1hTQ@mail.gmail.com>
- <YZKOce4XhAU49+Yn@elver.google.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HtYWc3BTKz2xCG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 15:49:47 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AG3gdZp006366; 
+ Tue, 16 Nov 2021 04:49:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=/IiP3OJn3/x2BE7U7GqNBNSQHO3LlVNZfJj+YeFRfp0=;
+ b=ZBoYc9/DKHdhgl1HFTsLjiOx2oxQOlKsBZHpOyI0/lRGUnVlXf7cc8Etxy/A7POsZR2v
+ Ks3eojG6rlweEMjuL+D52EoJ6hw8VOK/RIIf27N/Uf30CFraYbEWtM1e5OguYVt2ZSON
+ FyM/ofxEn+XuAC5xsAwkUUGYmixY5kbqRoPAVPMBUkINTAApQxguIxDZJngtCJOr5y4v
+ 8KkD8hkH6ykvrUXoan6+yEZFWuH4hIRX0Rl6YYhw4HJ5o1LzWKE7vEw8p+8Xz9f5TraW
+ Ke5KZaRg3iu9YYEEilCG4DXofS/gppFcWaVg1bGkgUboAlCcSjQhSVLNk6Y1Ccc3Kceo cg== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cc4yr0wrr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 Nov 2021 04:49:25 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AG4ghtC000721;
+ Tue, 16 Nov 2021 04:49:23 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06ams.nl.ibm.com with ESMTP id 3ca4mjkbrh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 Nov 2021 04:49:23 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 1AG4gPQg63701320
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 16 Nov 2021 04:42:25 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F370142041;
+ Tue, 16 Nov 2021 04:49:19 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1C31A42047;
+ Tue, 16 Nov 2021 04:49:16 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown
+ [9.43.127.103])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 16 Nov 2021 04:49:15 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, peterz@infradead.org,
+ dan.j.williams@intel.com, ira.weiny@intel.com, vishal.l.verma@intel.com
+Subject: [RESEND PATCH v5 0/4] Add perf interface to expose nvdimm
+Date: Tue, 16 Nov 2021 10:19:00 +0530
+Message-Id: <20211116044904.48718-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: IKOvPVtZdbC7CVoCd5xM3ObBko36qe5k
+X-Proofpoint-GUID: IKOvPVtZdbC7CVoCd5xM3ObBko36qe5k
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YZKOce4XhAU49+Yn@elver.google.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-15_16,2021-11-15_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011
+ lowpriorityscore=0 phishscore=0 adultscore=0 priorityscore=1501
+ mlxlogscore=999 spamscore=0 mlxscore=0 malwarescore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111160023
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,59 +99,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- linux-pci <linux-pci@vger.kernel.org>,
- DRI Development <dri-devel@lists.freedesktop.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>, Stan Skowronek <stan@corellium.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, Helge Deller <deller@gmx.de>,
- kasan-dev <kasan-dev@googlegroups.com>,
- Sergio Paracuellos <sergio.paracuellos@gmail.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Anton Altaparmakov <anton@tuxera.com>,
- linux-arm-msm <linux-arm-msm@vger.kernel.org>,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- Nick Terrell <terrelln@fb.com>, Joey Gouly <joey.gouly@arm.com>,
- =?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@collabora.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Parisc List <linux-parisc@vger.kernel.org>,
- linux-ntfs-dev@lists.sourceforge.net, Hector Martin <marcan@marcan.st>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Rob Clark <robdclark@gmail.com>,
- Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: santosh@fossix.org, maddy@linux.ibm.com, rnsastry@linux.ibm.com,
+ aneesh.kumar@linux.ibm.com, atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
+ vaibhav@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 15, 2021 at 05:44:33PM +0100, Marco Elver wrote:
-> On Mon, Nov 15, 2021 at 05:12PM +0100, Geert Uytterhoeven wrote:
-> [...]
-> > >   + /kisskb/src/include/linux/fortify-string.h: error: call to '__read_overflow' declared with attribute error: detected read beyond size of object (1st parameter):  => 263:25, 277:17
-> > 
-> >     in lib/test_kasan.c
-> > 
-> > s390-all{mod,yes}config
-> > arm64-allmodconfig (gcc11)
-> 
-> Kees, wasn't that what [1] was meant to fix?
-> [1] https://lkml.kernel.org/r/20211006181544.1670992-1-keescook@chromium.org
+Patchset adds performance stats reporting support for nvdimm.
+Added interface includes support for pmu register/unregister
+functions. A structure is added called nvdimm_pmu to be used for
+adding arch/platform specific data such as cpumask, nvdimm device
+pointer and pmu event functions like event_init/add/read/del.
+User could use the standard perf tool to access perf events
+exposed via pmu.
 
-Ah, I found it:
+Interface also defines supported event list, config fields for the
+event attributes and their corresponding bit values which are exported
+via sysfs. Patch 3 exposes IBM pseries platform nmem* device
+performance stats using this interface.
 
-http://kisskb.ellerman.id.au/kisskb/buildresult/14660585/log/
+Result from power9 pseries lpar with 2 nvdimm device:
 
-it's actually:
+Ex: List all event by perf list
 
-    inlined from 'kasan_memcmp' at /kisskb/src/lib/test_kasan.c:897:2:
+command:# perf list nmem
 
-and
+  nmem0/cache_rh_cnt/                                [Kernel PMU event]
+  nmem0/cache_wh_cnt/                                [Kernel PMU event]
+  nmem0/cri_res_util/                                [Kernel PMU event]
+  nmem0/ctl_res_cnt/                                 [Kernel PMU event]
+  nmem0/ctl_res_tm/                                  [Kernel PMU event]
+  nmem0/fast_w_cnt/                                  [Kernel PMU event]
+  nmem0/host_l_cnt/                                  [Kernel PMU event]
+  nmem0/host_l_dur/                                  [Kernel PMU event]
+  nmem0/host_s_cnt/                                  [Kernel PMU event]
+  nmem0/host_s_dur/                                  [Kernel PMU event]
+  nmem0/med_r_cnt/                                   [Kernel PMU event]
+  nmem0/med_r_dur/                                   [Kernel PMU event]
+  nmem0/med_w_cnt/                                   [Kernel PMU event]
+  nmem0/med_w_dur/                                   [Kernel PMU event]
+  nmem0/mem_life/                                    [Kernel PMU event]
+  nmem0/poweron_secs/                                [Kernel PMU event]
+  ...
+  nmem1/mem_life/                                    [Kernel PMU event]
+  nmem1/poweron_secs/                                [Kernel PMU event]
 
-    inlined from 'kasan_memchr' at /kisskb/src/lib/test_kasan.c:872:2:
+Patch1:
+        Introduces the nvdimm_pmu structure
+Patch2:
+        Adds common interface to add arch/platform specific data
+        includes nvdimm device pointer, pmu data along with
+        pmu event functions. It also defines supported event list
+        and adds attribute groups for format, events and cpumask.
+        It also adds code for cpu hotplug support.
+Patch3:
+        Add code in arch/powerpc/platform/pseries/papr_scm.c to expose
+        nmem* pmu. It fills in the nvdimm_pmu structure with pmu name,
+        capabilities, cpumask and event functions and then registers
+        the pmu by adding callbacks to register_nvdimm_pmu.
+Patch4:
+        Sysfs documentation patch
 
-I can send a patch doing the same as what [1] does for these cases too.
+Changelog
+---
+v4 -> v5:
+- Remove multiple variables defined in nvdimm_pmu structure include
+  name and pmu functions(event_int/add/del/read) as they are just
+  used to copy them again in pmu variable. Now we are directly doing
+  this step in arch specific code as suggested by Dan Williams.
+
+- Remove attribute group field from nvdimm pmu structure and
+  defined these attribute groups in common interface which
+  includes format, event list along with cpumask as suggested by
+  Dan Williams.
+  Since we added static defination for attrbute groups needed in
+  common interface, removes corresponding code from papr.
+
+- Add nvdimm pmu event list with event codes in the common interface.
+
+- Remove Acked-by/Reviewed-by/Tested-by tags as code is refactored
+  to handle review comments from Dan.
+
+- Make nvdimm_pmu_free_hotplug_memory function static as reported
+  by kernel test robot, also add corresponding Reported-by tag.
+
+- Link to the patchset v4: https://lkml.org/lkml/2021/9/3/45
+
+v3 -> v4
+- Rebase code on top of current papr_scm code without any logical
+  changes.
+
+- Added Acked-by tag from Peter Zijlstra and Reviewed by tag
+  from Madhavan Srinivasan.
+
+- Link to the patchset v3: https://lkml.org/lkml/2021/6/17/605
+
+v2 -> v3
+- Added Tested-by tag.
+
+- Fix nvdimm mailing list in the ABI Documentation.
+
+- Link to the patchset v2: https://lkml.org/lkml/2021/6/14/25
+
+v1 -> v2
+- Fix hotplug code by adding pmu migration call
+  incase current designated cpu got offline. As
+  pointed by Peter Zijlstra.
+
+- Removed the retun -1 part from cpu hotplug offline
+  function.
+
+- Link to the patchset v1: https://lkml.org/lkml/2021/6/8/500
+
+Kajol Jain (4):
+  drivers/nvdimm: Add nvdimm pmu structure
+  drivers/nvdimm: Add perf interface to expose nvdimm performance stats
+  powerpc/papr_scm: Add perf interface support
+  docs: ABI: sysfs-bus-nvdimm: Document sysfs event format entries for
+    nvdimm pmu
+
+ Documentation/ABI/testing/sysfs-bus-nvdimm |  35 +++
+ arch/powerpc/include/asm/device.h          |   5 +
+ arch/powerpc/platforms/pseries/papr_scm.c  | 225 ++++++++++++++
+ drivers/nvdimm/Makefile                    |   1 +
+ drivers/nvdimm/nd_perf.c                   | 328 +++++++++++++++++++++
+ include/linux/nd.h                         |  41 +++
+ 6 files changed, 635 insertions(+)
+ create mode 100644 drivers/nvdimm/nd_perf.c
 
 -- 
-Kees Cook
+2.26.2
+
