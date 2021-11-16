@@ -1,59 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF37453309
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 14:41:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3295645333C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 14:50:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HtnK823dZz3c6m
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 00:41:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HtnW8118sz2ymt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 00:50:12 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HvGUiNBy;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HvGUiNBy;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=HvGUiNBy; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=HvGUiNBy; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HtnJj4zlfz2xtc
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Nov 2021 00:41:08 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HtnJf0bH4z9sSJ;
- Tue, 16 Nov 2021 14:41:06 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id u7mAiaYI_xFI; Tue, 16 Nov 2021 14:41:05 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HtnJd6N0tz9sSH;
- Tue, 16 Nov 2021 14:41:05 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C51128B77A;
- Tue, 16 Nov 2021 14:41:05 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Nh3y__qSDvzK; Tue, 16 Nov 2021 14:41:05 +0100 (CET)
-Received: from [192.168.234.8] (unknown [192.168.234.8])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 036078B763;
- Tue, 16 Nov 2021 14:41:04 +0100 (CET)
-Message-ID: <431fb6da-fe21-c5a6-bfb3-4e26bdc153b4@csgroup.eu>
-Date: Tue, 16 Nov 2021 14:41:03 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HtnVT5Hjmz2xtM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Nov 2021 00:49:35 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1637070571;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=w00cP//oO+88K/Y2lFYbKr4Ng9e/d98pV+/20CZ3Uq4=;
+ b=HvGUiNBy99b3zNOiX4WFMVDtYJt7j98s3JJr80vvAg5vZ3GuCF4FPavrx75uM1jWDIPKCZ
+ keIfwDMxpth6v8MreDWwmfqEnxhLDyIzbgD1YWU0YyF4CmEGgYHZBLz92Q5p93CoT5pmFY
+ WrNNm0JQFZOT+Qo0EfHcsRS1cJEl3Ac=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1637070571;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=w00cP//oO+88K/Y2lFYbKr4Ng9e/d98pV+/20CZ3Uq4=;
+ b=HvGUiNBy99b3zNOiX4WFMVDtYJt7j98s3JJr80vvAg5vZ3GuCF4FPavrx75uM1jWDIPKCZ
+ keIfwDMxpth6v8MreDWwmfqEnxhLDyIzbgD1YWU0YyF4CmEGgYHZBLz92Q5p93CoT5pmFY
+ WrNNm0JQFZOT+Qo0EfHcsRS1cJEl3Ac=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-542-CYdHIWN-MYyQSKOSjn05jw-1; Tue, 16 Nov 2021 08:49:29 -0500
+X-MC-Unique: CYdHIWN-MYyQSKOSjn05jw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 36C7B1922038;
+ Tue, 16 Nov 2021 13:49:27 +0000 (UTC)
+Received: from [10.39.192.245] (unknown [10.39.192.245])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 711601970E;
+ Tue, 16 Nov 2021 13:49:09 +0000 (UTC)
+Message-ID: <02c44f36-5467-4dce-b0f9-af96d6286e20@redhat.com>
+Date: Tue, 16 Nov 2021 14:49:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.2.0
-Subject: Re: [PATCH v2 3/5] powerpc: Use preemption model accessors
-Content-Language: fr-FR
-To: Valentin Schneider <valentin.schneider@arm.com>,
- linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- linuxppc-dev@lists.ozlabs.org, linux-kbuild@vger.kernel.org
-References: <20211110202448.4054153-1-valentin.schneider@arm.com>
- <20211110202448.4054153-4-valentin.schneider@arm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20211110202448.4054153-4-valentin.schneider@arm.com>
+Subject: Re: [PATCH 1/5] KVM: Move wiping of the kvm->vcpus array to common
+ code
+Content-Language: en-US
+To: Marc Zyngier <maz@kernel.org>, Sean Christopherson <seanjc@google.com>
+References: <20211105192101.3862492-1-maz@kernel.org>
+ <20211105192101.3862492-2-maz@kernel.org> <YYWQHBwD4nBLo9qi@google.com>
+ <87o86xednu.wl-maz@kernel.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <87o86xednu.wl-maz@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,87 +90,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Marco Elver <elver@google.com>, Michal Marek <michal.lkml@markovi.net>,
- Peter Zijlstra <peterz@infradead.org>,
- Frederic Weisbecker <frederic@kernel.org>, Mike Galbraith <efault@gmx.de>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@kernel.org>,
- Paul Mackerras <paulus@samba.org>, Masahiro Yamada <masahiroy@kernel.org>,
- Dmitry Vyukov <dvyukov@google.com>
+Cc: Juergen Gross <jgross@suse.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>, Anup Patel <anup.patel@wdc.com>,
+ Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Huacai Chen <chenhuacai@kernel.org>, David Hildenbrand <david@redhat.com>,
+ linux-mips@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Atish Patra <atish.patra@wdc.com>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Paul Mackerras <paulus@samba.org>, James Morse <james.morse@arm.com>,
+ kernel-team@android.com, Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu,
+ Suzuki K Poulose <suzuki.poulose@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 10/11/2021 à 21:24, Valentin Schneider a écrit :
-> Per PREEMPT_DYNAMIC, checking CONFIG_PREEMPT doesn't tell you the actual
-> preemption model of the live kernel. Use the newly-introduced accessors
-> instead.
-
-Is that change worth it for now ? As far as I can see powerpc doesn't 
-have DYNAMIC PREEMPT, a lot of work needs to be done before being able 
-to use it:
-- Implement GENERIC_ENTRY
-- Implement STATIC_CALLS (already done on PPC32, to be done on PPC64)
-
+On 11/6/21 12:17, Marc Zyngier wrote:
 > 
-> sched_init() -> preempt_dynamic_init() happens way before IRQs are set up,
-> so this should be fine.
+> If you too believe that this is just wrong, I'm happy to drop the
+> locking altogether. If that breaks someone's flow, they'll shout soon
+> enough.
 
-It looks like you are mixing up interrupts and IRQs (also known as 
-"external interrupts").
+Yes, it's not necessary.  It was added in 2009 (commit 988a2cae6a3c, 
+"KVM: Use macro to iterate over vcpus.") and it was unnecessary back 
+then too.
 
-ISI (Instruction Storage Interrupt) and DSI (Data Storage Interrupt) for 
-instance are also interrupts. They happen everytime there is a page 
-fault so may happen pretty early.
+Paolo
 
-Traps generated by WARN_ON() are also interrupts that may happen at any 
-time.
-
-> 
-> Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-> ---
->   arch/powerpc/kernel/interrupt.c | 2 +-
->   arch/powerpc/kernel/traps.c     | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-> index de10a2697258..c56c10b59be3 100644
-> --- a/arch/powerpc/kernel/interrupt.c
-> +++ b/arch/powerpc/kernel/interrupt.c
-> @@ -552,7 +552,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
->   		/* Returning to a kernel context with local irqs enabled. */
->   		WARN_ON_ONCE(!(regs->msr & MSR_EE));
->   again:
-> -		if (IS_ENABLED(CONFIG_PREEMPT)) {
-> +		if (is_preempt_full()) {
-
-I think the cost of that additionnal test should be analysed. Maybe it's 
-worth not doing the test at all and check _TIF_NEED_RESCHED everytime, 
-unless that recurrent test is changed into a jump label as suggested in 
-patch 2.
-
-
->   			/* Return to preemptible kernel context */
->   			if (unlikely(current_thread_info()->flags & _TIF_NEED_RESCHED)) {
->   				if (preempt_count() == 0)
-> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-> index aac8c0412ff9..1cb31bbdc925 100644
-> --- a/arch/powerpc/kernel/traps.c
-> +++ b/arch/powerpc/kernel/traps.c
-> @@ -265,7 +265,7 @@ static int __die(const char *str, struct pt_regs *regs, long err)
->   	printk("%s PAGE_SIZE=%luK%s%s%s%s%s%s %s\n",
->   	       IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) ? "LE" : "BE",
->   	       PAGE_SIZE / 1024, get_mmu_str(),
-> -	       IS_ENABLED(CONFIG_PREEMPT) ? " PREEMPT" : "",
-> +	       is_preempt_full() ? " PREEMPT" : "",
->   	       IS_ENABLED(CONFIG_SMP) ? " SMP" : "",
->   	       IS_ENABLED(CONFIG_SMP) ? (" NR_CPUS=" __stringify(NR_CPUS)) : "",
->   	       debug_pagealloc_enabled() ? " DEBUG_PAGEALLOC" : "",
-> 
-
-Would it be interesting as well to know that we are indeed in a DYNAMIC 
-PREEMPT context when dying ?
-
-Christophe
