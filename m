@@ -1,89 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2B6453C03
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Nov 2021 22:58:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABAC3453D3B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 01:44:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hv0Lx3fkyz307C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 08:58:49 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KfCX0frC;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hv41m4Vlmz3ccB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 11:44:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=KfCX0frC; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hv0LD1WQ5z2x9p
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Nov 2021 08:58:11 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AGLiCSL005390
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 21:58:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : subject :
- date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=jWT5gZOBoM2SVGaC7qKIMakkYpABBHXfIGDJodsEsNY=;
- b=KfCX0frCcynqHItHsac0DEfahkFOrLPmwCMVlcjguoTaakFo1E3cq+prEoajCxXIOURS
- WfgAKJyKk0qd2+82gPdPbr0+18GseY0A3uHiySXM87iM3wwz8Ms3oZM0EohgdKZzk2ay
- wDSr9B9jGtwLNHNM0ext3umqPv7+zrROtV6E8tOZA4cSkPakynlxC1/gJjJpR6H22HoS
- /19TSCHFT9BQdZ2DpVQvkYGmeNEjUkS3XOGuGXMYrOOv40M9QowCoQybW7IjnHXKl0Ae
- fwRObnDOuYzUlyrBLO1IRqO1njUysupe3dZqgzaHVoZnZbds9kuKQfDrJxjvuHIsXBOX 5A== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3ccmteg5ve-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 21:58:08 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AGLmmW1014860
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 21:58:07 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma01dal.us.ibm.com with ESMTP id 3ca50bvwu3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 21:58:07 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1AGLw6Av48234910
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 21:58:06 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CD868AC05B
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 21:58:06 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8CB41AC060
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 21:58:06 +0000 (GMT)
-Received: from localhost (unknown [9.211.102.167])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Nov 2021 21:58:06 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/rtas: kernel-doc fixes
-Date: Tue, 16 Nov 2021 15:58:06 -0600
-Message-Id: <20211116215806.928235-1-nathanl@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hv3zz2gkdz2yJF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Nov 2021 11:42:39 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10170"; a="297277715"
+X-IronPort-AV: E=Sophos;i="5.87,239,1631602800"; d="scan'208";a="297277715"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Nov 2021 16:41:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,239,1631602800"; d="scan'208";a="494698012"
+Received: from lkp-server02.sh.intel.com (HELO c20d8bc80006) ([10.239.97.151])
+ by orsmga007.jf.intel.com with ESMTP; 16 Nov 2021 16:41:29 -0800
+Received: from kbuild by c20d8bc80006 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mn90y-00011N-9S; Wed, 17 Nov 2021 00:41:28 +0000
+Date: Wed, 17 Nov 2021 08:41:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 1e35eba4055149c578baf0318d2f2f89ea3c44a0
+Message-ID: <61944f9f.Of9LXcEEwjkjMr8f%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PQcL_fhEZ1GVXle6aUlhu9HNL-XKEPTy
-X-Proofpoint-ORIG-GUID: PQcL_fhEZ1GVXle6aUlhu9HNL-XKEPTy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-16_06,2021-11-16_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- bulkscore=0 clxscore=1015 malwarescore=0 adultscore=0 spamscore=0
- phishscore=0 suspectscore=0 lowpriorityscore=0 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2111160097
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,59 +50,219 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix the following issues reported by kernel-doc:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 1e35eba4055149c578baf0318d2f2f89ea3c44a0  powerpc/8xx: Fix pinned TLBs with CONFIG_STRICT_KERNEL_RWX
 
-$ scripts/kernel-doc -v -none arch/powerpc/kernel/rtas.c
-arch/powerpc/kernel/rtas.c:810: info: Scanning doc for function rtas_activate_firmware
-arch/powerpc/kernel/rtas.c:818: warning: contents before sections
-arch/powerpc/kernel/rtas.c:841: info: Scanning doc for function rtas_call_reentrant
-arch/powerpc/kernel/rtas.c:893: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
- * Find a specific pseries error log in an RTAS extended event log.
+elapsed time: 724m
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+configs tested: 190
+configs skipped: 104
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211116
+mips                 randconfig-c004-20211116
+powerpc                 mpc836x_rdk_defconfig
+arm                             pxa_defconfig
+powerpc                 mpc8313_rdb_defconfig
+sh                          r7785rp_defconfig
+s390                             allmodconfig
+microblaze                      mmu_defconfig
+mips                         tb0287_defconfig
+sh                   sh7724_generic_defconfig
+m68k                       m5249evb_defconfig
+x86_64                              defconfig
+arm                        cerfcube_defconfig
+powerpc                       eiger_defconfig
+mips                     loongson2k_defconfig
+powerpc                    socrates_defconfig
+xtensa                       common_defconfig
+mips                  decstation_64_defconfig
+m68k                            q40_defconfig
+arc                            hsdk_defconfig
+arm                         s5pv210_defconfig
+xtensa                          iss_defconfig
+powerpc                 mpc837x_rdb_defconfig
+powerpc                         ps3_defconfig
+sh                      rts7751r2d1_defconfig
+sh                            titan_defconfig
+um                             i386_defconfig
+ia64                             allyesconfig
+sh                            hp6xx_defconfig
+powerpc                      ppc44x_defconfig
+powerpc                 mpc85xx_cds_defconfig
+s390                       zfcpdump_defconfig
+arm                        mini2440_defconfig
+microblaze                          defconfig
+sh                          landisk_defconfig
+arm                         at91_dt_defconfig
+m68k                        m5407c3_defconfig
+openrisc                            defconfig
+mips                 decstation_r4k_defconfig
+powerpc                     pq2fads_defconfig
+powerpc                      walnut_defconfig
+arm                             mxs_defconfig
+mips                          ath79_defconfig
+powerpc                      makalu_defconfig
+mips                   sb1250_swarm_defconfig
+arm                        clps711x_defconfig
+arm                         socfpga_defconfig
+powerpc               mpc834x_itxgp_defconfig
+mips                           rs90_defconfig
+arm                          exynos_defconfig
+powerpc                        cell_defconfig
+arm                         axm55xx_defconfig
+arm                           sama5_defconfig
+mips                          rm200_defconfig
+arm                           stm32_defconfig
+arm                       spear13xx_defconfig
+ia64                             alldefconfig
+mips                          malta_defconfig
+arm                       versatile_defconfig
+arm                          gemini_defconfig
+arm                     eseries_pxa_defconfig
+arm                           u8500_defconfig
+mips                         cobalt_defconfig
+sh                   secureedge5410_defconfig
+powerpc                      bamboo_defconfig
+h8300                               defconfig
+arm                       aspeed_g4_defconfig
+arm                       imx_v6_v7_defconfig
+powerpc                 mpc832x_mds_defconfig
+s390                             alldefconfig
+arm                       imx_v4_v5_defconfig
+sh                         apsh4a3a_defconfig
+arm                            hisi_defconfig
+mips                          rb532_defconfig
+ia64                                defconfig
+arm                        magician_defconfig
+powerpc                mpc7448_hpc2_defconfig
+arm                          collie_defconfig
+powerpc                      ep88xc_defconfig
+arc                           tb10x_defconfig
+arm                            dove_defconfig
+nios2                         3c120_defconfig
+arm                       mainstone_defconfig
+powerpc                         wii_defconfig
+powerpc                     mpc512x_defconfig
+sh                 kfr2r09-romimage_defconfig
+sh                          rsk7264_defconfig
+m68k                         apollo_defconfig
+sh                            shmin_defconfig
+h8300                            alldefconfig
+mips                         rt305x_defconfig
+arm                            mps2_defconfig
+xtensa                  cadence_csp_defconfig
+sh                         ap325rxa_defconfig
+m68k                         amcore_defconfig
+arm                        mvebu_v7_defconfig
+sh                        dreamcast_defconfig
+arm                        vexpress_defconfig
+sh                          urquell_defconfig
+sh                           se7751_defconfig
+arm                       cns3420vb_defconfig
+arm                    vt8500_v6_v7_defconfig
+arc                        nsim_700_defconfig
+arm                   milbeaut_m10v_defconfig
+sh                   sh7770_generic_defconfig
+h8300                       h8s-sim_defconfig
+powerpc                    mvme5100_defconfig
+arm                         lpc32xx_defconfig
+sh                           se7780_defconfig
+xtensa                         virt_defconfig
+ia64                          tiger_defconfig
+arm                  randconfig-c002-20211116
+ia64                             allmodconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a015-20211116
+x86_64               randconfig-a013-20211116
+x86_64               randconfig-a012-20211116
+x86_64               randconfig-a011-20211116
+x86_64               randconfig-a016-20211116
+x86_64               randconfig-a014-20211116
+i386                 randconfig-a014-20211116
+i386                 randconfig-a016-20211116
+i386                 randconfig-a012-20211116
+i386                 randconfig-a013-20211116
+i386                 randconfig-a011-20211116
+i386                 randconfig-a015-20211116
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+
+clang tested configs:
+x86_64               randconfig-c007-20211116
+i386                 randconfig-c001-20211116
+arm                  randconfig-c002-20211116
+riscv                randconfig-c006-20211116
+powerpc              randconfig-c003-20211116
+s390                 randconfig-c005-20211116
+mips                 randconfig-c004-20211116
+x86_64               randconfig-a005-20211116
+x86_64               randconfig-a003-20211116
+x86_64               randconfig-a001-20211116
+x86_64               randconfig-a002-20211116
+x86_64               randconfig-a006-20211116
+x86_64               randconfig-a004-20211116
+i386                 randconfig-a006-20211116
+i386                 randconfig-a003-20211116
+i386                 randconfig-a005-20211116
+i386                 randconfig-a001-20211116
+i386                 randconfig-a004-20211116
+i386                 randconfig-a002-20211116
+hexagon              randconfig-r045-20211116
+hexagon              randconfig-r041-20211116
+
 ---
- arch/powerpc/kernel/rtas.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index ff80bbad22a5..ca27421f471a 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -809,13 +809,13 @@ void rtas_os_term(char *str)
- /**
-  * rtas_activate_firmware() - Activate a new version of firmware.
-  *
-+ * Context: This function may sleep.
-+ *
-  * Activate a new version of partition firmware. The OS must call this
-  * after resuming from a partition hibernation or migration in order
-  * to maintain the ability to perform live firmware updates. It's not
-  * catastrophic for this method to be absent or to fail; just log the
-  * condition in that case.
-- *
-- * Context: This function may sleep.
-  */
- void rtas_activate_firmware(void)
- {
-@@ -890,11 +890,12 @@ int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...)
- #endif /* CONFIG_PPC_PSERIES */
- 
- /**
-- * Find a specific pseries error log in an RTAS extended event log.
-+ * get_pseries_errorlog() - Find a specific pseries error log in an RTAS
-+ *                          extended event log.
-  * @log: RTAS error/event log
-  * @section_id: two character section identifier
-  *
-- * Returns a pointer to the specified errorlog or NULL if not found.
-+ * Return: A pointer to the specified errorlog or NULL if not found.
-  */
- struct pseries_errorlog *get_pseries_errorlog(struct rtas_error_log *log,
- 					      uint16_t section_id)
--- 
-2.31.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
