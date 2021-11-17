@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43E42454CDE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 19:12:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F59A454CE4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 19:14:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HvWH01PStz3cPd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 05:12:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HvWK82HyZz3c8R
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 05:14:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,28 +15,28 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HvWGN2M1bz3c54
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 05:11:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HvWJk0Nb0z2xKJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 05:13:42 +1100 (AEDT)
 Received: from disco-boy.misterjones.org (disco-boy.misterjones.org
  [51.254.78.96])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id D333B61AFF;
- Wed, 17 Nov 2021 18:11:37 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id D1DA261BC1;
+ Wed, 17 Nov 2021 18:13:39 +0000 (UTC)
 Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
  by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <maz@kernel.org>)
- id 1mnPPD-0069Au-Oo; Wed, 17 Nov 2021 18:11:35 +0000
-Date: Wed, 17 Nov 2021 18:11:35 +0000
-Message-ID: <87r1be7iug.wl-maz@kernel.org>
+ id 1mnPRB-0069CQ-WB; Wed, 17 Nov 2021 18:13:38 +0000
+Date: Wed, 17 Nov 2021 18:13:37 +0000
+Message-ID: <87pmqy7ir2.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
 To: David Woodhouse <dwmw2@infradead.org>
-Subject: Re: [PATCH v3 02/12] KVM: Add Makefile.kvm for common files,
- use it for x86
-In-Reply-To: <20211117174003.297096-3-dwmw2@infradead.org>
+Subject: Re: [PATCH v3 08/12] KVM: Propagate vcpu explicitly to
+ mark_page_dirty_in_slot()
+In-Reply-To: <20211117174003.297096-9-dwmw2@infradead.org>
 References: <20211117174003.297096-1-dwmw2@infradead.org>
- <20211117174003.297096-3-dwmw2@infradead.org>
+ <20211117174003.297096-9-dwmw2@infradead.org>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
  (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -90,61 +90,48 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 17 Nov 2021 17:39:53 +0000,
+On Wed, 17 Nov 2021 17:39:59 +0000,
 David Woodhouse <dwmw2@infradead.org> wrote:
 > 
 > From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> Splitting kvm_main.c out into smaller and better-organized files is
-> slightly non-trivial when it involves editing a bunch of per-arch
-> KVM makefiles. Provide virt/kvm/Makefile.kvm for them to include.
+> The kvm_dirty_ring_get() function uses kvm_get_running_vcpu() to work out
+> which dirty ring to use, but there are some use cases where that doesn't
+> work.
+> 
+> There's one in setting the Xen shared info page, introduced in commit
+> 629b5348841a ("KVM: x86/xen: update wallclock region") and reported by
+> "butt3rflyh4ck" <butterflyhuangxx@gmail.com> in
+> https://lore.kernel.org/kvm/CAFcO6XOmoS7EacN_n6v4Txk7xL7iqRa2gABg3F7E3Naf5uG94g@mail.gmail.com/
+> 
+> There's also about to be another one when the newly-reintroduced
+> gfn_to_pfn_cache needs to mark a page as dirty from the MMU notifier
+> which invalidates the mapping. In that case, we will *know* the vcpu
+> that can be 'blamed' for dirtying the page, and we just need to be
+> able to pass it in as an explicit argument when doing so.
+> 
+> This patch preemptively resolves the second issue, and paves the way
+> for resolving the first. A complete fix for the first issue will need
+> us to switch the Xen shinfo to be owned by a particular vCPU, which
+> will happen in a separate patch.
 > 
 > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
->  arch/x86/kvm/Makefile |  7 +------
->  virt/kvm/Makefile.kvm | 13 +++++++++++++
->  2 files changed, 14 insertions(+), 6 deletions(-)
->  create mode 100644 virt/kvm/Makefile.kvm
-> 
-> diff --git a/arch/x86/kvm/Makefile b/arch/x86/kvm/Makefile
-> index 75dfd27b6e8a..30f244b64523 100644
-> --- a/arch/x86/kvm/Makefile
-> +++ b/arch/x86/kvm/Makefile
-> @@ -7,12 +7,7 @@ ifeq ($(CONFIG_FRAME_POINTER),y)
->  OBJECT_FILES_NON_STANDARD_vmenter.o := y
->  endif
->  
-> -KVM := ../../../virt/kvm
-> -
-> -kvm-y			+= $(KVM)/kvm_main.o $(KVM)/coalesced_mmio.o \
-> -				$(KVM)/eventfd.o $(KVM)/irqchip.o $(KVM)/vfio.o \
-> -				$(KVM)/dirty_ring.o $(KVM)/binary_stats.o
-> -kvm-$(CONFIG_KVM_ASYNC_PF)	+= $(KVM)/async_pf.o
-> +include $(srctree)/virt/kvm/Makefile.kvm
->  
->  kvm-y			+= x86.o emulate.o i8259.o irq.o lapic.o \
->  			   i8254.o ioapic.o irq_comm.o cpuid.o pmu.o mtrr.o \
-> diff --git a/virt/kvm/Makefile.kvm b/virt/kvm/Makefile.kvm
-> new file mode 100644
-> index 000000000000..ffdcad3cc97a
-> --- /dev/null
-> +++ b/virt/kvm/Makefile.kvm
-> @@ -0,0 +1,13 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +#
-> +# Makefile for Kernel-based Virtual Machine module
-> +#
-> +
-> +KVM ?= ../../../virt/kvm
-> +
-> +kvm-y := $(KVM)/kvm_main.o $(KVM)/eventfd.o $(KVM)/binary_stats.o
-> +kvm-$(CONFIG_KVM_VFIO) += $(KVM)/vfio.o
-> +kvm-$(CONFIG_KVM_MMIO) += $(KVM)/coalesced_mmio.o
-> +kvm-$(CONFIG_KVM_ASYNC_PF) += $(KVM)/async_pf.o
-> +kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
-> +kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
+>  arch/arm64/kvm/mmu.c           |  2 +-
+>  arch/x86/kvm/mmu/mmu.c         |  2 +-
+>  arch/x86/kvm/mmu/spte.c        |  2 +-
+>  arch/x86/kvm/mmu/tdp_mmu.c     |  2 +-
+>  arch/x86/kvm/x86.c             |  4 ++--
+>  include/linux/kvm_dirty_ring.h |  6 ++++--
+>  include/linux/kvm_host.h       |  3 ++-
+>  virt/kvm/dirty_ring.c          |  8 ++++++--
+>  virt/kvm/kvm_main.c            | 18 +++++++++---------
+>  9 files changed, 27 insertions(+), 20 deletions(-)
 
-Acked-by: Marc Zyngier <maz@kernel.org>
+What's the base for this series? This patch fails to compile for me
+(at least on arm64), and the following patch doesn't apply on -rc1.
+
+Thanks,
 
 	M.
 
