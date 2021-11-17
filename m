@@ -2,105 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786514541DB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 08:31:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D3C454293
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 09:24:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HvF362NfHz3bN8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 18:30:58 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YA2EofTI;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HvGFN6mYkz2ymg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Nov 2021 19:24:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=de.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=borntraeger@de.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=YA2EofTI; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.222.43; helo=mail-ua1-f43.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com
+ [209.85.222.43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HvF2K3Xhfz2yNW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Nov 2021 18:30:16 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AH5CXHa019264; 
- Wed, 17 Nov 2021 07:29:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=6aUyWvGs2d2xIZAvoepVwnYdUm6nHahA0QpsvQPs9WA=;
- b=YA2EofTIX0WTWep6ZB6L5Eeoflkzjwi6qw7KBMzLNBn9tkpm1f35Ir9BOa0up3ryyJDW
- isfjTWagd/XFGvMOeR/WZAA7ff15KRD7q5OECprxC29i/fP60+1FW5jxnvcnz/r+7YbD
- sHj1nJWob/v/yfV4fsMZdWSapOghYi/mzkTQhHtAqVGB7SWPZkSV6XT0+y5kzuINdNZ9
- XgLgCUnpAIplCJjLGipi0s3Lkvrrd6Kt6y5iUKqxbTA838Ko3F90DLiyXhmtfrsQUMxE
- 7PzNi6U5jniw9Vyj3d8FRv+lx0rMrBuzivFAwDskJu8Mf5sQ9tjKj7yquesKzT3iAg+n Ew== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3ccucwtnn5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Nov 2021 07:29:53 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AH6fDc0018891;
- Wed, 17 Nov 2021 07:29:52 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3ccucwtnmc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Nov 2021 07:29:52 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AH7MkbU026793;
- Wed, 17 Nov 2021 07:29:49 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma03fra.de.ibm.com with ESMTP id 3ca50a5jy7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 17 Nov 2021 07:29:49 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 1AH7MnYx59113860
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 Nov 2021 07:22:49 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EE501AE045;
- Wed, 17 Nov 2021 07:29:46 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A8EA7AE057;
- Wed, 17 Nov 2021 07:29:45 +0000 (GMT)
-Received: from [9.171.32.217] (unknown [9.171.32.217])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 17 Nov 2021 07:29:45 +0000 (GMT)
-Message-ID: <2fcab5d3-fee1-a211-aaf5-a2569b5a7ed8@de.ibm.com>
-Date: Wed, 17 Nov 2021 08:29:45 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HvGDv07Ldz2xsT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Nov 2021 19:24:29 +1100 (AEDT)
+Received: by mail-ua1-f43.google.com with SMTP id ay21so4051151uab.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Nov 2021 00:24:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=pLki4VXVNEgH7BpAr7thCy6liKqtc8dZxgXibG/LDtU=;
+ b=W6/BKPCqlZhgQwXrqS415/ucyam7ufPsis/IMEXxGKOc5yvctXXNllCn3eYCKWtQHz
+ PUUyjQdc5kHFLx2amPyuI6N2lvsyBiTeNM04dCDKJ3YZoNUvckHRqBAmqK0KFZAphh8p
+ RPhox+Tp+UteP0XjttsG4nfPva6XiXLIZv3HVSp16IrxK3JUNfC5BWSLG8Vx50hvrylD
+ 2GRH1Gei5E2Ke9niRAIZzV7CtIzmpMEy6r7yisXqN4CyAyOUhDcY3MgFfjwdYMig+k3f
+ v9/2zaAA24epH92lTdE7M0FerXPedoQsoSs2fUWEeJdg0m2d76/etQasSQpq1w3zvzxq
+ W2kw==
+X-Gm-Message-State: AOAM5327TtTegjvgmpf38rHuulGxGmVWHI0P8L45AGgFVHezPhvKEkVV
+ oewxEZ+93XhidzVU8+h5H6xumzVAxb9ELg==
+X-Google-Smtp-Source: ABdhPJziSL3C0ukPDmPzknG/856doUx050BqK7nO/fNpa5/cU3DnHC/FgsVCdeNwJnVpfOgjrph6Nw==
+X-Received: by 2002:a67:e18e:: with SMTP id e14mr64662266vsl.49.1637137465793; 
+ Wed, 17 Nov 2021 00:24:25 -0800 (PST)
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com.
+ [209.85.222.45])
+ by smtp.gmail.com with ESMTPSA id u145sm12951503vsu.25.2021.11.17.00.24.24
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Nov 2021 00:24:25 -0800 (PST)
+Received: by mail-ua1-f45.google.com with SMTP id y5so4105538ual.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Nov 2021 00:24:24 -0800 (PST)
+X-Received: by 2002:a9f:2431:: with SMTP id 46mr20823663uaq.114.1637137464301; 
+ Wed, 17 Nov 2021 00:24:24 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 3/7] KVM: s390: Use Makefile.kvm for common files
-Content-Language: en-US
-To: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini
- <pbonzini@redhat.com>, kvm <kvm@vger.kernel.org>
-References: <5047c2591310e503491850ef683f251395247d50.camel@infradead.org>
- <20211116115051.119956-1-dwmw2@infradead.org>
- <20211116115051.119956-3-dwmw2@infradead.org>
-From: Christian Borntraeger <borntraeger@de.ibm.com>
-In-Reply-To: <20211116115051.119956-3-dwmw2@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aUsuyE-YVW6NNV1mmm64oovIwEx-v71q
-X-Proofpoint-ORIG-GUID: oQF21GtcP3exrUxbnxHVvurGZD_FqBc6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-17_02,2021-11-16_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 suspectscore=0 impostorscore=0 priorityscore=1501
- mlxscore=0 phishscore=0 mlxlogscore=999 malwarescore=0 clxscore=1011
- spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2111170033
+References: <20211115155105.3797527-1-geert@linux-m68k.org>
+ <CAMuHMdUCsyUxaEf1Lz7+jMnur4ECwK+JoXQqmOCkRKqXdb1hTQ@mail.gmail.com>
+ <fcdead1c-2e26-b8ca-9914-4b3718d8f6d4@gmx.de>
+ <480CE37B-FE60-44EE-B9D2-59A88FDFE809@fb.com>
+ <78b2d093-e06c-ba04-9890-69f948bfb937@infradead.org>
+ <B57193D6-1FD4-45D3-8045-8D2DE691E24E@fb.com>
+In-Reply-To: <B57193D6-1FD4-45D3-8045-8D2DE691E24E@fb.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 17 Nov 2021 09:24:12 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWgGz5FSidaGpp8YRRSnJfwdP4-wOkXdVx+mydXnMAXHQ@mail.gmail.com>
+Message-ID: <CAMuHMdWgGz5FSidaGpp8YRRSnJfwdP4-wOkXdVx+mydXnMAXHQ@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.16-rc1
+To: Nick Terrell <terrelln@fb.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,59 +74,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anup Patel <anup.patel@wdc.com>,
- "wanpengli @ tencent . com" <wanpengli@tencent.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Joao Martins <joao.m.martins@oracle.com>, Will Deacon <will@kernel.org>,
- kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
- "joro @ 8bytes . org" <joro@8bytes.org>, Huacai Chen <chenhuacai@kernel.org>,
- Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, karahmed@amazon.com,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- "jmattson @ google . com" <jmattson@google.com>,
- "seanjc @ google . com" <seanjc@google.com>,
- "mtosatti @ redhat . com" <mtosatti@redhat.com>, linux-mips@vger.kernel.org,
- James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org,
- Marc Zyngier <maz@kernel.org>, "vkuznets @ redhat . com" <vkuznets@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Hector Martin <marcan@marcan.st>, Peter Zijlstra <peterz@infradead.org>,
+ linux-pci <linux-pci@vger.kernel.org>,
+ DRI Development <dri-devel@lists.freedesktop.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>, Stan Skowronek <stan@corellium.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Helge Deller <deller@gmx.de>,
+ kasan-dev <kasan-dev@googlegroups.com>,
+ Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+ Anton Altaparmakov <anton@tuxera.com>,
+ linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ Joey Gouly <joey.gouly@arm.com>,
+ =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@collabora.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ "linux-ntfs-dev@lists.sourceforge.net" <linux-ntfs-dev@lists.sourceforge.net>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Rob Clark <robdclark@gmail.com>,
+ Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Nick,
 
+On Wed, Nov 17, 2021 at 3:20 AM Nick Terrell <terrelln@fb.com> wrote:
+> > On Nov 16, 2021, at 6:05 PM, Randy Dunlap <rdunlap@infradead.org> wrote=
+:
+> > On 11/16/21 5:59 PM, Nick Terrell wrote:
+> >> I=E2=80=99ll send the PR to Linus tomorrow. I=E2=80=99ve been informed=
+ that it
+> >> isn't strictly necessary to send the patches to the mailing list
+> >> for bug fixes, but its already done, so I=E2=80=99ll wait and see if t=
+here
+> >> is any feedback.
+> >
+> > IMO several (or many more) people would disagree with that.
+> >
+> > "strictly?"  OK, it's probably possible that almost any patch
+> > could be merged without being on a mailing list, but it's not
+> > desirable (except in the case of "security" patches).
+>
+> Good to know! Thanks for the advice, I wasn=E2=80=99t really sure what
+> the best practice is for sending patches to your own tree, as I
+> didn't see anything about it in the maintainer guide.
 
-Am 16.11.21 um 12:50 schrieb David Woodhouse:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+All patches must be sent to public mailing lists for review.
+You might get away with not doing that for a simple and trivial fix,
+but be prepared to end up on people's "special" lists if you did get
+it wrong.
 
-Looks good.
-Reviewed-by: Christian Borntraeger <borntraeger@de.ibm.com>
+We are Legion. We do not forgive. We do not forget ;-)
 
-> ---
->   arch/s390/kvm/Makefile | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/s390/kvm/Makefile b/arch/s390/kvm/Makefile
-> index b3aaadc60ead..e4f50453cf7f 100644
-> --- a/arch/s390/kvm/Makefile
-> +++ b/arch/s390/kvm/Makefile
-> @@ -3,13 +3,11 @@
->   #
->   # Copyright IBM Corp. 2008
->   
-> -KVM := ../../../virt/kvm
-> -common-objs = $(KVM)/kvm_main.o $(KVM)/eventfd.o  $(KVM)/async_pf.o \
-> -	      $(KVM)/irqchip.o $(KVM)/vfio.o $(KVM)/binary_stats.o
-> +include $(srctree)/virt/kvm/Makefile.kvm
->   
->   ccflags-y := -Ivirt/kvm -Iarch/s390/kvm
->   
-> -kvm-objs := $(common-objs) kvm-s390.o intercept.o interrupt.o priv.o sigp.o
-> +kvm-objs := kvm-s390.o intercept.o interrupt.o priv.o sigp.o
->   kvm-objs += diag.o gaccess.o guestdbg.o vsie.o pv.o
->   
->   obj-$(CONFIG_KVM) += kvm.o
-> 
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
