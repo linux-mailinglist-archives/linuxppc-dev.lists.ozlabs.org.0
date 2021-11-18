@@ -1,66 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B10245637B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 20:25:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 724154563B3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 20:47:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hw8rg2cl8z3c5J
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 06:25:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hw9Ln2Z3dz3bhx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 06:47:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=WoRuVORo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=TJltHTqm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=desiato.srs.infradead.org
- (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
- envelope-from=batv+5c91a5198af509282c03+6661+infradead.org+dwmw2@desiato.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::102e;
+ helo=mail-pj1-x102e.google.com; envelope-from=seanjc@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=desiato.20200630 header.b=WoRuVORo; 
- dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org
- [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=TJltHTqm; dkim-atps=neutral
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
+ [IPv6:2607:f8b0:4864:20::102e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hw8qy2Xk9z2ynk
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 06:24:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
- :MIME-Version:Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:
- Sender:Reply-To:Content-ID:Content-Description;
- bh=dY7Tt+ADu2oQp52XUsO3VZxqjQj7MzSBRXMcpbCbafM=; b=WoRuVORo9B/4wm/C+f4RvGG6R5
- aSUlxt0MYkOWLrvIgcfDvIr6UXShHu6loY5lSDBiU4FXuXgp3uspwRzYskh1Vs0x+Y53tK7p3vn/+
- ZjMS5DvaH8e0oC/2BcGEHKvjs+1WptAZ4FhRVASSjAXe0I60rDRJ6dyyjWPnh9cgyFCuKyilaytvL
- pJluZNiT0bwovPzhRdqmRPs1ZauvCLfEzEFBRXf3uCL1xUUDMSI+n0zj7a52oRJa//NNrrLSKe5bX
- qlCpX75DD9121jX1HXfgGNlPWl6zYrgFS/RdDFdi+eoCK7Q6hIhil60eqnxdT/fcHrzlvDtVCn6sx
- ikJ6CUsQ==;
-Received: from [2a01:4c8:1087:8341:4271:4cd3:119b:a847] (helo=[IPv6:::1])
- by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mnn08-00GkGi-FB; Thu, 18 Nov 2021 19:23:16 +0000
-Date: Thu, 18 Nov 2021 19:23:12 +0000
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_08/12=5D_KVM=3A_Propagate_vcpu?=
- =?US-ASCII?Q?_explicitly_to_mark=5Fpage=5Fdirty=5Fin=5Fslot=28=29?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <YZagjzYUsixbFre9@google.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hw9L25sp5z2yPs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 06:47:04 +1100 (AEDT)
+Received: by mail-pj1-x102e.google.com with SMTP id
+ np6-20020a17090b4c4600b001a90b011e06so6665270pjb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 11:47:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to;
+ bh=etzXRtUGTr8lCEC3N+zBz9sC9KLaK/1vTaoNub+XSrA=;
+ b=TJltHTqmUDTIgL1P24a20gD79MoRsYyT+oWNI7Zk1KCB0kxMW9nay123E+ZoFctpYI
+ aiNnMLJVER0OaOWjGQFAAodEb7XssAPkbTv3HZ/7Xvc56U/KwoqRQGvrj5PKP0bcKR4k
+ 2vvhP28esD9If7TAFeNjBviDlcYadmbYqHQK4EKbmvqKoyyDe2mAxq3N83OoFp8cHZvs
+ tW/44+HbAaU7BnQeov5HYKclsNsjLoArhh5d8PMaS08emGsC4hW0iBqIihQVo007XCgE
+ f+/05PLBrEHbV7h1EwSp8E42irdKiOdyzv/mpEc9ne+Zn3+nJLJHbZQwUjsMNM99uGwK
+ D+nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to;
+ bh=etzXRtUGTr8lCEC3N+zBz9sC9KLaK/1vTaoNub+XSrA=;
+ b=278LAycss92ZlaA1H2kECAp7ckK9ulO2yW89hftz+302cynN6CHu+L5UfZIosB7mvq
+ 8cpoQXAOpMssoultsqDNBym134qiH2M3cHn8Uhs2qkJohnr/LYdaZhKdTklXFq1TAeTo
+ JebdzNDIVmnuMubEtzPqU8IfhyDJyqBa2XQqIkaSBK/IUad7lrcmSg7JNQGHXyQAThH3
+ VSWiyePlDEAFp62/R822Cc/i4y4H8QjY6uh5zd4JimwRVfTQ1VSuYZhAvTRDzK/NdTU1
+ AwSrcacIGetJeuWHnQaJZ+2Px7c0tLMA6hVyhgNQyoN15/Jrp3C4M2SJ+wGzR5uirxlP
+ XTVg==
+X-Gm-Message-State: AOAM530UZGorHZ74oNVWN7g/rmbOC4sbad6cju5rPuoyH+eUuRw3gDLI
+ QcTKdIA4fBWUGV8fAvjknVxwrA==
+X-Google-Smtp-Source: ABdhPJw2jmwgTmZEgqtXJQ8BT+0frIfcOwv6QQsFYGUkgZtQBdhdiIC61pVtTpnGW9Ux3cY+6emP4Q==
+X-Received: by 2002:a17:90b:4d09:: with SMTP id
+ mw9mr13604040pjb.238.1637264821320; 
+ Thu, 18 Nov 2021 11:47:01 -0800 (PST)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com.
+ [35.185.214.157])
+ by smtp.gmail.com with ESMTPSA id t40sm435895pfg.107.2021.11.18.11.46.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 Nov 2021 11:46:59 -0800 (PST)
+Date: Thu, 18 Nov 2021 19:46:56 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Subject: Re: [PATCH v3 08/12] KVM: Propagate vcpu explicitly to
+ mark_page_dirty_in_slot()
+Message-ID: <YZatsB3oadj6dgb8@google.com>
 References: <20211117174003.297096-1-dwmw2@infradead.org>
  <20211117174003.297096-9-dwmw2@infradead.org>
  <85d9fec17f32c3eb9e100e56b91af050.squirrel@twosheds.infradead.org>
  <4c48546b-eb4a-dff7-cc38-5df54f73f5d4@redhat.com>
  <20b5952e76c54a3a5dfe5a898e3b835404ac6fb1.camel@infradead.org>
  <YZaeL5YztL3p1nLM@google.com> <YZagjzYUsixbFre9@google.com>
-Message-ID: <35AEC3FD-B46A-451D-B7D5-4B1BDD5407BD@infradead.org>
+ <35AEC3FD-B46A-451D-B7D5-4B1BDD5407BD@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- desiato.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <35AEC3FD-B46A-451D-B7D5-4B1BDD5407BD@infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,40 +112,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Nov 18, 2021, David Woodhouse wrote:
+> 
+> 
+> On 18 November 2021 18:50:55 GMT, Sean Christopherson <seanjc@google.com> wrote:
+> >On Thu, Nov 18, 2021, Sean Christopherson wrote:
+> >> On Thu, Nov 18, 2021, David Woodhouse wrote:
+> >> > That leaves the one in TDP MMU handle_changed_spte_dirty_log() which
+> >> > AFAICT can trigger the same crash seen by butt3rflyh4ck — can't that
+> >> > happen from a thread where kvm_get_running_vcpu() is NULL too? For that
+> >> > one I'm not sure.
+> >> 
+> >> I think could be trigger in the TDP MMU via kvm_mmu_notifier_release()
+> >> -> kvm_mmu_zap_all(), e.g. if the userspace VMM exits while dirty logging is
+> >> enabled.  That should be easy to (dis)prove via a selftest.
+> >
+> >Scratch that, the dirty log update is guarded by the new_spte being present, so
+> >zapping of any kind won't trigger it.
+> >
+> >Currently, I believe the only path that would create a present SPTE without an
+> >active vCPU is mmu_notifer.change_pte, but that squeaks by because its required
+> >to be wrapped with invalidate_range_{start,end}(MMU_NOTIFY_CLEAR), and KVM zaps
+> >in that situation.
+> 
+> Is it sufficient to have *an* active vCPU?  What if a VMM has threads for
+> active vCPUs but is doing mmap/munmap on a *different* thread? Does that not
+> suffer the same crash?
 
+It is sufficient for the current physical CPU to have an active vCPU, which is
+generally guaranteed in the MMU code because, with a few exceptions, populating
+SPTEs is done in vCPU context.
 
-On 18 November 2021 18:50:55 GMT, Sean Christopherson <seanjc@google=2Ecom=
-> wrote:
->On Thu, Nov 18, 2021, Sean Christopherson wrote:
->> On Thu, Nov 18, 2021, David Woodhouse wrote:
->> > That leaves the one in TDP MMU handle_changed_spte_dirty_log() which
->> > AFAICT can trigger the same crash seen by butt3rflyh4ck =E2=80=94 can=
-'t that
->> > happen from a thread where kvm_get_running_vcpu() is NULL too? For th=
-at
->> > one I'm not sure=2E
->>=20
->> I think could be trigger in the TDP MMU via kvm_mmu_notifier_release()
->> -> kvm_mmu_zap_all(), e=2Eg=2E if the userspace VMM exits while dirty l=
-ogging is
->> enabled=2E  That should be easy to (dis)prove via a selftest=2E
->
->Scratch that, the dirty log update is guarded by the new_spte being prese=
-nt, so
->zapping of any kind won't trigger it=2E
->
->Currently, I believe the only path that would create a present SPTE witho=
-ut an
->active vCPU is mmu_notifer=2Echange_pte, but that squeaks by because its =
-required
->to be wrapped with invalidate_range_{start,end}(MMU_NOTIFY_CLEAR), and KV=
-M zaps
->in that situation=2E
+mmap() will never directly trigger SPTE creation, KVM first requires a vCPU to
+fault on the new address.  munmap() is a pure zap flow, i.e. won't create a
+present SPTE and trigger the writeback of the dirty bit.
 
-Is it sufficient to have *an* active vCPU?  What if a VMM has threads for =
-active vCPUs but is doing mmap/munmap on a *different* thread? Does that no=
-t suffer the same crash?
-
-
---=20
-Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
+That's also why I dislike using kvm_get_running_vcpu(); when it's needed, there's
+a valid vCPU from the caller, but it deliberately gets dropped and indirectly
+picked back up.
