@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E0F4551C5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 01:35:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D4F4551C8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 01:36:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hvgnj67nwz3c6l
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 11:35:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hvgp84rpyz3cQ8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 11:36:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HvgnG3rXlz2yHX
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HvgnG4fbCz2yHq
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 11:35:28 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6200,9189,10171"; a="297505366"
-X-IronPort-AV: E=Sophos;i="5.87,243,1631602800"; d="scan'208";a="297505366"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+X-IronPort-AV: E=McAfee;i="6200,9189,10171"; a="220968389"
+X-IronPort-AV: E=Sophos;i="5.87,243,1631602800"; d="scan'208";a="220968389"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  17 Nov 2021 16:34:26 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,243,1631602800"; d="scan'208";a="495148427"
+X-IronPort-AV: E=Sophos;i="5.87,243,1631602800"; d="scan'208";a="604938468"
 Received: from lkp-server02.sh.intel.com (HELO c20d8bc80006) ([10.239.97.151])
- by orsmga007.jf.intel.com with ESMTP; 17 Nov 2021 16:34:24 -0800
+ by orsmga004.jf.intel.com with ESMTP; 17 Nov 2021 16:34:24 -0800
 Received: from kbuild by c20d8bc80006 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1mnVNg-0002Qv-4m; Thu, 18 Nov 2021 00:34:24 +0000
-Date: Thu, 18 Nov 2021 08:34:02 +0800
+ id 1mnVNg-0002Qs-3V; Thu, 18 Nov 2021 00:34:24 +0000
+Date: Thu, 18 Nov 2021 08:34:08 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 8e80a73fa9a7747e3e8255cb149c543aabf65a24
-Message-ID: <61959f7a.vvQItVMXoEdIVpGi%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 5d12a44d97850aacfc86a4817ca304fc33876476
+Message-ID: <61959f80.VhxfJp8L0wtsWAHs%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -55,13 +55,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 8e80a73fa9a7747e3e8255cb149c543aabf65a24  powerpc/xive: Change IRQ domain to a tree domain
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 5d12a44d97850aacfc86a4817ca304fc33876476  powerpc/rtas: rtas_busy_delay_time() kernel-doc
 
-elapsed time: 727m
+elapsed time: 726m
 
-configs tested: 188
-configs skipped: 85
+configs tested: 189
+configs skipped: 3
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -223,6 +223,7 @@ i386                 randconfig-a005-20211117
 i386                 randconfig-a001-20211117
 i386                 randconfig-a004-20211117
 i386                 randconfig-a002-20211117
+arc                  randconfig-r043-20211117
 riscv                    nommu_k210_defconfig
 riscv                            allyesconfig
 riscv                    nommu_virt_defconfig
