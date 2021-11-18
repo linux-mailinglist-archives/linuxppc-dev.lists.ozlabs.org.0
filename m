@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58724455948
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 11:41:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB3E45594A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 11:42:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HvxDt13jDz3c4X
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 21:41:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HvxFh6Lx6z3bnG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 21:42:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hIU4V0eF;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dRvI1qz9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,86 +18,86 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hIU4V0eF; dkim-atps=neutral
+ header.s=pp1 header.b=dRvI1qz9; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hvvzc0FNwz2yTr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 20:45:15 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AI9ZjsO024625; 
- Thu, 18 Nov 2021 09:45:08 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hvw753RQmz2yNr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 20:51:45 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AI8gnGQ013748; 
+ Thu, 18 Nov 2021 09:51:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=content-type :
  message-id : date : mime-version : subject : to : cc : references : from :
- in-reply-to; s=pp1; bh=eE3wI+Gs94DGpQhNap5xQ+0wxT7G5pjnLwSraosgp1Y=;
- b=hIU4V0eFsSqYjJFrqvMDnZt3/5TeSeWFmofVgR9Rgnexhzr6OpgKZPEz4zk2uuTH8S9S
- +vi4aTT/Qt7gZVJq6IQsJKd5sryubrpyxatcaDF6kEotHxhg562WZcf7uh7LCPOwKHOu
- 1e79oqn05pkQ9GITy3Im9JXZX1iM9ZbCcKW9n9IPM+CvnWyiFy1RO+kO+LBDlZIRyftd
- g9H2mYmQefo6NWydz01pkdEuQudIc2PYmkIpjXjj/eowuKfMkMpH7ID8IycmovquG+Er
- LXPcVv8sH/H8Rcqb7f+uA4n8EqTk8pX6sUD9LE871TDMVSEJqMO9dVJtnZa3K4zb1WfV 6g== 
+ in-reply-to; s=pp1; bh=rxmAuZYDz2Ri3zwNe73Amha4VnvmwwUmEHfbDIT3ZOE=;
+ b=dRvI1qz9Y8HgYYZJ0h9lknDKSdBKqdOMM30/6UNIlhAF2cXFOJ3A228ANkrxwdliVWJV
+ sUfrjLwiADbNydc0iX6WM0St4DaOS42XwTVQ6p4gk3eDIrhiHJdtqTJwyAohLzN8xvIk
+ wTrVKHKpafWOmne89ymQ0OkiQVJa1/hSOR7TxZMHzIAirda3y/8uEsd+DqTuoamHb44x
+ HE22YLmJRxGg38FHci8WvdqjO4U6rWoeYjhZCIwNpDR/+5vhH/HDx3HDfL/bZzUtniST
+ YI8xPcECyR5YYMpr2W8X61GkL/3SF62Sltm6UlZwpaql4JqST9BP80K+HbOi5huMNWz8 bA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cdgwu4pdh-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cdkj51em7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Nov 2021 09:45:08 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AI9copB015272;
- Thu, 18 Nov 2021 09:45:07 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cdgwu4pct-1
+ Thu, 18 Nov 2021 09:51:40 +0000
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AI9p4ia030973;
+ Thu, 18 Nov 2021 09:51:39 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cdkj51ekk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Nov 2021 09:45:07 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AI9b8ih011968;
- Thu, 18 Nov 2021 09:45:05 GMT
+ Thu, 18 Nov 2021 09:51:39 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AI9nJH4028233;
+ Thu, 18 Nov 2021 09:51:37 GMT
 Received: from b06avi18626390.portsmouth.uk.ibm.com
  (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma04ams.nl.ibm.com with ESMTP id 3ca50bkpmx-1
+ by ppma03ams.nl.ibm.com with ESMTP id 3ca50akt0p-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Nov 2021 09:45:04 +0000
+ Thu, 18 Nov 2021 09:51:36 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
  by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 1AI9c5Xe48890256
+ id 1AI9ibL159834652
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Nov 2021 09:38:05 GMT
+ Thu, 18 Nov 2021 09:44:37 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E8F04C046;
- Thu, 18 Nov 2021 09:45:02 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A31B94C050;
+ Thu, 18 Nov 2021 09:51:34 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 08F9F4C04E;
- Thu, 18 Nov 2021 09:45:00 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id AD68E4C044;
+ Thu, 18 Nov 2021 09:51:32 +0000 (GMT)
 Received: from [9.43.45.111] (unknown [9.43.45.111])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 18 Nov 2021 09:44:59 +0000 (GMT)
+ Thu, 18 Nov 2021 09:51:32 +0000 (GMT)
 Content-Type: multipart/alternative;
- boundary="------------yjEXfbbQcnix4qciBJJlFEdn"
-Message-ID: <0b5f58f1-1e03-e39f-fe85-0603088ec4dd@linux.ibm.com>
-Date: Thu, 18 Nov 2021 15:14:58 +0530
+ boundary="------------M9IUuI0J2Axk3RN0un1CzNGx"
+Message-ID: <c74e4fb4-6d3a-deb7-9591-60cda61f1e33@linux.ibm.com>
+Date: Thu, 18 Nov 2021 15:21:31 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.1.0
 Subject: Re: [PATCH 1/2] powerpc/mce: Avoid using irq_work_queue() in realmode
 Content-Language: en-US
-To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org,
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
  mpe@ellerman.id.au
 References: <20211108083804.380142-1-ganeshgr@linux.ibm.com>
- <87lf1t3l0q.fsf@linkitivity.dja.id.au>
+ <1636380442.sna3yrbwu3.astroid@bobo.none>
 From: Ganesh <ganeshgr@linux.ibm.com>
-In-Reply-To: <87lf1t3l0q.fsf@linkitivity.dja.id.au>
+In-Reply-To: <1636380442.sna3yrbwu3.astroid@bobo.none>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: OZCWhgspcbw7nUFsVb9UAxn9DJwweSTq
-X-Proofpoint-GUID: FE_RAqDBrvbmDdQW0-4Jb4_oUOsW5emX
+X-Proofpoint-ORIG-GUID: anKzJGQMG_q28Gnjpy8BBRTUqWCOPXUw
+X-Proofpoint-GUID: qwO7hJYcqhRhgbKaNefdX3k2j1pzePwf
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
  definitions=2021-11-18_04,2021-11-17_01,2020-04-07_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  impostorscore=0
- suspectscore=0 bulkscore=0 priorityscore=1501 spamscore=0 clxscore=1011
- malwarescore=0 mlxlogscore=999 adultscore=0 mlxscore=0 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ suspectscore=0 clxscore=1015 malwarescore=0 mlxlogscore=999
+ priorityscore=1501 lowpriorityscore=0 mlxscore=0 adultscore=0 phishscore=0
+ spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2110150000 definitions=main-2111180056
 X-Mailman-Approved-At: Thu, 18 Nov 2021 21:41:12 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -111,18 +111,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.ibm.com, npiggin@gmail.com
+Cc: mahesh@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 This is a multi-part message in MIME format.
---------------yjEXfbbQcnix4qciBJJlFEdn
+--------------M9IUuI0J2Axk3RN0un1CzNGx
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 11/12/21 12:42, Daniel Axtens wrote:
+On 11/8/21 19:49, Nicholas Piggin wrote:
 
+> Excerpts from Ganesh Goudar's message of November 8, 2021 6:38 pm:
 >> In realmode mce handler we use irq_work_queue() to defer
 >> the processing of mce events, irq_work_queue() can only
 >> be called when translation is enabled because it touches
@@ -133,11 +134,31 @@ On 11/12/21 12:42, Daniel Axtens wrote:
 >> To avoid this, program the decrementer and call the event
 >> processing functions from timer handler.
 >>
-> This is an interesting approach, and it would indeed be nice to clear up
-> the MCE handling a bit.
->
-> I have a few questions:
->
+>> Signed-off-by: Ganesh Goudar<ganeshgr@linux.ibm.com>
+>> ---
+>>   arch/powerpc/include/asm/machdep.h       |  2 +
+>>   arch/powerpc/include/asm/mce.h           |  2 +
+>>   arch/powerpc/include/asm/paca.h          |  1 +
+>>   arch/powerpc/kernel/mce.c                | 51 +++++++++++-------------
+>>   arch/powerpc/kernel/time.c               |  3 ++
+>>   arch/powerpc/platforms/pseries/pseries.h |  1 +
+>>   arch/powerpc/platforms/pseries/ras.c     | 31 +-------------
+>>   arch/powerpc/platforms/pseries/setup.c   |  1 +
+>>   8 files changed, 34 insertions(+), 58 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
+>> index 764f2732a821..c89cc03c0f97 100644
+>> --- a/arch/powerpc/include/asm/machdep.h
+>> +++ b/arch/powerpc/include/asm/machdep.h
+>> @@ -103,6 +103,8 @@ struct machdep_calls {
+>>   	/* Called during machine check exception to retrive fixup address. */
+>>   	bool		(*mce_check_early_recovery)(struct pt_regs *regs);
+>>   
+>> +	void            (*machine_check_log_err)(void);
+>> +
+>>   	/* Motherboard/chipset features. This is a kind of general purpose
+>>   	 * hook used to control some machine specific features (like reset
+>>   	 * lines, chip power control, etc...).
 >> diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
 >> index 331d944280b8..187810f13669 100644
 >> --- a/arch/powerpc/include/asm/mce.h
@@ -147,9 +168,9 @@ On 11/12/21 12:42, Daniel Axtens wrote:
 >>   extern void mce_common_process_ue(struct pt_regs *regs,
 >>   				  struct mce_error_info *mce_err);
 >> +extern void machine_check_raise_dec_intr(void);
-> Does this need an extern? I think that's the default...?
+> No new externs on function declarations, they tell me.
 
-Not required, I will remove it.
+ok.
 
 >>   int mce_register_notifier(struct notifier_block *nb);
 >>   int mce_unregister_notifier(struct notifier_block *nb);
@@ -166,28 +187,58 @@ Not required, I will remove it.
 >>   #ifdef CONFIG_PPC_BOOK3S_64
 >>   	struct mce_info *mce_info;
 >> +	atomic_t mces_to_process;
-> This is in the PACA, which is supposed to be a per-cpu structure: hey
-> does it need to be atomic_t? Isn't there only one CPU accessing it?
-
-Yes it need not be atomic, got confused with some scenario and
-made it atomic.
-
-> Does this variable provide anything new compared to mce_nest_count or
-> mce_queue_count + mce_ue_count? It looks like
-> machine_check_process_queued_event will clear a queue based on value of
-> mce_queue_count and machine_check_process_ue_event will clear a queue
-> based on mce_ue_count...
->
-> I think (absent nested interrupts which I talk about below) it should be
-> the case that mces_to_process == mce_queue_count + mce_ue_count but I
-> might be wrong?
-
-If we hit exception in process context, we may not increment mce_queue_count,
-so the equation need not be true all time.
-
 >>   #endif /* CONFIG_PPC_BOOK3S_64 */
 >>   } ____cacheline_aligned;
->    
+>>   
+>> diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+>> index fd829f7f25a4..45baa062ebc0 100644
+>> --- a/arch/powerpc/kernel/mce.c
+>> +++ b/arch/powerpc/kernel/mce.c
+>> @@ -28,19 +28,9 @@
+>>   
+>>   #include "setup.h"
+>>   
+>> -static void machine_check_process_queued_event(struct irq_work *work);
+>> -static void machine_check_ue_irq_work(struct irq_work *work);
+>>   static void machine_check_ue_event(struct machine_check_event *evt);
+>>   static void machine_process_ue_event(struct work_struct *work);
+>>   
+>> -static struct irq_work mce_event_process_work = {
+>> -        .func = machine_check_process_queued_event,
+>> -};
+>> -
+>> -static struct irq_work mce_ue_event_irq_work = {
+>> -	.func = machine_check_ue_irq_work,
+>> -};
+>> -
+>>   static DECLARE_WORK(mce_ue_event_work, machine_process_ue_event);
+>>   
+>>   static BLOCKING_NOTIFIER_HEAD(mce_notifier_list);
+>> @@ -89,6 +79,12 @@ static void mce_set_error_info(struct machine_check_event *mce,
+>>   	}
+>>   }
+>>   
+>> +/* Raise decrementer interrupt */
+>> +void machine_check_raise_dec_intr(void)
+>> +{
+>> +	set_dec(1);
+>> +}
+> The problem here is a timer can be scheduled (e.g., by an external
+> interrupt if it gets taken before the decrementer, then uses a
+> timer) and that set decr > 1. See logic in decrementer_set_next_event.
+>
+> I _think_ the way to get around this would be to have the machine check
+> just use arch_irq_work_raise.
+>
+> Then you could also only call the mce handler inside the
+> test_irq_work_pending() check and avoid the added function call on every
+> timer. That test should also be marked unlikely come to think of it, but
+> that's a side patchlet.
+
+Sure, I will use arch_irq_work_raise() and test_irq_work_pending().
+
+>
+>> +
 >>   /*
 >>    * Decode and save high level MCE information into per cpu buffer which
 >>    * is an array of machine_check_event structure.
@@ -197,29 +248,62 @@ so the equation need not be true all time.
 >>   
 >> +	atomic_inc(&local_paca->mces_to_process);
 >> +
-> Is there any chance the decrementer will fire between when you do this
-> atomic_inc() and when you finish adding all the information to the mce
-> data structure in the remainder of save_mce_event? (e.g. filling in the
-> tlb_errror.effective_address field)?
->
-> (Or does save_mce_event get called with interrupts masked? I find it
-> very hard to remember what parts of the MCE code path happen under what
-> circumstances!)
-
-Yes, Interrupts will be disabled, I mean MSR[EE]=0 when mce is being handled.
-
 >>   	if (!addr)
 >>   		return;
 >>   
+>> @@ -217,7 +215,7 @@ void release_mce_event(void)
+>>   	get_mce_event(NULL, true);
+>>   }
+>>   
+>> -static void machine_check_ue_irq_work(struct irq_work *work)
+>> +static void machine_check_ue_work(void)
+>>   {
+>>   	schedule_work(&mce_ue_event_work);
+>>   }
+>> @@ -239,7 +237,7 @@ static void machine_check_ue_event(struct machine_check_event *evt)
+>>   	       evt, sizeof(*evt));
+>>   
+>>   	/* Queue work to process this event later. */
+>> -	irq_work_queue(&mce_ue_event_irq_work);
+>> +	machine_check_raise_dec_intr();
+>>   }
+>>   
+>>   /*
+>> @@ -249,7 +247,6 @@ void machine_check_queue_event(void)
+>>   {
+>>   	int index;
+>>   	struct machine_check_event evt;
+>> -	unsigned long msr;
+>>   
+>>   	if (!get_mce_event(&evt, MCE_EVENT_RELEASE))
+>>   		return;
+>> @@ -263,20 +260,7 @@ void machine_check_queue_event(void)
+>>   	memcpy(&local_paca->mce_info->mce_event_queue[index],
+>>   	       &evt, sizeof(evt));
+>>   
+>> -	/*
+>> -	 * Queue irq work to process this event later. Before
+>> -	 * queuing the work enable translation for non radix LPAR,
+>> -	 * as irq_work_queue may try to access memory outside RMO
+>> -	 * region.
+>> -	 */
+>> -	if (!radix_enabled() && firmware_has_feature(FW_FEATURE_LPAR)) {
+>> -		msr = mfmsr();
+>> -		mtmsr(msr | MSR_IR | MSR_DR);
+>> -		irq_work_queue(&mce_event_process_work);
+>> -		mtmsr(msr);
+>> -	} else {
+>> -		irq_work_queue(&mce_event_process_work);
+>> -	}
+> Getting rid of these things would be very nice.
 >
+>> +	machine_check_raise_dec_intr();
+>>   }
+>>   
+>>   void mce_common_process_ue(struct pt_regs *regs,
 >> @@ -338,7 +322,7 @@ static void machine_process_ue_event(struct work_struct *work)
 >>    * process pending MCE event from the mce event queue. This function will be
 >>    * called during syscall exit.
-> Is this comment still accurate if this patch is applied?
-
-No, mpe has also pointed this out, we will clean it in a different patch.
-
->
 >>    */
 >> -static void machine_check_process_queued_event(struct irq_work *work)
 >> +static void machine_check_process_queued_event(void)
@@ -240,72 +324,7 @@ No, mpe has also pointed this out, we will clean it in a different patch.
 >> +		atomic_dec(&local_paca->mces_to_process);
 >> +	}
 >> +}
-> What happens if you get a nested MCE between log_err() and
-> process_queued_event()? If my very foggy memory of the MCE handling is
-> correct, we enable nested MCEs very early in the process because the
-> alternative is that a nested MCE will checkstop the box. So I think this
-> might be possible, albeit probably unlikely.
->
-> It looks like process_queued_event clears the entire MCE queue as
-> determined by the mce_queue_count. So, consider the following sequence
-> of events:
->
-> 1. Take MCE 1. Save to queue, increment mce_queue_count, increment
->     mces_to_process, set decrementer to fire.
->
-> 2. Decrementer fires. mce_run_late_handlers is called.
->
-> 3. mces_to_process = 1, so we call machine_check_log_err(), which prints
->     (on pseries) the info for MCE 1.
->
-> 4. Take MCE 2. This is saved to the queue, mce_queue_count is
->     incremented, mces_to_process is incremented, and the decrementer is
->     armed again.
->
-> 5. We then leave the MCE interrupt context and return to the decrementer
->     handling context. The next thing we do is we call
->     m_c_e_process_queued_event(), which clears the entire queue (that is,
->     MCEs 1 and 2):
->
-> 	while (local_paca->mce_info->mce_queue_count > 0) {
-> 		index = local_paca->mce_info->mce_queue_count - 1;
-> 		evt = &local_paca->mce_info->mce_event_queue[index];
->
-> 		if (evt->error_type == MCE_ERROR_TYPE_UE &&
-> 		    evt->u.ue_error.ignore_event) {
-> 			local_paca->mce_info->mce_queue_count--;
-> 			continue;
-> 		}
-> 		machine_check_print_event_info(evt, false, false);
-> 		local_paca->mce_info->mce_queue_count--;
-> 	}
->
->   6. We finish mce_run_late_handlers() and decrement mces_to_process,
->      so it's now 1.
->
->   7. The decrementer fires again, mces_to_process is 1, so we start
->      processing again.
->
->   8. We call machine_check_log_err again, it will now call the FWNMI code
->      again and possibly print error 2.
->
->   9. process_queued_event will be called again but mce_queue_count will
->      be 0 so it it will bail out early.
->
-> I _think_ the worst that can happen - at least so long as pseries is the
-> only implementaion of machine_check_log_err - is that we will handle
-> MCE 2 before we query the firmware about it. That's probably benign, but
-> I am still concerned with the overall interaction around nested
-> interrupts.
-
-The only problem we have here is overwriting mce_data_buf in case of nested
-mce, and about "handle MCE 2 before we query the firmware about it" It is not
-possible, isn't it?
-
-Assume we take MCE 2 while we are in the middle of mce_run_late_handlers(),
-before the MCE handler relinquishes the CPU to timer handler, we will have
-everything in place, right? or am I missing something obvious.
-
+>> +
 >>   void machine_check_print_event_info(struct machine_check_event *evt,
 >>   				    bool user_mode, bool in_guest)
 >>   {
@@ -320,18 +339,48 @@ everything in place, right? or am I missing something obvious.
 >> +#ifdef CONFIG_PPC_BOOK3S_64
 >> +	mce_run_late_handlers();
 >> +#endif
->>
-> So we're now branching to a function in a different file and doing an
-> atomic read in every timer interrupt. Is this a hot path? Is there any
-> speed implication to doing this?
+> It looks like if (IS_ENABLED(CONFIG_PPC_BOOK3S_64)) should work here?
 
-Nick has suggested me to use test_irq_work_pending() and I will remove the
-atomic read, with v2 we may not have any serious time implications.
+sure.
 
 >>   	now = get_tb();
 >>   	if (now >= *next_tb) {
 >>   		*next_tb = ~(u64)0;
+>> diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
+>> index 3544778e06d0..0dc4f1027b30 100644
+>> --- a/arch/powerpc/platforms/pseries/pseries.h
+>> +++ b/arch/powerpc/platforms/pseries/pseries.h
+>> @@ -21,6 +21,7 @@ struct pt_regs;
+>>   extern int pSeries_system_reset_exception(struct pt_regs *regs);
+>>   extern int pSeries_machine_check_exception(struct pt_regs *regs);
+>>   extern long pseries_machine_check_realmode(struct pt_regs *regs);
+>> +extern void pSeries_machine_check_log_err(void);
+> extern can be removed.
+
+sure, thanks.
+
+> Thanks,
+> Nick
 >
+>>   
+>>   #ifdef CONFIG_SMP
+>>   extern void smp_init_pseries(void);
+>> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
+>> index 56092dccfdb8..8613f9cc5798 100644
+>> --- a/arch/powerpc/platforms/pseries/ras.c
+>> +++ b/arch/powerpc/platforms/pseries/ras.c
+>> @@ -23,11 +23,6 @@ static DEFINE_SPINLOCK(ras_log_buf_lock);
+>>   
+>>   static int ras_check_exception_token;
+>>   
+>> -static void mce_process_errlog_event(struct irq_work *work);
+>> -static struct irq_work mce_errlog_process_work = {
+>> -	.func = mce_process_errlog_event,
+>> -};
+>> -
+>>   #define EPOW_SENSOR_TOKEN	9
+>>   #define EPOW_SENSOR_INDEX	0
+>>   
 >> @@ -729,40 +724,16 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
 >>   	error_type = mce_log->error_type;
 >>   
@@ -353,14 +402,6 @@ atomic read, with v2 we may not have any serious time implications.
 >> -
 >>   	disposition = mce_handle_err_virtmode(regs, errp, mce_log,
 >>   					      disposition);
-> Now you are not in virtual mode/translations on when you are calling
-> mce_handle_err_virtmode(). From the name, I thought that
-> mce_handle_err_virtmode() would assume that you are in virtual mode?
-> Does the function assume that? If so is it safe to call it in real mode?
-> If not, should we rename it as part of this patch?
-
-patch 2/2, refactors this.
-
 >> -
 >> -	/*
 >> -	 * Queue irq work to log this rtas event later.
@@ -373,11 +414,32 @@ patch 2/2, refactors this.
 >> -
 >>   	return disposition;
 >>   }
-
-Thanks for the review :) .
-Ganesh
-
---------------yjEXfbbQcnix4qciBJJlFEdn
+>>   
+>>   /*
+>>    * Process MCE rtas errlog event.
+>>    */
+>> -static void mce_process_errlog_event(struct irq_work *work)
+>> +void pSeries_machine_check_log_err(void)
+>>   {
+>>   	struct rtas_error_log *err;
+>>   
+>> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+>> index f79126f16258..54bd7bdb7e92 100644
+>> --- a/arch/powerpc/platforms/pseries/setup.c
+>> +++ b/arch/powerpc/platforms/pseries/setup.c
+>> @@ -1085,6 +1085,7 @@ define_machine(pseries) {
+>>   	.system_reset_exception = pSeries_system_reset_exception,
+>>   	.machine_check_early	= pseries_machine_check_realmode,
+>>   	.machine_check_exception = pSeries_machine_check_exception,
+>> +	.machine_check_log_err	= pSeries_machine_check_log_err,
+>>   #ifdef CONFIG_KEXEC_CORE
+>>   	.machine_kexec          = pSeries_machine_kexec,
+>>   	.kexec_cpu_down         = pseries_kexec_cpu_down,
+>> -- 
+>> 2.26.2
+>>
+>>
+--------------M9IUuI0J2Axk3RN0un1CzNGx
 Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -386,12 +448,11 @@ Content-Transfer-Encoding: 7bit
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   </head>
   <body>
-    <div class="moz-cite-prefix">
-      <pre class="moz-quote-pre" wrap="">On 11/12/21 12:42, Daniel Axtens wrote:
-</pre>
-    </div>
+    <pre>On 11/8/21 19:49, Nicholas Piggin wrote:</pre>
     <blockquote type="cite"
-      cite="mid:87lf1t3l0q.fsf@linkitivity.dja.id.au">
+      cite="mid:1636380442.sna3yrbwu3.astroid@bobo.none">
+      <pre class="moz-quote-pre" wrap="">Excerpts from Ganesh Goudar's message of November 8, 2021 6:38 pm:
+</pre>
       <blockquote type="cite">
         <pre class="moz-quote-pre" wrap="">In realmode mce handler we use irq_work_queue() to defer
 the processing of mce events, irq_work_queue() can only
@@ -403,17 +464,32 @@ is not safe to do in realmode.
 To avoid this, program the decrementer and call the event
 processing functions from timer handler.
 
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-This is an interesting approach, and it would indeed be nice to clear up
-the MCE handling a bit.
+Signed-off-by: Ganesh Goudar <a class="moz-txt-link-rfc2396E" href="mailto:ganeshgr@linux.ibm.com">&lt;ganeshgr@linux.ibm.com&gt;</a>
+---
+ arch/powerpc/include/asm/machdep.h       |  2 +
+ arch/powerpc/include/asm/mce.h           |  2 +
+ arch/powerpc/include/asm/paca.h          |  1 +
+ arch/powerpc/kernel/mce.c                | 51 +++++++++++-------------
+ arch/powerpc/kernel/time.c               |  3 ++
+ arch/powerpc/platforms/pseries/pseries.h |  1 +
+ arch/powerpc/platforms/pseries/ras.c     | 31 +-------------
+ arch/powerpc/platforms/pseries/setup.c   |  1 +
+ 8 files changed, 34 insertions(+), 58 deletions(-)
 
-I have a few questions:
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
+diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
+index 764f2732a821..c89cc03c0f97 100644
+--- a/arch/powerpc/include/asm/machdep.h
++++ b/arch/powerpc/include/asm/machdep.h
+@@ -103,6 +103,8 @@ struct machdep_calls {
+ 	/* Called during machine check exception to retrive fixup address. */
+ 	bool		(*mce_check_early_recovery)(struct pt_regs *regs);
+ 
++	void            (*machine_check_log_err)(void);
++
+ 	/* Motherboard/chipset features. This is a kind of general purpose
+ 	 * hook used to control some machine specific features (like reset
+ 	 * lines, chip power control, etc...).
+diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
 index 331d944280b8..187810f13669 100644
 --- a/arch/powerpc/include/asm/mce.h
 +++ b/arch/powerpc/include/asm/mce.h
@@ -425,12 +501,11 @@ index 331d944280b8..187810f13669 100644
 </pre>
       </blockquote>
       <pre class="moz-quote-pre" wrap="">
-Does this need an extern? I think that's the default...?</pre>
+No new externs on function declarations, they tell me.</pre>
     </blockquote>
-    <pre>Not required, I will remove it.
-</pre>
+    <pre>ok.</pre>
     <blockquote type="cite"
-      cite="mid:87lf1t3l0q.fsf@linkitivity.dja.id.au">
+      cite="mid:1636380442.sna3yrbwu3.astroid@bobo.none">
       <pre class="moz-quote-pre" wrap="">
 </pre>
       <blockquote type="cite">
@@ -449,44 +524,67 @@ index dc05a862e72a..f49180f8c9be 100644
  #ifdef CONFIG_PPC_BOOK3S_64
  	struct mce_info *mce_info;
 +	atomic_t mces_to_process;
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-This is in the PACA, which is supposed to be a per-cpu structure: hey
-does it need to be atomic_t? Isn't there only one CPU accessing it?</pre>
-    </blockquote>
-    <pre>Yes it need not be atomic, got confused with some scenario and
-made it atomic.
-</pre>
-    <blockquote type="cite"
-      cite="mid:87lf1t3l0q.fsf@linkitivity.dja.id.au">
-      <pre class="moz-quote-pre" wrap="">Does this variable provide anything new compared to mce_nest_count or
-mce_queue_count + mce_ue_count? It looks like
-machine_check_process_queued_event will clear a queue based on value of
-mce_queue_count and machine_check_process_ue_event will clear a queue
-based on mce_ue_count...
-
-I think (absent nested interrupts which I talk about below) it should be
-the case that mces_to_process == mce_queue_count + mce_ue_count but I
-might be wrong?</pre>
-    </blockquote>
-    <pre>If we hit exception in process context, we may not increment mce_queue_count,
-so the equation need not be true all time. 
-</pre>
-    <blockquote type="cite"
-      cite="mid:87lf1t3l0q.fsf@linkitivity.dja.id.au">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap=""> #endif /* CONFIG_PPC_BOOK3S_64 */
+ #endif /* CONFIG_PPC_BOOK3S_64 */
  } ____cacheline_aligned;
+ 
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index fd829f7f25a4..45baa062ebc0 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -28,19 +28,9 @@
+ 
+ #include "setup.h"
+ 
+-static void machine_check_process_queued_event(struct irq_work *work);
+-static void machine_check_ue_irq_work(struct irq_work *work);
+ static void machine_check_ue_event(struct machine_check_event *evt);
+ static void machine_process_ue_event(struct work_struct *work);
+ 
+-static struct irq_work mce_event_process_work = {
+-        .func = machine_check_process_queued_event,
+-};
+-
+-static struct irq_work mce_ue_event_irq_work = {
+-	.func = machine_check_ue_irq_work,
+-};
+-
+ static DECLARE_WORK(mce_ue_event_work, machine_process_ue_event);
+ 
+ static BLOCKING_NOTIFIER_HEAD(mce_notifier_list);
+@@ -89,6 +79,12 @@ static void mce_set_error_info(struct machine_check_event *mce,
+ 	}
+ }
+ 
++/* Raise decrementer interrupt */
++void machine_check_raise_dec_intr(void)
++{
++	set_dec(1);
++}
 </pre>
       </blockquote>
       <pre class="moz-quote-pre" wrap="">
-  
+The problem here is a timer can be scheduled (e.g., by an external 
+interrupt if it gets taken before the decrementer, then uses a
+timer) and that set decr &gt; 1. See logic in decrementer_set_next_event.
+
+I _think_ the way to get around this would be to have the machine check
+just use arch_irq_work_raise.
+
+Then you could also only call the mce handler inside the
+test_irq_work_pending() check and avoid the added function call on every 
+timer. That test should also be marked unlikely come to think of it, but
+that's a side patchlet.</pre>
+    </blockquote>
+    <pre>Sure, I will use arch_irq_work_raise() and test_irq_work_pending().
+</pre>
+    <blockquote type="cite"
+      cite="mid:1636380442.sna3yrbwu3.astroid@bobo.none">
+      <pre class="moz-quote-pre" wrap="">
+
 </pre>
       <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap=""> /*
+        <pre class="moz-quote-pre" wrap="">+
+ /*
   * Decode and save high level MCE information into per cpu buffer which
   * is an array of machine_check_event structure.
 @@ -135,6 +131,8 @@ void save_mce_event(struct pt_regs *regs, long handled,
@@ -495,50 +593,68 @@ so the equation need not be true all time.
  
 +	atomic_inc(&amp;local_paca-&gt;mces_to_process);
 +
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Is there any chance the decrementer will fire between when you do this
-atomic_inc() and when you finish adding all the information to the mce
-data structure in the remainder of save_mce_event? (e.g. filling in the
-tlb_errror.effective_address field)?
-
-(Or does save_mce_event get called with interrupts masked? I find it
-very hard to remember what parts of the MCE code path happen under what
-circumstances!)</pre>
-    </blockquote>
-    <pre>Yes, Interrupts will be disabled, I mean MSR[EE]=0 when mce is being handled. </pre>
-    <blockquote type="cite"
-      cite="mid:87lf1t3l0q.fsf@linkitivity.dja.id.au">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap=""> 	if (!addr)
+ 	if (!addr)
  		return;
  
+@@ -217,7 +215,7 @@ void release_mce_event(void)
+ 	get_mce_event(NULL, true);
+ }
+ 
+-static void machine_check_ue_irq_work(struct irq_work *work)
++static void machine_check_ue_work(void)
+ {
+ 	schedule_work(&amp;mce_ue_event_work);
+ }
+@@ -239,7 +237,7 @@ static void machine_check_ue_event(struct machine_check_event *evt)
+ 	       evt, sizeof(*evt));
+ 
+ 	/* Queue work to process this event later. */
+-	irq_work_queue(&amp;mce_ue_event_irq_work);
++	machine_check_raise_dec_intr();
+ }
+ 
+ /*
+@@ -249,7 +247,6 @@ void machine_check_queue_event(void)
+ {
+ 	int index;
+ 	struct machine_check_event evt;
+-	unsigned long msr;
+ 
+ 	if (!get_mce_event(&amp;evt, MCE_EVENT_RELEASE))
+ 		return;
+@@ -263,20 +260,7 @@ void machine_check_queue_event(void)
+ 	memcpy(&amp;local_paca-&gt;mce_info-&gt;mce_event_queue[index],
+ 	       &amp;evt, sizeof(evt));
+ 
+-	/*
+-	 * Queue irq work to process this event later. Before
+-	 * queuing the work enable translation for non radix LPAR,
+-	 * as irq_work_queue may try to access memory outside RMO
+-	 * region.
+-	 */
+-	if (!radix_enabled() &amp;&amp; firmware_has_feature(FW_FEATURE_LPAR)) {
+-		msr = mfmsr();
+-		mtmsr(msr | MSR_IR | MSR_DR);
+-		irq_work_queue(&amp;mce_event_process_work);
+-		mtmsr(msr);
+-	} else {
+-		irq_work_queue(&amp;mce_event_process_work);
+-	}
 </pre>
       </blockquote>
       <pre class="moz-quote-pre" wrap="">
+Getting rid of these things would be very nice.
 
 </pre>
       <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">@@ -338,7 +322,7 @@ static void machine_process_ue_event(struct work_struct *work)
+        <pre class="moz-quote-pre" wrap="">+	machine_check_raise_dec_intr();
+ }
+ 
+ void mce_common_process_ue(struct pt_regs *regs,
+@@ -338,7 +322,7 @@ static void machine_process_ue_event(struct work_struct *work)
   * process pending MCE event from the mce event queue. This function will be
   * called during syscall exit.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Is this comment still accurate if this patch is applied?</pre>
-    </blockquote>
-    <pre>No, mpe has also pointed this out, we will clean it in a different patch.
-</pre>
-    <blockquote type="cite"
-      cite="mid:87lf1t3l0q.fsf@linkitivity.dja.id.au">
-      <pre class="moz-quote-pre" wrap="">
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">  */
+  */
 -static void machine_check_process_queued_event(struct irq_work *work)
 +static void machine_check_process_queued_event(void)
  {
@@ -558,81 +674,8 @@ Is this comment still accurate if this patch is applied?</pre>
 +		atomic_dec(&amp;local_paca-&gt;mces_to_process);
 +	}
 +}
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-What happens if you get a nested MCE between log_err() and
-process_queued_event()? If my very foggy memory of the MCE handling is
-correct, we enable nested MCEs very early in the process because the
-alternative is that a nested MCE will checkstop the box. So I think this
-might be possible, albeit probably unlikely.
-
-It looks like process_queued_event clears the entire MCE queue as
-determined by the mce_queue_count. So, consider the following sequence
-of events:
-
-1. Take MCE 1. Save to queue, increment mce_queue_count, increment
-   mces_to_process, set decrementer to fire.
-
-2. Decrementer fires. mce_run_late_handlers is called.
-
-3. mces_to_process = 1, so we call machine_check_log_err(), which prints
-   (on pseries) the info for MCE 1.
-
-4. Take MCE 2. This is saved to the queue, mce_queue_count is
-   incremented, mces_to_process is incremented, and the decrementer is
-   armed again.
-
-5. We then leave the MCE interrupt context and return to the decrementer
-   handling context. The next thing we do is we call
-   m_c_e_process_queued_event(), which clears the entire queue (that is,
-   MCEs 1 and 2):
-
-	while (local_paca-&gt;mce_info-&gt;mce_queue_count &gt; 0) {
-		index = local_paca-&gt;mce_info-&gt;mce_queue_count - 1;
-		evt = &amp;local_paca-&gt;mce_info-&gt;mce_event_queue[index];
-
-		if (evt-&gt;error_type == MCE_ERROR_TYPE_UE &amp;&amp;
-		    evt-&gt;u.ue_error.ignore_event) {
-			local_paca-&gt;mce_info-&gt;mce_queue_count--;
-			continue;
-		}
-		machine_check_print_event_info(evt, false, false);
-		local_paca-&gt;mce_info-&gt;mce_queue_count--;
-	}
-
- 6. We finish mce_run_late_handlers() and decrement mces_to_process,
-    so it's now 1.
-
- 7. The decrementer fires again, mces_to_process is 1, so we start
-    processing again.
-
- 8. We call machine_check_log_err again, it will now call the FWNMI code
-    again and possibly print error 2.
-
- 9. process_queued_event will be called again but mce_queue_count will
-    be 0 so it it will bail out early.
-
-I _think_ the worst that can happen - at least so long as pseries is the
-only implementaion of machine_check_log_err - is that we will handle
-MCE 2 before we query the firmware about it. That's probably benign, but
-I am still concerned with the overall interaction around nested
-interrupts.</pre>
-    </blockquote>
-    <pre>The only problem we have here is overwriting mce_data_buf in case of nested
-mce, and about "handle MCE 2 before we query the firmware about it" It is not
-possible, isn't it?
-
-Assume we take MCE 2 while we are in the middle of mce_run_late_handlers(),
-before the MCE handler relinquishes the CPU to timer handler, we will have
-everything in place, right? or am I missing something obvious.    
-</pre>
-    <blockquote type="cite"
-      cite="mid:87lf1t3l0q.fsf@linkitivity.dja.id.au">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap=""> void machine_check_print_event_info(struct machine_check_event *evt,
++
+ void machine_check_print_event_info(struct machine_check_event *evt,
  				    bool user_mode, bool in_guest)
  {
 diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
@@ -646,31 +689,64 @@ index 934d8ae66cc6..2dc09d75d77c 100644
 +#ifdef CONFIG_PPC_BOOK3S_64
 +	mce_run_late_handlers();
 +#endif
-
 </pre>
       </blockquote>
-      <pre class="moz-quote-pre" wrap="">So we're now branching to a function in a different file and doing an
-atomic read in every timer interrupt. Is this a hot path? Is there any
-speed implication to doing this?</pre>
+      <pre class="moz-quote-pre" wrap="">
+It looks like if (IS_ENABLED(CONFIG_PPC_BOOK3S_64)) should work here?</pre>
     </blockquote>
-    <pre>Nick has suggested me to use test_irq_work_pending() and I will remove the
-atomic read, with v2 we may not have any serious time implications. 
-</pre>
+    <pre>sure.</pre>
     <blockquote type="cite"
-      cite="mid:87lf1t3l0q.fsf@linkitivity.dja.id.au">
+      cite="mid:1636380442.sna3yrbwu3.astroid@bobo.none">
       <pre class="moz-quote-pre" wrap="">
 </pre>
       <blockquote type="cite">
         <pre class="moz-quote-pre" wrap=""> 	now = get_tb();
  	if (now &gt;= *next_tb) {
  		*next_tb = ~(u64)0;
+diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
+index 3544778e06d0..0dc4f1027b30 100644
+--- a/arch/powerpc/platforms/pseries/pseries.h
++++ b/arch/powerpc/platforms/pseries/pseries.h
+@@ -21,6 +21,7 @@ struct pt_regs;
+ extern int pSeries_system_reset_exception(struct pt_regs *regs);
+ extern int pSeries_machine_check_exception(struct pt_regs *regs);
+ extern long pseries_machine_check_realmode(struct pt_regs *regs);
++extern void pSeries_machine_check_log_err(void);
 </pre>
       </blockquote>
       <pre class="moz-quote-pre" wrap="">
+extern can be removed.</pre>
+    </blockquote>
+    <pre>sure, thanks.
+</pre>
+    <blockquote type="cite"
+      cite="mid:1636380442.sna3yrbwu3.astroid@bobo.none">
+      <pre class="moz-quote-pre" wrap="">
+Thanks,
+Nick
 
 </pre>
       <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">@@ -729,40 +724,16 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
+        <pre class="moz-quote-pre" wrap=""> 
+ #ifdef CONFIG_SMP
+ extern void smp_init_pseries(void);
+diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
+index 56092dccfdb8..8613f9cc5798 100644
+--- a/arch/powerpc/platforms/pseries/ras.c
++++ b/arch/powerpc/platforms/pseries/ras.c
+@@ -23,11 +23,6 @@ static DEFINE_SPINLOCK(ras_log_buf_lock);
+ 
+ static int ras_check_exception_token;
+ 
+-static void mce_process_errlog_event(struct irq_work *work);
+-static struct irq_work mce_errlog_process_work = {
+-	.func = mce_process_errlog_event,
+-};
+-
+ #define EPOW_SENSOR_TOKEN	9
+ #define EPOW_SENSOR_INDEX	0
+ 
+@@ -729,40 +724,16 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
  	error_type = mce_log-&gt;error_type;
  
  	disposition = mce_handle_err_realmode(disposition, error_type);
@@ -691,23 +767,7 @@ atomic read, with v2 we may not have any serious time implications.
 -
  	disposition = mce_handle_err_virtmode(regs, errp, mce_log,
  					      disposition);
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Now you are not in virtual mode/translations on when you are calling
-mce_handle_err_virtmode(). From the name, I thought that
-mce_handle_err_virtmode() would assume that you are in virtual mode?
-Does the function assume that? If so is it safe to call it in real mode?
-If not, should we rename it as part of this patch?</pre>
-    </blockquote>
-    <pre>patch 2/2, refactors this.
-</pre>
-    <blockquote type="cite"
-      cite="mid:87lf1t3l0q.fsf@linkitivity.dja.id.au">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">-
+-
 -	/*
 -	 * Queue irq work to log this rtas event later.
 -	 * irq_work_queue uses per-cpu variables, so do this in virt
@@ -719,13 +779,35 @@ If not, should we rename it as part of this patch?</pre>
 -
  	return disposition;
  }
+ 
+ /*
+  * Process MCE rtas errlog event.
+  */
+-static void mce_process_errlog_event(struct irq_work *work)
++void pSeries_machine_check_log_err(void)
+ {
+ 	struct rtas_error_log *err;
+ 
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index f79126f16258..54bd7bdb7e92 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -1085,6 +1085,7 @@ define_machine(pseries) {
+ 	.system_reset_exception = pSeries_system_reset_exception,
+ 	.machine_check_early	= pseries_machine_check_realmode,
+ 	.machine_check_exception = pSeries_machine_check_exception,
++	.machine_check_log_err	= pSeries_machine_check_log_err,
+ #ifdef CONFIG_KEXEC_CORE
+ 	.machine_kexec          = pSeries_machine_kexec,
+ 	.kexec_cpu_down         = pseries_kexec_cpu_down,
+-- 
+2.26.2
+
+
 </pre>
       </blockquote>
     </blockquote>
-    <pre>Thanks for the review :) .
-Ganesh
-</pre>
   </body>
 </html>
---------------yjEXfbbQcnix4qciBJJlFEdn--
+--------------M9IUuI0J2Axk3RN0un1CzNGx--
 
