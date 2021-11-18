@@ -1,51 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE456455161
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 00:58:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2B74551A3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 01:27:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hvfyx5bCrz30GN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 10:58:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hvgbv2mNSz3bfv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 11:27:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lyKjNjZh;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=f+rNfOby;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=lyKjNjZh; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HvfyK2QQfz2yJM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 10:58:17 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C8D5A61AD2;
- Wed, 17 Nov 2021 23:58:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1637193494;
- bh=jt1bptChpIJAfJm7hhcvnL0z6T39eDJjHsyLzG8zD1Y=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=lyKjNjZh0qOCqIMVIpeRoNDwhdUJ/tL20BWpiwNwGttOe0RfGC7KJ4PhUovOify8k
- CPIwK9uSUQMg7VMxx+ystTmi5eBYFIkTtVD4sE8ulLOvbgkfTXGOpyI5/5ntrQgvl0
- CfZ1WfNlECodqxIGcyQGBzURqYPwL89BjB4irtfrZDGz99G0bGiOvyoqAHp04d3fBv
- aBxC568xp2R7kzM9biPqbt5SZcYkGOgkMTsagR6oWZfjlJq8OfZ4tIYBwT1Dm+Bjb+
- xfWKIqeKqVbpwaZ3tBQdETriNpArC0Ads/tlo1ukjZbgXjypi2+h68mtdIpt5Dhoxd
- 4UKc+KstDfPQQ==
-Date: Wed, 17 Nov 2021 17:58:12 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Naveen Naidu <naveennaidu479@gmail.com>
-Subject: Re: [PATCH v3 01/25] PCI: Add PCI_ERROR_RESPONSE and it's related
- definitions
-Message-ID: <20211117235812.GA1786428@bhelgaas>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HvgbC0cV6z2yHX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 11:26:47 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=f+rNfOby; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Hvgb94TTSz4xbs;
+ Thu, 18 Nov 2021 11:26:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1637195206;
+ bh=5c5t52y306hykkkeadxMkH5/WAhykSrlMvplZJ1hGVI=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=f+rNfObyfxi6i6EdF3TUKJx/A4F/z+Gl4p/ZZ+chMsmMhze9AYnYQgZnthgqcWyg1
+ mSk7ecobUoIgOzYZ65Wr+TIjrz9CRuIRSPssxx9yahPE0DSoAscNE0auufSbNJZDIZ
+ gZRhWTdkViaX+Qx9iUcMhHsHeAFc/HD9PMKVr5Unt0sPkx1pHwXGNpVsLTAJGIg0tW
+ adSrO105dXGhnLN8/gWd5IqsA2HK3ubMTa62U6br6soAiE6028lQ1vtbNL7oBE+jAt
+ P0KeyZ7LuVtsgenCalxFXtKazQFckyYprSrdn8Wb9xczKAkYtPOR6qyufp+4q+bx6i
+ Z4WtQaH+Sb8uw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/pseries: delete scanlog
+In-Reply-To: <87mtm2j0tz.fsf@linux.ibm.com>
+References: <20210920173203.1800475-1-nathanl@linux.ibm.com>
+ <87sfvvijjw.fsf@linux.ibm.com> <877dd7m5jd.fsf@mpe.ellerman.id.au>
+ <87mtm2j0tz.fsf@linux.ibm.com>
+Date: Thu, 18 Nov 2021 11:26:43 +1100
+Message-ID: <87y25ml35o.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f7960a4dee0e417eedd7d2e031d04ac9016c6686.1634825082.git.naveennaidu479@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,111 +62,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
- linux-hyperv@vger.kernel.org, Heiko Stuebner <heiko@sntech.de>,
- linux-pci@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
- Binghui Wang <wangbinghui@hisilicon.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Ryder Lee <ryder.lee@mediatek.com>, Oliver O'Halloran <oohall@gmail.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Toan Le <toan@os.amperecomputing.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Nirmal Patel <nirmal.patel@linux.intel.com>,
- Marek Vasut <marek.vasut+renesas@gmail.com>, Rob Herring <robh@kernel.org>,
- Wei Liu <wei.liu@kernel.org>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Marc Zyngier <maz@kernel.org>, Dexuan Cui <decui@microsoft.com>,
- Jianjun Wang <jianjun.wang@mediatek.com>, linux-rockchip@lists.infradead.org,
- "maintainer:BROADCOM IPROC ARM ARCHITECTURE"
- <bcm-kernel-feedback-list@broadcom.com>,
- Jonathan Derrick <jonathan.derrick@linux.dev>,
- Xiaowei Song <songxiaowei@hisilicon.com>,
- linux-kernel-mentees@lists.linuxfoundation.org,
- Matthias Brugger <matthias.bgg@gmail.com>, Robert Richter <rric@kernel.org>,
- Sean V Kelley <sean.v.kelley@intel.com>, Ray Jui <rjui@broadcom.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, linux-samsung-soc@vger.kernel.org,
- linux-mediatek@lists.infradead.org, bhelgaas@google.com,
- linux-arm-kernel@lists.infradead.org, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
- Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
- Scott Branden <sbranden@broadcom.com>, Jingoo Han <jingoohan1@gmail.com>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- Lukas Wunner <lukas@wunner.de>, Joyce Ooi <joyce.ooi@intel.com>,
- Shawn Guo <shawn.guo@linaro.org>, linuxppc-dev@lists.ozlabs.org
+Cc: tyreld@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Oct 21, 2021 at 08:37:26PM +0530, Naveen Naidu wrote:
-> An MMIO read from a PCI device that doesn't exist or doesn't respond
-> causes a PCI error.  There's no real data to return to satisfy the
-> CPU read, so most hardware fabricates ~0 data.
-> 
-> Add a PCI_ERROR_RESPONSE definition for that and use it where
-> appropriate to make these checks consistent and easier to find.
-> 
-> Also add helper definitions SET_PCI_ERROR_RESPONSE and
-> RESPONSE_IS_PCI_ERROR to make the code more readable.
-> 
-> Suggested-by: Bjorn Helgaas <bhelgaas@google.com>
-> Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
-> ---
->  include/linux/pci.h | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index cd8aa6fce204..689c8277c584 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -154,6 +154,15 @@ enum pci_interrupt_pin {
->  /* The number of legacy PCI INTx interrupts */
->  #define PCI_NUM_INTX	4
->  
-> +/*
-> + * Reading from a device that doesn't respond typically returns ~0.  A
-> + * successful read from a device may also return ~0, so you need additional
-> + * information to reliably identify errors.
-> + */
-> +#define PCI_ERROR_RESPONSE     (~0ULL)
-> +#define SET_PCI_ERROR_RESPONSE(val)    (*(val) = ((typeof(*(val))) PCI_ERROR_RESPONSE))
-> +#define RESPONSE_IS_PCI_ERROR(val) ((val) == ((typeof(val)) PCI_ERROR_RESPONSE))
+Nathan Lynch <nathanl@linux.ibm.com> writes:
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+>> Nathan Lynch <nathanl@linux.ibm.com> writes:
+>>> Nathan Lynch <nathanl@linux.ibm.com> writes:
+>>>> Remove the pseries scanlog driver.
+>>>>
+>>>> This code supports functions from Power4-era servers that are not pres=
+ent
+>>>> on targets currently supported by arch/powerpc. System manuals from th=
+is
+>>>> time have this description:
+>>>>
+>>>>   Scan Dump data is a set of chip data that the service processor gath=
+ers
+>>>>   after a system malfunction. It consists of chip scan rings, chip tra=
+ce
+>>>>   arrays, and Scan COM (SCOM) registers. This data is stored in the
+>>>>   scan-log partition of the system=E2=80=99s Nonvolatile Random Access
+>>>>   Memory (NVRAM).
+>>>>
+>>>> PowerVM partition firmware development doesn't recognize the associated
+>>>> function call or property, and they don't see any references to them in
+>>>> their codebase. It seems to have been specific to non-virtualized
+>>>> pseries.
+>>>
+>>> Just bumping this to see if there are any objections.
+>>
+>> Not an objection, I like nothing better than dropping old unused cruft,
+>> but are we sure it's safe to remove the proc file?
+>>
+>> I see that rtas_errd still looks for it, have you checked that it will
+>> handle the absence of the file gracefully and continue doing whatever
+>> else it does?
+>
+> Uhh. I will stop forgetting to check ppc64_diag when making such
+> changes. Thanks for pointing this out.
 
-Beautiful!  I really like this.
+No worries.
 
-I would prefer the macros to start with "PCI_", e.g.,
-PCI_SET_ERROR_RESPONSE().
+>> On further inspection it looks like the code that looks for it in
+>> rtas_errd is #if 0'ed out (??), so maybe it's dead.
+>
+> Yes it seems so. From rtas_errd's main():
+>
+> #if 0
+> 	/*=20
+> 	 * Check to see if a new scanlog dump is available;  if so, copy it to
+> 	 * the filesystem and associate the dump with the first error processed.
+> 	 */
+> 	check_scanlog_dump();
+> #endif
+>
+> And that's the only entry point into the code that collects the scanlog
+> data. And that dead code appears to deal with the absence of
+> /proc/ppc64/scan-log-dump gracefully. It has been like that since
+> initial git import in 2013.
 
-I think "RESPONSE_IS_PCI_ERROR()" is too strong because (as the
-comment says), ~0 *may* indicate an error.  Or it may be a successful
-read of a register that happens to contain ~0.
+OK, I guess it came from sourceforge before that. But I'm not going to
+start digging there, that's long enough ago that it shouldn't matter.
 
-Possibilities to convey the idea that this isn't definitive:
+>> Anyway if you can test that rtas_errd still works that'd be good.
+>
+> I've verified that it starts normally and logs EPOW events associated
+> with partition migration.
 
-  PCI_POSSIBLE_ERROR_RESPONSE(val)  # a little long
-  PCI_LIKELY_ERROR(val)             # we really have no idea whether
-  PCI_PROBABLE_ERROR(val)           #   likely or probable
-  PCI_POSSIBLE_ERROR(val)           # promising?
+Awesome.
 
-Can you rebase to my "main" branch (v5.16-rc1), tweak the above, and
-collect up the acks/reviews?
+>> Presumably there's no other code that cares about the proc file.
+>
+> AFAIK this is right. powerpc-utils and librtas do not use it. librtas
+> has a wrapper for the calling the associated RTAS function directly, but
+> that's fine.
+>
+> I tried using GitHub's search to find instances of "scan-log-dump" that
+> weren't from Linux or ppc64_diag (need to be logged in I think):
+>
+> https://github.com/search?q=3D%22scan-log-dump%22+-path%3Aarch%2Fpowerpc+=
+-filename%3Ascanlog.c+-extension%3Apatch&type=3DCode&ref=3Dadvsearch&l=3D&l=
+=3D
+>
+> This hasn't yielded any unexpected users. There may be better search
+> terms but that's what a few minutes of fiddling with it got me.
 
-We should also browse drivers outside drivers/pci for places we could
-use these.  Not necessarily as part of this series, although if
-authors there object, it would be good to learn that earlier than
-later.
+I had a look on sourcegraph too, same story, nothing interesting:
 
-Drivers that implement pci_error_handlers might be a fruitful place to
-start.  But you've done a great job finding users of ~0 and 0xffff...
-in drivers/pci/, too.
+  https://sourcegraph.com/search?q=3Dcontext:global+scan-log-dump+NOT+file:=
+arch/powerpc/platforms/pseries/scanlog.c+NOT+file:arch/powerpc/kernel/rtas.=
+c+NOT+file:arch/ppc64/kernel/scanlog.c+fork:yes+archived:yes&patternType=3D=
+literal
 
-> +
->  /*
->   * pci_power_t values must match the bits in the Capabilities PME_Support
->   * and Control/Status PowerState fields in the Power Management capability.
-> -- 
-> 2.25.1
-> 
-> _______________________________________________
-> Linux-kernel-mentees mailing list
-> Linux-kernel-mentees@lists.linuxfoundation.org
-> https://lists.linuxfoundation.org/mailman/listinfo/linux-kernel-mentees
+
+So that seems OK to me, I'll pick this up.
+
+cheers
