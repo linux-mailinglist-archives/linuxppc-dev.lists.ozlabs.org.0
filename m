@@ -2,62 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785AC456223
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 19:13:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1D84562A5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 19:41:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hw7GY2y0Kz3cnJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 05:13:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hw7tR0Gmmz3c6V
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 05:41:35 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=DnjI9osT;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.52; helo=mail-ot1-f52.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com
- [209.85.210.52])
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::62b;
+ helo=mail-pl1-x62b.google.com; envelope-from=seanjc@google.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=DnjI9osT; dkim-atps=neutral
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
+ [IPv6:2607:f8b0:4864:20::62b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hw7Dl5kBXz2yP3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 05:12:23 +1100 (AEDT)
-Received: by mail-ot1-f52.google.com with SMTP id
- u18-20020a9d7212000000b00560cb1dc10bso12329350otj.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 10:12:23 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hw7sj45Thz2ymq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 05:40:55 +1100 (AEDT)
+Received: by mail-pl1-x62b.google.com with SMTP id z6so4830483plk.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 10:40:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to;
+ bh=grrMnij3a2kLK2nD9/+zi8H0lxQV5j7EQVRD7AIwS2E=;
+ b=DnjI9osT+moWRQdwwunhhgYe2YGuzWKrQy5JwjvEJNUqQcpvnb0WoX5Pei6uXI5OdC
+ 7eGLhv3YIzk62P6sC5D7JBPnUohj6O7s664U/+jqNIv857J2ijyYc9lxkutY0si+1Jso
+ ztfH/9rMsVdRRal+62dCEzvALKr3rtl5XahGBeHA8m4ynGczBHkUGlN7RYWuUfQGcFke
+ WSfMnan0Kg6M9yWEVCFKWFu1Oy/he0ioyfZD1myK/YDRWIUpBN/5hc73yoNPRxPOyT9C
+ VLzYMyPNfdN9orn15Wn6MlOWGc4Qs8aD/O0pRMiPP4mF4KE17PRSHz5sCFRZguQ3AWZA
+ KcTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=lKjGmeKxePzD70fPeVNX3iOZlAphvR/tEc1cbLf20w4=;
- b=BGA+hwi3J6utvi7lZPm8LOyK9h30zK7usweAnSeFX+6V9nGfG1XUPWyFMu0nOW4tul
- EIdW/Zdi/hg875gptV5FDUNFwaL1gsBpENM8SEL4oe3wgv5EiR/hsVQFNfnN42RCHgFq
- 8tPMuGbtMfwhubDZtGEsabwnHvBiKMY+g6CCxv5hyiMALiQLAYefuzv1uWO0K9CkvmCQ
- wwr3kpLIHAdjOO7ieG7AnARAHqiZTcj9+vRsrfwwxVrDhzqY5GK7ioewTwINMG9K8uVZ
- hDCxDBm1tZL+cIJxDZVk/M9jjJWgXOGDnnj/YMblz1kLMKc+j+aNARdJjcULtY7ng7l3
- U3+g==
-X-Gm-Message-State: AOAM530R4mY+OjYawWntYkEG65f1v/ql/DEm7l0btg815dceJjqd1z9C
- PziiOSzCzpA7s4u5HrFssQ==
-X-Google-Smtp-Source: ABdhPJxhAvBxb/0cxPU/ID9tNSxww6OwM8HW6DSbRf+ew+ITysWoNTRD9+PHgOYNwmYeZDuZ7NkSoQ==
-X-Received: by 2002:a05:6830:4185:: with SMTP id
- r5mr23064102otu.50.1637259141449; 
- Thu, 18 Nov 2021 10:12:21 -0800 (PST)
-Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net.
- [66.90.148.213])
- by smtp.googlemail.com with ESMTPSA id n20sm99339ooe.7.2021.11.18.10.12.19
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to;
+ bh=grrMnij3a2kLK2nD9/+zi8H0lxQV5j7EQVRD7AIwS2E=;
+ b=4qPS4YP8/KQ3/ZvTxP1RhgyfvRHAm7i42FdqHHSqrJaPDE98rb1GbrvqjLomy0wLvU
+ +BJCBkMynpjCnf09pjBa6NscOBMIOULTADi/GsKc8QWjbbyt4Vr0BTMor0bUEFmxejlV
+ lqFAMBjNVFvpA8HUGknfvHl/TBqz8CH9rKVFuHjlaBfIsXK6X6Cs4M8Yk8AJNAKzQR7O
+ wOXpqddF/RAZohnuhfmD841Q3aMGQ4h8h/mxNLepsu1oWch///mMy0oi9EzAOjy8jCgD
+ x9+sbB+hhnazJmlztZEtKHTy99cnvp+QsPK9WaC1KdnExJsspZpscKAYTGI/JI02Y3R2
+ 9z2w==
+X-Gm-Message-State: AOAM531uaAHDRGESB7lm2M9dNRwwZX5iJ89U2AUfoTtysNQw/5uHrtvi
+ oRPYi6vqdsIXVa6LpVBd9Q1zqw==
+X-Google-Smtp-Source: ABdhPJxTT+sS2hBA2CisuiyQO1bWgOM4L3odX2TF09Y4yJcQHjhUg5+FNsR41T/1dQnqfraxxzIiPQ==
+X-Received: by 2002:a17:90a:af94:: with SMTP id
+ w20mr12506911pjq.223.1637260851435; 
+ Thu, 18 Nov 2021 10:40:51 -0800 (PST)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com.
+ [35.185.214.157])
+ by smtp.gmail.com with ESMTPSA id a12sm8600266pjq.16.2021.11.18.10.40.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Nov 2021 10:12:20 -0800 (PST)
-From: Rob Herring <robh@kernel.org>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Frank Rowand <frowand.list@gmail.com>, John Crispin <john@phrozen.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 3/3] of/fdt: Rework early_init_dt_scan_memory() to call
- directly
-Date: Thu, 18 Nov 2021 12:12:12 -0600
-Message-Id: <20211118181213.1433346-4-robh@kernel.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211118181213.1433346-1-robh@kernel.org>
-References: <20211118181213.1433346-1-robh@kernel.org>
+ Thu, 18 Nov 2021 10:40:50 -0800 (PST)
+Date: Thu, 18 Nov 2021 18:40:47 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Subject: Re: [PATCH v3 08/12] KVM: Propagate vcpu explicitly to
+ mark_page_dirty_in_slot()
+Message-ID: <YZaeL5YztL3p1nLM@google.com>
+References: <20211117174003.297096-1-dwmw2@infradead.org>
+ <20211117174003.297096-9-dwmw2@infradead.org>
+ <85d9fec17f32c3eb9e100e56b91af050.squirrel@twosheds.infradead.org>
+ <4c48546b-eb4a-dff7-cc38-5df54f73f5d4@redhat.com>
+ <20b5952e76c54a3a5dfe5a898e3b835404ac6fb1.camel@infradead.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20b5952e76c54a3a5dfe5a898e3b835404ac6fb1.camel@infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,226 +88,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org
+Cc: Anup Patel <anup.patel@wdc.com>,
+ "wanpengli @ tencent . com" <wanpengli@tencent.com>, kvm <kvm@vger.kernel.org>,
+ Joao Martins <joao.m.martins@oracle.com>, Will Deacon <will@kernel.org>,
+ kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
+ "joro @ 8bytes . org" <joro@8bytes.org>, Huacai Chen <chenhuacai@kernel.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, karahmed@amazon.com,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ "jmattson @ google . com" <jmattson@google.com>,
+ "mtosatti @ redhat . com" <mtosatti@redhat.com>, linux-mips@vger.kernel.org,
+ James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org,
+ Marc Zyngier <maz@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ "vkuznets @ redhat . com" <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use of the of_scan_flat_dt() function predates libfdt and is discouraged
-as libfdt provides a nicer set of APIs. Rework
-early_init_dt_scan_memory() to be called directly and use libfdt.
+On Thu, Nov 18, 2021, David Woodhouse wrote:
+> That leaves the one in TDP MMU handle_changed_spte_dirty_log() which
+> AFAICT can trigger the same crash seen by butt3rflyh4ck — can't that
+> happen from a thread where kvm_get_running_vcpu() is NULL too? For that
+> one I'm not sure.
 
-Cc: John Crispin <john@phrozen.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Frank Rowand <frowand.list@gmail.com>
-Cc: linux-mips@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- arch/mips/ralink/of.c      | 16 ++-------
- arch/powerpc/kernel/prom.c | 16 ++++-----
- drivers/of/fdt.c           | 68 ++++++++++++++++++++------------------
- include/linux/of_fdt.h     |  3 +-
- 4 files changed, 47 insertions(+), 56 deletions(-)
+I think could be trigger in the TDP MMU via kvm_mmu_notifier_release()
+-> kvm_mmu_zap_all(), e.g. if the userspace VMM exits while dirty logging is
+enabled.  That should be easy to (dis)prove via a selftest.
 
-diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
-index 0135376c5de5..e1d79523343a 100644
---- a/arch/mips/ralink/of.c
-+++ b/arch/mips/ralink/of.c
-@@ -53,17 +53,6 @@ void __init device_tree_init(void)
- 	unflatten_and_copy_device_tree();
- }
- 
--static int memory_dtb;
--
--static int __init early_init_dt_find_memory(unsigned long node,
--				const char *uname, int depth, void *data)
--{
--	if (depth == 1 && !strcmp(uname, "memory@0"))
--		memory_dtb = 1;
--
--	return 0;
--}
--
- void __init plat_mem_setup(void)
- {
- 	void *dtb;
-@@ -77,9 +66,8 @@ void __init plat_mem_setup(void)
- 	dtb = get_fdt();
- 	__dt_setup_arch(dtb);
- 
--	of_scan_flat_dt(early_init_dt_find_memory, NULL);
--	if (memory_dtb)
--		of_scan_flat_dt(early_init_dt_scan_memory, NULL);
-+	if (!early_init_dt_scan_memory())
-+		return;
- 	else if (soc_info.mem_detect)
- 		soc_info.mem_detect();
- 	else if (soc_info.mem_size)
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 6e1a106f02eb..63762a3b75e8 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -532,19 +532,19 @@ static int  __init early_init_drmem_lmb(struct drmem_lmb *lmb,
- }
- #endif /* CONFIG_PPC_PSERIES */
- 
--static int __init early_init_dt_scan_memory_ppc(unsigned long node,
--						const char *uname,
--						int depth, void *data)
-+static int __init early_init_dt_scan_memory_ppc(void)
- {
- #ifdef CONFIG_PPC_PSERIES
--	if (depth == 1 &&
--	    strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0) {
-+	const void *fdt = initial_boot_params;
-+	int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
-+
-+	if (node > 0) {
- 		walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
- 		return 0;
- 	}
- #endif
- 	
--	return early_init_dt_scan_memory(node, uname, depth, data);
-+	return early_init_dt_scan_memory();
- }
- 
- /*
-@@ -749,7 +749,7 @@ void __init early_init_devtree(void *params)
- 
- 	/* Scan memory nodes and rebuild MEMBLOCKs */
- 	early_init_dt_scan_root();
--	of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
-+	early_init_dt_scan_memory_ppc();
- 
- 	parse_early_param();
- 
-@@ -858,7 +858,7 @@ void __init early_get_first_memblock_info(void *params, phys_addr_t *size)
- 	 */
- 	add_mem_to_memblock = 0;
- 	early_init_dt_scan_root();
--	of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
-+	early_init_dt_scan_memory_ppc();
- 	add_mem_to_memblock = 1;
- 
- 	if (size)
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 5e216555fe4f..a799117886f4 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -1078,49 +1078,53 @@ u64 __init dt_mem_next_cell(int s, const __be32 **cellp)
- /*
-  * early_init_dt_scan_memory - Look for and parse memory nodes
-  */
--int __init early_init_dt_scan_memory(unsigned long node, const char *uname,
--				     int depth, void *data)
-+int __init early_init_dt_scan_memory(void)
- {
--	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
--	const __be32 *reg, *endp;
--	int l;
--	bool hotpluggable;
-+	int node;
-+	const void *fdt = initial_boot_params;
- 
--	/* We are scanning "memory" nodes only */
--	if (type == NULL || strcmp(type, "memory") != 0)
--		return 0;
-+	fdt_for_each_subnode(node, fdt, 0) {
-+		const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
-+		const __be32 *reg, *endp;
-+		int l;
-+		bool hotpluggable;
- 
--	reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
--	if (reg == NULL)
--		reg = of_get_flat_dt_prop(node, "reg", &l);
--	if (reg == NULL)
--		return 0;
-+		/* We are scanning "memory" nodes only */
-+		if (type == NULL || strcmp(type, "memory") != 0)
-+			continue;
- 
--	endp = reg + (l / sizeof(__be32));
--	hotpluggable = of_get_flat_dt_prop(node, "hotpluggable", NULL);
-+		reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
-+		if (reg == NULL)
-+			reg = of_get_flat_dt_prop(node, "reg", &l);
-+		if (reg == NULL)
-+			return 0;
- 
--	pr_debug("memory scan node %s, reg size %d,\n", uname, l);
-+		endp = reg + (l / sizeof(__be32));
-+		hotpluggable = of_get_flat_dt_prop(node, "hotpluggable", NULL);
- 
--	while ((endp - reg) >= (dt_root_addr_cells + dt_root_size_cells)) {
--		u64 base, size;
-+		pr_debug("memory scan node %s, reg size %d,\n",
-+			fdt_get_name(fdt, node, NULL), l);
- 
--		base = dt_mem_next_cell(dt_root_addr_cells, &reg);
--		size = dt_mem_next_cell(dt_root_size_cells, &reg);
-+		while ((endp - reg) >= (dt_root_addr_cells + dt_root_size_cells)) {
-+			u64 base, size;
- 
--		if (size == 0)
--			continue;
--		pr_debug(" - %llx, %llx\n", base, size);
-+			base = dt_mem_next_cell(dt_root_addr_cells, &reg);
-+			size = dt_mem_next_cell(dt_root_size_cells, &reg);
- 
--		early_init_dt_add_memory_arch(base, size);
-+			if (size == 0)
-+				continue;
-+			pr_debug(" - %llx, %llx\n", base, size);
- 
--		if (!hotpluggable)
--			continue;
-+			early_init_dt_add_memory_arch(base, size);
- 
--		if (memblock_mark_hotplug(base, size))
--			pr_warn("failed to mark hotplug range 0x%llx - 0x%llx\n",
--				base, base + size);
--	}
-+			if (!hotpluggable)
-+				continue;
- 
-+			if (memblock_mark_hotplug(base, size))
-+				pr_warn("failed to mark hotplug range 0x%llx - 0x%llx\n",
-+					base, base + size);
-+		}
-+	}
- 	return 0;
- }
- 
-@@ -1271,7 +1275,7 @@ void __init early_init_dt_scan_nodes(void)
- 		pr_warn("No chosen node found, continuing without\n");
- 
- 	/* Setup memory, calling early_init_dt_add_memory_arch */
--	of_scan_flat_dt(early_init_dt_scan_memory, NULL);
-+	early_init_dt_scan_memory();
- 
- 	/* Handle linux,usable-memory-range property */
- 	memblock_cap_memory_range(cap_mem_addr, cap_mem_size);
-diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
-index df3d31926c3c..914739f3c192 100644
---- a/include/linux/of_fdt.h
-+++ b/include/linux/of_fdt.h
-@@ -59,8 +59,7 @@ extern unsigned long of_get_flat_dt_root(void);
- extern uint32_t of_get_flat_dt_phandle(unsigned long node);
- 
- extern int early_init_dt_scan_chosen(char *cmdline);
--extern int early_init_dt_scan_memory(unsigned long node, const char *uname,
--				     int depth, void *data);
-+extern int early_init_dt_scan_memory(void);
- extern int early_init_dt_scan_chosen_stdout(void);
- extern void early_init_fdt_scan_reserved_mem(void);
- extern void early_init_fdt_reserve_self(void);
--- 
-2.32.0
+And for the record :-)
 
+On Mon, Dec 02, 2019 at 12:10:36PM -0800, Sean Christopherson wrote:
+> IMO, adding kvm_get_running_vcpu() is a hack that is just asking for future
+> abuse and the vcpu/vm/as_id interactions in mark_page_dirty_in_ring()
+> look extremely fragile.
+
+On 03/12/19 20:01, Sean Christopherson wrote:
+> In case it was clear, I strongly dislike adding kvm_get_running_vcpu().
+> IMO, it's a unnecessary hack.  The proper change to ensure a valid vCPU is
+> seen by mark_page_dirty_in_ring() when there is a current vCPU is to
+> plumb the vCPU down through the various call stacks.
