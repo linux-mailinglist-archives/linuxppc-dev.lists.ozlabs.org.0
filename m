@@ -1,85 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 724154563B3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 20:47:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9C4456458
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 21:36:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hw9Ln2Z3dz3bhx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 06:47:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HwBRK0rxvz3bhj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 07:36:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=TJltHTqm;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=PPEK73Yj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::102e;
- helo=mail-pj1-x102e.google.com; envelope-from=seanjc@google.com;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::102f;
+ helo=mail-pj1-x102f.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=TJltHTqm; dkim-atps=neutral
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
- [IPv6:2607:f8b0:4864:20::102e])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=PPEK73Yj; dkim-atps=neutral
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hw9L25sp5z2yPs
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 06:47:04 +1100 (AEDT)
-Received: by mail-pj1-x102e.google.com with SMTP id
- np6-20020a17090b4c4600b001a90b011e06so6665270pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 11:47:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to;
- bh=etzXRtUGTr8lCEC3N+zBz9sC9KLaK/1vTaoNub+XSrA=;
- b=TJltHTqmUDTIgL1P24a20gD79MoRsYyT+oWNI7Zk1KCB0kxMW9nay123E+ZoFctpYI
- aiNnMLJVER0OaOWjGQFAAodEb7XssAPkbTv3HZ/7Xvc56U/KwoqRQGvrj5PKP0bcKR4k
- 2vvhP28esD9If7TAFeNjBviDlcYadmbYqHQK4EKbmvqKoyyDe2mAxq3N83OoFp8cHZvs
- tW/44+HbAaU7BnQeov5HYKclsNsjLoArhh5d8PMaS08emGsC4hW0iBqIihQVo007XCgE
- f+/05PLBrEHbV7h1EwSp8E42irdKiOdyzv/mpEc9ne+Zn3+nJLJHbZQwUjsMNM99uGwK
- D+nQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HwBQd6jGLz2yng
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 07:36:09 +1100 (AEDT)
+Received: by mail-pj1-x102f.google.com with SMTP id h24so6123109pjq.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 12:36:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=lVkmmvG/j7pAxwD3ZkAKM2VobhK3Up8KSyZejtIse54=;
+ b=PPEK73YjIZ+zZ041dY75YBSx5UtWt6K5MgviG4QHxEGeyCZYxwFP/0FoKTcDhNwWHC
+ DjxZfKR0TwBk1ezwU++Gp3NdN8T4UpAE1jftPiLiojqArr4Bk4saT/OECZiSBnn9rMX+
+ 5YllHgwKvZv6KkYUv+yIEa5C6M5sCoUb0pPY0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=etzXRtUGTr8lCEC3N+zBz9sC9KLaK/1vTaoNub+XSrA=;
- b=278LAycss92ZlaA1H2kECAp7ckK9ulO2yW89hftz+302cynN6CHu+L5UfZIosB7mvq
- 8cpoQXAOpMssoultsqDNBym134qiH2M3cHn8Uhs2qkJohnr/LYdaZhKdTklXFq1TAeTo
- JebdzNDIVmnuMubEtzPqU8IfhyDJyqBa2XQqIkaSBK/IUad7lrcmSg7JNQGHXyQAThH3
- VSWiyePlDEAFp62/R822Cc/i4y4H8QjY6uh5zd4JimwRVfTQ1VSuYZhAvTRDzK/NdTU1
- AwSrcacIGetJeuWHnQaJZ+2Px7c0tLMA6hVyhgNQyoN15/Jrp3C4M2SJ+wGzR5uirxlP
- XTVg==
-X-Gm-Message-State: AOAM530UZGorHZ74oNVWN7g/rmbOC4sbad6cju5rPuoyH+eUuRw3gDLI
- QcTKdIA4fBWUGV8fAvjknVxwrA==
-X-Google-Smtp-Source: ABdhPJw2jmwgTmZEgqtXJQ8BT+0frIfcOwv6QQsFYGUkgZtQBdhdiIC61pVtTpnGW9Ux3cY+6emP4Q==
-X-Received: by 2002:a17:90b:4d09:: with SMTP id
- mw9mr13604040pjb.238.1637264821320; 
- Thu, 18 Nov 2021 11:47:01 -0800 (PST)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com.
- [35.185.214.157])
- by smtp.gmail.com with ESMTPSA id t40sm435895pfg.107.2021.11.18.11.46.59
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=lVkmmvG/j7pAxwD3ZkAKM2VobhK3Up8KSyZejtIse54=;
+ b=LG3MWtSmUxei+NOoTGVa36lpKCNc04Mo2TJzyG9r2XRMq4kKC+AVPPgmsWnKjazTNe
+ hIG6KyJjMp7M6e99RtiO3tTQyrkdlsTO9vQ0w+1EG9ybhdGsOygIbwpXH/8pilbxikZ3
+ NaNRwPren3NnL3vepYNOXmdY1XhUUgos7+uc6q5uUeY31pVddc8sIR4eZuXDE681d9bP
+ /fgxcb1er3jUenf0MxWWPuzLkQJk13aiUkK4fyV9A4eJr+dg7wPLTwi1Ighkdmy7zPHa
+ miAeEVO7ib8u2C9UvfU8gw7/nDW5jKISxrklCxi5jx61mB6cCgR7Nld/Th0kBgPo0Gze
+ 71xw==
+X-Gm-Message-State: AOAM530xiaP/E3Pp+XS0IQiBdEUJFRchIgn2n4m+/YYfzYqteWudO2PB
+ UMHmBX0DGE4IS4xNosRoYmh67Q==
+X-Google-Smtp-Source: ABdhPJxMwU1fSwD50NTL/ixCZzNZiTT9wK+rF5Dat8y+lnVThvSBnIvaT6qSQYGBMA8U9DmIJMZ29A==
+X-Received: by 2002:a17:90a:7ac8:: with SMTP id
+ b8mr13874273pjl.206.1637267766535; 
+ Thu, 18 Nov 2021 12:36:06 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id gc22sm8900753pjb.57.2021.11.18.12.36.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Nov 2021 11:46:59 -0800 (PST)
-Date: Thu, 18 Nov 2021 19:46:56 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Subject: Re: [PATCH v3 08/12] KVM: Propagate vcpu explicitly to
- mark_page_dirty_in_slot()
-Message-ID: <YZatsB3oadj6dgb8@google.com>
-References: <20211117174003.297096-1-dwmw2@infradead.org>
- <20211117174003.297096-9-dwmw2@infradead.org>
- <85d9fec17f32c3eb9e100e56b91af050.squirrel@twosheds.infradead.org>
- <4c48546b-eb4a-dff7-cc38-5df54f73f5d4@redhat.com>
- <20b5952e76c54a3a5dfe5a898e3b835404ac6fb1.camel@infradead.org>
- <YZaeL5YztL3p1nLM@google.com> <YZagjzYUsixbFre9@google.com>
- <35AEC3FD-B46A-451D-B7D5-4B1BDD5407BD@infradead.org>
+ Thu, 18 Nov 2021 12:36:06 -0800 (PST)
+From: Kees Cook <keescook@chromium.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/signal32: Use struct_group() to zero spe regs
+Date: Thu, 18 Nov 2021 12:36:04 -0800
+Message-Id: <20211118203604.1288379-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3131; h=from:subject;
+ bh=Nd4ePfUzckpA23dYadFOEde2uR/aV7RLm1vyTElA6rM=;
+ b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBhlrkzlK5F2t3ltvzRwjCkTmaKG7QFHzINoff+dGs2
+ EAsb07CJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYZa5MwAKCRCJcvTf3G3AJsaxEA
+ CdO3ZJYc4b0R3BTvkb66wG6EJaEgsRZ85XsSStLG9iLH8wNFFNYQaU2QY37x0PV8Hld/mIQjl0s24m
+ OamYw0ox0n67RvD21GiL6V6fBuzBIqLl//8XKH1HuXVmUR5KP8FpuugmilDvAaXHyVkHmaI9Ft+d2G
+ W5tB+zXf3G5PwWLJBU6dt7fAJYGjJUkGXZE8TdBUdRcS5yXKd5VkLYvB6wr+eN79xCZPzW2jhCqPH8
+ w7E0lW9r+wt4BjmCQ1q4pp/mHYkJcQFkSdzoiBWWIOnZoGQSDhfaROvr7cNOL2ampq9sNvcrsV15Yt
+ +FD1hU5ZmX8dzFDk2iAqhMxTYIaHHxhFm+yeyZd8CKrZReuCECztiTNoUTpfnMiwcZd5pkrJjjnGAU
+ 2EKQLvWqqK1LVKzR3rcm6MnyNhVduUwF3hqkS632N8ZvuQ1+IsXctxfBiN4icsN9LnYmigrZ2Ojuh8
+ uuq6hpntjT9q1kqSJMVZkFCOo97YS1i+J0QhIOlCOqR4eabzITemH7qSirg0sm5QIMiR8/Bpfk8i2h
+ Ds5O48/TYaLwyz9TCCGtYCSbAYZTl7LXFpl3ShVhl9+RoYqbxQ9f2LTVI7TRBMk6W6BfzDylb8Skvj
+ T9oPd1+dRKTkj2RX7oH+CzFt3t98ieoJmtPy2h+SXNBcrI7KOfnOvuhfLadA==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp;
+ fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <35AEC3FD-B46A-451D-B7D5-4B1BDD5407BD@infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,62 +90,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anup Patel <anup.patel@wdc.com>,
- "wanpengli @ tencent . com" <wanpengli@tencent.com>, kvm <kvm@vger.kernel.org>,
- Joao Martins <joao.m.martins@oracle.com>, Will Deacon <will@kernel.org>,
- kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
- "joro @ 8bytes . org" <joro@8bytes.org>, Huacai Chen <chenhuacai@kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, karahmed@amazon.com,
- Catalin Marinas <catalin.marinas@arm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- "jmattson @ google . com" <jmattson@google.com>,
- "mtosatti @ redhat . com" <mtosatti@redhat.com>, linux-mips@vger.kernel.org,
- James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org,
- Marc Zyngier <maz@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- "vkuznets @ redhat . com" <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ "Eric W. Biederman" <ebiederm@xmission.com>, Kees Cook <keescook@chromium.org>,
+ Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 18, 2021, David Woodhouse wrote:
-> 
-> 
-> On 18 November 2021 18:50:55 GMT, Sean Christopherson <seanjc@google.com> wrote:
-> >On Thu, Nov 18, 2021, Sean Christopherson wrote:
-> >> On Thu, Nov 18, 2021, David Woodhouse wrote:
-> >> > That leaves the one in TDP MMU handle_changed_spte_dirty_log() which
-> >> > AFAICT can trigger the same crash seen by butt3rflyh4ck — can't that
-> >> > happen from a thread where kvm_get_running_vcpu() is NULL too? For that
-> >> > one I'm not sure.
-> >> 
-> >> I think could be trigger in the TDP MMU via kvm_mmu_notifier_release()
-> >> -> kvm_mmu_zap_all(), e.g. if the userspace VMM exits while dirty logging is
-> >> enabled.  That should be easy to (dis)prove via a selftest.
-> >
-> >Scratch that, the dirty log update is guarded by the new_spte being present, so
-> >zapping of any kind won't trigger it.
-> >
-> >Currently, I believe the only path that would create a present SPTE without an
-> >active vCPU is mmu_notifer.change_pte, but that squeaks by because its required
-> >to be wrapped with invalidate_range_{start,end}(MMU_NOTIFY_CLEAR), and KVM zaps
-> >in that situation.
-> 
-> Is it sufficient to have *an* active vCPU?  What if a VMM has threads for
-> active vCPUs but is doing mmap/munmap on a *different* thread? Does that not
-> suffer the same crash?
+In preparation for FORTIFY_SOURCE performing compile-time and run-time
+field bounds checking for memset(), avoid intentionally writing across
+neighboring fields.
 
-It is sufficient for the current physical CPU to have an active vCPU, which is
-generally guaranteed in the MMU code because, with a few exceptions, populating
-SPTEs is done in vCPU context.
+Add a struct_group() for the spe registers so that memset() can correctly reason
+about the size:
 
-mmap() will never directly trigger SPTE creation, KVM first requires a vCPU to
-fault on the new address.  munmap() is a pure zap flow, i.e. won't create a
-present SPTE and trigger the writeback of the dirty bit.
+   In function 'fortify_memset_chk',
+       inlined from 'restore_user_regs.part.0' at arch/powerpc/kernel/signal_32.c:539:3:
+   >> include/linux/fortify-string.h:195:4: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+     195 |    __write_overflow_field();
+         |    ^~~~~~~~~~~~~~~~~~~~~~~~
 
-That's also why I dislike using kvm_get_running_vcpu(); when it's needed, there's
-a valid vCPU from the caller, but it deliberately gets dropped and indirectly
-picked back up.
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ arch/powerpc/include/asm/processor.h |  6 ++++--
+ arch/powerpc/kernel/signal_32.c      | 14 +++++++++-----
+ 2 files changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+index e39bd0ff69f3..978a80308466 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -191,8 +191,10 @@ struct thread_struct {
+ 	int		used_vsr;	/* set if process has used VSX */
+ #endif /* CONFIG_VSX */
+ #ifdef CONFIG_SPE
+-	unsigned long	evr[32];	/* upper 32-bits of SPE regs */
+-	u64		acc;		/* Accumulator */
++	struct_group(spe,
++		unsigned long	evr[32];	/* upper 32-bits of SPE regs */
++		u64		acc;		/* Accumulator */
++	);
+ 	unsigned long	spefscr;	/* SPE & eFP status */
+ 	unsigned long	spefscr_last;	/* SPEFSCR value on last prctl
+ 					   call or trap return */
+diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+index 00a9c9cd6d42..5e1664b501e4 100644
+--- a/arch/powerpc/kernel/signal_32.c
++++ b/arch/powerpc/kernel/signal_32.c
+@@ -527,16 +527,20 @@ static long restore_user_regs(struct pt_regs *regs,
+ 	regs_set_return_msr(regs, regs->msr & ~(MSR_FP | MSR_FE0 | MSR_FE1));
+ 
+ #ifdef CONFIG_SPE
+-	/* force the process to reload the spe registers from
+-	   current->thread when it next does spe instructions */
++	/*
++	 * Force the process to reload the spe registers from
++	 * current->thread when it next does spe instructions.
++	 * Since this is user ABI, we must enforce the sizing.
++	 */
++	BUILD_BUG_ON(sizeof(current->thread.spe) != ELF_NEVRREG * sizeof(u32));
+ 	regs_set_return_msr(regs, regs->msr & ~MSR_SPE);
+ 	if (msr & MSR_SPE) {
+ 		/* restore spe registers from the stack */
+-		unsafe_copy_from_user(current->thread.evr, &sr->mc_vregs,
+-				      ELF_NEVRREG * sizeof(u32), failed);
++		unsafe_copy_from_user(&current->thread.spe, &sr->mc_vregs,
++				      sizeof(current->thread.spe), failed);
+ 		current->thread.used_spe = true;
+ 	} else if (current->thread.used_spe)
+-		memset(current->thread.evr, 0, ELF_NEVRREG * sizeof(u32));
++		memset(&current->thread.spe, 0, sizeof(current->thread.spe));
+ 
+ 	/* Always get SPEFSCR back */
+ 	unsafe_get_user(current->thread.spefscr, (u32 __user *)&sr->mc_vregs + ELF_NEVRREG, failed);
+-- 
+2.30.2
+
