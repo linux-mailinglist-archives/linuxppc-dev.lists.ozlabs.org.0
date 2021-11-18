@@ -2,57 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE3B44557F3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 10:25:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C54455832
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 10:40:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HvvXf5ptKz2ywW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 20:25:22 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jGkAQEyc;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HvvtL2Z32z3c73
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 20:40:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HvvX12yCgz2x9W
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 20:24:49 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=jGkAQEyc; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HvvX10X6Wz4xdM;
- Thu, 18 Nov 2021 20:24:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1637227489;
- bh=TLTbM1CZSGXr7PCxRv9ZbnFUvxI0Acxhccq3yFrx4Jc=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=jGkAQEycG1qV3SxLYpFIYMnu/hpC3gGBNrkDe/5CS5aVZ770h+NHr9bga5+FZvGY4
- FTV2hJDrdQfwI4L15Ha7v5VK+GuLITKacPEXHq8ZWkqnmHdacJIY5+yEQnW2l6G8aE
- 7GN7rVpOUikkgL6eVYC0YSef6Ngj9cRyj4V3d6mh5j9mNHZ2XT7lZAm9Bqq4xnQp/N
- X+b3RRx7yl/kY12Itgy0Wla3BkJGKmT6bVEMdoIQCxa1/09B2Nrz8q7hiXDVzPpSm/
- dXEKB1cWc5Ogc0SM5kPQ8+ceDl/FTzgrcB1GpJIOotnqUDLsFVhcp/qy2zWM6r37BH
- e7mGTEZ/1mHtQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 11/11] powerpc/smp: Add a doorbell=off kernel parameter
-In-Reply-To: <7341ab0d-c12b-6d5f-76d3-5927a2734f02@kaod.org>
-References: <20211105102636.1016378-1-clg@kaod.org>
- <20211105102636.1016378-12-clg@kaod.org>
- <87fss3m0sp.fsf@mpe.ellerman.id.au>
- <7341ab0d-c12b-6d5f-76d3-5927a2734f02@kaod.org>
-Date: Thu, 18 Nov 2021 20:24:48 +1100
-Message-ID: <87sfvtlstb.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hvvsr65j4z2yTr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 20:40:14 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Hvvsh0CFtz9sSc;
+ Thu, 18 Nov 2021 10:40:08 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 5zKoQQlQXv6t; Thu, 18 Nov 2021 10:40:07 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Hvvsg6Pjgz9sSD;
+ Thu, 18 Nov 2021 10:40:07 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B49D18B7E0;
+ Thu, 18 Nov 2021 10:40:07 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id U2lzmI56qWFz; Thu, 18 Nov 2021 10:40:07 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.31])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6F5E78B7CA;
+ Thu, 18 Nov 2021 10:40:07 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1AI9ducX122988
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Thu, 18 Nov 2021 10:39:56 +0100
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1AI9dskd122980;
+ Thu, 18 Nov 2021 10:39:54 +0100
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/32: Fix hardlockup on vmap stack overflow
+Date: Thu, 18 Nov 2021 10:39:53 +0100
+Message-Id: <ce30364fb7ccda489272af4a1612b6aa147e1d23.1637227521.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1637228389; l=1336; s=20211009;
+ h=from:subject:message-id; bh=/FtuluvJts3chyFFop3qggivUoP6VglfwFD043ogEPk=;
+ b=whNTRzRhj3L0G2IEE03aJFvvaPox5SQuwWmf24H1cSCzFF3yjiW0NwRQqsmWl6V7K1bQ1QHTVXmX
+ K68QJjAsCbtIwFWBElEOJbr4rIEUsAZlf3a03I4KB+WdYkXd8M10
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,72 +73,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-C=C3=A9dric Le Goater <clg@kaod.org> writes:
-> On 11/11/21 11:41, Michael Ellerman wrote:
->> C=C3=A9dric Le Goater <clg@kaod.org> writes:
->>> On processors with a XIVE interrupt controller (POWER9 and above), the
->>> kernel can use either doorbells or XIVE to generate CPU IPIs. Sending
->>> doorbell is generally preferred to using the XIVE IC because it is
->>> faster. There are cases where we want to avoid doorbells and use XIVE
->>> only, for debug or performance. Only useful on POWER9 and above.
->>=20
->> How much do we want this?
->
-> Yes. Thanks for asking. It is a recent need.
->
-> Here is some background I should have added in the first place. May be
-> for a v2.
->
-> We have different ways of doing IPIs on POWER9 and above processors,
-> depending on the platform and the underlying hypervisor.
->
-> - PowerNV uses global doorbells
->
-> - pSeries/KVM uses XIVE only because local doorbells are not
->    efficient, as there are emulated in the KVM hypervisor
->
-> - pSeries/PowerVM uses XIVE for remote cores and local doorbells for
->    threads on same core (SMT4 or 8)
->
-> This recent commit 5b06d1679f2f ("powerpc/pseries: Use doorbells even
-> if XIVE is available") introduced the optimization for PowerVM and
-> commit 107c55005fbd ("powerpc/pseries: Add KVM guest doorbell
-> restrictions") restricted the optimization.
->
-> We would like a way to turn off the optimization.
+Since the commit c118c7303ad5 ("powerpc/32: Fix vmap stack - Do not
+activate MMU before reading task struct") a vmap stack overflow
+results in a hard lockup. This is because emergency_ctx is still
+addressed with its virtual address allthough data MMU is not active
+anymore at that time.
 
-Just for test/debug though?
+Fix it by using a physical address instead.
 
->> Kernel command line args are a bit of a pain, they tend to be poorly
->> tested, because someone has to explicitly enable them at boot time,
->> and then reboot to test the other case.
->
-> True. The "xive=3Doff" parameter was poorly tested initially.
->
->> When would we want to enable this?
->
-> For bring-up, for debug, for tests. I have been using a similar switch
-> to compare the XIVE interrupt controller performance with doorbells on
-> POWER9 and P0WER10.
->
-> A new need arises with PowerVM, some configurations will behave as KVM
-> (local doorbell are unsupported) and the doorbell=3Doff parameter is a
-> simple way to handle this case today.
+Fixes: c118c7303ad5 ("powerpc/32: Fix vmap stack - Do not activate MMU before reading task struct")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/head_32.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-That's the first I've heard of that, what PowerVM configurations have
-non-working doorbells?
+diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+index 6b1ec9e3541b..349c4a820231 100644
+--- a/arch/powerpc/kernel/head_32.h
++++ b/arch/powerpc/kernel/head_32.h
+@@ -202,11 +202,11 @@ _ASM_NOKPROBE_SYMBOL(\name\()_virt)
+ 	mfspr	r1, SPRN_SPRG_THREAD
+ 	lwz	r1, TASK_CPU - THREAD(r1)
+ 	slwi	r1, r1, 3
+-	addis	r1, r1, emergency_ctx@ha
++	addis	r1, r1, emergency_ctx-PAGE_OFFSET@ha
+ #else
+-	lis	r1, emergency_ctx@ha
++	lis	r1, emergency_ctx-PAGE_OFFSET@ha
+ #endif
+-	lwz	r1, emergency_ctx@l(r1)
++	lwz	r1, emergency_ctx-PAGE_OFFSET@l(r1)
+ 	addi	r1, r1, THREAD_SIZE - INT_FRAME_SIZE
+ 	EXCEPTION_PROLOG_2 0 vmap_stack_overflow
+ 	prepare_transfer_to_handler
+-- 
+2.33.1
 
->> Can we make the kernel smarter about when to use doorbells and make
->> it automated?
->
-> I don't think we want to probe all IPI methods to detect how well
-> local doorbells are supported on the platform. Do we ?
-
-We don't *want to*, but sounds like we might have to if they are not
-working in some configurations as you mentioned above.
-
-cheers
