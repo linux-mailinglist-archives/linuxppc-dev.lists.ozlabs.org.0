@@ -2,73 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DFC455D50
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 15:05:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E2D455D93
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 15:09:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hw1lJ4k7Vz3c6R
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 01:05:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hw1rp5Ph2z3c53
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 01:09:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=U2AsFUKZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=h4pBbCLr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033;
- helo=mail-pj1-x1033.google.com; envelope-from=naveennaidu479@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::534;
+ helo=mail-pg1-x534.google.com; envelope-from=naveennaidu479@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=U2AsFUKZ; dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
- [IPv6:2607:f8b0:4864:20::1033])
+ header.s=20210112 header.b=h4pBbCLr; dkim-atps=neutral
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com
+ [IPv6:2607:f8b0:4864:20::534])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hw1kb07njz2xBx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 01:04:21 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id
- np6-20020a17090b4c4600b001a90b011e06so5774463pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 06:04:21 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hw1r829cgz2yb6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 01:09:12 +1100 (AEDT)
+Received: by mail-pg1-x534.google.com with SMTP id b4so5399611pgh.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 06:09:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=2+h5Kd/hjqlgWPZhxmNy3OoG7OiHuipUsgtMWPBV6Ak=;
- b=U2AsFUKZLXJxwq1AOzr4+SXvMtjFGsxO8ExXuBT8byCkoGnUJsmIHIE9RaBdrO41Rl
- 8huvDZAw5E9R6TLbkkzhiG0KK3ozoaeqyNAOCPgfaVXDO9RiMVzPYQO8kM0jpDHGImp7
- mGfT7LqSqvp0vGwEav+2G8mOB/HtIp0+n1d5lT7on4J/eCJ5BhjDOqpUJNodLcLk69LE
- dsQIh5VyqtbSeUIvPCt28VdXKYnJ3AC6q5Y7i7rFWNmPQzuQYztj2GETNDY5XVCxMBRi
- +q4uDB/9eeOsa42CQY/qDnZw4RfX5KuaXc2wcxRoWzNfS6iF4pK1CZwYlyHMbvLRGlQR
- cSRg==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=gBBH/Q+4DT6MMFzudxxMo6qTH2zDvIqJYCuHRS/x8Gs=;
+ b=h4pBbCLrdpXpef+w/kUpZbJP1X3ldT63Q8bGt/bh2RhSlt94aUaf0PVnzja8+EzyiX
+ 5iYMNQKu/SyG4Nub6ksbx6VzPbGJRE/BZuFwnSSp+NgUjuqj2NhPYTKPM4zl6GDf1tKk
+ eK61KC8EUBYRAicc/ZNdM+7b7GmVwetmqBzyBFB975MngUwTm9aw4E2AL054rU9cFaPo
+ j+lKkLALHvmJGsPT61Y0tz5nJQZn9IMSHtNRdhRP9Yeb4mcwTwBjq2MzY9LTbmoj3JWS
+ x19JINYr4ISze+T9+hz9gOPl/KfmZVS+6YlJCCcOTFIQsQZYOt6jbkfEFPctsM8nThJQ
+ wFjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=2+h5Kd/hjqlgWPZhxmNy3OoG7OiHuipUsgtMWPBV6Ak=;
- b=2Ywcf18n102jEbLutlQkFIEE/iQ9CLN4OtenMUhwQY7gXklgfSJcImsRgmjE/PPxsF
- XOXpTGmdJyqlFeT8Wa6rtvCV7jpXCApbEC3mgmjP30FqewWELEZjTVQlQC3JD5IqRc6I
- p5zhycXqH8zbPpNhoWIpSGiSTDzwuxgRdo7pmEEE+JWOAivNlMw83qldvxDZHBeBNEgv
- hnbQzW5d730QN3IMjX7ScTuK7N5YVD5EIRjJS9qZL8Dza7g8z4ioZV31dbpYw+1xP7Om
- PrNw/v31vJiGhN1hwgP0nmcRsauCkVn7f87oWkeJ7T+88MJacqjrDRBvmvhupmeSi3aY
- 5sdw==
-X-Gm-Message-State: AOAM530tgQzABF9H3fhlvtu6ezUrkCgEnW/xlscDZPzFsfbJEwlt6dP3
- 3oOBjFHR3aV9QuEMqVRsVpU=
-X-Google-Smtp-Source: ABdhPJxcxZ6cnPohSI0/EFdUtlWDJVxg7caCTPrSiqQO3khzZ31HBiXw2/qZEqHgRBRrRj1t2soQnA==
-X-Received: by 2002:a17:902:9303:b0:143:d6c7:babc with SMTP id
- bc3-20020a170902930300b00143d6c7babcmr21567418plb.58.1637244258545; 
- Thu, 18 Nov 2021 06:04:18 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=gBBH/Q+4DT6MMFzudxxMo6qTH2zDvIqJYCuHRS/x8Gs=;
+ b=eJZyZSgUW3tqanQh6DtB8h/nzIR3IUqEeOAmJlXW4FuVT4Nq53jotnAwHV/GIVzIMn
+ Cg2viCSfNQkZrjOEeDrH1ROKUUsOmQnQgy8OmKoxLXfsJsM5BglGdxlqSc6VQREaQUiY
+ +ga6lVtaCx29qZqbYrBsFyV0baY7dk19NCYsMNtqInf4SVbS7d3wo/V4ieVIre6PoMEf
+ Dd5FCzNughGD+gAqMDLxon9mBqu/8t+YSAxEitkUKvKeSgqqVjkxXgFm5tI/BUYLEPmu
+ 2YmF1WXcFG8y2hP5c8uNfaG36FICG9KBcHPk6OuEgN1sctLZFJ7ZgTOGIFGDDF88LeJT
+ vQlQ==
+X-Gm-Message-State: AOAM5328EfsrOO7Bk/10w/1/BOIR8ZWjZXWJhvGk4bAGeLeBoBiQ7q7G
+ Xaq94Jh0EA4QQfIXrgLtDTc=
+X-Google-Smtp-Source: ABdhPJx6pongqUzF2GCWPf3PPjoh1vz7OEj8FQ/voPke/8ceAr1mP50zFni4Hu2G4gWzSziUIk45mQ==
+X-Received: by 2002:a63:ff23:: with SMTP id k35mr11505864pgi.28.1637244548964; 
+ Thu, 18 Nov 2021 06:09:08 -0800 (PST)
 Received: from localhost.localdomain ([2406:7400:63:2c47:5ffe:fc34:61f0:f1ea])
  by smtp.gmail.com with ESMTPSA id
- x14sm2822878pjl.27.2021.11.18.06.04.04
+ x14sm2822878pjl.27.2021.11.18.06.09.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Nov 2021 06:04:18 -0800 (PST)
+ Thu, 18 Nov 2021 06:09:08 -0800 (PST)
 From: Naveen Naidu <naveennaidu479@gmail.com>
 To: bhelgaas@google.com
-Subject: [PATCH v4 00/25] Unify PCI error response checking
-Date: Thu, 18 Nov 2021 19:33:10 +0530
-Message-Id: <cover.1637243717.git.naveennaidu479@gmail.com>
+Subject: [PATCH v4 19/25] PCI/DPC: Use PCI_POSSIBLE_ERROR() to check read from
+ hardware
+Date: Thu, 18 Nov 2021 19:33:29 +0530
+Message-Id: <9b0632f1f183432149f495cf12bdd5a72cc597a4.1637243717.git.naveennaidu479@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1637243717.git.naveennaidu479@gmail.com>
+References: <cover.1637243717.git.naveennaidu479@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -81,158 +81,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
- linux-hyperv@vger.kernel.org, Heiko Stuebner <heiko@sntech.de>,
- linux-pci@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>,
- Binghui Wang <wangbinghui@hisilicon.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Amey Narkhede <ameynarkhede03@gmail.com>, Oliver O'Halloran <oohall@gmail.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
- Toan Le <toan@os.amperecomputing.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Nirmal Patel <nirmal.patel@linux.intel.com>,
- Marek Vasut <marek.vasut+renesas@gmail.com>, Rob Herring <robh@kernel.org>,
- Wei Liu <wei.liu@kernel.org>, linux-samsung-soc@vger.kernel.org,
- Marc Zyngier <maz@kernel.org>, Naveen Naidu <naveennaidu479@gmail.com>,
- Joyce Ooi <joyce.ooi@intel.com>, Dexuan Cui <decui@microsoft.com>,
- Kishon Vijay Abraham I <kishon@ti.com>,
- Jianjun Wang <jianjun.wang@mediatek.com>, linux-rockchip@lists.infradead.org,
- "maintainer:BROADCOM IPROC ARM ARCHITECTURE"
- <bcm-kernel-feedback-list@broadcom.com>,
- Jonathan Derrick <jonathan.derrick@linux.dev>,
- Xiaowei Song <songxiaowei@hisilicon.com>,
- linux-kernel-mentees@lists.linuxfoundation.org,
- Robert Richter <rric@kernel.org>, Sean V Kelley <sean.v.kelley@intel.com>,
- Ray Jui <rjui@broadcom.com>, Haiyang Zhang <haiyangz@microsoft.com>,
- Ryder Lee <ryder.lee@mediatek.com>, linux-mediatek@lists.infradead.org,
- skhan@linuxfoundation.org, Matthias Brugger <matthias.bgg@gmail.com>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- linux-arm-kernel@lists.infradead.org, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
- Scott Branden <sbranden@broadcom.com>, linuxppc-dev@lists.ozlabs.org,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- Lukas Wunner <lukas@wunner.de>, Jingoo Han <jingoohan1@gmail.com>,
- Shawn Guo <shawn.guo@linaro.org>,
- =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+Cc: "open list:PCI ENHANCED ERROR HANDLING EEH FOR POWERPC"
+ <linuxppc-dev@lists.ozlabs.org>, linux-pci@vger.kernel.org,
+ skhan@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ Naveen Naidu <naveennaidu479@gmail.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linux-kernel-mentees@lists.linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 An MMIO read from a PCI device that doesn't exist or doesn't respond
-causes a PCI error.  There's no real data to return to satisfy the 
+causes a PCI error.  There's no real data to return to satisfy the
 CPU read, so most hardware fabricates ~0 data.
 
-This patch series adds PCI_ERROR_RESPONSE definition and other helper
-definition PCI_SET_ERROR_RESPONSE and PCI_POSSIBLE_ERROR and uses it
-where appropriate to make these checks consistent and easier to find.
+Use PCI_POSSIBLE_ERROR() to check the response we get when we read
+data from hardware.
 
-This helps unify PCI error response checking and make error check
+This helps unify PCI error response checking and make error checks
 consistent and easier to find.
 
-This series also ensures that the error response fabrication now happens
-in the PCI_OP_READ and PCI_USER_READ_CONFIG. This removes the
-responsibility from controller drivers to do the error response setting. 
+Compile tested only.
 
-Patch 1:
-    - Adds the PCI_ERROR_RESPONSE and other related defintions
-    - All other patches are dependent on this patch. This patch needs to
-      be applied first, before the others
+Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
+---
+ drivers/pci/pcie/dpc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Patch 2:
-    - Error fabrication happens in PCI_OP_READ and PCI_USER_READ_CONFIG
-      whenever the data read via the controller driver fails.
-    - This patch needs to be applied before, Patch 4/24 to Patch 15/24 are
-      applied.
-
-Patch 3:
-    - Uses PCI_SET_ERROR_RESPONSE() when device is not found 
-
-Patch 4 - 15:
-    - Removes redundant error fabrication that happens in controller 
-      drivers when the read from a PCI device fails.
-    - These patches are dependent on Patch 2/24 of the series.
-    - These can be applied in any order.
-
-Patch 16 - 22:
-    - Uses PCI_POSSIBLE_ERROR() to check the reads from hardware
-    - Patches can be applied in any order.
-
-Patch 23 - 25:
-    - Edits the comments to include PCI_ERROR_RESPONSE alsong with
-      0xFFFFFFFF, so that it becomes easier to grep for faulty 
-      hardware reads.
-
-Changelog
-=========
-v4:
-   - Rename SET_PCI_ERROR_RESPONSE to PCI_SET_ERROR_RESPONSE
-   - Rename RESPONSE_IS_PCI_ERROR to PCI_POSSIBLE_ERROR
-
-v3:
-   - Change RESPONSE_IS_PCI_ERROR macro definition
-   - Fix the macros, Add () around macro parameters
-   - Fix alignment issue in Patch 2/24
-   - Add proper receipients for all the patches
-
-v2:
-    - Instead of using SET_PCI_ERROR_RESPONSE in all controller drivers
-      to fabricate error response, only use them in PCI_OP_READ and
-      PCI_USER_READ_CONFIG
-
-Naveen Naidu (25):
- [PATCH v4 1/25] PCI: Add PCI_ERROR_RESPONSE and it's related definitions
- [PATCH v4 2/25] PCI: Set error response in config access defines when ops->read() fails
- [PATCH v4 3/25] PCI: Use PCI_SET_ERROR_RESPONSE() when device not found
- [PATCH v4 4/25] PCI: Remove redundant error fabrication when device read fails
- [PATCH v4 5/25] PCI: thunder: Remove redundant error fabrication when device read fails
- [PATCH v4 6/25] PCI: iproc: Remove redundant error fabrication when device read fails
- [PATCH v4 7/25] PCI: mediatek: Remove redundant error fabrication when device read fails
- [PATCH v4 8/25] PCI: exynos: Remove redundant error fabrication when device read fails
- [PATCH v4 9/25] PCI: histb: Remove redundant error fabrication when device read fails
- [PATCH v4 10/25] PCI: kirin: Remove redundant error fabrication when device read fails
- [PATCH v4 11/25] PCI: aardvark: Remove redundant error fabrication when device read fails
- [PATCH v4 12/25] PCI: mvebu: Remove redundant error fabrication when device read fails
- [PATCH v4 13/25] PCI: altera: Remove redundant error fabrication when device read fails
- [PATCH v4 14/25] PCI: rcar: Remove redundant error fabrication when device read fails
- [PATCH v4 15/25] PCI: rockchip: Remove redundant error fabrication when device read fails
- [PATCH v4 16/25] PCI/ERR: Use PCI_POSSIBLE_ERROR() to check read from hardware
- [PATCH v4 17/25] PCI: vmd: Use PCI_POSSIBLE_ERROR() to check read from hardware
- [PATCH v4 18/25] PCI: pciehp: Use PCI_POSSIBLE_ERROR() to check read from hardware
- [PATCH v4 19/25] PCI/DPC: Use PCI_POSSIBLE_ERROR() to check read from hardware
- [PATCH v4 20/25] PCI/PME: Use PCI_POSSIBLE_ERROR() to check read from hardware
- [PATCH v4 21/25] PCI: cpqphp: Use PCI_POSSIBLE_ERROR() to check read from hardware
- [PATCH v4 22/25] PCI: Use PCI_ERROR_RESPONSE to specify hardware error
- [PATCH v4 23/25] PCI: keystone: Use PCI_ERROR_RESPONSE to specify hardware error
- [PATCH v4 24/25] PCI: hv: Use PCI_ERROR_RESPONSE to specify hardware read error
- [PATCH v4 25/25] PCI: xgene: Use PCI_ERROR_RESPONSE to specify hardware error
-
- drivers/pci/access.c                        | 32 +++++++-------
- drivers/pci/controller/dwc/pci-exynos.c     |  4 +-
- drivers/pci/controller/dwc/pci-keystone.c   |  4 +-
- drivers/pci/controller/dwc/pcie-histb.c     |  4 +-
- drivers/pci/controller/dwc/pcie-kirin.c     |  4 +-
- drivers/pci/controller/pci-aardvark.c       |  4 +-
- drivers/pci/controller/pci-hyperv.c         |  2 +-
- drivers/pci/controller/pci-mvebu.c          |  8 +---
- drivers/pci/controller/pci-thunder-ecam.c   | 46 +++++++--------------
- drivers/pci/controller/pci-thunder-pem.c    |  4 +-
- drivers/pci/controller/pci-xgene.c          |  8 ++--
- drivers/pci/controller/pcie-altera.c        |  4 +-
- drivers/pci/controller/pcie-iproc.c         |  4 +-
- drivers/pci/controller/pcie-mediatek.c      | 11 +----
- drivers/pci/controller/pcie-rcar-host.c     |  4 +-
- drivers/pci/controller/pcie-rockchip-host.c |  4 +-
- drivers/pci/controller/vmd.c                |  2 +-
- drivers/pci/hotplug/cpqphp_ctrl.c           |  4 +-
- drivers/pci/hotplug/pciehp_hpc.c            | 10 ++---
- drivers/pci/pci.c                           | 10 ++---
- drivers/pci/pcie/dpc.c                      |  4 +-
- drivers/pci/pcie/pme.c                      |  4 +-
- drivers/pci/probe.c                         | 10 ++---
- include/linux/pci.h                         |  9 ++++
- 24 files changed, 84 insertions(+), 116 deletions(-)
-
+diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+index c556e7beafe3..3e9afee02e8d 100644
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -79,7 +79,7 @@ static bool dpc_completed(struct pci_dev *pdev)
+ 	u16 status;
+ 
+ 	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_STATUS, &status);
+-	if ((status != 0xffff) && (status & PCI_EXP_DPC_STATUS_TRIGGER))
++	if ((!PCI_POSSIBLE_ERROR(status)) && (status & PCI_EXP_DPC_STATUS_TRIGGER))
+ 		return false;
+ 
+ 	if (test_bit(PCI_DPC_RECOVERING, &pdev->priv_flags))
+@@ -312,7 +312,7 @@ static irqreturn_t dpc_irq(int irq, void *context)
+ 
+ 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
+ 
+-	if (!(status & PCI_EXP_DPC_STATUS_INTERRUPT) || status == (u16)(~0))
++	if (!(status & PCI_EXP_DPC_STATUS_INTERRUPT) || PCI_POSSIBLE_ERROR(status))
+ 		return IRQ_NONE;
+ 
+ 	pci_write_config_word(pdev, cap + PCI_EXP_DPC_STATUS,
 -- 
 2.25.1
 
