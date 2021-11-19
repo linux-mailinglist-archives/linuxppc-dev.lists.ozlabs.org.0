@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DCE1456E47
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 12:35:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9260C456E49
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 12:35:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HwZMv6B9Kz3cHC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 22:35:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HwZNd45xPz3c4n
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 22:35:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=VLDY6lYW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dfd0fSIt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,53 +18,54 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=VLDY6lYW; dkim-atps=neutral
+ header.s=20210112 header.b=dfd0fSIt; dkim-atps=neutral
 Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
  [IPv6:2607:f8b0:4864:20::629])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HwZJR4C3Lz3bWX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 22:32:07 +1100 (AEDT)
-Received: by mail-pl1-x629.google.com with SMTP id v19so7909350plo.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 03:32:07 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HwZJT5T4Lz3bWb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 22:32:09 +1100 (AEDT)
+Received: by mail-pl1-x629.google.com with SMTP id m24so7898176pls.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 03:32:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=szKvYnxJqWq8uRHA9z21YAvL81GGQGx0+gaVFJ7anCA=;
- b=VLDY6lYW7USmNXlbMfMCHNIz8XC/wMU0hLo8ahPl7QBf5Wo4ev+q92lYif5YQXwKjY
- OnLr/Ltx924hmHFDF4e1cGAPvWKGdjXCz/UKOA1d0cYp3Zq9sAQeUiAo6ZEMwHk44I4u
- 4vdZi93EenNytb5xDNeLPuKXSO/OJdGpBmWMMqNRnduS1NW1DNkx8HfJEYFyfRrFKGoQ
- jeeME5O66VMoukSsV3jY8ZisSVjtavu7WYqFIWq8FW+y/Iebssy7gwHMcPf8Z6Kp0KE4
- 7gYlCDnvLH3rgX7aQs2BLO6NiK3qsKbKD0m05exeeZowYCHKPZCeLHbbOP3A8+KUSyS7
- /qRQ==
+ bh=bBD6K8XoTAM7ZzTK9IxXY1jKAzzbF/adKK/RRa51jnw=;
+ b=dfd0fSItSwBicPk++srUQxWANowTUia0On69KFPdnjJiXE4L+HBc8yV15Q9lP4J34G
+ 1SDJ8cbGzp82GsjWOBfKmFdKqMongJFjmwWuh2cuOnwScnU7R1tm3kHYa60UGeSY2WFl
+ 6OvMDp1/oHwpdLpy+Mfrdriez6CeDn11nRcndFutC02vOVUZMd6kwaubzVNjdCt4kk0d
+ JuxRrGXJgIKv9yDKMBDJEyHOc3hNB25C0EisT0H5MsQQ1yq4vetUF/SlfeNC04JVp7Pp
+ +cGu7mwBNv+Ncr8dkQNQa2nnkv2jSUUHr8EoPr9kXmOHA70Efpmb8kUWDWbxbTQ6CG8z
+ sg7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=szKvYnxJqWq8uRHA9z21YAvL81GGQGx0+gaVFJ7anCA=;
- b=EojHb/RN9Je10r1Lo6kCrRyLInBJDFEsb2RckIXdkq9qgrYoJIayOiy6t+8j7b78L0
- keIUE5opfJbmUdtEiN3vB1VNnCImV/xM9Kj2wNWTy6o5+f/fu7dj+nH/PpxOkmtJzvM+
- zZJmGcexx6LYlI+lo4zjUIBhFCCpcwTA9hzzrawy8ScgOBwlVrkxDvcO6Rb1iD4m48TI
- qvsjpnm5l79PLw4Hj8mEp+7w5KiTxZMH0H2hBsUSSjPzCtey8pb/Dc3bwXgCafx/8R7D
- qrgf7SCtmwCuUlbbGaebiLwoFXkPTaBzS0PO2jqM4IoZYfl+tsc7YB3ArxXk1FivZaUP
- 0yDg==
-X-Gm-Message-State: AOAM533J5Tis1EIBfDyd93MEaO2IjxnZ0edHC0kA95ZwQWjGt4VDIFSd
- 1t01KY/cph150cMxN3QPuK0db2QgQ3Q=
-X-Google-Smtp-Source: ABdhPJzqFcKFsrxIjTw46yIA+gNDYpBNr32h7kBr744wKcdFAU1Wd5gfK42b5ppcYFf/gYvFE651mg==
-X-Received: by 2002:a17:90b:1bc4:: with SMTP id
- oa4mr3811121pjb.179.1637321525097; 
- Fri, 19 Nov 2021 03:32:05 -0800 (PST)
+ bh=bBD6K8XoTAM7ZzTK9IxXY1jKAzzbF/adKK/RRa51jnw=;
+ b=LvPU57X5LmLcx3jeAsfMlI13c2WjEY7Hmu4MfGH1c4l17uRkyv64K9sGDPhFD0W6e8
+ iiHNwoSyU6pARY3DwXlfCw6QKky8pNnQqp/LhqjKud+pRgdwUdLruDPnczyKQp65sWdo
+ 56Eo7PMiPXq/Sb4dhpuGpm0jf0egX0gSJV/UpzBINVU4JddM/OYkJnXP9GDqZ03P5wJy
+ cNq+k0sQqCKawE+R6oUTD8hYQZEfxj/S0NDYAq+aD1MzDhNk1Gawvsh1sowICXOGHKnl
+ ZyDmHmb8yAE7qcOwPE7JImjThBeETMk+fepsyqOOKEISxmxg0kIUgBeC1em2TlM9kp/Q
+ ZG8Q==
+X-Gm-Message-State: AOAM531bU3oAmJmJRKHQR0UkTnG1bR/4C9V4JMEpNNKucnFrSuEslqiv
+ XROwwGidTcnB2/zjgDxNIsHNksa/7aI=
+X-Google-Smtp-Source: ABdhPJzF1Ag2X4gJsANTJUSS/F2YgDeoYSVWIukcnGF6+lJCQuyU6cO16szFyVvFpfqhCJyuIOsMGA==
+X-Received: by 2002:a17:90a:fe0a:: with SMTP id
+ ck10mr3835851pjb.216.1637321527847; 
+ Fri, 19 Nov 2021 03:32:07 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (60-240-2-228.tpgi.com.au. [60.240.2.228])
  by smtp.gmail.com with ESMTPSA id
- g17sm2632626pfv.136.2021.11.19.03.32.02
+ g17sm2632626pfv.136.2021.11.19.03.32.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Nov 2021 03:32:04 -0800 (PST)
+ Fri, 19 Nov 2021 03:32:07 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 4/5] powerpc/watchdog: read TB close to where it is used
-Date: Fri, 19 Nov 2021 21:31:45 +1000
-Message-Id: <20211119113146.752759-5-npiggin@gmail.com>
+Subject: [PATCH v4 5/5] powerpc/watchdog: help remote CPUs to flush NMI printk
+ output
+Date: Fri, 19 Nov 2021 21:31:46 +1000
+Message-Id: <20211119113146.752759-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211119113146.752759-1-npiggin@gmail.com>
 References: <20211119113146.752759-1-npiggin@gmail.com>
@@ -87,141 +88,116 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When taking watchdog actions, printing messages, comparing and
-re-setting wd_smp_last_reset_tb, etc., read TB close to the point of use
-and under wd_smp_lock or printing lock (if applicable).
+The printk layer at the moment does not seem to have a good way to force
+flush printk messages that are created in NMI context, except in the
+panic path.
 
-This should keep timebase mostly monotonic with kernel log messages, and
-could prevent (in theory) a laggy CPU updating wd_smp_last_reset_tb to
-something a long way in the past, and causing other CPUs to appear to be
-stuck.
+NMI-context printk messages normally get to the console with irq_work,
+but that won't help if the CPU is stuck with irqs disabled, as can be
+the case for hard lockup watchdog messages.
 
-These additional TB reads are all slowpath (lockup has been detected),
-so performance does not matter.
+The watchdog currently flushes the printk buffers after detecting a
+lockup on remote CPUs, but they may not have processed their NMI IPI
+yet by that stage, or they may have self-detected a lockup in which
+case they won't go via this NMI IPI path.
 
-Reviewed-by: Laurent Dufour <ldufour@linux.ibm.com>
+Improve the situation by having NMI-context mark a flag if it called
+printk, and have watchdog timer interrupts check if that flag was set
+and try to flush if it was. Latency is not a big problem because we
+were already stuck for a while, just need to try to make sure the
+messages eventually make it out.
+
+Cc: Laurent Dufour <ldufour@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/watchdog.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+This patch requires commit 5d5e4522a7f4 ("printk: restore flushing of
+NMI buffers on remote CPUs after NMI backtraces"). If backporting this
+to a kernel without commit 93d102f094be ("printk: remove safe buffers"),
+then printk_safe_flush() should be used in place of
+printk_trigger_flush().
+
+Thanks,
+Nick
+
+ arch/powerpc/kernel/watchdog.c | 37 ++++++++++++++++++++++++++++------
+ 1 file changed, 31 insertions(+), 6 deletions(-)
 
 diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
-index cfd45049ec7f..23745af38d62 100644
+index 23745af38d62..bfc27496fe7e 100644
 --- a/arch/powerpc/kernel/watchdog.c
 +++ b/arch/powerpc/kernel/watchdog.c
-@@ -157,7 +157,7 @@ static void wd_lockup_ipi(struct pt_regs *regs)
+@@ -86,6 +86,7 @@ static DEFINE_PER_CPU(u64, wd_timer_tb);
+ /* SMP checker bits */
+ static unsigned long __wd_smp_lock;
+ static unsigned long __wd_reporting;
++static unsigned long __wd_nmi_output;
+ static cpumask_t wd_smp_cpus_pending;
+ static cpumask_t wd_smp_cpus_stuck;
+ static u64 wd_smp_last_reset_tb;
+@@ -154,6 +155,23 @@ static void wd_lockup_ipi(struct pt_regs *regs)
+ 	else
+ 		dump_stack();
+ 
++	/*
++	 * __wd_nmi_output must be set after we printk from NMI context.
++	 *
++	 * printk from NMI context defers printing to the console to irq_work.
++	 * If that NMI was taken in some code that is hard-locked, then irqs
++	 * are disabled so irq_work will never fire. That can result in the
++	 * hard lockup messages being delayed (indefinitely, until something
++	 * else kicks the console drivers).
++	 *
++	 * Setting __wd_nmi_output will cause another CPU to notice and kick
++	 * the console drivers for us.
++	 *
++	 * xchg is not needed here (it could be a smp_mb and store), but xchg
++	 * gives the memory ordering and atomicity required.
++	 */
++	xchg(&__wd_nmi_output, 1);
++
  	/* Do not panic from here because that can recurse into NMI IPI layer */
  }
  
--static bool set_cpu_stuck(int cpu, u64 tb)
-+static bool set_cpu_stuck(int cpu)
- {
- 	cpumask_set_cpu(cpu, &wd_smp_cpus_stuck);
- 	cpumask_clear_cpu(cpu, &wd_smp_cpus_pending);
-@@ -166,7 +166,7 @@ static bool set_cpu_stuck(int cpu, u64 tb)
- 	 */
- 	smp_mb();
- 	if (cpumask_empty(&wd_smp_cpus_pending)) {
--		wd_smp_last_reset_tb = tb;
-+		wd_smp_last_reset_tb = get_tb();
- 		cpumask_andnot(&wd_smp_cpus_pending,
- 				&wd_cpus_enabled,
- 				&wd_smp_cpus_stuck);
-@@ -175,15 +175,16 @@ static bool set_cpu_stuck(int cpu, u64 tb)
- 	return false;
- }
- 
--static void watchdog_smp_panic(int cpu, u64 tb)
-+static void watchdog_smp_panic(int cpu)
- {
- 	static cpumask_t wd_smp_cpus_ipi; // protected by reporting
- 	unsigned long flags;
--	u64 last_reset;
-+	u64 tb, last_reset;
- 	int c;
- 
- 	wd_smp_lock(&flags);
- 	/* Double check some things under lock */
-+	tb = get_tb();
- 	last_reset = wd_smp_last_reset_tb;
- 	if ((s64)(tb - last_reset) < (s64)wd_smp_panic_timeout_tb)
- 		goto out;
-@@ -198,7 +199,7 @@ static void watchdog_smp_panic(int cpu, u64 tb)
- 			continue; // should not happen
- 
- 		__cpumask_set_cpu(c, &wd_smp_cpus_ipi);
--		if (set_cpu_stuck(c, tb))
-+		if (set_cpu_stuck(c))
- 			break;
+@@ -227,12 +245,6 @@ static void watchdog_smp_panic(int cpu)
+ 		cpumask_clear(&wd_smp_cpus_ipi);
  	}
- 	if (cpumask_empty(&wd_smp_cpus_ipi)) {
-@@ -243,7 +244,7 @@ static void watchdog_smp_panic(int cpu, u64 tb)
- 	wd_smp_unlock(&flags);
- }
  
--static void wd_smp_clear_cpu_pending(int cpu, u64 tb)
-+static void wd_smp_clear_cpu_pending(int cpu)
- {
- 	if (!cpumask_test_cpu(cpu, &wd_smp_cpus_pending)) {
- 		if (unlikely(cpumask_test_cpu(cpu, &wd_smp_cpus_stuck))) {
-@@ -251,7 +252,7 @@ static void wd_smp_clear_cpu_pending(int cpu, u64 tb)
- 			unsigned long flags;
+-	/*
+-	 * Force flush any remote buffers that might be stuck in IRQ context
+-	 * and therefore could not run their irq_work.
+-	 */
+-	printk_trigger_flush();
+-
+ 	if (hardlockup_panic)
+ 		nmi_panic(NULL, "Hard LOCKUP");
  
- 			pr_emerg("CPU %d became unstuck TB:%lld\n",
--				 cpu, tb);
-+				 cpu, get_tb());
- 			print_irqtrace_events(current);
- 			if (regs)
- 				show_regs(regs);
-@@ -317,7 +318,7 @@ static void wd_smp_clear_cpu_pending(int cpu, u64 tb)
- 		 */
- 		wd_smp_lock(&flags);
- 		if (cpumask_empty(&wd_smp_cpus_pending)) {
--			wd_smp_last_reset_tb = tb;
-+			wd_smp_last_reset_tb = get_tb();
- 			cpumask_andnot(&wd_smp_cpus_pending,
- 					&wd_cpus_enabled,
- 					&wd_smp_cpus_stuck);
-@@ -332,10 +333,10 @@ static void watchdog_timer_interrupt(int cpu)
- 
- 	per_cpu(wd_timer_tb, cpu) = tb;
- 
--	wd_smp_clear_cpu_pending(cpu, tb);
-+	wd_smp_clear_cpu_pending(cpu);
+@@ -337,6 +349,17 @@ static void watchdog_timer_interrupt(int cpu)
  
  	if ((s64)(tb - wd_smp_last_reset_tb) >= (s64)wd_smp_panic_timeout_tb)
--		watchdog_smp_panic(cpu, tb);
-+		watchdog_smp_panic(cpu);
+ 		watchdog_smp_panic(cpu);
++
++	if (__wd_nmi_output && xchg(&__wd_nmi_output, 0)) {
++		/*
++		 * Something has called printk from NMI context. It might be
++		 * stuck, so this this triggers a flush that will get that
++		 * printk output to the console.
++		 *
++		 * See wd_lockup_ipi.
++		 */
++		printk_trigger_flush();
++	}
  }
  
  DEFINE_INTERRUPT_HANDLER_NMI(soft_nmi_interrupt)
-@@ -372,7 +373,7 @@ DEFINE_INTERRUPT_HANDLER_NMI(soft_nmi_interrupt)
- 			return 0;
- 		}
+@@ -386,6 +409,8 @@ DEFINE_INTERRUPT_HANDLER_NMI(soft_nmi_interrupt)
+ 		print_irqtrace_events(current);
+ 		show_regs(regs);
  
--		set_cpu_stuck(cpu, tb);
-+		set_cpu_stuck(cpu);
++		xchg(&__wd_nmi_output, 1); // see wd_lockup_ipi
++
+ 		if (sysctl_hardlockup_all_cpu_backtrace)
+ 			trigger_allbutself_cpu_backtrace();
  
- 		wd_smp_unlock(&flags);
- 
-@@ -433,7 +434,7 @@ void arch_touch_nmi_watchdog(void)
- 	tb = get_tb();
- 	if (tb - per_cpu(wd_timer_tb, cpu) >= ticks) {
- 		per_cpu(wd_timer_tb, cpu) = tb;
--		wd_smp_clear_cpu_pending(cpu, tb);
-+		wd_smp_clear_cpu_pending(cpu);
- 	}
- }
- EXPORT_SYMBOL(arch_touch_nmi_watchdog);
-@@ -491,7 +492,7 @@ static void stop_watchdog(void *arg)
- 	cpumask_clear_cpu(cpu, &wd_cpus_enabled);
- 	wd_smp_unlock(&flags);
- 
--	wd_smp_clear_cpu_pending(cpu, get_tb());
-+	wd_smp_clear_cpu_pending(cpu);
- }
- 
- static int stop_watchdog_on_cpu(unsigned int cpu)
 -- 
 2.23.0
 
