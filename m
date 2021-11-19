@@ -1,110 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126364565C3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Nov 2021 23:35:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CEC456887
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 04:17:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HwF3p73TVz3c6K
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 09:35:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HwMKV4Wkvz3c72
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 14:17:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LtdEAQpZ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TTamx8W0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
+ helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=LtdEAQpZ; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=TTamx8W0; dkim-atps=neutral
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
+ [IPv6:2607:f8b0:4864:20::532])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HwF3233M7z2x9d
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 09:34:22 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AIKxYo6019153; 
- Thu, 18 Nov 2021 22:34:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=3sZP65E5byhIvz4i90BuqnvbuxB6Skk0Z/nrqSuw/UU=;
- b=LtdEAQpZQ05KH5eWVBSStMhM3evlFg17GYUOrqiEEofJjF7olEuXJDGAhK/ypIfKoOEO
- 8GF6QG9C4QQR5ZNJWrVJv248tj4jW/G88iXQNnKU2SHmhKiz78/lOaH5ksQ3wznTAEW7
- k0OV5qeRSLfQY6YrEZw+TWpvjoeYbDUKOJ9TG6EnjSfn2xPRPTdjgkwYlSqmK3hG/NZD
- BfKELpL8fKNQ7oZez7ucVBq2QpCch/kfKfc6aV6QA+KOJMQQW6hZ4qW1/JtxxSGt58H5
- Hasrmk6b8pfNF0IoFg0puoGk85s41/jy9eqRxipxUZY8vKsWyTU7GSmQyY+EvYsgI3dt QQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cdxbvt7mc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Nov 2021 22:34:13 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AIMNMYg013965;
- Thu, 18 Nov 2021 22:34:13 GMT
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cdxbvt7m5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Nov 2021 22:34:12 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AIMR5mD011651;
- Thu, 18 Nov 2021 22:34:11 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma04wdc.us.ibm.com with ESMTP id 3ca50cfmfu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Nov 2021 22:34:11 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1AIMY7FK36241826
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Nov 2021 22:34:07 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 34C12AC089;
- Thu, 18 Nov 2021 22:34:07 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C7D03AC06C;
- Thu, 18 Nov 2021 22:34:02 +0000 (GMT)
-Received: from [9.211.61.197] (unknown [9.211.61.197])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 18 Nov 2021 22:34:02 +0000 (GMT)
-Message-ID: <604dad24-5406-509c-d765-905d74880523@linux.vnet.ibm.com>
-Date: Thu, 18 Nov 2021 17:34:01 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HwMJp6C0bz2yXc
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 14:16:40 +1100 (AEDT)
+Received: by mail-pg1-x532.google.com with SMTP id 206so2352924pgb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Nov 2021 19:16:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=NmKk8bOUhnAOj8m/UKP24fzkUYK+snNNLKFYgIajHSg=;
+ b=TTamx8W0ue5q/J5USPNMMTTvSe8b3xDKOZUA1i5miY6FVzIKwwajxhIB7Eeh/GpWhG
+ 0Ysi2THPUj3xb8sXwM73iP5Ur6vmiIxLK9GK1CX0vL+wIVYGhLRJORSrr2x+3emO7lDt
+ fBwjhheNfGw31tKwBu5NupwS9wZE0QDt7e+qaXDEM5bjEujJT6DjeJTPPTzFR8QegBrB
+ c9yQznT+fVj3AzXTcbN7hGy5UtpB6Jvi5WnTxgGh5baNPZfMYa/mfbcPjS8kiX582u73
+ HlDUeQMS0iZvVQyVQVB2uvTe5/bhHyJYnAPgywsKPo1idf+LwNebGeEZtdcQgc+VnFjT
+ zEOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=NmKk8bOUhnAOj8m/UKP24fzkUYK+snNNLKFYgIajHSg=;
+ b=xM3+I+j2o79zO+J2ZvP2jf4rot3qVj911/tBnJ3ZRckfm+aDLpVc4Sz0ptno6ESdaZ
+ dVI+angXXrR000GVjQFCUjq8D/gu8D1QLPNt8IB+Wmt/asqyjJ2d0/pVJgmSNgwFSyjD
+ ehBChGOGo1qz6gBJtVSMEWtiqYydPXeLG95zXNxJ4R7RC+jlEWl3FkVpx78zjv3A1pZ0
+ 2STVPcisSxnkAsAreMfs12R/QVf35dOI6LZcINIGtGr/bTPNhUsHEo8C9ion+qsrfxMG
+ 4GQ4HWv4jT4CcuKn+i0s41qjWmKwFl0OGBBM0uDrTJW7D6CbHYCS/ycMQNuUyfsG4XA3
+ gpaQ==
+X-Gm-Message-State: AOAM532Lwj/7U9YRIdEV85GLFqzH0qLOloIoUdH/X01ySP/n/arCX37D
+ LKWKFMGYfXqKDFN2Q0peVkDYPGJRWOJ/oA==
+X-Google-Smtp-Source: ABdhPJxf1cIJyWB8anXQJJg5zfoUaEoUZnOzgdWBtmprNT1qiU6IeI60i0FfKS+PIB8G/1S/vvRzew==
+X-Received: by 2002:a63:85c6:: with SMTP id
+ u189mr14736940pgd.377.1637291796213; 
+ Thu, 18 Nov 2021 19:16:36 -0800 (PST)
+Received: from bobo.ibm.com (60-240-2-228.tpgi.com.au. [60.240.2.228])
+ by smtp.gmail.com with ESMTPSA id k91sm817128pja.19.2021.11.18.19.16.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 Nov 2021 19:16:35 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v1] KVM: PPC: Book3S HV: Prevent POWER7/8 TLB flush flushing
+ SLB
+Date: Fri, 19 Nov 2021 13:16:27 +1000
+Message-Id: <20211119031627.577853-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 0/3] KEXEC_SIG with appended signature
-Content-Language: en-US
-To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
-References: <cover.1635948742.git.msuchanek@suse.de>
- <87czneeurr.fsf@dja-thinkpad.axtens.net>
- <20211105131401.GL11195@kunlun.suse.cz>
- <87a6ifehin.fsf@dja-thinkpad.axtens.net>
- <20211108120500.GO11195@kunlun.suse.cz>
- <56d2ae87-b9bf-c9fc-1395-db4769a424ea@linux.vnet.ibm.com>
- <20211112083055.GA34414@kunlun.suse.cz>
- <8cd90fea-05c9-b5f9-5e0c-84f98b2f55cd@linux.vnet.ibm.com>
- <20211116095343.GG34414@kunlun.suse.cz>
-From: Nayna <nayna@linux.vnet.ibm.com>
-In-Reply-To: <20211116095343.GG34414@kunlun.suse.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: x398kgBnLb2ZNX7NPbVzUTEXr0d2VD96
-X-Proofpoint-GUID: G_o52HHXc1RIsRhcs9H375AtA3LqBl1o
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-18_12,2021-11-17_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0
- clxscore=1015 lowpriorityscore=0 priorityscore=1501 mlxscore=0
- mlxlogscore=999 suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2111180115
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,108 +79,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
- Rob Herring <robh@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
- linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
- David Howells <dhowells@redhat.com>,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- Luis Chamberlain <mcgrof@kernel.org>, keyrings@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, Frank van der Linden <fllinden@amazon.com>,
- Jessica Yu <jeyu@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
- buendgen@de.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The POWER9 ERAT flush instruction is a SLBIA with IH=7, which is a
+reserved value on POWER7/8. On POWER8 this invalidates the SLB entries
+above index 0, similarly to SLBIA IH=0.
 
-On 11/16/21 04:53, Michal Suchánek wrote:
-> On Mon, Nov 15, 2021 at 06:53:53PM -0500, Nayna wrote:
->> On 11/12/21 03:30, Michal Suchánek wrote:
->>> Hello,
->>>
->>> On Thu, Nov 11, 2021 at 05:26:41PM -0500, Nayna wrote:
->>>> On 11/8/21 07:05, Michal Suchánek wrote:
->>>>> Hello,
->>>>>
->>>>> The other part is that distributions apply 'lockdown' patches that change
->>>>> the security policy depending on secure boot status which were rejected
->>>>> by upstream which only hook into the _SIG options, and not into the IMA_
->>>>> options. Of course, I expect this to change when the IMA options are
->>>>> universally available across architectures and the support picked up by
->>>>> distributions.
->>>>>
->>>>> Which brings the third point: IMA features vary across architectures,
->>>>> and KEXEC_SIG is more common than IMA_KEXEC.
->>>>>
->>>>> config/arm64/default:CONFIG_HAVE_IMA_KEXEC=y
->>>>> config/ppc64le/default:CONFIG_HAVE_IMA_KEXEC=y
->>>>>
->>>>> config/arm64/default:CONFIG_KEXEC_SIG=y
->>>>> config/s390x/default:CONFIG_KEXEC_SIG=y
->>>>> config/x86_64/default:CONFIG_KEXEC_SIG=y
->>>>>
->>>>> KEXEC_SIG makes it much easier to get uniform features across
->>>>> architectures.
->>>> Architectures use KEXEC_SIG vs IMA_KEXEC based on their requirement.
->>>> IMA_KEXEC is for the kernel images signed using sign-file (appended
->>>> signatures, not PECOFF), provides measurement along with verification, and
->>> That's certainly not the case. S390 uses appended signatures with
->>> KEXEC_SIG, arm64 uses PECOFF with both KEXEC_SIG and IMA_KEXEC.
->> Yes, S390 uses appended signature, but they also do not support
->> measurements.
->>
->> On the other hand for arm64/x86, PECOFF works only with KEXEC_SIG. Look at
->> the KEXEC_IMAGE_VERIFY_SIG config dependencies in arch/arm64/Kconfig and
->> KEXEC_BZIMAGE_VERIFY_SIG config dependencies in arch/x86/Kconfig. Now, if
->> KEXEC_SIG is not enabled, then IMA appraisal policies are enforced if secure
->> boot is enabled, refer to security/integrity/ima_efi.c . IMA would fail
->> verification if kernel is not signed with module sig appended signatures or
->> signature verification fails.
->>
->> In short, IMA is used to enforce the existence of a policy if secure boot is
->> enabled. If they don't support module sig appended signatures, by definition
->> it fails. Thus PECOFF doesn't work with both KEXEC_SIG and IMA_KEXEC, but
->> only with KEXEC_SIG.
-> Then IMA_KEXEC is a no-go. It is not supported on all architectures and
-> it principially cannot be supported because it does not support PECOFF
-> which is needed to boot the kernel on EFI platforms. To get feature
-> parity across architectures KEXEC_SIG is required.
+If the SLB entries are invalidated, and then the guest is bypassed, the
+host SLB does not get re-loaded, so the bolted entries above 0 will be
+lost. This can result in kernel stack access causing a SLB fault.
 
-I would not say "a no-go", it is based on user requirements.
+Kernel stack access causing a SLB fault was responsible for the infamous
+mega bug (search "Fix SLB reload bug"). Although since commit
+48e7b7695745 ("powerpc/64s/hash: Convert SLB miss handlers to C") that
+starts using the kernel stack in the SLB miss handler, it might only
+result in an infinite loop of SLB faults. In any case it's a bug.
 
-The key takeaway from this discussion is that both KEXEC_SIG and 
-IMA_KEXEC support functionality with some small degree of overlap, and 
-that documenting the differences is needed.  This will help kernel 
-consumers to understand the difference and enable the appropriate 
-functionality for their environment.
+Fix this by only executing the instruction on >= POWER9 where IH=7 is
+defined not to invalidate the SLB. POWER7/8 don't require this ERAT
+flush.
 
-As per my understanding:
+Fixes: 5008711259201 ("KVM: PPC: Book3S HV: Invalidate ERAT when flushing guest TLB entries")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kvm/book3s_hv_builtin.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-KEXEC_SIG:
-* Supports kernel image verification
-* Linked with secureboot state using downstream patch
-* Supports PECOFF and module sig appended signature format
-* Supports blocklisting of keys
-
-IMA_KEXEC:
-* Supports kernel image verification
-* Linked with secureboot state in upstream
-* Supports module sig appended signature format and signatures in 
-extended attribute.
-* Supports blocklisting of keys
-* Supports blocklisting single kernel binary
-* Supports measurements for attestation
-* Supports audit log
-
-Users can enable the option based on their requirements.
-
-Thanks for the good discussion and enabling KEXEC_SIG for POWER as well. 
-It would be good to have updated kernel documentation to go along with 
-KEXEC_SIG support in the patchset.
-
-Thanks & Regards,
-     - Nayna
+diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
+index fcf4760a3a0e..70b7a8f97153 100644
+--- a/arch/powerpc/kvm/book3s_hv_builtin.c
++++ b/arch/powerpc/kvm/book3s_hv_builtin.c
+@@ -695,6 +695,7 @@ static void flush_guest_tlb(struct kvm *kvm)
+ 				       "r" (0) : "memory");
+ 		}
+ 		asm volatile("ptesync": : :"memory");
++		// POWER9 congruence-class TLBIEL leaves ERAT. Flush it now.
+ 		asm volatile(PPC_RADIX_INVALIDATE_ERAT_GUEST : : :"memory");
+ 	} else {
+ 		for (set = 0; set < kvm->arch.tlb_sets; ++set) {
+@@ -705,7 +706,9 @@ static void flush_guest_tlb(struct kvm *kvm)
+ 			rb += PPC_BIT(51);	/* increment set number */
+ 		}
+ 		asm volatile("ptesync": : :"memory");
+-		asm volatile(PPC_ISA_3_0_INVALIDATE_ERAT : : :"memory");
++		// POWER9 congruence-class TLBIEL leaves ERAT. Flush it now.
++		if (cpu_has_feature(CPU_FTR_ARCH_300))
++			asm volatile(PPC_ISA_3_0_INVALIDATE_ERAT : : :"memory");
+ 	}
+ }
+ 
+-- 
+2.23.0
 
