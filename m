@@ -1,93 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B75C457BEC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Nov 2021 07:02:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72151457BED
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Nov 2021 07:03:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hx2y34l9fz3cYx
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Nov 2021 17:02:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hx2yp2XYDz3cSq
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Nov 2021 17:03:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=J1ySC3JQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=KPFYp17O;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=outlook.com (client-ip=40.92.40.14;
- helo=nam10-bn7-obe.outbound.protection.outlook.com;
- envelope-from=calvinzhang.cool@outlook.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
+ helo=mail-pj1-x1029.google.com; envelope-from=calvinzhang.cool@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256
- header.s=selector1 header.b=J1ySC3JQ; 
- dkim-atps=neutral
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10olkn2014.outbound.protection.outlook.com [40.92.40.14])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=KPFYp17O; dkim-atps=neutral
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HwXtS0d7Kz2yX8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 21:27:58 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O6EBg0XsD10jfiwe7E0G/iLwnmfCqaTIJ/u9dSmx3CdTTdCU2euxmPQ/fd58rSP2pyHRYM7XBxRQEZZHUsTq+JjSruZEqN5OfqGfRGi8fEF3NP8hcwWG1fkYA5j8qPyloorkAIwnEDsLqXyjWvzAubq3SDswzrCBTlIjjrFUpF137re5km3tYrpondrtRCGT3viw+A5qV7F7m4ZOrV2UDcDCXOEhZh0XIzG2p0NzxwL0GmAdvdX4pU0ez+hAqY6NCHm82c8MUbmqibaX9u1xmEX9sY3mCQacEuxu/gIFiSFnBw8MRwLzTOQRNvaOcl8bx3ynU9D9x6N3amQYYGGJQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P0IGN7BC/gYBbmMoOqL/FzEUtwX+nHsuXaIwwu/DyK4=;
- b=IgPyN+CoGtHefRfNucYkWwwhyDqrVxo2k9n35JdABMrjTYhJBpQPOLsazqQizurZ4G28ReJLTQAkYfqW3hFlcST7o55lELV2pXZvR8uaK8UXYCUKG9t/74GAm8XNqjoAkBy6mB7iOpw6tMN7L+2Qn/Ne1qqlHnrHN+R2JeoczzT2JPiuLpk1gbrAYaf/k2bolq2SYc1wVblqs+lCx4NYlRgdpqWLI6Ks+2+qmaAA3C8kGtTlYHwQu6vleH4ZxIyHaf8YZpYFE1HKnhF4lcXCPNmQ/xH8+zDUzB7aoWlcIRSMYFt+76SOMuZXKNEP83kllFU9NA0nG0yL9EaC430d6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P0IGN7BC/gYBbmMoOqL/FzEUtwX+nHsuXaIwwu/DyK4=;
- b=J1ySC3JQ9hOzMZxO3Y4awlMiAacolZtbSo8JLXxP2iZs4O+H2ZMSL4FELYsNk81OR/lELk/jYOTZ32fwIA++FQFfspcwgZnXbb+mucCWDdqrdq9ouDlKjpJ+sbUi2qZdRefucWj1ami9MaMmm4VNj8PJh6aEwaVgHGMx8DitMAmPrF+JHMHIdpl3kB6ekuBlwQVC1X+7P+DLIxPtK6x39Y4TxLMrSaA2buuLkZ96CygbFBz3KYqIRr7tdzs+oyDnAw/xo7BdqQPlcdghfaabimt1OsR587PfHQv6z9rG5RWfCa7j0eDBPcbWv7I5ljy+UWesWy5m9FX2cEoAX/ZbUA==
-Received: from PH7PR20MB4266.namprd20.prod.outlook.com (2603:10b6:510:130::21)
- by PH0PR20MB4352.namprd20.prod.outlook.com (2603:10b6:510:14d::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.22; Fri, 19 Nov
- 2021 10:27:34 +0000
-Received: from PH7PR20MB4266.namprd20.prod.outlook.com
- ([fe80::548d:a47:18bf:6b54]) by PH7PR20MB4266.namprd20.prod.outlook.com
- ([fe80::548d:a47:18bf:6b54%9]) with mapi id 15.20.4649.018; Fri, 19 Nov 2021
- 10:27:34 +0000
-Date: Fri, 19 Nov 2021 18:27:23 +0800
-From: Calvin Zhang <calvinzhang.cool@outlook.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HwXx94H0xz2yPs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 21:30:19 +1100 (AEDT)
+Received: by mail-pj1-x1029.google.com with SMTP id
+ np6-20020a17090b4c4600b001a90b011e06so8420636pjb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 02:30:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=mI6KtEpWF619oecwW9ziIW9hw+HsMKzn28OULpWVurc=;
+ b=KPFYp17Oy/uF3pbSIvlZbA7tgtmLiBC3HIruVIaKeBTx1ALHk1wBHI9RWH4Y/TRiM2
+ hAq35CyJOhqjAvnIz+XnfBNiKxqvsUzF8MUMqrbb+qoLapa3GCOHgXxaI6x9Km0AlL0K
+ 2wG7B8CCYpBSr+ZNFswMkvUZagoAlzcdTSS//NHNiGf8CdixgEqb6uKPGS2QpTEgcUAp
+ yArb+GP+Q+XhbKyaqKWupK7SJqNy6AAI7qZH/W5TKcSo7ZV4POw8PNPyAsvkQzKhD740
+ EiMIWTjA0fXMyULJynwnTQN6Kgk/iWbRQ1iPpWyGjz39JFmP0lOhp61wqe2NJVi1cPEy
+ 0utQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=mI6KtEpWF619oecwW9ziIW9hw+HsMKzn28OULpWVurc=;
+ b=nDWFDcsYkR3beeJsx6MO11W5+N42LOOSN1t78KYjC1J0glVcH5URyEiN+FzVCw/mAZ
+ 1GjGxSOhHO+5DfPk6/THK7FvUJZziebggM97UNTwld2ZLiYnkRuiWkrsRaqvUZZZlv65
+ rgPNqjJUAQkT1zAP2Q/Lw/iT9XoI+aBqDG/OzEZvfPfAUJ8aQ+CCUwj0qZT0zI4QUcvW
+ XV4NGbpT3LD+DNQ4KczwSjs6WiGeQaKEeQEEg1Zh290TzIoVitlTS9cmjc2nVZLPK/9j
+ k/XVIbwg6yK4DklJte9UHrw1mPggGXcPK4wNAZahdARirAMTEYB09dVoFqGYY51QBNqC
+ WSXg==
+X-Gm-Message-State: AOAM530+bL8owZb8NJWQB8kYn262fLsxNqL0DmnduAPMPPv3gzaz4Cov
+ 5CihaHCgW22Bk301pg+KrbU=
+X-Google-Smtp-Source: ABdhPJwCL45zphX6sAUQpCTH2XR0MI6TO3LxQucz8xUZnsL94laUGiXdLG1KlgE2xhwPB5DYkk54PQ==
+X-Received: by 2002:a17:902:bc85:b0:143:954e:8548 with SMTP id
+ bb5-20020a170902bc8500b00143954e8548mr73204786plb.82.1637317814262; 
+ Fri, 19 Nov 2021 02:30:14 -0800 (PST)
+Received: from localhost ([103.99.179.247])
+ by smtp.gmail.com with ESMTPSA id u22sm2537834pfk.148.2021.11.19.02.30.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 19 Nov 2021 02:30:14 -0800 (PST)
+Date: Fri, 19 Nov 2021 18:30:09 +0800
+From: Calvin Zhang <calvinzhang.cool@gmail.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Subject: Re: [PATCH 2/2] of: reserved_mem: Remove reserved regions count
  restriction
-Message-ID: <PH7PR20MB42663BF6B2DB62EEA95012F8989C9@PH7PR20MB4266.namprd20.prod.outlook.com>
+Message-ID: <YZd8sc6E0bgNA9ag@debian>
 References: <20211119075844.2902592-1-calvinzhang.cool@gmail.com>
  <20211119075844.2902592-3-calvinzhang.cool@gmail.com>
  <YZd0uEWNH6Def3+8@smile.fi.intel.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <YZd0uEWNH6Def3+8@smile.fi.intel.com>
-X-TMN: [4l5XR5jsTyaGhQdOKSGL1ZWW6tLviOvG]
-X-ClientProxiedBy: HK2PR0302CA0020.apcprd03.prod.outlook.com
- (2603:1096:202::30) To PH7PR20MB4266.namprd20.prod.outlook.com
- (2603:10b6:510:130::21)
-X-Microsoft-Original-Message-ID: <YZd8C9+NTZ+sLEjZ@debian>
-MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost (103.99.179.247) by
- HK2PR0302CA0020.apcprd03.prod.outlook.com (2603:1096:202::30) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4713.18 via Frontend Transport; Fri, 19 Nov 2021 10:27:33 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 3effd0ad-1f25-4d82-64ba-08d9ab473339
-X-MS-TrafficTypeDiagnostic: PH0PR20MB4352:
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Wvp9u67YY3EMxv2WF4Oprb5l3t07uoRMeoZPbORZLKbwH6OG1WM4zwKMfzyONQ+bXcdkP/ECL0oJF6iRBWVIuNZeqITnNk+rfwOu6qYK5NOlrgKk+0F/PVXY7Rrf/7jwyKbtgg7Ntfa6keDOJSbz4U8SZbmZzkMIdSaEh2lyjtaK/YFHOkFr45wsFDareZnixpY0sHduN72mVbbE3Fji7DMN7nL4y0VNXbIIsSZGvsSUBFKiNuRzL1slFNhSPt10pQA4izsQp4QH19o7ZT9ZFIJ7k/TYwbuLXTRLN0m7613fdEDIHCUBSW9p0MFzlQgPlFDuI7rrD7dz12Bt6ggqwhK7llNpPfxxezw8IUp0bIh5uhMT+DlgGo7RfUVbo3JFNz4Wgn6OvqDJkUHY7Uq8fJKKcxD/AXQhIBK5k8obZOO7v4IYlDOWNCN3xlCxR8z7rxxJCnN06mudUFOSwVFyMUxpz0K0cqX7aKKQJqmFXCvfBbd2EZoUt9glXv82GJXywMo0QMGIijOrHiP5kptlFV1e1CUVY2GE4DQQYMwLBYo=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: p4GealiK/Qw4Vf6g06c3lbieB8w0+KNvBHN8+jRdf+jK1eBBeng+eWrCwIwidKfgguvsvN7Q1pKb+a932cWQKTsL0Dt1WDc7e8uYGLm+VKO7HrSSAatkkdjPpEN3OtL21HdW3S9iBybwMisPQlp+gBMKOtv8zbhdOu/fgTfrwc+mNEFxMm0fi7k/wLhzIYaDFCrRv5UIGO7cetDjBTeDe6cFtTvVkwa7YrA1X7Z82UIzqKX6JK9ZkUeOm4fKquKKuGkFMFlyjt/1Wm9HW/2CoyswLwjZi6u3KYxtAn5DICaR7UfmjpbcmkAKXTDCwvxraDzW0CFjgBm7UFzm5mobbfmkduT7j80lM05PT4BzDcLRgibKhPx3zfGDyQhT0crN8Atoa44MYXsEOBFSGmguWaB+W3ci3P/Hbad6/mgdlXEKQkb8Qep2UERC1QfChCztK9I52StcNhd7xDPm8zSyvsJI8CJfVfkf/YK6jydQqomu+0rOCeUrhH8LFxFhb17H+TtYBbgSyBE6sHruIhXXzvgPF0YCTxkRZfcVRWP5SmkYmuxXDj32KMCUVMS+4Vd0X1oAWQnKjz8pPMGl792f8IopMuvMSh5yX2F+6b1MlmgU/QQ0f1ofL3fhR8OV+Fo2xi6BBbyLMfq8FT2AcbBSxHtCUFLPjnXOe22KfEScwcgK2ZKXAvHOc49EB6lHzdKcJeuktT6LeU67xUVqJpZuWg==
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3effd0ad-1f25-4d82-64ba-08d9ab473339
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR20MB4266.namprd20.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2021 10:27:34.5026 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR20MB4352
 X-Mailman-Approved-At: Sat, 20 Nov 2021 17:01:52 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -186,6 +171,5 @@ early_init_fdt_scan_reserved_mem().
 >
 >
 >
-
 Thanks,
 Calvin
