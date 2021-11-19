@@ -1,58 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6F5457318
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 17:35:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E0645734D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Nov 2021 17:42:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hwj2T5gMpz3c73
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Nov 2021 03:35:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HwjC050Y9z3c5w
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Nov 2021 03:42:52 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=SJ/5hd7o;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62b;
+ helo=mail-pl1-x62b.google.com; envelope-from=keescook@chromium.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=SJ/5hd7o; dkim-atps=neutral
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
+ [IPv6:2607:f8b0:4864:20::62b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hwj233zvpz2yQC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Nov 2021 03:35:05 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Hwj1y0P6Wz9sS7;
- Fri, 19 Nov 2021 17:35:02 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id ScUWaeylmfz1; Fri, 19 Nov 2021 17:35:01 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Hwj1x6TGcz9sS4;
- Fri, 19 Nov 2021 17:35:01 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C63F38B7E7;
- Fri, 19 Nov 2021 17:35:01 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id AVSSndVnRXwL; Fri, 19 Nov 2021 17:35:01 +0100 (CET)
-Received: from [192.168.203.70] (unknown [192.168.203.70])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B921B8B765;
- Fri, 19 Nov 2021 17:35:00 +0100 (CET)
-Message-ID: <7f4e7d24-6eb0-5ecf-3497-61c3633046bd@csgroup.eu>
-Date: Fri, 19 Nov 2021 17:35:00 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HwjBH4xngz2yb3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 20 Nov 2021 03:42:13 +1100 (AEDT)
+Received: by mail-pl1-x62b.google.com with SMTP id b11so8518086pld.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Nov 2021 08:42:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=6usG8MiQSxUWW8t4LIS6CwwnjV4gadMypuBMhJfOTXg=;
+ b=SJ/5hd7oOStu335XYv6nQAV6FVZqLIf9hAnFjiCDZVNARjObPclqPpfkPEbcoEKEcw
+ UL7tgGQ7+lX1lEDpzzXPu1KfbxDez6M63n1J7dtwKmWViDnGvVnQc++e3Ymsvm2kDgpJ
+ Vk6m5PtLG9oteHM0/wRxT6/CxDWmhUxiO3Bjk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=6usG8MiQSxUWW8t4LIS6CwwnjV4gadMypuBMhJfOTXg=;
+ b=A0UVIZqRXLKoXBV42+sJDVdRoGnpEmdzbu1mVPuaG8wuZuhqPREhQh+JlFDpYbfDKS
+ N/tjFbCFPkU/PlnZf+KIX0dUeif47EqAtvlgL8PS416acTflyC7Y9qZ0sMWkz49zE3OJ
+ QGVBhm5EcEJ4kCjsHuBIwV5hfiUKNgKZGQQmZNg8PgJsrd718i93swTYqZu7TRs463mg
+ lTNBe2oM+9dR1lFidtDN44aiKjZ5K4i2oqXPkzBuN0x1gMpQ6UxdsbPvNG+95mFC6gs0
+ k8f58O0oPyyilmNO2P02bF6MezX9SYk4MGIVzn5oFlvUBrA9Cq7DEHgVUD0VaJs/Yf4U
+ tGBA==
+X-Gm-Message-State: AOAM533gloVRqyWMMe0PQnXY4R7XhLKvlnVxvIhXC12UX4rqnPjbxx96
+ 71cOdMxJr3NrROBn1qL7rpjuyQ==
+X-Google-Smtp-Source: ABdhPJxJ0yfws7sNNKBoF+QxKvxIZXPDJEJBvkkmJPuM3LXNvCkaPrbM3z7R/EkI+PBoP+BKqrRXXA==
+X-Received: by 2002:a17:902:cb8a:b0:141:f601:d5f1 with SMTP id
+ d10-20020a170902cb8a00b00141f601d5f1mr79797842ply.77.1637340131104; 
+ Fri, 19 Nov 2021 08:42:11 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id t12sm11083635pjo.44.2021.11.19.08.42.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 19 Nov 2021 08:42:10 -0800 (PST)
+Date: Fri, 19 Nov 2021 08:42:08 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Subject: Re: [PATCH] powerpc/signal32: Use struct_group() to zero spe regs
-Content-Language: fr-FR
-To: Kees Cook <keescook@chromium.org>
+Message-ID: <202111190839.B6EC699B1@keescook>
 References: <20211118203604.1288379-1-keescook@chromium.org>
  <1e312cbd-cd52-ddce-f839-db765173c526@csgroup.eu>
  <202111190824.AEBBE1328@keescook>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <202111190824.AEBBE1328@keescook>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ <7f4e7d24-6eb0-5ecf-3497-61c3633046bd@csgroup.eu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7f4e7d24-6eb0-5ecf-3497-61c3633046bd@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,73 +93,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Nov 19, 2021 at 05:35:00PM +0100, Christophe Leroy wrote:
+> Neither do I. I was just scared by what I saw while reviewing your patch. A
+> cleanup is probably required but it can be another patch.
 
+Heh, understood! For my end, my objective with the fortify work is to
+either split cross-member memcpy() calls (which is usually undesirable) or
+add a struct group so it can be seen as a "single member" memcpy again
+(and usually results in 0 differences in binary output). :)
 
-Le 19/11/2021 à 17:28, Kees Cook a écrit :
-> On Fri, Nov 19, 2021 at 08:46:27AM +0000, LEROY Christophe wrote:
->>
->>
->> Le 18/11/2021 à 21:36, Kees Cook a écrit :
->>> In preparation for FORTIFY_SOURCE performing compile-time and run-time
->>> field bounds checking for memset(), avoid intentionally writing across
->>> neighboring fields.
->>>
->>> Add a struct_group() for the spe registers so that memset() can correctly reason
->>> about the size:
->>>
->>>      In function 'fortify_memset_chk',
->>>          inlined from 'restore_user_regs.part.0' at arch/powerpc/kernel/signal_32.c:539:3:
->>>      >> include/linux/fortify-string.h:195:4: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
->>>        195 |    __write_overflow_field();
->>>            |    ^~~~~~~~~~~~~~~~~~~~~~~~
->>>
->>> Reported-by: kernel test robot <lkp@intel.com>
->>> Signed-off-by: Kees Cook <keescook@chromium.org>
->>
->> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>
->> However, is it really worth adding that grouping ? Wouldn't it be
->> cleaner to handle evr[] and acc separately ? Now that we are using
->> unsafe variants of get/put user performance wouldn't be impacted.
-> 
-> I'm fine with whatever is desired here. I reworked an earlier version of
-> this patch based on mpe's feedback, so I can certain rework it again. :)
-
-Well, with oddities like the below, it may not be straight forward. If 
-the objective is to enable FORTIFY_SOURCE, maybe that's good enough.
-
-Let see if Michael has any opinion.
-
-
-> 
->>
->> I have some doubts about things like:
->>
->> 	unsafe_copy_to_user(&frame->mc_vregs, current->thread.evr,
->> 				    ELF_NEVRREG * sizeof(u32), failed);
->>
->> Because as far as I can see, ELF_NEVRREG is 34 but mc_vregs is a table
->> of 33 u32 and is at the end of the structure:
->>
->> 	struct mcontext {
->> 		elf_gregset_t	mc_gregs;
->> 		elf_fpregset_t	mc_fregs;
->> 		unsigned long	mc_pad[2];
->> 		elf_vrregset_t	mc_vregs __attribute__((__aligned__(16)));
->> 	};
->>
->> 	typedef elf_vrreg_t elf_vrregset_t[ELF_NVRREG];
->>
->> 	# define ELF_NEVRREG	34	/* includes acc (as 2) */
->> 	# define ELF_NVRREG	33	/* includes vscr */
-> 
-> I don't know these internals very well -- do you want me to change this
-> specifically somehow? With the BUILD_BUG_ON()s added, there's no binary
-> change here -- I wanted to make sure nothing was different in the
-> output.
-> 
-
-Neither do I. I was just scared by what I saw while reviewing your 
-patch. A cleanup is probably required but it can be another patch.
-
-Christophe
+-- 
+Kees Cook
