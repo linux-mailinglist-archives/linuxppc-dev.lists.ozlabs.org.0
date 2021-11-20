@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440FC457FB8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Nov 2021 18:03:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB32458000
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 20 Nov 2021 19:22:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HxKcH0dMhz3c5J
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Nov 2021 04:03:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HxMM65k7cz3c8K
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Nov 2021 05:22:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=eRJpUrg7;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=D3NBWYpV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,45 +19,41 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=eRJpUrg7; 
+ header.s=bombadil.20210309 header.b=D3NBWYpV; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HxKbc46htz2ydJ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Nov 2021 04:02:46 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HxMLN2m4rz2ybH
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Nov 2021 05:21:27 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=MIME-Version:Content-Type:References:
  In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=1djqxICSM9IYACohxCK/TatYXA+vpDHPuX47RR/2pVo=; b=eRJpUrg7QqrPDst2i5G+Wq/wlz
- oDnChP+5KKyQM5dvW4Psx2kpJ+IIHBXD22EJH7/FdV1g+birlaTtwSPRTSAoln6pYUSEStJH76Z5L
- CNfuJH70eBaAElTFKmK78NUx6OFzTigk5WNsIlrCCsEe7F4Ueb/QJ+IYTMUHSLRXswY30kqbqHUFp
- e87JUEut76RykPQ3aa+2l54wTQdHrfpEvwMItb1KtPbEH4vEhw4fFMj5QWPLYYJOWrbZyhNWr/ugd
- l4VJgcVU05qPR4MXdu1f35AExZ+CnP5WYa1vq3MTCnct9LmZFT65cEtsausZl1XkYkCzqsWxr+gdK
- VsTsJDeQ==;
+ bh=Q+UvFtXicHaEE3TvmushWVjhMMr05JRmMHEbTSUbz5o=; b=D3NBWYpVWh1H6xMpgOKLiTH8Az
+ ZLeEwvgIeIefkfYo9QYhLxKNVSUwVia8xb3HdwwpVofhB6/LlKdhmwW8zwUXTBQ5fSsy3SnB4ESz+
+ tsu1k4HjeMj/RczJg+4VwLv+AY+tlEPsKpTc7kPGnkvjF1s5a66Tr2piNIXknZlbVdIS/x+w7B4QN
+ b50L7/wbZHyF1PxllvVEGgF/IU8qsqhXIW/0pdGsV5+ip6LfBc/hc91izxbPyEp+NfL35vUy+IJFK
+ I1FvA+G9qDFlLgFo9VJ1XMe0AgxyGDv3VvNwCgbnOP0eblhqdrKPGAhnZJFXepq+hnXuGX9/WkZZJ
+ Vt+ssXGg==;
 Received: from [2001:8b0:10b:1:4a2a:e3ff:fe14:8625]
  (helo=u3832b3a9db3152.ant.amazon.com)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1moTkf-00CkGg-Gi; Sat, 20 Nov 2021 17:02:09 +0000
-Message-ID: <df87f7e828f403013f30c2c8d77ea2694b49292e.camel@infradead.org>
-Subject: Re: [PATCH v4 11/11] KVM: x86: First attempt at converting nested
- virtual APIC page to gpc
+ id 1moUyg-00CoDW-Sl; Sat, 20 Nov 2021 18:20:43 +0000
+Message-ID: <20fe80d50740a9e2ab79093cc1418ef76d518c4e.camel@infradead.org>
+Subject: [PATCH v4 12/11] KVM: x86: Fix wall clock writes in Xen shared_info
+ not to mark page dirty
 From: David Woodhouse <dwmw2@infradead.org>
-To: Mika =?ISO-8859-1?Q?Penttil=E4?= <mika.penttila@nextfour.com>, Paolo
- Bonzini <pbonzini@redhat.com>, kvm <kvm@vger.kernel.org>
-Date: Sat, 20 Nov 2021 17:02:03 +0000
-In-Reply-To: <b806de35-167a-4c7c-f143-cff3ec279491@nextfour.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, kvm <kvm@vger.kernel.org>, 
+ butt3rflyh4ck <butterflyhuangxx@gmail.com>
+Date: Sat, 20 Nov 2021 18:20:35 +0000
+In-Reply-To: <20211120102810.8858-1-dwmw2@infradead.org>
 References: <20211120102810.8858-1-dwmw2@infradead.org>
- <20211120102810.8858-12-dwmw2@infradead.org>
- <d87de1ec-8be7-3967-87b2-c8906c1ab1b3@nextfour.com>
- <8f434989aebd257a36cafcb414edcc5906c02728.camel@infradead.org>
- <b806de35-167a-4c7c-f143-cff3ec279491@nextfour.com>
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-4SL7/aYUfCZQHkl1DXdk"
+ boundary="=-tlUYoy7TkFSTAVa+558A"
 User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -96,56 +92,170 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---=-4SL7/aYUfCZQHkl1DXdk
+--=-tlUYoy7TkFSTAVa+558A
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 2021-11-20 at 18:30 +0200, Mika Penttil=C3=A4 wrote:
->=20
-> On 20.11.2021 18.21, David Woodhouse wrote:
-> > On Sat, 2021-11-20 at 17:48 +0200, Mika Penttil=C3=A4 wrote:
-> > > > @@ -9785,6 +9787,14 @@ static int vcpu_enter_guest(struct kvm_vcpu =
+From: David Woodhouse <dwmw@amazon.co.uk>
+
+When dirty ring logging is enabled, any dirty logging without an active
+vCPU context will cause a kernel oops. But we've already declared that
+the shared_info page doesn't get dirty tracking anyway, since it would
+be kind of insane to mark it dirty every time we deliver an event channel
+interrupt. Userspace is supposed to just assume it's always dirty any
+time a vCPU can run or event channels are routed.
+
+So stop using the generic kvm_write_wall_clock() and just write directly
+through the gfn_to_pfn_cache that we already have set up.
+
+We can make kvm_write_wall_clock() static in x86.c again now, but let's
+not remove the 'sec_hi_ofs' argument even though it's not used yet. At
+some point we *will* want to use that for KVM guests too.
+
+Fixes: 629b5348841a ("KVM: x86/xen: update wallclock region")
+Reported-by: butt3rflyh4ck <butterflyhuangxx@gmail.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+Putting this after the Xen evtchn series because now I have a kernel
+mapping I can use to avoid the dirty tracking.
+
+ arch/x86/kvm/x86.c |  2 +-
+ arch/x86/kvm/x86.h |  1 -
+ arch/x86/kvm/xen.c | 62 +++++++++++++++++++++++++++++++++++-----------
+ 3 files changed, 49 insertions(+), 16 deletions(-)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 01d20db5b1f4..d8f1d2169b45 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -2118,7 +2118,7 @@ static s64 get_kvmclock_base_ns(void)
+ }
+ #endif
+=20
+-void kvm_write_wall_clock(struct kvm *kvm, gpa_t wall_clock, int sec_hi_of=
+s)
++static void kvm_write_wall_clock(struct kvm *kvm, gpa_t wall_clock, int se=
+c_hi_ofs)
+ {
+ 	int version;
+ 	int r;
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 997669ae9caa..0260836b42ff 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -306,7 +306,6 @@ static inline bool kvm_vcpu_latch_init(struct kvm_vcpu =
 *vcpu)
-> > > >         local_irq_disable();
-> > > >         vcpu->mode =3D IN_GUEST_MODE;
-> > > >    =20
-> > > > +     /*
-> > > > +      * If the guest requires direct access to mapped L1 pages, ch=
-eck
-> > > > +      * the caches are valid. Will raise KVM_REQ_GET_NESTED_STATE_=
-PAGES
-> > > > +      * to go and revalidate them, if necessary.
-> > > > +      */
-> > > > +     if (is_guest_mode(vcpu) && kvm_x86_ops.nested_ops->check_gues=
-t_maps)
-> > > > +             kvm_x86_ops.nested_ops->check_guest_maps(vcpu);
-> > >
-> > > But KVM_REQ_GET_NESTED_STATE_PAGES is not check until next
-> > > vcpu_enter_guest() entry ?
-> >
-> > Sure, but that's why this call to ->check_guest_maps() comes just a few
-> > lines *before* the 'if (kvm_cpu_exit_request(vcpu))' that will bounce
-> > us back out so that we go through vcpu_enter_guest() from the start
-> > again?
->
-> Yes, I had forgotten that...=3D
+ 	return is_smm(vcpu) || static_call(kvm_x86_apic_init_signal_blocked)(vcpu=
+);
+ }
+=20
+-void kvm_write_wall_clock(struct kvm *kvm, gpa_t wall_clock, int sec_hi_of=
+s);
+ void kvm_inject_realmode_interrupt(struct kvm_vcpu *vcpu, int irq, int inc=
+_eip);
+=20
+ u64 get_kvmclock_ns(struct kvm *kvm);
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index ceddabd1f5c6..0e3f7d6e9fd7 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -25,8 +25,11 @@ DEFINE_STATIC_KEY_DEFERRED_FALSE(kvm_xen_enabled, HZ);
+ static int kvm_xen_shared_info_init(struct kvm *kvm, gfn_t gfn)
+ {
+ 	struct gfn_to_pfn_cache *gpc =3D &kvm->arch.xen.shinfo_cache;
++	struct pvclock_wall_clock *wc;
+ 	gpa_t gpa =3D gfn_to_gpa(gfn);
+-	int wc_ofs, sec_hi_ofs;
++	u32 *wc_sec_hi;
++	u32 wc_version;
++	u64 wall_nsec;
+ 	int ret =3D 0;
+ 	int idx =3D srcu_read_lock(&kvm->srcu);
+=20
+@@ -35,32 +38,63 @@ static int kvm_xen_shared_info_init(struct kvm *kvm, gf=
+n_t gfn)
+ 		goto out;
+ 	}
+=20
+-	ret =3D kvm_gfn_to_pfn_cache_init(kvm, gpc, NULL, false, true, gpa,
+-					PAGE_SIZE, false);
+-	if (ret)
+-		goto out;
++	do {
++		ret =3D kvm_gfn_to_pfn_cache_init(kvm, gpc, NULL, false, true,
++						gpa, PAGE_SIZE, false);
++		if (ret)
++			goto out;
++
++		/*
++		 * This code mirrors kvm_write_wall_clock() except that it writes
++		 * directly through the pfn cache and doesn't mark the page dirty.
++		 */
++		wall_nsec =3D ktime_get_real_ns() - get_kvmclock_ns(kvm);
++
++		/* It could be invalid again already, so we need to check */
++		read_lock_irq(&gpc->lock);
++
++		if (gpc->valid)
++			break;
++
++		read_unlock_irq(&gpc->lock);
++	} while (1);
+=20
+ 	/* Paranoia checks on the 32-bit struct layout */
+ 	BUILD_BUG_ON(offsetof(struct compat_shared_info, wc) !=3D 0x900);
+ 	BUILD_BUG_ON(offsetof(struct compat_shared_info, arch.wc_sec_hi) !=3D 0x9=
+24);
+ 	BUILD_BUG_ON(offsetof(struct pvclock_vcpu_time_info, version) !=3D 0);
+=20
+-	/* 32-bit location by default */
+-	wc_ofs =3D offsetof(struct compat_shared_info, wc);
+-	sec_hi_ofs =3D offsetof(struct compat_shared_info, arch.wc_sec_hi);
+-
+ #ifdef CONFIG_X86_64
+ 	/* Paranoia checks on the 64-bit struct layout */
+ 	BUILD_BUG_ON(offsetof(struct shared_info, wc) !=3D 0xc00);
+ 	BUILD_BUG_ON(offsetof(struct shared_info, wc_sec_hi) !=3D 0xc0c);
+=20
+-	if (kvm->arch.xen.long_mode) {
+-		wc_ofs =3D offsetof(struct shared_info, wc);
+-		sec_hi_ofs =3D offsetof(struct shared_info, wc_sec_hi);
+-	}
++	if (IS_ENABLED(CONFIG_64BIT) && kvm->arch.xen.long_mode) {
++		struct shared_info *shinfo =3D gpc->khva;
++
++		wc_sec_hi =3D &shinfo->wc_sec_hi;
++		wc =3D &shinfo->wc;
++	} else
+ #endif
++	{
++		struct compat_shared_info *shinfo =3D gpc->khva;
++
++		wc_sec_hi =3D &shinfo->arch.wc_sec_hi;
++		wc =3D &shinfo->wc;
++	}
++
++	/* Increment and ensure an odd value */
++	wc_version =3D wc->version =3D (wc->version + 1) | 1;
++	smp_wmb();
++
++	wc->nsec =3D do_div(wall_nsec,  1000000000);
++	wc->sec =3D (u32)wall_nsec;
++	*wc_sec_hi =3D wall_nsec >> 32;
++	smp_wmb();
++
++	wc->version =3D wc_version + 1;
++	read_unlock_irq(&gpc->lock);
+=20
+-	kvm_write_wall_clock(kvm, gpa + wc_ofs, sec_hi_ofs - wc_ofs);
+ 	kvm_make_all_cpus_request(kvm, KVM_REQ_MASTERCLOCK_UPDATE);
+=20
+ out:
+--=20
+2.31.1
 
-Having said that, I think Paolo was rightly trying to persuade me that
-we don't need the check there at all anyway. Because the *invalidation*
-will raise KVM_REQ_GPC_INVALIDATE, and that's sufficient to bounce us
-out of IN_GUEST_MODE without us having to check the GPC explicitly.
 
-We do need to ensure that we are up to date with memslots changes, but
-that's a bit simpler, and we have kvm_arch_memslots_changed() waking us
-for that too.
-
-So yeah, with sufficient thought I think we can be entirely event-
-driven instead of having to have an explicit *check* on entry.
-
-
-
-
---=-4SL7/aYUfCZQHkl1DXdk
+--=-tlUYoy7TkFSTAVa+558A
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -228,20 +338,20 @@ BAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGjAY
 BgNVBAoTEUNPTU9ETyBDQSBMaW1pdGVkMT0wOwYDVQQDEzRDT01PRE8gUlNBIENsaWVudCBBdXRo
 ZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA4rtJSHkq7AnpxKUY8ZlYZjANBglghkgB
 ZQMEAgEFAKCCAe0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjEx
-MTIwMTcwMjAzWjAvBgkqhkiG9w0BCQQxIgQgDqdeOluGL8F7SQA0wK4ljjjYPGRqgR8Bt/078X0J
-K5swgb4GCSsGAQQBgjcQBDGBsDCBrTCBlzELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIg
+MTIwMTgyMDM1WjAvBgkqhkiG9w0BCQQxIgQgJe/05Hj0e/ZD7tzEKg3XCI/dAMB7FMCGuW+2gNS2
+CpQwgb4GCSsGAQQBgjcQBDGBsDCBrTCBlzELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIg
 TWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEaMBgGA1UEChMRQ09NT0RPIENBIExpbWl0ZWQx
 PTA7BgNVBAMTNENPTU9ETyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1h
 aWwgQ0ECEQDiu0lIeSrsCenEpRjxmVhmMIHABgsqhkiG9w0BCRACCzGBsKCBrTCBlzELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEaMBgG
 A1UEChMRQ09NT0RPIENBIExpbWl0ZWQxPTA7BgNVBAMTNENPTU9ETyBSU0EgQ2xpZW50IEF1dGhl
 bnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0ECEQDiu0lIeSrsCenEpRjxmVhmMA0GCSqGSIb3
-DQEBAQUABIIBAHFCQtRj8bB81RnB2WzhXzi4BdWVU/QAWbWV1GoeN5K4kRYNLMjj/fWtIpHHL+7B
-q/u9Fcn5OJJVWs56zNjQU/3TWT9N8cU8kPL0kjLtikmOWgMuB14M3LqbAgKCMaEwagLGBiRSpL5b
-EgmhBo7jYRsDhvl7YGEKvjdx2+iMKcM9vhGrnRMrzT2562D+/v79wxUzvL3i2sMOQG7+g9aub7wJ
-uWOFAX+p1rY0uEJ3fydLr1c0/HzBmUU717KAgSNkvvhwMoalwyTroYQ7M/pIz9ZIP/21J+Es4N4b
-VRHfRlw/gTrZFBbqmdW1vn8hoSTsgaCY1x4cjYSl03y+/z/xhxkAAAAAAAA=
+DQEBAQUABIIBAEIXm2zsNCurAFJf1KlmQhhTzJGNsrbjKcsU5m5EMvIk67CZ28+hoP4EZZTrjQrW
+gUN+xQaHg9KgGpqYBNGB8XWM3a2rDz5jXL+ziQgQmNbvSeV9qRldjxRzWZ/yJY/0fCQiACrCal/z
+TnqKpGsEiBoUGyBrPlXV2MTZQL4w/wHQaGmlSXihOGYY6BBcCEJi+IFyvgjvCqjES4NSb85dfoo9
+jF6oakdr6BmzH1O4ueTNQH/jOqgStlGMTmRecgvoDOEo/99yaHUUwSiqQubQF5Qqkxp+mR7T349F
+Xcp2YgGxciVH7NBucGTgDNN72OjSZPlCPyOxAFdCEK688wdkadUAAAAAAAA=
 
 
---=-4SL7/aYUfCZQHkl1DXdk--
+--=-tlUYoy7TkFSTAVa+558A--
 
