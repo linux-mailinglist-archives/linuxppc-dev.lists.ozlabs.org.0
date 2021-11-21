@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCE74583AE
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Nov 2021 13:59:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A854583A8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Nov 2021 13:56:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hxr8Y3YK9z3cXt
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Nov 2021 23:59:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hxr4w6PVXz305X
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Nov 2021 23:56:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=fRCnuTLe;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=kM6W7+Ry;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,36 +19,36 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=desiato.20200630 header.b=fRCnuTLe; 
+ header.s=desiato.20200630 header.b=kM6W7+Ry; 
  dkim-atps=neutral
 Received: from desiato.infradead.org (desiato.infradead.org
  [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hxr4G1lFsz2yN1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Nov 2021 23:55:54 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hxr4G5N5jz2yfn
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Nov 2021 23:55:57 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=qgYU5vzDBKxIUC/iB5UVJS4/0uLVrDIq5zuDRSYxPkA=; b=fRCnuTLe0cq87iNUBx5gtjOTYC
- 5qh48tZzUp1B5r9r23yWLMzczE5oOIdRUtMiMyrjt1pOrpHeeUKpvWqch3071FDnX5mKox5fRN3kA
- sO9aiMiPOvLHIlsR1GBwO++A8qnH54U5bBxCtx51m4cyNlwiM9NyyXt6LUi6DyQREiewTZcolB5O/
- /FYzNcFm8dusGqRQZN3fcRd5rLd5kXOG46fULB6pOpZq72ku+pkDFzjnXrbmd7o9nnK836Jmekdha
- yAWD8NQDq3IRgN5K+jO1GHbd0miPs8zoHs0O6LwbhIKWFOV5REmqehTF3lErL46HtpsTqy8aC9twf
- 9TUuF2Ow==;
+ bh=6h0xVL2esfqq+zqj5xeWRwsV4t0vspg87ggVyWnX0Og=; b=kM6W7+RyOTSXt0gvoBtCktAzx2
+ /LtufhJIKvcBy7y0MOZd6OjUm6Jr2Nz9ADUjvUL2/KyqQO5Acp+NgBk0EEvwV1bPLjkf1Wx9jC2o6
+ 14kLlfqTtORV1PknVGEkEIAmoqXlrafVAgfPRYG4qCLDCC5hMvVdfVXYj3IEyKFDkFGgUslJTeRqI
+ +B1I9eB3vaDeV6cA9ZznUZQ/yppCupDImsN6zk4R3EP5UJWC0yHfHFqWoX5JlVjxa4UFfOfDPypbr
+ D0gey51oZTKa2Tzkz82fphlPoE0YsKSKDcGP2vSfaunjg5k/14lu3yiEe5T6Rn4h4IF/K5d7pUeWr
+ RrWrxAtA==;
 Received: from i7.infradead.org ([2001:8b0:10b:1:21e:67ff:fecb:7a92])
  by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1momMw-00HIg9-A2; Sun, 21 Nov 2021 12:54:54 +0000
+ id 1momMw-00HIgA-Eo; Sun, 21 Nov 2021 12:54:54 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.94.2 #2 (Red
- Hat Linux)) id 1momMv-0002Vy-Ub; Sun, 21 Nov 2021 12:54:53 +0000
+ Hat Linux)) id 1momMw-0002W5-32; Sun, 21 Nov 2021 12:54:54 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm <kvm@vger.kernel.org>
-Subject: [PATCH v5 01/12] KVM: Introduce CONFIG_HAVE_KVM_DIRTY_RING
-Date: Sun, 21 Nov 2021 12:54:40 +0000
-Message-Id: <20211121125451.9489-2-dwmw2@infradead.org>
+Subject: [PATCH v5 03/12] KVM: s390: Use Makefile.kvm for common files
+Date: Sun, 21 Nov 2021 12:54:42 +0000
+Message-Id: <20211121125451.9489-4-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211121125451.9489-1-dwmw2@infradead.org>
 References: <20211121125451.9489-1-dwmw2@infradead.org>
@@ -92,100 +92,32 @@ Sender: "Linuxppc-dev"
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-I'd like to make the build include dirty_ring.c based on whether the
-arch wants it or not. That's a whole lot simpler if there's a config
-symbol instead of doing it implicitly on KVM_DIRTY_LOG_PAGE_OFFSET
-being set to something non-zero.
-
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Christian Borntraeger <borntraeger@de.ibm.com>
 ---
- arch/x86/kvm/Kconfig           | 1 +
- include/linux/kvm_dirty_ring.h | 8 ++++----
- virt/kvm/Kconfig               | 3 +++
- virt/kvm/kvm_main.c            | 4 ++--
- 4 files changed, 10 insertions(+), 6 deletions(-)
+ arch/s390/kvm/Makefile | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index 619186138176..d7fa0a42ac25 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -27,6 +27,7 @@ config KVM
- 	select MMU_NOTIFIER
- 	select HAVE_KVM_IRQCHIP
- 	select HAVE_KVM_IRQFD
-+	select HAVE_KVM_DIRTY_RING
- 	select IRQ_BYPASS_MANAGER
- 	select HAVE_KVM_IRQ_BYPASS
- 	select HAVE_KVM_IRQ_ROUTING
-diff --git a/include/linux/kvm_dirty_ring.h b/include/linux/kvm_dirty_ring.h
-index fb0fa18878e2..906f899813dc 100644
---- a/include/linux/kvm_dirty_ring.h
-+++ b/include/linux/kvm_dirty_ring.h
-@@ -27,9 +27,9 @@ struct kvm_dirty_ring {
- 	int index;
- };
+diff --git a/arch/s390/kvm/Makefile b/arch/s390/kvm/Makefile
+index b3aaadc60ead..e4f50453cf7f 100644
+--- a/arch/s390/kvm/Makefile
++++ b/arch/s390/kvm/Makefile
+@@ -3,13 +3,11 @@
+ #
+ # Copyright IBM Corp. 2008
  
--#if (KVM_DIRTY_LOG_PAGE_OFFSET == 0)
-+#ifndef CONFIG_HAVE_KVM_DIRTY_RING
- /*
-- * If KVM_DIRTY_LOG_PAGE_OFFSET not defined, kvm_dirty_ring.o should
-+ * If CONFIG_HAVE_HVM_DIRTY_RING not defined, kvm_dirty_ring.o should
-  * not be included as well, so define these nop functions for the arch.
-  */
- static inline u32 kvm_dirty_ring_get_rsvd_entries(void)
-@@ -69,7 +69,7 @@ static inline bool kvm_dirty_ring_soft_full(struct kvm_dirty_ring *ring)
- 	return true;
- }
+-KVM := ../../../virt/kvm
+-common-objs = $(KVM)/kvm_main.o $(KVM)/eventfd.o  $(KVM)/async_pf.o \
+-	      $(KVM)/irqchip.o $(KVM)/vfio.o $(KVM)/binary_stats.o
++include $(srctree)/virt/kvm/Makefile.kvm
  
--#else /* KVM_DIRTY_LOG_PAGE_OFFSET == 0 */
-+#else /* CONFIG_HAVE_KVM_DIRTY_RING */
+ ccflags-y := -Ivirt/kvm -Iarch/s390/kvm
  
- u32 kvm_dirty_ring_get_rsvd_entries(void);
- int kvm_dirty_ring_alloc(struct kvm_dirty_ring *ring, int index, u32 size);
-@@ -92,6 +92,6 @@ struct page *kvm_dirty_ring_get_page(struct kvm_dirty_ring *ring, u32 offset);
- void kvm_dirty_ring_free(struct kvm_dirty_ring *ring);
- bool kvm_dirty_ring_soft_full(struct kvm_dirty_ring *ring);
+-kvm-objs := $(common-objs) kvm-s390.o intercept.o interrupt.o priv.o sigp.o
++kvm-objs := kvm-s390.o intercept.o interrupt.o priv.o sigp.o
+ kvm-objs += diag.o gaccess.o guestdbg.o vsie.o pv.o
  
--#endif /* KVM_DIRTY_LOG_PAGE_OFFSET == 0 */
-+#endif /* CONFIG_HAVE_KVM_DIRTY_RING */
- 
- #endif	/* KVM_DIRTY_RING_H */
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index 62b39149b8c8..97cf5413ac25 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -13,6 +13,9 @@ config HAVE_KVM_IRQFD
- config HAVE_KVM_IRQ_ROUTING
-        bool
- 
-+config HAVE_KVM_DIRTY_RING
-+       bool
-+
- config HAVE_KVM_EVENTFD
-        bool
-        select EVENTFD
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 72c6453bcef4..8eb8c962838d 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3432,7 +3432,7 @@ EXPORT_SYMBOL_GPL(kvm_vcpu_on_spin);
- 
- static bool kvm_page_in_dirty_ring(struct kvm *kvm, unsigned long pgoff)
- {
--#if KVM_DIRTY_LOG_PAGE_OFFSET > 0
-+#ifdef CONFIG_HAVE_KVM_DIRTY_RING
- 	return (pgoff >= KVM_DIRTY_LOG_PAGE_OFFSET) &&
- 	    (pgoff < KVM_DIRTY_LOG_PAGE_OFFSET +
- 	     kvm->dirty_ring_size / PAGE_SIZE);
-@@ -4135,7 +4135,7 @@ static long kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
- 	case KVM_CAP_NR_MEMSLOTS:
- 		return KVM_USER_MEM_SLOTS;
- 	case KVM_CAP_DIRTY_LOG_RING:
--#if KVM_DIRTY_LOG_PAGE_OFFSET > 0
-+#ifdef CONFIG_HAVE_KVM_DIRTY_RING
- 		return KVM_DIRTY_RING_MAX_ENTRIES * sizeof(struct kvm_dirty_gfn);
- #else
- 		return 0;
+ obj-$(CONFIG_KVM) += kvm.o
 -- 
 2.31.1
 
