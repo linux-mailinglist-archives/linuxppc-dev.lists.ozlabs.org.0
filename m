@@ -2,56 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A5E4583B2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Nov 2021 14:01:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCE74583AE
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Nov 2021 13:59:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HxrBf2ZGQz3dpw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Nov 2021 00:01:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hxr8Y3YK9z3cXt
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 21 Nov 2021 23:59:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Vu9vRhXy;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=fRCnuTLe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1;
- helo=casper.infradead.org;
- envelope-from=batv+e22a5da41c9f680ae1ec+6664+infradead.org+dwmw2@casper.srs.infradead.org;
+ smtp.mailfrom=desiato.srs.infradead.org
+ (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
+ envelope-from=batv+485698b98e86d7fb73c6+6664+infradead.org+dwmw2@desiato.srs.infradead.org;
  receiver=<UNKNOWN>)
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=desiato.20200630 header.b=fRCnuTLe; 
+ dkim-atps=neutral
+Received: from desiato.infradead.org (desiato.infradead.org
+ [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hxr4F6JSzz2yKN
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hxr4G1lFsz2yN1
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Nov 2021 23:55:54 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
- Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=IgNSXNY2TpIuc5DjPBel8XiPwVYxmuy/OdeenPYbteI=; b=Vu9vRhXy7bRTzRn551qpp2Sl2x
- zCtr/gMJ4DW8RwOHmzxJxzo7vDlzWes4Hqvf8OhYVQvu8TgUnPYAkp+B7dwWJGxd4qa98SoZOYuWV
- 5bhHnd4moc54T+xIGj//+Ct1psMVjPk+Pdg32UPn83uTEm30Y2xWCWDUWG7zzQA8A9jiya3kArabf
- lHB8fd0S9GhuLNI6EX6C0akf58/mnAKpVwdY1c0zqvxOiNqI8W9eVWQtmP2IMzGzdVo5+UUmKjlgh
- pghg+NjWVpziG/dkvqPqodD+6axkmt7LKPKsHXKEoxT0UziAnHuI2HqKcy6sNMq8iwkWYu+xYx/tX
- kWDa6thg==;
+ d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+ Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=qgYU5vzDBKxIUC/iB5UVJS4/0uLVrDIq5zuDRSYxPkA=; b=fRCnuTLe0cq87iNUBx5gtjOTYC
+ 5qh48tZzUp1B5r9r23yWLMzczE5oOIdRUtMiMyrjt1pOrpHeeUKpvWqch3071FDnX5mKox5fRN3kA
+ sO9aiMiPOvLHIlsR1GBwO++A8qnH54U5bBxCtx51m4cyNlwiM9NyyXt6LUi6DyQREiewTZcolB5O/
+ /FYzNcFm8dusGqRQZN3fcRd5rLd5kXOG46fULB6pOpZq72ku+pkDFzjnXrbmd7o9nnK836Jmekdha
+ yAWD8NQDq3IRgN5K+jO1GHbd0miPs8zoHs0O6LwbhIKWFOV5REmqehTF3lErL46HtpsTqy8aC9twf
+ 9TUuF2Ow==;
 Received: from i7.infradead.org ([2001:8b0:10b:1:21e:67ff:fecb:7a92])
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1momMv-00C3xt-Mo; Sun, 21 Nov 2021 12:54:54 +0000
+ by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1momMw-00HIg9-A2; Sun, 21 Nov 2021 12:54:54 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.94.2 #2 (Red
- Hat Linux)) id 1momMv-0002Vv-R2; Sun, 21 Nov 2021 12:54:53 +0000
+ Hat Linux)) id 1momMv-0002Vy-Ub; Sun, 21 Nov 2021 12:54:53 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm <kvm@vger.kernel.org>
-Subject: [PATCH v5 00/12] KVM: x86/xen: Add in-kernel Xen event channel
- delivery
-Date: Sun, 21 Nov 2021 12:54:39 +0000
-Message-Id: <20211121125451.9489-1-dwmw2@infradead.org>
+Subject: [PATCH v5 01/12] KVM: Introduce CONFIG_HAVE_KVM_DIRTY_RING
+Date: Sun, 21 Nov 2021 12:54:40 +0000
+Message-Id: <20211121125451.9489-2-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20211121125451.9489-1-dwmw2@infradead.org>
+References: <20211121125451.9489-1-dwmw2@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
- casper.infradead.org. See http://www.infradead.org/rpr.html
+ desiato.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,87 +90,102 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Introduce the basic concept of 2 level event channels for kernel delivery,
-which is just a simple matter of a few test_and_set_bit calls on a mapped
-shared info page.
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-This can be used for routing MSI of passthrough devices to PIRQ event
-channels in a Xen guest, and we can build on it for delivering IPIs and
-timers directly from the kernel too.
+I'd like to make the build include dirty_ring.c based on whether the
+arch wants it or not. That's a whole lot simpler if there's a config
+symbol instead of doing it implicitly on KVM_DIRTY_LOG_PAGE_OFFSET
+being set to something non-zero.
 
-v1: Use kvm_map_gfn() although I didn't quite see how it works.
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ arch/x86/kvm/Kconfig           | 1 +
+ include/linux/kvm_dirty_ring.h | 8 ++++----
+ virt/kvm/Kconfig               | 3 +++
+ virt/kvm/kvm_main.c            | 4 ++--
+ 4 files changed, 10 insertions(+), 6 deletions(-)
 
-v2: Avoid kvm_map_gfn() and implement a safe mapping with invalidation
-    support for myself.
-
-v3: Reinvent gfn_to_pfn_cache with sane invalidation semantics, for my
-    use case as well as nesting.
-
-v4: Rework dirty handling, as it became apparently that we need an active
-    vCPU context to mark pages dirty so it can't be done from the MMU
-    notifier duing the invalidation; it has to happen on unmap.
-
-v5: Fix sparse warnings reported by kernel test robot <lkp@intel.com>.
-
-    Fix revalidation when memslots change but the resulting HVA stays
-    the same. We can use the same kernel mapping in that case, if the
-    HVA → PFN translation was valid before. So that probably means we
-    shouldn't unmap the "old_hva". Augment the test case to exercise
-    that one too.
-
-    Include the fix for the dirty ring vs. Xen shinfo oops reported
-    by butt3rflyh4ck <butterflyhuangxx@gmail.com>.
-
-
-As in the previous two rounds, the last patch (this time patch 12) is
-included as illustration of how we *might* use this for fixing the UAF
-bugs in nesting, but isn't intended to be applied as-is. Patches 1-11 are.
-
-
-
-David Woodhouse (12):
-      KVM: Introduce CONFIG_HAVE_KVM_DIRTY_RING
-      KVM: Add Makefile.kvm for common files, use it for x86
-      KVM: s390: Use Makefile.kvm for common files
-      KVM: mips: Use Makefile.kvm for common files
-      KVM: RISC-V: Use Makefile.kvm for common files
-      KVM: powerpc: Use Makefile.kvm for common files
-      KVM: arm64: Use Makefile.kvm for common files
-      KVM: Reinstate gfn_to_pfn_cache with invalidation support
-      KVM: x86/xen: Maintain valid mapping of Xen shared_info page
-      KVM: x86/xen: Add KVM_IRQ_ROUTING_XEN_EVTCHN and event channel delivery
-      KVM: x86: Fix wall clock writes in Xen shared_info not to mark page dirty
-      KVM: x86: First attempt at converting nested virtual APIC page to gpc
-
- Documentation/virt/kvm/api.rst                     |  33 ++
- arch/arm64/kvm/Makefile                            |   6 +-
- arch/mips/kvm/Makefile                             |   3 +-
- arch/powerpc/kvm/Makefile                          |   6 +-
- arch/riscv/kvm/Makefile                            |   6 +-
- arch/s390/kvm/Makefile                             |   6 +-
- arch/x86/include/asm/kvm_host.h                    |   4 +-
- arch/x86/kvm/Kconfig                               |   2 +
- arch/x86/kvm/Makefile                              |   7 +-
- arch/x86/kvm/irq_comm.c                            |  12 +
- arch/x86/kvm/vmx/nested.c                          |  50 ++-
- arch/x86/kvm/vmx/vmx.c                             |  12 +-
- arch/x86/kvm/vmx/vmx.h                             |   2 +-
- arch/x86/kvm/x86.c                                 |  15 +-
- arch/x86/kvm/x86.h                                 |   1 -
- arch/x86/kvm/xen.c                                 | 341 +++++++++++++++++++--
- arch/x86/kvm/xen.h                                 |   9 +
- include/linux/kvm_dirty_ring.h                     |   8 +-
- include/linux/kvm_host.h                           | 110 +++++++
- include/linux/kvm_types.h                          |  18 ++
- include/uapi/linux/kvm.h                           |  11 +
- .../testing/selftests/kvm/x86_64/xen_shinfo_test.c | 184 ++++++++++-
- virt/kvm/Kconfig                                   |   6 +
- virt/kvm/Makefile.kvm                              |  14 +
- virt/kvm/dirty_ring.c                              |   2 +-
- virt/kvm/kvm_main.c                                |  16 +-
- virt/kvm/kvm_mm.h                                  |  44 +++
- virt/kvm/mmu_lock.h                                |  23 --
- virt/kvm/pfncache.c                                | 323 +++++++++++++++++++
- 29 files changed, 1173 insertions(+), 101 deletions(-)
-
+diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+index 619186138176..d7fa0a42ac25 100644
+--- a/arch/x86/kvm/Kconfig
++++ b/arch/x86/kvm/Kconfig
+@@ -27,6 +27,7 @@ config KVM
+ 	select MMU_NOTIFIER
+ 	select HAVE_KVM_IRQCHIP
+ 	select HAVE_KVM_IRQFD
++	select HAVE_KVM_DIRTY_RING
+ 	select IRQ_BYPASS_MANAGER
+ 	select HAVE_KVM_IRQ_BYPASS
+ 	select HAVE_KVM_IRQ_ROUTING
+diff --git a/include/linux/kvm_dirty_ring.h b/include/linux/kvm_dirty_ring.h
+index fb0fa18878e2..906f899813dc 100644
+--- a/include/linux/kvm_dirty_ring.h
++++ b/include/linux/kvm_dirty_ring.h
+@@ -27,9 +27,9 @@ struct kvm_dirty_ring {
+ 	int index;
+ };
+ 
+-#if (KVM_DIRTY_LOG_PAGE_OFFSET == 0)
++#ifndef CONFIG_HAVE_KVM_DIRTY_RING
+ /*
+- * If KVM_DIRTY_LOG_PAGE_OFFSET not defined, kvm_dirty_ring.o should
++ * If CONFIG_HAVE_HVM_DIRTY_RING not defined, kvm_dirty_ring.o should
+  * not be included as well, so define these nop functions for the arch.
+  */
+ static inline u32 kvm_dirty_ring_get_rsvd_entries(void)
+@@ -69,7 +69,7 @@ static inline bool kvm_dirty_ring_soft_full(struct kvm_dirty_ring *ring)
+ 	return true;
+ }
+ 
+-#else /* KVM_DIRTY_LOG_PAGE_OFFSET == 0 */
++#else /* CONFIG_HAVE_KVM_DIRTY_RING */
+ 
+ u32 kvm_dirty_ring_get_rsvd_entries(void);
+ int kvm_dirty_ring_alloc(struct kvm_dirty_ring *ring, int index, u32 size);
+@@ -92,6 +92,6 @@ struct page *kvm_dirty_ring_get_page(struct kvm_dirty_ring *ring, u32 offset);
+ void kvm_dirty_ring_free(struct kvm_dirty_ring *ring);
+ bool kvm_dirty_ring_soft_full(struct kvm_dirty_ring *ring);
+ 
+-#endif /* KVM_DIRTY_LOG_PAGE_OFFSET == 0 */
++#endif /* CONFIG_HAVE_KVM_DIRTY_RING */
+ 
+ #endif	/* KVM_DIRTY_RING_H */
+diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+index 62b39149b8c8..97cf5413ac25 100644
+--- a/virt/kvm/Kconfig
++++ b/virt/kvm/Kconfig
+@@ -13,6 +13,9 @@ config HAVE_KVM_IRQFD
+ config HAVE_KVM_IRQ_ROUTING
+        bool
+ 
++config HAVE_KVM_DIRTY_RING
++       bool
++
+ config HAVE_KVM_EVENTFD
+        bool
+        select EVENTFD
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 72c6453bcef4..8eb8c962838d 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3432,7 +3432,7 @@ EXPORT_SYMBOL_GPL(kvm_vcpu_on_spin);
+ 
+ static bool kvm_page_in_dirty_ring(struct kvm *kvm, unsigned long pgoff)
+ {
+-#if KVM_DIRTY_LOG_PAGE_OFFSET > 0
++#ifdef CONFIG_HAVE_KVM_DIRTY_RING
+ 	return (pgoff >= KVM_DIRTY_LOG_PAGE_OFFSET) &&
+ 	    (pgoff < KVM_DIRTY_LOG_PAGE_OFFSET +
+ 	     kvm->dirty_ring_size / PAGE_SIZE);
+@@ -4135,7 +4135,7 @@ static long kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+ 	case KVM_CAP_NR_MEMSLOTS:
+ 		return KVM_USER_MEM_SLOTS;
+ 	case KVM_CAP_DIRTY_LOG_RING:
+-#if KVM_DIRTY_LOG_PAGE_OFFSET > 0
++#ifdef CONFIG_HAVE_KVM_DIRTY_RING
+ 		return KVM_DIRTY_RING_MAX_ENTRIES * sizeof(struct kvm_dirty_gfn);
+ #else
+ 		return 0;
+-- 
+2.31.1
 
