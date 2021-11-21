@@ -1,51 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA563459652
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Nov 2021 21:58:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A87C459653
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Nov 2021 21:58:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HyfkF3MG5z2xBx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 07:58:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hyfl00KGcz2ypZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 07:58:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o40YeyKW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Tgb5Ic+u;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636;
+ helo=mail-pl1-x636.google.com; envelope-from=calvinzhang.cool@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=o40YeyKW; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=Tgb5Ic+u; dkim-atps=neutral
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
+ [IPv6:2607:f8b0:4864:20::636])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HxgqV48hrz2xtC
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Nov 2021 17:44:22 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 60B98604AC;
- Sun, 21 Nov 2021 06:43:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1637477055;
- bh=fF0qMHEWbaZWbEit/VvNjQKirKtWS4o0c8b9dFvtOFg=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=o40YeyKWlss6qPqzIaBC1BRaoNsy8h4lRluMS6PA711BRFcqyhJOnzbksEMtKtJO/
- 8jbTZZa3TfDTwFyR4bB+BvkwZH8B4Lq6zUtBDhL0B4WDBH9OrnY/ZIAuUCLySCed3G
- BY0pW/832nzdNqDcLtde/+ux9ozmIiM3YLALWMwekxe0nZCbZ8Eac9fyNJkYF8xblI
- zzUk/gDwJpgD0wAYRzlFYo+zhx5+msTuR9KF/8/1WOgKdEL1RlhcobAeHzb+LuS7g/
- jBCVo5DEsOze9uLZm95vmKlvgKfjbEPyxEhw1wZAFN+rxMTmDM0V/oXbaGrjJoZ0t1
- JqBkAezCYdBnA==
-Date: Sun, 21 Nov 2021 08:43:47 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Calvin Zhang <calvinzhang.cool@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hxksr6mY1z2xsY
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Nov 2021 20:01:34 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id b11so11501266pld.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Nov 2021 01:01:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=uQeJj6IFfvjTH7tZDTd0bi24dF8RigJdyTH2xVfGgTs=;
+ b=Tgb5Ic+uwSSoM4JZA36HMAnlatkdP+klPPLN5bBR4mKKK7eTLYbvh8o7E0EcmDPq2Q
+ qLbdPM+Vl8mxGeh64K6wzQ+bz31be5sOsZRi7/BFqa+3UZR2mkUMH1od5ApykCQ4oge7
+ PWRsbIqGPWCVfPaQ/9SinTdE1/ZkUXrgz0XtKq4W6GhO2Tqz3W9WDL2YZ864OPwKasYW
+ XOd5tML9uld3R9EbWMfJk2iapJud7W6QS3RAsn8xBt2Px10d2Ru8NLyAcujfPW2JGJIW
+ WoJyuNX3QATWQwrzDElQcMEP/yNoxhjpnku/gWQVFiahs4VyOBv8MikwZLaNOsRVBr4h
+ 1RLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=uQeJj6IFfvjTH7tZDTd0bi24dF8RigJdyTH2xVfGgTs=;
+ b=wm8AKfcc5NX1wPi5Xw3imAUb+AljtyOYU9bEzq5cJUednsgZdQtw21TvFDvTvY5O5K
+ jQhQjlmIFqNpQKOnxdngSCuG/T9PnIcZPO20rOwvKVvhuzUokFD/lYaEJXIqws7/IKfD
+ zE4kYsAss18mWidwvaiwUB5l+V+bbCD797I4lWM7DZ/PnSi/jrnAP9ubYXKQrY/UQ0qY
+ y5VmrlKTUCmYkEhPF6hnJtm0AWfRXfR5/kN1LAQRtXzGIKMNwSBbFpUcRp7O8+YJTGMd
+ c/4rnjmi291MX+dBjCM6LnQC8iq272d3V50m4pqMC9dqpcbJLmI1GGJAb3/vKTYna/WY
+ 2qKA==
+X-Gm-Message-State: AOAM5320ciF3GFu4SRCCZSQu0QTiz9gFRLqjLcY9e0/dJvLs/j6qWY2n
+ ZtCxCNgNnGJZ1Z8G9vHHzJU=
+X-Google-Smtp-Source: ABdhPJzLtHKp3ARITLkl6IEvP9ASH3fdvPyqX2o54+OrpL9oFv6P8ZWeoiFpXMGZlDp44TWDeD62sQ==
+X-Received: by 2002:a17:903:1d2:b0:142:24f1:1213 with SMTP id
+ e18-20020a17090301d200b0014224f11213mr96857331plh.81.1637485290032; 
+ Sun, 21 Nov 2021 01:01:30 -0800 (PST)
+Received: from localhost ([103.99.179.247])
+ by smtp.gmail.com with ESMTPSA id lp12sm4320990pjb.24.2021.11.21.01.01.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 21 Nov 2021 01:01:29 -0800 (PST)
+Date: Sun, 21 Nov 2021 17:01:20 +0800
+From: Calvin Zhang <calvinzhang.cool@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>
 Subject: Re: [PATCH 0/2] of: remove reserved regions count restriction
-Message-ID: <YZnqo3oA7srQik4N@kernel.org>
+Message-ID: <YZoK4IiBOTPduEyN@debian>
 References: <20211119075844.2902592-1-calvinzhang.cool@gmail.com>
+ <YZnqo3oA7srQik4N@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211119075844.2902592-1-calvinzhang.cool@gmail.com>
+In-Reply-To: <YZnqo3oA7srQik4N@kernel.org>
 X-Mailman-Approved-At: Tue, 23 Nov 2021 07:57:41 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -109,55 +133,32 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 19, 2021 at 03:58:17PM +0800, Calvin Zhang wrote:
-> The count of reserved regions in /reserved-memory was limited because
-> the struct reserved_mem array was defined statically. This series sorts
-> out reserved memory code and allocates that array from early allocator.
-> 
-> Note: reserved region with fixed location must be reserved before any
-> memory allocation. While struct reserved_mem array should be allocated
-> after allocator is activated. We make early_init_fdt_scan_reserved_mem()
-> do reservation only and add another call to initialize reserved memory.
-> So arch code have to change for it.
+On Sun, Nov 21, 2021 at 08:43:47AM +0200, Mike Rapoport wrote:
+>On Fri, Nov 19, 2021 at 03:58:17PM +0800, Calvin Zhang wrote:
+>> The count of reserved regions in /reserved-memory was limited because
+>> the struct reserved_mem array was defined statically. This series sorts
+>> out reserved memory code and allocates that array from early allocator.
+>> 
+>> Note: reserved region with fixed location must be reserved before any
+>> memory allocation. While struct reserved_mem array should be allocated
+>> after allocator is activated. We make early_init_fdt_scan_reserved_mem()
+>> do reservation only and add another call to initialize reserved memory.
+>> So arch code have to change for it.
+>
+>I think much simpler would be to use the same constant for sizing
+>memblock.reserved and reserved_mem arrays.
+>
+>If there is too much reserved regions in the device tree, reserving them in
+>memblock will fail anyway because memblock also starts with static array
+>for memblock.reserved, so doing one pass with memblock_reserve() and
+>another to set up reserved_mem wouldn't help anyway.
 
-I think much simpler would be to use the same constant for sizing
-memblock.reserved and reserved_mem arrays.
+Yes. This happens only if there are two many fixed reserved regions.
+memblock.reserved can be resized after paging.
 
-If there is too much reserved regions in the device tree, reserving them in
-memblock will fail anyway because memblock also starts with static array
-for memblock.reserved, so doing one pass with memblock_reserve() and
-another to set up reserved_mem wouldn't help anyway.
+I also find another problem. Initializing dynamic reservation after
+paging would fail to mark it no-map because no-map flag works when doing
+direct mapping. This seems to be a circular dependency.
 
-> I'm only familiar with arm and arm64 architectures. Approvals from arch
-> maintainers are required. Thank you all.
-> 
-> Calvin Zhang (2):
->   of: Sort reserved_mem related code
->   of: reserved_mem: Remove reserved regions count restriction
-> 
->  arch/arc/mm/init.c                 |   3 +
->  arch/arm/kernel/setup.c            |   2 +
->  arch/arm64/kernel/setup.c          |   3 +
->  arch/csky/kernel/setup.c           |   3 +
->  arch/h8300/kernel/setup.c          |   2 +
->  arch/mips/kernel/setup.c           |   3 +
->  arch/nds32/kernel/setup.c          |   3 +
->  arch/nios2/kernel/setup.c          |   2 +
->  arch/openrisc/kernel/setup.c       |   3 +
->  arch/powerpc/kernel/setup-common.c |   3 +
->  arch/riscv/kernel/setup.c          |   2 +
->  arch/sh/kernel/setup.c             |   3 +
->  arch/xtensa/kernel/setup.c         |   2 +
->  drivers/of/fdt.c                   | 107 +---------------
->  drivers/of/of_private.h            |  12 +-
->  drivers/of/of_reserved_mem.c       | 189 ++++++++++++++++++++++++-----
->  include/linux/of_reserved_mem.h    |   4 +
->  17 files changed, 207 insertions(+), 139 deletions(-)
-> 
-> -- 
-> 2.30.2
-> 
-
--- 
-Sincerely yours,
-Mike.
+Thank You,
+Calvin
