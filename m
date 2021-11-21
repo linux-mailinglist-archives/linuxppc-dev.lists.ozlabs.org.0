@@ -2,97 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7F84594C2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Nov 2021 19:35:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA563459652
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Nov 2021 21:58:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HybYw5mtPz3c56
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 05:35:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HyfkF3MG5z2xBx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 07:58:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Xglrpv6c;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o40YeyKW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Xglrpv6c; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=o40YeyKW; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HybY664SKz2xLL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Nov 2021 05:35:05 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AMHp3nF008822
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Nov 2021 18:35:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=347/xe1wCvRpOzDI4DQpY7kOC0jEvs+AERCYO56bBx8=;
- b=Xglrpv6ceRAQDNpADzPLgz9/B7wI/WFsoOLl+9EUrBhpyn0Rwxzw70cDoyB/WfBkFoGr
- qPvXximxik7lF35lkiD5nbqER8z4hX/l1bs5tzLVQfQdo5jzu7zskHVxXjUI3Kn4G212
- 1kpSD8e6sBUCqd74rlJTdAUhXicfoMWlCo4gsyMyVdjdHF6uYrtaGCMsvwjJd3FNGt5k
- B8LqI9f+EF9SdGYktUq5N062Xib0mLf9dV6W9iQudcllqsLyiggoCZTcMtIdO24qnDPD
- mhNH8Xvmt0QgedrjdZmqnlY8bZxgx8/lPDxuG3CxftjOQXbKIy4ZvKXORb2u+iRgV9sa ew== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cgfyh8sp9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Nov 2021 18:35:02 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AMIJ7ul040421
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Nov 2021 18:35:01 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cgfyh8sp2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Nov 2021 18:35:01 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AMISujG009719;
- Mon, 22 Nov 2021 18:35:01 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma04dal.us.ibm.com with ESMTP id 3cernanj2u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 22 Nov 2021 18:35:01 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1AMIYxp655968140
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 22 Nov 2021 18:34:59 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C03BEAE066;
- Mon, 22 Nov 2021 18:34:59 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C2B22AE068;
- Mon, 22 Nov 2021 18:34:58 +0000 (GMT)
-Received: from localhost (unknown [9.211.110.220])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
- Mon, 22 Nov 2021 18:34:58 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v1] KVM: PPC: Book3S HV: Prevent POWER7/8 TLB flush
- flushing SLB
-In-Reply-To: <20211119031627.577853-1-npiggin@gmail.com>
-References: <20211119031627.577853-1-npiggin@gmail.com>
-Date: Mon, 22 Nov 2021 15:34:56 -0300
-Message-ID: <87sfvoqbsf.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HxgqV48hrz2xtC
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 21 Nov 2021 17:44:22 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 60B98604AC;
+ Sun, 21 Nov 2021 06:43:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1637477055;
+ bh=fF0qMHEWbaZWbEit/VvNjQKirKtWS4o0c8b9dFvtOFg=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=o40YeyKWlss6qPqzIaBC1BRaoNsy8h4lRluMS6PA711BRFcqyhJOnzbksEMtKtJO/
+ 8jbTZZa3TfDTwFyR4bB+BvkwZH8B4Lq6zUtBDhL0B4WDBH9OrnY/ZIAuUCLySCed3G
+ BY0pW/832nzdNqDcLtde/+ux9ozmIiM3YLALWMwekxe0nZCbZ8Eac9fyNJkYF8xblI
+ zzUk/gDwJpgD0wAYRzlFYo+zhx5+msTuR9KF/8/1WOgKdEL1RlhcobAeHzb+LuS7g/
+ jBCVo5DEsOze9uLZm95vmKlvgKfjbEPyxEhw1wZAFN+rxMTmDM0V/oXbaGrjJoZ0t1
+ JqBkAezCYdBnA==
+Date: Sun, 21 Nov 2021 08:43:47 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Calvin Zhang <calvinzhang.cool@gmail.com>
+Subject: Re: [PATCH 0/2] of: remove reserved regions count restriction
+Message-ID: <YZnqo3oA7srQik4N@kernel.org>
+References: <20211119075844.2902592-1-calvinzhang.cool@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 1Op9Dl0c0W1UQvg5q0fTgR3RWRIu8OKH
-X-Proofpoint-GUID: v5DM3-Aj2cH5uebnfwkj4lz-59aPMVGe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-22_08,2021-11-22_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- adultscore=0 mlxlogscore=999 phishscore=0 impostorscore=0 bulkscore=0
- lowpriorityscore=0 clxscore=1015 suspectscore=0 mlxscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2111220095
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211119075844.2902592-1-calvinzhang.cool@gmail.com>
+X-Mailman-Approved-At: Tue, 23 Nov 2021 07:57:41 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,59 +58,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: "Kirill A. Shutemov" <kirill.shtuemov@linux.intel.com>,
+ Mark Rutland <mark.rutland@arm.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Rich Felker <dalias@libc.org>, Jinyang He <hejinyang@loongson.cn>,
+ David Hildenbrand <david@redhat.com>, Lee Jones <lee.jones@linaro.org>,
+ linux-kernel@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>,
+ Anup Patel <anup.patel@wdc.com>, Guo Ren <guoren@linux.alibaba.com>,
+ Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
+ Nick Kossifidis <mick@ics.forth.gr>, Vladimir Isaev <isaev@synopsys.com>,
+ Tiezhu Yang <yangtiezhu@loongson.cn>, Vincent Chen <deanbo422@gmail.com>,
+ Will Deacon <will@kernel.org>, Markus Elfring <elfring@users.sourceforge.net>,
+ Vitaly Wool <vitaly.wool@konsulko.com>, Jonas Bonn <jonas@southpole.se>,
+ devicetree@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ uclinux-h8-devel@lists.sourceforge.jp,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Palmer Dabbelt <palmerdabbelt@google.com>, linux-sh@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Ganesh Goudar <ganeshgr@linux.ibm.com>, David Brazdil <dbrazdil@google.com>,
+ linux-riscv@lists.infradead.org, Guenter Roeck <linux@roeck-us.net>,
+ Alexander Sverdlin <alexander.sverdlin@nokia.com>,
+ Thierry Reding <treding@nvidia.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Arnd Bergmann <arnd@arndb.de>, Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-xtensa@linux-xtensa.org, Vineet Gupta <vgupta@kernel.org>,
+ Andreas Oetken <andreas.oetken@siemens.com>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>,
+ Rob Herring <robh+dt@kernel.org>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Stafford Horne <shorne@gmail.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, Andrey Konovalov <andreyknvl@gmail.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org,
+ Alexandre Ghiti <alex@ghiti.fr>, Nick Hu <nickhu@andestech.com>,
+ Atish Patra <atish.patra@wdc.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Frank Rowand <frowand.list@gmail.com>,
+ Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+ Dinh Nguyen <dinguyen@kernel.org>, Zhang Yunkai <zhang.yunkai@zte.com.cn>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Souptick Joarder <jrdr.linux@gmail.com>,
+ Marc Zyngier <maz@kernel.org>, Mauri Sandberg <sandberg@mailfence.com>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, openrisc@lists.librecores.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+On Fri, Nov 19, 2021 at 03:58:17PM +0800, Calvin Zhang wrote:
+> The count of reserved regions in /reserved-memory was limited because
+> the struct reserved_mem array was defined statically. This series sorts
+> out reserved memory code and allocates that array from early allocator.
+> 
+> Note: reserved region with fixed location must be reserved before any
+> memory allocation. While struct reserved_mem array should be allocated
+> after allocator is activated. We make early_init_fdt_scan_reserved_mem()
+> do reservation only and add another call to initialize reserved memory.
+> So arch code have to change for it.
 
-> The POWER9 ERAT flush instruction is a SLBIA with IH=7, which is a
-> reserved value on POWER7/8. On POWER8 this invalidates the SLB entries
-> above index 0, similarly to SLBIA IH=0.
->
-> If the SLB entries are invalidated, and then the guest is bypassed, the
-> host SLB does not get re-loaded, so the bolted entries above 0 will be
-> lost. This can result in kernel stack access causing a SLB fault.
->
-> Kernel stack access causing a SLB fault was responsible for the infamous
-> mega bug (search "Fix SLB reload bug"). Although since commit
-> 48e7b7695745 ("powerpc/64s/hash: Convert SLB miss handlers to C") that
-> starts using the kernel stack in the SLB miss handler, it might only
-> result in an infinite loop of SLB faults. In any case it's a bug.
->
-> Fix this by only executing the instruction on >= POWER9 where IH=7 is
-> defined not to invalidate the SLB. POWER7/8 don't require this ERAT
-> flush.
->
-> Fixes: 5008711259201 ("KVM: PPC: Book3S HV: Invalidate ERAT when flushing guest TLB entries")
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+I think much simpler would be to use the same constant for sizing
+memblock.reserved and reserved_mem arrays.
 
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
+If there is too much reserved regions in the device tree, reserving them in
+memblock will fail anyway because memblock also starts with static array
+for memblock.reserved, so doing one pass with memblock_reserve() and
+another to set up reserved_mem wouldn't help anyway.
 
-> ---
->  arch/powerpc/kvm/book3s_hv_builtin.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
-> index fcf4760a3a0e..70b7a8f97153 100644
-> --- a/arch/powerpc/kvm/book3s_hv_builtin.c
-> +++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-> @@ -695,6 +695,7 @@ static void flush_guest_tlb(struct kvm *kvm)
->  				       "r" (0) : "memory");
->  		}
->  		asm volatile("ptesync": : :"memory");
-> +		// POWER9 congruence-class TLBIEL leaves ERAT. Flush it now.
->  		asm volatile(PPC_RADIX_INVALIDATE_ERAT_GUEST : : :"memory");
->  	} else {
->  		for (set = 0; set < kvm->arch.tlb_sets; ++set) {
-> @@ -705,7 +706,9 @@ static void flush_guest_tlb(struct kvm *kvm)
->  			rb += PPC_BIT(51);	/* increment set number */
->  		}
->  		asm volatile("ptesync": : :"memory");
-> -		asm volatile(PPC_ISA_3_0_INVALIDATE_ERAT : : :"memory");
-> +		// POWER9 congruence-class TLBIEL leaves ERAT. Flush it now.
-> +		if (cpu_has_feature(CPU_FTR_ARCH_300))
-> +			asm volatile(PPC_ISA_3_0_INVALIDATE_ERAT : : :"memory");
->  	}
->  }
+> I'm only familiar with arm and arm64 architectures. Approvals from arch
+> maintainers are required. Thank you all.
+> 
+> Calvin Zhang (2):
+>   of: Sort reserved_mem related code
+>   of: reserved_mem: Remove reserved regions count restriction
+> 
+>  arch/arc/mm/init.c                 |   3 +
+>  arch/arm/kernel/setup.c            |   2 +
+>  arch/arm64/kernel/setup.c          |   3 +
+>  arch/csky/kernel/setup.c           |   3 +
+>  arch/h8300/kernel/setup.c          |   2 +
+>  arch/mips/kernel/setup.c           |   3 +
+>  arch/nds32/kernel/setup.c          |   3 +
+>  arch/nios2/kernel/setup.c          |   2 +
+>  arch/openrisc/kernel/setup.c       |   3 +
+>  arch/powerpc/kernel/setup-common.c |   3 +
+>  arch/riscv/kernel/setup.c          |   2 +
+>  arch/sh/kernel/setup.c             |   3 +
+>  arch/xtensa/kernel/setup.c         |   2 +
+>  drivers/of/fdt.c                   | 107 +---------------
+>  drivers/of/of_private.h            |  12 +-
+>  drivers/of/of_reserved_mem.c       | 189 ++++++++++++++++++++++++-----
+>  include/linux/of_reserved_mem.h    |   4 +
+>  17 files changed, 207 insertions(+), 139 deletions(-)
+> 
+> -- 
+> 2.30.2
+> 
+
+-- 
+Sincerely yours,
+Mike.
