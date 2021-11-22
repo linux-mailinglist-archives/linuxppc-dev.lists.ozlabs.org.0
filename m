@@ -1,48 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B04458ED9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Nov 2021 13:58:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C8E1458F54
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Nov 2021 14:24:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HyS4n6vVNz301g
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Nov 2021 23:58:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HySgB0wy1z3c6G
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 00:24:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ghiti.fr
- (client-ip=217.70.183.193; helo=relay1-d.mail.gandi.net;
- envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
-X-Greylist: delayed 5712 seconds by postgrey-1.36 at boromir;
- Mon, 22 Nov 2021 23:58:08 AEDT
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
- [217.70.183.193])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.222.49; helo=mail-ua1-f49.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com
+ [209.85.222.49])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HyS4J232cz2xt7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Nov 2021 23:58:06 +1100 (AEDT)
-Received: (Authenticated sender: alex@ghiti.fr)
- by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id F15E724001C;
- Mon, 22 Nov 2021 12:57:56 +0000 (UTC)
-Message-ID: <eb070ba0-2131-cc4e-4742-ec20c13d72ef@ghiti.fr>
-Date: Mon, 22 Nov 2021 13:57:56 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HySfj28Jtz2yPd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Nov 2021 00:24:27 +1100 (AEDT)
+Received: by mail-ua1-f49.google.com with SMTP id p2so36372410uad.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Nov 2021 05:24:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to;
+ bh=xarPnle33Vd1NAVNINArZXI9fdyD3SNGNTfacLEzKQo=;
+ b=j/dzKMn8mBkHGTekgezkzIBxCJvNw96pvGx7zQdXK5a67JRG+WnACqoF9VWofwSd+l
+ FX2qTeUQEpjrXn17ce+IR52sE0762Z4H0PgQCOP1AKAelMhNnnnWQjUz7TO+mO4JyUIL
+ plSipP4+UT99+b/EjEjXB7dlgdp0PILDaBn0mYy059Sy6y3NohDrgEOeqnyITX8v/A02
+ 5XixsrqcgGmPyxzovRnwc2BjeQfO5KkfhEac6suEnPhQ4BMGK5Wd+kgNm154WNYss1Qf
+ 5URnN4NJszJpgzvfgWshqe3mbvTPZYOwOEMw3smDEwlsBTIXEABEcsProM7hF4TnuOhH
+ VPrQ==
+X-Gm-Message-State: AOAM5320pj363VQjhZqwuYcbDpjrN4BcIWbCBTvPf9+ChHegErXiokOt
+ Zz/5hMTRosyw4pepsNlyERiVDp2dsBeeeg==
+X-Google-Smtp-Source: ABdhPJyMETM25G4idk+BALH84gHkuS1Rc0Q/KyxQl56QR9t8ie580FH8OjF8M48naa5H2ukmLxeVkg==
+X-Received: by 2002:ab0:6ca7:: with SMTP id j7mr85816291uaa.133.1637587463319; 
+ Mon, 22 Nov 2021 05:24:23 -0800 (PST)
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com.
+ [209.85.222.51])
+ by smtp.gmail.com with ESMTPSA id y7sm4383118uac.3.2021.11.22.05.24.22
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 22 Nov 2021 05:24:22 -0800 (PST)
+Received: by mail-ua1-f51.google.com with SMTP id t13so36389107uad.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Nov 2021 05:24:22 -0800 (PST)
+X-Received: by 2002:a9f:248b:: with SMTP id 11mr85736008uar.14.1637587462423; 
+ Mon, 22 Nov 2021 05:24:22 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.1
-Subject: Re: [PATCH 6/8] mm: Allow arch specific arch_randomize_brk() with
- CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <cover.1637570556.git.christophe.leroy@csgroup.eu>
- <e2209d0f1f3c1b581592bd6c32243402ccfe3dde.1637570556.git.christophe.leroy@csgroup.eu>
- <325663a5-d9a1-a8b8-7f16-c2985c319864@ghiti.fr>
- <2dd4a22e-f1a5-683c-2d17-ce726f03f4c5@csgroup.eu>
-From: Alexandre ghiti <alex@ghiti.fr>
-In-Reply-To: <2dd4a22e-f1a5-683c-2d17-ce726f03f4c5@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20211122111214.3801534-1-geert@linux-m68k.org>
+In-Reply-To: <20211122111214.3801534-1-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 22 Nov 2021 14:24:11 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdW7jcoNHyBomcbkkHU-m32uAureeHYj_PhaMC=O2b4wLA@mail.gmail.com>
+Message-ID: <CAMuHMdW7jcoNHyBomcbkkHU-m32uAureeHYj_PhaMC=O2b4wLA@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.16-rc2
+To: linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ linux-um@lists.infradead.org, sparclinux@vger.kernel.org, 
+ linux-ntfs-dev@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,68 +70,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/22/21 12:47, Christophe Leroy wrote:
+On Mon, Nov 22, 2021 at 12:28 PM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> Below is the list of build error/warning regressions/improvements in
+> v5.16-rc2[1] compared to v5.15[2].
 >
+> Summarized:
+>   - build errors: +13/-12
+>   - build warnings: +3/-26
 >
-> Le 22/11/2021 à 12:22, Alex Ghiti a écrit :
->> Hi Christophe,
->>
->> Le 22/11/2021 à 09:48, Christophe Leroy a écrit :
->>> Commit e7142bf5d231 ("arm64, mm: make randomization selected by
->>> generic topdown mmap layout") introduced a default version of
->>> arch_randomize_brk() provided when
->>> CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT is selected.
->>>
->>> powerpc could select CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
->>> but needs to provide its own arch_randomize_brk().
->>>
->>> In order to allow that, don't make
->>> CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT select
->>> CONFIG_ARCH_HAS_ELF_RANDOMIZE. Instead, ensure that
->>> selecting CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT and
->>> selecting CONFIG_ARCH_HAS_ELF_RANDOMIZE has the same effect.
->>
->> This feels weird to me since if CONFIG_ARCH_HAS_ELF_RANDOMIZE is used 
->> somewhere else at some point, it is not natural to add 
->> CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT: can't we use a __weak 
->> function or a new CONFIG_ARCH_HAS_RANDOMIZE_BRK?
+> JFYI, when comparing v5.16-rc2[1] to v5.16-rc1[3], the summaries are:
+>   - build errors: +6/-12
+
+  + /kisskb/src/drivers/mtd/nand/raw/mpc5121_nfc.c: error: unused
+variable 'mtd' [-Werror=unused-variable]:  => 294:19
+
+ppc32_allmodconfig (patch sent)
+
+  + /kisskb/src/drivers/video/fbdev/nvidia/nvidia.c: error: passing
+argument 1 of 'iounmap' discards 'volatile' qualifier from pointer
+target type [-Werror=discarded-qualifiers]:  => 1439:10, 1414:10
+  + /kisskb/src/drivers/video/fbdev/riva/fbdev.c: error: passing
+argument 1 of 'iounmap' discards 'volatile' qualifier from pointer
+target type [-Werror=discarded-qualifiers]:  => 2095:11, 2062:11
+
+um-all{mod,yes}config
+
+  + /kisskb/src/fs/netfs/read_helper.c: error: implicit declaration of
+function 'flush_dcache_folio' [-Werror=implicit-function-declaration]:
+ => 435:4
+
+sparc-allmodconfig
+sparc64-allmodconfig
+
+  + /kisskb/src/fs/ntfs/aops.c: error: the frame size of 2192 bytes is
+larger than 2048 bytes [-Werror=frame-larger-than=]:  => 1311:1
+
+ppc64le_allmodconfig
+
+  + /kisskb/src/fs/ntfs/aops.c: error: the frame size of 2256 bytes is
+larger than 2048 bytes [-Werror=frame-larger-than=]:  => 1311:1
+
+powerpc-allyesconfig
+
+> Thanks to the linux-next team for providing the build service.
 >
->
-> Yes I also found things a bit weird.
->
-> CONFIG_ARCH_HAS_RANDOMIZE_BRK could be an idea but how different would 
-> it be from CONFIG_ARCH_HAS_ELF_RANDOMIZE ? In fact I find it weird 
-> that CONFIG_ARCH_HAS_ELF_RANDOMIZE is selected by 
-> CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT and not by the arch itself.
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/136057256686de39cc3a07c2e39ef6bc43003ff6/ (all 90 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/fa55b7dcdc43c1aa1ba12bca9d2dd4318c2a0dbf/ (all 90 configs)
 
+Gr{oetje,eeting}s,
 
-IIRC, this was a request from Kees Cook who wanted to enforce this 
-security measure.
+                        Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
->
-> On the other hand CONFIG_ARCH_HAS_ELF_RANDOMIZE also handles 
-> arch_mmap_rnd() and here we are talking about arch_randomize_brk() only.
->
-> In the begining I was thinking about adding a 
-> CONFIG_ARCH_WANT_DEFAULT_RANDOMIZE_BRK, but it was meaning adding it 
-> to the few other arches selecting 
-> CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT.
->
-> So I think I will go for the __weak function option.
-
-
-Ok, thanks.
-
-Alex
-
-
->
-> Thanks
-> Christophe
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
