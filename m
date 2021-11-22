@@ -1,43 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6136A4591A2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Nov 2021 16:49:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF1D459339
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 22 Nov 2021 17:37:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HyWsr1h7Pz3c7B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 02:49:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HyXxr2PNfz3c8Z
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 03:37:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HyWsM0X7yz2xBx
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Nov 2021 02:48:49 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6200,9189,10175"; a="298222071"
-X-IronPort-AV: E=Sophos;i="5.87,255,1631602800"; d="scan'208";a="298222071"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2021 07:46:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,255,1631602800"; d="scan'208";a="496907909"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
- by orsmga007.jf.intel.com with ESMTP; 22 Nov 2021 07:46:54 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1mpBWv-0000MZ-Cu; Mon, 22 Nov 2021 15:46:53 +0000
-Date: Mon, 22 Nov 2021 23:46:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS 95c6ab13ec7e63e5e8628e237082431779d270f3
-Message-ID: <619bbb56.dsYN+3v+F3mxBtVS%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=valentin.schneider@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4HyXxQ3q5xz2ymw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Nov 2021 03:37:28 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 57A04ED1;
+ Mon, 22 Nov 2021 08:37:25 -0800 (PST)
+Received: from e113632-lin (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5A2243F66F;
+ Mon, 22 Nov 2021 08:37:23 -0800 (PST)
+From: Valentin Schneider <valentin.schneider@arm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] preempt/dynamic: Introduce preempt mode accessors
+In-Reply-To: <2f22c57d-9bf0-3cc1-f0f1-61ecdf5dfa52@csgroup.eu>
+References: <20211110202448.4054153-1-valentin.schneider@arm.com>
+ <20211110202448.4054153-3-valentin.schneider@arm.com>
+ <2f22c57d-9bf0-3cc1-f0f1-61ecdf5dfa52@csgroup.eu>
+Date: Mon, 22 Nov 2021 16:37:16 +0000
+Message-ID: <87y25gcfk3.mognet@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,166 +47,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Marco Elver <elver@google.com>, Michal Marek <michal.lkml@markovi.net>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Frederic Weisbecker <frederic@kernel.org>, Mike Galbraith <efault@gmx.de>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Masahiro Yamada <masahiroy@kernel.org>,
+ Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 95c6ab13ec7e63e5e8628e237082431779d270f3  Automatic merge of 'master' into merge (2021-11-22 10:52)
+On 16/11/21 14:29, Christophe Leroy wrote:
+> Le 10/11/2021 =C3=A0 21:24, Valentin Schneider a =C3=A9crit=C2=A0:
+>> CONFIG_PREEMPT{_NONE, _VOLUNTARY} designate either:
+>> o The build-time preemption model when !PREEMPT_DYNAMIC
+>> o The default boot-time preemption model when PREEMPT_DYNAMIC
+>>
+>> IOW, using those on PREEMPT_DYNAMIC kernels is meaningless - the actual
+>> model could have been set to something else by the "preempt=3Dfoo" cmdli=
+ne
+>> parameter.
+>>
+>> Introduce a set of helpers to determine the actual preemption mode used =
+by
+>> the live kernel.
+>>
+>> Suggested-by: Marco Elver <elver@google.com>
+>> Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+>> ---
+>>   include/linux/sched.h | 16 ++++++++++++++++
+>>   kernel/sched/core.c   | 11 +++++++++++
+>>   2 files changed, 27 insertions(+)
+>>
+>> diff --git a/include/linux/sched.h b/include/linux/sched.h
+>> index 5f8db54226af..0640d5622496 100644
+>> --- a/include/linux/sched.h
+>> +++ b/include/linux/sched.h
+>> @@ -2073,6 +2073,22 @@ static inline void cond_resched_rcu(void)
+>>   #endif
+>>   }
+>>
+>> +#ifdef CONFIG_PREEMPT_DYNAMIC
+>> +
+>> +extern bool is_preempt_none(void);
+>> +extern bool is_preempt_voluntary(void);
+>> +extern bool is_preempt_full(void);
+>
+> Those are trivial tests supposed to be used in fast pathes. They should
+> be static inlines in order to minimise the overhead.
+>
+>> +
+>> +#else
+>> +
+>> +#define is_preempt_none() IS_ENABLED(CONFIG_PREEMPT_NONE)
+>> +#define is_preempt_voluntary() IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY)
+>> +#define is_preempt_full() IS_ENABLED(CONFIG_PREEMPT)
+>
+> Would be better to use static inlines here as well instead of macros.
+>
 
-elapsed time: 921m
+I realize I stripped all ppc folks from the cclist after dropping the ppc
+snippet, but you guys might still be interested - my bad. That's done in
+v3:
 
-configs tested: 137
-configs skipped: 3
+https://lore.kernel.org/lkml/20211112185203.280040-1-valentin.schneider@arm=
+.com/
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+>> +
+>> +#endif
+>> +
+>> +#define is_preempt_rt() IS_ENABLED(CONFIG_PREEMPT_RT)
+>> +
+>>   /*
+>>    * Does a critical section need to be broken due to another
+>>    * task waiting?: (technically does not depend on CONFIG_PREEMPTION,
+>> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+>> index 97047aa7b6c2..9db7f77e53c3 100644
+>> --- a/kernel/sched/core.c
+>> +++ b/kernel/sched/core.c
+>> @@ -6638,6 +6638,17 @@ static void __init preempt_dynamic_init(void)
+>>      }
+>>   }
+>>
+>> +#define PREEMPT_MODE_ACCESSOR(mode) \
+>> +	bool is_preempt_##mode(void)						 \
+>> +	{									 \
+>> +		WARN_ON_ONCE(preempt_dynamic_mode =3D=3D preempt_dynamic_undefined); \
+>
+> Not sure using WARN_ON is a good idea here, as it may be called very
+> early, see comment on powerpc patch.
 
-gcc tested configs:
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-arm                              allyesconfig
-arm                                 defconfig
-i386                 randconfig-c001-20211122
-mips                 randconfig-c004-20211122
-m68k                       m5208evb_defconfig
-arm                            pleb_defconfig
-xtensa                  nommu_kc705_defconfig
-parisc                           alldefconfig
-arm                            qcom_defconfig
-arc                      axs103_smp_defconfig
-m68k                          sun3x_defconfig
-mips                           ci20_defconfig
-openrisc                         alldefconfig
-sh                          kfr2r09_defconfig
-mips                           mtx1_defconfig
-ia64                          tiger_defconfig
-arm                          iop32x_defconfig
-sh                     magicpanelr2_defconfig
-powerpc                 mpc8540_ads_defconfig
-arc                            hsdk_defconfig
-m68k                         amcore_defconfig
-alpha                               defconfig
-arm                        neponset_defconfig
-sh                            hp6xx_defconfig
-arm                         at91_dt_defconfig
-mips                 decstation_r4k_defconfig
-sh                      rts7751r2d1_defconfig
-powerpc                   motionpro_defconfig
-sh                         microdev_defconfig
-powerpc                   microwatt_defconfig
-arm                          collie_defconfig
-sh                           se7721_defconfig
-powerpc                     tqm5200_defconfig
-powerpc                      pasemi_defconfig
-powerpc                     ep8248e_defconfig
-m68k                       bvme6000_defconfig
-arm                     am200epdkit_defconfig
-nios2                               defconfig
-mips                           ip28_defconfig
-arm                             rpc_defconfig
-mips                            e55_defconfig
-i386                             allyesconfig
-powerpc                    ge_imp3a_defconfig
-sh                         ap325rxa_defconfig
-openrisc                  or1klitex_defconfig
-arm                            xcep_defconfig
-x86_64                              defconfig
-arm                      pxa255-idp_defconfig
-arm                         mv78xx0_defconfig
-powerpc                     tqm8540_defconfig
-microblaze                          defconfig
-m68k                         apollo_defconfig
-arm                       aspeed_g5_defconfig
-sh                            migor_defconfig
-microblaze                      mmu_defconfig
-mips                malta_qemu_32r6_defconfig
-arm                  randconfig-c002-20211122
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-csky                                defconfig
-alpha                            allyesconfig
-nds32                               defconfig
-nios2                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                                defconfig
-i386                              debian-10.3
-sparc                            allyesconfig
-sparc                               defconfig
-mips                             allmodconfig
-mips                             allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64               randconfig-a015-20211122
-x86_64               randconfig-a016-20211122
-i386                 randconfig-a015-20211122
-i386                 randconfig-a012-20211122
-i386                 randconfig-a013-20211122
-i386                 randconfig-a014-20211122
-i386                 randconfig-a011-20211122
-i386                 randconfig-a016-20211122
-x86_64               randconfig-a001-20211121
-x86_64               randconfig-a003-20211121
-x86_64               randconfig-a004-20211121
-x86_64               randconfig-a005-20211121
-x86_64               randconfig-a002-20211121
-x86_64               randconfig-a006-20211121
-arc                  randconfig-r043-20211122
-s390                 randconfig-r044-20211122
-riscv                randconfig-r042-20211122
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                           allyesconfig
-x86_64                    rhel-8.3-kselftests
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
+Bah, I was gonna say that you *don't* want users of is_preempt_*() to be
+called before the "final" preemption model is set up (such users would need
+to make use of static_calls), but I realize there's a debug interface to
+flip the preemption model at will... Say an initcall sees
+is_preempt_voluntary() and sets things up accordingly, and then the debug
+knob switches to preempt_full. I don't think there's much we can really do
+here though :/
 
-clang tested configs:
-s390                 randconfig-c005-20211122
-riscv                randconfig-c006-20211122
-i386                 randconfig-c001-20211122
-powerpc              randconfig-c003-20211122
-arm                  randconfig-c002-20211122
-x86_64               randconfig-c007-20211122
-mips                 randconfig-c004-20211122
-x86_64               randconfig-a001-20211122
-x86_64               randconfig-a003-20211122
-x86_64               randconfig-a004-20211122
-x86_64               randconfig-a002-20211122
-x86_64               randconfig-a005-20211122
-x86_64               randconfig-a006-20211122
-i386                 randconfig-a001-20211122
-i386                 randconfig-a002-20211122
-i386                 randconfig-a005-20211122
-i386                 randconfig-a006-20211122
-i386                 randconfig-a004-20211122
-i386                 randconfig-a003-20211122
+>
+>> +		return preempt_dynamic_mode =3D=3D preempt_dynamic_##mode;		 \
+>> +	}
+>
+> I'm not sure that's worth a macro. You only have 3 accessors, 2 lines of
+> code each. Just define all 3 in plain text.
+>
+> CONFIG_PREEMPT_DYNAMIC is based on using strategies like static_calls in
+> order to minimise the overhead. For those accessors you should use the
+> same kind of approach and use things like jump_labels in order to not
+> redo the test at each time and minimise overhead as much as possible.
+>
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+That's a valid point, though the few paths that need patching up and don't
+make use of static calls already (AFAICT the ppc irq path I was touching in
+v2 needs to make use of irqentry_exit_cond_resched()) really seem like
+slow-paths.
+
+>> +
+>> +PREEMPT_MODE_ACCESSOR(none)
+>> +PREEMPT_MODE_ACCESSOR(voluntary)
+>> +PREEMPT_MODE_ACCESSOR(full)
+>> +
+>>   #else /* !CONFIG_PREEMPT_DYNAMIC */
+>>
+>>   static inline void preempt_dynamic_init(void) { }
+>>
