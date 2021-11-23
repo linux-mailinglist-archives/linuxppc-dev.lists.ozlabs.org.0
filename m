@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1791745AD64
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 21:27:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAF845AD6D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 21:31:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzG0q6fKLz3cFg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 07:27:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HzG4L6L2Bz3dp2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 07:30:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Qi+WT89v;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=yINnFu5k;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -21,20 +21,20 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HzFxP1QYZz2ymc
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 07:24:55 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HzFxQ2YcTz2yn2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 07:24:58 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=2Kv6Hoi+4rCR0xeNRjHAEL5W0WSj9wKutSwhTDgIue0=; b=Qi+WT89v/gxTJXFJzgrSOMN/j4
- 4rOnaodA9SoHPCBfgiqmeZiDb9Jip9L6gfN5zh0+xw5x4zfJ4tLm4LZ94MxfX4/cLHomKT0GwITKC
- 9JKt82tHX3MTqRxl7aN/V4975++ctv4fIwYEPkqZkHvAHJfopfoEHsRYRiFgmyCHxgftAKWfdMF2/
- SmnjX2hTOKP+Oxfb6PzrLZBzoPt4nF4yxh8DXwEjGSb01g4HHQZ1Hn0j2YOj9Nxm9GIXwnXNhSyHW
- jKIKQ0iWXm4zNAWEvO+0EJlgTdTI2EhA8Cvgg6jItc3zff4jfmPQAZ8GwgHNOUzyk/a//6tVVHsr4
- E+oWRjRw==;
+ bh=aTZqVF2ar9gFRxcW4axREzxdcbuKKNtu2N0Y/kRNh2k=; b=yINnFu5kN49mKwI2VfcW4RrAJA
+ e4pQ8MdM4ctUmswxgqNTa+JS+oEROqJglzh+ybGHkWwjsm3YnBlJBE8lUdBrUZfxn3LSF+VC5BowS
+ qOKKdnglDSLqHJ3GljHgqvDLikTWppOcjBfqxR83wcO+iSfsqfpngZzaVya8+S/sfYl9DKcgE4/7+
+ 3VMAkmZ2kfu18VmvYnoC5heHJNMIZgyBLKsalCe7/aVlEnRLfMsS4jbnkijqkKbNtpO6sMdJqSTIl
+ rgRFt8etjFERFDV+zqaKQMejfrLcuVEIt3cgxrtttlZO8pq5+kZMC2WsXwMuoflAlBRbe+Js201ly
+ fXglQltg==;
 Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1mpcL1-003R5D-7B; Tue, 23 Nov 2021 20:24:23 +0000
+ (Red Hat Linux)) id 1mpcL1-003R5F-8H; Tue, 23 Nov 2021 20:24:23 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: akpm@linux-foundation.org, keescook@chromium.org,
 	yzaikin@google.com, nixiaoming@huawei.com, ebiederm@xmission.com,
@@ -45,10 +45,10 @@ To: akpm@linux-foundation.org, keescook@chromium.org,
 	benh@kernel.crashing.org, mark@fasheh.com, jlbec@evilplan.org,
 	joseph.qi@linux.alibaba.com, jack@suse.cz, amir73il@gmail.com,
 	phil@philpotter.co.uk, viro@zeniv.linux.org.uk, julia.lawall@inria.fr
-Subject: [PATCH v2 1/8] hpet: simplify subdirectory registration with
+Subject: [PATCH v2 2/8] i915: simplify subdirectory registration with
  register_sysctl()
-Date: Tue, 23 Nov 2021 12:24:15 -0800
-Message-Id: <20211123202422.819032-2-mcgrof@kernel.org>
+Date: Tue, 23 Nov 2021 12:24:16 -0800
+Message-Id: <20211123202422.819032-3-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211123202422.819032-1-mcgrof@kernel.org>
 References: <20211123202422.819032-1-mcgrof@kernel.org>
@@ -77,7 +77,7 @@ There is no need to user boiler plate code to specify a set of base
 directories we're going to stuff sysctls under. Simplify this by using
 register_sysctl() and specifying the directory path directly.
 
-// pycocci sysctl-subdir-register-sysctl-simplify.cocci drivers/char/hpet.c
+// pycocci sysctl-subdir-register-sysctl-simplify.cocci PATH
 
 @c1@
 expression E1;
@@ -171,23 +171,23 @@ header =
 Generated-by: Coccinelle SmPL
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- drivers/char/hpet.c | 22 +---------------------
+ drivers/gpu/drm/i915/i915_perf.c | 22 +---------------------
  1 file changed, 1 insertion(+), 21 deletions(-)
 
-diff --git a/drivers/char/hpet.c b/drivers/char/hpet.c
-index 4e5431f01450..563dfae3b8da 100644
---- a/drivers/char/hpet.c
-+++ b/drivers/char/hpet.c
-@@ -746,26 +746,6 @@ static struct ctl_table hpet_table[] = {
+diff --git a/drivers/gpu/drm/i915/i915_perf.c b/drivers/gpu/drm/i915/i915_perf.c
+index 2f01b8c0284c..5979e3258647 100644
+--- a/drivers/gpu/drm/i915/i915_perf.c
++++ b/drivers/gpu/drm/i915/i915_perf.c
+@@ -4273,26 +4273,6 @@ static struct ctl_table oa_table[] = {
  	{}
  };
  
--static struct ctl_table hpet_root[] = {
+-static struct ctl_table i915_root[] = {
 -	{
--	 .procname = "hpet",
+-	 .procname = "i915",
 -	 .maxlen = 0,
 -	 .mode = 0555,
--	 .child = hpet_table,
+-	 .child = oa_table,
 -	 },
 -	{}
 -};
@@ -197,23 +197,23 @@ index 4e5431f01450..563dfae3b8da 100644
 -	 .procname = "dev",
 -	 .maxlen = 0,
 -	 .mode = 0555,
--	 .child = hpet_root,
+-	 .child = i915_root,
 -	 },
 -	{}
 -};
 -
- static struct ctl_table_header *sysctl_header;
+ static void oa_init_supported_formats(struct i915_perf *perf)
+ {
+ 	struct drm_i915_private *i915 = perf->i915;
+@@ -4488,7 +4468,7 @@ static int destroy_config(int id, void *p, void *data)
  
- /*
-@@ -1061,7 +1041,7 @@ static int __init hpet_init(void)
- 	if (result < 0)
- 		return -ENODEV;
- 
+ int i915_perf_sysctl_register(void)
+ {
 -	sysctl_header = register_sysctl_table(dev_root);
-+	sysctl_header = register_sysctl("dev/hpet", hpet_table);
++	sysctl_header = register_sysctl("dev/i915", oa_table);
+ 	return 0;
+ }
  
- 	result = acpi_bus_register_driver(&hpet_acpi_driver);
- 	if (result < 0) {
 -- 
 2.33.0
 
