@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DAF845AD6D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 21:31:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1DE45AD61
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 21:26:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzG4L6L2Bz3dp2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 07:30:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HzFzQ2wz3z3bT7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 07:26:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=yINnFu5k;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=uuhyMxlT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -21,20 +21,20 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HzFxQ2YcTz2yn2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 07:24:58 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HzFxP0q99z2ybD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 07:24:55 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=aTZqVF2ar9gFRxcW4axREzxdcbuKKNtu2N0Y/kRNh2k=; b=yINnFu5kN49mKwI2VfcW4RrAJA
- e4pQ8MdM4ctUmswxgqNTa+JS+oEROqJglzh+ybGHkWwjsm3YnBlJBE8lUdBrUZfxn3LSF+VC5BowS
- qOKKdnglDSLqHJ3GljHgqvDLikTWppOcjBfqxR83wcO+iSfsqfpngZzaVya8+S/sfYl9DKcgE4/7+
- 3VMAkmZ2kfu18VmvYnoC5heHJNMIZgyBLKsalCe7/aVlEnRLfMsS4jbnkijqkKbNtpO6sMdJqSTIl
- rgRFt8etjFERFDV+zqaKQMejfrLcuVEIt3cgxrtttlZO8pq5+kZMC2WsXwMuoflAlBRbe+Js201ly
- fXglQltg==;
+ bh=qEMCqYh4UIBtk+2Pnh2nxftwvU/rvXJVKDicg8b6I3s=; b=uuhyMxlTPAHzH8+Cod+gE/Zu/p
+ bT1ehnIfXmEBar5x5xwpA5IGS9LiS66z/oQQj2k588F8Sn4/yigOCsKhueeyHHUz0RsZHWsEqjsum
+ d5P8epbMkaSOTetwKN4TbkyYxlti4MI5j3UY3KGYcmL9RavpfJGGrOnejW3mbE7MQdzMDDejlMoZd
+ v2i69DcOwLvTh3vQq0Uoveshm4xDOcSUU0OqeqzA7/cma6vyoHXIgOygXw2gW57VkYaprjYOsRr4A
+ Xpj8MLXLjGHDGkVUyBakfEeKU4jBE18qNLE2hPu0kZQ2W4xscezxM5qe21geozMvsAYZSqpcDRSox
+ U/xkOx9g==;
 Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1mpcL1-003R5F-8H; Tue, 23 Nov 2021 20:24:23 +0000
+ (Red Hat Linux)) id 1mpcL1-003R5H-9R; Tue, 23 Nov 2021 20:24:23 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: akpm@linux-foundation.org, keescook@chromium.org,
 	yzaikin@google.com, nixiaoming@huawei.com, ebiederm@xmission.com,
@@ -45,10 +45,10 @@ To: akpm@linux-foundation.org, keescook@chromium.org,
 	benh@kernel.crashing.org, mark@fasheh.com, jlbec@evilplan.org,
 	joseph.qi@linux.alibaba.com, jack@suse.cz, amir73il@gmail.com,
 	phil@philpotter.co.uk, viro@zeniv.linux.org.uk, julia.lawall@inria.fr
-Subject: [PATCH v2 2/8] i915: simplify subdirectory registration with
- register_sysctl()
-Date: Tue, 23 Nov 2021 12:24:16 -0800
-Message-Id: <20211123202422.819032-3-mcgrof@kernel.org>
+Subject: [PATCH v2 3/8] macintosh/mac_hid.c: simplify subdirectory
+ registration with register_sysctl()
+Date: Tue, 23 Nov 2021 12:24:17 -0800
+Message-Id: <20211123202422.819032-4-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211123202422.819032-1-mcgrof@kernel.org>
 References: <20211123202422.819032-1-mcgrof@kernel.org>
@@ -171,48 +171,47 @@ header =
 Generated-by: Coccinelle SmPL
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_perf.c | 22 +---------------------
- 1 file changed, 1 insertion(+), 21 deletions(-)
+ drivers/macintosh/mac_hid.c | 24 +-----------------------
+ 1 file changed, 1 insertion(+), 23 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_perf.c b/drivers/gpu/drm/i915/i915_perf.c
-index 2f01b8c0284c..5979e3258647 100644
---- a/drivers/gpu/drm/i915/i915_perf.c
-+++ b/drivers/gpu/drm/i915/i915_perf.c
-@@ -4273,26 +4273,6 @@ static struct ctl_table oa_table[] = {
- 	{}
+diff --git a/drivers/macintosh/mac_hid.c b/drivers/macintosh/mac_hid.c
+index 28b8581b44dd..d8c4d5664145 100644
+--- a/drivers/macintosh/mac_hid.c
++++ b/drivers/macintosh/mac_hid.c
+@@ -239,33 +239,11 @@ static struct ctl_table mac_hid_files[] = {
+ 	{ }
  };
  
--static struct ctl_table i915_root[] = {
+-/* dir in /proc/sys/dev */
+-static struct ctl_table mac_hid_dir[] = {
 -	{
--	 .procname = "i915",
--	 .maxlen = 0,
--	 .mode = 0555,
--	 .child = oa_table,
--	 },
--	{}
+-		.procname	= "mac_hid",
+-		.maxlen		= 0,
+-		.mode		= 0555,
+-		.child		= mac_hid_files,
+-	},
+-	{ }
 -};
 -
--static struct ctl_table dev_root[] = {
+-/* /proc/sys/dev itself, in case that is not there yet */
+-static struct ctl_table mac_hid_root_dir[] = {
 -	{
--	 .procname = "dev",
--	 .maxlen = 0,
--	 .mode = 0555,
--	 .child = i915_root,
--	 },
--	{}
+-		.procname	= "dev",
+-		.maxlen		= 0,
+-		.mode		= 0555,
+-		.child		= mac_hid_dir,
+-	},
+-	{ }
 -};
 -
- static void oa_init_supported_formats(struct i915_perf *perf)
- {
- 	struct drm_i915_private *i915 = perf->i915;
-@@ -4488,7 +4468,7 @@ static int destroy_config(int id, void *p, void *data)
+ static struct ctl_table_header *mac_hid_sysctl_header;
  
- int i915_perf_sysctl_register(void)
+ static int __init mac_hid_init(void)
  {
--	sysctl_header = register_sysctl_table(dev_root);
-+	sysctl_header = register_sysctl("dev/i915", oa_table);
- 	return 0;
- }
+-	mac_hid_sysctl_header = register_sysctl_table(mac_hid_root_dir);
++	mac_hid_sysctl_header = register_sysctl("dev/mac_hid", mac_hid_files);
+ 	if (!mac_hid_sysctl_header)
+ 		return -ENOMEM;
  
 -- 
 2.33.0
