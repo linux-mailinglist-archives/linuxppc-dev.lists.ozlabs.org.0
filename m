@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C8745AD69
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 21:29:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833F345AD62
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 21:27:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzG2y4mDjz3cVb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 07:29:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HzG0727ZNz3bYL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 07:27:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ZWGMqUJp;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=pu9tDABb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -21,20 +21,20 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HzFxQ0R6Cz2ymt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 07:24:57 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HzFxP102rz2ybL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 07:24:55 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=98K78mt4doENfVFa8jk6SLvGB6ZcKxW39Bfjzxnd8Es=; b=ZWGMqUJpXOQI3VJBbWwkF5dkkm
- XuZBquuv28iODfbHzo7SWPv24PHTuhXjgWDcUFNe/h7zyH7S9XP727frDacpnOEVojWeDNN1WmZ7c
- JvLWHx5EvnyZnP3SGmAmMSXcbgOcbZQlMWA1vJXmojmLuwEQFzFUo+YxgsMohzvmdxasSE17Ic+iU
- pjSFBRxi7+xCaqy4nOBq1vViyaLZD8YLYwQz2X/FSkEdkIQYKj/XS6+Ijt+7Yl706JgOTvYkabwGw
- SQA8mf4bsdIsDAoQcGvSBHoCgveFuIcxcqynlp589RtL2MjQBWPHHWwXydpdVuWzfTjedzXJkQLrP
- gOwiAFdA==;
+ bh=uxX56sjsin2v3BRdfnr5TEVUTPcaLflkai/DCjMhC9c=; b=pu9tDABbAsc7CV51h7YN7FXpjb
+ 3f/hGByhDYBeRVT9KGZDXNhK8bCMVcllkROlHccQ4fZzY5zFCAh5aZVhGP+PTlng+fR+4+bh/4qxh
+ JYXlGdhBLa4KQuWhtkBAWUDXMthAhX3hcvFrNTylVe+N8B95Fkl30QOMumlvLrODOunVYXKyXhACG
+ 617dOry2em2+pA1lmms9tq7CanLN2gEgantMpCurXNAjbZBVGqkVwSx4d71zKRu54Ux1gFEi6urxs
+ j9VEQcTlcUf+MUdQcU5Ky2b5mgjYulsNWi9DpWzueIqpltgzFsFxjELc4liw1pw/j4GYAzkwaInS/
+ d4cD4fiQ==;
 Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1mpcL1-003R5N-Cp; Tue, 23 Nov 2021 20:24:23 +0000
+ (Red Hat Linux)) id 1mpcL1-003R5P-Dy; Tue, 23 Nov 2021 20:24:23 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: akpm@linux-foundation.org, keescook@chromium.org,
 	yzaikin@google.com, nixiaoming@huawei.com, ebiederm@xmission.com,
@@ -45,10 +45,10 @@ To: akpm@linux-foundation.org, keescook@chromium.org,
 	benh@kernel.crashing.org, mark@fasheh.com, jlbec@evilplan.org,
 	joseph.qi@linux.alibaba.com, jack@suse.cz, amir73il@gmail.com,
 	phil@philpotter.co.uk, viro@zeniv.linux.org.uk, julia.lawall@inria.fr
-Subject: [PATCH v2 6/8] inotify: simplify subdirectory registration with
+Subject: [PATCH v2 7/8] cdrom: simplify subdirectory registration with
  register_sysctl()
-Date: Tue, 23 Nov 2021 12:24:20 -0800
-Message-Id: <20211123202422.819032-7-mcgrof@kernel.org>
+Date: Tue, 23 Nov 2021 12:24:21 -0800
+Message-Id: <20211123202422.819032-8-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211123202422.819032-1-mcgrof@kernel.org>
 References: <20211123202422.819032-1-mcgrof@kernel.org>
@@ -73,115 +73,148 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Xiaoming Ni <nixiaoming@huawei.com>
-
 There is no need to user boiler plate code to specify a set of base
 directories we're going to stuff sysctls under. Simplify this by using
 register_sysctl() and specifying the directory path directly.
 
-Move inotify_user sysctl to inotify_user.c while at it to remove clutter
-from kernel/sysctl.c.
+// pycocci sysctl-subdir-register-sysctl-simplify.cocci PATH
 
-Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
-[mcgrof: update commit log to reflect new path we decided to take]
+@c1@
+expression E1;
+identifier subdir, sysctls;
+@@
+
+static struct ctl_table subdir[] = {
+	{
+		.procname = E1,
+		.maxlen = 0,
+		.mode = 0555,
+		.child = sysctls,
+	},
+	{ }
+};
+
+@c2@
+identifier c1.subdir;
+
+expression E2;
+identifier base;
+@@
+
+static struct ctl_table base[] = {
+	{
+		.procname = E2,
+		.maxlen = 0,
+		.mode = 0555,
+		.child = subdir,
+	},
+	{ }
+};
+
+@c3@
+identifier c2.base;
+identifier header;
+@@
+
+header = register_sysctl_table(base);
+
+@r1 depends on c1 && c2 && c3@
+expression c1.E1;
+identifier c1.subdir, c1.sysctls;
+@@
+
+-static struct ctl_table subdir[] = {
+-	{
+-		.procname = E1,
+-		.maxlen = 0,
+-		.mode = 0555,
+-		.child = sysctls,
+-	},
+-	{ }
+-};
+
+@r2 depends on c1 && c2 && c3@
+identifier c1.subdir;
+
+expression c2.E2;
+identifier c2.base;
+@@
+-static struct ctl_table base[] = {
+-	{
+-		.procname = E2,
+-		.maxlen = 0,
+-		.mode = 0555,
+-		.child = subdir,
+-	},
+-	{ }
+-};
+
+@initialize:python@
+@@
+
+def make_my_fresh_expression(s1, s2):
+  return '"' + s1.strip('"') + "/" + s2.strip('"') + '"'
+
+@r3 depends on c1 && c2 && c3@
+expression c1.E1;
+identifier c1.sysctls;
+expression c2.E2;
+identifier c2.base;
+identifier c3.header;
+fresh identifier E3 = script:python(E2, E1) { make_my_fresh_expression(E2, E1) };
+@@
+
+header =
+-register_sysctl_table(base);
++register_sysctl(E3, sysctls);
+
+Generated-by: Coccinelle SmPL
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- fs/notify/inotify/inotify_user.c | 11 ++++++++++-
- include/linux/inotify.h          |  3 ---
- kernel/sysctl.c                  | 21 ---------------------
- 3 files changed, 10 insertions(+), 25 deletions(-)
+ drivers/cdrom/cdrom.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-diff --git a/fs/notify/inotify/inotify_user.c b/fs/notify/inotify/inotify_user.c
-index 29fca3284bb5..54583f62dc44 100644
---- a/fs/notify/inotify/inotify_user.c
-+++ b/fs/notify/inotify/inotify_user.c
-@@ -58,7 +58,7 @@ struct kmem_cache *inotify_inode_mark_cachep __read_mostly;
- static long it_zero = 0;
- static long it_int_max = INT_MAX;
- 
--struct ctl_table inotify_table[] = {
-+static struct ctl_table inotify_table[] = {
- 	{
- 		.procname	= "max_user_instances",
- 		.data		= &init_user_ns.ucount_max[UCOUNT_INOTIFY_INSTANCES],
-@@ -87,6 +87,14 @@ struct ctl_table inotify_table[] = {
+diff --git a/drivers/cdrom/cdrom.c b/drivers/cdrom/cdrom.c
+index 9877e413fce3..1b57d4666e43 100644
+--- a/drivers/cdrom/cdrom.c
++++ b/drivers/cdrom/cdrom.c
+@@ -3691,27 +3691,6 @@ static struct ctl_table cdrom_table[] = {
  	},
  	{ }
  };
-+
-+static void __init inotify_sysctls_init(void)
-+{
-+	register_sysctl("fs/inotify", inotify_table);
-+}
-+
-+#else
-+#define inotify_sysctls_init() do { } while (0)
- #endif /* CONFIG_SYSCTL */
- 
- static inline __u32 inotify_arg_to_mask(struct inode *inode, u32 arg)
-@@ -849,6 +857,7 @@ static int __init inotify_user_setup(void)
- 	inotify_max_queued_events = 16384;
- 	init_user_ns.ucount_max[UCOUNT_INOTIFY_INSTANCES] = 128;
- 	init_user_ns.ucount_max[UCOUNT_INOTIFY_WATCHES] = watches_max;
-+	inotify_sysctls_init();
- 
- 	return 0;
- }
-diff --git a/include/linux/inotify.h b/include/linux/inotify.h
-index 6a24905f6e1e..8d20caa1b268 100644
---- a/include/linux/inotify.h
-+++ b/include/linux/inotify.h
-@@ -7,11 +7,8 @@
- #ifndef _LINUX_INOTIFY_H
- #define _LINUX_INOTIFY_H
- 
--#include <linux/sysctl.h>
- #include <uapi/linux/inotify.h>
- 
--extern struct ctl_table inotify_table[]; /* for sysctl */
 -
- #define ALL_INOTIFY_BITS (IN_ACCESS | IN_MODIFY | IN_ATTRIB | IN_CLOSE_WRITE | \
- 			  IN_CLOSE_NOWRITE | IN_OPEN | IN_MOVED_FROM | \
- 			  IN_MOVED_TO | IN_CREATE | IN_DELETE | \
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index 7a90a12b9ea4..6aa67c737e4e 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -125,13 +125,6 @@ static const int maxolduid = 65535;
- static const int ngroups_max = NGROUPS_MAX;
- static const int cap_last_cap = CAP_LAST_CAP;
- 
--#ifdef CONFIG_INOTIFY_USER
--#include <linux/inotify.h>
--#endif
--#ifdef CONFIG_FANOTIFY
--#include <linux/fanotify.h>
--#endif
+-static struct ctl_table cdrom_cdrom_table[] = {
+-	{
+-		.procname	= "cdrom",
+-		.maxlen		= 0,
+-		.mode		= 0555,
+-		.child		= cdrom_table,
+-	},
+-	{ }
+-};
 -
- #ifdef CONFIG_PROC_SYSCTL
+-/* Make sure that /proc/sys/dev is there */
+-static struct ctl_table cdrom_root_table[] = {
+-	{
+-		.procname	= "dev",
+-		.maxlen		= 0,
+-		.mode		= 0555,
+-		.child		= cdrom_cdrom_table,
+-	},
+-	{ }
+-};
+ static struct ctl_table_header *cdrom_sysctl_header;
  
- /**
-@@ -3099,20 +3092,6 @@ static struct ctl_table fs_table[] = {
- 		.proc_handler	= proc_dointvec,
- 	},
- #endif
--#ifdef CONFIG_INOTIFY_USER
--	{
--		.procname	= "inotify",
--		.mode		= 0555,
--		.child		= inotify_table,
--	},
--#endif
--#ifdef CONFIG_FANOTIFY
--	{
--		.procname	= "fanotify",
--		.mode		= 0555,
--		.child		= fanotify_table,
--	},
--#endif
- #ifdef CONFIG_EPOLL
- 	{
- 		.procname	= "epoll",
+ static void cdrom_sysctl_register(void)
+@@ -3721,7 +3700,7 @@ static void cdrom_sysctl_register(void)
+ 	if (!atomic_add_unless(&initialized, 1, 1))
+ 		return;
+ 
+-	cdrom_sysctl_header = register_sysctl_table(cdrom_root_table);
++	cdrom_sysctl_header = register_sysctl("dev/cdrom", cdrom_table);
+ 
+ 	/* set the defaults */
+ 	cdrom_sysctl_settings.autoclose = autoclose;
 -- 
 2.33.0
 
