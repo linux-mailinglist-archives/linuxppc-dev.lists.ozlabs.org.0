@@ -1,74 +1,116 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA0845A030
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 11:27:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C6645A373
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 14:06:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hz0hX5D10z3frM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 21:27:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hz4Cg6smTz2yw7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 00:06:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jmKqm+Dr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SGmieEcY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b;
- helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=jmKqm+Dr; dkim-atps=neutral
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
- [IPv6:2607:f8b0:4864:20::62b])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hyzy40Gdxz3ccV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Nov 2021 20:54:36 +1100 (AEDT)
-Received: by mail-pl1-x62b.google.com with SMTP id u11so16615997plf.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Nov 2021 01:54:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=jnWXCla2rk/Lk0f8Yox75O92jo//Tatiois+E+oXjq4=;
- b=jmKqm+DrrL5Elg5IxKlB/7Z4uLUlYE45xcL4y1jugFH9QutwUSrJzN+/D0508lSkYZ
- HM9tX6sOZq6coqbAEkIN5/LeSa6vo9TQM1j0jQg7SExnsDclh+1T1JlJhxjTvLd8SUMl
- iZDJV98Eyl+JkKL+t/RNKQii+Mex6WA/u3jWe0qZeSM6X7LEVuzlAeoy6Fe4lO0C3Rd9
- a0azNVtITP2+scdllxiN/0o0C2qmO7cKPCLTqEfiyiZnak8yqt0A2YXdhsb/eCQY6YAQ
- KzjdAC8rujLr4nLlotLf2fl2HsZ5f7P7YR3LSMfrYhQ1/N7KRvTuoJ02l2mV8o/kJM9h
- N+9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=jnWXCla2rk/Lk0f8Yox75O92jo//Tatiois+E+oXjq4=;
- b=raqAWMEClVE4Oq7ouJ9njaL5NRU08tt6HD52x2K21iHu9TtCVAkRPGYiJauru7LC5S
- SjRUlhUyNDUY6+JETM5tXGOoy+sSUYQ88xGe7ObB19wqDL1hrHmNLzKieDYJU9wXQqC3
- fXTH274QIWTM2Ck9UbV/ANnmdmQcO8dhhUi7624F+hqmvM6p6fMZn8BrdvVuhyglHImH
- Y/IJe3QAW9qnFQTsUC2+JkFzDI39KDFrO1eFrlkcwjLdC3gwFJulnxCgdlL155inLgqs
- ngbCoXkdHWxA5Lg7ATY801aRF6zz2Ee8EqsHhCzsd9DzURghWzF6STftEsTVTaLZ/YDX
- u75A==
-X-Gm-Message-State: AOAM532czoXX4/KQDG2e+B/u7o3nyzRmJ1OfIwIZrmJ1h1csgkjA/oJe
- J6qoVyiQ4pEfvVtFlRs8OC84LpjfHJYtcw==
-X-Google-Smtp-Source: ABdhPJy/NexDxuuquJA1uLtdHQgMwBL28MJLJbhvtEQaiw/EOvvYjZ6sZMeZj23UrNMsksDlYync8g==
-X-Received: by 2002:a17:902:d3c1:b0:142:2794:c8cc with SMTP id
- w1-20020a170902d3c100b001422794c8ccmr5067818plb.67.1637661274290; 
- Tue, 23 Nov 2021 01:54:34 -0800 (PST)
-Received: from bobo.ibm.com ([124.170.11.53])
- by smtp.gmail.com with ESMTPSA id j8sm12662176pfc.8.2021.11.23.01.54.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Nov 2021 01:54:34 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 53/53] KVM: PPC: Book3S HV P9: Remove subcore HMI handling
-Date: Tue, 23 Nov 2021 19:52:31 +1000
-Message-Id: <20211123095231.1036501-54-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20211123095231.1036501-1-npiggin@gmail.com>
-References: <20211123095231.1036501-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hz4Bt1j4Jz2yfr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 00:05:58 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=SGmieEcY; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Hz4Bt1KS5z4xbM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 00:05:58 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4Hz4Bt1GVXz4xcv; Wed, 24 Nov 2021 00:05:58 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=SGmieEcY; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4Hz4Bs5G5Cz4xbM
+ for <linuxppc-dev@ozlabs.org>; Wed, 24 Nov 2021 00:05:57 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1ANCl7A8020566
+ for <linuxppc-dev@ozlabs.org>; Tue, 23 Nov 2021 13:05:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : from : to : cc
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=fxgDBp8FTgOzqk1DVvr3ilCrRM/VctPWloixSIGocHY=;
+ b=SGmieEcYR+v6hJa8Z6E0FgVHIbwKf4pyslRN3J8DJPew5LgMgEJvq9GeJWrmFqYmkuW5
+ nIWbAJjWe3PKbsZze1vSnNpCOl0obHKnFCsoEy1grsmY8mUHkAzLURgi9sP0WD0ZeHlj
+ po3lIpMI0lT33FY1XyqZr6+9AVUaIC6kTzQCGTxNTkfqDVJ/eJlS3xRWRHxzdDZ6Frfv
+ XqnLREnNKvpJQtCvoNooAFAfVaJfpG8uHqg1UEf1CWEqOvbaMsgR7+NdHziLxIYaavxb
+ Hpxj5pP80JQjccqeokSvD+tibCpHml9nPR/8lL7pySzEUk1KTp2t+NrFnOE62CYzHh64 Mw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3ch0m1gd42-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 23 Nov 2021 13:05:54 +0000
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1ANClKOo023358
+ for <linuxppc-dev@ozlabs.org>; Tue, 23 Nov 2021 13:05:53 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3ch0m1gd3d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 23 Nov 2021 13:05:53 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1ANCx7Qh002399;
+ Tue, 23 Nov 2021 13:05:51 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma04ams.nl.ibm.com with ESMTP id 3cernar0yw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 23 Nov 2021 13:05:51 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1AND5nIF22413600
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 23 Nov 2021 13:05:49 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 876ADA4064;
+ Tue, 23 Nov 2021 13:05:49 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DE035A405B;
+ Tue, 23 Nov 2021 13:05:48 +0000 (GMT)
+Received: from [192.168.0.48] (unknown [9.43.41.130])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 23 Nov 2021 13:05:48 +0000 (GMT)
+Subject: [PATCH] powerpc/eeh: Delay slot presence check once driver is
+ notified about the pci error.
+From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@ozlabs.org>
+Date: Tue, 23 Nov 2021 18:35:47 +0530
+Message-ID: <163767273634.1368569.7327743414665595326.stgit@jupiter>
+User-Agent: StGit/0.23
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: N6Lt1bS1ZE1yJWj2bESnaAdWIAowvVGC
+X-Proofpoint-ORIG-GUID: lgopwWTge2_cVhzH3LI4h35UA1Afz2wN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-23_04,2021-11-23_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 spamscore=0
+ priorityscore=1501 bulkscore=0 suspectscore=0 clxscore=1011 mlxscore=0
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111230075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,176 +122,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On POWER9 and newer, rather than the complex HMI synchronisation and
-subcore state, have each thread un-apply the guest TB offset before
-calling into the early HMI handler.
+When certain PHB HW failure causes phyp to recover PHB, it marks the PE
+state as temporarily unavailable until recovery is complete. This also
+triggers an EEH handler in Linux which needs to notify drivers, and perform
+recovery. But before notifying the driver about the pci error it uses
+get_adapter_state()->get-sesnor-state() operation of the hotplug_slot to
+determine if the slot contains a device or not. if the slot is empty, the
+recovery is skipped entirely.
 
-This allows the subcore state to be avoided, including subcore enter
-/ exit guest, which includes an expensive divide that shows up
-slightly in profiles.
+However on certain PHB failures, the rtas call get-sesnor-state() returns
+extended busy error (9902) until PHB is recovered by phyp. Once PHB is
+recovered, the get-sensor-state() returns success with correct presence
+status. The rtas call interface rtas_get_sensor() loops over the rtas call
+on extended delay return code (9902) until the return value is either
+success (0) or error (-1). This causes the EEH handler to get stuck for ~6
+seconds before it could notify that the pci error has been detected and
+stop any active operations. Hence with running I/O traffic, during this 6
+seconds, the network driver continues its operation and hits a timeout
+(netdev watchdog). On timeouts, network driver go into ffdc capture mode
+and reset path assuming the PCI device is in fatal condition. This causes
+EEH recovery to fail and sometimes it leads to system hang or crash.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+------------
+[52732.244731] DEBUG: ibm_read_slot_reset_state2()
+[52732.244762] DEBUG: ret = 0, rets[0]=5, rets[1]=1, rets[2]=4000, rets[3]=0x0
+[52732.244798] DEBUG: in eeh_slot_presence_check
+[52732.244804] DEBUG: error state check
+[52732.244807] DEBUG: Is slot hotpluggable
+[52732.244810] DEBUG: hotpluggable ops ?
+[52732.244953] DEBUG: Calling ops->get_adapter_status
+[52732.244958] DEBUG: calling rpaphp_get_sensor_state
+[52736.564262] ------------[ cut here ]------------
+[52736.564299] NETDEV WATCHDOG: enP64p1s0f3 (tg3): transmit queue 0 timed out
+[52736.564324] WARNING: CPU: 1442 PID: 0 at net/sched/sch_generic.c:478 dev_watchdog+0x438/0x440
+[...]
+[52736.564505] NIP [c000000000c32368] dev_watchdog+0x438/0x440
+[52736.564513] LR [c000000000c32364] dev_watchdog+0x434/0x440
+------------
+
+To fix this issue, delay the slot presence check after notifying the driver
+about the pci error.
+
+Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 ---
- arch/powerpc/include/asm/kvm_ppc.h    |  1 +
- arch/powerpc/kvm/book3s_hv.c          | 12 +++---
- arch/powerpc/kvm/book3s_hv_hmi.c      |  7 +++-
- arch/powerpc/kvm/book3s_hv_p9_entry.c |  2 +-
- arch/powerpc/kvm/book3s_hv_ras.c      | 54 +++++++++++++++++++++++++++
- 5 files changed, 67 insertions(+), 9 deletions(-)
+ arch/powerpc/kernel/eeh_driver.c |   42 ++++++++++++++++++++------------------
+ 1 file changed, 22 insertions(+), 20 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-index 2b76d51e4b13..33db83b82fbd 100644
---- a/arch/powerpc/include/asm/kvm_ppc.h
-+++ b/arch/powerpc/include/asm/kvm_ppc.h
-@@ -759,6 +759,7 @@ void kvmppc_realmode_machine_check(struct kvm_vcpu *vcpu);
- void kvmppc_subcore_enter_guest(void);
- void kvmppc_subcore_exit_guest(void);
- long kvmppc_realmode_hmi_handler(void);
-+long kvmppc_p9_realmode_hmi_handler(struct kvm_vcpu *vcpu);
- long kvmppc_h_enter(struct kvm_vcpu *vcpu, unsigned long flags,
-                     long pte_index, unsigned long pteh, unsigned long ptel);
- long kvmppc_h_remove(struct kvm_vcpu *vcpu, unsigned long flags,
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 214481e5d56d..98e90bdf1f27 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4033,8 +4033,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index 350dab18e1373..a4a80451d50f7 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -851,26 +851,6 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		return;
+ 	}
  
- 	vcpu->arch.ceded = 0;
- 
--	kvmppc_subcore_enter_guest();
+-	/*
+-	 * When devices are hot-removed we might get an EEH due to
+-	 * a driver attempting to touch the MMIO space of a removed
+-	 * device. In this case we don't have a device to recover
+-	 * so suppress the event if we can't find any present devices.
+-	 *
+-	 * The hotplug driver should take care of tearing down the
+-	 * device itself.
+-	 */
+-	eeh_for_each_pe(pe, tmp_pe)
+-		eeh_pe_for_each_dev(tmp_pe, edev, tmp)
+-			if (eeh_slot_presence_check(edev->pdev))
+-				devices++;
 -
- 	vcpu_vpa_increment_dispatch(vcpu);
- 
- 	if (kvmhv_on_pseries()) {
-@@ -4087,8 +4085,6 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 
- 	vcpu_vpa_increment_dispatch(vcpu);
- 
--	kvmppc_subcore_exit_guest();
+-	if (!devices) {
+-		pr_debug("EEH: Frozen PHB#%x-PE#%x is empty!\n",
+-			pe->phb->global_number, pe->addr);
+-		goto out; /* nothing to recover */
+-	}
 -
- 	return trap;
- }
+ 	/* Log the event */
+ 	if (pe->type & EEH_PE_PHB) {
+ 		pr_err("EEH: Recovering PHB#%x, location: %s\n",
+@@ -942,6 +922,28 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 			result = PCI_ERS_RESULT_NEED_RESET;
+ 	}
  
-@@ -6102,9 +6098,11 @@ static int kvmppc_book3s_init_hv(void)
- 	if (r)
- 		return r;
- 
--	r = kvm_init_subcore_bitmap();
--	if (r)
--		return r;
-+	if (!cpu_has_feature(CPU_FTR_ARCH_300)) {
-+		r = kvm_init_subcore_bitmap();
-+		if (r)
-+			return r;
-+	}
- 
- 	/*
- 	 * We need a way of accessing the XICS interrupt controller,
-diff --git a/arch/powerpc/kvm/book3s_hv_hmi.c b/arch/powerpc/kvm/book3s_hv_hmi.c
-index 9af660476314..1ec50c69678b 100644
---- a/arch/powerpc/kvm/book3s_hv_hmi.c
-+++ b/arch/powerpc/kvm/book3s_hv_hmi.c
-@@ -20,10 +20,15 @@ void wait_for_subcore_guest_exit(void)
- 
- 	/*
- 	 * NULL bitmap pointer indicates that KVM module hasn't
--	 * been loaded yet and hence no guests are running.
-+	 * been loaded yet and hence no guests are running, or running
-+	 * on POWER9 or newer CPU.
-+	 *
- 	 * If no KVM is in use, no need to co-ordinate among threads
- 	 * as all of them will always be in host and no one is going
- 	 * to modify TB other than the opal hmi handler.
-+	 *
-+	 * POWER9 and newer don't need this synchronisation.
-+	 *
- 	 * Hence, just return from here.
- 	 */
- 	if (!local_paca->sibling_subcore_state)
-diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index 72119bc13e1d..ebb4781859e2 100644
---- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
-+++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -1013,7 +1013,7 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
- 		kvmppc_realmode_machine_check(vcpu);
- 
- 	} else if (unlikely(trap == BOOK3S_INTERRUPT_HMI)) {
--		kvmppc_realmode_hmi_handler();
-+		kvmppc_p9_realmode_hmi_handler(vcpu);
- 
- 	} else if (trap == BOOK3S_INTERRUPT_H_EMUL_ASSIST) {
- 		vcpu->arch.emul_inst = mfspr(SPRN_HEIR);
-diff --git a/arch/powerpc/kvm/book3s_hv_ras.c b/arch/powerpc/kvm/book3s_hv_ras.c
-index d4bca93b79f6..ccfd96965630 100644
---- a/arch/powerpc/kvm/book3s_hv_ras.c
-+++ b/arch/powerpc/kvm/book3s_hv_ras.c
-@@ -136,6 +136,60 @@ void kvmppc_realmode_machine_check(struct kvm_vcpu *vcpu)
- 	vcpu->arch.mce_evt = mce_evt;
- }
- 
-+
-+long kvmppc_p9_realmode_hmi_handler(struct kvm_vcpu *vcpu)
-+{
-+	struct kvmppc_vcore *vc = vcpu->arch.vcore;
-+	long ret = 0;
-+
 +	/*
-+	 * Unapply and clear the offset first. That way, if the TB was not
-+	 * resynced then it will remain in host-offset, and if it was resynced
-+	 * then it is brought into host-offset. Then the tb offset is
-+	 * re-applied before continuing with the KVM exit.
++	 * When devices are hot-removed we might get an EEH due to
++	 * a driver attempting to touch the MMIO space of a removed
++	 * device. In this case we don't have a device to recover
++	 * bail out early as there is nothing to recover.
 +	 *
-+	 * This way, we don't need to actually know whether not OPAL resynced
-+	 * the timebase or do any of the complicated dance that the P7/8
-+	 * path requires.
++	 * The hotplug driver should take care of tearing down the
++	 * device itself.
 +	 */
-+	if (vc->tb_offset_applied) {
-+		u64 new_tb = mftb() - vc->tb_offset_applied;
-+		mtspr(SPRN_TBU40, new_tb);
-+		if ((mftb() & 0xffffff) < (new_tb & 0xffffff)) {
-+			new_tb += 0x1000000;
-+			mtspr(SPRN_TBU40, new_tb);
-+		}
-+		vc->tb_offset_applied = 0;
++	eeh_for_each_pe(pe, tmp_pe)
++		eeh_pe_for_each_dev(tmp_pe, edev, tmp)
++			if (eeh_slot_presence_check(edev->pdev))
++				devices++;
++
++	if (!devices) {
++		pr_info("EEH: Frozen PHB#%x-PE#%x is empty!\n",
++			pe->phb->global_number, pe->addr);
++		pr_info("EEH: Surprise hotplug remove. nothing to recover.\n");
++		eeh_set_channel_state(pe, pci_channel_io_perm_failure);
++		goto out; /* nothing to recover */
 +	}
 +
-+	local_paca->hmi_irqs++;
-+
-+	if (hmi_handle_debugtrig(NULL) >= 0) {
-+		ret = 1;
-+		goto out;
-+	}
-+
-+	if (ppc_md.hmi_exception_early)
-+		ppc_md.hmi_exception_early(NULL);
-+
-+out:
-+	if (vc->tb_offset) {
-+		u64 new_tb = mftb() + vc->tb_offset;
-+		mtspr(SPRN_TBU40, new_tb);
-+		if ((mftb() & 0xffffff) < (new_tb & 0xffffff)) {
-+			new_tb += 0x1000000;
-+			mtspr(SPRN_TBU40, new_tb);
-+		}
-+		vc->tb_offset_applied = vc->tb_offset;
-+	}
-+
-+	return ret;
-+}
-+
-+/*
-+ * The following subcore HMI handling is all only for pre-POWER9 CPUs.
-+ */
-+
- /* Check if dynamic split is in force and return subcore size accordingly. */
- static inline int kvmppc_cur_subcore_size(void)
- {
--- 
-2.23.0
+ 	/* Get the current PCI slot state. This can take a long time,
+ 	 * sometimes over 300 seconds for certain systems.
+ 	 */
+
 
