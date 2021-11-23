@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5170E45AD5F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 21:26:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DA9945AD68
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 21:29:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzFyk0qVJz306d
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 07:26:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HzG2F59n6z308h
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 07:29:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=MWKwDI+3;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=BFHJcCQv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -21,20 +21,20 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HzFxP0LVtz2yP9
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HzFxP1ccLz2yms
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 07:24:55 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
  Reply-To:Content-Type:Content-ID:Content-Description;
- bh=Gd9eQWajxy0iI68lppb+s86qgv/iD4JNro7LeJWzrnM=; b=MWKwDI+3iFgBOVtnVoAOyB5NFa
- aKoQKCknzmOEv4+vlS0S9j9DlUv/3lDMKtskggo4N0ytRZVWdqxsiGfE/R9j0fTzs/V/4Smyy/+Fs
- SjiXs641h9nvM0IaJHwc+yd6zjul9oQr9TOfPoBO/X7oDnXpy2EFnLNKIjFWL4xK2uRXnovoVDoUN
- tpjGKNVARwRhTB2/900O1rfLDS/i6tckcPD4LS/Uxxf8vBTyiwHFOEXeh+eUN5ianyffwP3QOsxaZ
- KF3KOhguswWFrAGP6E2xFK6QLLmTseeInhlJm0YX0ej0PSKoCh2g7cNhq82meHCXFtFl+qTmM6UUZ
- 8YB/z9ZQ==;
+ bh=Tu3sMtoeec1V5uRlOD2gDU/2pD2Jwl8iInc5PNCGP04=; b=BFHJcCQv7mGOljArSyGFVHBZ8x
+ 7ZlgghZfaVFgGQSiDoJya/lpj4pw4aqSAMfCuBjbXywaqYuXdqLGxxZP0balA6ipJG4qAwzntIIzA
+ unOdunQHgouyH6Wwvr32fvMPjRxusAAs76Iei7mjnVLuoXKE0fOjudYgM3pGOEfNfggiNNWmDCBw9
+ bbtOB23ZzpxYVBMMtiyFvu85NeV81ydyK98+Bw3NiAk7TZdlvWGJAxFdR2YH67J7JqSBZ3Oq5htan
+ OR/xvGv2ToeokuFlU4yo2Pn+rR1gcbGUUdSQDr5EjLaitzsKQyzhsg3rsaNoUZJGisBPaWfXjGj9j
+ U1GXmAog==;
 Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1mpcL1-003R5J-AW; Tue, 23 Nov 2021 20:24:23 +0000
+ (Red Hat Linux)) id 1mpcL1-003R5L-Bf; Tue, 23 Nov 2021 20:24:23 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: akpm@linux-foundation.org, keescook@chromium.org,
 	yzaikin@google.com, nixiaoming@huawei.com, ebiederm@xmission.com,
@@ -45,10 +45,10 @@ To: akpm@linux-foundation.org, keescook@chromium.org,
 	benh@kernel.crashing.org, mark@fasheh.com, jlbec@evilplan.org,
 	joseph.qi@linux.alibaba.com, jack@suse.cz, amir73il@gmail.com,
 	phil@philpotter.co.uk, viro@zeniv.linux.org.uk, julia.lawall@inria.fr
-Subject: [PATCH v2 4/8] ocfs2: simplify subdirectory registration with
+Subject: [PATCH v2 5/8] test_sysctl: simplify subdirectory registration with
  register_sysctl()
-Date: Tue, 23 Nov 2021 12:24:18 -0800
-Message-Id: <20211123202422.819032-5-mcgrof@kernel.org>
+Date: Tue, 23 Nov 2021 12:24:19 -0800
+Message-Id: <20211123202422.819032-6-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211123202422.819032-1-mcgrof@kernel.org>
 References: <20211123202422.819032-1-mcgrof@kernel.org>
@@ -77,7 +77,7 @@ There is no need to user boiler plate code to specify a set of base
 directories we're going to stuff sysctls under. Simplify this by using
 register_sysctl() and specifying the directory path directly.
 
-// pycocci sysctl-subdir-register-sysctl-simplify.cocci PATH
+// pycocci sysctl-subdir-register-sysctl-simplify.cocci lib/test_sysctl.c
 
 @c1@
 expression E1;
@@ -171,54 +171,49 @@ header =
 Generated-by: Coccinelle SmPL
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- fs/ocfs2/stackglue.c | 25 +------------------------
- 1 file changed, 1 insertion(+), 24 deletions(-)
+ lib/test_sysctl.c | 22 +---------------------
+ 1 file changed, 1 insertion(+), 21 deletions(-)
 
-diff --git a/fs/ocfs2/stackglue.c b/fs/ocfs2/stackglue.c
-index 16f1bfc407f2..731558a6f27d 100644
---- a/fs/ocfs2/stackglue.c
-+++ b/fs/ocfs2/stackglue.c
-@@ -672,31 +672,8 @@ static struct ctl_table ocfs2_mod_table[] = {
+diff --git a/lib/test_sysctl.c b/lib/test_sysctl.c
+index 3750323973f4..a5a3d6c27e1f 100644
+--- a/lib/test_sysctl.c
++++ b/lib/test_sysctl.c
+@@ -128,26 +128,6 @@ static struct ctl_table test_table[] = {
  	{ }
  };
  
--static struct ctl_table ocfs2_kern_table[] = {
+-static struct ctl_table test_sysctl_table[] = {
 -	{
--		.procname	= "ocfs2",
--		.data		= NULL,
+-		.procname	= "test_sysctl",
 -		.maxlen		= 0,
 -		.mode		= 0555,
--		.child		= ocfs2_mod_table
+-		.child		= test_table,
 -	},
 -	{ }
 -};
 -
--static struct ctl_table ocfs2_root_table[] = {
+-static struct ctl_table test_sysctl_root_table[] = {
 -	{
--		.procname	= "fs",
--		.data		= NULL,
+-		.procname	= "debug",
 -		.maxlen		= 0,
 -		.mode		= 0555,
--		.child		= ocfs2_kern_table
+-		.child		= test_sysctl_table,
 -	},
 -	{ }
 -};
 -
- static struct ctl_table_header *ocfs2_table_header;
+ static struct ctl_table_header *test_sysctl_header;
  
--
- /*
-  * Initialization
-  */
-@@ -705,7 +682,7 @@ static int __init ocfs2_stack_glue_init(void)
- {
- 	strcpy(cluster_stack_name, OCFS2_STACK_PLUGIN_O2CB);
- 
--	ocfs2_table_header = register_sysctl_table(ocfs2_root_table);
-+	ocfs2_table_header = register_sysctl("fs/ocfs2", ocfs2_mod_table);
- 	if (!ocfs2_table_header) {
- 		printk(KERN_ERR
- 		       "ocfs2 stack glue: unable to register sysctl\n");
+ static int __init test_sysctl_init(void)
+@@ -155,7 +135,7 @@ static int __init test_sysctl_init(void)
+ 	test_data.bitmap_0001 = kzalloc(SYSCTL_TEST_BITMAP_SIZE/8, GFP_KERNEL);
+ 	if (!test_data.bitmap_0001)
+ 		return -ENOMEM;
+-	test_sysctl_header = register_sysctl_table(test_sysctl_root_table);
++	test_sysctl_header = register_sysctl("debug/test_sysctl", test_table);
+ 	if (!test_sysctl_header) {
+ 		kfree(test_data.bitmap_0001);
+ 		return -ENOMEM;
 -- 
 2.33.0
 
