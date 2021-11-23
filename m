@@ -1,75 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30B1459B8D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 06:24:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE4B459DAC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 09:16:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hysyh4mC0z2yX8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 16:24:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HyxnF2684z2yy3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 19:16:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=MVtXRG23;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=ak/2RnAp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=DF4iA32r;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629;
- helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=russell.cc (client-ip=66.111.4.26;
+ helo=out2-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=MVtXRG23; dkim-atps=neutral
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
- [IPv6:2607:f8b0:4864:20::629])
+ unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
+ header.s=fm3 header.b=ak/2RnAp; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm1 header.b=DF4iA32r; 
+ dkim-atps=neutral
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com
+ [66.111.4.26])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hysy24tb9z2yKN
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Nov 2021 16:24:08 +1100 (AEDT)
-Received: by mail-pl1-x629.google.com with SMTP id b11so16036825pld.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 22 Nov 2021 21:24:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=gddto/L6Aad3/eTtAsktG3OlA6e9jo3+yT5FuWCGdUU=;
- b=MVtXRG23MM5zqlX9Q2R6bODByUJHde+JqlsBG4BvQI2FAMd7ctYMHTzMO4Vjbe1jPo
- 4qKPTvvHZKb8gXr4Tl8pueCVS0OcbGpI5PmVcPasvX20oy46gtzaogJxB3xaXptLyIH/
- YWNQtAyUG8Nbn7nzFVgCX7dKEUc+7MXCAyrPnUN4AHUIttGOaNXW0nMKn+PTK/GPWPAP
- MBIxu6VrUDbBDQf3n14ERLLrRDip1B7Kl4sHIY/ZCanXAUo+SOaIoKvn4LV5kP1oLeYb
- xHJFscw0QYEXfQJW0HdpST+9RvfkfW0KD4m3GifFLbhQfws/j8cWCcfmvcYIFXSR/R2q
- sGrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=gddto/L6Aad3/eTtAsktG3OlA6e9jo3+yT5FuWCGdUU=;
- b=fuSmxRs5XcQQPeYi3FtYr/jdhWMU8zr1yztbSiSAdY8EQ9QsM40imwIpyoe80c2iZ2
- 0mMFLf+m4nfhVEC1vlI2oad9DygibbdjdhTW31Zt4keYmHCEwuopNrUzv6HZ6WoovHjA
- V/9egXq3jqv9BXMXSxH7wYvYHfyLP/5x5+zDggglwBGgdyZKZVSFje8uneTLwG5lFRSQ
- QLO6VS5bhbtvII4pmtuIghuTDAm01C62i55np+gsL4W4C7F0+D1NDwznb010bR1PFBri
- bcMLsQHVD/1Fs+vmj/QUVl4lmbPEH6j2/rBWtfz7pTc71b8y+4aYQKALdO9IRihr2agG
- ER3w==
-X-Gm-Message-State: AOAM530zfwP8a4nFKsxZ/2YlCyhTfYrDFrP9bqoPbHg/maU7Wrug7x9u
- UZkFgytNf+to3FoDpXL6j0ZQnKUVZ2CtIA==
-X-Google-Smtp-Source: ABdhPJz4K9fFUXOLFtOJp5c9bqkbQ+HVwF4sCqdqkWZV1rON+fkQm5L8z2YC4LIrKe+/saa8YJs9Zw==
-X-Received: by 2002:a17:90b:4b8d:: with SMTP id
- lr13mr38997248pjb.239.1637645045796; 
- Mon, 22 Nov 2021 21:24:05 -0800 (PST)
-Received: from localhost (220-244-84-117.tpgi.com.au. [220.244.84.117])
- by smtp.gmail.com with ESMTPSA id g22sm11211100pfj.29.2021.11.22.21.24.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Nov 2021 21:24:05 -0800 (PST)
-Date: Tue, 23 Nov 2021 15:24:00 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH V4 0/1] powerpc/perf: Clear pending PMI in ppmu callbacks
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, mpe@ellerman.id.au
-References: <1626846509-1350-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <40F23366-66BE-4063-8516-445E41E19EC6@linux.vnet.ibm.com>
-In-Reply-To: <40F23366-66BE-4063-8516-445E41E19EC6@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HyxmS2F4Jz2xrC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 23 Nov 2021 19:16:07 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id 525245C018F;
+ Tue, 23 Nov 2021 03:16:04 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute6.internal (MEProxy); Tue, 23 Nov 2021 03:16:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=fm3; bh=yZdCPksYWqrlMi9ckF8b/5HNKm
+ q5VmNZLYbPzTq90ME=; b=ak/2RnApbl1GDHznqdvVaNJl8YGToYbPv6JK6t2gFN
+ NHeyDVHjdwIuSlWnD3luMXUY0DvFVi9Z8BXPxs3LK8DFD5CoOCUpXPeELlMmkQWZ
+ rq8hwmL0xLYIoRL3/U8OUPSBwi9w9Ef/R8yYMjp/r8vRIcheJEiMCqGyahlafmK0
+ qjNGlaUoiof9tFApHMR+LpCWMmABe9u3EumK1urFUJu4IpcpvWfPMEjC78a9oK21
+ 6/byNbTCpnXtcOr9tgG2ZPaOfb20Brb9GINRSbXnfCdfJshjwotz9bvzXtcnzFmS
+ DNsg+x2dHqEStbMklztb7vIMGqC/ArxzgzKij3agrukQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:date:from
+ :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=yZdCPksYWqrlMi9ck
+ F8b/5HNKmq5VmNZLYbPzTq90ME=; b=DF4iA32rMs56ItgYZLq/SQ7nTuNCnqlRx
+ d0B6k0wMh8MZB80aMNZRN1HIlQKqKfrpBqPCRF/q+bCC3PGlgnnzGE2k3AY+v8Li
+ n1jCPH3a38e2dyqihyMIuBZw1yw7iOQiAnvF/pfZM2GTbk45fOqxvWCodAi7su9u
+ gP8DWTPDcTA2USPb34/rgN9D5UeKoW3D1zwqK5F3SDXY8r7zOO9kL7ZlNDRjxKGV
+ lwCWyRGUoufWn1ROkyCaLU6KRSd6ozcmYzr2KwGTB6wxPIdw8HWwjiktKN+P6pMc
+ NCyLqlnXSKk0VghTgtvLsFySa4N435Ldi4TPSvOSps+eiSeyeqG8A==
+X-ME-Sender: <xms:QaOcYfDBj0P_UViPmiZGQwQBfJxIXsbGNvNkBkhlkGfZOr1mLGtehA>
+ <xme:QaOcYVhPqR2XWq8X276J_609Crwh-7EhcVY0tbP5dSQa_9fCUYeiyaHJb09ovPYBd
+ FY0UD7whp8r2XKk9w>
+X-ME-Received: <xmr:QaOcYakw4Cpd6O1s7mrM7FBod-XokltnaEacd_EXFqZdUV1EmOo7k6co0wT7zecEtwb9uozBnFxoLONrXvXCOzkRDefiaLXZ_LWcKjxNOLR47dP_wC4_GsE5Rg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddrgeehgdduuddvucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ gfrhhlucfvnfffucdluddtmdenucfjughrpefhvffufffkofgggfestdekredtredttden
+ ucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhsshgvlh
+ hlrdgttgeqnecuggftrfgrthhtvghrnhepleegleefvdffkeegveefleevfedtieelgfdu
+ geekueehhfevgfffkeeugfffkeefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+ hmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:QaOcYRz621vXJNAm73UJJpU0JCZMetodvSBQocXmAavgCtdjEdr9_w>
+ <xmx:QaOcYURqctWHqRpO8iUqTnTZFfFiQAuekzhfYX4cCrqwZLK3B9KW1A>
+ <xmx:QaOcYUbzxhzAkrsaHW_LI6e46XVXkAEvJ6DcnNDPVXIP8kAbUUF7Zw>
+ <xmx:RKOcYZIQCSAS1Mt1W74wCabVpYT4AOnNOiFo9Q_k6mH7BmBmjiZH_w>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 23 Nov 2021 03:15:59 -0500 (EST)
+From: Russell Currey <ruscur@russell.cc>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/module_64: Fix livepatching for RO modules
+Date: Tue, 23 Nov 2021 18:15:20 +1000
+Message-Id: <20211123081520.18843-1-ruscur@russell.cc>
+X-Mailer: git-send-email 2.34.0
 MIME-Version: 1.0
-Message-Id: <1637644730.h2erjs9iz0.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,94 +92,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, rnsastry@linux.ibm.com
+Cc: Joe Lawrence <joe.lawrence@redhat.com>, jniethe5@gmail.com,
+ Russell Currey <ruscur@russell.cc>, naveen.n.rao@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Athira Rajeev's message of November 20, 2021 12:36 am:
->=20
->=20
->> On 21-Jul-2021, at 11:18 AM, Athira Rajeev <atrajeev@linux.vnet.ibm.com>=
- wrote:
->>=20
->> Running perf fuzzer testsuite popped up below messages
->> in the dmesg logs:
->>=20
->> "Can't find PMC that caused IRQ"
->>=20
->> This means a PMU exception happened, but none of the PMC's (Performance
->> Monitor Counter) were found to be overflown. Perf interrupt handler chec=
-ks
->> the PMC's to see which PMC has overflown and if none of the PMCs are
->> overflown ( counter value not >=3D 0x80000000 ), it throws warning:
->> "Can't find PMC that caused IRQ".
->>=20
->> Powerpc has capability to mask and replay a performance monitoring
->> interrupt (PMI). In case of replayed PMI, there are some corner cases
->> that clears the PMCs after masking. In such cases, the perf interrupt
->> handler will not find the active PMC values that had caused the overflow
->> and thus leading to this message. This patchset attempts to fix those
->> corner cases.
->>=20
->> However there is one more case in PowerNV where these messages are
->> emitted during system wide profiling or when a specific CPU is monitored
->> for an event. That is, when a counter overflow just before entering idle
->> and a PMI gets triggered after wakeup from idle. Since PMCs
->> are not saved in the idle path, perf interrupt handler will not
->> find overflown counter value and emits the "Can't find PMC" messages.
->> This patch documents this race condition in powerpc core-book3s.
->>=20
->> Patch fixes the ppmu callbacks to disable pending interrupt before clear=
-ing
->> the overflown PMC and documents the race condition in idle path.
->>=20
->> Changelog:
->> changes from v3 -> v4
->>   Addressed review comments from Nicholas Piggin
->>   - Added comment explaining the need to clear MMCR0 PMXE bit in
->>     pmu disable callback.
->>   - Added a check to display warning if there is a PMI pending
->>     bit set in Paca without any overflown PMC.
->>   - Removed the condition check before clearing pending PMI
->>     in 'clear_pmi_irq_pending' function.
->>   - Added reviewed by from Nicholas Piggin.
->>=20
->> Changes from v2 -> v3
->>   Addressed review comments from Nicholas Piggin
->>   - Moved the clearing of PMI bit to power_pmu_disable.
->>     In previous versions, this was done in power_pmu_del,
->>     power_pmu_stop/enable callbacks before clearing of PMC's.
->>   - power_pmu_disable is called before any event gets deleted
->>     or stopped. If more than one event is running in the PMU,
->>     we may clear the PMI bit for an event which is not going
->>     to be deleted/stopped. Hence introduced check in
->>     power_pmu_enable to set back PMI to avoid dropping of valid
->>     samples in such cases.
->>   - Disable MMCR0 PMXE bit in pmu disable callback which otherwise
->>     could trigger PMI when PMU is getting disabled.
->> Changes from v1 -> v2
->>   Addressed review comments from Nicholas Piggin
->>   - Moved the PMI pending check and clearing function
->>     to arch/powerpc/include/asm/hw_irq.h and renamed
->>     function to "get_clear_pmi_irq_pending"
->>   - Along with checking for pending PMI bit in Paca,
->>     look for PMAO bit in MMCR0 register to decide on
->>     pending PMI interrupt.
->>=20
->> Athira Rajeev (1):
->>  powerpc/perf: Fix PMU callbacks to clear pending PMI before resetting
->>    an overflown PMC
->=20
-> Hi,
->=20
-> Please let me know if there are any review comments for this patch.
->=20
-> Thanks
-> Athira
+Livepatching a loaded module involves applying relocations through
+apply_relocate_add(), which attempts to write to read-only memory when
+CONFIG_STRICT_MODULE_RWX=y.  Work around this by performing these
+writes through the text poke area by using patch_instruction().
 
-It seems good to me. It already has my R-B. Would be good if we can
-get this one merged.
+R_PPC_REL24 is the only relocation type generated by the kpatch-build
+userspace tool or klp-convert kernel tree that I observed applying a
+relocation to a post-init module.
 
-Thanks,
-Nick
+A more comprehensive solution is planned, but using patch_instruction()
+for R_PPC_REL24 on should serve as a sufficient fix.
+
+This does have a performance impact, I observed ~15% overhead in
+module_load() on POWER8 bare metal with checksum verification off.
+
+Fixes: c35717c71e98 ("powerpc: Set ARCH_HAS_STRICT_MODULE_RWX")
+Cc: stable@vger.kernel.org # v5.14+
+Reported-by: Joe Lawrence <joe.lawrence@redhat.com>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+---
+Intended to be a minimal fix that can go to stable.
+
+ arch/powerpc/kernel/module_64.c | 30 ++++++++++++++++++++++--------
+ 1 file changed, 22 insertions(+), 8 deletions(-)
+
+diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+index 6baa676e7cb6..c25ef36c3ef4 100644
+--- a/arch/powerpc/kernel/module_64.c
++++ b/arch/powerpc/kernel/module_64.c
+@@ -422,11 +422,16 @@ static inline int create_stub(const Elf64_Shdr *sechdrs,
+ 			      const char *name)
+ {
+ 	long reladdr;
++	func_desc_t desc;
++	int i;
+ 
+ 	if (is_mprofile_ftrace_call(name))
+ 		return create_ftrace_stub(entry, addr, me);
+ 
+-	memcpy(entry->jump, ppc64_stub_insns, sizeof(ppc64_stub_insns));
++	for (i = 0; i < sizeof(ppc64_stub_insns) / sizeof(u32); i++) {
++		patch_instruction(&entry->jump[i],
++				  ppc_inst(ppc64_stub_insns[i]));
++	}
+ 
+ 	/* Stub uses address relative to r2. */
+ 	reladdr = (unsigned long)entry - my_r2(sechdrs, me);
+@@ -437,10 +442,19 @@ static inline int create_stub(const Elf64_Shdr *sechdrs,
+ 	}
+ 	pr_debug("Stub %p get data from reladdr %li\n", entry, reladdr);
+ 
+-	entry->jump[0] |= PPC_HA(reladdr);
+-	entry->jump[1] |= PPC_LO(reladdr);
+-	entry->funcdata = func_desc(addr);
+-	entry->magic = STUB_MAGIC;
++	patch_instruction(&entry->jump[0],
++			  ppc_inst(entry->jump[0] | PPC_HA(reladdr)));
++	patch_instruction(&entry->jump[1],
++			  ppc_inst(entry->jump[1] | PPC_LO(reladdr)));
++
++	// func_desc_t is 8 bytes if ABIv2, else 16 bytes
++	desc = func_desc(addr);
++	for (i = 0; i < sizeof(func_desc_t) / sizeof(u32); i++) {
++		patch_instruction(((u32 *)&entry->funcdata) + i,
++				  ppc_inst(((u32 *)(&desc))[i]));
++	}
++
++	patch_instruction(&entry->magic, ppc_inst(STUB_MAGIC));
+ 
+ 	return 1;
+ }
+@@ -496,7 +510,7 @@ static int restore_r2(const char *name, u32 *instruction, struct module *me)
+ 		return 0;
+ 	}
+ 	/* ld r2,R2_STACK_OFFSET(r1) */
+-	*instruction = PPC_INST_LD_TOC;
++	patch_instruction(instruction, ppc_inst(PPC_INST_LD_TOC));
+ 	return 1;
+ }
+ 
+@@ -636,9 +650,9 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
+ 			}
+ 
+ 			/* Only replace bits 2 through 26 */
+-			*(uint32_t *)location
+-				= (*(uint32_t *)location & ~0x03fffffc)
++			value = (*(uint32_t *)location & ~0x03fffffc)
+ 				| (value & 0x03fffffc);
++			patch_instruction((u32 *)location, ppc_inst(value));
+ 			break;
+ 
+ 		case R_PPC64_REL64:
+-- 
+2.34.0
+
