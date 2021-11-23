@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BFBE45A87F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 17:39:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 246F445A883
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 23 Nov 2021 17:40:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hz8xj2JmJz3dbK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 03:39:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hz8yM75l0z2yyv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 03:40:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NUl2xQIH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VfAy9L5o;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=NUl2xQIH; 
+ header.s=k20201202 header.b=VfAy9L5o; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hz8v10qWQz30Ph
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 03:37:33 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9AB6460FBF;
- Tue, 23 Nov 2021 16:37:29 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hz8vB1h7qz3cBl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 03:37:42 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 74B5D60FD7;
+ Tue, 23 Nov 2021 16:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1637685451;
- bh=dTY20x9C7ILrJLF2x3WFcgP0Fw/5b/QS5q+eMTnwQ/Y=;
+ s=k20201202; t=1637685459;
+ bh=w3cT2oslgU+kwGW3oLI24vq8edURSGT6hX1m6elGhAg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=NUl2xQIHSLEE19HIJKYSrwwOLVA3JNA3U5diWaN16oMpj7OEMxop1W2oiO7NBD7hR
- 3LMeqWHfzAf2xzpIlOyig2nvqO7Vr60tXWmGs2zEloBE/uM2CqDqzDhmqRkay1rc71
- Yab/VPIoFBvmDh5jFoQZDhdwZM9GD+55VGyI21ktDfbk7wlz1j4hoCvfxn7jAk6a+W
- BL3VjZab6iKX8IswYkRc+b7luxiNINqDFYcon1RtlB1cXsxCsOGw0vNK5x/wLHdAxe
- WlXYmTtOVTCU0VevPGpzW0UEE6YA/CUqu/IimwOASf4rMGjlKiH799XHgYiX15RXLh
- PmR0RHAj0uz6Q==
+ b=VfAy9L5oVvTm8JQGTmTqJ6J31Ub+ywd/NOaIXP48DRCpVYohokdWreaet+hYwWOj8
+ VCgrtCxLJwNnuUu/jfiosgA9F3CnIE9GmKFG6DDZh7oerrd+h7VeEYlmoLYFJeUCrz
+ nYn1bZiDRHI6pdO1Z5VApQf/X4PliInqTWsNIdf8VZFSMvbxuxH7iBegFD9qJ9OUQm
+ 5loyjIlsz5WuAGOwWTReXKwS8AcfdE/ZidP7Z0mmta3jLSWx2oK12nOllnx8m3SkYr
+ S8y737d4+r49jrgea/+UuxW7KomRGj32sE4Hu4yVRavEqcyLv3uy27LQy5CU8hZn5r
+ s7hkzKslwNcVQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH MANUALSEL 4.14 2/3] KVM: PPC: Cap KVM_CAP_NR_VCPUS by
+Subject: [PATCH MANUALSEL 4.9 2/2] KVM: PPC: Cap KVM_CAP_NR_VCPUS by
  KVM_CAP_MAX_VCPUS
-Date: Tue, 23 Nov 2021 11:37:23 -0500
-Message-Id: <20211123163725.289694-2-sashal@kernel.org>
+Date: Tue, 23 Nov 2021 11:37:33 -0500
+Message-Id: <20211123163733.289925-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211123163725.289694-1-sashal@kernel.org>
-References: <20211123163725.289694-1-sashal@kernel.org>
+In-Reply-To: <20211123163733.289925-1-sashal@kernel.org>
+References: <20211123163733.289925-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,11 +61,10 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, ravi.bangoria@linux.ibm.com,
- jgross@suse.com, farosas@linux.ibm.com, ndesaulniers@google.com,
- bharata@linux.ibm.com, clg@kaod.org, npiggin@gmail.com,
+Cc: Sasha Levin <sashal@kernel.org>, jgross@suse.com, ndesaulniers@google.com,
+ farosas@linux.ibm.com, npiggin@gmail.com, bharata@linux.ibm.com, clg@kaod.org,
  Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
+ linuxppc-dev@lists.ozlabs.org, ravi.bangoria@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -86,10 +85,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index af1f065dc9f37..d3832f1f17003 100644
+index fc0df0f6fe881..596c7612bbbff 100644
 --- a/arch/powerpc/kvm/powerpc.c
 +++ b/arch/powerpc/kvm/powerpc.c
-@@ -624,9 +624,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+@@ -582,9 +582,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
  		 * implementations just count online CPUs.
  		 */
  		if (hv_enabled)
