@@ -2,56 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B7945C402
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 14:42:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1816145C4DA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 14:49:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzhyQ5qKSz3c5q
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:42:22 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=hhbQZhJw;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hzj6n0Xpkz301g
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:49:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=hhbQZhJw; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hzhxj3QrJz2yJ5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 00:41:44 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
- MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=u5Bp6Rfma9GvNlchoY1NvLTwJANeJ3HEug26+8isXwE=; b=hhbQZhJwK1Tb9e+q0Q28e25DAv
- Od9pIYN2Gyiv0dA95pkKXYVes6wIzr6Dyrdz7zE6LWYwQgtKQRddQQj3KlF/6e+rGlvDwZn81SO0L
- jmyNcKHUwuAAL4hqFxxBoCLbZ78/8YU9GtUBk2390mHdprFJB6Q5NEsOuCM+WqTROXedt17OSU57K
- Znwqwh32TO/nbgJf5ps0iEH4WpPxtncH2AfxYxaIDPl/mI7K7oszTaCg2ZYrE3yeotZ03DTuOQM8q
- SbFyM9HClWrBqJvP/vIs76mbieTIOeBHp8+RY1gteGkIKaIRwSzmIllOlYTn9YYs66Or0n5wDgTmB
- pHDv3JGg==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1mpsWA-004tSi-D1; Wed, 24 Nov 2021 13:40:58 +0000
-Date: Wed, 24 Nov 2021 05:40:58 -0800
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH v2 6/8] inotify: simplify subdirectory registration with
- register_sysctl()
-Message-ID: <YZ5A6iWLb0h3N3RC@bombadil.infradead.org>
-References: <20211123202422.819032-1-mcgrof@kernel.org>
- <20211123202422.819032-7-mcgrof@kernel.org>
- <20211124094409.GF8583@quack2.suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hzj6M14Y6z2yJ5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 00:49:14 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Hzj6H3Yd2z9sSc;
+ Wed, 24 Nov 2021 14:49:11 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id LeLWf_gu2Rtj; Wed, 24 Nov 2021 14:49:11 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Hzj6F3xTPz9sSt;
+ Wed, 24 Nov 2021 14:49:09 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 714138B774;
+ Wed, 24 Nov 2021 14:49:09 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 2zx_RAzlbcMG; Wed, 24 Nov 2021 14:49:09 +0100 (CET)
+Received: from [172.25.230.108] (unknown [172.25.230.108])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1D85B8B763;
+ Wed, 24 Nov 2021 14:49:09 +0100 (CET)
+Message-ID: <da5038fd-611a-a0b3-10b7-35dac6817e6a@csgroup.eu>
+Date: Wed, 24 Nov 2021 14:49:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211124094409.GF8583@quack2.suse.cz>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH 1/8] powerpc/mm: Make slice specific to book3s/64
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: kernel test robot <lkp@intel.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ alex@ghiti.fr
+References: <14e2c0b0d4fff49c1cb30166f54ce8e445e17b16.1637570556.git.christophe.leroy@csgroup.eu>
+ <202111222218.RhruLp7S-lkp@intel.com>
+ <adefca8d-5fd4-b9ad-dfb8-0cf334440935@csgroup.eu>
+In-Reply-To: <adefca8d-5fd4-b9ad-dfb8-0cf334440935@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,85 +67,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: airlied@linux.ie, amir73il@gmail.com, clemens@ladisch.de,
- dri-devel@lists.freedesktop.org, phil@philpotter.co.uk,
- joseph.qi@linux.alibaba.com, mark@fasheh.com, yzaikin@google.com,
- joonas.lahtinen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- intel-gfx@lists.freedesktop.org, jani.nikula@linux.intel.com,
- viro@zeniv.linux.org.uk, rodrigo.vivi@intel.com, nixiaoming@huawei.com,
- tvrtko.ursulin@linux.intel.com, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, julia.lawall@inria.fr, ebiederm@xmission.com,
- linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, ocfs2-devel@oss.oracle.com, jlbec@evilplan.org
+Cc: linux-mm@kvack.org, kbuild-all@lists.01.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 24, 2021 at 10:44:09AM +0100, Jan Kara wrote:
-> On Tue 23-11-21 12:24:20, Luis Chamberlain wrote:
-> > From: Xiaoming Ni <nixiaoming@huawei.com>
-> > 
-> > There is no need to user boiler plate code to specify a set of base
-> > directories we're going to stuff sysctls under. Simplify this by using
-> > register_sysctl() and specifying the directory path directly.
-> > 
-> > Move inotify_user sysctl to inotify_user.c while at it to remove clutter
-> > from kernel/sysctl.c.
-> > 
-> > Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
-> > [mcgrof: update commit log to reflect new path we decided to take]
-> > Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+
+
+Le 24/11/2021 à 13:10, Christophe Leroy a écrit :
 > 
-> This looks fishy. You register inotify_table but not fanotify_table and
-> remove both...
+> 
+> Le 22/11/2021 à 15:48, kernel test robot a écrit :
+>> Hi Christophe,
+>>
+>> I love your patch! Perhaps something to improve:
+>>
+>> [auto build test WARNING on powerpc/next]
+>> [also build test WARNING on hnaz-mm/master linus/master v5.16-rc2 
+>> next-20211118]
+>> [If your patch is applied to the wrong git tree, kindly drop us a note.
+>> And when submitting patch, we suggest to use '--base' as documented in
+>> https://git-scm.com/docs/git-format-patch]
+>>
+>> url:    
+>> https://github.com/0day-ci/linux/commits/Christophe-Leroy/Convert-powerpc-to-default-topdown-mmap-layout/20211122-165115 
+>>
+>> base:   
+>> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+>> config: powerpc64-randconfig-s031-20211122 (attached as .config)
+>> compiler: powerpc64-linux-gcc (GCC) 11.2.0
+>> reproduce:
+>>          wget 
+>> https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross 
+>> -O ~/bin/make.cross
+>>          chmod +x ~/bin/make.cross
+>>          # apt-get install sparse
+>>          # sparse version: v0.6.4-dirty
+>>          # 
+>> https://github.com/0day-ci/linux/commit/1d0b7cc86d08f25f595b52d8c39ba9ca1d29a30a 
+>>
+>>          git remote add linux-review https://github.com/0day-ci/linux
+>>          git fetch --no-tags linux-review 
+>> Christophe-Leroy/Convert-powerpc-to-default-topdown-mmap-layout/20211122-165115 
+>>
+>>          git checkout 1d0b7cc86d08f25f595b52d8c39ba9ca1d29a30a
+>>          # save the attached .config to linux build tree
+>>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 
+>> make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' ARCH=powerpc64
+>>
+>> If you fix the issue, kindly add following tag as appropriate
+>> Reported-by: kernel test robot <lkp@intel.com>
+>>
+>> All warnings (new ones prefixed by >>):
+>>
+>>     arch/powerpc/mm/book3s64/slice.c: In function 
+>> 'slice_get_unmapped_area':
+>>>> arch/powerpc/mm/book3s64/slice.c:639:1: warning: the frame size of 
+>>>> 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+>>       639 | }
+>>           | ^
+> 
+> 
+> The problem was already existing when slice.c was in arch/powerpc/mm/
+> 
+> This patch doesn't introduce the problem.
+> 
 
-Indeed, the following was missing, I'll roll it in:
+In fact the problem is really added by yourself mister 'kernel test robot'.
 
-diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 559bc1e9926d..a35693eb1f36 100644
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -59,7 +59,7 @@ static int fanotify_max_queued_events __read_mostly;
- static long ft_zero = 0;
- static long ft_int_max = INT_MAX;
- 
--struct ctl_table fanotify_table[] = {
-+static struct ctl_table fanotify_table[] = {
- 	{
- 		.procname	= "max_user_groups",
- 		.data	= &init_user_ns.ucount_max[UCOUNT_FANOTIFY_GROUPS],
-@@ -88,6 +88,13 @@ struct ctl_table fanotify_table[] = {
- 	},
- 	{ }
- };
-+
-+static void __init fanotify_sysctls_init(void)
-+{
-+	register_sysctl("fs/fanotify", fanotify_table);
-+}
-+#else
-+#define fanotify_sysctls_init() do { } while (0)
- #endif /* CONFIG_SYSCTL */
- 
- /*
-@@ -1685,6 +1692,7 @@ static int __init fanotify_user_setup(void)
- 	init_user_ns.ucount_max[UCOUNT_FANOTIFY_GROUPS] =
- 					FANOTIFY_DEFAULT_MAX_GROUPS;
- 	init_user_ns.ucount_max[UCOUNT_FANOTIFY_MARKS] = max_marks;
-+	fanotify_sysctls_init();
- 
- 	return 0;
- }
-diff --git a/include/linux/fanotify.h b/include/linux/fanotify.h
-index 616af2ea20f3..556cc63c88ee 100644
---- a/include/linux/fanotify.h
-+++ b/include/linux/fanotify.h
-@@ -5,8 +5,6 @@
- #include <linux/sysctl.h>
- #include <uapi/linux/fanotify.h>
- 
--extern struct ctl_table fanotify_table[]; /* for sysctl */
--
- #define FAN_GROUP_FLAG(group, flag) \
- 	((group)->fanotify_data.flags & (flag))
- 
+CONFIG_FRAME_WARN is supposed to be 2048 on 64 bit architectures.
+
+It the robot starts to reduce that value, it is on its own ....
+
+
+config FRAME_WARN
+	int "Warn for stack frames larger than"
+	range 0 8192
+	default 2048 if GCC_PLUGIN_LATENT_ENTROPY
+	default 1536 if (!64BIT && (PARISC || XTENSA))
+	default 1024 if (!64BIT && !PARISC)
+	default 2048 if 64BIT
+	help
+	  Tell gcc to warn at build time for stack frames larger than this.
+	  Setting this too low will cause a lot of warnings.
+	  Setting it to 0 disables the warning.
+
