@@ -2,75 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7F345C206
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 14:22:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 813C345C294
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 14:28:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzhWG3QF7z3bj1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:22:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hzhdq2MRbz3081
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:27:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=bGwnHyiz;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FMMYRpnf;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Mqki1S4Q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
- helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=bGwnHyiz; dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
- [IPv6:2607:f8b0:4864:20::1035])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
+ header.s=susede2_rsa header.b=FMMYRpnf; 
+ dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=Mqki1S4Q; 
+ dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HzhVX30BPz2yNW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 00:21:38 +1100 (AEDT)
-Received: by mail-pj1-x1035.google.com with SMTP id h24so2546877pjq.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 05:21:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=ZZnceqICuZXQxPcm2fjZ+yNkedIH7ExOGImuK8kHxUU=;
- b=bGwnHyizE2euGF4OJfhTDD2tgzRvAWwF6PN/DkgD6CTp4z8K9eAW13Jav2pgjImfCK
- OSon47t018CdVGm9mwvb/92iEYY3llvVuiiZW7fYtR9jv7GbrAtRGtB7p9qqlaXU2Lqi
- ZGdLYeQHe9ZPJwI5yEtPPR5WbEApMhzyIgis689/J6Y/haHI6FN4DbeQoA11s9T24lyj
- W/TaflPrQrNy0nXT2rAVInzq+weBRQ+8Is7lcmA7fV5km70Xd8uF/yJQnvd983gJ0DiN
- GTFC4E0k8tzzeXwn8H4YWGoe67sR09wIqkHUQCsSB1hU0+VljxCfrne+wrRW2W19Blp7
- 2Yyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=ZZnceqICuZXQxPcm2fjZ+yNkedIH7ExOGImuK8kHxUU=;
- b=VLfOQDDInXfEKU94lKSCI1tF8gP9DpXo8HWyplyTZLrjk10gosVKA35FBmhVVVI3Ej
- KUXcUDR0yJyvADBL62GlyipKLudIzhXESfkhE6XF8wjPP7SOnoameosam0zfEQEh/3BL
- 7CCuEDRkskSs6RTjbxFvwoGHDY8W0La4GHoEjKcCCHurj+durqv03BfTSF6GMDQDfepa
- ehgN04O65cIvpfzt/mnDcWP+fej6ZlR9xG1KriqZ4GFUz+MEZ/W/wcbrZZYbvrrdwIdp
- ZKjz2iv7NnQeJOgeujDZ3XTTFhiaVLgSL0I96rd8b36TcnlPCLYxHlMOVlt46soxrgvI
- 6TUA==
-X-Gm-Message-State: AOAM530S5fTI+x3SKxv+iTvXFOM7EAbgJmsDwO7Qa9LpAHDbNqnJUGlB
- Ij0VMzIiAoElpeqqpruWWUY=
-X-Google-Smtp-Source: ABdhPJz1FI1FMD+raRAIrvhT0VvCzZtUkPciJvFR7lj0nGhiV/h2EIZmuWty/vs4et/iSU5mts8Dqw==
-X-Received: by 2002:a17:902:c202:b0:142:2441:aa25 with SMTP id
- 2-20020a170902c20200b001422441aa25mr18417025pll.68.1637760095555; 
- Wed, 24 Nov 2021 05:21:35 -0800 (PST)
-Received: from localhost ([124.170.11.53])
- by smtp.gmail.com with ESMTPSA id j6sm17055518pfu.205.2021.11.24.05.21.34
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Nov 2021 05:21:34 -0800 (PST)
-Date: Wed, 24 Nov 2021 23:21:28 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 0/8] Convert powerpc to default topdown mmap layout
-To: alex@ghiti.fr, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman
- <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-References: <cover.1637570556.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1637570556.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hzhd72yXtz2xBL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 00:27:23 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out1.suse.de (Postfix) with ESMTP id CCED321941;
+ Wed, 24 Nov 2021 13:27:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1637760438; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mN2kL64eNA1N2PK/PmloaFO9N3vVjmU6wTcDc2qhV70=;
+ b=FMMYRpnfAGayOuJ/OK4NiO+Rx4lPtVOsvLnfUGWuitz77A9Q1LQzXEThtnv16Qf3SmSAwM
+ s2ZzzLYTAjhWFIweg/PzCBGYT7fz693yetXPDZ/nbU4tKRDFKxfMfTHwr/1OnUPihqoTaX
+ C/XDrJpV7ODrGvuHvUkkALx/m7QdGuc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1637760438;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mN2kL64eNA1N2PK/PmloaFO9N3vVjmU6wTcDc2qhV70=;
+ b=Mqki1S4QamNYU0y4PtzCs1Pt2rdDnqqPiT8W36clDnHP3O2iMu2RsASAK90x88WoZDwDNY
+ 7hA994IhL7ztkgAw==
+Received: from kunlun.suse.cz (unknown [10.100.128.76])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by relay2.suse.de (Postfix) with ESMTPS id C4C7EA3B93;
+ Wed, 24 Nov 2021 13:27:17 +0000 (UTC)
+Date: Wed, 24 Nov 2021 14:27:16 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Mimi Zohar <zohar@linux.ibm.com>
+Subject: Re: [PATCH 0/3] KEXEC_SIG with appended signature
+Message-ID: <20211124132716.GT34414@kunlun.suse.cz>
+References: <20211108120500.GO11195@kunlun.suse.cz>
+ <56d2ae87-b9bf-c9fc-1395-db4769a424ea@linux.vnet.ibm.com>
+ <20211112083055.GA34414@kunlun.suse.cz>
+ <8cd90fea-05c9-b5f9-5e0c-84f98b2f55cd@linux.vnet.ibm.com>
+ <20211116095343.GG34414@kunlun.suse.cz>
+ <604dad24-5406-509c-d765-905d74880523@linux.vnet.ibm.com>
+ <20211119111823.GC34414@kunlun.suse.cz>
+ <01218c22a287665091f24c7023f4bcd42dbb2001.camel@linux.ibm.com>
+ <20211124120950.57c10a9f@rhtmp>
+ <290c0097271c68f5a9fd1e8f6fdb542631981b33.camel@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1637759994.e3mppl4ly7.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <290c0097271c68f5a9fd1e8f6fdb542631981b33.camel@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,28 +84,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>, linux-s390@vger.kernel.org,
+ Vasily Gorbik <gor@linux.ibm.com>, Rob Herring <robh@kernel.org>,
+ Philipp Rudo <prudo@redhat.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Nayna <nayna@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org,
+ David Howells <dhowells@redhat.com>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, keyrings@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Frank van der Linden <fllinden@amazon.com>,
+ Jessica Yu <jeyu@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ buendgen@de.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of November 22, 2021 6:48 pm:
-> This series converts powerpc to default topdown mmap layout.
->=20
-> powerpc provides its own arch_get_unmapped_area() only when
-> slices are needed, which is only for book3s/64. First part of
-> the series moves slices into book3s/64 specific directories
-> and cleans up other subarchitectures.
->=20
-> Then a small modification is done to core mm to allow
-> powerpc to still provide its own arch_randomize_brk()
->=20
-> Last part converts to default topdown mmap layout.
+On Wed, Nov 24, 2021 at 08:10:10AM -0500, Mimi Zohar wrote:
+> On Wed, 2021-11-24 at 12:09 +0100, Philipp Rudo wrote:
+> > Now Michal wants to adapt KEXEC_SIG for ppc too so distros can rely on all
+> > architectures using the same mechanism and thus reduce maintenance cost.
+> > On the way there he even makes some absolutely reasonable improvements
+> > for everybody.
+> > 
+> > Why is that so controversial? What is the real problem that should be
+> > discussed here?
+> 
+> Nothing is controversial with what Michal wants to do.  I've already
+> said, "As for adding KEXEC_SIG appended signature support on PowerPC
+> based on the s390 code, it sounds reasonable."
 
-A nice series but will clash badly with the CONFIG_HASH_MMU=20
-series of course. One will have to be rebased if they are
-both to be merged.
+Ok, I will resend the series with the arch-specific changes first to be
+independent of the core cleanup.
 
-Thanks,
-Nick
+Thanks
+
+Michal
