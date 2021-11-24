@@ -1,55 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C128545B08F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 01:09:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA9545B22A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 03:47:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzLw048bdz3058
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 11:09:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HzQQC48jpz3bhj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 13:46:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n2vjb7SM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gFxW5UP2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HzLvN2yRTz2xrm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 11:08:32 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=n2vjb7SM; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HzLvJ1tJgz4xcK;
- Wed, 24 Nov 2021 11:08:28 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1637712511;
- bh=b+NrS7PSaK12qZPeCb8kmME984XWQTgUeWmP6maiS1U=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=n2vjb7SM5nHA0GSsrLq9HxPEACt5ncS6LaVn5+urRDVD2kHVMG7T1iGcCTTt+//3b
- D6Q1R2KsmGqmyjgyngpQ+bzqC6eR8SYTGM3YnYchp1ZBKt0hQUSbyrKOzGjUmb6+cz
- Pu2OnyuxREQ7omDKIB8ExvyipPAl21W63E7cxSgLNnYxD2xZiZG69FX8LjQN8cMI3s
- eY1HRsKOhRYddptzHjctNEx92inw14ObI8OjNQKiZqozjQKZrD5l6UQTjf35+OsedJ
- QZoFlcTMOzNuPtXZDnk5ZvK+p1YiK7EdQNwq3TWu9NFExVAjuzkRCqrmUE3gtMTAUO
- i9Bnllv5IiW3A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH] powerpc/signal32: Use struct_group() to zero spe regs
-In-Reply-To: <202111221247.B385EA2A8@keescook>
-References: <20211118203604.1288379-1-keescook@chromium.org>
- <1e312cbd-cd52-ddce-f839-db765173c526@csgroup.eu>
- <87ilwkrbhz.fsf@mpe.ellerman.id.au> <202111221247.B385EA2A8@keescook>
-Date: Wed, 24 Nov 2021 11:08:25 +1100
-Message-ID: <8735nmquti.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=gFxW5UP2; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HzQPT3gG4z2yNq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 13:46:20 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AO2HT8w016109; 
+ Wed, 24 Nov 2021 02:46:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=swtTjTYU4F7FKSVNga46f4iEucdRPoQ2Ky5p6tnYHkU=;
+ b=gFxW5UP27MjN8u0MwkkwEADDVPdJnC7oFCRqSCzwxB0WWfMvJJMD4QCx7S/CP/82IaeO
+ rf2XYcW3lwsAQVkdgeH/+xW3hx/RpC4jP1hMipD2q26DhcY0W0jSk/H6r1q5DD9If8u8
+ 58vMMcLizUAtfg8XLb4vZzNiEUqypVKkVRImkFuxS9KI3jdRc5cfFrUccZLqKvEW5wUn
+ tjpdlZXava/vMJgBj2HmNvv3ynveNMvyrGYlazBlDzCFbraPU2++XNGwZBCTLou9Gnzd
+ 3CVFuk7R7k9/BJ5RC6X9ThFOThLW2I4VpmCOSt8ot1JjSt1G1u2TawkBJU25ptXmXvVz 0w== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3chcfurbfh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Nov 2021 02:46:12 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AO2bA5B027149;
+ Wed, 24 Nov 2021 02:46:10 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 3cernavty6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Nov 2021 02:46:10 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1AO2k7ck25821460
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 24 Nov 2021 02:46:07 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2A2B2AE04D;
+ Wed, 24 Nov 2021 02:46:07 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7C53EAE056;
+ Wed, 24 Nov 2021 02:46:04 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.163.28.45])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 24 Nov 2021 02:46:04 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/perf: Fix task context setting for trace imc
+Date: Wed, 24 Nov 2021 08:16:00 +0530
+Message-Id: <20211124024600.18509-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: gJ1aMFCQAWUwk_s4uyAa3457MCznJ6iJ
+X-Proofpoint-ORIG-GUID: gJ1aMFCQAWUwk_s4uyAa3457MCznJ6iJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-23_08,2021-11-23_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0
+ clxscore=1015 lowpriorityscore=0 adultscore=0 impostorscore=0
+ priorityscore=1501 bulkscore=0 mlxlogscore=999 phishscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111240012
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,51 +96,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- kernel test robot <lkp@intel.com>, Peter Zijlstra <peterz@infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
- Sudeep Holla <sudeep.holla@arm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: kjain@linux.ibm.com, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kees Cook <keescook@chromium.org> writes:
-> On Mon, Nov 22, 2021 at 04:43:36PM +1100, Michael Ellerman wrote:
->> LEROY Christophe <christophe.leroy@csgroup.eu> writes:
->> > Le 18/11/2021 =C3=A0 21:36, Kees Cook a =C3=A9crit=C2=A0:
->> >> In preparation for FORTIFY_SOURCE performing compile-time and run-time
->> >> field bounds checking for memset(), avoid intentionally writing across
->> >> neighboring fields.
->> >>=20
->> >> Add a struct_group() for the spe registers so that memset() can corre=
-ctly reason
->> >> about the size:
->> >>=20
->> >>     In function 'fortify_memset_chk',
->> >>         inlined from 'restore_user_regs.part.0' at arch/powerpc/kerne=
-l/signal_32.c:539:3:
->> >>     >> include/linux/fortify-string.h:195:4: error: call to '__write_=
-overflow_field' declared with attribute warning: detected write beyond size=
- of field (1st parameter); maybe use struct_group()? [-Werror=3Dattribute-w=
-arning]
->> >>       195 |    __write_overflow_field();
->> >>           |    ^~~~~~~~~~~~~~~~~~~~~~~~
->> >>=20
->> >> Reported-by: kernel test robot <lkp@intel.com>
->> >> Signed-off-by: Kees Cook <keescook@chromium.org>
->> >
->> > Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>=20
->> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
->
-> Thanks! Should I take this via my tree, or do you want to take it via
-> ppc?
+Trace IMC (In-Memory collection counters) in powerpc is
+useful for application level profiling. For trace_imc,
+presently task context (task_ctx_nr) is set to
+perf_hw_context. But perf_hw_context is to be used for
+cpu PMU. So for trace_imc, even though it is per thread
+PMU, it is preferred to use sw_context inorder to be able
+to do application level monitoring. Hence change the
+task_ctx_nr to use perf_sw_context.
 
-I don't mind. If it's easier for you to take it as part of an existing
-series then do that, otherwise I can pick it up.
+Fixes: 012ae244845f ("powerpc/perf: Trace imc PMU functions")
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+---
+ arch/powerpc/perf/imc-pmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-cheers
+diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+index e106909ff9c3..f3b3262bdf02 100644
+--- a/arch/powerpc/perf/imc-pmu.c
++++ b/arch/powerpc/perf/imc-pmu.c
+@@ -1457,7 +1457,7 @@ static int trace_imc_event_init(struct perf_event *event)
+ 
+ 	event->hw.idx = -1;
+ 
+-	event->pmu->task_ctx_nr = perf_hw_context;
++	event->pmu->task_ctx_nr = perf_sw_context;
+ 	event->destroy = reset_global_refc;
+ 	return 0;
+ }
+-- 
+2.33.0
+
