@@ -2,84 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9609345B9D4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 13:02:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D598145BA81
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 13:10:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzflC3GkZz307C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 23:02:31 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lzHGXHqz;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hzfwv5F8sz2ywF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 23:10:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hzfkd1PGkz2xBL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 23:02:01 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=lzHGXHqz; dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Hzfkc72m8z4xdm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 23:02:00 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
- id 4Hzfkc6zgtz4xf3; Wed, 24 Nov 2021 23:02:00 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2e;
- helo=mail-qv1-xf2e.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=lzHGXHqz; dkim-atps=neutral
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com
- [IPv6:2607:f8b0:4864:20::f2e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by gandalf.ozlabs.org (Postfix) with ESMTPS id 4Hzfkc6vm4z4xdm
- for <linuxppc-dev@ozlabs.org>; Wed, 24 Nov 2021 23:02:00 +1100 (AEDT)
-Received: by mail-qv1-xf2e.google.com with SMTP id m17so1550652qvx.8
- for <linuxppc-dev@ozlabs.org>; Wed, 24 Nov 2021 04:01:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=xMs60OY6NuqoTznb3kAiAXIsovsCKzGLK+pIVmyJY0A=;
- b=lzHGXHqzWVcTimHCU6SNfHlDXu8eChfYOrIxaoprIgcDx9jH39cR7aYpZcQQCqtjrF
- aPuKE0lykdswvBrfa4TEIS9iBBeklUzlhXdL/uTwWDGfYCL+AjBY9eoq8qcNw98RJJc2
- 9h/u8dx1kpBCxeSllcVxYJX3DNNGqq6XTqPUZukHtvcXtUsW6YeSfdimD7uxvrekIvTn
- QqwVJEhB5ZH89byKO2wS5T9z5eqYEgS+4D28X1aZ7lpz5YMtbHYiXytwts59hkj1meAp
- 4D0mu2Tycf34IjPCGFIu/rRcRHMkt4W50UZQnFuhkvm5HxDge80x2wkEa3Qjxb1JofQz
- E7pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=xMs60OY6NuqoTznb3kAiAXIsovsCKzGLK+pIVmyJY0A=;
- b=SyJGuQr1kSbxYEZZnsd0OGpWDpQEac9SG22g6MJ5U0c2rHfv/FRhCRyL09GcZurkc9
- lIUM8aoHScnxlJ7l2yHUWuTB7UC+AEAiG0WIjvak2F/URH5IdVamjLsTlDcWRYHbMM6I
- U6Z1u7a3xjNToDLT1OgiyKcnkugM60fL3MuMYcNhTHFlgb10aT8pVsYBPsREYWHAGfH1
- A6D1Nhs/1IAJ3O03vzSDMUxygcVUE2QMZNKexNgDzxASogn9NlWj3orzz2+n3y2H6tF5
- UfJGZR14XxWmjOUjRj4GowfU9pXToAmWEog6qMdi1KplNE9YkXY+qmzBz7occyFl3H0E
- iI/Q==
-X-Gm-Message-State: AOAM532re3w6jlTsKBMpdQpHm9iTyfNfIuo6OmJidm4+MwW33jk0yCQv
- GTAWf2TliwB83++b7gGm6KekSxHbX7qTNFgfcNo=
-X-Google-Smtp-Source: ABdhPJz3OdCr9/ZmClglEISeEwIH7PRK/EUkdCTrHMeYapGlCCcdtd8Nl8dP4/F0Ia40eRTWqlRfWXmiGSIjzEIKNbc=
-X-Received: by 2002:a05:6214:8f2:: with SMTP id
- dr18mr6862237qvb.56.1637755316799; 
- Wed, 24 Nov 2021 04:01:56 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HzfwR4XnTz2yNW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 23:10:30 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4HzfwK47XZz9sSc;
+ Wed, 24 Nov 2021 13:10:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id sWkc7PQHeBeD; Wed, 24 Nov 2021 13:10:25 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4HzfwK357Rz9sSD;
+ Wed, 24 Nov 2021 13:10:25 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 56AC48B774;
+ Wed, 24 Nov 2021 13:10:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id HKLJqKu2q3SB; Wed, 24 Nov 2021 13:10:25 +0100 (CET)
+Received: from [172.25.230.108] (unknown [172.25.230.108])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1DBA78B763;
+ Wed, 24 Nov 2021 13:10:25 +0100 (CET)
+Message-ID: <adefca8d-5fd4-b9ad-dfb8-0cf334440935@csgroup.eu>
+Date: Wed, 24 Nov 2021 13:10:24 +0100
 MIME-Version: 1.0
-References: <163767273634.1368569.7327743414665595326.stgit@jupiter>
-In-Reply-To: <163767273634.1368569.7327743414665595326.stgit@jupiter>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Wed, 24 Nov 2021 23:01:45 +1100
-Message-ID: <CAOSf1CFRY=VsGenpwqVu_VOUYuBheVUEoX2M_h-XSHk6NdUtwg@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/eeh: Delay slot presence check once driver is
- notified about the pci error.
-To: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH 1/8] powerpc/mm: Make slice specific to book3s/64
+Content-Language: fr-FR
+To: kernel test robot <lkp@intel.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ alex@ghiti.fr
+References: <14e2c0b0d4fff49c1cb30166f54ce8e445e17b16.1637570556.git.christophe.leroy@csgroup.eu>
+ <202111222218.RhruLp7S-lkp@intel.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <202111222218.RhruLp7S-lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,26 +66,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>
+Cc: linux-mm@kvack.org, kbuild-all@lists.01.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Nov 24, 2021 at 12:05 AM Mahesh Salgaonkar <mahesh@linux.ibm.com> wrote:
->
-> *snip*
->
-> This causes the EEH handler to get stuck for ~6
-> seconds before it could notify that the pci error has been detected and
-> stop any active operations. Hence with running I/O traffic, during this 6
-> seconds, the network driver continues its operation and hits a timeout
-> (netdev watchdog).On timeouts, network driver go into ffdc capture mode
-> and reset path assuming the PCI device is in fatal condition. This causes
-> EEH recovery to fail and sometimes it leads to system hang or crash.
 
-Whatever is causing that crash is the real issue IMO. PCI error
-reporting is fundamentally asynchronous and the driver always has to
-tolerate some amount of latency between the error occuring and being
-reported. Six seconds is admittedly an eternity, but it should not
-cause a system crash under any circumstances. Printing a warning due
-to a timeout is annoying, but it's not the end of the world.
+
+Le 22/11/2021 à 15:48, kernel test robot a écrit :
+> Hi Christophe,
+> 
+> I love your patch! Perhaps something to improve:
+> 
+> [auto build test WARNING on powerpc/next]
+> [also build test WARNING on hnaz-mm/master linus/master v5.16-rc2 next-20211118]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/Convert-powerpc-to-default-topdown-mmap-layout/20211122-165115
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+> config: powerpc64-randconfig-s031-20211122 (attached as .config)
+> compiler: powerpc64-linux-gcc (GCC) 11.2.0
+> reproduce:
+>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>          chmod +x ~/bin/make.cross
+>          # apt-get install sparse
+>          # sparse version: v0.6.4-dirty
+>          # https://github.com/0day-ci/linux/commit/1d0b7cc86d08f25f595b52d8c39ba9ca1d29a30a
+>          git remote add linux-review https://github.com/0day-ci/linux
+>          git fetch --no-tags linux-review Christophe-Leroy/Convert-powerpc-to-default-topdown-mmap-layout/20211122-165115
+>          git checkout 1d0b7cc86d08f25f595b52d8c39ba9ca1d29a30a
+>          # save the attached .config to linux build tree
+>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' ARCH=powerpc64
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All warnings (new ones prefixed by >>):
+> 
+>     arch/powerpc/mm/book3s64/slice.c: In function 'slice_get_unmapped_area':
+>>> arch/powerpc/mm/book3s64/slice.c:639:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+>       639 | }
+>           | ^
+
+
+The problem was already existing when slice.c was in arch/powerpc/mm/
+
+This patch doesn't introduce the problem.
+
+Christophe
