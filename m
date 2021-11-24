@@ -2,57 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEAA745D0DD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:08:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D2345D11F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:25:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzxW65zL5z3bWC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 10:08:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hzxvj3gbCz3bXJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 10:25:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=BTvkGcA6;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=X/yZX2zV;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=eAA9L8IY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HzxVT43Pzz2yHj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 10:07:29 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
+ helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=BTvkGcA6; 
+ secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
+ header.s=2020 header.b=X/yZX2zV; 
+ dkim=pass header.d=linutronix.de header.i=@linutronix.de
+ header.a=ed25519-sha256 header.s=2020e header.b=eAA9L8IY; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+X-Greylist: delayed 426 seconds by postgrey-1.36 at boromir;
+ Thu, 25 Nov 2021 10:25:17 AEDT
+Received: from galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HzxVN0Pm9z4xYy;
- Thu, 25 Nov 2021 10:07:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1637795249;
- bh=7pRov1sIZwpusxuBiujaI38cmBz+hmwQh8SiJxJ6V4A=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=BTvkGcA6sRe76Gy1isc7w2/xkrLYnxKe2cqBq0GZkmo3MfAC6f/yy2152OFmF8hfz
- ERp6yUMEqynlekax8tGND0PUYTdPjimS7umZwMJD2eEZzHm6xM0TCeCZystvsXoEp/
- dOGb08CEJi0M0EKZ9GRPnCe+PY71tEutUo8DfZqK0BjfkRucFJoV5j9uqB76ejU77I
- tGRBKn0ErgMMddWkhbwZK7yiSBERddMcgmePyxpK0lviq3ImeJm2W3PY0TXuDBx5FS
- M0XMRHP0ACm+GBzFbMCEaC7auxJI5gaumq9uoq16TBuJyv1mTCSEe+pFI8yY/AowXU
- AQXHNLAwb3lmA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: =?utf-8?Q?Andr=C3=A9?= Almeida <andrealmeid@collabora.com>,
- linux-kernel@vger.kernel.org,
- arnd@arndb.de, geert@linux-m68k.org, monstr@monstr.eu,
- ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
- chris@zankel.net, jcmvbkbc@gmail.com, linux-alpha@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hzxv11yMmz2yQw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 10:25:17 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1637795881;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kgfD0hDh4gr0XMzkR2x84BR1TQ6+tWZptmE4dSLrghY=;
+ b=X/yZX2zV8XlAus/FBu0sptVdXYWgFjt85wCwAiu6eUKJBsOkqXZw1bwG6D5eQ4y3XItSO5
+ PME1b7NJiqjCFFOLUwssxvQfdm3YwlEVkZeZq2Lvaxr9X1F9DySBoKbtptiCypU7vX0lxb
+ rLd2g2UZ9iw2md3zGsCQFZVDy+Ps1Wj2giT5og+i4j8yelPkAlnXWb1Z02Pec22ezIqgU2
+ B24yr0FzQWwSctufH3JLXvswN/Vcon5CJcGGr3lK01xAYCAI+akKbgpKk2mMxDKnUMte1X
+ HsR0U998RBH9nGgHbNTgaQPvxAzbH7/ZRc3B/1s5dnvXurNarvbbMcqz8xLFyw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1637795881;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kgfD0hDh4gr0XMzkR2x84BR1TQ6+tWZptmE4dSLrghY=;
+ b=eAA9L8IY3vpIoozSoepqegehvk44k8iiAJ19r79ZDI+VHKbA09Xcb0eAefvCuqFa/D4MxI
+ qHgBCZYVv9jhifBA==
+To: Arnd Bergmann <arnd@arndb.de>, =?utf-8?Q?Andr=C3=A9?= Almeida
+ <andrealmeid@collabora.com>
 Subject: Re: [PATCH 1/1] futex: Wireup futex_waitv syscall
-In-Reply-To: <20211124132112.11641-1-andrealmeid@collabora.com>
+In-Reply-To: <CAK8P3a2BXefTw68yoZ9U0F=ASC3=EZDc5PDQCJ16MmXtynd59g@mail.gmail.com>
 References: <CAK8P3a3pQW59NVF=5P+ZiBjNJmnWh+iTZUHvqHBrXkHA6pMd4g@mail.gmail.com>
  <20211124132112.11641-1-andrealmeid@collabora.com>
-Date: Thu, 25 Nov 2021 10:07:23 +1100
-Message-ID: <87lf1dp2z8.fsf@mpe.ellerman.id.au>
+ <CAK8P3a2BXefTw68yoZ9U0F=ASC3=EZDc5PDQCJ16MmXtynd59g@mail.gmail.com>
+Date: Thu, 25 Nov 2021 00:18:00 +0100
+Message-ID: <87v90hjg7r.ffs@tglx>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -67,48 +77,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sfr@canb.auug.org.au, senozhatsky@chromium.org, peterz@infradead.org,
- will@kernel.org, boqun.feng@gmail.com, lkft-triage@lists.linaro.org,
- minchan@kernel.org, naresh.kamboju@linaro.org, linux-next@vger.kernel.org,
- umgwanakikbuti@gmail.com, rob@landley.net, andrealmeid@collabora.com,
- longman@redhat.com, akpm@linux-foundation.org, mingo@redhat.com,
- bigeasy@linutronix.de
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Linux-sh list <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ lkft-triage@lists.linaro.org, Max Filippov <jcmvbkbc@gmail.com>,
+ Mike Galbraith <umgwanakikbuti@gmail.com>,
+ sparclinux <sparclinux@vger.kernel.org>, Will Deacon <will@kernel.org>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>,
+ Linux-Next Mailing List <linux-next@vger.kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Waiman Long <longman@redhat.com>,
+ "open
+ list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>, Ingo Molnar <mingo@redhat.com>,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Minchan Kim <minchan@kernel.org>, Rob Landley <rob@landley.net>,
+ alpha <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andr=C3=A9 Almeida <andrealmeid@collabora.com> writes:
-> diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kern=
-el/syscalls/syscall.tbl
-> index 7bef917cc84e..15109af9d075 100644
-> --- a/arch/powerpc/kernel/syscalls/syscall.tbl
-> +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-> @@ -528,3 +528,4 @@
->  446	common	landlock_restrict_self		sys_landlock_restrict_self
->  # 447 reserved for memfd_secret
->  448	common	process_mrelease		sys_process_mrelease
-> +449	common  futex_waitv                     sys_futex_waitv
+On Wed, Nov 24 2021 at 15:29, Arnd Bergmann wrote:
+> On Wed, Nov 24, 2021 at 2:21 PM Andr=C3=A9 Almeida <andrealmeid@collabora=
+.com> wrote:
+>>
+>> Wireup futex_waitv syscall for all remaining archs.
+>>
+>> Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@collabora.com>
+>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+>
+> I double-checked that futex_waitv() doesn't need any architecture specific
+> hacks, and that the list above is complete.
+>
+> Should I take this through the asm-generic tree, or would you send it
+> through the tip tree?
 
-Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Feel free to pick it up.
 
-The selftest doesn't build with old headers, I needed this:
+Thanks,
 
-diff --git a/tools/testing/selftests/futex/include/futex2test.h b/tools/tes=
-ting/selftests/futex/include/futex2test.h
-index 9d305520e849..e6422321e9d0 100644
---- a/tools/testing/selftests/futex/include/futex2test.h
-+++ b/tools/testing/selftests/futex/include/futex2test.h
-@@ -8,6 +8,10 @@
-
- #define u64_to_ptr(x) ((void *)(uintptr_t)(x))
-
-+#ifndef __NR_futex_waitv
-+#define __NR_futex_waitv 449
-+#endif
-+
- /**
-  * futex_waitv - Wait at multiple futexes, wake on any
-  * @waiters:    Array of waiters
-
-
-cheers
+        tglx
