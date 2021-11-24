@@ -2,80 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3358645CA86
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 18:02:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D04A745CAE4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 18:24:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HznNx11kYz3c7q
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 04:02:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hzntp5C6Cz3c6N
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 04:24:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oNawTdMV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LPQIsg+f;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::731;
- helo=mail-qk1-x731.google.com; envelope-from=frowand.list@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::536;
+ helo=mail-ed1-x536.google.com; envelope-from=jcmvbkbc@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=oNawTdMV; dkim-atps=neutral
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com
- [IPv6:2607:f8b0:4864:20::731])
+ header.s=20210112 header.b=LPQIsg+f; dkim-atps=neutral
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com
+ [IPv6:2a00:1450:4864:20::536])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HznNM3M2Sz2yHM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 04:01:39 +1100 (AEDT)
-Received: by mail-qk1-x731.google.com with SMTP id t6so3567063qkg.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 09:01:39 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hznt40Xtfz2xD3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 04:23:53 +1100 (AEDT)
+Received: by mail-ed1-x536.google.com with SMTP id l25so13525424eda.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 09:23:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=4l8EHpoHR/MUDumoB/hsOQmLQDeVna4zuNcu6MG7N2Y=;
- b=oNawTdMVSlhLmOCrDcR19sMj/RztqPP/+Xul1ST0ZdjZqP/GXamlE06D/eZB2NI71+
- tKrHOxVlG3T5aAXCdaXsBqOpttB7xDhe0zytOjT9XF/Y3kqcM15J6tnRSys3yPlVcfuj
- 8EP1DG66Meqvt2KL14gdwqQ9jbr3N/44XS5CpoXDIWeaEKiqwkaLUHeulZyzxTbsYxOq
- T6Wi5OfXgyLiFxQ2A14taCw6JYR4yAQ9jvV+sjc9AENZn1PYPL5iPuP5LjAJLWFIOb9y
- 2/kVWUspoQ1F3b/jzWi05rfUah5HK/mQ6U2zRluZPdRWkPa235jsXYLL3mGnRGdQT0aH
- XKQQ==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=ccJMIpDP63AsSWP0+gJpsJishWCjmMXQ0SENwgrm5zo=;
+ b=LPQIsg+fnQjP+GIjcU+s2UMMyjwiLbLz29SB7qHmon0OqWk06zH7knq6feBANLCkBL
+ i+O6SprIXvZ/RMchNw5acYJ9uMkd508g1WcEDkla4Ao/ZDtmKCSaEIOCy2BS48JnD6eZ
+ eeJrqZuQva7WkELPIdub8lRIf/sL2XOOBWo1kY07QXJydijSe8PceQm7ghukbsZsXEvJ
+ uTIZScnEmTsw7dp6imxmSBAeZV7cV5J7Ob229ctIQbA9R+O2pki82r+BhKZf9nOgVP3w
+ p3BqEV6FrEZJK/3S3ghUyyumlvAqmGtD401bgDgsomSwG5ofZf3kcRFfKYo3ZIwOKFj9
+ TyLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=4l8EHpoHR/MUDumoB/hsOQmLQDeVna4zuNcu6MG7N2Y=;
- b=jfxoacnfT0bRrUnLfpg11Ce/2oodFge8EJ5/PhMME1b+4BFcrx2wsH3/phR6L3Cjpr
- gUEx91RHVK3K6rmyWaUeDYYt+PsyAxyccWHvbg0EXMwxfhhGLJF6FGUlNksPQ42gcej3
- DsIlfBfSAsBKZgM8pr48TfuJcb6Pu9wFkTQbpqO0PsG+tQSJeXSVYECrBMsLO4vKyFpb
- LQjm40HNe+quMhPdkWU2FWpF7u9HeelCdy+9bxaQ0z+Ee3DxZC5mi3NjY+hO3uyxNExO
- 5nFtINiCeggjJNcJWgBXhLXGrljSNvd1qil4XUSyTk2+pEU7k4fxfi7Mdy9dT5zvr7SL
- pIeg==
-X-Gm-Message-State: AOAM530eDIUfrS0imv4QLAuRZrT2DYThowMkQoXV3sVwO4ACzWURjCu8
- 68hqwIYCSNL7Y/T4cLxG0gk=
-X-Google-Smtp-Source: ABdhPJxMWf3VHGwZdkv0Dz7RlGUGqhel603IxJS5niNv9/50hWXBURFDisFz9q7IqpkQPDpH9JG1hg==
-X-Received: by 2002:ae9:e907:: with SMTP id x7mr7705930qkf.150.1637773295831; 
- Wed, 24 Nov 2021 09:01:35 -0800 (PST)
-Received: from [192.168.1.140] ([65.35.200.237])
- by smtp.gmail.com with ESMTPSA id x16sm158330qko.15.2021.11.24.09.01.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 Nov 2021 09:01:35 -0800 (PST)
-Subject: Re: [PATCH 0/3] of/fdt: Rework early FDT scanning functions
-To: Rob Herring <robh@kernel.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- John Crispin <john@phrozen.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-References: <20211118181213.1433346-1-robh@kernel.org>
-From: Frank Rowand <frowand.list@gmail.com>
-Message-ID: <7c3286d4-2da4-b083-b3a4-88d32e475617@gmail.com>
-Date: Wed, 24 Nov 2021 12:01:33 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=ccJMIpDP63AsSWP0+gJpsJishWCjmMXQ0SENwgrm5zo=;
+ b=TJIFidz1pezwaxJ946Q8RTTT4tiFWOikuE0FWFIaLd+XlicJF18dvIceYMFFE8LFmt
+ p1PKl90rWEAGpQLJ3HmKycv6IKr/5/XsWOTfbyhB6b/c/7yj7NXjO4GK/2lXhVT1zoCq
+ UAFfw44UJ83k752uAosQzj2Bd8X6Zl61vRu67B2RB2/vHR+wb9FNJ+42cZumb08xE//b
+ jxOk5clyJ7rm/dFPf5UsQ9HCOvaCyzxE/1i5eYmfsb5UNIsVp4E3C0gq9Tg+sDXhOR9P
+ U7e4pFUYwRJCtAYMczX2oh10OvWV5ZlfzFiCd5a0uWr3w15+42cmgBcax+2SjdF4l3Jb
+ mr1A==
+X-Gm-Message-State: AOAM531EZYAqwt6EGUlShGY7LcOy+8qgKR9bqfnFNgRvvE53SLk1IZWF
+ 6/c9wlasFVe6TnkalKEh5tQL2qC3xs7wWk0K1Y8=
+X-Google-Smtp-Source: ABdhPJxCkUPK2xGVGQ8pQVAH6s4Q6tpFbqatbbYoPoAC/pb3AwqZ/UUH4ORYdYtNjszU1n1TDfxAVTzojZYvfCqJ1Zg=
+X-Received: by 2002:a05:6402:40d3:: with SMTP id
+ z19mr28561357edb.185.1637774628721; 
+ Wed, 24 Nov 2021 09:23:48 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20211118181213.1433346-1-robh@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <CAK8P3a3pQW59NVF=5P+ZiBjNJmnWh+iTZUHvqHBrXkHA6pMd4g@mail.gmail.com>
+ <20211124132112.11641-1-andrealmeid@collabora.com>
+In-Reply-To: <20211124132112.11641-1-andrealmeid@collabora.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Wed, 24 Nov 2021 09:23:37 -0800
+Message-ID: <CAMo8BfL18MQah-Bsf3NUUH+U5inLyErMfHoqr2vdwzUzCc=dyA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] futex: Wireup futex_waitv syscall
+To: =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,41 +77,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org
+Cc: Rich Felker <dalias@libc.org>,
+ "open list:IA64 \(Itanium\) PL..." <linux-ia64@vger.kernel.org>,
+ "open list:SUPERH" <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ lkft-triage@lists.linaro.org, umgwanakikbuti@gmail.com,
+ "open list:SPARC + UltraSPAR..." <sparclinux@vger.kernel.org>,
+ Will Deacon <will@kernel.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>, naresh.kamboju@linaro.org,
+ Linux-Next <linux-next@vger.kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, longman@redhat.com,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Arnd Bergmann <arnd@arndb.de>, boqun.feng@gmail.com,
+ "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
+ Ingo Molnar <mingo@redhat.com>, Chris Zankel <chris@zankel.net>,
+ Michal Simek <monstr@monstr.eu>, LKML <linux-kernel@vger.kernel.org>,
+ Minchan Kim <minchan@kernel.org>, Rob Landley <rob@landley.net>,
+ "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/18/21 1:12 PM, Rob Herring wrote:
-> The early FDT scanning functions use of_scan_flat_dt() which implements 
-> its own node walking method. This function predates libfdt and is an 
-> unnecessary indirection. This series reworks 
-> early_init_dt_scan_chosen(), early_init_dt_scan_root(), and 
-> early_init_dt_scan_memory() to be called directly and use libfdt calls.
-> 
-> Ultimately, I want to remove of_scan_flat_dt(). Most of the remaining 
-> of_scan_flat_dt() users are in powerpc.
-> 
-> Rob
-> 
-> 
-> Rob Herring (3):
->   of/fdt: Rework early_init_dt_scan_chosen() to call directly
->   of/fdt: Rework early_init_dt_scan_root() to call directly
->   of/fdt: Rework early_init_dt_scan_memory() to call directly
-> 
->  arch/mips/ralink/of.c                |  16 +---
->  arch/powerpc/kernel/prom.c           |  22 ++---
->  arch/powerpc/mm/nohash/kaslr_booke.c |   4 +-
->  drivers/of/fdt.c                     | 121 ++++++++++++++-------------
->  include/linux/of_fdt.h               |   9 +-
->  5 files changed, 79 insertions(+), 93 deletions(-)
-> 
+On Wed, Nov 24, 2021 at 5:21 AM Andr=C3=A9 Almeida <andrealmeid@collabora.c=
+om> wrote:
+>
+> Wireup futex_waitv syscall for all remaining archs.
+>
+> Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@collabora.com>
+> ---
+>  arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
+>  arch/ia64/kernel/syscalls/syscall.tbl       | 1 +
+>  arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
+>  arch/microblaze/kernel/syscalls/syscall.tbl | 1 +
+>  arch/powerpc/kernel/syscalls/syscall.tbl    | 1 +
+>  arch/sh/kernel/syscalls/syscall.tbl         | 1 +
+>  arch/sparc/kernel/syscalls/syscall.tbl      | 1 +
+>  arch/xtensa/kernel/syscalls/syscall.tbl     | 1 +
+>  8 files changed, 8 insertions(+)
 
+For xtensa:
+Acked-by: Max Filippov <jcmvbkbc@gmail.com>
 
-"checkpatch --strict" reports some "CHECK" issues, but review of the patches
-for correctness becomes much more difficult if they are addressed, so they
-should be ignored for this series.
-
--Frank
+--=20
+Thanks.
+-- Max
