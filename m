@@ -1,65 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1A7F45C4EE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 14:50:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA6C45C788
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 15:35:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hzj7s44sVz3bWC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:50:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hzk7X6wzWz3c8j
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 01:35:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.222.54; helo=mail-ua1-f54.google.com;
- envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com
- [209.85.222.54])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=217.72.192.75; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hzj7P2kxZz2yJ5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 00:50:08 +1100 (AEDT)
-Received: by mail-ua1-f54.google.com with SMTP id l24so5269780uak.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 05:50:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=Hf4rPGIgUhHt4w8e7uNMvl+iKhb8nrL9YmbQ22fq8VI=;
- b=jomjZoTl3OZac/kEtzDzXlfWibWlu6OIcX8kgwS25806Wbd/XNJd3jxM6Yk/GPPF52
- SnBmGxaY0MZ8g4OnUbKKqG8h8nVYrn+qucZtGdoFeSC1on//16KlxUsuLXYobXxv/EP0
- eaeI6gF1JKi/W1f3j2mtxKYYWFudMaEgGzTCE5yetMaaMzbabLsWZwAHfJaAZwZ5P/Vg
- WgmtjhFXfqWGGFg6Kt7mHRrAudy2TJgqEqB5+m5w4g/PVEyAr0k7gAIwa2xy1ImZ2L0S
- QPRF92ubdKatBDF+9v+eEmExdgPdB9nD3tpJ7iNTgVO2ESWe04qmNotx2WyiOu3t6XuT
- o5Zg==
-X-Gm-Message-State: AOAM5300Q/Snz0qc+hLplDYc1HcvvEuK00IxT2IX3fxlSa8sVzEr5kYk
- EXgtzmdp6/nsJ+z5qDsDzvYNMmPDVQ3yTA==
-X-Google-Smtp-Source: ABdhPJzugl3U0gPBsPxjfZN4cu1Zr8kgjj5r7z+1t9vspDjJnTazDKhkZgFPf1tVLwn7m2ZHB64ESA==
-X-Received: by 2002:a05:6102:511e:: with SMTP id
- bm30mr23352838vsb.48.1637761805364; 
- Wed, 24 Nov 2021 05:50:05 -0800 (PST)
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com.
- [209.85.222.50])
- by smtp.gmail.com with ESMTPSA id y7sm7710294uac.3.2021.11.24.05.50.04
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 Nov 2021 05:50:04 -0800 (PST)
-Received: by mail-ua1-f50.google.com with SMTP id w23so5238020uao.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 05:50:04 -0800 (PST)
-X-Received: by 2002:a67:c38f:: with SMTP id s15mr24413982vsj.50.1637761804180; 
- Wed, 24 Nov 2021 05:50:04 -0800 (PST)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hzk740bzkz2y7P
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 01:34:55 +1100 (AEDT)
+Received: from mail-wm1-f50.google.com ([209.85.128.50]) by
+ mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MekKJ-1mG0ED0f3d-00alYq for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov
+ 2021 15:29:40 +0100
+Received: by mail-wm1-f50.google.com with SMTP id
+ r9-20020a7bc089000000b00332f4abf43fso4236947wmh.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 06:29:39 -0800 (PST)
+X-Gm-Message-State: AOAM532GJnEcfyCsmgLOcGQlYKXWs75KJSGZDxsD+SnnULp25WeAxu8S
+ GGUIbgLYPZJzTEbAye/+cUmF3y+BOIO9R89DVO4=
+X-Google-Smtp-Source: ABdhPJw9AuDVJPcPk5QwMaNIqLG+Gyph350xYhCGSeBIHw0tMZdjTjgs4734tAKvoxeRwyygv81r33HtARNOkWqIoYo=
+X-Received: by 2002:a1c:1c1:: with SMTP id 184mr15657228wmb.1.1637764179209;
+ Wed, 24 Nov 2021 06:29:39 -0800 (PST)
 MIME-Version: 1.0
 References: <CAK8P3a3pQW59NVF=5P+ZiBjNJmnWh+iTZUHvqHBrXkHA6pMd4g@mail.gmail.com>
  <20211124132112.11641-1-andrealmeid@collabora.com>
 In-Reply-To: <20211124132112.11641-1-andrealmeid@collabora.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 24 Nov 2021 14:49:53 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdViovyQ2xBeKaMRbAmYF5eMWKdYhQEPmnTyLJoF7a+xsg@mail.gmail.com>
-Message-ID: <CAMuHMdViovyQ2xBeKaMRbAmYF5eMWKdYhQEPmnTyLJoF7a+xsg@mail.gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 24 Nov 2021 15:29:23 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a2BXefTw68yoZ9U0F=ASC3=EZDc5PDQCJ16MmXtynd59g@mail.gmail.com>
+Message-ID: <CAK8P3a2BXefTw68yoZ9U0F=ASC3=EZDc5PDQCJ16MmXtynd59g@mail.gmail.com>
 Subject: Re: [PATCH 1/1] futex: Wireup futex_waitv syscall
 To: =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@collabora.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:41MxNfoWf99qZX/zt7a7ac0tXxGVpkhEzkwOOcBkx9bfjnImAew
+ XK9Z6L2aupWatAv7PzFRHeJhPYTrEtMk1UKREaKb1L9yAPXllV/qMkf0IGQvd1zcLeszaIQ
+ GJ1FTXs04UbNSQkkvdE5l3tNPQGXvTqKeUlHN5j9ndU8+fLVLGXIm7/vric5awHoHjlJEgS
+ SYs/WdznmN+jfNxd8SvMA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:dmBtCe5eYrg=:S+xjN4OuAUp3EUfOo2NBxZ
+ 6YyGadnyoEGOUKLtvsf9/um3bXogqZaZXhsSahiRQ/Ul2ES+rUU2LHCH7zRhDjjL6Oogp7rSP
+ 9jWR2UboPl8LIXhqUA3EIjfQI5kYLPrVvOuaA9uN++gSpADYHG+qEhZv/70zL9sg0wAC7HALp
+ T5oIhtA4Dw5upleDka/MygRAGi6hsS8+IjwVejDTOyqDhrrNh8KoFgH61zYFFpWRk2PQ6BDYG
+ q30CGeGBzFdgNMUy/ehLxrxNBPJGWknVsOgRyCbacI4uLCNWUsK8yPYiBBdMGu78tuUIHhE5s
+ wGCIsZYd02uUkNJ3e8JMWj0Dk38oymiSXBJ4ZWp0o1GZt1mdePg88bUYYTO4dMVepMRUSzco3
+ 6lL9GULInOsBTy4DafGftqw41aGyEqayXLG1c9/usH2pRWX35DqUCDS/rpDliJ6/fv4ih4gRK
+ 3hyRsXWf00D58uJ4Z1n16QgwwDv/jrKA9l0FDWniv2cvF4idc57Y41QQLp/C3oKGRFrNpV7ta
+ fnYOTpXO/bdp+DgjhPNkOnYk7CxFyTUitnzF++VwCiutNL/2RhCYGEH3UABMFvPzBQGiuFBqo
+ JGGgbvgHKZeQpIKO4tmFuWb8C/z5OZ5JuOdNwXFfSpZM0TN/ql+ecHRTD3sp+c2Qr/Votg9uW
+ L5+oKoAO+bAFOofEHYeEkccNLY3C/cGdMt81lfvjZEXDa1WDT+zdGDfjrLAPG3sKNWtNEanyw
+ RXsMv4r0oqGVeIu6rIzbizP9u2fBzyCnda1UEbjjFxJQm6zsqSL0HSi1J8beOllMjgYGp7VkV
+ 1b++kHFgA4tH7jT9BPp6tg+jI2omTZsRVLecyThAN60l5yRq68=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,8 +72,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
  Linux-sh list <linux-sh@vger.kernel.org>,
  Peter Zijlstra <peterz@infradead.org>,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
@@ -83,7 +83,8 @@ Cc: Rich Felker <dalias@libc.org>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Sergey Senozhatsky <senozhatsky@chromium.org>,
  Naresh Kamboju <naresh.kamboju@linaro.org>,
- Linux-Next <linux-next@vger.kernel.org>, Waiman Long <longman@redhat.com>,
+ Linux-Next Mailing List <linux-next@vger.kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Waiman Long <longman@redhat.com>,
  "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
  Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>,
  linux-m68k <linux-m68k@lists.linux-m68k.org>, Ingo Molnar <mingo@redhat.com>,
@@ -92,31 +93,25 @@ Cc: Rich Felker <dalias@libc.org>,
  Minchan Kim <minchan@kernel.org>, Rob Landley <rob@landley.net>,
  alpha <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
+ David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Wed, Nov 24, 2021 at 2:21 PM Andr=C3=A9 Almeida <andrealmeid@collabora.c=
 om> wrote:
+>
 > Wireup futex_waitv syscall for all remaining archs.
 >
 > Signed-off-by: Andr=C3=A9 Almeida <andrealmeid@collabora.com>
 
->  arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+I double-checked that futex_waitv() doesn't need any architecture specific
+hacks, and that the list above is complete.
 
-Gr{oetje,eeting}s,
+Should I take this through the asm-generic tree, or would you send it
+through the
+tip tree?
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+        Arnd
