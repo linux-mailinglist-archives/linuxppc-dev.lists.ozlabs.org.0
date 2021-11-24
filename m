@@ -1,59 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9A145C3C9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 14:41:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B7945C402
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 14:42:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzhxP4zXBz3c5h
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:41:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HzhyQ5qKSz3c5q
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:42:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=hhbQZhJw;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=hhbQZhJw; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hzhww54Txz2yHM
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 00:41:01 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Hzhwp35fcz9sSd;
- Wed, 24 Nov 2021 14:40:58 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id xJsxtdgyCAiz; Wed, 24 Nov 2021 14:40:58 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Hzhwp2K8rz9sSc;
- Wed, 24 Nov 2021 14:40:58 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 38BC98B774;
- Wed, 24 Nov 2021 14:40:58 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id WedtkgjjuB1f; Wed, 24 Nov 2021 14:40:58 +0100 (CET)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F21158B763;
- Wed, 24 Nov 2021 14:40:57 +0100 (CET)
-Message-ID: <e1fea487-8014-658d-84cd-ea1d7c89ee08@csgroup.eu>
-Date: Wed, 24 Nov 2021 14:40:57 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hzhxj3QrJz2yJ5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 00:41:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=u5Bp6Rfma9GvNlchoY1NvLTwJANeJ3HEug26+8isXwE=; b=hhbQZhJwK1Tb9e+q0Q28e25DAv
+ Od9pIYN2Gyiv0dA95pkKXYVes6wIzr6Dyrdz7zE6LWYwQgtKQRddQQj3KlF/6e+rGlvDwZn81SO0L
+ jmyNcKHUwuAAL4hqFxxBoCLbZ78/8YU9GtUBk2390mHdprFJB6Q5NEsOuCM+WqTROXedt17OSU57K
+ Znwqwh32TO/nbgJf5ps0iEH4WpPxtncH2AfxYxaIDPl/mI7K7oszTaCg2ZYrE3yeotZ03DTuOQM8q
+ SbFyM9HClWrBqJvP/vIs76mbieTIOeBHp8+RY1gteGkIKaIRwSzmIllOlYTn9YYs66Or0n5wDgTmB
+ pHDv3JGg==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
+ (Red Hat Linux)) id 1mpsWA-004tSi-D1; Wed, 24 Nov 2021 13:40:58 +0000
+Date: Wed, 24 Nov 2021 05:40:58 -0800
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH v2 6/8] inotify: simplify subdirectory registration with
+ register_sysctl()
+Message-ID: <YZ5A6iWLb0h3N3RC@bombadil.infradead.org>
+References: <20211123202422.819032-1-mcgrof@kernel.org>
+ <20211123202422.819032-7-mcgrof@kernel.org>
+ <20211124094409.GF8583@quack2.suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH 0/8] Convert powerpc to default topdown mmap layout
-Content-Language: fr-FR
-To: Nicholas Piggin <npiggin@gmail.com>, alex@ghiti.fr,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-References: <cover.1637570556.git.christophe.leroy@csgroup.eu>
- <1637759994.e3mppl4ly7.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <1637759994.e3mppl4ly7.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211124094409.GF8583@quack2.suse.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,36 +63,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: airlied@linux.ie, amir73il@gmail.com, clemens@ladisch.de,
+ dri-devel@lists.freedesktop.org, phil@philpotter.co.uk,
+ joseph.qi@linux.alibaba.com, mark@fasheh.com, yzaikin@google.com,
+ joonas.lahtinen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
+ intel-gfx@lists.freedesktop.org, jani.nikula@linux.intel.com,
+ viro@zeniv.linux.org.uk, rodrigo.vivi@intel.com, nixiaoming@huawei.com,
+ tvrtko.ursulin@linux.intel.com, gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org, julia.lawall@inria.fr, ebiederm@xmission.com,
+ linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, ocfs2-devel@oss.oracle.com, jlbec@evilplan.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 24/11/2021 à 14:21, Nicholas Piggin a écrit :
-> Excerpts from Christophe Leroy's message of November 22, 2021 6:48 pm:
->> This series converts powerpc to default topdown mmap layout.
->>
->> powerpc provides its own arch_get_unmapped_area() only when
->> slices are needed, which is only for book3s/64. First part of
->> the series moves slices into book3s/64 specific directories
->> and cleans up other subarchitectures.
->>
->> Then a small modification is done to core mm to allow
->> powerpc to still provide its own arch_randomize_brk()
->>
->> Last part converts to default topdown mmap layout.
+On Wed, Nov 24, 2021 at 10:44:09AM +0100, Jan Kara wrote:
+> On Tue 23-11-21 12:24:20, Luis Chamberlain wrote:
+> > From: Xiaoming Ni <nixiaoming@huawei.com>
+> > 
+> > There is no need to user boiler plate code to specify a set of base
+> > directories we're going to stuff sysctls under. Simplify this by using
+> > register_sysctl() and specifying the directory path directly.
+> > 
+> > Move inotify_user sysctl to inotify_user.c while at it to remove clutter
+> > from kernel/sysctl.c.
+> > 
+> > Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
+> > [mcgrof: update commit log to reflect new path we decided to take]
+> > Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 > 
-> A nice series but will clash badly with the CONFIG_HASH_MMU
-> series of course. One will have to be rebased if they are
-> both to be merged.
-> 
+> This looks fishy. You register inotify_table but not fanotify_table and
+> remove both...
 
-No worry, it should be an issue.
+Indeed, the following was missing, I'll roll it in:
 
-If you already forsee that series being merged soon, I can rebase my 
-series on top of it just now.
-
-Christophe
+diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
+index 559bc1e9926d..a35693eb1f36 100644
+--- a/fs/notify/fanotify/fanotify_user.c
++++ b/fs/notify/fanotify/fanotify_user.c
+@@ -59,7 +59,7 @@ static int fanotify_max_queued_events __read_mostly;
+ static long ft_zero = 0;
+ static long ft_int_max = INT_MAX;
+ 
+-struct ctl_table fanotify_table[] = {
++static struct ctl_table fanotify_table[] = {
+ 	{
+ 		.procname	= "max_user_groups",
+ 		.data	= &init_user_ns.ucount_max[UCOUNT_FANOTIFY_GROUPS],
+@@ -88,6 +88,13 @@ struct ctl_table fanotify_table[] = {
+ 	},
+ 	{ }
+ };
++
++static void __init fanotify_sysctls_init(void)
++{
++	register_sysctl("fs/fanotify", fanotify_table);
++}
++#else
++#define fanotify_sysctls_init() do { } while (0)
+ #endif /* CONFIG_SYSCTL */
+ 
+ /*
+@@ -1685,6 +1692,7 @@ static int __init fanotify_user_setup(void)
+ 	init_user_ns.ucount_max[UCOUNT_FANOTIFY_GROUPS] =
+ 					FANOTIFY_DEFAULT_MAX_GROUPS;
+ 	init_user_ns.ucount_max[UCOUNT_FANOTIFY_MARKS] = max_marks;
++	fanotify_sysctls_init();
+ 
+ 	return 0;
+ }
+diff --git a/include/linux/fanotify.h b/include/linux/fanotify.h
+index 616af2ea20f3..556cc63c88ee 100644
+--- a/include/linux/fanotify.h
++++ b/include/linux/fanotify.h
+@@ -5,8 +5,6 @@
+ #include <linux/sysctl.h>
+ #include <uapi/linux/fanotify.h>
+ 
+-extern struct ctl_table fanotify_table[]; /* for sysctl */
+-
+ #define FAN_GROUP_FLAG(group, flag) \
+ 	((group)->fanotify_data.flags & (flag))
+ 
