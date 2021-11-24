@@ -2,64 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC7C45C7DE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 15:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 979F945C94B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 16:57:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzkKq0fmXz3c7x
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 01:44:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hzlxs250Pz3c5h
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 02:57:05 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=E/pte9+S;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HzkKP2LWTz2xsC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 01:43:51 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4HzkKJ6YKvz9sSs;
- Wed, 24 Nov 2021 15:43:48 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id VGJ0UZeZW-Lk; Wed, 24 Nov 2021 15:43:48 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4HzkKJ5rtJz9sSd;
- Wed, 24 Nov 2021 15:43:48 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B5C728B774;
- Wed, 24 Nov 2021 15:43:48 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id EDSwOKENqCfz; Wed, 24 Nov 2021 15:43:48 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A09318B763;
- Wed, 24 Nov 2021 15:43:48 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1AOEhdgQ343791
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Wed, 24 Nov 2021 15:43:39 +0100
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1AOEhc8I343790;
- Wed, 24 Nov 2021 15:43:38 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH] recordmcount: Support empty section from recent binutils
-Date: Wed, 24 Nov 2021 15:43:30 +0100
-Message-Id: <cd0f6bdfdf1ee096fb2c07e7b38940921b8e9118.1637764848.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.33.1
+ smtp.mailfrom=collabora.com (client-ip=46.235.227.227;
+ helo=bhuna.collabora.co.uk; envelope-from=andrealmeid@collabora.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dkim=fail reason="signature verification failed" (2048-bit key;
+ unprotected) header.d=collabora.com header.i=@collabora.com
+ header.a=rsa-sha256 header.s=mail header.b=E/pte9+S; 
+ dkim-atps=neutral
+X-Greylist: delayed 9294 seconds by postgrey-1.36 at boromir;
+ Thu, 25 Nov 2021 02:56:27 AEDT
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Hzlx73jRmz2ymc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 02:56:25 +1100 (AEDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+ (Authenticated sender: tonyk) with ESMTPSA id 57F7C1F45BC8
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
+ t=1637769382; bh=zz/xw7PsWQON9rmJZojHTBxXbF24yxYHqhaUVP88TKs=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=E/pte9+S/xU8DdTZ/vKpNhA3ylTQYBGSinvyN6mt+xZdQFKKHEb6Mmt84KbEzM5mZ
+ OSPyhJ6sCmssRkBBHimK6onWi+F/fiAA5Ypad79m+N+kkn6BrMI3wqjRnjC5w47i2Q
+ aPNdfcTSLCdquNNhzIMYwK9OlGuMqJafLR38PMnBjrRL+zm9bD++8vMrP9KIyqazlB
+ tbunQevunpoo7PovcVIzyk1G/rHktU5H9JEaZdZEpb0Db+mq5nCjz2SQfKauqW6Gl0
+ yoYNuJa5aw5Hl9JNwgtzD1fRyYNxpu0YlbF5Voaz4iL2LRbsvhzZ/6BwDUd1b2lpYs
+ 25pmRI9iK1Hpw==
+Message-ID: <91a64059-f301-4812-56ea-38755ccae5d7@collabora.com>
+Date: Wed, 24 Nov 2021 12:56:09 -0300
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1637765008; l=1214; s=20211009;
- h=from:subject:message-id; bh=LFKGdto9BxD3XwnA+xbvk1tj0uMg8K2nc3ka3MH1LxA=;
- b=kKPr2EvB+f933bX3j4SlmszKBVeJZcMu11wNEYVvHil18VpHl9EmoVmGM1qz6Lxcr1A0CN2smfUS
- ZePFQtQ0BOBdcQFnrmc6jtJKqnsLlrwvl/J+sZGw1WEolzcBETXU
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH 1/1] futex: Wireup futex_waitv syscall
+Content-Language: en-US
+To: Arnd Bergmann <arnd@arndb.de>
+References: <CAK8P3a3pQW59NVF=5P+ZiBjNJmnWh+iTZUHvqHBrXkHA6pMd4g@mail.gmail.com>
+ <20211124132112.11641-1-andrealmeid@collabora.com>
+ <CAK8P3a2BXefTw68yoZ9U0F=ASC3=EZDc5PDQCJ16MmXtynd59g@mail.gmail.com>
+From: =?UTF-8?Q?Andr=c3=a9_Almeida?= <andrealmeid@collabora.com>
+In-Reply-To: <CAK8P3a2BXefTw68yoZ9U0F=ASC3=EZDc5PDQCJ16MmXtynd59g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -72,43 +65,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Steven Rostedt <rostedt@goodmis.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Linux-sh list <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ lkft-triage@lists.linaro.org, Max Filippov <jcmvbkbc@gmail.com>,
+ Mike Galbraith <umgwanakikbuti@gmail.com>,
+ sparclinux <sparclinux@vger.kernel.org>, Will Deacon <will@kernel.org>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>,
+ Linux-Next Mailing List <linux-next@vger.kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Waiman Long <longman@redhat.com>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>, Ingo Molnar <mingo@redhat.com>,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Minchan Kim <minchan@kernel.org>, Rob Landley <rob@landley.net>,
+ alpha <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Looks like recent binutils (2.36 and over ?) may empty some section,
-leading to failure like:
+Às 11:29 de 24/11/21, Arnd Bergmann escreveu:
+> On Wed, Nov 24, 2021 at 2:21 PM André Almeida <andrealmeid@collabora.com> wrote:
+>>
+>> Wireup futex_waitv syscall for all remaining archs.
+>>
+>> Signed-off-by: André Almeida <andrealmeid@collabora.com>
+> 
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> 
+> I double-checked that futex_waitv() doesn't need any architecture specific
+> hacks, and that the list above is complete.
 
-	Cannot find symbol for section 11: .text.unlikely.
-	kernel/kexec_file.o: failed
-	make[1]: *** [scripts/Makefile.build:287: kernel/kexec_file.o] Error 1
+Thanks!
 
-In order to avoid that, ensure that the section has a content before
-returning it's name in has_rel_mcount().
-
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Link: https://github.com/linuxppc/issues/issues/388
-Link: https://lore.kernel.org/all/20210215162209.5e2a475b@gandalf.local.home/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- scripts/recordmcount.h | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/scripts/recordmcount.h b/scripts/recordmcount.h
-index 1e9baa5c4fc6..cc6600b729ae 100644
---- a/scripts/recordmcount.h
-+++ b/scripts/recordmcount.h
-@@ -575,6 +575,8 @@ static char const *has_rel_mcount(Elf_Shdr const *const relhdr,
- 				  char const *const shstrtab,
- 				  char const *const fname)
- {
-+	if (!shdr0->sh_size)
-+		return NULL;
- 	if (w(relhdr->sh_type) != SHT_REL && w(relhdr->sh_type) != SHT_RELA)
- 		return NULL;
- 	return __has_rel_mcount(relhdr, shdr0, shstrtab, fname);
--- 
-2.33.1
-
+> 
+> Should I take this through the asm-generic tree, or would you send it
+> through the
+> tip tree?
+> 
+I think that adding it to asm-generic tree make sense to me.
