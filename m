@@ -2,56 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDD545AFEF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 00:15:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C128545B08F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 01:09:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzKjn4tsbz302G
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 10:15:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HzLw048bdz3058
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 11:09:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=nVXZ5iZt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n2vjb7SM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HzKj65v9Tz2xrP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 10:14:34 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HzLvN2yRTz2xrm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 11:08:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=nVXZ5iZt; 
+ header.a=rsa-sha256 header.s=201909 header.b=n2vjb7SM; 
  dkim-atps=neutral
-Received: by gandalf.ozlabs.org (Postfix)
- id 4HzKj60YwZz4xcv; Wed, 24 Nov 2021 10:14:34 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HzKj6040Pz4xcK;
- Wed, 24 Nov 2021 10:14:33 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HzLvJ1tJgz4xcK;
+ Wed, 24 Nov 2021 11:08:28 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1637709274;
- bh=EpGbxhcItglhJBefq3DjKP76FHcnzorqGMxJ7hVYIrk=;
+ s=201909; t=1637712511;
+ bh=b+NrS7PSaK12qZPeCb8kmME984XWQTgUeWmP6maiS1U=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=nVXZ5iZt48VqshMY3It0JzO1RkrCEKiWgggz9wcyn2nyLohuao3tH6rKYldY/aCeT
- fCh6eRXiUpwjc1xqWvVtgeV89Qr4AgyKg9vtHeGd0528fJZ4T7kiaZHGvb8vgYFUak
- dUy6y88gT3hzXeI8xnmMul9jy3a9Nh7H4W5ebcb21XG+pZO8zH0eRbfT7EX/cJ2pKT
- RRzO1w5sqIYN1H15SwMpDSLgZAN3w1z/fz+6vy8qQEDxNCyc31fXdNhclvOGOoMNDu
- ovZ5iaZfRmOwiRgFFNaR+p4rGuCd0Q1NjlSrOobxuTYSuEB+NSgnld3ZQewapRQfkH
- nfxD5p4bnt3Qw==
+ b=n2vjb7SM5nHA0GSsrLq9HxPEACt5ncS6LaVn5+urRDVD2kHVMG7T1iGcCTTt+//3b
+ D6Q1R2KsmGqmyjgyngpQ+bzqC6eR8SYTGM3YnYchp1ZBKt0hQUSbyrKOzGjUmb6+cz
+ Pu2OnyuxREQ7omDKIB8ExvyipPAl21W63E7cxSgLNnYxD2xZiZG69FX8LjQN8cMI3s
+ eY1HRsKOhRYddptzHjctNEx92inw14ObI8OjNQKiZqozjQKZrD5l6UQTjf35+OsedJ
+ QZoFlcTMOzNuPtXZDnk5ZvK+p1YiK7EdQNwq3TWu9NFExVAjuzkRCqrmUE3gtMTAUO
+ i9Bnllv5IiW3A==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Mahesh Salgaonkar <mahesh@linux.ibm.com>, linuxppc-dev
- <linuxppc-dev@ozlabs.org>
-Subject: Re: [PATCH] powerpc/eeh: Delay slot presence check once driver is
- notified about the pci error.
-In-Reply-To: <163767273634.1368569.7327743414665595326.stgit@jupiter>
-References: <163767273634.1368569.7327743414665595326.stgit@jupiter>
-Date: Wed, 24 Nov 2021 10:14:30 +1100
-Message-ID: <875ysiqxbd.fsf@mpe.ellerman.id.au>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH] powerpc/signal32: Use struct_group() to zero spe regs
+In-Reply-To: <202111221247.B385EA2A8@keescook>
+References: <20211118203604.1288379-1-keescook@chromium.org>
+ <1e312cbd-cd52-ddce-f839-db765173c526@csgroup.eu>
+ <87ilwkrbhz.fsf@mpe.ellerman.id.au> <202111221247.B385EA2A8@keescook>
+Date: Wed, 24 Nov 2021 11:08:25 +1100
+Message-ID: <8735nmquti.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,60 +61,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ kernel test robot <lkp@intel.com>, Peter Zijlstra <peterz@infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Sudeep Holla <sudeep.holla@arm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "Eric W. Biederman" <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mahesh Salgaonkar <mahesh@linux.ibm.com> writes:
-> When certain PHB HW failure causes phyp to recover PHB, it marks the PE
-> state as temporarily unavailable until recovery is complete. This also
-> triggers an EEH handler in Linux which needs to notify drivers, and perform
-> recovery. But before notifying the driver about the pci error it uses
-> get_adapter_state()->get-sesnor-state() operation of the hotplug_slot to
-> determine if the slot contains a device or not. if the slot is empty, the
-> recovery is skipped entirely.
+Kees Cook <keescook@chromium.org> writes:
+> On Mon, Nov 22, 2021 at 04:43:36PM +1100, Michael Ellerman wrote:
+>> LEROY Christophe <christophe.leroy@csgroup.eu> writes:
+>> > Le 18/11/2021 =C3=A0 21:36, Kees Cook a =C3=A9crit=C2=A0:
+>> >> In preparation for FORTIFY_SOURCE performing compile-time and run-time
+>> >> field bounds checking for memset(), avoid intentionally writing across
+>> >> neighboring fields.
+>> >>=20
+>> >> Add a struct_group() for the spe registers so that memset() can corre=
+ctly reason
+>> >> about the size:
+>> >>=20
+>> >>     In function 'fortify_memset_chk',
+>> >>         inlined from 'restore_user_regs.part.0' at arch/powerpc/kerne=
+l/signal_32.c:539:3:
+>> >>     >> include/linux/fortify-string.h:195:4: error: call to '__write_=
+overflow_field' declared with attribute warning: detected write beyond size=
+ of field (1st parameter); maybe use struct_group()? [-Werror=3Dattribute-w=
+arning]
+>> >>       195 |    __write_overflow_field();
+>> >>           |    ^~~~~~~~~~~~~~~~~~~~~~~~
+>> >>=20
+>> >> Reported-by: kernel test robot <lkp@intel.com>
+>> >> Signed-off-by: Kees Cook <keescook@chromium.org>
+>> >
+>> > Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>=20
+>> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 >
-> However on certain PHB failures, the rtas call get-sesnor-state() returns
-> extended busy error (9902) until PHB is recovered by phyp. Once PHB is
-> recovered, the get-sensor-state() returns success with correct presence
-> status. The rtas call interface rtas_get_sensor() loops over the rtas call
-> on extended delay return code (9902) until the return value is either
-> success (0) or error (-1). This causes the EEH handler to get stuck for ~6
-> seconds before it could notify that the pci error has been detected and
-> stop any active operations. Hence with running I/O traffic, during this 6
-> seconds, the network driver continues its operation and hits a timeout
-> (netdev watchdog). On timeouts, network driver go into ffdc capture mode
-> and reset path assuming the PCI device is in fatal condition. This causes
-> EEH recovery to fail and sometimes it leads to system hang or crash.
->
-> ------------
-> [52732.244731] DEBUG: ibm_read_slot_reset_state2()
-> [52732.244762] DEBUG: ret = 0, rets[0]=5, rets[1]=1, rets[2]=4000, rets[3]=0x0
-> [52732.244798] DEBUG: in eeh_slot_presence_check
-> [52732.244804] DEBUG: error state check
-> [52732.244807] DEBUG: Is slot hotpluggable
-> [52732.244810] DEBUG: hotpluggable ops ?
-> [52732.244953] DEBUG: Calling ops->get_adapter_status
-> [52732.244958] DEBUG: calling rpaphp_get_sensor_state
-> [52736.564262] ------------[ cut here ]------------
-> [52736.564299] NETDEV WATCHDOG: enP64p1s0f3 (tg3): transmit queue 0 timed out
-> [52736.564324] WARNING: CPU: 1442 PID: 0 at net/sched/sch_generic.c:478 dev_watchdog+0x438/0x440
-> [...]
-> [52736.564505] NIP [c000000000c32368] dev_watchdog+0x438/0x440
-> [52736.564513] LR [c000000000c32364] dev_watchdog+0x434/0x440
-> ------------
->
-> To fix this issue, delay the slot presence check after notifying the driver
-> about the pci error.
+> Thanks! Should I take this via my tree, or do you want to take it via
+> ppc?
 
-How does this interact with the commit that put the slot presence check
-there in the first place:
-
-  b104af5a7687 ("powerpc/eeh: Check slot presence state in eeh_handle_normal_event()")
-
-
-It seems like delaying the slot presence check will effectively revert
-that commit?
+I don't mind. If it's easier for you to take it as part of an existing
+series then do that, otherwise I can pick it up.
 
 cheers
