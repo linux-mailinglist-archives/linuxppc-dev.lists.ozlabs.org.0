@@ -2,75 +2,112 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567FB45C057
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 14:04:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5AC45C0F5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 14:11:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Hzh6W1kRsz3bvH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:04:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HzhGR3Vfdz304V
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:11:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YN73oKTO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JNAX6QEB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
- helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=YN73oKTO; dkim-atps=neutral
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
- [IPv6:2607:f8b0:4864:20::432])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=JNAX6QEB; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Hzh5l5bhTz2xrS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 00:03:37 +1100 (AEDT)
-Received: by mail-pf1-x432.google.com with SMTP id z6so2550331pfe.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 05:03:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=QJ9pl8yieznyJqhjXHAtPu/eMSKpzw8Ag0IY0vuUq3U=;
- b=YN73oKTO4joPpTLxAKNoG9wNo7jzU70DLuIqnQXTiXQ4Y3qvcOY/xMLbt7A+7l/S3T
- ijn+nXELKq/Icng5U6rwllfSeOZfLTcnsDFuffqad4LatKm7/uELJsese1v0JKVzwTrG
- fiN3JPRXYIc0W+E5YRxfYna0l4t6fgvc5Y3z4n/GV89EpJNIjK/p1CuiSN259wJ03Nkf
- 0eCZ87vfZylriVpiiX7wIAnkZKVEfKJrBJNsRbegJ/yaNvF8LdMKwaT530OyQy5PrYBl
- 7JW06L26mZxD23vF8jJvW5QFHAZv5UOW8C440/kmvFJQV8gClJ0fZbgT7Fm2i+Onv0A1
- BrtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=QJ9pl8yieznyJqhjXHAtPu/eMSKpzw8Ag0IY0vuUq3U=;
- b=5hcTfNbHgV3V+NoxcWpn3nyVbpGhNF4YXVJIhHu30Gl54C81Yv+l3aYltU3p4mrk3c
- c23GY4b/1qCp4OmJtTQ/4Twi+rmAtyswfJ51WukdW3+OYfeHgHl//zqQSlGUvoJLTPhP
- 9SE5ju9JAbmW3a7yvC0TMtxclY+X7IC/DFcgj8aJzuD++YYNae7IQbRFIwFAdltdOnyU
- m/eMn+c4oQCxxCSBbaL3GwFixwpC49Vbxlw7yZmz6332QMPKdz72u3pvYtNZ6YpX7z2t
- rAWgQAniVW/kRT/HEQsg3VyMp+AowgiaTcUY3IzPwFFCmDKrYFS54oDl55HOCu8jljlc
- 3mQA==
-X-Gm-Message-State: AOAM533TT5hyBhvq5JCiun4fjSnLyHNFADqF3L768oOq8YDGRfBX7c33
- KZzdbg6bZeF9PpUqDLqQQzI=
-X-Google-Smtp-Source: ABdhPJwUyzskWKcZJrC2QLscQDFWtbm/9gK87sAh9Xb9tyiiYzVWd1sxSOgV8t4T2Qp71gi5Yn2FHw==
-X-Received: by 2002:aa7:8b14:0:b0:4a3:a714:30ed with SMTP id
- f20-20020aa78b14000000b004a3a71430edmr5660544pfd.2.1637759013779; 
- Wed, 24 Nov 2021 05:03:33 -0800 (PST)
-Received: from localhost ([124.170.11.53])
- by smtp.gmail.com with ESMTPSA id y4sm17775438pfi.178.2021.11.24.05.03.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Nov 2021 05:03:33 -0800 (PST)
-Date: Wed, 24 Nov 2021 23:03:26 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 1/2] powerpc/mce: Avoid using irq_work_queue() in
- realmode
-To: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-References: <20211124095500.98656-1-ganeshgr@linux.ibm.com>
-In-Reply-To: <20211124095500.98656-1-ganeshgr@linux.ibm.com>
-MIME-Version: 1.0
-Message-Id: <1637757546.z3bufxuoab.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HzhFj0Pbnz2xgb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 00:10:32 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AOBm0jq004725; 
+ Wed, 24 Nov 2021 13:10:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=BdiExVAdatLHkjItbjJaPTR1gsgrwTgcXvTxI9FIeVw=;
+ b=JNAX6QEBZT7OWffOxFgyqMErIsK+wjCURw01kDnntdIX6lUTplC3/+60pMdODRLBLD4n
+ dU6RORYMM1YneOEpEYG/V20rznSJnEiZzvKAjtzJWEtUyOBP/Pm3r5jA/IcK6aAgBNNL
+ Mw5raUTgitan3XVTV3g8cMBb6CvNt2ajXU6++iiOu2sIko0zgM4eYoZ6t0NfXWFTJvrL
+ kp2C2EuT3+Y/UZupnF3zLNWkCuOWlXI7kNu6qbHnWH/ZiGmLkXckgYYDd+j3hzxQINwx
+ ++GZGxZSBPlskPwiyAEbSQl66x+YbF9ihFskzpbXLMpN+gLqmmQ9LS/NZBRSdsdgPEG5 gw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3chmu19q55-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Nov 2021 13:10:23 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AOCxf1G003362;
+ Wed, 24 Nov 2021 13:10:22 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3chmu19q4f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Nov 2021 13:10:22 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AOD8dOD024202;
+ Wed, 24 Nov 2021 13:10:20 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma01fra.de.ibm.com with ESMTP id 3cern9rhxp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 24 Nov 2021 13:10:20 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1AODAErK18219516
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 24 Nov 2021 13:10:14 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 25FA5A405B;
+ Wed, 24 Nov 2021 13:10:14 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B4B75A4054;
+ Wed, 24 Nov 2021 13:10:10 +0000 (GMT)
+Received: from sig-9-65-87-230.ibm.com (unknown [9.65.87.230])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 24 Nov 2021 13:10:10 +0000 (GMT)
+Message-ID: <290c0097271c68f5a9fd1e8f6fdb542631981b33.camel@linux.ibm.com>
+Subject: Re: [PATCH 0/3] KEXEC_SIG with appended signature
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Philipp Rudo <prudo@redhat.com>
+Date: Wed, 24 Nov 2021 08:10:10 -0500
+In-Reply-To: <20211124120950.57c10a9f@rhtmp>
+References: <cover.1635948742.git.msuchanek@suse.de>
+ <87czneeurr.fsf@dja-thinkpad.axtens.net>
+ <20211105131401.GL11195@kunlun.suse.cz>
+ <87a6ifehin.fsf@dja-thinkpad.axtens.net>
+ <20211108120500.GO11195@kunlun.suse.cz>
+ <56d2ae87-b9bf-c9fc-1395-db4769a424ea@linux.vnet.ibm.com>
+ <20211112083055.GA34414@kunlun.suse.cz>
+ <8cd90fea-05c9-b5f9-5e0c-84f98b2f55cd@linux.vnet.ibm.com>
+ <20211116095343.GG34414@kunlun.suse.cz>
+ <604dad24-5406-509c-d765-905d74880523@linux.vnet.ibm.com>
+ <20211119111823.GC34414@kunlun.suse.cz>
+ <01218c22a287665091f24c7023f4bcd42dbb2001.camel@linux.ibm.com>
+ <20211124120950.57c10a9f@rhtmp>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-16.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: W1hmjShiQJ4RGVtO1-gItT9P1q_sYdp7
+X-Proofpoint-ORIG-GUID: DsbinSytcni9CLx-5b8acxCYrTickBxr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-24_04,2021-11-24_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ lowpriorityscore=0 adultscore=0 mlxscore=0 bulkscore=0 clxscore=1015
+ phishscore=0 suspectscore=0 impostorscore=0 spamscore=0 mlxlogscore=862
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111240073
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,266 +119,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.ibm.com, dja@axtens.net
+Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>,
+ Rob Herring <robh@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+ Nayna <nayna@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org,
+ buendgen@de.ibm.com, David Howells <dhowells@redhat.com>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, keyrings@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Frank van der Linden <fllinden@amazon.com>,
+ Jessica Yu <jeyu@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Michal =?ISO-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
+ linuxppc-dev@lists.ozlabs.org, Christian Borntraeger <borntraeger@de.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Ganesh Goudar's message of November 24, 2021 7:54 pm:
-> In realmode mce handler we use irq_work_queue() to defer
-> the processing of mce events, irq_work_queue() can only
-> be called when translation is enabled because it touches
-> memory outside RMA, hence we enable translation before
-> calling irq_work_queue and disable on return, though it
-> is not safe to do in realmode.
->=20
-> To avoid this, program the decrementer and call the event
-> processing functions from timer handler.
->=20
-> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-> ---
-> V2:
-> * Use arch_irq_work_raise to raise decrementer interrupt.
-> * Avoid having atomic variable.
->=20
-> V3:
-> * Fix build error.
->   Reported by kernel test bot.
-> ---
->  arch/powerpc/include/asm/machdep.h       |  2 +
->  arch/powerpc/include/asm/mce.h           |  2 +
->  arch/powerpc/include/asm/paca.h          |  1 +
->  arch/powerpc/kernel/mce.c                | 51 +++++++++++-------------
->  arch/powerpc/kernel/time.c               |  3 ++
->  arch/powerpc/platforms/pseries/pseries.h |  1 +
->  arch/powerpc/platforms/pseries/ras.c     | 31 +-------------
->  arch/powerpc/platforms/pseries/setup.c   |  1 +
->  8 files changed, 34 insertions(+), 58 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/as=
-m/machdep.h
-> index 9c3c9f04129f..d22b222ba471 100644
-> --- a/arch/powerpc/include/asm/machdep.h
-> +++ b/arch/powerpc/include/asm/machdep.h
-> @@ -99,6 +99,8 @@ struct machdep_calls {
->  	/* Called during machine check exception to retrive fixup address. */
->  	bool		(*mce_check_early_recovery)(struct pt_regs *regs);
-> =20
-> +	void            (*machine_check_log_err)(void);
-> +
->  	/* Motherboard/chipset features. This is a kind of general purpose
->  	 * hook used to control some machine specific features (like reset
->  	 * lines, chip power control, etc...).
-> diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mc=
-e.h
-> index 331d944280b8..6e306aaf58aa 100644
-> --- a/arch/powerpc/include/asm/mce.h
-> +++ b/arch/powerpc/include/asm/mce.h
-> @@ -235,8 +235,10 @@ extern void machine_check_print_event_info(struct ma=
-chine_check_event *evt,
->  unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr);
->  extern void mce_common_process_ue(struct pt_regs *regs,
->  				  struct mce_error_info *mce_err);
-> +void machine_check_raise_dec_intr(void);
->  int mce_register_notifier(struct notifier_block *nb);
->  int mce_unregister_notifier(struct notifier_block *nb);
-> +void mce_run_late_handlers(void);
->  #ifdef CONFIG_PPC_BOOK3S_64
->  void flush_and_reload_slb(void);
->  void flush_erat(void);
-> diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/p=
-aca.h
-> index dc05a862e72a..d463c796f7fa 100644
-> --- a/arch/powerpc/include/asm/paca.h
-> +++ b/arch/powerpc/include/asm/paca.h
-> @@ -280,6 +280,7 @@ struct paca_struct {
->  #endif
->  #ifdef CONFIG_PPC_BOOK3S_64
->  	struct mce_info *mce_info;
-> +	u32 mces_to_process;
->  #endif /* CONFIG_PPC_BOOK3S_64 */
->  } ____cacheline_aligned;
-> =20
-> diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-> index fd829f7f25a4..8e17f29472a0 100644
-> --- a/arch/powerpc/kernel/mce.c
-> +++ b/arch/powerpc/kernel/mce.c
-> @@ -28,19 +28,9 @@
-> =20
->  #include "setup.h"
-> =20
-> -static void machine_check_process_queued_event(struct irq_work *work);
-> -static void machine_check_ue_irq_work(struct irq_work *work);
->  static void machine_check_ue_event(struct machine_check_event *evt);
->  static void machine_process_ue_event(struct work_struct *work);
-> =20
-> -static struct irq_work mce_event_process_work =3D {
-> -        .func =3D machine_check_process_queued_event,
-> -};
-> -
-> -static struct irq_work mce_ue_event_irq_work =3D {
-> -	.func =3D machine_check_ue_irq_work,
-> -};
-> -
->  static DECLARE_WORK(mce_ue_event_work, machine_process_ue_event);
-> =20
->  static BLOCKING_NOTIFIER_HEAD(mce_notifier_list);
-> @@ -89,6 +79,12 @@ static void mce_set_error_info(struct machine_check_ev=
-ent *mce,
->  	}
->  }
-> =20
-> +/* Raise decrementer interrupt */
-> +void machine_check_raise_dec_intr(void)
-> +{
-> +	arch_irq_work_raise();
-> +}
+On Wed, 2021-11-24 at 12:09 +0100, Philipp Rudo wrote:
+> Now Michal wants to adapt KEXEC_SIG for ppc too so distros can rely on all
+> architectures using the same mechanism and thus reduce maintenance cost.
+> On the way there he even makes some absolutely reasonable improvements
+> for everybody.
+> 
+> Why is that so controversial? What is the real problem that should be
+> discussed here?
 
-It would be better if the name specifically related to irq work, which=20
-is more than just dec interrupt. It might be good to set mces_to_process
-here as well.
+Nothing is controversial with what Michal wants to do.  I've already
+said, "As for adding KEXEC_SIG appended signature support on PowerPC
+based on the s390 code, it sounds reasonable."
 
-I would name it something like mce_irq_work_queue, and the paca variable
-to mce_pending_irq_work...
+thanks,
 
+Mimi
 
-> +void mce_run_late_handlers(void)
-> +{
-> +	if (unlikely(local_paca->mces_to_process)) {
-> +		if (ppc_md.machine_check_log_err)
-> +			ppc_md.machine_check_log_err();
-> +		machine_check_process_queued_event();
-> +		machine_check_ue_work();
-> +		local_paca->mces_to_process--;
-> +	}
-> +}
-
-The problem with a counter is that you're clearing the irq work pending
-in the timer interrupt, so you'll never call in here again to clear that
-(until something else sets irq work).
-
-But as far as I can see it does not need to be a counter, just a flag.
-The machine check calls will process multiple events, right? (and the
-current irq_work queue does not queue the same work multiple times).
-
-Oh. That's actually bad, isn't it? Our irq work should be per-CPU
-because the callbacks are mainly only operating on the local paca
-queued events, so we have a longstanding bug there AFAIKS. Your patch
-will solve it if everything is converted over.
-
-> +
->  void machine_check_print_event_info(struct machine_check_event *evt,
->  				    bool user_mode, bool in_guest)
->  {
-> diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-> index cae8f03a44fe..94c591b6f9d2 100644
-> --- a/arch/powerpc/kernel/time.c
-> +++ b/arch/powerpc/kernel/time.c
-> @@ -594,6 +594,9 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(timer_interrupt)
-> =20
->  	if (test_irq_work_pending()) {
->  		clear_irq_work_pending();
-> +#ifdef CONFIG_PPC_BOOK3S_64
-> +		mce_run_late_handlers();
-> +#endif
-
-Maybe create a no-op inline function for others and call unconditionally=20
-here. I wonder if the name could be better, we have lots of handlers, of
-varying earliness. real-mode, then virt mode NMI context, then IRQ=20
-context, then workqueue context.
-
-mce_run_irq_context_handlers() might not be much better though.
-
->  		irq_work_run();
->  	}
-> =20
-> diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/plat=
-forms/pseries/pseries.h
-> index 3544778e06d0..9cf0d33dfbf5 100644
-> --- a/arch/powerpc/platforms/pseries/pseries.h
-> +++ b/arch/powerpc/platforms/pseries/pseries.h
-> @@ -21,6 +21,7 @@ struct pt_regs;
->  extern int pSeries_system_reset_exception(struct pt_regs *regs);
->  extern int pSeries_machine_check_exception(struct pt_regs *regs);
->  extern long pseries_machine_check_realmode(struct pt_regs *regs);
-> +void pSeries_machine_check_log_err(void);
-> =20
->  #ifdef CONFIG_SMP
->  extern void smp_init_pseries(void);
-> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platform=
-s/pseries/ras.c
-> index 56092dccfdb8..8613f9cc5798 100644
-> --- a/arch/powerpc/platforms/pseries/ras.c
-> +++ b/arch/powerpc/platforms/pseries/ras.c
-> @@ -23,11 +23,6 @@ static DEFINE_SPINLOCK(ras_log_buf_lock);
-> =20
->  static int ras_check_exception_token;
-> =20
-> -static void mce_process_errlog_event(struct irq_work *work);
-> -static struct irq_work mce_errlog_process_work =3D {
-> -	.func =3D mce_process_errlog_event,
-> -};
-> -
->  #define EPOW_SENSOR_TOKEN	9
->  #define EPOW_SENSOR_INDEX	0
-> =20
-> @@ -729,40 +724,16 @@ static int mce_handle_error(struct pt_regs *regs, s=
-truct rtas_error_log *errp)
->  	error_type =3D mce_log->error_type;
-> =20
->  	disposition =3D mce_handle_err_realmode(disposition, error_type);
-> -
-> -	/*
-> -	 * Enable translation as we will be accessing per-cpu variables
-> -	 * in save_mce_event() which may fall outside RMO region, also
-> -	 * leave it enabled because subsequently we will be queuing work
-> -	 * to workqueues where again per-cpu variables accessed, besides
-> -	 * fwnmi_release_errinfo() crashes when called in realmode on
-> -	 * pseries.
-> -	 * Note: All the realmode handling like flushing SLB entries for
-> -	 *       SLB multihit is done by now.
-> -	 */
->  out:
-> -	msr =3D mfmsr();
-> -	mtmsr(msr | MSR_IR | MSR_DR);
-> -
->  	disposition =3D mce_handle_err_virtmode(regs, errp, mce_log,
->  					      disposition);
-> -
-> -	/*
-> -	 * Queue irq work to log this rtas event later.
-> -	 * irq_work_queue uses per-cpu variables, so do this in virt
-> -	 * mode as well.
-> -	 */
-> -	irq_work_queue(&mce_errlog_process_work);
-> -
-> -	mtmsr(msr);
-> -
->  	return disposition;
->  }
-> =20
->  /*
->   * Process MCE rtas errlog event.
->   */
-> -static void mce_process_errlog_event(struct irq_work *work)
-> +void pSeries_machine_check_log_err(void)
->  {
->  	struct rtas_error_log *err;
-> =20
-> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platfo=
-rms/pseries/setup.c
-> index 8a62af5b9c24..9bdc487b8e35 100644
-> --- a/arch/powerpc/platforms/pseries/setup.c
-> +++ b/arch/powerpc/platforms/pseries/setup.c
-> @@ -1084,6 +1084,7 @@ define_machine(pseries) {
->  	.system_reset_exception =3D pSeries_system_reset_exception,
->  	.machine_check_early	=3D pseries_machine_check_realmode,
->  	.machine_check_exception =3D pSeries_machine_check_exception,
-> +	.machine_check_log_err	=3D pSeries_machine_check_log_err,
->  #ifdef CONFIG_KEXEC_CORE
->  	.machine_kexec          =3D pSeries_machine_kexec,
->  	.kexec_cpu_down         =3D pseries_kexec_cpu_down,
-> --=20
-> 2.31.1
->=20
->=20
