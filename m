@@ -1,54 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2082E45B7B4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 10:45:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6922945B7B6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 10:45:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzbhZ5dbyz3cQ4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 20:45:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4HzbjF1ySPz3dcX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 20:45:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ofEYZviI;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UAkoGlTK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HzbdK0qf5z2yNq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 20:42:13 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HzbdL0bqqz2yb6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 20:42:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ofEYZviI; 
+ header.a=rsa-sha256 header.s=201909 header.b=UAkoGlTK; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4HzbdK05wRz4xcb;
- Wed, 24 Nov 2021 20:42:12 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4HzbdK6bPhz4xZ4;
+ Wed, 24 Nov 2021 20:42:13 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1637746933;
- bh=NUnMRoySTkVxobiLqiodYtH3gr/yzaypOG98vCxhZ8Q=;
+ s=201909; t=1637746934;
+ bh=ZECkOnEEXB+wfhbAI0017a6B5h7xgNeMG2pcpShSANc=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=ofEYZviI9ob9QEFscxPTgoRyEf90jq7B66Oqk4zw5Q5Tpuph4bmpHj2DbnjTJj7Xn
- 5aCVpPIX8HFezoVEjJyAr4fLfgHXVTYPGyOFliGeLQ80gAkwS6KhsYUHLhln1SZ0JC
- l84O8HJoal/IiFVx04DpcfawQo2HxCw33J328t6Khz5ZJQhwtZN1hzW2e3aJkFX70W
- F+BEcPfJwUs++uwdgJAKEmdE8gyuUQsFdR5pHFe0bv1jrBB8MqZOUPFV5rV8la+zj8
- ykusnt/QvVOxLm3+MB01cIfKc7DxBYhxiUfXkMK6nLpUGUYx+ZS3rD0DMYRGM/86C+
- P0A+jFoPj6dPg==
+ b=UAkoGlTKgr4Aw1ZzOvThKEZG2/BLYm+yws4Cm8LO9o1+KAjUOvDkdkDXw4P9TUAuJ
+ GGbTM/iJCQrRIR/7/2yKi/w2+KfBekbR4iilVcY9OvHJys3xJuIO6gybMw6Q+4cAc0
+ i4ZIFcLN8r1V3r90/UoiTqFBahOvht0ixWWTkRyf7yc9mtWZ/oE0987CM5ep12PMd+
+ GEqz6Byf67MBtLu7hB1nhpTTsgZV651ulev3zMPLIc8jJYcdFmrqZeYVMSR0Lx80RV
+ Mtqg9Nrth82od5sPoYC7CJO5SGEW/3x9Tyrw3Obm7IU3ZiKygGrCkQ/S9QJRhiNqLA
+ G8jhWoQ1QeQsQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 5/6] powerpc/smp: Move setup_profiling_timer() under
- CONFIG_PROFILING
-Date: Wed, 24 Nov 2021 20:32:53 +1100
-Message-Id: <20211124093254.1054750-5-mpe@ellerman.id.au>
+Subject: [PATCH 6/6] powerpc: Mark probe_machine() __init and static
+Date: Wed, 24 Nov 2021 20:32:54 +1100
+Message-Id: <20211124093254.1054750-6-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211124093254.1054750-1-mpe@ellerman.id.au>
 References: <20211124093254.1054750-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,33 +64,44 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-setup_profiling_timer() is only needed when CONFIG_PROFILING is enabled.
-
-Fixes the following W=1 warning when CONFIG_PROFILING=n:
-  linux/arch/powerpc/kernel/smp.c:1638:5: error: no previous prototype for ‘setup_profiling_timer’
+Prior to commit b1923caa6e64 ("powerpc: Merge 32-bit and 64-bit
+setup_arch()") probe_machine() was called from setup_32/64.c and lived
+in setup-common.c. But now it's only called from setup-common.c so it
+can be static and __init, and we don't need the declaration in
+machdep.h either.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/kernel/smp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/include/asm/machdep.h | 2 --
+ arch/powerpc/kernel/setup-common.c | 2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index c23ee842c4c3..aee3a7119f97 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1635,10 +1635,12 @@ void start_secondary(void *unused)
- 	BUG();
- }
+diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
+index 9c3c9f04129f..e821037f74f0 100644
+--- a/arch/powerpc/include/asm/machdep.h
++++ b/arch/powerpc/include/asm/machdep.h
+@@ -235,8 +235,6 @@ extern struct machdep_calls *machine_id;
+ 		machine_id == &mach_##name; \
+ 	})
  
-+#ifdef CONFIG_PROFILING
- int setup_profiling_timer(unsigned int multiplier)
- {
- 	return 0;
- }
-+#endif
+-extern void probe_machine(void);
+-
+ #ifdef CONFIG_PPC_PMAC
+ /*
+  * Power macintoshes have either a CUDA, PMU or SMU controlling
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index 4f1322b65760..f8da937df918 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -582,7 +582,7 @@ static __init int add_pcspkr(void)
+ device_initcall(add_pcspkr);
+ #endif	/* CONFIG_PCSPKR_PLATFORM */
  
- static void fixup_topology(void)
+-void probe_machine(void)
++static __init void probe_machine(void)
  {
+ 	extern struct machdep_calls __machine_desc_start;
+ 	extern struct machdep_calls __machine_desc_end;
 -- 
 2.31.1
 
