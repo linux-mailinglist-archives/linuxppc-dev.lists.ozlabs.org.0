@@ -2,75 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589F045C116
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 14:11:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72ECD45C405
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 24 Nov 2021 14:43:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4HzhHK1mNvz3cJ9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:11:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Hzhzw0K04z3cGn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 00:43:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j68mt/0F;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=AD0LfFCb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=collabora.com (client-ip=2a00:1098:0:82:1000:25:2eeb:e3e3;
+ helo=bhuna.collabora.co.uk; envelope-from=andrealmeid@collabora.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=j68mt/0F; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dkim=fail reason="signature verification failed" (2048-bit key;
+ unprotected) header.d=collabora.com header.i=@collabora.com
+ header.a=rsa-sha256 header.s=mail header.b=AD0LfFCb; 
+ dkim-atps=neutral
+X-Greylist: delayed 302 seconds by postgrey-1.36 at boromir;
+ Thu, 25 Nov 2021 00:26:42 AEDT
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
+ [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4HzhFp6JXqz2yZd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 00:10:36 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id v19so1811890plo.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 05:10:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=oVXLRxExfEHr4OD1FpEMSV5bDw9qODnyYnIGDaqvJCI=;
- b=j68mt/0Fh5A5bW4oiDdYaCfbx0jRfbPM+kTA54TfOV5DCKVESKVtGxbsx/B95spubJ
- p8HPDyI0uFYeuZDKeo9toBloBh4QbnZIKbUc6lZEpCPEnzliz52iftTDELxOPcjJwrR0
- hxNsczAR4aCGocas3K+iPhtZtDOS32XZFi6RGR3MKjcvDjojnkDL/MSRuNIOuwceu4fs
- wXREPx44f6CvCJdLaCoQqaibPoQJpl/7hV4EPqgbBURVtvL6/+93sCLBioa+SWkrcWnR
- bDlX2nmxUwdxRZg55XNv072WqVp+3/Ex2Pv+cdoczq0Rz4wroIO/bO4mRgMybNOs0tkI
- sOkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=oVXLRxExfEHr4OD1FpEMSV5bDw9qODnyYnIGDaqvJCI=;
- b=SmqE92cMU+ZXal8KsCr7JWlKsRG54lM1FiVoTNaNBWrbwGo70w+K80gvDSbRkLIVYE
- 4sQhWeA5fOnGOZOqq04YZoxYSBea9dhg6+VrZ3UpvBVM1ZhCroQIleYF3sh3n5wy5To6
- Dixpa832ZTVtSeTLQKpnmFKwOabHt2aRimtknWXYh57dSu5iFNb49V4Dd9I2jdqn1yNg
- J+6Pq4IIZ7C0iJSLLzp8WEOdbfDmFQ5JcM51DjVam2CWJICGr2zQyq2ONYBlH9ke+pRc
- a/rEp5FnF+jl2lqgGrTx8kYka2VEuu/bEv7uW+UG2SIGhQFErOGbsFI6qwP4998VmVDZ
- vO9Q==
-X-Gm-Message-State: AOAM530V7vDH2RQP6dEosGnGzcCkzuBn1ftTf5lUA28sVMCHfEuXPd3u
- sGZFl4PLgWVn+uHL43WMPXkRHP7rVgw=
-X-Google-Smtp-Source: ABdhPJy+HtprqIuT2FzdzqOgNcoALByqV1Uyarb47mCFoiE5c7F1xIRPaOFrSa69KkTnJLmv4pdMsg==
-X-Received: by 2002:a17:90a:c506:: with SMTP id
- k6mr8740495pjt.74.1637759433905; 
- Wed, 24 Nov 2021 05:10:33 -0800 (PST)
-Received: from localhost ([124.170.11.53])
- by smtp.gmail.com with ESMTPSA id g5sm4565389pjt.15.2021.11.24.05.10.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Nov 2021 05:10:33 -0800 (PST)
-Date: Wed, 24 Nov 2021 23:10:27 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 2/2] pseries/mce: Refactor the pseries mce handling code
-To: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-References: <20211124095500.98656-1-ganeshgr@linux.ibm.com>
- <20211124095500.98656-2-ganeshgr@linux.ibm.com>
-In-Reply-To: <20211124095500.98656-2-ganeshgr@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4HzhcL0z89z2yPW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 00:26:42 +1100 (AEDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+ (Authenticated sender: tonyk) with ESMTPSA id 1182B1F45A78
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
+ t=1637760086; bh=LoUzXVbB3wCwxf1FW0gK/muFdQnGfNnGszLYYog+/lU=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=AD0LfFCbtCb0lPtiWFikSc0XLR5Z6wW44k1wjposhAtht5drHk8ffJYsQmH2Q5W6A
+ OlROj7cj/qCKWi5Dy1MbzY5H86DsVfJFk7ojLi7Q+lRqMMZTIpXqBvmpSyD8rLL7Wp
+ 9kPDvyGRVZ0BUAwlZP0CdciKecpFD9161Ofc4WS13JQheyb+2y0tmzSTQuDIUs1XZR
+ xhtRWTu111op8oukvWLrydVcD3jHXnt1tVJE86ihwADP8qEbxXmPksbiVuBj1c5F00
+ 8kQpWRI1dzZ24tdIJDn/KLdriVfjMzI/zPYHgirq4+XjZzqYI8aUe6ZhQqcmUlCDAI
+ 7rJSFBekuqRXA==
+From: =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@collabora.com>
+To: linux-kernel@vger.kernel.org, arnd@arndb.de, geert@linux-m68k.org,
+ monstr@monstr.eu, mpe@ellerman.id.au, ysato@users.sourceforge.jp,
+ dalias@libc.org, davem@davemloft.net, chris@zankel.net, jcmvbkbc@gmail.com,
+ linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org
+Subject: [PATCH 1/1] futex: Wireup futex_waitv syscall
+Date: Wed, 24 Nov 2021 10:21:12 -0300
+Message-Id: <20211124132112.11641-1-andrealmeid@collabora.com>
+X-Mailer: git-send-email 2.33.1
+In-Reply-To: <CAK8P3a3pQW59NVF=5P+ZiBjNJmnWh+iTZUHvqHBrXkHA6pMd4g@mail.gmail.com>
+References: <CAK8P3a3pQW59NVF=5P+ZiBjNJmnWh+iTZUHvqHBrXkHA6pMd4g@mail.gmail.com>
 MIME-Version: 1.0
-Message-Id: <1637759013.aa9l8cb1io.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 25 Nov 2021 00:43:05 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,175 +69,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.ibm.com, dja@axtens.net
+Cc: sfr@canb.auug.org.au, senozhatsky@chromium.org, peterz@infradead.org,
+ will@kernel.org, boqun.feng@gmail.com, lkft-triage@lists.linaro.org,
+ minchan@kernel.org, naresh.kamboju@linaro.org, linux-next@vger.kernel.org,
+ umgwanakikbuti@gmail.com, rob@landley.net, andrealmeid@collabora.com,
+ longman@redhat.com, akpm@linux-foundation.org, mingo@redhat.com,
+ bigeasy@linutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Ganesh Goudar's message of November 24, 2021 7:55 pm:
-> Now that we are no longer switching on the mmu in realmode
-> mce handler, Revert the commit 4ff753feab02("powerpc/pseries:
-> Avoid using addr_to_pfn in real mode") partially, which
-> introduced functions mce_handle_err_virtmode/realmode() to
-> separate mce handler code which needed translation to enabled.
->=20
-> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/ras.c | 122 +++++++++++----------------
->  1 file changed, 49 insertions(+), 73 deletions(-)
->=20
-> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platform=
-s/pseries/ras.c
-> index 8613f9cc5798..62e1519b8355 100644
-> --- a/arch/powerpc/platforms/pseries/ras.c
-> +++ b/arch/powerpc/platforms/pseries/ras.c
-> @@ -511,58 +511,17 @@ int pSeries_system_reset_exception(struct pt_regs *=
-regs)
->  	return 0; /* need to perform reset */
->  }
-> =20
-> -static int mce_handle_err_realmode(int disposition, u8 error_type)
-> -{
-> -#ifdef CONFIG_PPC_BOOK3S_64
-> -	if (disposition =3D=3D RTAS_DISP_NOT_RECOVERED) {
-> -		switch (error_type) {
-> -		case	MC_ERROR_TYPE_ERAT:
-> -			flush_erat();
-> -			disposition =3D RTAS_DISP_FULLY_RECOVERED;
-> -			break;
-> -		case	MC_ERROR_TYPE_SLB:
-> -			/*
-> -			 * Store the old slb content in paca before flushing.
-> -			 * Print this when we go to virtual mode.
-> -			 * There are chances that we may hit MCE again if there
-> -			 * is a parity error on the SLB entry we trying to read
-> -			 * for saving. Hence limit the slb saving to single
-> -			 * level of recursion.
-> -			 */
-> -			if (local_paca->in_mce =3D=3D 1)
-> -				slb_save_contents(local_paca->mce_faulty_slbs);
-> -			flush_and_reload_slb();
-> -			disposition =3D RTAS_DISP_FULLY_RECOVERED;
-> -			break;
-> -		default:
-> -			break;
-> -		}
-> -	} else if (disposition =3D=3D RTAS_DISP_LIMITED_RECOVERY) {
-> -		/* Platform corrected itself but could be degraded */
-> -		pr_err("MCE: limited recovery, system may be degraded\n");
-> -		disposition =3D RTAS_DISP_FULLY_RECOVERED;
-> -	}
-> -#endif
-> -	return disposition;
-> -}
-> -
-> -static int mce_handle_err_virtmode(struct pt_regs *regs,
-> -				   struct rtas_error_log *errp,
-> -				   struct pseries_mc_errorlog *mce_log,
-> -				   int disposition)
-> +static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log =
-*errp)
->  {
->  	struct mce_error_info mce_err =3D { 0 };
-> +	unsigned long eaddr =3D 0, paddr =3D 0;
-> +	struct pseries_errorlog *pseries_log;
-> +	struct pseries_mc_errorlog *mce_log;
-> +	int disposition =3D rtas_error_disposition(errp);
->  	int initiator =3D rtas_error_initiator(errp);
->  	int severity =3D rtas_error_severity(errp);
-> -	unsigned long eaddr =3D 0, paddr =3D 0;
->  	u8 error_type, err_sub_type;
-> =20
-> -	if (!mce_log)
-> -		goto out;
-> -
-> -	error_type =3D mce_log->error_type;
-> -	err_sub_type =3D rtas_mc_error_sub_type(mce_log);
-> -
->  	if (initiator =3D=3D RTAS_INITIATOR_UNKNOWN)
->  		mce_err.initiator =3D MCE_INITIATOR_UNKNOWN;
->  	else if (initiator =3D=3D RTAS_INITIATOR_CPU)
-> @@ -588,6 +547,8 @@ static int mce_handle_err_virtmode(struct pt_regs *re=
-gs,
->  		mce_err.severity =3D MCE_SEV_SEVERE;
->  	else if (severity =3D=3D RTAS_SEVERITY_ERROR)
->  		mce_err.severity =3D MCE_SEV_SEVERE;
-> +	else if (severity =3D=3D RTAS_SEVERITY_FATAL)
-> +		mce_err.severity =3D MCE_SEV_FATAL;
->  	else
->  		mce_err.severity =3D MCE_SEV_FATAL;
-> =20
+Wireup futex_waitv syscall for all remaining archs.
 
-What's this hunk for?
+Signed-off-by: André Almeida <andrealmeid@collabora.com>
+---
+ arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
+ arch/ia64/kernel/syscalls/syscall.tbl       | 1 +
+ arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
+ arch/microblaze/kernel/syscalls/syscall.tbl | 1 +
+ arch/powerpc/kernel/syscalls/syscall.tbl    | 1 +
+ arch/sh/kernel/syscalls/syscall.tbl         | 1 +
+ arch/sparc/kernel/syscalls/syscall.tbl      | 1 +
+ arch/xtensa/kernel/syscalls/syscall.tbl     | 1 +
+ 8 files changed, 8 insertions(+)
 
-> @@ -599,7 +560,18 @@ static int mce_handle_err_virtmode(struct pt_regs *r=
-egs,
->  	mce_err.error_type =3D MCE_ERROR_TYPE_UNKNOWN;
->  	mce_err.error_class =3D MCE_ECLASS_UNKNOWN;
-> =20
-> -	switch (error_type) {
-> +	if (!rtas_error_extended(errp))
-> +		goto out;
-> +
-> +	pseries_log =3D get_pseries_errorlog(errp, PSERIES_ELOG_SECT_ID_MCE);
-> +	if (!pseries_log)
-> +		goto out;
-> +
-> +	mce_log =3D (struct pseries_mc_errorlog *)pseries_log->data;
-> +	error_type =3D mce_log->error_type;
-> +	err_sub_type =3D rtas_mc_error_sub_type(mce_log);
-> +
-> +	switch (mce_log->error_type) {
->  	case MC_ERROR_TYPE_UE:
->  		mce_err.error_type =3D MCE_ERROR_TYPE_UE;
->  		mce_common_process_ue(regs, &mce_err);
-> @@ -692,41 +664,45 @@ static int mce_handle_err_virtmode(struct pt_regs *=
-regs,
->  		mce_err.error_type =3D MCE_ERROR_TYPE_DCACHE;
->  		break;
->  	case MC_ERROR_TYPE_I_CACHE:
-> -		mce_err.error_type =3D MCE_ERROR_TYPE_ICACHE;
-> +		mce_err.error_type =3D MCE_ERROR_TYPE_DCACHE;
->  		break;
+diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
+index e4a041cd5715..ca5a32228cd6 100644
+--- a/arch/alpha/kernel/syscalls/syscall.tbl
++++ b/arch/alpha/kernel/syscalls/syscall.tbl
+@@ -488,3 +488,4 @@
+ 556	common	landlock_restrict_self		sys_landlock_restrict_self
+ # 557 reserved for memfd_secret
+ 558	common	process_mrelease		sys_process_mrelease
++559	common  futex_waitv                     sys_futex_waitv
+diff --git a/arch/ia64/kernel/syscalls/syscall.tbl b/arch/ia64/kernel/syscalls/syscall.tbl
+index 6fea1844fb95..707ae121f6d3 100644
+--- a/arch/ia64/kernel/syscalls/syscall.tbl
++++ b/arch/ia64/kernel/syscalls/syscall.tbl
+@@ -369,3 +369,4 @@
+ 446	common	landlock_restrict_self		sys_landlock_restrict_self
+ # 447 reserved for memfd_secret
+ 448	common	process_mrelease		sys_process_mrelease
++449	common  futex_waitv                     sys_futex_waitv
+diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
+index 7976dff8f879..45bc32a41b90 100644
+--- a/arch/m68k/kernel/syscalls/syscall.tbl
++++ b/arch/m68k/kernel/syscalls/syscall.tbl
+@@ -448,3 +448,4 @@
+ 446	common	landlock_restrict_self		sys_landlock_restrict_self
+ # 447 reserved for memfd_secret
+ 448	common	process_mrelease		sys_process_mrelease
++449	common  futex_waitv                     sys_futex_waitv
+diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
+index 6b0e11362bd2..2204bde3ce4a 100644
+--- a/arch/microblaze/kernel/syscalls/syscall.tbl
++++ b/arch/microblaze/kernel/syscalls/syscall.tbl
+@@ -454,3 +454,4 @@
+ 446	common	landlock_restrict_self		sys_landlock_restrict_self
+ # 447 reserved for memfd_secret
+ 448	common	process_mrelease		sys_process_mrelease
++449	common  futex_waitv                     sys_futex_waitv
+diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+index 7bef917cc84e..15109af9d075 100644
+--- a/arch/powerpc/kernel/syscalls/syscall.tbl
++++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+@@ -528,3 +528,4 @@
+ 446	common	landlock_restrict_self		sys_landlock_restrict_self
+ # 447 reserved for memfd_secret
+ 448	common	process_mrelease		sys_process_mrelease
++449	common  futex_waitv                     sys_futex_waitv
+diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
+index 208f131659c5..d9539d28bdaa 100644
+--- a/arch/sh/kernel/syscalls/syscall.tbl
++++ b/arch/sh/kernel/syscalls/syscall.tbl
+@@ -451,3 +451,4 @@
+ 446	common	landlock_restrict_self		sys_landlock_restrict_self
+ # 447 reserved for memfd_secret
+ 448	common	process_mrelease		sys_process_mrelease
++449	common  futex_waitv                     sys_futex_waitv
+diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+index c37764dc764d..46adabcb1720 100644
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -494,3 +494,4 @@
+ 446	common	landlock_restrict_self		sys_landlock_restrict_self
+ # 447 reserved for memfd_secret
+ 448	common	process_mrelease		sys_process_mrelease
++449	common  futex_waitv                     sys_futex_waitv
+diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
+index 104b327f8ac9..3e3e1a506bed 100644
+--- a/arch/xtensa/kernel/syscalls/syscall.tbl
++++ b/arch/xtensa/kernel/syscalls/syscall.tbl
+@@ -419,3 +419,4 @@
+ 446	common	landlock_restrict_self		sys_landlock_restrict_self
+ # 447 reserved for memfd_secret
+ 448	common	process_mrelease		sys_process_mrelease
++449	common  futex_waitv                     sys_futex_waitv
+-- 
+2.33.1
 
-And this one. Doesn't look right.
-
->  	case MC_ERROR_TYPE_UNKNOWN:
->  	default:
->  		mce_err.error_type =3D MCE_ERROR_TYPE_UNKNOWN;
->  		break;
->  	}
-> +
-> +#ifdef CONFIG_PPC_BOOK3S_64
-> +	if (disposition =3D=3D RTAS_DISP_NOT_RECOVERED) {
-> +		switch (error_type) {
-> +		case	MC_ERROR_TYPE_SLB:
-> +		case	MC_ERROR_TYPE_ERAT:
-> +			/*
-> +			 * Store the old slb content in paca before flushing.
-> +			 * Print this when we go to virtual mode.
-> +			 * There are chances that we may hit MCE again if there
-> +			 * is a parity error on the SLB entry we trying to read
-> +			 * for saving. Hence limit the slb saving to single
-> +			 * level of recursion.
-> +			 */
-> +			if (local_paca->in_mce =3D=3D 1)
-> +				slb_save_contents(local_paca->mce_faulty_slbs);
-> +			flush_and_reload_slb();
-> +			disposition =3D RTAS_DISP_FULLY_RECOVERED;
-> +			break;
-> +		default:
-> +			break;
-> +		}
-> +	} else if (disposition =3D=3D RTAS_DISP_LIMITED_RECOVERY) {
-> +		/* Platform corrected itself but could be degraded */
-> +		pr_err("MCE: limited recovery, system may be degraded\n");
-> +		disposition =3D RTAS_DISP_FULLY_RECOVERED;
-> +	}
-
-I would prefer if you just keep the mce_handle_err_realmode function=20
-(can rename it if you want). It's actually changed a bit since the
-patch being reverted so we don't want to undo that.
-
-Thanks,
-Nick
