@@ -1,60 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4717145E02F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 19:04:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE8B45E031
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 19:04:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0Qk10fJtz3cRQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 05:04:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0Qkl38c1z3dbh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 05:04:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=On15q/90;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FB0cBxjJ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=abSdWdsW;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=A32RcAl0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
  envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=On15q/90; 
+ header.s=susede2_rsa header.b=abSdWdsW; 
  dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=FB0cBxjJ; 
+ header.s=susede2_ed25519 header.b=A32RcAl0; 
  dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0QjN6MdTz2yg4
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0QjN3cbVz2yQH
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 05:03:36 +1100 (AEDT)
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 9FBAC2193C;
+ by smtp-out2.suse.de (Postfix) with ESMTP id EC9E21FD37;
  Thu, 25 Nov 2021 18:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
  t=1637863412; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=PK+Zc83ByJRm0GdafXCf4h8Ufy35eh7OxSjfkp0YrnM=;
- b=On15q/90t5q6ngo9oibHUk5cuUrtIKj5zDFosgbzJXlVOceZTDKJfsErLIEzHYK8+4Zc2e
- cRzs1dtDFfvcKgHNy65H366qh0ixIABXoALdzpohT/qsfymR/UQqpvMuPla/3w1F63BhI7
- aMxgW0ojb48EH/bKZ2lLNm9ZRBpLx9o=
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1kBE5RF9RSG/DJbSXaCj4RaeLu7dyO8AFG6nAY4jsNM=;
+ b=abSdWdsWiavySt/UHmmf/kPJ3DHeacXzg8q9kO5VSPiSRa9/Ms3XTOV8fw6/fcteTmjdWB
+ bjtgi/20+SK2X5wbUrECFCgsq5R8SgDta89DlED82RobTUrBZDpFaUS+aTUHRohC/u4gdG
+ 3eKQ88oLf3E2lq88JGqRF7XDP5LvBUk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
  s=susede2_ed25519; t=1637863412;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=PK+Zc83ByJRm0GdafXCf4h8Ufy35eh7OxSjfkp0YrnM=;
- b=FB0cBxjJNmMwuPYkcUDoiU/7Y4SjiDZ53QM2CYK1JiOCieeTSR0SvIeBiwtAX6gWj/69KW
- suy7eNPadG/YEaAA==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1kBE5RF9RSG/DJbSXaCj4RaeLu7dyO8AFG6nAY4jsNM=;
+ b=A32RcAl0iNP7iouK3UF0B61eBmvkSFdQP09K6lqCm/Nv2JTjjhJe0R10Wn7uCDevKY9Yxx
+ UnvTPltVWN++inCQ==
 Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
- by relay2.suse.de (Postfix) with ESMTP id 3B800A3B81;
- Thu, 25 Nov 2021 18:03:29 +0000 (UTC)
+ by relay2.suse.de (Postfix) with ESMTP id 9F33FA3B85;
+ Thu, 25 Nov 2021 18:03:32 +0000 (UTC)
 From: Michal Suchanek <msuchanek@suse.de>
 To: keyrings@vger.kernel.org
-Subject: [PATCH v2 0/6] KEXEC_SIG with appended signature
-Date: Thu, 25 Nov 2021 19:02:38 +0100
-Message-Id: <cover.1637862358.git.msuchanek@suse.de>
+Subject: [PATCH v2 1/6] s390/kexec_file: Don't opencode appended signature
+ check.
+Date: Thu, 25 Nov 2021 19:02:39 +0100
+Message-Id: <8457c53b5c9d66ea51a87b98a6394e124630e7c7.1637862358.git.msuchanek@suse.de>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <cover.1637862358.git.msuchanek@suse.de>
+References: <cover.1637862358.git.msuchanek@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -92,47 +99,57 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+Module verification already implements appeded signature check.
 
-This is resend of the KEXEC_SIG patchset.
+Reuse it for kexec_file.
 
-The first patch is new because it'a a cleanup that does not require any
-change to the module verification code.
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+---
+ arch/s390/kernel/machine_kexec_file.c | 22 +++++-----------------
+ 1 file changed, 5 insertions(+), 17 deletions(-)
 
-The second patch is the only one that is intended to change any
-functionality.
-
-The rest only deduplicates code but I did not receive any review on that
-part so I don't know if it's desirable as implemented.
-
-The first two patches can be applied separately without the rest.
-
-Thanks
-
-Michal
-
-Michal Suchanek (6):
-  s390/kexec_file: Don't opencode appended signature check.
-  powerpc/kexec_file: Add KEXEC_SIG support.
-  kexec_file: Don't opencode appended signature verification.
-  module: strip the signature marker in the verification function.
-  module: Use key_being_used_for for log messages in
-    verify_appended_signature
-  module: Move duplicate mod_check_sig users code to mod_parse_sig
-
- arch/powerpc/Kconfig                     | 11 +++++
- arch/powerpc/kexec/elf_64.c              | 14 ++++++
- arch/s390/kernel/machine_kexec_file.c    | 42 ++----------------
- crypto/asymmetric_keys/asymmetric_type.c |  1 +
- include/linux/module_signature.h         |  1 +
- include/linux/verification.h             |  4 ++
- kernel/module-internal.h                 |  2 -
- kernel/module.c                          | 12 +++--
- kernel/module_signature.c                | 56 +++++++++++++++++++++++-
- kernel/module_signing.c                  | 33 +++++++-------
- security/integrity/ima/ima_modsig.c      | 22 ++--------
- 11 files changed, 113 insertions(+), 85 deletions(-)
-
+diff --git a/arch/s390/kernel/machine_kexec_file.c b/arch/s390/kernel/machine_kexec_file.c
+index 9975ad200d74..43a9abe48abd 100644
+--- a/arch/s390/kernel/machine_kexec_file.c
++++ b/arch/s390/kernel/machine_kexec_file.c
+@@ -29,6 +29,7 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
+ 	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
+ 	struct module_signature *ms;
+ 	unsigned long sig_len;
++	int ret;
+ 
+ 	/* Skip signature verification when not secure IPLed. */
+ 	if (!ipl_secure_flag)
+@@ -43,25 +44,12 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
+ 	kernel_len -= marker_len;
+ 
+ 	ms = (void *)kernel + kernel_len - sizeof(*ms);
+-	kernel_len -= sizeof(*ms);
++	ret = mod_check_sig(ms, kernel_len, "kexec");
++	if (ret)
++		return ret;
+ 
+ 	sig_len = be32_to_cpu(ms->sig_len);
+-	if (sig_len >= kernel_len)
+-		return -EKEYREJECTED;
+-	kernel_len -= sig_len;
+-
+-	if (ms->id_type != PKEY_ID_PKCS7)
+-		return -EKEYREJECTED;
+-
+-	if (ms->algo != 0 ||
+-	    ms->hash != 0 ||
+-	    ms->signer_len != 0 ||
+-	    ms->key_id_len != 0 ||
+-	    ms->__pad[0] != 0 ||
+-	    ms->__pad[1] != 0 ||
+-	    ms->__pad[2] != 0) {
+-		return -EBADMSG;
+-	}
++	kernel_len -= sizeof(*ms) + sig_len;
+ 
+ 	return verify_pkcs7_signature(kernel, kernel_len,
+ 				      kernel + kernel_len, sig_len,
 -- 
 2.31.1
 
