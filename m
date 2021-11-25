@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997E945E317
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 23:44:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C648945E389
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 00:50:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0XxS3NtWz3cN8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 09:44:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0ZPW4d7dz3cPR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 10:50:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -15,26 +15,25 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0Xx05MQkz2xgb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 09:43:59 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6200,9189,10179"; a="233069086"
-X-IronPort-AV: E=Sophos;i="5.87,263,1631602800"; d="scan'208";a="233069086"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0ZP44kBPz2xtv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 10:50:00 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10179"; a="233073205"
+X-IronPort-AV: E=Sophos;i="5.87,263,1631602800"; d="scan'208";a="233073205"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2021 14:42:56 -0800
+ 25 Nov 2021 15:48:58 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,263,1631602800"; d="scan'208";a="675369467"
+X-IronPort-AV: E=Sophos;i="5.87,263,1631602800"; d="scan'208";a="475743064"
 Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
- by orsmga005.jf.intel.com with ESMTP; 25 Nov 2021 14:42:54 -0800
+ by orsmga002.jf.intel.com with ESMTP; 25 Nov 2021 15:48:56 -0800
 Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1mqNSA-000729-1H; Thu, 25 Nov 2021 22:42:54 +0000
-Date: Fri, 26 Nov 2021 06:42:40 +0800
+ id 1mqOU3-00075i-SR; Thu, 25 Nov 2021 23:48:55 +0000
+Date: Fri, 26 Nov 2021 07:48:10 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:topic/ppc-kvm] BUILD SUCCESS
- 9c5a432a558105d6145b058fad78eb6fcf3d4c38
-Message-ID: <61a01160.Mg9a1BTK8sJdJv14%lkp@intel.com>
+Subject: [powerpc:next] BUILD SUCCESS 3d030e301856da366380b3865fce6c03037b08a6
+Message-ID: <61a020ba.kyYt+hw0mN9FHiFO%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -55,10 +54,10 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
-branch HEAD: 9c5a432a558105d6145b058fad78eb6fcf3d4c38  KVM: PPC: Book3S HV P9: Remove subcore HMI handling
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 3d030e301856da366380b3865fce6c03037b08a6  powerpc/watchdog: Fix wd_smp_last_reset_tb reporting
 
-elapsed time: 726m
+elapsed time: 729m
 
 configs tested: 54
 configs skipped: 3
