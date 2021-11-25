@@ -2,66 +2,119 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB9845D3F7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 05:40:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C06D745D45C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 06:35:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J04v22k5Xz2ywZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 15:40:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J066449wKz3c6k
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 16:35:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kMmEciTC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UzhFlUhf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12d;
- helo=mail-lf1-x12d.google.com; envelope-from=hurricos@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=kMmEciTC; dkim-atps=neutral
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com
- [IPv6:2a00:1450:4864:20::12d])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J04SG6TMNz2yZv
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 15:21:00 +1100 (AEDT)
-Received: by mail-lf1-x12d.google.com with SMTP id bi37so12906608lfb.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 24 Nov 2021 20:21:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:from:date:message-id:subject:to:cc;
- bh=1BJtHCCY9G3E1sfZMPHG2DaRPAvcmGSHXzzpanPe5c8=;
- b=kMmEciTCvceVq3mnLjwbyTZFVgh3eJTGkcDfssstvhmgXroKSWwbkByvBLv6o2XBWP
- K8udpwgk4KWSDCVrkurmiGnhvxvjgeHNudEOjRkxdU3oEp/myaKXe71RcrWoAJjKxos3
- OEjPSV9zEFr1rSXSOfVehccc489x9SoeKbf77epTNpuVw16sORDqc04qgqAAzVooSvcU
- xRMo5hdo6gS1fMMrttQbxyE9Tw+Z9gVU5wWK0Az5mjqc7sE5i/81jH8DWhiVCI+g7aem
- gTd4Tq4L1LrbSt4e3GvjLcNU+yhcKv6OGLkWnqbya1IRzxz4xQwSSnnkrja3KOzhHV1x
- Xyww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
- bh=1BJtHCCY9G3E1sfZMPHG2DaRPAvcmGSHXzzpanPe5c8=;
- b=TEgbwSXLj7n7B5xC2wXDR4aCF8T8qBra3tu7OtqsuYkFmHcOLer4i2ylOwCjqsO/6b
- 4AUuXlkY2OMyVMsdX/UAAp2bdavnhns8V6wT+Z09wt357FWTIU1tIkXGfMhWQxP6qTdT
- ldSctfFgwIpYRAqUM4BKZfdwlWgx//ifa4fTyt2dcujuApq3JXAjih7cCkziHcWozEzq
- 6FL0epctkSFEbcQd5oYDroE20039BVokrN9RIOaYIpzCDVb4aF3vTGFAbRlLYIXvwvm6
- jYTqdMXxOsfRL3dHF3eP/UAuEAVQ/2a/WfgAUIWgYfJYRL79F4tyXdG1lzfb83cue45O
- a/KA==
-X-Gm-Message-State: AOAM533iGCFa1sL7MtuDIS1HTb7gkrWMhSSkPG1CGLtRmPSqro/qGhpm
- GxBcqHw6e0rwTRlOzPukmDky3hUNj2xoHT/PPTE=
-X-Google-Smtp-Source: ABdhPJwIUVOssHp4RJMjyoSr68KBMRojUjNHwX3vpvilFt42LJ1Vj3q8MPELBB+vaW00fTUs5ywW7Nl/+MJVK3l9gww=
-X-Received: by 2002:a05:6512:310e:: with SMTP id
- n14mr21359864lfb.475.1637814052533; 
- Wed, 24 Nov 2021 20:20:52 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J065G4my8z2xsH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 16:34:42 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=UzhFlUhf; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4J065F0JGlz4xcb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 16:34:41 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4J065F0Fvbz4xcM; Thu, 25 Nov 2021 16:34:41 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=UzhFlUhf; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4J065D2Gzbz4xbs;
+ Thu, 25 Nov 2021 16:34:39 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AP4IG6i029602; 
+ Thu, 25 Nov 2021 05:34:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=4c6/9XhIIRWaO/jlBK5EyXOD4x8oUVqpzRc+wJTO4mI=;
+ b=UzhFlUhf8qHeHh3TAE7WVVM27lSjVx7DydnNNMr6Wj0lHIJRmRqc8Hhk/su+3s4EFAtq
+ PS8k6oZQtooCZKbMGL5SoIVdE6x7LBQOYb3iOkOdeGeJYrLz9ycwYT7MOuuBEflYcJG8
+ yfUXZiFt7OFVLV9P6gL77DDXExoTyd7gDOxnrXrzqxXAkx1PdAhHnkhzwbRBbvRDlfsr
+ Oly6Hsobuh+k2Xu37+Ky2WG0LYQXY2w3C6ODqDyeI1onEebARZ7kpwSmqeNCx2rlT2Vh
+ 78In0RoRuvVQxzyerrhQxAFARa3dq1qO9VaGGy7ZvUqbbX79VOdXcZuRbZNDWZViYLl1 tQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cj3b911vy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Nov 2021 05:34:33 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AP5XH9I007574;
+ Thu, 25 Nov 2021 05:34:32 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cj3b911vm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Nov 2021 05:34:32 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AP5RODC021701;
+ Thu, 25 Nov 2021 05:34:30 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma06ams.nl.ibm.com with ESMTP id 3cer9k7bwv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Nov 2021 05:34:30 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 1AP5RF1m36045304
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 25 Nov 2021 05:27:15 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A49534204B;
+ Thu, 25 Nov 2021 05:34:27 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9202B4203F;
+ Thu, 25 Nov 2021 05:34:26 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.43.44.92])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Thu, 25 Nov 2021 05:34:26 +0000 (GMT)
+Date: Thu, 25 Nov 2021 11:04:23 +0530
+From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+To: "Oliver O'Halloran" <oohall@gmail.com>
+Subject: Re: [PATCH] powerpc/eeh: Delay slot presence check once driver is
+ notified about the pci error.
+Message-ID: <20211125053402.zyzpl3te5x3ryypx@in.ibm.com>
+References: <163767273634.1368569.7327743414665595326.stgit@jupiter>
+ <875ysiqxbd.fsf@mpe.ellerman.id.au>
+ <20211124084539.issrrg2lxq3mp6mj@in.ibm.com>
+ <CAOSf1CEv2kwRqctuwn1xkKTH_FmBLGx_FJefhs7FsTOSc72fdQ@mail.gmail.com>
 MIME-Version: 1.0
-From: Martin Kennedy <hurricos@gmail.com>
-Date: Wed, 24 Nov 2021 23:20:41 -0500
-Message-ID: <CANA18Uxu5dUYOkDmXpYtLc8iQuAYMv1UujkmEo1bkhm3CqxMAA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] powerpc:85xx: fix timebase sync issue when
- CONFIG_HOTPLUG_CPU=n
-To: nixiaoming@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Thu, 25 Nov 2021 15:40:12 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOSf1CEv2kwRqctuwn1xkKTH_FmBLGx_FJefhs7FsTOSc72fdQ@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: DIz9KGvYHRH5N1W3Osv0bDUN6bo1bPkh
+X-Proofpoint-ORIG-GUID: _NCigeQDWWue8N4UyB-AAeN3ziJOi1st
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-25_03,2021-11-24_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 clxscore=1015
+ mlxlogscore=999 phishscore=0 impostorscore=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 spamscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2110150000
+ definitions=main-2111250031
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,84 +126,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: chenjianguo3@huawei.com, wangle6@huawei.com, chenhui.zhao@freescale.com,
- Christian Lamparter <chunkeey@gmail.com>, oss@buserror.net,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Yuantian.Tang@feescale.com, paul.gortmaker@windriver.com, paulus@samba.org,
- gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
- liuwenliang@huawei.com
+Reply-To: mahesh@linux.ibm.com
+Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi there,
+On 2021-11-24 22:57:13 Wed, Oliver O'Halloran wrote:
+> On Wed, Nov 24, 2021 at 7:45 PM Mahesh J Salgaonkar
+> <mahesh@linux.ibm.com> wrote:
+> >
+> > No it doesn't. We will still do a presence check before the recovery
+> > process starts. This patch moves the check after notifying the driver to
+> > stop active I/O operations. If a presence check finds the device isn't
+> > present, we will skip the EEH recovery. However, on a surprise hotplug,
+> > the user will see the EEH messages on the console before it finds there
+> > is nothing to recover.
+> 
+> Suppressing the spurious EEH messages was part of why I added that
+> check in the first place. If you want to defer the presence check
+> until later you should move the stack trace printing, etc to after
+> we've confirmed there are still devices present. Considering the
 
-I have bisected OpenWrt master, and then the Linux kernel down to this
-change, to confirm that this change causes a kernel panic on my
-P1020RDB-based, dual-core Aerohive HiveAP 370, at initialization of
-the second CPU:
+That will help suppressing the spurious EEH messages.
 
-:
-[    0.000000] Linux version 5.10.80 (labby@lobon)
-(powerpc-openwrt-linux-musl-gcc (OpenWrt GCC 11.2.0
-r18111+1-ebb6f9287e) 11.2.0, GNU ld (GNU Binutils) 2.37) #0 SMP Thu
-Nov 25 02:49:35 2021
-[    0.000000] Using P1020 RDB machine description
-:
-[    0.627233] smp: Bringing up secondary CPUs ...
-[    0.681659] kernel tried to execute user page (0) - exploit attempt? (uid: 0)
-[    0.766618] BUG: Unable to handle kernel instruction fetch (NULL pointer?)
-[    0.848899] Faulting instruction address: 0x00000000
-[    0.908273] Oops: Kernel access of bad area, sig: 11 [#1]
-[    0.972851] BE PAGE_SIZE=4K SMP NR_CPUS=2 P1020 RDB
-[    1.031179] Modules linked in:
-[    1.067640] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.10.80 #0
-[    1.139507] NIP:  00000000 LR: c0021d2c CTR: 00000000
-[    1.199921] REGS: c1051cf0 TRAP: 0400   Not tainted  (5.10.80)
-[    1.269705] MSR:  00021000 <CE,ME>  CR: 84020202  XER: 00000000
-[    1.340534]
-[    1.340534] GPR00: c0021cb8 c1051da8 c1048000 00000001 00029000
-00000000 00000001 00000000
-[    1.340534] GPR08: 00000001 00000000 c08b0000 00000040 22000208
-00000000 c00032c4 00000000
-[    1.340534] GPR16: 00000000 00000000 00000000 00000000 00000000
-00000000 00029000 00000001
-[    1.340534] GPR24: 1ffff240 20000000 dffff240 c080a1f4 00000001
-c08ae0a8 00000001 dffff240
-[    1.758220] NIP [00000000] 0x0
-[    1.794688] LR [c0021d2c] smp_85xx_kick_cpu+0xe8/0x568
-[    1.856126] Call Trace:
-[    1.885295] [c1051da8] [c0021cb8] smp_85xx_kick_cpu+0x74/0x568 (unreliable)
-[    1.968633] [c1051de8] [c0011460] __cpu_up+0xc0/0x228
-[    2.029038] [c1051e18] [c0031bbc] bringup_cpu+0x30/0x224
-[    2.092572] [c1051e48] [c0031f3c] cpu_up.constprop.0+0x180/0x33c
-[    2.164443] [c1051e88] [c00322e8] bringup_nonboot_cpus+0x88/0xc8
-[    2.236326] [c1051eb8] [c07e67bc] smp_init+0x30/0x78
-[    2.295698] [c1051ed8] [c07d9e28] kernel_init_freeable+0x118/0x2a8
-[    2.369641] [c1051f18] [c00032d8] kernel_init+0x14/0x124
-[    2.433176] [c1051f38] [c0010278] ret_from_kernel_thread+0x14/0x1c
-[    2.507125] Instruction dump:
-[    2.542541] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
-XXXXXXXX XXXXXXXX
-[    2.635242] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
-XXXXXXXX XXXXXXXX
-[    2.727952] ---[ end trace 9b796a4bafb6bc14 ]---
-[    2.783149]
-[    3.800879] Kernel panic - not syncing: Fatal exception
-[    3.862353] Rebooting in 1 seconds..
-[    5.905097] System Halted, OK to turn off power
+> motivation for this patch is to avoid spurious warnings from the
+> driver I don't think printing spurious EEH messages is much of an
+> improvement.
 
-Without this patch, the kernel no longer panics:
+Agree.
 
-[    0.627232] smp: Bringing up secondary CPUs ...
-[    0.681857] smp: Brought up 1 node, 2 CPUs
+> 
+> The other option would be returning an error from the pseries hotplug
+> driver. IIRC that's what pnv_php / OPAL does if the PHB is fenced and
+> we can't check the slot presence state.
 
-Here is the kernel configuration for this built kernel:
-https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=target/linux/mpc85xx/config-5.10;hb=HEAD
+Yeah. I can change rpaphp_get_sensor_state() to use
+rtas_get_sensor_fast() variant which will return immediately with an
+error on extended busy error. That way we don't need to move the slot
+presence check at all. I did test that and it does fix the problem. But
+I wasn't sure if that would have any implications on hotplug driver
+behaviour. If pnv_php / OPAL does the same thing then this would be a
+cleaner approach to fix this issue. Let me send out the patch with this
+other option to fix the pseries hotplug driver instead.
 
-In case a force-push is needed for the source repository
-(https://github.com/Hurricos/openwrt/commit/ad19bdfc77d60ee1c52b41bb4345fdd02284c4cf),
-here is the device tree for this board:
-https://paste.c-net.org/TrousersSliced
+Thanks,
+-Mahesh.
 
-Martin
+-- 
+Mahesh J Salgaonkar
