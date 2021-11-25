@@ -1,101 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A3045E070
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 19:11:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 106FE45E101
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 20:30:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0Qtj0H8wz3dcD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 05:11:41 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FwxDTqRi;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0SdX6m18z307L
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 06:30:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=FwxDTqRi; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0QsC1Ysxz2yxx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 05:10:23 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1APHmBqQ019608; 
- Thu, 25 Nov 2021 18:10:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=xiFdOIbwOR+pc48g1L/jSJGeDHSncLZTbd7OdVTCKTg=;
- b=FwxDTqRip9sHj6ztBwqb+2n/U/tizHbdXEQxpebp1stTMASNENI2HtNOzIDwJmEfPdjf
- QYGVHFoLgzGU/AcrWEMSXbk2+J+zOmlsG9kc0mXEzz7wrzufHCEvIt/WZ/YoWkmsDxQA
- GFfrq3Y5HjqLg7WezWdYW2+MQ/GLNh6GmTtgRlaByXe3ps73g4leqlnpDMhdZSRsgYPH
- lVLfdwTZOMRYTGKfcCubUXVqeNF50klu3yEuYVOndx3r5iFqGE9TnEcBGgD5me7JzKZo
- QdjiflJIxVNf2Zzc9Z8iseywQGTd/9x7mG1i8mX8WdeNmcRYh+qnvgVfZHrXc6fJQeoU 6g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3cjf748aku-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Nov 2021 18:10:17 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1APHmsCu020840;
- Thu, 25 Nov 2021 18:10:17 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3cjf748ak9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Nov 2021 18:10:17 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1API2cME006090;
- Thu, 25 Nov 2021 18:10:15 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma02fra.de.ibm.com with ESMTP id 3cernabe8n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 25 Nov 2021 18:10:15 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 1API2tjZ61931858
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 25 Nov 2021 18:02:55 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E2E6FAE053;
- Thu, 25 Nov 2021 18:10:11 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A3F2DAE056;
- Thu, 25 Nov 2021 18:10:08 +0000 (GMT)
-Received: from hbathini-workstation.ibm.com.com (unknown [9.211.79.35])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 25 Nov 2021 18:10:08 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
-Subject: [PATCH v2 2/2] ppc64/fadump: fix inaccurate CPU state info in vmcore
- generated with panic
-Date: Thu, 25 Nov 2021 23:39:56 +0530
-Message-Id: <20211125180956.384886-2-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211125180956.384886-1-hbathini@linux.ibm.com>
-References: <20211125180956.384886-1-hbathini@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0Sd4747gz304j
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 06:29:54 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10179"; a="321793438"
+X-IronPort-AV: E=Sophos;i="5.87,263,1631602800"; d="scan'208";a="321793438"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Nov 2021 11:28:50 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,263,1631602800"; d="scan'208";a="539053377"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+ by orsmga001.jf.intel.com with ESMTP; 25 Nov 2021 11:28:48 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mqKQK-0006pj-5V; Thu, 25 Nov 2021 19:28:48 +0000
+Date: Fri, 26 Nov 2021 03:28:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v4 16/17] powerpc/64s: Move hash MMU support code under
+ CONFIG_PPC_64S_HASH_MMU
+Message-ID: <202111260315.Gs4d14lT-lkp@intel.com>
+References: <20211125125025.1472060-17-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: r33ZbDCtCFN147qig8ZVdGl6_lUDYF6O
-X-Proofpoint-ORIG-GUID: 1uUqWAR_MRmjORb02m2YSprgwA4R2bAR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-25_06,2021-11-25_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- bulkscore=0 impostorscore=0 phishscore=0 suspectscore=0 priorityscore=1501
- spamscore=0 clxscore=1015 mlxlogscore=999 adultscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2111250099
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211125125025.1472060-17-npiggin@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,135 +52,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hari Bathini <hbathini@linux.ibm.com>, mahesh@linux.ibm.com,
- sourabhjain@linux.ibm.com
+Cc: kbuild-all@lists.01.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In panic path, fadump is triggered via a panic notifier function.
-Before calling panic notifier functions, smp_send_stop() gets called,
-which stops all CPUs except the panic'ing CPU. Commit 8389b37dffdc
-("powerpc: stop_this_cpu: remove the cpu from the online map.") and
-again commit bab26238bbd4 ("powerpc: Offline CPU in stop_this_cpu()")
-started marking CPUs as offline while stopping them. So, if a kernel
-has either of the above commits, vmcore captured with fadump via panic
-path would not process register data for all CPUs except the panic'ing
-CPU. Sample output of crash-utility with such vmcore:
+Hi Nicholas,
 
-  # crash vmlinux vmcore
-  ...
-        KERNEL: vmlinux
-      DUMPFILE: vmcore  [PARTIAL DUMP]
-          CPUS: 1
-          DATE: Wed Nov 10 09:56:34 EST 2021
-        UPTIME: 00:00:42
-  LOAD AVERAGE: 2.27, 0.69, 0.24
-         TASKS: 183
-      NODENAME: XXXXXXXXX
-       RELEASE: 5.15.0+
-       VERSION: #974 SMP Wed Nov 10 04:18:19 CST 2021
-       MACHINE: ppc64le  (2500 Mhz)
-        MEMORY: 8 GB
-         PANIC: "Kernel panic - not syncing: sysrq triggered crash"
-           PID: 3394
-       COMMAND: "bash"
-          TASK: c0000000150a5f80  [THREAD_INFO: c0000000150a5f80]
-           CPU: 1
-         STATE: TASK_RUNNING (PANIC)
+I love your patch! Yet something to improve:
 
-  crash> p -x __cpu_online_mask
-  __cpu_online_mask = $1 = {
-    bits = {0x2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}
-  }
-  crash>
-  crash>
-  crash> p -x __cpu_active_mask
-  __cpu_active_mask = $2 = {
-    bits = {0xff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}
-  }
-  crash>
+[auto build test ERROR on powerpc/next]
+[also build test ERROR on char-misc/char-misc-testing v5.16-rc2 next-20211125]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-While this has been the case since fadump was introduced, the issue
-was not identified for two probable reasons:
+url:    https://github.com/0day-ci/linux/commits/Nicholas-Piggin/powerpc-Make-hash-MMU-code-build-configurable/20211125-210259
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+config: powerpc-allnoconfig (https://download.01.org/0day-ci/archive/20211126/202111260315.Gs4d14lT-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/34f5477219850333c3c610b708932d555b7e9c96
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Nicholas-Piggin/powerpc-Make-hash-MMU-code-build-configurable/20211125-210259
+        git checkout 34f5477219850333c3c610b708932d555b7e9c96
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/mm/book3s32/
 
-  - In general, the bulk of the vmcores analyzed were from crash
-    due to exception.
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-  - The above did change since commit 8341f2f222d7 ("sysrq: Use
-    panic() to force a crash") started using panic() instead of
-    deferencing NULL pointer to force a kernel crash. But then
-    commit de6e5d38417e ("powerpc: smp_send_stop do not offline
-    stopped CPUs") stopped marking CPUs as offline till kernel
-    commit bab26238bbd4 ("powerpc: Offline CPU in stop_this_cpu()")
-    reverted that change.
+All errors (new ones prefixed by >>):
 
-To ensure post processing register data of all other CPUs happens
-as intended, let panic() function take the crash friendly path (read
-crash_smp_send_stop()) with the help of crash_kexec_post_notifiers
-option. Also, as register data for all CPUs is captured by f/w, skip
-IPI callbacks here for fadump, to avoid any complications in finding
-the right backtraces.
+>> arch/powerpc/mm/book3s32/mmu.c:321:6: error: redefinition of 'update_mmu_cache'
+     321 | void update_mmu_cache(struct vm_area_struct *vma, unsigned long address,
+         |      ^~~~~~~~~~~~~~~~
+   In file included from arch/powerpc/include/asm/pgtable.h:18,
+                    from include/linux/pgtable.h:6,
+                    from include/linux/mm.h:33,
+                    from arch/powerpc/mm/book3s32/mmu.c:21:
+   arch/powerpc/include/asm/book3s/pgtable.h:40:20: note: previous definition of 'update_mmu_cache' with type 'void(struct vm_area_struct *, long unsigned int,  pte_t *)' {aka 'void(struct vm_area_struct *, long unsigned int,  long unsigned int *)'}
+      40 | static inline void update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep) {}
+         |                    ^~~~~~~~~~~~~~~~
 
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+
+vim +/update_mmu_cache +321 arch/powerpc/mm/book3s32/mmu.c
+
+3c726f8dee6f55e arch/powerpc/mm/ppc_mmu_32.c   Benjamin Herrenschmidt 2005-11-07  312  
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  313  /*
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  314   * This is called at the end of handling a user page fault, when the
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  315   * fault has been handled by updating a PTE in the linux page tables.
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  316   * We use it to preload an HPTE into the hash table corresponding to
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  317   * the updated linux PTE.
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  318   *
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  319   * This must always be called with the pte lock held.
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  320   */
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16 @321  void update_mmu_cache(struct vm_area_struct *vma, unsigned long address,
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  322  		      pte_t *ptep)
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  323  {
+f204338f8e29777 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  324  	if (!mmu_has_feature(MMU_FTR_HPTE_TABLE))
+f204338f8e29777 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  325  		return;
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  326  	/*
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  327  	 * We don't need to worry about _PAGE_PRESENT here because we are
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  328  	 * called with either mm->page_table_lock held or ptl lock held
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  329  	 */
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  330  
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  331  	/* We only want HPTEs for linux PTEs that have _PAGE_ACCESSED set */
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  332  	if (!pte_young(*ptep) || address >= TASK_SIZE)
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  333  		return;
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  334  
+f49f4e2b68b6834 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  335  	/* We have to test for regs NULL since init will get here first thing at boot */
+f49f4e2b68b6834 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  336  	if (!current->thread.regs)
+f49f4e2b68b6834 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  337  		return;
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  338  
+f49f4e2b68b6834 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  339  	/* We also avoid filling the hash if not coming from a fault */
+f49f4e2b68b6834 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  340  	if (TRAP(current->thread.regs) != 0x300 && TRAP(current->thread.regs) != 0x400)
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  341  		return;
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  342  
+f49f4e2b68b6834 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  343  	hash_preload(vma->vm_mm, address);
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  344  }
+e5a1edb9fe4cfa0 arch/powerpc/mm/book3s32/mmu.c Christophe Leroy       2019-08-16  345  
+
 ---
-
-Changes in v2:
-* Let panic(0 take crash friendly path when fadump is enabled
-  using crash_kexec_post_notifiers option.
-
-
- arch/powerpc/kernel/fadump.c |  8 ++++++++
- arch/powerpc/kernel/smp.c    | 10 ++++++++++
- 2 files changed, 18 insertions(+)
-
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index b7ceb041743c..60f5fc14aa23 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1641,6 +1641,14 @@ int __init setup_fadump(void)
- 	else if (fw_dump.reserve_dump_area_size)
- 		fw_dump.ops->fadump_init_mem_struct(&fw_dump);
- 
-+	/*
-+	 * In case of panic, fadump is triggered via ppc_panic_event()
-+	 * panic notifier. Setting crash_kexec_post_notifiers to 'true'
-+	 * lets panic() function take crash friendly path before panic
-+	 * notifiers are invoked.
-+	 */
-+	crash_kexec_post_notifiers = true;
-+
- 	return 1;
- }
- subsys_initcall(setup_fadump);
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index d34e6b67684c..00a52b6e3888 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -61,6 +61,7 @@
- #include <asm/cpu_has_feature.h>
- #include <asm/ftrace.h>
- #include <asm/kup.h>
-+#include <asm/fadump.h>
- 
- #ifdef DEBUG
- #include <asm/udbg.h>
-@@ -634,6 +635,15 @@ void crash_smp_send_stop(void)
- {
- 	static bool stopped = false;
- 
-+	/*
-+	 * In case of fadump, register data for all CPUs is captured by f/w
-+	 * on ibm,os-term rtas call. Skip IPI callbacks to other CPUs before
-+	 * this rtas call to avoid tricky post processing of those CPUs'
-+	 * backtraces.
-+	 */
-+	if (should_fadump_crash())
-+		return;
-+
- 	if (stopped)
- 		return;
- 
--- 
-2.33.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
