@@ -1,81 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD80A45D985
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 12:47:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D7D545D8C3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 12:07:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0GMK54H5z3051
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 22:47:25 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=philpotter-co-uk.20210112.gappssmtp.com header.i=@philpotter-co-uk.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=4mJ9AwSH;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0FSf3npnz3cDw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 22:06:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=philpotter.co.uk (client-ip=2607:f8b0:4864:20::72e;
- helo=mail-qk1-x72e.google.com; envelope-from=phil@philpotter.co.uk;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=philpotter-co-uk.20210112.gappssmtp.com
- header.i=@philpotter-co-uk.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=4mJ9AwSH; dkim-atps=neutral
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com
- [IPv6:2607:f8b0:4864:20::72e])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0C905klpz2xBL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 20:23:13 +1100 (AEDT)
-Received: by mail-qk1-x72e.google.com with SMTP id 193so10767757qkh.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 01:23:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philpotter-co-uk.20210112.gappssmtp.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=6cQ2VBT6GEq5IzxtMFOrkAmdfUkzXXUJICym+jfQClw=;
- b=4mJ9AwSHB31PIpdJFgjtZiPI3O5U6l1D0qy0KW0UNf5MH6ozT0e6B86+3bb+ubsNsn
- bM94zULnP3/Sn5TW2sU/aVPK6VkQM9qy7472OA32+vcwka6MF4HPtv3JEMMLnnF7wmI8
- ICnVsm3JYbKZ1EmnKJc5Z6apqZ2RUZkPkq+9OUBvr5SxgxoGUUCPzzNRjS9cNIPRmf9W
- FkRzAaXZcf5J4VFjOvxT6jDJIPAkJGMRS0lNjaglMXitLBGhfTqTjyAGLSVTx96zOYvc
- geD85MYGed6A2vdWo2NGX8n2KXD9U2AGeoO0+MzV1KSKw8zpkUNflxlTE2C1KHr75DOI
- PH4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=6cQ2VBT6GEq5IzxtMFOrkAmdfUkzXXUJICym+jfQClw=;
- b=g4K4LOH8QZp5pF9ncafwDbVrQGneSW/o0ZhQ60SDrepJEMOr8TLdkAFSAMGGPemdlP
- DC7SBCJAmSKkRraIBtBCD7u/qeveBRPFFNtbnxIy/k/AeZrqmmI0vp9Db7/pen3vx3La
- FRtGFNYn3wc3H1FYwwgO/tsa8XK/CZZuzlTm52UhJNwosZ7nj5S7PcwIbHpBuqcU2Dmj
- pzcCXfvCgxNWpzfQTNKWxP5nhEcsSzb2T+apbL5W+fmp88cByZIq1q+DRbD9+3Z9FG2y
- vZXhkUML+aYEjdcicI2QVmassPF2bjpoOW2DFJ//OTYY9e6Xw5B7ri2s6I+mGeqoONHi
- 0mBw==
-X-Gm-Message-State: AOAM531IK5cqYBc9xDMXDqeJMq1C8wCkkTaAWFYvFATBrM3Q6pUw+ce5
- XwaNH1crS4xmP0S1DDEf9eZlrQ==
-X-Google-Smtp-Source: ABdhPJwrHAepVsZs+KL0K+Dovd/v3IZvIaLP3c/YHUpcEAnEaPTq5AjU/2Qs0P+96c5OryJ5OBqRAA==
-X-Received: by 2002:a05:620a:f8b:: with SMTP id
- b11mr13482119qkn.81.1637832189250; 
- Thu, 25 Nov 2021 01:23:09 -0800 (PST)
-Received: from equinox
- (2.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.a.1.e.e.d.f.d.0.b.8.0.1.0.0.2.ip6.arpa.
- [2001:8b0:dfde:e1a0::2])
- by smtp.gmail.com with ESMTPSA id 16sm1314112qty.2.2021.11.25.01.23.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Nov 2021 01:23:08 -0800 (PST)
-Date: Thu, 25 Nov 2021 09:23:03 +0000
-From: Phillip Potter <phil@philpotter.co.uk>
-To: Luis Chamberlain <mcgrof@kernel.org>, axboe@kernel.dk
-Subject: Re: [PATCH v2 7/8] cdrom: simplify subdirectory registration with
- register_sysctl()
-Message-ID: <YZ9V9yxGapfPF4+g@equinox>
-References: <20211123202422.819032-1-mcgrof@kernel.org>
- <20211123202422.819032-8-mcgrof@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0FSD36bHz2ynj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 22:06:34 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4J0FS82fKBz9sSW;
+ Thu, 25 Nov 2021 12:06:32 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id bqarruM1xFSc; Thu, 25 Nov 2021 12:06:32 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4J0FS81lvNz9sSV;
+ Thu, 25 Nov 2021 12:06:32 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2D1718B77A;
+ Thu, 25 Nov 2021 12:06:32 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id GHXvQ1UT4Tft; Thu, 25 Nov 2021 12:06:32 +0100 (CET)
+Received: from [192.168.203.227] (unknown [192.168.203.227])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9F7F88B763;
+ Thu, 25 Nov 2021 12:06:31 +0100 (CET)
+Message-ID: <88599cf9-2ecc-d8ba-8d79-0c5ebededf7c@csgroup.eu>
+Date: Thu, 25 Nov 2021 12:06:31 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211123202422.819032-8-mcgrof@kernel.org>
-X-Mailman-Approved-At: Thu, 25 Nov 2021 22:46:50 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v2] powerpc64/exceptions: Refactor code to eliminate a few
+ memory loads
+Content-Language: fr-FR
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <874lq2px9c.fsf@concordia.ellerman.id.au>
+ <20171113170445.1404-1-naveen.n.rao@linux.vnet.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20171113170445.1404-1-naveen.n.rao@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,177 +65,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jack@suse.cz, airlied@linux.ie, amir73il@gmail.com, clemens@ladisch.de,
- dri-devel@lists.freedesktop.org, phil@philpotter.co.uk,
- joseph.qi@linux.alibaba.com, mark@fasheh.com, yzaikin@google.com,
- joonas.lahtinen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- intel-gfx@lists.freedesktop.org, jani.nikula@linux.intel.com,
- linux-block@vger.kernel.org, viro@zeniv.linux.org.uk, rodrigo.vivi@intel.com,
- nixiaoming@huawei.com, tvrtko.ursulin@linux.intel.com,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- julia.lawall@inria.fr, ebiederm@xmission.com, linux-fsdevel@vger.kernel.org,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- ocfs2-devel@oss.oracle.com, jlbec@evilplan.org
+Cc: linuxppc-dev@lists.ozlabs.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 23, 2021 at 12:24:21PM -0800, Luis Chamberlain wrote:
-> There is no need to user boiler plate code to specify a set of base
-> directories we're going to stuff sysctls under. Simplify this by using
-> register_sysctl() and specifying the directory path directly.
+
+
+Le 13/11/2017 à 18:04, Naveen N. Rao a écrit :
+> Michael Ellerman wrote:
+>> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+>>
+>>> On 2017/06/19 03:21PM, Aneesh Kumar K.V wrote:
+>>>>> @@ -1445,8 +1446,8 @@ do_hash_page:
+>>>>>   handle_page_fault:
+>>>>>   	andis.  r0,r4,DSISR_DABRMATCH@h
+>>>>>   	bne-    handle_dabr_fault
+>>>>> -	ld	r4,_DAR(r1)
+>>>>> -	ld	r5,_DSISR(r1)
+>>>>> +	mr	r5,r4
+>>>>> +	mr	r4,r3
+>>>>>   	addi	r3,r1,STACK_FRAME_OVERHEAD
+>>>>>   	bl	do_page_fault
+>>>>>   	cmpdi	r3,0
+>>>>
+>>>>
+>>>> Can we avoid that if we rearrange args of other functions calls, so that
+>>>> we can use r3 and r4 as it is ?
+>>>
+>>> Here's a version that does that. Again, boot tested with radix and
+>>> disable_radix.
+>>>
+>>> Thanks,
+>>> Naveen
+>>>
+>>> -
+>>> Change data_access_common() and instruction_access_common() to load the
+>>> trap number in r3, DAR in r4 and DSISR in r5 (rather than in r5, r3 and
+>>> r4 respectively). This change allows us to eliminate a few un-necessary
+>>> memory loads and register move operations in handle_page_fault(),
+>>> handle_dabr_fault() and label '77'.
+>>>
+>>> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+>>> ---
+>>>   arch/powerpc/kernel/exceptions-64s.S | 38 +++++++++++++++++-------------------
+>>>   1 file changed, 18 insertions(+), 20 deletions(-)
+>>
+>> Sorry I missed this and now it doesn't apply. Do you mind rebasing.
 > 
-> // pycocci sysctl-subdir-register-sysctl-simplify.cocci PATH
+> No problem - this is just a small refactoring after all :).
+> Here's a rebased version.  Boot tested on mambo with/without radix.
 > 
-> @c1@
-> expression E1;
-> identifier subdir, sysctls;
-> @@
+> Thanks,
+> Naveen
 > 
-> static struct ctl_table subdir[] = {
-> 	{
-> 		.procname = E1,
-> 		.maxlen = 0,
-> 		.mode = 0555,
-> 		.child = sysctls,
-> 	},
-> 	{ }
-> };
+> --
+> [PATCH v3] powerpc/exceptions64s: Eliminate a few un-necessary memory
+> loads
 > 
-> @c2@
-> identifier c1.subdir;
+> Change data_access_common() and instruction_access_common() to load the
+> trap number in r3, DAR in r4 and DSISR in r5 (rather than in r5, r3 and
+> r4 respectively). This change allows us to eliminate a few un-necessary
+> memory loads and register move operations in handle_page_fault(),
+> handle_dabr_fault() and label '77'.
 > 
-> expression E2;
-> identifier base;
-> @@
-> 
-> static struct ctl_table base[] = {
-> 	{
-> 		.procname = E2,
-> 		.maxlen = 0,
-> 		.mode = 0555,
-> 		.child = subdir,
-> 	},
-> 	{ }
-> };
-> 
-> @c3@
-> identifier c2.base;
-> identifier header;
-> @@
-> 
-> header = register_sysctl_table(base);
-> 
-> @r1 depends on c1 && c2 && c3@
-> expression c1.E1;
-> identifier c1.subdir, c1.sysctls;
-> @@
-> 
-> -static struct ctl_table subdir[] = {
-> -	{
-> -		.procname = E1,
-> -		.maxlen = 0,
-> -		.mode = 0555,
-> -		.child = sysctls,
-> -	},
-> -	{ }
-> -};
-> 
-> @r2 depends on c1 && c2 && c3@
-> identifier c1.subdir;
-> 
-> expression c2.E2;
-> identifier c2.base;
-> @@
-> -static struct ctl_table base[] = {
-> -	{
-> -		.procname = E2,
-> -		.maxlen = 0,
-> -		.mode = 0555,
-> -		.child = subdir,
-> -	},
-> -	{ }
-> -};
-> 
-> @initialize:python@
-> @@
-> 
-> def make_my_fresh_expression(s1, s2):
->   return '"' + s1.strip('"') + "/" + s2.strip('"') + '"'
-> 
-> @r3 depends on c1 && c2 && c3@
-> expression c1.E1;
-> identifier c1.sysctls;
-> expression c2.E2;
-> identifier c2.base;
-> identifier c3.header;
-> fresh identifier E3 = script:python(E2, E1) { make_my_fresh_expression(E2, E1) };
-> @@
-> 
-> header =
-> -register_sysctl_table(base);
-> +register_sysctl(E3, sysctls);
-> 
-> Generated-by: Coccinelle SmPL
-> Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 > ---
->  drivers/cdrom/cdrom.c | 23 +----------------------
->  1 file changed, 1 insertion(+), 22 deletions(-)
+>   arch/powerpc/kernel/exceptions-64s.S | 38 +++++++++++++++++-------------------
+>   1 file changed, 18 insertions(+), 20 deletions(-)
 > 
-> diff --git a/drivers/cdrom/cdrom.c b/drivers/cdrom/cdrom.c
-> index 9877e413fce3..1b57d4666e43 100644
-> --- a/drivers/cdrom/cdrom.c
-> +++ b/drivers/cdrom/cdrom.c
-> @@ -3691,27 +3691,6 @@ static struct ctl_table cdrom_table[] = {
->  	},
->  	{ }
->  };
-> -
-> -static struct ctl_table cdrom_cdrom_table[] = {
-> -	{
-> -		.procname	= "cdrom",
-> -		.maxlen		= 0,
-> -		.mode		= 0555,
-> -		.child		= cdrom_table,
-> -	},
-> -	{ }
-> -};
-> -
-> -/* Make sure that /proc/sys/dev is there */
-> -static struct ctl_table cdrom_root_table[] = {
-> -	{
-> -		.procname	= "dev",
-> -		.maxlen		= 0,
-> -		.mode		= 0555,
-> -		.child		= cdrom_cdrom_table,
-> -	},
-> -	{ }
-> -};
->  static struct ctl_table_header *cdrom_sysctl_header;
->  
->  static void cdrom_sysctl_register(void)
-> @@ -3721,7 +3700,7 @@ static void cdrom_sysctl_register(void)
->  	if (!atomic_add_unless(&initialized, 1, 1))
->  		return;
->  
-> -	cdrom_sysctl_header = register_sysctl_table(cdrom_root_table);
-> +	cdrom_sysctl_header = register_sysctl("dev/cdrom", cdrom_table);
->  
->  	/* set the defaults */
->  	cdrom_sysctl_settings.autoclose = autoclose;
-> -- 
-> 2.33.0
+> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+> index 72cffa0c4af6..b8166b4fa728 100644
+> --- a/arch/powerpc/kernel/exceptions-64s.S
+> +++ b/arch/powerpc/kernel/exceptions-64s.S
+> @@ -499,11 +499,11 @@ EXC_COMMON_BEGIN(data_access_common)
+>   	EXCEPTION_PROLOG_COMMON(0x300, PACA_EXGEN)
+>   	RECONCILE_IRQ_STATE(r10, r11)
+>   	ld	r12,_MSR(r1)
+> -	ld	r3,PACA_EXGEN+EX_DAR(r13)
+> -	lwz	r4,PACA_EXGEN+EX_DSISR(r13)
+> -	li	r5,0x300
+> -	std	r3,_DAR(r1)
+> -	std	r4,_DSISR(r1)
+> +	ld	r4,PACA_EXGEN+EX_DAR(r13)
+> +	lwz	r5,PACA_EXGEN+EX_DSISR(r13)
+> +	li	r3,0x300
+> +	std	r4,_DAR(r1)
+> +	std	r5,_DSISR(r1)
+>   BEGIN_MMU_FTR_SECTION
+>   	b	do_hash_page		/* Try to handle as hpte fault */
+>   MMU_FTR_SECTION_ELSE
+> @@ -543,11 +543,11 @@ EXC_COMMON_BEGIN(instruction_access_common)
+>   	EXCEPTION_PROLOG_COMMON(0x400, PACA_EXGEN)
+>   	RECONCILE_IRQ_STATE(r10, r11)
+>   	ld	r12,_MSR(r1)
+> -	ld	r3,_NIP(r1)
+> -	andis.	r4,r12,DSISR_BAD_FAULT_64S@h
+> -	li	r5,0x400
+> -	std	r3,_DAR(r1)
+> -	std	r4,_DSISR(r1)
+> +	ld	r4,_NIP(r1)
+> +	andis.	r5,r12,DSISR_BAD_FAULT_64S@h
+> +	li	r3,0x400
+> +	std	r4,_DAR(r1)
+> +	std	r5,_DSISR(r1)
+>   BEGIN_MMU_FTR_SECTION
+>   	b	do_hash_page		/* Try to handle as hpte fault */
+>   MMU_FTR_SECTION_ELSE
+> @@ -1523,7 +1523,7 @@ do_hash_page:
+>   #ifdef CONFIG_PPC_BOOK3S_64
+>   	lis	r0,DSISR_BAD_FAULT_64S@h
+>   	ori	r0,r0,DSISR_BAD_FAULT_64S@l
+> -	and.	r0,r4,r0		/* weird error? */
+> +	and.	r0,r5,r0		/* weird error? */
+>   	bne-	handle_page_fault	/* if not, try to insert a HPTE */
+>   	CURRENT_THREAD_INFO(r11, r1)
+>   	lwz	r0,TI_PREEMPT(r11)	/* If we're in an "NMI" */
+> @@ -1538,8 +1538,10 @@ do_hash_page:
+>   	 *
+>   	 * at return r3 = 0 for success, 1 for page fault, negative for error
+>   	 */
+> +	mr	r6,r5
+> +	mr	r5,r3
+> +	mr	r3,r4
+>           mr 	r4,r12
+> -	ld      r6,_DSISR(r1)
+>   	bl	__hash_page		/* build HPTE if possible */
+>           cmpdi	r3,0			/* see if __hash_page succeeded */
+>   
+> @@ -1549,16 +1551,15 @@ do_hash_page:
+>   	/* Error */
+>   	blt-	13f
+>   
+> -	/* Reload DSISR into r4 for the DABR check below */
+> -	ld      r4,_DSISR(r1)
+> +	/* Reload DAR/DSISR for handle_page_fault */
+> +	ld	r4,_DAR(r1)
+> +	ld      r5,_DSISR(r1)
+>   #endif /* CONFIG_PPC_BOOK3S_64 */
+>   
+>   /* Here we have a page fault that hash_page can't handle. */
+>   handle_page_fault:
+> -11:	andis.  r0,r4,DSISR_DABRMATCH@h
+> +	andis.  r0,r5,DSISR_DABRMATCH@h
+>   	bne-    handle_dabr_fault
+> -	ld	r4,_DAR(r1)
+> -	ld	r5,_DSISR(r1)
+>   	addi	r3,r1,STACK_FRAME_OVERHEAD
+>   	bl	do_page_fault
+>   	cmpdi	r3,0
+> @@ -1573,8 +1574,6 @@ handle_page_fault:
+>   /* We have a data breakpoint exception - handle it */
+>   handle_dabr_fault:
+>   	bl	save_nvgprs
+> -	ld      r4,_DAR(r1)
+> -	ld      r5,_DSISR(r1)
+>   	addi    r3,r1,STACK_FRAME_OVERHEAD
+>   	bl      do_break
+>   12:	b       ret_from_except_lite
+> @@ -1600,7 +1599,6 @@ handle_dabr_fault:
+>    * the access, or panic if there isn't a handler.
+>    */
+>   77:	bl	save_nvgprs
+> -	mr	r4,r3
+>   	addi	r3,r1,STACK_FRAME_OVERHEAD
+>   	li	r5,SIGSEGV
+>   	bl	bad_page_fault
 > 
 
-Dear Luis,
-
-Thank you for the patch. Tested and working, looks good to me. As this
-has already been pulled into Andrew Morton's tree, I have added in Jens
-and the linux-block list so there is awareness that the patch will go
-via -mm then linux-next tree.
-
-For what it's worth (although guess it won't be in the commit now):
-Reviewed-by: Phillip Potter <phil@philpotter.co.uk>
-
-Regards,
-Phil
+Seems like it was never merged but was superseded in 2019 by 
+https://lore.kernel.org/r/20190802105709.27696-37-npiggin@gmail.com
