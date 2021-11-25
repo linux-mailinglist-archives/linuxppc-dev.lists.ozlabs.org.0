@@ -1,69 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2374045E012
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 18:55:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4717145E02F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 19:04:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0QXL07TTz3djK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 04:55:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0Qk10fJtz3cRQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 05:04:09 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=On15q/90;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FB0cBxjJ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
+ header.s=susede2_rsa header.b=On15q/90; 
+ dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=FB0cBxjJ; 
+ dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0QVB129Zz3c7X
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 04:53:53 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J0QTs10qjz9sSs;
- Thu, 25 Nov 2021 18:53:37 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id v6aAk9oeh5-y; Thu, 25 Nov 2021 18:53:37 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J0QTm735lz9sSx;
- Thu, 25 Nov 2021 18:53:32 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E18958B77E;
- Thu, 25 Nov 2021 18:53:32 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id J1-XXP08DUs7; Thu, 25 Nov 2021 18:53:32 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.227])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 33FB48B788;
- Thu, 25 Nov 2021 18:53:32 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1APHrLUa385547
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Thu, 25 Nov 2021 18:53:21 +0100
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1APHrLjB385546;
- Thu, 25 Nov 2021 18:53:21 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Michael Ellerman <mpe@ellerman.id.au>, alex@ghiti.fr
-Subject: [PATCH v2 rebased 9/9] powerpc: Simplify and move arch_randomize_brk()
-Date: Thu, 25 Nov 2021 18:52:58 +0100
-Message-Id: <27281d506c4c1705143516e5f2558f775c3cfbe3.1637862579.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <cover.1637862579.git.christophe.leroy@csgroup.eu>
-References: <cover.1637862579.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0QjN6MdTz2yg4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 05:03:36 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out1.suse.de (Postfix) with ESMTP id 9FBAC2193C;
+ Thu, 25 Nov 2021 18:03:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1637863412; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=PK+Zc83ByJRm0GdafXCf4h8Ufy35eh7OxSjfkp0YrnM=;
+ b=On15q/90t5q6ngo9oibHUk5cuUrtIKj5zDFosgbzJXlVOceZTDKJfsErLIEzHYK8+4Zc2e
+ cRzs1dtDFfvcKgHNy65H366qh0ixIABXoALdzpohT/qsfymR/UQqpvMuPla/3w1F63BhI7
+ aMxgW0ojb48EH/bKZ2lLNm9ZRBpLx9o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1637863412;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=PK+Zc83ByJRm0GdafXCf4h8Ufy35eh7OxSjfkp0YrnM=;
+ b=FB0cBxjJNmMwuPYkcUDoiU/7Y4SjiDZ53QM2CYK1JiOCieeTSR0SvIeBiwtAX6gWj/69KW
+ suy7eNPadG/YEaAA==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+ by relay2.suse.de (Postfix) with ESMTP id 3B800A3B81;
+ Thu, 25 Nov 2021 18:03:29 +0000 (UTC)
+From: Michal Suchanek <msuchanek@suse.de>
+To: keyrings@vger.kernel.org
+Subject: [PATCH v2 0/6] KEXEC_SIG with appended signature
+Date: Thu, 25 Nov 2021 19:02:38 +0100
+Message-Id: <cover.1637862358.git.msuchanek@suse.de>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1637862777; l=4141; s=20211009;
- h=from:subject:message-id; bh=8tm/fqiMg9uYSM5VnoNA37ImSq9p8NMXx1XalKNqtIA=;
- b=nnGiMZN2zYzBJjmKb87nUq4f2ZbYOCT7sUIKO9hYgqY1U93QzgBna2Naf2IjYXEUt4FcTWppGRVA
- cExCkv8sBkS1D1BClajitXILblKt4husvxu/VKH4Lhb07+XyAFwd
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,139 +68,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Nayna <nayna@linux.vnet.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ David Howells <dhowells@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Rob Herring <robh@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Baoquan He <bhe@redhat.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ James Morris <jmorris@namei.org>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Michal Suchanek <msuchanek@suse.de>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
+ Heiko Carstens <hca@linux.ibm.com>, linux-crypto@vger.kernel.org,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
+ linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-arch_randomize_brk() is only needed for hash on book3s/64, for other
-platforms the one provided by the default mmap layout is good enough.
+Hello,
 
-Move it to hash_utils.c and use randomize_page() like the generic one.
+This is resend of the KEXEC_SIG patchset.
 
-And properly opt out the radix case instead of making an assumption
-on mmu_highuser_ssize.
+The first patch is new because it'a a cleanup that does not require any
+change to the module verification code.
 
-Also change to a 32M range like most other architectures instead of 8M.
+The second patch is the only one that is intended to change any
+functionality.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v3: Add missing include <linux/elf-randomize.h>
+The rest only deduplicates code but I did not receive any review on that
+part so I don't know if it's desirable as implemented.
 
-v2: New
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/process.c         | 41 ---------------------------
- arch/powerpc/mm/book3s64/hash_utils.c | 19 +++++++++++++
- include/linux/sizes.h                 |  2 ++
- 3 files changed, 21 insertions(+), 41 deletions(-)
+The first two patches can be applied separately without the rest.
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index a64cfbb85ca2..44c4bce5211d 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -34,10 +34,8 @@
- #include <linux/ftrace.h>
- #include <linux/kernel_stat.h>
- #include <linux/personality.h>
--#include <linux/random.h>
- #include <linux/hw_breakpoint.h>
- #include <linux/uaccess.h>
--#include <linux/elf-randomize.h>
- #include <linux/pkeys.h>
- #include <linux/seq_buf.h>
- 
-@@ -2310,42 +2308,3 @@ unsigned long arch_align_stack(unsigned long sp)
- 		sp -= get_random_int() & ~PAGE_MASK;
- 	return sp & ~0xf;
- }
--
--static inline unsigned long brk_rnd(void)
--{
--        unsigned long rnd = 0;
--
--	/* 8MB for 32bit, 1GB for 64bit */
--	if (is_32bit_task())
--		rnd = (get_random_long() % (1UL<<(23-PAGE_SHIFT)));
--	else
--		rnd = (get_random_long() % (1UL<<(30-PAGE_SHIFT)));
--
--	return rnd << PAGE_SHIFT;
--}
--
--unsigned long arch_randomize_brk(struct mm_struct *mm)
--{
--	unsigned long base = mm->brk;
--	unsigned long ret;
--
--#ifdef CONFIG_PPC_BOOK3S_64
--	/*
--	 * If we are using 1TB segments and we are allowed to randomise
--	 * the heap, we can put it above 1TB so it is backed by a 1TB
--	 * segment. Otherwise the heap will be in the bottom 1TB
--	 * which always uses 256MB segments and this may result in a
--	 * performance penalty.
--	 */
--	if (!radix_enabled() && !is_32bit_task() && (mmu_highuser_ssize == MMU_SEGSIZE_1T))
--		base = max_t(unsigned long, mm->brk, 1UL << SID_SHIFT_1T);
--#endif
--
--	ret = PAGE_ALIGN(base + brk_rnd());
--
--	if (ret < mm->brk)
--		return mm->brk;
--
--	return ret;
--}
--
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 7ecadf5e6bf9..68a5468b0f19 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -37,6 +37,8 @@
- #include <linux/cpu.h>
- #include <linux/pgtable.h>
- #include <linux/debugfs.h>
-+#include <linux/random.h>
-+#include <linux/elf-randomize.h>
- 
- #include <asm/interrupt.h>
- #include <asm/processor.h>
-@@ -2171,3 +2173,20 @@ void __init print_system_hash_info(void)
- 	if (htab_hash_mask)
- 		pr_info("htab_hash_mask    = 0x%lx\n", htab_hash_mask);
- }
-+
-+unsigned long arch_randomize_brk(struct mm_struct *mm)
-+{
-+	/*
-+	 * If we are using 1TB segments and we are allowed to randomise
-+	 * the heap, we can put it above 1TB so it is backed by a 1TB
-+	 * segment. Otherwise the heap will be in the bottom 1TB
-+	 * which always uses 256MB segments and this may result in a
-+	 * performance penalty.
-+	 */
-+	if (is_32bit_task())
-+		return randomize_page(mm->brk, SZ_32M);
-+	else if (!radix_enabled() && mmu_highuser_ssize == MMU_SEGSIZE_1T)
-+		return randomize_page(max_t(unsigned long, mm->brk, SZ_1T), SZ_1G);
-+	else
-+		return randomize_page(mm->brk, SZ_1G);
-+}
-diff --git a/include/linux/sizes.h b/include/linux/sizes.h
-index 1ac79bcee2bb..84aa448d8bb3 100644
---- a/include/linux/sizes.h
-+++ b/include/linux/sizes.h
-@@ -47,6 +47,8 @@
- #define SZ_8G				_AC(0x200000000, ULL)
- #define SZ_16G				_AC(0x400000000, ULL)
- #define SZ_32G				_AC(0x800000000, ULL)
-+
-+#define SZ_1T				_AC(0x10000000000, ULL)
- #define SZ_64T				_AC(0x400000000000, ULL)
- 
- #endif /* __LINUX_SIZES_H__ */
+Thanks
+
+Michal
+
+Michal Suchanek (6):
+  s390/kexec_file: Don't opencode appended signature check.
+  powerpc/kexec_file: Add KEXEC_SIG support.
+  kexec_file: Don't opencode appended signature verification.
+  module: strip the signature marker in the verification function.
+  module: Use key_being_used_for for log messages in
+    verify_appended_signature
+  module: Move duplicate mod_check_sig users code to mod_parse_sig
+
+ arch/powerpc/Kconfig                     | 11 +++++
+ arch/powerpc/kexec/elf_64.c              | 14 ++++++
+ arch/s390/kernel/machine_kexec_file.c    | 42 ++----------------
+ crypto/asymmetric_keys/asymmetric_type.c |  1 +
+ include/linux/module_signature.h         |  1 +
+ include/linux/verification.h             |  4 ++
+ kernel/module-internal.h                 |  2 -
+ kernel/module.c                          | 12 +++--
+ kernel/module_signature.c                | 56 +++++++++++++++++++++++-
+ kernel/module_signing.c                  | 33 +++++++-------
+ security/integrity/ima/ima_modsig.c      | 22 ++--------
+ 11 files changed, 113 insertions(+), 85 deletions(-)
+
 -- 
-2.33.1
+2.31.1
 
