@@ -2,32 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 544FD45D79D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 10:50:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC7445D7A2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 10:51:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0CmG1PMzz3dxD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 20:50:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0Cn72P47z3cDr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 20:51:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0CjD0gTmz3cN2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 20:47:44 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0CjY4CM1z3cWW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 20:48:01 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4J0CjC4VW8z4xcv;
- Thu, 25 Nov 2021 20:47:43 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4J0CjW2FDHz4xcs;
+ Thu, 25 Nov 2021 20:47:59 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20210920173203.1800475-1-nathanl@linux.ibm.com>
-References: <20210920173203.1800475-1-nathanl@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries: delete scanlog
-Message-Id: <163783299425.1228879.8095081341639658645.b4-ty@ellerman.id.au>
-Date: Thu, 25 Nov 2021 20:36:34 +1100
+In-Reply-To: <20211117060259.957178-1-nathanl@linux.ibm.com>
+References: <20211117060259.957178-1-nathanl@linux.ibm.com>
+Subject: Re: [PATCH v2 0/2] powerpc/rtas: improved busy and extended delay
+ status handling
+Message-Id: <163783299698.1228879.6478247995839677111.b4-ty@ellerman.id.au>
+Date: Thu, 25 Nov 2021 20:36:36 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,29 +44,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com
+Cc: aik@ozlabs.ru, tyreld@linux.ibm.com, cheloha@linux.ibm.com,
+ ldufour@linux.ibm.com, ajd@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 20 Sep 2021 12:32:03 -0500, Nathan Lynch wrote:
-> Remove the pseries scanlog driver.
+On Wed, 17 Nov 2021 00:02:57 -0600, Nathan Lynch wrote:
+> This can be considered a successor to:
 > 
-> This code supports functions from Power4-era servers that are not present
-> on targets currently supported by arch/powerpc. System manuals from this
-> time have this description:
+> https://lore.kernel.org/linuxppc-dev/20210504030358.1715034-1-nathanl@linux.ibm.com/
 > 
->   Scan Dump data is a set of chip data that the service processor gathers
->   after a system malfunction. It consists of chip scan rings, chip trace
->   arrays, and Scan COM (SCOM) registers. This data is stored in the
->   scan-log partition of the system’s Nonvolatile Random Access
->   Memory (NVRAM).
+> which tried to address both the suboptimal delay behavior as well as API
+> issues. This version achieves the performance improvements and leaves major
+> API changes for another time.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/pseries: delete scanlog
-      https://git.kernel.org/powerpc/c/22887f319a39929e357810a1f964fcba7ae42c59
+[1/2] powerpc/rtas: rtas_busy_delay() improvements
+      https://git.kernel.org/powerpc/c/38f7b7067dae0c101be573106018e8af22a90fdf
+[2/2] powerpc/rtas: rtas_busy_delay_time() kernel-doc
+      https://git.kernel.org/powerpc/c/dd5cde457a5eb77088d1d9eecface47c0563cd43
 
 cheers
