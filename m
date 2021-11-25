@@ -1,62 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7DE345D469
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 06:49:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CDA545D5B2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 08:44:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J06QP406Zz3cBK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 16:49:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J08yx1J31z3cBK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 18:44:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J06Pv320Jz2ybH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 16:49:05 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J06Pp0cprz9sSL;
- Thu, 25 Nov 2021 06:49:02 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id cdg8mVz8UKXe; Thu, 25 Nov 2021 06:49:01 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J06Pn6m3Sz9sSH;
- Thu, 25 Nov 2021 06:49:01 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D089E8B778;
- Thu, 25 Nov 2021 06:49:01 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id sdQh_ZomDY8A; Thu, 25 Nov 2021 06:49:01 +0100 (CET)
-Received: from [192.168.203.227] (unknown [192.168.203.227])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D54728B763;
- Thu, 25 Nov 2021 06:49:00 +0100 (CET)
-Message-ID: <b3c82c17-b659-a28d-b90b-8d353c7d4edd@csgroup.eu>
-Date: Thu, 25 Nov 2021 06:49:00 +0100
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
+ envelope-from=nixiaoming@huawei.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 1187 seconds by postgrey-1.36 at boromir;
+ Thu, 25 Nov 2021 18:43:59 AEDT
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J08yR41SPz2xtP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 18:43:56 +1100 (AEDT)
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.55])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4J08Rt0yjczZdHS;
+ Thu, 25 Nov 2021 15:20:58 +0800 (CST)
+Received: from dggema774-chm.china.huawei.com (10.1.198.216) by
+ dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.20; Thu, 25 Nov 2021 15:23:31 +0800
+Received: from [10.67.102.197] (10.67.102.197) by
+ dggema774-chm.china.huawei.com (10.1.198.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.20; Thu, 25 Nov 2021 15:23:31 +0800
+Subject: Re: [PATCH v2 2/2] powerpc:85xx: fix timebase sync issue when
+ CONFIG_HOTPLUG_CPU=n
+To: Martin Kennedy <hurricos@gmail.com>
+References: <CANA18Uxu5dUYOkDmXpYtLc8iQuAYMv1UujkmEo1bkhm3CqxMAA@mail.gmail.com>
+From: Xiaoming Ni <nixiaoming@huawei.com>
+Message-ID: <3c7523a3-2de2-3a76-2f46-9e4cf38f40b6@huawei.com>
+Date: Thu, 25 Nov 2021 15:23:30 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.0.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v1 0/5] Implement livepatch on PPC32
-Content-Language: fr-FR
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>,
- Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
- Joe Lawrence <joe.lawrence@redhat.com>, Steven Rostedt
- <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>,
- "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1635423081.git.christophe.leroy@csgroup.eu>
- <87r1b5p4hf.fsf@mpe.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <87r1b5p4hf.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANA18Uxu5dUYOkDmXpYtLc8iQuAYMv1UujkmEo1bkhm3CqxMAA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.102.197]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggema774-chm.china.huawei.com (10.1.198.216)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,34 +58,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: live-patching@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: chenjianguo3@huawei.com, wangle6@huawei.com, chenhui.zhao@freescale.com,
+ Christian Lamparter <chunkeey@gmail.com>, oss@buserror.net,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Yuantian.Tang@feescale.com, paul.gortmaker@windriver.com, paulus@samba.org,
+ gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
+ liuwenliang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 24/11/2021 à 23:34, Michael Ellerman a écrit :
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> This series implements livepatch on PPC32.
->>
->> This is largely copied from what's done on PPC64.
->>
->> Christophe Leroy (5):
->>    livepatch: Fix build failure on 32 bits processors
->>    powerpc/ftrace: No need to read LR from stack in _mcount()
->>    powerpc/ftrace: Add module_trampoline_target() for PPC32
->>    powerpc/ftrace: Activate HAVE_DYNAMIC_FTRACE_WITH_REGS on PPC32
->>    powerpc/ftrace: Add support for livepatch to PPC32
+On 2021/11/25 12:20, Martin Kennedy wrote:
+> Hi there,
 > 
-> I think we know patch 5 will need a respin because of the STRICT RWX vs
-> livepatching issue (https://github.com/linuxppc/issues/issues/375).
+> I have bisected OpenWrt master, and then the Linux kernel down to this
+> change, to confirm that this change causes a kernel panic on my
+> P1020RDB-based, dual-core Aerohive HiveAP 370, at initialization of
+> the second CPU:
 > 
-> So should I take patches 2,3,4 for now?
+> :
+> [    0.000000] Linux version 5.10.80 (labby@lobon)
+> (powerpc-openwrt-linux-musl-gcc (OpenWrt GCC 11.2.0
+> r18111+1-ebb6f9287e) 11.2.0, GNU ld (GNU Binutils) 2.37) #0 SMP Thu
+> Nov 25 02:49:35 2021
+> [    0.000000] Using P1020 RDB machine description
+> :
+> [    0.627233] smp: Bringing up secondary CPUs ...
+> [    0.681659] kernel tried to execute user page (0) - exploit attempt? (uid: 0)
+> [    0.766618] BUG: Unable to handle kernel instruction fetch (NULL pointer?)
+> [    0.848899] Faulting instruction address: 0x00000000
+> [    0.908273] Oops: Kernel access of bad area, sig: 11 [#1]
+> [    0.972851] BE PAGE_SIZE=4K SMP NR_CPUS=2 P1020 RDB
+> [    1.031179] Modules linked in:
+> [    1.067640] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.10.80 #0
+> [    1.139507] NIP:  00000000 LR: c0021d2c CTR: 00000000
+> [    1.199921] REGS: c1051cf0 TRAP: 0400   Not tainted  (5.10.80)
+> [    1.269705] MSR:  00021000 <CE,ME>  CR: 84020202  XER: 00000000
+> [    1.340534]
+> [    1.340534] GPR00: c0021cb8 c1051da8 c1048000 00000001 00029000
+> 00000000 00000001 00000000
+> [    1.340534] GPR08: 00000001 00000000 c08b0000 00000040 22000208
+> 00000000 c00032c4 00000000
+> [    1.340534] GPR16: 00000000 00000000 00000000 00000000 00000000
+> 00000000 00029000 00000001
+> [    1.340534] GPR24: 1ffff240 20000000 dffff240 c080a1f4 00000001
+> c08ae0a8 00000001 dffff240
+> [    1.758220] NIP [00000000] 0x0
+> [    1.794688] LR [c0021d2c] smp_85xx_kick_cpu+0xe8/0x568
+> [    1.856126] Call Trace:
+> [    1.885295] [c1051da8] [c0021cb8] smp_85xx_kick_cpu+0x74/0x568 (unreliable)
+> [    1.968633] [c1051de8] [c0011460] __cpu_up+0xc0/0x228
+> [    2.029038] [c1051e18] [c0031bbc] bringup_cpu+0x30/0x224
+> [    2.092572] [c1051e48] [c0031f3c] cpu_up.constprop.0+0x180/0x33c
+> [    2.164443] [c1051e88] [c00322e8] bringup_nonboot_cpus+0x88/0xc8
+> [    2.236326] [c1051eb8] [c07e67bc] smp_init+0x30/0x78
+> [    2.295698] [c1051ed8] [c07d9e28] kernel_init_freeable+0x118/0x2a8
+> [    2.369641] [c1051f18] [c00032d8] kernel_init+0x14/0x124
+> [    2.433176] [c1051f38] [c0010278] ret_from_kernel_thread+0x14/0x1c
+> [    2.507125] Instruction dump:
+> [    2.542541] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+> XXXXXXXX XXXXXXXX
+> [    2.635242] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+> XXXXXXXX XXXXXXXX
+> [    2.727952] ---[ end trace 9b796a4bafb6bc14 ]---
+> [    2.783149]
+> [    3.800879] Kernel panic - not syncing: Fatal exception
+> [    3.862353] Rebooting in 1 seconds..
+> [    5.905097] System Halted, OK to turn off power
 > 
+> Without this patch, the kernel no longer panics:
+> 
+> [    0.627232] smp: Bringing up secondary CPUs ...
+> [    0.681857] smp: Brought up 1 node, 2 CPUs
+> 
+> Here is the kernel configuration for this built kernel:
+> https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=target/linux/mpc85xx/config-5.10;hb=HEAD
+> 
+> In case a force-push is needed for the source repository
+> (https://github.com/Hurricos/openwrt/commit/ad19bdfc77d60ee1c52b41bb4345fdd02284c4cf),
+> here is the device tree for this board:
+> https://paste.c-net.org/TrousersSliced
+> 
+> Martin
+> .
+> 
+When CONFIG_FSL_PMC is set to n, cpu_up_prepare is not assigned to 
+mpc85xx_pm_ops. I suspect that this is the cause of the current null 
+pointer access.
+I do not have the corresponding board test environment. Can you help me 
+to test whether the following patch solves the problem?
 
-Yes you can take them now I think.
+diff --git a/arch/powerpc/platforms/85xx/smp.c 
+b/arch/powerpc/platforms/85xx/smp.c
+index 83f4a6389a28..d7081e9af65c 100644
+--- a/arch/powerpc/platforms/85xx/smp.c
++++ b/arch/powerpc/platforms/85xx/smp.c
+@@ -220,7 +220,7 @@ static int smp_85xx_start_cpu(int cpu)
+         local_irq_save(flags);
+         hard_irq_disable();
 
-Thanks
-Christophe
+-   if (qoriq_pm_ops)
++ if (qoriq_pm_ops && qoriq_pm_ops->cpu_up_prepare)
+                 qoriq_pm_ops->cpu_up_prepare(cpu);
+
+         /* if cpu is not spinning, reset it */
+@@ -292,7 +292,7 @@ static int smp_85xx_kick_cpu(int nr)
+                 booting_thread_hwid = cpu_thread_in_core(nr);
+                 primary = cpu_first_thread_sibling(nr);
+
+-           if (qoriq_pm_ops)
++         if (qoriq_pm_ops && qoriq_pm_ops->cpu_up_prepare)
+                         qoriq_pm_ops->cpu_up_prepare(nr);
+
+                 /*
+
+
