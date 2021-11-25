@@ -1,72 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE0945D850
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 11:34:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2C245D85D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 11:43:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0DlH0ywGz3c8p
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 21:34:35 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jld7bJyz;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0Dx521Pbz3cBK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 21:43:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e;
- helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=jld7bJyz; dkim-atps=neutral
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
- [IPv6:2607:f8b0:4864:20::102e])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0Dkd47Trz2xtR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 21:33:59 +1100 (AEDT)
-Received: by mail-pj1-x102e.google.com with SMTP id iq11so4876894pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 02:33:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=3uti4GyZsaJgrJ7k6soY+VvyoyKxX+DkZaIvxBJanjo=;
- b=jld7bJyzw+T0dq5UseQ01rsVKlZ5BOu8w2TP050FNVtZMLBti71oM2X0EV3Fv0VGdO
- YEsMP+XJQlRVZlXKcCjiTXlkwRjRE7hebPHDYWhwJrOoCmeOE20ESFgcc8b/Mw1mpl67
- wMTQluNTECNEJfPo1+DeRwe89hblx4GrQZ1mRawQNvGCUjVisMtNVfJRt9fEg1xd7yXv
- 8a0k/Onj19RWXM2txH2yzDe3Q8sdjjC4L1jPjpsdjVVaGF+BIHv46/yCrleeVlEQ3d/X
- Mmzwz/+JiuHe/AGne5YvZkdokoa+ELzEqfutRO9+Tglj+l5IGgDnj97sTx1SUpCwiSnW
- vPjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=3uti4GyZsaJgrJ7k6soY+VvyoyKxX+DkZaIvxBJanjo=;
- b=awpDpPYzmsqQ9tmtBgYURStERYOZDMFkVZ6BDVjFCVrfzCcGe1RXUHfhVzjNEeBfFN
- degfdNLYIU8Gy8cvWIMlXb7PdJk4ILfSvk2ORVtJsxAYuYt2yfPDMSav2KJwUfqOMmg+
- 8UIgfmYeAA2y/dtvs1K89UMWe87batjpoT3PCIiWvavbKeRs7hwtl6Pj03lEvvVVF1zr
- uFwytxyPBNgDDAcku3Azhn9Oz+U6+ZnLqcnuPpO1Mb9RzbCaJ21R/9zlJ0hyPpHYrjIj
- soczBCEa6LoxFxAviQEJ3PiDyia9gGxmnxsm3Z1QDMaHdWj/I1jlv9ob6EhPDH1M4bdq
- HGkA==
-X-Gm-Message-State: AOAM533qvi3QnLcApVTyh4zDcIsPTRDbh8HP19/sJVeg0UUASSQq6UNg
- 8MFZ1T6CnGpK43RUfG2Iog5vznGa8n5Kkw==
-X-Google-Smtp-Source: ABdhPJxI+XtXnJ+hOOPy4z4+JLGonR5mOh9kcZ6hhEfr05aAtsGpw99tuIbMXSYOFmlDRSCKrtNbOQ==
-X-Received: by 2002:a17:90a:430f:: with SMTP id
- q15mr5729543pjg.170.1637836436050; 
- Thu, 25 Nov 2021 02:33:56 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (115-64-213-93.static.tpgi.com.au.
- [115.64.213.93])
- by smtp.gmail.com with ESMTPSA id x9sm7212170pjq.50.2021.11.25.02.33.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Nov 2021 02:33:55 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/watchdog: Fix wd_smp_last_reset_tb reporting
-Date: Thu, 25 Nov 2021 20:33:46 +1000
-Message-Id: <20211125103346.1188958-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0Dwf3YXjz2ynj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 21:42:39 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4J0DwY21xqz9sSF;
+ Thu, 25 Nov 2021 11:42:37 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id nw29zLpg9ntr; Thu, 25 Nov 2021 11:42:37 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4J0DwY0pwpz9sRt;
+ Thu, 25 Nov 2021 11:42:37 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F23758B77A;
+ Thu, 25 Nov 2021 11:42:36 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id glwMjUd7MNY6; Thu, 25 Nov 2021 11:42:36 +0100 (CET)
+Received: from [192.168.203.227] (unknown [192.168.203.227])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 485A28B763;
+ Thu, 25 Nov 2021 11:42:36 +0100 (CET)
+Message-ID: <3f3578d4-168e-54ef-a3a7-cb7ec2aed43c@csgroup.eu>
+Date: Thu, 25 Nov 2021 11:42:35 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v2 9/9] powerpc: Simplify and move arch_randomize_brk()
+Content-Language: fr-FR
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ alex@ghiti.fr
+References: <cover.1637828367.git.christophe.leroy@csgroup.eu>
+ <4c5a2b18774552c2226573f7069ffeee71ad77cb.1637828367.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <4c5a2b18774552c2226573f7069ffeee71ad77cb.1637828367.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -79,62 +65,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-wd_smp_last_reset_tb now gets reset by watchdog_smp_panic() as part of
-marking CPUs stuck and removing them from the pending mask before it
-begins any printing. This causes last reset times reported to be off.
 
-Fix this by reading it into a local variable before it gets reset.
 
-Fixes: 76521c4b0291 ("powerpc/watchdog: Avoid holding wd_smp_lock over printk and smp_send_nmi_ipi")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
+Le 25/11/2021 à 09:23, Christophe Leroy a écrit :
+> arch_randomize_brk() is only needed for hash on book3s/64, for other
+> platforms the one provided by the default mmap layout is good enough.
+> 
+> Move it to hash_utils.c and use randomize_page() like the generic one.
+> 
+> And properly opt out the radix case instead of making an assumption
+> on mmu_highuser_ssize.
+> 
+> Also change to a 32M range like most other architectures instead of 8M.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+> v2: New
+> ---
+>   arch/powerpc/kernel/process.c         | 40 ---------------------------
+>   arch/powerpc/mm/book3s64/hash_utils.c | 18 ++++++++++++
+>   include/linux/sizes.h                 |  2 ++
+>   3 files changed, 20 insertions(+), 40 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+> index 406d7ee9e322..f1f2f17543d6 100644
+> --- a/arch/powerpc/kernel/process.c
+> +++ b/arch/powerpc/kernel/process.c
+> @@ -2274,43 +2274,3 @@ unsigned long arch_align_stack(unsigned long sp)
+>   		sp -= get_random_int() & ~PAGE_MASK;
+>   	return sp & ~0xf;
+>   }
+> -
+> -static inline unsigned long brk_rnd(void)
+> -{
+> -        unsigned long rnd = 0;
+> -
+> -	/* 8MB for 32bit, 1GB for 64bit */
+> -	if (is_32bit_task())
+> -		rnd = (get_random_long() % (1UL<<(23-PAGE_SHIFT)));
+> -	else
+> -		rnd = (get_random_long() % (1UL<<(30-PAGE_SHIFT)));
+> -
+> -	return rnd << PAGE_SHIFT;
+> -}
+> -
+> -unsigned long arch_randomize_brk(struct mm_struct *mm)
+> -{
+> -	unsigned long base = mm->brk;
+> -	unsigned long ret;
+> -
+> -#ifdef CONFIG_PPC_BOOK3S_64
+> -	/*
+> -	 * If we are using 1TB segments and we are allowed to randomise
+> -	 * the heap, we can put it above 1TB so it is backed by a 1TB
+> -	 * segment. Otherwise the heap will be in the bottom 1TB
+> -	 * which always uses 256MB segments and this may result in a
+> -	 * performance penalty. We don't need to worry about radix. For
+> -	 * radix, mmu_highuser_ssize remains unchanged from 256MB.
+> -	 */
+> -	if (!is_32bit_task() && (mmu_highuser_ssize == MMU_SEGSIZE_1T))
+> -		base = max_t(unsigned long, mm->brk, 1UL << SID_SHIFT_1T);
+> -#endif
+> -
+> -	ret = PAGE_ALIGN(base + brk_rnd());
+> -
+> -	if (ret < mm->brk)
+> -		return mm->brk;
+> -
+> -	return ret;
+> -}
+> -
+> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+> index 1d09d4aeddbf..3521fad6a479 100644
+> --- a/arch/powerpc/mm/book3s64/hash_utils.c
+> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
+> @@ -37,6 +37,7 @@
+>   #include <linux/cpu.h>
+>   #include <linux/pgtable.h>
+>   #include <linux/debugfs.h>
+> +#include <linux/random.h>
 
-This is the delta for patches 1-4 between v3 and v4 of the series which
-is the result of fixing the bug in patch 3. Sending because v3 got
-merged into powerpc next
+Also need <linux/elf-randomize.h> to get the declaration of 
+arch_randomize_brk() and make sparse happy :)
 
-Thanks,
-Nick
+Michael can you add it if you apply this version ?
 
- arch/powerpc/kernel/watchdog.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Thanks
 
-diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
-index b6533539386b..23745af38d62 100644
---- a/arch/powerpc/kernel/watchdog.c
-+++ b/arch/powerpc/kernel/watchdog.c
-@@ -179,13 +179,14 @@ static void watchdog_smp_panic(int cpu)
- {
- 	static cpumask_t wd_smp_cpus_ipi; // protected by reporting
- 	unsigned long flags;
--	u64 tb;
-+	u64 tb, last_reset;
- 	int c;
- 
- 	wd_smp_lock(&flags);
- 	/* Double check some things under lock */
- 	tb = get_tb();
--	if ((s64)(tb - wd_smp_last_reset_tb) < (s64)wd_smp_panic_timeout_tb)
-+	last_reset = wd_smp_last_reset_tb;
-+	if ((s64)(tb - last_reset) < (s64)wd_smp_panic_timeout_tb)
- 		goto out;
- 	if (cpumask_test_cpu(cpu, &wd_smp_cpus_pending))
- 		goto out;
-@@ -210,8 +211,7 @@ static void watchdog_smp_panic(int cpu)
- 	pr_emerg("CPU %d detected hard LOCKUP on other CPUs %*pbl\n",
- 		 cpu, cpumask_pr_args(&wd_smp_cpus_ipi));
- 	pr_emerg("CPU %d TB:%lld, last SMP heartbeat TB:%lld (%lldms ago)\n",
--		 cpu, tb, wd_smp_last_reset_tb,
--		 tb_to_ns(tb - wd_smp_last_reset_tb) / 1000000);
-+		 cpu, tb, last_reset, tb_to_ns(tb - last_reset) / 1000000);
- 
- 	if (!sysctl_hardlockup_all_cpu_backtrace) {
- 		/*
--- 
-2.23.0
-
+>   
+>   #include <asm/interrupt.h>
+>   #include <asm/processor.h>
+> @@ -2072,3 +2073,20 @@ void __init print_system_hash_info(void)
+>   	if (htab_hash_mask)
+>   		pr_info("htab_hash_mask    = 0x%lx\n", htab_hash_mask);
+>   }
+> +
+> +unsigned long arch_randomize_brk(struct mm_struct *mm)
+> +{
+> +	/*
+> +	 * If we are using 1TB segments and we are allowed to randomise
+> +	 * the heap, we can put it above 1TB so it is backed by a 1TB
+> +	 * segment. Otherwise the heap will be in the bottom 1TB
+> +	 * which always uses 256MB segments and this may result in a
+> +	 * performance penalty.
+> +	 */
+> +	if (is_32bit_task())
+> +		return randomize_page(mm->brk, SZ_32M);
+> +	else if (!radix_enabled() && mmu_highuser_ssize == MMU_SEGSIZE_1T)
+> +		return randomize_page(max_t(unsigned long, mm->brk, SZ_1T), SZ_1G);
+> +	else
+> +		return randomize_page(mm->brk, SZ_1G);
+> +}
+> diff --git a/include/linux/sizes.h b/include/linux/sizes.h
+> index 1ac79bcee2bb..84aa448d8bb3 100644
+> --- a/include/linux/sizes.h
+> +++ b/include/linux/sizes.h
+> @@ -47,6 +47,8 @@
+>   #define SZ_8G				_AC(0x200000000, ULL)
+>   #define SZ_16G				_AC(0x400000000, ULL)
+>   #define SZ_32G				_AC(0x800000000, ULL)
+> +
+> +#define SZ_1T				_AC(0x10000000000, ULL)
+>   #define SZ_64T				_AC(0x400000000000, ULL)
+>   
+>   #endif /* __LINUX_SIZES_H__ */
+> 
