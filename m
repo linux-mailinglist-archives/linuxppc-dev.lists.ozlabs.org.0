@@ -2,34 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC7445D7A2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 10:51:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5288745D790
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 10:49:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0Cn72P47z3cDr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 20:51:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0Ckz1c1Kz3dhN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 20:49:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0CjY4CM1z3cWW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 20:48:01 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0Cj215NQz3c6n
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 20:47:34 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4J0CjW2FDHz4xcs;
- Thu, 25 Nov 2021 20:47:59 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4J0Cj106q3z4xd8;
+ Thu, 25 Nov 2021 20:47:32 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20211117060259.957178-1-nathanl@linux.ibm.com>
-References: <20211117060259.957178-1-nathanl@linux.ibm.com>
-Subject: Re: [PATCH v2 0/2] powerpc/rtas: improved busy and extended delay
- status handling
-Message-Id: <163783299698.1228879.6478247995839677111.b4-ty@ellerman.id.au>
-Date: Thu, 25 Nov 2021 20:36:36 +1100
+To: npiggin@gmail.com, masahiroy@kernel.org, adobriyan@gmail.com,
+ andriy.shevchenko@linux.intel.com, Peiwei Hu <jlu.hpw@foxmail.com>,
+ mpe@ellerman.id.au, aneesh.kumar@linux.ibm.com, rafael.j.wysocki@intel.com,
+ benh@kernel.crashing.org, paulus@samba.org, ardb@kernel.org, clg@kaod.org
+In-Reply-To: <tencent_BA28CC6897B7C95A92EB8C580B5D18589105@qq.com>
+References: <tencent_BA28CC6897B7C95A92EB8C580B5D18589105@qq.com>
+Subject: Re: [PATCH] powerpc/prom_init: fix the improper check of prom_getprop
+Message-Id: <163783299816.1228879.14308105440652175596.b4-ty@ellerman.id.au>
+Date: Thu, 25 Nov 2021 20:36:38 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,28 +45,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, tyreld@linux.ibm.com, cheloha@linux.ibm.com,
- ldufour@linux.ibm.com, ajd@linux.ibm.com
+Cc: trivial@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 17 Nov 2021 00:02:57 -0600, Nathan Lynch wrote:
-> This can be considered a successor to:
+On Fri, 19 Nov 2021 17:12:18 +0800, Peiwei Hu wrote:
+> prom_getprop() can return PROM_ERROR. Binary operator can not identify it.
 > 
-> https://lore.kernel.org/linuxppc-dev/20210504030358.1715034-1-nathanl@linux.ibm.com/
 > 
-> which tried to address both the suboptimal delay behavior as well as API
-> issues. This version achieves the performance improvements and leaves major
-> API changes for another time.
-> 
-> [...]
 
 Applied to powerpc/next.
 
-[1/2] powerpc/rtas: rtas_busy_delay() improvements
-      https://git.kernel.org/powerpc/c/38f7b7067dae0c101be573106018e8af22a90fdf
-[2/2] powerpc/rtas: rtas_busy_delay_time() kernel-doc
-      https://git.kernel.org/powerpc/c/dd5cde457a5eb77088d1d9eecface47c0563cd43
+[1/1] powerpc/prom_init: fix the improper check of prom_getprop
+      https://git.kernel.org/powerpc/c/869fb7e5aecbc163003f93f36dcc26d0554319f6
 
 cheers
