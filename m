@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED6945DA78
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 13:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E602445DA7C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 13:55:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0HrZ6nWtz3dh7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 23:54:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0HsP5hcdz3dll
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 25 Nov 2021 23:55:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=bYc5X6KL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XYbEGCl7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62d;
- helo=mail-pl1-x62d.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a;
+ helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=bYc5X6KL; dkim-atps=neutral
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
- [IPv6:2607:f8b0:4864:20::62d])
+ header.s=20210112 header.b=XYbEGCl7; dkim-atps=neutral
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0HmV6DqMz3c63
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 23:50:50 +1100 (AEDT)
-Received: by mail-pl1-x62d.google.com with SMTP id v19so4485505plo.7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 04:50:50 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0HmY1zRVz3c6R
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 23:50:53 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id y8so4501311plg.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 04:50:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=HLw/6vsXwicoG7Mu0SnQ35hN93YcOzCfaVyabJIki0I=;
- b=bYc5X6KLu7i5P5U64Y7NBWk/HnkJNUouGCis4MGttIK+cQCWm/0ue0g57PXNgk7bTN
- pVydd9KTySht/e+2SjHhwSV/Etz3oeKQugD1vsXnef1Z7jnbl6rT+vdUA3GKO71+PChC
- 25Q3J+ukSLIvfWTFVNi0MsRuJnun/rbuofptn/2fV/yt8pSDrRf8t84YHvSLFUo4qgqa
- wLzz7ccdvkKR7QKyD/8yOHXLHa9hbVXFhkqUKA2LodI76f/0XKKXbQdSa7Fxq1E4s8sT
- 9bJYSUUZxXSqnOh1eldewlsQEHdDOUMoJGJ10XgHhmelWIIyul2nd2W7+H8Qwz7y2SPo
- KxZg==
+ bh=r+n/orxsGE5Dy6sCMbDmnBv6aqkBCkukdq9o2NqgSIg=;
+ b=XYbEGCl7P2zTPLe/6HwjrMqZB4EYAKRTPbtWLQlSItGICsndSwUVOzoXvhd49o8/lf
+ iX73Lowl/V8JumBTtIs6cZkxPFUcklJwxjy1XWT3u7E8zWyZcBKLUMaRVjCw6agSYJ3I
+ wM+9e8nF6w7AhWv87RsnU54dwgJSXmzOkvm31zKzm5S8T6VfxKHbOcsLwhqp7ipgRxVD
+ skO4xPXfYSTAwlp8XQA7WCQXaR1xUNUObDSGzwq9lfLBJ6t+4EJeNryGjPdlWhIMXPyZ
+ LNYC46oL+bxiutU9cacLmc0/Dh14CnfKEGV6aOyowr7VXgO8bKisTeuXNM1gO7+tjH9Z
+ TTNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=HLw/6vsXwicoG7Mu0SnQ35hN93YcOzCfaVyabJIki0I=;
- b=QARD9bk4gnsUl3kDWdPt+lh4BgdPokCq7U5gDvXaKLTY3hLNtOvDV+jf+snbSvMRHw
- ZW7GfLi7YPAUbdQ8seyKeip8vvM5f0g7B5QsSy4w9UKz6QV1wUOM7+uB+XmYujtDy7LD
- DLtgpTb0od9/ZvkunmynVlAakkmqJhz/d0UtJIC0s1Dhyq8DZgjiPnv2hMtgT7jEDYyd
- BLhBe+7+l1bwTQpuTavGHkPWID4+vJhaDj8/6MeeAitD+XF4XT0J6/gurEupvlCjnMfe
- AiWwiug7ioBkimv3ogyYUNc+SXC2aEDoXJh/e5X2QfSwq0nZ6rX/4/gZYCj43ZmOio4T
- 7+tg==
-X-Gm-Message-State: AOAM532a9dpDtL6ATbNc4cXxw5MYVByEYgBlBWWPMJzXSjWEZYh4vafy
- vefBDAziC+LHCvE21dUsjms3TvLAsbc=
-X-Google-Smtp-Source: ABdhPJyhdXzJlfYD+ZEhK24rjHLg2T854sO8xkZpZ8CdWRtkudwJpRA0e8KhaN6vNngvj4S0pGM0lg==
-X-Received: by 2002:a17:90a:7e0d:: with SMTP id
- i13mr6618594pjl.171.1637844648595; 
- Thu, 25 Nov 2021 04:50:48 -0800 (PST)
+ bh=r+n/orxsGE5Dy6sCMbDmnBv6aqkBCkukdq9o2NqgSIg=;
+ b=jjdyC4BoCvZpd0JVolhpZQBJADpEganGykRdnOMBiVWIg2T8Do37Rb4Mp7SF4CyphW
+ 9UvavmxPNPBOtVyzuTNdn7sMmWXeITqnVh4+8K7I4f4Vx4Xizmc78w8D9LHpJAuNu5Uj
+ Kp8RFRWQ5sHQPx4HbOr0q664Y66AB6Uws87DYKxrJxP1tTSYlwcD2EhETV08M8fTFOlf
+ q/TxQVIqPkGr41DKX1VxiRSLWyI692oeLK4jGO2BEUwayETNddghrAvUlb7rVeALM8pD
+ 97wbN277ixfxtoYdZdBmG/9DyhbKEBk56tFX7A46ioRNzfwPgOFX9WusZ9m6UXEMctQl
+ C9/g==
+X-Gm-Message-State: AOAM530U294QMn7YP6jDaHFOa8+dWvMTdC7SConacEgOKZPK9q2XrWzJ
+ DfQXoU6nI/i4zCuT4Mjr2hBOH77YAmo=
+X-Google-Smtp-Source: ABdhPJzA5iOGk+TI8mq8UipgzZbasB/H9tbywcQ3hOAPejoltJTaCs2LGpLek6mXCPvouCX10WMDQA==
+X-Received: by 2002:a17:90b:1b06:: with SMTP id
+ nu6mr6654839pjb.155.1637844651047; 
+ Thu, 25 Nov 2021 04:50:51 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (115-64-213-93.static.tpgi.com.au.
  [115.64.213.93])
- by smtp.gmail.com with ESMTPSA id gc22sm7242851pjb.57.2021.11.25.04.50.46
+ by smtp.gmail.com with ESMTPSA id gc22sm7242851pjb.57.2021.11.25.04.50.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Nov 2021 04:50:48 -0800 (PST)
+ Thu, 25 Nov 2021 04:50:50 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 05/17] powerpc/pseries: move process table registration
- away from hash-specific code
-Date: Thu, 25 Nov 2021 22:50:13 +1000
-Message-Id: <20211125125025.1472060-6-npiggin@gmail.com>
+Subject: [PATCH v4 06/17] powerpc/pseries: lparcfg don't include slb_size line
+ in radix mode
+Date: Thu, 25 Nov 2021 22:50:14 +1000
+Message-Id: <20211125125025.1472060-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211125125025.1472060-1-npiggin@gmail.com>
 References: <20211125125025.1472060-1-npiggin@gmail.com>
@@ -87,87 +87,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This reduces ifdefs in a later change which makes hash support configurable.
+This avoids a change in behaviour in the later patch making hash
+support configurable. This is possibly a user interface change, so
+the alternative would be a hard-coded slb_size=0 here.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/platforms/pseries/lpar.c | 56 +++++++++++++--------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+ arch/powerpc/platforms/pseries/lparcfg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 3df6bdfea475..06d6a824c0dc 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -712,6 +712,34 @@ void vpa_init(int cpu)
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index f71eac74ea92..3354c00914fa 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -532,7 +532,8 @@ static int pseries_lparcfg_data(struct seq_file *m, void *v)
+ 		   lppaca_shared_proc(get_lppaca()));
  
  #ifdef CONFIG_PPC_BOOK3S_64
- 
-+static int pseries_lpar_register_process_table(unsigned long base,
-+			unsigned long page_size, unsigned long table_size)
-+{
-+	long rc;
-+	unsigned long flags = 0;
-+
-+	if (table_size)
-+		flags |= PROC_TABLE_NEW;
-+	if (radix_enabled()) {
-+		flags |= PROC_TABLE_RADIX;
-+		if (mmu_has_feature(MMU_FTR_GTSE))
-+			flags |= PROC_TABLE_GTSE;
-+	} else
-+		flags |= PROC_TABLE_HPT_SLB;
-+	for (;;) {
-+		rc = plpar_hcall_norets(H_REGISTER_PROC_TBL, flags, base,
-+					page_size, table_size);
-+		if (!H_IS_LONG_BUSY(rc))
-+			break;
-+		mdelay(get_longbusy_msecs(rc));
-+	}
-+	if (rc != H_SUCCESS) {
-+		pr_err("Failed to register process table (rc=%ld)\n", rc);
-+		BUG();
-+	}
-+	return rc;
-+}
-+
- static long pSeries_lpar_hpte_insert(unsigned long hpte_group,
- 				     unsigned long vpn, unsigned long pa,
- 				     unsigned long rflags, unsigned long vflags,
-@@ -1680,34 +1708,6 @@ static int pseries_lpar_resize_hpt(unsigned long shift)
- 	return 0;
- }
- 
--static int pseries_lpar_register_process_table(unsigned long base,
--			unsigned long page_size, unsigned long table_size)
--{
--	long rc;
--	unsigned long flags = 0;
--
--	if (table_size)
--		flags |= PROC_TABLE_NEW;
--	if (radix_enabled()) {
--		flags |= PROC_TABLE_RADIX;
--		if (mmu_has_feature(MMU_FTR_GTSE))
--			flags |= PROC_TABLE_GTSE;
--	} else
--		flags |= PROC_TABLE_HPT_SLB;
--	for (;;) {
--		rc = plpar_hcall_norets(H_REGISTER_PROC_TBL, flags, base,
--					page_size, table_size);
--		if (!H_IS_LONG_BUSY(rc))
--			break;
--		mdelay(get_longbusy_msecs(rc));
--	}
--	if (rc != H_SUCCESS) {
--		pr_err("Failed to register process table (rc=%ld)\n", rc);
--		BUG();
--	}
--	return rc;
--}
--
- void __init hpte_init_pseries(void)
- {
- 	mmu_hash_ops.hpte_invalidate	 = pSeries_lpar_hpte_invalidate;
+-	seq_printf(m, "slb_size=%d\n", mmu_slb_size);
++	if (!radix_enabled())
++		seq_printf(m, "slb_size=%d\n", mmu_slb_size);
+ #endif
+ 	parse_em_data(m);
+ 	maxmem_data(m);
 -- 
 2.23.0
 
