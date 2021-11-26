@@ -1,77 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B9945EBA7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 11:31:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA43F45EBD3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 11:39:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0rdc2Nj6z3c6m
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 21:31:48 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=V3M31PqK;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0rpl6LSqz3cQJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 21:39:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f;
- helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=V3M31PqK; dkim-atps=neutral
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
- [IPv6:2607:f8b0:4864:20::42f])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0rd16sMwz2xnb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 21:31:17 +1100 (AEDT)
-Received: by mail-pf1-x42f.google.com with SMTP id x131so8499721pfc.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 02:31:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=zQCbbZWjAORYJRuTWIme2ylQk/0CIwG5L2sfdHUWp1M=;
- b=V3M31PqKPNni3g4YDIFWObta0+4lho7U1zg/A3F0wISM8WBuHcpDxjoOCbcIu2xGmY
- qrGLFWSPFXhSFJVoqf79Y2jucjbi7V3UnBhMsUQ78TcSyRzOl8hQaBzLR0RmP1qmp/Gc
- 9rxQpkP3iAPqmc5a6ag4fgV2kqY4AhqXF0JgbFZikZOIhe2ScipwXetJWG2/Zf9mJCFM
- 007R5/v7eE9abiAOVtvvONLom385Eb3YyibzkYOZoEp6CTVeF4Yj8VoxNWijpeBcB/FD
- hgYJzksVtuB1ZGn8VSWRYrnDnG9/fm8A+/7UNt0iWeOdtkxCm5davEpGNIWF5IRT6yOK
- B1mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=zQCbbZWjAORYJRuTWIme2ylQk/0CIwG5L2sfdHUWp1M=;
- b=uVcqKC2SNU9F3u56RLWEpzp2h6cX88Zlca42Q5asQyMSwkDfXsEl6rvIoaxRcNI/cW
- sM1Lb0Tmxl30uca//pPoZC6/1WhjhyoGPSyq2Lfy+cVCQIlVAkuQ76TP2jhSzf+JfZhB
- MNXlowngBTGVjtPe1stDgzatB1cPbZDNZgtMAokYvY5nBx2/ukGLE29J/fdlwQmaPK/k
- rqUwAcDeS7iyXDO1QGyJ8PeJE/HBgzLMr3ZVGtJI5HBWUKq25Ea8GvljvJnIGNd00sUz
- gQfR/PmHegtEbVl43UjHTG1gQRdwdJy/8hSISp6SSoEsXBEQlGDQRYEQ+DSINBWxJ0rD
- oq9A==
-X-Gm-Message-State: AOAM5306npsCZXhUeSK8XjAAvc8x4NpNrjw0cHyyMigKKlz7oI0yAa0p
- CoqWXqHgZDhjfG7PpsMOUTqiZ8RFgyE=
-X-Google-Smtp-Source: ABdhPJxh2lzb3EP+vl3WABBTRVW8mRPixcy0y/ObcpLDhQMk70UZtFGa93Ba8fGK+DpkjZvPJPHY5Q==
-X-Received: by 2002:a05:6a00:1584:b0:49f:e5dd:f904 with SMTP id
- u4-20020a056a00158400b0049fe5ddf904mr20545823pfk.55.1637922675129; 
- Fri, 26 Nov 2021 02:31:15 -0800 (PST)
-Received: from localhost (115-64-213-93.static.tpgi.com.au. [115.64.213.93])
- by smtp.gmail.com with ESMTPSA id rm1sm10873799pjb.3.2021.11.26.02.31.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Nov 2021 02:31:14 -0800 (PST)
-Date: Fri, 26 Nov 2021 20:31:09 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/pseries/vas: Don't print an error when VAS is
- unavailable
-To: =?iso-8859-1?q?C=E9dric?= Le Goater <clg@kaod.org>,
- linuxppc-dev@lists.ozlabs.org
-References: <20211126052133.1664375-1-npiggin@gmail.com>
- <43d21c1a-9122-d698-2229-e56c77a91313@kaod.org>
-In-Reply-To: <43d21c1a-9122-d698-2229-e56c77a91313@kaod.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0rpL4Pz1z2y7W
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 21:39:21 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4J0rpG6WqTz9sSM;
+ Fri, 26 Nov 2021 11:39:18 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 1eLy64U4mjAW; Fri, 26 Nov 2021 11:39:18 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4J0rpG5nGXz9sSK;
+ Fri, 26 Nov 2021 11:39:18 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B81CB8B77D;
+ Fri, 26 Nov 2021 11:39:18 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id a8QbGGboKAzC; Fri, 26 Nov 2021 11:39:18 +0100 (CET)
+Received: from [192.168.204.6] (unknown [192.168.204.6])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5FD8A8B763;
+ Fri, 26 Nov 2021 11:39:18 +0100 (CET)
+Message-ID: <cad41998-9f03-017a-3243-0efad14ea71a@csgroup.eu>
+Date: Fri, 26 Nov 2021 11:39:18 +0100
 MIME-Version: 1.0
-Message-Id: <1637922573.8ofrolskkj.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH 1/3] powerpc/code-patching: work around code patching
+ verification in patching tests
+Content-Language: fr-FR
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20211126032249.1652080-1-npiggin@gmail.com>
+ <f9e53405-b5b9-15d1-eaf9-0616a5b87424@csgroup.eu>
+ <1637922388.sidg5s6in4.astroid@bobo.none>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <1637922388.sidg5s6in4.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,27 +65,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Haren Myneni <haren@linux.ibm.com>
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from C=C3=A9dric Le Goater's message of November 26, 2021 5:13 pm:
-> On 11/26/21 06:21, Nicholas Piggin wrote:
->> KVM does not support VAS so guests always print a useless error on boot
->>=20
->>      vas: HCALL(398) error -2, query_type 0, result buffer 0x57f2000
->>=20
->> Change this to only print the message if the error is not H_FUNCTION.
->=20
->=20
-> Just being curious, why is it even called since "ibm,compression" should
-> not be exposed in the DT ?
 
-It looks like vas does not test for it. I guess in theory there can be=20
-other functions than compression implemented as an accelerator. Maybe
-that's why?
 
-Thanks,
-Nick
+Le 26/11/2021 à 11:27, Nicholas Piggin a écrit :
+> Excerpts from Christophe Leroy's message of November 26, 2021 4:34 pm:
+>>
+>>
+>> Le 26/11/2021 à 04:22, Nicholas Piggin a écrit :
+>>> Code patching tests patch the stack and (non-module) vmalloc space now,
+>>> which falls afoul of the new address check.
+>>>
+>>> The stack patching can easily be fixed, but the vmalloc patching is more
+>>> difficult. For now, add an ugly workaround to skip the check while the
+>>> test code is running.
+>>
+>> This really looks hacky.
+>>
+>> To skip the test, you can call do_patch_instruction() instead of calling
+>> patch_instruction().
+> 
+> And make a do_patch_branch function. I thought about it, and thought
+> this is sligtly easier.
+> 
 
+Anyway, as reported by Sachin the ftrace code also trips in the new 
+verification. So I have submitted a patch to revert to the previous 
+level of verification.
+
+Then we can fix all this properly without going through a temporary hack 
+and activate the verification again once every caller is fixed.
+
+I was not able to reproduce Sachin's problem on PPC32. Could it be 
+specific to PPC64 ?
+
+Christophe
