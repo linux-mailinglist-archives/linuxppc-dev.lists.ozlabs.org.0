@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE3545EA19
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 10:14:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F77345EA38
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 10:21:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0pwm2LTrz3c7g
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 20:14:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0q4S1CW7z3cNZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 20:21:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DxRD2FEP;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Oj5RxI9C;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,32 +18,32 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=DxRD2FEP; 
+ header.s=k20201202 header.b=Oj5RxI9C; 
  dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0pw13jmsz2yMc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 20:14:09 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPS id 21DC860F58
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 09:14:07 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0q3m1xsTz2yw9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 20:20:52 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPS id 0161161042
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 09:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1637918047;
- bh=QJeH6/BfwdS/rbW9driNkIVCW2ZHLMQR5iw3rIrZnnI=;
+ s=k20201202; t=1637918450;
+ bh=vxqSzZh6Xwbjk3RzK7Tq+aM58DMisbIQg8Y0S6YP9L4=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=DxRD2FEPfEdUod7jvWnmJCgyq/q9ZWj0CrvvVBLeVTVMJgT+mmJQWQWQaXBk0dlne
- giBLY8kDP0W5ImvCEmYmnqIiW86CchpfdDyew+GCv/uTIPG2WIimXqNMPxZOIzchtP
- G2IC9JEfMG+QfIwmXe2Cx/mkz9out6zQelBDwWTSNHrsCLWuTpHKmm/PmnsuriNQ9I
- gPuWsnP14jodt0ynB8OS52qul72Z1CmkXYXDWY61r0t/yGjNGHHSmyf8M53xIJpT+g
- yPV7wpch9ldhRB9qurU/0WaFyCdaOLLavmCdfup1BGoPyOe9Aqa1z6YUPENUJIa7cq
- fU8bnXWxcIxuA==
+ b=Oj5RxI9CQPEgb+35xURU2+bMj79l9LvRdv5+2pYcW3y9hdZKNiq7+Ud703M4L7oc2
+ whwgLL25ODFKiFh0rdlnqYXBfhLw7S0ur+1kkKM+WJE/dZAu102ezKM2tjRsQghy79
+ KSRXxa2YuWjyaZD4iuUv/dJ+QHXlZsbXgQSML6M9S+6ZdV7dw/q94pw+/+tUtCQmzm
+ LXCcJ8GtEaQ1NpRkdyh60saH9AC87+qt6jdahJLCoL/r2jP/NO+bKxG1BXn1ZM8AXj
+ zT6t8J9aMKwrUr6ZbgA6lYt4wO+cOoBMOPfuCkKMFMcpg04c+DLgM5a20Cz442W4KR
+ zRcLn9IVI/Ynw==
 Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 1890960F6E; Fri, 26 Nov 2021 09:14:07 +0000 (UTC)
+ id E7D5C60F4D; Fri, 26 Nov 2021 09:20:49 +0000 (UTC)
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 205099] KASAN hit at raid6_pq: BUG: Unable to handle kernel
  data access at 0x00f0fd0d
-Date: Fri, 26 Nov 2021 09:14:06 +0000
+Date: Fri, 26 Nov 2021 09:20:49 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -59,7 +59,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-205099-206035-05YnCvmN97@https.bugzilla.kernel.org/>
+Message-ID: <bug-205099-206035-gzyHxr74TF@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-205099-206035@https.bugzilla.kernel.org/>
 References: <bug-205099-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -84,25 +84,9 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D205099
 
---- Comment #38 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
-Looks like only x86 are arm implement this vmalloc=3D parameter:
-
-[chleroy@PO20335 linux-powerpc]$ git grep 'early_param("vmalloc"' arch/
-arch/arm/mm/mmu.c:early_param("vmalloc", early_vmalloc);
-arch/x86/mm/pgtable_32.c:early_param("vmalloc", parse_vmalloc);
-
-However, your vmalloc area has a size of 65M:
-
-Kernel virtual memory layout:
-  * 0xf6000000..0xfec00000  : kasan shadow mem
-  * 0xf5bbf000..0xf5fff000  : fixmap
-  * 0xf5400000..0xf5800000  : highmem PTEs
-  * 0xf5115000..0xf5400000  : early ioremap
-  * 0xf1000000..0xf5110000  : vmalloc & ioremap
-  * 0xb0000000..0xc0000000  : modules
-Memory: 1928984K/2097152K available (22288K kernel code, 2616K rwdata, 4868K
-rodata, 1408K init, 8981K bss, 168168K reserved, 0K cma-reserved, 1310720K
-highmem)
+--- Comment #39 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
+Can you retry with CONFIG_LOWMEM_SIZE=3D0x28000000 or
+CONFIG_LOWMEM_SIZE=3D0x20000000 ?
 
 --=20
 You may reply to this email to add a comment.
