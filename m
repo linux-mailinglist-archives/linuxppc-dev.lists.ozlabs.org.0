@@ -2,51 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF3B45E3F5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 02:22:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFEA445E422
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 02:48:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0cS83KwXz3cPR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 12:22:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0d1b5nBCz3c9T
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 12:48:19 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YJPOPMIp;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=nixiaoming@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0cRg1BBqz2yN1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 12:22:19 +1100 (AEDT)
-Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.54])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4J0cQm5rrlz91NJ;
- Fri, 26 Nov 2021 09:21:36 +0800 (CST)
-Received: from dggema774-chm.china.huawei.com (10.1.198.216) by
- dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.20; Fri, 26 Nov 2021 09:22:02 +0800
-Received: from [10.67.102.197] (10.67.102.197) by
- dggema774-chm.china.huawei.com (10.1.198.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.20; Fri, 26 Nov 2021 09:22:01 +0800
-Subject: Re: [PATCH v2 2/2] powerpc:85xx: fix timebase sync issue when
- CONFIG_HOTPLUG_CPU=n
-To: Martin Kennedy <hurricos@gmail.com>
-References: <CANA18Uxu5dUYOkDmXpYtLc8iQuAYMv1UujkmEo1bkhm3CqxMAA@mail.gmail.com>
- <3c7523a3-2de2-3a76-2f46-9e4cf38f40b6@huawei.com>
- <CANA18Uyba4kMJQrbCSZVTFep2Exe5izE45whNJgwwUvNSEcNLg@mail.gmail.com>
-From: Xiaoming Ni <nixiaoming@huawei.com>
-Message-ID: <5f56f1af-9404-21fa-eda0-05a75d769427@huawei.com>
-Date: Fri, 26 Nov 2021 09:22:01 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.0.1
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=YJPOPMIp; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0d0m5pkkz2yNW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 12:47:36 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPS id 79AC161028
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 01:47:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1637891252;
+ bh=bwZahqZ25a2ZbTT9WEX545uaVdWNf5ZN+8FIIanLuAo=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=YJPOPMIp2jJx2ojXrT7TU6LufcJCmUbeV7EqwHed2cUINP/EmaPFubzslYs7dPMTV
+ 2WHRPHQk4rIG5kGVNtN7Y4FxvYNb6tCJ+HM/RdKW7FrwYI+QwWwktkGb/IPrl42dYa
+ OeDKMm4qKf6NsUdb2fOgw3Yurpd2VBSwUcSmgDN3m8HO6AZBCZ4Q0k+E66B5uldKZ/
+ /aULCvPjOT0pwzUwSBoXi74tIXdCMa/8W3N4fPh8ZeFKa20vXxADORlYiHWzwWShIs
+ csfTFbNJYyEUniIeeoCfkzvMt6Eh+P6rcuwK+eSYlvOAj2y6Y6TtQ/rxNa0z+T2ZzC
+ bzx3bSevO0HcA==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id 6287360F39; Fri, 26 Nov 2021 01:47:32 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 205099] KASAN hit at raid6_pq: BUG: Unable to handle kernel
+ data access at 0x00f0fd0d
+Date: Fri, 26 Nov 2021 01:47:31 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-205099-206035-0dh1wolQbk@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-205099-206035@https.bugzilla.kernel.org/>
+References: <bug-205099-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-In-Reply-To: <CANA18Uyba4kMJQrbCSZVTFep2Exe5izE45whNJgwwUvNSEcNLg@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.102.197]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggema774-chm.china.huawei.com (10.1.198.216)
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,138 +78,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: chenjianguo3@huawei.com, wangle6@huawei.com, chenhui.zhao@freescale.com,
- Christian Lamparter <chunkeey@gmail.com>, oss@buserror.net,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Yuantian.Tang@feescale.com, paul.gortmaker@windriver.com, paulus@samba.org,
- gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
- liuwenliang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021/11/25 22:34, Martin Kennedy wrote:
-> Hi there,
-> 
-> Yes, I can test this patch.
-> 
-> I have added it to my tree and removed the reversion, and can confirm
-> that the second CPU comes up correctly now.
-> 
-> Martin
-> 
-Thank you very much for your report and testing, I'll send a patch later
+https://bugzilla.kernel.org/show_bug.cgi?id=3D205099
 
-Thanks
-Xiaoming Ni
+--- Comment #34 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 299711
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D299711&action=3Dedit
+dmesg (5.15.5, OUTLINE KASAN, PowerMac G4 DP)
 
-> On Thu, Nov 25, 2021 at 2:23 AM Xiaoming Ni <nixiaoming@huawei.com> wrote:
->>
->> On 2021/11/25 12:20, Martin Kennedy wrote:
->>> Hi there,
->>>
->>> I have bisected OpenWrt master, and then the Linux kernel down to this
->>> change, to confirm that this change causes a kernel panic on my
->>> P1020RDB-based, dual-core Aerohive HiveAP 370, at initialization of
->>> the second CPU:
->>>
->>> :
->>> [    0.000000] Linux version 5.10.80 (labby@lobon)
->>> (powerpc-openwrt-linux-musl-gcc (OpenWrt GCC 11.2.0
->>> r18111+1-ebb6f9287e) 11.2.0, GNU ld (GNU Binutils) 2.37) #0 SMP Thu
->>> Nov 25 02:49:35 2021
->>> [    0.000000] Using P1020 RDB machine description
->>> :
->>> [    0.627233] smp: Bringing up secondary CPUs ...
->>> [    0.681659] kernel tried to execute user page (0) - exploit attempt? (uid: 0)
->>> [    0.766618] BUG: Unable to handle kernel instruction fetch (NULL pointer?)
->>> [    0.848899] Faulting instruction address: 0x00000000
->>> [    0.908273] Oops: Kernel access of bad area, sig: 11 [#1]
->>> [    0.972851] BE PAGE_SIZE=4K SMP NR_CPUS=2 P1020 RDB
->>> [    1.031179] Modules linked in:
->>> [    1.067640] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.10.80 #0
->>> [    1.139507] NIP:  00000000 LR: c0021d2c CTR: 00000000
->>> [    1.199921] REGS: c1051cf0 TRAP: 0400   Not tainted  (5.10.80)
->>> [    1.269705] MSR:  00021000 <CE,ME>  CR: 84020202  XER: 00000000
->>> [    1.340534]
->>> [    1.340534] GPR00: c0021cb8 c1051da8 c1048000 00000001 00029000
->>> 00000000 00000001 00000000
->>> [    1.340534] GPR08: 00000001 00000000 c08b0000 00000040 22000208
->>> 00000000 c00032c4 00000000
->>> [    1.340534] GPR16: 00000000 00000000 00000000 00000000 00000000
->>> 00000000 00029000 00000001
->>> [    1.340534] GPR24: 1ffff240 20000000 dffff240 c080a1f4 00000001
->>> c08ae0a8 00000001 dffff240
->>> [    1.758220] NIP [00000000] 0x0
->>> [    1.794688] LR [c0021d2c] smp_85xx_kick_cpu+0xe8/0x568
->>> [    1.856126] Call Trace:
->>> [    1.885295] [c1051da8] [c0021cb8] smp_85xx_kick_cpu+0x74/0x568 (unreliable)
->>> [    1.968633] [c1051de8] [c0011460] __cpu_up+0xc0/0x228
->>> [    2.029038] [c1051e18] [c0031bbc] bringup_cpu+0x30/0x224
->>> [    2.092572] [c1051e48] [c0031f3c] cpu_up.constprop.0+0x180/0x33c
->>> [    2.164443] [c1051e88] [c00322e8] bringup_nonboot_cpus+0x88/0xc8
->>> [    2.236326] [c1051eb8] [c07e67bc] smp_init+0x30/0x78
->>> [    2.295698] [c1051ed8] [c07d9e28] kernel_init_freeable+0x118/0x2a8
->>> [    2.369641] [c1051f18] [c00032d8] kernel_init+0x14/0x124
->>> [    2.433176] [c1051f38] [c0010278] ret_from_kernel_thread+0x14/0x1c
->>> [    2.507125] Instruction dump:
->>> [    2.542541] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
->>> XXXXXXXX XXXXXXXX
->>> [    2.635242] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
->>> XXXXXXXX XXXXXXXX
->>> [    2.727952] ---[ end trace 9b796a4bafb6bc14 ]---
->>> [    2.783149]
->>> [    3.800879] Kernel panic - not syncing: Fatal exception
->>> [    3.862353] Rebooting in 1 seconds..
->>> [    5.905097] System Halted, OK to turn off power
->>>
->>> Without this patch, the kernel no longer panics:
->>>
->>> [    0.627232] smp: Bringing up secondary CPUs ...
->>> [    0.681857] smp: Brought up 1 node, 2 CPUs
->>>
->>> Here is the kernel configuration for this built kernel:
->>> https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=target/linux/mpc85xx/config-5.10;hb=HEAD
->>>
->>> In case a force-push is needed for the source repository
->>> (https://github.com/Hurricos/openwrt/commit/ad19bdfc77d60ee1c52b41bb4345fdd02284c4cf),
->>> here is the device tree for this board:
->>> https://paste.c-net.org/TrousersSliced
->>>
->>> Martin
->>> .
->>>
->> When CONFIG_FSL_PMC is set to n, cpu_up_prepare is not assigned to
->> mpc85xx_pm_ops. I suspect that this is the cause of the current null
->> pointer access.
->> I do not have the corresponding board test environment. Can you help me
->> to test whether the following patch solves the problem?
->>
->> diff --git a/arch/powerpc/platforms/85xx/smp.c
->> b/arch/powerpc/platforms/85xx/smp.c
->> index 83f4a6389a28..d7081e9af65c 100644
->> --- a/arch/powerpc/platforms/85xx/smp.c
->> +++ b/arch/powerpc/platforms/85xx/smp.c
->> @@ -220,7 +220,7 @@ static int smp_85xx_start_cpu(int cpu)
->>           local_irq_save(flags);
->>           hard_irq_disable();
->>
->> -   if (qoriq_pm_ops)
->> + if (qoriq_pm_ops && qoriq_pm_ops->cpu_up_prepare)
->>                   qoriq_pm_ops->cpu_up_prepare(cpu);
->>
->>           /* if cpu is not spinning, reset it */
->> @@ -292,7 +292,7 @@ static int smp_85xx_kick_cpu(int nr)
->>                   booting_thread_hwid = cpu_thread_in_core(nr);
->>                   primary = cpu_first_thread_sibling(nr);
->>
->> -           if (qoriq_pm_ops)
->> +         if (qoriq_pm_ops && qoriq_pm_ops->cpu_up_prepare)
->>                           qoriq_pm_ops->cpu_up_prepare(nr);
->>
->>                   /*
->>
->>
-> .
-> 
+Finally my G4 DP got its' fixed & overhauled PSU so I am able to continue h=
+ere.
 
+Tested kernel 5.15.5 and the original KASAN hit at raid6_pq did not show up.
+Instead I am getting this now:
+
+[...]
+Running code patching self-tests ...
+vmap allocation for size 33562624 failed: use vmalloc=3D<size> to increase =
+size
+swapper/0: vmalloc error: size 33558528, vm_struct allocation failed,
+mode:0xcc0(GFP_KERNEL), nodemask=3D(null)
+CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W=20=20=20=20=20=20=20=20
+5.15.5-gentoo-PowerMacG4 #5
+Call Trace:
+[f1033bb0] [c0d933c0] dump_stack_lvl+0x80/0xb0 (unreliable)
+[f1033bd0] [c0516128] warn_alloc+0x11c/0x2b4
+[f1033cb0] [c0508c40] __vmalloc_node_range+0xd8/0x64c
+[f1033d70] [c0508a58] __vmalloc_node+0xec/0xf4
+[f1033db0] [c1c0ecb0] test_code_patching+0x72c/0xd50
+[f1033df0] [c0008908] do_one_initcall+0x284/0x574
+[f1033ec0] [c1c03f78] kernel_init_freeable+0x510/0x51c
+[f1033f10] [c000934c] kernel_init+0x24/0x140
+[f1033f30] [c0033148] ret_from_kernel_thread+0x14/0x1c
+Mem-Info:
+active_anon:0 inactive_anon:0 isolated_anon:0
+ active_file:0 inactive_file:0 isolated_file:0
+ unevictable:0 dirty:0 writeback:0
+ slab_reclaimable:1306 slab_unreclaimable:4214
+ mapped:0 shmem:0 pagetables:0 bounce:0
+ kernel_misc_reclaimable:0
+ free:474459 free_pcp:592 free_cma:0
+Node 0 active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB
+unevictable:0kB isolated(anon):0kB isolated(file):0kB mapped:0kB dirty:0kB
+writeback:0kB shmem:0kB writeback_tmp:0kB kernel_stack:840kB pagetables:0kB
+all_unreclaimable? no
+DMA free:588612kB min:3144kB low:3928kB high:4712kB reserved_highatomic:0KB
+active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB
+unevictable:0kB writepending:0kB present:786432kB managed:618264kB mlocked:=
+0kB
+bounce:0kB free_pcp:1964kB local_pcp:1568kB free_cma:0kB
+lowmem_reserve[]: 0 0 1280 1280
+HighMem free:1309224kB min:512kB low:2176kB high:3840kB reserved_highatomic=
+:0KB
+active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB
+unevictable:0kB writepending:0kB present:1310720kB managed:1310720kB
+mlocked:0kB bounce:0kB free_pcp:404kB local_pcp:116kB free_cma:0kB
+lowmem_reserve[]: 0 0 0 0
+DMA: 5*4kB (ME) 2*8kB (UM) 4*16kB (M) 5*32kB (ME) 1*64kB (M) 4*128kB (UME)
+4*256kB (ME) 4*512kB (UM) 3*1024kB (M) 4*2048kB (ME) 140*4096kB (M) =3D 588=
+612kB
+HighMem: 0*4kB 1*8kB (U) 0*16kB 1*32kB (U) 0*64kB 2*128kB (U) 1*256kB (U)
+0*512kB 0*1024kB 1*2048kB (U) 319*4096kB (M) =3D 1309224kB
+0 total pagecache pages
+0 pages in swap cache
+Swap cache stats: add 0, delete 0, find 0/0
+Free swap  =3D 0kB
+Total swap =3D 0kB
+524288 pages RAM
+327680 pages HighMem/MovableOnly
+42042 pages reserved
+code-patching: test failed at line 598
+[...]
+
+This makes me wonder whether KASAN is working correctly when not enough vmap
+size is available. I did set it to vmalloc=3D64M via Kernel command line bu=
+t this
+does not seem to be reckognized. Same situation with INLINE KASAN. In both
+cases with VMAP_STACK and CONFIG_THREAD_SHIFT=3D14.
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
