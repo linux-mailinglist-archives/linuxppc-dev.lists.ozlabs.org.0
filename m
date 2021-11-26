@@ -1,65 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB5A45F686
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 22:35:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8CE045F68A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 22:35:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J17M73xm9z3fBL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 08:35:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J17Ms5BKnz3fF6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 08:35:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=F+ae4aJd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iJedDqBm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::131;
- helo=mail-lf1-x131.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::235;
+ helo=mail-lj1-x235.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=F+ae4aJd; dkim-atps=neutral
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com
- [IPv6:2a00:1450:4864:20::131])
+ header.s=20210112 header.b=iJedDqBm; dkim-atps=neutral
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com
+ [IPv6:2a00:1450:4864:20::235])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J12dT0v0Qz3bXV
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 05:02:21 +1100 (AEDT)
-Received: by mail-lf1-x131.google.com with SMTP id f18so26116406lfv.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 10:02:20 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J12dV2GxSz3bXj
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 05:02:22 +1100 (AEDT)
+Received: by mail-lj1-x235.google.com with SMTP id j18so7035336ljc.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 10:02:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=qRRUcggihxuvvuxXR8avhK/eModbACqCMIG7s3bijm0=;
- b=F+ae4aJdkYXCweN3qvWALmYLP+XcOBVsbUZiBz3wjv2WaGVtERDvv6V+5QSoW9UgbE
- E7y0Txw38D0ufR3EB9SzNGyJKSse6baosvaEwLysATr+xUnY8bVn+jrsQp57XyYfz3Z7
- 45QC05eh+LXoPZZqUSgnhomWnu7kpz0pbhmgHRbkTFBOmmdS4Kq5VKG++2d1ta76NPqQ
- 9aLY5Bk3H2UxUsR+31gFulbMnP83tLyUX9SAkO1yLlt7C75xtqe03dbtLt7OC2QP4zyb
- DEWBGonlvW4GQMjmrsFypIxp6FgBp+7XiIVx8uzb7ZWMYBKBdkchOcFCtzdM+DFES0eG
- 9ZFA==
+ bh=cQhCUMmxREqlb3fYFdUNP+80Jr1xwOUlupNd5E99mX4=;
+ b=iJedDqBmhe3+60jiATM7eoXnQMEolWhm1QV+PRtSvFQT1XQ5mcMSJ4SbbE7J6fhvtw
+ VH/PZa1wZwSWHs33Y/6nAuLNnbDCHXNpD6aQoyfIZCZ2XMBam1grhl0wuHW/5yhdfH30
+ KiN8EvZnlo5gV1MVEqlZkSUCt0WOr9CtN6icR3uiXanS114nv6/nF+zlN43mnzmy3llc
+ ohdo9Z3rua0Sa4TQlEEOe0yQW25sVwndRUvmhHAO8CXp3nhrBzc6CAxuW3di0hnLxbsi
+ rrHpvmlKGY4sMYtvd2+oJRIzegBMKEp8SKSQwBwHWbPTyfn/AE/HmcsgS7He03Kr5FVt
+ zegQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=qRRUcggihxuvvuxXR8avhK/eModbACqCMIG7s3bijm0=;
- b=NeBkjFOZ1rEKEIsODr0c2UhLDHFfuJxSKo6BeWfDIfZGd6S6BtjGujhHEGPsbEGcgP
- PjZcLvXAbMa0RhMeF1y1kNljCErQeYkKqz4/M9g1WKbzjxRVtcQTG8eY8OvSjCkkfVQH
- DtRLnSrFNITD51z4RXmuQeY7WCbNKnxuJXnOlbtTPUmZKjPkGv4AqxJvsWt6XGzP9myu
- /9ycGkMZs6tWqL8MUmyYAGwQxPpqjlCPakg0m9dg4P0aUKky2iiuRkPlnS2M0vSvWTre
- cANQrzRMY4RIwYyuSAgAswHGE31yIXzLBDdw4AsodL//Ss1DfFsRyEv3RYirvN1pS7jv
- i//A==
-X-Gm-Message-State: AOAM5300fvs+MUJcqwAr2v9aK9J9bmzoSFXa+Sj1cMG+Z2Ln3hxsHKpJ
- eK2FeMHHOZe3B9bbpOH4L7Y=
-X-Google-Smtp-Source: ABdhPJxIPCR62MVxA3Gk3y/yaFr4O3QtZDQL1qmRC9ygz6q9SZiw9bz2SP+4zezayKu/PH7lnK8+dg==
-X-Received: by 2002:a05:6512:3990:: with SMTP id
- j16mr30534742lfu.199.1637949737163; 
- Fri, 26 Nov 2021 10:02:17 -0800 (PST)
+ bh=cQhCUMmxREqlb3fYFdUNP+80Jr1xwOUlupNd5E99mX4=;
+ b=GnT1VFCxgq0vsbnXVZItMfeJwGuEcXRCeL7mZ9LCsBk4mJyPrU92mdS1HRmjtTr165
+ cys+l5II4/8LC1ZslOI33RjJfpdnylI9N3gTCmKGvsayhejZW2fuSQLSS8IzPgympD+s
+ cKEeuHVanfBUex5Vgp+TeKQ6JXkNrSDn7VAYeW3kWQM0nT0W6Eu+C90lPu/DxL2lIIEl
+ TKbKFaMxshf7IY1gtvxHILP9Im2Q98PKFHdZ2sz8uAFdrmNkiXhqyKYbDus5Ezl1NiL9
+ cICa58iSAf/DC2CDo2CGHfzKeyZlaEvJKhrhmiVehTVC1/FTPAuq8gMC1mSdp5Kr5Mzn
+ wCEA==
+X-Gm-Message-State: AOAM532l2S4r813LLfdTXf/2NSKPtJatAMwqmJBdjE0Ua4A/dL76XmVQ
+ WcwhGf5XZAHUK7WIgCmsAW0=
+X-Google-Smtp-Source: ABdhPJzLA9Z8G9nq11XvR1DefFsoLdvZVIBJZngCYUnkQI+xNdPv3SMCQJctE1SNfGefKSxAA3JkZQ==
+X-Received: by 2002:a2e:8807:: with SMTP id x7mr32119061ljh.490.1637949739271; 
+ Fri, 26 Nov 2021 10:02:19 -0800 (PST)
 Received: from localhost.localdomain (94-29-48-99.dynamic.spd-mgts.ru.
  [94.29.48.99])
- by smtp.gmail.com with ESMTPSA id i32sm553831lfv.295.2021.11.26.10.02.15
+ by smtp.gmail.com with ESMTPSA id i32sm553831lfv.295.2021.11.26.10.02.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Nov 2021 10:02:16 -0800 (PST)
+ Fri, 26 Nov 2021 10:02:18 -0800 (PST)
 From: Dmitry Osipenko <digetx@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
  Jonathan Hunter <jonathanh@nvidia.com>,
@@ -96,9 +95,9 @@ To: Thierry Reding <thierry.reding@gmail.com>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
  "K . C . Kuen-Chern Lin" <kclin@andestech.com>
-Subject: [PATCH v4 13/25] parisc: Use do_kernel_power_off()
-Date: Fri, 26 Nov 2021 21:00:49 +0300
-Message-Id: <20211126180101.27818-14-digetx@gmail.com>
+Subject: [PATCH v4 14/25] xen/x86: Use do_kernel_power_off()
+Date: Fri, 26 Nov 2021 21:00:50 +0300
+Message-Id: <20211126180101.27818-15-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211126180101.27818-1-digetx@gmail.com>
 References: <20211126180101.27818-1-digetx@gmail.com>
@@ -132,34 +131,34 @@ that invokes chained power-off handlers. It also invokes legacy
 pm_power_off() for now, which will be removed once all drivers will
 be converted to the new power-off API.
 
-Acked-by: Helge Deller <deller@gmx.de> # parisc
+Acked-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- arch/parisc/kernel/process.c | 4 ++--
+ arch/x86/xen/enlighten_pv.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-index ea3d83b6fb62..928201b1f58f 100644
---- a/arch/parisc/kernel/process.c
-+++ b/arch/parisc/kernel/process.c
-@@ -26,6 +26,7 @@
- #include <linux/module.h>
- #include <linux/personality.h>
- #include <linux/ptrace.h>
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index 5004feb16783..527fa545eb1f 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -31,6 +31,7 @@
+ #include <linux/gfp.h>
+ #include <linux/edd.h>
+ #include <linux/objtool.h>
 +#include <linux/reboot.h>
- #include <linux/sched.h>
- #include <linux/sched/debug.h>
- #include <linux/sched/task.h>
-@@ -114,8 +115,7 @@ void machine_power_off(void)
- 	pdc_chassis_send_status(PDC_CHASSIS_DIRECT_SHUTDOWN);
  
- 	/* ipmi_poweroff may have been installed. */
+ #include <xen/xen.h>
+ #include <xen/events.h>
+@@ -1068,8 +1069,7 @@ static void xen_machine_halt(void)
+ 
+ static void xen_machine_power_off(void)
+ {
 -	if (pm_power_off)
 -		pm_power_off();
 +	do_kernel_power_off();
- 		
- 	/* It seems we have no way to power the system off via
- 	 * software. The user has to press the button himself. */
+ 	xen_reboot(SHUTDOWN_poweroff);
+ }
+ 
 -- 
 2.33.1
 
