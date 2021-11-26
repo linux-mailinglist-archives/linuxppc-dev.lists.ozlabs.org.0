@@ -2,75 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D8E45E3D3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 01:56:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF3B45E3F5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 02:22:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0bsZ48ybz304V
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 11:56:18 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PEMEO0iN;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0cS83KwXz3cPR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 12:22:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536;
- helo=mail-pg1-x536.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=PEMEO0iN; dkim-atps=neutral
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
- [IPv6:2607:f8b0:4864:20::536])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0brx4FsGz2yfg
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 11:55:45 +1100 (AEDT)
-Received: by mail-pg1-x536.google.com with SMTP id m15so6598982pgu.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 16:55:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=NsHvPX0n7wne0hpCBJXHR+MXN+x6jE3MZwqkYuiuvLE=;
- b=PEMEO0iNYE0EAxDnHlj/3hAcHsr8jhSIqCM1Ccm9rPTT28dyu28ixjKfVEIHWqsnp2
- GGZck9pO28bPCtHl+FnyK+Mv8NznPR2guWe1ugdNyhH0nullgntrVORWXxz4kaTIfPuL
- OK2ptHGXk/74DlrA8tTy71PrXBWzAEKu0q+87g9LByATaJVCJd2GiWPSTlVE3TpJhEW8
- G3vUfhVVRpJnqNLWAlT66hbmwpzCHd17cIoMIOq0+OInc9mDz0ylOr2n7p68m6+jyLa+
- HGrxkmejb7N7IDJ94NKueFB7iBf27Kb6svbazjhuJGbToN7Nh9ciPPhObg6cgZB7+2hX
- aXKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=NsHvPX0n7wne0hpCBJXHR+MXN+x6jE3MZwqkYuiuvLE=;
- b=TGDE6EPco6/UUcXspERcauckU0AI8m2z3BV9vE6O5SwBwFg9icO7zmyBfRUjWQrvQw
- AAajVqK+CBe5MwWPX9fcgx/rYpFfmcYSf2RjlOqWTSMi0vx6uz/giDiZ1Kq+c8Dw+/jk
- he9oTD/d0cjM5C+03XVYwxpjMZ7A404T3CHKBamEaRkE5aIdV1sAYQqLLydM4XBCkTiG
- GFIVTL/yFGyguHN8wSLcSvUZE90X8L0Dl6ADsDYYK4OvRTazhnm3x7y++XmfoqMw1R2r
- ESRdU83oFE6kGmeJ8XDlkIrDk5MG+q9RkJid41bRaBBhrUr8v5iqAuJptYakZPM1RWOO
- 09Gg==
-X-Gm-Message-State: AOAM5304eGG0FmuQ/ZZh6OdIpD6xWMdj+IRztFMHG7B0VwGZlbaaGZon
- IOjGuM/H6C0r9QvD35uLfSXVGU73kmg=
-X-Google-Smtp-Source: ABdhPJx9RI1yanuLZeW8JCFUZPjd4A0VepzGZ0Hc2AOrIo9LoXX/jMY8vmOQ26HtAv4NmxxP0xMf6w==
-X-Received: by 2002:a65:5ccb:: with SMTP id b11mr19203087pgt.408.1637888143437; 
- Thu, 25 Nov 2021 16:55:43 -0800 (PST)
-Received: from localhost (115-64-213-93.static.tpgi.com.au. [115.64.213.93])
- by smtp.gmail.com with ESMTPSA id d3sm4947232pfv.57.2021.11.25.16.55.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Nov 2021 16:55:43 -0800 (PST)
-Date: Fri, 26 Nov 2021 10:55:38 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 00/17] powerpc: Make hash MMU code build configurable
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org
-References: <20211125125025.1472060-1-npiggin@gmail.com>
- <27f9cddf-44db-1d1f-17e0-fd8252c7a1c9@csgroup.eu>
- <d792e8a6-de81-1f93-8938-d1d9d6a1e748@csgroup.eu>
-In-Reply-To: <d792e8a6-de81-1f93-8938-d1d9d6a1e748@csgroup.eu>
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
+ envelope-from=nixiaoming@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0cRg1BBqz2yN1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 12:22:19 +1100 (AEDT)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.54])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4J0cQm5rrlz91NJ;
+ Fri, 26 Nov 2021 09:21:36 +0800 (CST)
+Received: from dggema774-chm.china.huawei.com (10.1.198.216) by
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.20; Fri, 26 Nov 2021 09:22:02 +0800
+Received: from [10.67.102.197] (10.67.102.197) by
+ dggema774-chm.china.huawei.com (10.1.198.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.20; Fri, 26 Nov 2021 09:22:01 +0800
+Subject: Re: [PATCH v2 2/2] powerpc:85xx: fix timebase sync issue when
+ CONFIG_HOTPLUG_CPU=n
+To: Martin Kennedy <hurricos@gmail.com>
+References: <CANA18Uxu5dUYOkDmXpYtLc8iQuAYMv1UujkmEo1bkhm3CqxMAA@mail.gmail.com>
+ <3c7523a3-2de2-3a76-2f46-9e4cf38f40b6@huawei.com>
+ <CANA18Uyba4kMJQrbCSZVTFep2Exe5izE45whNJgwwUvNSEcNLg@mail.gmail.com>
+From: Xiaoming Ni <nixiaoming@huawei.com>
+Message-ID: <5f56f1af-9404-21fa-eda0-05a75d769427@huawei.com>
+Date: Fri, 26 Nov 2021 09:22:01 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.0.1
 MIME-Version: 1.0
-Message-Id: <1637887917.uatiybce4e.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CANA18Uyba4kMJQrbCSZVTFep2Exe5izE45whNJgwwUvNSEcNLg@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.102.197]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggema774-chm.china.huawei.com (10.1.198.216)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,66 +58,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: chenjianguo3@huawei.com, wangle6@huawei.com, chenhui.zhao@freescale.com,
+ Christian Lamparter <chunkeey@gmail.com>, oss@buserror.net,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Yuantian.Tang@feescale.com, paul.gortmaker@windriver.com, paulus@samba.org,
+ gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
+ liuwenliang@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of November 26, 2021 3:35 am:
->=20
->=20
-> Le 25/11/2021 =C3=A0 17:35, Christophe Leroy a =C3=A9crit=C2=A0:
->>=20
->>=20
->> Le 25/11/2021 =C3=A0 13:50, Nicholas Piggin a =C3=A9crit=C2=A0:
->>> Now that there's a platform that can make good use of it, here's
->>> a series that can prevent the hash MMU code being built for 64s
->>> platforms that don't need it.
->>=20
->> # CONFIG_PPC_64S_HASH_MMU is not set
->>=20
->>=20
->> <stdin>:1559:2: warning: #warning syscall futex_waitv not implemented=20
->> [-Wcpp]
->> arch/powerpc/platforms/cell/spu_base.c: In function '__spu_kernel_slb':
->> arch/powerpc/platforms/cell/spu_base.c:215:38: error: 'mmu_linear_psize'=
-=20
->> undeclared (first use in this function); did you mean 'mmu_virtual_psize=
-'?
->>  =C2=A0 215 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 llp =3D mmu_psize_defs[mmu_linear_p=
-size].sllp;
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^~~~~~~~~~~~~~~~
->>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mmu_virtual_psize
->> arch/powerpc/platforms/cell/spu_base.c:215:38: note: each undeclared=20
->> identifier is reported only once for each function it appears in
->> make[3]: *** [scripts/Makefile.build:287:=20
->> arch/powerpc/platforms/cell/spu_base.o] Error 1
->> make[2]: *** [scripts/Makefile.build:549: arch/powerpc/platforms/cell]=20
->> Error 2
->> make[1]: *** [scripts/Makefile.build:549: arch/powerpc/platforms] Error =
-2
->> make: *** [Makefile:1846: arch/powerpc] Error 2
->>=20
->>=20
->=20
->=20
-> With CONFIG_SPU_BASE removed, the above voids and I get to the final=20
-> link with the following errors:
+On 2021/11/25 22:34, Martin Kennedy wrote:
+> Hi there,
+> 
+> Yes, I can test this patch.
+> 
+> I have added it to my tree and removed the reversion, and can confirm
+> that the second CPU comes up correctly now.
+> 
+> Martin
+> 
+Thank you very much for your report and testing, I'll send a patch later
 
-This is building cell platform with POWER9 CPU and !HASH?
+Thanks
+Xiaoming Ni
 
-We don't have to make that build, just prevent the config. I had that in=20
-a previous version which also had platforms select hash, but we went to=20
-just CPU. But now there's no constraint that prevents cell+POWER9 even=20
-though it doesn't make sense.
+> On Thu, Nov 25, 2021 at 2:23 AM Xiaoming Ni <nixiaoming@huawei.com> wrote:
+>>
+>> On 2021/11/25 12:20, Martin Kennedy wrote:
+>>> Hi there,
+>>>
+>>> I have bisected OpenWrt master, and then the Linux kernel down to this
+>>> change, to confirm that this change causes a kernel panic on my
+>>> P1020RDB-based, dual-core Aerohive HiveAP 370, at initialization of
+>>> the second CPU:
+>>>
+>>> :
+>>> [    0.000000] Linux version 5.10.80 (labby@lobon)
+>>> (powerpc-openwrt-linux-musl-gcc (OpenWrt GCC 11.2.0
+>>> r18111+1-ebb6f9287e) 11.2.0, GNU ld (GNU Binutils) 2.37) #0 SMP Thu
+>>> Nov 25 02:49:35 2021
+>>> [    0.000000] Using P1020 RDB machine description
+>>> :
+>>> [    0.627233] smp: Bringing up secondary CPUs ...
+>>> [    0.681659] kernel tried to execute user page (0) - exploit attempt? (uid: 0)
+>>> [    0.766618] BUG: Unable to handle kernel instruction fetch (NULL pointer?)
+>>> [    0.848899] Faulting instruction address: 0x00000000
+>>> [    0.908273] Oops: Kernel access of bad area, sig: 11 [#1]
+>>> [    0.972851] BE PAGE_SIZE=4K SMP NR_CPUS=2 P1020 RDB
+>>> [    1.031179] Modules linked in:
+>>> [    1.067640] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.10.80 #0
+>>> [    1.139507] NIP:  00000000 LR: c0021d2c CTR: 00000000
+>>> [    1.199921] REGS: c1051cf0 TRAP: 0400   Not tainted  (5.10.80)
+>>> [    1.269705] MSR:  00021000 <CE,ME>  CR: 84020202  XER: 00000000
+>>> [    1.340534]
+>>> [    1.340534] GPR00: c0021cb8 c1051da8 c1048000 00000001 00029000
+>>> 00000000 00000001 00000000
+>>> [    1.340534] GPR08: 00000001 00000000 c08b0000 00000040 22000208
+>>> 00000000 c00032c4 00000000
+>>> [    1.340534] GPR16: 00000000 00000000 00000000 00000000 00000000
+>>> 00000000 00029000 00000001
+>>> [    1.340534] GPR24: 1ffff240 20000000 dffff240 c080a1f4 00000001
+>>> c08ae0a8 00000001 dffff240
+>>> [    1.758220] NIP [00000000] 0x0
+>>> [    1.794688] LR [c0021d2c] smp_85xx_kick_cpu+0xe8/0x568
+>>> [    1.856126] Call Trace:
+>>> [    1.885295] [c1051da8] [c0021cb8] smp_85xx_kick_cpu+0x74/0x568 (unreliable)
+>>> [    1.968633] [c1051de8] [c0011460] __cpu_up+0xc0/0x228
+>>> [    2.029038] [c1051e18] [c0031bbc] bringup_cpu+0x30/0x224
+>>> [    2.092572] [c1051e48] [c0031f3c] cpu_up.constprop.0+0x180/0x33c
+>>> [    2.164443] [c1051e88] [c00322e8] bringup_nonboot_cpus+0x88/0xc8
+>>> [    2.236326] [c1051eb8] [c07e67bc] smp_init+0x30/0x78
+>>> [    2.295698] [c1051ed8] [c07d9e28] kernel_init_freeable+0x118/0x2a8
+>>> [    2.369641] [c1051f18] [c00032d8] kernel_init+0x14/0x124
+>>> [    2.433176] [c1051f38] [c0010278] ret_from_kernel_thread+0x14/0x1c
+>>> [    2.507125] Instruction dump:
+>>> [    2.542541] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+>>> XXXXXXXX XXXXXXXX
+>>> [    2.635242] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+>>> XXXXXXXX XXXXXXXX
+>>> [    2.727952] ---[ end trace 9b796a4bafb6bc14 ]---
+>>> [    2.783149]
+>>> [    3.800879] Kernel panic - not syncing: Fatal exception
+>>> [    3.862353] Rebooting in 1 seconds..
+>>> [    5.905097] System Halted, OK to turn off power
+>>>
+>>> Without this patch, the kernel no longer panics:
+>>>
+>>> [    0.627232] smp: Bringing up secondary CPUs ...
+>>> [    0.681857] smp: Brought up 1 node, 2 CPUs
+>>>
+>>> Here is the kernel configuration for this built kernel:
+>>> https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob_plain;f=target/linux/mpc85xx/config-5.10;hb=HEAD
+>>>
+>>> In case a force-push is needed for the source repository
+>>> (https://github.com/Hurricos/openwrt/commit/ad19bdfc77d60ee1c52b41bb4345fdd02284c4cf),
+>>> here is the device tree for this board:
+>>> https://paste.c-net.org/TrousersSliced
+>>>
+>>> Martin
+>>> .
+>>>
+>> When CONFIG_FSL_PMC is set to n, cpu_up_prepare is not assigned to
+>> mpc85xx_pm_ops. I suspect that this is the cause of the current null
+>> pointer access.
+>> I do not have the corresponding board test environment. Can you help me
+>> to test whether the following patch solves the problem?
+>>
+>> diff --git a/arch/powerpc/platforms/85xx/smp.c
+>> b/arch/powerpc/platforms/85xx/smp.c
+>> index 83f4a6389a28..d7081e9af65c 100644
+>> --- a/arch/powerpc/platforms/85xx/smp.c
+>> +++ b/arch/powerpc/platforms/85xx/smp.c
+>> @@ -220,7 +220,7 @@ static int smp_85xx_start_cpu(int cpu)
+>>           local_irq_save(flags);
+>>           hard_irq_disable();
+>>
+>> -   if (qoriq_pm_ops)
+>> + if (qoriq_pm_ops && qoriq_pm_ops->cpu_up_prepare)
+>>                   qoriq_pm_ops->cpu_up_prepare(cpu);
+>>
+>>           /* if cpu is not spinning, reset it */
+>> @@ -292,7 +292,7 @@ static int smp_85xx_kick_cpu(int nr)
+>>                   booting_thread_hwid = cpu_thread_in_core(nr);
+>>                   primary = cpu_first_thread_sibling(nr);
+>>
+>> -           if (qoriq_pm_ops)
+>> +         if (qoriq_pm_ops && qoriq_pm_ops->cpu_up_prepare)
+>>                           qoriq_pm_ops->cpu_up_prepare(nr);
+>>
+>>                   /*
+>>
+>>
+> .
+> 
 
-Not sure the best way to fix it. I'll think about it.
-
-Thanks,
-Nick
