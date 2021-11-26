@@ -1,102 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BDD45F351
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 19:01:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A4545F527
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 20:24:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J12c568MJz3cRg
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 05:01:09 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KT6a4dZC;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J14Sb3XCmz3cXp
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 06:24:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=KT6a4dZC; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J12bQ1G8Wz307l
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 05:00:33 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AQHqWdR009504; 
- Fri, 26 Nov 2021 18:00:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=+/hqb/un2BjaAFHg8euyO7jucLh7BK71I9UgLS4ZUUY=;
- b=KT6a4dZC16WMYE4SNeALLpv8yOyyTzhKedYhaFdS4Ygzvs7IeOHgpBjgQb53PHaye8F9
- lltuvKAN9FmCmN3XkfsiqJw+Ps8REFYY3mLZHDjOp5JSd4BJdY5a1l9dZ40IC0nEK8oS
- 1NCj4aoURIt0HpXyecUBNCvEy2jNB5c9QupfL2fPhYjunpVg/FVbTeHOZvZXLW0o72IT
- q2amK+F1zpDHG+fA3OHWMrDD44NWCbZnZLEA7rKrdCagfI8aitYTmz3ssWUtW/rQ/fZY
- 0y22fdQWEAmjJ5yYxnIZDyAOyz8y2Kxe+yFVTIS+B65AaDRa8WQQmo2v8QE1j7gXFvgt 8Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3ck4c7g2q5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Nov 2021 18:00:11 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AQHv24A024247;
- Fri, 26 Nov 2021 18:00:11 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3ck4c7g2p7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Nov 2021 18:00:10 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AQHvG29011045;
- Fri, 26 Nov 2021 18:00:09 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma03ams.nl.ibm.com with ESMTP id 3cernawp6k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Nov 2021 18:00:09 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 1AQHqmOL62980594
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Nov 2021 17:52:48 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D3649A4069;
- Fri, 26 Nov 2021 18:00:06 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5CA8DA405C;
- Fri, 26 Nov 2021 18:00:05 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.79.184.185])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 26 Nov 2021 18:00:05 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
-Subject: Re: [PATCH] powerpc/code-patching: Relax verification of patchability
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-In-Reply-To: <68d7d57675e0963fe5e2c4b84b0cb2390c78638c.1637912333.git.christophe.leroy@csgroup.eu>
-Date: Fri, 26 Nov 2021 23:30:02 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2EB75A15-726B-44D4-8007-0FE2FF7CAE82@linux.vnet.ibm.com>
-References: <68d7d57675e0963fe5e2c4b84b0cb2390c78638c.1637912333.git.christophe.leroy@csgroup.eu>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-X-Mailer: Apple Mail (2.3654.120.0.1.13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8TuRGswQ2D5ia17jkCNzZdQFpFLPflay
-X-Proofpoint-ORIG-GUID: cLH4ecp3qMq9onUibW46OCXZyv0e0wYb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-26_05,2021-11-25_02,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 adultscore=0 malwarescore=0 phishscore=0 spamscore=0
- impostorscore=0 mlxscore=0 suspectscore=0 lowpriorityscore=0
- mlxlogscore=999 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2110150000 definitions=main-2111260099
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J14S84SL9z2xsT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 06:24:18 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10180"; a="216415581"
+X-IronPort-AV: E=Sophos;i="5.87,266,1631602800"; d="scan'208";a="216415581"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Nov 2021 11:23:15 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,266,1631602800"; d="scan'208";a="539323646"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+ by orsmga001.jf.intel.com with ESMTP; 26 Nov 2021 11:23:13 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mqgoS-0008Tn-Gd; Fri, 26 Nov 2021 19:23:12 +0000
+Date: Sat, 27 Nov 2021 03:23:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, alex@ghiti.fr
+Subject: Re: [PATCH v2 9/9] powerpc: Simplify and move arch_randomize_brk()
+Message-ID: <202111270342.b1Y85fuz-lkp@intel.com>
+References: <4c5a2b18774552c2226573f7069ffeee71ad77cb.1637828367.git.christophe.leroy@csgroup.eu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4c5a2b18774552c2226573f7069ffeee71ad77cb.1637828367.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,33 +54,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, kbuild-all@lists.01.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Christophe,
 
->  Running code patching self-tests ...
->  patch_instruction() called on invalid text address 0xe1011e58 from =
-test_code_patching+0x34/0xd6c
->=20
-> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Fixes: 8b8a8f0ab3f5 ("powerpc/code-patching: Improve verification of =
-patchability")
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
-> arch/powerpc/lib/code-patching.c | 6 +++++-
-> 1 file changed, 5 insertions(+), 1 deletion(-)
->=20
+I love your patch! Perhaps something to improve:
 
-This fixes the problem for me.
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on hnaz-mm/master linus/master v5.16-rc2 next-20211126]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/Convert-powerpc-to-default-topdown-mmap-layout/20211125-162916
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+config: powerpc64-buildonly-randconfig-r006-20211125 (https://download.01.org/0day-ci/archive/20211127/202111270342.b1Y85fuz-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/554c475dfb73dc352708dff3589b55845b3dd751
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Christophe-Leroy/Convert-powerpc-to-default-topdown-mmap-layout/20211125-162916
+        git checkout 554c475dfb73dc352708dff3589b55845b3dd751
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/mm/book3s64/
 
-Thanks
--Sachin
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
+All warnings (new ones prefixed by >>):
+
+>> arch/powerpc/mm/book3s64/hash_utils.c:2077:15: warning: no previous prototype for 'arch_randomize_brk' [-Wmissing-prototypes]
+    2077 | unsigned long arch_randomize_brk(struct mm_struct *mm)
+         |               ^~~~~~~~~~~~~~~~~~
+
+
+vim +/arch_randomize_brk +2077 arch/powerpc/mm/book3s64/hash_utils.c
+
+  2076	
+> 2077	unsigned long arch_randomize_brk(struct mm_struct *mm)
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
