@@ -2,57 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECF645F1C9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 17:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E35245F1CC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 17:25:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J10Sy4nxCz3cQS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 03:24:50 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=t4bsyMz9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J10Tm0HRfz3cYB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 03:25:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=t4bsyMz9; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J10SH3mhGz2yPd
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 03:24:15 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 3658A622DE;
- Fri, 26 Nov 2021 16:24:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11490C93056;
- Fri, 26 Nov 2021 16:24:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1637943852;
- bh=Vgi66QN9GrkmxWdokZZIUkz1w8SHaCVhZ2xKywc0LJk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=t4bsyMz9sZ5SdNFbi8Lg+l0uMiN0ey9VkB0gZ4ewsPhDJKphrgo30OqgVl+Ib/hSy
- EnbF/tBud01uOKhBFfvaP88G5aI3yq4HPJp0GGxo5Vtv1vKTxg1DuYkD9aCYf+8qDc
- rMmxt6KmHuJFNfdoWl/FJDeKrEaiClZLjGWxbUyk=
-Date: Fri, 26 Nov 2021 17:24:09 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] w1: Misuse of get_user()/put_user() reported by sparse
-Message-ID: <YaEKKeNW70WJe38G@kroah.com>
-References: <2163689da6544c289254b3c69848acc36db998f5.1637313047.git.christophe.leroy@csgroup.eu>
- <YaEEqeKyWPfUP7vM@kroah.com>
- <39ec092d-428c-7fce-7291-a88a4caf8b9f@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J10TK4sWpz2yPd
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 03:25:08 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4J10TF2KRXz9sSM;
+ Fri, 26 Nov 2021 17:25:05 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id gUCo4gl_1BVF; Fri, 26 Nov 2021 17:25:05 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4J10TF1RBWz9sSL;
+ Fri, 26 Nov 2021 17:25:05 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 214D88B781;
+ Fri, 26 Nov 2021 17:25:05 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id pKQRMnP2DWp8; Fri, 26 Nov 2021 17:25:05 +0100 (CET)
+Received: from [192.168.204.6] (unknown [192.168.204.6])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 565248B763;
+ Fri, 26 Nov 2021 17:25:04 +0100 (CET)
+Message-ID: <90ea33c6-2e93-ea19-3052-90e15979578f@csgroup.eu>
+Date: Fri, 26 Nov 2021 17:25:04 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH] powerpc: mm: radix_tlb: rearrange the if-else block
+Content-Language: fr-FR
+To: Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+References: <20211125154406.470082-1-anders.roxell@linaro.org>
+ <6b1e51a8-2f4d-2024-df90-a35c926d7a30@csgroup.eu>
+ <CAK8P3a0n_n+PnfYmAdS9923yheLqYXRp8=65hKf9abLCRAX8ig@mail.gmail.com>
+ <YaEBTbjGyUBmISGK@archlinux-ax161>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <YaEBTbjGyUBmISGK@archlinux-ax161>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <39ec092d-428c-7fce-7291-a88a4caf8b9f@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,78 +65,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Evgeniy Polyakov <zbr@ioremap.net>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+Cc: Anders Roxell <anders.roxell@linaro.org>, llvm@lists.linux.dev,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 26, 2021 at 05:10:46PM +0100, Christophe Leroy wrote:
-> 
-> 
-> Le 26/11/2021 à 17:00, Greg Kroah-Hartman a écrit :
-> > On Fri, Nov 19, 2021 at 10:15:09AM +0100, Christophe Leroy wrote:
-> > > sparse warnings: (new ones prefixed by >>)
-> > > > > drivers/w1/slaves/w1_ds28e04.c:342:13: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected char [noderef] __user *_pu_addr @@     got char *buf @@
-> > >     drivers/w1/slaves/w1_ds28e04.c:342:13: sparse:     expected char [noderef] __user *_pu_addr
-> > >     drivers/w1/slaves/w1_ds28e04.c:342:13: sparse:     got char *buf
-> > > > > drivers/w1/slaves/w1_ds28e04.c:356:13: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected char const [noderef] __user *_gu_addr @@     got char const *buf @@
-> > >     drivers/w1/slaves/w1_ds28e04.c:356:13: sparse:     expected char const [noderef] __user *_gu_addr
-> > >     drivers/w1/slaves/w1_ds28e04.c:356:13: sparse:     got char const *buf
-> > > 
-> > > The buffer buf is a failsafe buffer in kernel space, it's not user
-> > > memory hence doesn't deserve the use of get_user() or put_user().
-> > > 
-> > > Access 'buf' content directly.
-> > > 
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > > Link: https://lore.kernel.org/lkml/202111190526.K5vb7NWC-lkp@intel.com/T/
-> > > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > > ---
-> > >   drivers/w1/slaves/w1_ds28e04.c | 10 ++--------
-> > >   1 file changed, 2 insertions(+), 8 deletions(-)
-> > > 
-> > > diff --git a/drivers/w1/slaves/w1_ds28e04.c b/drivers/w1/slaves/w1_ds28e04.c
-> > > index e4f336111edc..d75bb16fb7a1 100644
-> > > --- a/drivers/w1/slaves/w1_ds28e04.c
-> > > +++ b/drivers/w1/slaves/w1_ds28e04.c
-> > > @@ -339,10 +339,7 @@ static BIN_ATTR_RW(pio, 1);
-> > >   static ssize_t crccheck_show(struct device *dev, struct device_attribute *attr,
-> > >   			     char *buf)
-> > >   {
-> > > -	if (put_user(w1_enable_crccheck + 0x30, buf))
-> > > -		return -EFAULT;
-> > > -
-> > > -	return sizeof(w1_enable_crccheck);
-> > > +	return sprintf(buf, "%d", w1_enable_crccheck);
-> > 
-> > This should be sysfs_emit(), right?
-> 
-> Ok
-> 
-> > 
-> > >   }
-> > >   static ssize_t crccheck_store(struct device *dev, struct device_attribute *attr,
-> > > @@ -353,11 +350,8 @@ static ssize_t crccheck_store(struct device *dev, struct device_attribute *attr,
-> > >   	if (count != 1 || !buf)
-> > >   		return -EINVAL;
-> > > -	if (get_user(val, buf))
-> > > -		return -EFAULT;
-> > > -
-> > >   	/* convert to decimal */
-> > > -	val = val - 0x30;
-> > > +	val = *buf - 0x30;
-> > 
-> > Why not use a proper function that can parse a string and turn it into a
-> > number?
-> 
-> I wanted to keep the change minimal. But I can also replace it with some
-> scanf.
-> 
-> But don't we have any generic function to read and store a bool after all ?
 
-Yes we do, please use kstrtobool().
 
-thanks,
+Le 26/11/2021 Ã  16:46, Nathan Chancellor a Ã©critÂ :
+> On Fri, Nov 26, 2021 at 02:59:29PM +0100, Arnd Bergmann wrote:
+>> On Fri, Nov 26, 2021 at 2:43 PM Christophe Leroy
+>> <christophe.leroy@csgroup.eu> wrote:
+>>> Le 25/11/2021 Ã  16:44, Anders Roxell a Ã©crit :
+>>> Can't you fix CLANG instead :) ?
+>>>
+>>> Or just add an else to the IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) that
+>>> sets hstart and hend to 0 ?
+>>
+>> That doesn't sound any less risky than duplicating the code, it can lead to
+>> incorrect changes just as easily if a patch ends up actually flushing at the
+>> wrong address, and the compiler fails to complain because of the bogus
+>> initialization.
+>>
+>>> Or just put hstart and hend calculation outside the IS_ENABLED() ? After
+>>> all GCC should drop the calculation when not used.
+>>
+>> I like this one. I'm still unsure how clang can get so confused about whether
+>> the variables are initialized or not, usually it handles this much better than
+>> gcc. My best guess is that one of the memory clobbers makes it conclude
+>> that 'hflush' can be true when it gets written to by an inline asm.
+> 
+> As far as I am aware, clang's analysis does not evaluate variables when
+> generating a control flow graph and using that for static analysis:
+> 
+> https://godbolt.org/z/PdGxoq9j7
+> 
+> Based on the control flow graph, it knows that hstart and hend are
+> uninitialized because IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) gets
+> expanded to 0 by the preprocessor but it does not seem like it can piece
+> together that hflush's value of false is only changed to true under the
+> now 'if (0) {' branch, meaning that all the calls to __tlbiel_va_range()
+> never get evaluated. That may or may not be easy to fix in clang but we
+> run into issues like this so infrequently.
+> 
+> At any rate, the below diff works for me.
+> 
+> Cheers,
+> Nathan
+> 
+> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+> index 7724af19ed7e..156a631df976 100644
+> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
+> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+> @@ -1174,12 +1174,10 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
+>   		bool hflush = false;
+>   		unsigned long hstart, hend;
+>   
+> -		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
+> -			hstart = (start + PMD_SIZE - 1) & PMD_MASK;
+> -			hend = end & PMD_MASK;
+> -			if (hstart < hend)
+> -				hflush = true;
+> -		}
+> +		hstart = (start + PMD_SIZE - 1) & PMD_MASK;
+> +		hend = end & PMD_MASK;
+> +		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && hstart < hend)
+> +			hflush = true;
 
-greg k-h
+Yes I like that much better.
+
+Maybe even better with
+
+	hflush = IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && hstart < hend;
+
+(And remove default false value at declaration).
+
+>   
+>   		if (type == FLUSH_TYPE_LOCAL) {
+>   			asm volatile("ptesync": : :"memory");
+> 
