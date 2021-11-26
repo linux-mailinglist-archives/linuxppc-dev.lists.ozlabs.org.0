@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4120545E719
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 06:17:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B62545E720
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 06:18:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0jfx0xXSz3c7Z
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 16:17:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0jh01Z8qz3cVP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 16:18:24 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=nH4yWcsT;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=rong.a.chen@intel.com; receiver=<UNKNOWN>)
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0jfV4GvWz305Z
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 16:17:00 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6200,9189,10179"; a="216319294"
-X-IronPort-AV: E=Sophos;i="5.87,263,1631602800"; d="scan'208";a="216319294"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2021 21:15:58 -0800
-X-IronPort-AV: E=Sophos;i="5.87,263,1631602800"; d="scan'208";a="510513613"
-Received: from rongch2-mobl.ccr.corp.intel.com (HELO [10.255.31.165])
- ([10.255.31.165])
- by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2021 21:15:55 -0800
-Subject: Re: [kbuild-all] Re: [PATCH 1/8] powerpc/mm: Make slice specific to
- book3s/64
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- kernel test robot <lkp@intel.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- alex@ghiti.fr
-References: <14e2c0b0d4fff49c1cb30166f54ce8e445e17b16.1637570556.git.christophe.leroy@csgroup.eu>
- <202111222218.RhruLp7S-lkp@intel.com>
- <adefca8d-5fd4-b9ad-dfb8-0cf334440935@csgroup.eu>
- <da5038fd-611a-a0b3-10b7-35dac6817e6a@csgroup.eu>
-From: "Chen, Rong A" <rong.a.chen@intel.com>
-Message-ID: <802212cd-87d6-cb7b-768d-9794d08eb4f8@intel.com>
-Date: Fri, 26 Nov 2021 13:15:53 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.12.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0jgK1qNqz2xWj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 16:17:49 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=nH4yWcsT; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4J0jgJ0cFCz4xcs;
+ Fri, 26 Nov 2021 16:17:48 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+ s=201702; t=1637903868;
+ bh=AAOD21El17vpcnisEbyZYdugcNxszPm2+pdvTLoenSs=;
+ h=Date:From:To:Cc:Subject:From;
+ b=nH4yWcsTdCXNmXupIskWYkBjPcwXE9qsfAe27hsTwoZ74FBzYFxRO0A+8Yp1qli/m
+ lvwaF8Oysz+ncosu51eeJ8dKOy3e3ubsOsN7c6tmTXZ0n6FUfxI8556f1kijD0In3A
+ K0O2XbwOxhEjs/XUB5TT3LV+fgMj6JTa7qERwUuQhkeiVFmibQ08yZOO3dGn7kby8O
+ nFPSOJ6Q982lF/Fl8tsur2ncJ1LgGF9DsVoebyubmzIjHc0CZ0iMoHV0bIZmZfyAGS
+ rz8aPEUaplR6Dq4WZ/iqnSVa129tuBj+sJLIK9SQp8eE8j9b3GjFIQ/n3YX2kOWuIz
+ l6Vr/2nM+g9bQ==
+Date: Fri, 26 Nov 2021 16:17:47 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: runtime warnings from qemu run
+Message-ID: <20211126161747.1f7795b0@canb.auug.org.au>
 MIME-Version: 1.0
-In-Reply-To: <da5038fd-611a-a0b3-10b7-35dac6817e6a@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/Pjx1zm/0SNnSj.qidH65KuZ";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,104 +59,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, kbuild-all@lists.01.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+--Sig_/Pjx1zm/0SNnSj.qidH65KuZ
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
+Hi all,
 
-On 11/24/2021 9:49 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 24/11/2021 à 13:10, Christophe Leroy a écrit :
->>
->>
->> Le 22/11/2021 à 15:48, kernel test robot a écrit :
->>> Hi Christophe,
->>>
->>> I love your patch! Perhaps something to improve:
->>>
->>> [auto build test WARNING on powerpc/next]
->>> [also build test WARNING on hnaz-mm/master linus/master v5.16-rc2 
->>> next-20211118]
->>> [If your patch is applied to the wrong git tree, kindly drop us a note.
->>> And when submitting patch, we suggest to use '--base' as documented in
->>> https://git-scm.com/docs/git-format-patch]
->>>
->>> url: 
->>> https://github.com/0day-ci/linux/commits/Christophe-Leroy/Convert-powerpc-to-default-topdown-mmap-layout/20211122-165115 
->>>
->>> base: 
->>> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
->>> config: powerpc64-randconfig-s031-20211122 (attached as .config)
->>> compiler: powerpc64-linux-gcc (GCC) 11.2.0
->>> reproduce:
->>>          wget 
->>> https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross 
->>> -O ~/bin/make.cross
->>>          chmod +x ~/bin/make.cross
->>>          # apt-get install sparse
->>>          # sparse version: v0.6.4-dirty
->>>          # 
->>> https://github.com/0day-ci/linux/commit/1d0b7cc86d08f25f595b52d8c39ba9ca1d29a30a 
->>>
->>>          git remote add linux-review https://github.com/0day-ci/linux
->>>          git fetch --no-tags linux-review 
->>> Christophe-Leroy/Convert-powerpc-to-default-topdown-mmap-layout/20211122-165115 
->>>
->>>          git checkout 1d0b7cc86d08f25f595b52d8c39ba9ca1d29a30a
->>>          # save the attached .config to linux build tree
->>>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 
->>> make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' 
->>> ARCH=powerpc64
->>>
->>> If you fix the issue, kindly add following tag as appropriate
->>> Reported-by: kernel test robot <lkp@intel.com>
->>>
->>> All warnings (new ones prefixed by >>):
->>>
->>>     arch/powerpc/mm/book3s64/slice.c: In function 
->>> 'slice_get_unmapped_area':
->>>>> arch/powerpc/mm/book3s64/slice.c:639:1: warning: the frame size of 
->>>>> 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
->>>       639 | }
->>>           | ^
->>
->>
->> The problem was already existing when slice.c was in arch/powerpc/mm/
->>
->> This patch doesn't introduce the problem.
->>
-> 
-> In fact the problem is really added by yourself mister 'kernel test robot'.
-> 
-> CONFIG_FRAME_WARN is supposed to be 2048 on 64 bit architectures.
-> 
-> It the robot starts to reduce that value, it is on its own ....
+My qemu boot test (pseries_le_defconfig) produces these new messages:
 
-Hi Christophe,
+code-patching: test failed at line 444
+code-patching: test failed at line 447
+code-patching: test failed at line 450
+code-patching: test failed at line 453
+code-patching: test failed at line 456
+code-patching: test failed at line 461
+code-patching: test failed at line 466
+code-patching: test failed at line 471
+code-patching: test failed at line 476
+code-patching: test failed at line 493
+code-patching: test failed at line 533
+code-patching: test failed at line 536
+code-patching: test failed at line 539
+code-patching: test failed at line 542
+code-patching: test failed at line 545
+code-patching: test failed at line 553
+code-patching: test failed at line 558
+code-patching: test failed at line 563
+code-patching: test failed at line 568
+code-patching: test failed at line 585
+code-patching: test failed at line 605
+code-patching: test failed at line 609
+code-patching: test failed at line 618
+code-patching: test failed at line 619
+code-patching: test failed at line 620
+code-patching: test failed at line 629
+code-patching: test failed at line 630
+code-patching: test failed at line 631
+code-patching: test failed at line 640
+code-patching: test failed at line 641
+code-patching: test failed at line 650
+code-patching: test failed at line 651
+code-patching: test failed at line 661
+code-patching: test failed at line 665
+code-patching: test failed at line 675
+code-patching: test failed at line 676
+code-patching: test failed at line 677
+code-patching: test failed at line 687
+code-patching: test failed at line 688
+code-patching: test failed at line 689
+code-patching: test failed at line 699
+code-patching: test failed at line 700
+code-patching: test failed at line 710
+code-patching: test failed at line 711
 
-Thanks for the information, we'll set the default value for FRAME_WARN 
-in randconfig tests.
+Maybe caused by commit
 
-Best Regards,
-Rong Chen
+  8b8a8f0ab3f5 ("powerpc/code-patching: Improve verification of patchabilit=
+y")
 
-> 
-> 
-> config FRAME_WARN
->      int "Warn for stack frames larger than"
->      range 0 8192
->      default 2048 if GCC_PLUGIN_LATENT_ENTROPY
->      default 1536 if (!64BIT && (PARISC || XTENSA))
->      default 1024 if (!64BIT && !PARISC)
->      default 2048 if 64BIT
->      help
->        Tell gcc to warn at build time for stack frames larger than this.
->        Setting this too low will cause a lot of warnings.
->        Setting it to 0 disables the warning.
-> _______________________________________________
-> kbuild-all mailing list -- kbuild-all@lists.01.org
-> To unsubscribe send an email to kbuild-all-leave@lists.01.org
+As an presumably unrelated aside, we seem to be using a bit more stack
+space as well
+
+- mount (54) used greatest stack depth: 12512 bytes left
+- mount (55) used greatest stack depth: 12032 bytes left
++ mount (54) used greatest stack depth: 10608 bytes left
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/Pjx1zm/0SNnSj.qidH65KuZ
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmGgbfsACgkQAVBC80lX
+0Gxe3Qf+LJs2R9odFCwxljo8ufJdkWzJHDIluI/jxAUeRXb11TAqLN+RpO6bFdyX
++Wt6/Ua28tiT7Uj3B6ep4RKp0hEJ+jQzEGl5UIHxVm/qQgwd53FT8L9pmfPW2hBZ
+lyHtZh1vVcB4UmFdDTKN+e2Bmbde0aDlJIb8BD09qDZprENxDZsW+HCkLmB/BO0m
+fibxR7THsGopxE4IPjxOO0kTeyqhouSefEHFYkquet2krucrLjvnqVXxzNvXVoT3
+VuFONAgO13nuEzNH5zJuTwxXaFxcASMcb/90WzpQ+K248goNZtp0BoXPib5mW1uv
+V6d6LxaaL7yEhZAAjQUPSazZWD/ycg==
+=fUXM
+-----END PGP SIGNATURE-----
+
+--Sig_/Pjx1zm/0SNnSj.qidH65KuZ--
