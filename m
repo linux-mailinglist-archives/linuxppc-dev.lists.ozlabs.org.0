@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7354F45F692
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 22:38:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9150645F694
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 22:39:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J17Qp1vSQz3fST
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 08:38:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J17RX3f5rz3dfj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 08:39:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AZY07p3j;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=RkrRcUL3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::133;
- helo=mail-lf1-x133.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12d;
+ helo=mail-lf1-x12d.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=AZY07p3j; dkim-atps=neutral
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com
- [IPv6:2a00:1450:4864:20::133])
+ header.s=20210112 header.b=RkrRcUL3; dkim-atps=neutral
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com
+ [IPv6:2a00:1450:4864:20::12d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J12dg6NBJz3bXj
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 05:02:31 +1100 (AEDT)
-Received: by mail-lf1-x133.google.com with SMTP id m27so26048346lfj.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 10:02:31 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J12dj68gRz3blF
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 05:02:33 +1100 (AEDT)
+Received: by mail-lf1-x12d.google.com with SMTP id n12so26161958lfe.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 10:02:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=0HObz0L7jYC33/Dxy7x3kt14KoppaRcQ+sU+HcRStgU=;
- b=AZY07p3jVLTvHf+iy8yjRV4baO+SuWhRq3BxobIfzToTPQ495XsLui5sBRB4jmQbWd
- 1EWJUKKg8+0UuZ29BUV4qNF0EZPwI/Cbi8vdgYwSFQvz4hNtuCLFJYSs+LPsm6DuzjvH
- 65PLJGhO3XvoDdIr0zXkOLCUhIkdKBcFELfy9ChfqsWnYRJzPBssyb4LdQFOAaKHmqNg
- D36ZVSSFU0ETOwToL/Flb8SUj/WsJ3iD8Y97otUetf/DyVYBaLiwKoKohcxoU9Fr9rpX
- lLmjcwfKq6aMlYjVGNNTkKYnwNFeXefN9vJ2zSMn2axDRiiNM4lntTtQo1sdThJR1gBO
- Cjeg==
+ bh=jIixMSKlDuHM/ROsyXYWDI0GhGtBfDPAGuo/NFEP3H8=;
+ b=RkrRcUL3/unWl5TLL2UiI+cIefalNliyD5OZ8qBWw0vd5FWVYlkh2ZGxC2GwymdcF4
+ FnuqzFOgJ9BQ/mBjQ1gcA0nf/x0BiZJ+EgXuRos6k9RF6wtv8mydobglnFTyFDM/o/7U
+ fUeyXvBvL81voOpGVAlVYzb32boxZjAVRKIIq4IpzrY/VR/M+S4bjgjU1NP9DjKotc3U
+ /A+mqp3e4jEEb1Fop04zzVJHmitkr6/6LmFJtLtIeynw10291TBv/dm7oq2oOXHDw/W8
+ iLFwl6qMiG8Yr5CgCHF2n1M2IZGz5jiLQvM+yQ7bLbZ3yifj62/79nyqg4+7ZdM7pcg3
+ hbTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=0HObz0L7jYC33/Dxy7x3kt14KoppaRcQ+sU+HcRStgU=;
- b=goj0I/EFtwYPORA/318OfFt+p1kZLOFpfSudV6cUpFN1m+mwt7NXUUk/hlK1UAKfXP
- j9m2WA7M0MtSaJdyWYISnmb3i8mHoUhHJEfrAz+AZ+ok3ic+bteIudrLECC3fTD63M69
- kOw+Iu7mXNEILxE2IaeDcT01MDQai+a9+YR7Ik16J4am1hQLQFRJR7nqMRCzU4ov8sgH
- qJZeQaT7GW1QGiuFqrOWU3jrs+hUqCixKtwojGL/MhNThUpstOTfTWUb8Gvmoci/YXt3
- QzQxKofKrMQ2w9d2PpnAXl7I48/cGfp3Fy+B916/b981AMVYIaenYPjU1S8Avc8BlEEX
- LtEw==
-X-Gm-Message-State: AOAM533ADuqVbS72kTKlLTD/+NA/FO84aKhubtWdSnE/q7UI6wC+JYNs
- UrXZcOk71H9WkIBTitQt8C0=
-X-Google-Smtp-Source: ABdhPJxi5fpLaCpBhED5s6ixp22NJMTiIoO6NxLxmwPmwMn3ysOYt28+DNzeJCc6JiOYkJbJb7zBhg==
-X-Received: by 2002:a05:6512:70a:: with SMTP id
- b10mr30890432lfs.32.1637949748784; 
- Fri, 26 Nov 2021 10:02:28 -0800 (PST)
+ bh=jIixMSKlDuHM/ROsyXYWDI0GhGtBfDPAGuo/NFEP3H8=;
+ b=AmG/vBSGs7d/sAZvmLA9r9dwwnGkE39AqTbItadQnQuo2XKKCvZjKR0SQBUte6Tmep
+ NDectLv3antVH/6BEuZ5UJV0lsD0ot+GLlejPQZcme0hP7Hf1xpaAXola9qBz6+pjdlK
+ Z16u6w2Hg0y7sz8wcsFqlCGxoREgxYBtdm8KUOBwjpEndCbiV11BpSwLMU7re+3yqEeQ
+ cphjMr/baSI16DSLPpEY0C05taVyjLxNOaD8S+eCsYN5oa2vJTQqKjynZAmVvyp4Pfhu
+ CSMGorKMwhAbHsn+MjpzOEFS9TYDWP3kXsCFapdPUebah5r6buaGYK1ZohD+Lx+1yMT/
+ P3oA==
+X-Gm-Message-State: AOAM531suyYKd6DKo/OHNvFReXLlo1rJLLmbIytoFJmFsDqOHKOaT1s7
+ qmnHGRtiX9cBEhlQy4oM6/g=
+X-Google-Smtp-Source: ABdhPJwkZw3p0myZeHiHt7tYuC+kBTtIH6I1XgMcBHRb2HpPdyNP738dU9MuctCnRALXDO2n+ThzAg==
+X-Received: by 2002:a05:6512:114a:: with SMTP id
+ m10mr31826169lfg.54.1637949750851; 
+ Fri, 26 Nov 2021 10:02:30 -0800 (PST)
 Received: from localhost.localdomain (94-29-48-99.dynamic.spd-mgts.ru.
  [94.29.48.99])
- by smtp.gmail.com with ESMTPSA id i32sm553831lfv.295.2021.11.26.10.02.26
+ by smtp.gmail.com with ESMTPSA id i32sm553831lfv.295.2021.11.26.10.02.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 26 Nov 2021 10:02:28 -0800 (PST)
+ Fri, 26 Nov 2021 10:02:30 -0800 (PST)
 From: Dmitry Osipenko <digetx@gmail.com>
 To: Thierry Reding <thierry.reding@gmail.com>,
  Jonathan Hunter <jonathanh@nvidia.com>,
@@ -96,9 +96,9 @@ To: Thierry Reding <thierry.reding@gmail.com>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
  "K . C . Kuen-Chern Lin" <kclin@andestech.com>
-Subject: [PATCH v4 18/25] x86: Use do_kernel_power_off()
-Date: Fri, 26 Nov 2021 21:00:54 +0300
-Message-Id: <20211126180101.27818-19-digetx@gmail.com>
+Subject: [PATCH v4 19/25] ia64: Use do_kernel_power_off()
+Date: Fri, 26 Nov 2021 21:00:55 +0300
+Message-Id: <20211126180101.27818-20-digetx@gmail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211126180101.27818-1-digetx@gmail.com>
 References: <20211126180101.27818-1-digetx@gmail.com>
@@ -134,26 +134,31 @@ be converted to the new power-off API.
 
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- arch/x86/kernel/reboot.c | 4 ++--
+ arch/ia64/kernel/process.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 0a40df66a40d..cd7d9416d81a 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -747,10 +747,10 @@ static void native_machine_halt(void)
- 
- static void native_machine_power_off(void)
+diff --git a/arch/ia64/kernel/process.c b/arch/ia64/kernel/process.c
+index 834df24a88f1..cee4d7db2143 100644
+--- a/arch/ia64/kernel/process.c
++++ b/arch/ia64/kernel/process.c
+@@ -19,6 +19,7 @@
+ #include <linux/module.h>
+ #include <linux/notifier.h>
+ #include <linux/personality.h>
++#include <linux/reboot.h>
+ #include <linux/sched.h>
+ #include <linux/sched/debug.h>
+ #include <linux/sched/hotplug.h>
+@@ -599,8 +600,7 @@ machine_halt (void)
+ void
+ machine_power_off (void)
  {
--	if (pm_power_off) {
-+	if (kernel_can_power_off()) {
- 		if (!reboot_force)
- 			machine_shutdown();
+-	if (pm_power_off)
 -		pm_power_off();
-+		do_kernel_power_off();
- 	}
- 	/* A fallback in case there is no PM info available */
- 	tboot_shutdown(TB_SHUTDOWN_HALT);
++	do_kernel_power_off();
+ 	machine_halt();
+ }
+ 
 -- 
 2.33.1
 
