@@ -1,70 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31ECD45E7B7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 07:09:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1DB45E7E5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 07:35:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0kqG0HLvz3c5Z
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 17:09:46 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=eL6X1m0g;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0lNc1Ddsz3bjG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 17:35:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::432;
- helo=mail-pf1-x432.google.com; envelope-from=dja@axtens.net;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=eL6X1m0g; dkim-atps=neutral
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
- [IPv6:2607:f8b0:4864:20::432])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0kpZ4VcSz2yLJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 17:09:08 +1100 (AEDT)
-Received: by mail-pf1-x432.google.com with SMTP id g19so7874568pfb.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 22:09:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=Hs9a+ZiTlZA6Gkk3kiV2RW3d8HLh7Xt0cL7JLFGKFoQ=;
- b=eL6X1m0g4MqluMR/4GorsaGi4MCWJPQF/hsCtZamhdCj6D+JX1KnphLTzrCOHaGv0i
- JmZ6uyp2MiVJ9V7EPweG403t+NiHHe35jULoZDFbG8//JzUuWJGA/Ata335fbG/2oDbZ
- xyY/oNWBMRmpzxjM5076VGbzSSXhPn/R3Lmic=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=Hs9a+ZiTlZA6Gkk3kiV2RW3d8HLh7Xt0cL7JLFGKFoQ=;
- b=l1M+bEWE/uC99XfFQL9zCVmb2bpzsmsa9lPu0LhKJ40u3JQlbOcD3Y3YnMnQSjmE3P
- JtfBSMvkDO6srATr3A+AJiQQ3/zBxlO39nwckf7MAU4Mgp++8cSsoQh09RMt0wBiljxf
- mHsiOFoTk4zu5+I2+s2OLvVcdLZfdNQAnqvcNLqOOa7JXdCzf16JXjr4hEuyBDGusoMx
- pPFx18/G0PJEt2rnBkgnEySkJiF3TgdADa4J0O3LQnVZLvFLEIbs8x64sx+TXkgun4JO
- a9yYKNrVlS2aLvWenf0fX0lQc8VzwbCj8CnaIJSTvT/FbYMdV4mIIztoCgf8A/7elXST
- C21w==
-X-Gm-Message-State: AOAM5301bEcygKGHHi8whQJxOQefDKXXDMEguNjl+OCnX891jpWcGy+D
- yqiFBEkyWd9xXFD8oJt2A81H3A==
-X-Google-Smtp-Source: ABdhPJyUKHRkZqs8VKAWxJq+jiC4v7DguZ5wDjuNE00RzxpnI6G5oZ7P5P6TOaGjcK0masGpZW+0xg==
-X-Received: by 2002:a05:6a00:21c8:b0:4a8:125:de32 with SMTP id
- t8-20020a056a0021c800b004a80125de32mr4760964pfj.49.1637906945672; 
- Thu, 25 Nov 2021 22:09:05 -0800 (PST)
-Received: from localhost ([2001:4479:e000:e400:90aa:d61c:4f97:c608])
- by smtp.gmail.com with ESMTPSA id f15sm6104415pfe.171.2021.11.25.22.09.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Nov 2021 22:09:05 -0800 (PST)
-From: Daniel Axtens <dja@axtens.net>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/64s/radix: Fix unmapping huge vmaps when
- CONFIG_HUGETLB_PAGE=n
-In-Reply-To: <20211126022834.1622106-1-npiggin@gmail.com>
-References: <20211126022834.1622106-1-npiggin@gmail.com>
-Date: Fri, 26 Nov 2021 17:09:02 +1100
-Message-ID: <87tufzzbwh.fsf@linkitivity.dja.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0lNB3MNDz2xWj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 17:34:48 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4J0lN54tqlz9sSM;
+ Fri, 26 Nov 2021 07:34:45 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id hqmbWjIUzD78; Fri, 26 Nov 2021 07:34:45 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4J0lN549GKz9sRr;
+ Fri, 26 Nov 2021 07:34:45 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 806BA8B77D;
+ Fri, 26 Nov 2021 07:34:45 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id AIE-OL0El7RX; Fri, 26 Nov 2021 07:34:45 +0100 (CET)
+Received: from [192.168.204.6] (unknown [192.168.204.6])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3AFE18B763;
+ Fri, 26 Nov 2021 07:34:44 +0100 (CET)
+Message-ID: <f9e53405-b5b9-15d1-eaf9-0616a5b87424@csgroup.eu>
+Date: Fri, 26 Nov 2021 07:34:44 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH 1/3] powerpc/code-patching: work around code patching
+ verification in patching tests
+Content-Language: fr-FR
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20211126032249.1652080-1-npiggin@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20211126032249.1652080-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,50 +63,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
 
-> pmd_huge is defined out to false when HUGETLB_PAGE is not configured,
-> but the vmap code still installs huge PMDs. This leads to errors
-> encountering bad PMDs when vunmapping because it is not seen as a
-> huge PTE, and the bad PMD check catches it. The end result may not
-> be much more serious than some bad pmd warning messages, because the
-> pmd_none_or_clear_bad() does what we wanted and clears the huge PTE
-> anyway.
 
-Huh. So vmap seems to key off arch_vmap_p?d_supported which checks for
-radix and HAVE_ARCH_HUGE_VMAP.
+Le 26/11/2021 à 04:22, Nicholas Piggin a écrit :
+> Code patching tests patch the stack and (non-module) vmalloc space now,
+> which falls afoul of the new address check.
+> 
+> The stack patching can easily be fixed, but the vmalloc patching is more
+> difficult. For now, add an ugly workaround to skip the check while the
+> test code is running.
 
-> Fix this by checking pmd_is_leaf(), which checks for a PTE regardless
-> of config options. The whole huge/large/leaf stuff is a tangled mess
-> but that's kernel-wide and not something we can improve much in
-> arch/powerpc code.
+This really looks hacky.
 
-I guess I'm a bit late to the party here because p?d_is_leaf was added
-in 2019 in commit d6eacedd1f0e ("powerpc/book3s: Use config independent
-helpers for page table walk") but why wouldn't we just make pmd_huge()
-not config dependent?
+To skip the test, you can call do_patch_instruction() instead of calling 
+patch_instruction().
 
-Also, looking at that commit, there are a few places that might still
-throw warnings, e.g. find_linux_pte, find_current_mm_pte, pud_page which
-seem like they might still throw warnings if they were to encounter a
-huge vmap page:
-
-struct page *pud_page(pud_t pud)
-{
-	if (pud_is_leaf(pud)) {
-		VM_WARN_ON(!pud_huge(pud));
-
-Do these functions need special treatment for huge vmappings()?
-
-Apart from those questions, the patch itself makes sense to me and I can
-follow how it would fix a problem.
-
-Reviewed-by: Daniel Axtens <dja@axtens.net>
-
-Kind regards,
-Daniel
+> 
+> Fixes: 8b8a8f0ab3f55 ("powerpc/code-patching: Improve verification of patchability")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   arch/powerpc/lib/code-patching.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+> index 5e2fe133639e..57e160963ab7 100644
+> --- a/arch/powerpc/lib/code-patching.c
+> +++ b/arch/powerpc/lib/code-patching.c
+> @@ -187,10 +187,12 @@ static int do_patch_instruction(u32 *addr, struct ppc_inst instr)
+>   
+>   #endif /* CONFIG_STRICT_KERNEL_RWX */
+>   
+> +static bool skip_addr_verif = false;
+> +
+>   int patch_instruction(u32 *addr, struct ppc_inst instr)
+>   {
+>   	/* Make sure we aren't patching a freed init section */
+> -	if (!kernel_text_address((unsigned long)addr))
+> +	if (!skip_addr_verif && !kernel_text_address((unsigned long)addr))
+>   		return 0;
+>   
+>   	return do_patch_instruction(addr, instr);
+> @@ -738,11 +740,13 @@ static int __init test_code_patching(void)
+>   {
+>   	printk(KERN_DEBUG "Running code patching self-tests ...\n");
+>   
+> +	skip_addr_verif = true;
+>   	test_branch_iform();
+>   	test_branch_bform();
+>   	test_create_function_call();
+>   	test_translate_branch();
+>   	test_prefixed_patching();
+> +	skip_addr_verif = false;
+>   
+>   	return 0;
+>   }
+> 
