@@ -2,57 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3133045E791
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 06:49:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31ECD45E7B7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 07:09:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0kMP0JX4z3cRg
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 16:49:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0kqG0HLvz3c5Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 17:09:46 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256 header.s=google header.b=eL6X1m0g;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::432;
+ helo=mail-pf1-x432.google.com; envelope-from=dja@axtens.net;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
+ header.s=google header.b=eL6X1m0g; dkim-atps=neutral
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
+ [IPv6:2607:f8b0:4864:20::432])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0kLy4WRJz2xv5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 16:48:40 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J0kLs32pFz9sSM;
- Fri, 26 Nov 2021 06:48:37 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id JxVCKAO1sD1d; Fri, 26 Nov 2021 06:48:37 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J0kLs1yldz9sSL;
- Fri, 26 Nov 2021 06:48:37 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2D1C38B768;
- Fri, 26 Nov 2021 06:48:37 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Wdy7xI6fAQoi; Fri, 26 Nov 2021 06:48:37 +0100 (CET)
-Received: from [192.168.204.6] (unknown [192.168.204.6])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A2E018B763;
- Fri, 26 Nov 2021 06:48:36 +0100 (CET)
-Message-ID: <0dc1af93-3b5f-6147-359a-33980591c73f@csgroup.eu>
-Date: Fri, 26 Nov 2021 06:48:36 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0kpZ4VcSz2yLJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 17:09:08 +1100 (AEDT)
+Received: by mail-pf1-x432.google.com with SMTP id g19so7874568pfb.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 22:09:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
+ h=from:to:cc:subject:in-reply-to:references:date:message-id
+ :mime-version; bh=Hs9a+ZiTlZA6Gkk3kiV2RW3d8HLh7Xt0cL7JLFGKFoQ=;
+ b=eL6X1m0g4MqluMR/4GorsaGi4MCWJPQF/hsCtZamhdCj6D+JX1KnphLTzrCOHaGv0i
+ JmZ6uyp2MiVJ9V7EPweG403t+NiHHe35jULoZDFbG8//JzUuWJGA/Ata335fbG/2oDbZ
+ xyY/oNWBMRmpzxjM5076VGbzSSXhPn/R3Lmic=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=Hs9a+ZiTlZA6Gkk3kiV2RW3d8HLh7Xt0cL7JLFGKFoQ=;
+ b=l1M+bEWE/uC99XfFQL9zCVmb2bpzsmsa9lPu0LhKJ40u3JQlbOcD3Y3YnMnQSjmE3P
+ JtfBSMvkDO6srATr3A+AJiQQ3/zBxlO39nwckf7MAU4Mgp++8cSsoQh09RMt0wBiljxf
+ mHsiOFoTk4zu5+I2+s2OLvVcdLZfdNQAnqvcNLqOOa7JXdCzf16JXjr4hEuyBDGusoMx
+ pPFx18/G0PJEt2rnBkgnEySkJiF3TgdADa4J0O3LQnVZLvFLEIbs8x64sx+TXkgun4JO
+ a9yYKNrVlS2aLvWenf0fX0lQc8VzwbCj8CnaIJSTvT/FbYMdV4mIIztoCgf8A/7elXST
+ C21w==
+X-Gm-Message-State: AOAM5301bEcygKGHHi8whQJxOQefDKXXDMEguNjl+OCnX891jpWcGy+D
+ yqiFBEkyWd9xXFD8oJt2A81H3A==
+X-Google-Smtp-Source: ABdhPJyUKHRkZqs8VKAWxJq+jiC4v7DguZ5wDjuNE00RzxpnI6G5oZ7P5P6TOaGjcK0masGpZW+0xg==
+X-Received: by 2002:a05:6a00:21c8:b0:4a8:125:de32 with SMTP id
+ t8-20020a056a0021c800b004a80125de32mr4760964pfj.49.1637906945672; 
+ Thu, 25 Nov 2021 22:09:05 -0800 (PST)
+Received: from localhost ([2001:4479:e000:e400:90aa:d61c:4f97:c608])
+ by smtp.gmail.com with ESMTPSA id f15sm6104415pfe.171.2021.11.25.22.09.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 25 Nov 2021 22:09:05 -0800 (PST)
+From: Daniel Axtens <dja@axtens.net>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/64s/radix: Fix unmapping huge vmaps when
+ CONFIG_HUGETLB_PAGE=n
+In-Reply-To: <20211126022834.1622106-1-npiggin@gmail.com>
+References: <20211126022834.1622106-1-npiggin@gmail.com>
+Date: Fri, 26 Nov 2021 17:09:02 +1100
+Message-ID: <87tufzzbwh.fsf@linkitivity.dja.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: linux-next: runtime warnings from qemu run
-Content-Language: fr-FR
-To: Stephen Rothwell <sfr@canb.auug.org.au>,
- Michael Ellerman <mpe@ellerman.id.au>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
-References: <20211126161747.1f7795b0@canb.auug.org.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20211126161747.1f7795b0@canb.auug.org.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,77 +76,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi,
 
+> pmd_huge is defined out to false when HUGETLB_PAGE is not configured,
+> but the vmap code still installs huge PMDs. This leads to errors
+> encountering bad PMDs when vunmapping because it is not seen as a
+> huge PTE, and the bad PMD check catches it. The end result may not
+> be much more serious than some bad pmd warning messages, because the
+> pmd_none_or_clear_bad() does what we wanted and clears the huge PTE
+> anyway.
 
-Le 26/11/2021 à 06:17, Stephen Rothwell a écrit :
-> Hi all,
-> 
-> My qemu boot test (pseries_le_defconfig) produces these new messages:
-> 
-> code-patching: test failed at line 444
-> code-patching: test failed at line 447
-> code-patching: test failed at line 450
-> code-patching: test failed at line 453
-> code-patching: test failed at line 456
-> code-patching: test failed at line 461
-> code-patching: test failed at line 466
-> code-patching: test failed at line 471
-> code-patching: test failed at line 476
-> code-patching: test failed at line 493
-> code-patching: test failed at line 533
-> code-patching: test failed at line 536
-> code-patching: test failed at line 539
-> code-patching: test failed at line 542
-> code-patching: test failed at line 545
-> code-patching: test failed at line 553
-> code-patching: test failed at line 558
-> code-patching: test failed at line 563
-> code-patching: test failed at line 568
-> code-patching: test failed at line 585
-> code-patching: test failed at line 605
-> code-patching: test failed at line 609
-> code-patching: test failed at line 618
-> code-patching: test failed at line 619
-> code-patching: test failed at line 620
-> code-patching: test failed at line 629
-> code-patching: test failed at line 630
-> code-patching: test failed at line 631
-> code-patching: test failed at line 640
-> code-patching: test failed at line 641
-> code-patching: test failed at line 650
-> code-patching: test failed at line 651
-> code-patching: test failed at line 661
-> code-patching: test failed at line 665
-> code-patching: test failed at line 675
-> code-patching: test failed at line 676
-> code-patching: test failed at line 677
-> code-patching: test failed at line 687
-> code-patching: test failed at line 688
-> code-patching: test failed at line 689
-> code-patching: test failed at line 699
-> code-patching: test failed at line 700
-> code-patching: test failed at line 710
-> code-patching: test failed at line 711
-> 
-> Maybe caused by commit
-> 
->    8b8a8f0ab3f5 ("powerpc/code-patching: Improve verification of patchability")
+Huh. So vmap seems to key off arch_vmap_p?d_supported which checks for
+radix and HAVE_ARCH_HUGE_VMAP.
 
-Yes, Nic proposed a series to fix that: 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20211126032249.1652080-1-npiggin@gmail.com/
+> Fix this by checking pmd_is_leaf(), which checks for a PTE regardless
+> of config options. The whole huge/large/leaf stuff is a tangled mess
+> but that's kernel-wide and not something we can improve much in
+> arch/powerpc code.
 
+I guess I'm a bit late to the party here because p?d_is_leaf was added
+in 2019 in commit d6eacedd1f0e ("powerpc/book3s: Use config independent
+helpers for page table walk") but why wouldn't we just make pmd_huge()
+not config dependent?
 
-> 
-> As an presumably unrelated aside, we seem to be using a bit more stack
-> space as well
-> 
-> - mount (54) used greatest stack depth: 12512 bytes left
-> - mount (55) used greatest stack depth: 12032 bytes left
-> + mount (54) used greatest stack depth: 10608 bytes left
-> 
+Also, looking at that commit, there are a few places that might still
+throw warnings, e.g. find_linux_pte, find_current_mm_pte, pud_page which
+seem like they might still throw warnings if they were to encounter a
+huge vmap page:
+
+struct page *pud_page(pud_t pud)
+{
+	if (pud_is_leaf(pud)) {
+		VM_WARN_ON(!pud_huge(pud));
+
+Do these functions need special treatment for huge vmappings()?
+
+Apart from those questions, the patch itself makes sense to me and I can
+follow how it would fix a problem.
+
+Reviewed-by: Daniel Axtens <dja@axtens.net>
+
+Kind regards,
+Daniel
