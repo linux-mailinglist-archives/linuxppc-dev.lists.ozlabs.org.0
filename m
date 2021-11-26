@@ -1,77 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4757645E686
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 04:24:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C43F45E6C0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 05:12:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0g8y1SKzz3bj9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 14:24:50 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BfmN6JwU;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0hCy6RcGz3cQg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 15:12:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
- helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=BfmN6JwU; dkim-atps=neutral
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
- [IPv6:2607:f8b0:4864:20::1029])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0g6t5tCyz2x9g
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 14:23:02 +1100 (AEDT)
-Received: by mail-pj1-x1029.google.com with SMTP id
- y14-20020a17090a2b4e00b001a5824f4918so8949273pjc.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 19:23:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=siIOxxyhAn1KZ3ftKBh1iR9TL35DhB2z4dfXYlVCeX4=;
- b=BfmN6JwUaQ87LPPB/UXQORvjNTwJeGwm40XvON8jwo15PNFOhOxALRNxzRtCk91uZ/
- 3znhZXB9PhpU42bJGTVk5H6cIVpRA3YgIagIuQ/Ad7ED4+PrPypyJexGnefLo6ImHTL2
- w7n9/EIoArk2j4kvOBvmXYr2oQWzBhSgRp3Vk05wIwvtek7BHH6iUJ3LKkpwCf3F/U2R
- aZ6jWcuHujvSywHn/wu3rzkoxRDhQ9RXb3YRK0EXLNN3xK7fLuT3Yg8CDx5Nm50KkYB1
- l8ScUalpG557y18f0+66OQRNnQS5hkeCXYtYey8nBeqhHsFjdZhzmtnbmtb6mUAObRpj
- Nwcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=siIOxxyhAn1KZ3ftKBh1iR9TL35DhB2z4dfXYlVCeX4=;
- b=zMpOS21oaikVKXP1K5mXlneB5T0fyvXLAClwO1czsFv9oHdOGm9x1qK6JjFcqxsa8Q
- Je6OVnVE/wuMnvabhd6XrHEzKJ+bvB5CYNicTSMgNxOpCLdFI7CgoS9tHut4vpMmcMsq
- 4IJdWwz5Y+2Gv3Y+NL8qma+G7tUmI5U1/DmwE6sgcTdqhHqE8hWvS7ghEnqcX887UYac
- slTJOVka6oYhxzcGAsb72yk7agUBcGhkc1qfXnepCiaWmYtGiNag+rWiEEnITbOUnIjr
- hR0bFydgm9y2pbxtooy3aKB+gDG6+GdTu7rcWyxZpvP/haI5wK0wl/tKCUF8r20jXs3M
- RrPA==
-X-Gm-Message-State: AOAM530UG7vUP7kk9GGcqbTwra8OFsEHVVwH8gN3dmMoKvBNonu2GGrX
- IqdAzaIyJVcdhIgG8wM3H9Doz76utRk=
-X-Google-Smtp-Source: ABdhPJxdo6kqr0cmfu8gwRMlMtg9s+d7kBXHpeR8rWZYBxttPMq4XIV+H7n8HzqzKxAOzkfJyHAF8w==
-X-Received: by 2002:a17:90a:9294:: with SMTP id
- n20mr12289803pjo.69.1637896980953; 
- Thu, 25 Nov 2021 19:23:00 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (115-64-213-93.static.tpgi.com.au.
- [115.64.213.93])
- by smtp.gmail.com with ESMTPSA id l4sm5143386pfc.121.2021.11.25.19.22.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Nov 2021 19:23:00 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/3] powerpc/code-patching: don't use the stack for code
- patching tests
-Date: Fri, 26 Nov 2021 13:22:49 +1000
-Message-Id: <20211126032249.1652080-3-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20211126032249.1652080-1-npiggin@gmail.com>
-References: <20211126032249.1652080-1-npiggin@gmail.com>
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com;
+ envelope-from=nixiaoming@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0hCV4kH3z2yPd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 15:12:02 +1100 (AEDT)
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.53])
+ by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4J0h9725V5z8vbq;
+ Fri, 26 Nov 2021 12:10:03 +0800 (CST)
+Received: from dggema774-chm.china.huawei.com (10.1.198.216) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.20; Fri, 26 Nov 2021 12:11:56 +0800
+Received: from use12-sp2.huawei.com (10.67.189.174) by
+ dggema774-chm.china.huawei.com (10.1.198.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2308.20; Fri, 26 Nov 2021 12:11:55 +0800
+From: Xiaoming Ni <nixiaoming@huawei.com>
+To: <hurricos@gmail.com>, <Yuantian.Tang@feescale.com>,
+ <benh@kernel.crashing.org>, <chenhui.zhao@freescale.com>,
+ <chenjianguo3@huawei.com>, <gregkh@linuxfoundation.org>,
+ <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+ <liuwenliang@huawei.com>, <mpe@ellerman.id.au>, <oss@buserror.net>,
+ <paul.gortmaker@windriver.com>, <paulus@samba.org>, <stable@vger.kernel.org>, 
+ <wangle6@huawei.com>, <chunkeey@gmail.com>
+Subject: [PATCH] powerpc/85xx: fix oops when CONFIG_FSL_PMC=n
+Date: Fri, 26 Nov 2021 12:11:53 +0800
+Message-ID: <20211126041153.16926-1-nixiaoming@huawei.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <5f56f1af-9404-21fa-eda0-05a75d769427@huawei.com>
+References: <5f56f1af-9404-21fa-eda0-05a75d769427@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.189.174]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggema774-chm.china.huawei.com (10.1.198.216)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,91 +60,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: nixiaoming@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the existing test function for code patching tests instead of
-writing to the stack. This means the address verification does not have
-to be bypassed for these tests.
+When CONFIG_FSL_PMC is set to n, no value is assigned to cpu_up_prepare
+ in the mpc85xx_pm_ops structure. As a result, oops is triggered in
+ smp_85xx_start_cpu().
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+	[    0.627233] smp: Bringing up secondary CPUs ...
+	[    0.681659] kernel tried to execute user page (0) - exploit attempt? (uid: 0)
+	[    0.766618] BUG: Unable to handle kernel instruction fetch (NULL pointer?)
+	[    0.848899] Faulting instruction address: 0x00000000
+	[    0.908273] Oops: Kernel access of bad area, sig: 11 [#1]
+	...
+	[    1.758220] NIP [00000000] 0x0
+	[    1.794688] LR [c0021d2c] smp_85xx_kick_cpu+0xe8/0x568
+	[    1.856126] Call Trace:
+	[    1.885295] [c1051da8] [c0021cb8] smp_85xx_kick_cpu+0x74/0x568 (unreliable)
+	[    1.968633] [c1051de8] [c0011460] __cpu_up+0xc0/0x228
+	[    2.029038] [c1051e18] [c0031bbc] bringup_cpu+0x30/0x224
+	[    2.092572] [c1051e48] [c0031f3c] cpu_up.constprop.0+0x180/0x33c
+	[    2.164443] [c1051e88] [c00322e8] bringup_nonboot_cpus+0x88/0xc8
+	[    2.236326] [c1051eb8] [c07e67bc] smp_init+0x30/0x78
+	[    2.295698] [c1051ed8] [c07d9e28] kernel_init_freeable+0x118/0x2a8
+	[    2.369641] [c1051f18] [c00032d8] kernel_init+0x14/0x124
+	[    2.433176] [c1051f38] [c0010278] ret_from_kernel_thread+0x14/0x1c
+
+Fixes: c45361abb9185b ("powerpc/85xx: fix timebase sync issue when
+ CONFIG_HOTPLUG_CPU=n")
+Link: https://lore.kernel.org/lkml/CANA18Uyba4kMJQrbCSZVTFep2Exe5izE45whNJgwwUvNSEcNLg@mail.gmail.com/
+Reported-by: Martin Kennedy <hurricos@gmail.com>
+Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
+Tested-by: Martin Kennedy <hurricos@gmail.com>
+Cc: stable@vger.kernel.org
 ---
- arch/powerpc/lib/code-patching.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ arch/powerpc/platforms/85xx/smp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index 70247fc58b6e..babf6b22adef 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -422,9 +422,11 @@ static void __init test_branch_iform(void)
- {
- 	int err;
- 	struct ppc_inst instr;
--	u32 tmp[2];
--	u32 *iptr = tmp;
--	unsigned long addr = (unsigned long)tmp;
-+	u32 *iptr;
-+	unsigned long addr;
-+
-+	iptr = (u32 *)ppc_function_entry(test_trampoline);
-+	addr = (unsigned long)iptr;
+diff --git a/arch/powerpc/platforms/85xx/smp.c b/arch/powerpc/platforms/85xx/smp.c
+index 83f4a6389a28..d7081e9af65c 100644
+--- a/arch/powerpc/platforms/85xx/smp.c
++++ b/arch/powerpc/platforms/85xx/smp.c
+@@ -220,7 +220,7 @@ static int smp_85xx_start_cpu(int cpu)
+ 	local_irq_save(flags);
+ 	hard_irq_disable();
  
- 	/* The simplest case, branch to self, no flags */
- 	check(instr_is_branch_iform(ppc_inst(0x48000000)));
-@@ -516,12 +518,12 @@ static void __init test_create_function_call(void)
- static void __init test_branch_bform(void)
- {
- 	int err;
--	unsigned long addr;
- 	struct ppc_inst instr;
--	u32 tmp[2];
--	u32 *iptr = tmp;
-+	u32 *iptr;
-+	unsigned long addr;
- 	unsigned int flags;
+-	if (qoriq_pm_ops)
++	if (qoriq_pm_ops && qoriq_pm_ops->cpu_up_prepare)
+ 		qoriq_pm_ops->cpu_up_prepare(cpu);
  
-+	iptr = (u32 *)ppc_function_entry(test_trampoline);
- 	addr = (unsigned long)iptr;
+ 	/* if cpu is not spinning, reset it */
+@@ -292,7 +292,7 @@ static int smp_85xx_kick_cpu(int nr)
+ 		booting_thread_hwid = cpu_thread_in_core(nr);
+ 		primary = cpu_first_thread_sibling(nr);
  
- 	/* The simplest case, branch to self, no flags */
-@@ -603,6 +605,12 @@ static void __init test_translate_branch(void)
- 	if (!buf)
- 		return;
+-		if (qoriq_pm_ops)
++		if (qoriq_pm_ops && qoriq_pm_ops->cpu_up_prepare)
+ 			qoriq_pm_ops->cpu_up_prepare(nr);
  
-+	/*
-+	 * Have to disable the address bounds check for patch_instruction
-+	 * because we are patching vmalloc space here.
-+	 */
-+	skip_addr_verif = true;
-+
- 	/* Simple case, branch to self moved a little */
- 	p = buf;
- 	addr = (unsigned long)p;
-@@ -715,6 +723,8 @@ static void __init test_translate_branch(void)
- 	check(instr_is_branch_to_addr(p, addr));
- 	check(instr_is_branch_to_addr(q, addr));
- 
-+	skip_addr_verif = false;
-+
- 	/* Free the buffer we were using */
- 	vfree(buf);
- }
-@@ -743,13 +753,11 @@ static int __init test_code_patching(void)
- {
- 	printk(KERN_DEBUG "Running code patching self-tests ...\n");
- 
--	skip_addr_verif = true;
- 	test_branch_iform();
- 	test_branch_bform();
- 	test_create_function_call();
- 	test_translate_branch();
- 	test_prefixed_patching();
--	skip_addr_verif = false;
- 
- 	return 0;
- }
+ 		/*
 -- 
-2.23.0
+2.27.0
 
