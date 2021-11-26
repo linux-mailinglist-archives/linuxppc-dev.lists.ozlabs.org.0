@@ -1,57 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572E945E99C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 09:49:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D31AA45E9D9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 10:04:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0pMW1lwzz3cCS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 19:49:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0phJ5n2Pz3cJm
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 20:04:00 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=c2H5ar3Y;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=c2H5ar3Y; 
+ dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0pM51Knrz2yZt
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 19:49:04 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J0pM146QPz9sSM;
- Fri, 26 Nov 2021 09:49:01 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id c2ITOMNwlhy3; Fri, 26 Nov 2021 09:49:01 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J0pM13DYBz9sSH;
- Fri, 26 Nov 2021 09:49:01 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5F77F8B77D;
- Fri, 26 Nov 2021 09:49:01 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id LxK8mRy4-wOq; Fri, 26 Nov 2021 09:49:01 +0100 (CET)
-Received: from [192.168.204.6] (unknown [192.168.204.6])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AB2D38B763;
- Fri, 26 Nov 2021 09:49:00 +0100 (CET)
-Message-ID: <5a995d46-5292-b6e1-f88e-81d8cbc40b83@csgroup.eu>
-Date: Fri, 26 Nov 2021 09:49:00 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0pgZ0MpHz2x9T
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 20:03:22 +1100 (AEDT)
+Received: by mail.kernel.org (Postfix) with ESMTPS id CB7C661108
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 09:03:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1637917398;
+ bh=E9FghHIs1nvki5elh8B0+2e2C/BztRcCiDJELMkL5RE=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=c2H5ar3YVGkRmJy6llnP9z8i8ZED3Hl0xqc55fW2kageGKNK2j7cAKLVSdtaISHww
+ KH76fTGHTvV0w+tYOXPkDjGh310cebc6SW0mhJt/8cNBlYV63pIvOXFwN14CgQ/a3A
+ ax8vvU7Bx/cULy39qVQApVFBsYTsCm66AMgF3Ua3NiNGUqgMh4OnvWYQtOJDdVFROf
+ oHjpW1hTzzvf6iLgcFx3WmQkC3ebLbQ1j/79c++IUGxiofGq3DSMHsPDORD5CHyG3L
+ ygzi8bPGad2M7GOJm7H5yJUQE1jSIyNQovdnSM1RO4opYCOszMmFKrxr2/neArX0i5
+ mxSsWrfUJ8zrA==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id C063260EE3; Fri, 26 Nov 2021 09:03:18 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 205099] KASAN hit at raid6_pq: BUG: Unable to handle kernel
+ data access at 0x00f0fd0d
+Date: Fri, 26 Nov 2021 09:03:18 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: christophe.leroy@csgroup.eu
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-205099-206035-67F4Fr9Hrc@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-205099-206035@https.bugzilla.kernel.org/>
+References: <bug-205099-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] powerpc/code-patching: Relax verification of patchability
-Content-Language: fr-FR
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <68d7d57675e0963fe5e2c4b84b0cb2390c78638c.1637912333.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <68d7d57675e0963fe5e2c4b84b0cb2390c78638c.1637912333.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,60 +78,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D205099
 
+--- Comment #37 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
+I see no obvious reason for a 32Mb allocation to fail while you have 588612=
+kB
+free memory.
 
-Le 26/11/2021 à 08:39, Christophe Leroy a écrit :
-> Commit 8b8a8f0ab3f5 ("powerpc/code-patching: Improve verification of
-> patchability") introduced a stricter verification of the patched
-> area by checking it is proper kernel text.
-> 
-> But as least two usages of patch_instruction() fall outside:
-> - Code patching selftests, which use stack and vmalloc space.
-> - Ftrace
-> 
-> So for the time being, partially revert commit 8b8a8f0ab3f5 and add
-> a onetime warning:
-> 
->    Running code patching self-tests ...
->    patch_instruction() called on invalid text address 0xe1011e58 from test_code_patching+0x34/0xd6c
-> 
-> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Fixes: 8b8a8f0ab3f5 ("powerpc/code-patching: Improve verification of patchability")
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->   arch/powerpc/lib/code-patching.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-> index 1dd636a85cc1..c87eea773930 100644
-> --- a/arch/powerpc/lib/code-patching.c
-> +++ b/arch/powerpc/lib/code-patching.c
-> @@ -190,9 +190,13 @@ static int do_patch_instruction(u32 *addr, struct ppc_inst instr)
->   int patch_instruction(u32 *addr, struct ppc_inst instr)
->   {
->   	/* Make sure we aren't patching a freed init section */
-> -	if (!kernel_text_address((unsigned long)addr))
-> +	if (system_state >= SYSTEM_FREEING_INITMEM && init_section_contains(addr, 4))
->   		return 0;
->   
-> +	if (!kernel_text_address((unsigned long)addr))
-> +		pr_warn_once("%s() called on invalid text address 0x%p from %pS\n",
-> +			     __func__, addr, __builtin_return_address(0));
-> +
+And that happens early at boot, before user processes are started so the vm=
+ap
+area, allthough not very big, should still have 32M space available.
 
-May it be better to use pr_warn_ratelimited() instead in order to catch 
-more than the first occurence ?
+--=20
+You may reply to this email to add a comment.
 
->   	return do_patch_instruction(addr, instr);
->   }
->   NOKPROBE_SYMBOL(patch_instruction);
-> 
+You are receiving this mail because:
+You are watching the assignee of the bug.=
