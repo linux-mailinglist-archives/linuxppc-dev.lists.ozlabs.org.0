@@ -1,54 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2EF45E4C3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 03:34:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A674045E684
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 04:23:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0f2n1lrKz3cVr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 13:34:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0g7W6CDdz3c5q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 14:23:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AmOamxuD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j89VpPiO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
+ helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=AmOamxuD; 
- dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=j89VpPiO; dkim-atps=neutral
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
+ [IPv6:2607:f8b0:4864:20::1032])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0f272lTGz2x9M
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 13:33:51 +1100 (AEDT)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7D8D861214;
- Fri, 26 Nov 2021 02:33:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1637894029;
- bh=qLE1sVRzJypqraWu05K6YqnHauSd7DGbUmMaCeixQhg=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=AmOamxuDPzUELf8MUbjWa7y3dejW60qmBhxaENnKukWsaKxiNtwEmNsot+ym10Mqz
- svFPNLEUQeXIt+8UcnKINwuL5qfADXzg53aOufdQ2QbNBfQ4AjXdzmKH4Iysxp54iF
- tcAKsKc9chuMiaHqu7P+mcUHFUU51MSNLSQQtIXKDJkQ1DudcVtfpuwLqPjMzi8f7d
- jlSbKMazw1vtGMckUOr0qmyYafHz5lmZ2SnS91Oeq9eAuU1jUbMJ+psA5eB53DJID8
- /pPH7ZavOvbGTRJoBEaJC0x5poOUecNBbxK/RhaycJKf3V/C8CAmUjBSQDJ64TVYis
- n0va6S33ZoImg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 03/28] powerpc/pseries/ddw: Revert "Extend upper
- limit for huge DMA window for persistent memory"
-Date: Thu, 25 Nov 2021 21:33:18 -0500
-Message-Id: <20211126023343.442045-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211126023343.442045-1-sashal@kernel.org>
-References: <20211126023343.442045-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0g6s18ZNz2x9g
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 14:22:59 +1100 (AEDT)
+Received: by mail-pj1-x1032.google.com with SMTP id
+ nh10-20020a17090b364a00b001a69adad5ebso7057297pjb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 19:22:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=GUaUmTr1C3qa9qMGfGDtZO3hUTUW9SwzE/2YoH0XipE=;
+ b=j89VpPiOLuLWVjFMpUdPKb0pDBpUjRwbRR4qI377GR6bkwB51re4Ar52eVMQMupTOd
+ YS3Xj3gqMgjoZYe7JsFstT0oehD3W3JK2ipP4IgCZQ07nNtzPcsbcrR7cdZQdT1vTCnm
+ VI+8FV35jeFKvCtOReAfs6U4YQHNWhGBxrAaLWlQElpzalrc0ARJGgnV3EbQYIXiZ3Gf
+ AzbHZY6T6U17T523GI9Oyw07P+gmUZKMdKKVs4g+JtNAIvn2tc9E4JDcdVxQKlSKWk29
+ vaNcLJIS7kR9wX/dVDLTuUdLQvPjN72FYFc5FCE+nN5y50RxdwC1IEJyFag9k5Lt5ncE
+ qfdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=GUaUmTr1C3qa9qMGfGDtZO3hUTUW9SwzE/2YoH0XipE=;
+ b=VrQTS2DfxUgnE7IpugGaSQSutUL4o8Ty4b+lftIlpr0OsPfCLHkY5ba10eDjWXf/tD
+ XHjXpJfKOnpFvBPWbGLUcwHueDSUWIdAZMTIg8cxqippk66hOgYL9g58E+Omhk6ztdA2
+ X/+h/upB3+segIOAT0HIS/VNPb/HWKT3MYYNiLAAiYV6PtFDXNWohDVmaDZxe6n7GVCt
+ r88zCfV3HKorW/LSoKHVXmXItBcO3P7EaSTlT/7Id8X4y9l8T6vP4iPm2YGZ0GqeT2/4
+ HT9uaTFLUyupo3cztm58UxWbQ63TIjAQHF1oKxpUXzi+pSQ8TS3SaulBqiEeUxykOhPo
+ zONg==
+X-Gm-Message-State: AOAM532qEmPVTr983a3xFIsAW1JeEc1zxr7AwtD/4eaby62HdZRcrlji
+ g/ONQpwF+up8Om8r8H5d/Vingdivg1s=
+X-Google-Smtp-Source: ABdhPJyq9vtgQ1WWEjdpXY/r7Of5mLpG89C3zPAC5Rc3CzOd/2f2wPfSnRb9V/dG4X1x44i0qZ5PdA==
+X-Received: by 2002:a17:90a:3e09:: with SMTP id
+ j9mr12682511pjc.24.1637896976099; 
+ Thu, 25 Nov 2021 19:22:56 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com (115-64-213-93.static.tpgi.com.au.
+ [115.64.213.93])
+ by smtp.gmail.com with ESMTPSA id l4sm5143386pfc.121.2021.11.25.19.22.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 25 Nov 2021 19:22:55 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/3] powerpc/code-patching: work around code patching
+ verification in patching tests
+Date: Fri, 26 Nov 2021 13:22:47 +1000
+Message-Id: <20211126032249.1652080-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,49 +81,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, leobras.c@gmail.com,
- Alexey Kardashevskiy <aik@ozlabs.ru>, fbarrat@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Code patching tests patch the stack and (non-module) vmalloc space now,
+which falls afoul of the new address check.
 
-[ Upstream commit 2d33f5504490a9d90924476dbccd4a5349ee1ad0 ]
+The stack patching can easily be fixed, but the vmalloc patching is more
+difficult. For now, add an ugly workaround to skip the check while the
+test code is running.
 
-This reverts commit 54fc3c681ded9437e4548e2501dc1136b23cfa9a
-which does not allow 1:1 mapping even for the system RAM which
-is usually possible.
-
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20211108040320.3857636-2-aik@ozlabs.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8b8a8f0ab3f55 ("powerpc/code-patching: Improve verification of patchability")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/platforms/pseries/iommu.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ arch/powerpc/lib/code-patching.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index e4198700ed1a3..245f1f8df6563 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1034,15 +1034,6 @@ static phys_addr_t ddw_memory_hotplug_max(void)
- 	phys_addr_t max_addr = memory_hotplug_max();
- 	struct device_node *memory;
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index 5e2fe133639e..57e160963ab7 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -187,10 +187,12 @@ static int do_patch_instruction(u32 *addr, struct ppc_inst instr)
  
--	/*
--	 * The "ibm,pmemory" can appear anywhere in the address space.
--	 * Assuming it is still backed by page structs, set the upper limit
--	 * for the huge DMA window as MAX_PHYSMEM_BITS.
--	 */
--	if (of_find_node_by_type(NULL, "ibm,pmemory"))
--		return (sizeof(phys_addr_t) * 8 <= MAX_PHYSMEM_BITS) ?
--			(phys_addr_t) -1 : (1ULL << MAX_PHYSMEM_BITS);
--
- 	for_each_node_by_type(memory, "memory") {
- 		unsigned long start, size;
- 		int n_mem_addr_cells, n_mem_size_cells, len;
+ #endif /* CONFIG_STRICT_KERNEL_RWX */
+ 
++static bool skip_addr_verif = false;
++
+ int patch_instruction(u32 *addr, struct ppc_inst instr)
+ {
+ 	/* Make sure we aren't patching a freed init section */
+-	if (!kernel_text_address((unsigned long)addr))
++	if (!skip_addr_verif && !kernel_text_address((unsigned long)addr))
+ 		return 0;
+ 
+ 	return do_patch_instruction(addr, instr);
+@@ -738,11 +740,13 @@ static int __init test_code_patching(void)
+ {
+ 	printk(KERN_DEBUG "Running code patching self-tests ...\n");
+ 
++	skip_addr_verif = true;
+ 	test_branch_iform();
+ 	test_branch_bform();
+ 	test_create_function_call();
+ 	test_translate_branch();
+ 	test_prefixed_patching();
++	skip_addr_verif = false;
+ 
+ 	return 0;
+ }
 -- 
-2.33.0
+2.23.0
 
