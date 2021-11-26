@@ -1,48 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004C845E3C0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 01:39:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F7BA45E3CE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 01:51:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0bVR72ftz3c4b
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 11:39:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0bmG0KgDz3cCS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 11:51:42 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=b9zU55Vs;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034;
+ helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=b9zU55Vs; dkim-atps=neutral
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0bV11yV3z2xtC
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 11:39:15 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6200,9189,10179"; a="235407339"
-X-IronPort-AV: E=Sophos;i="5.87,263,1631602800"; d="scan'208";a="235407339"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2021 16:37:00 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,263,1631602800"; d="scan'208";a="457515106"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
- by orsmga003.jf.intel.com with ESMTP; 25 Nov 2021 16:36:57 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1mqPEW-000794-NR; Fri, 26 Nov 2021 00:36:56 +0000
-Date: Fri, 26 Nov 2021 08:36:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Michael Ellerman <mpe@ellerman.id.au>, alex@ghiti.fr
-Subject: Re: [PATCH v2 9/9] powerpc: Simplify and move arch_randomize_brk()
-Message-ID: <202111260844.kcgKX5Uk-lkp@intel.com>
-References: <4c5a2b18774552c2226573f7069ffeee71ad77cb.1637828367.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0blS1gW7z2yZt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 11:50:58 +1100 (AEDT)
+Received: by mail-pj1-x1034.google.com with SMTP id
+ n15-20020a17090a160f00b001a75089daa3so8779314pja.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 16:50:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=rfad6GS+R9gZQ+6gBqOpVoo39mJsn15reLYMXFsQgwg=;
+ b=b9zU55VsP9JPztpJdKhEYok4u06qajD75Cc8h2o2hBzSwAk2de/DOLrzOZT5AHOMn3
+ sKVrqZshnyIWjww2A+hC31EZ9sl1kIXm76fPrlscHscXyK2cAbady3AUntdkV8v6VsQk
+ UITcXPmf4WMgEZjO1FDTl3qp6csPPk/BPvUo3FEtyGjZ46zjUYI4HPiDLe7RzcoWS08J
+ 4OcWTJaUt67MI9OZRAlaeNm6UV2WDXbD6Yn6Ilcs25rCMhZWqpAMuRh/901T2r19Ch+R
+ JktQqdMfxA1RoBy5PLy4dZI58/bQELiMzJDBFj4f9cmGwbxAV+amBQypu3X2fT2TpfZ8
+ 66fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=rfad6GS+R9gZQ+6gBqOpVoo39mJsn15reLYMXFsQgwg=;
+ b=c6Jicp5FCZiYASvjC9QUK6Wzo3ZPBJPL+3HwPLKeR6jjNkkLIzPGRLqdFqeTIcAOTg
+ tR9GlsCQBYRCKIJWyw2HStJFtWXKOwG6KmArYhpCww6rWC33Lgt+xOehaFFU+O7rjcq8
+ xF9au1PwXcQgWKcDy3LVNbV/JCGbAZtaHLu0S4fUMSM8J+gJDXa3+ztJvdoQCHiJHmMC
+ 9R1CWliB33gug3Trf532YhNaCblKlitduhXwUdJEISt+Fef3zChQckrTIoK8RqZxGoTp
+ i06K/7/UUwJWTAgdOkt0BkiRAdTIE6kmLPpuW+sce8vGyUwrNgJf7xi+7+Y+fCLC77Dj
+ sP1A==
+X-Gm-Message-State: AOAM531UkQPJZchYyrQ1YJpwjVKLpmg9K626JqIlLl3920mvw347HFZa
+ Wsacwef1JBwnbqPZE1VtncY=
+X-Google-Smtp-Source: ABdhPJwInHvsKgcit1BmxoPRiNzM/rwwnd007pmnUcZZIPx4CXUueInWdeJwH6KWgLJihd2AR/h/mw==
+X-Received: by 2002:a17:90b:2252:: with SMTP id
+ hk18mr11971875pjb.36.1637887853684; 
+ Thu, 25 Nov 2021 16:50:53 -0800 (PST)
+Received: from localhost (115-64-213-93.static.tpgi.com.au. [115.64.213.93])
+ by smtp.gmail.com with ESMTPSA id f4sm4367561pfg.34.2021.11.25.16.50.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 25 Nov 2021 16:50:52 -0800 (PST)
+Date: Fri, 26 Nov 2021 10:50:47 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/watchdog: Fix wd_smp_last_reset_tb reporting
+To: Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20211125103346.1188958-1-npiggin@gmail.com>
+ <f8d08f56-29b7-5a17-9e64-5ac36731b9df@linux.ibm.com>
+In-Reply-To: <f8d08f56-29b7-5a17-9e64-5ac36731b9df@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4c5a2b18774552c2226573f7069ffeee71ad77cb.1637828367.git.christophe.leroy@csgroup.eu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-Id: <1637887834.g2b38lucev.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,68 +82,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, kbuild-all@lists.01.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+Excerpts from Laurent Dufour's message of November 26, 2021 3:21 am:
+> On 25/11/2021, 11:33:46, Nicholas Piggin wrote:
+>> wd_smp_last_reset_tb now gets reset by watchdog_smp_panic() as part of
+>> marking CPUs stuck and removing them from the pending mask before it
+>> begins any printing. This causes last reset times reported to be off.
+>>=20
+>> Fix this by reading it into a local variable before it gets reset.
+>>=20
+>> Fixes: 76521c4b0291 ("powerpc/watchdog: Avoid holding wd_smp_lock over p=
+rintk and smp_send_nmi_ipi")
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>=20
+>> This is the delta for patches 1-4 between v3 and v4 of the series which
+>> is the result of fixing the bug in patch 3. Sending because v3 got
+>> merged into powerpc next
+>=20
+> What about the 5th patch in the v4 series titled "[PATCH v4 5/5]
+> powerpc/watchdog: help remote CPUs to flush NMI printk output"?
 
-I love your patch! Perhaps something to improve:
+Yes it would be good to get that one in too.
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on hnaz-mm/master linus/master v5.16-rc2 next-20211125]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/Convert-powerpc-to-default-topdown-mmap-layout/20211125-162916
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-config: riscv-allyesconfig (https://download.01.org/0day-ci/archive/20211126/202111260844.kcgKX5Uk-lkp@intel.com/config)
-compiler: riscv64-linux-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/554c475dfb73dc352708dff3589b55845b3dd751
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Christophe-Leroy/Convert-powerpc-to-default-topdown-mmap-layout/20211125-162916
-        git checkout 554c475dfb73dc352708dff3589b55845b3dd751
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=riscv SHELL=/bin/bash drivers/net/wireless/mediatek/mt76/mt7915/ drivers/pci/controller/
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
->> drivers/pci/controller/pci-xgene.c:52: warning: "SZ_1T" redefined
-      52 | #define SZ_1T                           (SZ_1G*1024ULL)
-         | 
-   In file included from arch/riscv/include/asm/pgtable.h:10,
-                    from include/linux/pgtable.h:6,
-                    from arch/riscv/include/asm/io.h:15,
-                    from include/linux/io.h:13,
-                    from drivers/pci/controller/pci-xgene.c:11:
-   include/linux/sizes.h:51: note: this is the location of the previous definition
-      51 | #define SZ_1T                           _AC(0x10000000000, ULL)
-         | 
-
-
-vim +/SZ_1T +52 drivers/pci/controller/pci-xgene.c
-
-5f6b6ccdbe1cdfa drivers/pci/host/pci-xgene.c Tanmay Inamdar 2014-10-01  45  
-5f6b6ccdbe1cdfa drivers/pci/host/pci-xgene.c Tanmay Inamdar 2014-10-01  46  #define LINK_UP_MASK			0x00000100
-5f6b6ccdbe1cdfa drivers/pci/host/pci-xgene.c Tanmay Inamdar 2014-10-01  47  #define AXI_EP_CFG_ACCESS		0x10000
-5f6b6ccdbe1cdfa drivers/pci/host/pci-xgene.c Tanmay Inamdar 2014-10-01  48  #define EN_COHERENCY			0xF0000000
-5f6b6ccdbe1cdfa drivers/pci/host/pci-xgene.c Tanmay Inamdar 2014-10-01  49  #define EN_REG				0x00000001
-5f6b6ccdbe1cdfa drivers/pci/host/pci-xgene.c Tanmay Inamdar 2014-10-01  50  #define OB_LO_IO			0x00000002
-5f6b6ccdbe1cdfa drivers/pci/host/pci-xgene.c Tanmay Inamdar 2014-10-01  51  #define XGENE_PCIE_DEVICEID		0xE004
-5f6b6ccdbe1cdfa drivers/pci/host/pci-xgene.c Tanmay Inamdar 2014-10-01 @52  #define SZ_1T				(SZ_1G*1024ULL)
-5f6b6ccdbe1cdfa drivers/pci/host/pci-xgene.c Tanmay Inamdar 2014-10-01  53  #define PIPE_PHY_RATE_RD(src)		((0xc000 & (u32)(src)) >> 0xe)
-5f6b6ccdbe1cdfa drivers/pci/host/pci-xgene.c Tanmay Inamdar 2014-10-01  54  
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Thanks,
+Nick
