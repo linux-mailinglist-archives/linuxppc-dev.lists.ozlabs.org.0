@@ -2,62 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E6645F12D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 16:57:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7895E45F148
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 17:07:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0zrz1HYRz3cQZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:57:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J104V2D2Qz3cQg
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 03:07:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LKZG9ESn;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=JsXGxA4n;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=LKZG9ESn; 
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=JsXGxA4n; 
  dkim-atps=neutral
-X-Greylist: delayed 596 seconds by postgrey-1.36 at boromir;
- Sat, 27 Nov 2021 02:56:31 AEDT
+X-Greylist: delayed 345 seconds by postgrey-1.36 at boromir;
+ Sat, 27 Nov 2021 03:06:32 AEDT
 Received: from dfw.source.kernel.org (dfw.source.kernel.org
  [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0zrH58Dkz30Qv
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 02:56:31 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J103r1WF1z3bVs
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 03:06:30 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id E1FD2622A6;
- Fri, 26 Nov 2021 15:46:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8C9C93056;
- Fri, 26 Nov 2021 15:46:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1637941587;
- bh=b4Kjpba7B4xdXA8ajrnoUEksRT03kaVzqIxfFUFKJXo=;
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 8BBE9622C5;
+ Fri, 26 Nov 2021 16:00:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AC1C93056;
+ Fri, 26 Nov 2021 16:00:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1637942444;
+ bh=sh5Y1OU5oIIWp8xfzoyHNKbaEp5XLI12ojMxCu7QGaw=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=LKZG9ESne8pWqAxsEJ+5ZAaDepKcPTxEnLNpkf26h/dHGDVxqRy8MZGaLybxpjiwk
- jvMQF2fyGTLzM1X9np+lB6lEoEav71s+JcOXkj69cT1CX0CfsAis+lpSTL+dFpkBY6
- VYO5Pqmf8z1ToJtsT+aB0TNqjFjvIzKiayn06F0PVKsjjMpqQUSYMcKqoZlKJZJKVF
- 75Ab/iZg7aD0I7lbFnNRiusm3pj89RspCjLZGmjsQTAT36bF56gzajhzb+GtW5aaan
- WIJSZeNKiHCRmXQrOW+WXW5nDBUIBJb7LGGiVCTuMKNtAErKL5r6QEAUzDzZnLmh2N
- 96VfjGqO4hq5g==
-Date: Fri, 26 Nov 2021 08:46:21 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] powerpc: mm: radix_tlb: rearrange the if-else block
-Message-ID: <YaEBTbjGyUBmISGK@archlinux-ax161>
-References: <20211125154406.470082-1-anders.roxell@linaro.org>
- <6b1e51a8-2f4d-2024-df90-a35c926d7a30@csgroup.eu>
- <CAK8P3a0n_n+PnfYmAdS9923yheLqYXRp8=65hKf9abLCRAX8ig@mail.gmail.com>
+ b=JsXGxA4njB2sDXx0XoQYp3rGyHOXQQUk8Yno+fh9ozvbBK4p6UBLBBR5ejMuiu1Wq
+ 7ZsncU5ceiy96v5CP5lPqBbxfmcTTpXzWCi2NOOZnsfrnIZ2ObWCm8ETESco56HTRP
+ f+xlemGO8wRD3uJjTz45ZmR4H/ttg81igIv7pOPg=
+Date: Fri, 26 Nov 2021 17:00:41 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] w1: Misuse of get_user()/put_user() reported by sparse
+Message-ID: <YaEEqeKyWPfUP7vM@kroah.com>
+References: <2163689da6544c289254b3c69848acc36db998f5.1637313047.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK8P3a0n_n+PnfYmAdS9923yheLqYXRp8=65hKf9abLCRAX8ig@mail.gmail.com>
+In-Reply-To: <2163689da6544c289254b3c69848acc36db998f5.1637313047.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,73 +63,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anders Roxell <anders.roxell@linaro.org>, llvm@lists.linux.dev,
- Nick Desaulniers <ndesaulniers@google.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Evgeniy Polyakov <zbr@ioremap.net>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Nov 26, 2021 at 02:59:29PM +0100, Arnd Bergmann wrote:
-> On Fri, Nov 26, 2021 at 2:43 PM Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
-> > Le 25/11/2021 à 16:44, Anders Roxell a écrit :
-> > Can't you fix CLANG instead :) ?
-> >
-> > Or just add an else to the IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) that
-> > sets hstart and hend to 0 ?
+On Fri, Nov 19, 2021 at 10:15:09AM +0100, Christophe Leroy wrote:
+> sparse warnings: (new ones prefixed by >>)
+> >> drivers/w1/slaves/w1_ds28e04.c:342:13: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected char [noderef] __user *_pu_addr @@     got char *buf @@
+>    drivers/w1/slaves/w1_ds28e04.c:342:13: sparse:     expected char [noderef] __user *_pu_addr
+>    drivers/w1/slaves/w1_ds28e04.c:342:13: sparse:     got char *buf
+> >> drivers/w1/slaves/w1_ds28e04.c:356:13: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected char const [noderef] __user *_gu_addr @@     got char const *buf @@
+>    drivers/w1/slaves/w1_ds28e04.c:356:13: sparse:     expected char const [noderef] __user *_gu_addr
+>    drivers/w1/slaves/w1_ds28e04.c:356:13: sparse:     got char const *buf
 > 
-> That doesn't sound any less risky than duplicating the code, it can lead to
-> incorrect changes just as easily if a patch ends up actually flushing at the
-> wrong address, and the compiler fails to complain because of the bogus
-> initialization.
+> The buffer buf is a failsafe buffer in kernel space, it's not user
+> memory hence doesn't deserve the use of get_user() or put_user().
 > 
-> > Or just put hstart and hend calculation outside the IS_ENABLED() ? After
-> > all GCC should drop the calculation when not used.
+> Access 'buf' content directly.
 > 
-> I like this one. I'm still unsure how clang can get so confused about whether
-> the variables are initialized or not, usually it handles this much better than
-> gcc. My best guess is that one of the memory clobbers makes it conclude
-> that 'hflush' can be true when it gets written to by an inline asm.
+> Reported-by: kernel test robot <lkp@intel.com>
+> Link: https://lore.kernel.org/lkml/202111190526.K5vb7NWC-lkp@intel.com/T/
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  drivers/w1/slaves/w1_ds28e04.c | 10 ++--------
+>  1 file changed, 2 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/w1/slaves/w1_ds28e04.c b/drivers/w1/slaves/w1_ds28e04.c
+> index e4f336111edc..d75bb16fb7a1 100644
+> --- a/drivers/w1/slaves/w1_ds28e04.c
+> +++ b/drivers/w1/slaves/w1_ds28e04.c
+> @@ -339,10 +339,7 @@ static BIN_ATTR_RW(pio, 1);
+>  static ssize_t crccheck_show(struct device *dev, struct device_attribute *attr,
+>  			     char *buf)
+>  {
+> -	if (put_user(w1_enable_crccheck + 0x30, buf))
+> -		return -EFAULT;
+> -
+> -	return sizeof(w1_enable_crccheck);
+> +	return sprintf(buf, "%d", w1_enable_crccheck);
 
-As far as I am aware, clang's analysis does not evaluate variables when
-generating a control flow graph and using that for static analysis:
+This should be sysfs_emit(), right?
 
-https://godbolt.org/z/PdGxoq9j7
+>  }
+>  
+>  static ssize_t crccheck_store(struct device *dev, struct device_attribute *attr,
+> @@ -353,11 +350,8 @@ static ssize_t crccheck_store(struct device *dev, struct device_attribute *attr,
+>  	if (count != 1 || !buf)
+>  		return -EINVAL;
+>  
+> -	if (get_user(val, buf))
+> -		return -EFAULT;
+> -
+>  	/* convert to decimal */
+> -	val = val - 0x30;
+> +	val = *buf - 0x30;
 
-Based on the control flow graph, it knows that hstart and hend are
-uninitialized because IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) gets
-expanded to 0 by the preprocessor but it does not seem like it can piece
-together that hflush's value of false is only changed to true under the
-now 'if (0) {' branch, meaning that all the calls to __tlbiel_va_range()
-never get evaluated. That may or may not be easy to fix in clang but we
-run into issues like this so infrequently.
+Why not use a proper function that can parse a string and turn it into a
+number?
 
-At any rate, the below diff works for me.
+thanks,
 
-Cheers,
-Nathan
-
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 7724af19ed7e..156a631df976 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -1174,12 +1174,10 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 		bool hflush = false;
- 		unsigned long hstart, hend;
- 
--		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
--			hstart = (start + PMD_SIZE - 1) & PMD_MASK;
--			hend = end & PMD_MASK;
--			if (hstart < hend)
--				hflush = true;
--		}
-+		hstart = (start + PMD_SIZE - 1) & PMD_MASK;
-+		hend = end & PMD_MASK;
-+		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && hstart < hend)
-+			hflush = true;
- 
- 		if (type == FLUSH_TYPE_LOCAL) {
- 			asm volatile("ptesync": : :"memory");
+greg k-h
