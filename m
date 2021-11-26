@@ -1,53 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B62545E720
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 06:18:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B5445E728
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 06:22:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J0jh01Z8qz3cVP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 16:18:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J0jmV0jT8z3cJS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 26 Nov 2021 16:22:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=nH4yWcsT;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qj4vRc4M;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
+ helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=qj4vRc4M; dkim-atps=neutral
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J0jgK1qNqz2xWj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 16:17:49 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=nH4yWcsT; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4J0jgJ0cFCz4xcs;
- Fri, 26 Nov 2021 16:17:48 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
- s=201702; t=1637903868;
- bh=AAOD21El17vpcnisEbyZYdugcNxszPm2+pdvTLoenSs=;
- h=Date:From:To:Cc:Subject:From;
- b=nH4yWcsTdCXNmXupIskWYkBjPcwXE9qsfAe27hsTwoZ74FBzYFxRO0A+8Yp1qli/m
- lvwaF8Oysz+ncosu51eeJ8dKOy3e3ubsOsN7c6tmTXZ0n6FUfxI8556f1kijD0In3A
- K0O2XbwOxhEjs/XUB5TT3LV+fgMj6JTa7qERwUuQhkeiVFmibQ08yZOO3dGn7kby8O
- nFPSOJ6Q982lF/Fl8tsur2ncJ1LgGF9DsVoebyubmzIjHc0CZ0iMoHV0bIZmZfyAGS
- rz8aPEUaplR6Dq4WZ/iqnSVa129tuBj+sJLIK9SQp8eE8j9b3GjFIQ/n3YX2kOWuIz
- l6Vr/2nM+g9bQ==
-Date: Fri, 26 Nov 2021 16:17:47 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>
-Subject: linux-next: runtime warnings from qemu run
-Message-ID: <20211126161747.1f7795b0@canb.auug.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J0jls0rV2z2xWj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 26 Nov 2021 16:21:44 +1100 (AEDT)
+Received: by mail-pj1-x102a.google.com with SMTP id
+ gx15-20020a17090b124f00b001a695f3734aso7257896pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 25 Nov 2021 21:21:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=/Pug1pGYsi38hxanpCJr5EcsdO8jWU6cX0mu5Pc2ZvM=;
+ b=qj4vRc4MxPGq/G1UlFfIKBCSXQpB90rexyEGYp5FGaci8Sk9Cqyljhe45BeLnM0UUx
+ y9C3a4WJVtrO0QuBbnsigF1sJ1dY0xKH96R5BGfTj4psn56pS8dLARIDkoJvLwt4m213
+ q1RVgzrEJiYxyvWxAHninjp0VtJVzz+G44YzN/x/+9xVoCrfP6OYvxolUnP00YcvK2fZ
+ lmTZdT3035846xBRGHWuJvbcc3JMRGrKPyzVhaaY96DUWzUp3X8c6AT1v6tm1jMfJ4Ct
+ I/0g6Jcb1ZXkuVM9nV4snjeFqhEmBVKGEksjsuFxLKd5Gelva1YSNGw6Xgfi0eIEHeLs
+ n7mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=/Pug1pGYsi38hxanpCJr5EcsdO8jWU6cX0mu5Pc2ZvM=;
+ b=rwztizMonGHQ85zYyRV3BxocmYHG26MagCZZKwh78nEWZGQhna0BdycPDBdn2ZmkJd
+ uj/Xqw+ANN/PiNPs8Xufn0L5HfCXnlPrQXUzAovhpDIYGZ2ZOghrDqvLYwF7n0W6QQsZ
+ 6mmji2P+Ruo7Cqb60EDq26b2fg2HpCKuY7jI0dfqIls3LXi90P+MV72oPgiD69vdjSaL
+ RXUwld/BqOT9Cu1/X4he0gQrEvBC7crrB+k6pgAo5in/NLFR59BjP0xLDH7zWX73k66h
+ CTC72JmQMjHFuYIhkOyUbOoVbDFT3O/x9q63jEmNj51e4fAZyQIwKzN3HSUpa7ORfIjv
+ 0NTg==
+X-Gm-Message-State: AOAM5333EiDhaBZwXUPv/xXa82hk4zAeLAkouBopdQo61YikLPVWi7aW
+ 6fA2liSVM93ShLCY+pR8PtA4+VCUT8g=
+X-Google-Smtp-Source: ABdhPJwj/0YFzjON8nOsf91/WDhfyhpO7XMeBtEnP7Px183RghkjVhZsQxIl0TTiQRYa+iQ01r+c3Q==
+X-Received: by 2002:a17:90b:3b45:: with SMTP id
+ ot5mr13104412pjb.235.1637904099890; 
+ Thu, 25 Nov 2021 21:21:39 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com (115-64-213-93.static.tpgi.com.au.
+ [115.64.213.93])
+ by smtp.gmail.com with ESMTPSA id j15sm5292336pfh.35.2021.11.25.21.21.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 25 Nov 2021 21:21:39 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/pseries/vas: Don't print an error when VAS is
+ unavailable
+Date: Fri, 26 Nov 2021 15:21:33 +1000
+Message-Id: <20211126052133.1664375-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/Pjx1zm/0SNnSj.qidH65KuZ";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,95 +81,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Haren Myneni <haren@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/Pjx1zm/0SNnSj.qidH65KuZ
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+KVM does not support VAS so guests always print a useless error on boot
 
-Hi all,
+    vas: HCALL(398) error -2, query_type 0, result buffer 0x57f2000
 
-My qemu boot test (pseries_le_defconfig) produces these new messages:
+Change this to only print the message if the error is not H_FUNCTION.
 
-code-patching: test failed at line 444
-code-patching: test failed at line 447
-code-patching: test failed at line 450
-code-patching: test failed at line 453
-code-patching: test failed at line 456
-code-patching: test failed at line 461
-code-patching: test failed at line 466
-code-patching: test failed at line 471
-code-patching: test failed at line 476
-code-patching: test failed at line 493
-code-patching: test failed at line 533
-code-patching: test failed at line 536
-code-patching: test failed at line 539
-code-patching: test failed at line 542
-code-patching: test failed at line 545
-code-patching: test failed at line 553
-code-patching: test failed at line 558
-code-patching: test failed at line 563
-code-patching: test failed at line 568
-code-patching: test failed at line 585
-code-patching: test failed at line 605
-code-patching: test failed at line 609
-code-patching: test failed at line 618
-code-patching: test failed at line 619
-code-patching: test failed at line 620
-code-patching: test failed at line 629
-code-patching: test failed at line 630
-code-patching: test failed at line 631
-code-patching: test failed at line 640
-code-patching: test failed at line 641
-code-patching: test failed at line 650
-code-patching: test failed at line 651
-code-patching: test failed at line 661
-code-patching: test failed at line 665
-code-patching: test failed at line 675
-code-patching: test failed at line 676
-code-patching: test failed at line 677
-code-patching: test failed at line 687
-code-patching: test failed at line 688
-code-patching: test failed at line 689
-code-patching: test failed at line 699
-code-patching: test failed at line 700
-code-patching: test failed at line 710
-code-patching: test failed at line 711
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/platforms/pseries/vas.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-Maybe caused by commit
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+index b043e3936d21..734523e2272f 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -151,8 +151,15 @@ int h_query_vas_capabilities(const u64 hcall, u8 query_type, u64 result)
+ 	if (rc == H_SUCCESS)
+ 		return 0;
+ 
+-	pr_err("HCALL(%llx) error %ld, query_type %u, result buffer 0x%llx\n",
+-			hcall, rc, query_type, result);
++	/* H_FUNCTION means HV does not support VAS so don't print an error */
++	if (rc != H_FUNCTION) {
++		pr_err("%s error %ld, query_type %u, result buffer 0x%llx\n",
++			(hcall == H_QUERY_VAS_CAPABILITIES) ?
++				"H_QUERY_VAS_CAPABILITIES" :
++				"H_QUERY_NX_CAPABILITIES",
++			rc, query_type, result);
++	}
++
+ 	return -EIO;
+ }
+ EXPORT_SYMBOL_GPL(h_query_vas_capabilities);
+-- 
+2.23.0
 
-  8b8a8f0ab3f5 ("powerpc/code-patching: Improve verification of patchabilit=
-y")
-
-As an presumably unrelated aside, we seem to be using a bit more stack
-space as well
-
-- mount (54) used greatest stack depth: 12512 bytes left
-- mount (55) used greatest stack depth: 12032 bytes left
-+ mount (54) used greatest stack depth: 10608 bytes left
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/Pjx1zm/0SNnSj.qidH65KuZ
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmGgbfsACgkQAVBC80lX
-0Gxe3Qf+LJs2R9odFCwxljo8ufJdkWzJHDIluI/jxAUeRXb11TAqLN+RpO6bFdyX
-+Wt6/Ua28tiT7Uj3B6ep4RKp0hEJ+jQzEGl5UIHxVm/qQgwd53FT8L9pmfPW2hBZ
-lyHtZh1vVcB4UmFdDTKN+e2Bmbde0aDlJIb8BD09qDZprENxDZsW+HCkLmB/BO0m
-fibxR7THsGopxE4IPjxOO0kTeyqhouSefEHFYkquet2krucrLjvnqVXxzNvXVoT3
-VuFONAgO13nuEzNH5zJuTwxXaFxcASMcb/90WzpQ+K248goNZtp0BoXPib5mW1uv
-V6d6LxaaL7yEhZAAjQUPSazZWD/ycg==
-=fUXM
------END PGP SIGNATURE-----
-
---Sig_/Pjx1zm/0SNnSj.qidH65KuZ--
