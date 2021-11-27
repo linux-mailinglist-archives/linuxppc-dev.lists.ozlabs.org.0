@@ -1,15 +1,15 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B572745F7ED
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:19:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 137C845F7EF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:19:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J1DKZ4bvKz3cXD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 12:19:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J1DL871bcz3ckY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 12:19:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=MSnZxqs3;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=pxjlR8C9;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Q/BWnFgp;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=lOPEaRrj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,42 +19,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=MSnZxqs3; 
+ header.s=2020 header.b=Q/BWnFgp; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=pxjlR8C9; 
+ header.a=ed25519-sha256 header.s=2020e header.b=lOPEaRrj; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J1DK146zfz2xXx
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J1DK13bbtz2xDr
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 12:18:45 +1100 (AEDT)
-Message-ID: <20211126223824.204004845@linutronix.de>
+Message-ID: <20211126223824.263656943@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1637975918;
+ s=2020; t=1637975919;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=yyhtvslqP4HLRieVFfAZFU9HV4/e0iOdDJgsQQb4EZc=;
- b=MSnZxqs36ngrl9esIIYADuLZ5UnosIcrhDvAVsnJuf2st6ZzR4E0B8BK0WhsczGF2aQGRB
- 5xqOQF7gKjLg5HtkIGZlL6qPaoikrc//4NAmvgkfntQGveJ1vh93/nybm8ts4T5eKLbe2a
- FLC989xEGaNa67pn5Vg0kHFoSDs27rxgxD2Rnj0isODzxt0/Sbu19k1Ip1s3c4baRK4jif
- 2Yl57PGritygSsdkg6F0Zs/thARyj0yJ2lkp6xOmLTci5ES3K6dmvTb8S/jWtOyJovQflo
- 8tWJ8Gc9G8/Jsut61YVS4TsADPfWGLjLS9cFYLeUo18ZyEvWefuwbblT+T30NQ==
+ references:references; bh=7H7+YC/Q3X3DUjW7OFUmpmZxFX8YbEmXXunUPCxWTOo=;
+ b=Q/BWnFgpqlk/Xfzvk8Enumd9Tv9t7JEEp0DHi4rSBSx9/fQFTFOMhfhrRh+HvFyTryJZg6
+ 2H6cR7D0a+EEDQ8oQg0OU7d/nbqiZhQyNFyo4bhXjmQLINx5jNITNbKUROyMi6k5AylsFk
+ GuHYww9m3gcDcaQkDt89XO76miQ2YMD954fX/YwE6Q6bHL3HhsHaFps2ULrwJQWThfnBPG
+ 3yUvPsmNh5MonSc8cW1Dzr6keAHLf3o1bfK6y28a4Y/W5AQZNjHBs9tfcg+nJDTYJSjRF0
+ mmE0bpwDggg4+Lb75ngYAkUXqkaFYQLfA0sUdXi6vjtaa9R6ZCz5sQ03QYCLSg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1637975918;
+ s=2020e; t=1637975919;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=yyhtvslqP4HLRieVFfAZFU9HV4/e0iOdDJgsQQb4EZc=;
- b=pxjlR8C9JsyjjdEic60Abn3AE0T4g0tEBV+QqXtyNfpm9QMaaFULGX1MUnX49YqwF0yZy0
- u2vfAxS294gl3eBw==
+ references:references; bh=7H7+YC/Q3X3DUjW7OFUmpmZxFX8YbEmXXunUPCxWTOo=;
+ b=lOPEaRrjbm3G3ojV4Pxdg64aaahnAv+fh0zcGZd7hniH2wr2smlEjYaa9TlnTbAnZ42z1s
+ Y9bOJ0tKC/T204Cg==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 02/22] PCI/MSI: Fix pci_irq_vector()/pci_irq_get_attinity()
+Subject: [patch 03/22] genirq/msi: Guard sysfs code
 References: <20211126222700.862407977@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 27 Nov 2021 02:18:37 +0100 (CET)
+Date: Sat, 27 Nov 2021 02:18:39 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,82 +83,52 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pci_irq_vector() and pci_irq_get_affinity() use the list position to find the
-MSI-X descriptor at a given index. That's correct for the normal case where
-the entry number is the same as the list position.
+No point in building unused code when CONFIG_SYSFS=n.
 
-But it's wrong for cases where MSI-X was allocated with an entries array
-describing sparse entry numbers into the hardware message descriptor
-table. That's inconsistent at best.
-
-Make it always check the entry number because that's what the zero base
-index really means. This change won't break existing users which use a
-sparse entries array for allocation because these users retrieve the Linux
-interrupt number from the entries array after allocation and none of them
-uses pci_irq_vector() or pci_irq_get_affinity().
-
-Fixes: aff171641d18 ("PCI: Provide sensible IRQ vector alloc/free routines")
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- drivers/pci/msi.c |   26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ include/linux/msi.h |   10 ++++++++++
+ kernel/irq/msi.c    |    2 ++
+ 2 files changed, 12 insertions(+)
 
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -1187,19 +1187,24 @@ EXPORT_SYMBOL(pci_free_irq_vectors);
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -239,9 +239,19 @@ void __pci_write_msi_msg(struct msi_desc
+ void pci_msi_mask_irq(struct irq_data *data);
+ void pci_msi_unmask_irq(struct irq_data *data);
  
- /**
-  * pci_irq_vector - return Linux IRQ number of a device vector
-- * @dev: PCI device to operate on
-- * @nr: device-relative interrupt vector index (0-based).
-+ * @dev:	PCI device to operate on
-+ * @nr:		Interrupt vector index (0-based)
-+ *
-+ * @nr has the following meanings depending on the interrupt mode:
-+ *   MSI-X:	The index in the MSI-X vector table
-+ *   MSI:	The index of the enabled MSI vectors
-+ *   INTx:	Must be 0
-+ *
-+ * Return: The Linux interrupt number or -EINVAl if @nr is out of range.
-  */
- int pci_irq_vector(struct pci_dev *dev, unsigned int nr)
++#ifdef CONFIG_SYSFS
+ const struct attribute_group **msi_populate_sysfs(struct device *dev);
+ void msi_destroy_sysfs(struct device *dev,
+ 		       const struct attribute_group **msi_irq_groups);
++#else
++static inline const struct attribute_group **msi_populate_sysfs(struct device *dev)
++{
++	return NULL;
++}
++static inline void msi_destroy_sysfs(struct device *dev, const struct attribute_group **msi_irq_groups)
++{
++}
++#endif
+ 
+ /*
+  * The arch hooks to setup up msi irqs. Default functions are implemented
+--- a/kernel/irq/msi.c
++++ b/kernel/irq/msi.c
+@@ -72,6 +72,7 @@ void get_cached_msi_msg(unsigned int irq
+ }
+ EXPORT_SYMBOL_GPL(get_cached_msi_msg);
+ 
++#ifdef CONFIG_SYSFS
+ static ssize_t msi_mode_show(struct device *dev, struct device_attribute *attr,
+ 			     char *buf)
  {
- 	if (dev->msix_enabled) {
- 		struct msi_desc *entry;
--		int i = 0;
+@@ -204,6 +205,7 @@ void msi_destroy_sysfs(struct device *de
+ 		kfree(msi_irq_groups);
+ 	}
+ }
++#endif
  
- 		for_each_pci_msi_entry(entry, dev) {
--			if (i == nr)
-+			if (entry->msi_attrib.entry_nr == nr)
- 				return entry->irq;
--			i++;
- 		}
- 		WARN_ON_ONCE(1);
- 		return -EINVAL;
-@@ -1223,17 +1228,22 @@ EXPORT_SYMBOL(pci_irq_vector);
-  * pci_irq_get_affinity - return the affinity of a particular MSI vector
-  * @dev:	PCI device to operate on
-  * @nr:		device-relative interrupt vector index (0-based).
-+ *
-+ * @nr has the following meanings depending on the interrupt mode:
-+ *   MSI-X:	The index in the MSI-X vector table
-+ *   MSI:	The index of the enabled MSI vectors
-+ *   INTx:	Must be 0
-+ *
-+ * Return: A cpumask pointer or NULL if @nr is out of range
-  */
- const struct cpumask *pci_irq_get_affinity(struct pci_dev *dev, int nr)
- {
- 	if (dev->msix_enabled) {
- 		struct msi_desc *entry;
--		int i = 0;
- 
- 		for_each_pci_msi_entry(entry, dev) {
--			if (i == nr)
-+			if (entry->msi_attrib.entry_nr == nr)
- 				return &entry->affinity->mask;
--			i++;
- 		}
- 		WARN_ON_ONCE(1);
- 		return NULL;
+ #ifdef CONFIG_GENERIC_MSI_IRQ_DOMAIN
+ static inline void irq_chip_write_msi_msg(struct irq_data *data,
 
