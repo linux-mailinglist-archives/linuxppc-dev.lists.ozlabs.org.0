@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84F345FB3B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:34:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 205E845FB46
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:34:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J1Dfk5Ytgz3fqb
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 12:34:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J1DgT051Rz3cnR
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 12:34:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=hN+4spS3;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=ioOSz9Cw;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=OLgQ/+qN;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=5sUajdGI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,44 +19,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=hN+4spS3; 
+ header.s=2020 header.b=OLgQ/+qN; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=ioOSz9Cw; 
+ header.a=ed25519-sha256 header.s=2020e header.b=5sUajdGI; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J1DKp4x6dz3cZJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 12:19:26 +1100 (AEDT)
-Message-ID: <20211126222700.862407977@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J1DKr10nsz3cZR
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 12:19:28 +1100 (AEDT)
+Message-ID: <20211126223824.144593498@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1637975961;
+ s=2020; t=1637975962;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=dz+OhqNvUr9qcj4hBHSmJm3StmH1ayKUMDsS7c1/nyo=;
- b=hN+4spS3TMXDkqfUqEmJ9Q/KMS5D3jtlbPyy5sFM0vzt9tJ3OucTlyqxTh7IuZUj2aDMLU
- ZDeZKf2CAQVkg9z9CU43DNWnFg3/7hrZysWDOJqScxW19/nlOEosiGVfhdaSnv61zNTAq3
- g8lkERFO5y4Qc+o4XLLxHi0GiCVc5ZuC7/w5ZICrpMqUWqvGnO0bJ0nL9cfQwryG/4zhht
- TimG/GUiuetxcX9A8Nd/BSKpP30RdpOJ9eS1hnRikPx67uOv2VP1PtM5IklK87WgluDjxQ
- Eo7Kjh8fdnYYl56I9o1wJZcBbTmg2/I87rdi9HCQOAll7+/Yqf8ukFR78eJhvw==
+ references:references; bh=SP+dKeNJM2hwdIJDgcQ1U3/N14UrjfZzM9fREkCbB+Y=;
+ b=OLgQ/+qNPhyeiGuH7dTwFmaDA3RHOQcBGejXBnEIgK9SPjRkMk+ihcj0rY/hfSzUaXkrTq
+ U1oUl+iy9zK0MOrVnbU72ybCc3YYo4LfcJm2aAtzFpmAhYZB8llRjIj/glz115YZOrLSjb
+ knI+uQpZcoka/C1g2NHkieXzJhU5QO6e/5vzylnNBcgc/U6QP4/lndHc+g1cA/oa/wTjbB
+ VobVFEWYJ5SWEylsLFt9/wGHTbAufBL2vfOsGUgPW1pVrt7X4JyaeUTIzHkTitP5H5PqXv
+ WekM1o8eW5xEQerR/P2vzTcUGutNVguF6Lz+a9RtWYaFNbC36dI2sqYALffTRA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1637975961;
+ s=2020e; t=1637975962;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=dz+OhqNvUr9qcj4hBHSmJm3StmH1ayKUMDsS7c1/nyo=;
- b=ioOSz9CwpOLy5rcIumddu0bfOCT14ff5PEJyDJRFQjcGIrrDsZc99q5ItizXds9+ZxdIaJ
- E+I1dFNX0j5JSrBg==
+ references:references; bh=SP+dKeNJM2hwdIJDgcQ1U3/N14UrjfZzM9fREkCbB+Y=;
+ b=5sUajdGIlpeb1zGGLIu5csmNb4vbxcFCRA+Hdk8g0Ih21FojANjb2tXsQW+3FPyaCaTYFy
+ eaJgtAh/jSMOCNDg==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 00/22] genirq/msi, PCI/MSI: Spring cleaning - Part 1
+Subject: [patch 01/22] powerpc/4xx: Remove MSI support which never worked
+References: <20211126222700.862407977@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Sat, 27 Nov 2021 02:19:20 +0100 (CET)
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 27 Nov 2021 02:19:22 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,68 +83,350 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-VGhlIFtQQ0ldIE1TSSBjb2RlIGhhcyBnYWluZWQgcXVpdGUgc29tZSB3YXJ0cyBvdmVyIHRpbWUu
-IEEgcmVjZW50CmRpc2N1c3Npb24gdW5lYXJ0aGVkIGEgc2hvcnRjb21pbmc6IHRoZSBsYWNrIG9m
-IHN1cHBvcnQgZm9yIGV4cGFuZGluZwpQQ0kvTVNJLVggdmVjdG9ycyBhZnRlciBpbml0aWFsaXph
-dGlvbiBvZiBNU0ktWC4KClBDSS9NU0ktWCBoYXMgbm8gcmVxdWlyZW1lbnQgdG8gc2V0dXAgYWxs
-IHZlY3RvcnMgd2hlbiBNU0ktWCBpcyBlbmFibGVkIGluCnRoZSBkZXZpY2UuIFRoZSBub24tdXNl
-ZCB2ZWN0b3JzIGhhdmUganVzdCB0byBiZSBtYXNrZWQgaW4gdGhlIHZlY3Rvcgp0YWJsZS4gRm9y
-IFBDSS9NU0kgdGhpcyBpcyBub3QgcG9zc2libGUgYmVjYXVzZSB0aGUgbnVtYmVyIG9mIHZlY3Rv
-cnMKY2Fubm90IGJlIGNoYW5nZWQgYWZ0ZXIgaW5pdGlhbGl6YXRpb24uCgpUaGUgUENJL01TSSBj
-b2RlLCBidXQgYWxzbyB0aGUgY29yZSBNU0kgaXJxIGRvbWFpbiBjb2RlIGFyZSBidWlsdCBhcm91
-bmQKdGhlIGFzc3VtcHRpb24gdGhhdCBhbGwgcmVxdWlyZWQgdmVjdG9ycyBhcmUgaW5zdGFsbGVk
-IGF0IGluaXRpYWxpemF0aW9uCnRpbWUgYW5kIGZyZWVkIHdoZW4gdGhlIGRldmljZSBpcyBzaHV0
-IGRvd24gYnkgdGhlIGRyaXZlci4KClN1cHBvcnRpbmcgZHluYW1pYyBleHBhbnNpb24gYXQgbGVh
-c3QgZm9yIE1TSS1YIGlzIGltcG9ydGFudCBmb3IgVkZJTyBzbwp0aGF0IHRoZSBob3N0IHNpZGUg
-aW50ZXJydXB0cyBmb3IgcGFzc3Rocm91Z2ggZGV2aWNlcyBjYW4gYmUgaW5zdGFsbGVkIG9uCmRl
-bWFuZC4KClRoaXMgaXMgdGhlIGZpcnN0IHBhcnQgb2YgYSBsYXJnZSAodG90YWwgMTAxIHBhdGNo
-ZXMpIHNlcmllcyB3aGljaApyZWZhY3RvcnMgdGhlIFtQQ0ldTVNJIGluZnJhc3RydWN0dXJlIHRv
-IG1ha2UgcnVudGltZSBleHBhbnNpb24gb2YgTVNJLVgKdmVjdG9ycyBwb3NzaWJsZS4gVGhlIGxh
-c3QgcGFydCAoMTAgcGF0Y2hlcykgcHJvdmlkZSB0aGlzIGZ1bmN0aW9uYWxpdHkuCgpUaGUgZmly
-c3QgcGFydCBpcyBtb3N0bHkgYSBjbGVhbnVwIHdoaWNoIGNvbnNvbGlkYXRlcyBjb2RlLCBtb3Zl
-cyB0aGUgUENJCk1TSSBjb2RlIGludG8gYSBzZXBhcmF0ZSBkaXJlY3RvcnkgYW5kIHNwbGl0cyBp
-dCB1cCBpbnRvIHNldmVyYWwgcGFydHMuCgpObyBmdW5jdGlvbmFsIGNoYW5nZSBpbnRlbmRlZCBl
-eGNlcHQgZm9yIHBhdGNoIDIvTiB3aGljaCBjaGFuZ2VzIHRoZQpiZWhhdmlvdXIgb2YgcGNpX2dl
-dF92ZWN0b3IoKS9hZmZpbml0eSgpIHRvIGdldCByaWQgb2YgdGhlIGFzc3VtcHRpb24gdGhhdAp0
-aGUgcHJvdmlkZWQgaW5kZXggaXMgdGhlICJpbmRleCIgaW50byB0aGUgZGVzY3JpcHRvciBsaXN0
-IGluc3RlYWQgb2YgdXNpbmcKaXQgYXMgdGhlIGFjdHVhbCBNU0lbWF0gaW5kZXggYXMgc2VlbiBi
-eSB0aGUgaGFyZHdhcmUuIFRoaXMgd291bGQgYnJlYWsKdXNlcnMgb2Ygc3BhcnNlIGFsbG9jYXRl
-ZCBNU0ktWCBlbnRyaWVzLCBidXQgbm9uIG9mIHRoZW0gdXNlIHRoZXNlCmZ1bmN0aW9ucy4KClRo
-ZSBzZXJpZXMgaXMgYmFzZWQgb24gNS4xNi1yYzIgYW5kIGFsc28gYXZhaWxhYmxlIHZpYSBnaXQ6
-CgogICAgIGdpdDovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dpdC90Z2x4
-L2RldmVsLmdpdCBtc2ktdjEtcGFydC0xCgpGb3IgdGhlIGN1cmlvdXMgd2hvIGNhbid0IHdhaXQg
-Zm9yIHRoZSBuZXh0IHBhcnQgdG8gYXJyaXZlIHRoZSBmdWxsIHNlcmllcwppcyBhdmFpbGFibGUg
-dmlhOgoKICAgICBnaXQ6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQv
-dGdseC9kZXZlbC5naXQgbXNpLXYxLXBhcnQtNAoKVGhhbmtzLAoKCXRnbHgKLS0tCiBhcmNoL3Bv
-d2VycGMvcGxhdGZvcm1zLzR4eC9tc2kuYyAgICAgICAgICAgIHwgIDI4MSAtLS0tLS0tLS0tLS0K
-IGIvRG9jdW1lbnRhdGlvbi9kcml2ZXItYXBpL3BjaS9wY2kucnN0ICAgICAgfCAgICAyIAogYi9h
-cmNoL21pcHMvcGNpL21zaS1vY3Rlb24uYyAgICAgICAgICAgICAgICB8ICAgMzIgLQogYi9hcmNo
-L3Bvd2VycGMvcGxhdGZvcm1zLzR4eC9NYWtlZmlsZSAgICAgICB8ICAgIDEgCiBiL2FyY2gvcG93
-ZXJwYy9wbGF0Zm9ybXMvY2VsbC9heG9uX21zaS5jICAgIHwgICAgMiAKIGIvYXJjaC9wb3dlcnBj
-L3BsYXRmb3Jtcy9wb3dlcm52L3BjaS1pb2RhLmMgfCAgICA0IAogYi9hcmNoL3Bvd2VycGMvcGxh
-dGZvcm1zL3BzZXJpZXMvbXNpLmMgICAgICB8ICAgIDYgCiBiL2FyY2gvcG93ZXJwYy9zeXNkZXYv
-S2NvbmZpZyAgICAgICAgICAgICAgIHwgICAgNiAKIGIvYXJjaC9zMzkwL3BjaS9wY2lfaXJxLmMg
-ICAgICAgICAgICAgICAgICAgfCAgICA0IAogYi9hcmNoL3NwYXJjL2tlcm5lbC9wY2lfbXNpLmMg
-ICAgICAgICAgICAgICB8ICAgIDQgCiBiL2FyY2gveDg2L2h5cGVydi9pcnFkb21haW4uYyAgICAg
-ICAgICAgICAgIHwgICA1NSAtLQogYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS94ODZfaW5pdC5oICAg
-ICAgICAgICB8ICAgIDYgCiBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL3hlbi9oeXBlcnZpc29yLmgg
-ICAgIHwgICAgOCAKIGIvYXJjaC94ODYva2VybmVsL2FwaWMvbXNpLmMgICAgICAgICAgICAgICAg
-fCAgICA4IAogYi9hcmNoL3g4Ni9rZXJuZWwveDg2X2luaXQuYyAgICAgICAgICAgICAgICB8ICAg
-MTIgCiBiL2FyY2gveDg2L3BjaS94ZW4uYyAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxOSAK
-IGIvZHJpdmVycy9pcnFjaGlwL2lycS1naWMtdjJtLmMgICAgICAgICAgICAgfCAgICAxIAogYi9k
-cml2ZXJzL2lycWNoaXAvaXJxLWdpYy12My1pdHMtcGNpLW1zaS5jICB8ICAgIDEgCiBiL2RyaXZl
-cnMvaXJxY2hpcC9pcnEtZ2ljLXYzLW1iaS5jICAgICAgICAgIHwgICAgMSAKIGIvZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvYXRoL2F0aDExay9wY2kuYyAgICAgfCAgICAyIAogYi9kcml2ZXJzL3BjaS9N
-YWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICB8ICAgIDMgCiBiL2RyaXZlcnMvcGNpL21zaS9N
-YWtlZmlsZSAgICAgICAgICAgICAgICAgIHwgICAgNyAKIGIvZHJpdmVycy9wY2kvbXNpL2lycWRv
-bWFpbi5jICAgICAgICAgICAgICAgfCAgMjY3ICsrKysrKysrKysrCiBiL2RyaXZlcnMvcGNpL21z
-aS9sZWdhY3kuYyAgICAgICAgICAgICAgICAgIHwgICA3OSArKysKIGIvZHJpdmVycy9wY2kvbXNp
-L21zaS5jICAgICAgICAgICAgICAgICAgICAgfCAgNjQ1ICsrKystLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0KIGIvZHJpdmVycy9wY2kvbXNpL21zaS5oICAgICAgICAgICAgICAgICAgICAgfCAgIDM5
-ICsKIGIvZHJpdmVycy9wY2kvbXNpL3BjaWRldl9tc2kuYyAgICAgICAgICAgICAgfCAgIDQzICsK
-IGIvZHJpdmVycy9wY2kvcGNpLXN5c2ZzLmMgICAgICAgICAgICAgICAgICAgfCAgICA3IAogYi9k
-cml2ZXJzL3BjaS94ZW4tcGNpZnJvbnQuYyAgICAgICAgICAgICAgICB8ICAgIDIgCiBiL2luY2x1
-ZGUvbGludXgvbXNpLmggICAgICAgICAgICAgICAgICAgICAgIHwgIDEzNSArKy0tLQogYi9pbmNs
-dWRlL2xpbnV4L3BjaS5oICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDEgCiBiL2tlcm5lbC9p
-cnEvbXNpLmMgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICA0MSArCiAzMiBmaWxlcyBjaGFu
-Z2VkLCA2OTYgaW5zZXJ0aW9ucygrKSwgMTAyOCBkZWxldGlvbnMoLSkK
+This code is broken since day one. ppc4xx_setup_msi_irqs() has the
+following gems:
+
+ 1) The handling of the result of msi_bitmap_alloc_hwirqs() is completely
+    broken:
+    
+    When the result is greater than or equal 0 (bitmap allocation
+    successful) then the loop terminates and the function returns 0
+    (success) despite not having installed an interrupt.
+
+    When the result is less than 0 (bitmap allocation fails), it prints an
+    error message and continues to "work" with that error code which would
+    eventually end up in the MSI message data.
+
+ 2) On every invocation the file global pp4xx_msi::msi_virqs bitmap is
+    allocated thereby leaking the previous one.
+
+IOW, this has never worked and for more than 10 years nobody cared. Remove
+the gunk.
+
+Fixes: 3fb7933850fa ("powerpc/4xx: Adding PCIe MSI support")
+Fixes: 247540b03bfc ("powerpc/44x: Fix PCI MSI support for Maui APM821xx SoC and Bluestone board")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ arch/powerpc/platforms/4xx/Makefile |    1 
+ arch/powerpc/platforms/4xx/msi.c    |  281 ------------------------------------
+ arch/powerpc/sysdev/Kconfig         |    6 
+ 3 files changed, 288 deletions(-)
+
+--- a/arch/powerpc/platforms/4xx/Makefile
++++ b/arch/powerpc/platforms/4xx/Makefile
+@@ -3,6 +3,5 @@ obj-y				+= uic.o machine_check.o
+ obj-$(CONFIG_4xx_SOC)		+= soc.o
+ obj-$(CONFIG_PCI)		+= pci.o
+ obj-$(CONFIG_PPC4xx_HSTA_MSI)	+= hsta_msi.o
+-obj-$(CONFIG_PPC4xx_MSI)	+= msi.o
+ obj-$(CONFIG_PPC4xx_CPM)	+= cpm.o
+ obj-$(CONFIG_PPC4xx_GPIO)	+= gpio.o
+--- a/arch/powerpc/platforms/4xx/msi.c
++++ /dev/null
+@@ -1,281 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Adding PCI-E MSI support for PPC4XX SoCs.
+- *
+- * Copyright (c) 2010, Applied Micro Circuits Corporation
+- * Authors:	Tirumala R Marri <tmarri@apm.com>
+- *		Feng Kan <fkan@apm.com>
+- */
+-
+-#include <linux/irq.h>
+-#include <linux/pci.h>
+-#include <linux/msi.h>
+-#include <linux/of_platform.h>
+-#include <linux/interrupt.h>
+-#include <linux/export.h>
+-#include <linux/kernel.h>
+-#include <asm/prom.h>
+-#include <asm/hw_irq.h>
+-#include <asm/ppc-pci.h>
+-#include <asm/dcr.h>
+-#include <asm/dcr-regs.h>
+-#include <asm/msi_bitmap.h>
+-
+-#define PEIH_TERMADH	0x00
+-#define PEIH_TERMADL	0x08
+-#define PEIH_MSIED	0x10
+-#define PEIH_MSIMK	0x18
+-#define PEIH_MSIASS	0x20
+-#define PEIH_FLUSH0	0x30
+-#define PEIH_FLUSH1	0x38
+-#define PEIH_CNTRST	0x48
+-
+-static int msi_irqs;
+-
+-struct ppc4xx_msi {
+-	u32 msi_addr_lo;
+-	u32 msi_addr_hi;
+-	void __iomem *msi_regs;
+-	int *msi_virqs;
+-	struct msi_bitmap bitmap;
+-	struct device_node *msi_dev;
+-};
+-
+-static struct ppc4xx_msi ppc4xx_msi;
+-
+-static int ppc4xx_msi_init_allocator(struct platform_device *dev,
+-		struct ppc4xx_msi *msi_data)
+-{
+-	int err;
+-
+-	err = msi_bitmap_alloc(&msi_data->bitmap, msi_irqs,
+-			      dev->dev.of_node);
+-	if (err)
+-		return err;
+-
+-	err = msi_bitmap_reserve_dt_hwirqs(&msi_data->bitmap);
+-	if (err < 0) {
+-		msi_bitmap_free(&msi_data->bitmap);
+-		return err;
+-	}
+-
+-	return 0;
+-}
+-
+-static int ppc4xx_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
+-{
+-	int int_no = -ENOMEM;
+-	unsigned int virq;
+-	struct msi_msg msg;
+-	struct msi_desc *entry;
+-	struct ppc4xx_msi *msi_data = &ppc4xx_msi;
+-
+-	dev_dbg(&dev->dev, "PCIE-MSI:%s called. vec %x type %d\n",
+-		__func__, nvec, type);
+-	if (type == PCI_CAP_ID_MSIX)
+-		pr_debug("ppc4xx msi: MSI-X untested, trying anyway.\n");
+-
+-	msi_data->msi_virqs = kmalloc_array(msi_irqs, sizeof(int), GFP_KERNEL);
+-	if (!msi_data->msi_virqs)
+-		return -ENOMEM;
+-
+-	for_each_pci_msi_entry(entry, dev) {
+-		int_no = msi_bitmap_alloc_hwirqs(&msi_data->bitmap, 1);
+-		if (int_no >= 0)
+-			break;
+-		if (int_no < 0) {
+-			pr_debug("%s: fail allocating msi interrupt\n",
+-					__func__);
+-		}
+-		virq = irq_of_parse_and_map(msi_data->msi_dev, int_no);
+-		if (!virq) {
+-			dev_err(&dev->dev, "%s: fail mapping irq\n", __func__);
+-			msi_bitmap_free_hwirqs(&msi_data->bitmap, int_no, 1);
+-			return -ENOSPC;
+-		}
+-		dev_dbg(&dev->dev, "%s: virq = %d\n", __func__, virq);
+-
+-		/* Setup msi address space */
+-		msg.address_hi = msi_data->msi_addr_hi;
+-		msg.address_lo = msi_data->msi_addr_lo;
+-
+-		irq_set_msi_desc(virq, entry);
+-		msg.data = int_no;
+-		pci_write_msi_msg(virq, &msg);
+-	}
+-	return 0;
+-}
+-
+-void ppc4xx_teardown_msi_irqs(struct pci_dev *dev)
+-{
+-	struct msi_desc *entry;
+-	struct ppc4xx_msi *msi_data = &ppc4xx_msi;
+-	irq_hw_number_t hwirq;
+-
+-	dev_dbg(&dev->dev, "PCIE-MSI: tearing down msi irqs\n");
+-
+-	for_each_pci_msi_entry(entry, dev) {
+-		if (!entry->irq)
+-			continue;
+-		hwirq = virq_to_hw(entry->irq);
+-		irq_set_msi_desc(entry->irq, NULL);
+-		irq_dispose_mapping(entry->irq);
+-		msi_bitmap_free_hwirqs(&msi_data->bitmap, hwirq, 1);
+-	}
+-}
+-
+-static int ppc4xx_setup_pcieh_hw(struct platform_device *dev,
+-				 struct resource res, struct ppc4xx_msi *msi)
+-{
+-	const u32 *msi_data;
+-	const u32 *msi_mask;
+-	const u32 *sdr_addr;
+-	dma_addr_t msi_phys;
+-	void *msi_virt;
+-	int err;
+-
+-	sdr_addr = of_get_property(dev->dev.of_node, "sdr-base", NULL);
+-	if (!sdr_addr)
+-		return -EINVAL;
+-
+-	msi_data = of_get_property(dev->dev.of_node, "msi-data", NULL);
+-	if (!msi_data)
+-		return -EINVAL;
+-
+-	msi_mask = of_get_property(dev->dev.of_node, "msi-mask", NULL);
+-	if (!msi_mask)
+-		return -EINVAL;
+-
+-	msi->msi_dev = of_find_node_by_name(NULL, "ppc4xx-msi");
+-	if (!msi->msi_dev)
+-		return -ENODEV;
+-
+-	msi->msi_regs = of_iomap(msi->msi_dev, 0);
+-	if (!msi->msi_regs) {
+-		dev_err(&dev->dev, "of_iomap failed\n");
+-		err = -ENOMEM;
+-		goto node_put;
+-	}
+-	dev_dbg(&dev->dev, "PCIE-MSI: msi register mapped 0x%x 0x%x\n",
+-		(u32) (msi->msi_regs + PEIH_TERMADH), (u32) (msi->msi_regs));
+-
+-	msi_virt = dma_alloc_coherent(&dev->dev, 64, &msi_phys, GFP_KERNEL);
+-	if (!msi_virt) {
+-		err = -ENOMEM;
+-		goto iounmap;
+-	}
+-	msi->msi_addr_hi = upper_32_bits(msi_phys);
+-	msi->msi_addr_lo = lower_32_bits(msi_phys & 0xffffffff);
+-	dev_dbg(&dev->dev, "PCIE-MSI: msi address high 0x%x, low 0x%x\n",
+-		msi->msi_addr_hi, msi->msi_addr_lo);
+-
+-	mtdcri(SDR0, *sdr_addr, upper_32_bits(res.start));	/*HIGH addr */
+-	mtdcri(SDR0, *sdr_addr + 1, lower_32_bits(res.start));	/* Low addr */
+-
+-	/* Progam the Interrupt handler Termination addr registers */
+-	out_be32(msi->msi_regs + PEIH_TERMADH, msi->msi_addr_hi);
+-	out_be32(msi->msi_regs + PEIH_TERMADL, msi->msi_addr_lo);
+-
+-	/* Program MSI Expected data and Mask bits */
+-	out_be32(msi->msi_regs + PEIH_MSIED, *msi_data);
+-	out_be32(msi->msi_regs + PEIH_MSIMK, *msi_mask);
+-
+-	dma_free_coherent(&dev->dev, 64, msi_virt, msi_phys);
+-
+-	return 0;
+-
+-iounmap:
+-	iounmap(msi->msi_regs);
+-node_put:
+-	of_node_put(msi->msi_dev);
+-	return err;
+-}
+-
+-static int ppc4xx_of_msi_remove(struct platform_device *dev)
+-{
+-	struct ppc4xx_msi *msi = dev->dev.platform_data;
+-	int i;
+-	int virq;
+-
+-	for (i = 0; i < msi_irqs; i++) {
+-		virq = msi->msi_virqs[i];
+-		if (virq)
+-			irq_dispose_mapping(virq);
+-	}
+-
+-	if (msi->bitmap.bitmap)
+-		msi_bitmap_free(&msi->bitmap);
+-	iounmap(msi->msi_regs);
+-	of_node_put(msi->msi_dev);
+-
+-	return 0;
+-}
+-
+-static int ppc4xx_msi_probe(struct platform_device *dev)
+-{
+-	struct ppc4xx_msi *msi;
+-	struct resource res;
+-	int err = 0;
+-	struct pci_controller *phb;
+-
+-	dev_dbg(&dev->dev, "PCIE-MSI: Setting up MSI support...\n");
+-
+-	msi = devm_kzalloc(&dev->dev, sizeof(*msi), GFP_KERNEL);
+-	if (!msi)
+-		return -ENOMEM;
+-	dev->dev.platform_data = msi;
+-
+-	/* Get MSI ranges */
+-	err = of_address_to_resource(dev->dev.of_node, 0, &res);
+-	if (err) {
+-		dev_err(&dev->dev, "%pOF resource error!\n", dev->dev.of_node);
+-		return err;
+-	}
+-
+-	msi_irqs = of_irq_count(dev->dev.of_node);
+-	if (!msi_irqs)
+-		return -ENODEV;
+-
+-	err = ppc4xx_setup_pcieh_hw(dev, res, msi);
+-	if (err)
+-		return err;
+-
+-	err = ppc4xx_msi_init_allocator(dev, msi);
+-	if (err) {
+-		dev_err(&dev->dev, "Error allocating MSI bitmap\n");
+-		goto error_out;
+-	}
+-	ppc4xx_msi = *msi;
+-
+-	list_for_each_entry(phb, &hose_list, list_node) {
+-		phb->controller_ops.setup_msi_irqs = ppc4xx_setup_msi_irqs;
+-		phb->controller_ops.teardown_msi_irqs = ppc4xx_teardown_msi_irqs;
+-	}
+-	return 0;
+-
+-error_out:
+-	ppc4xx_of_msi_remove(dev);
+-	return err;
+-}
+-static const struct of_device_id ppc4xx_msi_ids[] = {
+-	{
+-		.compatible = "amcc,ppc4xx-msi",
+-	},
+-	{}
+-};
+-static struct platform_driver ppc4xx_msi_driver = {
+-	.probe = ppc4xx_msi_probe,
+-	.remove = ppc4xx_of_msi_remove,
+-	.driver = {
+-		   .name = "ppc4xx-msi",
+-		   .of_match_table = ppc4xx_msi_ids,
+-		   },
+-
+-};
+-
+-static __init int ppc4xx_msi_init(void)
+-{
+-	return platform_driver_register(&ppc4xx_msi_driver);
+-}
+-
+-subsys_initcall(ppc4xx_msi_init);
+--- a/arch/powerpc/sysdev/Kconfig
++++ b/arch/powerpc/sysdev/Kconfig
+@@ -12,17 +12,11 @@ config PPC4xx_HSTA_MSI
+ 	depends on PCI_MSI
+ 	depends on PCI && 4xx
+ 
+-config PPC4xx_MSI
+-	bool
+-	depends on PCI_MSI
+-	depends on PCI && 4xx
+-
+ config PPC_MSI_BITMAP
+ 	bool
+ 	depends on PCI_MSI
+ 	default y if MPIC
+ 	default y if FSL_PCI
+-	default y if PPC4xx_MSI
+ 	default y if PPC_POWERNV
+ 
+ source "arch/powerpc/sysdev/xics/Kconfig"
+
