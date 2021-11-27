@@ -1,15 +1,15 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21CD745FB4D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:36:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3FF45FB53
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:38:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J1Djl0Xk0z3dqn
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 12:36:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J1DlJ6Mnmz3ddx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 12:38:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=3QE1kwAZ;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=/+krVhSS;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=3IN7G2Z+;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=tNxaZsUi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,42 +19,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=3QE1kwAZ; 
+ header.s=2020 header.b=3IN7G2Z+; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=/+krVhSS; 
+ header.a=ed25519-sha256 header.s=2020e header.b=tNxaZsUi; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J1DKw4YTtz3cZs
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 12:19:32 +1100 (AEDT)
-Message-ID: <20211126223824.382273262@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J1DKz75bdz3cbN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 12:19:35 +1100 (AEDT)
+Message-ID: <20211126223824.441771859@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1637975969;
+ s=2020; t=1637975970;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=w7GncdwHZHkuO6107A0BMJdTfScXy8O2W/1Ze2L1KBI=;
- b=3QE1kwAZSn0AOk+bavNZ+1QGzKQwtdZggp/2QupSoLnSv4hgBf0i5NYSQk1Xh3Te7r2lj2
- RIKrJ8nRt+yOUSqgv/raaaEzi4g7iUcBuN551YDz6Xaov3UfHqH8KbAZc91CzVW9+qGr+5
- 0K2kZCbaxqFIj4mFhtFNSEu+KAhUE1WDPPYhMsX8N8ff3xkHmUekaAo3u4T7A66BSLqhYp
- 4XGys/cw7iBRHVdNQTa9QVZRKfJojBV6cCn4mN7axCrfi968z4S8U7K2yEJOsKQLwWgo1n
- EZ7cAGoXHBM1b+VijVozl6thH/vIF8O3zDUH6vXm2+A/d3lLLGdu2F4xFTZCEg==
+ references:references; bh=EjQK06gGut8wpWxb3xXf7TaaLrkIbQLhpXZXlXqI+1E=;
+ b=3IN7G2Z+0trEJeykGv7kUnMltcrJgw6/YiiYZT8QXhspQzKvcIJW3i6gR+n0r+g0hsjZAO
+ 6Y9KrK5zYseTHHVb7+c8IptjiFQeVXBeJDPflWUfULp3GtFjmbp9XFuGtmX1U+/q2euX+7
+ jbyTLqyRLHFcvAPwlksKJBmoQq5tScd89MT6QeCRCoLuq+1hECPKCcrJEwZqd6tTMvJfgo
+ omFGhCP0pUYeNAhfPERNfI16sLmeF3+3CoWsyDCxxVlEIkwnejxyxNkkc5/OsucKZ6M2Wz
+ 9b3BXGVs3dTsq0Elas1wdnxn4Qa5k8MRI/8VEocHf7LWeYN/GB276k0tmU8dkg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1637975969;
+ s=2020e; t=1637975970;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=w7GncdwHZHkuO6107A0BMJdTfScXy8O2W/1Ze2L1KBI=;
- b=/+krVhSSUWDZcKzVa8Z7DFG7rRo3Xw/7JdSU0e8eVBPs+Rs+2BYhA4S+6BpELmkd/ZqXPd
- OxLK/KydpitaftBQ==
+ references:references; bh=EjQK06gGut8wpWxb3xXf7TaaLrkIbQLhpXZXlXqI+1E=;
+ b=tNxaZsUisx8qmcOuXzPTbk9OTikfV8u0CcSvhiEBov4PNCxknl15jCdw3kB2y8lH62s1JS
+ bmCvi3+Z0sDU1eBw==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 05/22] genirq/msi: Fixup includes
+Subject: [patch 06/22] PCI/MSI: Make pci_msi_domain_write_msg() static
 References: <20211126222700.862407977@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 27 Nov 2021 02:19:28 +0100 (CET)
+Date: Sat, 27 Nov 2021 02:19:30 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,33 +83,67 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Remove the kobject.h include from msi.h as it's not required and add a
-sysfs.h include to the core code instead.
+There is no point to have this function public as it is set by the PCI core
+anyway when a PCI/MSI irqdomain is created.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- include/linux/msi.h |    1 -
- kernel/irq/msi.c    |    1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v2m.c            |    1 -
+ drivers/irqchip/irq-gic-v3-its-pci-msi.c |    1 -
+ drivers/irqchip/irq-gic-v3-mbi.c         |    1 -
+ drivers/pci/msi.c                        |    2 +-
+ include/linux/msi.h                      |    1 -
+ 5 files changed, 1 insertion(+), 5 deletions(-)
 
+--- a/drivers/irqchip/irq-gic-v2m.c
++++ b/drivers/irqchip/irq-gic-v2m.c
+@@ -88,7 +88,6 @@ static struct irq_chip gicv2m_msi_irq_ch
+ 	.irq_mask		= gicv2m_mask_msi_irq,
+ 	.irq_unmask		= gicv2m_unmask_msi_irq,
+ 	.irq_eoi		= irq_chip_eoi_parent,
+-	.irq_write_msi_msg	= pci_msi_domain_write_msg,
+ };
+ 
+ static struct msi_domain_info gicv2m_msi_domain_info = {
+--- a/drivers/irqchip/irq-gic-v3-its-pci-msi.c
++++ b/drivers/irqchip/irq-gic-v3-its-pci-msi.c
+@@ -28,7 +28,6 @@ static struct irq_chip its_msi_irq_chip
+ 	.irq_unmask		= its_unmask_msi_irq,
+ 	.irq_mask		= its_mask_msi_irq,
+ 	.irq_eoi		= irq_chip_eoi_parent,
+-	.irq_write_msi_msg	= pci_msi_domain_write_msg,
+ };
+ 
+ static int its_pci_msi_vec_count(struct pci_dev *pdev, void *data)
+--- a/drivers/irqchip/irq-gic-v3-mbi.c
++++ b/drivers/irqchip/irq-gic-v3-mbi.c
+@@ -171,7 +171,6 @@ static struct irq_chip mbi_msi_irq_chip
+ 	.irq_unmask		= mbi_unmask_msi_irq,
+ 	.irq_eoi		= irq_chip_eoi_parent,
+ 	.irq_compose_msi_msg	= mbi_compose_msi_msg,
+-	.irq_write_msi_msg	= pci_msi_domain_write_msg,
+ };
+ 
+ static struct msi_domain_info mbi_msi_domain_info = {
+--- a/drivers/pci/msi.c
++++ b/drivers/pci/msi.c
+@@ -1267,7 +1267,7 @@ EXPORT_SYMBOL_GPL(msi_desc_to_pci_sysdat
+  * @irq_data:	Pointer to interrupt data of the MSI interrupt
+  * @msg:	Pointer to the message
+  */
+-void pci_msi_domain_write_msg(struct irq_data *irq_data, struct msi_msg *msg)
++static void pci_msi_domain_write_msg(struct irq_data *irq_data, struct msi_msg *msg)
+ {
+ 	struct msi_desc *desc = irq_data_get_msi_desc(irq_data);
+ 
 --- a/include/linux/msi.h
 +++ b/include/linux/msi.h
-@@ -2,7 +2,6 @@
- #ifndef LINUX_MSI_H
- #define LINUX_MSI_H
+@@ -454,7 +454,6 @@ void *platform_msi_get_host_data(struct
+ #endif /* CONFIG_GENERIC_MSI_IRQ_DOMAIN */
  
--#include <linux/kobject.h>
- #include <linux/list.h>
- #include <asm/msi.h>
- 
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -14,6 +14,7 @@
- #include <linux/irqdomain.h>
- #include <linux/msi.h>
- #include <linux/slab.h>
-+#include <linux/sysfs.h>
- #include <linux/pci.h>
- 
- #include "internals.h"
+ #ifdef CONFIG_PCI_MSI_IRQ_DOMAIN
+-void pci_msi_domain_write_msg(struct irq_data *irq_data, struct msi_msg *msg);
+ struct irq_domain *pci_msi_create_irq_domain(struct fwnode_handle *fwnode,
+ 					     struct msi_domain_info *info,
+ 					     struct irq_domain *parent);
 
