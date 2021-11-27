@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A68D45FA82
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:29:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C94DB45FAA7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:30:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J1DYM2sXCz3fQL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 12:29:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J1DZ44pp3z3f0F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 12:30:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=hNIt8OdQ;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=VuXwjFCk;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YXrvDdji;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=RvZm8oUX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,42 +19,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=hNIt8OdQ; 
+ header.s=2020 header.b=YXrvDdji; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=VuXwjFCk; 
+ header.a=ed25519-sha256 header.s=2020e header.b=RvZm8oUX; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J1DKN0CSdz3cRj
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 12:19:04 +1100 (AEDT)
-Message-ID: <20211126223825.034426787@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J1DKP0yTdz3c7h
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 12:19:05 +1100 (AEDT)
+Message-ID: <20211126223825.093887718@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1637975940;
+ s=2020; t=1637975941;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=/hUtpZoje77D8jXpCF4dVmu6dIuQVzxr12Tf8gEZrmw=;
- b=hNIt8OdQYSBdhy1LPCcMUGRBqnREBl3UBjJaNo48wU+yitHyucClBw2FatgmLhmT+NU3Ql
- 4sNgzJGJwZh/ha6ppJ940OFjIokFLOJZrrZ9Hn+cAi1F4FyEZB5/WZGbdWx/0rI4gSVYXH
- 0ZAueHlXhJYar/+0Pt78nugjpObRWsEEvTI82qsArEFCxNUEKE1CjeVxpOaurVu/heD40x
- svbwdGhLpDr+48E2XA7s2rBrW/D9QDT1vecScPJtMzmkyrDlH0t6HEPyqjKucfxxETkZq3
- M3K9th4jI9ae1bWlJd5NI+WypKa6K5lyXJE2P5xEhwaQn0Ti6cqyZ6VpLW9nNw==
+ references:references; bh=Fm5t3j//2ZJWIAwQC/lUTYq1h7igaXJ6yKKmISA8BnE=;
+ b=YXrvDdjinCV1yBjHyHLHh4kbucu2LHURHR+t0zVJv5Iwe67q0LFuruaQh3vkwbzQtPwio7
+ pprtMrfRvledbc2Kp38dfn11v4y5Inu453zNnn62UbDXbEMDnzTVB2lG+F7/o751ne62V0
+ wuLwIsQnEtadtEUUBTR+POd7nVjDpAaMG5nsqWghfqGryom7R0YB/K06iimvmxsJ5KiFpB
+ JPV3B+r8CqqTRE3oo30uaAVzGJqzMsu2Bz/vPrVyNZToyYv3yqNeZE81QSacrNZkpZTNFS
+ XGAAgWOht7wVhoHHI0patyvWHbhFxyJn+zFlcFj6JBZ8L2lsCdtihTsPXR9eTg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1637975940;
+ s=2020e; t=1637975941;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=/hUtpZoje77D8jXpCF4dVmu6dIuQVzxr12Tf8gEZrmw=;
- b=VuXwjFCkRtJzwgPzd13igAMoSEEMu4NeLAa9wdlctBYjILYD2dtuDp0HaXuKf26rChjrKM
- 6+NREzi1mLkFLdBg==
+ references:references; bh=Fm5t3j//2ZJWIAwQC/lUTYq1h7igaXJ6yKKmISA8BnE=;
+ b=RvZm8oUXbruNEue8m0QI5IgMFXDCNY3ru8yRX0pyG3paqWiHR2a2l+sKosxSZ9wf0ryS/Q
+ OiKV6WwXAMjbYnDg==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 16/22] PCI/MSI: Split out CONFIG_PCI_MSI independent part
+Subject: [patch 17/22] PCI/MSI: Split out !IRQDOMAIN code
 References: <20211126222700.862407977@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 27 Nov 2021 02:18:59 +0100 (CET)
+Date: Sat, 27 Nov 2021 02:19:01 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,121 +83,133 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These functions are required even when CONFIG_PCI_MSI is not set. Move them
-to their own file.
+Split out the non irqdomain code into its own file.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- drivers/pci/msi/Makefile     |    3 ++-
- drivers/pci/msi/msi.c        |   39 ---------------------------------------
- drivers/pci/msi/pcidev_msi.c |   43 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 45 insertions(+), 40 deletions(-)
+ drivers/pci/msi/Makefile |    5 ++--
+ drivers/pci/msi/legacy.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/pci/msi/msi.c    |   46 ------------------------------------------
+ 3 files changed, 54 insertions(+), 48 deletions(-)
 
 --- a/drivers/pci/msi/Makefile
 +++ b/drivers/pci/msi/Makefile
-@@ -1,4 +1,5 @@
+@@ -1,5 +1,6 @@
  # SPDX-License-Identifier: GPL-2.0
  #
  # Makefile for the PCI/MSI
--obj-$(CONFIG_PCI)		+= msi.o
-+obj-$(CONFIG_PCI)		+= pcidev_msi.o
-+obj-$(CONFIG_PCI_MSI)		+= msi.o
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -18,8 +18,6 @@
- 
- #include "../pci.h"
- 
--#ifdef CONFIG_PCI_MSI
--
- static int pci_msi_enable = 1;
- int pci_msi_ignore_mask;
- 
-@@ -1479,40 +1477,3 @@ bool pci_dev_has_special_msi_domain(stru
- }
- 
- #endif /* CONFIG_PCI_MSI_IRQ_DOMAIN */
--#endif /* CONFIG_PCI_MSI */
--
--void pci_msi_init(struct pci_dev *dev)
--{
--	u16 ctrl;
--
--	/*
--	 * Disable the MSI hardware to avoid screaming interrupts
--	 * during boot.  This is the power on reset default so
--	 * usually this should be a noop.
--	 */
--	dev->msi_cap = pci_find_capability(dev, PCI_CAP_ID_MSI);
--	if (!dev->msi_cap)
--		return;
--
--	pci_read_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, &ctrl);
--	if (ctrl & PCI_MSI_FLAGS_ENABLE)
--		pci_write_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS,
--				      ctrl & ~PCI_MSI_FLAGS_ENABLE);
--
--	if (!(ctrl & PCI_MSI_FLAGS_64BIT))
--		dev->no_64bit_msi = 1;
--}
--
--void pci_msix_init(struct pci_dev *dev)
--{
--	u16 ctrl;
--
--	dev->msix_cap = pci_find_capability(dev, PCI_CAP_ID_MSIX);
--	if (!dev->msix_cap)
--		return;
--
--	pci_read_config_word(dev, dev->msix_cap + PCI_MSIX_FLAGS, &ctrl);
--	if (ctrl & PCI_MSIX_FLAGS_ENABLE)
--		pci_write_config_word(dev, dev->msix_cap + PCI_MSIX_FLAGS,
--				      ctrl & ~PCI_MSIX_FLAGS_ENABLE);
--}
+-obj-$(CONFIG_PCI)		+= pcidev_msi.o
+-obj-$(CONFIG_PCI_MSI)		+= msi.o
++obj-$(CONFIG_PCI)			+= pcidev_msi.o
++obj-$(CONFIG_PCI_MSI)			+= msi.o
++obj-$(CONFIG_PCI_MSI_ARCH_FALLBACKS)	+= legacy.o
 --- /dev/null
-+++ b/drivers/pci/msi/pcidev_msi.c
-@@ -0,0 +1,43 @@
++++ b/drivers/pci/msi/legacy.c
+@@ -0,0 +1,51 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * MSI[X} related functions which are available unconditionally.
++ * PCI Message Signaled Interrupt (MSI).
++ *
++ * Legacy architecture specific setup and teardown mechanism.
 + */
-+#include "../pci.h"
++#include "msi.h"
 +
-+/*
-+ * Disable the MSI[X] hardware to avoid screaming interrupts during boot.
-+ * This is the power on reset default so usually this should be a noop.
-+ */
-+
-+void pci_msi_init(struct pci_dev *dev)
++/* Arch hooks */
++int __weak arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
 +{
-+	u16 ctrl;
-+
-+	dev->msi_cap = pci_find_capability(dev, PCI_CAP_ID_MSI);
-+	if (!dev->msi_cap)
-+		return;
-+
-+	pci_read_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, &ctrl);
-+	if (ctrl & PCI_MSI_FLAGS_ENABLE) {
-+		pci_write_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS,
-+				      ctrl & ~PCI_MSI_FLAGS_ENABLE);
-+	}
-+
-+	if (!(ctrl & PCI_MSI_FLAGS_64BIT))
-+		dev->no_64bit_msi = 1;
++	return -EINVAL;
 +}
 +
-+void pci_msix_init(struct pci_dev *dev)
++void __weak arch_teardown_msi_irq(unsigned int irq)
 +{
-+	u16 ctrl;
++}
 +
-+	dev->msix_cap = pci_find_capability(dev, PCI_CAP_ID_MSIX);
-+	if (!dev->msix_cap)
-+		return;
++int __weak arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
++{
++	struct msi_desc *desc;
++	int ret;
 +
-+	pci_read_config_word(dev, dev->msix_cap + PCI_MSIX_FLAGS, &ctrl);
-+	if (ctrl & PCI_MSIX_FLAGS_ENABLE) {
-+		pci_write_config_word(dev, dev->msix_cap + PCI_MSIX_FLAGS,
-+				      ctrl & ~PCI_MSIX_FLAGS_ENABLE);
++	/*
++	 * If an architecture wants to support multiple MSI, it needs to
++	 * override arch_setup_msi_irqs()
++	 */
++	if (type == PCI_CAP_ID_MSI && nvec > 1)
++		return 1;
++
++	for_each_pci_msi_entry(desc, dev) {
++		ret = arch_setup_msi_irq(dev, desc);
++		if (ret)
++			return ret < 0 ? ret : -ENOSPC;
++	}
++
++	return 0;
++}
++
++void __weak arch_teardown_msi_irqs(struct pci_dev *dev)
++{
++	struct msi_desc *desc;
++	int i;
++
++	for_each_pci_msi_entry(desc, dev) {
++		if (desc->irq) {
++			for (i = 0; i < entry->nvec_used; i++)
++				arch_teardown_msi_irq(desc->irq + i);
++		}
 +	}
 +}
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -50,52 +50,6 @@ static void pci_msi_teardown_msi_irqs(st
+ #define pci_msi_teardown_msi_irqs	arch_teardown_msi_irqs
+ #endif
+ 
+-#ifdef CONFIG_PCI_MSI_ARCH_FALLBACKS
+-/* Arch hooks */
+-int __weak arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
+-{
+-	return -EINVAL;
+-}
+-
+-void __weak arch_teardown_msi_irq(unsigned int irq)
+-{
+-}
+-
+-int __weak arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
+-{
+-	struct msi_desc *entry;
+-	int ret;
+-
+-	/*
+-	 * If an architecture wants to support multiple MSI, it needs to
+-	 * override arch_setup_msi_irqs()
+-	 */
+-	if (type == PCI_CAP_ID_MSI && nvec > 1)
+-		return 1;
+-
+-	for_each_pci_msi_entry(entry, dev) {
+-		ret = arch_setup_msi_irq(dev, entry);
+-		if (ret < 0)
+-			return ret;
+-		if (ret > 0)
+-			return -ENOSPC;
+-	}
+-
+-	return 0;
+-}
+-
+-void __weak arch_teardown_msi_irqs(struct pci_dev *dev)
+-{
+-	int i;
+-	struct msi_desc *entry;
+-
+-	for_each_pci_msi_entry(entry, dev)
+-		if (entry->irq)
+-			for (i = 0; i < entry->nvec_used; i++)
+-				arch_teardown_msi_irq(entry->irq + i);
+-}
+-#endif /* CONFIG_PCI_MSI_ARCH_FALLBACKS */
+-
+ /*
+  * PCI 2.3 does not specify mask bits for each MSI interrupt.  Attempting to
+  * mask all MSI interrupts by clearing the MSI enable bit does not work
 
