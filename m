@@ -1,59 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5482045FB65
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:42:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5181245FB66
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:43:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J1DrV1McLz3gZj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 12:42:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J1DsC2FWvz3gdY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 12:43:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=3I27l9si;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=cSljuXSf;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=nLVAIHxU;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=1oZXQ7KM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
+ smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
  helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=3I27l9si; 
+ header.s=2020 header.b=nLVAIHxU; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=cSljuXSf; 
+ header.a=ed25519-sha256 header.s=2020e header.b=1oZXQ7KM; 
  dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J1DL80HGBz3ckP
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 12:19:44 +1100 (AEDT)
-Message-ID: <20211126223824.855947162@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J1DLB19Nyz3cSf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 12:19:46 +1100 (AEDT)
+Message-ID: <20211126223824.914161382@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1637975981;
+ s=2020; t=1637975983;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=lhIUE61Y2ARmaAA3RG1h6L7zHDs4cKgQsOndAjR5STU=;
- b=3I27l9siS6/oWE1JVUleWaLVyIqltkA2MLPegdLeuNH4xABPDw/VJVaN4/5xZwR/ZGDZ/X
- z+Yu7BvVlI1Y8bjNWoik91+y02TV4O1ndMArqPpxXOjDKZc7tlfYU+IDvy9/QevhvUBSSe
- nyPwZJhyvMtFooayQnVqCf1qlIROsanIGmDDCCtFBXia2UMjMfl/6bOUpWxdL7U7K8o12E
- JDsMmY+UavmvHDtkNDK/mVPz680wKGlII+yHcirzIllt9Z7FWCJTiaD8RGfRwVR8wCXrIw
- Fm3H9jm1jwNh8R+ZVC5kx7Gidr5VdZYHXIY0uS6MsgUEApx3IIaeb7WLJgRlLA==
+ references:references; bh=HvFnLhSNQWkY7FyV6dqkmiDpk27hPnt+iT7sMKioVYY=;
+ b=nLVAIHxU7zzvZDcgNYXA194SYdMrO6dCVMw9y6HDD/le7JD9C2QCF1wk/oqJx43iUEDnY1
+ pgFSlnrN/ssoMHCXM1uIFRYGaPp1xqbZEnupYzQc1IY8qVYeNbHLiAjPWJl+M4yhP2RdYQ
+ cCvlNNeLa1fK+j1OQO1an1R2IQT5f2TQuSGwBcLKRc/fbex/njb0MW28/CMYhqJTqy9tUY
+ CVHodIwjaxn70G+E6gtde2Lz44MuDnM9t8twCu61Q+gLHHsjI5TqsEgLxYzGmGm3HlcIN3
+ BEj3sWmPgxXgXz1yJGmpdxUJULqvf5Szc7KHc+NFChP1uqJQYAlM8cHG8IC6NA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1637975981;
+ s=2020e; t=1637975983;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=lhIUE61Y2ARmaAA3RG1h6L7zHDs4cKgQsOndAjR5STU=;
- b=cSljuXSfhLC27NoLNfSXkLMLt2p1DhSlr0Y1CawLWxZ6xSqD3SbIMB5YfCzJcABWyjJgHj
- cjBENAHWPOx02EDA==
+ references:references; bh=HvFnLhSNQWkY7FyV6dqkmiDpk27hPnt+iT7sMKioVYY=;
+ b=1oZXQ7KMDPa4UCKNRSuXOGmdL7VQAHRxAH7SeUCdr1ZzVhtYvvJdA6oJ2iJPmpT4hzHWhx
+ P5LB3i92rxk9FGCg==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 13/22] PCI/MSI: Cleanup include zoo
+Subject: [patch 14/22] PCI/MSI: Make msix_update_entries() smarter
 References: <20211126222700.862407977@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 27 Nov 2021 02:19:41 +0100 (CET)
+Date: Sat, 27 Nov 2021 02:19:42 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,40 +83,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Get rid of the pile of unneeded includes which accumulated over time.
+No need to walk the descriptors and check for each one whether the entries
+pointer function argument is NULL. Do it once.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- drivers/pci/msi.c |   16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/pci/msi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 --- a/drivers/pci/msi.c
 +++ b/drivers/pci/msi.c
-@@ -7,22 +7,14 @@
-  * Copyright (C) 2016 Christoph Hellwig.
-  */
+@@ -642,8 +642,8 @@ static void msix_update_entries(struct p
+ {
+ 	struct msi_desc *entry;
  
-+#include <linux/acpi_iort.h>
- #include <linux/err.h>
--#include <linux/mm.h>
--#include <linux/irq.h>
--#include <linux/interrupt.h>
- #include <linux/export.h>
--#include <linux/ioport.h>
--#include <linux/pci.h>
--#include <linux/proc_fs.h>
--#include <linux/msi.h>
--#include <linux/smp.h>
--#include <linux/errno.h>
--#include <linux/io.h>
--#include <linux/acpi_iort.h>
--#include <linux/slab.h>
-+#include <linux/irq.h>
- #include <linux/irqdomain.h>
-+#include <linux/msi.h>
- #include <linux/of_irq.h>
-+#include <linux/pci.h>
- 
- #include "pci.h"
- 
+-	for_each_pci_msi_entry(entry, dev) {
+-		if (entries) {
++	if (entries) {
++		for_each_pci_msi_entry(entry, dev) {
+ 			entries->vector = entry->irq;
+ 			entries++;
+ 		}
 
