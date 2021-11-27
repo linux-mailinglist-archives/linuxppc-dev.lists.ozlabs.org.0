@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4388445F916
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:23:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E7C45F98C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 02:24:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J1DQK17MLz3dss
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 12:23:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J1DRl2sFYz3f30
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 27 Nov 2021 12:24:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=en2BVqpl;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=4hUVGqAr;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=cmxuu0+S;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=cZ5icEO1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,42 +19,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=en2BVqpl; 
+ header.s=2020 header.b=cmxuu0+S; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=4hUVGqAr; 
+ header.a=ed25519-sha256 header.s=2020e header.b=cZ5icEO1; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J1DK54bQwz2xDv
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 12:18:49 +1100 (AEDT)
-Message-ID: <20211126223824.499448912@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J1DK828Mlz30R8
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 12:18:52 +1100 (AEDT)
+Message-ID: <20211126223824.558746009@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1637975926;
+ s=2020; t=1637975927;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=+rP3SiVoHOK5Hyn2EAGrDg54y7+IEHUse42w3xFRuo4=;
- b=en2BVqplFMhJlJ/67iu0Edu2NrGl2YoL7tfUkBXuWGzeU2hxeKRsBezk52+o99rxhr3938
- TRs0SQYeEY0XTWyetTmz5VEY4LyU/pCwOfsvgmIpv0evVB0njacCp5HZd95Lk6yEtPp2qC
- d1p1yOFMjNpOmU2EZz/humF1AL+c2gchzbmiK8fKoyFQFRNZr0ge/HjuNEWf7dAqZ3u/dl
- ZGfz8C379X5x+ikPMgYdarUXfu9tN65dbvfK9I1hJFDQrDXnn2iLf1UCuWBh5HtK4Sw7VS
- fwKOlxrXeck+pJ2IkumMPe/8tucPvP0pUZ/lUZw7GXQSElER8i5i2Fkh/6Q4mA==
+ references:references; bh=t8fdQf5v0Re3s6aU2w+RDhHEUcAYg2OEvsShj+q+pN4=;
+ b=cmxuu0+S0CsZgYZ32HYbpri2Sd336Qg0Z/c81KGZv/d8VT2cx3pO+wemLvUEb8/rZzqWVq
+ 0Aee2el4uFtUTEwM4NevFSfRRWXl8VsohVUQkWOKC+PX0UQyocXwd13XzgnMnq75EbEPpc
+ 0XDH6VZ4F6aY7FGjwQjBxCJ7S/gKrxXo/ft3a22JYLKHH+h+Axgwy8gMgGdardXG7mD8wm
+ 3V4bu8HbHxltFdFVIZbZpYe1L772kd6xKP36Y2xY0IxJPYxSmaQFkKvdAoQKrvZZSPMg4i
+ ILG/RGrZ7qSuIfwivCkd64S54zttW12a2Bqgv90Is3DfVoXms2CX5Xi+tguk7Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1637975926;
+ s=2020e; t=1637975927;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=+rP3SiVoHOK5Hyn2EAGrDg54y7+IEHUse42w3xFRuo4=;
- b=4hUVGqAr7Jj3KAwcapzMWVWkLocnYS1dwMuxMKLswtqj7uo9lVzO01+ZZON8j5/GAbX8Ix
- yWVdyyLvdQ59eaCw==
+ references:references; bh=t8fdQf5v0Re3s6aU2w+RDhHEUcAYg2OEvsShj+q+pN4=;
+ b=cZ5icEO1gkVwPGoTe3vcr7yZhvwpxdLRW5DA8ZhfyEhQ1AqnzzWnOcXhvMTVspkGXfUHDc
+ LU+g5W5AGkvQPBCg==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch 07/22] PCI/MSI: Remove msi_desc_to_pci_sysdata()
+Subject: [patch 08/22] PCI/sysfs: Use pci_irq_vector()
 References: <20211126222700.862407977@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 27 Nov 2021 02:18:45 +0100 (CET)
+Date: Sat, 27 Nov 2021 02:18:47 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,45 +83,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Last user is gone long ago.
+instead of fiddling with msi descriptors.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 ---
- drivers/pci/msi.c   |    8 --------
- include/linux/msi.h |    5 -----
- 2 files changed, 13 deletions(-)
+ drivers/pci/pci-sysfs.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -1253,14 +1253,6 @@ struct pci_dev *msi_desc_to_pci_dev(stru
- }
- EXPORT_SYMBOL(msi_desc_to_pci_dev);
- 
--void *msi_desc_to_pci_sysdata(struct msi_desc *desc)
--{
--	struct pci_dev *dev = msi_desc_to_pci_dev(desc);
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -62,11 +62,8 @@ static ssize_t irq_show(struct device *d
+ 	 * For MSI, show the first MSI IRQ; for all other cases including
+ 	 * MSI-X, show the legacy INTx IRQ.
+ 	 */
+-	if (pdev->msi_enabled) {
+-		struct msi_desc *desc = first_pci_msi_entry(pdev);
 -
--	return dev->bus->sysdata;
--}
--EXPORT_SYMBOL_GPL(msi_desc_to_pci_sysdata);
--
- #ifdef CONFIG_PCI_MSI_IRQ_DOMAIN
- /**
-  * pci_msi_domain_write_msg - Helper to write MSI message to PCI config space
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -217,13 +217,8 @@ static inline void msi_desc_set_iommu_co
- 	for_each_msi_entry((desc), &(pdev)->dev)
+-		return sysfs_emit(buf, "%u\n", desc->irq);
+-	}
++	if (pdev->msi_enabled)
++		return sysfs_emit(buf, "%u\n", pci_irq_vector(pdev, 0));
+ #endif
  
- struct pci_dev *msi_desc_to_pci_dev(struct msi_desc *desc);
--void *msi_desc_to_pci_sysdata(struct msi_desc *desc);
- void pci_write_msi_msg(unsigned int irq, struct msi_msg *msg);
- #else /* CONFIG_PCI_MSI */
--static inline void *msi_desc_to_pci_sysdata(struct msi_desc *desc)
--{
--	return NULL;
--}
- static inline void pci_write_msi_msg(unsigned int irq, struct msi_msg *msg)
- {
- }
+ 	return sysfs_emit(buf, "%u\n", pdev->irq);
 
