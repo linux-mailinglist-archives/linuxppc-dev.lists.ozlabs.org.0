@@ -2,79 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD219460A31
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:12:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36042460A6B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:51:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Lm857vvz3fBK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:12:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2MdF0XcPz3cHC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:51:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Tdth5Mz9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oml1oX0Z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::230;
- helo=mail-lj1-x230.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::136;
+ helo=mail-lf1-x136.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Tdth5Mz9; dkim-atps=neutral
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com
- [IPv6:2a00:1450:4864:20::230])
+ header.s=20210112 header.b=oml1oX0Z; dkim-atps=neutral
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com
+ [IPv6:2a00:1450:4864:20::136])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2LbD0chFz2xCy
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 08:04:55 +1100 (AEDT)
-Received: by mail-lj1-x230.google.com with SMTP id k23so30650999lje.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 13:04:55 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2Ld50CDTz3cTf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 08:06:32 +1100 (AEDT)
+Received: by mail-lf1-x136.google.com with SMTP id t26so39199492lfk.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 13:06:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=subject:to:cc:references:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=n+c+fNjlqpkODMNA/7ywsu2Xpxn181Yex3QT1BC7YkM=;
- b=Tdth5Mz95ILIP2wZ5DYmwGwqL/g2a8NQfIdIuxgXXVVg6RH3yDMvHbIjMPlUPQ+Kfi
- e7TNCwLl7gW+gWhWCzY5kWF31Q6d3MXbcfyHlK5mTJBCO9B0yoazspZoQ9QauZAg4VOZ
- GU1Du/NMRetIl1HCPpoZ/wmPwFcTZx09G+/z/T3SmJwaMw6FiTLYrkBEti6ebPBTNx4P
- ztESfCaJHpZ8ANbOeJv7E8GcPhKYp2JvSlX4AwC23x/kyRaPVi2WsI1lt1XYwZg48qKe
- Ljtqv2XVdBLjgOpaFjZQzH+Idsti2zOEBowM2JGqBDzv5KQCJSPSnTBTLx3XoGX8clP3
- 1rSw==
+ bh=dBFzSL4UYCAYQqmDupNTSShpvRMUEbaJ9Mx4K7HGHPc=;
+ b=oml1oX0ZWjhkzuRjHJtH1XTn55+HCuWM51eukHmTMUsqYvepCYTnsQ8nmJ1fi6Ny8O
+ hk+9nsbkv1H426inD0KEeQ2Fx2c/aojT5orC8a1HaRiSAHCfbZ4GibLUq6jXw8umdLa+
+ 7Npmf61QEFnfrTJUhnvyNQXEcG3o44nwO/yhewKgQ2Tv5+cyXPwRAr9avOHgipiR7uOU
+ 3lG/X5TvXt9e7Baba1QmnryaUy282ao9aOX5wnj9w2azfGP26R8Qk0MYK0SZQyDuBX5E
+ nJWhN9xVkrVnERfId0Z6c0a3FiVVFjBlUiijA64WcIz/4PjWlAuAjWR6TMU93ETZJ9CC
+ EpYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=n+c+fNjlqpkODMNA/7ywsu2Xpxn181Yex3QT1BC7YkM=;
- b=aQnrvyRzBebv7JoHA+/wFpl7NC+kRhL4PSFQ9wgvmYvPX6jUuMOhVQNt+LU8SmqmqT
- YO//1zTNy6D4wz9egiYWBPXcK9vwrUxSlZ944Lkl/fv0b0JFEDm9IQFKXhbBKjbG19y9
- YFozDKmzT9DYDmnnx+vcuO9WPz6xjB7oE/A62T90LlmyMI6kKfNPIMv+/OxO4pTS+lQM
- N/u546EJlc94Ml7wSDpttoMWXKG1+VkqlFF629VU6gH85crv2KTll5AKcr0XHz5WpH0G
- Mw8S3r90k6V9p/w9bNwQdgZZpe+rzyA6jHRhztvghpVNtvdKeeJw1T48VMUI6JrhS3io
- bTag==
-X-Gm-Message-State: AOAM5307s5yQApdZf/GNDW5SbsLlULRAGL4fDyxZ8TqtbVRi90nloiST
- Dt9HZEf9GSQTd8sumogOD+Y=
-X-Google-Smtp-Source: ABdhPJyuVlGCEG84pwfg6BbsVNdI4G/2tvLYelnsvUn7CQTQlf25Ym3pMWyWhlfLoQNWZ9AePptWxg==
-X-Received: by 2002:a2e:97cb:: with SMTP id m11mr45829799ljj.324.1638133492517; 
- Sun, 28 Nov 2021 13:04:52 -0800 (PST)
+ bh=dBFzSL4UYCAYQqmDupNTSShpvRMUEbaJ9Mx4K7HGHPc=;
+ b=np4UV0H5E+3XuiOlEYNMIs3ToJ0ux6guwtu4lrQ37T57gcwcBatG5Ztlv3itjPIkS+
+ +lx71lmHMLe+AjYH89I8ixoEYgRnTlpv4q3YvHysf0v8pcizmwTqGi2QwQ44KUqdqDyv
+ 7ynMmnbV3SdwmzawDV0HgkGvvp54O18cLkyLUHGqPWmNhzKhsHFQ9hM7XA2fMpg9IiIc
+ rE6u4nRNE2qtnXwExvmZu01vFNFkwPf4e82+Ut63NbUhyE+bE46Q+bedURY3TuZsbuwg
+ oqeYWmdq8EVUN10G0mD2fIMnOWGFomrf417D840j1aKYTBWiq8WJtkfXRnBwmebbvYoF
+ gw9A==
+X-Gm-Message-State: AOAM530V2rN30wNnqIZKsUBDxk02lNxyNyPsAA27dczgSZ7LlJTijSM3
+ kGczQvLU7PWe7HtiaqVXACo=
+X-Google-Smtp-Source: ABdhPJw8DbrxRHQUKfkUrzcq3jrRe892hdaQjtTmhQ/Pf+osYN9e0RKllfwyJmy+SLn8xY0V3MlxVg==
+X-Received: by 2002:a05:6512:3fa1:: with SMTP id
+ x33mr34004371lfa.676.1638133588639; 
+ Sun, 28 Nov 2021 13:06:28 -0800 (PST)
 Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru.
  [94.29.46.111])
- by smtp.googlemail.com with ESMTPSA id d30sm1105908lfv.58.2021.11.28.13.04.50
+ by smtp.googlemail.com with ESMTPSA id v2sm1096217lfb.258.2021.11.28.13.06.26
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 Nov 2021 13:04:52 -0800 (PST)
-Subject: Re: [PATCH v4 22/25] memory: emif: Use kernel_can_power_off()
+ Sun, 28 Nov 2021 13:06:28 -0800 (PST)
+Subject: Re: [PATCH v4 05/25] reboot: Warn if restart handler has duplicated
+ priority
 To: =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
 References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-23-digetx@gmail.com> <YaLaH3Yt2M/Gko//@qmqm.qmqm.pl>
+ <20211126180101.27818-6-digetx@gmail.com> <YaLNOJTM+lVq+YNS@qmqm.qmqm.pl>
 From: Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <98c5c3d3-1635-3a06-b57f-8facd409796a@gmail.com>
-Date: Mon, 29 Nov 2021 00:04:43 +0300
+Message-ID: <033ddf2a-6223-1a82-ec64-30f17c891f67@gmail.com>
+Date: Mon, 29 Nov 2021 00:06:19 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <YaLaH3Yt2M/Gko//@qmqm.qmqm.pl>
+In-Reply-To: <YaLNOJTM+lVq+YNS@qmqm.qmqm.pl>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Mon, 29 Nov 2021 08:05:26 +1100
+X-Mailman-Approved-At: Mon, 29 Nov 2021 08:51:06 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -124,34 +126,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-28.11.2021 04:23, Michał Mirosław пишет:
-> On Fri, Nov 26, 2021 at 09:00:58PM +0300, Dmitry Osipenko wrote:
->> Replace legacy pm_power_off with kernel_can_power_off() helper that
->> is aware about chained power-off handlers.
->>
->> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
->> ---
->>  drivers/memory/emif.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/memory/emif.c b/drivers/memory/emif.c
->> index 762d0c0f0716..cab10d5274a0 100644
->> --- a/drivers/memory/emif.c
->> +++ b/drivers/memory/emif.c
->> @@ -630,7 +630,7 @@ static irqreturn_t emif_threaded_isr(int irq, void *dev_id)
->>  		dev_emerg(emif->dev, "SDRAM temperature exceeds operating limit.. Needs shut down!!!\n");
->>  
->>  		/* If we have Power OFF ability, use it, else try restarting */
->> -		if (pm_power_off) {
->> +		if (kernel_can_power_off()) {
->>  			kernel_power_off();
->>  		} else {
->>  			WARN(1, "FIXME: NO pm_power_off!!! trying restart\n");
+28.11.2021 03:28, Michał Mirosław пишет:
+> On Fri, Nov 26, 2021 at 09:00:41PM +0300, Dmitry Osipenko wrote:
+>> Add sanity check which ensures that there are no two restart handlers
+>> registered with the same priority. Normally it's a direct sign of a
+>> problem if two handlers use the same priority.
 > 
-> BTW, this part of the code seems to be better moved to generic code that
-> could replace POWER_OFF request with REBOOT like it is done for reboot()
-> syscall.
+> The patch doesn't ensure the property that there are no duplicated-priority
+> entries on the chain.
 
-Not sure that it can be done. Somebody will have to verify that it won't
-break all those platform power-off handlers. Better to keep this code
-as-is in the context of this patchset.
+It's not the exact point of this patch.
+
+> I'd rather see a atomic_notifier_chain_register_unique() that returns
+> -EBUSY or something istead of adding an entry with duplicate priority.
+> That way it would need only one list traversal unless you want to
+> register the duplicate anyway (then you would call the older
+> atomic_notifier_chain_register() after reporting the error).
+
+The point of this patch is to warn developers about the problem that
+needs to be fixed. We already have such troubling drivers in mainline.
+
+It's not critical to register different handlers with a duplicated
+priorities, but such cases really need to be corrected. We shouldn't
+break users' machines during transition to the new API, meanwhile
+developers should take action of fixing theirs drivers.
+
+> (Or you could return > 0 when a duplicate is registered in
+> atomic_notifier_chain_register() if the callers are prepared
+> for that. I don't really like this way, though.)
+
+I had a similar thought at some point before and decided that I'm not in
+favor of this approach. It's nicer to have a dedicated function that
+verifies the uniqueness, IMO.
