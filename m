@@ -1,56 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CCC460A2C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:10:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55847460A20
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:09:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Ljb2Q6wz3f1q
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:10:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2LhD4y7yz3dsj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:09:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256 header.s=1 header.b=c8BMIb6Y;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256 header.s=1 header.b=XxvJmPPW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=rere.qmqm.pl (client-ip=91.227.64.183; helo=rere.qmqm.pl;
- envelope-from=mirq-test@rere.qmqm.pl; receiver=<UNKNOWN>)
+ envelope-from=mirq-linux@rere.qmqm.pl; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256
- header.s=1 header.b=c8BMIb6Y; dkim-atps=neutral
-X-Greylist: delayed 559 seconds by postgrey-1.36 at boromir;
- Mon, 29 Nov 2021 05:13:17 AEDT
+ header.s=1 header.b=XxvJmPPW; dkim-atps=neutral
 Received: from rere.qmqm.pl (rere.qmqm.pl [91.227.64.183])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2Gn930c3z2yHL
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 05:13:17 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2Gc04h1lz2yZh
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 05:05:20 +1100 (AEDT)
 Received: from remote.user (localhost [127.0.0.1])
- by rere.qmqm.pl (Postfix) with ESMTPSA id 4J2GZ84l0lzGX;
- Sun, 28 Nov 2021 19:03:44 +0100 (CET)
+ by rere.qmqm.pl (Postfix) with ESMTPSA id 4J2Gbw0CGMzWG;
+ Sun, 28 Nov 2021 19:05:15 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
- t=1638122634; bh=sEqOa0ZEPEWEUlBRSLFAiVwd6iLDymwK+DV3juGIkQI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=c8BMIb6Ys1MM9jtnUFS+OzCZESND169gxM1+qoGuDHQxJkjYTnLg1dYXL65SLSeBD
- OptKwwF3f6jjeAWkz8hKGEIpBsOyA7AZLbEyI0Ul8i9xig/dKvGR9NZ6kh+Ny2ulTW
- NSMm5sqIVijexkgrukA2T59koDDkGancK18mcZt702hpU7mgoZQDDZbSDYgNkFc9BO
- VIw8ONHFtRVbVnzFi4YPF5fViRQnoyL8aNWKj0ctBrm3IfLQEgZY5IGVCfNRdmPFM4
- VnIE/zolNmZ9Tr6q4VJbIye3TlVbgURGaBOqFwsRQiEoMGrVw4g28fuRp3xh+IiOQd
- dpDJSAp182XbQ==
+ t=1638122717; bh=sEqOa0ZEPEWEUlBRSLFAiVwd6iLDymwK+DV3juGIkQI=;
+ h=Date:From:To:Cc:Subject:From;
+ b=XxvJmPPWazylznPkDFNVygPkohQ37AeYwywQvuepL1w31LahkAW0gP0LAhZyVJpcw
+ QCkB6BljQdra5dN8zW66BSxqJNFsOQZ3SXN/IvfR7aJdEfhChJ01RFDgEXy7ZRidew
+ 5AuU0watcW2VhJ8VLEKa/g48uwHd6hUjzetMQJoBwvwxwQVSA3IWggzLzC2joJiPHp
+ 8JY+UhUQ+oYzz2QsWC6IREdA0RA0M1lN6rt3R0c026YIrrdzB0zCSa9TOmB+kCXZPl
+ HMxpZwG7mci2iV7G+PnmCZt5b87M/uk6yQ9shXg1YFXT3Bi4Ka8VZS9Szm3f/vvMWn
+ w1e6Lkbu+s3yw==
 X-Virus-Status: Clean
 X-Virus-Scanned: clamav-milter 0.103.3 at mail
-Date: Sun, 28 Nov 2021 19:03:41 +0100
-From: mirq-test@rere.qmqm.pl
+Date: Sun, 28 Nov 2021 19:05:14 +0100
+From: =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
 To: Yury Norov <yury.norov@gmail.com>
 Subject: Re: [PATCH 0/9] lib/bitmap: optimize bitmap_weight() usage
 Message-ID: <YaPEfZ0t9UFGwpml@qmqm.qmqm.pl>
-References: <20211128035704.270739-1-yury.norov@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-2
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211128035704.270739-1-yury.norov@gmail.com>
 X-Mailman-Approved-At: Mon, 29 Nov 2021 08:05:03 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
