@@ -2,78 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED621460A6C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:52:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD41A460A6D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:53:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Mdz5yz5z3cXT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:52:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Mfh5Fxsz3c90
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:53:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=MXJpk4bH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256 header.s=1 header.b=qeLiiTlD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12b;
- helo=mail-lf1-x12b.google.com; envelope-from=digetx@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=rere.qmqm.pl (client-ip=91.227.64.183; helo=rere.qmqm.pl;
+ envelope-from=mirq-linux@rere.qmqm.pl; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=MXJpk4bH; dkim-atps=neutral
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com
- [IPv6:2a00:1450:4864:20::12b])
+ unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256
+ header.s=1 header.b=qeLiiTlD; dkim-atps=neutral
+Received: from rere.qmqm.pl (rere.qmqm.pl [91.227.64.183])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2Ldp3Tvjz3dcm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 08:07:10 +1100 (AEDT)
-Received: by mail-lf1-x12b.google.com with SMTP id b1so39085749lfs.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 13:07:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=Kep6H8+bfVZ1xeLjsaS2A7zU/qUFFdJhuzBNEKDyf18=;
- b=MXJpk4bHJWHUsXnttmXJmMehCMhy9keZTcA7B/bYgzynu+fs9AEzA0zWS1didKGcXM
- ufZY1nIVOAfP0n1FcIj/YQO+JHOspxllH7lEwqxum4orCJ0HB2fsnMEDGJmWeH/qyrsf
- tBfKAbmns7/1QIwfCwYfnwageJ9+iaZP7wrA89IK5FuGsmtz3WgnEbf4CfOtVYKh+y1P
- P/ivsGXGLfJ8qk+PLiIxuT1vyrHF2S+SyEG3Jc+cuHLep64IrIJ92EMzFal/KsyKC+gQ
- ETMGdua/dzs6IwN9uDl7VCnKUva5ihWYK7VOkSKYM4fVdcc0cO/WridgO5+laEgsd2tU
- tz4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=Kep6H8+bfVZ1xeLjsaS2A7zU/qUFFdJhuzBNEKDyf18=;
- b=R93ru6igD5mv+BwNAzrWkXTo21aqAbxi29/kCkBDmmrgx9zUwsM73urN33v9Xh87qr
- XDxr38eu/fj2oCrXj07L2sNwhgK6N64KXe/b9zeJwQdRnW7pj0pMZORozOn59a4+EcNi
- K6zY90O2NF2bRr8ZqqCmFmoOoCtCYWikIi8Uw/qYgCThVl7O5ZJxx+Mj8pNXtc+pJEOj
- ZKl7VPcvUGiZArx+yLuIlfOU1Vho1K9COYXGfYvYXBfEE1gIIbiZxGDVwyfIri0XbyTu
- G4AH3TKLpsRDoAIP90TGLfYIKV8MwRo0yfR3T6C74KSBXWh8Xj0ow0QPSpUFHqQCIyCJ
- /aXg==
-X-Gm-Message-State: AOAM533t0Q8oGgaOAfai+LvgX/0z2+eGrS7pUeoBfAVIpCUGhlfYD9cv
- VFDYurePFt6ZpHkvpiONpaI=
-X-Google-Smtp-Source: ABdhPJy4zl/AZzFPwJNVkHu3GSDT6aqXWQbZeWCJLgVwlcbzfRDN23rTDTUYoWjDb/oPahZVEVnA9Q==
-X-Received: by 2002:a19:5e59:: with SMTP id z25mr43385851lfi.686.1638133626682; 
- Sun, 28 Nov 2021 13:07:06 -0800 (PST)
-Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru.
- [94.29.46.111])
- by smtp.googlemail.com with ESMTPSA id s13sm1104272lfg.126.2021.11.28.13.07.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 Nov 2021 13:07:06 -0800 (PST)
-Subject: Re: [PATCH v4 18/25] x86: Use do_kernel_power_off()
-To: =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2LsY0Qg6z2xtF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 08:17:20 +1100 (AEDT)
+Received: from remote.user (localhost [127.0.0.1])
+ by rere.qmqm.pl (Postfix) with ESMTPSA id 4J2LsJ1Lcdz9y;
+ Sun, 28 Nov 2021 22:17:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+ t=1638134236; bh=AVVRrFppT2KXeoQ1knr4qxNAWz0fqZEqjSZX5XRty4k=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=qeLiiTlDKcoC3FvftCsYmUekeo8vu2N1pSF3fCD2tgheWVvyonhdof+qu+Ea9djoI
+ F0VfIqhNPcyB+IepSkiEVfWMkXITXgi5yRN5hDrKipQbOIN/UYPiCQ3ypFE5/lr3yX
+ t143o/oCoxAN5HQdJgLvzJt9p7M6RWXHGnJUqKSETKZD7q6dZ+W4qIz0kh2v3idXT1
+ jUvuN2o4SCcowRIIDi5HFtYotMwlOnPhdI33AjtMrxHoxjMEAOO/hdSLgu27razlyO
+ MB5TcQY9Ad3wE8nllR9aML4jKPT5UuRgghYO2j4ETJ73vP6/OvL2peMilDKCW68Ia0
+ 6xDNHfFLM+f6A==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.103.3 at mail
+Date: Sun, 28 Nov 2021 22:17:06 +0100
+From: =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
+To: Dmitry Osipenko <digetx@gmail.com>
+Subject: Re: [PATCH v4 08/25] kernel: Add combined power-off+restart handler
+ call chain API
+Message-ID: <YaPx0kY7poGpwCL9@qmqm.qmqm.pl>
 References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-19-digetx@gmail.com> <YaLYR24XRijSmBq3@qmqm.qmqm.pl>
-From: Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <3082ba7a-f8f6-b2d9-5ae3-ec639b1a6bee@gmail.com>
-Date: Mon, 29 Nov 2021 00:06:57 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ <20211126180101.27818-9-digetx@gmail.com>
+ <YaLQqks8cB0vWp6Q@qmqm.qmqm.pl>
+ <9213569e-0f40-0df1-4710-8dab564e12d6@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <YaLYR24XRijSmBq3@qmqm.qmqm.pl>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <9213569e-0f40-0df1-4710-8dab564e12d6@gmail.com>
 X-Mailman-Approved-At: Mon, 29 Nov 2021 08:51:06 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -124,43 +103,63 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-28.11.2021 04:15, Michał Mirosław пишет:
-> On Fri, Nov 26, 2021 at 09:00:54PM +0300, Dmitry Osipenko wrote:
->> Kernel now supports chained power-off handlers. Use do_kernel_power_off()
->> that invokes chained power-off handlers. It also invokes legacy
->> pm_power_off() for now, which will be removed once all drivers will
->> be converted to the new power-off API.
->>
->> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
->> ---
->>  arch/x86/kernel/reboot.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
->> index 0a40df66a40d..cd7d9416d81a 100644
->> --- a/arch/x86/kernel/reboot.c
->> +++ b/arch/x86/kernel/reboot.c
->> @@ -747,10 +747,10 @@ static void native_machine_halt(void)
->>  
->>  static void native_machine_power_off(void)
->>  {
->> -	if (pm_power_off) {
->> +	if (kernel_can_power_off()) {
->>  		if (!reboot_force)
->>  			machine_shutdown();
->> -		pm_power_off();
->> +		do_kernel_power_off();
->>  	}
+On Mon, Nov 29, 2021 at 12:04:01AM +0300, Dmitry Osipenko wrote:
+> 28.11.2021 03:43, Michał Mirosław пишет:
+> > On Fri, Nov 26, 2021 at 09:00:44PM +0300, Dmitry Osipenko wrote:
+> >> SoC platforms often have multiple ways of how to perform system's
+> >> power-off and restart operations. Meanwhile today's kernel is limited to
+> >> a single option. Add combined power-off+restart handler call chain API,
+> >> which is inspired by the restart API. The new API provides both power-off
+> >> and restart functionality.
+> >>
+> >> The old pm_power_off method will be kept around till all users are
+> >> converted to the new API.
+> >>
+> >> Current restart API will be replaced by the new unified API since
+> >> new API is its superset. The restart functionality of the sys-off handler
+> >> API is built upon the existing restart-notifier APIs.
+> >>
+> >> In order to ease conversion to the new API, convenient helpers are added
+> >> for the common use-cases. They will reduce amount of boilerplate code and
+> >> remove global variables. These helpers preserve old behaviour for cases
+> >> where only one power-off handler is expected, this is what all existing
+> >> drivers want, and thus, they could be easily converted to the new API.
+> >> Users of the new API should explicitly enable power-off chaining by
+> >> setting corresponding flag of the power_handler structure.
+> > [...]
+> > 
+> > Hi,
+> > 
+> > A general question: do we really need three distinct chains for this?
 > 
-> Judging from an old commit from 2006 [1], this can be rewritten as:
+> Hello Michał,
 > 
-> if (!reboot_force && kernel_can_power_off())
-> 	machine_shutdown();
-> do_kernel_power_off();
+> At minimum this makes code easier to follow.
 > 
-> And maybe later reworked so it doesn't need kernel_can_power_off().
+> > Can't there be only one that chain of callbacks that get a stage
+> > (RESTART_PREPARE, RESTART, POWER_OFF_PREPARE, POWER_OFF) and can ignore
+> > them at will? Calling through POWER_OFF_PREPARE would also return
+> > whether that POWER_OFF is possible (for kernel_can_power_off()).
 > 
-> [1] http://lkml.iu.edu/hypermail//linux/kernel/0511.3/0681.html
+> I'm having trouble with parsing this comment. Could you please try to
+> rephrase it? I don't see how you could check whether power-off handler
+> is available if you'll mix all handlers together.
 
-It could be rewritten like you're suggesting, but I'd prefer to keep the
-old variant, for clarity.
+If notify_call_chain() would be fixed to return NOTIFY_OK if any call
+returned NOTIFY_OK, then this would be a clear way to gather the
+answer if any of the handlers will attempt the final action (reboot or
+power off).
+
+> 
+> > I would also split this patch into preparation cleanups (like wrapping
+> > pm_power_off call with a function) and adding the notifier-based
+> > implementation.
+> 
+> What's the benefit of this split up will be? Are you suggesting that it
+> will ease reviewing of this patch or something else?
+
+Mainly to ease review, as the wrapping will be a no-op, but the addition
+of notifier chain changes semantics a bit.
+
+Best Regards
+Michał Mirosław
