@@ -2,78 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E614460A2D
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:11:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 060D7460A30
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:12:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2LkL5207z3dhJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:11:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2LlN5yHRz3f8N
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:12:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oEs9cCLN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=D7axuJW5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f36;
- helo=mail-qv1-xf36.google.com; envelope-from=yury.norov@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::234;
+ helo=mail-lj1-x234.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=oEs9cCLN; dkim-atps=neutral
-Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com
- [IPv6:2607:f8b0:4864:20::f36])
+ header.s=20210112 header.b=D7axuJW5; dkim-atps=neutral
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com
+ [IPv6:2a00:1450:4864:20::234])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2HXb0T0Vz2yPv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 05:47:24 +1100 (AEDT)
-Received: by mail-qv1-xf36.google.com with SMTP id u16so12281374qvk.4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 10:47:24 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2LZX53pBz2xWx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 08:04:19 +1100 (AEDT)
+Received: by mail-lj1-x234.google.com with SMTP id 207so30520153ljf.10
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 13:04:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=+5JBAVd8frUmOsccut4e882tgrn1djQ8KjHhL4/ag+E=;
- b=oEs9cCLNoYNdz+AbfzXoumcqnU2rFCFJ5TyCH12jj8Ix0vmr0cjhof0ocW5eqSpQbo
- mrHrVXqzVgn1iu3yISJ4wwf50y2BGwES4qCIZWk6z19v3s6rfhM8ODKHsnHGdu0xSYmn
- zutWpoWgGKrfvlhNB+FDfgo3OCF/7V6L7yaewLYpZDm48/8KLn7Bhlr/nJjgfB4Oiw7i
- hyEVArk/04uNSdzcAMwME+LGzw661S1XN1lrF6iOjE5r2wDmrufbwXHGBlcjc0XG2JfP
- D0I2JqoyhsvbiLTErDYg5FY5mgjhIpdLZ1XuQkVWsomuMWeu+IFVGskruJ1MCFhjIPEq
- wYYw==
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=wtn5Hkee5e4Yh99ylBrB3oNbIRTQMbXx6i2LcHRuAAA=;
+ b=D7axuJW5K4soTW7ePg2XEY/iNxftObXK2r+AyGGcLpSZUVVVDeOdARXPvJKsrnTiWz
+ AoAXcXPY5kZDAFmNd2VORgyu8fNJK2h3Akf7Z4wOIV4j7hl4k+Lg94oWKvPyZvxvLsrU
+ gHjqykqz9pVTUOOpARf13AebW7syYSoupun9EMn0XvrUZckKr/LqJa+4eSWKEzDWJLdo
+ K7OPzWs09+Av5yHcfZj3Q7MZQ+BDltCGiVFFVwhBt7T15YiSiT0WAJ3uiNnPq9pF4dyU
+ I8pWXsXnC3XNCL+7zY4D1T6JR7EW9moTsiVuNSfEmpW1ojxHFbjsYoYQXbcJq5XV5+Um
+ iPxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=+5JBAVd8frUmOsccut4e882tgrn1djQ8KjHhL4/ag+E=;
- b=C7axdJwsSr2/2J3tg7m7h9pPiWA6piZgKgcF/kK/06AXTpDEN3cjh/7b1gQCxPQL0A
- cSNmMg05lNzoGPKcHWb/XvmynTbrTddIqNvwgXvct0ZczaYIUZsjLlL9OxBKqMxmNF6q
- OM2HnX/mjXJh8E3VKLE+Aezsv4PD8DcUu+HQikZZP1pPxmwCPdONueKc3t8o2ZBNU0+4
- jYOrW6hKMQki/uW2znnGdQsMbTi8Soo6PjT8s06YWwSMwaqbuoDgktMwuYeYpzySu+K2
- +u0vPOTjftFZI+ke9vwBOUcombChPIebcT1sW9LrDnISy0dKBv9SUI/nHUlgKU5IAHEW
- 0mmw==
-X-Gm-Message-State: AOAM530WcOPKSbLyBpoiIZlmSjp2FOd/dEtBjb1OuY+5wfQXHJhYF6um
- iZEPWAvIFwRsHwZzEP9/NYw=
-X-Google-Smtp-Source: ABdhPJy+21VmTcm+AhhPYb7MVuOfGbfxLsGp1r9C41IKKFVcOTnAXjsR8SRxKxcOFPC3Y4DL0s01XQ==
-X-Received: by 2002:a05:6214:2348:: with SMTP id
- hu8mr12230119qvb.9.1638125241136; 
- Sun, 28 Nov 2021 10:47:21 -0800 (PST)
-Received: from localhost ([66.216.211.25])
- by smtp.gmail.com with ESMTPSA id e13sm7457944qte.56.2021.11.28.10.47.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 Nov 2021 10:47:20 -0800 (PST)
-Date: Sun, 28 Nov 2021 10:47:12 -0800
-From: Yury Norov <yury.norov@gmail.com>
-To: Dennis Zhou <dennis@kernel.org>
-Subject: Re: [PATCH 7/9] lib/cpumask: add
- num_{possible,present,active}_cpus_{eq,gt,le}
-Message-ID: <20211128184712.GA309073@lapt>
-References: <20211128035704.270739-1-yury.norov@gmail.com>
- <20211128035704.270739-8-yury.norov@gmail.com>
- <8f389151c39a8a5b6b31d5238cb680305225d9f2.camel@perches.com>
- <20211128174320.GA304543@lapt> <YaPCOPqpI/oKrTXl@fedora>
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=wtn5Hkee5e4Yh99ylBrB3oNbIRTQMbXx6i2LcHRuAAA=;
+ b=V7r4n3G2DEUlYNdk0cl0gqlOf/oOiyr5vToikzqrNZKd3QWHAyzvyUy0KZspyfBwZG
+ Unj9dZH5A3U2HPQmE2UtzRH6rxVnWjxiBb2MCJFnurRMKv1pZJg6R8rLFst4bev3xLTH
+ s6Vk2lpgrJh7O5SsgUkcRVGY823XFwDqoN+1QzWzuyBcolh7ofkbwewyL7kPjbcIBeLV
+ bZrB85CUN3KPiBEn5jjgFb+qpFRVX6A/jsPtgAiZe1ZUDdiIGHfdgWdQ3GjW9W5JGX61
+ rqkcP4LBXRe8zP4UNhas+BxU/TmrxWmK8+kB+hOUDRY+WVAnTAD/aJtv93s3Yoby5rjN
+ B67Q==
+X-Gm-Message-State: AOAM5306/eWQvgkhlAj7KQD1JYKoxEbppyhzmsa2dc1VevDymsmZ0Gi3
+ BPCWCxlctdbOiGpGkI5zsj0=
+X-Google-Smtp-Source: ABdhPJxH7knkFdz7TFpFlawyIdB41srtPJMqsrOfzCPJDLK6AlWk3m8N6okcECoeJRZyDtP9PR9VhQ==
+X-Received: by 2002:a05:651c:1257:: with SMTP id
+ h23mr44458754ljh.17.1638133451873; 
+ Sun, 28 Nov 2021 13:04:11 -0800 (PST)
+Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru.
+ [94.29.46.111])
+ by smtp.googlemail.com with ESMTPSA id c17sm1100736lfr.235.2021.11.28.13.04.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 28 Nov 2021 13:04:11 -0800 (PST)
+Subject: Re: [PATCH v4 08/25] kernel: Add combined power-off+restart handler
+ call chain API
+To: =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+References: <20211126180101.27818-1-digetx@gmail.com>
+ <20211126180101.27818-9-digetx@gmail.com> <YaLQqks8cB0vWp6Q@qmqm.qmqm.pl>
+From: Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <9213569e-0f40-0df1-4710-8dab564e12d6@gmail.com>
+Date: Mon, 29 Nov 2021 00:04:01 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YaPCOPqpI/oKrTXl@fedora>
-X-Mailman-Approved-At: Mon, 29 Nov 2021 08:05:03 +1100
+In-Reply-To: <YaLQqks8cB0vWp6Q@qmqm.qmqm.pl>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Mon, 29 Nov 2021 08:05:26 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,107 +88,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
+ linux-ia64@vger.kernel.org, Santosh Shilimkar <ssantosh@kernel.org>,
  "Rafael J. Wysocki" <rafael@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Guo Ren <guoren@kernel.org>,
- Christoph Lameter <cl@linux.com>, Christoph Hellwig <hch@lst.de>,
- Andi Kleen <ak@linux.intel.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Mel Gorman <mgorman@suse.de>, Viresh Kumar <viresh.kumar@linaro.org>,
- Petr Mladek <pmladek@suse.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Jens Axboe <axboe@fb.com>, Andy Lutomirski <luto@kernel.org>,
- Lee Jones <lee.jones@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-crypto@vger.kernel.org,
- Joe Perches <joe@perches.com>, Andrew Morton <akpm@linux-foundation.org>,
- Mark Rutland <mark.rutland@arm.com>, Anup Patel <anup.patel@wdc.com>,
- linux-ia64@vger.kernel.org, David Airlie <airlied@linux.ie>,
- Roy Pledge <Roy.Pledge@nxp.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Solomon Peachy <pizza@shaftnet.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Thierry Reding <thierry.reding@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
+ Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
+ Stefano Stabellini <sstabellini@kernel.org>, alankao@andestech.com,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
  Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>, linux-alpha@vger.kernel.org,
- Tejun Heo <tj@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
- Stephen Boyd <sboyd@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
- Dinh Nguyen <dinguyen@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Subbaraya Sundeep <sbhatta@marvell.com>, Will Deacon <will@kernel.org>,
- Sagi Grimberg <sagi@grimberg.me>, linux-csky@vger.kernel.org,
- bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org,
- linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
- Vineet Gupta <vgupta@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Mark Gross <markgross@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
+ linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Jonathan Hunter <jonathanh@nvidia.com>, linux-acpi@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, xen-devel@lists.xenproject.org,
+ linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+ Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
+ Lee Jones <lee.jones@linaro.org>, linux-m68k@lists.linux-m68k.org,
+ Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ linux-tegra@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- David Laight <David.Laight@aculab.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Geetha sowjanya <gakula@marvell.com>, Ian Rogers <irogers@google.com>,
- kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Amitkumar Karwar <amitkarwar@gmail.com>, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, Jiri Olsa <jolsa@redhat.com>,
- Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Andy Gross <agross@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Vivien Didelot <vivien.didelot@gmail.com>,
- Sunil Goutham <sgoutham@marvell.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- linux-s390@vger.kernel.org, Alexey Klimov <aklimov@redhat.com>,
- Heiko Carstens <hca@linux.ibm.com>, Hans de Goede <hdegoede@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>, Marcin Wojtas <mw@semihalf.com>,
- Vlastimil Babka <vbabka@suse.cz>, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Daniel Vetter <daniel@ffwll.ch>, Jason Wessel <jason.wessel@windriver.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Andy Shevchenko <andy@infradead.org>
+ Daniel Lezcano <daniel.lezcano@linaro.org>, linux-parisc@vger.kernel.org,
+ linux-pm@vger.kernel.org, Sebastian Reichel <sre@kernel.org>,
+ linux-kernel@vger.kernel.org, "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Guo Ren <guoren@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Nov 28, 2021 at 12:54:00PM -0500, Dennis Zhou wrote:
-> Hello,
+28.11.2021 03:43, Michał Mirosław пишет:
+> On Fri, Nov 26, 2021 at 09:00:44PM +0300, Dmitry Osipenko wrote:
+>> SoC platforms often have multiple ways of how to perform system's
+>> power-off and restart operations. Meanwhile today's kernel is limited to
+>> a single option. Add combined power-off+restart handler call chain API,
+>> which is inspired by the restart API. The new API provides both power-off
+>> and restart functionality.
+>>
+>> The old pm_power_off method will be kept around till all users are
+>> converted to the new API.
+>>
+>> Current restart API will be replaced by the new unified API since
+>> new API is its superset. The restart functionality of the sys-off handler
+>> API is built upon the existing restart-notifier APIs.
+>>
+>> In order to ease conversion to the new API, convenient helpers are added
+>> for the common use-cases. They will reduce amount of boilerplate code and
+>> remove global variables. These helpers preserve old behaviour for cases
+>> where only one power-off handler is expected, this is what all existing
+>> drivers want, and thus, they could be easily converted to the new API.
+>> Users of the new API should explicitly enable power-off chaining by
+>> setting corresponding flag of the power_handler structure.
+> [...]
 > 
-> On Sun, Nov 28, 2021 at 09:43:20AM -0800, Yury Norov wrote:
-> > On Sun, Nov 28, 2021 at 09:07:52AM -0800, Joe Perches wrote:
-> > > On Sat, 2021-11-27 at 19:57 -0800, Yury Norov wrote:
-> > > > Add num_{possible,present,active}_cpus_{eq,gt,le} and replace num_*_cpus()
-> > > > with one of new functions where appropriate. This allows num_*_cpus_*()
-> > > > to return earlier depending on the condition.
-> > > []
-> > > > diff --git a/arch/arc/kernel/smp.c b/arch/arc/kernel/smp.c
-> > > []
-> > > > @@ -103,7 +103,7 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
-> > > >  	 * if platform didn't set the present map already, do it now
-> > > >  	 * boot cpu is set to present already by init/main.c
-> > > >  	 */
-> > > > -	if (num_present_cpus() <= 1)
-> > > > +	if (num_present_cpus_le(2))
-> > > >  		init_cpu_present(cpu_possible_mask);
-> > > 
-> > > ?  is this supposed to be 2 or 1
-> > 
-> > X <= 1 is the equivalent of X < 2.
-> > 
-> > > > diff --git a/drivers/cpufreq/pcc-cpufreq.c b/drivers/cpufreq/pcc-cpufreq.c
-> > > []
-> > > > @@ -593,7 +593,7 @@ static int __init pcc_cpufreq_init(void)
-> > > >  		return ret;
-> > > >  	}
-> > > >  
-> > > > -	if (num_present_cpus() > 4) {
-> > > > +	if (num_present_cpus_gt(4)) {
-> > > >  		pcc_cpufreq_driver.flags |= CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING;
-> > > >  		pr_err("%s: Too many CPUs, dynamic performance scaling disabled\n",
-> > > >  		       __func__);
-> > > 
-> > > It looks as if the present variants should be using the same values
-> > > so the _le test above with 1 changed to 2 looks odd.
-> >  
+> Hi,
 > 
-> I think the confusion comes from le meaning less than rather than lt.
-> Given the general convention of: lt (<), le (<=), eg (=), ge (>=),
-> gt (>), I'd consider renaming your le to lt.
+> A general question: do we really need three distinct chains for this?
 
-Ok, makes sense. I'll rename in v2 and add <= and >= versions.
+Hello Michał,
+
+At minimum this makes code easier to follow.
+
+> Can't there be only one that chain of callbacks that get a stage
+> (RESTART_PREPARE, RESTART, POWER_OFF_PREPARE, POWER_OFF) and can ignore
+> them at will? Calling through POWER_OFF_PREPARE would also return
+> whether that POWER_OFF is possible (for kernel_can_power_off()).
+
+I'm having trouble with parsing this comment. Could you please try to
+rephrase it? I don't see how you could check whether power-off handler
+is available if you'll mix all handlers together.
+
+> I would also split this patch into preparation cleanups (like wrapping
+> pm_power_off call with a function) and adding the notifier-based
+> implementation.
+
+What's the benefit of this split up will be? Are you suggesting that it
+will ease reviewing of this patch or something else?
