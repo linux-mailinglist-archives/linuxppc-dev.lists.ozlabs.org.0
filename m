@@ -2,55 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE70460A2A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:09:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E614460A2D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:11:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Lhw5c78z3dcP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:09:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2LkL5207z3dhJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:11:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256 header.s=1 header.b=BSqkw57U;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oEs9cCLN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rere.qmqm.pl (client-ip=91.227.64.183; helo=rere.qmqm.pl;
- envelope-from=mirq-linux@rere.qmqm.pl; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f36;
+ helo=mail-qv1-xf36.google.com; envelope-from=yury.norov@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256
- header.s=1 header.b=BSqkw57U; dkim-atps=neutral
-Received: from rere.qmqm.pl (rere.qmqm.pl [91.227.64.183])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=oEs9cCLN; dkim-atps=neutral
+Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com
+ [IPv6:2607:f8b0:4864:20::f36])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2Gjv5PHtz2ynm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 05:10:27 +1100 (AEDT)
-Received: from remote.user (localhost [127.0.0.1])
- by rere.qmqm.pl (Postfix) with ESMTPSA id 4J2Gjn33d2zW8;
- Sun, 28 Nov 2021 19:10:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
- t=1638123024; bh=JZhqOAoOJwkFLsUnNQo8o++CiFK7HEGKhePgc/FSOF4=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=BSqkw57UlW2pW1NXQ5wZ96M5n0daMnNFg3ZZGk4QpT65f28st6tvSbAjCuaDYp0Y0
- CmyX5dp3fxa/1bsCgFSoiXvYl/Ivrvk/XW5Lhr31jLklN0/6fnKbeszxM4AJMOo6b9
- hs1WVqqJVnnkAxwtLxudxAhzHN+6r0DPz2i1TcI1//mgPfBMhwBro3m3CGjmkmEKO0
- zFXYptfKQJ6Xhp//QSGLBmM8xlFJVmHJ9/rNfVpoRczyIK6/HJ5953QI6d4A5Zxyqw
- UnYVoDxFeKZcNpL0K/UJMA5pXP8gOMjtVWWYJxoXBIppSPMAs/Uq2+pv87S9vD8wOI
- LfWcTnK2w+pRg==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.103.3 at mail
-Date: Sun, 28 Nov 2021 19:10:20 +0100
-From: =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
-To: Yury Norov <yury.norov@gmail.com>
-Subject: Re: [PATCH 2/9] lib/bitmap: implement bitmap_{empty,full} with
- bitmap_weight_eq()
-Message-ID: <YaPGDOvBzhiRFcOP@qmqm.qmqm.pl>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2HXb0T0Vz2yPv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 05:47:24 +1100 (AEDT)
+Received: by mail-qv1-xf36.google.com with SMTP id u16so12281374qvk.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 10:47:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=+5JBAVd8frUmOsccut4e882tgrn1djQ8KjHhL4/ag+E=;
+ b=oEs9cCLNoYNdz+AbfzXoumcqnU2rFCFJ5TyCH12jj8Ix0vmr0cjhof0ocW5eqSpQbo
+ mrHrVXqzVgn1iu3yISJ4wwf50y2BGwES4qCIZWk6z19v3s6rfhM8ODKHsnHGdu0xSYmn
+ zutWpoWgGKrfvlhNB+FDfgo3OCF/7V6L7yaewLYpZDm48/8KLn7Bhlr/nJjgfB4Oiw7i
+ hyEVArk/04uNSdzcAMwME+LGzw661S1XN1lrF6iOjE5r2wDmrufbwXHGBlcjc0XG2JfP
+ D0I2JqoyhsvbiLTErDYg5FY5mgjhIpdLZ1XuQkVWsomuMWeu+IFVGskruJ1MCFhjIPEq
+ wYYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=+5JBAVd8frUmOsccut4e882tgrn1djQ8KjHhL4/ag+E=;
+ b=C7axdJwsSr2/2J3tg7m7h9pPiWA6piZgKgcF/kK/06AXTpDEN3cjh/7b1gQCxPQL0A
+ cSNmMg05lNzoGPKcHWb/XvmynTbrTddIqNvwgXvct0ZczaYIUZsjLlL9OxBKqMxmNF6q
+ OM2HnX/mjXJh8E3VKLE+Aezsv4PD8DcUu+HQikZZP1pPxmwCPdONueKc3t8o2ZBNU0+4
+ jYOrW6hKMQki/uW2znnGdQsMbTi8Soo6PjT8s06YWwSMwaqbuoDgktMwuYeYpzySu+K2
+ +u0vPOTjftFZI+ke9vwBOUcombChPIebcT1sW9LrDnISy0dKBv9SUI/nHUlgKU5IAHEW
+ 0mmw==
+X-Gm-Message-State: AOAM530WcOPKSbLyBpoiIZlmSjp2FOd/dEtBjb1OuY+5wfQXHJhYF6um
+ iZEPWAvIFwRsHwZzEP9/NYw=
+X-Google-Smtp-Source: ABdhPJy+21VmTcm+AhhPYb7MVuOfGbfxLsGp1r9C41IKKFVcOTnAXjsR8SRxKxcOFPC3Y4DL0s01XQ==
+X-Received: by 2002:a05:6214:2348:: with SMTP id
+ hu8mr12230119qvb.9.1638125241136; 
+ Sun, 28 Nov 2021 10:47:21 -0800 (PST)
+Received: from localhost ([66.216.211.25])
+ by smtp.gmail.com with ESMTPSA id e13sm7457944qte.56.2021.11.28.10.47.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 28 Nov 2021 10:47:20 -0800 (PST)
+Date: Sun, 28 Nov 2021 10:47:12 -0800
+From: Yury Norov <yury.norov@gmail.com>
+To: Dennis Zhou <dennis@kernel.org>
+Subject: Re: [PATCH 7/9] lib/cpumask: add
+ num_{possible,present,active}_cpus_{eq,gt,le}
+Message-ID: <20211128184712.GA309073@lapt>
 References: <20211128035704.270739-1-yury.norov@gmail.com>
- <20211128035704.270739-3-yury.norov@gmail.com>
+ <20211128035704.270739-8-yury.norov@gmail.com>
+ <8f389151c39a8a5b6b31d5238cb680305225d9f2.camel@perches.com>
+ <20211128174320.GA304543@lapt> <YaPCOPqpI/oKrTXl@fedora>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211128035704.270739-3-yury.norov@gmail.com>
+In-Reply-To: <YaPCOPqpI/oKrTXl@fedora>
 X-Mailman-Approved-At: Mon, 29 Nov 2021 08:05:03 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -78,14 +100,14 @@ Cc: Juri Lelli <juri.lelli@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
  linux-perf-users@vger.kernel.org,
  Sergey Senozhatsky <senozhatsky@chromium.org>,
  Thomas Gleixner <tglx@linutronix.de>, linux-crypto@vger.kernel.org,
- Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Joe Perches <joe@perches.com>, Andrew Morton <akpm@linux-foundation.org>,
  Mark Rutland <mark.rutland@arm.com>, Anup Patel <anup.patel@wdc.com>,
  linux-ia64@vger.kernel.org, David Airlie <airlied@linux.ie>,
  Roy Pledge <Roy.Pledge@nxp.com>, Dave Hansen <dave.hansen@linux.intel.com>,
  Solomon Peachy <pizza@shaftnet.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
  Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Dennis Zhou <dennis@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>,
- linux-alpha@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+ Matti Vaittinen <mazziesaccount@gmail.com>, linux-alpha@vger.kernel.org,
+ Tejun Heo <tj@kernel.org>, Kalle Valo <kvalo@codeaurora.org>,
  Stephen Boyd <sboyd@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
  Dinh Nguyen <dinguyen@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
  Ulf Hansson <ulf.hansson@linaro.org>,
@@ -122,45 +144,48 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Nov 27, 2021 at 07:56:57PM -0800, Yury Norov wrote:
-> Now as we have bitmap_weight_eq(), switch bitmap_full() and
-> bitmap_empty() to using it.
+On Sun, Nov 28, 2021 at 12:54:00PM -0500, Dennis Zhou wrote:
+> Hello,
 > 
-> Signed-off-by: Yury Norov <yury.norov@gmail.com>
-> ---
->  include/linux/bitmap.h | 26 ++++++++++----------------
->  1 file changed, 10 insertions(+), 16 deletions(-)
+> On Sun, Nov 28, 2021 at 09:43:20AM -0800, Yury Norov wrote:
+> > On Sun, Nov 28, 2021 at 09:07:52AM -0800, Joe Perches wrote:
+> > > On Sat, 2021-11-27 at 19:57 -0800, Yury Norov wrote:
+> > > > Add num_{possible,present,active}_cpus_{eq,gt,le} and replace num_*_cpus()
+> > > > with one of new functions where appropriate. This allows num_*_cpus_*()
+> > > > to return earlier depending on the condition.
+> > > []
+> > > > diff --git a/arch/arc/kernel/smp.c b/arch/arc/kernel/smp.c
+> > > []
+> > > > @@ -103,7 +103,7 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
+> > > >  	 * if platform didn't set the present map already, do it now
+> > > >  	 * boot cpu is set to present already by init/main.c
+> > > >  	 */
+> > > > -	if (num_present_cpus() <= 1)
+> > > > +	if (num_present_cpus_le(2))
+> > > >  		init_cpu_present(cpu_possible_mask);
+> > > 
+> > > ?  is this supposed to be 2 or 1
+> > 
+> > X <= 1 is the equivalent of X < 2.
+> > 
+> > > > diff --git a/drivers/cpufreq/pcc-cpufreq.c b/drivers/cpufreq/pcc-cpufreq.c
+> > > []
+> > > > @@ -593,7 +593,7 @@ static int __init pcc_cpufreq_init(void)
+> > > >  		return ret;
+> > > >  	}
+> > > >  
+> > > > -	if (num_present_cpus() > 4) {
+> > > > +	if (num_present_cpus_gt(4)) {
+> > > >  		pcc_cpufreq_driver.flags |= CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING;
+> > > >  		pr_err("%s: Too many CPUs, dynamic performance scaling disabled\n",
+> > > >  		       __func__);
+> > > 
+> > > It looks as if the present variants should be using the same values
+> > > so the _le test above with 1 changed to 2 looks odd.
+> >  
 > 
-> diff --git a/include/linux/bitmap.h b/include/linux/bitmap.h
-> index 996041f771c8..2d951e4dc814 100644
-> --- a/include/linux/bitmap.h
-> +++ b/include/linux/bitmap.h
-> @@ -386,22 +386,6 @@ static inline int bitmap_subset(const unsigned long *src1,
->  		return __bitmap_subset(src1, src2, nbits);
->  }
->  
-> -static inline bool bitmap_empty(const unsigned long *src, unsigned nbits)
-> -{
-> -	if (small_const_nbits(nbits))
-> -		return ! (*src & BITMAP_LAST_WORD_MASK(nbits));
-> -
-> -	return find_first_bit(src, nbits) == nbits;
-> -}
+> I think the confusion comes from le meaning less than rather than lt.
+> Given the general convention of: lt (<), le (<=), eg (=), ge (>=),
+> gt (>), I'd consider renaming your le to lt.
 
-Since this is supposed to be an optimization, I would go all the way and
-replace this with the trivial implementation instead:
-
-bool bitmap_empty(long *bits, size_t nbits)
-{
-	for (; nbits >= BITS_PER_LONG; ++bits, nbits -= BITS_PER_LONG)
-		if (*bits)
-			return false;
-
-	if (nbits && *bits & BITMAP_LAST_WORD_MASK(nbits))
-		return false;
-
-	return true;
-}
- 
-Best Regards
-Micha³ Miros³aw
+Ok, makes sense. I'll rename in v2 and add <= and >= versions.
