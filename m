@@ -2,97 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2124607A1
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 17:37:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B854609F8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:05:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Dfz3Yjkz3cPp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 03:37:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Lbt68DMz3c9v
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:05:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ywh814uD;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Qd5U4t2i;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Cf1UpbBD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=jolsa@redhat.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=Ywh814uD; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Qd5U4t2i; 
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=Cf1UpbBD; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+X-Greylist: delayed 140353 seconds by postgrey-1.36 at boromir;
+ Sun, 28 Nov 2021 19:01:53 AEDT
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2Df91mZVz2ypZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 03:37:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1638117421;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=u0WPuZI03sGDlrZl0+AEkcj4kDjxnWzt/i4KWwzVe9o=;
- b=Ywh814uDr5dZ+sQGFFzbe+8O1S/PhKqv4kfklRn8a2CBjrorKk4y50XoCizYfpYFXq+jtK
- 5JDVGSYdlk/tEok+cVcb7Eap3011uTBzKtLOvoBSF19Xc8pQqXNlcHOkqYIYfOBisYUhb0
- 23nVzbqRFWMym5rffwy6KRG/8vW3UFE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1638117422;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=u0WPuZI03sGDlrZl0+AEkcj4kDjxnWzt/i4KWwzVe9o=;
- b=Qd5U4t2ihHHH/ejDwTDY2Lm27PAQSzx0dhsoDU6oItGl+M0V0U0II1xaw7k522tWugFT0M
- 3ktrp0MFJW5jeUFynRX7yR2ai0gUjJQPER8VdJM7dEFRuhoQLRdMzua0+uN/fZ+7g4Il1L
- SYTV0PAfPKcRysgM6nm+KHnS7fR0CFk=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-223-OqFKqsCXNWia-0aJGRViAA-1; Sun, 28 Nov 2021 11:35:00 -0500
-X-MC-Unique: OqFKqsCXNWia-0aJGRViAA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- n41-20020a05600c502900b003335ab97f41so9054922wmr.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 08:35:00 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=u0WPuZI03sGDlrZl0+AEkcj4kDjxnWzt/i4KWwzVe9o=;
- b=Kc4WhRHaQK51pvhTdBBRSj0nkqU89za3ZrZnqWFlRV/SQnqzZfmZV2zpT05RFD7/y0
- dVgsl1KarEHA7/hfPRMbSXVgtGSeCOx0AR9mk2yIogcNU8Ch7mJMm3hTa/czigU5HPaY
- LCk7E3SGB56P3DxZRW+u1jzlcUNcBlOFHfEa276leeOoshK01QyOQE6VDXZPdMaT1pPL
- jHwhjtw0Mtn0B9OcgWOpITwC2o9vySRCqy/y8wCmG6C/pXm5saqlkhReipxRn6ouRZdw
- /vDfiG/TAtBxW8fk4yZ9QN/hhjQJsXrgZn3PQbTXElKuSdiqGg5jct4Z4i/mISYCWXJm
- J1FA==
-X-Gm-Message-State: AOAM533d77pFOKU7epgbRkpFeo6c1ZaHy9VS1dt3BArpsnRhyQJDOKSV
- BkFkVelo4X8rxL8FXsHslKEeAT+Oqt7qaDTPZVlbxarKwXc2dJ4x8u1Zs0DH/427f5sE/IxLNBy
- HJXoCaN0WXC03IxvpM8O1vdCPuA==
-X-Received: by 2002:a7b:c008:: with SMTP id c8mr29691470wmb.87.1638117298965; 
- Sun, 28 Nov 2021 08:34:58 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJx5P9GnGdwAy0/ojmvNAW+hWNTvpo6486QdE0YrLbmC7PJ9DePf+HWFFV/x9KAiHv1LGL6pqA==
-X-Received: by 2002:a7b:c008:: with SMTP id c8mr29691434wmb.87.1638117298695; 
- Sun, 28 Nov 2021 08:34:58 -0800 (PST)
-Received: from krava (nat-pool-brq-u.redhat.com. [213.175.37.12])
- by smtp.gmail.com with ESMTPSA id m9sm13461067wmq.1.2021.11.28.08.34.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 Nov 2021 08:34:58 -0800 (PST)
-Date: Sun, 28 Nov 2021 17:34:56 +0100
-From: Jiri Olsa <jolsa@redhat.com>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/2] tools/perf: Include global and local variants for
- p_stage_cyc sort key
-Message-ID: <YaOvsDAnuS+mXnrf@krava>
-References: <20211125024851.22895-1-atrajeev@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J21Cj3dXZz305F
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 19:01:52 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id E2F2AB80B54;
+ Sun, 28 Nov 2021 08:01:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E507C004E1;
+ Sun, 28 Nov 2021 08:01:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1638086506;
+ bh=b48YjTY/pVez8afNE+wzU+3WaQKxxQEURvaxADRtwDg=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Cf1UpbBDGUG/i+3B7710UJDtWCf5AiS+xYwJdJrswHkaMxwXqtghSrAeHqtG4ZEHm
+ kjNjM7/02WtoShcjN6FHzZa/U5USbrnlhn4XjHsJy9PjfumjC3FQHsmSzJbZZYb97a
+ uqjFGttZAm3d3AQ44noz4515EJlyQkKjujhY+AU0=
+Date: Sun, 28 Nov 2021 09:01:41 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Yury Norov <yury.norov@gmail.com>
+Subject: Re: [PATCH 3/9] all: replace bitmap_weigth() with
+ bitmap_{empty,full,eq,gt,le}
+Message-ID: <YaM3ZeQS4tHzsRkK@kroah.com>
+References: <20211128035704.270739-1-yury.norov@gmail.com>
+ <20211128035704.270739-4-yury.norov@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20211125024851.22895-1-atrajeev@linux.vnet.ibm.com>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=jolsa@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20211128035704.270739-4-yury.norov@gmail.com>
+X-Mailman-Approved-At: Mon, 29 Nov 2021 08:05:03 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,172 +66,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com, acme@kernel.org,
- linux-perf-users@vger.kernel.org, jolsa@kernel.org, kjain@linux.ibm.com,
- namhyung@kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Juri Lelli <juri.lelli@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Guo Ren <guoren@kernel.org>,
+ Christoph Lameter <cl@linux.com>, Christoph Hellwig <hch@lst.de>,
+ Andi Kleen <ak@linux.intel.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Mel Gorman <mgorman@suse.de>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Petr Mladek <pmladek@suse.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Jens Axboe <axboe@fb.com>, Andy Lutomirski <luto@kernel.org>,
+ Lee Jones <lee.jones@linaro.org>, Randy Dunlap <rdunlap@infradead.org>,
+ linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-crypto@vger.kernel.org,
+ Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Mark Rutland <mark.rutland@arm.com>, Anup Patel <anup.patel@wdc.com>,
+ linux-ia64@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ Roy Pledge <Roy.Pledge@nxp.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Solomon Peachy <pizza@shaftnet.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+ Dennis Zhou <dennis@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Kalle Valo <kvalo@codeaurora.org>,
+ Stephen Boyd <sboyd@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+ Dinh Nguyen <dinguyen@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Ulf Hansson <ulf.hansson@linaro.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Subbaraya Sundeep <sbhatta@marvell.com>, Will Deacon <will@kernel.org>,
+ Sagi Grimberg <sagi@grimberg.me>, linux-csky@vger.kernel.org,
+ bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org,
+ linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ Vineet Gupta <vgupta@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Mark Gross <markgross@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ David Laight <David.Laight@aculab.com>, linux-alpha@vger.kernel.org,
+ Geetha sowjanya <gakula@marvell.com>, Ian Rogers <irogers@google.com>,
+ kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Amitkumar Karwar <amitkarwar@gmail.com>, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, Jiri Olsa <jolsa@redhat.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Andy Gross <agross@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Vivien Didelot <vivien.didelot@gmail.com>,
+ Sunil Goutham <sgoutham@marvell.com>, "Paul E. McKenney" <paulmck@kernel.org>,
+ linux-s390@vger.kernel.org, Alexey Klimov <aklimov@redhat.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Hans de Goede <hdegoede@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Marcin Wojtas <mw@semihalf.com>,
+ Vlastimil Babka <vbabka@suse.cz>, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Daniel Vetter <daniel@ffwll.ch>, Jason Wessel <jason.wessel@windriver.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Andy Shevchenko <andy@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Nov 25, 2021 at 08:18:50AM +0530, Athira Rajeev wrote:
-> Sort key p_stage_cyc is used to present the latency
-> cycles spend in pipeline stages. perf tool has local
-> p_stage_cyc sort key to display this info. There is no
-> global variant available for this sort key. local variant
-> shows latency in a sinlge sample, whereas, global value
-> will be useful to present the total latency (sum of
-> latencies) in the hist entry. It represents latency
-> number multiplied by the number of samples.
+On Sat, Nov 27, 2021 at 07:56:58PM -0800, Yury Norov wrote:
+> bitmap_weight() counts all set bits in the bitmap unconditionally.
+> However in some cases we can traverse a part of bitmap when we
+> only need to check if number of set bits is greater, less or equal
+> to some number.
 > 
-> Add global (p_stage_cyc) and local variant
-> (local_p_stage_cyc) for this sort key. Use the
-> local_p_stage_cyc as default option for "mem" sort mode.
-> Also add this to list of dynamic sort keys.
+> This patch replaces bitmap_weight() with one of
+> bitmap_{empty,full,eq,gt,le), as appropriate.
 > 
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> Reported-by: Namhyung Kim <namhyung@kernel.org>
+> In some places driver code has been optimized further, where it's
+> trivial.
+> 
+> Signed-off-by: Yury Norov <yury.norov@gmail.com>
+> ---
+>  arch/nds32/kernel/perf_event_cpu.c                 |  4 +---
+>  arch/x86/kernel/cpu/resctrl/rdtgroup.c             |  4 ++--
+>  arch/x86/kvm/hyperv.c                              |  8 ++++----
+>  drivers/crypto/ccp/ccp-dev-v5.c                    |  5 +----
+>  drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c           |  2 +-
+>  drivers/iio/adc/mxs-lradc-adc.c                    |  3 +--
+>  drivers/iio/dummy/iio_simple_dummy_buffer.c        |  4 ++--
+>  drivers/iio/industrialio-buffer.c                  |  2 +-
+>  drivers/iio/industrialio-trigger.c                 |  2 +-
+>  drivers/memstick/core/ms_block.c                   |  4 ++--
+>  drivers/net/dsa/b53/b53_common.c                   |  2 +-
+>  drivers/net/ethernet/broadcom/bcmsysport.c         |  6 +-----
+>  drivers/net/ethernet/intel/ice/ice_virtchnl_pf.c   |  4 ++--
+>  drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c     |  2 +-
+>  .../ethernet/marvell/octeontx2/nic/otx2_ethtool.c  |  2 +-
+>  .../ethernet/marvell/octeontx2/nic/otx2_flows.c    |  8 ++++----
+>  .../net/ethernet/marvell/octeontx2/nic/otx2_pf.c   |  2 +-
+>  drivers/net/ethernet/mellanox/mlx4/cmd.c           | 10 +++-------
+>  drivers/net/ethernet/mellanox/mlx4/eq.c            |  4 ++--
+>  drivers/net/ethernet/mellanox/mlx4/main.c          |  2 +-
+>  .../net/ethernet/mellanox/mlx5/core/en_ethtool.c   |  2 +-
+>  drivers/net/ethernet/qlogic/qed/qed_dev.c          |  3 +--
+>  drivers/net/ethernet/qlogic/qed/qed_rdma.c         |  4 ++--
+>  drivers/net/ethernet/qlogic/qed/qed_roce.c         |  2 +-
+>  drivers/perf/arm-cci.c                             |  2 +-
+>  drivers/perf/arm_pmu.c                             |  4 ++--
+>  drivers/perf/hisilicon/hisi_uncore_pmu.c           |  2 +-
+>  drivers/perf/thunderx2_pmu.c                       |  3 +--
+>  drivers/perf/xgene_pmu.c                           |  2 +-
+>  drivers/pwm/pwm-pca9685.c                          |  2 +-
+>  drivers/staging/media/tegra-video/vi.c             |  2 +-
+>  drivers/thermal/intel/intel_powerclamp.c           | 10 ++++------
+>  fs/ocfs2/cluster/heartbeat.c                       | 14 +++++++-------
+>  33 files changed, 57 insertions(+), 75 deletions(-)
 
-I can't apply this to Arnaldo's perf/core, could you please rebase?
-
-patching file util/hist.c
-patching file util/hist.h
-patching file util/sort.c
-Hunk #3 FAILED at 1392.
-Hunk #4 succeeded at 1878 (offset 20 lines).
-1 out of 4 hunks FAILED -- saving rejects to file util/sort.c.rej
-patching file util/sort.h
+After you get the new functions added to the kernel tree, this patch
+should be broken up into one-patch-per-subsystem and submitted through
+the various subsystem trees.
 
 thanks,
-jirka
 
-> ---
->  tools/perf/util/hist.c |  4 +++-
->  tools/perf/util/hist.h |  3 ++-
->  tools/perf/util/sort.c | 34 +++++++++++++++++++++++++---------
->  tools/perf/util/sort.h |  3 ++-
->  4 files changed, 32 insertions(+), 12 deletions(-)
-> 
-> diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
-> index b776465e04ef..0a8033b09e28 100644
-> --- a/tools/perf/util/hist.c
-> +++ b/tools/perf/util/hist.c
-> @@ -211,7 +211,9 @@ void hists__calc_col_len(struct hists *hists, struct hist_entry *h)
->  	hists__new_col_len(hists, HISTC_MEM_BLOCKED, 10);
->  	hists__new_col_len(hists, HISTC_LOCAL_INS_LAT, 13);
->  	hists__new_col_len(hists, HISTC_GLOBAL_INS_LAT, 13);
-> -	hists__new_col_len(hists, HISTC_P_STAGE_CYC, 13);
-> +	hists__new_col_len(hists, HISTC_LOCAL_P_STAGE_CYC, 13);
-> +	hists__new_col_len(hists, HISTC_GLOBAL_P_STAGE_CYC, 13);
-> +
->  	if (symbol_conf.nanosecs)
->  		hists__new_col_len(hists, HISTC_TIME, 16);
->  	else
-> diff --git a/tools/perf/util/hist.h b/tools/perf/util/hist.h
-> index 5343b62476e6..2752ce681108 100644
-> --- a/tools/perf/util/hist.h
-> +++ b/tools/perf/util/hist.h
-> @@ -75,7 +75,8 @@ enum hist_column {
->  	HISTC_MEM_BLOCKED,
->  	HISTC_LOCAL_INS_LAT,
->  	HISTC_GLOBAL_INS_LAT,
-> -	HISTC_P_STAGE_CYC,
-> +	HISTC_LOCAL_P_STAGE_CYC,
-> +	HISTC_GLOBAL_P_STAGE_CYC,
->  	HISTC_NR_COLS, /* Last entry */
->  };
->  
-> diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-> index e9216a292a04..e978f7883e07 100644
-> --- a/tools/perf/util/sort.c
-> +++ b/tools/perf/util/sort.c
-> @@ -37,7 +37,7 @@ const char	default_parent_pattern[] = "^sys_|^do_page_fault";
->  const char	*parent_pattern = default_parent_pattern;
->  const char	*default_sort_order = "comm,dso,symbol";
->  const char	default_branch_sort_order[] = "comm,dso_from,symbol_from,symbol_to,cycles";
-> -const char	default_mem_sort_order[] = "local_weight,mem,sym,dso,symbol_daddr,dso_daddr,snoop,tlb,locked,blocked,local_ins_lat,p_stage_cyc";
-> +const char	default_mem_sort_order[] = "local_weight,mem,sym,dso,symbol_daddr,dso_daddr,snoop,tlb,locked,blocked,local_ins_lat,local_p_stage_cyc";
->  const char	default_top_sort_order[] = "dso,symbol";
->  const char	default_diff_sort_order[] = "dso,symbol";
->  const char	default_tracepoint_sort_order[] = "trace";
-> @@ -46,8 +46,8 @@ const char	*field_order;
->  regex_t		ignore_callees_regex;
->  int		have_ignore_callees = 0;
->  enum sort_mode	sort__mode = SORT_MODE__NORMAL;
-> -const char	*dynamic_headers[] = {"local_ins_lat", "p_stage_cyc"};
-> -const char	*arch_specific_sort_keys[] = {"p_stage_cyc"};
-> +const char	*dynamic_headers[] = {"local_ins_lat", "ins_lat", "local_p_stage_cyc", "p_stage_cyc"};
-> +const char	*arch_specific_sort_keys[] = {"local_p_stage_cyc", "p_stage_cyc"};
->  
->  /*
->   * Replaces all occurrences of a char used with the:
-> @@ -1392,22 +1392,37 @@ struct sort_entry sort_global_ins_lat = {
->  };
->  
->  static int64_t
-> -sort__global_p_stage_cyc_cmp(struct hist_entry *left, struct hist_entry *right)
-> +sort__p_stage_cyc_cmp(struct hist_entry *left, struct hist_entry *right)
->  {
->  	return left->p_stage_cyc - right->p_stage_cyc;
->  }
->  
-> +static int hist_entry__global_p_stage_cyc_snprintf(struct hist_entry *he, char *bf,
-> +					size_t size, unsigned int width)
-> +{
-> +	return repsep_snprintf(bf, size, "%-*u", width,
-> +			he->p_stage_cyc * he->stat.nr_events);
-> +}
-> +
-> +
->  static int hist_entry__p_stage_cyc_snprintf(struct hist_entry *he, char *bf,
->  					size_t size, unsigned int width)
->  {
->  	return repsep_snprintf(bf, size, "%-*u", width, he->p_stage_cyc);
->  }
->  
-> -struct sort_entry sort_p_stage_cyc = {
-> -	.se_header      = "Pipeline Stage Cycle",
-> -	.se_cmp         = sort__global_p_stage_cyc_cmp,
-> +struct sort_entry sort_local_p_stage_cyc = {
-> +	.se_header      = "Local Pipeline Stage Cycle",
-> +	.se_cmp         = sort__p_stage_cyc_cmp,
->  	.se_snprintf	= hist_entry__p_stage_cyc_snprintf,
-> -	.se_width_idx	= HISTC_P_STAGE_CYC,
-> +	.se_width_idx	= HISTC_LOCAL_P_STAGE_CYC,
-> +};
-> +
-> +struct sort_entry sort_global_p_stage_cyc = {
-> +	.se_header      = "Pipeline Stage Cycle",
-> +	.se_cmp         = sort__p_stage_cyc_cmp,
-> +	.se_snprintf    = hist_entry__global_p_stage_cyc_snprintf,
-> +	.se_width_idx   = HISTC_GLOBAL_P_STAGE_CYC,
->  };
->  
->  struct sort_entry sort_mem_daddr_sym = {
-> @@ -1858,7 +1873,8 @@ static struct sort_dimension common_sort_dimensions[] = {
->  	DIM(SORT_CODE_PAGE_SIZE, "code_page_size", sort_code_page_size),
->  	DIM(SORT_LOCAL_INS_LAT, "local_ins_lat", sort_local_ins_lat),
->  	DIM(SORT_GLOBAL_INS_LAT, "ins_lat", sort_global_ins_lat),
-> -	DIM(SORT_PIPELINE_STAGE_CYC, "p_stage_cyc", sort_p_stage_cyc),
-> +	DIM(SORT_LOCAL_PIPELINE_STAGE_CYC, "local_p_stage_cyc", sort_local_p_stage_cyc),
-> +	DIM(SORT_GLOBAL_PIPELINE_STAGE_CYC, "p_stage_cyc", sort_global_p_stage_cyc),
->  };
->  
->  #undef DIM
-> diff --git a/tools/perf/util/sort.h b/tools/perf/util/sort.h
-> index 3c7518378d62..83abe5e6812a 100644
-> --- a/tools/perf/util/sort.h
-> +++ b/tools/perf/util/sort.h
-> @@ -235,7 +235,8 @@ enum sort_type {
->  	SORT_CODE_PAGE_SIZE,
->  	SORT_LOCAL_INS_LAT,
->  	SORT_GLOBAL_INS_LAT,
-> -	SORT_PIPELINE_STAGE_CYC,
-> +	SORT_LOCAL_PIPELINE_STAGE_CYC,
-> +	SORT_GLOBAL_PIPELINE_STAGE_CYC,
->  
->  	/* branch stack specific sort keys */
->  	__SORT_BRANCH_STACK,
-> -- 
-> 2.27.0
-> 
-
+greg k-h
