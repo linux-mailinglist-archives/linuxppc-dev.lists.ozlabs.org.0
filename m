@@ -1,59 +1,127 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B854609F8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:05:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 329364609FC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:06:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Lbt68DMz3c9v
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:05:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Lcc1TXXz3cZM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:06:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Cf1UpbBD;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JS75cm1k;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
+ helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=Cf1UpbBD; 
- dkim-atps=neutral
-X-Greylist: delayed 140353 seconds by postgrey-1.36 at boromir;
- Sun, 28 Nov 2021 19:01:53 AEDT
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=JS75cm1k; dkim-atps=neutral
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J21Cj3dXZz305F
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 19:01:52 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id E2F2AB80B54;
- Sun, 28 Nov 2021 08:01:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E507C004E1;
- Sun, 28 Nov 2021 08:01:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1638086506;
- bh=b48YjTY/pVez8afNE+wzU+3WaQKxxQEURvaxADRtwDg=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Cf1UpbBDGUG/i+3B7710UJDtWCf5AiS+xYwJdJrswHkaMxwXqtghSrAeHqtG4ZEHm
- kjNjM7/02WtoShcjN6FHzZa/U5USbrnlhn4XjHsJy9PjfumjC3FQHsmSzJbZZYb97a
- uqjFGttZAm3d3AQ44noz4515EJlyQkKjujhY+AU0=
-Date: Sun, 28 Nov 2021 09:01:41 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Yury Norov <yury.norov@gmail.com>
-Subject: Re: [PATCH 3/9] all: replace bitmap_weigth() with
- bitmap_{empty,full,eq,gt,le}
-Message-ID: <YaM3ZeQS4tHzsRkK@kroah.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J25MW1gmdz2ymr
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 22:08:53 +1100 (AEDT)
+Received: by mail-pj1-x1036.google.com with SMTP id
+ j5-20020a17090a318500b001a6c749e697so10001098pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 03:08:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=RLGVormZNrRFWCDJ7jdRt19siDEPnOtSgoMRMWSMPpw=;
+ b=JS75cm1kNmau6QTu2rqjTEH1lacCTylUddbQig/MfaOv87fU1R4ixeZwUTvWkojCLe
+ FVsH5wJQluo9fnDCJtLxlNsFRugI2zkbabpCQ9VhDSP+vCMkQ9XcDyPUZsKoAN0XUVPp
+ aHUTDQx+GNGjfhDN5ufjzO429xe7p71bZ6QrT/eU2apwdj3VV4bcd4Oz9OEiXGFLWmkO
+ KTg66HtHflRGYT80QQO1K0h4MxrasFS2dEY2Sip94P5OybBl2LvseRqW7ZJqQswnXYN6
+ Cntrs/UrWT/QrCgRauE5NdDXQthF0aHKCC9fzaz2Cb2jdPmYhTY0PX3z2F7VkaSzQTfW
+ T9/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=RLGVormZNrRFWCDJ7jdRt19siDEPnOtSgoMRMWSMPpw=;
+ b=yto0Uxauf8vQZk40QYwfgxf0rWQHHRK8G8waeob4gPhnyOQ7R7U/80xgzpjDuecFBa
+ 5HRW8v8TiJRFwXBs2GG/bI+9U9PtoqkGpvgBfVaOPLalG+sJALZl2DskPZUievmCe/0G
+ mih0jpEYDW23oX1kQuftTzBZJSumQjvCH7wttqVveQJr+V4p4kDVa+RtVKvXJkKsLGbd
+ ygbn0dUhUwRujOTxPMPWHo7ZgHIfp+eNDEYWCEhczvvRiZQgXtb/e779ot9P63vF85uG
+ IELc2kBjAeF7RPW1iOJBt56H72ZXv7a+AKgKd4W6iOiTdog8Ao+EyGMA3avd48xRO4A2
+ enVg==
+X-Gm-Message-State: AOAM531IwpHWqmQDzPti/F072KnFPOKcrHgYO0998fJOHFzFGjz5ubcE
+ XJMx97hkesPNp3ucgM5E16I=
+X-Google-Smtp-Source: ABdhPJwy0Op9mcVC2NuBsFMopKknqC2dkNsLfr7KDw0piI/fX2AvzDRr44yqwWjkuQxAQyAX4DCrnA==
+X-Received: by 2002:a17:902:7fc3:b0:144:e29c:228d with SMTP id
+ t3-20020a1709027fc300b00144e29c228dmr51588052plb.4.1638097728470; 
+ Sun, 28 Nov 2021 03:08:48 -0800 (PST)
+Received: from localhost (115-64-213-93.static.tpgi.com.au. [115.64.213.93])
+ by smtp.gmail.com with ESMTPSA id 9sm9412647pgq.57.2021.11.28.03.08.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 28 Nov 2021 03:08:48 -0800 (PST)
+Date: Sun, 28 Nov 2021 21:08:41 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 0/9] lib/bitmap: optimize bitmap_weight() usage
+To: Arnaldo Carvalho de Melo <acme@kernel.org>, Andy Gross
+ <agross@kernel.org>, David Airlie <airlied@linux.ie>, Alexey Klimov
+ <aklimov@redhat.com>, Andi Kleen <ak@linux.intel.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Amitkumar Karwar
+ <amitkarwar@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Andy Shevchenko
+ <andy@infradead.org>, Anup Patel <anup.patel@wdc.com>, Ard Biesheuvel
+ <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@fb.com>,
+ bcm-kernel-feedback-list@broadcom.com, Borislav Petkov <bp@alien8.de>,
+ Catalin Marinas <catalin.marinas@arm.com>, Christoph Lameter <cl@linux.com>,
+ Daniel Vetter <daniel@ffwll.ch>, Dave Hansen <dave.hansen@linux.intel.com>,
+ David Laight <David.Laight@ACULAB.COM>, Dennis Zhou <dennis@kernel.org>,
+ Dinh Nguyen <dinguyen@kernel.org>, Geetha sowjanya <gakula@marvell.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Guo Ren <guoren@kernel.org>, Heiko Carstens
+ <hca@linux.ibm.com>, Christoph Hellwig <hch@lst.de>, Hans de Goede
+ <hdegoede@redhat.com>, Ian Rogers <irogers@google.com>, Jason Wessel
+ <jason.wessel@windriver.com>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ Jonathan Cameron <jic23@kernel.org>, Jiri Olsa <jolsa@redhat.com>, Juri Lelli
+ <juri.lelli@redhat.com>, Kees Cook <keescook@chromium.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>, Jakub Kicinski
+ <kuba@kernel.org>, Kalle Valo <kvalo@codeaurora.org>, kvm@vger.kernel.org,
+ Lee Jones <lee.jones@linaro.org>, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, Russell King <linux@armlinux.org.uk>,
+ linux-crypto@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-riscv@lists.infradead.org, 
+ linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ Andy Lutomirski <luto@kernel.org>, Mark Gross <markgross@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, Marc Zyngier <maz@kernel.org>, Matti Vaittinen
+ <mazziesaccount@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Mel Gorman <mgorman@suse.de>, Mike Marciniszyn
+ <mike.marciniszyn@cornelisnetworks.com>, Ingo Molnar <mingo@redhat.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Marcin Wojtas <mw@semihalf.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Solomon Peachy <pizza@shaftnet.org>,
+ Petr Mladek <pmladek@suse.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Roy Pledge <Roy.Pledge@nxp.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Sagi Grimberg <sagi@grimberg.me>, Subbaraya Sundeep <sbhatta@marvell.com>,
+ Stephen Boyd <sboyd@kernel.org>, Sergey Senozhatsky
+ <senozhatsky@chromium.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Sunil Goutham <sgoutham@marvell.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Tariq Toukan <tariqt@nvidia.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Tejun Heo <tj@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Vineet Gupta <vgupta@kernel.org>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Vivien Didelot <vivien.didelot@gmail.com>, Will Deacon <will@kernel.org>,
+ Yury Norov <yury.norov@gmail.com>
 References: <20211128035704.270739-1-yury.norov@gmail.com>
- <20211128035704.270739-4-yury.norov@gmail.com>
+In-Reply-To: <20211128035704.270739-1-yury.norov@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211128035704.270739-4-yury.norov@gmail.com>
+Message-Id: <1638096766.3elxdzb8ly.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Mon, 29 Nov 2021 08:05:03 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -66,116 +134,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Guo Ren <guoren@kernel.org>,
- Christoph Lameter <cl@linux.com>, Christoph Hellwig <hch@lst.de>,
- Andi Kleen <ak@linux.intel.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Mel Gorman <mgorman@suse.de>, Viresh Kumar <viresh.kumar@linaro.org>,
- Petr Mladek <pmladek@suse.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Jens Axboe <axboe@fb.com>, Andy Lutomirski <luto@kernel.org>,
- Lee Jones <lee.jones@linaro.org>, Randy Dunlap <rdunlap@infradead.org>,
- linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-crypto@vger.kernel.org,
- Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Mark Rutland <mark.rutland@arm.com>, Anup Patel <anup.patel@wdc.com>,
- linux-ia64@vger.kernel.org, David Airlie <airlied@linux.ie>,
- Roy Pledge <Roy.Pledge@nxp.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Solomon Peachy <pizza@shaftnet.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Dennis Zhou <dennis@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Kalle Valo <kvalo@codeaurora.org>,
- Stephen Boyd <sboyd@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
- Dinh Nguyen <dinguyen@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Subbaraya Sundeep <sbhatta@marvell.com>, Will Deacon <will@kernel.org>,
- Sagi Grimberg <sagi@grimberg.me>, linux-csky@vger.kernel.org,
- bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org,
- linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
- Vineet Gupta <vgupta@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Mark Gross <markgross@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- David Laight <David.Laight@aculab.com>, linux-alpha@vger.kernel.org,
- Geetha sowjanya <gakula@marvell.com>, Ian Rogers <irogers@google.com>,
- kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Amitkumar Karwar <amitkarwar@gmail.com>, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, Jiri Olsa <jolsa@redhat.com>,
- Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Andy Gross <agross@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Vivien Didelot <vivien.didelot@gmail.com>,
- Sunil Goutham <sgoutham@marvell.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- linux-s390@vger.kernel.org, Alexey Klimov <aklimov@redhat.com>,
- Heiko Carstens <hca@linux.ibm.com>, Hans de Goede <hdegoede@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>, Marcin Wojtas <mw@semihalf.com>,
- Vlastimil Babka <vbabka@suse.cz>, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Daniel Vetter <daniel@ffwll.ch>, Jason Wessel <jason.wessel@windriver.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Andy Shevchenko <andy@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Nov 27, 2021 at 07:56:58PM -0800, Yury Norov wrote:
-> bitmap_weight() counts all set bits in the bitmap unconditionally.
-> However in some cases we can traverse a part of bitmap when we
-> only need to check if number of set bits is greater, less or equal
-> to some number.
-> 
-> This patch replaces bitmap_weight() with one of
-> bitmap_{empty,full,eq,gt,le), as appropriate.
-> 
-> In some places driver code has been optimized further, where it's
-> trivial.
-> 
-> Signed-off-by: Yury Norov <yury.norov@gmail.com>
-> ---
->  arch/nds32/kernel/perf_event_cpu.c                 |  4 +---
->  arch/x86/kernel/cpu/resctrl/rdtgroup.c             |  4 ++--
->  arch/x86/kvm/hyperv.c                              |  8 ++++----
->  drivers/crypto/ccp/ccp-dev-v5.c                    |  5 +----
->  drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c           |  2 +-
->  drivers/iio/adc/mxs-lradc-adc.c                    |  3 +--
->  drivers/iio/dummy/iio_simple_dummy_buffer.c        |  4 ++--
->  drivers/iio/industrialio-buffer.c                  |  2 +-
->  drivers/iio/industrialio-trigger.c                 |  2 +-
->  drivers/memstick/core/ms_block.c                   |  4 ++--
->  drivers/net/dsa/b53/b53_common.c                   |  2 +-
->  drivers/net/ethernet/broadcom/bcmsysport.c         |  6 +-----
->  drivers/net/ethernet/intel/ice/ice_virtchnl_pf.c   |  4 ++--
->  drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c     |  2 +-
->  .../ethernet/marvell/octeontx2/nic/otx2_ethtool.c  |  2 +-
->  .../ethernet/marvell/octeontx2/nic/otx2_flows.c    |  8 ++++----
->  .../net/ethernet/marvell/octeontx2/nic/otx2_pf.c   |  2 +-
->  drivers/net/ethernet/mellanox/mlx4/cmd.c           | 10 +++-------
->  drivers/net/ethernet/mellanox/mlx4/eq.c            |  4 ++--
->  drivers/net/ethernet/mellanox/mlx4/main.c          |  2 +-
->  .../net/ethernet/mellanox/mlx5/core/en_ethtool.c   |  2 +-
->  drivers/net/ethernet/qlogic/qed/qed_dev.c          |  3 +--
->  drivers/net/ethernet/qlogic/qed/qed_rdma.c         |  4 ++--
->  drivers/net/ethernet/qlogic/qed/qed_roce.c         |  2 +-
->  drivers/perf/arm-cci.c                             |  2 +-
->  drivers/perf/arm_pmu.c                             |  4 ++--
->  drivers/perf/hisilicon/hisi_uncore_pmu.c           |  2 +-
->  drivers/perf/thunderx2_pmu.c                       |  3 +--
->  drivers/perf/xgene_pmu.c                           |  2 +-
->  drivers/pwm/pwm-pca9685.c                          |  2 +-
->  drivers/staging/media/tegra-video/vi.c             |  2 +-
->  drivers/thermal/intel/intel_powerclamp.c           | 10 ++++------
->  fs/ocfs2/cluster/heartbeat.c                       | 14 +++++++-------
->  33 files changed, 57 insertions(+), 75 deletions(-)
+Excerpts from Yury Norov's message of November 28, 2021 1:56 pm:
+> In many cases people use bitmap_weight()-based functions like this:
+>=20
+> 	if (num_present_cpus() > 1)
+> 		do_something();
+>=20
+> This may take considerable amount of time on many-cpus machines because
+> num_present_cpus() will traverse every word of underlying cpumask
+> unconditionally.
+>=20
+> We can significantly improve on it for many real cases if stop traversing
+> the mask as soon as we count present cpus to any number greater than 1:
+>=20
+> 	if (num_present_cpus_gt(1))
+> 		do_something();
+>=20
+> To implement this idea, the series adds bitmap_weight_{eq,gt,le}
+> functions together with corresponding wrappers in cpumask and nodemask.
 
-After you get the new functions added to the kernel tree, this patch
-should be broken up into one-patch-per-subsystem and submitted through
-the various subsystem trees.
+There would be no change to callers if you maintain counters like what
+is done for num_online_cpus() today. Maybe some fixes to arch code that
+does not use set_cpu_possible() etc APIs required, but AFAIKS it would
+be better to fix such cases anyway.
 
-thanks,
-
-greg k-h
+Thanks,
+Nick
