@@ -2,58 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD41A460A6D
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 22:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9E3460AD7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 23:42:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Mfh5Fxsz3c90
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:53:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Nlm6jJ1z3cNB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 09:42:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256 header.s=1 header.b=qeLiiTlD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Ve2rGzh1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rere.qmqm.pl (client-ip=91.227.64.183; helo=rere.qmqm.pl;
- envelope-from=mirq-linux@rere.qmqm.pl; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::132;
+ helo=mail-lf1-x132.google.com; envelope-from=digetx@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256
- header.s=1 header.b=qeLiiTlD; dkim-atps=neutral
-Received: from rere.qmqm.pl (rere.qmqm.pl [91.227.64.183])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=Ve2rGzh1; dkim-atps=neutral
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com
+ [IPv6:2a00:1450:4864:20::132])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2LsY0Qg6z2xtF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 08:17:20 +1100 (AEDT)
-Received: from remote.user (localhost [127.0.0.1])
- by rere.qmqm.pl (Postfix) with ESMTPSA id 4J2LsJ1Lcdz9y;
- Sun, 28 Nov 2021 22:17:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
- t=1638134236; bh=AVVRrFppT2KXeoQ1knr4qxNAWz0fqZEqjSZX5XRty4k=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=qeLiiTlDKcoC3FvftCsYmUekeo8vu2N1pSF3fCD2tgheWVvyonhdof+qu+Ea9djoI
- F0VfIqhNPcyB+IepSkiEVfWMkXITXgi5yRN5hDrKipQbOIN/UYPiCQ3ypFE5/lr3yX
- t143o/oCoxAN5HQdJgLvzJt9p7M6RWXHGnJUqKSETKZD7q6dZ+W4qIz0kh2v3idXT1
- jUvuN2o4SCcowRIIDi5HFtYotMwlOnPhdI33AjtMrxHoxjMEAOO/hdSLgu27razlyO
- MB5TcQY9Ad3wE8nllR9aML4jKPT5UuRgghYO2j4ETJ73vP6/OvL2peMilDKCW68Ia0
- 6xDNHfFLM+f6A==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.103.3 at mail
-Date: Sun, 28 Nov 2021 22:17:06 +0100
-From: =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
-To: Dmitry Osipenko <digetx@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2Mgy1bnQz2yHX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 08:54:05 +1100 (AEDT)
+Received: by mail-lf1-x132.google.com with SMTP id bi37so39406408lfb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 13:54:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=6vgwLT/ouzyM4jlzEumPwuoC7gyZzE5j02z7WHT5gL0=;
+ b=Ve2rGzh1LJA0+OcOlbbQ73O4vszbugE425G36NIT/LJkRhFMX190Vmwf9Z1u+DozQy
+ nt7KBoHLP6NcqsCJJVf/XMiWi1msgC02rhfjLu8CKl0SI+0RrFvUKjFjlZH7bdfHOiEX
+ jvvRM0yX0DY0N616Cr6USUXBiFSTo4izfqBOoNpjwV+G+cH1cFHUwmonpjoWJX8Ppl5i
+ 8dEUJUKATxCUbOfS4VM/cGGt6HuPu0povTPAj3Y6GTkQG70Ogmn5eg+CfWVBj+3pxNr6
+ ReZIvwRQlO/G/fnEj5DP0/liBCD4UXfZ78eAcvQevgGY/DQsBvKDeMEPHSEvbIQ59N2I
+ efCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=6vgwLT/ouzyM4jlzEumPwuoC7gyZzE5j02z7WHT5gL0=;
+ b=lrafDNILrfzllpup/xZRDW1p05NnkTnCQYZHPeAkNvMSaz1HWJXKiCKyJxWIHndqrh
+ WNgxtS1ZFAE8bE0odluH7RXoRzVHkFK6nWelmfd03Ny+7rfg0EAHgxG08Tjs0iA6uidI
+ bV2s20Ubjw4dMSoksBJXkbwen+D/eV50E2JFs5ktszg/huq34oyg8e/2pRZVKlcnidgJ
+ 61BcpjZHRuOgu0wtcmxpuiyF3kPIOFCKNHyP+8mNNxxveiqR0jRh9coF+yaas46lCgWC
+ WloGjFI3XqG0l6ufnLI8CqHeBATxn16ERNmjTmacF63/dAtkqkHdjVTZwenGDK7VpDJI
+ UY3g==
+X-Gm-Message-State: AOAM533qpaoA0KYiHKmWTkGA4IQ1xxPyOdXTkfOHhzVXB0xfjiZ5+lkr
+ rEXqqm9O/5dnYQGDN4pzUZs=
+X-Google-Smtp-Source: ABdhPJxrac6Czjs8U2D2QGSscJN4jhlYtGpRqd/e7TNYLEXAP/IVggs/yFEWoCFlClXMagpvBwvrwg==
+X-Received: by 2002:a05:6512:3c82:: with SMTP id
+ h2mr44786433lfv.128.1638136440658; 
+ Sun, 28 Nov 2021 13:54:00 -0800 (PST)
+Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru.
+ [94.29.46.111])
+ by smtp.googlemail.com with ESMTPSA id w15sm1168884ljo.97.2021.11.28.13.53.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 28 Nov 2021 13:54:00 -0800 (PST)
 Subject: Re: [PATCH v4 08/25] kernel: Add combined power-off+restart handler
  call chain API
-Message-ID: <YaPx0kY7poGpwCL9@qmqm.qmqm.pl>
+To: =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
 References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-9-digetx@gmail.com>
- <YaLQqks8cB0vWp6Q@qmqm.qmqm.pl>
+ <20211126180101.27818-9-digetx@gmail.com> <YaLQqks8cB0vWp6Q@qmqm.qmqm.pl>
  <9213569e-0f40-0df1-4710-8dab564e12d6@gmail.com>
+ <YaPx0kY7poGpwCL9@qmqm.qmqm.pl>
+From: Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <1fa2d9d5-f5f6-77f5-adf6-827921acce49@gmail.com>
+Date: Mon, 29 Nov 2021 00:53:51 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
+In-Reply-To: <YaPx0kY7poGpwCL9@qmqm.qmqm.pl>
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9213569e-0f40-0df1-4710-8dab564e12d6@gmail.com>
-X-Mailman-Approved-At: Mon, 29 Nov 2021 08:51:06 +1100
+X-Mailman-Approved-At: Mon, 29 Nov 2021 09:41:55 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,63 +128,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Nov 29, 2021 at 12:04:01AM +0300, Dmitry Osipenko wrote:
-> 28.11.2021 03:43, Michał Mirosław пишет:
-> > On Fri, Nov 26, 2021 at 09:00:44PM +0300, Dmitry Osipenko wrote:
-> >> SoC platforms often have multiple ways of how to perform system's
-> >> power-off and restart operations. Meanwhile today's kernel is limited to
-> >> a single option. Add combined power-off+restart handler call chain API,
-> >> which is inspired by the restart API. The new API provides both power-off
-> >> and restart functionality.
-> >>
-> >> The old pm_power_off method will be kept around till all users are
-> >> converted to the new API.
-> >>
-> >> Current restart API will be replaced by the new unified API since
-> >> new API is its superset. The restart functionality of the sys-off handler
-> >> API is built upon the existing restart-notifier APIs.
-> >>
-> >> In order to ease conversion to the new API, convenient helpers are added
-> >> for the common use-cases. They will reduce amount of boilerplate code and
-> >> remove global variables. These helpers preserve old behaviour for cases
-> >> where only one power-off handler is expected, this is what all existing
-> >> drivers want, and thus, they could be easily converted to the new API.
-> >> Users of the new API should explicitly enable power-off chaining by
-> >> setting corresponding flag of the power_handler structure.
-> > [...]
-> > 
-> > Hi,
-> > 
-> > A general question: do we really need three distinct chains for this?
+29.11.2021 00:17, Michał Mirosław пишет:
+>> I'm having trouble with parsing this comment. Could you please try to
+>> rephrase it? I don't see how you could check whether power-off handler
+>> is available if you'll mix all handlers together.
+> If notify_call_chain() would be fixed to return NOTIFY_OK if any call
+> returned NOTIFY_OK, then this would be a clear way to gather the
+> answer if any of the handlers will attempt the final action (reboot or
+> power off).
 > 
-> Hello Michał,
-> 
-> At minimum this makes code easier to follow.
-> 
-> > Can't there be only one that chain of callbacks that get a stage
-> > (RESTART_PREPARE, RESTART, POWER_OFF_PREPARE, POWER_OFF) and can ignore
-> > them at will? Calling through POWER_OFF_PREPARE would also return
-> > whether that POWER_OFF is possible (for kernel_can_power_off()).
-> 
-> I'm having trouble with parsing this comment. Could you please try to
-> rephrase it? I don't see how you could check whether power-off handler
-> is available if you'll mix all handlers together.
 
-If notify_call_chain() would be fixed to return NOTIFY_OK if any call
-returned NOTIFY_OK, then this would be a clear way to gather the
-answer if any of the handlers will attempt the final action (reboot or
-power off).
-
-> 
-> > I would also split this patch into preparation cleanups (like wrapping
-> > pm_power_off call with a function) and adding the notifier-based
-> > implementation.
-> 
-> What's the benefit of this split up will be? Are you suggesting that it
-> will ease reviewing of this patch or something else?
-
-Mainly to ease review, as the wrapping will be a no-op, but the addition
-of notifier chain changes semantics a bit.
-
-Best Regards
-Michał Mirosław
+Could you please show a code snippet that implements your suggestion?
