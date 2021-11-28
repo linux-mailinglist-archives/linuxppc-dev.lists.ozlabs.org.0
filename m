@@ -1,79 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3396D460514
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 08:04:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A991460516
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 08:05:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J1zxY08pNz3cBs
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 18:04:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J1zyF0vnpz3bnq
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 28 Nov 2021 18:05:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=RUU7MzRk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=N/urFmV2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72c;
- helo=mail-qk1-x72c.google.com; envelope-from=yury.norov@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::829;
+ helo=mail-qt1-x829.google.com; envelope-from=yury.norov@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=RUU7MzRk; dkim-atps=neutral
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com
- [IPv6:2607:f8b0:4864:20::72c])
+ header.s=20210112 header.b=N/urFmV2; dkim-atps=neutral
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com
+ [IPv6:2607:f8b0:4864:20::829])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J1z6s2KwFz30RH
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 17:27:32 +1100 (AEDT)
-Received: by mail-qk1-x72c.google.com with SMTP id i9so19331803qki.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 22:27:32 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J1zHJ3kDtz2xXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 17:34:51 +1100 (AEDT)
+Received: by mail-qt1-x829.google.com with SMTP id z9so13115420qtj.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 27 Nov 2021 22:34:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to;
- bh=UUaWw2/vndQwOuhRc6j6PRwXuBODm2Svdcs9xeM4FlQ=;
- b=RUU7MzRkdirUtowuDWCiM08P7YQBQBC0acoWzbBj+T+XJI6vVMBSu6aGIKh4+icUwh
- a8q9bMYJuHCqFTUz0wNigsRNRIbsDwqKoKMNa0qnfF66qijICeNv/dPkbz+/087xhZlV
- f64hTvJmbUAx1It3pzpI4UUvGtwyNbU+zmtX09eMQ0ByGsuhC27g5T60WwoNMBivtuLQ
- VUm/Sp71jqGs+1C8GEcrf12fOpYmPWgYxCrrC9gGrggZZRnsjHL5/c7LM3QqhQgnqCqj
- LxxzrdrvicV7rQvSx7+bgEc8nFcDr55sjaFrS6W7kwXrGHkLvw0E6R41fTx7A36r5Slm
- hdow==
+ h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+ :content-transfer-encoding:in-reply-to;
+ bh=rKuklq8jxCETHcjcAENlFbP3nl/uNBZqDfuGt3bzd1Q=;
+ b=N/urFmV2NmOFP42e1LVLW8fwa/hr9KDv3ZUpw+lC8WGtW8rc7tWztvbdFPuGBjub1O
+ wspFhVe7cCjM3GiHaTs/o61wPhHvRulBbX8eWk+oUvPHasNmnTk9fguzetRPFqMAMSbw
+ NSq70yUrota4HuwP2mw6e4EdU69PrQnC7+N7r+KW5WUjDm+ME76HZpk50UYeWuhhvrtv
+ jzlo36RajlwI73FqiorEZUjBdSjpmlO3li6nkrgdjIjD0UyBvsHE9SsWB4qkZCd+owE5
+ cwmTSVDOhxhxddNAGQkE0CL6sKvMvIJPhAZNBZoNO0tLt8RIHXr/GUyMzCFG050MR/6f
+ IXaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=UUaWw2/vndQwOuhRc6j6PRwXuBODm2Svdcs9xeM4FlQ=;
- b=rgSJUTU4BIoziCc/NDxhVD3s9hw2FPh6Qc9F5V9Go8JdjpjbTghfzy7qts1uESyfQK
- cv7kw4vncJ658hAbJe3VRmpXApNUI8CC2K8/80ahZoD0fuXuaY1T7XDSGET2hN7JqR71
- aInAWu+uLC/aCt+jk+CJcrAVstRzptaiRiAI5rvtcjl8b6mE+a5lQA2ay/1wkk0fC2CH
- +WmSQirb8JKU7CtkC5CTai5CEQAAqK3cepMyHy63kZ/adIX6nMhMNLiFFOIPlc6PgVW9
- KRKi0/USmM5mEOEJrg/0riSlXYwquWuwEERmtovoNLWbZiwoJKqcA2uwtvIirx1XUY++
- hc9A==
-X-Gm-Message-State: AOAM533kFsMq8lYRHE36ap6VGIMR80siZOJVtNipcC83yjfdIlZrnasO
- l7kDeoHfrrXoSJqJm04s0gg=
-X-Google-Smtp-Source: ABdhPJxAVXtuKFpo3xQALAgWXmZbnwidtxXikhe9UCcw/0T4+58Z974u1PPCzNdv2+qiERrm5clSCw==
-X-Received: by 2002:a05:620a:2153:: with SMTP id
- m19mr32383206qkm.77.1638080848758; 
- Sat, 27 Nov 2021 22:27:28 -0800 (PST)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+ :content-disposition:content-transfer-encoding:in-reply-to;
+ bh=rKuklq8jxCETHcjcAENlFbP3nl/uNBZqDfuGt3bzd1Q=;
+ b=NO56SgbawPWFWjdWaTLIbwGP2ihh+sdxv+2uc8ZNxgVkdS3VlYvOikzehdp17akN7P
+ EVezHFjFeWOzy/AjQCzpUnPPzmN09qjeWxby/tR4JXQFDpSJD7iI8eVYXf5AD+QiyfIt
+ r3XNyVKPZEOtL6oQzqAJW89BU7p2jHJenFx1C0sT36YdmbjwIZHZEtfXxLAVXaPX3G1n
+ dH007A/1X28nDXSesnsSWTz8DziDHD1QEbVBR0pxW/iAY8O0QKUt2DuG/j16cWbn0l0M
+ Vt2BTMlBB2vWg+3h4xeObflLitKJn309vji+VvXVDkZ70yO6SpsfQ8PhFxO8ma6E6jcG
+ fy8Q==
+X-Gm-Message-State: AOAM531jk0qW81k6Y6B7sxj4PLHe4neZIcN2sP59KyOZyXnS93ZF3q8N
+ nKPlrdArk97emeq9jFo/6y8=
+X-Google-Smtp-Source: ABdhPJyJzVPAC11UsMz+HJsW0TzZJUpS9rijQwW94Vpknlgpg+/mG8cwCXUq1qsThYXJdJN6S8tP7Q==
+X-Received: by 2002:ac8:5fcc:: with SMTP id k12mr35432768qta.346.1638081289128; 
+ Sat, 27 Nov 2021 22:34:49 -0800 (PST)
 Received: from localhost ([66.216.211.25])
- by smtp.gmail.com with ESMTPSA id z4sm6611865qtj.42.2021.11.27.22.27.28
+ by smtp.gmail.com with ESMTPSA id f18sm6419326qko.34.2021.11.27.22.34.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 27 Nov 2021 22:27:28 -0800 (PST)
-Date: Sat, 27 Nov 2021 22:27:27 -0800
+ Sat, 27 Nov 2021 22:34:48 -0800 (PST)
+Date: Sat, 27 Nov 2021 22:34:47 -0800
 From: Yury Norov <yury.norov@gmail.com>
 To: =?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
-Subject: Re: [PATCH 2/9] lib/bitmap: implement bitmap_{empty,full} with
- bitmap_weight_eq()
-Message-ID: <20211128062727.GA276670@lapt>
-References: <20211128035704.270739-1-yury.norov@gmail.com>
- <20211128035704.270739-3-yury.norov@gmail.com>
- <YaMHfzZ5PBn0714Z@qmqm.qmqm.pl>
+Subject: Re: [PATCH 7/9] lib/cpumask: add
+ num_{possible,present,active}_cpus_{eq,gt,le}
+Message-ID: <20211128063447.GA270945@lapt>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <YaMHfzZ5PBn0714Z@qmqm.qmqm.pl>
+In-Reply-To: <YaMME60Jfiz5BeJF@qmqm.qmqm.pl>
 X-Mailman-Approved-At: Sun, 28 Nov 2021 18:04:00 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -145,28 +140,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Nov 28, 2021 at 05:37:19AM +0100, Michał Mirosław wrote:
-> On Sat, Nov 27, 2021 at 07:56:57PM -0800, Yury Norov wrote:
-> > Now as we have bitmap_weight_eq(), switch bitmap_full() and
-> > bitmap_empty() to using it.
+(restore CC list)
+
+On Sun, Nov 28, 2021 at 05:56:51AM +0100, Michał Mirosław wrote:
+> On Sat, Nov 27, 2021 at 07:57:02PM -0800, Yury Norov wrote:
+> > Add num_{possible,present,active}_cpus_{eq,gt,le} and replace num_*_cpus()
+> > with one of new functions where appropriate. This allows num_*_cpus_*()
+> > to return earlier depending on the condition.
 > [...]
-> > -static inline bool bitmap_empty(const unsigned long *src, unsigned nbits)
-> > -{
-> > -	if (small_const_nbits(nbits))
-> > -		return ! (*src & BITMAP_LAST_WORD_MASK(nbits));
-> > -
-> > -	return find_first_bit(src, nbits) == nbits;
-> > -}
-> [...]
-> > +static __always_inline bool bitmap_empty(const unsigned long *src, unsigned int nbits)
-> > +{
-> > +	return bitmap_weight_eq(src, nbits, 0);
-> > +}
-> [..]
+> > @@ -3193,7 +3193,7 @@ int __init pcpu_page_first_chunk(size_t reserved_size,
+> >  
+> >  	/* allocate pages */
+> >  	j = 0;
+> > -	for (unit = 0; unit < num_possible_cpus(); unit++) {
+> > +	for (unit = 0; num_possible_cpus_gt(unit); unit++) {
 > 
-> What's the speed difference? Have you benchmarked this?
+> This looks dubious.
 
-bitmap_weight_eq() should be faster than find_first_bit(), but the
-difference is few cycles, so I didn't bother measuring it.
+Only this?
 
-New version looks just better.
+> The old version I could hope the compiler would call
+> num_possible_cpus() only once if it's marked const or pure, but the
+> alternative is going to count the bits every time making this a guaranteed
+> O(n^2) even though the bitmap doesn't change.
+
+num_possible_cpus() is not const neither pure. This is O(n^2) before and after.
+
