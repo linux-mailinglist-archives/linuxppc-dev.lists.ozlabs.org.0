@@ -1,107 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33189461D67
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 19:14:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E4C462113
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 20:52:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2tlz0jl4z3bXc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 05:14:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2wxR5DxZz3c85
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 06:52:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SdeyPNZN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sBefbYpy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=2604:1380:40e1:4800::1;
+ helo=sin.source.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=SdeyPNZN; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=sBefbYpy; 
+ dkim-atps=neutral
+X-Greylist: delayed 342 seconds by postgrey-1.36 at boromir;
+ Tue, 30 Nov 2021 06:52:06 AEDT
+Received: from sin.source.kernel.org (sin.source.kernel.org
+ [IPv6:2604:1380:40e1:4800::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2tl86dv5z2yHM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 05:13:40 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1ATHr7aM006859; 
- Mon, 29 Nov 2021 18:13:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=XjqjjPaXkvhbwGa9Lvnx0QTLkfytAxwZWyIl20Rf+rY=;
- b=SdeyPNZNd19UcCWVBFCX6bY95yPQ5L+KGyqn12Hr/CzeNITC2hh9ofrrJwdYMBc4mKLi
- twItaiEfYUXxusmWXWTuyLc9Om+g2Kxz59+w6jOBBVrlXI1K5Y1QWnTwXivfGgxjgqIc
- ukhYyntd3zXa3t1V816Nohsjiu/dmg9n1hG9d67aas3WQ8VKiW5610k/kclBTrOyWgnQ
- 4lhlJ1xBEM9rNdsa79ICrZtq7yMh+Y3B4DSFkHGokf0bMiZdraECPGnj4t5sZ/DSDM7p
- 1HSNm7vafzfh2u+P4W8eNZeguLsZwWyP5PXcKRe1utOZ00LahnfLTcabP77i2hPGWGnX 7g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cn3nfrde8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Nov 2021 18:13:34 +0000
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1ATICdq5025099;
- Mon, 29 Nov 2021 18:13:34 GMT
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cn3nfrddt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Nov 2021 18:13:34 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1ATHs62V032380;
- Mon, 29 Nov 2021 18:13:32 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com
- (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
- by ppma05wdc.us.ibm.com with ESMTP id 3ckcaa8suy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Nov 2021 18:13:32 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1ATIDWVl54395276
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Nov 2021 18:13:32 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1FF9678070;
- Mon, 29 Nov 2021 18:13:32 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4946378076;
- Mon, 29 Nov 2021 18:13:31 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.65.210.85])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 29 Nov 2021 18:13:31 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/pseries/vas: Don't print an error when VAS is
- unavailable
-To: Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, linuxppc-dev@lists.ozlabs.org
-References: <20211126052133.1664375-1-npiggin@gmail.com>
- <43d21c1a-9122-d698-2229-e56c77a91313@kaod.org>
- <1637922573.8ofrolskkj.astroid@bobo.none>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <fd7bc1d6-c036-efbe-71a4-b6db5bf2294c@linux.ibm.com>
-Date: Mon, 29 Nov 2021 10:13:30 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2wwk51Lcz2ybD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 06:52:06 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by sin.source.kernel.org (Postfix) with ESMTPS id 2340ECE12FD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 19:46:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 542BFC53FCD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 19:46:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1638215180;
+ bh=sXU8rVEat2HfPhVar9iDJjqSB+NXtwo9srCpCexT94U=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=sBefbYpyJoi979+Zz1l0N6vZe1wjEzXL+jQ3ZAH37sJASKoz8YTP5Q8D+VaoT64bn
+ ejWM1Jm7JxLAPxt4X+Z4BL92G5Hx1OJLVfhVpUldOvI8VkY82wZlBC0kf/jf0WQXpd
+ SnzfBh4TmcM+9ygi4E404fPQVBqJLY0diXGNcMhoIkdFlCn64hECRV7xz+M/biClqJ
+ TOjVsJkP2YJTQuQygzxDfmCXoCdbnskfNANVXDoKR0y5Z89tTcAOIkRaOekaO/AnTZ
+ B+cxvJGgWxFT4nY5BlHcAvvTcEH1SPucxc6TnVCcXIa3TfmlM3gVUPHQECqgWWWjgz
+ k+55MEhWyeAZA==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id 2DDE560E90; Mon, 29 Nov 2021 19:46:20 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 205099] KASAN hit at raid6_pq: BUG: Unable to handle kernel
+ data access at 0x00f0fd0d
+Date: Mon, 29 Nov 2021 19:46:19 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-205099-206035-AMS4xgli6C@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-205099-206035@https.bugzilla.kernel.org/>
+References: <bug-205099-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-In-Reply-To: <1637922573.8ofrolskkj.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 79_0B1yLlBFumxN32RYxnAnNxCAt-MTk
-X-Proofpoint-GUID: -kf3u6iGpBCINWhHVSqdeUAtVW_kRcXq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-29_10,2021-11-28_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0
- lowpriorityscore=0 mlxlogscore=999 clxscore=1011 mlxscore=0 malwarescore=0
- priorityscore=1501 impostorscore=0 spamscore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2111290084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,36 +86,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Haren Myneni <haren@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/26/21 2:31 AM, Nicholas Piggin wrote:
-> Excerpts from Cédric Le Goater's message of November 26, 2021 5:13 pm:
->> On 11/26/21 06:21, Nicholas Piggin wrote:
->>> KVM does not support VAS so guests always print a useless error on boot
->>>
->>>      vas: HCALL(398) error -2, query_type 0, result buffer 0x57f2000
->>>
->>> Change this to only print the message if the error is not H_FUNCTION.
->>
->>
->> Just being curious, why is it even called since "ibm,compression" should
->> not be exposed in the DT ?
-> 
-> It looks like vas does not test for it. I guess in theory there can be 
-> other functions than compression implemented as an accelerator. Maybe
-> that's why?
-> 
-> Thanks,
-> Nick
-> 
-Looks like pseries_vas_init() simply calls h_query_vas_capabilities() to test
-for VAS coprocessor support. I would assume KVM doesn't expose hcall-vas or
-hcall-nx in /rtas/ibm,hypertas-functions? Doesn't look like hcall-vas or
-hcall-nx have been added to the hypertas_fw_feature matching, but maybe they
-should and we can gate VAS initialization on those, or at the minimum
-FW_FEATURE_VAS?
+https://bugzilla.kernel.org/show_bug.cgi?id=3D205099
 
--Tyrel
+--- Comment #45 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 299773
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D299773&action=3Dedit
+kernel_page_tables (5.15.5, OUTLINE KASAN, LOWMEM_SIZE=3D0x30000000, PowerM=
+ac G4
+DP)
+
+Ah yes, I forgot about including the /sys/kernel/debug/kernel_page_tables..
+Sorry! Here you are.
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
