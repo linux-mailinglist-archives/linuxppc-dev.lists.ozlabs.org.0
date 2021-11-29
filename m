@@ -2,78 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F089746111D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 10:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BF54611B1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 11:02:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2g7j6cCTz3cTG
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 20:30:41 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.a=rsa-sha256 header.s=smtp header.b=taIcRHpM;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2grX024Kz3cWk
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 21:02:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=mg.codeaurora.org (client-ip=198.61.254.9;
- helo=so254-9.mailgun.net;
- envelope-from=bounce+ee6c0f.be9e4a-linuxppc-dev=lists.ozlabs.org@mg.codeaurora.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org
- header.a=rsa-sha256 header.s=smtp header.b=taIcRHpM; 
- dkim-atps=neutral
-Received: from so254-9.mailgun.net (so254-9.mailgun.net [198.61.254.9])
+ smtp.mailfrom=kaod.org (client-ip=87.98.180.222; helo=9.mo552.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 570 seconds by postgrey-1.36 at boromir;
+ Mon, 29 Nov 2021 21:02:10 AEDT
+Received: from 9.mo552.mail-out.ovh.net (9.mo552.mail-out.ovh.net
+ [87.98.180.222])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4J2g6z1vcfz2xKK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 20:30:02 +1100 (AEDT)
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org;
- q=dns/txt; 
- s=smtp; t=1638178202; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=6eYnZqn/a+66YlvOdqd+LVZ4HfzlOTayDC9zFdg1eh8=;
- b=taIcRHpMYofqgNN0zfg6RZI5ypkL+TCP8mw53BrACS6SbRyAYQrm22HKqbNKRyR8YYF9mthp
- 0+guoUJktYCQOhtjTwGVDvkbjdYKDMcTlG8XgRSxlCKNbxfpJ3/xFmdiY6T0o1KeTe+0v8yr
- lKWzu08k39lPLFaTLXUUzOIwdok=
-X-Mailgun-Sending-Ip: 198.61.254.9
-X-Mailgun-Sid: WyI5ZmEyMiIsICJsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZyIsICJiZTllNGEiXQ==
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n09.prod.us-east-1.postgun.com with SMTP id
- 61a49d95135a8a9d0e1cb1a7 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 29 Nov 2021 09:29:57
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
- id CE08EC4361A; Mon, 29 Nov 2021 09:29:56 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
- aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED, BAYES_00,
- SPF_FAIL, 
- URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from tykki (tynnyri.adurom.net [51.15.11.48])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested) (Authenticated sender: kvalo)
- by smtp.codeaurora.org (Postfix) with ESMTPSA id C23B0C4338F;
- Mon, 29 Nov 2021 09:29:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.1 smtp.codeaurora.org C23B0C4338F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org;
- dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org;
- spf=fail smtp.mailfrom=codeaurora.org
-From: Kalle Valo <kvalo@codeaurora.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch 10/22] genirq/msi,
- treewide: Use a named struct for PCI/MSI attributes
-References: <20211126222700.862407977@linutronix.de>
- <20211126223824.679247706@linutronix.de>
-Date: Mon, 29 Nov 2021 11:29:46 +0200
-In-Reply-To: <20211126223824.679247706@linutronix.de> (Thomas Gleixner's
- message of "Sat, 27 Nov 2021 02:18:50 +0100 (CET)")
-Message-ID: <874k7vcnsl.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2gr24Kgfz2yLJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 21:02:09 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.217])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 70F5120ADA;
+ Mon, 29 Nov 2021 09:52:31 +0000 (UTC)
+Received: from kaod.org (37.59.142.104) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Mon, 29 Nov
+ 2021 10:52:29 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-104R005f4bc25ac-e2d5-4f6a-8c28-ebe76ecd031f,
+ 3279756C2EB34864E332BB908A933B747C53BE44) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+Message-ID: <ee815cd9-03f3-02f2-a269-ad79ca2af742@kaod.org>
+Date: Mon, 29 Nov 2021 10:52:26 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [patch 00/22] genirq/msi, PCI/MSI: Spring cleaning - Part 1
+Content-Language: en-US
+To: Thomas Gleixner <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>
+References: <20211126222700.862407977@linutronix.de>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20211126222700.862407977@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [37.59.142.104]
+X-ClientProxiedBy: DAG4EX1.mxp5.local (172.16.2.31) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: 03ae1f15-2efb-4469-b086-6ab00679dc25
+X-Ovh-Tracer-Id: 11736099157494238108
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrheelgddtlecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfgjtgfgihesthejredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpefgtdehvdejkefhudevkeekffekleetfeeftdekudeliedujeeftdeikeffvefgfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrddutdegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,51 +64,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org,
+Cc: linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org,
  Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
  Wei Liu <wei.liu@kernel.org>, Ashok Raj <ashok.raj@intel.com>,
  Marc Zygnier <maz@kernel.org>, x86@kernel.org,
  Christian Borntraeger <borntraeger@de.ibm.com>,
  Bjorn Helgaas <helgaas@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- ath11k@lists.infradead.org, Kevin Tian <kevin.tian@intel.com>,
- Heiko Carstens <hca@linux.ibm.com>,
+ xen-devel@lists.xenproject.org, ath11k@lists.infradead.org,
+ Kevin Tian <kevin.tian@intel.com>, Heiko Carstens <hca@linux.ibm.com>,
  Alex Williamson <alex.williamson@redhat.com>, Megha Dey <megha.dey@intel.com>,
  Juergen Gross <jgross@suse.com>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thomas Gleixner <tglx@linutronix.de> writes:
+On 11/27/21 02:18, Thomas Gleixner wrote:
+> The [PCI] MSI code has gained quite some warts over time. A recent
+> discussion unearthed a shortcoming: the lack of support for expanding
+> PCI/MSI-X vectors after initialization of MSI-X.
+> 
+> PCI/MSI-X has no requirement to setup all vectors when MSI-X is enabled in
+> the device. The non-used vectors have just to be masked in the vector
+> table. For PCI/MSI this is not possible because the number of vectors
+> cannot be changed after initialization.
+> 
+> The PCI/MSI code, but also the core MSI irq domain code are built around
+> the assumption that all required vectors are installed at initialization
+> time and freed when the device is shut down by the driver.
+>
+> Supporting dynamic expansion at least for MSI-X is important for VFIO so
+> that the host side interrupts for passthrough devices can be installed on
+> demand.
+> 
+> This is the first part of a large (total 101 patches) series which
+> refactors the [PCI]MSI infrastructure to make runtime expansion of MSI-X
+> vectors possible. The last part (10 patches) provide this functionality.
+> 
+> The first part is mostly a cleanup which consolidates code, moves the PCI
+> MSI code into a separate directory and splits it up into several parts.
+> 
+> No functional change intended except for patch 2/N which changes the
+> behaviour of pci_get_vector()/affinity() to get rid of the assumption that
+> the provided index is the "index" into the descriptor list instead of using
+> it as the actual MSI[X] index as seen by the hardware. This would break
+> users of sparse allocated MSI-X entries, but non of them use these
+> functions.
+> 
+> This series is based on 5.16-rc2 and also available via git:
+> 
+>       git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git msi-v1-part-1
+> 
+> For the curious who can't wait for the next part to arrive the full series
+> is available via:
+> 
+>       git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git msi-v1-part-4
 
-> The unnamed struct sucks and is in the way of further cleanups. Stick the
-> PCI related MSI data into a real data structure and cleanup all users.
->
-> No functional change.
->
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: sparclinux@vger.kernel.org
-> Cc: x86@kernel.org
-> Cc: xen-devel@lists.xenproject.org
-> Cc: ath11k@lists.infradead.org
+After fixing the compile failures, I didn't see any regressions on
+these platforms :
+
+   PowerNV, pSeries under KVM and PowerVM, using POWER8/9 processors.
+
+Thanks,
+
+C.
+
+> Thanks,
+> 
+> 	tglx
 > ---
->  arch/powerpc/platforms/cell/axon_msi.c    |    2 
->  arch/powerpc/platforms/powernv/pci-ioda.c |    4 -
->  arch/powerpc/platforms/pseries/msi.c      |    6 -
->  arch/sparc/kernel/pci_msi.c               |    4 -
->  arch/x86/kernel/apic/msi.c                |    2 
->  arch/x86/pci/xen.c                        |    6 -
->  drivers/net/wireless/ath/ath11k/pci.c     |    2 
+>   arch/powerpc/platforms/4xx/msi.c            |  281 ------------
+>   b/Documentation/driver-api/pci/pci.rst      |    2
+>   b/arch/mips/pci/msi-octeon.c                |   32 -
+>   b/arch/powerpc/platforms/4xx/Makefile       |    1
+>   b/arch/powerpc/platforms/cell/axon_msi.c    |    2
+>   b/arch/powerpc/platforms/powernv/pci-ioda.c |    4
+>   b/arch/powerpc/platforms/pseries/msi.c      |    6
+>   b/arch/powerpc/sysdev/Kconfig               |    6
+>   b/arch/s390/pci/pci_irq.c                   |    4
+>   b/arch/sparc/kernel/pci_msi.c               |    4
+>   b/arch/x86/hyperv/irqdomain.c               |   55 --
+>   b/arch/x86/include/asm/x86_init.h           |    6
+>   b/arch/x86/include/asm/xen/hypervisor.h     |    8
+>   b/arch/x86/kernel/apic/msi.c                |    8
+>   b/arch/x86/kernel/x86_init.c                |   12
+>   b/arch/x86/pci/xen.c                        |   19
+>   b/drivers/irqchip/irq-gic-v2m.c             |    1
+>   b/drivers/irqchip/irq-gic-v3-its-pci-msi.c  |    1
+>   b/drivers/irqchip/irq-gic-v3-mbi.c          |    1
+>   b/drivers/net/wireless/ath/ath11k/pci.c     |    2
+>   b/drivers/pci/Makefile                      |    3
+>   b/drivers/pci/msi/Makefile                  |    7
+>   b/drivers/pci/msi/irqdomain.c               |  267 +++++++++++
+>   b/drivers/pci/msi/legacy.c                  |   79 +++
+>   b/drivers/pci/msi/msi.c                     |  645 ++++------------------------
+>   b/drivers/pci/msi/msi.h                     |   39 +
+>   b/drivers/pci/msi/pcidev_msi.c              |   43 +
+>   b/drivers/pci/pci-sysfs.c                   |    7
+>   b/drivers/pci/xen-pcifront.c                |    2
+>   b/include/linux/msi.h                       |  135 ++---
+>   b/include/linux/pci.h                       |    1
+>   b/kernel/irq/msi.c                          |   41 +
+>   32 files changed, 696 insertions(+), 1028 deletions(-)
+> 
 
-For ath11k:
-
-Acked-by: Kalle Valo <kvalo@codeaurora.org>
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
