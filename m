@@ -1,70 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32C04617F8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 15:23:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACC94619C4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 15:38:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2ndn4wTcz3f8s
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 01:23:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2nzC4vMgz3070
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 01:38:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2nYz1Q1Qz3cZK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 01:20:23 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J2nYN0tkpz9sT5;
- Mon, 29 Nov 2021 15:19:52 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id zM0g6DZv7enN; Mon, 29 Nov 2021 15:19:52 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J2nY40y6hz9sT6;
- Mon, 29 Nov 2021 15:19:36 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0EAEF8B7AD;
- Mon, 29 Nov 2021 15:19:36 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id wexZe5IIyXuS; Mon, 29 Nov 2021 15:19:35 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A07028B7B0;
- Mon, 29 Nov 2021 15:19:35 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1ATEJTrC959588
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Mon, 29 Nov 2021 15:19:29 +0100
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1ATEJTEE959587;
- Mon, 29 Nov 2021 15:19:29 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Michael Ellerman <mpe@ellerman.id.au>, alex@ghiti.fr
-Subject: [PATCH v3 10/10] powerpc: Simplify and move arch_randomize_brk()
-Date: Mon, 29 Nov 2021 15:19:24 +0100
-Message-Id: <f591888ebece95d70ffc5b4539c3f7a8f3132521.1638195388.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <cover.1638195388.git.christophe.leroy@csgroup.eu>
-References: <cover.1638195388.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2nyk4Fchz2x9J
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 01:38:17 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10182"; a="216674771"
+X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; d="scan'208";a="216674771"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Nov 2021 06:37:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; d="scan'208";a="608726541"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+ by orsmga004.jf.intel.com with ESMTP; 29 Nov 2021 06:37:11 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mrhmI-000C2S-Lg; Mon, 29 Nov 2021 14:37:10 +0000
+Date: Mon, 29 Nov 2021 22:36:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v4 1/5] powerpc/inst: Refactor ___get_user_instr()
+Message-ID: <202111292213.TqMVcy38-lkp@intel.com>
+References: <97a171efd8c582e2bae82c31f2a9519823a20d3f.1638186773.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1638195562; l=3756; s=20211009;
- h=from:subject:message-id; bh=bqmcPDzk8HUoSoz0FrExnArqtAGvbgCdBXU0FtLr27c=;
- b=hcnbOH8wuHkDEqIHcxNywY7LDWBgbGM7X7doH6ERlSIyHc3cyxmh9+J6mO0eAkUibfzuclgGNthr
- a9J/j08rBPvP3J/6pc1m33mxpnQAQcbsVX58YjCPgazfugspnaqg
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <97a171efd8c582e2bae82c31f2a9519823a20d3f.1638186773.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,127 +53,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+Cc: linuxppc-dev@lists.ozlabs.org, kbuild-all@lists.01.org,
  linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-arch_randomize_brk() is only needed for hash on book3s/64, for other
-platforms the one provided by the default mmap layout is good enough.
+Hi Christophe,
 
-Move it to hash_utils.c and use randomize_page() like the generic one.
+I love your patch! Perhaps something to improve:
 
-And properly opt out the radix case instead of making an assumption
-on mmu_highuser_ssize.
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on v5.16-rc3 next-20211129]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-Also change to a 32M range like most other architectures instead of 8M.
+url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/powerpc-inst-Refactor-___get_user_instr/20211129-195613
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20211129/202111292213.TqMVcy38-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/12f08114cece066b2640aef99e2bc74f49eebef5
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Christophe-Leroy/powerpc-inst-Refactor-___get_user_instr/20211129-195613
+        git checkout 12f08114cece066b2640aef99e2bc74f49eebef5
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/kernel/
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   In file included from arch/powerpc/include/asm/hw_breakpoint.h:13,
+                    from arch/powerpc/include/asm/processor.h:43,
+                    from arch/powerpc/include/asm/thread_info.h:40,
+                    from include/linux/thread_info.h:60,
+                    from include/asm-generic/preempt.h:5,
+                    from ./arch/powerpc/include/generated/asm/preempt.h:1,
+                    from include/linux/preempt.h:78,
+                    from include/linux/spinlock.h:55,
+                    from include/linux/mmzone.h:8,
+                    from include/linux/gfp.h:6,
+                    from include/linux/mm.h:10,
+                    from arch/powerpc/kernel/align.c:17:
+   arch/powerpc/kernel/align.c: In function 'fix_alignment':
+>> arch/powerpc/include/asm/inst.h:12:32: warning: variable '__suffix' set but not used [-Wunused-but-set-variable]
+      12 |         unsigned int __prefix, __suffix;                                \
+         |                                ^~~~~~~~
+   arch/powerpc/include/asm/inst.h:31:34: note: in expansion of macro '___get_user_instr'
+      31 | #define __get_user_instr(x, ptr) ___get_user_instr(__get_user, x, ptr)
+         |                                  ^~~~~~~~~~~~~~~~~
+   arch/powerpc/kernel/align.c:310:21: note: in expansion of macro '__get_user_instr'
+     310 |                 r = __get_user_instr(instr, (void __user *)regs->nip);
+         |                     ^~~~~~~~~~~~~~~~
+--
+   In file included from arch/powerpc/include/asm/hw_breakpoint.h:13,
+                    from arch/powerpc/include/asm/processor.h:43,
+                    from arch/powerpc/include/asm/thread_info.h:40,
+                    from include/linux/thread_info.h:60,
+                    from arch/powerpc/include/asm/ptrace.h:323,
+                    from arch/powerpc/include/asm/hw_irq.h:12,
+                    from arch/powerpc/include/asm/irqflags.h:12,
+                    from include/linux/irqflags.h:16,
+                    from include/asm-generic/cmpxchg-local.h:6,
+                    from arch/powerpc/include/asm/cmpxchg.h:526,
+                    from arch/powerpc/include/asm/atomic.h:11,
+                    from include/linux/atomic.h:7,
+                    from include/linux/rcupdate.h:25,
+                    from include/linux/rculist.h:11,
+                    from include/linux/pid.h:5,
+                    from include/linux/sched.h:14,
+                    from include/linux/uaccess.h:8,
+                    from arch/powerpc/kernel/hw_breakpoint_constraints.c:3:
+   arch/powerpc/kernel/hw_breakpoint_constraints.c: In function 'wp_get_instr_detail':
+>> arch/powerpc/include/asm/inst.h:12:32: warning: variable '__suffix' set but not used [-Wunused-but-set-variable]
+      12 |         unsigned int __prefix, __suffix;                                \
+         |                                ^~~~~~~~
+   arch/powerpc/include/asm/inst.h:31:34: note: in expansion of macro '___get_user_instr'
+      31 | #define __get_user_instr(x, ptr) ___get_user_instr(__get_user, x, ptr)
+         |                                  ^~~~~~~~~~~~~~~~~
+   arch/powerpc/kernel/hw_breakpoint_constraints.c:135:13: note: in expansion of macro '__get_user_instr'
+     135 |         if (__get_user_instr(*instr, (void __user *)regs->nip))
+         |             ^~~~~~~~~~~~~~~~
+--
+   In file included from arch/powerpc/include/asm/hw_breakpoint.h:13,
+                    from arch/powerpc/include/asm/processor.h:43,
+                    from arch/powerpc/include/asm/thread_info.h:40,
+                    from include/linux/thread_info.h:60,
+                    from arch/powerpc/include/asm/ptrace.h:323,
+                    from arch/powerpc/include/asm/hw_irq.h:12,
+                    from arch/powerpc/include/asm/irqflags.h:12,
+                    from include/linux/irqflags.h:16,
+                    from include/asm-generic/cmpxchg-local.h:6,
+                    from arch/powerpc/include/asm/cmpxchg.h:526,
+                    from arch/powerpc/include/asm/atomic.h:11,
+                    from include/linux/atomic.h:7,
+                    from include/linux/rcupdate.h:25,
+                    from include/linux/rculist.h:11,
+                    from include/linux/pid.h:5,
+                    from include/linux/sched.h:14,
+                    from arch/powerpc/kernel/vecemu.c:8:
+   arch/powerpc/kernel/vecemu.c: In function 'emulate_altivec':
+>> arch/powerpc/include/asm/inst.h:12:32: warning: variable '__suffix' set but not used [-Wunused-but-set-variable]
+      12 |         unsigned int __prefix, __suffix;                                \
+         |                                ^~~~~~~~
+   arch/powerpc/include/asm/inst.h:29:32: note: in expansion of macro '___get_user_instr'
+      29 | #define get_user_instr(x, ptr) ___get_user_instr(get_user, x, ptr)
+         |                                ^~~~~~~~~~~~~~~~~
+   arch/powerpc/kernel/vecemu.c:269:13: note: in expansion of macro 'get_user_instr'
+     269 |         if (get_user_instr(instr, (void __user *)regs->nip))
+         |             ^~~~~~~~~~~~~~
+
+
+vim +/__suffix +12 arch/powerpc/include/asm/inst.h
+
+650b55b707fdfa Jordan Niethe    2020-05-15   6  
+35506a3e2d7c4d Christophe Leroy 2021-03-10   7  #define ___get_user_instr(gu_op, dest, ptr)				\
+35506a3e2d7c4d Christophe Leroy 2021-03-10   8  ({									\
+042e0860e1c1d6 Christophe Leroy 2021-05-20   9  	long __gui_ret;							\
+9134806e149ebb Christophe Leroy 2021-05-20  10  	u32 __user *__gui_ptr = (u32 __user *)ptr;			\
+35506a3e2d7c4d Christophe Leroy 2021-03-10  11  	struct ppc_inst __gui_inst;					\
+35506a3e2d7c4d Christophe Leroy 2021-03-10 @12  	unsigned int __prefix, __suffix;				\
+b3a9e523237013 Christophe Leroy 2021-05-20  13  									\
+b3a9e523237013 Christophe Leroy 2021-05-20  14  	__chk_user_ptr(ptr);						\
+9134806e149ebb Christophe Leroy 2021-05-20  15  	__gui_ret = gu_op(__prefix, __gui_ptr);				\
+35506a3e2d7c4d Christophe Leroy 2021-03-10  16  	if (__gui_ret == 0) {						\
+12f08114cece06 Christophe Leroy 2021-11-29  17  		if (IS_ENABLED(CONFIG_PPC64) && (__prefix >> 26) == OP_PREFIX) { \
+9134806e149ebb Christophe Leroy 2021-05-20  18  			__gui_ret = gu_op(__suffix, __gui_ptr + 1);	\
+042e0860e1c1d6 Christophe Leroy 2021-05-20  19  			__gui_inst = ppc_inst_prefix(__prefix, __suffix); \
+35506a3e2d7c4d Christophe Leroy 2021-03-10  20  		} else {						\
+35506a3e2d7c4d Christophe Leroy 2021-03-10  21  			__gui_inst = ppc_inst(__prefix);		\
+35506a3e2d7c4d Christophe Leroy 2021-03-10  22  		}							\
+35506a3e2d7c4d Christophe Leroy 2021-03-10  23  		if (__gui_ret == 0)					\
+35506a3e2d7c4d Christophe Leroy 2021-03-10  24  			(dest) = __gui_inst;				\
+35506a3e2d7c4d Christophe Leroy 2021-03-10  25  	}								\
+35506a3e2d7c4d Christophe Leroy 2021-03-10  26  	__gui_ret;							\
+35506a3e2d7c4d Christophe Leroy 2021-03-10  27  })
+35506a3e2d7c4d Christophe Leroy 2021-03-10  28  
+
 ---
-v3:
-- Add missing include <linux/elf-randomize.h>
-- Move SZ_1T in a previous patch that moves it out of drivers/pci/controller/pci-xgene.c
-
-v2: New
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/process.c         | 41 ---------------------------
- arch/powerpc/mm/book3s64/hash_utils.c | 19 +++++++++++++
- 2 files changed, 19 insertions(+), 41 deletions(-)
-
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index a64cfbb85ca2..44c4bce5211d 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -34,10 +34,8 @@
- #include <linux/ftrace.h>
- #include <linux/kernel_stat.h>
- #include <linux/personality.h>
--#include <linux/random.h>
- #include <linux/hw_breakpoint.h>
- #include <linux/uaccess.h>
--#include <linux/elf-randomize.h>
- #include <linux/pkeys.h>
- #include <linux/seq_buf.h>
- 
-@@ -2310,42 +2308,3 @@ unsigned long arch_align_stack(unsigned long sp)
- 		sp -= get_random_int() & ~PAGE_MASK;
- 	return sp & ~0xf;
- }
--
--static inline unsigned long brk_rnd(void)
--{
--        unsigned long rnd = 0;
--
--	/* 8MB for 32bit, 1GB for 64bit */
--	if (is_32bit_task())
--		rnd = (get_random_long() % (1UL<<(23-PAGE_SHIFT)));
--	else
--		rnd = (get_random_long() % (1UL<<(30-PAGE_SHIFT)));
--
--	return rnd << PAGE_SHIFT;
--}
--
--unsigned long arch_randomize_brk(struct mm_struct *mm)
--{
--	unsigned long base = mm->brk;
--	unsigned long ret;
--
--#ifdef CONFIG_PPC_BOOK3S_64
--	/*
--	 * If we are using 1TB segments and we are allowed to randomise
--	 * the heap, we can put it above 1TB so it is backed by a 1TB
--	 * segment. Otherwise the heap will be in the bottom 1TB
--	 * which always uses 256MB segments and this may result in a
--	 * performance penalty.
--	 */
--	if (!radix_enabled() && !is_32bit_task() && (mmu_highuser_ssize == MMU_SEGSIZE_1T))
--		base = max_t(unsigned long, mm->brk, 1UL << SID_SHIFT_1T);
--#endif
--
--	ret = PAGE_ALIGN(base + brk_rnd());
--
--	if (ret < mm->brk)
--		return mm->brk;
--
--	return ret;
--}
--
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 7ecadf5e6bf9..68a5468b0f19 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -37,6 +37,8 @@
- #include <linux/cpu.h>
- #include <linux/pgtable.h>
- #include <linux/debugfs.h>
-+#include <linux/random.h>
-+#include <linux/elf-randomize.h>
- 
- #include <asm/interrupt.h>
- #include <asm/processor.h>
-@@ -2171,3 +2173,20 @@ void __init print_system_hash_info(void)
- 	if (htab_hash_mask)
- 		pr_info("htab_hash_mask    = 0x%lx\n", htab_hash_mask);
- }
-+
-+unsigned long arch_randomize_brk(struct mm_struct *mm)
-+{
-+	/*
-+	 * If we are using 1TB segments and we are allowed to randomise
-+	 * the heap, we can put it above 1TB so it is backed by a 1TB
-+	 * segment. Otherwise the heap will be in the bottom 1TB
-+	 * which always uses 256MB segments and this may result in a
-+	 * performance penalty.
-+	 */
-+	if (is_32bit_task())
-+		return randomize_page(mm->brk, SZ_32M);
-+	else if (!radix_enabled() && mmu_highuser_ssize == MMU_SEGSIZE_1T)
-+		return randomize_page(max_t(unsigned long, mm->brk, SZ_1T), SZ_1G);
-+	else
-+		return randomize_page(mm->brk, SZ_1G);
-+}
--- 
-2.33.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
