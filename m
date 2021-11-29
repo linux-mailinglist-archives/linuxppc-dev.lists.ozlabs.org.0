@@ -1,47 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E004461C87
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 18:12:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2644D461C86
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 18:12:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2sNw1cyLz3ck1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 04:12:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2sNQ0wFhz3081
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 04:12:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A0cMLHlB;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=A0cMLHlB;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=jolsa@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=A0cMLHlB; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=A0cMLHlB; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2sNB6256z3cCG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 04:12:08 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6200,9189,10183"; a="235840187"
-X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; d="scan'208";a="235840187"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Nov 2021 09:10:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; d="scan'208";a="458508532"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
- by orsmga003.jf.intel.com with ESMTP; 29 Nov 2021 09:10:14 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1mrkAP-000C9A-BW; Mon, 29 Nov 2021 17:10:13 +0000
-Date: Tue, 30 Nov 2021 01:09:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v4 1/5] powerpc/inst: Refactor ___get_user_instr()
-Message-ID: <202111300028.pvdtx2Vc-lkp@intel.com>
-References: <97a171efd8c582e2bae82c31f2a9519823a20d3f.1638186773.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2sMj4wXpz2xtR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 04:11:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1638205900;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YQeXdayCnkvjWc51N14x/4MfGt9KFvQgOqWRPynFEGY=;
+ b=A0cMLHlBi5ijMEFfeK5H8cyMUGtYNXWjoVqGMKHGQ/sm4C28Mw76tWLNUHdCMDsVO5TtNU
+ 9REoGzQpU0UfBdvImOH661RWvpa30T3s9VhZ5y3/YbWEeHQ8Gk6X0A8pPhXeLqWEdZQgUA
+ OgbevyZWtofpgZRzTAUUIaeyUB7yg/E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1638205900;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YQeXdayCnkvjWc51N14x/4MfGt9KFvQgOqWRPynFEGY=;
+ b=A0cMLHlBi5ijMEFfeK5H8cyMUGtYNXWjoVqGMKHGQ/sm4C28Mw76tWLNUHdCMDsVO5TtNU
+ 9REoGzQpU0UfBdvImOH661RWvpa30T3s9VhZ5y3/YbWEeHQ8Gk6X0A8pPhXeLqWEdZQgUA
+ OgbevyZWtofpgZRzTAUUIaeyUB7yg/E=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-382-04GU3AQfOue08cAus1WiZw-1; Mon, 29 Nov 2021 12:11:38 -0500
+X-MC-Unique: 04GU3AQfOue08cAus1WiZw-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ a85-20020a1c7f58000000b0033ddc0eacc8so10305690wmd.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 09:11:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=YQeXdayCnkvjWc51N14x/4MfGt9KFvQgOqWRPynFEGY=;
+ b=ZhHM3sWF/qnnXIL+hlWT+uomvJ25e1nDsMztFW5zhbXG80A6pA9KM88/7kA1pr8u1Z
+ 3EPh982gl6/0aIYBh+rwCNDGKw5P6xMf4fiCaP12WLVLogG+riZIqL1Bn+qhin5FE2ex
+ 4EpaB/Qq+tv9ymkQZcgfpPnpcz/Ybke4AK8j9v6sXZloP+EM/hRa1qLJDK1nPyCc1hBK
+ AnkKwD6Jafjj09JUgMpWZN8jAN3qgAz/EQIWeOdinc8qZyydsq2OaCzJuVZIgG41a3WN
+ bJnQNkvg4ZVE1XPj+mcCYnouV4/82XwNwkxe9Q85PpFiihHxu6fjCdT9vtvQC2Rt9Nfu
+ 3uzw==
+X-Gm-Message-State: AOAM533zK2RpjNLedYI/wna/qH9/7e+qNJO8u2WGew4MyeWOGU/eo2uX
+ G9Ku5T28CKclncpyu75OAlfx4vSoL2vOjllL8wfquIVF8znybK+8x2Reoc/QkZLNiAuR62Ab+q4
+ cWWeHj/tEbo9RcR24FhApLP2QiQ==
+X-Received: by 2002:adf:fbc5:: with SMTP id d5mr38118076wrs.291.1638205896890; 
+ Mon, 29 Nov 2021 09:11:36 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwHpkPDO/3JJftsa0KO/wQW2joNogZAU7drv1A4fLjU/VAKwmh8O+A4HaIDtCq1J/G2bry+DQ==
+X-Received: by 2002:adf:fbc5:: with SMTP id d5mr38118039wrs.291.1638205896656; 
+ Mon, 29 Nov 2021 09:11:36 -0800 (PST)
+Received: from krava (nat-pool-brq-u.redhat.com. [213.175.37.12])
+ by smtp.gmail.com with ESMTPSA id k187sm272819wme.0.2021.11.29.09.11.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Nov 2021 09:11:33 -0800 (PST)
+Date: Mon, 29 Nov 2021 18:11:31 +0100
+From: Jiri Olsa <jolsa@redhat.com>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/2] tools/perf: Include global and local variants for
+ p_stage_cyc sort key
+Message-ID: <YaUJwxHPTz1J7K1e@krava>
+References: <20211125024851.22895-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
+In-Reply-To: <20211125024851.22895-1-atrajeev@linux.vnet.ibm.com>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=jolsa@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <97a171efd8c582e2bae82c31f2a9519823a20d3f.1638186773.git.christophe.leroy@csgroup.eu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,123 +104,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kbuild-all@lists.01.org,
- linux-kernel@vger.kernel.org
+Cc: maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com, acme@kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org, kjain@linux.ibm.com,
+ namhyung@kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+On Thu, Nov 25, 2021 at 08:18:50AM +0530, Athira Rajeev wrote:
+> Sort key p_stage_cyc is used to present the latency
+> cycles spend in pipeline stages. perf tool has local
+> p_stage_cyc sort key to display this info. There is no
+> global variant available for this sort key. local variant
+> shows latency in a sinlge sample, whereas, global value
+> will be useful to present the total latency (sum of
+> latencies) in the hist entry. It represents latency
+> number multiplied by the number of samples.
+> 
+> Add global (p_stage_cyc) and local variant
+> (local_p_stage_cyc) for this sort key. Use the
+> local_p_stage_cyc as default option for "mem" sort mode.
+> Also add this to list of dynamic sort keys.
+> 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> Reported-by: Namhyung Kim <namhyung@kernel.org>
+> ---
+>  tools/perf/util/hist.c |  4 +++-
+>  tools/perf/util/hist.h |  3 ++-
+>  tools/perf/util/sort.c | 34 +++++++++++++++++++++++++---------
+>  tools/perf/util/sort.h |  3 ++-
+>  4 files changed, 32 insertions(+), 12 deletions(-)
+> 
+> diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
+> index b776465e04ef..0a8033b09e28 100644
+> --- a/tools/perf/util/hist.c
+> +++ b/tools/perf/util/hist.c
+> @@ -211,7 +211,9 @@ void hists__calc_col_len(struct hists *hists, struct hist_entry *h)
+>  	hists__new_col_len(hists, HISTC_MEM_BLOCKED, 10);
+>  	hists__new_col_len(hists, HISTC_LOCAL_INS_LAT, 13);
+>  	hists__new_col_len(hists, HISTC_GLOBAL_INS_LAT, 13);
+> -	hists__new_col_len(hists, HISTC_P_STAGE_CYC, 13);
+> +	hists__new_col_len(hists, HISTC_LOCAL_P_STAGE_CYC, 13);
+> +	hists__new_col_len(hists, HISTC_GLOBAL_P_STAGE_CYC, 13);
+> +
+>  	if (symbol_conf.nanosecs)
+>  		hists__new_col_len(hists, HISTC_TIME, 16);
+>  	else
+> diff --git a/tools/perf/util/hist.h b/tools/perf/util/hist.h
+> index 5343b62476e6..2752ce681108 100644
+> --- a/tools/perf/util/hist.h
+> +++ b/tools/perf/util/hist.h
+> @@ -75,7 +75,8 @@ enum hist_column {
+>  	HISTC_MEM_BLOCKED,
+>  	HISTC_LOCAL_INS_LAT,
+>  	HISTC_GLOBAL_INS_LAT,
+> -	HISTC_P_STAGE_CYC,
+> +	HISTC_LOCAL_P_STAGE_CYC,
+> +	HISTC_GLOBAL_P_STAGE_CYC,
+>  	HISTC_NR_COLS, /* Last entry */
+>  };
+>  
+> diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
+> index e9216a292a04..e978f7883e07 100644
+> --- a/tools/perf/util/sort.c
+> +++ b/tools/perf/util/sort.c
+> @@ -37,7 +37,7 @@ const char	default_parent_pattern[] = "^sys_|^do_page_fault";
+>  const char	*parent_pattern = default_parent_pattern;
+>  const char	*default_sort_order = "comm,dso,symbol";
+>  const char	default_branch_sort_order[] = "comm,dso_from,symbol_from,symbol_to,cycles";
+> -const char	default_mem_sort_order[] = "local_weight,mem,sym,dso,symbol_daddr,dso_daddr,snoop,tlb,locked,blocked,local_ins_lat,p_stage_cyc";
+> +const char	default_mem_sort_order[] = "local_weight,mem,sym,dso,symbol_daddr,dso_daddr,snoop,tlb,locked,blocked,local_ins_lat,local_p_stage_cyc";
+>  const char	default_top_sort_order[] = "dso,symbol";
+>  const char	default_diff_sort_order[] = "dso,symbol";
+>  const char	default_tracepoint_sort_order[] = "trace";
+> @@ -46,8 +46,8 @@ const char	*field_order;
+>  regex_t		ignore_callees_regex;
+>  int		have_ignore_callees = 0;
+>  enum sort_mode	sort__mode = SORT_MODE__NORMAL;
+> -const char	*dynamic_headers[] = {"local_ins_lat", "p_stage_cyc"};
+> -const char	*arch_specific_sort_keys[] = {"p_stage_cyc"};
+> +const char	*dynamic_headers[] = {"local_ins_lat", "ins_lat", "local_p_stage_cyc", "p_stage_cyc"};
 
-I love your patch! Yet something to improve:
+so you also add global ins_lat, right? will this change
+some default behaviour?
 
-[auto build test ERROR on powerpc/next]
-[also build test ERROR on v5.16-rc3 next-20211129]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+> +const char	*arch_specific_sort_keys[] = {"local_p_stage_cyc", "p_stage_cyc"};
 
-url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/powerpc-inst-Refactor-___get_user_instr/20211129-195613
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-config: powerpc-allnoconfig (https://download.01.org/0day-ci/archive/20211130/202111300028.pvdtx2Vc-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/12f08114cece066b2640aef99e2bc74f49eebef5
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Christophe-Leroy/powerpc-inst-Refactor-___get_user_instr/20211129-195613
-        git checkout 12f08114cece066b2640aef99e2bc74f49eebef5
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/kernel/
+nit.. both dynamic_headers and arch_specific_sort_keys could be static right?
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+thanks,
+jirka
 
-All errors (new ones prefixed by >>):
+>  
+>  /*
+>   * Replaces all occurrences of a char used with the:
+> @@ -1392,22 +1392,37 @@ struct sort_entry sort_global_ins_lat = {
+>  };
+>  
+>  static int64_t
+> -sort__global_p_stage_cyc_cmp(struct hist_entry *left, struct hist_entry *right)
+> +sort__p_stage_cyc_cmp(struct hist_entry *left, struct hist_entry *right)
+>  {
+>  	return left->p_stage_cyc - right->p_stage_cyc;
+>  }
+>  
+> +static int hist_entry__global_p_stage_cyc_snprintf(struct hist_entry *he, char *bf,
+> +					size_t size, unsigned int width)
+> +{
+> +	return repsep_snprintf(bf, size, "%-*u", width,
+> +			he->p_stage_cyc * he->stat.nr_events);
+> +}
+> +
+> +
+>  static int hist_entry__p_stage_cyc_snprintf(struct hist_entry *he, char *bf,
+>  					size_t size, unsigned int width)
+>  {
+>  	return repsep_snprintf(bf, size, "%-*u", width, he->p_stage_cyc);
+>  }
+>  
+> -struct sort_entry sort_p_stage_cyc = {
+> -	.se_header      = "Pipeline Stage Cycle",
+> -	.se_cmp         = sort__global_p_stage_cyc_cmp,
+> +struct sort_entry sort_local_p_stage_cyc = {
+> +	.se_header      = "Local Pipeline Stage Cycle",
+> +	.se_cmp         = sort__p_stage_cyc_cmp,
+>  	.se_snprintf	= hist_entry__p_stage_cyc_snprintf,
+> -	.se_width_idx	= HISTC_P_STAGE_CYC,
+> +	.se_width_idx	= HISTC_LOCAL_P_STAGE_CYC,
+> +};
+> +
+> +struct sort_entry sort_global_p_stage_cyc = {
+> +	.se_header      = "Pipeline Stage Cycle",
+> +	.se_cmp         = sort__p_stage_cyc_cmp,
+> +	.se_snprintf    = hist_entry__global_p_stage_cyc_snprintf,
+> +	.se_width_idx   = HISTC_GLOBAL_P_STAGE_CYC,
+>  };
+>  
+>  struct sort_entry sort_mem_daddr_sym = {
+> @@ -1858,7 +1873,8 @@ static struct sort_dimension common_sort_dimensions[] = {
+>  	DIM(SORT_CODE_PAGE_SIZE, "code_page_size", sort_code_page_size),
+>  	DIM(SORT_LOCAL_INS_LAT, "local_ins_lat", sort_local_ins_lat),
+>  	DIM(SORT_GLOBAL_INS_LAT, "ins_lat", sort_global_ins_lat),
+> -	DIM(SORT_PIPELINE_STAGE_CYC, "p_stage_cyc", sort_p_stage_cyc),
+> +	DIM(SORT_LOCAL_PIPELINE_STAGE_CYC, "local_p_stage_cyc", sort_local_p_stage_cyc),
+> +	DIM(SORT_GLOBAL_PIPELINE_STAGE_CYC, "p_stage_cyc", sort_global_p_stage_cyc),
+>  };
+>  
+>  #undef DIM
+> diff --git a/tools/perf/util/sort.h b/tools/perf/util/sort.h
+> index 3c7518378d62..83abe5e6812a 100644
+> --- a/tools/perf/util/sort.h
+> +++ b/tools/perf/util/sort.h
+> @@ -235,7 +235,8 @@ enum sort_type {
+>  	SORT_CODE_PAGE_SIZE,
+>  	SORT_LOCAL_INS_LAT,
+>  	SORT_GLOBAL_INS_LAT,
+> -	SORT_PIPELINE_STAGE_CYC,
+> +	SORT_LOCAL_PIPELINE_STAGE_CYC,
+> +	SORT_GLOBAL_PIPELINE_STAGE_CYC,
+>  
+>  	/* branch stack specific sort keys */
+>  	__SORT_BRANCH_STACK,
+> -- 
+> 2.27.0
+> 
 
-   In file included from arch/powerpc/include/asm/hw_breakpoint.h:13,
-                    from arch/powerpc/include/asm/processor.h:43,
-                    from arch/powerpc/include/asm/thread_info.h:40,
-                    from include/linux/thread_info.h:60,
-                    from include/asm-generic/preempt.h:5,
-                    from ./arch/powerpc/include/generated/asm/preempt.h:1,
-                    from include/linux/preempt.h:78,
-                    from include/linux/spinlock.h:55,
-                    from include/linux/mmzone.h:8,
-                    from include/linux/gfp.h:6,
-                    from include/linux/mm.h:10,
-                    from arch/powerpc/kernel/align.c:17:
-   arch/powerpc/kernel/align.c: In function 'fix_alignment':
->> arch/powerpc/include/asm/inst.h:12:32: error: variable '__suffix' set but not used [-Werror=unused-but-set-variable]
-      12 |         unsigned int __prefix, __suffix;                                \
-         |                                ^~~~~~~~
-   arch/powerpc/include/asm/inst.h:31:34: note: in expansion of macro '___get_user_instr'
-      31 | #define __get_user_instr(x, ptr) ___get_user_instr(__get_user, x, ptr)
-         |                                  ^~~~~~~~~~~~~~~~~
-   arch/powerpc/kernel/align.c:310:21: note: in expansion of macro '__get_user_instr'
-     310 |                 r = __get_user_instr(instr, (void __user *)regs->nip);
-         |                     ^~~~~~~~~~~~~~~~
-   cc1: all warnings being treated as errors
---
-   In file included from arch/powerpc/include/asm/hw_breakpoint.h:13,
-                    from arch/powerpc/include/asm/processor.h:43,
-                    from arch/powerpc/include/asm/thread_info.h:40,
-                    from include/linux/thread_info.h:60,
-                    from arch/powerpc/include/asm/ptrace.h:323,
-                    from arch/powerpc/include/asm/hw_irq.h:12,
-                    from arch/powerpc/include/asm/irqflags.h:12,
-                    from include/linux/irqflags.h:16,
-                    from include/asm-generic/cmpxchg-local.h:6,
-                    from arch/powerpc/include/asm/cmpxchg.h:526,
-                    from arch/powerpc/include/asm/atomic.h:11,
-                    from include/linux/atomic.h:7,
-                    from include/linux/rcupdate.h:25,
-                    from include/linux/rculist.h:11,
-                    from include/linux/pid.h:5,
-                    from include/linux/sched.h:14,
-                    from include/linux/uaccess.h:8,
-                    from arch/powerpc/kernel/hw_breakpoint_constraints.c:3:
-   arch/powerpc/kernel/hw_breakpoint_constraints.c: In function 'wp_get_instr_detail':
->> arch/powerpc/include/asm/inst.h:12:32: error: variable '__suffix' set but not used [-Werror=unused-but-set-variable]
-      12 |         unsigned int __prefix, __suffix;                                \
-         |                                ^~~~~~~~
-   arch/powerpc/include/asm/inst.h:31:34: note: in expansion of macro '___get_user_instr'
-      31 | #define __get_user_instr(x, ptr) ___get_user_instr(__get_user, x, ptr)
-         |                                  ^~~~~~~~~~~~~~~~~
-   arch/powerpc/kernel/hw_breakpoint_constraints.c:135:13: note: in expansion of macro '__get_user_instr'
-     135 |         if (__get_user_instr(*instr, (void __user *)regs->nip))
-         |             ^~~~~~~~~~~~~~~~
-   cc1: all warnings being treated as errors
-
-
-vim +/__suffix +12 arch/powerpc/include/asm/inst.h
-
-650b55b707fdfa Jordan Niethe    2020-05-15   6  
-35506a3e2d7c4d Christophe Leroy 2021-03-10   7  #define ___get_user_instr(gu_op, dest, ptr)				\
-35506a3e2d7c4d Christophe Leroy 2021-03-10   8  ({									\
-042e0860e1c1d6 Christophe Leroy 2021-05-20   9  	long __gui_ret;							\
-9134806e149ebb Christophe Leroy 2021-05-20  10  	u32 __user *__gui_ptr = (u32 __user *)ptr;			\
-35506a3e2d7c4d Christophe Leroy 2021-03-10  11  	struct ppc_inst __gui_inst;					\
-35506a3e2d7c4d Christophe Leroy 2021-03-10 @12  	unsigned int __prefix, __suffix;				\
-b3a9e523237013 Christophe Leroy 2021-05-20  13  									\
-b3a9e523237013 Christophe Leroy 2021-05-20  14  	__chk_user_ptr(ptr);						\
-9134806e149ebb Christophe Leroy 2021-05-20  15  	__gui_ret = gu_op(__prefix, __gui_ptr);				\
-35506a3e2d7c4d Christophe Leroy 2021-03-10  16  	if (__gui_ret == 0) {						\
-12f08114cece06 Christophe Leroy 2021-11-29  17  		if (IS_ENABLED(CONFIG_PPC64) && (__prefix >> 26) == OP_PREFIX) { \
-9134806e149ebb Christophe Leroy 2021-05-20  18  			__gui_ret = gu_op(__suffix, __gui_ptr + 1);	\
-042e0860e1c1d6 Christophe Leroy 2021-05-20  19  			__gui_inst = ppc_inst_prefix(__prefix, __suffix); \
-35506a3e2d7c4d Christophe Leroy 2021-03-10  20  		} else {						\
-35506a3e2d7c4d Christophe Leroy 2021-03-10  21  			__gui_inst = ppc_inst(__prefix);		\
-35506a3e2d7c4d Christophe Leroy 2021-03-10  22  		}							\
-35506a3e2d7c4d Christophe Leroy 2021-03-10  23  		if (__gui_ret == 0)					\
-35506a3e2d7c4d Christophe Leroy 2021-03-10  24  			(dest) = __gui_inst;				\
-35506a3e2d7c4d Christophe Leroy 2021-03-10  25  	}								\
-35506a3e2d7c4d Christophe Leroy 2021-03-10  26  	__gui_ret;							\
-35506a3e2d7c4d Christophe Leroy 2021-03-10  27  })
-35506a3e2d7c4d Christophe Leroy 2021-03-10  28  
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
