@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBDC84617EC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 15:22:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F37404617E2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 15:21:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2ncD5SnDz3dvj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 01:22:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2nZh6YjYz3ddg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 01:21:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2nYk3b9Cz3cVK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 01:20:10 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2nYT145Gz3btR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 01:19:56 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J2nYH36MNz9sSr;
- Mon, 29 Nov 2021 15:19:47 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4J2nYD5bwnz9sSh;
+ Mon, 29 Nov 2021 15:19:44 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id CeubHEJ4EgDm; Mon, 29 Nov 2021 15:19:47 +0100 (CET)
+ with ESMTP id LwES2UsVuC5K; Mon, 29 Nov 2021 15:19:44 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J2nY40ljpz9sT4;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4J2nY40V0Hz9sSk;
  Mon, 29 Nov 2021 15:19:36 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 087E38B7B9;
- Mon, 29 Nov 2021 15:19:36 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F268A8B7AA;
+ Mon, 29 Nov 2021 15:19:35 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 11Adm6uqXEND; Mon, 29 Nov 2021 15:19:35 +0100 (CET)
+ with ESMTP id ei4h0soNuQth; Mon, 29 Nov 2021 15:19:35 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 982F18B7AD;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A85B88B7B3;
  Mon, 29 Nov 2021 15:19:35 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1ATEJTt8959580
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1ATEJTOa959584
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Mon, 29 Nov 2021 15:19:29 +0100
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1ATEJT6W959579;
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1ATEJTOR959583;
  Mon, 29 Nov 2021 15:19:29 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
@@ -51,17 +51,17 @@ From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>,
  Michael Ellerman <mpe@ellerman.id.au>, alex@ghiti.fr
-Subject: [PATCH v3 08/10] powerpc/mm: Properly randomise mmap with slices
-Date: Mon, 29 Nov 2021 15:19:22 +0100
-Message-Id: <7c3b62d55b259adaf3bd977c3accb6324fa4da11.1638195388.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 09/10] sizes.h: Add SZ_1T macro
+Date: Mon, 29 Nov 2021 15:19:23 +0100
+Message-Id: <1b6216bb8452ea53636767a198691590ed58560a.1638195388.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <cover.1638195388.git.christophe.leroy@csgroup.eu>
 References: <cover.1638195388.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1638195562; l=3498; s=20211009;
- h=from:subject:message-id; bh=ngfeg/2tmEpq6TE0+FDDvF+lIoivpzUM2irZRsGVREQ=;
- b=lCAxZrPJffmNRr2OoOVOU4+d1AQZ9aD0wsdScLw6D6HlaKUcOcH7GkUsmFjQG7VTWvhizi1B2iwT
- 5rIb74EuBIpmsyNRtRu8IQkA3KN2YIeyryut4GBJbEAc2bNVGt1X
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1638195562; l=1333; s=20211009;
+ h=from:subject:message-id; bh=gHcpRE3PXyrvhupmS2R1SHs0FcIlaQvnE07fWVmC6zo=;
+ b=N39fJanSMWTr99TJn+jPqf/PObIwPcsu+EiN1AGB+aqgWYAIbNkFN9ND9Jh3wVXWqjtx1cKcfVxl
+ UUGEu9iJCOVMePGjJGanJ+Wwdh+O+OYhhtDFW2ee9ZJlM3KZ06Pv
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -76,102 +76,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Toan Le <toan@os.amperecomputing.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that powerpc switched to default topdown mmap layout,
-mm->mmap_base is properly randomised.  However
-slice_find_area_bottomup() doesn't use mm->mmap_base but
-uses the fixed TASK_UNMAPPED_BASE instead.
+Today drivers/pci/controller/pci-xgene.c defines SZ_1T
 
-slice_find_area_bottomup() being used as a fallback to
-slice_find_area_topdown(), it can't use mm->mmap_base
-directly.
+Move it into linux/sizes.h so that it can be re-used elsewhere.
 
-Instead of always using TASK_UNMAPPED_BASE as base address, leave
-it to the caller. When called from slice_find_area_topdown()
-TASK_UNMAPPED_BASE is used. Otherwise mm->mmap_base is used.
-
+Cc: Toan Le <toan@os.amperecomputing.com>
+Cc: linux-pci@vger.kernel.org
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/mm/book3s64/slice.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+v3: new
+---
+ drivers/pci/controller/pci-xgene.c | 1 -
+ include/linux/sizes.h              | 2 ++
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/book3s64/slice.c b/arch/powerpc/mm/book3s64/slice.c
-index 99742dde811c..997f40184e97 100644
---- a/arch/powerpc/mm/book3s64/slice.c
-+++ b/arch/powerpc/mm/book3s64/slice.c
-@@ -276,20 +276,18 @@ static bool slice_scan_available(unsigned long addr,
- }
+diff --git a/drivers/pci/controller/pci-xgene.c b/drivers/pci/controller/pci-xgene.c
+index 56d0d50338c8..716dcab5ca47 100644
+--- a/drivers/pci/controller/pci-xgene.c
++++ b/drivers/pci/controller/pci-xgene.c
+@@ -49,7 +49,6 @@
+ #define EN_REG				0x00000001
+ #define OB_LO_IO			0x00000002
+ #define XGENE_PCIE_DEVICEID		0xE004
+-#define SZ_1T				(SZ_1G*1024ULL)
+ #define PIPE_PHY_RATE_RD(src)		((0xc000 & (u32)(src)) >> 0xe)
  
- static unsigned long slice_find_area_bottomup(struct mm_struct *mm,
--					      unsigned long len,
-+					      unsigned long addr, unsigned long len,
- 					      const struct slice_mask *available,
- 					      int psize, unsigned long high_limit)
- {
- 	int pshift = max_t(int, mmu_psize_defs[psize].shift, PAGE_SHIFT);
--	unsigned long addr, found, next_end;
-+	unsigned long found, next_end;
- 	struct vm_unmapped_area_info info;
+ #define XGENE_V1_PCI_EXP_CAP		0x40
+diff --git a/include/linux/sizes.h b/include/linux/sizes.h
+index 1ac79bcee2bb..84aa448d8bb3 100644
+--- a/include/linux/sizes.h
++++ b/include/linux/sizes.h
+@@ -47,6 +47,8 @@
+ #define SZ_8G				_AC(0x200000000, ULL)
+ #define SZ_16G				_AC(0x400000000, ULL)
+ #define SZ_32G				_AC(0x800000000, ULL)
++
++#define SZ_1T				_AC(0x10000000000, ULL)
+ #define SZ_64T				_AC(0x400000000000, ULL)
  
- 	info.flags = 0;
- 	info.length = len;
- 	info.align_mask = PAGE_MASK & ((1ul << pshift) - 1);
- 	info.align_offset = 0;
--
--	addr = TASK_UNMAPPED_BASE;
- 	/*
- 	 * Check till the allow max value for this mmap request
- 	 */
-@@ -322,12 +320,12 @@ static unsigned long slice_find_area_bottomup(struct mm_struct *mm,
- }
- 
- static unsigned long slice_find_area_topdown(struct mm_struct *mm,
--					     unsigned long len,
-+					     unsigned long addr, unsigned long len,
- 					     const struct slice_mask *available,
- 					     int psize, unsigned long high_limit)
- {
- 	int pshift = max_t(int, mmu_psize_defs[psize].shift, PAGE_SHIFT);
--	unsigned long addr, found, prev;
-+	unsigned long found, prev;
- 	struct vm_unmapped_area_info info;
- 	unsigned long min_addr = max(PAGE_SIZE, mmap_min_addr);
- 
-@@ -335,8 +333,6 @@ static unsigned long slice_find_area_topdown(struct mm_struct *mm,
- 	info.length = len;
- 	info.align_mask = PAGE_MASK & ((1ul << pshift) - 1);
- 	info.align_offset = 0;
--
--	addr = mm->mmap_base;
- 	/*
- 	 * If we are trying to allocate above DEFAULT_MAP_WINDOW
- 	 * Add the different to the mmap_base.
-@@ -377,7 +373,7 @@ static unsigned long slice_find_area_topdown(struct mm_struct *mm,
- 	 * can happen with large stack limits and large mmap()
- 	 * allocations.
- 	 */
--	return slice_find_area_bottomup(mm, len, available, psize, high_limit);
-+	return slice_find_area_bottomup(mm, TASK_UNMAPPED_BASE, len, available, psize, high_limit);
- }
- 
- 
-@@ -386,9 +382,9 @@ static unsigned long slice_find_area(struct mm_struct *mm, unsigned long len,
- 				     int topdown, unsigned long high_limit)
- {
- 	if (topdown)
--		return slice_find_area_topdown(mm, len, mask, psize, high_limit);
-+		return slice_find_area_topdown(mm, mm->mmap_base, len, mask, psize, high_limit);
- 	else
--		return slice_find_area_bottomup(mm, len, mask, psize, high_limit);
-+		return slice_find_area_bottomup(mm, mm->mmap_base, len, mask, psize, high_limit);
- }
- 
- static inline void slice_copy_mask(struct slice_mask *dst,
+ #endif /* __LINUX_SIZES_H__ */
 -- 
 2.33.1
 
