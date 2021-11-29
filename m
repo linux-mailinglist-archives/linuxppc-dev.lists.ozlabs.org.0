@@ -1,71 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FF3460D01
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 04:09:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DE9460D04
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 04:10:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2VhN1bjXz3c6D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 14:09:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Vj50PBrz3c7h
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 14:10:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ACGrCMKg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=FWrkoPe6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
- helo=mail-pj1-x1031.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c;
+ helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=ACGrCMKg; dkim-atps=neutral
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
- [IPv6:2607:f8b0:4864:20::1031])
+ header.s=20210112 header.b=FWrkoPe6; dkim-atps=neutral
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
+ [IPv6:2607:f8b0:4864:20::42c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2VfT3kCmz2ynV
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 14:08:17 +1100 (AEDT)
-Received: by mail-pj1-x1031.google.com with SMTP id
- gb13-20020a17090b060d00b001a674e2c4a8so12818833pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 19:08:17 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2VfW4pGwz3069
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 14:08:19 +1100 (AEDT)
+Received: by mail-pf1-x42c.google.com with SMTP id o4so15275119pfp.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 19:08:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=tF4tpA8vXvgZOdNmOBO+qTUJMqVIyzTDq75T6lbmLT4=;
- b=ACGrCMKg9Y04021Sof6aFt4ek4z4SptiwnfWlT2T2pFMyBXDEqLDoMucJKUY8b6xb4
- NWNgDw5Xz/FD9WIdxK5WinKy82kbgEqb5ZjvjmMTk11xQ5AhUhbGaPLaMnb51lLZo8Tj
- vgWexUQQ4gnRTN2oayskrv6U56kgykAVRRNOYPUqZkM+Q2YCSose4k3TCFcX+RKi6nVj
- qs+WEcu4LEi8JMgOtDUp4EjPf9CL40blKFdxfBpXTPogD4uGao9GpD160apiiEgSkGCP
- t3lCojPinUXMiuqWaA9d/paoDJJE6yIoMsVEcQCcA+D1lrjgennsFUrr7tZkzlDuTh4h
- xaQw==
+ bh=VGgNCNf0+/PKQu78DOLbLpQlOjPA8YgZvwx1+X75hdo=;
+ b=FWrkoPe6Nji3xjPrqf8HafVxlZXseMmdtRdOGUBDNbmF24ktekjs0hePIjz5A13JXj
+ hBrvK1ZmVFvY6Lh81WtmEaR/L9fibclOs8gBDGKqpytcoKNaRgHpkrWxSQ/moxF2lUo2
+ wHj4911V3wk8hhxfSXegJr8E+pTBb7UjzkqXLuaHs1+SsIA6DuVp7W3EWTGHk+92Sk+A
+ isbbQ06sFqrdwtQzzPvi0K63+4HhmJDfv7VorwWaNhj5dbMSAyydZMhHA/tEmIzT2mPX
+ iYLGsRgua1Hnh09OuHgYcVgPTX17g8OsuNswHcSOXncdJ5HiJxHbKBmcxTVYupT6H7/W
+ L7HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=tF4tpA8vXvgZOdNmOBO+qTUJMqVIyzTDq75T6lbmLT4=;
- b=sWbn+g+sP29sdm+yY86OdkAm/fv4/8wi4jBrnZx91isOdPeN0Uc6WB/YoGQB3Z96jg
- vh7chW9gh5Bx6bDMVnreIMyualDvHakOPodChs7ksXgB9OG9tOWl92iZTokexjaKTmWt
- dyxF9g5rWEdM+LoZXXj/KiL7kkImtsto940F63rxcHUCD8VkCZjpa25lPSHWMm8lXNNf
- WS6fCK013aIY2u0E594KxZ4gP04RsK5kgjpX4cnuG2FRsK3NCgRfQtf6g/C+jYNbQozX
- PfpiwF8MNMCjvZ5jJR8bbWgOG/BW9Kl98WOTkN8ojKAAnlP+wr2g+Dq0IfKptPAQMPHb
- QsLg==
-X-Gm-Message-State: AOAM533uFi8qB1Vuc3wy3vgUTCalvBh+79v8J/Rv3tS0Ke09v0oRevyw
- nTwT4jVM2xZRHMTSm2dHvQi7Am6k1ks=
-X-Google-Smtp-Source: ABdhPJxphhl3i4jrKpd32DSvLzpU9rdC43xhS8b0+hLhy22vzfOFHth7iD00NLHoNpXYYolIWNZ0jw==
-X-Received: by 2002:a17:90a:fe14:: with SMTP id
- ck20mr35188950pjb.72.1638155295096; 
- Sun, 28 Nov 2021 19:08:15 -0800 (PST)
+ bh=VGgNCNf0+/PKQu78DOLbLpQlOjPA8YgZvwx1+X75hdo=;
+ b=EOgfjZPVpPLT1EsPHUv//2fhcq4OUK4QST3ZqmCiUFUECnFbTCitYzpW4PWH3cNnQz
+ rKnlv/JjgS9HrQM8e73zhzcMi/fSI+bJpHLxwItMn2PDXBW/DdE5FBZeciAVDS02f0LP
+ uvUs+bkxJ8GV0cSVs6vHW6NMEfC+KV2YfTkjmBjQ7zZVLl+qoFgskVUwWeAmO8UEK2Xf
+ Aznqbzm/TIoOppT/C6PkSLunD5nOZj05d9k+KOYqmIzhENPfFyRVV7morwpZDqB/00Vc
+ DimkHs1qNjne6UXOw3UEG2gBZL2tw0ClslZt644Rs5jaUkiK4puCrWCAXRgES3EIg74e
+ FwfA==
+X-Gm-Message-State: AOAM532MgOMhXY5rDq00y0fPhtyjjFrvXu3vw+UbzokTFFmIv9SN/J/L
+ TWELX/ECA7VLJjrB+2Y4yI6n6P/Owvs=
+X-Google-Smtp-Source: ABdhPJw1vgWJos1dLW4eVoTSGAaVdGt7BJNWDLEFE0C0saOkJ0Z3J2TfH+vc5oB48bKQ3Zif3WnlRQ==
+X-Received: by 2002:a05:6a00:2290:b0:49f:c63a:2a5f with SMTP id
+ f16-20020a056a00229000b0049fc63a2a5fmr36547686pfe.69.1638155297403; 
+ Sun, 28 Nov 2021 19:08:17 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (115-64-213-93.static.tpgi.com.au.
  [115.64.213.93])
- by smtp.gmail.com with ESMTPSA id h8sm15462908pfh.10.2021.11.28.19.08.13
+ by smtp.gmail.com with ESMTPSA id h8sm15462908pfh.10.2021.11.28.19.08.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 Nov 2021 19:08:14 -0800 (PST)
+ Sun, 28 Nov 2021 19:08:17 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 02/17] powerpc: Rename PPC_NATIVE to PPC_HASH_MMU_NATIVE
-Date: Mon, 29 Nov 2021 13:07:48 +1000
-Message-Id: <20211129030803.1888161-3-npiggin@gmail.com>
+Subject: [PATCH v5 03/17] powerpc/pseries: Stop selecting PPC_HASH_MMU_NATIVE
+Date: Mon, 29 Nov 2021 13:07:49 +1000
+Message-Id: <20211129030803.1888161-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211129030803.1888161-1-npiggin@gmail.com>
 References: <20211129030803.1888161-1-npiggin@gmail.com>
@@ -87,194 +86,280 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PPC_NATIVE now only controls the native HPT code, so rename it to be
-more descriptive. Restrict it to Book3S only.
+The pseries platform does not use the native hash code but the PAPR
+virtualised hash interfaces, so remove PPC_HASH_MMU_NATIVE.
+
+This requires moving tlbiel code from hash_native.c to hash_utils.c.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/mm/book3s64/Makefile          | 2 +-
- arch/powerpc/mm/book3s64/hash_utils.c      | 2 +-
- arch/powerpc/platforms/52xx/Kconfig        | 2 +-
- arch/powerpc/platforms/Kconfig             | 4 ++--
- arch/powerpc/platforms/cell/Kconfig        | 2 +-
- arch/powerpc/platforms/chrp/Kconfig        | 2 +-
- arch/powerpc/platforms/embedded6xx/Kconfig | 2 +-
- arch/powerpc/platforms/maple/Kconfig       | 2 +-
- arch/powerpc/platforms/microwatt/Kconfig   | 2 +-
- arch/powerpc/platforms/pasemi/Kconfig      | 2 +-
- arch/powerpc/platforms/powermac/Kconfig    | 2 +-
- arch/powerpc/platforms/powernv/Kconfig     | 2 +-
- arch/powerpc/platforms/pseries/Kconfig     | 2 +-
- 13 files changed, 14 insertions(+), 14 deletions(-)
+ arch/powerpc/include/asm/book3s/64/tlbflush.h |   4 -
+ arch/powerpc/mm/book3s64/hash_native.c        | 104 ------------------
+ arch/powerpc/mm/book3s64/hash_utils.c         | 104 ++++++++++++++++++
+ arch/powerpc/platforms/pseries/Kconfig        |   1 -
+ 4 files changed, 104 insertions(+), 109 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/Makefile b/arch/powerpc/mm/book3s64/Makefile
-index 1b56d3af47d4..319f4b7f3357 100644
---- a/arch/powerpc/mm/book3s64/Makefile
-+++ b/arch/powerpc/mm/book3s64/Makefile
-@@ -6,7 +6,7 @@ CFLAGS_REMOVE_slb.o = $(CC_FLAGS_FTRACE)
+diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+index 215973b4cb26..d2e80f178b6d 100644
+--- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
++++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
+@@ -14,7 +14,6 @@ enum {
+ 	TLB_INVAL_SCOPE_LPID = 1,	/* invalidate TLBs for current LPID */
+ };
  
- obj-y				+= hash_pgtable.o hash_utils.o slb.o \
- 				   mmu_context.o pgtable.o hash_tlb.o
--obj-$(CONFIG_PPC_NATIVE)	+= hash_native.o
-+obj-$(CONFIG_PPC_HASH_MMU_NATIVE)	+= hash_native.o
- obj-$(CONFIG_PPC_RADIX_MMU)	+= radix_pgtable.o radix_tlb.o
- obj-$(CONFIG_PPC_4K_PAGES)	+= hash_4k.o
- obj-$(CONFIG_PPC_64K_PAGES)	+= hash_64k.o
+-#ifdef CONFIG_PPC_NATIVE
+ static inline void tlbiel_all(void)
+ {
+ 	/*
+@@ -30,9 +29,6 @@ static inline void tlbiel_all(void)
+ 	else
+ 		hash__tlbiel_all(TLB_INVAL_SCOPE_GLOBAL);
+ }
+-#else
+-static inline void tlbiel_all(void) { BUG(); }
+-#endif
+ 
+ static inline void tlbiel_all_lpid(bool radix)
+ {
+diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/book3s64/hash_native.c
+index d8279bfe68ea..d2a320828c0b 100644
+--- a/arch/powerpc/mm/book3s64/hash_native.c
++++ b/arch/powerpc/mm/book3s64/hash_native.c
+@@ -43,110 +43,6 @@
+ 
+ static DEFINE_RAW_SPINLOCK(native_tlbie_lock);
+ 
+-static inline void tlbiel_hash_set_isa206(unsigned int set, unsigned int is)
+-{
+-	unsigned long rb;
+-
+-	rb = (set << PPC_BITLSHIFT(51)) | (is << PPC_BITLSHIFT(53));
+-
+-	asm volatile("tlbiel %0" : : "r" (rb));
+-}
+-
+-/*
+- * tlbiel instruction for hash, set invalidation
+- * i.e., r=1 and is=01 or is=10 or is=11
+- */
+-static __always_inline void tlbiel_hash_set_isa300(unsigned int set, unsigned int is,
+-					unsigned int pid,
+-					unsigned int ric, unsigned int prs)
+-{
+-	unsigned long rb;
+-	unsigned long rs;
+-	unsigned int r = 0; /* hash format */
+-
+-	rb = (set << PPC_BITLSHIFT(51)) | (is << PPC_BITLSHIFT(53));
+-	rs = ((unsigned long)pid << PPC_BITLSHIFT(31));
+-
+-	asm volatile(PPC_TLBIEL(%0, %1, %2, %3, %4)
+-		     : : "r"(rb), "r"(rs), "i"(ric), "i"(prs), "i"(r)
+-		     : "memory");
+-}
+-
+-
+-static void tlbiel_all_isa206(unsigned int num_sets, unsigned int is)
+-{
+-	unsigned int set;
+-
+-	asm volatile("ptesync": : :"memory");
+-
+-	for (set = 0; set < num_sets; set++)
+-		tlbiel_hash_set_isa206(set, is);
+-
+-	ppc_after_tlbiel_barrier();
+-}
+-
+-static void tlbiel_all_isa300(unsigned int num_sets, unsigned int is)
+-{
+-	unsigned int set;
+-
+-	asm volatile("ptesync": : :"memory");
+-
+-	/*
+-	 * Flush the partition table cache if this is HV mode.
+-	 */
+-	if (early_cpu_has_feature(CPU_FTR_HVMODE))
+-		tlbiel_hash_set_isa300(0, is, 0, 2, 0);
+-
+-	/*
+-	 * Now invalidate the process table cache. UPRT=0 HPT modes (what
+-	 * current hardware implements) do not use the process table, but
+-	 * add the flushes anyway.
+-	 *
+-	 * From ISA v3.0B p. 1078:
+-	 *     The following forms are invalid.
+-	 *      * PRS=1, R=0, and RIC!=2 (The only process-scoped
+-	 *        HPT caching is of the Process Table.)
+-	 */
+-	tlbiel_hash_set_isa300(0, is, 0, 2, 1);
+-
+-	/*
+-	 * Then flush the sets of the TLB proper. Hash mode uses
+-	 * partition scoped TLB translations, which may be flushed
+-	 * in !HV mode.
+-	 */
+-	for (set = 0; set < num_sets; set++)
+-		tlbiel_hash_set_isa300(set, is, 0, 0, 0);
+-
+-	ppc_after_tlbiel_barrier();
+-
+-	asm volatile(PPC_ISA_3_0_INVALIDATE_ERAT "; isync" : : :"memory");
+-}
+-
+-void hash__tlbiel_all(unsigned int action)
+-{
+-	unsigned int is;
+-
+-	switch (action) {
+-	case TLB_INVAL_SCOPE_GLOBAL:
+-		is = 3;
+-		break;
+-	case TLB_INVAL_SCOPE_LPID:
+-		is = 2;
+-		break;
+-	default:
+-		BUG();
+-	}
+-
+-	if (early_cpu_has_feature(CPU_FTR_ARCH_300))
+-		tlbiel_all_isa300(POWER9_TLB_SETS_HASH, is);
+-	else if (early_cpu_has_feature(CPU_FTR_ARCH_207S))
+-		tlbiel_all_isa206(POWER8_TLB_SETS, is);
+-	else if (early_cpu_has_feature(CPU_FTR_ARCH_206))
+-		tlbiel_all_isa206(POWER7_TLB_SETS, is);
+-	else
+-		WARN(1, "%s called on pre-POWER7 CPU\n", __func__);
+-}
+-
+ static inline unsigned long  ___tlbie(unsigned long vpn, int psize,
+ 						int apsize, int ssize)
+ {
 diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index cfd45245d009..92680da5229a 100644
+index 92680da5229a..97a36fa3940e 100644
 --- a/arch/powerpc/mm/book3s64/hash_utils.c
 +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1091,7 +1091,7 @@ void __init hash__early_init_mmu(void)
- 		ps3_early_mm_init();
- 	else if (firmware_has_feature(FW_FEATURE_LPAR))
- 		hpte_init_pseries();
--	else if (IS_ENABLED(CONFIG_PPC_NATIVE))
-+	else if (IS_ENABLED(CONFIG_PPC_HASH_MMU_NATIVE))
- 		hpte_init_native();
+@@ -175,6 +175,110 @@ static struct mmu_psize_def mmu_psize_defaults_gp[] = {
+ 	},
+ };
  
- 	if (!mmu_hash_ops.hpte_insert)
-diff --git a/arch/powerpc/platforms/52xx/Kconfig b/arch/powerpc/platforms/52xx/Kconfig
-index 99d60acc20c8..b72ed2950ca8 100644
---- a/arch/powerpc/platforms/52xx/Kconfig
-+++ b/arch/powerpc/platforms/52xx/Kconfig
-@@ -34,7 +34,7 @@ config PPC_EFIKA
- 	bool "bPlan Efika 5k2. MPC5200B based computer"
- 	depends on PPC_MPC52xx
- 	select PPC_RTAS
--	select PPC_NATIVE
-+	select PPC_HASH_MMU_NATIVE
- 
- config PPC_LITE5200
- 	bool "Freescale Lite5200 Eval Board"
-diff --git a/arch/powerpc/platforms/Kconfig b/arch/powerpc/platforms/Kconfig
-index e02d29a9d12f..d41dad227de8 100644
---- a/arch/powerpc/platforms/Kconfig
-+++ b/arch/powerpc/platforms/Kconfig
-@@ -40,9 +40,9 @@ config EPAPR_PARAVIRT
- 
- 	  In case of doubt, say Y
- 
--config PPC_NATIVE
-+config PPC_HASH_MMU_NATIVE
- 	bool
--	depends on PPC_BOOK3S_32 || PPC64
-+	depends on PPC_BOOK3S
- 	help
- 	  Support for running natively on the hardware, i.e. without
- 	  a hypervisor. This option is not user-selectable but should
-diff --git a/arch/powerpc/platforms/cell/Kconfig b/arch/powerpc/platforms/cell/Kconfig
-index cb70c5f25bc6..db4465c51b56 100644
---- a/arch/powerpc/platforms/cell/Kconfig
-+++ b/arch/powerpc/platforms/cell/Kconfig
-@@ -8,7 +8,7 @@ config PPC_CELL_COMMON
- 	select PPC_DCR_MMIO
- 	select PPC_INDIRECT_PIO
- 	select PPC_INDIRECT_MMIO
--	select PPC_NATIVE
-+	select PPC_HASH_MMU_NATIVE
- 	select PPC_RTAS
- 	select IRQ_EDGE_EOI_HANDLER
- 
-diff --git a/arch/powerpc/platforms/chrp/Kconfig b/arch/powerpc/platforms/chrp/Kconfig
-index 9b5c5505718a..ff30ed579a39 100644
---- a/arch/powerpc/platforms/chrp/Kconfig
-+++ b/arch/powerpc/platforms/chrp/Kconfig
-@@ -11,6 +11,6 @@ config PPC_CHRP
- 	select RTAS_ERROR_LOGGING
- 	select PPC_MPC106
- 	select PPC_UDBG_16550
--	select PPC_NATIVE
-+	select PPC_HASH_MMU_NATIVE
- 	select FORCE_PCI
- 	default y
-diff --git a/arch/powerpc/platforms/embedded6xx/Kconfig b/arch/powerpc/platforms/embedded6xx/Kconfig
-index 4c6d703a4284..c54786f8461e 100644
---- a/arch/powerpc/platforms/embedded6xx/Kconfig
-+++ b/arch/powerpc/platforms/embedded6xx/Kconfig
-@@ -55,7 +55,7 @@ config MVME5100
- 	select FORCE_PCI
- 	select PPC_INDIRECT_PCI
- 	select PPC_I8259
--	select PPC_NATIVE
-+	select PPC_HASH_MMU_NATIVE
- 	select PPC_UDBG_16550
- 	help
- 	  This option enables support for the Motorola (now Emerson) MVME5100
-diff --git a/arch/powerpc/platforms/maple/Kconfig b/arch/powerpc/platforms/maple/Kconfig
-index 86ae210bee9a..7fd84311ade5 100644
---- a/arch/powerpc/platforms/maple/Kconfig
-+++ b/arch/powerpc/platforms/maple/Kconfig
-@@ -9,7 +9,7 @@ config PPC_MAPLE
- 	select GENERIC_TBSYNC
- 	select PPC_UDBG_16550
- 	select PPC_970_NAP
--	select PPC_NATIVE
-+	select PPC_HASH_MMU_NATIVE
- 	select PPC_RTAS
- 	select MMIO_NVRAM
- 	select ATA_NONSTANDARD if ATA
-diff --git a/arch/powerpc/platforms/microwatt/Kconfig b/arch/powerpc/platforms/microwatt/Kconfig
-index 8f6a81978461..62b51e37fc05 100644
---- a/arch/powerpc/platforms/microwatt/Kconfig
-+++ b/arch/powerpc/platforms/microwatt/Kconfig
-@@ -5,7 +5,7 @@ config PPC_MICROWATT
- 	select PPC_XICS
- 	select PPC_ICS_NATIVE
- 	select PPC_ICP_NATIVE
--	select PPC_NATIVE
-+	select PPC_HASH_MMU_NATIVE
- 	select PPC_UDBG_16550
- 	select ARCH_RANDOM
- 	help
-diff --git a/arch/powerpc/platforms/pasemi/Kconfig b/arch/powerpc/platforms/pasemi/Kconfig
-index c52731a7773f..bc7137353a7f 100644
---- a/arch/powerpc/platforms/pasemi/Kconfig
-+++ b/arch/powerpc/platforms/pasemi/Kconfig
-@@ -5,7 +5,7 @@ config PPC_PASEMI
- 	select MPIC
- 	select FORCE_PCI
- 	select PPC_UDBG_16550
--	select PPC_NATIVE
-+	select PPC_HASH_MMU_NATIVE
- 	select MPIC_BROKEN_REGREAD
- 	help
- 	  This option enables support for PA Semi's PWRficient line
-diff --git a/arch/powerpc/platforms/powermac/Kconfig b/arch/powerpc/platforms/powermac/Kconfig
-index b97bf12801eb..2b56df145b82 100644
---- a/arch/powerpc/platforms/powermac/Kconfig
-+++ b/arch/powerpc/platforms/powermac/Kconfig
-@@ -6,7 +6,7 @@ config PPC_PMAC
- 	select FORCE_PCI
- 	select PPC_INDIRECT_PCI if PPC32
- 	select PPC_MPC106 if PPC32
--	select PPC_NATIVE
-+	select PPC_HASH_MMU_NATIVE
- 	select ZONE_DMA if PPC32
- 	default y
- 
-diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
-index 043eefbbdd28..cd754e116184 100644
---- a/arch/powerpc/platforms/powernv/Kconfig
-+++ b/arch/powerpc/platforms/powernv/Kconfig
-@@ -2,7 +2,7 @@
- config PPC_POWERNV
- 	depends on PPC64 && PPC_BOOK3S
- 	bool "IBM PowerNV (Non-Virtualized) platform support"
--	select PPC_NATIVE
-+	select PPC_HASH_MMU_NATIVE
- 	select PPC_XICS
- 	select PPC_ICP_NATIVE
- 	select PPC_XIVE_NATIVE
++static inline void tlbiel_hash_set_isa206(unsigned int set, unsigned int is)
++{
++	unsigned long rb;
++
++	rb = (set << PPC_BITLSHIFT(51)) | (is << PPC_BITLSHIFT(53));
++
++	asm volatile("tlbiel %0" : : "r" (rb));
++}
++
++/*
++ * tlbiel instruction for hash, set invalidation
++ * i.e., r=1 and is=01 or is=10 or is=11
++ */
++static __always_inline void tlbiel_hash_set_isa300(unsigned int set, unsigned int is,
++					unsigned int pid,
++					unsigned int ric, unsigned int prs)
++{
++	unsigned long rb;
++	unsigned long rs;
++	unsigned int r = 0; /* hash format */
++
++	rb = (set << PPC_BITLSHIFT(51)) | (is << PPC_BITLSHIFT(53));
++	rs = ((unsigned long)pid << PPC_BITLSHIFT(31));
++
++	asm volatile(PPC_TLBIEL(%0, %1, %2, %3, %4)
++		     : : "r"(rb), "r"(rs), "i"(ric), "i"(prs), "i"(r)
++		     : "memory");
++}
++
++
++static void tlbiel_all_isa206(unsigned int num_sets, unsigned int is)
++{
++	unsigned int set;
++
++	asm volatile("ptesync": : :"memory");
++
++	for (set = 0; set < num_sets; set++)
++		tlbiel_hash_set_isa206(set, is);
++
++	ppc_after_tlbiel_barrier();
++}
++
++static void tlbiel_all_isa300(unsigned int num_sets, unsigned int is)
++{
++	unsigned int set;
++
++	asm volatile("ptesync": : :"memory");
++
++	/*
++	 * Flush the partition table cache if this is HV mode.
++	 */
++	if (early_cpu_has_feature(CPU_FTR_HVMODE))
++		tlbiel_hash_set_isa300(0, is, 0, 2, 0);
++
++	/*
++	 * Now invalidate the process table cache. UPRT=0 HPT modes (what
++	 * current hardware implements) do not use the process table, but
++	 * add the flushes anyway.
++	 *
++	 * From ISA v3.0B p. 1078:
++	 *     The following forms are invalid.
++	 *      * PRS=1, R=0, and RIC!=2 (The only process-scoped
++	 *        HPT caching is of the Process Table.)
++	 */
++	tlbiel_hash_set_isa300(0, is, 0, 2, 1);
++
++	/*
++	 * Then flush the sets of the TLB proper. Hash mode uses
++	 * partition scoped TLB translations, which may be flushed
++	 * in !HV mode.
++	 */
++	for (set = 0; set < num_sets; set++)
++		tlbiel_hash_set_isa300(set, is, 0, 0, 0);
++
++	ppc_after_tlbiel_barrier();
++
++	asm volatile(PPC_ISA_3_0_INVALIDATE_ERAT "; isync" : : :"memory");
++}
++
++void hash__tlbiel_all(unsigned int action)
++{
++	unsigned int is;
++
++	switch (action) {
++	case TLB_INVAL_SCOPE_GLOBAL:
++		is = 3;
++		break;
++	case TLB_INVAL_SCOPE_LPID:
++		is = 2;
++		break;
++	default:
++		BUG();
++	}
++
++	if (early_cpu_has_feature(CPU_FTR_ARCH_300))
++		tlbiel_all_isa300(POWER9_TLB_SETS_HASH, is);
++	else if (early_cpu_has_feature(CPU_FTR_ARCH_207S))
++		tlbiel_all_isa206(POWER8_TLB_SETS, is);
++	else if (early_cpu_has_feature(CPU_FTR_ARCH_206))
++		tlbiel_all_isa206(POWER7_TLB_SETS, is);
++	else
++		WARN(1, "%s called on pre-POWER7 CPU\n", __func__);
++}
++
+ /*
+  * 'R' and 'C' update notes:
+  *  - Under pHyp or KVM, the updatepp path will not set C, thus it *will*
 diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
-index 9bd542164128..30618750bd98 100644
+index 30618750bd98..f7fd91d153a4 100644
 --- a/arch/powerpc/platforms/pseries/Kconfig
 +++ b/arch/powerpc/platforms/pseries/Kconfig
-@@ -17,7 +17,7 @@ config PPC_PSERIES
+@@ -17,7 +17,6 @@ config PPC_PSERIES
  	select PPC_RTAS_DAEMON
  	select RTAS_ERROR_LOGGING
  	select PPC_UDBG_16550
--	select PPC_NATIVE
-+	select PPC_HASH_MMU_NATIVE
+-	select PPC_HASH_MMU_NATIVE
  	select PPC_DOORBELL
  	select HOTPLUG_CPU
  	select ARCH_RANDOM
