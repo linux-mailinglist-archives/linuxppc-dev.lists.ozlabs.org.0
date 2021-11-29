@@ -2,68 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A685461D43
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 19:01:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 842E7461CFA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 18:47:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2tSc0vBGz3ddD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 05:01:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2t9T2rkKz3cYS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 04:47:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=arWwcpj6;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=5xRw1Cp/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q8gkGMV+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
- helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=arWwcpj6; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=5xRw1Cp/; 
- dkim-atps=neutral
-X-Greylist: delayed 711 seconds by postgrey-1.36 at boromir;
- Tue, 30 Nov 2021 05:00:27 AEDT
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=q8gkGMV+; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2tRv2rCwz2yPD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 05:00:27 +1100 (AEDT)
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1638208111;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Tbl3+zAOEmpP6ZGCt/BD/PG2cZ3xnDr+Tb2+yq81oZo=;
- b=arWwcpj6Q/D6pvkRJiP142R5s1arQMXkHQxn/zOjEbHQImbzvbopydkHkJVlZU1LyU8wcj
- lfTHFIczOSU8/AxvkV7RlMv59UNEsq07wTaCjGR0hhzFxAJqBfsG+RQLUCnFd9mRROoZHy
- oM36Hu/i3jaiMslNkMd8KSiGnZnfD6E9OtVayofH2faDlnYttgS8ROCBpOUjRvircInDcE
- D7QYx/vTcwEIm1WQMEwbO3ryNqgSOcogR0awZvPqk+/4Ssex92D191dUHP56nk8LNkAmH/
- ofoyFF9VV4Dvtt12/JcPQ5Oupu94FrnmDjslyjx9Wa1m2kjHBmo475RB/hQL+w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1638208111;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Tbl3+zAOEmpP6ZGCt/BD/PG2cZ3xnDr+Tb2+yq81oZo=;
- b=5xRw1Cp/h/haoQhJAxftFnjCbEc9UKH/scHgQVSdL5qC+aJRF+i0MC2mtjiyiG1rOEKaPZ
- igMovB8jTE5WtwCQ==
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 11/11] locking: Allow to include asm/spinlock_types.h from
- linux/spinlock_types_raw.h
-Date: Mon, 29 Nov 2021 18:46:54 +0100
-Message-Id: <20211129174654.668506-12-bigeasy@linutronix.de>
-In-Reply-To: <20211129174654.668506-1-bigeasy@linutronix.de>
-References: <20211129174654.668506-1-bigeasy@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2t8s2wplz2yHM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 04:47:25 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1ATHGC0k005149; 
+ Mon, 29 Nov 2021 17:47:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=azobKao7kbnvdoMWTlKyAKYOGvveAoIGhsrr/v5VuE4=;
+ b=q8gkGMV+5kuI98cgm9XU26Za6SKx+Rz2HG03SLh3MkUE6Ed0+MXOjqprREnx2elOqonL
+ 4Cg2qqR1ZkN2iHRvHPi17T+PpaNXkRZmw7c5aC45gs4Fphu9JfWKRGT3SEWUEvCfd8qG
+ hUfuaK8rhWukGJNz1eGR5sEFOjczjzuxknSW0isyXg/T+kmjrKVp8S6P6lZDw6RecEKy
+ MfWaRcUP0jABusIRbUrktGysuxXSgHvOVoTRrKlzxFlkBIz9RIUmw8qZbIzIunTvAK4e
+ vHgXrQ12X0VNSAZYsOUdxFaoKF8HMuKto4GamCrGlTdH+1NIHuroAsP2d4NJp4RqhkEI hQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cn3458rgy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Nov 2021 17:47:17 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1ATHcMkP008945;
+ Mon, 29 Nov 2021 17:47:17 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cn3458rgf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Nov 2021 17:47:17 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1ATHgcgg028730;
+ Mon, 29 Nov 2021 17:47:15 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma02wdc.us.ibm.com with ESMTP id 3ckcaag3by-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Nov 2021 17:47:15 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1ATHlE4m57934212
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 29 Nov 2021 17:47:15 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D780C2805C;
+ Mon, 29 Nov 2021 17:47:14 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E20702805A;
+ Mon, 29 Nov 2021 17:47:13 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.160.7.253])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 29 Nov 2021 17:47:13 +0000 (GMT)
+Message-ID: <3d2eb6e197c6c7908d938126ef46ac0e7dabfd09.camel@linux.ibm.com>
+Subject: [PATCH 02/10] powerpc/pseries/vas: Add notifier for DLPAR core
+ removal/add
+From: Haren Myneni <haren@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Date: Mon, 29 Nov 2021 09:47:11 -0800
+In-Reply-To: <a2187018b4e030fe6c7e408b3a73c37c85472e10.camel@linux.ibm.com>
+References: <a2187018b4e030fe6c7e408b3a73c37c85472e10.camel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5Ffd10JMESGU3i75WGSnXrnPM9B1m3nQ
+X-Proofpoint-ORIG-GUID: ii56K9xiRn5aNqcI08UMejU_jK9kLxgS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-29_10,2021-11-28_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 priorityscore=1501 adultscore=0
+ mlxscore=0 suspectscore=0 impostorscore=0 clxscore=1015 spamscore=0
+ phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111290082
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,382 +107,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Ben Segall <bsegall@google.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Guo Ren <guoren@kernel.org>, linux-hexagon@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Brian Cain <bcain@codeaurora.org>, Russell King <linux@armlinux.org.uk>,
- linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- Mel Gorman <mgorman@suse.de>, Waiman Long <longman@redhat.com>,
- Matt Turner <mattst88@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, linux-xtensa@linux-xtensa.org,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- Boqun Feng <boqun.feng@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
- Chris Zankel <chris@zankel.net>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linuxppc-dev@lists.ozlabs.org, Palmer Dabbelt <palmer@dabbelt.com>,
- linux-alpha@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Daniel Bristot de Oliveira <bristot@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The printk header file includes ratelimit_types.h for its __ratelimit()
-based usage. It is required for the static initializer used in
-printk_ratelimited(). It uses a raw_spinlock_t and includes the
-spinlock_types.h.
 
-PREEMPT_RT substitutes spinlock_t with a rtmutex based implementation and so
-its spinlock_t implmentation (provided by spinlock_rt.h) includes rtmutex.h=
- and
-atomic.h which leads to recursive includes where defines are missing.
+The hypervisor assigns credits for each LPAR based on number of
+cores configured in that system. So expects to release credits
+(means windows) when the core is removed. This patch adds notifier
+for core removal/add so that the OS closes windows if the system
+looses credits due to core removal and reopen windows when the
+credits available later.
 
-By including only the raw_spinlock_t defines it avoids the atomic.h
-related includes at this stage.
-
-An example on powerpc:
-
-|  CALL    scripts/atomic/check-atomics.sh
-|In file included from include/linux/bug.h:5,
-|                 from include/linux/page-flags.h:10,
-|                 from kernel/bounds.c:10:
-|arch/powerpc/include/asm/page_32.h: In function =E2=80=98clear_page=E2=80=
-=99:
-|arch/powerpc/include/asm/bug.h:87:4: error: implicit declaration of functi=
-on =E2=80=98__WARN=E2=80=99 [-Werror=3Dimplicit-function-declaration]
-|   87 |    __WARN();    \
-|      |    ^~~~~~
-|arch/powerpc/include/asm/page_32.h:48:2: note: in expansion of macro =E2=
-=80=98WARN_ON=E2=80=99
-|   48 |  WARN_ON((unsigned long)addr & (L1_CACHE_BYTES - 1));
-|      |  ^~~~~~~
-|arch/powerpc/include/asm/bug.h:58:17: error: invalid application of =E2=80=
-=98sizeof=E2=80=99 to incomplete type =E2=80=98struct bug_entry=E2=80=99
-|   58 |     "i" (sizeof(struct bug_entry)), \
-|      |                 ^~~~~~
-|arch/powerpc/include/asm/bug.h:89:3: note: in expansion of macro =E2=80=98=
-BUG_ENTRY=E2=80=99
-|   89 |   BUG_ENTRY(PPC_TLNEI " %4, 0",   \
-|      |   ^~~~~~~~~
-|arch/powerpc/include/asm/page_32.h:48:2: note: in expansion of macro =E2=
-=80=98WARN_ON=E2=80=99
-|   48 |  WARN_ON((unsigned long)addr & (L1_CACHE_BYTES - 1));
-|      |  ^~~~~~~
-|In file included from arch/powerpc/include/asm/ptrace.h:298,
-|                 from arch/powerpc/include/asm/hw_irq.h:12,
-|                 from arch/powerpc/include/asm/irqflags.h:12,
-|                 from include/linux/irqflags.h:16,
-|                 from include/asm-generic/cmpxchg-local.h:6,
-|                 from arch/powerpc/include/asm/cmpxchg.h:526,
-|                 from arch/powerpc/include/asm/atomic.h:11,
-|                 from include/linux/atomic.h:7,
-|                 from include/linux/rwbase_rt.h:6,
-|                 from include/linux/rwlock_types.h:55,
-|                 from include/linux/spinlock_types.h:74,
-|                 from include/linux/ratelimit_types.h:7,
-|                 from include/linux/printk.h:10,
-|                 from include/asm-generic/bug.h:22,
-|                 from arch/powerpc/include/asm/bug.h:109,
-|                 from include/linux/bug.h:5,
-|                 from include/linux/page-flags.h:10,
-|                 from kernel/bounds.c:10:
-|include/linux/thread_info.h: In function =E2=80=98copy_overflow=E2=80=99:
-|include/linux/thread_info.h:210:2: error: implicit declaration of function=
- =E2=80=98WARN=E2=80=99 [-Werror=3Dimplicit-function-declaration]
-|  210 |  WARN(1, "Buffer overflow detected (%d < %lu)!\n", size, count);
-|      |  ^~~~
-
-The WARN / BUG include pulls in printk.h and then ptrace.h expects WARN
-(from bug.h) which is not yet complete. Even hw_irq.h has WARN_ON()
-statements.
-
-On POWERPC64 there are missing atomic64 defines while building 32bit
-VDSO:
-|  VDSO32C arch/powerpc/kernel/vdso32/vgettimeofday.o
-|In file included from include/linux/atomic.h:80,
-|                 from include/linux/rwbase_rt.h:6,
-|                 from include/linux/rwlock_types.h:55,
-|                 from include/linux/spinlock_types.h:74,
-|                 from include/linux/ratelimit_types.h:7,
-|                 from include/linux/printk.h:10,
-|                 from include/linux/kernel.h:19,
-|                 from arch/powerpc/include/asm/page.h:11,
-|                 from arch/powerpc/include/asm/vdso/gettimeofday.h:5,
-|                 from include/vdso/datapage.h:137,
-|                 from lib/vdso/gettimeofday.c:5,
-|                 from <command-line>:
-|include/linux/atomic-arch-fallback.h: In function =E2=80=98arch_atomic64_i=
-nc=E2=80=99:
-|include/linux/atomic-arch-fallback.h:1447:2: error: implicit declaration o=
-f function =E2=80=98arch_atomic64_add=E2=80=99; did you mean =E2=80=98arch_=
-atomic_add=E2=80=99? [-Werror=3Dimpl
-|icit-function-declaration]
-| 1447 |  arch_atomic64_add(1, v);
-|      |  ^~~~~~~~~~~~~~~~~
-|      |  arch_atomic_add
-
-The generic fallback is not included, atomics itself are not used. If
-kernel.h does not include printk.h then it comes later from the bug.h
-include.
-
-Allow asm/spinlock_types.h to be included from
-linux/spinlock_types_raw.h.
-
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Brian Cain <bcain@codeaurora.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Guo Ren <guoren@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Rich Felker <dalias@libc.org>
-Cc: Richard Henderson <rth@twiddle.net>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: linux-alpha@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-csky@vger.kernel.org
-Cc: linux-hexagon@vger.kernel.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-riscv@lists.infradead.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: linux-xtensa@linux-xtensa.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 ---
- arch/alpha/include/asm/spinlock_types.h          | 2 +-
- arch/arm/include/asm/spinlock_types.h            | 2 +-
- arch/arm64/include/asm/spinlock_types.h          | 2 +-
- arch/csky/include/asm/spinlock_types.h           | 2 +-
- arch/hexagon/include/asm/spinlock_types.h        | 2 +-
- arch/ia64/include/asm/spinlock_types.h           | 2 +-
- arch/powerpc/include/asm/simple_spinlock_types.h | 2 +-
- arch/powerpc/include/asm/spinlock_types.h        | 2 +-
- arch/riscv/include/asm/spinlock_types.h          | 2 +-
- arch/s390/include/asm/spinlock_types.h           | 2 +-
- arch/sh/include/asm/spinlock_types.h             | 2 +-
- arch/xtensa/include/asm/spinlock_types.h         | 2 +-
- include/linux/ratelimit_types.h                  | 2 +-
- include/linux/spinlock_types_up.h                | 2 +-
- 14 files changed, 14 insertions(+), 14 deletions(-)
+ arch/powerpc/platforms/pseries/vas.c | 34 ++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/arch/alpha/include/asm/spinlock_types.h b/arch/alpha/include/a=
-sm/spinlock_types.h
-index 1d5716bc060be..2526fd3be5fd7 100644
---- a/arch/alpha/include/asm/spinlock_types.h
-+++ b/arch/alpha/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef _ALPHA_SPINLOCK_TYPES_H
- #define _ALPHA_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/arm/include/asm/spinlock_types.h b/arch/arm/include/asm/s=
-pinlock_types.h
-index 5976958647fe1..0c14b36ef1013 100644
---- a/arch/arm/include/asm/spinlock_types.h
-+++ b/arch/arm/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_SPINLOCK_TYPES_H
- #define __ASM_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/arm64/include/asm/spinlock_types.h b/arch/arm64/include/a=
-sm/spinlock_types.h
-index 18782f0c47212..11ab1c0776977 100644
---- a/arch/arm64/include/asm/spinlock_types.h
-+++ b/arch/arm64/include/asm/spinlock_types.h
-@@ -5,7 +5,7 @@
- #ifndef __ASM_SPINLOCK_TYPES_H
- #define __ASM_SPINLOCK_TYPES_H
-=20
--#if !defined(__LINUX_SPINLOCK_TYPES_H) && !defined(__ASM_SPINLOCK_H)
-+#if !defined(__LINUX_SPINLOCK_TYPES_RAW_H) && !defined(__ASM_SPINLOCK_H)
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/csky/include/asm/spinlock_types.h b/arch/csky/include/asm=
-/spinlock_types.h
-index 8ff0f6ff3a006..db87a12c3827d 100644
---- a/arch/csky/include/asm/spinlock_types.h
-+++ b/arch/csky/include/asm/spinlock_types.h
-@@ -3,7 +3,7 @@
- #ifndef __ASM_CSKY_SPINLOCK_TYPES_H
- #define __ASM_CSKY_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/hexagon/include/asm/spinlock_types.h b/arch/hexagon/inclu=
-de/asm/spinlock_types.h
-index 19d233497ba52..d5f66495b670f 100644
---- a/arch/hexagon/include/asm/spinlock_types.h
-+++ b/arch/hexagon/include/asm/spinlock_types.h
-@@ -8,7 +8,7 @@
- #ifndef _ASM_SPINLOCK_TYPES_H
- #define _ASM_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/ia64/include/asm/spinlock_types.h b/arch/ia64/include/asm=
-/spinlock_types.h
-index 6e345fefcdcab..14b8a161c1652 100644
---- a/arch/ia64/include/asm/spinlock_types.h
-+++ b/arch/ia64/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef _ASM_IA64_SPINLOCK_TYPES_H
- #define _ASM_IA64_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/powerpc/include/asm/simple_spinlock_types.h b/arch/powerp=
-c/include/asm/simple_spinlock_types.h
-index 0f3cdd8faa959..08243338069d2 100644
---- a/arch/powerpc/include/asm/simple_spinlock_types.h
-+++ b/arch/powerpc/include/asm/simple_spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef _ASM_POWERPC_SIMPLE_SPINLOCK_TYPES_H
- #define _ASM_POWERPC_SIMPLE_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/powerpc/include/asm/spinlock_types.h b/arch/powerpc/inclu=
-de/asm/spinlock_types.h
-index c5d742f18021d..d5f8a74ed2e8c 100644
---- a/arch/powerpc/include/asm/spinlock_types.h
-+++ b/arch/powerpc/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef _ASM_POWERPC_SPINLOCK_TYPES_H
- #define _ASM_POWERPC_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/riscv/include/asm/spinlock_types.h b/arch/riscv/include/a=
-sm/spinlock_types.h
-index f398e7638dd63..5a35a49505da2 100644
---- a/arch/riscv/include/asm/spinlock_types.h
-+++ b/arch/riscv/include/asm/spinlock_types.h
-@@ -6,7 +6,7 @@
- #ifndef _ASM_RISCV_SPINLOCK_TYPES_H
- #define _ASM_RISCV_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/s390/include/asm/spinlock_types.h b/arch/s390/include/asm=
-/spinlock_types.h
-index a2bbfd7df85fa..b69695e399574 100644
---- a/arch/s390/include/asm/spinlock_types.h
-+++ b/arch/s390/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_SPINLOCK_TYPES_H
- #define __ASM_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/sh/include/asm/spinlock_types.h b/arch/sh/include/asm/spi=
-nlock_types.h
-index e82369f286a20..907bda4b1619a 100644
---- a/arch/sh/include/asm/spinlock_types.h
-+++ b/arch/sh/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_SH_SPINLOCK_TYPES_H
- #define __ASM_SH_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/xtensa/include/asm/spinlock_types.h b/arch/xtensa/include=
-/asm/spinlock_types.h
-index 64c9389254f13..797aed7df3dd8 100644
---- a/arch/xtensa/include/asm/spinlock_types.h
-+++ b/arch/xtensa/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_SPINLOCK_TYPES_H
- #define __ASM_SPINLOCK_TYPES_H
-=20
--#if !defined(__LINUX_SPINLOCK_TYPES_H) && !defined(__ASM_SPINLOCK_H)
-+#if !defined(__LINUX_SPINLOCK_TYPES_RAW_H) && !defined(__ASM_SPINLOCK_H)
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/include/linux/ratelimit_types.h b/include/linux/ratelimit_type=
-s.h
-index b676aa419eef8..c21c7f8103e2b 100644
---- a/include/linux/ratelimit_types.h
-+++ b/include/linux/ratelimit_types.h
-@@ -4,7 +4,7 @@
-=20
- #include <linux/bits.h>
- #include <linux/param.h>
--#include <linux/spinlock_types.h>
-+#include <linux/spinlock_types_raw.h>
-=20
- #define DEFAULT_RATELIMIT_INTERVAL	(5 * HZ)
- #define DEFAULT_RATELIMIT_BURST		10
-diff --git a/include/linux/spinlock_types_up.h b/include/linux/spinlock_typ=
-es_up.h
-index c09b6407ae1b3..7f86a2016ac5c 100644
---- a/include/linux/spinlock_types_up.h
-+++ b/include/linux/spinlock_types_up.h
-@@ -1,7 +1,7 @@
- #ifndef __LINUX_SPINLOCK_TYPES_UP_H
- #define __LINUX_SPINLOCK_TYPES_UP_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
---=20
-2.34.0
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+index ecdd21f517c0..04a6eee2301e 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -531,6 +531,36 @@ static int get_vas_capabilities(u8 feat, enum vas_cop_feat_type type,
+ 	return 0;
+ }
+ 
++/*
++ * Total number of default credits available (target_credits)
++ * in LPAR depends on number of cores configured. It varies based on
++ * whether processors are in shared mode or dedicated mode.
++ * Get the notifier when CPU configuration is changed with DLPAR
++ * operation so that get the new target_credits (vas default capabilities)
++ * and then update the existing windows usage if needed.
++ */
++static int pseries_vas_notifier(struct notifier_block *nb,
++				unsigned long action, void *data)
++{
++	struct of_reconfig_data *rd = data;
++	struct device_node *dn = rd->dn;
++	const __be32 *intserv;
++	int len, rc = 0;
++
++	intserv = of_get_property(dn, "ibm,ppc-interrupt-server#s", &len);
++	/*
++	 * Processor config is not changed
++	 */
++	if (!intserv)
++		return NOTIFY_OK;
++
++	return rc;
++}
++
++static struct notifier_block pseries_vas_nb = {
++	.notifier_call = pseries_vas_notifier,
++};
++
+ static int __init pseries_vas_init(void)
+ {
+ 	struct hv_vas_cop_feat_caps *hv_cop_caps;
+@@ -584,6 +614,10 @@ static int __init pseries_vas_init(void)
+ 			goto out_cop;
+ 	}
+ 
++	/* Processors can be added/removed only on LPAR */
++	if (copypaste_feat && firmware_has_feature(FW_FEATURE_LPAR))
++		of_reconfig_notifier_register(&pseries_vas_nb);
++
+ 	pr_info("GZIP feature is available\n");
+ 
+ out_cop:
+-- 
+2.27.0
+
 
