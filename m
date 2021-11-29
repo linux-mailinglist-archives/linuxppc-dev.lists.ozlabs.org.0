@@ -1,57 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CE546293A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 01:43:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F23CC46283A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 00:26:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J33P70DsHz3cRg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 11:43:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J31gm6FWwz3cWt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 10:26:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256 header.s=1 header.b=GV8Md+4w;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QSCVX0qb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=rere.qmqm.pl (client-ip=91.227.64.183; helo=rere.qmqm.pl;
- envelope-from=mirq-linux@rere.qmqm.pl; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256
- header.s=1 header.b=GV8Md+4w; dkim-atps=neutral
-Received: from rere.qmqm.pl (rere.qmqm.pl [91.227.64.183])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2rXm2h6tz2ynV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 03:34:31 +1100 (AEDT)
-Received: from remote.user (localhost [127.0.0.1])
- by rere.qmqm.pl (Postfix) with ESMTPSA id 4J2rXL58g0z9h;
- Mon, 29 Nov 2021 17:34:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
- t=1638203665; bh=qlu3mL+FOvVS9aPE/gZoS7KdAdQ/avBctxZ8QxqT38I=;
- h=Date:From:To:CC:Subject:In-Reply-To:References:From;
- b=GV8Md+4wLJhNSJZqrJvdjyVU0DlzlhbpPkGnTNqVApkG+uUQ6A+MoaqEQT9dgrjXq
- q+escBY9SwJTtDVYNHqesyY22ZcfBKeLVi2I4yINeaBpICc3EsCTOMz8/JkEhkxKwH
- 5jlUqEb0yuAf8eVUX8cWy9bi6RovdDbzWpM+g8ZdNeFAwiFdkLHHM+FUiQ+x0Dv37t
- bEpCos1VGSJffWt42H8cWp9GNUDKdAgiFLCcBLScmau30GyMgUFylkw6qvpMGUFype
- xiTzGA2klsrhcAXTQoeGJ7H6y00R/3ukWQ3tN7aMIYo31vE1Ni41oAjMZVdXQclWDE
- FhYcDpXStxEZw==
-X-Virus-Status: Clean
-X-Virus-Scanned: clamav-milter 0.103.3 at mail
-Date: Mon, 29 Nov 2021 16:34:07 +0000
-From: =?UTF-8?Q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
-To: Yury Norov <yury.norov@gmail.com>
-Subject: Re: [PATCH 0/9] lib/bitmap: optimize bitmap_weight() usage
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20211129063839.GA338729@lapt>
-References: <20211128035704.270739-1-yury.norov@gmail.com>
- <YaPEfZ0t9UFGwpml@qmqm.qmqm.pl> <20211129063839.GA338729@lapt>
-Message-ID: <3CD9ECD8-901E-497B-9AE1-0DDB02346892@rere.qmqm.pl>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J31g53Kd1z2ymg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 10:25:37 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=QSCVX0qb; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4J31g44xLHz4xQt;
+ Tue, 30 Nov 2021 10:25:36 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1638228336;
+ bh=9QqeY1I9wTb4n+iEyy59M4aOd8rLjYN+2Xd8r+rblL8=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=QSCVX0qbIK6h/tJ3IEVWbmm4mAdhit+1WEBhX2IRPkEnJn4HknhlIxpF+h8h2L3/K
+ nfPh81HJy34JCCvS37oWV5dXTnJInqmIGSURDvZ5LZetNhQoQC2ypa3gOQMt+GCShX
+ 2WZawIYSHx3EE5ycKhPAhZY9iAhYPl8FFKR3pp7Rfr1Jq4SFomNzn02P0U2aqc+QLg
+ PKCGqnoE2wFFbMCNqRfMcJPDtI0NuyxDpvFCw8lvfU5ySOpMNHvjWMwMIQ4oUJSv26
+ j3QdxFLzTcfMmOrSOLIyE48ax3X7j0+NrhHt3kO8VNyqBgHhiEPwLh5hojNUKAyzPt
+ zotznMVdKftBw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, =?utf-8?Q?C=C3=A9dric?= Le Goater
+ <clg@kaod.org>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/pseries/vas: Don't print an error when VAS is
+ unavailable
+In-Reply-To: <1637922573.8ofrolskkj.astroid@bobo.none>
+References: <20211126052133.1664375-1-npiggin@gmail.com>
+ <43d21c1a-9122-d698-2229-e56c77a91313@kaod.org>
+ <1637922573.8ofrolskkj.astroid@bobo.none>
+Date: Tue, 30 Nov 2021 10:25:35 +1100
+Message-ID: <87fsrepms0.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Tue, 30 Nov 2021 11:43:13 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,145 +64,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Guo Ren <guoren@kernel.org>,
- Christoph Lameter <cl@linux.com>, Christoph Hellwig <hch@lst.de>,
- Andi Kleen <ak@linux.intel.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Mel Gorman <mgorman@suse.de>, Viresh Kumar <viresh.kumar@linaro.org>,
- Petr Mladek <pmladek@suse.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Jens Axboe <axboe@fb.com>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org,
- Sergey Senozhatsky <senozhatsky@chromium.org>, linux-crypto@vger.kernel.org,
- Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Mark Rutland <mark.rutland@arm.com>, Anup Patel <anup.patel@wdc.com>,
- linux-ia64@vger.kernel.org, David Airlie <airlied@linux.ie>,
- Roy Pledge <Roy.Pledge@nxp.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Solomon Peachy <pizza@shaftnet.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Dennis Zhou <dennis@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>,
- linux-alpha@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
- Stephen Boyd <sboyd@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
- Dinh Nguyen <dinguyen@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Subbaraya Sundeep <sbhatta@marvell.com>, Will Deacon <will@kernel.org>,
- Sagi Grimberg <sagi@grimberg.me>, linux-csky@vger.kernel.org,
- bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org,
- linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Arnd Bergmann <arnd@arndb.de>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
- Vineet Gupta <vgupta@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Mark Gross <markgross@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- David Laight <David.Laight@aculab.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Geetha sowjanya <gakula@marvell.com>, Ian Rogers <irogers@google.com>,
- kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Amitkumar Karwar <amitkarwar@gmail.com>, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, Lee Jones <lee.jones@linaro.org>,
- Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Jiri Olsa <jolsa@redhat.com>, Russell King <linux@armlinux.org.uk>,
- Andy Gross <agross@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Vivien Didelot <vivien.didelot@gmail.com>,
- Sunil Goutham <sgoutham@marvell.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- linux-s390@vger.kernel.org, Alexey Klimov <aklimov@redhat.com>,
- Heiko Carstens <hca@linux.ibm.com>, Hans de Goede <hdegoede@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>, Marcin Wojtas <mw@semihalf.com>,
- Vlastimil Babka <vbabka@suse.cz>, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Daniel Vetter <daniel@ffwll.ch>, Jason Wessel <jason.wessel@windriver.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Andy Shevchenko <andy@infradead.org>
+Cc: Haren Myneni <haren@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dnia 29 listopada 2021 06:38:39 UTC, Yury Norov <yury=2Enorov@gmail=2Ecom> =
-napisa=C5=82/a:
->On Sun, Nov 28, 2021 at 07:03:41PM +0100, mirq-test@rere=2Eqmqm=2Epl wrot=
-e:
->> On Sat, Nov 27, 2021 at 07:56:55PM -0800, Yury Norov wrote:
->> > In many cases people use bitmap_weight()-based functions like this:
->> >=20
->> > 	if (num_present_cpus() > 1)
->> > 		do_something();
->> >=20
->> > This may take considerable amount of time on many-cpus machines becau=
-se
->> > num_present_cpus() will traverse every word of underlying cpumask
->> > unconditionally=2E
->> >=20
->> > We can significantly improve on it for many real cases if stop traver=
-sing
->> > the mask as soon as we count present cpus to any number greater than =
-1:
->> >=20
->> > 	if (num_present_cpus_gt(1))
->> > 		do_something();
->> >=20
->> > To implement this idea, the series adds bitmap_weight_{eq,gt,le}
->> > functions together with corresponding wrappers in cpumask and nodemas=
-k=2E
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Excerpts from C=C3=A9dric Le Goater's message of November 26, 2021 5:13 p=
+m:
+>> On 11/26/21 06:21, Nicholas Piggin wrote:
+>>> KVM does not support VAS so guests always print a useless error on boot
+>>>=20
+>>>      vas: HCALL(398) error -2, query_type 0, result buffer 0x57f2000
+>>>=20
+>>> Change this to only print the message if the error is not H_FUNCTION.
 >>=20
->> Having slept on it I have more structured thoughts:
 >>=20
->> First, I like substituting bitmap_empty/full where possible - I think
->> the change stands on its own, so could be split and sent as is=2E
+>> Just being curious, why is it even called since "ibm,compression" should
+>> not be exposed in the DT ?
 >
->Ok, I can do it=2E
->
->> I don't like the proposed API very much=2E One problem is that it hides
->> the comparison operator and makes call sites less readable:
->>=20
->> 	bitmap_weight(=2E=2E=2E) > N
->>=20
->> becomes:
->>=20
->> 	bitmap_weight_gt(=2E=2E=2E, N)
->>=20
->> and:
->> 	bitmap_weight(=2E=2E=2E) <=3D N
->>=20
->> becomes:
->>=20
->> 	bitmap_weight_lt(=2E=2E=2E, N+1)
->> or:
->> 	!bitmap_weight_gt(=2E=2E=2E, N)
->>=20
->> I'd rather see something resembling memcmp() API that's known enough
->> to be easier to grasp=2E For above examples:
->>=20
->> 	bitmap_weight_cmp(=2E=2E=2E, N) > 0
->> 	bitmap_weight_cmp(=2E=2E=2E, N) <=3D 0
->> 	=2E=2E=2E
->
->bitmap_weight_cmp() cannot be efficient=2E Consider this example:
->
->bitmap_weight_lt(1000 0000 0000 0000, 1) =3D=3D false
->                 ^
->                 stop here
->
->bitmap_weight_cmp(1000 0000 0000 0000, 1) =3D=3D 0
->                                 ^
->                                 stop here
->
->I agree that '_gt' is less verbose than '>', but the advantage of=20
->'_gt' over '>' is proportional to length of bitmap, and it means
->that this API should exist=2E
+> It looks like vas does not test for it. I guess in theory there can be=20
+> other functions than compression implemented as an accelerator. Maybe
+> that's why?
 
-Thank you for the example=2E Indeed, for less-than to be efficient here yo=
-u would need to replace
- bitmap_weight_cmp(=2E=2E=2E, N) < 0
-with
- bitmap_weight_cmp(=2E=2E=2E, N-1) <=3D 0
+Yeah I guess, or it's just not structured that well. The vas platform
+code is a bit awkward, it's there to support drivers, but it's not
+actually driver code.
 
-It would still be more readable, I think=2E
+I think we can probably rework it so the vas code does nothing until a
+driver calls in to it.
 
-Best Regards
-Micha=C5=82 Miros=C5=82aw
+eg. something like below.
+
+cheers
+
+
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/=
+pseries/vas.c
+index b043e3936d21..dc3491fc919d 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -454,6 +454,8 @@ static const struct vas_user_win_ops vops_pseries =3D {
+ 	.close_win	=3D vas_deallocate_window, /* Close window */
+ };
+=20
++static int pseries_vas_init(void);
++
+ /*
+  * Supporting only nx-gzip coprocessor type now, but this API code
+  * extended to other coprocessor types later.
+@@ -463,7 +465,8 @@ int vas_register_api_pseries(struct module *mod, enum v=
+as_cop_type cop_type,
+ {
+ 	int rc;
+=20
+-	if (!copypaste_feat)
++	rc =3D pseries_vas_init();
++	if (rc || !copypaste_feat)
+ 		return -ENOTSUPP;
+=20
+ 	rc =3D vas_register_coproc_api(mod, cop_type, name, &vops_pseries);
+@@ -531,7 +534,7 @@ static int get_vas_capabilities(u8 feat, enum vas_cop_f=
+eat_type type,
+ 	return 0;
+ }
+=20
+-static int __init pseries_vas_init(void)
++static int pseries_vas_init(void)
+ {
+ 	struct hv_vas_cop_feat_caps *hv_cop_caps;
+ 	struct hv_vas_all_caps *hv_caps;
+@@ -592,4 +595,3 @@ static int __init pseries_vas_init(void)
+ 	kfree(hv_caps);
+ 	return rc;
+ }
+-machine_device_initcall(pseries, pseries_vas_init);
