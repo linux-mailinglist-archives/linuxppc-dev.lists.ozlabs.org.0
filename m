@@ -2,131 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152D54623FE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 23:09:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A4F462558
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 23:36:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2zzl0Dg5z3bXj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 09:09:55 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Fib1Lp1x;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J30Zj2Sp3z3cYs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 09:36:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=40.107.95.69;
- helo=nam02-dm3-obe.outbound.protection.outlook.com;
- envelope-from=ziy@nvidia.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256
- header.s=selector2 header.b=Fib1Lp1x; 
- dkim-atps=neutral
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam07on2069.outbound.protection.outlook.com [40.107.95.69])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.222.172;
+ helo=mail-qk1-f172.google.com; envelope-from=dennisszhou@gmail.com;
+ receiver=<UNKNOWN>)
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com
+ [209.85.222.172])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2zyt4lSYz2xCX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 09:09:07 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RIMOJQ3k/Jx3Gxb3BcTDYTqrojjKOBTI2EanJFhZYLwcAFHcBotXaa4KpJVuzHwWcJcGRstkOuA971n6UoMv1D5Y/B7HrPAQ31hpdBOMkKzSz4k8CGw0tgXPOHsXZjxeRxz3uziaDKcFmn82BtR6qgs4jfQqQsxF78JNTp4NlABCUQeSIvvrBuBpLwKtiJlYnU9OxqwbljD/bmS5a5efCCU7lKQjYdHonjnmWZcEc7WvK7K27OFgQc5dkl+zbAk/3P6DWEyTo1evwtAMPjbR3nLPZyJb+lzmGDd7lZnWUeDeJX5rSm+GAV7WUJF28kXj77tiZ2XHChGwzfXrp7k3zQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8zwazSGCLjIMi3AqEDquB0s4llI/Xb/R+68c/to+kpI=;
- b=ayq0DxD8Dv30VnBSeHTtN7iZbEjtTI/etuWBYDDQx8tuzdHOiLDOgUZNwOE5eq5ilLcgb2kNZ9cch+6TkOTGIwyQGXlhfNjSvFnypRXp/vxcIIVjCzjhc+7epcoKzIcZnZ9q6KKHVos92WvEi4s6LcQQrVXOx1PD5+0B4kk3OfR2Wmy6ZISxeE2IHKPyQ3gKQM97LkA6JtcAgflwX3y4s4HWNO4HSyv75wp0BjD6dvb25C04N3PUYCKxrUHrJCCDKBw8mOg+oNqU3yNev3IrPwkcpOVzxQWNG8zFF14B+wGYXPI5UFEqfq/i4FHZAJKAGkboduEHSRbx8t+Ckng+XQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8zwazSGCLjIMi3AqEDquB0s4llI/Xb/R+68c/to+kpI=;
- b=Fib1Lp1xkXUoDEg/NZZGQY7j9UHkpiOgKfx6OaQI5H2AjwPYIizmwvSU1DYRIV7vCkw5uYHoXPxtGC7LJltvOUV6I02kl5VgE0owp4/YcpfXxlfb8jVu8n+iiDOuphmoA7RrBF26i/l13hKevhsQYW1cmqz2Jdh2GmqOJI/hr1kPQ0Sz0txXoVN09sJnlqU/Wxe1/NdlVNU7Co6++JS3F5Ip0ZDJYtO88gB+I29qJ5DN2jZfaChg/OzVVt8Ai3lsbdlvCrNLrKzh/hXpOS/RgthS5jKLywi2yGNtKpXxDOFd1wL6Dwkt9fGW++8i14XLmRsjS3nl4Ndcu2uqFGMTVw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN2PR12MB3823.namprd12.prod.outlook.com (2603:10b6:208:168::26)
- by MN2PR12MB3983.namprd12.prod.outlook.com (2603:10b6:208:169::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4734.23; Mon, 29 Nov
- 2021 22:09:00 +0000
-Received: from MN2PR12MB3823.namprd12.prod.outlook.com
- ([fe80::2dea:e478:592:6d66]) by MN2PR12MB3823.namprd12.prod.outlook.com
- ([fe80::2dea:e478:592:6d66%3]) with mapi id 15.20.4734.024; Mon, 29 Nov 2021
- 22:09:00 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [RFC PATCH 0/3] Use pageblock_order for cma and
- alloc_contig_range alignment.
-Date: Mon, 29 Nov 2021 17:08:57 -0500
-X-Mailer: MailMate (1.14r5850)
-Message-ID: <35A20739-152A-450E-8535-2236D2B28748@nvidia.com>
-In-Reply-To: <52dbf824-76be-cc34-3983-d45510b1b618@suse.cz>
-References: <20211115193725.737539-1-zi.yan@sent.com>
- <3083463d-978b-fbe6-dadf-670d400ed437@suse.cz>
- <AEFF28CF-0ED8-450F-96A4-A6CD59CB1F3D@nvidia.com>
- <BF8FB68A-6E1D-4465-8A2B-884FC034660B@nvidia.com>
- <52dbf824-76be-cc34-3983-d45510b1b618@suse.cz>
-Content-Type: multipart/signed;
- boundary="=_MailMate_4B5044BF-6C2C-47FF-8D31-06E6118699F1_=";
- micalg=pgp-sha512; protocol="application/pgp-signature"
-X-ClientProxiedBy: BL1PR13CA0184.namprd13.prod.outlook.com
- (2603:10b6:208:2be::9) To MN2PR12MB3823.namprd12.prod.outlook.com
- (2603:10b6:208:168::26)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J30ZH3Fljz2xrl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 09:36:22 +1100 (AEDT)
+Received: by mail-qk1-f172.google.com with SMTP id de30so24729237qkb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 14:36:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=oYq4GIQm8QrcJcBYcEtsoL1OUQLtI2uaYWFL3tBum1w=;
+ b=m4lpFR/dFMCN5KrFJq/LEuuRx4q6I203tR3iB3UnaJp3vUI3qa58U0iF8DmqUcGQz/
+ D0WWcMCRfh1wWQVsHABm2djH+aUbOUSkFBCAfWFPWwN6wzYYQraFahwQVVUHVddyZ06A
+ NANtXUlAtEeUcx5lPoxa7rN7Jwr99LjlrkCbMyMhf3Jg9EcnRKxeQDFkr1EKj2D4n0wi
+ Lznx8CsKWy8X64Qok0pSwhF6kCR3L0iU0ma/hR/GnQwNBHVdXKOeMmG74RUXMdnw7aIy
+ gAg5BbB9d2q3rTYDEiYNynqBCqIFgsgMVgWZjIuV8VphL/o4mdNUKP4+Ql6jnZl3g/WT
+ Xy+w==
+X-Gm-Message-State: AOAM5306+idcyl9lU/nNv/U7VvyErt1GIOdHJvimhrN/7lcWMAg8PcSC
+ 7ZSNRyXlroFZbuaR5k1NbHI=
+X-Google-Smtp-Source: ABdhPJzJz5BEY0tJAESTBlt73gwvqVTS7JmG7hyL3hoGsSGW1neE0oIGr731XokwLH4ohx1EX356dw==
+X-Received: by 2002:a05:620a:4092:: with SMTP id
+ f18mr31107993qko.629.1638225377694; 
+ Mon, 29 Nov 2021 14:36:17 -0800 (PST)
+Received: from fedora (pool-173-68-57-129.nycmny.fios.verizon.net.
+ [173.68.57.129])
+ by smtp.gmail.com with ESMTPSA id 9sm8636358qkm.5.2021.11.29.14.36.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Nov 2021 14:36:17 -0800 (PST)
+Date: Mon, 29 Nov 2021 17:36:15 -0500
+From: Dennis Zhou <dennis@kernel.org>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH RFC 1/4] mm: percpu: Generalize percpu related config
+Message-ID: <YaVV38QSn6LEBKH/@fedora>
+References: <20211121093557.139034-1-wangkefeng.wang@huawei.com>
+ <20211121093557.139034-2-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Received: from [10.2.82.121] (130.44.175.231) by
- BL1PR13CA0184.namprd13.prod.outlook.com (2603:10b6:208:2be::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4755.8 via Frontend Transport; Mon, 29 Nov 2021 22:08:59 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ef4ec0ce-0b24-40a2-1f6d-08d9b384d85f
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3983:
-X-Microsoft-Antispam-PRVS: <MN2PR12MB3983B7AAE86B10EB38E4613BC2669@MN2PR12MB3983.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: WZJ9tAz8A6MJBJ3QUTSg4tCidVPbl15Dts+RpmYDFfe0LNKSkIywoSHRIocl+f5zoGoX99RlQdEfVkPna3PJlJGoXzwN0tm9jWDdM/4j6ELnLnhyoCi1LG898D9c0hYhYg6DYQjRneDtodbld7mxH8KHzBT8SBViAeZClhJqr1khyUEhXVm+MNuf4VMsdbxrTwSCVygB/LZMgnhUL26qwKxWWRzozB2HhqOGHeV7PNcnU8OaDkiIo34L1/5oHgcWflJFHkiZytSA1D3KhTV0+XNyIejrl3ZGnHOg+WLTdVOZseo9SjbPgKV4Vp8BKHVobeQzsFLHY1lK1TTCVtVEa4l/oAtIyZGezsWch0khzV4/c89xguir64ElSEiF4Q/Mh1gfDQoCIZtXkuceRq4gghNPfz27BO1CBnwZWnb1La1gc9QhTt4ncQJNpqOwOnUvKwegD0Psifcbit/y2nrE+eOkCW+jAyt+D+SYb9lvi4EhfLIlbfJpdGNY131y05ihCaqgnslre+EGSLLUr7rA8g8tCnHE7u+8tCNcAK+Vi94BJaw9HEX4XSe0LWzCQYaSxNi69+flH7lVPD4hzFDjdoCnzpVvk6rn2Vq5QoOoh816IwtcII9v8xLcaRfK4ux39sF28z7znFTQQfKoFoGjyPxZqDke+17dJgQUwCDYJbUHAqqo7ERriTPzLtRWkO5SH+DFNrOH4ib+YX0TWv3Lsicq1PTUI22x5nzHr8HkLOU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MN2PR12MB3823.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(6486002)(16576012)(26005)(2616005)(6916009)(38100700002)(8936002)(53546011)(54906003)(36756003)(2906002)(66946007)(66556008)(956004)(186003)(316002)(83380400001)(33656002)(508600001)(86362001)(8676002)(4326008)(235185007)(5660300002)(21480400003)(66476007)(7416002)(45980500001)(72826004);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?KFivDfphpzyNfU4JRr13Xl4z6stZwmv+etn9zR/VX9AHy+HXuyQaG85Lm0Z0?=
- =?us-ascii?Q?zaz0TK6n3ZNT0hUVUDL0F29Lpn4z8VsmYdfx8UaQTn8kKu3Xx4K5zs9G/wgs?=
- =?us-ascii?Q?/DNDUSSQzNvvSGYsVq1L/7nrrpuimkZawcAJIlU6kM15/Xir2tDnqnlC9jgW?=
- =?us-ascii?Q?bNH6MHIiLYovMNpbHPWISng/f7zro6FTjrGHNWXxSz209zhn5MCkwyewwW6V?=
- =?us-ascii?Q?zoO4DM3UnyQNurmHgIjHl48ZPw2FcrxQ68/OmgS0jkiaDrfAQhF+gYjF1552?=
- =?us-ascii?Q?MvJ2Afp22509JAJlkObLJWCUjNlRY75X/cHlde9MtwNU0jkvbWIO6w5aeFDG?=
- =?us-ascii?Q?7s7aYnILH8DRDb35Wa3uNTTM9dKGOwJ94oTPqU2N5eMsRIWMrVImo3tk9Qt9?=
- =?us-ascii?Q?Ec1ssTMBM810nywI89apRMSUaR6sCIbCuPoHPxmspC4zES0J74h+GoO023du?=
- =?us-ascii?Q?M+Nw8rLSBVIFJNwU3vBkj7uKoAmUfRmNaOFML1vVY1YX8wU4DgLf+U6bk8a7?=
- =?us-ascii?Q?aw1aU8346oej/l5U36J569jKFGo7RlQNNWsNEKGfyqH9a91qLa5SV4scpSyT?=
- =?us-ascii?Q?0dbVykBlOnFjapTR3njXrWCRytVVEtIC41bjnRViXf2TLW7Gp1RC/eYljVJU?=
- =?us-ascii?Q?TUOrlUvn+haZYuMoiEcL7ctUoVizSG7BPeKEHG2WxKgom4hJYsnoR4CId2Pg?=
- =?us-ascii?Q?xAbenPwTPh7qG2A0mdCidff7kXsUhSg6OMuM1Yg/D0P4MWFB3PeRrCgFO/HF?=
- =?us-ascii?Q?5lLve2Eg7nyJL05o/8nmsQIcdc9mYiCLwJQNUuAwbhdCulaA6/Ogjw4dCBQv?=
- =?us-ascii?Q?3Zy2atXdf1fa8QJIITfOFYpn/d12NvcBBHCqgHE5x4GXqnR7x4+KXnsKx0FF?=
- =?us-ascii?Q?XvhcpvJ4IdQY8bVrK8tIlVT/yA9zfrIj19sCFTbPsRjYjdDoDc5t48PEm5KT?=
- =?us-ascii?Q?W80YawPwkRR9/8E+oTCU/ReFKqcjYeZfSXTb429uJ1Q7GtaokDxfIFcMq2Qe?=
- =?us-ascii?Q?3n2oKRyFhRYQwKuzgnL2xCSXK4QWEfTHCCjK+GKXcGlJcA5qNAMIwnSphnO6?=
- =?us-ascii?Q?Z8xdP3BbNTROvR2aTQHNKJ9HG438qt92g9luhP5+ZaDf4WfEXXc1eUgQlEnb?=
- =?us-ascii?Q?WfMdz7qgIAGByJXYJDEV1K5VX71F3kzXIAI6IN3qKxdjuZ8mUbukqRGpiB4I?=
- =?us-ascii?Q?junhmqzrg4nd4tF2E2kSDLVBZOfWtl1Od/gyrdUaIgS5+WJiYdDse0JvCjrC?=
- =?us-ascii?Q?YMZm8mYY78GgiGCtefkdnEU56fpPwrGH7zdd3AjpAA+Dkho1E/O4b7XKLAo+?=
- =?us-ascii?Q?03OF/sFRkK1eZ59/Ykgz+V2xbKlNVCiTs/7tKfI3XMz+iP1NBm/vp8I4A8Er?=
- =?us-ascii?Q?OmixYvP1v0g0kewwxE/IzYYNerx3N1Hy39HJjLoeYHgwAfd8z15I2l787fAd?=
- =?us-ascii?Q?qMc9XIGCZP1p7AhjRYL7Y+8f1/jt6Lqnhw5c12zHryug3PrzTQlo3m8TkXG6?=
- =?us-ascii?Q?kfQiQIv2GzeFce4UrqAEqgY4o117xP8EjqaZpxRJrR+yBMwrpMioAav0NeMU?=
- =?us-ascii?Q?katquDJ7xfSOGzK9/Hk=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef4ec0ce-0b24-40a2-1f6d-08d9b384d85f
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3823.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2021 22:09:00.0281 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bklzwKCTclG+BWxJtbSwfaiA+ZwNF6OMSsZAkkBQ+FsXwnTcNz7Zf6S3SJ1zlbY5
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3983
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211121093557.139034-2-wangkefeng.wang@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -138,87 +66,350 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org,
- Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org, paulus@samba.org,
+ hpa@zytor.com, sparclinux@vger.kernel.org, cl@linux.com, will@kernel.org,
+ linux-riscv@lists.infradead.org, x86@kernel.org, mingo@redhat.com,
+ catalin.marinas@arm.com, dennis@kernel.org, aou@eecs.berkeley.edu,
+ bp@alien8.de, paul.walmsley@sifive.com, tglx@linutronix.de,
+ linux-arm-kernel@lists.infradead.org, tsbogend@alpha.franken.de,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, palmer@dabbelt.com,
+ tj@kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---=_MailMate_4B5044BF-6C2C-47FF-8D31-06E6118699F1_=
-Content-Type: text/plain
+Hello,
 
-On 23 Nov 2021, at 12:32, Vlastimil Babka wrote:
+On Sun, Nov 21, 2021 at 05:35:54PM +0800, Kefeng Wang wrote:
+> The HAVE_SETUP_PER_CPU_AREA/NEED_PER_CPU_EMBED_FIRST_CHUNK/
+> NEED_PER_CPU_PAGE_FIRST_CHUNK/USE_PERCPU_NUMA_NODE_ID configs,
+> which has duplicate definitions on platforms that subscribe it.
+> 
+> Move them into mm, drop these redundant definitions and instead
+> just select it on applicable platforms.
+> 
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+>  arch/arm64/Kconfig   | 20 ++++----------------
+>  arch/ia64/Kconfig    |  9 ++-------
+>  arch/mips/Kconfig    | 10 ++--------
+>  arch/powerpc/Kconfig | 17 ++++-------------
+>  arch/riscv/Kconfig   | 10 ++--------
+>  arch/sparc/Kconfig   | 12 +++---------
+>  arch/x86/Kconfig     | 17 ++++-------------
+>  mm/Kconfig           | 12 ++++++++++++
+>  8 files changed, 33 insertions(+), 74 deletions(-)
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index c4207cf9bb17..4ff73299f8a9 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -1135,6 +1135,10 @@ config NUMA
+>  	select GENERIC_ARCH_NUMA
+>  	select ACPI_NUMA if ACPI
+>  	select OF_NUMA
+> +	select HAVE_SETUP_PER_CPU_AREA
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+> +	select NEED_PER_CPU_PAGE_FIRST_CHUNK
+> +	select USE_PERCPU_NUMA_NODE_ID
+>  	help
+>  	  Enable NUMA (Non-Uniform Memory Access) support.
+>  
+> @@ -1151,22 +1155,6 @@ config NODES_SHIFT
+>  	  Specify the maximum number of NUMA Nodes available on the target
+>  	  system.  Increases memory reserved to accommodate various tables.
+>  
+> -config USE_PERCPU_NUMA_NODE_ID
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config NEED_PER_CPU_PAGE_FIRST_CHUNK
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  source "kernel/Kconfig.hz"
+>  
+>  config ARCH_SPARSEMEM_ENABLE
+> diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+> index 1e33666fa679..703952819e10 100644
+> --- a/arch/ia64/Kconfig
+> +++ b/arch/ia64/Kconfig
+> @@ -32,6 +32,7 @@ config IA64
+>  	select HAVE_FTRACE_MCOUNT_RECORD
+>  	select HAVE_DYNAMIC_FTRACE if (!ITANIUM)
+>  	select HAVE_FUNCTION_TRACER
+> +	select HAVE_SETUP_PER_CPU_AREA
+>  	select TTY
+>  	select HAVE_ARCH_TRACEHOOK
+>  	select HAVE_VIRT_CPU_ACCOUNTING
+> @@ -88,9 +89,6 @@ config GENERIC_CALIBRATE_DELAY
+>  	bool
+>  	default y
+>  
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool y
+> -
+>  config DMI
+>  	bool
+>  	default y
+> @@ -292,6 +290,7 @@ config NUMA
+>  	bool "NUMA support"
+>  	depends on !FLATMEM
+>  	select SMP
+> +	select USE_PERCPU_NUMA_NODE_ID
+>  	help
+>  	  Say Y to compile the kernel to support NUMA (Non-Uniform Memory
+>  	  Access).  This option is for configuring high-end multiprocessor
+> @@ -311,10 +310,6 @@ config HAVE_ARCH_NODEDATA_EXTENSION
+>  	def_bool y
+>  	depends on NUMA
+>  
+> -config USE_PERCPU_NUMA_NODE_ID
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  config HAVE_MEMORYLESS_NODES
+>  	def_bool NUMA
+>  
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index de60ad190057..c106a2080877 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -2666,6 +2666,8 @@ config NUMA
+>  	bool "NUMA Support"
+>  	depends on SYS_SUPPORTS_NUMA
+>  	select SMP
+> +	select HAVE_SETUP_PER_CPU_AREA
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+>  	help
+>  	  Say Y to compile the kernel to support NUMA (Non-Uniform Memory
+>  	  Access).  This option improves performance on systems with more
+> @@ -2676,14 +2678,6 @@ config NUMA
+>  config SYS_SUPPORTS_NUMA
+>  	bool
+>  
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  config RELOCATABLE
+>  	bool "Relocatable kernel"
+>  	depends on SYS_SUPPORTS_RELOCATABLE
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index dea74d7717c0..8badd39854a0 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -55,15 +55,6 @@ config ARCH_MMAP_RND_COMPAT_BITS_MIN
+>  	default 9 if PPC_16K_PAGES	#  9 = 23 (8MB) - 14 (16K)
+>  	default 11			# 11 = 23 (8MB) - 12 (4K)
+>  
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool PPC64
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y if PPC64
+> -
+> -config NEED_PER_CPU_PAGE_FIRST_CHUNK
+> -	def_bool y if PPC64
+> -
+>  config NR_IRQS
+>  	int "Number of virtual interrupt numbers"
+>  	range 32 1048576
+> @@ -240,6 +231,7 @@ config PPC
+>  	select HAVE_REGS_AND_STACK_ACCESS_API
+>  	select HAVE_RELIABLE_STACKTRACE
+>  	select HAVE_RSEQ
+> +	select HAVE_SETUP_PER_CPU_AREA		if PPC64
+>  	select HAVE_SOFTIRQ_ON_OWN_STACK
+>  	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
+>  	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
+> @@ -254,6 +246,8 @@ config PPC
+>  	select MMU_GATHER_RCU_TABLE_FREE
+>  	select MODULES_USE_ELF_RELA
+>  	select NEED_DMA_MAP_STATE		if PPC64 || NOT_COHERENT_CACHE
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK	if PPC64
+> +	select NEED_PER_CPU_PAGE_FIRST_CHUNK	if PPC64
+>  	select NEED_SG_DMA_LENGTH
+>  	select OF
+>  	select OF_DMA_DEFAULT_COHERENT		if !NOT_COHERENT_CACHE
+> @@ -659,6 +653,7 @@ config NUMA
+>  	bool "NUMA Memory Allocation and Scheduler Support"
+>  	depends on PPC64 && SMP
+>  	default y if PPC_PSERIES || PPC_POWERNV
+> +	select USE_PERCPU_NUMA_NODE_ID
+>  	help
+>  	  Enable NUMA (Non-Uniform Memory Access) support.
+>  
+> @@ -672,10 +667,6 @@ config NODES_SHIFT
+>  	default "4"
+>  	depends on NUMA
+>  
+> -config USE_PERCPU_NUMA_NODE_ID
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  config HAVE_MEMORYLESS_NODES
+>  	def_bool y
+>  	depends on NUMA
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 821252b65f89..bf66bcbc5a39 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -334,6 +334,8 @@ config NUMA
+>  	select GENERIC_ARCH_NUMA
+>  	select OF_NUMA
+>  	select ARCH_SUPPORTS_NUMA_BALANCING
+> +	select USE_PERCPU_NUMA_NODE_ID
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+>  	help
+>  	  Enable NUMA (Non-Uniform Memory Access) support.
+>  
+> @@ -349,14 +351,6 @@ config NODES_SHIFT
+>  	  Specify the maximum number of NUMA Nodes available on the target
+>  	  system.  Increases memory reserved to accommodate various tables.
+>  
+> -config USE_PERCPU_NUMA_NODE_ID
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  config RISCV_ISA_C
+>  	bool "Emit compressed instructions when building Linux"
+>  	default y
+> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+> index 66fc08646be5..a6765e0fe6a8 100644
+> --- a/arch/sparc/Kconfig
+> +++ b/arch/sparc/Kconfig
+> @@ -97,6 +97,9 @@ config SPARC64
+>  	select PCI_DOMAINS if PCI
+>  	select ARCH_HAS_GIGANTIC_PAGE
+>  	select HAVE_SOFTIRQ_ON_OWN_STACK
+> +	select HAVE_SETUP_PER_CPU_AREA
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+> +	select NEED_PER_CPU_PAGE_FIRST_CHUUNK
+>  
+>  config ARCH_PROC_KCORE_TEXT
+>  	def_bool y
+> @@ -123,15 +126,6 @@ config AUDIT_ARCH
+>  	bool
+>  	default y
+>  
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool y if SPARC64
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y if SPARC64
+> -
+> -config NEED_PER_CPU_PAGE_FIRST_CHUNK
+> -	def_bool y if SPARC64
+> -
+>  config MMU
+>  	bool
+>  	default y
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 7399327d1eff..ca120a1f5857 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -239,6 +239,7 @@ config X86
+>  	select HAVE_REGS_AND_STACK_ACCESS_API
+>  	select HAVE_RELIABLE_STACKTRACE		if X86_64 && (UNWINDER_FRAME_POINTER || UNWINDER_ORC) && STACK_VALIDATION
+>  	select HAVE_FUNCTION_ARG_ACCESS_API
+> +	select HAVE_SETUP_PER_CPU_AREA
+>  	select HAVE_SOFTIRQ_ON_OWN_STACK
+>  	select HAVE_STACKPROTECTOR		if CC_HAS_SANE_STACKPROTECTOR
+>  	select HAVE_STACK_VALIDATION		if X86_64
+> @@ -252,6 +253,8 @@ config X86
+>  	select HAVE_GENERIC_VDSO
+>  	select HOTPLUG_SMT			if SMP
+>  	select IRQ_FORCED_THREADING
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+> +	select NEED_PER_CPU_PAGE_FIRST_CHUNK
+>  	select NEED_SG_DMA_LENGTH
+>  	select PCI_DOMAINS			if PCI
+>  	select PCI_LOCKLESS_CONFIG		if PCI
+> @@ -331,15 +334,6 @@ config ARCH_HAS_CPU_RELAX
+>  config ARCH_HAS_FILTER_PGPROT
+>  	def_bool y
+>  
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool y
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y
+> -
+> -config NEED_PER_CPU_PAGE_FIRST_CHUNK
+> -	def_bool y
+> -
+>  config ARCH_HIBERNATION_POSSIBLE
+>  	def_bool y
+>  
+> @@ -1557,6 +1551,7 @@ config NUMA
+>  	depends on SMP
+>  	depends on X86_64 || (X86_32 && HIGHMEM64G && X86_BIGSMP)
+>  	default y if X86_BIGSMP
+> +	select USE_PERCPU_NUMA_NODE_ID
+>  	help
+>  	  Enable NUMA (Non-Uniform Memory Access) support.
+>  
+> @@ -2430,10 +2425,6 @@ config ARCH_HAS_ADD_PAGES
+>  config ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
+>  	def_bool y
+>  
+> -config USE_PERCPU_NUMA_NODE_ID
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  menu "Power management and ACPI options"
+>  
+>  config ARCH_HIBERNATION_HEADER
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 28edafc820ad..6bc5d780c51b 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -432,6 +432,18 @@ config NEED_PER_CPU_KM
+>  	bool
+>  	default y
+>  
+> +config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> +	bool
+> +
+> +config NEED_PER_CPU_PAGE_FIRST_CHUNK
+> +	bool
+> +
+> +config USE_PERCPU_NUMA_NODE_ID
+> +	bool
+> +
+> +config HAVE_SETUP_PER_CPU_AREA
+> +	bool
+> +
+>  config CLEANCACHE
+>  	bool "Enable cleancache driver to cache clean pages if tmem is present"
+>  	help
+> -- 
+> 2.26.2
+> 
 
-> On 11/23/21 17:35, Zi Yan wrote:
->> On 19 Nov 2021, at 10:15, Zi Yan wrote:
->>>>> From what my understanding, cma required alignment of
->>>>> max(MAX_ORDER - 1, pageblock_order), because when MIGRATE_CMA was introduced,
->>>>> __free_one_page() does not prevent merging two different pageblocks, when
->>>>> MAX_ORDER - 1 > pageblock_order. But current __free_one_page() implementation
->>>>> does prevent that.
->>>>
->>>> But it does prevent that only for isolated pageblock, not CMA, and yout
->>>> patchset doesn't seem to expand that to CMA? Or am I missing something.
->>>
->>> Yeah, you are right. Originally, I thought preventing merging isolated pageblock
->>> with other types of pageblocks is sufficient, since MIGRATE_CMA is always
->>> converted from MIGRATE_ISOLATE. But that is not true. I will rework the code.
->>> Thanks for pointing this out.
->>>
->>
->> I find that two pageblocks with different migratetypes, like MIGRATE_RECLAIMABLE
->> and MIGRATE_MOVABLE can be merged into a single free page after I checked
->> __free_one_page() in detail and printed pageblock information during buddy page
->> merging.
->
-> Yes, that can happen.
->
-> I am not sure what consequence it will cause. Do you have any idea?
->
-> For MIGRATE_RECLAIMABLE or MIGRATE_MOVABLE or even MIGRATE_UNMOVABLE it's
-> absolutely fine. As long as these pageblocks are fully free (and they are if
-> it's a single free page spanning 2 pageblocks), they can be of any of these
-> type, as they can be reused as needed without causing fragmentation.
->
-> But in case of MIGRATE_CMA and MIGRATE_ISOLATE, uncontrolled merging would
-> break the specifics of those types. That's why the code is careful for
-> MIGRATE_ISOLATE, and MIGRATE_CMA was until now done in MAX_ORDER granularity.
+This makes sense and looks good. A series like this is a little tricky.
+The latter patches change the contracts so it'd be easiest to run it
+through my tree. We'd need to get explicit acks from each arch
+maintainer to make sure they're fine with this.
 
-Thanks for the explanation. Basically migratetypes that can fall back to each
-other can be merged into a single free page, right?
-
-How about MIGRATE_HIGHATOMIC? It should not be merged with other migratetypes
-from my understanding.
-
-
---
-Best Regards,
-Yan, Zi
-
---=_MailMate_4B5044BF-6C2C-47FF-8D31-06E6118699F1_=
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQJDBAEBCgAtFiEEh7yFAW3gwjwQ4C9anbJR82th+ooFAmGlT3kPHHppeUBudmlk
-aWEuY29tAAoJEJ2yUfNrYfqK0ToP/3xsHoF15mPR7E4A+wmWq5NufZnqLsDp/BYx
-fTspt0RwFFCCYfGmltjtvaR3oJ6ZR/Zq4VGAH4bQqhV3RXW3ln+J10tGEr2P2/c3
-jkSlXj4buDI+7M310afqzeTgp4OKZ2Bl5cEg2VcgGfSi4peM3ndSzc/MFwOzh3vH
-L7ObLigzaUvuJbD3Rp6xq3GDj+53JUZh8wkjZuRlX2RsGVu/tjS2Or+jtP7+wL50
-WkcsyrEfOR8I7C92uArBGifAJQEP9jevsnwN6GJwI/ZEmga0djUBOL5AZcS2HEd4
-ikd9vESjZNs7WSO2j7Y84LhPojaHA5v1xlkoNOdTbw3ndg/LP4nwlAMqs6/2fP3Q
-7gmDAfOW8iZ9r9inH0HNFn0O+vtc+2X2TCgU0FPjv6osUzRc9SXJmTASPmwAa38C
-SUol5lwxsl78vG+A0knxOyusiK1Mb5iouJy/hPmuteobiCXS5PGe4ZL7WAm0Qv0U
-VdCBpuxcoB0GahO9KXWBuQ7EqCo2ubYKvsKQBeyByScKecbuKc55KMIUROPWONiB
-7jsNUrZ++nQzRQ176Az5Ig69f09f6e4BnphGCkLhhEvmJUu7MDbQT4NPEOjippHY
-MbAnuKkUDEF8xY904hlNFcDetthF+ARWVNlx8qWBKqSzfVDodRwNqNBsqoMs1X8o
-/QiCLa1r
-=neNK
------END PGP SIGNATURE-----
-
---=_MailMate_4B5044BF-6C2C-47FF-8D31-06E6118699F1_=--
+Thanks,
+Dennis
