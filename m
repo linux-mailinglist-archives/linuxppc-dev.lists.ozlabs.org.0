@@ -2,82 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6AF54613FD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 12:39:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16500461514
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 13:30:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2k0l4bV8z3cFh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 22:39:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2l7Z6vqqz3c6D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 23:30:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j7IepB0c;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=U2tIEVQP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22f;
- helo=mail-lj1-x22f.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::135;
+ helo=mail-lf1-x135.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=j7IepB0c; dkim-atps=neutral
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com
- [IPv6:2a00:1450:4864:20::22f])
+ header.s=20210112 header.b=U2tIEVQP; dkim-atps=neutral
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com
+ [IPv6:2a00:1450:4864:20::135])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2jv92gZMz305t
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 22:34:59 +1100 (AEDT)
-Received: by mail-lj1-x22f.google.com with SMTP id k2so33856261lji.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 03:34:59 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2kHY737Rz2ymc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 22:52:39 +1100 (AEDT)
+Received: by mail-lf1-x135.google.com with SMTP id t26so43816651lfk.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 03:52:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=subject:to:cc:references:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=euaa0MK3qpl38vu/xm/JZntaVOCHcXyS5pdHcr9Cv9Y=;
- b=j7IepB0c7QsF+gZGn8sLWlXDCQr83Yhq9Uwq9fJmgvQdhWWCer0J3Db/gwAG0Blu3V
- KLIiDLWANtPW2sX+O/m2jQqBDLC+4NfkDAxYnlnBfxi7qlePYrZZysw0Kj4NFPMagEe7
- 5Z58UnljUl1PUrtNNqQtNaR8rjEOAOjAptz9aZ81TzHnOGVzQL+Ka518l0o45nrM05c1
- wTSb3kazkFWdVLhzdtamDwO56fb5XsgOF41m+pkkrOCbpYLS/NmBUtznRV2wcvObV+eX
- /QUCocD7Th3AP/6bIoc90HuBDrH/5Le5nNAAFps88ziv0187Td+CIqcDZxoQmDkSEFJt
- ILjw==
+ bh=iWUEeMgXKbO77AD47foBEfa7mbQmssJKLzk8yjSOYSY=;
+ b=U2tIEVQPLPCeMdCu1GCSmBGmgd4b3cE0YUaVA7Ptat003bULsFRIKB0ShMWsNVLpnC
+ gIiNSuaR89vPD5NvBHVAJptiz6fEnTOzANkyKGw87fayadLAwoS9823DcSjh7ICj4+z3
+ 8BMKd+pKMrfT65KNK+2vA4wn0Ab/36kY6JZj8X/gHMh+mTKic7nzZ9Q5pTe+scSSAMrR
+ oGXpQFc+Y/9JY1X3lRTxbgKArCnrSUBW7q8iJYRRAFJ8bg8FkN1DAbSGthXoerdFc3rX
+ j1XUuuRyr6MK1Wp6xTbZoTqp3eksfHnUZLI3T8PZzPTIBG4u+ANjjJp1zdOJ3alnPslD
+ h0Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=euaa0MK3qpl38vu/xm/JZntaVOCHcXyS5pdHcr9Cv9Y=;
- b=egsOthLqzKxmY2vaYuxv3XAT5JIuqI4gwhqRKr6DBZIOmq6QaY8C1PZDMPZudWn+8R
- 1WkQjKhRcly/nLHl+hvPqGN3hAQUEbcmXacwLPbKNvK9axy/45yNorqdUrigaJsDEH/P
- xHk5PSGIUDzMdcyVLkSUbh6k2nIOJhRnyZv/kVfypKo0GSE+TfS8Ol+UnHOtVYKoYSFt
- Wb+HJzUoxOn5/u4nLrBm4/sLSn/+RdPrYeJ+DHPFgTznNsxJjdcQyaxrkQ9Hw85Ywia1
- OtfmEoLDmjoFba5yKlT4nwWS1JuF4e8NnKTaB67sikrRjhcUWT4QlTHkpy7hkrt2afUn
- hI/w==
-X-Gm-Message-State: AOAM530mXrPNk4yS4wcpMQB9fcbp8w9KZXBnbNoBtDZ0tAcdxbAc/jpr
- ItFywTVHCBpci7N6xqlQtEk=
-X-Google-Smtp-Source: ABdhPJzVpycz41Q2saZagDnrHTPX3H5Cn8S9UMBEs5Q4UAjlx4ArmiP2PAHXWXd2FxMxn0TZfV9KEQ==
-X-Received: by 2002:a2e:814b:: with SMTP id t11mr47973901ljg.171.1638185691187; 
- Mon, 29 Nov 2021 03:34:51 -0800 (PST)
+ bh=iWUEeMgXKbO77AD47foBEfa7mbQmssJKLzk8yjSOYSY=;
+ b=DPd8pBK3MHFzBjVwzBrUDH9mJ82Jsqmwf0Lu45XHgB3XStXh+q7Dx39X8gORQ617lm
+ vhY8jS/42vzlzfUGri94oHHzA2OBGn5szxdjaWTtwz9QRlr8Nzlt7FB+DCkC+QTgIU/d
+ fJxKp2zpNCpA7ts1ROAl1xxXi4gOuMlxEBzvk+T6R5QSC4ee/UtZe1TmitcmZI9p5qEf
+ zawXm27zoZTy65ZwRYOkC4n6UAoY4bnzHBLI+RX0I+4G3crmRW156MfM6MLYxEN/PqXG
+ w5Tr130E0KiB3iFWiIws2TNDuYY9nGitrVW9drKwLSf3DSiKfHgdR9HrN9VfDT1HgtRc
+ +Plg==
+X-Gm-Message-State: AOAM531lIVcHKHku0mV12oqxlG5Il4Ta0MpfyWroYYyYsB71ANPARPGS
+ nKjnXCahuR8Q9Bn4jyOoFV8=
+X-Google-Smtp-Source: ABdhPJyV4a2kK7Hf+W0BvWJCYp3tm9l5nhuE3mizXVMpliBSqh/r6CyMfNuIh0FZ0TT44eUwwVCrkw==
+X-Received: by 2002:a05:6512:3a91:: with SMTP id
+ q17mr46080008lfu.425.1638186755724; 
+ Mon, 29 Nov 2021 03:52:35 -0800 (PST)
 Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru.
  [94.29.46.111])
- by smtp.googlemail.com with ESMTPSA id n2sm131579ljq.30.2021.11.29.03.34.49
+ by smtp.googlemail.com with ESMTPSA id o15sm1323059lfd.164.2021.11.29.03.52.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Nov 2021 03:34:50 -0800 (PST)
-Subject: Re: [PATCH v4 05/25] reboot: Warn if restart handler has duplicated
- priority
+ Mon, 29 Nov 2021 03:52:35 -0800 (PST)
+Subject: Re: [PATCH v4 08/25] kernel: Add combined power-off+restart handler
+ call chain API
 To: =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
 References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-6-digetx@gmail.com> <YaLNOJTM+lVq+YNS@qmqm.qmqm.pl>
- <033ddf2a-6223-1a82-ec64-30f17c891f67@gmail.com>
- <YaQeQgbW+CjEdsqG@qmqm.qmqm.pl>
+ <20211126180101.27818-9-digetx@gmail.com> <YaLQqks8cB0vWp6Q@qmqm.qmqm.pl>
+ <9213569e-0f40-0df1-4710-8dab564e12d6@gmail.com>
+ <YaPx0kY7poGpwCL9@qmqm.qmqm.pl>
+ <1fa2d9d5-f5f6-77f5-adf6-827921acce49@gmail.com>
+ <YaQgiLw03lPyvuhr@qmqm.qmqm.pl>
 From: Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <091321ea-4919-0579-88a8-23d05871575d@gmail.com>
-Date: Mon, 29 Nov 2021 14:34:40 +0300
+Message-ID: <33d1dfa7-e90e-d174-7375-836c15e7f818@gmail.com>
+Date: Mon, 29 Nov 2021 14:52:25 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <YaQeQgbW+CjEdsqG@qmqm.qmqm.pl>
+In-Reply-To: <YaQgiLw03lPyvuhr@qmqm.qmqm.pl>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Mon, 29 Nov 2021 22:39:17 +1100
+X-Mailman-Approved-At: Mon, 29 Nov 2021 23:30:17 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -127,69 +130,57 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-29.11.2021 03:26, Michał Mirosław пишет:
-> On Mon, Nov 29, 2021 at 12:06:19AM +0300, Dmitry Osipenko wrote:
->> 28.11.2021 03:28, Michał Mirosław пишет:
->>> On Fri, Nov 26, 2021 at 09:00:41PM +0300, Dmitry Osipenko wrote:
->>>> Add sanity check which ensures that there are no two restart handlers
->>>> registered with the same priority. Normally it's a direct sign of a
->>>> problem if two handlers use the same priority.
->>>
->>> The patch doesn't ensure the property that there are no duplicated-priority
->>> entries on the chain.
->>
->> It's not the exact point of this patch.
->>
->>> I'd rather see a atomic_notifier_chain_register_unique() that returns
->>> -EBUSY or something istead of adding an entry with duplicate priority.
->>> That way it would need only one list traversal unless you want to
->>> register the duplicate anyway (then you would call the older
->>> atomic_notifier_chain_register() after reporting the error).
->>
->> The point of this patch is to warn developers about the problem that
->> needs to be fixed. We already have such troubling drivers in mainline.
->>
->> It's not critical to register different handlers with a duplicated
->> priorities, but such cases really need to be corrected. We shouldn't
->> break users' machines during transition to the new API, meanwhile
->> developers should take action of fixing theirs drivers.
->>
->>> (Or you could return > 0 when a duplicate is registered in
->>> atomic_notifier_chain_register() if the callers are prepared
->>> for that. I don't really like this way, though.)
->>
->> I had a similar thought at some point before and decided that I'm not in
->> favor of this approach. It's nicer to have a dedicated function that
->> verifies the uniqueness, IMO.
+29.11.2021 03:36, Michał Mirosław пишет:
+> On Mon, Nov 29, 2021 at 12:53:51AM +0300, Dmitry Osipenko wrote:
+>> 29.11.2021 00:17, Michał Mirosław пишет:
+>>>> I'm having trouble with parsing this comment. Could you please try to
+>>>> rephrase it? I don't see how you could check whether power-off handler
+>>>> is available if you'll mix all handlers together.
+>>> If notify_call_chain() would be fixed to return NOTIFY_OK if any call
+>>> returned NOTIFY_OK, then this would be a clear way to gather the
+>>> answer if any of the handlers will attempt the final action (reboot or
+>>> power off).
+>> Could you please show a code snippet that implements your suggestion?
 > 
-> I don't like the part that it traverses the list second time to check
-> the uniqueness. But actually you could avoid that if
-> notifier_chain_register() would always add equal-priority entries in
-> reverse order:
+> A rough idea is this:
 > 
->  static int notifier_chain_register(struct notifier_block **nl,
->  		struct notifier_block *n)
+>  static int notifier_call_chain(struct notifier_block **nl,
+>  			       unsigned long val, void *v,
+>  			       int nr_to_call, int *nr_calls)
 >  {
->  	while ((*nl) != NULL) {
->  		if (unlikely((*nl) == n)) {
->  			WARN(1, "double register detected");
->  			return 0;
->  		}
-> -		if (n->priority > (*nl)->priority)
-> +		if (n->priority >= (*nl)->priority)
->  			break;
->  		nl = &((*nl)->next);
+> -	int ret = NOTIFY_DONE;
+> +	int ret, result = NOTIFY_DONE;
+>  	struct notifier_block *nb, *next_nb;
+>  
+>  	nb = rcu_dereference_raw(*nl);
+>  
+>  	while (nb && nr_to_call) {
+> ...
+>  		ret = nb->notifier_call(nb, val, v);
+> +
+> +		/* Assuming NOTIFY_STOP-carrying return is always greater than non-stopping one. */
+> +		if (result < ret)
+> +			result = ret;
+> ... 
 >  	}
->  	n->next = *nl;
->  	rcu_assign_pointer(*nl, n);
->  	return 0;
+> -	return ret;
+> +	return result;
 >  }
 > 
-> Then the check for uniqueness after adding would be:
+> Then:
 > 
->  WARN(nb->next && nb->priority == nb->next->priority);
+> bool prepare_reboot()
+> {
+> 	int ret = xx_notifier_call_chain(&shutdown_notifier, PREPARE_REBOOT, ...);
+> 	return ret == NOTIFY_OK;
+> }
+> 
+> And the return value would signify whether the reboot will be attempted
+> when calling the chain for the REBOOT action. (Analogously for powering off.)
 
-We can't just change the registration order because invocation order of
-the call chain depends on the registration order and some of current
-users may rely on that order. I'm pretty sure that changing the order
-will have unfortunate consequences.
+If you started to execute call chain, then you began the power-off /
+restart sequence, this is a point of no return. Sorry, I still don't
+understand what you're trying to achieve.
+
+The approach of having separate call chains is simple and intuitive, I
+don't see reasons to change it.
