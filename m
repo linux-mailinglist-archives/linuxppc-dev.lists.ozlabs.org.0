@@ -1,69 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD99F461D0F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 18:50:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A82461D17
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 18:53:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2tDq4H4Gz3cBl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 04:50:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2tHK18dgz3f2S
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 04:53:01 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jLCx3GbK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=jLCx3GbK; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2tD05prdz3clm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 04:50:08 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J2tCp0Z4fz9sSp;
- Mon, 29 Nov 2021 18:49:58 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id HmAs7gbUB6xq; Mon, 29 Nov 2021 18:49:58 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J2tCn6cmbz9sSQ;
- Mon, 29 Nov 2021 18:49:57 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D23238B7AF;
- Mon, 29 Nov 2021 18:49:57 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id PyG3-rNDVByz; Mon, 29 Nov 2021 18:49:57 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.92])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 56A308B7AB;
- Mon, 29 Nov 2021 18:49:57 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1ATHnoFt015570
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Mon, 29 Nov 2021 18:49:50 +0100
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1ATHnoRB015569;
- Mon, 29 Nov 2021 18:49:50 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v5 5/5] powerpc/inst: Optimise copy_inst_from_kernel_nofault()
-Date: Mon, 29 Nov 2021 18:49:41 +0100
-Message-Id: <0d5b12183d5176dd702d29ad94c39c384e51c78f.1638208156.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <1f0ede830ccb33a659119a55cb590820c27004db.1638208156.git.christophe.leroy@csgroup.eu>
-References: <1f0ede830ccb33a659119a55cb590820c27004db.1638208156.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2tF12rr8z3cDY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 04:51:01 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1ATHlxF4030194; 
+ Mon, 29 Nov 2021 17:50:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=JK0dmALoXEWOI0h8DBqVrzXlzqk+nFZG2q+3Sv3sjdE=;
+ b=jLCx3GbKV3H/B3pIU8L66cypWY7sjhs6qwlA4QUsTYSUtK0qt5sd1wPezzm1f8/un3g+
+ k17S2ifFJUdn4TVmRVxEE5p9bwVwali7tERwClqF5FRjFdqaJalB5OpkctrIrUkUuUkc
+ 1Hd7h399CoFf6mvY6fSJwMwj2KmPQbsQ+xd/vICFONnhO7cEqTzpkmWijPQKB2cIOsK0
+ dZ7N4PhwM2WWrb9IxkCB1FPbFQwUCFS/8ppSMElLzMLToqX6ejY//JGqaHOYNWe9YN3D
+ 7RKj0YKFpv9abI7zzBgl1n839ZtaLdVJY1+9xgVcT9QHUtzHL8QaOhj4E9qQAf+gPcp9 aA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3cn3jrr18h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Nov 2021 17:50:55 +0000
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1ATHoawN003727;
+ Mon, 29 Nov 2021 17:50:55 GMT
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3cn3jrr188-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Nov 2021 17:50:55 +0000
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1ATHhvuS030239;
+ Mon, 29 Nov 2021 17:50:54 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma03dal.us.ibm.com with ESMTP id 3ckcaahpdv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 29 Nov 2021 17:50:54 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1ATHorGK26804492
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 29 Nov 2021 17:50:53 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6CC2CAC067;
+ Mon, 29 Nov 2021 17:50:53 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 97794AC069;
+ Mon, 29 Nov 2021 17:50:52 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.160.7.253])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 29 Nov 2021 17:50:52 +0000 (GMT)
+Message-ID: <7e569fb62b3debfc8a052ef8f88c540343685855.camel@linux.ibm.com>
+Subject: [PATCH 05/10] powerpc/pseries/vas: Close windows with DLPAR core
+ removal
+From: Haren Myneni <haren@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Date: Mon, 29 Nov 2021 09:50:51 -0800
+In-Reply-To: <a2187018b4e030fe6c7e408b3a73c37c85472e10.camel@linux.ibm.com>
+References: <a2187018b4e030fe6c7e408b3a73c37c85472e10.camel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1638208179; l=4527; s=20211009;
- h=from:subject:message-id; bh=fTslvI2FBnUZmL2VtwTjeTaEtgoSGT27H2cJtyNw/9o=;
- b=qJN6WXatWGf7mCrm2QqMRz4Ujj8POWEoDwA9M5x+7/QT45KBAPnrDnI3UdbwYeHvEjhztKVTyo7F
- tt0yFaUvBAav/hwJANW3QhJNU9OMljXdXI3ZYetN1HFe4MN/Qt22
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: HgrMXA4pVLnB7FtZq3EYBVOfRT8dO497
+X-Proofpoint-GUID: Tss67CR3RpJm2cHNxdEYaAesM0NWiqij
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-29_10,2021-11-28_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015
+ impostorscore=0 mlxlogscore=999 bulkscore=0 phishscore=0 suspectscore=0
+ spamscore=0 mlxscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
+ definitions=main-2111290082
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,146 +107,189 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-copy_inst_from_kernel_nofault() uses copy_from_kernel_nofault() to
-copy one or two 32bits words. This means calling an out-of-line
-function which itself calls back copy_from_kernel_nofault_allowed()
-then performs a generic copy with loops.
 
-Rewrite copy_inst_from_kernel_nofault() to do everything at a
-single place and use __get_kernel_nofault() directly to perform
-single accesses without loops.
+The hypervisor reduces the available credits if the core is removed
+from the LPAR. So there is possibility of using excessive credits
+(windows) in the LPAR and the hypervisor expects the system to close
+the excessive windows. Even though the user space can continue to use
+these windows to send compression requests to NX, the hypervisor expects
+the LPAR to reduce these windows usage so that NX load can be equally
+distributed across all LPARs in the system.
 
-Allthough the generic function uses pagefault_disable(), it is not
-required on powerpc because do_page_fault() bails earlier when a
-kernel mode fault happens on a kernel address.
+When the DLPAR notifier is received, get the new VAS capabilities from
+the hypervisor and close the excessive windows in the hypervisor. Also
+the kernel unmaps the paste address so that the user space receives paste
+failure until these windows are active with the later DLPAR (core add).
 
-As the function has now become very small, inline it.
-
-With this change, on an 8xx the time spent in the loop in
-ftrace_replace_code() is reduced by 23% at function tracer activation
-and 27% at nop tracer activation.
-The overall time to activate function tracer (measured with shell
-command 'time') is 570ms before the patch and 470ms after the patch.
-
-Even vmlinux size is reduced (by 152 instruction).
-
-Before the patch:
-
-	00000018 <copy_inst_from_kernel_nofault>:
-	  18:	94 21 ff e0 	stwu    r1,-32(r1)
-	  1c:	7c 08 02 a6 	mflr    r0
-	  20:	38 a0 00 04 	li      r5,4
-	  24:	93 e1 00 1c 	stw     r31,28(r1)
-	  28:	7c 7f 1b 78 	mr      r31,r3
-	  2c:	38 61 00 08 	addi    r3,r1,8
-	  30:	90 01 00 24 	stw     r0,36(r1)
-	  34:	48 00 00 01 	bl      34 <copy_inst_from_kernel_nofault+0x1c>
-				34: R_PPC_REL24	copy_from_kernel_nofault
-	  38:	2c 03 00 00 	cmpwi   r3,0
-	  3c:	40 82 00 0c 	bne     48 <copy_inst_from_kernel_nofault+0x30>
-	  40:	81 21 00 08 	lwz     r9,8(r1)
-	  44:	91 3f 00 00 	stw     r9,0(r31)
-	  48:	80 01 00 24 	lwz     r0,36(r1)
-	  4c:	83 e1 00 1c 	lwz     r31,28(r1)
-	  50:	38 21 00 20 	addi    r1,r1,32
-	  54:	7c 08 03 a6 	mtlr    r0
-	  58:	4e 80 00 20 	blr
-
-After the patch (before inlining):
-
-	00000018 <copy_inst_from_kernel_nofault>:
-	  18:	3d 20 b0 00 	lis     r9,-20480
-	  1c:	7c 04 48 40 	cmplw   r4,r9
-	  20:	7c 69 1b 78 	mr      r9,r3
-	  24:	41 80 00 14 	blt     38 <copy_inst_from_kernel_nofault+0x20>
-	  28:	81 44 00 00 	lwz     r10,0(r4)
-	  2c:	38 60 00 00 	li      r3,0
-	  30:	91 49 00 00 	stw     r10,0(r9)
-	  34:	4e 80 00 20 	blr
-
-	  38:	38 60 ff de 	li      r3,-34
-	  3c:	4e 80 00 20 	blr
-	  40:	38 60 ff f2 	li      r3,-14
-	  44:	4e 80 00 20 	blr
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 ---
-v4: Inline and remove pagefault_disable()
+ arch/powerpc/include/asm/vas.h          |  1 +
+ arch/powerpc/platforms/book3s/vas-api.c |  2 +
+ arch/powerpc/platforms/pseries/vas.c    | 93 ++++++++++++++++++++++++-
+ 3 files changed, 94 insertions(+), 2 deletions(-)
 
-v3: New
----
- arch/powerpc/include/asm/inst.h | 21 ++++++++++++++++++++-
- arch/powerpc/mm/maccess.c       | 17 -----------------
- 2 files changed, 20 insertions(+), 18 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
-index 53a40faf362a..631436f3f5c3 100644
---- a/arch/powerpc/include/asm/inst.h
-+++ b/arch/powerpc/include/asm/inst.h
-@@ -4,6 +4,8 @@
+diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
+index 43cea69d1af1..72d1df038b4b 100644
+--- a/arch/powerpc/include/asm/vas.h
++++ b/arch/powerpc/include/asm/vas.h
+@@ -73,6 +73,7 @@ struct vas_user_win_ref {
+ 	struct mm_struct *mm;	/* Linux process mm_struct */
+ 	struct mutex mmap_mutex;	/* protects paste address mmap() */
+ 					/* with DLPAR close/open windows */
++	struct vm_area_struct *vma;	/* Save VMA and used in DLPAR ops */
+ };
  
- #include <asm/ppc-opcode.h>
- #include <asm/reg.h>
-+#include <asm/disassemble.h>
-+#include <asm/uaccess.h>
+ /*
+diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
+index 2b0ced611f32..a63fd48e34a7 100644
+--- a/arch/powerpc/platforms/book3s/vas-api.c
++++ b/arch/powerpc/platforms/book3s/vas-api.c
+@@ -399,6 +399,8 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
+ 	pr_devel("%s(): paste addr %llx at %lx, rc %d\n", __func__,
+ 			paste_addr, vma->vm_start, rc);
  
- #define ___get_user_instr(gu_op, dest, ptr)				\
- ({									\
-@@ -148,6 +150,23 @@ static inline char *__ppc_inst_as_str(char str[PPC_INST_STR_LEN], ppc_inst_t x)
- 	__str;				\
- })
- 
--int copy_inst_from_kernel_nofault(ppc_inst_t *inst, u32 *src);
-+static inline int copy_inst_from_kernel_nofault(ppc_inst_t *inst, u32 *src)
-+{
-+	unsigned int val, suffix;
++	txwin->task_ref.vma = vma;
 +
-+	if (unlikely(!is_kernel_addr((unsigned long)src)))
-+		return -ERANGE;
-+
-+	__get_kernel_nofault(&val, src, u32, Efault);
-+	if (IS_ENABLED(CONFIG_PPC64) && get_op(val) == OP_PREFIX) {
-+		__get_kernel_nofault(&suffix, src + 1, u32, Efault);
-+		*inst = ppc_inst_prefix(val, suffix);
-+	} else {
-+		*inst = ppc_inst(val);
-+	}
-+	return 0;
-+Efault:
-+	return -EFAULT;
-+}
- 
- #endif /* _ASM_POWERPC_INST_H */
-diff --git a/arch/powerpc/mm/maccess.c b/arch/powerpc/mm/maccess.c
-index 5abae96b2b46..ea821d0ffe16 100644
---- a/arch/powerpc/mm/maccess.c
-+++ b/arch/powerpc/mm/maccess.c
-@@ -11,20 +11,3 @@ bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
- {
- 	return is_kernel_addr((unsigned long)unsafe_src);
+ 	return rc;
  }
--
--int copy_inst_from_kernel_nofault(ppc_inst_t *inst, u32 *src)
--{
--	unsigned int val, suffix;
--	int err;
--
--	err = copy_from_kernel_nofault(&val, src, sizeof(val));
--	if (err)
--		return err;
--	if (IS_ENABLED(CONFIG_PPC64) && get_op(val) == OP_PREFIX) {
--		err = copy_from_kernel_nofault(&suffix, src + 1, sizeof(suffix));
--		*inst = ppc_inst_prefix(val, suffix);
--	} else {
--		*inst = ppc_inst(val);
--	}
--	return err;
--}
+ 
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+index ace8ee7a99e6..ed458620f007 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -431,14 +431,27 @@ static int vas_deallocate_window(struct vas_window *vwin)
+ 
+ 	caps = &vascaps[win->win_type].caps;
+ 	mutex_lock(&vas_pseries_mutex);
++	/*
++	 * VAS window is already closed in the hypervisor when
++	 * lost the credit. So just remove the entry from
++	 * the list, remove task references and free vas_window
++	 * struct.
++	 */
++	if (win->vas_win.status == VAS_WIN_NO_CRED_CLOSE) {
++		vascaps[win->win_type].close_wins--;
++		goto out;
++	}
++
+ 	rc = deallocate_free_window(win);
+ 	if (rc) {
+ 		mutex_unlock(&vas_pseries_mutex);
+ 		return rc;
+ 	}
+ 
+-	list_del(&win->win_list);
+ 	atomic_dec(&caps->used_creds);
++
++out:
++	list_del(&win->win_list);
+ 	mutex_unlock(&vas_pseries_mutex);
+ 
+ 	put_vas_user_win_ref(&vwin->task_ref);
+@@ -617,6 +630,74 @@ static int reconfig_open_windows(struct vas_caps *vcaps, int creds)
+ 	return rc;
+ }
+ 
++/*
++ * The hypervisor reduces the available credits if the LPAR lost core. It
++ * means the excessive windows should not be active and the user space
++ * should not be using these windows to send compression requests to NX.
++ * So the kernel closes the excessive windows and unmap the paste address
++ * such that the user space receives paste instruction failure. Then up to
++ * the user space to fall back to SW compression and manage with the
++ * existing windows.
++ */
++static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds)
++{
++	struct vas_cop_feat_caps *caps =  &vcap->caps;
++	struct vm_area_struct *vma;
++	struct pseries_vas_window *win;
++	struct vas_user_win_ref *task_ref;
++	int rc = 0;
++
++	list_for_each_entry(win, &vcap->list, win_list) {
++		/*
++		 * This window is already closed due to lost credit
++		 * before. Go for next window.
++		 */
++		if (win->vas_win.status == VAS_WIN_NO_CRED_CLOSE)
++			continue;
++
++		task_ref = &win->vas_win.task_ref;
++		mutex_lock(&task_ref->mmap_mutex);
++		vma = task_ref->vma;
++		/*
++		 * Number of available credits are reduced, So select
++		 * and close windows.
++		 */
++		win->vas_win.status = VAS_WIN_NO_CRED_CLOSE;
++
++		mmap_write_lock(task_ref->mm);
++		/*
++		 * vma is set in the original mapping. But this mapping
++		 * is done with mmap() after the window is opened with ioctl.
++		 * so we may not see the original mapping if the core remove
++		 * is done before the original mmap() and after the ioctl.
++		 */
++		if (vma)
++			zap_page_range(vma, vma->vm_start,
++					vma->vm_end - vma->vm_start);
++
++		mmap_write_unlock(task_ref->mm);
++		mutex_unlock(&task_ref->mmap_mutex);
++		/*
++		 * Close VAS window in the hypervisor, but do not
++		 * free vas_window struct since it may be reused
++		 * when the credit is available later (DLPAR with
++		 * adding cores). This struct will be used
++		 * later when the process issued with close(FD).
++		 */
++		rc = deallocate_free_window(win);
++		if (rc)
++			return rc;
++
++		atomic_dec(&caps->used_creds);
++		vcap->close_wins++;
++
++		if (!--excess_creds)
++			break;
++	}
++
++	return 0;
++}
++
+ /*
+  * Get new VAS capabilities when the core add/removal configuration
+  * changes. Reconfig window configurations based on the credits
+@@ -624,7 +705,7 @@ static int reconfig_open_windows(struct vas_caps *vcaps, int creds)
+  */
+ static int vas_reconfig_capabilties(u8 type)
+ {
+-	int lpar_creds, avail_creds;
++	int lpar_creds, avail_creds, excess_creds;
+ 	struct hv_vas_cop_feat_caps *hv_caps;
+ 	struct vas_cop_feat_caps *caps;
+ 	struct vas_caps *vcaps;
+@@ -667,6 +748,14 @@ static int vas_reconfig_capabilties(u8 type)
+ 		avail_creds = lpar_creds -
+ 				atomic_read(&caps->used_creds);
+ 		rc = reconfig_open_windows(vcaps, avail_creds);
++	} else if (atomic_read(&caps->used_creds) > lpar_creds) {
++		/*
++		 * # open windows is more than new LPAR available
++		 * credits. So close the excessive windows.
++		 */
++		excess_creds = atomic_read(&caps->used_creds) -
++					lpar_creds;
++		rc = reconfig_close_windows(vcaps, excess_creds);
+ 	}
+ 
+ out:
 -- 
-2.33.1
+2.27.0
+
 
