@@ -1,48 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC30462704
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 23:57:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20CE546293A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 01:43:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J31353PFtz3cYK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 09:57:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J33P70DsHz3cRg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 11:43:39 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256 header.s=1 header.b=GV8Md+4w;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=rere.qmqm.pl (client-ip=91.227.64.183; helo=rere.qmqm.pl;
+ envelope-from=mirq-linux@rere.qmqm.pl; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=rere.qmqm.pl header.i=@rere.qmqm.pl header.a=rsa-sha256
+ header.s=1 header.b=GV8Md+4w; dkim-atps=neutral
+Received: from rere.qmqm.pl (rere.qmqm.pl [91.227.64.183])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J312f1CPnz2xt7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 09:57:28 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6200,9189,10183"; a="234819053"
-X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; d="scan'208";a="234819053"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Nov 2021 14:56:26 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; d="scan'208";a="511903144"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
- by orsmga008.jf.intel.com with ESMTP; 29 Nov 2021 14:56:23 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1mrpZO-000CT1-TV; Mon, 29 Nov 2021 22:56:22 +0000
-Date: Tue, 30 Nov 2021 06:55:38 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v5 5/5] powerpc/inst: Optimise
- copy_inst_from_kernel_nofault()
-Message-ID: <202111300652.0yDBNvyJ-lkp@intel.com>
-References: <0d5b12183d5176dd702d29ad94c39c384e51c78f.1638208156.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2rXm2h6tz2ynV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 03:34:31 +1100 (AEDT)
+Received: from remote.user (localhost [127.0.0.1])
+ by rere.qmqm.pl (Postfix) with ESMTPSA id 4J2rXL58g0z9h;
+ Mon, 29 Nov 2021 17:34:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+ t=1638203665; bh=qlu3mL+FOvVS9aPE/gZoS7KdAdQ/avBctxZ8QxqT38I=;
+ h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+ b=GV8Md+4wLJhNSJZqrJvdjyVU0DlzlhbpPkGnTNqVApkG+uUQ6A+MoaqEQT9dgrjXq
+ q+escBY9SwJTtDVYNHqesyY22ZcfBKeLVi2I4yINeaBpICc3EsCTOMz8/JkEhkxKwH
+ 5jlUqEb0yuAf8eVUX8cWy9bi6RovdDbzWpM+g8ZdNeFAwiFdkLHHM+FUiQ+x0Dv37t
+ bEpCos1VGSJffWt42H8cWp9GNUDKdAgiFLCcBLScmau30GyMgUFylkw6qvpMGUFype
+ xiTzGA2klsrhcAXTQoeGJ7H6y00R/3ukWQ3tN7aMIYo31vE1Ni41oAjMZVdXQclWDE
+ FhYcDpXStxEZw==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.103.3 at mail
+Date: Mon, 29 Nov 2021 16:34:07 +0000
+From: =?UTF-8?Q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
+To: Yury Norov <yury.norov@gmail.com>
+Subject: Re: [PATCH 0/9] lib/bitmap: optimize bitmap_weight() usage
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20211129063839.GA338729@lapt>
+References: <20211128035704.270739-1-yury.norov@gmail.com>
+ <YaPEfZ0t9UFGwpml@qmqm.qmqm.pl> <20211129063839.GA338729@lapt>
+Message-ID: <3CD9ECD8-901E-497B-9AE1-0DDB02346892@rere.qmqm.pl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0d5b12183d5176dd702d29ad94c39c384e51c78f.1638208156.git.christophe.leroy@csgroup.eu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Tue, 30 Nov 2021 11:43:13 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,98 +63,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev,
- kbuild-all@lists.01.org, linux-kernel@vger.kernel.org
+Cc: Juri Lelli <juri.lelli@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Guo Ren <guoren@kernel.org>,
+ Christoph Lameter <cl@linux.com>, Christoph Hellwig <hch@lst.de>,
+ Andi Kleen <ak@linux.intel.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Mel Gorman <mgorman@suse.de>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Petr Mladek <pmladek@suse.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Jens Axboe <axboe@fb.com>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org,
+ Sergey Senozhatsky <senozhatsky@chromium.org>, linux-crypto@vger.kernel.org,
+ Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Mark Rutland <mark.rutland@arm.com>, Anup Patel <anup.patel@wdc.com>,
+ linux-ia64@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ Roy Pledge <Roy.Pledge@nxp.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Solomon Peachy <pizza@shaftnet.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+ Dennis Zhou <dennis@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>,
+ linux-alpha@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
+ Stephen Boyd <sboyd@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+ Dinh Nguyen <dinguyen@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Ulf Hansson <ulf.hansson@linaro.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Subbaraya Sundeep <sbhatta@marvell.com>, Will Deacon <will@kernel.org>,
+ Sagi Grimberg <sagi@grimberg.me>, linux-csky@vger.kernel.org,
+ bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org,
+ linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ Vineet Gupta <vgupta@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Mark Gross <markgross@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ David Laight <David.Laight@aculab.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ Geetha sowjanya <gakula@marvell.com>, Ian Rogers <irogers@google.com>,
+ kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Amitkumar Karwar <amitkarwar@gmail.com>, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, Lee Jones <lee.jones@linaro.org>,
+ Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Jiri Olsa <jolsa@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ Andy Gross <agross@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Vivien Didelot <vivien.didelot@gmail.com>,
+ Sunil Goutham <sgoutham@marvell.com>, "Paul E. McKenney" <paulmck@kernel.org>,
+ linux-s390@vger.kernel.org, Alexey Klimov <aklimov@redhat.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Hans de Goede <hdegoede@redhat.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Marcin Wojtas <mw@semihalf.com>,
+ Vlastimil Babka <vbabka@suse.cz>, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Daniel Vetter <daniel@ffwll.ch>, Jason Wessel <jason.wessel@windriver.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Andy Shevchenko <andy@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+Dnia 29 listopada 2021 06:38:39 UTC, Yury Norov <yury=2Enorov@gmail=2Ecom> =
+napisa=C5=82/a:
+>On Sun, Nov 28, 2021 at 07:03:41PM +0100, mirq-test@rere=2Eqmqm=2Epl wrot=
+e:
+>> On Sat, Nov 27, 2021 at 07:56:55PM -0800, Yury Norov wrote:
+>> > In many cases people use bitmap_weight()-based functions like this:
+>> >=20
+>> > 	if (num_present_cpus() > 1)
+>> > 		do_something();
+>> >=20
+>> > This may take considerable amount of time on many-cpus machines becau=
+se
+>> > num_present_cpus() will traverse every word of underlying cpumask
+>> > unconditionally=2E
+>> >=20
+>> > We can significantly improve on it for many real cases if stop traver=
+sing
+>> > the mask as soon as we count present cpus to any number greater than =
+1:
+>> >=20
+>> > 	if (num_present_cpus_gt(1))
+>> > 		do_something();
+>> >=20
+>> > To implement this idea, the series adds bitmap_weight_{eq,gt,le}
+>> > functions together with corresponding wrappers in cpumask and nodemas=
+k=2E
+>>=20
+>> Having slept on it I have more structured thoughts:
+>>=20
+>> First, I like substituting bitmap_empty/full where possible - I think
+>> the change stands on its own, so could be split and sent as is=2E
+>
+>Ok, I can do it=2E
+>
+>> I don't like the proposed API very much=2E One problem is that it hides
+>> the comparison operator and makes call sites less readable:
+>>=20
+>> 	bitmap_weight(=2E=2E=2E) > N
+>>=20
+>> becomes:
+>>=20
+>> 	bitmap_weight_gt(=2E=2E=2E, N)
+>>=20
+>> and:
+>> 	bitmap_weight(=2E=2E=2E) <=3D N
+>>=20
+>> becomes:
+>>=20
+>> 	bitmap_weight_lt(=2E=2E=2E, N+1)
+>> or:
+>> 	!bitmap_weight_gt(=2E=2E=2E, N)
+>>=20
+>> I'd rather see something resembling memcmp() API that's known enough
+>> to be easier to grasp=2E For above examples:
+>>=20
+>> 	bitmap_weight_cmp(=2E=2E=2E, N) > 0
+>> 	bitmap_weight_cmp(=2E=2E=2E, N) <=3D 0
+>> 	=2E=2E=2E
+>
+>bitmap_weight_cmp() cannot be efficient=2E Consider this example:
+>
+>bitmap_weight_lt(1000 0000 0000 0000, 1) =3D=3D false
+>                 ^
+>                 stop here
+>
+>bitmap_weight_cmp(1000 0000 0000 0000, 1) =3D=3D 0
+>                                 ^
+>                                 stop here
+>
+>I agree that '_gt' is less verbose than '>', but the advantage of=20
+>'_gt' over '>' is proportional to length of bitmap, and it means
+>that this API should exist=2E
 
-I love your patch! Perhaps something to improve:
+Thank you for the example=2E Indeed, for less-than to be efficient here yo=
+u would need to replace
+ bitmap_weight_cmp(=2E=2E=2E, N) < 0
+with
+ bitmap_weight_cmp(=2E=2E=2E, N-1) <=3D 0
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on v5.16-rc3 next-20211129]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+It would still be more readable, I think=2E
 
-url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/powerpc-inst-Refactor-___get_user_instr/20211130-015346
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-config: powerpc-randconfig-r023-20211129 (https://download.01.org/0day-ci/archive/20211130/202111300652.0yDBNvyJ-lkp@intel.com/config)
-compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project df08b2fe8b35cb63dfb3b49738a3494b9b4e6f8e)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install powerpc cross compiling tool for clang build
-        # apt-get install binutils-powerpc-linux-gnu
-        # https://github.com/0day-ci/linux/commit/fb7bff30cc0efc7e4df1b48bb69de1f325eee826
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Christophe-Leroy/powerpc-inst-Refactor-___get_user_instr/20211130-015346
-        git checkout fb7bff30cc0efc7e4df1b48bb69de1f325eee826
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc prepare
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
-   In file included from arch/powerpc/kernel/asm-offsets.c:71:
-   In file included from arch/powerpc/kernel/../xmon/xmon_bpts.h:7:
->> arch/powerpc/include/asm/inst.h:165:20: warning: variable 'val' is uninitialized when used here [-Wuninitialized]
-                   *inst = ppc_inst(val);
-                                    ^~~
-   arch/powerpc/include/asm/inst.h:53:22: note: expanded from macro 'ppc_inst'
-   #define ppc_inst(x) (x)
-                        ^
-   arch/powerpc/include/asm/inst.h:155:18: note: initialize the variable 'val' to silence this warning
-           unsigned int val, suffix;
-                           ^
-                            = 0
-   1 warning generated.
-   <stdin>:1559:2: warning: syscall futex_waitv not implemented [-W#warnings]
-   #warning syscall futex_waitv not implemented
-    ^
-   1 warning generated.
-   arch/powerpc/kernel/vdso32/gettimeofday.S:72:8: error: unsupported directive '.stabs'
-   .stabs "_restgpr_31_x:F-1",36,0,0,_restgpr_31_x; .globl _restgpr_31_x; _restgpr_31_x:
-          ^
-   arch/powerpc/kernel/vdso32/gettimeofday.S:73:8: error: unsupported directive '.stabs'
-   .stabs "_rest32gpr_31_x:F-1",36,0,0,_rest32gpr_31_x; .globl _rest32gpr_31_x; _rest32gpr_31_x:
-          ^
-   make[2]: *** [arch/powerpc/kernel/vdso32/Makefile:55: arch/powerpc/kernel/vdso32/gettimeofday.o] Error 1
-   make[2]: Target 'include/generated/vdso32-offsets.h' not remade because of errors.
-   make[1]: *** [arch/powerpc/Makefile:421: vdso_prepare] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:219: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
-
-
-vim +/val +165 arch/powerpc/include/asm/inst.h
-
-   152	
-   153	static inline int copy_inst_from_kernel_nofault(ppc_inst_t *inst, u32 *src)
-   154	{
-   155		unsigned int val, suffix;
-   156	
-   157		if (unlikely(!is_kernel_addr((unsigned long)src)))
-   158			return -ERANGE;
-   159	
-   160		__get_kernel_nofault(&val, src, u32, Efault);
-   161		if (IS_ENABLED(CONFIG_PPC64) && get_op(val) == OP_PREFIX) {
-   162			__get_kernel_nofault(&suffix, src + 1, u32, Efault);
-   163			*inst = ppc_inst_prefix(val, suffix);
-   164		} else {
- > 165			*inst = ppc_inst(val);
-   166		}
-   167		return 0;
-   168	Efault:
-   169		return -EFAULT;
-   170	}
-   171	
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Best Regards
+Micha=C5=82 Miros=C5=82aw
