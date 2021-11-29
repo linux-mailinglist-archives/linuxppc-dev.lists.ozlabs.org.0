@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E404617ED
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 15:22:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1DC4617E6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 15:21:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2ncj0cxdz3dyh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 01:22:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2nbH6d08z3dkh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 01:21:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,36 +14,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2nYp6Fp5z3cYB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 01:20:14 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2nYY68JQz3036
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 01:20:01 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J2nYK0bGDz9sSx;
- Mon, 29 Nov 2021 15:19:49 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4J2nYF1bMZz9sSk;
+ Mon, 29 Nov 2021 15:19:45 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id DmPCWUb4XUFi; Mon, 29 Nov 2021 15:19:49 +0100 (CET)
+ with ESMTP id tMFiFXXY5YB5; Mon, 29 Nov 2021 15:19:45 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J2nY417Rdz9sT8;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4J2nY40f7dz9sT0;
  Mon, 29 Nov 2021 15:19:36 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 131F38B7AE;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 041308B7B8;
  Mon, 29 Nov 2021 15:19:36 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 05udLhZsMS-F; Mon, 29 Nov 2021 15:19:35 +0100 (CET)
+ with ESMTP id UV2pae6Rn5Ai; Mon, 29 Nov 2021 15:19:35 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B029D8B7B6;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 99A478B7AE;
  Mon, 29 Nov 2021 15:19:35 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1ATEJSnU959566
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1ATEJSE5959572
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Mon, 29 Nov 2021 15:19:28 +0100
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1ATEJSZY959565;
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1ATEJSYd959571;
  Mon, 29 Nov 2021 15:19:28 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
@@ -51,18 +51,18 @@ From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>,
  Michael Ellerman <mpe@ellerman.id.au>, alex@ghiti.fr
-Subject: [PATCH v3 05/10] powerpc/mm: Call radix__arch_get_unmapped_area()
- from arch_get_unmapped_area()
-Date: Mon, 29 Nov 2021 15:19:19 +0100
-Message-Id: <196aeb8ecf6f68dfa369ad198554b2dcfd53c38a.1638195388.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 06/10] mm: Allow arch specific arch_randomize_brk() with
+ CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
+Date: Mon, 29 Nov 2021 15:19:20 +0100
+Message-Id: <6e242e505c2f5e528a6217b3462fcb8465da4c2e.1638195388.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <cover.1638195388.git.christophe.leroy@csgroup.eu>
 References: <cover.1638195388.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1638195562; l=8800; s=20211009;
- h=from:subject:message-id; bh=xhmMDhewW/TRmUJ1bjg7TfwHU+gY/5N0CfluBZorISk=;
- b=Ytz6Z4adu+QpjdMcE0FeJ4uoAgyOqhTcv8RIWb3OIvjwSic4iGzy1OYmV5QmF85fpE/jlofaAbpP
- rSulJpNiBQ/5NgqL520KGZqmrn8PsUuEwy1tZOlamGr58vWf6swW
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1638195562; l=1197; s=20211009;
+ h=from:subject:message-id; bh=ieZDasKgJMLzWvasijn2/EaRxhxrIxH0kApK0npELEI=;
+ b=3eK4/LkHASlZxwojwvJ1UN52PWpkOtHvR3vlHdoDCYaqY6d/VpBawjWNRsOkCxwAkUd49Sj3A/ts
+ 5A0HHlcmBKX5yWXuO97w8QhE07W7ze09M2no9XLRX3Tc1GcSNUlK
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -83,290 +83,38 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Instead of setting mm->get_unmapped_area() to either
-arch_get_unmapped_area() or radix__arch_get_unmapped_area(),
-always set it to arch_get_unmapped_area() and call
-radix__arch_get_unmapped_area() from there when radix is enabled.
+Commit e7142bf5d231 ("arm64, mm: make randomization selected by
+generic topdown mmap layout") introduced a default version of
+arch_randomize_brk() provided when
+CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT is selected.
 
-To keep radix__arch_get_unmapped_area() static, move it to slice.c
+powerpc could select CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
+but needs to provide its own arch_randomize_brk().
 
-Do the same with radix__arch_get_unmapped_area_topdown()
+In order to allow that, define generic version of arch_randomize_brk()
+as a __weak symbol.
 
+Cc: Alexandre Ghiti <alex@ghiti.fr>
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/mm/book3s64/slice.c | 104 ++++++++++++++++++++++++++
- arch/powerpc/mm/mmap.c           | 123 -------------------------------
- 2 files changed, 104 insertions(+), 123 deletions(-)
+v2: Make the generic version of it a __weak symbol instead of a messy play with CONFIG_ items.
+---
+ mm/util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/book3s64/slice.c b/arch/powerpc/mm/book3s64/slice.c
-index 4c3e9601fdf6..99742dde811c 100644
---- a/arch/powerpc/mm/book3s64/slice.c
-+++ b/arch/powerpc/mm/book3s64/slice.c
-@@ -639,12 +639,113 @@ unsigned long slice_get_unmapped_area(unsigned long addr, unsigned long len,
+diff --git a/mm/util.c b/mm/util.c
+index 741ba32a43ac..46d1a2dd7a32 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -344,7 +344,7 @@ unsigned long randomize_stack_top(unsigned long stack_top)
  }
- EXPORT_SYMBOL_GPL(slice_get_unmapped_area);
  
-+/*
-+ * Same function as generic code used only for radix, because we don't need to overload
-+ * the generic one. But we will have to duplicate, because hash select
-+ * HAVE_ARCH_UNMAPPED_AREA
-+ */
-+static unsigned long
-+radix__arch_get_unmapped_area(struct file *filp, unsigned long addr, unsigned long len,
-+			      unsigned long pgoff, unsigned long flags)
-+{
-+	struct mm_struct *mm = current->mm;
-+	struct vm_area_struct *vma;
-+	int fixed = (flags & MAP_FIXED);
-+	unsigned long high_limit;
-+	struct vm_unmapped_area_info info;
-+
-+	high_limit = DEFAULT_MAP_WINDOW;
-+	if (addr >= high_limit || (fixed && (addr + len > high_limit)))
-+		high_limit = TASK_SIZE;
-+
-+	if (len > high_limit)
-+		return -ENOMEM;
-+
-+	if (fixed) {
-+		if (addr > high_limit - len)
-+			return -ENOMEM;
-+		return addr;
-+	}
-+
-+	if (addr) {
-+		addr = PAGE_ALIGN(addr);
-+		vma = find_vma(mm, addr);
-+		if (high_limit - len >= addr && addr >= mmap_min_addr &&
-+		    (!vma || addr + len <= vm_start_gap(vma)))
-+			return addr;
-+	}
-+
-+	info.flags = 0;
-+	info.length = len;
-+	info.low_limit = mm->mmap_base;
-+	info.high_limit = high_limit;
-+	info.align_mask = 0;
-+
-+	return vm_unmapped_area(&info);
-+}
-+
-+static unsigned long
-+radix__arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
-+				      const unsigned long len, const unsigned long pgoff,
-+				      const unsigned long flags)
-+{
-+	struct vm_area_struct *vma;
-+	struct mm_struct *mm = current->mm;
-+	unsigned long addr = addr0;
-+	int fixed = (flags & MAP_FIXED);
-+	unsigned long high_limit;
-+	struct vm_unmapped_area_info info;
-+
-+	high_limit = DEFAULT_MAP_WINDOW;
-+	if (addr >= high_limit || (fixed && (addr + len > high_limit)))
-+		high_limit = TASK_SIZE;
-+
-+	if (len > high_limit)
-+		return -ENOMEM;
-+
-+	if (fixed) {
-+		if (addr > high_limit - len)
-+			return -ENOMEM;
-+		return addr;
-+	}
-+
-+	if (addr) {
-+		addr = PAGE_ALIGN(addr);
-+		vma = find_vma(mm, addr);
-+		if (high_limit - len >= addr && addr >= mmap_min_addr &&
-+		    (!vma || addr + len <= vm_start_gap(vma)))
-+			return addr;
-+	}
-+
-+	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
-+	info.length = len;
-+	info.low_limit = max(PAGE_SIZE, mmap_min_addr);
-+	info.high_limit = mm->mmap_base + (high_limit - DEFAULT_MAP_WINDOW);
-+	info.align_mask = 0;
-+
-+	addr = vm_unmapped_area(&info);
-+	if (!(addr & ~PAGE_MASK))
-+		return addr;
-+	VM_BUG_ON(addr != -ENOMEM);
-+
-+	/*
-+	 * A failed mmap() very likely causes application failure,
-+	 * so fall back to the bottom-up function here. This scenario
-+	 * can happen with large stack limits and large mmap()
-+	 * allocations.
-+	 */
-+	return radix__arch_get_unmapped_area(filp, addr0, len, pgoff, flags);
-+}
-+
- unsigned long arch_get_unmapped_area(struct file *filp,
- 				     unsigned long addr,
- 				     unsigned long len,
- 				     unsigned long pgoff,
- 				     unsigned long flags)
+ #ifdef CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
+-unsigned long arch_randomize_brk(struct mm_struct *mm)
++unsigned long __weak arch_randomize_brk(struct mm_struct *mm)
  {
-+	if (radix_enabled())
-+		return radix__arch_get_unmapped_area(filp, addr, len, pgoff, flags);
-+
- 	return slice_get_unmapped_area(addr, len, flags,
- 				       mm_ctx_user_psize(&current->mm->context), 0);
- }
-@@ -655,6 +756,9 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
- 					     const unsigned long pgoff,
- 					     const unsigned long flags)
- {
-+	if (radix_enabled())
-+		return radix__arch_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags);
-+
- 	return slice_get_unmapped_area(addr0, len, flags,
- 				       mm_ctx_user_psize(&current->mm->context), 1);
- }
-diff --git a/arch/powerpc/mm/mmap.c b/arch/powerpc/mm/mmap.c
-index ae683fdc716c..5972d619d274 100644
---- a/arch/powerpc/mm/mmap.c
-+++ b/arch/powerpc/mm/mmap.c
-@@ -80,126 +80,6 @@ static inline unsigned long mmap_base(unsigned long rnd,
- 	return PAGE_ALIGN(DEFAULT_MAP_WINDOW - gap - rnd);
- }
- 
--#ifdef CONFIG_PPC_RADIX_MMU
--/*
-- * Same function as generic code used only for radix, because we don't need to overload
-- * the generic one. But we will have to duplicate, because hash select
-- * HAVE_ARCH_UNMAPPED_AREA
-- */
--static unsigned long
--radix__arch_get_unmapped_area(struct file *filp, unsigned long addr,
--			     unsigned long len, unsigned long pgoff,
--			     unsigned long flags)
--{
--	struct mm_struct *mm = current->mm;
--	struct vm_area_struct *vma;
--	int fixed = (flags & MAP_FIXED);
--	unsigned long high_limit;
--	struct vm_unmapped_area_info info;
--
--	high_limit = DEFAULT_MAP_WINDOW;
--	if (addr >= high_limit || (fixed && (addr + len > high_limit)))
--		high_limit = TASK_SIZE;
--
--	if (len > high_limit)
--		return -ENOMEM;
--
--	if (fixed) {
--		if (addr > high_limit - len)
--			return -ENOMEM;
--		return addr;
--	}
--
--	if (addr) {
--		addr = PAGE_ALIGN(addr);
--		vma = find_vma(mm, addr);
--		if (high_limit - len >= addr && addr >= mmap_min_addr &&
--		    (!vma || addr + len <= vm_start_gap(vma)))
--			return addr;
--	}
--
--	info.flags = 0;
--	info.length = len;
--	info.low_limit = mm->mmap_base;
--	info.high_limit = high_limit;
--	info.align_mask = 0;
--
--	return vm_unmapped_area(&info);
--}
--
--static unsigned long
--radix__arch_get_unmapped_area_topdown(struct file *filp,
--				     const unsigned long addr0,
--				     const unsigned long len,
--				     const unsigned long pgoff,
--				     const unsigned long flags)
--{
--	struct vm_area_struct *vma;
--	struct mm_struct *mm = current->mm;
--	unsigned long addr = addr0;
--	int fixed = (flags & MAP_FIXED);
--	unsigned long high_limit;
--	struct vm_unmapped_area_info info;
--
--	high_limit = DEFAULT_MAP_WINDOW;
--	if (addr >= high_limit || (fixed && (addr + len > high_limit)))
--		high_limit = TASK_SIZE;
--
--	if (len > high_limit)
--		return -ENOMEM;
--
--	if (fixed) {
--		if (addr > high_limit - len)
--			return -ENOMEM;
--		return addr;
--	}
--
--	if (addr) {
--		addr = PAGE_ALIGN(addr);
--		vma = find_vma(mm, addr);
--		if (high_limit - len >= addr && addr >= mmap_min_addr &&
--		    (!vma || addr + len <= vm_start_gap(vma)))
--			return addr;
--	}
--
--	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
--	info.length = len;
--	info.low_limit = max(PAGE_SIZE, mmap_min_addr);
--	info.high_limit = mm->mmap_base + (high_limit - DEFAULT_MAP_WINDOW);
--	info.align_mask = 0;
--
--	addr = vm_unmapped_area(&info);
--	if (!(addr & ~PAGE_MASK))
--		return addr;
--	VM_BUG_ON(addr != -ENOMEM);
--
--	/*
--	 * A failed mmap() very likely causes application failure,
--	 * so fall back to the bottom-up function here. This scenario
--	 * can happen with large stack limits and large mmap()
--	 * allocations.
--	 */
--	return radix__arch_get_unmapped_area(filp, addr0, len, pgoff, flags);
--}
--
--static void radix__arch_pick_mmap_layout(struct mm_struct *mm,
--					unsigned long random_factor,
--					struct rlimit *rlim_stack)
--{
--	if (mmap_is_legacy(rlim_stack)) {
--		mm->mmap_base = TASK_UNMAPPED_BASE;
--		mm->get_unmapped_area = radix__arch_get_unmapped_area;
--	} else {
--		mm->mmap_base = mmap_base(random_factor, rlim_stack);
--		mm->get_unmapped_area = radix__arch_get_unmapped_area_topdown;
--	}
--}
--#else
--/* dummy */
--extern void radix__arch_pick_mmap_layout(struct mm_struct *mm,
--					unsigned long random_factor,
--					struct rlimit *rlim_stack);
--#endif
- /*
-  * This function, called very early during the creation of a new
-  * process VM image, sets up which VM layout function to use:
-@@ -211,9 +91,6 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
- 	if (current->flags & PF_RANDOMIZE)
- 		random_factor = arch_mmap_rnd();
- 
--	if (radix_enabled())
--		return radix__arch_pick_mmap_layout(mm, random_factor,
--						    rlim_stack);
- 	/*
- 	 * Fall back to the standard layout if the personality
- 	 * bit is set, or if the expected stack growth is unlimited:
+ 	/* Is the current task 32bit ? */
+ 	if (!IS_ENABLED(CONFIG_64BIT) || is_compat_task())
 -- 
 2.33.1
 
