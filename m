@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F37404617E2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 15:21:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D32C04617F8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 15:23:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2nZh6YjYz3ddg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 01:21:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2ndn4wTcz3f8s
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 01:23:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2nYT145Gz3btR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 01:19:56 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2nYz1Q1Qz3cZK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 01:20:23 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J2nYD5bwnz9sSh;
- Mon, 29 Nov 2021 15:19:44 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4J2nYN0tkpz9sT5;
+ Mon, 29 Nov 2021 15:19:52 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id LwES2UsVuC5K; Mon, 29 Nov 2021 15:19:44 +0100 (CET)
+ with ESMTP id zM0g6DZv7enN; Mon, 29 Nov 2021 15:19:52 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J2nY40V0Hz9sSk;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4J2nY40y6hz9sT6;
  Mon, 29 Nov 2021 15:19:36 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F268A8B7AA;
- Mon, 29 Nov 2021 15:19:35 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0EAEF8B7AD;
+ Mon, 29 Nov 2021 15:19:36 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ei4h0soNuQth; Mon, 29 Nov 2021 15:19:35 +0100 (CET)
+ with ESMTP id wexZe5IIyXuS; Mon, 29 Nov 2021 15:19:35 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A85B88B7B3;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A07028B7B0;
  Mon, 29 Nov 2021 15:19:35 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1ATEJTOa959584
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1ATEJTrC959588
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Mon, 29 Nov 2021 15:19:29 +0100
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1ATEJTOR959583;
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1ATEJTEE959587;
  Mon, 29 Nov 2021 15:19:29 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
@@ -51,17 +51,17 @@ From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>,
  Michael Ellerman <mpe@ellerman.id.au>, alex@ghiti.fr
-Subject: [PATCH v3 09/10] sizes.h: Add SZ_1T macro
-Date: Mon, 29 Nov 2021 15:19:23 +0100
-Message-Id: <1b6216bb8452ea53636767a198691590ed58560a.1638195388.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 10/10] powerpc: Simplify and move arch_randomize_brk()
+Date: Mon, 29 Nov 2021 15:19:24 +0100
+Message-Id: <f591888ebece95d70ffc5b4539c3f7a8f3132521.1638195388.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <cover.1638195388.git.christophe.leroy@csgroup.eu>
 References: <cover.1638195388.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1638195562; l=1333; s=20211009;
- h=from:subject:message-id; bh=gHcpRE3PXyrvhupmS2R1SHs0FcIlaQvnE07fWVmC6zo=;
- b=N39fJanSMWTr99TJn+jPqf/PObIwPcsu+EiN1AGB+aqgWYAIbNkFN9ND9Jh3wVXWqjtx1cKcfVxl
- UUGEu9iJCOVMePGjJGanJ+Wwdh+O+OYhhtDFW2ee9ZJlM3KZ06Pv
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1638195562; l=3756; s=20211009;
+ h=from:subject:message-id; bh=bqmcPDzk8HUoSoz0FrExnArqtAGvbgCdBXU0FtLr27c=;
+ b=hcnbOH8wuHkDEqIHcxNywY7LDWBgbGM7X7doH6ERlSIyHc3cyxmh9+J6mO0eAkUibfzuclgGNthr
+ a9J/j08rBPvP3J/6pc1m33mxpnQAQcbsVX58YjCPgazfugspnaqg
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -76,51 +76,127 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Toan Le <toan@os.amperecomputing.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Today drivers/pci/controller/pci-xgene.c defines SZ_1T
+arch_randomize_brk() is only needed for hash on book3s/64, for other
+platforms the one provided by the default mmap layout is good enough.
 
-Move it into linux/sizes.h so that it can be re-used elsewhere.
+Move it to hash_utils.c and use randomize_page() like the generic one.
 
-Cc: Toan Le <toan@os.amperecomputing.com>
-Cc: linux-pci@vger.kernel.org
+And properly opt out the radix case instead of making an assumption
+on mmu_highuser_ssize.
+
+Also change to a 32M range like most other architectures instead of 8M.
+
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v3: new
----
- drivers/pci/controller/pci-xgene.c | 1 -
- include/linux/sizes.h              | 2 ++
- 2 files changed, 2 insertions(+), 1 deletion(-)
+v3:
+- Add missing include <linux/elf-randomize.h>
+- Move SZ_1T in a previous patch that moves it out of drivers/pci/controller/pci-xgene.c
 
-diff --git a/drivers/pci/controller/pci-xgene.c b/drivers/pci/controller/pci-xgene.c
-index 56d0d50338c8..716dcab5ca47 100644
---- a/drivers/pci/controller/pci-xgene.c
-+++ b/drivers/pci/controller/pci-xgene.c
-@@ -49,7 +49,6 @@
- #define EN_REG				0x00000001
- #define OB_LO_IO			0x00000002
- #define XGENE_PCIE_DEVICEID		0xE004
--#define SZ_1T				(SZ_1G*1024ULL)
- #define PIPE_PHY_RATE_RD(src)		((0xc000 & (u32)(src)) >> 0xe)
+v2: New
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kernel/process.c         | 41 ---------------------------
+ arch/powerpc/mm/book3s64/hash_utils.c | 19 +++++++++++++
+ 2 files changed, 19 insertions(+), 41 deletions(-)
+
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index a64cfbb85ca2..44c4bce5211d 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -34,10 +34,8 @@
+ #include <linux/ftrace.h>
+ #include <linux/kernel_stat.h>
+ #include <linux/personality.h>
+-#include <linux/random.h>
+ #include <linux/hw_breakpoint.h>
+ #include <linux/uaccess.h>
+-#include <linux/elf-randomize.h>
+ #include <linux/pkeys.h>
+ #include <linux/seq_buf.h>
  
- #define XGENE_V1_PCI_EXP_CAP		0x40
-diff --git a/include/linux/sizes.h b/include/linux/sizes.h
-index 1ac79bcee2bb..84aa448d8bb3 100644
---- a/include/linux/sizes.h
-+++ b/include/linux/sizes.h
-@@ -47,6 +47,8 @@
- #define SZ_8G				_AC(0x200000000, ULL)
- #define SZ_16G				_AC(0x400000000, ULL)
- #define SZ_32G				_AC(0x800000000, ULL)
+@@ -2310,42 +2308,3 @@ unsigned long arch_align_stack(unsigned long sp)
+ 		sp -= get_random_int() & ~PAGE_MASK;
+ 	return sp & ~0xf;
+ }
+-
+-static inline unsigned long brk_rnd(void)
+-{
+-        unsigned long rnd = 0;
+-
+-	/* 8MB for 32bit, 1GB for 64bit */
+-	if (is_32bit_task())
+-		rnd = (get_random_long() % (1UL<<(23-PAGE_SHIFT)));
+-	else
+-		rnd = (get_random_long() % (1UL<<(30-PAGE_SHIFT)));
+-
+-	return rnd << PAGE_SHIFT;
+-}
+-
+-unsigned long arch_randomize_brk(struct mm_struct *mm)
+-{
+-	unsigned long base = mm->brk;
+-	unsigned long ret;
+-
+-#ifdef CONFIG_PPC_BOOK3S_64
+-	/*
+-	 * If we are using 1TB segments and we are allowed to randomise
+-	 * the heap, we can put it above 1TB so it is backed by a 1TB
+-	 * segment. Otherwise the heap will be in the bottom 1TB
+-	 * which always uses 256MB segments and this may result in a
+-	 * performance penalty.
+-	 */
+-	if (!radix_enabled() && !is_32bit_task() && (mmu_highuser_ssize == MMU_SEGSIZE_1T))
+-		base = max_t(unsigned long, mm->brk, 1UL << SID_SHIFT_1T);
+-#endif
+-
+-	ret = PAGE_ALIGN(base + brk_rnd());
+-
+-	if (ret < mm->brk)
+-		return mm->brk;
+-
+-	return ret;
+-}
+-
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 7ecadf5e6bf9..68a5468b0f19 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -37,6 +37,8 @@
+ #include <linux/cpu.h>
+ #include <linux/pgtable.h>
+ #include <linux/debugfs.h>
++#include <linux/random.h>
++#include <linux/elf-randomize.h>
+ 
+ #include <asm/interrupt.h>
+ #include <asm/processor.h>
+@@ -2171,3 +2173,20 @@ void __init print_system_hash_info(void)
+ 	if (htab_hash_mask)
+ 		pr_info("htab_hash_mask    = 0x%lx\n", htab_hash_mask);
+ }
 +
-+#define SZ_1T				_AC(0x10000000000, ULL)
- #define SZ_64T				_AC(0x400000000000, ULL)
- 
- #endif /* __LINUX_SIZES_H__ */
++unsigned long arch_randomize_brk(struct mm_struct *mm)
++{
++	/*
++	 * If we are using 1TB segments and we are allowed to randomise
++	 * the heap, we can put it above 1TB so it is backed by a 1TB
++	 * segment. Otherwise the heap will be in the bottom 1TB
++	 * which always uses 256MB segments and this may result in a
++	 * performance penalty.
++	 */
++	if (is_32bit_task())
++		return randomize_page(mm->brk, SZ_32M);
++	else if (!radix_enabled() && mmu_highuser_ssize == MMU_SEGSIZE_1T)
++		return randomize_page(max_t(unsigned long, mm->brk, SZ_1T), SZ_1G);
++	else
++		return randomize_page(mm->brk, SZ_1G);
++}
 -- 
 2.33.1
 
