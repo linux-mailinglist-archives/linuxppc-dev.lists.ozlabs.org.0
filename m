@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24BD461D12
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 18:51:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D1B461D14
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 18:51:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2tFH45hnz3cc7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 04:51:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2tFv4F4Yz3dvD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 04:51:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,51 +16,51 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2tD52F4tz3cks
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 04:50:13 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2tD95gVrz3cZ2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 04:50:17 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J2tCq6gKXz9sSr;
- Mon, 29 Nov 2021 18:49:59 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4J2tCr6grPz9sSh;
+ Mon, 29 Nov 2021 18:50:00 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id opmSJnmzTvVT; Mon, 29 Nov 2021 18:49:59 +0100 (CET)
+ with ESMTP id P5kD9sYVYiDU; Mon, 29 Nov 2021 18:50:00 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J2tCn6kz4z9sSh;
- Mon, 29 Nov 2021 18:49:57 +0100 (CET)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4J2tCp0Qfrz9sSP;
+ Mon, 29 Nov 2021 18:49:58 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D35828B7B2;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F3CA88B7AB;
  Mon, 29 Nov 2021 18:49:57 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 7SepyU8EpgJH; Mon, 29 Nov 2021 18:49:57 +0100 (CET)
+ with ESMTP id IjKYV44Ykzyj; Mon, 29 Nov 2021 18:49:57 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.92])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 59CA38B7AD;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5CCEE8B7AE;
  Mon, 29 Nov 2021 18:49:57 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1ATHno0J015562
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1ATHnojI015566
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Mon, 29 Nov 2021 18:49:50 +0100
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1ATHnoTp015561;
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1ATHnox0015565;
  Mon, 29 Nov 2021 18:49:50 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v5 3/5] powerpc/inst: Define ppc_inst_t as u32 on PPC32
-Date: Mon, 29 Nov 2021 18:49:39 +0100
-Message-Id: <c6d0c46f598f76ad0b0a88bc0d84773bd921b17c.1638208156.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v5 4/5] powerpc/inst: Move ppc_inst_t definition in asm/reg.h
+Date: Mon, 29 Nov 2021 18:49:40 +0100
+Message-Id: <4b79f1491118af96b1ac0735e74aeca02ea4c04e.1638208156.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <1f0ede830ccb33a659119a55cb590820c27004db.1638208156.git.christophe.leroy@csgroup.eu>
 References: <1f0ede830ccb33a659119a55cb590820c27004db.1638208156.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1638208179; l=2480; s=20211009;
- h=from:subject:message-id; bh=bRSXL/bM2fHo0+BAsYi79ROpQjL4J98x+R5UsmSQH6w=;
- b=7fWmrDcjPGQDzRKmPO+3yLfzB8eKw5YZVJgCxvuDvDHx5Oc3XXj9aJVowao5kGJt7NWQZJe7IdWa
- jjmwB5ZkBMTVuadzGInNqMo3MsH3AtdnuvpXGCmZzGoUoqroaDgK
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1638208179; l=2950; s=20211009;
+ h=from:subject:message-id; bh=iVQcuTLGFrRqTJVxnNIHAAXBtfS2roWUnbqKcU3QVJo=;
+ b=IbL3NDi70/rmwLnWd5MQKESgDN8sd/9Ee+zUK3IHJkkJqIcGvEGcDNcywipp7SP0b9jQ/llSv+eT
+ kFB1nlgyCx3Snrn/qPmLLwMCBe1LtFkTUx7/FGvW1l/5VXuhMFkE
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -80,83 +80,106 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Unlike PPC64 ABI, PPC32 uses the stack to pass a parameter defined
-as a struct, even when the struct has a single simple element.
+Because of circular inclusion of asm/hw_breakpoint.h, we
+need to move definition of asm/reg.h outside of inst.h
+so that asm/hw_breakpoint.h gets it without including
+asm/inst.h
 
-To avoid that, define ppc_inst_t as u32 on PPC32.
-
-Keep it as 'struct ppc_inst' when __CHECKER__ is defined so that
-sparse can perform type checking.
-
-Also revert commit 511eea5e2ccd ("powerpc/kprobes: Fix Oops by passing
-ppc_inst as a pointer to emulate_step() on ppc32") as now the
-instruction to be emulated is passed as a register to emulate_step().
+Also remove asm/inst.h from asm/uprobes.h as it's not
+needed anymore.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v2: Make it work with kprobes
+v4: New to support inlining of copy_inst_from_kernel_nofault() in following patch.
 ---
- arch/powerpc/include/asm/inst.h | 15 +++++++++++++--
- arch/powerpc/kernel/optprobes.c |  8 ++------
- 2 files changed, 15 insertions(+), 8 deletions(-)
+ arch/powerpc/include/asm/hw_breakpoint.h |  1 -
+ arch/powerpc/include/asm/inst.h          | 10 +---------
+ arch/powerpc/include/asm/reg.h           | 12 ++++++++++++
+ arch/powerpc/include/asm/uprobes.h       |  1 -
+ 4 files changed, 13 insertions(+), 11 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
+index 88053d3c68e6..84d39fd42f71 100644
+--- a/arch/powerpc/include/asm/hw_breakpoint.h
++++ b/arch/powerpc/include/asm/hw_breakpoint.h
+@@ -10,7 +10,6 @@
+ #define _PPC_BOOK3S_64_HW_BREAKPOINT_H
+ 
+ #include <asm/cpu_has_feature.h>
+-#include <asm/inst.h>
+ 
+ #ifdef	__KERNEL__
+ struct arch_hw_breakpoint {
 diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
-index b3502f21e0f4..7ef5fd3bb167 100644
+index 7ef5fd3bb167..53a40faf362a 100644
 --- a/arch/powerpc/include/asm/inst.h
 +++ b/arch/powerpc/include/asm/inst.h
-@@ -34,6 +34,7 @@
-  * Instruction data type for POWER
+@@ -3,6 +3,7 @@
+ #define _ASM_POWERPC_INST_H
+ 
+ #include <asm/ppc-opcode.h>
++#include <asm/reg.h>
+ 
+ #define ___get_user_instr(gu_op, dest, ptr)				\
+ ({									\
+@@ -35,13 +36,6 @@
   */
  
-+#if defined(CONFIG_PPC64) || defined(__CHECKER__)
- typedef struct {
- 	u32 val;
- #ifdef CONFIG_PPC64
-@@ -46,13 +47,23 @@ static inline u32 ppc_inst_val(ppc_inst_t x)
+ #if defined(CONFIG_PPC64) || defined(__CHECKER__)
+-typedef struct {
+-	u32 val;
+-#ifdef CONFIG_PPC64
+-	u32 suffix;
+-#endif
+-} __packed ppc_inst_t;
+-
+ static inline u32 ppc_inst_val(ppc_inst_t x)
+ {
  	return x.val;
- }
+@@ -50,8 +44,6 @@ static inline u32 ppc_inst_val(ppc_inst_t x)
+ #define ppc_inst(x) ((ppc_inst_t){ .val = (x) })
  
-+#define ppc_inst(x) ((ppc_inst_t){ .val = (x) })
+ #else
+-typedef u32 ppc_inst_t;
+-
+ static inline u32 ppc_inst_val(ppc_inst_t x)
+ {
+ 	return x;
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index e9d27265253b..85501181f929 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -1366,6 +1366,18 @@
+ 
+ /* Macros for setting and retrieving special purpose registers */
+ #ifndef __ASSEMBLY__
 +
++#if defined(CONFIG_PPC64) || defined(__CHECKER__)
++typedef struct {
++	u32 val;
++#ifdef CONFIG_PPC64
++	u32 suffix;
++#endif
++} __packed ppc_inst_t;
 +#else
 +typedef u32 ppc_inst_t;
-+
-+static inline u32 ppc_inst_val(ppc_inst_t x)
-+{
-+	return x;
-+}
-+#define ppc_inst(x) (x)
 +#endif
 +
- static inline int ppc_inst_primary_opcode(ppc_inst_t x)
- {
- 	return ppc_inst_val(x) >> 26;
- }
+ #define mfmsr()		({unsigned long rval; \
+ 			asm volatile("mfmsr %0" : "=r" (rval) : \
+ 						: "memory"); rval;})
+diff --git a/arch/powerpc/include/asm/uprobes.h b/arch/powerpc/include/asm/uprobes.h
+index fe683371336f..a7ae1860115a 100644
+--- a/arch/powerpc/include/asm/uprobes.h
++++ b/arch/powerpc/include/asm/uprobes.h
+@@ -11,7 +11,6 @@
  
--#define ppc_inst(x) ((ppc_inst_t){ .val = (x) })
--
- #ifdef CONFIG_PPC64
- #define ppc_inst_prefix(x, y) ((ppc_inst_t){ .val = (x), .suffix = (y) })
+ #include <linux/notifier.h>
+ #include <asm/probes.h>
+-#include <asm/inst.h>
  
-diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
-index 378db980ded3..3b1c2236cbee 100644
---- a/arch/powerpc/kernel/optprobes.c
-+++ b/arch/powerpc/kernel/optprobes.c
-@@ -228,12 +228,8 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 	/*
- 	 * 3. load instruction to be emulated into relevant register, and
- 	 */
--	if (IS_ENABLED(CONFIG_PPC64)) {
--		temp = ppc_inst_read(p->ainsn.insn);
--		patch_imm_load_insns(ppc_inst_as_ulong(temp), 4, buff + TMPL_INSN_IDX);
--	} else {
--		patch_imm_load_insns((unsigned long)p->ainsn.insn, 4, buff + TMPL_INSN_IDX);
--	}
-+	temp = ppc_inst_read(p->ainsn.insn);
-+	patch_imm_load_insns(ppc_inst_as_ulong(temp), 4, buff + TMPL_INSN_IDX);
+ typedef ppc_opcode_t uprobe_opcode_t;
  
- 	/*
- 	 * 4. branch back from trampoline
 -- 
 2.33.1
 
