@@ -1,97 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C590C461269
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 11:27:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6AF54613FD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 12:39:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2hNw4PDTz2yJv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 21:27:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2k0l4bV8z3cFh
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 22:39:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=huWPmO5I;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j7IepB0c;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22f;
+ helo=mail-lj1-x22f.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=huWPmO5I; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=j7IepB0c; dkim-atps=neutral
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com
+ [IPv6:2a00:1450:4864:20::22f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2hNC27qlz2xsC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 21:26:34 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AT8g2hV024506; 
- Mon, 29 Nov 2021 10:26:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=DpQapP1iYdDs9/blA8KcABzBjpVNbUS1R/t6HOOXaKI=;
- b=huWPmO5IXvT+ZD9GVH9lh/R/1QFQkR504l/tJzIK+oJNv9GeQ2xpX1DjqurzCGr95YRx
- e0IJEJb4omrnfdCx6ANiOhEUbUDPt8FTmR4Iequ2KEEqxY7QOznpsbwoCiV3VUW0k55p
- Cm5cJJZ2c1mQfyX12whCqSOWefqrFmchq7zvJxMenfxL+HfThLjatRpGcvVNT7wwmfGR
- MmaSTGIpQEE+PKnNFLAUTOXUixAERB50ApzUpBV1O/VEyHFJzKJ76AxodnBN8hpXvctP
- 80XxbPtbvLCxHvnbv3ffguvJRhw6pIbKVxRMEtVm6w8hp+cTsifgqE7NsLHNa4Ti+LRN 5g== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cmujxtcch-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Nov 2021 10:26:30 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1ATAESHf001089;
- Mon, 29 Nov 2021 10:26:28 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 3ckca93ebw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 29 Nov 2021 10:26:28 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1ATAQQDi24772880
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Nov 2021 10:26:26 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 14C06A4068;
- Mon, 29 Nov 2021 10:26:26 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E88C3A4065;
- Mon, 29 Nov 2021 10:26:24 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.195.37.93])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 29 Nov 2021 10:26:24 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Subject: Re: [linux-next] Read-only file system after boot (powerpc)
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-In-Reply-To: <20211129095947.GA32642@lst.de>
-Date: Mon, 29 Nov 2021 15:56:23 +0530
-Message-Id: <2CD932C2-A553-4676-B73C-5A65198F73F2@linux.vnet.ibm.com>
-References: <87F94FF1-5D9D-475B-B083-C101DDB7A108@linux.vnet.ibm.com>
- <20211129095947.GA32642@lst.de>
-To: Christoph Hellwig <hch@lst.de>
-X-Mailer: Apple Mail (2.3654.120.0.1.13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: bPKF31uG6UyOWzoO02wEdCcmEm-HtxG_
-X-Proofpoint-GUID: bPKF31uG6UyOWzoO02wEdCcmEm-HtxG_
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2jv92gZMz305t
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 22:34:59 +1100 (AEDT)
+Received: by mail-lj1-x22f.google.com with SMTP id k2so33856261lji.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 03:34:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=euaa0MK3qpl38vu/xm/JZntaVOCHcXyS5pdHcr9Cv9Y=;
+ b=j7IepB0c7QsF+gZGn8sLWlXDCQr83Yhq9Uwq9fJmgvQdhWWCer0J3Db/gwAG0Blu3V
+ KLIiDLWANtPW2sX+O/m2jQqBDLC+4NfkDAxYnlnBfxi7qlePYrZZysw0Kj4NFPMagEe7
+ 5Z58UnljUl1PUrtNNqQtNaR8rjEOAOjAptz9aZ81TzHnOGVzQL+Ka518l0o45nrM05c1
+ wTSb3kazkFWdVLhzdtamDwO56fb5XsgOF41m+pkkrOCbpYLS/NmBUtznRV2wcvObV+eX
+ /QUCocD7Th3AP/6bIoc90HuBDrH/5Le5nNAAFps88ziv0187Td+CIqcDZxoQmDkSEFJt
+ ILjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=euaa0MK3qpl38vu/xm/JZntaVOCHcXyS5pdHcr9Cv9Y=;
+ b=egsOthLqzKxmY2vaYuxv3XAT5JIuqI4gwhqRKr6DBZIOmq6QaY8C1PZDMPZudWn+8R
+ 1WkQjKhRcly/nLHl+hvPqGN3hAQUEbcmXacwLPbKNvK9axy/45yNorqdUrigaJsDEH/P
+ xHk5PSGIUDzMdcyVLkSUbh6k2nIOJhRnyZv/kVfypKo0GSE+TfS8Ol+UnHOtVYKoYSFt
+ Wb+HJzUoxOn5/u4nLrBm4/sLSn/+RdPrYeJ+DHPFgTznNsxJjdcQyaxrkQ9Hw85Ywia1
+ OtfmEoLDmjoFba5yKlT4nwWS1JuF4e8NnKTaB67sikrRjhcUWT4QlTHkpy7hkrt2afUn
+ hI/w==
+X-Gm-Message-State: AOAM530mXrPNk4yS4wcpMQB9fcbp8w9KZXBnbNoBtDZ0tAcdxbAc/jpr
+ ItFywTVHCBpci7N6xqlQtEk=
+X-Google-Smtp-Source: ABdhPJzVpycz41Q2saZagDnrHTPX3H5Cn8S9UMBEs5Q4UAjlx4ArmiP2PAHXWXd2FxMxn0TZfV9KEQ==
+X-Received: by 2002:a2e:814b:: with SMTP id t11mr47973901ljg.171.1638185691187; 
+ Mon, 29 Nov 2021 03:34:51 -0800 (PST)
+Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru.
+ [94.29.46.111])
+ by smtp.googlemail.com with ESMTPSA id n2sm131579ljq.30.2021.11.29.03.34.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 Nov 2021 03:34:50 -0800 (PST)
+Subject: Re: [PATCH v4 05/25] reboot: Warn if restart handler has duplicated
+ priority
+To: =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
+References: <20211126180101.27818-1-digetx@gmail.com>
+ <20211126180101.27818-6-digetx@gmail.com> <YaLNOJTM+lVq+YNS@qmqm.qmqm.pl>
+ <033ddf2a-6223-1a82-ec64-30f17c891f67@gmail.com>
+ <YaQeQgbW+CjEdsqG@qmqm.qmqm.pl>
+From: Dmitry Osipenko <digetx@gmail.com>
+Message-ID: <091321ea-4919-0579-88a8-23d05871575d@gmail.com>
+Date: Mon, 29 Nov 2021 14:34:40 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-29_07,2021-11-28_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015
- mlxscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0
- mlxlogscore=999 phishscore=0 bulkscore=0 spamscore=0 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2111290049
+In-Reply-To: <YaQeQgbW+CjEdsqG@qmqm.qmqm.pl>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Mon, 29 Nov 2021 22:39:17 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,23 +89,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-block@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
- linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
+ linux-ia64@vger.kernel.org, Santosh Shilimkar <ssantosh@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Thierry Reding <thierry.reding@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
+ Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
+ Stefano Stabellini <sstabellini@kernel.org>, alankao@andestech.com,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+ linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Jonathan Hunter <jonathanh@nvidia.com>, linux-acpi@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, xen-devel@lists.xenproject.org,
+ linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+ Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
+ Lee Jones <lee.jones@linaro.org>, linux-m68k@lists.linux-m68k.org,
+ Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ linux-tegra@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, linux-parisc@vger.kernel.org,
+ linux-pm@vger.kernel.org, Sebastian Reichel <sre@kernel.org>,
+ linux-kernel@vger.kernel.org, "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Guo Ren <guoren@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+29.11.2021 03:26, Michał Mirosław пишет:
+> On Mon, Nov 29, 2021 at 12:06:19AM +0300, Dmitry Osipenko wrote:
+>> 28.11.2021 03:28, Michał Mirosław пишет:
+>>> On Fri, Nov 26, 2021 at 09:00:41PM +0300, Dmitry Osipenko wrote:
+>>>> Add sanity check which ensures that there are no two restart handlers
+>>>> registered with the same priority. Normally it's a direct sign of a
+>>>> problem if two handlers use the same priority.
+>>>
+>>> The patch doesn't ensure the property that there are no duplicated-priority
+>>> entries on the chain.
+>>
+>> It's not the exact point of this patch.
+>>
+>>> I'd rather see a atomic_notifier_chain_register_unique() that returns
+>>> -EBUSY or something istead of adding an entry with duplicate priority.
+>>> That way it would need only one list traversal unless you want to
+>>> register the duplicate anyway (then you would call the older
+>>> atomic_notifier_chain_register() after reporting the error).
+>>
+>> The point of this patch is to warn developers about the problem that
+>> needs to be fixed. We already have such troubling drivers in mainline.
+>>
+>> It's not critical to register different handlers with a duplicated
+>> priorities, but such cases really need to be corrected. We shouldn't
+>> break users' machines during transition to the new API, meanwhile
+>> developers should take action of fixing theirs drivers.
+>>
+>>> (Or you could return > 0 when a duplicate is registered in
+>>> atomic_notifier_chain_register() if the callers are prepared
+>>> for that. I don't really like this way, though.)
+>>
+>> I had a similar thought at some point before and decided that I'm not in
+>> favor of this approach. It's nicer to have a dedicated function that
+>> verifies the uniqueness, IMO.
+> 
+> I don't like the part that it traverses the list second time to check
+> the uniqueness. But actually you could avoid that if
+> notifier_chain_register() would always add equal-priority entries in
+> reverse order:
+> 
+>  static int notifier_chain_register(struct notifier_block **nl,
+>  		struct notifier_block *n)
+>  {
+>  	while ((*nl) != NULL) {
+>  		if (unlikely((*nl) == n)) {
+>  			WARN(1, "double register detected");
+>  			return 0;
+>  		}
+> -		if (n->priority > (*nl)->priority)
+> +		if (n->priority >= (*nl)->priority)
+>  			break;
+>  		nl = &((*nl)->next);
+>  	}
+>  	n->next = *nl;
+>  	rcu_assign_pointer(*nl, n);
+>  	return 0;
+>  }
+> 
+> Then the check for uniqueness after adding would be:
+> 
+>  WARN(nb->next && nb->priority == nb->next->priority);
 
-> On 29-Nov-2021, at 3:29 PM, Christoph Hellwig <hch@lst.de> wrote:
->=20
-> Can you check if your tree already includes this commit:
->=20
-> https://git.kernel.dk/cgit/linux-block/commit/?h=3Dfor-5.17/block&id=3D3f=
-39d47d7ad858c024bd777f5f2a86fa7f6a9f14
->=20
-> and if not see if that fixes the problem?
-
-Thanks. Yes, this patch fixes the problem for me.
-
--Sachin
-
+We can't just change the registration order because invocation order of
+the call chain depends on the registration order and some of current
+users may rely on that order. I'm pretty sure that changing the order
+will have unfortunate consequences.
