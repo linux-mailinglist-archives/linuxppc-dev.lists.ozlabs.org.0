@@ -1,71 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A7B460CFF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 04:09:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9190C460CFD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 04:08:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Vgd5p3dz3cXY
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 14:09:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Vfz46Ssz3cTQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 14:08:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=L43W186J;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iE0nXswh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
- helo=mail-pf1-x432.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
+ helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=L43W186J; dkim-atps=neutral
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
- [IPv6:2607:f8b0:4864:20::432])
+ header.s=20210112 header.b=iE0nXswh; dkim-atps=neutral
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2VfR3Hhgz2ynV
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2VfR3XxNz2yp6
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 14:08:14 +1100 (AEDT)
-Received: by mail-pf1-x432.google.com with SMTP id n26so15329982pff.3
+Received: by mail-pj1-x1036.google.com with SMTP id
+ nh10-20020a17090b364a00b001a69adad5ebso12849990pjb.2
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 19:08:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=kDKWr3hb9egBhkBwYHFYn5SOmJPG4fZQEijlEweX8U0=;
- b=L43W186JTsye0+hNp1sNzX8b+xUOoSVqjhkKTp11x0tsAmOLWtQIvqQ5Lw83z22rIK
- nHjWrBZskuHIf3t/OI71yKa7vCzUDFN5k7oLZL7ZMYEcAm4p3D1TSZlhQnTzOxhb/4+p
- lMyQ95EyK0nadw3/qTn0X9wM3LZ4Tx/EaNdLmWQxRkXu8xreitkiBhTdyA3fa91JjPHo
- YfCy8amcq/06NKxhu+fH/4w8i1RWAYVwpaIGzPzQ7GQcviYXLUq6GK5vG/3Qk1YJXtoo
- yEw8m3lTV27DpY4BjnQSgqxIawuKsF2WciLPeF5kSN4MJ9Lz86DMWr1E0cVS8dCOLrMT
- EclA==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=CUx1zrTY0Ka69PwK0HuQcXj89HkMpPrH2ks6HQYuL00=;
+ b=iE0nXswhUTRS32Qv75C/50+CtW0IIXJtT8vxvVHwmw2j3GRuwBsBaWDJW1DzwMZlKI
+ QvYASpt7Uvd0lUkHA4auoVhvia4ubE6aHPhewgl6C0CM0wHRsBGXGxQstyR5Rr9v47AV
+ 8Owkn94G9VzTvH02RpE60k2cXQKCuzekN1DMw62hmSO95u1yU/CHjnkhMActw6BNFe/O
+ JztafR+b7IPiZRIOyd802ZdLviwqfEy9cz1u11SG6X9n1WZ1RU4JVQo1/b4rUVQeJFGD
+ y7/XQrGelc6cm8JApyUOykRJjmcLgzYuM2iiKri2yPjQfPrb96jQAxFnbEacgtx5dC9f
+ uzRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=kDKWr3hb9egBhkBwYHFYn5SOmJPG4fZQEijlEweX8U0=;
- b=jRYi2n2Tk8p+A5bj/0bv8nlgxDVnWbY5+O5RivW0ToCTCsdjfVLEVMCwwDMWDR9Atv
- pX+CjIhz4HRol91VVN80go23rLS/+gfKALow2AwMjMCodjw6iYH2v/JeZwO/geOrx7MI
- D6EYepHRwA2qrjibb+0XrmS6SgcFmP6WNwrg14Xx+VbM7wdKUSkLw0g5pOeLbO1C7coV
- yGcbhzOrl70pJCMN2kVHA09rUChtNysK9fKSl1NB5aPDBEL7dWR59yvYmd+iztVhI4np
- po7g6Tff+hqRRTd3zy0EnMJ+YYnXyQxFImtKu+oP8+VJkWkCL7RpHu9TiyUer20wpfmB
- gQDQ==
-X-Gm-Message-State: AOAM532qElDb6ewKUv51HxZ+gAMkexjZpEupFXpWfrD3BIQKcXyn3sVk
- fzFfJFwvj/CU6ETaGlX+rhT3kbnfqGI=
-X-Google-Smtp-Source: ABdhPJzfGXl71uJFsJvYw0DdHhf8vcTF58N640nCdWjw6N2u1zTBViXs9Bd8eiZjB8vvCwwoARDDJA==
-X-Received: by 2002:a05:6a00:1995:b0:4a4:edfd:518d with SMTP id
- d21-20020a056a00199500b004a4edfd518dmr37027230pfl.29.1638155289904; 
- Sun, 28 Nov 2021 19:08:09 -0800 (PST)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=CUx1zrTY0Ka69PwK0HuQcXj89HkMpPrH2ks6HQYuL00=;
+ b=YaedHD5kRFV7/PZupql7G/5hQBXrEwZZnBeixEPsEgIZrJLC+oWSixPJ9k/fp4mHjZ
+ 97YFa4sve1jjsxqmX4DU2TI011hgvNwRzCbsb9qUdvu+8FpxcQDyiANiSTvhwQtxdYOJ
+ Ilts8e+G6UjJb0FwcmUW3q7Hq4c4PILDIWJzY8Etpo+ORQyeB5ma/iQwWFV1Fid8qsbu
+ 0BamRf1+JCXV1zzkRfnyBV04yf9NZ04vbeDk00xI8ocKoMpBFD2zM6dCo+MpihtMsN5E
+ Al3GBDaTdzfW6gEJVYpaQV2YIbb3jZFjKKlJqYj/IwI1D1OVVllqgR2+ZEjAmLR/tZ6n
+ NBgA==
+X-Gm-Message-State: AOAM5324LWL/7skPyoeWUekqkcqUHdXEgPXDOc4BNHwaHMidPdPiFka2
+ 1ELJOl+J2H3FEmFzspYs3o1Oiwmp5NM=
+X-Google-Smtp-Source: ABdhPJzYCW3pd8USqxi1l+dAtrIFOp5zATCrrl58PrnGT+Solwbu/kY5fhDtEuaCxEtDXhxrpt2M1g==
+X-Received: by 2002:a17:90b:2412:: with SMTP id
+ nr18mr35974630pjb.233.1638155292651; 
+ Sun, 28 Nov 2021 19:08:12 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (115-64-213-93.static.tpgi.com.au.
  [115.64.213.93])
- by smtp.gmail.com with ESMTPSA id h8sm15462908pfh.10.2021.11.28.19.08.07
+ by smtp.gmail.com with ESMTPSA id h8sm15462908pfh.10.2021.11.28.19.08.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 Nov 2021 19:08:09 -0800 (PST)
+ Sun, 28 Nov 2021 19:08:12 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 00/17] powerpc: Make hash MMU code build configurable
-Date: Mon, 29 Nov 2021 13:07:46 +1000
-Message-Id: <20211129030803.1888161-1-npiggin@gmail.com>
+Subject: [PATCH v5 01/17] powerpc: Remove unused FW_FEATURE_NATIVE references
+Date: Mon, 29 Nov 2021 13:07:47 +1000
+Message-Id: <20211129030803.1888161-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20211129030803.1888161-1-npiggin@gmail.com>
+References: <20211129030803.1888161-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,144 +87,47 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that there's a platform that can make good use of it, here's
-a series that can prevent the hash MMU code being built for 64s
-platforms that don't need it.
+FW_FEATURE_NATIVE_ALWAYS and FW_FEATURE_NATIVE_POSSIBLE are always
+zero and never do anything. Remove them.
 
-Since v4:
-- Fix 32s allnoconfig compile found by kernel test robot.
-- Fix 64s platforms like cell that require hash but allow POWER9 CPU
-  and !HASH to be selected found by Christophe.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/firmware.h | 8 --------
+ 1 file changed, 8 deletions(-)
 
-Since v3:
-- Merged microwatt patches into 1.
-- Fix some changelogs, titles, comments.
-- Keep MMU_FTR_HPTE_TABLE in the features when booting radix if hash
-  support is is configured because it will be needed for KVM radix host
-  hash guest (when we extend this option to KVM).
-- Accounted for hopefully all review comments (thanks Christophe)
-
-Since v2:
-- Split MMU_FTR_HPTE_TABLE clearing for radix boot into its own patch.
-- Remove memremap_compat_align from other sub archs entirely.
-- Flip patch order of the 2 main patches to put Kconfig change first.
-- Fixed Book3S/32 xmon segment dumping bug.
-- Removed a few more ifdefs, changed numbers to use SZ_ definitions,
-  etc.
-- Fixed microwatt defconfig so it should actually disable hash MMU now.
-
-Since v1:
-- Split out most of the Kconfig change from the conditional compilation
-  changes.
-- Split out several more changes into preparatory patches.
-- Reduced some ifdefs.
-- Caught a few missing hash bits: pgtable dump, lkdtm,
-  memremap_compat_align.
-
-Since RFC:
-- Split out large code movement from other changes.
-- Used mmu ftr test constant folding rather than adding new constant
-  true/false for radix_enabled().
-- Restore tlbie trace point that had to be commented out in the
-  previous.
-- Avoid minor (probably unreachable) behaviour change in machine check
-  handler when hash was not compiled.
-- Fix microwatt updates so !HASH is not enforced.
-- Rebase, build fixes.
-
-Thanks,
-Nick
-
-Nicholas Piggin (17):
-  powerpc: Remove unused FW_FEATURE_NATIVE references
-  powerpc: Rename PPC_NATIVE to PPC_HASH_MMU_NATIVE
-  powerpc/pseries: Stop selecting PPC_HASH_MMU_NATIVE
-  powerpc/64s: Move and rename do_bad_slb_fault as it is not hash
-    specific
-  powerpc/pseries: move process table registration away from
-    hash-specific code
-  powerpc/pseries: lparcfg don't include slb_size line in radix mode
-  powerpc/64s: move THP trace point creation out of hash specific file
-  powerpc/64s: Make flush_and_reload_slb a no-op when radix is enabled
-  powerpc/64s: move page size definitions from hash specific file
-  powerpc/64s: Rename hash_hugetlbpage.c to hugetlbpage.c
-  powerpc/64: pcpu setup avoid reading mmu_linear_psize on 64e or radix
-  powerpc: make memremap_compat_align 64s-only
-  powerpc/64e: remove mmu_linear_psize
-  powerpc/64s: Fix radix MMU when MMU_FTR_HPTE_TABLE is clear
-  powerpc/64s: Make hash MMU support configurable
-  powerpc/64s: Move hash MMU support code under CONFIG_PPC_64S_HASH_MMU
-  powerpc/microwatt: add POWER9_CPU, clear PPC_64S_HASH_MMU
-
- arch/powerpc/Kconfig                          |   5 +-
- arch/powerpc/configs/microwatt_defconfig      |   3 +-
- arch/powerpc/include/asm/book3s/64/mmu.h      |  21 +++-
- .../include/asm/book3s/64/tlbflush-hash.h     |   6 +
- arch/powerpc/include/asm/book3s/64/tlbflush.h |   4 -
- arch/powerpc/include/asm/book3s/pgtable.h     |   4 +
- arch/powerpc/include/asm/firmware.h           |   8 --
- arch/powerpc/include/asm/interrupt.h          |   2 +-
- arch/powerpc/include/asm/mmu.h                |  16 ++-
- arch/powerpc/include/asm/mmu_context.h        |   2 +
- arch/powerpc/include/asm/nohash/mmu-book3e.h  |   1 -
- arch/powerpc/include/asm/paca.h               |   8 ++
- arch/powerpc/kernel/asm-offsets.c             |   2 +
- arch/powerpc/kernel/dt_cpu_ftrs.c             |  14 ++-
- arch/powerpc/kernel/entry_64.S                |   4 +-
- arch/powerpc/kernel/exceptions-64s.S          |  20 +++-
- arch/powerpc/kernel/mce.c                     |   2 +-
- arch/powerpc/kernel/mce_power.c               |  16 ++-
- arch/powerpc/kernel/paca.c                    |  18 ++-
- arch/powerpc/kernel/process.c                 |  13 +-
- arch/powerpc/kernel/prom.c                    |   2 +
- arch/powerpc/kernel/setup_64.c                |  26 +++-
- arch/powerpc/kexec/core_64.c                  |   4 +-
- arch/powerpc/kexec/ranges.c                   |   4 +
- arch/powerpc/kvm/Kconfig                      |   1 +
- arch/powerpc/mm/book3s64/Makefile             |  19 +--
- arch/powerpc/mm/book3s64/hash_native.c        | 104 ----------------
- arch/powerpc/mm/book3s64/hash_pgtable.c       |   1 -
- arch/powerpc/mm/book3s64/hash_utils.c         | 111 +++++++++++++++++-
- .../{hash_hugetlbpage.c => hugetlbpage.c}     |   2 +
- arch/powerpc/mm/book3s64/mmu_context.c        |  32 ++++-
- arch/powerpc/mm/book3s64/pgtable.c            |  27 +++++
- arch/powerpc/mm/book3s64/radix_pgtable.c      |   4 +
- arch/powerpc/mm/book3s64/slb.c                |  16 ---
- arch/powerpc/mm/book3s64/trace.c              |   8 ++
- arch/powerpc/mm/copro_fault.c                 |   2 +
- arch/powerpc/mm/fault.c                       |  24 ++++
- arch/powerpc/mm/init_64.c                     |  13 +-
- arch/powerpc/mm/ioremap.c                     |  20 ----
- arch/powerpc/mm/nohash/tlb.c                  |   9 --
- arch/powerpc/mm/pgtable.c                     |   9 +-
- arch/powerpc/mm/ptdump/Makefile               |   2 +-
- arch/powerpc/platforms/52xx/Kconfig           |   2 +-
- arch/powerpc/platforms/Kconfig                |   4 +-
- arch/powerpc/platforms/Kconfig.cputype        |  23 +++-
- arch/powerpc/platforms/cell/Kconfig           |   3 +-
- arch/powerpc/platforms/chrp/Kconfig           |   2 +-
- arch/powerpc/platforms/embedded6xx/Kconfig    |   2 +-
- arch/powerpc/platforms/maple/Kconfig          |   3 +-
- arch/powerpc/platforms/microwatt/Kconfig      |   1 -
- arch/powerpc/platforms/pasemi/Kconfig         |   3 +-
- arch/powerpc/platforms/powermac/Kconfig       |   3 +-
- arch/powerpc/platforms/powernv/Kconfig        |   2 +-
- arch/powerpc/platforms/powernv/idle.c         |   2 +
- arch/powerpc/platforms/powernv/setup.c        |   2 +
- arch/powerpc/platforms/pseries/Kconfig        |   1 -
- arch/powerpc/platforms/pseries/lpar.c         |  67 ++++++-----
- arch/powerpc/platforms/pseries/lparcfg.c      |   5 +-
- arch/powerpc/platforms/pseries/mobility.c     |   6 +
- arch/powerpc/platforms/pseries/ras.c          |   2 +
- arch/powerpc/platforms/pseries/reconfig.c     |   2 +
- arch/powerpc/platforms/pseries/setup.c        |   6 +-
- arch/powerpc/xmon/xmon.c                      |   8 +-
- drivers/misc/lkdtm/Makefile                   |   2 +-
- drivers/misc/lkdtm/core.c                     |   2 +-
- 65 files changed, 470 insertions(+), 292 deletions(-)
- rename arch/powerpc/mm/book3s64/{hash_hugetlbpage.c => hugetlbpage.c} (99%)
- create mode 100644 arch/powerpc/mm/book3s64/trace.c
-
+diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
+index 97a3bd9ffeb9..9b702d2b80fb 100644
+--- a/arch/powerpc/include/asm/firmware.h
++++ b/arch/powerpc/include/asm/firmware.h
+@@ -80,8 +80,6 @@ enum {
+ 	FW_FEATURE_POWERNV_ALWAYS = 0,
+ 	FW_FEATURE_PS3_POSSIBLE = FW_FEATURE_LPAR | FW_FEATURE_PS3_LV1,
+ 	FW_FEATURE_PS3_ALWAYS = FW_FEATURE_LPAR | FW_FEATURE_PS3_LV1,
+-	FW_FEATURE_NATIVE_POSSIBLE = 0,
+-	FW_FEATURE_NATIVE_ALWAYS = 0,
+ 	FW_FEATURE_POSSIBLE =
+ #ifdef CONFIG_PPC_PSERIES
+ 		FW_FEATURE_PSERIES_POSSIBLE |
+@@ -91,9 +89,6 @@ enum {
+ #endif
+ #ifdef CONFIG_PPC_PS3
+ 		FW_FEATURE_PS3_POSSIBLE |
+-#endif
+-#ifdef CONFIG_PPC_NATIVE
+-		FW_FEATURE_NATIVE_ALWAYS |
+ #endif
+ 		0,
+ 	FW_FEATURE_ALWAYS =
+@@ -105,9 +100,6 @@ enum {
+ #endif
+ #ifdef CONFIG_PPC_PS3
+ 		FW_FEATURE_PS3_ALWAYS &
+-#endif
+-#ifdef CONFIG_PPC_NATIVE
+-		FW_FEATURE_NATIVE_ALWAYS &
+ #endif
+ 		FW_FEATURE_POSSIBLE,
+ 
 -- 
 2.23.0
 
