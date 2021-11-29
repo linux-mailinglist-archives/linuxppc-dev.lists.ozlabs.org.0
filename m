@@ -2,75 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AEE460F79
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:39:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E78460F47
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 08:22:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2cfr1Nqpz3cGl
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 18:39:00 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Ximtyy9D;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2cJF62jCz3cV6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 18:22:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2d;
- helo=mail-qv1-xf2d.google.com; envelope-from=yury.norov@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Ximtyy9D; dkim-atps=neutral
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com
- [IPv6:2607:f8b0:4864:20::f2d])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2bKP6WZVz2xYQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 17:38:47 +1100 (AEDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id i12so280717qvh.11
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 22:38:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=GW7wD7qKvROu8z9xZL5o2Gh9JvMEXrXNdc/d8bAaPNs=;
- b=Ximtyy9D6hF34jeHkx2abhxO2fEDksv5f5qJu4CbvoNWokti3yxmfDL3L7TYPRNI1N
- nLBExnAtE1kHxfW3UuSIcTZjpfdkrYaWw77PtYlgHprrRWmhg8onSirLlPaay6tbmdGV
- QOolCDulR6Tk/EKA2Gv8Xlb2VKcWxKtuMIpV9m8bP/Y2OIkRrwh1D8Uy/bj62ViSMN2l
- ZvGgVYwmHud/XyWXGXVdXp5Qsb6Tf/NpieRKvdWwCGOCaqCRU7xxjxP8pUys/Y0my6pK
- DI87mJm/+MqXPnLUnP7Gv+O+UoGKFiXftZWbYzOV5qGvrEcopuUsleS20idOc1qycgZd
- CJ3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=GW7wD7qKvROu8z9xZL5o2Gh9JvMEXrXNdc/d8bAaPNs=;
- b=fsHnrY8QWSC8SFrw2gXXf6KKjqTEcLZXtoNyg3wxr2ZjJM+ZwD3xTzwCVUB46MlbV2
- WntcNZk0hMP+fjy6sEONHJ00/mUbClwVI3aQuSvv8H0uIGkh28gQtESFG7DvfgejN82t
- OpGnCo7Kfxl+o1dmW9BMsicaWLx+y4q+ezUI/2CZFXtOO/gL+6f8XOYtbGb7lVqx4Kg0
- guASQHiHKDDsCZVU4xZgwiVSp2TToVkh1f84xunDM4XlPd+SLOZk+LTiOmUxVmwXy28T
- iKu73Hc2tB+/KU1cKOtHRcjOxtLzQq5uPCSVRTAjzAbdMAJ2Cl0NfuDVfReFPZ3xPV4+
- a1IA==
-X-Gm-Message-State: AOAM532AJ9zUrzse3LjGIPq7zI99DgFFNRu42NYTnHTi+AxUWmnCdyY5
- mqhTWnUwqLxLL3YAZUi5zM4=
-X-Google-Smtp-Source: ABdhPJwSywxmnS7RgaW8ur/GbWm8YSeTFfi4rMgLh/NdfnxtrZBeDnmatO6ciZp/cAThb6LO+btZbw==
-X-Received: by 2002:a05:6214:984:: with SMTP id
- dt4mr30031399qvb.120.1638167922796; 
- Sun, 28 Nov 2021 22:38:42 -0800 (PST)
-Received: from localhost ([66.216.211.25])
- by smtp.gmail.com with ESMTPSA id h19sm8495514qth.63.2021.11.28.22.38.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 Nov 2021 22:38:42 -0800 (PST)
-Date: Sun, 28 Nov 2021 22:38:39 -0800
-From: Yury Norov <yury.norov@gmail.com>
-To: mirq-test@rere.qmqm.pl
-Subject: Re: [PATCH 0/9] lib/bitmap: optimize bitmap_weight() usage
-Message-ID: <20211129063839.GA338729@lapt>
-References: <20211128035704.270739-1-yury.norov@gmail.com>
- <YaPEfZ0t9UFGwpml@qmqm.qmqm.pl>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2cHq2Tztz2xvy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 18:22:28 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4J2cHg211vz9sSk;
+ Mon, 29 Nov 2021 08:22:23 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id UPVQNJoArrEd; Mon, 29 Nov 2021 08:22:23 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4J2cHg1BMJz9sSh;
+ Mon, 29 Nov 2021 08:22:23 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 19C2D8B76D;
+ Mon, 29 Nov 2021 08:22:23 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 95kUX8e7kcKx; Mon, 29 Nov 2021 08:22:23 +0100 (CET)
+Received: from [172.25.230.108] (unknown [172.25.230.108])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BD33C8B763;
+ Mon, 29 Nov 2021 08:22:22 +0100 (CET)
+Message-ID: <e1f310b4-2e23-0fa4-424d-271395824438@csgroup.eu>
+Date: Mon, 29 Nov 2021 08:22:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YaPEfZ0t9UFGwpml@qmqm.qmqm.pl>
-X-Mailman-Approved-At: Mon, 29 Nov 2021 18:38:27 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v3 4/4] powerpc/inst: Optimise
+ copy_inst_from_kernel_nofault()
+Content-Language: fr-FR
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <1a8623dce54a72c7af172027caa7c44b1fefa8c4.1638036607.git.christophe.leroy@csgroup.eu>
+ <cfcff31e25dd6556b6cdf85842fb4e70174fabaa.1638036607.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <cfcff31e25dd6556b6cdf85842fb4e70174fabaa.1638036607.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,144 +65,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Guo Ren <guoren@kernel.org>,
- Christoph Lameter <cl@linux.com>, Christoph Hellwig <hch@lst.de>,
- Andi Kleen <ak@linux.intel.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Mel Gorman <mgorman@suse.de>, Viresh Kumar <viresh.kumar@linaro.org>,
- Petr Mladek <pmladek@suse.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Jens Axboe <axboe@fb.com>, Andy Lutomirski <luto@kernel.org>,
- Lee Jones <lee.jones@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-crypto@vger.kernel.org,
- Tejun Heo <tj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Mark Rutland <mark.rutland@arm.com>, Anup Patel <anup.patel@wdc.com>,
- linux-ia64@vger.kernel.org, David Airlie <airlied@linux.ie>,
- Roy Pledge <Roy.Pledge@nxp.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Solomon Peachy <pizza@shaftnet.org>, Stephen Rothwell <sfr@canb.auug.org.au>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Dennis Zhou <dennis@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>,
- linux-alpha@vger.kernel.org, Kalle Valo <kvalo@codeaurora.org>,
- Stephen Boyd <sboyd@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
- Dinh Nguyen <dinguyen@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Subbaraya Sundeep <sbhatta@marvell.com>, Will Deacon <will@kernel.org>,
- Sagi Grimberg <sagi@grimberg.me>, linux-csky@vger.kernel.org,
- bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org,
- linux-snps-arc@lists.infradead.org, Kees Cook <keescook@chromium.org>,
- Yury Norov <yury.norov@gmail.com>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
- Vineet Gupta <vgupta@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Mark Gross <markgross@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- David Laight <David.Laight@aculab.com>, Sudeep Holla <sudeep.holla@arm.com>,
- Geetha sowjanya <gakula@marvell.com>, Ian Rogers <irogers@google.com>,
- kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Amitkumar Karwar <amitkarwar@gmail.com>, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, Jiri Olsa <jolsa@redhat.com>,
- Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Marc Zyngier <maz@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Andy Gross <agross@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Vivien Didelot <vivien.didelot@gmail.com>,
- Sunil Goutham <sgoutham@marvell.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- linux-s390@vger.kernel.org, Alexey Klimov <aklimov@redhat.com>,
- Heiko Carstens <hca@linux.ibm.com>, Hans de Goede <hdegoede@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>, Marcin Wojtas <mw@semihalf.com>,
- Vlastimil Babka <vbabka@suse.cz>, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Daniel Vetter <daniel@ffwll.ch>, Jason Wessel <jason.wessel@windriver.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Andy Shevchenko <andy@infradead.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Nov 28, 2021 at 07:03:41PM +0100, mirq-test@rere.qmqm.pl wrote:
-> On Sat, Nov 27, 2021 at 07:56:55PM -0800, Yury Norov wrote:
-> > In many cases people use bitmap_weight()-based functions like this:
-> > 
-> > 	if (num_present_cpus() > 1)
-> > 		do_something();
-> > 
-> > This may take considerable amount of time on many-cpus machines because
-> > num_present_cpus() will traverse every word of underlying cpumask
-> > unconditionally.
-> > 
-> > We can significantly improve on it for many real cases if stop traversing
-> > the mask as soon as we count present cpus to any number greater than 1:
-> > 
-> > 	if (num_present_cpus_gt(1))
-> > 		do_something();
-> > 
-> > To implement this idea, the series adds bitmap_weight_{eq,gt,le}
-> > functions together with corresponding wrappers in cpumask and nodemask.
+
+
+Le 27/11/2021 à 19:10, Christophe Leroy a écrit :
+> copy_inst_from_kernel_nofault() uses copy_from_kernel_nofault() to
+> copy one or two 32bits words. This means calling an out-of-line
+> function which itself calls back copy_from_kernel_nofault_allowed()
+> then performs a generic copy with loops.
 > 
-> Having slept on it I have more structured thoughts:
+> Rewrite copy_inst_from_kernel_nofault() to do everything at a
+> single place and use __get_kernel_nofault() directly to perform
+> single accesses without loops.
 > 
-> First, I like substituting bitmap_empty/full where possible - I think
-> the change stands on its own, so could be split and sent as is.
-
-Ok, I can do it.
-
-> I don't like the proposed API very much. One problem is that it hides
-> the comparison operator and makes call sites less readable:
+> Before the patch:
 > 
-> 	bitmap_weight(...) > N
+> 	00000018 <copy_inst_from_kernel_nofault>:
+> 	  18:	94 21 ff e0 	stwu    r1,-32(r1)
+> 	  1c:	7c 08 02 a6 	mflr    r0
+> 	  20:	38 a0 00 04 	li      r5,4
+> 	  24:	93 e1 00 1c 	stw     r31,28(r1)
+> 	  28:	7c 7f 1b 78 	mr      r31,r3
+> 	  2c:	38 61 00 08 	addi    r3,r1,8
+> 	  30:	90 01 00 24 	stw     r0,36(r1)
+> 	  34:	48 00 00 01 	bl      34 <copy_inst_from_kernel_nofault+0x1c>
+> 				34: R_PPC_REL24	copy_from_kernel_nofault
+> 	  38:	2c 03 00 00 	cmpwi   r3,0
+> 	  3c:	40 82 00 0c 	bne     48 <copy_inst_from_kernel_nofault+0x30>
+> 	  40:	81 21 00 08 	lwz     r9,8(r1)
+> 	  44:	91 3f 00 00 	stw     r9,0(r31)
+> 	  48:	80 01 00 24 	lwz     r0,36(r1)
+> 	  4c:	83 e1 00 1c 	lwz     r31,28(r1)
+> 	  50:	38 21 00 20 	addi    r1,r1,32
+> 	  54:	7c 08 03 a6 	mtlr    r0
+> 	  58:	4e 80 00 20 	blr
 > 
-> becomes:
+> After the patch:
 > 
-> 	bitmap_weight_gt(..., N)
+> 	00000018 <copy_inst_from_kernel_nofault>:
+> 	  18:	3d 20 b0 00 	lis     r9,-20480
+> 	  1c:	7c 04 48 40 	cmplw   r4,r9
+> 	  20:	7c 69 1b 78 	mr      r9,r3
+> 	  24:	41 80 00 2c 	blt     50 <copy_inst_from_kernel_nofault+0x38>
+> 	  28:	81 42 04 d0 	lwz     r10,1232(r2)
+> 	  2c:	39 4a 00 01 	addi    r10,r10,1
+> 	  30:	91 42 04 d0 	stw     r10,1232(r2)
+> 	  34:	80 e4 00 00 	lwz     r7,0(r4)
+> 	  38:	81 42 04 d0 	lwz     r10,1232(r2)
+> 	  3c:	38 60 00 00 	li      r3,0
+> 	  40:	39 4a ff ff 	addi    r10,r10,-1
+> 	  44:	91 42 04 d0 	stw     r10,1232(r2)
+> 	  48:	90 e9 00 00 	stw     r7,0(r9)
+> 	  4c:	4e 80 00 20 	blr
 > 
-> and:
-> 	bitmap_weight(...) <= N
+> 	  50:	38 60 ff de 	li      r3,-34
+> 	  54:	4e 80 00 20 	blr
+> 	  58:	81 22 04 d0 	lwz     r9,1232(r2)
+> 	  5c:	38 60 ff f2 	li      r3,-14
+> 	  60:	39 29 ff ff 	addi    r9,r9,-1
+> 	  64:	91 22 04 d0 	stw     r9,1232(r2)
+> 	  68:	4e 80 00 20 	blr
 > 
-> becomes:
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+> v3: New
+> ---
+>   arch/powerpc/mm/maccess.c | 18 ++++++++++++------
+>   1 file changed, 12 insertions(+), 6 deletions(-)
 > 
-> 	bitmap_weight_lt(..., N+1)
-> or:
-> 	!bitmap_weight_gt(..., N)
+> diff --git a/arch/powerpc/mm/maccess.c b/arch/powerpc/mm/maccess.c
+> index 5abae96b2b46..90309806f5eb 100644
+> --- a/arch/powerpc/mm/maccess.c
+> +++ b/arch/powerpc/mm/maccess.c
+> @@ -15,16 +15,22 @@ bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
+>   int copy_inst_from_kernel_nofault(ppc_inst_t *inst, u32 *src)
+>   {
+>   	unsigned int val, suffix;
+> -	int err;
+>   
+> -	err = copy_from_kernel_nofault(&val, src, sizeof(val));
+> -	if (err)
+> -		return err;
+> +	if (unlikely(!is_kernel_addr((unsigned long)src)))
+> +		return -ERANGE;
+> +
+> +	pagefault_disable();
+
+Allthough generic version of copy_from_kernel_nofault() does it, 
+disabling pagefault is pointless here because we are accessing kernel 
+addresses only, so a page fault will always fail via bad_kernel_fault(), 
+it will never reach the faulthandler_disabled() test.
+
+> +	__get_kernel_nofault(&val, src, u32, Efault);
+>   	if (IS_ENABLED(CONFIG_PPC64) && get_op(val) == OP_PREFIX) {
+> -		err = copy_from_kernel_nofault(&suffix, src + 1, sizeof(suffix));
+> +		__get_kernel_nofault(&suffix, src + 1, u32, Efault);
+> +		pagefault_enable();
+>   		*inst = ppc_inst_prefix(val, suffix);
+>   	} else {
+> +		pagefault_enable();
+>   		*inst = ppc_inst(val);
+>   	}
+> -	return err;
+> +	return 0;
+> +Efault:
+> +	pagefault_enable();
+> +	return -EFAULT;
+>   }
 > 
-> I'd rather see something resembling memcmp() API that's known enough
-> to be easier to grasp. For above examples:
-> 
-> 	bitmap_weight_cmp(..., N) > 0
-> 	bitmap_weight_cmp(..., N) <= 0
-> 	...
-
-bitmap_weight_cmp() cannot be efficient. Consider this example:
-
-bitmap_weight_lt(1000 0000 0000 0000, 1) == false
-                 ^
-                 stop here
-
-bitmap_weight_cmp(1000 0000 0000 0000, 1) == 0
-                                 ^
-                                 stop here
-
-I agree that '_gt' is less verbose than '>', but the advantage of 
-'_gt' over '>' is proportional to length of bitmap, and it means
-that this API should exist.
-
-> This would also make the implementation easier in not having to
-> copy and paste the code three times. Could also use a simple
-> optimization reducing code size:
-
-In the next version I'll reduce code duplication like this:
-
-bool bitmap_eq(..., N);
-bool bitmap_ge(..., N);
-
-#define bitmap_weight_gt(..., N)  bitmap_weight_ge(..., N + 1)
-#define bitmap_weight_lt(..., N) !bitmap_weight_ge(..., N)
-#define bitmap_weight_le(..., N) !bitmap_weight_gt(..., N)
-
-Thanks,
-Yury
