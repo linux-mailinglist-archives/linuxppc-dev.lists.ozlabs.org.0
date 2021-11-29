@@ -2,69 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DE9460D04
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 04:10:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 070A0460D07
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 04:11:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Vj50PBrz3c7h
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 14:10:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J2Vjw6DjPz3dh3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 29 Nov 2021 14:11:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=FWrkoPe6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eM0OX0fh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c;
- helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::531;
+ helo=mail-pg1-x531.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=FWrkoPe6; dkim-atps=neutral
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
- [IPv6:2607:f8b0:4864:20::42c])
+ header.s=20210112 header.b=eM0OX0fh; dkim-atps=neutral
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com
+ [IPv6:2607:f8b0:4864:20::531])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J2VfW4pGwz3069
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 14:08:19 +1100 (AEDT)
-Received: by mail-pf1-x42c.google.com with SMTP id o4so15275119pfp.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 19:08:19 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J2VfZ0pHFz3bZx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 14:08:21 +1100 (AEDT)
+Received: by mail-pg1-x531.google.com with SMTP id r5so14475523pgi.6
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 28 Nov 2021 19:08:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=VGgNCNf0+/PKQu78DOLbLpQlOjPA8YgZvwx1+X75hdo=;
- b=FWrkoPe6Nji3xjPrqf8HafVxlZXseMmdtRdOGUBDNbmF24ktekjs0hePIjz5A13JXj
- hBrvK1ZmVFvY6Lh81WtmEaR/L9fibclOs8gBDGKqpytcoKNaRgHpkrWxSQ/moxF2lUo2
- wHj4911V3wk8hhxfSXegJr8E+pTBb7UjzkqXLuaHs1+SsIA6DuVp7W3EWTGHk+92Sk+A
- isbbQ06sFqrdwtQzzPvi0K63+4HhmJDfv7VorwWaNhj5dbMSAyydZMhHA/tEmIzT2mPX
- iYLGsRgua1Hnh09OuHgYcVgPTX17g8OsuNswHcSOXncdJ5HiJxHbKBmcxTVYupT6H7/W
- L7HQ==
+ bh=xKWFud3go7o/jf536uWSp+jHP8JUPhxDyRoHZkebU94=;
+ b=eM0OX0fhqrlbSHu7GQJ+MDcdfB33zgQrgrT0FktIdPq58LT545SWeTKvUKE5xxD1Ij
+ o7mBVnraA/Q+qYLtH58smiISLekNsD5zzaHkIuiXuHXv2uh/OwDfoNKn0+X8YFPQx80i
+ H3Mi9la2T4VxKhXWHVlstrPgGly+sf2EV1Mv0YOuKEvIVpLjCagQ2oBHouw8gSiZW/1p
+ UM5J1XkFxzBoQJQv9JEwzZ2QoibD4T2gbOU3rpRY/8tN/o7mxuWPR+d7iGhfJpW+deLV
+ rH4ewhSsovSf0hxun9JA5yf6w+gixhqryrMS3cv5olPQhLOHD8V37z9N3KwXeshvbGH7
+ slBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=VGgNCNf0+/PKQu78DOLbLpQlOjPA8YgZvwx1+X75hdo=;
- b=EOgfjZPVpPLT1EsPHUv//2fhcq4OUK4QST3ZqmCiUFUECnFbTCitYzpW4PWH3cNnQz
- rKnlv/JjgS9HrQM8e73zhzcMi/fSI+bJpHLxwItMn2PDXBW/DdE5FBZeciAVDS02f0LP
- uvUs+bkxJ8GV0cSVs6vHW6NMEfC+KV2YfTkjmBjQ7zZVLl+qoFgskVUwWeAmO8UEK2Xf
- Aznqbzm/TIoOppT/C6PkSLunD5nOZj05d9k+KOYqmIzhENPfFyRVV7morwpZDqB/00Vc
- DimkHs1qNjne6UXOw3UEG2gBZL2tw0ClslZt644Rs5jaUkiK4puCrWCAXRgES3EIg74e
- FwfA==
-X-Gm-Message-State: AOAM532MgOMhXY5rDq00y0fPhtyjjFrvXu3vw+UbzokTFFmIv9SN/J/L
- TWELX/ECA7VLJjrB+2Y4yI6n6P/Owvs=
-X-Google-Smtp-Source: ABdhPJw1vgWJos1dLW4eVoTSGAaVdGt7BJNWDLEFE0C0saOkJ0Z3J2TfH+vc5oB48bKQ3Zif3WnlRQ==
-X-Received: by 2002:a05:6a00:2290:b0:49f:c63a:2a5f with SMTP id
- f16-20020a056a00229000b0049fc63a2a5fmr36547686pfe.69.1638155297403; 
- Sun, 28 Nov 2021 19:08:17 -0800 (PST)
+ bh=xKWFud3go7o/jf536uWSp+jHP8JUPhxDyRoHZkebU94=;
+ b=4aMkG+w6elKmfMerCjgQFKpG+fgmJK8OjO5C13hNPz9jFrqXZ2Mnufzx6/KVKVEXtu
+ HlDWlDNJf/jRrqvTckD5RnhAoxSEjofvM7mI7QO0RlDNRjYfEyGrl+RfWC9adN9Yij8X
+ skcYYpGBgVMy0Bslk7WuVfVTJbAVDNeMDhHEGnNaZShGPRyTZFmF8RgO5Pa90lLI24Zb
+ BmT111aCzgYGCbed+Tf1eDStex+lic+yBw95rb8WzOXtvgAPjV333tU+drGes2cqo0Kd
+ kx7ST1MzaNIct8Dcky+si0J9AqiPhHD4750fCESbWom3Y4+serd14B01oxUy5iP9/46h
+ u9gg==
+X-Gm-Message-State: AOAM530MFnuZKDhhZ4X5vY4wrahCGxzPweF1ePfDoxtbp11Y2yMTibzp
+ WcTUTRf9lpFYgBluZ1OaG0TsuccbxGs=
+X-Google-Smtp-Source: ABdhPJyHofKdIL6oV4s3FEAWrBSaRt4jEp5V4Q/Vu55UhoQCUDueXyjoIiEkQUCMeCmeAE4uvuFaFQ==
+X-Received: by 2002:a63:41c5:: with SMTP id
+ o188mr33417294pga.206.1638155299798; 
+ Sun, 28 Nov 2021 19:08:19 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (115-64-213-93.static.tpgi.com.au.
  [115.64.213.93])
- by smtp.gmail.com with ESMTPSA id h8sm15462908pfh.10.2021.11.28.19.08.15
+ by smtp.gmail.com with ESMTPSA id h8sm15462908pfh.10.2021.11.28.19.08.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 Nov 2021 19:08:17 -0800 (PST)
+ Sun, 28 Nov 2021 19:08:19 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 03/17] powerpc/pseries: Stop selecting PPC_HASH_MMU_NATIVE
-Date: Mon, 29 Nov 2021 13:07:49 +1000
-Message-Id: <20211129030803.1888161-4-npiggin@gmail.com>
+Subject: [PATCH v5 04/17] powerpc/64s: Move and rename do_bad_slb_fault as it
+ is not hash specific
+Date: Mon, 29 Nov 2021 13:07:50 +1000
+Message-Id: <20211129030803.1888161-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211129030803.1888161-1-npiggin@gmail.com>
 References: <20211129030803.1888161-1-npiggin@gmail.com>
@@ -86,283 +87,116 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pseries platform does not use the native hash code but the PAPR
-virtualised hash interfaces, so remove PPC_HASH_MMU_NATIVE.
-
-This requires moving tlbiel code from hash_native.c to hash_utils.c.
+slb.c is hash-specific SLB management, but do_bad_slb_fault deals with
+segment interrupts that occur with radix MMU as well.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/book3s/64/tlbflush.h |   4 -
- arch/powerpc/mm/book3s64/hash_native.c        | 104 ------------------
- arch/powerpc/mm/book3s64/hash_utils.c         | 104 ++++++++++++++++++
- arch/powerpc/platforms/pseries/Kconfig        |   1 -
- 4 files changed, 104 insertions(+), 109 deletions(-)
+ arch/powerpc/include/asm/interrupt.h |  2 +-
+ arch/powerpc/kernel/exceptions-64s.S |  4 ++--
+ arch/powerpc/mm/book3s64/slb.c       | 16 ----------------
+ arch/powerpc/mm/fault.c              | 24 ++++++++++++++++++++++++
+ 4 files changed, 27 insertions(+), 19 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush.h b/arch/powerpc/include/asm/book3s/64/tlbflush.h
-index 215973b4cb26..d2e80f178b6d 100644
---- a/arch/powerpc/include/asm/book3s/64/tlbflush.h
-+++ b/arch/powerpc/include/asm/book3s/64/tlbflush.h
-@@ -14,7 +14,6 @@ enum {
- 	TLB_INVAL_SCOPE_LPID = 1,	/* invalidate TLBs for current LPID */
- };
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index a1d238255f07..3487aab12229 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -564,7 +564,7 @@ DECLARE_INTERRUPT_HANDLER(kernel_bad_stack);
  
--#ifdef CONFIG_PPC_NATIVE
- static inline void tlbiel_all(void)
- {
- 	/*
-@@ -30,9 +29,6 @@ static inline void tlbiel_all(void)
- 	else
- 		hash__tlbiel_all(TLB_INVAL_SCOPE_GLOBAL);
+ /* slb.c */
+ DECLARE_INTERRUPT_HANDLER_RAW(do_slb_fault);
+-DECLARE_INTERRUPT_HANDLER(do_bad_slb_fault);
++DECLARE_INTERRUPT_HANDLER(do_bad_segment_interrupt);
+ 
+ /* hash_utils.c */
+ DECLARE_INTERRUPT_HANDLER_RAW(do_hash_fault);
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index eaf1f72131a1..046c99e31d01 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -1430,7 +1430,7 @@ MMU_FTR_SECTION_ELSE
+ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+ 	std	r3,RESULT(r1)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	bl	do_bad_slb_fault
++	bl	do_bad_segment_interrupt
+ 	b	interrupt_return_srr
+ 
+ 
+@@ -1510,7 +1510,7 @@ MMU_FTR_SECTION_ELSE
+ ALT_MMU_FTR_SECTION_END_IFCLR(MMU_FTR_TYPE_RADIX)
+ 	std	r3,RESULT(r1)
+ 	addi	r3,r1,STACK_FRAME_OVERHEAD
+-	bl	do_bad_slb_fault
++	bl	do_bad_segment_interrupt
+ 	b	interrupt_return_srr
+ 
+ 
+diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
+index f0037bcc47a0..31f4cef3adac 100644
+--- a/arch/powerpc/mm/book3s64/slb.c
++++ b/arch/powerpc/mm/book3s64/slb.c
+@@ -868,19 +868,3 @@ DEFINE_INTERRUPT_HANDLER_RAW(do_slb_fault)
+ 		return err;
+ 	}
  }
--#else
--static inline void tlbiel_all(void) { BUG(); }
--#endif
- 
- static inline void tlbiel_all_lpid(bool radix)
- {
-diff --git a/arch/powerpc/mm/book3s64/hash_native.c b/arch/powerpc/mm/book3s64/hash_native.c
-index d8279bfe68ea..d2a320828c0b 100644
---- a/arch/powerpc/mm/book3s64/hash_native.c
-+++ b/arch/powerpc/mm/book3s64/hash_native.c
-@@ -43,110 +43,6 @@
- 
- static DEFINE_RAW_SPINLOCK(native_tlbie_lock);
- 
--static inline void tlbiel_hash_set_isa206(unsigned int set, unsigned int is)
+-
+-DEFINE_INTERRUPT_HANDLER(do_bad_slb_fault)
 -{
--	unsigned long rb;
+-	int err = regs->result;
 -
--	rb = (set << PPC_BITLSHIFT(51)) | (is << PPC_BITLSHIFT(53));
--
--	asm volatile("tlbiel %0" : : "r" (rb));
--}
--
--/*
-- * tlbiel instruction for hash, set invalidation
-- * i.e., r=1 and is=01 or is=10 or is=11
-- */
--static __always_inline void tlbiel_hash_set_isa300(unsigned int set, unsigned int is,
--					unsigned int pid,
--					unsigned int ric, unsigned int prs)
--{
--	unsigned long rb;
--	unsigned long rs;
--	unsigned int r = 0; /* hash format */
--
--	rb = (set << PPC_BITLSHIFT(51)) | (is << PPC_BITLSHIFT(53));
--	rs = ((unsigned long)pid << PPC_BITLSHIFT(31));
--
--	asm volatile(PPC_TLBIEL(%0, %1, %2, %3, %4)
--		     : : "r"(rb), "r"(rs), "i"(ric), "i"(prs), "i"(r)
--		     : "memory");
--}
--
--
--static void tlbiel_all_isa206(unsigned int num_sets, unsigned int is)
--{
--	unsigned int set;
--
--	asm volatile("ptesync": : :"memory");
--
--	for (set = 0; set < num_sets; set++)
--		tlbiel_hash_set_isa206(set, is);
--
--	ppc_after_tlbiel_barrier();
--}
--
--static void tlbiel_all_isa300(unsigned int num_sets, unsigned int is)
--{
--	unsigned int set;
--
--	asm volatile("ptesync": : :"memory");
--
--	/*
--	 * Flush the partition table cache if this is HV mode.
--	 */
--	if (early_cpu_has_feature(CPU_FTR_HVMODE))
--		tlbiel_hash_set_isa300(0, is, 0, 2, 0);
--
--	/*
--	 * Now invalidate the process table cache. UPRT=0 HPT modes (what
--	 * current hardware implements) do not use the process table, but
--	 * add the flushes anyway.
--	 *
--	 * From ISA v3.0B p. 1078:
--	 *     The following forms are invalid.
--	 *      * PRS=1, R=0, and RIC!=2 (The only process-scoped
--	 *        HPT caching is of the Process Table.)
--	 */
--	tlbiel_hash_set_isa300(0, is, 0, 2, 1);
--
--	/*
--	 * Then flush the sets of the TLB proper. Hash mode uses
--	 * partition scoped TLB translations, which may be flushed
--	 * in !HV mode.
--	 */
--	for (set = 0; set < num_sets; set++)
--		tlbiel_hash_set_isa300(set, is, 0, 0, 0);
--
--	ppc_after_tlbiel_barrier();
--
--	asm volatile(PPC_ISA_3_0_INVALIDATE_ERAT "; isync" : : :"memory");
--}
--
--void hash__tlbiel_all(unsigned int action)
--{
--	unsigned int is;
--
--	switch (action) {
--	case TLB_INVAL_SCOPE_GLOBAL:
--		is = 3;
--		break;
--	case TLB_INVAL_SCOPE_LPID:
--		is = 2;
--		break;
--	default:
+-	if (err == -EFAULT) {
+-		if (user_mode(regs))
+-			_exception(SIGSEGV, regs, SEGV_BNDERR, regs->dar);
+-		else
+-			bad_page_fault(regs, SIGSEGV);
+-	} else if (err == -EINVAL) {
+-		unrecoverable_exception(regs);
+-	} else {
 -		BUG();
 -	}
--
--	if (early_cpu_has_feature(CPU_FTR_ARCH_300))
--		tlbiel_all_isa300(POWER9_TLB_SETS_HASH, is);
--	else if (early_cpu_has_feature(CPU_FTR_ARCH_207S))
--		tlbiel_all_isa206(POWER8_TLB_SETS, is);
--	else if (early_cpu_has_feature(CPU_FTR_ARCH_206))
--		tlbiel_all_isa206(POWER7_TLB_SETS, is);
--	else
--		WARN(1, "%s called on pre-POWER7 CPU\n", __func__);
 -}
--
- static inline unsigned long  ___tlbie(unsigned long vpn, int psize,
- 						int apsize, int ssize)
- {
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 92680da5229a..97a36fa3940e 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -175,6 +175,110 @@ static struct mmu_psize_def mmu_psize_defaults_gp[] = {
- 	},
- };
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index a8d0ce85d39a..2d4a411c7c85 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -35,6 +35,7 @@
+ #include <linux/kfence.h>
+ #include <linux/pkeys.h>
  
-+static inline void tlbiel_hash_set_isa206(unsigned int set, unsigned int is)
-+{
-+	unsigned long rb;
-+
-+	rb = (set << PPC_BITLSHIFT(51)) | (is << PPC_BITLSHIFT(53));
-+
-+	asm volatile("tlbiel %0" : : "r" (rb));
-+}
++#include <asm/asm-prototypes.h>
+ #include <asm/firmware.h>
+ #include <asm/interrupt.h>
+ #include <asm/page.h>
+@@ -620,4 +621,27 @@ DEFINE_INTERRUPT_HANDLER(do_bad_page_fault_segv)
+ {
+ 	bad_page_fault(regs, SIGSEGV);
+ }
 +
 +/*
-+ * tlbiel instruction for hash, set invalidation
-+ * i.e., r=1 and is=01 or is=10 or is=11
++ * In radix, segment interrupts indicate the EA is not addressable by the
++ * page table geometry, so they are always sent here.
++ *
++ * In hash, this is called if do_slb_fault returns error. Typically it is
++ * because the EA was outside the region allowed by software.
 + */
-+static __always_inline void tlbiel_hash_set_isa300(unsigned int set, unsigned int is,
-+					unsigned int pid,
-+					unsigned int ric, unsigned int prs)
++DEFINE_INTERRUPT_HANDLER(do_bad_segment_interrupt)
 +{
-+	unsigned long rb;
-+	unsigned long rs;
-+	unsigned int r = 0; /* hash format */
++	int err = regs->result;
 +
-+	rb = (set << PPC_BITLSHIFT(51)) | (is << PPC_BITLSHIFT(53));
-+	rs = ((unsigned long)pid << PPC_BITLSHIFT(31));
-+
-+	asm volatile(PPC_TLBIEL(%0, %1, %2, %3, %4)
-+		     : : "r"(rb), "r"(rs), "i"(ric), "i"(prs), "i"(r)
-+		     : "memory");
-+}
-+
-+
-+static void tlbiel_all_isa206(unsigned int num_sets, unsigned int is)
-+{
-+	unsigned int set;
-+
-+	asm volatile("ptesync": : :"memory");
-+
-+	for (set = 0; set < num_sets; set++)
-+		tlbiel_hash_set_isa206(set, is);
-+
-+	ppc_after_tlbiel_barrier();
-+}
-+
-+static void tlbiel_all_isa300(unsigned int num_sets, unsigned int is)
-+{
-+	unsigned int set;
-+
-+	asm volatile("ptesync": : :"memory");
-+
-+	/*
-+	 * Flush the partition table cache if this is HV mode.
-+	 */
-+	if (early_cpu_has_feature(CPU_FTR_HVMODE))
-+		tlbiel_hash_set_isa300(0, is, 0, 2, 0);
-+
-+	/*
-+	 * Now invalidate the process table cache. UPRT=0 HPT modes (what
-+	 * current hardware implements) do not use the process table, but
-+	 * add the flushes anyway.
-+	 *
-+	 * From ISA v3.0B p. 1078:
-+	 *     The following forms are invalid.
-+	 *      * PRS=1, R=0, and RIC!=2 (The only process-scoped
-+	 *        HPT caching is of the Process Table.)
-+	 */
-+	tlbiel_hash_set_isa300(0, is, 0, 2, 1);
-+
-+	/*
-+	 * Then flush the sets of the TLB proper. Hash mode uses
-+	 * partition scoped TLB translations, which may be flushed
-+	 * in !HV mode.
-+	 */
-+	for (set = 0; set < num_sets; set++)
-+		tlbiel_hash_set_isa300(set, is, 0, 0, 0);
-+
-+	ppc_after_tlbiel_barrier();
-+
-+	asm volatile(PPC_ISA_3_0_INVALIDATE_ERAT "; isync" : : :"memory");
-+}
-+
-+void hash__tlbiel_all(unsigned int action)
-+{
-+	unsigned int is;
-+
-+	switch (action) {
-+	case TLB_INVAL_SCOPE_GLOBAL:
-+		is = 3;
-+		break;
-+	case TLB_INVAL_SCOPE_LPID:
-+		is = 2;
-+		break;
-+	default:
++	if (err == -EFAULT) {
++		if (user_mode(regs))
++			_exception(SIGSEGV, regs, SEGV_BNDERR, regs->dar);
++		else
++			bad_page_fault(regs, SIGSEGV);
++	} else if (err == -EINVAL) {
++		unrecoverable_exception(regs);
++	} else {
 +		BUG();
 +	}
-+
-+	if (early_cpu_has_feature(CPU_FTR_ARCH_300))
-+		tlbiel_all_isa300(POWER9_TLB_SETS_HASH, is);
-+	else if (early_cpu_has_feature(CPU_FTR_ARCH_207S))
-+		tlbiel_all_isa206(POWER8_TLB_SETS, is);
-+	else if (early_cpu_has_feature(CPU_FTR_ARCH_206))
-+		tlbiel_all_isa206(POWER7_TLB_SETS, is);
-+	else
-+		WARN(1, "%s called on pre-POWER7 CPU\n", __func__);
 +}
-+
- /*
-  * 'R' and 'C' update notes:
-  *  - Under pHyp or KVM, the updatepp path will not set C, thus it *will*
-diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
-index 30618750bd98..f7fd91d153a4 100644
---- a/arch/powerpc/platforms/pseries/Kconfig
-+++ b/arch/powerpc/platforms/pseries/Kconfig
-@@ -17,7 +17,6 @@ config PPC_PSERIES
- 	select PPC_RTAS_DAEMON
- 	select RTAS_ERROR_LOGGING
- 	select PPC_UDBG_16550
--	select PPC_HASH_MMU_NATIVE
- 	select PPC_DOORBELL
- 	select HOTPLUG_CPU
- 	select ARCH_RANDOM
+ #endif
 -- 
 2.23.0
 
