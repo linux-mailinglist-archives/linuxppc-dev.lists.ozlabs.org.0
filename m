@@ -2,77 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB9B463A49
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 16:40:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71126463D94
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 19:18:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J3RHp3MLlz3cSX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 02:40:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J3Vny4vKZz3c98
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 05:18:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X5r0MrHr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rigIwMrg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=2604:1380:40e1:4800::1;
- helo=sin.source.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=nathan@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=X5r0MrHr; 
+ header.s=k20201202 header.b=rigIwMrg; 
  dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org
- [IPv6:2604:1380:40e1:4800::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J3RH5615Jz2yb9
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Dec 2021 02:39:45 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J3VnG4C5Vz2yJL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Dec 2021 05:17:38 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id BE1F1CE1A2E
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 15:39:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3B8C4C53FCD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 15:39:42 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id A512DB81B9B;
+ Tue, 30 Nov 2021 18:17:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB67BC53FCC;
+ Tue, 30 Nov 2021 18:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1638286782;
- bh=twdgupdV9j5YqNHHCZrYUtbolloWOuJPFWECawaQ0sg=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=X5r0MrHrySqHgfoyrhRr6jhpIJvtJTP3xCdc24/fdFYrlHdZpxuzXhmsprZv20SF8
- J+MR0GGFsBLjePiTAas35zRbte65jsbtCEj9AX3pFwhgc6ICt8acGh8CKATvRq7OEE
- hFS/gd2iNRUfKuGh0FuROzc3aS4WR3HGxS2ch+1a9BRt1jTMuk7qe1v07DamYxcTS5
- Uj/At/sRXYS8TIwPrB2RLvgRTin08J71qF6RPl8pwh22OqbzsM6QNzvPq3aWFtY5rA
- qBt/WvA+OT8EzWAce8ASnXcgUAzj2vsR8yHgFlBcQ6QIRWXnXDmmlQpgAQoNNN9/gr
- 5pp+RUS/hsSQw==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 28AC560F6E; Tue, 30 Nov 2021 15:39:42 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 205099] KASAN hit at raid6_pq: BUG: Unable to handle kernel
- data access at 0x00f0fd0d
-Date: Tue, 30 Nov 2021 15:39:41 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: OBSOLETE
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status resolution
-Message-ID: <bug-205099-206035-CQlcKksHK3@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-205099-206035@https.bugzilla.kernel.org/>
-References: <bug-205099-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ s=k20201202; t=1638296249;
+ bh=we0XXIEykccEkXZEaJhZNjX+PQK69G70xjfm//KyBgA=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=rigIwMrgMPCkepAryW1j2rkkbvPAjrSv7o5Rc+jAMdkurrFl33bZPO2BEl55yqpQD
+ ylkFUhCN6RuZo0jTXSQluq10v/HjJjEuUs7TpgPR26Wwe9yRGKnFQgmwQU0ovCAXao
+ DkiQffFoZvr6AeBnAcouF6YULvoqnhcKDLQdZlk4cTwhytra+kJBJ9Z8jUmbmDPnQi
+ cwOCshj0WO3ycrLOBukz03c0ViQJbLNOayYfOON9xlJ/H/42HaADYVxq0iOmpgsUQR
+ QRJSV7brQAzhFAVwPwKOe87CK+miGoK8rqkMxluAVorROSUoMmXrzevYFiclY8Gx6O
+ d0hFSMOg4vauA==
+Date: Tue, 30 Nov 2021 11:17:23 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v5 5/5] powerpc/inst: Optimise
+ copy_inst_from_kernel_nofault()
+Message-ID: <YaZqs2tPxMzhgkAW@archlinux-ax161>
+References: <0d5b12183d5176dd702d29ad94c39c384e51c78f.1638208156.git.christophe.leroy@csgroup.eu>
+ <202111300652.0yDBNvyJ-lkp@intel.com>
+ <e7b67ca6-8cd1-da3c-c0f3-e05f7e592828@csgroup.eu>
+ <87a6hlq408.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87a6hlq408.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,32 +69,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kbuild-all@lists.01.org, kernel test robot <lkp@intel.com>,
+ llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Bill Wendling <morbo@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D205099
+On Tue, Nov 30, 2021 at 10:25:43PM +1100, Michael Ellerman wrote:
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> > Le 29/11/2021 à 23:55, kernel test robot a écrit :
+> >> Hi Christophe,
+> >> 
+> >> I love your patch! Perhaps something to improve:
+> >> 
+> >> [auto build test WARNING on powerpc/next]
+> >> [also build test WARNING on v5.16-rc3 next-20211129]
+> >> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> >> And when submitting patch, we suggest to use '--base' as documented in
+> >> https://git-scm.com/docs/git-format-patch]
+> >> 
+> >> url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/powerpc-inst-Refactor-___get_user_instr/20211130-015346
+> >> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+> >> config: powerpc-randconfig-r023-20211129 (https://download.01.org/0day-ci/archive/20211130/202111300652.0yDBNvyJ-lkp@intel.com/config)
+> >> compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project df08b2fe8b35cb63dfb3b49738a3494b9b4e6f8e)
+> >> reproduce (this is a W=1 build):
+> >>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+> >>          chmod +x ~/bin/make.cross
+> >>          # install powerpc cross compiling tool for clang build
+> >>          # apt-get install binutils-powerpc-linux-gnu
+> >>          # https://github.com/0day-ci/linux/commit/fb7bff30cc0efc7e4df1b48bb69de1f325eee826
+> >>          git remote add linux-review https://github.com/0day-ci/linux
+> >>          git fetch --no-tags linux-review Christophe-Leroy/powerpc-inst-Refactor-___get_user_instr/20211130-015346
+> >>          git checkout fb7bff30cc0efc7e4df1b48bb69de1f325eee826
+> >>          # save the config file to linux build tree
+> >>          mkdir build_dir
+> >>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc prepare
+> >> 
+> >> If you fix the issue, kindly add following tag as appropriate
+> >> Reported-by: kernel test robot <lkp@intel.com>
+> >> 
+> >> All warnings (new ones prefixed by >>):
+> >> 
+> >>     In file included from arch/powerpc/kernel/asm-offsets.c:71:
+> >>     In file included from arch/powerpc/kernel/../xmon/xmon_bpts.h:7:
+> >>>> arch/powerpc/include/asm/inst.h:165:20: warning: variable 'val' is uninitialized when used here [-Wuninitialized]
+> >>                     *inst = ppc_inst(val);
+> >>                                      ^~~
+> >>     arch/powerpc/include/asm/inst.h:53:22: note: expanded from macro 'ppc_inst'
+> >>     #define ppc_inst(x) (x)
+> >>                          ^
+> >>     arch/powerpc/include/asm/inst.h:155:18: note: initialize the variable 'val' to silence this warning
+> >>             unsigned int val, suffix;
+> >>                             ^
+> >>                              = 0
+> >
+> > I can't understand what's wrong here.
+> >
+> > We have
+> >
+> > 	__get_kernel_nofault(&val, src, u32, Efault);
+> > 	if (IS_ENABLED(CONFIG_PPC64) && get_op(val) == OP_PREFIX) {
+> > 		__get_kernel_nofault(&suffix, src + 1, u32, Efault);
+> > 		*inst = ppc_inst_prefix(val, suffix);
+> > 	} else {
+> > 		*inst = ppc_inst(val);
+> > 	}
+> >
+> > With
+> >
+> > #define __get_kernel_nofault(dst, src, type, err_label)			\
+> > 	__get_user_size_goto(*((type *)(dst)),				\
+> > 		(__force type __user *)(src), sizeof(type), err_label)
+> >
+> >
+> > And
+> >
+> > #define __get_user_size_goto(x, ptr, size, label)				\
+> > do {										\
+> > 	BUILD_BUG_ON(size > sizeof(x));						\
+> > 	switch (size) {								\
+> > 	case 1: __get_user_asm_goto(x, (u8 __user *)ptr, label, "lbz"); break;	\
+> > 	case 2: __get_user_asm_goto(x, (u16 __user *)ptr, label, "lhz"); break;	\
+> > 	case 4: __get_user_asm_goto(x, (u32 __user *)ptr, label, "lwz"); break;	\
+> > 	case 8: __get_user_asm2_goto(x, (u64 __user *)ptr, label);  break;	\
+> > 	default: x = 0; BUILD_BUG();						\
+> > 	}									\
+> > } while (0)
+> >
+> > And
+> >
+> > #define __get_user_asm_goto(x, addr, label, op)			\
+> > 	asm_volatile_goto(					\
+> > 		"1:	"op"%U1%X1 %0, %1	# get_user\n"	\
+> > 		EX_TABLE(1b, %l2)				\
+> > 		: "=r" (x)					\
+> > 		: "m<>" (*addr)				\
+> > 		:						\
+> > 		: label)
+> >
+> >
+> > I see no possibility, no alternative path where val wouldn't be set. The 
+> > asm clearly has *addr as an output param so it is always set.
+> 
+> I guess clang can't convince itself of that?
 
-Erhard F. (erhard_f@mailbox.org) changed:
+A simplified reproducer:
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|NEW                         |RESOLVED
-         Resolution|---                         |OBSOLETE
+$ cat test.c
+static inline int copy_inst_from_kernel_nofault(unsigned int *inst,
+                                                unsigned int *src)
+{
+        unsigned int val;
 
---- Comment #49 from Erhard F. (erhard_f@mailbox.org) ---
-As the other KASAN inconsistencies mentioned here got ironed out by Christo=
-phe
-(patches available but not in stable yet) and this "KASAN hit at raid6_pq: =
-BUG:
-Unable to handle kernel data access at 0x00f0fd0d" does no longer show up w=
-ith
-OUTLINE/INLINE KASAN on 5.15.5 or 5.16-rc3 I think it is safe to close this=
- bug
-as obsolete.
+        asm goto("1: lwz %U1%X1 %0, %1   # get_user\n"
+                 ".section __ex_table,\"a\";"
+                 ".balign 4;"
+                 ".long (1b) - . ;"
+                 ".long (%l2) - . ;"
+                 ".previous"
+                 : "=r" (*(unsigned int *)(&val))
+                 : "m<>" (*(unsigned int *)(src))
+                 :
+                 : Efault);
 
---=20
-You may reply to this email to add a comment.
+        *inst = val;
+        return 0;
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Efault:
+        return -14; /* -EFAULT */
+}
+
+$ clang --target=powerpc-linux-gnu -Wuninitialized -fsyntax-only test.c
+test.c:17:10: warning: variable 'val' is uninitialized when used here [-Wuninitialized]
+        *inst = val;
+                ^~~
+test.c:4:18: note: initialize the variable 'val' to silence this warning
+        unsigned int val;
+                        ^
+                         = 0
+1 warning generated.
+
+It certainly looks like there is something wrong with how clang is
+tracking the initialization of the variable because it looks to me like
+val is only used in the fallthrough path, which happens after it is
+initialized via lwz.  Perhaps something is wrong with the logic of
+https://reviews.llvm.org/D71314?  I've added Bill to CC (LLVM issues are
+being migrated from Bugzilla to GitHub Issues right now so I cannot file
+this upstream at the moment).
+
+Cheers,
+Nathan
