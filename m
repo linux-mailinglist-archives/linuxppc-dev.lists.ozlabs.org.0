@@ -1,74 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE797462D7F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 08:30:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E316C462D94
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 08:36:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J3DQQ4SRWz3cSC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 18:30:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J3DYc6F0Yz305c
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 18:36:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Kt7h10ge;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ev8nUjBl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
- helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Kt7h10ge; dkim-atps=neutral
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
- [IPv6:2607:f8b0:4864:20::1032])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ev8nUjBl; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J3DPl0xgRz2xtp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 18:29:44 +1100 (AEDT)
-Received: by mail-pj1-x1032.google.com with SMTP id
- j5-20020a17090a318500b001a6c749e697so13326215pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 23:29:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=7fT1fMdsuC6Jw21/6Qn6LP/Ttbuo4JuePGOBG3eeItQ=;
- b=Kt7h10geLbxLUo6czwqtxLTry+wUOwPdlQmJdw1p90NOcx3PnJyUrskte/Va+NHfQj
- hhmC6odM3Z/aikgIuHmDhg5Uj/aGnXr+zK48ZJXni6l07BlVL/bDzWq1gYEuA6vfZbUK
- qIvMz6aaJ5UGwhHN+mev7bqWMkwUsgjoZ87D2sToF24DIXGyKI40H624N0DVLdpERzbe
- heLfGJl9SxRVIjX1NHkorIyTX56jdGahG039NkMkvEANOzqu+cKnLpGgS2m6/8So0y4d
- Z3INcSH3GhLg7u3kx+cSl0FhA4PXgHkK85FsljTOjL//WjaQGR5+oEdPLNofDF1ojoTz
- BI1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=7fT1fMdsuC6Jw21/6Qn6LP/Ttbuo4JuePGOBG3eeItQ=;
- b=i65M8HIfZgW2hlEFTVdS70vpzIn9WX0ImgtS5dtr/vs4qB9sq8c5X6jkdLhjlY4eOT
- B7DhK7lVdyU6nxf4sopGiufmSrwd1IJs7PDyzUKEju07+wmQUTj0HyVkELS5+C9y2G8B
- fIGTY6wvS9UTxEw/FWcYDi72BAXhr/t9rFaa6WteGOgTFFl5OSZDW63ATlx74zk+WCxu
- E6ltRj0UrFnO5WgIFxx13wRNVJWrn6W3rXq/StgYNQkOI9MlNU/cprzswBy7KCoyIqWz
- yoGTKKYxtW2hkolFTS+EIDTmexdEvdx4EsnR0432FjJByufF0hDvxoJ4wUO1ZplB4R8j
- vpnw==
-X-Gm-Message-State: AOAM532NhUSqEqpzO3G3qeFxqUBuIB1KQyEJeUciOhdVkWz6PlFShl4k
- vMKAfd8w5dXFJy40lzJFlI+qaa744wk=
-X-Google-Smtp-Source: ABdhPJzreLQH9gecLGDngX0+vrkBGIC3PYVu4rOoR9Q1ihlQB1qm85WQVXyz5cSdISjZ9h8c/MLHpA==
-X-Received: by 2002:a17:90b:4c44:: with SMTP id
- np4mr3984446pjb.195.1638257380085; 
- Mon, 29 Nov 2021 23:29:40 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (115-64-213-93.static.tpgi.com.au.
- [115.64.213.93])
- by smtp.gmail.com with ESMTPSA id g5sm1417277pjt.15.2021.11.29.23.29.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Nov 2021 23:29:39 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH] powerpc/signal: sanitise PT_NIP and sa_handler low bits
-Date: Tue, 30 Nov 2021 17:29:33 +1000
-Message-Id: <20211130072933.2004389-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J3DXn51X9z3036
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 18:35:52 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AU6m4oW013479; 
+ Tue, 30 Nov 2021 07:35:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : date : in-reply-to : references : content-type : mime-version
+ : content-transfer-encoding; s=pp1;
+ bh=3NfPzkK6a602RR2p6wr3mRnb0Y+bSFdG0KqPdbgOTGc=;
+ b=ev8nUjBlYzZf6PCAsjdCVkBxLDgq4GsbofwWmOqmffm+ZjoekqIAfEqShMXKF1BK8wcX
+ JQUJOr45gXl6pFFpdYe/X0ZOF54d+rTNAF7vr9rO16sJoQxZlU+etxJnNcKhjaKtg80S
+ +lvZpvzoR2DaPZ90JEyBw8q+5WOmSbTYBrM4NSXVJtjl3XTcQoGLcn5MhWo0a1mwT28y
+ ppZT26i/bsviFSECMvysWUkToHWxQmbxbyRoI99c+XglzTKyIEbTaqTqgui9Wb9KW46L
+ JY2rmmKC/3ilxGRNm5vzDx4S8+Q9G4KWq6fTjFlmc3SZ38Cf5QC8Wk4MZcXIUW9PdGuu eg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3cnd7wtvtj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 Nov 2021 07:35:38 +0000
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AU6Vrom015972;
+ Tue, 30 Nov 2021 07:35:38 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3cnd7wtvta-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 Nov 2021 07:35:38 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AU7RYDM027885;
+ Tue, 30 Nov 2021 07:35:37 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma01dal.us.ibm.com with ESMTP id 3ckcabbbjt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 Nov 2021 07:35:37 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1AU7ZZkD53936630
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 30 Nov 2021 07:35:35 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D9D282805C;
+ Tue, 30 Nov 2021 07:35:35 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 445E928058;
+ Tue, 30 Nov 2021 07:35:35 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.160.7.253])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 30 Nov 2021 07:35:35 +0000 (GMT)
+Message-ID: <200d69c3f168f84bd8165935ad778c49bf8b83ff.camel@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries/vas: Don't print an error when VAS is
+ unavailable
+From: Haren Myneni <haren@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org
+Date: Mon, 29 Nov 2021 23:35:33 -0800
+In-Reply-To: <87fsrepms0.fsf@mpe.ellerman.id.au>
+References: <20211126052133.1664375-1-npiggin@gmail.com>
+ <43d21c1a-9122-d698-2229-e56c77a91313@kaod.org>
+ <1637922573.8ofrolskkj.astroid@bobo.none>
+ <87fsrepms0.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: OQIHoYAs0r4oNeI0DLR5RqDkMYKAy5oz
+X-Proofpoint-GUID: uxxEvLdpUMjpDhSF_X0PvHZT2eogZADT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-30_05,2021-11-28_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ priorityscore=1501 adultscore=0 mlxlogscore=999 mlxscore=0 impostorscore=0
+ spamscore=0 clxscore=1011 bulkscore=0 malwarescore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111300040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,198 +112,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The bottom 2 bits of NIP are ignored when RFI returns with SRR0 = NIP,
-so regs->nip does not correspond to the actual return address if either
-of those bits are set. Further, these bits are reserved in SRR0 so they
-should not be set. Sanitize PT_NIP from signal handlers to ensure they
-can't be set by userspace, this also keeps the low 2 bit of TFHAR clear,
-which are similarly reserved. 32-bit signal delivery returns directly to
-the handler, so sa_handler is sanitised similarly there.
+On Tue, 2021-11-30 at 10:25 +1100, Michael Ellerman wrote:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+> > Excerpts from Cédric Le Goater's message of November 26, 2021 5:13
+> > pm:
+> > > On 11/26/21 06:21, Nicholas Piggin wrote:
+> > > > KVM does not support VAS so guests always print a useless error
+> > > > on boot
+> > > > 
+> > > >      vas: HCALL(398) error -2, query_type 0, result buffer
+> > > > 0x57f2000
+> > > > 
+> > > > Change this to only print the message if the error is not
+> > > > H_FUNCTION.
+> > > 
+> > > Just being curious, why is it even called since "ibm,compression"
+> > > should
+> > > not be exposed in the DT ?
+> > 
+> > It looks like vas does not test for it. I guess in theory there can
+> > be 
+> > other functions than compression implemented as an accelerator.
+> > Maybe
+> > that's why?
+> 
+> Yeah I guess, or it's just not structured that well. The vas platform
+> code is a bit awkward, it's there to support drivers, but it's not
+> actually driver code.
+> 
+> I think we can probably rework it so the vas code does nothing until
+> a
+> driver calls in to it.
+> 
+> eg. something like below.
 
-This can cause a bug when CONFIG_PPC_RFI_SRR_DEBUG=y on a processor that
-does not implement the 2 low bits of SRR0 (always read back 0) because
-SRR0 will not match regs->nip. This was caught by sigfuz, but a simple
-reproducer follows.
+Correct, Even though NXGZIP is the only usage right now, VAS is
+accelerator switchboard which should support other coprocessor types
+such as GZIP and 842 or SW type solutions such as fast thread wakeup
+and fast memory copy. 
 
-  #include <stdlib.h>
-  #include <signal.h>
-  #include <ucontext.h>
+So can we leave VAS initialization separate from drivers and use some
+feature such as FW_FEATURE_LPAR to differentiate from KVM guests?
 
-  static void trap_signal_handler(int signo, siginfo_t *si, void *uc)
-  {
-      ucontext_t *ucp = uc;
-      ucp->uc_mcontext.gp_regs[PT_NIP] |= 3;
-  }
+Thanks
+Haren
 
-  int main(void)
-  {
-      struct sigaction trap_sa;
-      trap_sa.sa_flags = SA_SIGINFO;
-      trap_sa.sa_sigaction = trap_signal_handler;
-      sigaction(SIGUSR1, &trap_sa, NULL);
-      raise(SIGUSR1);
-      exit(EXIT_SUCCESS);
-  }
-
-Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-I'm not entirely sure about the 32-bit / compat part. Or the 64-bit for
-that matter except that it does seem to fix the bug caused by the test
-program.
-
-Thanks,
-Nick
-
- arch/powerpc/kernel/signal_32.c | 23 ++++++++++++++++-------
- arch/powerpc/kernel/signal_64.c | 17 ++++++++++++-----
- 2 files changed, 28 insertions(+), 12 deletions(-)
-
-diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
-index 3e053e2fd6b6..5379bece8072 100644
---- a/arch/powerpc/kernel/signal_32.c
-+++ b/arch/powerpc/kernel/signal_32.c
-@@ -116,7 +116,7 @@ __unsafe_restore_general_regs(struct pt_regs *regs, struct mcontext __user *sr)
- 	int i;
- 
- 	for (i = 0; i <= PT_RESULT; i++) {
--		if ((i == PT_MSR) || (i == PT_SOFTE))
-+		if ((i == PT_NIP) || (i == PT_MSR) || (i == PT_SOFTE))
- 			continue;
- 		unsafe_get_user(gregs[i], &sr->mc_gregs[i], failed);
- 	}
-@@ -156,7 +156,7 @@ static __always_inline
- int __unsafe_restore_general_regs(struct pt_regs *regs, struct mcontext __user *sr)
- {
- 	/* copy up to but not including MSR */
--	unsafe_copy_from_user(regs, &sr->mc_gregs, PT_MSR * sizeof(elf_greg_t), failed);
-+	unsafe_copy_from_user(regs, &sr->mc_gregs, PT_NIP * sizeof(elf_greg_t), failed);
- 
- 	/* copy from orig_r3 (the word after the MSR) up to the end */
- 	unsafe_copy_from_user(&regs->orig_gpr3, &sr->mc_gregs[PT_ORIG_R3],
-@@ -458,7 +458,7 @@ static long restore_user_regs(struct pt_regs *regs,
- 			      struct mcontext __user *sr, int sig)
- {
- 	unsigned int save_r2 = 0;
--	unsigned long msr;
-+	unsigned long nip, msr;
- #ifdef CONFIG_VSX
- 	int i;
- #endif
-@@ -473,6 +473,9 @@ static long restore_user_regs(struct pt_regs *regs,
- 		save_r2 = (unsigned int)regs->gpr[2];
- 	unsafe_restore_general_regs(regs, sr, failed);
- 	set_trap_norestart(regs);
-+	unsafe_get_user(nip, &sr->mc_gregs[PT_NIP], failed);
-+	nip &= ~3UL;
-+	regs_set_return_ip(regs, nip);
- 	unsafe_get_user(msr, &sr->mc_gregs[PT_MSR], failed);
- 	if (!sig)
- 		regs->gpr[2] = (unsigned long) save_r2;
-@@ -560,7 +563,7 @@ static long restore_tm_user_regs(struct pt_regs *regs,
- 				 struct mcontext __user *sr,
- 				 struct mcontext __user *tm_sr)
- {
--	unsigned long msr, msr_hi;
-+	unsigned long nip, msr, msr_hi;
- 	int i;
- 
- 	if (tm_suspend_disabled)
-@@ -576,7 +579,9 @@ static long restore_tm_user_regs(struct pt_regs *regs,
- 		return 1;
- 
- 	unsafe_restore_general_regs(&current->thread.ckpt_regs, sr, failed);
--	unsafe_get_user(current->thread.tm_tfhar, &sr->mc_gregs[PT_NIP], failed);
-+	unsafe_get_user(nip, &sr->mc_gregs[PT_NIP], failed);
-+	nip &= ~3UL;
-+	current->thread.tm_tfhar = nip;
- 	unsafe_get_user(msr, &sr->mc_gregs[PT_MSR], failed);
- 
- 	/* Restore the previous little-endian mode */
-@@ -646,6 +651,10 @@ static long restore_tm_user_regs(struct pt_regs *regs,
- 		current->thread.used_vsr = true;
- 	}
- 
-+	unsafe_get_user(nip, &tm_sr->mc_gregs[PT_NIP], failed);
-+	nip &= ~3UL;
-+	regs_set_return_ip(regs, nip);
-+
- 	/* Get the top half of the MSR from the user context */
- 	unsafe_get_user(msr_hi, &tm_sr->mc_gregs[PT_MSR], failed);
- 	msr_hi <<= 32;
-@@ -801,7 +810,7 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
- 	regs->gpr[4] = (unsigned long)&frame->info;
- 	regs->gpr[5] = (unsigned long)&frame->uc;
- 	regs->gpr[6] = (unsigned long)frame;
--	regs_set_return_ip(regs, (unsigned long) ksig->ka.sa.sa_handler);
-+	regs_set_return_ip(regs, (unsigned long) ksig->ka.sa.sa_handler & ~3UL);
- 	/* enter the signal handler in native-endian mode */
- 	regs_set_return_msr(regs, (regs->msr & ~MSR_LE) | (MSR_KERNEL & MSR_LE));
- 
-@@ -889,7 +898,7 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
- 	regs->gpr[1] = newsp;
- 	regs->gpr[3] = ksig->sig;
- 	regs->gpr[4] = (unsigned long) sc;
--	regs_set_return_ip(regs, (unsigned long) ksig->ka.sa.sa_handler);
-+	regs_set_return_ip(regs, (unsigned long) ksig->ka.sa.sa_handler & ~3UL);
- 	/* enter the signal handler in native-endian mode */
- 	regs_set_return_msr(regs, (regs->msr & ~MSR_LE) | (MSR_KERNEL & MSR_LE));
- 
-diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index d1e1fc0acbea..5ef24adb9803 100644
---- a/arch/powerpc/kernel/signal_64.c
-+++ b/arch/powerpc/kernel/signal_64.c
-@@ -336,7 +336,7 @@ static long notrace __unsafe_restore_sigcontext(struct task_struct *tsk, sigset_
- 	elf_vrreg_t __user *v_regs;
- #endif
- 	unsigned long save_r13 = 0;
--	unsigned long msr;
-+	unsigned long nip, msr;
- 	struct pt_regs *regs = tsk->thread.regs;
- #ifdef CONFIG_VSX
- 	int i;
-@@ -350,7 +350,9 @@ static long notrace __unsafe_restore_sigcontext(struct task_struct *tsk, sigset_
- 
- 	/* copy the GPRs */
- 	unsafe_copy_from_user(regs->gpr, sc->gp_regs, sizeof(regs->gpr), efault_out);
--	unsafe_get_user(regs->nip, &sc->gp_regs[PT_NIP], efault_out);
-+	unsafe_get_user(nip, &sc->gp_regs[PT_NIP], efault_out);
-+	nip &= ~3UL;
-+	regs_set_return_ip(regs, nip);
- 	/* get MSR separately, transfer the LE bit if doing signal return */
- 	unsafe_get_user(msr, &sc->gp_regs[PT_MSR], efault_out);
- 	if (sig)
-@@ -434,7 +436,7 @@ static long restore_tm_sigcontexts(struct task_struct *tsk,
- 	elf_vrreg_t __user *v_regs, *tm_v_regs;
- #endif
- 	unsigned long err = 0;
--	unsigned long msr;
-+	unsigned long nip, msr;
- 	struct pt_regs *regs = tsk->thread.regs;
- #ifdef CONFIG_VSX
- 	int i;
-@@ -458,8 +460,13 @@ static long restore_tm_sigcontexts(struct task_struct *tsk,
- 	 * For the case of getting a signal and simply returning from it,
- 	 * we don't need to re-copy them here.
- 	 */
--	err |= __get_user(regs->nip, &tm_sc->gp_regs[PT_NIP]);
--	err |= __get_user(tsk->thread.tm_tfhar, &sc->gp_regs[PT_NIP]);
-+	err |= __get_user(nip, &tm_sc->gp_regs[PT_NIP]);
-+	nip &= ~3UL;
-+	regs_set_return_ip(regs, nip);
-+
-+	err |= __get_user(nip, &sc->gp_regs[PT_NIP]);
-+	nip &= ~3UL;
-+	tsk->thread.tm_tfhar = nip;
- 
- 	/* get MSR separately, transfer the LE bit if doing signal return */
- 	err |= __get_user(msr, &sc->gp_regs[PT_MSR]);
--- 
-2.23.0
+> 
+> cheers
+> 
+> 
+> diff --git a/arch/powerpc/platforms/pseries/vas.c
+> b/arch/powerpc/platforms/pseries/vas.c
+> index b043e3936d21..dc3491fc919d 100644
+> --- a/arch/powerpc/platforms/pseries/vas.c
+> +++ b/arch/powerpc/platforms/pseries/vas.c
+> @@ -454,6 +454,8 @@ static const struct vas_user_win_ops vops_pseries
+> = {
+>  	.close_win	= vas_deallocate_window, /* Close window */
+>  };
+>  
+> +static int pseries_vas_init(void);
+> +
+>  /*
+>   * Supporting only nx-gzip coprocessor type now, but this API code
+>   * extended to other coprocessor types later.
+> @@ -463,7 +465,8 @@ int vas_register_api_pseries(struct module *mod,
+> enum vas_cop_type cop_type,
+>  {
+>  	int rc;
+>  
+> -	if (!copypaste_feat)
+> +	rc = pseries_vas_init();
+> +	if (rc || !copypaste_feat)
+>  		return -ENOTSUPP;
+>  
+>  	rc = vas_register_coproc_api(mod, cop_type, name,
+> &vops_pseries);
+> @@ -531,7 +534,7 @@ static int get_vas_capabilities(u8 feat, enum
+> vas_cop_feat_type type,
+>  	return 0;
+>  }
+>  
+> -static int __init pseries_vas_init(void)
+> +static int pseries_vas_init(void)
+>  {
+>  	struct hv_vas_cop_feat_caps *hv_cop_caps;
+>  	struct hv_vas_all_caps *hv_caps;
+> @@ -592,4 +595,3 @@ static int __init pseries_vas_init(void)
+>  	kfree(hv_caps);
+>  	return rc;
+>  }
+> -machine_device_initcall(pseries, pseries_vas_init);
 
