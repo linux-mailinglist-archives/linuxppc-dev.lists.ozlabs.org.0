@@ -2,68 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028ED4641AC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 23:42:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 028934641B7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 23:44:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J3cfQ5gPkz3cPC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 09:42:06 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=2IrmNv3I;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=wP+0RlPV;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J3chd65dHz3cYT
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 09:44:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=2IrmNv3I; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=wP+0RlPV; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (unknown [IPv6:2a0a:51c0:0:12e:550::1])
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.46; helo=mail-ot1-f46.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com
+ [209.85.210.46])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J3cdm54Wnz2ybD
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Dec 2021 09:41:32 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1638312089;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1bOw8HEe7jHxyt1BTzbWx6wvk9iJpbF5Gn0Kg7y1Blo=;
- b=2IrmNv3Iea3b/0P87xEGqZAZmwL1onSUMGqd0zxtDIRJLTynmNSC7uxIH8L/l5dtLj/5OD
- JagFWx3aJMiS1LFIeYftEfo0Ur2kNjTtrOTkBnBmsBzvAxM9ucbFfqPVN5bViblbdfTyHh
- DmsunGG30VGceQJj3KLRF3KIyBTUwjdi6+cIFEZFOGwVLxR6/Qv+GDEs3kZsbO3Sb5vEY4
- CGDmi02z+2/4fP0CRSLAGmUXhnn/6DLG04oqIJtIelaVlS8RIp1r9e2Sxk09e7hCcOFzEs
- b9sVLSs/CWxPIfpw834x9ILDVWh3TWdsOj5JuMEeZ6q+sN/NVCvFkfOxPIzp8w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1638312089;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1bOw8HEe7jHxyt1BTzbWx6wvk9iJpbF5Gn0Kg7y1Blo=;
- b=wP+0RlPVEZMaKpggmpseYFDjn/awmzpDeY9BMit0WIgaUAvSVTefpWgNK6fro3P2SJv3Ar
- 0+sa+FEk57SExTAA==
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, LKML
- <linux-kernel@vger.kernel.org>
-Subject: Re: [patch 05/22] genirq/msi: Fixup includes
-In-Reply-To: <87czmhb8gq.ffs@tglx>
-References: <20211126222700.862407977@linutronix.de>
- <20211126223824.382273262@linutronix.de>
- <b1a6d267-c7b4-c4b9-ab0e-f5cc32bfe9bf@kaod.org> <87tufud4m3.ffs@tglx>
- <524d9b84-caa8-dd6f-bb5e-9fc906d279c0@kaod.org> <87czmhb8gq.ffs@tglx>
-Date: Tue, 30 Nov 2021 23:41:28 +0100
-Message-ID: <875ys9b71j.ffs@tglx>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J3ch90tgrz2yP9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Dec 2021 09:43:36 +1100 (AEDT)
+Received: by mail-ot1-f46.google.com with SMTP id
+ u18-20020a9d7212000000b00560cb1dc10bso32358574otj.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 14:43:36 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=bgNkZ9Km7uslGW9spgB64Ff0uwinA/sUJ4dW12Hx5NQ=;
+ b=2hn6kZNwNSYYCnL94/ckv5u3d9i9jWzLxTbSlcD18s6tm9VAlWkJkUOMU59wFEGgIV
+ makgvyPCH873KnZ1njORipQhr7SKjNfK2a3nmrLIr77OQ8ISCEWGJuF2qVJuhnY2Rr07
+ rhibQjKnUrN3KjVr2wSp/GetuuUuFCIhrd0t0+ZqdY1PH+zSrPTdCKJbGC7NwiBhSoD9
+ NwYWVWtg4hlA6XAd2+J37DIyVQLwgVr2vj0Ng4W75RdGjtV0l6zHYbXUQliMbCSuW1+K
+ G3c0wT7+9HcFeNLut4onW+zr0S4kTxbkvnMsc0RoGTxiMSsJtWbj7dhIx8jyjSGc2NNB
+ y6hA==
+X-Gm-Message-State: AOAM5320LOghY28GUUkPiApClHMZ2pJ9itPmE69l6qNVKMdawrdFULBs
+ xPOpJUDCGL1RjRejEoOH6A==
+X-Google-Smtp-Source: ABdhPJzzNxeCz/g28KThw4laZ7VZ4CBNkktlUh1TUdViKWztFqJrvQFOHaXnbD/wHUUc+yOXcVd/+Q==
+X-Received: by 2002:a9d:364b:: with SMTP id w69mr2131689otb.18.1638312212779; 
+ Tue, 30 Nov 2021 14:43:32 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net.
+ [66.90.148.213])
+ by smtp.gmail.com with ESMTPSA id g1sm2943995ooq.2.2021.11.30.14.43.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 Nov 2021 14:43:31 -0800 (PST)
+Received: (nullmailer pid 3146302 invoked by uid 1000);
+ Tue, 30 Nov 2021 22:43:31 -0000
+Date: Tue, 30 Nov 2021 16:43:31 -0600
+From: Rob Herring <robh@kernel.org>
+To: Calvin Zhang <calvinzhang.cool@gmail.com>
+Subject: Re: [PATCH] of: unmap memory regions in /memreserve node
+Message-ID: <YaapE8oys5zQEdD5@robh.at.kernel.org>
+References: <20211124133347.3861391-1-calvinzhang.cool@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211124133347.3861391-1-calvinzhang.cool@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,54 +66,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Wei Liu <wei.liu@kernel.org>, Ashok Raj <ashok.raj@intel.com>,
- Marc Zygnier <maz@kernel.org>, x86@kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Bjorn Helgaas <helgaas@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- xen-devel@lists.xenproject.org, ath11k@lists.infradead.org,
- Kevin Tian <kevin.tian@intel.com>, Heiko Carstens <hca@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>, Megha Dey <megha.dey@intel.com>,
- Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Frank Rowand <frowand.list@gmail.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 30 2021 at 23:10, Thomas Gleixner wrote:
++linuxppc-dev
 
-> On Tue, Nov 30 2021 at 22:48, C=C3=A9dric Le Goater wrote:
->> On 11/29/21 22:38, Thomas Gleixner wrote:
->>> On Mon, Nov 29 2021 at 08:33, C=C3=A9dric Le Goater wrote:
->>> thanks for having a look. I fixed up this and other fallout and pushed =
-out an
->>> updated series (all 4 parts) to:
->>>=20
->>>          git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel msi
->>
->> pSeries fails to allocate MSIs starting with this patch :
->>
->>   [PATCH 049/101] powerpc/pseries/msi: Let core code check for contiguou=
-s ...
->>
->> I will dig in later on.
->
-> Let me stare at the core function..
+On Wed, Nov 24, 2021 at 09:33:47PM +0800, Calvin Zhang wrote:
+> Reserved memory regions in /memreserve node aren't and shouldn't
+> be referenced elsewhere. So mark them no-map to skip direct mapping
+> for them.
 
-It's not the core function. It's the patch above and I'm a moron.
+I suspect this has a high chance of breaking some platform. There's no 
+rule a region can't be accessed.
 
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -359,9 +359,6 @@ static int rtas_prepare_msi_irqs(struct
- 	if (quota && quota < nvec)
- 		return quota;
-=20
--	if (type =3D=3D PCI_CAP_ID_MSIX)
--		return -EINVAL;
--
- 	/*
- 	 * Firmware currently refuse any non power of two allocation
- 	 * so we round up if the quota will allow it.
+> 
+> Signed-off-by: Calvin Zhang <calvinzhang.cool@gmail.com>
+> ---
+>  drivers/of/fdt.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+> index bdca35284ceb..9e88cc8445f6 100644
+> --- a/drivers/of/fdt.c
+> +++ b/drivers/of/fdt.c
+> @@ -638,7 +638,7 @@ void __init early_init_fdt_scan_reserved_mem(void)
+>  		fdt_get_mem_rsv(initial_boot_params, n, &base, &size);
+>  		if (!size)
+>  			break;
+> -		early_init_dt_reserve_memory_arch(base, size, false);
+> +		early_init_dt_reserve_memory_arch(base, size, true);
+>  	}
+>  
+>  	fdt_scan_reserved_mem();
+> -- 
+> 2.30.2
+> 
+> 
