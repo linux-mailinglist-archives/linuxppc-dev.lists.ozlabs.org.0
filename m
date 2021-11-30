@@ -2,50 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7850C462D26
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 07:54:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE797462D7F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 08:30:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J3Cd75BR9z3cN1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 17:54:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J3DQQ4SRWz3cSC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 18:30:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Kt7h10ge;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com;
- envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J3Ccd1zg8z2yg5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 17:54:06 +1100 (AEDT)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
- by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4J3CYk04yNz8vg4;
- Tue, 30 Nov 2021 14:51:38 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Tue, 30 Nov 2021 14:53:35 +0800
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.20; Tue, 30 Nov 2021 14:53:34 +0800
-Message-ID: <617f11ad-3033-473f-162e-cb7ecd67a78a@huawei.com>
-Date: Tue, 30 Nov 2021 14:53:33 +0800
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
+ helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=Kt7h10ge; dkim-atps=neutral
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
+ [IPv6:2607:f8b0:4864:20::1032])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J3DPl0xgRz2xtp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 18:29:44 +1100 (AEDT)
+Received: by mail-pj1-x1032.google.com with SMTP id
+ j5-20020a17090a318500b001a6c749e697so13326215pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 29 Nov 2021 23:29:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=7fT1fMdsuC6Jw21/6Qn6LP/Ttbuo4JuePGOBG3eeItQ=;
+ b=Kt7h10geLbxLUo6czwqtxLTry+wUOwPdlQmJdw1p90NOcx3PnJyUrskte/Va+NHfQj
+ hhmC6odM3Z/aikgIuHmDhg5Uj/aGnXr+zK48ZJXni6l07BlVL/bDzWq1gYEuA6vfZbUK
+ qIvMz6aaJ5UGwhHN+mev7bqWMkwUsgjoZ87D2sToF24DIXGyKI40H624N0DVLdpERzbe
+ heLfGJl9SxRVIjX1NHkorIyTX56jdGahG039NkMkvEANOzqu+cKnLpGgS2m6/8So0y4d
+ Z3INcSH3GhLg7u3kx+cSl0FhA4PXgHkK85FsljTOjL//WjaQGR5+oEdPLNofDF1ojoTz
+ BI1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=7fT1fMdsuC6Jw21/6Qn6LP/Ttbuo4JuePGOBG3eeItQ=;
+ b=i65M8HIfZgW2hlEFTVdS70vpzIn9WX0ImgtS5dtr/vs4qB9sq8c5X6jkdLhjlY4eOT
+ B7DhK7lVdyU6nxf4sopGiufmSrwd1IJs7PDyzUKEju07+wmQUTj0HyVkELS5+C9y2G8B
+ fIGTY6wvS9UTxEw/FWcYDi72BAXhr/t9rFaa6WteGOgTFFl5OSZDW63ATlx74zk+WCxu
+ E6ltRj0UrFnO5WgIFxx13wRNVJWrn6W3rXq/StgYNQkOI9MlNU/cprzswBy7KCoyIqWz
+ yoGTKKYxtW2hkolFTS+EIDTmexdEvdx4EsnR0432FjJByufF0hDvxoJ4wUO1ZplB4R8j
+ vpnw==
+X-Gm-Message-State: AOAM532NhUSqEqpzO3G3qeFxqUBuIB1KQyEJeUciOhdVkWz6PlFShl4k
+ vMKAfd8w5dXFJy40lzJFlI+qaa744wk=
+X-Google-Smtp-Source: ABdhPJzreLQH9gecLGDngX0+vrkBGIC3PYVu4rOoR9Q1ihlQB1qm85WQVXyz5cSdISjZ9h8c/MLHpA==
+X-Received: by 2002:a17:90b:4c44:: with SMTP id
+ np4mr3984446pjb.195.1638257380085; 
+ Mon, 29 Nov 2021 23:29:40 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com (115-64-213-93.static.tpgi.com.au.
+ [115.64.213.93])
+ by smtp.gmail.com with ESMTPSA id g5sm1417277pjt.15.2021.11.29.23.29.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Nov 2021 23:29:39 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH] powerpc/signal: sanitise PT_NIP and sa_handler low bits
+Date: Tue, 30 Nov 2021 17:29:33 +1000
+Message-Id: <20211130072933.2004389-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH RFC 0/4] mm: percpu: Cleanup percpu first chunk funciton
-Content-Language: en-US
-To: Dennis Zhou <dennis@kernel.org>
-References: <20211121093557.139034-1-wangkefeng.wang@huawei.com>
- <YaVaTwjiZmWz8PKY@fedora>
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <YaVaTwjiZmWz8PKY@fedora>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggeme705-chm.china.huawei.com (10.1.199.101) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,90 +80,198 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com,
- linux-mips@vger.kernel.org, linux-mm@kvack.org, paulus@samba.org,
- hpa@zytor.com, sparclinux@vger.kernel.org, cl@linux.com, will@kernel.org,
- linux-riscv@lists.infradead.org, x86@kernel.org, mingo@redhat.com,
- catalin.marinas@arm.com, aou@eecs.berkeley.edu, bp@alien8.de,
- paul.walmsley@sifive.com, tglx@linutronix.de,
- linux-arm-kernel@lists.infradead.org, tsbogend@alpha.franken.de,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, palmer@dabbelt.com,
- tj@kernel.org, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- davem@davemloft.net
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The bottom 2 bits of NIP are ignored when RFI returns with SRR0 = NIP,
+so regs->nip does not correspond to the actual return address if either
+of those bits are set. Further, these bits are reserved in SRR0 so they
+should not be set. Sanitize PT_NIP from signal handlers to ensure they
+can't be set by userspace, this also keeps the low 2 bit of TFHAR clear,
+which are similarly reserved. 32-bit signal delivery returns directly to
+the handler, so sa_handler is sanitised similarly there.
 
-On 2021/11/30 6:55, Dennis Zhou wrote:
-> Hello,
->
-> On Sun, Nov 21, 2021 at 05:35:53PM +0800, Kefeng Wang wrote:
->> When support page mapping percpu first chunk allocator on arm64, we
->> found there are lots of duplicated codes in percpu embed/page first
->> chunk allocator. This patchset is aimed to cleanup them and should
->> no funciton change, only test on arm64.
->>
->> Kefeng Wang (4):
->>    mm: percpu: Generalize percpu related config
->>    mm: percpu: Add pcpu_fc_cpu_to_node_fn_t typedef
->>    mm: percpu: Add generic pcpu_fc_alloc/free funciton
->>    mm: percpu: Add generic pcpu_populate_pte() function
->>
->>   arch/arm64/Kconfig             |  20 +----
->>   arch/ia64/Kconfig              |   9 +--
->>   arch/mips/Kconfig              |  10 +--
->>   arch/mips/mm/init.c            |  14 +---
->>   arch/powerpc/Kconfig           |  17 +---
->>   arch/powerpc/kernel/setup_64.c |  92 +--------------------
->>   arch/riscv/Kconfig             |  10 +--
->>   arch/sparc/Kconfig             |  12 +--
->>   arch/sparc/kernel/smp_64.c     | 105 +-----------------------
->>   arch/x86/Kconfig               |  17 +---
->>   arch/x86/kernel/setup_percpu.c |  66 ++-------------
->>   drivers/base/arch_numa.c       |  68 +---------------
->>   include/linux/percpu.h         |  13 +--
->>   mm/Kconfig                     |  12 +++
->>   mm/percpu.c                    | 143 +++++++++++++++++++++++++--------
->>   15 files changed, 165 insertions(+), 443 deletions(-)
->>
->> -- 
->> 2.26.2
->>
-> I've made a few comments. I think this will be a little bit of a
-> challenge to get through due to it touching so many architectures. For
-> ease, it probably makes sense to run it through mny tree, but we'll need
-> explicit acks as I mentioned.
->
-> I like getting rid of the pcpu_alloc_bootmem()/pcpu_free_bootmem()
-> functions. However, let's keep the implementation identical to x86.
-ok , will change patch3 in v2
->
->
-> I don't think we should get rid of the populate_pte_fn(). I'm not
-> comfortable changing x86's implementation. Simply offer a NULL, and if
-> NULL use the default.
+This can cause a bug when CONFIG_PPC_RFI_SRR_DEBUG=y on a processor that
+does not implement the 2 low bits of SRR0 (always read back 0) because
+SRR0 will not match regs->nip. This was caught by sigfuz, but a simple
+reproducer follows.
 
-As replied in patch4, we use __weak method, and x86's implementation is
+  #include <stdlib.h>
+  #include <signal.h>
+  #include <ucontext.h>
 
-not changed in patch4, is this ok?
+  static void trap_signal_handler(int signo, siginfo_t *si, void *uc)
+  {
+      ucontext_t *ucp = uc;
+      ucp->uc_mcontext.gp_regs[PT_NIP] |= 3;
+  }
 
->
-> Do you have a tree that intel pulls? I suggest cleaning up the patches
-> and pushing to a remote branch that they pick up. That would have caught
-> the mips typo. Send a PR creating a file in [1] for your branch, github
-> is fine. Basic validation needs to be done before I can pick this up
-> too on more than arm64.
+  int main(void)
+  {
+      struct sigaction trap_sa;
+      trap_sa.sa_flags = SA_SIGINFO;
+      trap_sa.sa_sigaction = trap_signal_handler;
+      sigaction(SIGUSR1, &trap_sa, NULL);
+      raise(SIGUSR1);
+      exit(EXIT_SUCCESS);
+  }
 
-Ok, x86/arm64/riscv are tested, but I don't has ppc/mips/sparc compliler.
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+I'm not entirely sure about the 32-bit / compat part. Or the 64-bit for
+that matter except that it does seem to fix the bug caused by the test
+program.
 
-I will try to push new version into github and test by lkp.
+Thanks,
+Nick
 
-Thanks.
+ arch/powerpc/kernel/signal_32.c | 23 ++++++++++++++++-------
+ arch/powerpc/kernel/signal_64.c | 17 ++++++++++++-----
+ 2 files changed, 28 insertions(+), 12 deletions(-)
 
->
-> [1] https://github.com/intel/lkp-tests/tree/master/repo/linux
->
-> Thanks,
-> Dennis
-> .
+diff --git a/arch/powerpc/kernel/signal_32.c b/arch/powerpc/kernel/signal_32.c
+index 3e053e2fd6b6..5379bece8072 100644
+--- a/arch/powerpc/kernel/signal_32.c
++++ b/arch/powerpc/kernel/signal_32.c
+@@ -116,7 +116,7 @@ __unsafe_restore_general_regs(struct pt_regs *regs, struct mcontext __user *sr)
+ 	int i;
+ 
+ 	for (i = 0; i <= PT_RESULT; i++) {
+-		if ((i == PT_MSR) || (i == PT_SOFTE))
++		if ((i == PT_NIP) || (i == PT_MSR) || (i == PT_SOFTE))
+ 			continue;
+ 		unsafe_get_user(gregs[i], &sr->mc_gregs[i], failed);
+ 	}
+@@ -156,7 +156,7 @@ static __always_inline
+ int __unsafe_restore_general_regs(struct pt_regs *regs, struct mcontext __user *sr)
+ {
+ 	/* copy up to but not including MSR */
+-	unsafe_copy_from_user(regs, &sr->mc_gregs, PT_MSR * sizeof(elf_greg_t), failed);
++	unsafe_copy_from_user(regs, &sr->mc_gregs, PT_NIP * sizeof(elf_greg_t), failed);
+ 
+ 	/* copy from orig_r3 (the word after the MSR) up to the end */
+ 	unsafe_copy_from_user(&regs->orig_gpr3, &sr->mc_gregs[PT_ORIG_R3],
+@@ -458,7 +458,7 @@ static long restore_user_regs(struct pt_regs *regs,
+ 			      struct mcontext __user *sr, int sig)
+ {
+ 	unsigned int save_r2 = 0;
+-	unsigned long msr;
++	unsigned long nip, msr;
+ #ifdef CONFIG_VSX
+ 	int i;
+ #endif
+@@ -473,6 +473,9 @@ static long restore_user_regs(struct pt_regs *regs,
+ 		save_r2 = (unsigned int)regs->gpr[2];
+ 	unsafe_restore_general_regs(regs, sr, failed);
+ 	set_trap_norestart(regs);
++	unsafe_get_user(nip, &sr->mc_gregs[PT_NIP], failed);
++	nip &= ~3UL;
++	regs_set_return_ip(regs, nip);
+ 	unsafe_get_user(msr, &sr->mc_gregs[PT_MSR], failed);
+ 	if (!sig)
+ 		regs->gpr[2] = (unsigned long) save_r2;
+@@ -560,7 +563,7 @@ static long restore_tm_user_regs(struct pt_regs *regs,
+ 				 struct mcontext __user *sr,
+ 				 struct mcontext __user *tm_sr)
+ {
+-	unsigned long msr, msr_hi;
++	unsigned long nip, msr, msr_hi;
+ 	int i;
+ 
+ 	if (tm_suspend_disabled)
+@@ -576,7 +579,9 @@ static long restore_tm_user_regs(struct pt_regs *regs,
+ 		return 1;
+ 
+ 	unsafe_restore_general_regs(&current->thread.ckpt_regs, sr, failed);
+-	unsafe_get_user(current->thread.tm_tfhar, &sr->mc_gregs[PT_NIP], failed);
++	unsafe_get_user(nip, &sr->mc_gregs[PT_NIP], failed);
++	nip &= ~3UL;
++	current->thread.tm_tfhar = nip;
+ 	unsafe_get_user(msr, &sr->mc_gregs[PT_MSR], failed);
+ 
+ 	/* Restore the previous little-endian mode */
+@@ -646,6 +651,10 @@ static long restore_tm_user_regs(struct pt_regs *regs,
+ 		current->thread.used_vsr = true;
+ 	}
+ 
++	unsafe_get_user(nip, &tm_sr->mc_gregs[PT_NIP], failed);
++	nip &= ~3UL;
++	regs_set_return_ip(regs, nip);
++
+ 	/* Get the top half of the MSR from the user context */
+ 	unsafe_get_user(msr_hi, &tm_sr->mc_gregs[PT_MSR], failed);
+ 	msr_hi <<= 32;
+@@ -801,7 +810,7 @@ int handle_rt_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 	regs->gpr[4] = (unsigned long)&frame->info;
+ 	regs->gpr[5] = (unsigned long)&frame->uc;
+ 	regs->gpr[6] = (unsigned long)frame;
+-	regs_set_return_ip(regs, (unsigned long) ksig->ka.sa.sa_handler);
++	regs_set_return_ip(regs, (unsigned long) ksig->ka.sa.sa_handler & ~3UL);
+ 	/* enter the signal handler in native-endian mode */
+ 	regs_set_return_msr(regs, (regs->msr & ~MSR_LE) | (MSR_KERNEL & MSR_LE));
+ 
+@@ -889,7 +898,7 @@ int handle_signal32(struct ksignal *ksig, sigset_t *oldset,
+ 	regs->gpr[1] = newsp;
+ 	regs->gpr[3] = ksig->sig;
+ 	regs->gpr[4] = (unsigned long) sc;
+-	regs_set_return_ip(regs, (unsigned long) ksig->ka.sa.sa_handler);
++	regs_set_return_ip(regs, (unsigned long) ksig->ka.sa.sa_handler & ~3UL);
+ 	/* enter the signal handler in native-endian mode */
+ 	regs_set_return_msr(regs, (regs->msr & ~MSR_LE) | (MSR_KERNEL & MSR_LE));
+ 
+diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
+index d1e1fc0acbea..5ef24adb9803 100644
+--- a/arch/powerpc/kernel/signal_64.c
++++ b/arch/powerpc/kernel/signal_64.c
+@@ -336,7 +336,7 @@ static long notrace __unsafe_restore_sigcontext(struct task_struct *tsk, sigset_
+ 	elf_vrreg_t __user *v_regs;
+ #endif
+ 	unsigned long save_r13 = 0;
+-	unsigned long msr;
++	unsigned long nip, msr;
+ 	struct pt_regs *regs = tsk->thread.regs;
+ #ifdef CONFIG_VSX
+ 	int i;
+@@ -350,7 +350,9 @@ static long notrace __unsafe_restore_sigcontext(struct task_struct *tsk, sigset_
+ 
+ 	/* copy the GPRs */
+ 	unsafe_copy_from_user(regs->gpr, sc->gp_regs, sizeof(regs->gpr), efault_out);
+-	unsafe_get_user(regs->nip, &sc->gp_regs[PT_NIP], efault_out);
++	unsafe_get_user(nip, &sc->gp_regs[PT_NIP], efault_out);
++	nip &= ~3UL;
++	regs_set_return_ip(regs, nip);
+ 	/* get MSR separately, transfer the LE bit if doing signal return */
+ 	unsafe_get_user(msr, &sc->gp_regs[PT_MSR], efault_out);
+ 	if (sig)
+@@ -434,7 +436,7 @@ static long restore_tm_sigcontexts(struct task_struct *tsk,
+ 	elf_vrreg_t __user *v_regs, *tm_v_regs;
+ #endif
+ 	unsigned long err = 0;
+-	unsigned long msr;
++	unsigned long nip, msr;
+ 	struct pt_regs *regs = tsk->thread.regs;
+ #ifdef CONFIG_VSX
+ 	int i;
+@@ -458,8 +460,13 @@ static long restore_tm_sigcontexts(struct task_struct *tsk,
+ 	 * For the case of getting a signal and simply returning from it,
+ 	 * we don't need to re-copy them here.
+ 	 */
+-	err |= __get_user(regs->nip, &tm_sc->gp_regs[PT_NIP]);
+-	err |= __get_user(tsk->thread.tm_tfhar, &sc->gp_regs[PT_NIP]);
++	err |= __get_user(nip, &tm_sc->gp_regs[PT_NIP]);
++	nip &= ~3UL;
++	regs_set_return_ip(regs, nip);
++
++	err |= __get_user(nip, &sc->gp_regs[PT_NIP]);
++	nip &= ~3UL;
++	tsk->thread.tm_tfhar = nip;
+ 
+ 	/* get MSR separately, transfer the LE bit if doing signal return */
+ 	err |= __get_user(msr, &sc->gp_regs[PT_MSR]);
+-- 
+2.23.0
+
