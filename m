@@ -1,51 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68BBD462CC2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 07:27:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90092462CFA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 07:43:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J3C2M1kk3z3cFX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 17:27:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J3CNB3v9dz3cXv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 17:43:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com;
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
  envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J3C1w0N38z2xYG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 17:27:31 +1100 (AEDT)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.54])
- by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4J3Byk5GSHz1DJpF;
- Tue, 30 Nov 2021 14:24:46 +0800 (CST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J3CMk5JRbz2yS3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 17:42:55 +1100 (AEDT)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.53])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4J3CLt4BgzzcbkW;
+ Tue, 30 Nov 2021 14:42:14 +0800 (CST)
 Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Tue, 30 Nov 2021 14:27:26 +0800
+ 15.1.2308.20; Tue, 30 Nov 2021 14:42:20 +0800
 Received: from [10.174.177.243] (10.174.177.243) by
  dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.20; Tue, 30 Nov 2021 14:27:25 +0800
-Message-ID: <ab9b7446-e955-67da-b9f3-1e1c15566fdb@huawei.com>
-Date: Tue, 30 Nov 2021 14:27:24 +0800
+ 15.1.2308.20; Tue, 30 Nov 2021 14:42:19 +0800
+Message-ID: <b3253299-7381-b977-d19a-b76169d9c9a6@huawei.com>
+Date: Tue, 30 Nov 2021 14:42:18 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.2.0
-Subject: Re: [PATCH RFC 3/4] mm: percpu: Add generic pcpu_fc_alloc/free
- funciton
+Subject: Re: [PATCH RFC 4/4] mm: percpu: Add generic pcpu_populate_pte()
+ function
 Content-Language: en-US
 To: Dennis Zhou <dennis@kernel.org>
 References: <20211121093557.139034-1-wangkefeng.wang@huawei.com>
- <20211121093557.139034-4-wangkefeng.wang@huawei.com>
- <YaVYGCB+I7QLZo0+@fedora>
+ <20211121093557.139034-5-wangkefeng.wang@huawei.com>
+ <YaVZB/Lcis4iQ3RY@fedora>
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <YaVYGCB+I7QLZo0+@fedora>
+In-Reply-To: <YaVZB/Lcis4iQ3RY@fedora>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggeme704-chm.china.huawei.com (10.1.199.100) To
+X-ClientProxiedBy: dggeme705-chm.china.huawei.com (10.1.199.101) To
  dggpemm500001.china.huawei.com (7.185.36.107)
 X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -74,89 +74,110 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-On 2021/11/30 6:45, Dennis Zhou wrote:
-> On Sun, Nov 21, 2021 at 05:35:56PM +0800, Kefeng Wang wrote:
->> With previous patch, we could add a generic pcpu first chunk
->> allocation and free function to cleanup the duplicated definations
->> on each architecture.
+On 2021/11/30 6:49, Dennis Zhou wrote:
+> On Sun, Nov 21, 2021 at 05:35:57PM +0800, Kefeng Wang wrote:
+>> When NEED_PER_CPU_PAGE_FIRST_CHUNK enabled, we need a function to
+>> populate pte, add a generic pcpu populate pte function and switch
+>> to use it.
 >>
 >> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 >> ---
->>   arch/mips/mm/init.c            | 16 +--------
->>   arch/powerpc/kernel/setup_64.c | 51 ++------------------------
->>   arch/sparc/kernel/smp_64.c     | 50 +-------------------------
->>   arch/x86/kernel/setup_percpu.c | 59 +-----------------------------
->>   drivers/base/arch_numa.c       | 19 +---------
->>   include/linux/percpu.h         |  9 +----
->>   mm/percpu.c                    | 66 ++++++++++++++++++----------------
->>   7 files changed, 42 insertions(+), 228 deletions(-)
+>>   arch/powerpc/kernel/setup_64.c | 47 +--------------------
+>>   arch/sparc/kernel/smp_64.c     | 57 +------------------------
+>>   arch/x86/kernel/setup_percpu.c |  5 +--
+>>   drivers/base/arch_numa.c       | 51 +---------------------
+>>   include/linux/percpu.h         |  5 +--
+>>   mm/percpu.c                    | 77 +++++++++++++++++++++++++++++++---
+>>   6 files changed, 79 insertions(+), 163 deletions(-)
+>>
 ...
+>> diff --git a/arch/x86/kernel/setup_percpu.c b/arch/x86/kernel/setup_percpu.c
+>> index cd672bd46241..4eadbe45078e 100644
+>> --- a/arch/x86/kernel/setup_percpu.c
+>> +++ b/arch/x86/kernel/setup_percpu.c
+>> @@ -101,7 +101,7 @@ static int __init pcpu_cpu_to_node(int cpu)
+>>   	return IS_ENABLED(CONFIG_NUMA) ? early_cpu_to_node(cpu) : NUMA_NO_NODE;
+>>   }
+>>   
+>> -static void __init pcpup_populate_pte(unsigned long addr)
+>> +void __init pcpu_populate_pte(unsigned long addr)
+>>   {
+>>   	populate_extra_pte(addr);
+>>   }
+>> @@ -163,8 +163,7 @@ void __init setup_per_cpu_areas(void)
+>>   	}
+>>   	if (rc < 0)
+>>   		rc = pcpu_page_first_chunk(PERCPU_FIRST_CHUNK_RESERVE,
+>> -					   pcpu_cpu_to_node,
+>> -					   pcpup_populate_pte);
+>> +					   pcpu_cpu_to_node);
+> x86 has it's own implementation that differs for 32 bit. I'm not
+> confident this is correct to drop in as a replacement for x86, so I'd
+> prefer to keep populate_pte_fn() around.
+
+
+The x86's pcpup_populate_pte() version is not dropped.
+
+We define a __weak pcpu_populate_pte function in mm/percpu.c,
+
+and there is a own version on x86,  so no function change on x86.
+
+I will add this into changelog,
+
+arch/x86/kernel/setup_percpu.c:  void __init pcpu_populate_pte(unsigned 
+long addr)
+include/linux/percpu.h:                 void __init 
+pcpu_populate_pte(unsigned long addr);
+mm/percpu.c:                                void __init __weak 
+pcpu_populate_pte(unsigned long addr)
+mm/percpu.c: pcpu_populate_pte(unit_addr + (i << PAGE_SHIFT));
+
+
 >> diff --git a/include/linux/percpu.h b/include/linux/percpu.h
->> index 41bb54715b0c..d73c97ef4ff4 100644
+>> index d73c97ef4ff4..f1ec5ad1351c 100644
 >> --- a/include/linux/percpu.h
 >> +++ b/include/linux/percpu.h
->> @@ -95,9 +95,6 @@ extern const char * const pcpu_fc_names[PCPU_FC_NR];
+>> @@ -95,7 +95,6 @@ extern const char * const pcpu_fc_names[PCPU_FC_NR];
 >>   extern enum pcpu_fc pcpu_chosen_fc;
 >>   
 >>   typedef int (pcpu_fc_cpu_to_node_fn_t)(int cpu);
->> -typedef void * (*pcpu_fc_alloc_fn_t)(unsigned int cpu, size_t size, size_t align,
->> -				     pcpu_fc_cpu_to_node_fn_t cpu_to_nd_fn);
->> -typedef void (*pcpu_fc_free_fn_t)(void *ptr, size_t size);
->>   typedef void (*pcpu_fc_populate_pte_fn_t)(unsigned long addr);
+>> -typedef void (*pcpu_fc_populate_pte_fn_t)(unsigned long addr);
 >>   typedef int (pcpu_fc_cpu_distance_fn_t)(unsigned int from, unsigned int to);
 >>   
->> @@ -112,15 +109,11 @@ extern void __init pcpu_setup_first_chunk(const struct pcpu_alloc_info *ai,
->>   extern int __init pcpu_embed_first_chunk(size_t reserved_size, size_t dyn_size,
->>   				size_t atom_size,
->>   				pcpu_fc_cpu_distance_fn_t cpu_distance_fn,
->> -				pcpu_fc_cpu_to_node_fn_t cpu_to_nd_fn,
->> -				pcpu_fc_alloc_fn_t alloc_fn,
->> -				pcpu_fc_free_fn_t free_fn);
->> +				pcpu_fc_cpu_to_node_fn_t cpu_to_nd_fn);
+>>   extern struct pcpu_alloc_info * __init pcpu_alloc_alloc_info(int nr_groups,
+>> @@ -113,9 +112,9 @@ extern int __init pcpu_embed_first_chunk(size_t reserved_size, size_t dyn_size,
 >>   #endif
 >>   
 >>   #ifdef CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK
+>> +void __init pcpu_populate_pte(unsigned long addr);
 >>   extern int __init pcpu_page_first_chunk(size_t reserved_size,
->> -				pcpu_fc_alloc_fn_t alloc_fn,
->> -				pcpu_fc_free_fn_t free_fn,
->>   				pcpu_fc_cpu_to_node_fn_t cpu_to_nd_fn,
->>   				pcpu_fc_populate_pte_fn_t populate_pte_fn);
+>> -				pcpu_fc_cpu_to_node_fn_t cpu_to_nd_fn,
+>> -				pcpu_fc_populate_pte_fn_t populate_pte_fn);
+>> +				pcpu_fc_cpu_to_node_fn_t cpu_to_nd_fn);
 >>   #endif
+>>   
+>>   extern void __percpu *__alloc_reserved_percpu(size_t size, size_t align) __alloc_size(1);
 >> diff --git a/mm/percpu.c b/mm/percpu.c
->> index 3f6cf1ff0be2..efaa1cbaf73d 100644
+>> index efaa1cbaf73d..d907daed04eb 100644
 >> --- a/mm/percpu.c
 >> +++ b/mm/percpu.c
->> @@ -2992,6 +2992,30 @@ static struct pcpu_alloc_info * __init __flatten pcpu_build_alloc_info(
+>> @@ -3162,11 +3162,80 @@ int __init pcpu_embed_first_chunk(size_t reserved_size, size_t dyn_size,
+>>   #endif /* BUILD_EMBED_FIRST_CHUNK */
 >>   
->>   	return ai;
->>   }
->> +
->> +static void * __init pcpu_fc_alloc(unsigned int cpu, size_t size, size_t align,
->> +				   pcpu_fc_cpu_to_node_fn_t cpu_to_nd_fn)
+...
+>> +void __init __weak pcpu_populate_pte(unsigned long addr)
 >> +{
->> +	const unsigned long goal = __pa(MAX_DMA_ADDRESS);
->> +	int node = NUMA_NO_NODE;
->> +	void *ptr;
+>> +	pgd_t *pgd = pgd_offset_k(addr);
+>> +	p4d_t *p4d;
+>> +	pud_t *pud;
+>> +	pmd_t *pmd;
 >> +
->> +	if (cpu_to_nd_fn)
->> +		node = cpu_to_nd_fn(cpu);
+>> +	if (pgd_none(*pgd)) {
+>> +		p4d_t *new;
 >> +
->> +	if (node == NUMA_NO_NODE || !node_online(node) || !NODE_DATA(node)) {
->> +		ptr = memblock_alloc_from(size, align, goal);
->> +	} else {
->> +		ptr = memblock_alloc_try_nid(size, align, goal,
->> +					     MEMBLOCK_ALLOC_ACCESSIBLE, node);
->> +	}
->> +	return ptr;
->> +}
-> My preference here would be to keep this identical to the x86
-> implementation where we #ifdef CONFIG_NUMA.
+>> +		new = memblock_alloc_from(P4D_TABLE_SIZE, P4D_TABLE_SIZE, PAGE_SIZE);
+> It's unnecessary to specify a min_addr to memblock_alloc_from() as it
+> won't allocate 0 anyway. So please use memblock_alloc() instead.
 
-I will add back '#ifdef CONFIG_NUMA',  also will add back the 
-pr_debug/pr_info part as x86 does,
+ok, will use memblock_alloc in this function
 
-> Overall this makes sense.
->
-> Thanks,
-> Dennis
-> .
