@@ -1,66 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3314636B4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 15:31:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48065463865
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 15:57:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J3PmF1jlqz302D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 01:31:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J3QLZ16Zcz3cVx
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 01:57:42 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=M4rxyShl;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=sashal@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=M4rxyShl; 
+ dkim-atps=neutral
+X-Greylist: delayed 462 seconds by postgrey-1.36 at boromir;
+ Wed, 01 Dec 2021 01:57:06 AEDT
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J3Plp3JkKz301K
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Dec 2021 01:31:01 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J3Plk6XJQz9sSj;
- Tue, 30 Nov 2021 15:30:58 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id vU463tmi0809; Tue, 30 Nov 2021 15:30:58 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J3Plk5km0z9sSh;
- Tue, 30 Nov 2021 15:30:58 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B40778B779;
- Tue, 30 Nov 2021 15:30:58 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id aCNCFI98Zzae; Tue, 30 Nov 2021 15:30:58 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.93])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6F76D8B763;
- Tue, 30 Nov 2021 15:30:58 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1AUEUix0256050
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 30 Nov 2021 15:30:44 +0100
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1AUEUgdI256048;
- Tue, 30 Nov 2021 15:30:42 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/powermac: Add missing lockdep_register_key()
-Date: Tue, 30 Nov 2021 15:30:42 +0100
-Message-Id: <34b423d68d170676fc3367594d17d1ca5c3844a4.1638282630.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.33.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J3QKv009yz30Hj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Dec 2021 01:57:06 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 90521B81A28;
+ Tue, 30 Nov 2021 14:49:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6588CC53FC7;
+ Tue, 30 Nov 2021 14:49:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1638283755;
+ bh=oRuAmpp5REdqeW8iRnEJPu/Vsovl/VI3cLjHZcmwVyw=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=M4rxyShlKx52j5Xnvk/W9k2vEVjbxm/8K8E9LWQXd4eOdBuM2IdgImMiY3w7LDC8/
+ E2gANettHp8ne7JxlRLjzJRS6xg72bOswP0y5j0ucLQHB3HrmejJm9zy0Z7IXZ1nci
+ gjdYdHY6fq+Muo0thL4ERLKuoLIHiKPFbevjt4ZHTq8/Z29pFsmlOpGAT/VbR4U6uH
+ DD0VHv0heMdfrTHwGSCNSLpYiTG1EwhZOby+HmwOtxob3StyxZcUHgO1nGjgQ3fk2t
+ FimxHt/J4J6hPJ2nDrXVYmKmHAGswV1R+I19JkBbOMKK7iCiOkMOetWd5Q/cxLK7NL
+ t8/D83H6humPA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 50/68] xen: flag hvc_xen to be not essential for
+ system boot
+Date: Tue, 30 Nov 2021 09:46:46 -0500
+Message-Id: <20211130144707.944580-50-sashal@kernel.org>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20211130144707.944580-1-sashal@kernel.org>
+References: <20211130144707.944580-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1638282641; l=2966; s=20211009;
- h=from:subject:message-id; bh=jMUA6/CdNEAwxuuseeJkPI/0xYNf89rYf+05Sg3f9cM=;
- b=RdVnPmEhY+dz+Fq1Kvdj0A+gXpK2+pfhR3eqjMo73J6P90G23cLnmJLv97RbMWmJcVhm3j4kBYHa
- 4hJS/m1/BAtnMFTiZawt9bB/EYC54R7WbYVFrs0UezUzWywcLcMY
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,78 +70,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Erhard Furtner <erhard_f@mailbox.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Juergen Gross <jgross@suse.com>, Sasha Levin <sashal@kernel.org>,
+ gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org, jbeulich@suse.com,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, jirislaby@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-KeyWest i2c @0xf8001003 irq 42 /uni-n@f8000000/i2c@f8001000
-BUG: key c2d00cbc has not been registered!
-------------[ cut here ]------------
-DEBUG_LOCKS_WARN_ON(1)
-WARNING: CPU: 0 PID: 1 at kernel/locking/lockdep.c:4801 lockdep_init_map_type+0x4c0/0xb4c
-Modules linked in:
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.15.5-gentoo-PowerMacG4 #9
-NIP:  c01a9428 LR: c01a9428 CTR: 00000000
-REGS: e1033cf0 TRAP: 0700   Not tainted  (5.15.5-gentoo-PowerMacG4)
-MSR:  00029032 <EE,ME,IR,DR,RI>  CR: 24002002  XER: 00000000
+From: Juergen Gross <jgross@suse.com>
 
-GPR00: c01a9428 e1033db0 c2d1cf20 00000016 00000004 00000001 c01c0630 e1033a73
-GPR08: 00000000 00000000 00000000 e1033db0 24002004 00000000 f8729377 00000003
-GPR16: c1829a9c 00000000 18305357 c1416fc0 c1416f80 c006ac60 c2d00ca8 c1416f00
-GPR24: 00000000 c21586f0 c2160000 00000000 c2d00cbc c2170000 c216e1a0 c2160000
-NIP [c01a9428] lockdep_init_map_type+0x4c0/0xb4c
-LR [c01a9428] lockdep_init_map_type+0x4c0/0xb4c
-Call Trace:
-[e1033db0] [c01a9428] lockdep_init_map_type+0x4c0/0xb4c (unreliable)
-[e1033df0] [c1c177b8] kw_i2c_add+0x334/0x424
-[e1033e20] [c1c18294] pmac_i2c_init+0x9ec/0xa9c
-[e1033e80] [c1c1a790] smp_core99_probe+0xbc/0x35c
-[e1033eb0] [c1c03cb0] kernel_init_freeable+0x190/0x5a4
-[e1033f10] [c000946c] kernel_init+0x28/0x154
-[e1033f30] [c0035148] ret_from_kernel_thread+0x14/0x1c
+[ Upstream commit 0239143490a9fa1344955dde93527b09f5576dac ]
 
-Add missing lockdep_register_key()
+The Xen pv console driver is not essential for boot. Set the respective
+flag.
 
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=200055
-Fixes: 9e607f72748d ("i2c_powermac: shut up lockdep warning")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Link: https://lore.kernel.org/r/20211022064800.14978-4-jgross@suse.com
+Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-v2: Added lockdep_register_key() at two other places.
----
- arch/powerpc/platforms/powermac/low_i2c.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/hvc/hvc_xen.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/platforms/powermac/low_i2c.c b/arch/powerpc/platforms/powermac/low_i2c.c
-index f77a59b5c2e1..df89d916236d 100644
---- a/arch/powerpc/platforms/powermac/low_i2c.c
-+++ b/arch/powerpc/platforms/powermac/low_i2c.c
-@@ -582,6 +582,7 @@ static void __init kw_i2c_add(struct pmac_i2c_host_kw *host,
- 	bus->close = kw_i2c_close;
- 	bus->xfer = kw_i2c_xfer;
- 	mutex_init(&bus->mutex);
-+	lockdep_register_key(&bus->lock_key);
- 	lockdep_set_class(&bus->mutex, &bus->lock_key);
- 	if (controller == busnode)
- 		bus->flags = pmac_i2c_multibus;
-@@ -810,6 +811,7 @@ static void __init pmu_i2c_probe(void)
- 		bus->hostdata = bus + 1;
- 		bus->xfer = pmu_i2c_xfer;
- 		mutex_init(&bus->mutex);
-+		lockdep_register_key(&bus->lock_key);
- 		lockdep_set_class(&bus->mutex, &bus->lock_key);
- 		bus->flags = pmac_i2c_multibus;
- 		list_add(&bus->link, &pmac_i2c_busses);
-@@ -933,6 +935,7 @@ static void __init smu_i2c_probe(void)
- 		bus->hostdata = bus + 1;
- 		bus->xfer = smu_i2c_xfer;
- 		mutex_init(&bus->mutex);
-+		lockdep_register_key(&bus->lock_key);
- 		lockdep_set_class(&bus->mutex, &bus->lock_key);
- 		bus->flags = 0;
- 		list_add(&bus->link, &pmac_i2c_busses);
+diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
+index f0bf01ea069ae..71e0dd2c0ce5b 100644
+--- a/drivers/tty/hvc/hvc_xen.c
++++ b/drivers/tty/hvc/hvc_xen.c
+@@ -522,6 +522,7 @@ static struct xenbus_driver xencons_driver = {
+ 	.remove = xencons_remove,
+ 	.resume = xencons_resume,
+ 	.otherend_changed = xencons_backend_changed,
++	.not_essential = true,
+ };
+ #endif /* CONFIG_HVC_XEN_FRONTEND */
+ 
 -- 
-2.33.1
+2.33.0
 
