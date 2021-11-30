@@ -1,116 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F44C462BDB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 05:54:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F3B462C70
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 06:58:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J38yb2ts2z3bZj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 15:54:31 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SRncarii;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J3BNv4yN1z3cWc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 16:58:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J38xn4PS5z306m
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 15:53:49 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=SRncarii; dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4J38xn2K8Rz4xPv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 15:53:49 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
- id 4J38xn2G98z4xRC; Tue, 30 Nov 2021 15:53:49 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=SRncarii; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by gandalf.ozlabs.org (Postfix) with ESMTPS id 4J38xm4h3Kz4xPv
- for <linuxppc-dev@ozlabs.org>; Tue, 30 Nov 2021 15:53:48 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AU4ftSh031348
- for <linuxppc-dev@ozlabs.org>; Tue, 30 Nov 2021 04:53:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : content-type :
- mime-version; s=pp1; bh=ezgNW0k8z8frjlN10Ut7K0hm70ywDIqw85HvDGUFi5k=;
- b=SRncariikjD78SX/qW40sQAla5VIYdSXAquEVRPWfnskBgURYwFTpU6MhEPadwxW9h/v
- OMcyd1e74pkGncw7WzNbPwIw4LBTqUAJFSLJBTrcKVdQVdYlCeFCtFiBwCAfkPb+gHfF
- PS7kG497FIj8bUhpq6PHkBLIJIJnQNDlYyu2EovLkg/yPJb29bU+oI+h7t1QdaRjBzPp
- 5Uhm1Wl+col9nUJPGm6XpPV9g2tvEz4xvY8N9Gv7v8XEUYXOkxvh/LBaB4+JtmOG6732
- 8m58at5EgRnbnarhXI9s46PnqgHOHnwadOXp7jjBqaR263sqs8Aen3rdPcxFj4wcvIz/ Dw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cnd5b8640-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Tue, 30 Nov 2021 04:53:45 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AU4kDvu010961
- for <linuxppc-dev@ozlabs.org>; Tue, 30 Nov 2021 04:53:45 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cnd5b863v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Nov 2021 04:53:45 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AU4rZkk013412;
- Tue, 30 Nov 2021 04:53:44 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma01dal.us.ibm.com with ESMTP id 3ckcab8acb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Nov 2021 04:53:44 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1AU4rgEg40960398
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Nov 2021 04:53:42 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C6816B2067;
- Tue, 30 Nov 2021 04:53:42 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 85115B2064;
- Tue, 30 Nov 2021 04:53:42 +0000 (GMT)
-Received: from localhost (unknown [9.163.19.234])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 30 Nov 2021 04:53:42 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Mahesh Salgaonkar <mahesh@linux.ibm.com>, linuxppc-dev
- <linuxppc-dev@ozlabs.org>
-Subject: Re: [PATCH] powerpc/rtas: Introduce rtas_get_sensor_nonblocking()
- for pci hotplug driver.
-In-Reply-To: <163817631601.2016996.16085383012429651821.stgit@jupiter>
-References: <163817631601.2016996.16085383012429651821.stgit@jupiter>
-Date: Mon, 29 Nov 2021 22:53:41 -0600
-Message-ID: <87o862nt0q.fsf@linux.ibm.com>
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: VLWYpgpYKn03UDzYSAIj03EpQf_TH4lu
-X-Proofpoint-ORIG-GUID: JRYvoBrbQeMPUKmFNXcaqyGsHpV8ogJR
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J3BNS6nSmz2xtP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 16:58:30 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4J3BNM60LCz9sSS;
+ Tue, 30 Nov 2021 06:58:27 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id VJnpcIrt215C; Tue, 30 Nov 2021 06:58:27 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4J3BNM4v9hz9sSP;
+ Tue, 30 Nov 2021 06:58:27 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 93DDE8B778;
+ Tue, 30 Nov 2021 06:58:27 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id HJlyjb9UKWoj; Tue, 30 Nov 2021 06:58:27 +0100 (CET)
+Received: from [192.168.232.93] (unknown [192.168.232.93])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0AAA58B763;
+ Tue, 30 Nov 2021 06:58:27 +0100 (CET)
+Message-ID: <e7b67ca6-8cd1-da3c-c0f3-e05f7e592828@csgroup.eu>
+Date: Tue, 30 Nov 2021 06:58:26 +0100
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-30_04,2021-11-28_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0
- mlxscore=0 mlxlogscore=999 lowpriorityscore=0 malwarescore=0 phishscore=0
- spamscore=0 impostorscore=0 priorityscore=1501 clxscore=1015 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2111300026
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v5 5/5] powerpc/inst: Optimise
+ copy_inst_from_kernel_nofault()
+Content-Language: fr-FR
+To: kernel test robot <lkp@intel.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nick Desaulniers <ndesaulniers@google.com>
+References: <0d5b12183d5176dd702d29ad94c39c384e51c78f.1638208156.git.christophe.leroy@csgroup.eu>
+ <202111300652.0yDBNvyJ-lkp@intel.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <202111300652.0yDBNvyJ-lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -122,132 +67,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev,
+ kbuild-all@lists.01.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mahesh Salgaonkar <mahesh@linux.ibm.com> writes:
-> When certain PHB HW failure causes phyp to recover PHB, it marks the PE
-> state as temporarily unavailable until recovery is complete. This also
-> triggers an EEH handler in Linux which needs to notify drivers, and perform
-> recovery. But before notifying the driver about the pci error it uses
-> get_adapter_state()->get-sesnor-state() operation of the hotplug_slot to
-> determine if the slot contains a device or not. if the slot is empty, the
-> recovery is skipped entirely.
->
-> However on certain PHB failures, the rtas call get-sesnor-state() returns
-> extended busy error (9902) until PHB is recovered by phyp. Once PHB is
-> recovered, the get-sensor-state() returns success with correct presence
-> status. The rtas call interface rtas_get_sensor() loops over the rtas call
-> on extended delay return code (9902) until the return value is either
-> success (0) or error (-1). This causes the EEH handler to get stuck for ~6
-> seconds before it could notify that the pci error has been detected and
-> stop any active operations.
-
-I am curious whether you see any difference with "powerpc/rtas:
-rtas_busy_delay() improvements" which was recently applied. It will
-cause the the calling task to sleep in response to a 990x status instead
-of immediately retrying:
-
-https://git.kernel.org/powerpc/c/38f7b7067dae0c101be573106018e8af22a90fdf
-
-If that commit helps then maybe this change isn't needed.
-
-Otherwise, see my comments below.
 
 
-> -int rtas_get_sensor_fast(int sensor, int index, int *state)
-> +static int
-> +__rtas_get_sensor(int sensor, int index, int *state, bool warn_on)
+Le 29/11/2021 à 23:55, kernel test robot a écrit :
+> Hi Christophe,
+> 
+> I love your patch! Perhaps something to improve:
+> 
+> [auto build test WARNING on powerpc/next]
+> [also build test WARNING on v5.16-rc3 next-20211129]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/powerpc-inst-Refactor-___get_user_instr/20211130-015346
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+> config: powerpc-randconfig-r023-20211129 (https://download.01.org/0day-ci/archive/20211130/202111300652.0yDBNvyJ-lkp@intel.com/config)
+> compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project df08b2fe8b35cb63dfb3b49738a3494b9b4e6f8e)
+> reproduce (this is a W=1 build):
+>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>          chmod +x ~/bin/make.cross
+>          # install powerpc cross compiling tool for clang build
+>          # apt-get install binutils-powerpc-linux-gnu
+>          # https://github.com/0day-ci/linux/commit/fb7bff30cc0efc7e4df1b48bb69de1f325eee826
+>          git remote add linux-review https://github.com/0day-ci/linux
+>          git fetch --no-tags linux-review Christophe-Leroy/powerpc-inst-Refactor-___get_user_instr/20211130-015346
+>          git checkout fb7bff30cc0efc7e4df1b48bb69de1f325eee826
+>          # save the config file to linux build tree
+>          mkdir build_dir
+>          COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc prepare
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All warnings (new ones prefixed by >>):
+> 
+>     In file included from arch/powerpc/kernel/asm-offsets.c:71:
+>     In file included from arch/powerpc/kernel/../xmon/xmon_bpts.h:7:
+>>> arch/powerpc/include/asm/inst.h:165:20: warning: variable 'val' is uninitialized when used here [-Wuninitialized]
+>                     *inst = ppc_inst(val);
+>                                      ^~~
+>     arch/powerpc/include/asm/inst.h:53:22: note: expanded from macro 'ppc_inst'
+>     #define ppc_inst(x) (x)
+>                          ^
+>     arch/powerpc/include/asm/inst.h:155:18: note: initialize the variable 'val' to silence this warning
+>             unsigned int val, suffix;
+>                             ^
+>                              = 0
 
-Boolean flag parameters in this style are undesirable. As a reader you
-can't infer the significance of a 'true' or 'false' in the argument list
-at the call site.
+I can't understand what's wrong here.
 
->  {
->  	int token = rtas_token("get-sensor-state");
->  	int rc;
-> @@ -618,14 +619,26 @@ int rtas_get_sensor_fast(int sensor, int index, int *state)
->  		return -ENOENT;
->  
->  	rc = rtas_call(token, 2, 2, state, sensor, index);
-> -	WARN_ON(rc == RTAS_BUSY || (rc >= RTAS_EXTENDED_DELAY_MIN &&
-> -				    rc <= RTAS_EXTENDED_DELAY_MAX));
-> +	WARN_ON(warn_on &&
-> +		(rc == RTAS_BUSY || (rc >= RTAS_EXTENDED_DELAY_MIN &&
-> +				    rc <= RTAS_EXTENDED_DELAY_MAX)));
->  
->  	if (rc < 0)
->  		return rtas_error_rc(rc);
->  	return rc;
->  }
+We have
 
-Issues I see with this, in terms of correctness and convention:
+	__get_kernel_nofault(&val, src, u32, Efault);
+	if (IS_ENABLED(CONFIG_PPC64) && get_op(val) == OP_PREFIX) {
+		__get_kernel_nofault(&suffix, src + 1, u32, Efault);
+		*inst = ppc_inst_prefix(val, suffix);
+	} else {
+		*inst = ppc_inst(val);
+	}
 
-* On non-negative status from rtas_call(), including 990x,
-  __rtas_get_sensor() returns the RTAS status unchanged. On a negative
-  status, it returns a Linux errno value. On a -2 (busy) status
-  rtas_error_rc() prints an error message and returns -ERANGE. Seems
-  difficult for a caller to handle. Generally we want rtas_* APIs to
-  adhere to a Linux 0/-errno convention or to return the RTAS
-  status unchanged, but not a mixture.
+With
 
-* __rtas_get_sensor() is called by rtas_get_sensor_fast() and
-  rtas_get_sensor_nonblocking(), but is not called by rtas_get_sensor(),
-  despite common practice with __-prefixed functions.
+#define __get_kernel_nofault(dst, src, type, err_label)			\
+	__get_user_size_goto(*((type *)(dst)),				\
+		(__force type __user *)(src), sizeof(type), err_label)
 
-> +int rtas_get_sensor_fast(int sensor, int index, int *state)
-> +{
-> +	return __rtas_get_sensor(sensor, index, state, true);
-> +}
-> +
-> +int rtas_get_sensor_nonblocking(int sensor, int index, int *state)
-> +{
-> +	return __rtas_get_sensor(sensor, index, state, false);
-> +}
-> +EXPORT_SYMBOL(rtas_get_sensor_nonblocking);
-> +
->  bool rtas_indicator_present(int token, int *maxindex)
->  {
->  	int proplen, count, i;
-> diff --git a/drivers/pci/hotplug/rpaphp_pci.c b/drivers/pci/hotplug/rpaphp_pci.c
-> index c380bdacd1466..8a7d681254ce9 100644
-> --- a/drivers/pci/hotplug/rpaphp_pci.c
-> +++ b/drivers/pci/hotplug/rpaphp_pci.c
-> @@ -23,7 +23,7 @@ int rpaphp_get_sensor_state(struct slot *slot, int *state)
->  	int rc;
->  	int setlevel;
->  
-> -	rc = rtas_get_sensor(DR_ENTITY_SENSE, slot->index, state);
-> +	rc = rtas_get_sensor_nonblocking(DR_ENTITY_SENSE, slot->index, state);
->  
->  	if (rc < 0) {
->  		if (rc == -EFAULT || rc == -EEXIST) {
-> @@ -38,10 +38,10 @@ int rpaphp_get_sensor_state(struct slot *slot, int *state)
->  			if (rc < 0) {
->  				dbg("%s: power on slot[%s] failed rc=%d.\n",
->  				    __func__, slot->name, rc);
-> -			} else {
-> -				rc = rtas_get_sensor(DR_ENTITY_SENSE,
-> -						     slot->index, state);
-> +				return rc;
->  			}
-> +			rc = rtas_get_sensor_nonblocking(DR_ENTITY_SENSE,
-> +							 slot->index, state);
->  		} else if (rc == -ENODEV)
->  			info("%s: slot is unusable\n", __func__);
->  		else
 
-If I'm reading it right rpaphp_get_sensor_state() now returns 9902 in
-the situation this change is trying to address. I checked a couple of
-its call sites and it seems like this is going to propagate back into
-the PCI hotplug core which of course doesn't understand RTAS call
-statuses. So this doesn't seem right.
+And
 
-Maybe it would be better to have rpaphp_get_sensor_state() invoke
-rtas_call("get-sensor-state", ...) directly and code whatever special
-behavior is needed there, instead of introducing a new exported API. The
-driver seems to want to deal with the RTAS return values anyway - it's
-implicitly mapping ENODEV, EFAULT, EEXIST from rtas_get_sensor() back to
--9002, -9000, -9001 respectively.
+#define __get_user_size_goto(x, ptr, size, label)				\
+do {										\
+	BUILD_BUG_ON(size > sizeof(x));						\
+	switch (size) {								\
+	case 1: __get_user_asm_goto(x, (u8 __user *)ptr, label, "lbz"); break;	\
+	case 2: __get_user_asm_goto(x, (u16 __user *)ptr, label, "lhz"); break;	\
+	case 4: __get_user_asm_goto(x, (u32 __user *)ptr, label, "lwz"); break;	\
+	case 8: __get_user_asm2_goto(x, (u64 __user *)ptr, label);  break;	\
+	default: x = 0; BUILD_BUG();						\
+	}									\
+} while (0)
+
+And
+
+#define __get_user_asm_goto(x, addr, label, op)			\
+	asm_volatile_goto(					\
+		"1:	"op"%U1%X1 %0, %1	# get_user\n"	\
+		EX_TABLE(1b, %l2)				\
+		: "=r" (x)					\
+		: "m<>" (*addr)				\
+		:						\
+		: label)
+
+
+I see no possibility, no alternative path where val wouldn't be set. The 
+asm clearly has *addr as an output param so it is always set.
+
+>     1 warning generated.
+>     <stdin>:1559:2: warning: syscall futex_waitv not implemented [-W#warnings]
+>     #warning syscall futex_waitv not implemented
+>      ^
+>     1 warning generated.
+>     arch/powerpc/kernel/vdso32/gettimeofday.S:72:8: error: unsupported directive '.stabs'
+>     .stabs "_restgpr_31_x:F-1",36,0,0,_restgpr_31_x; .globl _restgpr_31_x; _restgpr_31_x:
+>            ^
+>     arch/powerpc/kernel/vdso32/gettimeofday.S:73:8: error: unsupported directive '.stabs'
+>     .stabs "_rest32gpr_31_x:F-1",36,0,0,_rest32gpr_31_x; .globl _rest32gpr_31_x; _rest32gpr_31_x:
+
+How should we fix that ? Will clang support .stabs in the future ?
+
+
+>            ^
+>     make[2]: *** [arch/powerpc/kernel/vdso32/Makefile:55: arch/powerpc/kernel/vdso32/gettimeofday.o] Error 1
+>     make[2]: Target 'include/generated/vdso32-offsets.h' not remade because of errors.
+>     make[1]: *** [arch/powerpc/Makefile:421: vdso_prepare] Error 2
+>     make[1]: Target 'prepare' not remade because of errors.
+>     make: *** [Makefile:219: __sub-make] Error 2
+>     make: Target 'prepare' not remade because of errors.
+> 
+> 
+> vim +/val +165 arch/powerpc/include/asm/inst.h
+> 
+>     152	
+>     153	static inline int copy_inst_from_kernel_nofault(ppc_inst_t *inst, u32 *src)
+>     154	{
+>     155		unsigned int val, suffix;
+>     156	
+>     157		if (unlikely(!is_kernel_addr((unsigned long)src)))
+>     158			return -ERANGE;
+>     159	
+>     160		__get_kernel_nofault(&val, src, u32, Efault);
+>     161		if (IS_ENABLED(CONFIG_PPC64) && get_op(val) == OP_PREFIX) {
+>     162			__get_kernel_nofault(&suffix, src + 1, u32, Efault);
+>     163			*inst = ppc_inst_prefix(val, suffix);
+>     164		} else {
+>   > 165			*inst = ppc_inst(val);
+>     166		}
+>     167		return 0;
+>     168	Efault:
+>     169		return -EFAULT;
+>     170	}
+>     171	
+> 
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> 
