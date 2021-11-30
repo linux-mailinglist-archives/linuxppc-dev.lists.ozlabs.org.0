@@ -1,39 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D8A4629C7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 02:33:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9804629C3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 02:32:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J34VL3ZKWz3dZv
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 12:33:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J34Tv42gLz3cb0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 12:32:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J34TW1jgVz304y
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J34TW1lqzz3056
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 12:32:29 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6200,9189,10183"; a="234840123"
-X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; d="scan'208";a="234840123"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+X-IronPort-AV: E=McAfee;i="6200,9189,10183"; a="260054123"
+X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; d="scan'208";a="260054123"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  29 Nov 2021 17:31:27 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; d="scan'208";a="573836181"
+X-IronPort-AV: E=Sophos;i="5.87,273,1631602800"; d="scan'208";a="458646546"
 Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
- by fmsmga004.fm.intel.com with ESMTP; 29 Nov 2021 17:31:25 -0800
+ by orsmga003.jf.intel.com with ESMTP; 29 Nov 2021 17:31:25 -0800
 Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1mrrzR-000Ca2-5z; Tue, 30 Nov 2021 01:31:25 +0000
-Date: Tue, 30 Nov 2021 09:30:33 +0800
+ id 1mrrzR-000CZx-4w; Tue, 30 Nov 2021 01:31:25 +0000
+Date: Tue, 30 Nov 2021 09:30:40 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS af3fdce4ab0781ea183107c90de9cbf21d701c54
-Message-ID: <61a57eb9.EOHwnmCXKUbaLQeX%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ aebd1fb45c622e9a2b06fb70665d084d3a8d6c78
+Message-ID: <61a57ec0.eLcevInOvBb/48pN%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -54,12 +55,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: af3fdce4ab0781ea183107c90de9cbf21d701c54  Revert "powerpc/code-patching: Improve verification of patchability"
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: aebd1fb45c622e9a2b06fb70665d084d3a8d6c78  powerpc: flexible GPR range save/restore macros
 
 elapsed time: 730m
 
-configs tested: 224
+configs tested: 187
 configs skipped: 3
 
 The following configs have been built successfully.
@@ -88,10 +89,6 @@ arm                        multi_v5_defconfig
 m68k                           sun3_defconfig
 powerpc                     tqm8540_defconfig
 um                                  defconfig
-sh                 kfr2r09-romimage_defconfig
-arm                             mxs_defconfig
-mips                          ath79_defconfig
-arm                              alldefconfig
 arm                     davinci_all_defconfig
 mips                malta_qemu_32r6_defconfig
 powerpc                      cm5200_defconfig
@@ -103,14 +100,6 @@ powerpc                       ebony_defconfig
 mips                          rm200_defconfig
 sh                   sh7770_generic_defconfig
 arm                          lpd270_defconfig
-arm                            xcep_defconfig
-mips                      loongson3_defconfig
-arm                      integrator_defconfig
-arm                        multi_v7_defconfig
-powerpc                 mpc836x_rdk_defconfig
-arm                          exynos_defconfig
-powerpc                 canyonlands_defconfig
-sh                     sh7710voipgw_defconfig
 mips                         tb0219_defconfig
 arm                            qcom_defconfig
 mips                           xway_defconfig
@@ -126,9 +115,6 @@ s390                       zfcpdump_defconfig
 mips                      pic32mzda_defconfig
 sparc64                          alldefconfig
 arm                           viper_defconfig
-m68k                             alldefconfig
-mips                        maltaup_defconfig
-sh                  sh7785lcr_32bit_defconfig
 arm                        realview_defconfig
 powerpc                     taishan_defconfig
 arm                         palmz72_defconfig
@@ -141,9 +127,6 @@ arm                       versatile_defconfig
 microblaze                      mmu_defconfig
 arm                         orion5x_defconfig
 mips                           ip22_defconfig
-powerpc                    socrates_defconfig
-riscv             nommu_k210_sdcard_defconfig
-sparc                       sparc32_defconfig
 sh                           se7722_defconfig
 arc                                 defconfig
 mips                        omega2p_defconfig
@@ -157,14 +140,6 @@ mips                           gcw0_defconfig
 arm                       imx_v6_v7_defconfig
 mips                           rs90_defconfig
 arm                           h5000_defconfig
-s390                          debug_defconfig
-arc                     haps_hs_smp_defconfig
-m68k                       bvme6000_defconfig
-openrisc                            defconfig
-arm                          pcm027_defconfig
-powerpc                        warp_defconfig
-mips                 decstation_r4k_defconfig
-nds32                               defconfig
 arm                       imx_v4_v5_defconfig
 arm                          simpad_defconfig
 m68k                       m5249evb_defconfig
@@ -175,23 +150,14 @@ arm                   milbeaut_m10v_defconfig
 sh                            shmin_defconfig
 m68k                        m5272c3_defconfig
 arm                        trizeps4_defconfig
-powerpc                       maple_defconfig
-openrisc                  or1klitex_defconfig
-sparc                            allyesconfig
-xtensa                              defconfig
-powerpc                 mpc837x_rdb_defconfig
 powerpc                 mpc834x_itx_defconfig
 m68k                          atari_defconfig
 sh                           se7712_defconfig
 arm                          ixp4xx_defconfig
 powerpc                      ep88xc_defconfig
 powerpc                     redwood_defconfig
-arm                         shannon_defconfig
-sh                          rsk7203_defconfig
-arm                           u8500_defconfig
-arm                        cerfcube_defconfig
+sh                  sh7785lcr_32bit_defconfig
 arm                  randconfig-c002-20211128
-arm                  randconfig-c002-20211129
 arm                  randconfig-c002-20211130
 ia64                             allmodconfig
 ia64                                defconfig
@@ -199,8 +165,9 @@ ia64                             allyesconfig
 m68k                             allmodconfig
 m68k                                defconfig
 m68k                             allyesconfig
-nios2                               defconfig
 nds32                             allnoconfig
+nios2                               defconfig
+nds32                               defconfig
 nios2                            allyesconfig
 csky                                defconfig
 alpha                               defconfig
@@ -214,6 +181,7 @@ s390                             allmodconfig
 parisc                           allyesconfig
 s390                                defconfig
 i386                             allyesconfig
+sparc                            allyesconfig
 sparc                               defconfig
 i386                   debian-10.3-kselftests
 i386                              debian-10.3
@@ -278,12 +246,6 @@ i386                 randconfig-a006-20211128
 i386                 randconfig-a005-20211128
 i386                 randconfig-a004-20211128
 i386                 randconfig-a003-20211128
-x86_64               randconfig-a011-20211129
-x86_64               randconfig-a014-20211129
-x86_64               randconfig-a012-20211129
-x86_64               randconfig-a016-20211129
-x86_64               randconfig-a013-20211129
-x86_64               randconfig-a015-20211129
 i386                 randconfig-a015-20211129
 i386                 randconfig-a016-20211129
 i386                 randconfig-a013-20211129
@@ -294,6 +256,8 @@ hexagon              randconfig-r045-20211129
 hexagon              randconfig-r041-20211129
 s390                 randconfig-r044-20211129
 riscv                randconfig-r042-20211129
+hexagon              randconfig-r045-20211128
+hexagon              randconfig-r041-20211128
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
