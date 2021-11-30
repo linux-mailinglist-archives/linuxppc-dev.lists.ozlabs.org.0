@@ -1,15 +1,15 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E103464114
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 23:11:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 028ED4641AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 23:42:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J3bz81txNz3cVM
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 09:11:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J3cfQ5gPkz3cPC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 09:42:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=cfCUOIaP;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=OS4mhIe7;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=2IrmNv3I;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=wP+0RlPV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,48 +19,48 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=cfCUOIaP; 
+ header.s=2020 header.b=2IrmNv3I; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=OS4mhIe7; 
+ header.a=ed25519-sha256 header.s=2020e header.b=wP+0RlPV; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (unknown [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J3byP4nD1z30Ph
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Dec 2021 09:10:53 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J3cdm54Wnz2ybD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Dec 2021 09:41:32 +1100 (AEDT)
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1638310245;
+ s=2020; t=1638312089;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iQwNm3evMDmCqqNj6SOBSL2raZeNEDMRyVYLWo7plsQ=;
- b=cfCUOIaPomiZCO9d79k8QaTA54iAEZbQY4lmYzVXbCZ99fBBPE+xqpOo1m4nSfa3KPq6+6
- pI8jqClQqAQ6e9xEzGMdMDMlM7PO3wO+IzFhUB7wl4w2H81v2euyyU8OpSzUxgKY+0HqOn
- tbRxYHYo0OtQnM7fMd/Q2RflLcOK0WEbJRcLaARC9aG5kGkie13cZuSuCFIva1m+TA616i
- dV35DJLlXGyNBE5vTnPj0hgLjo4pBUrYZ1WEUXNY8Y4DNEBT5I7kTI7Vt9Tc5Lg2J+Di+B
- X84UlqMbc2Q4lC6o9mfXgbNv2vVK1HCIjDj9nJ/ptp3y+rYMnW5ZpEnm9xcPOg==
+ bh=1bOw8HEe7jHxyt1BTzbWx6wvk9iJpbF5Gn0Kg7y1Blo=;
+ b=2IrmNv3Iea3b/0P87xEGqZAZmwL1onSUMGqd0zxtDIRJLTynmNSC7uxIH8L/l5dtLj/5OD
+ JagFWx3aJMiS1LFIeYftEfo0Ur2kNjTtrOTkBnBmsBzvAxM9ucbFfqPVN5bViblbdfTyHh
+ DmsunGG30VGceQJj3KLRF3KIyBTUwjdi6+cIFEZFOGwVLxR6/Qv+GDEs3kZsbO3Sb5vEY4
+ CGDmi02z+2/4fP0CRSLAGmUXhnn/6DLG04oqIJtIelaVlS8RIp1r9e2Sxk09e7hCcOFzEs
+ b9sVLSs/CWxPIfpw834x9ILDVWh3TWdsOj5JuMEeZ6q+sN/NVCvFkfOxPIzp8w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1638310245;
+ s=2020e; t=1638312089;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iQwNm3evMDmCqqNj6SOBSL2raZeNEDMRyVYLWo7plsQ=;
- b=OS4mhIe7yFZLurVEyelXc9LbdOQ2hxFAIJTEo5kZyIy2QO7wrWZZMF3x6KmDym+n1S953w
- D2cPy3zCOhdCl9Bg==
+ bh=1bOw8HEe7jHxyt1BTzbWx6wvk9iJpbF5Gn0Kg7y1Blo=;
+ b=wP+0RlPVEZMaKpggmpseYFDjn/awmzpDeY9BMit0WIgaUAvSVTefpWgNK6fro3P2SJv3Ar
+ 0+sa+FEk57SExTAA==
 To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, LKML
  <linux-kernel@vger.kernel.org>
 Subject: Re: [patch 05/22] genirq/msi: Fixup includes
-In-Reply-To: <524d9b84-caa8-dd6f-bb5e-9fc906d279c0@kaod.org>
+In-Reply-To: <87czmhb8gq.ffs@tglx>
 References: <20211126222700.862407977@linutronix.de>
  <20211126223824.382273262@linutronix.de>
  <b1a6d267-c7b4-c4b9-ab0e-f5cc32bfe9bf@kaod.org> <87tufud4m3.ffs@tglx>
- <524d9b84-caa8-dd6f-bb5e-9fc906d279c0@kaod.org>
-Date: Tue, 30 Nov 2021 23:10:45 +0100
-Message-ID: <87czmhb8gq.ffs@tglx>
+ <524d9b84-caa8-dd6f-bb5e-9fc906d279c0@kaod.org> <87czmhb8gq.ffs@tglx>
+Date: Tue, 30 Nov 2021 23:41:28 +0100
+Message-ID: <875ys9b71j.ffs@tglx>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -92,20 +92,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 30 2021 at 22:48, C=C3=A9dric Le Goater wrote:
-> On 11/29/21 22:38, Thomas Gleixner wrote:
->> On Mon, Nov 29 2021 at 08:33, C=C3=A9dric Le Goater wrote:
->> thanks for having a look. I fixed up this and other fallout and pushed o=
-ut an
->> updated series (all 4 parts) to:
->>=20
->>          git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel msi
->
-> pSeries fails to allocate MSIs starting with this patch :
->
->   [PATCH 049/101] powerpc/pseries/msi: Let core code check for contiguous=
- ...
->
-> I will dig in later on.
+On Tue, Nov 30 2021 at 23:10, Thomas Gleixner wrote:
 
-Let me stare at the core function..
+> On Tue, Nov 30 2021 at 22:48, C=C3=A9dric Le Goater wrote:
+>> On 11/29/21 22:38, Thomas Gleixner wrote:
+>>> On Mon, Nov 29 2021 at 08:33, C=C3=A9dric Le Goater wrote:
+>>> thanks for having a look. I fixed up this and other fallout and pushed =
+out an
+>>> updated series (all 4 parts) to:
+>>>=20
+>>>          git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel msi
+>>
+>> pSeries fails to allocate MSIs starting with this patch :
+>>
+>>   [PATCH 049/101] powerpc/pseries/msi: Let core code check for contiguou=
+s ...
+>>
+>> I will dig in later on.
+>
+> Let me stare at the core function..
+
+It's not the core function. It's the patch above and I'm a moron.
+
+--- a/arch/powerpc/platforms/pseries/msi.c
++++ b/arch/powerpc/platforms/pseries/msi.c
+@@ -359,9 +359,6 @@ static int rtas_prepare_msi_irqs(struct
+ 	if (quota && quota < nvec)
+ 		return quota;
+=20
+-	if (type =3D=3D PCI_CAP_ID_MSIX)
+-		return -EINVAL;
+-
+ 	/*
+ 	 * Firmware currently refuse any non power of two allocation
+ 	 * so we round up if the quota will allow it.
