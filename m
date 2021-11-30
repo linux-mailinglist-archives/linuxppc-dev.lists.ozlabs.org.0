@@ -1,69 +1,116 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E264633CF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 13:06:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6CD4634AF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 13:40:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J3LXc0rVrz3cW6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 23:06:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J3MJ53xL5z3cTc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 30 Nov 2021 23:40:21 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k4D5g0SC;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J3LWk0CZyz3096
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 23:05:22 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J3LWb4ksHz9sSc;
- Tue, 30 Nov 2021 13:05:15 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id asgcQ1z_74_Z; Tue, 30 Nov 2021 13:05:15 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J3LWZ2vy0z9sSd;
- Tue, 30 Nov 2021 13:05:14 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 544FF8B77B;
- Tue, 30 Nov 2021 13:05:14 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id BsaB4EuA2GbA; Tue, 30 Nov 2021 13:05:14 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.93])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 15E558B763;
- Tue, 30 Nov 2021 13:05:14 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1AUC50nJ213789
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 30 Nov 2021 13:05:00 +0100
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1AUC50Fp213788;
- Tue, 30 Nov 2021 13:05:00 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 2/2] powerpc/32: Remove _ENTRY() macro
-Date: Tue, 30 Nov 2021 13:04:50 +0100
-Message-Id: <62a35f8dde2bb74c8d0d7a5430cce07a5a3a6fb6.1638273868.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <68932ec2ba6b868d35006b96e90f0890f3da3c05.1638273868.git.christophe.leroy@csgroup.eu>
-References: <68932ec2ba6b868d35006b96e90f0890f3da3c05.1638273868.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J3MHL4wjHz2xsr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 23:39:42 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=k4D5g0SC; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4J3MHL3N2Gz4xdQ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 23:39:42 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4J3MHL3KLSz4xdS; Tue, 30 Nov 2021 23:39:42 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=k4D5g0SC; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4J3MHL11q6z4xdQ
+ for <linuxppc-dev@ozlabs.org>; Tue, 30 Nov 2021 23:39:41 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AUAMPCQ003678
+ for <linuxppc-dev@ozlabs.org>; Tue, 30 Nov 2021 12:39:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=+3Rrl8+P4ynrW+zAEM++PLlGzHxKktgz1cc+A1Lugf0=;
+ b=k4D5g0SCUmXG/Z886abMTJVaTAUcqnyQ2H9pCygNQoPXo0iaTyM2fK4D/zcikCUli/WQ
+ lK7poiMt7SP+lQbN+E6m4hJzSrXrimjUJ9vGAk5awqyisKiggnzHtOeH8yoqDYx+zrB0
+ 8cLIVcTV3QtJm/4Mnx28DObiNRu0ZHLLBKZA8QcmVoGOxIBSBYLWXnRhCqs7wfOgT4NJ
+ Bf2GXXKZP9PnGdvUPG0KRX52xGqrA4i28GeD5JoNZzdlJRrpGqizKKQQZQIcX+Hi4R0F
+ 2/0XTqJeRN1UqNXfakb9SEBSaPh4FER2jCSq3bAZNFvlr7L+stSs7CrDsGJmvdKpmEDS ww== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cnj55jpt4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 30 Nov 2021 12:39:39 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1AUCZrKw030694
+ for <linuxppc-dev@ozlabs.org>; Tue, 30 Nov 2021 12:39:39 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cnj55jpss-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 Nov 2021 12:39:39 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1AUCY0eO032532;
+ Tue, 30 Nov 2021 12:39:38 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma04dal.us.ibm.com with ESMTP id 3ckcabsq0r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 30 Nov 2021 12:39:38 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1AUCdb6K50528736
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 30 Nov 2021 12:39:37 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0116328067;
+ Tue, 30 Nov 2021 12:39:37 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BCE1128065;
+ Tue, 30 Nov 2021 12:39:36 +0000 (GMT)
+Received: from localhost (unknown [9.211.63.38])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 30 Nov 2021 12:39:36 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: mahesh@linux.ibm.com
+Subject: Re: [PATCH] powerpc/rtas: Introduce rtas_get_sensor_nonblocking()
+ for pci hotplug driver.
+In-Reply-To: <20211130093144.zpjcxnbkz3jsxfql@in.ibm.com>
+References: <163817631601.2016996.16085383012429651821.stgit@jupiter>
+ <87o862nt0q.fsf@linux.ibm.com>
+ <20211130093144.zpjcxnbkz3jsxfql@in.ibm.com>
+Date: Tue, 30 Nov 2021 06:39:35 -0600
+Message-ID: <87lf15om0o.fsf@linux.ibm.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1638273888; l=4300; s=20211009;
- h=from:subject:message-id; bh=kk1+JxekfD4IbJEqqb7QNhKABAvCBFivCtE4ldcnTes=;
- b=HntRXWiVjdk15JZ1Ldc0sXl03UFVWcal2aidJ+xkDuaCWRLM6zs2H5M2770RtsCFO+z6QXBBx0JH
- 0abFFUghDfZfzu7hukTUl3Y4pajTmW1DIHnBFhvm/UZi2czecWbd
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: j4omlfrZjmFM6gS6kl_hLhNeEXc28My6
+X-Proofpoint-GUID: VFciNv20lBm1wTlbxSzWWOV_auS1v9rJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
+ definitions=2021-11-30_07,2021-11-28_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ bulkscore=0 mlxlogscore=637 adultscore=0 malwarescore=0 mlxscore=0
+ phishscore=0 clxscore=1015 suspectscore=0 spamscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2111300072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,172 +122,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-_ENTRY() is now redundant with _GLOBAL(). Remove it.
+Mahesh J Salgaonkar <mahesh@linux.ibm.com> writes:
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/ppc_asm.h   |  4 ----
- arch/powerpc/kernel/head_40x.S       | 18 +++++++++---------
- arch/powerpc/kernel/head_44x.S       |  4 ++--
- arch/powerpc/kernel/head_8xx.S       |  4 ++--
- arch/powerpc/kernel/head_book3s_32.S |  8 ++++----
- arch/powerpc/kernel/head_fsl_booke.S |  6 +++---
- 6 files changed, 20 insertions(+), 24 deletions(-)
+> On 2021-11-29 22:53:41 Mon, Nathan Lynch wrote:
+>> Mahesh Salgaonkar <mahesh@linux.ibm.com> writes:
+>> > When certain PHB HW failure causes phyp to recover PHB, it marks the PE
+>> > state as temporarily unavailable until recovery is complete. This also
+>> > triggers an EEH handler in Linux which needs to notify drivers, and perform
+>> > recovery. But before notifying the driver about the pci error it uses
+>> > get_adapter_state()->get-sesnor-state() operation of the hotplug_slot to
+>> > determine if the slot contains a device or not. if the slot is empty, the
+>> > recovery is skipped entirely.
+>> >
+>> > However on certain PHB failures, the rtas call get-sesnor-state() returns
+>> > extended busy error (9902) until PHB is recovered by phyp. Once PHB is
+>> > recovered, the get-sensor-state() returns success with correct presence
+>> > status. The rtas call interface rtas_get_sensor() loops over the rtas call
+>> > on extended delay return code (9902) until the return value is either
+>> > success (0) or error (-1). This causes the EEH handler to get stuck for ~6
+>> > seconds before it could notify that the pci error has been detected and
+>> > stop any active operations.
+>> 
+>> I am curious whether you see any difference with "powerpc/rtas:
+>> rtas_busy_delay() improvements" which was recently applied. It will
+>> cause the the calling task to sleep in response to a 990x status instead
+>> of immediately retrying:
+>
+> If it is still sleeping it may not help, however I will give a try.
 
-diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
-index 35544ba93352..ea90ef9da207 100644
---- a/arch/powerpc/include/asm/ppc_asm.h
-+++ b/arch/powerpc/include/asm/ppc_asm.h
-@@ -192,10 +192,6 @@ GLUE(.,name):
- 
- #else /* 32-bit */
- 
--#define _ENTRY(n)	\
--	.globl n;	\
--n:
--
- #define _GLOBAL(n)	\
- 	.globl n;	\
- n:
-diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
-index 7d72ee5ab387..af63eb7deb69 100644
---- a/arch/powerpc/kernel/head_40x.S
-+++ b/arch/powerpc/kernel/head_40x.S
-@@ -52,8 +52,8 @@
-  * This is all going to change RSN when we add bi_recs.......  -- Dan
-  */
- 	__HEAD
--_ENTRY(_stext);
--_ENTRY(_start);
-+_GLOBAL(_stext);
-+_GLOBAL(_start);
- 
- 	mr	r31,r3			/* save device tree ptr */
- 
-@@ -81,19 +81,19 @@ turn_on_mmu:
-  */
- 	. = 0xc0
- crit_save:
--_ENTRY(crit_r10)
-+_GLOBAL(crit_r10)
- 	.space	4
--_ENTRY(crit_r11)
-+_GLOBAL(crit_r11)
- 	.space	4
--_ENTRY(crit_srr0)
-+_GLOBAL(crit_srr0)
- 	.space	4
--_ENTRY(crit_srr1)
-+_GLOBAL(crit_srr1)
- 	.space	4
--_ENTRY(crit_r1)
-+_GLOBAL(crit_r1)
- 	.space	4
--_ENTRY(crit_dear)
-+_GLOBAL(crit_dear)
- 	.space	4
--_ENTRY(crit_esr)
-+_GLOBAL(crit_esr)
- 	.space	4
- 
- /*
-diff --git a/arch/powerpc/kernel/head_44x.S b/arch/powerpc/kernel/head_44x.S
-index 02d2928d1e01..6170a804e181 100644
---- a/arch/powerpc/kernel/head_44x.S
-+++ b/arch/powerpc/kernel/head_44x.S
-@@ -52,8 +52,8 @@
-  *
-  */
- 	__HEAD
--_ENTRY(_stext);
--_ENTRY(_start);
-+_GLOBAL(_stext);
-+_GLOBAL(_start);
- 	/*
- 	 * Reserve a word at a fixed location to store the address
- 	 * of abatron_pteptrs
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 0d073b9fd52c..0b05f2be66b9 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -53,8 +53,8 @@
- #define PAGE_SHIFT_8M		23
- 
- 	__HEAD
--_ENTRY(_stext);
--_ENTRY(_start);
-+_GLOBAL(_stext);
-+_GLOBAL(_start);
- 
- /* MPC8xx
-  * This port was done on an MBX board with an 860.  Right now I only
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
-index dae813539851..26a56cd26967 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -50,13 +50,13 @@
- 	mtspr	SPRN_DBAT##n##L,RB
- 
- 	__HEAD
--_ENTRY(_stext);
-+_GLOBAL(_stext);
- 
- /*
-  * _start is defined this way because the XCOFF loader in the OpenFirmware
-  * on the powermac expects the entry point to be a procedure descriptor.
-  */
--_ENTRY(_start);
-+_GLOBAL(_start);
- 	/*
- 	 * These are here for legacy reasons, the kernel used to
- 	 * need to look like a coff function entry for the pmac
-@@ -781,7 +781,7 @@ relocate_kernel:
-  * r3 = dest addr, r4 = source addr, r5 = copy limit, r6 = start offset
-  * on exit, r3, r4, r5 are unchanged, r6 is updated to be >= r5.
-  */
--_ENTRY(copy_and_flush)
-+_GLOBAL(copy_and_flush)
- 	addi	r5,r5,-4
- 	addi	r6,r6,-4
- 4:	li	r0,L1_CACHE_BYTES/4
-@@ -1075,7 +1075,7 @@ BEGIN_MMU_FTR_SECTION
- END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
- 	blr
- 
--_ENTRY(update_bats)
-+_GLOBAL(update_bats)
- 	lis	r4, 1f@h
- 	ori	r4, r4, 1f@l
- 	tophys(r4, r4)
-diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
-index 0a9a0f301474..29badf8176ed 100644
---- a/arch/powerpc/kernel/head_fsl_booke.S
-+++ b/arch/powerpc/kernel/head_fsl_booke.S
-@@ -54,8 +54,8 @@
-  *
-  */
- 	__HEAD
--_ENTRY(_stext);
--_ENTRY(_start);
-+_GLOBAL(_stext);
-+_GLOBAL(_start);
- 	/*
- 	 * Reserve a word at a fixed location to store the address
- 	 * of abatron_pteptrs
-@@ -154,7 +154,7 @@ _ENTRY(_start);
-  * if needed
-  */
- 
--_ENTRY(__early_start)
-+_GLOBAL(__early_start)
- 	LOAD_REG_ADDR_PIC(r20, kernstart_virt_addr)
- 	lwz     r20,0(r20)
- 
--- 
-2.33.1
+Thanks. My thought is that with the old behavior of rtas_busy_delay(),
+the repeated retries (potentially hundreds or thousands of
+get-sensor-state calls) that occur before finally sleeping may be
+prolonging the ongoing PHB recovery.
 
