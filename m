@@ -2,47 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E13CA464763
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 07:47:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CABC74647B8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 08:14:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J3qQn65CDz3cVr
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 17:47:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J3r1r5bRqz3c5d
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 18:14:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=kaod.org (client-ip=188.165.49.222;
+ helo=6.mo552.mail-out.ovh.net; envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+Received: from 6.mo552.mail-out.ovh.net (6.mo552.mail-out.ovh.net
+ [188.165.49.222])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J3qQJ5hkHz2ywv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Dec 2021 17:47:15 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6200,9189,10184"; a="223275495"
-X-IronPort-AV: E=Sophos;i="5.87,278,1631602800"; d="scan'208";a="223275495"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Nov 2021 22:46:11 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,278,1631602800"; d="scan'208";a="477433087"
-Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
- by orsmga002.jf.intel.com with ESMTP; 30 Nov 2021 22:46:08 -0800
-Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1msJNY-000EOq-0m; Wed, 01 Dec 2021 06:46:08 +0000
-Date: Wed, 1 Dec 2021 14:45:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v5 5/5] powerpc/inst: Optimise
- copy_inst_from_kernel_nofault()
-Message-ID: <202112011435.ttoYYtbC-lkp@intel.com>
-References: <0d5b12183d5176dd702d29ad94c39c384e51c78f.1638208156.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J3r1M5dTrz2yXv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Dec 2021 18:14:13 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.108.1.125])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id B6B2D217F7;
+ Wed,  1 Dec 2021 07:14:07 +0000 (UTC)
+Received: from kaod.org (37.59.142.105) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Wed, 1 Dec
+ 2021 08:14:05 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-105G00686e3cafe-0521-4f42-aedc-fcaeb2775d24,
+ A214034E9EDAB49BEA2160BF49F8C38F118F2259) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 90.11.56.15
+Message-ID: <39556bdc-f48c-68b2-6bec-5975b92e02e2@kaod.org>
+Date: Wed, 1 Dec 2021 08:14:05 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0d5b12183d5176dd702d29ad94c39c384e51c78f.1638208156.git.christophe.leroy@csgroup.eu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [patch 05/22] genirq/msi: Fixup includes
+Content-Language: en-US
+To: Thomas Gleixner <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>
+References: <20211126222700.862407977@linutronix.de>
+ <20211126223824.382273262@linutronix.de>
+ <b1a6d267-c7b4-c4b9-ab0e-f5cc32bfe9bf@kaod.org> <87tufud4m3.ffs@tglx>
+ <524d9b84-caa8-dd6f-bb5e-9fc906d279c0@kaod.org> <87czmhb8gq.ffs@tglx>
+ <875ys9b71j.ffs@tglx>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <875ys9b71j.ffs@tglx>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.105]
+X-ClientProxiedBy: DAG1EX2.mxp5.local (172.16.2.2) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: e52f034b-6a74-4e80-b1cd-9a54c9a992a9
+X-Ovh-Tracer-Id: 2359604732828158876
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddriedvgddutdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekvdfgudevkeefkeeltdejteekvdegffegudetgeettdffjeefheekfeelffdtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,193 +66,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev,
- kbuild-all@lists.01.org, linux-kernel@vger.kernel.org
+Cc: linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Wei Liu <wei.liu@kernel.org>, Ashok Raj <ashok.raj@intel.com>,
+ Marc Zygnier <maz@kernel.org>, x86@kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Bjorn Helgaas <helgaas@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ xen-devel@lists.xenproject.org, ath11k@lists.infradead.org,
+ Kevin Tian <kevin.tian@intel.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Alex Williamson <alex.williamson@redhat.com>, Megha Dey <megha.dey@intel.com>,
+ Juergen Gross <jgross@suse.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+On 11/30/21 23:41, Thomas Gleixner wrote:
+> On Tue, Nov 30 2021 at 23:10, Thomas Gleixner wrote:
+> 
+>> On Tue, Nov 30 2021 at 22:48, Cédric Le Goater wrote:
+>>> On 11/29/21 22:38, Thomas Gleixner wrote:
+>>>> On Mon, Nov 29 2021 at 08:33, Cédric Le Goater wrote:
+>>>> thanks for having a look. I fixed up this and other fallout and pushed out an
+>>>> updated series (all 4 parts) to:
+>>>>
+>>>>           git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel msi
+>>>
+>>> pSeries fails to allocate MSIs starting with this patch :
+>>>
+>>>    [PATCH 049/101] powerpc/pseries/msi: Let core code check for contiguous ...
+>>>
+>>> I will dig in later on.
+>>
+>> Let me stare at the core function..
+> 
+> It's not the core function. It's the patch above and I'm a moron.
 
-I love your patch! Perhaps something to improve:
+All good now. Ship it !
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on v5.16-rc3 next-20211201]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Thanks,
 
-url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/powerpc-inst-Refactor-___get_user_instr/20211130-015346
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-config: powerpc64-randconfig-r021-20211201 (https://download.01.org/0day-ci/archive/20211201/202112011435.ttoYYtbC-lkp@intel.com/config)
-compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project 25eb7fa01d7ebbe67648ea03841cda55b4239ab2)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install powerpc64 cross compiling tool for clang build
-        # apt-get install binutils-powerpc64-linux-gnu
-        # https://github.com/0day-ci/linux/commit/fb7bff30cc0efc7e4df1b48bb69de1f325eee826
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Christophe-Leroy/powerpc-inst-Refactor-___get_user_instr/20211130-015346
-        git checkout fb7bff30cc0efc7e4df1b48bb69de1f325eee826
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc prepare
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
-   In file included from include/linux/kernel_stat.h:9:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:619:
-   arch/powerpc/include/asm/io-defs.h:47:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-   DEF_PCI_AC_NORET(insl, (unsigned long p, void *b, unsigned long c),
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/powerpc/include/asm/io.h:616:3: note: expanded from macro 'DEF_PCI_AC_NORET'
-                   __do_##name al;                                 \
-                   ^~~~~~~~~~~~~~
-   <scratch space>:143:1: note: expanded from here
-   __do_insl
-   ^
-   arch/powerpc/include/asm/io.h:558:56: note: expanded from macro '__do_insl'
-   #define __do_insl(p, b, n)      readsl((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
-                                          ~~~~~~~~~~~~~~~~~~~~~^
-   In file included from arch/powerpc/kernel/asm-offsets.c:21:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:9:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:619:
-   arch/powerpc/include/asm/io-defs.h:49:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-   DEF_PCI_AC_NORET(outsb, (unsigned long p, const void *b, unsigned long c),
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/powerpc/include/asm/io.h:616:3: note: expanded from macro 'DEF_PCI_AC_NORET'
-                   __do_##name al;                                 \
-                   ^~~~~~~~~~~~~~
-   <scratch space>:145:1: note: expanded from here
-   __do_outsb
-   ^
-   arch/powerpc/include/asm/io.h:559:58: note: expanded from macro '__do_outsb'
-   #define __do_outsb(p, b, n)     writesb((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
-                                           ~~~~~~~~~~~~~~~~~~~~~^
-   In file included from arch/powerpc/kernel/asm-offsets.c:21:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:9:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:619:
-   arch/powerpc/include/asm/io-defs.h:51:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-   DEF_PCI_AC_NORET(outsw, (unsigned long p, const void *b, unsigned long c),
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/powerpc/include/asm/io.h:616:3: note: expanded from macro 'DEF_PCI_AC_NORET'
-                   __do_##name al;                                 \
-                   ^~~~~~~~~~~~~~
-   <scratch space>:147:1: note: expanded from here
-   __do_outsw
-   ^
-   arch/powerpc/include/asm/io.h:560:58: note: expanded from macro '__do_outsw'
-   #define __do_outsw(p, b, n)     writesw((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
-                                           ~~~~~~~~~~~~~~~~~~~~~^
-   In file included from arch/powerpc/kernel/asm-offsets.c:21:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:9:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:619:
-   arch/powerpc/include/asm/io-defs.h:53:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-   DEF_PCI_AC_NORET(outsl, (unsigned long p, const void *b, unsigned long c),
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/powerpc/include/asm/io.h:616:3: note: expanded from macro 'DEF_PCI_AC_NORET'
-                   __do_##name al;                                 \
-                   ^~~~~~~~~~~~~~
-   <scratch space>:149:1: note: expanded from here
-   __do_outsl
-   ^
-   arch/powerpc/include/asm/io.h:561:58: note: expanded from macro '__do_outsl'
-   #define __do_outsl(p, b, n)     writesl((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
-                                           ~~~~~~~~~~~~~~~~~~~~~^
-   In file included from arch/powerpc/kernel/asm-offsets.c:71:
-   In file included from arch/powerpc/kernel/../xmon/xmon_bpts.h:7:
-   arch/powerpc/include/asm/inst.h:161:41: warning: variable 'val' is uninitialized when used here [-Wuninitialized]
-           if (IS_ENABLED(CONFIG_PPC64) && get_op(val) == OP_PREFIX) {
-                                                  ^~~
-   arch/powerpc/include/asm/inst.h:155:18: note: initialize the variable 'val' to silence this warning
-           unsigned int val, suffix;
-                           ^
-                            = 0
->> arch/powerpc/include/asm/inst.h:163:32: warning: variable 'suffix' is uninitialized when used here [-Wuninitialized]
-                   *inst = ppc_inst_prefix(val, suffix);
-                                                ^~~~~~
-   arch/powerpc/include/asm/inst.h:62:69: note: expanded from macro 'ppc_inst_prefix'
-   #define ppc_inst_prefix(x, y) ((ppc_inst_t){ .val = (x), .suffix = (y) })
-                                                                       ^
-   arch/powerpc/include/asm/inst.h:155:26: note: initialize the variable 'suffix' to silence this warning
-           unsigned int val, suffix;
-                                   ^
-                                    = 0
-   14 warnings generated.
-   <stdin>:1559:2: warning: syscall futex_waitv not implemented [-W#warnings]
-   #warning syscall futex_waitv not implemented
-    ^
-   1 warning generated.
-   /usr/bin/ld: unrecognised emulation mode: elf64ppc
-   Supported emulations: elf_x86_64 elf32_x86_64 elf_i386 elf_iamcu elf_l1om elf_k1om i386pep i386pe
-   clang-14: error: linker command failed with exit code 1 (use -v to see invocation)
-   make[2]: *** [arch/powerpc/kernel/vdso64/Makefile:44: arch/powerpc/kernel/vdso64/vdso64.so.dbg] Error 1
-   make[2]: Target 'include/generated/vdso64-offsets.h' not remade because of errors.
-   make[1]: *** [arch/powerpc/Makefile:422: vdso_prepare] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:219: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
+C.
 
 
-vim +/suffix +163 arch/powerpc/include/asm/inst.h
 
-   152	
-   153	static inline int copy_inst_from_kernel_nofault(ppc_inst_t *inst, u32 *src)
-   154	{
-   155		unsigned int val, suffix;
-   156	
-   157		if (unlikely(!is_kernel_addr((unsigned long)src)))
-   158			return -ERANGE;
-   159	
-   160		__get_kernel_nofault(&val, src, u32, Efault);
-   161		if (IS_ENABLED(CONFIG_PPC64) && get_op(val) == OP_PREFIX) {
-   162			__get_kernel_nofault(&suffix, src + 1, u32, Efault);
- > 163			*inst = ppc_inst_prefix(val, suffix);
-   164		} else {
-   165			*inst = ppc_inst(val);
-   166		}
-   167		return 0;
-   168	Efault:
-   169		return -EFAULT;
-   170	}
-   171	
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
