@@ -1,75 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEBE464649
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 06:14:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B514B464676
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 06:22:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J3nLZ0M6fz3cC2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 16:13:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J3nWp34K9z3cDY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 16:21:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JQxYsiF2;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jrO5r5PP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
- helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
+ helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=JQxYsiF2; dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
+ header.s=20210112 header.b=jrO5r5PP; dkim-atps=neutral
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J3nKq0gnKz2ync
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Dec 2021 16:13:17 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id y8so16761132plg.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 21:13:17 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J3nW84JXNz2yg4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Dec 2021 16:21:22 +1100 (AEDT)
+Received: by mail-pg1-x533.google.com with SMTP id s37so12682885pga.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 30 Nov 2021 21:21:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=vagRKhVlayGNGpvzipvwwiXW4ekkDwImubFgDN/6ACg=;
- b=JQxYsiF2H7BtU8Yx0ym0rEu9ZDq8BfqBVJ7sBGoIJAubnn1QDb1D/8jLnk1ZyaXzPT
- j58IpZHDmWl97/XBGVyaP1l0k/C0rcCB2CRgy4/rQG6eBsGChRuMCTc0YMcDFK7FlCDj
- AE7EvclT141INyf5OoSM0q+fghEarV5+L0hWVEgM26qdfirhBV4brzQtiw8OzWhwdJjw
- 0qkkmhCa74hscxNrKPaABABpiTaXHDuGTtRSttP8Q3O86oxxk5PsudVVan4cfZyKyvB0
- wJz+8m6KSRhSjY1pjM4EvHpVSso7q8LmjAQuby6TbTbmsPQt3ILVrSKEKD25Hv30vbZG
- QD7g==
+ bh=wZTag35Tahvq2Vi5v+jAD38uLJ/IZZzlBXgZDpWi9SA=;
+ b=jrO5r5PPq+rwDsEQ3LBbLZsxuHFhZX2zRJDKrHiSwVoRMOV9jqUxdEjdW9ZWWXl+IN
+ GEYYf3QySgkDLFfTCwm+/vzLySC8xBj1ywhhw5Esc5BLA8GwRitmg6DA+buF4Wg2qdN/
+ 61IQD1JKLViJaV00oycZFbPINS/BDkaU0DdXxcRCInSaVZUxXM7gVsXGgLoNrDV55EIb
+ cQpxUDwBDev5uTi9d6QsC07hOCLLk/qQ5Np/db5cHoMJCoLzKU1YaN2Ty/KPEgub/Sia
+ AvZLErCCUcuLOILF2XzwB6vdkRWb+NUFl91vtodhRjPU1gKIYrFcYCOy2S0jlhoAazRD
+ OSPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=vagRKhVlayGNGpvzipvwwiXW4ekkDwImubFgDN/6ACg=;
- b=sh/B2FydcleVC875FOHURwahxwImy6IR5AQ/88NEV5Zv9zzPlbp+U8Z4zioqL81mA2
- 6ExEZNKrtYoAdPqXVH00GaIlhofgpGr+6WjKki354vZuPE3ocG+9Vg/z70wppM3W5VMX
- 68LvvvzqEeyH1t/LZOs4xh4TA3KTG42QxJd3KtX28u3tgHdyEejw+jyXmE5G9L7xKTsQ
- Krtx9vBGx75+vgCm+hrQTC1xMp8ztyCrrHNgDZG82TY6e4Yw7EyfWSajMtk+QdXwbjiH
- X0ZPSZ3Gf04pJiofGWBWWWuB+ntgsmP9fZcmFH4sqHBt6AoybjI1N3DpUMfQtJOu89R/
- UK9g==
-X-Gm-Message-State: AOAM531vjcYIpnUBdJWiTZLRCD6UACM/YJ8lxeFn+QH2apYWK8sIasAm
- ewmmNGO/7qvhahmdZ5an64+OgIqDv3M=
-X-Google-Smtp-Source: ABdhPJwg4xAayZtE6TCUGHloRPZoNvc36H7nJax+piZi/fV34hcVvfi/Ywkt16t6jZBfa0mWh99iqA==
-X-Received: by 2002:a17:90b:1bc3:: with SMTP id
- oa3mr4639515pjb.52.1638335594232; 
- Tue, 30 Nov 2021 21:13:14 -0800 (PST)
-Received: from localhost (115-64-213-93.static.tpgi.com.au. [115.64.213.93])
- by smtp.gmail.com with ESMTPSA id s19sm19484790pfu.137.2021.11.30.21.13.13
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=wZTag35Tahvq2Vi5v+jAD38uLJ/IZZzlBXgZDpWi9SA=;
+ b=Bpyg9nZ0eMrYqv9m1KlC/X8vUJFrU37aFISAN9rN1FqJaqT8b4bOqIbCkk1fn61Y8r
+ bgeiXp8h8E9i0VixM3BaObEnQVDhzfFQc3oMNuG4BVRNSL/Mc+reL/zo/gv1vRDL5IO9
+ 6AgjftGfRYxo02D5tXRwXA9UozRGjsOlEQeFq5//bfEqgNvEDPjYhYbXmTNKbxtUNzcj
+ J3i0pGYsaRc8XuxIy3Y+NqqO8hYUMmKLJOwb74YoXcXmD/grpc632acYYt0sionq8/Bq
+ SFqHod8p/gf0bymgtr/4tVNOJtrRrDrDjBg6+3RVVnCThXGFWjE+AamJOgQ/OxRYYuMO
+ LbPA==
+X-Gm-Message-State: AOAM531Zv7CJCJ862rcb2SuQO+gNU7M/q1GQ8jlYWsz/MuF2nSdpSRhr
+ mjEnS17hKorKsPodKSpttRcwlKEu2Q4=
+X-Google-Smtp-Source: ABdhPJxZWazmUhrXM+qe4x3x+7SsGZnyxlTKLTvHLbeGX/zjR5mJLQoZSCJKvnLCUwuOAzsC4SsvtA==
+X-Received: by 2002:a63:d354:: with SMTP id u20mr3062372pgi.366.1638336079474; 
+ Tue, 30 Nov 2021 21:21:19 -0800 (PST)
+Received: from bobo.ozlabs.ibm.com (115-64-213-93.static.tpgi.com.au.
+ [115.64.213.93])
+ by smtp.gmail.com with ESMTPSA id i193sm22412953pfe.87.2021.11.30.21.21.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Nov 2021 21:13:13 -0800 (PST)
-Date: Wed, 01 Dec 2021 15:13:08 +1000
+ Tue, 30 Nov 2021 21:21:19 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v5 15/17] powerpc/64s: Make hash MMU support configurable
-To: Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20211129030803.1888161-1-npiggin@gmail.com>
- <20211129030803.1888161-16-npiggin@gmail.com> <877dcrqdkw.fsf@linux.ibm.com>
-In-Reply-To: <877dcrqdkw.fsf@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] KVM: PPC: Book3S HV P9: Remove unused ri_set local variable
+Date: Wed,  1 Dec 2021 15:21:12 +1000
+Message-Id: <20211201052112.2137167-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Message-Id: <1638335395.u0enl7fqho.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,55 +78,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Fabiano Rosas's message of November 29, 2021 11:46 pm:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->=20
->> This adds Kconfig selection which allows 64s hash MMU support to be
->> disabled. It can be disabled if radix support is enabled, the minimum
->> supported CPU type is POWER9 (or higher), and KVM is not selected.
->>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>  arch/powerpc/Kconfig                     |  3 ++-
->>  arch/powerpc/include/asm/mmu.h           | 16 +++++++++++++---
->>  arch/powerpc/kernel/dt_cpu_ftrs.c        | 14 ++++++++++----
->>  arch/powerpc/kvm/Kconfig                 |  1 +
->>  arch/powerpc/mm/init_64.c                | 13 +++++++++++--
->>  arch/powerpc/platforms/Kconfig.cputype   | 23 +++++++++++++++++++++--
->>  arch/powerpc/platforms/cell/Kconfig      |  1 +
->>  arch/powerpc/platforms/maple/Kconfig     |  1 +
->>  arch/powerpc/platforms/microwatt/Kconfig |  2 +-
->>  arch/powerpc/platforms/pasemi/Kconfig    |  1 +
->>  arch/powerpc/platforms/powermac/Kconfig  |  1 +
->>  arch/powerpc/platforms/powernv/Kconfig   |  2 +-
->=20
-> powernv_defconfig brings CONFIG_CXL=3Dm
->=20
-> ../drivers/misc/cxl/main.c: In function =E2=80=98cxl_alloc_sst=E2=80=99: =
-                                                =20
-> ../drivers/misc/cxl/main.c:127:45: error: =E2=80=98mmu_linear_psize=E2=80=
-=99 undeclared (first use in this function); did you mean =E2=80=98mmu_virt=
-ual_psize=E2=80=99?                                                        =
-                     =20
->   127 |  sstp0 |=3D (SLB_VSID_KERNEL | mmu_psize_defs[mmu_linear_psize].s=
-llp) << 50;                       =20
->       |                                             ^~~~~~~~~~~~~~~~     =
-                                =20
->       |                                             mmu_virtual_psize    =
-                                =20
-> ../drivers/misc/cxl/main.c:127:45: note: each undeclared identifier is re=
-ported only once for each function it appears in                           =
-                                                                =20
-> make[4]: *** [../scripts/Makefile.build:287: drivers/misc/cxl/main.o] Err=
-or 1=20
+ri_set is set and never used.
 
-Gah. I'll have to just make that depend on hash MMU for now.
-
-I won't repost the full series yet it's should just be a one liner.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+This patch is against powerpc next. It's causing warnings with new
+gcc now.
 
 Thanks,
 Nick
+
+ arch/powerpc/kvm/book3s_hv_p9_entry.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
+
+diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
+index ebb4781859e2..a28e5b3daabd 100644
+--- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
++++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
+@@ -768,7 +768,6 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	s64 hdec, dec;
+ 	u64 purr, spurr;
+ 	u64 *exsave;
+-	bool ri_set;
+ 	int trap;
+ 	unsigned long msr;
+ 	unsigned long host_hfscr;
+@@ -968,18 +967,12 @@ int kvmhv_vcpu_entry_p9(struct kvm_vcpu *vcpu, u64 time_limit, unsigned long lpc
+ 	/* 0x2 bit for HSRR is only used by PR and P7/8 HV paths, clear it */
+ 	trap = local_paca->kvm_hstate.scratch0 & ~0x2;
+ 
+-	/* HSRR interrupts leave MSR[RI] unchanged, SRR interrupts clear it. */
+-	ri_set = false;
+-	if (likely(trap > BOOK3S_INTERRUPT_MACHINE_CHECK)) {
+-		if (trap != BOOK3S_INTERRUPT_SYSCALL &&
+-				(vcpu->arch.shregs.msr & MSR_RI))
+-			ri_set = true;
++	if (likely(trap > BOOK3S_INTERRUPT_MACHINE_CHECK))
+ 		exsave = local_paca->exgen;
+-	} else if (trap == BOOK3S_INTERRUPT_SYSTEM_RESET) {
++	else if (trap == BOOK3S_INTERRUPT_SYSTEM_RESET)
+ 		exsave = local_paca->exnmi;
+-	} else { /* trap == 0x200 */
++	else /* trap == 0x200 */
+ 		exsave = local_paca->exmc;
+-	}
+ 
+ 	vcpu->arch.regs.gpr[1] = local_paca->kvm_hstate.scratch1;
+ 	vcpu->arch.regs.gpr[3] = local_paca->kvm_hstate.scratch2;
+-- 
+2.23.0
+
