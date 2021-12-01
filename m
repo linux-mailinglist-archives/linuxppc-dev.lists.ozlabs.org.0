@@ -2,96 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB708465239
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 16:57:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4BF465367
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 17:54:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J43dd4x7rz3cCj
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Dec 2021 02:57:57 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cBB5jf3y;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J44vH2JFGz3cTn
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Dec 2021 03:54:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
+ helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=cBB5jf3y; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from smtpout1.mo529.mail-out.ovh.net
+ (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J43cq2hDJz2yg5
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Dec 2021 02:57:14 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B1FrS5T023365; 
- Wed, 1 Dec 2021 15:57:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=4kqsN37tthTsACC+urbO3N/4rEnX08amATB56h6JiRo=;
- b=cBB5jf3yOAdPC40qaCg2RGwmRvg/xhg/K8mNA1QmxlFhuBju7Wwp++mkusPqv7RBzO5B
- KvLwD2Qmgpop6qfNtFdZjgSVhgF1Mh5EqKJ3jMZJxQqsGSeicebl9nHryywV5j0R+P4a
- FHf5t8Fx6fAvHkWvpe5qpKeh8R91CKr1Ie+Rfil3qf0Ntdic+pl0NGVJgJ7Ar8yE+wKP
- Gb37Zwp2HTfboaz2cNIMV+RVMqoiuPL1I54jvoEmEzAMKyJns9uQJRUFtWHTlvuJC48N
- krhR+F0+wYoe2MjWAEh47Rfdi2GeS79JBma6gSa9LkcULYoonxLHop3cMHfn/WaLBuaV Eg== 
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cpc2yg1sy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Dec 2021 15:57:11 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B1FXK5G014135;
- Wed, 1 Dec 2021 15:57:10 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03fra.de.ibm.com with ESMTP id 3ckcaa1qp0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Dec 2021 15:57:10 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1B1Fv6sG22806910
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 1 Dec 2021 15:57:06 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B4012A4051;
- Wed,  1 Dec 2021 15:57:06 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8F419A4053;
- Wed,  1 Dec 2021 15:57:06 +0000 (GMT)
-Received: from [9.145.175.48] (unknown [9.145.175.48])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  1 Dec 2021 15:57:06 +0000 (GMT)
-Message-ID: <60df1f67-dc37-f891-3c83-aba5a15bdddc@linux.ibm.com>
-Date: Wed, 1 Dec 2021 16:57:06 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J44ts4BK2z2yQw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Dec 2021 03:54:27 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.138.179])
+ by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 0EE2DCF3B2D0;
+ Wed,  1 Dec 2021 17:54:20 +0100 (CET)
+Received: from kaod.org (37.59.142.97) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Wed, 1 Dec
+ 2021 17:54:20 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-97G0025022e13d-74ca-4688-93a6-628411ca09a0,
+ A214034E9EDAB49BEA2160BF49F8C38F118F2259) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 82.64.250.170
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/xive: Fix compile when !CONFIG_PPC_POWERNV.
+Date: Wed, 1 Dec 2021 17:54:18 +0100
+Message-ID: <20211201165418.1041842-1-clg@kaod.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.3.2
-Subject: Re: [PATCH] powerpc/pseries: read the lpar name from the firmware
-Content-Language: en-US
-To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20211201144826.45342-1-ldufour@linux.ibm.com>
- <87h7bsny0a.fsf@linux.ibm.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <87h7bsny0a.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xbk255KHP_umlFlTlkhhAZr7-roTM3EL
-X-Proofpoint-ORIG-GUID: xbk255KHP_umlFlTlkhhAZr7-roTM3EL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-30_10,2021-12-01_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 bulkscore=0
- mlxlogscore=999 clxscore=1015 spamscore=0 adultscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2112010088
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.97]
+X-ClientProxiedBy: DAG8EX2.mxp5.local (172.16.2.72) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: 364d482b-59c9-45db-9c14-0b962c5b54d4
+X-Ovh-Tracer-Id: 12158593098004073440
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrieefgdelgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvufffkffogggtgfhisehtkeertdertdejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepfedvuedtvdeikeekuefhkedujeejgffggffhtefglefgveevfeeghfdvgedtleevnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdeljeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopegtlhhgsehkrghougdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,21 +58,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01/12/2021, 16:30:29, Nathan Lynch wrote:
-> Laurent Dufour <ldufour@linux.ibm.com> writes:
->> The LPAR name may be changed after the LPAR has been started in the HMC.
->> In that case lparstat command is not reporting the updated value because it
->> reads it from the device tree which is read at boot time.
-> Could lparstat be changed to make the appropriate get-system-parameter
-> call via librtas, avoiding a kernel change?
+The automatic "save & restore" of interrupt context is a POWER10/XIVE2
+feature exploited by KVM under the PowerNV platform. It is not
+available under pSeries and the associated toggle should not be
+exposed under the XIVE debugfs directory.
 
-You're right, I could do that directly in lparstat without changes in the
-kernel.
+Introduce a platform handler for debugfs initialization and move the
+'save-restore' entry under the native (PowerNV) backend to fix compile
+when !CONFIG_PPC_POWERNV.
 
-Thanks,
-Laurent.
+Reported-by: kernel test robot <lkp@intel.com>
+Fixes: 1e7684dc4fc7 ("powerpc/xive: Add a debugfs toggle for save-restore")
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ arch/powerpc/sysdev/xive/xive-internal.h |  1 +
+ arch/powerpc/sysdev/xive/common.c        |  4 +++-
+ arch/powerpc/sysdev/xive/native.c        | 11 +++++++++++
+ 3 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/sysdev/xive/xive-internal.h b/arch/powerpc/sysdev/xive/xive-internal.h
+index e0941bc64430..fe6d95d54af9 100644
+--- a/arch/powerpc/sysdev/xive/xive-internal.h
++++ b/arch/powerpc/sysdev/xive/xive-internal.h
+@@ -58,6 +58,7 @@ struct xive_ops {
+ 	void	(*put_ipi)(unsigned int cpu, struct xive_cpu *xc);
+ #endif
+ 	int	(*debug_show)(struct seq_file *m, void *private);
++	int	(*debug_create)(struct dentry *xive_dir);
+ 	const char *name;
+ };
+ 
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+index 43f7f7df6407..1ca5564bda9d 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -1847,7 +1847,9 @@ static void xive_core_debugfs_create(void)
+ 				    &xive_eq_debug_fops);
+ 	}
+ 	debugfs_create_bool("store-eoi", 0600, xive_dir, &xive_store_eoi);
+-	debugfs_create_bool("save-restore", 0600, xive_dir, &xive_has_save_restore);
++
++	if (xive_ops->debug_create)
++		xive_ops->debug_create(xive_dir);
+ }
+ #else
+ static inline void xive_core_debugfs_create(void) { }
+diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
+index d6a091dc1bce..d4243dab230e 100644
+--- a/arch/powerpc/sysdev/xive/native.c
++++ b/arch/powerpc/sysdev/xive/native.c
+@@ -461,6 +461,14 @@ void xive_native_sync_queue(u32 hw_irq)
+ }
+ EXPORT_SYMBOL_GPL(xive_native_sync_queue);
+ 
++#ifdef CONFIG_DEBUG_FS
++static int xive_native_debug_create(struct dentry *xive_dir)
++{
++	debugfs_create_bool("save-restore", 0600, xive_dir, &xive_has_save_restore);
++	return 0;
++}
++#endif
++
+ static const struct xive_ops xive_native_ops = {
+ 	.populate_irq_data	= xive_native_populate_irq_data,
+ 	.configure_irq		= xive_native_configure_irq,
+@@ -478,6 +486,9 @@ static const struct xive_ops xive_native_ops = {
+ 	.get_ipi		= xive_native_get_ipi,
+ 	.put_ipi		= xive_native_put_ipi,
+ #endif /* CONFIG_SMP */
++#ifdef CONFIG_DEBUG_FS
++	.debug_create		= xive_native_debug_create,
++#endif /* CONFIG_DEBUG_FS */
+ 	.name			= "native",
+ };
+ 
+-- 
+2.31.1
+
