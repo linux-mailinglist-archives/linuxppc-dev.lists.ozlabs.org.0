@@ -2,70 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0711465064
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 15:49:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A7A1465067
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 15:49:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J426H3YNnz3f4V
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Dec 2021 01:49:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J42786Ql7z3cmT
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Dec 2021 01:49:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=OLL0nSrV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=RvBSYjPV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
- helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
+ helo=mail-pg1-x533.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=OLL0nSrV; dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
+ header.s=20210112 header.b=RvBSYjPV; dkim-atps=neutral
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
+ [IPv6:2607:f8b0:4864:20::533])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J41yb3jLBz3bhh
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Dec 2021 01:42:31 +1100 (AEDT)
-Received: by mail-pj1-x102c.google.com with SMTP id x7so18215636pjn.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Dec 2021 06:42:31 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J41yc6KkJz3c7S
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Dec 2021 01:42:32 +1100 (AEDT)
+Received: by mail-pg1-x533.google.com with SMTP id j11so13925606pgs.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Dec 2021 06:42:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=XuRZuXMp4TxqU1SsXIYoSuXCGrcjNgo7TLmZp/yqIWg=;
- b=OLL0nSrVSt4aQw2tq9EXU1K1yRBpnDcbXxOZSkWFboWp2wE9HcBfL5GooEabw2ZHpe
- +Ji7OUEA3XviH5/4wxYQu9qLmkQiN91dsbfXQtvMLAStZjXq5hAncb8oXKygrcaxTxbM
- /THJAzlBWUm2W7QeoDxzRaaBTmi5GVgJcmQJVwAGYHMHmItVmFLnqyKldL72pezoD9Le
- 4nLCuWgTCbaD+UiCZUwYh2oikkeHq04BfFj6d2mj3XYw/nyAVtMikfttJj2Iq4BnrK1X
- uDWXf2UcSwfVKDQ54pbjcmTPZoQ4Z9GJm15r4SPIYiyddk4N5zD1C2eZmzCqqB/dJSHB
- vG+A==
+ bh=taZLnlPrXdCP99uSGAqCJpCbv2P0WZx06q/5cluHg4Y=;
+ b=RvBSYjPVzdlfDSY8Q9l4ENyHYBNrCGPa7c2i6+TvKJh7vP+1rWfGLNSKOvN4XWLh9G
+ k9CiRjxdOrxBhjzihnC3IaBYmAxCjdUcfr9I2NXf7I6uz1zJKQpoOXekg21WriD1N5i4
+ UOECX50hxgdsRqz0TP7flfbKKTc7WMyOEhzmrmKzlvqoK/8hoXWy8nQUmJoa+lPdauQi
+ F/wOe9NvxWg7GECFDTWGiY8GsE60dYUHxBwtDcq/piT+6GkuK7wCS48zZF1JSxsSSV+j
+ yVDrPRcL1zolFtc/s1BmbaSipBaf59DddxAdXIaY1VlDKTQu3t0sQSUW018rPu5kaPaY
+ zD2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=XuRZuXMp4TxqU1SsXIYoSuXCGrcjNgo7TLmZp/yqIWg=;
- b=wK/P6/KLYB0pfTbS6mT8mhH6YcQuI2lzRbxgHo4VBDccRZNLtaVso2muerr/P/oEO8
- M/OYwNx6phdw4aNPfwZS3BCujsWSjkiyrbjfjQ8ICg/kTXELItx7qk6odtkN9tj+kc5f
- +Mq+93V7wlqF6dHyCA7elsF3YCeEDxFwm3KxBsUncnQArZ6atRvOwt/G1Z4PrGnOAzdS
- PWkKp6zhehed1Zcl/wtQvLNGInvo6WAzq9UHLas+r/8YO4OOBIljNVFgM8M48B8eHIR6
- 9iO51VJmrW+eDUC5a0a290NUR2hr5ly9CZOq692RIjUaNgjiVkxljo43LIiMAUZHugFH
- xwfA==
-X-Gm-Message-State: AOAM532E066JJYfPopdnIQ5SSKzgJU3zpe0zHUqrWGwvhsXYoNS4X/l6
- vAeluEmA9VM5bY8WwVdTaI6Irb0gciA=
-X-Google-Smtp-Source: ABdhPJxt91rN8GP3bsswgGPjUYsRMG0r+PPQ+XbJXYeXbvbdClQoUoKh0x8XEBM9BVkFy22C4QUSuw==
-X-Received: by 2002:a17:90a:ca11:: with SMTP id
- x17mr7988011pjt.61.1638369748645; 
- Wed, 01 Dec 2021 06:42:28 -0800 (PST)
+ bh=taZLnlPrXdCP99uSGAqCJpCbv2P0WZx06q/5cluHg4Y=;
+ b=bIIUyB2PCD+bfg7ZKoO3cnezGwaIxq/vfFjFY93eAHT0qprM1Afr82fQJG7bLeTbaj
+ AUnSFOhcvJ/XuPAv8C0SPcWb3lZ5q95aJIvMrAcElf+rn0ToBTF7INxJK5kXkwFU8stI
+ x21/prTRFmzdQXlbxFxSoSydPQ9w0NH6dHnkAS+L9qCIOAsicxglkEBVZ6Gdn7YFNSDG
+ MUXWFparnsCCx03B1nkUivWI8qvnB94GMJWcAuc7//nH6nbOAkEVPUF0bNpIO5z2Bt3t
+ oPP3UMxeZU24GcnAErYs3+jnr+SgzckVtl//ja8tzBjAPOH0n9EPdK4pDF2toz4cHnms
+ BqbA==
+X-Gm-Message-State: AOAM530rYTCzI61k3JeGws3NNyTc9OWDmwQBerv/bj8FkPLhguvjbdhd
+ zhv4sCMdTDcP2tm05k0PMJ0ftfsa0tc=
+X-Google-Smtp-Source: ABdhPJxIPqBP+qrAKIqZ7AsnIEfHduu0DiMAmU2JxpGiZeRdKomq7Bx3jBoQMae4Wg+Tfbw2EsebPA==
+X-Received: by 2002:a63:8149:: with SMTP id t70mr4966598pgd.2.1638369750790;
+ Wed, 01 Dec 2021 06:42:30 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (115-64-213-93.static.tpgi.com.au.
  [115.64.213.93])
- by smtp.gmail.com with ESMTPSA id e13sm29230pgb.8.2021.12.01.06.42.26
+ by smtp.gmail.com with ESMTPSA id e13sm29230pgb.8.2021.12.01.06.42.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Dec 2021 06:42:28 -0800 (PST)
+ Wed, 01 Dec 2021 06:42:30 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v6 10/18] powerpc/64s: Rename hash_hugetlbpage.c to
- hugetlbpage.c
-Date: Thu,  2 Dec 2021 00:41:45 +1000
-Message-Id: <20211201144153.2456614-11-npiggin@gmail.com>
+Subject: [PATCH v6 11/18] powerpc/64: pcpu setup avoid reading
+ mmu_linear_psize on 64e or radix
+Date: Thu,  2 Dec 2021 00:41:46 +1000
+Message-Id: <20211201144153.2456614-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20211201144153.2456614-1-npiggin@gmail.com>
 References: <20211201144153.2456614-1-npiggin@gmail.com>
@@ -87,33 +86,51 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This file contains functions and data common to radix, so rename it to
-remove the hash_ prefix.
+Radix never sets mmu_linear_psize so it's always 4K, which causes pcpu
+atom_size to always be PAGE_SIZE. 64e sets it to 1GB always.
+
+Make paths for these platforms to be explicit about what value they set
+atom_size to.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/mm/book3s64/Makefile                              | 2 +-
- arch/powerpc/mm/book3s64/{hash_hugetlbpage.c => hugetlbpage.c} | 0
- 2 files changed, 1 insertion(+), 1 deletion(-)
- rename arch/powerpc/mm/book3s64/{hash_hugetlbpage.c => hugetlbpage.c} (100%)
+ arch/powerpc/kernel/setup_64.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/Makefile b/arch/powerpc/mm/book3s64/Makefile
-index 1579e18e098d..501efadb287f 100644
---- a/arch/powerpc/mm/book3s64/Makefile
-+++ b/arch/powerpc/mm/book3s64/Makefile
-@@ -10,7 +10,7 @@ obj-$(CONFIG_PPC_HASH_MMU_NATIVE)	+= hash_native.o
- obj-$(CONFIG_PPC_RADIX_MMU)	+= radix_pgtable.o radix_tlb.o
- obj-$(CONFIG_PPC_4K_PAGES)	+= hash_4k.o
- obj-$(CONFIG_PPC_64K_PAGES)	+= hash_64k.o
--obj-$(CONFIG_HUGETLB_PAGE)	+= hash_hugetlbpage.o
-+obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
- ifdef CONFIG_HUGETLB_PAGE
- obj-$(CONFIG_PPC_RADIX_MMU)	+= radix_hugetlbpage.o
- endif
-diff --git a/arch/powerpc/mm/book3s64/hash_hugetlbpage.c b/arch/powerpc/mm/book3s64/hugetlbpage.c
-similarity index 100%
-rename from arch/powerpc/mm/book3s64/hash_hugetlbpage.c
-rename to arch/powerpc/mm/book3s64/hugetlbpage.c
+diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+index 6052f5d5ded3..9a493796ce66 100644
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -880,14 +880,23 @@ void __init setup_per_cpu_areas(void)
+ 	int rc = -EINVAL;
+ 
+ 	/*
+-	 * Linear mapping is one of 4K, 1M and 16M.  For 4K, no need
+-	 * to group units.  For larger mappings, use 1M atom which
+-	 * should be large enough to contain a number of units.
++	 * BookE and BookS radix are historical values and should be revisited.
+ 	 */
+-	if (mmu_linear_psize == MMU_PAGE_4K)
++	if (IS_ENABLED(CONFIG_PPC_BOOK3E)) {
++		atom_size = SZ_1M;
++	} else if (radix_enabled()) {
+ 		atom_size = PAGE_SIZE;
+-	else
+-		atom_size = 1 << 20;
++	} else {
++		/*
++		 * Linear mapping is one of 4K, 1M and 16M.  For 4K, no need
++		 * to group units.  For larger mappings, use 1M atom which
++		 * should be large enough to contain a number of units.
++		 */
++		if (mmu_linear_psize == MMU_PAGE_4K)
++			atom_size = PAGE_SIZE;
++		else
++			atom_size = SZ_1M;
++	}
+ 
+ 	if (pcpu_chosen_fc != PCPU_FC_PAGE) {
+ 		rc = pcpu_embed_first_chunk(0, dyn_size, atom_size, pcpu_cpu_distance,
 -- 
 2.23.0
 
