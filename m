@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7240466311
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Dec 2021 13:05:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 125FC46630F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Dec 2021 13:04:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J4ZQz5Fzfz3fFN
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Dec 2021 23:05:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J4ZPt6Tc3z3f4Q
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Dec 2021 23:04:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,52 +16,52 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J4ZLH63wqz3cYQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Dec 2021 23:01:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J4ZL669ZSz3cR0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Dec 2021 23:01:18 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4J4ZKX2mk9z9sSw;
- Thu,  2 Dec 2021 13:00:48 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4J4ZKV0k8Dz9sT3;
+ Thu,  2 Dec 2021 13:00:46 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Udl5Is05eNWq; Thu,  2 Dec 2021 13:00:48 +0100 (CET)
+ with ESMTP id KoZyMEmFwKPV; Thu,  2 Dec 2021 13:00:46 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4J4ZKM3TKsz9sSP;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4J4ZKM153wz9sSw;
  Thu,  2 Dec 2021 13:00:39 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 67EC88B7C4;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0FD398B7C4;
  Thu,  2 Dec 2021 13:00:39 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 5KggCfnswrgq; Thu,  2 Dec 2021 13:00:39 +0100 (CET)
+ with ESMTP id qNd-pJtiBJps; Thu,  2 Dec 2021 13:00:38 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.163])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 664788B7CE;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 54B2B8B7CB;
  Thu,  2 Dec 2021 13:00:38 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1B2C0WWY177269
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 1B2C0Wbv177273
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Thu, 2 Dec 2021 13:00:32 +0100
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1B2C0WM4177268;
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 1B2C0WKb177272;
  Thu, 2 Dec 2021 13:00:32 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v1 08/11] powerpc/code-patching: Move patch_exception()
- outside code-patching.c
-Date: Thu,  2 Dec 2021 13:00:24 +0100
-Message-Id: <0968622b98b1fb51838c35b844c42ad6609de62e.1638446239.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v1 09/11] powerpc/code-patching: Move
+ instr_is_branch_{i/b}form() in code-patching.h
+Date: Thu,  2 Dec 2021 13:00:25 +0100
+Message-Id: <fca0f3b191211b3681020885a611bf73eef20563.1638446239.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <3ff9823c0a812a8a145d979a9600a6d4591b80ee.1638446239.git.christophe.leroy@csgroup.eu>
 References: <3ff9823c0a812a8a145d979a9600a6d4591b80ee.1638446239.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1638446425; l=4578; s=20211009;
- h=from:subject:message-id; bh=/sU9qLAAbjwWQ/OLRmi5hB7Ehm7QyNUrCpfZcIEhskM=;
- b=sHSU/xC2pN6My3HrLkFkgTYLcNGetV0r1HEhaz79SUJ5AyJqb4ioJQ+Ud+G+HRixEfk5eOmpufv+
- xC5m8zzMCldnZX9/4M/5BOa6IhhVnI31QHxmdFxLND6CwQK5X9mZ
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1638446425; l=2047; s=20211009;
+ h=from:subject:message-id; bh=wRDSISeicKDJX6JeNkgMtSJNyflikmT2k1wJ8bYmY5c=;
+ b=klC2D+6jP1pd2auvXwF/87IrfjkrJm4iCn1AgeBISGbBm1r0hSDajSW/4U8g2UD6YiKRM3T0YVa6
+ 9F3ciZiQC9WuRdwR4ViiW4MGVdF2ZmdR6oZl+Jr6FMJlued1jrdE
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -81,125 +81,68 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-patch_exception() is dedicated to book3e/64 is nothing more than
-a normal use of patch_branch(), so move it into a place dedicated
-to book3e/64.
+To enable moving selftests in their own C file in following patch,
+move instr_is_branch_iform() and instr_is_branch_bform()
+to code-patching.h
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/code-patching.h     |  7 -------
- arch/powerpc/include/asm/exception-64e.h     |  4 ++++
- arch/powerpc/include/asm/nohash/64/pgtable.h |  6 ++++++
- arch/powerpc/lib/code-patching.c             | 16 ----------------
- arch/powerpc/mm/nohash/book3e_pgtable.c      | 14 ++++++++++++++
- 5 files changed, 24 insertions(+), 23 deletions(-)
+ arch/powerpc/include/asm/code-patching.h | 15 +++++++++++++++
+ arch/powerpc/lib/code-patching.c         | 15 ---------------
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/include/asm/code-patching.h
-index 46e8c5a8ce51..275061c3c977 100644
+index 275061c3c977..e26080539c31 100644
 --- a/arch/powerpc/include/asm/code-patching.h
 +++ b/arch/powerpc/include/asm/code-patching.h
-@@ -63,13 +63,6 @@ int instr_is_relative_link_branch(ppc_inst_t instr);
+@@ -58,6 +58,21 @@ static inline int modify_instruction_site(s32 *site, unsigned int clr, unsigned
+ 	return modify_instruction((unsigned int *)patch_site_addr(site), clr, set);
+ }
+ 
++static inline unsigned int branch_opcode(ppc_inst_t instr)
++{
++	return ppc_inst_primary_opcode(instr) & 0x3F;
++}
++
++static inline int instr_is_branch_iform(ppc_inst_t instr)
++{
++	return branch_opcode(instr) == 18;
++}
++
++static inline int instr_is_branch_bform(ppc_inst_t instr)
++{
++	return branch_opcode(instr) == 16;
++}
++
+ int instr_is_relative_branch(ppc_inst_t instr);
+ int instr_is_relative_link_branch(ppc_inst_t instr);
  unsigned long branch_target(const u32 *instr);
- int translate_branch(ppc_inst_t *instr, const u32 *dest, const u32 *src);
- bool is_conditional_branch(ppc_inst_t instr);
--#ifdef CONFIG_PPC_BOOK3E_64
--void __patch_exception(int exc, unsigned long addr);
--#define patch_exception(exc, name) do { \
--	extern unsigned int name; \
--	__patch_exception((exc), (unsigned long)&name); \
--} while (0)
--#endif
- 
- #define OP_RT_RA_MASK	0xffff0000UL
- #define LIS_R2		(PPC_RAW_LIS(_R2, 0))
-diff --git a/arch/powerpc/include/asm/exception-64e.h b/arch/powerpc/include/asm/exception-64e.h
-index 40cdcb2fb057..b1ef1e92c34a 100644
---- a/arch/powerpc/include/asm/exception-64e.h
-+++ b/arch/powerpc/include/asm/exception-64e.h
-@@ -149,6 +149,10 @@ exc_##label##_book3e:
- 	addi	r11,r13,PACA_EXTLB;					    \
- 	TLB_MISS_RESTORE(r11)
- 
-+#ifndef __ASSEMBLY__
-+extern unsigned int interrupt_base_book3e;
-+#endif
-+
- #define SET_IVOR(vector_number, vector_offset)	\
- 	LOAD_REG_ADDR(r3,interrupt_base_book3e);\
- 	ori	r3,r3,vector_offset@l;		\
-diff --git a/arch/powerpc/include/asm/nohash/64/pgtable.h b/arch/powerpc/include/asm/nohash/64/pgtable.h
-index 9d2905a47410..a3313e853e5e 100644
---- a/arch/powerpc/include/asm/nohash/64/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/64/pgtable.h
-@@ -313,6 +313,12 @@ extern int __meminit vmemmap_create_mapping(unsigned long start,
- 					    unsigned long phys);
- extern void vmemmap_remove_mapping(unsigned long start,
- 				   unsigned long page_size);
-+void __patch_exception(int exc, unsigned long addr);
-+#define patch_exception(exc, name) do { \
-+	extern unsigned int name; \
-+	__patch_exception((exc), (unsigned long)&name); \
-+} while (0)
-+
- #endif /* __ASSEMBLY__ */
- 
- #endif /* _ASM_POWERPC_NOHASH_64_PGTABLE_H */
 diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index 2d878e67df3f..17e6443eb6c8 100644
+index 17e6443eb6c8..e07de5db06c0 100644
 --- a/arch/powerpc/lib/code-patching.c
 +++ b/arch/powerpc/lib/code-patching.c
-@@ -370,22 +370,6 @@ int translate_branch(ppc_inst_t *instr, const u32 *dest, const u32 *src)
- 	return 1;
- }
- 
--#ifdef CONFIG_PPC_BOOK3E_64
--void __patch_exception(int exc, unsigned long addr)
--{
--	extern unsigned int interrupt_base_book3e;
--	unsigned int *ibase = &interrupt_base_book3e;
--
--	/* Our exceptions vectors start with a NOP and -then- a branch
--	 * to deal with single stepping from userspace which stops on
--	 * the second instruction. Thus we need to patch the second
--	 * instruction of the exception, not the first one
--	 */
--
--	patch_branch(ibase + (exc / 4) + 1, addr, 0);
--}
--#endif
--
- #ifdef CONFIG_CODE_PATCHING_SELFTEST
- 
- static int instr_is_branch_to_addr(const u32 *instr, unsigned long addr)
-diff --git a/arch/powerpc/mm/nohash/book3e_pgtable.c b/arch/powerpc/mm/nohash/book3e_pgtable.c
-index 77884e24281d..7b6db97c2bdc 100644
---- a/arch/powerpc/mm/nohash/book3e_pgtable.c
-+++ b/arch/powerpc/mm/nohash/book3e_pgtable.c
-@@ -10,6 +10,7 @@
- #include <asm/pgalloc.h>
- #include <asm/tlb.h>
- #include <asm/dma.h>
-+#include <asm/code-patching.h>
- 
- #include <mm/mmu_decl.h>
- 
-@@ -115,3 +116,16 @@ int __ref map_kernel_page(unsigned long ea, unsigned long pa, pgprot_t prot)
- 	smp_wmb();
+@@ -285,21 +285,6 @@ int create_cond_branch(ppc_inst_t *instr, const u32 *addr,
  	return 0;
  }
-+
-+void __patch_exception(int exc, unsigned long addr)
-+{
-+	unsigned int *ibase = &interrupt_base_book3e;
-+
-+	/* Our exceptions vectors start with a NOP and -then- a branch
-+	 * to deal with single stepping from userspace which stops on
-+	 * the second instruction. Thus we need to patch the second
-+	 * instruction of the exception, not the first one
-+	 */
-+
-+	patch_branch(ibase + (exc / 4) + 1, addr, 0);
-+}
+ 
+-static unsigned int branch_opcode(ppc_inst_t instr)
+-{
+-	return ppc_inst_primary_opcode(instr) & 0x3F;
+-}
+-
+-static int instr_is_branch_iform(ppc_inst_t instr)
+-{
+-	return branch_opcode(instr) == 18;
+-}
+-
+-static int instr_is_branch_bform(ppc_inst_t instr)
+-{
+-	return branch_opcode(instr) == 16;
+-}
+-
+ int instr_is_relative_branch(ppc_inst_t instr)
+ {
+ 	if (ppc_inst_val(instr) & BRANCH_ABSOLUTE)
 -- 
 2.33.1
 
