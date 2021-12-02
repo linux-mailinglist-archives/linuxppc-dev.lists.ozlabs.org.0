@@ -1,69 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D48E4656AF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Dec 2021 20:42:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058BA465BC7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Dec 2021 02:40:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J48cB1Qxzz3cSM
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Dec 2021 06:42:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J4JYl6dGSz3c5b
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Dec 2021 12:40:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.219.49; helo=mail-qv1-f49.google.com;
- envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com
- [209.85.219.49])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J48bg6zfrz305j
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Dec 2021 06:41:33 +1100 (AEDT)
-Received: by mail-qv1-f49.google.com with SMTP id j9so22746217qvm.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Dec 2021 11:41:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=bjDuMIeNukQm5l61QJg6nNUANP6Dica4CrK7FOgg6ks=;
- b=ZpSueGKYxp5cZLTRJhwAgnj5bXz2AdvU94HCePUb7m0L/cxbz2BUevN5xub0TyPrGm
- 54sB2nhbtdbjX6OnBRlpqYsjQrhzJI1BrrOSbuJU+T62lpxC8r5oXaPZ3oBdhLYCQMzx
- eAZS7/W3YUF1T/mnKUzu4CsraH2nWZEt5FG7CRo72nKpNGgJO4hCEAOb1sJRj5slbnds
- 1yLMy2s6ck5iFqEnKpykcB6OQ7oHZT5RulE0ywteXE35bHw92ZfQOdQHnc0AI2Ztm93n
- pksOGq4H9E40UZ7SYFwesvIWgBdAu5iEb5jvLNYqcsTstUg1yBWfrFyy9TyrXqAvCWN3
- XAKA==
-X-Gm-Message-State: AOAM5323uzuOR0CixWYVQ9QXQqcjebTVex+v/V2BbgyE1GjuZBYel8yg
- 8XTn/+OqkNbThp6fj7JD3eQGQ0A9wdE=
-X-Google-Smtp-Source: ABdhPJyJRqexARs7xtsBoARVpX1TVMfu0v+e/IyFdWT+GERIfafsvQp7vLNwN/6k3MuyqYrbjB6N6g==
-X-Received: by 2002:a05:6214:2c5:: with SMTP id
- g5mr8593539qvu.109.1638387690369; 
- Wed, 01 Dec 2021 11:41:30 -0800 (PST)
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com.
- [209.85.222.176])
- by smtp.gmail.com with ESMTPSA id s4sm386586qko.47.2021.12.01.11.41.29
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 Dec 2021 11:41:30 -0800 (PST)
-Received: by mail-qk1-f176.google.com with SMTP id m192so32285025qke.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Dec 2021 11:41:29 -0800 (PST)
-X-Received: by 2002:a05:620a:298e:: with SMTP id
- r14mr8391905qkp.509.1638387689177; 
- Wed, 01 Dec 2021 11:41:29 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J4JYJ2TWcz2xF9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Dec 2021 12:40:02 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10185"; a="322847448"
+X-IronPort-AV: E=Sophos;i="5.87,280,1631602800"; d="scan'208";a="322847448"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Dec 2021 17:39:00 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.87,280,1631602800"; d="scan'208";a="459464200"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+ by orsmga003.jf.intel.com with ESMTP; 01 Dec 2021 17:38:58 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1msb3p-000FdH-Ex; Thu, 02 Dec 2021 01:38:57 +0000
+Date: Thu, 02 Dec 2021 09:38:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ af11dee4361b3519981fa04d014873f9d9edd6ac
+Message-ID: <61a82393.GQs9ZvjvDeNmSIDE%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20211110105952.62013-1-andriy.shevchenko@linux.intel.com>
- <20211110105952.62013-3-andriy.shevchenko@linux.intel.com>
- <YZJExzxJ4j8g6jEY@smile.fi.intel.com>
- <AS8PR04MB8946B4800AE34258F7F2BA688F989@AS8PR04MB8946.eurprd04.prod.outlook.com>
- <YZN7+UlXtJi8/i1L@smile.fi.intel.com> <YZ0WlMyS36Gj565C@smile.fi.intel.com>
-In-Reply-To: <YZ0WlMyS36Gj565C@smile.fi.intel.com>
-From: Li Yang <leoyang.li@nxp.com>
-Date: Wed, 1 Dec 2021 13:41:16 -0600
-X-Gmail-Original-Message-ID: <CADRPPNT3yhr3jAPZm=hcON3nd97eLSrkWqFBV6kh6W5gf0w3Xg@mail.gmail.com>
-Message-ID: <CADRPPNT3yhr3jAPZm=hcON3nd97eLSrkWqFBV6kh6W5gf0w3Xg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] soc: fsl: Replace kernel.h with the necessary
- inclusions
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,44 +50,171 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Qiang Zhao <qiang.zhao@nxp.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Nov 23, 2021 at 10:32 AM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Tue, Nov 16, 2021 at 11:38:01AM +0200, Andy Shevchenko wrote:
-> > On Mon, Nov 15, 2021 at 10:24:36PM +0000, Leo Li wrote:
-> > > > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > > Sent: Monday, November 15, 2021 5:30 AM
-> > > > On Wed, Nov 10, 2021 at 12:59:52PM +0200, Andy Shevchenko wrote:
-> >
-> > ...
-> >
-> > > > > v2: updated Cc list based on previous changes to MAINTAINERS
-> > > >
-> > > > Any comments on this, please?
-> > > >
-> > > > I really want to decrease amount of kernel.h usage in the common headers.
-> > > > So others won't copy'n'paste bad example.
-> > >
-> > > There seems to be no problem with the patch although I didn't get time to really compile with it applied.
-> > >
-> > > Will pick them up later after build test.
-> >
-> > Thank you!
-> >
-> > Note, it has two fixes against MAINTAINERS which may be sent, I believe,
-> > sooner than later to Linus.
->
-> Any new so far?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: af11dee4361b3519981fa04d014873f9d9edd6ac  powerpc/32s: Fix shift-out-of-bounds in KASAN init
 
-The build test is good.  I have applied it for next.  Thanks.
+elapsed time: 764m
 
-Regards,
-Leo
+configs tested: 145
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm64                               defconfig
+arm64                            allyesconfig
+i386                 randconfig-c001-20211128
+powerpc                      pasemi_defconfig
+sh                               alldefconfig
+arm                       imx_v6_v7_defconfig
+powerpc                      acadia_defconfig
+m68k                        m5272c3_defconfig
+sh                           se7750_defconfig
+mips                          rm200_defconfig
+ia64                          tiger_defconfig
+mips                        qi_lb60_defconfig
+mips                         mpc30x_defconfig
+s390                             alldefconfig
+mips                           ci20_defconfig
+m68k                       m5208evb_defconfig
+m68k                        m5407c3_defconfig
+mips                          rb532_defconfig
+powerpc                      makalu_defconfig
+sh                           se7721_defconfig
+arc                         haps_hs_defconfig
+arm                          exynos_defconfig
+arm                          ixp4xx_defconfig
+xtensa                              defconfig
+arm                  randconfig-c002-20211128
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+i386                 randconfig-a005-20211130
+i386                 randconfig-a002-20211130
+i386                 randconfig-a006-20211130
+i386                 randconfig-a004-20211130
+i386                 randconfig-a003-20211130
+i386                 randconfig-a001-20211130
+x86_64               randconfig-a011-20211128
+x86_64               randconfig-a014-20211128
+x86_64               randconfig-a012-20211128
+x86_64               randconfig-a016-20211128
+x86_64               randconfig-a013-20211128
+x86_64               randconfig-a015-20211128
+i386                 randconfig-a015-20211128
+i386                 randconfig-a016-20211128
+i386                 randconfig-a013-20211128
+i386                 randconfig-a012-20211128
+i386                 randconfig-a014-20211128
+i386                 randconfig-a011-20211128
+x86_64               randconfig-a006-20211201
+x86_64               randconfig-a005-20211201
+x86_64               randconfig-a001-20211201
+x86_64               randconfig-a002-20211201
+x86_64               randconfig-a004-20211201
+x86_64               randconfig-a003-20211201
+arc                  randconfig-r043-20211129
+arc                  randconfig-r043-20211128
+s390                 randconfig-r044-20211128
+riscv                randconfig-r042-20211128
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+
+clang tested configs:
+i386                 randconfig-a001-20211128
+i386                 randconfig-a002-20211128
+i386                 randconfig-a006-20211128
+i386                 randconfig-a005-20211128
+i386                 randconfig-a004-20211128
+i386                 randconfig-a003-20211128
+x86_64               randconfig-a014-20211130
+x86_64               randconfig-a013-20211130
+x86_64               randconfig-a012-20211130
+x86_64               randconfig-a011-20211130
+x86_64               randconfig-a015-20211130
+x86_64               randconfig-a016-20211130
+i386                 randconfig-a011-20211130
+i386                 randconfig-a015-20211130
+i386                 randconfig-a012-20211130
+i386                 randconfig-a013-20211130
+i386                 randconfig-a014-20211130
+i386                 randconfig-a016-20211130
+i386                 randconfig-a015-20211129
+i386                 randconfig-a016-20211129
+i386                 randconfig-a013-20211129
+i386                 randconfig-a012-20211129
+i386                 randconfig-a014-20211129
+i386                 randconfig-a011-20211129
+i386                 randconfig-a013-20211201
+i386                 randconfig-a016-20211201
+i386                 randconfig-a011-20211201
+i386                 randconfig-a014-20211201
+i386                 randconfig-a012-20211201
+i386                 randconfig-a015-20211201
+x86_64               randconfig-a001-20211128
+x86_64               randconfig-a006-20211128
+x86_64               randconfig-a003-20211128
+x86_64               randconfig-a005-20211128
+x86_64               randconfig-a004-20211128
+x86_64               randconfig-a002-20211128
+hexagon              randconfig-r045-20211129
+hexagon              randconfig-r041-20211129
+s390                 randconfig-r044-20211129
+riscv                randconfig-r042-20211129
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
