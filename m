@@ -1,55 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2373A4670F7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 04:55:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE09467574
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 11:44:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J4zWQ6tFzz3c59
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 14:55:46 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ImBzqzy3;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J58ZX5hHkz3cQs
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 21:44:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J4zVp22Mpz2yQK
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Dec 2021 14:55:14 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ImBzqzy3; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4J4zVm6JgMz4xQs;
- Fri,  3 Dec 2021 14:55:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1638503713;
- bh=CBcjaqWL5ywYRsLFA1bPdUjs/lKp7sGGKXcCqCVDPpA=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ImBzqzy3hk58qj4+MzIK46abtIMGdkXPlKdMKe+c40R+FVcOYZg47nvV28/C7kvMH
- gNNpypJKL1sjYH2+g3vp+qE9/CKJE5T+68Zb3tTGNtPuCITgrHLv22VJis5ANEKfw9
- M23c94ciHb/s0gNLQJzR+wywGldXLYAuaxAHYOBPwQ1ULMRKsBZj5ibQ8zVQiIBJFB
- jCeq01a/NgDzfWoxfRpcy63VjCgY8gBGkFGVz7/1+gcF6MN5VFZMq1RrUYw/iswqy6
- 0rusDl2tbQ+G+D+tHEJ5LgPQO3psy0x/vtJ/ePVDYnCBtZTWLZwrudL/3xb1es0/4m
- +P+Y3gR/xGDOw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH] powerpc/32s: Allocate one 256k IBAT instead of two
- consecutives 128k IBATs
-In-Reply-To: <ab58b296832b0ec650e2203200e060adbcb2677d.1637930421.git.christophe.leroy@csgroup.eu>
-References: <ab58b296832b0ec650e2203200e060adbcb2677d.1637930421.git.christophe.leroy@csgroup.eu>
-Date: Fri, 03 Dec 2021 14:55:09 +1100
-Message-ID: <871r2upcki.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=amit.kachhap@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4J58Z61P7Dz2yYS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Dec 2021 21:43:39 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F311A15AD;
+ Fri,  3 Dec 2021 02:43:36 -0800 (PST)
+Received: from a077416.arm.com (unknown [10.163.33.180])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1539C3F5A1;
+ Fri,  3 Dec 2021 02:43:32 -0800 (PST)
+From: Amit Daniel Kachhap <amit.kachhap@arm.com>
+To: linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 11/14] powerpc/crash_dump: Use the new interface
+ copy_oldmem_page_buf
+Date: Fri,  3 Dec 2021 16:12:28 +0530
+Message-Id: <20211203104231.17597-12-amit.kachhap@arm.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20211203104231.17597-1-amit.kachhap@arm.com>
+References: <20211203104231.17597-1-amit.kachhap@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,47 +42,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>, kexec <kexec@lists.infradead.org>,
+ Amit Daniel Kachhap <amit.kachhap@arm.com>, Paul Mackerras <paulus@samba.org>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Vincenzo Frascino <Vincenzo.Frascino@arm.com>,
+ linuxppc <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Today we have the following IBATs allocated:
->
-> 	---[ Instruction Block Address Translation ]---
-> 	0: 0xc0000000-0xc03fffff 0x00000000         4M Kernel   x     m
-> 	1: 0xc0400000-0xc05fffff 0x00400000         2M Kernel   x     m
-> 	2: 0xc0600000-0xc06fffff 0x00600000         1M Kernel   x     m
-> 	3: 0xc0700000-0xc077ffff 0x00700000       512K Kernel   x     m
-> 	4: 0xc0780000-0xc079ffff 0x00780000       128K Kernel   x     m
-> 	5: 0xc07a0000-0xc07bffff 0x007a0000       128K Kernel   x     m
-> 	6:         -
-> 	7:         -
->
-> The two 128K should be a single 256K instead.
->
-> When _etext is not aligned to 128Kbytes, the system will allocate
-> all necessary BATs to the lower 128Kbytes boundary, then allocate
-> an additional 128Kbytes BAT for the remaining block.
->
-> Instead, align the top to 128Kbytes so that the function directly
-> allocates a 256Mbytes last block:
-                 ^
+The current interface copy_oldmem_page() passes user pointer without
+__user annotation and hence does unnecessary user/kernel pointer
+conversions during its implementation.
 
-I think that's meant to be 256Kbytes, I changed it when committing.
+Use the interface copy_oldmem_page_buf() to avoid this issue.
 
-> 	---[ Instruction Block Address Translation ]---
-> 	0: 0xc0000000-0xc03fffff 0x00000000         4M Kernel   x     m
-> 	1: 0xc0400000-0xc05fffff 0x00400000         2M Kernel   x     m
-> 	2: 0xc0600000-0xc06fffff 0x00600000         1M Kernel   x     m
-> 	3: 0xc0700000-0xc077ffff 0x00700000       512K Kernel   x     m
-> 	4: 0xc0780000-0xc07bffff 0x00780000       256K Kernel   x     m
-> 	5:         -
-> 	6:         -
-> 	7:         -
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc <linuxppc-dev@lists.ozlabs.org>
+Signed-off-by: Amit Daniel Kachhap <amit.kachhap@arm.com>
+---
+ arch/powerpc/kernel/crash_dump.c | 33 ++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
 
+diff --git a/arch/powerpc/kernel/crash_dump.c b/arch/powerpc/kernel/crash_dump.c
+index 5693e1c67c2b..a1c8a3a11694 100644
+--- a/arch/powerpc/kernel/crash_dump.c
++++ b/arch/powerpc/kernel/crash_dump.c
+@@ -68,33 +68,34 @@ void __init setup_kdump_trampoline(void)
+ }
+ #endif /* CONFIG_NONSTATIC_KERNEL */
+ 
+-static size_t copy_oldmem_vaddr(void *vaddr, char *buf, size_t csize,
+-                               unsigned long offset, int userbuf)
++static size_t copy_oldmem_vaddr(void *vaddr, char __user *ubuf, char *kbuf,
++				size_t csize, unsigned long offset)
+ {
+-	if (userbuf) {
+-		if (copy_to_user((char __user *)buf, (vaddr + offset), csize))
++	if (ubuf) {
++		if (copy_to_user(ubuf, (vaddr + offset), csize))
+ 			return -EFAULT;
+ 	} else
+-		memcpy(buf, (vaddr + offset), csize);
++		memcpy(kbuf, (vaddr + offset), csize);
+ 
+ 	return csize;
+ }
+ 
+ /**
+- * copy_oldmem_page - copy one page from "oldmem"
++ * copy_oldmem_page_buf - copy one page from "oldmem"
+  * @pfn: page frame number to be copied
+- * @buf: target memory address for the copy; this can be in kernel address
+- *      space or user address space (see @userbuf)
++ * @ubuf: target user memory address for the copy; use copy_to_user() if this
++ * address is present
++ * @kbuf: target kernel memory address for the copy; use memcpy() if this
++ * address is present
+  * @csize: number of bytes to copy
+  * @offset: offset in bytes into the page (based on pfn) to begin the copy
+- * @userbuf: if set, @buf is in user address space, use copy_to_user(),
+- *      otherwise @buf is in kernel address space, use memcpy().
+  *
+- * Copy a page from "oldmem". For this page, there is no pte mapped
+- * in the current kernel. We stitch up a pte, similar to kmap_atomic.
++ * Copy a page from "oldmem" into buffer pointed by either @ubuf or @kbuf. For
++ * this page, there is no pte mapped in the current kernel. We stitch up a pte,
++ * similar to kmap_atomic.
+  */
+-ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
+-			size_t csize, unsigned long offset, int userbuf)
++ssize_t copy_oldmem_page_buf(unsigned long pfn, char __user *ubuf, char *kbuf,
++			     size_t csize, unsigned long offset)
+ {
+ 	void  *vaddr;
+ 	phys_addr_t paddr;
+@@ -107,10 +108,10 @@ ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
+ 
+ 	if (memblock_is_region_memory(paddr, csize)) {
+ 		vaddr = __va(paddr);
+-		csize = copy_oldmem_vaddr(vaddr, buf, csize, offset, userbuf);
++		csize = copy_oldmem_vaddr(vaddr, ubuf, kbuf, csize, offset);
+ 	} else {
+ 		vaddr = ioremap_cache(paddr, PAGE_SIZE);
+-		csize = copy_oldmem_vaddr(vaddr, buf, csize, offset, userbuf);
++		csize = copy_oldmem_vaddr(vaddr, ubuf, kbuf, csize, offset);
+ 		iounmap(vaddr);
+ 	}
+ 
+-- 
+2.17.1
 
-cheers
