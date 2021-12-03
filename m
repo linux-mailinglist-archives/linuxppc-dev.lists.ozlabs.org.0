@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF18467CAA
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 18:37:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCB7467CDB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 18:51:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J5Klr3T24z3cNK
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Dec 2021 04:37:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J5L3T63Bfz3cMQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Dec 2021 04:51:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=Yr7TRkzR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=Vxtjt6fa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,41 +19,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org;
  dkim=fail reason="signature verification failed" (2048-bit key;
  unprotected) header.d=collabora.com header.i=@collabora.com
- header.a=rsa-sha256 header.s=mail header.b=Yr7TRkzR; 
+ header.a=rsa-sha256 header.s=mail header.b=Vxtjt6fa; 
  dkim-atps=neutral
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
  [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J5KlC5pKMz2xtZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Dec 2021 04:37:11 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J5L2s40gLz304t
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Dec 2021 04:50:45 +1100 (AEDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
- (Authenticated sender: adalessandro) with ESMTPSA id 3E02E1F40F12
+ (Authenticated sender: adalessandro) with ESMTPSA id 24DA11F41317
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
- t=1638553029; bh=6DQqd6PdWjbwATYc5OwpxooTIyDGyjPYpNpe0Obs3Sc=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=Yr7TRkzR/0XKIud0HXHmtfb1p9HPCeObqRIBjA9PgYseBSC92kOQLiCRUFZMwkVA/
- pxUJyDEdierMw6v4Y+mrSnE5uXBJQEmILlMdiy47sBKNu1JMp4JL1I2VIjmQSwkbZR
- s6XqUQEWOwIp9sHjSaKSGoyF4wSTsUN6GoymFrRFBBcHFCtBt2QIClg4RNUCW/ZMkd
- 6SnXkfc3addcXm8oNwu0b9euYjERQZMbBdJqBKN3c1djj6GEbdTixaqf8r2xM+fjN5
- 95qyx6k9h5kyKQQhtlUUQUmVNDbWy0hHsIfcqvMP0hJzAP0KJjYWYYopRazNyARIA1
- 9Mvv8TyrSfbIg==
-Subject: Re: [RFC patch 0/5] Support BCLK input clock in tlv320aic31xx
-To: Mark Brown <broonie@kernel.org>
-References: <20211119153248.419802-1-ariel.dalessandro@collabora.com>
- <163762561675.2471742.16439171676950432106.b4-ty@kernel.org>
- <6a2ff1f0-ebd9-be6d-9b2c-5704edd7c25d@collabora.com>
- <YapVH3b9urxvngWG@sirena.org.uk>
+ t=1638553842; bh=yGwScbDhyL1oOF9cERSZ73Apg4NOw/m+9XA+Lj/me2k=;
+ h=From:To:Cc:Subject:Date:From;
+ b=Vxtjt6famLNA0bPuSzq3bwFuOHlAF37VLUzF6Xnh5G+AEhTP3PK68JyVyLf2GDPSM
+ nukyGs3LqgrALzxv8qz6K6lUp3sngRdfKg4ZQ3zP+Sdupj96LyVycjFMvKbylR34ob
+ Q0cZlKVmXEVjXVHUNLff+O4/1OCqRFhuOTpCca9ZV9VLs4oSgwLb6Af+009/xCkKDk
+ WSN/5bTtQiWnYUTYdjvaeUwcAkpIQZLA6LiGbKeXWiGvz5/xJR6WxiakHvta8BN+QT
+ aoM/ptM7faU2Vu1rRGdqm/W7jNx0l2Oh4E6UlLp4r/V/T57DneNnHeKaZmsGj+syxD
+ +WHh8is4OL9Sg==
 From: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-Message-ID: <2a79ca46-74b7-4add-912e-d687cee825a7@collabora.com>
-Date: Fri, 3 Dec 2021 14:37:00 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+To: alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/1] ASoC: fsl-asoc-card: Add missing Kconfig option for
+ tlv320aic31xx
+Date: Fri,  3 Dec 2021 14:50:17 -0300
+Message-Id: <20211203175018.252641-1-ariel.dalessandro@collabora.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <YapVH3b9urxvngWG@sirena.org.uk>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,28 +60,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com,
- kuninori.morimoto.gx@renesas.com, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, shengjiu.wang@gmail.com, tiwai@suse.com,
- linux-kernel@vger.kernel.org, perex@perex.cz, nicoleotsuka@gmail.com,
- bkylerussell@gmail.com, michael@amarulasolutions.com, festevam@gmail.com
+Cc: ariel.dalessandro@collabora.com, kuninori.morimoto.gx@renesas.com,
+ Xiubo.Lee@gmail.com, tony@atomide.com, shengjiu.wang@gmail.com, tiwai@suse.com,
+ lgirdwood@gmail.com, robh+dt@kernel.org, perex@perex.cz,
+ nicoleotsuka@gmail.com, broonie@kernel.org, bcousson@baylibre.com,
+ michael@amarulasolutions.com, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mark,
+This is a follow up of patchsets:
 
-On 12/3/21 2:34 PM, Mark Brown wrote:
-> On Fri, Dec 03, 2021 at 02:25:17PM -0300, Ariel D'Alessandro wrote:
->> On 11/22/21 9:00 PM, Mark Brown wrote:
-> 
->>> If any updates are required or you are submitting further changes they
->>> should be sent as incremental updates against current git, existing
->>> patches will not be replaced.
-> 
->> I gotta send a fix for one of the patches. So, should it be a new
->> incremental patch or I can still send a patchset v2?
-> 
-> See above.
+  [RFC patch 0/5] Support BCLK input clock in tlv320aic31xx
+  [PATCH 0/4] fsl-asoc-card: Add optional dt property for setting mclk-id
 
-Got it, thank you for confirming it.
+Patch "ASoC: fsl-asoc-card: Support fsl,imx-audio-tlv320aic31xx codec"
+in "[RFC patch 0/5] Support BCLK input clock in tlv320aic31xx" missed a
+Kconfig option. Sending incremental patch fix.
+
+Regards,
+Ariel
+
+Ariel D'Alessandro (1):
+  ASoC: fsl-asoc-card: Add missing Kconfig option for tlv320aic31xx
+
+ sound/soc/fsl/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+-- 
+2.30.2
+
