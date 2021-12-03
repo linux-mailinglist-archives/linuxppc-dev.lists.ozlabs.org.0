@@ -2,51 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBCB7467CDB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 18:51:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA71A467CDD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 18:52:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J5L3T63Bfz3cMQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Dec 2021 04:51:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J5L4K3sblz3bXW
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Dec 2021 04:52:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=Vxtjt6fa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=NwkfaQST;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=collabora.com (client-ip=2a00:1098:0:82:1000:25:2eeb:e3e3;
+ smtp.mailfrom=collabora.com (client-ip=46.235.227.227;
  helo=bhuna.collabora.co.uk; envelope-from=ariel.dalessandro@collabora.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dkim=fail reason="signature verification failed" (2048-bit key;
  unprotected) header.d=collabora.com header.i=@collabora.com
- header.a=rsa-sha256 header.s=mail header.b=Vxtjt6fa; 
+ header.a=rsa-sha256 header.s=mail header.b=NwkfaQST; 
  dkim-atps=neutral
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
- [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J5L2s40gLz304t
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Dec 2021 04:50:45 +1100 (AEDT)
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J5L2y3dDRz3bj0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Dec 2021 04:50:50 +1100 (AEDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
- (Authenticated sender: adalessandro) with ESMTPSA id 24DA11F41317
+ (Authenticated sender: adalessandro) with ESMTPSA id 5BF591F4724E
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
- t=1638553842; bh=yGwScbDhyL1oOF9cERSZ73Apg4NOw/m+9XA+Lj/me2k=;
- h=From:To:Cc:Subject:Date:From;
- b=Vxtjt6famLNA0bPuSzq3bwFuOHlAF37VLUzF6Xnh5G+AEhTP3PK68JyVyLf2GDPSM
- nukyGs3LqgrALzxv8qz6K6lUp3sngRdfKg4ZQ3zP+Sdupj96LyVycjFMvKbylR34ob
- Q0cZlKVmXEVjXVHUNLff+O4/1OCqRFhuOTpCca9ZV9VLs4oSgwLb6Af+009/xCkKDk
- WSN/5bTtQiWnYUTYdjvaeUwcAkpIQZLA6LiGbKeXWiGvz5/xJR6WxiakHvta8BN+QT
- aoM/ptM7faU2Vu1rRGdqm/W7jNx0l2Oh4E6UlLp4r/V/T57DneNnHeKaZmsGj+syxD
- +WHh8is4OL9Sg==
+ t=1638553848; bh=sjUDlRzGKvbKVrH0gyQWnGzouzwqlG1XZ4Jt6m71DjQ=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=NwkfaQSTsNOkewcP0B716mc78gWZExuruZKkT+w5vMZK3j5bz16Jz46lMdsSHN6d8
+ vbrQW+rczqrkZv7gADP/scWRDEpZELWkgK9yA3WbJZ7dzxsAcQM3cDW6Z1dSMAb2Ph
+ DNZF/IGm1DuStbG7DGLsA3ifLF43DOGqZelzCHtFwWuhY9wg8KVgqH+XQ0KWLpha4L
+ qG7g0WNvjEWJlWRgAmxQ49gBw/2k9U/fZgKgHc25hoh1vheF6Au/McyIVX/qPQcez6
+ qZRfpnnAGXXsjsVkukAqI/r4Gfni8Z3xi3pR/SlzRu6kHkDoRnRsKTWgE+AyRiCnpk
+ 05KK4eUCt4h8g==
 From: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
 To: alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org
 Subject: [PATCH 1/1] ASoC: fsl-asoc-card: Add missing Kconfig option for
  tlv320aic31xx
-Date: Fri,  3 Dec 2021 14:50:17 -0300
-Message-Id: <20211203175018.252641-1-ariel.dalessandro@collabora.com>
+Date: Fri,  3 Dec 2021 14:50:18 -0300
+Message-Id: <20211203175018.252641-2-ariel.dalessandro@collabora.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20211203175018.252641-1-ariel.dalessandro@collabora.com>
+References: <20211203175018.252641-1-ariel.dalessandro@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -69,24 +70,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a follow up of patchsets:
+The following commit added support for tlv320aic31xx codec to
+fsl-asoc-card, but missed the related Kconfig option. Fix this.
 
-  [RFC patch 0/5] Support BCLK input clock in tlv320aic31xx
-  [PATCH 0/4] fsl-asoc-card: Add optional dt property for setting mclk-id
+  commit 8c9b9cfb7724685ce705f511b882f30597596536
+  Author: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+  Date:   Fri Nov 19 12:32:48 2021 -0300
 
-Patch "ASoC: fsl-asoc-card: Support fsl,imx-audio-tlv320aic31xx codec"
-in "[RFC patch 0/5] Support BCLK input clock in tlv320aic31xx" missed a
-Kconfig option. Sending incremental patch fix.
+      ASoC: fsl-asoc-card: Support fsl,imx-audio-tlv320aic31xx codec
 
-Regards,
-Ariel
-
-Ariel D'Alessandro (1):
-  ASoC: fsl-asoc-card: Add missing Kconfig option for tlv320aic31xx
-
+Signed-off-by: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+---
  sound/soc/fsl/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
+diff --git a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
+index 8e05d092790e..10fa38753453 100644
+--- a/sound/soc/fsl/Kconfig
++++ b/sound/soc/fsl/Kconfig
+@@ -311,6 +311,7 @@ config SND_SOC_FSL_ASOC_CARD
+ 	select SND_SOC_FSL_ESAI
+ 	select SND_SOC_FSL_SAI
+ 	select SND_SOC_FSL_SSI
++	select SND_SOC_TLV320AIC31XX
+ 	select SND_SOC_WM8994
+ 	select MFD_WM8994
+ 	help
 -- 
 2.30.2
 
