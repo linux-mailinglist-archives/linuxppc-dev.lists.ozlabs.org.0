@@ -2,128 +2,116 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB59467822
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 14:23:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5E984677E3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 14:13:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J5D6g09hKz3c59
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Dec 2021 00:23:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J5CtS3XH6z30Bm
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Dec 2021 00:13:04 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BKTx5dAl;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::61a;
- helo=fra01-mr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on061a.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e19::61a])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J5Csf60HVz2yZv
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Dec 2021 00:12:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=BKTx5dAl; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4J5Csf3wsDz4xQs
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Dec 2021 00:12:22 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4J5Csf3tGXz4xYy; Sat,  4 Dec 2021 00:12:22 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=BKTx5dAl; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J5D684pS0z2ymP
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Dec 2021 00:23:11 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gDDmwjjHpY90AcPXIjk1fDAp24wR+80wEld3vHVFU33SObIqp1Z7HQce2hSRJsk98q1b9jyMiIp1dBewjuZD3GYe4JARdf6tPn3OSkzpsKKwv0spdOEA5DiVulm1ZeM4RXqbjMtRQlRzbzH34RkKzD5METY7xj7Oxr8m39Onc4Pb6ODIjL05HxI2qH6eZ5yZ0rHu8oz5PYgVW50J73+PeS4PvFCtrCfI4b+HgcBNDI++qJPXUqKouCi34B2NxiWHwnWsmgjHxg2kPJBpboNGubafwn3JBwhOnBiKh6QO/IbDk+rbN17LVB+O5XcDNCIffVycKRyI2bmMbBC6+HhIxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4hWM/DMAxV8Ts5HgKdm88J8cqQ0g4QLVxLYZR9l5GY8=;
- b=Z6ckrSjmhzS1EiCFfFa9XmzgN7WPIw5uIgEZH+OlkcbGSJuKVU9sPMoIYV9Kz7epwCZm3q+DyUqN+Rk8MhGIwmFf/D+Vv7sZFqTUlCElZRZO3uaGGbz9C3VK1bhX3Hdf+WsEcUVKFwySeh6FmuOu+yQHm2PsxEtnXrBIroGZGOACGMYxOBJxOpzhF8Vj4ELo9C8MX1MYvT+AOzyWxDBQXlnyXBZZNndwcsJZYxRd4AZQES15dpCLU2D7peEmCAwi4VytUNeGc/IRGwmzV1GVVEtNvpNqt5C1qZH2Xeo1FqNrazMt6urs3cvJlC9Empu42u37OjQuK9r/cXYS+/XzRQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRXP264MB0726.FRAP264.PROD.OUTLOOK.COM (2603:10a6:500:17::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4734.23; Fri, 3 Dec
- 2021 12:49:06 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::fc67:d895:7965:663f]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::fc67:d895:7965:663f%2]) with mapi id 15.20.4755.016; Fri, 3 Dec 2021
- 12:49:06 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "mbizon@freebox.fr" <mbizon@freebox.fr>
-Subject: Re: Fail to boot 5.15 on mpc8347 with either debug_pagealloc or nobats
-Thread-Topic: Fail to boot 5.15 on mpc8347 with either debug_pagealloc or
- nobats
-Thread-Index: AQHX597pFZD8fwjYfUOPVLOQ2QefI6wguJIA
-Date: Fri, 3 Dec 2021 12:49:06 +0000
-Message-ID: <68bf4c39-53ce-f88f-383f-5defb1a36b1c@csgroup.eu>
-References: <f23763d551e65d4a225ba13c7898f83853c2aeaf.camel@freebox.fr>
-In-Reply-To: <f23763d551e65d4a225ba13c7898f83853c2aeaf.camel@freebox.fr>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 5abda525-ca47-4d5e-a432-08d9b65b4b03
-x-ms-traffictypediagnostic: MRXP264MB0726:
-x-microsoft-antispam-prvs: <MRXP264MB0726168FAD4EAFD17C29226EED6A9@MRXP264MB0726.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: KbMAocnmdX5t42T2ZFWBPEvEnIzQAc4UWWPZLITBRfWZ/eeIyd1/ZbO+d5hstZerDPlp+ttLktR8UneWbaUNb4Wl+KOWg7c2WSBDAr7jybljFYqj2jBuDotp+rVwlZ+soAkX69ScX/JgK83DYmpoFClBPIBT9DmtpPjBGwJvOQf3vk9RZZl9WrKFak6A8anQC3eVYFg9/HfxZtmEqlp0gv8t+VhVWo4TZRnL/cKN49iUVQgLDZa01FbOfTQHoQBADCYKHECzBrw420ywUgmcloouhbLPXO50svAdRgmD1hxXaGcGIr3V6BuYkn6xc7VCFs/EvuI1vhMPgvH04J1r8bW9gV4Sio+DN+Bi+TXL1vz1s1W2Hzk03jD6bky49NAsqv1Fvgsf64f0GtGs5lgHWhT2Xf06QU419rrbw+7PQn5k2S8QcKiAFDhKPyFYtoS6WlWodVAktfV4ZhwdQvcgiE2X9PKnMnzbiV+s9LkfMQ2V0AUPH3q6+yMgRehDNv6PL0ezrTTulZcYH+lW6JaUghheUmJOlXBXoCFbjdP3TsqRDQQhZDaq9VoxSupn9LhvwD0IDUDZXHcPAYbdf+yEkmE9poQd2nIGJ3DsmiUKHZtdZJLak6xnEXyJI+J5T94pQbjV69CgNU8kuTFe+RORJnCoUvVWX6YG25DIqsOFf8ZDea9R6Bo2OojZ3pvQji+KsGZEcr4xofDJQk7HZ1OHKt6gTaVZmDtH+NiEuy2VcIoMI8RS2YH4P2LdrpNq2mlVoJQunx4ge6z14TvM95l0YQ==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(2906002)(6506007)(316002)(83380400001)(91956017)(64756008)(66946007)(71200400001)(8936002)(2616005)(31686004)(36756003)(66446008)(38070700005)(38100700002)(44832011)(6512007)(86362001)(6486002)(508600001)(26005)(186003)(5660300002)(66556008)(8676002)(76116006)(122000001)(110136005)(31696002)(66574015)(66476007)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?YkRBV21Ib1Vha1J4VnhYY3lFQklWdE4vN2VlYlJDandsNmdNSTdXUWowcm1C?=
- =?utf-8?B?SmVnVzBFNTZOS01tK0pncXlSY1NycnlOeG5FQUpIYmFPeHdlc0NWRC9uMXVp?=
- =?utf-8?B?Y1JMN2RuYSt0WllOREtFTExXWTBCRzZObWo5ZkE1bGhHaFJVcjZBQlFLL2JL?=
- =?utf-8?B?RGZQZjVDaVBUZjBpVHkyYjJYbjhMMjB5eVFwSkFpOWRESDByUUlveFVIamFY?=
- =?utf-8?B?TldOdlpqaUx1aUJCWkQ4dEluMEtkd1BYOWhOM2tzNmpFR2tOcUNDcDFONXp2?=
- =?utf-8?B?WVM5M2huNVJ2aGhoZWZBUWJPaFNIamxvNmxzOEt0VE1ZMmlJa1dQdGZTYjcr?=
- =?utf-8?B?QitQWTJxM2k2RzFCT0dNb2ZGMEx0L0NzWnk2dmlSalJxTjU2QkxjYkc0NElv?=
- =?utf-8?B?UUVZVTVYTUF5eFVjSmxxb2FBL0FMN0lGSW1wbDhJMmI5MzM1aCt0L0UxSk00?=
- =?utf-8?B?QmxHK216c0RIa3lnbXBmTXdxaXBFM29UWldIRDQ0bDBYcWlwUzVNY1JjYUY4?=
- =?utf-8?B?UXk2NElVZFUyQmhmMkpsaDVsOG5LUWVzRi82UDhldzBpbmpuZmJHc0tJQ01z?=
- =?utf-8?B?YnhSbmZEMkpXdzU3NWpya3pObS9uYU42dkJlOXE1Y3dDWVp3Z1lJSWZVZGo3?=
- =?utf-8?B?WnpiUGFQMlYxbTM0MEFiZDM3U01pWGt3bmxsYWNOd1ByZWFFdEhWV3YvNWFN?=
- =?utf-8?B?SXpvMGxBWGRxempDSWUvbFdiTjBzOTdKMXpCbVE5dVhUcTlMRG9uaHFqYldH?=
- =?utf-8?B?Z2dPZFZOVWxObWJvdHJJdEFvb2w4MWFoaUY1TlM2d0pvRThaWlBoU2dYTG1a?=
- =?utf-8?B?ZDlJYWlqMlRwdG9qS3VWTmRrd0w0R1NpeG1CT0p3QXhBeExIYjBabERiL2dY?=
- =?utf-8?B?NGlTbGNvaWVTd0wrTzZ2c1VULzhvc3AzNCtPKzRXNENSMktmUE5JL3JkUWhE?=
- =?utf-8?B?ZjBkeWJUZ256ODMvZHdXNk9EcXlzYWZRWVRZMldzb0hRWDhFSWJSSWpZUk8w?=
- =?utf-8?B?cnZiV244MVprWkFad2ZhODV1OWF4UTBvbmZ2NitBNGk0dUNod3ZpNXgwdmt6?=
- =?utf-8?B?aXVmTDNFQ3FGei90R1ZhbTBLMDQ5bjBhcE0ydE5kc2MzVW83Z1BEL3I3Z3NO?=
- =?utf-8?B?eGtBWElwM0VyOUpBWFU3WnRkL1ZIOW42QVI2TUF3ZExwYmdPZ3JkM3Rhald2?=
- =?utf-8?B?cVk3MlZ0QUJRbE9OS2k5b3NvblQyUlpKc09sMUZtbWUwVGZ5NHhGRHYvS0xi?=
- =?utf-8?B?NCtUTXNXZGFrdVQ3cmVCMEJEVWhRN3VWZWJDaTMxMWJ0WUpNRXRzRnFFS3py?=
- =?utf-8?B?RDRRNWIvZWtqdWFXTmhVQUk4Z3hRV3djMk82ZTFFSUJ0T0RJZG5yUmczSXRj?=
- =?utf-8?B?VG5rSG5QUVV0VUtIUGFKLzlyVnNRYytRcjZpSFRIVklLNTkzTE5ML1laQnpW?=
- =?utf-8?B?S2x5WDJQdUxtT2VQaDR6b2ptcjhPMDJyZ093aEo4Q2M5d3I4ellHUHdsMjZR?=
- =?utf-8?B?TjA2MHpXNjAwVWpBdFFuc0NXZXpwYUQvZmZjc0l2bEdUcTYxZXR5blk3Q2hK?=
- =?utf-8?B?b0VLcUhjaXE3a0x6dU1ZYVY2eTVPZVllaitBUUVVUk4vMGlxdGh4SGErRThF?=
- =?utf-8?B?L2FvM1dHUHdhSlpNa0hKNlN2RENGOU9wUVhLWWJhZll1SERaYnVrYTQ4WGJy?=
- =?utf-8?B?VVpFMzFwTGpsc21SUVhsOG5BeXQ5amdxZVdmaEZoSXgxTkx5cHFCYXFKckJP?=
- =?utf-8?B?eGg4WlhVQkhxb3JQaEZubWhxM3o2Q0dGamdJYnpzYkViV1pYUVM2TXprTUJQ?=
- =?utf-8?B?RENQSFJ1Y3QvVXNYVzhWU3RlOTM4TE04c0ZlVCtUVVl1cGRxOGljWDdCQnF4?=
- =?utf-8?B?OUl0WHVQSU92R2wrblpZdnpZWjB3RlpZc3VVRGd2RmxwbzBkUmlJVEpKaWpG?=
- =?utf-8?B?cDBuRlhTcjlTajVhVGlwRVRPODVNcThJZytEUWs5dVRSVFg3WHBoN1BUTnp5?=
- =?utf-8?B?QTQyRVVWODRESTNhSnFVQm9XWUJWRGtjT3JLdllIbjJtSnhRUXdYcnVPSmVx?=
- =?utf-8?B?QklMVzhNMXhYVlMyMTBXeVlpNEVINGV2WFd1MHZaNU1pUmNXMXZaSmVoRHMr?=
- =?utf-8?B?aXVPc3BWSUZ2QytSUy9EaWtYcXBKc2FQL2FMMzV6Z29QSnkxdGhlSFljdGVr?=
- =?utf-8?B?ZnhrNWw2ZC9wMysrTGExUDIyUUpyWE1POGdtSDlXK0tKSlJVVEt3amllT3g1?=
- =?utf-8?Q?hIdXC/+x5m0vw3LdKmmDjlandPI21DQ//8JgJ8aaIo=3D?=
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4J5Csf10hNz4xQs
+ for <linuxppc-dev@ozlabs.org>; Sat,  4 Dec 2021 00:12:21 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B3BJCVs032414
+ for <linuxppc-dev@ozlabs.org>; Fri, 3 Dec 2021 13:12:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : from : to : cc
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=Q2SLc1jWqa3Om2O91X6Uzz6dlqCynPycO7YLFKjWGaU=;
+ b=BKTx5dAllCZ6PUKRckaj6XslQeYumL0I0nvjBBEzYuWie1hddt82Nwjz/TfzZ2Eq4lEO
+ 2UdUvMuIIjKOubTpe3K79DTEiarf6l7dcXHjEpPzwfo6hldvPddmMv3zSIRD+ZgROfZb
+ 20aB0CHFB4FdakIDKABbtV8cu45FyU21Qy6IhdQWBVERSwPawjSsjCIzPyg5WXtEdvK5
+ iUESRG0QJsRXAASw3fG9Kh3SZkmGcPo61/9gPlCAF1cisuWAHfJa/VWbptbi32cqVhhs
+ jyU4zVCZJXHQRdKiediEJUuGYCc66brdNxNaRVLmoUeZv3dEPz8WvyZHR+JPPeHCCpv0 NA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cqj8hhxda-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Fri, 03 Dec 2021 13:12:19 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1B3DAHEr020305
+ for <linuxppc-dev@ozlabs.org>; Fri, 3 Dec 2021 13:12:18 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cqj8hhxcu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 Dec 2021 13:12:18 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B3D2Noe021098;
+ Fri, 3 Dec 2021 13:12:16 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma02fra.de.ibm.com with ESMTP id 3ckcaau7hb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 Dec 2021 13:12:16 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1B3DCDEX24445424
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 3 Dec 2021 13:12:13 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 54BC2A405B;
+ Fri,  3 Dec 2021 13:12:13 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5168FA4054;
+ Fri,  3 Dec 2021 13:12:12 +0000 (GMT)
+Received: from [192.168.0.48] (unknown [9.43.11.18])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  3 Dec 2021 13:12:12 +0000 (GMT)
+Subject: [PATCH v3] PCI hotplug: rpaphp: Error out on busy status from
+ get-sensor-state
+From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@ozlabs.org>
+Date: Fri, 03 Dec 2021 18:42:11 +0530
+Message-ID: <163853708110.360679.18375283379078566258.stgit@jupiter>
+User-Agent: StGit/0.23
 Content-Type: text/plain; charset="utf-8"
-Content-ID: <A51B847BA38FF54287AE5876FEAFEAF0@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AnTGDgqJN22-61VhskRcQQ6Ktf1PzYYJ
+X-Proofpoint-GUID: s25SnJuzto8215-L5niaaWG7RQnbo8Pv
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5abda525-ca47-4d5e-a432-08d9b65b4b03
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Dec 2021 12:49:06.5090 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5YKeiSoQON21l5RzDZeKNyloJzYu1CJdE8U4yCtr251vVdw3Belz4kKCYPLWpy/oViask16mTAGzi+NrejYe7LaXs2tKLlEq1CiMVVdQkb8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRXP264MB0726
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-03_06,2021-12-02_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 clxscore=1015
+ adultscore=0 suspectscore=0 mlxlogscore=999 malwarescore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 spamscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112030082
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,97 +123,176 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SGkgTWF4aW1lLA0KDQoNCkxlIDAzLzEyLzIwMjEgw6AgMDE6NDQsIE1heGltZSBCaXpvbiBhIMOp
-Y3JpdMKgOg0KPiANCj4gSGVsbG8gQ2hyaXN0b3BoZSwNCj4gDQo+IEkgaGF2ZSBhIG1wYzgzNDcg
-Ym9hcmQgYm9vdGluZyA1LjE1IGZpbmUsIGJ1dCBpdCBkb2VzIG5vdCBib290IHdpdGgNCj4gQ09O
-RklHX0RFQlVHX1BBR0VBTExPQz15IChhbmQgZW5hYmxlZCkgb3IgIm5vYmF0cyIuDQo+IA0KPiBU
-aG9zZSB0d28gb3B0aW9ucyB3b3JrZWQgZmluZSBvbiBteSBwcmV2aW91cyBrZXJuZWwgKDUuNCkN
-Cj4gDQo+IA0KPiBOb3RoaW5nIGlzIG91dHB1dCBvbiBzZXJpYWwgY29uc29sZSB3aGVuIEkgc2V0
-IHRob3NlIG9wdGlvbnMsIHNvIEkgaGFkDQo+IHRvIGhhY2sgYSBiaXQ6DQo+IA0KPiAxKSB0byBl
-YXNlIGRlYnVnZ2luZywgSSB1c2VkIG1lbT0yNTZNLCBzbyBvbmx5IGEgZmV3IEJBVHMgYXJlIHVz
-ZWQNCj4gDQo+IDIpIEkgaGlqYWNrZWQgQkFUIDcgYW5kIHRoZSB2bSBzcGFjZSBhdCBiMDAweHh4
-eCAobW9kdWxlcywgdW51c2VkIGZvcg0KPiBtZSkgdG8gc2V0IGEgY29uc3RhbnQgbWFwcGluZyBz
-byBteSB1YXJ0IGFsd2F5cyB3b3JrcyAocGF0Y2ggYXR0YWNoZWQNCj4gaW4gY2FzZSkNCj4gDQo+
-IA0KPiBJIGdvdCB0aGlzOg0KPiANCj4gbW11X21hcGluX3JhbTogYmFzZToweDAgdG9wOjB4MTAw
-MDAwMDAgYm9yZGVyOjB4NjAwMDAwDQo+IG1tdV9tYXBpbl9yYW06IHVwZGF0ZWQgYmFzZToweDAg
-dG9wOjB4NjAwMDAwDQo+IHNldGJhdCBpbmRleD0wIHZpcnQ9MHhjMDAwMDAwMCBwaHlzPTB4MCBz
-aXplPTB4NDAwMDAwDQo+IHNldGJhdCBpbmRleD0xIHZpcnQ9MHhjMDQwMDAwMCBwaHlzPTB4NDAw
-MDAwIHNpemU9MHgyMDAwMDANCj4gWyAgICAwLjAwMDAwMF0ga2VybmVsIHRyaWVkIHRvIGV4ZWN1
-dGUgZXhlYy1wcm90ZWN0ZWQgcGFnZSAoYzA2MDA5NDQpIC0gZXhwbG9pdCBhdHRlbXB0PyAodWlk
-OiAwKQ0KPiBbICAgIDAuMDAwMDAwXSBCVUc6IFVuYWJsZSB0byBoYW5kbGUga2VybmVsIGluc3Ry
-dWN0aW9uIGZldGNoDQo+IFsgICAgMC4wMDAwMDBdIEZhdWx0aW5nIGluc3RydWN0aW9uIGFkZHJl
-c3M6IDB4YzA2MDA5NDQNCj4gWyAgICAwLjAwMDAwMF0gVGhyZWFkIG92ZXJyYW4gc3RhY2ssIG9y
-IHN0YWNrIGNvcnJ1cHRlZA0KPiBbICAgIDAuMDAwMDAwXSBPb3BzOiBLZXJuZWwgYWNjZXNzIG9m
-IGJhZCBhcmVhLCBzaWc6IDExIFsjMV0NCj4gWyAgICAwLjAwMDAwMF0gQkUgUEFHRV9TSVpFPTRL
-IERFQlVHX1BBR0VBTExPQw0KPiBbICAgIDAuMDAwMDAwXSBDUFU6IDAgUElEOiAwIENvbW06IHN3
-YXBwZXIgTm90IHRhaW50ZWQgNS4xNS4wKyAjMjM3DQo+IFsgICAgMC4wMDAwMDBdIE5JUDogIGMw
-NjAwOTQ0IExSOiAwMDAwMzM5MCBDVFI6IDAwMDAwMDAwDQo+IFsgICAgMC4wMDAwMDBdIFJFR1M6
-IGMwN2JiZjQwIFRSQVA6IDA0MDAgICBOb3QgdGFpbnRlZCAgKDUuMTUuMCspDQo+IFsgICAgMC4w
-MDAwMDBdIE1TUjogIDIwMDAxMDMyIDxNRSxJUixEUixSST4gIENSOiA0ODIyMjQ0NCAgWEVSOiAy
-MDAwMDAwMA0KPiBbICAgIDAuMDAwMDAwXQ0KPiBbICAgIDAuMDAwMDAwXSBHUFIwMDogYzAwMDMz
-NjQgYzA3YmJmZjAgYzA3MDc1ODAgYzA2MDA5NDQgMDAwMDEwMzIgMDAwMDAwMDAgYzA3N2RjOGMg
-MDAwMDAwMDANCj4gWyAgICAwLjAwMDAwMF0gR1BSMDg6IGMwN2QwMDAwIDAwMDAwMDAxIGMwN2Qw
-MDAwIGZmZmZmZmZmIDg4MjIyNDQ0IDAwMDAwMDAwIDNmZjljNWYwIDNmZmZkNzljDQo+IFsgICAg
-MC4wMDAwMDBdIEdQUjE2OiAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAw
-MDAwMCAwMDAwMDAwMCAwMDAwMDAwMCAwMDAwMDAwMA0KPiBbICAgIDAuMDAwMDAwXSBHUFIyNDog
-MDAwMDAwMDAgMDAwMDAwMDAgNDAwMDAwMDAgM2ZmOWM1ZDggMDNmZmIwMDAgMDAwMDAwMDAgM2Zm
-ZmU0ZDQgMDNmZmIwMDANCj4gWyAgICAwLjAwMDAwMF0gTklQIFtjMDYwMDk0NF0gc3RhcnRfa2Vy
-bmVsKzB4MC8weDYwMA0KPiBbICAgIDAuMDAwMDAwXSBMUiBbMDAwMDMzOTBdIDB4MzM5MA0KPiBb
-ICAgIDAuMDAwMDAwXSBDYWxsIFRyYWNlOg0KPiBbICAgIDAuMDAwMDAwXSBbYzA3YmJmZjBdIFtj
-MDAwMzM2NF0gc3RhcnRfaGVyZSsweDRjLzB4OTAgKHVucmVsaWFibGUpDQo+IFsgICAgMC4wMDAw
-MDBdIEluc3RydWN0aW9uIGR1bXA6DQo+IFsgICAgMC4wMDAwMDBdIDgzZTEwMDBjIDdjMDgwM2E2
-IDM4MjEwMDEwIDRlODAwMDIwIDRlODAwMDIwIDRiYTA1YmI4IDRlODAwMDIwIDRlODAwMDIwDQo+
-IFsgICAgMC4wMDAwMDBdIDRlODAwMDIwIDRlODAwMDIwIDRlODAwMDIwIDRlODAwMDIwIDw5NDIx
-ZmZjMD4gM2M2MGMwNzAgN2MwODAyYTYgMzg2Mzc1ODANCj4gWyAgICAwLjAwMDAwMF0gcmFuZG9t
-OiBnZXRfcmFuZG9tX2J5dGVzIGNhbGxlZCBmcm9tIG9vcHNfZXhpdCsweDQ0LzB4ODQgd2l0aCBj
-cm5nX2luaXQ9MA0KPiBbICAgIDAuMDAwMDAwXSAtLS1bIGVuZCB0cmFjZSAwMDAwMDAwMDAwMDAw
-MDAwIF0tLS0NCj4gWyAgICAwLjAwMDAwMF0NCj4gWyAgICAwLjAwMDAwMF0gS2VybmVsIHBhbmlj
-IC0gbm90IHN5bmNpbmc6IEZhdGFsIGV4Y2VwdGlvbg0KPiBbICAgIDAuMDAwMDAwXSBSZWJvb3Rp
-bmcgaW4gMzAgc2Vjb25kcy4uDQo+IA0KPiANCj4gDQo+IEl0IGdldHMgYSBwYWdlIGZhdWx0IHdo
-ZW4ganVtcGluZyBvbiBzdGFydF9rZXJuZWwoKSwgaXQgc2VlbXMgdGhlDQo+IGluaXQudGV4dCBz
-ZWN0aW9uIGlzIG5vdCBtYXBwZWQsIGF0IGxlYXN0IG5vdCBpbiBleGVjdXRlLg0KPiANCj4gZGVi
-dWdfcGFnZWFsbG9jX2VuYWJsZWQgY2hhbmdlcyBiZWhhdmlvdXIgb2YgbW11X21hcGluX3JhbSgp
-LCBpdCB3aWxsDQo+IG1hcCBvbmx5IHVwIHRvIF9faW5pdF9iZWdpbiB3aXRoIEJBVHMsIGFuZCB1
-c2UgcGFnZSBtYXBwaW5ncyBmb3IgdGhlDQo+IHJlbWluZGVyLg0KPiANCj4gbXkgZGVidWcgcHJp
-bnRzIGNvbmZpcm0gdGhhdCBpdCBzZWVtcyB0byBkbyBhIGNvcnJlY3Qgam9iIGF0IGl0LCBJJ3Zl
-DQo+IGFsc28gdmVyaWZpZWQgdGhhdCBfX21hcGluX3JhbV9jaHVuaygpIHdhcyBpbmRlZWQgbWFw
-cGluZyB0aGUgd2hpbGUNCj4gaW5pdC50ZXh0IGFyZWEgd2l0aCBwcm90PVBBR0VfS0VSTkVMX1RF
-WFQNCj4gDQo+IGJ1dCBpdCdzIGFzIGlmIHRob3NlIHBhZ2UgbWFwcGluZ3MgaGFkIG5vIGVmZmVj
-dCBhdCBhbGwsIGFuZCBJIGFtIG5vdA0KPiBmYW1pbGlhciB3aXRoIFBQQyBNTVUgdG8gZGlnIGZ1
-cnRoZXINCj4gDQo+IFNpbXBseSBjaGFuZ2luZyBtbXVfbWFwaW5fcmFtKCkgdG8gbm90IHRvIGVu
-dGVyIHRoZSAiaWYNCj4gZGVidWdfcGFnZWFsbG9jX2VuYWJsZWRfb3Jfa2ZlbmNlKCkiIG1ha2Vz
-IHRoZSBrZXJuZWwgYm9vdCBmaW5lLg0KPiANCj4gSWYgeW91IGhhdmUgYW55IGd1aWRhbmNlIHRo
-YXQgd291bGQgYmUgYXBwcmVjaWF0ZWQNCj4gDQoNClRoYW5rcyBmb3IgdGhlIHJlcG9ydC4NCg0K
-VGhpcyBwcm9ibGVtIGRvZXNuJ3QgaGFwcGVuIG9uIHBvd2VybWFjIG9uIFFFTVUuDQpJIHdhcyBh
-YmxlIHRvIHJlcHJvZHVjZSB0aGlzIHByb2JsZW0gb24gYW4gbXBjODMyMSBib2FyZC4NCg0KSXQg
-aGFwcGVucyB3aGVuIENPTkZJR19NT0RVTEVTIGlzIG5vdCBkZWZpbmVkLCBpbiB0aGF0IGNhc2Ug
-dGhlIA0KSW5zdHJ1Y3Rpb24gVExCIG1pc3MgZXhjZXB0aW9uIGhhbmRsZXIgZG9lc24ndCBleHBl
-Y3Qgc3VjaCBleGNlcHRpb24gYXQgDQphbGwgYmVjYXVzZSBhbGwga2VybmVsIHRleHQgaXMgZXhw
-ZWN0ZWQgdG8gYmUgbWFwcGVkIHdpdGggSUJBVHMuIA0KSG93ZXZlciwgZHVlIHRvIERFQlVHUEFH
-RV9BTExPQywgb25seSBtYWluIHRleHQgaXMgbWFwcGVkIHdpdGggQkFUcywgbm90IA0KaW5pdHRl
-eHQuIFRoYXQncyBhIG1pc3Rha2UuIGluaXR0ZXh0IHNob3VsZCBzdGlsbCBiZSBtYXBwZWQgd2l0
-aCBCQVRzLg0KDQpXaGVuIENPTkZJR19NT0RVTEVTIGlzIHNldCBpdCB3b3Jrcy4NCg0KT25lIHdh
-eSB0byBmaXggaXQgaXMgdG8gZHJvcCB0aGlzIENPTkZJR19NT0RVTEVTICNpZmRlZnMgaW4gaW5z
-dHJ1Y3Rpb24gDQpUTEIgbWlzcyBoYW5kbGVyIChJbiBrZXJuZWwvaGVhZF9ib29rM3NfMzIuUyks
-IGJ1dCB0aGF0IHdvdWxkIGtpbGwgDQpwZXJmb3JtYW5jZSBmb3IganVzdCB0aGUgc2FrZSBpbml0
-Lg0KDQpBbm90aGVyIHdheSB0byBmaXggaXQgaXMgdG8gc2V0IGFuIElCQVQgY292ZXJyaW5nIHVw
-IHRvIF9laW5pdHRleHQuIFRoaXMgDQpJQkFUIHNob3VsZCBiZSByZW1vdmVkIGJ5IG1hcmtfaW5p
-dG1lbV9ueCgpIGF0IHRoZSBlbmQgb2YgaW5pdCAuLi4gYnV0IA0KLi4uIGl0IGxvb2tzIGxpa2Ug
-d2UgaGF2ZSBhIHByb2JsZW0gdGhlcmUgYXMgd2VsbDogYXMgd2UgaGF2ZSBub3QgbWFwcGVkIA0K
-X3Npbml0dGV4dCBieSBEQkFUcywgbW11X21hcmtfaW5pdG1lbV9ueCgpIGlzIG5vdCBjYWxsZWQu
-DQpBbHNvLCBhcyB3ZSBhcmUgc2V0dGluZyBhbiBJQkFULCB3ZSBzaG91ZG4ndCBzZXQgdGhlIHBh
-Z2VzIGV4ZWN1dGFibGUsIA0KYXQgbGVhc3QgWCBiaXQgc2hvdWxkIGJlIGNsZWFyZWQuIEJ1dCB0
-aGUgd2F5IGl0IGlzIGRvbmUsIGlmIHdlIGNhbGwgDQptYXJrX2luaXRtZW1fbngoKSB0aGVuIG1h
-cmtfaW5pdG1lbV9ueCgpIHdvdWxkIGNhbGwgc2V0X21lbW9yeV9hdHRyKCkgdG8gDQpjbGVhciBY
-IGJpdCBmcm9tIHRoZSBwYWdlcy4gQXQgdGhlIGVuZCBpdCdzIG5vdCBhIHByb2JsZW0gYmVjYXVz
-ZSB0aGUgDQprZXJuZWwgc2VnbWVudHMgYXJlIG1hcmtlZCBOWCwgYnV0IGl0J3Mgbm90IGNsZWFu
-Lg0KDQpTbyBhdCB0aGUgZW5kIGl0IHNlZW1zIHRvIGJlIGEgbWVzcyBhcm91bmQgREVCVUdQQUdF
-X0FMTE9DIGFuZCANClNUUklDVF9LRVJORUxfUldYLiBBbGwgdGhpcyBiZWluZyBhbXBsaWZpZWQg
-YnkgdGhvc2UgJ25vYmF0cycgYW5kIA0KJ25vbHRsYnMnIG9wdGlvbnMgdGhhdCBhcmUgcG9pbnRs
-ZXNzIGZyb20gYSBmdW5jdGlvbm5hbCBwb2ludCBvZiB2aWV3Lg0KDQpJIG5lZWQgdG8gdGhpbmsg
-YSBiaXQgbW9yZSBhYm91dCBpdCB0byBmaW5kIHRoZSBjbGVhbmVzdCBzb2x1dGlvbiB0aGF0IA0K
-d29ya3MgZm9yIGFsbCBwbGF0Zm9ybXMuDQoNCkNocmlzdG9waGU=
+When certain PHB HW failure causes phyp to recover PHB, it marks the PE
+state as temporarily unavailable until recovery is complete. This also
+triggers an EEH handler in Linux which needs to notify drivers, and perform
+recovery. But before notifying the driver about the pci error it uses
+get_adapter_state()->get-sesnor-state() operation of the hotplug_slot to
+determine if the slot contains a device or not. if the slot is empty, the
+recovery is skipped entirely.
+
+However on certain PHB failures, the rtas call get-sesnor-state() returns
+extended busy error (9902) until PHB is recovered by phyp. Once PHB is
+recovered, the get-sensor-state() returns success with correct presence
+status. The rtas call interface rtas_get_sensor() loops over the rtas call
+on extended delay return code (9902) until the return value is either
+success (0) or error (-1). This causes the EEH handler to get stuck for ~6
+seconds before it could notify that the pci error has been detected and
+stop any active operations. Hence with running I/O traffic, during this 6
+seconds, the network driver continues its operation and hits a timeout
+(netdev watchdog). On timeouts, network driver go into ffdc capture mode
+and reset path assuming the PCI device is in fatal condition. This
+sometimes causes EEH recovery to fail. This impacts the ssh connection and
+leads to the system being inaccessible.
+
+------------
+[52732.244731] DEBUG: ibm_read_slot_reset_state2()
+[52732.244762] DEBUG: ret = 0, rets[0]=5, rets[1]=1, rets[2]=4000, rets[3]=>
+[52732.244798] DEBUG: in eeh_slot_presence_check
+[52732.244804] DEBUG: error state check
+[52732.244807] DEBUG: Is slot hotpluggable
+[52732.244810] DEBUG: hotpluggable ops ?
+[52732.244953] DEBUG: Calling ops->get_adapter_status
+[52732.244958] DEBUG: calling rpaphp_get_sensor_state
+[52736.564262] ------------[ cut here ]------------
+[52736.564299] NETDEV WATCHDOG: enP64p1s0f3 (tg3): transmit queue 0 timed o>
+[52736.564324] WARNING: CPU: 1442 PID: 0 at net/sched/sch_generic.c:478 dev>
+[...]
+[52736.564505] NIP [c000000000c32368] dev_watchdog+0x438/0x440
+[52736.564513] LR [c000000000c32364] dev_watchdog+0x434/0x440
+------------
+
+To avoid this issue, fix the pci hotplug driver (rpaphp) to return an error
+if the slot presence state can not be detected immediately. Current
+implementation uses rtas_get_sensor() API which blocks the slot check state
+until rtas call returns success. Change rpaphp_get_sensor_state() to invoke
+rtas_call(get-sensor-state) directly and take actions based on rtas return
+status. This patch now errors out immediately on busy return status from
+rtas_call.
+
+Please note that, only on certain PHB failures, the slot presence check
+returns BUSY condition. In normal cases it returns immediately with a
+correct presence state value. Hence this change has no impact on normal pci
+dlpar operations.
+
+Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+---
+Change in V3:
+- Invoke rtas_call(get-sensor-state) directly from
+  rpaphp_get_sensor_state() directly and do special handling.
+- See v2 at
+  https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-November/237336.html
+
+Change in V2:
+- Alternate approach to fix the EEH issue instead of delaying slot presence
+  check proposed at
+  https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-November/236956.html
+
+Also refer:
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-November/237027.html
+---
+ drivers/pci/hotplug/rpaphp_pci.c |   64 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 58 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/pci/hotplug/rpaphp_pci.c b/drivers/pci/hotplug/rpaphp_pci.c
+index c380bdacd1466..57ec1a72b24aa 100644
+--- a/drivers/pci/hotplug/rpaphp_pci.c
++++ b/drivers/pci/hotplug/rpaphp_pci.c
+@@ -18,15 +18,65 @@
+ #include "../pci.h"		/* for pci_add_new_bus */
+ #include "rpaphp.h"
+ 
++/*
++ * RTAS call get-sensor-state(DR_ENTITY_SENSE) return values as per PAPR:
++ *    -1: Hardware Error
++ *    -2: RTAS_BUSY
++ *    -3: Invalid sensor. RTAS Parameter Error.
++ * -9000: Need DR entity to be powered up and unisolated before RTAS call
++ * -9001: Need DR entity to be powered up, but not unisolated, before RTAS call
++ * -9002: DR entity unusable
++ *  990x: Extended delay - where x is a number in the range of 0-5
++ */
++#define RTAS_HARDWARE_ERROR	-1
++#define RTAS_INVALID_SENSOR	-3
++#define SLOT_UNISOLATED		-9000
++#define SLOT_NOT_UNISOLATED	-9001
++#define SLOT_NOT_USABLE		-9002
++
++static int rtas_to_errno(int rtas_rc)
++{
++	int rc;
++
++	switch (rtas_rc) {
++	case RTAS_HARDWARE_ERROR:
++		rc = -EIO;
++		break;
++	case RTAS_INVALID_SENSOR:
++		rc = -EINVAL;
++		break;
++	case SLOT_UNISOLATED:
++	case SLOT_NOT_UNISOLATED:
++		rc = -EFAULT;
++		break;
++	case SLOT_NOT_USABLE:
++		rc = -ENODEV;
++		break;
++	case RTAS_BUSY:
++	case RTAS_EXTENDED_DELAY_MIN...RTAS_EXTENDED_DELAY_MAX:
++		rc = -EBUSY;
++		break;
++	default:
++		err("%s: unexpected RTAS error %d\n", __func__, rtas_rc);
++		rc = -ERANGE;
++		break;
++	}
++	return rc;
++}
++
+ int rpaphp_get_sensor_state(struct slot *slot, int *state)
+ {
++	int token = rtas_token("get-sensor-state");
+ 	int rc;
+ 	int setlevel;
+ 
+-	rc = rtas_get_sensor(DR_ENTITY_SENSE, slot->index, state);
++	if (token == RTAS_UNKNOWN_SERVICE)
++		return -ENOENT;
++
++	rc = rtas_call(token, 2, 2, state, DR_ENTITY_SENSE, slot->index);
+ 
+ 	if (rc < 0) {
+-		if (rc == -EFAULT || rc == -EEXIST) {
++		if (rc == SLOT_UNISOLATED  || rc == SLOT_NOT_UNISOLATED) {
+ 			dbg("%s: slot must be power up to get sensor-state\n",
+ 			    __func__);
+ 
+@@ -38,15 +88,17 @@ int rpaphp_get_sensor_state(struct slot *slot, int *state)
+ 			if (rc < 0) {
+ 				dbg("%s: power on slot[%s] failed rc=%d.\n",
+ 				    __func__, slot->name, rc);
+-			} else {
+-				rc = rtas_get_sensor(DR_ENTITY_SENSE,
+-						     slot->index, state);
++				return rc;
+ 			}
+-		} else if (rc == -ENODEV)
++			rc = rtas_call(token, 2, 2, state, DR_ENTITY_SENSE,
++				       slot->index);
++		} else if (rc == SLOT_NOT_USABLE)
+ 			info("%s: slot is unusable\n", __func__);
+ 		else
+ 			err("%s failed to get sensor state\n", __func__);
+ 	}
++	if (rc)
++		rc = rtas_to_errno(rc);
+ 	return rc;
+ }
+ 
+
+
