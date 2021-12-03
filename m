@@ -2,35 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE09467574
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 11:44:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A20594676D3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 12:53:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J58ZX5hHkz3cQs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 21:44:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J5B734NbCz3cPf
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 22:53:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=amit.kachhap@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4J58Z61P7Dz2yYS
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Dec 2021 21:43:39 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F311A15AD;
- Fri,  3 Dec 2021 02:43:36 -0800 (PST)
-Received: from a077416.arm.com (unknown [10.163.33.180])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1539C3F5A1;
- Fri,  3 Dec 2021 02:43:32 -0800 (PST)
-From: Amit Daniel Kachhap <amit.kachhap@arm.com>
-To: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 11/14] powerpc/crash_dump: Use the new interface
- copy_oldmem_page_buf
-Date: Fri,  3 Dec 2021 16:12:28 +0530
-Message-Id: <20211203104231.17597-12-amit.kachhap@arm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20211203104231.17597-1-amit.kachhap@arm.com>
-References: <20211203104231.17597-1-amit.kachhap@arm.com>
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J5B6d2KTbz2xnb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Dec 2021 22:53:29 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4J5B6Y3zCCz4xR9;
+ Fri,  3 Dec 2021 22:53:25 +1100 (AEDT)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: benh@kernel.crashing.org, chunkeey@gmail.com, gregkh@linuxfoundation.org,
+ hurricos@gmail.com, chenhui.zhao@freescale.com, stable@vger.kernel.org,
+ Xiaoming Ni <nixiaoming@huawei.com>, wangle6@huawei.com,
+ linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, oss@buserror.net,
+ paulus@samba.org, chenjianguo3@huawei.com, linux-kernel@vger.kernel.org,
+ liuwenliang@huawei.com, Yuantian.Tang@feescale.com,
+ paul.gortmaker@windriver.com
+In-Reply-To: <20211126041153.16926-1-nixiaoming@huawei.com>
+References: <5f56f1af-9404-21fa-eda0-05a75d769427@huawei.com>
+ <20211126041153.16926-1-nixiaoming@huawei.com>
+Subject: Re: [PATCH] powerpc/85xx: fix oops when CONFIG_FSL_PMC=n
+Message-Id: <163853238100.2903976.13035103513287667638.b4-ty@ellerman.id.au>
+Date: Fri, 03 Dec 2021 22:53:01 +1100
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,96 +49,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>, kexec <kexec@lists.infradead.org>,
- Amit Daniel Kachhap <amit.kachhap@arm.com>, Paul Mackerras <paulus@samba.org>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Vincenzo Frascino <Vincenzo.Frascino@arm.com>,
- linuxppc <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The current interface copy_oldmem_page() passes user pointer without
-__user annotation and hence does unnecessary user/kernel pointer
-conversions during its implementation.
+On Fri, 26 Nov 2021 12:11:53 +0800, Xiaoming Ni wrote:
+> When CONFIG_FSL_PMC is set to n, no value is assigned to cpu_up_prepare
+>  in the mpc85xx_pm_ops structure. As a result, oops is triggered in
+>  smp_85xx_start_cpu().
+> 
+> 	[    0.627233] smp: Bringing up secondary CPUs ...
+> 	[    0.681659] kernel tried to execute user page (0) - exploit attempt? (uid: 0)
+> 	[    0.766618] BUG: Unable to handle kernel instruction fetch (NULL pointer?)
+> 	[    0.848899] Faulting instruction address: 0x00000000
+> 	[    0.908273] Oops: Kernel access of bad area, sig: 11 [#1]
+> 	...
+> 	[    1.758220] NIP [00000000] 0x0
+> 	[    1.794688] LR [c0021d2c] smp_85xx_kick_cpu+0xe8/0x568
+> 	[    1.856126] Call Trace:
+> 	[    1.885295] [c1051da8] [c0021cb8] smp_85xx_kick_cpu+0x74/0x568 (unreliable)
+> 	[    1.968633] [c1051de8] [c0011460] __cpu_up+0xc0/0x228
+> 	[    2.029038] [c1051e18] [c0031bbc] bringup_cpu+0x30/0x224
+> 	[    2.092572] [c1051e48] [c0031f3c] cpu_up.constprop.0+0x180/0x33c
+> 	[    2.164443] [c1051e88] [c00322e8] bringup_nonboot_cpus+0x88/0xc8
+> 	[    2.236326] [c1051eb8] [c07e67bc] smp_init+0x30/0x78
+> 	[    2.295698] [c1051ed8] [c07d9e28] kernel_init_freeable+0x118/0x2a8
+> 	[    2.369641] [c1051f18] [c00032d8] kernel_init+0x14/0x124
+> 	[    2.433176] [c1051f38] [c0010278] ret_from_kernel_thread+0x14/0x1c
+> 
+> [...]
 
-Use the interface copy_oldmem_page_buf() to avoid this issue.
+Applied to powerpc/fixes.
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc <linuxppc-dev@lists.ozlabs.org>
-Signed-off-by: Amit Daniel Kachhap <amit.kachhap@arm.com>
----
- arch/powerpc/kernel/crash_dump.c | 33 ++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+[1/1] powerpc/85xx: fix oops when CONFIG_FSL_PMC=n
+      https://git.kernel.org/powerpc/c/3dc709e518b47386e6af937eaec37bb36539edfd
 
-diff --git a/arch/powerpc/kernel/crash_dump.c b/arch/powerpc/kernel/crash_dump.c
-index 5693e1c67c2b..a1c8a3a11694 100644
---- a/arch/powerpc/kernel/crash_dump.c
-+++ b/arch/powerpc/kernel/crash_dump.c
-@@ -68,33 +68,34 @@ void __init setup_kdump_trampoline(void)
- }
- #endif /* CONFIG_NONSTATIC_KERNEL */
- 
--static size_t copy_oldmem_vaddr(void *vaddr, char *buf, size_t csize,
--                               unsigned long offset, int userbuf)
-+static size_t copy_oldmem_vaddr(void *vaddr, char __user *ubuf, char *kbuf,
-+				size_t csize, unsigned long offset)
- {
--	if (userbuf) {
--		if (copy_to_user((char __user *)buf, (vaddr + offset), csize))
-+	if (ubuf) {
-+		if (copy_to_user(ubuf, (vaddr + offset), csize))
- 			return -EFAULT;
- 	} else
--		memcpy(buf, (vaddr + offset), csize);
-+		memcpy(kbuf, (vaddr + offset), csize);
- 
- 	return csize;
- }
- 
- /**
-- * copy_oldmem_page - copy one page from "oldmem"
-+ * copy_oldmem_page_buf - copy one page from "oldmem"
-  * @pfn: page frame number to be copied
-- * @buf: target memory address for the copy; this can be in kernel address
-- *      space or user address space (see @userbuf)
-+ * @ubuf: target user memory address for the copy; use copy_to_user() if this
-+ * address is present
-+ * @kbuf: target kernel memory address for the copy; use memcpy() if this
-+ * address is present
-  * @csize: number of bytes to copy
-  * @offset: offset in bytes into the page (based on pfn) to begin the copy
-- * @userbuf: if set, @buf is in user address space, use copy_to_user(),
-- *      otherwise @buf is in kernel address space, use memcpy().
-  *
-- * Copy a page from "oldmem". For this page, there is no pte mapped
-- * in the current kernel. We stitch up a pte, similar to kmap_atomic.
-+ * Copy a page from "oldmem" into buffer pointed by either @ubuf or @kbuf. For
-+ * this page, there is no pte mapped in the current kernel. We stitch up a pte,
-+ * similar to kmap_atomic.
-  */
--ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
--			size_t csize, unsigned long offset, int userbuf)
-+ssize_t copy_oldmem_page_buf(unsigned long pfn, char __user *ubuf, char *kbuf,
-+			     size_t csize, unsigned long offset)
- {
- 	void  *vaddr;
- 	phys_addr_t paddr;
-@@ -107,10 +108,10 @@ ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
- 
- 	if (memblock_is_region_memory(paddr, csize)) {
- 		vaddr = __va(paddr);
--		csize = copy_oldmem_vaddr(vaddr, buf, csize, offset, userbuf);
-+		csize = copy_oldmem_vaddr(vaddr, ubuf, kbuf, csize, offset);
- 	} else {
- 		vaddr = ioremap_cache(paddr, PAGE_SIZE);
--		csize = copy_oldmem_vaddr(vaddr, buf, csize, offset, userbuf);
-+		csize = copy_oldmem_vaddr(vaddr, ubuf, kbuf, csize, offset);
- 		iounmap(vaddr);
- 	}
- 
--- 
-2.17.1
-
+cheers
