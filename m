@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D9646777C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 13:34:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CDE467794
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 13:41:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J5C2K49v8z308v
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 23:34:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J5CBQ4YpPz304j
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Dec 2021 23:41:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=oGNN2kp/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YUqgyVMK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,39 +17,36 @@ Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J5C1j5mzMz2yP3
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Dec 2021 23:34:17 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J5C9q0Wkdz2yP3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Dec 2021 23:41:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=oGNN2kp/; 
+ header.a=rsa-sha256 header.s=201909 header.b=YUqgyVMK; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4J5C1j2B1nz4xYy;
- Fri,  3 Dec 2021 23:34:17 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4J5C9p2CMYz4xcB;
+ Fri,  3 Dec 2021 23:41:18 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1638534857;
- bh=XMxLd4ajAAbZtPcPQhc1mQbBj4Ot7fREpSHIUjxETbw=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=oGNN2kp/n29cpg9kZktTIdhzJBefYIoF0kLALMYnFcrT1jelcNrP2tTZtgL4YvArF
- MFwoRO0ub7Q9nqaxJmHChKkuTi9ySOu+I2FzO0sDvKqJI9/QvMmh3sYOjDmzofbFKy
- uYZXaCZdnb/EtCmJZd2L6Gcu+ZQKyrmFnw0S3Wu/szC6tWrNVPZHZkJceT45NVrBe9
- t4U/CGqGMfx9V+SLzTNAp681wmE1nwYE/fzIg4D7Npfw5AXUVi5bvXFteDppgIqxcT
- sEnNarDHEYCi2gIwSy2fqALgbznNj7fIy9G09W6jC0Q0ATqzIvsDi5+H0kXnvVQ+MV
- z1Bvq+hVUeYgA==
+ s=201909; t=1638535278;
+ bh=wZqkehbaUBbKFTds6K0Dc8aARZno9NAyRgPmB2UGgIk=;
+ h=From:To:Cc:Subject:Date:From;
+ b=YUqgyVMKD7QyJQB3Vvks/BFwPB3SAXUvvJmMr139kNTqhSOB3TX/UKkHtzv2MhQ4N
+ 3yuqyMCsoRP3YZQ95txpu92ZgoiIgn/fCb4OGvqILCPDFEzRtk04y8llPqSeHfcbOP
+ 4k43gf/o+M5yUuWPM6sXjK1jgoNIOW5kwLMB+jFkKDheAbdw0CDAv5OgkxnlAkao0+
+ +vUjLJ7PK/DJ8Co//L1vYWkevhOrbz+24KFsM36Kpqm7t5AZ1boVGutgVb/DU7yWCp
+ Hq06BAIL344Erv2fV1qNwgZAr7BfwjUQr8nJWTkrfVxjTZDOe3eDBBM8ShTaekEV99
+ R2/AskKBiAY4Q==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v6 17/18] powerpc/64s: Move hash MMU support code under
- CONFIG_PPC_64S_HASH_MMU
-In-Reply-To: <20211201144153.2456614-18-npiggin@gmail.com>
-References: <20211201144153.2456614-1-npiggin@gmail.com>
- <20211201144153.2456614-18-npiggin@gmail.com>
-Date: Fri, 03 Dec 2021 23:34:16 +1100
-Message-ID: <87v905oojb.fsf@mpe.ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/ptdump: Fix DEBUG_WX since generic ptdump conversion
+Date: Fri,  3 Dec 2021 23:41:12 +1100
+Message-Id: <20211203124112.2912562-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,25 +58,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-> index 4d97d1525d49..d765d972566b 100644
-> --- a/arch/powerpc/mm/book3s64/pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/pgtable.c
-> @@ -534,7 +534,7 @@ static int __init pgtable_debugfs_setup(void)
->  }
->  arch_initcall(pgtable_debugfs_setup);
->  
-> -#ifdef CONFIG_ZONE_DEVICE
-> +#if defined(CONFIG_ZONE_DEVICE) && defined(ARCH_HAS_MEMREMAP_COMPAT_ALIGN)
-                                              ^
-                                              This needs "CONFIG_"
+In note_prot_wx() we bail out without reporting anything if
+CONFIG_PPC_DEBUG_WX is disabled.
 
-I fixed it up when applying.
+But CONFIG_PPC_DEBUG_WX was removed in the conversion to generic ptdump,
+we now need to use CONFIG_DEBUG_WX instead.
 
-cheers
+Fixes: e084728393a5 ("powerpc/ptdump: Convert powerpc to GENERIC_PTDUMP")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/mm/ptdump/ptdump.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
+index 031956d0ee84..be120e09aa3e 100644
+--- a/arch/powerpc/mm/ptdump/ptdump.c
++++ b/arch/powerpc/mm/ptdump/ptdump.c
+@@ -183,7 +183,7 @@ static void note_prot_wx(struct pg_state *st, unsigned long addr)
+ {
+ 	pte_t pte = __pte(st->current_flags);
+ 
+-	if (!IS_ENABLED(CONFIG_PPC_DEBUG_WX) || !st->check_wx)
++	if (!IS_ENABLED(CONFIG_DEBUG_WX) || !st->check_wx)
+ 		return;
+ 
+ 	if (!pte_write(pte) || !pte_exec(pte))
+-- 
+2.31.1
+
