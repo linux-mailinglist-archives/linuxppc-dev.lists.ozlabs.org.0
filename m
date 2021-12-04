@@ -2,51 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A70E14687AA
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Dec 2021 22:41:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04187468822
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Dec 2021 23:48:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J636M4fXCz3cVj
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Dec 2021 08:41:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J64cL6KFhz305L
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Dec 2021 09:48:50 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B9+Gc1yp;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=srs.iliad.fr (client-ip=212.27.33.1; helo=ns.iliad.fr;
- envelope-from=srs0=d/ltdb=qv=freebox.fr=mbizon@srs.iliad.fr;
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=139.178.84.217;
+ helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 301 seconds by postgrey-1.36 at boromir;
- Sun, 05 Dec 2021 01:15:42 AEDT
-Received: from ns.iliad.fr (ns.iliad.fr [212.27.33.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J5sDG5s01z2xsZ
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Dec 2021 01:15:42 +1100 (AEDT)
-Received: from ns.iliad.fr (localhost [127.0.0.1])
- by ns.iliad.fr (Postfix) with ESMTP id 12B2F2022B;
- Sat,  4 Dec 2021 15:10:33 +0100 (CET)
-Received: from sakura (freebox.vlq16.iliad.fr [213.36.7.13])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=B9+Gc1yp; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J64bW5dHQz2xtW
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Dec 2021 09:48:07 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ns.iliad.fr (Postfix) with ESMTPS id 0592C20216;
- Sat,  4 Dec 2021 15:10:33 +0100 (CET)
-Date: Sat, 4 Dec 2021 15:10:31 +0100
-From: Maxime Bizon <mbizon@freebox.fr>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: Fail to boot 5.15 on mpc8347 with either debug_pagealloc or nobats
-Message-ID: <20211204141031.GA23757@sakura>
-References: <f23763d551e65d4a225ba13c7898f83853c2aeaf.camel@freebox.fr>
- <68bf4c39-53ce-f88f-383f-5defb1a36b1c@csgroup.eu>
- <913068d2c368c80f89d6f9575d6b41e6fab48ae2.camel@freebox.fr>
- <c7b4ef55-1deb-41f6-58cc-f8dc4477e90c@csgroup.eu>
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 19FBB60F43
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Dec 2021 22:48:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 81AAEC341C2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Dec 2021 22:48:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1638658083;
+ bh=xHVLniYkiQC011+OBpG5B8C1BehuCfxpbZngUl6TPuU=;
+ h=From:To:Subject:Date:From;
+ b=B9+Gc1ypUvyZcYoZFChqV6aBNBc2jRRahqCOKtB6T2gxvUGCM1qg1jWuZ1WdF5s1V
+ n8RRow0nOldnYUXZJfx8wpDzDjM3tO6AJFNINq63uR/wEAe1D5uh260WvZgSVxqYks
+ deAC8xpxNHb+pUIQp1a7VtQsbHKsWdEdu0lhUxMBBK6Jc8QJ9ZVK/LJN1z6A18D0TM
+ GOLMI66zkQGTx0sOTCeXJx5Ij5AJv+CC0xl4yTO6LwJykuzlhuMLFQbGgjEKiJVYfH
+ Bz4LufgXbT2SYK/D1fwIvAJAx31Igi5eqGiFDxVyjlnsbAIbTcDBVSiBwuhXhQVCuF
+ XWiyqUB3l7KFw==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id 57DB361005; Sat,  4 Dec 2021 22:48:03 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 215217] New: Kernel fails to boot at an early stage when built
+ with GCC_PLUGIN_LATENT_ENTROPY=y (PowerMac G4 3,6)
+Date: Sat, 04 Dec 2021 22:48:03 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version
+ cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
+ priority component assigned_to reporter cc cf_regression attachments.created
+Message-ID: <bug-215217-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c7b4ef55-1deb-41f6-58cc-f8dc4477e90c@csgroup.eu>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ;
- Sat Dec  4 15:10:33 2021 +0100 (CET)
-X-Mailman-Approved-At: Sun, 05 Dec 2021 08:40:32 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,71 +83,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215217
 
-On Saturday 04 Dec 2021 à 10:01:07 (+0000), Christophe Leroy wrote:
+            Bug ID: 215217
+           Summary: Kernel fails to boot at an early stage when built with
+                    GCC_PLUGIN_LATENT_ENTROPY=3Dy (PowerMac G4 3,6)
+           Product: Platform Specific/Hardware
+           Version: 2.5
+    Kernel Version: 5.16-rc3
+          Hardware: PPC-32
+                OS: Linux
+              Tree: Mainline
+            Status: NEW
+          Severity: normal
+          Priority: P1
+         Component: PPC-32
+          Assignee: platform_ppc-32@kernel-bugs.osdl.org
+          Reporter: erhard_f@mailbox.org
+                CC: christophe.leroy@csgroup.eu
+        Regression: No
 
-> In fact BAT4 is wrong. Both virtual and physical address of a 64M BAT 
-> must be 64M aligned. I think the display is wrong as well (You took it
+Created attachment 299871
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D299871&action=3Dedit
+kernel .config (5.16-rc3, PowerMac G4 DP)
 
-oh so hardware does simple bitmask after all
+Get this on my PowerMac G4 DP when I build a kernel with
+GCC_PLUGIN_LATENT_ENTROPY=3Dy. The kernel gets decompressed but shortly
+afterwards the machine freezes, displaying in black letters on an entirely
+white screen:
 
-I got fooled by the lack of guard in the bat setup code, so I assumed
-magical hardware
+done
+found display   : /pci@f0000000/ATY,AlteracParent@10/ATY,Alterac_B@1,
+opening...
 
-> from ptdump ?), BEPI and BRPN must be anded with complement of BL.
+Same kernel config built without GCC_PLUGIN_LATENT_ENTROPY just boots fine.
+Happens on v5.15.5 and v5.16-rc3. I did not test other kernel versions yet.
 
-yes that was ptdump code with seq_printf replaced by printk
+My Talos II (Power9) on the other hand just works fine with a
+GCC_PLUGIN_LATENT_ENTROPY=3Dy built kernel.
 
-ptdump code is correct but iif the bat addresses are correctly
-aligned, maybe add a safeguard like this ?
+--=20
+You may reply to this email to add a comment.
 
-index 85062ce2d849..f7c5cf62ef41 100644
---- a/arch/powerpc/mm/book3s32/mmu.c
-+++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -275,6 +279,10 @@ void __init setbat(int index, unsigned long virt, phys_addr_t phys,
-                       (unsigned long long)phys);
-                return;
-        }
-+
-+       WARN_ON(!is_power_of_2(size));
-+       WARN_ON((phys & (size - 1)));
-+       WARN_ON((virt & (size - 1)));
-        bat = BATS[index];
-
-
-> So here your 64M BAT maps 0xf8000000-0xfbffffff, therefore the address 
-> 0xfd3fce00 is not mapped by any BAT hence the OOPS.
-
-ok I think I found the issue:
-
-diff --git a/arch/powerpc/mm/kasan/book3s_32.c b/arch/powerpc/mm/kasan/book3s_32.c
-index 35b287b0a8da..fcbb9a136c1a 100644
---- a/arch/powerpc/mm/kasan/book3s_32.c
-+++ b/arch/powerpc/mm/kasan/book3s_32.c
-@@ -12,14 +12,14 @@ int __init kasan_init_region(void *start, size_t size)
-        unsigned long k_end = (unsigned long)kasan_mem_to_shadow(start + size);
-        unsigned long k_cur = k_start;
-        int k_size = k_end - k_start;
--       int k_size_base = 1 << (ffs(k_size) - 1);
-+       int k_size_base = 1 << (fls(k_size) - 1);
-        int ret;
-        void *block;
- 
-        block = memblock_alloc(k_size, k_size_base);
- 
-        if (block && k_size_base >= SZ_128K && k_start == ALIGN(k_start, k_size_base)) {
--               int shift = ffs(k_size - k_size_base);
-+               int shift = fls(k_size - k_size_base);
-                int k_size_more = shift ? 1 << (shift - 1) : 0;
- 
-                setbat(-1, k_start, __pa(block), k_size_base, PAGE_KERNEL);
-
-
-
--- 
-Maxime
+You are receiving this mail because:
+You are watching the assignee of the bug.=
