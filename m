@@ -1,53 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059D4468C30
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Dec 2021 17:51:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6944468C77
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Dec 2021 18:49:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J6Xdl68yDz3c54
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 03:51:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J6Yvz66jXz30BM
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 04:49:03 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sPfpAKQK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=srs.iliad.fr (client-ip=212.27.33.1; helo=ns.iliad.fr;
- envelope-from=srs0=os5f8w=qw=freebox.fr=mbizon@srs.iliad.fr;
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 531 seconds by postgrey-1.36 at boromir;
- Mon, 06 Dec 2021 03:51:17 AEDT
-Received: from ns.iliad.fr (ns.iliad.fr [212.27.33.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J6XdK3cgfz2xXD
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Dec 2021 03:51:17 +1100 (AEDT)
-Received: from ns.iliad.fr (localhost [127.0.0.1])
- by ns.iliad.fr (Postfix) with ESMTP id 97AB92018A;
- Sun,  5 Dec 2021 17:42:18 +0100 (CET)
-Received: from sakura (freebox.vlq16.iliad.fr [213.36.7.13])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=sPfpAKQK; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ns.iliad.fr (Postfix) with ESMTPS id 898E62014F;
- Sun,  5 Dec 2021 17:42:18 +0100 (CET)
-Date: Sun, 5 Dec 2021 17:42:17 +0100
-From: Maxime Bizon <mbizon@freebox.fr>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: Fail to boot 5.15 on mpc8347 with either debug_pagealloc or nobats
-Message-ID: <20211205164217.GA29658@sakura>
-References: <f23763d551e65d4a225ba13c7898f83853c2aeaf.camel@freebox.fr>
- <68bf4c39-53ce-f88f-383f-5defb1a36b1c@csgroup.eu>
- <913068d2c368c80f89d6f9575d6b41e6fab48ae2.camel@freebox.fr>
- <c7b4ef55-1deb-41f6-58cc-f8dc4477e90c@csgroup.eu>
- <20211204141031.GA23757@sakura>
- <5f4d36a1-695d-38a7-9ff9-d5af97f1a7e0@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J6YvC408yz2xC3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Dec 2021 04:48:23 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 28F88B80ED3
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Dec 2021 17:48:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D0559C00446
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Dec 2021 17:48:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1638726498;
+ bh=xzVYVC9zD7cqGNWf2nuQvwYICW5oMMuR5muLTxisIEE=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=sPfpAKQK1czyGfXYg2uW/zAR9xQqxD+N7AeyU6vlMRPG18Gh3Pe/17SXT+yvRO8Kz
+ 0ACxJuPC2/HXIYqVTUEhFQMXnaGmWSWcJtj2hZw4nt01w+vh6VWe6l9u/U8keaxgzF
+ DsRD+mekGcyp6pzlXe6frNpNwNOXo+/hC7ivxIhkcPpNywPSyVPkKNO8aJBw5vivcA
+ OONWOQsiILnSzGpiiJjfl9Vo4KI+DqTRjpt7BnDfe+eFYT00XEVtxMkH1brH31FYY6
+ r4NRtTMorz2ay/6cFaueJ+4amZagmxSVt1HiUgzFLnhGDVWQ5b8vEslg1WZtQpcUHQ
+ 2o/lGoU3TYv9g==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id B2AC160FD8; Sun,  5 Dec 2021 17:48:18 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 215217] Kernel fails to boot at an early stage when built with
+ GCC_PLUGIN_LATENT_ENTROPY=y (PowerMac G4 3,6)
+Date: Sun, 05 Dec 2021 17:48:18 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: christophe.leroy@csgroup.eu
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-215217-206035-FCuYD8w5BQ@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-215217-206035@https.bugzilla.kernel.org/>
+References: <bug-215217-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5f4d36a1-695d-38a7-9ff9-d5af97f1a7e0@csgroup.eu>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ;
- Sun Dec  5 17:42:18 2021 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,73 +84,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215217
 
+--- Comment #3 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
+I tried your config under QEMU and it works. So I don't know how I could he=
+lp.
 
-On Saturday 04 Dec 2021 à 17:42:44 (+0000), Christophe Leroy wrote:
+>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>> OpenBIOS 1.1 [Jul 22 2021 22:33]
+>> Configuration device id QEMU version 1 machine id 1
+>> CPUs: 1
+>> Memory: 2048M
+>> UUID: 00000000-0000-0000-0000-000000000000
+>> CPU type PowerPC,G4
+milliseconds isn't unique.
+Welcome to OpenBIOS v1.1 built on Jul 22 2021 22:33
+>> [ppc] Kernel already loaded (0x01000000 + 0x00f39460) (initrd 0x0203a000=
+ +
+>> 0x001d1a3b)
+>> [ppc] Kernel command line: noreboot
+>> switching to new context:
+OF stdout device is: /pci@f2000000/mac-io@c/escc@13000/ch-a@13020
+Preparing to boot Linux version 5.16.0-rc3-PowerMacG4+
+(chleroy@PO20335.IDSI0.si.c-s.fr) (powerpc64-linux-gcc (GCC) 11.1.0, GNU ld
+(GNU Binutils) 2.36.1) #669 SMP Sun Dec 5 18:41:30 CET 2021
+Detected machine type: 00000400
+command line:=20=20
+memory layout at init:
+  memory_limit : 00000000 (16 MB aligned)
+  alloc_bottom : 01f3e000
+  alloc_top    : 30000000
+  alloc_top_hi : 80000000
+  rmo_top      : 30000000
+  ram_top      : 80000000
+found display   : /pci@f2000000/QEMU,VGA@e, opening... done
+copying OF device tree...
+Building dt strings...
+Building dt structure...
+Device tree strings 0x01f3f000 -> 0x01f3e0a4
+Device tree struct  0x01f40000 -> 0x7fde7ef8
+Quiescing Open Firmware ...
+Booting Linux via __start() @ 0x01000000 ...
+Hello World !
+Total memory =3D 2048MB; using 4096kB for hash table
+Activating Kernel Userspace Execution Prevention
+Activating Kernel Userspace Access Protection
+Linux version 5.16.0-rc3-PowerMacG4+ (chleroy@PO20335.IDSI0.si.c-s.fr)
+(powerpc64-linux-gcc (GCC) 11.1.0, GNU ld (GNU Binutils) 2.36.1) #669 SMP S=
+un
+Dec 5 18:41:30 CET 2021
+KASAN init done
+ioremap() called early from pmac_feature_init+0x248/0xfe4. Use early_iorema=
+p()
+instead
+Found UniNorth memory controller & host bridge @ 0xf8000000 revision: 0x07
+Mapped at 0xf53bf000
+ioremap() called early from probe_one_macio+0x228/0x414. Use early_ioremap()
+instead
+Found a Keylargo mac-io controller, rev: 0, mapped at 0x(ptrval)
+PowerMac motherboard: PowerMac G4 AGP Graphics
+ioremap() called early from udbg_scc_init+0x1dc/0x380. Use early_ioremap()
+instead
+boot stdout isn't a display !
+Using PowerMac machine description
+printk: bootconsole [udbg0] enabled
+CPU maps initialized for 1 thread per core
 
-> I guess all the guard is in the comment ...
-> 
-> /*
->   * Set up one of the I/D BAT (block address translation) register pairs.
->   * The parameters are not checked; in particular size must be a power
->   * of 2 between 128k and 256M.
->   */
+--=20
+You may reply to this email to add a comment.
 
-It's missing the aligment rule you just taught me, but it's arguably
-not the right place to teach ppc 101.
-
-> Not sure it is that simple.
-> 
-> I'm cooking a patch reusing the block_size() function in mm/book3s32/mmu.c
-
-Indeed it will handle cases that need more than 2 BATs.
-
-Also when mem=2G, I have physical memory mapped twice:
-
-CONFIG_PAGE_OFFSET=0x80000000
-CONFIG_LOWMEM_SIZE=0x60000000
-
-0: 0x80000000-0x8fffffff 0x00000000       256M Kernel rw      m   
-1: 0x90000000-0x9fffffff 0x10000000       256M Kernel rw      m   
-2: 0xa0000000-0xafffffff 0x20000000       256M Kernel rw      m   
-3: 0xb0000000-0xbfffffff 0x30000000       256M Kernel rw      m   
-4: 0xc0000000-0xcfffffff 0x40000000       256M Kernel rw      m   
-5: 0xd0000000-0xdfffffff 0x50000000       256M Kernel rw      m   
-6: 0xf0000000-0xf7ffffff 0x50000000       128M Kernel rw      m   
-
-BAT5 comes from __mmu_mapin_ram(), BAT6 from kasan init
-
-Is BAT5 needed here ?
-
-
-Last one, with KASAN and the following layout, I have an non working
-kernel with VMALLOC_START > VMALLOC_END:
-
-mem=2G
-CONFIG_PAGE_OFFSET=0x80000000
-CONFIG_LOWMEM_SIZE=0x70000000
-
-[    0.000000]   * 0xf0000000..0xfe000000  : kasan shadow mem
-[    0.000000]   * 0xef7ff000..0xeffff000  : fixmap
-[    0.000000]   * 0xf1000000..0xef7ff000  : vmalloc & ioremap
-
-
-IIUC the safeguard is here:
-
-arch/powerpc/mm/init_32.c:
-/* The amount of lowmem must be within 0xF0000000 - KERNELBASE. */
-#if (CONFIG_LOWMEM_SIZE > (0xF0000000 - PAGE_OFFSET))
-#error "You must adjust CONFIG_LOWMEM_SIZE or CONFIG_KERNEL_START"
-
-
-but the definition needs to be adapted for KASAN=y and require 256
-more MB.
-
-
--- 
-Maxime
+You are receiving this mail because:
+You are watching the assignee of the bug.=
