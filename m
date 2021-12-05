@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04187468822
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Dec 2021 23:48:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7624689DC
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Dec 2021 09:09:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J64cL6KFhz305L
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Dec 2021 09:48:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J6K2j5fTJz3089
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Dec 2021 19:09:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=B9+Gc1yp;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PIutyWux;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,55 +18,55 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=B9+Gc1yp; 
+ header.s=k20201202 header.b=PIutyWux; 
  dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J64bW5dHQz2xtW
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Dec 2021 09:48:07 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J6K1v6Wbnz2xsp
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Dec 2021 19:08:19 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 19FBB60F43
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Dec 2021 22:48:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 81AAEC341C2
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Dec 2021 22:48:03 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id A3BA860A5B
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Dec 2021 08:08:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0B615C341C4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Dec 2021 08:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1638658083;
- bh=xHVLniYkiQC011+OBpG5B8C1BehuCfxpbZngUl6TPuU=;
- h=From:To:Subject:Date:From;
- b=B9+Gc1ypUvyZcYoZFChqV6aBNBc2jRRahqCOKtB6T2gxvUGCM1qg1jWuZ1WdF5s1V
- n8RRow0nOldnYUXZJfx8wpDzDjM3tO6AJFNINq63uR/wEAe1D5uh260WvZgSVxqYks
- deAC8xpxNHb+pUIQp1a7VtQsbHKsWdEdu0lhUxMBBK6Jc8QJ9ZVK/LJN1z6A18D0TM
- GOLMI66zkQGTx0sOTCeXJx5Ij5AJv+CC0xl4yTO6LwJykuzlhuMLFQbGgjEKiJVYfH
- Bz4LufgXbT2SYK/D1fwIvAJAx31Igi5eqGiFDxVyjlnsbAIbTcDBVSiBwuhXhQVCuF
- XWiyqUB3l7KFw==
+ s=k20201202; t=1638691696;
+ bh=qO5UCqAVyGXp5A2l9K94P6rGDNHeDg6tTCTmAq2VqKk=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=PIutyWuxyrKZlOlRzz45jI9b/pA99ELQCuWlu7wb31F/tHjPrBYiT7uxdeGeA3ZBk
+ wzd5Cjh0dvCHd37HS1prufBdXjKbebfaTvvhQfApwDnEj4MRqcPJIkzPzGZLyP7xZI
+ IW1qaokrTNddmzjMPatIzBtJNSYEJ5Y447TVkhNAUFoQLubw56A80Vu/IddJIzi8Pz
+ UX3jhBNDlOr9DeeG78g7t/ELkhuN8VB0p93FRyNZhXsSmtTHbf+tYdGtdCGIK/m5mp
+ d4n79sE7sLuPOAg4TUJTxEx0d9Zxe0lnMGvBpFfYrd12Wq22k9v3Oa49fX59Yp5cgQ
+ FdVRV0E+qrmRw==
 Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 57DB361005; Sat,  4 Dec 2021 22:48:03 +0000 (UTC)
+ id C8EE661177; Sun,  5 Dec 2021 08:08:15 +0000 (UTC)
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 215217] New: Kernel fails to boot at an early stage when built
- with GCC_PLUGIN_LATENT_ENTROPY=y (PowerMac G4 3,6)
-Date: Sat, 04 Dec 2021 22:48:03 +0000
+Subject: [Bug 215217] Kernel fails to boot at an early stage when built with
+ GCC_PLUGIN_LATENT_ENTROPY=y (PowerMac G4 3,6)
+Date: Sun, 05 Dec 2021 08:08:15 +0000
 X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
+X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Product: Platform Specific/Hardware
 X-Bugzilla-Component: PPC-32
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Who: christophe.leroy@csgroup.eu
 X-Bugzilla-Status: NEW
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version
- cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
- priority component assigned_to reporter cc cf_regression attachments.created
-Message-ID: <bug-215217-206035@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-215217-206035-PvRisy3CXs@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-215217-206035@https.bugzilla.kernel.org/>
+References: <bug-215217-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -89,42 +89,10 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D215217
 
-            Bug ID: 215217
-           Summary: Kernel fails to boot at an early stage when built with
-                    GCC_PLUGIN_LATENT_ENTROPY=3Dy (PowerMac G4 3,6)
-           Product: Platform Specific/Hardware
-           Version: 2.5
-    Kernel Version: 5.16-rc3
-          Hardware: PPC-32
-                OS: Linux
-              Tree: Mainline
-            Status: NEW
-          Severity: normal
-          Priority: P1
-         Component: PPC-32
-          Assignee: platform_ppc-32@kernel-bugs.osdl.org
-          Reporter: erhard_f@mailbox.org
-                CC: christophe.leroy@csgroup.eu
-        Regression: No
+--- Comment #1 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
+POWER9 doesn't have KASAN.
 
-Created attachment 299871
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D299871&action=3Dedit
-kernel .config (5.16-rc3, PowerMac G4 DP)
-
-Get this on my PowerMac G4 DP when I build a kernel with
-GCC_PLUGIN_LATENT_ENTROPY=3Dy. The kernel gets decompressed but shortly
-afterwards the machine freezes, displaying in black letters on an entirely
-white screen:
-
-done
-found display   : /pci@f0000000/ATY,AlteracParent@10/ATY,Alterac_B@1,
-opening...
-
-Same kernel config built without GCC_PLUGIN_LATENT_ENTROPY just boots fine.
-Happens on v5.15.5 and v5.16-rc3. I did not test other kernel versions yet.
-
-My Talos II (Power9) on the other hand just works fine with a
-GCC_PLUGIN_LATENT_ENTROPY=3Dy built kernel.
+Did you try G4 without KASAN ?
 
 --=20
 You may reply to this email to add a comment.
