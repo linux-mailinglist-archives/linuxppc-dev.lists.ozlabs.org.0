@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E4546AC9E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 23:40:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 849BE46ACB6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 23:41:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J7JKf2NBsz3cHS
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 09:40:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J7JLV2N5zz3fPn
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 09:41:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Ir8wMJVO;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=YM/Nr8za;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=XU5P0R3+;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=5xLy8ejX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,42 +19,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=Ir8wMJVO; 
+ header.s=2020 header.b=XU5P0R3+; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=YM/Nr8za; 
+ header.a=ed25519-sha256 header.s=2020e header.b=5xLy8ejX; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J7J3K4l73z3c57
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Dec 2021 09:27:57 +1100 (AEDT)
-Message-ID: <20211206210224.871651518@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J7J3M2f4yz308v
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Dec 2021 09:27:59 +1100 (AEDT)
+Message-ID: <20211206210224.925241961@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1638829675;
+ s=2020; t=1638829676;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=S+W1Q0LZK9qA36CwaGMZKKV+Y38NSAQ6cljplijOq1c=;
- b=Ir8wMJVOR0vRWYRtvVvvwdh8vk+hNLZauyW7VLWKrRT++IgOgmGu+iffTCxfxNnPnp/eUL
- rTyGHuAWLoqtYLFd0zuaiTQla2JtOb0eBIYhLEtEk9jZ3FXwQz4l6Rl7X4EP2BZT/nLmZG
- gB4XgEyUu0cKAWYBqXdGzv1j+4khf3rt8PXLnTT7HslbLMvlblRWmeFO493rPXuzAQNQvD
- pdevv23YcY11nJ5sRpy9ritQyb0MV8xDifB3U1aMs4fGqJo2CjNucLCPr7Kd6QZ00kkwLx
- CpF8pwB2sHyy6TwKDjA1aIW9IsWvP1KTSYgKnNKZ+NMAS6BpK3f7cHa0u/cYAQ==
+ references:references; bh=FXX41Qfq2rmX4Pnl0ZDgGggJiyIMhnsIgHBe+OGHmI0=;
+ b=XU5P0R3+ZvbfRzdT7eITdUZpVffQhu3mwMQxHIuYgaoigDHKPoocQDa8qE3Uaf7sAC1A9a
+ Js9g6cNcn6mG5wi/DOPiYiYl3E8Zz14cSLHuVeGnH6q1kq55XyN9gRmcVHSh5M702eeuzS
+ bamXvbJtwYpQ7EnWUWKX/KSbvsAjwKbfyZz1Ddew/kluJQEYrt+sgElwsfwUoFZGHB3SW5
+ JWhsk59n5A4ddQt8nalxZK/oiN+HIb+DfnIB5bCE/+7f4xAhtXvdT/dZztFeYnEkP4j9ik
+ qGpniZKbYB7qVDkE7feBPxpsBYMFmfBZX4PgA2J+mwXW3+TPFkwcsLvleDUFdw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1638829675;
+ s=2020e; t=1638829676;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=S+W1Q0LZK9qA36CwaGMZKKV+Y38NSAQ6cljplijOq1c=;
- b=YM/Nr8za192FA3caYGvQ8jFv+3Zicdz432O3rHkigtDdu6sexgOdl0L4qhS98KEbr6kSi1
- mc4fbpLRQSX5C0DA==
+ references:references; bh=FXX41Qfq2rmX4Pnl0ZDgGggJiyIMhnsIgHBe+OGHmI0=;
+ b=5xLy8ejXtHWFxftIt7uUy/JNMg6lFP0zokUkUY/UbBvVYESVtltZxcFPpywZO0EAeM6axN
+ GP3uFRXwCiRvoiAg==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V2 19/23] PCI/MSI: Sanitize MSIX table map handling
+Subject: [patch V2 20/23] PCI/MSI: Move msi_lock to struct pci_dev
 References: <20211206210147.872865823@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Mon,  6 Dec 2021 23:27:54 +0100 (CET)
+Date: Mon,  6 Dec 2021 23:27:56 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,77 +83,79 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Unmapping the MSIX base mapping in the loops which allocate/free MSI
-desciptors is daft and in the way of allowing runtime expansion of MSI-X
-descriptors.
-
-Store the mapping in struct pci_dev and free it after freeing the MSI-X
-descriptors.
+It's only required for PCI/MSI. So no point in having it in every struct
+device.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 ---
- drivers/pci/msi/msi.c |   18 ++++++++----------
- include/linux/pci.h   |    1 +
- 2 files changed, 9 insertions(+), 10 deletions(-)
+V2: New patch
+---
+ drivers/base/core.c    |    1 -
+ drivers/pci/msi/msi.c  |    2 +-
+ drivers/pci/probe.c    |    4 +++-
+ include/linux/device.h |    2 --
+ include/linux/pci.h    |    1 +
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2875,7 +2875,6 @@ void device_initialize(struct device *de
+ 	device_pm_init(dev);
+ 	set_dev_node(dev, NUMA_NO_NODE);
+ #ifdef CONFIG_GENERIC_MSI_IRQ
+-	raw_spin_lock_init(&dev->msi_lock);
+ 	INIT_LIST_HEAD(&dev->msi_list);
+ #endif
+ 	INIT_LIST_HEAD(&dev->links.consumers);
 --- a/drivers/pci/msi/msi.c
 +++ b/drivers/pci/msi/msi.c
-@@ -241,14 +241,14 @@ static void free_msi_irqs(struct pci_dev
- 	pci_msi_teardown_msi_irqs(dev);
+@@ -18,7 +18,7 @@ int pci_msi_ignore_mask;
  
- 	list_for_each_entry_safe(entry, tmp, msi_list, list) {
--		if (entry->pci.msi_attrib.is_msix) {
--			if (list_is_last(&entry->list, msi_list))
--				iounmap(entry->pci.mask_base);
--		}
+ static noinline void pci_msi_update_mask(struct msi_desc *desc, u32 clear, u32 set)
+ {
+-	raw_spinlock_t *lock = &desc->dev->msi_lock;
++	raw_spinlock_t *lock = &to_pci_dev(desc->dev)->msi_lock;
+ 	unsigned long flags;
+ 
+ 	if (!desc->pci.msi_attrib.can_mask)
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2311,7 +2311,9 @@ struct pci_dev *pci_alloc_dev(struct pci
+ 	INIT_LIST_HEAD(&dev->bus_list);
+ 	dev->dev.type = &pci_dev_type;
+ 	dev->bus = pci_bus_get(bus);
 -
- 		list_del(&entry->list);
- 		free_msi_entry(entry);
- 	}
-+
-+	if (dev->msix_base) {
-+		iounmap(dev->msix_base);
-+		dev->msix_base = NULL;
-+	}
++#ifdef CONFIG_PCI_MSI
++	raw_spin_lock_init(&dev->msi_lock);
++#endif
+ 	return dev;
  }
- 
- static void pci_intx_for_msi(struct pci_dev *dev, int enable)
-@@ -501,10 +501,6 @@ static int msix_setup_entries(struct pci
- 	for (i = 0, curmsk = masks; i < nvec; i++) {
- 		entry = alloc_msi_entry(&dev->dev, 1, curmsk);
- 		if (!entry) {
--			if (!i)
--				iounmap(base);
--			else
--				free_msi_irqs(dev);
- 			/* No enough memory. Don't try again */
- 			ret = -ENOMEM;
- 			goto out;
-@@ -602,12 +598,14 @@ static int msix_capability_init(struct p
- 		goto out_disable;
- 	}
- 
-+	dev->msix_base = base;
-+
- 	/* Ensure that all table entries are masked. */
- 	msix_mask_all(base, tsize);
- 
- 	ret = msix_setup_entries(dev, base, entries, nvec, affd);
- 	if (ret)
--		goto out_disable;
-+		goto out_free;
- 
- 	ret = pci_msi_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSIX);
- 	if (ret)
+ EXPORT_SYMBOL(pci_alloc_dev);
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -407,7 +407,6 @@ struct dev_links_info {
+  * @em_pd:	device's energy model performance domain
+  * @pins:	For device pin management.
+  *		See Documentation/driver-api/pin-control.rst for details.
+- * @msi_lock:	Lock to protect MSI mask cache and mask register
+  * @msi_list:	Hosts MSI descriptors
+  * @msi_domain: The generic MSI domain this device is using.
+  * @numa_node:	NUMA node this device is close to.
+@@ -508,7 +507,6 @@ struct device {
+ 	struct dev_pin_info	*pins;
+ #endif
+ #ifdef CONFIG_GENERIC_MSI_IRQ
+-	raw_spinlock_t		msi_lock;
+ 	struct list_head	msi_list;
+ #endif
+ #ifdef CONFIG_DMA_OPS
 --- a/include/linux/pci.h
 +++ b/include/linux/pci.h
-@@ -473,6 +473,7 @@ struct pci_dev {
- 	u8		ptm_granularity;
+@@ -474,6 +474,7 @@ struct pci_dev {
  #endif
  #ifdef CONFIG_PCI_MSI
-+	void __iomem	*msix_base;
+ 	void __iomem	*msix_base;
++	raw_spinlock_t	msi_lock;
  	const struct attribute_group **msi_irq_groups;
  #endif
  	struct pci_vpd	vpd;
