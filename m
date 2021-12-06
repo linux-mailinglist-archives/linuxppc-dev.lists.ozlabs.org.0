@@ -1,60 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C0D46AC2D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 23:33:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5B346AC2F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 23:33:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J7J971Hs1z3cJS
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 09:32:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J7J9r0qJZz3brX
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 09:33:36 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=vZzNCRO+;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=M/NxrnxG;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dvaOjaxx;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=jqiplyDo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
+ smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
  helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=vZzNCRO+; 
+ header.s=2020 header.b=dvaOjaxx; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=M/NxrnxG; 
+ header.a=ed25519-sha256 header.s=2020e header.b=jqiplyDo; 
  dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J7J302F57z2yxx
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Dec 2021 09:27:40 +1100 (AEDT)
-Message-ID: <20211206210224.265589103@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J7J311dWRz308G
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Dec 2021 09:27:41 +1100 (AEDT)
+Message-ID: <20211206210224.319201379@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1638829657;
+ s=2020; t=1638829658;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=OKsXQmZewVMh9C4veaPA025YU+pW4cMZqzIAn23b/9c=;
- b=vZzNCRO+uOrMt1rLYUlSjWHvY3GnOwXQ/odIk4OnimL55yM4E7H9Z+gKxR4cdWzJuc9jJT
- M0aZip9AGf/BRov7wd4DUsRP6NuHKtBNXayKEfTNAPYWG4mlPDCTJXpLfq+Eq2Q7uel0c0
- GCYlxK1amEskkZn0CPcuIPlwQANt3pdUSVU0mXb6Dh6glegghN2NwscVEl8RJS6xJpYmzr
- 0oSjRQ0h7Lm4xi7TTTOAuPFvY1F1jeW22TqUuxURSvBD6YjS5m5HOdgSgSZmuNW7/hljHH
- 0p6i/mhLMFw2u59Zr1gi+Goyq9OYh0ugIdb202nzF0CcX0f/aD/i2jlLaPiQJw==
+ references:references; bh=gOhEwOl7pWXAdyfdjPv/xL32Zd5rtVvQRFE5wZzX1CM=;
+ b=dvaOjaxxL6xiDQA7FFy4cxQQ/uHU9sUdt6e/yyFwN1tu+bJ1yi46Si+LsK8MUpqWL66GBZ
+ 2vYuDYX1gMzlWrQlXSNF7Gy5YE1JoRbELnLUr87259Kjgtgb01AkT3/PzG4pDRcVNe6nnu
+ ivxMXrLRTAd3saTznKV7mbiAHy2Rtw3hMMQvRO+thrnTc3FA0K+E4ppbPA/2gfw4NYQ+xk
+ oJH8E0LDjQDUOmg7euoxTjnOnIPyEBUSb+AO4mByR8WoxcxvvNGBpWjsmNaE7QFybpIRFg
+ x8MhqCDCTsZoEj80vUenfUClW3vGGZTwtNcCQ4Iw5T8t8x7oh0OUHc455oO1Ww==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1638829657;
+ s=2020e; t=1638829658;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=OKsXQmZewVMh9C4veaPA025YU+pW4cMZqzIAn23b/9c=;
- b=M/NxrnxGKVPLqAlsqI5UQ6dl9IZUEhUwGcQJKRyC/Ho89KfJQzOP0MU4EFQc7/B84xAAnW
- 7QekxbEDbxz2NvAA==
+ references:references; bh=gOhEwOl7pWXAdyfdjPv/xL32Zd5rtVvQRFE5wZzX1CM=;
+ b=jqiplyDoFdSA46RvOetOaqUacacbKtOW+CT5oA5zeEczBM+vXFTNHE6+JVcjlrsieqeQMT
+ qjTsGymloYl2PTAw==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V2 08/23] PCI/sysfs: Use pci_irq_vector()
+Subject: [patch V2 09/23] MIPS: Octeon: Use arch_setup_msi_irq()
 References: <20211206210147.872865823@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Mon,  6 Dec 2021 23:27:36 +0100 (CET)
+Date: Mon,  6 Dec 2021 23:27:38 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,29 +82,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-instead of fiddling with msi descriptors.
+The core code provides the same loop code except for the MSI-X reject. Move
+that to arch_setup_msi_irq() and remove the duplicated code.
+
+No functional change.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Juergen Gross <jgross@suse.com>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: linux-mips@vger.kernel.org
 ---
- drivers/pci/pci-sysfs.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/mips/pci/msi-octeon.c |   32 +++-----------------------------
+ 1 file changed, 3 insertions(+), 29 deletions(-)
 
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -62,11 +62,8 @@ static ssize_t irq_show(struct device *d
- 	 * For MSI, show the first MSI IRQ; for all other cases including
- 	 * MSI-X, show the legacy INTx IRQ.
- 	 */
--	if (pdev->msi_enabled) {
--		struct msi_desc *desc = first_pci_msi_entry(pdev);
--
--		return sysfs_emit(buf, "%u\n", desc->irq);
--	}
-+	if (pdev->msi_enabled)
-+		return sysfs_emit(buf, "%u\n", pci_irq_vector(pdev, 0));
- #endif
+--- a/arch/mips/pci/msi-octeon.c
++++ b/arch/mips/pci/msi-octeon.c
+@@ -68,6 +68,9 @@ int arch_setup_msi_irq(struct pci_dev *d
+ 	u64 search_mask;
+ 	int index;
  
- 	return sysfs_emit(buf, "%u\n", pdev->irq);
++	if (desc->pci.msi_attrib.is_msix)
++		return -EINVAL;
++
+ 	/*
+ 	 * Read the MSI config to figure out how many IRQs this device
+ 	 * wants.  Most devices only want 1, which will give
+@@ -182,35 +185,6 @@ int arch_setup_msi_irq(struct pci_dev *d
+ 	return 0;
+ }
+ 
+-int arch_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
+-{
+-	struct msi_desc *entry;
+-	int ret;
+-
+-	/*
+-	 * MSI-X is not supported.
+-	 */
+-	if (type == PCI_CAP_ID_MSIX)
+-		return -EINVAL;
+-
+-	/*
+-	 * If an architecture wants to support multiple MSI, it needs to
+-	 * override arch_setup_msi_irqs()
+-	 */
+-	if (type == PCI_CAP_ID_MSI && nvec > 1)
+-		return 1;
+-
+-	for_each_pci_msi_entry(entry, dev) {
+-		ret = arch_setup_msi_irq(dev, entry);
+-		if (ret < 0)
+-			return ret;
+-		if (ret > 0)
+-			return -ENOSPC;
+-	}
+-
+-	return 0;
+-}
+-
+ /**
+  * Called when a device no longer needs its MSI interrupts. All
+  * MSI interrupts for the device are freed.
 
