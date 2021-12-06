@@ -2,52 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BE84694CD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 12:12:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72540469857
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 15:13:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J714Q2PDXz2yb1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 22:12:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J75572qL5z304w
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 01:13:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::62f;
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::622;
  helo=fra01-pr2-obe.outbound.protection.outlook.com;
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-X-Greylist: delayed 14903 seconds by postgrey-1.36 at boromir;
- Mon, 06 Dec 2021 22:12:28 AEDT
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (unknown
- [IPv6:2a01:111:f400:7e18::62f])
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com
+ (mail-pr2fra01on0622.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e18::622])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J713w3NYHz2yLd
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Dec 2021 22:12:24 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J754d18f5z2yLd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Dec 2021 01:13:18 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UfTSg08KMsFG9nIwDvoUWhnqzJx7TAdb5AsyxcNVT3K8Y1yTWheOKOxhPl1pwc5BoLn9KAjYKqOiTGnvAD8KEzK8Q0uT7jI96ww4ywwlKVbx1yda68hrIcUTj+YFCklU84GIK/Iaasi5GTk8ikC5Y+zhc58VvVgBIz6+r00YAgFomqszx30Y5fn4UQjS06CVF+bSxgv3Xi5XCG0h2eksRA1mzEHi4PCjaerwGMLWMw4shdb3PvkxZPuyj/dN+aCLSKm9XD24mWDLtIT5vAjJkahlLIWU7Vcr+VVFxWgI9xAGsWDzUAvQlrjNjse9Lx9gv34dclStbLwrHZC9OE6m3w==
+ b=JqVxumo9o0NdXUOT60vFiCrpQUtvv0wG95SB7I9SP6cqrFo5FeCKeeclaOY4JZnaG2X+blxy8gMlXki7hB1QEOq+/qSMhHWQAAJp4j7p3ECM/az2PnhTOqJ9iThxWiPwKqK9TnkZ/vzTi6vVvMa5JwkVgXDr187FY148qrPyZG3Xf3VusH4o5pgZki2SiTA/UjeVWKY6MuCWLh9zVDsaBcYM+wlu/JQXA4ibhDq+4WNVQY6fG5PrXI8ygxebNgyym2rYMDallGdefYsYUBcsj/f5xy50T+ZyJbaAoLT0c0dyEsQ3CkauivYdbU0g8DNJAqtnJ7S3fKJuBGrgouAlDg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YU1O7rFTsJFN+AjsMEI5xXr9s19wf9Qpi2GaLzskffc=;
- b=ULAfC1655RHLDnSF1ZkCJpWCJQKGz28bZydAAr9PTWjQFay8Prr0JRwoWKYvv34WTGTlVcGSyrFamreh5TE/Kszjrizs2kpmW9BNDzLt0WM3p645oyePa8XYPC2ryQLaCtcq2wj+WUM2r0hCFsWc8CyPER92Jm1w/9DC5GthtDhsbz4B+i+5W6oSrXHxPLaUUYuNtWVOnzuc/1cBOgJ9rhcrqQqsglLrnAIdX81swaiqgWdzDKDK1OxuNKyN3DVFFUmwNFmTCgSk+RuFfwjPWGJV3ZV0ya7XdxAyrgA1T63+JZlsO7S4HbXNsH6bbMN0iBWlhCUCHSUxZfUm7ILZxw==
+ bh=984RHHzw+YmTqJKX09uurr+BUVyONmjYuoecdJMjK0Y=;
+ b=m1f9K0ZX2KvTjKheb/gDb02CmwPuImhXyNmqhSPEen+3FZHxw/FDd/+SNfKy+EYbNDcHSXizCJAk//qWcxXuKcp2fvzMTMQ6LT4+FDc3x0oqNAuJH1Airiu7pK/M51VLK2NexkAt1nrhmaGQiJcjEAVGmRXf1nHPehoXuzGKyiksddEOjniI0jpwz4TURXll1fJ7FNgat0XzV0mjSAtwC8A/D7pa7nFH5qROBStfFKXZKPuqjBWg6BLYwtzY0DDHPGz0TBzg99ntt1WxwMho4b+iclvmxqOLW1zct6zh+sSrVmwPhYOq9Gi2hjELLyFsbC/s3uILUn435IRquIC4vw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
  dkim=pass header.d=csgroup.eu; arc=none
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRXP264MB0104.FRAP264.PROD.OUTLOOK.COM (2603:10a6:500:20::17) with
+ by MR2P264MB0275.FRAP264.PROD.OUTLOOK.COM (2603:10a6:500:e::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.20; Mon, 6 Dec
- 2021 11:11:51 +0000
+ 2021 14:12:51 +0000
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::fc67:d895:7965:663f]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::fc67:d895:7965:663f%2]) with mapi id 15.20.4755.022; Mon, 6 Dec 2021
- 11:11:51 +0000
+ 14:12:51 +0000
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
  <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/fixmap: Fix VM debug warning on unmap
-Thread-Topic: [PATCH] powerpc/fixmap: Fix VM debug warning on unmap
-Thread-Index: AQHX6pIRHFFuQfD5tUqKFOXRId3biQ==
-Date: Mon, 6 Dec 2021 11:11:51 +0000
-Message-ID: <b0b752f6f6ecc60653e873f385c6f0dce4e9ab6a.1638789098.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2] powerpc/32s: Fix kasan_init_region() for KASAN
+Thread-Topic: [PATCH v2] powerpc/32s: Fix kasan_init_region() for KASAN
+Thread-Index: AQHX6qtaVhn+nTorakewpI8P3ssyQg==
+Date: Mon, 6 Dec 2021 14:12:51 +0000
+Message-ID: <90826d123e3e28b840f284412b150a1e13ed62fb.1638799954.git.christophe.leroy@csgroup.eu>
 Accept-Language: fr-FR, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -55,62 +54,62 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=csgroup.eu;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c52cbe1d-e2d8-4dd6-0124-08d9b8a9340c
-x-ms-traffictypediagnostic: MRXP264MB0104:EE_
-x-microsoft-antispam-prvs: <MRXP264MB01049E3687B59437DB13614BED6D9@MRXP264MB0104.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:4502;
+x-ms-office365-filtering-correlation-id: 2e3aa2ae-e669-439c-9a4e-08d9b8c27d4b
+x-ms-traffictypediagnostic: MR2P264MB0275:EE_
+x-microsoft-antispam-prvs: <MR2P264MB0275EFBBFFB8C99B7D9C13FEED6D9@MR2P264MB0275.FRAP264.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: +oYKA+B76w222g3PJBJP6nA3wIDeVc5uqhgwdoWDviyTU560vUFjejQzaDYFIGx9WmEUOFWPtKQfASWNf3vUnScmZFW9CNXEUtQqdED7aUs8DMUhKB7ubTRsT9v305aOAQP9XnTnV6VDtKX8m+GTDGtGrBcSH8g7fl3UzjNwllc0XTyS9prz029sjz+fa/1F5mqImcKaJEO13AVEqfmjf/jdKS1hcLkj+FlHGnX0nMBiGvMo2C/HQ+9OTh1QgBmjKrt2ZG+RTUvXTFBNE/oyesBf/TDBtyeYGa0knVZUDv+mWJFXSdeL3Vkcnk0byMN3KB/0auG9Hd76TkbtjjbZiY8uT4vThKkoR9pV0g34uc1pfHwAnYdbdeEFP2o75puj/pSWOYASCERvK0ZmPnzIjQYpYAKHhnty0kdy9oGNK39tLOsmniJQ+HeT83ihNCgJI3mql/2LEyM+iBcfMkHp/3w5Hqd/H8wlpOOruDBWDKUdkgnCYZmmRC+7weUt4igzkQBSh7ijMOIW0lNgwm1E6L0L9qLeUzvRZ6Z2N6+NVdZVYKEJtbEQExjFvq8ZZpdPeV8wbt8hF0NZop2zwyUbpprWixP3Ssu6V1QaibetObyCtoX1rlVoCnhgWH4W44ZhQeVRy6keKhtaxCiF5MFDhEIlo32PIRgNFp7Cc02CVv6iOUp8qeNkhZlGc+5GIAVrDSiDedVFOmllZ3x7UXUjhQ==
+x-microsoft-antispam-message-info: 8WheWHxNLPYFcjVlDzzW/kzBY4LvOoOS6UepPv29uI44yghe/VFf3FQz48zCEB7GMx+inc3fOq86F6lBO3PR6nvIE1MPH5U6rknxRLyr32taFNvz3NoT43AppEou7wZR+Q0Bf875la5d6gl7Ele89Kfrs+zp/g4O1eJYvawXF+qam02NHWPQXqvD6ex7LlCCo8pena42I5rxQa5erukdhhRvL5O90iVbn82x0inn2ijiKXBbJWCcBTxcDcCiSEPAIOcB/DV+tK8wd1KIKa0OwKz7mY8RWP2FDt0psTW6Ho9k9CGBwxYj1qWXrgEXWvmiWhOlhp1nGuPzYFMN+tUjp6WcR1RQi2Ug5M/MdHQoTjWIsC2XNPclDsDcMc/vJs4j8JCzIOjs2XEKXNL35sOlDa/MYW7SIwfNdMya81gM5SzhnuLT1JWYUrlYYQI2WDJWOMkGS7pQlTZp0jiaJXNT6qrFj81GYET4z1KetmkJAywLm8RpF5bNBnmGvN2I/A91felxH59dcJfwTOAJQycPZdJuAhi9HkqZ3oLqnJMg9+l491nQ/GUDh86turlm1yZ0l0MUEt9T2LKCLNUTCO2ufDGTa2ybqnod03oLdKM5UZBrqIDZCU0tkCrptn9XhPczTumno7NZ4w5Wmxr9vSrEbVuph0Eo9reXFMgiuJiP45Zooyb7WnIllZgg+AYdYhDBVy9GzZrl2RWZCQrs/8q35Q==
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(38070700005)(316002)(508600001)(66446008)(66946007)(76116006)(66476007)(66556008)(91956017)(38100700002)(110136005)(83380400001)(64756008)(54906003)(36756003)(5660300002)(122000001)(86362001)(2906002)(2616005)(8676002)(8936002)(6486002)(4326008)(186003)(44832011)(6506007)(6512007)(71200400001)(26005);
+ SFS:(4636009)(366004)(110136005)(6486002)(36756003)(26005)(508600001)(54906003)(6506007)(64756008)(5660300002)(86362001)(66946007)(66556008)(66476007)(66446008)(6512007)(91956017)(76116006)(71200400001)(38100700002)(8676002)(316002)(4326008)(83380400001)(2616005)(8936002)(122000001)(44832011)(186003)(38070700005)(2906002);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?+4x9yrG1o5gcWWpHTGwY9IYg5rC0Pv7Hd8tZj/8akOZcSEdz/kV52z03go?=
- =?iso-8859-1?Q?0rl0+73K8tg0Bh4jT0xeI3ahqRwbLEuDKjjm1+ZsLf4ejBTy6QJu08cnDY?=
- =?iso-8859-1?Q?ORUuBqLgUKG+8Gmlz+5bvxY425egJpeg5JlR+aTw9yZQsiU1kYaxGsHMKH?=
- =?iso-8859-1?Q?ozfabnem05a5dVnm+xBU80XyOE+tyHQzKWBWwzsPjUyP6zqDhPTsYHFWxv?=
- =?iso-8859-1?Q?+6PwrVNtQ0b8zTaI/o08+9qJh0RJmNq4XFvQcs5R2jcn+F+FbcjglY0tSM?=
- =?iso-8859-1?Q?R45Fk9RdXG5/TSbZyJ3C/KIMfaCujx3xf5zcNOKcwNTQmP7Cs+kP0ojZIW?=
- =?iso-8859-1?Q?63Baw7aFANzNdXCmcWQVqKoUsvF/+S57NV6zDu3H5peMeD1sR6LCqGZ/FF?=
- =?iso-8859-1?Q?b0EW3YAqyGgDBUBlr1TddxYGRt9vkPW8LVa9vofV9WaxDFKTipUouv8aF/?=
- =?iso-8859-1?Q?AsJ1NmDAsoT1cTd16crF/BG6dlMLx1d+5eRDlJ7Iplkguv3b43TBKKq1nt?=
- =?iso-8859-1?Q?aPqvFLFXnzn5+4Q99G28bcSXZKwoo9YDea4cPXIWE5gyRkfSnQ4UPN150K?=
- =?iso-8859-1?Q?p829uyJFeT4IHgse8z7E3xqGuj5gbvo22pB2JhG2XNWR/kUf+WIpelr8Zg?=
- =?iso-8859-1?Q?s684Yev6nrVQTkX65wzTeu12mZT1S+UBBVdRyaZhg2Q3oZ9GTe3egAx+h6?=
- =?iso-8859-1?Q?JoOrYfqBXlGpvvRCztmiyo7UWEaLFvZNDUfaSOxiCruM7gYO/b7fc3tWKV?=
- =?iso-8859-1?Q?lrxt4po/l5x54fQmvLCanB+mJdiCAfeP5bXEZbWys4mllaSZ/k13smT3DS?=
- =?iso-8859-1?Q?tLzCKctIiu1dAGyM8xokQdWR1HK0ImLeis+SC0+zgmc8oq8q2slqzan68y?=
- =?iso-8859-1?Q?jX236nu+BpMM/B94nMH5MngcXz/RP7EPZrJdolxin5sDFZGQT1DQvDGGvN?=
- =?iso-8859-1?Q?Tl5XkNUiMyARFXvsXq5tdzXRVIKJzkSfpUtIYZBvJb0e7wn41OV82ABxcT?=
- =?iso-8859-1?Q?izx9Qwo6rF5RRjBckABCcjNiyvQbVbcUViwIUNcbkXvG/pV4ANssTf7Dlk?=
- =?iso-8859-1?Q?aKLGqVb9klojI2wcSrTe2t3b0YQ0+5iLC0NFVowEG289p6AEh61AusovTA?=
- =?iso-8859-1?Q?6SSsN6cXxEkFAqc63xOyw6INwCepcLrUsOmaC3IkHVqieAWMdZMVJ/N0d0?=
- =?iso-8859-1?Q?0m8tlRxOBP9SECGi8TmssYm+1GZrVTR9fiSLdKFoP3KHlHygVVrMpzmBPZ?=
- =?iso-8859-1?Q?/Noy4hYbuSwR3rrWzVLaljN2P4XxH31CzaXzApJbwu9zMvrLl5x6pjXdX5?=
- =?iso-8859-1?Q?PrIOEuPEm7XcDxKsEIVlHv7uomu+b75674ucp8vLJl0x3CZC1C4dMdVEw0?=
- =?iso-8859-1?Q?/p3AfNfDo8bCYZ9VKpAdu6XbqPRVECwk3/mIT3H2cgWm1tCczfu0FyZJGg?=
- =?iso-8859-1?Q?UhpfWlHm4DydCHj3Bc39jeJTMpSY7KmvbEu+3Ihs5Mnc4u/N1yNqmVWTN+?=
- =?iso-8859-1?Q?hn9HU3itobMnx9YmkSKggVxR66Je5NETSBE1PDzWct0/+Ja4XD0RymBVLH?=
- =?iso-8859-1?Q?I4/TxvQSELZK7F/qcwEbrP7UJWedMrFm+HftANI8XTTAh0F7epBIa+jtAW?=
- =?iso-8859-1?Q?dbFMFZDIqO340zFSR1tB0BgRYYiDb6aAPHuKTUKLAxq/Ubgg1bz10Nm2bc?=
- =?iso-8859-1?Q?DMZQg9GecQuhOyxgIZExuX3ckkg0gpT3ouw6GrCUwdoSI2McUZpS5KNRe6?=
- =?iso-8859-1?Q?WZheLITs3tjlmLO7FLNjY8Gn0=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?WEVLTaqEOAc1Kk58n/K8dzJ/MlCAlVunLOUyBdgqK4Y7nplvmC4s4byDta?=
+ =?iso-8859-1?Q?H61dX8L642AUVcY278+C7O3AjVrzjZ0xEof1r/aa0qLeLGjmpTt5dwwyoo?=
+ =?iso-8859-1?Q?9Oul6P7bFRfQiNOwoaUzMgM4D/CilhRnT2rG8xyNqbDCMwRci7GPjLX4fh?=
+ =?iso-8859-1?Q?PANaxdcMShIUE/mD4COGmEgEFiU65ee1VWeYixYzZMosbcTO/NSqf71Z4M?=
+ =?iso-8859-1?Q?gGld+YKoRRIL8ixKK/3s0g1Y45DdSAfSkLR5GCzetV4TWnxnv87x9YVY/D?=
+ =?iso-8859-1?Q?f4D4PG7NV8HMhA6FkBMrSLDxUvq+VLKORHFBUHvLaj7QTTshavxvSGnPFi?=
+ =?iso-8859-1?Q?ELP9PYV+nEHkaek0iWRvC5NjFj5eQJQVV3bWKPhv5aLAIRwe7SCNsEj3Bu?=
+ =?iso-8859-1?Q?8+8VgIXUL2kzrl3/vfRsCFufOkuhkyTNRR4mp9OL4RTjWHs2lq5AlVlJWm?=
+ =?iso-8859-1?Q?ryxYDqS60EuHhS37yT6VrHdV6NuKBf6hp+kKAxyeggZwetpnarKMtji3bM?=
+ =?iso-8859-1?Q?MhGDe/9ZwVZ94sKuntKnPM8xXTiwRnSh1hYmtggff4AhlY764WFNG+CdVP?=
+ =?iso-8859-1?Q?CA0fyH6v6nDPSOXuFiFdPJCTdEgZcoLnP8exSDrYTHn4JJjRUy570utVMK?=
+ =?iso-8859-1?Q?vJAGUayYiu3S0y7ohKWEJ27L2M8G/jR3T1EePW+dT0aOkfhDcO5RXNC0pD?=
+ =?iso-8859-1?Q?oJ7zbixdZ6Hjqly1RMv/Wkr4F5uyrJrXbcNoYSP+N9wuGl4ZTd8qGXXRya?=
+ =?iso-8859-1?Q?vLwN7yHxdU5tckhvp89lO7a0PQ8+ixeNxKujZTIr1OMsVboEkJER2FCBcb?=
+ =?iso-8859-1?Q?8qMOoJyCFgWYXeMJzm5NBs0wzai3EImygEjrm2P89x6FwKd8OEuLgOO48L?=
+ =?iso-8859-1?Q?jq01/cBlmpLV40D1vmd95vOg33Xo/1Go2nlLsb7+qsUTAHLeYfY54Wr6Hm?=
+ =?iso-8859-1?Q?V47t8Dz64QSiUxiDvUxUS+4Qr3bpVWa9FjxPphtXjwpNSCCErDzrre7qyE?=
+ =?iso-8859-1?Q?NrEkR01WdlJq7R6ra7Cvz5mW2Q9M7zW9tT3/qrta5SU1RCZSyzbBj5Rsd1?=
+ =?iso-8859-1?Q?SlpVYP3AvAORarJFN82yHAtXmD51G3dmDNN9k4MvX/y881Q1KoVGwQHg7Z?=
+ =?iso-8859-1?Q?URzPnsIjMPJe/C8C1EI3dOm1doWWGSuapO7b4ya9RHNimfwKl1gmifu3Cy?=
+ =?iso-8859-1?Q?sY8O2QZFWuDCkLOvLgKLzeloXg1BO04cyv2vIK748ClPT80B0IenRITSQU?=
+ =?iso-8859-1?Q?MkuIy3UGuATvSpyio3d0518BkDXfelbfjMeYmt8lmEPT7CtbKXl3gP9c5c?=
+ =?iso-8859-1?Q?1VbcQnqz2NzfrEwim0plQLYLgNbd1bbRv/QBN5tw3C5MHcFXXa0Mvsjkra?=
+ =?iso-8859-1?Q?RgueOOw+EhT2e7MN3cC8AjnM2Ol+x/qs2dM647Cs9c/iSnI8u7/xD/lgtK?=
+ =?iso-8859-1?Q?YbawJIvtAjiZ/jncu5TtlDhPS0pm6ECnR73e75ls9CQM9xqnTVivAqI99P?=
+ =?iso-8859-1?Q?+M+H4z/0qLtif3jxexUzL2zjT3F5/vQWsPvcs3AN1mNBcIIiPJytMSm3nN?=
+ =?iso-8859-1?Q?Bx5y5maHfWkGmBP+4OvFdhDZtbPnaM8AQHVcFO++p+BWoVQ6+ExxnFWzTb?=
+ =?iso-8859-1?Q?WdwTnLbNQFNqCKpiRyIy0Kiv40kujwGnKDyyhWrl3hhQ/7hcqzPVem4qzK?=
+ =?iso-8859-1?Q?YP2Pj/T2o3hKTnnTM02XM3yj9Dan1hQkHKC4s0ZMw2aKdWCXeo/ZmE0V9u?=
+ =?iso-8859-1?Q?EHASmydczi0nWNTUgeqe1K+y8=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: csgroup.eu
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: c52cbe1d-e2d8-4dd6-0124-08d9b8a9340c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Dec 2021 11:11:51.0975 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e3aa2ae-e669-439c-9a4e-08d9b8c27d4b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Dec 2021 14:12:51.3972 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XLja+0UbKKFOBMI9CEfG+4UwBYwPk37ZUs+N3JQJ+rw5xRMFM8hDx0U8aKBwMtf1mSVA+gf4Gy04UaHlCM5MLn3/G6QMyUtp33+QFLtEXhs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRXP264MB0104
+X-MS-Exchange-CrossTenant-userprincipalname: h7yIkHF6xLBTc3tYHVp09xzOAlwJLtFBM9Ixs7NqcO35PXPmgwQpjIduXIo0Mw49ETC4IkzTggxd3VBQZRXkzJGmWot8dUk0eKtBOXXv4Y8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR2P264MB0275
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,160 +122,212 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Maxime Bizon <mbizon@freebox.fr>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Unmapping a fixmap entry is done by calling __set_fixmap()
-with FIXMAP_PAGE_CLEAR as flags.
+It has been reported some configuration where the kernel doesn't
+boot with KASAN enabled.
 
-Today, powerpc __set_fixmap() calls map_kernel_page().
+This is due to wrong BAT allocation for the KASAN area:
 
-map_kernel_page() is not happy when called a second time
-for the same page.
+	---[ Data Block Address Translation ]---
+	0: 0xc0000000-0xcfffffff 0x00000000       256M Kernel rw      m
+	1: 0xd0000000-0xdfffffff 0x10000000       256M Kernel rw      m
+	2: 0xe0000000-0xefffffff 0x20000000       256M Kernel rw      m
+	3: 0xf8000000-0xf9ffffff 0x2a000000        32M Kernel rw      m
+	4: 0xfa000000-0xfdffffff 0x2c000000        64M Kernel rw      m
 
-	WARNING: CPU: 0 PID: 1 at arch/powerpc/mm/pgtable.c:194 set_pte_at+0xc/0x1=
-e8
-	CPU: 0 PID: 1 Comm: swapper Not tainted 5.16.0-rc3-s3k-dev-01993-g350ff07f=
-eb7d-dirty #682
-	NIP:  c0017cd4 LR: c00187f0 CTR: 00000010
-	REGS: e1011d50 TRAP: 0700   Not tainted  (5.16.0-rc3-s3k-dev-01993-g350ff0=
-7feb7d-dirty)
-	MSR:  00029032 <EE,ME,IR,DR,RI>  CR: 42000208  XER: 00000000
+A BAT must have both virtual and physical addresses alignment matching
+the size of the BAT. This is not the case for BAT 4 above.
 
-	GPR00: c0165fec e1011e10 c14c0000 c0ee2550 ff800000 c0f3d000 00000000 c001=
-686c
-	GPR08: 00001000 b00045a9 00000001 c0f58460 c0f50000 00000000 c0007e10 0000=
-0000
-	GPR16: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 0000=
-0000
-	GPR24: 00000000 00000000 c0ee2550 00000000 c0f57000 00000ff8 00000000 ff80=
-0000
-	NIP [c0017cd4] set_pte_at+0xc/0x1e8
-	LR [c00187f0] map_kernel_page+0x9c/0x100
-	Call Trace:
-	[e1011e10] [c0736c68] vsnprintf+0x358/0x6c8 (unreliable)
-	[e1011e30] [c0165fec] __set_fixmap+0x30/0x44
-	[e1011e40] [c0c13bdc] early_iounmap+0x11c/0x170
-	[e1011e70] [c0c06cb0] ioremap_legacy_serial_console+0x88/0xc0
-	[e1011e90] [c0c03634] do_one_initcall+0x80/0x178
-	[e1011ef0] [c0c0385c] kernel_init_freeable+0xb4/0x250
-	[e1011f20] [c0007e34] kernel_init+0x24/0x140
-	[e1011f30] [c0016268] ret_from_kernel_thread+0x5c/0x64
-	Instruction dump:
-	7fe3fb78 48019689 80010014 7c630034 83e1000c 5463d97e 7c0803a6 38210010
-	4e800020 81250000 712a0001 41820008 <0fe00000> 9421ffe0 93e1001c 48000030
+Fix kasan_init_region() by using block_size() function that is in
+book3s32/mmu.c. To be able to reuse it here, make it non static and
+change its name to bat_block_size() in order to avoid name conflict
+with block_size() defined in <linux/blkdev.h>
 
-Implement unmap_kernel_page() which clears an existing pte.
+Also reuse find_free_bat() to avoid an error message from setbat()
+when no BAT is available.
+
+And allocate memory outside of linear memory mapping to avoid
+wasting that precious space.
+
+With this change we get correct alignment for BATs and KASAN shadow
+memory is allocated outside the linear memory space.
+
+	---[ Data Block Address Translation ]---
+	0: 0xc0000000-0xcfffffff 0x00000000       256M Kernel rw
+	1: 0xd0000000-0xdfffffff 0x10000000       256M Kernel rw
+	2: 0xe0000000-0xefffffff 0x20000000       256M Kernel rw
+	3: 0xf8000000-0xfbffffff 0x7c000000        64M Kernel rw
+	4: 0xfc000000-0xfdffffff 0x7a000000        32M Kernel rw
 
 Reported-by: Maxime Bizon <mbizon@freebox.fr>
+Fixes: 7974c4732642 ("powerpc/32s: Implement dedicated kasan_init_region()"=
+)
+Cc: stable@vger.kernel.org
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/book3s/32/pgtable.h | 1 +
- arch/powerpc/include/asm/book3s/64/pgtable.h | 2 ++
- arch/powerpc/include/asm/fixmap.h            | 6 ++++--
- arch/powerpc/include/asm/nohash/32/pgtable.h | 1 +
- arch/powerpc/include/asm/nohash/64/pgtable.h | 1 +
- arch/powerpc/mm/pgtable.c                    | 9 +++++++++
- 6 files changed, 18 insertions(+), 2 deletions(-)
+v2:
+- Allocate kasan shadow memory outside precious kernel linear memory
+- Properly zeroise kasan shadow memory
+---
+ arch/powerpc/include/asm/book3s/32/mmu-hash.h |  2 +
+ arch/powerpc/mm/book3s32/mmu.c                | 10 ++--
+ arch/powerpc/mm/kasan/book3s_32.c             | 58 ++++++++++---------
+ 3 files changed, 38 insertions(+), 32 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/in=
-clude/asm/book3s/32/pgtable.h
-index 609c80f67194..f8b94f78403f 100644
---- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-@@ -178,6 +178,7 @@ static inline bool pte_user(pte_t pte)
- #ifndef __ASSEMBLY__
-=20
- int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
-+void unmap_kernel_page(unsigned long va);
-=20
- #endif /* !__ASSEMBLY__ */
-=20
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/in=
-clude/asm/book3s/64/pgtable.h
-index 33e073d6b0c4..875730d5af40 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1082,6 +1082,8 @@ static inline int map_kernel_page(unsigned long ea, u=
-nsigned long pa, pgprot_t p
- 	return hash__map_kernel_page(ea, pa, prot);
+diff --git a/arch/powerpc/include/asm/book3s/32/mmu-hash.h b/arch/powerpc/i=
+nclude/asm/book3s/32/mmu-hash.h
+index f5be185cbdf8..5b45c648a8d9 100644
+--- a/arch/powerpc/include/asm/book3s/32/mmu-hash.h
++++ b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
+@@ -143,6 +143,8 @@ static __always_inline void update_user_segments(u32 va=
+l)
+ 	update_user_segment(15, val);
  }
 =20
-+void unmap_kernel_page(unsigned long va);
-+
- static inline int __meminit vmemmap_create_mapping(unsigned long start,
- 						   unsigned long page_size,
- 						   unsigned long phys)
-diff --git a/arch/powerpc/include/asm/fixmap.h b/arch/powerpc/include/asm/f=
-ixmap.h
-index 947b5b9c4424..a832aeafe560 100644
---- a/arch/powerpc/include/asm/fixmap.h
-+++ b/arch/powerpc/include/asm/fixmap.h
-@@ -111,8 +111,10 @@ static inline void __set_fixmap(enum fixed_addresses i=
-dx,
- 		BUILD_BUG_ON(idx >=3D __end_of_fixed_addresses);
- 	else if (WARN_ON(idx >=3D __end_of_fixed_addresses))
- 		return;
++int find_free_bat(void);
++unsigned int bat_block_size(unsigned long base, unsigned long top);
+ #endif /* !__ASSEMBLY__ */
+=20
+ /* We happily ignore the smaller BATs on 601, we don't actually use
+diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.=
+c
+index cb48e4a5106d..9e7714a861bf 100644
+--- a/arch/powerpc/mm/book3s32/mmu.c
++++ b/arch/powerpc/mm/book3s32/mmu.c
+@@ -76,7 +76,7 @@ unsigned long p_block_mapped(phys_addr_t pa)
+ 	return 0;
+ }
+=20
+-static int find_free_bat(void)
++int find_free_bat(void)
+ {
+ 	int b;
+ 	int n =3D mmu_has_feature(MMU_FTR_USE_HIGH_BATS) ? 8 : 4;
+@@ -100,7 +100,7 @@ static int find_free_bat(void)
+  * - block size has to be a power of two. This is calculated by finding th=
+e
+  *   highest bit set to 1.
+  */
+-static unsigned int block_size(unsigned long base, unsigned long top)
++unsigned int bat_block_size(unsigned long base, unsigned long top)
+ {
+ 	unsigned int max_size =3D SZ_256M;
+ 	unsigned int base_shift =3D (ffs(base) - 1) & 31;
+@@ -145,7 +145,7 @@ static unsigned long __init __mmu_mapin_ram(unsigned lo=
+ng base, unsigned long to
+ 	int idx;
+=20
+ 	while ((idx =3D find_free_bat()) !=3D -1 && base !=3D top) {
+-		unsigned int size =3D block_size(base, top);
++		unsigned int size =3D bat_block_size(base, top);
+=20
+ 		if (size < 128 << 10)
+ 			break;
+@@ -204,12 +204,12 @@ void mmu_mark_initmem_nx(void)
+ 	unsigned long size;
+=20
+ 	for (i =3D 0; i < nb - 1 && base < top && top - base > (128 << 10);) {
+-		size =3D block_size(base, top);
++		size =3D bat_block_size(base, top);
+ 		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_TEXT);
+ 		base +=3D size;
+ 	}
+ 	if (base < top) {
+-		size =3D block_size(base, top);
++		size =3D bat_block_size(base, top);
+ 		size =3D max(size, 128UL << 10);
+ 		if ((top - base) > size) {
+ 			size <<=3D 1;
+diff --git a/arch/powerpc/mm/kasan/book3s_32.c b/arch/powerpc/mm/kasan/book=
+3s_32.c
+index 202bd260a009..450a67ef0bbe 100644
+--- a/arch/powerpc/mm/kasan/book3s_32.c
++++ b/arch/powerpc/mm/kasan/book3s_32.c
+@@ -10,47 +10,51 @@ int __init kasan_init_region(void *start, size_t size)
+ {
+ 	unsigned long k_start =3D (unsigned long)kasan_mem_to_shadow(start);
+ 	unsigned long k_end =3D (unsigned long)kasan_mem_to_shadow(start + size);
+-	unsigned long k_cur =3D k_start;
+-	int k_size =3D k_end - k_start;
+-	int k_size_base =3D 1 << (ffs(k_size) - 1);
++	unsigned long k_nobat =3D k_start;
++	unsigned long k_cur;
++	phys_addr_t phys;
+ 	int ret;
+-	void *block;
+=20
+-	block =3D memblock_alloc(k_size, k_size_base);
 -
--	map_kernel_page(__fix_to_virt(idx), phys, flags);
-+	if (pgprot_val(flags))
-+		map_kernel_page(__fix_to_virt(idx), phys, flags);
-+	else
-+		unmap_kernel_page(__fix_to_virt(idx));
- }
-=20
- #define __early_set_fixmap	__set_fixmap
-diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/in=
-clude/asm/nohash/32/pgtable.h
-index b67742e2a9b2..d959c2a73fbf 100644
---- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-@@ -64,6 +64,7 @@ extern int icache_44x_need_flush;
- #ifndef __ASSEMBLY__
-=20
- int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
-+void unmap_kernel_page(unsigned long va);
-=20
- #endif /* !__ASSEMBLY__ */
-=20
-diff --git a/arch/powerpc/include/asm/nohash/64/pgtable.h b/arch/powerpc/in=
-clude/asm/nohash/64/pgtable.h
-index 9d2905a47410..2225991c69b5 100644
---- a/arch/powerpc/include/asm/nohash/64/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/64/pgtable.h
-@@ -308,6 +308,7 @@ static inline void __ptep_set_access_flags(struct vm_ar=
-ea_struct *vma,
- #define __swp_entry_to_pte(x)		__pte((x).val)
-=20
- int map_kernel_page(unsigned long ea, unsigned long pa, pgprot_t prot);
-+void unmap_kernel_page(unsigned long va);
- extern int __meminit vmemmap_create_mapping(unsigned long start,
- 					    unsigned long page_size,
- 					    unsigned long phys);
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index ce9482383144..b7385e637e3e 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -203,6 +203,15 @@ void set_pte_at(struct mm_struct *mm, unsigned long ad=
-dr, pte_t *ptep,
- 	__set_pte_at(mm, addr, ptep, pte, 0);
- }
-=20
-+void unmap_kernel_page(unsigned long va)
-+{
-+	pmd_t *pmdp =3D pmd_off_k(va);
-+	pte_t *ptep =3D pte_offset_kernel(pmdp, va);
+-	if (block && k_size_base >=3D SZ_128K && k_start =3D=3D ALIGN(k_start, k_=
+size_base)) {
+-		int k_size_more =3D 1 << (ffs(k_size - k_size_base) - 1);
+-
+-		setbat(-1, k_start, __pa(block), k_size_base, PAGE_KERNEL);
+-		if (k_size_more >=3D SZ_128K)
+-			setbat(-1, k_start + k_size_base, __pa(block) + k_size_base,
+-			       k_size_more, PAGE_KERNEL);
+-		if (v_block_mapped(k_start))
+-			k_cur =3D k_start + k_size_base;
+-		if (v_block_mapped(k_start + k_size_base))
+-			k_cur =3D k_start + k_size_base + k_size_more;
+-
+-		update_bats();
++	while (k_nobat < k_end) {
++		unsigned int k_size =3D bat_block_size(k_nobat, k_end);
++		int idx =3D find_free_bat();
 +
-+	pte_clear(&init_mm, va, ptep);
-+	flush_tlb_kernel_range(va, va + PAGE_SIZE);
-+}
++		if (idx =3D=3D -1)
++			break;
++		if (k_size < SZ_128K)
++			break;
++		phys =3D memblock_phys_alloc_range(k_size, k_size, 0,
++						 MEMBLOCK_ALLOC_ANYWHERE);
++		if (!phys)
++			break;
 +
- /*
-  * This is called when relaxing access to a PTE. It's also called in the p=
-age
-  * fault path when we don't hit any of the major fault cases, ie, a minor
++		setbat(idx, k_nobat, phys, k_size, PAGE_KERNEL);
++		k_nobat +=3D k_size;
+ 	}
++	if (k_nobat !=3D k_start)
++		update_bats();
+=20
+-	if (!block)
+-		block =3D memblock_alloc(k_size, PAGE_SIZE);
+-	if (!block)
+-		return -ENOMEM;
++	if (k_nobat < k_end) {
++		phys =3D memblock_phys_alloc_range(k_end - k_nobat, PAGE_SIZE, 0,
++						 MEMBLOCK_ALLOC_ANYWHERE);
++		if (!phys)
++			return -ENOMEM;
++	}
+=20
+ 	ret =3D kasan_init_shadow_page_tables(k_start, k_end);
+ 	if (ret)
+ 		return ret;
+=20
+-	kasan_update_early_region(k_start, k_cur, __pte(0));
++	kasan_update_early_region(k_start, k_nobat, __pte(0));
+=20
+-	for (; k_cur < k_end; k_cur +=3D PAGE_SIZE) {
++	for (k_cur =3D k_nobat; k_cur < k_end; k_cur +=3D PAGE_SIZE) {
+ 		pmd_t *pmd =3D pmd_off_k(k_cur);
+-		void *va =3D block + k_cur - k_start;
+-		pte_t pte =3D pfn_pte(PHYS_PFN(__pa(va)), PAGE_KERNEL);
++		pte_t pte =3D pfn_pte(PHYS_PFN(phys + k_cur - k_nobat), PAGE_KERNEL);
+=20
+ 		__set_pte_at(&init_mm, k_cur, pte_offset_kernel(pmd, k_cur), pte, 0);
+ 	}
+ 	flush_tlb_kernel_range(k_start, k_end);
++	memset(kasan_mem_to_shadow(start), 0, k_end - k_start);
++
+ 	return 0;
+ }
 --=20
 2.33.1
