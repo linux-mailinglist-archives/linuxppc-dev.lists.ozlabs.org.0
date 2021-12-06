@@ -1,41 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22B54692E3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 10:44:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED1D4693FC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 11:32:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J6z6c4ywnz3bjW
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 20:44:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J709t62n8z3bsp
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Dec 2021 21:32:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ghiti.fr
- (client-ip=217.70.183.194; helo=relay2-d.mail.gandi.net;
- envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=srs.iliad.fr (client-ip=212.27.33.1; helo=ns.iliad.fr;
+ envelope-from=srs0=63cgvt=qx=freebox.fr=mbizon@srs.iliad.fr;
+ receiver=<UNKNOWN>)
+Received: from ns.iliad.fr (ns.iliad.fr [212.27.33.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J6z696RH2z2xBf
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Dec 2021 20:44:14 +1100 (AEDT)
-Received: (Authenticated sender: alex@ghiti.fr)
- by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 2AF174000C;
- Mon,  6 Dec 2021 09:44:04 +0000 (UTC)
-Message-ID: <c6da1d52-380a-715a-8432-87e6a79bf7be@ghiti.fr>
-Date: Mon, 6 Dec 2021 10:44:04 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
-Subject: Re: [PATCH v7 1/3] riscv: Introduce CONFIG_RELOCATABLE
-Content-Language: en-US
-From: Alexandre ghiti <alex@ghiti.fr>
-To: Palmer Dabbelt <palmer@dabbelt.com>
-References: <mhng-4d503326-d18d-4155-a595-91dc15cfb4f1@palmerdabbelt-glaptop>
- <5846825d-cd7e-5085-569e-17cfaf36630f@ghiti.fr>
-In-Reply-To: <5846825d-cd7e-5085-569e-17cfaf36630f@ghiti.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J709T2ZDKz2xXg
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Dec 2021 21:32:09 +1100 (AEDT)
+Received: from ns.iliad.fr (localhost [127.0.0.1])
+ by ns.iliad.fr (Postfix) with ESMTP id 88947200F0;
+ Mon,  6 Dec 2021 11:32:06 +0100 (CET)
+Received: from sakura (freebox.vlq16.iliad.fr [213.36.7.13])
+ by ns.iliad.fr (Postfix) with ESMTP id 868FC20FF9;
+ Mon,  6 Dec 2021 11:32:06 +0100 (CET)
+Message-ID: <b9a4afdc13d29100d562232b6376834782c02e92.camel@freebox.fr>
+Subject: Re: Fail to boot 5.15 on mpc8347 with either debug_pagealloc or nobats
+From: Maxime Bizon <mbizon@freebox.fr>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Date: Mon, 06 Dec 2021 11:32:06 +0100
+In-Reply-To: <854e7a5f-2b1b-47de-51fb-6cd0f3c6ccd3@csgroup.eu>
+References: <f23763d551e65d4a225ba13c7898f83853c2aeaf.camel@freebox.fr>
+ <68bf4c39-53ce-f88f-383f-5defb1a36b1c@csgroup.eu>
+ <913068d2c368c80f89d6f9575d6b41e6fab48ae2.camel@freebox.fr>
+ <c7b4ef55-1deb-41f6-58cc-f8dc4477e90c@csgroup.eu>
+ <20211204141031.GA23757@sakura>
+ <5f4d36a1-695d-38a7-9ff9-d5af97f1a7e0@csgroup.eu>
+ <20211205164217.GA29658@sakura>
+ <d39825e0-6b48-5ac1-662e-26186e730eaa@csgroup.eu>
+ <20211205214408.GC29658@sakura>
+ <cea77e1e-9972-33cf-3ef8-e0be5ff26b63@csgroup.eu>
+ <b39cea045b4317a83b4605f2aeb8a88bcc44b1d7.camel@freebox.fr>
+ <854e7a5f-2b1b-47de-51fb-6cd0f3c6ccd3@csgroup.eu>
+Organization: Freebox
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: ClamAV using ClamSMTP ; ns.iliad.fr ;
+ Mon Dec  6 11:32:06 2021 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,246 +61,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aou@eecs.berkeley.edu, linux-kernel@vger.kernel.org, paulus@samba.org,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org,
- alexandre.ghiti@canonical.com, linuxppc-dev@lists.ozlabs.org
+Reply-To: mbizon@freebox.fr
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-@Palmer, can I do anything for that to be pulled in 5.17?
 
-Thanks,
 
-Alex
+On Mon, 2021-12-06 at 09:07 +0000, Christophe Leroy wrote:
 
-On 10/27/21 07:04, Alexandre ghiti wrote:
-> Hi Palmer,
->
-> On 10/26/21 11:29 PM, Palmer Dabbelt wrote:
->> On Sat, 09 Oct 2021 10:20:20 PDT (-0700), alex@ghiti.fr wrote:
->>> Arf, I have sent this patchset with the wrong email address. @Palmer
->>> tell me if you want me to resend it correctly.
->> Sorry for being kind of slow here.  It's fine: there's a "From:" in
->> the patch, and git picks those up so it'll match the signed-off-by
->> line.  I send pretty much all my patches that way, as I never managed
->> to get my Google address working correctly.
->>
->>> Thanks,
->>>
->>> Alex
->>>
->>> On 10/9/21 7:12 PM, Alexandre Ghiti wrote:
->>>> From: Alexandre Ghiti <alex@ghiti.fr>
->>>>
->>>> This config allows to compile 64b kernel as PIE and to relocate it at
->>>> any virtual address at runtime: this paves the way to KASLR.
->>>> Runtime relocation is possible since relocation metadata are
->>>> embedded into
->>>> the kernel.
->> IMO this should really be user selectable, at a bare minimum so it's
->> testable.
->> I just sent along a patch to do that (my power's off at home, so email
->> is a bit
->> wacky right now).
->>
->> I haven't put this on for-next yet as I'm not sure if you had a fix
->> for the
->> kasan issue (which IIUC would conflict with this).
->
-> The kasan issue only revealed that I need to move the kasan shadow
-> memory around with sv48 support, that's not related to the relocatable
-> kernel.
->
-> Thanks,
->
-> Alex
->
->
->>>> Note that relocating at runtime introduces an overhead even if the
->>>> kernel is loaded at the same address it was linked at and that the
->>>> compiler
->>>> options are those used in arm64 which uses the same RELA relocation
->>>> format.
->>>>
->>>> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->>>> ---
->>>>   arch/riscv/Kconfig              | 12 ++++++++
->>>>   arch/riscv/Makefile             |  7 +++--
->>>>   arch/riscv/kernel/vmlinux.lds.S |  6 ++++
->>>>   arch/riscv/mm/Makefile          |  4 +++
->>>>   arch/riscv/mm/init.c            | 54 ++++++++++++++++++++++++++++++++-
->>>>   5 files changed, 80 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
->>>> index ea16fa2dd768..043ba92559fa 100644
->>>> --- a/arch/riscv/Kconfig
->>>> +++ b/arch/riscv/Kconfig
->>>> @@ -213,6 +213,18 @@ config PGTABLE_LEVELS
->>>>   config LOCKDEP_SUPPORT
->>>>       def_bool y
->>>>
->>>> +config RELOCATABLE
->>>> +    bool
->>>> +    depends on MMU && 64BIT && !XIP_KERNEL
->>>> +    help
->>>> +          This builds a kernel as a Position Independent Executable
->>>> (PIE),
->>>> +          which retains all relocation metadata required to
->>>> relocate the
->>>> +          kernel binary at runtime to a different virtual address
->>>> than the
->>>> +          address it was linked at.
->>>> +          Since RISCV uses the RELA relocation format, this requires a
->>>> +          relocation pass at runtime even if the kernel is loaded
->>>> at the
->>>> +          same address it was linked at.
->>>> +
->>>>   source "arch/riscv/Kconfig.socs"
->>>>   source "arch/riscv/Kconfig.erratas"
->>>>
->>>> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
->>>> index 0eb4568fbd29..2f509915f246 100644
->>>> --- a/arch/riscv/Makefile
->>>> +++ b/arch/riscv/Makefile
->>>> @@ -9,9 +9,12 @@
->>>>   #
->>>>
->>>>   OBJCOPYFLAGS    := -O binary
->>>> -LDFLAGS_vmlinux :=
->>>> +ifeq ($(CONFIG_RELOCATABLE),y)
->>>> +    LDFLAGS_vmlinux += -shared -Bsymbolic -z notext -z norelro
->>>> +    KBUILD_CFLAGS += -fPIE
->>>> +endif
->>>>   ifeq ($(CONFIG_DYNAMIC_FTRACE),y)
->>>> -    LDFLAGS_vmlinux := --no-relax
->>>> +    LDFLAGS_vmlinux += --no-relax
->>>>       KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
->>>>       CC_FLAGS_FTRACE := -fpatchable-function-entry=8
->>>>   endif
->>>> diff --git a/arch/riscv/kernel/vmlinux.lds.S
->>>> b/arch/riscv/kernel/vmlinux.lds.S
->>>> index 5104f3a871e3..862a8c09723c 100644
->>>> --- a/arch/riscv/kernel/vmlinux.lds.S
->>>> +++ b/arch/riscv/kernel/vmlinux.lds.S
->>>> @@ -133,6 +133,12 @@ SECTIONS
->>>>
->>>>       BSS_SECTION(PAGE_SIZE, PAGE_SIZE, 0)
->>>>
->>>> +    .rela.dyn : ALIGN(8) {
->>>> +        __rela_dyn_start = .;
->>>> +        *(.rela .rela*)
->>>> +        __rela_dyn_end = .;
->>>> +    }
->>>> +
->>>>   #ifdef CONFIG_EFI
->>>>       . = ALIGN(PECOFF_SECTION_ALIGNMENT);
->>>>       __pecoff_data_virt_size = ABSOLUTE(. - __pecoff_text_end);
->>>> diff --git a/arch/riscv/mm/Makefile b/arch/riscv/mm/Makefile
->>>> index 7ebaef10ea1b..2d33ec574bbb 100644
->>>> --- a/arch/riscv/mm/Makefile
->>>> +++ b/arch/riscv/mm/Makefile
->>>> @@ -1,6 +1,10 @@
->>>>   # SPDX-License-Identifier: GPL-2.0-only
->>>>
->>>>   CFLAGS_init.o := -mcmodel=medany
->>>> +ifdef CONFIG_RELOCATABLE
->>>> +CFLAGS_init.o += -fno-pie
->>>> +endif
->>>> +
->>>>   ifdef CONFIG_FTRACE
->>>>   CFLAGS_REMOVE_init.o = $(CC_FLAGS_FTRACE)
->>>>   CFLAGS_REMOVE_cacheflush.o = $(CC_FLAGS_FTRACE)
->>>> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
->>>> index c0cddf0fc22d..42041c12d496 100644
->>>> --- a/arch/riscv/mm/init.c
->>>> +++ b/arch/riscv/mm/init.c
->>>> @@ -20,6 +20,9 @@
->>>>   #include <linux/dma-map-ops.h>
->>>>   #include <linux/crash_dump.h>
->>>>   #include <linux/hugetlb.h>
->>>> +#ifdef CONFIG_RELOCATABLE
->>>> +#include <linux/elf.h>
->>>> +#endif
->>>>
->>>>   #include <asm/fixmap.h>
->>>>   #include <asm/tlbflush.h>
->>>> @@ -103,7 +106,7 @@ static void __init print_vm_layout(void)
->>>>       print_mlm("lowmem", (unsigned long)PAGE_OFFSET,
->>>>             (unsigned long)high_memory);
->>>>   #ifdef CONFIG_64BIT
->>>> -    print_mlm("kernel", (unsigned long)KERNEL_LINK_ADDR,
->>>> +    print_mlm("kernel", (unsigned long)kernel_map.virt_addr,
->>>>             (unsigned long)ADDRESS_SPACE_END);
->>>>   #endif
->>>>   }
->>>> @@ -518,6 +521,44 @@ static __init pgprot_t pgprot_from_va(uintptr_t
->>>> va)
->>>>   #error "setup_vm() is called from head.S before relocate so it
->>>> should not use absolute addressing."
->>>>   #endif
->>>>
->>>> +#ifdef CONFIG_RELOCATABLE
->>>> +extern unsigned long __rela_dyn_start, __rela_dyn_end;
->>>> +
->>>> +static void __init relocate_kernel(void)
->>>> +{
->>>> +    Elf64_Rela *rela = (Elf64_Rela *)&__rela_dyn_start;
->>>> +    /*
->>>> +     * This holds the offset between the linked virtual address and
->>>> the
->>>> +     * relocated virtual address.
->>>> +     */
->>>> +    uintptr_t reloc_offset = kernel_map.virt_addr - KERNEL_LINK_ADDR;
->>>> +    /*
->>>> +     * This holds the offset between kernel linked virtual address and
->>>> +     * physical address.
->>>> +     */
->>>> +    uintptr_t va_kernel_link_pa_offset = KERNEL_LINK_ADDR -
->>>> kernel_map.phys_addr;
->>>> +
->>>> +    for ( ; rela < (Elf64_Rela *)&__rela_dyn_end; rela++) {
->>>> +        Elf64_Addr addr = (rela->r_offset - va_kernel_link_pa_offset);
->>>> +        Elf64_Addr relocated_addr = rela->r_addend;
->>>> +
->>>> +        if (rela->r_info != R_RISCV_RELATIVE)
->>>> +            continue;
->>>> +
->>>> +        /*
->>>> +         * Make sure to not relocate vdso symbols like rt_sigreturn
->>>> +         * which are linked from the address 0 in vmlinux since
->>>> +         * vdso symbol addresses are actually used as an offset from
->>>> +         * mm->context.vdso in VDSO_OFFSET macro.
->>>> +         */
->>>> +        if (relocated_addr >= KERNEL_LINK_ADDR)
->>>> +            relocated_addr += reloc_offset;
->>>> +
->>>> +        *(Elf64_Addr *)addr = relocated_addr;
->>>> +    }
->>>> +}
->>>> +#endif /* CONFIG_RELOCATABLE */
->>>> +
->>>>   #ifdef CONFIG_XIP_KERNEL
->>>>   static void __init create_kernel_page_table(pgd_t *pgdir,
->>>>                           __always_unused bool early)
->>>> @@ -625,6 +666,17 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
->>>>       BUG_ON((kernel_map.virt_addr + kernel_map.size) >
->>>> ADDRESS_SPACE_END - SZ_4K);
->>>>   #endif
->>>>
->>>> +#ifdef CONFIG_RELOCATABLE
->>>> +    /*
->>>> +     * Early page table uses only one PGDIR, which makes it possible
->>>> +     * to map PGDIR_SIZE aligned on PGDIR_SIZE: if the relocation
->>>> offset
->>>> +     * makes the kernel cross over a PGDIR_SIZE boundary, raise a bug
->>>> +     * since a part of the kernel would not get mapped.
->>>> +     */
->>>> +    BUG_ON(PGDIR_SIZE - (kernel_map.virt_addr & (PGDIR_SIZE - 1)) <
->>>> kernel_map.size);
->>>> +    relocate_kernel();
->>>> +#endif
->>>> +
->>>>       pt_ops.alloc_pte = alloc_pte_early;
->>>>       pt_ops.get_pte_virt = get_pte_virt_early;
->>>>   #ifndef __PAGETABLE_PMD_FOLDED
+Hello,
+
+> Looks like you can win something if you take the patch I just sent
+> and replace the memblock_phys_alloc(k_size, k_size) by 
+> memblock_phys_alloc_range(k_size, k_size, 0, MEMBLOCK_ALLOC_ANYWHERE)
+
+I tried your patch without your proposed modification and got something new:
+
+[    0.000000] ==================================================================
+[    0.000000] BUG: KASAN: unknown-crash in vprintk+0x30/0xe8
+[    0.000000] Read of size 4 at addr 80ad0740 by task swapper/0
+[    0.000000] 
+[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 5.15.0+ #415
+[    0.000000] Call Trace:
+[    0.000000] [80cdfe50] [8017711c] print_address_description.constprop.0+0x78/0x338 (unreliable)
+[    0.000000] [80cdfe80] [80176e48] kasan_report+0x1c0/0x1d4
+[    0.000000] [80cdfec0] [80099a34] vprintk+0x30/0xe8
+[    0.000000] [80cdfee0] [80099600] _printk+0x9c/0xbc
+[    0.000000] [80cdff60] [80999628] kasan_init+0x14c/0x164
+[    0.000000] [80cdff90] [80995440] setup_arch+0x18/0x1c4
+[    0.000000] [80cdffc0] [809910c8] start_kernel+0x60/0x2fc
+[    0.000000] [80cdfff0] [000033c0] 0x33c0
+[    0.000000] 
+[    0.000000] The buggy address belongs to the variable:
+[    0.000000]  init_task+0x0/0xce0
+[    0.000000] 
+[    0.000000] Memory state around the buggy address:
+[    0.000000]  80ad0600: de ad be ef de ad be ef de ad be ef de ad be ef
+[    0.000000]  80ad0680: de ad be ef de ad be ef de ad be ef de ad be ef
+[    0.000000] >80ad0700: de ad be ef de ad be ef de ad be ef de ad be ef
+[    0.000000]                                    ^
+[    0.000000]  80ad0780: de ad be ef de ad be ef de ad be ef de ad be ef
+[    0.000000]  80ad0800: de ad be ef de ad be ef de ad be ef de ad be ef
+[    0.000000] ==================================================================
+[    0.000000] Disabling lock debugging due to kernel taint
+[    0.000000] KASAN init done
+
+
+Looking at the archive when you introduced KASAN, you had this kind of
+bug, and the conclusion of the thread was:
+
+> Indeed the problem is in kasan_init() : memblock_phys_alloc()
+> doesn't zeroize the allocated memory. I changed it to
+> memblock_alloc() and now it works.	
+
+since your patch uses memblock_phys_alloc() again, maybe that's the
+same issue
+
+-- 
+Maxime
+
+
+
