@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A32246BCA9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 14:32:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AE646BCA7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 14:31:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J7h6W3Z1sz3f3c
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 00:32:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J7h650sBWz3dx5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 00:31:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J7h2S1YPSz2ypX
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 00:28:32 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J7h2Q5QPqz2ywg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 00:28:30 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4J7h2R0c6qz4xh5;
- Wed,  8 Dec 2021 00:28:31 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4J7h2Q35Rmz4xh2;
+ Wed,  8 Dec 2021 00:28:30 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, Kees Cook <keescook@chromium.org>
-In-Reply-To: <20211118203604.1288379-1-keescook@chromium.org>
-References: <20211118203604.1288379-1-keescook@chromium.org>
-Subject: Re: [PATCH] powerpc/signal32: Use struct_group() to zero spe regs
-Message-Id: <163888363674.3690807.16904122616287532498.b4-ty@ellerman.id.au>
-Date: Wed, 08 Dec 2021 00:27:16 +1100
+To: Cédric Le Goater <clg@kaod.org>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20211201165418.1041842-1-clg@kaod.org>
+References: <20211201165418.1041842-1-clg@kaod.org>
+Subject: Re: [PATCH] powerpc/xive: Fix compile when !CONFIG_PPC_POWERNV.
+Message-Id: <163888363909.3690807.6557313130555656672.b4-ty@ellerman.id.au>
+Date: Wed, 08 Dec 2021 00:27:19 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,28 +42,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel test robot <lkp@intel.com>, Peter Zijlstra <peterz@infradead.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- linux-hardening@vger.kernel.org, Sudeep Holla <sudeep.holla@arm.com>,
- linuxppc-dev@lists.ozlabs.org, "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: kernel test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 18 Nov 2021 12:36:04 -0800, Kees Cook wrote:
-> In preparation for FORTIFY_SOURCE performing compile-time and run-time
-> field bounds checking for memset(), avoid intentionally writing across
-> neighboring fields.
+On Wed, 1 Dec 2021 17:54:18 +0100, Cédric Le Goater wrote:
+> The automatic "save & restore" of interrupt context is a POWER10/XIVE2
+> feature exploited by KVM under the PowerNV platform. It is not
+> available under pSeries and the associated toggle should not be
+> exposed under the XIVE debugfs directory.
 > 
-> Add a struct_group() for the spe registers so that memset() can correctly reason
-> about the size:
+> Introduce a platform handler for debugfs initialization and move the
+> 'save-restore' entry under the native (PowerNV) backend to fix compile
+> when !CONFIG_PPC_POWERNV.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/signal32: Use struct_group() to zero spe regs
-      https://git.kernel.org/powerpc/c/62ea67e31981bca95ec16c37e2a1fba68f3dd8c5
+[1/1] powerpc/xive: Fix compile when !CONFIG_PPC_POWERNV.
+      https://git.kernel.org/powerpc/c/2a2ac8a7018b953cd23d770ebd28f8e1ea365df4
 
 cheers
