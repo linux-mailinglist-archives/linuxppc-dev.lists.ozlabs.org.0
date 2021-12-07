@@ -1,82 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A9B46C061
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 17:11:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E184046C064
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 17:13:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J7lfs5kGJz3c5l
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 03:11:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J7lhS59jFz3cbd
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 03:13:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XtY+L/Cm;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XtY+L/Cm;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IqOO63c+;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IQrTlaEU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
  helo=us-smtp-delivery-124.mimecast.com; envelope-from=prudo@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=XtY+L/Cm; 
+ header.s=mimecast20190719 header.b=IqOO63c+; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=XtY+L/Cm; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=IQrTlaEU; 
  dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (us-smtp-delivery-124.mimecast.com [170.10.129.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J7lf9271zz2yY7
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 03:11:13 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J7lgm3H2kz3cT4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 03:12:36 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1638893470;
+ s=mimecast20190719; t=1638893553;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Onz5Twi1yBYsmurLPM8Oy6J1rZ5yDH44DYmuLT6gN40=;
- b=XtY+L/CmDsNlBB1VlPgYOtHXCCoDZXSC0EwGy/ngGfAqVMEH4b4zZddV+AJ6ld8udVkVHK
- Vn0QMVlWhRw4D9jtDILWeQFixKzq+/lPsJ5pgP4f/w88IfSCo7xdVNfxT1gvcm8+ARH5o6
- oc3hPdWsS5/jnfgnCIrlw5BmhxW/m9s=
+ bh=q14zqMaClWT6A6pjsZ9r/kKotJ2Nm5bDx7Gi7LWBtyI=;
+ b=IqOO63c+UeBs4n9CIPOc0XJTSyjWi29q0t62rcSerIRryeybwoUW9pms+FwA0EKqcxEeSo
+ XofFK9oxlaBeJHrpDaz4T7QHMKCvH7SmsvIfLkENhiPkaJ/BBuNVQPzBTm1ezDk3M8fiyl
+ 92U9mLeg66DizquDJV88c6JFUDAXHS8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1638893470;
+ s=mimecast20190719; t=1638893554;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Onz5Twi1yBYsmurLPM8Oy6J1rZ5yDH44DYmuLT6gN40=;
- b=XtY+L/CmDsNlBB1VlPgYOtHXCCoDZXSC0EwGy/ngGfAqVMEH4b4zZddV+AJ6ld8udVkVHK
- Vn0QMVlWhRw4D9jtDILWeQFixKzq+/lPsJ5pgP4f/w88IfSCo7xdVNfxT1gvcm8+ARH5o6
- oc3hPdWsS5/jnfgnCIrlw5BmhxW/m9s=
+ bh=q14zqMaClWT6A6pjsZ9r/kKotJ2Nm5bDx7Gi7LWBtyI=;
+ b=IQrTlaEUGK7u059C12mSvvd0rYaPT0XWdHuBNGoBkTUfoQbZ/yU7qEB/lzAiMbVXwC4xgt
+ /nkEta6jQQxZb6GA0yEZvMmI3fs2uh+9quDFh+l6P1T6QDC/w6ZVPZ+tYcRZvvlqlNX1KC
+ iUfJczXYt2bTkZlWmSduCPLVl/QTm0U=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-524-FPUfGenlPk2WNeICvGOZDQ-1; Tue, 07 Dec 2021 11:11:07 -0500
-X-MC-Unique: FPUfGenlPk2WNeICvGOZDQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
+ us-mta-505-BdX3DYBpO-KAjRBFDzmJRA-1; Tue, 07 Dec 2021 11:11:25 -0500
+X-MC-Unique: BdX3DYBpO-KAjRBFDzmJRA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BBFD31023F53;
- Tue,  7 Dec 2021 16:11:03 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 106B31006AA2;
+ Tue,  7 Dec 2021 16:11:21 +0000 (UTC)
 Received: from rhtmp (unknown [10.39.192.202])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BF2305DF4B;
- Tue,  7 Dec 2021 16:10:36 +0000 (UTC)
-Date: Tue, 7 Dec 2021 17:10:34 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D0F241972E;
+ Tue,  7 Dec 2021 16:11:14 +0000 (UTC)
+Date: Tue, 7 Dec 2021 17:11:12 +0100
 From: Philipp Rudo <prudo@redhat.com>
 To: Michal Suchanek <msuchanek@suse.de>
-Subject: Re: [PATCH v2 6/6] module: Move duplicate mod_check_sig users code
- to mod_parse_sig
-Message-ID: <20211207171034.0b782d82@rhtmp>
-In-Reply-To: <d464e1f45d21a29cbbe828dea412206cdc94866b.1637862358.git.msuchanek@suse.de>
+Subject: Re: [PATCH v2 4/6] module: strip the signature marker in the
+ verification function.
+Message-ID: <20211207171112.03850036@rhtmp>
+In-Reply-To: <0f9bbbc4800d5329485b6bdabbbe1ef3b2169b02.1637862358.git.msuchanek@suse.de>
 References: <cover.1637862358.git.msuchanek@suse.de>
- <d464e1f45d21a29cbbe828dea412206cdc94866b.1637862358.git.msuchanek@suse.de>
+ <0f9bbbc4800d5329485b6bdabbbe1ef3b2169b02.1637862358.git.msuchanek@suse.de>
 Organization: Red Hat inc.
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,202 +112,133 @@ Sender: "Linuxppc-dev"
 
 Hi Michal,
 
-On Thu, 25 Nov 2021 19:02:44 +0100
+On Thu, 25 Nov 2021 19:02:42 +0100
 Michal Suchanek <msuchanek@suse.de> wrote:
 
-> Multiple users of mod_check_sig check for the marker, then call
-> mod_check_sig, extract signature length, and remove the signature.
-> 
-> Put this code in one place together with mod_check_sig.
+> It is stripped by each caller separately.
 > 
 > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 > ---
->  include/linux/module_signature.h    |  1 +
->  kernel/module_signature.c           | 56 ++++++++++++++++++++++++++++-
->  kernel/module_signing.c             | 26 +++-----------
->  security/integrity/ima/ima_modsig.c | 22 ++----------
->  4 files changed, 63 insertions(+), 42 deletions(-)
-> 
-> diff --git a/include/linux/module_signature.h b/include/linux/module_signature.h
-> index 7eb4b00381ac..1343879b72b3 100644
-> --- a/include/linux/module_signature.h
-> +++ b/include/linux/module_signature.h
-> @@ -42,5 +42,6 @@ struct module_signature {
->  
->  int mod_check_sig(const struct module_signature *ms, size_t file_len,
->  		  const char *name);
-> +int mod_parse_sig(const void *data, size_t *len, size_t *sig_len, const char *name);
->  
->  #endif /* _LINUX_MODULE_SIGNATURE_H */
-> diff --git a/kernel/module_signature.c b/kernel/module_signature.c
-> index 00132d12487c..784b40575ee4 100644
-> --- a/kernel/module_signature.c
-> +++ b/kernel/module_signature.c
-> @@ -8,14 +8,36 @@
->  
->  #include <linux/errno.h>
->  #include <linux/printk.h>
-> +#include <linux/string.h>
->  #include <linux/module_signature.h>
->  #include <asm/byteorder.h>
->  
-> +/**
-> + * mod_check_sig_marker - check that the given data has signature marker at the end
-> + *
-> + * @data:	Data with appended signature
-> + * @len:	Length of data. Signature marker length is subtracted on success.
-> + */
-> +static inline int mod_check_sig_marker(const void *data, size_t *len)
+>  arch/powerpc/kexec/elf_64.c           |  9 ---------
+>  arch/s390/kernel/machine_kexec_file.c |  9 ---------
+>  kernel/module.c                       |  7 +------
+>  kernel/module_signing.c               | 12 ++++++++++--
 
-I personally don't like it when a function has a "check" in it's name
-as it doesn't describe what the function is checking for. For me
-mod_has_sig_marker is much more precise. I would use that instead.
+kernel/module_signing.c is only compiled with MODULE_SIG enabled but
+KEXEC_SIG only selects MODULE_SIG_FORMAT. In the unlikely case that
+KEXEC_SIG is enabled but MODULE_SIG isn't this causes a build breakage.
+So you need to update KEXEC_SIG to select MODULE_SIG instead of
+MODULE_SIG_FORMAT for s390 and ppc.
 
 Thanks
 Philipp
 
-> +{
-> +	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
-> +
-> +	if (markerlen > *len)
-> +		return -ENODATA;
-> +
-> +	if (memcmp(data + *len - markerlen, MODULE_SIG_STRING,
-> +		   markerlen))
-> +		return -ENODATA;
-> +
-> +	*len -= markerlen;
-> +	return 0;
-> +}
-> +
->  /**
->   * mod_check_sig - check that the given signature is sane
->   *
->   * @ms:		Signature to check.
-> - * @file_len:	Size of the file to which @ms is appended.
-> + * @file_len:	Size of the file to which @ms is appended (without the marker).
->   * @name:	What is being checked. Used for error messages.
->   */
->  int mod_check_sig(const struct module_signature *ms, size_t file_len,
-> @@ -44,3 +66,35 @@ int mod_check_sig(const struct module_signature *ms, size_t file_len,
+>  4 files changed, 11 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+> index 266cb26d3ca0..63634c95265d 100644
+> --- a/arch/powerpc/kexec/elf_64.c
+> +++ b/arch/powerpc/kexec/elf_64.c
+> @@ -156,15 +156,6 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+>  int elf64_verify_sig(const char *kernel, unsigned long length)
+>  {
+>  	size_t kernel_len = length;
+> -	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
+> -
+> -	if (marker_len > kernel_len)
+> -		return -EKEYREJECTED;
+> -
+> -	if (memcmp(kernel + kernel_len - marker_len, MODULE_SIG_STRING,
+> -		   marker_len))
+> -		return -EKEYREJECTED;
+> -	kernel_len -= marker_len;
 >  
->  	return 0;
+>  	return verify_appended_signature(kernel, &kernel_len, VERIFY_USE_PLATFORM_KEYRING,
+>  					"kexec_file");
+> diff --git a/arch/s390/kernel/machine_kexec_file.c b/arch/s390/kernel/machine_kexec_file.c
+> index 432797249db3..c4632c1a1b59 100644
+> --- a/arch/s390/kernel/machine_kexec_file.c
+> +++ b/arch/s390/kernel/machine_kexec_file.c
+> @@ -27,20 +27,11 @@ const struct kexec_file_ops * const kexec_file_loaders[] = {
+>  int s390_verify_sig(const char *kernel, unsigned long length)
+>  {
+>  	size_t kernel_len = length;
+> -	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
+>  
+>  	/* Skip signature verification when not secure IPLed. */
+>  	if (!ipl_secure_flag)
+>  		return 0;
+>  
+> -	if (marker_len > kernel_len)
+> -		return -EKEYREJECTED;
+> -
+> -	if (memcmp(kernel + kernel_len - marker_len, MODULE_SIG_STRING,
+> -		   marker_len))
+> -		return -EKEYREJECTED;
+> -	kernel_len -= marker_len;
+> -
+>  	return verify_appended_signature(kernel, &kernel_len, VERIFY_USE_PLATFORM_KEYRING,
+>  					"kexec_file");
 >  }
-> +
-> +/**
-> + * mod_parse_sig - check that the given signature is sane and determine signature length
-> + *
-> + * @data:	Data with appended signature.
-> + * @len:	Length of data. Signature and marker length is subtracted on success.
-> + * @sig_len:	Length of signature. Filled on success.
-> + * @name:	What is being checked. Used for error messages.
-> + */
-> +int mod_parse_sig(const void *data, size_t *len, size_t *sig_len, const char *name)
-> +{
-> +	const struct module_signature *sig;
-> +	int rc;
-> +
-> +	rc = mod_check_sig_marker(data, len);
-> +	if (rc)
-> +		return rc;
-> +
-> +	if (*len < sizeof(*sig))
-> +		return -ENODATA;
-> +
-> +	sig = (const struct module_signature *)(data + (*len - sizeof(*sig)));
-> +
-> +	rc = mod_check_sig(sig, *len, name);
-> +	if (rc)
-> +		return rc;
-> +
-> +	*sig_len = be32_to_cpu(sig->sig_len);
-> +	*len -= *sig_len + sizeof(*sig);
-> +
-> +	return 0;
-> +}
+> diff --git a/kernel/module.c b/kernel/module.c
+> index 8481933dfa92..d91ca0f93a40 100644
+> --- a/kernel/module.c
+> +++ b/kernel/module.c
+> @@ -2882,7 +2882,6 @@ static inline void kmemleak_load_module(const struct module *mod,
+>  static int module_sig_check(struct load_info *info, int flags)
+>  {
+>  	int err = -ENODATA;
+> -	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
+>  	const char *reason;
+>  	const void *mod = info->hdr;
+>  
+> @@ -2890,11 +2889,7 @@ static int module_sig_check(struct load_info *info, int flags)
+>  	 * Require flags == 0, as a module with version information
+>  	 * removed is no longer the module that was signed
+>  	 */
+> -	if (flags == 0 &&
+> -	    info->len > markerlen &&
+> -	    memcmp(mod + info->len - markerlen, MODULE_SIG_STRING, markerlen) == 0) {
+> -		/* We truncate the module to discard the signature */
+> -		info->len -= markerlen;
+> +	if (flags == 0) {
+>  		err = verify_appended_signature(mod, &info->len,
+>  						VERIFY_USE_SECONDARY_KEYRING, "module");
+>  		if (!err) {
 > diff --git a/kernel/module_signing.c b/kernel/module_signing.c
-> index cef72a6f6b5d..02bbca90f467 100644
+> index f492e410564d..4c28cb55275f 100644
 > --- a/kernel/module_signing.c
 > +++ b/kernel/module_signing.c
-> @@ -25,35 +25,17 @@ int verify_appended_signature(const void *data, size_t *len,
->  			      struct key *trusted_keys,
->  			      enum key_being_used_for purpose)
+> @@ -15,8 +15,7 @@
+>  #include "module-internal.h"
+>  
+>  /**
+> - * verify_appended_signature - Verify the signature on a module with the
+> - * signature marker stripped.
+> + * verify_appended_signature - Verify the signature on a module
+>   * @data: The data to be verified
+>   * @len: Size of @data.
+>   * @trusted_keys: Keyring to use for verification
+> @@ -25,12 +24,21 @@
+>  int verify_appended_signature(const void *data, size_t *len,
+>  			      struct key *trusted_keys, const char *what)
 >  {
-> -	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
+> +	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
 >  	struct module_signature ms;
-> -	size_t sig_len, modlen = *len;
-> +	size_t sig_len;
+>  	size_t sig_len, modlen = *len;
 >  	int ret;
 >  
-> -	pr_devel("==>%s %s(,%zu)\n", __func__, key_being_used_for[purpose], modlen);  
-> +	pr_devel("==>%s %s(,%zu)\n", __func__, key_being_used_for[purpose], *len);
+>  	pr_devel("==>%s(,%zu)\n", __func__, modlen);  
 >  
-> -	if (markerlen > modlen)
-> -		return -ENODATA;
-> -
-> -	if (memcmp(data + modlen - markerlen, MODULE_SIG_STRING,
-> -		   markerlen))
-> -		return -ENODATA;
-> -	modlen -= markerlen;
-> -
-> -	if (modlen <= sizeof(ms))
-> -		return -EBADMSG;
-> -
-> -	memcpy(&ms, data + (modlen - sizeof(ms)), sizeof(ms));
-> -
-> -	ret = mod_check_sig(&ms, modlen, key_being_used_for[purpose]);
-> +	ret = mod_parse_sig(data, len, &sig_len, key_being_used_for[purpose]);
->  	if (ret)
->  		return ret;
+> +	if (markerlen > modlen)
+> +		return -ENODATA;
+> +
+> +	if (memcmp(data + modlen - markerlen, MODULE_SIG_STRING,
+> +		   markerlen))
+> +		return -ENODATA;
+> +	modlen -= markerlen;
+> +
+>  	if (modlen <= sizeof(ms))
+>  		return -EBADMSG;
 >  
-> -	sig_len = be32_to_cpu(ms.sig_len);
-> -	modlen -= sig_len + sizeof(ms);
-> -	*len = modlen;
-> -
-> -	return verify_pkcs7_signature(data, modlen, data + modlen, sig_len,
-> +	return verify_pkcs7_signature(data, *len, data + *len, sig_len,
->  				      trusted_keys,
->  				      purpose,
->  				      NULL, NULL);
-> diff --git a/security/integrity/ima/ima_modsig.c b/security/integrity/ima/ima_modsig.c
-> index fb25723c65bc..46917eb37fd8 100644
-> --- a/security/integrity/ima/ima_modsig.c
-> +++ b/security/integrity/ima/ima_modsig.c
-> @@ -37,33 +37,17 @@ struct modsig {
->   *
->   * Return: 0 on success, error code otherwise.
->   */
-> -int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t buf_len,
-> +int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t len,
->  		    struct modsig **modsig)
->  {
-> -	const size_t marker_len = strlen(MODULE_SIG_STRING);
-> -	const struct module_signature *sig;
->  	struct modsig *hdr;
-> -	size_t sig_len;
-> -	const void *p;
-> +	size_t sig_len, buf_len = len;
->  	int rc;
->  
-> -	if (buf_len <= marker_len + sizeof(*sig))
-> -		return -ENOENT;
-> -
-> -	p = buf + buf_len - marker_len;
-> -	if (memcmp(p, MODULE_SIG_STRING, marker_len))
-> -		return -ENOENT;
-> -
-> -	buf_len -= marker_len;
-> -	sig = (const struct module_signature *)(p - sizeof(*sig));
-> -
-> -	rc = mod_check_sig(sig, buf_len, func_tokens[func]);
-> +	rc = mod_parse_sig(buf, &buf_len, &sig_len, func_tokens[func]);
->  	if (rc)
->  		return rc;
->  
-> -	sig_len = be32_to_cpu(sig->sig_len);
-> -	buf_len -= sig_len + sizeof(*sig);
-> -
->  	/* Allocate sig_len additional bytes to hold the raw PKCS#7 data. */
->  	hdr = kzalloc(sizeof(*hdr) + sig_len, GFP_KERNEL);
->  	if (!hdr)
 
