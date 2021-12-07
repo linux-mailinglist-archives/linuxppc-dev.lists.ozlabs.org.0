@@ -2,60 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 125F346BFE1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 16:50:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1365D46C057
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 17:08:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J7lBW0TQ4z3c9b
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 02:50:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J7lZm6tqSz300S
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 03:08:16 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=N2u/XNXY;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=79.137.123.220;
- helo=smtpout2.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
-Received: from smtpout2.mo529.mail-out.ovh.net
- (smtpout2.mo529.mail-out.ovh.net [79.137.123.220])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=N2u/XNXY; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J7l9z10zLz2xYL
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 02:50:12 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.108.4.36])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 876D2D06810E;
- Tue,  7 Dec 2021 16:50:06 +0100 (CET)
-Received: from kaod.org (37.59.142.96) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Tue, 7 Dec
- 2021 16:50:04 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-96R0016d463d06-8f28-4116-8296-36026f977615,
- D5B34436B48CBBE29FDE786D5871FA4E32D79878) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 86.201.172.254
-Message-ID: <27f22e0e-8f84-a6d7-704b-d9eddc642d74@kaod.org>
-Date: Tue, 7 Dec 2021 16:50:01 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J7lZ26W6Kz2yZx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 03:07:38 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B7EqWt3018172; 
+ Tue, 7 Dec 2021 16:07:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=KhR7aBzxn5ylYqmhqahWZ1ONXD7ujdIkLRxq8HLSKhU=;
+ b=N2u/XNXYxIEMkKaIt7BmbFZLY/e1AJKvrJxPRDsipGhTGLkPSdUtm3se/sKLpX7JhCEF
+ YRkKiiiTzgFqHzB2sKhnSQ/tCcXOg/BTWWOKMA8JxWRn3jPWTjEWSyEr46XQfdgcOzOV
+ I2wOrppeQXW4SNYWpAsCdpJIBcHFnRC9vpABbr8bMFEBw+qZpsXqrdrjWRovNWLEc0uM
+ 09xlhAwfjVO9vZ9ZMLiqAVoNfU7PhIxod5/pux73rRT/JO6fXBCXb1xcz1FvLnEx8ArW
+ iCVbXzbnbLzKO9imxzSJU2s01xcVfzbsOZ5/wsuyuymIeFbMnlRjMw6QBv8wR0DhpfgG dw== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ct9ru1sq9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Dec 2021 16:07:35 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B7G2joN025848;
+ Tue, 7 Dec 2021 16:07:33 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06ams.nl.ibm.com with ESMTP id 3cqykj88xh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Dec 2021 16:07:33 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 1B7G7UV030474578
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 Dec 2021 16:07:30 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 651F8A405E;
+ Tue,  7 Dec 2021 16:07:30 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3BFA7A4051;
+ Tue,  7 Dec 2021 16:07:30 +0000 (GMT)
+Received: from [9.145.91.80] (unknown [9.145.91.80])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  7 Dec 2021 16:07:30 +0000 (GMT)
+Message-ID: <bbaa0d78-a09f-3ce3-25a9-67434039b741@linux.ibm.com>
+Date: Tue, 7 Dec 2021 17:07:29 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [patch V2 01/23] powerpc/4xx: Remove MSI support which never
- worked
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.2
+Subject: Re: [PATCH v3] powerpc/pseries: read the lpar name from the firmware
 Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>, Thomas Gleixner
- <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>
-References: <20211206210147.872865823@linutronix.de>
- <20211206210223.872249537@linutronix.de>
- <8d1e9d2b-fbe9-2e15-6df6-03028902791a@kaod.org>
- <87ilw0odel.fsf@mpe.ellerman.id.au>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <87ilw0odel.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.96]
-X-ClientProxiedBy: DAG9EX1.mxp5.local (172.16.2.81) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 3ba07c30-c0fb-4b34-adb9-c7c234a94237
-X-Ovh-Tracer-Id: 9416182396562148133
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrjeehgdekfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfgjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeeigedvffekgeeftedutddttdevudeihfegudffkeeitdekkeetkefhffelveelleenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddrleeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpohhuthdphhgvlhhopehmgihplhgrnhehrdhmrghilhdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtohephhgtrgeslhhinhhugidrihgsmhdrtghomh
+To: Nathan Lynch <nathanl@linux.ibm.com>
+References: <20211203154321.13168-1-ldufour@linux.ibm.com>
+ <87bl1so588.fsf@linux.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <87bl1so588.fsf@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: KvSKrxeJPNMmUHxXyKeJ_sgKxjGxyvy7
+X-Proofpoint-GUID: KvSKrxeJPNMmUHxXyKeJ_sgKxjGxyvy7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-07_06,2021-12-06_02,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 mlxscore=0
+ lowpriorityscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
+ adultscore=0 suspectscore=0 bulkscore=0 phishscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112070098
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,284 +103,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
- Ashok Raj <ashok.raj@intel.com>, Marc Zygnier <maz@kernel.org>, x86@kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Bjorn Helgaas <helgaas@kernel.org>, Megha Dey <megha.dey@intel.com>,
- Jason Gunthorpe <jgg@nvidia.com>, linux-pci@vger.kernel.org,
- xen-devel@lists.xenproject.org, ath11k@lists.infradead.org,
- Kevin Tian <kevin.tian@intel.com>, Heiko Carstens <hca@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Kalle Valo <kvalo@codeaurora.org>, Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/7/21 12:36, Michael Ellerman wrote:
-> Cédric Le Goater <clg@kaod.org> writes:
->> Hello Thomas,
->>
->> On 12/6/21 23:27, Thomas Gleixner wrote:
->>> This code is broken since day one. ppc4xx_setup_msi_irqs() has the
->>> following gems:
->>>
->>>    1) The handling of the result of msi_bitmap_alloc_hwirqs() is completely
->>>       broken:
->>>       
->>>       When the result is greater than or equal 0 (bitmap allocation
->>>       successful) then the loop terminates and the function returns 0
->>>       (success) despite not having installed an interrupt.
->>>
->>>       When the result is less than 0 (bitmap allocation fails), it prints an
->>>       error message and continues to "work" with that error code which would
->>>       eventually end up in the MSI message data.
->>>
->>>    2) On every invocation the file global pp4xx_msi::msi_virqs bitmap is
->>>       allocated thereby leaking the previous one.
->>>
->>> IOW, this has never worked and for more than 10 years nobody cared. Remove
->>> the gunk.
->>>
->>> Fixes: 3fb7933850fa ("powerpc/4xx: Adding PCIe MSI support")
->>
->> Shouldn't we remove all of it ? including the updates in the device trees
->> and the Kconfig changes under :
->>
->> arch/powerpc/platforms/44x/Kconfig:	select PPC4xx_MSI
->> arch/powerpc/platforms/44x/Kconfig:	select PPC4xx_MSI
->> arch/powerpc/platforms/44x/Kconfig:	select PPC4xx_MSI
->> arch/powerpc/platforms/44x/Kconfig:	select PPC4xx_MSI
->> arch/powerpc/platforms/40x/Kconfig:	select PPC4xx_MSI
+On 07/12/2021, 15:32:39, Nathan Lynch wrote:
+> Hi Laurent,
 > 
-> This patch should drop those selects I guess. Can you send an
-> incremental diff for Thomas to squash in?
+> Laurent Dufour <ldufour@linux.ibm.com> writes:
+>> +/*
+>> + * PAPR defines, in section "7.3.16 System Parameters Option", the token 55 to
+>> + * read the LPAR name.
+>> + */
+>> +#define SPLPAR_LPAR_NAME_TOKEN	55
+>> +static void read_lpar_name(struct seq_file *m)
+>> +{
+>> +	int rc, len, token;
+>> +	union {
+>> +		char raw_buffer[RTAS_DATA_BUF_SIZE];
+>> +		struct {
+>> +			__be16 len;
+> 
+> This:
+> 
+>> +			char name[RTAS_DATA_BUF_SIZE-2];
+>                                        ^^^^^^
+> 
+> should be 4000, not (4K - 2), according to PAPR (it's weird and I don't
+> know the reason).
 
-Sure.
+That's true, PAPR defines the largest output buffer for
+ibm,get-system-parameter to 4002, so we could limit this to 4002, not sure
+whether this would make a big difference here. Anyway I will limit that
+buffer size this way.
+> 
+> 
+>> +		};
+>> +	} *local_buffer;
+>> +
+>> +	token = rtas_token("ibm,get-system-parameter");
+>> +	if (token == RTAS_UNKNOWN_SERVICE)
+>> +		return;
+>> +
+>> +	local_buffer = kmalloc(sizeof(*local_buffer), GFP_KERNEL);
+>> +	if (!local_buffer)
+>> +		return;
+>> +
+>> +	do {
+>> +		spin_lock(&rtas_data_buf_lock);
+>> +		memset(rtas_data_buf, 0, RTAS_DATA_BUF_SIZE);
+>> +		rc = rtas_call(token, 3, 1, NULL, SPLPAR_LPAR_NAME_TOKEN,
+>> +			       __pa(rtas_data_buf), RTAS_DATA_BUF_SIZE);
+>> +		if (!rc)
+>> +			memcpy(local_buffer->raw_buffer, rtas_data_buf,
+>> +			       RTAS_DATA_BUF_SIZE);
+>> +		spin_unlock(&rtas_data_buf_lock);
+>> +	} while (rtas_busy_delay(rc));
+>> +
+>> +	if (rc != 0) {
+>> +		pr_err_once(
+>> +			"%s %s Error calling get-system-parameter (0x%x)\n",
+>> +			__FILE__, __func__, rc);
+> 
+> The __FILE__ and __func__ in the message seem unnecessary, and rc should
+> be reported in decimal so the error meaning is apparent.
 
-> Removing all the tendrils in various device tree files will probably
-> require some archaeology, and it should be perfectly safe to leave those
-> in the tree with the driver gone. So I think we can do that as a
-> subsequent patch, rather than in this series.
+Fair enough.
 
-Here are the changes. Compiled tested with ppc40x and ppc44x defconfigs.
+> Is there a reasonable fallback for VMs where this parameter doesn't
+> exist? PowerVM partitions should always have it, but what do we want the
+> behavior to be on other hypervisors?
+
+In that case, there is no value displayed in the /proc/powerpc/lparcfg and
+the lparstat -i command will fall back to the device tree value. I can't
+see any valid reason to report the value defined in the device tree here.
+
+> 
+> 
+>> +	} else {
+>> +		/* Force end of string */
+>> +		len = be16_to_cpu(local_buffer->len);
+>> +		if (len >= (RTAS_DATA_BUF_SIZE-2))
+>> +			len = RTAS_DATA_BUF_SIZE-2;
+> 
+> Could use min() or clamp(), and it would be better to build the
+> expression using the value of sizeof(local_buffer->name).
+
+Fair enough.
+
+> 
+>> +		local_buffer->name[len] = '\0';
+> 
+> If 'len' can be (RTAS_DATA_BUF_SIZE - 2), then this writes past the end
+> of the buffer, no?
+
+Oh yes, the previous test should be
+		if (len >= (RTAS_DATA_BUF_SIZE-2))
+			len = RTAS_DATA_BUF_SIZE-3;
 
 Thanks,
-
-C.
-
-diff --git a/arch/powerpc/boot/dts/bluestone.dts b/arch/powerpc/boot/dts/bluestone.dts
-index aa1ae94cd776..6971595319c1 100644
---- a/arch/powerpc/boot/dts/bluestone.dts
-+++ b/arch/powerpc/boot/dts/bluestone.dts
-@@ -366,30 +366,5 @@ PCIE0: pcie@d00000000 {
-  				0x0 0x0 0x0 0x3 &UIC3 0xe 0x4 /* swizzled int C */
-  				0x0 0x0 0x0 0x4 &UIC3 0xf 0x4 /* swizzled int D */>;
-  		};
--
--		MSI: ppc4xx-msi@C10000000 {
--			compatible = "amcc,ppc4xx-msi", "ppc4xx-msi";
--			reg = < 0xC 0x10000000 0x100
--				0xC 0x10000000 0x100>;
--			sdr-base = <0x36C>;
--			msi-data = <0x00004440>;
--			msi-mask = <0x0000ffe0>;
--			interrupts =<0 1 2 3 4 5 6 7>;
--			interrupt-parent = <&MSI>;
--			#interrupt-cells = <1>;
--			#address-cells = <0>;
--			#size-cells = <0>;
--			msi-available-ranges = <0x0 0x100>;
--			interrupt-map = <
--				0 &UIC3 0x18 1
--				1 &UIC3 0x19 1
--				2 &UIC3 0x1A 1
--				3 &UIC3 0x1B 1
--				4 &UIC3 0x1C 1
--				5 &UIC3 0x1D 1
--				6 &UIC3 0x1E 1
--				7 &UIC3 0x1F 1
--			>;
--		};
-  	};
-  };
-diff --git a/arch/powerpc/boot/dts/canyonlands.dts b/arch/powerpc/boot/dts/canyonlands.dts
-index c5fbb08e0a6e..5db1bff6b23d 100644
---- a/arch/powerpc/boot/dts/canyonlands.dts
-+++ b/arch/powerpc/boot/dts/canyonlands.dts
-@@ -544,23 +544,5 @@ PCIE1: pcie@d20000000 {
-  				0x0 0x0 0x0 0x3 &UIC3 0x12 0x4 /* swizzled int C */
-  				0x0 0x0 0x0 0x4 &UIC3 0x13 0x4 /* swizzled int D */>;
-  		};
--
--		MSI: ppc4xx-msi@C10000000 {
--			compatible = "amcc,ppc4xx-msi", "ppc4xx-msi";
--			reg = < 0xC 0x10000000 0x100>;
--			sdr-base = <0x36C>;
--			msi-data = <0x00000000>;
--			msi-mask = <0x44440000>;
--			interrupt-count = <3>;
--			interrupts = <0 1 2 3>;
--			interrupt-parent = <&UIC3>;
--			#interrupt-cells = <1>;
--			#address-cells = <0>;
--			#size-cells = <0>;
--			interrupt-map = <0 &UIC3 0x18 1
--					1 &UIC3 0x19 1
--					2 &UIC3 0x1A 1
--					3 &UIC3 0x1B 1>;
--		};
-  	};
-  };
-diff --git a/arch/powerpc/boot/dts/katmai.dts b/arch/powerpc/boot/dts/katmai.dts
-index a8f353229fb7..4262b2bbd6de 100644
---- a/arch/powerpc/boot/dts/katmai.dts
-+++ b/arch/powerpc/boot/dts/katmai.dts
-@@ -442,24 +442,6 @@ PCIE2: pcie@d40000000 {
-  				0x0 0x0 0x0 0x4 &UIC3 0xb 0x4 /* swizzled int D */>;
-  		};
-  
--		MSI: ppc4xx-msi@400300000 {
--				compatible = "amcc,ppc4xx-msi", "ppc4xx-msi";
--				reg = < 0x4 0x00300000 0x100>;
--				sdr-base = <0x3B0>;
--				msi-data = <0x00000000>;
--				msi-mask = <0x44440000>;
--				interrupt-count = <3>;
--				interrupts =<0 1 2 3>;
--				interrupt-parent = <&UIC0>;
--				#interrupt-cells = <1>;
--				#address-cells = <0>;
--				#size-cells = <0>;
--				interrupt-map = <0 &UIC0 0xC 1
--					1 &UIC0 0x0D 1
--					2 &UIC0 0x0E 1
--					3 &UIC0 0x0F 1>;
--		};
--
-  		I2O: i2o@400100000 {
-  			compatible = "ibm,i2o-440spe";
-  			reg = <0x00000004 0x00100000 0x100>;
-diff --git a/arch/powerpc/boot/dts/kilauea.dts b/arch/powerpc/boot/dts/kilauea.dts
-index a709fb47a180..c07a7525a72c 100644
---- a/arch/powerpc/boot/dts/kilauea.dts
-+++ b/arch/powerpc/boot/dts/kilauea.dts
-@@ -403,33 +403,5 @@ PCIE1: pcie@c0000000 {
-  				0x0 0x0 0x0 0x3 &UIC2 0xd 0x4 /* swizzled int C */
-  				0x0 0x0 0x0 0x4 &UIC2 0xe 0x4 /* swizzled int D */>;
-  		};
--
--		MSI: ppc4xx-msi@C10000000 {
--			compatible = "amcc,ppc4xx-msi", "ppc4xx-msi";
--			reg = <0xEF620000 0x100>;
--			sdr-base = <0x4B0>;
--			msi-data = <0x00000000>;
--			msi-mask = <0x44440000>;
--			interrupt-count = <12>;
--			interrupts = <0 1 2 3 4 5 6 7 8 9 0xA 0xB 0xC 0xD>;
--			interrupt-parent = <&UIC2>;
--			#interrupt-cells = <1>;
--			#address-cells = <0>;
--			#size-cells = <0>;
--			interrupt-map = <0 &UIC2 0x10 1
--					1 &UIC2 0x11 1
--					2 &UIC2 0x12 1
--					2 &UIC2 0x13 1
--					2 &UIC2 0x14 1
--					2 &UIC2 0x15 1
--					2 &UIC2 0x16 1
--					2 &UIC2 0x17 1
--					2 &UIC2 0x18 1
--					2 &UIC2 0x19 1
--					2 &UIC2 0x1A 1
--					2 &UIC2 0x1B 1
--					2 &UIC2 0x1C 1
--					3 &UIC2 0x1D 1>;
--		};
-  	};
-  };
-diff --git a/arch/powerpc/boot/dts/redwood.dts b/arch/powerpc/boot/dts/redwood.dts
-index f38035a1f4a1..3c849e23e5f3 100644
---- a/arch/powerpc/boot/dts/redwood.dts
-+++ b/arch/powerpc/boot/dts/redwood.dts
-@@ -358,25 +358,6 @@ PCIE2: pcie@d40000000 {
-  				0x0 0x0 0x0 0x4 &UIC3 0xb 0x4 /* swizzled int D */>;
-  		};
-  
--		MSI: ppc4xx-msi@400300000 {
--				compatible = "amcc,ppc4xx-msi", "ppc4xx-msi";
--				reg = < 0x4 0x00300000 0x100
--					0x4 0x00300000 0x100>;
--				sdr-base = <0x3B0>;
--				msi-data = <0x00000000>;
--				msi-mask = <0x44440000>;
--				interrupt-count = <3>;
--				interrupts =<0 1 2 3>;
--				interrupt-parent = <&UIC0>;
--				#interrupt-cells = <1>;
--				#address-cells = <0>;
--				#size-cells = <0>;
--				interrupt-map = <0 &UIC0 0xC 1
--					1 &UIC0 0x0D 1
--					2 &UIC0 0x0E 1
--					3 &UIC0 0x0F 1>;
--		};
--
-  	};
-  
-  
-diff --git a/arch/powerpc/platforms/40x/Kconfig b/arch/powerpc/platforms/40x/Kconfig
-index e3e5217c9822..614ea6dc994c 100644
---- a/arch/powerpc/platforms/40x/Kconfig
-+++ b/arch/powerpc/platforms/40x/Kconfig
-@@ -23,7 +23,6 @@ config KILAUEA
-  	select PPC4xx_PCI_EXPRESS
-  	select FORCE_PCI
-  	select PCI_MSI
--	select PPC4xx_MSI
-  	help
-  	  This option enables support for the AMCC PPC405EX evaluation board.
-  
-diff --git a/arch/powerpc/platforms/44x/Kconfig b/arch/powerpc/platforms/44x/Kconfig
-index 83975ef50975..25b80cd558f8 100644
---- a/arch/powerpc/platforms/44x/Kconfig
-+++ b/arch/powerpc/platforms/44x/Kconfig
-@@ -23,7 +23,6 @@ config BLUESTONE
-  	select APM821xx
-  	select FORCE_PCI
-  	select PCI_MSI
--	select PPC4xx_MSI
-  	select PPC4xx_PCI_EXPRESS
-  	select IBM_EMAC_RGMII if IBM_EMAC
-  	help
-@@ -73,7 +72,6 @@ config KATMAI
-  	select FORCE_PCI
-  	select PPC4xx_PCI_EXPRESS
-  	select PCI_MSI
--	select PPC4xx_MSI
-  	help
-  	  This option enables support for the AMCC PPC440SPe evaluation board.
-  
-@@ -115,7 +113,6 @@ config CANYONLANDS
-  	select FORCE_PCI
-  	select PPC4xx_PCI_EXPRESS
-  	select PCI_MSI
--	select PPC4xx_MSI
-  	select IBM_EMAC_RGMII if IBM_EMAC
-  	select IBM_EMAC_ZMII if IBM_EMAC
-  	help
-@@ -141,7 +138,6 @@ config REDWOOD
-  	select FORCE_PCI
-  	select PPC4xx_PCI_EXPRESS
-  	select PCI_MSI
--	select PPC4xx_MSI
-  	help
-  	  This option enables support for the AMCC PPC460SX Redwood board.
-  
--- 
-2.31.1
-
-
+Laurent.
