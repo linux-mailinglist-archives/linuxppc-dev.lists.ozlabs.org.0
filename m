@@ -2,57 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA3146B9F8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 12:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A473E46BA2A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 12:36:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J7d9q5YDPz3c56
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 22:19:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J7dYN3Pj4z3c5d
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 22:36:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=bllKWJBb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=BMwzDWkP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
  [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J7d9B2mjyz2yN1
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Dec 2021 22:19:10 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J7dXj3093z2yLd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Dec 2021 22:36:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=bllKWJBb; 
+ header.a=rsa-sha256 header.s=201909 header.b=BMwzDWkP; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4J7d964jVBz4xgY;
- Tue,  7 Dec 2021 22:19:06 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4J7dXf3dSsz4xYy;
+ Tue,  7 Dec 2021 22:36:02 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1638875948;
- bh=0XMPFg1uyLXcByQa57fLF55p79RM8131PNd2ix+ygg8=;
+ s=201909; t=1638876964;
+ bh=lTsXMkBa68SdK2mCmwfpSshAWpT0dRMMMq4RDsTmMUc=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=bllKWJBbZ5SepP/QI5nePCofpeapO/yXsQh3GdA7T6GRyQ3YwRoz3HU4W+hOxciuP
- L/KZUi1UGwNjzHgWKO/BZi+TrLa+fHALGKEhRquvGlNUCcmf3V8JcVWzJseXUOtpne
- Dl0rzR7bbVJQ9LqxFSSFUjMfCv2xVYZ2c0GmWBfNhxShRobl9qNl/CyahVxIm58HOU
- cseXlKGcij6ojOLG1BvahU7GSonXbaxGvS45H5X/huhIjlwYGllxSHR2lVddIGoTz+
- JXbKM6QBH1BBDnsgpLMY9yrwkLRey1sHjMGJ+TdeGCehP1D3ZhOJDEC9ylUEQP+rB7
- tb+WksYYkS3yg==
+ b=BMwzDWkPEIYhXynBVAirAw4gLvuuvW+w979j7Yqtpl/UPXPORphUfbt+jK+l0pabP
+ GTehyWDzuL/CjvtZ3vJKYoj5rsJPb1bnDWny7P2YlVPjCcML69cHmHBNG0AIDWe7Gz
+ 7IRiJMIJ4Kb9b5hGDoNDnHaxCTClNUWIJdKvD1WISOHxae57UeEHW0ELnQ3BY1ByPF
+ 1oPzO4gyeKDsiFe+zukx8HTbH7jtndcbjgt+u2Img9ev7FSfwZJM9PLRYWX7kshjFe
+ JBwE+rXxecauzokxEZQ57uU9ynC6VsB3Nd14q1sEiH2ivRH0Hx8EhFL3DwxqA8pymw
+ p3ZiZsIoOoIIQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [PATCH v5 5/5] powerpc/inst: Optimise
- copy_inst_from_kernel_nofault()
-In-Reply-To: <Ya7ntJ0ehZPy6HKA@archlinux-ax161>
-References: <0d5b12183d5176dd702d29ad94c39c384e51c78f.1638208156.git.christophe.leroy@csgroup.eu>
- <202111300652.0yDBNvyJ-lkp@intel.com>
- <e7b67ca6-8cd1-da3c-c0f3-e05f7e592828@csgroup.eu>
- <87a6hlq408.fsf@mpe.ellerman.id.au> <YaZqs2tPxMzhgkAW@archlinux-ax161>
- <CAGG=3QX4k6MZ1qkT+sVAroJeBpbZBnOJauM_uJsu2uV1vnVObQ@mail.gmail.com>
- <CAGG=3QVQ9bwWWyKDN3_C2B0v7H6iZ4ZpNybXGCqbzwWrPjuPrg@mail.gmail.com>
- <87o85tnkzt.fsf@mpe.ellerman.id.au> <Ya7ntJ0ehZPy6HKA@archlinux-ax161>
-Date: Tue, 07 Dec 2021 22:19:05 +1100
-Message-ID: <87lf0woe6u.fsf@mpe.ellerman.id.au>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, Thomas Gleixner
+ <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [patch V2 01/23] powerpc/4xx: Remove MSI support which never
+ worked
+In-Reply-To: <8d1e9d2b-fbe9-2e15-6df6-03028902791a@kaod.org>
+References: <20211206210147.872865823@linutronix.de>
+ <20211206210223.872249537@linutronix.de>
+ <8d1e9d2b-fbe9-2e15-6df6-03028902791a@kaod.org>
+Date: Tue, 07 Dec 2021 22:36:02 +1100
+Message-ID: <87ilw0odel.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -67,92 +64,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, kernel test robot <lkp@intel.com>,
- llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Bill Wendling <morbo@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-hyperv@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
+ Ashok Raj <ashok.raj@intel.com>, Marc Zygnier <maz@kernel.org>, x86@kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Bjorn Helgaas <helgaas@kernel.org>, Megha Dey <megha.dey@intel.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, linux-pci@vger.kernel.org,
+ xen-devel@lists.xenproject.org, ath11k@lists.infradead.org,
+ Kevin Tian <kevin.tian@intel.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Kalle Valo <kvalo@codeaurora.org>, Juergen Gross <jgross@suse.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nathan Chancellor <nathan@kernel.org> writes:
-> On Tue, Dec 07, 2021 at 02:37:26PM +1100, Michael Ellerman wrote:
->> Bill Wendling <morbo@google.com> writes:
->> > On Tue, Nov 30, 2021 at 10:38 AM Bill Wendling <morbo@google.com> wrot=
-e:
->> >> On Tue, Nov 30, 2021 at 10:17 AM Nathan Chancellor <nathan@kernel.org=
-> wrote:
->> >> > On Tue, Nov 30, 2021 at 10:25:43PM +1100, Michael Ellerman wrote:
->> >> > > Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> >> > > > Le 29/11/2021 =C3=A0 23:55, kernel test robot a =C3=A9crit :
->> ...
->> >> > > >> All warnings (new ones prefixed by >>):
->> >> > > >>
->> >> > > >>     In file included from arch/powerpc/kernel/asm-offsets.c:71:
->> >> > > >>     In file included from arch/powerpc/kernel/../xmon/xmon_bpt=
-s.h:7:
->> >> > > >>>> arch/powerpc/include/asm/inst.h:165:20: warning: variable 'v=
-al' is uninitialized when used here [-Wuninitialized]
->> >> > > >>                     *inst =3D ppc_inst(val);
->> >> > > >>                                      ^~~
->> >> > > >>     arch/powerpc/include/asm/inst.h:53:22: note: expanded from=
- macro 'ppc_inst'
->> >> > > >>     #define ppc_inst(x) (x)
->> >> > > >>                          ^
->> >> > > >>     arch/powerpc/include/asm/inst.h:155:18: note: initialize t=
-he variable 'val' to silence this warning
->> >> > > >>             unsigned int val, suffix;
->> >> > > >>                             ^
->> >> > > >>                              =3D 0
->> >> > > >
->> >> > > > I can't understand what's wrong here.
->> ...
->> >> > > >
->> >> > > > I see no possibility, no alternative path where val wouldn't be=
- set. The
->> >> > > > asm clearly has *addr as an output param so it is always set.
->> >> > >
->> >> > > I guess clang can't convince itself of that?
->> ...
->> >> >
->> >> > It certainly looks like there is something wrong with how clang is
->> >> > tracking the initialization of the variable because it looks to me =
-like
->> >> > val is only used in the fallthrough path, which happens after it is
->> >> > initialized via lwz.  Perhaps something is wrong with the logic of
->> >> > https://reviews.llvm.org/D71314?  I've added Bill to CC (LLVM issue=
-s are
->> >> > being migrated from Bugzilla to GitHub Issues right now so I cannot=
- file
->> >> > this upstream at the moment).
->> >> >
->> >> If I remove the casts of "val" the warning doesn't appear. I suspect
->> >> that when I wrote that patch I forgot to remove those when checking.
->> >> #include "Captain_Picard_facepalm.h"
->> >>
->> >> I'll look into it.
->> >>
->> > Small retraction. It's the "*(<cast>)&val" that's the issue. (I.e. the=
- "*&")
->>=20
->> I guess for now I'll just squash this in as a workaround?
->>=20
->>=20
->> diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/=
-inst.h
->> index 631436f3f5c3..5b591c51fec9 100644
->> --- a/arch/powerpc/include/asm/inst.h
->> +++ b/arch/powerpc/include/asm/inst.h
->> @@ -157,6 +157,9 @@ static inline int copy_inst_from_kernel_nofault(ppc_=
-inst_t *inst, u32 *src)
->>  	if (unlikely(!is_kernel_addr((unsigned long)src)))
->>  		return -ERANGE;
+C=C3=A9dric Le Goater <clg@kaod.org> writes:
+> Hello Thomas,
 >
-> Could we add a version check to this and a link to our bug tracker:
+> On 12/6/21 23:27, Thomas Gleixner wrote:
+>> This code is broken since day one. ppc4xx_setup_msi_irqs() has the
+>> following gems:
+>>=20
+>>   1) The handling of the result of msi_bitmap_alloc_hwirqs() is complete=
+ly
+>>      broken:
+>>=20=20=20=20=20=20
+>>      When the result is greater than or equal 0 (bitmap allocation
+>>      successful) then the loop terminates and the function returns 0
+>>      (success) despite not having installed an interrupt.
+>>=20
+>>      When the result is less than 0 (bitmap allocation fails), it prints=
+ an
+>>      error message and continues to "work" with that error code which wo=
+uld
+>>      eventually end up in the MSI message data.
+>>=20
+>>   2) On every invocation the file global pp4xx_msi::msi_virqs bitmap is
+>>      allocated thereby leaking the previous one.
+>>=20
+>> IOW, this has never worked and for more than 10 years nobody cared. Remo=
+ve
+>> the gunk.
+>>=20
+>> Fixes: 3fb7933850fa ("powerpc/4xx: Adding PCIe MSI support")
 >
-> /* https://github.com/ClangBuiltLinux/linux/issues/1521 */
-> #if defined(CONFIG_CC_IS_CLANG) && CONFIG_CLANG_VERSION < 140000
+> Shouldn't we remove all of it ? including the updates in the device trees
+> and the Kconfig changes under :
+>
+> arch/powerpc/platforms/44x/Kconfig:	select PPC4xx_MSI
+> arch/powerpc/platforms/44x/Kconfig:	select PPC4xx_MSI
+> arch/powerpc/platforms/44x/Kconfig:	select PPC4xx_MSI
+> arch/powerpc/platforms/44x/Kconfig:	select PPC4xx_MSI
+> arch/powerpc/platforms/40x/Kconfig:	select PPC4xx_MSI
 
-Yep, thanks I'll use that.
+This patch should drop those selects I guess. Can you send an
+incremental diff for Thomas to squash in?
+
+Removing all the tendrils in various device tree files will probably
+require some archaeology, and it should be perfectly safe to leave those
+in the tree with the driver gone. So I think we can do that as a
+subsequent patch, rather than in this series.
 
 cheers
