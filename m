@@ -2,56 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D12446B47F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 08:49:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B0B46B481
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 08:50:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J7XWS1VYtz3cQY
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 18:49:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J7XX71yBXz3dwZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 18:50:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=uaiDHF8b;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=SWIJfmNG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:40e1:4800::1;
- helo=sin.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=uaiDHF8b; 
+ header.a=rsa-sha256 header.s=korg header.b=SWIJfmNG; 
  dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org
- [IPv6:2604:1380:40e1:4800::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J7XTw0JnFz3bW7
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Dec 2021 18:48:19 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J7XVM3h92z3cZx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Dec 2021 18:48:43 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id ADCABCE180E;
- Tue,  7 Dec 2021 07:48:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5387BC341C3;
- Tue,  7 Dec 2021 07:48:16 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id D954AB80E8B;
+ Tue,  7 Dec 2021 07:48:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33958C341C1;
+ Tue,  7 Dec 2021 07:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1638863297;
- bh=987va09/dvP0ztOLf5mXiuObxbrtwLhSB7qczYAr3zc=;
+ s=korg; t=1638863319;
+ bh=WhRceJhmzxjby5fPejJ6zCulOVcJWw8H5bLGS/3QcH8=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=uaiDHF8b4ZwfaykbIRoAGImv/wOEYnC2OuRRekPTUvnH7Z+KoDN2eitf1+2jyFZYE
- RW+eyBwNessu97qSLx5/+QRYN5pKkPpJcIjhEtARHEOXbvL32YiTSQMez2rOnMK2aS
- hmP2VmZeVihGhwMbl5FyYdeY/dLwK2GtNNuHp+J4=
-Date: Tue, 7 Dec 2021 08:48:14 +0100
+ b=SWIJfmNGJimxpVxVrmep8jDL+8fq/9M8tTEfUWTU7yrf8FEhCukCMCNYwcchrGZil
+ KTC2GFjwOHm5Vp8ki83GFWK0/anM//KXBF0T7w4Aubbsae5n/x81pWpLxBWXyc+O0d
+ AKTd3slwt1mIBdgwhnTy90iEA7VRwneYulUqX2fg=
+Date: Tue, 7 Dec 2021 08:48:37 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch V2 22/23] genirq/msi: Handle PCI/MSI allocation fail in
- core code
-Message-ID: <Ya8RvhfV2j5i0gwg@kroah.com>
+Subject: Re: [patch V2 23/23] PCI/MSI: Move descriptor counting on allocation
+ fail to the legacy code
+Message-ID: <Ya8R1eosQhOZbj1q@kroah.com>
 References: <20211206210147.872865823@linutronix.de>
- <20211206210225.046615302@linutronix.de>
+ <20211206210225.101336873@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211206210225.046615302@linutronix.de>
+In-Reply-To: <20211206210225.101336873@linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,13 +80,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 06, 2021 at 11:27:59PM +0100, Thomas Gleixner wrote:
-> Get rid of yet another irqdomain callback and let the core code return the
-> already available information of how many descriptors could be allocated.
+On Mon, Dec 06, 2021 at 11:28:00PM +0100, Thomas Gleixner wrote:
+> The irqdomain code already returns the information. Move the loop to the
+> legacy code.
 > 
 > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 > Tested-by: Juergen Gross <jgross@suse.com>
 > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 
