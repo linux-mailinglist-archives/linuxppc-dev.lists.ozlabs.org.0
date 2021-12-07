@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5AB46B453
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 08:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D793746B456
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 08:46:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J7XRJ6fmqz3cPd
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 18:46:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J7XS059yMz3db0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 18:46:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=l1/QgBFw;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=d+jxkiN+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,39 +18,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=l1/QgBFw; 
+ header.a=rsa-sha256 header.s=korg header.b=d+jxkiN+; 
  dkim-atps=neutral
 Received: from sin.source.kernel.org (sin.source.kernel.org
  [IPv6:2604:1380:40e1:4800::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J7XQ82HwKz3cWR
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Dec 2021 18:45:04 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J7XQX72W0z3cZH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Dec 2021 18:45:24 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id 2DAF9CE19DD;
- Tue,  7 Dec 2021 07:45:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A401C341C3;
- Tue,  7 Dec 2021 07:44:59 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTPS id 5F5CFCE19FC;
+ Tue,  7 Dec 2021 07:45:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE83C341C1;
+ Tue,  7 Dec 2021 07:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1638863100;
- bh=1r1X+ZHiffheVJg5Mf7nrvakcpVQqQbwTurW2S7fT/s=;
+ s=korg; t=1638863121;
+ bh=x8rfoXc6M9OTPg850eW6BmKW89RExZgEThtugpTz+6A=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=l1/QgBFwqoXc2OAqrPg8mXMQvF5rv5z/fNqAHcshOCZgD5tN6DsYDVMKyMum5XpbR
- tTUmjHxCYxJdHEeYzATtISF27T8l5whlPASeO5DQut4iaiHRSBKvqJ9dh18fp3h8CK
- xuOWK2ssrIqlzWKMqvooAc5l1otA0m+pE8ZKIdZ4=
-Date: Tue, 7 Dec 2021 08:44:57 +0100
+ b=d+jxkiN+f3Ne67zNIOcujASWUugViQ8TCbEK7hiYq+U3n+Fahxn1L0f30VN8pbizc
+ hZNBuPiZATbQ+AOim8phsr2YKIPQl8JKLp/83pYydRrndRT/TnSSzHpxTclp34m7lF
+ oxqIgoW6u6pwrjoz/ow2obv1+OJVMNbiDW5DGKmY=
+Date: Tue, 7 Dec 2021 08:45:19 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch V2 14/23] PCI/MSI: Make msix_update_entries() smarter
-Message-ID: <Ya8Q+Q8OnrovJGET@kroah.com>
+Subject: Re: [patch V2 16/23] PCI/MSI: Split out CONFIG_PCI_MSI independent
+ part
+Message-ID: <Ya8RD/4MMG8LLzDR@kroah.com>
 References: <20211206210147.872865823@linutronix.de>
- <20211206210224.600351129@linutronix.de>
+ <20211206210224.710137730@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211206210224.600351129@linutronix.de>
+In-Reply-To: <20211206210224.710137730@linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,12 +80,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 06, 2021 at 11:27:46PM +0100, Thomas Gleixner wrote:
-> No need to walk the descriptors and check for each one whether the entries
-> pointer function argument is NULL. Do it once.
+On Mon, Dec 06, 2021 at 11:27:49PM +0100, Thomas Gleixner wrote:
+> These functions are required even when CONFIG_PCI_MSI is not set. Move them
+> to their own file.
 > 
 > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 > Tested-by: Juergen Gross <jgross@suse.com>
 > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
+
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+
