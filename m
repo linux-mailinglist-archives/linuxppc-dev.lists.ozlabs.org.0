@@ -1,56 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A4046BC2A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 14:07:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FD546BCB1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 14:32:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J7gYn0Wjzz300S
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 00:07:09 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=IGN66SNB;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J7h7V6dn7z3f9D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 00:32:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canonical.com (client-ip=185.125.188.120;
- helo=smtp-relay-canonical-0.canonical.com;
- envelope-from=cascardo@canonical.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=canonical.com header.i=@canonical.com
- header.a=rsa-sha256 header.s=20210705 header.b=IGN66SNB; 
- dkim-atps=neutral
-Received: from smtp-relay-canonical-0.canonical.com
- (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J7gXn36cSz305p
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 00:06:16 +1100 (AEDT)
-Received: from mussarela.. (unknown [191.23.94.109])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J7h2T1tx0z3bXW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 00:28:33 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 5A3F33F051; 
- Tue,  7 Dec 2021 13:06:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1638882372;
- bh=pfD3hfjfBHQLHEt8+m6l+yGjSs+9S0CZh8LkB9uKIEI=;
- h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
- b=IGN66SNBhGbgESvzIgH66Zkq68fAioBytkskSs0gtHv2qEUNvRkTXMBgZcZ35SEAo
- Zg3ITm7VTfHma1leKyg8yseZIjlHAXE8xe2nZN4pOW9CB5jkBCzapsWtfiQflSengO
- pJU5K2YUSedpKmVN8GzJk6nx3+es7LVGIzCa6REuavZffcWZcMfcR69B9R+PhqQWSG
- LH3Bvj7GST8Bma9cqhnHqbgmQDQJC/Fe52kt42TuSPaJAZPdFr3HNJYMo1kpY0WABn
- VSHN35sOjWH/eCQilhCV43j2MpWRE6e2e+VniyVteS5/uXhYqLggaPbZLyykNpLOBY
- 2uiOVlpNL7MiA==
-From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] selftests/powerpc/spectre_v2: Return skip code when
- miss_percent is high
-Date: Tue,  7 Dec 2021 10:05:57 -0300
-Message-Id: <20211207130557.40566-1-cascardo@canonical.com>
-X-Mailer: git-send-email 2.32.0
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4J7h2T1Lyrz4xh8;
+ Wed,  8 Dec 2021 00:28:33 +1100 (AEDT)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20211105035042.1398309-1-npiggin@gmail.com>
+References: <20211105035042.1398309-1-npiggin@gmail.com>
+Subject: Re: [PATCH 1/2] powerpc: remove cpu_online_cores_map function
+Message-Id: <163888358888.3690807.15330687133722711176.b4-ty@ellerman.id.au>
+Date: Wed, 08 Dec 2021 00:26:28 +1100
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,38 +43,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A mis-match between reported and actual mitigation is not restricted to the
-Vulnerable case. The guest might also report the mitigation as "Software
-count cache flush" and the host will still mitigate with branch cache
-disabled.
+On Fri, 5 Nov 2021 13:50:41 +1000, Nicholas Piggin wrote:
+> This function builds the cores online map with on-stack cpumasks which
+> can cause high stack usage with large NR_CPUS.
+> 
+> It is not used in any performance sensitive paths, so instead just check
+> for first thread sibling.
+> 
+> 
+> [...]
 
-So, instead of skipping depending on the detected mitigation, simply skip
-whenever the detected miss_percent is the expected one for a fully
-mitigated system, that is, above 95%.
+Applied to powerpc/next.
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
----
- tools/testing/selftests/powerpc/security/spectre_v2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[1/2] powerpc: remove cpu_online_cores_map function
+      https://git.kernel.org/powerpc/c/b350111bf7b3f4a780d28c44f18f7c9fcbe6d11b
+[2/2] powerpc: select CPUMASK_OFFSTACK if NR_CPUS >= 8192
+      https://git.kernel.org/powerpc/c/2eafc4748bc08c5b9b6ee0b5b65ad20b30f7d704
 
-diff --git a/tools/testing/selftests/powerpc/security/spectre_v2.c b/tools/testing/selftests/powerpc/security/spectre_v2.c
-index adc2b7294e5f..83647b8277e7 100644
---- a/tools/testing/selftests/powerpc/security/spectre_v2.c
-+++ b/tools/testing/selftests/powerpc/security/spectre_v2.c
-@@ -193,7 +193,7 @@ int spectre_v2_test(void)
- 			 * We are not vulnerable and reporting otherwise, so
- 			 * missing such a mismatch is safe.
- 			 */
--			if (state == VULNERABLE)
-+			if (miss_percent > 95)
- 				return 4;
- 
- 			return 1;
--- 
-2.32.0
-
+cheers
