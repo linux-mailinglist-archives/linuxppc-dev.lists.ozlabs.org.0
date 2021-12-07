@@ -2,35 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E73746BC8D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 14:29:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E46046BCB5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 14:34:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J7h3W0WQCz3cZ3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 00:29:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J7h8p29jYz3fR8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 00:34:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J7h2L5bVtz2yYS
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 00:28:26 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J7h2V6Tj0z3c6y
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 00:28:34 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4J7h2L3sWtz4xgr;
- Wed,  8 Dec 2021 00:28:26 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4J7h2V4dbgz4xh3;
+ Wed,  8 Dec 2021 00:28:34 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <3eb14570612eef17e01bb67f14a4450136001794.1637840601.git.christophe.leroy@csgroup.eu>
-References: <3eb14570612eef17e01bb67f14a4450136001794.1637840601.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc: Don't bother about .data..Lubsan sections
-Message-Id: <163888361204.3690807.4937169274874065902.b4-ty@ellerman.id.au>
-Date: Wed, 08 Dec 2021 00:26:52 +1100
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20211119113146.752759-1-npiggin@gmail.com>
+References: <20211119113146.752759-1-npiggin@gmail.com>
+Subject: Re: (subset) [PATCH v4 0/5] powerpc: watchdog fixes
+Message-Id: <163888361403.3690807.15839669782410709977.b4-ty@ellerman.id.au>
+Date: Wed, 08 Dec 2021 00:26:54 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,24 +42,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Laurent Dufour <ldufour@linux.ibm.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 25 Nov 2021 12:43:33 +0100, Christophe Leroy wrote:
-> Since commit 9a427556fb8e ("vmlinux.lds.h: catch compound literals
-> into data and BSS") .data..Lubsan sections are taken into account
-> in DATA_MAIN which is included in DATA_DATA macro.
+On Fri, 19 Nov 2021 21:31:41 +1000, Nicholas Piggin wrote:
+> These are some watchdog fixes and improvements, in particular a
+> deadlock between the wd_smp_lock and console lock when the watchdog
+> fires, found by Laurent.
 > 
-> No need to take care of them anymore in powerpc vmlinux.lds.S
-> 
+> Thanks,
+> Nick
 > 
 > [...]
 
-Applied to powerpc/next.
+Patch 5 applied to powerpc/next.
 
-[1/1] powerpc: Don't bother about .data..Lubsan sections
-      https://git.kernel.org/powerpc/c/57dd3a7bdf311e4a499fe0decabcdf2484e2538a
+[5/5] powerpc/watchdog: help remote CPUs to flush NMI printk output
+      https://git.kernel.org/powerpc/c/e012c499985c608c936410d8bab29d9596d62859
 
 cheers
