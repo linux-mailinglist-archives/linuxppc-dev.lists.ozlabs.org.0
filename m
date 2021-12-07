@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CECE046C503
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 21:55:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5769C46C529
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 21:56:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J7syh5dGVz3cTX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 07:55:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J7szl1kxsz3cYH
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 07:56:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dvUfGzkA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZuIbLGLf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,39 +17,39 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=dvUfGzkA; 
+ header.s=k20201202 header.b=ZuIbLGLf; 
  dkim-atps=neutral
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J7sxl2b6bz3cBr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 07:55:07 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J7sz7028nz2yY7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 07:56:18 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id D73F3B81E7F;
- Tue,  7 Dec 2021 20:55:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A28BC341CA;
- Tue,  7 Dec 2021 20:55:03 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id A22C4B81E7E;
+ Tue,  7 Dec 2021 20:56:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B8EC341C1;
+ Tue,  7 Dec 2021 20:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1638910503;
- bh=Fa6UchSERsdNVXky6PNS2vCw8nCpV4RsTu7TPsjmB4I=;
+ s=k20201202; t=1638910575;
+ bh=qLik4JFtyxqmSptBayqaCn1r8IHM9yMTUp4uNVorfnk=;
  h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=dvUfGzkAJKzccQlv0HtPexRzXLWw3+BexhSfcjdhY9OELj9M9shyPr2oxlHYgishh
- t4D2z7Bdr+ncSq9kKTlJ1eWwQvEyIE70QCOcHPfTkykUuEbmkImTsvOBxAh+YrDT2N
- e2tXRjJ7AyPRQqOviSDYGDRtTGTym9+e84h6CsKaxpAqC8y47ShWjPbJ5Wc+6tQEDN
- O+w8x6jcjhb24uXwmpRRwPhRkrIfIv7GvPutd6orOK9sOuf81nkdYTyVSsRwR7X0hy
- UTGVn2mumg3zTPmrl6DdJIgD9FUL38mTDmd4Yy4CHa5XbrINFDsrU5l0x2T6JYzzJO
- QyWBUWsq4OuoA==
-Date: Tue, 7 Dec 2021 14:55:02 -0600
+ b=ZuIbLGLfYV/nvLepPIU/oJgGVLR/cUv4fN1TB9jN6qxiqhzWiZXhZIRCqViFXsXX2
+ BupHwnNmoV668bTXaUoUD++cCPB+blzebEwefTUII/C/6Vy7O3vnv9NoEGA/Ji6Owv
+ oPt6EPc+oZmfGxvR4m833Yz/aYsVS5bGsuqgu5ZEDfAHynE853rfjGlPDeDpFGEt3Z
+ R8MZc2PJgawqhxAfrRf/p8uWcDY0ETOixepI3ae+2tW6W36bm3938Zs5e4gyXwU3uL
+ Xg3/BGlYj1tkxDl4i0Ek1cNEw8YRkCMuc4qXgDYFJwb6ISeYQABlWAEk0RIe7vI2Hq
+ f6aHj3PLOAFog==
+Date: Tue, 7 Dec 2021 14:56:13 -0600
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch V2 07/23] PCI/MSI: Remove msi_desc_to_pci_sysdata()
-Message-ID: <20211207205502.GA76553@bhelgaas>
+Subject: Re: [patch V2 08/23] PCI/sysfs: Use pci_irq_vector()
+Message-ID: <20211207205613.GA76623@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211206210224.210768199@linutronix.de>
+In-Reply-To: <20211206210224.265589103@linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,8 +79,8 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 06, 2021 at 11:27:34PM +0100, Thomas Gleixner wrote:
-> Last user is gone long ago.
+On Mon, Dec 06, 2021 at 11:27:36PM +0100, Thomas Gleixner wrote:
+> instead of fiddling with msi descriptors.
 > 
 > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 > Tested-by: Juergen Gross <jgross@suse.com>
@@ -88,42 +88,26 @@ On Mon, Dec 06, 2021 at 11:27:34PM +0100, Thomas Gleixner wrote:
 
 Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
+s/msi/MSI/ above if you have a chance.  Nice cleanup, thanks!
+
 > ---
->  drivers/pci/msi.c   |    8 --------
->  include/linux/msi.h |    5 -----
->  2 files changed, 13 deletions(-)
+>  drivers/pci/pci-sysfs.c |    7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
 > 
-> --- a/drivers/pci/msi.c
-> +++ b/drivers/pci/msi.c
-> @@ -1267,14 +1267,6 @@ struct pci_dev *msi_desc_to_pci_dev(stru
->  }
->  EXPORT_SYMBOL(msi_desc_to_pci_dev);
->  
-> -void *msi_desc_to_pci_sysdata(struct msi_desc *desc)
-> -{
-> -	struct pci_dev *dev = msi_desc_to_pci_dev(desc);
+> --- a/drivers/pci/pci-sysfs.c
+> +++ b/drivers/pci/pci-sysfs.c
+> @@ -62,11 +62,8 @@ static ssize_t irq_show(struct device *d
+>  	 * For MSI, show the first MSI IRQ; for all other cases including
+>  	 * MSI-X, show the legacy INTx IRQ.
+>  	 */
+> -	if (pdev->msi_enabled) {
+> -		struct msi_desc *desc = first_pci_msi_entry(pdev);
 > -
-> -	return dev->bus->sysdata;
-> -}
-> -EXPORT_SYMBOL_GPL(msi_desc_to_pci_sysdata);
-> -
->  #ifdef CONFIG_PCI_MSI_IRQ_DOMAIN
->  /**
->   * pci_msi_domain_write_msg - Helper to write MSI message to PCI config space
-> --- a/include/linux/msi.h
-> +++ b/include/linux/msi.h
-> @@ -218,13 +218,8 @@ static inline void msi_desc_set_iommu_co
->  	for_each_msi_entry((desc), &(pdev)->dev)
+> -		return sysfs_emit(buf, "%u\n", desc->irq);
+> -	}
+> +	if (pdev->msi_enabled)
+> +		return sysfs_emit(buf, "%u\n", pci_irq_vector(pdev, 0));
+>  #endif
 >  
->  struct pci_dev *msi_desc_to_pci_dev(struct msi_desc *desc);
-> -void *msi_desc_to_pci_sysdata(struct msi_desc *desc);
->  void pci_write_msi_msg(unsigned int irq, struct msi_msg *msg);
->  #else /* CONFIG_PCI_MSI */
-> -static inline void *msi_desc_to_pci_sysdata(struct msi_desc *desc)
-> -{
-> -	return NULL;
-> -}
->  static inline void pci_write_msi_msg(unsigned int irq, struct msi_msg *msg)
->  {
->  }
+>  	return sysfs_emit(buf, "%u\n", pdev->irq);
 > 
