@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A82446C5E6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 22:02:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 286FF46C5ED
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Dec 2021 22:03:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J7t6M22wSz3cFg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 08:02:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J7t730hC7z3f4X
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 08:03:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uu5zBvm5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n8AstkO1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,40 +18,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=uu5zBvm5; 
+ header.s=k20201202 header.b=n8AstkO1; 
  dkim-atps=neutral
 Received: from ams.source.kernel.org (ams.source.kernel.org
  [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J7t556rgYz3cnl
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 08:01:29 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J7t5j2b3pz3dvy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 08:02:01 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 98CDFB81E87;
- Tue,  7 Dec 2021 21:01:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBF1C341C6;
- Tue,  7 Dec 2021 21:01:26 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id C9098B81E8E;
+ Tue,  7 Dec 2021 21:01:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25EABC341C6;
+ Tue,  7 Dec 2021 21:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1638910887;
- bh=KswCIrDmmz+hcDnAj7scewOtghNKAUSvlR/YL46B2y4=;
+ s=k20201202; t=1638910917;
+ bh=Xx5Xlrv9sa2u5A/Kpn/Dg/C1KiusFx7+1t0Q3ZaD6H0=;
  h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=uu5zBvm54PthoHMlAqMnKRp9In+QOttow33Sbz7fEJ6O739+SKVMNcj0eNux2Q1Fm
- ClUIhicQb0fbu7dNnC5RUJc8cgV1kAUjfZKalR6pgWyzBP5HyLTWLSqil36RtKbcDM
- nqVi0ewcV8haHkpihS2wEZ6W406lbkA9hAmoJYBBNhdiTOCAQEDa24Jm2l0Hw6e3ko
- tU0U/GoEd9YCrvWvapKu9DPDHWTw8UAwhom8fGjgSe6puuiXErpmMgBAhsH2nykktX
- lzB/yMVW0IXZVQGumZ7IMNW/rs3/0hjKex87BhLox/oRgleVnT9TL1qDc5II4Yygcs
- 8zJbA1ld5WgZg==
-Date: Tue, 7 Dec 2021 15:01:25 -0600
+ b=n8AstkO1bzz/peccJoNv+OV8w4azVbrZfSQZ+C6VrByvWmPCcuA2UoeLK7KF47R8L
+ vZst3jSGZu4YUxnifcSqUb1O35ur9epBYuG/DP/WQ/icPCZjzW/3TXclIKDXlqCJoX
+ tc18Sbi36Aj0D6NsekqSM+82EIrp06HXxtNuS66W7DP7eTGFxuQRp9F7qgu1/oS6Nh
+ EiQZ2fSjwcXjKQPTB0uzie9HLe4wME36g/iRUJWHldf2e/7IFERXGSfGEslP0xR4VZ
+ V4I9BEz7rWwPqwC+sNYmCoDe+CD/nvsXq9LjxicUETpYVVdLu043m0E8HlLj60v+3X
+ HUdygMtqlpOxw==
+Date: Tue, 7 Dec 2021 15:01:56 -0600
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch V2 20/23] PCI/MSI: Move msi_lock to struct pci_dev
-Message-ID: <20211207210125.GA77339@bhelgaas>
+Subject: Re: [patch V2 21/23] PCI/MSI: Make pci_msi_domain_check_cap() static
+Message-ID: <20211207210156.GA77414@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211206210224.925241961@linutronix.de>
+In-Reply-To: <20211206210224.980989243@linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,84 +81,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 06, 2021 at 11:27:56PM +0100, Thomas Gleixner wrote:
-> It's only required for PCI/MSI. So no point in having it in every struct
-> device.
+On Mon, Dec 06, 2021 at 11:27:57PM +0100, Thomas Gleixner wrote:
+> No users outside of that file.
 > 
 > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Tested-by: Juergen Gross <jgross@suse.com>
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
 Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
 > ---
-> V2: New patch
-> ---
->  drivers/base/core.c    |    1 -
->  drivers/pci/msi/msi.c  |    2 +-
->  drivers/pci/probe.c    |    4 +++-
->  include/linux/device.h |    2 --
->  include/linux/pci.h    |    1 +
->  5 files changed, 5 insertions(+), 5 deletions(-)
+>  drivers/pci/msi/irqdomain.c |    5 +++--
+>  include/linux/msi.h         |    2 --
+>  2 files changed, 3 insertions(+), 4 deletions(-)
 > 
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -2875,7 +2875,6 @@ void device_initialize(struct device *de
->  	device_pm_init(dev);
->  	set_dev_node(dev, NUMA_NO_NODE);
->  #ifdef CONFIG_GENERIC_MSI_IRQ
-> -	raw_spin_lock_init(&dev->msi_lock);
->  	INIT_LIST_HEAD(&dev->msi_list);
->  #endif
->  	INIT_LIST_HEAD(&dev->links.consumers);
-> --- a/drivers/pci/msi/msi.c
-> +++ b/drivers/pci/msi/msi.c
-> @@ -18,7 +18,7 @@ int pci_msi_ignore_mask;
->  
->  static noinline void pci_msi_update_mask(struct msi_desc *desc, u32 clear, u32 set)
+> --- a/drivers/pci/msi/irqdomain.c
+> +++ b/drivers/pci/msi/irqdomain.c
+> @@ -79,8 +79,9 @@ static inline bool pci_msi_desc_is_multi
+>   *  1 if Multi MSI is requested, but the domain does not support it
+>   *  -ENOTSUPP otherwise
+>   */
+> -int pci_msi_domain_check_cap(struct irq_domain *domain,
+> -			     struct msi_domain_info *info, struct device *dev)
+> +static int pci_msi_domain_check_cap(struct irq_domain *domain,
+> +				    struct msi_domain_info *info,
+> +				    struct device *dev)
 >  {
-> -	raw_spinlock_t *lock = &desc->dev->msi_lock;
-> +	raw_spinlock_t *lock = &to_pci_dev(desc->dev)->msi_lock;
->  	unsigned long flags;
+>  	struct msi_desc *desc = first_pci_msi_entry(to_pci_dev(dev));
 >  
->  	if (!desc->pci.msi_attrib.can_mask)
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -2311,7 +2311,9 @@ struct pci_dev *pci_alloc_dev(struct pci
->  	INIT_LIST_HEAD(&dev->bus_list);
->  	dev->dev.type = &pci_dev_type;
->  	dev->bus = pci_bus_get(bus);
-> -
-> +#ifdef CONFIG_PCI_MSI
-> +	raw_spin_lock_init(&dev->msi_lock);
-> +#endif
->  	return dev;
->  }
->  EXPORT_SYMBOL(pci_alloc_dev);
-> --- a/include/linux/device.h
-> +++ b/include/linux/device.h
-> @@ -407,7 +407,6 @@ struct dev_links_info {
->   * @em_pd:	device's energy model performance domain
->   * @pins:	For device pin management.
->   *		See Documentation/driver-api/pin-control.rst for details.
-> - * @msi_lock:	Lock to protect MSI mask cache and mask register
->   * @msi_list:	Hosts MSI descriptors
->   * @msi_domain: The generic MSI domain this device is using.
->   * @numa_node:	NUMA node this device is close to.
-> @@ -508,7 +507,6 @@ struct device {
->  	struct dev_pin_info	*pins;
->  #endif
->  #ifdef CONFIG_GENERIC_MSI_IRQ
-> -	raw_spinlock_t		msi_lock;
->  	struct list_head	msi_list;
->  #endif
->  #ifdef CONFIG_DMA_OPS
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -474,6 +474,7 @@ struct pci_dev {
->  #endif
->  #ifdef CONFIG_PCI_MSI
->  	void __iomem	*msix_base;
-> +	raw_spinlock_t	msi_lock;
->  	const struct attribute_group **msi_irq_groups;
->  #endif
->  	struct pci_vpd	vpd;
+> --- a/include/linux/msi.h
+> +++ b/include/linux/msi.h
+> @@ -439,8 +439,6 @@ void *platform_msi_get_host_data(struct
+>  struct irq_domain *pci_msi_create_irq_domain(struct fwnode_handle *fwnode,
+>  					     struct msi_domain_info *info,
+>  					     struct irq_domain *parent);
+> -int pci_msi_domain_check_cap(struct irq_domain *domain,
+> -			     struct msi_domain_info *info, struct device *dev);
+>  u32 pci_msi_domain_get_msi_rid(struct irq_domain *domain, struct pci_dev *pdev);
+>  struct irq_domain *pci_msi_get_device_domain(struct pci_dev *pdev);
+>  bool pci_dev_has_special_msi_domain(struct pci_dev *pdev);
 > 
