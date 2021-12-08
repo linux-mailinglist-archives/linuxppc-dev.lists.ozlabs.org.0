@@ -2,61 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 406D546D13F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 11:45:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36AEA46D50C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 15:05:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J8DMg1B51z3bY9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 21:45:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J8Jq31LjLz3bmk
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 01:05:51 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dh7WNodL;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.32.125.2;
- helo=smtpout1.mo529.mail-out.ovh.net; envelope-from=clg@kaod.org;
- receiver=<UNKNOWN>)
-Received: from smtpout1.mo529.mail-out.ovh.net
- (smtpout1.mo529.mail-out.ovh.net [178.32.125.2])
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=dh7WNodL; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J8DM84vr0z2yR8
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 21:44:50 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.156.35])
- by mo529.mail-out.ovh.net (Postfix) with ESMTPS id 4A0F4D092F09;
- Wed,  8 Dec 2021 11:44:42 +0100 (CET)
-Received: from kaod.org (37.59.142.96) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Wed, 8 Dec
- 2021 11:44:40 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-96R001f5056120-68a4-4c0a-bc06-f617410d6d7e,
- EB01F339838E5AA67C986A6C3251B49097B81903) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 86.201.172.254
-Message-ID: <e92f2bb3-b5e1-c870-8151-3917a789a640@kaod.org>
-Date: Wed, 8 Dec 2021 11:44:39 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J8JpP4jYHz2xKT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 01:05:17 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id D9B3DB820ED;
+ Wed,  8 Dec 2021 14:05:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D3CC00446;
+ Wed,  8 Dec 2021 14:05:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1638972311;
+ bh=vS1icKEjwwFDMks8ZEP6VHIjK8xXwV7tmx3OxQCGPa4=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=dh7WNodLKyM24s9Wp1+uYZ2KSzJJiWdKVYrtanLmUsv5t74iYftQAw7bWw1LWAoqM
+ KcIppoQBS6hxp5ZRgslT2XUDa6tLwcW5ONQvitQfNtXSgV7NBS9GkpD79iLRZA5OWR
+ vK80u83eimkFeQZqEGYY7JXOvy6dnJU+0zcpuMZlErwmfBgzrCPjZFZABzOLAuwoTl
+ cev27RMFydVyvCKmKLnQhnMINCX50WrNNS93repBbTmN0L/EEdIe6XrYPVkEeqouhD
+ h/+tTMhO+9WcrrOAGggEJXxBIxfbxk/iDjygQZ/3Z9bX+F2YC9ryGL2Gntp52Jc0rt
+ 0VRSylJGxhwYw==
+Date: Wed, 8 Dec 2021 14:05:05 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Qing Wang <wangqing@vivo.com>
+Subject: Re: [PATCH] sound: fsl: add missing put_device() call in
+ imx_hdmi_probe()
+Message-ID: <YbC7kffqjbqoPkW5@sirena.org.uk>
+References: <1638881818-3407-1-git-send-email-wangqing@vivo.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [patch V2 01/23] powerpc/4xx: Remove MSI support which never
- worked
-Content-Language: en-US
-To: Thomas Gleixner <tglx@linutronix.de>, Michael Ellerman
- <mpe@ellerman.id.au>, LKML <linux-kernel@vger.kernel.org>
-References: <20211206210147.872865823@linutronix.de>
- <20211206210223.872249537@linutronix.de>
- <8d1e9d2b-fbe9-2e15-6df6-03028902791a@kaod.org>
- <87ilw0odel.fsf@mpe.ellerman.id.au>
- <27f22e0e-8f84-a6d7-704b-d9eddc642d74@kaod.org> <8735n42lld.ffs@tglx>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <8735n42lld.ffs@tglx>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.96]
-X-ClientProxiedBy: DAG4EX1.mxp5.local (172.16.2.31) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: d54a9dd7-eba7-4e7f-a7a0-0dc7c43fc796
-X-Ovh-Tracer-Id: 10131410315672259365
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrjeekgddulecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfgjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeeuveelvdejteegteefieevfeetffefvddvieekteevleefgeelgfeutedvfedvfeenucffohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppedtrddtrddtrddtpdefjedrheelrddugedvrdelieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehhtggrsehlihhnuhigrdhisghmrdgtohhm
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="rKb0zWUnE/0QDh3m"
+Content-Disposition: inline
+In-Reply-To: <1638881818-3407-1-git-send-email-wangqing@vivo.com>
+X-Cookie: Alex Haley was adopted!
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,57 +65,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
- Ashok Raj <ashok.raj@intel.com>, Marc Zygnier <maz@kernel.org>, x86@kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Bjorn Helgaas <helgaas@kernel.org>, Megha Dey <megha.dey@intel.com>,
- Jason Gunthorpe <jgg@nvidia.com>, linux-pci@vger.kernel.org,
- xen-devel@lists.xenproject.org, ath11k@lists.infradead.org,
- Kevin Tian <kevin.tian@intel.com>, Heiko Carstens <hca@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Kalle Valo <kvalo@codeaurora.org>, Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ NXP Linux Team <linux-imx@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/7/21 21:42, Thomas Gleixner wrote:
-> Cedric,
-> 
-> On Tue, Dec 07 2021 at 16:50, Cédric Le Goater wrote:
->> On 12/7/21 12:36, Michael Ellerman wrote:
->>>
->>> This patch should drop those selects I guess. Can you send an
->>> incremental diff for Thomas to squash in?
->>
->> Sure.
->>
->>> Removing all the tendrils in various device tree files will probably
->>> require some archaeology, and it should be perfectly safe to leave those
->>> in the tree with the driver gone. So I think we can do that as a
->>> subsequent patch, rather than in this series.
->>
->> Here are the changes. Compiled tested with ppc40x and ppc44x defconfigs.
-> 
-> < Lots of patch skipped />
->> @@ -141,7 +138,6 @@ config REDWOOD
->>    	select FORCE_PCI
->>    	select PPC4xx_PCI_EXPRESS
->>    	select PCI_MSI
->> -	select PPC4xx_MSI
->>    	help
->>    	  This option enables support for the AMCC PPC460SX Redwood board.
-> 
-> While that is incremental it certainly is worth a patch on it's
-> own. Could you add a proper changelog and an SOB please?
 
-Here you are.
+--rKb0zWUnE/0QDh3m
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-  https://github.com/legoater/linux/commit/75d2764b11fe8f6d8bf50d60a3feb599ce27b16d
+On Tue, Dec 07, 2021 at 04:56:58AM -0800, Qing Wang wrote:
+> From: Wang Qing <wangqing@vivo.com>
+>=20
+> of_find_device_by_node() takes a reference to the embedded struct device=
+=20
+> which needs to be dropped when error return.
 
-Thanks,
+=2E..
 
-C.
+>  	data =3D devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+>  	if (!data) {
+> +		put_device(&cpu_pdev->dev);
+
+If it's of_find_device_by_node() you need an of_node_put() since you're
+dropping a reference on the OF node.
+
+--rKb0zWUnE/0QDh3m
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmGwu5AACgkQJNaLcl1U
+h9DDOQf+J5zK6lF7fGbSzDyocKgHfhSXm+Zi4VikzTPBrRjWBzR7I7Xb3EzyftoK
+q8scd1RieKQjYG9+EwWFxAiw3o+L68/BfzK7PGEiiH6PoyGCl0woc87FdYofTIzV
+bfWOkjr2i151MEEhmI7Ho00H6jrCvoAYlmyV5aZhjEkv5jLwpzkM0Otk0SIfE5Kw
+pzi4d0B35D1JthsWkLp8c4R9SD1zN7G1U/RgXbBTkd3Bcj5LgFK0UpEHKt/ahqqE
+mWhpqjAC9q3V0M8T4KLW1riUZ3S2UpW0KYF8y1aoFlrUN8opchz1FFR6J88ddhpi
+/KdYZR2CzkcCZcFbxRILlTIJy5q6rw==
+=vpxc
+-----END PGP SIGNATURE-----
+
+--rKb0zWUnE/0QDh3m--
