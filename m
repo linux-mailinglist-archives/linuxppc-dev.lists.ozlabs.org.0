@@ -1,65 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEB646DD5C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 21:57:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09E5746DD88
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 22:19:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J8TyB14Pxz3c9b
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 07:57:38 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=NIPhL0sg;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=KF19qqsU;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J8VRl74TDz3cDZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 08:19:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=NIPhL0sg; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=KF19qqsU; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
+ smtp.mailfrom=gmail.com (client-ip=209.85.128.54; helo=mail-wm1-f54.google.com;
+ envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
+ [209.85.128.54])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J8TxV4Hxrz2yQ9
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 07:57:02 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1638997011;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=RI9goYiyaxxlyowVIy50GRXpRhCNUYZrM4r3seD1bKI=;
- b=NIPhL0sgn8M0aJUIi890pmZGlk891yoUSSDMnC4hnbyawxG2Kyh7G1sHH/xsmtSWUM8FfZ
- FyiBCPJVbWpXpFfMUl77mb1l8QqDIF5HigALgdn/RYqTMPCpOHMr0KIFCokDN7aLnrEdks
- 8rrnfZKCxcaetGnTQyHUg4mAfEc2N1sxXiIWn5IbWqnhikYmOYt6fknKqXzV7CdqL4P4H4
- 8ZS0DFKNdnSGea2HezKm7Hkc6llGKcBl9S+VI9FjnibvCSYHAcSlNTnETtfGbCxdf3f6N4
- HjxoAKj0UnKj8JjZlpBFr0/NMCZQnVLvInv7aT9TCLkwNt6S0nNqOl/aBjfedw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1638997011;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=RI9goYiyaxxlyowVIy50GRXpRhCNUYZrM4r3seD1bKI=;
- b=KF19qqsUtSG+rWG9NpEYyzGIEvbq/ti9eoiMayWfd1iK3FYz9roP5HeWY227THj1hSYyZu
- bO4E+0TC1Z5Br/AA==
-To: Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [patch V2 20/23] PCI/MSI: Move msi_lock to struct pci_dev
-In-Reply-To: <20211208152925.GU6385@nvidia.com>
-References: <20211206210147.872865823@linutronix.de>
- <20211206210224.925241961@linutronix.de>
- <20211208152925.GU6385@nvidia.com>
-Date: Wed, 08 Dec 2021 21:56:50 +0100
-Message-ID: <871r2m24tp.ffs@tglx>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J8VRH1TZpz2xsq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 08:19:21 +1100 (AEDT)
+Received: by mail-wm1-f54.google.com with SMTP id
+ k37-20020a05600c1ca500b00330cb84834fso5164276wms.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Dec 2021 13:19:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to;
+ bh=lGCJse956z74hTTB9jr5bIXKoOQXyIcPGQuNGuBUSrc=;
+ b=S5WjDwkoU5m5qblS0ErgGbZ0AonxF3i1jdP35Wrqj4Awqvm8oCXrMBwxskU2/yjgPQ
+ CcWpQFDTTHHEpMywv8L1QxFvkxld7EZBg50CQta9dwav7ynxx3c7cMjvtRbssHjaHM7M
+ NUc+YqGx+cLlmdLo46rAUydeLH7xAnsmQnGGtM+yQ15bbwxeHL4i2/+y+UmnKOaSBeaL
+ 04aRaJf7ueZ9HtqUliDcrKeXmMnXWDc+QwRiY0x9FB9AjXtlz7WL9YUiBsY9zd2LhbMa
+ WjsUQm9KV6S4JjEd9Hj7AQL47+orvaW5R3dPvFfkqUFxnivYY0ftPP7Wg/zTdzyT7Jgc
+ xJuQ==
+X-Gm-Message-State: AOAM533sWbJnS85Nj/8qKUOJJPc1xSZqk9xHp+45i1KuipFCyTqDFIxc
+ RUrd5jeoahgdv1gX8vEYRO8=
+X-Google-Smtp-Source: ABdhPJxE5TjdbwCurdu70/FRp2HcLs5d8u7RmvO/weZBI7PJ6qkZyX+gZ8rmDU5YmXvXj7xM6jowcw==
+X-Received: by 2002:a05:600c:202:: with SMTP id
+ 2mr1393564wmi.167.1638998357263; 
+ Wed, 08 Dec 2021 13:19:17 -0800 (PST)
+Received: from rocinante ([95.155.85.46])
+ by smtp.gmail.com with ESMTPSA id r17sm8019876wmq.5.2021.12.08.13.19.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 08 Dec 2021 13:19:15 -0800 (PST)
+Date: Wed, 8 Dec 2021 22:19:13 +0100
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 1/2] sizes.h: Add SZ_1T macro
+Message-ID: <YbEhUeUy7PlOk2iR@rocinante>
+References: <b03f5cf556f1a89ccb4d7ae2f56414520cfd9209.1638973836.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <b03f5cf556f1a89ccb4d7ae2f56414520cfd9209.1638973836.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,33 +66,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, linux-mips@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Wei Liu <wei.liu@kernel.org>, Ashok Raj <ashok.raj@intel.com>, x86@kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Bjorn Helgaas <helgaas@kernel.org>, Megha Dey <megha.dey@intel.com>,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- ath11k@lists.infradead.org, Kevin Tian <kevin.tian@intel.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>, Cedric Le Goater <clg@kaod.org>,
- Kalle Valo <kvalo@codeaurora.org>, Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- LKML <linux-kernel@vger.kernel.org>, Marc Zygnier <maz@kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Toan Le <toan@os.amperecomputing.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 08 2021 at 11:29, Jason Gunthorpe wrote:
-> On Mon, Dec 06, 2021 at 11:27:56PM +0100, Thomas Gleixner wrote:
->>  	if (!desc->pci.msi_attrib.can_mask)
->
-> It looks like most of the time this is called by an irq_chip, except
-> for a few special cases list pci_msi_shutdown()
->
-> Is this something that should ideally go away someday and use some
-> lock in the irq_chip - not unlike what we've thought is needed for
-> IMS?
+Hello Christophe,
 
-Some day we'll have that yes.
+> Today drivers/pci/controller/pci-xgene.c defines SZ_1T
+> 
+> Move it into linux/sizes.h so that it can be re-used elsewhere.
+
+Sounds like a good idea!
+
+By the way, there was an earlier version of this patch, did something
+happened?  I think you simply extracted these changes from the other
+series, correct?
+
+> diff --git a/drivers/pci/controller/pci-xgene.c b/drivers/pci/controller/pci-xgene.c
+> index 56d0d50338c8..716dcab5ca47 100644
+> --- a/drivers/pci/controller/pci-xgene.c
+> +++ b/drivers/pci/controller/pci-xgene.c
+> @@ -49,7 +49,6 @@
+>  #define EN_REG				0x00000001
+>  #define OB_LO_IO			0x00000002
+>  #define XGENE_PCIE_DEVICEID		0xE004
+> -#define SZ_1T				(SZ_1G*1024ULL)
+>  #define PIPE_PHY_RATE_RD(src)		((0xc000 & (u32)(src)) >> 0xe)
+>  
+>  #define XGENE_V1_PCI_EXP_CAP		0x40
+> diff --git a/include/linux/sizes.h b/include/linux/sizes.h
+> index 1ac79bcee2bb..84aa448d8bb3 100644
+> --- a/include/linux/sizes.h
+> +++ b/include/linux/sizes.h
+> @@ -47,6 +47,8 @@
+>  #define SZ_8G				_AC(0x200000000, ULL)
+>  #define SZ_16G				_AC(0x400000000, ULL)
+>  #define SZ_32G				_AC(0x800000000, ULL)
+> +
+> +#define SZ_1T				_AC(0x10000000000, ULL)
+>  #define SZ_64T				_AC(0x400000000000, ULL)
+>  
+>  #endif /* __LINUX_SIZES_H__ */
+
+Thank you!
+
+Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
+
+	Krzysztof
