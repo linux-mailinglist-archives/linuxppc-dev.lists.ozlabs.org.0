@@ -2,38 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D0046CAC9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 03:21:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 088F946CAD1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 03:22:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J81Bn52m4z3bY9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 13:21:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J81Cr6D0Zz3clc
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 13:22:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J81BM3BwFz2yLv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 13:21:26 +1100 (AEDT)
-X-IronPort-AV: E=McAfee;i="6200,9189,10191"; a="237546753"
-X-IronPort-AV: E=Sophos;i="5.87,296,1631602800"; d="scan'208";a="237546753"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J81CQ2yJYz3cYG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Dec 2021 13:22:26 +1100 (AEDT)
+X-IronPort-AV: E=McAfee;i="6200,9189,10191"; a="261812522"
+X-IronPort-AV: E=Sophos;i="5.87,296,1631602800"; d="scan'208";a="261812522"
 Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Dec 2021 18:20:23 -0800
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Dec 2021 18:21:23 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.87,296,1631602800"; d="scan'208";a="563910418"
+X-IronPort-AV: E=Sophos;i="5.87,296,1631602800"; d="scan'208";a="563910627"
 Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
- by fmsmga008.fm.intel.com with ESMTP; 07 Dec 2021 18:20:21 -0800
+ by fmsmga008.fm.intel.com with ESMTP; 07 Dec 2021 18:21:21 -0800
 Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1mumZB-000NFr-1t; Wed, 08 Dec 2021 02:20:21 +0000
-Date: Wed, 08 Dec 2021 10:20:11 +0800
+ id 1muma9-000NGF-4M; Wed, 08 Dec 2021 02:21:21 +0000
+Date: Wed, 08 Dec 2021 10:20:17 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS 2a2ac8a7018b953cd23d770ebd28f8e1ea365df4
-Message-ID: <61b0165b.B+fVhB7pfH8xfebO%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 27918f696e421df5b71d65d416a621bcd5c5fee2
+Message-ID: <61b01661./X2u6LKTMW3ggFb4%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -54,8 +55,8 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 2a2ac8a7018b953cd23d770ebd28f8e1ea365df4  powerpc/xive: Fix compile when !CONFIG_PPC_POWERNV.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 27918f696e421df5b71d65d416a621bcd5c5fee2  mpe hash fixups
 
 elapsed time: 732m
 
