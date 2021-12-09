@@ -1,77 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B7846F61D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 22:41:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C6646F645
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 22:54:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J96tn2ttdz3cNH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 08:41:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J979c09dTz3brd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 08:54:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ga0D7v81;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CQvQZs82;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=145.40.68.75;
- helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=ga0D7v81; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=CQvQZs82; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J96t21hyFz2ypL
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 08:41:14 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 2F9B9B8250C
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 21:41:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 04FFEC004DD
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 21:41:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1639086069;
- bh=qMu2EqfDCLKw2QIbpWk+ftnyFM0rf9CAzVzJtmW3E5A=;
- h=From:To:Subject:Date:From;
- b=ga0D7v81lnZBxgbZz2eNCFX/ji4xXl+kDN3cSSCVhLtRXvKiEHuan2RtigjrLJhxh
- 0iXDFRYvdN54PEJ7qM+BIY0wNetPPavX6XywTuiRm711yzM1uQ9lQMIC2t5o/VaDrO
- awVB3yHiHVpKpguulGZIFFfyA4Pr2aMpRO26CMWZ/dwGWxSGd/qQ+Bv8pThRR/8Fm8
- 3t6XHf7BJLeSFc1Ah/cCa4Y0flmoVDlyGxC3d3EbY3oirsXpI//yMhBLMCKdGkzxfS
- jXCf5v/mmpECX+QTLF4n3O+ynPmgtqpdEXudZMtrZlV/y8e6o3lms0wQOzwxGXjQb6
- wTILfPc14wxwg==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id D551760F4F; Thu,  9 Dec 2021 21:41:08 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 215285] New: power9 le: amdgpu: *ERROR* hw_init of IP block
- <psp> failed -22
-Date: Thu, 09 Dec 2021 21:41:08 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: high
-X-Bugzilla-Who: sid@aeam.us
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version
- cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
- priority component assigned_to reporter cf_regression
-Message-ID: <bug-215285-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J978r12bSz2yPD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 08:54:03 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B9KZHjb027392; 
+ Thu, 9 Dec 2021 21:53:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=WMWPuPqMKkG7POp8eawwV4RyD7I/ba69OipN2SLIhY8=;
+ b=CQvQZs82boi9r/eoannQphMh+dI0uZhcqNDtBHo5FK+3ZSVy6ZL3noAsV3RzaXUdAGzl
+ maworrN7wm4zu+ueXaE6DbbtmSyABIcqp3AXXadrzv59wybqvXuAiuLBhi5sYRo/ohAJ
+ KCp3bTvihHt2x2Ds7SHmcr3I20WigbNag2S85aN29mmldXcx/mukpQvKbKjsbvmAmccA
+ oPqB5T4kaw7VFy9Ge8WASuFOY7fm/qdgclaufYBEC1CY8jzy1HiwAWIcqr+CpV+q3gFW
+ uu4KBoZ7QjsoTPorlYuWd4XViUrgqUQbBg/bFzKhQdsD5AhNDK374+iog2ZV9WYkTyCq SA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cup7pwehy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Dec 2021 21:53:39 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1B9LrdNB019382;
+ Thu, 9 Dec 2021 21:53:39 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cup7pwehr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Dec 2021 21:53:39 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B9LcEZB011635;
+ Thu, 9 Dec 2021 21:53:37 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma02wdc.us.ibm.com with ESMTP id 3cqyyc2mqn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Dec 2021 21:53:37 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1B9LrZ3927132204
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 9 Dec 2021 21:53:35 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 93B856E056;
+ Thu,  9 Dec 2021 21:53:35 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 97FCF6E052;
+ Thu,  9 Dec 2021 21:53:33 +0000 (GMT)
+Received: from [9.211.103.28] (unknown [9.211.103.28])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  9 Dec 2021 21:53:33 +0000 (GMT)
+Message-ID: <790c68ce-070d-c391-0c3a-4637c616fa5e@linux.vnet.ibm.com>
+Date: Thu, 9 Dec 2021 16:53:33 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 2/6] powerpc/kexec_file: Add KEXEC_SIG support.
+Content-Language: en-US
+To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
+References: <cover.1637862358.git.msuchanek@suse.de>
+ <8b30a3c6a4e845eb77f276298424811897efdebf.1637862358.git.msuchanek@suse.de>
+ <c3c9c6e4-6371-2f5a-ac94-fa4389d5dbe5@linux.vnet.ibm.com>
+ <20211209092155.GO117207@kunlun.suse.cz>
+From: Nayna <nayna@linux.vnet.ibm.com>
+In-Reply-To: <20211209092155.GO117207@kunlun.suse.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: x2XUc9cxjnO1DJ8AfathjBta2FnXVAlc
+X-Proofpoint-ORIG-GUID: HZolCF3M1gk1kZAg8NUwVeVyMGL04EK2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-09_09,2021-12-08_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 mlxscore=0
+ lowpriorityscore=0 mlxlogscore=999 malwarescore=0 priorityscore=1501
+ clxscore=1015 suspectscore=0 adultscore=0 bulkscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112090112
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,50 +112,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+ keyrings@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
+ Herbert Xu <herbert@gondor.apana.org.au>, Baoquan He <bhe@redhat.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ James Morris <jmorris@namei.org>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Rob Herring <robh@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+ linux-crypto@vger.kernel.org, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
+ Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
+ linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D215285
 
-            Bug ID: 215285
-           Summary: power9 le: amdgpu: *ERROR* hw_init of IP block <psp>
-                    failed -22
-           Product: Platform Specific/Hardware
-           Version: 2.5
-    Kernel Version: 5.15.6
-          Hardware: PPC-64
-                OS: Linux
-              Tree: Mainline
-            Status: NEW
-          Severity: high
-          Priority: P1
-         Component: PPC-64
-          Assignee: platform_ppc-64@kernel-bugs.osdl.org
-          Reporter: sid@aeam.us
-        Regression: No
+On 12/9/21 04:21, Michal Suchánek wrote:
+> Hello,
+Hi,
+> On Wed, Dec 08, 2021 at 08:51:47PM -0500, Nayna wrote:
+>> On 11/25/21 13:02, Michal Suchanek wrote:
+>>> Copy the code from s390x
+>>>
+>>> Signed-off-by: Michal Suchanek<msuchanek@suse.de>
+>>> ---
+>>>    arch/powerpc/Kconfig        | 11 +++++++++++
+>>>    arch/powerpc/kexec/elf_64.c | 36 ++++++++++++++++++++++++++++++++++++
+>>>    2 files changed, 47 insertions(+)
+>>>
+>>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>>> index ac0c515552fd..ecc1227a77f1 100644
+>>> --- a/arch/powerpc/Kconfig
+>>> +++ b/arch/powerpc/Kconfig
+>>> @@ -561,6 +561,17 @@ config KEXEC_FILE
+>>>    config ARCH_HAS_KEXEC_PURGATORY
+>>>    	def_bool KEXEC_FILE
+>>>
+>>> +config KEXEC_SIG
+>>> +	bool "Verify kernel signature during kexec_file_load() syscall"
+>>> +	depends on KEXEC_FILE && MODULE_SIG_FORMAT
+>> After manually applying the patch, the build is failing with the following
+>> error:
+>>
+>> build failed with error "arch/powerpc/kexec/elf_64.o: In function
+>> `elf64_verify_sig':
+>> /root/kernel/linus/linux/arch/powerpc/kexec/elf_64.c:160: undefined
+>> reference to `verify_appended_signature'"
+> This patch does not add call to verify_appended_signature.
+>
+> Maybe you applied the following patch as well?
 
-POWER9 blackbird system from Talos. GPU is 6600XT. This seems to be a flip =
-flop
-regression: https://gitlab.freedesktop.org/drm/amd/-/issues/1519
+Yes, I tried build after applying all the patches.
 
-[   54.313046] [drm] Found VCN firmware Version ENC: 1.16 DEC: 2 VEP: 0
-Revision: 1
-[   54.313054] amdgpu 0000:03:00.0: amdgpu: Will use PSP to load VCN firmwa=
-re
-[   54.314153] amdgpu 0000:03:00.0: enabling bus mastering
-[   54.570938] [drm:psp_hw_start [amdgpu]] *ERROR* PSP create ring failed!
-[   54.571061] [drm:psp_hw_init [amdgpu]] *ERROR* PSP firmware loading fail=
-ed
-[   54.571175] [drm:amdgpu_device_fw_loading [amdgpu]] *ERROR* hw_init of IP
-block <psp> failed -22
-[   54.571277] amdgpu 0000:03:00.0: amdgpu: amdgpu_device_ip_init failed
-[   54.571279] amdgpu 0000:03:00.0: amdgpu: Fatal error during GPU init
-[   54.571282] amdgpu 0000:03:00.0: amdgpu: amdgpu: finishing device.
-[   54.572789] amdgpu: probe of 0000:03:00.0 failed with error -22
+Thanks & Regards,
 
---=20
-You may reply to this email to add a comment.
+     - Nayna
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
