@@ -2,69 +2,112 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AED846EA70
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 15:58:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CF046EA8B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 16:03:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J8xxK6HsZz2yng
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 01:58:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J8y3J0WT3z3c7y
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 02:03:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gPgeGBOq;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ifKqt785;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nnwFKQhQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=gPgeGBOq; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=ifKqt785; 
- dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J8xwb4fj3z308v
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 01:57:51 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 2EB09210FF;
- Thu,  9 Dec 2021 14:57:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1639061867; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=B7f6qRahiw5jhS0ShhXv7YNAlwGFAuEPvz02wcswTDY=;
- b=gPgeGBOqAj1w2/IfiYiUJZQKOR5J82A1Jcgx9IB9Lg4xy6yn6SJ5BFAlgLdbOLu1hHG7vE
- 0panrH92CgFnCxooEeYXPRniRiGQzT2/9Wq8WzmBRRrKzV/iXa5gM6ei/5FlPbBPij83bp
- vqSVzkoMk5Lf/ek96wOP4gFIEnDAhro=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1639061867;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=B7f6qRahiw5jhS0ShhXv7YNAlwGFAuEPvz02wcswTDY=;
- b=ifKqt7859hHQVpcEXofA567hptOij+KjdqlWOciBCOlO/gkAk2kGLrViK2ee2A72WKzrh7
- l33DkpGEwGJL82CQ==
-Received: from kunlun.suse.cz (unknown [10.100.128.76])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J8y2Z0VPsz2yfd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 02:03:02 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=nnwFKQhQ; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4J8y2X4vmyz4xd3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 02:03:00 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4J8y2X4lRkz4xhd; Fri, 10 Dec 2021 02:03:00 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=nnwFKQhQ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 44CA3A3B95;
- Thu,  9 Dec 2021 14:57:45 +0000 (UTC)
-Date: Thu, 9 Dec 2021 15:57:44 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Nayna <nayna@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 0/6] KEXEC_SIG with appended signature
-Message-ID: <20211209145744.GQ117207@kunlun.suse.cz>
-References: <cover.1637862358.git.msuchanek@suse.de>
- <b5e6ec36-a9ec-22f4-be58-28d48bdc38b4@linux.vnet.ibm.com>
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4J8y2X2Rl7z4xd3
+ for <linuxppc-dev@ozlabs.org>; Fri, 10 Dec 2021 02:02:59 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B9EvXQw016998
+ for <linuxppc-dev@ozlabs.org>; Thu, 9 Dec 2021 15:02:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=8LLIeyYxU1bsP1waQ1kX6i/gs2ml6LM4+0zXFRtCe5Q=;
+ b=nnwFKQhQUrfGkNSzoGaSzoRlUSmwvz5f4mE0xyVi3fOUmRGJHOjBOwyF1jBxkpGfPqpE
+ rWk8nLa+jDNaeezEnJrvBdj3GU/HQn6lhLQ0qODSS5qONGdHWIDvjQxuMVoaXtbfXVWb
+ rSWG6Wz9s15JwJLxXDWMuxzcqAmuNz8rGYdWCgjJDsxk6xr53SkEDXwG2gwPGB7q1alx
+ +FP/r5aFc7j/m2OtNQB41le8OsGxTbhVTtRgWpTT+RoYe4mwASLjjSDMtpxgUg8DozC1
+ Ba+xSSxOeypKKaVPYYUXiNdMOZ00bV+uoA1PMxf6flYMsJQAutF6FLpj3yoAQFxyr1MQ fQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cum14g605-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Thu, 09 Dec 2021 15:02:56 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1B9EwQF7023547
+ for <linuxppc-dev@ozlabs.org>; Thu, 9 Dec 2021 15:02:56 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cum14g5yj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Dec 2021 15:02:56 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B9F2E5C025090;
+ Thu, 9 Dec 2021 15:02:55 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma04dal.us.ibm.com with ESMTP id 3cqyyc9pdw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Dec 2021 15:02:54 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1B9F2rDX27394424
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 9 Dec 2021 15:02:53 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 49A71124058;
+ Thu,  9 Dec 2021 15:02:53 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E3146124054;
+ Thu,  9 Dec 2021 15:02:52 +0000 (GMT)
+Received: from localhost (unknown [9.211.99.77])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu,  9 Dec 2021 15:02:52 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Subject: Re: [PATCH v3] PCI hotplug: rpaphp: Error out on busy status from
+ get-sensor-state
+In-Reply-To: <163853708110.360679.18375283379078566258.stgit@jupiter>
+References: <163853708110.360679.18375283379078566258.stgit@jupiter>
+Date: Thu, 09 Dec 2021 09:02:51 -0600
+Message-ID: <87y24tn7ms.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b5e6ec36-a9ec-22f4-be58-28d48bdc38b4@linux.vnet.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: TyZUF3FsLg4kGmcmc7BqOdZffw-T8DoL
+X-Proofpoint-ORIG-GUID: jo_UFsqymoQ4TyACVfCWPxwpWFa888AC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-09_06,2021-12-08_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ lowpriorityscore=0 impostorscore=0 phishscore=0 mlxlogscore=999
+ malwarescore=0 suspectscore=0 bulkscore=0 priorityscore=1501 clxscore=1015
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112090082
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,71 +119,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
- keyrings@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>, Baoquan He <bhe@redhat.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- James Morris <jmorris@namei.org>,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- "Serge E. Hallyn" <serge@hallyn.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Rob Herring <robh@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- linux-crypto@vger.kernel.org, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
- Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
- linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+Mahesh Salgaonkar <mahesh@linux.ibm.com> writes:
+> To avoid this issue, fix the pci hotplug driver (rpaphp) to return an error
+> if the slot presence state can not be detected immediately. Current
+> implementation uses rtas_get_sensor() API which blocks the slot check state
+> until rtas call returns success. Change rpaphp_get_sensor_state() to invoke
+> rtas_call(get-sensor-state) directly and take actions based on rtas return
+> status. This patch now errors out immediately on busy return status from
+> rtas_call.
+>
+> Please note that, only on certain PHB failures, the slot presence check
+> returns BUSY condition. In normal cases it returns immediately with a
+> correct presence state value. Hence this change has no impact on normal pci
+> dlpar operations.
 
-On Wed, Dec 08, 2021 at 08:50:54PM -0500, Nayna wrote:
-> 
-> On 11/25/21 13:02, Michal Suchanek wrote:
-> > Hello,
-> 
-> Hi Michael,
-> 
-> > 
-> > This is resend of the KEXEC_SIG patchset.
-> > 
-> > The first patch is new because it'a a cleanup that does not require any
-> > change to the module verification code.
-> > 
-> > The second patch is the only one that is intended to change any
-> > functionality.
-> > 
-> > The rest only deduplicates code but I did not receive any review on that
-> > part so I don't know if it's desirable as implemented.
-> > 
-> > The first two patches can be applied separately without the rest.
-> 
-> Patch 2 fails to apply on v5.16-rc4. Can you please also include git
-> tree/branch while posting the patches ?
+I was wondering about this. This seems to be saying -2/990x cannot
+happen in other cases. I couldn't find this specified in the
+architecture. It seems a bit risky to me to *always* error out on
+-2/990x - won't we have intermittent slot enable failures?
 
-Sorry, I did not have a clean base and the Kconfig had another change.
+> +/*
+> + * RTAS call get-sensor-state(DR_ENTITY_SENSE) return values as per PAPR:
+> + *    -1: Hardware Error
+> + *    -2: RTAS_BUSY
+> + *    -3: Invalid sensor. RTAS Parameter Error.
+> + * -9000: Need DR entity to be powered up and unisolated before RTAS call
+> + * -9001: Need DR entity to be powered up, but not unisolated, before RTAS call
+> + * -9002: DR entity unusable
+> + *  990x: Extended delay - where x is a number in the range of 0-5
+> + */
+> +#define RTAS_HARDWARE_ERROR	-1
+> +#define RTAS_INVALID_SENSOR	-3
+> +#define SLOT_UNISOLATED		-9000
+> +#define SLOT_NOT_UNISOLATED	-9001
+> +#define SLOT_NOT_USABLE		-9002
+> +
+> +static int rtas_to_errno(int rtas_rc)
+> +{
+> +	int rc;
+> +
+> +	switch (rtas_rc) {
+> +	case RTAS_HARDWARE_ERROR:
+> +		rc = -EIO;
+> +		break;
+> +	case RTAS_INVALID_SENSOR:
+> +		rc = -EINVAL;
+> +		break;
+> +	case SLOT_UNISOLATED:
+> +	case SLOT_NOT_UNISOLATED:
+> +		rc = -EFAULT;
+> +		break;
+> +	case SLOT_NOT_USABLE:
+> +		rc = -ENODEV;
+> +		break;
+> +	case RTAS_BUSY:
+> +	case RTAS_EXTENDED_DELAY_MIN...RTAS_EXTENDED_DELAY_MAX:
+> +		rc = -EBUSY;
+> +		break;
+> +	default:
+> +		err("%s: unexpected RTAS error %d\n", __func__, rtas_rc);
+> +		rc = -ERANGE;
+> +		break;
+> +	}
+> +	return rc;
+> +}
 
-Here is a tree with the changes applied:
-https://github.com/hramrach/kernel/tree/kexec_sig
-
-> 
-> Secondly, I see that you add the powerpc support in Patch 2 and then modify
-> it again in Patch 5 after cleanup. Why not add the support for powerpc after
-> the clean up ? This will reduce some rework and also probably simplify
-> patches.
-
-That's because I don't know if the later patches will be accepted. By
-queueing this patch first it can be applied standalone to ppc tree
-without regard for the other patches. It's a copy of the s390 code so it
-needs the same rework - not really adding complexity.
-
-Thanks
-
-Michal
+These conversions look OK to me.
