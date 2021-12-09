@@ -1,60 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09E5746DD88
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Dec 2021 22:19:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8A646E07A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 02:52:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J8VRl74TDz3cDZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 08:19:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J8cV70lGCz308v
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 12:52:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bGfF52Mt;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.128.54; helo=mail-wm1-f54.google.com;
- envelope-from=kswilczynski@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
- [209.85.128.54])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=bGfF52Mt; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J8VRH1TZpz2xsq
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 08:19:21 +1100 (AEDT)
-Received: by mail-wm1-f54.google.com with SMTP id
- k37-20020a05600c1ca500b00330cb84834fso5164276wms.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Dec 2021 13:19:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=lGCJse956z74hTTB9jr5bIXKoOQXyIcPGQuNGuBUSrc=;
- b=S5WjDwkoU5m5qblS0ErgGbZ0AonxF3i1jdP35Wrqj4Awqvm8oCXrMBwxskU2/yjgPQ
- CcWpQFDTTHHEpMywv8L1QxFvkxld7EZBg50CQta9dwav7ynxx3c7cMjvtRbssHjaHM7M
- NUc+YqGx+cLlmdLo46rAUydeLH7xAnsmQnGGtM+yQ15bbwxeHL4i2/+y+UmnKOaSBeaL
- 04aRaJf7ueZ9HtqUliDcrKeXmMnXWDc+QwRiY0x9FB9AjXtlz7WL9YUiBsY9zd2LhbMa
- WjsUQm9KV6S4JjEd9Hj7AQL47+orvaW5R3dPvFfkqUFxnivYY0ftPP7Wg/zTdzyT7Jgc
- xJuQ==
-X-Gm-Message-State: AOAM533sWbJnS85Nj/8qKUOJJPc1xSZqk9xHp+45i1KuipFCyTqDFIxc
- RUrd5jeoahgdv1gX8vEYRO8=
-X-Google-Smtp-Source: ABdhPJxE5TjdbwCurdu70/FRp2HcLs5d8u7RmvO/weZBI7PJ6qkZyX+gZ8rmDU5YmXvXj7xM6jowcw==
-X-Received: by 2002:a05:600c:202:: with SMTP id
- 2mr1393564wmi.167.1638998357263; 
- Wed, 08 Dec 2021 13:19:17 -0800 (PST)
-Received: from rocinante ([95.155.85.46])
- by smtp.gmail.com with ESMTPSA id r17sm8019876wmq.5.2021.12.08.13.19.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Dec 2021 13:19:15 -0800 (PST)
-Date: Wed, 8 Dec 2021 22:19:13 +0100
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 1/2] sizes.h: Add SZ_1T macro
-Message-ID: <YbEhUeUy7PlOk2iR@rocinante>
-References: <b03f5cf556f1a89ccb4d7ae2f56414520cfd9209.1638973836.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J8cTK19VXz2yZx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 12:51:32 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B8NpFij020559; 
+ Thu, 9 Dec 2021 01:51:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=lzNkL6HlG8uoD4LD2dknfufOrMTAzaPjmA2GavdwoYk=;
+ b=bGfF52MtqCIan3T31khGXLZ5V9SQmsU4tNjRDTsPk0R+5fMLn2gtnBKPbdfDuVa5s9QK
+ XmTVr0wMHAec3IqMumy0uRK150V/ZkYtf4Px4RsbTrVM9NS2NME5CgfEGqgnV82aUZ00
+ papvyzMMEPdotAsvuLc65+p4/1d6b7TvD2FdY3ubuGHJYgUW4w64dSV5iQqjf1stp22s
+ j91697c2DmCOoxj+0FsETRnoxKIVyspCZ/X0ets/IywZblS6I8ZBW/n5mKd5sRTVMANF
+ C8GODj+RezSazeQblBkrne22Q7MD+gT2+p8iZAbeqaa2y20zWnjaUpcNtyfi0g7Nsbgn 0w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cu1gk88we-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Dec 2021 01:51:01 +0000
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1B91k8st023060;
+ Thu, 9 Dec 2021 01:51:00 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cu1gk88w2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Dec 2021 01:51:00 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B91mA8k014682;
+ Thu, 9 Dec 2021 01:50:59 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma04dal.us.ibm.com with ESMTP id 3cqyybtxwq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Dec 2021 01:50:59 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1B91ovro28115566
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 9 Dec 2021 01:50:57 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 00C6BC6063;
+ Thu,  9 Dec 2021 01:50:57 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F1C6DC6062;
+ Thu,  9 Dec 2021 01:50:54 +0000 (GMT)
+Received: from [9.211.91.166] (unknown [9.211.91.166])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  9 Dec 2021 01:50:54 +0000 (GMT)
+Message-ID: <b5e6ec36-a9ec-22f4-be58-28d48bdc38b4@linux.vnet.ibm.com>
+Date: Wed, 8 Dec 2021 20:50:54 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 0/6] KEXEC_SIG with appended signature
+Content-Language: en-US
+To: Michal Suchanek <msuchanek@suse.de>, keyrings@vger.kernel.org
+References: <cover.1637862358.git.msuchanek@suse.de>
+From: Nayna <nayna@linux.vnet.ibm.com>
+In-Reply-To: <cover.1637862358.git.msuchanek@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b03f5cf556f1a89ccb4d7ae2f56414520cfd9209.1638973836.git.christophe.leroy@csgroup.eu>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: xrnPnY685HKWDzMtt8FN4mvhzwUwSKub
+X-Proofpoint-ORIG-GUID: PnjZLCiMbUjVAQT56miJWZSqnDdO6KM6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-09_01,2021-12-08_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=984
+ lowpriorityscore=0 malwarescore=0 spamscore=0 bulkscore=0 suspectscore=0
+ impostorscore=0 adultscore=0 priorityscore=1501 mlxscore=0 clxscore=1011
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112090006
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,54 +109,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Toan Le <toan@os.amperecomputing.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ linux-s390@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+ Baoquan He <bhe@redhat.com>, Christian Borntraeger <borntraeger@de.ibm.com>,
+ James Morris <jmorris@namei.org>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Rob Herring <robh@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+ linux-crypto@vger.kernel.org, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
+ Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
+ linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Christophe,
 
-> Today drivers/pci/controller/pci-xgene.c defines SZ_1T
-> 
-> Move it into linux/sizes.h so that it can be re-used elsewhere.
+On 11/25/21 13:02, Michal Suchanek wrote:
+> Hello,
 
-Sounds like a good idea!
+Hi Michael,
 
-By the way, there was an earlier version of this patch, did something
-happened?  I think you simply extracted these changes from the other
-series, correct?
+>
+> This is resend of the KEXEC_SIG patchset.
+>
+> The first patch is new because it'a a cleanup that does not require any
+> change to the module verification code.
+>
+> The second patch is the only one that is intended to change any
+> functionality.
+>
+> The rest only deduplicates code but I did not receive any review on that
+> part so I don't know if it's desirable as implemented.
+>
+> The first two patches can be applied separately without the rest.
 
-> diff --git a/drivers/pci/controller/pci-xgene.c b/drivers/pci/controller/pci-xgene.c
-> index 56d0d50338c8..716dcab5ca47 100644
-> --- a/drivers/pci/controller/pci-xgene.c
-> +++ b/drivers/pci/controller/pci-xgene.c
-> @@ -49,7 +49,6 @@
->  #define EN_REG				0x00000001
->  #define OB_LO_IO			0x00000002
->  #define XGENE_PCIE_DEVICEID		0xE004
-> -#define SZ_1T				(SZ_1G*1024ULL)
->  #define PIPE_PHY_RATE_RD(src)		((0xc000 & (u32)(src)) >> 0xe)
->  
->  #define XGENE_V1_PCI_EXP_CAP		0x40
-> diff --git a/include/linux/sizes.h b/include/linux/sizes.h
-> index 1ac79bcee2bb..84aa448d8bb3 100644
-> --- a/include/linux/sizes.h
-> +++ b/include/linux/sizes.h
-> @@ -47,6 +47,8 @@
->  #define SZ_8G				_AC(0x200000000, ULL)
->  #define SZ_16G				_AC(0x400000000, ULL)
->  #define SZ_32G				_AC(0x800000000, ULL)
-> +
-> +#define SZ_1T				_AC(0x10000000000, ULL)
->  #define SZ_64T				_AC(0x400000000000, ULL)
->  
->  #endif /* __LINUX_SIZES_H__ */
+Patch 2 fails to apply on v5.16-rc4. Can you please also include git 
+tree/branch while posting the patches ?
 
-Thank you!
+Secondly, I see that you add the powerpc support in Patch 2 and then 
+modify it again in Patch 5 after cleanup. Why not add the support for 
+powerpc after the clean up ? This will reduce some rework and also 
+probably simplify patches.
 
-Reviewed-by: Krzysztof Wilczyński <kw@linux.com>
+Thanks & Regards,
 
-	Krzysztof
+      - Nayna
+
