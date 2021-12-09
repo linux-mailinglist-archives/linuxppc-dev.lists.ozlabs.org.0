@@ -1,101 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE4346E4A8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 09:54:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CCCC46E575
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 10:22:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J8nss3TPvz3c7R
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 19:54:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J8pTs3G47z30RC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 20:22:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IfM7sNXC;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=y5YzNG0r;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UmTHULVE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=IfM7sNXC; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
+ envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
+ header.s=susede2_rsa header.b=y5YzNG0r; 
+ dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=UmTHULVE; 
+ dkim-atps=neutral
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J8pT61qnlz2yp2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 20:22:01 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out2.suse.de (Postfix) with ESMTP id 3B32B1FD2A;
+ Thu,  9 Dec 2021 09:21:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1639041718; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jo3sn1byKWtiTn1dBpjtwdFa6oBSNCtz/xhF6ucACsY=;
+ b=y5YzNG0rNKaO9NxPBAvDaQoQJPkQmG2LM54kVRigZuFPeyYKpKjohXF5zSI+IMLN4805NR
+ PkkekB5S0F8a10njKbZFjLTgzTAvz8uTJAnMFj/1fbYEyKhhWdWB66C9iz1Fa9DfR0cDsy
+ yshj9dKYiEAUsXxJ+DIpi0rjIY+0z9o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1639041718;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jo3sn1byKWtiTn1dBpjtwdFa6oBSNCtz/xhF6ucACsY=;
+ b=UmTHULVEapvtK0ndlxOwHm+jDi1BGZ/4ZhnM7iTiCPnzFci+pO9RE5k+RBPEDy456LoCP6
+ ab98l4y69aWfTuBQ==
+Received: from kunlun.suse.cz (unknown [10.100.128.76])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J8ns25Xgdz2yNw
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 19:54:14 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B98Sn17002214; 
- Thu, 9 Dec 2021 08:54:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=VmKUvcSOlDKYgtvHEH1mC9xCaRoQCxwASXycEo/RWbo=;
- b=IfM7sNXCZZttwY5C6rKINPJrksVL0qhAq7VKP/v5aZ5QN80fN96v+CrKXLe/Vd2PW/Uk
- 2Pg/oIbMOiRcj7U2C0o+xy7lrm8oaiUCEWxJRoZ6OLYfYvbmq4JiWnrr1CvpuUzlmTNz
- T61ptsG1Zpm6a8D2MPdwUEDzPcLVql37Gh6///Y4ZAnRVgySi+FWQ/Cd205gq1iMjOp8
- +Blbxq/pWjkmPvkG9gVQzikIxlZmYCwvCgkLnNNL0lyqhw5onmNS9F4nvJ5sRyeSFXTv
- PzyTo+/g/aznAcWUvKmHXIFWNlYUSS6Du1RBdLqKEp4m/+wG9J20CxKiAnpcTh5AjPBE BA== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cueax0f1c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Dec 2021 08:54:11 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B98qWMT016144;
- Thu, 9 Dec 2021 08:54:09 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma01fra.de.ibm.com with ESMTP id 3cqyy9w666-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Dec 2021 08:54:08 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 1B98kK8I18350578
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 Dec 2021 08:46:20 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8B16DAE05D;
- Thu,  9 Dec 2021 08:54:05 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 61A37AE058;
- Thu,  9 Dec 2021 08:54:05 +0000 (GMT)
-Received: from [9.145.152.236] (unknown [9.145.152.236])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  9 Dec 2021 08:54:05 +0000 (GMT)
-Message-ID: <b6edbf96-4349-c39b-69ee-477b4fdef511@linux.ibm.com>
-Date: Thu, 9 Dec 2021 09:54:05 +0100
+ by relay2.suse.de (Postfix) with ESMTPS id 46A5DA3B95;
+ Thu,  9 Dec 2021 09:21:56 +0000 (UTC)
+Date: Thu, 9 Dec 2021 10:21:55 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Nayna <nayna@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 2/6] powerpc/kexec_file: Add KEXEC_SIG support.
+Message-ID: <20211209092155.GO117207@kunlun.suse.cz>
+References: <cover.1637862358.git.msuchanek@suse.de>
+ <8b30a3c6a4e845eb77f276298424811897efdebf.1637862358.git.msuchanek@suse.de>
+ <c3c9c6e4-6371-2f5a-ac94-fa4389d5dbe5@linux.vnet.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.3.2
-Subject: Re: [PATCH v3] powerpc/pseries: read the lpar name from the firmware
-Content-Language: en-US
-To: Nathan Lynch <nathanl@linux.ibm.com>
-References: <20211203154321.13168-1-ldufour@linux.ibm.com>
- <87bl1so588.fsf@linux.ibm.com>
- <bbaa0d78-a09f-3ce3-25a9-67434039b741@linux.ibm.com>
- <878rwwny1l.fsf@linux.ibm.com>
- <21eb4749-42b1-da78-8833-00d360fa36e5@linux.ibm.com>
- <874k7jnmva.fsf@linux.ibm.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <874k7jnmva.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: nvGaBsQb1vQFqX4oMFyP5Gyw7O2-UVSu
-X-Proofpoint-GUID: nvGaBsQb1vQFqX4oMFyP5Gyw7O2-UVSu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2021-12-09_03,2021-12-08_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- mlxlogscore=999 mlxscore=0 malwarescore=0 spamscore=0 priorityscore=1501
- adultscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0 impostorscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2112090045
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c3c9c6e4-6371-2f5a-ac94-fa4389d5dbe5@linux.vnet.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,61 +77,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+ keyrings@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
+ Herbert Xu <herbert@gondor.apana.org.au>, Baoquan He <bhe@redhat.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ James Morris <jmorris@namei.org>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Rob Herring <robh@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+ linux-crypto@vger.kernel.org, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
+ Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
+ linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08/12/2021, 16:21:29, Nathan Lynch wrote:
-> Laurent Dufour <ldufour@linux.ibm.com> writes:
->> On 07/12/2021, 18:07:50, Nathan Lynch wrote:
->>> Laurent Dufour <ldufour@linux.ibm.com> writes:
->>>> On 07/12/2021, 15:32:39, Nathan Lynch wrote:
->>>>> Is there a reasonable fallback for VMs where this parameter doesn't
->>>>> exist? PowerVM partitions should always have it, but what do we want the
->>>>> behavior to be on other hypervisors?
->>>>
->>>> In that case, there is no value displayed in the /proc/powerpc/lparcfg and
->>>> the lparstat -i command will fall back to the device tree value. I can't
->>>> see any valid reason to report the value defined in the device tree
->>>> here.
->>>
->>> Here's a valid reason :-)
->>>
->>> lparstat isn't the only possible consumer of the interface, and the
->>> 'ibm,partition-name' property and the dynamic system parameter clearly
->>> serve a common purpose. 'ibm,partition-name' is provided by qemu.
->>
->> If the hypervisor is not providing this value, this is not the goal of this
->> interface to fetch it from the device tree.
->>
->> Any consumer should be able to fall back on the device tree value, and
->> there is no added value to do such a trick in the kernel when it can be
->> done in the user space.
-> 
-> There is value in imposing a level of abstraction so that the semantics
-> are:
-> 
-> * Report the name assigned to the guest by the hosting environment, if
->   available
-> 
-> as opposed to
-> 
-> * Return the string returned by a RTAS call to ibm,get-system-parameter
->   with token 55, if implemented
-> 
-> The benefit is that consumers of lparcfg do not have to be coded with
-> the knowledge that "if a partition_name= line is absent, the
-> ibm,get-system-parameter RTAS call must have failed, so now I should
-> read /sys/firmware/devicetree/base/ibm,partition_name." That's the sort
-> of esoterica that is appropriate for the kernel to encapsulate.
-> 
-> And I'd say the effort involved (falling back to a root node property
-> lookup) is proportional to the benefit.
-> 
+Hello,
 
-I don't agree.
-From the kernel point of view, I can't see any benefit, this is adding more
-complexity to do in the kernel what can be done easily in user space.
+On Wed, Dec 08, 2021 at 08:51:47PM -0500, Nayna wrote:
+> 
+> On 11/25/21 13:02, Michal Suchanek wrote:
+> > Copy the code from s390x
+> > 
+> > Signed-off-by: Michal Suchanek<msuchanek@suse.de>
+> > ---
+> >   arch/powerpc/Kconfig        | 11 +++++++++++
+> >   arch/powerpc/kexec/elf_64.c | 36 ++++++++++++++++++++++++++++++++++++
+> >   2 files changed, 47 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> > index ac0c515552fd..ecc1227a77f1 100644
+> > --- a/arch/powerpc/Kconfig
+> > +++ b/arch/powerpc/Kconfig
+> > @@ -561,6 +561,17 @@ config KEXEC_FILE
+> >   config ARCH_HAS_KEXEC_PURGATORY
+> >   	def_bool KEXEC_FILE
+> > 
+> > +config KEXEC_SIG
+> > +	bool "Verify kernel signature during kexec_file_load() syscall"
+> > +	depends on KEXEC_FILE && MODULE_SIG_FORMAT
+> 
+> After manually applying the patch, the build is failing with the following
+> error:
+> 
+> build failed with error "arch/powerpc/kexec/elf_64.o: In function
+> `elf64_verify_sig':
+> /root/kernel/linus/linux/arch/powerpc/kexec/elf_64.c:160: undefined
+> reference to `verify_appended_signature'"
 
-This is typically what should be implemented in a user space shared library.
+This patch does not add call to verify_appended_signature.
+
+Maybe you applied the following patch as well?
+
+Thanks
+
+Michal
