@@ -1,78 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C3D46E43B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 09:31:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE4346E4A8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 09:54:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J8nLr4hZQz3cRH
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 19:31:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J8nss3TPvz3c7R
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 19:54:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qO/uzayy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IfM7sNXC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
- helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=qO/uzayy; dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
- [IPv6:2607:f8b0:4864:20::102c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=IfM7sNXC; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J8nL95d03z303F
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 19:30:56 +1100 (AEDT)
-Received: by mail-pj1-x102c.google.com with SMTP id gt5so3901606pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Dec 2021 00:30:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=hsX2vSMnrxLONlWvtWncdN8J9hcalbFSZZUOqwHblPg=;
- b=qO/uzayy+EA8UhE4ho59EbAme9+iRj7k482cZ1Le5jX7CWs5pSQ7ypaHY59gWgsRbo
- Wd5ghmMjRCHdSkIgmkWNeRECh2ws+4s7KEl8rMryEqy+rjjb8nOM6+OFuMlJCZdaMRq/
- iWxjWBjwlnNUjxOvDFPmfcGlnilB3r73ph9U8MaZk4woRJ3uEPKprU7sow7cqPgrRw2H
- TGr57HYQS9Qta5g0LWnvenrEWCsr7hJcpVSScM42o8fEtaAL+bW+I/5OzmQG2QAQXx7G
- g4rBqJivM1MZ06j4QLIHCeNuPi86II2AAAlDmjjO2DNskOwSnmz8sslOf0wywRm+rfsY
- khAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=hsX2vSMnrxLONlWvtWncdN8J9hcalbFSZZUOqwHblPg=;
- b=Xy5bJPuGTobKANXceQYVGvGutb+EdwZ6x27QN1PBaeKLnMyVJjaEjvP7lIQsHt+GVF
- mVgSlH4Y1wGG5KB1/2K6o5ZuMx0SQUgJeAQzG4XPhS3RarJdM4vUpw8Tc4qyLpdbu9Yt
- aMzrogqlYh4h0MIf/N96xCUCOvgHjEsD4Dyi9HeDapRjo8YaaZEQfUTTMnf9nXYpjYjZ
- /Ex15p3sZ/B4H7QjCwjPYueuq5y3qlPtM243XN/xGUQtwbpjAPPirB1g9DVx5eTC4FPE
- cUWIuFhLoOR55DFn+dJUFSIL8kWC/hTaKm59fQT/3fzCDvhKpDk/7BGkGhfzd+MFJLqp
- 21YA==
-X-Gm-Message-State: AOAM532wbhlfe2cuHqDc/PVwaw28wpkdQR3RuFfq9hx+MW45lZzO8amn
- iAeNleQL27OM6Q7wuZhRGs42WPZm1IA=
-X-Google-Smtp-Source: ABdhPJyo1F4XRRLPw6tGMsz/meaX3GLeaeQgJtsI9sCs0nMTo/jgFyPUeGd12wl28hn88NOvX3/b/A==
-X-Received: by 2002:a17:90b:1c0b:: with SMTP id
- oc11mr13889481pjb.237.1639038654791; 
- Thu, 09 Dec 2021 00:30:54 -0800 (PST)
-Received: from localhost (203-219-139-206.static.tpgi.com.au.
- [203.219.139.206])
- by smtp.gmail.com with ESMTPSA id l9sm6544641pfu.55.2021.12.09.00.30.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 Dec 2021 00:30:54 -0800 (PST)
-Date: Thu, 09 Dec 2021 18:30:48 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v6 17/18] powerpc/64s: Move hash MMU support code under
- CONFIG_PPC_64S_HASH_MMU
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-References: <20211201144153.2456614-1-npiggin@gmail.com>
- <20211201144153.2456614-18-npiggin@gmail.com>
- <87czm8o9i1.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87czm8o9i1.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J8ns25Xgdz2yNw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 19:54:14 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B98Sn17002214; 
+ Thu, 9 Dec 2021 08:54:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=VmKUvcSOlDKYgtvHEH1mC9xCaRoQCxwASXycEo/RWbo=;
+ b=IfM7sNXCZZttwY5C6rKINPJrksVL0qhAq7VKP/v5aZ5QN80fN96v+CrKXLe/Vd2PW/Uk
+ 2Pg/oIbMOiRcj7U2C0o+xy7lrm8oaiUCEWxJRoZ6OLYfYvbmq4JiWnrr1CvpuUzlmTNz
+ T61ptsG1Zpm6a8D2MPdwUEDzPcLVql37Gh6///Y4ZAnRVgySi+FWQ/Cd205gq1iMjOp8
+ +Blbxq/pWjkmPvkG9gVQzikIxlZmYCwvCgkLnNNL0lyqhw5onmNS9F4nvJ5sRyeSFXTv
+ PzyTo+/g/aznAcWUvKmHXIFWNlYUSS6Du1RBdLqKEp4m/+wG9J20CxKiAnpcTh5AjPBE BA== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cueax0f1c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Dec 2021 08:54:11 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B98qWMT016144;
+ Thu, 9 Dec 2021 08:54:09 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma01fra.de.ibm.com with ESMTP id 3cqyy9w666-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 09 Dec 2021 08:54:08 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 1B98kK8I18350578
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 9 Dec 2021 08:46:20 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8B16DAE05D;
+ Thu,  9 Dec 2021 08:54:05 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 61A37AE058;
+ Thu,  9 Dec 2021 08:54:05 +0000 (GMT)
+Received: from [9.145.152.236] (unknown [9.145.152.236])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  9 Dec 2021 08:54:05 +0000 (GMT)
+Message-ID: <b6edbf96-4349-c39b-69ee-477b4fdef511@linux.ibm.com>
+Date: Thu, 9 Dec 2021 09:54:05 +0100
 MIME-Version: 1.0
-Message-Id: <1639038631.s3sqpbsr39.astroid@bobo.none>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.2
+Subject: Re: [PATCH v3] powerpc/pseries: read the lpar name from the firmware
+Content-Language: en-US
+To: Nathan Lynch <nathanl@linux.ibm.com>
+References: <20211203154321.13168-1-ldufour@linux.ibm.com>
+ <87bl1so588.fsf@linux.ibm.com>
+ <bbaa0d78-a09f-3ce3-25a9-67434039b741@linux.ibm.com>
+ <878rwwny1l.fsf@linux.ibm.com>
+ <21eb4749-42b1-da78-8833-00d360fa36e5@linux.ibm.com>
+ <874k7jnmva.fsf@linux.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <874k7jnmva.fsf@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: nvGaBsQb1vQFqX4oMFyP5Gyw7O2-UVSu
+X-Proofpoint-GUID: nvGaBsQb1vQFqX4oMFyP5Gyw7O2-UVSu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-09_03,2021-12-08_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ mlxlogscore=999 mlxscore=0 malwarescore=0 spamscore=0 priorityscore=1501
+ adultscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0 impostorscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112090045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,194 +107,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of December 7, 2021 11:00 pm:
-> Nicholas Piggin <npiggin@gmail.com> writes:
->>  34 files changed, 173 insertions(+), 52 deletions(-)
->=20
->=20
-> I was able to clean up some of the ifdefs a little with the changes
-> below. I'll run these through some test builds and then squash them in.
+On 08/12/2021, 16:21:29, Nathan Lynch wrote:
+> Laurent Dufour <ldufour@linux.ibm.com> writes:
+>> On 07/12/2021, 18:07:50, Nathan Lynch wrote:
+>>> Laurent Dufour <ldufour@linux.ibm.com> writes:
+>>>> On 07/12/2021, 15:32:39, Nathan Lynch wrote:
+>>>>> Is there a reasonable fallback for VMs where this parameter doesn't
+>>>>> exist? PowerVM partitions should always have it, but what do we want the
+>>>>> behavior to be on other hypervisors?
+>>>>
+>>>> In that case, there is no value displayed in the /proc/powerpc/lparcfg and
+>>>> the lparstat -i command will fall back to the device tree value. I can't
+>>>> see any valid reason to report the value defined in the device tree
+>>>> here.
+>>>
+>>> Here's a valid reason :-)
+>>>
+>>> lparstat isn't the only possible consumer of the interface, and the
+>>> 'ibm,partition-name' property and the dynamic system parameter clearly
+>>> serve a common purpose. 'ibm,partition-name' is provided by qemu.
+>>
+>> If the hypervisor is not providing this value, this is not the goal of this
+>> interface to fetch it from the device tree.
+>>
+>> Any consumer should be able to fall back on the device tree value, and
+>> there is no added value to do such a trick in the kernel when it can be
+>> done in the user space.
+> 
+> There is value in imposing a level of abstraction so that the semantics
+> are:
+> 
+> * Report the name assigned to the guest by the hosting environment, if
+>   available
+> 
+> as opposed to
+> 
+> * Return the string returned by a RTAS call to ibm,get-system-parameter
+>   with token 55, if implemented
+> 
+> The benefit is that consumers of lparcfg do not have to be coded with
+> the knowledge that "if a partition_name= line is absent, the
+> ibm,get-system-parameter RTAS call must have failed, so now I should
+> read /sys/firmware/devicetree/base/ibm,partition_name." That's the sort
+> of esoterica that is appropriate for the kernel to encapsulate.
+> 
+> And I'd say the effort involved (falling back to a root node property
+> lookup) is proportional to the benefit.
+> 
 
-Looks good to me.
+I don't agree.
+From the kernel point of view, I can't see any benefit, this is adding more
+complexity to do in the kernel what can be done easily in user space.
 
-Thanks,
-Nick
-
->=20
-> cheers
->=20
->=20
-> diff --git a/arch/powerpc/include/asm/book3s/64/mmu-hash.h b/arch/powerpc=
-/include/asm/book3s/64/mmu-hash.h
-> index 3004f3323144..21f780942911 100644
-> --- a/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-> +++ b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-> @@ -523,8 +523,14 @@ void slb_save_contents(struct slb_entry *slb_ptr);
->  void slb_dump_contents(struct slb_entry *slb_ptr);
-> =20
->  extern void slb_vmalloc_update(void);
-> -extern void slb_set_size(u16 size);
->  void preload_new_slb_context(unsigned long start, unsigned long sp);
-> +
-> +#ifdef CONFIG_PPC_64S_HASH_MMU
-> +void slb_set_size(u16 size);
-> +#else
-> +static inline void slb_set_size(u16 size) { }
-> +#endif
-> +
->  #endif /* __ASSEMBLY__ */
-> =20
->  /*
-> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> index 2197404cdcc4..75678ff04dd7 100644
-> --- a/arch/powerpc/kernel/prom.c
-> +++ b/arch/powerpc/kernel/prom.c
-> @@ -231,10 +231,9 @@ static void __init check_cpu_pa_features(unsigned lo=
-ng node)
->  		      ibm_pa_features, ARRAY_SIZE(ibm_pa_features));
->  }
-> =20
-> -#ifdef CONFIG_PPC_BOOK3S_64
-> +#ifdef CONFIG_PPC_64S_HASH_MMU
->  static void __init init_mmu_slb_size(unsigned long node)
->  {
-> -#ifdef CONFIG_PPC_64S_HASH_MMU
->  	const __be32 *slb_size_ptr;
-> =20
->  	slb_size_ptr =3D of_get_flat_dt_prop(node, "slb-size", NULL) ? :
-> @@ -242,7 +241,6 @@ static void __init init_mmu_slb_size(unsigned long no=
-de)
-> =20
->  	if (slb_size_ptr)
->  		mmu_slb_size =3D be32_to_cpup(slb_size_ptr);
-> -#endif
->  }
->  #else
->  #define init_mmu_slb_size(node) do { } while(0)
-> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_6=
-4.c
-> index 22647bb82198..703a2e6ab08d 100644
-> --- a/arch/powerpc/kernel/setup_64.c
-> +++ b/arch/powerpc/kernel/setup_64.c
-> @@ -886,9 +886,7 @@ void __init setup_per_cpu_areas(void)
->  		atom_size =3D SZ_1M;
->  	} else if (radix_enabled()) {
->  		atom_size =3D PAGE_SIZE;
-> -	} else {
-> -#ifdef CONFIG_PPC_64S_HASH_MMU
-> -
-> +	} else if (IS_ENABLED(CONFIG_PPC_64S_HASH_MMU)) {
->  		/*
->  		 * Linear mapping is one of 4K, 1M and 16M.  For 4K, no need
->  		 * to group units.  For larger mappings, use 1M atom which
-> @@ -898,9 +896,6 @@ void __init setup_per_cpu_areas(void)
->  			atom_size =3D PAGE_SIZE;
->  		else
->  			atom_size =3D SZ_1M;
-> -#else
-> -		BUILD_BUG(); // radix_enabled() should be constant true
-> -#endif
->  	}
-> =20
->  	if (pcpu_chosen_fc !=3D PCPU_FC_PAGE) {
-> diff --git a/arch/powerpc/kexec/ranges.c b/arch/powerpc/kexec/ranges.c
-> index 92d831621fa0..563e9989a5bf 100644
-> --- a/arch/powerpc/kexec/ranges.c
-> +++ b/arch/powerpc/kexec/ranges.c
-> @@ -296,7 +296,7 @@ int add_initrd_mem_range(struct crash_mem **mem_range=
-s)
->  	return ret;
->  }
-> =20
-> -#ifdef CONFIG_PPC_BOOK3S_64
-> +#ifdef CONFIG_PPC_64S_HASH_MMU
->  /**
->   * add_htab_mem_range - Adds htab range to the given memory ranges list,
->   *                      if it exists
-> @@ -306,14 +306,10 @@ int add_initrd_mem_range(struct crash_mem **mem_ran=
-ges)
->   */
->  int add_htab_mem_range(struct crash_mem **mem_ranges)
->  {
-> -#ifdef CONFIG_PPC_64S_HASH_MMU
->  	if (!htab_address)
->  		return 0;
-> =20
->  	return add_mem_range(mem_ranges, __pa(htab_address), htab_size_bytes);
-> -#else
-> -	return 0;
-> -#endif
->  }
->  #endif
-> =20
-> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/b=
-ook3s64/radix_pgtable.c
-> index 5f8cbeca8080..3c4f0ebe5df8 100644
-> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-> @@ -333,10 +333,8 @@ static void __init radix_init_pgtable(void)
->  	phys_addr_t start, end;
->  	u64 i;
-> =20
-> -#ifdef CONFIG_PPC_64S_HASH_MMU
->  	/* We don't support slb for radix */
-> -	mmu_slb_size =3D 0;
-> -#endif
-> +	slb_set_size(0);
-> =20
->  	/*
->  	 * Create the linear mapping
-> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/pla=
-tforms/pseries/mobility.c
-> index 21b706bcea76..85033f392c78 100644
-> --- a/arch/powerpc/platforms/pseries/mobility.c
-> +++ b/arch/powerpc/platforms/pseries/mobility.c
-> @@ -484,9 +484,7 @@ static int do_suspend(void)
->  	ret =3D rtas_ibm_suspend_me(&status);
->  	if (ret !=3D 0) {
->  		pr_err("ibm,suspend-me error: %d\n", status);
-> -#ifdef CONFIG_PPC_64S_HASH_MMU
->  		slb_set_size(saved_slb_size);
-> -#endif
->  	}
-> =20
->  	return ret;
-> diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/plat=
-forms/pseries/pseries.h
-> index 3544778e06d0..b4c63c481f33 100644
-> --- a/arch/powerpc/platforms/pseries/pseries.h
-> +++ b/arch/powerpc/platforms/pseries/pseries.h
-> @@ -113,6 +113,11 @@ int dlpar_workqueue_init(void);
-> =20
->  extern u32 pseries_security_flavor;
->  void pseries_setup_security_mitigations(void);
-> +
-> +#ifdef CONFIG_PPC_64S_HASH_MMU
->  void pseries_lpar_read_hblkrm_characteristics(void);
-> +#else
-> +static inline void pseries_lpar_read_hblkrm_characteristics(void) { }
-> +#endif
-> =20
->  #endif /* _PSERIES_PSERIES_H */
-> diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/pla=
-tforms/pseries/reconfig.c
-> index 80dae18d6621..7f7369fec46b 100644
-> --- a/arch/powerpc/platforms/pseries/reconfig.c
-> +++ b/arch/powerpc/platforms/pseries/reconfig.c
-> @@ -337,10 +337,8 @@ static int do_update_property(char *buf, size_t bufs=
-ize)
->  	if (!newprop)
->  		return -ENOMEM;
-> =20
-> -#ifdef CONFIG_PPC_64S_HASH_MMU
->  	if (!strcmp(name, "slb-size") || !strcmp(name, "ibm,slb-size"))
->  		slb_set_size(*(int *)value);
-> -#endif
-> =20
->  	return of_update_property(np, newprop);
->  }
->=20
+This is typically what should be implemented in a user space shared library.
