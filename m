@@ -2,70 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCCC46E575
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 10:22:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E03E46E59D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 10:31:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J8pTs3G47z30RC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 20:22:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J8pgf1GM9z3cN1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 20:31:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=y5YzNG0r;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UmTHULVE;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IUSEBa77;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=y5YzNG0r; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=UmTHULVE; 
- dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
+ helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=IUSEBa77; dkim-atps=neutral
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J8pT61qnlz2yp2
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 20:22:01 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 3B32B1FD2A;
- Thu,  9 Dec 2021 09:21:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1639041718; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=jo3sn1byKWtiTn1dBpjtwdFa6oBSNCtz/xhF6ucACsY=;
- b=y5YzNG0rNKaO9NxPBAvDaQoQJPkQmG2LM54kVRigZuFPeyYKpKjohXF5zSI+IMLN4805NR
- PkkekB5S0F8a10njKbZFjLTgzTAvz8uTJAnMFj/1fbYEyKhhWdWB66C9iz1Fa9DfR0cDsy
- yshj9dKYiEAUsXxJ+DIpi0rjIY+0z9o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1639041718;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=jo3sn1byKWtiTn1dBpjtwdFa6oBSNCtz/xhF6ucACsY=;
- b=UmTHULVEapvtK0ndlxOwHm+jDi1BGZ/4ZhnM7iTiCPnzFci+pO9RE5k+RBPEDy456LoCP6
- ab98l4y69aWfTuBQ==
-Received: from kunlun.suse.cz (unknown [10.100.128.76])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 46A5DA3B95;
- Thu,  9 Dec 2021 09:21:56 +0000 (UTC)
-Date: Thu, 9 Dec 2021 10:21:55 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Nayna <nayna@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 2/6] powerpc/kexec_file: Add KEXEC_SIG support.
-Message-ID: <20211209092155.GO117207@kunlun.suse.cz>
-References: <cover.1637862358.git.msuchanek@suse.de>
- <8b30a3c6a4e845eb77f276298424811897efdebf.1637862358.git.msuchanek@suse.de>
- <c3c9c6e4-6371-2f5a-ac94-fa4389d5dbe5@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J8pfz6WKlz300S
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 20:30:33 +1100 (AEDT)
+Received: by mail-pj1-x102f.google.com with SMTP id
+ gf14-20020a17090ac7ce00b001a7a2a0b5c3so6424799pjb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Dec 2021 01:30:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=cYazK2GDjnL5dvH7A6uCUptz7owjXANvq3DQasgi2No=;
+ b=IUSEBa77VnK97HgVvKFeXkpeuHjIJ5kkOjt/BQ0poeoqodA1bpJ7cM4sH8jUEWSojW
+ sc9SPB4FOHa8FOuSLrE+95EP2d5YpVOC/M2IICXQ9zU4AfgMdAuVlYAbfmwbQSgHf1na
+ wdAuuI4nSRwY6tV+X2VLdLilminJ/nF65Fa74lfu3bDK6mJozFSQxeArzy+ko/+5Bt3V
+ fu78cu9nnuculQSg3Nfw6hh5aPAQt4/4yvf4v0jddjqng0UajNUrT1K361PE5mNmJzFR
+ m4TZ520PDOjSm99PiXF397CB0WERKhN/xw5mgL2z+RwP8yK4yNW4H7SZdgv1zqD4ahiW
+ 8IQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=cYazK2GDjnL5dvH7A6uCUptz7owjXANvq3DQasgi2No=;
+ b=oOfaLrjaYMbuaidQAJGLfYbfWHenURUrhpEQ1Y7XXk2qU42KRbE/84ay7FZbK8yz2U
+ dWl/RYYKmmxkJObJ1Gwaz0b1t5va75QKrMCSIpb8PTxjF40siLKtFaKoC/s+Cw4y6GoT
+ SxCdWeo7I0+jaWX+imgryg7F/67Bzu+LBWfI+pngymvRWkOqDnxxFincHSQxxnBiXLwa
+ JIsmhFTN75H03MaPNxvwXAFw4P1E8qpHVd12XF73nF81KTVrK+hO32nKtrNdBGrSzIR1
+ HEKgj7P2M/GEXevm/uh3D9EoRXhNDPPrTwxpxBa5OLpG8D4lSlcoTPdsxDL5fYOZ7Ylv
+ hnnw==
+X-Gm-Message-State: AOAM533PaAc+Nbam9XbeBJmR5LUpUA27Ci45BGv2xG5tP63Y0/OOz2nP
+ FTceeGp1qmWvUv7hV4rVLS4=
+X-Google-Smtp-Source: ABdhPJw9DtTDMWHAUDU83T94CNcId+HJmy0Pz817FosxT0Pv3hGqC6CcUldX/WiQVzwwAGXmydQyvQ==
+X-Received: by 2002:a17:90b:1812:: with SMTP id
+ lw18mr13876801pjb.96.1639042231204; 
+ Thu, 09 Dec 2021 01:30:31 -0800 (PST)
+Received: from localhost (203-219-139-206.static.tpgi.com.au.
+ [203.219.139.206])
+ by smtp.gmail.com with ESMTPSA id j8sm6887865pfc.8.2021.12.09.01.30.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Dec 2021 01:30:31 -0800 (PST)
+Date: Thu, 09 Dec 2021 19:30:25 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v6 15/18] powerpc/64s: Always define arch unmapped area
+ calls
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20211201144153.2456614-1-npiggin@gmail.com>
+ <20211201144153.2456614-16-npiggin@gmail.com>
+ <bbe64ca3-5439-4b79-6bda-a3464febdc53@csgroup.eu>
+ <1639038294.oxbnieugst.astroid@bobo.none>
+In-Reply-To: <1639038294.oxbnieugst.astroid@bobo.none>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c3c9c6e4-6371-2f5a-ac94-fa4389d5dbe5@linux.vnet.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-Id: <1639042116.ygvz3j9w9k.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,66 +87,171 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
- keyrings@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>, Baoquan He <bhe@redhat.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- James Morris <jmorris@namei.org>,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- "Serge E. Hallyn" <serge@hallyn.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Rob Herring <robh@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- linux-crypto@vger.kernel.org, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
- Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
- linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+Excerpts from Nicholas Piggin's message of December 9, 2021 6:25 pm:
+> Excerpts from Christophe Leroy's message of December 8, 2021 7:38 pm:
+>>=20
+>>=20
+>> Le 01/12/2021 =C3=A0 15:41, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>> To avoid any functional changes to radix paths when building with hash
+>>> MMU support disabled (and CONFIG_PPC_MM_SLICES=3Dn), always define the
+>>> arch get_unmapped_area calls on 64s platforms.
+>>>=20
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>> ---
+>>>   arch/powerpc/include/asm/book3s/64/hash.h |  4 ---
+>>>   arch/powerpc/include/asm/book3s/64/mmu.h  |  6 ++++
+>>>   arch/powerpc/mm/hugetlbpage.c             | 16 ++++++---
+>>>   arch/powerpc/mm/mmap.c                    | 40 +++++++++++++++++++---=
+-
+>>>   arch/powerpc/mm/slice.c                   | 20 ------------
+>>>   5 files changed, 51 insertions(+), 35 deletions(-)
+>>>=20
+>>> diff --git a/arch/powerpc/include/asm/book3s/64/hash.h b/arch/powerpc/i=
+nclude/asm/book3s/64/hash.h
+>>> index 674fe0e890dc..a7a0572f3846 100644
+>>> --- a/arch/powerpc/include/asm/book3s/64/hash.h
+>>> +++ b/arch/powerpc/include/asm/book3s/64/hash.h
+>>> @@ -99,10 +99,6 @@
+>>>    * Defines the address of the vmemap area, in its own region on
+>>>    * hash table CPUs.
+>>>    */
+>>> -#ifdef CONFIG_PPC_MM_SLICES
+>>> -#define HAVE_ARCH_UNMAPPED_AREA
+>>> -#define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
+>>> -#endif /* CONFIG_PPC_MM_SLICES */
+>>>  =20
+>>>   /* PTEIDX nibble */
+>>>   #define _PTEIDX_SECONDARY	0x8
+>>> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/in=
+clude/asm/book3s/64/mmu.h
+>>> index c02f42d1031e..015d7d972d16 100644
+>>> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
+>>> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+>>> @@ -4,6 +4,12 @@
+>>>  =20
+>>>   #include <asm/page.h>
+>>>  =20
+>>> +#ifdef CONFIG_HUGETLB_PAGE
+>>> +#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+>>> +#endif
+>>> +#define HAVE_ARCH_UNMAPPED_AREA
+>>> +#define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
+>>> +
+>>>   #ifndef __ASSEMBLY__
+>>>   /*
+>>>    * Page size definition
+>>> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpag=
+e.c
+>>> index 82d8b368ca6d..ddead41e2194 100644
+>>> --- a/arch/powerpc/mm/hugetlbpage.c
+>>> +++ b/arch/powerpc/mm/hugetlbpage.c
+>>> @@ -542,20 +542,26 @@ struct page *follow_huge_pd(struct vm_area_struct=
+ *vma,
+>>>   	return page;
+>>>   }
+>>>  =20
+>>> -#ifdef CONFIG_PPC_MM_SLICES
+>>> +#ifdef HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+>>> +static inline int file_to_psize(struct file *file)
+>>> +{
+>>> +	struct hstate *hstate =3D hstate_file(file);
+>>> +	return shift_to_mmu_psize(huge_page_shift(hstate));
+>>> +}
+>>> +
+>>>   unsigned long hugetlb_get_unmapped_area(struct file *file, unsigned l=
+ong addr,
+>>>   					unsigned long len, unsigned long pgoff,
+>>>   					unsigned long flags)
+>>>   {
+>>> -	struct hstate *hstate =3D hstate_file(file);
+>>> -	int mmu_psize =3D shift_to_mmu_psize(huge_page_shift(hstate));
+>>> -
+>>>   #ifdef CONFIG_PPC_RADIX_MMU
+>>>   	if (radix_enabled())
+>>>   		return radix__hugetlb_get_unmapped_area(file, addr, len,
+>>>   						       pgoff, flags);
+>>>   #endif
+>>> -	return slice_get_unmapped_area(addr, len, flags, mmu_psize, 1);
+>>> +#ifdef CONFIG_PPC_MM_SLICES
+>>> +	return slice_get_unmapped_area(addr, len, flags, file_to_psize(file),=
+ 1);
+>>> +#endif
+>>> +	BUG();
+>>=20
+>> We shouldn't had new instances of BUG().
+>>=20
+>> BUILD_BUG() should do the trick here.
+>>=20
+>>>   }
+>>>   #endif
+>>>  =20
+>>> diff --git a/arch/powerpc/mm/mmap.c b/arch/powerpc/mm/mmap.c
+>>> index ae683fdc716c..c475cf810aa8 100644
+>>> --- a/arch/powerpc/mm/mmap.c
+>>> +++ b/arch/powerpc/mm/mmap.c
+>>> @@ -80,6 +80,7 @@ static inline unsigned long mmap_base(unsigned long r=
+nd,
+>>>   	return PAGE_ALIGN(DEFAULT_MAP_WINDOW - gap - rnd);
+>>>   }
+>>>  =20
+>>> +#ifdef HAVE_ARCH_UNMAPPED_AREA
+>>>   #ifdef CONFIG_PPC_RADIX_MMU
+>>>   /*
+>>>    * Same function as generic code used only for radix, because we don'=
+t need to overload
+>>> @@ -181,11 +182,42 @@ radix__arch_get_unmapped_area_topdown(struct file=
+ *filp,
+>>>   	 */
+>>>   	return radix__arch_get_unmapped_area(filp, addr0, len, pgoff, flags)=
+;
+>>>   }
+>>> +#endif
+>>> +
+>>> +unsigned long arch_get_unmapped_area(struct file *filp,
+>>> +				     unsigned long addr,
+>>> +				     unsigned long len,
+>>> +				     unsigned long pgoff,
+>>> +				     unsigned long flags)
+>>> +{
+>>> +#ifdef CONFIG_PPC_MM_SLICES
+>>> +	return slice_get_unmapped_area(addr, len, flags,
+>>> +				       mm_ctx_user_psize(&current->mm->context), 0);
+>>> +#else
+>>> +	BUG();
+>>=20
+>> Same.
+>>=20
+>> And the #else isn't needed
+>>=20
+>>> +#endif
+>>> +}
+>>> +
+>>> +unsigned long arch_get_unmapped_area_topdown(struct file *filp,
+>>> +					     const unsigned long addr0,
+>>> +					     const unsigned long len,
+>>> +					     const unsigned long pgoff,
+>>> +					     const unsigned long flags)
+>>> +{
+>>> +#ifdef CONFIG_PPC_MM_SLICES
+>>> +	return slice_get_unmapped_area(addr0, len, flags,
+>>> +				       mm_ctx_user_psize(&current->mm->context), 1);
+>>> +#else
+>>> +	BUG();
+>>=20
+>> Same
+>>=20
+>> And the #else isn't needed
+>=20
+> Fair enough. I'll see if mpe can squash in an incremental patch.
 
-On Wed, Dec 08, 2021 at 08:51:47PM -0500, Nayna wrote:
-> 
-> On 11/25/21 13:02, Michal Suchanek wrote:
-> > Copy the code from s390x
-> > 
-> > Signed-off-by: Michal Suchanek<msuchanek@suse.de>
-> > ---
-> >   arch/powerpc/Kconfig        | 11 +++++++++++
-> >   arch/powerpc/kexec/elf_64.c | 36 ++++++++++++++++++++++++++++++++++++
-> >   2 files changed, 47 insertions(+)
-> > 
-> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> > index ac0c515552fd..ecc1227a77f1 100644
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -561,6 +561,17 @@ config KEXEC_FILE
-> >   config ARCH_HAS_KEXEC_PURGATORY
-> >   	def_bool KEXEC_FILE
-> > 
-> > +config KEXEC_SIG
-> > +	bool "Verify kernel signature during kexec_file_load() syscall"
-> > +	depends on KEXEC_FILE && MODULE_SIG_FORMAT
-> 
-> After manually applying the patch, the build is failing with the following
-> error:
-> 
-> build failed with error "arch/powerpc/kexec/elf_64.o: In function
-> `elf64_verify_sig':
-> /root/kernel/linus/linux/arch/powerpc/kexec/elf_64.c:160: undefined
-> reference to `verify_appended_signature'"
+Ah no we can't do that here because arch_get_unmapped_area* is not static
+so BUILD_BUG() triggers.
 
-This patch does not add call to verify_appended_signature.
+I think we can just look at how it could be improved in future patches.
 
-Maybe you applied the following patch as well?
-
-Thanks
-
-Michal
+Thanks,
+Nick
