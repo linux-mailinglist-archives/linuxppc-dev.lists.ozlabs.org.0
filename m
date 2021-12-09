@@ -2,105 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C6646F645
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 22:54:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D573046F6F7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 23:35:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J979c09dTz3brd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 08:54:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J984Z4nP6z3cPv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 09:35:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CQvQZs82;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fXFqrXO6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::535;
+ helo=mail-ed1-x535.google.com; envelope-from=paolo.bonzini@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=CQvQZs82; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=fXFqrXO6; dkim-atps=neutral
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com
+ [IPv6:2a00:1450:4864:20::535])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J978r12bSz2yPD
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 08:54:03 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1B9KZHjb027392; 
- Thu, 9 Dec 2021 21:53:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=WMWPuPqMKkG7POp8eawwV4RyD7I/ba69OipN2SLIhY8=;
- b=CQvQZs82boi9r/eoannQphMh+dI0uZhcqNDtBHo5FK+3ZSVy6ZL3noAsV3RzaXUdAGzl
- maworrN7wm4zu+ueXaE6DbbtmSyABIcqp3AXXadrzv59wybqvXuAiuLBhi5sYRo/ohAJ
- KCp3bTvihHt2x2Ds7SHmcr3I20WigbNag2S85aN29mmldXcx/mukpQvKbKjsbvmAmccA
- oPqB5T4kaw7VFy9Ge8WASuFOY7fm/qdgclaufYBEC1CY8jzy1HiwAWIcqr+CpV+q3gFW
- uu4KBoZ7QjsoTPorlYuWd4XViUrgqUQbBg/bFzKhQdsD5AhNDK374+iog2ZV9WYkTyCq SA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cup7pwehy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Dec 2021 21:53:39 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1B9LrdNB019382;
- Thu, 9 Dec 2021 21:53:39 GMT
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3cup7pwehr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Dec 2021 21:53:39 +0000
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1B9LcEZB011635;
- Thu, 9 Dec 2021 21:53:37 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma02wdc.us.ibm.com with ESMTP id 3cqyyc2mqn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 09 Dec 2021 21:53:37 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1B9LrZ3927132204
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 Dec 2021 21:53:35 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 93B856E056;
- Thu,  9 Dec 2021 21:53:35 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 97FCF6E052;
- Thu,  9 Dec 2021 21:53:33 +0000 (GMT)
-Received: from [9.211.103.28] (unknown [9.211.103.28])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  9 Dec 2021 21:53:33 +0000 (GMT)
-Message-ID: <790c68ce-070d-c391-0c3a-4637c616fa5e@linux.vnet.ibm.com>
-Date: Thu, 9 Dec 2021 16:53:33 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J983v29bJz2yfd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 09:34:49 +1100 (AEDT)
+Received: by mail-ed1-x535.google.com with SMTP id e3so24685854edu.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Dec 2021 14:34:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=sender:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=e0xWu4FRBdpcPopR+tYuIVQgtChl7uURnH22cFlaA5A=;
+ b=fXFqrXO6Mqxbn1VMEeZUPYqwDn0Axi1WQoRKyIm0Wko3qi8To1yhBnzyQBnuuJpvU9
+ tR9dyu+xSqUrDMvvahFuENMdiHPMXRJ4o4DKWl7ljy3Mz+Nrt/S+gISbeuWgkR+cEOle
+ 5HfXVZsTYOn1456X/asYJBDh/+KY3upkcOeEjnBkupzBDml+tuhSKMfrF3aI5eR2H+9m
+ AxeYoRDcvdBsZd0n9yd/Xbwhp7Eyc1p3mbosWQ4yNA3IyW8kf/9iawYPt5tkAmOak1+/
+ fGSMnJ7WfE0c7M44ExGyn8D0Cv6BJ1MqLcK9O6mLpBWThWXCeEb72RJR4HaLNOYG3YT4
+ QWww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+ :subject:content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=e0xWu4FRBdpcPopR+tYuIVQgtChl7uURnH22cFlaA5A=;
+ b=l0mDe80VkvjpKgxNVzNEJkiF0aOHAOJ1ixe7SyczCNQtt1MDvHllGwfKB8pNYDDoi7
+ IMYyqQIf/LKMYwRXPRaPLfwwh9bvAG3YZLXVS3SutNNMVqICC+NyPtazXhcRmg89jZ43
+ 7upLfEI6PT+sbFG9d7Geo54vbxxPcB/FMwt6xssZyogA7wzumoEREQZg43ZDqwx3skCm
+ w1Ok+f2rno0JrXTZ/h5pg32Vlg7M6xr6/nAk2CAFoflxgAOrp6rHVg/xTTz4s9OVcmbq
+ XAIrHry6b464psXOaimQ8OMPy2EFtFH3cZY9+Uw76wML6c+6D6TsRjTRPccJANiFP+55
+ ohyA==
+X-Gm-Message-State: AOAM530p2HV/EcpHW7TmF230gIIE/92Dsyc+ehIc+eZBLwV3X+mpdmxN
+ UbcAXnF6qLDVC1SuaDkCvDE=
+X-Google-Smtp-Source: ABdhPJyxMeAJrbZymRVBb0iPORoJGZau5fLIvkWo7GHCG5UbZ3oj1yMvqn13BjVbdYGJRifVkBRRAw==
+X-Received: by 2002:a17:906:b2c7:: with SMTP id
+ cf7mr19483296ejb.303.1639089285134; 
+ Thu, 09 Dec 2021 14:34:45 -0800 (PST)
+Received: from ?IPV6:2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e?
+ ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
+ by smtp.googlemail.com with ESMTPSA id go10sm459347ejc.115.2021.12.09.14.34.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 09 Dec 2021 14:34:44 -0800 (PST)
+Message-ID: <6cb2cd57-16f3-d0ec-adf6-cb8fdcbae035@redhat.com>
+Date: Thu, 9 Dec 2021 23:34:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.2.0
-Subject: Re: [PATCH v2 2/6] powerpc/kexec_file: Add KEXEC_SIG support.
+Subject: Re: [PATCH v5 08/12] KVM: Reinstate gfn_to_pfn_cache with
+ invalidation support
 Content-Language: en-US
-To: =?UTF-8?Q?Michal_Such=c3=a1nek?= <msuchanek@suse.de>
-References: <cover.1637862358.git.msuchanek@suse.de>
- <8b30a3c6a4e845eb77f276298424811897efdebf.1637862358.git.msuchanek@suse.de>
- <c3c9c6e4-6371-2f5a-ac94-fa4389d5dbe5@linux.vnet.ibm.com>
- <20211209092155.GO117207@kunlun.suse.cz>
-From: Nayna <nayna@linux.vnet.ibm.com>
-In-Reply-To: <20211209092155.GO117207@kunlun.suse.cz>
+To: David Woodhouse <dwmw2@infradead.org>, kvm <kvm@vger.kernel.org>
+References: <20211121125451.9489-1-dwmw2@infradead.org>
+ <20211121125451.9489-9-dwmw2@infradead.org>
+ <b1bacc6f-be56-4108-6e52-4315a021184b@redhat.com>
+ <b614d9ae0fe7910cfa72eee0b4077776f8012e5f.camel@infradead.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <b614d9ae0fe7910cfa72eee0b4077776f8012e5f.camel@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: x2XUc9cxjnO1DJ8AfathjBta2FnXVAlc
-X-Proofpoint-ORIG-GUID: HZolCF3M1gk1kZAg8NUwVeVyMGL04EK2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2021-12-09_09,2021-12-08_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- lowpriorityscore=0 mlxlogscore=999 malwarescore=0 priorityscore=1501
- clxscore=1015 suspectscore=0 adultscore=0 bulkscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2112090112
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,68 +90,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
- keyrings@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>, Baoquan He <bhe@redhat.com>,
+Cc: Anup Patel <anup.patel@wdc.com>,
+ "wanpengli @ tencent . com" <wanpengli@tencent.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Joao Martins <joao.m.martins@oracle.com>, Will Deacon <will@kernel.org>,
+ kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
+ "joro @ 8bytes . org" <joro@8bytes.org>, Huacai Chen <chenhuacai@kernel.org>,
  Christian Borntraeger <borntraeger@de.ibm.com>,
- James Morris <jmorris@namei.org>,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- "Serge E. Hallyn" <serge@hallyn.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Rob Herring <robh@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- linux-crypto@vger.kernel.org, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
- Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
- linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, karahmed@amazon.com,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ butt3rflyh4ck <butterflyhuangxx@gmail.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ "jmattson @ google . com" <jmattson@google.com>,
+ "seanjc @ google . com" <seanjc@google.com>,
+ "mtosatti @ redhat . com" <mtosatti@redhat.com>, linux-mips@vger.kernel.org,
+ James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org,
+ Marc Zyngier <maz@kernel.org>, "vkuznets @ redhat . com" <vkuznets@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 12/9/21 21:40, David Woodhouse wrote:
+> 
+> NP, very useful fixes. Thanks. Incremental patch looks like this. It
+> passes the xen_shinfo_test self-test; will test it with real Xen guests
+> tomorrow and repost based on your kvm/next tree once it shows up.
 
-On 12/9/21 04:21, Michal Suchánek wrote:
-> Hello,
-Hi,
-> On Wed, Dec 08, 2021 at 08:51:47PM -0500, Nayna wrote:
->> On 11/25/21 13:02, Michal Suchanek wrote:
->>> Copy the code from s390x
->>>
->>> Signed-off-by: Michal Suchanek<msuchanek@suse.de>
->>> ---
->>>    arch/powerpc/Kconfig        | 11 +++++++++++
->>>    arch/powerpc/kexec/elf_64.c | 36 ++++++++++++++++++++++++++++++++++++
->>>    2 files changed, 47 insertions(+)
->>>
->>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->>> index ac0c515552fd..ecc1227a77f1 100644
->>> --- a/arch/powerpc/Kconfig
->>> +++ b/arch/powerpc/Kconfig
->>> @@ -561,6 +561,17 @@ config KEXEC_FILE
->>>    config ARCH_HAS_KEXEC_PURGATORY
->>>    	def_bool KEXEC_FILE
->>>
->>> +config KEXEC_SIG
->>> +	bool "Verify kernel signature during kexec_file_load() syscall"
->>> +	depends on KEXEC_FILE && MODULE_SIG_FORMAT
->> After manually applying the patch, the build is failing with the following
->> error:
->>
->> build failed with error "arch/powerpc/kexec/elf_64.o: In function
->> `elf64_verify_sig':
->> /root/kernel/linus/linux/arch/powerpc/kexec/elf_64.c:160: undefined
->> reference to `verify_appended_signature'"
-> This patch does not add call to verify_appended_signature.
->
-> Maybe you applied the following patch as well?
+Compared to the review it's missing this hunk:
 
-Yes, I tried build after applying all the patches.
 
-Thanks & Regards,
+@@ -265,7 +265,7 @@ void kvm_gfn_to_pfn_cache_unmap(struct kvm *kvm, struct gfn_to_pfn_cache *gpc)
+   
+   	gpc->valid = false;
+   
+-	old_khva = gpc->khva;
++	old_khva = (void *)((unsigned long)gpc->khva & ~PAGE_MASK);
+   	old_dirty = gpc->dirty;
+   	old_gpa = gpc->gpa;
+   	old_pfn = gpc->pfn;
 
-     - Nayna
+Otherwise looks good, thanks!
 
+Paolo
