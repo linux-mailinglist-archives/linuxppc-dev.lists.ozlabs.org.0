@@ -1,79 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF8346F2AF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 19:01:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E443A46F2C5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 19:07:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J92005dXYz3bXV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 05:01:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J927k6Bzbz3cNl
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 05:07:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AfxDwo47;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Lhbpmm1U;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52c;
- helo=mail-ed1-x52c.google.com; envelope-from=paolo.bonzini@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::532;
+ helo=mail-ed1-x532.google.com; envelope-from=paolo.bonzini@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=AfxDwo47; dkim-atps=neutral
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com
- [IPv6:2a00:1450:4864:20::52c])
+ header.s=20210112 header.b=Lhbpmm1U; dkim-atps=neutral
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com
+ [IPv6:2a00:1450:4864:20::532])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J91zH4skwz3053
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 05:00:25 +1100 (AEDT)
-Received: by mail-ed1-x52c.google.com with SMTP id x10so4857380edd.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Dec 2021 10:00:25 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J9272438dz304j
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 05:07:08 +1100 (AEDT)
+Received: by mail-ed1-x532.google.com with SMTP id e3so22551559edu.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Dec 2021 10:07:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=sender:message-id:date:mime-version:user-agent:subject
  :content-language:to:cc:references:from:in-reply-to
  :content-transfer-encoding;
- bh=Al9kg2F9KDqFvq3nxTcebEIzKXlYK2ZMwKvTrLWHJ6E=;
- b=AfxDwo47UvGMhAdm6Rw/BtUIa4RRpUznlxWNvCDi2EwKzRCRrPvpJmh+M2nKrIHif6
- RpHyhRpE97GWx32ojsr+vOQSd5ecRefy6O6Vid8OcOd0+D4p0Q2SoCBgR3rrAmmKahlA
- aUl3wft7sP5QEuN7iSZhH5rkRKaVK1peWM2Os+UDkvDQn533w9x1rcBKjnT9Nokfcqta
- Nef0h+w0lhpcQqN0kBurWFGd8S50Mwadf5HiHCGvZWYCzfgJ7NBAmJnNi6ZglYeTn5YH
- YVCRHEqPF2Ka7FDT6tHNM5M/dGc0icYZIyOfod4j1semrTFhGJ0HeqkSr+p8VomRXS/o
- 2VaA==
+ bh=/BR1/2RGDScqGY9eUb2OeC+8FFb2k7htqUCGVYcL9Ck=;
+ b=Lhbpmm1UKqlpxT/ebiO1Bba267s4bE94yh07WOHh4nJeWCnmE8+23Eg5C12Rhgfpsc
+ 0I4D6URfKKEqBAzSviybZHxAOPOACMyExokRlTYNq44nDkWCuzRtqrXLPqBLh0Q1MX+o
+ Jtx1lpBHXhEr3ddLKS6N/SSGxs76Q2vWnWxLnCwJZn1OqNjqHCU0mb7ID9NFK1G/sQ7f
+ QnXai4TvqSPLltPU5wh6tLAcP4ybsTybXo1I146LDMPVWG7M5ZooS0wo6QoJtRF//8Lt
+ 64rO/CTBMU0ZFk+JY57EO2EnzjUHgznePMSl5XKLuc96fG3MU0lOVX14FEeAcqzIaDIb
+ CLtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
  :subject:content-language:to:cc:references:from:in-reply-to
  :content-transfer-encoding;
- bh=Al9kg2F9KDqFvq3nxTcebEIzKXlYK2ZMwKvTrLWHJ6E=;
- b=kgGycH05sQ39CEtBm4cp5d/AylNE7S+Qe3VRxXWBCYqGAKmUVYMO4c6v4xxv3Ztrhi
- 3TvcuwHxnGMX63g77g7p8M/IaN/2SRsE496CMuypm5kPW+TUbmx6qonJCI9AFD/FNB0F
- myZFlTou+RruEFboZsIzkfWIZWi/zB6eFf1JC04PwDA6Lc+WxNJCKva4leSSU6PRCM9Y
- 2PXjqdkf8YmBNSZ9ZdEB96dr8DW53GB4S8Z/2ZDJehb/TQs7O3T7O9pBX6tfwuz7FHkb
- UwchoGgwWDIB7i7LASs5KAoZiC9TBC4aYOxrJhmKZcCcjglhABCcLtvtlzBJWiNgJ8fa
- UwAQ==
-X-Gm-Message-State: AOAM532LOJFomd0UfZJkmg3VjTpznhZL1etsSQzfeHDvRoqLz+4MiMPc
- gTKin8acqwsDD0nvZr1vXvM=
-X-Google-Smtp-Source: ABdhPJxaGNq1VOGmKW6I6GM+NsKqxWNzc1RuAQMRjvuCk3KwBPxNP9Ur2NQtkE54kPDyjrnXzFPGaA==
-X-Received: by 2002:a17:906:7315:: with SMTP id
- di21mr14270348ejc.193.1639072703169; 
- Thu, 09 Dec 2021 09:58:23 -0800 (PST)
+ bh=/BR1/2RGDScqGY9eUb2OeC+8FFb2k7htqUCGVYcL9Ck=;
+ b=KjF2xhlrvcBbw0DnrOBcwK2a1PNu2uIujne0mp8MUxQKw6IMWKwKxh6MqBmCOdUgIj
+ fP+ysFCO58y89tt+YH63FP6su45ioqR6iSQlCaoCGe8c8Wet8i09UgEOPdBz6B+MAtNq
+ Ijn5lVLgbQQzfI7DZq76SFLHr70YiHMCe3DdtAZ2FpH8yJwfU8qQ1OnFKwVTcKSi0eiE
+ ITTpUWiSqEeTdzz56y/7W6Cz5xY2nqhhMZHOkvQmnAEKtuPpgAqQOXpMa7Y1TSo2hsr8
+ d7zg8XLszf2kEgy1Dr4xtIuTGmxnQg5hI5N0l9wI6jeJxDcCn5Ad+o7wjUAYJNSsqppX
+ 9zMQ==
+X-Gm-Message-State: AOAM532ODucSiWO9QBLhZS5s8NRnirYQlWyQ+EGTAd0Lxv6xHUsSTLUR
+ GLQ/UtvaQmhov8sLt01ewKE=
+X-Google-Smtp-Source: ABdhPJyCcY7SoPv6aHO9XYFGu1O783sL+OxwRl4LzsOaKHe6HzGM6Aj5sR6vgOMnSD+1083Jrn4srQ==
+X-Received: by 2002:a05:6402:d05:: with SMTP id
+ eb5mr31407913edb.360.1639073154112; 
+ Thu, 09 Dec 2021 10:05:54 -0800 (PST)
 Received: from ?IPV6:2001:b07:6468:f312:c8dd:75d4:99ab:290a?
  ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
- by smtp.googlemail.com with ESMTPSA id hs20sm259690ejc.26.2021.12.09.09.58.19
+ by smtp.googlemail.com with ESMTPSA id og38sm275399ejc.5.2021.12.09.10.05.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 Dec 2021 09:58:22 -0800 (PST)
-Message-ID: <5549294a-b411-1279-dcd0-3977c19c928e@redhat.com>
-Date: Thu, 9 Dec 2021 18:58:18 +0100
+ Thu, 09 Dec 2021 10:05:52 -0800 (PST)
+Message-ID: <048a1ef6-193a-eb82-0433-70c97e1a03e5@redhat.com>
+Date: Thu, 9 Dec 2021 19:05:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.2.0
-Subject: Re: [PATCH v5 03/12] KVM: s390: Use Makefile.kvm for common files
+Subject: Re: [PATCH v5 06/12] KVM: powerpc: Use Makefile.kvm for common files
 Content-Language: en-US
 To: David Woodhouse <dwmw2@infradead.org>, kvm <kvm@vger.kernel.org>
 References: <20211121125451.9489-1-dwmw2@infradead.org>
- <20211121125451.9489-4-dwmw2@infradead.org>
+ <20211121125451.9489-7-dwmw2@infradead.org>
 From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20211121125451.9489-4-dwmw2@infradead.org>
+In-Reply-To: <20211121125451.9489-7-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -111,13 +111,48 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 11/21/21 13:54, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> It's all fairly baroque but in the end, I don't think there's any reason
+> for $(KVM)/irqchip.o to have been handled differently, as they all end
+> up in $(kvm-y) in the end anyway, regardless of whether they get there
+> via $(common-objs-y) and the CPU-specific object lists.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+> ---
+>   arch/powerpc/kvm/Makefile | 6 +-----
+>   1 file changed, 1 insertion(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/kvm/Makefile b/arch/powerpc/kvm/Makefile
+> index 583c14ef596e..245f59118413 100644
+> --- a/arch/powerpc/kvm/Makefile
+> +++ b/arch/powerpc/kvm/Makefile
+> @@ -4,11 +4,8 @@
+>   #
 >   
-> -kvm-objs := $(common-objs) kvm-s390.o intercept.o interrupt.o priv.o sigp.o
-> +kvm-objs := kvm-s390.o intercept.o interrupt.o priv.o sigp.o
->   kvm-objs += diag.o gaccess.o guestdbg.o vsie.o pv.o
+>   ccflags-y := -Ivirt/kvm -Iarch/powerpc/kvm
+> -KVM := ../../../virt/kvm
+>   
+> -common-objs-y = $(KVM)/kvm_main.o $(KVM)/eventfd.o $(KVM)/binary_stats.o
+> -common-objs-$(CONFIG_KVM_VFIO) += $(KVM)/vfio.o
+> -common-objs-$(CONFIG_KVM_MMIO) += $(KVM)/coalesced_mmio.o
+> +include $(srctree)/virt/kvm/Makefile.kvm
+>   
+>   common-objs-y += powerpc.o emulate_loadstore.o
+>   obj-$(CONFIG_KVM_EXIT_TIMING) += timing.o
+> @@ -125,7 +122,6 @@ kvm-book3s_32-objs := \
+>   kvm-objs-$(CONFIG_KVM_BOOK3S_32) := $(kvm-book3s_32-objs)
+>   
+>   kvm-objs-$(CONFIG_KVM_MPIC) += mpic.o
+> -kvm-objs-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
+>   
+>   kvm-objs := $(kvm-objs-m) $(kvm-objs-y)
 
-"kvm-y +=" here (for both lines) would be nicer, it's consistent with 
-x86 and avoids the question of what happens if you have both kvm-objs 
-and kvm-y.
+Same here,
+
+kvm-y += $(kvm-objs-m) $(kvm-objs-y)
+
+would be slightly preferrable IMO.
 
 Paolo
