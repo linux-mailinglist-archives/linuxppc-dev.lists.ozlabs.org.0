@@ -1,136 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D4346E612
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 11:00:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5087A46E61C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 11:02:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J8qKB0YRGz3cC2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 21:00:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J8qN81Ylzz3c7f
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 21:02:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com header.b=MF2Mc2oN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kFVc38va;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=2a01:111:f400:feab::72c;
- helo=apc01-sg2-obe.outbound.protection.outlook.com;
- envelope-from=wangqing@vivo.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com
- header.b=MF2Mc2oN; dkim-atps=neutral
-Received: from APC01-SG2-obe.outbound.protection.outlook.com
- (mail-sgaapc01on2072c.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:feab::72c])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c;
+ helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=kFVc38va; dkim-atps=neutral
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
+ [IPv6:2607:f8b0:4864:20::42c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J8qJM2JkRz2yK6
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 20:59:20 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nFdChmJPWgpjsNwGA/Q1Idi3Ya7A6q8Kxp6f18Hjb9Rp5kL8ikijwxnHSUSZF2+nurcxaX89EjG5QhCbORPeKNwXthVCkbHTCjB+ADGd586yW1y8lL/SgFimgbXniT6JJsjfrv1zel5Qq2fIDAwHsd67ogxoesWAFVmLgS2D1Xy36wMu6OSaSs5XBW0A6H0N7RJE2oZWBlKX/cnUbmjvGNaDMpWA8Fk8slREDHg/Co0i5yr6iOqQd/OUoW2QhMEzsi00G77olk2DRv3H9QpDb+UllTJyV5I1UoaTwdsR4g7cwbETCxTzJiZ2CJ9bBzXWZZ5SkDaOLUHK/fGzrPF/ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=84z8k/4eQBTYc7CKXhgpO/uLyH5Ouo+04uiMhCo4hrI=;
- b=BzbpKfy1/BkShsBkl9Vcy2tyRxwpBYrCMdxXGIk5U1wGPmbWSbhbknAB6rVkIR6Z1tOcMYLkNKQCaTiRxZ5PMjCOV5HS8/JdcjaJVawuyCO0lgZrj9KnOZCh0cS2LDP2QRw9ZeO2KvF2+jzXS0IXCWJdwikcG3DrR+JE9T2VRlYEyAcwmFJGsUP+KXmm4mjzaLyZZ7nPq7wu2KEGV/Oo/7MbUP4SYDqs0y3hOuCvERL7GcCRsc4a7pk6fjwWigGT6cmKnyuxKjdhghO3hjAJstQshMGFCY6DasrVPhGLf1oJ7kNdYruYeBPlHs6U0XILSaEwVJcsgRTwne4eWykgLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com; 
- s=selector2-vivo0-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=84z8k/4eQBTYc7CKXhgpO/uLyH5Ouo+04uiMhCo4hrI=;
- b=MF2Mc2oN6PPR454IB8VG5oYH0AxvaejkFi8lG+grueul9xhJnc5kUr7GeMGaEEh28Qf2/0Zg/rRc3p9NS43HS7xjJIb9mZ7pUGrHc8tes0gifVmknIIPvkstxkhW6xJnh4YJiFUvB6QAIOpdao+eeaJBMlulcd4XzXpdpvddKlA=
-Received: from SL2PR06MB3082.apcprd06.prod.outlook.com (2603:1096:100:37::17)
- by SL2PR06MB2988.apcprd06.prod.outlook.com (2603:1096:100:34::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.22; Thu, 9 Dec
- 2021 09:58:52 +0000
-Received: from SL2PR06MB3082.apcprd06.prod.outlook.com
- ([fe80::a0cf:a0e2:ee48:a396]) by SL2PR06MB3082.apcprd06.prod.outlook.com
- ([fe80::a0cf:a0e2:ee48:a396%4]) with mapi id 15.20.4755.023; Thu, 9 Dec 2021
- 09:58:52 +0000
-From: =?utf-8?B?546L5pOO?= <wangqing@vivo.com>
-To: Mark Brown <broonie@kernel.org>
-Subject: RE: [PATCH] sound: fsl: add missing put_device() call in
- imx_hdmi_probe()
-Thread-Topic: [PATCH] sound: fsl: add missing put_device() call in
- imx_hdmi_probe()
-Thread-Index: AQHX7NwjmsyYvshZLE+AShkbQYaGZw==
-Date: Thu, 9 Dec 2021 09:58:52 +0000
-Message-ID: <SL2PR06MB3082D6C1C65786A1E8DD0397BD709@SL2PR06MB3082.apcprd06.prod.outlook.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-suggested_attachment_session_id: c94bdbf1-5c89-fee1-b066-326bb565e076
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 5a8cfea3-90df-48d9-0bce-08d9bafa8135
-x-ms-traffictypediagnostic: SL2PR06MB2988:EE_
-x-microsoft-antispam-prvs: <SL2PR06MB2988CFEE0652F9D37946DD44BD709@SL2PR06MB2988.apcprd06.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3968;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: fE+/xL7E8lpBJIaJpmmHnxspX+RyoUI1011dJjGb5KpCYOeNEjpQou19LBYi/4W3k/+oFJK7OE9DomEnM8p3Ne6h2pRIKWrTvnItXC+JFcTpHmVHbJXh92NONoZya5AvNfhsiOTtqj7bIPJ0ZXIkDb/jybE0wIUQjwA3ELkFkZXE6jBO5DRT+oGxYfeWUF0b6W4MMiozJciYO8C2v612bmGufbx5q26s4cEyB6uf/BxC430ut2YTs1iDxgEEm/mb/GuIJyKNGYBXejJnzDZbi/IqKvfegXF4l1vUc8qZ/3Pqm7nd8kDOGwMWMkTDBSzv8bNGNpBL2cYuTg5ZY+nci8sZBbNBCPzt8KoXC2MGG2YA49KN/MttBW0L8UhPZeyFueFgb2YPgMx4pw6bGhdEPzYuzg1KHTOrw44Y/YM4MOhktVYpHaOyjcMkUaDt9XY7sqqpG6ksVnUC6uruQJI2/yxUA0aRohgamEhzvwegB+JM0CMT1ETCxoBF0amDEBps4ywclB9zUtlAXHznGH7zLtQ/VoJ6w7vu8Z1gK3Vq7OlWj5Ie37/rV+ClUo46jrI/w2Z12fbHvpcxOrGDrQHYV7SBq1aqVL/xFUOltB4XcaGGXLJKHbvm+wsO+75lzSBfGkEkTGsHgzudtT1RNgCc40OUmBYkWhH7YotCnroQoVyk8Oxml99VHmpyr5vAnu3F/LjvDhWb1DCgHbaGGpxs0Q==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SL2PR06MB3082.apcprd06.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(71200400001)(76116006)(38070700005)(122000001)(38100700002)(4326008)(186003)(508600001)(91956017)(316002)(52536014)(26005)(8936002)(8676002)(33656002)(4744005)(7696005)(54906003)(5660300002)(55016003)(9686003)(86362001)(66446008)(64756008)(6506007)(66476007)(66556008)(66946007)(2906002)(7416002)(6916009);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?T3NteHhEWjZoN1BVVFdZWVh4WjgxQXR6bkdPQnc4b3BHWkVwR1dKRnhRNk9R?=
- =?utf-8?B?c2xaTmZpRFpONlE3UDZ1a05lcG96bitlR0puUFJRakdGVWpZd3RHemoxbjBz?=
- =?utf-8?B?bllBVFE5aTh2Q0FibkkyaXEvUmhmclVOMjRmYnhuaWJIbUs1ODlhMzQvckF5?=
- =?utf-8?B?SDAycDFuYVNiNU9CVUptQ2MrZFRQcWRyTlJ5YjhzdWRIZU93QlZpcEFlRnpL?=
- =?utf-8?B?VHJEVnVzM2VxK0hBK2dGVkdNZVVSN0tCbGlWV3VXUk5XaFhSM1B0WTIwVWlx?=
- =?utf-8?B?SHVCR1lIOHJQSXhVTHVqdmJrbnFBbVFJc0JCdXBjKzgvS2dvbWpKSHlkSnZW?=
- =?utf-8?B?RURkMjNKUzlrNW1QYk1YbEhZYXBWMXlqYk9lay9IQ1RTc1B3djZEZFQ1LzFS?=
- =?utf-8?B?UVJJOXliVFN4Qzc2SmwyUlI5QXlJS2NDZDNXYndlS3JIcytJTUpGTnB2NndK?=
- =?utf-8?B?L1hvNXMzOG56TnBmYWMrVmRHVnVCY3BhajBVTE0wWUxoU0JKOWtXYUt3TXhu?=
- =?utf-8?B?alZHYysvR0pGaXJnZHJYZFJQQnp1cGZLNWRJd3ltT1NicHYxeUpxOXYyTGdy?=
- =?utf-8?B?Zk1oU3FySWhGZzRYeUFlTjQ0MWhyWmNFK09sTmllb0tmY2JiM1loMHQvOGZZ?=
- =?utf-8?B?UFZ1bDlqV1pqQkJNMHp5a0JDQXVJakRRaUE5ZEhSWlhKZytzSlViS2J5ckxN?=
- =?utf-8?B?Q3RXNncyQi92TmlKVXp4NkF3VmlWYmJsbW1RazJOWGJ3aWpHazVOZFpPdmto?=
- =?utf-8?B?S2pRVmcyNEkxWGhlNEJsRWlBaG10Qkt0aUpGMzl1aENrbkgvdnAycFd5SWs5?=
- =?utf-8?B?UE82aFZ6U1pUOFpkVnJlaU9aczdoZ2xEOWpsZExmRzJyUHMzaGluTGwzMGNS?=
- =?utf-8?B?UFkwT0pVQmUrYU40bzZ2b0VOV3dHWHBaaHVrYWt0VERwRkRGQjNCMTZiNVlH?=
- =?utf-8?B?dmQxcUg5dlMxWU9XK2RjOG05Y1RpYXRxVDZHWHdML1RCemhOekpzaDQ1TUxr?=
- =?utf-8?B?ZlBtTTluUHBNYmdQT2FmbmRKUC9jcHdWa1ZZdTFhYndNNTRBUmhGKzJvNTFL?=
- =?utf-8?B?M1hKK2xjckpPNFpDL3ZaMVg1TzloaVRhRnFLa1JWcm85ZnpZOC9RbStOc05R?=
- =?utf-8?B?b3YzaGJrOFdEVlBDN0d2bTRzc2hzNE0veGdBMGN6SURTbUpHeUJBdDdFL3BN?=
- =?utf-8?B?YTRSRkRObjRpOHJJb1hwcUExVzIyR05yb0tVYXBaNnBJOFNZZ1FmSnBJUkdu?=
- =?utf-8?B?dmIrbUlrTzloT0I4V2w3a2FrdlZHZ2tCSndMMlNWYkFMejUvWkhWS1J0QXBP?=
- =?utf-8?B?Qm1JQTJoM09Rc1pBdDcyeStoVG5nVFVHcXNINE5nYnVlK1d5TkZFSFhCMlhj?=
- =?utf-8?B?YmlQZ3VLbjVZVS95dkljYjZwSHFEOEpEeVpxbGZ6NmJuYWE4bDQzaG1uKzhx?=
- =?utf-8?B?YVNpbHRWMUE1UHNSUC9UY2VOVExjM1lBK0FRNWoxUEJ0NHIxSlRGbTU0bVQ2?=
- =?utf-8?B?ekp6cXhBWktrUEpFaWZFWGhCT3UwVzlCWGUzdzR4THRWb01aSTM2SWpSZlBt?=
- =?utf-8?B?TGNyWUlJenNQWXR1Ujk2RloyL0RtSENaVGVIcXhQbnJvdDhOZU1NT2JZQk91?=
- =?utf-8?B?Y3hMN25XRmw0Q0tGTXEvMnhSZDhPMVJMbFFBQnMzVzZNMk0xdHZ5bFU5QmVo?=
- =?utf-8?B?ay8rMkpKUW51bm5vWG83a0VQaW8zV0lxR1lhLzlpTlJRTFArRHp6RDFpeUM0?=
- =?utf-8?B?Zlh2Q1RpZlRqNzM1aUcrUjFacUxsZ1plK3Q5Nkk2cTZoZVZNdDl5cTIzWmtK?=
- =?utf-8?B?RWhsdDZ0aUdjYmxZdDZTN2ZmdFRqOHF6T05ZaXZrLzlGZUx6SUZoV1ZZRHpJ?=
- =?utf-8?B?T0FBSE1PaTdvUU9yYlVzNnA1VnhPRlczQlpHbHlYUzRzczZIYjlMRmVhTmpj?=
- =?utf-8?B?NUVOU2toanNzOUplTDVQeGFFNUJNcjIxOGNjZ1pxakpUdGszNFNPaFJnSFZM?=
- =?utf-8?B?RVh5NG1rK2hnUEZnU0hsbkhVK0NlOTFuWUR5VVlNeVoxWjJOVU1nL2Vhc0sx?=
- =?utf-8?B?aGY2S0N0Tmlsd0g2cXU5dnJNZkhkelpwamxIR2ZaOXJPdHpaNVNYZjh6b1pF?=
- =?utf-8?B?OXFNSWhYTjRNQ3FFeEpMUXAxc0g3aDR1TU1pNjdyL01BeGRnVUpJRXh3RUtZ?=
- =?utf-8?Q?SBSrWJNxUNEhsV2i7v74AkQ=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J8qMT3wwmz3036
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 21:02:12 +1100 (AEDT)
+Received: by mail-pf1-x42c.google.com with SMTP id n26so4969635pff.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Dec 2021 02:02:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=5oVFdJaM2PcvUusC9hs7LeIc0YvFAbCJaVJ7FzBWJdM=;
+ b=kFVc38vaTBxkwEMJdZmfRtbKqwkN31Wc5nZTgf5Fg20Ay116TKWw9FyZg0s8UM4FHP
+ Fhnf+MIBC/ZO3ayNf/q4q51faWxqHALqjWZ0QbPLDwOLDBKLNe5Lct50J8ySCmzQF3dT
+ c7qiLkroSDir7Ss0SGzdqv2Q5bn+IPHTtfKDkqW5UlWecpET9bftDMvgD9y7QY+6QqwK
+ R7pksqgo416XTozyzHluRDszHwSQ8G9xdOQT4/a215mpHRcb+HCxTSrpSu0kCDpeJlYU
+ pH1CoZRpCgHrcKaZUOnsEOyg7l3v8Z7RrCe9hV2h4VZG7XBy+95sq1+nrEYp7MUj4MtS
+ eytg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=5oVFdJaM2PcvUusC9hs7LeIc0YvFAbCJaVJ7FzBWJdM=;
+ b=Vqd04DcmzeczIBbHwn2fVUyQkr6HKvp7HOJlubHhUsUWWca88Rqo688m9OghusFTLH
+ DvTC+5rsPE1Q1gttXcCxZ0ApOdKL/x4Xv/2Xrr0meLxd99aoCv9a/EVm3ydiCytOCoo2
+ yFM/XcKSaH16ai3J/DyN9qi3ghHCIUJLFsF8D01568FtcGet75MY/rGeTUhOP7lT4iqI
+ e3OQbFrOAm5w3a6uaEDgiVXtTBtwGVJZoDxJsW3DkiME3YhzdWUG5OcXpvamIPyHltYl
+ lhHwtojuDqZMYdc6kmeqB9518qk7Q3hh5cHE2yW60Nij28vzSSEawiVShjE3DrfNlTd+
+ v9vw==
+X-Gm-Message-State: AOAM533fRDzZppLsxWYwjFB3nXPdRyLd57WwTHjpo5JbzVdSJqIHct41
+ MzD/eiMy5ffUO8iSWhE7DDg=
+X-Google-Smtp-Source: ABdhPJzy3TvVBy6QQSkTJFD+qdFCNy0Rp7564qrtzvh+bA8jUmTAU5XESi30JQgsDpF2u6x66E5wLA==
+X-Received: by 2002:a63:e34c:: with SMTP id o12mr27909026pgj.509.1639044129670; 
+ Thu, 09 Dec 2021 02:02:09 -0800 (PST)
+Received: from localhost (203-219-139-206.static.tpgi.com.au.
+ [203.219.139.206])
+ by smtp.gmail.com with ESMTPSA id n6sm6176458pfa.28.2021.12.09.02.02.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Dec 2021 02:02:09 -0800 (PST)
+Date: Thu, 09 Dec 2021 20:02:03 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v4 07/10] powerpc/mm: Use
+ generic_hugetlb_get_unmapped_area()
+To: "alex@ghiti.fr" <alex@ghiti.fr>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+References: <cover.1638976228.git.christophe.leroy@csgroup.eu>
+ <f292a83707b64c73fcb02a8708f18f09422f7eea.1638976229.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <f292a83707b64c73fcb02a8708f18f09422f7eea.1638976229.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SL2PR06MB3082.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5a8cfea3-90df-48d9-0bce-08d9bafa8135
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Dec 2021 09:58:52.0675 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Xp6jAzUofl4vJBGybp9XsXdGfZvvnx9K01rGEePnRz0gLkY8HUJ4MKajhlPmQ4xApULOkIOEoqpY4WvIuZQ0fg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SL2PR06MB2988
+Message-Id: <1639043741.e2zqhea1ix.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -142,29 +84,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
- Nicolin Chen <nicoleotsuka@gmail.com>, NXP Linux Team <linux-imx@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Cj4+IEZyb206IFdhbmcgUWluZyA8d2FuZ3FpbmdAdml2by5jb20+Cj4+IAo+PiBvZl9maW5kX2Rl
-dmljZV9ieV9ub2RlKCkgdGFrZXMgYSByZWZlcmVuY2UgdG8gdGhlIGVtYmVkZGVkIHN0cnVjdCBk
-ZXZpY2UgCj4+IHdoaWNoIG5lZWRzIHRvIGJlIGRyb3BwZWQgd2hlbiBlcnJvciByZXR1cm4uCj4K
-Pi4uLgo+Cj4+wqDCoMKgwqDCoMKgwqAgZGF0YSA9IGRldm1fa3phbGxvYygmcGRldi0+ZGV2LCBz
-aXplb2YoKmRhdGEpLCBHRlBfS0VSTkVMKTsKPj7CoMKgwqDCoMKgwqDCoCBpZiAoIWRhdGEpIHsK
-Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBwdXRfZGV2aWNlKCZjcHVfcGRldi0+ZGV2KTsK
-Pgo+SWYgaXQncyBvZl9maW5kX2RldmljZV9ieV9ub2RlKCkgeW91IG5lZWQgYW4gb2Zfbm9kZV9w
-dXQoKSBzaW5jZSB5b3UncmUKPmRyb3BwaW5nIGEgcmVmZXJlbmNlIG9uIHRoZSBPRiBub2RlLgo+
-CgpMYWJlbCBmYWlsIHdpbGwgZHJvcCBhIHJlZmVyZW5jZSBvbiB0aGUgT0Ygbm9kZS4KQWxzbywg
-cHV0X2RldmljZSgpIGlzIGNhbGxlZCBsYXRlciBleGNlcHQgdGhpcyBicmFuY2gsIAp3ZSBqdXN0
-IG5lZWQgdG8gYWRkIHB1dF9kZXZpY2UoKSBoZXJlLgoKVGhhbmtzLApRaW5nCgo+PiAgICAgICAg
-ICAgICAgICByZXQgPSAtRU5PTUVNOwo+PiAgICAgICAgICAgICAgICAgZ290byBmYWlsOwo=
+Excerpts from Christophe Leroy's message of December 9, 2021 3:18 am:
+> Use the generic version of arch_hugetlb_get_unmapped_area()
+> which is now available at all time.
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/include/asm/book3s/64/hugetlb.h |  4 --
+>  arch/powerpc/mm/book3s64/radix_hugetlbpage.c | 55 --------------------
+>  arch/powerpc/mm/hugetlbpage.c                |  4 +-
+>  3 files changed, 1 insertion(+), 62 deletions(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/book3s/64/hugetlb.h b/arch/powerpc/=
+include/asm/book3s/64/hugetlb.h
+> index 12e150e615b7..b37a28f62cf6 100644
+> --- a/arch/powerpc/include/asm/book3s/64/hugetlb.h
+> +++ b/arch/powerpc/include/asm/book3s/64/hugetlb.h
+> @@ -8,10 +8,6 @@
+>   */
+>  void radix__flush_hugetlb_page(struct vm_area_struct *vma, unsigned long=
+ vmaddr);
+>  void radix__local_flush_hugetlb_page(struct vm_area_struct *vma, unsigne=
+d long vmaddr);
+> -extern unsigned long
+> -radix__hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
+> -				unsigned long len, unsigned long pgoff,
+> -				unsigned long flags);
+> =20
+>  extern void radix__huge_ptep_modify_prot_commit(struct vm_area_struct *v=
+ma,
+>  						unsigned long addr, pte_t *ptep,
+> diff --git a/arch/powerpc/mm/book3s64/radix_hugetlbpage.c b/arch/powerpc/=
+mm/book3s64/radix_hugetlbpage.c
+> index 23d3e08911d3..d2fb776febb4 100644
+> --- a/arch/powerpc/mm/book3s64/radix_hugetlbpage.c
+> +++ b/arch/powerpc/mm/book3s64/radix_hugetlbpage.c
+> @@ -41,61 +41,6 @@ void radix__flush_hugetlb_tlb_range(struct vm_area_str=
+uct *vma, unsigned long st
+>  		radix__flush_tlb_range_psize(vma->vm_mm, start, end, psize);
+>  }
+> =20
+> -/*
+> - * A vairant of hugetlb_get_unmapped_area doing topdown search
+> - * FIXME!! should we do as x86 does or non hugetlb area does ?
+> - * ie, use topdown or not based on mmap_is_legacy check ?
+> - */
+> -unsigned long
+> -radix__hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
+> -				unsigned long len, unsigned long pgoff,
+> -				unsigned long flags)
+> -{
+> -	struct mm_struct *mm =3D current->mm;
+> -	struct vm_area_struct *vma;
+> -	struct hstate *h =3D hstate_file(file);
+> -	int fixed =3D (flags & MAP_FIXED);
+> -	unsigned long high_limit;
+> -	struct vm_unmapped_area_info info;
+> -
+> -	high_limit =3D DEFAULT_MAP_WINDOW;
+> -	if (addr >=3D high_limit || (fixed && (addr + len > high_limit)))
+> -		high_limit =3D TASK_SIZE;
+
+I wonder if generic hugetlb_get_unmapped_area needs to have the
+arch_get_mmap_end() added.
+
+arm64 has arch_get_mmap_end() and !HAVE_ARCH_HUGETLB_UNMAPPED_AREA so
+it looks like it has broken large address hint logic for hugetlbfs
+mappings? x86-64 defines their own and does the same hinting for
+normal and hugetlbfs mmap.
+
+If we had that and defied arch_get_mmap_end(), then this patch should
+work.
+
+Thanks,
+Nick
