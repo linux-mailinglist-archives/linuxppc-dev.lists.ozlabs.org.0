@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92F546E77F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 12:21:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4676E46E787
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 12:23:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J8s6T69tBz3c8M
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 22:21:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J8s8f1Fxcz3cD3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Dec 2021 22:22:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gqzYWzQv;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JmYn2r6O;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,37 +18,37 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=gqzYWzQv; 
+ header.s=k20201202 header.b=JmYn2r6O; 
  dkim-atps=neutral
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J8s5l0Tbqz2y7P
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 22:20:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J8s7v6xmqz2xWd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 22:22:19 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 038D2B8240D
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 11:20:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AE011C004DD
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 11:20:20 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 62E4BB82453
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 11:22:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 191D3C341C3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Dec 2021 11:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1639048820;
- bh=ZhA/UMeg+af38vQxuap2Bm8HjudthlA9+b+rRZ/4yoA=;
+ s=k20201202; t=1639048936;
+ bh=Epdr4HItDZN4qJfJ9ky7Bw4SzAimx9tkgxdEo8dELQQ=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=gqzYWzQv8EkUbscVX4AbK0YQKT4VzX2GCjFFpcVDELxKrKy0PEBrHbFxdiMhUs2F6
- GUr5LMGS2v17TRN5iINj2Px7i5jNyVarOiOcFUIcuKCgfILQN8Ql9uXvCi07XSqsiY
- qBNJI1FfQPMuqFVCtSX2fWzp9otfOKz7pyNkjGeOuynPrwbSsQTy6hAgVPewnV4ujE
- Yp4mG9/8ijtao39fxkI9PmAtkIRuLWyOgafDN+AAyrNa1s9HYl/xtYdOv0s/fGZ6ex
- hrTSYxZN3GUcZjqzbXGcxgaHEgnOdvQI5ighcZQwqsOdy3m+cx8ONB1HtO0f30SBYn
- kyqBOCR4wjELQ==
+ b=JmYn2r6OCqScuKZ6Yvm1YNqmM6chwpZ9LhCYMDwu1K0RJBV75+KA2c1HNss1H+fQJ
+ +h0/WK9l8m95Z5VBwzuOALpFiAmEKScp5SRmj74MXM3geNF82IWVPP7HSJroCXq6CF
+ +6kjzasMbEIc6cVu4au5S2gDMc78hSdKsx0EihK41nhqKu2jUHTlLfgYQn7DUwdDsB
+ 86R0Q03OSCkbAZmTdq5Kds2T1qL8kEodrwx7Vekjv4PNCQ0fQ8DpD1nUKOkuOA1aKt
+ 4ZLzTXfisj1TRT/u16mrOSisy/A/lX5+gFNNK2aTRKLlp+OqwzLwtMq3WqJgHxepGM
+ XBZKkq8SkZxag==
 Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id 9DE7560F48; Thu,  9 Dec 2021 11:20:20 +0000 (UTC)
+ id 0128860F51; Thu,  9 Dec 2021 11:22:16 +0000 (UTC)
 From: bugzilla-daemon@bugzilla.kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 215217] Kernel fails to boot at an early stage when built with
  GCC_PLUGIN_LATENT_ENTROPY=y (PowerMac G4 3,6)
-Date: Thu, 09 Dec 2021 11:20:20 +0000
+Date: Thu, 09 Dec 2021 11:22:15 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -57,14 +57,14 @@ X-Bugzilla-Component: PPC-32
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Who: christophe.leroy@csgroup.eu
 X-Bugzilla-Status: NEW
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-215217-206035-qoAmGPnBQW@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-215217-206035-en0Wlof4D3@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-215217-206035@https.bugzilla.kernel.org/>
 References: <bug-215217-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -89,10 +89,9 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D215217
 
---- Comment #7 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 299967
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D299967&action=3Dedit
-kernel .config (5.16-rc4 + CFLAGS_setup_32.o +=3D... , PowerMac G4 DP)
+--- Comment #8 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
+early_32.o should likely also have DISABLE_LATENT_ENTROPY_PLUGIN, maybe even
+more important that for setup_32.o
 
 --=20
 You may reply to this email to add a comment.
