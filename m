@@ -1,47 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34462470204
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 14:44:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B12F470206
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 14:45:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J9XFb0RyPz3cjj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 00:44:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J9XG16yfsz3dbT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 00:44:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=loongson.cn;
  envelope-from=yangtiezhu@loongson.cn; receiver=<UNKNOWN>)
 Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
- by lists.ozlabs.org (Postfix) with ESMTP id 4J9XDd3PB4z3bjJ
+ by lists.ozlabs.org (Postfix) with ESMTP id 4J9XDd3gWBz3bmr
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 00:43:43 +1100 (AEDT)
 Received: from linux.localdomain (unknown [113.200.148.30])
- by mail.loongson.cn (Coremail) with SMTP id AQAAf9AxusjBV7Nh3OEFAA--.12281S2; 
+ by mail.loongson.cn (Coremail) with SMTP id AQAAf9AxusjBV7Nh3OEFAA--.12281S3; 
  Fri, 10 Dec 2021 21:36:02 +0800 (CST)
 From: Tiezhu Yang <yangtiezhu@loongson.cn>
 To: Dave Young <dyoung@redhat.com>, Baoquan He <bhe@redhat.com>,
  Vivek Goyal <vgoyal@redhat.com>, Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 0/2] kdump: simplify code
-Date: Fri, 10 Dec 2021 21:35:59 +0800
-Message-Id: <1639143361-17773-1-git-send-email-yangtiezhu@loongson.cn>
+Subject: [PATCH 1/2] kdump: vmcore: move copy_to() from vmcore.c to uaccess.h
+Date: Fri, 10 Dec 2021 21:36:00 +0800
+Message-Id: <1639143361-17773-2-git-send-email-yangtiezhu@loongson.cn>
 X-Mailer: git-send-email 2.1.0
-X-CM-TRANSID: AQAAf9AxusjBV7Nh3OEFAA--.12281S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKFyDGrW7KF1UCF45GFW7Jwb_yoW3Grb_XF
- WIgas5Gry0va4FyFy7K3W3urWDJr4vvFnYvw1ktrW5ta9xJFyrJw48JF4jgrn8XrWkJrZr
- ArWDGas2vr1FqjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUIcSsGvfJTRUUUbs8YjsxI4VWxJwAYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I
- 6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
- 8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0
- cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z2
- 80aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAK
- zVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx
- 8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7
- MxkIecxEwVAFwVW5GwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
- 026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
- Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20x
- vEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280
- aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43
- ZEXa7IU0nID7UUUUU==
+In-Reply-To: <1639143361-17773-1-git-send-email-yangtiezhu@loongson.cn>
+References: <1639143361-17773-1-git-send-email-yangtiezhu@loongson.cn>
+X-CM-TRANSID: AQAAf9AxusjBV7Nh3OEFAA--.12281S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7WF43Ar4Utr4rKr43tw4ktFb_yoW8AF4Upr
+ nxJry3Gr48KryUJFnFywnru3WrX3Z3CF4Uta97GF1rZ3sxZr12vrn3uFyagrW8JrZ2kFW5
+ CF95GrW3Gr4DXw7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUPIb7Iv0xC_KF4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+ 0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
+ 8067AKxVWUGwA2048vs2IY020Ec7CjxVAFwI0_Gr0_Xr1l8cAvFVAK0II2c7xJM28CjxkF
+ 64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcV
+ CY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY
+ 1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4
+ xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCa
+ FVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkIec
+ xEwVAFwVW5GwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GF
+ ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jD
+ fHUUUUUU=
 X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,23 +66,66 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tiezhu Yang (2):
-  kdump: vmcore: move copy_to() from vmcore.c to uaccess.h
-  kdump: crashdump: use copy_to() to simplify the related code
+In arch/*/kernel/crash_dump*.c, there exist similar code about
+copy_oldmem_page(), move copy_to() from vmcore.c to uaccess.h,
+and then we can use copy_to() to simplify the related code.
 
- arch/arm/kernel/crash_dump.c     | 10 ++--------
- arch/arm64/kernel/crash_dump.c   | 10 ++--------
- arch/ia64/kernel/crash_dump.c    | 10 ++++------
- arch/mips/kernel/crash_dump.c    |  9 ++-------
- arch/powerpc/kernel/crash_dump.c |  7 ++-----
- arch/riscv/kernel/crash_dump.c   |  9 ++-------
- arch/sh/kernel/crash_dump.c      |  9 ++-------
- arch/x86/kernel/crash_dump_32.c  |  9 ++-------
- arch/x86/kernel/crash_dump_64.c  |  9 ++-------
- fs/proc/vmcore.c                 | 14 --------------
- include/linux/uaccess.h          | 14 ++++++++++++++
- 11 files changed, 34 insertions(+), 76 deletions(-)
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+---
+ fs/proc/vmcore.c        | 14 --------------
+ include/linux/uaccess.h | 14 ++++++++++++++
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
+diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
+index 509f851..c5976a8 100644
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -238,20 +238,6 @@ copy_oldmem_page_encrypted(unsigned long pfn, char *buf, size_t csize,
+ 	return copy_oldmem_page(pfn, buf, csize, offset, userbuf);
+ }
+ 
+-/*
+- * Copy to either kernel or user space
+- */
+-static int copy_to(void *target, void *src, size_t size, int userbuf)
+-{
+-	if (userbuf) {
+-		if (copy_to_user((char __user *) target, src, size))
+-			return -EFAULT;
+-	} else {
+-		memcpy(target, src, size);
+-	}
+-	return 0;
+-}
+-
+ #ifdef CONFIG_PROC_VMCORE_DEVICE_DUMP
+ static int vmcoredd_copy_dumps(void *dst, u64 start, size_t size, int userbuf)
+ {
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index ac03940..4a6c3e4 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -201,6 +201,20 @@ copy_to_user(void __user *to, const void *from, unsigned long n)
+ 	return n;
+ }
+ 
++/*
++ * Copy to either kernel or user space
++ */
++static inline int copy_to(void *target, void *src, size_t size, int userbuf)
++{
++	if (userbuf) {
++		if (copy_to_user((char __user *) target, src, size))
++			return -EFAULT;
++	} else {
++		memcpy(target, src, size);
++	}
++	return 0;
++}
++
+ #ifndef copy_mc_to_kernel
+ /*
+  * Without arch opt-in this generic copy_mc_to_kernel() will not handle
 -- 
 2.1.0
 
