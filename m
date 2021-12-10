@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D36470D99
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 23:21:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F071A470D65
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 23:19:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J9ljb3xF8z3cYX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 09:21:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J9lh96ZYxz3ckh
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 09:19:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=qC+ywnci;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=5lxdmWfE;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=RVFQBQqA;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=W5z8GHgz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,44 +19,42 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=qC+ywnci; 
+ header.s=2020 header.b=RVFQBQqA; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=5lxdmWfE; 
+ header.a=ed25519-sha256 header.s=2020e header.b=W5z8GHgz; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J9lfz0bqgz2xtW
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J9lfy6tXfz2xtM
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 09:18:50 +1100 (AEDT)
-Message-ID: <20211210221642.869015045@linutronix.de>
+Message-ID: <20211210221813.250049810@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1639174723;
+ s=2020; t=1639174725;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=IBbfy8DUMmeX2/DxJ4bxtqprC0vLuk1jWkG3suZ0PZw=;
- b=qC+ywncigd88uX881G7drnWnPitC8LQEDjIxWICRbmx1CnZuuhH2HOM78Mj73Xd+ZCv0Kb
- ncvkjbnzAtbd+ixrpTmp/mZ4pThJranbywfqMLopOdcOEGpsPc6uk3V8xaldwObLZfsa/F
- EQ9V2dZmFKR1bqfNssiazFt8n3Mf+7q1vPMaTRADEfAyYuxcvDch8l/qTyx/UZYaRnEdfG
- 107k2ftTZl52fiKXc5XfVwoW5s/CdJw8zCMdv0ss6LKqyYgeRXX/LiA2+XXHlrLhd7JdKS
- +inOsrufS8ZmeqDmP1k3/yTr0mCeJApmaMV52ZYaBfM4TpXhGFC+GjjHRExr/A==
+ references:references; bh=LAPO48TeSRvyraOCUaLnLGoqr3cykpYVLg5Q2NPw+tk=;
+ b=RVFQBQqAHeoiRwlZ3riRsRVnIL91ZjHAfRJRIp58J8GUnDjLQx7L9kWYIIUbdLwuKR/jwL
+ JcJBPfohipM62TDgI++91yG93z8S9yOtP19oQQE8Q8k13Dz0zt5IP/hM5mMrevOXLmlklN
+ kWOoGd3So5Fe6OgP0QbWV76D4psb9hl5USqdOyh+D6Aqhblm4cpa5e5Vf78Qu6ZYHkQHTi
+ bgYvnB6aYzx+LTLoj46c14I2SP51PPz15FBrvc8JBpekzRO6sF7T8vtiJHTJFweb24goaW
+ joW6zxk5fBYith6L0SW2dhYjEXttIyscMDGJDovBvIbb2eL2uBhx9UWrfH/KNw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1639174723;
+ s=2020e; t=1639174725;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=IBbfy8DUMmeX2/DxJ4bxtqprC0vLuk1jWkG3suZ0PZw=;
- b=5lxdmWfE59j3yHf4IXX2tpXuGGPaN2BKbOiQcB9ippOtvBNy75YsOs7y6x5FiIbDSi4ZaA
- +C6w+xOR5nRMXFBA==
+ references:references; bh=LAPO48TeSRvyraOCUaLnLGoqr3cykpYVLg5Q2NPw+tk=;
+ b=W5z8GHgzI4pNn8BJLekDX4e1pfDaOzUgMdqste1q3KO/3rlD+JtPo0I0BMrvt2m3/1G3Vk
+ MFABiwOkTOMR3XAQ==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 00/35] genirq/msi, PCI/MSI: Spring cleaning - Part 2
+Subject: [patch V3 01/35] PCI/MSI: Set pci_dev::msi[x]_enabled early
+References: <20211210221642.869015045@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Fri, 10 Dec 2021 23:18:43 +0100 (CET)
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 10 Dec 2021 23:18:44 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,76 +86,91 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-VGhpcyBpcyB0aGUgc2Vjb25kIHBhcnQgb2YgW1BDSV1NU0kgcmVmYWN0b3Jpbmcgd2hpY2ggYWlt
-cyB0byBwcm92aWRlIHRoZQphYmlsaXR5IG9mIGV4cGFuZGluZyBNU0ktWCB2ZWN0b3JzIGFmdGVy
-IGVuYWJsaW5nIE1TSS1YLgoKVGhpcyBpcyBiYXNlZCBvbiB0aGUgZmlyc3QgcGFydCBvZiB0aGlz
-IHdvcmsgd2hpY2ggY2FuIGJlIGZvdW5kIGhlcmU6CgogICAgaHR0cHM6Ly9sb3JlLmtlcm5lbC5v
-cmcvci8yMDIxMTIwNjIxMDE0Ny44NzI4NjU4MjNAbGludXRyb25peC5kZQoKYW5kIGhhcyBiZWVu
-IGFwcGxpZWQgdG86CgogICAgIGdpdDovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2Vy
-bmVsL2dpdC90aXAvdGlwLmdpdCBpcnEvbXNpCgoKVGhpcyBzZWNvbmQgcGFydCBoYXMgdGhlIGZv
-bGxvd2luZyBpbXBvcnRhbnQgY2hhbmdlczoKCiAgIDEpIENsZWFudXAgb2YgdGhlIE1TSSByZWxh
-dGVkIGRhdGEgaW4gc3RydWN0IGRldmljZQoKICAgICAgc3RydWN0IGRldmljZSBjb250YWlucyBh
-dCB0aGUgbW9tZW50IHZhcmlvdXMgTVNJIHJlbGF0ZWQgcGFydHMuIFNvbWUKICAgICAgb2YgdGhl
-bSAodGhlIGlycSBkb21haW4gcG9pbnRlcikgY2Fubm90IGJlIG1vdmVkIG91dCwgYnV0IHRoZSBy
-ZXN0CiAgICAgIGNhbiBiZSBhbGxvY2F0ZWQgb24gZmlyc3QgdXNlLiBUaGlzIGlzIGluIHByZXBh
-cmF0aW9uIG9mIGFkZGluZyBtb3JlCiAgICAgIHBlciBkZXZpY2UgTVNJIGRhdGEgbGF0ZXIgb24u
-CgogICAyKSBDb25zb2xpZGF0aW9uIG9mIHN5c2ZzIGhhbmRsaW5nCgogICAgICBBcyBhIGZpcnN0
-IHN0ZXAgdGhpcyBtb3ZlcyB0aGUgc3lzZnMgcG9pbnRlciBmcm9tIHN0cnVjdCBtc2lfZGVzYwog
-ICAgICBpbnRvIHRoZSBuZXcgcGVyIGRldmljZSBNU0kgZGF0YSBzdHJ1Y3R1cmUgd2hlcmUgaXQg
-YmVsb25ncy4KCiAgICAgIExhdGVyIGNoYW5nZXMgd2lsbCBjbGVhbnVwIHRoaXMgY29kZSBmdXJ0
-aGVyLCBidXQgdGhhdCdzIG5vdCBwb3NzaWJsZQogICAgICBhdCB0aGlzIHBvaW50LgoKICAgMykg
-VXNlIFBDSSBkZXZpY2UgcHJvcGVydGllcyBpbnN0ZWFkIG9mIGxvb2tpbmcgdXAgTVNJIGRlc2Ny
-aXB0b3JzIGFuZAogICAgICBhbmFseXNpbmcgdGhlaXIgZGF0YS4KCiAgIDQpIFByb3ZpZGUgYSBm
-dW5jdGlvbiB0byByZXRyaWV2ZSB0aGUgTGludXggaW50ZXJydXB0IG51bWJlciBmb3IgYSBnaXZl
-bgogICAgICBNU0kgaW5kZXggc2ltaWxhciB0byBwY2lfaXJxX3ZlY3RvcigpIGFuZCBjbGVhbnVw
-IGFsbCBvcGVuIGNvZGVkCiAgICAgIHZhcmlhbnRzLgoKSXQncyBhbHNvIGF2YWlsYWJsZSBmcm9t
-IGdpdDoKCiAgICAgZ2l0Oi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0
-L3RnbHgvZGV2ZWwuZ2l0IG1zaS12My1wYXJ0LTIKClBhcnQgMyBvZiB0aGlzIGVmZm9ydCBpcyBh
-dmFpbGFibGUgb24gdG9wCgogICAgIGdpdDovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgv
-a2VybmVsL2dpdC90Z2x4L2RldmVsLmdpdCBtc2ktdjMtcGFydC0zCgogICAgIFBhcnQgMyBpcyBu
-b3QgZ29pbmcgdG8gYmUgcmVwb3N0ZWQgYXMgdGhlcmUgaXMgbm8gY2hhbmdlIHZzLiBWMi4KClYy
-IG9mIHBhcnQgMiBjYW4gYmUgZm91bmQgaGVyZToKCiAgICBodHRwczovL2xvcmUua2VybmVsLm9y
-Zy9yLzIwMjExMjA2MjEwMzA3LjYyNTExNjI1M0BsaW51dHJvbml4LmRlCgpDaGFuZ2VzIHZlcnN1
-cyBWMjoKCiAgLSBVc2UgUENJIGRldmljZSBwcm9wZXJ0aWVzIGluc3RlYWQgb2YgY3JlYXRpbmcg
-YSBuZXcgc2V0IC0gSmFzb24KCiAgLSBQaWNrZWQgdXAgUmV2aWV3ZWQvVGVzdGVkL0Fja2VkLWJ5
-IHRhZ3MgYXMgYXBwcm9wcmlhdGUKClRoYW5rcywKCgl0Z2x4Ci0tLQogYXJjaC9wb3dlcnBjL3Bs
-YXRmb3Jtcy9jZWxsL2F4b25fbXNpLmMgICAgICAgICAgICAgIHwgICAgNSAKIGFyY2gvcG93ZXJw
-Yy9wbGF0Zm9ybXMvcHNlcmllcy9tc2kuYyAgICAgICAgICAgICAgICB8ICAgMzggKy0tLQogYXJj
-aC94ODYva2VybmVsL2FwaWMvbXNpLmMgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgNSAK
-IGFyY2gveDg2L3BjaS94ZW4uYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
-MTEgLQogZHJpdmVycy9iYXNlL3BsYXRmb3JtLW1zaS5jICAgICAgICAgICAgICAgICAgICAgICAg
-IHwgIDE1MiArKysrKysrKy0tLS0tLS0tLS0tCiBkcml2ZXJzL2J1cy9mc2wtbWMvZHByYy1kcml2
-ZXIuYyAgICAgICAgICAgICAgICAgICAgfCAgICA4IC0KIGRyaXZlcnMvYnVzL2ZzbC1tYy9mc2wt
-bWMtYWxsb2NhdG9yLmMgICAgICAgICAgICAgICB8ICAgIDkgLQogZHJpdmVycy9idXMvZnNsLW1j
-L2ZzbC1tYy1tc2kuYyAgICAgICAgICAgICAgICAgICAgIHwgICAyNiArLS0KIGRyaXZlcnMvZG1h
-L212X3hvcl92Mi5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMTYgLS0KIGRyaXZl
-cnMvZG1hL3Fjb20vaGlkbWEuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNDQgKyst
-LS0KIGRyaXZlcnMvZG1hL3RpL2szLXVkbWEtcHJpdmF0ZS5jICAgICAgICAgICAgICAgICAgICB8
-ICAgIDYgCiBkcml2ZXJzL2RtYS90aS9rMy11ZG1hLmMgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgfCAgIDE0IC0KIGRyaXZlcnMvaW9tbXUvYXJtL2FybS1zbW11LXYzL2FybS1zbW11LXYzLmMg
-ICAgICAgICB8ICAgMjMgLS0KIGRyaXZlcnMvaXJxY2hpcC9pcnEtbWJpZ2VuLmMgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAgIDQgCiBkcml2ZXJzL2lycWNoaXAvaXJxLW12ZWJ1LWljdS5jICAg
-ICAgICAgICAgICAgICAgICAgfCAgIDEyIC0KIGRyaXZlcnMvaXJxY2hpcC9pcnEtdGktc2NpLWlu
-dGEuYyAgICAgICAgICAgICAgICAgICB8ICAgIDIgCiBkcml2ZXJzL21haWxib3gvYmNtLWZsZXhy
-bS1tYWlsYm94LmMgICAgICAgICAgICAgICAgfCAgICA5IC0KIGRyaXZlcnMvbmV0L2V0aGVybmV0
-L2ZyZWVzY2FsZS9kcGFhMi9kcGFhMi1ldGguYyAgICB8ICAgIDQgCiBkcml2ZXJzL25ldC9ldGhl
-cm5ldC9mcmVlc2NhbGUvZHBhYTIvZHBhYTItcHRwLmMgICAgfCAgICA0IAogZHJpdmVycy9uZXQv
-ZXRoZXJuZXQvZnJlZXNjYWxlL2RwYWEyL2RwYWEyLXN3aXRjaC5jIHwgICAgNSAKIGRyaXZlcnMv
-cGNpL21zaS9pcnFkb21haW4uYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMjAgKysKIGRy
-aXZlcnMvcGNpL21zaS9sZWdhY3kuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDYg
-CiBkcml2ZXJzL3BjaS9tc2kvbXNpLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-MTMzICsrKysrKy0tLS0tLS0tLS0KIGRyaXZlcnMvcGNpL3hlbi1wY2lmcm9udC5jICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICAgIDIgCiBkcml2ZXJzL3BlcmYvYXJtX3NtbXV2M19wbXUuYyAg
-ICAgICAgICAgICAgICAgICAgICAgfCAgICA1IAogZHJpdmVycy9zb2MvZnNsL2RwaW8vZHBpby1k
-cml2ZXIuYyAgICAgICAgICAgICAgICAgIHwgICAgOCAtCiBkcml2ZXJzL3NvYy90aS9rMy1yaW5n
-YWNjLmMgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICA2IAogZHJpdmVycy9zb2MvdGkvdGlf
-c2NpX2ludGFfbXNpLmMgICAgICAgICAgICAgICAgICAgIHwgICAyMiAtLQogZHJpdmVycy92Zmlv
-L2ZzbC1tYy92ZmlvX2ZzbF9tY19pbnRyLmMgICAgICAgICAgICAgIHwgICAgNCAKIGluY2x1ZGUv
-bGludXgvZGV2aWNlLmggICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMjUgKystCiBp
-bmNsdWRlL2xpbnV4L2ZzbC9tYy5oICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICA0
-IAogaW5jbHVkZS9saW51eC9tc2kuaCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
-ICA5NSArKysrLS0tLS0tLS0KIGluY2x1ZGUvbGludXgvcGNpLmggICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAgIDEgCiBpbmNsdWRlL2xpbnV4L3NvYy90aS90aV9zY2lfaW50YV9t
-c2kuaCAgICAgICAgICAgICAgfCAgICAxIAoga2VybmVsL2lycS9tc2kuYyAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwgIDE1OCArKysrKysrKysrKysrKystLS0tLQogMzUgZmls
-ZXMgY2hhbmdlZCwgNDI5IGluc2VydGlvbnMoKyksIDQ1OCBkZWxldGlvbnMoLSkKCg==
+There are quite some places which retrieve the first MSI descriptor to
+evaluate whether the setup is for MSI or MSI-X. That's required because
+pci_dev::msi[x]_enabled is only set when the setup completed successfully.
+
+There is no real reason why msi[x]_enabled can't be set at the beginning of
+the setup sequence and cleared in case of a failure.
+
+Implement that so the MSI descriptor evaluations can be converted to simple
+property queries.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+---
+V3: New patch
+---
+ drivers/pci/msi/msi.c |   23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
+
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -421,11 +421,18 @@ static int msi_capability_init(struct pc
+ 	struct msi_desc *entry;
+ 	int ret;
+ 
+-	pci_msi_set_enable(dev, 0);	/* Disable MSI during set up */
++	/*
++	 * Disable MSI during setup in the hardware, but mark it enabled
++	 * so that setup code can evaluate it.
++	 */
++	pci_msi_set_enable(dev, 0);
++	dev->msi_enabled = 1;
+ 
+ 	entry = msi_setup_entry(dev, nvec, affd);
+-	if (!entry)
+-		return -ENOMEM;
++	if (!entry) {
++		ret = -ENOMEM;
++		goto fail;
++	}
+ 
+ 	/* All MSIs are unmasked by default; mask them all */
+ 	pci_msi_mask(entry, msi_multi_mask(entry));
+@@ -452,7 +459,6 @@ static int msi_capability_init(struct pc
+ 	/* Set MSI enabled bits	*/
+ 	pci_intx_for_msi(dev, 0);
+ 	pci_msi_set_enable(dev, 1);
+-	dev->msi_enabled = 1;
+ 
+ 	pcibios_free_irq(dev);
+ 	dev->irq = entry->irq;
+@@ -461,6 +467,8 @@ static int msi_capability_init(struct pc
+ err:
+ 	pci_msi_unmask(entry, msi_multi_mask(entry));
+ 	free_msi_irqs(dev);
++fail:
++	dev->msi_enabled = 0;
+ 	return ret;
+ }
+ 
+@@ -589,6 +597,9 @@ static int msix_capability_init(struct p
+ 	pci_msix_clear_and_set_ctrl(dev, 0, PCI_MSIX_FLAGS_MASKALL |
+ 				    PCI_MSIX_FLAGS_ENABLE);
+ 
++	/* Mark it enabled so setup functions can query it */
++	dev->msix_enabled = 1;
++
+ 	pci_read_config_word(dev, dev->msix_cap + PCI_MSIX_FLAGS, &control);
+ 	/* Request & Map MSI-X table region */
+ 	tsize = msix_table_size(control);
+@@ -626,9 +637,8 @@ static int msix_capability_init(struct p
+ 
+ 	dev->msi_irq_groups = groups;
+ 
+-	/* Set MSI-X enabled bits and unmask the function */
++	/* Disable INTX and unmask MSI-X */
+ 	pci_intx_for_msi(dev, 0);
+-	dev->msix_enabled = 1;
+ 	pci_msix_clear_and_set_ctrl(dev, PCI_MSIX_FLAGS_MASKALL, 0);
+ 
+ 	pcibios_free_irq(dev);
+@@ -638,6 +648,7 @@ static int msix_capability_init(struct p
+ 	free_msi_irqs(dev);
+ 
+ out_disable:
++	dev->msix_enabled = 0;
+ 	pci_msix_clear_and_set_ctrl(dev, PCI_MSIX_FLAGS_ENABLE, 0);
+ 
+ 	return ret;
+
