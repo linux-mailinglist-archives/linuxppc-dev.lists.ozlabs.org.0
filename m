@@ -1,15 +1,15 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C5D470DAD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 23:25:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06AC5470DAF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 23:25:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J9lp33n6gz3f1D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 09:24:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J9lpl6kpDz3djD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 09:25:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=pLlvWRgJ;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=fGZcqe6W;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=j1D2L9Q7;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=iR9CZQZx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,41 +19,41 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=pLlvWRgJ; 
+ header.s=2020 header.b=j1D2L9Q7; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=fGZcqe6W; 
+ header.a=ed25519-sha256 header.s=2020e header.b=iR9CZQZx; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J9lg81gPSz3cPg
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 09:19:00 +1100 (AEDT)
-Message-ID: <20211210221813.740644351@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J9lg96ss3z3cPv
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 09:19:01 +1100 (AEDT)
+Message-ID: <20211210221813.805529729@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1639174737;
+ s=2020; t=1639174739;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=lone/RHMXjlrVHw4SO3cyBPgNXO7SR/kjpngIvo8KXc=;
- b=pLlvWRgJJR/FozuPSZc/p3nSaSDVV9NbBY8rkEojQLKfzboZJPgEZ0QGJxryfOxb5vJXjW
- eBBPB65jIQk9+B1THMlYp0yGqF4rL2yHG62KFDRr14BUWKIF7M20mar760FwMkfrQzvRuP
- frt5N2PJ/xGqaTeQW8wTK+U8KkAFAKd4htcwQHlE2SrL5D3xqkdUSaNO3M42Mz14vtKiDQ
- 1TvZXJXtRgeoEBKeHM0ubuCWIcCUGNAV2hTbvSlYDalKpRKK8q1fk2cI4lSaaA29ziMele
- UAn5OHfmJCIJKFGNS3y69IG1bpP8yT509O8M0KnFnRnGtN/0Sp9b4mWVngiMzQ==
+ references:references; bh=AIipdYHJdw47YEIR3ibDM4/EuKIZd0bBkHdL069vGOQ=;
+ b=j1D2L9Q78IUwnll6n5rxMGVu2mITgI1fie6htejXwkZkBu5vKvBCoSC0hybtM8CIndzeKy
+ 8FxbvyCsSWDO1Je5QzsKaI/JE7U3VHAG33NrckGM8Jh90EVfjx9LVyCBsKiWw/5ODWbyNU
+ kojl0x/4/PVaVVmvviwmUOctKhNCi3chDZvokC+2bV6jT+/MGWHy2QTxSbgq5bJLTS0oc3
+ WunwiNoKKzPpL872PSd/7Fh8pFZgVkBASgKwd3jLaDi5pE0MyQTn5hNy8f1JZB6aEnheiK
+ IXKzSIcv8qTnf/i+HWAfLXKhChF87Qp+8borfTOdx+L3rIKkbAniU7i2NTkEuA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1639174737;
+ s=2020e; t=1639174739;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=lone/RHMXjlrVHw4SO3cyBPgNXO7SR/kjpngIvo8KXc=;
- b=fGZcqe6WqEa09T04QnEG0wFvQt+EXzqvmqvVYXhxq4JPl8Xl8WUjUPXH0+2Own5rPSRrGs
- rNikqidmCczP5lBg==
+ references:references; bh=AIipdYHJdw47YEIR3ibDM4/EuKIZd0bBkHdL069vGOQ=;
+ b=iR9CZQZxt9DwiDQaI1OMnpL3qc51lhNFwI0XGQkIVGuIAxEp7I6QmDjeueiB5NSx48DEzo
+ NTxgjLao7vpldkAw==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 09/35] PCI/MSI: Allocate MSI device data on first use
+Subject: [patch V3 10/35] platform-msi: Allocate MSI device data on first use
 References: <20211210221642.869015045@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 10 Dec 2021 23:18:57 +0100 (CET)
+Date: Fri, 10 Dec 2021 23:18:58 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,60 +87,45 @@ Sender: "Linuxppc-dev"
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
-Allocate MSI device data on first use, i.e. when a PCI driver invokes one
-of the PCI/MSI enablement functions.
+Allocate the MSI device data on first invocation of the allocation function
+for platform MSI private data.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 ---
- drivers/pci/msi/msi.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/base/platform-msi.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -900,10 +900,12 @@ static int __pci_enable_msi_range(struct
- /* deprecated, don't use */
- int pci_enable_msi(struct pci_dev *dev)
+--- a/drivers/base/platform-msi.c
++++ b/drivers/base/platform-msi.c
+@@ -204,6 +204,8 @@ platform_msi_alloc_priv_data(struct devi
+ 			     irq_write_msi_msg_t write_msi_msg)
  {
--	int rc = __pci_enable_msi_range(dev, 1, 1, NULL);
--	if (rc < 0)
--		return rc;
--	return 0;
-+	int rc = msi_setup_device_data(&dev->dev);
+ 	struct platform_msi_priv_data *datap;
++	int err;
 +
-+	if (!rc)
-+		rc = __pci_enable_msi_range(dev, 1, 1, NULL);
-+
-+	return rc < 0 ? rc : 0;
- }
- EXPORT_SYMBOL(pci_enable_msi);
+ 	/*
+ 	 * Limit the number of interrupts to 2048 per device. Should we
+ 	 * need to bump this up, DEV_ID_SHIFT should be adjusted
+@@ -218,6 +220,10 @@ platform_msi_alloc_priv_data(struct devi
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
-@@ -958,7 +960,11 @@ static int __pci_enable_msix_range(struc
- int pci_enable_msix_range(struct pci_dev *dev, struct msix_entry *entries,
- 		int minvec, int maxvec)
- {
--	return __pci_enable_msix_range(dev, entries, minvec, maxvec, NULL, 0);
-+	int ret = msi_setup_device_data(&dev->dev);
++	err = msi_setup_device_data(dev);
++	if (err)
++		return ERR_PTR(err);
 +
-+	if (!ret)
-+		ret = __pci_enable_msix_range(dev, entries, minvec, maxvec, NULL, 0);
-+	return ret;
- }
- EXPORT_SYMBOL(pci_enable_msix_range);
- 
-@@ -985,8 +991,12 @@ int pci_alloc_irq_vectors_affinity(struc
- 				   struct irq_affinity *affd)
- {
- 	struct irq_affinity msi_default_affd = {0};
-+	int ret = msi_setup_device_data(&dev->dev);
- 	int nvecs = -ENOSPC;
- 
-+	if (ret)
-+		return ret;
-+
- 	if (flags & PCI_IRQ_AFFINITY) {
- 		if (!affd)
- 			affd = &msi_default_affd;
+ 	/* Already had a helping of MSI? Greed... */
+ 	if (!list_empty(dev_to_msi_list(dev)))
+ 		return ERR_PTR(-EBUSY);
+@@ -229,7 +235,7 @@ platform_msi_alloc_priv_data(struct devi
+ 	datap->devid = ida_simple_get(&platform_msi_devid_ida,
+ 				      0, 1 << DEV_ID_SHIFT, GFP_KERNEL);
+ 	if (datap->devid < 0) {
+-		int err = datap->devid;
++		err = datap->devid;
+ 		kfree(datap);
+ 		return ERR_PTR(err);
+ 	}
 
