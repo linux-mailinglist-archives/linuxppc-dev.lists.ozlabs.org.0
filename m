@@ -2,59 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3583470DB0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 23:26:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E7A470DB3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 23:26:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J9lqb5Qpjz3dlj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 09:26:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J9lrJ5CFHz3fBj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 09:26:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=2lSBrqL7;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=AmDRzUTH;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=KpnJbo94;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=UgAZcMDw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
+ smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
  helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=2lSBrqL7; 
+ header.s=2020 header.b=KpnJbo94; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=AmDRzUTH; 
+ header.a=ed25519-sha256 header.s=2020e header.b=UgAZcMDw; 
  dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J9lgC2kHtz3cSS
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 09:19:03 +1100 (AEDT)
-Message-ID: <20211210221813.867985931@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J9lgF12jYz3cQZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 09:19:05 +1100 (AEDT)
+Message-ID: <20211210221813.928842960@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1639174740;
+ s=2020; t=1639174742;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=Y82OSyHV4tCeBzBC1rgQ8/N8FaTKISWwv/0ho8RVhuc=;
- b=2lSBrqL7tZdnQovckLcRFs+zUPITNEnJXtT+2t/rF3/6USo+oM3rVzWI5tmzBuF8v+fTql
- Y/WOe+crXeCISzmidHrjHzy1/dM/bLhEGF6X78s2KO5zgtoADPazF6hbJHmZc83RIDEZ+U
- S3NcKAlmaR7iXrlw0Wyt7MQ+5GzK/qAHQuSapmDPvqVfsc0Ygv0gok/KxyDWalxpEjwiij
- lOyBs1cQWG/UTyGJS+ODHvhGY9UGVMnlFBi1jRxRIBXX9aHbQyi5XmvGDAjr3NZ0MZ2nHe
- FZdyKYem/VTlhxHFL6icdY/Lr7wgeJS28HmRZY5DnE4kXSdKV/5/4F5fOjnGqw==
+ references:references; bh=QlSfKOBDbr45C76IAsibYWGajwRrbHzT4oR8MTMol6A=;
+ b=KpnJbo94PqafiDuB6cPP3ZG9y5TYJIE/BqRjDQ0OMl+P5klfpfRI7MUpyeTBzsKPc5S7kh
+ 7p3bE4N4UClxyjVm4RQXGQBoUIlrUzhcVfp1xJrqCvGQODcFtaL8VLk9npWo2+QOK7o5tV
+ b8D7JRJxi5hLB8IALGYUp00MiCX/ts+z5R21QKQl8nIuInb4hpSIHrSWUplo5op0d61N1y
+ RIhRFc5a7u4PREveCUA5ts1KCb929sEyBGYy7dGh0DMVlgqH0fqqZWZBKpVtc2K6Bc9eC1
+ SblHiCzRFrs/1DG8/HPJfiG3/K2bxSPCdWYGZWDWrbuFk9vApUEdyDOw8IUSng==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1639174740;
+ s=2020e; t=1639174742;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=Y82OSyHV4tCeBzBC1rgQ8/N8FaTKISWwv/0ho8RVhuc=;
- b=AmDRzUTHc7jg0q3On78/vfF7TTqillkRcjofWpZD4PcjdOpOL/P4qxmwngleQjhYBtmCNP
- dxdvwJMQPD35dMCw==
+ references:references; bh=QlSfKOBDbr45C76IAsibYWGajwRrbHzT4oR8MTMol6A=;
+ b=UgAZcMDwKNxLIdU8MxFmR1DNd/e2mpKEkmAj2dgcbgZL095ScwRy/HwPdGnfG/reYRKINs
+ E5jUy+5K8dMLKvAQ==
 From: Thomas Gleixner <tglx@linutronix.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 11/35] bus: fsl-mc-msi: Allocate MSI device data on first
- use
+Subject: [patch V3 12/35] soc: ti: ti_sci_inta_msi: Allocate MSI device data
+ on first use
 References: <20211210221642.869015045@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 10 Dec 2021 23:19:00 +0100 (CET)
+Date: Fri, 10 Dec 2021 23:19:01 +0100 (CET)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,40 +94,25 @@ Allocate the MSI device data on first invocation of the allocation function.
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Stuart Yoder <stuyoder@gmail.com>
-Cc: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Cc: Nishanth Menon <nm@ti.com>
+Cc: Tero Kristo <kristo@kernel.org>
+Cc: Santosh Shilimkar <ssantosh@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
 ---
- drivers/bus/fsl-mc/fsl-mc-msi.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/soc/ti/ti_sci_inta_msi.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/bus/fsl-mc/fsl-mc-msi.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-msi.c
-@@ -253,6 +253,14 @@ int fsl_mc_msi_domain_alloc_irqs(struct
- 	struct irq_domain *msi_domain;
- 	int error;
+--- a/drivers/soc/ti/ti_sci_inta_msi.c
++++ b/drivers/soc/ti/ti_sci_inta_msi.c
+@@ -120,6 +120,10 @@ int ti_sci_inta_msi_domain_alloc_irqs(st
+ 	if (pdev->id < 0)
+ 		return -ENODEV;
  
-+	msi_domain = dev_get_msi_domain(dev);
-+	if (!msi_domain)
-+		return -EINVAL;
++	ret = msi_setup_device_data(dev);
++	if (ret)
++		return ret;
 +
-+	error = msi_setup_device_data(dev);
-+	if (error)
-+		return error;
-+
- 	if (!list_empty(dev_to_msi_list(dev)))
- 		return -EINVAL;
- 
-@@ -260,12 +268,6 @@ int fsl_mc_msi_domain_alloc_irqs(struct
- 	if (error < 0)
- 		return error;
- 
--	msi_domain = dev_get_msi_domain(dev);
--	if (!msi_domain) {
--		error = -EINVAL;
--		goto cleanup_msi_descs;
--	}
--
- 	/*
- 	 * NOTE: Calling this function will trigger the invocation of the
- 	 * its_fsl_mc_msi_prepare() callback
+ 	nvec = ti_sci_inta_msi_alloc_descs(dev, res);
+ 	if (nvec <= 0)
+ 		return nvec;
 
