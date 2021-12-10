@@ -1,54 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B970470203
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 14:44:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B04D47032D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 15:54:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J9XF818Lkz3cPQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 00:44:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J9Yns08Lnz3c9K
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 01:54:09 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=axcBhrYY;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=loongson.cn;
- envelope-from=yangtiezhu@loongson.cn; receiver=<UNKNOWN>)
-X-Greylist: delayed 450 seconds by postgrey-1.36 at boromir;
- Sat, 11 Dec 2021 00:43:44 AEDT
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
- by lists.ozlabs.org (Postfix) with ESMTP id 4J9XDc0Qgvz3bW6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 00:43:43 +1100 (AEDT)
-Received: from linux.localdomain (unknown [113.200.148.30])
- by mail.loongson.cn (Coremail) with SMTP id AQAAf9AxusjBV7Nh3OEFAA--.12281S4; 
- Fri, 10 Dec 2021 21:36:03 +0800 (CST)
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-To: Dave Young <dyoung@redhat.com>, Baoquan He <bhe@redhat.com>,
- Vivek Goyal <vgoyal@redhat.com>, Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 2/2] kdump: crashdump: use copy_to() to simplify the related
- code
-Date: Fri, 10 Dec 2021 21:36:01 +0800
-Message-Id: <1639143361-17773-3-git-send-email-yangtiezhu@loongson.cn>
-X-Mailer: git-send-email 2.1.0
-In-Reply-To: <1639143361-17773-1-git-send-email-yangtiezhu@loongson.cn>
-References: <1639143361-17773-1-git-send-email-yangtiezhu@loongson.cn>
-X-CM-TRANSID: AQAAf9AxusjBV7Nh3OEFAA--.12281S4
-X-Coremail-Antispam: 1UD129KBjvJXoW3XrW5CF1rtr1fXr4fJF17Awb_yoW7KF13pr
- 1vk39ayr4Ig3Z8GasrtrnrWFW0qwn7G3W7J3yDC3WrZwnaqwnFvw1kJas2g3yjqr15KryF
- yF95Kr4Yy3y8W3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUPab7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
- 0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
- 8067AKxVWUXwA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF
- 64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcV
- CY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIE
- c7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I
- 8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCF
- s4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY02
- Avz4vE14v_Xr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAq
- x4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r
- 43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF
- 7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxV
- WUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU
- yuWlDUUUU
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::529;
+ helo=mail-ed1-x529.google.com; envelope-from=paolo.bonzini@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=axcBhrYY; dkim-atps=neutral
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com
+ [IPv6:2a00:1450:4864:20::529])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J9Yn66Twbz3bXV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 01:53:28 +1100 (AEDT)
+Received: by mail-ed1-x529.google.com with SMTP id y12so30102620eda.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 06:53:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=sender:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=ZPopxfZRkg4NTOl+klIySl5FTmEnEGA7/rHJVRlm4p0=;
+ b=axcBhrYY5F+b/7Id5o19CVMf16DlNK++Iv+QQkzI9Mnf7ZTRnJCaH9XidNQOFsOBwc
+ KF/wXTKGrFlcXFR9QcXh0tmfQaqluH4DlsgXOrJpdK/LJQrYRJUCa1eRc6to96/IwV2B
+ BlyqvjvgggseyLJ8qtFA8u7nkulUxlTbfdET3/IxAhjbM4n3l7+In1S5EkRZyqGZl5Ck
+ wKgANnRzx+uuEJWvWG98rzsSbQ650jB+d4dvhyUIs42e58MDzXi1cDPbfAvmMlzdfpM0
+ BOcEFYO9Tm6j84wjCz2oTA6sCdsavxKcq1hTPn1dIX2c8ATBFG3sdm+KRLTm8NvOgy5R
+ pgDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+ :subject:content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=ZPopxfZRkg4NTOl+klIySl5FTmEnEGA7/rHJVRlm4p0=;
+ b=L9jOdQxEMDW9fVyNWYsjgGXc8JYXDr5EgP7/oluPBilr2yyfce7eJ5VvWu4UYzwpEE
+ ingJ4qutHuFR+vYcg0/VgiV1IB24imOMDoyq9KybfUg6yCXRjeRZbK9K9FfwYsL40yxe
+ gYt7amH0RIitJJMLPfcxHxCin4294vsGelyC0Cpf0uOAC880T2vbcVZW7wGC1ZLmd+ep
+ 7ArNKFQajCHcpret/3HjPoFA4ELvKuL+k7O5G4ZtYCXPKaT+Mh/M/Yd6PGqRIoVFTzBl
+ wBOqaxzP75ZTeoVFXalewEsc+RzkB1Lo76YzYZ7H8rVfGbNEhoPSOxabNk72tmegjfb3
+ UdFg==
+X-Gm-Message-State: AOAM532PAvwOvdg8sinOQm1+J9EMiWTO13S9DhSTXHrBQZJ3fsAuzwS+
+ KNpm/yaGiMZNDLoXTy0Gyac=
+X-Google-Smtp-Source: ABdhPJzHeROj3HC5Sukl5Uto4GX2p0nJsKAKZ5t4nooil+qkn+wpDmJamxHHNUoZnQ1//006tmFgjQ==
+X-Received: by 2002:a50:e003:: with SMTP id e3mr38840536edl.374.1639147986203; 
+ Fri, 10 Dec 2021 06:53:06 -0800 (PST)
+Received: from ?IPV6:2001:b07:6468:f312:48f9:bea:a04c:3dfe?
+ ([2001:b07:6468:f312:48f9:bea:a04c:3dfe])
+ by smtp.googlemail.com with ESMTPSA id
+ yc24sm1573561ejb.104.2021.12.10.06.53.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 10 Dec 2021 06:53:05 -0800 (PST)
+Message-ID: <2d864e94-1bae-4cc2-7242-676ef102398f@redhat.com>
+Date: Fri, 10 Dec 2021 15:53:04 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v5 08/12] KVM: Reinstate gfn_to_pfn_cache with
+ invalidation support
+Content-Language: en-US
+To: David Woodhouse <dwmw2@infradead.org>, kvm <kvm@vger.kernel.org>
+References: <20211121125451.9489-1-dwmw2@infradead.org>
+ <20211121125451.9489-9-dwmw2@infradead.org>
+ <b1bacc6f-be56-4108-6e52-4315a021184b@redhat.com>
+ <b614d9ae0fe7910cfa72eee0b4077776f8012e5f.camel@infradead.org>
+ <6cb2cd57-16f3-d0ec-adf6-cb8fdcbae035@redhat.com>
+ <5d0a68cd0d06884a2a58338aace811144990f8f5.camel@infradead.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <5d0a68cd0d06884a2a58338aace811144990f8f5.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,213 +92,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, x86@kernel.org,
- kexec@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Anup Patel <anup.patel@wdc.com>,
+ "wanpengli @ tencent . com" <wanpengli@tencent.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Joao Martins <joao.m.martins@oracle.com>, Will Deacon <will@kernel.org>,
+ kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
+ "joro @ 8bytes . org" <joro@8bytes.org>, Huacai Chen <chenhuacai@kernel.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>, karahmed@amazon.com,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ butt3rflyh4ck <butterflyhuangxx@gmail.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ "jmattson @ google . com" <jmattson@google.com>,
+ "seanjc @ google . com" <seanjc@google.com>,
+ "mtosatti @ redhat . com" <mtosatti@redhat.com>, linux-mips@vger.kernel.org,
+ James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org,
+ Marc Zyngier <maz@kernel.org>, "vkuznets @ redhat . com" <vkuznets@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use copy_to() to simplify the related code about copy_oldmem_page()
-in arch/*/kernel/crash_dump*.c files.
+On 12/10/21 13:25, David Woodhouse wrote:
+> On Thu, 2021-12-09 at 23:34 +0100, Paolo Bonzini wrote:
+>>
+>> Compared to the review it's missing this hunk:
+>>
+>> @@ -265,7 +265,7 @@ void kvm_gfn_to_pfn_cache_unmap(struct kvm *kvm, struct gfn_to_pfn_cache *gpc)
+>>
+>>          gpc->valid = false;
+>>
+>> -       old_khva = gpc->khva;
+>> +       old_khva = (void *)((unsigned long)gpc->khva & ~PAGE_MASK);
+>>          old_dirty = gpc->dirty;
+> 
+> Do you know what? I couldn't bring myself to add that a second time. I
+> managed it once, but it made me sad.
+> 
+> Did it like this instead:
+> 
+> -       old_khva = gpc->khva;
+> +       old_khva = gpc->khva - offset_in_page(gpc->khva);
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
----
- arch/arm/kernel/crash_dump.c     | 10 ++--------
- arch/arm64/kernel/crash_dump.c   | 10 ++--------
- arch/ia64/kernel/crash_dump.c    | 10 ++++------
- arch/mips/kernel/crash_dump.c    |  9 ++-------
- arch/powerpc/kernel/crash_dump.c |  7 ++-----
- arch/riscv/kernel/crash_dump.c   |  9 ++-------
- arch/sh/kernel/crash_dump.c      |  9 ++-------
- arch/x86/kernel/crash_dump_32.c  |  9 ++-------
- arch/x86/kernel/crash_dump_64.c  |  9 ++-------
- 9 files changed, 20 insertions(+), 62 deletions(-)
+Very nice, and it would have deserved a macro in include/linux if there 
+wasn't a decent way to write it.
 
-diff --git a/arch/arm/kernel/crash_dump.c b/arch/arm/kernel/crash_dump.c
-index 53cb924..6491f1d 100644
---- a/arch/arm/kernel/crash_dump.c
-+++ b/arch/arm/kernel/crash_dump.c
-@@ -40,14 +40,8 @@ ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
- 	if (!vaddr)
- 		return -ENOMEM;
- 
--	if (userbuf) {
--		if (copy_to_user(buf, vaddr + offset, csize)) {
--			iounmap(vaddr);
--			return -EFAULT;
--		}
--	} else {
--		memcpy(buf, vaddr + offset, csize);
--	}
-+	if (copy_to(buf, vaddr + offset, csize, userbuf))
-+		csize = -EFAULT;
- 
- 	iounmap(vaddr);
- 	return csize;
-diff --git a/arch/arm64/kernel/crash_dump.c b/arch/arm64/kernel/crash_dump.c
-index 58303a9..496e6a5 100644
---- a/arch/arm64/kernel/crash_dump.c
-+++ b/arch/arm64/kernel/crash_dump.c
-@@ -38,14 +38,8 @@ ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
- 	if (!vaddr)
- 		return -ENOMEM;
- 
--	if (userbuf) {
--		if (copy_to_user((char __user *)buf, vaddr + offset, csize)) {
--			memunmap(vaddr);
--			return -EFAULT;
--		}
--	} else {
--		memcpy(buf, vaddr + offset, csize);
--	}
-+	if (copy_to(buf, vaddr + offset, csize, userbuf))
-+		csize = -EFAULT;
- 
- 	memunmap(vaddr);
- 
-diff --git a/arch/ia64/kernel/crash_dump.c b/arch/ia64/kernel/crash_dump.c
-index 0ed3c3d..20f4c4e 100644
---- a/arch/ia64/kernel/crash_dump.c
-+++ b/arch/ia64/kernel/crash_dump.c
-@@ -39,13 +39,11 @@ copy_oldmem_page(unsigned long pfn, char *buf,
- 
- 	if (!csize)
- 		return 0;
-+
- 	vaddr = __va(pfn<<PAGE_SHIFT);
--	if (userbuf) {
--		if (copy_to_user(buf, (vaddr + offset), csize)) {
--			return -EFAULT;
--		}
--	} else
--		memcpy(buf, (vaddr + offset), csize);
-+	if (copy_to(buf, vaddr + offset, csize, userbuf))
-+		return -EFAULT;
-+
- 	return csize;
- }
- 
-diff --git a/arch/mips/kernel/crash_dump.c b/arch/mips/kernel/crash_dump.c
-index 2e50f551..80704dc 100644
---- a/arch/mips/kernel/crash_dump.c
-+++ b/arch/mips/kernel/crash_dump.c
-@@ -24,13 +24,8 @@ ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
- 		return 0;
- 
- 	vaddr = kmap_local_pfn(pfn);
--
--	if (!userbuf) {
--		memcpy(buf, vaddr + offset, csize);
--	} else {
--		if (copy_to_user(buf, vaddr + offset, csize))
--			csize = -EFAULT;
--	}
-+	if (copy_to(buf, vaddr + offset, csize, userbuf))
-+		csize = -EFAULT;
- 
- 	kunmap_local(vaddr);
- 
-diff --git a/arch/powerpc/kernel/crash_dump.c b/arch/powerpc/kernel/crash_dump.c
-index 5693e1c67..43b2658 100644
---- a/arch/powerpc/kernel/crash_dump.c
-+++ b/arch/powerpc/kernel/crash_dump.c
-@@ -71,11 +71,8 @@ void __init setup_kdump_trampoline(void)
- static size_t copy_oldmem_vaddr(void *vaddr, char *buf, size_t csize,
-                                unsigned long offset, int userbuf)
- {
--	if (userbuf) {
--		if (copy_to_user((char __user *)buf, (vaddr + offset), csize))
--			return -EFAULT;
--	} else
--		memcpy(buf, (vaddr + offset), csize);
-+	if (copy_to(buf, vaddr + offset, csize, userbuf))
-+		return -EFAULT;
- 
- 	return csize;
- }
-diff --git a/arch/riscv/kernel/crash_dump.c b/arch/riscv/kernel/crash_dump.c
-index 86cc0ad..707fbc1 100644
---- a/arch/riscv/kernel/crash_dump.c
-+++ b/arch/riscv/kernel/crash_dump.c
-@@ -33,13 +33,8 @@ ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
- 	if (!vaddr)
- 		return -ENOMEM;
- 
--	if (userbuf) {
--		if (copy_to_user((char __user *)buf, vaddr + offset, csize)) {
--			memunmap(vaddr);
--			return -EFAULT;
--		}
--	} else
--		memcpy(buf, vaddr + offset, csize);
-+	if (copy_to(buf, vaddr + offset, csize, userbuf))
-+		csize = -EFAULT;
- 
- 	memunmap(vaddr);
- 	return csize;
-diff --git a/arch/sh/kernel/crash_dump.c b/arch/sh/kernel/crash_dump.c
-index 5b41b59..2af9286 100644
---- a/arch/sh/kernel/crash_dump.c
-+++ b/arch/sh/kernel/crash_dump.c
-@@ -33,13 +33,8 @@ ssize_t copy_oldmem_page(unsigned long pfn, char *buf,
- 
- 	vaddr = ioremap(pfn << PAGE_SHIFT, PAGE_SIZE);
- 
--	if (userbuf) {
--		if (copy_to_user((void __user *)buf, (vaddr + offset), csize)) {
--			iounmap(vaddr);
--			return -EFAULT;
--		}
--	} else
--	memcpy(buf, (vaddr + offset), csize);
-+	if (copy_to(buf, vaddr + offset, csize, userbuf))
-+		csize = -EFAULT;
- 
- 	iounmap(vaddr);
- 	return csize;
-diff --git a/arch/x86/kernel/crash_dump_32.c b/arch/x86/kernel/crash_dump_32.c
-index 5fcac46..731658b 100644
---- a/arch/x86/kernel/crash_dump_32.c
-+++ b/arch/x86/kernel/crash_dump_32.c
-@@ -54,13 +54,8 @@ ssize_t copy_oldmem_page(unsigned long pfn, char *buf, size_t csize,
- 		return -EFAULT;
- 
- 	vaddr = kmap_local_pfn(pfn);
--
--	if (!userbuf) {
--		memcpy(buf, vaddr + offset, csize);
--	} else {
--		if (copy_to_user(buf, vaddr + offset, csize))
--			csize = -EFAULT;
--	}
-+	if (copy_to(buf, vaddr + offset, csize, userbuf))
-+		csize = -EFAULT;
- 
- 	kunmap_local(vaddr);
- 
-diff --git a/arch/x86/kernel/crash_dump_64.c b/arch/x86/kernel/crash_dump_64.c
-index a7f617a..8e7c192 100644
---- a/arch/x86/kernel/crash_dump_64.c
-+++ b/arch/x86/kernel/crash_dump_64.c
-@@ -29,13 +29,8 @@ static ssize_t __copy_oldmem_page(unsigned long pfn, char *buf, size_t csize,
- 	if (!vaddr)
- 		return -ENOMEM;
- 
--	if (userbuf) {
--		if (copy_to_user((void __user *)buf, vaddr + offset, csize)) {
--			iounmap((void __iomem *)vaddr);
--			return -EFAULT;
--		}
--	} else
--		memcpy(buf, vaddr + offset, csize);
-+	if (copy_to(buf, vaddr + offset, csize, userbuf))
-+		csize = -EFAULT;
- 
- 	set_iounmap_nonlazy();
- 	iounmap((void __iomem *)vaddr);
--- 
-2.1.0
+> I checked that for me at least, GCC is clever enough to just do the
+> mask.
+> 
+>          old_khva = gpc->khva - offset_in_page(gpc->khva);
+>   131:   48 8b 43 78             mov    0x78(%rbx),%rax
+>   135:   48 25 00 f0 ff ff       and    $0xfffffffffffff000,%rax
+> 
+> 
+> I still don't see the previous patches in kvm/next — is that an
+> automatic push after testing has passed, or is the kernel.org
+> infrastructure just *really* slow?
+
+No, it's me really wanting to send out the -rc5 pull request before the 
+weekend.  Just wait five more minutes.
+
+Paolo
+
+> I've pushed based on the currently-visible kvm/next to
+> https://git.infradead.org/users/dwmw2/linux.git/shortlog/refs/heads/xen-evtchn
+> and can resend when the tree finally surfaces.
+> 
 
