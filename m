@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B6A471E5C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Dec 2021 23:53:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52CBE471E5E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Dec 2021 23:53:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JC0Kl4Hg1z3f2Q
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 09:53:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JC0LD1DHnz3cVM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 09:53:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.161.53; helo=mail-oo1-f53.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.54; helo=mail-ot1-f54.google.com;
  envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com
- [209.85.161.53])
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com
+ [209.85.210.54])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J9fMT4cx3z2ywb
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 05:20:05 +1100 (AEDT)
-Received: by mail-oo1-f53.google.com with SMTP id
- e17-20020a4a8291000000b002c5ee0645e7so2604628oog.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 10:20:05 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J9fP200qpz3c6D
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 05:21:24 +1100 (AEDT)
+Received: by mail-ot1-f54.google.com with SMTP id
+ x3-20020a05683000c300b0057a5318c517so10388080oto.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 10:21:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=otNvdkTkoV7wYQ8jKu5rR7dHo6vQCE5BmfrHPdMYTOI=;
- b=m4smvaqLAczc/RH8jHs8YIoTDYSGGlJ4ZsAQPl+SY5Iu5/NE8ALq9aDJvX6g8QM5Mw
- m4sLGb7B1Tr7iFAUeStPT16dtVoiANPipAQDdfuP57z5UiOp1VDiJGfo1SBn+Jh5+ft6
- tRz0hpBdS0ED+myRFseQ0fXb0qqYUeTatBdKfUoJP000pQgHNRJrIqhRdN48QYLcud3V
- j0BN6ZC3t8qdQzUlK8q4bWdSe1jRrJYDRi2OWJNIn1uEVLA/nMaMfmlOwHCcXywyDfyz
- Andxm+pbqSvnCP3TtS8mA6uKLCQvVU71dlNoJGR0Q0rctkFiyqNcLxz2LG3CU4TTiP94
- PX7w==
-X-Gm-Message-State: AOAM530Qguzp+Y0/GHNI69/YizG/5WShNRVU/r5yxwPCAYq5YJCfzrUW
- 1x2/4Wvcz5E3+VMCIJQIlrwZSVR4KIAH+6hu4xQ=
-X-Google-Smtp-Source: ABdhPJwWhlgSTT1XO9DdsJeGtp3+qj/KLI9CFrQ1iXrm/9qKavB6UGr0uIjkNl6uj3XKEKq2VM+aZTVW+dl+zG+2Q+M=
-X-Received: by 2002:a4a:1d82:: with SMTP id 124mr9074671oog.91.1639160403307; 
- Fri, 10 Dec 2021 10:20:03 -0800 (PST)
+ bh=CGnO4bxnTAqMK/uthYlBDN3+OwLPbg309qxpgobdKxI=;
+ b=1I2pVelhuFbWAEfL8VBpPoO/10+iU+D0oM1jX1rMSmj94D7HRZ7NwGyaQPhRZggqB5
+ sNDU96TarnjRH8KRmeFD6Es6benrZ/oEfBxGVeVjIr5uYZVXPUR4f1BNZqz6WqwJOCTR
+ DFEDBfQtkZuuKANYSZLNnLm5GVoW+7u/XXEMmTu4qDj092swiXj3wbaiqQBtNuuE8KtC
+ 5AHfne0+BtDcvvwlgmm/MQ1fbo5A6Xc28vTDhqjlZEG0VwYtzjYAU32mPKB4XHk/nLc6
+ lwEO/PxsnhpCJcmRjXE6IdJBztx8bqZWFjPVhehnnSfcrSqPe/gL0LYeTUAESv+mek2n
+ kJBw==
+X-Gm-Message-State: AOAM531HnE2tnBVGoqLVupEMRJRsWQkBpKDL5POzgTGZINuDB7A5atQe
+ oPzS2Ekg63zw+56bSRYGtfi/0jbMM9j22x5tCJk=
+X-Google-Smtp-Source: ABdhPJxyUbegeOKjvJ3CxiHL7dwpj9EzFVDPRUNdKiJGM3d307QrxgUO9bUGZj0EMwemLB2snxZHAeDirffJcqK0rDM=
+X-Received: by 2002:a05:6830:1e57:: with SMTP id
+ e23mr12377743otj.16.1639160481982; 
+ Fri, 10 Dec 2021 10:21:21 -0800 (PST)
 MIME-Version: 1.0
 References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-4-digetx@gmail.com>
-In-Reply-To: <20211126180101.27818-4-digetx@gmail.com>
+ <20211126180101.27818-5-digetx@gmail.com>
+In-Reply-To: <20211126180101.27818-5-digetx@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 10 Dec 2021 19:19:52 +0100
-Message-ID: <CAJZ5v0jTJ3f7oUUR690PGaPJsxA8yzua9XDa8MONBHMzHnDfOQ@mail.gmail.com>
-Subject: Re: [PATCH v4 03/25] notifier: Add
- atomic/blocking_notifier_has_unique_priority()
+Date: Fri, 10 Dec 2021 19:21:11 +0100
+Message-ID: <CAJZ5v0h_OfrQ92KqsUdiKAfUrXDT9dPXzq4S=b6zi4k_2cPAjg@mail.gmail.com>
+Subject: Re: [PATCH v4 04/25] reboot: Correct typo in a comment
 To: Dmitry Osipenko <digetx@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Mon, 13 Dec 2021 09:47:48 +1100
@@ -107,138 +107,29 @@ Sender: "Linuxppc-dev"
 
 On Fri, Nov 26, 2021 at 7:02 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 >
-> Add atomic/blocking_notifier_has_unique_priority() helpers which return
-> true if given handler has unique priority.
+> Correct s/implemenations/implementations/ in <reboot.h>.
 >
 > Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+
+This patch clearly need not be part of this series.
+
 > ---
->  include/linux/notifier.h |  5 +++
->  kernel/notifier.c        | 69 ++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 74 insertions(+)
+>  include/linux/reboot.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/include/linux/notifier.h b/include/linux/notifier.h
-> index 924c9d7c8e73..2c4036f225e1 100644
-> --- a/include/linux/notifier.h
-> +++ b/include/linux/notifier.h
-> @@ -175,6 +175,11 @@ int raw_notifier_call_chain_robust(struct raw_notifier_head *nh,
+> diff --git a/include/linux/reboot.h b/include/linux/reboot.h
+> index af907a3d68d1..7c288013a3ca 100644
+> --- a/include/linux/reboot.h
+> +++ b/include/linux/reboot.h
+> @@ -63,7 +63,7 @@ struct pt_regs;
+>  extern void machine_crash_shutdown(struct pt_regs *);
 >
->  bool blocking_notifier_call_chain_is_empty(struct blocking_notifier_head *nh);
->
-> +bool atomic_notifier_has_unique_priority(struct atomic_notifier_head *nh,
-> +               struct notifier_block *nb);
-> +bool blocking_notifier_has_unique_priority(struct blocking_notifier_head *nh,
-> +               struct notifier_block *nb);
-> +
->  #define NOTIFY_DONE            0x0000          /* Don't care */
->  #define NOTIFY_OK              0x0001          /* Suits me */
->  #define NOTIFY_STOP_MASK       0x8000          /* Don't call further */
-> diff --git a/kernel/notifier.c b/kernel/notifier.c
-> index b20cb7b9b1f0..7a325b742104 100644
-> --- a/kernel/notifier.c
-> +++ b/kernel/notifier.c
-> @@ -122,6 +122,19 @@ static int notifier_call_chain_robust(struct notifier_block **nl,
->         return ret;
->  }
->
-> +static int notifier_has_unique_priority(struct notifier_block **nl,
-> +                                       struct notifier_block *n)
-> +{
-> +       while (*nl && (*nl)->priority >= n->priority) {
-> +               if ((*nl)->priority == n->priority && *nl != n)
-> +                       return false;
-> +
-> +               nl = &((*nl)->next);
-> +       }
-> +
-> +       return true;
-> +}
-> +
 >  /*
->   *     Atomic notifier chain routines.  Registration and unregistration
->   *     use a spinlock, and call_chain is synchronized by RCU (no locks).
-> @@ -203,6 +216,30 @@ int atomic_notifier_call_chain(struct atomic_notifier_head *nh,
->  EXPORT_SYMBOL_GPL(atomic_notifier_call_chain);
->  NOKPROBE_SYMBOL(atomic_notifier_call_chain);
+> - * Architecture independent implemenations of sys_reboot commands.
+> + * Architecture independent implementations of sys_reboot commands.
+>   */
 >
-> +/**
-> + *     atomic_notifier_has_unique_priority - Checks whether notifier's priority is unique
-> + *     @nh: Pointer to head of the atomic notifier chain
-> + *     @n: Entry in notifier chain to check
-> + *
-> + *     Checks whether there is another notifier in the chain with the same priority.
-> + *     Must be called in process context.
-> + *
-> + *     Returns true if priority is unique, false otherwise.
-> + */
-> +bool atomic_notifier_has_unique_priority(struct atomic_notifier_head *nh,
-> +               struct notifier_block *n)
-> +{
-> +       unsigned long flags;
-> +       bool ret;
-> +
-> +       spin_lock_irqsave(&nh->lock, flags);
-> +       ret = notifier_has_unique_priority(&nh->head, n);
-> +       spin_unlock_irqrestore(&nh->lock, flags);
-
-This only works if the caller can prevent new entries from being added
-to the list at this point or if the caller knows that they cannot be
-added for some reason, but the kerneldoc doesn't mention this
-limitation.
-
-> +
-> +       return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(atomic_notifier_has_unique_priority);
-> +
->  /*
->   *     Blocking notifier chain routines.  All access to the chain is
->   *     synchronized by an rwsem.
-> @@ -336,6 +373,38 @@ bool blocking_notifier_call_chain_is_empty(struct blocking_notifier_head *nh)
->  }
->  EXPORT_SYMBOL_GPL(blocking_notifier_call_chain_is_empty);
->
-> +/**
-> + *     blocking_notifier_has_unique_priority - Checks whether notifier's priority is unique
-> + *     @nh: Pointer to head of the blocking notifier chain
-> + *     @n: Entry in notifier chain to check
-> + *
-> + *     Checks whether there is another notifier in the chain with the same priority.
-> + *     Must be called in process context.
-> + *
-> + *     Returns true if priority is unique, false otherwise.
-> + */
-> +bool blocking_notifier_has_unique_priority(struct blocking_notifier_head *nh,
-> +               struct notifier_block *n)
-> +{
-> +       bool ret;
-> +
-> +       /*
-> +        * This code gets used during boot-up, when task switching is
-> +        * not yet working and interrupts must remain disabled. At such
-> +        * times we must not call down_read().
-> +        */
-> +       if (system_state != SYSTEM_BOOTING)
-
-No, please don't do this, it makes the whole thing error-prone.
-
-> +               down_read(&nh->rwsem);
-> +
-> +       ret = notifier_has_unique_priority(&nh->head, n);
-> +
-> +       if (system_state != SYSTEM_BOOTING)
-> +               up_read(&nh->rwsem);
-
-And still what if a new entry with a non-unique priority is added to
-the chain at this point?
-
-> +
-> +       return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(blocking_notifier_has_unique_priority);
-> +
->  /*
->   *     Raw notifier chain routines.  There is no protection;
->   *     the caller must provide it.  Use at your own risk!
+>  extern void kernel_restart_prepare(char *cmd);
 > --
 > 2.33.1
 >
