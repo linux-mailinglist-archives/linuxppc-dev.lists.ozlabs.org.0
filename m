@@ -2,77 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF52471E63
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Dec 2021 23:56:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 805A6471E64
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Dec 2021 23:56:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JC0P44cvxz3dm8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 09:56:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JC0Pq2ftzz3cbr
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 09:56:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IxhbpvG2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lRJVrFA1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12b;
- helo=mail-lf1-x12b.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12f;
+ helo=mail-lf1-x12f.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=IxhbpvG2; dkim-atps=neutral
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com
- [IPv6:2a00:1450:4864:20::12b])
+ header.s=20210112 header.b=lRJVrFA1; dkim-atps=neutral
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com
+ [IPv6:2a00:1450:4864:20::12f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J9g732M27z2ywV
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 05:54:23 +1100 (AEDT)
-Received: by mail-lf1-x12b.google.com with SMTP id bu18so19850476lfb.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 10:54:22 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J9g9f5Wf8z3bjD
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 05:56:38 +1100 (AEDT)
+Received: by mail-lf1-x12f.google.com with SMTP id cf39so7611002lfb.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 10:56:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=subject:to:cc:references:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=IKf1m11e2CmLOphgB5tXRwG67Tf75LBrlnq5Vg7yJZw=;
- b=IxhbpvG2CFXB3xmkjVMdWRMntYmHOq8xg7eP7zr/AbSS5vu1B9sdxo5o91nGOD2995
- QQ3KG6tw48EY7IhOrAyb30j6v2PDl8KJF+jKSnPayvNkG1XmqZAU+fLfW7OnlwsZZOnn
- 0A9elkL050dIg2mh2nAMxrCkv1StUF1LjCWn+NlhosKjCmIUCMa0MKcmxWQ+/W+IgKI6
- i8CNkkus5bglRUlOxac8XP3LVuSzA40MUvRiA2U0B7IAsHpJ1AsKj9N6snoJl+u70szG
- pZzPqoOnQIc/elfvbeQCxFa9JUiQLy0NMI8wwjD0fM288MJ0ySJSpfHIgwDyPyb7i3mv
- C2Og==
+ bh=OLTFQmX2Kf2e3cZmLG4jxsS1bq2aSoDXpxl5QnKq9FU=;
+ b=lRJVrFA11Fu94g9aC4quIzKTIJBQHb56jvC3UHQRYxQnYMhhiqHXe+HNIaU6izZboH
+ h0BDFCIwI4bVAz64DQVVsH0MSKsIo5r3rhYcpSgEs+F8SRLOvGUk6MezYqtprOuHSHY+
+ xZjhnDgdSP0x9ihrSMtshGYvbNVvxVMeCabfWJNzXp5+bcL+U+5yCBZgtjUoQy5c5Srk
+ XvThuXHF65j6/Qpyivd03hsOvMnXYmDchKWNvnb9km4xj+cql2CnI3JZSdhbiWgBDsX+
+ pJV/q1mj1vSBgnFw5Nf3SQ1PcuWrLHkWB0ABMsx7hJcTqhLbY3gqIMN0WZdDvJ/sUnhK
+ zo7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=IKf1m11e2CmLOphgB5tXRwG67Tf75LBrlnq5Vg7yJZw=;
- b=NlXxnifyufDdeeddAE61ZB0LbwzYjoDgvsBexN9esrfUXNabWYWCB3AS5WLYGFT1Aj
- lKaoYdViwoNvFDkCgvdsJdIB8sk7kMt4RN3NkRinHSuBwsoD5HkSmp3NaYAZk/0rBXND
- 0ARcHhw01lk85Tsz05lhW+KIXSUSKNLW2+YE00jieuPif/2k1PQyJ5PXFa/He4yxjEUg
- f6jqsSiYyOj6Yv6bM41VDjyJK/rgrLSLMowegYvwoS/oQhQOrKCYWeulqg7XQvQaQbp2
- JBG0+y0jp7I2OZ3Ov1AWWt+fBJE/x1xucWrSIVjmSnAJbaaFQHaBHLGwcno4WZ7Xw5Bi
- vu5Q==
-X-Gm-Message-State: AOAM532enJudLSNOqLleGMllBNVUGeVpnGf4+2wyvSl0XlqgKOiX6gk4
- oxEPtC00vKQn9yRIj6b4wi0=
-X-Google-Smtp-Source: ABdhPJyNtPZVq+j4jRpVe2vNWn4eVPA/mLyRKU7MjcAV9J6qXLR8NEClMh21SuEPG0vCBnH7Acz/0w==
-X-Received: by 2002:ac2:4c4d:: with SMTP id o13mr13668768lfk.196.1639162460068; 
- Fri, 10 Dec 2021 10:54:20 -0800 (PST)
+ bh=OLTFQmX2Kf2e3cZmLG4jxsS1bq2aSoDXpxl5QnKq9FU=;
+ b=1f5uKvUaLQNhWBQz2ew9n+iNNUHODr3DeAh1N1B7VxExRWa1ieObWV+0s44O1nemkS
+ aWAqlGx8JuufPTaj8BKNyNdfu1SNv+QPHemf2uXs9mRf6SJjixa34u06e3GbPRYZF9E/
+ PPeeMZj38FpVFqVDo+zm6BlWVLXf1hrVKV+u5jB6Ajtl3us+KjIiSvIo+//BW4Ec91+Q
+ NPng1j1qJs6lrcN1acv/NZbMGmHypi5QsgQTJ7rn0Lb088HIHhVpGQtUeqrBsnHKVpMX
+ 0kM8X373X/gEU1KZQkMaxozJGcZKITMjgb1U5u1sPZjug+KxH58J27Q4j95Y/6mdX0yC
+ KOVw==
+X-Gm-Message-State: AOAM532hBtwnhJ0PEfaC9Zmi3Tjf4FbLaOf9nF3nSKxY2JN3G1IobYsP
+ eWnMTiAy6gDp81pWr1gtIKU=
+X-Google-Smtp-Source: ABdhPJx4BKlEbZ+Eghk+XJYmXdOJaHtYRLuIKsc/RB19AF8hnZocVzO0VkIjSpmfvEqny0BWm7yDgw==
+X-Received: by 2002:ac2:5101:: with SMTP id q1mr8849810lfb.319.1639162594092; 
+ Fri, 10 Dec 2021 10:56:34 -0800 (PST)
 Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru.
  [94.29.46.111])
- by smtp.googlemail.com with ESMTPSA id v15sm390403ljj.5.2021.12.10.10.54.17
+ by smtp.googlemail.com with ESMTPSA id b10sm416126lfj.230.2021.12.10.10.56.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Dec 2021 10:54:19 -0800 (PST)
-Subject: Re: [PATCH v4 06/25] reboot: Warn if unregister_restart_handler()
- fails
+ Fri, 10 Dec 2021 10:56:33 -0800 (PST)
+Subject: Re: [PATCH v4 07/25] reboot: Remove extern annotation from function
+ prototypes
 To: "Rafael J. Wysocki" <rafael@kernel.org>
 References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-7-digetx@gmail.com>
- <CAJZ5v0ii7tGRDbxw+5GqdyONXvRPznXUqBZd03+pdoAd+pH=JQ@mail.gmail.com>
+ <20211126180101.27818-8-digetx@gmail.com>
+ <CAJZ5v0i=zgubEtF5-Wnaqa5FMnfVUdSnEmD11-LAuYCH8ZCwrA@mail.gmail.com>
+ <acf8289e-6ab8-6eda-ec06-e9044ddd9a92@gmail.com>
+ <CAJZ5v0gvuteY4EtXWTKmh4-Wt-Z_dPcqfDLwc-ja1uovbV3rpw@mail.gmail.com>
 From: Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <c518ce36-09d2-16a3-cec2-6bab8260e3cf@gmail.com>
-Date: Fri, 10 Dec 2021 21:54:17 +0300
+Message-ID: <bafcaa92-5bd1-874c-c5ff-a72ebc98945d@gmail.com>
+Date: Fri, 10 Dec 2021 21:56:31 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0ii7tGRDbxw+5GqdyONXvRPznXUqBZd03+pdoAd+pH=JQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0gvuteY4EtXWTKmh4-Wt-Z_dPcqfDLwc-ja1uovbV3rpw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -131,38 +133,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-10.12.2021 21:32, Rafael J. Wysocki пишет:
-> On Fri, Nov 26, 2021 at 7:02 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+10.12.2021 21:35, Rafael J. Wysocki пишет:
+> On Fri, Dec 10, 2021 at 7:16 PM Dmitry Osipenko <digetx@gmail.com> wrote:
 >>
->> Emit warning if unregister_restart_handler() fails since it never should
->> fail. This will ease further API development by catching mistakes early.
+>> 10.12.2021 21:09, Rafael J. Wysocki пишет:
+>>> On Fri, Nov 26, 2021 at 7:02 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+>>>>
+>>>> There is no need to annotate function prototypes with 'extern', it makes
+>>>> code less readable. Remove unnecessary annotations from <reboot.h>.
+>>>>
+>>>> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+>>>
+>>> I'm not sure that this is really useful.
+>>>
+>>> Personally, I tend to respect the existing conventions like this.
+>>>
+>>> Surely, this change is not required for the rest of the series to work.
 >>
->> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
->> ---
->>  kernel/reboot.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> Problem that such things start to spread all over the kernel with a
+>> copy-paste approach if there is nobody to clean up the code.
 >>
->> diff --git a/kernel/reboot.c b/kernel/reboot.c
->> index e6659ae329f1..f0e7b9c13f6b 100644
->> --- a/kernel/reboot.c
->> +++ b/kernel/reboot.c
->> @@ -210,7 +210,7 @@ EXPORT_SYMBOL(register_restart_handler);
->>   */
->>  int unregister_restart_handler(struct notifier_block *nb)
->>  {
->> -       return atomic_notifier_chain_unregister(&restart_handler_list, nb);
->> +       return WARN_ON(atomic_notifier_chain_unregister(&restart_handler_list, nb));
+>> This is not a common convention and sometimes it's getting corrected [1].
+>>
+>> [1] https://git.kernel.org/linus/6d7434931
 > 
-> The only reason why it can fail is if the object pointed to by nb is
-> not in the chain.
+> In separate patches outside of series adding new features, if one is
+> so inclined.
+> 
 
-I had exactly this case where object wasn't in the chain due to a bug
-and this warning was very helpful.
-
->  Why WARN() about this?  And what about systems with
-> panic_on_warn set?
-
-That warning condition will never happen normally, only when something
-is seriously wrong.
-
-Those systems with panic_on_warn will get what was they asked for.
+Alright, I'll drop this patch then because it can't be done in parallel
+without creating the merge conflict. I'll try not to forget to come back
+to this later on.
