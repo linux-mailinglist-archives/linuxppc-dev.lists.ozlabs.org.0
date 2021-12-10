@@ -1,82 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CAC471E5B
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Dec 2021 23:52:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B6A471E5C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Dec 2021 23:53:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JC0KD3DMLz3cnX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 09:52:48 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AqjAg4O7;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JC0Kl4Hg1z3f2Q
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 09:53:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12d;
- helo=mail-lf1-x12d.google.com; envelope-from=digetx@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=AqjAg4O7; dkim-atps=neutral
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com
- [IPv6:2a00:1450:4864:20::12d])
+ smtp.mailfrom=gmail.com (client-ip=209.85.161.53; helo=mail-oo1-f53.google.com;
+ envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com
+ [209.85.161.53])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J9fLv4pTrz2ywR
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 05:19:35 +1100 (AEDT)
-Received: by mail-lf1-x12d.google.com with SMTP id m6so7747334lfu.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 10:19:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=EXOlhuwO6PwxX2A+xhcTtBM4hDyUpnAJiexjEXDAvCY=;
- b=AqjAg4O7giyzVdt+tBG9uHdplJtifqxLx/yVu+cgoY6plA3iYDA6wXW+lamp4aSGK0
- JtAw3aPoKL/gydUbbFYOf1pi7KNgtnB7CRHE+MknWMiFR30YU057EAppHMp3RQPfHd8d
- 06yVvqsThCCunZ4BRns7COFfMth1pjRjda7taFbydUf0oWJrqvgB05orw4q9ScnuxSKa
- RGrhlOCs187IEnib8HCpTe8JzWEZV9cVroOWHPffKJtOeT7C/Fogm7PG4qgUyWMygMmF
- ds56Fkt5Zck/MXhrzJhxcRgHcy1bwpmNWqyftpmBQa7CL/iiV+9v5OptrusSns2ZXc73
- k16Q==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J9fMT4cx3z2ywb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 05:20:05 +1100 (AEDT)
+Received: by mail-oo1-f53.google.com with SMTP id
+ e17-20020a4a8291000000b002c5ee0645e7so2604628oog.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 10:20:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=EXOlhuwO6PwxX2A+xhcTtBM4hDyUpnAJiexjEXDAvCY=;
- b=JerITK+bELFANRtzb5MGJsaPPN0MdkXnd3G88gVss/EkAleJQqy8bOphxAb8t0KOJJ
- nyYOcYWYgX5NzsmhtORXJljcIzMKSNeADdOYq2T+2PSTqWqa2E8TJGc5L99TrX2zl3uu
- lsNdn9kFPFDVgP0WcdFHI56PpIcROqFQa/40KK7EM9IlYO+WxChci8QmV8tMHcLt5Se5
- 2rcnd2h19Ldgnof2t3801Eop1E+Q4zrK+BHvf0A6uNd3dvwq7Ufd/ol0yp9GWYPbuQ8+
- IuPK5O/K9tPm34E90ARPq1bFlQcCXBSsblSbILZ4ZwbjTShL6+x8gfvPY7gDKbeSEEf1
- OGPQ==
-X-Gm-Message-State: AOAM533r2tAbE7RpB3Dk5RabNH4agfvEuBKRrfWBNF7efHepeiFeA3u6
- UiZ1H4eMu10b/lFrVTejjGk=
-X-Google-Smtp-Source: ABdhPJzMrOyS+fXdy9iuUu0OwY3ayky869D80K4hHhkf8whZoWRjpK8Gq06BVfaBtvKTtjzQFmSyrg==
-X-Received: by 2002:a05:6512:2603:: with SMTP id
- bt3mr13366040lfb.202.1639160372149; 
- Fri, 10 Dec 2021 10:19:32 -0800 (PST)
-Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru.
- [94.29.46.111])
- by smtp.googlemail.com with ESMTPSA id u16sm379604lfu.42.2021.12.10.10.19.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Dec 2021 10:19:31 -0800 (PST)
-Subject: Re: [PATCH v4 02/25] notifier: Add
- blocking_notifier_call_chain_is_empty()
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-3-digetx@gmail.com>
- <CAJZ5v0gy5M5yYT7k5CY0JtW4MvsgKq4psBEw81UKz=pjGo0xPw@mail.gmail.com>
-From: Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <9307a684-0b0b-0488-75be-7845d9b973a1@gmail.com>
-Date: Fri, 10 Dec 2021 21:19:29 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=otNvdkTkoV7wYQ8jKu5rR7dHo6vQCE5BmfrHPdMYTOI=;
+ b=m4smvaqLAczc/RH8jHs8YIoTDYSGGlJ4ZsAQPl+SY5Iu5/NE8ALq9aDJvX6g8QM5Mw
+ m4sLGb7B1Tr7iFAUeStPT16dtVoiANPipAQDdfuP57z5UiOp1VDiJGfo1SBn+Jh5+ft6
+ tRz0hpBdS0ED+myRFseQ0fXb0qqYUeTatBdKfUoJP000pQgHNRJrIqhRdN48QYLcud3V
+ j0BN6ZC3t8qdQzUlK8q4bWdSe1jRrJYDRi2OWJNIn1uEVLA/nMaMfmlOwHCcXywyDfyz
+ Andxm+pbqSvnCP3TtS8mA6uKLCQvVU71dlNoJGR0Q0rctkFiyqNcLxz2LG3CU4TTiP94
+ PX7w==
+X-Gm-Message-State: AOAM530Qguzp+Y0/GHNI69/YizG/5WShNRVU/r5yxwPCAYq5YJCfzrUW
+ 1x2/4Wvcz5E3+VMCIJQIlrwZSVR4KIAH+6hu4xQ=
+X-Google-Smtp-Source: ABdhPJwWhlgSTT1XO9DdsJeGtp3+qj/KLI9CFrQ1iXrm/9qKavB6UGr0uIjkNl6uj3XKEKq2VM+aZTVW+dl+zG+2Q+M=
+X-Received: by 2002:a4a:1d82:: with SMTP id 124mr9074671oog.91.1639160403307; 
+ Fri, 10 Dec 2021 10:20:03 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0gy5M5yYT7k5CY0JtW4MvsgKq4psBEw81UKz=pjGo0xPw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20211126180101.27818-1-digetx@gmail.com>
+ <20211126180101.27818-4-digetx@gmail.com>
+In-Reply-To: <20211126180101.27818-4-digetx@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 10 Dec 2021 19:19:52 +0100
+Message-ID: <CAJZ5v0jTJ3f7oUUR690PGaPJsxA8yzua9XDa8MONBHMzHnDfOQ@mail.gmail.com>
+Subject: Re: [PATCH v4 03/25] notifier: Add
+ atomic/blocking_notifier_has_unique_priority()
+To: Dmitry Osipenko <digetx@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Mon, 13 Dec 2021 09:47:48 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -91,7 +63,7 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
  linux-ia64@vger.kernel.org, Santosh Shilimkar <ssantosh@kernel.org>,
- Linux-sh list <linux-sh@vger.kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
  Boris Ostrovsky <boris.ostrovsky@oracle.com>,
  Linus Walleij <linus.walleij@linaro.org>,
  Dave Hansen <dave.hansen@linux.intel.com>, Liam Girdwood <lgirdwood@gmail.com>,
@@ -103,7 +75,8 @@ Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
  Stefano Stabellini <sstabellini@kernel.org>, alankao@andestech.com,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
+ Linux-sh list <linux-sh@vger.kernel.org>, Helge Deller <deller@gmx.de>,
+ the arch/x86 maintainers <x86@kernel.org>,
  Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
  Jonathan Hunter <jonathanh@nvidia.com>,
  ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
@@ -132,58 +105,140 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-10.12.2021 21:14, Rafael J. Wysocki пишет:
-> On Fri, Nov 26, 2021 at 7:01 PM Dmitry Osipenko <digetx@gmail.com> wrote:
->>
->> Add blocking_notifier_call_chain_is_empty() that returns true if call
->> chain is empty.
->>
->> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
->> ---
->>  include/linux/notifier.h |  2 ++
->>  kernel/notifier.c        | 14 ++++++++++++++
->>  2 files changed, 16 insertions(+)
->>
->> diff --git a/include/linux/notifier.h b/include/linux/notifier.h
->> index 4b80a815b666..924c9d7c8e73 100644
->> --- a/include/linux/notifier.h
->> +++ b/include/linux/notifier.h
->> @@ -173,6 +173,8 @@ int blocking_notifier_call_chain_robust(struct blocking_notifier_head *nh,
->>  int raw_notifier_call_chain_robust(struct raw_notifier_head *nh,
->>                 unsigned long val_up, unsigned long val_down, void *v);
->>
->> +bool blocking_notifier_call_chain_is_empty(struct blocking_notifier_head *nh);
->> +
->>  #define NOTIFY_DONE            0x0000          /* Don't care */
->>  #define NOTIFY_OK              0x0001          /* Suits me */
->>  #define NOTIFY_STOP_MASK       0x8000          /* Don't call further */
->> diff --git a/kernel/notifier.c b/kernel/notifier.c
->> index b8251dc0bc0f..b20cb7b9b1f0 100644
->> --- a/kernel/notifier.c
->> +++ b/kernel/notifier.c
->> @@ -322,6 +322,20 @@ int blocking_notifier_call_chain(struct blocking_notifier_head *nh,
->>  }
->>  EXPORT_SYMBOL_GPL(blocking_notifier_call_chain);
->>
->> +/**
->> + *     blocking_notifier_call_chain_is_empty - Check whether notifier chain is empty
->> + *     @nh: Pointer to head of the blocking notifier chain
->> + *
->> + *     Checks whether notifier chain is empty.
->> + *
->> + *     Returns true is notifier chain is empty, false otherwise.
->> + */
->> +bool blocking_notifier_call_chain_is_empty(struct blocking_notifier_head *nh)
->> +{
->> +       return !rcu_access_pointer(nh->head);
->> +}
->> +EXPORT_SYMBOL_GPL(blocking_notifier_call_chain_is_empty);
-> 
-> The check is not reliable (racy) without locking, so I wouldn't export
-> anything like this to modules.
-> 
-> At least IMO it should be added along with a user.
-> 
+On Fri, Nov 26, 2021 at 7:02 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+>
+> Add atomic/blocking_notifier_has_unique_priority() helpers which return
+> true if given handler has unique priority.
+>
+> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+> ---
+>  include/linux/notifier.h |  5 +++
+>  kernel/notifier.c        | 69 ++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 74 insertions(+)
+>
+> diff --git a/include/linux/notifier.h b/include/linux/notifier.h
+> index 924c9d7c8e73..2c4036f225e1 100644
+> --- a/include/linux/notifier.h
+> +++ b/include/linux/notifier.h
+> @@ -175,6 +175,11 @@ int raw_notifier_call_chain_robust(struct raw_notifier_head *nh,
+>
+>  bool blocking_notifier_call_chain_is_empty(struct blocking_notifier_head *nh);
+>
+> +bool atomic_notifier_has_unique_priority(struct atomic_notifier_head *nh,
+> +               struct notifier_block *nb);
+> +bool blocking_notifier_has_unique_priority(struct blocking_notifier_head *nh,
+> +               struct notifier_block *nb);
+> +
+>  #define NOTIFY_DONE            0x0000          /* Don't care */
+>  #define NOTIFY_OK              0x0001          /* Suits me */
+>  #define NOTIFY_STOP_MASK       0x8000          /* Don't call further */
+> diff --git a/kernel/notifier.c b/kernel/notifier.c
+> index b20cb7b9b1f0..7a325b742104 100644
+> --- a/kernel/notifier.c
+> +++ b/kernel/notifier.c
+> @@ -122,6 +122,19 @@ static int notifier_call_chain_robust(struct notifier_block **nl,
+>         return ret;
+>  }
+>
+> +static int notifier_has_unique_priority(struct notifier_block **nl,
+> +                                       struct notifier_block *n)
+> +{
+> +       while (*nl && (*nl)->priority >= n->priority) {
+> +               if ((*nl)->priority == n->priority && *nl != n)
+> +                       return false;
+> +
+> +               nl = &((*nl)->next);
+> +       }
+> +
+> +       return true;
+> +}
+> +
+>  /*
+>   *     Atomic notifier chain routines.  Registration and unregistration
+>   *     use a spinlock, and call_chain is synchronized by RCU (no locks).
+> @@ -203,6 +216,30 @@ int atomic_notifier_call_chain(struct atomic_notifier_head *nh,
+>  EXPORT_SYMBOL_GPL(atomic_notifier_call_chain);
+>  NOKPROBE_SYMBOL(atomic_notifier_call_chain);
+>
+> +/**
+> + *     atomic_notifier_has_unique_priority - Checks whether notifier's priority is unique
+> + *     @nh: Pointer to head of the atomic notifier chain
+> + *     @n: Entry in notifier chain to check
+> + *
+> + *     Checks whether there is another notifier in the chain with the same priority.
+> + *     Must be called in process context.
+> + *
+> + *     Returns true if priority is unique, false otherwise.
+> + */
+> +bool atomic_notifier_has_unique_priority(struct atomic_notifier_head *nh,
+> +               struct notifier_block *n)
+> +{
+> +       unsigned long flags;
+> +       bool ret;
+> +
+> +       spin_lock_irqsave(&nh->lock, flags);
+> +       ret = notifier_has_unique_priority(&nh->head, n);
+> +       spin_unlock_irqrestore(&nh->lock, flags);
 
-I'll remove the export since it's indeed not obvious how other users may
-want to use this function.
+This only works if the caller can prevent new entries from being added
+to the list at this point or if the caller knows that they cannot be
+added for some reason, but the kerneldoc doesn't mention this
+limitation.
+
+> +
+> +       return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(atomic_notifier_has_unique_priority);
+> +
+>  /*
+>   *     Blocking notifier chain routines.  All access to the chain is
+>   *     synchronized by an rwsem.
+> @@ -336,6 +373,38 @@ bool blocking_notifier_call_chain_is_empty(struct blocking_notifier_head *nh)
+>  }
+>  EXPORT_SYMBOL_GPL(blocking_notifier_call_chain_is_empty);
+>
+> +/**
+> + *     blocking_notifier_has_unique_priority - Checks whether notifier's priority is unique
+> + *     @nh: Pointer to head of the blocking notifier chain
+> + *     @n: Entry in notifier chain to check
+> + *
+> + *     Checks whether there is another notifier in the chain with the same priority.
+> + *     Must be called in process context.
+> + *
+> + *     Returns true if priority is unique, false otherwise.
+> + */
+> +bool blocking_notifier_has_unique_priority(struct blocking_notifier_head *nh,
+> +               struct notifier_block *n)
+> +{
+> +       bool ret;
+> +
+> +       /*
+> +        * This code gets used during boot-up, when task switching is
+> +        * not yet working and interrupts must remain disabled. At such
+> +        * times we must not call down_read().
+> +        */
+> +       if (system_state != SYSTEM_BOOTING)
+
+No, please don't do this, it makes the whole thing error-prone.
+
+> +               down_read(&nh->rwsem);
+> +
+> +       ret = notifier_has_unique_priority(&nh->head, n);
+> +
+> +       if (system_state != SYSTEM_BOOTING)
+> +               up_read(&nh->rwsem);
+
+And still what if a new entry with a non-unique priority is added to
+the chain at this point?
+
+> +
+> +       return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(blocking_notifier_has_unique_priority);
+> +
+>  /*
+>   *     Raw notifier chain routines.  There is no protection;
+>   *     the caller must provide it.  Use at your own risk!
+> --
+> 2.33.1
+>
