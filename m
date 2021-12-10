@@ -2,62 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3CD46F7BE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 00:56:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C6846F8DF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 02:58:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J99tT6tydz3cPt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 10:56:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J9DZX5Tspz3bWC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 12:58:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=k4Ixw+o1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ngRhzypw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J99sp2s7Dz2yYS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 10:56:14 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=k4Ixw+o1; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4J99sn4XY5z4xZ1;
- Fri, 10 Dec 2021 10:56:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1639094174;
- bh=/v4SVtZq8xW+evoRy4+yM+wHmPlfA9nlX7pd5+hkz40=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=k4Ixw+o1rT6uKSLGyAz9FDErqBItZ0z/IJjiPwPEEjOgFLb/Z/rHctYSMJ0nkj2Vh
- P4yJKALFXD1W6yrnl+kKtZE9lQ5KI5ZQ1K1ARmodGr3xtyRGrSeYs3S3RoeAZvBrE7
- C2n/mUVNgeKx+AX9Dv4NZ7BtgRRqqCDD71OCe55pHw/5Pq4zKKHEGWHHWav0kEArSE
- M6Ddew6uJFVhz9ss/8oNLA3/G/xAI2Hw9B4HetqPfJzdZ/igxLgPXNd2qfVi1ts1dl
- n3PkPAHdqjSQ2/1I0XJzJcgvFHbuO5RMZAGxoaLmlW5msnOXjs1HMzlzVV9SMu4XNi
- xf8Fk9DnbM7zg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin
- <npiggin@gmail.com>, "alex@ghiti.fr" <alex@ghiti.fr>, Benjamin
- Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH v4 09/10] powerpc/mm: Convert to default topdown mmap
- layout
-In-Reply-To: <7990b457-0b16-b4fb-d279-89a4cdc093a7@csgroup.eu>
-References: <cover.1638976228.git.christophe.leroy@csgroup.eu>
- <d2d5510115cba2d56866fa01dab267655a20da71.1638976229.git.christophe.leroy@csgroup.eu>
- <1639044621.jeow25j0pr.astroid@bobo.none>
- <360e2a3e-63c6-3ce2-f481-695ad0ec4880@csgroup.eu>
- <1639046542.qkwu4mjtew.astroid@bobo.none>
- <87v8zym39m.fsf@mpe.ellerman.id.au>
- <7990b457-0b16-b4fb-d279-89a4cdc093a7@csgroup.eu>
-Date: Fri, 10 Dec 2021 10:56:11 +1100
-Message-ID: <87r1almixw.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=ngRhzypw; dkim-atps=neutral
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J9DY90jM4z2yS3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 12:57:00 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1639101421; x=1670637421;
+ h=date:from:to:cc:subject:message-id:mime-version:
+ content-transfer-encoding;
+ bh=N2FcrPT74e4XlmG2vKLXOWSuKFkWsGpNT8MCsl9zxwE=;
+ b=ngRhzypwBtyfG9u3AbKH1y1nl/UJdxrGBYJtEX5Wv7A+tN3wsWCuSRgG
+ 8+KziSWuoKYo+aVKRsKMf5DoCDfafvT4tznQ+G3Ab5GEyfaJyJAi0F/7v
+ 8UYc8dnIqhyQQgLkzVtZ/4w9InovaCDyj5KJvv+1JRRtBiCdf0kWVSJLe
+ JuryIlW2Q2N9pkahekFNtgDBZHingnZsKoNVBP7ocO7hRRriVefeM48X/
+ R34I7Nu8aW/2Y+/lGrM2ldoNCa5YDiLGGT0Yq/qBUiTdQ9DnB2d/FkZ2/
+ HCtcjQpHDjEy9PVJy88m4ZckZJSIL7QZ1I6SgXmN+y5FpmkzXnuTGtahM w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10193"; a="235762720"
+X-IronPort-AV: E=Sophos;i="5.88,194,1635231600"; d="scan'208";a="235762720"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2021 17:55:51 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,194,1635231600"; d="scan'208";a="463489177"
+Received: from lkp-server02.sh.intel.com (HELO 9e1e9f9b3bcb) ([10.239.97.151])
+ by orsmga006.jf.intel.com with ESMTP; 09 Dec 2021 17:55:50 -0800
+Received: from kbuild by 9e1e9f9b3bcb with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mvV8X-0002cZ-Dc; Fri, 10 Dec 2021 01:55:49 +0000
+Date: Fri, 10 Dec 2021 09:55:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS 0d76914a4c99ab5658f3fb07cdf3799d28e2eab3
+Message-ID: <61b2b385.uEQDM0fthd2v4LUD%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,112 +67,175 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 09/12/2021 =C3=A0 12:22, Michael Ellerman a =C3=A9crit=C2=A0:
->> Nicholas Piggin <npiggin@gmail.com> writes:
->>=20
->>> Excerpts from Christophe Leroy's message of December 9, 2021 8:22 pm:
->>>>
->>>>
->>>> Le 09/12/2021 =C3=A0 11:15, Nicholas Piggin a =C3=A9crit=C2=A0:
->>>>> Excerpts from Christophe Leroy's message of December 9, 2021 3:18 am:
->>>>>> Select CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT and
->>>>>> remove arch/powerpc/mm/mmap.c
->>>>>>
->>>>>> This change provides standard randomisation of mmaps.
->>>>>>
->>>>>> See commit 8b8addf891de ("x86/mm/32: Enable full randomization on i3=
-86
->>>>>> and X86_32") for all the benefits of mmap randomisation.
->>>>>
->>>>> The justification seems pretty reasonable.
->>>>>
->>>>>>
->>>>>> Comparison between powerpc implementation and the generic one:
->>>>>> - mmap_is_legacy() is identical.
->>>>>> - arch_mmap_rnd() does exactly the same allthough it's written
->>>>>> slightly differently.
->>>>>> - MIN_GAP and MAX_GAP are identical.
->>>>>> - mmap_base() does the same but uses STACK_RND_MASK which provides
->>>>>> the same values as stack_maxrandom_size().
->>>>>> - arch_pick_mmap_layout() is almost identical. The only difference
->>>>>> is that it also adds the random factor to mm->mmap_base in legacy mo=
-de.
->>>>>>
->>>>>> That last point is what provides the standard randomisation of mmaps.
->>>>>
->>>>> Thanks for describing it. Could you add random_factor to mmap_base for
->>>>> the legacy path for powerpc as a 2-line change that adds the legacy
->>>>> randomisation. And then this bigger patch would be closer to a no-op.
->>>>>
->>>>
->>>> You mean you would like to see the following patch before doing the
->>>> convert ?
->>>>
->>>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/7dabf1cbde67a3=
-46a187881d4f0bd17347e0334a.1533732583.git.christophe.leroy@c-s.fr/
->>>
->>> Yes.
->>=20
->> My comment at the time was:
->>=20
->>    Basically mmap_is_legacy() tells you if any of these is true:
->>=20=20=20=20
->>     - process has the ADDR_COMPAT_LAYOUT personality
->>     - global legacy_va_layout sysctl is enabled
->>     - stack is unlimited
->>=20
->>    And we only want to change the behaviour for the stack. Or at least t=
-he
->>    change log of your patch only talks about the stack limit, not the
->>    others.
->>=20=20=20=20
->>    Possibly we should just enable randomisation for all three of those
->>    cases, but if so we must spell it out in the patch.
->>=20=20=20=20
->>    It'd also be good to see the output of /proc/x/maps for some processes
->>    before and after, to show what actually changes.
->>=20
->>=20
->> From: https://github.com/linuxppc/issues/issues/59#issuecomment-502066947
->>=20
->>=20
->> So I think at least the change log on that patch still needs updating to
->> be clear that it's changing behaviour for all mmap_is_legacy() cases,
->> not just the stack unlimited case.
->>=20
->> There's also a risk changing the mmap legacy behaviour breaks something.
->> But we are at least matching the behaviour of other architectures, and
->> there is also an escape hatch in the form of `setarch -R`.
->
-> That was the purpose of adding in the change log a reference to commit=20
-> 8b8addf891de ("x86/mm/32: Enable full randomization on i386
-> and X86_32")
->
-> All this applies to powerpc as well.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 0d76914a4c99ab5658f3fb07cdf3799d28e2eab3  powerpc/inst: Optimise copy_inst_from_kernel_nofault()
 
-Yeah, I'm just a pessimist :) So although the security benefit is nice,
-I'm more worried that the layout change will break some mission critical
-legacy app somewhere. So I just like to have that spelled out in the
-change log, or at least in the discussion like here.
+elapsed time: 724m
 
-> But I can copy paste the changelog of that commit into mine if you think=
-=20
-> it is more explicit.
+configs tested: 146
+configs skipped: 4
 
-Just referring to it is probably fine.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> I agree that old patch was only refering to stack limit, I had no clue=20
-> of everything else at that time.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211209
+powerpc              randconfig-c003-20211209
+x86_64                           allyesconfig
+arc                      axs103_smp_defconfig
+powerpc                      mgcoge_defconfig
+arm                        mvebu_v7_defconfig
+m68k                        stmark2_defconfig
+arm                          imote2_defconfig
+powerpc                    sam440ep_defconfig
+m68k                        m5307c3_defconfig
+sh                          sdk7780_defconfig
+arm                           sunxi_defconfig
+xtensa                  cadence_csp_defconfig
+arm                          pxa3xx_defconfig
+m68k                       m5475evb_defconfig
+ia64                            zx1_defconfig
+ia64                      gensparse_defconfig
+powerpc                      tqm8xx_defconfig
+arm                             mxs_defconfig
+sh                        apsh4ad0a_defconfig
+alpha                            allyesconfig
+arm                            pleb_defconfig
+ia64                        generic_defconfig
+mips                          malta_defconfig
+h8300                    h8300h-sim_defconfig
+openrisc                 simple_smp_defconfig
+sh                        sh7763rdp_defconfig
+powerpc                 mpc834x_mds_defconfig
+powerpc                     kilauea_defconfig
+powerpc                      makalu_defconfig
+sh                          lboxre2_defconfig
+mips                           ip27_defconfig
+powerpc                 xes_mpc85xx_defconfig
+powerpc                    socrates_defconfig
+nds32                             allnoconfig
+mips                  maltasmvp_eva_defconfig
+mips                           rs90_defconfig
+sh                           se7705_defconfig
+sh                          sdk7786_defconfig
+arm                           sama7_defconfig
+mips                         cobalt_defconfig
+sh                          rsk7201_defconfig
+arm                             rpc_defconfig
+arm                        multi_v5_defconfig
+m68k                             alldefconfig
+arm                      jornada720_defconfig
+m68k                          hp300_defconfig
+arm                       omap2plus_defconfig
+ia64                                defconfig
+powerpc                     ep8248e_defconfig
+arm                             ezx_defconfig
+arm                       multi_v4t_defconfig
+powerpc                   motionpro_defconfig
+mips                           gcw0_defconfig
+arm                        mvebu_v5_defconfig
+powerpc                        fsp2_defconfig
+sh                           se7721_defconfig
+arm                  randconfig-c002-20211209
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a006-20211209
+x86_64               randconfig-a005-20211209
+x86_64               randconfig-a001-20211209
+x86_64               randconfig-a002-20211209
+x86_64               randconfig-a004-20211209
+x86_64               randconfig-a003-20211209
+i386                 randconfig-a001-20211209
+i386                 randconfig-a005-20211209
+i386                 randconfig-a003-20211209
+i386                 randconfig-a002-20211209
+i386                 randconfig-a006-20211209
+i386                 randconfig-a004-20211209
+i386                 randconfig-a001-20211210
+i386                 randconfig-a002-20211210
+i386                 randconfig-a005-20211210
+i386                 randconfig-a003-20211210
+i386                 randconfig-a006-20211210
+i386                 randconfig-a004-20211210
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
 
-No worries.
+clang tested configs:
+arm                  randconfig-c002-20211209
+x86_64               randconfig-c007-20211209
+riscv                randconfig-c006-20211209
+i386                 randconfig-c001-20211209
+mips                 randconfig-c004-20211209
+powerpc              randconfig-c003-20211209
+s390                 randconfig-c005-20211209
+x86_64               randconfig-a016-20211209
+x86_64               randconfig-a011-20211209
+x86_64               randconfig-a013-20211209
+x86_64               randconfig-a015-20211209
+x86_64               randconfig-a012-20211209
+x86_64               randconfig-a014-20211209
+i386                 randconfig-a013-20211209
+i386                 randconfig-a016-20211209
+i386                 randconfig-a011-20211209
+i386                 randconfig-a014-20211209
+i386                 randconfig-a012-20211209
+i386                 randconfig-a015-20211209
+hexagon              randconfig-r045-20211209
+s390                 randconfig-r044-20211209
+hexagon              randconfig-r041-20211209
+riscv                randconfig-r042-20211209
 
-cheers
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
