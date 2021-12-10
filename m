@@ -1,60 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A22C470E1B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 23:41:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5425A470EF5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 00:51:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J9m9X6vTRz3fQd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 09:41:52 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Uy0NC+Qn;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=rCtZG1LY;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J9njR1Y0Mz3cZb
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Dec 2021 10:51:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=Uy0NC+Qn; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=rCtZG1LY; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J9lgw4fmcz3ccR
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 09:19:40 +1100 (AEDT)
-Message-ID: <20211210221815.329792721@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1639174778;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=El+H3F4NXV3E+px9T1PJDDlrE0XW8D36UmPAiNafE8w=;
- b=Uy0NC+QniJEawZ4yuuEFtqIMzw9PFLBgpx0HDrRUo2md8XUl4SS73Nl7EfE819E5PtpbVc
- LAz+1cPwMJ/P73wMT+BU/i9qA4amhAWgAueMd0/fC606btT7duSv4NvM14w5Glhzh8MMt6
- Vf8SrpkxfuLKYwgK8ZgtU7FQjNQoMGjZqRjEQAW68HIHWKLNXxWyDiwhGs8MAwuo+Mw6+1
- gNzbkVQZh77bKcaEtUEDOtwWMdTwvsOeTeAuHpf0qQRNTFrf+/FLo1BbMBzYXFZsIbop/R
- ssapnQMEEzj69/QY+0rBqrGI4rNejNtgJBDAT+PK0tQBj3vgRF91DKkGdlcQHg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1639174778;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- references:references; bh=El+H3F4NXV3E+px9T1PJDDlrE0XW8D36UmPAiNafE8w=;
- b=rCtZG1LYH0eCoa6arIPeivQCBnZ/C7/60VDfvadqZFSQ6CFg6eVTEQvW1V/zkV59EqrcH/
- ZMdJiiA2xvl8beBw==
-From: Thomas Gleixner <tglx@linutronix.de>
-To: LKML <linux-kernel@vger.kernel.org>
-Subject: [patch V3 35/35] dmaengine: qcom_hidma: Cleanup MSI handling
-References: <20211210221642.869015045@linutronix.de>
+ smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=loongson.cn;
+ envelope-from=yangtiezhu@loongson.cn; receiver=<UNKNOWN>)
+Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4J9nhw5hdWz3cB0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 10:50:37 +1100 (AEDT)
+Received: from [10.130.0.135] (unknown [113.200.148.30])
+ by mail.loongson.cn (Coremail) with SMTP id AQAAf9AxKsjC57NhGAMGAA--.13314S3; 
+ Sat, 11 Dec 2021 07:50:27 +0800 (CST)
+Subject: Re: [PATCH 1/2] kdump: vmcore: move copy_to() from vmcore.c to
+ uaccess.h
+To: Andrew Morton <akpm@linux-foundation.org>
+References: <1639143361-17773-1-git-send-email-yangtiezhu@loongson.cn>
+ <1639143361-17773-2-git-send-email-yangtiezhu@loongson.cn>
+ <20211210085903.e7820815e738d7dc6da06050@linux-foundation.org>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <249b17ea-171a-49f7-b438-488c03fa1f9b@loongson.cn>
+Date: Sat, 11 Dec 2021 07:50:26 +0800
+User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 10 Dec 2021 23:19:37 +0100 (CET)
+In-Reply-To: <20211210085903.e7820815e738d7dc6da06050@linux-foundation.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: AQAAf9AxKsjC57NhGAMGAA--.13314S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7uw4fuF47Zr17JryxKry5CFg_yoW8Kryxpr
+ 1UJrZIkr4IgFWUJFyqywn3X34rXw43CF1UJ393KF18A3WDXrn2vFnYvFyYgay8J3sIkF10
+ ya4kXryfCr4qyrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+ 6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJV
+ WxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+ 2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+ W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+ 0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCY02Avz4vE14v_uwCF04k20xvY0x0EwIxGrw
+ CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+ 14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+ IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
+ x2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267
+ AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUUubyJUUUUU==
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,116 +62,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nishanth Menon <nm@ti.com>, Mark Rutland <mark.rutland@arm.com>,
- Stuart Yoder <stuyoder@gmail.com>, Will Deacon <will@kernel.org>,
- Ashok Raj <ashok.raj@intel.com>, Joerg Roedel <joro@8bytes.org>,
- Jassi Brar <jassisinghbrar@gmail.com>, Sinan Kaya <okaya@kernel.org>,
- iommu@lists.linux-foundation.org, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
- Bjorn Helgaas <helgaas@kernel.org>, linux-arm-kernel@lists.infradead.org,
- Jason Gunthorpe <jgg@nvidia.com>, linux-pci@vger.kernel.org,
- xen-devel@lists.xenproject.org, Kevin Tian <kevin.tian@intel.com>,
- Arnd Bergmann <arnd@arndb.de>, Robin Murphy <robin.murphy@arm.com>,
- Alex Williamson <alex.williamson@redhat.com>, Cedric Le Goater <clg@kaod.org>,
- Santosh Shilimkar <ssantosh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Megha Dey <megha.dey@intel.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>,
- Juergen Gross <jgross@suse.com>, Tero Kristo <kristo@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Vinod Koul <vkoul@kernel.org>,
- Marc Zygnier <maz@kernel.org>, dmaengine@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-ia64@vger.kernel.org, Baoquan He <bhe@redhat.com>,
+ linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
+ kexec@lists.infradead.org, linux-mips@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Vivek Goyal <vgoyal@redhat.com>,
+ Xuefeng Li <lixuefeng@loongson.cn>, linux-fsdevel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Dave Young <dyoung@redhat.com>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Thomas Gleixner <tglx@linutronix.de>
+On 12/11/2021 12:59 AM, Andrew Morton wrote:
+> On Fri, 10 Dec 2021 21:36:00 +0800 Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
+>
+>> In arch/*/kernel/crash_dump*.c, there exist similar code about
+>> copy_oldmem_page(), move copy_to() from vmcore.c to uaccess.h,
+>> and then we can use copy_to() to simplify the related code.
+>>
+>> ...
+>>
+>> --- a/fs/proc/vmcore.c
+>> +++ b/fs/proc/vmcore.c
+>> @@ -238,20 +238,6 @@ copy_oldmem_page_encrypted(unsigned long pfn, char *buf, size_t csize,
+>>  	return copy_oldmem_page(pfn, buf, csize, offset, userbuf);
+>>  }
+>>
+>> -/*
+>> - * Copy to either kernel or user space
+>> - */
+>> -static int copy_to(void *target, void *src, size_t size, int userbuf)
+>> -{
+>> -	if (userbuf) {
+>> -		if (copy_to_user((char __user *) target, src, size))
+>> -			return -EFAULT;
+>> -	} else {
+>> -		memcpy(target, src, size);
+>> -	}
+>> -	return 0;
+>> -}
+>> -
+>>  #ifdef CONFIG_PROC_VMCORE_DEVICE_DUMP
+>>  static int vmcoredd_copy_dumps(void *dst, u64 start, size_t size, int userbuf)
+>>  {
+>> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+>> index ac03940..4a6c3e4 100644
+>> --- a/include/linux/uaccess.h
+>> +++ b/include/linux/uaccess.h
+>> @@ -201,6 +201,20 @@ copy_to_user(void __user *to, const void *from, unsigned long n)
+>>  	return n;
+>>  }
+>>
+>> +/*
+>> + * Copy to either kernel or user space
+>> + */
+>> +static inline int copy_to(void *target, void *src, size_t size, int userbuf)
+>> +{
+>> +	if (userbuf) {
+>> +		if (copy_to_user((char __user *) target, src, size))
+>> +			return -EFAULT;
+>> +	} else {
+>> +		memcpy(target, src, size);
+>> +	}
+>> +	return 0;
+>> +}
+>> +
+>
+> Ordinarily I'd say "this is too large to be inlined".  But the function
+> has only a single callsite per architecture so inlining it won't cause
+> bloat at present.
+>
+> But hopefully copy_to() will get additional callers in the future, in
+> which case it shouldn't be inlined.  So I'm thinking it would be best
+> to start out with this as a regular non-inlined function, in
+> lib/usercopy.c.
+>
+> Also, copy_to() is a very poor name for a globally-visible helper
+> function.  Better would be copy_to_user_or_kernel(), although that's
+> perhaps a bit long.
+>
+> And the `userbuf' arg should have type bool, yes?
+>
 
-There is no reason to walk the MSI descriptors to retrieve the interrupt
-number for a device. Use msi_get_virq() instead.
+Hi Andrew,
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Acked-by: Sinan Kaya <okaya@kernel.org>
-Cc: dmaengine@vger.kernel.org
----
- drivers/dma/qcom/hidma.c |   42 ++++++++++++++++++------------------------
- 1 file changed, 18 insertions(+), 24 deletions(-)
+Thank you very much for your reply and suggestion, I agree with you,
+I will send v2 later.
 
---- a/drivers/dma/qcom/hidma.c
-+++ b/drivers/dma/qcom/hidma.c
-@@ -678,11 +678,13 @@ static void hidma_free_msis(struct hidma
- {
- #ifdef CONFIG_GENERIC_MSI_IRQ_DOMAIN
- 	struct device *dev = dmadev->ddev.dev;
--	struct msi_desc *desc;
-+	int i, virq;
- 
--	/* free allocated MSI interrupts above */
--	for_each_msi_entry(desc, dev)
--		devm_free_irq(dev, desc->irq, &dmadev->lldev);
-+	for (i = 0; i < HIDMA_MSI_INTS; i++) {
-+		virq = msi_get_virq(dev, i);
-+		if (virq)
-+			devm_free_irq(dev, virq, &dmadev->lldev);
-+	}
- 
- 	platform_msi_domain_free_irqs(dev);
- #endif
-@@ -692,45 +694,37 @@ static int hidma_request_msi(struct hidm
- 			     struct platform_device *pdev)
- {
- #ifdef CONFIG_GENERIC_MSI_IRQ_DOMAIN
--	int rc;
--	struct msi_desc *desc;
--	struct msi_desc *failed_desc = NULL;
-+	int rc, i, virq;
- 
- 	rc = platform_msi_domain_alloc_irqs(&pdev->dev, HIDMA_MSI_INTS,
- 					    hidma_write_msi_msg);
- 	if (rc)
- 		return rc;
- 
--	for_each_msi_entry(desc, &pdev->dev) {
--		if (!desc->msi_index)
--			dmadev->msi_virqbase = desc->irq;
--
--		rc = devm_request_irq(&pdev->dev, desc->irq,
-+	for (i = 0; i < HIDMA_MSI_INTS; i++) {
-+		virq = msi_get_virq(&pdev->dev, i);
-+		rc = devm_request_irq(&pdev->dev, virq,
- 				       hidma_chirq_handler_msi,
- 				       0, "qcom-hidma-msi",
- 				       &dmadev->lldev);
--		if (rc) {
--			failed_desc = desc;
-+		if (rc)
- 			break;
--		}
-+		if (!i)
-+			dmadev->msi_virqbase = virq;
- 	}
- 
- 	if (rc) {
- 		/* free allocated MSI interrupts above */
--		for_each_msi_entry(desc, &pdev->dev) {
--			if (desc == failed_desc)
--				break;
--			devm_free_irq(&pdev->dev, desc->irq,
--				      &dmadev->lldev);
-+		for (--i; i >= 0; i--) {
-+			virq = msi_get_virq(&pdev->dev, i);
-+			devm_free_irq(&pdev->dev, virq, &dmadev->lldev);
- 		}
-+		dev_warn(&pdev->dev,
-+			 "failed to request MSI irq, falling back to wired IRQ\n");
- 	} else {
- 		/* Add callback to free MSIs on teardown */
- 		hidma_ll_setup_irq(dmadev->lldev, true);
--
- 	}
--	if (rc)
--		dev_warn(&pdev->dev,
--			 "failed to request MSI irq, falling back to wired IRQ\n");
- 	return rc;
- #else
- 	return -EINVAL;
+Thanks,
+Tiezhu
 
