@@ -2,115 +2,121 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34BB346FC5A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 09:10:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B15046FC7B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 09:13:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4J9NrF0JcHz3cRj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 19:10:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4J9NvP6g37z3cDr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Dec 2021 19:13:21 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com header.b=kMcKp3vk;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::602;
- helo=fra01-mr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on0602.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e19::602])
+ smtp.mailfrom=vivo.com (client-ip=40.107.255.107;
+ helo=apc01-psa-obe.outbound.protection.outlook.com;
+ envelope-from=wangqing@vivo.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com
+ header.b=kMcKp3vk; dkim-atps=neutral
+Received: from APC01-PSA-obe.outbound.protection.outlook.com
+ (mail-psaapc01on2107.outbound.protection.outlook.com [40.107.255.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J9Nqh54RBz2yfm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 19:10:06 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J9Ntg5ynpz305J
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 19:12:32 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gibEA6ez6fPwKWElkaEF18JU2iYsI98+0R2zZB2ekNxYV20xUD2H7AJIASeUteVVjfejcslZwFkVCt4i5EoZ+In1zPmaYswp/3ObQjOCeWjTLpeKrEAgaf4hGqrc54Y7mTC2nMnIxZBcZpHA9hH956MhWvV850yFhIDSHJtbXMT7sOKA+g0asd05vDGaCtY/pqQRm5QnzbyDNg00KKVNp7ETfkmOFHFLKaeQfOK6gBezgBgk5a/gPVjV6yJDnqGdDEPN/JG+mysum86Eu+3KPvMcz13KjWZbUdrDJtDHRU9AWdehofU0AZU9oUvBkafzl3tcEZ1xjDcRFu/XEl4fzQ==
+ b=EeIJPcxusXu8jXp0NP+9R11fhf7vzZiVwPGuLwp7j73rMmlxiwKICvEBzU+424pjOYf2pzxgGSMBvGjqGOCIiKtzEnMv1Go+QHsufiWmynL+zKHlWnqiIzNtvW0E8supoZ+q18+9cv7d7M2z50eUAu9KTNI+5egwpgJ4uvlxIxFI9HnasbzSsbcZWT1QfGN36gXXvaaBpBFMjDJCXDyPsUYyC+RW6wyegDzeBY4Ba7BJLzD7TpS+2kCxdahfbpbRMOBy99BmsvbW8jv5XSm9CjJRHG8V5jWc8SWKXvWuOAoUDx5FRZDvJG8MfqmAW3iYo1n0ODuil1wQkv1KyVvM3w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EYvuCWHRt8lTGnlzeemjU77Vv6WSxjP5l+FuCpH/mTs=;
- b=hCUnd/mX+hSBhSXGQnKg0sblJWRGFtwe7kCoVSDbhudrViUT42olc4QGKnNa8zr7vQ2h3gMuuWT/uT+FfmCczbWc9p6cwMgPq17HK5wD3Te5BmkePsqf5Ww9W8speU1T8AEJUFjDAe2CKADfa/T4gGkfOYv0Gom/VJjmkw1tbJ+ZZJMeCmPv5J5tGtIYGhb06GFO4FYZI9a2ifvqe7HYVoxGy6MHtvjxuUeZnHWGhnvYQqZrtXTMdYhN2HWKEv8CFPRMgvVy88BTHAYmJ77g7CCs2ddWsmMqUTKFlsJe234gf8AIefIo70scdylKdBmtCcILh5enZPozPUdyxDbhfA==
+ bh=IRfj/08Z/+sHVMJs6y3DCcs/iNehE7cY6dekcJu6KRA=;
+ b=TWpT1l4jehYWCD8FA6VXzuDllt9AMTXep8mTiduqMY9TK1/827mMlcCPzaJXVEN1XPIVDZKuNdL1wt7mGSDO1EKjBNxfrIsWO8LUTyFp5kEM9LOnI/Emsk/CzXOD2i3yclxXgrRiNf1p/WVpMaHTKIf5NTxylsq+nYvaZ61skVamFGRLQB/XP1YXcdIGrBt47Ug+yF9yT+jHCLLayXEoP2TV3+8VDjhvL6K5DCot/4qW56EwaH1LhzSIDl6GbBdsZgXDKxwN99Eeu9xLw743qzupvIWUjrOCakeQoRq/pBwWV+L6mnTBQzzMWLoPl3Ugp+Xl/iioOrAGX5reTr0lmw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRXP264MB0262.FRAP264.PROD.OUTLOOK.COM (2603:10a6:500:1a::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.21; Fri, 10 Dec
- 2021 08:09:42 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::fc67:d895:7965:663f]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::fc67:d895:7965:663f%2]) with mapi id 15.20.4778.015; Fri, 10 Dec 2021
- 08:09:42 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
- <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: Add set_memory_{p/np}() and remove set_memory_attr()
-Thread-Topic: [PATCH] powerpc: Add set_memory_{p/np}() and remove
- set_memory_attr()
-Thread-Index: AQHX7Z1JD9WtX5NUS0iOvd1wzg71lg==
-Date: Fri, 10 Dec 2021 08:09:42 +0000
-Message-ID: <715cc0c2f801ef3b39b91233be44d328a91c30bc.1639123757.git.christophe.leroy@csgroup.eu>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2768c1a0-0647-48c9-415e-08d9bbb46ba0
-x-ms-traffictypediagnostic: MRXP264MB0262:EE_
-x-microsoft-antispam-prvs: <MRXP264MB02628ED1C46317D5D9BAE73AED719@MRXP264MB0262.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:989;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: mEEmYFVfzeW/oyS4r1RLrFskDjxEOR5AzAq976MxwW08s6p198F093C+3ybnGsV/XceKPs9lyQ8CVgaojUVhfTPQEDLIPHF1EzW1W40TsCkUnFH5F1erN2YpnpoYeG9qpB+DKWcG0eRS/6NR25g5dj7Nyfi03XvwZg22uXtp6Tpft6GEM/wA5DkllL+WaMBwWhJ80Z0urKd6cCvfdAiJ39aibuwidTtO8brFdCLES5X/ud046eDKauqXQ1fkeBhU2UZrihMiizqlVUjIIWeHt2miiMbN+/A1EPVc3zAOvAkZF0IJ+wVaUslJ/kk/W+gGODuF9fsRUZiCqGejV45hilXSH20naGGWJlZZNdDv0WAWt/mwQZ+gQm7jIfcgnlO6JP8stBoCCE3qONkfbn67/XM6245kmfb+BwQ4odGec4GlboMFqmy1d2/KCJztsV8VUOLvrPjewHwADOh03EjR1BYM9CNPs61SAfjXMc7WjqGqEaGD1KLmhJTEA75kO5g5n4BkxEfKvWH4Je3ZSzKbDI4cvD63UNp6nCeOVSHi/TkdH3Yx9uXTxIyh3G755alOJuBEUto9H+zFx+BAlE9QX3HDMkxgc+r9rNdtQXqWvVuUNbKNMGXEBLzfQ0H+cT/j6EmWiA+Am7SpUkTaeYIp9Q2fCyHvIrXbDj4/qQqX292wCtSvq0CYzhkomxmUhYPJ+hwc/ZENHamO6RhmvuIfXQ==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(8676002)(186003)(4326008)(44832011)(26005)(2616005)(38100700002)(122000001)(71200400001)(316002)(6512007)(110136005)(38070700005)(54906003)(86362001)(66946007)(91956017)(76116006)(36756003)(66476007)(66556008)(66446008)(64756008)(508600001)(6486002)(5660300002)(2906002)(8936002)(6506007)(83380400001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?xw/W5Qw9dsZdCnEqCJNrdzodKNEZ50Mm4/BajegGnZhDvRNXo+UHycFlnR?=
- =?iso-8859-1?Q?6gjprVsrbJ2Vfk7V0tWynYIl1sXyJCJ+crrBB4EaZdP4AwKrWEsbCm8Kgs?=
- =?iso-8859-1?Q?vl9JczlmjAgeWc9xBFswzatan1OJgEAjgP4Fjtbsc22af0JHOXQHwULGIO?=
- =?iso-8859-1?Q?rv9DF86kBpujGcqvSk7gXMRSElPg5SrCsPiEHQHlr9TqAcCSdOvmo4UiCB?=
- =?iso-8859-1?Q?VJuzHGS5YZp9ei42+NYWy8T9OuHc1E0UmksLkVxbAcyH/ZPukmr79eEjCY?=
- =?iso-8859-1?Q?sA9lWhIb0FB7edF/lUJ/DjAB3cn4GXcOeGgI3+7jMtuLQJGucsSRppmqDj?=
- =?iso-8859-1?Q?MU+Va/nmok0q33yzdunvtN6W9c/kuempCK5ebipYInBQTgF2n4UWSOMdEM?=
- =?iso-8859-1?Q?w90rxBAT1bKVSRkM86zkMWPT1BY2LLm0Mj9x50lxHh132FZXuAunlglboG?=
- =?iso-8859-1?Q?Y53EHYc09qYZctxVQx6ZqJSHakRixRyXOAndXj1Gxj/sXufwXrJU79xjc+?=
- =?iso-8859-1?Q?tuWLpf/uIVcd5U3rckT5FbNVsHdsiRfJqgqjSjJUW3Edx0xK7GSmV1XBFs?=
- =?iso-8859-1?Q?S8Y+i64J54jKVJQjs4I+V2hKaBEkFrqctjYzZKzRmK6kj3ZofsaNeQDdNp?=
- =?iso-8859-1?Q?s0VuUbE34C/O0VasjfDGx9rUWeh3n7RCS40pxL0EpbiBTU3Ux+SrUmZWaC?=
- =?iso-8859-1?Q?rXzrhEQIjppPtWYd7Pg+FR0go6livo5qnlvD36nJmv4Eir2PdTgStlXLne?=
- =?iso-8859-1?Q?qU6tOq6qm4WQlpkurjpmXfCNZEUExWdIzSrKltmt1ga0O5kpwkbd1f7DdX?=
- =?iso-8859-1?Q?EW9gtUrYQOyGioTQi5/cQcOJI5YFqjYv64RI9sa3zAKUui+A1Fb9vsCHJo?=
- =?iso-8859-1?Q?MkDVsZNBsk+pzkF/OYeXzUwijWgpChlKTUmkVIeVuvgVfp3aD+t2JmXEe8?=
- =?iso-8859-1?Q?sV1vmo2CnLaVZgIVY0saTR4Mo3brRYr/Er0xVNrTi+04eyn3LWaZk/iCxz?=
- =?iso-8859-1?Q?oBfYSqhNzs3p9MeerxbWdIVwC9uMjfA+M3cPKpw8xsx2SJeLNupWkrGzpc?=
- =?iso-8859-1?Q?LIkK63bzxubFh5CJ5NfzW1ZGqJ6d9H49YhknOYUnB/YKDRQ8yVMQ/ORBBQ?=
- =?iso-8859-1?Q?cvHbNYF/hSpeV6yZt4H6w03BFuVBnhp5O/I1cOFxdXJ/acsrKUr2DLki5W?=
- =?iso-8859-1?Q?/2m6pEe5qiEUyCzf2eua+txws30aP8LDoTNn8M797T8CjAmdwLIWYR6d79?=
- =?iso-8859-1?Q?vw69+r2RSRytQ2Pq8kLUcR6S+jPnXLKfw4lg3TqsXJOwn5H8jmuwxWtQ9A?=
- =?iso-8859-1?Q?cEmVNRxxVk2h3ca8ois+kMWLQFLHunh0SEOtViYmaTYL7cCLM4pwicytqD?=
- =?iso-8859-1?Q?jXpjT/3MGk6Vbi8bih1lG22aIw3AYY9r063ie9wA7+/TZZuCOmT71+8LPa?=
- =?iso-8859-1?Q?mB6Cx3zrYPXQTBqinDBm7Im0U0u4ZdaA2Y/bUt1o72fve3LUTMzekikjYt?=
- =?iso-8859-1?Q?Wrb3rSr4d0SYGkYCI0cWzzNmkZKAIzWpwyZOvf1l2OStTmCcQB3PCQhulN?=
- =?iso-8859-1?Q?+4IFBLH5a1oTsYxNgMXkJswRIr/BAaVqYCzVPtTh4ruvh6fz5MDv4T+m+O?=
- =?iso-8859-1?Q?nloc/Yr3rqPKt46xm0wxZPqA1ots+ZHHwopv8cb9ZAS4GZtlbm71IMw0js?=
- =?iso-8859-1?Q?2RIMpVoShq7Unv29Eg3zfMtcV63RjzvGO87PkcLb4ZQ82yWheVMcq6GunZ?=
- =?iso-8859-1?Q?gStVj1AdJtHHt/diQ3HfRlNN0=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com; 
+ s=selector2-vivo0-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IRfj/08Z/+sHVMJs6y3DCcs/iNehE7cY6dekcJu6KRA=;
+ b=kMcKp3vkmk/+Mv+hVEpW6WyZNFUBmB9TvAZvozUgEXwuxHf75uWwj2ghk0duPzOuMTFvoUbO35A6UhQHYQoY3YvA07jwst7mQcbrWoyg2R+p9KqKEFfNgfkR5BiXkoOUC0duKmEgPPgQzowkbxiWicmZxuaBuTYWLQug3vd0fkY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from SL2PR06MB3082.apcprd06.prod.outlook.com (2603:1096:100:37::17)
+ by SL2PR06MB3033.apcprd06.prod.outlook.com (2603:1096:100:36::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.13; Fri, 10 Dec
+ 2021 08:12:12 +0000
+Received: from SL2PR06MB3082.apcprd06.prod.outlook.com
+ ([fe80::a0cf:a0e2:ee48:a396]) by SL2PR06MB3082.apcprd06.prod.outlook.com
+ ([fe80::a0cf:a0e2:ee48:a396%4]) with mapi id 15.20.4778.014; Fri, 10 Dec 2021
+ 08:12:12 +0000
+From: Qing Wang <wangqing@vivo.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] powermac: low_i2c: Add missing of_node_put for loop iteration
+Date: Fri, 10 Dec 2021 00:11:51 -0800
+Message-Id: <1639123911-31736-1-git-send-email-wangqing@vivo.com>
+X-Mailer: git-send-email 2.7.4
+Content-Type: text/plain
+X-ClientProxiedBy: HK2P15301CA0002.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:202:1::12) To SL2PR06MB3082.apcprd06.prod.outlook.com
+ (2603:1096:100:37::17)
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 55017e37-ad22-4937-e3a0-08d9bbb4c501
+X-MS-TrafficTypeDiagnostic: SL2PR06MB3033:EE_
+X-Microsoft-Antispam-PRVS: <SL2PR06MB3033C08C3075A4A80D1283C7BD719@SL2PR06MB3033.apcprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1002;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: HhoCedNLanEqL89s9Ihu3Siyvg1da6y563dz6Z7KQuVBPi2rX+bvV1EK9BzxXYwGKw0WQfm+Sqj30X5ksPq3QZs5uFeEX+2FpxlFOCZU03Xbv6CCPe1rS35+vq8xFVQuZbeSrL+7vnOJDiJiqGIeoN+I6k25mEd1sCR4UzGyaY743HqKXRTqb5c+r7dBIXebQkBTnLvaK0GC+U5/7SZ/Ld7BebvwQN/pTqAc97ROSufTx/koN2k2rm+r0d56GTIu3rq2Ixk5kQ5p1ipqJTga4PWgrFJZmzOJWYdvSk7yeqXa/YZ10W08p4S1yZU8vO65hxXdYoNSuioqqNOhyrfQslvxtN/3OdmnWy/OjFI7eZkAdJNP4YYdjvFdk9PNOqttumkXNadPLe9KoA0Ye1vCChrexVElT8A9dQoYey1C2OZn8xz/xOr6vX9MrR40LnWTLceXREfUJQiWKKUGP7V2aQJQHpvYs9vwY22g4o/fbMlfZkLBXcs9sW6/X4mlUAZ47BVDnzSn1sWTDFMxSe3tMvVQI3NH/23T+ti+N+fQkhKZTyNdcf5rP0u7wH/sdltRLaGtFTpmqJUb1sGMBw04lw9M06EZndiXuQxR9JeAFfpcjw//vxhxLX+xjq8xfhh0/G1iEhfDCHVZibm8rREWs6TJ676nTqNm58GgFttEUAyxuf/88eE+dxJa6OAZChJx6q9vkKK8wBllUsPYTekJlA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SL2PR06MB3082.apcprd06.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(366004)(8936002)(186003)(66946007)(66556008)(66476007)(508600001)(4326008)(2906002)(5660300002)(36756003)(110136005)(52116002)(6666004)(83380400001)(6512007)(6486002)(6506007)(38100700002)(38350700002)(4744005)(107886003)(2616005)(8676002)(316002)(26005)(86362001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?6dFExIfx8JtFl6uawMHJO4dHm4Utjz8E11yc9lAbCKb5iFR1VlCzk2ojmEk3?=
+ =?us-ascii?Q?kPW10D2T4pXEUqBSxLcaugbFJ83cKm8aVTUNsGlwiovyAHAaS+kTKP2W37PG?=
+ =?us-ascii?Q?CJQi/rKM49cJq+ylqT85rrdEoeQfTyTMy8ytijdjInblBH+OlYPc1mLwtpdo?=
+ =?us-ascii?Q?bmHpj6nos73G1TylZ9WLZTzwnqqWn94/ImYyK6wsr3WRcIadfR2aZI8QswOh?=
+ =?us-ascii?Q?iNuroi3JUqxC5H3/aq0Fyh6tLx6u6zG+6EUurnhovIztkkD+gGIYYKUkXIRg?=
+ =?us-ascii?Q?hGTox2HhXv6bQhHaw7u6euFOeFbFv1Vy/6Yi9wq54yW0fBZs87tblxZWWobr?=
+ =?us-ascii?Q?A3oV3a2QXW4lsz/vqben0ApKCJ7MoSHkXhy88oPPzhl2zTx3DRw708T2REJm?=
+ =?us-ascii?Q?va0rEOj5in3To2aFhE90EiLucv1eS9Sygl6x8YQHuOXPyNfXIZnMdWxokge7?=
+ =?us-ascii?Q?gA9n2OFzzSGexGPjlLK1zKXFtx+3Zmh8XD69YVR5FrGzVx2Kb+2OqK628J1H?=
+ =?us-ascii?Q?koO+sret7j19gpK98p/fiAWnitvd7tnIm/xUnNRbt8pu5ZBLAQ3uaQiIjdqF?=
+ =?us-ascii?Q?CHQL/hziohX6ERsSSlmg79JPCtAQnyHHifcNjafys+oL5Ui2oYeGVWPuJZMs?=
+ =?us-ascii?Q?JStch/oP/Z9ZuseNlMGTdSLAfoxnE7XUYKWMrSEVgJkBgkX51TiU2YQpsSaJ?=
+ =?us-ascii?Q?KJlSk78hSwfPWLC+z/FoAdxVhwRX7ZK6IbrWX5k+sPJ3frigVGokcr1LDkkv?=
+ =?us-ascii?Q?rfTp5Knt5CER4vRVWu0ow1pA0FuBuYq3PZSAS+8nxjdw1uOChTsd6cWfumOn?=
+ =?us-ascii?Q?LR/sZ3XxxorL7I5bSwbVvwOMs5Rhjzouk+yjIm/vTv60d6BcjhMB9blDhSIc?=
+ =?us-ascii?Q?DNBEON8VsqAUSq2ziPBaqHZSc3exXKMQHAq1nK7AB+NjGDblVwQ29EvtIL68?=
+ =?us-ascii?Q?WM445tXNPZuFCzABff9Uz+aBL+0Eex58k2VLW+FVwUyz6nMVQRd6ZU3kuSMy?=
+ =?us-ascii?Q?XszSzQXUs7C2dkYRfANqEGOiqFRWUWR44d4dAD+NCHZAbnAayr+Rg+rjp8pn?=
+ =?us-ascii?Q?KUoDsM8WLKhvVEYDunXCazS9UIUUdxjl/q7TSNfS4rxm4nFwRfVMvxPtGgya?=
+ =?us-ascii?Q?5rbCm5eBEnWntOF34HFDhVLMYqdOiaV0I7tZ6K4SYWkjNJfBMq1vqXhbi/7b?=
+ =?us-ascii?Q?TkOjBAuWfZQa8DGNhh5PUZyEk7tRxxow9B+tLN7vus7sDhbYgqeu1ccUf2vN?=
+ =?us-ascii?Q?sTYxk7N9jWl05zF4NlmDKi8WfH2sDvw/T+3Y6D2F4HEi7qavhKMDfoAMXIuN?=
+ =?us-ascii?Q?UNU88/ssTE0ljmJP6UJhDlZ41uUYfqni3iyovSjKq3uUwLiqS/2OEIoIdkTb?=
+ =?us-ascii?Q?O2eoQBgxSjmAs7puA378wVYMMVktH2FkdPJI4BWQnPAKe/1XFc3lYWh8bUuj?=
+ =?us-ascii?Q?BgltsLQA6n1z3JkDo2Kk4Zl5GfWGzFMtzvZkPhO+dwcyr8fufAcBm6SKbssr?=
+ =?us-ascii?Q?cqaEeF/q5H7IdbYCtvIE2D6svYfJFsuDHmZvICOx1k/7E3P92oyDWDziRtGA?=
+ =?us-ascii?Q?Are1FAkYmd2LYG97R3L+0jaXxIeK/39kYv5RnhndK7VMtLpddRa4HgoAnd6T?=
+ =?us-ascii?Q?BUbiF/bjAOpg3Lm+AEGOkJA=3D?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55017e37-ad22-4937-e3a0-08d9bbb4c501
+X-MS-Exchange-CrossTenant-AuthSource: SL2PR06MB3082.apcprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2768c1a0-0647-48c9-415e-08d9bbb46ba0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Dec 2021 08:09:42.2563 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: h8216ee5q/GJ62SbiFJceEGKrttcjS2PDlb7lOAylBQr/3QvwGWnDPG7CYRoK7K+Vr5kOn8aNHF3NPOrjJl2Wqb9gmqzFwK8zzZBfoskW+A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRXP264MB0262
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2021 08:12:12.5677 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xl+HfWgVM7T0HpkAgWEPFv4d/WPtj60z2Lp+IBWHqcuZBVz86DFAn+cIF8rAG2gJZFKbJVJxi+PHOGaZmqfcjw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SL2PR06MB3033
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -122,262 +128,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Maxime Bizon <mbizon@freebox.fr>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Wang Qing <wangqing@vivo.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-set_memory_attr() was implemented by commit 4d1755b6a762 ("powerpc/mm:
-implement set_memory_attr()") because the set_memory_xx() couldn't
-be used at that time to modify memory "on the fly" as explained it
-the commit.
+From: Wang Qing <wangqing@vivo.com>
 
-But set_memory_attr() uses set_pte_at() which leads to warnings when
-CONFIG_DEBUG_VM is selected, because set_pte_at() is unexpected for
-updating existing page table entries.
+for_each_available_child_of_node() should decrement the
+node reference counter.  Reported by Coccinelle:
 
-The check could be bypassed by using __set_pte_at() instead,
-as it was the case before commit c988cfd38e48 ("powerpc/32:
-use set_memory_attr()") but since commit 9f7853d7609d ("powerpc/mm:
-Fix set_memory_*() against concurrent accesses") it is now possible
-to use set_memory_xx() functions to update page table entries
-"on the fly" because the update is now atomic.
+arch/powerpc/platforms/powermac/low_i2c.c:916:1-23: WARNING: Function 
+"for_each_child_of_node" should have of_node_put() before return.
 
-For DEBUG_PAGEALLOC we need to clear and set back _PAGE_PRESENT.
-Add set_memory_np() and set_memory_p() for that.
-
-Replace all uses of set_memory_attr() by the relevant set_memory_xx()
-and remove set_memory_attr().
-
-Reported-by: Maxime Bizon <mbizon@freebox.fr>
-Fixes: c988cfd38e48 ("powerpc/32: use set_memory_attr()")
-Cc: stable@vger.kernel.org
-Depends-on: 9f7853d7609d ("powerpc/mm: Fix set_memory_*() against concurren=
-t accesses")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Wang Qing <wangqing@vivo.com>
 ---
- arch/powerpc/include/asm/book3s/32/pgtable.h | 10 +++++
- arch/powerpc/include/asm/book3s/64/pgtable.h | 10 +++++
- arch/powerpc/include/asm/nohash/pgtable.h    | 10 +++++
- arch/powerpc/include/asm/set_memory.h        | 12 +++++-
- arch/powerpc/mm/pageattr.c                   | 39 +++-----------------
- arch/powerpc/mm/pgtable_32.c                 | 24 ++++++------
- 6 files changed, 58 insertions(+), 47 deletions(-)
+ arch/powerpc/platforms/powermac/low_i2c.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/in=
-clude/asm/book3s/32/pgtable.h
-index 609c80f67194..4ceebb291896 100644
---- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-@@ -518,6 +518,16 @@ static inline pte_t pte_mkuser(pte_t pte)
- 	return __pte(pte_val(pte) | _PAGE_USER);
- }
-=20
-+static inline pte_t pte_mkpresent(pte_t pte)
-+{
-+	return __pte(pte_val(pte) | _PAGE_PRESENT);
-+}
-+
-+static inline pte_t pte_mkabsent(pte_t pte)
-+{
-+	return __pte(pte_val(pte) & ~_PAGE_PRESENT);
-+}
-+
- static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
- {
- 	return __pte((pte_val(pte) & _PAGE_CHG_MASK) | pgprot_val(newprot));
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/in=
-clude/asm/book3s/64/pgtable.h
-index 33e073d6b0c4..2bbc8b69b7f4 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -724,6 +724,16 @@ static inline pte_t pte_mkuser(pte_t pte)
- 	return __pte_raw(pte_raw(pte) & cpu_to_be64(~_PAGE_PRIVILEGED));
- }
-=20
-+static inline pte_t pte_mkpresent(pte_t pte)
-+{
-+	return __pte_raw(pte_raw(pte) | cpu_to_be64(_PAGE_PRESENT));
-+}
-+
-+static inline pte_t pte_mkabsent(pte_t pte)
-+{
-+	return __pte_raw(pte_raw(pte) & cpu_to_be64(~_PAGE_PRESENT));
-+}
-+
- /*
-  * This is potentially called with a pmd as the argument, in which case it=
-'s not
-  * safe to check _PAGE_DEVMAP unless we also confirm that _PAGE_PTE is set=
-.
-diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/inclu=
-de/asm/nohash/pgtable.h
-index ac75f4ab0dba..3d4169969900 100644
---- a/arch/powerpc/include/asm/nohash/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/pgtable.h
-@@ -166,6 +166,16 @@ static inline pte_t pte_mkuser(pte_t pte)
- }
- #endif
-=20
-+static inline pte_t pte_mkpresent(pte_t pte)
-+{
-+	return __pte(pte_val(pte) | _PAGE_PRESENT);
-+}
-+
-+static inline pte_t pte_mkabsent(pte_t pte)
-+{
-+	return __pte(pte_val(pte) & ~_PAGE_PRESENT);
-+}
-+
- static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
- {
- 	return __pte((pte_val(pte) & _PAGE_CHG_MASK) | pgprot_val(newprot));
-diff --git a/arch/powerpc/include/asm/set_memory.h b/arch/powerpc/include/a=
-sm/set_memory.h
-index b040094f7920..061f1766a8a4 100644
---- a/arch/powerpc/include/asm/set_memory.h
-+++ b/arch/powerpc/include/asm/set_memory.h
-@@ -6,6 +6,8 @@
- #define SET_MEMORY_RW	1
- #define SET_MEMORY_NX	2
- #define SET_MEMORY_X	3
-+#define SET_MEMORY_NP	4
-+#define SET_MEMORY_P	5
-=20
- int change_memory_attr(unsigned long addr, int numpages, long action);
-=20
-@@ -29,6 +31,14 @@ static inline int set_memory_x(unsigned long addr, int n=
-umpages)
- 	return change_memory_attr(addr, numpages, SET_MEMORY_X);
- }
-=20
--int set_memory_attr(unsigned long addr, int numpages, pgprot_t prot);
-+static inline int set_memory_np(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_NP);
-+}
-+
-+static inline int set_memory_p(unsigned long addr, int numpages)
-+{
-+	return change_memory_attr(addr, numpages, SET_MEMORY_P);
-+}
-=20
- #endif
-diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
-index edea388e9d3f..cb36963644c9 100644
---- a/arch/powerpc/mm/pageattr.c
-+++ b/arch/powerpc/mm/pageattr.c
-@@ -48,6 +48,12 @@ static int change_page_attr(pte_t *ptep, unsigned long a=
-ddr, void *data)
- 	case SET_MEMORY_X:
- 		pte =3D pte_mkexec(pte);
- 		break;
-+	case SET_MEMORY_NP:
-+		pte =3D pte_mkabsent(pte);
-+		break;
-+	case SET_MEMORY_P:
-+		pte =3D pte_mkpresent(pte);
-+		break;
- 	default:
- 		WARN_ON_ONCE(1);
- 		break;
-@@ -96,36 +102,3 @@ int change_memory_attr(unsigned long addr, int numpages=
-, long action)
- 	return apply_to_existing_page_range(&init_mm, start, size,
- 					    change_page_attr, (void *)action);
- }
--
--/*
-- * Set the attributes of a page:
-- *
-- * This function is used by PPC32 at the end of init to set final kernel m=
-emory
-- * protection. It includes changing the maping of the page it is executing=
- from
-- * and data pages it is using.
-- */
--static int set_page_attr(pte_t *ptep, unsigned long addr, void *data)
--{
--	pgprot_t prot =3D __pgprot((unsigned long)data);
--
--	spin_lock(&init_mm.page_table_lock);
--
--	set_pte_at(&init_mm, addr, ptep, pte_modify(*ptep, prot));
--	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--
--	spin_unlock(&init_mm.page_table_lock);
--
--	return 0;
--}
--
--int set_memory_attr(unsigned long addr, int numpages, pgprot_t prot)
--{
--	unsigned long start =3D ALIGN_DOWN(addr, PAGE_SIZE);
--	unsigned long sz =3D numpages * PAGE_SIZE;
--
--	if (numpages <=3D 0)
--		return 0;
--
--	return apply_to_existing_page_range(&init_mm, start, sz, set_page_attr,
--					    (void *)pgprot_val(prot));
--}
-diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-index 906e4e4328b2..f71ededdc02a 100644
---- a/arch/powerpc/mm/pgtable_32.c
-+++ b/arch/powerpc/mm/pgtable_32.c
-@@ -135,10 +135,12 @@ void mark_initmem_nx(void)
- 	unsigned long numpages =3D PFN_UP((unsigned long)_einittext) -
- 				 PFN_DOWN((unsigned long)_sinittext);
-=20
--	if (v_block_mapped((unsigned long)_sinittext))
-+	if (v_block_mapped((unsigned long)_sinittext)) {
- 		mmu_mark_initmem_nx();
--	else
--		set_memory_attr((unsigned long)_sinittext, numpages, PAGE_KERNEL);
-+	} else {
-+		set_memory_nx((unsigned long)_sinittext, numpages);
-+		set_memory_rw((unsigned long)_sinittext, numpages);
-+	}
- }
-=20
- #ifdef CONFIG_STRICT_KERNEL_RWX
-@@ -152,18 +154,14 @@ void mark_rodata_ro(void)
- 		return;
- 	}
-=20
--	numpages =3D PFN_UP((unsigned long)_etext) -
--		   PFN_DOWN((unsigned long)_stext);
--
--	set_memory_attr((unsigned long)_stext, numpages, PAGE_KERNEL_ROX);
- 	/*
--	 * mark .rodata as read only. Use __init_begin rather than __end_rodata
--	 * to cover NOTES and EXCEPTION_TABLE.
-+	 * mark .text and .rodata as read only. Use __init_begin rather than
-+	 * __end_rodata to cover NOTES and EXCEPTION_TABLE.
- 	 */
- 	numpages =3D PFN_UP((unsigned long)__init_begin) -
--		   PFN_DOWN((unsigned long)__start_rodata);
-+		   PFN_DOWN((unsigned long)_stext);
-=20
--	set_memory_attr((unsigned long)__start_rodata, numpages, PAGE_KERNEL_RO);
-+	set_memory_ro((unsigned long)_stext, numpages);
-=20
- 	// mark_initmem_nx() should have already run by now
- 	ptdump_check_wx();
-@@ -179,8 +177,8 @@ void __kernel_map_pages(struct page *page, int numpages=
-, int enable)
- 		return;
-=20
- 	if (enable)
--		set_memory_attr(addr, numpages, PAGE_KERNEL);
-+		set_memory_p(addr, numpages);
- 	else
--		set_memory_attr(addr, numpages, __pgprot(0));
-+		set_memory_np(addr, numpages);
- }
- #endif /* CONFIG_DEBUG_PAGEALLOC */
---=20
-2.33.1
+diff --git a/arch/powerpc/platforms/powermac/low_i2c.c b/arch/powerpc/platforms/powermac/low_i2c.c
+index f77a59b..5a8c306
+--- a/arch/powerpc/platforms/powermac/low_i2c.c
++++ b/arch/powerpc/platforms/powermac/low_i2c.c
+@@ -922,8 +922,10 @@ static void __init smu_i2c_probe(void)
+ 
+ 		sz = sizeof(struct pmac_i2c_bus) + sizeof(struct smu_i2c_cmd);
+ 		bus = kzalloc(sz, GFP_KERNEL);
+-		if (bus == NULL)
++		if (bus == NULL) {
++			of_node_put(busnode);
+ 			return;
++		}
+ 
+ 		bus->controller = controller;
+ 		bus->busnode = of_node_get(busnode);
+-- 
+2.7.4
+
