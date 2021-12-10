@@ -1,78 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A99471E62
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Dec 2021 23:55:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF52471E63
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Dec 2021 23:56:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JC0NL2CpPz3cbR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 09:55:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JC0P44cvxz3dm8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 09:56:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DpLCPmMg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IxhbpvG2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12a;
- helo=mail-lf1-x12a.google.com; envelope-from=digetx@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12b;
+ helo=mail-lf1-x12b.google.com; envelope-from=digetx@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=DpLCPmMg; dkim-atps=neutral
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com
- [IPv6:2a00:1450:4864:20::12a])
+ header.s=20210112 header.b=IxhbpvG2; dkim-atps=neutral
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com
+ [IPv6:2a00:1450:4864:20::12b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J9g4V5yY6z3bj9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 05:52:08 +1100 (AEDT)
-Received: by mail-lf1-x12a.google.com with SMTP id d10so19696718lfg.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 10:52:08 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4J9g732M27z2ywV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 05:54:23 +1100 (AEDT)
+Received: by mail-lf1-x12b.google.com with SMTP id bu18so19850476lfb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 10:54:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=subject:to:cc:references:from:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=j1hvlB2w2BrWNScbCJyLwX4oBGKG9hr6NJqtvFkNM/U=;
- b=DpLCPmMgrOty3y0HrpqopSxxp/qGs/dwG/CgN0apuyA6on28PorJtUybksa6iWzXUQ
- 1nC+svp1ZReaFc8Ho69TZxII0UpyuP8U7xwSjZaJzyMIRrgh64VdMWwWLpT7FD5pRO3K
- REVQTxyYOO3tzHZOXPhjO1pz+wC6sFrKKUXdbaxaG08xMkm/2y6DNn/B8j1qrJKM7+bp
- P06T1NhQFOSTeILIcDdZiYIbm1FILYdO04vFRszXD6zy1FhLrwMPIaNrfLI1p4FempaK
- JIbIyvDEnU7xy4tOpOMAsYn+ngt9JZU69+QjylTYb0y426O41rF96XAtvzhN80gJmNuF
- j5Ug==
+ bh=IKf1m11e2CmLOphgB5tXRwG67Tf75LBrlnq5Vg7yJZw=;
+ b=IxhbpvG2CFXB3xmkjVMdWRMntYmHOq8xg7eP7zr/AbSS5vu1B9sdxo5o91nGOD2995
+ QQ3KG6tw48EY7IhOrAyb30j6v2PDl8KJF+jKSnPayvNkG1XmqZAU+fLfW7OnlwsZZOnn
+ 0A9elkL050dIg2mh2nAMxrCkv1StUF1LjCWn+NlhosKjCmIUCMa0MKcmxWQ+/W+IgKI6
+ i8CNkkus5bglRUlOxac8XP3LVuSzA40MUvRiA2U0B7IAsHpJ1AsKj9N6snoJl+u70szG
+ pZzPqoOnQIc/elfvbeQCxFa9JUiQLy0NMI8wwjD0fM288MJ0ySJSpfHIgwDyPyb7i3mv
+ C2Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:subject:to:cc:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=j1hvlB2w2BrWNScbCJyLwX4oBGKG9hr6NJqtvFkNM/U=;
- b=hEYWKXa24KUe5gAwc3fvb73KAYsDVfxho6LakX1f9QZ4utPnUWRQvSGkHhjGjSeh2U
- NAuHDoCJgyosY/j/1pJcWgjgvUOOd1NKZPSTkOXxrUebU258TX1rjbfiG58JJ1ReVIQo
- Z4QReNGjzg6IWYSWsTsauZLwPewE1gWQh0xZzEUhX8cr2DsBCXpni6Csjjg4cQr824+P
- YfvSyeWvEq7b1YTsnvw/VQHPGK1DP2KWu8Kyku9Ogqr8wCONHDE3j+AQmeYzbvI91k7o
- nwORcfi1TKHCVcldH4AqOUZQUaFbNHrTpdZLUuGYoiMlWMTdwz3D571dZh6JdjTpXytT
- u0/g==
-X-Gm-Message-State: AOAM533B3I/6Rpoy5LSJ+7yvHpqTaUyqTUhm3vaIaDVmKgmdSSamaZRi
- rZCpNqkgjHiC7Jzd1fM4i78=
-X-Google-Smtp-Source: ABdhPJwwyZAuw0wQQ6Dju/0DgEoENSIDq2aqqR4iP7Vldq5bfh8DtMEIrZOS6poEr19ZPeaYgjpDkg==
-X-Received: by 2002:ac2:58d9:: with SMTP id u25mr14351127lfo.514.1639162324540; 
- Fri, 10 Dec 2021 10:52:04 -0800 (PST)
+ bh=IKf1m11e2CmLOphgB5tXRwG67Tf75LBrlnq5Vg7yJZw=;
+ b=NlXxnifyufDdeeddAE61ZB0LbwzYjoDgvsBexN9esrfUXNabWYWCB3AS5WLYGFT1Aj
+ lKaoYdViwoNvFDkCgvdsJdIB8sk7kMt4RN3NkRinHSuBwsoD5HkSmp3NaYAZk/0rBXND
+ 0ARcHhw01lk85Tsz05lhW+KIXSUSKNLW2+YE00jieuPif/2k1PQyJ5PXFa/He4yxjEUg
+ f6jqsSiYyOj6Yv6bM41VDjyJK/rgrLSLMowegYvwoS/oQhQOrKCYWeulqg7XQvQaQbp2
+ JBG0+y0jp7I2OZ3Ov1AWWt+fBJE/x1xucWrSIVjmSnAJbaaFQHaBHLGwcno4WZ7Xw5Bi
+ vu5Q==
+X-Gm-Message-State: AOAM532enJudLSNOqLleGMllBNVUGeVpnGf4+2wyvSl0XlqgKOiX6gk4
+ oxEPtC00vKQn9yRIj6b4wi0=
+X-Google-Smtp-Source: ABdhPJyNtPZVq+j4jRpVe2vNWn4eVPA/mLyRKU7MjcAV9J6qXLR8NEClMh21SuEPG0vCBnH7Acz/0w==
+X-Received: by 2002:ac2:4c4d:: with SMTP id o13mr13668768lfk.196.1639162460068; 
+ Fri, 10 Dec 2021 10:54:20 -0800 (PST)
 Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru.
  [94.29.46.111])
- by smtp.googlemail.com with ESMTPSA id c21sm387216lfv.29.2021.12.10.10.52.02
+ by smtp.googlemail.com with ESMTPSA id v15sm390403ljj.5.2021.12.10.10.54.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Dec 2021 10:52:04 -0800 (PST)
-Subject: Re: [PATCH v4 03/25] notifier: Add
- atomic/blocking_notifier_has_unique_priority()
+ Fri, 10 Dec 2021 10:54:19 -0800 (PST)
+Subject: Re: [PATCH v4 06/25] reboot: Warn if unregister_restart_handler()
+ fails
 To: "Rafael J. Wysocki" <rafael@kernel.org>
 References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-4-digetx@gmail.com>
- <CAJZ5v0jTJ3f7oUUR690PGaPJsxA8yzua9XDa8MONBHMzHnDfOQ@mail.gmail.com>
+ <20211126180101.27818-7-digetx@gmail.com>
+ <CAJZ5v0ii7tGRDbxw+5GqdyONXvRPznXUqBZd03+pdoAd+pH=JQ@mail.gmail.com>
 From: Dmitry Osipenko <digetx@gmail.com>
-Message-ID: <e6ff1cea-a168-1cb0-25c5-fb16c681cf4a@gmail.com>
-Date: Fri, 10 Dec 2021 21:52:01 +0300
+Message-ID: <c518ce36-09d2-16a3-cec2-6bab8260e3cf@gmail.com>
+Date: Fri, 10 Dec 2021 21:54:17 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <CAJZ5v0jTJ3f7oUUR690PGaPJsxA8yzua9XDa8MONBHMzHnDfOQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0ii7tGRDbxw+5GqdyONXvRPznXUqBZd03+pdoAd+pH=JQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -131,53 +131,38 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-10.12.2021 21:19, Rafael J. Wysocki пишет:
-...
->> +bool atomic_notifier_has_unique_priority(struct atomic_notifier_head *nh,
->> +               struct notifier_block *n)
->> +{
->> +       unsigned long flags;
->> +       bool ret;
->> +
->> +       spin_lock_irqsave(&nh->lock, flags);
->> +       ret = notifier_has_unique_priority(&nh->head, n);
->> +       spin_unlock_irqrestore(&nh->lock, flags);
+10.12.2021 21:32, Rafael J. Wysocki пишет:
+> On Fri, Nov 26, 2021 at 7:02 PM Dmitry Osipenko <digetx@gmail.com> wrote:
+>>
+>> Emit warning if unregister_restart_handler() fails since it never should
+>> fail. This will ease further API development by catching mistakes early.
+>>
+>> Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+>> ---
+>>  kernel/reboot.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/kernel/reboot.c b/kernel/reboot.c
+>> index e6659ae329f1..f0e7b9c13f6b 100644
+>> --- a/kernel/reboot.c
+>> +++ b/kernel/reboot.c
+>> @@ -210,7 +210,7 @@ EXPORT_SYMBOL(register_restart_handler);
+>>   */
+>>  int unregister_restart_handler(struct notifier_block *nb)
+>>  {
+>> -       return atomic_notifier_chain_unregister(&restart_handler_list, nb);
+>> +       return WARN_ON(atomic_notifier_chain_unregister(&restart_handler_list, nb));
 > 
-> This only works if the caller can prevent new entries from being added
-> to the list at this point or if the caller knows that they cannot be
-> added for some reason, but the kerneldoc doesn't mention this
-> limitation.
+> The only reason why it can fail is if the object pointed to by nb is
+> not in the chain.
 
-I'll update the comment.
+I had exactly this case where object wasn't in the chain due to a bug
+and this warning was very helpful.
 
-..
->> +bool blocking_notifier_has_unique_priority(struct blocking_notifier_head *nh,
->> +               struct notifier_block *n)
->> +{
->> +       bool ret;
->> +
->> +       /*
->> +        * This code gets used during boot-up, when task switching is
->> +        * not yet working and interrupts must remain disabled. At such
->> +        * times we must not call down_read().
->> +        */
->> +       if (system_state != SYSTEM_BOOTING)
-> 
-> No, please don't do this, it makes the whole thing error-prone.
+>  Why WARN() about this?  And what about systems with
+> panic_on_warn set?
 
-What should I do then?
+That warning condition will never happen normally, only when something
+is seriously wrong.
 
->> +               down_read(&nh->rwsem);
->> +
->> +       ret = notifier_has_unique_priority(&nh->head, n);
->> +
->> +       if (system_state != SYSTEM_BOOTING)
->> +               up_read(&nh->rwsem);
-> 
-> And still what if a new entry with a non-unique priority is added to
-> the chain at this point?
-
-If entry with a non-unique priority is added after the check, then
-obviously it won't be detected. I don't understand the question. These
-down/up_read() are the locks that prevent the race, if that's the question.
-
+Those systems with panic_on_warn will get what was they asked for.
