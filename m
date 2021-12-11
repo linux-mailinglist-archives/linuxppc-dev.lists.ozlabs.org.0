@@ -1,85 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F380471E83
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 00:02:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE265471E85
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 00:03:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JC0XD0lH2z3gBm
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 10:02:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JC0Xz62q9z3f4j
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 10:02:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=pA5gJzqp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ETF9jKtG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::129;
- helo=mail-lf1-x129.google.com; envelope-from=digetx@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=pA5gJzqp; dkim-atps=neutral
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com
- [IPv6:2a00:1450:4864:20::129])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ETF9jKtG; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4J9hxy4PMVz2yS3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Dec 2021 07:16:36 +1100 (AEDT)
-Received: by mail-lf1-x129.google.com with SMTP id cf39so7943489lfb.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Dec 2021 12:16:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=subject:from:to:cc:references:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=3TjXmEXDJ/+bmC4Ps/ax4TtRHBZzHR+/4MLS5Bo5vyY=;
- b=pA5gJzqpb6DuYCThgFEy/8I55Q/DWCaUg3a+PUCGAi7titTHPZavt9HNjzNTaNOdtA
- W9bvYLeTFtb26OuFlSespYNsQjEuRbN74aib6efdQf4sRvk0jZOXEyR7Ry1SlPtvny3V
- dHFm88kS0utx46N/B1V95jCju3EdX/3tioPOW0AUjL07+k8WzDTAaYKBNQJxB0pggImt
- zxKY302IiWihQZ6zPY6n4S1ZYz2akRfe0TTR5ci41YrCJJyH8fb1pqNG9DRsK91AXeR3
- 4OlRlbRYehYwacP4ScBqgyVswzojoT/ol0CB6bk5gTERql84YP9I/T1kujCvte5MFcNM
- x95w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:from:to:cc:references:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=3TjXmEXDJ/+bmC4Ps/ax4TtRHBZzHR+/4MLS5Bo5vyY=;
- b=GPj1TW/oIOB9Gyg6GiNkSAqP9h3W+rR0fbN+H4jsdJ7YeVNJ12qmzr9XB/UTyDqEUd
- EQBvyRijKVIdAlMjma4faUm3q156nJ9SwIByrQCyiEgZfJcJIhFPIBd0YHDTWDOw0xlN
- RPGjZ63R34qB5nY40Ovm4CRgJIXVhb0xcXEV4OJjJ6+CXAWpQH2JnuCeCJHCRRLvVVQh
- /HkVe2BqgfUz6Th+jICGA2QVodBRrY1M2DafSJ/oVhe+RwdQkEkQ4HTWIRRdphxxoGOx
- NNN+Z8fUWuV2+NkdBezBNQp1RNYbZSprJYuc1GEp/I2+S56kkH25vcQDMwrVVTq2M3mz
- 2KXw==
-X-Gm-Message-State: AOAM5335J1/jOQrz9H6i8asUVhpfxFzG24jII/lbtyBdhqQwMi7WSTvf
- SRbk4crrDSdfcdXns13Oar0=
-X-Google-Smtp-Source: ABdhPJwE5tZeH/HHL0CnlLb6JayzZfWyUFquo/I1vHYJYjJlUN8IQfec3+fnfy4fMkF6dVQvXojbFQ==
-X-Received: by 2002:a05:6512:2292:: with SMTP id
- f18mr14265704lfu.18.1639167392050; 
- Fri, 10 Dec 2021 12:16:32 -0800 (PST)
-Received: from [192.168.2.145] (94-29-46-111.dynamic.spd-mgts.ru.
- [94.29.46.111])
- by smtp.googlemail.com with ESMTPSA id z23sm409427ljn.23.2021.12.10.12.16.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 Dec 2021 12:16:31 -0800 (PST)
-Subject: Re: [PATCH v4 03/25] notifier: Add
- atomic/blocking_notifier_has_unique_priority()
-From: Dmitry Osipenko <digetx@gmail.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-4-digetx@gmail.com>
- <CAJZ5v0jTJ3f7oUUR690PGaPJsxA8yzua9XDa8MONBHMzHnDfOQ@mail.gmail.com>
- <e6ff1cea-a168-1cb0-25c5-fb16c681cf4a@gmail.com>
- <CAJZ5v0gwnY07vg71_NB8RDWyv84FtMsmx7UTDd8TkUd7vFzc6A@mail.gmail.com>
- <fd158245-aa9a-2e48-0145-004f30005a66@gmail.com>
-Message-ID: <218e67e2-1d8c-5727-3862-8884d74aa63e@gmail.com>
-Date: Fri, 10 Dec 2021 23:16:29 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JBPNh0Wlcz2xsZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Dec 2021 10:38:43 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1BBNE0GQ005429; 
+ Sat, 11 Dec 2021 23:38:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=content-type :
+ message-id : date : mime-version : subject : to : cc : references : from :
+ in-reply-to; s=pp1; bh=8bc2M3gNYRDx+CctIv/D//nNdeJiOUba1qesd6QPvtU=;
+ b=ETF9jKtGtXPS0DhMEvxl4INvmp88CjH01oCvWPMDshlDcDv0GdPhHg7ULnelPZNZq8Iw
+ AwUNM9PXFVNiR6lzwZflCDqBnkvuBcRy9EphxYQG4/cJrG8U4pFjIrGnI8iXnjJiDQ8h
+ cunDW+p400uRXWFuilGy+/mx/JpCNz47QRPnuRT7Z81VZT9NDJHvEaAU7GiZ5cSGBlsf
+ xR5uxGxorwMbqEXPs4sCtqzbOEHKOdz+KvH3cPDfr7BfbbJvxvW52FdCMMtI9CQq+Edc
+ IFwuGdEzjLhZQ2V6n8Yn0ZtMeMXGh5gcqVkhfz8uKk8T3Ou68TtzG22mb7ZB2k5YptFT aA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cw5fu871v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 11 Dec 2021 23:38:06 +0000
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1BBNc5Z8000340;
+ Sat, 11 Dec 2021 23:38:05 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cw5fu871m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 11 Dec 2021 23:38:05 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1BBNWWqw031051;
+ Sat, 11 Dec 2021 23:38:04 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma04dal.us.ibm.com with ESMTP id 3cvkm8ug22-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 11 Dec 2021 23:38:04 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1BBNc2qe25428360
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 11 Dec 2021 23:38:02 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1FFEDB2066;
+ Sat, 11 Dec 2021 23:38:02 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DD2E7B2067;
+ Sat, 11 Dec 2021 23:37:57 +0000 (GMT)
+Received: from [9.211.63.5] (unknown [9.211.63.5])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Sat, 11 Dec 2021 23:37:57 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------BkCI85ljeBxCSg0XgT0RrAju"
+Message-ID: <bd7e0273-375c-2d67-72b4-d157bac76b42@linux.vnet.ibm.com>
+Date: Sat, 11 Dec 2021 18:37:57 -0500
 MIME-Version: 1.0
-In-Reply-To: <fd158245-aa9a-2e48-0145-004f30005a66@gmail.com>
-Content-Type: text/plain; charset=utf-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 2/6] powerpc/kexec_file: Add KEXEC_SIG support.
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+To: Michal Suchanek <msuchanek@suse.de>, keyrings@vger.kernel.org
+References: <cover.1637862358.git.msuchanek@suse.de>
+ <8b30a3c6a4e845eb77f276298424811897efdebf.1637862358.git.msuchanek@suse.de>
+From: Nayna <nayna@linux.vnet.ibm.com>
+In-Reply-To: <8b30a3c6a4e845eb77f276298424811897efdebf.1637862358.git.msuchanek@suse.de>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: yyEMWk4V3Y6kTSKaP0866gPjTPm_aGjD
+X-Proofpoint-GUID: pVjzNIUh4HQqp1FjvEc7J_NfGtrUkl4M
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-11_10,2021-12-10_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 clxscore=1015
+ bulkscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0 suspectscore=0
+ adultscore=0 impostorscore=0 spamscore=0 priorityscore=1501
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112110136
 X-Mailman-Approved-At: Mon, 13 Dec 2021 09:47:48 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -92,72 +109,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Santosh Shilimkar <ssantosh@kernel.org>,
- Linux-sh list <linux-sh@vger.kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Liam Girdwood <lgirdwood@gmail.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Thierry Reding <thierry.reding@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Vincent Chen <deanbo422@gmail.com>,
- Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
- Stefano Stabellini <sstabellini@kernel.org>, alankao@andestech.com,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Jonathan Hunter <jonathanh@nvidia.com>,
- ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Catalin Marinas <catalin.marinas@arm.com>, xen-devel@lists.xenproject.org,
- linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
- Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
- Lee Jones <lee.jones@linaro.org>, linux-m68k@lists.linux-m68k.org,
- Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- linux-tegra <linux-tegra@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, linux-parisc@vger.kernel.org,
- Linux PM <linux-pm@vger.kernel.org>, Sebastian Reichel <sre@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Guo Ren <guoren@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Joshua Thompson <funaho@jurai.org>
+Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ linux-s390@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+ Baoquan He <bhe@redhat.com>, Christian Borntraeger <borntraeger@de.ibm.com>,
+ James Morris <jmorris@namei.org>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Rob Herring <robh@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+ linux-crypto@vger.kernel.org, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
+ Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
+ linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-10.12.2021 22:33, Dmitry Osipenko пишет:
->> Not really, they only prevent the race from occurring while
->> notifier_has_unique_priority() is running.
->>
->> If anyone depends on this check for correctness, they need to lock the
->> rwsem, do the check, do the thing depending on the check while holding
->> the rwsem and then release the rwsem.  Otherwise it is racy.
->>
-> It's fine that it's a bit "racy" since in the context of this series. We
-> always do the check after adding new entry, so it's not a problem.
-> 
-> There are two options:
-> 
-> 1. Use blocking_notifier_has_unique_priority() like it's done in this
-> patchset. Remove it after all drivers are converted to the new API and
-> add blocking_notifier_chain_register_unique().
-> 
-> 2. Add blocking_notifier_chain_register_unique(), but don't let it fail
-> the registration of non-unique entries until all drivers are converted
-> to the new API.
+This is a multi-part message in MIME format.
+--------------BkCI85ljeBxCSg0XgT0RrAju
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-There is third, perhaps the best option:
 
-3. Add blocking_notifier_chain_register_unique() and fall back to
-blocking_notifier_chain_register() if unique fails, do it until all
-drivers are converted to the new API.
+On 11/25/21 13:02, Michal Suchanek wrote:
+> Copy the code from s390x
+>
+> Signed-off-by: Michal Suchanek<msuchanek@suse.de>
+> ---
+>   arch/powerpc/Kconfig        | 11 +++++++++++
+>   arch/powerpc/kexec/elf_64.c | 36 ++++++++++++++++++++++++++++++++++++
+>   2 files changed, 47 insertions(+)
+>
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index ac0c515552fd..ecc1227a77f1 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -561,6 +561,17 @@ config KEXEC_FILE
+>   config ARCH_HAS_KEXEC_PURGATORY
+>   	def_bool KEXEC_FILE
+>
+> +config KEXEC_SIG
+> +	bool "Verify kernel signature during kexec_file_load() syscall"
+> +	depends on KEXEC_FILE && MODULE_SIG_FORMAT
+> +	help
+> +	  This option makes kernel signature verification mandatory for
+> +	  the kexec_file_load() syscall.
+> +
+
+Since powerpc also supports IMA_ARCH_POLICY for kernel image signature 
+verification, please include the following:
+
+"An alternative implementation for the powerpc arch is 
+IMA_ARCH_POLICY. It verifies the appended kernel image signature and 
+additionally includes both the signed and unsigned file hashes in the 
+IMA measurement list, extends the IMA PCR in the TPM, and prevents 
+blacklisted binary kernel images from being kexec'd"
+
+Thanks & Regards,
+
+     - Nayna
+
+--------------BkCI85ljeBxCSg0XgT0RrAju
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 11/25/21 13:02, Michal Suchanek
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+cite="mid:8b30a3c6a4e845eb77f276298424811897efdebf.1637862358.git.msuchanek@suse.de">
+      <pre class="moz-quote-pre" wrap="">Copy the code from s390x
+
+Signed-off-by: Michal Suchanek <a class="moz-txt-link-rfc2396E" href="mailto:msuchanek@suse.de">&lt;msuchanek@suse.de&gt;</a>
+---
+ arch/powerpc/Kconfig        | 11 +++++++++++
+ arch/powerpc/kexec/elf_64.c | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index ac0c515552fd..ecc1227a77f1 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -561,6 +561,17 @@ config KEXEC_FILE
+ config ARCH_HAS_KEXEC_PURGATORY
+ 	def_bool KEXEC_FILE
+
++config KEXEC_SIG
++	bool "Verify kernel signature during kexec_file_load() syscall"
++	depends on KEXEC_FILE &amp;&amp; MODULE_SIG_FORMAT
++	help
++	  This option makes kernel signature verification mandatory for
++	  the kexec_file_load() syscall.
++</pre>
+    </blockquote>
+    <p>Since powerpc also supports IMA_ARCH_POLICY for kernel image
+      signature verification, please include the following:<br>
+    </p>
+    <p>"<span style="color: rgb(29, 28, 29); font-family: Slack-Lato,
+        appleLogo, sans-serif; font-size: 15px; font-style: normal;
+        font-variant-ligatures: common-ligatures; font-variant-caps:
+        normal; font-weight: 400; letter-spacing: normal; orphans: 2;
+        text-align: left; text-indent: 0px; text-transform: none;
+        white-space: normal; widows: 2; word-spacing: 0px;
+        -webkit-text-stroke-width: 0px; background-color: rgb(255, 255,
+        255); text-decoration-thickness: initial; text-decoration-style:
+        initial; text-decoration-color: initial; display: inline
+        !important; float: none;">An alternative implementation for the
+        powerpc arch is IMA_ARCH_POLICY. It verifies the appended kernel
+        image signature and additionally includes both the signed and
+        unsigned file hashes in the IMA measurement list, extends the
+        IMA PCR in the TPM, and prevents blacklisted binary kernel
+        images from being kexec'd"</span></p>
+    <p>Thanks &amp; Regards,</p>
+    <p>    - Nayna<br>
+    </p>
+  </body>
+</html>
+--------------BkCI85ljeBxCSg0XgT0RrAju--
+
