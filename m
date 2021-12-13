@@ -2,58 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21CDA47204B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 06:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B62F472053
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 06:15:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JC8pP6r7gz2yp6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 16:15:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JC8q56LPdz3cTK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 16:15:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pcDQjwCH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RGfflIEV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1;
- helo=sin.source.kernel.org; envelope-from=vkoul@kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=vkoul@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=pcDQjwCH; 
+ header.s=k20201202 header.b=RGfflIEV; 
  dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org
- [IPv6:2604:1380:40e1:4800::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JC8nl4wVRz2yn2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 16:14:35 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JC8pB28SLz3bnJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 16:14:58 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id 3B0C9CE0DAF;
- Mon, 13 Dec 2021 05:14:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F64C00446;
- Mon, 13 Dec 2021 05:14:28 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 73F0EB80D7C;
+ Mon, 13 Dec 2021 05:14:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E36C00446;
+ Mon, 13 Dec 2021 05:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1639372469;
- bh=m+MbzkCsPCJNXsBFySexaUdkbI+fIAKWZPiq+A6GBck=;
+ s=k20201202; t=1639372491;
+ bh=zuuGW5+kS2UVDTK9JZgN0rVsKZ9vO7N+ikVVGGhcFus=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=pcDQjwCHOz6BSONU5joUW6e60Mu1jAbxQzts0EfFaFm5JmSfwPYHyrXe+as4aLjeM
- eFJH1OLum6J0MwbxxotL5Ynx/Wl9FSzFLuVcZ/MiaFGyolmZeXYP0aRrzCZjW5ZdJq
- Yt5fu6OtnruTRf7YSvoSO+XnwngnSyHnpkVidlaQ4C6iMZ9tlspBmToBaYm7+u5kTp
- 56ZJujbc1BVH7oROt6l/x3asZi1J9mKWjGd5xEZzFFEQ0GglJh+ze5/cFl0ltz5OnT
- HkJi0GnpAKgWw3QDQFyUKxAUiibgYJ1iBPJwPobSVKG5xk0d9X3x2zWgArHsKu4K1+
- TCjLAS6Yk203w==
-Date: Mon, 13 Dec 2021 10:44:25 +0530
+ b=RGfflIEVbOYzZ4L0+ZwdoUg9quAO5nOi9/UXP3Xmr9G9FMvVyrwT7jr3JP9IGaiFL
+ iDr3OkfoB6b8rQrplP3MBZ21trYA1fHZJ/P6K9OgJk7ys8npF3ZR421z8PmAzyK7at
+ mVJOPb6bRTPOptJL+XKRuXrxiPG2olj+FZeiYHjN4ZRoI7C3Src7FeNuQiJmp+bUMG
+ xPtHLVBnuBhLRIQdqXBDutn2NvWHHNDEQKnckdYO0OUOOTJAyaAkyCOddpx7Tk6abA
+ UbXFRd62tmtswrOO2et02MquRCBkv8NhukN03R6Wud8Ms+/tbnOLTtPGic26cUTGyv
+ Al/o3XGCyfNBQ==
+Date: Mon, 13 Dec 2021 10:44:47 +0530
 From: Vinod Koul <vkoul@kernel.org>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch V3 29/35] dmaengine: mv_xor_v2: Get rid of msi_desc abuse
-Message-ID: <YbbWsUO6o5ccU5ai@matsya>
+Subject: Re: [patch V3 35/35] dmaengine: qcom_hidma: Cleanup MSI handling
+Message-ID: <YbbWx1LhPEtF/9pp@matsya>
 References: <20211210221642.869015045@linutronix.de>
- <20211210221814.970099984@linutronix.de>
+ <20211210221815.329792721@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211210221814.970099984@linutronix.de>
+In-Reply-To: <20211210221815.329792721@linutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,8 +87,8 @@ Sender: "Linuxppc-dev"
 On 10-12-21, 23:19, Thomas Gleixner wrote:
 > From: Thomas Gleixner <tglx@linutronix.de>
 > 
-> Storing a pointer to the MSI descriptor just to keep track of the Linux
-> interrupt number is daft. Use msi_get_virq() instead.
+> There is no reason to walk the MSI descriptors to retrieve the interrupt
+> number for a device. Use msi_get_virq() instead.
 
 Acked-By: Vinod Koul <vkoul@kernel.org>
 
