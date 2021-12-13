@@ -2,73 +2,121 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D224728B3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 11:15:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B1247258B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 10:44:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JCHSV1974z3cCg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 21:15:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCGmx74pzz3bnJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 20:44:17 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com header.b=i19xTbCg;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.182;
- helo=mail-pf1-f182.google.com; envelope-from=geert.uytterhoeven@gmail.com;
- receiver=<UNKNOWN>)
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com
- [209.85.210.182])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=vivo.com (client-ip=40.107.130.101;
+ helo=apc01-hk2-obe.outbound.protection.outlook.com;
+ envelope-from=wangqing@vivo.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com
+ header.b=i19xTbCg; dkim-atps=neutral
+Received: from APC01-HK2-obe.outbound.protection.outlook.com
+ (mail-eopbgr1300101.outbound.protection.outlook.com [40.107.130.101])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JCGK917hpz2xYL
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 20:23:39 +1100 (AEDT)
-Received: by mail-pf1-f182.google.com with SMTP id x131so14344350pfc.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 01:23:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=7JQ6xhDuC8UGs/jm3YR6x8QoCCs8KyehtdxluDCRZKo=;
- b=IUnErhH49a53wpj4Tzhx9efMyyfWaOJvYXIR38En1GLLb4PF92XqSOolRd1CilpTzv
- YvWESrNbL5kM4GSdJt0nC0YyzrGzYQFq6jZA5T2T16BkgWgCToTCuOwfCE9c6vXVAaFn
- UGwwWXcA2fsnOBKNb75sZqUnQ1bLft/n7c7HXPWGyRtv1gTVLv+4w5Qu1CwMK40HB2PE
- 12HxlUtZas80tsbFHDEjGmlERPXSrMJIxU8+wEeY1xFiGJQ4wtaBBaUe+4Mv7sqKCjEs
- OGXf5c9s+yk0UFUsWsYAWWLQKRFF2GsweimoHMIfxIyvy0+7tyINVEUAjkpbKnupn/Og
- 45YA==
-X-Gm-Message-State: AOAM5334Sumu3zFAOqiGjnmlHWsiNzR1UYDlSYJkkX3Z6Z9a1qu4liF4
- Q4k5P3+bBdiUM9VEdHlVfDsx9vHus8T83w==
-X-Google-Smtp-Source: ABdhPJzZUDXQ50DUC3HqjEzny757aTqL993MJGY+7xjO/+cf30sOI8EBthPPF1TFtheh/aQirCwEUg==
-X-Received: by 2002:a63:b307:: with SMTP id i7mr52968070pgf.445.1639387415625; 
- Mon, 13 Dec 2021 01:23:35 -0800 (PST)
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com.
- [209.85.215.182])
- by smtp.gmail.com with ESMTPSA id r16sm9612807pgk.45.2021.12.13.01.23.34
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Dec 2021 01:23:35 -0800 (PST)
-Received: by mail-pg1-f182.google.com with SMTP id j11so14040970pgs.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 01:23:34 -0800 (PST)
-X-Received: by 2002:a67:c106:: with SMTP id d6mr26074577vsj.77.1639387403608; 
- Mon, 13 Dec 2021 01:23:23 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCGm61RSBz2yw9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 20:43:22 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OjQ/RtbYfOcU+stJlaaQzfXXEL1SeFxA3m0Ate+R7OOIHhoGPF6N4oLANIh6nkewHBaoyojdN1PVohkytgomhk5mfVrZc6WoAUrlMXicUY7eyHTF3WZStqXgog58z0U2BJzEJEiwIc9R1z7GFJCaWgpoAyo3UIG80wjf4bTnYz6ZG22hezlcC2nUgArHpKxswVJr4MZqqYpOa39vplisV9uoKRVOmqFNLo6sVLBjWVl9/72tfgST0kKW3i5epn3lI6kT5wcbsfenVJMoso8NsmxbOS04Y109VBbojbfuinTDaEOgtjKnoyCfXBxOuGG49QlXnFE+i4dVZ9AVAVphFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IZv6rWuXraT/4KPE6oifLgxFcTswNiwroZQH7Zaoddo=;
+ b=V34P2OmWx3Flng90mWoCHpukHr97RJinlD1nCbjqi5vszw5iE1BY/KtprisM/cympak7M57WRqI/FXarc7PveS63bQqwLBp4FkDiV43q48FqwjhghAWTSfDHeb2tnRYLO1ma68+TT+li+SrwSpQ6vRtEbI6ix1c4LdjttTM8KQQfbnzC7/sm20SNLjWuRQEOzIwlB4nPucEI6Igtjcch8nqBuYOdU+V36G+Fjn51FL1l7BJzTszLORjijuYqqi7VaVf6/wyJAnO19/RlqKWB/UuSTahD/5agcfzRLgd+ssoOTPiuEfwbBoLe2Ya6d4Ns41WmGY41kTl7ODp1s6bdjw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com; 
+ s=selector2-vivo0-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IZv6rWuXraT/4KPE6oifLgxFcTswNiwroZQH7Zaoddo=;
+ b=i19xTbCgINoFuGF0QPQ/sRJXIOrxmrwVpdEqmDnonOXDysIjX//TCC+wTeZUDP2uhgSHtn1IGlc+P34ndG4BS2um6HQWpYOf5FEY4fsS85UTC+mJePdcHMR/U7Pl+AtN3omMj7h6PkedXQqEs4dhz0dPrqBPpjLU0QWxhTxnxEs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from SL2PR06MB3082.apcprd06.prod.outlook.com (2603:1096:100:37::17)
+ by SL2PR06MB3050.apcprd06.prod.outlook.com (2603:1096:100:39::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.16; Mon, 13 Dec
+ 2021 09:43:00 +0000
+Received: from SL2PR06MB3082.apcprd06.prod.outlook.com
+ ([fe80::a0cf:a0e2:ee48:a396]) by SL2PR06MB3082.apcprd06.prod.outlook.com
+ ([fe80::a0cf:a0e2:ee48:a396%4]) with mapi id 15.20.4778.017; Mon, 13 Dec 2021
+ 09:43:00 +0000
+From: Qing Wang <wangqing@vivo.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] arch: powerpc: add missing of_node_put before break
+Date: Mon, 13 Dec 2021 01:42:52 -0800
+Message-Id: <1639388572-63704-1-git-send-email-wangqing@vivo.com>
+X-Mailer: git-send-email 2.7.4
+Content-Type: text/plain
+X-ClientProxiedBy: HK0PR01CA0069.apcprd01.prod.exchangelabs.com
+ (2603:1096:203:a6::33) To SL2PR06MB3082.apcprd06.prod.outlook.com
+ (2603:1096:100:37::17)
 MIME-Version: 1.0
-References: <20211126180101.27818-1-digetx@gmail.com>
- <20211126180101.27818-6-digetx@gmail.com>
- <YaLNOJTM+lVq+YNS@qmqm.qmqm.pl>
- <033ddf2a-6223-1a82-ec64-30f17c891f67@gmail.com>
- <YaQeQgbW+CjEdsqG@qmqm.qmqm.pl>
- <091321ea-4919-0579-88a8-23d05871575d@gmail.com>
- <CAJZ5v0jMvdhfBqjY+V9h_Z6EH1ohuJH+KjuGiOw_Jor1Tnp7vg@mail.gmail.com>
- <45025b2d-4be1-f694-be61-31903795cf5d@gmail.com>
- <CAJZ5v0ieTwnBVjW8R_VTdPFH3yr5AwLc+ZEG5N3KrpTH+j8qZw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0ieTwnBVjW8R_VTdPFH3yr5AwLc+ZEG5N3KrpTH+j8qZw@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 13 Dec 2021 10:23:12 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXW1bCLkJhC1Jnf2rkS1rBnXsMX=4LMVdXDvMV5HOzrLw@mail.gmail.com>
-Message-ID: <CAMuHMdXW1bCLkJhC1Jnf2rkS1rBnXsMX=4LMVdXDvMV5HOzrLw@mail.gmail.com>
-Subject: Re: [PATCH v4 05/25] reboot: Warn if restart handler has duplicated
- priority
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Mon, 13 Dec 2021 21:14:44 +1100
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 65cc7d38-5296-42d1-45da-08d9be1cf33f
+X-MS-TrafficTypeDiagnostic: SL2PR06MB3050:EE_
+X-Microsoft-Antispam-PRVS: <SL2PR06MB305010D17ECBA96211AE7E5DBD749@SL2PR06MB3050.apcprd06.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3631;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: UQSTfRqnvtjctO/0L6HeokhsnMZMqBL0sulvuKXMyVyPTAGWOB40GHyYVY2sf9c4uENvdqd0WlvrA0s6O44KGKso7hFe1Q90zm+8zs0p8/FXiiozok5LuiEWX7aB1OeXoaQW75DUcX131NWbAl0qfFDlkRNKcVqQ0G/Iofo9jmiApEqczgdBDZA9MYPH0IQYV/cuaZbRvG5AaAE6i0EdaBxS8MSAB9RTPAfcyCLLhssChvAojpvvE7hWzc9H/51sI8hfSjzdnEsK9mgogSwxDDOeFp99decvPRLgIwOu9TbSEf9kgzj8strOKtcc44YDcjOrgcuo4VRSCmD9yqlH4PS0E8BuJIB78zRl6MpjtSirV5aKI57MZzmxY+QZ5ucKKgWpRrLBAHfdtOTzq9mBOk5/UV5Crm0eryLVMriueniWFMbI50hmtIWYbZvDdegzCuE0dh29p5nfW8uOKjvQCy5xx5MuMj6zERn6UNkaOYjdZfdKjFhBXb0q4b6xeGLhlwB6Yw2sVmhK81HfIANTTrDH7ezJJAKv9ZpvVvxoLSeLGPk5bssY5hVx93E8sy13s29R2zGVD0vvfB7z0Z8Jq+ZXvVasertu2C1FEopP/gKfyVB6Yt4dizLg29FGOKRlai/B2Cd6QF0HbsM/CKX1w2ihjlTQBD80t0I7URFJJtGaRJZTXYGBRRX4Ah310xFLL5JexC1NmoZ2PcHKoxLwmg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SL2PR06MB3082.apcprd06.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(366004)(86362001)(83380400001)(52116002)(6506007)(110136005)(2906002)(316002)(508600001)(26005)(186003)(66946007)(36756003)(107886003)(66476007)(2616005)(66556008)(8936002)(6512007)(8676002)(4326008)(5660300002)(6486002)(38100700002)(4744005)(38350700002)(6666004);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?77UTGkerUJEbY4bkbVY+OMG7sxWxmUAEoUZYL3tWlWc94ZZeGxliDlCCRQRb?=
+ =?us-ascii?Q?Z+bIOTNopXF0raXc5Wc/5QzRBgXUfMOjBgwJnAJQg0N76gQHF9Jv1zvG5fyC?=
+ =?us-ascii?Q?0q86+luTHJyl+SGWMZoWiOXG7mHb4gzgb0FE70XYKmmfXWRWbEOVgo+f1aWN?=
+ =?us-ascii?Q?9enr6qbwa18YHsMTqPct4yOA9B5N4v+3WZMmnPLCEHFKt7otyl0dVyoCumxc?=
+ =?us-ascii?Q?cb++5y216gUb9mHoOZHHclJh1XoW7hOkR0haSJc02KBbRaGrHFked5nBd5u9?=
+ =?us-ascii?Q?PXTvKBRtDBpV+5YRQQb1kiVG834Vga3IKc3Bw5spSmYfo/NBdU5OirtA2UYI?=
+ =?us-ascii?Q?NPQ5Dct1IBIsvKSX/p3+Tj33LNJPDn8h07cGKxEcjaJx366gu4p8wxQCxvYQ?=
+ =?us-ascii?Q?R9/wW7Rbqj4qMk1Ua/1+X6HhKlCUCqQqs+zFcGlo7/4tmYokeAmlXwO7FbVE?=
+ =?us-ascii?Q?3vd/XO1ZxbfeOpGiMmND+MxuptPR0q2jMl+9uwNwkAKV1X+f7pJJEioBeze9?=
+ =?us-ascii?Q?FNOkvMzjxEEpaVJ6F6qO1cGGXhKB0nBxFHGCL3S4u3vDDaipRzUa/15RSvxz?=
+ =?us-ascii?Q?5YgLY3d6DBSSLcUnC7uYtNknaaX+wybAZxd+VyeuM0/6Ep7TxqOPbwKL2gRs?=
+ =?us-ascii?Q?H0M6hcHtFc31Dit/i51WgFMm6U7eKl0XDw37WxtzpJrieKC3QW6ky1c6CUfg?=
+ =?us-ascii?Q?+qDj4E9GMLSaJSxNHGsHDkLIqcRR4rNdPGG1TCASh45YsmO2B6PmlFfuef50?=
+ =?us-ascii?Q?0q9DFbCGDgmC5GAm2BzH21QLhw6CbUyYxcTZc+EI4Py8ySAqOxgtmypBHS9g?=
+ =?us-ascii?Q?rgVvHiYKm03xfSjpgziWZ+s6yoPqnmJUflKLLKGD/SpfqZ9C9Jld1lCQsJaE?=
+ =?us-ascii?Q?YkbxaB/QUCCC6t4RlVvmUwZiNqpDsWKod0d2v7IskUo2hKeRFL+yMH9POSlN?=
+ =?us-ascii?Q?mNzw1tX20oK/g3OnLHvryyG2Ah2+HmAM1D6wfZGPzAZBCDa+eDC/yeoCugjW?=
+ =?us-ascii?Q?nu9b+Ng8wsA23OvyY1au0F1zfS+4SuUmdPWKAGqzjDGm6kx36iVEAtzpjBuX?=
+ =?us-ascii?Q?JY51t3lT/9hOcyGlCo3WKIt8XMlrwCnHNGPczlYd2iWonCVBqFxBb8CEbcYd?=
+ =?us-ascii?Q?YBhEV8A/DDQdf+J5UBXv5QmvC0dKt0ocLPxuo243psgF0Vru7FrNyD3LYQBU?=
+ =?us-ascii?Q?oxLSUgR0Zcq4R8xNZMHsecVf5vBPGG7ia2vKpU8IW4JiKIZWgLW6gfazl8wd?=
+ =?us-ascii?Q?xJkyQwsoCBcFeGI8iShH/VYdSlIRgEFhDGT0aL4ZbTKEC/wvPUs28LPDz3b0?=
+ =?us-ascii?Q?VHXbNJ6dp7zdWcYClpDF6jBfEOPlodvB3MsMd0g7ncIVYO8jSJdpzNT2ia2K?=
+ =?us-ascii?Q?Aal3jiyuKjEjCF3fryvLDPHXexAmvaKSrvRBuXgczTq9pakBG5ttRW9TjCRt?=
+ =?us-ascii?Q?8Ei18JXl3k6gxXC7+cvYUuIgWQEJFLZmxbbefauR5T9AKJvw+0oUs9FtOBsW?=
+ =?us-ascii?Q?Qi/UnFgA7Z0vcph+EmUb1MrddLV8JAGSW753rVHStjtlPsJi+zRO5i9DY2lu?=
+ =?us-ascii?Q?dcoeT3P+LVoI9aXXnfwrRHIcNMGj9bJrFeUrPxDknnPoUScGe5Fv576MQYoM?=
+ =?us-ascii?Q?y0Hu8xusqQJeWQ8odYWg5RY=3D?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65cc7d38-5296-42d1-45da-08d9be1cf33f
+X-MS-Exchange-CrossTenant-AuthSource: SL2PR06MB3082.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2021 09:43:00.2105 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6FJi9MFKtRFhM+sv1NlM/mCMVxg2hw9WOAvei4I5dNri9sEJLJs+/KlKL2JXatiEgB/JU8VeBfYxEnyumbrQJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SL2PR06MB3050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,182 +128,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Santosh Shilimkar <ssantosh@kernel.org>,
- Linux-sh list <linux-sh@vger.kernel.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Liam Girdwood <lgirdwood@gmail.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Thierry Reding <thierry.reding@gmail.com>, Guo Ren <guoren@kernel.org>,
- Pavel Machek <pavel@ucw.cz>, "H. Peter Anvin" <hpa@zytor.com>,
- Dmitry Osipenko <digetx@gmail.com>, Vincent Chen <deanbo422@gmail.com>,
- Will Deacon <will@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
- Stefano Stabellini <sstabellini@kernel.org>, alankao@andestech.com,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Jonathan Hunter <jonathanh@nvidia.com>,
- ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
- Ingo Molnar <mingo@redhat.com>, xen-devel@lists.xenproject.org,
- linux-mips@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
- Len Brown <lenb@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
- Lee Jones <lee.jones@linaro.org>,
- =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
- linux-m68k@lists.linux-m68k.org, Mark Brown <broonie@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- linux-tegra <linux-tegra@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Juergen Gross <jgross@suse.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, linux-parisc@vger.kernel.org,
- Linux PM <linux-pm@vger.kernel.org>, Sebastian Reichel <sre@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
- linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Philipp Zabel <p.zabel@pengutronix.de>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Joshua Thompson <funaho@jurai.org>
+Cc: Wang Qing <wangqing@vivo.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 10, 2021 at 8:14 PM Rafael J. Wysocki <rafael@kernel.org> wrote=
-:
-> On Fri, Dec 10, 2021 at 8:04 PM Dmitry Osipenko <digetx@gmail.com> wrote:
-> > 10.12.2021 21:27, Rafael J. Wysocki =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
-> > > On Mon, Nov 29, 2021 at 12:34 PM Dmitry Osipenko <digetx@gmail.com> w=
-rote:
-> > >> 29.11.2021 03:26, Micha=C5=82 Miros=C5=82aw =D0=BF=D0=B8=D1=88=D0=B5=
-=D1=82:
-> > >>> On Mon, Nov 29, 2021 at 12:06:19AM +0300, Dmitry Osipenko wrote:
-> > >>>> 28.11.2021 03:28, Micha=C5=82 Miros=C5=82aw =D0=BF=D0=B8=D1=88=D0=
-=B5=D1=82:
-> > >>>>> On Fri, Nov 26, 2021 at 09:00:41PM +0300, Dmitry Osipenko wrote:
-> > >>>>>> Add sanity check which ensures that there are no two restart han=
-dlers
-> > >>>>>> registered with the same priority. Normally it's a direct sign o=
-f a
-> > >>>>>> problem if two handlers use the same priority.
-> > >>>>>
-> > >>>>> The patch doesn't ensure the property that there are no duplicate=
-d-priority
-> > >>>>> entries on the chain.
-> > >>>>
-> > >>>> It's not the exact point of this patch.
-> > >>>>
-> > >>>>> I'd rather see a atomic_notifier_chain_register_unique() that ret=
-urns
-> > >>>>> -EBUSY or something istead of adding an entry with duplicate prio=
-rity.
-> > >>>>> That way it would need only one list traversal unless you want to
-> > >>>>> register the duplicate anyway (then you would call the older
-> > >>>>> atomic_notifier_chain_register() after reporting the error).
-> > >>>>
-> > >>>> The point of this patch is to warn developers about the problem th=
-at
-> > >>>> needs to be fixed. We already have such troubling drivers in mainl=
-ine.
-> > >>>>
-> > >>>> It's not critical to register different handlers with a duplicated
-> > >>>> priorities, but such cases really need to be corrected. We shouldn=
-'t
-> > >>>> break users' machines during transition to the new API, meanwhile
-> > >>>> developers should take action of fixing theirs drivers.
-> > >>>>
-> > >>>>> (Or you could return > 0 when a duplicate is registered in
-> > >>>>> atomic_notifier_chain_register() if the callers are prepared
-> > >>>>> for that. I don't really like this way, though.)
-> > >>>>
-> > >>>> I had a similar thought at some point before and decided that I'm =
-not in
-> > >>>> favor of this approach. It's nicer to have a dedicated function th=
-at
-> > >>>> verifies the uniqueness, IMO.
-> > >>>
-> > >>> I don't like the part that it traverses the list second time to che=
-ck
-> > >>> the uniqueness. But actually you could avoid that if
-> > >>> notifier_chain_register() would always add equal-priority entries i=
-n
-> > >>> reverse order:
-> > >>>
-> > >>>  static int notifier_chain_register(struct notifier_block **nl,
-> > >>>               struct notifier_block *n)
-> > >>>  {
-> > >>>       while ((*nl) !=3D NULL) {
-> > >>>               if (unlikely((*nl) =3D=3D n)) {
-> > >>>                       WARN(1, "double register detected");
-> > >>>                       return 0;
-> > >>>               }
-> > >>> -             if (n->priority > (*nl)->priority)
-> > >>> +             if (n->priority >=3D (*nl)->priority)
-> > >>>                       break;
-> > >>>               nl =3D &((*nl)->next);
-> > >>>       }
-> > >>>       n->next =3D *nl;
-> > >>>       rcu_assign_pointer(*nl, n);
-> > >>>       return 0;
-> > >>>  }
-> > >>>
-> > >>> Then the check for uniqueness after adding would be:
-> > >>>
-> > >>>  WARN(nb->next && nb->priority =3D=3D nb->next->priority);
-> > >>
-> > >> We can't just change the registration order because invocation order=
- of
-> > >> the call chain depends on the registration order
-> > >
-> > > It doesn't if unique priorities are required and isn't that what you =
-want?
-> > >
-> > >> and some of current
-> > >> users may rely on that order. I'm pretty sure that changing the orde=
-r
-> > >> will have unfortunate consequences.
-> > >
-> > > Well, the WARN() doesn't help much then.
-> > >
-> > > Either you can make all of the users register with unique priorities,
-> > > and then you can make the registration reject non-unique ones, or you
-> > > cannot assume them to be unique.
-> >
-> > There is no strong requirement for priorities to be unique, the reboot.=
-c
-> > code will work properly.
->
-> In which case adding the WARN() is not appropriate IMV.
->
-> Also I've looked at the existing code and at least in some cases the
-> order in which the notifiers run doesn't matter.  I'm not sure what
-> the purpose of this patch is TBH.
->
-> > The potential problem is on the user's side and the warning is intended
-> > to aid the user.
->
-> Unless somebody has the panic_on_warn mentioned previously set and
-> really the user need not understand what the WARN() is about.  IOW,
-> WARN() helps developers, not users.
+From: Wang Qing <wangqing@vivo.com>
 
-Do panic_on_warn and reboot_on_panic play well with having a WARN()
-in the reboot notifier handling?
+Fix following coccicheck warning:
+WARNING: Function "for_each_node_by_name" 
+should have of_node_put() before return.
 
-Gr{oetje,eeting}s,
+Early exits from for_each_node_by_name should decrement the
+node reference counter.
 
-                        Geert
+Signed-off-by: Wang Qing <wangqing@vivo.com>
+---
+ arch/powerpc/platforms/powermac/smp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+diff --git a/arch/powerpc/platforms/powermac/smp.c b/arch/powerpc/platforms/powermac/smp.c
+index 3256a31..c9a044a
+--- a/arch/powerpc/platforms/powermac/smp.c
++++ b/arch/powerpc/platforms/powermac/smp.c
+@@ -598,8 +598,10 @@ static void __init smp_core99_setup_i2c_hwsync(int ncpus)
+ 			name = "Pulsar";
+ 			break;
+ 		}
+-		if (pmac_tb_freeze != NULL)
++		if (pmac_tb_freeze != NULL) {
++			of_node_put(cc);
+ 			break;
++		}
+ 	}
+ 	if (pmac_tb_freeze != NULL) {
+ 		/* Open i2c bus for synchronous access */
+-- 
+2.7.4
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
