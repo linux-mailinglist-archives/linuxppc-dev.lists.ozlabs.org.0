@@ -2,110 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE835471EB2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 00:18:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E756A471F0B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 01:48:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JC0th4d3kz3hbZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 10:18:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JC2tg5xj0z3c7l
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 11:48:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Ti+UtGG8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F8/JJF/C;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12b;
- helo=mail-lf1-x12b.google.com; envelope-from=digetx@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Ti+UtGG8; dkim-atps=neutral
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com
- [IPv6:2a00:1450:4864:20::12b])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=F8/JJF/C; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JBxw43Tw6z2ynp
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 08:04:20 +1100 (AEDT)
-Received: by mail-lf1-x12b.google.com with SMTP id e24so1721310lfc.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Dec 2021 13:04:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=LnM2oqI/P3qkpx3c1EWtD4sLNI6B6gG/+oTBL+kWCNQ=;
- b=Ti+UtGG8XV6c0zOWqrHGbE59RojWkw4ydpgjMyPnKydCS+/MWggp7Pc9vXP3/dSIcd
- 3jnWTMBd8zv/qBtjyyIl9yIZVhT8x6fyMjQXI7luWmrCTc61AVDnaWwsG+mIfuPQO9dB
- vcqOllWLO88CRGpuT6+xXO8ZmzEOzeGTj/s4L1fT4s6+Ybm6rqbTcVdA4UXyNrivjGv5
- UJ6UviXyCjmc4b8nSyi1dpErcal2pEnmBKVfp4o/3mh7A8Qp+zHAUZCcABQgpQssHyoG
- UiW2FFO7QpKrXAOmKzFmfqtuBRyQuxNiF7hVzSScTIX4m9O5uZ05fsLoNM2XxAyyofSA
- atBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=LnM2oqI/P3qkpx3c1EWtD4sLNI6B6gG/+oTBL+kWCNQ=;
- b=CEpNWXCKZIbGgk7ZKioMG5AkmnG+6bfSH1DLt1AJefI/c9SZMogBFKwL/PDknXAry7
- f9ze7NbTfkArPuQPOY63OIBN0I039eAJc1VP7miYp9o5YRle3OMsOudCRsVodOPFBpRV
- wNo81HW97N2LhUT1/NVxmeXVFO2eB9pQRxyu6xR0+tZliZosyf+S8mrh+/kTjyhpR25w
- MXwx+OWp2TZszO3JpcHXrROPocFHeYwNAtJvCPph3sJpdV0Mcf9txRk0IFlBjFNglHz4
- gRAJ2yoDjOIqLdIuxlZd/7+BnoU4rdj7DTBPTTdGjnHHCb5/xtTpA6/t2mAVJaOJ/pd0
- zGJA==
-X-Gm-Message-State: AOAM532END69+hewqtjNivCV+vckAAjR80s4hzTuhquNjheUIiODjW7l
- cIG20GNmYf/CWToEng+Oqi8=
-X-Google-Smtp-Source: ABdhPJzqEv9dTDNrIB5aKtlnsJyeHcmVeske90TevqdWeeks/wIjllK9zuSKBLKrf6g7j5l1fLZDZQ==
-X-Received: by 2002:a05:6512:3c9e:: with SMTP id
- h30mr24792667lfv.212.1639343056911; 
- Sun, 12 Dec 2021 13:04:16 -0800 (PST)
-Received: from localhost.localdomain (94-29-46-111.dynamic.spd-mgts.ru.
- [94.29.46.111])
- by smtp.gmail.com with ESMTPSA id y4sm1197172ljp.16.2021.12.12.13.04.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 Dec 2021 13:04:16 -0800 (PST)
-From: Dmitry Osipenko <digetx@gmail.com>
-To: Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Guo Ren <guoren@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Greg Ungerer <gerg@linux-m68k.org>, Joshua Thompson <funaho@jurai.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Sebastian Reichel <sre@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Philipp Zabel <p.zabel@pengutronix.de>, Greentime Hu <green.hu@gmail.com>,
- Vincent Chen <deanbo422@gmail.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Santosh Shilimkar <ssantosh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Pavel Machek <pavel@ucw.cz>, Lee Jones <lee.jones@linaro.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Guenter Roeck <linux@roeck-us.net>,
- Daniel Lezcano <daniel.lezcano@linaro.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
- "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
- =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
-Subject: [PATCH v5 21/21] reboot: Remove pm_power_off_prepare()
-Date: Mon, 13 Dec 2021 00:03:09 +0300
-Message-Id: <20211212210309.9851-22-digetx@gmail.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211212210309.9851-1-digetx@gmail.com>
-References: <20211212210309.9851-1-digetx@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JC2sq4wNyz2yY7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 11:47:42 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1BCLvUvs016229; 
+ Mon, 13 Dec 2021 00:47:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=zOt3Vw1U7V5T99tnwjAB0hqFcNcT+qcheJmHQjaOsDc=;
+ b=F8/JJF/CMQkwYdXH2gOkspH9BGznTIlmEjk2tbDT3cNiGruZxPmgEZscKF4w97q2zlVS
+ /iOWD8O48zgbDaTfQlAXVBOTmN6PffuB72Cd592G3Xs/tJNjARJIsLnWGpTQkt3ifdr9
+ 0qbdA3btRtclEt+RGPuEpfGFhbhMOuImS7Jz8/32qQnP0g2arS52oD97X1ML2/+bDGCI
+ uqj4AKPrGwlwBNwJt7NDpIgwuv8PtKv5d+9/sktwcP4ZTcQV0XY9rfguTnrhc2eV5Lm7
+ 2sB/XNmMJiQu3O2mrxoN9jlk4lcx9Qu3GD/wRICTU2STJiO0rn2TfFstVmlEsuMlct4l 4Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cwsf0sxxb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Dec 2021 00:47:02 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1BD0h65K010409;
+ Mon, 13 Dec 2021 00:47:02 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3cwsf0sxx0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Dec 2021 00:47:01 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1BD0hleo005625;
+ Mon, 13 Dec 2021 00:47:00 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma01dal.us.ibm.com with ESMTP id 3cvkm9rffq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Dec 2021 00:47:00 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1BD0kwtg25887224
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 13 Dec 2021 00:46:58 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F1EDE124054;
+ Mon, 13 Dec 2021 00:46:57 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 14392124055;
+ Mon, 13 Dec 2021 00:46:54 +0000 (GMT)
+Received: from [9.211.121.29] (unknown [9.211.121.29])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 13 Dec 2021 00:46:53 +0000 (GMT)
+Message-ID: <17153a1c-86c6-6ffd-35d6-5329829661df@linux.vnet.ibm.com>
+Date: Sun, 12 Dec 2021 19:46:53 -0500
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 2/6] powerpc/kexec_file: Add KEXEC_SIG support.
+Content-Language: en-US
+To: Michal Suchanek <msuchanek@suse.de>, keyrings@vger.kernel.org
+References: <cover.1637862358.git.msuchanek@suse.de>
+ <8b30a3c6a4e845eb77f276298424811897efdebf.1637862358.git.msuchanek@suse.de>
+From: Nayna <nayna@linux.vnet.ibm.com>
+In-Reply-To: <8b30a3c6a4e845eb77f276298424811897efdebf.1637862358.git.msuchanek@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Mon, 13 Dec 2021 09:47:48 +1100
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: YD7rJlLgYd2Udqtt5LalPdJn3WE0YgaV
+X-Proofpoint-ORIG-GUID: gG1gdafl-3bV4bqCZbyCCQ71PQZVX-ez
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-12_10,2021-12-10_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ malwarescore=0 adultscore=0 spamscore=0 priorityscore=1501 bulkscore=0
+ phishscore=0 mlxlogscore=999 impostorscore=0 clxscore=1015 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112130001
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,67 +109,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-tegra@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ linux-s390@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+ Baoquan He <bhe@redhat.com>, Christian Borntraeger <borntraeger@de.ibm.com>,
+ James Morris <jmorris@namei.org>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Rob Herring <robh@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+ linux-crypto@vger.kernel.org, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
+ Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
+ linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All pm_power_off_prepare() users were converted to sys-off handler API.
-Remove the obsolete callback.
 
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
----
- include/linux/pm.h |  1 -
- kernel/reboot.c    | 11 -----------
- 2 files changed, 12 deletions(-)
+On 11/25/21 13:02, Michal Suchanek wrote:
+> Copy the code from s390x
+>
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> ---
+>   arch/powerpc/Kconfig        | 11 +++++++++++
+>   arch/powerpc/kexec/elf_64.c | 36 ++++++++++++++++++++++++++++++++++++
+>   2 files changed, 47 insertions(+)
+>
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index ac0c515552fd..ecc1227a77f1 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -561,6 +561,17 @@ config KEXEC_FILE
+>   config ARCH_HAS_KEXEC_PURGATORY
+>   	def_bool KEXEC_FILE
+>
+> +config KEXEC_SIG
+> +	bool "Verify kernel signature during kexec_file_load() syscall"
+> +	depends on KEXEC_FILE && MODULE_SIG_FORMAT
+> +	help
+> +	  This option makes kernel signature verification mandatory for
+> +	  the kexec_file_load() syscall.
+> +
 
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index 1d8209c09686..d9bf1426f81e 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -20,7 +20,6 @@
-  * Callbacks for platform drivers to implement.
-  */
- extern void (*pm_power_off)(void);
--extern void (*pm_power_off_prepare)(void);
- 
- struct device; /* we have a circular dep with device.h */
- #ifdef CONFIG_VT_CONSOLE_SLEEP
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index 3085873a876f..2f79d4f7cfaa 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -48,13 +48,6 @@ int reboot_cpu;
- enum reboot_type reboot_type = BOOT_ACPI;
- int reboot_force;
- 
--/*
-- * If set, this is used for preparing the system to power off.
-- */
--
--void (*pm_power_off_prepare)(void);
--EXPORT_SYMBOL_GPL(pm_power_off_prepare);
--
- /**
-  *	emergency_restart - reboot the system
-  *
-@@ -829,10 +822,6 @@ void do_kernel_power_off(void)
- 
- static void do_kernel_power_off_prepare(void)
- {
--	/* legacy pm_power_off_prepare() is unchained and has highest priority */
--	if (pm_power_off_prepare)
--		return pm_power_off_prepare();
--
- 	blocking_notifier_call_chain(&power_off_handler_list, POWEROFF_PREPARE,
- 				     NULL);
- }
--- 
-2.33.1
+Resending my last response as looks like it didn't go through mailing 
+list because of some wrong formatting. My apologies to those who are 
+receiving it twice.
+
+Since powerpc also supports IMA_ARCH_POLICY for kernel image signature 
+verification, please include the following:
+
+"An alternative implementation for the powerpc arch is IMA_ARCH_POLICY. 
+It verifies the appended kernel image signature and additionally 
+includes both the signed and unsigned file hashes in the IMA measurement 
+list, extends the IMA PCR in the TPM, and prevents blacklisted binary 
+kernel images from being kexec'd."
+
+Thanks & Regards,
+
+     - Nayna
 
