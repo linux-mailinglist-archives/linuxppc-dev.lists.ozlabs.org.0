@@ -2,95 +2,133 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106FB4720F2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 07:08:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 268A74721DE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 08:43:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JC9zT73hkz3bhh
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 17:08:05 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=RULPijSC;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=kE+F6uIL;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCD500bP5z3cNH
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 18:43:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=66.111.4.28;
- helo=out4-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm3 header.b=RULPijSC; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm1 header.b=kE+F6uIL; 
- dkim-atps=neutral
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com
- [66.111.4.28])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::60a;
+ helo=fra01-pr2-obe.outbound.protection.outlook.com;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com
+ (mail-pr2fra01on060a.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e18::60a])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JC9yk61Rzz2ynt
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 17:07:26 +1100 (AEDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
- by mailout.nyi.internal (Postfix) with ESMTP id 98CE45C0097;
- Mon, 13 Dec 2021 01:07:24 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Mon, 13 Dec 2021 01:07:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- message-id:subject:from:to:cc:in-reply-to:references
- :content-type:date:mime-version:content-transfer-encoding; s=
- fm3; bh=oBCcaWmcC3nSaIOPSwBkbOCEl1+2mMavwzCz1JILnb4=; b=RULPijSC
- UpohxlqxnbboA9lCiBamUV+4OO9NU9peKjA/E7wu+7OBVwaGgx42zT0f8IDeckI5
- ex4wuNHslGHplgM3rldDs9xB04ID9mDZW8OO7jdzx5yfJjFk+FPiLXx7S0tL5bp7
- px3XP4ZWJev8ciEJVYMrla/sNp1SBRj8nIz2yC1wQFcTMkw0xq4+497smTKBXmlF
- Y9tSzgxpjBWuxU8SIKneO87LDIJ3BoY7ZrWweYxP1xqFo3A15k/DaWHLX3jSwAbW
- 6Y0MEyifXBrOitWJZJIWABEhFTQ1aGFUDbDvetBFvMvmx1D+VIvoC6Gf3FiL4sh6
- gdzNX8yNd8ZbnA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:content-type
- :date:from:in-reply-to:message-id:mime-version:references
- :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm1; bh=oBCcaWmcC3nSaIOPSwBkbOCEl1+2mMavwzCz1JILn
- b4=; b=kE+F6uILMUhvlVpQWjHbdqiPXOped9cbvm8QkZjP+WcBSFrOewj6yQs1Y
- IAy/3Ns9JUj2OcxKLSCsJsjKX/FeKsO0Hpq71qysQVz5WiZK1KNMxAwxk+R/76wF
- oQnUNvlMIFz4qR3jLPBpRRNNIkUeW/aFVEmGJe/sJLbKi9faWTKvdHeM7eiqBTPV
- UbMSa0jiFnaCHSgKH0MLKY+NR9bzxL2f8jXmiSF+rV/3uq1ohWUl8faQ/A4/5bNe
- +rUhARxW1GwRb6ybxrRVOxb9Zr45C88EFJ2pOQSVFb8oN58qzoH6QkxS8EC6MwTE
- IYHbUXLQXtOg8/53e/2ah+3J1CkEQ==
-X-ME-Sender: <xms:HOO2Yd5Pn_G28DWreZEntjeRbyAT1NOaY_vSTRPysCQR0c7Baav0eA>
- <xme:HOO2Ya6RNG_tefpFqZUddw3x5XXOxZ8ut3RKGDfCz3l6AASp1518VSWYkCrppPEaA
- 6iK4ZxafsvMShkrhQ>
-X-ME-Received: <xmr:HOO2YUezDLxSlT2-A1i73GjmpGhZO4T2O1XZ7MQiUZHJR3FP-yprh0flK6pTObm4VGKM57A4_lXM3MoGsfNy21_uxLDa5cQv87W19tQ0P8FA0a4dYxXd>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddrkeejgdeltdcutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
- hrlhcuvffnffculddutddmnecujfgurhepkffuhffvjghftgffgggfgfesthekredttder
- jeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
- gvlhhlrdgttgeqnecuggftrfgrthhtvghrnhepgedvfeffgfeuhefhveeileeuveejheet
- geettdevleegheetueetgefgvdejkeetnecuffhomhgrihhnpehgihhthhhusgdrtghomh
- dpkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehm
- rghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
-X-ME-Proxy: <xmx:HOO2YWKL0ZY8sCia7iV3flZjVsWXPtEQf8EM6-9foo4woCSJfaZozQ>
- <xmx:HOO2YRIpDjEicHM-dqX_8uhCBwYGy60oGViNRMDMXj2u9ONhmAPh0w>
- <xmx:HOO2YfxEbJXSK_ZCtmhPnlKE88Y-fdOrrstXtp87yWa4MTWEo99lxg>
- <xmx:HOO2Yfi-YgaUwEmT4EbnMJsD9DkLTa9GahBdGIhfiTLc0xD0wAkQ4g>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Dec 2021 01:07:21 -0500 (EST)
-Message-ID: <657f15f5bf7e918441ca9670e67254435cf57ad3.camel@russell.cc>
-Subject: Re: [PATCH v2 2/2] powerpc/module_64: Use patch_memory() to apply
- relocations to loaded modules
-From: Russell Currey <ruscur@russell.cc>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, 
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-In-Reply-To: <12d81cfc-1c76-705f-af83-1b424eff64a0@csgroup.eu>
-References: <20211212010357.16280-1-ruscur@russell.cc>
- <20211212010357.16280-2-ruscur@russell.cc>
- <12d81cfc-1c76-705f-af83-1b424eff64a0@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Date: Mon, 13 Dec 2021 16:07:19 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCD4V5W5Wz2yw1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 18:42:32 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=a7k6VTxPyM5b80CbCsqNmbZb6gjRJsduR04Vw8HqUrcVGz0Vp8UBQUML+UP7FIff0aDwM5PVFUDMqgIG1umBFyydil+ihAG6lt6SlGi3AFpyfa9SWRsVSWg+vcr7TeTbX0sCbZlrAynVDlPmPHfG2j3hYxQWWmtGFoqp4OCP8eucxKbvMUgEQaJJ3i3NQQ9fQSWlYRGJOeO26J8x+zOYiohSOlIXuGVs/kFkaYk5dkTX6GGJo5RKUOS1/s7FmDtdPy5/358A/j/ckRUee2rNRyr6W00jrOgcc0Jm9oQCujB+hOLvxUL8ll3aOAJbauj+wNwEs/azcZrtrrOKrBRKrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Qxt0aBQpvDSmQQsLrfasJTFv++LnMBFJbJsKJYIur04=;
+ b=AeMNgBnvEq0htx1i14o3K2fR8IRMeVo5wCHf948g4P4D/dYnEpwSugmebcDFGJC9NshtCJXTJmQScqqD49N4By1rWC72QpI/nWSq2WovN4C3r6cI+CEPHFfPdtZ4+boYSgMsF4bJv/9XuCyGskVIECEuE1NGBrjI1Fl+5IjdTQdgepS8uFN7F5feZ39FAPkoUU6Rz8sX9/FBWF5lYcrWldnmYIF2dLhIvzopMVfmoEL/9bepLxFXey8AP2wQy9JmIWmPoZhTdxJwGA1KCRFoEBqD54qJfQDHBR+s1Pab1obB2X9P0+5NiQGV9J9GsAkXQOepJD5tILSd0QkRF3NX6g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MR1P264MB2179.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:14::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.14; Mon, 13 Dec
+ 2021 07:42:06 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::fc67:d895:7965:663f]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::fc67:d895:7965:663f%2]) with mapi id 15.20.4778.017; Mon, 13 Dec 2021
+ 07:42:06 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Joe Lawrence <joe.lawrence@redhat.com>, Russell Currey
+ <ruscur@russell.cc>, "live-patching@vger.kernel.org"
+ <live-patching@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: ppc64le STRICT_MODULE_RWX and livepatch apply_relocate_add()
+ crashes
+Thread-Topic: ppc64le STRICT_MODULE_RWX and livepatch apply_relocate_add()
+ crashes
+Thread-Index: AQHXzspJJmoyNvOd+UCDOrmbjdknXavuZfuAgABKxICAQZuGAA==
+Date: Mon, 13 Dec 2021 07:42:06 +0000
+Message-ID: <bed88ff4-e5d3-4b78-4f28-29fc635c2f97@csgroup.eu>
+References: <YX9UUBeudSUuJs01@redhat.com>
+ <7ee0c84650617e6307b29674dd0a12c7258417cf.camel@russell.cc>
+ <f8a96ac1-fda3-92da-cf27-0992a43a2f3f@redhat.com>
+In-Reply-To: <f8a96ac1-fda3-92da-cf27-0992a43a2f3f@redhat.com>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: e4f1feb2-6cbd-482b-0401-08d9be0c0fec
+x-ms-traffictypediagnostic: MR1P264MB2179:EE_
+x-microsoft-antispam-prvs: <MR1P264MB2179F3E41EFD5959F86E20E5ED749@MR1P264MB2179.FRAP264.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:4714;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: O4OCboINt4sZ0sgCHPzgl9BiabYXSMy5B4b8VxqnrjAn3LLi+S3qJIin1eF2dmUoyh36vlplDdlLQhE2gHlP93PAVtLTrd1mlJHHMoSnUtqr5j1sL+8fnQ9F/hBxSm/4wlhAhm5iDSks/bjLMtW4Y9Afox/DemFqdiJzl29jI3p5IXpMSOEMrCWormKqd+7Qn8O2bs/FVNALZqh5vdxEZQABrzMVkwgLAy+/xPWDzMkVQE6Z7hyJWrVyzSik3RL3jCRap/ajfi9jCNCfN8elmr9AUDC+cTm5o58oeRPWvnoOpfZA/4rB8L5IDrbV2tcGM2Z1qAWcIl2JFjhHljKtrQCzOY4HDdZrBJ4+JuDG2k2iIDchlBus70pihWJy0F30LxX7Y/ttXKm008rHTapPa4QZ/bnrmdip1MSim8/oLNFectutcuw/At7Y7iOFWGf4RoeFeBBARIkpVWky4S701eZB+4S/qr/VwrEIrqfFs/4d5SwMCKgTZCEXWD2HDGcQeGiWctHK+nUwxWB0hkSMQwrZYASmyaO1sBg3Dq3FLdvDp4O63qdkIxzanUHvZ401UVlcXKPQLoeGg/LeEg3gGBjsNdsetMaCkMFKEWuYFT5atqe03JYRVGt/skYS3A7YM4WAdCMyX837gcJNkmo2zQ29ajd8q74N+9E0NGZ7o2n2ZjxLvko9kZCtAY0vja/2opNV2HIvQCUcyeCN3nI3SiRyVD4iI/d1uf2GE6nXp68sNEsgXlPyAxg2eFvd++LxkiTIYfihkUbHoU2yTHPXEg==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(4636009)(366004)(86362001)(31686004)(71200400001)(8676002)(2616005)(2906002)(122000001)(64756008)(66556008)(6486002)(6512007)(66446008)(8936002)(36756003)(6506007)(53546011)(31696002)(110136005)(38070700005)(4326008)(76116006)(66476007)(5660300002)(316002)(44832011)(91956017)(66946007)(186003)(83380400001)(66574015)(508600001)(38100700002)(54906003)(26005)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RDB5YmoycStmRnY0YmNBRlJoTmw1ekdCMHdlTk5oUng4ZVVoNXVIUm96eEFX?=
+ =?utf-8?B?TG9yeGtZSVQyNlRMYUQ1Z1YzUFBsMmdoZHNndzlpV0p0SFVlQUlIVHdJczE4?=
+ =?utf-8?B?Nys1akhkUHBZNmZqWnQ4djNJVE9RVU5lbTk4RERaRnlXZDU3WHc1SnZOeFZV?=
+ =?utf-8?B?S3FJaWxIZDA1UWhWemFYU3Y5dUNhcmRtU0VVOVkwVkMzY2ZNZC93WjVxZHdV?=
+ =?utf-8?B?VFpHd253eGV2MWpYVFhuT3dtUzJ0U1BOT3NDQWIvbkFzRXVSZWdEQUJ6WS8x?=
+ =?utf-8?B?TlRUNnc2d0hMZHFXNHMzbzR6azE3WjhZaXN1VjBXd1BwZXFaYTRHUkcyWlhl?=
+ =?utf-8?B?L0NYOTVSTm5ybmxBTXNnSFF1QjBCTlB4UlRaNzJjQXdKd1BoT1lCb1dEUzY4?=
+ =?utf-8?B?NEViN29Pajh0bEwxV2FDc1FDTlJkbmszcGRHN0xiZWFnYUFJQi9reHVLTEI4?=
+ =?utf-8?B?aWUwd3BMVGt1Y2I0Tjd2czgxMzEveXJkVUNnWElzL0d4MDBlWUZxNHJoQysr?=
+ =?utf-8?B?V1BhZ1FBbmhWMXJvdzh0bHNYWnlyNUFXQmhJQWRERllCb2lCaUNVVGplWmov?=
+ =?utf-8?B?RTNqTnJULzRxSG5uVFZ0WVB0Q2dFUTFrcjhDRDljemFJY2VLaVMzTjQ0WVZp?=
+ =?utf-8?B?ZTVXK3N1Q2RBaUZZRlJLcFdVakJ3dFZPRUVFUHVzRllzZGtPTW1KekFvTHRt?=
+ =?utf-8?B?d2paVS9FM3c5WFF1MXdrK2g1R3RDaFF3VWpDYzBZdVFMZ0xpRk1CakNUeDYy?=
+ =?utf-8?B?dHc1Rmc2UmNGcUZrbVlkUjU0N0lvN3FPWHRVNmNhTTB3RXZuNXFQRjBYUHlO?=
+ =?utf-8?B?L3NhcW1RdlI5SjdtZ1JXeVY4bU5QcC8yUkh6MG1rQVFtaHdsVHFCbzJNcEhW?=
+ =?utf-8?B?NE5YQ3dFS1FPeExTN0JhRGpZcFpmT09HWllsTFlhWkkrSlUvSm43cjludW1q?=
+ =?utf-8?B?QldyL0ZndW9SWms2eGVsVVAwV3FUMlVMdFRYSVJmNWtBQVU3Nnlrek03VVZP?=
+ =?utf-8?B?am9ZSFdqKy96VUtNcmpERGxmMlMvV2RaTzNDNTFMK1lWQVNwRm1CUVNVcUdl?=
+ =?utf-8?B?cVlxUkdGckkzRHFWeDc1T3FaQ1RXalBUR3MxV2pNUURUa2hRQVppN2ZoT3Vt?=
+ =?utf-8?B?S2FOemVrREFGOUhqNU9EaUNQVlFwM0ZsNWl0ZGZRb0xzN21pTHRldDZuaytH?=
+ =?utf-8?B?bXFmNUIxZFFFYnVkdkg3N2RSUE5BeEJzb0JKM3gxNHI1Z0xtOSs2dGdXY0xv?=
+ =?utf-8?B?QzJXNUlTemtjNjcwdW5kWUhNcmhnZHhQcFVMdE5lZUVEOHhjUXlYcmJpaFhC?=
+ =?utf-8?B?V0djWGsvT0psV3d1RTd5ZUZCSVVvQnRMbVJqUHpxbE5OVjlPTWhBcDJmZHJt?=
+ =?utf-8?B?a2MyUzlxZjJNcE50R2l4M1h1TzRFd0UwRXRuZHFTTldpSUphbFFSekYzakxT?=
+ =?utf-8?B?WG1wZnpyaG5laEZVUEEvWmMrWVpGTW1vdkplVUhUWUZCVnRDemcxTncwOHpx?=
+ =?utf-8?B?M2NzMDhMdExYMTk5L0VpdEdSKzdGMGFMWWJiUFRFWm5RYWcxYjFTRkU5YVc3?=
+ =?utf-8?B?N0JoTzFVSjc4MU5EUlRnWkZmZ25lS2FERGVaRUZiTXpHSmNkRThhWi9HMHhG?=
+ =?utf-8?B?QWVzSDdQSDBBaDFkNTA3ZWdTQk5EV3hPd1JGY2ZFalJuVjNnQVptb3g1Rjll?=
+ =?utf-8?B?OHUzTmNndW92RHdHZEZyYXZEUjhZN3VGdUVrNVBXa1hnSTA4YjFTYytWNkpa?=
+ =?utf-8?B?NHN0eU5OOFRuVlBpTWYzSWE0eEk2a3ozQm9NalozYnlPbmRkVSt5Vm4zcEdP?=
+ =?utf-8?B?clk1QngrQ0RyVG84TWNHMXBTQ3FOL2pYT1hxejg2QkUwS1gzLzZraE9oL3Nv?=
+ =?utf-8?B?bndob2E4U3JQVGFIS0taMHVQcXhSSm9lRU94NUtGaVJSc043d0xTV1l4YUtH?=
+ =?utf-8?B?aVpRRkVpT1ErUmt2NGVhVXBoelNjcTlwOEFMQU5kMG11aHZjMVgyeWJzQVhW?=
+ =?utf-8?B?L2VLb2pnaVc0dGRDZ3dFYWk1QTNiY3NsZGoxWm1lNmwyVkpZeTlZWkJhSDV2?=
+ =?utf-8?B?Q09na3NFcml4N1d2dkdJSWZ4RGQzcEhUV0FNYXQ5S3h0bFQ3WUlFWWlWWitO?=
+ =?utf-8?B?dWlsNEVaamhTaEtIdW1uRGd2QmNPY29qeEtsL0xibnkwOWYycjlua1kxR3NM?=
+ =?utf-8?B?REJRNmRKazJkenZsN0NqVkVpOHI2aFFKWFlEdGU5aDlBemdPUGZmN3Nob0ox?=
+ =?utf-8?Q?9QdJg8QNj3aQTFCDrVhity4WfjqGwInbhAg+capHxA=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E6AF8B11AC7EE54490B9371E8101DDEB@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Evolution 3.42.2 
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4f1feb2-6cbd-482b-0401-08d9be0c0fec
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Dec 2021 07:42:06.4959 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 0kpKagJxWbfCLkgLMXvE/LhoCMrI2oMquI/pZjZDX2v8BydagwN8l58En3mSGLdwxzk0J/VIlGbZ0d4nWoi9NGAHgUBKNQBedJYKlVMndPE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2179
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,538 +140,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "jniethe5@gmail.com" <jniethe5@gmail.com>,
- "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>,
- "joe.lawrence@redhat.com" <joe.lawrence@redhat.com>,
- "joel@jms.id.au" <joel@jms.id.au>
+Cc: Peter Zijlstra <peterz@infradead.org>, Jordan Niethe <jniethe5@gmail.com>,
+ Jessica Yu <jeyu@kernel.org>, Josh Poimboeuf <jpoimboe@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 2021-12-12 at 10:41 +0000, Christophe Leroy wrote:
-> 
-> 
-> Le 12/12/2021 à 02:03, Russell Currey a écrit :
-> > Livepatching a loaded module involves applying relocations through
-> > apply_relocate_add(), which attempts to write to read-only memory
-> > when
-> > CONFIG_STRICT_MODULE_RWX=y.  Work around this by performing these
-> > writes through the text poke area by using patch_memory().
-> > 
-> > Similar to x86 and s390 implementations, apply_relocate_add() now
-> > chooses to use patch_memory() or memcpy() depending on if the
-> > module
-> > is loaded or not.  Without STRICT_KERNEL_RWX, patch_memory() is
-> > just
-> > memcpy(), so there should be no performance impact.
-> > 
-> > While many relocation types may not be applied in a livepatch
-> > context, comprehensively handling them prevents any issues in
-> > future,
-> > with no performance penalty as the text poke area is only used when
-> > necessary.
-> > 
-> > create_stub() and create_ftrace_stub() are modified to first write
-> > to the stack so that the ppc64_stub_entry struct only takes one
-> > write() to modify, saving several map/unmap/flush operations
-> > when use of patch_memory() is necessary.
-> > 
-> > This patch also contains some trivial whitespace fixes.
-> > 
-> > Fixes: c35717c71e98 ("powerpc: Set ARCH_HAS_STRICT_MODULE_RWX")
-> > Reported-by: Joe Lawrence <joe.lawrence@redhat.com>
-> > Signed-off-by: Russell Currey <ruscur@russell.cc>
-> > ---
-> > v2: No changes.
-> > 
-> > Some discussion here:https://github.com/linuxppc/issues/issues/375
-> > for-stable version using patch_instruction():
-> > https://lore.kernel.org/linuxppc-dev/20211123081520.18843-1-ruscur@russell.cc/
-> > 
-> >   arch/powerpc/kernel/module_64.c | 157 +++++++++++++++++++++------
-> > -----
-> >   1 file changed, 104 insertions(+), 53 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/kernel/module_64.c
-> > b/arch/powerpc/kernel/module_64.c
-> > index 6baa676e7cb6..2a146750fa6f 100644
-> > --- a/arch/powerpc/kernel/module_64.c
-> > +++ b/arch/powerpc/kernel/module_64.c
-> > @@ -350,11 +350,11 @@ static u32 stub_insns[] = {
-> >    */
-> >   static inline int create_ftrace_stub(struct ppc64_stub_entry
-> > *entry,
-> >                                         unsigned long addr,
-> > -                                       struct module *me)
-> > +                                       struct module *me,
-> > +                                       void *(*write)(void *,
-> > const void *, size_t))
-> 
-> I really dislike this write() parameter to the function.
-> 
-> I think it would be better to define a static sub-function that takes
-> write()'s parameters plus the 'struct module *me' and have it call 
-> either patch_memory() or memcpy() based on me->state.
-
-I don't like it much either, I was just going off prior art from x86
-and s390.  I like your idea better, and that function could just be
-memcpy() if !CONFIG_STRICT_MODULE_RWX, removing the need to check the
-state in that case.
-
-> 
-> >   {
-> >         long reladdr;
-> > -
-> > -       memcpy(entry->jump, stub_insns, sizeof(stub_insns));
-> > +       struct ppc64_stub_entry tmp_entry;
-> >   
-> >         /* Stub uses address relative to kernel toc (from the paca)
-> > */
-> >         reladdr = addr - kernel_toc_addr();
-> > @@ -364,12 +364,20 @@ static inline int create_ftrace_stub(struct
-> > ppc64_stub_entry *entry,
-> >                 return 0;
-> >         }
-> >   
-> > -       entry->jump[1] |= PPC_HA(reladdr);
-> > -       entry->jump[2] |= PPC_LO(reladdr);
-> > +       /*
-> > +        * In case @entry is write-protected, make our changes on
-> > the stack
-> > +        * so we can update the whole struct in one write().
-> > +        */
-> > +       memcpy(&tmp_entry, entry, sizeof(struct ppc64_stub_entry));
-> 
-> That copy seems unnecessary, entry is a struct with three fields and
-> you 
-> are setting all three field below.
-
-Oops, you're right.
-
-> >   
-> > +       memcpy(&tmp_entry.jump, stub_insns, sizeof(stub_insns));
-> > +       tmp_entry.jump[1] |= PPC_HA(reladdr);
-> > +       tmp_entry.jump[2] |= PPC_LO(reladdr);
-> >         /* Eventhough we don't use funcdata in the stub, it's
-> > needed elsewhere. */
-> > -       entry->funcdata = func_desc(addr);
-> > -       entry->magic = STUB_MAGIC;
-> > +       tmp_entry.funcdata = func_desc(addr);
-> > +       tmp_entry.magic = STUB_MAGIC;
-> > +
-> > +       write(entry, &tmp_entry, sizeof(struct ppc64_stub_entry));
-> >   
-> >         return 1;
-> >   }
-> > @@ -392,7 +400,8 @@ static bool is_mprofile_ftrace_call(const char
-> > *name)
-> >   #else
-> >   static inline int create_ftrace_stub(struct ppc64_stub_entry
-> > *entry,
-> >                                         unsigned long addr,
-> > -                                       struct module *me)
-> > +                                       struct module *me,
-> > +                                       void *(*write)(void *,
-> > const void *, size_t))
-> >   {
-> >         return 0;
-> >   }
-> > @@ -419,14 +428,14 @@ static inline int create_stub(const
-> > Elf64_Shdr *sechdrs,
-> >                               struct ppc64_stub_entry *entry,
-> >                               unsigned long addr,
-> >                               struct module *me,
-> > -                             const char *name)
-> > +                             const char *name,
-> > +                             void *(*write)(void *, const void *,
-> > size_t))
-> >   {
-> >         long reladdr;
-> > +       struct ppc64_stub_entry tmp_entry;
-> >   
-> >         if (is_mprofile_ftrace_call(name))
-> > -               return create_ftrace_stub(entry, addr, me);
-> > -
-> > -       memcpy(entry->jump, ppc64_stub_insns,
-> > sizeof(ppc64_stub_insns));
-> > +               return create_ftrace_stub(entry, addr, me, write);
-> >   
-> >         /* Stub uses address relative to r2. */
-> >         reladdr = (unsigned long)entry - my_r2(sechdrs, me);
-> > @@ -437,10 +446,19 @@ static inline int create_stub(const
-> > Elf64_Shdr *sechdrs,
-> >         }
-> >         pr_debug("Stub %p get data from reladdr %li\n", entry,
-> > reladdr);
-> >   
-> > -       entry->jump[0] |= PPC_HA(reladdr);
-> > -       entry->jump[1] |= PPC_LO(reladdr);
-> > -       entry->funcdata = func_desc(addr);
-> > -       entry->magic = STUB_MAGIC;
-> > +       /*
-> > +        * In case @entry is write-protected, make our changes on
-> > the stack
-> > +        * so we can update the whole struct in one write().
-> > +        */
-> > +       memcpy(&tmp_entry, entry, sizeof(struct ppc64_stub_entry));
-> > +
-> > +       memcpy(&tmp_entry.jump, ppc64_stub_insns,
-> > sizeof(ppc64_stub_insns));
-> > +       tmp_entry.jump[0] |= PPC_HA(reladdr);
-> > +       tmp_entry.jump[1] |= PPC_LO(reladdr);
-> > +       tmp_entry.funcdata = func_desc(addr);
-> > +       tmp_entry.magic = STUB_MAGIC;
-> > +
-> > +       write(entry, &tmp_entry, sizeof(struct ppc64_stub_entry));
-> >   
-> >         return 1;
-> >   }
-> > @@ -450,7 +468,8 @@ static inline int create_stub(const Elf64_Shdr
-> > *sechdrs,
-> >   static unsigned long stub_for_addr(const Elf64_Shdr *sechdrs,
-> >                                    unsigned long addr,
-> >                                    struct module *me,
-> > -                                  const char *name)
-> > +                                  const char *name,
-> > +                                  void *(*write)(void *, const
-> > void *, size_t))
-> >   {
-> >         struct ppc64_stub_entry *stubs;
-> >         unsigned int i, num_stubs;
-> > @@ -467,7 +486,7 @@ static unsigned long stub_for_addr(const
-> > Elf64_Shdr *sechdrs,
-> >                         return (unsigned long)&stubs[i];
-> >         }
-> >   
-> > -       if (!create_stub(sechdrs, &stubs[i], addr, me, name))
-> > +       if (!create_stub(sechdrs, &stubs[i], addr, me, name,
-> > write))
-> >                 return 0;
-> >   
-> >         return (unsigned long)&stubs[i];
-> > @@ -496,15 +515,20 @@ static int restore_r2(const char *name, u32
-> > *instruction, struct module *me)
-> >                 return 0;
-> >         }
-> >         /* ld r2,R2_STACK_OFFSET(r1) */
-> > -       *instruction = PPC_INST_LD_TOC;
-> > +       if (me->state == MODULE_STATE_UNFORMED)
-> > +               *instruction = PPC_INST_LD_TOC;
-> > +       else
-> > +               patch_instruction(instruction,
-> > ppc_inst(PPC_INST_LD_TOC));
-> > +
-> 
-> Would be better if that hunk was following the same approach as other
-> places.
-
-It's not great that it's different, but I do like using
-patch_instruction() for instructions.
-
-> 
-> >         return 1;
-> >   }
-> >   
-> > -int apply_relocate_add(Elf64_Shdr *sechdrs,
-> > -                      const char *strtab,
-> > -                      unsigned int symindex,
-> > -                      unsigned int relsec,
-> > -                      struct module *me)
-> > +static int __apply_relocate_add(Elf64_Shdr *sechdrs,
-> > +                               const char *strtab,
-> > +                               unsigned int symindex,
-> > +                               unsigned int relsec,
-> > +                               struct module *me,
-> > +                               void *(*write)(void *dest, const
-> > void *src, size_t len))
-> >   {
-> >         unsigned int i;
-> >         Elf64_Rela *rela = (void *)sechdrs[relsec].sh_addr;
-> > @@ -544,16 +568,17 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
-> >                 switch (ELF64_R_TYPE(rela[i].r_info)) {
-> >                 case R_PPC64_ADDR32:
-> >                         /* Simply set it */
-> > -                       *(u32 *)location = value;
-> > +                       write(location, &value, 4);
-> >                         break;
-> >   
-> >                 case R_PPC64_ADDR64:
-> >                         /* Simply set it */
-> > -                       *(unsigned long *)location = value;
-> > +                       write(location, &value, 8);
-> >                         break;
-> >   
-> >                 case R_PPC64_TOC:
-> > -                       *(unsigned long *)location = my_r2(sechdrs,
-> > me);
-> > +                       value = my_r2(sechdrs, me);
-> > +                       write(location, &value, 8);
-> >                         break;
-> >   
-> >                 case R_PPC64_TOC16:
-> > @@ -564,17 +589,17 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
-> >                                        me->name, value);
-> >                                 return -ENOEXEC;
-> >                         }
-> > -                       *((uint16_t *) location)
-> > -                               = (*((uint16_t *) location) &
-> > ~0xffff)
-> > +                       value = (*((uint16_t *) location) &
-> > ~0xffff)
-> >                                 | (value & 0xffff);
-> > +                       write(location, &value, 2);
-> >                         break;
-> >   
-> >                 case R_PPC64_TOC16_LO:
-> >                         /* Subtract TOC pointer */
-> >                         value -= my_r2(sechdrs, me);
-> > -                       *((uint16_t *) location)
-> > -                               = (*((uint16_t *) location) &
-> > ~0xffff)
-> > +                       value = (*((uint16_t *) location) &
-> > ~0xffff)
-> >                                 | (value & 0xffff);
-> > +                       write(location, &value, 2);
-> >                         break;
-> >   
-> >                 case R_PPC64_TOC16_DS:
-> > @@ -585,9 +610,9 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
-> >                                        me->name, value);
-> >                                 return -ENOEXEC;
-> >                         }
-> > -                       *((uint16_t *) location)
-> > -                               = (*((uint16_t *) location) &
-> > ~0xfffc)
-> > +                       value = (*((uint16_t *) location) &
-> > ~0xfffc)
-> >                                 | (value & 0xfffc);
-> > +                       write(location, &value, 2);
-> >                         break;
-> >   
-> >                 case R_PPC64_TOC16_LO_DS:
-> > @@ -598,18 +623,18 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
-> >                                        me->name, value);
-> >                                 return -ENOEXEC;
-> >                         }
-> > -                       *((uint16_t *) location)
-> > -                               = (*((uint16_t *) location) &
-> > ~0xfffc)
-> > +                       value = (*((uint16_t *) location) &
-> > ~0xfffc)
-> >                                 | (value & 0xfffc);
-> > +                       write(location, &value, 2);
-> >                         break;
-> >   
-> >                 case R_PPC64_TOC16_HA:
-> >                         /* Subtract TOC pointer */
-> >                         value -= my_r2(sechdrs, me);
-> >                         value = ((value + 0x8000) >> 16);
-> > -                       *((uint16_t *) location)
-> > -                               = (*((uint16_t *) location) &
-> > ~0xffff)
-> > +                       value = (*((uint16_t *) location) &
-> > ~0xffff)
-> >                                 | (value & 0xffff);
-> > +                       write(location, &value, 2);
-> >                         break;
-> >   
-> >                 case R_PPC_REL24:
-> > @@ -618,14 +643,15 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
-> >                             sym->st_shndx == SHN_LIVEPATCH) {
-> >                                 /* External: go via stub */
-> >                                 value = stub_for_addr(sechdrs,
-> > value, me,
-> > -                                               strtab + sym-
-> > >st_name);
-> > +                                                     strtab + sym-
-> > >st_name, write);
-> >                                 if (!value)
-> >                                         return -ENOENT;
-> >                                 if (!restore_r2(strtab + sym-
-> > >st_name,
-> >                                                         (u32
-> > *)location + 1, me))
-> >                                         return -ENOEXEC;
-> > -                       } else
-> > +                       } else {
-> >                                 value += local_entry_offset(sym);
-> > +                       }
-> >   
-> >                         /* Convert value to relative */
-> >                         value -= (unsigned long)location;
-> > @@ -636,14 +662,15 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
-> >                         }
-> >   
-> >                         /* Only replace bits 2 through 26 */
-> > -                       *(uint32_t *)location
-> > -                               = (*(uint32_t *)location &
-> > ~0x03fffffc)
-> > +                       value = (*(uint32_t *)location &
-> > ~0x03fffffc)
-> >                                 | (value & 0x03fffffc);
-> > +                       write(location, &value, 4);
-> >                         break;
-> >   
-> >                 case R_PPC64_REL64:
-> >                         /* 64 bits relative (used by features
-> > fixups) */
-> > -                       *location = value - (unsigned
-> > long)location;
-> > +                       value -= (unsigned long)location;
-> > +                       write(location, &value, 8);
-> >                         break;
-> >   
-> >                 case R_PPC64_REL32:
-> > @@ -655,7 +682,7 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
-> >                                        me->name, (long int)value);
-> >                                 return -ENOEXEC;
-> >                         }
-> > -                       *(u32 *)location = value;
-> > +                       write(location, &value, 4);
-> >                         break;
-> >   
-> >                 case R_PPC64_TOCSAVE:
-> > @@ -676,7 +703,7 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
-> >                                 break;
-> >                         /*
-> >                          * Check for the large code model prolog
-> > sequence:
-> > -                        *      ld r2, ...(r12)
-> > +                        *      ld r2, ...(r12)
-> >                          *      add r2, r2, r12
-> >                          */
-> >                         if ((((uint32_t *)location)[0] & ~0xfffc)
-> > != PPC_RAW_LD(_R2, _R12, 0))
-> > @@ -688,25 +715,27 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
-> >                          *      addis r2, r12, (.TOC.-func)@ha
-> >                          *      addi  r2,  r2, (.TOC.-func)@l
-> >                          */
-> > -                       ((uint32_t *)location)[0] =
-> > PPC_RAW_ADDIS(_R2, _R12, PPC_HA(value));
-> > -                       ((uint32_t *)location)[1] =
-> > PPC_RAW_ADDI(_R2, _R2, PPC_LO(value));
-> > +                       patch_instruction(&((uint32_t
-> > *)location)[0],
-> > +                                        
-> > ppc_inst(PPC_RAW_ADDIS(_R2, _R12, PPC_HA(value))));
-> > +                       patch_instruction(&((uint32_t
-> > *)location)[1],
-> > +                                        
-> > ppc_inst(PPC_RAW_ADDI(_R2, _R2, PPC_LO(value))));
-> 
-> Shouldn't you do like restore_r2() ?
-
-Yeah, I probably did it this way to reduce code size in this already
-very ugly section.  I can solve both problems with a static helper.
-
-> 
-> >                         break;
-> >   
-> >                 case R_PPC64_REL16_HA:
-> >                         /* Subtract location pointer */
-> >                         value -= (unsigned long)location;
-> >                         value = ((value + 0x8000) >> 16);
-> > -                       *((uint16_t *) location)
-> > -                               = (*((uint16_t *) location) &
-> > ~0xffff)
-> > +                       value = (*((uint16_t *) location) &
-> > ~0xffff)
-> >                                 | (value & 0xffff);
-> > +                       write(location, &value, 2);
-> >                         break;
-> >   
-> >                 case R_PPC64_REL16_LO:
-> >                         /* Subtract location pointer */
-> >                         value -= (unsigned long)location;
-> > -                       *((uint16_t *) location)
-> > -                               = (*((uint16_t *) location) &
-> > ~0xffff)
-> > +                       value = (*((uint16_t *) location) &
-> > ~0xffff)
-> >                                 | (value & 0xffff);
-> > +                       write(location, &value, 2);
-> >                         break;
-> >   
-> >                 default:
-> > @@ -720,6 +749,20 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
-> >         return 0;
-> >   }
-> >   
-> > +int apply_relocate_add(Elf64_Shdr *sechdrs,
-> > +                      const char *strtab,
-> > +                      unsigned int symindex,
-> > +                      unsigned int relsec,
-> > +                      struct module *me)
-> > +{
-> > +       void *(*write)(void *, const void *, size_t) = memcpy;
-> > +       bool early = me->state == MODULE_STATE_UNFORMED;
-> > +
-> > +       if (!early)
-> > +               write = patch_memory;
-> > +
-> > +       return __apply_relocate_add(sechdrs, strtab, symindex,
-> > relsec, me, write);
-> > +}
-> 
-> I really dislike this stuff with the write() function as a parameter.
-> We 
-> have 'me', it should be enough for the callee to know what to do, see
-> my 
-> first comment at the top of this email.
-
-I'll rework it.  No love lost, I had to look up function pointer syntax
-for this.
-
-Thanks for the feedback.
-- Russell
-
-> 
-> >   #ifdef CONFIG_DYNAMIC_FTRACE
-> >   int module_trampoline_target(struct module *mod, unsigned long
-> > addr,
-> >                              unsigned long *target)
-> > @@ -749,7 +792,7 @@ int module_trampoline_target(struct module
-> > *mod, unsigned long addr,
-> >         if (copy_from_kernel_nofault(&funcdata, &stub->funcdata,
-> >                         sizeof(funcdata))) {
-> >                 pr_err("%s: fault reading funcdata for stub %lx for
-> > %s\n", __func__, addr, mod->name);
-> > -                return -EFAULT;
-> > +               return -EFAULT;
-> >         }
-> >   
-> >         *target = stub_func_addr(funcdata);
-> > @@ -759,15 +802,23 @@ int module_trampoline_target(struct module
-> > *mod, unsigned long addr,
-> >   
-> >   int module_finalize_ftrace(struct module *mod, const Elf_Shdr
-> > *sechdrs)
-> >   {
-> > +       void *(*write)(void *, const void *, size_t) = memcpy;
-> > +       bool early = mod->state == MODULE_STATE_UNFORMED;
-> > +
-> > +       if (!early)
-> > +               write = patch_memory;
-> > +
-> >         mod->arch.tramp = stub_for_addr(sechdrs,
-> >                                         (unsigned
-> > long)ftrace_caller,
-> >                                         mod,
-> > -                                       "ftrace_caller");
-> > +                                       "ftrace_caller",
-> > +                                       write);
-> >   #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
-> >         mod->arch.tramp_regs = stub_for_addr(sechdrs,
-> >                                         (unsigned
-> > long)ftrace_regs_caller,
-> >                                         mod,
-> > -                                       "ftrace_regs_caller");
-> > +                                       "ftrace_regs_caller",
-> > +                                       write);
-> >         if (!mod->arch.tramp_regs)
-> >                 return -ENOENT;
-> >   #endif
-> > 
-> 
-> Christophe
-
+DQoNCkxlIDAxLzExLzIwMjEgw6AgMTQ6NDgsIEpvZSBMYXdyZW5jZSBhIMOpY3JpdMKgOg0KPiBP
+biAxMS8xLzIxIDU6MjAgQU0sIFJ1c3NlbGwgQ3VycmV5IHdyb3RlOg0KPj4gSSdtIGxvb2tpbmcg
+aW50byB0aGlzIG5vdywgd2lsbCB1cGRhdGUgd2hlbiB0aGVyZSdzIHByb2dyZXNzLiAgSQ0KPj4g
+cGVyc29uYWxseSB3YXNuJ3QgYXdhcmUgYnV0IEpvcmRhbiBmbGFnZ2VkIHRoaXMgYXMgYW4gaXNz
+dWUgYmFjayBpbg0KPj4gQXVndXN0IFswXS4gIEFyZSB0aGUgc2VsZnRlc3RzIGluIHRoZSBrbHAt
+Y29udmVydCB0cmVlIHN1ZmZpY2llbnQgZm9yDQo+PiB0ZXN0aW5nPyAgSSdtIG5vdCBlc3BlY2lh
+bGx5IGZhbWlsaWFyIHdpdGggbGl2ZXBhdGNoaW5nICYgaGF2ZW4ndCB1c2VkDQo+PiB0aGUgdXNl
+cnNwYWNlIHRvb2xzLg0KPj4NCj4gDQo+IEhpIFJ1c3NlbGwsIHRoYW5rcyBmb3IgdGFraW5nIGEg
+bG9vay4NCj4gDQo+IFRlc3Rpbmcgd2l0aCB0aGF0IGtscC1jb252ZXJ0IHRyZWUgaXMgcHJvYmFi
+bHkgdGhlIHF1aWNrZXN0IGFuZCBlYXNpZXN0DQo+IHdheSB0byB2ZXJpZnkgdGhlIGxhdGUgcmVs
+b2NhdGlvbnMuDQo+IA0KPiBJJ20gaGFwcHkgdG8gc2V0dXAgYW5kIHRlc3QgYWRkaXRpb25hbCB0
+b29scyAoaWUsIGtwYXRjaC1idWlsZCkgd2l0aCBhbnkNCj4gcG90ZW50aWFsIGNoYW5nZXMgYXMg
+SSBrbm93IHRoZXkgdGFrZSBsb25nZXIgdG8gY29uZmlnIGFuZCBydW4uDQo+IA0KDQpIZWxsbyBK
+b2UsDQoNCkknbSBpbXBsZW1lbnRpbmcgTElWRVBBVENIIG9uIFBQQzMyIGFuZCBJIHdhbnRlZCB0
+byB0ZXN0IHdpdGggDQpTVFJJQ1RfTU9EVUxFX1JXWCBlbmFibGVkIHNvIEkgdG9vayB5b3VyIGJy
+YW5jaCBhcyBzdWdnZXN0ZWQsIGJ1dCBJJ20gDQpnZXR0aW5nIHRoZSBmb2xsb3dpbmcgZXJyb3Jz
+IG9uIGJ1aWxkLiBXaGF0IHNoYWxsIEkgZG8gPw0KDQogICBDQUxMICAgIHNjcmlwdHMvY2hlY2tz
+eXNjYWxscy5zaA0KICAgQ0FMTCAgICBzY3JpcHRzL2F0b21pYy9jaGVjay1hdG9taWNzLnNoDQog
+ICBDSEsgICAgIGluY2x1ZGUvZ2VuZXJhdGVkL2NvbXBpbGUuaA0KICAgS0xQICAgICBsaWIvbGl2
+ZXBhdGNoL3Rlc3Rfa2xwX2NvbnZlcnQxLmtvDQprbHAtY29udmVydDogc2VjdGlvbiAucmVsYS5r
+bHAubW9kdWxlX3JlbG9jcy50ZXN0X2tscF9jb252ZXJ0X21vZCBsZW5ndGggDQpiZXlvbmQgbnJf
+ZW50cmllcw0KDQprbHAtY29udmVydDogVW5hYmxlIHRvIGxvYWQgdXNlci1wcm92aWRlZCBzeW1w
+b3MNCm1ha2VbMl06ICoqKiBbc2NyaXB0cy9NYWtlZmlsZS5tb2RmaW5hbDo3OTogDQpsaWIvbGl2
+ZXBhdGNoL3Rlc3Rfa2xwX2NvbnZlcnQxLmtvXSBFcnJvciAyNTUNCiAgIEtMUCAgICAgbGliL2xp
+dmVwYXRjaC90ZXN0X2tscF9jb252ZXJ0Mi5rbw0Ka2xwLWNvbnZlcnQ6IHNlY3Rpb24gLnJlbGEu
+a2xwLm1vZHVsZV9yZWxvY3MudGVzdF9rbHBfY29udmVydF9tb2QgbGVuZ3RoIA0KYmV5b25kIG5y
+X2VudHJpZXMNCg0Ka2xwLWNvbnZlcnQ6IFVuYWJsZSB0byBsb2FkIHVzZXItcHJvdmlkZWQgc3lt
+cG9zDQptYWtlWzJdOiAqKiogW3NjcmlwdHMvTWFrZWZpbGUubW9kZmluYWw6Nzk6IA0KbGliL2xp
+dmVwYXRjaC90ZXN0X2tscF9jb252ZXJ0Mi5rb10gRXJyb3IgMjU1DQogICBLTFAgICAgIGxpYi9s
+aXZlcGF0Y2gvdGVzdF9rbHBfY29udmVydF9zZWN0aW9ucy5rbw0Ka2xwLWNvbnZlcnQ6IHNlY3Rp
+b24gLnJlbGEua2xwLm1vZHVsZV9yZWxvY3MudGVzdF9rbHBfY29udmVydF9tb2QgbGVuZ3RoIA0K
+YmV5b25kIG5yX2VudHJpZXMNCg0Ka2xwLWNvbnZlcnQ6IFVuYWJsZSB0byBsb2FkIHVzZXItcHJv
+dmlkZWQgc3ltcG9zDQptYWtlWzJdOiAqKiogW3NjcmlwdHMvTWFrZWZpbGUubW9kZmluYWw6Nzk6
+IA0KbGliL2xpdmVwYXRjaC90ZXN0X2tscF9jb252ZXJ0X3NlY3Rpb25zLmtvXSBFcnJvciAyNTUN
+Cm1ha2VbMl06IFRhcmdldCAnX19tb2RmaW5hbCcgbm90IHJlbWFkZSBiZWNhdXNlIG9mIGVycm9y
+cy4NCm1ha2VbMV06ICoqKiBbc2NyaXB0cy9NYWtlZmlsZS5tb2Rwb3N0OjE0NTogX19tb2Rwb3N0
+XSBFcnJvciAyDQptYWtlOiAqKiogW01ha2VmaWxlOjE3NzA6IG1vZHVsZXNdIEVycm9yIDINCg0K
+Q2hyaXN0b3BoZQ==
