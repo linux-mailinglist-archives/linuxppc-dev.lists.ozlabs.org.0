@@ -1,57 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A35747359B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 21:08:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD70473605
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 21:36:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JCXcw6qWwz3cN6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 07:08:16 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MeqMXfaa;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCYDv5NZ3z301k
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 07:35:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=MeqMXfaa; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.50; helo=mail-ot1-f50.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com
+ [209.85.210.50])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JCXcH6LWfz2x9V
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 07:07:43 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 10B9A60FF5;
- Mon, 13 Dec 2021 20:07:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D98C34600;
- Mon, 13 Dec 2021 20:07:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1639426061;
- bh=TlkT++GPiQDQi1bo65d/WeVwXL8dX35GBswu/sLieu4=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=MeqMXfaaLYgS43G6iWIscvRtALp6yTNjwcQPSD3DZw8h3gsEnqXz/T3I503P2ggnb
- jTKMWELnxAByDsEVmPjytkfcPYAFzaSAibb+H/sHd1GmXxzJ7gSEDm0F8eSm/MGMyb
- AOF8tLaN52FZqBo3r3ZhTMr3oXa9sKrky2jAVOpkalXQCLAIJx1Kfz0Eql8SDigf2/
- 3k7xctv/DT8S8+ph4pL+Viq2tJGq8HANXpeknU9cKitv5FA38xddamZf/lKMz+I9uL
- 1JjSmjVD2HIzgoNs/T3JzdvadAnjwQnwVLkFQK2OTGm7X+BwhLgo7poYqXON8hyT/j
- UpeoPB3KU46Xg==
-Date: Mon, 13 Dec 2021 14:07:39 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Rajat Jain <rajatja@google.com>
-Subject: Re: [PATCH] PCI/AER: potential dereference of null pointer
-Message-ID: <20211213200739.GA542591@bhelgaas>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCYDS2xNJz2yws
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 07:35:34 +1100 (AEDT)
+Received: by mail-ot1-f50.google.com with SMTP id
+ u18-20020a9d7212000000b00560cb1dc10bso18698729otj.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 12:35:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=UjShsLmpN0SZM+m8SUUiNDWjd+SPX71KTwqzkwvysM0=;
+ b=gOk0bqtjvl9g4Kb19jWrFZTvHgd68rMh3TrYo49KFxEZ2yWSPv/L8v85yML7/af1s6
+ JXN2eTAurkPrVMuMj/FXyEHg6T7JMbm/DaIYxow1dq2sZmnvP92g+EbX9CiXiPuBu5xy
+ TFVYI2tbF2cvVPK/+YKZBUM+6scebwV87JdLp3mkuCTS1t4xiAFt6ymELnmfOaJwFkgI
+ d/qB2AJNzZGbTCP/tRpAcWh2JOhPK7TPcT9qJ2lrqsc4pQppDINPMwWn8WoGfIMIrval
+ vW7ffbmgxRAPxJRU0fHG74cDvpfsIEPgmz9fdqcDn2nxBBjlEBeAUAm5Wpqw9zK+aDbU
+ uxQg==
+X-Gm-Message-State: AOAM532yn27/v2Rw1LoVtw9tl1rMDhj1EVV/hkgrTU7Frxmtxrfcc9y6
+ p9FQwhuHl/F5bIWgg5AX/Q==
+X-Google-Smtp-Source: ABdhPJy3T03Lv6DYRee0EAteJwqi9P/4wzvwMoGsPqpWTMFq+yupuVXKZwoG097ja4/X7OvByWI01w==
+X-Received: by 2002:a9d:6190:: with SMTP id g16mr742838otk.54.1639427731541;
+ Mon, 13 Dec 2021 12:35:31 -0800 (PST)
+Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net.
+ [66.90.148.213])
+ by smtp.gmail.com with ESMTPSA id p10sm2340679otp.53.2021.12.13.12.35.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 13 Dec 2021 12:35:30 -0800 (PST)
+Received: (nullmailer pid 1526504 invoked by uid 1000);
+ Mon, 13 Dec 2021 20:35:29 -0000
+Date: Mon, 13 Dec 2021 14:35:29 -0600
+From: Rob Herring <robh@kernel.org>
+To: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+Subject: Re: [PATCH 0/4] fsl-asoc-card: Add optional dt property for setting
+ mclk-id
+Message-ID: <YbeukcwXQueEquJZ@robh.at.kernel.org>
+References: <20211203134930.128703-1-ariel.dalessandro@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CACK8Z6EntHP0TWfq=JdQ7QS8vCgXoRUJOWqbGYLvD6R2Mq0paw@mail.gmail.com>
+In-Reply-To: <20211203134930.128703-1-ariel.dalessandro@collabora.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,81 +67,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
- linux-kernel@vger.kernel.org, oohall@gmail.com, bhelgaas@google.com,
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
+ michael@amarulasolutions.com, kuninori.morimoto.gx@renesas.com,
+ Xiubo.Lee@gmail.com, tony@atomide.com, festevam@gmail.com,
+ shengjiu.wang@gmail.com, tiwai@suse.com, linux-kernel@vger.kernel.org,
+ lgirdwood@gmail.com, nicoleotsuka@gmail.com, broonie@kernel.org,
+ bcousson@baylibre.com, perex@perex.cz, linux-omap@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 13, 2021 at 11:57:52AM -0800, Rajat Jain wrote:
-> Hello
+On Fri, Dec 03, 2021 at 10:49:26AM -0300, Ariel D'Alessandro wrote:
+> This is a follow up of patchset:
 > 
-> On Sat, Dec 11, 2021 at 9:54 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> >
-> > [+cc Rajat, author of aer_stats:
-> > db89ccbe52c7 ("PCI/AER: Define aer_stats structure for AER capable devices"
-> > 81aa5206f9a7 ("PCI/AER: Add sysfs attributes to provide AER stats and breakdown"]
-> >
-> > On Thu, Dec 09, 2021 at 05:45:56PM +0800, Jiasheng Jiang wrote:
-> > > he return value of kzalloc() needs to be checked.
-> > > To avoid use of null pointer in case of the failure of alloc.
-> > >
-> > > Fixes: db89ccbe52c7 ("PCI/AER: Define aer_stats structure for AER capable devices")
-> > > Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-> > > ---
-> > >  drivers/pci/pcie/aer.c | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > >
-> > > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> > > index ec943cee5ecc..d04303edf468 100644
-> > > --- a/drivers/pci/pcie/aer.c
-> > > +++ b/drivers/pci/pcie/aer.c
-> > > @@ -376,6 +376,8 @@ void pci_aer_init(struct pci_dev *dev)
-> > >               return;
-> > >
-> > >       dev->aer_stats = kzalloc(sizeof(struct aer_stats), GFP_KERNEL);
-> > > +     if (!dev->aer_stats)
-> > > +             return;
-> >
-> > Did you actually trip over a null pointer dereference, and if so,
-> > where was it?
-> >
-> > I think the intent here was that aer_stats is a non-essential feature,
-> > and if we can't allocate space to keep the statistics, we can still
-> > use the device without the stats.
-> 
-> Ack. Yes, this was my intention.
-> 
-> Practically speaking though, if a system cannot allocate space for
-> aer_stats (608 bytes), I would think it is under an extreme memory
-> pressure so not really sure if will be able to really do anything with
-> the PCI device (probe the driver which may want to allocate more
-> memory etc). But that isn't anything that we can help with.
-> 
-> The current patch AFAICS looks like a no-op to me.
+>     [RFC patch 0/5] Support BCLK input clock in tlv320aic31xx
 
-Well, it's a no-op except for the fact that we should continue on to
-add a save buffer and clear the AER status, so if we applied this
-patch, I think an alloc failure (unlikely though it is) would mean we
-would continue using the device, but the AER init for it wouldn't be
-done correctly.
+Link?
 
-I think we need to drop this patch, and if there is a null pointer
-dereference elsewhere, fix that.
+> Sound cards may allow using different main clock inputs. In the generic
+> fsl-asoc-card driver, these values are hardcoded for each specific card
+> configuration.
+> 
+> Let's make it more flexible, allowing setting mclk-id from the
+> device-tree node.
+> 
+> Ariel D'Alessandro (4):
+>   dt-bindings: sound: Rename tlv320aic31xx-micbias as tlv320aic31xx
+>   dt-bindings: tlv320aic31xx: Define PLL clock inputs
+>   ASoC: fsl-asoc-card: Add optional dt property for setting mclk-id
 
-> > I *think* all the users of dev->aer_stats check for NULL before
-> > dereferencing it, but if you found a case that doesn't do that, we
-> > should definitely fix it.
-> >
-> > In a few cases (aer_stats_dev_attr, aer_stats_rootport_attr), the
-> > check isn't obvious -- it happens in aer_stats_attrs_are_visible().
-> > If aer_stats_attrs_are_visible() finds that aer_stats is NULL, those
-> > sysfs attributes should not be visible, and the corresponding *_show()
-> > functions should never be called.
-> >
-> > >       /*
-> > >        * We save/restore PCI_ERR_UNCOR_MASK, PCI_ERR_UNCOR_SEVER,
-> > > --
-> > > 2.25.1
-> > >
+'mclk-id' is not documented.
+
+>   ASoC: fsl-asoc-card: Remove BCLK default value for tlv320aic31xx card
+> 
+>  .../devicetree/bindings/sound/fsl-asoc-card.txt    |  1 +
+>  .../devicetree/bindings/sound/tlv320aic31xx.txt    |  2 +-
+>  arch/arm/boot/dts/am43x-epos-evm.dts               |  2 +-
+>  include/dt-bindings/sound/tlv320aic31xx-micbias.h  |  9 ---------
+>  include/dt-bindings/sound/tlv320aic31xx.h          | 14 ++++++++++++++
+>  sound/soc/codecs/tlv320aic31xx.c                   |  2 +-
+>  sound/soc/fsl/fsl-asoc-card.c                      |  7 ++++++-
+>  7 files changed, 24 insertions(+), 13 deletions(-)
+>  delete mode 100644 include/dt-bindings/sound/tlv320aic31xx-micbias.h
+>  create mode 100644 include/dt-bindings/sound/tlv320aic31xx.h
+> 
+> -- 
+> 2.30.2
+> 
+> 
