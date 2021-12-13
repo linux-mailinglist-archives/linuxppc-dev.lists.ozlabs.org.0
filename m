@@ -2,56 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7B94737CE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 23:45:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40129473952
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 01:08:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JCc5q41nzz3cB0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 09:45:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCdxs1Hcsz3c75
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 11:08:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=lIhD4VLF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GnrjInCg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=collabora.com (client-ip=46.235.227.227;
- helo=bhuna.collabora.co.uk; envelope-from=ariel.dalessandro@collabora.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::52f;
+ helo=mail-pg1-x52f.google.com; envelope-from=rajatja@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=collabora.com header.i=@collabora.com
- header.a=rsa-sha256 header.s=mail header.b=lIhD4VLF; 
- dkim-atps=neutral
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JCc583gZSz30JT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 09:44:28 +1100 (AEDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
- (Authenticated sender: adalessandro) with ESMTPSA id 7A1501F44304
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=collabora.com; s=mail;
- t=1639435458; bh=+jzYdtXs7CB4ta79rrB++MGxP0waydJU7QsAh1AmXQo=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=lIhD4VLFF2S6LlIDylVcf8FfHctEQWqmhWUr+LKKcAcmy9YIByC53bq6Eo7A2Q+GW
- G1bDUmwqaSkSoMMnGWD7S/e6cDOqeOaqjRy3Y0GsYOEga5PibX2MJA/dlMIq0VeaB/
- ZFXivb0uRKvsinimGrTPvCG+fml899xWKRTbLvBTdCky2nj1Jo8ZsCBz5eFox/SOO/
- gQ5TwXw9vLjtHFqNIyZPIdvwBwmfSeIjz0Ns+NFWpN0JKasZEHSTlmeHyVaIRVpgh/
- bG7XQVAWqF1hck75vl29HTYXEhYOnlrckapPzQrsKu95krz3dG1cQ2U8xOPYbhvJyh
- lXhvoa6gMND9A==
-Subject: Re: [PATCH 3/4] ASoC: fsl-asoc-card: Add optional dt property for
- setting mclk-id
-To: Rob Herring <robh@kernel.org>
-References: <20211203134930.128703-1-ariel.dalessandro@collabora.com>
- <20211203134930.128703-4-ariel.dalessandro@collabora.com>
- <Ybeu/1vsUzvAg2Ya@robh.at.kernel.org>
-From: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-Message-ID: <288a8463-b4dc-80cc-1964-23ef613201c4@collabora.com>
-Date: Mon, 13 Dec 2021 19:44:07 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=GnrjInCg; dkim-atps=neutral
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
+ [IPv6:2607:f8b0:4864:20::52f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCXPl03Tlz2yPk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 06:58:32 +1100 (AEDT)
+Received: by mail-pg1-x52f.google.com with SMTP id d11so6842544pgl.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 11:58:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=cmtlwaoKecb3OjlTS1+QUQgYom0U7BYI17ypi8x6kXI=;
+ b=GnrjInCguT1hYvRxEFp2FFlcWJk+X6scQ0TguTZJYVs5btZvLe4+YCVtdB1wZBA4ql
+ lPf7oCvJEdd0G+oUe5yfcRXur4cxWEXfxcjyEJoITH2W9As4AMyaF/6oqsEcsNBAgWD/
+ UBIucA6BcyhNjSnCqT/ISHXWrlgFdN+ILDONTu1HlNwv1vdXyPxGBU9vO+59APihDv/L
+ /nwhYbGPq5FxpkV4Q212xLuEDTP4CAF4U5LzT8KXzoBVVzuau0xfXfTisMvTpfIsPlgw
+ +17xll8EDuD0UqXiCAsNXUxf++d7lYacez0U09SFm2L5hSCMz5JIZS3+Y+DKV/2HHGL6
+ Pi6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=cmtlwaoKecb3OjlTS1+QUQgYom0U7BYI17ypi8x6kXI=;
+ b=l+tO5cN/HoUCFfOEwQifaBVaZRT/UfyfNdFvCeouivzARkyS+2XmzcaU7gBb7ldMMZ
+ mLYcyRHtmq7NfiNJUMisLiI08TizxstOgBbfa2qKr95tpLaPgMmBXRy07Kbc1NaEA9el
+ m6rljZ55tAwQYa7JST5G9bAjO3HPYSinGKb6Wm9zAWvpb3VN8W7qsSNCZgCx1e+njV6O
+ uni/SWheC6fz4pelNPToGwx2ySvE89ZoLzPpbPOM1VY7cY5sGoYQoLWFyA1no7Nafphg
+ zBJxNWdBXqWuKTTUDRNMYLqZzLFgT+DlF4iL6756hlP6tUFTnyyOX+qSOWV3EW6LcWtn
+ 7CCg==
+X-Gm-Message-State: AOAM530dDYH83dUJ2oQFwxq3ebiVKUDNRUO8weYiSBu2a+jC7hlU6Xhz
+ rxDBMOBz3gSZRcsRxAykv1W7CDTDfcu0ctaSPzPhSg==
+X-Google-Smtp-Source: ABdhPJyxdpF8yw1Mfppja7TttKdq2KytY/u0mapNh2UceVCKIokfMXDLBzkp5pk5YhzPAhPmfct2uhkiNfnabLvww9s=
+X-Received: by 2002:a63:ef44:: with SMTP id c4mr564190pgk.146.1639425509218;
+ Mon, 13 Dec 2021 11:58:29 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <Ybeu/1vsUzvAg2Ya@robh.at.kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20211209094556.2085357-1-jiasheng@iscas.ac.cn>
+ <20211211175450.GA398271@bhelgaas>
+In-Reply-To: <20211211175450.GA398271@bhelgaas>
+From: Rajat Jain <rajatja@google.com>
+Date: Mon, 13 Dec 2021 11:57:52 -0800
+Message-ID: <CACK8Z6EntHP0TWfq=JdQ7QS8vCgXoRUJOWqbGYLvD6R2Mq0paw@mail.gmail.com>
+Subject: Re: [PATCH] PCI/AER: potential dereference of null pointer
+To: Bjorn Helgaas <helgaas@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Tue, 14 Dec 2021 11:07:43 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,49 +75,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
- michael@amarulasolutions.com, kuninori.morimoto.gx@renesas.com,
- Xiubo.Lee@gmail.com, tony@atomide.com, festevam@gmail.com,
- shengjiu.wang@gmail.com, tiwai@suse.com, linux-kernel@vger.kernel.org,
- lgirdwood@gmail.com, nicoleotsuka@gmail.com, broonie@kernel.org,
- bcousson@baylibre.com, perex@perex.cz, linux-omap@vger.kernel.org,
+Cc: linux-pci@vger.kernel.org, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+ linux-kernel@vger.kernel.org, oohall@gmail.com, bhelgaas@google.com,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rob,
+Hello
 
-On 12/13/21 5:37 PM, Rob Herring wrote:
-> On Fri, Dec 03, 2021 at 10:49:29AM -0300, Ariel D'Alessandro wrote:
->> Sound cards may allow using different main clock inputs. In the generic
->> fsl-asoc-card driver, these values are hardcoded for each specific card
->> configuration.
->>
->> Let's make it more flexible, allowing setting mclk-id from the
->> device-tree node. Otherwise, the default value for each card
->> configuration is used.
->>
->> Signed-off-by: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
->> ---
->>  Documentation/devicetree/bindings/sound/fsl-asoc-card.txt | 1 +
->>  sound/soc/fsl/fsl-asoc-card.c                             | 6 ++++++
->>  2 files changed, 7 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt b/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
->> index 23d83fa7609f..b219626a5403 100644
->> --- a/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
->> +++ b/Documentation/devicetree/bindings/sound/fsl-asoc-card.txt
->> @@ -82,6 +82,7 @@ Optional properties:
->>    - dai-format		: audio format, for details see simple-card.yaml.
->>    - frame-inversion	: dai-link uses frame clock inversion, for details see simple-card.yaml.
->>    - bitclock-inversion	: dai-link uses bit clock inversion, for details see simple-card.yaml.
->> +  - mclk-id		: main clock id, specific for each card configuration.
-> 
-> Ahh, there it is. This change and the header defines should be 1 patch 
-> and driver changes another.
+On Sat, Dec 11, 2021 at 9:54 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> [+cc Rajat, author of aer_stats:
+> db89ccbe52c7 ("PCI/AER: Define aer_stats structure for AER capable devices"
+> 81aa5206f9a7 ("PCI/AER: Add sysfs attributes to provide AER stats and breakdown"]
+>
+> On Thu, Dec 09, 2021 at 05:45:56PM +0800, Jiasheng Jiang wrote:
+> > he return value of kzalloc() needs to be checked.
+> > To avoid use of null pointer in case of the failure of alloc.
+> >
+> > Fixes: db89ccbe52c7 ("PCI/AER: Define aer_stats structure for AER capable devices")
+> > Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+> > ---
+> >  drivers/pci/pcie/aer.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> > index ec943cee5ecc..d04303edf468 100644
+> > --- a/drivers/pci/pcie/aer.c
+> > +++ b/drivers/pci/pcie/aer.c
+> > @@ -376,6 +376,8 @@ void pci_aer_init(struct pci_dev *dev)
+> >               return;
+> >
+> >       dev->aer_stats = kzalloc(sizeof(struct aer_stats), GFP_KERNEL);
+> > +     if (!dev->aer_stats)
+> > +             return;
+>
+> Did you actually trip over a null pointer dereference, and if so,
+> where was it?
+>
+> I think the intent here was that aer_stats is a non-essential feature,
+> and if we can't allocate space to keep the statistics, we can still
+> use the device without the stats.
 
-Ah, I see. I'll split it and send a patchset v2 for this.
+Ack. Yes, this was my intention.
+
+Practically speaking though, if a system cannot allocate space for
+aer_stats (608 bytes), I would think it is under an extreme memory
+pressure so not really sure if will be able to really do anything with
+the PCI device (probe the driver which may want to allocate more
+memory etc). But that isn't anything that we can help with.
+
+The current patch AFAICS looks like a no-op to me.
 
 Thanks,
-Ariel
+
+Rajat
+
+>
+> I *think* all the users of dev->aer_stats check for NULL before
+> dereferencing it, but if you found a case that doesn't do that, we
+> should definitely fix it.
+>
+> In a few cases (aer_stats_dev_attr, aer_stats_rootport_attr), the
+> check isn't obvious -- it happens in aer_stats_attrs_are_visible().
+> If aer_stats_attrs_are_visible() finds that aer_stats is NULL, those
+> sysfs attributes should not be visible, and the corresponding *_show()
+> functions should never be called.
+>
+> >       /*
+> >        * We save/restore PCI_ERR_UNCOR_MASK, PCI_ERR_UNCOR_SEVER,
+> > --
+> > 2.25.1
+> >
