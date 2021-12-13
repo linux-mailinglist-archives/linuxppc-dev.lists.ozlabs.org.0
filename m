@@ -1,122 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B1247258B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 10:44:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B45DA472C8E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 13:47:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JCGmx74pzz3bnJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 20:44:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCLrQ4p7Zz3c8Z
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 23:47:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com header.b=i19xTbCg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=FCYCETjA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=40.107.130.101;
- helo=apc01-hk2-obe.outbound.protection.outlook.com;
- envelope-from=wangqing@vivo.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com
- header.b=i19xTbCg; dkim-atps=neutral
-Received: from APC01-HK2-obe.outbound.protection.outlook.com
- (mail-eopbgr1300101.outbound.protection.outlook.com [40.107.130.101])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JCGm61RSBz2yw9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 20:43:22 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OjQ/RtbYfOcU+stJlaaQzfXXEL1SeFxA3m0Ate+R7OOIHhoGPF6N4oLANIh6nkewHBaoyojdN1PVohkytgomhk5mfVrZc6WoAUrlMXicUY7eyHTF3WZStqXgog58z0U2BJzEJEiwIc9R1z7GFJCaWgpoAyo3UIG80wjf4bTnYz6ZG22hezlcC2nUgArHpKxswVJr4MZqqYpOa39vplisV9uoKRVOmqFNLo6sVLBjWVl9/72tfgST0kKW3i5epn3lI6kT5wcbsfenVJMoso8NsmxbOS04Y109VBbojbfuinTDaEOgtjKnoyCfXBxOuGG49QlXnFE+i4dVZ9AVAVphFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IZv6rWuXraT/4KPE6oifLgxFcTswNiwroZQH7Zaoddo=;
- b=V34P2OmWx3Flng90mWoCHpukHr97RJinlD1nCbjqi5vszw5iE1BY/KtprisM/cympak7M57WRqI/FXarc7PveS63bQqwLBp4FkDiV43q48FqwjhghAWTSfDHeb2tnRYLO1ma68+TT+li+SrwSpQ6vRtEbI6ix1c4LdjttTM8KQQfbnzC7/sm20SNLjWuRQEOzIwlB4nPucEI6Igtjcch8nqBuYOdU+V36G+Fjn51FL1l7BJzTszLORjijuYqqi7VaVf6/wyJAnO19/RlqKWB/UuSTahD/5agcfzRLgd+ssoOTPiuEfwbBoLe2Ya6d4Ns41WmGY41kTl7ODp1s6bdjw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com; 
- s=selector2-vivo0-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IZv6rWuXraT/4KPE6oifLgxFcTswNiwroZQH7Zaoddo=;
- b=i19xTbCgINoFuGF0QPQ/sRJXIOrxmrwVpdEqmDnonOXDysIjX//TCC+wTeZUDP2uhgSHtn1IGlc+P34ndG4BS2um6HQWpYOf5FEY4fsS85UTC+mJePdcHMR/U7Pl+AtN3omMj7h6PkedXQqEs4dhz0dPrqBPpjLU0QWxhTxnxEs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SL2PR06MB3082.apcprd06.prod.outlook.com (2603:1096:100:37::17)
- by SL2PR06MB3050.apcprd06.prod.outlook.com (2603:1096:100:39::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4778.16; Mon, 13 Dec
- 2021 09:43:00 +0000
-Received: from SL2PR06MB3082.apcprd06.prod.outlook.com
- ([fe80::a0cf:a0e2:ee48:a396]) by SL2PR06MB3082.apcprd06.prod.outlook.com
- ([fe80::a0cf:a0e2:ee48:a396%4]) with mapi id 15.20.4778.017; Mon, 13 Dec 2021
- 09:43:00 +0000
-From: Qing Wang <wangqing@vivo.com>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] arch: powerpc: add missing of_node_put before break
-Date: Mon, 13 Dec 2021 01:42:52 -0800
-Message-Id: <1639388572-63704-1-git-send-email-wangqing@vivo.com>
-X-Mailer: git-send-email 2.7.4
-Content-Type: text/plain
-X-ClientProxiedBy: HK0PR01CA0069.apcprd01.prod.exchangelabs.com
- (2603:1096:203:a6::33) To SL2PR06MB3082.apcprd06.prod.outlook.com
- (2603:1096:100:37::17)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCLqj2HLvz2yZ2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 23:46:57 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=FCYCETjA; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JCLqg21XHz4xQs;
+ Mon, 13 Dec 2021 23:46:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1639399616;
+ bh=W5VnYCvz7/mlHDYZbPhaQ5CNO1ZBQOxPjLpWHYJP0oo=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=FCYCETjAr0YAA0gTNjmpVVzSxElRjWZqAR1vlrvWLoAb7OiEpV7Mbp4Mnr7gQq4DX
+ Wtz0UJAt5d7bOKGQDXQT/bHJY4mhZPa2nAYEFaeR/DAWO2NeblIfVhGCVFkklHxN4g
+ JU8ToWI6dxI7oWuYorKFyadjdIAqoFQ1Sv7visIsjjFaMmAvnt4JjGoiDflRDXIJo2
+ Dh03DlQSGX9PkelFfqk88s5EAdyduc8VKFJW7CSqJUbPQObr5w9RjqjtftGLAnEkMJ
+ PtFUPSpkOjCetftc0sGd7fOtjnc7xTkpmBoWzd93b93LxlEz6P9sErMcB62uSXUX55
+ UGXkIkz3yUahA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Rob Herring <robh@kernel.org>, John Crispin <john@phrozen.org>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Frank
+ Rowand <frowand.list@gmail.com>
+Subject: Re: [PATCH v2] of/fdt: Rework early_init_dt_scan_memory() to call
+ directly
+In-Reply-To: <20211208155839.4084795-1-robh@kernel.org>
+References: <20211208155839.4084795-1-robh@kernel.org>
+Date: Mon, 13 Dec 2021 23:46:51 +1100
+Message-ID: <87fsqwn03o.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 65cc7d38-5296-42d1-45da-08d9be1cf33f
-X-MS-TrafficTypeDiagnostic: SL2PR06MB3050:EE_
-X-Microsoft-Antispam-PRVS: <SL2PR06MB305010D17ECBA96211AE7E5DBD749@SL2PR06MB3050.apcprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3631;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: UQSTfRqnvtjctO/0L6HeokhsnMZMqBL0sulvuKXMyVyPTAGWOB40GHyYVY2sf9c4uENvdqd0WlvrA0s6O44KGKso7hFe1Q90zm+8zs0p8/FXiiozok5LuiEWX7aB1OeXoaQW75DUcX131NWbAl0qfFDlkRNKcVqQ0G/Iofo9jmiApEqczgdBDZA9MYPH0IQYV/cuaZbRvG5AaAE6i0EdaBxS8MSAB9RTPAfcyCLLhssChvAojpvvE7hWzc9H/51sI8hfSjzdnEsK9mgogSwxDDOeFp99decvPRLgIwOu9TbSEf9kgzj8strOKtcc44YDcjOrgcuo4VRSCmD9yqlH4PS0E8BuJIB78zRl6MpjtSirV5aKI57MZzmxY+QZ5ucKKgWpRrLBAHfdtOTzq9mBOk5/UV5Crm0eryLVMriueniWFMbI50hmtIWYbZvDdegzCuE0dh29p5nfW8uOKjvQCy5xx5MuMj6zERn6UNkaOYjdZfdKjFhBXb0q4b6xeGLhlwB6Yw2sVmhK81HfIANTTrDH7ezJJAKv9ZpvVvxoLSeLGPk5bssY5hVx93E8sy13s29R2zGVD0vvfB7z0Z8Jq+ZXvVasertu2C1FEopP/gKfyVB6Yt4dizLg29FGOKRlai/B2Cd6QF0HbsM/CKX1w2ihjlTQBD80t0I7URFJJtGaRJZTXYGBRRX4Ah310xFLL5JexC1NmoZ2PcHKoxLwmg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SL2PR06MB3082.apcprd06.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(86362001)(83380400001)(52116002)(6506007)(110136005)(2906002)(316002)(508600001)(26005)(186003)(66946007)(36756003)(107886003)(66476007)(2616005)(66556008)(8936002)(6512007)(8676002)(4326008)(5660300002)(6486002)(38100700002)(4744005)(38350700002)(6666004);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?77UTGkerUJEbY4bkbVY+OMG7sxWxmUAEoUZYL3tWlWc94ZZeGxliDlCCRQRb?=
- =?us-ascii?Q?Z+bIOTNopXF0raXc5Wc/5QzRBgXUfMOjBgwJnAJQg0N76gQHF9Jv1zvG5fyC?=
- =?us-ascii?Q?0q86+luTHJyl+SGWMZoWiOXG7mHb4gzgb0FE70XYKmmfXWRWbEOVgo+f1aWN?=
- =?us-ascii?Q?9enr6qbwa18YHsMTqPct4yOA9B5N4v+3WZMmnPLCEHFKt7otyl0dVyoCumxc?=
- =?us-ascii?Q?cb++5y216gUb9mHoOZHHclJh1XoW7hOkR0haSJc02KBbRaGrHFked5nBd5u9?=
- =?us-ascii?Q?PXTvKBRtDBpV+5YRQQb1kiVG834Vga3IKc3Bw5spSmYfo/NBdU5OirtA2UYI?=
- =?us-ascii?Q?NPQ5Dct1IBIsvKSX/p3+Tj33LNJPDn8h07cGKxEcjaJx366gu4p8wxQCxvYQ?=
- =?us-ascii?Q?R9/wW7Rbqj4qMk1Ua/1+X6HhKlCUCqQqs+zFcGlo7/4tmYokeAmlXwO7FbVE?=
- =?us-ascii?Q?3vd/XO1ZxbfeOpGiMmND+MxuptPR0q2jMl+9uwNwkAKV1X+f7pJJEioBeze9?=
- =?us-ascii?Q?FNOkvMzjxEEpaVJ6F6qO1cGGXhKB0nBxFHGCL3S4u3vDDaipRzUa/15RSvxz?=
- =?us-ascii?Q?5YgLY3d6DBSSLcUnC7uYtNknaaX+wybAZxd+VyeuM0/6Ep7TxqOPbwKL2gRs?=
- =?us-ascii?Q?H0M6hcHtFc31Dit/i51WgFMm6U7eKl0XDw37WxtzpJrieKC3QW6ky1c6CUfg?=
- =?us-ascii?Q?+qDj4E9GMLSaJSxNHGsHDkLIqcRR4rNdPGG1TCASh45YsmO2B6PmlFfuef50?=
- =?us-ascii?Q?0q9DFbCGDgmC5GAm2BzH21QLhw6CbUyYxcTZc+EI4Py8ySAqOxgtmypBHS9g?=
- =?us-ascii?Q?rgVvHiYKm03xfSjpgziWZ+s6yoPqnmJUflKLLKGD/SpfqZ9C9Jld1lCQsJaE?=
- =?us-ascii?Q?YkbxaB/QUCCC6t4RlVvmUwZiNqpDsWKod0d2v7IskUo2hKeRFL+yMH9POSlN?=
- =?us-ascii?Q?mNzw1tX20oK/g3OnLHvryyG2Ah2+HmAM1D6wfZGPzAZBCDa+eDC/yeoCugjW?=
- =?us-ascii?Q?nu9b+Ng8wsA23OvyY1au0F1zfS+4SuUmdPWKAGqzjDGm6kx36iVEAtzpjBuX?=
- =?us-ascii?Q?JY51t3lT/9hOcyGlCo3WKIt8XMlrwCnHNGPczlYd2iWonCVBqFxBb8CEbcYd?=
- =?us-ascii?Q?YBhEV8A/DDQdf+J5UBXv5QmvC0dKt0ocLPxuo243psgF0Vru7FrNyD3LYQBU?=
- =?us-ascii?Q?oxLSUgR0Zcq4R8xNZMHsecVf5vBPGG7ia2vKpU8IW4JiKIZWgLW6gfazl8wd?=
- =?us-ascii?Q?xJkyQwsoCBcFeGI8iShH/VYdSlIRgEFhDGT0aL4ZbTKEC/wvPUs28LPDz3b0?=
- =?us-ascii?Q?VHXbNJ6dp7zdWcYClpDF6jBfEOPlodvB3MsMd0g7ncIVYO8jSJdpzNT2ia2K?=
- =?us-ascii?Q?Aal3jiyuKjEjCF3fryvLDPHXexAmvaKSrvRBuXgczTq9pakBG5ttRW9TjCRt?=
- =?us-ascii?Q?8Ei18JXl3k6gxXC7+cvYUuIgWQEJFLZmxbbefauR5T9AKJvw+0oUs9FtOBsW?=
- =?us-ascii?Q?Qi/UnFgA7Z0vcph+EmUb1MrddLV8JAGSW753rVHStjtlPsJi+zRO5i9DY2lu?=
- =?us-ascii?Q?dcoeT3P+LVoI9aXXnfwrRHIcNMGj9bJrFeUrPxDknnPoUScGe5Fv576MQYoM?=
- =?us-ascii?Q?y0Hu8xusqQJeWQ8odYWg5RY=3D?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 65cc7d38-5296-42d1-45da-08d9be1cf33f
-X-MS-Exchange-CrossTenant-AuthSource: SL2PR06MB3082.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2021 09:43:00.2105 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6FJi9MFKtRFhM+sv1NlM/mCMVxg2hw9WOAvei4I5dNri9sEJLJs+/KlKL2JXatiEgB/JU8VeBfYxEnyumbrQJg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SL2PR06MB3050
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -128,41 +63,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Wang Qing <wangqing@vivo.com>
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Wang Qing <wangqing@vivo.com>
+Rob Herring <robh@kernel.org> writes:
+> Use of the of_scan_flat_dt() function predates libfdt and is discouraged
+> as libfdt provides a nicer set of APIs. Rework
+> early_init_dt_scan_memory() to be called directly and use libfdt.
+...
+> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+> index 6e1a106f02eb..63762a3b75e8 100644
+> --- a/arch/powerpc/kernel/prom.c
+> +++ b/arch/powerpc/kernel/prom.c
+> @@ -532,19 +532,19 @@ static int  __init early_init_drmem_lmb(struct drmem_lmb *lmb,
+>  }
+>  #endif /* CONFIG_PPC_PSERIES */
+>  
+> -static int __init early_init_dt_scan_memory_ppc(unsigned long node,
+> -						const char *uname,
+> -						int depth, void *data)
+> +static int __init early_init_dt_scan_memory_ppc(void)
+>  {
+>  #ifdef CONFIG_PPC_PSERIES
+> -	if (depth == 1 &&
+> -	    strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0) {
+> +	const void *fdt = initial_boot_params;
+> +	int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
+> +
+> +	if (node > 0) {
+>  		walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
+>  		return 0;
+>  	}
+>  #endif
+>  	
+> -	return early_init_dt_scan_memory(node, uname, depth, data);
+> +	return early_init_dt_scan_memory();
+>  }
+>  
+>  /*
+> @@ -749,7 +749,7 @@ void __init early_init_devtree(void *params)
+>  
+>  	/* Scan memory nodes and rebuild MEMBLOCKs */
+>  	early_init_dt_scan_root();
+> -	of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
+> +	early_init_dt_scan_memory_ppc();
+>  
+>  	parse_early_param();
+>  
+> @@ -858,7 +858,7 @@ void __init early_get_first_memblock_info(void *params, phys_addr_t *size)
+>  	 */
+>  	add_mem_to_memblock = 0;
+>  	early_init_dt_scan_root();
+> -	of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
+> +	early_init_dt_scan_memory_ppc();
+>  	add_mem_to_memblock = 1;
+>  
+>  	if (size)
 
-Fix following coccicheck warning:
-WARNING: Function "for_each_node_by_name" 
-should have of_node_put() before return.
 
-Early exits from for_each_node_by_name should decrement the
-node reference counter.
+This blows up one of my machines with:
 
-Signed-off-by: Wang Qing <wangqing@vivo.com>
----
- arch/powerpc/platforms/powermac/smp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+  [    0.000000][    T0] printk: bootconsole [udbg0] enabled
+   -> early_setup(), dt_ptr: 0x1ec90000
+  [    0.000000][    T0] ------------[ cut here ]------------
+  [    0.000000][    T0] kernel BUG at arch/powerpc/mm/book3s64/hash_utils.c:2117!
+  [    0.000000][    T0] Oops: Exception in kernel mode, sig: 5 [#1]
+  [    0.000000][    T0] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA
+  [    0.000000][    T0] Modules linked in:
+  [    0.000000][    T0] CPU: 0 PID: 0 Comm: swapper Not tainted 5.16.0-rc4-00073-g81291383ffde-dirty #69
+  [    0.000000][    T0] NIP:  c0000000000924d8 LR: c000000002009764 CTR: c0000000000924d0
+  [    0.000000][    T0] REGS: c000000002833bc0 TRAP: 0700   Not tainted  (5.16.0-rc4-00073-g81291383ffde-dirty)
+  [    0.000000][    T0] MSR:  8000000000021003 <SF,ME,RI,LE>  CR: 24000244  XER: 20000001
+  [    0.000000][    T0] CFAR: 0000000000000730 IRQMASK: 1
+  [    0.000000][    T0] GPR00: c000000002009764 c000000002833e60 c000000002834100 ffffffffffffffff
+  [    0.000000][    T0] GPR04: 0000000000000000 c000000002080866 0000000000000000 0000000000000000
+  [    0.000000][    T0] GPR08: c000000002080864 0000000000000001 c0000000028d4100 c000000000ffe598
+  [    0.000000][    T0] GPR12: c0000000000924d0 c000000002082200 0000000000000000 0000000000000000
+  [    0.000000][    T0] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+  [    0.000000][    T0] GPR20: 0000000000000001 0000000010004604 0000000000000000 0000000010004bfc
+  [    0.000000][    T0] GPR24: 0000000000000000 c000000000000000 0000000002970000 c00000000008a480
+  [    0.000000][    T0] GPR28: c0000000028e19f8 c00000001ec90000 c000000002865af8 000000001ec90000
+  [    0.000000][    T0] NIP [c0000000000924d8] hash__setup_initial_memory_limit+0x18/0x110
+  [    0.000000][    T0] LR [c000000002009764] early_init_devtree+0x13c/0x4ec
+  [    0.000000][    T0] Call Trace:
+  [    0.000000][    T0] [c000000002833e60] [c0000000020096fc] early_init_devtree+0xd4/0x4ec (unreliable)
+  [    0.000000][    T0] [c000000002833f10] [c00000000200b008] early_setup+0xc8/0x22c
+  [    0.000000][    T0] [c000000002833f90] [000000000000d368] 0xd368
+  [    0.000000][    T0] Instruction dump:
+  [    0.000000][    T0] 4bffff0c eaa10028 4bffff44 60000000 60000000 60420000 3c4c027a 38421c40
+  [    0.000000][    T0] 7c0802a6 4bfe2e5d 3123ffff 7d291910 <0b090000> 3d220003 392919f8 e9290000
+  [    0.000000][    T0] random: get_random_bytes called from oops_exit+0x54/0xa0 with crng_init=0
+  [    0.000000][    T0] ---[ end trace 0000000000000000 ]---
 
-diff --git a/arch/powerpc/platforms/powermac/smp.c b/arch/powerpc/platforms/powermac/smp.c
-index 3256a31..c9a044a
---- a/arch/powerpc/platforms/powermac/smp.c
-+++ b/arch/powerpc/platforms/powermac/smp.c
-@@ -598,8 +598,10 @@ static void __init smp_core99_setup_i2c_hwsync(int ncpus)
- 			name = "Pulsar";
- 			break;
- 		}
--		if (pmac_tb_freeze != NULL)
-+		if (pmac_tb_freeze != NULL) {
-+			of_node_put(cc);
- 			break;
-+		}
- 	}
- 	if (pmac_tb_freeze != NULL) {
- 		/* Open i2c bus for synchronous access */
--- 
-2.7.4
+
+It's complaining about memstart_addr being 0, which implies
+early_init_dt_add_memory_arch() was never called.
+
+Will try and get some more debug tomorrow.
+
+cheers
 
