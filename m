@@ -1,49 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2809D47337D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 19:02:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D411B4732C3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 18:16:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JCTqG02H3z3cPm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 05:02:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCSpG60btz3c9V
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 04:16:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=a.fatoum@pengutronix.de;
- receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JCMgZ5c6Zz2yQw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 00:24:57 +1100 (AEDT)
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1mwlJx-0008Sf-9N; Mon, 13 Dec 2021 14:24:49 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [BUG] mtd: cfi_cmdset_0002: write regression since v4.17-rc1
-To: linux-mtd@lists.infradead.org, ikegami@allied-telesis.co.jp,
- Joakim.Tjernlund@infinera.com, miquel.raynal@bootlin.com, vigneshr@ti.com,
- richard@nod.at, ikegami.t@gmail.com
-Message-ID: <b687c259-6413-26c9-d4c9-b3afa69ea124@pengutronix.de>
-Date: Mon, 13 Dec 2021 14:24:39 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=srs0=gc06=q6=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCSnr65Zmz2yMc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 04:15:44 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 7FEE7B8119C;
+ Mon, 13 Dec 2021 17:15:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F6FC34602;
+ Mon, 13 Dec 2021 17:15:38 +0000 (UTC)
+Date: Mon, 13 Dec 2021 12:15:36 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v1 0/5] Implement livepatch on PPC32
+Message-ID: <20211213121536.25e5488d@gandalf.local.home>
+In-Reply-To: <6209682d-0caa-b779-8763-376a984d8ed8@csgroup.eu>
+References: <cover.1635423081.git.christophe.leroy@csgroup.eu>
+ <20211028093547.48c69dfe@gandalf.local.home>
+ <6209682d-0caa-b779-8763-376a984d8ed8@csgroup.eu>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
-X-Mailman-Approved-At: Tue, 14 Dec 2021 05:01:41 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,85 +48,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
+Cc: Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>,
+ Jiri Kosina <jikos@kernel.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- marek.vasut@gmail.com, Chris Packham <chris.packham@alliedtelesis.co.nz>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, cyrille.pitchen@wedev4u.fr,
- Shaohui.Xie@nxp.com, Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
+ Ingo Molnar <mingo@redhat.com>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ "live-patching@vger.kernel.org" <live-patching@vger.kernel.org>, "Naveen
+ N . Rao" <naveen.n.rao@linux.vnet.ibm.com>, Miroslav Benes <mbenes@suse.cz>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Mon, 13 Dec 2021 14:39:15 +0000
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-I've been investigating a breakage on a PowerPC MPC8313: The SoC is connected
-via the "Enhanced Local Bus Controller" to a 8-bit-parallel S29GL064N flash,
-which is represented as a memory-mapped cfi-flash.
+> > Note, you can implement this first, (I looked over the patches and they
+> > seem fine) and then update both ppc64 and ppc32 to implement
+> > DYNAMIC_FTRACE_WITH_ARGS.
+> >   
+> 
+> I tried to activate DYNAMIC_FTRACE_WITH_ARGS on PPC32.
+> 
+> I copied into powerpc the changes from 5740a7c71ab6 ("s390/ftrace: add 
+> HAVE_DYNAMIC_FTRACE_WITH_ARGS support")
+> 
+> Ftrace selftests tell "Testing tracer function_graph: FAILED!".
+> 
+> Is there anything else to do ?
 
-The regression began in v4.17-rc1 with
+Yes. Because BPF is now hooking into the function callbacks, it causes
+issues with function graph tracer. So what we did was to have function
+graph tracing to now use the function tracer callback as well (this allows
+both the BPF direct trampolines to work with function graph tracer).
 
-  dfeae1073583 ("mtd: cfi_cmdset_0002: Change write buffer to check correct value")
+As it requires DYNAMIC_FTRACE_WITH_ARGS, and x86 was the only one to
+support that for now, I decided to make all the archs change function graph
+tracing when they implement DYNAMIC_FTRACE_WITH_ARGS too. (It is becoming a
+pain to have too many variants of function tracing between the archs).
 
-and causes all flash write accesses on the hardware to fail. Example output
-after v5.1-rc2[1]:
+The change that did this for x86 was:
 
-  root@host:~# mount -t jffs2 /dev/mtdblock0 /mnt
-  MTD do_write_buffer_wait(): software timeout, address:0x000c000b.
-  jffs2: Write clean marker to block at 0x000c0000 failed: -5
+0c0593b45c9b4 ("x86/ftrace: Make function graph use ftrace directly")
 
-This issue still persists with v5.16-rc. Reverting aforementioned patch fixes
-it, but I am still looking for a change that keeps both Tokunori's and my
-hardware happy.
+This actually simplifies the function graph tracer, as you no longer need
+it's own entry trampoline (still need the trampoline for the return of the
+function).
 
-What Tokunori's patch did is that it strengthened the success condition
-for flash writes:
+What you need to do is:
 
- - Prior to the patch, DQ polling was done until bits
-   stopped toggling. This was taken as an indicator that the write succeeded
-   and was reported up the stack. i.e. success condition is chip_ready()
+In your arch/*/include/asm/ftrace.h add:
 
- - After the patch, polling continues until the just written data is
-   actually read back, i.e. success condition is chip_good()
+struct ftrace_ops;
 
-This new condition never holds for me, when DQ stabilizes, it reads 0xFF,
-never the just written data. The data is still written and can be read back
-on subsequent reads, just not at that point of time in the poll loop.
-
-We haven't had write issues for the years predating that patch. As the
-regression has been mainline for a while, I am wondering what about my setup
-that makes it pop up here, but not elsewhere?
-
-I consulted the data sheet[2] and found Figure 27, which describes DQ polling
-during embedded algorithms. DQ switches from status output to "True" (I assume
-True == all bits set == 0xFF) until CS# is reasserted. 
-
-I compared with another chip's datasheet, and it (Figure 8.4) doesn't describe
-such an intermittent "True" state. In any case, the driver polls a few hundred
-times, however, before giving up, so there should be enough CS# toggles.
+#define ftrace_graph_func ftrace_graph_func
+void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
+                      struct ftrace_ops *op, struct ftrace_regs *fregs);
 
 
-Locally, I'll revert this patch for now. I think accepting 0xFF as a success
-condition may be appropriate, but I don't yet have the rationale to back it up.
+Where ftrace_graph_func() is now what is called for the function graph
+tracer, directly from the ftrace callbacks (no longer a secondary
+trampoline).
 
-I am investigating this some more, probably with a logic trace, but I wanted
-to report this in case someone has pointers and in case other people run into
-the same issue.
+Define the ftrace_graph_func() to be something like:
 
+void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
+                      struct ftrace_ops *op, struct ftrace_regs *fregs)
+{
+       struct pt_regs *regs = &fregs->regs;
+       unsigned long *stack = (unsigned long *)kernel_stack_pointer(regs);
 
-Cheers,
-Ahmad
+       prepare_ftrace_return(ip, (unsigned long *)stack, 0);
+}
 
-[1] Prior to d9b8a67b3b95 ("mtd: cfi: fix deadloop in cfi_cmdset_0002.c do_write_buffer") 
-    first included with v5.1-rc2, failing writes just hung indefinitely in kernel space.
-    That's fixed, but the writes still fail.
+This is called by the function tracer code. But because with
+DYNAMIC_FTRACE_WITH_ARGS, we have access to the argument register, we should
+also have access to the link register and the stack. Then you can use that
+to modify the stack and or link register to jump to the the return
+trampoline.
 
-[2]: 001-98525 Rev. *B, https://www.infineon.com/dgdl/Infineon-S29GL064N_S29GL032N_64_Mbit_32_Mbit_3_V_Page_Mode_MirrorBit_Flash-DataSheet-v03_00-EN.pdf?fileId=8ac78c8c7d0d8da4017d0ed556fd548b
+This should all work with powerpc (both 64 and 32) but if it does not, let
+me know. I'm happy to help out.
 
-[3]: https://www.mouser.com/datasheet/2/268/SST39VF1601C-SST39VF1602C-16-Mbit-x16-Multi-Purpos-709008.pdf
-     Note that "true data" means valid data here, not all bits one.
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-- Steve
