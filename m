@@ -2,69 +2,94 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C3F471F54
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 03:29:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1735472008
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 05:37:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JC5744R49z3069
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 13:29:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JC7z969l6z2ywn
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 15:37:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=OarK1TFf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=XOHVEWug;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=Q6KmIDe3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=foxmail.com (client-ip=203.205.251.27;
- helo=out203-205-251-27.mail.qq.com; envelope-from=xkernel.wang@foxmail.com;
+ smtp.mailfrom=russell.cc (client-ip=66.111.4.27;
+ helo=out3-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256
- header.s=s201512 header.b=OarK1TFf; dkim-atps=neutral
-X-Greylist: delayed 52033 seconds by postgrey-1.36 at boromir;
- Mon, 13 Dec 2021 13:28:40 AEDT
-Received: from out203-205-251-27.mail.qq.com (out203-205-251-27.mail.qq.com
- [203.205.251.27])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
+ header.s=fm3 header.b=XOHVEWug; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm1 header.b=Q6KmIDe3; 
+ dkim-atps=neutral
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com
+ [66.111.4.27])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JC56J6Y8Tz2x9N
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 13:28:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
- s=s201512; t=1639362497;
- bh=dJKtjTSKz62rNy49syVpqD28WJWax6LS+Mw42ExvDiE=;
- h=Date:From:To:Cc:Subject;
- b=OarK1TFfplfbv/lwm3EjdNCQoi0rAi9wc0XExlEaqUE9lG6NTAgoHN2XkUoZ3JHHB
- GWl+OM1WxLifKH08dKTgiVEg/mZ/0BoK49NJ/IQHo19kNZLsHttmJKOTmzIj3hLtWF
- e4KQ9/bhxzxWrRPfkLLd3ZdwAf1d7L0iwwkpO58s=
-Received: from LAPTOP-4BSPBRI7 ([59.172.176.92])
- by newxmesmtplogicsvrsza7.qq.com (NewEsmtp) with SMTP
- id 6A90BE4C; Mon, 13 Dec 2021 10:26:41 +0800
-X-QQ-mid: xmsmtpt1639362401t6u5s3bdr
-Message-ID: <tencent_C982943047E43271285358863729A5FF630A@qq.com>
-X-QQ-XMAILINFO: M1xqn9pGP6LN76WbLmg5E+5W3cSr5Q2BaM6+cpZekx2T5StSOh/kW47VGafMPZ
- 0nVODas39U+GjjKp1zZEzdK2GGnE7fBhyy2sCHnk2lIjgHTdl663jtqa4hJxN19dZozX61y0Ksdi
- JbqUUEtVMjg0vf0UWYC97ldrThhooIAUTCc/VyBr3/AIb6IfWObbX3iOMeLJ+v9LNSm6HY9sRUia
- 34LRPoAq271C3M26VP5gWFzGWkH2rt5j970znP3IF5RH/wxAgSlwRD8cU/na7xRl622cjhWOE0+J
- IZX3fUIbMFtHzgGUv30lJ9vqKTp94Mib+z2NbKsOq3lnwI0pAgwEEYUaYkop90f/fIvQz6c17p6m
- 8rcdn7fcjpoWArb7Bn3steomCXJoEleNwYro3IJsxQXTOYRWfobdoOILGKNhST1Tx5yyfCV2KI6U
- Z6Ypm3CtEXZ09JbS0x5rnq3LB5QaBgdWUuX4/Y7gcQzB19y+vriMP+fK0eU7Swzc4Ur8Ql+ATwck
- 3OuNK972mKzeWPKvzK1qfxEJdlI61CDlQtypeo0dj+RsrIlXSzUSg1XN7gtQBk0cFPaeKTEztpWX
- gRlTTsOPCCXNSIdQ4T1sJ/JhWImNk5WPeVUnuUy7t61Jcf/+m5r7L1/8OTlolJ8JjbCzo2GEDHi/
- OizURGyvLWNfKD0mZ8H+4LHG8bluv6abpL9OjeEF3KyUJU8TYYggluHqRKF2b+fvqhvz6QYqK2Pk
- J/qw8o5lf/wkZ9nmdQgZj47G6X7LHFjIu7xVYYy6DTKrJlTxflYF7ILsh9gttU7PNbaxH36KoFaJ
- +EqD8CPP2UASVpFuA2x/ccvdlEkH4GmDobT65D8xZsXzxA1N3+Qoaax2dG2e4kYHs=
-Date: Mon, 13 Dec 2021 10:26:41 +0800
-From: "xkernel.wang@foxmail.com" <xkernel.wang@foxmail.com>
-To: mpe <mpe@ellerman.id.au>, 
-	agust <agust@denx.de>
-Subject: Re: [PATCH] powerpc: mpc52xx_gpt: fix a potential memory leak
-X-Priority: 3
-X-GUID: 0E828642-9115-4B73-A131-B82288F17D29
-X-Has-Attach: no
-X-Mailer: Foxmail 7.2.14.410[en]
-Mime-Version: 1.0
-Message-ID: <202112131026410462899@foxmail.com>
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JC7yM1nfHz2xrP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 15:36:58 +1100 (AEDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id C76035C00C9;
+ Sun, 12 Dec 2021 23:36:54 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute6.internal (MEProxy); Sun, 12 Dec 2021 23:36:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ message-id:subject:from:to:cc:in-reply-to:references
+ :content-type:date:mime-version:content-transfer-encoding; s=
+ fm3; bh=OUsM0IPuEeSG7R5tkw+JV5egTMzCpaE7Lad6FfawhOE=; b=XOHVEWug
+ 4N+O5S9J/CpVJ8cZs+sY0dJd9Qxf76Qyr3EW3Zej75V7rxi+YmIR+I4c3gV3M1lB
+ LFWNdlnVSMWGljJUmwCWNR7LtXmNWp2Msx75r/IoChl2+vPbNj0HrZ9KQHGwSj8i
+ twaBk6L+TVxQJBESwR68V7PQQSPO8biEQ0bI+Ch0Q+1sPfZt6gRGLxo/6isCwjKQ
+ cA9Cmyr0/PEBrvUuLCQzta/dxw7rctEJxjmMpStyHnmZR/b0Kd8W5MWCOagFirkp
+ r8I7B/Zw5KnMwvtyhZZ0PsrbPdRTNn8WtQzsrHZqNWefvouQOv1Cfwxm/9tcWOBB
+ Pi8LWPrwYeD0Yg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :date:from:in-reply-to:message-id:mime-version:references
+ :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; bh=OUsM0IPuEeSG7R5tkw+JV5egTMzCpaE7Lad6Ffawh
+ OE=; b=Q6KmIDe3C6F51MV3/68eUjZ66YJhSyjI+igBy3eW4FzAzb4piga7S7MU/
+ U53DZaxRNyh/34b+uX/F4LyxXSDk9a1fm3u+V2X/14OIs0bBptjE9djL1OKtx1yB
+ r+bCEKpzPwkhwQMtFuKMzWVrEkYHDoRTQinyx6nIPWtNwBBjy3U9r52pUYxUbYU9
+ ky7JRadxx2FDUbCdtbBAa7nrSmkFP6UhEcT0tJ9TnY6f90vkexiPdMijboqhYHiM
+ RnjoApBLxFlsMTTD0dPzuKRGzfG0sgjDiMgLK+F2Y3t8vfVfE+7jsqwNOjo4/Rrc
+ kcj6d5tm5Kp5+eHKqOi1pfW2gPp5Q==
+X-ME-Sender: <xms:5s22YQ13WkOmgPyYzzGkKEqlDho_PZnwQxRxn-MV_Ia5GpQV2wwU4w>
+ <xme:5s22YbF6bEJPJuajKjAALFqZaCVaWazK8B2x2QBzh1VS4825ydeuDd52vCgjQQmN0
+ aXlG3vVQ_dd8NOvOg>
+X-ME-Received: <xmr:5s22YY6b907Xooim6ZA4HTV5fTRHJTBbmeI8inzQ_akI-NXAgDV8GvLQhJlsyCi2bxh3YvmJdXgK9PqQYZk2P_vdH_6urbXdptVa-5Uof0d330MwO8sl>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddrkeejgdejvdcutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
+ hrlhcuvffnffculdejmdenucfjughrpefkuffhvfgjfhgtffggfgfgsehtkeertddtreej
+ necuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhushhsvg
+ hllhdrtggtqeenucggtffrrghtthgvrhhnpeetgeekhfevvedtfffhvddvhfevveeludev
+ vdegveevkeekkeetvedvvddtlefggeenucffohhmrghinhepphhrvghsvghnthdrrhhone
+ cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgt
+ uhhrsehruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:5s22YZ07-uSSVg6WHvi6NvACqZRryTE0wC4m2b3O_nbYeNxMIqu20A>
+ <xmx:5s22YTE0GqcUhfN2kzF4hNksu3g0Ffur4meGm-DYtw6Pf2VtrJ5ehA>
+ <xmx:5s22YS_bHs2QhUzVx0hEcKwrapU_X5aUuZvHj7NaPpf6HZIWaqnWNA>
+ <xmx:5s22YY65N0wV0hQRB1GEyb3Bdh_DdA8ZFjKnDbWHU5xcyuiTb6crmA>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 12 Dec 2021 23:36:51 -0500 (EST)
+Message-ID: <984da14c339ae81b45518002081f791153fe69dd.camel@russell.cc>
+Subject: Re: [PATCH] powerpc: Add set_memory_{p/np}() and remove
+ set_memory_attr()
+From: Russell Currey <ruscur@russell.cc>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
+ Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <715cc0c2f801ef3b39b91233be44d328a91c30bc.1639123757.git.christophe.leroy@csgroup.eu>
+References: <715cc0c2f801ef3b39b91233be44d328a91c30bc.1639123757.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Date: Mon, 13 Dec 2021 14:36:47 +1000
+MIME-Version: 1.0
+User-Agent: Evolution 3.42.2 
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,22 +101,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus <paulus@samba.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-kernel <linux-kernel@vger.kernel.org>
+Cc: Maxime Bizon <mbizon@freebox.fr>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-TWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1PiB3cm90ZToKPiA+IFdoZW4gc29t
-ZSBpbnRlcm5hbCBtZW1vcnkgZXJyb3JzIGhhcHBlbmQgaW4gb2ZfaW9tYXAoKSwgd2Ugc2hvdWxk
-IGZyZWUKPiA+IGdwdCB0byBwcmV2ZW50IG1lbW9yeSBsZWFrLgo+Cj4gQnV0IGl0J3MgYWxsb2Nh
-dGVkIHdpdGggZGV2bV9remFsbG9jKCksIHNvIHRoZSBkZXZyZXMgY29yZSBpcyBtZWFudCB0bwo+
-IGZyZWUgaXQgZm9yIHVzIGlzbid0IGl0PwoKWWVzLCBtYXliZSB5b3UgYXJlIHJpZ2h0LiBJIGRp
-ZCB0aGF0IGFzIEkgbWVudGlvbmVkIHdoZW4gZ3B0LXJlZ3MgaXMgTlVMTCwgaXTCoAp3aWxsIHJl
-dHVybiAtRU5PTUVNLCB3aGljaCBpcyB0aGUgc2FtZSB3aGVuIGdwdCBpcyBOVUxMLiBTbyBJIHN1
-cHBvc2UgdG8gCmZyZWXCoGl0IGluIHRpbWUgaXMgYmV0dGVyOgo+CWdwdCA9IGRldm1fa3phbGxv
-Yygmb2ZkZXYtPmRldiwgc2l6ZW9mICpncHQsIEdGUF9LRVJORUwpOwo+CWlmICghZ3B0KQo+CQly
-ZXR1cm4gLUVOT01FTTsKCmNoZWVycwoK
+On Fri, 2021-12-10 at 08:09 +0000, Christophe Leroy wrote:
+> set_memory_attr() was implemented by commit 4d1755b6a762
+> ("powerpc/mm:
+> implement set_memory_attr()") because the set_memory_xx() couldn't
+> be used at that time to modify memory "on the fly" as explained it
+> the commit.
+> 
+> But set_memory_attr() uses set_pte_at() which leads to warnings when
+> CONFIG_DEBUG_VM is selected, because set_pte_at() is unexpected for
+> updating existing page table entries.
+> 
+> The check could be bypassed by using __set_pte_at() instead,
+> as it was the case before commit c988cfd38e48 ("powerpc/32:
+> use set_memory_attr()") but since commit 9f7853d7609d ("powerpc/mm:
+> Fix set_memory_*() against concurrent accesses") it is now possible
+> to use set_memory_xx() functions to update page table entries
+> "on the fly" because the update is now atomic.
+> 
+> For DEBUG_PAGEALLOC we need to clear and set back _PAGE_PRESENT.
+> Add set_memory_np() and set_memory_p() for that.
+> 
+> Replace all uses of set_memory_attr() by the relevant set_memory_xx()
+> and remove set_memory_attr().
+> 
+> Reported-by: Maxime Bizon <mbizon@freebox.fr>
+> Fixes: c988cfd38e48 ("powerpc/32: use set_memory_attr()")
+> Cc: stable@vger.kernel.org
+> Depends-on: 9f7853d7609d ("powerpc/mm: Fix set_memory_*() against
+> concurrent accesses")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-.
+Reviewed-by: Russell Currey <ruscur@russell.cc>
 
+One comment below:
+
+> diff --git a/arch/powerpc/include/asm/set_memory.h
+> b/arch/powerpc/include/asm/set_memory.h
+> index b040094f7920..061f1766a8a4 100644
+> --- a/arch/powerpc/include/asm/set_memory.h
+> +++ b/arch/powerpc/include/asm/set_memory.h
+> @@ -6,6 +6,8 @@
+>  #define SET_MEMORY_RW  1
+>  #define SET_MEMORY_NX  2
+>  #define SET_MEMORY_X   3
+> +#define SET_MEMORY_NP  4
+> +#define SET_MEMORY_P   5
+
+It might be nice to have a comment somewhere in set_memory.h explaining
+that {p/np} = present/not present.  RO/RW/NX/X are commonly used, "p"
+as shorthand for "present" is less obvious.  x86's set_memory.h has a
+nice comment covering everything as an example.
+
+>  int change_memory_attr(unsigned long addr, int numpages, long
+> action);
+>  
+> @@ -29,6 +31,14 @@ static inline int set_memory_x(unsigned long addr,
+> int numpages)
+>         return change_memory_attr(addr, numpages, SET_MEMORY_X);
+>  }
+>  
+> -int set_memory_attr(unsigned long addr, int numpages, pgprot_t
+> prot);
+> +static inline int set_memory_np(unsigned long addr, int numpages)
+> +{
+> +       return change_memory_attr(addr, numpages, SET_MEMORY_NP);
+> +}
+> +
+> +static inline int set_memory_p(unsigned long addr, int numpages)
+> +{
+> +       return change_memory_attr(addr, numpages, SET_MEMORY_P);
+> +}
+>  
+>  #endif
