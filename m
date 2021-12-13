@@ -1,69 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB8A47340A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 19:31:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC71473463
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 19:54:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JCVTZ45Pcz306j
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 05:31:46 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=ti-com-17Q1 header.b=aQr+rT7A;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCVzy4sJ7z3cR1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 05:54:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=ti.com
- (client-ip=198.47.19.142; helo=fllv0016.ext.ti.com; envelope-from=nm@ti.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256
- header.s=ti-com-17Q1 header.b=aQr+rT7A; 
- dkim-atps=neutral
-X-Greylist: delayed 1988 seconds by postgrey-1.36 at boromir;
- Tue, 14 Dec 2021 05:31:08 AEDT
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org;
+ envelope-from=srs0=gc06=q6=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JCVSr75Xqz2yNY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 05:31:07 +1100 (AEDT)
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
- by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1BDITweD032784;
- Mon, 13 Dec 2021 12:29:58 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
- s=ti-com-17Q1; t=1639420199;
- bh=CIwJXsDVc6MpWMxloZbtRdlpLw1Ztan/9G2UzPwMY0E=;
- h=Date:From:To:CC:Subject:References:In-Reply-To;
- b=aQr+rT7AbNmri1BYm4glcZYUB4D0/LtbXNn0eGzLe1Xq4LgTziMH/fZw9NMlUSxOJ
- eUvgRnz/JUOtWmI/LUlydZmqlDtGvShVqc/335BSewifnzHFovUoMb7LUYizCR9g/k
- /rYDbql0vQTQMlM2Nnxl+1kL4PPvB9mCQmf5UIQI=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
- by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1BDITwlR038320
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
- Mon, 13 Dec 2021 12:29:58 -0600
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 13
- Dec 2021 12:29:58 -0600
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 13 Dec 2021 12:29:58 -0600
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
- by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1BDITwZX089938;
- Mon, 13 Dec 2021 12:29:58 -0600
-Date: Mon, 13 Dec 2021 12:29:58 -0600
-From: Nishanth Menon <nm@ti.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch V3 00/35] genirq/msi, PCI/MSI: Spring cleaning - Part 2
-Message-ID: <20211213182958.ytj4m6gsg35u77cv@detonator>
-References: <20211210221642.869015045@linutronix.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCVzX5G6vz2yNY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 05:54:16 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 2CA14B8124B;
+ Mon, 13 Dec 2021 18:54:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30A4C34604;
+ Mon, 13 Dec 2021 18:54:11 +0000 (UTC)
+Date: Mon, 13 Dec 2021 13:54:10 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v1 0/5] Implement livepatch on PPC32
+Message-ID: <20211213135410.12642d8f@gandalf.local.home>
+In-Reply-To: <fc3099b8-9f12-3e47-08a0-05abc37a0482@csgroup.eu>
+References: <cover.1635423081.git.christophe.leroy@csgroup.eu>
+ <20211028093547.48c69dfe@gandalf.local.home>
+ <6209682d-0caa-b779-8763-376a984d8ed8@csgroup.eu>
+ <20211213121536.25e5488d@gandalf.local.home>
+ <5511f43c-192a-622b-7c72-52e07f0032c2@csgroup.eu>
+ <20211213123338.65eda5a0@gandalf.local.home>
+ <fc3099b8-9f12-3e47-08a0-05abc37a0482@csgroup.eu>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20211210221642.869015045@linutronix.de>
-User-Agent: NeoMutt/20171215
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,66 +54,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Stuart Yoder <stuyoder@gmail.com>,
- Will Deacon <will@kernel.org>, Ashok Raj <ashok.raj@intel.com>,
- Joerg Roedel <joro@8bytes.org>, Jassi Brar <jassisinghbrar@gmail.com>,
- Sinan Kaya <okaya@kernel.org>, iommu@lists.linux-foundation.org,
- Peter Ujfalusi <peter.ujfalusi@gmail.com>, Bjorn Helgaas <helgaas@kernel.org>,
- linux-arm-kernel@lists.infradead.org, Jason Gunthorpe <jgg@nvidia.com>,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Kevin Tian <kevin.tian@intel.com>, Arnd Bergmann <arnd@arndb.de>,
- Robin Murphy <robin.murphy@arm.com>,
- Alex Williamson <alex.williamson@redhat.com>, Cedric Le Goater <clg@kaod.org>,
- Santosh Shilimkar <ssantosh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Megha Dey <megha.dey@intel.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>,
- Juergen Gross <jgross@suse.com>, Tero Kristo <kristo@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- LKML <linux-kernel@vger.kernel.org>, Vinod Koul <vkoul@kernel.org>,
- Marc Zygnier <maz@kernel.org>, dmaengine@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ Jiri Kosina <jikos@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ "live-patching@vger.kernel.org" <live-patching@vger.kernel.org>, "Naveen
+ N . Rao" <naveen.n.rao@linux.vnet.ibm.com>, Miroslav Benes <mbenes@suse.cz>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 23:18-20211210, Thomas Gleixner wrote:
-[...]
+On Mon, 13 Dec 2021 17:50:52 +0000
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-> 
-> It's also available from git:
-> 
->      git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git msi-v3-part-2
+> @@ -958,6 +942,12 @@ unsigned long prepare_ftrace_return(unsigned long 
+> parent, unsigned long ip,
+>   out:
+>   	return parent;
+>   }
+> +
+> +void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
+> +		       struct ftrace_ops *op, struct ftrace_regs *fregs)
+> +{
+> +	prepare_ftrace_return(ip, kernel_stack_pointer(&fregs->regs), 0);
+> +}
 
-[...]
+I have for powerpc prepare_ftrace_return as:
 
-> ---
->  drivers/dma/ti/k3-udma-private.c                    |    6 
->  drivers/dma/ti/k3-udma.c                            |   14 -
->  drivers/irqchip/irq-ti-sci-inta.c                   |    2 
->  drivers/soc/ti/k3-ringacc.c                         |    6 
->  drivers/soc/ti/ti_sci_inta_msi.c                    |   22 --
->  include/linux/soc/ti/ti_sci_inta_msi.h              |    1 
 
-Also while testing on TI K3 platforms, I noticed:
+unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
+                                                unsigned long sp)
+{
+        unsigned long return_hooker;
 
-msi_device_data_release/msi_device_destroy_sysfs in am64xx-evm / j7200
-[1] https://gist.github.com/nmenon/36899c7819681026cfe1ef185fb95f33#file-am64xx-evm-txt-L1018
-[2] https://gist.github.com/nmenon/36899c7819681026cfe1ef185fb95f33#file-j7200-evm-txt-L1076
+        if (unlikely(ftrace_graph_is_dead()))
+                goto out;
 
-Which is not present in vanilla v5.16-rc4
+        if (unlikely(atomic_read(&current->tracing_graph_pause)))
+                goto out;
 
-v5.16-rc4:
-https://gist.github.com/nmenon/1aee3f0a7da47d5e9dcb7336b32a70cb
+        return_hooker = ppc_function_entry(return_to_handler);
 
-msi-v3-part-2:
-https://gist.github.com/nmenon/36899c7819681026cfe1ef185fb95f33
+        if (!function_graph_enter(parent, ip, 0, (unsigned long *)sp))
+                parent = return_hooker;
+out:
+        return parent;
+}
 
-(.config https://gist.github.com/nmenon/ec6f95303828abf16a64022d8e3a269f)
+Which means you'll need different parameters to it than what x86 has, which
+has the prototype of:
 
-Vs:
-next-20211208:
-https://gist.github.com/nmenon/f5ca3558bd5c1fbe62dc5ceb420b536e
+void prepare_ftrace_return(unsigned long ip, unsigned long *parent,
+			   unsigned long frame_pointer)
 
--- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D)/Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+and it does not use the frame_pointer for this case, which is why it is
+zero.
+
+For powerpc though, it uses the stack pointer, so you parameters are
+incorrect. Looks like it should be:
+
+	prepare_ftrace_return(parent_ip, ip, kernel_stack_pointer(&fregs->regs));
+
+And that will likely not be enough. I'll need to update the ctr register,
+as that is where the return address is saved. So you'll probably need it to be:
+
+void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
+		       struct ftrace_ops *op, struct ftrace_regs *fregs)
+{
+	unsigned long parent;
+
+	parent = prepare_ftrace_return(parent_ip, ip, kernel_stack_pointer(&fregs->regs));
+	fregs->regs.ctr = parent;
+}
+
+
+
+-- Steve
