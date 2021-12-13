@@ -1,61 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD70473605
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 21:36:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AEDD473608
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 21:36:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JCYDv5NZ3z301k
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 07:35:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCYFW1S87z3cbx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 07:36:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.50; helo=mail-ot1-f50.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com
- [209.85.210.50])
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.178;
+ helo=mail-oi1-f178.google.com; envelope-from=robherring2@gmail.com;
+ receiver=<UNKNOWN>)
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com
+ [209.85.167.178])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JCYDS2xNJz2yws
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 07:35:34 +1100 (AEDT)
-Received: by mail-ot1-f50.google.com with SMTP id
- u18-20020a9d7212000000b00560cb1dc10bso18698729otj.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 12:35:34 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCYDf2qzKz304n
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 07:35:46 +1100 (AEDT)
+Received: by mail-oi1-f178.google.com with SMTP id u74so24712469oie.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 12:35:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=UjShsLmpN0SZM+m8SUUiNDWjd+SPX71KTwqzkwvysM0=;
- b=gOk0bqtjvl9g4Kb19jWrFZTvHgd68rMh3TrYo49KFxEZ2yWSPv/L8v85yML7/af1s6
- JXN2eTAurkPrVMuMj/FXyEHg6T7JMbm/DaIYxow1dq2sZmnvP92g+EbX9CiXiPuBu5xy
- TFVYI2tbF2cvVPK/+YKZBUM+6scebwV87JdLp3mkuCTS1t4xiAFt6ymELnmfOaJwFkgI
- d/qB2AJNzZGbTCP/tRpAcWh2JOhPK7TPcT9qJ2lrqsc4pQppDINPMwWn8WoGfIMIrval
- vW7ffbmgxRAPxJRU0fHG74cDvpfsIEPgmz9fdqcDn2nxBBjlEBeAUAm5Wpqw9zK+aDbU
- uxQg==
-X-Gm-Message-State: AOAM532yn27/v2Rw1LoVtw9tl1rMDhj1EVV/hkgrTU7Frxmtxrfcc9y6
- p9FQwhuHl/F5bIWgg5AX/Q==
-X-Google-Smtp-Source: ABdhPJy3T03Lv6DYRee0EAteJwqi9P/4wzvwMoGsPqpWTMFq+yupuVXKZwoG097ja4/X7OvByWI01w==
-X-Received: by 2002:a9d:6190:: with SMTP id g16mr742838otk.54.1639427731541;
- Mon, 13 Dec 2021 12:35:31 -0800 (PST)
+ bh=AxSFGAofOwMIAYDCCLSObSduTWGbW1+gxYdw/nwgbn8=;
+ b=b+Pt3GRH4k96MRzWI3GdMuDTQgzbtBFWakJ3vHDdG9ObtS3mvfNPvOUB++XwZyXyuY
+ 92iFlXS6t2+9IBOqUO7Cy1+nwzqRljAfYZkb6Py6fwixdOWRDqTgJSJnW5TGSHdLIh8K
+ YtZplx3UFn+Hd2Tq2NGA6AfT9QBCZpzEIz7bX+0khXH6381Uj5tbNfgqauqsMki65M0+
+ Qj7e1wKMPeDNsvIwZnc3DFIzW6ws3QgJSM9M1IHFRgpsJwC3ImVfwJlaKr/42bW6ch4I
+ xLHr1vwVRoijERdQfw2CgMz6e73Ch6k6Q6fEaiz9RSQXqGtRg2YGWjT7pc+hOHUHVZqn
+ 0JYw==
+X-Gm-Message-State: AOAM530QWg4QqrFcFnXL+FwI1UM/bL48NDkpZVQM6AoDZL4ADZyxn2HO
+ jItaeArJSI6TyPSCtr4g/w==
+X-Google-Smtp-Source: ABdhPJw7qa4AuHZj7EbN/+1qNf7EXChlDMQ/Ktbo40SMyKH7L4Hvz/la/8EklTYV0aHyX/NY6RRJLA==
+X-Received: by 2002:a05:6808:1311:: with SMTP id
+ y17mr843858oiv.32.1639427743733; 
+ Mon, 13 Dec 2021 12:35:43 -0800 (PST)
 Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net.
  [66.90.148.213])
- by smtp.gmail.com with ESMTPSA id p10sm2340679otp.53.2021.12.13.12.35.30
+ by smtp.gmail.com with ESMTPSA id a16sm2338828otj.79.2021.12.13.12.35.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Dec 2021 12:35:30 -0800 (PST)
-Received: (nullmailer pid 1526504 invoked by uid 1000);
- Mon, 13 Dec 2021 20:35:29 -0000
-Date: Mon, 13 Dec 2021 14:35:29 -0600
+ Mon, 13 Dec 2021 12:35:43 -0800 (PST)
+Received: (nullmailer pid 1526832 invoked by uid 1000);
+ Mon, 13 Dec 2021 20:35:42 -0000
+Date: Mon, 13 Dec 2021 14:35:42 -0600
 From: Rob Herring <robh@kernel.org>
 To: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-Subject: Re: [PATCH 0/4] fsl-asoc-card: Add optional dt property for setting
- mclk-id
-Message-ID: <YbeukcwXQueEquJZ@robh.at.kernel.org>
+Subject: Re: [PATCH 1/4] dt-bindings: sound: Rename tlv320aic31xx-micbias as
+ tlv320aic31xx
+Message-ID: <YbeunvMNmyDxGrLb@robh.at.kernel.org>
 References: <20211203134930.128703-1-ariel.dalessandro@collabora.com>
+ <20211203134930.128703-2-ariel.dalessandro@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211203134930.128703-1-ariel.dalessandro@collabora.com>
+In-Reply-To: <20211203134930.128703-2-ariel.dalessandro@collabora.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,51 +70,30 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
- michael@amarulasolutions.com, kuninori.morimoto.gx@renesas.com,
- Xiubo.Lee@gmail.com, tony@atomide.com, festevam@gmail.com,
- shengjiu.wang@gmail.com, tiwai@suse.com, linux-kernel@vger.kernel.org,
- lgirdwood@gmail.com, nicoleotsuka@gmail.com, broonie@kernel.org,
- bcousson@baylibre.com, perex@perex.cz, linux-omap@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+ linuxppc-dev@lists.ozlabs.org, kuninori.morimoto.gx@renesas.com,
+ Xiubo.Lee@gmail.com, tony@atomide.com, shengjiu.wang@gmail.com, tiwai@suse.com,
+ lgirdwood@gmail.com, robh+dt@kernel.org, perex@perex.cz,
+ nicoleotsuka@gmail.com, linux-omap@vger.kernel.org, broonie@kernel.org,
+ bcousson@baylibre.com, michael@amarulasolutions.com, festevam@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Dec 03, 2021 at 10:49:26AM -0300, Ariel D'Alessandro wrote:
-> This is a follow up of patchset:
+On Fri, 03 Dec 2021 10:49:27 -0300, Ariel D'Alessandro wrote:
+> Let's use a more generic name, so other definitions for tlv320aic31xx
+> can be included.
 > 
->     [RFC patch 0/5] Support BCLK input clock in tlv320aic31xx
-
-Link?
-
-> Sound cards may allow using different main clock inputs. In the generic
-> fsl-asoc-card driver, these values are hardcoded for each specific card
-> configuration.
-> 
-> Let's make it more flexible, allowing setting mclk-id from the
-> device-tree node.
-> 
-> Ariel D'Alessandro (4):
->   dt-bindings: sound: Rename tlv320aic31xx-micbias as tlv320aic31xx
->   dt-bindings: tlv320aic31xx: Define PLL clock inputs
->   ASoC: fsl-asoc-card: Add optional dt property for setting mclk-id
-
-'mclk-id' is not documented.
-
->   ASoC: fsl-asoc-card: Remove BCLK default value for tlv320aic31xx card
-> 
->  .../devicetree/bindings/sound/fsl-asoc-card.txt    |  1 +
->  .../devicetree/bindings/sound/tlv320aic31xx.txt    |  2 +-
->  arch/arm/boot/dts/am43x-epos-evm.dts               |  2 +-
->  include/dt-bindings/sound/tlv320aic31xx-micbias.h  |  9 ---------
->  include/dt-bindings/sound/tlv320aic31xx.h          | 14 ++++++++++++++
->  sound/soc/codecs/tlv320aic31xx.c                   |  2 +-
->  sound/soc/fsl/fsl-asoc-card.c                      |  7 ++++++-
->  7 files changed, 24 insertions(+), 13 deletions(-)
+> Signed-off-by: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+> ---
+>  .../devicetree/bindings/sound/tlv320aic31xx.txt          | 2 +-
+>  arch/arm/boot/dts/am43x-epos-evm.dts                     | 2 +-
+>  include/dt-bindings/sound/tlv320aic31xx-micbias.h        | 9 ---------
+>  include/dt-bindings/sound/tlv320aic31xx.h                | 9 +++++++++
+>  sound/soc/codecs/tlv320aic31xx.c                         | 2 +-
+>  5 files changed, 12 insertions(+), 12 deletions(-)
 >  delete mode 100644 include/dt-bindings/sound/tlv320aic31xx-micbias.h
 >  create mode 100644 include/dt-bindings/sound/tlv320aic31xx.h
 > 
-> -- 
-> 2.30.2
-> 
-> 
+
+Acked-by: Rob Herring <robh@kernel.org>
