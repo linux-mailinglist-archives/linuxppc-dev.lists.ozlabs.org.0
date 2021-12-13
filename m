@@ -2,66 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA1A84733DC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 19:19:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB8A47340A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Dec 2021 19:31:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JCVCb3fSlz3cVr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 05:19:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCVTZ45Pcz306j
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 05:31:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ask3d39g;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=ti-com-17Q1 header.b=aQr+rT7A;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=ask3d39g; 
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=ti.com
+ (client-ip=198.47.19.142; helo=fllv0016.ext.ti.com; envelope-from=nm@ti.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256
+ header.s=ti-com-17Q1 header.b=aQr+rT7A; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
+X-Greylist: delayed 1988 seconds by postgrey-1.36 at boromir;
+ Tue, 14 Dec 2021 05:31:08 AEDT
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JCVBZ6Kk9z3c69
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 05:18:46 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id B88A7B81205
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 18:18:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EAAC34604
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 18:18:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1639419520;
- bh=ufnnwRnurk1q2aqknJbOmUyt6HZgObDA6V99gZUmitk=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=ask3d39ghcNdqyGIEhsKFhKTMapNAeAkWyf6B/udDSGjpc+Fzs8HCapyWN4mQdxep
- 0f2Ko4aJ0deBRauWRBpN0gCfXC0MTPfyVkPpT+NYSruSQPxIaiwuV4Rg4XRvbFkwPC
- QfMK/audKlttY7+4gS9HjLQzh9hdmry7oJXKV1V7T17f6clacIFkGpvOhDa3CHMod8
- KC9HKrz7xcZmpv6B/pVpby/z1ejGsSkfH8vgdg0ZZyqCs2MbTxlfNlpNWxnw/+dIZ5
- +FRzmy/b0WAM98m9n+Tl/AiS9M3L41pEiBMMgU38u5d7P6lWpDd5b5nbQQ+M1Uhe/B
- fhze/4nObBGEg==
-Received: by mail-ed1-f50.google.com with SMTP id y12so54151403eda.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 10:18:40 -0800 (PST)
-X-Gm-Message-State: AOAM533KmXJ4wbwRrlQAUbt5GOqes9FKrs3nJZDxP2I1340BPktQOauC
- S3uibOcaDOvi97HtNS52k8gx25luDl3yFXqAwA==
-X-Google-Smtp-Source: ABdhPJysuXioNIpSqHmW/pzNKP+ZVhyQo0RbJ+slIAGweWZQFETGldXVdl1VLvhYedG9n+9zYtmdoSXxX4NBU8tSGq0=
-X-Received: by 2002:a05:6402:84f:: with SMTP id
- b15mr510356edz.342.1639419518740; 
- Mon, 13 Dec 2021 10:18:38 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCVSr75Xqz2yNY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 05:31:07 +1100 (AEDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+ by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1BDITweD032784;
+ Mon, 13 Dec 2021 12:29:58 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+ s=ti-com-17Q1; t=1639420199;
+ bh=CIwJXsDVc6MpWMxloZbtRdlpLw1Ztan/9G2UzPwMY0E=;
+ h=Date:From:To:CC:Subject:References:In-Reply-To;
+ b=aQr+rT7AbNmri1BYm4glcZYUB4D0/LtbXNn0eGzLe1Xq4LgTziMH/fZw9NMlUSxOJ
+ eUvgRnz/JUOtWmI/LUlydZmqlDtGvShVqc/335BSewifnzHFovUoMb7LUYizCR9g/k
+ /rYDbql0vQTQMlM2Nnxl+1kL4PPvB9mCQmf5UIQI=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+ by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1BDITwlR038320
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Mon, 13 Dec 2021 12:29:58 -0600
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 13
+ Dec 2021 12:29:58 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Mon, 13 Dec 2021 12:29:58 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+ by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1BDITwZX089938;
+ Mon, 13 Dec 2021 12:29:58 -0600
+Date: Mon, 13 Dec 2021 12:29:58 -0600
+From: Nishanth Menon <nm@ti.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [patch V3 00/35] genirq/msi, PCI/MSI: Spring cleaning - Part 2
+Message-ID: <20211213182958.ytj4m6gsg35u77cv@detonator>
+References: <20211210221642.869015045@linutronix.de>
 MIME-Version: 1.0
-References: <20211208155839.4084795-1-robh@kernel.org>
- <87fsqwn03o.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87fsqwn03o.fsf@mpe.ellerman.id.au>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 13 Dec 2021 12:18:27 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLpq7fx0pyQiJFa0P5C3JXijiVe_fr84x9RML1aDJ7vDQ@mail.gmail.com>
-Message-ID: <CAL_JsqLpq7fx0pyQiJFa0P5C3JXijiVe_fr84x9RML1aDJ7vDQ@mail.gmail.com>
-Subject: Re: [PATCH v2] of/fdt: Rework early_init_dt_scan_memory() to call
- directly
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20211210221642.869015045@linutronix.de>
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,141 +75,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, John Crispin <john@phrozen.org>,
- Frank Rowand <frowand.list@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Stuart Yoder <stuyoder@gmail.com>,
+ Will Deacon <will@kernel.org>, Ashok Raj <ashok.raj@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, Jassi Brar <jassisinghbrar@gmail.com>,
+ Sinan Kaya <okaya@kernel.org>, iommu@lists.linux-foundation.org,
+ Peter Ujfalusi <peter.ujfalusi@gmail.com>, Bjorn Helgaas <helgaas@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, Jason Gunthorpe <jgg@nvidia.com>,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Kevin Tian <kevin.tian@intel.com>, Arnd Bergmann <arnd@arndb.de>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Alex Williamson <alex.williamson@redhat.com>, Cedric Le Goater <clg@kaod.org>,
+ Santosh Shilimkar <ssantosh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Megha Dey <megha.dey@intel.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+ Juergen Gross <jgross@suse.com>, Tero Kristo <kristo@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ LKML <linux-kernel@vger.kernel.org>, Vinod Koul <vkoul@kernel.org>,
+ Marc Zygnier <maz@kernel.org>, dmaengine@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 13, 2021 at 6:47 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Rob Herring <robh@kernel.org> writes:
-> > Use of the of_scan_flat_dt() function predates libfdt and is discouraged
-> > as libfdt provides a nicer set of APIs. Rework
-> > early_init_dt_scan_memory() to be called directly and use libfdt.
-> ...
-> > diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-> > index 6e1a106f02eb..63762a3b75e8 100644
-> > --- a/arch/powerpc/kernel/prom.c
-> > +++ b/arch/powerpc/kernel/prom.c
-> > @@ -532,19 +532,19 @@ static int  __init early_init_drmem_lmb(struct drmem_lmb *lmb,
-> >  }
-> >  #endif /* CONFIG_PPC_PSERIES */
-> >
-> > -static int __init early_init_dt_scan_memory_ppc(unsigned long node,
-> > -                                             const char *uname,
-> > -                                             int depth, void *data)
-> > +static int __init early_init_dt_scan_memory_ppc(void)
-> >  {
-> >  #ifdef CONFIG_PPC_PSERIES
-> > -     if (depth == 1 &&
-> > -         strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0) {
-> > +     const void *fdt = initial_boot_params;
-> > +     int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
-> > +
-> > +     if (node > 0) {
-> >               walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
-> >               return 0;
-> >       }
-> >  #endif
-> >
-> > -     return early_init_dt_scan_memory(node, uname, depth, data);
-> > +     return early_init_dt_scan_memory();
-> >  }
-> >
-> >  /*
-> > @@ -749,7 +749,7 @@ void __init early_init_devtree(void *params)
-> >
-> >       /* Scan memory nodes and rebuild MEMBLOCKs */
-> >       early_init_dt_scan_root();
-> > -     of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
-> > +     early_init_dt_scan_memory_ppc();
-> >
-> >       parse_early_param();
-> >
-> > @@ -858,7 +858,7 @@ void __init early_get_first_memblock_info(void *params, phys_addr_t *size)
-> >        */
-> >       add_mem_to_memblock = 0;
-> >       early_init_dt_scan_root();
-> > -     of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
-> > +     early_init_dt_scan_memory_ppc();
-> >       add_mem_to_memblock = 1;
-> >
-> >       if (size)
->
->
-> This blows up one of my machines with:
->
->   [    0.000000][    T0] printk: bootconsole [udbg0] enabled
->    -> early_setup(), dt_ptr: 0x1ec90000
->   [    0.000000][    T0] ------------[ cut here ]------------
->   [    0.000000][    T0] kernel BUG at arch/powerpc/mm/book3s64/hash_utils.c:2117!
->   [    0.000000][    T0] Oops: Exception in kernel mode, sig: 5 [#1]
->   [    0.000000][    T0] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA
->   [    0.000000][    T0] Modules linked in:
->   [    0.000000][    T0] CPU: 0 PID: 0 Comm: swapper Not tainted 5.16.0-rc4-00073-g81291383ffde-dirty #69
->   [    0.000000][    T0] NIP:  c0000000000924d8 LR: c000000002009764 CTR: c0000000000924d0
->   [    0.000000][    T0] REGS: c000000002833bc0 TRAP: 0700   Not tainted  (5.16.0-rc4-00073-g81291383ffde-dirty)
->   [    0.000000][    T0] MSR:  8000000000021003 <SF,ME,RI,LE>  CR: 24000244  XER: 20000001
->   [    0.000000][    T0] CFAR: 0000000000000730 IRQMASK: 1
->   [    0.000000][    T0] GPR00: c000000002009764 c000000002833e60 c000000002834100 ffffffffffffffff
->   [    0.000000][    T0] GPR04: 0000000000000000 c000000002080866 0000000000000000 0000000000000000
->   [    0.000000][    T0] GPR08: c000000002080864 0000000000000001 c0000000028d4100 c000000000ffe598
->   [    0.000000][    T0] GPR12: c0000000000924d0 c000000002082200 0000000000000000 0000000000000000
->   [    0.000000][    T0] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
->   [    0.000000][    T0] GPR20: 0000000000000001 0000000010004604 0000000000000000 0000000010004bfc
->   [    0.000000][    T0] GPR24: 0000000000000000 c000000000000000 0000000002970000 c00000000008a480
->   [    0.000000][    T0] GPR28: c0000000028e19f8 c00000001ec90000 c000000002865af8 000000001ec90000
->   [    0.000000][    T0] NIP [c0000000000924d8] hash__setup_initial_memory_limit+0x18/0x110
->   [    0.000000][    T0] LR [c000000002009764] early_init_devtree+0x13c/0x4ec
->   [    0.000000][    T0] Call Trace:
->   [    0.000000][    T0] [c000000002833e60] [c0000000020096fc] early_init_devtree+0xd4/0x4ec (unreliable)
->   [    0.000000][    T0] [c000000002833f10] [c00000000200b008] early_setup+0xc8/0x22c
->   [    0.000000][    T0] [c000000002833f90] [000000000000d368] 0xd368
->   [    0.000000][    T0] Instruction dump:
->   [    0.000000][    T0] 4bffff0c eaa10028 4bffff44 60000000 60000000 60420000 3c4c027a 38421c40
->   [    0.000000][    T0] 7c0802a6 4bfe2e5d 3123ffff 7d291910 <0b090000> 3d220003 392919f8 e9290000
->   [    0.000000][    T0] random: get_random_bytes called from oops_exit+0x54/0xa0 with crng_init=0
->   [    0.000000][    T0] ---[ end trace 0000000000000000 ]---
->
->
-> It's complaining about memstart_addr being 0, which implies
-> early_init_dt_add_memory_arch() was never called.
+On 23:18-20211210, Thomas Gleixner wrote:
+[...]
 
-The only thing I see is now there is an assumption that 'memory' nodes
-are off the root node only. Before they could be anywhere. If that's
-the issue, then we need something like this (untested and WS
-corrupted):
+> 
+> It's also available from git:
+> 
+>      git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git msi-v3-part-2
 
-index a835c458f50a..97d7607625ec 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -1083,16 +1083,13 @@ int __init early_init_dt_scan_memory(void)
-        int node;
-        const void *fdt = initial_boot_params;
+[...]
 
--       fdt_for_each_subnode(node, fdt, 0) {
--               const char *type = of_get_flat_dt_prop(node,
-"device_type", NULL);
-+       for (node = fdt_node_offset_by_prop_value(fdt, -1,
-"device_type", "memory", 6);
-+            node != -FDT_ERR_NOTFOUND;
-+            node = fdt_node_offset_by_prop_value(fdt, node,
-"device_type", "memory", 6)) {
-                const __be32 *reg, *endp;
-                int l;
-                bool hotpluggable;
+> ---
+>  drivers/dma/ti/k3-udma-private.c                    |    6 
+>  drivers/dma/ti/k3-udma.c                            |   14 -
+>  drivers/irqchip/irq-ti-sci-inta.c                   |    2 
+>  drivers/soc/ti/k3-ringacc.c                         |    6 
+>  drivers/soc/ti/ti_sci_inta_msi.c                    |   22 --
+>  include/linux/soc/ti/ti_sci_inta_msi.h              |    1 
 
--               /* We are scanning "memory" nodes only */
--               if (type == NULL || strcmp(type, "memory") != 0)
--                       continue;
--
-                reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
-                if (reg == NULL)
-                        reg = of_get_flat_dt_prop(node, "reg", &l);
+Also while testing on TI K3 platforms, I noticed:
 
-Rob
+msi_device_data_release/msi_device_destroy_sysfs in am64xx-evm / j7200
+[1] https://gist.github.com/nmenon/36899c7819681026cfe1ef185fb95f33#file-am64xx-evm-txt-L1018
+[2] https://gist.github.com/nmenon/36899c7819681026cfe1ef185fb95f33#file-j7200-evm-txt-L1076
+
+Which is not present in vanilla v5.16-rc4
+
+v5.16-rc4:
+https://gist.github.com/nmenon/1aee3f0a7da47d5e9dcb7336b32a70cb
+
+msi-v3-part-2:
+https://gist.github.com/nmenon/36899c7819681026cfe1ef185fb95f33
+
+(.config https://gist.github.com/nmenon/ec6f95303828abf16a64022d8e3a269f)
+
+Vs:
+next-20211208:
+https://gist.github.com/nmenon/f5ca3558bd5c1fbe62dc5ceb420b536e
+
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D)/Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
