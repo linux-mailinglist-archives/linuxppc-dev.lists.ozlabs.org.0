@@ -1,66 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC784474CB4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 21:37:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 708F2474CE3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 21:58:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JD9DH55Fmz3brX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 07:37:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JD9hC2lGcz2yxV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 07:58:19 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256 header.s=ti-com-17Q1 header.b=ro9Zy1Bi;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=87.98.187.244;
- helo=10.mo552.mail-out.ovh.net; envelope-from=clg@kaod.org;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=ti.com
+ (client-ip=198.47.19.142; helo=fllv0016.ext.ti.com; envelope-from=nm@ti.com;
  receiver=<UNKNOWN>)
-Received: from 10.mo552.mail-out.ovh.net (10.mo552.mail-out.ovh.net
- [87.98.187.244])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=ti.com header.i=@ti.com header.a=rsa-sha256
+ header.s=ti-com-17Q1 header.b=ro9Zy1Bi; 
+ dkim-atps=neutral
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JD9Cp3S4Mz2yPs
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 07:37:09 +1100 (AEDT)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.156.148])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 81EA321E5C;
- Tue, 14 Dec 2021 20:30:14 +0000 (UTC)
-Received: from kaod.org (37.59.142.104) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Tue, 14 Dec
- 2021 21:30:13 +0100
-Authentication-Results: garm.ovh; auth=pass
- (GARM-104R005923756eb-fc34-4846-a5c4-8a8ce2fecfe3,
- 8EFD5A58B5F84DDBEE409E983A0304C96EE54735) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 90.76.172.47
-Message-ID: <102e59ba-fcf0-dd85-9338-75b7ce5fbd83@kaod.org>
-Date: Tue, 14 Dec 2021 21:30:12 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JD9gS5YvCz2yPs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 07:57:39 +1100 (AEDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+ by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1BEKuQ2G087867;
+ Tue, 14 Dec 2021 14:56:26 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+ s=ti-com-17Q1; t=1639515386;
+ bh=j3osEyGU+RxWIqSwbtxX3t4fWrHk6cyOWUyU3Kklrls=;
+ h=Date:From:To:CC:Subject:References:In-Reply-To;
+ b=ro9Zy1BiNWwoHciKsimW9l8VopF6tYlVp/6zMhM4RqRr5OMdDNHhzpvvxTClpNzB8
+ dPzQuK5sKOVV9r4w2zlsPGBt+0LP2kgt2QlGyvAvguubR7lVNMCWrPyux0hcVHFUr4
+ 7zdyFM5y9LIDHeI/2x8RTh77XgWACTwR6L5QvGfs=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+ by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1BEKuQZP071677
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Tue, 14 Dec 2021 14:56:26 -0600
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Tue, 14
+ Dec 2021 14:56:26 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Tue, 14 Dec 2021 14:56:26 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+ by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1BEKuQKW080208;
+ Tue, 14 Dec 2021 14:56:26 -0600
+Date: Tue, 14 Dec 2021 14:56:26 -0600
+From: Nishanth Menon <nm@ti.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [patch V3 00/35] genirq/msi, PCI/MSI: Spring cleaning - Part 2
+Message-ID: <20211214205626.lrnddha6bd6d6es5@possibly>
+References: <20211210221642.869015045@linutronix.de>
+ <20211213182958.ytj4m6gsg35u77cv@detonator> <87fsqvttfv.ffs@tglx>
+ <20211214162247.ocjm7ihg5oi7uiuv@slider> <87wnk7rvnz.ffs@tglx>
+ <87tufbrudl.ffs@tglx> <87mtl3rli1.ffs@tglx>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: linux-next: manual merge of the audit tree with the powerpc tree
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Paul Moore
- <paul@paul-moore.com>
-References: <20211026133147.35d19e00@canb.auug.org.au>
- <87k0i0awdl.fsf@mpe.ellerman.id.au>
- <CAHC9VhTj7gn3iAOYctVRKvv_Bk1iQMrmkA8FVJtYzdvBjqFmvg@mail.gmail.com>
- <87tuh2aepp.fsf@mpe.ellerman.id.au>
- <2012df5e-62ec-06fb-9f4d-e27dde184a3f@csgroup.eu>
- <CAHC9VhRHs8Lx8+v+LHmJByxO_m330sfLWRsGDsFtQxyQ1860eg@mail.gmail.com>
- <dc5705cf-d47a-57b0-65da-2a2af8d71b19@csgroup.eu>
- <CAHC9VhQPizVLkr2+sqRCS0gS4+ZSw-AMkJM5V64-ku8AQe+QQg@mail.gmail.com>
- <1a78709f-162e-0d78-0550-4e9ef213f9c6@csgroup.eu>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <1a78709f-162e-0d78-0550-4e9ef213f9c6@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.104]
-X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 659388e9-f9c1-4eda-a9e4-44d041de7a6b
-X-Ovh-Tracer-Id: 18362864531949849449
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrledtgddufeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeejuedutdetteeljeekudeiffehgeekhffffeejffegheefheefieduudeuheevnecuffhomhgrihhnpeguvggsihgrnhdrohhrghenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <87mtl3rli1.ffs@tglx>
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,52 +76,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Richard Guy Briggs <rgb@redhat.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Stuart Yoder <stuyoder@gmail.com>,
+ Will Deacon <will@kernel.org>, Ashok Raj <ashok.raj@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, Jassi Brar <jassisinghbrar@gmail.com>,
+ Sinan Kaya <okaya@kernel.org>, iommu@lists.linux-foundation.org,
+ Peter Ujfalusi <peter.ujfalusi@gmail.com>, Bjorn Helgaas <helgaas@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, Jason Gunthorpe <jgg@nvidia.com>,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Kevin Tian <kevin.tian@intel.com>, Arnd Bergmann <arnd@arndb.de>,
+ Robin Murphy <robin.murphy@arm.com>, Johannes Berg <johannes.berg@intel.com>,
+ Alex Williamson <alex.williamson@redhat.com>, Cedric Le Goater <clg@kaod.org>,
+ Santosh Shilimkar <ssantosh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Megha Dey <megha.dey@intel.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+ Juergen Gross <jgross@suse.com>, Tero Kristo <kristo@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Vinod Koul <vkoul@kernel.org>, Marc Zygnier <maz@kernel.org>,
+ dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/14/21 20:32, Christophe Leroy wrote:
+On 21:15-20211214, Thomas Gleixner wrote:
+> Nishanth,
 > 
+> On Tue, Dec 14 2021 at 18:03, Thomas Gleixner wrote:
+> >     msi_device_data_release()
+> >     ...
+> >     pcim_release()
+> >        pci_disable_msi[x]()
+> >
+> > Groan....
 > 
-> Le 14/12/2021 à 19:23, Paul Moore a écrit :
->> On Tue, Dec 14, 2021 at 12:59 PM Christophe Leroy
->> <christophe.leroy@csgroup.eu> wrote:
->>> Hello Paul,
->>>
->>> I've been trying to setup your test suite on my powerpc board but it's
->>> based on Perl and on a lot of optional Perl packages. I was able to add
->>> them one by one until some of them require some .so libraries
->>> (Pathtools-Cwd), and it seems nothing is made to allow cross building
->>> those libraries.
->>>
->>> Do you have another test suite based on C and not perl ?
->>>
->>> If not, what can I do, do you know how I can cross compile those Perl
->>> packages for PPC32 ?
->>
->> Is there no Linux distribution that supports PPC32?  I would think
->> that would be the easiest path forward, but you're the PPC32 expert -
->> not me - so I'll assume you already tried that or it didn't work for
->> other reasons.
+> I think I managed to distangle this. Can you please give:
 > 
-> There hasn't been Linux distribution supporting PPC32 for a few years
-> now. And regardless, the boards I'm running Linux on are home made
-> embedded boards, with limited amount of memory and flashdisk space and
-> no video chip, so they are hardly supported by any distributions, even
-> older ones.
+>    git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git msi-v4-part-2
 
-We still have debian. you will find images under :
 
-   https://cdimage.debian.org/cdimage/ports/snapshots/2021-04-17/
+Umm.. I am not entirely sure what is going on.. but all kinds of weird
+corruption seems to occur with msi-v4-part-2 that does'nt seem to be
+present in v5.16-rc5. (I use NFS since ethernet in K3 platforms use
+inta/intr and dma that is impacted by this series).
 
-and from there, you can update to unstable, which runs fine under
-a mac99 QEMU machine.
+I will try and rebase your patches on v5.16-rc4 to be sure as well and
+report back later today once i get some time.
 
-Cheers,
-
-C.
+[1] https://gist.github.com/nmenon/a66e022926c4c15313c45d44313d860c msi-v4-part-2
+[2] https://gist.github.com/nmenon/43085664d69ad846d596e76a06ed0656  v5.16-rc5
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
