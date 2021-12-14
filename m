@@ -1,103 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7DC473DFD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 09:08:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA17473FB3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 10:41:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JCrbS2Z9rz3bvH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 19:08:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCtgh5tNKz3cFX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 20:41:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R7Q5QjZA;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=uVT3SzBc;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=KbnnQxJj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
+ helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=R7Q5QjZA; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
+ header.s=2020 header.b=uVT3SzBc; 
+ dkim=pass header.d=linutronix.de header.i=@linutronix.de
+ header.a=ed25519-sha256 header.s=2020e header.b=KbnnQxJj; 
+ dkim-atps=neutral
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JCrZj2FHCz2yxV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 19:07:24 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1BE7OGEd026971; 
- Tue, 14 Dec 2021 08:07:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=Rw/RSbaZ9R8PhgYkldknpdlNAwQ6MY5+0neDWly7nJM=;
- b=R7Q5QjZAAdUc5IA03RR/N8WbuoIRl6Yw4rPh8W9N6aZLz4xC58S10iekihkZ6pqocheL
- rtdkeVF2qNW0CHHI23ZvciSvPvGh+SMrgcZc7KPMhJ7vjqCB4INI9EIyPvyTYq8LP6Jh
- 5NXj3Bsw7LxmCDko9t7rDD4wsJ3i1e1u20jgmhwdncVAOJhryCdHZYAmQ8Up0Tt7WWUP
- c8cP7jAyMP2CBs2qC1RI7Qk1m4wcaElDPnU7ZeyOTzLdagvu3IB9WMSbsBkTpSh+CIgJ
- ym68lmXmNUirytCnWcce6dd9zIfbL4nO4Xl1aL0ZRYVgpz8FBUYkmt2WKe37n2ktkhIi yg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3cx9ra441b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 14 Dec 2021 08:07:16 +0000
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1BE7tVx6029106;
- Tue, 14 Dec 2021 08:07:16 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3cx9ra440m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 14 Dec 2021 08:07:16 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1BE7wAGZ007779;
- Tue, 14 Dec 2021 08:07:14 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 3cvk8hv0ya-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 14 Dec 2021 08:07:14 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 1BE87CLO43843902
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 14 Dec 2021 08:07:12 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 290234C04E;
- Tue, 14 Dec 2021 08:07:12 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C1D274C044;
- Tue, 14 Dec 2021 08:07:10 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.195.34.55])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 14 Dec 2021 08:07:10 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
-Subject: Re: [PATCH] KVM: PPC: Book3S HV P9: Use kvm_arch_vcpu_get_wait() to
- get rcuwait object
-From: Sachin Sant <sachinp@linux.vnet.ibm.com>
-In-Reply-To: <20211213174556.3871157-1-seanjc@google.com>
-Date: Tue, 14 Dec 2021 13:37:09 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6D5BB54E-442E-4097-932B-7E0AC949D47C@linux.vnet.ibm.com>
-References: <20211213174556.3871157-1-seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>
-X-Mailer: Apple Mail (2.3654.120.0.1.13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: BGV6Wr3SFJP4GFYL8xA4dqnOBxrxuYeK
-X-Proofpoint-ORIG-GUID: KrXLSQwq0bBiSCDVbdBAeqysPFUe4fEt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2021-12-14_02,2021-12-13_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 suspectscore=0
- clxscore=1015 phishscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0
- lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2110150000 definitions=main-2112140046
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCtg01g5Bz2yY0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 20:41:15 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1639474869;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QERmxLNSvvFx6vzNSYmMrsv0e2X5CmwuAGyK1bazfj4=;
+ b=uVT3SzBcceVfCKVd9bfwP/mkrBbU6i6CXo8B0uqt0K0CoD5a4qXyBj1twarA7qhg9DUpCf
+ OrVbNB7kcn9ckbfr0CT2aeLTQTe7pl003+0ptW2EbYL49mtlKdiGcdgbTrY3LmUvHIDRVO
+ oUyYJTCLGbEKPL3lyqY4wNdexzr+WwLkloa+hbSAnazTQRKYFU/bmsDlS0IKdiZ6tW9GGx
+ HiqEkWnh0eDq6pt7S9pHkclWGxZU61oDJv8S9DVEIUgIkiP6c3yxVlpBmL8rJzB+H4TNe6
+ G8+D7456TbPXVtBVebfm1EMXeWbrmmtdvroOCyBCNYYLr4GmBNBW77LIxVu6Kg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1639474869;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QERmxLNSvvFx6vzNSYmMrsv0e2X5CmwuAGyK1bazfj4=;
+ b=KbnnQxJjrjwD3AUzOdrDHb83i5GFD5BYZ+EuPZBYHEXZFSMZ3bN/5+CPOSNQTQ/bGXXBRZ
+ h+7rXr2HbjWxd5Dw==
+To: Nishanth Menon <nm@ti.com>
+Subject: Re: [patch V3 00/35] genirq/msi, PCI/MSI: Spring cleaning - Part 2
+In-Reply-To: <20211213182958.ytj4m6gsg35u77cv@detonator>
+References: <20211210221642.869015045@linutronix.de>
+ <20211213182958.ytj4m6gsg35u77cv@detonator>
+Date: Tue, 14 Dec 2021 10:41:08 +0100
+Message-ID: <87fsqvttfv.ffs@tglx>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,37 +69,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Stuart Yoder <stuyoder@gmail.com>,
+ Will Deacon <will@kernel.org>, Ashok Raj <ashok.raj@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, Jassi Brar <jassisinghbrar@gmail.com>,
+ Sinan Kaya <okaya@kernel.org>, iommu@lists.linux-foundation.org,
+ Peter Ujfalusi <peter.ujfalusi@gmail.com>, Bjorn Helgaas <helgaas@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, Jason Gunthorpe <jgg@nvidia.com>,
+ linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Kevin Tian <kevin.tian@intel.com>, Arnd Bergmann <arnd@arndb.de>,
+ Robin Murphy <robin.murphy@arm.com>, Johannes Berg <johannes.berg@intel.com>,
+ Alex Williamson <alex.williamson@redhat.com>, Cedric Le Goater <clg@kaod.org>,
+ Santosh Shilimkar <ssantosh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Megha Dey <megha.dey@intel.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+ Juergen Gross <jgross@suse.com>, Tero Kristo <kristo@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Vinod Koul <vkoul@kernel.org>, Marc Zygnier <maz@kernel.org>,
+ dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Dec 13 2021 at 12:29, Nishanth Menon wrote:
+> On 23:18-20211210, Thomas Gleixner wrote:
+> Also while testing on TI K3 platforms, I noticed:
+>
+> msi_device_data_release/msi_device_destroy_sysfs in am64xx-evm / j7200
 
+The warning complains about a device being released with MSI descriptors
+still attached to the device. This was added by:
 
-> On 13-Dec-2021, at 11:15 PM, Sean Christopherson <seanjc@google.com> =
-wrote:
->=20
-> Use kvm_arch_vcpu_get_wait() to get a vCPU's rcuwait object instead of
-> using vcpu->wait directly in kvmhv_run_single_vcpu().  Functionally, =
-this
-> is a nop as vcpu->arch.waitp is guaranteed to point at vcpu->wait.  =
-But
-> that is not obvious at first glance, and a future change coming in via
-> the KVM tree, commit 510958e99721 ("KVM: Force PPC to define its own
-> rcuwait object"), will hide vcpu->wait from architectures that define
-> __KVM_HAVE_ARCH_WQP to prevent generic KVM from attepting to wake a =
-vCPU
-> with the wrong rcuwait object.
->=20
-> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> =E2=80=94
->=20
-Thanks for the patch.
+  5b012cede0f7 ("device: Add device::msi_data pointer and struct msi_device_data")
 
-Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+That's not a regression caused by this commit. The warning is just
+exposing an already existing problem in the iwlwifi driver, which seems
+to do:
 
+   probe()
+     setup_pci_msi[x]_interrupts()
+     start_drv()
+       if (try_to_load_firmware() == FAIL)
+       	   device_release_driver()
+                ...
+                msi_device_data_release()
+                    WARN()
+
+Thanks,
+
+        tglx
