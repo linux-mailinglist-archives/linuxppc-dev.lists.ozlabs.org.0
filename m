@@ -2,64 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A125F474C89
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 21:16:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AAC474CA2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 21:27:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JD8lh4NSTz3cDV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 07:16:16 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=moChZUSh;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=+ecmdjzC;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JD90T5vfSz3cPX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 07:27:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.181;
+ helo=mail-oi1-f181.google.com; envelope-from=robherring2@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=moChZUSh; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=+ecmdjzC; 
- dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com
+ [209.85.167.181])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JD8l03ll1z2yQK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 07:15:40 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1639512936;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=d4wqcXY+MET+Bv0FcRzIRIc5XGvbPUI2bHV9pxD9Ydo=;
- b=moChZUSho9BA78Zeq1WI5tu/U00oT82AtvfenvZ7wj4+/rbRuMvnEvgp06APrkesXoQIzl
- 7RPpBe3m0oONdQpdS7DAAUNLaW0sDBUgC0jenFPjG7Wr9CEB6Oy4B9l4Iuq/IfEVofBt4t
- vnaGOWsnREceAU8uxY8NAKpNhml+AgXrJsZ6gKqMSiQL7bA9CFgw8w2TYZeEYT8V3NhbQ8
- JAqpROxGWfe9cCXptM9xGI/fDzxgqMZx8ZITW8fq90knUugjlJY38p2e8sp+HmqqufWXbS
- n3mRyaNC3MmjNNomr7JUos4qRao6JylFxbVwVGdREF91hazpGg2c9oB6BzqE4w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1639512936;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=d4wqcXY+MET+Bv0FcRzIRIc5XGvbPUI2bHV9pxD9Ydo=;
- b=+ecmdjzCvUtoz/ixJ5pxFaVr7F21Ajeaa5ilYhIAuSfZy+n3tm1NOnNdHltlRFCs+3G/Mc
- B5RpqeVcmdLBkuDA==
-To: Nishanth Menon <nm@ti.com>
-Subject: Re: [patch V3 00/35] genirq/msi, PCI/MSI: Spring cleaning - Part 2
-In-Reply-To: <87tufbrudl.ffs@tglx>
-References: <20211210221642.869015045@linutronix.de>
- <20211213182958.ytj4m6gsg35u77cv@detonator> <87fsqvttfv.ffs@tglx>
- <20211214162247.ocjm7ihg5oi7uiuv@slider> <87wnk7rvnz.ffs@tglx>
- <87tufbrudl.ffs@tglx>
-Date: Tue, 14 Dec 2021 21:15:34 +0100
-Message-ID: <87mtl3rli1.ffs@tglx>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JD9032vHsz2xsZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 07:26:57 +1100 (AEDT)
+Received: by mail-oi1-f181.google.com with SMTP id n66so28732359oia.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 12:26:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=zoA5Z8TrkhyO9VpXkw4vVgVTvX1m0JlpyPfyrdFngu4=;
+ b=vNgdTszp1TdoblKCSJ5Yhts1Bkzaug5GhCcMyFSp2oSJNXbozab5dU1bARJ7Y3S1fR
+ DTktiiSvtP2LApNbUYVl/RVSDoXeH1H71ZEhDpUk15aRd3e/rp8Tg+ydumBYzkX4J4N8
+ Ws3yx0pqFaJdJz8ZMaw6K3MgR+7R5Qk76LQnCRIxviQyi+811OvEjNrR0eHSeKJFdTkr
+ mvuW3K02bmfNss/nORR20oeV2alNuzufrsrOp0hnKfUy1ckrhXFhKgq61+dLiMoGsy0k
+ VMiBKf8GagbQrAJczblPw/eCLTjAu7WBxlIvJtgZIraRJc9ikKn2y+jcombpzlbIe5Uw
+ butA==
+X-Gm-Message-State: AOAM532+BiPVF/284k7/mPMMFcEiyg1L66g3jMLTnW0LkfHYiczIxHd6
+ UuheIpkNd0yThvDzeAmedQ==
+X-Google-Smtp-Source: ABdhPJw0zliiKLsHvNnJ7zXg7WFegzRRUZqy33/B0czNpd/RWUhOX058+lN4XGpG8555QCmRZ2KvoA==
+X-Received: by 2002:a05:6808:14c2:: with SMTP id
+ f2mr6173359oiw.154.1639513613845; 
+ Tue, 14 Dec 2021 12:26:53 -0800 (PST)
+Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net.
+ [66.90.148.213])
+ by smtp.googlemail.com with ESMTPSA id m12sm177454ots.59.2021.12.14.12.26.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Dec 2021 12:26:53 -0800 (PST)
+From: Rob Herring <robh@kernel.org>
+To: John Crispin <john@phrozen.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Frank Rowand <frowand.list@gmail.com>
+Subject: [PATCH v3] of/fdt: Rework early_init_dt_scan_memory() to call directly
+Date: Tue, 14 Dec 2021 14:26:51 -0600
+Message-Id: <20211214202652.3894707-1-robh@kernel.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,47 +67,238 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Stuart Yoder <stuyoder@gmail.com>,
- Will Deacon <will@kernel.org>, Ashok Raj <ashok.raj@intel.com>,
- Joerg Roedel <joro@8bytes.org>, Jassi Brar <jassisinghbrar@gmail.com>,
- Sinan Kaya <okaya@kernel.org>, iommu@lists.linux-foundation.org,
- Peter Ujfalusi <peter.ujfalusi@gmail.com>, Bjorn Helgaas <helgaas@kernel.org>,
- linux-arm-kernel@lists.infradead.org, Jason Gunthorpe <jgg@nvidia.com>,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Kevin Tian <kevin.tian@intel.com>, Arnd Bergmann <arnd@arndb.de>,
- Robin Murphy <robin.murphy@arm.com>, Johannes Berg <johannes.berg@intel.com>,
- Alex Williamson <alex.williamson@redhat.com>, Cedric Le Goater <clg@kaod.org>,
- Santosh Shilimkar <ssantosh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Megha Dey <megha.dey@intel.com>, Laurentiu Tudor <laurentiu.tudor@nxp.com>,
- Juergen Gross <jgross@suse.com>, Tero Kristo <kristo@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Vinod Koul <vkoul@kernel.org>, Marc Zygnier <maz@kernel.org>,
- dmaengine@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, Frank Rowand <frank.rowand@sony.com>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nishanth,
+Use of the of_scan_flat_dt() function predates libfdt and is discouraged
+as libfdt provides a nicer set of APIs. Rework
+early_init_dt_scan_memory() to be called directly and use libfdt.
 
-On Tue, Dec 14 2021 at 18:03, Thomas Gleixner wrote:
->     msi_device_data_release()
->     ...
->     pcim_release()
->        pci_disable_msi[x]()
->
-> Groan....
+Cc: John Crispin <john@phrozen.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: linux-mips@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Reviewed-by: Frank Rowand <frank.rowand@sony.com>
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+v3:
+ - Fix powerpc when /ibm,dynamic-reconfiguration-memory is present
+v2:
+ - ralink: Use 'if' instead of 'else if'
+ - early_init_dt_scan_memory: continue instead of return on no reg
+ - Fix indentation
+---
+ arch/mips/ralink/of.c      | 19 +++--------
+ arch/powerpc/kernel/prom.c | 21 ++++++------
+ drivers/of/fdt.c           | 67 +++++++++++++++++++-------------------
+ include/linux/of_fdt.h     |  3 +-
+ 4 files changed, 49 insertions(+), 61 deletions(-)
 
-I think I managed to distangle this. Can you please give:
+diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
+index 0135376c5de5..35a87a2da10b 100644
+--- a/arch/mips/ralink/of.c
++++ b/arch/mips/ralink/of.c
+@@ -53,17 +53,6 @@ void __init device_tree_init(void)
+ 	unflatten_and_copy_device_tree();
+ }
+ 
+-static int memory_dtb;
+-
+-static int __init early_init_dt_find_memory(unsigned long node,
+-				const char *uname, int depth, void *data)
+-{
+-	if (depth == 1 && !strcmp(uname, "memory@0"))
+-		memory_dtb = 1;
+-
+-	return 0;
+-}
+-
+ void __init plat_mem_setup(void)
+ {
+ 	void *dtb;
+@@ -77,10 +66,10 @@ void __init plat_mem_setup(void)
+ 	dtb = get_fdt();
+ 	__dt_setup_arch(dtb);
+ 
+-	of_scan_flat_dt(early_init_dt_find_memory, NULL);
+-	if (memory_dtb)
+-		of_scan_flat_dt(early_init_dt_scan_memory, NULL);
+-	else if (soc_info.mem_detect)
++	if (!early_init_dt_scan_memory())
++		return;
++
++	if (soc_info.mem_detect)
+ 		soc_info.mem_detect();
+ 	else if (soc_info.mem_size)
+ 		memblock_add(soc_info.mem_base, soc_info.mem_size * SZ_1M);
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 6e1a106f02eb..ad1230c4f3fe 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -532,19 +532,18 @@ static int  __init early_init_drmem_lmb(struct drmem_lmb *lmb,
+ }
+ #endif /* CONFIG_PPC_PSERIES */
+ 
+-static int __init early_init_dt_scan_memory_ppc(unsigned long node,
+-						const char *uname,
+-						int depth, void *data)
++static int __init early_init_dt_scan_memory_ppc(void)
+ {
+ #ifdef CONFIG_PPC_PSERIES
+-	if (depth == 1 &&
+-	    strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0) {
++	const void *fdt = initial_boot_params;
++	int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
++
++	if (node > 0)
+ 		walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
+-		return 0;
+-	}
++
+ #endif
+-	
+-	return early_init_dt_scan_memory(node, uname, depth, data);
++
++	return early_init_dt_scan_memory();
+ }
+ 
+ /*
+@@ -749,7 +748,7 @@ void __init early_init_devtree(void *params)
+ 
+ 	/* Scan memory nodes and rebuild MEMBLOCKs */
+ 	early_init_dt_scan_root();
+-	of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
++	early_init_dt_scan_memory_ppc();
+ 
+ 	parse_early_param();
+ 
+@@ -858,7 +857,7 @@ void __init early_get_first_memblock_info(void *params, phys_addr_t *size)
+ 	 */
+ 	add_mem_to_memblock = 0;
+ 	early_init_dt_scan_root();
+-	of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
++	early_init_dt_scan_memory_ppc();
+ 	add_mem_to_memblock = 1;
+ 
+ 	if (size)
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 5e216555fe4f..97d7607625ec 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -1078,49 +1078,50 @@ u64 __init dt_mem_next_cell(int s, const __be32 **cellp)
+ /*
+  * early_init_dt_scan_memory - Look for and parse memory nodes
+  */
+-int __init early_init_dt_scan_memory(unsigned long node, const char *uname,
+-				     int depth, void *data)
++int __init early_init_dt_scan_memory(void)
+ {
+-	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
+-	const __be32 *reg, *endp;
+-	int l;
+-	bool hotpluggable;
+-
+-	/* We are scanning "memory" nodes only */
+-	if (type == NULL || strcmp(type, "memory") != 0)
+-		return 0;
++	int node;
++	const void *fdt = initial_boot_params;
+ 
+-	reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
+-	if (reg == NULL)
+-		reg = of_get_flat_dt_prop(node, "reg", &l);
+-	if (reg == NULL)
+-		return 0;
++	for (node = fdt_node_offset_by_prop_value(fdt, -1, "device_type", "memory", 6);
++	     node != -FDT_ERR_NOTFOUND;
++	     node = fdt_node_offset_by_prop_value(fdt, node, "device_type", "memory", 6)) {
++		const __be32 *reg, *endp;
++		int l;
++		bool hotpluggable;
++
++		reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
++		if (reg == NULL)
++			reg = of_get_flat_dt_prop(node, "reg", &l);
++		if (reg == NULL)
++			continue;
+ 
+-	endp = reg + (l / sizeof(__be32));
+-	hotpluggable = of_get_flat_dt_prop(node, "hotpluggable", NULL);
++		endp = reg + (l / sizeof(__be32));
++		hotpluggable = of_get_flat_dt_prop(node, "hotpluggable", NULL);
+ 
+-	pr_debug("memory scan node %s, reg size %d,\n", uname, l);
++		pr_debug("memory scan node %s, reg size %d,\n",
++			 fdt_get_name(fdt, node, NULL), l);
+ 
+-	while ((endp - reg) >= (dt_root_addr_cells + dt_root_size_cells)) {
+-		u64 base, size;
++		while ((endp - reg) >= (dt_root_addr_cells + dt_root_size_cells)) {
++			u64 base, size;
+ 
+-		base = dt_mem_next_cell(dt_root_addr_cells, &reg);
+-		size = dt_mem_next_cell(dt_root_size_cells, &reg);
++			base = dt_mem_next_cell(dt_root_addr_cells, &reg);
++			size = dt_mem_next_cell(dt_root_size_cells, &reg);
+ 
+-		if (size == 0)
+-			continue;
+-		pr_debug(" - %llx, %llx\n", base, size);
++			if (size == 0)
++				continue;
++			pr_debug(" - %llx, %llx\n", base, size);
+ 
+-		early_init_dt_add_memory_arch(base, size);
++			early_init_dt_add_memory_arch(base, size);
+ 
+-		if (!hotpluggable)
+-			continue;
++			if (!hotpluggable)
++				continue;
+ 
+-		if (memblock_mark_hotplug(base, size))
+-			pr_warn("failed to mark hotplug range 0x%llx - 0x%llx\n",
+-				base, base + size);
++			if (memblock_mark_hotplug(base, size))
++				pr_warn("failed to mark hotplug range 0x%llx - 0x%llx\n",
++					base, base + size);
++		}
+ 	}
+-
+ 	return 0;
+ }
+ 
+@@ -1271,7 +1272,7 @@ void __init early_init_dt_scan_nodes(void)
+ 		pr_warn("No chosen node found, continuing without\n");
+ 
+ 	/* Setup memory, calling early_init_dt_add_memory_arch */
+-	of_scan_flat_dt(early_init_dt_scan_memory, NULL);
++	early_init_dt_scan_memory();
+ 
+ 	/* Handle linux,usable-memory-range property */
+ 	memblock_cap_memory_range(cap_mem_addr, cap_mem_size);
+diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
+index df3d31926c3c..914739f3c192 100644
+--- a/include/linux/of_fdt.h
++++ b/include/linux/of_fdt.h
+@@ -59,8 +59,7 @@ extern unsigned long of_get_flat_dt_root(void);
+ extern uint32_t of_get_flat_dt_phandle(unsigned long node);
+ 
+ extern int early_init_dt_scan_chosen(char *cmdline);
+-extern int early_init_dt_scan_memory(unsigned long node, const char *uname,
+-				     int depth, void *data);
++extern int early_init_dt_scan_memory(void);
+ extern int early_init_dt_scan_chosen_stdout(void);
+ extern void early_init_fdt_scan_reserved_mem(void);
+ extern void early_init_fdt_reserve_self(void);
+-- 
+2.32.0
 
-   git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git msi-v4-part-2
-
-and/or the full pile:
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git msi-v4-part-3
-
-a test ride?
-
-Thanks,
-
-        tglx
