@@ -1,55 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6936447415A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 12:19:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B119D474227
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 13:13:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JCwql2sjMz3c9d
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 22:18:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCy2l1XMYz3bnG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 23:13:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ncUXHFoM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Jed3uFD/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JCwq343z3z2ynK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 22:18:23 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCy234mCzz2xvv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 23:12:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ncUXHFoM; 
+ header.a=rsa-sha256 header.s=201909 header.b=Jed3uFD/; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JCwq11xYBz4xPw;
- Tue, 14 Dec 2021 22:18:21 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JCy201djVz4xPw;
+ Tue, 14 Dec 2021 23:12:56 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1639480702;
- bh=JkHhmAZ1NigU2RvvhMuaItAKWghROfy9nEo/On2PQa8=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ncUXHFoM4iG4FsToTcGgVSlxrlTPrcsbVkQQE6BgD/h1twByADVlLw69s0K4fc8er
- w5koZXpw0PUgqdYeC8XJoCtX0Ywjya0/ax9ego1o+XCtQTbBJvdCa30cvSxXNrDmNT
- r8ReFRa4z7jYoij18LldV3u1cIL3RzFNOhqq23k9SmajeCxjP3GNmZfmbn9q92A7hp
- kODuYZ+k8Wo3Hvit1tQOLZ2krTqAC7xw7UrkdYxiXfjRF4u46IeI+E88aWI4M09+aD
- oInHcrXZlCrP/5dLvfgD4/rCOr4ZGY0h4HfH5I1gF9xb2L/mCIn8QJ6YK6IlnV2oZA
- ZqbMI5mYOrnqg==
+ s=201909; t=1639483976;
+ bh=2fYDibVv9JsVNAGfADJBpU+CS0e78nj7qFvJPP0S/0Y=;
+ h=From:To:Cc:Subject:Date:From;
+ b=Jed3uFD/ZavTPwbrN7v9BH4gH7XykW7bt5gkc4DC+mTFRDeYUz044t4TUHw0GYl5j
+ dh6qV+l9qPJZGEQXYw6lOapkUNyoOqOCkzAoZ+ia4fd/QI1cmsRRuYMDrZmLinXilh
+ 1vyvutLl+1yQutn68RR1ZDWtSYj96kZy01E1iXc/RgFRGNlLEnzvprQgkSFPIbz394
+ 8HusC+jevUa13+9B1Td4tbWnFTsnH497yVhzL85p1U/j2k2zVIVTjXTCkFGEZCC5Pd
+ 3i7iIvMKO4H3NKe/EcRIqa9OoGUm4dIi04fqwf1qBPw+D/lL4Xtk2t/Ex3EDa+kQc7
+ w9hFHvletpwXA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2] of/fdt: Rework early_init_dt_scan_memory() to call
- directly
-In-Reply-To: <CAL_JsqLpq7fx0pyQiJFa0P5C3JXijiVe_fr84x9RML1aDJ7vDQ@mail.gmail.com>
-References: <20211208155839.4084795-1-robh@kernel.org>
- <87fsqwn03o.fsf@mpe.ellerman.id.au>
- <CAL_JsqLpq7fx0pyQiJFa0P5C3JXijiVe_fr84x9RML1aDJ7vDQ@mail.gmail.com>
-Date: Tue, 14 Dec 2021 22:18:19 +1100
-Message-ID: <877dc7mo3o.fsf@mpe.ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH v2] powerpc/module_64: Fix livepatching for RO modules
+Date: Tue, 14 Dec 2021 23:12:48 +1100
+Message-Id: <20211214121248.777249-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,108 +58,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, John Crispin <john@phrozen.org>,
- Frank Rowand <frowand.list@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rob Herring <robh@kernel.org> writes:
-> On Mon, Dec 13, 2021 at 6:47 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->> Rob Herring <robh@kernel.org> writes:
->> > Use of the of_scan_flat_dt() function predates libfdt and is discouraged
->> > as libfdt provides a nicer set of APIs. Rework
->> > early_init_dt_scan_memory() to be called directly and use libfdt.
->> ...
->> > diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
->> > index 6e1a106f02eb..63762a3b75e8 100644
->> > --- a/arch/powerpc/kernel/prom.c
->> > +++ b/arch/powerpc/kernel/prom.c
->> > @@ -532,19 +532,19 @@ static int  __init early_init_drmem_lmb(struct drmem_lmb *lmb,
->> >  }
->> >  #endif /* CONFIG_PPC_PSERIES */
->> >
->> > -static int __init early_init_dt_scan_memory_ppc(unsigned long node,
->> > -                                             const char *uname,
->> > -                                             int depth, void *data)
->> > +static int __init early_init_dt_scan_memory_ppc(void)
->> >  {
->> >  #ifdef CONFIG_PPC_PSERIES
->> > -     if (depth == 1 &&
->> > -         strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0) {
->> > +     const void *fdt = initial_boot_params;
->> > +     int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
->> > +
->> > +     if (node > 0) {
->> >               walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
->> >               return 0;
->> >       }
+From: Russell Currey <ruscur@russell.cc>
 
-It's that return that is the problem.
+Livepatching a loaded module involves applying relocations through
+apply_relocate_add(), which attempts to write to read-only memory when
+CONFIG_STRICT_MODULE_RWX=y.  Work around this by performing these
+writes through the text poke area by using patch_instruction().
 
-Now that early_init_dt_scan_memory_ppc() is only called once, that
-return causes us to skip scanning regular memory nodes if there is an
-"ibm,dynamic-reconfiguration-memory" property present.
+R_PPC_REL24 is the only relocation type generated by the kpatch-build
+userspace tool or klp-convert kernel tree that I observed applying a
+relocation to a post-init module.
 
-So the fix is just:
+A more comprehensive solution is planned, but using patch_instruction()
+for R_PPC_REL24 on should serve as a sufficient fix.
 
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 1098de3b172f..125661e5fcf3 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -538,10 +538,8 @@ static int __init early_init_dt_scan_memory_ppc(void)
- 	const void *fdt = initial_boot_params;
- 	int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
+This does have a performance impact, I observed ~15% overhead in
+module_load() on POWER8 bare metal with checksum verification off.
+
+Fixes: c35717c71e98 ("powerpc: Set ARCH_HAS_STRICT_MODULE_RWX")
+Cc: stable@vger.kernel.org # v5.14+
+Reported-by: Joe Lawrence <joe.lawrence@redhat.com>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+Tested-by: Joe Lawrence <joe.lawrence@redhat.com>
+[mpe: Check return codes from patch_instruction()]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/module_64.c | 42 ++++++++++++++++++++++++++-------
+ 1 file changed, 34 insertions(+), 8 deletions(-)
+
+v2: mpe: Check return codes from patch_instruction()
+
+diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+index 6baa676e7cb6..5d77d3f5fbb5 100644
+--- a/arch/powerpc/kernel/module_64.c
++++ b/arch/powerpc/kernel/module_64.c
+@@ -422,11 +422,17 @@ static inline int create_stub(const Elf64_Shdr *sechdrs,
+ 			      const char *name)
+ {
+ 	long reladdr;
++	func_desc_t desc;
++	int i;
  
--	if (node > 0) {
-+	if (node > 0)
- 		walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
--		return 0;
--	}
- #endif
- 	
- 	return early_init_dt_scan_memory();
+ 	if (is_mprofile_ftrace_call(name))
+ 		return create_ftrace_stub(entry, addr, me);
+ 
+-	memcpy(entry->jump, ppc64_stub_insns, sizeof(ppc64_stub_insns));
++	for (i = 0; i < sizeof(ppc64_stub_insns) / sizeof(u32); i++) {
++		if (patch_instruction(&entry->jump[i],
++				      ppc_inst(ppc64_stub_insns[i])))
++			return 0;
++	}
+ 
+ 	/* Stub uses address relative to r2. */
+ 	reladdr = (unsigned long)entry - my_r2(sechdrs, me);
+@@ -437,10 +443,24 @@ static inline int create_stub(const Elf64_Shdr *sechdrs,
+ 	}
+ 	pr_debug("Stub %p get data from reladdr %li\n", entry, reladdr);
+ 
+-	entry->jump[0] |= PPC_HA(reladdr);
+-	entry->jump[1] |= PPC_LO(reladdr);
+-	entry->funcdata = func_desc(addr);
+-	entry->magic = STUB_MAGIC;
++	if (patch_instruction(&entry->jump[0],
++			      ppc_inst(entry->jump[0] | PPC_HA(reladdr))))
++		return 0;
++
++	if (patch_instruction(&entry->jump[1],
++			  ppc_inst(entry->jump[1] | PPC_LO(reladdr))))
++		return 0;
++
++	// func_desc_t is 8 bytes if ABIv2, else 16 bytes
++	desc = func_desc(addr);
++	for (i = 0; i < sizeof(func_desc_t) / sizeof(u32); i++) {
++		if (patch_instruction(((u32 *)&entry->funcdata) + i,
++				      ppc_inst(((u32 *)(&desc))[i])))
++			return 0;
++	}
++
++	if (patch_instruction(&entry->magic, ppc_inst(STUB_MAGIC)))
++		return 0;
+ 
+ 	return 1;
+ }
+@@ -495,8 +515,11 @@ static int restore_r2(const char *name, u32 *instruction, struct module *me)
+ 			me->name, *instruction, instruction);
+ 		return 0;
+ 	}
++
+ 	/* ld r2,R2_STACK_OFFSET(r1) */
+-	*instruction = PPC_INST_LD_TOC;
++	if (patch_instruction(instruction, ppc_inst(PPC_INST_LD_TOC)))
++		return 0;
++
+ 	return 1;
+ }
+ 
+@@ -636,9 +659,12 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
+ 			}
+ 
+ 			/* Only replace bits 2 through 26 */
+-			*(uint32_t *)location
+-				= (*(uint32_t *)location & ~0x03fffffc)
++			value = (*(uint32_t *)location & ~0x03fffffc)
+ 				| (value & 0x03fffffc);
++
++			if (patch_instruction((u32 *)location, ppc_inst(value)))
++				return -EFAULT;
++
+ 			break;
+ 
+ 		case R_PPC64_REL64:
+-- 
+2.31.1
 
-
-> The only thing I see is now there is an assumption that 'memory' nodes
-> are off the root node only. Before they could be anywhere.
-
-I don't know of any machines where that would be a problem. But given
-all the wild and wonderful device trees out there, who really knows :)
-
-Maybe we should continue to allow memory nodes to be anywhere, and print
-a warning for any that aren't at the root. Then if no one reports any
-hits for the warning we could switch to only allowing them at the root?
-
-cheers
-
-
-> index a835c458f50a..97d7607625ec 100644
-> --- a/drivers/of/fdt.c
-> +++ b/drivers/of/fdt.c
-> @@ -1083,16 +1083,13 @@ int __init early_init_dt_scan_memory(void)
->         int node;
->         const void *fdt = initial_boot_params;
->
-> -       fdt_for_each_subnode(node, fdt, 0) {
-> -               const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
-> +       for (node = fdt_node_offset_by_prop_value(fdt, -1, "device_type", "memory", 6);
-> +            node != -FDT_ERR_NOTFOUND;
-> +            node = fdt_node_offset_by_prop_value(fdt, node, "device_type", "memory", 6)) {
->                 const __be32 *reg, *endp;
->                 int l;
->                 bool hotpluggable;
->
-> -               /* We are scanning "memory" nodes only */
-> -               if (type == NULL || strcmp(type, "memory") != 0)
-> -                       continue;
-> -
->                 reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
->                 if (reg == NULL)
->                         reg = of_get_flat_dt_prop(node, "reg", &l);
->
-> Rob
