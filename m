@@ -2,68 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40129473952
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 01:08:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 709764739B9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 01:45:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JCdxs1Hcsz3c75
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 11:08:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCfnH34YJz2yxV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 11:45:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=GnrjInCg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eKh9r4AL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::52f;
- helo=mail-pg1-x52f.google.com; envelope-from=rajatja@google.com;
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=GnrjInCg; dkim-atps=neutral
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
- [IPv6:2607:f8b0:4864:20::52f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=eKh9r4AL; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JCXPl03Tlz2yPk
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 06:58:32 +1100 (AEDT)
-Received: by mail-pg1-x52f.google.com with SMTP id d11so6842544pgl.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Dec 2021 11:58:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=cmtlwaoKecb3OjlTS1+QUQgYom0U7BYI17ypi8x6kXI=;
- b=GnrjInCguT1hYvRxEFp2FFlcWJk+X6scQ0TguTZJYVs5btZvLe4+YCVtdB1wZBA4ql
- lPf7oCvJEdd0G+oUe5yfcRXur4cxWEXfxcjyEJoITH2W9As4AMyaF/6oqsEcsNBAgWD/
- UBIucA6BcyhNjSnCqT/ISHXWrlgFdN+ILDONTu1HlNwv1vdXyPxGBU9vO+59APihDv/L
- /nwhYbGPq5FxpkV4Q212xLuEDTP4CAF4U5LzT8KXzoBVVzuau0xfXfTisMvTpfIsPlgw
- +17xll8EDuD0UqXiCAsNXUxf++d7lYacez0U09SFm2L5hSCMz5JIZS3+Y+DKV/2HHGL6
- Pi6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=cmtlwaoKecb3OjlTS1+QUQgYom0U7BYI17ypi8x6kXI=;
- b=l+tO5cN/HoUCFfOEwQifaBVaZRT/UfyfNdFvCeouivzARkyS+2XmzcaU7gBb7ldMMZ
- mLYcyRHtmq7NfiNJUMisLiI08TizxstOgBbfa2qKr95tpLaPgMmBXRy07Kbc1NaEA9el
- m6rljZ55tAwQYa7JST5G9bAjO3HPYSinGKb6Wm9zAWvpb3VN8W7qsSNCZgCx1e+njV6O
- uni/SWheC6fz4pelNPToGwx2ySvE89ZoLzPpbPOM1VY7cY5sGoYQoLWFyA1no7Nafphg
- zBJxNWdBXqWuKTTUDRNMYLqZzLFgT+DlF4iL6756hlP6tUFTnyyOX+qSOWV3EW6LcWtn
- 7CCg==
-X-Gm-Message-State: AOAM530dDYH83dUJ2oQFwxq3ebiVKUDNRUO8weYiSBu2a+jC7hlU6Xhz
- rxDBMOBz3gSZRcsRxAykv1W7CDTDfcu0ctaSPzPhSg==
-X-Google-Smtp-Source: ABdhPJyxdpF8yw1Mfppja7TttKdq2KytY/u0mapNh2UceVCKIokfMXDLBzkp5pk5YhzPAhPmfct2uhkiNfnabLvww9s=
-X-Received: by 2002:a63:ef44:: with SMTP id c4mr564190pgk.146.1639425509218;
- Mon, 13 Dec 2021 11:58:29 -0800 (PST)
-MIME-Version: 1.0
-References: <20211209094556.2085357-1-jiasheng@iscas.ac.cn>
- <20211211175450.GA398271@bhelgaas>
-In-Reply-To: <20211211175450.GA398271@bhelgaas>
-From: Rajat Jain <rajatja@google.com>
-Date: Mon, 13 Dec 2021 11:57:52 -0800
-Message-ID: <CACK8Z6EntHP0TWfq=JdQ7QS8vCgXoRUJOWqbGYLvD6R2Mq0paw@mail.gmail.com>
-Subject: Re: [PATCH] PCI/AER: potential dereference of null pointer
-To: Bjorn Helgaas <helgaas@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCfmY53n4z2xsG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 11:45:17 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 0D69D612C6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 00:45:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 736CDC34603
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 00:45:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1639442713;
+ bh=xx1brTUdX/hppIxlt1a53qTuY1VhG48JsF0r7g4uduc=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=eKh9r4ALqDqfnJ7OOCtzVnM6ozouie8ImOrQ6uve+IaZy2AUIqSGCM4YeCUpR3qRY
+ dpoybj21RsUiVH7Q5ds7pxogiQmXFhb9/SoBScY/5jXm61+lGVgPmC1ssgRserGB1D
+ T0hc2HVRJ7qkjQF5k/RyTkJ5aJX8QdcgGqYeO3jr15qTMInvj3mQYP3/Km+4wFNjY/
+ 0/sXg+zprXVuG24ebCM6aaPhYySQ6dj4hcb1sGDmPWJ4Ps3JTljlIQrejTsgv9Kg7O
+ DxaUnldanWo1lJb1lcdkRDs766wqUXWDkZN9fabuVtOXKb/xJaP8+0pdIWKgWjWVBN
+ Hmbb5Cohfb6+g==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id 5084C60F59; Tue, 14 Dec 2021 00:45:13 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 215217] Kernel fails to boot at an early stage when built with
+ GCC_PLUGIN_LATENT_ENTROPY=y (PowerMac G4 3,6)
+Date: Tue, 14 Dec 2021 00:45:12 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: attachments.created
+Message-ID: <bug-215217-206035-AHsAwhT0P2@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-215217-206035@https.bugzilla.kernel.org/>
+References: <bug-215217-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Tue, 14 Dec 2021 11:07:43 +1100
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,76 +84,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
- linux-kernel@vger.kernel.org, oohall@gmail.com, bhelgaas@google.com,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215217
 
-On Sat, Dec 11, 2021 at 9:54 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
->
-> [+cc Rajat, author of aer_stats:
-> db89ccbe52c7 ("PCI/AER: Define aer_stats structure for AER capable devices"
-> 81aa5206f9a7 ("PCI/AER: Add sysfs attributes to provide AER stats and breakdown"]
->
-> On Thu, Dec 09, 2021 at 05:45:56PM +0800, Jiasheng Jiang wrote:
-> > he return value of kzalloc() needs to be checked.
-> > To avoid use of null pointer in case of the failure of alloc.
-> >
-> > Fixes: db89ccbe52c7 ("PCI/AER: Define aer_stats structure for AER capable devices")
-> > Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-> > ---
-> >  drivers/pci/pcie/aer.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> > index ec943cee5ecc..d04303edf468 100644
-> > --- a/drivers/pci/pcie/aer.c
-> > +++ b/drivers/pci/pcie/aer.c
-> > @@ -376,6 +376,8 @@ void pci_aer_init(struct pci_dev *dev)
-> >               return;
-> >
-> >       dev->aer_stats = kzalloc(sizeof(struct aer_stats), GFP_KERNEL);
-> > +     if (!dev->aer_stats)
-> > +             return;
->
-> Did you actually trip over a null pointer dereference, and if so,
-> where was it?
->
-> I think the intent here was that aer_stats is a non-essential feature,
-> and if we can't allocate space to keep the statistics, we can still
-> use the device without the stats.
+--- Comment #10 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 300015
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D300015&action=3Dedit
+kernel zImage (5.16-rc5 + CFLAGS_setup_32.o/early_32.o +=3D... , PowerMac G=
+4 DP)
 
-Ack. Yes, this was my intention.
+Unfortunately still no success.
 
-Practically speaking though, if a system cannot allocate space for
-aer_stats (608 bytes), I would think it is under an extreme memory
-pressure so not really sure if will be able to really do anything with
-the PCI device (probe the driver which may want to allocate more
-memory etc). But that isn't anything that we can help with.
+Relevant section in the Makefile now looks like this:
+CFLAGS_early_32.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
+CFLAGS_setup_32.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
+CFLAGS_cputable.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
+CFLAGS_prom_init.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
+CFLAGS_btext.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
+CFLAGS_prom.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
 
-The current patch AFAICS looks like a no-op to me.
+I'll attach the generated zImage, maybe you can make something out of it.
 
-Thanks,
+--=20
+You may reply to this email to add a comment.
 
-Rajat
-
->
-> I *think* all the users of dev->aer_stats check for NULL before
-> dereferencing it, but if you found a case that doesn't do that, we
-> should definitely fix it.
->
-> In a few cases (aer_stats_dev_attr, aer_stats_rootport_attr), the
-> check isn't obvious -- it happens in aer_stats_attrs_are_visible().
-> If aer_stats_attrs_are_visible() finds that aer_stats is NULL, those
-> sysfs attributes should not be visible, and the corresponding *_show()
-> functions should never be called.
->
-> >       /*
-> >        * We save/restore PCI_ERR_UNCOR_MASK, PCI_ERR_UNCOR_SEVER,
-> > --
-> > 2.25.1
-> >
+You are receiving this mail because:
+You are watching the assignee of the bug.=
