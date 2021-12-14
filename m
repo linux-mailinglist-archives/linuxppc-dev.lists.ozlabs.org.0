@@ -1,58 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A7D47400F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 11:04:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6936447415A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 12:19:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JCv9M2zkqz3cPt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 21:04:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JCwql2sjMz3c9d
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 22:18:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ncUXHFoM;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=loongson.cn (client-ip=114.242.206.163; helo=loongson.cn;
- envelope-from=yangtiezhu@loongson.cn; receiver=<UNKNOWN>)
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
- by lists.ozlabs.org (Postfix) with ESMTP id 4JCv8s2KCSz2xrC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 21:03:37 +1100 (AEDT)
-Received: from [10.130.0.135] (unknown [113.200.148.30])
- by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dx_Nzfa7hhAZYAAA--.3224S3;
- Tue, 14 Dec 2021 18:03:13 +0800 (CST)
-Subject: Re: [PATCH v2 0/2] kdump: simplify code
-To: Matthew Wilcox <willy@infradead.org>,
- David Laight <David.Laight@aculab.com>
-References: <1639193588-7027-1-git-send-email-yangtiezhu@loongson.cn>
- <0c5cb37139af4f3e85cc2c5115d7d006@AcuMS.aculab.com>
- <YbXhVxRJfjvKw++W@casper.infradead.org>
- <b7a75ae9253445af81ff2fedd5268af4@AcuMS.aculab.com>
- <YbdcKK3Cq6ITTg/l@casper.infradead.org>
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <36440c0f-8b8a-c401-684f-6f54ce9c061e@loongson.cn>
-Date: Tue, 14 Dec 2021 18:03:11 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
- Thunderbird/45.4.0
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JCwq343z3z2ynK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 22:18:23 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=ncUXHFoM; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JCwq11xYBz4xPw;
+ Tue, 14 Dec 2021 22:18:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1639480702;
+ bh=JkHhmAZ1NigU2RvvhMuaItAKWghROfy9nEo/On2PQa8=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=ncUXHFoM4iG4FsToTcGgVSlxrlTPrcsbVkQQE6BgD/h1twByADVlLw69s0K4fc8er
+ w5koZXpw0PUgqdYeC8XJoCtX0Ywjya0/ax9ego1o+XCtQTbBJvdCa30cvSxXNrDmNT
+ r8ReFRa4z7jYoij18LldV3u1cIL3RzFNOhqq23k9SmajeCxjP3GNmZfmbn9q92A7hp
+ kODuYZ+k8Wo3Hvit1tQOLZ2krTqAC7xw7UrkdYxiXfjRF4u46IeI+E88aWI4M09+aD
+ oInHcrXZlCrP/5dLvfgD4/rCOr4ZGY0h4HfH5I1gF9xb2L/mCIn8QJ6YK6IlnV2oZA
+ ZqbMI5mYOrnqg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v2] of/fdt: Rework early_init_dt_scan_memory() to call
+ directly
+In-Reply-To: <CAL_JsqLpq7fx0pyQiJFa0P5C3JXijiVe_fr84x9RML1aDJ7vDQ@mail.gmail.com>
+References: <20211208155839.4084795-1-robh@kernel.org>
+ <87fsqwn03o.fsf@mpe.ellerman.id.au>
+ <CAL_JsqLpq7fx0pyQiJFa0P5C3JXijiVe_fr84x9RML1aDJ7vDQ@mail.gmail.com>
+Date: Tue, 14 Dec 2021 22:18:19 +1100
+Message-ID: <877dc7mo3o.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <YbdcKK3Cq6ITTg/l@casper.infradead.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: AQAAf9Dx_Nzfa7hhAZYAAA--.3224S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7WF4fCF1DZFWDCw13KF18AFb_yoW8Wr18pr
- WYya42yrs7X3s8Gw4Iyr4fJ3yFqw42yFWrW3Z5Xw15Ar90qFnFvr1jyr1S9a4UWrn7Wa1x
- AFyYqr9I93WDA3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUU9214x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
- 1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
- JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
- CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
- 2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
- W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
- 0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
- kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
- 67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
- CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rWUJVWr
- Zr1UMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYx
- BIdaVFxhVjvjDU0xZFpf9x0JU6c_fUUUUU=
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,65 +61,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- Baoquan He <bhe@redhat.com>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "x86@kernel.org" <x86@kernel.org>,
- "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+Cc: devicetree@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Vivek Goyal <vgoyal@redhat.com>, Xuefeng Li <lixuefeng@loongson.cn>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Dave Young <dyoung@redhat.com>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+ Paul Mackerras <paulus@samba.org>, John Crispin <john@phrozen.org>,
+ Frank Rowand <frowand.list@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 12/13/2021 10:43 PM, Matthew Wilcox wrote:
-> On Mon, Dec 13, 2021 at 08:30:33AM +0000, David Laight wrote:
->> From: Matthew Wilcox
->>> Sent: 12 December 2021 11:48
->>>
->>> On Sat, Dec 11, 2021 at 05:53:46PM +0000, David Laight wrote:
->>>> From: Tiezhu Yang
->>>>> Sent: 11 December 2021 03:33
->>>>>
->>>>> v2:
->>>>>   -- add copy_to_user_or_kernel() in lib/usercopy.c
->>>>>   -- define userbuf as bool type
->>>>
->>>> Instead of having a flag to indicate whether the buffer is user or kernel,
->>>> would it be better to have two separate buffer pointers.
->>>> One for a user space buffer, the other for a kernel space buffer.
->>>> Exactly one of the buffers should always be NULL.
->>>
->>> No.  You should be using an iov_iter instead.  See
->>> https://lore.kernel.org/all/Ya4bdB0UBJCZhUSo@casper.infradead.org/
->>> for a start on this.
->>
->> iov_iter gets horribly expensive...
+Rob Herring <robh@kernel.org> writes:
+> On Mon, Dec 13, 2021 at 6:47 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> Rob Herring <robh@kernel.org> writes:
+>> > Use of the of_scan_flat_dt() function predates libfdt and is discouraged
+>> > as libfdt provides a nicer set of APIs. Rework
+>> > early_init_dt_scan_memory() to be called directly and use libfdt.
+>> ...
+>> > diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+>> > index 6e1a106f02eb..63762a3b75e8 100644
+>> > --- a/arch/powerpc/kernel/prom.c
+>> > +++ b/arch/powerpc/kernel/prom.c
+>> > @@ -532,19 +532,19 @@ static int  __init early_init_drmem_lmb(struct drmem_lmb *lmb,
+>> >  }
+>> >  #endif /* CONFIG_PPC_PSERIES */
+>> >
+>> > -static int __init early_init_dt_scan_memory_ppc(unsigned long node,
+>> > -                                             const char *uname,
+>> > -                                             int depth, void *data)
+>> > +static int __init early_init_dt_scan_memory_ppc(void)
+>> >  {
+>> >  #ifdef CONFIG_PPC_PSERIES
+>> > -     if (depth == 1 &&
+>> > -         strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0) {
+>> > +     const void *fdt = initial_boot_params;
+>> > +     int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
+>> > +
+>> > +     if (node > 0) {
+>> >               walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
+>> >               return 0;
+>> >       }
+
+It's that return that is the problem.
+
+Now that early_init_dt_scan_memory_ppc() is only called once, that
+return causes us to skip scanning regular memory nodes if there is an
+"ibm,dynamic-reconfiguration-memory" property present.
+
+So the fix is just:
+
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 1098de3b172f..125661e5fcf3 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -538,10 +538,8 @@ static int __init early_init_dt_scan_memory_ppc(void)
+ 	const void *fdt = initial_boot_params;
+ 	int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
+ 
+-	if (node > 0) {
++	if (node > 0)
+ 		walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
+-		return 0;
+-	}
+ #endif
+ 	
+ 	return early_init_dt_scan_memory();
+
+
+> The only thing I see is now there is an assumption that 'memory' nodes
+> are off the root node only. Before they could be anywhere.
+
+I don't know of any machines where that would be a problem. But given
+all the wild and wonderful device trees out there, who really knows :)
+
+Maybe we should continue to allow memory nodes to be anywhere, and print
+a warning for any that aren't at the root. Then if no one reports any
+hits for the warning we could switch to only allowing them at the root?
+
+cheers
+
+
+> index a835c458f50a..97d7607625ec 100644
+> --- a/drivers/of/fdt.c
+> +++ b/drivers/of/fdt.c
+> @@ -1083,16 +1083,13 @@ int __init early_init_dt_scan_memory(void)
+>         int node;
+>         const void *fdt = initial_boot_params;
 >
-> Oh, right.  Reading the kcore is a high-performance path, my mistake.
+> -       fdt_for_each_subnode(node, fdt, 0) {
+> -               const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
+> +       for (node = fdt_node_offset_by_prop_value(fdt, -1, "device_type", "memory", 6);
+> +            node != -FDT_ERR_NOTFOUND;
+> +            node = fdt_node_offset_by_prop_value(fdt, node, "device_type", "memory", 6)) {
+>                 const __be32 *reg, *endp;
+>                 int l;
+>                 bool hotpluggable;
 >
-
-Hi,
-
-Thank you for your discussions.
-
-The intention of this patchset is to simplify the related code with no
-functional changes and no side effects.
-
-At this moment, if you are OK, I will send v3 used with inline function
-copy_to_user_or_kernel() to keep it simple, maybe other more changes can
-be done in the future if no any side effect.
-
-The v3 will contain the following three patches to make the changes
-more clear:
-
-kdump: vmcore: remove copy_to() and add copy_to_user_or_kernel()
-kdump: crashdump: use copy_to_user_or_kernel() to simplify code
-kdump: vmcore: crashdump: make variable type of userbuf as bool
-
+> -               /* We are scanning "memory" nodes only */
+> -               if (type == NULL || strcmp(type, "memory") != 0)
+> -                       continue;
+> -
+>                 reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
+>                 if (reg == NULL)
+>                         reg = of_get_flat_dt_prop(node, "reg", &l);
+>
+> Rob
