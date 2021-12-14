@@ -1,61 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7AAC474CA2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 21:27:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC784474CB4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Dec 2021 21:37:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JD90T5vfSz3cPX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 07:27:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JD9DH55Fmz3brX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 07:37:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.181;
- helo=mail-oi1-f181.google.com; envelope-from=robherring2@gmail.com;
+ smtp.mailfrom=kaod.org (client-ip=87.98.187.244;
+ helo=10.mo552.mail-out.ovh.net; envelope-from=clg@kaod.org;
  receiver=<UNKNOWN>)
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com
- [209.85.167.181])
+Received: from 10.mo552.mail-out.ovh.net (10.mo552.mail-out.ovh.net
+ [87.98.187.244])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JD9032vHsz2xsZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 07:26:57 +1100 (AEDT)
-Received: by mail-oi1-f181.google.com with SMTP id n66so28732359oia.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 12:26:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=zoA5Z8TrkhyO9VpXkw4vVgVTvX1m0JlpyPfyrdFngu4=;
- b=vNgdTszp1TdoblKCSJ5Yhts1Bkzaug5GhCcMyFSp2oSJNXbozab5dU1bARJ7Y3S1fR
- DTktiiSvtP2LApNbUYVl/RVSDoXeH1H71ZEhDpUk15aRd3e/rp8Tg+ydumBYzkX4J4N8
- Ws3yx0pqFaJdJz8ZMaw6K3MgR+7R5Qk76LQnCRIxviQyi+811OvEjNrR0eHSeKJFdTkr
- mvuW3K02bmfNss/nORR20oeV2alNuzufrsrOp0hnKfUy1ckrhXFhKgq61+dLiMoGsy0k
- VMiBKf8GagbQrAJczblPw/eCLTjAu7WBxlIvJtgZIraRJc9ikKn2y+jcombpzlbIe5Uw
- butA==
-X-Gm-Message-State: AOAM532+BiPVF/284k7/mPMMFcEiyg1L66g3jMLTnW0LkfHYiczIxHd6
- UuheIpkNd0yThvDzeAmedQ==
-X-Google-Smtp-Source: ABdhPJw0zliiKLsHvNnJ7zXg7WFegzRRUZqy33/B0czNpd/RWUhOX058+lN4XGpG8555QCmRZ2KvoA==
-X-Received: by 2002:a05:6808:14c2:: with SMTP id
- f2mr6173359oiw.154.1639513613845; 
- Tue, 14 Dec 2021 12:26:53 -0800 (PST)
-Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net.
- [66.90.148.213])
- by smtp.googlemail.com with ESMTPSA id m12sm177454ots.59.2021.12.14.12.26.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Dec 2021 12:26:53 -0800 (PST)
-From: Rob Herring <robh@kernel.org>
-To: John Crispin <john@phrozen.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Frank Rowand <frowand.list@gmail.com>
-Subject: [PATCH v3] of/fdt: Rework early_init_dt_scan_memory() to call directly
-Date: Tue, 14 Dec 2021 14:26:51 -0600
-Message-Id: <20211214202652.3894707-1-robh@kernel.org>
-X-Mailer: git-send-email 2.32.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JD9Cp3S4Mz2yPs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 07:37:09 +1100 (AEDT)
+Received: from mxplan5.mail.ovh.net (unknown [10.109.156.148])
+ by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 81EA321E5C;
+ Tue, 14 Dec 2021 20:30:14 +0000 (UTC)
+Received: from kaod.org (37.59.142.104) by DAG4EX1.mxp5.local (172.16.2.31)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.17; Tue, 14 Dec
+ 2021 21:30:13 +0100
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-104R005923756eb-fc34-4846-a5c4-8a8ce2fecfe3,
+ 8EFD5A58B5F84DDBEE409E983A0304C96EE54735) smtp.auth=clg@kaod.org
+X-OVh-ClientIp: 90.76.172.47
+Message-ID: <102e59ba-fcf0-dd85-9338-75b7ce5fbd83@kaod.org>
+Date: Tue, 14 Dec 2021 21:30:12 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: linux-next: manual merge of the audit tree with the powerpc tree
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Paul Moore
+ <paul@paul-moore.com>
+References: <20211026133147.35d19e00@canb.auug.org.au>
+ <87k0i0awdl.fsf@mpe.ellerman.id.au>
+ <CAHC9VhTj7gn3iAOYctVRKvv_Bk1iQMrmkA8FVJtYzdvBjqFmvg@mail.gmail.com>
+ <87tuh2aepp.fsf@mpe.ellerman.id.au>
+ <2012df5e-62ec-06fb-9f4d-e27dde184a3f@csgroup.eu>
+ <CAHC9VhRHs8Lx8+v+LHmJByxO_m330sfLWRsGDsFtQxyQ1860eg@mail.gmail.com>
+ <dc5705cf-d47a-57b0-65da-2a2af8d71b19@csgroup.eu>
+ <CAHC9VhQPizVLkr2+sqRCS0gS4+ZSw-AMkJM5V64-ku8AQe+QQg@mail.gmail.com>
+ <1a78709f-162e-0d78-0550-4e9ef213f9c6@csgroup.eu>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <1a78709f-162e-0d78-0550-4e9ef213f9c6@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [37.59.142.104]
+X-ClientProxiedBy: DAG3EX1.mxp5.local (172.16.2.21) To DAG4EX1.mxp5.local
+ (172.16.2.31)
+X-Ovh-Tracer-GUID: 659388e9-f9c1-4eda-a9e4-44d041de7a6b
+X-Ovh-Tracer-Id: 18362864531949849449
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvuddrledtgddufeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfhisehtkeertddtfeejnecuhfhrohhmpeevrogurhhitggpnfgvpgfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeejuedutdetteeljeekudeiffehgeekhffffeejffegheefheefieduudeuheevnecuffhomhgrihhnpeguvggsihgrnhdrohhrghenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,238 +72,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, Frank Rowand <frank.rowand@sony.com>,
- linux-kernel@vger.kernel.org
+Cc: Richard Guy Briggs <rgb@redhat.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use of the of_scan_flat_dt() function predates libfdt and is discouraged
-as libfdt provides a nicer set of APIs. Rework
-early_init_dt_scan_memory() to be called directly and use libfdt.
+On 12/14/21 20:32, Christophe Leroy wrote:
+> 
+> 
+> Le 14/12/2021 à 19:23, Paul Moore a écrit :
+>> On Tue, Dec 14, 2021 at 12:59 PM Christophe Leroy
+>> <christophe.leroy@csgroup.eu> wrote:
+>>> Hello Paul,
+>>>
+>>> I've been trying to setup your test suite on my powerpc board but it's
+>>> based on Perl and on a lot of optional Perl packages. I was able to add
+>>> them one by one until some of them require some .so libraries
+>>> (Pathtools-Cwd), and it seems nothing is made to allow cross building
+>>> those libraries.
+>>>
+>>> Do you have another test suite based on C and not perl ?
+>>>
+>>> If not, what can I do, do you know how I can cross compile those Perl
+>>> packages for PPC32 ?
+>>
+>> Is there no Linux distribution that supports PPC32?  I would think
+>> that would be the easiest path forward, but you're the PPC32 expert -
+>> not me - so I'll assume you already tried that or it didn't work for
+>> other reasons.
+> 
+> There hasn't been Linux distribution supporting PPC32 for a few years
+> now. And regardless, the boards I'm running Linux on are home made
+> embedded boards, with limited amount of memory and flashdisk space and
+> no video chip, so they are hardly supported by any distributions, even
+> older ones.
 
-Cc: John Crispin <john@phrozen.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Frank Rowand <frowand.list@gmail.com>
-Cc: linux-mips@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Reviewed-by: Frank Rowand <frank.rowand@sony.com>
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-v3:
- - Fix powerpc when /ibm,dynamic-reconfiguration-memory is present
-v2:
- - ralink: Use 'if' instead of 'else if'
- - early_init_dt_scan_memory: continue instead of return on no reg
- - Fix indentation
----
- arch/mips/ralink/of.c      | 19 +++--------
- arch/powerpc/kernel/prom.c | 21 ++++++------
- drivers/of/fdt.c           | 67 +++++++++++++++++++-------------------
- include/linux/of_fdt.h     |  3 +-
- 4 files changed, 49 insertions(+), 61 deletions(-)
+We still have debian. you will find images under :
 
-diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
-index 0135376c5de5..35a87a2da10b 100644
---- a/arch/mips/ralink/of.c
-+++ b/arch/mips/ralink/of.c
-@@ -53,17 +53,6 @@ void __init device_tree_init(void)
- 	unflatten_and_copy_device_tree();
- }
- 
--static int memory_dtb;
--
--static int __init early_init_dt_find_memory(unsigned long node,
--				const char *uname, int depth, void *data)
--{
--	if (depth == 1 && !strcmp(uname, "memory@0"))
--		memory_dtb = 1;
--
--	return 0;
--}
--
- void __init plat_mem_setup(void)
- {
- 	void *dtb;
-@@ -77,10 +66,10 @@ void __init plat_mem_setup(void)
- 	dtb = get_fdt();
- 	__dt_setup_arch(dtb);
- 
--	of_scan_flat_dt(early_init_dt_find_memory, NULL);
--	if (memory_dtb)
--		of_scan_flat_dt(early_init_dt_scan_memory, NULL);
--	else if (soc_info.mem_detect)
-+	if (!early_init_dt_scan_memory())
-+		return;
-+
-+	if (soc_info.mem_detect)
- 		soc_info.mem_detect();
- 	else if (soc_info.mem_size)
- 		memblock_add(soc_info.mem_base, soc_info.mem_size * SZ_1M);
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 6e1a106f02eb..ad1230c4f3fe 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -532,19 +532,18 @@ static int  __init early_init_drmem_lmb(struct drmem_lmb *lmb,
- }
- #endif /* CONFIG_PPC_PSERIES */
- 
--static int __init early_init_dt_scan_memory_ppc(unsigned long node,
--						const char *uname,
--						int depth, void *data)
-+static int __init early_init_dt_scan_memory_ppc(void)
- {
- #ifdef CONFIG_PPC_PSERIES
--	if (depth == 1 &&
--	    strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0) {
-+	const void *fdt = initial_boot_params;
-+	int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
-+
-+	if (node > 0)
- 		walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
--		return 0;
--	}
-+
- #endif
--	
--	return early_init_dt_scan_memory(node, uname, depth, data);
-+
-+	return early_init_dt_scan_memory();
- }
- 
- /*
-@@ -749,7 +748,7 @@ void __init early_init_devtree(void *params)
- 
- 	/* Scan memory nodes and rebuild MEMBLOCKs */
- 	early_init_dt_scan_root();
--	of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
-+	early_init_dt_scan_memory_ppc();
- 
- 	parse_early_param();
- 
-@@ -858,7 +857,7 @@ void __init early_get_first_memblock_info(void *params, phys_addr_t *size)
- 	 */
- 	add_mem_to_memblock = 0;
- 	early_init_dt_scan_root();
--	of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
-+	early_init_dt_scan_memory_ppc();
- 	add_mem_to_memblock = 1;
- 
- 	if (size)
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 5e216555fe4f..97d7607625ec 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -1078,49 +1078,50 @@ u64 __init dt_mem_next_cell(int s, const __be32 **cellp)
- /*
-  * early_init_dt_scan_memory - Look for and parse memory nodes
-  */
--int __init early_init_dt_scan_memory(unsigned long node, const char *uname,
--				     int depth, void *data)
-+int __init early_init_dt_scan_memory(void)
- {
--	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
--	const __be32 *reg, *endp;
--	int l;
--	bool hotpluggable;
--
--	/* We are scanning "memory" nodes only */
--	if (type == NULL || strcmp(type, "memory") != 0)
--		return 0;
-+	int node;
-+	const void *fdt = initial_boot_params;
- 
--	reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
--	if (reg == NULL)
--		reg = of_get_flat_dt_prop(node, "reg", &l);
--	if (reg == NULL)
--		return 0;
-+	for (node = fdt_node_offset_by_prop_value(fdt, -1, "device_type", "memory", 6);
-+	     node != -FDT_ERR_NOTFOUND;
-+	     node = fdt_node_offset_by_prop_value(fdt, node, "device_type", "memory", 6)) {
-+		const __be32 *reg, *endp;
-+		int l;
-+		bool hotpluggable;
-+
-+		reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
-+		if (reg == NULL)
-+			reg = of_get_flat_dt_prop(node, "reg", &l);
-+		if (reg == NULL)
-+			continue;
- 
--	endp = reg + (l / sizeof(__be32));
--	hotpluggable = of_get_flat_dt_prop(node, "hotpluggable", NULL);
-+		endp = reg + (l / sizeof(__be32));
-+		hotpluggable = of_get_flat_dt_prop(node, "hotpluggable", NULL);
- 
--	pr_debug("memory scan node %s, reg size %d,\n", uname, l);
-+		pr_debug("memory scan node %s, reg size %d,\n",
-+			 fdt_get_name(fdt, node, NULL), l);
- 
--	while ((endp - reg) >= (dt_root_addr_cells + dt_root_size_cells)) {
--		u64 base, size;
-+		while ((endp - reg) >= (dt_root_addr_cells + dt_root_size_cells)) {
-+			u64 base, size;
- 
--		base = dt_mem_next_cell(dt_root_addr_cells, &reg);
--		size = dt_mem_next_cell(dt_root_size_cells, &reg);
-+			base = dt_mem_next_cell(dt_root_addr_cells, &reg);
-+			size = dt_mem_next_cell(dt_root_size_cells, &reg);
- 
--		if (size == 0)
--			continue;
--		pr_debug(" - %llx, %llx\n", base, size);
-+			if (size == 0)
-+				continue;
-+			pr_debug(" - %llx, %llx\n", base, size);
- 
--		early_init_dt_add_memory_arch(base, size);
-+			early_init_dt_add_memory_arch(base, size);
- 
--		if (!hotpluggable)
--			continue;
-+			if (!hotpluggable)
-+				continue;
- 
--		if (memblock_mark_hotplug(base, size))
--			pr_warn("failed to mark hotplug range 0x%llx - 0x%llx\n",
--				base, base + size);
-+			if (memblock_mark_hotplug(base, size))
-+				pr_warn("failed to mark hotplug range 0x%llx - 0x%llx\n",
-+					base, base + size);
-+		}
- 	}
--
- 	return 0;
- }
- 
-@@ -1271,7 +1272,7 @@ void __init early_init_dt_scan_nodes(void)
- 		pr_warn("No chosen node found, continuing without\n");
- 
- 	/* Setup memory, calling early_init_dt_add_memory_arch */
--	of_scan_flat_dt(early_init_dt_scan_memory, NULL);
-+	early_init_dt_scan_memory();
- 
- 	/* Handle linux,usable-memory-range property */
- 	memblock_cap_memory_range(cap_mem_addr, cap_mem_size);
-diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
-index df3d31926c3c..914739f3c192 100644
---- a/include/linux/of_fdt.h
-+++ b/include/linux/of_fdt.h
-@@ -59,8 +59,7 @@ extern unsigned long of_get_flat_dt_root(void);
- extern uint32_t of_get_flat_dt_phandle(unsigned long node);
- 
- extern int early_init_dt_scan_chosen(char *cmdline);
--extern int early_init_dt_scan_memory(unsigned long node, const char *uname,
--				     int depth, void *data);
-+extern int early_init_dt_scan_memory(void);
- extern int early_init_dt_scan_chosen_stdout(void);
- extern void early_init_fdt_scan_reserved_mem(void);
- extern void early_init_fdt_reserve_self(void);
--- 
-2.32.0
+   https://cdimage.debian.org/cdimage/ports/snapshots/2021-04-17/
 
+and from there, you can update to unstable, which runs fine under
+a mac99 QEMU machine.
+
+Cheers,
+
+C.
