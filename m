@@ -2,54 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B25CB4755FA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 11:14:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF3DC475644
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 11:26:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JDWLn4p8Yz3cMQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 21:14:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JDWc959yyz3c8K
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 21:26:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=a8eNNWo6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SPtvvB0B;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
  [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JDWL75nt6z2yxL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 21:13:51 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JDWbX4wx8z2yyf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 21:25:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=a8eNNWo6; 
+ header.a=rsa-sha256 header.s=201909 header.b=SPtvvB0B; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JDWL53dllz4xhp;
- Wed, 15 Dec 2021 21:13:49 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JDWbX2KXKz4xd4;
+ Wed, 15 Dec 2021 21:25:28 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1639563231;
- bh=3WntohgGBSsd5zLTEq/JbPVU3YTQL8XrTLe5DXnpfYU=;
+ s=201909; t=1639563928;
+ bh=3R0VgynKtNl3FLsyWItoiGw25E6Vy04chDcTc/NGlg8=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=a8eNNWo605MEiL8ylUOt7YdhmBZnPIijg5uWdKFJI3EqXiu+9jJpFpl0qRgxjzNJr
- 55GgeghdhXOIhoWSsLRVt5H5NVVbMTJzW2/EjE5nILpENBmH45hJ0/QPUHs7Pj2XRc
- /o9AAUkwztZJ310T95OfI0JVUjoY7WFCJ+z7ykWMAka6NRYrnV1Q9t1M2A3byErDiI
- cjyrvJtn5OSAe6ONWSFVW8pDPsEZs9qTceN3/135nZOJfw1fK94BI4LRatIT6WHA08
- KkCkMzLAlITDIIbrhWV0KkJLHITxpaRN4bnqsKy8EHEWN95bNBXOqGub2C2EtCC5Xs
- lnLM4fX6QarMA==
+ b=SPtvvB0BjYtARgDX1GdEqbbXC2ovev5L20lmyq1pTMPVdvAWwdtO/FD105XhIfPNj
+ 4es7LLBLVQZpmAj0QuzGrbhHMkkwyIMi+eulT/fDTgmA1n32zj1TKlnTLNLsSH76XX
+ JFyrNVESVX7+Pdh09WdJ0jQfxqgwoc/uOlWj1N30VuczpSHfYlcDd3GMtKbtwwGIGD
+ yPG6lb+e5gh4uHPspHvU2eWgNv7kwMCp4VBmA1nrzACJw+JSsG6eq8k8DBsyN9rZM0
+ wYynB2nHbNTI3vAdVoqOzOJPBiAucmDIBdxHhOYQnsoBHSJSFXSt13tlzZHSHgamE9
+ wSbOYR2T2ldiQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Rob Herring <robh@kernel.org>, John Crispin <john@phrozen.org>, Thomas
- Bogendoerfer <tsbogend@alpha.franken.de>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Frank
- Rowand <frowand.list@gmail.com>
-Subject: Re: [PATCH v3] of/fdt: Rework early_init_dt_scan_memory() to call
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v2] of/fdt: Rework early_init_dt_scan_memory() to call
  directly
-In-Reply-To: <20211214202652.3894707-1-robh@kernel.org>
-References: <20211214202652.3894707-1-robh@kernel.org>
-Date: Wed, 15 Dec 2021 21:13:46 +1100
-Message-ID: <871r2emazp.fsf@mpe.ellerman.id.au>
+In-Reply-To: <CAL_JsqKbaRgivZMxEj6Mjdny2LNeSA1GQyDW-nQe7E2irPc-Fw@mail.gmail.com>
+References: <20211208155839.4084795-1-robh@kernel.org>
+ <87fsqwn03o.fsf@mpe.ellerman.id.au>
+ <CAL_JsqLpq7fx0pyQiJFa0P5C3JXijiVe_fr84x9RML1aDJ7vDQ@mail.gmail.com>
+ <877dc7mo3o.fsf@mpe.ellerman.id.au>
+ <CAL_JsqKbaRgivZMxEj6Mjdny2LNeSA1GQyDW-nQe7E2irPc-Fw@mail.gmail.com>
+Date: Wed, 15 Dec 2021 21:25:27 +1100
+Message-ID: <87zgp2kvvs.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -63,48 +64,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, Frank Rowand <frank.rowand@sony.com>,
- linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, John Crispin <john@phrozen.org>,
+ Frank Rowand <frowand.list@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Rob Herring <robh@kernel.org> writes:
-> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-> index 5e216555fe4f..97d7607625ec 100644
-> --- a/drivers/of/fdt.c
-> +++ b/drivers/of/fdt.c
-> @@ -1078,49 +1078,50 @@ u64 __init dt_mem_next_cell(int s, const __be32 **cellp)
->  /*
->   * early_init_dt_scan_memory - Look for and parse memory nodes
->   */
-> -int __init early_init_dt_scan_memory(unsigned long node, const char *uname,
-> -				     int depth, void *data)
-> +int __init early_init_dt_scan_memory(void)
->  {
-> -	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
-> -	const __be32 *reg, *endp;
-> -	int l;
-> -	bool hotpluggable;
-> -
-> -	/* We are scanning "memory" nodes only */
-> -	if (type == NULL || strcmp(type, "memory") != 0)
-> -		return 0;
-> +	int node;
-> +	const void *fdt = initial_boot_params;
->  
-> -	reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
-> -	if (reg == NULL)
-> -		reg = of_get_flat_dt_prop(node, "reg", &l);
-> -	if (reg == NULL)
-> -		return 0;
-> +	for (node = fdt_node_offset_by_prop_value(fdt, -1, "device_type", "memory", 6);
-> +	     node != -FDT_ERR_NOTFOUND;
-> +	     node = fdt_node_offset_by_prop_value(fdt, node, "device_type", "memory", 6)) {
+> On Tue, Dec 14, 2021 at 5:18 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>
+>> Rob Herring <robh@kernel.org> writes:
+>> > On Mon, Dec 13, 2021 at 6:47 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> >> Rob Herring <robh@kernel.org> writes:
+>> >> > Use of the of_scan_flat_dt() function predates libfdt and is discouraged
+>> >> > as libfdt provides a nicer set of APIs. Rework
+>> >> > early_init_dt_scan_memory() to be called directly and use libfdt.
+>> >> ...
+>> >> > diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+>> >> > index 6e1a106f02eb..63762a3b75e8 100644
+>> >> > --- a/arch/powerpc/kernel/prom.c
+>> >> > +++ b/arch/powerpc/kernel/prom.c
+>> >> > @@ -532,19 +532,19 @@ static int  __init early_init_drmem_lmb(struct drmem_lmb *lmb,
+>> >> >  }
+>> >> >  #endif /* CONFIG_PPC_PSERIES */
+>> >> >
+>> >> > -static int __init early_init_dt_scan_memory_ppc(unsigned long node,
+>> >> > -                                             const char *uname,
+>> >> > -                                             int depth, void *data)
+>> >> > +static int __init early_init_dt_scan_memory_ppc(void)
+>> >> >  {
+>> >> >  #ifdef CONFIG_PPC_PSERIES
+>> >> > -     if (depth == 1 &&
+>> >> > -         strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0) {
+>> >> > +     const void *fdt = initial_boot_params;
+>> >> > +     int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
+>> >> > +
+>> >> > +     if (node > 0) {
+>> >> >               walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
+>> >> >               return 0;
+>> >> >       }
+>>
+>> It's that return that is the problem.
+>>
+>> Now that early_init_dt_scan_memory_ppc() is only called once, that
+>> return causes us to skip scanning regular memory nodes if there is an
+>> "ibm,dynamic-reconfiguration-memory" property present.
+>>
+>> So the fix is just:
+>>
+>> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+>> index 1098de3b172f..125661e5fcf3 100644
+>> --- a/arch/powerpc/kernel/prom.c
+>> +++ b/arch/powerpc/kernel/prom.c
+>> @@ -538,10 +538,8 @@ static int __init early_init_dt_scan_memory_ppc(void)
+>>         const void *fdt = initial_boot_params;
+>>         int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
+>>
+>> -       if (node > 0) {
+>> +       if (node > 0)
+>>                 walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
+>> -               return 0;
+>> -       }
+>>  #endif
+>>
+>>         return early_init_dt_scan_memory();
+>
+> Thanks! I've rolled that in.
+>
+>> > The only thing I see is now there is an assumption that 'memory' nodes
+>> > are off the root node only. Before they could be anywhere.
+>>
+>> I don't know of any machines where that would be a problem. But given
+>> all the wild and wonderful device trees out there, who really knows :)
+>>
+>> Maybe we should continue to allow memory nodes to be anywhere, and print
+>> a warning for any that aren't at the root. Then if no one reports any
+>> hits for the warning we could switch to only allowing them at the root?
+>
+> I really doubt there's any case. I just have the least visibility into
+> what IBM DTs look like. I checked some old DT files I have and also
+> u-boot only supports off the root node.
 
-The 6 there doesn't work on my machines.
+The IBM ones are pretty standard, it's other embedded things I'd be more
+worried about.
 
-It needs to match the trailing NULL, so 7 or sizeof("memory") works.
+I have a collection of device trees, but they were given to me by
+various random people over the years and I'm not comfortable putting
+them up in public. I looked through those and didn't see anything odd.
+
+I'll try and get a collection of device trees from machines of mine and
+put them somewhere public.
 
 cheers
