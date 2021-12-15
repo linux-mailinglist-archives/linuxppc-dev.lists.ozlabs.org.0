@@ -2,56 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D69476393
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 21:42:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7074047648E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 22:29:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JDnHt5GdTz3bnq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 07:42:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JDpKL1tmSz3cRD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 08:29:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U0/niBIg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=btiPqbbJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=helgaas@kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=U0/niBIg; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=btiPqbbJ; dkim-atps=neutral
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JDnHB2yfnz3bbv
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 07:42:14 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 3911AB816C2;
- Wed, 15 Dec 2021 20:42:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9397CC36AE2;
- Wed, 15 Dec 2021 20:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1639600928;
- bh=77j1aFKa3BKj9OCIas2iLnj9Txbm+/MSJFvVadJN+gc=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=U0/niBIgwV0jq1JklZXB1TQnBOSGK19gh4zLFeQg0jhpgCYm5Jhtnfkj7QLn1ChUU
- n+GIjv9gqJ9euoh5GdJRV6EC+3yA8IwUxE9nDQ40ula8hxJdd+C2V5n+W53VyMrNQR
- EwmhjVwyqI8LhRGmSIWsxk8rFuhphINMmmuER2BekMJPZlgiY7G1mUPAhKFXi26aTy
- nNOU1KwR/52k9gGBOzIfMYSAP4ZYNTVleTL8wh+NuwHH7RUQ08D+wr5dyia0jJ+1My
- nknddiB2NoMQTC19/F6qyab5E7ecLzjDA3YAH8U9syQ51e0E1kjx0giXqhSZ6PNAXL
- /VYn9/NTkHWwQ==
-Date: Wed, 15 Dec 2021 14:42:07 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 1/2] sizes.h: Add SZ_1T macro
-Message-ID: <20211215204207.GA710838@bhelgaas>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JDpJc4CGbz2yms
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 08:28:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1639603712; x=1671139712;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=g/NNFcBw5bc4hIV6nEPi17Es916AkGoKUnMAW4aOk9w=;
+ b=btiPqbbJMNHvVkkrv87fLR0R5VuMqPrb0Gx377tNLmc95GL2daTNrBOJ
+ YpuIkvkYyzv/KWBqLeuz5S1oAdBPOrxJSmH9KySicDpUleNz9LNQVTobs
+ T2jopIZG46PRjnErFl3U3RGkdx9KO/P/lFZua70YRwFb0HugmqYZ/LICh
+ 8H21AMc3hqBUWrvSGPCfR5Y2dM8xEb6J1j+2WB4pt40COfvVg5gVRx/CN
+ eiyhF8EKRWwgjCdQnaBp2tkGxlUCK26qwaHypbEoHrQ7Y+diI9gDZLm18
+ KOC9hdzKDKOG6c9aowFOCRXDnKfbGKHBGaTaH5hFo4b+RGAZoBSW7B0J+ w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10199"; a="226198117"
+X-IronPort-AV: E=Sophos;i="5.88,209,1635231600"; d="scan'208";a="226198117"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Dec 2021 13:27:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,209,1635231600"; d="scan'208";a="662073815"
+Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
+ by fmsmga001.fm.intel.com with ESMTP; 15 Dec 2021 13:27:19 -0800
+Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mxbny-0002MF-Bh; Wed, 15 Dec 2021 21:27:18 +0000
+Date: Thu, 16 Dec 2021 05:26:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ "alex@ghiti.fr" <alex@ghiti.fr>
+Subject: Re: [PATCH v5 07/11] powerpc/mm: Use generic_get_unmapped_area() and
+ call it from arch_get_unmapped_area()
+Message-ID: <202112160557.ANnYN1ZQ-lkp@intel.com>
+References: <686895764befff16e9dbc2989e8f8eb2284b38d6.1639550392.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b03f5cf556f1a89ccb4d7ae2f56414520cfd9209.1638973836.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <686895764befff16e9dbc2989e8f8eb2284b38d6.1639550392.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,57 +73,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+Cc: kbuild-all@lists.01.org,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Toan Le <toan@os.amperecomputing.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 08, 2021 at 02:32:42PM +0000, Christophe Leroy wrote:
-> Today drivers/pci/controller/pci-xgene.c defines SZ_1T
-> 
-> Move it into linux/sizes.h so that it can be re-used elsewhere.
-> 
-> Cc: Toan Le <toan@os.amperecomputing.com>
-> Cc: linux-pci@vger.kernel.org
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Hi Christophe,
 
-I guess this needs to go with the [2/2] patch, since it also uses
-SZ_1T.
+I love your patch! Perhaps something to improve:
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on next-20211214]
+[cannot apply to hnaz-mm/master arm64/for-next/core linus/master v5.16-rc5]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-> ---
->  drivers/pci/controller/pci-xgene.c | 1 -
->  include/linux/sizes.h              | 2 ++
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/pci-xgene.c b/drivers/pci/controller/pci-xgene.c
-> index 56d0d50338c8..716dcab5ca47 100644
-> --- a/drivers/pci/controller/pci-xgene.c
-> +++ b/drivers/pci/controller/pci-xgene.c
-> @@ -49,7 +49,6 @@
->  #define EN_REG				0x00000001
->  #define OB_LO_IO			0x00000002
->  #define XGENE_PCIE_DEVICEID		0xE004
-> -#define SZ_1T				(SZ_1G*1024ULL)
->  #define PIPE_PHY_RATE_RD(src)		((0xc000 & (u32)(src)) >> 0xe)
->  
->  #define XGENE_V1_PCI_EXP_CAP		0x40
-> diff --git a/include/linux/sizes.h b/include/linux/sizes.h
-> index 1ac79bcee2bb..84aa448d8bb3 100644
-> --- a/include/linux/sizes.h
-> +++ b/include/linux/sizes.h
-> @@ -47,6 +47,8 @@
->  #define SZ_8G				_AC(0x200000000, ULL)
->  #define SZ_16G				_AC(0x400000000, ULL)
->  #define SZ_32G				_AC(0x800000000, ULL)
-> +
-> +#define SZ_1T				_AC(0x10000000000, ULL)
->  #define SZ_64T				_AC(0x400000000000, ULL)
->  
->  #endif /* __LINUX_SIZES_H__ */
-> -- 
-> 2.33.1
+url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/Convert-powerpc-to-default-topdown-mmap-layout/20211215-144700
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+config: powerpc64-randconfig-m031-20211214 (https://download.01.org/0day-ci/archive/20211216/202112160557.ANnYN1ZQ-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/6b1717476e74918c79cc7d76b009a9e0424a4414
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Christophe-Leroy/Convert-powerpc-to-default-topdown-mmap-layout/20211215-144700
+        git checkout 6b1717476e74918c79cc7d76b009a9e0424a4414
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   In file included from arch/powerpc/include/asm/processor.h:71,
+                    from arch/powerpc/include/asm/thread_info.h:40,
+                    from include/linux/thread_info.h:60,
+                    from include/asm-generic/preempt.h:5,
+                    from ./arch/powerpc/include/generated/asm/preempt.h:1,
+                    from include/linux/preempt.h:78,
+                    from include/linux/spinlock.h:55,
+                    from include/linux/mmzone.h:8,
+                    from include/linux/gfp.h:6,
+                    from include/linux/slab.h:15,
+                    from mm/mmap.c:13:
+   mm/mmap.c: In function 'generic_get_unmapped_area':
+>> arch/powerpc/include/asm/task_size_64.h:84:32: warning: suggest parentheses around '&&' within '||' [-Wparentheses]
+      84 |          ((flags) & MAP_FIXED) && ((addr) + (len) > DEFAULT_MAP_WINDOW) ? TASK_SIZE : \
+         |          ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   mm/mmap.c:2142:40: note: in expansion of macro 'arch_get_mmap_end'
+    2142 |         const unsigned long mmap_end = arch_get_mmap_end(addr, len, flags);
+         |                                        ^~~~~~~~~~~~~~~~~
+   mm/mmap.c: In function 'generic_get_unmapped_area_topdown':
+>> arch/powerpc/include/asm/task_size_64.h:84:32: warning: suggest parentheses around '&&' within '||' [-Wparentheses]
+      84 |          ((flags) & MAP_FIXED) && ((addr) + (len) > DEFAULT_MAP_WINDOW) ? TASK_SIZE : \
+         |          ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   mm/mmap.c:2190:40: note: in expansion of macro 'arch_get_mmap_end'
+    2190 |         const unsigned long mmap_end = arch_get_mmap_end(addr, len, flags);
+         |                                        ^~~~~~~~~~~~~~~~~
+
+
+vim +84 arch/powerpc/include/asm/task_size_64.h
+
+    78	
+    79	#define arch_get_mmap_base(addr, base) \
+    80		(((addr) > DEFAULT_MAP_WINDOW) ? (base) + TASK_SIZE - DEFAULT_MAP_WINDOW : (base))
+    81	
+    82	#define arch_get_mmap_end(addr, len, flags) \
+    83		(((addr) > DEFAULT_MAP_WINDOW) || \
+  > 84		 ((flags) & MAP_FIXED) && ((addr) + (len) > DEFAULT_MAP_WINDOW) ? TASK_SIZE : \
+    85										  DEFAULT_MAP_WINDOW)
+    86	
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
