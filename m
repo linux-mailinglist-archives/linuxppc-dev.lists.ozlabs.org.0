@@ -2,33 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6124474F2B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 01:27:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74302474F34
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 01:27:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JDGK25gdlz3cQD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 11:27:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JDGKT3HQWz3cb9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 11:27:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JDGJj1F95z2ywm
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JDGJj227pz2ywm
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 11:26:45 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JDGJh0qycz4xRB;
- Wed, 15 Dec 2021 11:26:44 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JDGJf6V6Zz4xQs;
+ Wed, 15 Dec 2021 11:26:42 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org,
- Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
-In-Reply-To: <20211207130557.40566-1-cascardo@canonical.com>
-References: <20211207130557.40566-1-cascardo@canonical.com>
-Subject: Re: [PATCH] selftests/powerpc/spectre_v2: Return skip code when
- miss_percent is high
-Message-Id: <163952788080.919625.5237049240642905738.b4-ty@ellerman.id.au>
+To: arnd@arndb.de, Anders Roxell <anders.roxell@linaro.org>
+In-Reply-To: <20211207110228.698956-1-anders.roxell@linaro.org>
+References: <20211207110228.698956-1-anders.roxell@linaro.org>
+Subject: Re: [PATCH] powerpc: platforms: cell: pervasive: fix clang
+ -Wimplicit-fallthrough
+Message-Id: <163952788002.919625.12030438662288837731.b4-ty@ellerman.id.au>
 Date: Wed, 15 Dec 2021 11:24:40 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -44,26 +43,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kselftest@vger.kernel.org
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, llvm@lists.linux.dev,
+ ndesaulniers@google.com, linux-kernel@vger.kernel.org, nathan@kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 7 Dec 2021 10:05:57 -0300, Thadeu Lima de Souza Cascardo wrote:
-> A mis-match between reported and actual mitigation is not restricted to the
-> Vulnerable case. The guest might also report the mitigation as "Software
-> count cache flush" and the host will still mitigate with branch cache
-> disabled.
+On Tue, 7 Dec 2021 12:02:28 +0100, Anders Roxell wrote:
+> Clang warns:
 > 
-> So, instead of skipping depending on the detected mitigation, simply skip
-> whenever the detected miss_percent is the expected one for a fully
-> mitigated system, that is, above 95%.
+> arch/powerpc/platforms/cell/pervasive.c:81:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
+>         case SRR1_WAKEEE:
+>         ^
+> arch/powerpc/platforms/cell/pervasive.c:81:2: note: insert 'break;' to avoid fall-through
+>         case SRR1_WAKEEE:
+>         ^
+>         break;
+> 1 error generated.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] selftests/powerpc/spectre_v2: Return skip code when miss_percent is high
-      https://git.kernel.org/powerpc/c/3c42e9542050d49610077e083c7c3f5fd5e26820
+[1/1] powerpc: platforms: cell: pervasive: fix clang -Wimplicit-fallthrough
+      https://git.kernel.org/powerpc/c/e89257e28e844f5d1d39081bb901d9f1183a7705
 
 cheers
