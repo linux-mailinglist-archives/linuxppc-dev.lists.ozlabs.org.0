@@ -1,71 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B0C476BC3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 09:19:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4646E476BC4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 09:20:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JF4lg1Jsjz3fF2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 19:19:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JF4mQ16t9z3fHX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 19:20:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AgCBvJ2V;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=X8n1kF0C;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f32;
- helo=mail-qv1-xf32.google.com; envelope-from=nnac123@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82c;
+ helo=mail-qt1-x82c.google.com; envelope-from=nnac123@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=AgCBvJ2V; dkim-atps=neutral
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com
- [IPv6:2607:f8b0:4864:20::f32])
+ header.s=20210112 header.b=X8n1kF0C; dkim-atps=neutral
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com
+ [IPv6:2607:f8b0:4864:20::82c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JDgKC19GPz308b
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 03:13:35 +1100 (AEDT)
-Received: by mail-qv1-xf32.google.com with SMTP id m17so20700063qvx.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 08:13:35 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JDgKF0y12z30HX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 03:13:37 +1100 (AEDT)
+Received: by mail-qt1-x82c.google.com with SMTP id v22so22281410qtx.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 08:13:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=DvMJ434CH1uK1ceYThBOiVq0e770iFS7Yqkua9hqxn8=;
- b=AgCBvJ2V2uhuPgS7VZA8U8ndMYFx38zKVcCcwNlf2Jj6sX2Dh3aw9V5PLOX+m7DMUo
- rbcrxF1ot1/Hl96dwFQmxQQ0pSe2nBRkMAugJ1h6bHz+6q/8X3F2yFcQwvGgv3PcGee1
- uRtZy50bIyZcNiYBQ7mE0k6H5syjh0QIBzHywuq3T4bXF+TbPvT/5VJdmWUuCxLM52nX
- nIcGa3Xjzw7e/ZPNqU/7Xg3YPU4+mUQ7qxH0ATLFUl9uGl3xVei0p1dwApkZE/MAq49d
- PEg+Z6rqTAlkAFOS3SXJsDDFr3b6BHYT9JDZS+0j+N9tOaF4HPDZ8VMslPfTtumUDhZY
- ULrw==
+ bh=5zwVV20JyZ7tzD2KFvN/thIii6fJmIVhEMKDPdNM4kM=;
+ b=X8n1kF0CtqztlyxvWV/CMngliejYtvC1Hsl9qvaZ1hxYazpKY7PbsxcSL/Ee2fwzol
+ A35DuPWYyXvSCUifJigs6OZkBjwQRTITiiWYCyBHEmJyraXk5QqfZ+0Xf47Nytra1hxx
+ QgpGX9lv2XqQNfp/sGkYoqnkSLYWnSkTo/FZfd2JcQwoLNyz0kLW6VYQ6ShYcYBuKunk
+ /4Q3dr5YJvkTRTmEplzfciYene0AKZZsfdFLnA6xLNDVxkb1HhnBttHPvLMcve2g2JVz
+ N5Owf/SUxMLbi7wjku6vW2ShhM0j/jKnDKfSpNmXW0HP6E7OmfGCiDOO86vSayDh8h1U
+ jSQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=DvMJ434CH1uK1ceYThBOiVq0e770iFS7Yqkua9hqxn8=;
- b=nVupk22LSWIPTBKNFFCckqtcVVxq11aPqdfeQMnz/nvLKhsR1XX0Qhihmt/dvGYsTu
- +7HnxTZO0wX2ZM6TojzKCpAhW18s0mMxHi0O6h3tqnMaaxxEFpmmGRFyap/dVkWIj4id
- Z15zn/4PWFjC5YUjWgnmdjTdx2syJfnU6JRAJWufMYokwd+/3hRkkxGurc8LfWS/XwkE
- LTv3ZuJnZWkChOLFxt0HvBnY2jPe3S9Cv7H48vxlzhTrXsZXj6DhVS1lWaJdgxri4seM
- p0yauUuJjcg6yFG4765hvrEvAqCy5HkmoMnG1jel9cfvm7Qy78rHy1tkU1SCD3UKvNxn
- mF1w==
-X-Gm-Message-State: AOAM531tzg+7GN4rLzJlHP2Aio23qAyFdD+8Y9ZKr7Yx49ve54frO9b/
- zjnke7meG6g+hLF9IvNlKdQtYrtUrEw=
-X-Google-Smtp-Source: ABdhPJyoO5d77TQzLKnFCmnz3MWjpaRtm0knv0BhseVjS+2ae04b9442awmqPS1KN4DkLc0tcDuIDQ==
-X-Received: by 2002:a05:6214:29c3:: with SMTP id
- gh3mr11772418qvb.44.1639584812751; 
- Wed, 15 Dec 2021 08:13:32 -0800 (PST)
+ bh=5zwVV20JyZ7tzD2KFvN/thIii6fJmIVhEMKDPdNM4kM=;
+ b=kcqc+mlz9yjsNpiIsR8TJRCEvTs9V8gVwkyZcUfL+e1vDK9JOwN7eTvqRjQrblhJPJ
+ 6Xr4qQn8r2pXEM5tED6hZ7P3MPua71LAQXFX1YoJn0UJqGvTQjMr/d1KcSqrpp5WsfXv
+ 2ahkBxhYgMytl9++/zk2C04c13dTiXQOIZUm/dD/vMbzs6CO34wH48HYDVvqUGUxX6b1
+ d9TrMMB6/pVBG+stDG85uJfXmv4au1u3Y9j2xjnGOYmK5U8lYEVHrKqx9almilPlasQe
+ Q2X98KHeXyP5HTH9sTGUiO9L7m2cxa3L+K+y6SJYHyDtxt1V8VhSzjQysmXJJ4eEHoQa
+ lm5g==
+X-Gm-Message-State: AOAM530zfGbY4ufAsJzpm44ICOGVN8XAUpZ2/H1NqMZNx3UlxbvKdq8G
+ IrI6QhQZyynJLfzysaK1vDFGjnzj4Vo=
+X-Google-Smtp-Source: ABdhPJx4/H+/yLrqES31nbJyfcebS1gpbTAxRXAR6CVgXFIRsAhBXXAVo7mYgz6NPr0/G5QOX1pkGA==
+X-Received: by 2002:ac8:7252:: with SMTP id l18mr12653814qtp.9.1639584814137; 
+ Wed, 15 Dec 2021 08:13:34 -0800 (PST)
 Received: from starship-12.hsd1.fl.comcast.net
  ([2601:589:4a00:1ed0:73:d0b0:acf1:e2d0])
- by smtp.gmail.com with ESMTPSA id t11sm1276436qkp.56.2021.12.15.08.13.31
+ by smtp.gmail.com with ESMTPSA id t11sm1276436qkp.56.2021.12.15.08.13.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Dec 2021 08:13:32 -0800 (PST)
+ Wed, 15 Dec 2021 08:13:33 -0800 (PST)
 From: Nick Child <nnac123@gmail.com>
 X-Google-Original-From: Nick Child <nick.child@ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 14/20] powerpc/4xx: Add __init attribute to eligible functions
-Date: Wed, 15 Dec 2021 11:12:37 -0500
-Message-Id: <20211215161243.16396-15-nick.child@ibm.com>
+Subject: [PATCH 15/20] powerpc/44x: Add __init attribute to eligible functions
+Date: Wed, 15 Dec 2021 11:12:38 -0500
+Message-Id: <20211215161243.16396-16-nick.child@ibm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211215161243.16396-1-nick.child@ibm.com>
 References: <20211215161243.16396-1-nick.child@ibm.com>
@@ -88,51 +87,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some functions defined in 'arch/powerpc/platforms/4xx' are deserving of an
+Some functions defined in 'arch/powerpc/platforms/44x/' are deserving of an
 `__init` macro attribute. These functions are only called by other
 initialization functions and therefore should inherit the attribute.
 
 Signed-off-by: Nick Child <nick.child@ibm.com>
 ---
- arch/powerpc/platforms/4xx/cpm.c | 4 ++--
- arch/powerpc/platforms/4xx/pci.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/44x/fsp2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/4xx/cpm.c b/arch/powerpc/platforms/4xx/cpm.c
-index ae8b812c9202..2571841625a2 100644
---- a/arch/powerpc/platforms/4xx/cpm.c
-+++ b/arch/powerpc/platforms/4xx/cpm.c
-@@ -163,7 +163,7 @@ static ssize_t cpm_idle_store(struct kobject *kobj,
- static struct kobj_attribute cpm_idle_attr =
- 	__ATTR(idle, 0644, cpm_idle_show, cpm_idle_store);
- 
--static void cpm_idle_config_sysfs(void)
-+static void __init cpm_idle_config_sysfs(void)
- {
- 	struct device *dev;
- 	unsigned long ret;
-@@ -231,7 +231,7 @@ static const struct platform_suspend_ops cpm_suspend_ops = {
- 	.enter		= cpm_suspend_enter,
- };
- 
--static int cpm_get_uint_property(struct device_node *np,
-+static int __init cpm_get_uint_property(struct device_node *np,
- 				 const char *name)
- {
- 	int len;
-diff --git a/arch/powerpc/platforms/4xx/pci.c b/arch/powerpc/platforms/4xx/pci.c
-index c13d64c3b019..24f41e178cbc 100644
---- a/arch/powerpc/platforms/4xx/pci.c
-+++ b/arch/powerpc/platforms/4xx/pci.c
-@@ -1273,7 +1273,7 @@ static int __init ppc405ex_pciex_core_init(struct device_node *np)
- 	return 2;
+diff --git a/arch/powerpc/platforms/44x/fsp2.c b/arch/powerpc/platforms/44x/fsp2.c
+index 823397c802de..af13a59d2f60 100644
+--- a/arch/powerpc/platforms/44x/fsp2.c
++++ b/arch/powerpc/platforms/44x/fsp2.c
+@@ -197,7 +197,7 @@ static irqreturn_t rst_wrn_handler(int irq, void *data) {
+ 	}
  }
  
--static void ppc405ex_pcie_phy_reset(struct ppc4xx_pciex_port *port)
-+static void __init ppc405ex_pcie_phy_reset(struct ppc4xx_pciex_port *port)
+-static void node_irq_request(const char *compat, irq_handler_t errirq_handler)
++static void __init node_irq_request(const char *compat, irq_handler_t errirq_handler)
  {
- 	/* Assert the PE0_PHY reset */
- 	mtdcri(SDR0, port->sdr_base + PESDRn_RCSSET, 0x01010000);
+ 	struct device_node *np;
+ 	unsigned int irq;
+@@ -222,7 +222,7 @@ static void node_irq_request(const char *compat, irq_handler_t errirq_handler)
+ 	}
+ }
+ 
+-static void critical_irq_setup(void)
++static void __init critical_irq_setup(void)
+ {
+ 	node_irq_request(FSP2_CMU_ERR, cmu_err_handler);
+ 	node_irq_request(FSP2_BUS_ERR, bus_err_handler);
 -- 
 2.25.1
 
