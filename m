@@ -1,60 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3E2475B4A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 16:01:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E60B5475C02
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 16:42:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JDdk52m3Rz3cTQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 02:01:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JDfd83dfkz3c5j
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 02:42:20 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CJqKxvjF;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.52; helo=mail-ot1-f52.google.com;
- envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com
- [209.85.210.52])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=CJqKxvjF; dkim-atps=neutral
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JDdjf4p0Yz305B
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 02:01:08 +1100 (AEDT)
-Received: by mail-ot1-f52.google.com with SMTP id
- 35-20020a9d08a6000000b00579cd5e605eso25312941otf.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 07:01:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=Jq0x8iVALaGMJU7xAVYGCo3xMt/B1pDw6eEI2Wc91JY=;
- b=pXPFEpL5JqWbLtyxx499aH98rKsDbWy+EcqlULEo0cWZW2Uiy2y0Wr0sFFw3DujCG8
- pL4p2JRzsf0SSrZc68N1YcOaiTBuEhUrN8Pqrldn4+cDRmiMiFb1PZYaU7i/vRcI9W8g
- OcuWdhs0x4Tx8trjlXQVaN2acn0sugSli/OS7AMw/IfTPERvhNKPQdCMsbY5DxzsebUg
- zskxuNe1i19kQeaYw0FJz/2y8V5vt5T61Vln2hdJhFIKrZUZpLzZbJXQ/tFhDLg9490P
- qxGPOgXYqZP9qq5Faf5KZEeVuyTAG4j3beVEimjnA4AQfP9Gc13ESJRWACU9h1ezko4M
- hZeQ==
-X-Gm-Message-State: AOAM532hnZiKcGZFp4d1l7slPb6QvC51WlrUm95jKpK48Cm7FCy9Hr1m
- qq/zvrQH1+FDDeqWZUdpJg==
-X-Google-Smtp-Source: ABdhPJy9pSAKcn/6iGV5Hbw1t6r2jfryKDONyLlWKGyr+6nX1um5VXoLr8WiphSTjUPLS5R9dSYbpw==
-X-Received: by 2002:a9d:70ce:: with SMTP id w14mr8776986otj.77.1639580464571; 
- Wed, 15 Dec 2021 07:01:04 -0800 (PST)
-Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net.
- [66.90.148.213])
- by smtp.googlemail.com with ESMTPSA id r22sm387007oij.36.2021.12.15.07.01.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Dec 2021 07:01:03 -0800 (PST)
-From: Rob Herring <robh@kernel.org>
-To: John Crispin <john@phrozen.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Frank Rowand <frowand.list@gmail.com>
-Subject: [PATCH v4] of/fdt: Rework early_init_dt_scan_memory() to call directly
-Date: Wed, 15 Dec 2021 09:01:02 -0600
-Message-Id: <20211215150102.1303588-1-robh@kernel.org>
-X-Mailer: git-send-email 2.32.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JDfcV3Fdsz307l
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 02:41:39 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1639582906; x=1671118906;
+ h=date:from:to:cc:subject:message-id:mime-version:
+ content-transfer-encoding;
+ bh=kf6xWAn86TWiWLI4DYc3IVIG2PwGFjvjLXPSKIdWGY0=;
+ b=CJqKxvjFSl+IIGOWbL6S0oSssjEqCqmh12a0mRvtYYI4YMf72qhWqSdh
+ kA2LsE+a9Wg7R8PXqadQiPdbOPGZO/+Tn9ee+tdK/yzL32P3vuYpiVYZo
+ XWPVaniW6fbowP3uDsDm+E+Qm+KoxrMuZly0DHlht7lvjU7yz0MgsnVRA
+ CIjGpd4f2CTHAQFaRSjF/P+fTBHJMZtCG/cmkN/M6k73c9vXWlAZLTT7U
+ hy5Pe7fvPnB6HgEOsi23WGXnqutOSmPx2VZKh/ApQspQvIMXcmQeOd5Nz
+ 61Ja+0NeU6AB7JGmeWP8DQf7k7i+Rysgbf+Ywof3G51SuRhI7/O3YIdap Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10198"; a="263406992"
+X-IronPort-AV: E=Sophos;i="5.88,207,1635231600"; d="scan'208";a="263406992"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Dec 2021 07:40:07 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,207,1635231600"; d="scan'208";a="682541372"
+Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
+ by orsmga005.jf.intel.com with ESMTP; 15 Dec 2021 07:40:05 -0800
+Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mxWNw-0001xz-Ke; Wed, 15 Dec 2021 15:40:04 +0000
+Date: Wed, 15 Dec 2021 23:39:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:topic/ppc-kvm] BUILD SUCCESS
+ 63fa47ba886b86cbd58f03b3b01b04bd57a1f233
+Message-ID: <61ba0c38.ulg2F89h+I+MSy8E%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,245 +68,250 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, Frank Rowand <frank.rowand@sony.com>,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use of the of_scan_flat_dt() function predates libfdt and is discouraged
-as libfdt provides a nicer set of APIs. Rework
-early_init_dt_scan_memory() to be called directly and use libfdt.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
+branch HEAD: 63fa47ba886b86cbd58f03b3b01b04bd57a1f233  KVM: PPC: Book3S HV P9: Use kvm_arch_vcpu_get_wait() to get rcuwait object
 
-Cc: John Crispin <john@phrozen.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Frank Rowand <frowand.list@gmail.com>
-Cc: linux-mips@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Frank Rowand <frank.rowand@sony.com>
-Link: https://lore.kernel.org/r/20211208155839.4084795-1-robh@kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
+elapsed time: 1597m
+
+configs tested: 221
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                 randconfig-c001-20211214
+mips                 randconfig-c004-20211214
+i386                 randconfig-c001-20211215
+sh                 kfr2r09-romimage_defconfig
+powerpc                    klondike_defconfig
+xtensa                    xip_kc705_defconfig
+arm                      tct_hammer_defconfig
+m68k                          amiga_defconfig
+arm                          pcm027_defconfig
+sh                        apsh4ad0a_defconfig
+arm                         lpc32xx_defconfig
+mips                      bmips_stb_defconfig
+arm                            hisi_defconfig
+arm                            mps2_defconfig
+mips                           ip22_defconfig
+sh                          urquell_defconfig
+powerpc                      acadia_defconfig
+powerpc                      tqm8xx_defconfig
+arm                          gemini_defconfig
+csky                             alldefconfig
+arm                        cerfcube_defconfig
+powerpc                        cell_defconfig
+powerpc                   motionpro_defconfig
+powerpc                 mpc834x_itx_defconfig
+sh                               alldefconfig
+arm                             mxs_defconfig
+nds32                             allnoconfig
+mips                           ip27_defconfig
+powerpc                      ep88xc_defconfig
+arm                           stm32_defconfig
+xtensa                       common_defconfig
+sh                         ecovec24_defconfig
+powerpc                      pasemi_defconfig
+powerpc                    gamecube_defconfig
+powerpc64                        alldefconfig
+mips                  cavium_octeon_defconfig
+arm                     eseries_pxa_defconfig
+arm                      footbridge_defconfig
+arm                          pxa168_defconfig
+riscv                            allmodconfig
+m68k                          sun3x_defconfig
+arm                         s5pv210_defconfig
+mips                         tb0226_defconfig
+powerpc                          allyesconfig
+mips                         tb0219_defconfig
+powerpc                 xes_mpc85xx_defconfig
+arm64                            alldefconfig
+arc                    vdk_hs38_smp_defconfig
+arm                         orion5x_defconfig
+powerpc                   lite5200b_defconfig
+arc                     nsimosci_hs_defconfig
+powerpc                 mpc85xx_cds_defconfig
+um                             i386_defconfig
+powerpc                        fsp2_defconfig
+mips                         mpc30x_defconfig
+arm                            dove_defconfig
+arm                        oxnas_v6_defconfig
+sh                          polaris_defconfig
+mips                     loongson2k_defconfig
+arc                 nsimosci_hs_smp_defconfig
+powerpc                 mpc834x_mds_defconfig
+powerpc                 mpc836x_mds_defconfig
+arm                         hackkit_defconfig
+mips                      malta_kvm_defconfig
+mips                           ci20_defconfig
+sh                          r7780mp_defconfig
+arm                   milbeaut_m10v_defconfig
+arm                  colibri_pxa270_defconfig
+powerpc                      makalu_defconfig
+arm                      jornada720_defconfig
+arm                           sama5_defconfig
+mips                            ar7_defconfig
+arm                       aspeed_g5_defconfig
+riscv             nommu_k210_sdcard_defconfig
+arm                       imx_v4_v5_defconfig
+mips                      fuloong2e_defconfig
+arm                         assabet_defconfig
+arm                      integrator_defconfig
+powerpc                 mpc832x_rdb_defconfig
+arm                          lpd270_defconfig
+powerpc                     ppa8548_defconfig
+mips                      maltaaprp_defconfig
+arm                          imote2_defconfig
+sh                      rts7751r2d1_defconfig
+sparc                               defconfig
+sh                         microdev_defconfig
+powerpc                     stx_gp3_defconfig
+parisc                           alldefconfig
+m68k                        m5307c3_defconfig
+xtensa                          iss_defconfig
+sh                            shmin_defconfig
+sh                  sh7785lcr_32bit_defconfig
+m68k                        stmark2_defconfig
+h8300                       h8s-sim_defconfig
+x86_64                           allyesconfig
+arm                         lubbock_defconfig
+mips                        vocore2_defconfig
+i386                             alldefconfig
+mips                           rs90_defconfig
+mips                    maltaup_xpa_defconfig
+sparc                       sparc32_defconfig
+h8300                               defconfig
+openrisc                            defconfig
+powerpc                       ppc64_defconfig
+powerpc                      pmac32_defconfig
+m68k                             alldefconfig
+arm                            qcom_defconfig
+sh                           se7724_defconfig
+sparc64                             defconfig
+h8300                    h8300h-sim_defconfig
+arm                         socfpga_defconfig
+powerpc                      bamboo_defconfig
+ia64                         bigsur_defconfig
+arm                        multi_v5_defconfig
+arm                        shmobile_defconfig
+arm                        magician_defconfig
+sh                                  defconfig
+powerpc                    mvme5100_defconfig
+arm                          moxart_defconfig
+sparc                            alldefconfig
+powerpc                     pseries_defconfig
+arm                      pxa255-idp_defconfig
+m68k                       bvme6000_defconfig
+powerpc                          g5_defconfig
+arm                           sama7_defconfig
+arm                  randconfig-c002-20211214
+arm                  randconfig-c002-20211215
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a006-20211214
+x86_64               randconfig-a005-20211214
+x86_64               randconfig-a001-20211214
+x86_64               randconfig-a002-20211214
+x86_64               randconfig-a003-20211214
+x86_64               randconfig-a004-20211214
+i386                 randconfig-a001-20211214
+i386                 randconfig-a002-20211214
+i386                 randconfig-a005-20211214
+i386                 randconfig-a003-20211214
+i386                 randconfig-a006-20211214
+i386                 randconfig-a004-20211214
+x86_64               randconfig-a011-20211215
+x86_64               randconfig-a014-20211215
+x86_64               randconfig-a012-20211215
+x86_64               randconfig-a013-20211215
+x86_64               randconfig-a016-20211215
+x86_64               randconfig-a015-20211215
+i386                 randconfig-a013-20211215
+i386                 randconfig-a011-20211215
+i386                 randconfig-a016-20211215
+i386                 randconfig-a014-20211215
+i386                 randconfig-a015-20211215
+i386                 randconfig-a012-20211215
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
+
+clang tested configs:
+arm                  randconfig-c002-20211214
+x86_64               randconfig-c007-20211214
+riscv                randconfig-c006-20211214
+mips                 randconfig-c004-20211214
+i386                 randconfig-c001-20211214
+s390                 randconfig-c005-20211214
+powerpc              randconfig-c003-20211214
+x86_64               randconfig-a011-20211214
+x86_64               randconfig-a014-20211214
+x86_64               randconfig-a012-20211214
+x86_64               randconfig-a013-20211214
+x86_64               randconfig-a016-20211214
+x86_64               randconfig-a015-20211214
+i386                 randconfig-a013-20211214
+i386                 randconfig-a011-20211214
+i386                 randconfig-a016-20211214
+i386                 randconfig-a014-20211214
+i386                 randconfig-a015-20211214
+i386                 randconfig-a012-20211214
+hexagon              randconfig-r045-20211214
+s390                 randconfig-r044-20211214
+riscv                randconfig-r042-20211214
+hexagon              randconfig-r041-20211214
+hexagon              randconfig-r045-20211215
+hexagon              randconfig-r041-20211215
+
 ---
-v4:
- - Revert the changes to search for memory nodes at any level which were
-   accidentally committed.
-v3:
- - Fix powerpc when /ibm,dynamic-reconfiguration-memory is present
-v2:
- - ralink: Use 'if' instead of 'else if'
- - early_init_dt_scan_memory: continue instead of return on no reg
- - Fix indentation
----
- arch/mips/ralink/of.c      | 19 +++--------
- arch/powerpc/kernel/prom.c | 21 ++++++------
- drivers/of/fdt.c           | 68 ++++++++++++++++++++------------------
- include/linux/of_fdt.h     |  3 +-
- 4 files changed, 51 insertions(+), 60 deletions(-)
-
-diff --git a/arch/mips/ralink/of.c b/arch/mips/ralink/of.c
-index 0135376c5de5..35a87a2da10b 100644
---- a/arch/mips/ralink/of.c
-+++ b/arch/mips/ralink/of.c
-@@ -53,17 +53,6 @@ void __init device_tree_init(void)
- 	unflatten_and_copy_device_tree();
- }
- 
--static int memory_dtb;
--
--static int __init early_init_dt_find_memory(unsigned long node,
--				const char *uname, int depth, void *data)
--{
--	if (depth == 1 && !strcmp(uname, "memory@0"))
--		memory_dtb = 1;
--
--	return 0;
--}
--
- void __init plat_mem_setup(void)
- {
- 	void *dtb;
-@@ -77,10 +66,10 @@ void __init plat_mem_setup(void)
- 	dtb = get_fdt();
- 	__dt_setup_arch(dtb);
- 
--	of_scan_flat_dt(early_init_dt_find_memory, NULL);
--	if (memory_dtb)
--		of_scan_flat_dt(early_init_dt_scan_memory, NULL);
--	else if (soc_info.mem_detect)
-+	if (!early_init_dt_scan_memory())
-+		return;
-+
-+	if (soc_info.mem_detect)
- 		soc_info.mem_detect();
- 	else if (soc_info.mem_size)
- 		memblock_add(soc_info.mem_base, soc_info.mem_size * SZ_1M);
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 6e1a106f02eb..ad1230c4f3fe 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -532,19 +532,18 @@ static int  __init early_init_drmem_lmb(struct drmem_lmb *lmb,
- }
- #endif /* CONFIG_PPC_PSERIES */
- 
--static int __init early_init_dt_scan_memory_ppc(unsigned long node,
--						const char *uname,
--						int depth, void *data)
-+static int __init early_init_dt_scan_memory_ppc(void)
- {
- #ifdef CONFIG_PPC_PSERIES
--	if (depth == 1 &&
--	    strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0) {
-+	const void *fdt = initial_boot_params;
-+	int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
-+
-+	if (node > 0)
- 		walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
--		return 0;
--	}
-+
- #endif
--	
--	return early_init_dt_scan_memory(node, uname, depth, data);
-+
-+	return early_init_dt_scan_memory();
- }
- 
- /*
-@@ -749,7 +748,7 @@ void __init early_init_devtree(void *params)
- 
- 	/* Scan memory nodes and rebuild MEMBLOCKs */
- 	early_init_dt_scan_root();
--	of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
-+	early_init_dt_scan_memory_ppc();
- 
- 	parse_early_param();
- 
-@@ -858,7 +857,7 @@ void __init early_get_first_memblock_info(void *params, phys_addr_t *size)
- 	 */
- 	add_mem_to_memblock = 0;
- 	early_init_dt_scan_root();
--	of_scan_flat_dt(early_init_dt_scan_memory_ppc, NULL);
-+	early_init_dt_scan_memory_ppc();
- 	add_mem_to_memblock = 1;
- 
- 	if (size)
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 5e216555fe4f..a835c458f50a 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -1078,49 +1078,53 @@ u64 __init dt_mem_next_cell(int s, const __be32 **cellp)
- /*
-  * early_init_dt_scan_memory - Look for and parse memory nodes
-  */
--int __init early_init_dt_scan_memory(unsigned long node, const char *uname,
--				     int depth, void *data)
-+int __init early_init_dt_scan_memory(void)
- {
--	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
--	const __be32 *reg, *endp;
--	int l;
--	bool hotpluggable;
-+	int node;
-+	const void *fdt = initial_boot_params;
- 
--	/* We are scanning "memory" nodes only */
--	if (type == NULL || strcmp(type, "memory") != 0)
--		return 0;
-+	fdt_for_each_subnode(node, fdt, 0) {
-+		const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
-+		const __be32 *reg, *endp;
-+		int l;
-+		bool hotpluggable;
- 
--	reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
--	if (reg == NULL)
--		reg = of_get_flat_dt_prop(node, "reg", &l);
--	if (reg == NULL)
--		return 0;
-+		/* We are scanning "memory" nodes only */
-+		if (type == NULL || strcmp(type, "memory") != 0)
-+			continue;
- 
--	endp = reg + (l / sizeof(__be32));
--	hotpluggable = of_get_flat_dt_prop(node, "hotpluggable", NULL);
-+		reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
-+		if (reg == NULL)
-+			reg = of_get_flat_dt_prop(node, "reg", &l);
-+		if (reg == NULL)
-+			continue;
- 
--	pr_debug("memory scan node %s, reg size %d,\n", uname, l);
-+		endp = reg + (l / sizeof(__be32));
-+		hotpluggable = of_get_flat_dt_prop(node, "hotpluggable", NULL);
- 
--	while ((endp - reg) >= (dt_root_addr_cells + dt_root_size_cells)) {
--		u64 base, size;
-+		pr_debug("memory scan node %s, reg size %d,\n",
-+			 fdt_get_name(fdt, node, NULL), l);
- 
--		base = dt_mem_next_cell(dt_root_addr_cells, &reg);
--		size = dt_mem_next_cell(dt_root_size_cells, &reg);
-+		while ((endp - reg) >= (dt_root_addr_cells + dt_root_size_cells)) {
-+			u64 base, size;
- 
--		if (size == 0)
--			continue;
--		pr_debug(" - %llx, %llx\n", base, size);
-+			base = dt_mem_next_cell(dt_root_addr_cells, &reg);
-+			size = dt_mem_next_cell(dt_root_size_cells, &reg);
- 
--		early_init_dt_add_memory_arch(base, size);
-+			if (size == 0)
-+				continue;
-+			pr_debug(" - %llx, %llx\n", base, size);
- 
--		if (!hotpluggable)
--			continue;
-+			early_init_dt_add_memory_arch(base, size);
- 
--		if (memblock_mark_hotplug(base, size))
--			pr_warn("failed to mark hotplug range 0x%llx - 0x%llx\n",
--				base, base + size);
--	}
-+			if (!hotpluggable)
-+				continue;
- 
-+			if (memblock_mark_hotplug(base, size))
-+				pr_warn("failed to mark hotplug range 0x%llx - 0x%llx\n",
-+					base, base + size);
-+		}
-+	}
- 	return 0;
- }
- 
-@@ -1271,7 +1275,7 @@ void __init early_init_dt_scan_nodes(void)
- 		pr_warn("No chosen node found, continuing without\n");
- 
- 	/* Setup memory, calling early_init_dt_add_memory_arch */
--	of_scan_flat_dt(early_init_dt_scan_memory, NULL);
-+	early_init_dt_scan_memory();
- 
- 	/* Handle linux,usable-memory-range property */
- 	memblock_cap_memory_range(cap_mem_addr, cap_mem_size);
-diff --git a/include/linux/of_fdt.h b/include/linux/of_fdt.h
-index df3d31926c3c..914739f3c192 100644
---- a/include/linux/of_fdt.h
-+++ b/include/linux/of_fdt.h
-@@ -59,8 +59,7 @@ extern unsigned long of_get_flat_dt_root(void);
- extern uint32_t of_get_flat_dt_phandle(unsigned long node);
- 
- extern int early_init_dt_scan_chosen(char *cmdline);
--extern int early_init_dt_scan_memory(unsigned long node, const char *uname,
--				     int depth, void *data);
-+extern int early_init_dt_scan_memory(void);
- extern int early_init_dt_scan_chosen_stdout(void);
- extern void early_init_fdt_scan_reserved_mem(void);
- extern void early_init_fdt_reserve_self(void);
--- 
-2.32.0
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
