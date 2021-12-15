@@ -2,89 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12E24751BE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 05:36:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EF2047527C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 07:05:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JDMsB58RHz3bYW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 15:36:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JDPqb1bbdz307B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 17:05:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=WQTK8vW9;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=HzCH0ahP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j66aG4va;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=66.111.4.28;
- helo=out4-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2b;
+ helo=mail-qv1-xf2b.google.com; envelope-from=cgel.zte@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm3 header.b=WQTK8vW9; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm1 header.b=HzCH0ahP; 
- dkim-atps=neutral
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com
- [66.111.4.28])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=j66aG4va; dkim-atps=neutral
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com
+ [IPv6:2607:f8b0:4864:20::f2b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JDMrQ3DGnz304R
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 15:36:05 +1100 (AEDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.nyi.internal (Postfix) with ESMTP id 6869E5C01FE;
- Tue, 14 Dec 2021 23:36:01 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute4.internal (MEProxy); Tue, 14 Dec 2021 23:36:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- message-id:subject:from:to:cc:in-reply-to:references
- :content-type:date:mime-version:content-transfer-encoding; s=
- fm3; bh=wiF2JcwxoM8+U2DE8QbAmNOqDLX5bXcTRCnqS868btU=; b=WQTK8vW9
- 3pVsezLImHDI7wIyrVsF3i1hsNmhT3XL0VMAtMwIc0hTPUThdpo5vbDZnykmVHvD
- p9zhhnpQowxjfkTcO/XpbfUNfWIEcOGzm95KOpmSXk/jg+9gHgXHKoo4NQZ4taL1
- yk9QrdAWobdbHUre07zO7yjz+dUBHDSDYX679Ed4ZO38A1uJeLKBwdkjgspejyco
- 9+7MM+jw00y1Rr36ptSCXTk7q9m9orUL/PW38cxEiSjXylxzGY09MTPkGv1uplCn
- nR7hB6erEEgr2tO5rgYIx3gH5gU7SO5BueYk2SxWLAJTHCR4KUr6rCCNaIJE/BAT
- /fKXHZx3ry3TKg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:content-type
- :date:from:in-reply-to:message-id:mime-version:references
- :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm1; bh=wiF2JcwxoM8+U2DE8QbAmNOqDLX5bXcTRCnqS868b
- tU=; b=HzCH0ahP/Cw6HonBtY0VK+eJFoQ8J31XRL/0P0Qqqp5RPSmb+jeXoFRoZ
- dRtas/xh6zdVGyZbGsJiLqmYW901PX2JA2afg/TCtNwJqfMsdnh5Hl8HPJwTpnKM
- Y+euXlXtjNXeqlVlsWkQ+GWmbRbxl93yrp26LaqgDCM1KAwHLoFM48wthk+p3nVT
- QQg/0KVcRIQwDo0NIEbvIRfMefXUiKAvaj6l2jJBdYwsJNgJYkQ2IyuZHa1rQeba
- mKXxbx6yIUH0UAMCWe1LPw4HmYb9ef0ErE59PkuEorRTSPwW0fszrJ7BCjWpPa8S
- WMVtSAIvkN7p2t5cxc/INSjbeYweA==
-X-ME-Sender: <xms:sXC5YVznTGMj8lTgMvDaaVcNj83wIkDUREwYt8g6PBzg5MTQuGM8VQ>
- <xme:sXC5YVRGYbhjvM31xZ1YI9N51Xoa3_7vQB5O8lHo6YHpb5qdy-hNqLdDIgw2MIC7N
- TErPJIQfoqcImSs6Q>
-X-ME-Received: <xmr:sXC5YfXBaotD0ew_MTN1bytUIqQdwT-opH5VkgS5ZoKPPY9NGcTtjPBX7skUAt04doiXr7F__K6w3D6-PdvrO2WEfcv1A1yvKXQXg-g0ARcHwfSCCefN>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvuddrledugdeiiecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
- hrlhcuvffnffculdduhedmnecujfgurhepkffuhffvjghftgffgggfgfesthekredttder
- jeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
- gvlhhlrdgttgeqnecuggftrfgrthhtvghrnhepffevffeuveelieevvdevueegheeuheeh
- gfethfevhfduiedtudeiffevjeduvedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
- hrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
-X-ME-Proxy: <xmx:sXC5YXgfds8Yd0NAeaAYBYDooZitDbReU1pc84puzU_-EqWgZsAgGw>
- <xmx:sXC5YXD6dMSIjaNjT4zjUMIBlYfujdxwgKYbtOX103Ifg3MAQ-JONg>
- <xmx:sXC5YQLe9T6aVeqwR77Y4XUYgsOO3VAVPfierIddmH7qoEFAlz5iEA>
- <xmx:sXC5Yc6hdEvo3w7smgODGVuhbPWxSrXSQee5erbZTiKfODgTEfN_qQ>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Dec 2021 23:35:59 -0500 (EST)
-Message-ID: <7f39553bd839709f7fdcc1cb136de3aa0241dc0c.camel@russell.cc>
-Subject: Re: [PATCH]selftests/powerpc: skip tests for unavailable mitigations.
-From: Russell Currey <ruscur@russell.cc>
-To: Sachin Sant <sachinp@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <163941374362.36967.18016981579099073379.sendpatchset@1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa>
-References: <163941374362.36967.18016981579099073379.sendpatchset@1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa>
-Content-Type: text/plain; charset="UTF-8"
-Date: Wed, 15 Dec 2021 14:35:54 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JDPpt0lSzz301k
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 17:04:52 +1100 (AEDT)
+Received: by mail-qv1-xf2b.google.com with SMTP id bu11so19467049qvb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Dec 2021 22:04:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=2R5OeRRbE3oFvfnQ6EkZyxFAy5mgz3HVPN8knpgRZ+4=;
+ b=j66aG4va2AEf5a1Tg6TnnySxzXSk/TojXjsiXYw/cLsBi9ppRIfHI8dkr4sfgZq0gP
+ FnYFLdYXXaICFTm+/BRikIVOPfie847o0a895FY71HhfKMfMt3nxCh6DgjPMw5hDhZCO
+ 8j7bfg9SYEfSIPzm1HtzGHrrSJtRMNvXNJB49hUOnUJf6pHyh60aR+BNW3w/Iw/81fua
+ qmJg04DcI5IjnUNcRRDfBWbOFUAQJ8ePKTpDaQYzaOz3fDO06mrn7u7AM0Ym5I+Wwrpn
+ na7f7CQDeuERZpkW6BQu4GU1hN/RyLLcS4DG95SeK4lMQS5Z6BrvQiHa4SDltuytfyaG
+ qyrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=2R5OeRRbE3oFvfnQ6EkZyxFAy5mgz3HVPN8knpgRZ+4=;
+ b=CXNy9Opu1uFTLtBvZTvo3cpLjCn5DfYJc+pM22nreIIHAu4uLERhDOmzBRjUqdcxKt
+ R72V3+CtFPBv9ZtyoKKTxHgyOWSktk2ijT7+k/pzYn7rC/a+tNW8GlhL+u6/uYvuhbGF
+ lPfnlD+Rsv0xITZrXY52DYp1Gv6wsTpLgFlOMcoGBByIXTP7uEfTduV6U8AWuLxIwVTg
+ RsmYW/C4GyI142xTIw3sZmPpwua5iydH/j2TyItKVpk5awJ9AAfrsKDD+6XdbJCMtXDI
+ BcKDd5/oepRAGCX1jLlEE4PsadxoN0kd8IqoyMrjFQY3uumtcm4LpYaTc6+g3zrJjrJZ
+ 6eFw==
+X-Gm-Message-State: AOAM531QFdvPZIrAGciiCEYp1z67YCajd3yQb9XkjoAD/2I6hr82skWb
+ JtBjI3sx86W13A/aGZZh33E=
+X-Google-Smtp-Source: ABdhPJysi/QemswnOvlwmBX+VdVLw9Xg1SigpRarxG7fxAwRCV2cUswrZ/m+trtWu/kkApevLcjCgA==
+X-Received: by 2002:a0c:c710:: with SMTP id w16mr9508506qvi.114.1639548283626; 
+ Tue, 14 Dec 2021 22:04:43 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+ by smtp.gmail.com with ESMTPSA id y16sm17017qkj.69.2021.12.14.22.04.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 Dec 2021 22:04:43 -0800 (PST)
+From: cgel.zte@gmail.com
+X-Google-Original-From: chi.minghao@zte.com.cn
+To: fbarrat@linux.ibm.com
+Subject: [PATCH misc-next] drivers/misc: remove redundant rc variable
+Date: Wed, 15 Dec 2021 06:04:38 +0000
+Message-Id: <20211215060438.441918-1-chi.minghao@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Evolution 3.42.2 
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -97,27 +78,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nageswara R Sastry <rnsastry@linux.ibm.com>
+Cc: ajd@linux.ibm.com, arnd@arndb.de, gregkh@linuxfoundation.org,
+ Zeal Robot <zealci@zte.com.cn>, linux-kernel@vger.kernel.org,
+ Minghao Chi <chi.minghao@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2021-12-13 at 22:12 +0530, Sachin Sant wrote:
-> Mitigation patching test iterates over a set of mitigations
-> irrespective
-> of whether a certain mitigation is supported/available in the kernel.
-> This causes following messages on a kernel where some mitigations
-> are unavailable:
-> 
->   Spawned threads enabling/disabling mitigations ...
->   cat: entry_flush: No such file or directory
->   cat: uaccess_flush: No such file or directory
->   Waiting for timeout ...
->   OK
-> 
-> This patch adds a check for available mitigations in the kernel.
-> 
-> Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-> Signed-off-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+From: Minghao Chi <chi.minghao@zte.com.cn>
 
-Reviewed-by: Russell Currey <ruscur@russell.cc>
+Return value from ocxl_context_attach() directly instead
+of taking this in another redundant variable.
+
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+---
+ drivers/misc/ocxl/file.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
+index e70525eedaae..d881f5e40ad9 100644
+--- a/drivers/misc/ocxl/file.c
++++ b/drivers/misc/ocxl/file.c
+@@ -74,7 +74,6 @@ static long afu_ioctl_attach(struct ocxl_context *ctx,
+ {
+ 	struct ocxl_ioctl_attach arg;
+ 	u64 amr = 0;
+-	int rc;
+ 
+ 	pr_debug("%s for context %d\n", __func__, ctx->pasid);
+ 
+@@ -86,8 +85,7 @@ static long afu_ioctl_attach(struct ocxl_context *ctx,
+ 		return -EINVAL;
+ 
+ 	amr = arg.amr & mfspr(SPRN_UAMOR);
+-	rc = ocxl_context_attach(ctx, amr, current->mm);
+-	return rc;
++	return ocxl_context_attach(ctx, amr, current->mm);
+ }
+ 
+ static long afu_ioctl_get_metadata(struct ocxl_context *ctx,
+-- 
+2.25.1
+
