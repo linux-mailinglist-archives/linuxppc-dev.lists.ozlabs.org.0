@@ -2,57 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF3DC475644
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 11:26:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9F0475657
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 11:28:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JDWc959yyz3c8K
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 21:26:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JDWgH0Zbnz3cC5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Dec 2021 21:28:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SPtvvB0B;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JVVc6P8C;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JDWbX4wx8z2yyf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 21:25:28 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=SPtvvB0B; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JDWbX2KXKz4xd4;
- Wed, 15 Dec 2021 21:25:28 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1639563928;
- bh=3R0VgynKtNl3FLsyWItoiGw25E6Vy04chDcTc/NGlg8=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=SPtvvB0BjYtARgDX1GdEqbbXC2ovev5L20lmyq1pTMPVdvAWwdtO/FD105XhIfPNj
- 4es7LLBLVQZpmAj0QuzGrbhHMkkwyIMi+eulT/fDTgmA1n32zj1TKlnTLNLsSH76XX
- JFyrNVESVX7+Pdh09WdJ0jQfxqgwoc/uOlWj1N30VuczpSHfYlcDd3GMtKbtwwGIGD
- yPG6lb+e5gh4uHPspHvU2eWgNv7kwMCp4VBmA1nrzACJw+JSsG6eq8k8DBsyN9rZM0
- wYynB2nHbNTI3vAdVoqOzOJPBiAucmDIBdxHhOYQnsoBHSJSFXSt13tlzZHSHgamE9
- wSbOYR2T2ldiQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2] of/fdt: Rework early_init_dt_scan_memory() to call
- directly
-In-Reply-To: <CAL_JsqKbaRgivZMxEj6Mjdny2LNeSA1GQyDW-nQe7E2irPc-Fw@mail.gmail.com>
-References: <20211208155839.4084795-1-robh@kernel.org>
- <87fsqwn03o.fsf@mpe.ellerman.id.au>
- <CAL_JsqLpq7fx0pyQiJFa0P5C3JXijiVe_fr84x9RML1aDJ7vDQ@mail.gmail.com>
- <877dc7mo3o.fsf@mpe.ellerman.id.au>
- <CAL_JsqKbaRgivZMxEj6Mjdny2LNeSA1GQyDW-nQe7E2irPc-Fw@mail.gmail.com>
-Date: Wed, 15 Dec 2021 21:25:27 +1100
-Message-ID: <87zgp2kvvs.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=JVVc6P8C; dkim-atps=neutral
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JDWfW4Fh0z2yyv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Dec 2021 21:28:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1639564083; x=1671100083;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=LkGJ+4FAnooNMJajceOtXw2YvpQUK863tvBjQaYETEY=;
+ b=JVVc6P8C+AiVzEGWjDTadiL9yna2Savaio54LNdnxs5bKt1UJ0yhzhfG
+ ILSq+19boD0PwH3JGFUFdvBCOdCnrTc45YazL1W2r7yBUUYIMoHlsisat
+ 2oWqFX4hUtJuccGfz1SPJ/DtqjTYvF22iQz4HHInzILMA4mOZzuNLXtcL
+ 49YIDstmvUdT9aqL6d+kb4fMbe/w8OY76e9h2JBDEROCxEdDq5++onDNb
+ 9eYfMc0YhstANYHt9LE9QrgQSlhfB81ZCgSyCskRVZLE2uc+tzSqnn0iN
+ XCQrRx3fMxWyGBRZa0RhuLp5F8H6C5WR69df82TZLTpEe+y03vRzwqehs g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10198"; a="239148430"
+X-IronPort-AV: E=Sophos;i="5.88,207,1635231600"; d="scan'208";a="239148430"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Dec 2021 02:27:00 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,207,1635231600"; d="scan'208";a="682438445"
+Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
+ by orsmga005.jf.intel.com with ESMTP; 15 Dec 2021 02:26:56 -0800
+Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mxRUt-0001bw-UV; Wed, 15 Dec 2021 10:26:55 +0000
+Date: Wed, 15 Dec 2021 18:26:19 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH kernel v3] KVM: PPC: Merge powerpc's debugfs entry
+ content into generic entry
+Message-ID: <202112151845.kedQxkhk-lkp@intel.com>
+References: <20211215013309.217102-1-aik@ozlabs.ru>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211215013309.217102-1-aik@ozlabs.ru>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,99 +70,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, John Crispin <john@phrozen.org>,
- Frank Rowand <frowand.list@gmail.com>
+Cc: kbuild-all@lists.01.org, kvm@vger.kernel.org,
+ Fabiano Rosas <farosas@linux.ibm.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ kvm-ppc@vger.kernel.org, =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rob Herring <robh@kernel.org> writes:
-> On Tue, Dec 14, 2021 at 5:18 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>
->> Rob Herring <robh@kernel.org> writes:
->> > On Mon, Dec 13, 2021 at 6:47 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->> >> Rob Herring <robh@kernel.org> writes:
->> >> > Use of the of_scan_flat_dt() function predates libfdt and is discouraged
->> >> > as libfdt provides a nicer set of APIs. Rework
->> >> > early_init_dt_scan_memory() to be called directly and use libfdt.
->> >> ...
->> >> > diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
->> >> > index 6e1a106f02eb..63762a3b75e8 100644
->> >> > --- a/arch/powerpc/kernel/prom.c
->> >> > +++ b/arch/powerpc/kernel/prom.c
->> >> > @@ -532,19 +532,19 @@ static int  __init early_init_drmem_lmb(struct drmem_lmb *lmb,
->> >> >  }
->> >> >  #endif /* CONFIG_PPC_PSERIES */
->> >> >
->> >> > -static int __init early_init_dt_scan_memory_ppc(unsigned long node,
->> >> > -                                             const char *uname,
->> >> > -                                             int depth, void *data)
->> >> > +static int __init early_init_dt_scan_memory_ppc(void)
->> >> >  {
->> >> >  #ifdef CONFIG_PPC_PSERIES
->> >> > -     if (depth == 1 &&
->> >> > -         strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0) {
->> >> > +     const void *fdt = initial_boot_params;
->> >> > +     int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
->> >> > +
->> >> > +     if (node > 0) {
->> >> >               walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
->> >> >               return 0;
->> >> >       }
->>
->> It's that return that is the problem.
->>
->> Now that early_init_dt_scan_memory_ppc() is only called once, that
->> return causes us to skip scanning regular memory nodes if there is an
->> "ibm,dynamic-reconfiguration-memory" property present.
->>
->> So the fix is just:
->>
->> diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
->> index 1098de3b172f..125661e5fcf3 100644
->> --- a/arch/powerpc/kernel/prom.c
->> +++ b/arch/powerpc/kernel/prom.c
->> @@ -538,10 +538,8 @@ static int __init early_init_dt_scan_memory_ppc(void)
->>         const void *fdt = initial_boot_params;
->>         int node = fdt_path_offset(fdt, "/ibm,dynamic-reconfiguration-memory");
->>
->> -       if (node > 0) {
->> +       if (node > 0)
->>                 walk_drmem_lmbs_early(node, NULL, early_init_drmem_lmb);
->> -               return 0;
->> -       }
->>  #endif
->>
->>         return early_init_dt_scan_memory();
->
-> Thanks! I've rolled that in.
->
->> > The only thing I see is now there is an assumption that 'memory' nodes
->> > are off the root node only. Before they could be anywhere.
->>
->> I don't know of any machines where that would be a problem. But given
->> all the wild and wonderful device trees out there, who really knows :)
->>
->> Maybe we should continue to allow memory nodes to be anywhere, and print
->> a warning for any that aren't at the root. Then if no one reports any
->> hits for the warning we could switch to only allowing them at the root?
->
-> I really doubt there's any case. I just have the least visibility into
-> what IBM DTs look like. I checked some old DT files I have and also
-> u-boot only supports off the root node.
+Hi Alexey,
 
-The IBM ones are pretty standard, it's other embedded things I'd be more
-worried about.
+Thank you for the patch! Yet something to improve:
 
-I have a collection of device trees, but they were given to me by
-various random people over the years and I'm not comfortable putting
-them up in public. I looked through those and didn't see anything odd.
+[auto build test ERROR on powerpc/topic/ppc-kvm]
+[also build test ERROR on v5.16-rc5]
+[cannot apply to next-20211214]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-I'll try and get a collection of device trees from machines of mine and
-put them somewhere public.
+url:    https://github.com/0day-ci/linux/commits/Alexey-Kardashevskiy/KVM-PPC-Merge-powerpc-s-debugfs-entry-content-into-generic-entry/20211215-094051
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
+config: powerpc-randconfig-r003-20211214 (https://download.01.org/0day-ci/archive/20211215/202112151845.kedQxkhk-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/bb4c492cb444748049b4392c1d6f97ca5c82f846
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Alexey-Kardashevskiy/KVM-PPC-Merge-powerpc-s-debugfs-entry-content-into-generic-entry/20211215-094051
+        git checkout bb4c492cb444748049b4392c1d6f97ca5c82f846
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/kvm/
 
-cheers
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+>> arch/powerpc/kvm/e500.c:498:32: error: initialization of 'int (*)(struct kvm_vcpu *, struct dentry *)' from incompatible pointer type 'void (*)(struct kvm_vcpu *, struct dentry *)' [-Werror=incompatible-pointer-types]
+     498 |         .create_vcpu_debugfs = kvmppc_create_vcpu_debugfs_e500,
+         |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/powerpc/kvm/e500.c:498:32: note: (near initialization for 'kvm_ops_e500.create_vcpu_debugfs')
+   cc1: all warnings being treated as errors
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for HOTPLUG_CPU
+   Depends on SMP && (PPC_PSERIES || PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE
+   Selected by
+   - PM_SLEEP_SMP && SMP && (ARCH_SUSPEND_POSSIBLE || ARCH_HIBERNATION_POSSIBLE && PM_SLEEP
+
+
+vim +498 arch/powerpc/kvm/e500.c
+
+   483	
+   484	static struct kvmppc_ops kvm_ops_e500 = {
+   485		.get_sregs = kvmppc_core_get_sregs_e500,
+   486		.set_sregs = kvmppc_core_set_sregs_e500,
+   487		.get_one_reg = kvmppc_get_one_reg_e500,
+   488		.set_one_reg = kvmppc_set_one_reg_e500,
+   489		.vcpu_load   = kvmppc_core_vcpu_load_e500,
+   490		.vcpu_put    = kvmppc_core_vcpu_put_e500,
+   491		.vcpu_create = kvmppc_core_vcpu_create_e500,
+   492		.vcpu_free   = kvmppc_core_vcpu_free_e500,
+   493		.init_vm = kvmppc_core_init_vm_e500,
+   494		.destroy_vm = kvmppc_core_destroy_vm_e500,
+   495		.emulate_op = kvmppc_core_emulate_op_e500,
+   496		.emulate_mtspr = kvmppc_core_emulate_mtspr_e500,
+   497		.emulate_mfspr = kvmppc_core_emulate_mfspr_e500,
+ > 498		.create_vcpu_debugfs = kvmppc_create_vcpu_debugfs_e500,
+   499	};
+   500	
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
