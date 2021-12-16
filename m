@@ -2,39 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78CDE476E34
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 10:50:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CFE476E79
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 11:04:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JF6mT3KBWz3cb5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 20:50:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JF74x1pBfz3cSC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 21:04:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bootlin.com (client-ip=217.70.178.232;
- helo=relay12.mail.gandi.net; envelope-from=alexandre.belloni@bootlin.com;
+ smtp.mailfrom=bootlin.com (client-ip=217.70.178.240;
+ helo=mslow1.mail.gandi.net; envelope-from=alexandre.belloni@bootlin.com;
  receiver=<UNKNOWN>)
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JF6m25vbhz3dfj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 20:49:53 +1100 (AEDT)
+Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JF74S5VL6z2xtM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 21:04:07 +1100 (AEDT)
+Received: from relay1-d.mail.gandi.net (unknown [217.70.183.193])
+ by mslow1.mail.gandi.net (Postfix) with ESMTP id 98B45D74C2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 09:51:12 +0000 (UTC)
 Received: (Authenticated sender: alexandre.belloni@bootlin.com)
- by relay12.mail.gandi.net (Postfix) with ESMTPSA id 2E19A200009;
- Thu, 16 Dec 2021 09:49:45 +0000 (UTC)
+ by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 7102024000D;
+ Thu, 16 Dec 2021 09:50:45 +0000 (UTC)
+Date: Thu, 16 Dec 2021 10:50:44 +0100
 From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Alessandro Zummo <a.zummo@towertech.it>,
- Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-Subject: Re: [PATCH v3 0/5] rtc: nintendo: Add a RTC driver for the GameCube,
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v3 0/5] rtc: nintendo: Add a RTC driver for the GameCube, 
  Wii and Wii U
-Date: Thu, 16 Dec 2021 10:49:44 +0100
-Message-Id: <163964813197.6786.14005810276404182021.b4-ty@bootlin.com>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211215175501.6761-1-linkmauve@linkmauve.fr>
+Message-ID: <YbsL9C6qjo/8SgjU@piout.net>
 References: <20211027223516.2031-1-linkmauve@linkmauve.fr>
  <20211215175501.6761-1-linkmauve@linkmauve.fr>
+ <87tuf9kv6c.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87tuf9kv6c.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,43 +48,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- rw-r-r-0644 <r.r.qwertyuiop.r.r@gmail.com>, linux-kernel@vger.kernel.org,
+Cc: linux-rtc@vger.kernel.org, Alessandro Zummo <a.zummo@towertech.it>,
+ devicetree@vger.kernel.org, Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>,
+ linux-kernel@vger.kernel.org, rw-r-r-0644 <r.r.qwertyuiop.r.r@gmail.com>,
  Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
  Ash Logan <ash@heyquark.com>, linuxppc-dev@lists.ozlabs.org,
- =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.ne@posteo.net>
+ Jonathan =?iso-8859-1?Q?Neusch=E4fer?= <j.ne@posteo.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 15 Dec 2021 18:54:56 +0100, Emmanuel Gil Peyrot wrote:
-> These three consoles share a device, the MX23L4005, which contains a
-> clock and 64 bytes of SRAM storage, and is exposed on the EXI bus
-> (similar to SPI) on channel 0, device 1.  This driver allows it to be
-> used as a Linux RTC device, where time can be read and set.
+Hello,
+
+On 16/12/2021 15:52:59+1100, Michael Ellerman wrote:
+> > Emmanuel Gil Peyrot (5):
+> >   rtc: gamecube: Add a RTC driver for the GameCube, Wii and Wii U
+> >   rtc: gamecube: Report low battery as invalid data
+> >   powerpc: wii.dts: Expose HW_SRNPROT on this platform
+> >   powerpc: gamecube_defconfig: Enable the RTC driver
+> >   powerpc: wii_defconfig: Enable the RTC driver
+> >
+> >  drivers/rtc/Kconfig                     |  11 +
+> >  drivers/rtc/Makefile                    |   1 +
+> >  drivers/rtc/rtc-gamecube.c              | 377 ++++++++++++++++++++++++
 > 
-> The hardware also exposes two timers, one which shuts down the console
-> and one which powers it on, but these aren’t supported currently.
+> This is basically an rtc series as far as I'm concerned.
 > 
-> [...]
+> >  arch/powerpc/boot/dts/wii.dts           |   5 +
+> >  arch/powerpc/configs/gamecube_defconfig |   2 +-
+> >  arch/powerpc/configs/wii_defconfig      |   2 +-
+> 
+> I have nothing queued in the powerpc tree that touches any of those
+> files, so conflicts are unlikely.
+> 
+> So I'm happy for this to go via the rtc tree whenever it's ready.
+> 
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Applied, thanks!
-
-[1/5] rtc: gamecube: Add a RTC driver for the GameCube, Wii and Wii U
-      commit: 86559400b3ef9de93ba50523cffe767c35cd531a
-[2/5] rtc: gamecube: Report low battery as invalid data
-      commit: 322539a014bcd24cbb9281832c09b24e07912237
-[3/5] powerpc: wii.dts: Expose HW_SRNPROT on this platform
-      commit: 5479618e1e2641dd57352a73b7b7b2f6908fbeee
-[4/5] powerpc: gamecube_defconfig: Enable the RTC driver
-      commit: 57bd7d356506b713d0df8d8e42da7810a18864df
-[5/5] powerpc: wii_defconfig: Enable the RTC driver
-      commit: 69e8ba80ddda4db31e59facbf2db19773ad3785b
-
-This one didn't apply ceanly but I believe I did the right thing. Can you check?
+That's done, thanks.
 
 
-Best regards,
 -- 
-Alexandre Belloni <alexandre.belloni@bootlin.com>
+Alexandre Belloni, co-owner and COO, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
