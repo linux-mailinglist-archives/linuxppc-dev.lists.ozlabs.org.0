@@ -2,72 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FFFA476EF2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 11:34:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E556476F09
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 11:41:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JF7lb2L7Nz3cHC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 21:34:35 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=VZHLewhp;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JF7vx0sTRz3cPC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 21:41:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635;
- helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=VZHLewhp; dkim-atps=neutral
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
- [IPv6:2607:f8b0:4864:20::635])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JF7kt0dzmz2yZx
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 21:33:55 +1100 (AEDT)
-Received: by mail-pl1-x635.google.com with SMTP id o14so19097363plg.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 02:33:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=qO+jOkjRK48o6+1+jVibP8f+57PdsRVye8ZUPnrv1Ws=;
- b=VZHLewhprzIJcwvT0198kiPypScCjxvVndXQ3rCZkSozD03o8LhWeZ172OFOI/zjvc
- h56lRk/+08FkUDJEGbfd0vERYkvZgX3dz7pzLfMbk/1cXsDKkMl9dof0sPZSputTlZ80
- HgYFHDiaEucAZCSFKlklkEDg+9m/AsWevOBElG3BFAFuvTO85allExFmqf1mQyl1/7wM
- 6a+3F+4q25ThvydXdd4Y+9GdttOf8ivr+v3oLxJbLbre5nwjwbMlE7LK6DlGfMLEtKjm
- ngOiYUVI3dz5FXIzemwkmStekryutg2EEiqfNyBDqY2zU5hBgYymhjDRzKCLfNWCv/3F
- JauQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=qO+jOkjRK48o6+1+jVibP8f+57PdsRVye8ZUPnrv1Ws=;
- b=GvcN3r9wAAphfSFKk4CaaOenwea5Q7hamjDKD3QICwZXtJbVIwS2ggs/WM0Sa499gp
- RcRj22LgGnDz0Gb2SIj50Asis6mcqKt5z/vY34f2UpqPqEZE+XIQVTae8e9423GxHhfN
- 9FSF5+JNcPM6qgAvioWmmJzDviOpMxARxdi//urbwFDnmf4utwtWeRjcmrmZcwYcsuFf
- 80s0S8j3TrPI1P/ReSdtsBK+KhM/3traKQDlp6cOyRI5q7d9oWV1iM5bGDHiHhwzlKyJ
- y8wmg+Du6RZk85aPNIMKEARsLOrneSYDNqzKGsr6WVLnH8S/Rou4e5jSxf33o4sxr89o
- ehgw==
-X-Gm-Message-State: AOAM532dlL9/Cxn8jRxuvjCMoPtFWbZfqaty3cshcbpin4Yah07JkAC/
- 4zDUq4aNHxKDPUkf1FRWjNnBrE5UpzU=
-X-Google-Smtp-Source: ABdhPJwFRqCGA4SQNeVsSpc5zmOiW2aEHul+HDakMTrbeunderUSRkTyo1Hb/3skuwqJLRUhNFgx8w==
-X-Received: by 2002:a17:90a:b013:: with SMTP id
- x19mr5223833pjq.126.1639650830324; 
- Thu, 16 Dec 2021 02:33:50 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (203-219-139-206.static.tpgi.com.au.
- [203.219.139.206])
- by smtp.gmail.com with ESMTPSA id h10sm4979507pgj.64.2021.12.16.02.33.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Dec 2021 02:33:49 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc/64s/radix: Fix huge vmap false positive
-Date: Thu, 16 Dec 2021 20:33:42 +1000
-Message-Id: <20211216103342.609192-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ smtp.helo=elvis.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de;
+ envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4JF7vV2S9Wz2ynd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 21:41:23 +1100 (AEDT)
+Received: from uucp (helo=alpha)
+ by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+ id 1mxoC2-00089d-00; Thu, 16 Dec 2021 11:40:58 +0100
+Received: by alpha.franken.de (Postfix, from userid 1000)
+ id 5AA86C075D; Thu, 16 Dec 2021 11:40:49 +0100 (CET)
+Date: Thu, 16 Dec 2021 11:40:49 +0100
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Alexandre Ghiti <alexandre.ghiti@canonical.com>
+Subject: Re: [PATCH v2 0/6] Cleanup after removal of configs
+Message-ID: <20211216104049.GA10578@alpha.franken.de>
+References: <20211216094426.2083802-1-alexandre.ghiti@canonical.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211216094426.2083802-1-alexandre.ghiti@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,101 +42,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>, Daniel Axtens <dja@axtens.net>
+Cc: Rich Felker <dalias@libc.org>, linux-doc@vger.kernel.org,
+ Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ linux-mips@vger.kernel.org, David Howells <dhowells@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Lee Jones <lee.jones@linaro.org>,
+ linux-cifs@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Jonathan Corbet <corbet@lwn.net>, linux-sh@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-cachefs@redhat.com,
+ linux-arm-kernel@lists.infradead.org, Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+ Guenter Roeck <linux@roeck-us.net>, Arnd Bergmann <arnd@arndb.de>,
+ Wim Van Sebroeck <wim@linux-watchdog.org>, Kalle Valo <kvalo@codeaurora.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ samba-technical@lists.samba.org, linux-kernel@vger.kernel.org,
+ Ronnie Sahlberg <lsahlber@redhat.com>, Steve French <sfrench@samba.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-power@fi.rohmeurope.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pmd_huge() is defined to false when HUGETLB_PAGE is not configured, but
-the vmap code still installs huge PMDs. This leads to false bad PMD
-errors when vunmapping because it is not seen as a huge PTE, and the bad
-PMD check catches it. The end result may not be much more serious than
-some bad pmd warning messages, because the pmd_none_or_clear_bad() does
-what we wanted and clears the huge PTE anyway.
+On Thu, Dec 16, 2021 at 10:44:20AM +0100, Alexandre Ghiti wrote:
+> While bumping from 5.13 to 5.15, I found that a few deleted configs had
+> left some pieces here and there: this patchset cleans that.
+> 
+> Changes in v2:
+> - Rebase on top of v5.16-rc1
+> - Removed patch 6 since Matti said he would take care of that
+> - Added AB, RB
+> 
+> Alexandre Ghiti (6):
+>   Documentation, arch: Remove leftovers from fscache/cachefiles
+>     histograms
+>   Documentation, arch: Remove leftovers from raw device
+>   Documentation, arch: Remove leftovers from CIFS_WEAK_PW_HASH
+>   arch: Remove leftovers from mandatory file locking
+>   Documentation, arch, fs: Remove leftovers from fscache object list
+>   arch: Remove leftovers from prism54 wireless driver
+> 
+>  Documentation/admin-guide/cifs/usage.rst      |   7 +-
+>  Documentation/admin-guide/devices.txt         |   8 +-
+>  .../filesystems/caching/cachefiles.rst        |  34 -----
+>  Documentation/filesystems/caching/fscache.rst | 123 +-----------------
+>  arch/arm/configs/axm55xx_defconfig            |   3 -
+>  arch/arm/configs/cm_x300_defconfig            |   1 -
+>  arch/arm/configs/ezx_defconfig                |   1 -
+>  arch/arm/configs/imote2_defconfig             |   1 -
+>  arch/arm/configs/nhk8815_defconfig            |   1 -
+>  arch/arm/configs/pxa_defconfig                |   1 -
+>  arch/arm/configs/spear13xx_defconfig          |   1 -
+>  arch/arm/configs/spear3xx_defconfig           |   1 -
+>  arch/arm/configs/spear6xx_defconfig           |   1 -
+>  arch/mips/configs/decstation_64_defconfig     |   1 -
+>  arch/mips/configs/decstation_defconfig        |   1 -
+>  arch/mips/configs/decstation_r4k_defconfig    |   1 -
+>  arch/mips/configs/fuloong2e_defconfig         |   1 -
+>  arch/mips/configs/ip27_defconfig              |   1 -
+>  arch/mips/configs/malta_defconfig             |   1 -
+>  arch/mips/configs/malta_kvm_defconfig         |   1 -
+>  arch/mips/configs/malta_qemu_32r6_defconfig   |   1 -
+>  arch/mips/configs/maltaaprp_defconfig         |   1 -
+>  arch/mips/configs/maltasmvp_defconfig         |   1 -
+>  arch/mips/configs/maltasmvp_eva_defconfig     |   1 -
+>  arch/mips/configs/maltaup_defconfig           |   1 -
+>  arch/mips/configs/maltaup_xpa_defconfig       |   1 -
+>  arch/powerpc/configs/pmac32_defconfig         |   1 -
+>  arch/powerpc/configs/ppc6xx_defconfig         |   1 -
+>  arch/powerpc/configs/pseries_defconfig        |   1 -
+>  arch/sh/configs/titan_defconfig               |   1 -
+>  fs/fscache/object.c                           |   3 -
+>  fs/fscache/proc.c                             |  12 --
+>  32 files changed, 6 insertions(+), 209 deletions(-)
 
-Fix this by checking pmd_is_leaf(), which checks for a PTE regardless of
-config options. The whole huge/large/leaf stuff is a tangled mess but
-that's kernel-wide and not something we can improve much in arch/powerpc
-code.
+for the MIPS parts:
 
-pmd_page(), pud_page(), etc., called by vmalloc_to_page() on huge vmaps
-can similarly trigger a false VM_BUG_ON when CONFIG_HUGETLB_PAGE=n, so
-those checks are adjusted. The checks were added by commit d6eacedd1f0e
-("powerpc/book3s: Use config independent helpers for page table walk"),
-while implementing a similar fix for other page table walking functions.
+Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-Fixes: d909f9109c30 ("powerpc/64s/radix: Enable HAVE_ARCH_HUGE_VMAP")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-Since v1:
-- Also fix some false positive warnings spotted by Daniel.
-- Rename the patch slightly to account for the new changes.
-
- arch/powerpc/mm/book3s64/radix_pgtable.c |  4 ++--
- arch/powerpc/mm/pgtable_64.c             | 14 +++++++++++---
- 2 files changed, 13 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 3c4f0ebe5df8..ca23f5d1883a 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1076,7 +1076,7 @@ int pud_set_huge(pud_t *pud, phys_addr_t addr, pgprot_t prot)
- 
- int pud_clear_huge(pud_t *pud)
- {
--	if (pud_huge(*pud)) {
-+	if (pud_is_leaf(*pud)) {
- 		pud_clear(pud);
- 		return 1;
- 	}
-@@ -1123,7 +1123,7 @@ int pmd_set_huge(pmd_t *pmd, phys_addr_t addr, pgprot_t prot)
- 
- int pmd_clear_huge(pmd_t *pmd)
- {
--	if (pmd_huge(*pmd)) {
-+	if (pmd_is_leaf(*pmd)) {
- 		pmd_clear(pmd);
- 		return 1;
- 	}
-diff --git a/arch/powerpc/mm/pgtable_64.c b/arch/powerpc/mm/pgtable_64.c
-index 78c8cf01db5f..175aabf101e8 100644
---- a/arch/powerpc/mm/pgtable_64.c
-+++ b/arch/powerpc/mm/pgtable_64.c
-@@ -102,7 +102,8 @@ EXPORT_SYMBOL(__pte_frag_size_shift);
- struct page *p4d_page(p4d_t p4d)
- {
- 	if (p4d_is_leaf(p4d)) {
--		VM_WARN_ON(!p4d_huge(p4d));
-+		if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-+			VM_WARN_ON(!p4d_huge(p4d));
- 		return pte_page(p4d_pte(p4d));
- 	}
- 	return virt_to_page(p4d_pgtable(p4d));
-@@ -112,7 +113,8 @@ struct page *p4d_page(p4d_t p4d)
- struct page *pud_page(pud_t pud)
- {
- 	if (pud_is_leaf(pud)) {
--		VM_WARN_ON(!pud_huge(pud));
-+		if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-+			VM_WARN_ON(!pud_huge(pud));
- 		return pte_page(pud_pte(pud));
- 	}
- 	return virt_to_page(pud_pgtable(pud));
-@@ -125,7 +127,13 @@ struct page *pud_page(pud_t pud)
- struct page *pmd_page(pmd_t pmd)
- {
- 	if (pmd_is_leaf(pmd)) {
--		VM_WARN_ON(!(pmd_large(pmd) || pmd_huge(pmd)));
-+		/*
-+		 * vmalloc_to_page may be called on any vmap address (not only
-+		 * vmalloc), and it uses pmd_page() etc., when huge vmap is
-+		 * enabled so these checks can't be used.
-+		 */
-+		if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-+			VM_WARN_ON(!(pmd_large(pmd) || pmd_huge(pmd)));
- 		return pte_page(pmd_pte(pmd));
- 	}
- 	return virt_to_page(pmd_page_vaddr(pmd));
 -- 
-2.23.0
-
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
