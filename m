@@ -1,76 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D29477FF0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 23:14:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8BC47804B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 00:05:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JFRHF72sJz3cYY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 09:14:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JFSQF48VLz3cN3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 10:05:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=bmdTDDz1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20210112.gappssmtp.com header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=Z63xJiB3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::731;
- helo=mail-qk1-x731.google.com; envelope-from=nnac123@gmail.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=paul-moore.com
+ (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com;
+ envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=bmdTDDz1; dkim-atps=neutral
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com
- [IPv6:2607:f8b0:4864:20::731])
+ unprotected) header.d=paul-moore-com.20210112.gappssmtp.com
+ header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256
+ header.s=20210112 header.b=Z63xJiB3; dkim-atps=neutral
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com
+ [IPv6:2a00:1450:4864:20::52e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JFQzp2nhRz3cPF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Dec 2021 09:01:10 +1100 (AEDT)
-Received: by mail-qk1-x731.google.com with SMTP id 193so315528qkh.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 14:01:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=4zFYmKS48E59GjuSX+VbB4jaKc3MMByoUQ53zxoDAWE=;
- b=bmdTDDz1EaY8szYl1bTG6mUCLIr5H3+elqN/nHWMl9qLQ+RNm3gPZC6EaTAn592Uws
- qE8DRyjQpu1O+DzKmhNSU9JKjb2J9zNPriF9o3C4KJnuecRDVYLqavDhoUyzFik4YZco
- Q0iQ2pWXH7j9pPI9W/vcS9zRC+eDZiIvAfOI0DJXszhQDq1UcEeei6alzg2QcwGLxFUL
- NZsQU9WwLkWSCmxgtmcYLdCw6W0XXsEtO8c+EXBPv96KD+9qmfuAVBqRK10O62baQNQ1
- h3lPiA5uqaBXxWviHYcc92/oUkd+ps+r324LQgRH+tVfUjl1VB9wmn1pyWIfOKW4eQHx
- B84w==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JFSPX5YGxz2yNY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Dec 2021 10:05:03 +1100 (AEDT)
+Received: by mail-ed1-x52e.google.com with SMTP id t5so1305862edd.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 15:05:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=GJ64TcgksQc3C6D3xtvHzgt3iSOg6McffYMs3O8prrE=;
+ b=Z63xJiB3Ei8LRcpyHm+qEbadN02vR/u6ZMgg4wLoJE0RBSk+pzm39iXdJq7Pkoaym3
+ MMbyLdHN9fgCKEgRW4gBwD50fE8DWWE5hHjRyN0UQFAaVIVWqcxkIU5nQIJ9R0LC/A3/
+ 8DMJt3Z7EQE/YKXLzc4ymVMUg1kH6LZ7B4bfgPC0zRoszkE1AdnT06n7mcKaFMsVpf7m
+ wOkbgLJOmEd3n4TDlCDbofS10/+OnLap04+VhPnPjJlTRGFXqUIzrGNVVnayQAcTLbqy
+ 0tIGF7c19QMMGwLX8zMSbau5pEABlonMGEkPVmBSNiw9spvZiECzEoTvVPc/vToSHvw0
+ lTBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=4zFYmKS48E59GjuSX+VbB4jaKc3MMByoUQ53zxoDAWE=;
- b=MmYlefuEjbAHpPqrKDlxrbA49Xm//zOO585bA8rDZS/5GVcY1YP4Xyl4pKA8t8c1jp
- iEYGcR6SVXtLANk65v54m/iAms6ufoCSG63DTAuDU37rF7eCl58f9bcxuNO9HyD/DYDO
- QNF980vdNZrJDP3Ttv/p2ri3V4ay0iOjlMRA+mm1EMY24JLrzTUf0fXLCNqnMY51QQt8
- UnBSXkTGReoAmlnFrTg9+a3zQwu+CWVf0gZ10jR1BybHbTFtzwqllXcVanOdIo9osZ3I
- MT0LlkS8ToFr5Z9eFFYs/Rju0FNJzVHX3PEIwWKtsv16n08GyGYc/oYBcGhDK/z5pUXX
- rBIg==
-X-Gm-Message-State: AOAM5310+nCykDW4pVK4/hmDQuAe5WF6qRf8jo0r9m1Cye+l5jCLDuQb
- Z5VxJ3zMj1DlUbyszBuULHwUA3WtctQ=
-X-Google-Smtp-Source: ABdhPJyZCMA/kcSxEIP1wHXN726LgCCP3DFOSGCPxRqcftaUvrWHRFtEYm8WLCFaGu3yNx1O+quINA==
-X-Received: by 2002:a05:620a:20d6:: with SMTP id
- f22mr71119qka.342.1639692067931; 
- Thu, 16 Dec 2021 14:01:07 -0800 (PST)
-Received: from starship-12.hsd1.fl.comcast.net
- ([2601:589:4a00:1ed0:dce6:135:603d:e519])
- by smtp.gmail.com with ESMTPSA id y21sm5478483qtw.10.2021.12.16.14.01.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Dec 2021 14:01:07 -0800 (PST)
-From: Nick Child <nnac123@gmail.com>
-X-Google-Original-From: Nick Child <nick.child@ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 20/20] cuda/pmu: Make find_via_cuda/pmu init functions
-Date: Thu, 16 Dec 2021 17:00:35 -0500
-Message-Id: <20211216220035.605465-21-nick.child@ibm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211216220035.605465-1-nick.child@ibm.com>
-References: <20211216220035.605465-1-nick.child@ibm.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=GJ64TcgksQc3C6D3xtvHzgt3iSOg6McffYMs3O8prrE=;
+ b=TWPA/fahrgltM+IKPS8pEAattzUTOy98XjXLY8iBs2wuxpfHgqkRjWKHk0N7kJhCkY
+ ck65U4ODhFez5GAvGNK8iQ7Z8Ign15IXrwtUpxp3TqP75WKsHxoL0zWrTufFp2wo8Xyy
+ j5W7kPqnww33SIgEFY49/0R8TIwALjcU1CVuKHJLu7i9GkyB9ZIQ/Y1YkP2VhbT+oCv7
+ tligxWz3vWD0LZAzVfiKl5TRlXaRgrHLGCWNsg+8Tc5DPYytf5m97wnVkwPjP5HQgLe8
+ 6PxXzndrnHtWZ6Ap0O7GpY5LzuSrT5NZt3c6ZmElmlUCdaE0/MTnVYTmYNMYsORAC3om
+ KsbQ==
+X-Gm-Message-State: AOAM5321apQHeeidlPGRmI+NEWlAi8U0le+w1WNM3I0hsZFrxYbdLtHC
+ 7C9MsPHei1Z9+r6rXFLEKd1Tz2cpLS0VifyuqvcI
+X-Google-Smtp-Source: ABdhPJx3SFGGswhmmu2r1dzkr+eLURRkoUYw4sDxRVomPchgoioBKl7e14g/fwAEf2396aEHS44SLD69T09wvRp1j0Y=
+X-Received: by 2002:a17:907:e8e:: with SMTP id
+ ho14mr268357ejc.12.1639695898735; 
+ Thu, 16 Dec 2021 15:04:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211026133147.35d19e00@canb.auug.org.au>
+ <87k0i0awdl.fsf@mpe.ellerman.id.au>
+ <CAHC9VhTj7gn3iAOYctVRKvv_Bk1iQMrmkA8FVJtYzdvBjqFmvg@mail.gmail.com>
+ <87tuh2aepp.fsf@mpe.ellerman.id.au>
+ <2012df5e-62ec-06fb-9f4d-e27dde184a3f@csgroup.eu>
+ <CAHC9VhRHs8Lx8+v+LHmJByxO_m330sfLWRsGDsFtQxyQ1860eg@mail.gmail.com>
+ <dc5705cf-d47a-57b0-65da-2a2af8d71b19@csgroup.eu>
+ <CAHC9VhQPizVLkr2+sqRCS0gS4+ZSw-AMkJM5V64-ku8AQe+QQg@mail.gmail.com>
+ <1a78709f-162e-0d78-0550-4e9ef213f9c6@csgroup.eu>
+ <102e59ba-fcf0-dd85-9338-75b7ce5fbd83@kaod.org>
+ <5f83d1fe-4e6e-1d08-b0c2-aec8ee852065@csgroup.eu>
+In-Reply-To: <5f83d1fe-4e6e-1d08-b0c2-aec8ee852065@csgroup.eu>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 16 Dec 2021 18:04:47 -0500
+Message-ID: <CAHC9VhTcV6jn4z7uGXZb=RZ5k7W4KW1vnoAUMHN6Zhkxsw1Xpg@mail.gmail.com>
+Subject: Re: linux-next: manual merge of the audit tree with the powerpc tree
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,74 +88,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Child <nick.child@ibm.com>, dja@axtens.net
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Richard Guy Briggs <rgb@redhat.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Make `find_via_cuda` and `find_via_pmu` initialization functions.
-Previously, their definitions in `drivers/macintosh/via-cuda.h` include
-the `__init` attribute but their alternative definitions in
-`arch/powerpc/powermac/sectup./c` and prototypes in `include/linux/
-cuda.h` and `include/linux/pmu.h` do not use the `__init` macro. Since,
-only initialization functions call `find_via_cuda` and `find_via_pmu`
-it is safe to label these functions with `__init`.
+On Thu, Dec 16, 2021 at 4:08 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+> Thanks C=C3=A9dric, I've now been able to install debian PPC32 port of DE=
+BIAN
+> 11 on QEMU and run the tests.
+>
+> I followed instructions in file README.md provided in the test suite.
+> I also modified tests/Makefile to force MODE :=3D 32
+>
+> I've got a lot of failures, am I missing some options in the kernel or
+> something ?
+>
+> Running as   user    root
+>          with context root:::
+>          on   system
 
-Signed-off-by: Nick Child <nick.child@ibm.com>
----
- arch/powerpc/platforms/powermac/setup.c | 4 ++--
- include/linux/cuda.h                    | 2 +-
- include/linux/pmu.h                     | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+While SELinux is not required for audit, I don't think I've ever run
+it on system without SELinux.  In theory the audit-testsuite shouldn't
+rely on SELinux being present (other than the SELinux specific tests
+of course), but I'm not confident enough to say that the test suite
+will run without problem without SELinux.
 
-diff --git a/arch/powerpc/platforms/powermac/setup.c b/arch/powerpc/platforms/powermac/setup.c
-index f7661b81db18..974d4b49867b 100644
---- a/arch/powerpc/platforms/powermac/setup.c
-+++ b/arch/powerpc/platforms/powermac/setup.c
-@@ -166,7 +166,7 @@ static void pmac_show_cpuinfo(struct seq_file *m)
- }
- 
- #ifndef CONFIG_ADB_CUDA
--int find_via_cuda(void)
-+int __init find_via_cuda(void)
- {
- 	struct device_node *dn = of_find_node_by_name(NULL, "via-cuda");
- 
-@@ -180,7 +180,7 @@ int find_via_cuda(void)
- #endif
- 
- #ifndef CONFIG_ADB_PMU
--int find_via_pmu(void)
-+int __init find_via_pmu(void)
- {
- 	struct device_node *dn = of_find_node_by_name(NULL, "via-pmu");
- 
-diff --git a/include/linux/cuda.h b/include/linux/cuda.h
-index 45bfe9d61271..daf3e6f98444 100644
---- a/include/linux/cuda.h
-+++ b/include/linux/cuda.h
-@@ -12,7 +12,7 @@
- #include <uapi/linux/cuda.h>
- 
- 
--extern int find_via_cuda(void);
-+extern int __init find_via_cuda(void);
- extern int cuda_request(struct adb_request *req,
- 			void (*done)(struct adb_request *), int nbytes, ...);
- extern void cuda_poll(void);
-diff --git a/include/linux/pmu.h b/include/linux/pmu.h
-index 52453a24a24f..c677442d007c 100644
---- a/include/linux/pmu.h
-+++ b/include/linux/pmu.h
-@@ -13,7 +13,7 @@
- #include <uapi/linux/pmu.h>
- 
- 
--extern int find_via_pmu(void);
-+extern int __init find_via_pmu(void);
- 
- extern int pmu_request(struct adb_request *req,
- 		void (*done)(struct adb_request *), int nbytes, ...);
--- 
-2.25.1
+If it isn't too difficult, I would suggest enabling SELinux in your
+kernel build and ensuring the necessary userspace, policy, etc. is
+installed.  You don't need to worry about getting it all running
+correctly; the audit-testsuite should pass with SELinux in permissive
+mode.
 
+If you're still seeing all these failures after trying that let us know.
+
+> # Test 3 got: "256" (backlog_wait_time_actual_reset/test at line 151)
+> #   Expected: "0"
+> #  backlog_wait_time_actual_reset/test line 151 is: ok( $result, 0 );
+>   # Was an event found?
+
+...
+
+--=20
+paul moore
+www.paul-moore.com
