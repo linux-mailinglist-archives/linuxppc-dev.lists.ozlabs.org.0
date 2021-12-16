@@ -1,71 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DEA477FC1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 23:03:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CE1477FBD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 23:02:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JFR2C5jt1z3dd6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 09:03:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JFR0l1VC7z3cTw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 09:01:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Qm5fciFY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=V+hp+c+/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72b;
- helo=mail-qk1-x72b.google.com; envelope-from=nnac123@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f31;
+ helo=mail-qv1-xf31.google.com; envelope-from=nnac123@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Qm5fciFY; dkim-atps=neutral
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com
- [IPv6:2607:f8b0:4864:20::72b])
+ header.s=20210112 header.b=V+hp+c+/; dkim-atps=neutral
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com
+ [IPv6:2607:f8b0:4864:20::f31])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JFQzV1jrwz305W
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Dec 2021 09:00:52 +1100 (AEDT)
-Received: by mail-qk1-x72b.google.com with SMTP id t83so333557qke.8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JFQzV1Gr4z304j
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Dec 2021 09:00:53 +1100 (AEDT)
+Received: by mail-qv1-xf31.google.com with SMTP id kc16so632174qvb.3
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 14:00:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=FGlxhpZofU0sZTJhq0pcfG1o3G8FhbhXguoAwLHafxA=;
- b=Qm5fciFY/QsX9EJZ41ddycEO9cY7L6HH94NFc2rVWHPTN35Xy0WCUgIg07B0zatJR/
- hbCi0TBic8GAHqVhJMl32WvdxwYEeY4jxPuNPoIyBA9nmSbAL9h4u8FyKZWhsf8oF0x1
- Cm43SokIUs9iivlmRzW2ZCF+BF9Vyt14HKrFiJE9rR7Rz5mNuhRdjG0VXPCgD3fUoyZv
- r7f7MXLb/QHonIVk4NrLLzZRk1jGVxi7RBThhwZ0/F4/kOpUdpfJChXVzdAaqJn1svMB
- YY+tCb2BTSZ/uqy39VSMG9dYksISFDmOOfXucC9HbIKXKNTD3PT20G6FE9JCUFVeA2pG
- 17Xw==
+ bh=eWFRV4YVkN/SeNWScFvsbWjza3Jt9Zc7/qiBkNUkoEk=;
+ b=V+hp+c+/Ev/nFrg8EpGpSctnTk4A2iHsE5G8BVQQ0dia2fyNszsork+n69iwumaUZP
+ +DDNwq8O94IwK9y6jehNiZQ3UWdfPGP64Yx7wD5Q4flLeqvxeMJsr2Xj9EvT+NU+IXfe
+ RcMd4O41+WjC3Fu90RbdfsaFjHPKU58XruhjiXjyCoezXf8NdIP83F48GbdI1kHVLMUA
+ 4SVJ239mnx/1lqHxIiLWco1N/G8M1Hpnr9RxFnCrfg5DnlA7OoKPhjJ5u2gdRHdLPDl+
+ WavsuTuuDF9bNDcMYDQJeM7PQgNAm3HYOZR8+ThFLdxf89vwaI0S8KpDsyvm5karluVg
+ oDSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=FGlxhpZofU0sZTJhq0pcfG1o3G8FhbhXguoAwLHafxA=;
- b=Bx6dLUfjxgy+RtLH8a5UTFRGuKf2ijypj7a723JuJ/YDDNds/NK+BHEH5FxuT213uf
- Cs0pzP7YBfXEQP+lTT+0wQaL+Tut2Sd6gKyh9C+KvPDAJKRTFd11/YC8EzH77R2KSxuM
- i2rUQLNtnv5fSOC5699fBOJw4QP5qrmXKQTwOaiVo1ZtEVoYxjr3+xbaOjt/TXs3xaod
- kvsYU+GWvSLQFIh2GUs2gnlrwwfIdXQ4NLOxgkvQbMWVkmbw541bD+jcVlWBqwiv6CTR
- GCnPEibEwuyUb/RdovSntARmb19al67V1/IO99unxxUopykLgetuDczMrGSiyLuAZjJM
- UHtA==
-X-Gm-Message-State: AOAM531HJEx2zfc8kW0zISdGlj/vaVNN1ThuJFpmkh8G4+G5O7rgmZdx
- MxgpyPQa2vA7RZ0yQUkwoBLXqdNA58M=
-X-Google-Smtp-Source: ABdhPJw11CtbUwJD0uQUQ0XPtPafJPv5AEqLIgoNwgPxO5DV39UpZboZb83c/2PC99oQFcWN/4t4+g==
-X-Received: by 2002:a05:620a:ce3:: with SMTP id c3mr71900qkj.306.1639692048724; 
- Thu, 16 Dec 2021 14:00:48 -0800 (PST)
+ bh=eWFRV4YVkN/SeNWScFvsbWjza3Jt9Zc7/qiBkNUkoEk=;
+ b=hufRLiFc9O1k4oxTiWLYcSawbjBwu8z8wofbfUY58xwtjA5jJ5VA1HnwAtmX/BPHV9
+ zeak84Sz0q/MaEAUC+IINL7pQ2oizvE3S9AtRpetR0G3tUOKkmJpqwN+HJIzWK//iL8o
+ Bel2VxzQ46T+AAVAT7gl/WMJA1wNybLV4fdT/UhXR3N7pR93SroocNtOp/bu5c0pk++f
+ LKAPVZAYRK4Rcxo50okiHpinPUBL09QUTzHOTS392vXqLB6ZQLgsI7yDnB0GTSqKPzkS
+ gTfHauOjoGMnmwE0cTnOrhHqrxMcYnFog6C8NmWi0G36Zm1vrO1kgLWL1OEyouXheEMB
+ lngw==
+X-Gm-Message-State: AOAM530n0qqA/BWIBc3Y0sC7MfNw+Nwjs1o3HX9+bsWpl7ebSVYCl504
+ pAYoGokGUjEYnOyWz8uFiVjRbBSKJkg=
+X-Google-Smtp-Source: ABdhPJzWpkkejlixpl3WpK0L+2V/bHuRn0YtLkMzN514xG12BgwgRa3AlF/xnYjd/4w8B6X5TGXwFg==
+X-Received: by 2002:a05:6214:2a45:: with SMTP id
+ jf5mr169559qvb.15.1639692049685; 
+ Thu, 16 Dec 2021 14:00:49 -0800 (PST)
 Received: from starship-12.hsd1.fl.comcast.net
  ([2601:589:4a00:1ed0:dce6:135:603d:e519])
- by smtp.gmail.com with ESMTPSA id y21sm5478483qtw.10.2021.12.16.14.00.47
+ by smtp.gmail.com with ESMTPSA id y21sm5478483qtw.10.2021.12.16.14.00.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Dec 2021 14:00:48 -0800 (PST)
+ Thu, 16 Dec 2021 14:00:49 -0800 (PST)
 From: Nick Child <nnac123@gmail.com>
 X-Google-Original-From: Nick Child <nick.child@ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 02/20] powerpc/lib: Add __init attribute to eligible
+Subject: [PATCH v2 03/20] powerpc/mm: Add __init attribute to eligible
  functions
-Date: Thu, 16 Dec 2021 17:00:17 -0500
-Message-Id: <20211216220035.605465-3-nick.child@ibm.com>
+Date: Thu, 16 Dec 2021 17:00:18 -0500
+Message-Id: <20211216220035.605465-4-nick.child@ibm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211216220035.605465-1-nick.child@ibm.com>
 References: <20211216220035.605465-1-nick.child@ibm.com>
@@ -87,162 +88,260 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some functions defined in 'arch/powerpc/lib' are deserving of an `__init`
-macro attribute. These functions are only called by other initialization
-functions and therefore should inherit the attribute.
+Some functions defined in 'arch/powerpc/mm' are deserving of an
+`__init` macro attribute. These functions are only called by other
+initialization functions and therefore should inherit the attribute.
 Also, change function declarations in header files to include `__init`.
 
 Signed-off-by: Nick Child <nick.child@ibm.com>
 ---
- arch/powerpc/include/asm/setup.h  |  2 +-
- arch/powerpc/lib/code-patching.c  |  2 +-
- arch/powerpc/lib/feature-fixups.c | 26 +++++++++++++-------------
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ arch/powerpc/include/asm/hugetlb.h       | 2 +-
+ arch/powerpc/include/asm/mmu_context.h   | 2 +-
+ arch/powerpc/mm/book3s32/mmu.c           | 2 +-
+ arch/powerpc/mm/book3s64/hash_utils.c    | 6 +++---
+ arch/powerpc/mm/book3s64/hugetlbpage.c   | 2 +-
+ arch/powerpc/mm/book3s64/mmu_context.c   | 2 +-
+ arch/powerpc/mm/book3s64/pkeys.c         | 2 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 4 ++--
+ arch/powerpc/mm/nohash/44x.c             | 4 ++--
+ arch/powerpc/mm/nohash/fsl_book3e.c      | 2 +-
+ arch/powerpc/mm/nohash/tlb.c             | 4 ++--
+ arch/powerpc/mm/numa.c                   | 6 +++---
+ arch/powerpc/mm/ptdump/ptdump.c          | 2 +-
+ 13 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/setup.h b/arch/powerpc/include/asm/setup.h
-index cff58db6130f..607e42b8cbf0 100644
---- a/arch/powerpc/include/asm/setup.h
-+++ b/arch/powerpc/include/asm/setup.h
-@@ -75,7 +75,7 @@ void __init setup_spectre_v2(void);
- #else
- static inline void setup_spectre_v2(void) {}
- #endif
--void do_btb_flush_fixups(void);
-+void __init do_btb_flush_fixups(void);
+diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
+index f18c543bc01d..962708fa1017 100644
+--- a/arch/powerpc/include/asm/hugetlb.h
++++ b/arch/powerpc/include/asm/hugetlb.h
+@@ -15,7 +15,7 @@
  
- #endif /* !__ASSEMBLY__ */
+ extern bool hugetlb_disabled;
  
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index 312324a26df3..ee54cb447f80 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -397,7 +397,7 @@ void __patch_exception(int exc, unsigned long addr)
+-void hugetlbpage_init_default(void);
++void __init hugetlbpage_init_default(void);
  
- #ifdef CONFIG_CODE_PATCHING_SELFTEST
- 
--static int instr_is_branch_to_addr(const u32 *instr, unsigned long addr)
-+static int __init instr_is_branch_to_addr(const u32 *instr, unsigned long addr)
- {
- 	if (instr_is_branch_iform(ppc_inst_read(instr)) ||
- 	    instr_is_branch_bform(ppc_inst_read(instr)))
-diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
-index 57c6bb802f6c..343a78826035 100644
---- a/arch/powerpc/lib/feature-fixups.c
-+++ b/arch/powerpc/lib/feature-fixups.c
-@@ -580,7 +580,7 @@ void do_barrier_nospec_fixups_range(bool enable, void *fixup_start, void *fixup_
- 	printk(KERN_DEBUG "barrier-nospec: patched %d locations\n", i);
+ int slice_is_hugepage_only_range(struct mm_struct *mm, unsigned long addr,
+ 			   unsigned long len);
+diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
+index e46394d27785..fd277b15635c 100644
+--- a/arch/powerpc/include/asm/mmu_context.h
++++ b/arch/powerpc/include/asm/mmu_context.h
+@@ -71,7 +71,7 @@ static inline void switch_mmu_context(struct mm_struct *prev,
  }
  
--static void patch_btb_flush_section(long *curr)
-+static void __init patch_btb_flush_section(long *curr)
- {
- 	unsigned int *start, *end;
+ extern int hash__alloc_context_id(void);
+-extern void hash__reserve_context_id(int id);
++void __init hash__reserve_context_id(int id);
+ extern void __destroy_context(int context_id);
+ static inline void mmu_context_init(void) { }
  
-@@ -592,7 +592,7 @@ static void patch_btb_flush_section(long *curr)
+diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
+index 33ab63d56435..94045b265b6b 100644
+--- a/arch/powerpc/mm/book3s32/mmu.c
++++ b/arch/powerpc/mm/book3s32/mmu.c
+@@ -76,7 +76,7 @@ unsigned long p_block_mapped(phys_addr_t pa)
+ 	return 0;
+ }
+ 
+-static int find_free_bat(void)
++static int __init find_free_bat(void)
+ {
+ 	int b;
+ 	int n = mmu_has_feature(MMU_FTR_USE_HIGH_BATS) ? 8 : 4;
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index eced266dc5e9..7abf82a698d3 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -662,7 +662,7 @@ static int __init htab_dt_scan_hugepage_blocks(unsigned long node,
+ }
+ #endif /* CONFIG_HUGETLB_PAGE */
+ 
+-static void mmu_psize_set_default_penc(void)
++static void __init mmu_psize_set_default_penc(void)
+ {
+ 	int bpsize, apsize;
+ 	for (bpsize = 0; bpsize < MMU_PAGE_COUNT; bpsize++)
+@@ -672,7 +672,7 @@ static void mmu_psize_set_default_penc(void)
+ 
+ #ifdef CONFIG_PPC_64K_PAGES
+ 
+-static bool might_have_hea(void)
++static bool __init might_have_hea(void)
+ {
+ 	/*
+ 	 * The HEA ethernet adapter requires awareness of the
+@@ -743,7 +743,7 @@ static void __init htab_scan_page_sizes(void)
+  * low-order N bits as the encoding for the 2^(12+N) byte page size
+  * (if it exists).
+  */
+-static void init_hpte_page_sizes(void)
++static void __init init_hpte_page_sizes(void)
+ {
+ 	long int ap, bp;
+ 	long int shift, penc;
+diff --git a/arch/powerpc/mm/book3s64/hugetlbpage.c b/arch/powerpc/mm/book3s64/hugetlbpage.c
+index 95b2a283fd6e..ea8f83afb0ae 100644
+--- a/arch/powerpc/mm/book3s64/hugetlbpage.c
++++ b/arch/powerpc/mm/book3s64/hugetlbpage.c
+@@ -150,7 +150,7 @@ void huge_ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr
+ 	set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
+ }
+ 
+-void hugetlbpage_init_default(void)
++void __init hugetlbpage_init_default(void)
+ {
+ 	/* Set default large page size. Currently, we pick 16M or 1M
+ 	 * depending on what is available
+diff --git a/arch/powerpc/mm/book3s64/mmu_context.c b/arch/powerpc/mm/book3s64/mmu_context.c
+index 24aa953c9311..c766e4c26e42 100644
+--- a/arch/powerpc/mm/book3s64/mmu_context.c
++++ b/arch/powerpc/mm/book3s64/mmu_context.c
+@@ -32,7 +32,7 @@ static int alloc_context_id(int min_id, int max_id)
+ }
+ 
+ #ifdef CONFIG_PPC_64S_HASH_MMU
+-void hash__reserve_context_id(int id)
++void __init hash__reserve_context_id(int id)
+ {
+ 	int result = ida_alloc_range(&mmu_context_ida, id, id, GFP_KERNEL);
+ 
+diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
+index a2d9ad138709..753e62ba67af 100644
+--- a/arch/powerpc/mm/book3s64/pkeys.c
++++ b/arch/powerpc/mm/book3s64/pkeys.c
+@@ -66,7 +66,7 @@ static int __init dt_scan_storage_keys(unsigned long node,
+ 	return 1;
+ }
+ 
+-static int scan_pkey_feature(void)
++static int __init scan_pkey_feature(void)
+ {
+ 	int ret;
+ 	int pkeys_total = 0;
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 3c4f0ebe5df8..fe09f8a7650a 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -499,7 +499,7 @@ static int __init probe_memory_block_size(unsigned long node, const char *uname,
+ 	return 1;
+ }
+ 
+-static unsigned long radix_memory_block_size(void)
++static unsigned long __init radix_memory_block_size(void)
+ {
+ 	unsigned long mem_block_size = MIN_MEMORY_BLOCK_SIZE;
+ 
+@@ -517,7 +517,7 @@ static unsigned long radix_memory_block_size(void)
+ 
+ #else   /* CONFIG_MEMORY_HOTPLUG */
+ 
+-static unsigned long radix_memory_block_size(void)
++static unsigned long __init radix_memory_block_size(void)
+ {
+ 	return 1UL * 1024 * 1024 * 1024;
+ }
+diff --git a/arch/powerpc/mm/nohash/44x.c b/arch/powerpc/mm/nohash/44x.c
+index 796c824acc8c..1beae802bb1c 100644
+--- a/arch/powerpc/mm/nohash/44x.c
++++ b/arch/powerpc/mm/nohash/44x.c
+@@ -38,7 +38,7 @@ int icache_44x_need_flush;
+ 
+ unsigned long tlb_47x_boltmap[1024/8];
+ 
+-static void ppc44x_update_tlb_hwater(void)
++static void __init ppc44x_update_tlb_hwater(void)
+ {
+ 	/* The TLB miss handlers hard codes the watermark in a cmpli
+ 	 * instruction to improve performances rather than loading it
+@@ -122,7 +122,7 @@ static void __init ppc47x_update_boltmap(void)
+ /*
+  * "Pins" a 256MB TLB entry in AS0 for kernel lowmem for 47x type MMU
+  */
+-static void ppc47x_pin_tlb(unsigned int virt, unsigned int phys)
++static void __init ppc47x_pin_tlb(unsigned int virt, unsigned int phys)
+ {
+ 	unsigned int rA;
+ 	int bolted;
+diff --git a/arch/powerpc/mm/nohash/fsl_book3e.c b/arch/powerpc/mm/nohash/fsl_book3e.c
+index 7f71bc3bf85f..dfe715e0f70a 100644
+--- a/arch/powerpc/mm/nohash/fsl_book3e.c
++++ b/arch/powerpc/mm/nohash/fsl_book3e.c
+@@ -259,7 +259,7 @@ void __init MMU_init_hw(void)
+ 	flush_instruction_cache();
+ }
+ 
+-static unsigned long tlbcam_sz(int idx)
++static unsigned long __init tlbcam_sz(int idx)
+ {
+ 	return tlbcam_addrs[idx].limit - tlbcam_addrs[idx].start + 1;
+ }
+diff --git a/arch/powerpc/mm/nohash/tlb.c b/arch/powerpc/mm/nohash/tlb.c
+index 311281063d48..fd2c77af5c55 100644
+--- a/arch/powerpc/mm/nohash/tlb.c
++++ b/arch/powerpc/mm/nohash/tlb.c
+@@ -432,7 +432,7 @@ void tlb_flush_pgtable(struct mmu_gather *tlb, unsigned long address)
  	}
  }
  
--void do_btb_flush_fixups(void)
-+void __init do_btb_flush_fixups(void)
+-static void setup_page_sizes(void)
++static void __init setup_page_sizes(void)
  {
- 	long *start, *end;
- 
-@@ -621,7 +621,7 @@ void do_lwsync_fixups(unsigned long value, void *fixup_start, void *fixup_end)
+ 	unsigned int tlb0cfg;
+ 	unsigned int tlb0ps;
+@@ -570,7 +570,7 @@ static void setup_page_sizes(void)
  	}
  }
  
--static void do_final_fixups(void)
-+static void __init do_final_fixups(void)
+-static void setup_mmu_htw(void)
++static void __init setup_mmu_htw(void)
  {
- #if defined(CONFIG_PPC64) && defined(CONFIG_RELOCATABLE)
- 	ppc_inst_t inst;
-@@ -715,12 +715,12 @@ late_initcall(check_features);
- /* This must be after the text it fixes up, vmlinux.lds.S enforces that atm */
- static struct fixup_entry fixup;
- 
--static long calc_offset(struct fixup_entry *entry, unsigned int *p)
-+static long __init calc_offset(struct fixup_entry *entry, unsigned int *p)
- {
- 	return (unsigned long)p - (unsigned long)entry;
+ 	/*
+ 	 * If we want to use HW tablewalk, enable it by patching the TLB miss
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index 59d3cfcd7887..9d5f710d2c20 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -134,7 +134,7 @@ static int __init fake_numa_create_new_node(unsigned long end_pfn,
+ 	return 0;
  }
  
--static void test_basic_patching(void)
-+static void __init test_basic_patching(void)
+-static void reset_numa_cpu_lookup_table(void)
++static void __init reset_numa_cpu_lookup_table(void)
  {
- 	extern unsigned int ftr_fixup_test1[];
- 	extern unsigned int end_ftr_fixup_test1[];
-@@ -751,7 +751,7 @@ static void test_basic_patching(void)
- 	check(memcmp(ftr_fixup_test1, ftr_fixup_test1_expected, size) == 0);
+ 	unsigned int cpu;
+ 
+@@ -372,7 +372,7 @@ void update_numa_distance(struct device_node *node)
+  * ibm,numa-lookup-index-table= {N, domainid1, domainid2, ..... domainidN}
+  * ibm,numa-distance-table = { N, 1, 2, 4, 5, 1, 6, .... N elements}
+  */
+-static void initialize_form2_numa_distance_lookup_table(void)
++static void __init initialize_form2_numa_distance_lookup_table(void)
+ {
+ 	int i, j;
+ 	struct device_node *root;
+@@ -581,7 +581,7 @@ static int of_get_assoc_arrays(struct assoc_arrays *aa)
+ 	return 0;
  }
  
--static void test_alternative_patching(void)
-+static void __init test_alternative_patching(void)
+-static int get_nid_and_numa_distance(struct drmem_lmb *lmb)
++static int __init get_nid_and_numa_distance(struct drmem_lmb *lmb)
  {
- 	extern unsigned int ftr_fixup_test2[];
- 	extern unsigned int end_ftr_fixup_test2[];
-@@ -784,7 +784,7 @@ static void test_alternative_patching(void)
- 	check(memcmp(ftr_fixup_test2, ftr_fixup_test2_expected, size) == 0);
- }
+ 	struct assoc_arrays aa = { .arrays = NULL };
+ 	int default_nid = NUMA_NO_NODE;
+diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
+index 031956d0ee84..473960e4b07a 100644
+--- a/arch/powerpc/mm/ptdump/ptdump.c
++++ b/arch/powerpc/mm/ptdump/ptdump.c
+@@ -315,7 +315,7 @@ static int ptdump_show(struct seq_file *m, void *v)
  
--static void test_alternative_case_too_big(void)
-+static void __init test_alternative_case_too_big(void)
- {
- 	extern unsigned int ftr_fixup_test3[];
- 	extern unsigned int end_ftr_fixup_test3[];
-@@ -810,7 +810,7 @@ static void test_alternative_case_too_big(void)
- 	check(memcmp(ftr_fixup_test3, ftr_fixup_test3_orig, size) == 0);
- }
+ DEFINE_SHOW_ATTRIBUTE(ptdump);
  
--static void test_alternative_case_too_small(void)
-+static void __init test_alternative_case_too_small(void)
+-static void build_pgtable_complete_mask(void)
++static void __init build_pgtable_complete_mask(void)
  {
- 	extern unsigned int ftr_fixup_test4[];
- 	extern unsigned int end_ftr_fixup_test4[];
-@@ -856,7 +856,7 @@ static void test_alternative_case_with_branch(void)
- 	check(memcmp(ftr_fixup_test5, ftr_fixup_test5_expected, size) == 0);
- }
+ 	unsigned int i, j;
  
--static void test_alternative_case_with_external_branch(void)
-+static void __init test_alternative_case_with_external_branch(void)
- {
- 	extern unsigned int ftr_fixup_test6[];
- 	extern unsigned int end_ftr_fixup_test6[];
-@@ -866,7 +866,7 @@ static void test_alternative_case_with_external_branch(void)
- 	check(memcmp(ftr_fixup_test6, ftr_fixup_test6_expected, size) == 0);
- }
- 
--static void test_alternative_case_with_branch_to_end(void)
-+static void __init test_alternative_case_with_branch_to_end(void)
- {
- 	extern unsigned int ftr_fixup_test7[];
- 	extern unsigned int end_ftr_fixup_test7[];
-@@ -876,7 +876,7 @@ static void test_alternative_case_with_branch_to_end(void)
- 	check(memcmp(ftr_fixup_test7, ftr_fixup_test7_expected, size) == 0);
- }
- 
--static void test_cpu_macros(void)
-+static void __init test_cpu_macros(void)
- {
- 	extern u8 ftr_fixup_test_FTR_macros[];
- 	extern u8 ftr_fixup_test_FTR_macros_expected[];
-@@ -888,7 +888,7 @@ static void test_cpu_macros(void)
- 		     ftr_fixup_test_FTR_macros_expected, size) == 0);
- }
- 
--static void test_fw_macros(void)
-+static void __init test_fw_macros(void)
- {
- #ifdef CONFIG_PPC64
- 	extern u8 ftr_fixup_test_FW_FTR_macros[];
-@@ -902,7 +902,7 @@ static void test_fw_macros(void)
- #endif
- }
- 
--static void test_lwsync_macros(void)
-+static void __init test_lwsync_macros(void)
- {
- 	extern u8 lwsync_fixup_test[];
- 	extern u8 end_lwsync_fixup_test[];
 -- 
 2.25.1
 
