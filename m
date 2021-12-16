@@ -1,72 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9616C477FDA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 23:09:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF05477FE7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Dec 2021 23:10:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JFR952tyQz3dmJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 09:09:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JFRB034yBz3fD0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 09:10:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lGhmiFjr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GeN5zmb+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2a;
- helo=mail-qv1-xf2a.google.com; envelope-from=nnac123@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f31;
+ helo=mail-qv1-xf31.google.com; envelope-from=nnac123@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=lGhmiFjr; dkim-atps=neutral
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com
- [IPv6:2607:f8b0:4864:20::f2a])
+ header.s=20210112 header.b=GeN5zmb+; dkim-atps=neutral
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com
+ [IPv6:2607:f8b0:4864:20::f31])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JFQzf27CKz3cBH
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JFQzf5vbtz3cDN
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Dec 2021 09:01:02 +1100 (AEDT)
-Received: by mail-qv1-xf2a.google.com with SMTP id ke6so645335qvb.1
+Received: by mail-qv1-xf31.google.com with SMTP id kd9so581764qvb.11
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 14:01:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=9B5qgW0HBVzPqFUNOfUIHwC65WVVDR/PYpT2AxrYRRI=;
- b=lGhmiFjrWCBPIBHaV9B4M614iLL7ko40SgtTP+Q2Sv7f1LjPeAkrNy7LlnXHE98k0R
- iUbc8pYUfVmI7CJmAI9YpiKYbKhWD0//Vpd6vAKpkZE6oKwIB1e/C0TaUnbwIYwAP1lQ
- oXQ5Ja2dhHqQh1WQXa1G0BoMZ+kIZWcGqTvK//Dse6YwTy4qOaoX7j29eddu0+sZB9k9
- DgHtINMV22MerpSVBMbX/vIW1NdFc1pWGIO1bWVmRsdXQOrLTOSTwAvAOtpnZRqU93PN
- jH7LNCh9MIW4PW51ptTv0xuLcWREliWbMfmLDv/rJxgYFoG65H7yaYCCEE7pKkc7k/Uc
- BhEg==
+ bh=N6rqkgGw3DNrveZumzMs6g7a6h4+dvZFQPI/oyF02GA=;
+ b=GeN5zmb+wXlk/eCE4z3yHuRug+TPHeXhgS2Gt/cb8jXjR0JeWO2miQVvHt/HUI01+3
+ Hyy8pAWy7MfAbKvvEtVj8bnf3Jz1/HOkOOz5BHgYPvEAJvHvq/wytv6qkKy8FWeXHJG6
+ ZeHdllWUuG1+NJ6cY1Rmo4lOYS6VS6SMQmXAuvr9/8EpQ5QpQWXhL4nUTcs8dVTM/0QG
+ DcfrA2ITOUlHgfhnmEk3QUbFBKodtxEpwdcdjbU3LZJbmc6vJrmVX6vMEqMUlkAGOB60
+ d9qMUD804K10d4WJXcd68lpfZOI0eDg87kpkrHGhAE8WO5FbJ5gl9vcu72Q1fuqb59Eh
+ Qb9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=9B5qgW0HBVzPqFUNOfUIHwC65WVVDR/PYpT2AxrYRRI=;
- b=FvOl4hEFKixWrJV0aBpEtOLZJaBUIXcYUU1PUc4lqlRCTF3TmRtTq8Sj5q5fXiJISm
- xeEorqHVT6i2aUer28LwFZU+vs/JBXzhNQTCv8ZD67wckvfUlhk7LDToEvNasAxQbwUt
- nKnCFIzRBljzPRIWXJ643+A+j96POjjjzYHrPWIFVWj22/i/nesI7OgzoBGpjFX8Xbe6
- z4/ALV0JshYiuoApbinswVt0fBrEb2xqcoVHTuFmJLu3DIV+ULMpoinEbYgLniZaT+dl
- bamekV74RCw6PS26NE754mgNQ9hPS30re8GepbuRv1LBikgIjQw1hUSD9pB4EpT4D5Wq
- YCbg==
-X-Gm-Message-State: AOAM532vIvAeGR4yTiR4VwzlFAp//Tzd6IpmpJ3BC5KOlVBun32G7vyH
- JsYSGf/nMPzNF3Fo08yuIOsmMwaZ6fI=
-X-Google-Smtp-Source: ABdhPJxbs/cJEjdTnQO5Lqh/tqILbi4XeLWvWMKTmq5zr96pBwbcLhxodKBcZY70pt1YaaqAX9Rhuw==
-X-Received: by 2002:a05:6214:c89:: with SMTP id
- r9mr17755229qvr.81.1639692059279; 
- Thu, 16 Dec 2021 14:00:59 -0800 (PST)
+ bh=N6rqkgGw3DNrveZumzMs6g7a6h4+dvZFQPI/oyF02GA=;
+ b=h0eKhLZJfVz8YtEPVAany8pl46Dx75FC7jkJoAACteIo3uLo208eB08AQAzprEJtKu
+ 1s4JRSAyaQ4ATyM43bkdi8MU5hvVyecMgOwofe4cTFl3AoNqbMQ5BOyOnGJaqFzUayq7
+ D/dYNjpblxZk/mpFaFaNG3bnwgfdrmIMA8mGvusDUE8DggyDFS8MzmCY9wOj1b1R2Zcn
+ xuOSkgSwJTFQdjTJratUZork5bqUNY+Y9VnOntwlBl+O+SRcPzNe54qjuyR56aNlIxuv
+ mMOgYvr9yyGowXqnafUYaJQxEef5r5Qjj2KAjrcvpcQFcCVHsBatyE37WgGqj5UcvYW4
+ q+LA==
+X-Gm-Message-State: AOAM530PEXuuUDBQP7X8RgzLcHiXNyP8vzFdX9HRrZYUTj0GyUeFM9RW
+ JJU2SjEBUAibAHn+STre+GHegJDGwhQ=
+X-Google-Smtp-Source: ABdhPJxJtxZcqjjgEDcJnYjc41TuSTHluEd5moHvbkylgN1LOwgFWnkPp2qjXB/sna9whZ5p1M4TYw==
+X-Received: by 2002:a05:6214:2a45:: with SMTP id
+ jf5mr170659qvb.15.1639692060340; 
+ Thu, 16 Dec 2021 14:01:00 -0800 (PST)
 Received: from starship-12.hsd1.fl.comcast.net
  ([2601:589:4a00:1ed0:dce6:135:603d:e519])
- by smtp.gmail.com with ESMTPSA id y21sm5478483qtw.10.2021.12.16.14.00.58
+ by smtp.gmail.com with ESMTPSA id y21sm5478483qtw.10.2021.12.16.14.00.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Dec 2021 14:00:58 -0800 (PST)
+ Thu, 16 Dec 2021 14:00:59 -0800 (PST)
 From: Nick Child <nnac123@gmail.com>
 X-Google-Original-From: Nick Child <nick.child@ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 12/20] powerpc/pseries: Add __init attribute to eligible
+Subject: [PATCH v2 13/20] powerpc/ps3: Add __init attribute to eligible
  functions
-Date: Thu, 16 Dec 2021 17:00:27 -0500
-Message-Id: <20211216220035.605465-13-nick.child@ibm.com>
+Date: Thu, 16 Dec 2021 17:00:28 -0500
+Message-Id: <20211216220035.605465-14-nick.child@ibm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211216220035.605465-1-nick.child@ibm.com>
 References: <20211216220035.605465-1-nick.child@ibm.com>
@@ -88,232 +88,244 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some functions defined in 'arch/powerpc/platforms/pseries' are
-deserving of an `__init` macro attribute. These functions are only
-called by other initialization functions and therefore should inherit
-the attribute.
+Some functions defined in 'arch/powerpc/platforms/ps3' are deserving of an
+`__init` macro attribute. These functions are only called by other
+initialization functions and therefore should inherit the attribute.
 Also, change function declarations in header files to include `__init`.
 
 Signed-off-by: Nick Child <nick.child@ibm.com>
 ---
- arch/powerpc/include/asm/book3s/64/mmu.h       | 2 +-
- arch/powerpc/include/asm/iommu.h               | 2 +-
- arch/powerpc/include/asm/setup.h               | 2 +-
- arch/powerpc/platforms/pseries/event_sources.c | 2 +-
- arch/powerpc/platforms/pseries/iommu.c         | 2 +-
- arch/powerpc/platforms/pseries/lpar.c          | 6 +++---
- arch/powerpc/platforms/pseries/pseries.h       | 2 +-
- arch/powerpc/platforms/pseries/rtas-fadump.c   | 6 +++---
- arch/powerpc/platforms/pseries/setup.c         | 4 ++--
- arch/powerpc/platforms/pseries/vas.c           | 2 +-
- arch/powerpc/platforms/pseries/vio.c           | 6 +++---
- 11 files changed, 18 insertions(+), 18 deletions(-)
+ arch/powerpc/platforms/ps3/gelic_udbg.c |  2 +-
+ arch/powerpc/platforms/ps3/mm.c         |  4 ++--
+ arch/powerpc/platforms/ps3/os-area.c    |  4 ++--
+ arch/powerpc/platforms/ps3/platform.h   | 14 +++++++-------
+ arch/powerpc/platforms/ps3/repository.c | 20 ++++++++++----------
+ arch/powerpc/platforms/ps3/smp.c        |  2 +-
+ arch/powerpc/platforms/ps3/spu.c        |  2 +-
+ 7 files changed, 24 insertions(+), 24 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-index 7fee46e50377..ba5b1becf518 100644
---- a/arch/powerpc/include/asm/book3s/64/mmu.h
-+++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-@@ -258,7 +258,7 @@ static inline void setup_initial_memory_limit(phys_addr_t first_memblock_base,
+diff --git a/arch/powerpc/platforms/ps3/gelic_udbg.c b/arch/powerpc/platforms/ps3/gelic_udbg.c
+index cba4f8f5b8d7..6b298010fd84 100644
+--- a/arch/powerpc/platforms/ps3/gelic_udbg.c
++++ b/arch/powerpc/platforms/ps3/gelic_udbg.c
+@@ -113,7 +113,7 @@ static int unmap_dma_mem(int bus_id, int dev_id, u64 bus_addr, size_t len)
+ 	return lv1_free_device_dma_region(bus_id, dev_id, real_bus_addr);
  }
  
- #ifdef CONFIG_PPC_PSERIES
--extern void radix_init_pseries(void);
-+void __init radix_init_pseries(void);
+-static void gelic_debug_init(void)
++static void __init gelic_debug_init(void)
+ {
+ 	s64 result;
+ 	u64 v2;
+diff --git a/arch/powerpc/platforms/ps3/mm.c b/arch/powerpc/platforms/ps3/mm.c
+index 9c44f335c0b9..5ce924611b94 100644
+--- a/arch/powerpc/platforms/ps3/mm.c
++++ b/arch/powerpc/platforms/ps3/mm.c
+@@ -41,7 +41,7 @@ enum {
+ 	PAGE_SHIFT_16M = 24U,
+ };
+ 
+-static unsigned long make_page_sizes(unsigned long a, unsigned long b)
++static unsigned long __init make_page_sizes(unsigned long a, unsigned long b)
+ {
+ 	return (a << 56) | (b << 48);
+ }
+@@ -215,7 +215,7 @@ notrace void ps3_mm_vas_destroy(void)
+ 	}
+ }
+ 
+-static int ps3_mm_get_repository_highmem(struct mem_region *r)
++static int __init ps3_mm_get_repository_highmem(struct mem_region *r)
+ {
+ 	int result;
+ 
+diff --git a/arch/powerpc/platforms/ps3/os-area.c b/arch/powerpc/platforms/ps3/os-area.c
+index e8530371aed6..cb844e0add2b 100644
+--- a/arch/powerpc/platforms/ps3/os-area.c
++++ b/arch/powerpc/platforms/ps3/os-area.c
+@@ -501,7 +501,7 @@ static int db_set_64(struct os_area_db *db, const struct os_area_db_id *id,
+ 	return -1;
+ }
+ 
+-static int db_get_64(const struct os_area_db *db,
++static int __init db_get_64(const struct os_area_db *db,
+ 	const struct os_area_db_id *id, uint64_t *value)
+ {
+ 	struct db_iterator i;
+@@ -517,7 +517,7 @@ static int db_get_64(const struct os_area_db *db,
+ 	return -1;
+ }
+ 
+-static int db_get_rtc_diff(const struct os_area_db *db, int64_t *rtc_diff)
++static int __init db_get_rtc_diff(const struct os_area_db *db, int64_t *rtc_diff)
+ {
+ 	return db_get_64(db, &os_area_db_id_rtc_diff, (uint64_t*)rtc_diff);
+ }
+diff --git a/arch/powerpc/platforms/ps3/platform.h b/arch/powerpc/platforms/ps3/platform.h
+index 07bd39ef71ff..6beecdb0d51f 100644
+--- a/arch/powerpc/platforms/ps3/platform.h
++++ b/arch/powerpc/platforms/ps3/platform.h
+@@ -35,7 +35,7 @@ void __init ps3_register_ipi_irq(unsigned int cpu, unsigned int virq);
+ 
+ /* smp */
+ 
+-void smp_init_ps3(void);
++void __init smp_init_ps3(void);
+ #ifdef CONFIG_SMP
+ void ps3_smp_cleanup_cpu(int cpu);
  #else
- static inline void radix_init_pseries(void) { }
+@@ -134,9 +134,9 @@ struct ps3_repository_device {
+ int ps3_repository_find_device(struct ps3_repository_device *repo);
+ int ps3_repository_find_device_by_id(struct ps3_repository_device *repo,
+ 				     u64 bus_id, u64 dev_id);
+-int ps3_repository_find_devices(enum ps3_bus_type bus_type,
++int __init ps3_repository_find_devices(enum ps3_bus_type bus_type,
+ 	int (*callback)(const struct ps3_repository_device *repo));
+-int ps3_repository_find_bus(enum ps3_bus_type bus_type, unsigned int from,
++int __init ps3_repository_find_bus(enum ps3_bus_type bus_type, unsigned int from,
+ 	unsigned int *bus_index);
+ int ps3_repository_find_interrupt(const struct ps3_repository_device *repo,
+ 	enum ps3_interrupt_type intr_type, unsigned int *interrupt_id);
+@@ -211,8 +211,8 @@ static inline int ps3_repository_delete_highmem_info(unsigned int region_index)
+ int ps3_repository_read_num_be(unsigned int *num_be);
+ int ps3_repository_read_be_node_id(unsigned int be_index, u64 *node_id);
+ int ps3_repository_read_be_id(u64 node_id, u64 *be_id);
+-int ps3_repository_read_tb_freq(u64 node_id, u64 *tb_freq);
+-int ps3_repository_read_be_tb_freq(unsigned int be_index, u64 *tb_freq);
++int __init ps3_repository_read_tb_freq(u64 node_id, u64 *tb_freq);
++int __init ps3_repository_read_be_tb_freq(unsigned int be_index, u64 *tb_freq);
+ 
+ /* repository performance monitor info */
+ 
+@@ -247,7 +247,7 @@ int ps3_repository_read_spu_resource_id(unsigned int res_index,
+ 
+ /* repository vuart info */
+ 
+-int ps3_repository_read_vuart_av_port(unsigned int *port);
+-int ps3_repository_read_vuart_sysmgr_port(unsigned int *port);
++int __init ps3_repository_read_vuart_av_port(unsigned int *port);
++int __init ps3_repository_read_vuart_sysmgr_port(unsigned int *port);
+ 
  #endif
-diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
-index c361212ac160..d7912b66c874 100644
---- a/arch/powerpc/include/asm/iommu.h
-+++ b/arch/powerpc/include/asm/iommu.h
-@@ -275,7 +275,7 @@ extern void iommu_unmap_page(struct iommu_table *tbl, dma_addr_t dma_handle,
- 			     size_t size, enum dma_data_direction direction,
- 			     unsigned long attrs);
+diff --git a/arch/powerpc/platforms/ps3/repository.c b/arch/powerpc/platforms/ps3/repository.c
+index 21712964e76f..205763061a2d 100644
+--- a/arch/powerpc/platforms/ps3/repository.c
++++ b/arch/powerpc/platforms/ps3/repository.c
+@@ -413,7 +413,7 @@ int ps3_repository_find_device_by_id(struct ps3_repository_device *repo,
+ 	return 0;
+ }
  
--extern void iommu_init_early_pSeries(void);
-+void __init iommu_init_early_pSeries(void);
- extern void iommu_init_early_dart(struct pci_controller_ops *controller_ops);
- extern void iommu_init_early_pasemi(void);
- 
-diff --git a/arch/powerpc/include/asm/setup.h b/arch/powerpc/include/asm/setup.h
-index 607e42b8cbf0..71658504dadd 100644
---- a/arch/powerpc/include/asm/setup.h
-+++ b/arch/powerpc/include/asm/setup.h
-@@ -32,7 +32,7 @@ void setup_panic(void);
- extern bool pseries_enable_reloc_on_exc(void);
- extern void pseries_disable_reloc_on_exc(void);
- extern void pseries_big_endian_exceptions(void);
--extern void pseries_little_endian_exceptions(void);
-+void __init pseries_little_endian_exceptions(void);
- #else
- static inline bool pseries_enable_reloc_on_exc(void) { return false; }
- static inline void pseries_disable_reloc_on_exc(void) {}
-diff --git a/arch/powerpc/platforms/pseries/event_sources.c b/arch/powerpc/platforms/pseries/event_sources.c
-index be661e919c76..623dfe0d8e1c 100644
---- a/arch/powerpc/platforms/pseries/event_sources.c
-+++ b/arch/powerpc/platforms/pseries/event_sources.c
-@@ -8,7 +8,7 @@
- 
- #include "pseries.h"
- 
--void request_event_sources_irqs(struct device_node *np,
-+void __init request_event_sources_irqs(struct device_node *np,
- 				irq_handler_t handler,
- 				const char *name)
+-int ps3_repository_find_devices(enum ps3_bus_type bus_type,
++int __init ps3_repository_find_devices(enum ps3_bus_type bus_type,
+ 	int (*callback)(const struct ps3_repository_device *repo))
  {
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 8f998e55735b..4d991cf840d9 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1654,7 +1654,7 @@ static struct notifier_block iommu_reconfig_nb = {
+ 	int result = 0;
+@@ -455,7 +455,7 @@ int ps3_repository_find_devices(enum ps3_bus_type bus_type,
+ 	return result;
+ }
+ 
+-int ps3_repository_find_bus(enum ps3_bus_type bus_type, unsigned int from,
++int __init ps3_repository_find_bus(enum ps3_bus_type bus_type, unsigned int from,
+ 	unsigned int *bus_index)
+ {
+ 	unsigned int i;
+@@ -908,7 +908,7 @@ int ps3_repository_read_boot_dat_size(unsigned int *size)
+ 	return result;
+ }
+ 
+-int ps3_repository_read_vuart_av_port(unsigned int *port)
++int __init ps3_repository_read_vuart_av_port(unsigned int *port)
+ {
+ 	int result;
+ 	u64 v1 = 0;
+@@ -923,7 +923,7 @@ int ps3_repository_read_vuart_av_port(unsigned int *port)
+ 	return result;
+ }
+ 
+-int ps3_repository_read_vuart_sysmgr_port(unsigned int *port)
++int __init ps3_repository_read_vuart_sysmgr_port(unsigned int *port)
+ {
+ 	int result;
+ 	u64 v1 = 0;
+@@ -1005,7 +1005,7 @@ int ps3_repository_read_be_id(u64 node_id, u64 *be_id)
+ 		be_id, NULL);
+ }
+ 
+-int ps3_repository_read_tb_freq(u64 node_id, u64 *tb_freq)
++int __init ps3_repository_read_tb_freq(u64 node_id, u64 *tb_freq)
+ {
+ 	return read_node(PS3_LPAR_ID_PME,
+ 		make_first_field("be", 0),
+@@ -1015,7 +1015,7 @@ int ps3_repository_read_tb_freq(u64 node_id, u64 *tb_freq)
+ 		tb_freq, NULL);
+ }
+ 
+-int ps3_repository_read_be_tb_freq(unsigned int be_index, u64 *tb_freq)
++int __init ps3_repository_read_be_tb_freq(unsigned int be_index, u64 *tb_freq)
+ {
+ 	int result;
+ 	u64 node_id;
+@@ -1178,7 +1178,7 @@ int ps3_repository_delete_highmem_info(unsigned int region_index)
+ 
+ #if defined(DEBUG)
+ 
+-int ps3_repository_dump_resource_info(const struct ps3_repository_device *repo)
++int __init ps3_repository_dump_resource_info(const struct ps3_repository_device *repo)
+ {
+ 	int result = 0;
+ 	unsigned int res_index;
+@@ -1231,7 +1231,7 @@ int ps3_repository_dump_resource_info(const struct ps3_repository_device *repo)
+ 	return result;
+ }
+ 
+-static int dump_stor_dev_info(struct ps3_repository_device *repo)
++static int __init dump_stor_dev_info(struct ps3_repository_device *repo)
+ {
+ 	int result = 0;
+ 	unsigned int num_regions, region_index;
+@@ -1279,7 +1279,7 @@ static int dump_stor_dev_info(struct ps3_repository_device *repo)
+ 	return result;
+ }
+ 
+-static int dump_device_info(struct ps3_repository_device *repo,
++static int __init dump_device_info(struct ps3_repository_device *repo,
+ 	unsigned int num_dev)
+ {
+ 	int result = 0;
+@@ -1323,7 +1323,7 @@ static int dump_device_info(struct ps3_repository_device *repo,
+ 	return result;
+ }
+ 
+-int ps3_repository_dump_bus_info(void)
++int __init ps3_repository_dump_bus_info(void)
+ {
+ 	int result = 0;
+ 	struct ps3_repository_device repo;
+diff --git a/arch/powerpc/platforms/ps3/smp.c b/arch/powerpc/platforms/ps3/smp.c
+index 93b1e73b3529..85295756005a 100644
+--- a/arch/powerpc/platforms/ps3/smp.c
++++ b/arch/powerpc/platforms/ps3/smp.c
+@@ -112,7 +112,7 @@ static struct smp_ops_t ps3_smp_ops = {
+ 	.kick_cpu	= smp_generic_kick_cpu,
  };
  
- /* These are called very early. */
--void iommu_init_early_pSeries(void)
-+void __init iommu_init_early_pSeries(void)
+-void smp_init_ps3(void)
++void __init smp_init_ps3(void)
  {
- 	if (of_chosen && of_get_property(of_chosen, "linux,iommu-off", NULL))
- 		return;
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index fac5d86777db..f8899d506ea4 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -714,7 +714,7 @@ void vpa_init(int cpu)
- 
- #ifdef CONFIG_PPC_BOOK3S_64
- 
--static int pseries_lpar_register_process_table(unsigned long base,
-+static int __init pseries_lpar_register_process_table(unsigned long base,
- 			unsigned long page_size, unsigned long table_size)
- {
- 	long rc;
-@@ -1737,7 +1737,7 @@ void __init hpte_init_pseries(void)
- #endif /* CONFIG_PPC_64S_HASH_MMU */
- 
- #ifdef CONFIG_PPC_RADIX_MMU
--void radix_init_pseries(void)
-+void __init radix_init_pseries(void)
- {
- 	pr_info("Using radix MMU under hypervisor\n");
- 
-@@ -1938,7 +1938,7 @@ int h_get_mpp_x(struct hvcall_mpp_x_data *mpp_x_data)
+ 	DBG(" -> %s\n", __func__);
+ 	smp_ops = &ps3_smp_ops;
+diff --git a/arch/powerpc/platforms/ps3/spu.c b/arch/powerpc/platforms/ps3/spu.c
+index 0c252478e556..4a2520ec6d7f 100644
+--- a/arch/powerpc/platforms/ps3/spu.c
++++ b/arch/powerpc/platforms/ps3/spu.c
+@@ -137,7 +137,7 @@ u64 ps3_get_spe_id(void *arg)
  }
+ EXPORT_SYMBOL_GPL(ps3_get_spe_id);
  
- #ifdef CONFIG_PPC_64S_HASH_MMU
--static unsigned long vsid_unscramble(unsigned long vsid, int ssize)
-+static unsigned long __init vsid_unscramble(unsigned long vsid, int ssize)
+-static unsigned long get_vas_id(void)
++static unsigned long __init get_vas_id(void)
  {
- 	unsigned long protovsid;
- 	unsigned long va_bits = VA_BITS;
-diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
-index b4c63c481f33..56c9ef9052e9 100644
---- a/arch/powerpc/platforms/pseries/pseries.h
-+++ b/arch/powerpc/platforms/pseries/pseries.h
-@@ -11,7 +11,7 @@
- 
- struct device_node;
- 
--extern void request_event_sources_irqs(struct device_node *np,
-+void __init request_event_sources_irqs(struct device_node *np,
- 				       irq_handler_t handler, const char *name);
- 
- #include <linux/of.h>
-diff --git a/arch/powerpc/platforms/pseries/rtas-fadump.c b/arch/powerpc/platforms/pseries/rtas-fadump.c
-index f8f73b47b107..35f9cb602c30 100644
---- a/arch/powerpc/platforms/pseries/rtas-fadump.c
-+++ b/arch/powerpc/platforms/pseries/rtas-fadump.c
-@@ -39,7 +39,7 @@ static void rtas_fadump_update_config(struct fw_dump *fadump_conf,
-  * This function is called in the capture kernel to get configuration details
-  * setup in the first kernel and passed to the f/w.
-  */
--static void rtas_fadump_get_config(struct fw_dump *fadump_conf,
-+static void __init rtas_fadump_get_config(struct fw_dump *fadump_conf,
- 				   const struct rtas_fadump_mem_struct *fdm)
- {
- 	fadump_conf->boot_mem_addr[0] =
-@@ -247,7 +247,7 @@ static inline int rtas_fadump_gpr_index(u64 id)
- 	return i;
- }
- 
--static void rtas_fadump_set_regval(struct pt_regs *regs, u64 reg_id, u64 reg_val)
-+static void __init rtas_fadump_set_regval(struct pt_regs *regs, u64 reg_id, u64 reg_val)
- {
- 	int i;
- 
-@@ -272,7 +272,7 @@ static void rtas_fadump_set_regval(struct pt_regs *regs, u64 reg_id, u64 reg_val
- 		regs->dsisr = (unsigned long)reg_val;
- }
- 
--static struct rtas_fadump_reg_entry*
-+static struct rtas_fadump_reg_entry* __init
- rtas_fadump_read_regs(struct rtas_fadump_reg_entry *reg_entry,
- 		      struct pt_regs *regs)
- {
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index 7f69237d4fa4..83a04d967a59 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -447,7 +447,7 @@ void pseries_big_endian_exceptions(void)
- 		panic("Could not enable big endian exceptions");
- }
- 
--void pseries_little_endian_exceptions(void)
-+void __init pseries_little_endian_exceptions(void)
- {
- 	long rc;
- 
-@@ -907,7 +907,7 @@ void pSeries_coalesce_init(void)
-  * fw_cmo_feature_init - FW_FEATURE_CMO is not stored in ibm,hypertas-functions,
-  * handle that here. (Stolen from parse_system_parameter_string)
-  */
--static void pSeries_cmo_feature_init(void)
-+static void __init pSeries_cmo_feature_init(void)
- {
- 	char *ptr, *key, *value, *end;
- 	int call_status;
-diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index b043e3936d21..3e59662d0181 100644
---- a/arch/powerpc/platforms/pseries/vas.c
-+++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -482,7 +482,7 @@ EXPORT_SYMBOL_GPL(vas_unregister_api_pseries);
-  * Get the specific capabilities based on the feature type.
-  * Right now supports GZIP default and GZIP QoS capabilities.
-  */
--static int get_vas_capabilities(u8 feat, enum vas_cop_feat_type type,
-+static int __init get_vas_capabilities(u8 feat, enum vas_cop_feat_type type,
- 				struct hv_vas_cop_feat_caps *hv_caps)
- {
- 	struct vas_cop_feat_caps *caps;
-diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
-index feafcb582e1b..c9f9be4ea26a 100644
---- a/arch/powerpc/platforms/pseries/vio.c
-+++ b/arch/powerpc/platforms/pseries/vio.c
-@@ -1061,7 +1061,7 @@ static struct attribute *vio_bus_attrs[] = {
- };
- ATTRIBUTE_GROUPS(vio_bus);
- 
--static void vio_cmo_sysfs_init(void)
-+static void __init vio_cmo_sysfs_init(void)
- {
- 	vio_bus_type.dev_groups = vio_cmo_dev_groups;
- 	vio_bus_type.bus_groups = vio_bus_groups;
-@@ -1073,7 +1073,7 @@ static int vio_cmo_bus_probe(struct vio_dev *viodev) { return 0; }
- static void vio_cmo_bus_remove(struct vio_dev *viodev) {}
- static void vio_cmo_set_dma_ops(struct vio_dev *viodev) {}
- static void vio_cmo_bus_init(void) {}
--static void vio_cmo_sysfs_init(void) { }
-+static void __init vio_cmo_sysfs_init(void) { }
- #endif /* CONFIG_PPC_SMLPAR */
- EXPORT_SYMBOL(vio_cmo_entitlement_update);
- EXPORT_SYMBOL(vio_cmo_set_dev_desired);
-@@ -1479,7 +1479,7 @@ EXPORT_SYMBOL(vio_register_device_node);
-  * Starting from the root node provide, register the device node for
-  * each child beneath the root.
-  */
--static void vio_bus_scan_register_devices(char *root_name)
-+static void __init vio_bus_scan_register_devices(char *root_name)
- {
- 	struct device_node *node_root, *node_child;
+ 	u64 id;
  
 -- 
 2.25.1
