@@ -2,76 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E101447858A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 08:21:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AE9C47890A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 11:36:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JFgQd69wXz3c5l
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 18:21:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JFlkw6r4mz3dtR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 21:36:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NGo3nSRt;
+	dkim=pass (1024-bit key; unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=X8RPgZ6y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=145.40.73.55;
- helo=sin.source.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=NGo3nSRt; 
+ smtp.mailfrom=virtuozzo.com (client-ip=185.231.240.75; helo=relay.sw.ru;
+ envelope-from=nikita.yushchenko@virtuozzo.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com
+ header.a=rsa-sha256 header.s=relay header.b=X8RPgZ6y; 
  dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 1049 seconds by postgrey-1.36 at boromir;
+ Fri, 17 Dec 2021 19:38:52 AEDT
+Received: from relay.sw.ru (relay.sw.ru [185.231.240.75])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JFgPp6yR6z2yMx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Dec 2021 18:21:02 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id A140CCE23E5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Dec 2021 07:20:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D2189C36AE8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Dec 2021 07:20:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1639725657;
- bh=Ij0jxUpxQffnHBwZQloyYY0ITMO9lRr4nuwrejpkdbg=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=NGo3nSRtawS8+ktZkLPdBRoNvvPd14ACNgc9u4NTMDjPpIQawWT364+dZVnqTNr1v
- uHZTCA/CJkA8o2oTc9zch7SskDPFH/Llj3fLo9dm2A9ynqcWzmVA5VZi7IIccmpOFv
- +Z0I/uW20HPPJRBBmPeQow2YfF0VXrSz9EJmwxh4w+NqDMLtir82VpjAnIZOAcXyt0
- uz07IqBlpiFRnOU1+aSBVu1TALdqOjXQuQ3Ws8OZx5ItxXec2frUKDwg+H7A2rH1KN
- 5z3M8PtuuLtWtaEDP1f9YJFqkZTtJYI0JtnyJX3DGcsl9pLc2DXC/hlOh/O2dRnR+A
- RtCTsV651rtfw==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id B5E5A60F54; Fri, 17 Dec 2021 07:20:57 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 215217] Kernel fails to boot at an early stage when built with
- GCC_PLUGIN_LATENT_ENTROPY=y (PowerMac G4 3,6)
-Date: Fri, 17 Dec 2021 07:20:57 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: christophe.leroy@csgroup.eu
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-215217-206035-6XStNurOM1@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-215217-206035@https.bugzilla.kernel.org/>
-References: <bug-215217-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JFj7c4SYkz2yPM
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Dec 2021 19:38:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
+ Content-Type; bh=pDjfFIdDdVXXMPSil9iEKbKF8fJOdHI7/Q0gh6xQ34w=; b=X8RPgZ6yVUZD
+ 3Y9cBJNTwkeMHdU44vvDRZUupnhQWBJt14hzWPuOzdS9Mwll4Jj7aTjX0kc8ilYdWfHhzEp37xctT
+ ZdXsD3/8oYSdihEFcbozYpTV5kvcjDDlzsYf1KIJEIjFR79wJs0gb1qc+kYsreHv9FgJ9Uiifn2Bl
+ mhauY=;
+Received: from [192.168.15.79] (helo=cobook.home)
+ by relay.sw.ru with esmtp (Exim 4.94.2)
+ (envelope-from <nikita.yushchenko@virtuozzo.com>)
+ id 1my8Te-003jwy-Cd; Fri, 17 Dec 2021 11:20:30 +0300
+From: Nikita Yushchenko <nikita.yushchenko@virtuozzo.com>
+To: Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH/RFC] mm: add and use batched version of __tlb_remove_table()
+Date: Fri, 17 Dec 2021 11:19:10 +0300
+Message-Id: <20211217081909.596413-1-nikita.yushchenko@virtuozzo.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Fri, 17 Dec 2021 21:35:35 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,35 +67,299 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel@openvz.org,
+ sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D215217
+When batched page table freeing via struct mmu_table_batch is used, the
+final freeing in __tlb_remove_table_free() executes a loop, calling
+arch hook __tlb_remove_table() to free each table individually.
 
---- Comment #13 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
-arch/powerpc/lib/feature-fixups.o also need DISABLE_LATENT_ENTROPY_PLUGIN, =
-see
-extract from you vmlinux below
+Shift that loop down to archs. This allows archs to optimize it, by
+freeing multiple tables in a single release_pages() call. This is
+faster than individual put_page() calls, especially with memcg
+accounting enabled.
 
+Signed-off-by: Andrey Ryabinin <aryabinin@virtuozzo.com>
+Signed-off-by: Nikita Yushchenko <nikita.yushchenko@virtuozzo.com>
+---
+ arch/arm/include/asm/tlb.h                   |  5 ++++
+ arch/arm64/include/asm/tlb.h                 |  5 ++++
+ arch/powerpc/include/asm/book3s/32/pgalloc.h |  8 +++++++
+ arch/powerpc/include/asm/book3s/64/pgalloc.h |  1 +
+ arch/powerpc/include/asm/nohash/pgalloc.h    |  8 +++++++
+ arch/powerpc/mm/book3s64/pgtable.c           |  8 +++++++
+ arch/s390/include/asm/tlb.h                  |  1 +
+ arch/s390/mm/pgalloc.c                       |  8 +++++++
+ arch/sparc/include/asm/pgalloc_64.h          |  8 +++++++
+ arch/x86/include/asm/tlb.h                   |  5 ++++
+ include/asm-generic/tlb.h                    |  2 +-
+ include/linux/swap.h                         |  5 +++-
+ mm/mmu_gather.c                              |  6 +----
+ mm/swap_state.c                              | 24 +++++++++++++++-----
+ 14 files changed, 81 insertions(+), 13 deletions(-)
 
-c0c0ad20 <apply_feature_fixups>:
-c0c0ad20:       94 21 ff e0     stwu    r1,-32(r1)
-c0c0ad24:       3c 60 c0 db     lis     r3,-16165
-c0c0ad28:       7c 08 02 a6     mflr    r0
-c0c0ad2c:       38 63 55 50     addi    r3,r3,21840
-c0c0ad30:       bf 41 00 08     stmw    r26,8(r1)
-c0c0ad34:       7c 3f 0b 78     mr      r31,r1
-c0c0ad38:       3f 60 c0 da     lis     r27,-16166         <=3D=3D latent_e=
-ntropy@h
-c0c0ad3c:       90 01 00 24     stw     r0,36(r1)
-c0c0ad40:       3f 80 c0 d4     lis     r28,-16172
-c0c0ad44:       83 db 5b 50     lwz     r30,23376(r27)     <=3D=3D latent_e=
-ntropy@l
-c0c0ad48:       4b 40 60 35     bl      c0010d7c <add_reloc_offset>
+diff --git a/arch/arm/include/asm/tlb.h b/arch/arm/include/asm/tlb.h
+index b8cbe03ad260..37f8a5193581 100644
+--- a/arch/arm/include/asm/tlb.h
++++ b/arch/arm/include/asm/tlb.h
+@@ -34,6 +34,11 @@ static inline void __tlb_remove_table(void *_table)
+ 	free_page_and_swap_cache((struct page *)_table);
+ }
+ 
++static inline void __tlb_remove_tables(void **tables, int nr)
++{
++	free_pages_and_swap_cache_nolru((struct page **)tables, nr);
++}
++
+ #include <asm-generic/tlb.h>
+ 
+ static inline void
+diff --git a/arch/arm64/include/asm/tlb.h b/arch/arm64/include/asm/tlb.h
+index c995d1f4594f..c70dd428e1f6 100644
+--- a/arch/arm64/include/asm/tlb.h
++++ b/arch/arm64/include/asm/tlb.h
+@@ -16,6 +16,11 @@ static inline void __tlb_remove_table(void *_table)
+ 	free_page_and_swap_cache((struct page *)_table);
+ }
+ 
++static inline void __tlb_remove_tables(void **tables, int nr)
++{
++	free_pages_and_swap_cache_nolru((struct page **)tables, nr);
++}
++
+ #define tlb_flush tlb_flush
+ static void tlb_flush(struct mmu_gather *tlb);
+ 
+diff --git a/arch/powerpc/include/asm/book3s/32/pgalloc.h b/arch/powerpc/include/asm/book3s/32/pgalloc.h
+index dc5c039eb28e..880369de688a 100644
+--- a/arch/powerpc/include/asm/book3s/32/pgalloc.h
++++ b/arch/powerpc/include/asm/book3s/32/pgalloc.h
+@@ -66,6 +66,14 @@ static inline void __tlb_remove_table(void *_table)
+ 	pgtable_free(table, shift);
+ }
+ 
++static inline void __tlb_remove_tables(void **tables, int nr)
++{
++	int i;
++
++	for (i = 0; i < nr; i++)
++		__tlb_remove_table(tables[i]);
++}
++
+ static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t table,
+ 				  unsigned long address)
+ {
+diff --git a/arch/powerpc/include/asm/book3s/64/pgalloc.h b/arch/powerpc/include/asm/book3s/64/pgalloc.h
+index e1af0b394ceb..f3dcd735e4ce 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgalloc.h
++++ b/arch/powerpc/include/asm/book3s/64/pgalloc.h
+@@ -20,6 +20,7 @@ extern pmd_t *pmd_fragment_alloc(struct mm_struct *, unsigned long);
+ extern void pmd_fragment_free(unsigned long *);
+ extern void pgtable_free_tlb(struct mmu_gather *tlb, void *table, int shift);
+ extern void __tlb_remove_table(void *_table);
++extern void __tlb_remove_tables(void **tables, int nr);
+ void pte_frag_destroy(void *pte_frag);
+ 
+ static inline pgd_t *radix__pgd_alloc(struct mm_struct *mm)
+diff --git a/arch/powerpc/include/asm/nohash/pgalloc.h b/arch/powerpc/include/asm/nohash/pgalloc.h
+index 29c43665a753..170f5fda3dc1 100644
+--- a/arch/powerpc/include/asm/nohash/pgalloc.h
++++ b/arch/powerpc/include/asm/nohash/pgalloc.h
+@@ -63,6 +63,14 @@ static inline void __tlb_remove_table(void *_table)
+ 	pgtable_free(table, shift);
+ }
+ 
++static inline void __tlb_remove_tables(void **tables, int nr)
++{
++	int i;
++
++	for (i = 0; i < nr; i++)
++		__tlb_remove_table(tables[i]);
++}
++
+ static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t table,
+ 				  unsigned long address)
+ {
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index 9e16c7b1a6c5..f95fb42fadfa 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -412,6 +412,14 @@ void __tlb_remove_table(void *_table)
+ 	return pgtable_free(table, index);
+ }
+ 
++void __tlb_remove_tables(void **tables, int nr)
++{
++	int i;
++
++	for (i = 0; i < nr; i++)
++		__tlb_remove_table(tables[i]);
++}
++
+ #ifdef CONFIG_PROC_FS
+ atomic_long_t direct_pages_count[MMU_PAGE_COUNT];
+ 
+diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
+index fe6407f0eb1b..144d3db1441e 100644
+--- a/arch/s390/include/asm/tlb.h
++++ b/arch/s390/include/asm/tlb.h
+@@ -23,6 +23,7 @@
+  */
+ 
+ void __tlb_remove_table(void *_table);
++void __tlb_remove_tables(void **tables, int nr);
+ static inline void tlb_flush(struct mmu_gather *tlb);
+ static inline bool __tlb_remove_page_size(struct mmu_gather *tlb,
+ 					  struct page *page, int page_size);
+diff --git a/arch/s390/mm/pgalloc.c b/arch/s390/mm/pgalloc.c
+index 781965f7210e..6a685a895fdb 100644
+--- a/arch/s390/mm/pgalloc.c
++++ b/arch/s390/mm/pgalloc.c
+@@ -315,6 +315,14 @@ void __tlb_remove_table(void *_table)
+ 	}
+ }
+ 
++void __tlb_remove_tables(void **tables, int nr)
++{
++	int i;
++
++	for (i = 0; i < nr; i++)
++		__tlb_remove_table(tables[i]);
++}
++
+ /*
+  * Base infrastructure required to generate basic asces, region, segment,
+  * and page tables that do not make use of enhanced features like EDAT1.
+diff --git a/arch/sparc/include/asm/pgalloc_64.h b/arch/sparc/include/asm/pgalloc_64.h
+index 7b5561d17ab1..eb7c9bf46747 100644
+--- a/arch/sparc/include/asm/pgalloc_64.h
++++ b/arch/sparc/include/asm/pgalloc_64.h
+@@ -92,6 +92,14 @@ static inline void __tlb_remove_table(void *_table)
+ 		is_page = true;
+ 	pgtable_free(table, is_page);
+ }
++
++static inline void __tlb_remove_tables(void **tables, int nr)
++{
++	int i;
++
++	for (i = 0; i < nr; i++)
++		__tlb_remove_table(tables[i]);
++}
+ #else /* CONFIG_SMP */
+ static inline void pgtable_free_tlb(struct mmu_gather *tlb, void *table, bool is_page)
+ {
+diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
+index 1bfe979bb9bc..253a62be888c 100644
+--- a/arch/x86/include/asm/tlb.h
++++ b/arch/x86/include/asm/tlb.h
+@@ -37,4 +37,9 @@ static inline void __tlb_remove_table(void *table)
+ 	free_page_and_swap_cache(table);
+ }
+ 
++static inline void __tlb_remove_tables(void **tables, int nr)
++{
++	free_pages_and_swap_cache_nolru((struct page **)tables, nr);
++}
++
+ #endif /* _ASM_X86_TLB_H */
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index 2c68a545ffa7..923c65d986dc 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -148,7 +148,7 @@
+  *  Useful if your architecture has non-page page directories.
+  *
+  *  When used, an architecture is expected to provide __tlb_remove_table()
+- *  which does the actual freeing of these pages.
++ *  and __tlb_remove_tables() which do the actual freeing of these pages.
+  *
+  *  MMU_GATHER_RCU_TABLE_FREE
+  *
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index d1ea44b31f19..86a1b0a61889 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -460,6 +460,7 @@ extern void clear_shadow_from_swap_cache(int type, unsigned long begin,
+ extern void free_swap_cache(struct page *);
+ extern void free_page_and_swap_cache(struct page *);
+ extern void free_pages_and_swap_cache(struct page **, int);
++extern void free_pages_and_swap_cache_nolru(struct page **, int);
+ extern struct page *lookup_swap_cache(swp_entry_t entry,
+ 				      struct vm_area_struct *vma,
+ 				      unsigned long addr);
+@@ -565,7 +566,9 @@ static inline struct address_space *swap_address_space(swp_entry_t entry)
+ #define free_page_and_swap_cache(page) \
+ 	put_page(page)
+ #define free_pages_and_swap_cache(pages, nr) \
+-	release_pages((pages), (nr));
++	release_pages((pages), (nr))
++#define free_pages_and_swap_cache_nolru(pages, nr) \
++	release_pages((pages), (nr))
+ 
+ static inline void free_swap_cache(struct page *page)
+ {
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index 1b9837419bf9..2faa0d59aeca 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -95,11 +95,7 @@ bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page, int page_
+ 
+ static void __tlb_remove_table_free(struct mmu_table_batch *batch)
+ {
+-	int i;
+-
+-	for (i = 0; i < batch->nr; i++)
+-		__tlb_remove_table(batch->tables[i]);
+-
++	__tlb_remove_tables(batch->tables, batch->nr);
+ 	free_page((unsigned long)batch);
+ }
+ 
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 8d4104242100..76c3d4a756a3 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -307,17 +307,29 @@ void free_page_and_swap_cache(struct page *page)
+ 
+ /*
+  * Passed an array of pages, drop them all from swapcache and then release
+- * them.  They are removed from the LRU and freed if this is their last use.
++ * them.  They are optionally removed from the LRU and freed if this is their
++ * last use.
+  */
+-void free_pages_and_swap_cache(struct page **pages, int nr)
++static void __free_pages_and_swap_cache(struct page **pages, int nr,
++		bool do_lru)
+ {
+-	struct page **pagep = pages;
+ 	int i;
+ 
+-	lru_add_drain();
++	if (do_lru)
++		lru_add_drain();
+ 	for (i = 0; i < nr; i++)
+-		free_swap_cache(pagep[i]);
+-	release_pages(pagep, nr);
++		free_swap_cache(pages[i]);
++	release_pages(pages, nr);
++}
++
++void free_pages_and_swap_cache(struct page **pages, int nr)
++{
++	__free_pages_and_swap_cache(pages, nr, true);
++}
++
++void free_pages_and_swap_cache_nolru(struct page **pages, int nr)
++{
++	__free_pages_and_swap_cache(pages, nr, false);
+ }
+ 
+ static inline bool swap_use_vma_readahead(void)
+-- 
+2.30.2
 
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
