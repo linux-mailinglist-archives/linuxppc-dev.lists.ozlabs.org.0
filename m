@@ -1,137 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78921478D1E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 15:12:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A365147928B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 18:13:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JFrXg2MGNz3cY1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Dec 2021 01:12:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JFwYt3xHkz3cTf
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Dec 2021 04:13:54 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256 header.s=badeba3b8450 header.b=lykRjIGV;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::62f;
- helo=fra01-mr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on062f.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e19::62f])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JFrX61pgYz30R1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Dec 2021 01:12:03 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VNFxFzmHcC7TtqTHQYqj1zwJApOjxv8ysQZEa7E8Q9aU/RLX+wtpvZyYDbolTqT+Dj+H6QjJSosw8yfU9KZsD2eQXRxf2T9MHqGAsB1iC6BHxMkmuuYcsIRcExJhRAfqWbCscnVf19Q14pZOCCD4E0TQVuGmN8mIDFfF3vq1dNA56NjAsSSPbmzMLl3+NYbz4BatKiu/DatKaWCaCP1tBIt3cBJ6+rv+pguc4qcgcJxhL6B1fu6oAlIm4Wuy3TzOPleCa0xllkfbl9gdnRXRNFy3m7YgU+gcnkbUJWsNupagC8+27ClHKV0gg0wft4u69792kLvpgqpiHYqKcKvgPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F6gQUmn42eZRNdI4sq7fopsldfWd2uDGg0wfM4iSnu0=;
- b=Ck1VdEx7IgE1//hENIXFw42EMOog4IpImPjXP9PU/8qUVj/VxRDp4z2El10C95t5zbKvlxmkE3yve2pogOamuCaSzdDhz0V8c6RBl1xNPoJQzw8kI7erKq2kBKir1FR073tC3IrB/S9xvyuzwEmE50xus/S4VoYEdmIi96oKA+AmB52YkPdMLiyksc0fHTiGbjWvtmHjl9wKtytuyDOMjif7k1DJcfoEHzYX8HIDKU5YQWrq/Q7uNPewb+/UXLEVdlXw36PCMly+JhMkvRCRWAaKX/CFOiZbLWE981HBTxz0CzHqqPTb0xFHEkkzBe5z3ggrul/oqbnBVYngksMCSw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB1606.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:9::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4801.14; Fri, 17 Dec 2021 14:11:38 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::f0ef:856d:b0de:e85d]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::f0ef:856d:b0de:e85d%5]) with mapi id 15.20.4801.016; Fri, 17 Dec 2021
- 14:11:38 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Paul Moore <paul@paul-moore.com>
-Subject: Re: linux-next: manual merge of the audit tree with the powerpc tree
-Thread-Topic: linux-next: manual merge of the audit tree with the powerpc tree
-Thread-Index: AQHXyhGlv9NcChlzxUqn6eTOsDZjzavlG8oAgAA7YoCAAWBkAIAAA16AgAAsAgCAS62bAIAABqsAgAATXwCAABARAIACZh0AgADpvYCAAP1egA==
-Date: Fri, 17 Dec 2021 14:11:38 +0000
-Message-ID: <23e9c126-d167-254f-2f4b-391e9f01396c@csgroup.eu>
-References: <20211026133147.35d19e00@canb.auug.org.au>
- <87k0i0awdl.fsf@mpe.ellerman.id.au>
- <CAHC9VhTj7gn3iAOYctVRKvv_Bk1iQMrmkA8FVJtYzdvBjqFmvg@mail.gmail.com>
- <87tuh2aepp.fsf@mpe.ellerman.id.au>
- <2012df5e-62ec-06fb-9f4d-e27dde184a3f@csgroup.eu>
- <CAHC9VhRHs8Lx8+v+LHmJByxO_m330sfLWRsGDsFtQxyQ1860eg@mail.gmail.com>
- <dc5705cf-d47a-57b0-65da-2a2af8d71b19@csgroup.eu>
- <CAHC9VhQPizVLkr2+sqRCS0gS4+ZSw-AMkJM5V64-ku8AQe+QQg@mail.gmail.com>
- <1a78709f-162e-0d78-0550-4e9ef213f9c6@csgroup.eu>
- <102e59ba-fcf0-dd85-9338-75b7ce5fbd83@kaod.org>
- <5f83d1fe-4e6e-1d08-b0c2-aec8ee852065@csgroup.eu>
- <CAHC9VhTcV6jn4z7uGXZb=RZ5k7W4KW1vnoAUMHN6Zhkxsw1Xpg@mail.gmail.com>
-In-Reply-To: <CAHC9VhTcV6jn4z7uGXZb=RZ5k7W4KW1vnoAUMHN6Zhkxsw1Xpg@mail.gmail.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 5f5a163f-b6ea-49e4-561d-08d9c167242f
-x-ms-traffictypediagnostic: MRZP264MB1606:EE_
-x-microsoft-antispam-prvs: <MRZP264MB1606A9A7ED3796305AC99D47ED789@MRZP264MB1606.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:4502;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Hgtm6rL6SrFiF4R9pXQC48uCgj7GKDerApDzhKW0Lc4LmuiNJrDsqTDUPGw2O9NFDSWaYd5z37jrnWehoJyLbgbVj0vMg/R1SvdFLYN589I15OJ0Qcy6Zq81RrrzmlWOYTFrEk6yHOoiSsXR4KRaLpmU8MGUuvhNAxHtVP6bCW4BskRvjnhMdrWtATRFZjjMs8g8W7Mo1G6sV5CLBC/06umMIJKqqALFbHygPdkLxdeJvjMu74KpzoluhrnqzYr3x4Ou3bZXeR67OChspp/YrMWX+I74pdoZF/kQrYDS1xLdVL8ZpdKAshQ2qCUdIcInZpKebWDKJ55yuryjHfWNOPjR4wxrIlLpuxJCRuk9J/IJaP94JH/5n24Wsb9/reOWQY68F2H4AbvmTGJVZIjPaLQPirrBudgyfNvWohzA/kjWTn+haYqEfQYyTSMLPVwiXdBlVcREaVWoqUQC+ibTxLh6q3PcVajo2q0KMbWm/NjBlg0TX+91a34dfjqkljdeyRUVLAP/2mXTY4J4XzgbGJo2TM6ublhjB5Y/4KJ36vinTtNQcLL3Xo+0OtBHXQxV3IGx8QiEpMYOSfNBJmDSclL2+cry3QCW/CFwBCfhKTxXo3euVNFq/BVwJnHJzUs/AklH6WUyOq614AQ9LH20pt+I0rh5szWOrXLUVRPd1S1GLtJns+2ogGsBZmLF227jT9KxZg5BMDzp4Lvx+bo7VngYHER45MrWDchlwHq7CYnA0iXx0WTUa+gcFSj2/nB9cIp49P1diWJqnFvBvQVu/Q==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(71200400001)(6506007)(5660300002)(6486002)(4326008)(26005)(31696002)(6512007)(83380400001)(44832011)(2906002)(6916009)(38070700005)(54906003)(2616005)(8676002)(316002)(53546011)(508600001)(86362001)(66556008)(91956017)(8936002)(76116006)(66476007)(66946007)(66446008)(64756008)(66574015)(122000001)(31686004)(38100700002)(36756003)(186003)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OEQvQlp2bVFWTGZVdkVPSnRTdWtuOFFJVjRhM3FBbnBMMDR5SnNyTlR2S3JC?=
- =?utf-8?B?ZERlL3A5b1FxUXIxSlJObVY4Rk9EdDBlejJDRnMyajlyZ1Y1d0hjWmJVTzVM?=
- =?utf-8?B?MjNKN3F2QUF6S2Flb0hLUElnMUV1NDdkbkMxTStsV21HRUdNU1RuRWNwKzky?=
- =?utf-8?B?WU9uSTZnbFFVdWJ2SnZEeEVRc2Y5VjJKNmRjd2ltUzBVcjRsWFhaSHgvaU5o?=
- =?utf-8?B?Ukc3bWQ4RmhCenZkUTFsR25LenhCSGNCM2dwUi9pK1o2WmVzQlVSbXYyWnJJ?=
- =?utf-8?B?ejdldVdoWmpCT3gzN1c2STFFbHhKa3BmT1Z0U2xET212ZnNQS0plNlk0TnNN?=
- =?utf-8?B?VWZMdjBrTTlnWFVBYUtrQVlVZEdjSFBWVkpPNzV6RW1TUkpTR3pUa0c0RjFs?=
- =?utf-8?B?STcvODhtbTJ2Z0tHRzdCdjlFaGlYMlFNMWpXcXcwN1FmQ3dKYjhlVCtOdUpN?=
- =?utf-8?B?eFR3V3hENGkyQ0pWV09IbFcxc2g4ZVhSVDhHcmJpaU5Sbjh1eWdHTytBRE5o?=
- =?utf-8?B?OXhKWkpQbGRjQnFUN0EyY2lRU2F2a3QzZCtUdVRzTnBVUVkrY2tCZFp2S2Fy?=
- =?utf-8?B?YzQxa2Myb1ZlQ0FHMk5SaWl3ZXN2UXF6Y2x1bjFDbDVZSENDS0RJTlNqVFBQ?=
- =?utf-8?B?c1pwL1UzbjZpdm44c2tqK2o4UFpkNDBMb05oaHVXeHVJL2JKNC94QndyVkpt?=
- =?utf-8?B?U081RG03bWxDWkplU3Arc1J2UVFSQ3B1ZlZpQ1BORzNkWU1Lb0ZBY1hsNVVi?=
- =?utf-8?B?YUYxN3JOYi9ERForeFFUTmZkV3FPdGMrbzY5QThYZkZpUmw5MGxVZnJ0T05z?=
- =?utf-8?B?aUV5aTZIaWowWTdYQVRJaWYyV2FJVmJTeDBqM01EMHpyei92RkJuUitzMDlt?=
- =?utf-8?B?YkQ2T3c1R3FXcW10TENnaC8xbHFEZGRCM1JDN2lCZUNVS3ZBRGxPSDVrb2RW?=
- =?utf-8?B?aS9Uak5UVElYVS9yTFMremdlbmlOTFRHYzNaUHB5M3BZaW9YYWtXanAyQVB4?=
- =?utf-8?B?WWZHWkQreVB0UW1JLzU3VGx6blVDMXUvbm9FTUpSNmMzZ0V2dDlucFRpZkF1?=
- =?utf-8?B?Z1Z4WTNSQlZvS2U4bkluRXRUYW1oRFB0RkJMTGlxYzlGSVFrRjZ2WTF2QTJa?=
- =?utf-8?B?VzI2Sy9LM3JzMnZ3ZnhhaGRtSFR3MVUwRG90MGFZOTQ3eWpDWlNGWEpIczN0?=
- =?utf-8?B?ZWJhV0JDbVVSV1BGZWt2L1piU203UmVoU3Exdjlub3lLNk1sWGJCVlBkV05y?=
- =?utf-8?B?Uk81YWRIRGxRajJmSFpldkxPc1B0ZEQrbHcyOEVyallvVDNpdEdJdW0zUU9S?=
- =?utf-8?B?Q21EbWpVTysrRkRUWk1TcUhHV0pRQUt6MCtQek5leUtMeEZJdmd3ZEd2bGow?=
- =?utf-8?B?aG5id0dCcWNsK2htYU9sUE5tYjdzcFZ2OHBhRCt1YjNzQ3RrL09iV2FReWpU?=
- =?utf-8?B?Y2hpeTB0bVNnR0tLeG0wRjUxQWkzb2lSUW1TNXpobjVORWZxTnlYdzBhSTc1?=
- =?utf-8?B?VVcyWFBPSmlGaG5ZS1d1SG54QXZuYUhNQk03Y2pMUjljT0U5VGNRT0tkNHc3?=
- =?utf-8?B?bUc0MW82R3BUaTVmRTVkcE50bjRDMlF0L0Q1Ykx2a2QyYmV1MWlrdmhBSGdD?=
- =?utf-8?B?Q2tpdWlEbllGUEtlNDZyaytWcG9FLzkvbE5INURvaTUxV0RLR09pbi8wTDhR?=
- =?utf-8?B?RnVCd0xjNlJjU3FaQXJFVFY1dU8vUGFxc0JBbUUwb3hNUklXay9Ea2I1aGRM?=
- =?utf-8?B?NGNrMGhieDFjc3ZxRXBjNGJQdEZoTGIwYjFTRnprV3FnWUVzd0d4ZFpSR3Jm?=
- =?utf-8?B?K1Q4TndsQTRuL29pS2J0TnNhRHZRRkNjRVcya0cwMTVnaGcxZ091N3lwVnNP?=
- =?utf-8?B?bWNzTGxWYUw4S1lMZHpPQ2lOb0d5QmFJVVMzcGErOEVVZjhBcng0bjY4anlr?=
- =?utf-8?B?b1BJd3VRZm1VWlpseXJYK2VmaFVvbGt1bHVnRlpYTGNqVFExV1VDOXRGQ0xU?=
- =?utf-8?B?czZZdDRvNmJLOWY2aXBqdmhZYmlISU1OaTg1akdCcWRkVlVYTHlDSzIxQk1H?=
- =?utf-8?B?QlJXMVNEK2RYTU5OREEzREFiSkVsdGkzRjBLZVJQZy9xR1BNVXdaTWEwSTh2?=
- =?utf-8?B?bDh2RWlxclhaSVIyUjVaRkN5SjQwZlBFWWdCV2hlQko4clQ5bE9xZy9IRmtU?=
- =?utf-8?B?UTRobDdJZmFxUXQvOVRWbGh0UXZyMzMydVRrMUx0UERGeXN5aDVPdEQ5ZmtV?=
- =?utf-8?Q?VxAw/Mnr6VxJS14CT/SKMpOec1x+pYTPPTkHYaJqWg=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DB0025BCB8C0B04DA9A34685B5B85275@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de
+ (client-ip=212.227.15.18; helo=mout.gmx.net; envelope-from=deller@gmx.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256
+ header.s=badeba3b8450 header.b=lykRjIGV; 
+ dkim-atps=neutral
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JFwY461Bzz3cCK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Dec 2021 04:13:08 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+ s=badeba3b8450; t=1639761149;
+ bh=nTwjJ/cnuT0Typyl6+FFGgb6cw8PUp2Hhdq7Dxmubh0=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=lykRjIGV1WZ4x1rUUW1JP9Q+AVEhoaNcZId8Xz4gVZnXbJTa8yRl8wie7jYiZ638y
+ dlH2hW+G/1MxaHlAQJCiExujeRGXt1euORu6VTwApA1uJRwhxvljqJr3+It+T81ihR
+ i1lzXA1zjpQAyGilujChARH640I0PhgT2rQR29Ig=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [192.168.20.60] ([92.116.181.24]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MPXd2-1nBy8t2stu-00MapY; Fri, 17
+ Dec 2021 18:12:29 +0100
+Message-ID: <295e2386-eda8-a9d8-3748-60f48205a815@gmx.de>
+Date: Fri, 17 Dec 2021 18:12:19 +0100
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f5a163f-b6ea-49e4-561d-08d9c167242f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Dec 2021 14:11:38.1728 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1zLyIRtDJnEsJ9uNTe9gxOWBclROM9KID560u4Q6ZM3YKX1uyOxgbWxKNGfNRQ9dzmw1EcJqXqonMUSz9yc7I/PjqXjEfPBgxu/b8LH5MVM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1606
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+Subject: Re: [PATCH v3 11/12] lkdtm: Fix execute_[user]_location()
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Kees Cook <keescook@chromium.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
+ <d4688c2af08dda706d3b6786ae5ec5a74e6171f1.1634457599.git.christophe.leroy@csgroup.eu>
+ <e7793192-6879-490d-1f37-3d6d6908a121@csgroup.eu>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <e7793192-6879-490d-1f37-3d6d6908a121@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:t39+qgQtUdFYhLWaR4ktFZpw2IGTCWRMsa8sbAkTDnzeLkkp4HT
+ FG3itWE0wReh8ICjXvNXQqBVvWU8r9tHp74/IvFzsj3pQKsdbmv5IVZFgPMGs1V+ynIicFL
+ S1NXCiSVkystwXxmUcf422y8pBCACWrFUu6Ju5WSOvH+2M7s30bAyU3Or/idGaJubajv3pa
+ LqJFVrkPjs7P44jc25gnQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:sphp7f4HiA4=:RFQYrMUnJl770ORGTHOd3x
+ 4AhdwQpuV/Jb6WLYV74GPqymlKonWTF4A4XA7VljZdm32iMWrqgP0aZfIZzBr99TSX4Fj6ZQ3
+ Xt5Xqywk5Z0x0zJnX7p0i/WNuy714W3aJDZlWZaATcgRQ2qQvaeRASX1kuY0dcGgEAqz65LWw
+ H9KpKEfkax0kzKB9+npQ0NA/WKigs4A0eadclz0p2fO64DBHoD41LDqYNPKxvgVSkRBc3U3+I
+ HHRAOm2K9rOgcznvNeNAfFMgV+noGvJ9jD3xW04AcHOdNU3ftKp5s2lcNUG9nG8md2UQQWiD8
+ f0zRXniz2dnGu3149SCccXg0aSuc3r1JuZdqWX8bAYo0wzfPdflOEDsrS2GuuaZ00d7bmPqDf
+ VJYiLpJr8iu5Be7JeXGF5vo0SXCy4tqC/huk7YIVq1fLl/BF7OC3i02I2y4pnb03DEXPhWCXP
+ bSDVKvzUVnn+mXMt3UkQ/Op90KorOtedRL7VJpiCdHv5xTT+wYQA7WTQ2VDRUX3CaqolHLrBe
+ /ip1P1LbcspP74KR2srEzj/5xW3LYoXiunEsRRmKz0Dnnjn1epW0Ba9UdQ25DTt9EaqgN686H
+ RTfBHI6F8KxLlE/JTa8B+vC+MRPSdMNuojqB04xPNBL4c+kYIdVZhwZh3WbQE1TVKu7gLG4wl
+ lLnD+MwZEE7AZhegL4vKyQy+1NOCdtu1vg0OGkIEO3ppZJjov6GvKWfDgwxsSFrbmaXBJwbpK
+ vEZVMrvAhqrqfpICCKitouq67tvrfkcrheN1NeCmgAjapTACz1rWakP1Ceo2IMTZ325F0ItXz
+ oIxntJkSFGoW8CCWzjBNyUkPvkKGFBgKRm+LH2jW0zUkKWdlzAP1it06+6FCHEUF6Y194og6a
+ ZsgxSlnM+Ad/qNxMV+ZpnO+Uco8bysc7MGaaoybrtgKWHWhQue6ZhDZX/5lIDJrUpf+AB743A
+ 63/IXKaCO0EWpdsxwQis4A2sK5fH4Tt6amvD56lTUEKfZzvxI1GmSd4P5SRR2iMtSChCW4aGz
+ cwUg1KUOGBBP11YtwZg31QxwcPF6WmqDwwhmbHbuHPU+BWhEnqv/baVfp0YhbhRDhtLyNtY7R
+ yNphjEqau1iVOY=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -143,140 +86,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- Richard Guy Briggs <rgb@redhat.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@kaod.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDE3LzEyLzIwMjEgw6AgMDA6MDQsIFBhdWwgTW9vcmUgYSDDqWNyaXTCoDoNCj4gT24g
-VGh1LCBEZWMgMTYsIDIwMjEgYXQgNDowOCBBTSBDaHJpc3RvcGhlIExlcm95DQo+IDxjaHJpc3Rv
-cGhlLmxlcm95QGNzZ3JvdXAuZXU+IHdyb3RlOg0KPj4gVGhhbmtzIEPDqWRyaWMsIEkndmUgbm93
-IGJlZW4gYWJsZSB0byBpbnN0YWxsIGRlYmlhbiBQUEMzMiBwb3J0IG9mIERFQklBTg0KPj4gMTEg
-b24gUUVNVSBhbmQgcnVuIHRoZSB0ZXN0cy4NCj4+DQo+PiBJIGZvbGxvd2VkIGluc3RydWN0aW9u
-cyBpbiBmaWxlIFJFQURNRS5tZCBwcm92aWRlZCBpbiB0aGUgdGVzdCBzdWl0ZS4NCj4+IEkgYWxz
-byBtb2RpZmllZCB0ZXN0cy9NYWtlZmlsZSB0byBmb3JjZSBNT0RFIDo9IDMyDQo+Pg0KPj4gSSd2
-ZSBnb3QgYSBsb3Qgb2YgZmFpbHVyZXMsIGFtIEkgbWlzc2luZyBzb21lIG9wdGlvbnMgaW4gdGhl
-IGtlcm5lbCBvcg0KPj4gc29tZXRoaW5nID8NCj4+DQo+PiBSdW5uaW5nIGFzICAgdXNlciAgICBy
-b290DQo+PiAgICAgICAgICAgd2l0aCBjb250ZXh0IHJvb3Q6OjoNCj4+ICAgICAgICAgICBvbiAg
-IHN5c3RlbQ0KPiANCj4gV2hpbGUgU0VMaW51eCBpcyBub3QgcmVxdWlyZWQgZm9yIGF1ZGl0LCBJ
-IGRvbid0IHRoaW5rIEkndmUgZXZlciBydW4NCj4gaXQgb24gc3lzdGVtIHdpdGhvdXQgU0VMaW51
-eC4gIEluIHRoZW9yeSB0aGUgYXVkaXQtdGVzdHN1aXRlIHNob3VsZG4ndA0KPiByZWx5IG9uIFNF
-TGludXggYmVpbmcgcHJlc2VudCAob3RoZXIgdGhhbiB0aGUgU0VMaW51eCBzcGVjaWZpYyB0ZXN0
-cw0KPiBvZiBjb3Vyc2UpLCBidXQgSSdtIG5vdCBjb25maWRlbnQgZW5vdWdoIHRvIHNheSB0aGF0
-IHRoZSB0ZXN0IHN1aXRlDQo+IHdpbGwgcnVuIHdpdGhvdXQgcHJvYmxlbSB3aXRob3V0IFNFTGlu
-dXguDQo+IA0KPiBJZiBpdCBpc24ndCB0b28gZGlmZmljdWx0LCBJIHdvdWxkIHN1Z2dlc3QgZW5h
-YmxpbmcgU0VMaW51eCBpbiB5b3VyDQo+IGtlcm5lbCBidWlsZCBhbmQgZW5zdXJpbmcgdGhlIG5l
-Y2Vzc2FyeSB1c2Vyc3BhY2UsIHBvbGljeSwgZXRjLiBpcw0KPiBpbnN0YWxsZWQuICBZb3UgZG9u
-J3QgbmVlZCB0byB3b3JyeSBhYm91dCBnZXR0aW5nIGl0IGFsbCBydW5uaW5nDQo+IGNvcnJlY3Rs
-eTsgdGhlIGF1ZGl0LXRlc3RzdWl0ZSBzaG91bGQgcGFzcyB3aXRoIFNFTGludXggaW4gcGVybWlz
-c2l2ZQ0KPiBtb2RlLg0KPiANCj4gSWYgeW91J3JlIHN0aWxsIHNlZWluZyBhbGwgdGhlc2UgZmFp
-bHVyZXMgYWZ0ZXIgdHJ5aW5nIHRoYXQgbGV0IHVzIGtub3cuDQo+IA0KDQpTdGlsbCB0aGUgc2Ft
-ZSBpdCBzZWVtczoNCg0KUnVubmluZyBhcyAgIHVzZXIgICAgcm9vdA0KICAgICAgICAgd2l0aCBj
-b250ZXh0IHVuY29uZmluZWRfdTp1bmNvbmZpbmVkX3I6dW5jb25maW5lZF90OnMwLXMwOmMwLmMx
-MDIzDQogICAgICAgICBvbiAgIHN5c3RlbQ0KDQojIFRlc3QgMyBnb3Q6ICIyNTYiIChiYWNrbG9n
-X3dhaXRfdGltZV9hY3R1YWxfcmVzZXQvdGVzdCBhdCBsaW5lIDE1MSkNCiMgICBFeHBlY3RlZDog
-IjAiDQojICBiYWNrbG9nX3dhaXRfdGltZV9hY3R1YWxfcmVzZXQvdGVzdCBsaW5lIDE1MSBpczog
-b2soICRyZXN1bHQsIDAgKTsgDQogICMgV2FzIGFuIGV2ZW50IGZvdW5kPw0KIyBUZXN0IDQgZ290
-OiAiMCIgKGJhY2tsb2dfd2FpdF90aW1lX2FjdHVhbF9yZXNldC90ZXN0IGF0IGxpbmUgMTY4KQ0K
-IyAgIEV4cGVjdGVkOiAiMSINCiMgIGJhY2tsb2dfd2FpdF90aW1lX2FjdHVhbF9yZXNldC90ZXN0
-IGxpbmUgMTY4IGlzOiBvayggJGZvdW5kX21zZywgMSApOyANCiAgICAjIFdhcyB0aGUgbWVzc2Fn
-ZSB3ZWxsLWZvcm1lZD8NCiMgRmFpbGVkIHRlc3QgNSBpbiBiYWNrbG9nX3dhaXRfdGltZV9hY3R1
-YWxfcmVzZXQvdGVzdCBhdCBsaW5lIDE2OQ0KIyAgYmFja2xvZ193YWl0X3RpbWVfYWN0dWFsX3Jl
-c2V0L3Rlc3QgbGluZSAxNjkgaXM6IG9rKCAkcmVzZXRfcmMgPT0gDQokcmVzZXRfbXNnICkNCmJh
-Y2tsb2dfd2FpdF90aW1lX2FjdHVhbF9yZXNldC90ZXN0IC4uDQpGYWlsZWQgMy81IHN1YnRlc3Rz
-DQpzaDogMTogU3ludGF4IGVycm9yOiBCYWQgZmQgbnVtYmVyDQpzaDogMTogU3ludGF4IGVycm9y
-OiBCYWQgZmQgbnVtYmVyDQpleGVjX2V4ZWN2ZS90ZXN0IC4uLi4uLi4uLi4uLi4uLi4uLi4uLiBv
-aw0Kc2g6IDE6IFN5bnRheCBlcnJvcjogQmFkIGZkIG51bWJlcg0Kc2g6IDE6IFN5bnRheCBlcnJv
-cjogQmFkIGZkIG51bWJlcg0KIyBGYWlsZWQgdGVzdCA3IGluIGV4ZWNfbmFtZS90ZXN0IGF0IGxp
-bmUgMTQ1IGZhaWwgIzQNCiMgIGV4ZWNfbmFtZS90ZXN0IGxpbmUgMTQ1IGlzOiAgICAgICAgIG9r
-KCAkZm91bmRbJF9dID09ICRleHBlY3RlZFskX10gKTsNCnNoOiAxOiBTeW50YXggZXJyb3I6IEJh
-ZCBmZCBudW1iZXINCiMgRmFpbGVkIHRlc3QgMTEgaW4gZXhlY19uYW1lL3Rlc3QgYXQgbGluZSAx
-NDUgZmFpbCAjNw0Kc2g6IDE6IFN5bnRheCBlcnJvcjogQmFkIGZkIG51bWJlcg0KIyBGYWlsZWQg
-dGVzdCAxNSBpbiBleGVjX25hbWUvdGVzdCBhdCBsaW5lIDE0NSBmYWlsICMxMA0KIyBGYWlsZWQg
-dGVzdCAxNyBpbiBleGVjX25hbWUvdGVzdCBhdCBsaW5lIDE0NSBmYWlsICMxMg0Kc2g6IDE6IFN5
-bnRheCBlcnJvcjogQmFkIGZkIG51bWJlcg0KIyBGYWlsZWQgdGVzdCAxOSBpbiBleGVjX25hbWUv
-dGVzdCBhdCBsaW5lIDE0NSBmYWlsICMxMw0Kc2g6IDE6IFN5bnRheCBlcnJvcjogQmFkIGZkIG51
-bWJlcg0KIyBGYWlsZWQgdGVzdCAyMyBpbiBleGVjX25hbWUvdGVzdCBhdCBsaW5lIDE0NSBmYWls
-ICMxNg0KIyBGYWlsZWQgdGVzdCAyNCBpbiBleGVjX25hbWUvdGVzdCBhdCBsaW5lIDE0NSBmYWls
-ICMxNw0Kc2g6IDE6IFN5bnRheCBlcnJvcjogQmFkIGZkIG51bWJlcg0KRXJyb3Igc2VuZGluZyBh
-ZGQgcnVsZSBkYXRhIHJlcXVlc3QgKFJ1bGUgZXhpc3RzKQ0KIyBGYWlsZWQgdGVzdCAyOSBpbiBl
-eGVjX25hbWUvdGVzdCBhdCBsaW5lIDE0NSBmYWlsICMyMQ0Kc2g6IDE6IFN5bnRheCBlcnJvcjog
-QmFkIGZkIG51bWJlcg0KZXhlY19uYW1lL3Rlc3QgLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4NCkZh
-aWxlZCA4LzI5IHN1YnRlc3RzDQpzaDogMTogU3ludGF4IGVycm9yOiBCYWQgZmQgbnVtYmVyDQoj
-IEZhaWxlZCB0ZXN0IDIgaW4gZmlsZV9jcmVhdGUvdGVzdCBhdCBsaW5lIDEyMQ0KIyAgZmlsZV9j
-cmVhdGUvdGVzdCBsaW5lIDEyMSBpczogb2soJGZvdW5kX3N5c2NhbGwpOw0KIyBGYWlsZWQgdGVz
-dCAzIGluIGZpbGVfY3JlYXRlL3Rlc3QgYXQgbGluZSAxMjINCiMgIGZpbGVfY3JlYXRlL3Rlc3Qg
-bGluZSAxMjIgaXM6IG9rKCRmb3VuZF9wYXJlbnQpOw0KIyBGYWlsZWQgdGVzdCA0IGluIGZpbGVf
-Y3JlYXRlL3Rlc3QgYXQgbGluZSAxMjMNCiMgIGZpbGVfY3JlYXRlL3Rlc3QgbGluZSAxMjMgaXM6
-IG9rKCRmb3VuZF9jcmVhdGUpOw0Kc2g6IDE6IFN5bnRheCBlcnJvcjogQmFkIGZkIG51bWJlcg0K
-ZmlsZV9jcmVhdGUvdGVzdCAuLi4uLi4uLi4uLi4uLi4uLi4uLi4NCkZhaWxlZCAzLzQgc3VidGVz
-dHMNCnNoOiAxOiBTeW50YXggZXJyb3I6IEJhZCBmZCBudW1iZXINCiMgRmFpbGVkIHRlc3QgMiBp
-biBmaWxlX2RlbGV0ZS90ZXN0IGF0IGxpbmUgMTIyDQojICBmaWxlX2RlbGV0ZS90ZXN0IGxpbmUg
-MTIyIGlzOiBvaygkZm91bmRfc3lzY2FsbCk7DQojIEZhaWxlZCB0ZXN0IDMgaW4gZmlsZV9kZWxl
-dGUvdGVzdCBhdCBsaW5lIDEyMw0KIyAgZmlsZV9kZWxldGUvdGVzdCBsaW5lIDEyMyBpczogb2so
-JGZvdW5kX3BhcmVudCk7DQojIEZhaWxlZCB0ZXN0IDQgaW4gZmlsZV9kZWxldGUvdGVzdCBhdCBs
-aW5lIDEyNA0KIyAgZmlsZV9kZWxldGUvdGVzdCBsaW5lIDEyNCBpczogb2soJGZvdW5kX2RlbGV0
-ZSk7DQpzaDogMTogU3ludGF4IGVycm9yOiBCYWQgZmQgbnVtYmVyDQpmaWxlX2RlbGV0ZS90ZXN0
-IC4uLi4uLi4uLi4uLi4uLi4uLi4uLg0KRmFpbGVkIDMvNCBzdWJ0ZXN0cw0Kc2g6IDE6IFN5bnRh
-eCBlcnJvcjogQmFkIGZkIG51bWJlcg0KIyBGYWlsZWQgdGVzdCAyIGluIGZpbGVfcmVuYW1lL3Rl
-c3QgYXQgbGluZSAxMzgNCiMgIGZpbGVfcmVuYW1lL3Rlc3QgbGluZSAxMzggaXM6IG9rKCRmb3Vu
-ZF9zeXNjYWxsKTsNCiMgVGVzdCAzIGdvdDogIjAiIChmaWxlX3JlbmFtZS90ZXN0IGF0IGxpbmUg
-MTM5KQ0KIyAgIEV4cGVjdGVkOiAiMiINCiMgIGZpbGVfcmVuYW1lL3Rlc3QgbGluZSAxMzkgaXM6
-IG9rKCAkZm91bmRfcGFyZW50LCAyICk7DQojIEZhaWxlZCB0ZXN0IDQgaW4gZmlsZV9yZW5hbWUv
-dGVzdCBhdCBsaW5lIDE0MA0KIyAgZmlsZV9yZW5hbWUvdGVzdCBsaW5lIDE0MCBpczogb2soJGZv
-dW5kX2NyZWF0ZSk7DQojIEZhaWxlZCB0ZXN0IDUgaW4gZmlsZV9yZW5hbWUvdGVzdCBhdCBsaW5l
-IDE0MQ0KIyAgZmlsZV9yZW5hbWUvdGVzdCBsaW5lIDE0MSBpczogb2soJGZvdW5kX2RlbGV0ZSk7
-DQpzaDogMTogU3ludGF4IGVycm9yOiBCYWQgZmQgbnVtYmVyDQpmaWxlX3JlbmFtZS90ZXN0IC4u
-Li4uLi4uLi4uLi4uLi4uLi4uLg0KRmFpbGVkIDQvNSBzdWJ0ZXN0cw0Kc2g6IDE6IFN5bnRheCBl
-cnJvcjogQmFkIGZkIG51bWJlcg0KIyBUZXN0IDIwIGdvdDogIjI1NiIgKGZpbHRlcl9leGNsdWRl
-L3Rlc3QgYXQgbGluZSAxNjcpDQojICAgIEV4cGVjdGVkOiAiMCINCiMgIGZpbHRlcl9leGNsdWRl
-L3Rlc3QgbGluZSAxNjcgaXM6IG9rKCAkcmVzdWx0LCAwICk7DQojIFRlc3QgMjEgZ290OiAiMCIg
-KGZpbHRlcl9leGNsdWRlL3Rlc3QgYXQgbGluZSAxNzkpDQojICAgIEV4cGVjdGVkOiAiMSINCiMg
-IGZpbHRlcl9leGNsdWRlL3Rlc3QgbGluZSAxNzkgaXM6IG9rKCAkZm91bmRfbXNnLCAxICk7DQpz
-aDogMTogU3ludGF4IGVycm9yOiBCYWQgZmQgbnVtYmVyDQpmaWx0ZXJfZXhjbHVkZS90ZXN0IC4u
-Li4uLi4uLi4uLi4uLi4uLg0KRmFpbGVkIDIvMjEgc3VidGVzdHMNCnNoOiAxOiBjYW5ub3QgY3Jl
-YXRlIC9kZXYvdWRwLzEyNy4wLjAuMS8yNDI0MjogRGlyZWN0b3J5IG5vbmV4aXN0ZW50DQojIFRl
-c3QgMyBnb3Q6ICIyNTYiIChmaWx0ZXJfc2FkZHJfZmFtL3Rlc3QgYXQgbGluZSA4OCkNCiMgICBF
-eHBlY3RlZDogIjAiDQojICBmaWx0ZXJfc2FkZHJfZmFtL3Rlc3QgbGluZSA4OCBpczogb2soICRy
-ZXN1bHQsIDAgKTsgICAgIyBXYXMgYW4gZXZlbnQgDQpmb3VuZD8NCiMgVGVzdCA0IGdvdDogIjAi
-IChmaWx0ZXJfc2FkZHJfZmFtL3Rlc3QgYXQgbGluZSAxMjkpDQojICAgRXhwZWN0ZWQ6ICIxIg0K
-IyAgZmlsdGVyX3NhZGRyX2ZhbS90ZXN0IGxpbmUgMTI5IGlzOiBvayggJGZvdW5kX21zZywgICAg
-MSApOyAgICAgIyBXYXMgDQp0aGUgaW5ldCBtZXNzYWdlIGZvdW5kPw0KZmlsdGVyX3NhZGRyX2Zh
-bS90ZXN0IC4uLi4uLi4uLi4uLi4uLi4NCkZhaWxlZCAyLzUgc3VidGVzdHMNCnNoOiAxOiBTeW50
-YXggZXJyb3I6IEJhZCBmZCBudW1iZXINCnNoOiAxOiBTeW50YXggZXJyb3I6IEJhZCBmZCBudW1i
-ZXINCmZpbHRlcl9zZXNzaW9uaWQvdGVzdCAuLi4uLi4uLi4uLi4uLi4uIG9rDQpzaDogMTogU3lu
-dGF4IGVycm9yOiBCYWQgZmQgbnVtYmVyDQpzaDogMTogU3ludGF4IGVycm9yOiBCYWQgZmQgbnVt
-YmVyDQpsb2dpbl90dHkvdGVzdCAuLi4uLi4uLi4uLi4uLi4uLi4uLi4uLiBvaw0KIyBUZXN0IDMg
-Z290OiAiMjU2IiAobG9zdF9yZXNldC90ZXN0IGF0IGxpbmUgMTUwKQ0KIyAgIEV4cGVjdGVkOiAi
-MCINCiMgIGxvc3RfcmVzZXQvdGVzdCBsaW5lIDE1MCBpczogb2soICRyZXN1bHQsIDAgKTsgICAg
-IyBXYXMgYW4gZXZlbnQgZm91bmQ/DQojIFRlc3QgNCBnb3Q6ICIwIiAobG9zdF9yZXNldC90ZXN0
-IGF0IGxpbmUgMTY3KQ0KIyAgIEV4cGVjdGVkOiAiMSINCiMgIGxvc3RfcmVzZXQvdGVzdCBsaW5l
-IDE2NyBpczogb2soICRmb3VuZF9tc2csIDEgKTsgICAgICAgICAgICAgICMgV2FzIA0KdGhlIG1l
-c3NhZ2Ugd2VsbC1mb3JtZWQ/DQojIEZhaWxlZCB0ZXN0IDUgaW4gbG9zdF9yZXNldC90ZXN0IGF0
-IGxpbmUgMTY4DQojICBsb3N0X3Jlc2V0L3Rlc3QgbGluZSAxNjggaXM6IG9rKCAkcmVzZXRfcmMg
-PT0gJHJlc2V0X21zZyApOyAgICAjIERvIA0KdGhlIHR3byBsb3N0IHZhbHVlcyBhZ3JlZT8NCmxv
-c3RfcmVzZXQvdGVzdCAuLi4uLi4uLi4uLi4uLi4uLi4uLi4uDQpGYWlsZWQgMy81IHN1YnRlc3Rz
-DQpzaDogMTogU3ludGF4IGVycm9yOiBCYWQgZmQgbnVtYmVyDQpzaDogMTogY2Fubm90IGNyZWF0
-ZSAvZGV2L3VkcC8xMjcuMC4wLjEvNDI0MjQ6IERpcmVjdG9yeSBub25leGlzdGVudA0Kc2g6IDE6
-IGNhbm5vdCBjcmVhdGUgL2Rldi91ZHAvOjoxLzQyNDI0OiBEaXJlY3Rvcnkgbm9uZXhpc3RlbnQN
-CnNoOiAxOiBjYW5ub3QgY3JlYXRlIC9kZXYvdGNwLzEyNy4wLjAuMS80MjQyNDogRGlyZWN0b3J5
-IG5vbmV4aXN0ZW50DQpzaDogMTogY2Fubm90IGNyZWF0ZSAvZGV2L3RjcC86OjEvNDI0MjQ6IERp
-cmVjdG9yeSBub25leGlzdGVudA0KIyBGYWlsZWQgdGVzdCA0IGluIG5ldGZpbHRlcl9wa3QvdGVz
-dCBhdCBsaW5lIDE0NCBmYWlsICMzDQojICBuZXRmaWx0ZXJfcGt0L3Rlc3QgbGluZSAxNDQgaXM6
-ICAgICBvayggJGZvdW5kWyRfXSApOyAgICAjIFdhcyB0aGUgDQpuZm1hcmtlZCBwYXJja2V0IGZv
-dW5kPw0KIyBGYWlsZWQgdGVzdCA1IGluIG5ldGZpbHRlcl9wa3QvdGVzdCBhdCBsaW5lIDE0NCBm
-YWlsICM0DQojIEZhaWxlZCB0ZXN0IDYgaW4gbmV0ZmlsdGVyX3BrdC90ZXN0IGF0IGxpbmUgMTQ0
-IGZhaWwgIzUNCiMgRmFpbGVkIHRlc3QgNyBpbiBuZXRmaWx0ZXJfcGt0L3Rlc3QgYXQgbGluZSAx
-NDQgZmFpbCAjNg0KIyBGYWlsZWQgdGVzdCAxMCBpbiBuZXRmaWx0ZXJfcGt0L3Rlc3QgYXQgbGlu
-ZSAxNDggZmFpbCAjMw0KIyAgbmV0ZmlsdGVyX3BrdC90ZXN0IGxpbmUgMTQ4IGlzOiAgICAgb2so
-ICRmaWVsZHNbJF9dID09ICRmaWVsZHMgKTsgDQojICRfIENvcnJlY3QgbnVtYmVyIG9mIGZpZWxk
-cz8NCiMgRmFpbGVkIHRlc3QgMTEgaW4gbmV0ZmlsdGVyX3BrdC90ZXN0IGF0IGxpbmUgMTQ4IGZh
-aWwgIzQNCiMgRmFpbGVkIHRlc3QgMTIgaW4gbmV0ZmlsdGVyX3BrdC90ZXN0IGF0IGxpbmUgMTQ4
-IGZhaWwgIzUNCiMgRmFpbGVkIHRlc3QgMTMgaW4gbmV0ZmlsdGVyX3BrdC90ZXN0IGF0IGxpbmUg
-MTQ4IGZhaWwgIzYNCnNoOiAxOiBTeW50YXggZXJyb3I6IEJhZCBmZCBudW1iZXINCg0KDQpDaHJp
-c3RvcGhl
+On 12/17/21 12:49, Christophe Leroy wrote:
+> Hi Kees,
+>
+> Le 17/10/2021 =C3=A0 14:38, Christophe Leroy a =C3=A9crit=C2=A0:
+>> execute_location() and execute_user_location() intent
+>> to copy do_nothing() text and execute it at a new location.
+>> However, at the time being it doesn't copy do_nothing() function
+>> but do_nothing() function descriptor which still points to the
+>> original text. So at the end it still executes do_nothing() at
+>> its original location allthough using a copied function descriptor.
+>>
+>> So, fix that by really copying do_nothing() text and build a new
+>> function descriptor by copying do_nothing() function descriptor and
+>> updating the target address with the new location.
+>>
+>> Also fix the displayed addresses by dereferencing do_nothing()
+>> function descriptor.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>
+> Do you have any comment to this patch and to patch 12 ?
+>
+> If not, is it ok to get your acked-by ?
+
+
+Hi Christophe,
+
+I think this whole series is a nice cleanup and harmonization
+of how function descriptors are used.
+
+At least for the PA-RISC parts you may add:
+Acked-by: Helge Deller <deller@gmx.de>
+
+Thanks!
+Helge
+
+>
+>> ---
+>>   drivers/misc/lkdtm/perms.c | 37 ++++++++++++++++++++++++++++---------
+>>   1 file changed, 28 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
+>> index 035fcca441f0..1cf24c4a79e9 100644
+>> --- a/drivers/misc/lkdtm/perms.c
+>> +++ b/drivers/misc/lkdtm/perms.c
+>> @@ -44,19 +44,34 @@ static noinline void do_overwritten(void)
+>>   	return;
+>>   }
+>>
+>> +static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
+>> +{
+>> +	if (!have_function_descriptors())
+>> +		return dst;
+>> +
+>> +	memcpy(fdesc, do_nothing, sizeof(*fdesc));
+>> +	fdesc->addr =3D (unsigned long)dst;
+>> +	barrier();
+>> +
+>> +	return fdesc;
+>> +}
+>> +
+>>   static noinline void execute_location(void *dst, bool write)
+>>   {
+>> -	void (*func)(void) =3D dst;
+>> +	void (*func)(void);
+>> +	func_desc_t fdesc;
+>> +	void *do_nothing_text =3D dereference_function_descriptor(do_nothing)=
+;
+>>
+>> -	pr_info("attempting ok execution at %px\n", do_nothing);
+>> +	pr_info("attempting ok execution at %px\n", do_nothing_text);
+>>   	do_nothing();
+>>
+>>   	if (write =3D=3D CODE_WRITE) {
+>> -		memcpy(dst, do_nothing, EXEC_SIZE);
+>> +		memcpy(dst, do_nothing_text, EXEC_SIZE);
+>>   		flush_icache_range((unsigned long)dst,
+>>   				   (unsigned long)dst + EXEC_SIZE);
+>>   	}
+>> -	pr_info("attempting bad execution at %px\n", func);
+>> +	pr_info("attempting bad execution at %px\n", dst);
+>> +	func =3D setup_function_descriptor(&fdesc, dst);
+>>   	func();
+>>   	pr_err("FAIL: func returned\n");
+>>   }
+>> @@ -66,16 +81,19 @@ static void execute_user_location(void *dst)
+>>   	int copied;
+>>
+>>   	/* Intentionally crossing kernel/user memory boundary. */
+>> -	void (*func)(void) =3D dst;
+>> +	void (*func)(void);
+>> +	func_desc_t fdesc;
+>> +	void *do_nothing_text =3D dereference_function_descriptor(do_nothing)=
+;
+>>
+>> -	pr_info("attempting ok execution at %px\n", do_nothing);
+>> +	pr_info("attempting ok execution at %px\n", do_nothing_text);
+>>   	do_nothing();
+>>
+>> -	copied =3D access_process_vm(current, (unsigned long)dst, do_nothing,
+>> +	copied =3D access_process_vm(current, (unsigned long)dst, do_nothing_=
+text,
+>>   				   EXEC_SIZE, FOLL_WRITE);
+>>   	if (copied < EXEC_SIZE)
+>>   		return;
+>> -	pr_info("attempting bad execution at %px\n", func);
+>> +	pr_info("attempting bad execution at %px\n", dst);
+>> +	func =3D setup_function_descriptor(&fdesc, dst);
+>>   	func();
+>>   	pr_err("FAIL: func returned\n");
+>>   }
+>> @@ -153,7 +171,8 @@ void lkdtm_EXEC_VMALLOC(void)
+>>
+>>   void lkdtm_EXEC_RODATA(void)
+>>   {
+>> -	execute_location(lkdtm_rodata_do_nothing, CODE_AS_IS);
+>> +	execute_location(dereference_function_descriptor(lkdtm_rodata_do_noth=
+ing),
+>> +			 CODE_AS_IS);
+>>   }
+>>
+>>   void lkdtm_EXEC_USERSPACE(void)
+
