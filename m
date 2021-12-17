@@ -1,83 +1,128 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B89647837E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 04:07:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F8294784EA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 07:30:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JFYnm1twkz3cRJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 14:07:56 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=iN8HmKrV;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JFfH02z3fz3cB2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 17:30:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::532;
- helo=mail-pg1-x532.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com
- header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=iN8HmKrV; dkim-atps=neutral
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::612;
+ helo=fra01-mr2-obe.outbound.protection.outlook.com;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com
+ (mail-mr2fra01on0612.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e19::612])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JFYn047Zdz2yK3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Dec 2021 14:07:13 +1100 (AEDT)
-Received: by mail-pg1-x532.google.com with SMTP id m15so814746pgu.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Dec 2021 19:07:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20210112.gappssmtp.com; s=20210112;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=hqVeHYszJrco9ra2C2j8EHyWbAh1gF1XNTB+IDSGnkA=;
- b=iN8HmKrVxt9lDjYWhkv3zQxN0RsFwJipjLVg/CpyYVKDbnOpE7+sppxleWAOKvAUYt
- /vs+W5tTUWcVFpVkza3BPSSBSsE2OSzA+dWxVtU2rP+p6G70Yc6mBjpye3oEulabdFw9
- n75XUtpOn78rDY0AuTOMmgikPJjHZVEeae4Meo5oorSqISHjDLjLQieddAgwWW6rGdc/
- R48/uss4DnWlZRiGwOcBr5bQMy6wgMP60Hqclcf8tO0ikcpfiyF1C3Fajdt8V5pGzbRL
- wIFmaxOjOvXqciceCy6OZpnTfiAjesS04p/5EZc1fT9OwCHXQUOjgh602ZPIIrbuv4NW
- Vugg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=hqVeHYszJrco9ra2C2j8EHyWbAh1gF1XNTB+IDSGnkA=;
- b=DhK1HWVLpKfuJ042Tpt/LTtLMh8L7gykZh3oRnIc2jIPjEOE7hXTx4iOjaiXGjT84V
- MeOv2BOZQ74AZgSjp7lM5V0lCQvOuHV65Oue92uyoOb8nSpw67PM3ScLFn81xdRxKvUY
- mmn5XgaC/1F8r/XYi11S99UsYHAlUWPhSol8Cg14gsCEhpX1hy4q2K0YhO0eRpPIbtIC
- wcJr4oPkoXzf98aaqL9+ZZCVlym8PH0QemT3oc01RZaD77/0wwdDZtyYB0jlwAEG//Wo
- X/NOMq2uSTrxBtMyGDLaGpYimp/5NDfQmZ464lzsJzTe6NWR7MmT4qtf93WThKB/h9o8
- aj2Q==
-X-Gm-Message-State: AOAM533wX2Ge0TAf4w+AN5ubuEceOYxQ4B2JFb8+5F237HxZtH8fd5as
- VjIaBxqd3Hzmgb+YGYRf+c9Gi7n275XS0w==
-X-Google-Smtp-Source: ABdhPJzicJEgh8Afueuqf6fIiQw6DhvqKmheZLxm2ppty6gVVTSeoRHzK5ZA6uGKH0l8i7HYsn4atw==
-X-Received: by 2002:a63:d753:: with SMTP id w19mr1095375pgi.174.1639710430889; 
- Thu, 16 Dec 2021 19:07:10 -0800 (PST)
-Received: from [192.168.10.24] (124-171-108-209.dyn.iinet.net.au.
- [124.171.108.209])
- by smtp.gmail.com with ESMTPSA id s38sm7998233pfg.17.2021.12.16.19.07.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Dec 2021 19:07:09 -0800 (PST)
-Message-ID: <e59eaa8c-6c60-521f-dc5d-d7c549a7c80f@ozlabs.ru>
-Date: Fri, 17 Dec 2021 14:07:05 +1100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101
- Thunderbird/96.0
-Subject: Re: [PATCH kernel v3] KVM: PPC: Merge powerpc's debugfs entry content
- into generic entry
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JFfGR0Nwdz304R
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Dec 2021 17:29:32 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Cfh/p7JuVOWdumx8Og3g0A3U+tYn22LRzN5Ch/n1lWhnTyfzL7v4SZiR73/1ktPKYCbxZM/xtcKG7ImCirD36ywYBd53JbARJyVptL3ucYSpNIjYQ1vBAMZVjNPLHH70IkhtcouSkW5LkXKReJ590pfVxdPdioGximWfsfWfOYpi3h/6UjLl5Iy9aBVSsHAOMPT8CwUb1cvpP6Nupve88hyYaoKldTNf+iodGBbosDXR64CDIQwTBUGVRzezs1pjP8tYuKhEZO+vuERnS+Oe4xdyisDqali8dryouE7WS1QDMxCwQAgioNC0yYErAg1hx1hr8K4tm6n84guCkPA0Dw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jCVa34PXHp2h9o+dVRfZtZVbhSO1DDChYHpsGRbaHdA=;
+ b=QD8f5fFqHiMrswkCT6lqbzSXQA2AnpZb2IRCxJZud3fN73Dkp65waOOXhL84TEW25vtXQsOaGdzPztwEIpd1QhjvYKD9f+LP9ylMUPSL4KKdTL870x94fLyYeW7Z3E1xsE9Vb9JBxpgMraiptHJPfoJNUPgfxvZiHyS7v8t2nVe/Pl1nmpMkZk9iUc5xuBoUjnbvS3if5Fqy28SxtUCCpe/vu9rQI99Hy4fX97ltOvx71fG7SrY7KqJaFH9BmZW9Gut5W4YF1/QqKyVTjvqRHKtx9CmsHgIqauCUeYjmKK6AVJ4GYE1EXBraVPof5Oe5wCFGMEHGoMCNkM3Dnw7qxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MR1P264MB2179.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:14::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4801.14; Fri, 17 Dec
+ 2021 06:29:08 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::f0ef:856d:b0de:e85d]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::f0ef:856d:b0de:e85d%5]) with mapi id 15.20.4801.016; Fri, 17 Dec 2021
+ 06:29:08 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Nick Child <nnac123@gmail.com>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH v2 00/20] powerpc: Define eligible functions as __init
+Thread-Topic: [PATCH v2 00/20] powerpc: Define eligible functions as __init
+Thread-Index: AQHX8sh4VMNy9vZNSE2refa3Neo9gKw2OTkA
+Date: Fri, 17 Dec 2021 06:29:08 +0000
+Message-ID: <f1bdd55e-1141-c118-0f6d-b5ce61c6f7dd@csgroup.eu>
+References: <20211216220035.605465-1-nick.child@ibm.com>
+In-Reply-To: <20211216220035.605465-1-nick.child@ibm.com>
+Accept-Language: fr-FR, en-US
 Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- linuxppc-dev@lists.ozlabs.org
-References: <20211215013309.217102-1-aik@ozlabs.ru>
- <d980eeb7-1f32-dbd3-f60d-ea6ef24dbaaa@kaod.org>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <d980eeb7-1f32-dbd3-f60d-ea6ef24dbaaa@kaod.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 10369598-4ef8-4915-fe4f-08d9c126882e
+x-ms-traffictypediagnostic: MR1P264MB2179:EE_
+x-microsoft-antispam-prvs: <MR1P264MB2179B10323FE498090D9C038ED789@MR1P264MB2179.FRAP264.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:1443;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 5HHkkZ27BSjwuouZ49Qzd7wUy/raI53sjzCpwQhkFtRjTRUP+OQmwDA6mDiDvT4nowV29p6Q5eHScDVAKC2timyd6tEkPUcgoqKoZpnHGE3vVGzaLVlccDtDVg68msK6M/HYv5WOoR95ScXQxNSMOAqEsPwwhpin9C7uIz4TuOW/Cew0g7f+sNHpJxbY7rw3+xuZwsrA7oeu2mnbVt3EKN9D/EAFnQ+E70i/QMNRtAXM6Olp4QzVnFtLH8fIn9bX0dnDESiKL/Uk6woommqsDGkJIWhVQunQ86FxZN6IsoL4XvAed5rseYPsDA2JDTWLPVI8wWOP/luB9La/IfzbBiCTHZxZ4x7VZTYREawDVWs134xwqe2RMQLt8mTg8q0OyEviDS03j5uFXiQs+R/yikBTyonmuxT5LxH4S0FRZ7mbe+k+YBqWj6xZkkZT/YFRDIQ60gceIJaxOCbNay2uGLAOB/JKsryjZlSEu+ShfjM7tWFXQ+tJSJYQ79PrZLvTToJSdrZOfLJiDAQFFppjZ0Mjw6WhkhWCTmr5rrwV6C7r0zKTv9OvgWw7sJpEHSUUmJAEHtxyPVo63OTC06vozhh5Pw46/BxWvKV6MgCmnNDX1+WdZcBWPfPpYiiwkrLAM7BPWeM4+srD58Dr0uL2NONQwq/n8BE/LCNicmRB8D0umutGNbpzNR27lnWiOubpP7FTzylha5PmJZZrrOtH1z8dgNB52bIcccwmQeyn/hXIhvwagOILNXyhY8oHF08OSOaIKEuEDJOI6FozJ7HFOw==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(4636009)(366004)(31696002)(2906002)(86362001)(122000001)(186003)(36756003)(6512007)(2616005)(110136005)(8936002)(38070700005)(71200400001)(316002)(8676002)(66574015)(44832011)(26005)(38100700002)(91956017)(76116006)(31686004)(6486002)(508600001)(4744005)(66556008)(83380400001)(64756008)(66476007)(66446008)(6506007)(54906003)(66946007)(5660300002)(4326008)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MXZET3pMaUxxZzBySXNXZkg0OHMyaEk1OVJjODNtSjc3NHF5VGloRWNacDFx?=
+ =?utf-8?B?UElJWGJLK0IzQmhWTWgyTnFtVzdzSWluL1c3VCsrMU9uanBTQUczTWxCV2w4?=
+ =?utf-8?B?d1dBV2pGS2o1RGVxdnl3SHo0MDBYSDJVRXh2WVNBZlR0ZEgrSXpqRmkvWExM?=
+ =?utf-8?B?M2thaU9yWUZqRkdBV2lCMXgxM3Y3T3YrRzlTVm82MnJVei92ZkxsdW12anFP?=
+ =?utf-8?B?Y3NncWxjYm5GMjNBY0tRWlRadXhPMkt3T0Z2cUxIUDFlUjBiTEFSMXlrYlFl?=
+ =?utf-8?B?ZVNrbktnQnA2Z0JVeWZXY04xckRKeUVwdWY1YlJmTFhZdjdCME5WTzd1N2F4?=
+ =?utf-8?B?aERJVkRLZm4xNFdIRm5zelNKS2VkSE1RUk9RazVoL2tkTFVDNWFzWGhwejhr?=
+ =?utf-8?B?a01LMk1ldmFxcXQwakN2UGhjUjYyYkZXNXVDdmt3cWxOb1JBMWdJaU9tZjlF?=
+ =?utf-8?B?ekdMWGJUWXAwSXFRZ2V6L2FSWVpPV2NNRXNCV0VmVkZzS3NZQVBxaS9mWkg0?=
+ =?utf-8?B?Z3QvT3lSa0FDajNwdzlMRG80ZThMTncrU3AvS2VYYUNTUEJEaHg3eURpYVMv?=
+ =?utf-8?B?MWxBdzlKUWRHRkU4ZzB3SVNaZEI1K2RCbTVPcDdqWWVpeDBiaWhBNHhNcU1q?=
+ =?utf-8?B?akxiSFlBSmRqL25JR1VEYUlXTlhXSFZDcVZzdHlXZVA0elIvMW03a01RRmVP?=
+ =?utf-8?B?N2NRRDgvbFlSYmx5VTBka1JhREN3T3J6QUxScTdva1BSZGkyQ3NiUTdMYWlO?=
+ =?utf-8?B?MHpzYjY3bVVTWk9JVC81MmNyaFluT1F5S2RmTGpzUndLUDdNOGxFbXEzdUJH?=
+ =?utf-8?B?N3BjejNqRWlYMHVtVWpwYVBMR0YwcVY0L08xaXpEWVRFTUZrVjdXcWMrU1k4?=
+ =?utf-8?B?YXpzT2hKZkJRT2pLa2xZZzRqa0NCVUNCSUtSSFpaYk5VUmZnRWlDakpHdVNV?=
+ =?utf-8?B?TVowWUJyKzdBUHVRR0ltRWl2UmZnMkZ1QUd3ZXhyaDQ3aVhxWjBCVjZtMFgv?=
+ =?utf-8?B?UTRnZFJoYlBoTnpLWm9hcTV4dTBpRTJtWFhNSmlEcXMrQnVWNWhNUFAwY3BL?=
+ =?utf-8?B?Y2xJbngzTHF5Q0VERlhWM3l3VkFZOEUxRkxRZ2NMdzMzaXFUNVZyWWN6a3Ru?=
+ =?utf-8?B?bUhNd0tOd3A3WTE4MnZvSnlMVW1zTVdXWFIvbDd4YWM1ZXFRZzhKZStpMzJB?=
+ =?utf-8?B?bVNLbFJKb3FUbzNtbU0zdzcrYzVTM3BGa1p1aXpBem1QQkY0NVpNZ0w1ZXVt?=
+ =?utf-8?B?T1dnNlNHSUd1YjlweGlES3g1b0x5M1htU1kyNldJNkdjSmRsTlpVUmhLV2RG?=
+ =?utf-8?B?YXdoaGFnYWNmcUhyT0ZCWkg2SUFiNzhmOUQ3clR1b3JRdm5xRjBLQlZPK1gx?=
+ =?utf-8?B?WEVubFc5c3E2QkxubFcwQ3RhaUFuUXlWK09zcE5TeXdNVGE3bjdORlErTDhB?=
+ =?utf-8?B?UHVDNThoZzBVcytDMVFEOWpYV1pOK1l4ZzJqOGxIQTZTdmZURFd5L0dCZ0pu?=
+ =?utf-8?B?VVNyaG1RNkF1Szd6MURvUVhsSHVBbitUdWYrMkpXNkw1RTBQZ3I2ejdvR1Vx?=
+ =?utf-8?B?SVpUbEt5VWFTTzFCNWNwTVBNNzE0N1NGVmloZGxLem1venFvZVJhKzdNbGYr?=
+ =?utf-8?B?R3JoenZIZk1DQXdKNzF2NUNueExRN3MyZjRoeG5TQ2VReDZ1d3FXSU96THk5?=
+ =?utf-8?B?eTYrRk91bUpCdzdCdjRsbk00cVhnOXVaazY2RW5JdEdkVkdwbDFsYUF4VjlD?=
+ =?utf-8?B?ZTlJMytMZ0J2RjNIbUw2UTB2VVFybVJMTDB2ZDdiNkM3NkJ5ZXBHTnNLWU92?=
+ =?utf-8?B?WURLTzVlYkhtTGUyMVY4VmVJaC9mRkVISlllSXVUbTBTT1U3Ujg4SXg4WFZX?=
+ =?utf-8?B?RnY0T1NiM3lWbjZQd2grQTR6R3hBVDZDYkU3aXMybjgwZGZ6ZkFzcURKdzFi?=
+ =?utf-8?B?QkNwUjVpN3MxZko3WkZUNnNTcEhhQytYTzV3WEtZMGxRdHZwYUR3VjVpWlpZ?=
+ =?utf-8?B?RmRicG0ySkpvSlg2T2dCSThlZ2VySS9ybXUxTUxKUWFZa3N5cXlQR2xjQXla?=
+ =?utf-8?B?OUhwR0JFOGVpdWx1WU1vajlrVXVDbVo4NVlNM3dXblFlZ1N1bDJub1ByRzVh?=
+ =?utf-8?B?MkRkdWwxSytkbko2MDV5Wkt4RUpHODJoZ3FISm1ncEJoRUo2cTRURWVmOFBH?=
+ =?utf-8?B?UHRzSEZoaFdFVWhVZlhZL1dzUjdwZHNZQXBad2ZEZ1I1bDZlSm1XMGx2cDhp?=
+ =?utf-8?Q?6uefwNNhyclT4DLTvgYK6T8iVk1UsKAjO+WGtA3Z64=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <EAB827440AA658428531B66ACE9677A7@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10369598-4ef8-4915-fe4f-08d9c126882e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Dec 2021 06:29:08.6554 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 1Pa9WXid3kVS+3zjlQ+eSNukZGToDbsfQGz8vkZIOncabEQNjuIIBamJotdLbnO3IaHsIa9zTIUbCnwxVbpu876VlQXHTNmo9tj/WhoWijo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2179
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,86 +134,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
- Fabiano Rosas <farosas@linux.ibm.com>
+Cc: Nick Child <nick.child@ibm.com>, "dja@axtens.net" <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 12/16/21 05:11, Cédric Le Goater wrote:
-> On 12/15/21 02:33, Alexey Kardashevskiy wrote:
->> At the moment KVM on PPC creates 3 types of entries under the kvm debugfs:
->> 1) "%pid-%fd" per a KVM instance (for all platforms);
->> 2) "vm%pid" (for PPC Book3s HV KVM);
->> 3) "vm%u_vcpu%u_timing" (for PPC Book3e KVM).
->>
->> The problem with this is that multiple VMs per process is not allowed for
->> 2) and 3) which makes it possible for userspace to trigger errors when
->> creating duplicated debugfs entries.
->>
->> This merges all these into 1).
->>
->> This defines kvm_arch_create_kvm_debugfs() similar to
->> kvm_arch_create_vcpu_debugfs().
->>
->> This defines 2 hooks in kvmppc_ops that allow specific KVM implementations
->> add necessary entries, this adds the _e500 suffix to
->> kvmppc_create_vcpu_debugfs_e500() to make it clear what platform it is for.
->>
->> This makes use of already existing kvm_arch_create_vcpu_debugfs() on PPC.
->>
->> This removes no more used debugfs_dir pointers from PPC kvm_arch structs.
->>
->> This stops removing vcpu entries as once created vcpus stay around
->> for the entire life of a VM and removed when the KVM instance is closed,
->> see commit d56f5136b010 ("KVM: let kvm_destroy_vm_debugfs clean up vCPU
->> debugfs directories").
-> 
-> It would nice to also move the KVM device debugfs files :
-> 
->    /sys/kernel/debug/powerpc/kvm-xive-%p
-> 
-> These are dynamically created and destroyed at run time depending
-> on the interrupt mode negociated by CAS. It might be more complex ?
-
-With this addition:
-
-diff --git a/arch/powerpc/kvm/book3s_xive_native.c
-b/arch/powerpc/kvm/book3s_xive_native.c
-index 99db9ac49901..511f643e2875 100644
---- a/arch/powerpc/kvm/book3s_xive_native.c
-+++ b/arch/powerpc/kvm/book3s_xive_native.c
-@@ -1267,10 +1267,10 @@ static void xive_native_debugfs_init(struct
-kvmppc_xive *xive)
-                return;
-        }
-
--       xive->dentry = debugfs_create_file(name, 0444, arch_debugfs_dir,
-+       xive->dentry = debugfs_create_file(name, 0444,
-xive->kvm->debugfs_dentry,
-                                           xive, &xive_native_debug_fops);
-
-
-it looks fine, this is "before":
-
-root@zz1:/sys/kernel/debug# find -iname "*xive*"
-./slab/xive-provision
-./powerpc/kvm-xive-c0000000208c0000
-./powerpc/xive
-
-
-and this is "after" the patch applied.
-
-root@zz1:/sys/kernel/debug# find -iname "*xive*"
-./kvm/29058-11/kvm-xive-c0000000208c0000
-./slab/xive-provision
-./powerpc/xive
-
-
-I'll repost unless there is something more to it. Thanks,
-
-
--- 
-Alexey
+DQoNCkxlIDE2LzEyLzIwMjEgw6AgMjM6MDAsIE5pY2sgQ2hpbGQgYSDDqWNyaXTCoDoNCj4gDQo+
+IENoYW5nZXMgaW4gdjI6DQo+ICAgLSBhZGQgYF9faW5pdGAgaW4gcHJvdG90eXBlcyByaWdodCBi
+ZWZvcmUgdGhlIGZ1bnRpb24gbmFtZSBpbnN0ZWFkIG9mDQo+ICAgICAgYXQgdGhlIGVuZC4NCj4g
+ICAtIHJlc3BvbmQgdG8gLi9zY3JpcHRzL2NoZWNrcGF0Y2ggZmVlZGJhY2sNCg0KWW91IHByb2Jh
+Ymx5IG1pc3NlZCB0aGUgZm9sbG93aW5nIGNvbW1lbnQgZnJvbSBjaGVja3BhdGNoOg0KDQpXQVJO
+SU5HOiBGcm9tOi9TaWduZWQtb2ZmLWJ5OiBlbWFpbCBhZGRyZXNzIG1pc21hdGNoOiAnRnJvbTog
+TmljayBDaGlsZCANCjxubmFjMTIzQGdtYWlsLmNvbT4nICE9ICdTaWduZWQtb2ZmLWJ5OiBOaWNr
+IENoaWxkIDxuaWNrLmNoaWxkQGlibS5jb20+Jw0KDQoNClNlbmRpbmcgZnJvbSBhIGRpZmZlcmVu
+dCBhZGRyZXNzIGlzIHBvc3NpYmxlLCBidXQgeW91IHRoZW4gbXVzdCBhZGQNCg0KRnJvbTogTmlj
+ayBDaGlsZCA8bmljay5jaGlsZEBpYm0uY29tPg0KDQphdCB0aGUgdG9wIG9mIHRoZSBjb21taXQg
+bWVzc2FnZS4NCg0KDQonZ2l0IGZvcm1hdC1wYXRjaCcgc2hvdWxkIGJlIGFibGUgdG8gZG8gaXQg
+Zm9yIHlvdSB3aXRoIHRoZSBnb29kIG9wdGlvbi4NCg0KQ2hyaXN0b3BoZQ==
