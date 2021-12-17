@@ -1,37 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34504796C0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 23:02:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D314796EA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Dec 2021 23:14:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JG2yb4Z4wz3ccN
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Dec 2021 09:02:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JG3Dw1lnqz3cbd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Dec 2021 09:14:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=wanadoo.fr
- (client-ip=80.12.242.125; helo=smtp.smtpout.orange.fr;
- envelope-from=christophe.jaillet@wanadoo.fr; receiver=<UNKNOWN>)
-Received: from smtp.smtpout.orange.fr (smtp03.smtpout.orange.fr
- [80.12.242.125])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.50; helo=mail-ot1-f50.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com
+ [209.85.210.50])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JG2yB52YLz3c7l
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Dec 2021 09:01:52 +1100 (AEDT)
-Received: from pop-os.home ([86.243.171.122]) by smtp.orange.fr with ESMTPA
- id yLB7mDo2VUGqlyLB7mEfuG; Fri, 17 Dec 2021 22:54:18 +0100
-X-ME-Helo: pop-os.home
-X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Fri, 17 Dec 2021 22:54:18 +0100
-X-ME-IP: 86.243.171.122
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
- maz@kernel.org
-Subject: [PATCH] powerpc/mpic: Use bitmap_zalloc() when applicable
-Date: Fri, 17 Dec 2021 22:54:12 +0100
-Message-Id: <aa145f674e08044c98f13f1a985faa9cc29c3708.1639777976.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.30.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JG3DQ3ty7z2xY1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Dec 2021 09:14:12 +1100 (AEDT)
+Received: by mail-ot1-f50.google.com with SMTP id
+ x19-20020a9d7053000000b0055c8b39420bso4613934otj.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Dec 2021 14:14:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=HRPjZ6BCCRz8DgC5lU6t6/+QUdNthSGalR45oT3E+s4=;
+ b=5CF+jAC4NV+GgqtdycjSP8WbSYPRe6sv7kAki7HVkhPSCE8DHSxZAXDQFFf3EH1CbI
+ VmpvCNyTHB2LKT3wGwi/X2usoc0hyqy4MvTXN3He2lcQghnNsMi8r+Aj1LEYE23aOKq4
+ RL/rIBJ+QevjxQ6ZxhraVLP/vsWm9WTl86yKNDQ2ZEo8voqXJXw42bR7wSLnrGuEgp+M
+ lPnKkxBWSAMMD4bwWqyr+NmlttxemHBrFYCocLRvCPw8ZMRdFSI4Px0JPysUgZS9NQQB
+ 0kNI8/GlELO2GIVVPTyGMgt2Lf7lvC2tV4Nzv9jtcZk1BxQ7yR3j6PHKdIHeSCycfnqB
+ p3lQ==
+X-Gm-Message-State: AOAM532hamgP7DheTq/OLMeNhTDnoxeM77qD5BUiqKtLxPiipdf6Rs+m
+ JoJPTgoL+XxQF4XhRR+Zxw==
+X-Google-Smtp-Source: ABdhPJwh4Y9Lw6ei5ha5CA9qNLUhAYqUzn12Yng2m8cXlJN677jIVGkwJ+3t94R7Keqvk2kyYbmtMA==
+X-Received: by 2002:a05:6830:2b14:: with SMTP id
+ l20mr3649399otv.42.1639779248692; 
+ Fri, 17 Dec 2021 14:14:08 -0800 (PST)
+Received: from xps15.herring.priv (66-90-148-213.dyn.grandenetworks.net.
+ [66.90.148.213])
+ by smtp.googlemail.com with ESMTPSA id a16sm1813248otj.79.2021.12.17.14.14.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 17 Dec 2021 14:14:08 -0800 (PST)
+From: Rob Herring <robh@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: [PATCH] powerpc: dts: Remove "spidev" nodes
+Date: Fri, 17 Dec 2021 16:14:00 -0600
+Message-Id: <20211217221400.3667133-1-robh@kernel.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -45,35 +65,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+Cc: devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
  linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-'mpic->protected' is a bitmap. So use 'bitmap_zalloc()' to simplify
-code and improve the semantic, instead of hand writing it.
+"spidev" is not a real device, but a Linux implementation detail. It has
+never been documented either. The kernel has WARNed on the use of it for
+over 6 years. Time to remove its usage from the tree.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Mark Brown <broonie@kernel.org>
+Signed-off-by: Rob Herring <robh@kernel.org>
 ---
- arch/powerpc/sysdev/mpic.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/boot/dts/digsy_mtc.dts | 8 --------
+ arch/powerpc/boot/dts/o2d.dtsi      | 6 ------
+ 2 files changed, 14 deletions(-)
 
-diff --git a/arch/powerpc/sysdev/mpic.c b/arch/powerpc/sysdev/mpic.c
-index 995fb2ada507..626ba4a9f64f 100644
---- a/arch/powerpc/sysdev/mpic.c
-+++ b/arch/powerpc/sysdev/mpic.c
-@@ -1323,8 +1323,7 @@ struct mpic * __init mpic_alloc(struct device_node *node,
- 	psrc = of_get_property(mpic->node, "protected-sources", &psize);
- 	if (psrc) {
- 		/* Allocate a bitmap with one bit per interrupt */
--		unsigned int mapsize = BITS_TO_LONGS(intvec_top + 1);
--		mpic->protected = kcalloc(mapsize, sizeof(long), GFP_KERNEL);
-+		mpic->protected = bitmap_zalloc(intvec_top + 1, GFP_KERNEL);
- 		BUG_ON(mpic->protected == NULL);
- 		for (i = 0; i < psize/sizeof(u32); i++) {
- 			if (psrc[i] > intvec_top)
+diff --git a/arch/powerpc/boot/dts/digsy_mtc.dts b/arch/powerpc/boot/dts/digsy_mtc.dts
+index 57024a4c1e7d..dfaf974c0ce6 100644
+--- a/arch/powerpc/boot/dts/digsy_mtc.dts
++++ b/arch/powerpc/boot/dts/digsy_mtc.dts
+@@ -25,14 +25,6 @@ rtc@800 {
+ 			status = "disabled";
+ 		};
+ 
+-		spi@f00 {
+-			msp430@0 {
+-				compatible = "spidev";
+-				spi-max-frequency = <32000>;
+-				reg = <0>;
+-			};
+-		};
+-
+ 		psc@2000 {		// PSC1
+ 			status = "disabled";
+ 		};
+diff --git a/arch/powerpc/boot/dts/o2d.dtsi b/arch/powerpc/boot/dts/o2d.dtsi
+index b55a9e5bd828..7e52509fa506 100644
+--- a/arch/powerpc/boot/dts/o2d.dtsi
++++ b/arch/powerpc/boot/dts/o2d.dtsi
+@@ -34,12 +34,6 @@ psc@2000 {		// PSC1
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			cell-index = <0>;
+-
+-			spidev@0 {
+-				compatible = "spidev";
+-				spi-max-frequency = <250000>;
+-				reg = <0>;
+-			};
+ 		};
+ 
+ 		psc@2200 {		// PSC2
 -- 
-2.30.2
+2.32.0
 
