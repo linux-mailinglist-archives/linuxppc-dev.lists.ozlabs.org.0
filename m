@@ -2,63 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4A9479D6F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Dec 2021 22:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC49479D70
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Dec 2021 22:41:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JGfRJ053qz3ccK
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Dec 2021 08:40:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JGfS16DFFz3cVj
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Dec 2021 08:41:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=RbLh966d;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qBSsByr5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::233;
- helo=mail-oi1-x233.google.com; envelope-from=yury.norov@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::330;
+ helo=mail-ot1-x330.google.com; envelope-from=yury.norov@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=RbLh966d; dkim-atps=neutral
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com
- [IPv6:2607:f8b0:4864:20::233])
+ header.s=20210112 header.b=qBSsByr5; dkim-atps=neutral
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com
+ [IPv6:2607:f8b0:4864:20::330])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JGdzt0lFCz2xsx
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Dec 2021 08:20:26 +1100 (AEDT)
-Received: by mail-oi1-x233.google.com with SMTP id bk14so9353459oib.7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Dec 2021 13:20:26 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JGdzy02Wkz2xsx
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Dec 2021 08:20:29 +1100 (AEDT)
+Received: by mail-ot1-x330.google.com with SMTP id
+ x43-20020a056830246b00b00570d09d34ebso7490490otr.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Dec 2021 13:20:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:subject:date:message-id:in-reply-to:references:mime-version
  :content-transfer-encoding;
- bh=ZRDbXQndZB+h1W3grije4oLm88mhsLSCo0DvJeL0oOc=;
- b=RbLh966dNM6Q9dumAKT/s67Li0XDMiqpqy9QDRjKZ7xykviae8HUZGbBK4++gzts9+
- 4HWimSnZbbp981RdIy4mUiEPi5KNC27XZMzAqhbLAbSCXpzsa6pdkKTooARlGNlTUTY6
- JoyuKChgIL/vGpnEuqm73H3imSDYRcmkvOW7G88lNj2P4DJILBf/LhHA1ZwruMX1IzE2
- L/mAlIYrOkdOM5wMkeJ8+xwn6+2dLufPFudFw0L+ol31R0QIHi6gU0asPbGQ0WpcgUYF
- TKKLWiuHi4Ipvj4eEi1DnTT9o6ibI9n5SLfH6H9ye6clD987ERDreQoQOmClSh/YKHYJ
- 9wZA==
+ bh=zfgimupqB4xhJIvLvGgrer31y9tj8J1RXghy7qnKugc=;
+ b=qBSsByr5wgMGTMBtOR8VWBruHG7gI5rTpoBxIGIotdCHMEM8HTurhNEBXdSXJJ+vbp
+ z4nZd0M39rMgvfX7n1BPLb5W4Fp5e0leIK5Oa7DbmdMHBOyxdk35npFt2mE/TvddHuI/
+ Msp5Y52cWIKQii7zOSViL3Ww6EkCwTY013XJOUEO3bhPky4coYrmEAWuQbHOMj+/krEh
+ Bq02bTDKA77Evur3WZMYyRFHf6eVuraNL3a/kRxjitzg+7c/cubCjCY3QhtIB3Tg8Tti
+ s8SG5C4j5Z6VKW9y8SwSvFV+p7TtpXnOmfiJ0V0NksAo/lfqooBch0gV4OclKr3i12oe
+ fPxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=ZRDbXQndZB+h1W3grije4oLm88mhsLSCo0DvJeL0oOc=;
- b=gg1+MfF282+DjDhjLY+NuyNjQEAm7HKTQyJUSp+lf+4ZK6iUHjMO1xsKukaIzicSsl
- +2adpnQEF8tFPohEsSS0Jgu3t5FMLYkttOvYds1MjqfGUKHsZ19ygF4oCQFRqBYN4NYL
- 0V7P9QLtQ/LmqergCPoAVDkXxaMrdZ/Ahbn09udqtv7cYRxFisD7n723HZODDaZpNaKn
- OBqInXWfWIPqzN9v0kvfq73Or8ET2HBD6+nGeOBwIbC8fXa3/tnFCTfkiFF1QqLliIg1
- a6vlvG496YxEYP7ObQFqWSR3HYus4e+GVz0ijsXGHFNaFURD8j18N7gQLhNaXij7vsgp
- qXsg==
-X-Gm-Message-State: AOAM531J9c81pqXXRGDgfqN4GdjTMymT3/zuP6Sbi6enoW6XvJtUs73M
- HRrys6W0zikQ0sVFOAoeTkE=
-X-Google-Smtp-Source: ABdhPJxshh8wZNTv7Y9Ku4jyb7QQxFrS/1r/onV0bhXisp6AJbbov2WJDwCGNF7Hkx62Pk9+Bq0Ozw==
-X-Received: by 2002:a05:6808:159a:: with SMTP id
- t26mr13219038oiw.106.1639862424104; 
- Sat, 18 Dec 2021 13:20:24 -0800 (PST)
+ bh=zfgimupqB4xhJIvLvGgrer31y9tj8J1RXghy7qnKugc=;
+ b=7DV+oJUaycChu9MMPEwXjSmzoMyNrBXEMikf1ZaCjal5tHKPYa7q7GNSuuXTDbw4Vw
+ rUlosv37yuEiFX8snQCIGb+/JTZNdcISkL3RMR6ffedck/9N/z5JvbbW08fIoNuv8O90
+ gDZhTJCqU5cEjvGMyvV0fHO9FC68+iuBCmunnX6YlurYOiGLcfi/8S0RQpyjOKwJKIMq
+ lsn7ImvzSqkwaaTEoPGvbXux0DAIqtmt6XxgTEjS1rdrxhQ5u0RZ5thjiRI3QVRPQmC2
+ /PWvOzbWuSBpQJmQ5QZub40TmjTi/yi3g7tCHrULHQJIvHwsw4wXG9X6DKnyrqPkJGNX
+ U7Pw==
+X-Gm-Message-State: AOAM531TrPu2gEIRm3IaBEW43KOiQqfpkRK9JB3FcTI9s6jFcUek5ss+
+ 6IhrEcSHrGAUTUkAosfPCXg=
+X-Google-Smtp-Source: ABdhPJwIylU9xFoADkyS/ZsNIhCh+muyVjquH8ZgDzjT4LGhQhjnFx091zqSLOoLPp8knGVEvtv/Vw==
+X-Received: by 2002:a9d:6052:: with SMTP id v18mr1040027otj.238.1639862427318; 
+ Sat, 18 Dec 2021 13:20:27 -0800 (PST)
 Received: from localhost (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id 186sm2409379oig.28.2021.12.18.13.20.23
+ by smtp.gmail.com with ESMTPSA id k17sm2285241oom.6.2021.12.18.13.20.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Dec 2021 13:20:23 -0800 (PST)
+ Sat, 18 Dec 2021 13:20:27 -0800 (PST)
 From: Yury Norov <yury.norov@gmail.com>
 To: linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
  "James E.J. Bottomley" <jejb@linux.ibm.com>,
@@ -123,9 +123,9 @@ To: linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
  linux-perf-users@vger.kernel.org, linux-riscv@lists.infradead.org,
  linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
  linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 02/17] drivers: rename num_*_cpus variables
-Date: Sat, 18 Dec 2021 13:19:58 -0800
-Message-Id: <20211218212014.1315894-3-yury.norov@gmail.com>
+Subject: [PATCH 03/17] fix open-coded for_each_set_bit()
+Date: Sat, 18 Dec 2021 13:19:59 -0800
+Message-Id: <20211218212014.1315894-4-yury.norov@gmail.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211218212014.1315894-1-yury.norov@gmail.com>
 References: <20211218212014.1315894-1-yury.norov@gmail.com>
@@ -147,74 +147,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some drivers declare num_active_cpus and num_present_cpus,
-despite that kernel has macros with corresponding names in
-linux/cpumask.h, and the drivers include cpumask.h
-
-The following patches switch num_*_cpus() to real functions,
-which causes build failures for the drivers.
+Mellanox driver has an open-coded for_each_set_bit(). Fix it.
 
 Signed-off-by: Yury Norov <yury.norov@gmail.com>
 ---
- drivers/leds/trigger/ledtrig-cpu.c | 6 +++---
- drivers/scsi/storvsc_drv.c         | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/cmd.c | 23 ++++++-----------------
+ 1 file changed, 6 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/leds/trigger/ledtrig-cpu.c b/drivers/leds/trigger/ledtrig-cpu.c
-index 8af4f9bb9cde..767e9749ca41 100644
---- a/drivers/leds/trigger/ledtrig-cpu.c
-+++ b/drivers/leds/trigger/ledtrig-cpu.c
-@@ -39,7 +39,7 @@ struct led_trigger_cpu {
- static DEFINE_PER_CPU(struct led_trigger_cpu, cpu_trig);
+diff --git a/drivers/net/ethernet/mellanox/mlx4/cmd.c b/drivers/net/ethernet/mellanox/mlx4/cmd.c
+index e10b7b04b894..c56d2194cbfc 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx4/cmd.c
+@@ -1994,21 +1994,16 @@ static void mlx4_allocate_port_vpps(struct mlx4_dev *dev, int port)
  
- static struct led_trigger *trig_cpu_all;
--static atomic_t num_active_cpus = ATOMIC_INIT(0);
-+static atomic_t _active_cpus = ATOMIC_INIT(0);
- 
- /**
-  * ledtrig_cpu - emit a CPU event as a trigger
-@@ -79,8 +79,8 @@ void ledtrig_cpu(enum cpu_led_event ledevt)
- 
- 		/* Update trigger state */
- 		trig->is_active = is_active;
--		atomic_add(is_active ? 1 : -1, &num_active_cpus);
--		active_cpus = atomic_read(&num_active_cpus);
-+		atomic_add(is_active ? 1 : -1, &_active_cpus);
-+		active_cpus = atomic_read(&_active_cpus);
- 		total_cpus = num_present_cpus();
- 
- 		led_trigger_event(trig->_trig,
-diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
-index 20595c0ba0ae..705dd4ebde98 100644
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1950,7 +1950,7 @@ static int storvsc_probe(struct hv_device *device,
+ static int mlx4_master_activate_admin_state(struct mlx4_priv *priv, int slave)
  {
- 	int ret;
- 	int num_cpus = num_online_cpus();
--	int num_present_cpus = num_present_cpus();
-+	int present_cpus = num_present_cpus();
- 	struct Scsi_Host *host;
- 	struct hv_host_device *host_dev;
- 	bool dev_is_ide = ((dev_id->driver_data == IDE_GUID) ? true : false);
-@@ -2060,7 +2060,7 @@ static int storvsc_probe(struct hv_device *device,
- 	 * Set the number of HW queues we are supporting.
- 	 */
- 	if (!dev_is_ide) {
--		if (storvsc_max_hw_queues > num_present_cpus) {
-+		if (storvsc_max_hw_queues > present_cpus) {
- 			storvsc_max_hw_queues = 0;
- 			storvsc_log(device, STORVSC_LOGGING_WARN,
- 				"Resetting invalid storvsc_max_hw_queues value to default.\n");
-@@ -2068,7 +2068,7 @@ static int storvsc_probe(struct hv_device *device,
- 		if (storvsc_max_hw_queues)
- 			host->nr_hw_queues = storvsc_max_hw_queues;
- 		else
--			host->nr_hw_queues = num_present_cpus;
-+			host->nr_hw_queues = present_cpus;
- 	}
+-	int port, err;
++	int p, port, err;
+ 	struct mlx4_vport_state *vp_admin;
+ 	struct mlx4_vport_oper_state *vp_oper;
+ 	struct mlx4_slave_state *slave_state =
+ 		&priv->mfunc.master.slave_state[slave];
+ 	struct mlx4_active_ports actv_ports = mlx4_get_active_ports(
+ 			&priv->dev, slave);
+-	int min_port = find_first_bit(actv_ports.ports,
+-				      priv->dev.caps.num_ports) + 1;
+-	int max_port = min_port - 1 +
+-		bitmap_weight(actv_ports.ports, priv->dev.caps.num_ports);
  
- 	/*
+-	for (port = min_port; port <= max_port; port++) {
+-		if (!test_bit(port - 1, actv_ports.ports))
+-			continue;
++	for_each_set_bit(p, actv_ports.ports, priv->dev.caps.num_ports) {
++		port = p + 1;
+ 		priv->mfunc.master.vf_oper[slave].smi_enabled[port] =
+ 			priv->mfunc.master.vf_admin[slave].enable_smi[port];
+ 		vp_oper = &priv->mfunc.master.vf_oper[slave].vport[port];
+@@ -2063,19 +2058,13 @@ static int mlx4_master_activate_admin_state(struct mlx4_priv *priv, int slave)
+ 
+ static void mlx4_master_deactivate_admin_state(struct mlx4_priv *priv, int slave)
+ {
+-	int port;
++	int p, port;
+ 	struct mlx4_vport_oper_state *vp_oper;
+ 	struct mlx4_active_ports actv_ports = mlx4_get_active_ports(
+ 			&priv->dev, slave);
+-	int min_port = find_first_bit(actv_ports.ports,
+-				      priv->dev.caps.num_ports) + 1;
+-	int max_port = min_port - 1 +
+-		bitmap_weight(actv_ports.ports, priv->dev.caps.num_ports);
+ 
+-
+-	for (port = min_port; port <= max_port; port++) {
+-		if (!test_bit(port - 1, actv_ports.ports))
+-			continue;
++	for_each_set_bit(p, actv_ports.ports, priv->dev.caps.num_ports) {
++		port = p + 1;
+ 		priv->mfunc.master.vf_oper[slave].smi_enabled[port] =
+ 			MLX4_VF_SMI_DISABLED;
+ 		vp_oper = &priv->mfunc.master.vf_oper[slave].vport[port];
 -- 
 2.30.2
 
