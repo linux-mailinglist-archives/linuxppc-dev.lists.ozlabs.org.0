@@ -1,64 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1F21479D6D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Dec 2021 22:39:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4A9479D6F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Dec 2021 22:40:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JGfPs4MzXz3cNC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Dec 2021 08:39:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JGfRJ053qz3ccK
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Dec 2021 08:40:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=emXGoF/r;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=RbLh966d;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c31;
- helo=mail-oo1-xc31.google.com; envelope-from=yury.norov@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::233;
+ helo=mail-oi1-x233.google.com; envelope-from=yury.norov@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=emXGoF/r; dkim-atps=neutral
-Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com
- [IPv6:2607:f8b0:4864:20::c31])
+ header.s=20210112 header.b=RbLh966d; dkim-atps=neutral
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com
+ [IPv6:2607:f8b0:4864:20::233])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JGdzr07pRz2xsx
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Dec 2021 08:20:23 +1100 (AEDT)
-Received: by mail-oo1-xc31.google.com with SMTP id
- g11-20020a4a754b000000b002c679a02b18so1851538oof.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Dec 2021 13:20:22 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JGdzt0lFCz2xsx
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Dec 2021 08:20:26 +1100 (AEDT)
+Received: by mail-oi1-x233.google.com with SMTP id bk14so9353459oib.7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Dec 2021 13:20:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:subject:date:message-id:in-reply-to:references:mime-version
  :content-transfer-encoding;
- bh=Z2tvdbF6REb1vBF1soXoDEIHAExTZD83ljtvXFSjKwo=;
- b=emXGoF/rqz2kZ1ppkVCvpVwnlzRGfpHvB6fCjdgXgq4mWi4taNltzT/8wcLQq66dbk
- MD2zDykqS6XJaQ5PU2HVINr4Hy6yCA5bYv6gpPBvg9v3XheXHY+8l+yeCmhX2tga4gVQ
- sTew+4Ce+CJk3e/yVOV0JvK+IRua38r6JmY0W0m2iG7AvTEFJPzEdJgJthm8SUSs/HSu
- +2y2hMZR9kLSjfG1dQSz0Un8nNh3r481BC0sqINll4Wfg/BF12V/L2oAmdDVwhPToLvH
- OP+x58qnTe8/1kAkfYhKXTLFTwToKojcYG+btHtZE0qvbhco3tOTmSCXQ29ee1Ng0z1Y
- 3GQg==
+ bh=ZRDbXQndZB+h1W3grije4oLm88mhsLSCo0DvJeL0oOc=;
+ b=RbLh966dNM6Q9dumAKT/s67Li0XDMiqpqy9QDRjKZ7xykviae8HUZGbBK4++gzts9+
+ 4HWimSnZbbp981RdIy4mUiEPi5KNC27XZMzAqhbLAbSCXpzsa6pdkKTooARlGNlTUTY6
+ JoyuKChgIL/vGpnEuqm73H3imSDYRcmkvOW7G88lNj2P4DJILBf/LhHA1ZwruMX1IzE2
+ L/mAlIYrOkdOM5wMkeJ8+xwn6+2dLufPFudFw0L+ol31R0QIHi6gU0asPbGQ0WpcgUYF
+ TKKLWiuHi4Ipvj4eEi1DnTT9o6ibI9n5SLfH6H9ye6clD987ERDreQoQOmClSh/YKHYJ
+ 9wZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=Z2tvdbF6REb1vBF1soXoDEIHAExTZD83ljtvXFSjKwo=;
- b=2XY+GslV+bKT9H5KZ5OEbjXzCNO0HixlXZN15Drg9PVaJAKi0uupc41cb2g77PsTJ4
- Z1o2V//YqIIN1299f0MQy3g48sIwense432FnXK46R3OsUbrIffOWiV/WThRct3WFbuO
- g25crtZWA9JseQAncI7mfJUNGx3y1lazdSmeKkDlwBqgoH8hl7T/mi0eIW9EKM0H/B6P
- 1etMDDPzr6Z1ztVHt7UoJ9VeUmEJORkXM75dK4mOnJrzp9BM7NtXIZmyLMF+4I6vsOgP
- 1mtlFTjb10Nyte24LuVeY7VIlKLTftUlB5l6fk7puHlA/WoCpS06bWK6ncVwU1wvGi6e
- DrxQ==
-X-Gm-Message-State: AOAM533jk2GAsctMB4ZiEovQWqQ5xVCHz+CRvLLNhJ8cEnggf1d/zPo0
- 8t/vZNN9AqZz6Pmf+ScUm60=
-X-Google-Smtp-Source: ABdhPJwPbo0K0G4ak9o4in4lTp9662eXAkNuBO+m2YfWhJBYOSEs8AJNY3EOrOHmvQuk+mj1mPzKcQ==
-X-Received: by 2002:a4a:8701:: with SMTP id z1mr6056463ooh.68.1639862420605;
- Sat, 18 Dec 2021 13:20:20 -0800 (PST)
+ bh=ZRDbXQndZB+h1W3grije4oLm88mhsLSCo0DvJeL0oOc=;
+ b=gg1+MfF282+DjDhjLY+NuyNjQEAm7HKTQyJUSp+lf+4ZK6iUHjMO1xsKukaIzicSsl
+ +2adpnQEF8tFPohEsSS0Jgu3t5FMLYkttOvYds1MjqfGUKHsZ19ygF4oCQFRqBYN4NYL
+ 0V7P9QLtQ/LmqergCPoAVDkXxaMrdZ/Ahbn09udqtv7cYRxFisD7n723HZODDaZpNaKn
+ OBqInXWfWIPqzN9v0kvfq73Or8ET2HBD6+nGeOBwIbC8fXa3/tnFCTfkiFF1QqLliIg1
+ a6vlvG496YxEYP7ObQFqWSR3HYus4e+GVz0ijsXGHFNaFURD8j18N7gQLhNaXij7vsgp
+ qXsg==
+X-Gm-Message-State: AOAM531J9c81pqXXRGDgfqN4GdjTMymT3/zuP6Sbi6enoW6XvJtUs73M
+ HRrys6W0zikQ0sVFOAoeTkE=
+X-Google-Smtp-Source: ABdhPJxshh8wZNTv7Y9Ku4jyb7QQxFrS/1r/onV0bhXisp6AJbbov2WJDwCGNF7Hkx62Pk9+Bq0Ozw==
+X-Received: by 2002:a05:6808:159a:: with SMTP id
+ t26mr13219038oiw.106.1639862424104; 
+ Sat, 18 Dec 2021 13:20:24 -0800 (PST)
 Received: from localhost (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id x13sm2332785otr.58.2021.12.18.13.20.19
+ by smtp.gmail.com with ESMTPSA id 186sm2409379oig.28.2021.12.18.13.20.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Dec 2021 13:20:20 -0800 (PST)
+ Sat, 18 Dec 2021 13:20:23 -0800 (PST)
 From: Yury Norov <yury.norov@gmail.com>
 To: linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
  "James E.J. Bottomley" <jejb@linux.ibm.com>,
@@ -123,9 +123,9 @@ To: linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
  linux-perf-users@vger.kernel.org, linux-riscv@lists.infradead.org,
  linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
  linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 01/17] all: don't use bitmap_weight() where possible
-Date: Sat, 18 Dec 2021 13:19:57 -0800
-Message-Id: <20211218212014.1315894-2-yury.norov@gmail.com>
+Subject: [PATCH 02/17] drivers: rename num_*_cpus variables
+Date: Sat, 18 Dec 2021 13:19:58 -0800
+Message-Id: <20211218212014.1315894-3-yury.norov@gmail.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211218212014.1315894-1-yury.norov@gmail.com>
 References: <20211218212014.1315894-1-yury.norov@gmail.com>
@@ -147,73 +147,74 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Don't call bitmap_weight() if the following code can get by
-without it.
+Some drivers declare num_active_cpus and num_present_cpus,
+despite that kernel has macros with corresponding names in
+linux/cpumask.h, and the drivers include cpumask.h
+
+The following patches switch num_*_cpus() to real functions,
+which causes build failures for the drivers.
 
 Signed-off-by: Yury Norov <yury.norov@gmail.com>
 ---
- drivers/net/dsa/b53/b53_common.c           | 6 +-----
- drivers/net/ethernet/broadcom/bcmsysport.c | 6 +-----
- drivers/thermal/intel/intel_powerclamp.c   | 9 +++------
- 3 files changed, 5 insertions(+), 16 deletions(-)
+ drivers/leds/trigger/ledtrig-cpu.c | 6 +++---
+ drivers/scsi/storvsc_drv.c         | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 3867f3d4545f..9a10d80125d9 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1620,12 +1620,8 @@ static int b53_arl_read(struct b53_device *dev, u64 mac,
- 		return 0;
- 	}
+diff --git a/drivers/leds/trigger/ledtrig-cpu.c b/drivers/leds/trigger/ledtrig-cpu.c
+index 8af4f9bb9cde..767e9749ca41 100644
+--- a/drivers/leds/trigger/ledtrig-cpu.c
++++ b/drivers/leds/trigger/ledtrig-cpu.c
+@@ -39,7 +39,7 @@ struct led_trigger_cpu {
+ static DEFINE_PER_CPU(struct led_trigger_cpu, cpu_trig);
  
--	if (bitmap_weight(free_bins, dev->num_arl_bins) == 0)
--		return -ENOSPC;
--
- 	*idx = find_first_bit(free_bins, dev->num_arl_bins);
--
--	return -ENOENT;
-+	return *idx >= dev->num_arl_bins ? -ENOSPC : -ENOENT;
- }
+ static struct led_trigger *trig_cpu_all;
+-static atomic_t num_active_cpus = ATOMIC_INIT(0);
++static atomic_t _active_cpus = ATOMIC_INIT(0);
  
- static int b53_arl_op(struct b53_device *dev, int op, int port,
-diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
-index 40933bf5a710..241696fdc6c7 100644
---- a/drivers/net/ethernet/broadcom/bcmsysport.c
-+++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -2177,13 +2177,9 @@ static int bcm_sysport_rule_set(struct bcm_sysport_priv *priv,
- 	if (nfc->fs.ring_cookie != RX_CLS_FLOW_WAKE)
- 		return -EOPNOTSUPP;
+ /**
+  * ledtrig_cpu - emit a CPU event as a trigger
+@@ -79,8 +79,8 @@ void ledtrig_cpu(enum cpu_led_event ledevt)
  
--	/* All filters are already in use, we cannot match more rules */
--	if (bitmap_weight(priv->filters, RXCHK_BRCM_TAG_MAX) ==
--	    RXCHK_BRCM_TAG_MAX)
--		return -ENOSPC;
--
- 	index = find_first_zero_bit(priv->filters, RXCHK_BRCM_TAG_MAX);
- 	if (index >= RXCHK_BRCM_TAG_MAX)
-+		/* All filters are already in use, we cannot match more rules */
- 		return -ENOSPC;
+ 		/* Update trigger state */
+ 		trig->is_active = is_active;
+-		atomic_add(is_active ? 1 : -1, &num_active_cpus);
+-		active_cpus = atomic_read(&num_active_cpus);
++		atomic_add(is_active ? 1 : -1, &_active_cpus);
++		active_cpus = atomic_read(&_active_cpus);
+ 		total_cpus = num_present_cpus();
  
- 	/* Location is the classification ID, and index is the position
-diff --git a/drivers/thermal/intel/intel_powerclamp.c b/drivers/thermal/intel/intel_powerclamp.c
-index 14256421d98c..c841ab37e7c6 100644
---- a/drivers/thermal/intel/intel_powerclamp.c
-+++ b/drivers/thermal/intel/intel_powerclamp.c
-@@ -556,12 +556,9 @@ static void end_power_clamp(void)
- 	 * stop faster.
+ 		led_trigger_event(trig->_trig,
+diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
+index 20595c0ba0ae..705dd4ebde98 100644
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1950,7 +1950,7 @@ static int storvsc_probe(struct hv_device *device,
+ {
+ 	int ret;
+ 	int num_cpus = num_online_cpus();
+-	int num_present_cpus = num_present_cpus();
++	int present_cpus = num_present_cpus();
+ 	struct Scsi_Host *host;
+ 	struct hv_host_device *host_dev;
+ 	bool dev_is_ide = ((dev_id->driver_data == IDE_GUID) ? true : false);
+@@ -2060,7 +2060,7 @@ static int storvsc_probe(struct hv_device *device,
+ 	 * Set the number of HW queues we are supporting.
  	 */
- 	clamping = false;
--	if (bitmap_weight(cpu_clamping_mask, num_possible_cpus())) {
--		for_each_set_bit(i, cpu_clamping_mask, num_possible_cpus()) {
--			pr_debug("clamping worker for cpu %d alive, destroy\n",
--				 i);
--			stop_power_clamp_worker(i);
--		}
-+	for_each_set_bit(i, cpu_clamping_mask, num_possible_cpus()) {
-+		pr_debug("clamping worker for cpu %d alive, destroy\n", i);
-+		stop_power_clamp_worker(i);
+ 	if (!dev_is_ide) {
+-		if (storvsc_max_hw_queues > num_present_cpus) {
++		if (storvsc_max_hw_queues > present_cpus) {
+ 			storvsc_max_hw_queues = 0;
+ 			storvsc_log(device, STORVSC_LOGGING_WARN,
+ 				"Resetting invalid storvsc_max_hw_queues value to default.\n");
+@@ -2068,7 +2068,7 @@ static int storvsc_probe(struct hv_device *device,
+ 		if (storvsc_max_hw_queues)
+ 			host->nr_hw_queues = storvsc_max_hw_queues;
+ 		else
+-			host->nr_hw_queues = num_present_cpus;
++			host->nr_hw_queues = present_cpus;
  	}
- }
  
+ 	/*
 -- 
 2.30.2
 
