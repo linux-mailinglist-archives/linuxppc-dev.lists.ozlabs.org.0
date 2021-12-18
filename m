@@ -2,63 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55FB479D6E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Dec 2021 22:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F21479D6D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Dec 2021 22:39:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JGfQZ4Lr7z3cHC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Dec 2021 08:40:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JGfPs4MzXz3cNC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Dec 2021 08:39:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JJsYWCM4;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=emXGoF/r;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::233;
- helo=mail-oi1-x233.google.com; envelope-from=yury.norov@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c31;
+ helo=mail-oo1-xc31.google.com; envelope-from=yury.norov@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=JJsYWCM4; dkim-atps=neutral
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com
- [IPv6:2607:f8b0:4864:20::233])
+ header.s=20210112 header.b=emXGoF/r; dkim-atps=neutral
+Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com
+ [IPv6:2607:f8b0:4864:20::c31])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JGdzr0SDTz2xt7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Dec 2021 08:20:22 +1100 (AEDT)
-Received: by mail-oi1-x233.google.com with SMTP id t19so9371793oij.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JGdzr07pRz2xsx
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Dec 2021 08:20:23 +1100 (AEDT)
+Received: by mail-oo1-xc31.google.com with SMTP id
+ g11-20020a4a754b000000b002c679a02b18so1851538oof.3
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Dec 2021 13:20:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:subject:date:message-id:mime-version
+ h=from:to:subject:date:message-id:in-reply-to:references:mime-version
  :content-transfer-encoding;
- bh=JzsjdMdsnVfTtF2jA28Re9um5Pc1jpset8TjSm+sCCQ=;
- b=JJsYWCM4ZBrFr/QGYcVtz1O5XpwXMR8kjk5zvlx1xd9d3Bnfs+RyARM+UF2BFzbQzh
- Gtz0Jhiop3r+qa0tUyPUPAMdU6Jzy350IR0tNVuhpUl5a46wJZSSCfrlTroVV0iEzWQm
- jnatXUCyMxUjx4zPd6MbwV+jlb+bcIyfWFewnkHP1g6bfMLkxOoJnBeNiY1ltSGyKLUW
- NJO78tJlSMx+Op9iY217snQDmDuDZZGnfHCB/c9C+zObP29p/bUuiIWC4jVIoflp+GZQ
- +vsH2Ey++3hW+p7C5pzF3cKCahFFKGna42dCmd+BpNpZItDrp0SdGfIa8OEsJ5ce8y7A
- EIWw==
+ bh=Z2tvdbF6REb1vBF1soXoDEIHAExTZD83ljtvXFSjKwo=;
+ b=emXGoF/rqz2kZ1ppkVCvpVwnlzRGfpHvB6fCjdgXgq4mWi4taNltzT/8wcLQq66dbk
+ MD2zDykqS6XJaQ5PU2HVINr4Hy6yCA5bYv6gpPBvg9v3XheXHY+8l+yeCmhX2tga4gVQ
+ sTew+4Ce+CJk3e/yVOV0JvK+IRua38r6JmY0W0m2iG7AvTEFJPzEdJgJthm8SUSs/HSu
+ +2y2hMZR9kLSjfG1dQSz0Un8nNh3r481BC0sqINll4Wfg/BF12V/L2oAmdDVwhPToLvH
+ OP+x58qnTe8/1kAkfYhKXTLFTwToKojcYG+btHtZE0qvbhco3tOTmSCXQ29ee1Ng0z1Y
+ 3GQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=JzsjdMdsnVfTtF2jA28Re9um5Pc1jpset8TjSm+sCCQ=;
- b=xWs/q3kwI1FDWJK0OM5+esTPVHQkcVuIe7b2m1mvIEfnzypdp7gBAVKCq4lqDUPGPp
- 5IjVLvbGIzdvk1AIUS3PQBG/ODSqDPHThRdyYD8UUjYF1nihE+gJtT7+Qu2fPcaGOyde
- HxWu51kuj2fOMuUZXAnO/VUVpCIk505vEfGDYx97LX4DwbzbQsVcLpX4vX78a0F0ryZr
- wLhxim/MNGMHhU0PqWLr90awN4TVWCvKL7a/rxootMOp3tI9kAgaZ2qLQKq4pmh4IaDT
- kukvOP2lDNHynx4ZTTDEW3YjWABpAdpv/wNtAvQmMKAqDlax7OwbwliDJ6gAjnYwCkTg
- hP7w==
-X-Gm-Message-State: AOAM533hTCfhwxoXkP+qCyy23s1kTxHO1i6tim9CRiDv42KkhD0a+EHe
- B5WcxhO3+yCiET+tda3eUsM=
-X-Google-Smtp-Source: ABdhPJx5aJcpDQGi8bZmEiNIZHDj12WYIMCd+iCUv3wO5n9NxzqY0XYaFcTOfyycv/QCCz3me1Quxg==
-X-Received: by 2002:a05:6808:a8f:: with SMTP id
- q15mr12338850oij.65.1639862417151; 
- Sat, 18 Dec 2021 13:20:17 -0800 (PST)
+ h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=Z2tvdbF6REb1vBF1soXoDEIHAExTZD83ljtvXFSjKwo=;
+ b=2XY+GslV+bKT9H5KZ5OEbjXzCNO0HixlXZN15Drg9PVaJAKi0uupc41cb2g77PsTJ4
+ Z1o2V//YqIIN1299f0MQy3g48sIwense432FnXK46R3OsUbrIffOWiV/WThRct3WFbuO
+ g25crtZWA9JseQAncI7mfJUNGx3y1lazdSmeKkDlwBqgoH8hl7T/mi0eIW9EKM0H/B6P
+ 1etMDDPzr6Z1ztVHt7UoJ9VeUmEJORkXM75dK4mOnJrzp9BM7NtXIZmyLMF+4I6vsOgP
+ 1mtlFTjb10Nyte24LuVeY7VIlKLTftUlB5l6fk7puHlA/WoCpS06bWK6ncVwU1wvGi6e
+ DrxQ==
+X-Gm-Message-State: AOAM533jk2GAsctMB4ZiEovQWqQ5xVCHz+CRvLLNhJ8cEnggf1d/zPo0
+ 8t/vZNN9AqZz6Pmf+ScUm60=
+X-Google-Smtp-Source: ABdhPJwPbo0K0G4ak9o4in4lTp9662eXAkNuBO+m2YfWhJBYOSEs8AJNY3EOrOHmvQuk+mj1mPzKcQ==
+X-Received: by 2002:a4a:8701:: with SMTP id z1mr6056463ooh.68.1639862420605;
+ Sat, 18 Dec 2021 13:20:20 -0800 (PST)
 Received: from localhost (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id g26sm2402061ots.25.2021.12.18.13.20.15
+ by smtp.gmail.com with ESMTPSA id x13sm2332785otr.58.2021.12.18.13.20.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Dec 2021 13:20:16 -0800 (PST)
+ Sat, 18 Dec 2021 13:20:20 -0800 (PST)
 From: Yury Norov <yury.norov@gmail.com>
 To: linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
  "James E.J. Bottomley" <jejb@linux.ibm.com>,
@@ -123,10 +123,12 @@ To: linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
  linux-perf-users@vger.kernel.org, linux-riscv@lists.infradead.org,
  linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
  linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 00/17] lib/bitmap: optimize bitmap_weight() usage
-Date: Sat, 18 Dec 2021 13:19:56 -0800
-Message-Id: <20211218212014.1315894-1-yury.norov@gmail.com>
+Subject: [PATCH 01/17] all: don't use bitmap_weight() where possible
+Date: Sat, 18 Dec 2021 13:19:57 -0800
+Message-Id: <20211218212014.1315894-2-yury.norov@gmail.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20211218212014.1315894-1-yury.norov@gmail.com>
+References: <20211218212014.1315894-1-yury.norov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Sun, 19 Dec 2021 08:39:01 +1100
@@ -145,142 +147,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In many cases people use bitmap_weight()-based functions to compare
-the result against a number of expression:
+Don't call bitmap_weight() if the following code can get by
+without it.
 
-	if (cpumask_weight(...) > 1)
-		do_something();
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+---
+ drivers/net/dsa/b53/b53_common.c           | 6 +-----
+ drivers/net/ethernet/broadcom/bcmsysport.c | 6 +-----
+ drivers/thermal/intel/intel_powerclamp.c   | 9 +++------
+ 3 files changed, 5 insertions(+), 16 deletions(-)
 
-This may take considerable amount of time on many-cpus machines because
-cpumask_weight(...) will traverse every word of underlying cpumask
-unconditionally.
-
-We can significantly improve on it for many real cases if stop traversing
-the mask as soon as we count cpus to any number greater than 1:
-
-	if (cpumask_weight_gt(..., 1))
-		do_something();
-
-To implement this idea, the series adds bitmap_weight_cmp() function
-and bitmap_weight_{eq,gt,ge,lt,le} macros on top of it; corresponding
-wrappers in cpumask and nodemask.
-
-There are 3 cpumasks, for which weight is counted frequently: possible,
-present and active. They all are read-mostly, and to optimize counting
-number of set bits for them, this series adds atomic counters, similarly
-to online cpumask.
-
-v1: https://lkml.org/lkml/2021/11/27/339
-v2:
-  - add bitmap_weight_cmp();
-  - fix bitmap_weight_le semantics and provide full set of {eq,gt,ge,lt,le}
-    as wrappers around bitmap_weight_cmp();
-  - don't touch small bitmaps (less than 32 bits) - optimization works
-    only for large bitmaps;
-  - move bitmap_weight() == 0 -> bitmap_empty() conversion to a separate
-    patch, ditto cpumask_weight() and nodes_weight;
-  - add counters for possible, present and active cpus;
-  - drop bitmap_empty() where possible;
-  - various fixes around bit counting that spotted my eyes.
-
-Yury Norov (17):
-  all: don't use bitmap_weight() where possible
-  drivers: rename num_*_cpus variables
-  fix open-coded for_each_set_bit()
-  all: replace bitmap_weight with bitmap_empty where appropriate
-  all: replace cpumask_weight with cpumask_empty where appropriate
-  all: replace nodes_weight with nodes_empty where appropriate
-  lib/bitmap: add bitmap_weight_{cmp,eq,gt,ge,lt,le} functions
-  all: replace bitmap_weight with bitmap_weight_{eq,gt,ge,lt,le} where
-    appropriate
-  lib/cpumask: add cpumask_weight_{eq,gt,ge,lt,le}
-  lib/nodemask: add nodemask_weight_{eq,gt,ge,lt,le}
-  lib/nodemask: add num_node_state_eq()
-  kernel/cpu.c: fix init_cpu_online
-  kernel/cpu: add num_possible_cpus counter
-  kernel/cpu: add num_present_cpu counter
-  kernel/cpu: add num_active_cpu counter
-  tools/bitmap: sync bitmap_weight
-  MAINTAINERS: add cpumask and nodemask files to BITMAP_API
-
- MAINTAINERS                                   |   4 +
- arch/alpha/kernel/process.c                   |   2 +-
- arch/ia64/kernel/setup.c                      |   2 +-
- arch/ia64/mm/tlb.c                            |   2 +-
- arch/mips/cavium-octeon/octeon-irq.c          |   4 +-
- arch/mips/kernel/crash.c                      |   2 +-
- arch/nds32/kernel/perf_event_cpu.c            |   2 +-
- arch/powerpc/kernel/smp.c                     |   2 +-
- arch/powerpc/kernel/watchdog.c                |   2 +-
- arch/powerpc/xmon/xmon.c                      |   4 +-
- arch/s390/kernel/perf_cpum_cf.c               |   2 +-
- arch/x86/kernel/cpu/resctrl/rdtgroup.c        |  16 +--
- arch/x86/kernel/smpboot.c                     |   4 +-
- arch/x86/kvm/hyperv.c                         |   8 +-
- arch/x86/mm/amdtopology.c                     |   2 +-
- arch/x86/mm/mmio-mod.c                        |   2 +-
- arch/x86/mm/numa_emulation.c                  |   4 +-
- arch/x86/platform/uv/uv_nmi.c                 |   2 +-
- drivers/acpi/numa/srat.c                      |   2 +-
- drivers/cpufreq/qcom-cpufreq-hw.c             |   2 +-
- drivers/cpufreq/scmi-cpufreq.c                |   2 +-
- drivers/firmware/psci/psci_checker.c          |   2 +-
- drivers/gpu/drm/i915/i915_pmu.c               |   2 +-
- drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c      |   2 +-
- drivers/hv/channel_mgmt.c                     |   4 +-
- drivers/iio/dummy/iio_simple_dummy_buffer.c   |   4 +-
- drivers/iio/industrialio-trigger.c            |   2 +-
- drivers/infiniband/hw/hfi1/affinity.c         |  13 +-
- drivers/infiniband/hw/qib/qib_file_ops.c      |   2 +-
- drivers/infiniband/hw/qib/qib_iba7322.c       |   2 +-
- drivers/irqchip/irq-bcm6345-l1.c              |   2 +-
- drivers/leds/trigger/ledtrig-cpu.c            |   6 +-
- drivers/memstick/core/ms_block.c              |   4 +-
- drivers/net/dsa/b53/b53_common.c              |   6 +-
- drivers/net/ethernet/broadcom/bcmsysport.c    |   6 +-
- .../net/ethernet/intel/ice/ice_virtchnl_pf.c  |   4 +-
- .../net/ethernet/intel/ixgbe/ixgbe_sriov.c    |   2 +-
- .../marvell/octeontx2/nic/otx2_ethtool.c      |   2 +-
- .../marvell/octeontx2/nic/otx2_flows.c        |   8 +-
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |   2 +-
- drivers/net/ethernet/mellanox/mlx4/cmd.c      |  33 ++---
- drivers/net/ethernet/mellanox/mlx4/eq.c       |   4 +-
- drivers/net/ethernet/mellanox/mlx4/fw.c       |   4 +-
- drivers/net/ethernet/mellanox/mlx4/main.c     |   2 +-
- drivers/net/ethernet/qlogic/qed/qed_rdma.c    |   4 +-
- drivers/net/ethernet/qlogic/qed/qed_roce.c    |   2 +-
- drivers/perf/arm-cci.c                        |   2 +-
- drivers/perf/arm_pmu.c                        |   4 +-
- drivers/perf/hisilicon/hisi_uncore_pmu.c      |   2 +-
- drivers/perf/thunderx2_pmu.c                  |   4 +-
- drivers/perf/xgene_pmu.c                      |   2 +-
- drivers/scsi/lpfc/lpfc_init.c                 |   2 +-
- drivers/scsi/storvsc_drv.c                    |   6 +-
- drivers/soc/fsl/qbman/qman_test_stash.c       |   2 +-
- drivers/staging/media/tegra-video/vi.c        |   2 +-
- drivers/thermal/intel/intel_powerclamp.c      |   9 +-
- include/linux/bitmap.h                        |  80 +++++++++++
- include/linux/cpumask.h                       | 131 +++++++++++++-----
- include/linux/nodemask.h                      |  40 ++++++
- kernel/cpu.c                                  |  54 ++++++++
- kernel/irq/affinity.c                         |   2 +-
- kernel/padata.c                               |   2 +-
- kernel/rcu/tree_nocb.h                        |   4 +-
- kernel/rcu/tree_plugin.h                      |   2 +-
- kernel/sched/core.c                           |  10 +-
- kernel/sched/topology.c                       |   4 +-
- kernel/time/clockevents.c                     |   2 +-
- kernel/time/clocksource.c                     |   2 +-
- lib/bitmap.c                                  |  21 +++
- mm/mempolicy.c                                |   2 +-
- mm/page_alloc.c                               |   2 +-
- mm/vmstat.c                                   |   4 +-
- tools/include/linux/bitmap.h                  |  44 ++++++
- tools/lib/bitmap.c                            |  20 +++
- tools/perf/builtin-c2c.c                      |   4 +-
- tools/perf/util/pmu.c                         |   2 +-
- 76 files changed, 480 insertions(+), 183 deletions(-)
-
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 3867f3d4545f..9a10d80125d9 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1620,12 +1620,8 @@ static int b53_arl_read(struct b53_device *dev, u64 mac,
+ 		return 0;
+ 	}
+ 
+-	if (bitmap_weight(free_bins, dev->num_arl_bins) == 0)
+-		return -ENOSPC;
+-
+ 	*idx = find_first_bit(free_bins, dev->num_arl_bins);
+-
+-	return -ENOENT;
++	return *idx >= dev->num_arl_bins ? -ENOSPC : -ENOENT;
+ }
+ 
+ static int b53_arl_op(struct b53_device *dev, int op, int port,
+diff --git a/drivers/net/ethernet/broadcom/bcmsysport.c b/drivers/net/ethernet/broadcom/bcmsysport.c
+index 40933bf5a710..241696fdc6c7 100644
+--- a/drivers/net/ethernet/broadcom/bcmsysport.c
++++ b/drivers/net/ethernet/broadcom/bcmsysport.c
+@@ -2177,13 +2177,9 @@ static int bcm_sysport_rule_set(struct bcm_sysport_priv *priv,
+ 	if (nfc->fs.ring_cookie != RX_CLS_FLOW_WAKE)
+ 		return -EOPNOTSUPP;
+ 
+-	/* All filters are already in use, we cannot match more rules */
+-	if (bitmap_weight(priv->filters, RXCHK_BRCM_TAG_MAX) ==
+-	    RXCHK_BRCM_TAG_MAX)
+-		return -ENOSPC;
+-
+ 	index = find_first_zero_bit(priv->filters, RXCHK_BRCM_TAG_MAX);
+ 	if (index >= RXCHK_BRCM_TAG_MAX)
++		/* All filters are already in use, we cannot match more rules */
+ 		return -ENOSPC;
+ 
+ 	/* Location is the classification ID, and index is the position
+diff --git a/drivers/thermal/intel/intel_powerclamp.c b/drivers/thermal/intel/intel_powerclamp.c
+index 14256421d98c..c841ab37e7c6 100644
+--- a/drivers/thermal/intel/intel_powerclamp.c
++++ b/drivers/thermal/intel/intel_powerclamp.c
+@@ -556,12 +556,9 @@ static void end_power_clamp(void)
+ 	 * stop faster.
+ 	 */
+ 	clamping = false;
+-	if (bitmap_weight(cpu_clamping_mask, num_possible_cpus())) {
+-		for_each_set_bit(i, cpu_clamping_mask, num_possible_cpus()) {
+-			pr_debug("clamping worker for cpu %d alive, destroy\n",
+-				 i);
+-			stop_power_clamp_worker(i);
+-		}
++	for_each_set_bit(i, cpu_clamping_mask, num_possible_cpus()) {
++		pr_debug("clamping worker for cpu %d alive, destroy\n", i);
++		stop_power_clamp_worker(i);
+ 	}
+ }
+ 
 -- 
 2.30.2
 
