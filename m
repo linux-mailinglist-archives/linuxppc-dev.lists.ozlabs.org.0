@@ -2,63 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20897479D7F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Dec 2021 22:47:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B73479D80
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Dec 2021 22:47:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JGfZf0BG4z3dk6
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Dec 2021 08:47:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JGfbN2pXLz3cVN
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Dec 2021 08:47:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fBftgt78;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JpKKkwIN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::335;
- helo=mail-ot1-x335.google.com; envelope-from=yury.norov@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::332;
+ helo=mail-ot1-x332.google.com; envelope-from=yury.norov@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=fBftgt78; dkim-atps=neutral
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com
- [IPv6:2607:f8b0:4864:20::335])
+ header.s=20210112 header.b=JpKKkwIN; dkim-atps=neutral
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com
+ [IPv6:2607:f8b0:4864:20::332])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JGf0T6h6bz2yP3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Dec 2021 08:20:57 +1100 (AEDT)
-Received: by mail-ot1-x335.google.com with SMTP id
- v15-20020a9d604f000000b0056cdb373b82so7470295otj.7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Dec 2021 13:20:57 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JGf0Y4lx2z2y7J
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Dec 2021 08:21:01 +1100 (AEDT)
+Received: by mail-ot1-x332.google.com with SMTP id
+ 47-20020a9d0332000000b005798ac20d72so7439444otv.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Dec 2021 13:21:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:subject:date:message-id:in-reply-to:references:mime-version
  :content-transfer-encoding;
- bh=Hec35lasK9ZA9Al4lVu2VLAlB7ZGIYc9EtAwCKNTlw8=;
- b=fBftgt78xMj1xKG5HZZwIKhKCaPNvVnrKaDadtsATTpbsWGFVP5e7HSashlaWMcwqO
- LGw9PZb24tpFErLVXHUlIglhlIamlRCnbPR5OsIzGuKEIH1AURNfV/dBdfTBQoYJvzuO
- vJHwptAoNFqOBC8BK+K0vkVFi+BHhxI0ibPZCe0ZoMw3oErF2aHMJ2Qi5YW1XoA/0FmX
- DvxauUzfNVo2yGxIRxf4OdPGCp1xAi9orXiOGorjkgyc4oijxQ3LsGsYHHg9DqrmgOxo
- d9gh/VCFcHiQ0ntVUwmhI9B1jfed7aIsK1FoKUVaewVhnEosQJQvZUV3oMwwmTiQqF/E
- EGHA==
+ bh=TtB4s+TeH5Hsx4aMsA8zovfLkC56GGSxZAM2kKc/k+s=;
+ b=JpKKkwINU8Ydvnyx9TIa0uTEfLIEeORqwMjlt2cBKjHjbDtmjXYoAYcpkHvWOACNZ+
+ JClsTJjPz351JiBL5YkKHmfgQb6Bs9RYm3XbiLNQpBXdxk6fSPpeP/UdvMr1JZgJmzOO
+ 3zd+x9XrwW0Ta4OedkblF2OTR3HDwbCAnWpcgXnJtqaKYqgdIUsODPw8Wp+KaP/4tQcA
+ 9zIa24wEaUYy2nK+3lrBCplwLyxuKdWlNpxyOXXoiOONLC5fupt6hpsq3NiXG/6pQoSG
+ wtOhHaiB3EGda/k0PB3OUJtDVXKKoy2mUG5TqWrYE76xWrWSeHaSuRq4yt4Mp1WKWa5j
+ aevA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=Hec35lasK9ZA9Al4lVu2VLAlB7ZGIYc9EtAwCKNTlw8=;
- b=PcGu8bNTEOMYQboyH4UHTsP007Osgm5rR7L7zHXoPXipluirphaYMXXuUKeZCL9d4p
- mEJNgKhfVmnHkI8qlJ7CiZWVKDcjOlaw43O7tx8uvLcK/nzbTaNljkSRbZwGDspMdXuh
- 7l+/Hb2Zuse4X9Rd7yC11ju78xsrKlVZVeVLRDJog11+M/svWU4Sysn2ObvjBttgoSRz
- wWE4Wiq8B+g0BkczJ592qdCYI/vbT7nCSG2bqF+E54PDFDo+nCeo6rW2Xy9oRYPmHxmi
- UDPHlUO5mxRjC4kvT3Xk764C5HGrGBL/r2T5N2qO3Ul3ecplr1ZsRpPZ+K5aOa6CoCkz
- WH+g==
-X-Gm-Message-State: AOAM531laTK5a85yWxpuI7RROq0FXLtateJEB3RDulS7J2aHGbp0W3YV
- BUuikM3KsQBu3RquvWkCoig=
-X-Google-Smtp-Source: ABdhPJyF3ZGCXzeXjVp/KVuej2Lro/GR2ZMmRe4CsBC/6he5KNwSmag2n9ENl7goEuOdRGP79z0Maw==
-X-Received: by 2002:a9d:2d81:: with SMTP id g1mr6637050otb.25.1639862455926;
- Sat, 18 Dec 2021 13:20:55 -0800 (PST)
+ bh=TtB4s+TeH5Hsx4aMsA8zovfLkC56GGSxZAM2kKc/k+s=;
+ b=1oywL/OAQlhGp3utDvcFRClXwkUCi8RLb22a6qB9YKeZDmT2H6M83mVAOblWZgbIM9
+ QiHM1j0qfg69SdG/3bXFXl1X/RwFCASQg903UoGVHvckvbRnG6DfFY6/u2Fcy4GAwN3x
+ pSJL4Gv7V4MR++7VmtpoZSHyclfZG8KxpzOGN/yLrQugYW5QxTsLKCZTtS0FGyODPTt8
+ SRz6wioPdgr9zPl/GlmAHKQ0NAz4AvFtFcOYo/HlyEGhuOpetuvm3gu+56Hcsdj+/yDg
+ W4bdAnkVWRiHofhqQs3oRhYz8+FNi64SL9xGGfg/uxy/EcmjPuyNmT4Pko0Y/zPlboD7
+ cXiw==
+X-Gm-Message-State: AOAM531XgvRtFJ1OQq1CVc3/UTrsiDFaDqHSqBWaHP/1iomTBa3i/Vbq
+ ht2oIgJ9mLZSPvBFNU8aBN8=
+X-Google-Smtp-Source: ABdhPJz65aswwCqCKcm3NSepL1No7Bu916BAt7YX/+A7MjCUNmyZSZaKJNIPfs9JYRO4CobDyeY4pQ==
+X-Received: by 2002:a05:6830:10:: with SMTP id
+ c16mr6492562otp.79.1639862459100; 
+ Sat, 18 Dec 2021 13:20:59 -0800 (PST)
 Received: from localhost (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id n23sm2383616oic.26.2021.12.18.13.20.54
+ by smtp.gmail.com with ESMTPSA id e21sm2358431ote.72.2021.12.18.13.20.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Dec 2021 13:20:55 -0800 (PST)
+ Sat, 18 Dec 2021 13:20:58 -0800 (PST)
 From: Yury Norov <yury.norov@gmail.com>
 To: linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
  "James E.J. Bottomley" <jejb@linux.ibm.com>,
@@ -123,9 +124,9 @@ To: linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
  linux-perf-users@vger.kernel.org, linux-riscv@lists.infradead.org,
  linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
  linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 12/17] kernel/cpu.c: fix init_cpu_online
-Date: Sat, 18 Dec 2021 13:20:08 -0800
-Message-Id: <20211218212014.1315894-13-yury.norov@gmail.com>
+Subject: [PATCH 13/17] kernel/cpu: add num_possible_cpus counter
+Date: Sat, 18 Dec 2021 13:20:09 -0800
+Message-Id: <20211218212014.1315894-14-yury.norov@gmail.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211218212014.1315894-1-yury.norov@gmail.com>
 References: <20211218212014.1315894-1-yury.norov@gmail.com>
@@ -147,27 +148,124 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-cpu_online_mask has an associate counter of online cpus, which should be
-initialized in init_cpu_online()
+Similarly to the online cpus, the cpu_possible_mask is actively used
+in the kernel. This patch adds a counter for possible cpus, so that
+users that call num_possible_cpus() would know the result immediately,
+instead of calling the bitmap_weight for the mask underlying.
 
-Fixes: 0c09ab96fc82010 (cpu/hotplug: Cache number of online CPUs)
+Suggested-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Yury Norov <yury.norov@gmail.com>
 ---
- kernel/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/cpumask.h | 30 ++++++++++++++++--------------
+ kernel/cpu.c            | 22 ++++++++++++++++++++++
+ 2 files changed, 38 insertions(+), 14 deletions(-)
 
+diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
+index 1906e3225737..0be2504d8e4c 100644
+--- a/include/linux/cpumask.h
++++ b/include/linux/cpumask.h
+@@ -99,6 +99,7 @@ extern struct cpumask __cpu_dying_mask;
+ #define cpu_dying_mask    ((const struct cpumask *)&__cpu_dying_mask)
+ 
+ extern atomic_t __num_online_cpus;
++extern atomic_t __num_possible_cpus;
+ 
+ extern cpumask_t cpus_booted_once_mask;
+ 
+@@ -870,19 +871,8 @@ void init_cpu_present(const struct cpumask *src);
+ void init_cpu_possible(const struct cpumask *src);
+ void init_cpu_online(const struct cpumask *src);
+ 
+-static inline void reset_cpu_possible_mask(void)
+-{
+-	bitmap_zero(cpumask_bits(&__cpu_possible_mask), NR_CPUS);
+-}
+-
+-static inline void
+-set_cpu_possible(unsigned int cpu, bool possible)
+-{
+-	if (possible)
+-		cpumask_set_cpu(cpu, &__cpu_possible_mask);
+-	else
+-		cpumask_clear_cpu(cpu, &__cpu_possible_mask);
+-}
++void set_cpu_possible(unsigned int cpu, bool possible);
++void reset_cpu_possible_mask(void);
+ 
+ static inline void
+ set_cpu_present(unsigned int cpu, bool present)
+@@ -962,7 +952,19 @@ static inline unsigned int num_online_cpus(void)
+ {
+ 	return atomic_read(&__num_online_cpus);
+ }
+-#define num_possible_cpus()	cpumask_weight(cpu_possible_mask)
++
++/**
++ * num_possible_cpus() - Read the number of possible CPUs
++ *
++ * Despite the fact that __num_possible_cpus is of type atomic_t, this
++ * interface gives only a momentary snapshot and is not protected against
++ * concurrent CPU hotplug operations unless invoked from a cpuhp_lock held
++ * region.
++ */
++static inline unsigned int num_possible_cpus(void)
++{
++	return atomic_read(&__num_possible_cpus);
++}
+ #define num_present_cpus()	cpumask_weight(cpu_present_mask)
+ #define num_active_cpus()	cpumask_weight(cpu_active_mask)
+ 
 diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 407a2568f35e..cd7605204d4d 100644
+index cd7605204d4d..a0a815911173 100644
 --- a/kernel/cpu.c
 +++ b/kernel/cpu.c
-@@ -2616,6 +2616,7 @@ void init_cpu_possible(const struct cpumask *src)
- void init_cpu_online(const struct cpumask *src)
+@@ -2583,10 +2583,13 @@ EXPORT_SYMBOL(cpu_all_bits);
+ #ifdef CONFIG_INIT_ALL_POSSIBLE
+ struct cpumask __cpu_possible_mask __read_mostly
+ 	= {CPU_BITS_ALL};
++atomic_t __num_possible_cpus __read_mostly = ATOMIC_INIT(NR_CPUS);
+ #else
+ struct cpumask __cpu_possible_mask __read_mostly;
++atomic_t __num_possible_cpus __read_mostly;
+ #endif
+ EXPORT_SYMBOL(__cpu_possible_mask);
++EXPORT_SYMBOL(__num_possible_cpus);
+ 
+ struct cpumask __cpu_online_mask __read_mostly;
+ EXPORT_SYMBOL(__cpu_online_mask);
+@@ -2611,6 +2614,7 @@ void init_cpu_present(const struct cpumask *src)
+ void init_cpu_possible(const struct cpumask *src)
  {
- 	cpumask_copy(&__cpu_online_mask, src);
-+	atomic_set(&__num_online_cpus, cpumask_weight(cpu_online_mask));
+ 	cpumask_copy(&__cpu_possible_mask, src);
++	atomic_set(&__num_possible_cpus, cpumask_weight(cpu_possible_mask));
  }
  
- void set_cpu_online(unsigned int cpu, bool online)
+ void init_cpu_online(const struct cpumask *src)
+@@ -2640,6 +2644,24 @@ void set_cpu_online(unsigned int cpu, bool online)
+ 	}
+ }
+ 
++void reset_cpu_possible_mask(void)
++{
++	bitmap_zero(cpumask_bits(&__cpu_possible_mask), NR_CPUS);
++	atomic_set(&__num_possible_cpus, 0);
++}
++
++void set_cpu_possible(unsigned int cpu, bool possible)
++{
++	if (possible) {
++		if (!cpumask_test_and_set_cpu(cpu, &__cpu_possible_mask))
++			atomic_inc(&__num_possible_cpus);
++	} else {
++		if (cpumask_test_and_clear_cpu(cpu, &__cpu_possible_mask))
++			atomic_dec(&__num_possible_cpus);
++	}
++}
++EXPORT_SYMBOL(set_cpu_possible);
++
+ /*
+  * Activate the first processor.
+  */
 -- 
 2.30.2
 
