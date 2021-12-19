@@ -2,71 +2,118 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D45479E91
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Dec 2021 01:29:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3E36479EB2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Dec 2021 02:36:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JGk9j36N9z3c56
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Dec 2021 11:29:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JGlfs4ryMz3cBH
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Dec 2021 12:36:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TIuyQXz6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VUm6kEvv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::533;
- helo=mail-pg1-x533.google.com; envelope-from=yury.norov@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=TIuyQXz6; dkim-atps=neutral
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com
- [IPv6:2607:f8b0:4864:20::533])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=VUm6kEvv; dkim-atps=neutral
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JGhqv4KcMz2xDr
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Dec 2021 10:28:41 +1100 (AEDT)
-Received: by mail-pg1-x533.google.com with SMTP id d11so5761438pgl.1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Dec 2021 15:28:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=pIYxkiGisug+VVJYFtmCG20TylNRXB8zO8kw91s3wyc=;
- b=TIuyQXz6oo8PN+yMbImlC2c2rmmoCdLu5CdlQlReccXapNNMDZyLSkZvnzlgZ9AIdV
- 6+qzntuQo5gBX86FaZFlCIaH4FCNC7RUVw367F08QPEjoiFWXa2CV6SAzISHS5RZPpY/
- QbkHqa0fdrihFEuRX0X/GeMy6P75DvnBsKWfABXcb5D5/2zTgkKaV4VEiJSuyy+zBwcd
- zNIVzererH+Fx7ZEOWvTBpmd3THvXh1KHtzsLHvjMiIPuGFGIqMdZbyjf9H7vLYP6+7J
- cQ/P2vAafsI3DEFtzgX9UWRj1ZmCeXy01hG6ih9PN1N9Tz70SEQsg8aJQpCrrbXl1cqP
- QppQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=pIYxkiGisug+VVJYFtmCG20TylNRXB8zO8kw91s3wyc=;
- b=vh5Mh6DyMGHsLprWQNXymbuZz6ji0tX2oJ+TcuhXIWODm8wo8rVtL5/5f9Vp6fUvfh
- x4OlMR/4/OCYqFxLlGz+tCA9KmUEXj9qEHipF/zewAY2GKKGK4q54UcxjqL0CkcY1/JX
- AY3fC0bk/wemIYuDVzAAQKWP6KQ8dc8HlDDu7ZJ24AAr2yZq29v5sa8k+XBMbCLvFA4b
- 7ZtLDjOr8brMZzRc8ZVHe6AchuD+GH+sszTWPEpXgn4VlF6HtW13GoTR4AlPLcfbrPX/
- dk0eEjw7rc7NTL52FMei+cSgAPIDo5IpNAVGoFU71ZLyeLJFmBMrfX4PtlEPT88JVa96
- 3G1g==
-X-Gm-Message-State: AOAM533utetCtjpJfsSx35DAzSfgG3k6xfYBlSFc4WRkD3c28/E9Sjxq
- sMSNUoWTela++MwKf7pGducvrLZ4dz0+orqde7I=
-X-Google-Smtp-Source: ABdhPJxWDXMTWC77oOKCjFiIpES/JejUzoFwUACXrmSW9T47MOn3N7k2dUXoB6NpZZlsfwgvBd+k97C3LkDR7q0l13Y=
-X-Received: by 2002:a63:2a0d:: with SMTP id q13mr8815341pgq.513.1639870119035; 
- Sat, 18 Dec 2021 15:28:39 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JGlf64cx7z2xtL
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Dec 2021 12:35:20 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1639877726; x=1671413726;
+ h=subject:to:cc:references:from:message-id:date:
+ mime-version:in-reply-to:content-transfer-encoding;
+ bh=cv74yQu4yaEw55arUJxxiaDLp4QaHtBmtA1P6ilYt3E=;
+ b=VUm6kEvv6DJx+R/awkC/iDKcAUvpi/nZxen5Aw1jgv7CMWM+3qsGqI5X
+ OvV26nEp5BBdCzvDgmtFjLrSmCebksf3BpMqzzexnS8cMsdu2bMWY7URo
+ 5u5fOcjA3bJ4M/pSpRKThQCQBMaVf95Uzgn6OBDgwJSgZDoFgnn0uxFn9
+ E7hoc+EuPgjz+sM3Y2kb9/aCV9j8Pto5qOuDRgg1+uItvizO/mrbmh9kr
+ x1ZQvvuoAtMeMreKl/S6gBI/3Maeb9HDzcF+DxFZ/ZLAlDh8Q5QbbLtLW
+ tWH/8kcvTPC2TzhAbWkPpLdPvNje7rsxearkeGBeEDlUA+HvFY1LMSFXK w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10202"; a="220645225"
+X-IronPort-AV: E=Sophos;i="5.88,217,1635231600"; d="scan'208";a="220645225"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2021 17:34:16 -0800
+X-IronPort-AV: E=Sophos;i="5.88,217,1635231600"; d="scan'208";a="683817902"
+Received: from dravipat-mobl.amr.corp.intel.com (HELO [10.209.5.57])
+ ([10.209.5.57])
+ by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2021 17:34:15 -0800
+Subject: Re: [PATCH/RFC] mm: add and use batched version of
+ __tlb_remove_table()
+To: Nikita Yushchenko <nikita.yushchenko@virtuozzo.com>,
+ Will Deacon <will@kernel.org>, "Aneesh Kumar K.V"
+ <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ "David S. Miller" <davem@davemloft.net>, Thomas Gleixner
+ <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Arnd Bergmann <arnd@arndb.de>
+References: <20211217081909.596413-1-nikita.yushchenko@virtuozzo.com>
+ <fcbb726d-fe6a-8fe4-20fd-6a10cdef007a@intel.com>
+ <d6094dc4-3976-e06f-696b-c55f696fe287@virtuozzo.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+ z5cecg==
+Message-ID: <290cfe1c-564f-9779-0757-5ca281055e77@intel.com>
+Date: Sat, 18 Dec 2021 17:34:13 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20211218212014.1315894-1-yury.norov@gmail.com>
- <20211218212014.1315894-2-yury.norov@gmail.com>
- <Yb5dmqlYd3owtH29@qmqm.qmqm.pl>
-In-Reply-To: <Yb5dmqlYd3owtH29@qmqm.qmqm.pl>
-From: Yury Norov <yury.norov@gmail.com>
-Date: Sat, 18 Dec 2021 15:28:29 -0800
-Message-ID: <CAAH8bW9uWW+t5TvkMt_e-sKp71hiLpXhXeuGuSZPK-3kds-GgQ@mail.gmail.com>
-Subject: Re: [PATCH 01/17] all: don't use bitmap_weight() where possible
-To: =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Sun, 19 Dec 2021 11:28:13 +1100
+In-Reply-To: <d6094dc4-3976-e06f-696b-c55f696fe287@virtuozzo.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,104 +125,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Guo Ren <guoren@kernel.org>,
- Christoph Lameter <cl@linux.com>, Christoph Hellwig <hch@lst.de>,
- Andi Kleen <ak@linux.intel.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Mel Gorman <mgorman@suse.de>, Viresh Kumar <viresh.kumar@linaro.org>,
- Petr Mladek <pmladek@suse.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Jens Axboe <axboe@fb.com>, Andy Lutomirski <luto@kernel.org>,
- Lee Jones <lee.jones@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-crypto@vger.kernel.org,
- Joe Perches <joe@perches.com>, Andrew Morton <akpm@linux-foundation.org>,
- Mark Rutland <mark.rutland@arm.com>, Anup Patel <anup.patel@wdc.com>,
- linux-ia64@vger.kernel.org, David Airlie <airlied@linux.ie>,
- Dave Hansen <dave.hansen@linux.intel.com>, Solomon Peachy <pizza@shaftnet.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
- Dennis Zhou <dennis@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Tejun Heo <tj@kernel.org>,
- linux-arm-kernel@lists.infradead.org, Stephen Boyd <sboyd@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Jonathan Cameron <jic23@kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>, Emil Renner Berthing <kernel@esmil.dk>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Subbaraya Sundeep <sbhatta@marvell.com>, Will Deacon <will@kernel.org>,
- Sagi Grimberg <sagi@grimberg.me>, linux-csky@vger.kernel.org,
- bcm-kernel-feedback-list@broadcom.com, linux-snps-arc@lists.infradead.org,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Mark Gross <markgross@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- David Laight <David.Laight@aculab.com>, linux-alpha@vger.kernel.org,
- Geetha sowjanya <gakula@marvell.com>, Ian Rogers <irogers@google.com>,
- kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Amitkumar Karwar <amitkarwar@gmail.com>, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, Jiri Olsa <jolsa@redhat.com>,
- Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Andy Gross <agross@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Vivien Didelot <vivien.didelot@gmail.com>,
- Sunil Goutham <sgoutham@marvell.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- linux-s390@vger.kernel.org, Alexey Klimov <aklimov@redhat.com>,
- Heiko Carstens <hca@linux.ibm.com>, Hans de Goede <hdegoede@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>, Marcin Wojtas <mw@semihalf.com>,
- Vlastimil Babka <vbabka@suse.cz>, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Daniel Vetter <daniel@ffwll.ch>, Jason Wessel <jason.wessel@windriver.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Andy Shevchenko <andy@infradead.org>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel@openvz.org,
+ sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Dec 18, 2021 at 2:16 PM Micha=C5=82 Miros=C5=82aw <mirq-linux@rere.=
-qmqm.pl> wrote:
->
-> On Sat, Dec 18, 2021 at 01:19:57PM -0800, Yury Norov wrote:
-> > Don't call bitmap_weight() if the following code can get by
-> > without it.
-> >
-> > Signed-off-by: Yury Norov <yury.norov@gmail.com>
-> > ---
-> >  drivers/net/dsa/b53/b53_common.c           | 6 +-----
-> >  drivers/net/ethernet/broadcom/bcmsysport.c | 6 +-----
-> >  drivers/thermal/intel/intel_powerclamp.c   | 9 +++------
-> >  3 files changed, 5 insertions(+), 16 deletions(-)
-> [...]
->
-> Looks good,
+On 12/18/21 6:31 AM, Nikita Yushchenko wrote:
+>>> This allows archs to optimize it, by
+>>> freeing multiple tables in a single release_pages() call. This is
+>>> faster than individual put_page() calls, especially with memcg
+>>> accounting enabled.
+>>
+>> Could we quantify "faster"?  There's a non-trivial amount of code being
+>> added here and it would be nice to back it up with some cold-hard
+>> numbers.
+> 
+> I currently don't have numbers for this patch taken alone. This patch
+> originates from work done some years ago to reduce cost of memory
+> accounting, and x86-only version of this patch was in virtuozzo/openvz
+> kernel since then. Other patches from that work have been upstreamed,
+> but this one was missed.
+> 
+> Still it's obvious that release_pages() shall be faster that a loop
+> calling put_page() - isn't that exactly the reason why release_pages()
+> exists and is different from a loop calling put_page()?
 
-Does it mean Acked-by, Reviewed-by, or something else?
+Yep, but this patch does a bunch of stuff to some really hot paths.  It
+would be greatly appreciated if you could put in the effort to actually
+put some numbers behind this.  Plenty of weird stuff happens on
+computers that we suck at predicting.
 
-> but I think this needs to be split per subsystem.
+I'd be happy with even a quick little micro.  My favorite is:
 
-What you ask breaks rules:
+	https://github.com/antonblanchard/will-it-scale
 
-Documentation/process/submitting-patches.rst:
+Although, I do wonder if anything will even be measurable.  Please at
+least try.
 
-Separate each **logical change** into a separate patch.
+...
+>> But, even more than that, do all the architectures even need the
+>> free_swap_cache()?
+> 
+> I was under impression that process page tables are a valid target for
+> swapping out. Although I can be wrong here.
 
-For example, if your changes include both bug fixes and performance
-enhancements for a single driver, separate those changes into two
-or more patches.  If your changes include an API update, and a new
-driver which uses that new API, separate those into two patches.
-
-On the other hand, if you make a single change to numerous files,
-group those changes into a single patch.  Thus a single logical change
-is contained within a single patch.
-
-This is not a dead rule, refer for example the 96d4f267e40f9 ("Remove
-'type' argument from access_ok() functioin.")
-
-Or this: https://lkml.org/lkml/2021/6/14/1736
-
-Thanks,
-Yury
+It's not out of the realm of possibilities.  But, last I checked, the
+only path we free page tables in was when VMAs are being torn down.  I
+have a longstanding TODO item to reclaim them if they're empty (all
+zeros) or to zero them out if they're mapping page cache.
