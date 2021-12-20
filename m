@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7169247B16F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 17:42:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F382C47B173
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 17:43:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JHlkS2q2sz2ywH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 03:42:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JHllf6tzyz3cVb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 03:43:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::615;
- helo=fra01-pr2-obe.outbound.protection.outlook.com;
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::621;
+ helo=fra01-mr2-obe.outbound.protection.outlook.com;
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com
- (mail-pr2fra01on0615.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e18::615])
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com
+ (mail-mr2fra01on0621.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e19::621])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JHldg0hWCz307C
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Dec 2021 03:38:31 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JHldk2z7nz2yp5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Dec 2021 03:38:34 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TIEkOdmvi+tMk7E5qXfo4NvcyfRKNf7lD7H38mCWmITPD7hWIlQPwrF/MIC3qGFzAy2IwfZ04BkRBLq45hYrKKnf6t/rja3CuNl83W0JuNhdjntnT735+8UxqB3pwna1c0aBFZtnVWAT00j+PVEBtNThSy5PnAuSLVyLdM9Yx+ukNsduEeTunpAXy2TeQb+tGj/jHkjAES9D7AllP1vgoaegSvwbe6h/UotnXEAiNsCntgqYxI2DcknpPalNCpwLVxXejcHVYE6ddHghZ+opLd6NqbpvoLImrFRAI8XcBc9UDm+tDEWpkssEpFe5vyFZP105PPadxfahVDo0XRLvgw==
+ b=gdPOLxaL2nGuGIxK4L/+YKNO8vFjyUooS7uXA8gnjXb5rv+gNpUFEVdlrSZF35bMEsZevFbQkKgVXijhbsSPaLAX99qgktNailpY5S82Z80mzYVzVVRoP1b5Gc7aTjEFkrgtM3dIasQIu1TxKEAVq5De9UyDPCDi4wM/SRpK+XXPWd2KeO/Qu5sA/zTo+Pg8N5XjiOLJUkCkU97ieqzEJFjcdyIVa5GZuPLXmLGuW02PDHNbQADrj3ySVWa2Rr3FrIS17S4M70YLwSLD9e5AdqdeBCbNv8P5XlD+Ks5gj+rLccOw+Y6vZnRAKTw0yqtFNDExSCB/wJ/fj1Zm+sPPKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=64tEcR99sWdNnfbkyRKYpT7uG0hgGKM6Y5ExkSuSGPI=;
- b=UuZlnQ4rP7haM1NBm4Whx6wxQjlIzeGuOiA340vTnseY9z2D50Ygk+9vIrE7y6rhWxxTDasWDlGo+DSMhzhgOJk8YVNyODR/WiLI6az9iKmhOfGcR8YwDDp+87PYdT4hWqKBSTgUvEFN/upLK3Et2gA1xZFhz9pi80RhBDwPK5+SpKJn/506SBe3QYfhslnwN0j0ZM1mK+HnC/Qn9wcZxRmhnPTHhGBET8CYaFHvxBiU081D5FY/UcuWHGt50SFr+/FeJxBSEthZiqfVbkn6AAC1o2G4ABkqeawdA05EjuzhczWLMRkxNV+5wP0SUcDZRRVWRublTHoziiAaw2yL/g==
+ bh=0VnYTnU4UZib71s8A1qbE2QTy4FztFa9DLNZTJoEOz4=;
+ b=GZnHA9kfZ6FBc/3K51Bo/45hekL9kLefOjjiWh3+0/Ya1vzlUbEDLZa8oeYKtATDzROespJBxbVZ6kBdHG01OxDH40NkIB4orpmiEo5MSOPTQMBcYTaFWRCo1ZNKvy59E0KZnx+0C8eJpKWiTS6yC8XgbStQibQ2zl0tci681aFMLMfVo55KU12CHBNFljUjmGGbg5UqdTql9588iEn2hUwTnDkXrPfdB7DRSgIE2y65zeIQ4GQqx7U42tzzl09Xk8Le4uPPV/p3J+m8zTOZdTuAKUwTOaSTQOOY2HolRGMqg24ujxzqnNfw7lYzH/wrNO5huFZn/ysz62Od8yVh7g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
  dkim=pass header.d=csgroup.eu; arc=none
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MR1P264MB2161.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:14::24) with
+ by MRZP264MB2924.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:1a::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4801.15; Mon, 20 Dec
- 2021 16:38:28 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4801.14; Mon, 20 Dec
+ 2021 16:38:31 +0000
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::f0ef:856d:b0de:e85d]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::f0ef:856d:b0de:e85d%5]) with mapi id 15.20.4801.020; Mon, 20 Dec 2021
- 16:38:28 +0000
+ 16:38:31 +0000
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Josh Poimboeuf <jpoimboe@redhat.com>, Jiri Kosina <jikos@kernel.org>,
  Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>, Joe Lawrence
  <joe.lawrence@redhat.com>, Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar
  <mingo@redhat.com>, "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: [PATCH v2 09/13] powerpc/ftrace: Implement
- CONFIG_DYNAMIC_FTRACE_WITH_ARGS
-Thread-Topic: [PATCH v2 09/13] powerpc/ftrace: Implement
- CONFIG_DYNAMIC_FTRACE_WITH_ARGS
-Thread-Index: AQHX9cAEWTCD8cHnLE+YV5TEx6NNVg==
-Date: Mon, 20 Dec 2021 16:38:28 +0000
-Message-ID: <5831f711a778fcd6eb51eb5898f1faae4378b35b.1640017960.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 10/13] powerpc/ftrace: Refactor
+ ftrace_{en/dis}able_ftrace_graph_caller
+Thread-Topic: [PATCH v2 10/13] powerpc/ftrace: Refactor
+ ftrace_{en/dis}able_ftrace_graph_caller
+Thread-Index: AQHX9cAGmx9IDhU2XE6F7yRDPjZy2g==
+Date: Mon, 20 Dec 2021 16:38:31 +0000
+Message-ID: <f37785a531f1a8f201e1b3da45997a5c77e9d820.1640017960.git.christophe.leroy@csgroup.eu>
 References: <cover.1640017960.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1640017960.git.christophe.leroy@csgroup.eu>
 Accept-Language: fr-FR, en-US
@@ -60,62 +60,62 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=csgroup.eu;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: ca5a6680-ab6c-4e48-5883-08d9c3d726aa
-x-ms-traffictypediagnostic: MR1P264MB2161:EE_
-x-microsoft-antispam-prvs: <MR1P264MB21618C110683FF8594FECAC4ED7B9@MR1P264MB2161.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:457;
+x-ms-office365-filtering-correlation-id: 3dd04941-70d2-4b4e-5a42-08d9c3d7289a
+x-ms-traffictypediagnostic: MRZP264MB2924:EE_
+x-microsoft-antispam-prvs: <MRZP264MB29246005B908C929FC8E45F9ED7B9@MRZP264MB2924.FRAP264.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:215;
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ye8CUmNd2lveU3NS3fLGfJr5fKUuJjXDf6XHtarEDTzqwqpVwrmhAtnG+hyQgy7s3s1uJpZgKGsUsiWU83TID+y0q9ShZt8NYelCzlqF7aBYvtko0iBy/dqXR877lYDmYWsEI30AvDayg5Ug4vnnGw2CjW2a6br/PfOrtQQ3R29zsPTwtlMg1Z0T768E3ieXRqoWXOGHS8njKo1JPDyRepBZDlRFtc9woMmFn8NwhVzMUYunbZ4EC4Ytrb6srOsJQ2f4CNvMbb5gi8lSuLKKdDtHVVBkDZHGQKl3Nn5pDhR64e7d+JRQsIY0/TXrItXn7xPJZlKoS5/SX1KJu2gyTRJ/jZLyv49B7nSQpS1D60Z+2hl1Gx3N/T4ktGDHsq6lz3NE7u5UXGZ9wzbcbFXOdUiuNmJSv69nzuUrAUej20tziDrIM+8EvdDehGez28QqXNsQiBj93M5qgiu5wdBOg3DGiXXN1Ejw3kmbvvAplpOU/IgbavqpDolgMDuaCqn2L7EGzqggCeRNU7+R3itSGyqPFkY5ePQg3T1fANUH10PuOALjAVLt/tysw2rJ9H0th1xDfyK2TIoTGOknQWRpA+mZT9NO6Gxz1JjF0u3D3dGMuMjKp0yLu5YfwvOZsCM9vD4BNPXnH7qtcxykcstXYxlczmpkwYY51sg2zinAIHxhH4EF+Z3eY+JvPtMctySJo1gvZm9DXV9g5N0HzyIHMw==
+x-microsoft-antispam-message-info: R2v28u0WI+BdJN3ivesSUFhVzpNnkhhmqZcRTezxmy3L+JfpBCxx79Jn/Qk6fbl2/pw+jqhxNXDuVRfawKZHkF4mE3SG9A9ZgQ5JWTIvHDSeA/gz2F7jFy8ctHFJw/16z0xs7ESB2cdPU8knUehKuNaaWZcN1V8hEVDG5Lvs6woPMvmjoTCjd1GYqWNK0MNv0A/i9oXyQA45m/DJS5a+aGES4rPtrY6yOSXe47Lk/RZvmDqfjvp5voCEtxEvJhLvFiAR6AB9r1VD7yTgcH9Y8dQxCK6g1LaScaN+AvL2T7c964HH+KJNtJ/rMMVYJXs/qZyTvdClbOmaeNfXoXJvoOF7/xrwG/gsmv7l0MhhOHOR18raBHgJLg3C5XBcpoYQoig9zjubq2qAidct0cqMe/LUwVs5uJH20AbKmGm4ulpJyVs+NRsHQScBo4zfZYlzNH4PYsBfDwk0hZtsPifeTfftn9vsePV5b3vqSpB3uipNVloHvEKuYOUUpuqIDenhrD/Ksf263lnAWtIz3voc8KEYOZQLw2SVo/LM7o97QjYJpNij/tNHql2SeMo0cjkdspNNp82yhomELtC3CKk0SGr+9NcG49j8UW0jQ4Vt7sSJ1ePPo6MnPQO+VfegrJAV7SLjM42IRxk8XU00Posp1dxB4SwdVrdVFqlkbR7u6b7ZcgzykkxK69t9MyaaWJ8hCpMJ98jFNR7OisjG8MR7Pg==
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(5660300002)(6506007)(508600001)(83380400001)(86362001)(2616005)(8676002)(71200400001)(4326008)(6512007)(36756003)(54906003)(122000001)(8936002)(110136005)(44832011)(26005)(316002)(6486002)(186003)(64756008)(66946007)(66446008)(2906002)(38100700002)(38070700005)(7416002)(76116006)(66556008)(66476007)(91956017);
+ SFS:(4636009)(366004)(5660300002)(2616005)(6512007)(7416002)(44832011)(2906002)(83380400001)(6486002)(66946007)(186003)(26005)(66556008)(64756008)(38100700002)(66476007)(8676002)(8936002)(122000001)(66446008)(76116006)(86362001)(91956017)(316002)(6506007)(508600001)(54906003)(4326008)(110136005)(71200400001)(38070700005)(36756003);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?u+h1DKg03mn3h8dyvag2mL1q4w3+lFf7RRyjim/eBFO1S9ZQwtqDIYqkwS?=
- =?iso-8859-1?Q?XLiiD0DiCSj4n2VVP4DVkBFWOewAd2x4J1HOQB93O9bhBzCoRvp6+J/FO6?=
- =?iso-8859-1?Q?gFYs3v0I+LAujJtF9fFoNGm11bG7VQnQyQZb9fXN3VCT3RWwNaiUUaDgGW?=
- =?iso-8859-1?Q?9BIZPkxSk/xMZJrHWmRVs88w0KR6fo4e4SVkvAsWVPTRM5L00y5FM5Bm4c?=
- =?iso-8859-1?Q?qGtWm6QamRoacU5pNX6Oat8CL4Cs/n5J7g7oJ9UUoIGXHJ9EdhWuivMCwM?=
- =?iso-8859-1?Q?smQmx6JfEGLtAAWK8H4UqBqwhD+aRMapRpcrIyscW8pycxi5yqD0HLQVrN?=
- =?iso-8859-1?Q?WQnESZ+vqtULTFV88HWwwncrdDDt5AyG8baDJEld2ynddI3ZL9kYFofGu5?=
- =?iso-8859-1?Q?bNSYjgHDKP/AeQwJ/srCKkxPYqZW2NxWBS3tAc2aYBA/2T5ncTv02FeK+Q?=
- =?iso-8859-1?Q?S7hrvKXw+RO5c0msOlKlboN9u8OsHenJ4ZBiGqRaVrzFJqxwYkUX3XvR/M?=
- =?iso-8859-1?Q?bhsU7DPcOOzhFGUUWg9BXMdlOVxeI67J7gV9CIKydAjsqSZ44kYMSZUXrY?=
- =?iso-8859-1?Q?PKEsUrJni6yZU8oevr50eiJXwnzstcXxcJQi5KuGOvOHLwKL2bvD7jcuwJ?=
- =?iso-8859-1?Q?GcKRxYGXsioFrAKz1TEnC8zVscTbaHGDV3ZrzcBT8cN3ZjGTo+YKyt38vc?=
- =?iso-8859-1?Q?/fEpWJxoMYu8chp8T8z86n9HF22suwQybnCyNA8SGx/MrR5aZpubjRgkqP?=
- =?iso-8859-1?Q?NP4bRk8pw43kzjVqXsFrEiac8FZJpRSoNgXPQc/kYi9AqvDTKO7HorfTpx?=
- =?iso-8859-1?Q?Tp0AOQgrdKBYlAJQx62G1jtt89kcSFEIoFYmG+AKK6rRXJ4P8sdbj8/FcH?=
- =?iso-8859-1?Q?eMTFG99/MBB0VWJEOibKECfnkv3EOIiGQjb/SGIyIBK0owKxQymUFrF3Az?=
- =?iso-8859-1?Q?itg4MpAzFss2CtmV61WQe9Filla8Zoo18Bw6586vjKkxYXNzbpzk0fUMHj?=
- =?iso-8859-1?Q?626DDBpGCKDLRTcP+KTIJOHBMXN/k/73Pzvd1Xp3/jz0rNKNSRRFNNwk8c?=
- =?iso-8859-1?Q?Q0IxZ/B5+ElfmG9Pl+Lviyo8IjznS5ZcT/4hDtEGh+ygMIcv3AbsTwUV2+?=
- =?iso-8859-1?Q?nYtDLmDLSdQkumxftK83bmEu7PCMWo17EJVHZU0h8vtxyCbvva3ymMtP7Z?=
- =?iso-8859-1?Q?TNPjRymAw6N7u6vQ1F0w09tkDmU4dIQGBU2G0wHlAVa5sBXL2LCWTRszCp?=
- =?iso-8859-1?Q?lBgzhnwjDlXKlvsE8cHMPwWPDdpSJ4SpbPeLPlVRx1P8B+8U/0oBhMVrgT?=
- =?iso-8859-1?Q?WGCrLrV/v57kwA7G9ycVLD7OiDccp6BFD6t6E36WJE02kpcPlWr04q1Iov?=
- =?iso-8859-1?Q?VH4hsVccnLSxCmviY4fUD79WqDsXYiZKhtYAWFx+NqB5D8ezyZd80e4P00?=
- =?iso-8859-1?Q?FNDynCl9Uwh7/X6RQwyI1PsZqFcy2JatvL1dW6KCRH4T6EbNCIgQA32tME?=
- =?iso-8859-1?Q?2PV44SzzHHIi1rf5rvywq7BXaUEruggUBGn2AEbyAJUvvf60nqBP80vMm0?=
- =?iso-8859-1?Q?+/ffF/3oWFOY7uf+9oedBGDyVUnPHiXbSbrIElHH/4+u/9h+8fqpSRU36A?=
- =?iso-8859-1?Q?qJHDqtfpfCzckz3uSgwDYDj9nnACgUg50GsJERzk7VNHb7/JCo35Pzw8+d?=
- =?iso-8859-1?Q?++hkYtaqTJQjTjqS2Vj5V+8TDrD/6rIA6RbQM1g2sqDxCHqTcLjxinehe8?=
- =?iso-8859-1?Q?/Acr6scwZm59ynceWgS0e5WwA=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?YMulNDEx/s7T3xr/Yzp9JBIZpnkFckNYfgGiSqtnbe1bOvUNRufx6GDmx8?=
+ =?iso-8859-1?Q?a1C5g+1SY0k8HgkWlYfNHFGzWDYRQ8rXEVZqLIXFJYXgmRUyyH+2N7J/Cw?=
+ =?iso-8859-1?Q?a2/rSvBTF0qhFWPegwxH1H7W+5YsoY2ZivAnjMBB418/RqKrfJhTvudygU?=
+ =?iso-8859-1?Q?4SOzaWB90vFEluYqECtcHdAduqcGaEo+qJinY76o2Y6rKt3wx7dPpqMEvA?=
+ =?iso-8859-1?Q?xCaThs/w6KHa0vpDjQm5dBXUBwkQccuWhA1+c70SzQgNACbAuXlntAi6mp?=
+ =?iso-8859-1?Q?HBJhxq7cTMjhOrwP0fDZVTm1w9ltW0gri06U0MqWjwa0z2Y7m2e3f+lY9w?=
+ =?iso-8859-1?Q?yHvOO0a2l3j8AhxRB2HEXF9kWoai+Q/EHqyVuVtgxfyfrth5KOgkblHcnw?=
+ =?iso-8859-1?Q?Xk3STvUv1tbpIEGykyIcRbuIeMWJuPmrocg4Wl/7TGJrRX9wMO11bKxygZ?=
+ =?iso-8859-1?Q?YjYJxZKr8cfMknnfcGIccr4DzKrAl0pNdQf3TkSmXrnLiZfDnELwJr5AAG?=
+ =?iso-8859-1?Q?KOIs3IVKRPeT1EfpzGh2ZC7CyAiDe3WCzXAEXcXN5RpmQw8B5SXco/K8/l?=
+ =?iso-8859-1?Q?Pf6Lz3ilifcFB0akLr1QA1ICpCiC2K7kMvUgVSBYSpNehzDYh8obcl04u8?=
+ =?iso-8859-1?Q?gcdKfzBEqdvNTdlVayhn/nwUwnVOWcC+qioFx3xHyLoRaHGf5+tMeCS0SJ?=
+ =?iso-8859-1?Q?tqJNtHlGmg7w6BpZV1mwHNahnnAiiLUVXUGzgIVMihLfwi6nRDKTW0l5dK?=
+ =?iso-8859-1?Q?bL4m3gpzIcN+JqdIZ/5+yLQAh8xth39lHUMBZa/ZqXhfCgHNZhAkUYIz/O?=
+ =?iso-8859-1?Q?JGGxhMwv+/9Hv3W71Tcn8K9m4P4Egu6CQko6l1XBXL5g2hQUdA4h0M3Fpo?=
+ =?iso-8859-1?Q?twezn5kKlwTQdAga4h5ztoLM/dUjJnpI/6cSBz9bKAkLHPFiZoVXaumnT1?=
+ =?iso-8859-1?Q?7V5/vlcRlDJAN9KVnNM0NKz7TJIsibodxQW8ab23ogPjRhVv/rnqVYVhMZ?=
+ =?iso-8859-1?Q?SsGQJhnjXj+KnlRrDp3OY4GWser/ExQ2iAQn+N8b8FR3mmkGPUpF2dT1pI?=
+ =?iso-8859-1?Q?82E8zb8HAeGFbHiv9JF3y/M/jJd/alGcC6h9uTG4idKXLP0fL3CQbPoEyG?=
+ =?iso-8859-1?Q?f5e+aheBGF70eDap6KNQodUMmAYsd6GoI3j/l8wTLb8XrysbRvgMko1E9Y?=
+ =?iso-8859-1?Q?b2q40W1G+OvWYT6n6/V7IoLQXFbkGlOLuS6ohZFpohfoxiSHfwj2LBiBiW?=
+ =?iso-8859-1?Q?uWj2RpG1hd2wl0auGn8jc9Sg68k1cmypKL4GnNwcEImxnjCpsLiHK8O2pC?=
+ =?iso-8859-1?Q?F+5hw484NNXCGknmp6MoNS38qIY4wL+Xa18LLzCGbGZ6nkPs6akEHPSwNx?=
+ =?iso-8859-1?Q?Rk6hmM9vqNAIHFLZiJnxPfOftT9lO2OhvYGNp7Utmh1EOn414gdqrfelO+?=
+ =?iso-8859-1?Q?f//yMEVYxA6assct7Uk7Z0sukkw7qkLAhhfeCUzimjXFI31p43iMhx81NP?=
+ =?iso-8859-1?Q?5x94R0s5pZdtJ69ZuvfDuf/ri8Mx9mEDRUB5PJkm8aa+BMOi3lgGt1bQtD?=
+ =?iso-8859-1?Q?rlNOA8XRVyUKeMG5weguvBna2F+O/rLjeu6zhJJtVsiSVv3qk3BxZPURNm?=
+ =?iso-8859-1?Q?AMAwBvf/CQAKFP9AbgpdILL2GIFJTqm7ejexta+XqH1v5VTjWuv1BVvOIn?=
+ =?iso-8859-1?Q?hSBSDQTx38BqECC6UbCL97Ab1XQ2C63sd5R2ELCfjFPEkuoW1+YaF8d2VH?=
+ =?iso-8859-1?Q?/5MoKALSrBl7COYXZObFNP7r8=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: csgroup.eu
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca5a6680-ab6c-4e48-5883-08d9c3d726aa
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Dec 2021 16:38:28.3093 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3dd04941-70d2-4b4e-5a42-08d9c3d7289a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Dec 2021 16:38:31.5756 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: VROQGSk8qPPxs42WBYxXsoyahGwSeOfCj6P+klKhEqPNKtVrrS88A4iwgC9H3oYTeYBfyQcOwR6mQHPJ4a204vksu5+zo9xiEgqsJz9tPq0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2161
+X-MS-Exchange-CrossTenant-userprincipalname: hhhBE1R9yHi3oIEw7owcC0VeH5ui+srYpDgwnH1C+PnLn1kpBbO944LI4UR0TXh4mkXmPCem5n3gUg187TvkFJ99z3NPccxz503coePE3hc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2924
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,81 +134,62 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Implement CONFIG_DYNAMIC_FTRACE_WITH_ARGS. It accelerates the call
-of livepatching.
+ftrace_enable_ftrace_graph_caller() and
+ftrace_disable_ftrace_graph_caller() have common code.
 
-Also note that powerpc being the last one to convert to
-CONFIG_DYNAMIC_FTRACE_WITH_ARGS, it will now be possible to remove
-klp_arch_set_pc() on all architectures.
+They will have even more common code after following patch.
+
+Refactor into a single ftrace_modify_ftrace_graph_caller() function.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/Kconfig                 |  1 +
- arch/powerpc/include/asm/ftrace.h    | 17 +++++++++++++++++
- arch/powerpc/include/asm/livepatch.h |  4 +---
- 3 files changed, 19 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/trace/ftrace.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index cdac2115eb00..e2b1792b2aae 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -210,6 +210,7 @@ config PPC
- 	select HAVE_DEBUG_KMEMLEAK
- 	select HAVE_DEBUG_STACKOVERFLOW
- 	select HAVE_DYNAMIC_FTRACE
-+	select HAVE_DYNAMIC_FTRACE_WITH_ARGS	if MPROFILE_KERNEL || PPC32
- 	select HAVE_DYNAMIC_FTRACE_WITH_REGS	if MPROFILE_KERNEL || PPC32
- 	select HAVE_EBPF_JIT
- 	select HAVE_EFFICIENT_UNALIGNED_ACCESS	if !(CPU_LITTLE_ENDIAN && POWER7_C=
-PU)
-diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/f=
-trace.h
-index b3f6184f77ea..45c3d6f11daa 100644
---- a/arch/powerpc/include/asm/ftrace.h
-+++ b/arch/powerpc/include/asm/ftrace.h
-@@ -22,6 +22,23 @@ static inline unsigned long ftrace_call_adjust(unsigned =
-long addr)
- struct dyn_arch_ftrace {
- 	struct module *mod;
- };
-+
-+#ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
-+struct ftrace_regs {
-+	struct pt_regs regs;
-+};
-+
-+static __always_inline struct pt_regs *arch_ftrace_get_regs(struct ftrace_=
-regs *fregs)
-+{
-+	return &fregs->regs;
-+}
-+
-+static __always_inline void ftrace_instruction_pointer_set(struct ftrace_r=
-egs *fregs,
-+							   unsigned long ip)
-+{
-+	regs_set_return_ip(&fregs->regs, ip);
-+}
-+#endif
- #endif /* __ASSEMBLY__ */
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace=
+/ftrace.c
+index 80b6285769f2..ce673764cb69 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -910,30 +910,27 @@ int __init ftrace_dyn_arch_init(void)
+ extern void ftrace_graph_call(void);
+ extern void ftrace_graph_stub(void);
 =20
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
-diff --git a/arch/powerpc/include/asm/livepatch.h b/arch/powerpc/include/as=
-m/livepatch.h
-index 37af961eb74c..6f10de6af6e3 100644
---- a/arch/powerpc/include/asm/livepatch.h
-+++ b/arch/powerpc/include/asm/livepatch.h
-@@ -14,9 +14,7 @@
- #ifdef CONFIG_LIVEPATCH
- static inline void klp_arch_set_pc(struct ftrace_regs *fregs, unsigned lon=
-g ip)
+-int ftrace_enable_ftrace_graph_caller(void)
++static int ftrace_modify_ftrace_graph_caller(bool enable)
  {
--	struct pt_regs *regs =3D ftrace_get_regs(fregs);
--
--	regs_set_return_ip(regs, ip);
-+	ftrace_instruction_pointer_set(fregs, ip);
+ 	unsigned long ip =3D (unsigned long)(&ftrace_graph_call);
+ 	unsigned long addr =3D (unsigned long)(&ftrace_graph_caller);
+ 	unsigned long stub =3D (unsigned long)(&ftrace_graph_stub);
+ 	ppc_inst_t old, new;
+=20
+-	old =3D ftrace_call_replace(ip, stub, 0);
+-	new =3D ftrace_call_replace(ip, addr, 0);
++	old =3D ftrace_call_replace(ip, enable ? stub : addr, 0);
++	new =3D ftrace_call_replace(ip, enable ? addr : stub, 0);
+=20
+ 	return ftrace_modify_code(ip, old, new);
  }
 =20
- #define klp_get_ftrace_location klp_get_ftrace_location
+-int ftrace_disable_ftrace_graph_caller(void)
++int ftrace_enable_ftrace_graph_caller(void)
+ {
+-	unsigned long ip =3D (unsigned long)(&ftrace_graph_call);
+-	unsigned long addr =3D (unsigned long)(&ftrace_graph_caller);
+-	unsigned long stub =3D (unsigned long)(&ftrace_graph_stub);
+-	ppc_inst_t old, new;
+-
+-	old =3D ftrace_call_replace(ip, addr, 0);
+-	new =3D ftrace_call_replace(ip, stub, 0);
++	return ftrace_modify_ftrace_graph_caller(true);
++}
+=20
+-	return ftrace_modify_code(ip, old, new);
++int ftrace_disable_ftrace_graph_caller(void)
++{
++	return ftrace_modify_ftrace_graph_caller(false);
+ }
+=20
+ /*
 --=20
 2.33.1
