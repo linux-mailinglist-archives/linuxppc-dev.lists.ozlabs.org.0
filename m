@@ -2,31 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8505A47A6F2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 10:24:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E9447A6FE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 10:29:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JHZ0N2cC9z3bVC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 20:24:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JHZ671vkSz3cB2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 20:29:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=47.88.44.36;
- helo=out4436.biz.mail.alibaba.com;
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.56;
+ helo=out30-56.freemail.mail.aliyun.com;
  envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out4436.biz.mail.alibaba.com (out4436.biz.mail.alibaba.com
- [47.88.44.36])
+X-Greylist: delayed 307 seconds by postgrey-1.36 at boromir;
+ Mon, 20 Dec 2021 20:28:41 AEDT
+Received: from out30-56.freemail.mail.aliyun.com
+ (out30-56.freemail.mail.aliyun.com [115.124.30.56])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JHYzx0z5qz2yLd
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Dec 2021 20:23:40 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R191e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04426;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JHZ5j2K5Zz2yN1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Dec 2021 20:28:40 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R181e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e01424;
  MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=17; SR=0;
- TI=SMTPD_---0V.Acb6e_1639992202; 
+ TI=SMTPD_---0V.B9zcJ_1639992203; 
 Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com
- fp:SMTPD_---0V.Acb6e_1639992202) by smtp.aliyun-inc.com(127.0.0.1);
- Mon, 20 Dec 2021 17:23:23 +0800
+ fp:SMTPD_---0V.B9zcJ_1639992203) by smtp.aliyun-inc.com(127.0.0.1);
+ Mon, 20 Dec 2021 17:23:24 +0800
 From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 To: Herbert Xu <herbert@gondor.apana.org.au>,
  "David S. Miller" <davem@davemloft.net>,
@@ -40,9 +42,9 @@ To: Herbert Xu <herbert@gondor.apana.org.au>,
  linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
  sparclinux@vger.kernel.org
-Subject: [PATCH 2/5] crypto: mips/sha - remove duplicate hash init function
-Date: Mon, 20 Dec 2021 17:23:15 +0800
-Message-Id: <20211220092318.5793-3-tianjia.zhang@linux.alibaba.com>
+Subject: [PATCH 3/5] crypto: powerpc/sha - remove duplicate hash init function
+Date: Mon, 20 Dec 2021 17:23:16 +0800
+Message-Id: <20211220092318.5793-4-tianjia.zhang@linux.alibaba.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20211220092318.5793-1-tianjia.zhang@linux.alibaba.com>
 References: <20211220092318.5793-1-tianjia.zhang@linux.alibaba.com>
@@ -70,28 +72,28 @@ replace repeated implementations.
 
 Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 ---
- arch/mips/cavium-octeon/crypto/octeon-sha1.c  | 17 +-------
- .../mips/cavium-octeon/crypto/octeon-sha256.c | 39 ++-----------------
- .../mips/cavium-octeon/crypto/octeon-sha512.c | 39 ++-----------------
- 3 files changed, 8 insertions(+), 87 deletions(-)
+ arch/powerpc/crypto/sha1-spe-glue.c   | 17 ++----------
+ arch/powerpc/crypto/sha1.c            | 14 ++--------
+ arch/powerpc/crypto/sha256-spe-glue.c | 39 +++------------------------
+ 3 files changed, 7 insertions(+), 63 deletions(-)
 
-diff --git a/arch/mips/cavium-octeon/crypto/octeon-sha1.c b/arch/mips/cavium-octeon/crypto/octeon-sha1.c
-index 30f1d75208a5..37a07b3c4568 100644
---- a/arch/mips/cavium-octeon/crypto/octeon-sha1.c
-+++ b/arch/mips/cavium-octeon/crypto/octeon-sha1.c
-@@ -15,6 +15,7 @@
- 
+diff --git a/arch/powerpc/crypto/sha1-spe-glue.c b/arch/powerpc/crypto/sha1-spe-glue.c
+index 88e8ea73bfa7..9170892a8557 100644
+--- a/arch/powerpc/crypto/sha1-spe-glue.c
++++ b/arch/powerpc/crypto/sha1-spe-glue.c
+@@ -13,6 +13,7 @@
  #include <linux/mm.h>
+ #include <linux/types.h>
  #include <crypto/sha1.h>
 +#include <crypto/sha1_base.h>
- #include <linux/init.h>
- #include <linux/types.h>
- #include <linux/module.h>
-@@ -71,20 +72,6 @@ static void octeon_sha1_transform(const void *_block)
- 	octeon_sha1_start(block[7]);
+ #include <asm/byteorder.h>
+ #include <asm/switch_to.h>
+ #include <linux/hardirq.h>
+@@ -55,20 +56,6 @@ static inline void ppc_sha1_clear_context(struct sha1_state *sctx)
+ 	do { *ptr++ = 0; } while (--count);
  }
  
--static int octeon_sha1_init(struct shash_desc *desc)
+-static int ppc_spe_sha1_init(struct shash_desc *desc)
 -{
 -	struct sha1_state *sctx = shash_desc_ctx(desc);
 -
@@ -105,52 +107,71 @@ index 30f1d75208a5..37a07b3c4568 100644
 -	return 0;
 -}
 -
- static void __octeon_sha1_update(struct sha1_state *sctx, const u8 *data,
- 				 unsigned int len)
+ static int ppc_spe_sha1_update(struct shash_desc *desc, const u8 *data,
+ 			unsigned int len)
  {
-@@ -200,7 +187,7 @@ static int octeon_sha1_import(struct shash_desc *desc, const void *in)
+@@ -168,7 +155,7 @@ static int ppc_spe_sha1_import(struct shash_desc *desc, const void *in)
  
- static struct shash_alg octeon_sha1_alg = {
+ static struct shash_alg alg = {
  	.digestsize	=	SHA1_DIGEST_SIZE,
--	.init		=	octeon_sha1_init,
+-	.init		=	ppc_spe_sha1_init,
 +	.init		=	sha1_base_init,
- 	.update		=	octeon_sha1_update,
- 	.final		=	octeon_sha1_final,
- 	.export		=	octeon_sha1_export,
-diff --git a/arch/mips/cavium-octeon/crypto/octeon-sha256.c b/arch/mips/cavium-octeon/crypto/octeon-sha256.c
-index 36cb92895d72..435e4a6e7f13 100644
---- a/arch/mips/cavium-octeon/crypto/octeon-sha256.c
-+++ b/arch/mips/cavium-octeon/crypto/octeon-sha256.c
-@@ -16,6 +16,7 @@
- 
+ 	.update		=	ppc_spe_sha1_update,
+ 	.final		=	ppc_spe_sha1_final,
+ 	.export		=	ppc_spe_sha1_export,
+diff --git a/arch/powerpc/crypto/sha1.c b/arch/powerpc/crypto/sha1.c
+index 7a55d790cdb1..f283bbd3f121 100644
+--- a/arch/powerpc/crypto/sha1.c
++++ b/arch/powerpc/crypto/sha1.c
+@@ -18,21 +18,11 @@
  #include <linux/mm.h>
- #include <crypto/sha2.h>
-+#include <crypto/sha256_base.h>
- #include <linux/init.h>
  #include <linux/types.h>
- #include <linux/module.h>
-@@ -63,40 +64,6 @@ static void octeon_sha256_transform(const void *_block)
- 	octeon_sha256_start(block[7]);
- }
+ #include <crypto/sha1.h>
++#include <crypto/sha1_base.h>
+ #include <asm/byteorder.h>
  
--static int octeon_sha224_init(struct shash_desc *desc)
+ void powerpc_sha_transform(u32 *state, const u8 *src);
+ 
+-static int powerpc_sha1_init(struct shash_desc *desc)
 -{
--	struct sha256_state *sctx = shash_desc_ctx(desc);
+-	struct sha1_state *sctx = shash_desc_ctx(desc);
 -
--	sctx->state[0] = SHA224_H0;
--	sctx->state[1] = SHA224_H1;
--	sctx->state[2] = SHA224_H2;
--	sctx->state[3] = SHA224_H3;
--	sctx->state[4] = SHA224_H4;
--	sctx->state[5] = SHA224_H5;
--	sctx->state[6] = SHA224_H6;
--	sctx->state[7] = SHA224_H7;
--	sctx->count = 0;
+-	*sctx = (struct sha1_state){
+-		.state = { SHA1_H0, SHA1_H1, SHA1_H2, SHA1_H3, SHA1_H4 },
+-	};
 -
 -	return 0;
 -}
 -
--static int octeon_sha256_init(struct shash_desc *desc)
+ static int powerpc_sha1_update(struct shash_desc *desc, const u8 *data,
+ 			       unsigned int len)
+ {
+@@ -114,7 +104,7 @@ static int powerpc_sha1_import(struct shash_desc *desc, const void *in)
+ 
+ static struct shash_alg alg = {
+ 	.digestsize	=	SHA1_DIGEST_SIZE,
+-	.init		=	powerpc_sha1_init,
++	.init		=	sha1_base_init,
+ 	.update		=	powerpc_sha1_update,
+ 	.final		=	powerpc_sha1_final,
+ 	.export		=	powerpc_sha1_export,
+diff --git a/arch/powerpc/crypto/sha256-spe-glue.c b/arch/powerpc/crypto/sha256-spe-glue.c
+index ffedea7e4bef..2997d13236e0 100644
+--- a/arch/powerpc/crypto/sha256-spe-glue.c
++++ b/arch/powerpc/crypto/sha256-spe-glue.c
+@@ -14,6 +14,7 @@
+ #include <linux/mm.h>
+ #include <linux/types.h>
+ #include <crypto/sha2.h>
++#include <crypto/sha256_base.h>
+ #include <asm/byteorder.h>
+ #include <asm/switch_to.h>
+ #include <linux/hardirq.h>
+@@ -56,40 +57,6 @@ static inline void ppc_sha256_clear_context(struct sha256_state *sctx)
+ 	do { *ptr++ = 0; } while (--count);
+ }
+ 
+-static int ppc_spe_sha256_init(struct shash_desc *desc)
 -{
 -	struct sha256_state *sctx = shash_desc_ctx(desc);
 -
@@ -167,98 +188,44 @@ index 36cb92895d72..435e4a6e7f13 100644
 -	return 0;
 -}
 -
- static void __octeon_sha256_update(struct sha256_state *sctx, const u8 *data,
- 				   unsigned int len)
+-static int ppc_spe_sha224_init(struct shash_desc *desc)
+-{
+-	struct sha256_state *sctx = shash_desc_ctx(desc);
+-
+-	sctx->state[0] = SHA224_H0;
+-	sctx->state[1] = SHA224_H1;
+-	sctx->state[2] = SHA224_H2;
+-	sctx->state[3] = SHA224_H3;
+-	sctx->state[4] = SHA224_H4;
+-	sctx->state[5] = SHA224_H5;
+-	sctx->state[6] = SHA224_H6;
+-	sctx->state[7] = SHA224_H7;
+-	sctx->count = 0;
+-
+-	return 0;
+-}
+-
+ static int ppc_spe_sha256_update(struct shash_desc *desc, const u8 *data,
+ 			unsigned int len)
  {
-@@ -224,7 +191,7 @@ static int octeon_sha256_import(struct shash_desc *desc, const void *in)
+@@ -214,7 +181,7 @@ static int ppc_spe_sha256_import(struct shash_desc *desc, const void *in)
  
- static struct shash_alg octeon_sha256_algs[2] = { {
+ static struct shash_alg algs[2] = { {
  	.digestsize	=	SHA256_DIGEST_SIZE,
--	.init		=	octeon_sha256_init,
+-	.init		=	ppc_spe_sha256_init,
 +	.init		=	sha256_base_init,
- 	.update		=	octeon_sha256_update,
- 	.final		=	octeon_sha256_final,
- 	.export		=	octeon_sha256_export,
-@@ -240,7 +207,7 @@ static struct shash_alg octeon_sha256_algs[2] = { {
+ 	.update		=	ppc_spe_sha256_update,
+ 	.final		=	ppc_spe_sha256_final,
+ 	.export		=	ppc_spe_sha256_export,
+@@ -230,7 +197,7 @@ static struct shash_alg algs[2] = { {
  	}
  }, {
  	.digestsize	=	SHA224_DIGEST_SIZE,
--	.init		=	octeon_sha224_init,
+-	.init		=	ppc_spe_sha224_init,
 +	.init		=	sha224_base_init,
- 	.update		=	octeon_sha256_update,
- 	.final		=	octeon_sha224_final,
- 	.descsize	=	sizeof(struct sha256_state),
-diff --git a/arch/mips/cavium-octeon/crypto/octeon-sha512.c b/arch/mips/cavium-octeon/crypto/octeon-sha512.c
-index 359f039820d8..2dee9354e33f 100644
---- a/arch/mips/cavium-octeon/crypto/octeon-sha512.c
-+++ b/arch/mips/cavium-octeon/crypto/octeon-sha512.c
-@@ -15,6 +15,7 @@
- 
- #include <linux/mm.h>
- #include <crypto/sha2.h>
-+#include <crypto/sha512_base.h>
- #include <linux/init.h>
- #include <linux/types.h>
- #include <linux/module.h>
-@@ -74,40 +75,6 @@ static void octeon_sha512_transform(const void *_block)
- 	octeon_sha512_start(block[15]);
- }
- 
--static int octeon_sha512_init(struct shash_desc *desc)
--{
--	struct sha512_state *sctx = shash_desc_ctx(desc);
--
--	sctx->state[0] = SHA512_H0;
--	sctx->state[1] = SHA512_H1;
--	sctx->state[2] = SHA512_H2;
--	sctx->state[3] = SHA512_H3;
--	sctx->state[4] = SHA512_H4;
--	sctx->state[5] = SHA512_H5;
--	sctx->state[6] = SHA512_H6;
--	sctx->state[7] = SHA512_H7;
--	sctx->count[0] = sctx->count[1] = 0;
--
--	return 0;
--}
--
--static int octeon_sha384_init(struct shash_desc *desc)
--{
--	struct sha512_state *sctx = shash_desc_ctx(desc);
--
--	sctx->state[0] = SHA384_H0;
--	sctx->state[1] = SHA384_H1;
--	sctx->state[2] = SHA384_H2;
--	sctx->state[3] = SHA384_H3;
--	sctx->state[4] = SHA384_H4;
--	sctx->state[5] = SHA384_H5;
--	sctx->state[6] = SHA384_H6;
--	sctx->state[7] = SHA384_H7;
--	sctx->count[0] = sctx->count[1] = 0;
--
--	return 0;
--}
--
- static void __octeon_sha512_update(struct sha512_state *sctx, const u8 *data,
- 				   unsigned int len)
- {
-@@ -223,7 +190,7 @@ static int octeon_sha384_final(struct shash_desc *desc, u8 *hash)
- 
- static struct shash_alg octeon_sha512_algs[2] = { {
- 	.digestsize	=	SHA512_DIGEST_SIZE,
--	.init		=	octeon_sha512_init,
-+	.init		=	sha512_base_init,
- 	.update		=	octeon_sha512_update,
- 	.final		=	octeon_sha512_final,
- 	.descsize	=	sizeof(struct sha512_state),
-@@ -236,7 +203,7 @@ static struct shash_alg octeon_sha512_algs[2] = { {
- 	}
- }, {
- 	.digestsize	=	SHA384_DIGEST_SIZE,
--	.init		=	octeon_sha384_init,
-+	.init		=	sha384_base_init,
- 	.update		=	octeon_sha512_update,
- 	.final		=	octeon_sha384_final,
- 	.descsize	=	sizeof(struct sha512_state),
+ 	.update		=	ppc_spe_sha256_update,
+ 	.final		=	ppc_spe_sha224_final,
+ 	.export		=	ppc_spe_sha256_export,
 -- 
 2.32.0
 
