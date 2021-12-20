@@ -2,53 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EFC47A706
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 10:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4401847A7B4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 11:23:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JHZ815d6hz2ywg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 20:30:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JHbKL1Xb6z3bXP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 21:23:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.130;
- helo=out30-130.freemail.mail.aliyun.com;
- envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-130.freemail.mail.aliyun.com
- (out30-130.freemail.mail.aliyun.com [115.124.30.130])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JHZ5w3CkWz2ymg
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Dec 2021 20:28:51 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R161e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04394;
- MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=17; SR=0;
- TI=SMTPD_---0V.B9zcn_1639992206; 
-Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com
- fp:SMTPD_---0V.B9zcn_1639992206) by smtp.aliyun-inc.com(127.0.0.1);
- Mon, 20 Dec 2021 17:23:27 +0800
-From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>, linux-crypto@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- sparclinux@vger.kernel.org
-Subject: [PATCH 5/5] crypto: s390/sha512 - Use macros instead of direct IV
- numbers
-Date: Mon, 20 Dec 2021 17:23:18 +0800
-Message-Id: <20211220092318.5793-6-tianjia.zhang@linux.alibaba.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20211220092318.5793-1-tianjia.zhang@linux.alibaba.com>
-References: <20211220092318.5793-1-tianjia.zhang@linux.alibaba.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JHbJt1DTLz2ymg
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Dec 2021 21:23:24 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-1-5ELj3wkrPNSGHHm-pqNVkA-1; Mon, 20 Dec 2021 10:23:17 +0000
+X-MC-Unique: 5ELj3wkrPNSGHHm-pqNVkA-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.26; Mon, 20 Dec 2021 10:23:16 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.026; Mon, 20 Dec 2021 10:23:16 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Jason Wang' <wangborong@cdjrlc.com>, "mpe@ellerman.id.au"
+ <mpe@ellerman.id.au>
+Subject: RE: [PATCH] powerpc: use strscpy to copy strings
+Thread-Topic: [PATCH] powerpc: use strscpy to copy strings
+Thread-Index: AQHX9VEUZ6FjgeLc1kWSeYk5lSMsIaw7KVuQ
+Date: Mon, 20 Dec 2021 10:23:16 +0000
+Message-ID: <c82f01143a174c8281930158e4804a4b@AcuMS.aculab.com>
+References: <20211220032402.630240-1-wangborong@cdjrlc.com>
+In-Reply-To: <20211220032402.630240-1-wangborong@cdjrlc.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,69 +64,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Cc: "paulus@samba.org" <paulus@samba.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the init functions of sha512 and sha384, the initial hash value
-use macros instead of numbers.
+From: Jason Wang
+> Sent: 20 December 2021 03:24
+>=20
+> The strlcpy should not be used because it doesn't limit the source
+> length. So that it will lead some potential bugs.
+>=20
+> But the strscpy doesn't require reading memory from the src string
+> beyond the specified "count" bytes, and since the return value is
+> easier to error-check than strlcpy()'s. In addition, the implementation
+> is robust to the string changing out from underneath it, unlike the
+> current strlcpy() implementation.
+>=20
+> Thus, replace strlcpy with strscpy.
+>=20
+> Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
+> ---
+>  arch/powerpc/platforms/pasemi/misc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/powerpc/platforms/pasemi/misc.c b/arch/powerpc/platform=
+s/pasemi/misc.c
+> index 1bf65d02d3ba..06a1ffd43bfe 100644
+> --- a/arch/powerpc/platforms/pasemi/misc.c
+> +++ b/arch/powerpc/platforms/pasemi/misc.c
+> @@ -35,7 +35,7 @@ static int __init find_i2c_driver(struct device_node *n=
+ode,
+>  =09for (i =3D 0; i < ARRAY_SIZE(i2c_devices); i++) {
+>  =09=09if (!of_device_is_compatible(node, i2c_devices[i].of_device))
+>  =09=09=09continue;
+> -=09=09if (strlcpy(info->type, i2c_devices[i].i2c_type,
+> +=09=09if (strscpy(info->type, i2c_devices[i].i2c_type,
+>  =09=09=09    I2C_NAME_SIZE) >=3D I2C_NAME_SIZE)
+>  =09=09=09return -ENOMEM;
 
-Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
----
- arch/s390/crypto/sha512_s390.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+Isn't that the wrong overflow check?
+Doesn't strscpy() return a -ve errno value on failure
+(just to cause a different buffer overflow issue?)
 
-diff --git a/arch/s390/crypto/sha512_s390.c b/arch/s390/crypto/sha512_s390.c
-index 29a6bd404c59..43ce4956df73 100644
---- a/arch/s390/crypto/sha512_s390.c
-+++ b/arch/s390/crypto/sha512_s390.c
-@@ -22,14 +22,14 @@ static int sha512_init(struct shash_desc *desc)
- {
- 	struct s390_sha_ctx *ctx = shash_desc_ctx(desc);
- 
--	*(__u64 *)&ctx->state[0] = 0x6a09e667f3bcc908ULL;
--	*(__u64 *)&ctx->state[2] = 0xbb67ae8584caa73bULL;
--	*(__u64 *)&ctx->state[4] = 0x3c6ef372fe94f82bULL;
--	*(__u64 *)&ctx->state[6] = 0xa54ff53a5f1d36f1ULL;
--	*(__u64 *)&ctx->state[8] = 0x510e527fade682d1ULL;
--	*(__u64 *)&ctx->state[10] = 0x9b05688c2b3e6c1fULL;
--	*(__u64 *)&ctx->state[12] = 0x1f83d9abfb41bd6bULL;
--	*(__u64 *)&ctx->state[14] = 0x5be0cd19137e2179ULL;
-+	*(__u64 *)&ctx->state[0] = SHA512_H0;
-+	*(__u64 *)&ctx->state[2] = SHA512_H1;
-+	*(__u64 *)&ctx->state[4] = SHA512_H2;
-+	*(__u64 *)&ctx->state[6] = SHA512_H3;
-+	*(__u64 *)&ctx->state[8] = SHA512_H4;
-+	*(__u64 *)&ctx->state[10] = SHA512_H5;
-+	*(__u64 *)&ctx->state[12] = SHA512_H6;
-+	*(__u64 *)&ctx->state[14] = SHA512_H7;
- 	ctx->count = 0;
- 	ctx->func = CPACF_KIMD_SHA_512;
- 
-@@ -87,14 +87,14 @@ static int sha384_init(struct shash_desc *desc)
- {
- 	struct s390_sha_ctx *ctx = shash_desc_ctx(desc);
- 
--	*(__u64 *)&ctx->state[0] = 0xcbbb9d5dc1059ed8ULL;
--	*(__u64 *)&ctx->state[2] = 0x629a292a367cd507ULL;
--	*(__u64 *)&ctx->state[4] = 0x9159015a3070dd17ULL;
--	*(__u64 *)&ctx->state[6] = 0x152fecd8f70e5939ULL;
--	*(__u64 *)&ctx->state[8] = 0x67332667ffc00b31ULL;
--	*(__u64 *)&ctx->state[10] = 0x8eb44a8768581511ULL;
--	*(__u64 *)&ctx->state[12] = 0xdb0c2e0d64f98fa7ULL;
--	*(__u64 *)&ctx->state[14] = 0x47b5481dbefa4fa4ULL;
-+	*(__u64 *)&ctx->state[0] = SHA384_H0;
-+	*(__u64 *)&ctx->state[2] = SHA384_H1;
-+	*(__u64 *)&ctx->state[4] = SHA384_H2;
-+	*(__u64 *)&ctx->state[6] = SHA384_H3;
-+	*(__u64 *)&ctx->state[8] = SHA384_H4;
-+	*(__u64 *)&ctx->state[10] = SHA384_H5;
-+	*(__u64 *)&ctx->state[12] = SHA384_H6;
-+	*(__u64 *)&ctx->state[14] = SHA384_H7;
- 	ctx->count = 0;
- 	ctx->func = CPACF_KIMD_SHA_512;
- 
--- 
-2.32.0
+Not that any kind of overflow is actually possible in that over-engineered
+code fragment.
+
+=09David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
