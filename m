@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D219147A704
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 10:29:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF09E47A705
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 10:30:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JHZ715pCnz3ckb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 20:29:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JHZ7R410jz3dcb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Dec 2021 20:30:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.57;
- helo=out30-57.freemail.mail.aliyun.com;
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.133;
+ helo=out30-133.freemail.mail.aliyun.com;
  envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-57.freemail.mail.aliyun.com
- (out30-57.freemail.mail.aliyun.com [115.124.30.57])
+Received: from out30-133.freemail.mail.aliyun.com
+ (out30-133.freemail.mail.aliyun.com [115.124.30.133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JHZ5m3hK2z2xB8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Dec 2021 20:28:43 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R191e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04394;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JHZ5n5qnVz301v
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Dec 2021 20:28:44 +1100 (AEDT)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R111e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04357;
  MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=17; SR=0;
- TI=SMTPD_---0V.B9zbM_1639992199; 
+ TI=SMTPD_---0V.CdyjU_1639992201; 
 Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com
- fp:SMTPD_---0V.B9zbM_1639992199) by smtp.aliyun-inc.com(127.0.0.1);
- Mon, 20 Dec 2021 17:23:20 +0800
+ fp:SMTPD_---0V.CdyjU_1639992201) by smtp.aliyun-inc.com(127.0.0.1);
+ Mon, 20 Dec 2021 17:23:21 +0800
 From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 To: Herbert Xu <herbert@gondor.apana.org.au>,
  "David S. Miller" <davem@davemloft.net>,
@@ -40,10 +40,13 @@ To: Herbert Xu <herbert@gondor.apana.org.au>,
  linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
  sparclinux@vger.kernel.org
-Subject: [PATCH 0/5] Remove duplicate context init function for sha algorithm
-Date: Mon, 20 Dec 2021 17:23:13 +0800
-Message-Id: <20211220092318.5793-1-tianjia.zhang@linux.alibaba.com>
+Subject: [PATCH 1/5] crypto: sha256 - remove duplicate generic hash init
+ function
+Date: Mon, 20 Dec 2021 17:23:14 +0800
+Message-Id: <20211220092318.5793-2-tianjia.zhang@linux.alibaba.com>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20211220092318.5793-1-tianjia.zhang@linux.alibaba.com>
+References: <20211220092318.5793-1-tianjia.zhang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -62,32 +65,56 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series of patches is mainly for repetitive code cleaning. The sha
-algorithm has provided generic context initialization implementation.
-The context initialization code in the optimized implementation of each
-platform is a repetitive code and can be deleted. The sha*_base_init()
-series of functions are used uniformly.
+crypto_sha256_init() and sha256_base_init() are the same repeated
+implementations, remove the crypto_sha256_init() in generic
+implementation, sha224 is the same process.
 
-Tianjia Zhang (5):
-  crypto: sha256 - remove duplicate generic hash init function
-  crypto: mips/sha - remove duplicate hash init function
-  crypto: powerpc/sha - remove duplicate hash init function
-  crypto: sparc/sha - remove duplicate hash init function
-  crypto: s390/sha512 - Use macros instead of direct IV numbers
+Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+---
+ crypto/sha256_generic.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
- arch/mips/cavium-octeon/crypto/octeon-sha1.c  | 17 +-------
- .../mips/cavium-octeon/crypto/octeon-sha256.c | 39 ++-----------------
- .../mips/cavium-octeon/crypto/octeon-sha512.c | 39 ++-----------------
- arch/powerpc/crypto/sha1-spe-glue.c           | 17 +-------
- arch/powerpc/crypto/sha1.c                    | 14 +------
- arch/powerpc/crypto/sha256-spe-glue.c         | 39 ++-----------------
- arch/s390/crypto/sha512_s390.c                | 32 +++++++--------
- arch/sparc/crypto/sha1_glue.c                 | 14 +------
- arch/sparc/crypto/sha256_glue.c               | 37 ++----------------
- arch/sparc/crypto/sha512_glue.c               | 37 ++----------------
- crypto/sha256_generic.c                       | 16 +-------
- 11 files changed, 41 insertions(+), 260 deletions(-)
-
+diff --git a/crypto/sha256_generic.c b/crypto/sha256_generic.c
+index 3b377197236e..bf147b01e313 100644
+--- a/crypto/sha256_generic.c
++++ b/crypto/sha256_generic.c
+@@ -33,18 +33,6 @@ const u8 sha256_zero_message_hash[SHA256_DIGEST_SIZE] = {
+ };
+ EXPORT_SYMBOL_GPL(sha256_zero_message_hash);
+ 
+-static int crypto_sha256_init(struct shash_desc *desc)
+-{
+-	sha256_init(shash_desc_ctx(desc));
+-	return 0;
+-}
+-
+-static int crypto_sha224_init(struct shash_desc *desc)
+-{
+-	sha224_init(shash_desc_ctx(desc));
+-	return 0;
+-}
+-
+ int crypto_sha256_update(struct shash_desc *desc, const u8 *data,
+ 			  unsigned int len)
+ {
+@@ -72,7 +60,7 @@ EXPORT_SYMBOL(crypto_sha256_finup);
+ 
+ static struct shash_alg sha256_algs[2] = { {
+ 	.digestsize	=	SHA256_DIGEST_SIZE,
+-	.init		=	crypto_sha256_init,
++	.init		=	sha256_base_init,
+ 	.update		=	crypto_sha256_update,
+ 	.final		=	crypto_sha256_final,
+ 	.finup		=	crypto_sha256_finup,
+@@ -86,7 +74,7 @@ static struct shash_alg sha256_algs[2] = { {
+ 	}
+ }, {
+ 	.digestsize	=	SHA224_DIGEST_SIZE,
+-	.init		=	crypto_sha224_init,
++	.init		=	sha224_base_init,
+ 	.update		=	crypto_sha256_update,
+ 	.final		=	crypto_sha256_final,
+ 	.finup		=	crypto_sha256_finup,
 -- 
 2.32.0
 
