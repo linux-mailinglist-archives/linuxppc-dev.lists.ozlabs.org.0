@@ -2,77 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADDF47C701
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 19:52:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC00C47C792
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 20:39:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JJQZ424xWz3081
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 05:52:44 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FjboI/N/;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JJRbc4cL2z3cDr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 06:39:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=FjboI/N/; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JJQYL0JBgz2xXy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 05:52:06 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 621AB6175D
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Dec 2021 18:52:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C863EC36AE8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Dec 2021 18:52:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1640112722;
- bh=Hr/tvZ/uQC64tzCNQWu3aJs6xWJOhOK2UxGUIz7ujT0=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=FjboI/N/bVAGRBQDDNPIRo9x4S89TKMxe2pqKtVt3Ixgu9GueMw4WTw/yGyR6FV0T
- /W+RQVDVzH12VVPUVqALvU3lWL1DJ/TuDJj4sdQULIdJIQNhZFAN9RemmiDs3YQXrp
- hKvpbc7jTdVk9yGdgFzlXZ6jYMvXa19vMVxVrZRqiJS1gUgT7UAxDqLAV+P7gRP+bW
- Us5p+LWRJB26gDEG+KkcNJCGTYw83m4ErpEf/K4Pe5mTXDLgOgPxSvciJz+et1hBEG
- xA38+BdH2Ek8ItRNkZCc8KQ54WXeiaPvpDbnscdmtG2oLkf7mLS2TuDeHX1svNg8p7
- VjU8+EPKi9E/Q==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
- id AE447610E5; Tue, 21 Dec 2021 18:52:02 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 215381] BUG: Unable to handle kernel data access on read at
- 0x6600cc00000004
-Date: Tue, 21 Dec 2021 18:52:02 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-215381-206035-QvqZXPKODu@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-215381-206035@https.bugzilla.kernel.org/>
-References: <bug-215381-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
-MIME-Version: 1.0
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4JJRb760Qyz2xsj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 06:38:42 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 1BLJaAxU013501;
+ Tue, 21 Dec 2021 13:36:10 -0600
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 1BLJa9FH013500;
+ Tue, 21 Dec 2021 13:36:09 -0600
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Tue, 21 Dec 2021 13:36:08 -0600
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 1/3] powerpc/vdso: augment VDSO32 functions to support 64
+ bits build
+Message-ID: <20211221193608.GD614@gate.crashing.org>
+References: <09b25a22cd5179eba4580ae95414f18fc162bedf.1640108961.git.christophe.leroy@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <09b25a22cd5179eba4580ae95414f18fc162bedf.1640108961.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,19 +47,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "masahiroy@kernel.org" <masahiroy@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D215381
+On Tue, Dec 21, 2021 at 05:49:33PM +0000, Christophe Leroy wrote:
+> diff --git a/arch/powerpc/kernel/vdso32/datapage.S b/arch/powerpc/kernel/vdso32/datapage.S
+> index 65244416ab94..db8e167f0166 100644
+> --- a/arch/powerpc/kernel/vdso32/datapage.S
+> +++ b/arch/powerpc/kernel/vdso32/datapage.S
+> @@ -30,11 +30,15 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
+>  	mr.	r4,r3
+>  	get_datapage	r3
+>  	mtlr	r12
+> +#ifdef __powerpc64__
+> +	addi	r3,r3,CFG_SYSCALL_MAP64
+> +#else
+>  	addi	r3,r3,CFG_SYSCALL_MAP32
+> +#endif
+> +	crclr	cr0*4+so
+>  	beqlr
+>  	li	r0,NR_syscalls
+>  	stw	r0,0(r4)
+> -	crclr	cr0*4+so
+>  	blr
 
---- Comment #1 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 300107
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D300107&action=3Dedit
-kernel .config (kernel 5.15.10, Talos II)
+This now clears cr0.3 if r3 is zero on entry.  Is that on purpose?
 
---=20
-You may reply to this email to add a comment.
+Rest looks good.
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+
+
+Segher
