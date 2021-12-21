@@ -1,81 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9395F47B6B9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 02:14:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E11A047B6D9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 02:32:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JHz4W3D63z3bsp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 12:14:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JHzTZ6HSKz3bjW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 12:32:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=VLRYoqQp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GTlBWVSo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::82b;
- helo=mail-qt1-x82b.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256
- header.s=google header.b=VLRYoqQp; dkim-atps=neutral
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com
- [IPv6:2607:f8b0:4864:20::82b])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=GTlBWVSo; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JHz3r5HzSz2xWl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Dec 2021 12:13:26 +1100 (AEDT)
-Received: by mail-qt1-x82b.google.com with SMTP id n15so11583742qta.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Dec 2021 17:13:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to;
- bh=ImhGZNgWQ6RSPs0/MNgkgB9bxoki7Hld1WRDVZLnPFc=;
- b=VLRYoqQphPkZHC7/mVdrVwi4JRSSX4/EcZlF/HwnA+2dvfr3EppJPZ0e75yD6cqvEi
- eOOQayG7v6CLJSO53F9A8v4Beerdugi4zsWwEkWCVp+xAlxnAkkspTMCvrUz76/T6Zs+
- fpFvNNWUkhq3CV0yI7aAkxmYtxbTVL+jvEjbZrT+D/4sT/o85ScW0wzk69lPb7ReIPAn
- eDC7+AxN83mEdK/4zPzRTGcyBGPMEaWrGVvLD0wwyUil1aii0qxF1Hty6R7Jn5cwydtA
- SNtMHDoxHQN6uHtWj9SKDLtXPDB5YielKtH/KMqWLBH+2xVv5wFuCBXfq2FxvLRwf12Q
- FL3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=ImhGZNgWQ6RSPs0/MNgkgB9bxoki7Hld1WRDVZLnPFc=;
- b=hGPgm1b4q8mxrHifrJEqo/ZlMzGgfZ+QKEetu2iaccJ3vjQ+19zVVh11ymcjrWICDd
- zyo6SuA7eZMn+afTo7nQNiWEHH85pn1XNcoNcfvSd0sN+ChZq61esQXf3D2WmA3k0x+n
- geqMFPZIw2aGqLoR1sKA2KNOR5jbZB0TbqxmYiNWQuTj2KMYNB/bfO2AKzGHf0V2H4i4
- c54xmnQPrOMtBk8GKvu3wA4T/rRvZvDGASB0qtYwGQsjyNPWG6dpn4m/nFrNEWf7DFff
- NeEcAFpJ2Jjt+59YijVe2ti6VYlZG6vcHktUvEOnj72UbAgMYCHF+rGF0Acl8WxH1mQa
- Tw0g==
-X-Gm-Message-State: AOAM533hPc5k6HxEvKK2E2YZ7/uSabN+s5hOKR0yFGGQEBemWUa04i/w
- iarVOKHS9NzZutu2Xp+dm3uO1Q==
-X-Google-Smtp-Source: ABdhPJw+4sRAzJSi3LnPVoLw1Dt7Bkx+hmVXajl3aaZlbjv5jLRVbLeuQXoICu0pNeKnjSZ3FNLWJw==
-X-Received: by 2002:ac8:45d2:: with SMTP id e18mr621640qto.112.1640049202009; 
- Mon, 20 Dec 2021 17:13:22 -0800 (PST)
-Received: from ziepe.ca
- (hlfxns017vw-142-162-113-129.dhcp-dynamic.fibreop.ns.bellaliant.net.
- [142.162.113.129])
- by smtp.gmail.com with ESMTPSA id b9sm15854858qtb.53.2021.12.20.17.13.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 Dec 2021 17:13:21 -0800 (PST)
-Received: from jgg by mlx with local (Exim 4.94) (envelope-from <jgg@ziepe.ca>)
- id 1mzTiS-006yyf-C9; Mon, 20 Dec 2021 21:13:20 -0400
-Date: Mon, 20 Dec 2021 21:13:20 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Stefan Berger <stefanb@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JHzSm2L0Rz2xsN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Dec 2021 12:31:35 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1BKMXnGp022063; 
+ Tue, 21 Dec 2021 01:31:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=esHj3kYXWZ1lBSmdCOGo+Qhb/eF4178jJnfYkc5j9To=;
+ b=GTlBWVSo9gdnvVadgQgwUb8qxCgkuVlh2+ymiS102oXJn5RQJq6RDt1ZDeNYiEA0auxT
+ g8D66KlKYjTQaZwmIphf69DG2X5lwIgcDLkimuhb2/0SjJbs5h7Nulf0Raf1hUoKhI4D
+ eF1e+ZVw544Xo8XLS250XaLNyOq4E9fuB7wNVowzkiTGVfFAp+I2SVj2t0XOCDyjsWsG
+ o/8TMXtTzwvZLxA0RmrAvavWfFi7bjk4sJoJ8Lvy8r0jotoclJqBo2DFI0Dedj7PMEpY
+ VAQ4AaajTQTDqh7Dw3nQBY+z+8KusbsL48RtOC6q/qrTEsYOU5yNdhI0DWt7Sle20nkj aw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3d1skes3cm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Dec 2021 01:31:31 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1BL1VUYj020533;
+ Tue, 21 Dec 2021 01:31:30 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3d1skes3cc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Dec 2021 01:31:30 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1BL1NjGa016312;
+ Tue, 21 Dec 2021 01:31:30 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma03wdc.us.ibm.com with ESMTP id 3d1799qu6u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 21 Dec 2021 01:31:30 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1BL1VRQA17695138
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 Dec 2021 01:31:27 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B71BB112061;
+ Tue, 21 Dec 2021 01:31:27 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 69A8D112065;
+ Tue, 21 Dec 2021 01:31:27 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 21 Dec 2021 01:31:27 +0000 (GMT)
+Message-ID: <f80e33d2-948d-f885-b063-245eb37de8c1@linux.ibm.com>
+Date: Mon, 20 Dec 2021 20:31:27 -0500
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.0
 Subject: Re: [PATCH] tpm: Fix kexec crash due to access to ops NULL pointer
  (powerpc)
-Message-ID: <20211221011320.GM6467@ziepe.ca>
+Content-Language: en-US
+To: Jason Gunthorpe <jgg@ziepe.ca>
 References: <20211212012804.1555661-1-stefanb@linux.ibm.com>
  <1052cd36-1b85-5d36-045f-5c5bf9f0fc4e@linux.ibm.com>
  <d9eafa8f-4006-4bc2-c09b-6b02a14c6ef3@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ <20211221011320.GM6467@ziepe.ca>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20211221011320.GM6467@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d9eafa8f-4006-4bc2-c09b-6b02a14c6ef3@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ZmV61b529U1oHj1p_UAkKG7QajVz5iVe
+X-Proofpoint-GUID: 6TCUo1k1sZyJ216sRqHqJ8aW9jUtD1KN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-20_11,2021-12-20_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 bulkscore=0
+ spamscore=0 clxscore=1015 mlxscore=0 malwarescore=0 suspectscore=0
+ phishscore=0 lowpriorityscore=0 priorityscore=1501 mlxlogscore=933
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112210004
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,26 +121,47 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 20, 2021 at 08:05:58PM -0500, Stefan Berger wrote:
 
-> diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-> index ddaeceb7e109..4cb908349b31 100644
-> +++ b/drivers/char/tpm/tpm-chip.c
-> @@ -473,15 +473,8 @@ static void tpm_del_char_device(struct tpm_chip *chip)
->         mutex_unlock(&idr_lock);
-> 
->         /* Make the driver uncallable. */
-> -       down_write(&chip->ops_sem);
-> -       if (chip->flags & TPM_CHIP_FLAG_TPM2) {
-> -               if (!tpm_chip_start(chip)) {
-> -                       tpm2_shutdown(chip, TPM2_SU_CLEAR);
-> -                       tpm_chip_stop(chip);
-> -               }
-> -       }
-> -       chip->ops = NULL;
-> -       up_write(&chip->ops_sem);
-> +       if (chip->ops)
+On 12/20/21 20:13, Jason Gunthorpe wrote:
+> On Mon, Dec 20, 2021 at 08:05:58PM -0500, Stefan Berger wrote:
+>
+>> diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+>> index ddaeceb7e109..4cb908349b31 100644
+>> +++ b/drivers/char/tpm/tpm-chip.c
+>> @@ -473,15 +473,8 @@ static void tpm_del_char_device(struct tpm_chip *chip)
+>>          mutex_unlock(&idr_lock);
+>>
+>>          /* Make the driver uncallable. */
+>> -       down_write(&chip->ops_sem);
+>> -       if (chip->flags & TPM_CHIP_FLAG_TPM2) {
+>> -               if (!tpm_chip_start(chip)) {
+>> -                       tpm2_shutdown(chip, TPM2_SU_CLEAR);
+>> -                       tpm_chip_stop(chip);
+>> -               }
+>> -       }
+>> -       chip->ops = NULL;
+>> -       up_write(&chip->ops_sem);
+>> +       if (chip->ops)
+> ops cannot be read without locking
 
-ops cannot be read without locking
+This here could be an alternative:
 
-Jason
+diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+index ddaeceb7e109..7772b475ebc0 100644
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -474,7 +474,7 @@ static void tpm_del_char_device(struct tpm_chip *chip)
+
+         /* Make the driver uncallable. */
+         down_write(&chip->ops_sem);
+-       if (chip->flags & TPM_CHIP_FLAG_TPM2) {
++       if (chip->ops && chip->flags & TPM_CHIP_FLAG_TPM2) {
+                 if (!tpm_chip_start(chip)) {
+                         tpm2_shutdown(chip, TPM2_SU_CLEAR);
+                         tpm_chip_stop(chip);
+
+    Stefan
+
+
+>
+> Jason
