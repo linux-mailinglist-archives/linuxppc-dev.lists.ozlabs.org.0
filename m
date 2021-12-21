@@ -2,69 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1564547C1DD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 15:49:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FEDA47C485
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 18:01:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JJK8v01Qzz3c6G
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 01:49:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JJN626GjZz3c83
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 04:01:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=QwYotQVA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dEgydiYr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::833;
- helo=mail-qt1-x833.google.com; envelope-from=cgel.zte@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=QwYotQVA; dkim-atps=neutral
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com
- [IPv6:2607:f8b0:4864:20::833])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=dEgydiYr; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JJK892w6fz2xtw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 01:48:23 +1100 (AEDT)
-Received: by mail-qt1-x833.google.com with SMTP id v22so12997298qtx.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Dec 2021 06:48:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=zZuDkRiIkR9ys/6q9NNmS5Lq8rxb7QfIIo9v52hklq8=;
- b=QwYotQVAOw8t142MhQtL5+mbjmyHKWsbUStue/SPP7IY9tm5RYJdi7gtxSTCyIJo/O
- IpimVtyfCBPML408CUBDpht1PQswdsEokBKl4jg4euhi6pg7H8MChYJVNbG//xr39NTn
- d/mRWIWTEQdTKq1LODzeNdA1yAAr8aTM2zrV/VClEpZ+g5CxLtjFf/p776IDItuOYed5
- a5UbzizCDkLkmFJvjF4D3wVXNwSuff/olsX1y7V2yWn2J4b3juMBRyIHQ25wjMsUFWMW
- uqrJEYrVQSv01yGAAE7tbvifskxNi4PZVXJy8CGhSiMnmkG+z5RtB+AP8jfKA5LQ0UkK
- kEqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=zZuDkRiIkR9ys/6q9NNmS5Lq8rxb7QfIIo9v52hklq8=;
- b=Mp+59EdVQvAtBsgEiUitt6w697yYFTx849q8VaUZMMDfCpgnqWqm4+BO/2f+E8+5bl
- E6KwJwdq+QPCbvvCFyg/w/rKMFQXk/Sqa3vU/quqQdmp4ZgrJ8soed+6SXwVmDYyoDS2
- 4HJXcQQ29nr4FTu84b79NX0rFGRQSRXU9xQGiNx4PdGkQiH8gTFRGV21+duCI0zFgxmG
- IN5JpZT7iqKKxxPuRDuJvdV0mGWHHMmZtrn/9r+jpbWvfu7udWljoSOXWqgPfX9dpcoN
- of/XK9R0qlmj70S8UaW/SWF/P2iiJ9CHJXhzXFYrRMMRsOKiYnrKFgHV804B+Fo99Dbx
- p91Q==
-X-Gm-Message-State: AOAM531SKDkAN7US/RHPSCz7z+aGIiI5LVRRoPM+i2vz8sZxp++6CaZ1
- 0U255wSchvTYATthTysnVzs=
-X-Google-Smtp-Source: ABdhPJycfYQf2KP5PZ7xjWj+VSDFrXKBOwWd5EsILfz2JTg5hj204QyNxDQyiJNBB5Ho2MIZXAm3Pw==
-X-Received: by 2002:a05:622a:c8:: with SMTP id p8mr2483288qtw.52.1640098099976; 
- Tue, 21 Dec 2021 06:48:19 -0800 (PST)
-Received: from localhost.localdomain ([193.203.214.57])
- by smtp.gmail.com with ESMTPSA id y11sm18110177qta.6.2021.12.21.06.48.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Dec 2021 06:48:19 -0800 (PST)
-From: cgel.zte@gmail.com
-X-Google-Original-From: deng.changcheng@zte.com.cn
-To: arnd@arndb.de
-Subject: [PATCH] powerpc/cell/axon_msi: replace DEFINE_SIMPLE_ATTRIBUTE with
- DEFINE_DEBUGFS_ATTRIBUTE
-Date: Tue, 21 Dec 2021 14:48:14 +0000
-Message-Id: <20211221144814.480849-1-deng.changcheng@zte.com.cn>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JJN5N6JwPz2y7Q
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 04:01:12 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 8B70EB817AF;
+ Tue, 21 Dec 2021 17:01:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5408C36AE8;
+ Tue, 21 Dec 2021 17:01:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1640106066;
+ bh=7d8LhHNqF8chXHYwnQCba3+BVf9M2vb5t0LpTpOXl3I=;
+ h=From:To:Cc:Subject:Date:From;
+ b=dEgydiYrKTv4MoEpX8HEQPqxS6hcDAYv3fewK7fRHlYo1CHlD/jbRbllFF0F8kZJR
+ 7Ol7HU29iOHWoMgGNtsqJUJCM5S4W0bgP/zIGIS5hDslGvSBAcnMkOveiGKJ3RC9in
+ phVRHxd7jJND527OgA3JMqshWfpLFVLj3H6JoZQlMlYklclMYaZz0Kb7LD+CmhEWua
+ uKrgpIgE7bEmoNRS3EL88iGk+rcBxqSBw196mkCKvdSsMMYIldXUa3jUAkYsmHra4o
+ ZYOiY88ri24LqnBH+ncTH+nICWwBRbCrgyo/8AjbwLlOdXvXLXKKZdbHKtkvqkpvAZ
+ +r/YN5cJ3971w==
+From: guoren@kernel.org
+To: guoren@kernel.org, will@kernel.org, tglx@linutronix.de,
+ benh@kernel.crashing.org, arnd@arndb.de, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com
+Subject: [PATCH 0/8] sched: Remove unused TASK_SIZE_OF
+Date: Wed, 22 Dec 2021 01:00:49 +0800
+Message-Id: <20211221170057.2637763-1-guoren@kernel.org>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -79,41 +62,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zeal Robot <zealci@zte.com.cn>,
- Changcheng Deng <deng.changcheng@zte.com.cn>, linux-kernel@vger.kernel.org,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, Guo Ren <guoren@linux.alibaba.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, sparclinux@vger.kernel.or,
+ linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, inux-parisc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Changcheng Deng <deng.changcheng@zte.com.cn>
+From: Guo Ren <guoren@linux.alibaba.com>
 
-Fix the following coccicheck warning:
-./arch/powerpc/platforms/cell/axon_msi.c: 456: 0-23: WARNING: fops_msic
-should be defined with DEFINE_DEBUGFS_ATTRIBUTE
+This macro isn't used in Linux, now. Delete in include/linux/sched.h
+and arch's include/asm. This would confuse people who are
+implementing the COMPAT feature for architecture.
 
-Use DEFINE_DEBUGFS_ATTRIBUTE rather than DEFINE_SIMPLE_ATTRIBUTE for
-debugfs files.
+Guo Ren (8):
+  sched: Remove unused TASK_SIZE_OF
+  sched: x86: Remove unused TASK_SIZE_OF
+  sched: sparc: Remove unused TASK_SIZE_OF
+  sched: powerpc: Remove unused TASK_SIZE_OF
+  sched: s390: Remove unused TASK_SIZE_OF
+  sched: parisc: Remove unused TASK_SIZE_OF
+  sched: arm64: Remove unused TASK_SIZE_OF
+  sched: mips: Remove unused TASK_SIZE_OF
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Changcheng Deng <deng.changcheng@zte.com.cn>
----
- arch/powerpc/platforms/cell/axon_msi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/processor.h      | 2 --
+ arch/mips/include/asm/processor.h       | 3 ---
+ arch/parisc/include/asm/processor.h     | 3 +--
+ arch/powerpc/include/asm/task_size_64.h | 6 ++----
+ arch/s390/include/asm/processor.h       | 3 +--
+ arch/sparc/include/asm/processor_64.h   | 3 ---
+ arch/x86/include/asm/page_64_types.h    | 2 --
+ include/linux/sched.h                   | 4 ----
+ 8 files changed, 4 insertions(+), 22 deletions(-)
 
-diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platforms/cell/axon_msi.c
-index 354a58c1e6f2..47bb0ae8d6c9 100644
---- a/arch/powerpc/platforms/cell/axon_msi.c
-+++ b/arch/powerpc/platforms/cell/axon_msi.c
-@@ -453,7 +453,7 @@ static int msic_get(void *data, u64 *val)
- 	return 0;
- }
- 
--DEFINE_SIMPLE_ATTRIBUTE(fops_msic, msic_get, msic_set, "%llu\n");
-+DEFINE_DEBUGFS_ATTRIBUTE(fops_msic, msic_get, msic_set, "%llu\n");
- 
- void axon_msi_debug_setup(struct device_node *dn, struct axon_msic *msic)
- {
 -- 
 2.25.1
 
