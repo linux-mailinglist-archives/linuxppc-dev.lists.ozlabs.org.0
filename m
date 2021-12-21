@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B9147C4A3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 18:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A1147C4AB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 18:06:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JJNBJ4NpSz3cNT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 04:05:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JJNC049Zmz3cjy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 04:06:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ru2RsyEb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jVZs0brl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,38 +18,38 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Ru2RsyEb; 
+ header.s=k20201202 header.b=jVZs0brl; 
  dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org
  [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JJN5w1ry6z3c5Q
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 04:01:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JJN60093Mz3c5Q
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 04:01:43 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 332C46169C;
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 905726168F;
+ Tue, 21 Dec 2021 17:01:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D3CC36AEA;
  Tue, 21 Dec 2021 17:01:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A11C36AE9;
- Tue, 21 Dec 2021 17:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1640106095;
- bh=UkaP0ipbtWQqs3GD7NQjrdRO2cbNiQOOmCN2E316SyA=;
+ s=k20201202; t=1640106100;
+ bh=yebEHrXO3xitrmPY1eiCj8/ZZmBcRpO1kVVqCIUFCmY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Ru2RsyEbawlXaApkFj782iUERzy01onJjv5kLF1/iUSMqX0iyZcz9nq6waTBL3FAi
- XTcFy3Q49b/i03JGMNfN9H/NBOqpI/QJloEbPvOR2voTECnbqIXT15QJaiz54KzY3u
- jdXF2YyPqeq3feulRpKE67947HMSknOgTOvQGoTT4Mwkko6//K+EY6vhNNvv4kHmp6
- DUrWao7nrs2PeVClH8wlUUNK3BKlCHZjmia5EgmQpCTS5Zb1mAY2CQEuCoajeFgOPv
- 7/AmXMRk4hA6pQu0KA9ILxiVbLwGAulZo0rrywlbMd9l9h8Sqfr+BIbOx7gfSs+QJj
- i7MQKa/LAAlLA==
+ b=jVZs0brlicBeWTJT6gUoU+0VOX9gAZ1AaW+R7u29v8MChfsAAZ3n5+IwWbugSO6H+
+ /Rjk+nONgaTYZyeF/JvoV0kLHWyupDaNTnHSRgDH3ds8LLKOZbR+MzQSPvgUQZ/xRg
+ GAdVS+eSR9bBsQMgJJwgZuvSSRGLTZ8P0fa5gxa1k+3FRa1X7qSSVS3NSVmbZh6WTE
+ BUUeBfzRDBVoUac59kIPNLbSU87LzcWMwQLutIw9I85D0mUa3CLqiw+/yI9QxFuQ5w
+ g3ip6oo/gDqNGG9xSDLIG93lSBwga8tqITI+VYAtVYnCnY0RaQNRTaIAN9PWY2G2I/
+ 8+0EqwaqjbWaA==
 From: guoren@kernel.org
 To: guoren@kernel.org, will@kernel.org, tglx@linutronix.de,
  benh@kernel.crashing.org, arnd@arndb.de, mingo@redhat.com,
  peterz@infradead.org, juri.lelli@redhat.com
-Subject: [PATCH 6/8] sched: parisc: Remove unused TASK_SIZE_OF
-Date: Wed, 22 Dec 2021 01:00:55 +0800
-Message-Id: <20211221170057.2637763-7-guoren@kernel.org>
+Subject: [PATCH 7/8] sched: arm64: Remove unused TASK_SIZE_OF
+Date: Wed, 22 Dec 2021 01:00:56 +0800
+Message-Id: <20211221170057.2637763-8-guoren@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211221170057.2637763-1-guoren@kernel.org>
 References: <20211221170057.2637763-1-guoren@kernel.org>
@@ -82,23 +82,22 @@ include/linux/sched.h and arch's include/asm.
 
 Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
 ---
- arch/parisc/include/asm/processor.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/include/asm/processor.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm/processor.h
-index b669f4b9040b..d9c8dc76ee6a 100644
---- a/arch/parisc/include/asm/processor.h
-+++ b/arch/parisc/include/asm/processor.h
-@@ -23,8 +23,7 @@
- 
- #define HAVE_ARCH_PICK_MMAP_LAYOUT
- 
--#define TASK_SIZE_OF(tsk)       ((tsk)->thread.task_size)
--#define TASK_SIZE	        TASK_SIZE_OF(current)
-+#define TASK_SIZE               (current->thread.task_size)
- #define TASK_UNMAPPED_BASE      (current->thread.map_base)
- 
- #define DEFAULT_TASK_SIZE32	(0xFFF00000UL)
+diff --git a/arch/arm64/include/asm/processor.h b/arch/arm64/include/asm/processor.h
+index 6f41b65f9962..d24dfb49237d 100644
+--- a/arch/arm64/include/asm/processor.h
++++ b/arch/arm64/include/asm/processor.h
+@@ -65,8 +65,6 @@
+ #endif /* CONFIG_ARM64_64K_PAGES */
+ #define TASK_SIZE		(test_thread_flag(TIF_32BIT) ? \
+ 				TASK_SIZE_32 : TASK_SIZE_64)
+-#define TASK_SIZE_OF(tsk)	(test_tsk_thread_flag(tsk, TIF_32BIT) ? \
+-				TASK_SIZE_32 : TASK_SIZE_64)
+ #define DEFAULT_MAP_WINDOW	(test_thread_flag(TIF_32BIT) ? \
+ 				TASK_SIZE_32 : DEFAULT_MAP_WINDOW_64)
+ #else
 -- 
 2.25.1
 
