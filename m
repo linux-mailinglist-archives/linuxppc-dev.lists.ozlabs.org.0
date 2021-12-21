@@ -1,28 +1,28 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1429B47B9CB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 07:00:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 723F047B9CC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 07:00:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JJ5Qy0TrNz3c91
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 17:00:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JJ5RN2FYLz3df1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 17:00:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
  envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Received: from ozlabs.ru (unknown [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4JJ5Pt5Ztnz3c5D
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Dec 2021 16:59:30 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4JJ5Q16BXBz3bNB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Dec 2021 16:59:37 +1100 (AEDT)
 Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 4A7C781FD1;
- Tue, 21 Dec 2021 00:59:22 -0500 (EST)
+ by ozlabs.ru (Postfix) with ESMTP id B781B80B64;
+ Tue, 21 Dec 2021 00:59:30 -0500 (EST)
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH llvm 2/6] powerpc: check for support for -Wa,-m{power4,any}
-Date: Tue, 21 Dec 2021 16:59:00 +1100
-Message-Id: <20211221055904.555763-3-aik@ozlabs.ru>
+Subject: [PATCH llvm 3/6] powerpc/64/asm: Inline BRANCH_TO_C000
+Date: Tue, 21 Dec 2021 16:59:01 +1100
+Message-Id: <20211221055904.555763-4-aik@ozlabs.ru>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20211221055904.555763-1-aik@ozlabs.ru>
 References: <20211221055904.555763-1-aik@ozlabs.ru>
@@ -46,32 +46,48 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Daniel Axtens <dja@axtens.net>
+It is used just once and does not really help with readability, remove it.
 
-LLVM's integrated assembler does not like either -Wa,-mpower4
-or -Wa,-many. So just don't pass them if they're not supported.
-
-Signed-off-by: Daniel Axtens <dja@axtens.net>
 Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- arch/powerpc/Makefile | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/exceptions-64s.S | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index e9aa4e8b07dd..5f16ac1583c5 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -245,7 +245,9 @@ cpu-as-$(CONFIG_E500)		+= -Wa,-me500
- # When using '-many -mpower4' gas will first try and find a matching power4
- # mnemonic and failing that it will allow any valid mnemonic that GAS knows
- # about. GCC will pass -many to GAS when assembling, clang does not.
--cpu-as-$(CONFIG_PPC_BOOK3S_64)	+= -Wa,-mpower4 -Wa,-many
-+# LLVM IAS doesn't understand either flag: https://github.com/ClangBuiltLinux/linux/issues/675
-+# but LLVM IAS only supports ISA >= 2.06 for Book3S 64 anyway...
-+cpu-as-$(CONFIG_PPC_BOOK3S_64)	+= $(call as-option,-Wa$(comma)-mpower4) $(call as-option,-Wa$(comma)-many)
- cpu-as-$(CONFIG_PPC_E500MC)	+= $(call as-option,-Wa$(comma)-me500mc)
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index a30f563bc7a8..83d37678f7cf 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -89,19 +89,6 @@ name:
+ 	ori	reg,reg,(ABS_ADDR(label))@l;				\
+ 	addis	reg,reg,(ABS_ADDR(label))@h
  
- KBUILD_AFLAGS += $(cpu-as-y)
+-/*
+- * Branch to label using its 0xC000 address. This results in instruction
+- * address suitable for MSR[IR]=0 or 1, which allows relocation to be turned
+- * on using mtmsr rather than rfid.
+- *
+- * This could set the 0xc bits for !RELOCATABLE as an immediate, rather than
+- * load KBASE for a slight optimisation.
+- */
+-#define BRANCH_TO_C000(reg, label)					\
+-	__LOAD_FAR_HANDLER(reg, label);					\
+-	mtctr	reg;							\
+-	bctr
+-
+ /*
+  * Interrupt code generation macros
+  */
+@@ -962,7 +949,9 @@ TRAMP_REAL_BEGIN(system_reset_idle_wake)
+ 	/* We are waking up from idle, so may clobber any volatile register */
+ 	cmpwi	cr1,r5,2
+ 	bltlr	cr1	/* no state loss, return to idle caller with r3=SRR1 */
+-	BRANCH_TO_C000(r12, DOTSYM(idle_return_gpr_loss))
++	__LOAD_FAR_HANDLER(r12, DOTSYM(idle_return_gpr_loss))
++	mtctr	r12
++	bctr
+ #endif
+ 
+ #ifdef CONFIG_PPC_PSERIES
 -- 
 2.30.2
 
