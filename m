@@ -1,54 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEDA47C485
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 18:01:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D6A47C48D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 18:02:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JJN626GjZz3c83
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 04:01:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JJN6j1rw0z3cRs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 04:02:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dEgydiYr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t+2SY3ct;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1;
+ helo=sin.source.kernel.org; envelope-from=guoren@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=dEgydiYr; 
+ header.s=k20201202 header.b=t+2SY3ct; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from sin.source.kernel.org (sin.source.kernel.org
+ [IPv6:2604:1380:40e1:4800::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JJN5N6JwPz2y7Q
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 04:01:12 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JJN5S1dtLz2y7Q
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 04:01:16 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 8B70EB817AF;
- Tue, 21 Dec 2021 17:01:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5408C36AE8;
- Tue, 21 Dec 2021 17:01:01 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTPS id 01EACCE1759;
+ Tue, 21 Dec 2021 17:01:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02DBC36AF1;
+ Tue, 21 Dec 2021 17:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1640106066;
- bh=7d8LhHNqF8chXHYwnQCba3+BVf9M2vb5t0LpTpOXl3I=;
- h=From:To:Cc:Subject:Date:From;
- b=dEgydiYrKTv4MoEpX8HEQPqxS6hcDAYv3fewK7fRHlYo1CHlD/jbRbllFF0F8kZJR
- 7Ol7HU29iOHWoMgGNtsqJUJCM5S4W0bgP/zIGIS5hDslGvSBAcnMkOveiGKJ3RC9in
- phVRHxd7jJND527OgA3JMqshWfpLFVLj3H6JoZQlMlYklclMYaZz0Kb7LD+CmhEWua
- uKrgpIgE7bEmoNRS3EL88iGk+rcBxqSBw196mkCKvdSsMMYIldXUa3jUAkYsmHra4o
- ZYOiY88ri24LqnBH+ncTH+nICWwBRbCrgyo/8AjbwLlOdXvXLXKKZdbHKtkvqkpvAZ
- +r/YN5cJ3971w==
+ s=k20201202; t=1640106071;
+ bh=Oy/NR31/F+xIHSgTDjx6GQ7Gg7r+DRliyRChxoAHfB4=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=t+2SY3ctNJy2loFboEsO1g1VwFMmfV1vqCzgFiBIAs+nQOxvy14mfPk6ozxvJiD0B
+ eg90VAmLXNGCPOo9oB6vWiAiXtJiBS3aQw6asEkpwbbZRLsh0QbyPMz/5HiCv1MTpd
+ IPAajqWSbzXDNhuf5QsWfR4GKqaHvQGOOX8oAUUCadtRsuEsG81hDYcWSXE0SDJfUS
+ f3zeqKgVzuacH2+clEiw3G/1gOfpdBu8YvQjO8L5lIRyoAdFqjvTUmDM13Onb0pWlO
+ yWXPjHR3GYyfgiGta4BbY4xbA66cojMLT2j8WuuzRs5FsgX8G01zNHESnkL4troWbC
+ JU9hzS/5ry9ag==
 From: guoren@kernel.org
 To: guoren@kernel.org, will@kernel.org, tglx@linutronix.de,
  benh@kernel.crashing.org, arnd@arndb.de, mingo@redhat.com,
  peterz@infradead.org, juri.lelli@redhat.com
-Subject: [PATCH 0/8] sched: Remove unused TASK_SIZE_OF
-Date: Wed, 22 Dec 2021 01:00:49 +0800
-Message-Id: <20211221170057.2637763-1-guoren@kernel.org>
+Subject: [PATCH 1/8] sched: Remove unused TASK_SIZE_OF
+Date: Wed, 22 Dec 2021 01:00:50 +0800
+Message-Id: <20211221170057.2637763-2-guoren@kernel.org>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20211221170057.2637763-1-guoren@kernel.org>
+References: <20211221170057.2637763-1-guoren@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -77,26 +81,26 @@ This macro isn't used in Linux, now. Delete in include/linux/sched.h
 and arch's include/asm. This would confuse people who are
 implementing the COMPAT feature for architecture.
 
-Guo Ren (8):
-  sched: Remove unused TASK_SIZE_OF
-  sched: x86: Remove unused TASK_SIZE_OF
-  sched: sparc: Remove unused TASK_SIZE_OF
-  sched: powerpc: Remove unused TASK_SIZE_OF
-  sched: s390: Remove unused TASK_SIZE_OF
-  sched: parisc: Remove unused TASK_SIZE_OF
-  sched: arm64: Remove unused TASK_SIZE_OF
-  sched: mips: Remove unused TASK_SIZE_OF
+Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+---
+ include/linux/sched.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
- arch/arm64/include/asm/processor.h      | 2 --
- arch/mips/include/asm/processor.h       | 3 ---
- arch/parisc/include/asm/processor.h     | 3 +--
- arch/powerpc/include/asm/task_size_64.h | 6 ++----
- arch/s390/include/asm/processor.h       | 3 +--
- arch/sparc/include/asm/processor_64.h   | 3 ---
- arch/x86/include/asm/page_64_types.h    | 2 --
- include/linux/sched.h                   | 4 ----
- 8 files changed, 4 insertions(+), 22 deletions(-)
-
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 78c351e35fec..8e5689d06ac8 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -2166,10 +2166,6 @@ static inline bool vcpu_is_preempted(int cpu)
+ extern long sched_setaffinity(pid_t pid, const struct cpumask *new_mask);
+ extern long sched_getaffinity(pid_t pid, struct cpumask *mask);
+ 
+-#ifndef TASK_SIZE_OF
+-#define TASK_SIZE_OF(tsk)	TASK_SIZE
+-#endif
+-
+ #ifdef CONFIG_SMP
+ /* Returns effective CPU energy utilization, as seen by the scheduler */
+ unsigned long sched_cpu_util(int cpu, unsigned long max);
 -- 
 2.25.1
 
