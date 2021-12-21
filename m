@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3849C47C15E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 15:21:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A0547C15F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Dec 2021 15:21:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JJJXp1l4rz3bhg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 01:21:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JJJYX6g5xz3cJl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 01:21:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=AjuA8BQj;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=FgQjd3eD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
  envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=AjuA8BQj; 
+ header.s=desiato.20200630 header.b=FgQjd3eD; 
  dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+Received: from desiato.infradead.org (desiato.infradead.org
+ [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JJH306MGdz2x99
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 00:13:48 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JJH4Y0CSqz2xB8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 00:15:08 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
  References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=Tyz8PzJg8/A5UQdYT2N7TKnumB0ofZk85H9pQ9LnVsA=; b=AjuA8BQjL7+/rDNZMwZx4pp5q2
- PysFMI/fv4hFwTTDw4XxEArzWe0ZK5GBiEyp+hDW9HM9+h6/ZQCy4eC6WJX6fq6WowEskId61gItI
- vRtt7Qm+xnjKQJyFhny8sHZIOa5QhN28flhxt6JyTHAaWzsk++I2u5VmR6FcyYtUF142KdOdzW/ij
- rsIR+fX912pBnHUo+yxjOsM57rBSDe4DP5Z3xHSWbFiPRhCn7BprBdEc7nvH86sVcXn+TO5h5ewz0
- QHNZiJS0siLYVEYPdmAnApk4NZVOc9gsKI++PEcz/gWfc9htRxnDddmeKc6liKB4Ie5fC4TDa2Wy7
- 5PkwJRrg==;
+ bh=BQJ41uOETooHS8YreNmk+iO8nSNFA+o+JuBWcEsnIp0=; b=FgQjd3eDwQkafscGGqIntpgWn8
+ QcQ0GBrEAqdyid02waGnI5pcwDat1etueqnRtzjcJFAzD5xly6k1U4pdETbNcy4Qbd2BZIQu8HyNZ
+ JZ4CUE9nFUq+AVKLJCnyiNw9oMApWQpTeexx8YoMAjArG4BdFHled+sT8RJqkCFmDLaRBauqF4iSP
+ 2vGZlFStkFrl+77Zfh9WqOR24gVDKtIgKu/Rjg0UzVluQMA9mtvvs5W5pg76wSw2U9cBjwQ0ny84S
+ GybOC5r4ZCemafXBrvD4t0vyR2npdq8qorykzkLs3rcFhsgmeE9IFzzfzu1LLSWwoDiln8+wOvrpn
+ XoC3ydUg==;
 Received: from j217100.upc-j.chello.nl ([24.132.217.100]
  helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1mzexF-002UMD-PZ; Tue, 21 Dec 2021 13:13:21 +0000
+ by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1mzeyd-002jrB-4H; Tue, 21 Dec 2021 13:14:47 +0000
 Received: from hirez.programming.kicks-ass.net
  (hirez.programming.kicks-ass.net [192.168.1.225])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id AA37C300347;
- Tue, 21 Dec 2021 14:13:17 +0100 (CET)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 871D2300347;
+ Tue, 21 Dec 2021 14:14:46 +0100 (CET)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 8DCA2206E66FD; Tue, 21 Dec 2021 14:13:17 +0100 (CET)
-Date: Tue, 21 Dec 2021 14:13:17 +0100
+ id 75C9F206E66FD; Tue, 21 Dec 2021 14:14:46 +0100 (CET)
+Date: Tue, 21 Dec 2021 14:14:46 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: Yury Norov <yury.norov@gmail.com>
-Subject: Re: [PATCH 15/17] kernel/cpu: add num_active_cpu counter
-Message-ID: <YcHS7c7zWVrLhIfV@hirez.programming.kicks-ass.net>
+Subject: Re: [PATCH 14/17] kernel/cpu: add num_present_cpu counter
+Message-ID: <YcHTRsi+cdMxmBkl@hirez.programming.kicks-ass.net>
 References: <20211218212014.1315894-1-yury.norov@gmail.com>
- <20211218212014.1315894-16-yury.norov@gmail.com>
+ <20211218212014.1315894-15-yury.norov@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211218212014.1315894-16-yury.norov@gmail.com>
+In-Reply-To: <20211218212014.1315894-15-yury.norov@gmail.com>
 X-Mailman-Approved-At: Wed, 22 Dec 2021 01:20:39 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -132,15 +132,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Dec 18, 2021 at 01:20:11PM -0800, Yury Norov wrote:
-> Similarly to the online cpus, the cpu_active_mask is actively used
-> in the kernel. This patch adds a counter for active cpus, so that
-> users that call num_active_cpus() would know the result immediately,
-> instead of calling the bitmap_weight for the mask.
+On Sat, Dec 18, 2021 at 01:20:10PM -0800, Yury Norov wrote:
+> +EXPORT_SYMBOL(set_cpu_present);
 
-Who cares about num_active_cpus() ?
-
-> +EXPORT_SYMBOL(set_cpu_active);
-
-NAK, this should *never*ever* be used from a module.
-
+NAK
