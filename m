@@ -1,76 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8776847CED4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 10:08:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 648DA47CF39
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 10:28:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JJnY01w0Lz2ywF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 20:08:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JJp0Q0HQBz30BM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 20:28:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=NTGfEsaq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kYT8bDsr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::736;
- helo=mail-qk1-x736.google.com; envelope-from=cgel.zte@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=NTGfEsaq; dkim-atps=neutral
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com
- [IPv6:2607:f8b0:4864:20::736])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=kYT8bDsr; dkim-atps=neutral
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JJnXK2xjlz2xsx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 20:07:27 +1100 (AEDT)
-Received: by mail-qk1-x736.google.com with SMTP id i130so684143qke.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 01:07:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=82q23pf6F79CsGvvyr6VtDk1U+LrvvXzl1yTpgD2qXI=;
- b=NTGfEsaq/Z50NHpLlCHaPzI5WfxbxdMl0ct1kvlbHAL451PDYR5CLpPG8C/Yu0Q6XF
- 4TY0pcnpLOSV2brWp2f6Cggcezl4B8gvYNu3WsNWH5CCd51YHXms+wssKTVPwQQt5ciJ
- Uf4YWJwSrCtAB3pD9SrIAWlBSkjz4C1hrP8834IJ6mBua1rks57alNLHh5oXRe9zdFMD
- r58CqFObroiFWZ6Dc9R/N0sSLaKdEAMHYvghxbhzntTnvkO3RClWSUdKvlqKoOdukxa0
- nJMcirQSpxl8vxc3LUTlRigA9UXuRMjVt3eXUwxxnRRIUSsF1IWVf7ylscxcBbZzCLCv
- vT0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=82q23pf6F79CsGvvyr6VtDk1U+LrvvXzl1yTpgD2qXI=;
- b=W9es1CKXoVgnIWVOWQ9dBGFTIhUzTyV4mBgxCXZBHBA5kdgY7DdzSiidN0bBAsUKmJ
- 13JYnyuNQn6QsvV1KiWGl45UF4yv/ba1VBRdSsmu76U+D9Z/5AlI2nPl+cFdXCh3yk2p
- E4jcgMdkcrnXqASKkDi80mPsn88KTrOoozf8aMkdF7D2zFAa9GHB9UyU9jhZ6/m/KfZS
- h+inT9v88DTKNycooDOsFeFXxNrCwahdyhCp8uXwCs3pOLLW24NOPVlvJ3iYCoLGjw16
- S6HIvpJdMkGCeZ2pyV0C/eSTgWInV9PmTFxNAdOoidMmy26Pp3b8XPVaxtduNS+uzlDc
- IC/g==
-X-Gm-Message-State: AOAM5303Xe8igcARSeTxPFBl3fEQ7vej2jKKc+F0agR9eRUWmuZSYzhM
- TJdoueJB0Q/l6yTnd+TRNMdisvnSb6U=
-X-Google-Smtp-Source: ABdhPJyFLxncjijnVuS5KNcjwTO+lXy9IW1Mver2NIeQoTrkbrAtkoVh5HBoMTrpUH0StirNzNuaEA==
-X-Received: by 2002:a05:620a:430e:: with SMTP id
- u14mr1372729qko.286.1640164033021; 
- Wed, 22 Dec 2021 01:07:13 -0800 (PST)
-Received: from localhost.localdomain ([193.203.214.57])
- by smtp.gmail.com with ESMTPSA id bk25sm1371223qkb.13.2021.12.22.01.07.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 Dec 2021 01:07:12 -0800 (PST)
-From: cgel.zte@gmail.com
-X-Google-Original-From: deng.changcheng@zte.com.cn
-To: mpe@ellerman.id.au
-Subject: [PATCH v2] powerpc/cell/axon_msi: replace DEFINE_SIMPLE_ATTRIBUTE
- with DEFINE_DEBUGFS_ATTRIBUTE
-Date: Wed, 22 Dec 2021 09:06:55 +0000
-Message-Id: <20211222090655.484551-1-deng.changcheng@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <87h7b1lcvt.fsf@mpe.ellerman.id.au>
-References: <87h7b1lcvt.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JJnzk1LdKz2xDY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 20:27:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1640165266; x=1671701266;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=BWSCNL8E8hvaZ2ldO5d2vDPYWr3g9rssV1h09w5DYN8=;
+ b=kYT8bDsrq4qXm5WX2il3yztoY7kZqfzV4H+2VBQnXLpMZ9cH7jwiSK+Z
+ xHpaPV7ALnEj74SE5awuQbv75vApabnW7GVfNvU+LDqOKq7VMlxOatiWm
+ ecGUrPW6+SWKHB1fz0L3uhInUMabhOxIGty35LkFgW4rF0G/dNDfeEzPf
+ WREHvcZFGhcJwAtpQvJdWPtKyeq4qcOcgaytgsJe4s5BsxpPv3CICFV2+
+ dzyhp8ZxIKHC2nClVb/2jz8VYvZTIJwZabkSWhAg1PlE9M0d/cmetsLF6
+ jcx4oeWJutzeaB8f2xTxoqC4UNQotjjDdoOACy0ercYjIJVs0SCAJZDSm w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10205"; a="227880866"
+X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; d="scan'208";a="227880866"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Dec 2021 01:26:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,226,1635231600"; d="scan'208";a="466610892"
+Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
+ by orsmga003.jf.intel.com with ESMTP; 22 Dec 2021 01:26:39 -0800
+Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mzxtO-0000Jb-J9; Wed, 22 Dec 2021 09:26:38 +0000
+Date: Wed, 22 Dec 2021 17:25:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ "masahiroy@kernel.org" <masahiroy@kernel.org>
+Subject: Re: [PATCH 3/3] powerpc/vdso: Merge vdso64 and vdso32 into a single
+ directory
+Message-ID: <202112221723.qyvrCJHe-lkp@intel.com>
+References: <c4ff129869fa6b0c936ff7e388eee42bb5f46778.1640108961.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c4ff129869fa6b0c936ff7e388eee42bb5f46778.1640108961.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,50 +73,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: arnd@arndb.de, zealci@zte.com.cn, linux-kernel@vger.kernel.org,
- deng.changcheng@zte.com.cn, paulus@samba.org, cgel.zte@gmail.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ llvm@lists.linux.dev, kbuild-all@lists.01.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Changcheng Deng <deng.changcheng@zte.com.cn>
+Hi Christophe,
 
-Fix the following coccicheck warning:
-./arch/powerpc/platforms/cell/axon_msi.c: 456: 0-23: WARNING: fops_msic
-should be defined with DEFINE_DEBUGFS_ATTRIBUTE
+I love your patch! Yet something to improve:
 
-DEFINE_SIMPLE_ATTRIBUTE + debugfs_create_file()
-imposes some significant overhead as compared to
-DEFINE_DEBUGFS_ATTRIBUTE + debugfs_create_file_unsafe().
+[auto build test ERROR on powerpc/next]
+[also build test ERROR on v5.16-rc6 next-20211221]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Changcheng Deng <deng.changcheng@zte.com.cn>
+url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/powerpc-vdso-augment-VDSO32-functions-to-support-64-bits-build/20211222-021033
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+config: powerpc-randconfig-r023-20211222 (https://download.01.org/0day-ci/archive/20211222/202112221723.qyvrCJHe-lkp@intel.com/config)
+compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project de4e0195ae1c39f1c3b07834b8e32c113f4f20eb)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install powerpc cross compiling tool for clang build
+        # apt-get install binutils-powerpc-linux-gnu
+        # https://github.com/0day-ci/linux/commit/16137812dbb55d25ebe3962d5fb7486cb5b43311
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Christophe-Leroy/powerpc-vdso-augment-VDSO32-functions-to-support-64-bits-build/20211222-021033
+        git checkout 16137812dbb55d25ebe3962d5fb7486cb5b43311
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc prepare
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   <stdin>:1559:2: warning: syscall futex_waitv not implemented [-W#warnings]
+   #warning syscall futex_waitv not implemented
+    ^
+   1 warning generated.
+>> arch/powerpc/kernel/vdso/gettimeofday.S:75:8: error: unsupported directive '.stabs'
+   .stabs "_restgpr_31_x:F-1",36,0,0,_restgpr_31_x; .globl _restgpr_31_x; _restgpr_31_x:
+          ^
+   arch/powerpc/kernel/vdso/gettimeofday.S:76:8: error: unsupported directive '.stabs'
+   .stabs "_rest32gpr_31_x:F-1",36,0,0,_rest32gpr_31_x; .globl _rest32gpr_31_x; _rest32gpr_31_x:
+          ^
+   make[2]: *** [arch/powerpc/kernel/vdso/Makefile:71: arch/powerpc/kernel/vdso/gettimeofday-32.o] Error 1
+   make[2]: Target 'include/generated/vdso32-offsets.h' not remade because of errors.
+   make[1]: *** [arch/powerpc/Makefile:421: vdso_prepare] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:219: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
+
+
+vim +75 arch/powerpc/kernel/vdso/gettimeofday.S
+
+08c18b63d9656e arch/powerpc/kernel/vdso32/gettimeofday.S Christophe Leroy 2021-03-09  70  
+08c18b63d9656e arch/powerpc/kernel/vdso32/gettimeofday.S Christophe Leroy 2021-03-09  71  /* Routines for restoring integer registers, called by the compiler.  */
+08c18b63d9656e arch/powerpc/kernel/vdso32/gettimeofday.S Christophe Leroy 2021-03-09  72  /* Called with r11 pointing to the stack header word of the caller of the */
+08c18b63d9656e arch/powerpc/kernel/vdso32/gettimeofday.S Christophe Leroy 2021-03-09  73  /* function, just beyond the end of the integer restore area.  */
+11f0a078a8b6be arch/powerpc/kernel/vdso32/gettimeofday.S Christophe Leroy 2021-12-21  74  #ifndef __powerpc64__
+08c18b63d9656e arch/powerpc/kernel/vdso32/gettimeofday.S Christophe Leroy 2021-03-09 @75  _GLOBAL(_restgpr_31_x)
+
 ---
- arch/powerpc/platforms/cell/axon_msi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platforms/cell/axon_msi.c
-index 354a58c1e6f2..362c1efe4180 100644
---- a/arch/powerpc/platforms/cell/axon_msi.c
-+++ b/arch/powerpc/platforms/cell/axon_msi.c
-@@ -453,7 +453,7 @@ static int msic_get(void *data, u64 *val)
- 	return 0;
- }
- 
--DEFINE_SIMPLE_ATTRIBUTE(fops_msic, msic_get, msic_set, "%llu\n");
-+DEFINE_DEBUGFS_ATTRIBUTE(fops_msic, msic_get, msic_set, "%llu\n");
- 
- void axon_msi_debug_setup(struct device_node *dn, struct axon_msic *msic)
- {
-@@ -474,6 +474,6 @@ void axon_msi_debug_setup(struct device_node *dn, struct axon_msic *msic)
- 
- 	snprintf(name, sizeof(name), "msic_%d", of_node_to_nid(dn));
- 
--	debugfs_create_file(name, 0600, arch_debugfs_dir, msic, &fops_msic);
-+	debugfs_create_file_unsafe(name, 0600, arch_debugfs_dir, msic, &fops_msic);
- }
- #endif /* DEBUG */
--- 
-2.25.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
