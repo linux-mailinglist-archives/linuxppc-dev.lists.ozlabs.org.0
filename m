@@ -2,53 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8FB47CA10
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 01:09:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C87247CA26
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 01:16:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JJYbK1k1Qz3c71
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 11:09:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JJYl61LZVz2ywF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Dec 2021 11:16:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=AZ/3hHLa;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kaD+BQzV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JJYZg43pZz2xsZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 11:08:43 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=AZ/3hHLa; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JJYZf0kXFz4xd4;
- Wed, 22 Dec 2021 11:08:42 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1640131723;
- bh=VaK3fe/fwdQvGHMuHp0W4YtsHrFkm3aqf/mdtrIJnfY=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=AZ/3hHLatxABiCAVuLhEeUXvZWOLql6W16iEG/c+hI7PdR8C7f7z7ziHSBYEF5V7h
- X2bFYppX0K5l0KiULFvEORw3SEubax/VvTFa3KIF19cemiiNLmDEvrTXatkp0nc66D
- n4lnGiqWP6EcavcwIMpS2p3kJ2bJ2ni39lGQ0fib3rp3ZD9jcF2Zy6e7Ahd/StAF3B
- LQj7/fBagdAoUz8/kJP2XPIm4Lpbf3m1mvuF4zgYBSZgJ1tXiEB1aSA8Bk40+gu7u3
- kFyUFfxv6oXEMRsadk7lOD6J/RJ8G5osazX1+INvubKVjjcD6FBlibADXVo4c2Euus
- b3Pl4S7dIvwFw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: cgel.zte@gmail.com, arnd@arndb.de
-Subject: Re: [PATCH] powerpc/cell/axon_msi: replace DEFINE_SIMPLE_ATTRIBUTE
- with  DEFINE_DEBUGFS_ATTRIBUTE
-In-Reply-To: <20211221144814.480849-1-deng.changcheng@zte.com.cn>
-References: <20211221144814.480849-1-deng.changcheng@zte.com.cn>
-Date: Wed, 22 Dec 2021 11:08:38 +1100
-Message-ID: <87h7b1lcvt.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=kaD+BQzV; dkim-atps=neutral
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JJYkS0850z2xsS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Dec 2021 11:15:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1640132128; x=1671668128;
+ h=date:from:to:cc:subject:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Zt+CBoGd+qV9Nf1nf4NmD9Zhut7qW9KpPmNqLhlPVyM=;
+ b=kaD+BQzVzboeYFibMFw/C7ituBdM1g7eBHgPJzOH5Db4e5TU34dy645E
+ +PDydRlXPdYb2ueTQfJVAP1B6hMZ5nXRT3IAzZVqTtr0fJohl7Twjrpc4
+ oC4M0nKhd4uRQQvbeylsJP48F4otrtXxn3CQfT8cOnvqZ5Ms7wIiYkYCT
+ D7C+5EYNyIbnUN7vRpYU8YS9Bn3MANQhJeWuv+qmVZRVK72E2ThKCVkvD
+ 7gdxdTg6VKZW+e7GgjZIkID9RhjQEBYKrLTzeJecKhjUjq9gk5GV7fWpa
+ 2673J3kMFG7h5PzPsBJCnfOXTyyHNX0x2oZEIQR7MqdA19Ii7pbiB8wG7 w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10205"; a="303885634"
+X-IronPort-AV: E=Sophos;i="5.88,224,1635231600"; d="scan'208";a="303885634"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Dec 2021 16:14:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,224,1635231600"; d="scan'208";a="684837135"
+Received: from lkp-server02.sh.intel.com (HELO 9f38c0981d9f) ([10.239.97.151])
+ by orsmga005.jf.intel.com with ESMTP; 21 Dec 2021 16:14:21 -0800
+Received: from kbuild by 9f38c0981d9f with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1mzpGu-0009h7-Ta; Wed, 22 Dec 2021 00:14:20 +0000
+Date: Wed, 22 Dec 2021 08:14:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 8d84fca4375e3c35dadc16b8c7eee6821b2a575c
+Message-ID: <61c26dcc.05Nk9JNJ9BZVSa8o%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,46 +68,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zeal Robot <zealci@zte.com.cn>,
- Changcheng Deng <deng.changcheng@zte.com.cn>, linux-kernel@vger.kernel.org,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-cgel.zte@gmail.com writes:
-> From: Changcheng Deng <deng.changcheng@zte.com.cn>
->
-> Fix the following coccicheck warning:
-> ./arch/powerpc/platforms/cell/axon_msi.c: 456: 0-23: WARNING: fops_msic
-> should be defined with DEFINE_DEBUGFS_ATTRIBUTE
->
-> Use DEFINE_DEBUGFS_ATTRIBUTE rather than DEFINE_SIMPLE_ATTRIBUTE for
-> debugfs files.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 8d84fca4375e3c35dadc16b8c7eee6821b2a575c  powerpc/ptdump: Fix DEBUG_WX since generic ptdump conversion
 
-But it also says:
+elapsed time: 721m
 
-  //# Rationale: DEFINE_SIMPLE_ATTRIBUTE + debugfs_create_file()
-  //# imposes some significant overhead as compared to
-  //# DEFINE_DEBUGFS_ATTRIBUTE + debugfs_create_file_unsafe().
+configs tested: 121
+configs skipped: 130
 
-Your patch doesn't change it to use debugfs_create_file_unsafe(),
-shouldn't it?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-cheers
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+sh                             espt_defconfig
+mips                     loongson1c_defconfig
+arm                        realview_defconfig
+powerpc                  storcenter_defconfig
+sh                        edosk7705_defconfig
+powerpc                 mpc832x_rdb_defconfig
+powerpc                       eiger_defconfig
+powerpc                     stx_gp3_defconfig
+sh                     sh7710voipgw_defconfig
+arm                              alldefconfig
+arm                          moxart_defconfig
+mips                        qi_lb60_defconfig
+arm                        magician_defconfig
+mips                           ip32_defconfig
+mips                         rt305x_defconfig
+mips                           gcw0_defconfig
+mips                       bmips_be_defconfig
+powerpc                     skiroot_defconfig
+mips                      maltaaprp_defconfig
+sh                           se7206_defconfig
+mips                        jmr3927_defconfig
+mips                       capcella_defconfig
+powerpc                 canyonlands_defconfig
+sh                        dreamcast_defconfig
+mips                           ci20_defconfig
+m68k                            q40_defconfig
+powerpc                   lite5200b_defconfig
+arm                          pcm027_defconfig
+powerpc                      katmai_defconfig
+arm                         assabet_defconfig
+sh                            shmin_defconfig
+powerpc                    sam440ep_defconfig
+m68k                        m5407c3_defconfig
+powerpc                     tqm8548_defconfig
+sh                           se7780_defconfig
+arm                  randconfig-c002-20211220
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+nds32                             allnoconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64               randconfig-a001-20211220
+x86_64               randconfig-a003-20211220
+x86_64               randconfig-a005-20211220
+x86_64               randconfig-a006-20211220
+x86_64               randconfig-a004-20211220
+x86_64               randconfig-a002-20211220
+i386                 randconfig-a013-20211219
+i386                 randconfig-a011-20211219
+i386                 randconfig-a016-20211219
+i386                 randconfig-a015-20211219
+i386                 randconfig-a014-20211219
+i386                 randconfig-a012-20211219
+arc                  randconfig-r043-20211221
+riscv                randconfig-r042-20211221
+s390                 randconfig-r044-20211221
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
 
-> diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platforms/cell/axon_msi.c
-> index 354a58c1e6f2..47bb0ae8d6c9 100644
-> --- a/arch/powerpc/platforms/cell/axon_msi.c
-> +++ b/arch/powerpc/platforms/cell/axon_msi.c
-> @@ -453,7 +453,7 @@ static int msic_get(void *data, u64 *val)
->  	return 0;
->  }
->  
-> -DEFINE_SIMPLE_ATTRIBUTE(fops_msic, msic_get, msic_set, "%llu\n");
-> +DEFINE_DEBUGFS_ATTRIBUTE(fops_msic, msic_get, msic_set, "%llu\n");
->  
->  void axon_msi_debug_setup(struct device_node *dn, struct axon_msic *msic)
->  {
-> -- 
-> 2.25.1
+clang tested configs:
+x86_64               randconfig-a013-20211220
+x86_64               randconfig-a015-20211220
+x86_64               randconfig-a014-20211220
+x86_64               randconfig-a012-20211220
+x86_64               randconfig-a011-20211220
+x86_64               randconfig-a016-20211220
+i386                 randconfig-a012-20211220
+i386                 randconfig-a011-20211220
+i386                 randconfig-a014-20211220
+i386                 randconfig-a016-20211220
+i386                 randconfig-a015-20211220
+i386                 randconfig-a013-20211220
+hexagon              randconfig-r041-20211220
+hexagon              randconfig-r045-20211220
+riscv                randconfig-r042-20211220
+s390                 randconfig-r044-20211220
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
