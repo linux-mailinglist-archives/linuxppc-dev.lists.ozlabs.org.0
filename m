@@ -2,49 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 030DF47E127
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Dec 2021 11:12:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F7447E289
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Dec 2021 12:45:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JKQx56q2Nz3cG5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Dec 2021 21:12:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JKSzk4y5dz3cCM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Dec 2021 22:45:06 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=H7HZlWW1;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com;
- envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JKQwc22C3z2yfm
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Dec 2021 21:12:12 +1100 (AEDT)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.55])
- by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4JKQrg6bjFz1DKFD;
- Thu, 23 Dec 2021 18:08:51 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Thu, 23 Dec 2021 18:12:01 +0800
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Thu, 23 Dec 2021 18:12:01 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Kees Cook <keescook@chromium.org>, Laura Abbott <labbott@redhat.com>,
- "Mark Rutland" <mark.rutland@arm.com>, <linux-mm@kvack.org>, Andrew Morton
- <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- "Paul Mackerras" <paulus@samba.org>, <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] Revert "mm/usercopy: Drop extra is_vmalloc_or_module() check"
-Date: Thu, 23 Dec 2021 18:21:26 +0800
-Message-ID: <20211223102126.161848-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.26.2
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JKSz60Mysz2xsX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Dec 2021 22:44:34 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=H7HZlWW1; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JKSz45D6yz4xmv;
+ Thu, 23 Dec 2021 22:44:31 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1640259872;
+ bh=9hQPRuG+ZL74d5IotcBT6emLikScsj754Sfn0BuoEWc=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=H7HZlWW1AJSxhvRcUn94p+IHKJKFI2YoW1jhX21VxDDI/mrcqw5qOxYq1n45mgJo4
+ dlWQLnV3X+Eeto+5/TAnh4WcgOMP3FihfUYByqwXvHW+S969z/iHbFhAFwnmK6/SwS
+ CG5oo3T15uk9fgTec3wTuiKNV0ajIyWIaxiAynKbnRji+S0S54n8UdO6mLGBk6bbBx
+ 9jxBSxzAQicr6DhJkyldF6CXSBd/1Oub35nQEUJ/n3T4yj0nxwuvtAKNdepOtAAkj/
+ vGNclFGtR1llG8EfZHBA0WU8al/dhF/lVpIPuTBbyCFkv2hLdnNeeAt9pxcV79bdH3
+ JG9ObwIT5HX1A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nick Child
+ <nnac123@gmail.com>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH v2 00/20] powerpc: Define eligible functions as __init
+In-Reply-To: <f1bdd55e-1141-c118-0f6d-b5ce61c6f7dd@csgroup.eu>
+References: <20211216220035.605465-1-nick.child@ibm.com>
+ <f1bdd55e-1141-c118-0f6d-b5ce61c6f7dd@csgroup.eu>
+Date: Thu, 23 Dec 2021 22:44:28 +1100
+Message-ID: <874k6z35r7.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.113.25]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,64 +63,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Nick Child <nick.child@ibm.com>, "dja@axtens.net" <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This reverts commit 517e1fbeb65f5eade8d14f46ac365db6c75aea9b.
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 16/12/2021 =C3=A0 23:00, Nick Child a =C3=A9crit=C2=A0:
+>>=20
+>> Changes in v2:
+>>   - add `__init` in prototypes right before the funtion name instead of
+>>      at the end.
+>>   - respond to ./scripts/checkpatch feedback
+>
+> You probably missed the following comment from checkpatch:
+>
+> WARNING: From:/Signed-off-by: email address mismatch: 'From: Nick Child=20
+> <nnac123@gmail.com>' !=3D 'Signed-off-by: Nick Child <nick.child@ibm.com>'
 
-  usercopy: Kernel memory exposure attempt detected from SLUB object not in SLUB page?! (offset 0, size 1048)!
-  kernel BUG at mm/usercopy.c:99
-  ...
-  usercopy_abort+0x64/0xa0 (unreliable)
-  __check_heap_object+0x168/0x190
-  __check_object_size+0x1a0/0x200
-  dev_ethtool+0x2494/0x2b20
-  dev_ioctl+0x5d0/0x770
-  sock_do_ioctl+0xf0/0x1d0
-  sock_ioctl+0x3ec/0x5a0
-  __se_sys_ioctl+0xf0/0x160
-  system_call_exception+0xfc/0x1f0
-  system_call_common+0xf8/0x200
+I fixed it up when applying to use Nick's IBM address as the author.
 
-When run ethtool eth0, the BUG occurred, the code shows below,
+> Sending from a different address is possible, but you then must add
+>
+> From: Nick Child <nick.child@ibm.com>
+>
+> at the top of the commit message.
+>
+> 'git format-patch' should be able to do it for you with the good option.
 
-  data = vzalloc(array_size(gstrings.len, ETH_GSTRING_LEN));
-  copy_to_user(useraddr, data, gstrings.len * ETH_GSTRING_LEN))
+Yeah, Nick please teach git format-patch/send-email to use the right
+address for future series. If you need any help just let me know.
 
-The data is alloced by vmalloc(),  virt_addr_valid(ptr) will return true
-on PowerPC64, which leads to the panic, add back the is_vmalloc_or_module()
-check to fix it.
-
-Fixes: 517e1fbeb65f (mm/usercopy: Drop extra is_vmalloc_or_module() check)
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
- mm/usercopy.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/mm/usercopy.c b/mm/usercopy.c
-index b3de3c4eefba..cfc845403017 100644
---- a/mm/usercopy.c
-+++ b/mm/usercopy.c
-@@ -225,6 +225,17 @@ static inline void check_heap_object(const void *ptr, unsigned long n,
- {
- 	struct page *page;
- 
-+	/*
-+	 * Some architectures (PowerPC64) return true for virt_addr_valid() on
-+	 * vmalloced addresses. Work around this by checking for vmalloc
-+	 * first.
-+	 *
-+	 * We also need to check for module addresses explicitly since we
-+	 * may copy static data from modules to userspace
-+	 */
-+	if (is_vmalloc_or_module_addr(ptr))
-+		return;
-+
- 	if (!virt_addr_valid(ptr))
- 		return;
- 
--- 
-2.26.2
-
+cheers
