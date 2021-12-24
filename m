@@ -1,58 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED5347EF24
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Dec 2021 14:24:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB7647EF39
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Dec 2021 14:35:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JL78R5jK9z305v
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 00:24:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JL7P152dlz2ybK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 00:35:49 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Lu9yHVCK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Lu9yHVCK; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JL7810kHFz2x9b
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 00:24:30 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4JL77s35fFz9sSb;
- Fri, 24 Dec 2021 14:24:25 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 7jpGFkVta4MA; Fri, 24 Dec 2021 14:24:25 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4JL77s2MD1z9sSG;
- Fri, 24 Dec 2021 14:24:25 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 413F98B78C;
- Fri, 24 Dec 2021 14:24:25 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id f6_VEmgpR73p; Fri, 24 Dec 2021 14:24:25 +0100 (CET)
-Received: from [192.168.234.3] (unknown [192.168.234.3])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E5E5D8B764;
- Fri, 24 Dec 2021 14:24:24 +0100 (CET)
-Message-ID: <8926c850-a28b-0600-9116-1c794f80b532@csgroup.eu>
-Date: Fri, 24 Dec 2021 14:24:24 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JL7NH6sWbz2yPT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 00:35:11 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 24491B822D5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Dec 2021 13:35:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DA04BC36AE5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Dec 2021 13:35:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1640352907;
+ bh=xipJ9rn4PtpAeH9KbMdvcJO0PbpME/vYNBNH6ArvAiU=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=Lu9yHVCKVADD6xC2bSxUT5kogIbfKI3qAiuuTo9HVgrd0KxyqQxbuoSDv0d/bGk7S
+ DpK5pfDgeH5IrYOe8QS61EpaEttGt5G9+KbnZrccOV2TQKjgk5kH+DJZHPBS+X+enT
+ qLO8VSLHvx4A7L5zaJp50rsOxkTD6NMdhcYS4FFFK9fVYZrmlqVJgoNhHe+kol6C/w
+ u3Dg39kCKb6IPY0pECUH48VZLRq89X+cuYDp9m8Jjy9amYJ3ZO0gf6N7XwVh4koApw
+ cja4YYASWjJ9iweXVSiwhR/FrGqVBm1hFok9R1NkeDHSkD9YhfOKwryLgU+r4cdem6
+ t/VyiLGvyFHlg==
+Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
+ id BC6E360EB2; Fri, 24 Dec 2021 13:35:07 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 215389] pagealloc: memory corruption at building glibc-2.33 and
+ running its' testsuite
+Date: Fri, 24 Dec 2021 13:35:07 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: christophe.leroy@csgroup.eu
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-215389-206035-4DIClVPcEi@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-215389-206035@https.bugzilla.kernel.org/>
+References: <bug-215389-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH 4/5] powerpc/64: Add VIRTUAL_BUG_ON checks for __va and
- __pa addresses
-Content-Language: fr-FR
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20190724084638.24982-1-npiggin@gmail.com>
- <20190724084638.24982-4-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20190724084638.24982-4-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,55 +84,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Reza Arbab <arbab@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nic,
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215389
 
-Le 24/07/2019 à 10:46, Nicholas Piggin a écrit :
-> Ensure __va is given a physical address below PAGE_OFFSET, and __pa is
-> given a virtual address above PAGE_OFFSET.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   arch/powerpc/include/asm/page.h | 14 ++++++++++++--
->   1 file changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
-> index 0d52f57fca04..c8bb14ff4713 100644
-> --- a/arch/powerpc/include/asm/page.h
-> +++ b/arch/powerpc/include/asm/page.h
-> @@ -215,9 +215,19 @@ static inline bool pfn_valid(unsigned long pfn)
->   /*
->    * gcc miscompiles (unsigned long)(&static_var) - PAGE_OFFSET
->    * with -mcmodel=medium, so we use & and | instead of - and + on 64-bit.
-> + * This also results in better code generation.
->    */
-> -#define __va(x) ((void *)(unsigned long)((phys_addr_t)(x) | PAGE_OFFSET))
-> -#define __pa(x) ((unsigned long)(x) & 0x0fffffffffffffffUL)
-> +#define __va(x)								\
-> +({									\
-> +	VIRTUAL_BUG_ON((unsigned long)(x) >= PAGE_OFFSET);		\
-> +	(void *)(unsigned long)((phys_addr_t)(x) | PAGE_OFFSET);	\
-> +})
-> +
-> +#define __pa(x)								\
-> +({									\
-> +	VIRTUAL_BUG_ON((unsigned long)(x) < PAGE_OFFSET);		\
+Christophe Leroy (christophe.leroy@csgroup.eu) changed:
 
-With this, it is likely that virt_addr_valid() BUGs on a non valid address.
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |christophe.leroy@csgroup.eu
 
-I think the purpose of virt_addr_valid() is to check addresses 
-seamlessly, see check_heap_object()
+--- Comment #2 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
+Probably hard to track.
 
+Any chance to bisect the issue ?
 
-> +	(unsigned long)(x) & 0x0fffffffffffffffUL;			\
-> +})
->   
->   #else /* 32-bit, non book E */
->   #define __va(x) ((void *)(unsigned long)((phys_addr_t)(x) + PAGE_OFFSET - MEMORY_START))
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
