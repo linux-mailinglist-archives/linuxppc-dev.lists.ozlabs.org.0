@@ -2,71 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE99647F2E8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 11:17:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CCF47F2EB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 11:17:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JLfxW5qDGz305W
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 21:17:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JLfyF4J6Xz3cP5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 21:17:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fAYdn9Py;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XzVdxE+8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436;
- helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
+ helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=fAYdn9Py; dkim-atps=neutral
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com
- [IPv6:2607:f8b0:4864:20::436])
+ header.s=20210112 header.b=XzVdxE+8; dkim-atps=neutral
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
+ [IPv6:2607:f8b0:4864:20::630])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JLfwq5H7Yz2x9B
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 21:16:41 +1100 (AEDT)
-Received: by mail-pf1-x436.google.com with SMTP id u20so9518288pfi.12
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 02:16:41 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JLfxb72cKz308b
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 21:17:23 +1100 (AEDT)
+Received: by mail-pl1-x630.google.com with SMTP id w24so8041617ply.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 02:17:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=AiLBuSRxPrOC9G+ecpzrT+nfcX/wNK5T9ujCVDlu8KE=;
- b=fAYdn9PyWyIqj3OH+YtDuI5yLgQDLK6FnMg/THs8eW5a8LhrRGBb0YUcyyVvfueX32
- nVJ4TdBQZ9ADwrsnHLIKxKuSs7ptFCh+XGBdwOSk0LmlIwwHfExQwSKth6WONvqi+ia6
- MYvzE9t9qoy88gqb6SoqifFV7esV++Th6xqgnm2Eyw4nttdgIq/5MwgzgDPcCQodN0Xk
- rEGV74fj/frefWqUP0g1mV1LW7acsaQpP1luQ88Vg49JvnuS7cQzA4fJuu4Fy6h+jcqW
- vSigyoARse5m+7LtOdyaPXp8F7BqfPKwoO2N++nBqwDC9MwCp0Ex81nwqqYx74J3ZHJe
- wqxA==
+ bh=+Ua4M1wfcUhBq2TD1oIgn0I4RkUTfjjelNJTCFbhcA8=;
+ b=XzVdxE+8JiAKiwnNyHob3JSx3aFcs8tys+NKp+JTL7vVSeMN6btZW+kyyVAEELjmm+
+ 9HsrCyTsWomFmsg466x69YuLkBFmEoF+DHfqAMGEq9SAGxBqMgp9IqBP5WX9Z+xCjGQW
+ axop7FvhHbl56iCsmb+4vflzxH/h5oLP7ray4NolDIqgnbDx0YBgPUGiaSescvpLZ0mX
+ eq16c9qi3kQyJVrSxlOW+BISTvgE2EOVefq8H53Z3EMu5wRsldGbHu2OfVEo0C5KVsl4
+ DWZWi4KKoXkAATU/nVaWSHyKTQhxINERTuKrvDD/C3RL3znqGR657canOAaZUNWabaNM
+ i2GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=AiLBuSRxPrOC9G+ecpzrT+nfcX/wNK5T9ujCVDlu8KE=;
- b=sOD5vPe0hbv1y8MKrtRXP4m6oH9x8GIcHqIC1uwOpsPUz1GcFjn/uSj06IBmmHv5yx
- g/yne2PGNgKVM4qFPea9I9eLF4/6s5nQBOO31pqGu0bXDRBO+zG9RwSgp9rNLD50qabH
- kRsiJ97MXqjdVdQoxY0joW7erDkfptVimAwqTpHVs8V3uYD3O6hE6/k8GIm4tLVmM9ye
- mO+tIwSrxIg9y//pk59v/l3YjyakLTtymF5Pc7ky6YGsFQ3/f+t5TqcEwPZ6R61nJVAm
- ObcxEGGDa7BI4YzczyRtKQy7dpymPfx9tIR1SuO1z4tL1Z5/69HM1gREKO09jV40BAze
- TbYg==
-X-Gm-Message-State: AOAM531mjZ3L23MLCQtOwpBaqIm+cXOtVnZ84jRNVzuweSaXdXIoi1FX
- /dV60kTdpLDBDawwDp2j7BSuwt70mHs=
-X-Google-Smtp-Source: ABdhPJyFPV+d6OnL1RxRjtWxEAE4KAyN3wF7hUCLdGI3gvZZYJ07qiGz65Cg+e/tXdpt9iWtc/ZSYg==
-X-Received: by 2002:a63:6c03:: with SMTP id h3mr8943567pgc.458.1640427398948; 
- Sat, 25 Dec 2021 02:16:38 -0800 (PST)
+ bh=+Ua4M1wfcUhBq2TD1oIgn0I4RkUTfjjelNJTCFbhcA8=;
+ b=Wrei9G4xzsIP0361DATg37DCK/yNFAq368pEN8uXT1E3gSfcktttP28JV8VErp69nH
+ jX4f6rjeK115BEgJF1MTQPkCrIYyA4RDSHmR07WOAKrbLTGqtl5J+cblhG6/zb+Pa4Vu
+ nQL+1L0GfcZt/RcvReMgNR8pPmd5HaDj/n9cEr0fIQlDwssWEqlRvuKL3slarE1EAqPV
+ 5cVLYOoA6wW2p4yV0NK1XDl6sXmRSFQQcKg4Yx/pas7R3HaA4ixAQ2sUnYFp0mBMfeFo
+ bcHue2JV/tMMvRdM4SmYHn/Nama+8ITl84mi8K15SPjWYQm7PEJACy2YGpkA2cJzPC5m
+ Eoow==
+X-Gm-Message-State: AOAM5303M9b2K+fFIbXbImdlWPrt8fFWYOYTEeNObRQBwYNfQHN/7yqe
+ qd39GcfJOamyevwav/mFvgY=
+X-Google-Smtp-Source: ABdhPJzpkbpqANhmB7dUgOLbovVw1mLVyBejti7xPBHB/aUjzpXT6jcRQ2Q1pN1KcMg4lcBTYapLoA==
+X-Received: by 2002:a17:902:8c97:b0:148:ce06:eff9 with SMTP id
+ t23-20020a1709028c9700b00148ce06eff9mr9827290plo.5.1640427441787; 
+ Sat, 25 Dec 2021 02:17:21 -0800 (PST)
 Received: from localhost (121-44-67-22.tpgi.com.au. [121.44.67.22])
- by smtp.gmail.com with ESMTPSA id c9sm11372447pfb.126.2021.12.25.02.16.38
+ by smtp.gmail.com with ESMTPSA id w7sm9758401pgo.56.2021.12.25.02.17.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 25 Dec 2021 02:16:38 -0800 (PST)
-Date: Sat, 25 Dec 2021 20:16:34 +1000
+ Sat, 25 Dec 2021 02:17:21 -0800 (PST)
+Date: Sat, 25 Dec 2021 20:17:16 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 3/3] KVM: PPC: Fix mmio length message
+Subject: Re: [PATCH 1/3] KVM: PPC: Book3S HV: Check return value of
+ kvmppc_radix_init
 To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
-References: <20211223211528.3560711-1-farosas@linux.ibm.com>
- <20211223211528.3560711-4-farosas@linux.ibm.com>
-In-Reply-To: <20211223211528.3560711-4-farosas@linux.ibm.com>
+References: <20211223211931.3560887-1-farosas@linux.ibm.com>
+ <20211223211931.3560887-2-farosas@linux.ibm.com>
+In-Reply-To: <20211223211931.3560887-2-farosas@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1640427230.38pm5r9iop.astroid@bobo.none>
+Message-Id: <1640427422.4ftxfv81m7.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -80,62 +82,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Fabiano Rosas's message of December 24, 2021 7:15 am:
-> We check against 'bytes' but print 'run->mmio.len' which at that point
-> has an old value.
+Excerpts from Fabiano Rosas's message of December 24, 2021 7:19 am:
+> The return of the function is being shadowed by the call to
+> kvmppc_uvmem_init.
 >=20
-> e.g. 16-byte load:
->=20
-> before:
-> __kvmppc_handle_load: bad MMIO length: 8
->=20
-> now:
-> __kvmppc_handle_load: bad MMIO length: 16
->=20
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+> Fixes: ca9f4942670c ("KVM: PPC: Book3S HV: Support for running secure gue=
+sts")
 > Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
-
-This patch fine, but in the case of overflow we continue anyway here.
-Can that overwrite some other memory in the kvm_run struct?
-
-This is familiar, maybe something Alexey has noticed in the past too?
-What was the consensus on fixing it? (at least it should have a comment
-if it's not a problem IMO)
-
-Thanks,
-Nick
-
 > ---
->  arch/powerpc/kvm/powerpc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  arch/powerpc/kvm/book3s_hv.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 793d42bd6c8f..7823207eb8f1 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -1246,7 +1246,7 @@ static int __kvmppc_handle_load(struct kvm_vcpu *vc=
-pu,
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 7b74fc0a986b..9f4765951733 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -6098,8 +6098,11 @@ static int kvmppc_book3s_init_hv(void)
+>  	if (r)
+>  		return r;
 > =20
->  	if (bytes > sizeof(run->mmio.data)) {
->  		printk(KERN_ERR "%s: bad MMIO length: %d\n", __func__,
-> -		       run->mmio.len);
-> +		       bytes);
->  	}
+> -	if (kvmppc_radix_possible())
+> +	if (kvmppc_radix_possible()) {
+>  		r =3D kvmppc_radix_init();
+> +		if (r)
+> +			return r;
+> +	}
 > =20
->  	run->mmio.phys_addr =3D vcpu->arch.paddr_accessed;
-> @@ -1335,7 +1335,7 @@ int kvmppc_handle_store(struct kvm_vcpu *vcpu,
-> =20
->  	if (bytes > sizeof(run->mmio.data)) {
->  		printk(KERN_ERR "%s: bad MMIO length: %d\n", __func__,
-> -		       run->mmio.len);
-> +		       bytes);
->  	}
-> =20
->  	run->mmio.phys_addr =3D vcpu->arch.paddr_accessed;
+>  	r =3D kvmppc_uvmem_init();
+>  	if (r < 0)
 > --=20
 > 2.33.1
 >=20
