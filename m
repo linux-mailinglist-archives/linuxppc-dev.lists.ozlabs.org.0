@@ -1,75 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDF347F2FB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 11:32:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C189D47F30B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 12:05:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JLgHB2GsBz3bXV
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 21:32:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JLh114bvtz3blF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 22:05:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GkLp4gXM;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LQLYQvPR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f;
- helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e;
+ helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=GkLp4gXM; dkim-atps=neutral
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
- [IPv6:2607:f8b0:4864:20::52f])
+ header.s=20210112 header.b=LQLYQvPR; dkim-atps=neutral
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
+ [IPv6:2607:f8b0:4864:20::42e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JLgGV0sdWz2ywm
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 21:32:00 +1100 (AEDT)
-Received: by mail-pg1-x52f.google.com with SMTP id f125so9631065pgc.0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 02:31:59 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JLh0K179pz2xXC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 22:04:46 +1100 (AEDT)
+Received: by mail-pf1-x42e.google.com with SMTP id 205so9643208pfu.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 03:04:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:references:in-reply-to:mime-version:message-id
  :content-transfer-encoding;
- bh=KN6PIQquCgk03dWkG9XL/kIzWdXLnNmWHChE1GRrZAE=;
- b=GkLp4gXMCdlVzRzp/ktZHR6riB2nIdanwM41i7NhAeDRz/U4ejuds3tqeXlXFCmEBC
- N7DsUhjemU7EB5VU/mKlr6CMTM4Prgnbe3BwbyPhXNNNpPD49lzrAbVTAPDnZCCxp+p3
- PLmz5UFbYnMzcGfUu9h6td9e0SarVArr679wnocDQip7HnPR85x3IesXMUjqmbsvLDpN
- 9sTlHua9q23cyKCZAosUOMzejtYi5hNzvpN+2JKKStuHL9tFw7/HMQne/BfXhjxegVqU
- RLFFyO3bWAv7uaEH3Z7L4k4Ruorom7sKpWKpX2Qkf8qAPWZ1RbGH11lhdTLdkDZ0jm//
- fgRw==
+ bh=gUtCyLQsycQFtRbUQo6GBEUij99uMbOT++CaP/ehmsE=;
+ b=LQLYQvPR3FxgN7WrRRrlthrOLisN0lxn55B20rVaL16EDMyE9jyvvIBJeSi27OS6Ty
+ yt7cWwzp4Hn2RqHkkCtd4k6HqozcanrPegubnIK8SRsWswBz65wjq9C4CPShmfhdFbSb
+ gZ4GL0XKRRPux7CWSRPD82fRnis/UxHkIISdbIfdF+hbwvKy0sMmCcmQufJgD4uuUrIe
+ 0EVympRZ8LMP7oaWGQjFSNeBpjIOcXvgmBHUH6kOpnLO80qEI8Z0WknCxqoNISh3CqKp
+ Ts+jYMFStkrNlMB5rdsgyqPy2+tKBEbbVgFoyUz4aQXKQOtEJWRW1gYDytv5rZA4zETl
+ ZmUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=KN6PIQquCgk03dWkG9XL/kIzWdXLnNmWHChE1GRrZAE=;
- b=UZFlZejbGh7R7cGgiXVBKYrIB8WAD/9KBEe+osOgwBzf4UQJkfHbQLPZrPDSxzachq
- xsKTw4qNF1ClSsqDCkPZfSXseHi6ueDjY+TYMvqgwMJFvRXuFqS5PWxmFyPuC8DIVpzk
- wdTFSrzpfXkU1OLFMV8wDDZ9N1B0ViBSmUaZyxGqsx8BOF+EGUhD7jlK0SpvGldqy2yX
- UE05nWV3uyDtU1HUgGOLqSKl/rpCBde0tLT/uPvw9qNOtmH6Hjnr8CdhnqckeiHk1ofO
- 73d6HYKj9vu943YGUMM+6+A12lEwKZLHlgTOhqALpmHG2DjW4vBPYOt9fYkU5M1jeqbu
- meHA==
-X-Gm-Message-State: AOAM5315rzZAPxV+9/ob6YJf9XkW/Mr3kgqY6lhrWM4mX49mjfydUIJY
- R34UubkAKWh+EJS+nHhfpuM=
-X-Google-Smtp-Source: ABdhPJxvyTH+PcEJGwXpy9zyPgomb0JXdQ1sZgBWbC21x8DiYARCWc4SlbwIUmgspEF4kiah7uDFXA==
-X-Received: by 2002:a63:43c6:: with SMTP id q189mr9005296pga.424.1640428317079; 
- Sat, 25 Dec 2021 02:31:57 -0800 (PST)
+ bh=gUtCyLQsycQFtRbUQo6GBEUij99uMbOT++CaP/ehmsE=;
+ b=czk3jVkPCllY4sc4HLtnhdcrdoe7nUrTk2+IF3x1q+3DUrdF//SynRS/e2ZZt3zuHW
+ i5Yk1Gt01iUWiNoPyabgW4MfkbAWH8BTAWqLM3yJn3oAsZH7MPlCtb1qQElknyAVuXin
+ mhbP6OmEQNvaQEH7KQuxmEYfdOfMp7IWNLH3j1lIEuToiGPTs1Jan06T7oWZuSxQV81l
+ VrClkcJFmP/7mFuakOVzN1VwGOEbvxZEM1S2DmxOUCvVlm54j+XSS7wpXOHy/VVBcW+N
+ qXno8zp/h+5ntKPbE8ZxCi6j1gqRCpUwSmIxVBgjILdOd1xZLVEUWDNQ9uBJxJRcJRnC
+ saJQ==
+X-Gm-Message-State: AOAM530mVWm9JXBM4vvg6DkUAsMDyhc63XWDJYOwOcjquJ5ZxHIcn68y
+ 3leDrw2mHd1IWeE+QMe6lVs=
+X-Google-Smtp-Source: ABdhPJylUCKnuUHRcWemOFkwIPlwxs6vDbXGNhqq378aNwWiTTImv/OjbXn4ax2cLlMrLgSLVArO4w==
+X-Received: by 2002:a63:5558:: with SMTP id f24mr8936141pgm.484.1640430283958; 
+ Sat, 25 Dec 2021 03:04:43 -0800 (PST)
 Received: from localhost (121-44-67-22.tpgi.com.au. [121.44.67.22])
- by smtp.gmail.com with ESMTPSA id x6sm10235097pge.50.2021.12.25.02.31.56
+ by smtp.gmail.com with ESMTPSA id w2sm9720928pgt.93.2021.12.25.03.04.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 25 Dec 2021 02:31:56 -0800 (PST)
-Date: Sat, 25 Dec 2021 20:31:51 +1000
+ Sat, 25 Dec 2021 03:04:43 -0800 (PST)
+Date: Sat, 25 Dec 2021 21:04:38 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [BISECTED] power8: watchdog: CPU 3 self-detected hard LOCKUP @
- queued_spin_lock_slowpath+0x154/0x2d0
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Davidlohr Bueso <dbueso@suse.de>,
- linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>, Stijn Tintel <stijn@linux-ipv6.be>
-References: <c9abdadc-bc38-dbba-7f96-1ce15db8ab79@linux-ipv6.be>
-In-Reply-To: <c9abdadc-bc38-dbba-7f96-1ce15db8ab79@linux-ipv6.be>
+Subject: Re: [PATCH] Revert "mm/usercopy: Drop extra is_vmalloc_or_module()
+ check"
+To: =?iso-8859-1?q?Andrew=0A?= Morton <akpm@linux-foundation.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Kees Cook <keescook@chromium.org>,
+ Laura Abbott <labbott@redhat.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Mark Rutland
+ <mark.rutland@arm.com>, Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras
+ <paulus@samba.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
+References: <20211223102126.161848-1-wangkefeng.wang@huawei.com>
+ <ffd77bcf-b9d8-956c-9f83-14b9f0b496e7@csgroup.eu>
+ <96fe1826-aeaf-4ea0-9f01-03d6b3933b34@huawei.com>
+ <6e2ddc83-bec3-fdd4-4d91-3ade0de0b7c8@csgroup.eu>
+ <ccf311bd-c0ed-3e42-8057-849a9c3e9a98@huawei.com>
+In-Reply-To: <ccf311bd-c0ed-3e42-8057-849a9c3e9a98@huawei.com>
 MIME-Version: 1.0
-Message-Id: <1640427851.k47q6y3qjb.astroid@bobo.none>
+Message-Id: <1640429980.38ev9qg7xc.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,170 +95,176 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Stijn Tintel's message of December 22, 2021 11:20 am:
-> Hi,
+Excerpts from Kefeng Wang's message of December 25, 2021 12:05 pm:
 >=20
-> After upgrading my Power8 server from 5.10 LTS to 5.15 LTS, I started
-> experiencing CPU hard lockups, usually rather quickly after boot:
+> On 2021/12/24 21:18, Christophe Leroy wrote:
+>>
+>> Le 24/12/2021 =C3=A0 08:06, Kefeng Wang a =C3=A9crit=C2=A0:
+>>> On 2021/12/24 14:01, Christophe Leroy wrote:
+>>>> Le 23/12/2021 =C3=A0 11:21, Kefeng Wang a =C3=A9crit=C2=A0:
+>>>>> This reverts commit 517e1fbeb65f5eade8d14f46ac365db6c75aea9b.
+>>>>>
+>>>>>  =C2=A0=C2=A0=C2=A0 usercopy: Kernel memory exposure attempt detected=
+ from SLUB
+>>>>> object not in SLUB page?! (offset 0, size 1048)!
+>>>>>  =C2=A0=C2=A0=C2=A0 kernel BUG at mm/usercopy.c:99
+>>>>>  =C2=A0=C2=A0=C2=A0 ...
+>>>>>  =C2=A0=C2=A0=C2=A0 usercopy_abort+0x64/0xa0 (unreliable)
+>>>>>  =C2=A0=C2=A0=C2=A0 __check_heap_object+0x168/0x190
+>>>>>  =C2=A0=C2=A0=C2=A0 __check_object_size+0x1a0/0x200
+>>>>>  =C2=A0=C2=A0=C2=A0 dev_ethtool+0x2494/0x2b20
+>>>>>  =C2=A0=C2=A0=C2=A0 dev_ioctl+0x5d0/0x770
+>>>>>  =C2=A0=C2=A0=C2=A0 sock_do_ioctl+0xf0/0x1d0
+>>>>>  =C2=A0=C2=A0=C2=A0 sock_ioctl+0x3ec/0x5a0
+>>>>>  =C2=A0=C2=A0=C2=A0 __se_sys_ioctl+0xf0/0x160
+>>>>>  =C2=A0=C2=A0=C2=A0 system_call_exception+0xfc/0x1f0
+>>>>>  =C2=A0=C2=A0=C2=A0 system_call_common+0xf8/0x200
+>>>>>
+>>>>> When run ethtool eth0, the BUG occurred, the code shows below,
+>>>>>
+>>>>>  =C2=A0=C2=A0=C2=A0 data =3D vzalloc(array_size(gstrings.len, ETH_GST=
+RING_LEN));
+>>>>>  =C2=A0=C2=A0=C2=A0 copy_to_user(useraddr, data, gstrings.len * ETH_G=
+STRING_LEN))
+>>>>>
+>>>>> The data is alloced by vmalloc(),=C2=A0 virt_addr_valid(ptr) will ret=
+urn true
+>>>>> on PowerPC64, which leads to the panic, add back the
+>>>>> is_vmalloc_or_module()
+>>>>> check to fix it.
+>>>> Is it expected that virt_addr_valid() returns true on PPC64 for
+>>>> vmalloc'ed memory ? If that's the case it also means that
+>>>> CONFIG_DEBUG_VIRTUAL won't work as expected either.
+>>> Our product reports this bug to me, after let them do some test,
+>>>
+>>> I found virt_addr_valid return true for vmalloc'ed memory on their boar=
+d.
+>>>
+>>> I think DEBUG_VIRTUAL could not be work well too, but I can't test it.
+>>>
+>>>> If it is unexpected, I think you should fix PPC64 instead of adding th=
+is
+>>>> hack back. Maybe the ARM64 fix can be used as a starting point, see
+>>>> commit 68dd8ef32162 ("arm64: memory: Fix virt_addr_valid() using
+>>>> __is_lm_address()")
+>>> Yes=EF=BC=8C I check the history,=C2=A0 fix virt_addr_valid() on PowerP=
+C is what I
+>>> firstly want to do,
+>>>
+>>> but I am not familiar with PPC, and also HARDENED_USERCOPY on other's
+>>> ARCHs could
+>>>
+>>> has this issue too, so I add the workaround back.
+>>>
+>>>
+>>> 1) PPC maintainer/expert, any suggestion ?
+>>>
+>>> 2) Maybe we could add some check to WARN this scenario.
+>>>
+>>> --- a/mm/usercopy.c
+>>> +++ b/mm/usercopy.c
+>>> @@ -229,6 +229,8 @@ static inline void check_heap_object(const void
+>>> *ptr, unsigned long n,
+>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!virt_addr_valid(ptr))
+>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 return;
+>>>
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 WARN_ON_ONCE(is_vmalloc_or_module=
+_addr(ptr));
 >=20
+>>>
+>>>> In the meantime, can you provide more information on your config,
+>>>> especially which memory model is used ?
+>>> Some useful configs,
+>>>
+>>> CONFIG_PPC64=3Dy
+>>> CONFIG_PPC_BOOK3E_64=3Dy
+>>> CONFIG_E5500_CPU=3Dy
+>>> CONFIG_TARGET_CPU_BOOL=3Dy
+>>> CONFIG_PPC_BOOK3E=3Dy
+>>> CONFIG_E500=3Dy
+>>> CONFIG_PPC_E500MC=3Dy
+>>> CONFIG_PPC_FPU=3Dy
+>>> CONFIG_FSL_EMB_PERFMON=3Dy
+>>> CONFIG_FSL_EMB_PERF_EVENT=3Dy
+>>> CONFIG_FSL_EMB_PERF_EVENT_E500=3Dy
+>>> CONFIG_BOOKE=3Dy
+>>> CONFIG_PPC_FSL_BOOK3E=3Dy
+>>> CONFIG_PTE_64BIT=3Dy
+>>> CONFIG_PHYS_64BIT=3Dy
+>>> CONFIG_PPC_MMU_NOHASH=3Dy
+>>> CONFIG_PPC_BOOK3E_MMU=3Dy
+>>> CONFIG_SELECT_MEMORY_MODEL=3Dy
+>>> CONFIG_FLATMEM_MANUAL=3Dy
+>>> CONFIG_FLATMEM=3Dy
+>>> CONFIG_FLAT_NODE_MEM_MAP=3Dy
+>>> CONFIG_SPARSEMEM_VMEMMAP_ENABLE=3Dy
+>>>
+>> OK so it is PPC64 book3e and with flatmem.
+>>
+>> The problem is virt_to_pfn() which uses __pa()
+>>
+>> __pa(x) on PPC64 is (x) & 0x0fffffffffffffffUL
+>>
+>> And on book3e/64 we have
+>>
+>> VMALLOC_START =3D KERN_VIRT_START =3D ASM_CONST(0x8000000000000000)
+>>
+>>
+>> It means that __pa() will return a valid PFN for VMALLOCed addresses.
+>>
+>>
+>> So an additional check is required in virt_addr_valid(), maybe check
+>> that (kaddr & PAGE_OFFSET) =3D=3D PAGE_OFFSET
+>>
+>> Can you try that ?
+>>
+>> #define virt_addr_valid(kaddr)	((kaddr & PAGE_OFFSET) =3D=3D PAGE_OFFSET=
+ &&
+>> pfn_valid(virt_to_pfn(kaddr)))
 >=20
-> watchdog: CPU 3 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x154/0x2d0
-> watchdog: CPU 3 TB:265651929071, last heartbeat TB:259344820187 (12318ms
-> ago)
-> watchdog: CPU 4 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x22c/0x2d0
-> watchdog: CPU 4 TB:265651929059, last heartbeat TB:259344820045 (12318ms
-> ago)
-> watchdog: CPU 5 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 5 TB:265651929037, last heartbeat TB:259349940303 (12308ms
-> ago)
-> watchdog: CPU 6 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x144/0x2d0
-> watchdog: CPU 6 TB:265651929056, last heartbeat TB:259349940294 (12308ms
-> ago)
-> watchdog: CPU 12 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x280/0x2d0
-> watchdog: CPU 12 TB:242479050267, last heartbeat TB:236822174350
-> (11048ms ago)
-> watchdog: CPU 26 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x22c/0x2d0
-> watchdog: CPU 26 TB:265657049348, last heartbeat TB:259355060595
-> (12308ms ago)
-> watchdog: CPU 40 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 40 TB:265657049289, last heartbeat TB:259360180427
-> (12298ms ago)
-> watchdog: CPU 47 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x21c/0x2d0
-> watchdog: CPU 47 TB:265657049213, last heartbeat TB:259365300321
-> (12288ms ago)
-> watchdog: CPU 60 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 60 TB:265651929348, last heartbeat TB:259370420527
-> (12268ms ago)
-> watchdog: CPU 72 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 72 TB:265718488733, last heartbeat TB:259375540545
-> (12388ms ago)
-> watchdog: CPU 13 detected hard LOCKUP on other CPUs 0-2,7,10,44
-> watchdog: CPU 13 TB:267541867921, last SMP heartbeat TB:259380660378
-> (15939ms ago)
-> watchdog: CPU 34 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 34 TB:269913954376, last heartbeat TB:263456144470
-> (12612ms ago)
-> watchdog: CPU 41 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 41 TB:267865972392, last heartbeat TB:261408162383
-> (12612ms ago)
-> watchdog: CPU 74 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 74 TB:267766470637, last heartbeat TB:261423522630
-> (12388ms ago)
-> watchdog: CPU 8 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 8 TB:274978264599, last heartbeat TB:269237436681 (11212ms
-> ago)
-> watchdog: CPU 9 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 9 TB:268029810836, last heartbeat TB:261397922093 (12952ms
-> ago)
-> watchdog: CPU 11 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 11 TB:279685725759, last heartbeat TB:273685814104
-> (11718ms ago)
-> watchdog: CPU 16 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 16 TB:267865972449, last heartbeat TB:261397922458
-> (12632ms ago)
-> watchdog: CPU 18 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 18 TB:269913954314, last heartbeat TB:263445904285
-> (12632ms ago)
-> watchdog: CPU 24 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 24 TB:267865972338, last heartbeat TB:261403042311
-> (12622ms ago)
-> watchdog: CPU 31 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x22c/0x2d0
-> watchdog: CPU 31 TB:268029811095, last heartbeat TB:261403042673
-> (12942ms ago)
-> watchdog: CPU 32 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 32 TB:267865972528, last heartbeat TB:261403042589
-> (12622ms ago)
-> watchdog: CPU 33 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 33 TB:268029811013, last heartbeat TB:261408162474
-> (12932ms ago)
-> watchdog: CPU 35 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 35 TB:280174344471, last heartbeat TB:273696054625
-> (12652ms ago)
-> watchdog: CPU 37 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x230/0x2d0
-> watchdog: CPU 37 TB:269913954356, last heartbeat TB:263456144501
-> (12612ms ago)
-> watchdog: CPU 38 self-detected hard LOCKUP @
-> queued_spin_lock_slowpath+0x228/0x2d0
-> watchdog: CPU 38 TB:290393774681, last heartbeat TB:283946212510
-> (12592ms ago)
+> I got this commit,
 >=20
-> Bisecting lead to the following commit:
+> commit 4dd7554a6456d124c85e0a4ad156625b71390b5c
 >=20
-> deb9b13eb2571fbde164ae012c77985fd14f2f02 is the first bad commit
-> commit deb9b13eb2571fbde164ae012c77985fd14f2f02
-> Author: Davidlohr Bueso <dave@stgolabs.net>
-> Date: =C2=A0=C2=A0Mon Mar 8 17:59:50 2021 -0800
+> Author: Nicholas Piggin <npiggin@gmail.com>
+> Date:=C2=A0=C2=A0 Wed Jul 24 18:46:37 2019 +1000
 >=20
-> =C2=A0=C2=A0=C2=A0powerpc/qspinlock: Use generic smp_cond_load_relaxed
+>  =C2=A0=C2=A0=C2=A0 powerpc/64: Add VIRTUAL_BUG_ON checks for __va and __=
+pa addresses
+>=20
+>  =C2=A0=C2=A0=C2=A0 Ensure __va is given a physical address below PAGE_OF=
+FSET, and __pa is
+>  =C2=A0=C2=A0=C2=A0 given a virtual address above PAGE_OFFSET.
+>=20
+> It has check the PAGE_OFFSET in __pa,=C2=A0 will test it and resend the=20
+> patch(with above warning changes).
 
-Thanks for bisecting and reporting this.
+What did you get with this commit? Is this what causes the crash?
 
-As far as I can see, the code should be functionally identical,
-the difference is slightly in loop structure and priority nops
-but that shouldn't cause complete lock ups.
+riscv for example with flatmem also relies on pfn_valid to do the right
+thing, so as far as I can see the check should exclude vmalloc addresses
+and it's just a matter of virt_addr_valid not to give virt_to_pfn an
+address < PAGE_OFFSET.
 
-I suspect possibly something is getting miscompiled. What distro
-do you use, what gcc version? And would you be able to send the
-output of objdump --disassemble=3Dqueued_spin_lock_slowpath vmlinux
-for your bad kernel?
+If we take riscv's implementation
 
-Thanks,
-Nick
+diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/pag=
+e.h
+index 254687258f42..7713188516a6 100644
+--- a/arch/powerpc/include/asm/page.h
++++ b/arch/powerpc/include/asm/page.h
+@@ -132,7 +132,10 @@ static inline bool pfn_valid(unsigned long pfn)
+ #define virt_to_page(kaddr)    pfn_to_page(virt_to_pfn(kaddr))
+ #define pfn_to_kaddr(pfn)      __va((pfn) << PAGE_SHIFT)
+=20
+-#define virt_addr_valid(kaddr) pfn_valid(virt_to_pfn(kaddr))
++#define virt_addr_valid(vaddr) ({                                      \
++       unsigned long _addr =3D (unsigned long)vaddr;                     \
++       (unsigned long)(_addr) >=3D PAGE_OFFSET && pfn_valid(virt_to_pfn(_a=
+ddr)); \
++})
+=20
+ /*
+  * On Book-E parts we need __va to parse the device tree and we can't
 
-> =C2=A0=C2=A0=C2=A0
->=20
-> The problem persists in 2f47a9a4dfa3674fad19a49b40c5103a9a8e1589 and
-> goes away if I revert deb9b13eb2571fbde164ae012c77985fd14f2f02 on top of
-> that. As deb9b13eb2571fbde164ae012c77985fd14f2f02 seems to be a revert
-> of 49a7d46a06c30c7beabbf9d1a8ea1de0f9e4fdfe, I suspect this problem
-> might have existed before 49a7d46a06c30c7beabbf9d1a8ea1de0f9e4fdfe. I
-> therefore tried to build 49a7d46a06c30c7beabbf9d1a8ea1de0f9e4fdfe and
-> 49a7d46a06c30c7beabbf9d1a8ea1de0f9e4fdfe^1 to verify if the problem
-> exists there as well, unfortunately these commits don't build due to the
-> following compile error:
->=20
-> kernel/smp.c:In function 'smp_init':
-> ./include/linux/compiler.h:392:38:error: call to
-> '__compiletime_assert_150' declared with attribute error: BUILD_BUG_ON
-> failed: offsetof(struct task_struct, wake_entry_type) - offsetof(struct
-> task_struct, wake_entry) !=3D offsetof(struct __call_single_data, flags) =
--
-> offsetof(struct __call_single_data, llist)
-> =C2=A0392 | =C2=A0_compiletime_assert(condition, msg, __compiletime_asser=
-t_,
-> __COUNTER__)
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0| =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0^
->=20
-> Is this report enough to revert deb9b13eb2571fbde164ae012c77985fd14f2f02
-> for now?
->=20
-> Stijn
->=20
->=20
