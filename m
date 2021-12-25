@@ -1,58 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93EA647F1FC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 06:00:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2193547F2DB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 11:11:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JLWvp3p7Cz3cmJ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 16:00:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JLfpV01G9z3bjC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 21:11:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eCTqFf8w;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CxvkMY23;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
+ helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=eCTqFf8w; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=CxvkMY23; dkim-atps=neutral
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
+ [IPv6:2607:f8b0:4864:20::1032])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JLWpF0NbSz3c9b
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 15:55:33 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id B2F6AB8072F;
- Sat, 25 Dec 2021 04:55:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530E6C36AE5;
- Sat, 25 Dec 2021 04:55:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1640408129;
- bh=w04+g7RvLMoxdOro5NWVNK03xjcmOlA8n0cnB++OVgU=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=eCTqFf8wEuhKfl21rpwpQBj1OGBxWCcduW0UCq8AuFCWh6YKZEYyaumEk2oPBg1Nr
- +b+zZxfPoJ3FQCA+hOw+Dyq+etKS9P0I8GgXRJ67CoYacaJAYaUdNe9uo1GxKs9Zeb
- e7Z5rB3yAayaAqZQUVl8Uf+0CZkrtkYcIBmGt4Oxl0tRuSny5Nw4Xf/sc80GSbWWYB
- yJwEIm4ExI7dPLbBD7XWlQ8ta56gLEsInjVFihTzwwoHIvJB2QMShRxHwQ+0EhVR+w
- xU29LRpOI2qzHno8Xssll8YCIU+XJUk8Rgcu46UvpsQfNVvEf49cUEqbdq/itMNGjx
- Oq3EWlpNtKNjQ==
-From: guoren@kernel.org
-To: guoren@kernel.org, will@kernel.org, tglx@linutronix.de,
- benh@kernel.crashing.org, arnd@arndb.de, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, christophe.leroy@csgroup.eu
-Subject: [PATCH V2 8/8] sched: mips: Remove unused TASK_SIZE_OF
-Date: Sat, 25 Dec 2021 12:54:30 +0800
-Message-Id: <20211225045430.2868608-9-guoren@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211225045430.2868608-1-guoren@kernel.org>
-References: <20211225045430.2868608-1-guoren@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JLfnn67pxz2ynj
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 21:10:35 +1100 (AEDT)
+Received: by mail-pj1-x1032.google.com with SMTP id gj24so9462548pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 02:10:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=LhcOzOtDO8pKm5olSdybERYUAZjiaaP0djecbAEsS/E=;
+ b=CxvkMY23MoG9SsIn9LG4LfwR3m0aGwLZFuSce2pSEEFEGvfH1d5C/B7ZnHfIAHCVFz
+ dDZLYxqBRRxLknCD98T8qo94eMR3yV669ywrHaWPvucGSje+YsV06vqvpalgl0XO2g9B
+ uEahXxBVu1Wzh/H8csQLkVqRG+frNxifmoSZye2+hrvPzD/0DWxeCA1ElT8coft/9yUV
+ ulj7pj5Xv5evJlqmyKT9cwAf4/5Fh4jaBUzoVvMryDEjSqEdBCBBozvj3431vH8529AM
+ prxKuAliIBIYdniavtNDy0HsG7cUDbzFccjfAarytZOtgHVZHdFDkF2OJNsdLp7KBbsV
+ I1Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=LhcOzOtDO8pKm5olSdybERYUAZjiaaP0djecbAEsS/E=;
+ b=feMc6pRLRSuPDQHpkUMzYNUP4498GVf4Fkf1C+1o+Gi0kfARTQTFhXQoKbSxiS7+Ja
+ SQOPPDZoK2AVqDpvMxiO0MbTIJLLVchtiZO4vsOlXttMkQkiL/td5Kwcgx6g40JTe3vN
+ JK4r3jWAZ7O/CAgQL7Q08dqzqe2hrUdg4SEmaCb63dfUSlUI6YzHpTfWELiLl/qpfBnA
+ OQ1jc6t7v0QA362E8qs2cBfVdCuqV00TPql811GiGlh64QHLSKim4zdnXBD1o0n/BKB5
+ yLxRSosjrORSkOIXkVoqhQDWHZy3wlgLwQ+zcCecy0eNPwxlf7XCActGFAROL86y6Ph3
+ IvrQ==
+X-Gm-Message-State: AOAM533zj+foQZKrkE45xIgPial0fFQUKCuH4uXpTXthrAY7x/6odx5z
+ olOkTcL2GzVWaz7sR6P9W+c=
+X-Google-Smtp-Source: ABdhPJw9/CJXpyzJ8Au3DqUHi3UOos+BeEGxz/Uc+lcNC+qAtKz6xWjgLvyEBDbkJuRs1r63rqQYpA==
+X-Received: by 2002:a17:903:234a:b0:148:a51b:d043 with SMTP id
+ c10-20020a170903234a00b00148a51bd043mr9705488plh.105.1640427030760; 
+ Sat, 25 Dec 2021 02:10:30 -0800 (PST)
+Received: from localhost (121-44-67-22.tpgi.com.au. [121.44.67.22])
+ by smtp.gmail.com with ESMTPSA id w76sm10870284pff.21.2021.12.25.02.10.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 25 Dec 2021 02:10:30 -0800 (PST)
+Date: Sat, 25 Dec 2021 20:10:25 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 4/5] powerpc/64: Add VIRTUAL_BUG_ON checks for __va and
+ __pa addresses
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20190724084638.24982-1-npiggin@gmail.com>
+ <20190724084638.24982-4-npiggin@gmail.com>
+ <8926c850-a28b-0600-9116-1c794f80b532@csgroup.eu>
+In-Reply-To: <8926c850-a28b-0600-9116-1c794f80b532@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <1640426616.sx4j7ru11d.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,40 +84,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Guo Ren <guoren@linux.alibaba.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org, sparclinux@vger.kernel.or,
- linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, inux-parisc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Reza Arbab <arbab@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Guo Ren <guoren@linux.alibaba.com>
+Excerpts from Christophe Leroy's message of December 24, 2021 11:24 pm:
+> Hi Nic,
+>=20
+> Le 24/07/2019 =C3=A0 10:46, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> Ensure __va is given a physical address below PAGE_OFFSET, and __pa is
+>> given a virtual address above PAGE_OFFSET.
+>>=20
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   arch/powerpc/include/asm/page.h | 14 ++++++++++++--
+>>   1 file changed, 12 insertions(+), 2 deletions(-)
+>>=20
+>> diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/=
+page.h
+>> index 0d52f57fca04..c8bb14ff4713 100644
+>> --- a/arch/powerpc/include/asm/page.h
+>> +++ b/arch/powerpc/include/asm/page.h
+>> @@ -215,9 +215,19 @@ static inline bool pfn_valid(unsigned long pfn)
+>>   /*
+>>    * gcc miscompiles (unsigned long)(&static_var) - PAGE_OFFSET
+>>    * with -mcmodel=3Dmedium, so we use & and | instead of - and + on 64-=
+bit.
+>> + * This also results in better code generation.
+>>    */
+>> -#define __va(x) ((void *)(unsigned long)((phys_addr_t)(x) | PAGE_OFFSET=
+))
+>> -#define __pa(x) ((unsigned long)(x) & 0x0fffffffffffffffUL)
+>> +#define __va(x)								\
+>> +({									\
+>> +	VIRTUAL_BUG_ON((unsigned long)(x) >=3D PAGE_OFFSET);		\
+>> +	(void *)(unsigned long)((phys_addr_t)(x) | PAGE_OFFSET);	\
+>> +})
+>> +
+>> +#define __pa(x)								\
+>> +({									\
+>> +	VIRTUAL_BUG_ON((unsigned long)(x) < PAGE_OFFSET);		\
+>=20
+> With this, it is likely that virt_addr_valid() BUGs on a non valid addres=
+s.
+>=20
+> I think the purpose of virt_addr_valid() is to check addresses=20
+> seamlessly, see check_heap_object()
 
-This macro isn't used in Linux sched, now. Delete in
-include/linux/sched.h and arch's include/asm.
+Looks like you're right. How did you catch that?
 
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/mips/include/asm/processor.h | 3 ---
- 1 file changed, 3 deletions(-)
+We could change virt_addr_valid() to make that test first. x86 and arm64
+both do checking rather than relying on !pfn_valid for < PAGE_OFFSET
+addresses.
 
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index 4bb24579d12e..8871fc5b0baa 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -61,9 +61,6 @@ extern int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src
- #define TASK_SIZE (test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE64)
- #define STACK_TOP_MAX	TASK_SIZE64
- 
--#define TASK_SIZE_OF(tsk)						\
--	(test_tsk_thread_flag(tsk, TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE64)
--
- #define TASK_IS_32BIT_ADDR test_thread_flag(TIF_32BIT_ADDR)
- 
- #endif
--- 
-2.25.1
-
+Thanks,
+Nick
