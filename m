@@ -2,72 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C48647F2F2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 11:20:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 893FC47F2F5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 11:23:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JLg162Vnnz3c9T
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 21:20:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JLg4V2Vx6z307B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 21:23:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=EViq9QyF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dgUfnVEY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
- helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635;
+ helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=EViq9QyF; dkim-atps=neutral
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
- [IPv6:2607:f8b0:4864:20::1032])
+ header.s=20210112 header.b=dgUfnVEY; dkim-atps=neutral
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
+ [IPv6:2607:f8b0:4864:20::635])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JLg0T5sy3z2ynj
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 21:19:53 +1100 (AEDT)
-Received: by mail-pj1-x1032.google.com with SMTP id
- l10-20020a17090a384a00b001b22190e075so8391636pjf.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 02:19:53 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JLg3m3g37z2ynj
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 21:22:42 +1100 (AEDT)
+Received: by mail-pl1-x635.google.com with SMTP id i6so2049504pla.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 02:22:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=Mmel+tedTB5YoX4P4ksLym5gFTM6R7kIIMKU3ZsytT4=;
- b=EViq9QyF5bkZ8SrPmK7akPsIuSMFVLwkKPcwN8h3cwazrkHAl4sWkYCw6+kOz4HVzK
- k9mtU3FFEye/DehlYSZaBhCmYxKotH4hsjUb6QFBTsdjwGRYCMri2AKIqqj7MMmfqN1L
- ETNBgVlCWpc7l4HTbYv8tc+RZLnFTcviGyYyndDKI5UVUQK57/vIlyfFxHud+gFAwrYL
- ACQMkuIahakpTeCj9mSugkxlcyhen70N0YApZxPw3w/HO/y0gtoiCR+UKo6dtRMdxEOa
- ofjwUVH877G+4OST3nxmcKRJCj3UxBEVF5FOa1Gfqs4uRh4Ip7Unj2T1UJq0GsVeJa5G
- kQXg==
+ bh=zABYTDkRCXD7YnSXgmckKl0di++lyiV/wtKOsAFdCOU=;
+ b=dgUfnVEYoIapnOPCJtUrxkMGMD/CuvqBZMI09usIzRTm0Uc2X6cDr0VOValV3AdNbK
+ suvBbVrDCtUHTO2t4a9+ttMSI11kJB40HTfM4vW9I/Bpe0eh6HdHzWnjjkikgGAlZMpK
+ f35XeVHPI9E8propq0NzZFh5yRu8H8etXkfPabNH7Ih42JdhqgycZRJbwyUwHG81tRM3
+ XJfm5RB4/hjU78k2gtX5rwHehKBT8gCd+LdDjmTk887h1kx9Lc9jAw/m+oy4qAllq2DM
+ 4QuRXrCsrW6958ATkyRvgzD9Xpy/aqjLO4cWwKJm53tYeHEzo2EMcAsNiRccZG+4fxbe
+ 1pww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=Mmel+tedTB5YoX4P4ksLym5gFTM6R7kIIMKU3ZsytT4=;
- b=zTiJMlCKhYtV4mxoYdwKHK0/yDKKdjUcXIJceWMLh7KQQjjyvrXll44fICM1JsksGf
- nOVLyKFWx0PdQNzstvXli9waJoCEro2/fEbue+j6UXTd9OXABaeEZ836E924QUmihlX2
- Hl+zpIw0JXiZlL00Y366JIzVQVwgSH+tb9ZGUDC9pzf3V8+R3dc0ZEB5M8nxNllvrt0r
- evl+uO9lsrX23Ejx223bUbdkE8iqyNtMJJcIT3Lpb0MzZougvpjUeHoXqumaK+nxlW6p
- /IXvtcdaxft9aZjhZdrby2osJKpukywSGEhnH15dDgpALqXgjoLUJUOn+U01gyqawXjN
- 36eQ==
-X-Gm-Message-State: AOAM5305c5i566SapH+7YfAou8E+6GhX9S6PbbvVrGsSEkpOfnpEYbjd
- hLvhMeLMkUcpxnt0afUZSZjt0FWWAso=
-X-Google-Smtp-Source: ABdhPJzsyc1mrnzfjOO4+nvy5y65RBO5OAbaQDrHXl6t4XfaFHAQtA3Nqvsmt3Kc3pe08E85BqMqIQ==
-X-Received: by 2002:a17:90b:3b83:: with SMTP id pc3mr668375pjb.3.1640427591720; 
- Sat, 25 Dec 2021 02:19:51 -0800 (PST)
+ bh=zABYTDkRCXD7YnSXgmckKl0di++lyiV/wtKOsAFdCOU=;
+ b=MyV8Qc8CAf6micjJh7znLR9EVzE54I7h+NQX0L/kVh7jC1EPfaH6+8chBfb72BOU4b
+ h42xdwEIvkXzqxl1Mt2gRQgTM+ybfUgOX9wo0wqOFIO0CMzPCfpW20M5v2jcKAJhtlOi
+ 7MtIsIObfpZ35ua8ztxX6K59u0TB+HFteEGa/wN28PHdR+NqmZmBAdqVtDVPH6wN6lQ8
+ zvIMubG8J5EWI8fQO1RMygvjL2eiwflY25fqGqXNkhoek8Hyrv2jyzk8K5HjzzoKbcJ4
+ QwxGXTbB78mXWrbkTbATMybzFhEcrKUd8E8yBploKl8voIrxaY3z97xzL9RdBmlOAXeR
+ sByw==
+X-Gm-Message-State: AOAM533Tt1jP1oe3w04+Rdv/gFnHIFQbKPd3cMpS5brE8gs+YL+JO1uA
+ lsNgYnSgWw0jfNR/9bMteg4=
+X-Google-Smtp-Source: ABdhPJxTkMdALYld74m+geG63p9dWNi1p2dnSIkU414Kd1BPqXanEBoDifWvzO2prhNFG7aFQRMNbw==
+X-Received: by 2002:a17:90b:360e:: with SMTP id
+ ml14mr12131878pjb.135.1640427759397; 
+ Sat, 25 Dec 2021 02:22:39 -0800 (PST)
 Received: from localhost (121-44-67-22.tpgi.com.au. [121.44.67.22])
- by smtp.gmail.com with ESMTPSA id u5sm12119210pfk.67.2021.12.25.02.19.50
+ by smtp.gmail.com with ESMTPSA id k8sm12766668pfu.72.2021.12.25.02.22.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 25 Dec 2021 02:19:51 -0800 (PST)
-Date: Sat, 25 Dec 2021 20:19:46 +1000
+ Sat, 25 Dec 2021 02:22:39 -0800 (PST)
+Date: Sat, 25 Dec 2021 20:22:34 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/3] KVM: PPC: Book3S HV: Delay setting of kvm ops
+Subject: Re: [PATCH 3/3] KVM: PPC: Book3S HV: Free allocated memory if module
+ init fails
 To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
 References: <20211223211931.3560887-1-farosas@linux.ibm.com>
- <20211223211931.3560887-3-farosas@linux.ibm.com>
-In-Reply-To: <20211223211931.3560887-3-farosas@linux.ibm.com>
+ <20211223211931.3560887-4-farosas@linux.ibm.com>
+In-Reply-To: <20211223211931.3560887-4-farosas@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1640427464.ji8lnut0io.astroid@bobo.none>
+Message-Id: <1640427594.mim1kqxpi8.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,52 +88,71 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Excerpts from Fabiano Rosas's message of December 24, 2021 7:19 am:
-> Delay the setting of kvm_hv_ops until after all init code has
-> completed. This avoids leaving the ops still accessible if the init
-> fails.
+> The module's exit function is not called when the init fails, we need
+> to do cleanup before returning.
 >=20
 > Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 15 +++++++++++----
+>  1 file changed, 11 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 53400932f5d8..2d79298e7ca4 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -6065,7 +6065,7 @@ static int kvmppc_book3s_init_hv(void)
+> =20
+>  	r =3D kvm_init_subcore_bitmap();
+>  	if (r)
+> -		return r;
+> +		goto err;
+> =20
+>  	/*
+>  	 * We need a way of accessing the XICS interrupt controller,
+> @@ -6080,7 +6080,8 @@ static int kvmppc_book3s_init_hv(void)
+>  		np =3D of_find_compatible_node(NULL, NULL, "ibm,opal-intc");
+>  		if (!np) {
+>  			pr_err("KVM-HV: Cannot determine method for accessing XICS\n");
+> -			return -ENODEV;
+> +			r =3D -ENODEV;
+> +			goto err;
+>  		}
+>  		/* presence of intc confirmed - node can be dropped again */
+>  		of_node_put(np);
+> @@ -6093,12 +6094,12 @@ static int kvmppc_book3s_init_hv(void)
+> =20
+>  	r =3D kvmppc_mmu_hv_init();
+>  	if (r)
+> -		return r;
+> +		goto err;
+> =20
+>  	if (kvmppc_radix_possible()) {
+>  		r =3D kvmppc_radix_init();
+>  		if (r)
+> -			return r;
+> +			goto err;
+>  	}
+> =20
+>  	r =3D kvmppc_uvmem_init();
+> @@ -6111,6 +6112,12 @@ static int kvmppc_book3s_init_hv(void)
+>  	kvmppc_hv_ops =3D &kvm_ops_hv;
+> =20
+>  	return 0;
+> +
+> +err:
+> +	kvmhv_nested_exit();
+> +	kvmppc_radix_exit();
 
-Also looks okay to me but KVM init has lots of details. IIRC Alexey may=20
-have run into a related issue with ops being set too early (or was it=20
-cleared too late?)
+These should both be callable without init functions succeeding
+so this looks right to me.
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
 Thanks,
 Nick
 
-> ---
->  arch/powerpc/kvm/book3s_hv.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
->=20
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 9f4765951733..53400932f5d8 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -6087,9 +6087,6 @@ static int kvmppc_book3s_init_hv(void)
->  	}
->  #endif
-> =20
-> -	kvm_ops_hv.owner =3D THIS_MODULE;
-> -	kvmppc_hv_ops =3D &kvm_ops_hv;
-> -
->  	init_default_hcalls();
-> =20
->  	init_vcore_lists();
-> @@ -6105,10 +6102,15 @@ static int kvmppc_book3s_init_hv(void)
->  	}
-> =20
->  	r =3D kvmppc_uvmem_init();
-> -	if (r < 0)
-> +	if (r < 0) {
->  		pr_err("KVM-HV: kvmppc_uvmem_init failed %d\n", r);
-> +		return r;
-> +	}
-> =20
-> -	return r;
-> +	kvm_ops_hv.owner =3D THIS_MODULE;
-> +	kvmppc_hv_ops =3D &kvm_ops_hv;
 > +
-> +	return 0;
+> +	return r;
 >  }
 > =20
 >  static void kvmppc_book3s_exit_hv(void)
