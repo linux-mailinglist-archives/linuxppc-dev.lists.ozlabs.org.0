@@ -1,74 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893FC47F2F5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 11:23:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDF347F2FB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 11:32:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JLg4V2Vx6z307B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 21:23:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JLgHB2GsBz3bXV
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 21:32:38 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dgUfnVEY;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GkLp4gXM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635;
- helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52f;
+ helo=mail-pg1-x52f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=dgUfnVEY; dkim-atps=neutral
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
- [IPv6:2607:f8b0:4864:20::635])
+ header.s=20210112 header.b=GkLp4gXM; dkim-atps=neutral
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com
+ [IPv6:2607:f8b0:4864:20::52f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JLg3m3g37z2ynj
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 21:22:42 +1100 (AEDT)
-Received: by mail-pl1-x635.google.com with SMTP id i6so2049504pla.0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 02:22:42 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JLgGV0sdWz2ywm
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 21:32:00 +1100 (AEDT)
+Received: by mail-pg1-x52f.google.com with SMTP id f125so9631065pgc.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Dec 2021 02:31:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=zABYTDkRCXD7YnSXgmckKl0di++lyiV/wtKOsAFdCOU=;
- b=dgUfnVEYoIapnOPCJtUrxkMGMD/CuvqBZMI09usIzRTm0Uc2X6cDr0VOValV3AdNbK
- suvBbVrDCtUHTO2t4a9+ttMSI11kJB40HTfM4vW9I/Bpe0eh6HdHzWnjjkikgGAlZMpK
- f35XeVHPI9E8propq0NzZFh5yRu8H8etXkfPabNH7Ih42JdhqgycZRJbwyUwHG81tRM3
- XJfm5RB4/hjU78k2gtX5rwHehKBT8gCd+LdDjmTk887h1kx9Lc9jAw/m+oy4qAllq2DM
- 4QuRXrCsrW6958ATkyRvgzD9Xpy/aqjLO4cWwKJm53tYeHEzo2EMcAsNiRccZG+4fxbe
- 1pww==
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=KN6PIQquCgk03dWkG9XL/kIzWdXLnNmWHChE1GRrZAE=;
+ b=GkLp4gXMCdlVzRzp/ktZHR6riB2nIdanwM41i7NhAeDRz/U4ejuds3tqeXlXFCmEBC
+ N7DsUhjemU7EB5VU/mKlr6CMTM4Prgnbe3BwbyPhXNNNpPD49lzrAbVTAPDnZCCxp+p3
+ PLmz5UFbYnMzcGfUu9h6td9e0SarVArr679wnocDQip7HnPR85x3IesXMUjqmbsvLDpN
+ 9sTlHua9q23cyKCZAosUOMzejtYi5hNzvpN+2JKKStuHL9tFw7/HMQne/BfXhjxegVqU
+ RLFFyO3bWAv7uaEH3Z7L4k4Ruorom7sKpWKpX2Qkf8qAPWZ1RbGH11lhdTLdkDZ0jm//
+ fgRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=zABYTDkRCXD7YnSXgmckKl0di++lyiV/wtKOsAFdCOU=;
- b=MyV8Qc8CAf6micjJh7znLR9EVzE54I7h+NQX0L/kVh7jC1EPfaH6+8chBfb72BOU4b
- h42xdwEIvkXzqxl1Mt2gRQgTM+ybfUgOX9wo0wqOFIO0CMzPCfpW20M5v2jcKAJhtlOi
- 7MtIsIObfpZ35ua8ztxX6K59u0TB+HFteEGa/wN28PHdR+NqmZmBAdqVtDVPH6wN6lQ8
- zvIMubG8J5EWI8fQO1RMygvjL2eiwflY25fqGqXNkhoek8Hyrv2jyzk8K5HjzzoKbcJ4
- QwxGXTbB78mXWrbkTbATMybzFhEcrKUd8E8yBploKl8voIrxaY3z97xzL9RdBmlOAXeR
- sByw==
-X-Gm-Message-State: AOAM533Tt1jP1oe3w04+Rdv/gFnHIFQbKPd3cMpS5brE8gs+YL+JO1uA
- lsNgYnSgWw0jfNR/9bMteg4=
-X-Google-Smtp-Source: ABdhPJxTkMdALYld74m+geG63p9dWNi1p2dnSIkU414Kd1BPqXanEBoDifWvzO2prhNFG7aFQRMNbw==
-X-Received: by 2002:a17:90b:360e:: with SMTP id
- ml14mr12131878pjb.135.1640427759397; 
- Sat, 25 Dec 2021 02:22:39 -0800 (PST)
+ bh=KN6PIQquCgk03dWkG9XL/kIzWdXLnNmWHChE1GRrZAE=;
+ b=UZFlZejbGh7R7cGgiXVBKYrIB8WAD/9KBEe+osOgwBzf4UQJkfHbQLPZrPDSxzachq
+ xsKTw4qNF1ClSsqDCkPZfSXseHi6ueDjY+TYMvqgwMJFvRXuFqS5PWxmFyPuC8DIVpzk
+ wdTFSrzpfXkU1OLFMV8wDDZ9N1B0ViBSmUaZyxGqsx8BOF+EGUhD7jlK0SpvGldqy2yX
+ UE05nWV3uyDtU1HUgGOLqSKl/rpCBde0tLT/uPvw9qNOtmH6Hjnr8CdhnqckeiHk1ofO
+ 73d6HYKj9vu943YGUMM+6+A12lEwKZLHlgTOhqALpmHG2DjW4vBPYOt9fYkU5M1jeqbu
+ meHA==
+X-Gm-Message-State: AOAM5315rzZAPxV+9/ob6YJf9XkW/Mr3kgqY6lhrWM4mX49mjfydUIJY
+ R34UubkAKWh+EJS+nHhfpuM=
+X-Google-Smtp-Source: ABdhPJxvyTH+PcEJGwXpy9zyPgomb0JXdQ1sZgBWbC21x8DiYARCWc4SlbwIUmgspEF4kiah7uDFXA==
+X-Received: by 2002:a63:43c6:: with SMTP id q189mr9005296pga.424.1640428317079; 
+ Sat, 25 Dec 2021 02:31:57 -0800 (PST)
 Received: from localhost (121-44-67-22.tpgi.com.au. [121.44.67.22])
- by smtp.gmail.com with ESMTPSA id k8sm12766668pfu.72.2021.12.25.02.22.38
+ by smtp.gmail.com with ESMTPSA id x6sm10235097pge.50.2021.12.25.02.31.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 25 Dec 2021 02:22:39 -0800 (PST)
-Date: Sat, 25 Dec 2021 20:22:34 +1000
+ Sat, 25 Dec 2021 02:31:56 -0800 (PST)
+Date: Sat, 25 Dec 2021 20:31:51 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 3/3] KVM: PPC: Book3S HV: Free allocated memory if module
- init fails
-To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
-References: <20211223211931.3560887-1-farosas@linux.ibm.com>
- <20211223211931.3560887-4-farosas@linux.ibm.com>
-In-Reply-To: <20211223211931.3560887-4-farosas@linux.ibm.com>
+Subject: Re: [BISECTED] power8: watchdog: CPU 3 self-detected hard LOCKUP @
+ queued_spin_lock_slowpath+0x154/0x2d0
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Davidlohr Bueso <dbueso@suse.de>,
+ linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>, Stijn Tintel <stijn@linux-ipv6.be>
+References: <c9abdadc-bc38-dbba-7f96-1ce15db8ab79@linux-ipv6.be>
+In-Reply-To: <c9abdadc-bc38-dbba-7f96-1ce15db8ab79@linux-ipv6.be>
 MIME-Version: 1.0
-Message-Id: <1640427594.mim1kqxpi8.astroid@bobo.none>
+Message-Id: <1640427851.k47q6y3qjb.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,81 +83,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Fabiano Rosas's message of December 24, 2021 7:19 am:
-> The module's exit function is not called when the init fails, we need
-> to do cleanup before returning.
+Excerpts from Stijn Tintel's message of December 22, 2021 11:20 am:
+> Hi,
 >=20
-> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
-> ---
->  arch/powerpc/kvm/book3s_hv.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
+> After upgrading my Power8 server from 5.10 LTS to 5.15 LTS, I started
+> experiencing CPU hard lockups, usually rather quickly after boot:
 >=20
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 53400932f5d8..2d79298e7ca4 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -6065,7 +6065,7 @@ static int kvmppc_book3s_init_hv(void)
-> =20
->  	r =3D kvm_init_subcore_bitmap();
->  	if (r)
-> -		return r;
-> +		goto err;
-> =20
->  	/*
->  	 * We need a way of accessing the XICS interrupt controller,
-> @@ -6080,7 +6080,8 @@ static int kvmppc_book3s_init_hv(void)
->  		np =3D of_find_compatible_node(NULL, NULL, "ibm,opal-intc");
->  		if (!np) {
->  			pr_err("KVM-HV: Cannot determine method for accessing XICS\n");
-> -			return -ENODEV;
-> +			r =3D -ENODEV;
-> +			goto err;
->  		}
->  		/* presence of intc confirmed - node can be dropped again */
->  		of_node_put(np);
-> @@ -6093,12 +6094,12 @@ static int kvmppc_book3s_init_hv(void)
-> =20
->  	r =3D kvmppc_mmu_hv_init();
->  	if (r)
-> -		return r;
-> +		goto err;
-> =20
->  	if (kvmppc_radix_possible()) {
->  		r =3D kvmppc_radix_init();
->  		if (r)
-> -			return r;
-> +			goto err;
->  	}
-> =20
->  	r =3D kvmppc_uvmem_init();
-> @@ -6111,6 +6112,12 @@ static int kvmppc_book3s_init_hv(void)
->  	kvmppc_hv_ops =3D &kvm_ops_hv;
-> =20
->  	return 0;
-> +
-> +err:
-> +	kvmhv_nested_exit();
-> +	kvmppc_radix_exit();
+>=20
+> watchdog: CPU 3 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x154/0x2d0
+> watchdog: CPU 3 TB:265651929071, last heartbeat TB:259344820187 (12318ms
+> ago)
+> watchdog: CPU 4 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x22c/0x2d0
+> watchdog: CPU 4 TB:265651929059, last heartbeat TB:259344820045 (12318ms
+> ago)
+> watchdog: CPU 5 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 5 TB:265651929037, last heartbeat TB:259349940303 (12308ms
+> ago)
+> watchdog: CPU 6 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x144/0x2d0
+> watchdog: CPU 6 TB:265651929056, last heartbeat TB:259349940294 (12308ms
+> ago)
+> watchdog: CPU 12 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x280/0x2d0
+> watchdog: CPU 12 TB:242479050267, last heartbeat TB:236822174350
+> (11048ms ago)
+> watchdog: CPU 26 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x22c/0x2d0
+> watchdog: CPU 26 TB:265657049348, last heartbeat TB:259355060595
+> (12308ms ago)
+> watchdog: CPU 40 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 40 TB:265657049289, last heartbeat TB:259360180427
+> (12298ms ago)
+> watchdog: CPU 47 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x21c/0x2d0
+> watchdog: CPU 47 TB:265657049213, last heartbeat TB:259365300321
+> (12288ms ago)
+> watchdog: CPU 60 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 60 TB:265651929348, last heartbeat TB:259370420527
+> (12268ms ago)
+> watchdog: CPU 72 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 72 TB:265718488733, last heartbeat TB:259375540545
+> (12388ms ago)
+> watchdog: CPU 13 detected hard LOCKUP on other CPUs 0-2,7,10,44
+> watchdog: CPU 13 TB:267541867921, last SMP heartbeat TB:259380660378
+> (15939ms ago)
+> watchdog: CPU 34 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 34 TB:269913954376, last heartbeat TB:263456144470
+> (12612ms ago)
+> watchdog: CPU 41 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 41 TB:267865972392, last heartbeat TB:261408162383
+> (12612ms ago)
+> watchdog: CPU 74 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 74 TB:267766470637, last heartbeat TB:261423522630
+> (12388ms ago)
+> watchdog: CPU 8 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 8 TB:274978264599, last heartbeat TB:269237436681 (11212ms
+> ago)
+> watchdog: CPU 9 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 9 TB:268029810836, last heartbeat TB:261397922093 (12952ms
+> ago)
+> watchdog: CPU 11 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 11 TB:279685725759, last heartbeat TB:273685814104
+> (11718ms ago)
+> watchdog: CPU 16 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 16 TB:267865972449, last heartbeat TB:261397922458
+> (12632ms ago)
+> watchdog: CPU 18 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 18 TB:269913954314, last heartbeat TB:263445904285
+> (12632ms ago)
+> watchdog: CPU 24 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 24 TB:267865972338, last heartbeat TB:261403042311
+> (12622ms ago)
+> watchdog: CPU 31 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x22c/0x2d0
+> watchdog: CPU 31 TB:268029811095, last heartbeat TB:261403042673
+> (12942ms ago)
+> watchdog: CPU 32 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 32 TB:267865972528, last heartbeat TB:261403042589
+> (12622ms ago)
+> watchdog: CPU 33 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 33 TB:268029811013, last heartbeat TB:261408162474
+> (12932ms ago)
+> watchdog: CPU 35 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 35 TB:280174344471, last heartbeat TB:273696054625
+> (12652ms ago)
+> watchdog: CPU 37 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x230/0x2d0
+> watchdog: CPU 37 TB:269913954356, last heartbeat TB:263456144501
+> (12612ms ago)
+> watchdog: CPU 38 self-detected hard LOCKUP @
+> queued_spin_lock_slowpath+0x228/0x2d0
+> watchdog: CPU 38 TB:290393774681, last heartbeat TB:283946212510
+> (12592ms ago)
+>=20
+> Bisecting lead to the following commit:
+>=20
+> deb9b13eb2571fbde164ae012c77985fd14f2f02 is the first bad commit
+> commit deb9b13eb2571fbde164ae012c77985fd14f2f02
+> Author: Davidlohr Bueso <dave@stgolabs.net>
+> Date: =C2=A0=C2=A0Mon Mar 8 17:59:50 2021 -0800
+>=20
+> =C2=A0=C2=A0=C2=A0powerpc/qspinlock: Use generic smp_cond_load_relaxed
 
-These should both be callable without init functions succeeding
-so this looks right to me.
+Thanks for bisecting and reporting this.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+As far as I can see, the code should be functionally identical,
+the difference is slightly in loop structure and priority nops
+but that shouldn't cause complete lock ups.
+
+I suspect possibly something is getting miscompiled. What distro
+do you use, what gcc version? And would you be able to send the
+output of objdump --disassemble=3Dqueued_spin_lock_slowpath vmlinux
+for your bad kernel?
 
 Thanks,
 Nick
 
-> +
-> +	return r;
->  }
-> =20
->  static void kvmppc_book3s_exit_hv(void)
-> --=20
-> 2.33.1
+> =C2=A0=C2=A0=C2=A0
+>=20
+> The problem persists in 2f47a9a4dfa3674fad19a49b40c5103a9a8e1589 and
+> goes away if I revert deb9b13eb2571fbde164ae012c77985fd14f2f02 on top of
+> that. As deb9b13eb2571fbde164ae012c77985fd14f2f02 seems to be a revert
+> of 49a7d46a06c30c7beabbf9d1a8ea1de0f9e4fdfe, I suspect this problem
+> might have existed before 49a7d46a06c30c7beabbf9d1a8ea1de0f9e4fdfe. I
+> therefore tried to build 49a7d46a06c30c7beabbf9d1a8ea1de0f9e4fdfe and
+> 49a7d46a06c30c7beabbf9d1a8ea1de0f9e4fdfe^1 to verify if the problem
+> exists there as well, unfortunately these commits don't build due to the
+> following compile error:
+>=20
+> kernel/smp.c:In function 'smp_init':
+> ./include/linux/compiler.h:392:38:error: call to
+> '__compiletime_assert_150' declared with attribute error: BUILD_BUG_ON
+> failed: offsetof(struct task_struct, wake_entry_type) - offsetof(struct
+> task_struct, wake_entry) !=3D offsetof(struct __call_single_data, flags) =
+-
+> offsetof(struct __call_single_data, llist)
+> =C2=A0392 | =C2=A0_compiletime_assert(condition, msg, __compiletime_asser=
+t_,
+> __COUNTER__)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0| =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0^
+>=20
+> Is this report enough to revert deb9b13eb2571fbde164ae012c77985fd14f2f02
+> for now?
+>=20
+> Stijn
 >=20
 >=20
