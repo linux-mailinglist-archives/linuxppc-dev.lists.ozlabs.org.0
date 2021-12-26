@@ -1,34 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE3847F926
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 22:56:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D8F47F92E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 22:58:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JMZQ73vpwz3dsp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 08:56:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JMZS01dVkz3fBv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 08:58:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JMZLw6LZxz2ynj
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Dec 2021 08:54:00 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JMZLz1PnRz2yXv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Dec 2021 08:54:03 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JMZLw5P6Qz4xn1;
- Mon, 27 Dec 2021 08:54:00 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JMZLz0f5yz4xnD;
+ Mon, 27 Dec 2021 08:54:03 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20211209115944.4062384-1-mpe@ellerman.id.au>
-References: <20211209115944.4062384-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] selftests/powerpc: Add a test of sigreturning to the
- kernel
-Message-Id: <164055553269.3187272.9055381081762369428.b4-ty@ellerman.id.au>
-Date: Mon, 27 Dec 2021 08:52:12 +1100
+To: Paul Mackerras <paulus@samba.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Rob Herring <robh@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20211217221400.3667133-1-robh@kernel.org>
+References: <20211217221400.3667133-1-robh@kernel.org>
+Subject: Re: [PATCH] powerpc: dts: Remove "spidev" nodes
+Message-Id: <164055553337.3187272.12536677526522754431.b4-ty@ellerman.id.au>
+Date: Mon, 27 Dec 2021 08:52:13 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,24 +45,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com
+Cc: devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 9 Dec 2021 22:59:44 +1100, Michael Ellerman wrote:
-> We have a general signal fuzzer, sigfuz, which can modify the MSR & NIP
-> before sigreturn. But the chance of it hitting a kernel address and also
-> clearing MSR_PR is fairly slim.
+On Fri, 17 Dec 2021 16:14:00 -0600, Rob Herring wrote:
+> "spidev" is not a real device, but a Linux implementation detail. It has
+> never been documented either. The kernel has WARNed on the use of it for
+> over 6 years. Time to remove its usage from the tree.
 > 
-> So add a specific test of sigreturn to a kernel address, both with and
-> without attempting to clear MSR_PR (which the kernel must block).
 > 
-> [...]
 
 Applied to powerpc/next.
 
-[1/1] selftests/powerpc: Add a test of sigreturning to the kernel
-      https://git.kernel.org/powerpc/c/a8968521cfdc3e339fe69473d6632e0aa8d7202a
+[1/1] powerpc: dts: Remove "spidev" nodes
+      https://git.kernel.org/powerpc/c/9cbbe6bae938dd335a5092b0ce41f88cb39ba40c
 
 cheers
