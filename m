@@ -1,58 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349A447F49F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Dec 2021 23:43:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF8247F5E9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 09:34:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JLzVT1SFwz30Qv
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 09:43:29 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ECKWTM9g;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JMDcB5Q61z3cVq
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 19:34:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JLzTq29NDz2xtj
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Dec 2021 09:42:55 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ECKWTM9g; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JLzTj6CNfz4xps;
- Sun, 26 Dec 2021 09:42:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1640472170;
- bh=qiVqpRlRRXS0iAH2nX/AkQBYFrUOx2vQ2Vqp7kM0LCw=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ECKWTM9gdi+sCsiy1dHQXyULGKSSWTz2ZLVhuUvcXREX9nG51Nm07U1fOp7KeiGI/
- WFmzX7vg/CXq/BsT5Q5iGJZGoAgB+IkGwm1Ig1mf4/7GC8PgX3M6JUSOvCJgySS9tN
- GMYrpOWwOCAt5rq1FE7zyCzfyPNMmEk1wQ3RZBRLaIvWVOoPU4dpwZAm4wDAvfxwfC
- IQo1vaVUXbCBblQbpa0a41VYClo3FWcRXlzbfHXhTugyjRyIz340RAK0gQly+D+vi9
- GGvp8MMYzz/6Ur5oTIViGAoSb8xsI6nAXfbZcD6MSW3rdh0CF/YT/7TFiJs34cefOd
- tgW+6sSNJ1pzQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Lukas Bulwahn
- <lukas.bulwahn@gmail.com>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: code conditional on non-existing PPC_EARLY_DEBUG_MICROWATT.
-In-Reply-To: <27eefbf2-fc2c-7800-1397-8acfea7ed7e8@csgroup.eu>
-References: <CAKXUXMxa6zuTncNjTVHeU7nJ9uvv3KqMtSDocMC7P5hxfrkakQ@mail.gmail.com>
- <27eefbf2-fc2c-7800-1397-8acfea7ed7e8@csgroup.eu>
-Date: Sun, 26 Dec 2021 09:42:48 +1100
-Message-ID: <87y2481f2v.fsf@mpe.ellerman.id.au>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
+ envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JMDbj2VXzz2xBx
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Dec 2021 19:33:53 +1100 (AEDT)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.56])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4JMDb55RtDzbjYq;
+ Sun, 26 Dec 2021 16:33:21 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Sun, 26 Dec 2021 16:33:48 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.20; Sun, 26 Dec 2021 16:33:47 +0800
+Message-ID: <60dd4235-865b-6072-d44c-5c50f4683ab4@huawei.com>
+Date: Sun, 26 Dec 2021 16:33:46 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH 1/3] mm: vmalloc: Let user to control huge vmalloc default
+ behavior
+Content-Language: en-US
+To: Jonathan Corbet <corbet@lwn.net>, Andrew Morton
+ <akpm@linux-foundation.org>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <x86@kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>
+References: <20211226083912.166512-1-wangkefeng.wang@huawei.com>
+ <20211226083912.166512-2-wangkefeng.wang@huawei.com>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <20211226083912.166512-2-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggeme710-chm.china.huawei.com (10.1.199.106) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,40 +62,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors <kernel-janitors@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@samba.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 23/12/2021 =C3=A0 11:21, Lukas Bulwahn a =C3=A9crit=C2=A0:
->> Dear Benjamin, dear Paul, dear Michael,
->>=20
->> with commit 48b545b8018d ("powerpc/microwatt: Use standard 16550 UART
->> for console"), you have some code in arch/powerpc/kernel/udbg_16550.c,
->> conditional on the Kconfig symbol PPC_EARLY_DEBUG_MICROWATT. However,
->> since then, the definition of this Kconfig symbol was never introduced
->> to the mainline repository or current linux-next, nor am I finding any
->> pending patch for that.
->>=20
->> Are you going to add this config definition soon? Or did you identify
->> that this setup code in udbg_16550.c is not actually needed and can we
->> simply drop this code again?
->>=20
->> This issue was identified with the script ./scripts/checkkconfigsymbols.=
-py.
->>=20
+
+On 2021/12/26 16:39, Kefeng Wang wrote:
+> Add HUGE_VMALLOC_DEFAULT_ENABLED to let user to choose whether or
+> not enable huge vmalloc mappings by default, and this could make
+> more architectures to enable huge vmalloc mappings feature but
+> don't want to enable it by default.
 >
-> Was it forgotten when handling comments to=20
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20200509050340.GD=
-1464954@thinks.paulus.ozlabs.org/=20
-> ?
-
-Yes. I reported it internally to some folks but I guess they haven't had
-time to send a fixup patch.
-
-I'm pretty sure we just need the first three hunks of that patch, but it
-would be good if someone with a Microwatt setup could test it.
-
-cheers
+> Add hugevmalloc=on/off parameter to enable or disable this feature
+> at boot time, nohugevmalloc is still supported and equivalent to
+> hugevmalloc=off.
+>
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+>   .../admin-guide/kernel-parameters.txt          | 12 ++++++++++++
+>   arch/powerpc/Kconfig                           |  1 +
+>   mm/Kconfig                                     |  7 +++++++
+>   mm/vmalloc.c                                   | 18 +++++++++++++++++-
+>   4 files changed, 37 insertions(+), 1 deletion(-)
+>
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index 2fba82431efb..4107136097a6 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -1629,6 +1629,18 @@
+>   			If both parameters are enabled, hugetlb_free_vmemmap takes
+>   			precedence over memory_hotplug.memmap_on_memory.
+>   
+> +
+> +	hugevmalloc=	[PPC] Reguires CONFIG_HAVE_ARCH_HUGE_VMALLOC
+> +			Format: { on | off }
+> +			Default set by CONFIG_HUGE_VMALLOC_DEFAULT_ENABLED.
+> +
+> +			This parameter enables/disables kernel huge vmalloc
+> +			mappings at boot time.
+> +
+> +			on:  Enable the feature
+> +			off: Disable the feature
+> +			     Equivalent to: nohugevmalloc
+> +
+>   	hung_task_panic=
+>   			[KNL] Should the hung task detector generate panics.
+>   			Format: 0 | 1
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index dea74d7717c0..d59b221be264 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -246,6 +246,7 @@ config PPC
+>   	select HAVE_STATIC_CALL			if PPC32
+>   	select HAVE_SYSCALL_TRACEPOINTS
+>   	select HAVE_VIRT_CPU_ACCOUNTING
+> +	select HUGE_VMALLOC_DEFAULT_ENABLED	if HAVE_ARCH_HUGE_VMALLOC
+>   	select HUGETLB_PAGE_SIZE_VARIABLE	if PPC_BOOK3S_64 && HUGETLB_PAGE
+>   	select IOMMU_HELPER			if PPC64
+>   	select IRQ_DOMAIN
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 356f4f2c779e..4ba91c0359bd 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -262,6 +262,13 @@ config HUGETLB_PAGE_SIZE_VARIABLE
+>   	  HUGETLB_PAGE_ORDER when there are multiple HugeTLB page sizes available
+>   	  on a platform.
+>   
+> +config HUGE_VMALLOC_DEFAULT_ENABLED
+> +	bool "Enable huge vmalloc mappings by default"
+> +	depends on HAVE_ARCH_HUGE_VMALLOC
+> +	help
+> +	  Enable huge vmalloc mappings by default, this value could be overridden
+> +	  by hugevmalloc=off|on.
+> +
+>   config CONTIG_ALLOC
+>   	def_bool (MEMORY_ISOLATION && COMPACTION) || CMA
+>   
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index d2a00ad4e1dd..3b6f99753816 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -58,7 +58,7 @@ static const unsigned int ioremap_max_page_shift = PAGE_SHIFT;
+>   #endif	/* CONFIG_HAVE_ARCH_HUGE_VMAP */
+>   
+>   #ifdef CONFIG_HAVE_ARCH_HUGE_VMALLOC
+> -static bool __ro_after_init vmap_allow_huge = true;
+> +static bool __ro_after_init vmap_allow_huge = IS_ENABLED(CONFIG_HUGE_VMALLOC_DEFAULT_ENABLED);
+>   
+>   static int __init set_nohugevmalloc(char *str)
+>   {
+> @@ -66,6 +66,22 @@ static int __init set_nohugevmalloc(char *str)
+>   	return 0;
+>   }
+>   early_param("nohugevmalloc", set_nohugevmalloc);
+> +
+> +static int __init set_hugevmalloc(char *str)
+> +{
+> +	if (!str)
+> +		return -EINVAL;
+> +
+> +	if (!strcmp(str, "on"))
+> +		vmap_allow_huge = true;
+> +	else if (!strcmp(str, "off"))
+> +		vmap_allow_huge = true;
+should vmap_allow_huge=false, my mistake...
+> +	else
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +early_param("hugevmalloc=", set_hugevmalloc);
+>   #else /* CONFIG_HAVE_ARCH_HUGE_VMALLOC */
+>   static const bool vmap_allow_huge = false;
+>   #endif	/* CONFIG_HAVE_ARCH_HUGE_VMALLOC */
