@@ -2,34 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C925A47F915
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 22:52:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D73DD47F920
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 22:54:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JMZJr3Vg2z3c6D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 08:52:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JMZMY59Qxz3cR3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 08:54:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JMZJN20dQz2xXd
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Dec 2021 08:51:48 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JMZLt4tBKz2yn3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Dec 2021 08:53:58 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JMZJH6tpKz4xdB;
- Mon, 27 Dec 2021 08:51:43 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JMZLs3B5Nz4xhj;
+ Mon, 27 Dec 2021 08:53:57 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20211203124112.2912562-1-mpe@ellerman.id.au>
-References: <20211203124112.2912562-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/ptdump: Fix DEBUG_WX since generic ptdump
- conversion
-Message-Id: <164055549299.3186641.4130885945834148183.b4-ty@ellerman.id.au>
-Date: Mon, 27 Dec 2021 08:51:32 +1100
+To: mpe@ellerman.id.au, maz@kernel.org, benh@kernel.crashing.org,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, paulus@samba.org
+In-Reply-To: <aa145f674e08044c98f13f1a985faa9cc29c3708.1639777976.git.christophe.jaillet@wanadoo.fr>
+References: <aa145f674e08044c98f13f1a985faa9cc29c3708.1639777976.git.christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] powerpc/mpic: Use bitmap_zalloc() when applicable
+Message-Id: <164055552979.3187272.5056547935512472848.b4-ty@ellerman.id.au>
+Date: Mon, 27 Dec 2021 08:52:09 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,23 +43,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, kernel-janitors@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 3 Dec 2021 23:41:12 +1100, Michael Ellerman wrote:
-> In note_prot_wx() we bail out without reporting anything if
-> CONFIG_PPC_DEBUG_WX is disabled.
-> 
-> But CONFIG_PPC_DEBUG_WX was removed in the conversion to generic ptdump,
-> we now need to use CONFIG_DEBUG_WX instead.
+On Fri, 17 Dec 2021 22:54:12 +0100, Christophe JAILLET wrote:
+> 'mpic->protected' is a bitmap. So use 'bitmap_zalloc()' to simplify
+> code and improve the semantic, instead of hand writing it.
 > 
 > 
-> [...]
 
-Applied to powerpc/fixes.
+Applied to powerpc/next.
 
-[1/1] powerpc/ptdump: Fix DEBUG_WX since generic ptdump conversion
-      https://git.kernel.org/powerpc/c/8d84fca4375e3c35dadc16b8c7eee6821b2a575c
+[1/1] powerpc/mpic: Use bitmap_zalloc() when applicable
+      https://git.kernel.org/powerpc/c/2fe4ca6ad7f6a0b98f97c498320051e5066e4b95
 
 cheers
