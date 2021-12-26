@@ -1,135 +1,118 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422CB47F868
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 18:37:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6364A47F890
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 20:38:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JMSgF0kLdz3c7q
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 04:37:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JMWLv2HMCz3c7Z
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 06:38:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::62f;
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::614;
  helo=fra01-mr2-obe.outbound.protection.outlook.com;
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on062f.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e19::62f])
+ (mail-mr2fra01on0614.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e19::614])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JMSfk5Ch0z2xD4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Dec 2021 04:37:17 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JMWLR6RRJz2xKT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Dec 2021 06:38:22 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oHXLtFDGm8oHw6KhzNvGZj6Znx1Y9Vf1KNUWQ5zwJHeCNOBy436EFYHL9tuLC/SEgdJ3AaRownl7QDwZyyhoPBA2Rog3XOMUttzL5voBVSFsdy++S/EC1h6qXYQM/lzpPkzJ6DieXubEvD8LVlA+SzACOS5sjM2Wnijjt7LorrozYoib1O3PLymDFb1KrCfMHhsS95MPWsGxlzAWeCIispEmX1YaSKmRl5diXbScuE+U68j+VGUryT0yZik5AH7v4eTqiMy3hCFg6KGvvSi1/h0vF0tnGYvNMON1pPFyk0PsbM/dJtF3WgIrfmnZvcDwO3qmJAcdWJwfQ3ip6I+aTQ==
+ b=gUJgdRp/YLR3OdFiqkPyGAJR5TGSnZkfjCVxbGrOoVK02EUgNqLbAVtAvnXeXKAJuHuJcaCXC5FcDVmYTUHowtELvUZShQZe8O7SGbo/r1Z5dRWFohcvbwe3a2I+vsfj9JKldaxAUj2BKZuc1c10DYYVFyzOB+5jg3yJJytuZd/wzlfXK6DOPkPK6odYX5alkQXUwk7i506RXlJK0412TBbacgMeKlWFUXRpkn3bCl8I3kFpLwd25rqoXPNbmXk1Cz/aAPFn6Q5s623UYoTu7jDWMMS8DtwvtqUlRITLtKOuG383tsTgpTstTJ0DYsb38QxB7hZcc4xXuA4PzbsL8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uI2REbDuBG8jO4lVLL1V0gBrxenblaZyg1pRYPb5s+c=;
- b=IlGz/8iy1i2BD+JpGruBkxF24pu0nzcqyyW7+NLYZQ2IdVVhRL+XDt551rtdbPr/Sp1H8L7Qn86uYDXU7GEb0OxiJ57KA6YDYeSxq8IxR1BG21YMIFARG4kRnUJNEz4UHGmCx/bwBMYs5IIMOzVsix8XwR1k3Y1U9MKCI2vxW0GceAPTBoXOXGonYCBoJseWOfHjNdqfxK2cULBC94O6dGB8b2KrY5IwWMADvREAT2hvPlULMiWAm2ZoeSUhi2D8ArUP9u34/nKKGD9xVqbC389+CtBjcdNVqNy0FP05/+itqY8hk77qJ+0Ysg4klWNB0vUMviXL1qm1LOkKqRsx/A==
+ bh=JD04R82x84zl7tSQ6t9ZKg+qT3Wu9XlJqadQMBjmzJM=;
+ b=lIO25ZPDhznm2ljAhno/u8MLzsFe/LV5AOhPCCvhxjiTDw4CNsbZwEKcg6apddCWcFMNEA2uO0eqK0oMZO48VZf/IYwMx1xZarntvGjlrRQjhVvMwtdlMz/AbRCDk6Y7NBzEyphFUSmbFMvGft90fvXjsBuRRGU44F1DIh+b8u23LFihAqgkAWZQzOBEzj2vPOZqnmuYWB2NeAMxlNDWjILCF10eBPhjq4KtiB3MohGYRf5kfTy/KQ0fSxbQlbzB/r0r82jdq+EJZQkKLALZ/izEFY5OsI+VCGpXflfkXbV0EAdb0A55ai40g9U9ntOjeQYIBzk1+bJV16mxMfuEAA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
  dkim=pass header.d=csgroup.eu; arc=none
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB2103.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:a::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4823.19; Sun, 26 Dec 2021 17:36:59 +0000
+ by MR1P264MB2233.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:2::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4823.18; Sun, 26 Dec
+ 2021 19:38:00 +0000
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::f0ef:856d:b0de:e85d]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::f0ef:856d:b0de:e85d%7]) with mapi id 15.20.4823.022; Sun, 26 Dec 2021
- 17:36:59 +0000
+ 19:38:00 +0000
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Kefeng Wang <wangkefeng.wang@huawei.com>, Jonathan Corbet
- <corbet@lwn.net>, Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "x86@kernel.org" <x86@kernel.org>, 
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 1/3] mm: vmalloc: Let user to control huge vmalloc default
- behavior
-Thread-Topic: [PATCH 1/3] mm: vmalloc: Let user to control huge vmalloc
- default behavior
-Thread-Index: AQHX+jLwrp8KH+lFZU682OcqJ3skPaxFCfiA
-Date: Sun, 26 Dec 2021 17:36:59 +0000
-Message-ID: <6c4bd989-268e-5899-09a7-ac573bd8b4d9@csgroup.eu>
-References: <20211226083912.166512-1-wangkefeng.wang@huawei.com>
- <20211226083912.166512-2-wangkefeng.wang@huawei.com>
-In-Reply-To: <20211226083912.166512-2-wangkefeng.wang@huawei.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
+ <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ "masahiroy@kernel.org" <masahiroy@kernel.org>
+Subject: [PATCH v2 1/4] powerpc/vdso: augment VDSO32 functions to support 64
+ bits build
+Thread-Topic: [PATCH v2 1/4] powerpc/vdso: augment VDSO32 functions to support
+ 64 bits build
+Thread-Index: AQHX+pAXhwejkc9jW0iFxYfLSL4H2A==
+Date: Sun, 26 Dec 2021 19:38:00 +0000
+Message-ID: <169b36a06ea63260a5047d4f44f7dbbf8442aabe.1640542625.git.christophe.leroy@csgroup.eu>
 Accept-Language: fr-FR, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=csgroup.eu;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 700c2a74-fe36-4d6e-dc86-08d9c89651cd
-x-ms-traffictypediagnostic: MRZP264MB2103:EE_
-x-microsoft-antispam-prvs: <MRZP264MB2103B86F259868FD2E586839ED419@MRZP264MB2103.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:6430;
+x-ms-office365-filtering-correlation-id: 8437fc56-10ff-4b8a-5e0b-08d9c8a739a3
+x-ms-traffictypediagnostic: MR1P264MB2233:EE_
+x-microsoft-antispam-prvs: <MR1P264MB22338CE09FCEFCCA85B8323EED419@MR1P264MB2233.FRAP264.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: u4N4nljK0q4y72AiGjAYi8AsDG+lISVAkKhqOnV2JtVBO29lW4frJPf8XCaqRxfx88H1YTM43cNodN/rSx4ZsQvSbx58icrG6fN3ya7o+c6eV8kLAI/UgoaB97N/3ShEaERml0UG7wZdx3EB9xUlya3X+yWojDSMy7LrcCnIyNx9jGtVzb2zwGedfhmdZk0xgGYznRkR6A8eVnXy3k60JnmVl8IcHY3BLuHCV+n/PDx1zuiGHnns5SXtsmAc5isXx8BJ0hiV4f7AGzVjVY5jQ1FCC+OM+3D+AhGxVBxUxVdtKcgHTC8g6SlBZQZtmc939FUhLlSF+Ce0pQQFYhoy+bx3QiQHvja3cC9ZWtcK+Ls8gy/6UjJgOmNnfwzwNSwQtheDSYYX3bYQohVlN1YhD1hYvLFzKSmri4udg8caWmDTxMiek7lMs4+rsQCrEJbpPJpobLva/n1A5e1Mx0iWudd65P/EZHhDpsoyhpPOz7j92Q75vpttLJKt2gDAvK8k/n2VIVrGP1DcG+GCwDR462JcUpi/b+IHegmSjbXDHj1GanRdbXS/NzXlxgR+L35vel80QtGIP0ooJcK1PICZELjVktlBqNufNpgKRXuxMzzA+MncqbxNDdD6zy6519XIIiL38fsKL++bYw678KDkrBIGJmFouK/1xlHOXgEI7eGFYq9oRvYwFpQF3z95rYHKReyanyitY4tqfW+VJPNXeKqc9528vVfX2LJbzZucgCoULVsSNkKKvNCGGK12xaXICbDIe6XtfVIkRs8WdDhmjBY7HYUKHcd8Fk/cN5jEZKE=
+x-microsoft-antispam-message-info: ypQXLFW1WGWY/78K4Ah3OFLw3psTJS6X5k0RNVsNHmW6zYVC37EAw632e9Xs8Zkpf8vi2t9XZzDUuJrdDOBSlc3+OrkHSY5gE3WwkLhGB82tkiUHeyyLAqiNCzHyrO1VtFSSvz+tgLypBu6RS4KqJHcutmgWeJUKiy32UTFAOjyrxE2b4VpcBV+6ItkEVfOEz2zPHGKpDu0i1q1cXYU58jleCeetr8YIzsOk6Jo93xNttSUpvQYGXbUuS86OppOO6X4AMrmUPOud7l3M0mEIBVJjn8wqSYxy/X/JHIPOrmksoQ3j8e70S35scu1yyoOb15iaXSheC5JW+Lk0l0H1y59FtN0C9DqDuBmVEUYJ9gJQrlgueBw1yGasl7d3bK5UjKj/NJhnI9oQiZsWocrj+Xnh+nQA7yd8BnM5SMmNL/xEyDknLC9/iAQjxQWWeb71IzoAVmvecuD55DjqWtZme6RU3PWtzconxkQx6pg7VtPFGhk0zVj4YQLl/W+OZau9V9O1pP5fzmtAro7PDusc7xHPXUB6aNiTgIcyIWfPn+mAEibHRdr0QqrYb72AZsya9Jc9kKv0DRKhh9ncXRvduiyMSoLic5fdPxzxUN9I48tvduyDaThrVkuZaTEUEy6m4+oM5xfI9qMN1YhCF56GMIF/hT4PhWbfj8ImcnEbKMpU6TburBPr2RaWuYsA3pZMU0GL2H5u1VwAWKIXbOmDrg==
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(31696002)(508600001)(8936002)(36756003)(38070700005)(6506007)(38100700002)(122000001)(8676002)(5660300002)(7416002)(44832011)(26005)(186003)(2616005)(86362001)(66574015)(66556008)(54906003)(6512007)(2906002)(110136005)(316002)(83380400001)(71200400001)(66946007)(91956017)(66446008)(66476007)(6486002)(76116006)(64756008)(31686004)(4326008)(14583001)(43740500002)(45980500001);
+ SFS:(4636009)(366004)(76116006)(6506007)(4326008)(91956017)(6512007)(44832011)(2616005)(26005)(54906003)(5660300002)(186003)(38100700002)(66476007)(66946007)(36756003)(83380400001)(71200400001)(66446008)(64756008)(86362001)(110136005)(122000001)(66556008)(38070700005)(6486002)(8676002)(316002)(508600001)(8936002)(2906002);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?eGRJa0Q4aW5rZmdHdmgvdVJsK3hXeWRMMDg2aVUvSzhqUUM1NmZobjYvOUp4?=
- =?utf-8?B?K1crZVdxRnVLWFpZMElhc2ZOWjJ5UFR2TllsNHJxYTZ3TW9QcjBiSkhVMndI?=
- =?utf-8?B?NTU2S1NuRVZDZ0JYTGhnYm9mNDRTMElXa21oRHlwd0wrN3pHZDYwMElNcDZ3?=
- =?utf-8?B?aWVyUEpQOUlIOWdwNHdGMHM3QzJINnRPVkgzb3hQb1Zyai93YnBzMzZIQWZG?=
- =?utf-8?B?bHVVcVZTRFRrR1pib1JyT05QUFZreUhZRU1ITE9SQ1ZYRitwYjZpYkU4TU0y?=
- =?utf-8?B?VTNaaDRkWC95cmd2L2RiSmQ2WVFHcmZkYU9MQ0FSOE9vaUJPYnRveHQwUTJO?=
- =?utf-8?B?WXYvdG8yTWp2KzdsTXNqWGU1dHV3QmhXWmVKOXFBUDl5NFVNVVNGN1h1UnZj?=
- =?utf-8?B?MGxwaW5uaU9nVXR1Ump5Q0Voc0xrZ1NRb2xUVENDSEQ3aFV6c1E2ZUQ1cndz?=
- =?utf-8?B?SzJrYmw3TmdidmNvZmgybGdGNEtPY3VnOTRjVm9rejFjOFVFZklMUGZQYStR?=
- =?utf-8?B?M3VyZDJKQldiY3hWTC9QZldpeXRpWTBIR2xUNUh0RlNvZjhtVEJheWhvTnBy?=
- =?utf-8?B?eDZCeU1CVllLUWZNSlRjUEVEdndPcnFkc243bzNYVXp4SUlTYzRTRk1sZjRh?=
- =?utf-8?B?cEFFbjFOY1dqSVUyMGNncWNQRGlxYUwxRmZ4OCtGNkdMLytSREhnUml4L0c5?=
- =?utf-8?B?S1Z4c0dqMEx6bWVuOFFkSVNaNmpxaWVGMnFtK1cwTVdIbUQxR1gva0UzYVZ5?=
- =?utf-8?B?MkU5WFg2d2xibWQ4MFBWeG1lbThWOWFUZlBydy9UZlozclM1SDF4QjBHYUZ6?=
- =?utf-8?B?c0cvUUpYbXdWVUU1dGdHRmJmWUhoRE9nUWJSeGpIc0ZyVWFVNU0xN3MwZURX?=
- =?utf-8?B?V3JVbUxpUXRQeE41Y1RsaHJkQmh1NkR6Tng0ZEhZVzkvSUovTzlOZEFFRG0x?=
- =?utf-8?B?M0Y1czE5bmwxRlBYZXNtYzU0WTU0bzJHNW4xZEhDRFNxVjdFazcvTkZrRnhS?=
- =?utf-8?B?Q2l3T1VaNjQvbnFwQ0xvRlFxWVJ6V2ZhSUhGb2VNL0VIWDRjTjRYWWRqUTJT?=
- =?utf-8?B?aGM4czJnYzljbERROElsWXhIQ0VhT3BtZ1N2a045cFJZQ2JiZUlDRHdnT2pS?=
- =?utf-8?B?dkc4UTdjeGU1MTdoTHFyMTFtQnd6eHJDc3JOSFB5MjgzZkFkZWE2UmFpZzVx?=
- =?utf-8?B?RjZOTCtteVk1RmtLMG5qMkpCUUtzQUltT3kyY2liWUJKZURxWHFhZHRUWHVh?=
- =?utf-8?B?RVJjYnNKT2xnL05uQzBhcmoxYjdzM3JuOEkzWTVSaWE0Y1ZTY0tqUCt3NHlT?=
- =?utf-8?B?WEgwZTZmQkxwNUNyUk8xVlFRdHQySHY1ZTZVSkw5SEhZaUhiSDBudzNJOWJz?=
- =?utf-8?B?RTIvSFRiTS82Rnd4UmpwYVhma2o5Nmdsd3hWS2pTR0d0WHdNSkR4YTNPbnhS?=
- =?utf-8?B?bHVqUWM0ZnFyUm1td1I1YlVPWW1HVnF5R3JiRkRpWTJRNVU3K2NORWtrYUFI?=
- =?utf-8?B?ZjhieWRQZ0h6MkdPOUhNRlBZWHVnOWJXaFV0ck9ITTN0NUE3QUZOR1JTZmU3?=
- =?utf-8?B?b3M5SjVVZ3VFakw2YmZtUUpKcVhQamNKcllHNkJQQmpRcmZlL3c4SXp6NUZp?=
- =?utf-8?B?SnpiWlF3aVRvY2l1ZTM2bDl0aW41N3M3aVNwVlJQVGZMcnVOaWRjT3BVczI1?=
- =?utf-8?B?RC9wcmpaRTQyZWk1R1l4cHViODBqRzN6Q3BXTGdTdzlQaTgzV2FzWlRzUUxI?=
- =?utf-8?B?WEtpdzZjRWJxbU0vUlNEaWh5VFRIeGxXT1ptUjBsRUtQeG5zbUYxQk5pK2k0?=
- =?utf-8?B?c0hHWjZoeEpFNU1uc3pzOXp3R0FsZmVFMnBaRGgrcWt1eWpONU1BYkpvUWc3?=
- =?utf-8?B?TnR5UFYwTm94QXZZNFppek1sRlZ0ZnJVMDJuWVVZNkxmOVkrbjZwZ2NRQVVM?=
- =?utf-8?B?MnlRL3Q4eEtnbDJGQkZSR3VqUkRUK2lqUjZVamMwd1JxdjZJVnZ2cVhNUGtl?=
- =?utf-8?B?eEVMRjVoaEtoN1VyZUVCQ1ltcFVmcU9MUEVlTmxSaS9lWm9aVEhxSnZUVXJl?=
- =?utf-8?B?SFd3c2pacHE3NzJvY1hsUVk1RG9ObmRrcVVMYm9qQ1Q3T0c1b3BFbnhGUmRL?=
- =?utf-8?B?cnltNDdZTUsxRGsyM2o5cFZveWhGLzE0YXRmMUxQNHdGSzlFSU55NHNJKzVH?=
- =?utf-8?B?NVJ3K1Z5NnpiZkx5MldFSmpvQTBlVlE1SEZzWG41amdsakU2bDh2ei9SM01Y?=
- =?utf-8?Q?EmLbo0wcSLrpKHA4LcvK4hSaSzKExDGU1KCxj3eRUg=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E594DBDB4C8EE049844FF9716FF04C93@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?pW2WrXcLvAwnXSXcZh8GrohWV7HGlXgcWGfnoTpS2b4OIu4XlY2tMCE4oI?=
+ =?iso-8859-1?Q?m2mGC1AZ6HKCY4U/WvwUzKLrK9TYHHZBu1ywKlq2V64R54v2vu0VIohZ4G?=
+ =?iso-8859-1?Q?MuPkBlVo/N+QYaj6oMgvZunGAw+2dCJIxZdPa07g28d41iUO0SsqT2R8VI?=
+ =?iso-8859-1?Q?au1d/oQhgudfWSoFKlw4ifNq+P27Ako+gkrqbE193tYtjhqpu1JvP0z3Ic?=
+ =?iso-8859-1?Q?sGAioeIr75+K6URmrL3jaeYarr1iWXj211iZ/hlJBDZGGqZHMAkP830rkO?=
+ =?iso-8859-1?Q?uBZhjwEM9evhNIz3SRp2MeKepTgAmiFW8QQe+N5N0faVd+/5t4kybMheWC?=
+ =?iso-8859-1?Q?3nVTy58baRoKjDPzzHXup6YEGPVj6NNo4bWpRVsrGXo7x/eHg4aVr2vJXt?=
+ =?iso-8859-1?Q?4G2VRCANtkB3HldYxcJHRiXSPA+9b1KDR6UVYJtDRkP3oEDnEpf7uOLdT3?=
+ =?iso-8859-1?Q?DKW6i7bfl5va4xKgVLkdSYAYostXo2ZfQE42ObC462Z7DhhQoxJ+Gzqm/C?=
+ =?iso-8859-1?Q?P8m8BhkGnbzr/AFPYXc//ScwNOyDKTSX14w7ZcLRH3A767KhDH10x+5LVv?=
+ =?iso-8859-1?Q?+EZrkYGHv/c/dhj3TXl4NarPOmTD4l4y3RJ3p2oCJtryVL8NF7ajzrr8Gr?=
+ =?iso-8859-1?Q?chbvyaCzWj2+T0zv+lFd3D8CQeHSLMf3NJwceBgNP2152/5DPil90SVjrF?=
+ =?iso-8859-1?Q?CJVxGmzwV/2VeCPcGYTZUYzBKwwtJtIwy1kzUZnwlNd5NTtZx9Fl7NlnmW?=
+ =?iso-8859-1?Q?/ysDxG6h+C+rJBjRuwNTz/FlLSG8XVS4VU19ECMe7IZvTizLXVZTg04hry?=
+ =?iso-8859-1?Q?NvwBmWUzK5CW8cwFqg965BBdWIwzXkS2R5LtuLw87xQnlkr9vFDJi/c41L?=
+ =?iso-8859-1?Q?4qtatHmBtQmsfAyGKwSdXTPXYDoZe3V+apn/YPnIsuRxu97Bn0GuaUtlxN?=
+ =?iso-8859-1?Q?IpDWY48WerA4uyaHEpKa+W12rLKmZvMgeAhPcET3MMd38gHKerQlBBaJid?=
+ =?iso-8859-1?Q?QCOPkh0X7jEomOivI4kuf82oxz2CkEcncgZrEr0jmqJli4OgA7qro092+I?=
+ =?iso-8859-1?Q?JpsC3idmgpZmYkMe8/VEPA0tqTW7cBR5jhQAk020nJNrfpyjdDhTLwHf7w?=
+ =?iso-8859-1?Q?ndHk/53XVujaByUDqHe3W3i9+xwBqrfYz8ZtNab3alqpncNHbccqfAxX0Z?=
+ =?iso-8859-1?Q?lCSUn5aPLcIQGIUGt9KgOSGXuS8r2EJjTgZ2+tSKgwPB9VtN1d94StOWi7?=
+ =?iso-8859-1?Q?VaOlWUSorgM5wgcfQMU8whsbGhdP1Nr20okOOVOAvysHAtht5apuD0l4XX?=
+ =?iso-8859-1?Q?9G10So5O7gbwNasRvDTDkf6vYfXnIsn4v88FpcHPdMUNMcRAR+GuTOcQsa?=
+ =?iso-8859-1?Q?5sRNj1nx3cxOftZ3PVblaHFsfsoPhDdpDc19kpx45KqE7K992bfTx0rp6k?=
+ =?iso-8859-1?Q?FQlTfvcGIEQAgS4uW5IAtOb/v1QvVeD4qPf7YHZTUrV1iT7yVpvzAQsW20?=
+ =?iso-8859-1?Q?X2W6zlGd6CIEo1HF4GVlCIdur3MrDwGCAkK2VfpGnZagKDiJfW7ljjkpw6?=
+ =?iso-8859-1?Q?1hPz/jUzAeUVdmU6ZkZoBTY8cprPEof+c2Yfk7E7hKKK5VGF8Sd7WQOKY9?=
+ =?iso-8859-1?Q?xTpvKWFicFfwWMg298ROJh1gdpw8ntgflTfyt/ytSjAbp67DuEJLb2E6kH?=
+ =?iso-8859-1?Q?ScNAg/Y0JMYt06tEebIDXq6ZOSnarS3L/L2jfF4R5h3OPqDWvKcOXbm/Cw?=
+ =?iso-8859-1?Q?VSJQDVIe4ZNGKb3H/yxYJHMxU=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: csgroup.eu
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 700c2a74-fe36-4d6e-dc86-08d9c89651cd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Dec 2021 17:36:59.1792 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8437fc56-10ff-4b8a-5e0b-08d9c8a739a3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Dec 2021 19:38:00.1269 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NJXb7V5fRlaZF5p5738vMwf1KnA6JXnwwZrnrrpBdC1ujVlOT1yzDr2Q0gBFcJLuQctxK67zt0RfdtNThKQP3u+NLd3mwxTx7vZ5fsz7aBs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2103
+X-MS-Exchange-CrossTenant-userprincipalname: cxlgAKehl+2wKICTb3KtCpL/Et9Kf6nms2DlLQy6GgS9w0c4a5ivbjH5ARMCxqo0WrnUKd41JL15nWcAgribXxrZpqwUUX5g9tDKvyB+VR8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2233
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -141,89 +124,227 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Nicholas Piggin <npiggin@gmail.com>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDI2LzEyLzIwMjEgw6AgMDk6MzksIEtlZmVuZyBXYW5nIGEgw6ljcml0wqA6DQo+IEFk
-ZCBIVUdFX1ZNQUxMT0NfREVGQVVMVF9FTkFCTEVEIHRvIGxldCB1c2VyIHRvIGNob29zZSB3aGV0
-aGVyIG9yDQo+IG5vdCBlbmFibGUgaHVnZSB2bWFsbG9jIG1hcHBpbmdzIGJ5IGRlZmF1bHQsIGFu
-ZCB0aGlzIGNvdWxkIG1ha2UNCj4gbW9yZSBhcmNoaXRlY3R1cmVzIHRvIGVuYWJsZSBodWdlIHZt
-YWxsb2MgbWFwcGluZ3MgZmVhdHVyZSBidXQNCj4gZG9uJ3Qgd2FudCB0byBlbmFibGUgaXQgYnkg
-ZGVmYXVsdC4NCj4gDQo+IEFkZCBodWdldm1hbGxvYz1vbi9vZmYgcGFyYW1ldGVyIHRvIGVuYWJs
-ZSBvciBkaXNhYmxlIHRoaXMgZmVhdHVyZQ0KPiBhdCBib290IHRpbWUsIG5vaHVnZXZtYWxsb2Mg
-aXMgc3RpbGwgc3VwcG9ydGVkIGFuZCBlcXVpdmFsZW50IHRvDQo+IGh1Z2V2bWFsbG9jPW9mZi4N
-Cg0KDQpJcyB0aGVyZSBhIHJlYWwgYWRkZWQgdmFsdWUgdG8gaGF2ZSB0aGUgdXNlciBiZSBhYmxl
-IHRvIHNlbGVjdCB0aGF0ID8NCg0KSWYgdGhlIGFyY2hpdGVjdHVyZSBzdXBwb3J0cyBpdCwgaXMg
-dGhlcmUgYW55IGdvb2QgcmVhc29uIHRvIG5vdCB1c2UgaXQgPw0KDQpXaHkgbm90IGp1c3QgZG8g
-bGlrZSBQUEMgYW5kIGVuYWJsZSBpdCBieSBkZWZhdWx0ID8gV2h5IHNob3VsZCBpdCBiZSANCmVu
-YWJsZWQgYnkgZGVmYXVsdCBvbiBQUEMgYnV0IGRpc2FibGVkIGJ5IGRlZmF1bHQgb24gQVJNNjQg
-YW5kIFg4NiA/DQoNCg0KPiANCj4gU2lnbmVkLW9mZi1ieTogS2VmZW5nIFdhbmcgPHdhbmdrZWZl
-bmcud2FuZ0BodWF3ZWkuY29tPg0KPiAtLS0NCj4gICAuLi4vYWRtaW4tZ3VpZGUva2VybmVsLXBh
-cmFtZXRlcnMudHh0ICAgICAgICAgIHwgMTIgKysrKysrKysrKysrDQo+ICAgYXJjaC9wb3dlcnBj
-L0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAxICsNCj4gICBtbS9LY29uZmln
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDcgKysrKysrKw0KPiAgIG1t
-L3ZtYWxsb2MuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAxOCArKysrKysr
-KysrKysrKysrKy0NCj4gICA0IGZpbGVzIGNoYW5nZWQsIDM3IGluc2VydGlvbnMoKyksIDEgZGVs
-ZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2FkbWluLWd1aWRlL2tl
-cm5lbC1wYXJhbWV0ZXJzLnR4dCBiL0RvY3VtZW50YXRpb24vYWRtaW4tZ3VpZGUva2VybmVsLXBh
-cmFtZXRlcnMudHh0DQo+IGluZGV4IDJmYmE4MjQzMWVmYi4uNDEwNzEzNjA5N2E2IDEwMDY0NA0K
-PiAtLS0gYS9Eb2N1bWVudGF0aW9uL2FkbWluLWd1aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dA0K
-PiArKysgYi9Eb2N1bWVudGF0aW9uL2FkbWluLWd1aWRlL2tlcm5lbC1wYXJhbWV0ZXJzLnR4dA0K
-PiBAQCAtMTYyOSw2ICsxNjI5LDE4IEBADQo+ICAgCQkJSWYgYm90aCBwYXJhbWV0ZXJzIGFyZSBl
-bmFibGVkLCBodWdldGxiX2ZyZWVfdm1lbW1hcCB0YWtlcw0KPiAgIAkJCXByZWNlZGVuY2Ugb3Zl
-ciBtZW1vcnlfaG90cGx1Zy5tZW1tYXBfb25fbWVtb3J5Lg0KPiAgIA0KPiArDQo+ICsJaHVnZXZt
-YWxsb2M9CVtQUENdIFJlZ3VpcmVzIENPTkZJR19IQVZFX0FSQ0hfSFVHRV9WTUFMTE9DDQo+ICsJ
-CQlGb3JtYXQ6IHsgb24gfCBvZmYgfQ0KPiArCQkJRGVmYXVsdCBzZXQgYnkgQ09ORklHX0hVR0Vf
-Vk1BTExPQ19ERUZBVUxUX0VOQUJMRUQuDQo+ICsNCj4gKwkJCVRoaXMgcGFyYW1ldGVyIGVuYWJs
-ZXMvZGlzYWJsZXMga2VybmVsIGh1Z2Ugdm1hbGxvYw0KPiArCQkJbWFwcGluZ3MgYXQgYm9vdCB0
-aW1lLg0KPiArDQo+ICsJCQlvbjogIEVuYWJsZSB0aGUgZmVhdHVyZQ0KPiArCQkJb2ZmOiBEaXNh
-YmxlIHRoZSBmZWF0dXJlDQo+ICsJCQkgICAgIEVxdWl2YWxlbnQgdG86IG5vaHVnZXZtYWxsb2MN
-Cj4gKw0KPiAgIAlodW5nX3Rhc2tfcGFuaWM9DQo+ICAgCQkJW0tOTF0gU2hvdWxkIHRoZSBodW5n
-IHRhc2sgZGV0ZWN0b3IgZ2VuZXJhdGUgcGFuaWNzLg0KPiAgIAkJCUZvcm1hdDogMCB8IDENCj4g
-ZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9LY29uZmlnIGIvYXJjaC9wb3dlcnBjL0tjb25maWcN
-Cj4gaW5kZXggZGVhNzRkNzcxN2MwLi5kNTliMjIxYmUyNjQgMTAwNjQ0DQo+IC0tLSBhL2FyY2gv
-cG93ZXJwYy9LY29uZmlnDQo+ICsrKyBiL2FyY2gvcG93ZXJwYy9LY29uZmlnDQo+IEBAIC0yNDYs
-NiArMjQ2LDcgQEAgY29uZmlnIFBQQw0KPiAgIAlzZWxlY3QgSEFWRV9TVEFUSUNfQ0FMTAkJCWlm
-IFBQQzMyDQo+ICAgCXNlbGVjdCBIQVZFX1NZU0NBTExfVFJBQ0VQT0lOVFMNCj4gICAJc2VsZWN0
-IEhBVkVfVklSVF9DUFVfQUNDT1VOVElORw0KPiArCXNlbGVjdCBIVUdFX1ZNQUxMT0NfREVGQVVM
-VF9FTkFCTEVECWlmIEhBVkVfQVJDSF9IVUdFX1ZNQUxMT0MNCj4gICAJc2VsZWN0IEhVR0VUTEJf
-UEFHRV9TSVpFX1ZBUklBQkxFCWlmIFBQQ19CT09LM1NfNjQgJiYgSFVHRVRMQl9QQUdFDQo+ICAg
-CXNlbGVjdCBJT01NVV9IRUxQRVIJCQlpZiBQUEM2NA0KPiAgIAlzZWxlY3QgSVJRX0RPTUFJTg0K
-PiBkaWZmIC0tZ2l0IGEvbW0vS2NvbmZpZyBiL21tL0tjb25maWcNCj4gaW5kZXggMzU2ZjRmMmM3
-NzllLi40YmE5MWMwMzU5YmQgMTAwNjQ0DQo+IC0tLSBhL21tL0tjb25maWcNCj4gKysrIGIvbW0v
-S2NvbmZpZw0KPiBAQCAtMjYyLDYgKzI2MiwxMyBAQCBjb25maWcgSFVHRVRMQl9QQUdFX1NJWkVf
-VkFSSUFCTEUNCj4gICAJICBIVUdFVExCX1BBR0VfT1JERVIgd2hlbiB0aGVyZSBhcmUgbXVsdGlw
-bGUgSHVnZVRMQiBwYWdlIHNpemVzIGF2YWlsYWJsZQ0KPiAgIAkgIG9uIGEgcGxhdGZvcm0uDQo+
-ICAgDQo+ICtjb25maWcgSFVHRV9WTUFMTE9DX0RFRkFVTFRfRU5BQkxFRA0KPiArCWJvb2wgIkVu
-YWJsZSBodWdlIHZtYWxsb2MgbWFwcGluZ3MgYnkgZGVmYXVsdCINCj4gKwlkZXBlbmRzIG9uIEhB
-VkVfQVJDSF9IVUdFX1ZNQUxMT0MNCj4gKwloZWxwDQo+ICsJICBFbmFibGUgaHVnZSB2bWFsbG9j
-IG1hcHBpbmdzIGJ5IGRlZmF1bHQsIHRoaXMgdmFsdWUgY291bGQgYmUgb3ZlcnJpZGRlbg0KPiAr
-CSAgYnkgaHVnZXZtYWxsb2M9b2ZmfG9uLg0KPiArDQo+ICAgY29uZmlnIENPTlRJR19BTExPQw0K
-PiAgIAlkZWZfYm9vbCAoTUVNT1JZX0lTT0xBVElPTiAmJiBDT01QQUNUSU9OKSB8fCBDTUENCj4g
-ICANCj4gZGlmZiAtLWdpdCBhL21tL3ZtYWxsb2MuYyBiL21tL3ZtYWxsb2MuYw0KPiBpbmRleCBk
-MmEwMGFkNGUxZGQuLjNiNmY5OTc1MzgxNiAxMDA2NDQNCj4gLS0tIGEvbW0vdm1hbGxvYy5jDQo+
-ICsrKyBiL21tL3ZtYWxsb2MuYw0KPiBAQCAtNTgsNyArNTgsNyBAQCBzdGF0aWMgY29uc3QgdW5z
-aWduZWQgaW50IGlvcmVtYXBfbWF4X3BhZ2Vfc2hpZnQgPSBQQUdFX1NISUZUOw0KPiAgICNlbmRp
-ZgkvKiBDT05GSUdfSEFWRV9BUkNIX0hVR0VfVk1BUCAqLw0KPiAgIA0KPiAgICNpZmRlZiBDT05G
-SUdfSEFWRV9BUkNIX0hVR0VfVk1BTExPQw0KPiAtc3RhdGljIGJvb2wgX19yb19hZnRlcl9pbml0
-IHZtYXBfYWxsb3dfaHVnZSA9IHRydWU7DQo+ICtzdGF0aWMgYm9vbCBfX3JvX2FmdGVyX2luaXQg
-dm1hcF9hbGxvd19odWdlID0gSVNfRU5BQkxFRChDT05GSUdfSFVHRV9WTUFMTE9DX0RFRkFVTFRf
-RU5BQkxFRCk7DQo+ICAgDQo+ICAgc3RhdGljIGludCBfX2luaXQgc2V0X25vaHVnZXZtYWxsb2Mo
-Y2hhciAqc3RyKQ0KPiAgIHsNCj4gQEAgLTY2LDYgKzY2LDIyIEBAIHN0YXRpYyBpbnQgX19pbml0
-IHNldF9ub2h1Z2V2bWFsbG9jKGNoYXIgKnN0cikNCj4gICAJcmV0dXJuIDA7DQo+ICAgfQ0KPiAg
-IGVhcmx5X3BhcmFtKCJub2h1Z2V2bWFsbG9jIiwgc2V0X25vaHVnZXZtYWxsb2MpOw0KPiArDQo+
-ICtzdGF0aWMgaW50IF9faW5pdCBzZXRfaHVnZXZtYWxsb2MoY2hhciAqc3RyKQ0KPiArew0KPiAr
-CWlmICghc3RyKQ0KPiArCQlyZXR1cm4gLUVJTlZBTDsNCj4gKw0KPiArCWlmICghc3RyY21wKHN0
-ciwgIm9uIikpDQo+ICsJCXZtYXBfYWxsb3dfaHVnZSA9IHRydWU7DQo+ICsJZWxzZSBpZiAoIXN0
-cmNtcChzdHIsICJvZmYiKSkNCj4gKwkJdm1hcF9hbGxvd19odWdlID0gdHJ1ZTsNCj4gKwllbHNl
-DQo+ICsJCXJldHVybiAtRUlOVkFMOw0KPiArDQo+ICsJcmV0dXJuIDA7DQo+ICt9DQo+ICtlYXJs
-eV9wYXJhbSgiaHVnZXZtYWxsb2M9Iiwgc2V0X2h1Z2V2bWFsbG9jKTsNCj4gICAjZWxzZSAvKiBD
-T05GSUdfSEFWRV9BUkNIX0hVR0VfVk1BTExPQyAqLw0KPiAgIHN0YXRpYyBjb25zdCBib29sIHZt
-YXBfYWxsb3dfaHVnZSA9IGZhbHNlOw0KPiAgICNlbmRpZgkvKiBDT05GSUdfSEFWRV9BUkNIX0hV
-R0VfVk1BTExPQyAqLw==
+VDSO64 cacheflush.S datapage.S gettimeofday.S and vgettimeofday.c
+are very similar to their VDSO32 counterpart.
+
+VDSO32 counterpart is already more complete than the VDSO64 version
+as it supports both PPC32 vdso and 32 bits VDSO for PPC64.
+
+Use compat macros wherever necessary in PPC32 files
+so that they can also be used to build VDSO64.
+
+vdso64/note.S is already a link to vdso32/note.S so
+no change is required.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/asm-compat.h      |  2 ++
+ arch/powerpc/kernel/vdso32/cacheflush.S    |  4 ++--
+ arch/powerpc/kernel/vdso32/datapage.S      | 10 ++++++++--
+ arch/powerpc/kernel/vdso32/getcpu.S        |  4 ++--
+ arch/powerpc/kernel/vdso32/gettimeofday.S  |  8 ++++++--
+ arch/powerpc/kernel/vdso32/vgettimeofday.c | 23 ++++++++++++++++++----
+ 6 files changed, 39 insertions(+), 12 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/asm-compat.h b/arch/powerpc/include/a=
+sm/asm-compat.h
+index 2b736d9fbb1b..2bc53c646ccd 100644
+--- a/arch/powerpc/include/asm/asm-compat.h
++++ b/arch/powerpc/include/asm/asm-compat.h
+@@ -21,6 +21,7 @@
+ #define PPC_STLCX	stringify_in_c(stdcx.)
+ #define PPC_CNTLZL	stringify_in_c(cntlzd)
+ #define PPC_MTOCRF(FXM, RS) MTOCRF((FXM), RS)
++#define PPC_SRL		stringify_in_c(srd)
+ #define PPC_LR_STKOFF	16
+ #define PPC_MIN_STKFRM	112
+=20
+@@ -54,6 +55,7 @@
+ #define PPC_STLCX	stringify_in_c(stwcx.)
+ #define PPC_CNTLZL	stringify_in_c(cntlzw)
+ #define PPC_MTOCRF	stringify_in_c(mtcrf)
++#define PPC_SRL		stringify_in_c(srw)
+ #define PPC_LR_STKOFF	4
+ #define PPC_MIN_STKFRM	16
+=20
+diff --git a/arch/powerpc/kernel/vdso32/cacheflush.S b/arch/powerpc/kernel/=
+vdso32/cacheflush.S
+index f340e82d1981..d4e43ab2d5df 100644
+--- a/arch/powerpc/kernel/vdso32/cacheflush.S
++++ b/arch/powerpc/kernel/vdso32/cacheflush.S
+@@ -46,7 +46,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
+ 	add	r8,r8,r5		/* ensure we get enough */
+ #ifdef CONFIG_PPC64
+ 	lwz	r9,CFG_DCACHE_LOGBLOCKSZ(r10)
+-	srw.	r8,r8,r9		/* compute line count */
++	PPC_SRL.	r8,r8,r9		/* compute line count */
+ #else
+ 	srwi.	r8, r8, L1_CACHE_SHIFT
+ 	mr	r7, r6
+@@ -72,7 +72,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
+ 	subf	r8,r6,r4		/* compute length */
+ 	add	r8,r8,r5
+ 	lwz	r9,CFG_ICACHE_LOGBLOCKSZ(r10)
+-	srw.	r8,r8,r9		/* compute line count */
++	PPC_SRL.	r8,r8,r9		/* compute line count */
+ 	crclr	cr0*4+so
+ 	beqlr				/* nothing to do? */
+ #endif
+diff --git a/arch/powerpc/kernel/vdso32/datapage.S b/arch/powerpc/kernel/vd=
+so32/datapage.S
+index 65244416ab94..db8e167f0166 100644
+--- a/arch/powerpc/kernel/vdso32/datapage.S
++++ b/arch/powerpc/kernel/vdso32/datapage.S
+@@ -30,11 +30,15 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
+ 	mr.	r4,r3
+ 	get_datapage	r3
+ 	mtlr	r12
++#ifdef __powerpc64__
++	addi	r3,r3,CFG_SYSCALL_MAP64
++#else
+ 	addi	r3,r3,CFG_SYSCALL_MAP32
++#endif
++	crclr	cr0*4+so
+ 	beqlr
+ 	li	r0,NR_syscalls
+ 	stw	r0,0(r4)
+-	crclr	cr0*4+so
+ 	blr
+   .cfi_endproc
+ V_FUNCTION_END(__kernel_get_syscall_map)
+@@ -49,8 +53,10 @@ V_FUNCTION_BEGIN(__kernel_get_tbfreq)
+ 	mflr	r12
+   .cfi_register lr,r12
+ 	get_datapage	r3
++#ifndef __powerpc64__
+ 	lwz	r4,(CFG_TB_TICKS_PER_SEC + 4)(r3)
+-	lwz	r3,CFG_TB_TICKS_PER_SEC(r3)
++#endif
++	PPC_LL	r3,CFG_TB_TICKS_PER_SEC(r3)
+ 	mtlr	r12
+ 	crclr	cr0*4+so
+ 	blr
+diff --git a/arch/powerpc/kernel/vdso32/getcpu.S b/arch/powerpc/kernel/vdso=
+32/getcpu.S
+index ff5e214fec41..8e08ccf19062 100644
+--- a/arch/powerpc/kernel/vdso32/getcpu.S
++++ b/arch/powerpc/kernel/vdso32/getcpu.S
+@@ -19,8 +19,8 @@
+ V_FUNCTION_BEGIN(__kernel_getcpu)
+   .cfi_startproc
+ 	mfspr	r5,SPRN_SPRG_VDSO_READ
+-	cmpwi	cr0,r3,0
+-	cmpwi	cr1,r4,0
++	PPC_LCMPI	cr0,r3,0
++	PPC_LCMPI	cr1,r4,0
+ 	clrlwi  r6,r5,16
+ 	rlwinm  r7,r5,16,31-15,31-0
+ 	beq	cr0,1f
+diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kerne=
+l/vdso32/gettimeofday.S
+index d21d08140a5e..c875312274aa 100644
+--- a/arch/powerpc/kernel/vdso32/gettimeofday.S
++++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0-or-later */
+ /*
+- * Userland implementation of gettimeofday() for 32 bits processes in a
+- * ppc64 kernel for use in the vDSO
++ * Userland implementation of gettimeofday() for processes
++ * for use in the vDSO
+  *
+  * Copyright (C) 2004 Benjamin Herrenschmuidt (benh@kernel.crashing.org,
+  *                    IBM Corp.
+@@ -41,9 +41,11 @@ V_FUNCTION_END(__kernel_clock_gettime)
+  * int __kernel_clock_gettime64(clockid_t clock_id, struct __timespec64 *t=
+s);
+  *
+  */
++#ifndef __powerpc64__
+ V_FUNCTION_BEGIN(__kernel_clock_gettime64)
+ 	cvdso_call __c_kernel_clock_gettime64
+ V_FUNCTION_END(__kernel_clock_gettime64)
++#endif
+=20
+ /*
+  * Exact prototype of clock_getres()
+@@ -69,6 +71,7 @@ V_FUNCTION_END(__kernel_time)
+ /* Routines for restoring integer registers, called by the compiler.  */
+ /* Called with r11 pointing to the stack header word of the caller of the =
+*/
+ /* function, just beyond the end of the integer restore area.  */
++#ifndef __powerpc64__
+ _GLOBAL(_restgpr_31_x)
+ _GLOBAL(_rest32gpr_31_x)
+ 	lwz	r0,4(r11)
+@@ -76,3 +79,4 @@ _GLOBAL(_rest32gpr_31_x)
+ 	mtlr	r0
+ 	mr	r1,r11
+ 	blr
++#endif
+diff --git a/arch/powerpc/kernel/vdso32/vgettimeofday.c b/arch/powerpc/kern=
+el/vdso32/vgettimeofday.c
+index 65fb03fb1731..55a287c9a736 100644
+--- a/arch/powerpc/kernel/vdso32/vgettimeofday.c
++++ b/arch/powerpc/kernel/vdso32/vgettimeofday.c
+@@ -2,8 +2,22 @@
+ /*
+  * Powerpc userspace implementations of gettimeofday() and similar.
+  */
++#include <linux/time.h>
+ #include <linux/types.h>
+=20
++#ifdef __powerpc64__
++int __c_kernel_clock_gettime(clockid_t clock, struct __kernel_timespec *ts=
+,
++			     const struct vdso_data *vd)
++{
++	return __cvdso_clock_gettime_data(vd, clock, ts);
++}
++
++int __c_kernel_clock_getres(clockid_t clock_id, struct __kernel_timespec *=
+res,
++			    const struct vdso_data *vd)
++{
++	return __cvdso_clock_getres_data(vd, clock_id, res);
++}
++#else
+ int __c_kernel_clock_gettime(clockid_t clock, struct old_timespec32 *ts,
+ 			     const struct vdso_data *vd)
+ {
+@@ -16,16 +30,17 @@ int __c_kernel_clock_gettime64(clockid_t clock, struct =
+__kernel_timespec *ts,
+ 	return __cvdso_clock_gettime_data(vd, clock, ts);
+ }
+=20
+-int __c_kernel_gettimeofday(struct __kernel_old_timeval *tv, struct timezo=
+ne *tz,
++int __c_kernel_clock_getres(clockid_t clock_id, struct old_timespec32 *res=
+,
+ 			    const struct vdso_data *vd)
+ {
+-	return __cvdso_gettimeofday_data(vd, tv, tz);
++	return __cvdso_clock_getres_time32_data(vd, clock_id, res);
+ }
++#endif
+=20
+-int __c_kernel_clock_getres(clockid_t clock_id, struct old_timespec32 *res=
+,
++int __c_kernel_gettimeofday(struct __kernel_old_timeval *tv, struct timezo=
+ne *tz,
+ 			    const struct vdso_data *vd)
+ {
+-	return __cvdso_clock_getres_time32_data(vd, clock_id, res);
++	return __cvdso_gettimeofday_data(vd, tv, tz);
+ }
+=20
+ __kernel_old_time_t __c_kernel_time(__kernel_old_time_t *time, const struc=
+t vdso_data *vd)
+--=20
+2.33.1
