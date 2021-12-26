@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6364A47F890
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 20:38:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 584A947F891
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 20:39:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JMWLv2HMCz3c7Z
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 06:38:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JMWMQ1f6qz30Ph
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 06:39:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,15 +18,15 @@ Received: from FRA01-MR2-obe.outbound.protection.outlook.com
  [IPv6:2a01:111:f400:7e19::614])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JMWLR6RRJz2xKT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Dec 2021 06:38:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JMWLS2fwnz2xKT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Dec 2021 06:38:24 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gUJgdRp/YLR3OdFiqkPyGAJR5TGSnZkfjCVxbGrOoVK02EUgNqLbAVtAvnXeXKAJuHuJcaCXC5FcDVmYTUHowtELvUZShQZe8O7SGbo/r1Z5dRWFohcvbwe3a2I+vsfj9JKldaxAUj2BKZuc1c10DYYVFyzOB+5jg3yJJytuZd/wzlfXK6DOPkPK6odYX5alkQXUwk7i506RXlJK0412TBbacgMeKlWFUXRpkn3bCl8I3kFpLwd25rqoXPNbmXk1Cz/aAPFn6Q5s623UYoTu7jDWMMS8DtwvtqUlRITLtKOuG383tsTgpTstTJ0DYsb38QxB7hZcc4xXuA4PzbsL8A==
+ b=Cl1XZc5gEK5pj+ajT8wOpmgOgzg84XBETzYGzOmh9WtXOaJOytILSrPd8OaIQFEmj4fnQfv7HzrRly0eTs+T3EEgjPplRfufvrYPJYKdCwShaUIuzDTZzBEmJJ7ejF+WaoPILU/DNz5cjYSs/HuUW/YzK1KNqYvERET36mS6zc4NPFSMEdRP9fAFvE4jZjgKKLaQnhqM4Wz+m+yVbt5tlvXJDTsnVyIzKIOPweJ6O99/gj8XDNMJemi6bj163G1Ccq2poJ9FaiyK7y5sH/8UEInkwztRNRSfxyWULrmP3J3oDeVuZZnsjVBfVSjjY1gjnMDJtu8FXzAklGgl0AYeHw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JD04R82x84zl7tSQ6t9ZKg+qT3Wu9XlJqadQMBjmzJM=;
- b=lIO25ZPDhznm2ljAhno/u8MLzsFe/LV5AOhPCCvhxjiTDw4CNsbZwEKcg6apddCWcFMNEA2uO0eqK0oMZO48VZf/IYwMx1xZarntvGjlrRQjhVvMwtdlMz/AbRCDk6Y7NBzEyphFUSmbFMvGft90fvXjsBuRRGU44F1DIh+b8u23LFihAqgkAWZQzOBEzj2vPOZqnmuYWB2NeAMxlNDWjILCF10eBPhjq4KtiB3MohGYRf5kfTy/KQ0fSxbQlbzB/r0r82jdq+EJZQkKLALZ/izEFY5OsI+VCGpXflfkXbV0EAdb0A55ai40g9U9ntOjeQYIBzk1+bJV16mxMfuEAA==
+ bh=s2uoIMr7ouwSiiTxtmQ00wCzL0EFew1/CqzIpuCx3MU=;
+ b=MP1R8FlFq7Ddc18rT6XyiRjKcyrisUM2D0ZaiaZLrbbp8rk3NTkwX1xwxMF9vrMCP55rOddhpj/rzBBx48GlELA5pkTAgq5mnvIYavbm3fAqf939bEaWNMZjTPyQh+MKGzquOgWI4V2l4XI4MkBy26LyQWcCb4JJf2l0FXrpZUaQxLCR/fzxU7qpcquR1pPC0KnotrV0OEjy8NWoXj6nQfuQJ4/2W4BA1qT7qgS6BYkpmTF6KjL89VgkinrRLbqRbXnBduuSgWbbThEauSegSP5YT2NiqNzDfowuMF2dDeFOJ+jRQ/Zwh23VxMntjbD/dTf1wq74wmBVn0QSG/uW3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
  dkim=pass header.d=csgroup.eu; arc=none
@@ -34,22 +34,24 @@ Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
  by MR1P264MB2233.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:2::24) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4823.18; Sun, 26 Dec
- 2021 19:38:00 +0000
+ 2021 19:38:05 +0000
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::f0ef:856d:b0de:e85d]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::f0ef:856d:b0de:e85d%7]) with mapi id 15.20.4823.022; Sun, 26 Dec 2021
- 19:38:00 +0000
+ 19:38:05 +0000
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
  <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
  "masahiroy@kernel.org" <masahiroy@kernel.org>
-Subject: [PATCH v2 1/4] powerpc/vdso: augment VDSO32 functions to support 64
- bits build
-Thread-Topic: [PATCH v2 1/4] powerpc/vdso: augment VDSO32 functions to support
- 64 bits build
-Thread-Index: AQHX+pAXhwejkc9jW0iFxYfLSL4H2A==
-Date: Sun, 26 Dec 2021 19:38:00 +0000
-Message-ID: <169b36a06ea63260a5047d4f44f7dbbf8442aabe.1640542625.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 2/4] powerpc/vdso: Rework VDSO32 makefile to add a prefix
+ to object files
+Thread-Topic: [PATCH v2 2/4] powerpc/vdso: Rework VDSO32 makefile to add a
+ prefix to object files
+Thread-Index: AQHX+pAaSe9JgyppJECjckw0PHd0bw==
+Date: Sun, 26 Dec 2021 19:38:05 +0000
+Message-ID: <e4cda7fc60e9e3baf09c17a9a681ba2aeff45a83.1640542625.git.christophe.leroy@csgroup.eu>
+References: <169b36a06ea63260a5047d4f44f7dbbf8442aabe.1640542625.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <169b36a06ea63260a5047d4f44f7dbbf8442aabe.1640542625.git.christophe.leroy@csgroup.eu>
 Accept-Language: fr-FR, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -57,61 +59,61 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=csgroup.eu;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 8437fc56-10ff-4b8a-5e0b-08d9c8a739a3
+x-ms-office365-filtering-correlation-id: bd70a279-0955-434b-2cab-08d9c8a73cbb
 x-ms-traffictypediagnostic: MR1P264MB2233:EE_
-x-microsoft-antispam-prvs: <MR1P264MB22338CE09FCEFCCA85B8323EED419@MR1P264MB2233.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-microsoft-antispam-prvs: <MR1P264MB2233C9F658D3A90E8913B578ED419@MR1P264MB2233.FRAP264.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:1013;
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ypQXLFW1WGWY/78K4Ah3OFLw3psTJS6X5k0RNVsNHmW6zYVC37EAw632e9Xs8Zkpf8vi2t9XZzDUuJrdDOBSlc3+OrkHSY5gE3WwkLhGB82tkiUHeyyLAqiNCzHyrO1VtFSSvz+tgLypBu6RS4KqJHcutmgWeJUKiy32UTFAOjyrxE2b4VpcBV+6ItkEVfOEz2zPHGKpDu0i1q1cXYU58jleCeetr8YIzsOk6Jo93xNttSUpvQYGXbUuS86OppOO6X4AMrmUPOud7l3M0mEIBVJjn8wqSYxy/X/JHIPOrmksoQ3j8e70S35scu1yyoOb15iaXSheC5JW+Lk0l0H1y59FtN0C9DqDuBmVEUYJ9gJQrlgueBw1yGasl7d3bK5UjKj/NJhnI9oQiZsWocrj+Xnh+nQA7yd8BnM5SMmNL/xEyDknLC9/iAQjxQWWeb71IzoAVmvecuD55DjqWtZme6RU3PWtzconxkQx6pg7VtPFGhk0zVj4YQLl/W+OZau9V9O1pP5fzmtAro7PDusc7xHPXUB6aNiTgIcyIWfPn+mAEibHRdr0QqrYb72AZsya9Jc9kKv0DRKhh9ncXRvduiyMSoLic5fdPxzxUN9I48tvduyDaThrVkuZaTEUEy6m4+oM5xfI9qMN1YhCF56GMIF/hT4PhWbfj8ImcnEbKMpU6TburBPr2RaWuYsA3pZMU0GL2H5u1VwAWKIXbOmDrg==
+x-microsoft-antispam-message-info: b3T28RQ1lyg6ybdFAD44oFAFIassgf7/bc8JPDyypGHn8ugWMb4vM3W9SK9NVOCJhOtoo317GfArSndNDqs7V3taeHaLgx638353taysY1wPIZ30dJL6DMwWKhTiK+lCoeU3MsJlKVvXt+JrFZ7gLd3b7By8OU/Ga3pf3B33es6+ko6/mru5qLoguJKJYDGhng8G3tAyZsohOryiqOKwVSlu5VZvAl3vVkvV9yjsBP+7wfS0d1YxwaYCJsiTm317dTe6jsRt1dHa/kiYkliMpqas4bJz70c4LOtIfktgotV/qZYXXP58IFRSTZP7yDOsre7IJtYwScIG3vj8487/celieKL4eQJcmKcCPDe1tTD3rxr2RhplVqX2KBXAWwhfa0Gya1QfrbwmTmyDDg5p0c7M6MsZDN0ljkkMAFHiWl41F7co5KC/blXTrSe/nGaFrzkIiANcFPyvnOJO/sJEUWbuPlMCubRfx6K1cNjgrK5gjo5rUGW7GLP6eFpDXV2K20LzSRwZIzO0qWccWZZnJ9gGEw2LsT59Xo+sNgC3M0MNp91RvHJKvs5aWRL+Xeg+3LumIjXhWTJjLT/VDyIf7CT1rBzMNkDdlGf/297i0eaGUVKvP7BMCUhmTlpuG6toeBxXJZLIwUg9Y/yhE8c0JV2qNAMU7Zv85ztCMHmS4OmJXHXtToSFVs8hgUQ6GQBqbBcTHvqUeHrSWJQ+53j2Ng==
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
  SFS:(4636009)(366004)(76116006)(6506007)(4326008)(91956017)(6512007)(44832011)(2616005)(26005)(54906003)(5660300002)(186003)(38100700002)(66476007)(66946007)(36756003)(83380400001)(71200400001)(66446008)(64756008)(86362001)(110136005)(122000001)(66556008)(38070700005)(6486002)(8676002)(316002)(508600001)(8936002)(2906002);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?pW2WrXcLvAwnXSXcZh8GrohWV7HGlXgcWGfnoTpS2b4OIu4XlY2tMCE4oI?=
- =?iso-8859-1?Q?m2mGC1AZ6HKCY4U/WvwUzKLrK9TYHHZBu1ywKlq2V64R54v2vu0VIohZ4G?=
- =?iso-8859-1?Q?MuPkBlVo/N+QYaj6oMgvZunGAw+2dCJIxZdPa07g28d41iUO0SsqT2R8VI?=
- =?iso-8859-1?Q?au1d/oQhgudfWSoFKlw4ifNq+P27Ako+gkrqbE193tYtjhqpu1JvP0z3Ic?=
- =?iso-8859-1?Q?sGAioeIr75+K6URmrL3jaeYarr1iWXj211iZ/hlJBDZGGqZHMAkP830rkO?=
- =?iso-8859-1?Q?uBZhjwEM9evhNIz3SRp2MeKepTgAmiFW8QQe+N5N0faVd+/5t4kybMheWC?=
- =?iso-8859-1?Q?3nVTy58baRoKjDPzzHXup6YEGPVj6NNo4bWpRVsrGXo7x/eHg4aVr2vJXt?=
- =?iso-8859-1?Q?4G2VRCANtkB3HldYxcJHRiXSPA+9b1KDR6UVYJtDRkP3oEDnEpf7uOLdT3?=
- =?iso-8859-1?Q?DKW6i7bfl5va4xKgVLkdSYAYostXo2ZfQE42ObC462Z7DhhQoxJ+Gzqm/C?=
- =?iso-8859-1?Q?P8m8BhkGnbzr/AFPYXc//ScwNOyDKTSX14w7ZcLRH3A767KhDH10x+5LVv?=
- =?iso-8859-1?Q?+EZrkYGHv/c/dhj3TXl4NarPOmTD4l4y3RJ3p2oCJtryVL8NF7ajzrr8Gr?=
- =?iso-8859-1?Q?chbvyaCzWj2+T0zv+lFd3D8CQeHSLMf3NJwceBgNP2152/5DPil90SVjrF?=
- =?iso-8859-1?Q?CJVxGmzwV/2VeCPcGYTZUYzBKwwtJtIwy1kzUZnwlNd5NTtZx9Fl7NlnmW?=
- =?iso-8859-1?Q?/ysDxG6h+C+rJBjRuwNTz/FlLSG8XVS4VU19ECMe7IZvTizLXVZTg04hry?=
- =?iso-8859-1?Q?NvwBmWUzK5CW8cwFqg965BBdWIwzXkS2R5LtuLw87xQnlkr9vFDJi/c41L?=
- =?iso-8859-1?Q?4qtatHmBtQmsfAyGKwSdXTPXYDoZe3V+apn/YPnIsuRxu97Bn0GuaUtlxN?=
- =?iso-8859-1?Q?IpDWY48WerA4uyaHEpKa+W12rLKmZvMgeAhPcET3MMd38gHKerQlBBaJid?=
- =?iso-8859-1?Q?QCOPkh0X7jEomOivI4kuf82oxz2CkEcncgZrEr0jmqJli4OgA7qro092+I?=
- =?iso-8859-1?Q?JpsC3idmgpZmYkMe8/VEPA0tqTW7cBR5jhQAk020nJNrfpyjdDhTLwHf7w?=
- =?iso-8859-1?Q?ndHk/53XVujaByUDqHe3W3i9+xwBqrfYz8ZtNab3alqpncNHbccqfAxX0Z?=
- =?iso-8859-1?Q?lCSUn5aPLcIQGIUGt9KgOSGXuS8r2EJjTgZ2+tSKgwPB9VtN1d94StOWi7?=
- =?iso-8859-1?Q?VaOlWUSorgM5wgcfQMU8whsbGhdP1Nr20okOOVOAvysHAtht5apuD0l4XX?=
- =?iso-8859-1?Q?9G10So5O7gbwNasRvDTDkf6vYfXnIsn4v88FpcHPdMUNMcRAR+GuTOcQsa?=
- =?iso-8859-1?Q?5sRNj1nx3cxOftZ3PVblaHFsfsoPhDdpDc19kpx45KqE7K992bfTx0rp6k?=
- =?iso-8859-1?Q?FQlTfvcGIEQAgS4uW5IAtOb/v1QvVeD4qPf7YHZTUrV1iT7yVpvzAQsW20?=
- =?iso-8859-1?Q?X2W6zlGd6CIEo1HF4GVlCIdur3MrDwGCAkK2VfpGnZagKDiJfW7ljjkpw6?=
- =?iso-8859-1?Q?1hPz/jUzAeUVdmU6ZkZoBTY8cprPEof+c2Yfk7E7hKKK5VGF8Sd7WQOKY9?=
- =?iso-8859-1?Q?xTpvKWFicFfwWMg298ROJh1gdpw8ntgflTfyt/ytSjAbp67DuEJLb2E6kH?=
- =?iso-8859-1?Q?ScNAg/Y0JMYt06tEebIDXq6ZOSnarS3L/L2jfF4R5h3OPqDWvKcOXbm/Cw?=
- =?iso-8859-1?Q?VSJQDVIe4ZNGKb3H/yxYJHMxU=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?48XlDKrghqNRzTd0vrCEbAerQxd1m/YDRluoKM/rkaWYu+F6a0z5yTI9YW?=
+ =?iso-8859-1?Q?WtBGaa9M/yOmPVJzaKixygFfRSfS+hhjrTiQYR/Ch+9zbHzGoXGkhelpkW?=
+ =?iso-8859-1?Q?UuJFDTMmDD+XTSzqm6Qs3c7zSwVhBzFFpQX4dzpHlbPDGNO6EsiGtrGLRo?=
+ =?iso-8859-1?Q?A5ufwdtjlWAK3Gjjd2KmLwiHl5yPBCchKdWacpdPfmTXSaL/vIq3RaEHlW?=
+ =?iso-8859-1?Q?kG3YpQntI0tneNNUknfx3DA4GQ7fefvjDZvQLh5wVOvFZd/E7lvuQO/9HO?=
+ =?iso-8859-1?Q?OoAeTj4SmCFXiWwKzhFekSo283RIdLw5FWdI2QuLjucwLRuAaQQVwmp+AC?=
+ =?iso-8859-1?Q?WIrEpTeaHAkAN9CTi6DeFObzKcdwn2VR9s4FgogcS5Lru1e3foxCePAiLq?=
+ =?iso-8859-1?Q?pp6ZXCsIkSUqVBS7zrlLVy2TRv99ptnMUIvlXQ7n5l597ZHwHwz7n7C6Ad?=
+ =?iso-8859-1?Q?fyxgJa0rdp3kWu9gSPkma1IiPCA7SaJ4tUq4fVeHmShgCG7FGErjz4qf31?=
+ =?iso-8859-1?Q?P2J9WDN6kSL5Gy2UmoqNAqeEyKvc4hs+Rw9F8cZz5zZDrXewvaPuYMs0Wi?=
+ =?iso-8859-1?Q?i/uNfxfHKu2JX4DY0+Dxuw1hLeykk5lH10LZCzC8b9LNgFHPu5AOBx5fd7?=
+ =?iso-8859-1?Q?N/dxGyUUT5SRq3F+7O3i7+Q93lwMYnW2gAkSPlvzdGRIw5EhtgeFqdRiP2?=
+ =?iso-8859-1?Q?SOjodm6ub6m7oU+27afhN7MKS6ZEEcWssjLRMQJgmcJ+lmDcwdxC8gUpSv?=
+ =?iso-8859-1?Q?6kXq7zrNk4Mry2yMOGMzjt2TS1mshApVe6GFs+pYGbp/0JXg/gexsu+KbY?=
+ =?iso-8859-1?Q?n84sOUlr9ZkFeAEzjLrQ3ZimfDxE++JQ5eN2BFkU4s9Aw1RJdWdWBOY9Mg?=
+ =?iso-8859-1?Q?qsMIK5mTwof2k16+0YbexhZamepiYCseYZniKFun64XIp/mDj9B58BHaQ0?=
+ =?iso-8859-1?Q?66bgnstHjKbQ8zvhmjbE21qhFz1zxzIQZdOHGbjIO+bnqLbbzcdxLFyklr?=
+ =?iso-8859-1?Q?iI5ZxqdmaWrStp5d7J9Z9TAzW39AkCsGLEAcFC+McYbC/nBPXSXenr1I85?=
+ =?iso-8859-1?Q?7t3aSPItr37PAWE2m0B7Wz8/XemHWZntYEQP2E6v2NQSmiTiXL71d30Ifd?=
+ =?iso-8859-1?Q?genFGdEOY4mAu0dxVB/LBjtG6bPPl4U1es7Kcfs0osW3q19tBp/I6cgQg7?=
+ =?iso-8859-1?Q?++bT8e6ENlKfSAlScW7eXQsFFQA3TQqUOfPWN/W87F84S2UMzRHLV1yv75?=
+ =?iso-8859-1?Q?97J0ddlA5UNqu/jzWxw7zhpmfsDoqgRYwXm8Ybn+GnNAa0ktCN0WCsXgog?=
+ =?iso-8859-1?Q?RMfdwxyrBbEV5RRLVR7OMB32sxgsDPSKN+rzWIDexumFzXOx0adkUACCzb?=
+ =?iso-8859-1?Q?KLMbStOlhQde6eJTlnzfmxpQK/wwZkdiAtoCnMm9PLajA4UrxBOAE9dQnh?=
+ =?iso-8859-1?Q?epJmd2HeqxwW9ZokS/lJJJXb5OPsliDLtxKF3H7SYYfscpNP/Xrd0o+EWq?=
+ =?iso-8859-1?Q?MiK9Gbow/ZcqdQfk2MTs0nIUthgb4tJ0t+UVyoY8T1K+jpKGy09wXC8Kn1?=
+ =?iso-8859-1?Q?55XX8PWkVUfvBfAzB2yl1RXoyNmailxFaVjMIUogw50lyApAYvINRQa2oy?=
+ =?iso-8859-1?Q?dBFYpJ3ykeIJYhKwbjeR4rpGUfamY2ogi1iLiyFxTUqUqWzMThBsG8LZSb?=
+ =?iso-8859-1?Q?57vYeqoMHSHmcKhW7jRcffcouBq8biPrg7t4ZmbJikSvOB83/qlOHeKjT5?=
+ =?iso-8859-1?Q?7sPTdq9PcjTqzT2X0vLIAmeS0=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: csgroup.eu
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8437fc56-10ff-4b8a-5e0b-08d9c8a739a3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Dec 2021 19:38:00.1269 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bd70a279-0955-434b-2cab-08d9c8a73cbb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Dec 2021 19:38:05.3316 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: cxlgAKehl+2wKICTb3KtCpL/Et9Kf6nms2DlLQy6GgS9w0c4a5ivbjH5ARMCxqo0WrnUKd41JL15nWcAgribXxrZpqwUUX5g9tDKvyB+VR8=
+X-MS-Exchange-CrossTenant-userprincipalname: d0ncXBh9I9fn43e12wd7MBLzq6nv0UReFZzKL9kdgkbhHPx4Dm6jj2fDjEgq7D7r0db8na559za2OvtmBWvfZv2Opemd0GbNJ1Qoq0ASB/U=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2233
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -130,221 +132,138 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-VDSO64 cacheflush.S datapage.S gettimeofday.S and vgettimeofday.c
-are very similar to their VDSO32 counterpart.
+In order to merge vdso32 and vdso64 build in following patch, rework
+Makefile is order to add -32 suffix to VDSO32 object files.
 
-VDSO32 counterpart is already more complete than the VDSO64 version
-as it supports both PPC32 vdso and 32 bits VDSO for PPC64.
+Also change sigtramp.S to sigtramp32.S as VDSO64 sigtramp.S is too
+different to be squashed into VDSO32 sigtramp.S at the first place.
 
-Use compat macros wherever necessary in PPC32 files
-so that they can also be used to build VDSO64.
-
-vdso64/note.S is already a link to vdso32/note.S so
-no change is required.
+gen_vdso_offsets.sh also becomes gen_vdso32_offsets.sh
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/asm-compat.h      |  2 ++
- arch/powerpc/kernel/vdso32/cacheflush.S    |  4 ++--
- arch/powerpc/kernel/vdso32/datapage.S      | 10 ++++++++--
- arch/powerpc/kernel/vdso32/getcpu.S        |  4 ++--
- arch/powerpc/kernel/vdso32/gettimeofday.S  |  8 ++++++--
- arch/powerpc/kernel/vdso32/vgettimeofday.c | 23 ++++++++++++++++++----
- 6 files changed, 39 insertions(+), 12 deletions(-)
+ arch/powerpc/kernel/vdso32/Makefile           | 47 +++++++++----------
+ ..._vdso_offsets.sh =3D> gen_vdso32_offsets.sh} |  0
+ .../vdso32/{sigtramp.S =3D> sigtramp32.S}       |  0
+ 3 files changed, 21 insertions(+), 26 deletions(-)
+ rename arch/powerpc/kernel/vdso32/{gen_vdso_offsets.sh =3D> gen_vdso32_off=
+sets.sh} (100%)
+ rename arch/powerpc/kernel/vdso32/{sigtramp.S =3D> sigtramp32.S} (100%)
 
-diff --git a/arch/powerpc/include/asm/asm-compat.h b/arch/powerpc/include/a=
-sm/asm-compat.h
-index 2b736d9fbb1b..2bc53c646ccd 100644
---- a/arch/powerpc/include/asm/asm-compat.h
-+++ b/arch/powerpc/include/asm/asm-compat.h
-@@ -21,6 +21,7 @@
- #define PPC_STLCX	stringify_in_c(stdcx.)
- #define PPC_CNTLZL	stringify_in_c(cntlzd)
- #define PPC_MTOCRF(FXM, RS) MTOCRF((FXM), RS)
-+#define PPC_SRL		stringify_in_c(srd)
- #define PPC_LR_STKOFF	16
- #define PPC_MIN_STKFRM	112
+diff --git a/arch/powerpc/kernel/vdso32/Makefile b/arch/powerpc/kernel/vdso=
+32/Makefile
+index 7d9a6fee0e3d..7d7b38d90ca5 100644
+--- a/arch/powerpc/kernel/vdso32/Makefile
++++ b/arch/powerpc/kernel/vdso32/Makefile
+@@ -5,15 +5,16 @@
+ ARCH_REL_TYPE_ABS :=3D R_PPC_JUMP_SLOT|R_PPC_GLOB_DAT|R_PPC_ADDR32|R_PPC_A=
+DDR24|R_PPC_ADDR16|R_PPC_ADDR16_LO|R_PPC_ADDR16_HI|R_PPC_ADDR16_HA|R_PPC_AD=
+DR14|R_PPC_ADDR14_BRTAKEN|R_PPC_ADDR14_BRNTAKEN|R_PPC_REL24
+ include $(srctree)/lib/vdso/Makefile
 =20
-@@ -54,6 +55,7 @@
- #define PPC_STLCX	stringify_in_c(stwcx.)
- #define PPC_CNTLZL	stringify_in_c(cntlzw)
- #define PPC_MTOCRF	stringify_in_c(mtcrf)
-+#define PPC_SRL		stringify_in_c(srw)
- #define PPC_LR_STKOFF	4
- #define PPC_MIN_STKFRM	16
+-obj-vdso32 =3D sigtramp.o gettimeofday.o datapage.o cacheflush.o note.o ge=
+tcpu.o
++obj-vdso32 =3D sigtramp32-32.o gettimeofday-32.o datapage-32.o cacheflush-=
+32.o note-32.o getcpu-32.o
 =20
-diff --git a/arch/powerpc/kernel/vdso32/cacheflush.S b/arch/powerpc/kernel/=
-vdso32/cacheflush.S
-index f340e82d1981..d4e43ab2d5df 100644
---- a/arch/powerpc/kernel/vdso32/cacheflush.S
-+++ b/arch/powerpc/kernel/vdso32/cacheflush.S
-@@ -46,7 +46,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
- 	add	r8,r8,r5		/* ensure we get enough */
- #ifdef CONFIG_PPC64
- 	lwz	r9,CFG_DCACHE_LOGBLOCKSZ(r10)
--	srw.	r8,r8,r9		/* compute line count */
-+	PPC_SRL.	r8,r8,r9		/* compute line count */
- #else
- 	srwi.	r8, r8, L1_CACHE_SHIFT
- 	mr	r7, r6
-@@ -72,7 +72,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
- 	subf	r8,r6,r4		/* compute length */
- 	add	r8,r8,r5
- 	lwz	r9,CFG_ICACHE_LOGBLOCKSZ(r10)
--	srw.	r8,r8,r9		/* compute line count */
-+	PPC_SRL.	r8,r8,r9		/* compute line count */
- 	crclr	cr0*4+so
- 	beqlr				/* nothing to do? */
- #endif
-diff --git a/arch/powerpc/kernel/vdso32/datapage.S b/arch/powerpc/kernel/vd=
-so32/datapage.S
-index 65244416ab94..db8e167f0166 100644
---- a/arch/powerpc/kernel/vdso32/datapage.S
-+++ b/arch/powerpc/kernel/vdso32/datapage.S
-@@ -30,11 +30,15 @@ V_FUNCTION_BEGIN(__kernel_get_syscall_map)
- 	mr.	r4,r3
- 	get_datapage	r3
- 	mtlr	r12
-+#ifdef __powerpc64__
-+	addi	r3,r3,CFG_SYSCALL_MAP64
-+#else
- 	addi	r3,r3,CFG_SYSCALL_MAP32
-+#endif
-+	crclr	cr0*4+so
- 	beqlr
- 	li	r0,NR_syscalls
- 	stw	r0,0(r4)
--	crclr	cr0*4+so
- 	blr
-   .cfi_endproc
- V_FUNCTION_END(__kernel_get_syscall_map)
-@@ -49,8 +53,10 @@ V_FUNCTION_BEGIN(__kernel_get_tbfreq)
- 	mflr	r12
-   .cfi_register lr,r12
- 	get_datapage	r3
-+#ifndef __powerpc64__
- 	lwz	r4,(CFG_TB_TICKS_PER_SEC + 4)(r3)
--	lwz	r3,CFG_TB_TICKS_PER_SEC(r3)
-+#endif
-+	PPC_LL	r3,CFG_TB_TICKS_PER_SEC(r3)
- 	mtlr	r12
- 	crclr	cr0*4+so
- 	blr
-diff --git a/arch/powerpc/kernel/vdso32/getcpu.S b/arch/powerpc/kernel/vdso=
-32/getcpu.S
-index ff5e214fec41..8e08ccf19062 100644
---- a/arch/powerpc/kernel/vdso32/getcpu.S
-+++ b/arch/powerpc/kernel/vdso32/getcpu.S
-@@ -19,8 +19,8 @@
- V_FUNCTION_BEGIN(__kernel_getcpu)
-   .cfi_startproc
- 	mfspr	r5,SPRN_SPRG_VDSO_READ
--	cmpwi	cr0,r3,0
--	cmpwi	cr1,r4,0
-+	PPC_LCMPI	cr0,r3,0
-+	PPC_LCMPI	cr1,r4,0
- 	clrlwi  r6,r5,16
- 	rlwinm  r7,r5,16,31-15,31-0
- 	beq	cr0,1f
-diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kerne=
-l/vdso32/gettimeofday.S
-index d21d08140a5e..c875312274aa 100644
---- a/arch/powerpc/kernel/vdso32/gettimeofday.S
-+++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0-or-later */
- /*
-- * Userland implementation of gettimeofday() for 32 bits processes in a
-- * ppc64 kernel for use in the vDSO
-+ * Userland implementation of gettimeofday() for processes
-+ * for use in the vDSO
-  *
-  * Copyright (C) 2004 Benjamin Herrenschmuidt (benh@kernel.crashing.org,
-  *                    IBM Corp.
-@@ -41,9 +41,11 @@ V_FUNCTION_END(__kernel_clock_gettime)
-  * int __kernel_clock_gettime64(clockid_t clock_id, struct __timespec64 *t=
-s);
-  *
-  */
-+#ifndef __powerpc64__
- V_FUNCTION_BEGIN(__kernel_clock_gettime64)
- 	cvdso_call __c_kernel_clock_gettime64
- V_FUNCTION_END(__kernel_clock_gettime64)
-+#endif
+ ifneq ($(c-gettimeofday-y),)
+-  CFLAGS_vgettimeofday.o +=3D -include $(c-gettimeofday-y)
+-  CFLAGS_vgettimeofday.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
+-  CFLAGS_vgettimeofday.o +=3D $(call cc-option, -fno-stack-protector)
+-  CFLAGS_vgettimeofday.o +=3D -DDISABLE_BRANCH_PROFILING
+-  CFLAGS_vgettimeofday.o +=3D -ffreestanding -fasynchronous-unwind-tables
+-  CFLAGS_REMOVE_vgettimeofday.o =3D $(CC_FLAGS_FTRACE)
++  CFLAGS_vgettimeofday-32.o +=3D -include $(c-gettimeofday-y)
++  CFLAGS_vgettimeofday-32.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
++  CFLAGS_vgettimeofday-32.o +=3D $(call cc-option, -fno-stack-protector)
++  CFLAGS_vgettimeofday-32.o +=3D -DDISABLE_BRANCH_PROFILING
++  CFLAGS_vgettimeofday-32.o +=3D -ffreestanding -fasynchronous-unwind-tabl=
+es
++  CFLAGS_REMOVE_vgettimeofday-32.o =3D $(CC_FLAGS_FTRACE)
++  CFLAGS_REMOVE_vgettimeofday-32.o +=3D -mcmodel=3Dmedium -mabi=3Delfv1 -m=
+abi=3Delfv2 -mcall-aixdesc
+ endif
 =20
- /*
-  * Exact prototype of clock_getres()
-@@ -69,6 +71,7 @@ V_FUNCTION_END(__kernel_time)
- /* Routines for restoring integer registers, called by the compiler.  */
- /* Called with r11 pointing to the stack header word of the caller of the =
-*/
- /* function, just beyond the end of the integer restore area.  */
-+#ifndef __powerpc64__
- _GLOBAL(_restgpr_31_x)
- _GLOBAL(_rest32gpr_31_x)
- 	lwz	r0,4(r11)
-@@ -76,3 +79,4 @@ _GLOBAL(_rest32gpr_31_x)
- 	mtlr	r0
- 	mr	r1,r11
- 	blr
-+#endif
-diff --git a/arch/powerpc/kernel/vdso32/vgettimeofday.c b/arch/powerpc/kern=
-el/vdso32/vgettimeofday.c
-index 65fb03fb1731..55a287c9a736 100644
---- a/arch/powerpc/kernel/vdso32/vgettimeofday.c
-+++ b/arch/powerpc/kernel/vdso32/vgettimeofday.c
-@@ -2,8 +2,22 @@
- /*
-  * Powerpc userspace implementations of gettimeofday() and similar.
-  */
-+#include <linux/time.h>
- #include <linux/types.h>
+ # Build rules
+@@ -24,13 +25,7 @@ else
+     VDSOCC :=3D $(CC)
+ endif
 =20
-+#ifdef __powerpc64__
-+int __c_kernel_clock_gettime(clockid_t clock, struct __kernel_timespec *ts=
-,
-+			     const struct vdso_data *vd)
-+{
-+	return __cvdso_clock_gettime_data(vd, clock, ts);
-+}
+-CC32FLAGS :=3D
+-ifdef CONFIG_PPC64
+-CC32FLAGS +=3D -m32
+-KBUILD_CFLAGS :=3D $(filter-out -mcmodel=3Dmedium -mabi=3Delfv1 -mabi=3Del=
+fv2 -mcall-aixdesc,$(KBUILD_CFLAGS))
+-endif
+-
+-targets :=3D $(obj-vdso32) vdso32.so.dbg vgettimeofday.o
++targets :=3D $(obj-vdso32) vdso32.so.dbg vgettimeofday-32.o
+ obj-vdso32 :=3D $(addprefix $(obj)/, $(obj-vdso32))
+=20
+ GCOV_PROFILE :=3D n
+@@ -38,36 +33,36 @@ KCOV_INSTRUMENT :=3D n
+ UBSAN_SANITIZE :=3D n
+ KASAN_SANITIZE :=3D n
+=20
+-ccflags-y :=3D -shared -fno-common -fno-builtin -nostdlib \
+-	-Wl,-soname=3Dlinux-vdso32.so.1 -Wl,--hash-style=3Dboth
+-asflags-y :=3D -D__VDSO32__ -s
++ccflags-y :=3D -shared -fno-common -fno-builtin -nostdlib -Wl,--hash-style=
+=3Dboth
 +
-+int __c_kernel_clock_getres(clockid_t clock_id, struct __kernel_timespec *=
-res,
-+			    const struct vdso_data *vd)
-+{
-+	return __cvdso_clock_getres_data(vd, clock_id, res);
-+}
-+#else
- int __c_kernel_clock_gettime(clockid_t clock, struct old_timespec32 *ts,
- 			     const struct vdso_data *vd)
- {
-@@ -16,16 +30,17 @@ int __c_kernel_clock_gettime64(clockid_t clock, struct =
-__kernel_timespec *ts,
- 	return __cvdso_clock_gettime_data(vd, clock, ts);
- }
++CC32FLAGS :=3D -Wl,-soname=3Dlinux-vdso32.so.1 -m32
++AS32FLAGS :=3D -D__VDSO32__ -s
 =20
--int __c_kernel_gettimeofday(struct __kernel_old_timeval *tv, struct timezo=
-ne *tz,
-+int __c_kernel_clock_getres(clockid_t clock_id, struct old_timespec32 *res=
-,
- 			    const struct vdso_data *vd)
- {
--	return __cvdso_gettimeofday_data(vd, tv, tz);
-+	return __cvdso_clock_getres_time32_data(vd, clock_id, res);
- }
-+#endif
+-obj-y +=3D vdso32_wrapper.o
+ targets +=3D vdso32.lds
+ CPPFLAGS_vdso32.lds +=3D -P -C -Upowerpc
 =20
--int __c_kernel_clock_getres(clockid_t clock_id, struct old_timespec32 *res=
-,
-+int __c_kernel_gettimeofday(struct __kernel_old_timeval *tv, struct timezo=
-ne *tz,
- 			    const struct vdso_data *vd)
- {
--	return __cvdso_clock_getres_time32_data(vd, clock_id, res);
-+	return __cvdso_gettimeofday_data(vd, tv, tz);
- }
+ # link rule for the .so file, .lds has to be first
+-$(obj)/vdso32.so.dbg: $(src)/vdso32.lds $(obj-vdso32) $(obj)/vgettimeofday=
+.o FORCE
++$(obj)/vdso32.so.dbg: $(src)/vdso32.lds $(obj-vdso32) $(obj)/vgettimeofday=
+-32.o FORCE
+ 	$(call if_changed,vdso32ld_and_check)
 =20
- __kernel_old_time_t __c_kernel_time(__kernel_old_time_t *time, const struc=
-t vdso_data *vd)
+ # assembly rules for the .S files
+-$(obj-vdso32): %.o: %.S FORCE
++$(obj-vdso32): %-32.o: %.S FORCE
+ 	$(call if_changed_dep,vdso32as)
+-$(obj)/vgettimeofday.o: %.o: %.c FORCE
++$(obj)/vgettimeofday-32.o: %-32.o: %.c FORCE
+ 	$(call if_changed_dep,vdso32cc)
+=20
+ # Generate VDSO offsets using helper script
+-gen-vdsosym :=3D $(srctree)/$(src)/gen_vdso_offsets.sh
+-quiet_cmd_vdsosym =3D VDSOSYM $@
+-      cmd_vdsosym =3D $(NM) $< | $(gen-vdsosym) | LC_ALL=3DC sort > $@
++gen-vdso32sym :=3D $(srctree)/$(src)/gen_vdso32_offsets.sh
++quiet_cmd_vdso32sym =3D VDSO32SYM $@
++      cmd_vdso32sym =3D $(NM) $< | $(gen-vdso32sym) | LC_ALL=3DC sort > $@
+=20
+ include/generated/vdso32-offsets.h: $(obj)/vdso32.so.dbg FORCE
+-	$(call if_changed,vdsosym)
++	$(call if_changed,vdso32sym)
+=20
+ # actual build commands
+ quiet_cmd_vdso32ld_and_check =3D VDSO32L $@
+       cmd_vdso32ld_and_check =3D $(VDSOCC) $(c_flags) $(CC32FLAGS) -o $@ -=
+Wl,-T$(filter %.lds,$^) $(filter %.o,$^) ; $(cmd_vdso_check)
+ quiet_cmd_vdso32as =3D VDSO32A $@
+-      cmd_vdso32as =3D $(VDSOCC) $(a_flags) $(CC32FLAGS) -c -o $@ $<
++      cmd_vdso32as =3D $(VDSOCC) $(a_flags) $(CC32FLAGS) $(AS32FLAGS) -c -=
+o $@ $<
+ quiet_cmd_vdso32cc =3D VDSO32C $@
+       cmd_vdso32cc =3D $(VDSOCC) $(c_flags) $(CC32FLAGS) -c -o $@ $<
+diff --git a/arch/powerpc/kernel/vdso32/gen_vdso_offsets.sh b/arch/powerpc/=
+kernel/vdso32/gen_vdso32_offsets.sh
+similarity index 100%
+rename from arch/powerpc/kernel/vdso32/gen_vdso_offsets.sh
+rename to arch/powerpc/kernel/vdso32/gen_vdso32_offsets.sh
+diff --git a/arch/powerpc/kernel/vdso32/sigtramp.S b/arch/powerpc/kernel/vd=
+so32/sigtramp32.S
+similarity index 100%
+rename from arch/powerpc/kernel/vdso32/sigtramp.S
+rename to arch/powerpc/kernel/vdso32/sigtramp32.S
 --=20
 2.33.1
