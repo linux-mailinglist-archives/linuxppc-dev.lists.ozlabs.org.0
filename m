@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D7647F91B
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 22:54:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6975047F923
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 22:55:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JMZM76v4xz3c6D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 08:54:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JMZNr2JQQz3dfY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 08:55:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
@@ -14,21 +14,25 @@ Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JMZLp540Wz2xCp
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Dec 2021 08:53:54 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JMZLv2z3Wz2yws
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Dec 2021 08:53:59 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JMZLk4Skhz4xdB;
- Mon, 27 Dec 2021 08:53:50 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JMZLv26HQz4xmw;
+ Mon, 27 Dec 2021 08:53:59 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20211221055904.555763-1-aik@ozlabs.ru>
-References: <20211221055904.555763-1-aik@ozlabs.ru>
-Subject: Re: [PATCH kernel 0/6] powerpc: Build with LLVM_IAS=1
-Message-Id: <164055555286.3187272.4918713007568303339.b4-ty@ellerman.id.au>
-Date: Mon, 27 Dec 2021 08:52:32 +1100
+To: Paul Mackerras <paulus@samba.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <3ff9823c0a812a8a145d979a9600a6d4591b80ee.1638446239.git.christophe.leroy@csgroup.eu>
+References: <3ff9823c0a812a8a145d979a9600a6d4591b80ee.1638446239.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v1 01/11] powerpc/code-patching: Remove
+ pr_debug()/pr_devel() messages and fix check()
+Message-Id: <164055556054.3187272.4740665700594331538.b4-ty@ellerman.id.au>
+Date: Mon, 27 Dec 2021 08:52:40 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,37 +47,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>,
- Alan Modra <amodra@au1.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 21 Dec 2021 16:58:58 +1100, Alexey Kardashevskiy wrote:
-> This allows compiling the upstream Linux with the upstream llvm with one fix on top;
-> https://reviews.llvm.org/D115419
+On Thu, 2 Dec 2021 13:00:17 +0100, Christophe Leroy wrote:
+> code-patching has been working for years now, time has come to
+> remove debugging messages.
 > 
-> This is based on sha1
-> 798527287598 Michael Ellerman "Automatic merge of 'next' into merge (2021-12-14 00:12)".
+> Change useful message to KERN_INFO and remove other ones.
 > 
-> Please comment. Thanks.
+> Also add KERN_ERR to check() macro and change it into a do/while
+> to make checkpatch happy.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/6] powerpc/toc: PowerPC64 future proof kernel toc, revised for lld
-      https://git.kernel.org/powerpc/c/a3ad84da076009c94969fa97f604257667e2980f
-[2/6] powerpc: check for support for -Wa,-m{power4,any}
-      https://git.kernel.org/powerpc/c/f5140cab448e4819ca6f158cb4130352f73c92e4
-[3/6] powerpc/64/asm: Inline BRANCH_TO_C000
-      https://git.kernel.org/powerpc/c/fd983957971632088908c646116383402f04084b
-[4/6] powerpc/64/asm: Do not reassign labels
-      https://git.kernel.org/powerpc/c/d72c4a36d7ab560127885473a310ece28988b604
-[5/6] powerpc/mm: Switch obsolete dssall to .long
-      https://git.kernel.org/powerpc/c/d51f86cfd8e378d4907958db77da3074f6dce3ba
-[6/6] powerpc/mm/book3s64/hash: Switch pre 2.06 tlbiel to .long
-      https://git.kernel.org/powerpc/c/62479e6e26ef18f00e2e540c0e30156254533a43
+[01/11] powerpc/code-patching: Remove pr_debug()/pr_devel() messages and fix check()
+        https://git.kernel.org/powerpc/c/edecd2d6d6f4a122dd62bce654b4f63301e8ad9a
+[02/11] powerpc/code-patching: Remove init_mem_is_free
+        https://git.kernel.org/powerpc/c/af5304a7506588221d8317ef3f76585eb4483506
+[03/11] powerpc/code-patching: Fix error handling in do_patch_instruction()
+        https://git.kernel.org/powerpc/c/285672f99327d5b8febdf83cadba61a68abe5d69
+[04/11] powerpc/code-patching: Fix unmap_patch_area() error handling
+        https://git.kernel.org/powerpc/c/a3483c3dd18c136785a31406fe27210649fc4fba
+[05/11] powerpc/code-patching: Reorganise do_patch_instruction() to ease error handling
+        https://git.kernel.org/powerpc/c/6b21af74495b556f9d496d97d74e7a3d0ab16d7c
+[06/11] powerpc/code-patching: Fix patch_branch() return on out-of-range failure
+        https://git.kernel.org/powerpc/c/d5937db114e4b6446c62809484729955f1aeb108
+[07/11] powerpc/code-patching: Use test_trampoline for prefixed patch test
+        https://git.kernel.org/powerpc/c/ff14a9c09fe91a70bfc6381809877e5a19e38cdb
+[08/11] powerpc/code-patching: Move patch_exception() outside code-patching.c
+        https://git.kernel.org/powerpc/c/29562a9da29478834e57f81e3804e9ec7a6b350b
+[09/11] powerpc/code-patching: Move instr_is_branch_{i/b}form() in code-patching.h
+        https://git.kernel.org/powerpc/c/31acc599564120fa41f9df2c567842d003728dab
+[10/11] powerpc/code-patching: Move code patching selftests in its own file
+        https://git.kernel.org/powerpc/c/f30a578d7653f7dbb253a20daad4bcd9f881d6c9
+[11/11] powerpc/code-patching: Replace patch_instruction() by ppc_inst_write() in selftests
+        https://git.kernel.org/powerpc/c/309a0a601864831510209531dd72da486225d8ae
 
 cheers
