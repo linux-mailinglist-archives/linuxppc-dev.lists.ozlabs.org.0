@@ -1,36 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D9747F925
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Dec 2021 22:56:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45AB747F9A8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 02:45:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JMZPh4kLfz3cTq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 08:56:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JMgTs014bz3c5b
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Dec 2021 12:45:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JMZLw2kQrz305P
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Dec 2021 08:54:00 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JMZLw1pRFz4xmy;
- Mon, 27 Dec 2021 08:54:00 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20211221135101.2085547-1-mpe@ellerman.id.au>
-References: <20211221135101.2085547-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH 1/3] powerpc/64s: Mask NIP before checking against SRR0
-Message-Id: <164055556397.3187272.15095835229382770382.b4-ty@ellerman.id.au>
-Date: Mon, 27 Dec 2021 08:52:43 +1100
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com;
+ envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JMgTM4VWbz2xvP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Dec 2021 12:44:53 +1100 (AEDT)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.57])
+ by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4JMgQM26Kvz8w5B;
+ Mon, 27 Dec 2021 09:42:19 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Mon, 27 Dec 2021 09:44:25 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.20; Mon, 27 Dec 2021 09:44:24 +0800
+Message-ID: <c7037a3a-d0b1-6351-5e31-22be0d8e0e01@huawei.com>
+Date: Mon, 27 Dec 2021 09:44:24 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH 1/3] mm: vmalloc: Let user to control huge vmalloc default
+ behavior
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Jonathan Corbet
+ <corbet@lwn.net>, Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "x86@kernel.org" <x86@kernel.org>, 
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+References: <20211226083912.166512-1-wangkefeng.wang@huawei.com>
+ <20211226083912.166512-2-wangkefeng.wang@huawei.com>
+ <6c4bd989-268e-5899-09a7-ac573bd8b4d9@csgroup.eu>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <6c4bd989-268e-5899-09a7-ac573bd8b4d9@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggeme704-chm.china.huawei.com (10.1.199.100) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,28 +65,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sachinp@linux.ibm.com, npiggin@gmail.com
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@samba.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 22 Dec 2021 00:50:59 +1100, Michael Ellerman wrote:
-> When CONFIG_PPC_RFI_SRR_DEBUG=y we check that NIP and SRR0 match when
-> returning from interrupts. This can trigger falsely if NIP has either of
-> its two low bits set via sigreturn or ptrace, while SRR0 has its low two
-> bits masked in hardware.
-> 
-> As a quick fix make sure to mask the low bits before doing the check.
-> 
-> [...]
 
-Applied to powerpc/next.
+On 2021/12/27 1:36, Christophe Leroy wrote:
+>
+> Le 26/12/2021 à 09:39, Kefeng Wang a écrit :
+>> Add HUGE_VMALLOC_DEFAULT_ENABLED to let user to choose whether or
+>> not enable huge vmalloc mappings by default, and this could make
+>> more architectures to enable huge vmalloc mappings feature but
+>> don't want to enable it by default.
+>>
+>> Add hugevmalloc=on/off parameter to enable or disable this feature
+>> at boot time, nohugevmalloc is still supported and equivalent to
+>> hugevmalloc=off.
+>
+> Is there a real added value to have the user be able to select that ?
+>
+> If the architecture supports it, is there any good reason to not use it ?
 
-[1/3] powerpc/64s: Mask NIP before checking against SRR0
-      https://git.kernel.org/powerpc/c/314f6c23dd8d417281eb9e8a516dd98036f2e7b3
-[2/3] powerpc/64s: Use EMIT_WARN_ENTRY for SRR debug warnings
-      https://git.kernel.org/powerpc/c/fd1eaaaaa6864b5fb8f99880fcefb49760b8fe4e
-[3/3] selftests/powerpc: Add a test of sigreturning to an unaligned address
-      https://git.kernel.org/powerpc/c/beeac538c366cd2828092adecd1edab28326c55b
+There are some disadvantages[1],  one of the main concerns is the possible
 
-cheers
+memory waste, we have backported this feature to our kernel 5.10, but our
+
+downstream in our some scenario(especially in embedded), they don't want
+
+it enabled by default, and others want it, this is why patch1 comes.
+
+>
+> Why not just do like PPC and enable it by default ? Why should it be
+> enabled by default on PPC but disabled by default on ARM64 and X86 ?
+
+The PPC is default enabled, we don't changes this behavior.
+
+Maybe upstream is not care about this, as I said in cover-letter, if 
+arm64/x86
+
+don't want patch1, we could only just select config to enable it.
+
+Let's wait for more feedback.
+
+Thanks.
+
+[1] 
+https://lore.kernel.org/linux-mm/1616036421.amjz2efujj.astroid@bobo.none/
+
