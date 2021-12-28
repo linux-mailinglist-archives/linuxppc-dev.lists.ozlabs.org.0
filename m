@@ -1,60 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25BF0480600
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 05:52:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 997DF4806CD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 07:48:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JNMb10zWTz3c8j
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 15:52:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JNQ8y2y3Wz3c7C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 17:48:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J0tQTGU5;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
- envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=J0tQTGU5; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JNMZZ1zdsz2yV7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Dec 2021 15:51:46 +1100 (AEDT)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.54])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4JNMTv63dHzZdtB;
- Tue, 28 Dec 2021 12:47:47 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Tue, 28 Dec 2021 12:51:04 +0800
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.20; Tue, 28 Dec 2021 12:51:03 +0800
-Message-ID: <4ca5a8e4-8edc-3ea4-34f0-26d6ff7c5db4@huawei.com>
-Date: Tue, 28 Dec 2021 12:51:03 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JNQ8K17zJz2yfZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Dec 2021 17:47:44 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id B8E1D6116B;
+ Tue, 28 Dec 2021 06:47:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD265C36AE8;
+ Tue, 28 Dec 2021 06:47:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1640674060;
+ bh=pDkAgbZHBe02te6liij9nNRo6iDaWmoyo0HIE9qWJ7Q=;
+ h=From:To:Cc:Subject:Date:From;
+ b=J0tQTGU5yi38c+R7BCY6ovWaCF+3fcuMSMVPO0ZRPYD6cNTNbp6xwPfIVbvfPfsyJ
+ Lepzv4jyp/tVTUjWsJIfMwPMiLq14rKXa3U3oMr52+7hhJoH1ePjkE/8VN2amD8bU5
+ bkXgWGHWueeTbotl81lQ3/pKiQaiBBWeyq4F9gHflYHKxFQ026DrAOVB8E8bYuS7UP
+ 6a4Jc7YE3Qc7t1WXocvq21585wOb1llRUc6Qb/luci8VZ1KbmEaVFJ3/fFnSFPK3/u
+ yppWVn13Bbucm8V7j+yKYEMcyL9CzCmkboFrXy6S/12731Coph7/qfrwdAyU+SHMqy
+ Pi1bm8dXC+iEQ==
+From: guoren@kernel.org
+To: guoren@kernel.org, will@kernel.org, tglx@linutronix.de,
+ benh@kernel.crashing.org, arnd@arndb.de, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, christophe.leroy@csgroup.eu,
+ hca@linux.ibm.com
+Subject: [PATCH V3 0/8] sched: Remove unused TASK_SIZE_OF for all archs
+Date: Tue, 28 Dec 2021 14:47:21 +0800
+Message-Id: <20211228064730.2882351-1-guoren@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v2 2/2] mm: usercopy: Warn vmalloc/module address in
- check_heap_object()
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Kees Cook
- <keescook@chromium.org>, Laura Abbott <labbott@redhat.com>, Mark Rutland
- <mark.rutland@arm.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
- <paulus@samba.org>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>
-References: <20211225120621.13908-1-wangkefeng.wang@huawei.com>
- <20211225120621.13908-3-wangkefeng.wang@huawei.com>
- <fadd9754-ab85-63ec-4d6a-c6490adb5d94@csgroup.eu>
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <fadd9754-ab85-63ec-4d6a-c6490adb5d94@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggeme707-chm.china.huawei.com (10.1.199.103) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,49 +63,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-s390@vger.kernel.org, Guo Ren <guoren@linux.alibaba.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, sparclinux@vger.kernel.or,
+ linux-mips@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, inux-parisc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Guo Ren <guoren@linux.alibaba.com>
 
-On 2021/12/27 1:33, Christophe Leroy wrote:
->
-> Le 25/12/2021 à 13:06, Kefeng Wang a écrit :
->> virt_addr_valid() could be insufficient to validate the virt addr
->> on some architecture, which could lead to potential BUG which has
->> been found on arm64/powerpc64.
->>
->> Let's add WARN_ON to check if the virt addr is passed virt_addr_valid()
->> but is a vmalloc/module address.
-> I think that's the responsibility of the architecture and doesn't
-> deserve a WARN_ON() in generic code.
->
-> The generic code cannot check all what architectures do wrong.
->
-> Eventually you can do some testing at startup, maybe with
-> CONFIG_DEBUG_VM_PGTABLE, but I don't think we should have such
-> verification in functions like check_heap_object()
+This macro isn't used in Linux, now. Delete in include/linux/sched.h
+and arch's include/asm. This would confuse people who are
+implementing the COMPAT feature for architecture.
 
-Ok, we could find other better place to add a virt_to_valid() check
+Changes in v3:
+ - Fixup Documentation/process/submitting-patches.rst, add sender
+   Signed-off-by.
 
-instead of this one.
+Changes in v2:
+ - Add Arnd's comment in main patch
+ - Optimize coding convention with Christophe's advise
 
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
->>    mm/usercopy.c | 2 ++
->>    1 file changed, 2 insertions(+)
->>
->> diff --git a/mm/usercopy.c b/mm/usercopy.c
->> index b3de3c4eefba..ce83e0b137dd 100644
->> --- a/mm/usercopy.c
->> +++ b/mm/usercopy.c
->> @@ -228,6 +228,8 @@ static inline void check_heap_object(const void *ptr, unsigned long n,
->>    	if (!virt_addr_valid(ptr))
->>    		return;
->>    
->> +	WARN_ON_ONCE(is_vmalloc_or_module_addr(ptr));
->> +
->>    	/*
->>    	 * When CONFIG_HIGHMEM=y, kmap_to_page() will give either the
->>    	 * highmem page or fallback to virt_to_page(). The following
+Guo Ren (8):
+  sched: Remove unused TASK_SIZE_OF
+  sched: x86: Remove unused TASK_SIZE_OF
+  sched: sparc: Remove unused TASK_SIZE_OF
+  sched: powerpc: Remove unused TASK_SIZE_OF
+  sched: s390: Remove unused TASK_SIZE_OF
+  sched: parisc: Remove unused TASK_SIZE_OF
+  sched: arm64: Remove unused TASK_SIZE_OF
+  sched: mips: Remove unused TASK_SIZE_OF
+
+ arch/arm64/include/asm/processor.h      | 2 --
+ arch/mips/include/asm/processor.h       | 3 ---
+ arch/parisc/include/asm/processor.h     | 3 +--
+ arch/powerpc/include/asm/task_size_64.h | 6 +-----
+ arch/s390/include/asm/processor.h       | 3 +--
+ arch/sparc/include/asm/processor_64.h   | 3 ---
+ arch/x86/include/asm/page_64_types.h    | 2 --
+ include/linux/sched.h                   | 4 ----
+ 8 files changed, 3 insertions(+), 23 deletions(-)
+
+-- 
+2.25.1
+
