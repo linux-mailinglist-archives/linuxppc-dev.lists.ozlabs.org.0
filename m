@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C2C480A75
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 15:45:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3110480A79
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 15:45:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JNclC3xP8z3c6G
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Dec 2021 01:45:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JNclv55Tkz3ckS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Dec 2021 01:45:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QHY1F9Tg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ERrwd3rB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,39 +18,39 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=QHY1F9Tg; 
+ header.s=k20201202 header.b=ERrwd3rB; 
  dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org
  [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JNcfL5LVgz3cG2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Dec 2021 01:40:58 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JNcfS60nnz3c85
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Dec 2021 01:41:04 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 0BFDF61241;
- Tue, 28 Dec 2021 14:40:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE00C36AEE;
- Tue, 28 Dec 2021 14:40:49 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 2FB976123D;
+ Tue, 28 Dec 2021 14:41:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B173FC36AEB;
+ Tue, 28 Dec 2021 14:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1640702456;
- bh=864EqwfqbN5tfZJaOZVLuXV6AxD97/gM1MGPXUImivo=;
+ s=k20201202; t=1640702462;
+ bh=pdrDlH8jqoqjZ8l99cKqnGDf4VeK939Cf4653l9SI3Q=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=QHY1F9TgQxSN3MBdV4IF66+io4Ym75STMc9/9DmwsdHUg9lscjEbTxn5NfjNyq0hR
- bzzw/EHKY/dDzjYSAEkxW6uaxvl0u5MuEfBtNG6xPaBa73LMlj0ZBfOaTNQCNxsdOb
- h3GSkYnLRpZk5xHuP1Tq5QItWj0haKyZ/4S2Swp1TVnhbvUwoVe/F/nBv6ZTYqPCTK
- nkPLnFDitgtM5Q5q5wzbJO75Cq0GgrAFGzbHSDZ9tHTcP3KM8aoVKDxifr6E1bZCMZ
- 3kn7AB5LOnl6R9MOFP+x3U91lPJClP0mh3lTiCXL6klMFZ2RzoIPON/2dh0Bqfevnn
- APxjxquNt8qxw==
+ b=ERrwd3rBdCA1978j3In0lNzqO4ywGa9b4wqUrfKcAq5mhSVnQsPYTlTMhfTXOhP4o
+ ruxxIh5OwNXGrpzmCZg3J4cTvvoFu6cnI3TYlWq31S7GuI38Bv4ihDNkOfr/NbZBqC
+ 8rJve9kuVgxT9UINKP0yCtMvtQkuEpUv4Up49ysuVyLr+8FzXobOYUI4atatCI/EJC
+ KPwDe+6zceYKD8ACNrOfUz3umNeDdkPtish3rSh/TsLjUdRYG5sT+POazrejLGyBhg
+ dC1hKrmKqV/ZQTyzbhJaf80AOf08GFTDnsGYreJxzW0YjmsCu5HNeOifB9Aso1Yccs
+ G+iwTANNiR/NQ==
 From: guoren@kernel.org
 To: guoren@kernel.org, palmer@dabbelt.com, arnd@arndb.de, anup.patel@wdc.com,
  gregkh@linuxfoundation.org, liush@allwinnertech.com, wefu@redhat.com,
  drew@beagleboard.org, wangjunqiang@iscas.ac.cn, hch@infradead.org
-Subject: [PATCH V2 07/17] riscv: compat: Add basic compat date type
- implementation
-Date: Tue, 28 Dec 2021 22:39:48 +0800
-Message-Id: <20211228143958.3409187-8-guoren@kernel.org>
+Subject: [PATCH V2 08/17] riscv: compat: Re-implement TASK_SIZE for
+ COMPAT_32BIT
+Date: Tue, 28 Dec 2021 22:39:49 +0800
+Message-Id: <20211228143958.3409187-9-guoren@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211228143958.3409187-1-guoren@kernel.org>
 References: <20211228143958.3409187-1-guoren@kernel.org>
@@ -78,168 +78,80 @@ Sender: "Linuxppc-dev"
 
 From: Guo Ren <guoren@linux.alibaba.com>
 
-Implement asm/compat.h for struct compat_xxx, RLIM_INFINITY,
-OFF_T_MAX, is_compat_task, compat_user_regset, regset convert.
+Make TASK_SIZE from const to dynamic detect TIF_32BIT flag
+function. Refer to arm64 to implement DEFAULT_MAP_WINDOW_64 for
+efi-stub.
+
+Limit 32-bit compatible process in 0-2GB virtual address range
+(which is enough for real scenarios), because it could avoid
+address sign extend problem when 32-bit enter 64-bit and ease
+software design.
+
+The standard 32-bit TASK_SIZE is 0x9dc00000:FIXADDR_START, and
+compared to a compatible 32-bit, it increases 476MB for the
+application's virtual address.
 
 Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
 Signed-off-by: Guo Ren <guoren@kernel.org>
 Cc: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/riscv/include/asm/compat.h      | 132 +++++++++++++++++++++++++++
- arch/riscv/include/asm/thread_info.h |   1 +
- 2 files changed, 133 insertions(+)
- create mode 100644 arch/riscv/include/asm/compat.h
+ arch/riscv/include/asm/pgtable.h        | 11 ++++++++++-
+ arch/riscv/include/asm/processor.h      |  6 ++++++
+ drivers/firmware/efi/libstub/efi-stub.c |  2 +-
+ 3 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/include/asm/compat.h b/arch/riscv/include/asm/compat.h
-new file mode 100644
-index 000000000000..dcfd44fd2e21
---- /dev/null
-+++ b/arch/riscv/include/asm/compat.h
-@@ -0,0 +1,132 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __ASM_COMPAT_H
-+#define __ASM_COMPAT_H
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index bf204e7c1f74..2dd5b8674380 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -663,7 +663,16 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+  * Note that PGDIR_SIZE must evenly divide TASK_SIZE.
+  */
+ #ifdef CONFIG_64BIT
+-#define TASK_SIZE (PGDIR_SIZE * PTRS_PER_PGD / 2)
++#define TASK_SIZE_64	(PGDIR_SIZE * PTRS_PER_PGD / 2)
 +
-+#define compat_mode_t	compat_mode_t
-+typedef u16		compat_mode_t;
++#ifdef CONFIG_COMPAT
++#define TASK_SIZE_32	(_AC(0x80000000, UL) - PAGE_SIZE)
++#define TASK_SIZE	(test_thread_flag(TIF_32BIT) ? \
++			 TASK_SIZE_32 : TASK_SIZE_64)
++#else
++#define TASK_SIZE	TASK_SIZE_64
++#endif
 +
-+#define COMPAT_UTS_MACHINE	"riscv\0\0"
-+
-+/*
-+ * Architecture specific compatibility types
-+ */
-+#include <linux/types.h>
-+#include <linux/sched.h>
-+#include <linux/sched/task_stack.h>
-+#include <asm-generic/compat.h>
-+
-+static inline int is_compat_task(void)
-+{
-+	return test_thread_flag(TIF_32BIT);
-+}
-+
-+struct compat_user_regs_struct {
-+	compat_ulong_t pc;
-+	compat_ulong_t ra;
-+	compat_ulong_t sp;
-+	compat_ulong_t gp;
-+	compat_ulong_t tp;
-+	compat_ulong_t t0;
-+	compat_ulong_t t1;
-+	compat_ulong_t t2;
-+	compat_ulong_t s0;
-+	compat_ulong_t s1;
-+	compat_ulong_t a0;
-+	compat_ulong_t a1;
-+	compat_ulong_t a2;
-+	compat_ulong_t a3;
-+	compat_ulong_t a4;
-+	compat_ulong_t a5;
-+	compat_ulong_t a6;
-+	compat_ulong_t a7;
-+	compat_ulong_t s2;
-+	compat_ulong_t s3;
-+	compat_ulong_t s4;
-+	compat_ulong_t s5;
-+	compat_ulong_t s6;
-+	compat_ulong_t s7;
-+	compat_ulong_t s8;
-+	compat_ulong_t s9;
-+	compat_ulong_t s10;
-+	compat_ulong_t s11;
-+	compat_ulong_t t3;
-+	compat_ulong_t t4;
-+	compat_ulong_t t5;
-+	compat_ulong_t t6;
-+};
-+
-+static inline void regs_to_cregs(struct compat_user_regs_struct *cregs,
-+				 struct pt_regs *regs)
-+{
-+	cregs->pc	= (compat_ulong_t) regs->epc;
-+	cregs->ra	= (compat_ulong_t) regs->ra;
-+	cregs->sp	= (compat_ulong_t) regs->sp;
-+	cregs->gp	= (compat_ulong_t) regs->gp;
-+	cregs->tp	= (compat_ulong_t) regs->tp;
-+	cregs->t0	= (compat_ulong_t) regs->t0;
-+	cregs->t1	= (compat_ulong_t) regs->t1;
-+	cregs->t2	= (compat_ulong_t) regs->t2;
-+	cregs->s0	= (compat_ulong_t) regs->s0;
-+	cregs->s1	= (compat_ulong_t) regs->s1;
-+	cregs->a0	= (compat_ulong_t) regs->a0;
-+	cregs->a1	= (compat_ulong_t) regs->a1;
-+	cregs->a2	= (compat_ulong_t) regs->a2;
-+	cregs->a3	= (compat_ulong_t) regs->a3;
-+	cregs->a4	= (compat_ulong_t) regs->a4;
-+	cregs->a5	= (compat_ulong_t) regs->a5;
-+	cregs->a6	= (compat_ulong_t) regs->a6;
-+	cregs->a7	= (compat_ulong_t) regs->a7;
-+	cregs->s2	= (compat_ulong_t) regs->s2;
-+	cregs->s3	= (compat_ulong_t) regs->s3;
-+	cregs->s4	= (compat_ulong_t) regs->s4;
-+	cregs->s5	= (compat_ulong_t) regs->s5;
-+	cregs->s6	= (compat_ulong_t) regs->s6;
-+	cregs->s7	= (compat_ulong_t) regs->s7;
-+	cregs->s8	= (compat_ulong_t) regs->s8;
-+	cregs->s9	= (compat_ulong_t) regs->s9;
-+	cregs->s10	= (compat_ulong_t) regs->s10;
-+	cregs->s11	= (compat_ulong_t) regs->s11;
-+	cregs->t3	= (compat_ulong_t) regs->t3;
-+	cregs->t4	= (compat_ulong_t) regs->t4;
-+	cregs->t5	= (compat_ulong_t) regs->t5;
-+	cregs->t6	= (compat_ulong_t) regs->t6;
-+};
-+
-+static inline void cregs_to_regs(struct compat_user_regs_struct *cregs,
-+				 struct pt_regs *regs)
-+{
-+	regs->epc	= (unsigned long) cregs->pc;
-+	regs->ra	= (unsigned long) cregs->ra;
-+	regs->sp	= (unsigned long) cregs->sp;
-+	regs->gp	= (unsigned long) cregs->gp;
-+	regs->tp	= (unsigned long) cregs->tp;
-+	regs->t0	= (unsigned long) cregs->t0;
-+	regs->t1	= (unsigned long) cregs->t1;
-+	regs->t2	= (unsigned long) cregs->t2;
-+	regs->s0	= (unsigned long) cregs->s0;
-+	regs->s1	= (unsigned long) cregs->s1;
-+	regs->a0	= (unsigned long) cregs->a0;
-+	regs->a1	= (unsigned long) cregs->a1;
-+	regs->a2	= (unsigned long) cregs->a2;
-+	regs->a3	= (unsigned long) cregs->a3;
-+	regs->a4	= (unsigned long) cregs->a4;
-+	regs->a5	= (unsigned long) cregs->a5;
-+	regs->a6	= (unsigned long) cregs->a6;
-+	regs->a7	= (unsigned long) cregs->a7;
-+	regs->s2	= (unsigned long) cregs->s2;
-+	regs->s3	= (unsigned long) cregs->s3;
-+	regs->s4	= (unsigned long) cregs->s4;
-+	regs->s5	= (unsigned long) cregs->s5;
-+	regs->s6	= (unsigned long) cregs->s6;
-+	regs->s7	= (unsigned long) cregs->s7;
-+	regs->s8	= (unsigned long) cregs->s8;
-+	regs->s9	= (unsigned long) cregs->s9;
-+	regs->s10	= (unsigned long) cregs->s10;
-+	regs->s11	= (unsigned long) cregs->s11;
-+	regs->t3	= (unsigned long) cregs->t3;
-+	regs->t4	= (unsigned long) cregs->t4;
-+	regs->t5	= (unsigned long) cregs->t5;
-+	regs->t6	= (unsigned long) cregs->t6;
-+};
-+
-+#endif /* __ASM_COMPAT_H */
-diff --git a/arch/riscv/include/asm/thread_info.h b/arch/riscv/include/asm/thread_info.h
-index 60da0dcacf14..9392e35c689d 100644
---- a/arch/riscv/include/asm/thread_info.h
-+++ b/arch/riscv/include/asm/thread_info.h
-@@ -91,6 +91,7 @@ struct thread_info {
- #define TIF_SECCOMP		8	/* syscall secure computing */
- #define TIF_NOTIFY_SIGNAL	9	/* signal notifications exist */
- #define TIF_UPROBE		10	/* uprobe breakpoint or singlestep */
-+#define TIF_32BIT		11	/* 32bit process */
+ #else
+ #define TASK_SIZE FIXADDR_START
+ #endif
+diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
+index 0749924d9e55..8649436b8fcf 100644
+--- a/arch/riscv/include/asm/processor.h
++++ b/arch/riscv/include/asm/processor.h
+@@ -61,6 +61,12 @@ static inline void arch_thread_struct_whitelist(unsigned long *offset,
+ extern void start_thread(struct pt_regs *regs,
+ 			unsigned long pc, unsigned long sp);
  
- #define _TIF_SYSCALL_TRACE	(1 << TIF_SYSCALL_TRACE)
- #define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
++#ifdef CONFIG_COMPAT
++#define DEFAULT_MAP_WINDOW_64 TASK_SIZE_64
++#else
++#define DEFAULT_MAP_WINDOW_64 TASK_SIZE
++#endif
++
+ /* Free all resources held by a thread. */
+ static inline void release_thread(struct task_struct *dead_task)
+ {
+diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
+index 26e69788f27a..4075fd19d219 100644
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -38,7 +38,7 @@
+ #define EFI_RT_VIRTUAL_BASE	SZ_512M
+ #define EFI_RT_VIRTUAL_SIZE	SZ_512M
+ 
+-#ifdef CONFIG_ARM64
++#if defined(CONFIG_ARM64) || defined(CONFIG_RISCV)
+ # define EFI_RT_VIRTUAL_LIMIT	DEFAULT_MAP_WINDOW_64
+ #else
+ # define EFI_RT_VIRTUAL_LIMIT	TASK_SIZE
 -- 
 2.25.1
 
