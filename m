@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2CC480A43
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 15:41:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C41B480A68
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 15:42:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JNcfl2gfMz3cRg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Dec 2021 01:41:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JNcgY0qvhz3bc4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Dec 2021 01:42:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SuDQRxSB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oFX+IsUg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
  envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=SuDQRxSB; 
+ header.s=k20201202 header.b=oFX+IsUg; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JNcdc1Hphz306j
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Dec 2021 01:40:19 +1100 (AEDT)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JNcdn2yKFz3015
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Dec 2021 01:40:29 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 3F7686123F;
+ by ams.source.kernel.org (Postfix) with ESMTPS id 50E18B81219;
+ Tue, 28 Dec 2021 14:40:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AB1C36AEC;
  Tue, 28 Dec 2021 14:40:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6636EC36AE7;
- Tue, 28 Dec 2021 14:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1640702417;
- bh=m9/MBzAUgH+3KenwcR170Cj1Yqb+dUCRfCU8056oorc=;
+ s=k20201202; t=1640702424;
+ bh=fi1HY+Cq4c9K/NsOX+yepw5xhH7gfb0plVNU2Rx1Yz4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=SuDQRxSBTndFbHqf8KdtDab88SNqvj/cQ/AfoJQO48Qkn/amkzXV/X/2iffYfS10f
- VFV7QjJTAGQ7XCt/9cKHnWv5qWRIxxBrEX/M9K46pETIe5ghQUW+Y8g5UtKqyphafa
- ZqMXPRLBP4yFgHQsiWo881KQBpfm7oig8ZyKhUcVBYq3GzLDbP+Yun2ubgoOwelRd/
- DmgjYeSF4LhhlWdL6pYydsGkAdQq7JdokK/AanUGi2UqohMooEioITwhOhz6iVxVpr
- rJ1Yb+4vsFe3e1dIEvOdANIoisCyWczgl3hCy+jb81ywaTfy5UNHFsp2KfawLq4JjX
- zbieBkXKw4Gqg==
+ b=oFX+IsUgb8V6XCqrZmzmSkwGTjYJ7A8RYywq86xiyVAYGyw2IREV5SMaADVG4/XQ6
+ XvMN6J4ER8UWpAEV1JAD7R1XtoFS5rA9QHDltr82u9Kk6VTu+735zQjQQWEhQ1EAdo
+ DoN52ViVvgXHWg4Mga6ZhHw/FL1aGQUY80trxCH5W8KzLaWr+v66PyEhlZ1uKzFdUd
+ riHRrf4G2vFdDPDNi+lB9cZ526JGyfoG1CaunEm7QNK68oME/cLILnX5Wr9YgbeKkC
+ Dia7hiHq/pk7EudEzcDshYV10cQExsqKfSnUI8LagJ4dP6Dqp0xXV/R3puvyPNgz9t
+ tRFUauyRq5aHA==
 From: guoren@kernel.org
 To: guoren@kernel.org, palmer@dabbelt.com, arnd@arndb.de, anup.patel@wdc.com,
  gregkh@linuxfoundation.org, liush@allwinnertech.com, wefu@redhat.com,
  drew@beagleboard.org, wangjunqiang@iscas.ac.cn, hch@infradead.org
-Subject: [PATCH V2 01/17] kconfig: Add SYSVIPC_COMPAT for all architectures
-Date: Tue, 28 Dec 2021 22:39:42 +0800
-Message-Id: <20211228143958.3409187-2-guoren@kernel.org>
+Subject: [PATCH V2 02/17] fs: stat: compat: Add __ARCH_WANT_COMPAT_STAT
+Date: Tue, 28 Dec 2021 22:39:43 +0800
+Message-Id: <20211228143958.3409187-3-guoren@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211228143958.3409187-1-guoren@kernel.org>
 References: <20211228143958.3409187-1-guoren@kernel.org>
@@ -75,157 +75,121 @@ Sender: "Linuxppc-dev"
 
 From: Guo Ren <guoren@linux.alibaba.com>
 
-The existing per-arch definitions are pretty much historic cruft.
-Move SYSVIPC_COMPAT into init/Kconfig.
+RISC-V doesn't neeed compat_stat, so using __ARCH_WANT_COMPAT_STAT
+to exclude unnecessary SYSCALL functions.
 
 Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
 Signed-off-by: Guo Ren <guoren@kernel.org>
 Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Christoph Hellwig <hch@infradead.org>
 ---
- arch/arm64/Kconfig   | 4 ----
- arch/mips/Kconfig    | 5 -----
- arch/parisc/Kconfig  | 4 ----
- arch/powerpc/Kconfig | 5 -----
- arch/s390/Kconfig    | 3 ---
- arch/sparc/Kconfig   | 5 -----
- arch/x86/Kconfig     | 4 ----
- init/Kconfig         | 4 ++++
- 8 files changed, 4 insertions(+), 30 deletions(-)
+ arch/arm64/include/asm/unistd.h   | 1 +
+ arch/mips/include/asm/unistd.h    | 2 ++
+ arch/parisc/include/asm/unistd.h  | 1 +
+ arch/powerpc/include/asm/unistd.h | 1 +
+ arch/s390/include/asm/unistd.h    | 1 +
+ arch/sparc/include/asm/unistd.h   | 1 +
+ arch/x86/include/asm/unistd.h     | 1 +
+ fs/stat.c                         | 2 +-
+ 8 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index c4207cf9bb17..8ca8cc6f3253 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -2028,10 +2028,6 @@ config DMI
+diff --git a/arch/arm64/include/asm/unistd.h b/arch/arm64/include/asm/unistd.h
+index 6bdb5f5db438..bc2c4c55bae6 100644
+--- a/arch/arm64/include/asm/unistd.h
++++ b/arch/arm64/include/asm/unistd.h
+@@ -3,6 +3,7 @@
+  * Copyright (C) 2012 ARM Ltd.
+  */
+ #ifdef CONFIG_COMPAT
++#define __ARCH_WANT_COMPAT_STAT
+ #define __ARCH_WANT_COMPAT_STAT64
+ #define __ARCH_WANT_SYS_GETHOSTNAME
+ #define __ARCH_WANT_SYS_PAUSE
+diff --git a/arch/mips/include/asm/unistd.h b/arch/mips/include/asm/unistd.h
+index c2196b1b6604..25a5253db7f4 100644
+--- a/arch/mips/include/asm/unistd.h
++++ b/arch/mips/include/asm/unistd.h
+@@ -50,6 +50,8 @@
+ # ifdef CONFIG_32BIT
+ #  define __ARCH_WANT_STAT64
+ #  define __ARCH_WANT_SYS_TIME32
++# else
++#  define __ARCH_WANT_COMPAT_STAT
+ # endif
+ # ifdef CONFIG_MIPS32_O32
+ #  define __ARCH_WANT_SYS_TIME32
+diff --git a/arch/parisc/include/asm/unistd.h b/arch/parisc/include/asm/unistd.h
+index cd438e4150f6..14e0668184cb 100644
+--- a/arch/parisc/include/asm/unistd.h
++++ b/arch/parisc/include/asm/unistd.h
+@@ -168,6 +168,7 @@ type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5)	\
+ #define __ARCH_WANT_SYS_CLONE
+ #define __ARCH_WANT_SYS_CLONE3
+ #define __ARCH_WANT_COMPAT_SYS_SENDFILE
++#define __ARCH_WANT_COMPAT_STAT
  
- endmenu
+ #ifdef CONFIG_64BIT
+ #define __ARCH_WANT_SYS_TIME
+diff --git a/arch/powerpc/include/asm/unistd.h b/arch/powerpc/include/asm/unistd.h
+index 5eb462af6766..b1129b4ef57d 100644
+--- a/arch/powerpc/include/asm/unistd.h
++++ b/arch/powerpc/include/asm/unistd.h
+@@ -44,6 +44,7 @@
+ #define __ARCH_WANT_SYS_TIME
+ #define __ARCH_WANT_SYS_UTIME
+ #define __ARCH_WANT_SYS_NEWFSTATAT
++#define __ARCH_WANT_COMPAT_STAT
+ #define __ARCH_WANT_COMPAT_SYS_SENDFILE
+ #endif
+ #define __ARCH_WANT_SYS_FORK
+diff --git a/arch/s390/include/asm/unistd.h b/arch/s390/include/asm/unistd.h
+index 9e9f75ef046a..4260bc5ce7f8 100644
+--- a/arch/s390/include/asm/unistd.h
++++ b/arch/s390/include/asm/unistd.h
+@@ -28,6 +28,7 @@
+ #define __ARCH_WANT_SYS_SIGPENDING
+ #define __ARCH_WANT_SYS_SIGPROCMASK
+ # ifdef CONFIG_COMPAT
++#   define __ARCH_WANT_COMPAT_STAT
+ #   define __ARCH_WANT_SYS_TIME32
+ #   define __ARCH_WANT_SYS_UTIME32
+ # endif
+diff --git a/arch/sparc/include/asm/unistd.h b/arch/sparc/include/asm/unistd.h
+index 1e66278ba4a5..d6bc76706a7a 100644
+--- a/arch/sparc/include/asm/unistd.h
++++ b/arch/sparc/include/asm/unistd.h
+@@ -46,6 +46,7 @@
+ #define __ARCH_WANT_SYS_TIME
+ #define __ARCH_WANT_SYS_UTIME
+ #define __ARCH_WANT_COMPAT_SYS_SENDFILE
++#define __ARCH_WANT_COMPAT_STAT
+ #endif
  
--config SYSVIPC_COMPAT
--	def_bool y
--	depends on COMPAT && SYSVIPC
--
- menu "Power management options"
+ #ifdef __32bit_syscall_numbers__
+diff --git a/arch/x86/include/asm/unistd.h b/arch/x86/include/asm/unistd.h
+index 80e9d5206a71..761173ccc33c 100644
+--- a/arch/x86/include/asm/unistd.h
++++ b/arch/x86/include/asm/unistd.h
+@@ -22,6 +22,7 @@
+ #  include <asm/unistd_32_ia32.h>
+ #  define __ARCH_WANT_SYS_TIME
+ #  define __ARCH_WANT_SYS_UTIME
++#  define __ARCH_WANT_COMPAT_STAT
+ #  define __ARCH_WANT_COMPAT_SYS_PREADV64
+ #  define __ARCH_WANT_COMPAT_SYS_PWRITEV64
+ #  define __ARCH_WANT_COMPAT_SYS_PREADV64V2
+diff --git a/fs/stat.c b/fs/stat.c
+index 28d2020ba1f4..ffdeb9065d53 100644
+--- a/fs/stat.c
++++ b/fs/stat.c
+@@ -639,7 +639,7 @@ SYSCALL_DEFINE5(statx,
+ 	return do_statx(dfd, filename, flags, mask, buffer);
+ }
  
- source "kernel/power/Kconfig"
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 0215dc1529e9..b84eba22fefe 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -3169,16 +3169,12 @@ config MIPS32_COMPAT
- config COMPAT
- 	bool
- 
--config SYSVIPC_COMPAT
--	bool
--
- config MIPS32_O32
- 	bool "Kernel support for o32 binaries"
- 	depends on 64BIT
- 	select ARCH_WANT_OLD_COMPAT_IPC
- 	select COMPAT
- 	select MIPS32_COMPAT
--	select SYSVIPC_COMPAT if SYSVIPC
- 	help
- 	  Select this option if you want to run o32 binaries.  These are pure
- 	  32-bit binaries as used by the 32-bit Linux/MIPS port.  Most of
-@@ -3192,7 +3188,6 @@ config MIPS32_N32
- 	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION
- 	select COMPAT
- 	select MIPS32_COMPAT
--	select SYSVIPC_COMPAT if SYSVIPC
- 	help
- 	  Select this option if you want to run n32 binaries.  These are
- 	  64-bit binaries using 32-bit quantities for addressing and certain
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index b2188da09c73..bd72696cbd42 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -364,10 +364,6 @@ config COMPAT
- 	def_bool y
- 	depends on 64BIT
- 
--config SYSVIPC_COMPAT
--	def_bool y
--	depends on COMPAT && SYSVIPC
--
- config AUDIT_ARCH
- 	def_bool y
- 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index dea74d7717c0..81d198daa998 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -296,11 +296,6 @@ config COMPAT
- 	select ARCH_WANT_OLD_COMPAT_IPC
- 	select COMPAT_OLD_SIGACTION
- 
--config SYSVIPC_COMPAT
--	bool
--	depends on COMPAT && SYSVIPC
--	default y
--
- config SCHED_OMIT_FRAME_POINTER
- 	bool
- 	default y
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 2a5bb4f29cfe..c1816ca7ae43 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -461,9 +461,6 @@ config COMPAT
- 	  (and some other stuff like libraries and such) is needed for
- 	  executing 31 bit applications.  It is safe to say "Y".
- 
--config SYSVIPC_COMPAT
--	def_bool y if COMPAT && SYSVIPC
--
- config SMP
- 	def_bool y
- 
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index 66fc08646be5..45401b99d6cb 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -494,9 +494,4 @@ config COMPAT
- 	select ARCH_WANT_OLD_COMPAT_IPC
- 	select COMPAT_OLD_SIGACTION
- 
--config SYSVIPC_COMPAT
--	bool
--	depends on COMPAT && SYSVIPC
--	default y
--
- source "drivers/sbus/char/Kconfig"
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 5c2ccb85f2ef..569703122cce 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2850,10 +2850,6 @@ config COMPAT
- if COMPAT
- config COMPAT_FOR_U64_ALIGNMENT
- 	def_bool y
--
--config SYSVIPC_COMPAT
--	def_bool y
--	depends on SYSVIPC
- endif
- 
- endmenu
-diff --git a/init/Kconfig b/init/Kconfig
-index 4b7bac10c72d..aa0d63677c82 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -386,6 +386,10 @@ config SYSVIPC_SYSCTL
- 	depends on SYSCTL
- 	default y
- 
-+config SYSVIPC_COMPAT
-+	def_bool y
-+	depends on COMPAT && SYSVIPC
-+
- config POSIX_MQUEUE
- 	bool "POSIX Message Queues"
- 	depends on NET
+-#ifdef CONFIG_COMPAT
++#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_STAT)
+ static int cp_compat_stat(struct kstat *stat, struct compat_stat __user *ubuf)
+ {
+ 	struct compat_stat tmp;
 -- 
 2.25.1
 
