@@ -1,51 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2107C480582
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 02:37:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3AF4805F9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 05:32:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JNHGP0p4bz3c9D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 12:37:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JNM8N4Kfwz3c65
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 15:32:36 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GEydf/Cb;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JNHFs2WG6z2yfb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Dec 2021 12:37:00 +1100 (AEDT)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.55])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4JNHDb4YjGz91ys;
- Tue, 28 Dec 2021 09:35:59 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Tue, 28 Dec 2021 09:36:54 +0800
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.20; Tue, 28 Dec 2021 09:36:53 +0800
-Message-ID: <8f30057e-da61-55b4-adf7-e35d91798806@huawei.com>
-Date: Tue, 28 Dec 2021 09:36:53 +0800
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=GEydf/Cb; dkim-atps=neutral
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JNM7j15Qxz2yV7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Dec 2021 15:31:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1640665921; x=1672201921;
+ h=date:from:to:cc:subject:message-id:mime-version;
+ bh=IKeaJLl6EQ4rLbj1rQZgbi5UOCp8h3qCZnj6nKvpDpw=;
+ b=GEydf/CbswIcQ18rG5lzh8zrOiY35Ocn0IX8eRDg8B9DeE3xMks61Yh2
+ LKNVbOgMotNpAwLgGVF/qgbO1acYexb3ypZ4055Ja3SBJyHpbiNqe3pQ9
+ 85lnA9xyucRl+wHYtFOiuUtewJftYnpx00yuvMAEAyLpdAY5wgaOjD+8F
+ Ur1EGnRTa7lIBQyBMmToIyIQEOiO4jElJI49lxfiYVtMPNjqpdlYDAUlo
+ lSHABAofOnAYUvPibdwpm/GWBGSRDL8zIC5BFnKYDsWRAR9d/VO1GvWH2
+ oMHm9t6jbluKFoNRbtePvbgLrE3RXZGtBNEfeW9rEFgET0V0Qpb4wtarw w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10210"; a="241524382"
+X-IronPort-AV: E=Sophos;i="5.88,241,1635231600"; d="scan'208";a="241524382"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Dec 2021 20:30:51 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,241,1635231600"; d="scan'208";a="468033883"
+Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
+ by orsmga003.jf.intel.com with ESMTP; 27 Dec 2021 20:30:50 -0800
+Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1n248P-0007EI-Be; Tue, 28 Dec 2021 04:30:49 +0000
+Date: Tue, 28 Dec 2021 12:30:11 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: [powerpc:next-test 127/179] include/linux/compiler_types.h:335:45:
+ error: call to '__compiletime_assert_34' declared with attribute error:
+ BUILD_BUG failed
+Message-ID: <202112281204.Rr4j6o5h-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: (No subject)
-Content-Language: en-US
-To: William Kucharski <william.kucharski@oracle.com>
-References: <20211227145903.187152-3-wangkefeng.wang@huawei.com>
- <E2C9DE8E-F5D9-46E9-9298-B632A202B080@oracle.com>
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <E2C9DE8E-F5D9-46E9-9298-B632A202B080@oracle.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggeme702-chm.china.huawei.com (10.1.199.98) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,100 +68,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "x86@kernel.org" <x86@kernel.org>, Will Deacon <will@kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Jonathan Corbet <corbet@lwn.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- Matthew Wilcox <willy@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: linuxppc-dev@lists.ozlabs.org, kbuild-all@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+head:   beeac538c366cd2828092adecd1edab28326c55b
+commit: 0faf20a1ad1647c0fc0f5a367c71e5e84deaf899 [127/179] powerpc/64s/interrupt: Don't enable MSR[EE] in irq handlers unless perf is in use
+config: powerpc-randconfig-r021-20211227 (https://download.01.org/0day-ci/archive/20211228/202112281204.Rr4j6o5h-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=0faf20a1ad1647c0fc0f5a367c71e5e84deaf899
+        git remote add powerpc https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+        git fetch --no-tags powerpc next-test
+        git checkout 0faf20a1ad1647c0fc0f5a367c71e5e84deaf899
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash
 
-On 2021/12/28 1:35, William Kucharski wrote:
-> You should also fix the existing typo in the documentation (inline):
->
->> On Dec 27, 2021, at 07:49, Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
->>
->> ﻿This patch select HAVE_ARCH_HUGE_VMALLOC to let arm64 support huge
->> vmalloc mappings.
->>
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> ---
->> Documentation/admin-guide/kernel-parameters.txt | 4 ++--
->> arch/arm64/Kconfig                              | 1 +
->> arch/arm64/kernel/module.c                      | 5 +++--
->> 3 files changed, 6 insertions(+), 4 deletions(-)
->>
->> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
->> index 7b2f900fd243..e3f9fd7ec106 100644
->> --- a/Documentation/admin-guide/kernel-parameters.txt
->> +++ b/Documentation/admin-guide/kernel-parameters.txt
->> @@ -1639,7 +1639,7 @@
->>             precedence over memory_hotplug.memmap_on_memory.
->>
->>
->> -    hugevmalloc=    [PPC] Reguires CONFIG_HAVE_ARCH_HUGE_VMALLOC
->> +    hugevmalloc=    [KNL,PPC,ARM64] Reguires CONFIG_HAVE_ARCH_HUGE_VMALLOC
->>             Format: { on | off }
->>             Default set by CONFIG_HUGE_VMALLOC_DEFAULT_ENABLED.
-> "Reguires" should be "Requires."
-Will fix, thanks.
->
->> @@ -3424,7 +3424,7 @@
->>
->>     nohugeiomap    [KNL,X86,PPC,ARM64] Disable kernel huge I/O mappings.
->>
->> -    nohugevmalloc    [PPC] Disable kernel huge vmalloc mappings.
->> +    nohugevmalloc    [KNL,PPC,ARM64] Disable kernel huge vmalloc mappings.
->>
->>     nosmt        [KNL,S390] Disable symmetric multithreading (SMT).
->>             Equivalent to smt=1.
->> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
->> index 3bb0b67292b5..c34bbb4482b0 100644
->> --- a/arch/arm64/Kconfig
->> +++ b/arch/arm64/Kconfig
->> @@ -142,6 +142,7 @@ config ARM64
->>     select HAVE_ARCH_AUDITSYSCALL
->>     select HAVE_ARCH_BITREVERSE
->>     select HAVE_ARCH_COMPILER_H
->> +    select HAVE_ARCH_HUGE_VMALLOC
->>     select HAVE_ARCH_HUGE_VMAP
->>     select HAVE_ARCH_JUMP_LABEL
->>     select HAVE_ARCH_JUMP_LABEL_RELATIVE
->> diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
->> index 309a27553c87..af7b4cbace2b 100644
->> --- a/arch/arm64/kernel/module.c
->> +++ b/arch/arm64/kernel/module.c
->> @@ -36,7 +36,8 @@ void *module_alloc(unsigned long size)
->>         module_alloc_end = MODULES_END;
->>
->>     p = __vmalloc_node_range(size, MODULE_ALIGN, module_alloc_base,
->> -                module_alloc_end, gfp_mask, PAGE_KERNEL, VM_DEFER_KMEMLEAK,
->> +                module_alloc_end, gfp_mask, PAGE_KERNEL,
->> +                VM_DEFER_KMEMLEAK | VM_NO_HUGE_VMAP,
->>                 NUMA_NO_NODE, __builtin_return_address(0));
->>
->>     if (!p && IS_ENABLED(CONFIG_ARM64_MODULE_PLTS) &&
->> @@ -55,7 +56,7 @@ void *module_alloc(unsigned long size)
->>          */
->>         p = __vmalloc_node_range(size, MODULE_ALIGN, module_alloc_base,
->>                 module_alloc_base + SZ_2G, GFP_KERNEL,
->> -                PAGE_KERNEL, 0, NUMA_NO_NODE,
->> +                PAGE_KERNEL, VM_NO_HUGE_VMAP, NUMA_NO_NODE,
->>                 __builtin_return_address(0));
->>
->>     if (p && (kasan_module_alloc(p, size, gfp_mask) < 0)) {
->> -- 
->> 2.26.2
->>
->>
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   In file included from <command-line>:
+   arch/powerpc/include/asm/hw_irq.h: In function 'do_hard_irq_enable':
+>> include/linux/compiler_types.h:335:45: error: call to '__compiletime_assert_34' declared with attribute error: BUILD_BUG failed
+     335 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                                             ^
+   include/linux/compiler_types.h:316:25: note: in definition of macro '__compiletime_assert'
+     316 |                         prefix ## suffix();                             \
+         |                         ^~~~~~
+   include/linux/compiler_types.h:335:9: note: in expansion of macro '_compiletime_assert'
+     335 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:59:21: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+      59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
+         |                     ^~~~~~~~~~~~~~~~
+   arch/powerpc/include/asm/hw_irq.h:483:9: note: in expansion of macro 'BUILD_BUG'
+     483 |         BUILD_BUG();
+         |         ^~~~~~~~~
+
+
+vim +/__compiletime_assert_34 +335 include/linux/compiler_types.h
+
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  321  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  322  #define _compiletime_assert(condition, msg, prefix, suffix) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  323  	__compiletime_assert(condition, msg, prefix, suffix)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  324  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  325  /**
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  326   * compiletime_assert - break build and emit msg if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  327   * @condition: a compile-time constant condition to check
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  328   * @msg:       a message to emit if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  329   *
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  330   * In tradition of POSIX assert, this macro will break the build if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  331   * supplied condition is *false*, emitting the supplied error message if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  332   * compiler has support to do so.
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  333   */
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  334  #define compiletime_assert(condition, msg) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21 @335  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  336  
+
+:::::: The code at line 335 was first introduced by commit
+:::::: eb5c2d4b45e3d2d5d052ea6b8f1463976b1020d5 compiler.h: Move compiletime_assert() macros into compiler_types.h
+
+:::::: TO: Will Deacon <will@kernel.org>
+:::::: CC: Will Deacon <will@kernel.org>
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
