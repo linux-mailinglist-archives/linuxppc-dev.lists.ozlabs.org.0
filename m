@@ -1,62 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37972480B99
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 17:55:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B176480BB3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 18:01:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JNgf40NYNz3c7n
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Dec 2021 03:55:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JNgmy1rtZz3c6l
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Dec 2021 04:01:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RaMKlPW+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XWoCeNtj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=RaMKlPW+; dkim-atps=neutral
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=XWoCeNtj; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JNgdP2Tp0z2yRf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Dec 2021 03:55:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1640710521; x=1672246521;
- h=date:from:to:cc:subject:message-id:mime-version;
- bh=2qpknpf69D+xnfUiUqwCUJxwxuGQjpZk/0GruwiH748=;
- b=RaMKlPW+dqgAM4wlJrkh3FMKooWhpDAtHVNFf//BB57KcjZkwsEQoUnq
- GDEWy9Dyf3gVwcjfouEMmKi20hJ/pYFXsKA630IXeymeBC1Dv94q/HvR+
- novd6/d+7hSLq9/eQlJN2aiPk1JgbqemGOGjuxDC5g+aeH5glnRLpt0hZ
- JTg+GfeHJTI1wP6q1zJtA8QzxJsuli29sjheCX/qvzWeW7hBPiwyhIqmT
- gLVhuYrXTLyKacOtsT6I7N+6yUVofUbj5hXuqhNv2pVX+JJKmCyZJE7ji
- Lxyw2fdldREst2OMvv2N6EZqlBe3neqONk3lfhflZjy1R8wU0thACh0Jd w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10211"; a="228696424"
-X-IronPort-AV: E=Sophos;i="5.88,242,1635231600"; d="scan'208";a="228696424"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Dec 2021 08:54:11 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,242,1635231600"; d="scan'208";a="486342808"
-Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
- by orsmga002.jf.intel.com with ESMTP; 28 Dec 2021 08:54:10 -0800
-Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1n2Fjl-0007kc-Fc; Tue, 28 Dec 2021 16:54:09 +0000
-Date: Wed, 29 Dec 2021 00:53:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test 46/179] arch/powerpc/mm/nohash/fsl_book3e.c:61:3:
- sparse: sparse: symbol 'tlbcam_addrs' was not declared. Should it be
- static?
-Message-ID: <202112290015.xhdzgVU5-lkp@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JNgm66kglz2ybD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Dec 2021 04:01:10 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1BSF2jrG013235; 
+ Tue, 28 Dec 2021 17:00:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=HnOj7Ruj/aiPsemF0RK+yqeJAcI1ks0Mm0MLeijRB0k=;
+ b=XWoCeNtjHD83AOJpWuV7RWM6f2sZGfEYS1osz5n0bsX9qZ2f6YZfEuGHJ44wO7EnPRNK
+ qef6MFp6RJhBhmzXrAriiMgk0kj0omjKu66e58gCEDqlO0HkNJW/QhPR9MzWjwOSJ8CV
+ OZ1wapSrboP0ceeP3TTxMCavmyv3ofkY6Kz+EXW0cTePFeIRv66U40j7vje1SSBNTIyw
+ 4HWLUBNHsnkUNYLQqNDUzoKpKx24Nkamd94ducNtkF5I40ZaTt4SFFF3nwwrCPZn5wi2
+ Tc6tM+zz5Fdigmutmn2KvcrXx5FPn27fb9V6VoYMN3xZP5+UNbqMkT9UwfOyqtvWXOHO 5g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3d81g66p9m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Dec 2021 17:00:33 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1BSGxEOD038776;
+ Tue, 28 Dec 2021 17:00:32 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3d81g66p8n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Dec 2021 17:00:32 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1BSGwEj7020583;
+ Tue, 28 Dec 2021 17:00:30 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 3d5txasjgm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Dec 2021 17:00:30 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1BSH0Rb930605762
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 Dec 2021 17:00:27 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EF96842056;
+ Tue, 28 Dec 2021 17:00:26 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3A54B4203F;
+ Tue, 28 Dec 2021 17:00:26 +0000 (GMT)
+Received: from osiris (unknown [9.145.95.23])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue, 28 Dec 2021 17:00:26 +0000 (GMT)
+Date: Tue, 28 Dec 2021 18:00:24 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: guoren@kernel.org
+Subject: Re: [PATCH V3 5/8] sched: s390: Remove unused TASK_SIZE_OF
+Message-ID: <YctCqJsKWltOfLO6@osiris>
+References: <20211228064730.2882351-1-guoren@kernel.org>
+ <20211228064730.2882351-6-guoren@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20211228064730.2882351-6-guoren@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 4jtWmHMXNG03Qh0QF9W5oA_Gpf3QaHpv
+X-Proofpoint-GUID: 18xlVlTjbnO_Si-BGff2bmk9Qz6OyusA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-28_08,2021-12-28_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 mlxscore=0
+ priorityscore=1501 bulkscore=0 adultscore=0 lowpriorityscore=0
+ suspectscore=0 mlxlogscore=999 phishscore=0 clxscore=1015 malwarescore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112280075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,55 +105,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kbuild-all@lists.01.org
+Cc: juri.lelli@redhat.com, linux-s390@vger.kernel.org, x86@kernel.org,
+ arnd@arndb.de, peterz@infradead.org, linuxppc-dev@lists.ozlabs.org,
+ Guo Ren <guoren@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+ inux-parisc@vger.kernel.org, mingo@redhat.com, sparclinux@vger.kernel.or,
+ tglx@linutronix.de, linux-mips@vger.kernel.org, will@kernel.org,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-head:   beeac538c366cd2828092adecd1edab28326c55b
-commit: ff47a95d1a67477e9bc2049a840d93b68508e079 [46/179] powerpc/mm: Move tlbcam_sz() and make it static
-config: powerpc64-randconfig-s031-20211228 (https://download.01.org/0day-ci/archive/20211229/202112290015.xhdzgVU5-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 11.2.0
-reproduce:
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # apt-get install sparse
-        # sparse version: v0.6.4-dirty
-        # https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=ff47a95d1a67477e9bc2049a840d93b68508e079
-        git remote add powerpc https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
-        git fetch --no-tags powerpc next-test
-        git checkout ff47a95d1a67477e9bc2049a840d93b68508e079
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/mm/nohash/
+On Tue, Dec 28, 2021 at 02:47:26PM +0800, guoren@kernel.org wrote:
+> From: Guo Ren <guoren@linux.alibaba.com>
+> 
+> This macro isn't used in Linux sched, now. Delete in
+> include/linux/sched.h and arch's include/asm.
+> 
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/s390/include/asm/processor.h | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-
-sparse warnings: (new ones prefixed by >>)
->> arch/powerpc/mm/nohash/fsl_book3e.c:61:3: sparse: sparse: symbol 'tlbcam_addrs' was not declared. Should it be static?
-
-vim +/tlbcam_addrs +61 arch/powerpc/mm/nohash/fsl_book3e.c
-
-14cf11af6cf608 arch/powerpc/mm/fsl_booke_mmu.c Paul Mackerras 2005-09-26  53  
-78f622377f7d31 arch/powerpc/mm/fsl_booke_mmu.c Kumar Gala     2010-05-13  54  #define NUM_TLBCAMS	(64)
-78f622377f7d31 arch/powerpc/mm/fsl_booke_mmu.c Kumar Gala     2010-05-13 @55  struct tlbcam TLBCAM[NUM_TLBCAMS];
-14cf11af6cf608 arch/powerpc/mm/fsl_booke_mmu.c Paul Mackerras 2005-09-26  56  
-14cf11af6cf608 arch/powerpc/mm/fsl_booke_mmu.c Paul Mackerras 2005-09-26  57  struct tlbcamrange {
-14cf11af6cf608 arch/powerpc/mm/fsl_booke_mmu.c Paul Mackerras 2005-09-26  58  	unsigned long start;
-14cf11af6cf608 arch/powerpc/mm/fsl_booke_mmu.c Paul Mackerras 2005-09-26  59  	unsigned long limit;
-14cf11af6cf608 arch/powerpc/mm/fsl_booke_mmu.c Paul Mackerras 2005-09-26  60  	phys_addr_t phys;
-14cf11af6cf608 arch/powerpc/mm/fsl_booke_mmu.c Paul Mackerras 2005-09-26 @61  } tlbcam_addrs[NUM_TLBCAMS];
-14cf11af6cf608 arch/powerpc/mm/fsl_booke_mmu.c Paul Mackerras 2005-09-26  62  
-
-:::::: The code at line 61 was first introduced by commit
-:::::: 14cf11af6cf608eb8c23e989ddb17a715ddce109 powerpc: Merge enough to start building in arch/powerpc.
-
-:::::: TO: Paul Mackerras <paulus@samba.org>
-:::::: CC: Paul Mackerras <paulus@samba.org>
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Applied, thanks!
