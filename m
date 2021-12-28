@@ -1,54 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DC44806E0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 07:51:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10F24806E1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 07:52:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JNQDX3j9nz3c7P
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 17:51:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JNQFD5y2Yz3dh4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 17:52:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iZJdIjCP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L0E07KS1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=iZJdIjCP; 
+ header.s=k20201202 header.b=L0E07KS1; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JNQ8q52G7z3bjW
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Dec 2021 17:48:11 +1100 (AEDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JNQ8y6F28z3c7P
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Dec 2021 17:48:18 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id F1D4B6117A;
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 9248C611A6;
+ Tue, 28 Dec 2021 06:48:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14BCC36AEC;
  Tue, 28 Dec 2021 06:48:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E30EC36AE7;
- Tue, 28 Dec 2021 06:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1640674089;
- bh=+GnMS/OPoYG7iR/KsEwNlbZjf29CM2NqgjFZvoobNBE=;
+ s=k20201202; t=1640674095;
+ bh=16Xsifca9wkKUTK9OpCC6J6+WJoRfyl6c8OE6ELYn1M=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=iZJdIjCPIfEdOY3H6eDHZ64LATvocPbarXuzVAnDl8T0QYyhPYUknYTdU5yEB/5wH
- NyafdEETUQ4Nar9C/HYFZYzLmZ7Y2JRLXOmmp3iDp/rOOSOXK9P5Z4+qFAe4Lgxno6
- IJ1EdExYBCP61Trn/pi6UNaWiAA1P08h9oz/t0z/fIKGVn77QO1smVyMJQGR2uW+Gg
- ipF0UHM0iDJvkfyPFL06LFlHdDtFwbmQOzxsY/hnE+yJPAsTgJyjvh2zZpnHXNxol5
- QSWBr4hM3EeOGMJCIwVGxLMiMISxsH4Q+FRA6S5egJHIjQGy3+7nNGcWA+t9P5Gu5N
- gU1XAx3pRx2kA==
+ b=L0E07KS19qkH/0CCH5Z8kDC5HG2hLHXJ18r+ghFJA6w/xWOXVCuE6NWt3soxf+5vD
+ DDKIXKXo16qlV8VF6keVcb5Bqtx0iRFpFa5NnSmr1+Or7NFatWIV+110jsZ4KMJZas
+ TNLMO3O4o+jS97FOYgboHWDkbFzSDT0mt18CQk2+e3wa4TDVrd97JPB5sJiDxH34fR
+ w6aB6sluGKhydx76A+3AEQjd5THrEKQIGLTPke3CdByKbG7s+4Wkd0YMeZc0darcto
+ sCRTIhL9v660gGK5IPsu+sLR4NHJpG9q5ArXxeVsu1VFPexDOcllHxTFyVKJozjfOn
+ NOizjMG6O+zjA==
 From: guoren@kernel.org
 To: guoren@kernel.org, will@kernel.org, tglx@linutronix.de,
  benh@kernel.crashing.org, arnd@arndb.de, mingo@redhat.com,
  peterz@infradead.org, juri.lelli@redhat.com, christophe.leroy@csgroup.eu,
  hca@linux.ibm.com
-Subject: [PATCH V3 5/8] sched: s390: Remove unused TASK_SIZE_OF
-Date: Tue, 28 Dec 2021 14:47:26 +0800
-Message-Id: <20211228064730.2882351-6-guoren@kernel.org>
+Subject: [PATCH V3 6/8] sched: parisc: Remove unused TASK_SIZE_OF
+Date: Tue, 28 Dec 2021 14:47:27 +0800
+Message-Id: <20211228064730.2882351-7-guoren@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211228064730.2882351-1-guoren@kernel.org>
 References: <20211228064730.2882351-1-guoren@kernel.org>
@@ -83,26 +85,23 @@ Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
 Signed-off-by: Guo Ren <guoren@kernel.org>
 Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/s390/include/asm/processor.h | 3 +--
+ arch/parisc/include/asm/processor.h | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
-index f54c152bf2bf..5581b64a4236 100644
---- a/arch/s390/include/asm/processor.h
-+++ b/arch/s390/include/asm/processor.h
-@@ -88,11 +88,10 @@ extern void __bpon(void);
-  * User space process size: 2GB for 31 bit, 4TB or 8PT for 64 bit.
-  */
+diff --git a/arch/parisc/include/asm/processor.h b/arch/parisc/include/asm/processor.h
+index b669f4b9040b..d9c8dc76ee6a 100644
+--- a/arch/parisc/include/asm/processor.h
++++ b/arch/parisc/include/asm/processor.h
+@@ -23,8 +23,7 @@
  
--#define TASK_SIZE_OF(tsk)	(test_tsk_thread_flag(tsk, TIF_31BIT) ? \
-+#define TASK_SIZE		(test_thread_flag(TIF_31BIT) ? \
- 					_REGION3_SIZE : TASK_SIZE_MAX)
- #define TASK_UNMAPPED_BASE	(test_thread_flag(TIF_31BIT) ? \
- 					(_REGION3_SIZE >> 1) : (_REGION2_SIZE >> 1))
--#define TASK_SIZE		TASK_SIZE_OF(current)
- #define TASK_SIZE_MAX		(-PAGE_SIZE)
+ #define HAVE_ARCH_PICK_MMAP_LAYOUT
  
- #define STACK_TOP		(test_thread_flag(TIF_31BIT) ? \
+-#define TASK_SIZE_OF(tsk)       ((tsk)->thread.task_size)
+-#define TASK_SIZE	        TASK_SIZE_OF(current)
++#define TASK_SIZE               (current->thread.task_size)
+ #define TASK_UNMAPPED_BASE      (current->thread.map_base)
+ 
+ #define DEFAULT_TASK_SIZE32	(0xFFF00000UL)
 -- 
 2.25.1
 
