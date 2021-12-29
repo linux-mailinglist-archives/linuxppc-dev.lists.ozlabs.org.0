@@ -2,48 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58970481A98
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Dec 2021 09:01:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4609481A99
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Dec 2021 09:02:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JPghY1SB7z3dgV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Dec 2021 19:01:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JPgjB5jtGz3djh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Dec 2021 19:02:06 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=SgUGGN6V;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
- envelope-from=chenjingwen6@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JNyDQ5q59z2ymk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Dec 2021 14:53:06 +1100 (AEDT)
-Received: from dggpeml500025.china.huawei.com (unknown [172.30.72.57])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4JNyC764gtzccBh;
- Wed, 29 Dec 2021 11:52:03 +0800 (CST)
-Received: from dggpeml500017.china.huawei.com (7.185.36.243) by
- dggpeml500025.china.huawei.com (7.185.36.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Wed, 29 Dec 2021 11:52:32 +0800
-Received: from linux-suspe12sp5.huawei.com (10.67.133.83) by
- dggpeml500017.china.huawei.com (7.185.36.243) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Wed, 29 Dec 2021 11:52:31 +0800
-From: Chen Jingwen <chenjingwen6@huawei.com>
-To: Chen Jingwen <chenjingwen6@huawei.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- "Paul Mackerras" <paulus@samba.org>, Christophe Leroy
- <christophe.leroy@c-s.fr>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-kernel@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>
-Subject: [PATCH] powerpc/kasan: Fix early region not updated correctly
-Date: Wed, 29 Dec 2021 11:52:26 +0800
-Message-ID: <20211229035226.59159-1-chenjingwen6@huawei.com>
-X-Mailer: git-send-email 2.12.3
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d;
+ helo=mail-pj1-x102d.google.com; envelope-from=schmitzmic@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=SgUGGN6V; dkim-atps=neutral
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
+ [IPv6:2607:f8b0:4864:20::102d])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JNykf0rRdz2xsq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Dec 2021 15:15:53 +1100 (AEDT)
+Received: by mail-pj1-x102d.google.com with SMTP id
+ y16-20020a17090a6c9000b001b13ffaa625so23422738pjj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Dec 2021 20:15:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=subject:to:references:cc:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-transfer-encoding;
+ bh=oo7gGMOkpKZtsifyQrF9uAkP4p/YBx2m/GIQa4Tq0YE=;
+ b=SgUGGN6VhsGuSJ4+x7BV8WmUFGnq6AU/S3MGIbRuvgcmK5iemLDPInHX4HtGqsDBOP
+ X+ShdKiY6WGvZxZzGll6Lp9gXc9Iofh3zmxzNCmw3Dn3KgxWg++og+5/hcFLsP9lz2Xr
+ 2GF2kpRya+BTKsokuDFYluzgdLN+9R6oDmfEeq5seHlKkuDQoWmHZpB5lsfFQJLsHHhA
+ J+6fOy7KSqTSf4RHl5+/z/3kvG8PPaQjjUrbxIO/1twWStmOPd1O5hfeFSFRI+7/1KDQ
+ V6duyLcOszOYryU8sc+sZAK9TuMnZyNEumxgE9K0xpEM2ht/1sy9t9bhV6U0QsHIl9qG
+ 4r0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+ bh=oo7gGMOkpKZtsifyQrF9uAkP4p/YBx2m/GIQa4Tq0YE=;
+ b=IcS6pXXtgeeDtusl2ex5Irte4KZsLGSmOzGOioDJkA3OKeWgWKDFp3HfGRf+Ij4L80
+ GpY41VX5JQ2dq8UoYG5Ij6H6lgbGVTh/Fgxm8C1ZWoOaBbBEvYMqUMNgunJAP98ZgYWg
+ /uyaxpnwP0V67iwGoed5IFLE2N2QX+QsR5xw0w7TtqI6Ru3Fsweo6hD97I+R5DCIJW27
+ +7e3JIfU5LdRI5o7Snm3bpBuTry1wf7fcZb/13FnclF2X/FVNx6mv0rw5httejxANc9c
+ Fl036O0i7G5T+hAXcI/+VRqucXeomWxE+Kts9Km6+h9Smn8s90NuWb4t92rcxkqZgTeo
+ fRAg==
+X-Gm-Message-State: AOAM5333aNZGviHR8fPpbcr2eVDVJwfKsfW7hrT5HCxViq83aLRw65/k
+ HJOshKFVirjTbQI0hsk3cWw=
+X-Google-Smtp-Source: ABdhPJyjCqGNhQip5lk1bKe/Q9ifrO91rL0XFrD4WiMDGXXaVLZjRe+Yr2Tq1lIfNgSSQkzYLSFwkQ==
+X-Received: by 2002:a17:902:d48a:b0:148:a8ae:7ab7 with SMTP id
+ c10-20020a170902d48a00b00148a8ae7ab7mr24900237plg.171.1640751350387; 
+ Tue, 28 Dec 2021 20:15:50 -0800 (PST)
+Received: from [10.1.1.24] (222-155-5-102-adsl.sparkbb.co.nz. [222.155.5.102])
+ by smtp.gmail.com with ESMTPSA id
+ k9sm13406563pgr.47.2021.12.28.20.15.25
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 28 Dec 2021 20:15:49 -0800 (PST)
+Subject: Re: [RFC 02/32] Kconfig: introduce HAS_IOPORT option and select it as
+ necessary
+To: Arnd Bergmann <arnd@kernel.org>
+References: <20211227164317.4146918-1-schnelle@linux.ibm.com>
+ <20211227164317.4146918-3-schnelle@linux.ibm.com>
+ <CAMuHMdXk6VcDryekkMJ3aGFnw4LLWOWMi8M2PwjT81PsOsOBMQ@mail.gmail.com>
+ <d406b93a-0f76-d056-3380-65d459d05ea9@gmail.com>
+ <CAK8P3a2j-OFUUp+haHoV4PyL-On4EASZ9+59SDqNqmL8Gv_k7Q@mail.gmail.com>
+From: Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <1f90f145-219e-1cad-6162-9959d43a27ad@gmail.com>
+Date: Wed, 29 Dec 2021 17:15:23 +1300
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101 Icedove/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.133.83]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpeml500017.china.huawei.com (7.185.36.243)
-X-CFilter-Loop: Reflected
+In-Reply-To: <CAK8P3a2j-OFUUp+haHoV4PyL-On4EASZ9+59SDqNqmL8Gv_k7Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Thu, 30 Dec 2021 18:58:16 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -56,85 +89,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-pci@vger.kernel.org,
+ linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ sparclinux@vger.kernel.org, Guo Ren <guoren@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>,
+ linux-ia64@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
+ Greg Ungerer <gerg@linux-m68k.org>, Karol Gugala <kgugala@antmicro.com>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-parisc@vger.kernel.org,
+ Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>,
+ linux-snps-arc@lists.infradead.org, Heiko Carstens <hca@linux.ibm.com>,
+ linux-xtensa@linux-xtensa.org, Albert Ou <aou@eecs.berkeley.edu>,
+ Niklas Schnelle <schnelle@linux.ibm.com>, Jeff Dike <jdike@addtoit.com>,
+ John Garry <john.garry@huawei.com>, linux-m68k@lists.linux-m68k.org,
+ openrisc@lists.librecores.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Brian Cain <bcain@codeaurora.org>, Nick Hu <nickhu@andestech.com>,
+ linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, linux-alpha@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The shadow's page table is not updated when PTE_RPN_SHIFT is 24
-and PAGE_SHIFT is 12. It not only causes false positives but
-also false negative as shown the following text.
+Hi Arnd,
 
-Fix it by bringing the logic of kasan_early_shadow_page_entry here.
+Am 29.12.2021 um 16:41 schrieb Arnd Bergmann:
+> On Tue, Dec 28, 2021 at 8:20 PM Michael Schmitz <schmitzmic@gmail.com> wrote:
+>> Am 28.12.2021 um 23:08 schrieb Geert Uytterhoeven:
+>>> On Mon, Dec 27, 2021 at 5:44 PM Niklas Schnelle <schnelle@linux.ibm.com> wrote:
+>>>> We introduce a new HAS_IOPORT Kconfig option to gate support for
+>>>> I/O port access. In a future patch HAS_IOPORT=n will disable compilation
+>>>> of the I/O accessor functions inb()/outb() and friends on architectures
+>>>> which can not meaningfully support legacy I/O spaces. On these platforms
+>>>> inb()/outb() etc are currently just stubs in asm-generic/io.h which when
+>>>> called will cause a NULL pointer access which some compilers actually
+>>>> detect and warn about.
+>>>>
+>>>> The dependencies on HAS_IOPORT in drivers as well as ifdefs for
+>>>> HAS_IOPORT specific sections will be added in subsequent patches on
+>>>> a per subsystem basis. Then a final patch will ifdef the I/O access
+>>>> functions on HAS_IOPORT thus turning any use not gated by HAS_IOPORT
+>>>> into a compile-time warning.
+>>>>
+>>>> Link: https://lore.kernel.org/lkml/CAHk-=wg80je=K7madF4e7WrRNp37e3qh6y10Svhdc7O8SZ_-8g@mail.gmail.com/
+>>>> Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+>>>> Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+>>>> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+>>>
+>>> Thanks for your patch!
+>>>
+>>>> --- a/arch/m68k/Kconfig
+>>>> +++ b/arch/m68k/Kconfig
+>>>> @@ -16,6 +16,7 @@ config M68K
+>>>>         select GENERIC_CPU_DEVICES
+>>>>         select GENERIC_IOMAP
+>>>>         select GENERIC_IRQ_SHOW
+>>>> +       select HAS_IOPORT
+>>>>         select HAVE_AOUT if MMU
+>>>>         select HAVE_ASM_MODVERSIONS
+>>>>         select HAVE_DEBUG_BUGVERBOSE
+>>>
+>>> This looks way too broad to me: most m68k platform do not have I/O
+>>> port access support.
+>>>
+>>> My gut feeling says:
+>>>
+>>>     select HAS_IOPORT if PCI || ISA
+>>>
+>>> but that might miss some intricate details...
+>>
+>> In particular, this misses the Atari ROM port ISA adapter case -
+>>
+>>         select HAS_IOPORT if PCI || ISA || ATARI_ROM_ISA
+>>
+>> might do instead.
+>
+> Right, makes sense. I had suggested to go the easy way and assume that
+> each architecture would select HAS_IOPORT if any configuration supports
+> it, but it looks like for m68k there is a clearly defined set of platforms that
+> do.
+>
+> Note that for the platforms that don't set any of the three symbols, the
+> fallback makes inb() an alias for readb() with a different argument type,
+> so there may be m68k specific drivers that rely on this, but those would
+> already be broken if ATARI_ROM_ISA is set.
 
-1. False Positive:
-==================================================================
-BUG: KASAN: vmalloc-out-of-bounds in pcpu_alloc+0x508/0xa50
-Write of size 16 at addr f57f3be0 by task swapper/0/1
+I'd hope not - we spent some effort to make sure setting ATARI_ROM_ISA 
+does not affect other m68k platforms when e.g. building multiplatform 
+kernels.
 
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.15.0-12267-gdebe436e77c7 #1
-Call Trace:
-[c80d1c20] [c07fe7b8] dump_stack_lvl+0x4c/0x6c (unreliable)
-[c80d1c40] [c02ff668] print_address_description.constprop.0+0x88/0x300
-[c80d1c70] [c02ff45c] kasan_report+0x1ec/0x200
-[c80d1cb0] [c0300b20] kasan_check_range+0x160/0x2f0
-[c80d1cc0] [c03018a4] memset+0x34/0x90
-[c80d1ce0] [c0280108] pcpu_alloc+0x508/0xa50
-[c80d1d40] [c02fd7bc] __kmem_cache_create+0xfc/0x570
-[c80d1d70] [c0283d64] kmem_cache_create_usercopy+0x274/0x3e0
-[c80d1db0] [c2036580] init_sd+0xc4/0x1d0
-[c80d1de0] [c00044a0] do_one_initcall+0xc0/0x33c
-[c80d1eb0] [c2001624] kernel_init_freeable+0x2c8/0x384
-[c80d1ef0] [c0004b14] kernel_init+0x24/0x170
-[c80d1f10] [c001b26c] ret_from_kernel_thread+0x5c/0x64
+Replacing inb() by readb() without any address translation won't do much 
+good for m68k though - addresses in the traditional ISA I/O port range 
+would hit the (unmapped) zero page.
 
-Memory state around the buggy address:
- f57f3a80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
- f57f3b00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
->f57f3b80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                                               ^
- f57f3c00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
- f57f3c80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-==================================================================
+Cheers,
 
-2. False Negative (with KASAN tests):
-==================================================================
-Before fix:
-    ok 45 - kmalloc_double_kzfree
-    # vmalloc_oob: EXPECTATION FAILED at lib/test_kasan.c:1039
-    KASAN failure expected in "((volatile char *)area)[3100]", but none occurred
-    not ok 46 - vmalloc_oob
-    not ok 1 - kasan
+	Michael
 
-==================================================================
-After fix:
-    ok 1 - kasan
-
-Fixes: cbd18991e24fe ("powerpc/mm: Fix an Oops in kasan_mmu_init()")
-Cc: stable@vger.kernel.org # 5.4.x
-Signed-off-by: Chen Jingwen <chenjingwen6@huawei.com>
----
- arch/powerpc/mm/kasan/kasan_init_32.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
-index cf8770b1a692e..f3e4d069e0ba7 100644
---- a/arch/powerpc/mm/kasan/kasan_init_32.c
-+++ b/arch/powerpc/mm/kasan/kasan_init_32.c
-@@ -83,13 +83,12 @@ void __init
- kasan_update_early_region(unsigned long k_start, unsigned long k_end, pte_t pte)
- {
- 	unsigned long k_cur;
--	phys_addr_t pa = __pa(kasan_early_shadow_page);
- 
- 	for (k_cur = k_start; k_cur != k_end; k_cur += PAGE_SIZE) {
- 		pmd_t *pmd = pmd_off_k(k_cur);
- 		pte_t *ptep = pte_offset_kernel(pmd, k_cur);
- 
--		if ((pte_val(*ptep) & PTE_RPN_MASK) != pa)
-+		if (pte_page(*ptep) != virt_to_page(lm_alias(kasan_early_shadow_page)))
- 			continue;
- 
- 		__set_pte_at(&init_mm, k_cur, ptep, pte, 0);
--- 
-2.19.1
-
+>
+>           Arnd
+>
