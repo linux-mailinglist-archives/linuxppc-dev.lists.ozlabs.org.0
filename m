@@ -1,54 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D82480DCA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Dec 2021 23:46:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5705480E1E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Dec 2021 01:11:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JNqQc2Bz2z2yqC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Dec 2021 09:46:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JNsJF4Bnsz3c65
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Dec 2021 11:11:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=F3ek6iwW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QWt1Tcnc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JNqPx19Hpz2ymk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Dec 2021 09:45:57 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=jarkko@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=F3ek6iwW; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=QWt1Tcnc; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JNqPq3Hplz4xgY;
- Wed, 29 Dec 2021 09:45:51 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1640731552;
- bh=qljWZbGI1apBrOJgjHe30U4ij1VSVO919oknE97+iHQ=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=F3ek6iwWIBiBhsWe3OP0jJps5GD6L/20yTHI/laLt8I/rf28G/oNlmGekUPpPdZ7b
- 6n7My31upouYpmhUha3XH4uD1jXAUirYKKROigV5cOaJ5UDW6d0YNp0/vj3GKBFo+5
- blWmm2QF2qlPQbgb/yRvISQ5fxcup4hztkOnchqJyDA9QQqrWhSdcfw5BxWrLetH3R
- e/MgyNxVMRuYKkVvTGtXhMPuwLEE6RynP7tLN2uQgPGwLpZdda4fOFv4F4nc3F1Z6a
- 2+E58iycqZZLi/c71z0OCCU/S01jdY/BA5uzNhC+ZRcmpG7S7fmM94KZG1uePk/3Uv
- ggNN6h07PNuUw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH v2] powerpc/32s: Fix kasan_init_region() for KASAN
-In-Reply-To: <90826d123e3e28b840f284412b150a1e13ed62fb.1638799954.git.christophe.leroy@csgroup.eu>
-References: <90826d123e3e28b840f284412b150a1e13ed62fb.1638799954.git.christophe.leroy@csgroup.eu>
-Date: Wed, 29 Dec 2021 09:45:51 +1100
-Message-ID: <87pmpg1h7k.fsf@mpe.ellerman.id.au>
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JNsHd5YZRz2xtj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Dec 2021 11:10:37 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 7D84EB81752;
+ Wed, 29 Dec 2021 00:10:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA27C36AEB;
+ Wed, 29 Dec 2021 00:10:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1640736633;
+ bh=/Kys4P+ipabSvqg0bzoCo0je/2ZVTpj4063QCgXpfH4=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=QWt1TcnctMP2I+BPI4uKgwEfH8wrYH7rTIIvRmJEAbPKuQLC6zUGN0RD7nXXugVM7
+ tVArn+PQBUo2TPZcvMp7BRxmHmYaDxFZE0rkr6uXYWpsadJOlTCcpcHmskuoASsxMc
+ e8o0ucS/vOHCHvhJzmvd77iXNjAJp2OOe3uwF4hJzTy9FYVFW8kGxbZyJKWhXieCcC
+ y63cBjl/YxOrKgqMsAOsJHfx320s4fOdDm9IKIjrhDUuB6N5RXt/exH90rjD6n9P+N
+ r2OEx21RQS0CpUfoO085XqUgqnSZe7h4y85Cl1BdoFVwowNVPPArnVjR1UIcc4yu5E
+ yuKkG3Uc0Gd6w==
+Date: Wed, 29 Dec 2021 02:10:31 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH] tpm: Fix kexec crash due to access to ops NULL pointer
+ (powerpc)
+Message-ID: <Ycund7mDOBkndOKn@iki.fi>
+References: <20211212012804.1555661-1-stefanb@linux.ibm.com>
+ <YcGUoJCtmqfCWER0@iki.fi>
+ <8b0c9683-d29b-38a2-8dfe-8f47db6544f2@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8b0c9683-d29b-38a2-8dfe-8f47db6544f2@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,65 +67,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Maxime Bizon <mbizon@freebox.fr>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Korrapati.Likhitha@ibm.com, pavrampu@in.ibm.com,
+ linux-kernel@vger.kernel.org, jgg@ziepe.ca,
+ linux-security-module@vger.kernel.org, gcwilson@us.ibm.com, peterhuewe@gmx.de,
+ linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> It has been reported some configuration where the kernel doesn't
-> boot with KASAN enabled.
->
-> This is due to wrong BAT allocation for the KASAN area:
->
-> 	---[ Data Block Address Translation ]---
-> 	0: 0xc0000000-0xcfffffff 0x00000000       256M Kernel rw      m
-> 	1: 0xd0000000-0xdfffffff 0x10000000       256M Kernel rw      m
-> 	2: 0xe0000000-0xefffffff 0x20000000       256M Kernel rw      m
-> 	3: 0xf8000000-0xf9ffffff 0x2a000000        32M Kernel rw      m
-> 	4: 0xfa000000-0xfdffffff 0x2c000000        64M Kernel rw      m
->
-> A BAT must have both virtual and physical addresses alignment matching
-> the size of the BAT. This is not the case for BAT 4 above.
->
-> Fix kasan_init_region() by using block_size() function that is in
-> book3s32/mmu.c. To be able to reuse it here, make it non static and
-> change its name to bat_block_size() in order to avoid name conflict
-> with block_size() defined in <linux/blkdev.h>
->
-> Also reuse find_free_bat() to avoid an error message from setbat()
-> when no BAT is available.
->
-> And allocate memory outside of linear memory mapping to avoid
-> wasting that precious space.
->
-> With this change we get correct alignment for BATs and KASAN shadow
-> memory is allocated outside the linear memory space.
->
-> 	---[ Data Block Address Translation ]---
-> 	0: 0xc0000000-0xcfffffff 0x00000000       256M Kernel rw
-> 	1: 0xd0000000-0xdfffffff 0x10000000       256M Kernel rw
-> 	2: 0xe0000000-0xefffffff 0x20000000       256M Kernel rw
-> 	3: 0xf8000000-0xfbffffff 0x7c000000        64M Kernel rw
-> 	4: 0xfc000000-0xfdffffff 0x7a000000        32M Kernel rw
->
-> Reported-by: Maxime Bizon <mbizon@freebox.fr>
-> Fixes: 7974c4732642 ("powerpc/32s: Implement dedicated kasan_init_region()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
-> v2:
-> - Allocate kasan shadow memory outside precious kernel linear memory
-> - Properly zeroise kasan shadow memory
-> ---
->  arch/powerpc/include/asm/book3s/32/mmu-hash.h |  2 +
->  arch/powerpc/mm/book3s32/mmu.c                | 10 ++--
->  arch/powerpc/mm/kasan/book3s_32.c             | 58 ++++++++++---------
->  3 files changed, 38 insertions(+), 32 deletions(-)
+On Tue, Dec 21, 2021 at 09:01:06AM -0500, Stefan Berger wrote:
+> 
+> On 12/21/21 03:47, Jarkko Sakkinen wrote:
+> > On Sat, Dec 11, 2021 at 08:28:04PM -0500, Stefan Berger wrote:
+> > > Fix the following crash on kexec by checking chip->ops for a NULL pointer
+> > > in tpm_chip_start() and returning an error code if this is the case.
+> > > 
+> > > BUG: Kernel NULL pointer dereference on read at 0x00000060
+> > > Faulting instruction address: 0xc00000000099a06c
+> > > Oops: Kernel access of bad area, sig: 11 [#1]
+> > > ...
+> > > NIP [c00000000099a06c] tpm_chip_start+0x2c/0x140
+> > >   LR [c00000000099a808] tpm_chip_unregister+0x108/0x170
+> > > Call Trace:
+> > > [c0000000188bfa00] [c000000002b03930] fw_devlink_strict+0x0/0x8 (unreliable)
+> > > [c0000000188bfa30] [c00000000099a808] tpm_chip_unregister+0x108/0x170
+> > > [c0000000188bfa70] [c0000000009a3874] tpm_ibmvtpm_remove+0x34/0x130
+> > > [c0000000188bfae0] [c000000000110dbc] vio_bus_remove+0x5c/0xb0
+> > > [c0000000188bfb20] [c0000000009bc154] device_shutdown+0x1d4/0x3a8
+> > > [c0000000188bfbc0] [c000000000196e14] kernel_restart_prepare+0x54/0x70
+> > > 
+> > > The referenced patch below introduced a function to shut down the VIO bus.
+> > > The bus shutdown now calls tpm_del_char_device (via tpm_chip_unregister)
+> > > after a call to tpm_class_shutdown, which already set chip->ops to NULL.
+> > > The crash occurrs when tpm_del_char_device calls tpm_chip_start with the
+> > > chip->ops NULL pointer.
+> > > 
+> > > Fixes: 39d0099f9439 ("powerpc/pseries: Add shutdown() to vio_driver and vio_bus")
+> > > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> > > ---
+> > >   drivers/char/tpm/tpm-chip.c | 3 +++
+> > >   1 file changed, 3 insertions(+)
+> > > 
+> > > diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+> > > index ddaeceb7e109..cca1bde296ee 100644
+> > > --- a/drivers/char/tpm/tpm-chip.c
+> > > +++ b/drivers/char/tpm/tpm-chip.c
+> > > @@ -101,6 +101,9 @@ int tpm_chip_start(struct tpm_chip *chip)
+> > >   {
+> > >   	int ret;
+> > > +	if (!chip->ops)
+> > > +		return -EINVAL;
+> > This triggers to all drivers, not just tpm_ibmvtpm, i.e. the fix has
+> > side-effects.
+> 
+> What are those side-effects?
 
-Sorry this now conflicts with other changes in next. Can you rebase it please?
+It does change behaviour for all drivers, which is not acceptable for a
+bug fix.
 
-cheers
+/Jarkko
