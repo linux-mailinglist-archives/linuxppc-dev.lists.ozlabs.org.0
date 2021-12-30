@@ -2,126 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9933C481C4F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Dec 2021 14:01:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FEBF481F2E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Dec 2021 19:25:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JPpLL38Spz2yxP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Dec 2021 00:01:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JPxX057Tmz3bbF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Dec 2021 05:25:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=SFpEcrV7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pIdgM2M6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.4.84; helo=eur03-db5-obe.outbound.protection.outlook.com;
- envelope-from=vladimir.oltean@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=SFpEcrV7; 
- dkim-atps=neutral
-Received: from EUR03-DB5-obe.outbound.protection.outlook.com
- (mail-eopbgr40084.outbound.protection.outlook.com [40.107.4.84])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=pIdgM2M6; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JPpKV5c9Hz2xXx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Dec 2021 00:00:25 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RbzT/Mcqp6IrkcExKn8Stg1MZW4dCDhCJWsC8YPKvaYZCR32/xa11GhQ2hKctkxm1RrrCW0VF8WzDkUW18FCAjrUbSGQhREfkTUyIDYUUBQ2+Y+xwZBpiUpTDf0QvjwW8QY80O5EFr0HCFUg9yVrvSBR7ix6PxyV83+S3J2Mv4lpgPrRIj/pIUnXbngtBuArcJQKIH9tTurmWockUJA7v+1K1JLTyN+KgdmHYOUbFycJ0MOk/YfM8BzHXA2xKOZ1hs8gePNcrvgQ8ubuysR5Mki/zocVGak169fAdNtJYpHtlWg0mVdN6QQQ2yujHBkY1fZ8k8NwpxUqLUOITMcNKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nPScv5aVAZDucZD+LBKkeS5nyXuFniWj/F2aoqX38fI=;
- b=bNctb8qsdxf+jprZAFdcnssSxnvU5hxyryflsfpw+HmPnvnH+Ch4NEwAFOEH54IXjYPC2h0IdcD273Mdhc9OrnnXPB4ERXyGEb1uNGiKQlbuTu+yGGh3Z1p81gyNLbNdFmnqBczeawGXiyXC/s4xgCXJ+HFHqESS3HTkbEWUEaq8OfttjwOL+gV6fTK+SZQpjLPbrYfCsybLq7lC8vTZvT9SoPzmyTOVSX+hg6nx+27RscrnrDrcht06oCmjj3unRpp9GDB1GXu1J7ctkWroOdZM1MySPIPnh1bmlfU/Wc13xlyZ+cd+RuUgczqSnPY1J6DD0rdWMHOQajDy6SnJmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nPScv5aVAZDucZD+LBKkeS5nyXuFniWj/F2aoqX38fI=;
- b=SFpEcrV7NiaDqxMg20Xwop3wkxhWhVwQ12O9r5pyi8Rc/vqppxycrvuo6rQpfYNuisVOn6AmyiR0zHhg4xdCxxiusqc39ISOlA9w8CZxn3d/4p3Vlx2L+kN0zpUfG1NR7egHO/Yzm7Z0uqZJ+UcwwyxoJ9KxNR8EB5b9QwFn1Vs=
-Received: from VI1PR04MB5136.eurprd04.prod.outlook.com (2603:10a6:803:55::19)
- by VI1PR04MB5293.eurprd04.prod.outlook.com (2603:10a6:803:5f::30)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4823.21; Thu, 30 Dec
- 2021 13:00:04 +0000
-Received: from VI1PR04MB5136.eurprd04.prod.outlook.com
- ([fe80::c84:1f0b:cc79:9226]) by VI1PR04MB5136.eurprd04.prod.outlook.com
- ([fe80::c84:1f0b:cc79:9226%3]) with mapi id 15.20.4823.023; Thu, 30 Dec 2021
- 13:00:04 +0000
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Maxim Kiselev <bigunclemax@gmail.com>
-Subject: Re: [PATCH] powerpc: dts: t1040rdb: fix ports names for Seville
- Ethernet switch
-Thread-Topic: [PATCH] powerpc: dts: t1040rdb: fix ports names for Seville
- Ethernet switch
-Thread-Index: AQHX/WognYLuoHin80+YgXjEGjdBC6xK/32A
-Date: Thu, 30 Dec 2021 13:00:04 +0000
-Message-ID: <20211230130003.pzwzac5xttnnksz6@skbuf>
-References: <20211230104329.677138-1-bigunclemax@gmail.com>
-In-Reply-To: <20211230104329.677138-1-bigunclemax@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: ca136a7e-8e17-4953-b473-08d9cb944c22
-x-ms-traffictypediagnostic: VI1PR04MB5293:EE_
-x-microsoft-antispam-prvs: <VI1PR04MB529301D2E340F3705600B880E0459@VI1PR04MB5293.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: /B+ZOTW9qTGebbHRnsmZ+SvRtU5gPE26UXx1Bp5MpSnKHKh8plHl2ZEjjyw4p8wDG1FUj1KMzPWgpdVPnlhG9aQjjexYFsg9zj2MAlTMbRsWQHkd8oPdl7nxOtQmCDt6Nylic0inXZCYhOhar5RG7+GB155zycjsfOAvs2D/b++/clgzmARShlUYkidYytsVphp6u6W7qOq7x78DKlU1pux1gtWzFKEHtie87hy2tsB5uCgTdOChQmMApq6yFCPC02FgiZNUIxUmrhnanfj/Kg1KxLicWOVg8celbudUsosLL6iyutimuRglKc+E1CDdODZbemzN8/DzymnFswUAhvnVC/uan7aop7tDCCH5XnoS9Tgka/GJvAL/FeePdG8/sepcnBHYN6mUOg4gZjKSgDZ7zHloMrJjH37d41bFlUXLJ+lBIFqKCjFVVOtGBKqTIaTnZ+eEj9xn81PfSEW6R8VCVesZsN9WPEZUBoxonz3UoaBjiJN17sN4l9bAPyLcibwqBKq8IvBxS3Ix6rfe+cUXth+aKzwzeyOCAb5H0DBhWx5KUodbSat3XIrcAlRPZ23jzfDncxh14wUdjEwOTPCuc8l6cPHsJ1kHI2+cM1rYE5+pi8q0vcGQH1DWRjOEViPsFhv3PCVmY95cRG2pFDJ89VYme6FpV56RRrXwMV0ZGPlITLZ8cfoM+xZDy67jvXwnBkfEcFOA3LPZtnVmxA==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR04MB5136.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(7916004)(4636009)(366004)(38100700002)(8676002)(66946007)(54906003)(86362001)(4326008)(6506007)(6486002)(66446008)(64756008)(66476007)(316002)(33716001)(66556008)(83380400001)(7416002)(38070700005)(76116006)(9686003)(186003)(26005)(6916009)(44832011)(2906002)(71200400001)(508600001)(122000001)(5660300002)(1076003)(8936002)(6512007);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?DTJLR9CGSjERw/QuQ8hZmhIvSAlR4IjpuQmnQ6CsbNyLMHpmeP1cjRGnGHdc?=
- =?us-ascii?Q?mELHtOyPUcTM5le46rVX8Wz33m4XvcxACjN3mXotGGxPrePelizGMGTtni+v?=
- =?us-ascii?Q?Ma++adhu5BD3C2/Sto/pTmyMObgLCA6pOH9eHZpFqB1ejitmJyV+oN/cR099?=
- =?us-ascii?Q?TCPZe4mT3HhSnibngbRqI9eDPA2gkW6rJz9RUn/1MILzCGIaWefM0iIazYEN?=
- =?us-ascii?Q?0/41b7A+0V0hwVj+z9JU4dOuGU7pMIuhg/lp3sxJ7i/ytpc+xMh2bpYW6A3P?=
- =?us-ascii?Q?LW5+Glj7F+Q13ECO70cCZCWaw3P1OQk4G3mrLCo0b5xfXbsM8v1zUy3he58x?=
- =?us-ascii?Q?aRyrFnw59nkqPfBXMDG0Wm6a+G98Y8RgGE5r4+jPC9GajsMeimvGPTqFZ6Cg?=
- =?us-ascii?Q?hZ+auMEmGsu/v+t4/QPrF+X6B5eDVLkGL8/5dyvFZ6HLqMjB1K7xEbLDkQvd?=
- =?us-ascii?Q?17+t7LRS4iwDY5M803q8bH/ackPQSTGpRCI1XnFPcP6UY498/cum6W4/YTQJ?=
- =?us-ascii?Q?8EA89dsOLQQcdFeBFKYXHhN+eVmLpte7HeJhnT+0HuVNkCKdPHjCFymb4XlH?=
- =?us-ascii?Q?IlhJw8sNa4fp87V+y+r1+iyigykOko28muYCKAnwTVY4lz/uk+1/yD+1G7BD?=
- =?us-ascii?Q?9soQ3910mGyOdCkhH8C9f2oecP5/BzdWSnAC8Xes1sH94N96POH8mhxFb+Vs?=
- =?us-ascii?Q?DdmZgkytgMzVGwdzMKrU//DItjYlZ159f2N1YfEBxQqu+rCLAfqkV8lF8KJW?=
- =?us-ascii?Q?MywUfwl4UzTWrcieXqLEu08rsMGD9y+fA1go67PIZb//8S1QQNyeTvp+MrPj?=
- =?us-ascii?Q?ekmYYf8SBZpsQdi++9tpq8i2ykSR9RuwrtCOfciXI5AxK+uSYhBYNVmAybwG?=
- =?us-ascii?Q?DOHgX1ou9vHr5YxmkVATHjrvvTxPPVJAKfzylL8Hz5TxzE/920vR/wqky3M2?=
- =?us-ascii?Q?I6D4z5Df5EvND4mLrmSLqRKBIf+Q2Kq0lktVtmBVCVOOsq7+MzdqlVVcxWTE?=
- =?us-ascii?Q?NGfdglv08yb5CUgjNtWGPcjG9os0JVIVOSuPupTPBTGmX6MmLJNi2o9K1vD1?=
- =?us-ascii?Q?4OWDKMU1W0c9VMY/X/csdGFrQ+DqEQvCuclMNrkejovhgNTneBq8sU6/Q36o?=
- =?us-ascii?Q?73PHCiLCRVOEq5QDlpBnsVuMpjITtP7qkMw1D33AKQ9ipoIfz7N2YH8ci7xa?=
- =?us-ascii?Q?sYQI3Zh8j+eRiX+0qZF1NSpLl2L7sTt1i62m+JQtNJ4ZphQU/aIn/H3EfxFB?=
- =?us-ascii?Q?kPK/ZfolokS0uThIt39ACdwqiLxAgjizkjb2J5SfVsR/sSU7SmTtnZZH2FUm?=
- =?us-ascii?Q?lNPwI4jLBjGY2oyD8JwXVfFghmfbNcpj4JXH8s10zJb3Yxwf7DtDk6jDiiEz?=
- =?us-ascii?Q?t9qv6KreuagPfU1slRU1ink0E8pezvcLqD5VaM5hJd2OYul9Ka1W1/2Dw30k?=
- =?us-ascii?Q?lpd8JR3GG4OAAOLid7eTI0lwWalxNc/Z+NvuIWGtd8j374kaU19yCnBmaFPi?=
- =?us-ascii?Q?bAT8Eci2+66UkMySfeA0tQts3g0ifR8OouCj7VojSbt/Yq/4J8x/CDpP+dOM?=
- =?us-ascii?Q?1c1uVe3BgpFd1JarDfhR2OCa1fAZpmWO8CXeBMw1HTqmnsKptSCqkuKW07KF?=
- =?us-ascii?Q?WC4X4z8gbtjMphZMUIXRnUs=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1FBAA796895CCB4AB23AF6019D2DA1FF@eurprd04.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JPxWC67T5z2xB8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Dec 2021 05:24:23 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1BUFfUPM024003; 
+ Thu, 30 Dec 2021 18:24:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=YWgRaEd+REMjJpcwUjRw9SyuwqkdBQZTpBdM89u9W9o=;
+ b=pIdgM2M6lZu/CdtovOrLDRciPextT/E8T5GHkhX9jYqF8U34y4ULjd85guYnGIWHmMPG
+ RGbfqmLW6lyv5icgQueJktjXvCJRgc7sJN9meCyNa2Yu3OMpqnZqJH4M3Qd9fv4a13e9
+ v7cqo0ZGP8MMuHIyMLq6SncdMHWs0wiA2XedinYmszwkCmfP/DQj6jRECAEI820IO7Uy
+ Bgr/Vu48rtHJEJVt49I9JGIvxqgjkIrH28Q4ntDf3EP3TbFqOpvX7X1MQxBCewvafBZk
+ bB0s6svHO7U+1JG7F5ZtW4Tl5mh4Xm5ExX7Xv4VMJrxVbpIdQ783kMIybJpWnvQUbVjA 0A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3d9fmr2bmh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Dec 2021 18:24:15 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1BUICXA7013397;
+ Thu, 30 Dec 2021 18:24:15 GMT
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3d9fmr2bm9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Dec 2021 18:24:15 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1BUIHCOx016233;
+ Thu, 30 Dec 2021 18:24:14 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma01wdc.us.ibm.com with ESMTP id 3d5txb45c0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Dec 2021 18:24:14 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 1BUIODdG22479280
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 Dec 2021 18:24:13 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 42B64C6062;
+ Thu, 30 Dec 2021 18:24:13 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D531C6061;
+ Thu, 30 Dec 2021 18:24:12 +0000 (GMT)
+Received: from localhost (unknown [9.211.44.182])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Thu, 30 Dec 2021 18:24:12 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH 3/3] KVM: PPC: Fix mmio length message
+In-Reply-To: <1640427230.38pm5r9iop.astroid@bobo.none>
+References: <20211223211528.3560711-1-farosas@linux.ibm.com>
+ <20211223211528.3560711-4-farosas@linux.ibm.com>
+ <1640427230.38pm5r9iop.astroid@bobo.none>
+Date: Thu, 30 Dec 2021 15:24:10 -0300
+Message-ID: <87k0fmdk8l.fsf@linux.ibm.com>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5136.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca136a7e-8e17-4953-b473-08d9cb944c22
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Dec 2021 13:00:04.1795 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Z3DmOQUOjva3UCheMydB1hOJcs1uYOwIFf6+54l+4PK+5PAFP3LBLTK2DTeOSKuWatckcYKCzVLlchQZKBG48Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5293
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 1uGL07M_4uGru3WZfmg356fR9qH0iS8R
+X-Proofpoint-GUID: QABWd76b-9hV9yV2wWZoSXxlY-I3NdEN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2021-12-30_06,2021-12-30_02,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 mlxlogscore=999
+ impostorscore=0 lowpriorityscore=0 mlxscore=0 suspectscore=0 adultscore=0
+ bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2112300104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,92 +106,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "fido_max@inbox.ru" <fido_max@inbox.ru>, Rob Herring <robh+dt@kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 30, 2021 at 01:43:28PM +0300, Maxim Kiselev wrote:
-> Fix network interface names for the switch ports according to labels
-> that are written on the front panel of the board. They start from ETH3
-> and end at ETH10.
->=20
-> Fixes: e69eb0824d8c ("powerpc: dts: t1040rdb: add ports for Seville
-> Ethernet switch")
+Nicholas Piggin <npiggin@gmail.com> writes:
 
-A Fixes: tag should not wrap on multiple lines.
+> Excerpts from Fabiano Rosas's message of December 24, 2021 7:15 am:
+>> We check against 'bytes' but print 'run->mmio.len' which at that point
+>> has an old value.
+>> 
+>> e.g. 16-byte load:
+>> 
+>> before:
+>> __kvmppc_handle_load: bad MMIO length: 8
+>> 
+>> now:
+>> __kvmppc_handle_load: bad MMIO length: 16
+>> 
+>> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+>
+> This patch fine, but in the case of overflow we continue anyway here.
+> Can that overwrite some other memory in the kvm_run struct?
 
-> Signed-off-by: Maxim Kiselev <bigunclemax@gmail.com>
-> Reviewed-by: Maxim Kochetkov <fido_max@inbox.ru>
-> ---
+I tested this and QEMU will indeed overwrite the subsequent fields of
+kvm_run. A `lq` on this data:
 
-Sadly I'm not able to confirm or disprove this change right now, because
-my T1040RDB has a bad DDR memory stick, it seems, so it just randomly hangs=
-.
-But I'm pretty sure the Ethernet ports were properly mapped out when I
-tested them.
+mmio_test_data:
+	.long	0xdeadbeef
+	.long	0x8badf00d
+	.long	0x1337c0de
+	.long	0x01abcdef
 
-Do you have the T1040RDB or the T1040D4RDB? Because the front panel of
-my T1040RDB looks like this:
+produces:
 
- +---------------------------------------------------------------------+
- |                                                                     |
- |  +-------+-------+               +-------+-------+-------+-------+  |
- |  | UART0 |  ETH1 |               |  ETH4 |  ETH6 |  ETH8 | ETH10 |  |
- |  +-------+-------+-------+-------+-------+-------+-------+-------+  |
- |  | UART1 |  ETH0 |  ETH2 |  ETH3 |  ETH5 |  ETH7 |  ETH9 | ETH11 |  |
- +--+-------+-------+-------+-------+-------+-------+-------+-------+--+
+__kvmppc_handle_load: bad MMIO length: 16
+kvmppc_complete_mmio_load data: 0x8badf00ddeadbeef
+bad MMIO length: 322420958          <-- mmio.len got nuked
 
->  arch/powerpc/boot/dts/fsl/t1040rdb.dts | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/arch/powerpc/boot/dts/fsl/t1040rdb.dts b/arch/powerpc/boot/d=
-ts/fsl/t1040rdb.dts
-> index af0c8a6f56138..b6733e7e65805 100644
-> --- a/arch/powerpc/boot/dts/fsl/t1040rdb.dts
-> +++ b/arch/powerpc/boot/dts/fsl/t1040rdb.dts
-> @@ -119,7 +119,7 @@ &seville_port0 {
->  	managed =3D "in-band-status";
->  	phy-handle =3D <&phy_qsgmii_0>;
->  	phy-mode =3D "qsgmii";
-> -	label =3D "ETH5";
-> +	label =3D "ETH3";
->  	status =3D "okay";
->  };
-> =20
-> @@ -135,7 +135,7 @@ &seville_port2 {
->  	managed =3D "in-band-status";
->  	phy-handle =3D <&phy_qsgmii_2>;
->  	phy-mode =3D "qsgmii";
-> -	label =3D "ETH7";
-> +	label =3D "ETH5";
->  	status =3D "okay";
->  };
-> =20
-> @@ -151,7 +151,7 @@ &seville_port4 {
->  	managed =3D "in-band-status";
->  	phy-handle =3D <&phy_qsgmii_4>;
->  	phy-mode =3D "qsgmii";
-> -	label =3D "ETH9";
-> +	label =3D "ETH7";
->  	status =3D "okay";
->  };
-> =20
-> @@ -167,7 +167,7 @@ &seville_port6 {
->  	managed =3D "in-band-status";
->  	phy-handle =3D <&phy_qsgmii_6>;
->  	phy-mode =3D "qsgmii";
-> -	label =3D "ETH11";
-> +	label =3D "ETH9";
->  	status =3D "okay";
->  };
-> =20
-> --=20
-> 2.32.0
->=
+But then we return from kvmppc_complete_mmio_load without writing to the
+registers.
+
+>
+> This is familiar, maybe something Alexey has noticed in the past too?
+> What was the consensus on fixing it? (at least it should have a comment
+> if it's not a problem IMO)
+
+My plan was to just add quadword support. And whatever else might
+missing. But I got sidetracked with how to test this so I'm just now
+coming back to it.
+
+Perhaps a more immediate fix is needed before that? We could block loads
+and stores larger than 8 bytes earlier at kvmppc_emulate_loadstore for
+instance.
