@@ -1,69 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4167E482074
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Dec 2021 22:49:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4009E4823E8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Dec 2021 13:05:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JQ23f16pvz3096
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Dec 2021 08:49:18 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=lixom-net.20210112.gappssmtp.com header.i=@lixom-net.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=qlkNIjcl;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JQP3Y0zP8z3bP6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Dec 2021 23:05:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lixom.net
- (client-ip=2607:f8b0:4864:20::535; helo=mail-pg1-x535.google.com;
- envelope-from=olof@lixom.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lixom-net.20210112.gappssmtp.com
- header.i=@lixom-net.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=qlkNIjcl; dkim-atps=neutral
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
- [IPv6:2607:f8b0:4864:20::535])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gondor.apana.org.au (client-ip=216.24.177.18;
+ helo=fornost.hmeau.com; envelope-from=herbert@gondor.apana.org.au;
+ receiver=<UNKNOWN>)
+X-Greylist: delayed 1791 seconds by postgrey-1.36 at boromir;
+ Fri, 31 Dec 2021 23:05:03 AEDT
+Received: from fornost.hmeau.com (helcar.hmeau.com [216.24.177.18])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JQ22v67Sfz2xYK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Dec 2021 08:48:37 +1100 (AEDT)
-Received: by mail-pg1-x535.google.com with SMTP id g22so22400567pgn.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Dec 2021 13:48:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=lixom-net.20210112.gappssmtp.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=GEcklNFD65j4kAPxqT7FBidrmJ3x+5F/2wsu3+ms61k=;
- b=qlkNIjclBJdx5nlGVwRBbrGI01mALgjZRcAIg/yKcGlhViS1qVZ48FHhACsxBadAPm
- l+GtkjsldrP1F8v7qmBF5YQv7ylBT1aPWFar9lOOCcgBZiw/FucQi7323bxXloDLSmtG
- Jkyl/rBeYBWrXSi0AIQOV9J2oo/gJhGQWFWAHoNwqGPSD0xUbBB+kdM27StCY1KmF4r9
- CkJoMg6tCEtJGhMjFwwY/R143FN/CHrQWK9tXlQPMO5YMIYUM4mDTj716I/g5noUKAil
- XYPdw5Ahw9iLDEVNE9GTgHdsEzI1CpSLiAEtcAkx4Yv9GTC9vLhSYrZAvPqSuBl4LjPV
- k9Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=GEcklNFD65j4kAPxqT7FBidrmJ3x+5F/2wsu3+ms61k=;
- b=g/lgb/UxEMw+f2e1YSJUmmaFmBsa/ZhNxr4ZeYqaH++wJwC48p2Jjt/FW8L0gEKQls
- bniRMc80jq3KDdwYJ6EYAJpS0koqqTdDixo5Ms5vSa7Q5Wt/vXWzfr7NyEcJkhAqXg53
- vD1sg53QmsvXRHQ+Ttj9pOYhac4YGdkpphsyqHhLOpj0tznrP6r1fDv7fP8y/9V2IfMC
- El9mPalE+8tFPpI/SFSYjI3rK2qUPCC13zlu596RtMqwY3FcmRspZAxiVQVInL0lxTGa
- G3yAQmDIKQUATfsv/YmXK5rbOg8zeyJPGBkgJRq7gW33taNCBDeqaDu83JYlWXwxM1ig
- Rw2Q==
-X-Gm-Message-State: AOAM533Dzf90ZaJcWZChgdu/3dK4j4DcgWaC+zl6e6k4E1GCm1JxiPD9
- Y4aIShpAVlTEwotrJtDJk6/yUGwq/m+3duNwoFiF2Q==
-X-Google-Smtp-Source: ABdhPJxB2+L0Ilgtxo24InThDxdI6L7PXX8L6YGcNe9PhKz0Hrp3Pr2ndaWJaDS+U/lZleW8xu0XDuGdqqRipaSCzkM=
-X-Received: by 2002:a63:b909:: with SMTP id z9mr29347618pge.26.1640900912949; 
- Thu, 30 Dec 2021 13:48:32 -0800 (PST)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JQP333njFz2xDY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Dec 2021 23:05:03 +1100 (AEDT)
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
+ by fornost.hmeau.com with smtp (Exim 4.92 #5 (Debian))
+ id 1n3GB5-0004sN-4E; Fri, 31 Dec 2021 22:34:32 +1100
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation);
+ Fri, 31 Dec 2021 22:34:30 +1100
+Date: Fri, 31 Dec 2021 22:34:30 +1100
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Subject: Re: [PATCH 0/5] Remove duplicate context init function for sha
+ algorithm
+Message-ID: <Yc7qxrxxIMr5kPSj@gondor.apana.org.au>
+References: <20211220092318.5793-1-tianjia.zhang@linux.alibaba.com>
 MIME-Version: 1.0
-References: <F651905D-FC8B-43D4-A5DC-FFAFEF5AD69F@xenosoft.de>
-In-Reply-To: <F651905D-FC8B-43D4-A5DC-FFAFEF5AD69F@xenosoft.de>
-From: Olof Johansson <olof@lixom.net>
-Date: Thu, 30 Dec 2021 13:48:21 -0800
-Message-ID: <CAOesGMgaTtP3Tjs9ZBj_OP6AzBWCK1n84iD6KdK4c+LUF=tgtw@mail.gmail.com>
-Subject: Re: The PA6T is still vulnerable
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211220092318.5793-1-tianjia.zhang@linux.alibaba.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,58 +48,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "R.T.Dickinson" <rtd@a-eon.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Matthew Leaman <matthew@a-eon.biz>
+Cc: linux-s390@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, linux-crypto@vger.kernel.org,
+ sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Dec 29, 2021 at 8:07 AM Christian Zigotzky
-<chzigotzky@xenosoft.de> wrote:
->
-> Hi All,
->
-> The P.A. Semi PA6T is still vulnerable.
->
-> Architecture:                    ppc64
-> CPU op-mode(s):                  32-bit, 64-bit
-> Byte Order:                      Big Endian
-> CPU(s):                          2
-> On-line CPU(s) list:             0,1
-> Thread(s) per core:              1
-> Core(s) per socket:              2
-> Socket(s):                       1
-> Model:                           1.2 (pvr 0090 0102)
-> Model name:                      PA6T, altivec supported
-> L1d cache:                       128 KiB
-> L1i cache:                       128 KiB
-> Vulnerability Itlb multihit:     Not affected
-> Vulnerability L1tf:              Vulnerable
-> Vulnerability Mds:               Not affected
-> Vulnerability Meltdown:          Vulnerable
-> Vulnerability Spec store bypass: Vulnerable
-> Vulnerability Spectre v1:        Mitigation; __user pointer sanitization
-> Vulnerability Spectre v2:        Vulnerable
-> Vulnerability Srbds:             Not affected
-> Vulnerability Tsx async abort:   Not affected
->
-> Could you please check this issue?
+On Mon, Dec 20, 2021 at 05:23:13PM +0800, Tianjia Zhang wrote:
+> This series of patches is mainly for repetitive code cleaning. The sha
+> algorithm has provided generic context initialization implementation.
+> The context initialization code in the optimized implementation of each
+> platform is a repetitive code and can be deleted. The sha*_base_init()
+> series of functions are used uniformly.
+> 
+> Tianjia Zhang (5):
+>   crypto: sha256 - remove duplicate generic hash init function
+>   crypto: mips/sha - remove duplicate hash init function
+>   crypto: powerpc/sha - remove duplicate hash init function
+>   crypto: sparc/sha - remove duplicate hash init function
+>   crypto: s390/sha512 - Use macros instead of direct IV numbers
+> 
+>  arch/mips/cavium-octeon/crypto/octeon-sha1.c  | 17 +-------
+>  .../mips/cavium-octeon/crypto/octeon-sha256.c | 39 ++-----------------
+>  .../mips/cavium-octeon/crypto/octeon-sha512.c | 39 ++-----------------
+>  arch/powerpc/crypto/sha1-spe-glue.c           | 17 +-------
+>  arch/powerpc/crypto/sha1.c                    | 14 +------
+>  arch/powerpc/crypto/sha256-spe-glue.c         | 39 ++-----------------
+>  arch/s390/crypto/sha512_s390.c                | 32 +++++++--------
+>  arch/sparc/crypto/sha1_glue.c                 | 14 +------
+>  arch/sparc/crypto/sha256_glue.c               | 37 ++----------------
+>  arch/sparc/crypto/sha512_glue.c               | 37 ++----------------
+>  crypto/sha256_generic.c                       | 16 +-------
+>  11 files changed, 41 insertions(+), 260 deletions(-)
 
-I'm not sure where you are directing this inquiry, you sent it to: me
-and the mailing list. So, just in case there's any expectation of a
-response:
-
-I'm not able to spend time investigating side channel exposures on
-PA6T, the platform is unsupported and best-effort on spare time (of
-which I don't have enough). I don't have hardware set up to test it at
-the moment.
-
-While enabling some of the powerpc shared mitigations wouldn't be a
-lot of work (cache flushes, etc), I expect them to have performance
-impact that needs some effort to measure/investigate.
-
-Have you confirmed that the published exploits are reproducible on the platform?
-
-
--Olof
+All applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
