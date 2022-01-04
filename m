@@ -2,78 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356514848BD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jan 2022 20:45:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B62A6484901
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jan 2022 20:54:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JT34506r0z3bd0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 06:45:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JT3GM49xbz306j
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 06:54:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iT1aZ9ke;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iT1aZ9ke;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=muTIsEE1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=iT1aZ9ke; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=iT1aZ9ke; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=muTIsEE1; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JT33P6v8lz2xsj
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jan 2022 06:44:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1641325470;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pVpW4f5n/S0S6HV+zomyaoFiFeW+Dl4rjMkt6Jm1LkE=;
- b=iT1aZ9kebKATazeYF7nEV0qv4Ya636qIz5hqBCT/Mg3pHTEp8eOLJMefnFplkSJ4pDYAqa
- PX9GBUqWvN5en8lKIpqcgXtgLBjg11thyGxsW0XUTJhhkunYz+pwQbzETnyxNUdmIeJoNx
- jEXW5YOAfi7jaXfvN/nlZwDfR2l0OjE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1641325470;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pVpW4f5n/S0S6HV+zomyaoFiFeW+Dl4rjMkt6Jm1LkE=;
- b=iT1aZ9kebKATazeYF7nEV0qv4Ya636qIz5hqBCT/Mg3pHTEp8eOLJMefnFplkSJ4pDYAqa
- PX9GBUqWvN5en8lKIpqcgXtgLBjg11thyGxsW0XUTJhhkunYz+pwQbzETnyxNUdmIeJoNx
- jEXW5YOAfi7jaXfvN/nlZwDfR2l0OjE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-155-WIKoIBCFP9SpOYXJnQ47UA-1; Tue, 04 Jan 2022 14:44:29 -0500
-X-MC-Unique: WIKoIBCFP9SpOYXJnQ47UA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 57B3181EE62;
- Tue,  4 Jan 2022 19:44:26 +0000 (UTC)
-Received: from redhat.com (unknown [10.22.32.209])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B63CF1948C;
- Tue,  4 Jan 2022 19:44:24 +0000 (UTC)
-Date: Tue, 4 Jan 2022 14:44:22 -0500
-From: Joe Lawrence <joe.lawrence@redhat.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2 03/13] powerpc/module_32: Fix livepatching for RO
- modules
-Message-ID: <YdSjlgflqKi6Raof@redhat.com>
-References: <cover.1640017960.git.christophe.leroy@csgroup.eu>
- <d5697157cb7dba3927e19aa17c915a83bc550bb2.1640017960.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JT3Fd4l57z2xtQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jan 2022 06:53:25 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 204Imvgk018871; 
+ Tue, 4 Jan 2022 19:53:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=gJrZxwfTZYQL/Utzfoow+YBWBL1Ftq4ZELsOh7odyrw=;
+ b=muTIsEE1B2CuATmGTZostSQOPCmAjE5j02hcCf55WwMB+fUHsnzY0O/vg4Slt5ynWbQw
+ X1E6/tGZxKpULUzMM3c8N/mEGSC0n7G1SbRV6JXqPZ3f4ykfQu1MqAMWkMirM58eMyzF
+ vmxseuAUqxwoMjjZhepfQMKTQbSJe5RM+CZrVqhbKg0/Pc7Nmnw9lE+s/isWTMEg4jLG
+ 7SauEOmlhAOOMFukRlt05G+0mpN7Q+9bOKSWPWTxYnoutjP/bmjZWvjFiWcePxf88ebZ
+ GEHJRPYg5sOVdEHpYWPSX+7CzCh1+RaqpQP2tyXO9flqISpjkXPQ9KrPWBEO+mRQy6hx Ng== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dch82nybh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jan 2022 19:53:21 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 204Jm8n1014078;
+ Tue, 4 Jan 2022 19:53:18 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma03wdc.us.ibm.com with ESMTP id 3dcv2qrpky-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jan 2022 19:53:18 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 204JrIcC35062072
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 Jan 2022 19:53:18 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 027AB28059;
+ Tue,  4 Jan 2022 19:53:18 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 334DE28058;
+ Tue,  4 Jan 2022 19:53:17 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.160.94.20])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue,  4 Jan 2022 19:53:17 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/cacheinfo: use default_groups in kobj_type
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org
+References: <20220104155450.1291277-1-gregkh@linuxfoundation.org>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <4f0fbbce-1601-7a59-7019-b78e695bc2bf@linux.ibm.com>
+Date: Tue, 4 Jan 2022 11:53:16 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d5697157cb7dba3927e19aa17c915a83bc550bb2.1640017960.git.christophe.leroy@csgroup.eu>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+In-Reply-To: <20220104155450.1291277-1-gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -qb6CNl_uZf8bns4Y_ekk3MEyN4dDNkO
+X-Proofpoint-GUID: -qb6CNl_uZf8bns4Y_ekk3MEyN4dDNkO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-04_09,2022-01-04_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0
+ mlxscore=0 clxscore=1011 impostorscore=0 spamscore=0 suspectscore=0
+ lowpriorityscore=0 adultscore=0 malwarescore=0 priorityscore=1501
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201040126
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,145 +102,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, Jiri Kosina <jikos@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>,
- Josh Poimboeuf <jpoimboe@redhat.com>,
- "live-patching@vger.kernel.org" <live-patching@vger.kernel.org>,
- "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Miroslav Benes <mbenes@suse.cz>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Parth Shah <parth@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org, "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 20, 2021 at 04:38:09PM +0000, Christophe Leroy wrote:
-> Livepatching a loaded module involves applying relocations through
-> apply_relocate_add(), which attempts to write to read-only memory when
-> CONFIG_STRICT_MODULE_RWX=y.
+On 1/4/22 7:54 AM, Greg Kroah-Hartman wrote:
+> There are currently 2 ways to create a set of sysfs files for a
+> kobj_type, through the default_attrs field, and the default_groups
+> field.  Move the powerpc cacheinfo sysfs code to use default_groups
+> field which has been the preferred way since aa30f47cf666 ("kobject: Add
+> support for default attribute groups to kobj_type") so that we can soon
+> get rid of the obsolete default_attrs field.
 > 
-> R_PPC_ADDR16_LO, R_PPC_ADDR16_HI, R_PPC_ADDR16_HA and R_PPC_REL24 are
-> the types generated by the kpatch-build userspace tool or klp-convert
-> kernel tree observed applying a relocation to a post-init module.
-> 
-> Use patch_instruction() to patch those relocations.
-> 
-> Commit 8734b41b3efe ("powerpc/module_64: Fix livepatching for
-> RO modules") did similar change in module_64.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Russell Currey <ruscur@russell.cc>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+> Cc: Parth Shah <parth@linux.ibm.com>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > ---
->  arch/powerpc/kernel/module_32.c | 44 ++++++++++++++++++++++-----------
->  1 file changed, 30 insertions(+), 14 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/module_32.c b/arch/powerpc/kernel/module_32.c
-> index a491ad481d85..a0432ef46967 100644
-> --- a/arch/powerpc/kernel/module_32.c
-> +++ b/arch/powerpc/kernel/module_32.c
-> @@ -18,6 +18,7 @@
->  #include <linux/bug.h>
->  #include <linux/sort.h>
->  #include <asm/setup.h>
-> +#include <asm/code-patching.h>
->  
->  /* Count how many different relocations (different symbol, different
->     addend) */
-> @@ -174,15 +175,25 @@ static uint32_t do_plt_call(void *location,
->  		entry++;
->  	}
->  
-> -	entry->jump[0] = PPC_RAW_LIS(_R12, PPC_HA(val));
-> -	entry->jump[1] = PPC_RAW_ADDI(_R12, _R12, PPC_LO(val));
-> -	entry->jump[2] = PPC_RAW_MTCTR(_R12);
-> -	entry->jump[3] = PPC_RAW_BCTR();
-> +	if (patch_instruction(&entry->jump[0], ppc_inst(PPC_RAW_LIS(_R12, PPC_HA(val)))))
-> +		return 0;
-> +	if (patch_instruction(&entry->jump[1], ppc_inst(PPC_RAW_ADDI(_R12, _R12, PPC_LO(val)))))
-> +		return 0;
-> +	if (patch_instruction(&entry->jump[2], ppc_inst(PPC_RAW_MTCTR(_R12))))
-> +		return 0;
-> +	if (patch_instruction(&entry->jump[3], ppc_inst(PPC_RAW_BCTR())))
-> +		return 0;
->  
->  	pr_debug("Initialized plt for 0x%x at %p\n", val, entry);
->  	return (uint32_t)entry;
->  }
->  
-> +static int patch_location_16(uint32_t *loc, u16 value)
-> +{
-> +	loc = PTR_ALIGN_DOWN(loc, sizeof(u32));
-> +	return patch_instruction(loc, ppc_inst((*loc & 0xffff0000) | value));
-> +}
-> +
->  int apply_relocate_add(Elf32_Shdr *sechdrs,
->  		       const char *strtab,
->  		       unsigned int symindex,
-> @@ -216,37 +227,42 @@ int apply_relocate_add(Elf32_Shdr *sechdrs,
->  
->  		case R_PPC_ADDR16_LO:
->  			/* Low half of the symbol */
-> -			*(uint16_t *)location = value;
-> +			if (patch_location_16(location, PPC_LO(value)))
-> +				return -EFAULT;
->  			break;
->  
->  		case R_PPC_ADDR16_HI:
->  			/* Higher half of the symbol */
-> -			*(uint16_t *)location = (value >> 16);
-> +			if (patch_location_16(location, PPC_HI(value)))
-> +				return -EFAULT;
->  			break;
->  
->  		case R_PPC_ADDR16_HA:
-> -			/* Sign-adjusted lower 16 bits: PPC ELF ABI says:
-> -			   (((x >> 16) + ((x & 0x8000) ? 1 : 0))) & 0xFFFF.
-> -			   This is the same, only sane.
-> -			 */
-> -			*(uint16_t *)location = (value + 0x8000) >> 16;
-> +			if (patch_location_16(location, PPC_HA(value)))
-> +				return -EFAULT;
->  			break;
->  
->  		case R_PPC_REL24:
->  			if ((int)(value - (uint32_t)location) < -0x02000000
-> -			    || (int)(value - (uint32_t)location) >= 0x02000000)
-> +			    || (int)(value - (uint32_t)location) >= 0x02000000) {
->  				value = do_plt_call(location, value,
->  						    sechdrs, module);
-> +				if (!value)
-> +					return -EFAULT;
-> +			}
->  
->  			/* Only replace bits 2 through 26 */
->  			pr_debug("REL24 value = %08X. location = %08X\n",
->  			       value, (uint32_t)location);
->  			pr_debug("Location before: %08X.\n",
->  			       *(uint32_t *)location);
-> -			*(uint32_t *)location
-> -				= (*(uint32_t *)location & ~0x03fffffc)
-> +			value = (*(uint32_t *)location & ~0x03fffffc)
->  				| ((value - (uint32_t)location)
->  				   & 0x03fffffc);
-> +
-> +			if (patch_instruction(location, ppc_inst(value)))
-> +				return -EFAULT;
-> +
->  			pr_debug("Location after: %08X.\n",
->  			       *(uint32_t *)location);
->  			pr_debug("ie. jump to %08X+%08X = %08X\n",
-> -- 
-> 2.33.1
-> 
 
-IIRC, offlist we hacked up klp-convert to create the klp-relocations for
-a 32-bit target and then you hit the selftest late relocation crash, so
-I assume that part is happy after this fix. :)  Thanks again for the
-testing.
-
-For the livepatching implications,
-
-Acked-by: Joe Lawrence <joe.lawrence@redhat.com>
-
--- Joe
-
+Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
