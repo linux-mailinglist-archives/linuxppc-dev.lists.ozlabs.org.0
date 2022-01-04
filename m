@@ -1,60 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B11484777
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jan 2022 19:07:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3894848AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jan 2022 20:36:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JT0vg70sKz3bht
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 05:07:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JT2sk66jKz3bX0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 06:36:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TODSu9Pk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a0fdr4g5;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CuEaH2WQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=TODSu9Pk; 
+ smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=a0fdr4g5; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=CuEaH2WQ; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.129.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JT0tx5b9Xz2xBv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jan 2022 05:07:05 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JT2s11HjTz2xsj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jan 2022 06:35:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1641324925;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=M31283hPor/SMg1Hu2xm9ZT/xhUO7KMLt4Ra3PtJ46g=;
+ b=a0fdr4g5fmZGIvdmI9LAfwHDa2+tPVp37rw+4vwJyAo9KaUfhzbU/LniyTBMpuQzmdSV8/
+ CAQbIQyUG1x2V4lqIpXgAkd08KtC9iRBBv1e5L32QeRsiBMCaK37bI8Oe/3I4aIj5UzIeE
+ Z6pl+PtFGoJwJK7wuDmBEFifTpavbfM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1641324926;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=M31283hPor/SMg1Hu2xm9ZT/xhUO7KMLt4Ra3PtJ46g=;
+ b=CuEaH2WQmlPivNYkoRlV3mFGTPwzsT2XxeDCcJkHsqTxJT43JnIwMcwMrM7xFYLmENfCko
+ 7l4lqfqZj/gpWyZO2OotnNu/WlEl65p3kRWiViWqg0wyT1V2f9ttUv9xrVJs5otM+F/qiM
+ yv/Q6cYyFyapDGtOCVC6zsmW+O1lTmk=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-605-cGMCxWdAPTeBu14WgwCJ3g-1; Tue, 04 Jan 2022 14:35:22 -0500
+X-MC-Unique: cGMCxWdAPTeBu14WgwCJ3g-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 28C55B817A2;
- Tue,  4 Jan 2022 18:07:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34CDC36AED;
- Tue,  4 Jan 2022 18:06:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1641319620;
- bh=txfvS+Gitakuv4kkZ9OkxwiKDa6QdbuL+sIHK0c2OxI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=TODSu9PkSjLNlNUJyBzC+8Cdt+Ux36ZiJX6gytEt0Sg56BXO3Eo1sgHAjb6ZJ53U6
- 03ekSEye8DfpM2W7iS7LpZ//U+8LjI7GaY1fi09XDA+FbBnRWVEkBOPCaA+bCKqJ2B
- UcAmuTuICA5nzHRaPCUcIjm41628b+o0qXaQopyYLY9i5PO4mMSGS5/60uLRMvchqz
- 6SlVOosnsr5UNzLgSvKMyCUOYZ8mbpw7fKA4uh/1AStk5NpgZK7aGSmAWu9DNWTW9i
- swxQBKY3tXMy4CqNMly8wyByj2/HWX9TQDMEJ2AGBFWaFlSxz9Ck2BETWKTUDHkDnV
- xpKmO8fLsT+MQ==
-Date: Tue, 4 Jan 2022 18:06:54 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 1/3] ASoC: imx-card: Need special setting for ak4497 on
- i.MX8MQ
-Message-ID: <YdSMvtXHsYWl7E0U@sirena.org.uk>
-References: <1641292835-19085-1-git-send-email-shengjiu.wang@nxp.com>
- <1641292835-19085-2-git-send-email-shengjiu.wang@nxp.com>
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 40F8181CCB4;
+ Tue,  4 Jan 2022 19:35:20 +0000 (UTC)
+Received: from redhat.com (unknown [10.22.32.209])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 911E95BE04;
+ Tue,  4 Jan 2022 19:35:15 +0000 (UTC)
+Date: Tue, 4 Jan 2022 14:35:13 -0500
+From: Joe Lawrence <joe.lawrence@redhat.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 01/13] livepatch: Fix build failure on 32 bits
+ processors
+Message-ID: <YdShcXQwOaQnylo6@redhat.com>
+References: <cover.1640017960.git.christophe.leroy@csgroup.eu>
+ <5288e11b018a762ea3351cc8fb2d4f15093a4457.1640017960.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="wM9Rnn4bmiJ3jtwv"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1641292835-19085-2-git-send-email-shengjiu.wang@nxp.com>
-X-Cookie: The horror... the horror!
+In-Reply-To: <5288e11b018a762ea3351cc8fb2d4f15093a4457.1640017960.git.christophe.leroy@csgroup.eu>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,49 +85,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, perex@perex.cz,
- nicoleotsuka@gmail.com, festevam@gmail.com, linux-kernel@vger.kernel.org
+Cc: Petr Mladek <pmladek@suse.com>, Jiri Kosina <jikos@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>,
+ Josh Poimboeuf <jpoimboe@redhat.com>,
+ "live-patching@vger.kernel.org" <live-patching@vger.kernel.org>,
+ "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Miroslav Benes <mbenes@suse.cz>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Dec 20, 2021 at 04:38:02PM +0000, Christophe Leroy wrote:
+> Trying to build livepatch on powerpc/32 results in:
+> 
+> 	kernel/livepatch/core.c: In function 'klp_resolve_symbols':
+> 	kernel/livepatch/core.c:221:23: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+> 	  221 |                 sym = (Elf64_Sym *)sechdrs[symndx].sh_addr + ELF_R_SYM(relas[i].r_info);
+> 	      |                       ^
+> 	kernel/livepatch/core.c:221:21: error: assignment to 'Elf32_Sym *' {aka 'struct elf32_sym *'} from incompatible pointer type 'Elf64_Sym *' {aka 'struct elf64_sym *'} [-Werror=incompatible-pointer-types]
+> 	  221 |                 sym = (Elf64_Sym *)sechdrs[symndx].sh_addr + ELF_R_SYM(relas[i].r_info);
+> 	      |                     ^
+> 	kernel/livepatch/core.c: In function 'klp_apply_section_relocs':
+> 	kernel/livepatch/core.c:312:35: error: passing argument 1 of 'klp_resolve_symbols' from incompatible pointer type [-Werror=incompatible-pointer-types]
+> 	  312 |         ret = klp_resolve_symbols(sechdrs, strtab, symndx, sec, sec_objname);
+> 	      |                                   ^~~~~~~
+> 	      |                                   |
+> 	      |                                   Elf32_Shdr * {aka struct elf32_shdr *}
+> 	kernel/livepatch/core.c:193:44: note: expected 'Elf64_Shdr *' {aka 'struct elf64_shdr *'} but argument is of type 'Elf32_Shdr *' {aka 'struct elf32_shdr *'}
+> 	  193 | static int klp_resolve_symbols(Elf64_Shdr *sechdrs, const char *strtab,
+> 	      |                                ~~~~~~~~~~~~^~~~~~~
+> 
+> Fix it by using the right types instead of forcing 64 bits types.
+> 
+> Fixes: 7c8e2bdd5f0d ("livepatch: Apply vmlinux-specific KLP relocations early")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Acked-by: Petr Mladek <pmladek@suse.com>
+> ---
+>  kernel/livepatch/core.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
+> index 335d988bd811..c0789383807b 100644
+> --- a/kernel/livepatch/core.c
+> +++ b/kernel/livepatch/core.c
+> @@ -190,7 +190,7 @@ static int klp_find_object_symbol(const char *objname, const char *name,
+>  	return -EINVAL;
+>  }
+>  
+> -static int klp_resolve_symbols(Elf64_Shdr *sechdrs, const char *strtab,
+> +static int klp_resolve_symbols(Elf_Shdr *sechdrs, const char *strtab,
+>  			       unsigned int symndx, Elf_Shdr *relasec,
+>  			       const char *sec_objname)
+>  {
+> @@ -218,7 +218,7 @@ static int klp_resolve_symbols(Elf64_Shdr *sechdrs, const char *strtab,
+>  	relas = (Elf_Rela *) relasec->sh_addr;
+>  	/* For each rela in this klp relocation section */
+>  	for (i = 0; i < relasec->sh_size / sizeof(Elf_Rela); i++) {
+> -		sym = (Elf64_Sym *)sechdrs[symndx].sh_addr + ELF_R_SYM(relas[i].r_info);
+> +		sym = (Elf_Sym *)sechdrs[symndx].sh_addr + ELF_R_SYM(relas[i].r_info);
+>  		if (sym->st_shndx != SHN_LIVEPATCH) {
+>  			pr_err("symbol %s is not marked as a livepatch symbol\n",
+>  			       strtab + sym->st_name);
+> -- 
+> 2.33.1
+> 
 
---wM9Rnn4bmiJ3jtwv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks for finding and fixing, lgtm.
 
-On Tue, Jan 04, 2022 at 06:40:33PM +0800, Shengjiu Wang wrote:
+Acked-by: Joe Lawrence <joe.lawrence@redhat.com>
 
->  			/* sai may support mclk/bclk = 1 */
-> -			if (of_find_property(np, "fsl,mclk-equal-bclk", NULL))
-> +			if (of_find_property(np, "fsl,mclk-equal-bclk", NULL)) {
->  				link_data->one2one_ratio = true;
-> +			} else {
-> +				int i;
-> +
-> +				/*
-> +				 * i.MX8MQ don't support one2one ratio, then
-> +				 * with ak4497 only 16bit case is supported.
-> +				 */
-> +				for (i = 0; i < ARRAY_SIZE(ak4497_fs_mul); i++) {
+-- Joe
 
-Shouldn't this be keyed off checking that we are actually running with
-an ak4497?
-
---wM9Rnn4bmiJ3jtwv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmHUjL0ACgkQJNaLcl1U
-h9DLtQf+NYjFfOunR2kagpHatM3uw3vj6y2ywBhn8AKl0Ar0TPugAPIBV7cClQVk
-1sHU5pGUol0aOrSl9c/y+uccKTxxK+dZs3jnI2RX3u8n9UdW/tsiQepu/rkVgMYy
-SZdNhfcCp0VkJGYq8099YjMoo0zH4WUC5b5Ph0Jb0c80dixXJ2LCFtcKoKaxMkHZ
-oYCJrpeu1LWU4b9hqgjkuRpFpU2ihQWuHQQwMIXzqk2+zdRYbyGabWRdxnyN2F+8
-3LHLlPlUXGdyomQfUFWu//LqMI1Yi/xqHDeyk1Oi7WFduA4WvFuSrwtaHDqSpX9E
-ds+WpmNO0leJRKzk7+c+U8iIqlXt3g==
-=8shi
------END PGP SIGNATURE-----
-
---wM9Rnn4bmiJ3jtwv--
