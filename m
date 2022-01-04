@@ -1,59 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A474845D8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jan 2022 17:14:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E782A4845E9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jan 2022 17:22:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JSyNV3D2Pz3bY9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 03:14:02 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=pYHLsyIm;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JSyYr69Q0z2yp5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 03:22:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75;
- helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=pYHLsyIm; 
- dkim-atps=neutral
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JSyMr33pMz2xBV
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jan 2022 03:13:28 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JSyYQ251rz2x9p
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jan 2022 03:21:46 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id B6552B81732;
- Tue,  4 Jan 2022 16:13:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22AAC36AED;
- Tue,  4 Jan 2022 16:13:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1641312803;
- bh=SYOuq4QCCHRXMqkBPeDi3N8aojaaAmUTN11Y3EnSLFw=;
- h=From:To:Cc:Subject:Date:From;
- b=pYHLsyIm8sARB68IALsDq2lM3CKxWn0HOloWJV3XcM4qEMMoYkv2dcGfky+i0LQbc
- V1M1BIUHVg8Lqhn6T9xTLvtxY4KfqG7lf+VDq2jpgMfyOcX4eaSEwyYQMnBekJIS2g
- 8SRn8ewVsVk2FZH1j7J5hW5/HDl0+Jk2ot0Ls1hs=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc/opal: use default_groups in kobj_type
-Date: Tue,  4 Jan 2022 17:13:18 +0100
-Message-Id: <20220104161318.1306023-1-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.34.1
+ by ams.source.kernel.org (Postfix) with ESMTPS id 4796DB81732;
+ Tue,  4 Jan 2022 16:21:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A6DCC36AED;
+ Tue,  4 Jan 2022 16:21:39 +0000 (UTC)
+Date: Tue, 4 Jan 2022 16:21:36 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v6 04/14] mm, hugetlbfs: Allow for "high" userspace
+ addresses
+Message-ID: <YdR0EN2mdJuysugk@arm.com>
+References: <cover.1639736449.git.christophe.leroy@csgroup.eu>
+ <db238c1ca2d46e33c57328f8d450f2563e92f8c2.1639736449.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2218; h=from:subject;
- bh=SYOuq4QCCHRXMqkBPeDi3N8aojaaAmUTN11Y3EnSLFw=;
- b=owGbwMvMwCRo6H6F97bub03G02pJDIlXimSKZzZG+yy2btCZqf84QsThxyN37qzlcya9+bVsoo3Z
- a1f9jlgWBkEmBlkxRZYv23iO7q84pOhlaHsaZg4rE8gQBi5OAZjIiQ0M82zfLUqMnKpaOVWOXT/89Y
- LI3d+v7GOYZ2MqfORJ7oMAySLG9TpRi1fKT1n/BgA=
-X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp;
- fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <db238c1ca2d46e33c57328f8d450f2563e92f8c2.1639736449.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,69 +47,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Vasant Hegde <hegdevasant@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>, Joel Stanley <joel@jms.id.au>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "alex@ghiti.fr" <alex@ghiti.fr>, Steve Capper <steve.capper@arm.com>,
+ Will Deacon <will.deacon@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, "will@kernel.org" <will@kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are currently 2 ways to create a set of sysfs files for a
-kobj_type, through the default_attrs field, and the default_groups
-field.  Move the powerpc opal dump and elog sysfs code to use
-default_groups field which has been the preferred way since aa30f47cf666
-("kobject: Add support for default attribute groups to kobj_type") so
-that we can soon get rid of the obsolete default_attrs field.
+On Fri, Dec 17, 2021 at 10:27:28AM +0000, Christophe Leroy wrote:
+> This is a complement of f6795053dac8 ("mm: mmap: Allow for "high"
+> userspace addresses") for hugetlb.
+> 
+> This patch adds support for "high" userspace addresses that are
+> optionally supported on the system and have to be requested via a hint
+> mechanism ("high" addr parameter to mmap).
+> 
+> Architectures such as powerpc and x86 achieve this by making changes to
+> their architectural versions of hugetlb_get_unmapped_area() function.
+> However, arm64 uses the generic version of that function.
+> 
+> So take into account arch_get_mmap_base() and arch_get_mmap_end() in
+> hugetlb_get_unmapped_area(). To allow that, move those two macros
+> out of mm/mmap.c into include/linux/sched/mm.h
+> 
+> If these macros are not defined in architectural code then they default
+> to (TASK_SIZE) and (base) so should not introduce any behavioural
+> changes to architectures that do not define them.
+> 
+> For the time being, only ARM64 is affected by this change.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Steve Capper <steve.capper@arm.com>
+> Cc: Will Deacon <will.deacon@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> ---
+>  fs/hugetlbfs/inode.c     | 9 +++++----
+>  include/linux/sched/mm.h | 8 ++++++++
+>  mm/mmap.c                | 8 --------
+>  3 files changed, 13 insertions(+), 12 deletions(-)
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Joel Stanley <joel@jms.id.au>
-Cc: Vasant Hegde <hegdevasant@linux.vnet.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/powerpc/platforms/powernv/opal-dump.c | 3 ++-
- arch/powerpc/platforms/powernv/opal-elog.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+This would be an ABI change but I'm fine with it. Basically with this
+patch, getting hugetblfs addresses above 48-bit require explicit hint
+passed to mmap().
 
-diff --git a/arch/powerpc/platforms/powernv/opal-dump.c b/arch/powerpc/platforms/powernv/opal-dump.c
-index 717d1d30ade5..410ed5b9de29 100644
---- a/arch/powerpc/platforms/powernv/opal-dump.c
-+++ b/arch/powerpc/platforms/powernv/opal-dump.c
-@@ -208,11 +208,12 @@ static struct attribute *dump_default_attrs[] = {
- 	&ack_attribute.attr,
- 	NULL,
- };
-+ATTRIBUTE_GROUPS(dump_default);
- 
- static struct kobj_type dump_ktype = {
- 	.sysfs_ops = &dump_sysfs_ops,
- 	.release = &dump_release,
--	.default_attrs = dump_default_attrs,
-+	.default_groups = dump_default_groups,
- };
- 
- static int64_t dump_read_info(uint32_t *dump_id, uint32_t *dump_size, uint32_t *dump_type)
-diff --git a/arch/powerpc/platforms/powernv/opal-elog.c b/arch/powerpc/platforms/powernv/opal-elog.c
-index 5821b0fa8614..554fdd7f88b8 100644
---- a/arch/powerpc/platforms/powernv/opal-elog.c
-+++ b/arch/powerpc/platforms/powernv/opal-elog.c
-@@ -144,11 +144,12 @@ static struct attribute *elog_default_attrs[] = {
- 	&ack_attribute.attr,
- 	NULL,
- };
-+ATTRIBUTE_GROUPS(elog_default);
- 
- static struct kobj_type elog_ktype = {
- 	.sysfs_ops = &elog_sysfs_ops,
- 	.release = &elog_release,
--	.default_attrs = elog_default_attrs,
-+	.default_groups = elog_default_groups,
- };
- 
- /* Maximum size of a single log on FSP is 16KB */
--- 
-2.34.1
+I wonder whether we should add a fixes tag (or at least the cc stable):
 
+Fixes: f6795053dac8 ("mm: mmap: Allow for "high" userspace addresses")
+Cc: <stable@vger.kernel.org> # 5.0.x
+
+I think the original commit should have changed
+hugetlb_get_unmapped_area() to have the same behaviour as
+arch_get_unmapped_area(). Steve, any thoughts?
+
+FWIW,
+
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
