@@ -2,44 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F0BB4840AD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jan 2022 12:19:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8633484207
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jan 2022 14:04:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JSqrV1FfYz3cbn
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Jan 2022 22:19:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JSt9w5kJyz3c6l
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 00:04:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
+ helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
+ receiver=<UNKNOWN>)
+X-Greylist: delayed 233 seconds by postgrey-1.36 at boromir;
+ Wed, 05 Jan 2022 00:04:11 AEDT
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
+ [130.133.4.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JSqr429W5z2ym7
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Jan 2022 22:18:59 +1100 (AEDT)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id EEF85200CC7;
- Tue,  4 Jan 2022 12:10:22 +0100 (CET)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com
- (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B7C1D200C96;
- Tue,  4 Jan 2022 12:10:22 +0100 (CET)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 51B77183AD05;
- Tue,  4 Jan 2022 19:10:21 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org
-Subject: [PATCH 3/3] ASoC: imx-card: improve the sound quality for low rate
-Date: Tue,  4 Jan 2022 18:40:35 +0800
-Message-Id: <1641292835-19085-4-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1641292835-19085-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1641292835-19085-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JSt9R100Cz2x9T
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jan 2022 00:04:11 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+ by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
+ tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1n4jQB-002FDq-QI; Tue, 04 Jan 2022 14:00:11 +0100
+Received: from p57bd91bf.dip0.t-ipconnect.de ([87.189.145.191]
+ helo=[192.168.178.81]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
+ with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+ (envelope-from <glaubitz@physik.fu-berlin.de>)
+ id 1n4jQB-002TRX-Jc; Tue, 04 Jan 2022 14:00:11 +0100
+Message-ID: <fca7cf14-b598-d25a-8f71-8d1c16a84e5f@physik.fu-berlin.de>
+Date: Tue, 4 Jan 2022 14:00:11 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.1
+Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
+ <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
+ <878ryfavaz.fsf@mpe.ellerman.id.au>
+ <04864fe5-fdd0-74b2-2bad-0303e4c2b15a@physik.fu-berlin.de>
+ <874k92bubv.fsf@mpe.ellerman.id.au>
+ <c21c7a0e-95f1-e6d2-a04c-fb99d801e8da@physik.fu-berlin.de>
+ <878rydac0d.fsf@mpe.ellerman.id.au>
+ <73c55cc9-369e-8989-4f6c-6801ce6a4d64@physik.fu-berlin.de>
+ <87k0hs8iyq.fsf@mpe.ellerman.id.au>
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+In-Reply-To: <87k0hs8iyq.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.145.191
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,58 +65,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-According to RM, on auto mode:
-For codec AK4458 and AK4497, the lowest ratio of MLCK/FS is 256
-if sample rate is 8kHz-48kHz,
-For codec AK5558, the lowest ratio of MLCK/FS is 512 if sample
-rate is 8kHz-48kHz.
+Hi Michael!
 
-With these setting the sound quality for 8kHz-48kHz can be improved.
+Sorry for the long time without any responses. Shall we continue debugging this?
 
-Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/imx-card.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+We're currently running 5.15.x on the host system and the guests and the testsuite
+for gcc-9 still reproducibly kills the KVM host.
 
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index f9196fb7e833..6f8efd838fcc 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -120,7 +120,7 @@ struct imx_card_data {
- 
- static struct imx_akcodec_fs_mul ak4458_fs_mul[] = {
- 	/* Normal, < 32kHz */
--	{ .rmin = 8000,   .rmax = 24000,  .wmin = 1024, .wmax = 1024, },
-+	{ .rmin = 8000,   .rmax = 24000,  .wmin = 256,  .wmax = 1024, },
- 	/* Normal, 32kHz */
- 	{ .rmin = 32000,  .rmax = 32000,  .wmin = 256,  .wmax = 1024, },
- 	/* Normal */
-@@ -151,8 +151,8 @@ static struct imx_akcodec_fs_mul ak4497_fs_mul[] = {
- 	 * Table 7      - mapping multiplier and speed mode
- 	 * Tables 8 & 9 - mapping speed mode and LRCK fs
- 	 */
--	{ .rmin = 8000,   .rmax = 32000,  .wmin = 1024, .wmax = 1024, }, /* Normal, <= 32kHz */
--	{ .rmin = 44100,  .rmax = 48000,  .wmin = 512,  .wmax = 512, }, /* Normal */
-+	{ .rmin = 8000,   .rmax = 32000,  .wmin = 256,  .wmax = 1024, }, /* Normal, <= 32kHz */
-+	{ .rmin = 44100,  .rmax = 48000,  .wmin = 256,  .wmax = 512, }, /* Normal */
- 	{ .rmin = 88200,  .rmax = 96000,  .wmin = 256,  .wmax = 256, }, /* Double */
- 	{ .rmin = 176400, .rmax = 192000, .wmin = 128,  .wmax = 128, }, /* Quad */
- 	{ .rmin = 352800, .rmax = 384000, .wmin = 128,  .wmax = 128, }, /* Oct */
-@@ -164,7 +164,7 @@ static struct imx_akcodec_fs_mul ak4497_fs_mul[] = {
-  * (Table 4 from datasheet)
-  */
- static struct imx_akcodec_fs_mul ak5558_fs_mul[] = {
--	{ .rmin = 8000,   .rmax = 32000,  .wmin = 1024, .wmax = 1024, },
-+	{ .rmin = 8000,   .rmax = 32000,  .wmin = 512,  .wmax = 1024, },
- 	{ .rmin = 44100,  .rmax = 48000,  .wmin = 512,  .wmax = 512, },
- 	{ .rmin = 88200,  .rmax = 96000,  .wmin = 256,  .wmax = 256, },
- 	{ .rmin = 176400, .rmax = 192000, .wmin = 128,  .wmax = 128, },
+Adrian
+
+On 11/1/21 07:53, Michael Ellerman wrote:
+> Sure, will give that a try.
+> 
+> I was able to crash my machine over the weekend, building openjdk, but I
+> haven't been able to reproduce it for ~24 hours now (I didn't change
+> anything).
+> 
+> 
+> Can you try running your guests with no SMT threads?
+> 
+> I think one of your guests was using:
+> 
+>   -smp 32,sockets=1,dies=1,cores=8,threads=4
+> 
+> Can you change that to:
+> 
+>   -smp 8,sockets=1,dies=1,cores=8,threads=1
+> 
+> 
+> And something similar for the other guest(s).
+> 
+> If the system is stable with those settings that would be useful
+> information, and would also mean you could use the system without it
+> crashing semi regularly.
+> 
+> cheers
 -- 
-2.17.1
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
