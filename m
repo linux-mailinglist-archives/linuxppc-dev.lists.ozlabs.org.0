@@ -1,102 +1,124 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB2C484F5D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 09:30:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BCB484FB9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 10:03:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JTN3D61lhz30hZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 19:30:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JTNnb4TtZz30LJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 20:03:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ij7comEv;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=anPL2R8K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=abdhalee@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ij7comEv; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.7.79; helo=eur04-he1-obe.outbound.protection.outlook.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=anPL2R8K; 
+ dkim-atps=neutral
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr70079.outbound.protection.outlook.com [40.107.7.79])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JTN2Q40N9z2xtQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jan 2022 19:29:49 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2058Epek017432; 
- Wed, 5 Jan 2022 08:29:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : cc : from : subject : to : content-type :
- content-transfer-encoding; s=pp1;
- bh=IzBMxitNbdLyU3nShevN0ViQ22zjFL6d5QbxSUBtHzA=;
- b=ij7comEvQUrKhIYAITrBpgDaljSNib4SyVTON1sFaKQb8CdL7HQOHZPeqNWoNrDi1Zrc
- KUmWCMCkIkaBl8To8cgYDp+IRgjf8L50oRteZFTyKWAsOc7A6cotftILmVlVxOba/Snn
- Ql3HG46dwkJlE6bBdr/1IqiEbzjUjom6P3pf0ZBP4zv3VDoHsaKV0BS9/0Rj7/k4Nn/G
- wYqazaETwkqTfMKkmt1yJy3ew7oOSCYxrD3Mq5avMjj01e9smHaOh694Q7wBImwe3nch
- K4OGllqTpJYiWDefihOm8OFeYTi46fYG22PhB3+OP+p/VYuIYNi40lOyHLM3lZ1LbStq uw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dckxsvux6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Jan 2022 08:29:38 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2058ObJW025268;
- Wed, 5 Jan 2022 08:29:37 GMT
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dckxsvuwy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Jan 2022 08:29:37 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2058SfLT027917;
- Wed, 5 Jan 2022 08:29:36 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com
- (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
- by ppma05wdc.us.ibm.com with ESMTP id 3daekb2bqs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Jan 2022 08:29:36 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 2058TZ3r34406710
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 5 Jan 2022 08:29:35 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5A94C136066;
- Wed,  5 Jan 2022 08:29:35 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3DB01136060;
- Wed,  5 Jan 2022 08:29:32 +0000 (GMT)
-Received: from [9.43.99.48] (unknown [9.43.99.48])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  5 Jan 2022 08:29:31 +0000 (GMT)
-Message-ID: <63380c22-a163-2664-62be-2cf401065e73@linux.vnet.ibm.com>
-Date: Wed, 5 Jan 2022 13:56:53 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JTNml73Zhz2yLn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Jan 2022 20:02:59 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HAyNLZStNMLRyix0JWeVJZabvM2b66FcmR8k+lRbD07BkmkA/Gw0lSRIi8uREOaOYE4aZmOtP1grlUfuKECNSiTGhUOBZ2w1Qpy96d5P70+nPkKWkuGzAcjaTzu2noE/UQNInDB4rWnVLwQlgRgYhEegw7l1M/TR47iJj5InWctVjMgt2dszLw+H7k59ywsxWEQf9TKTyfXSXaH1mrVnESCDVz7EZ5jrpH5IOB3rgakCen9jC3t4ojapby9zNBKoM6OaeWMJgQW0SX2bUDwi8L9mHR2Qw7RCqk77Z9erWrXOuF7t0OuQuVrg5A84cwkUUT+4mEfHXkoiXdiu/vRBeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MWzqq4vSsYu+MH67aPMWryn3svQpFRVFLhmttS4n3I8=;
+ b=kwbtj8L2PoJ8qidSYBVTGf6y0/NhJtw4lh9h5FChq/kpBTobs5WLHHLDDUx2V4Ves4RiiZJ51ar0TtmJgrAeowjx9XXhD/W8NI8AXtqgCkOBJr3MBSKvintPTju8cvMH61H9c3O4ouRDA3xk1ZE9Y0eBAS8nOoYnPXmSj7YGqByv0ltNTJ6ghX93AKbLqLC+Li6AoGpBO1UAjYpdvbXKgAqGNe/ACblT7PG3M0zn/h4BNOR3DuQHCliEwHQvVsCTTsr0+WYGMG6DktMkynB2+ICTC7z9hZrqBWuuLOdtLSvMv/fizfgqpqWAxFv1WzZr2zQx9EHjwVdWZhLtCQjGxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MWzqq4vSsYu+MH67aPMWryn3svQpFRVFLhmttS4n3I8=;
+ b=anPL2R8KfzviZeSu+iqa1HMPxvlE2netH1JjJA9M+1QHPLyv1DdGoEuwgzSasb0yVzLY5ejZDwUb7wSTIBdqsbVFJ5pKyKWqUMLAtFR8mZzVVDlzKhNZt6YilJKVNqo9EKza7/uVeTE+eAwNi7DpW9LS3g4k/xoPBZPEz/GY8+A=
+Received: from PAXPR04MB9089.eurprd04.prod.outlook.com (2603:10a6:102:225::22)
+ by PAXPR04MB8831.eurprd04.prod.outlook.com (2603:10a6:102:20e::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4844.15; Wed, 5 Jan
+ 2022 09:02:41 +0000
+Received: from PAXPR04MB9089.eurprd04.prod.outlook.com
+ ([fe80::192:f955:f98a:4d62]) by PAXPR04MB9089.eurprd04.prod.outlook.com
+ ([fe80::192:f955:f98a:4d62%4]) with mapi id 15.20.4867.007; Wed, 5 Jan 2022
+ 09:02:41 +0000
+From: "S.J. Wang" <shengjiu.wang@nxp.com>
+To: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/3] ASoC: imx-card: Need special setting for ak4497 on
+ i.MX8MQ
+Thread-Topic: [PATCH 1/3] ASoC: imx-card: Need special setting for ak4497 on
+ i.MX8MQ
+Thread-Index: AdgCEhZ7Lb6RtTFBSJ+4JF9NIvhERw==
+Date: Wed, 5 Jan 2022 09:02:40 +0000
+Message-ID: <PAXPR04MB9089C99640D09D6CC22AC0DFE34B9@PAXPR04MB9089.eurprd04.prod.outlook.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
-Subject: [5.16.0-rc5][ppc][net] kernel oops when hotplug remove of vNIC
- interface
-To: linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 3lSDvtLjC7hXrJ5K58EV8ilW6-bjGaAw
-X-Proofpoint-ORIG-GUID: zg1rzLiCKba6e1FbQN6PtOb5jekeE4Ir
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-05_02,2022-01-04_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
- mlxscore=0 bulkscore=0 clxscore=1011 suspectscore=0 malwarescore=0
- adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2201050053
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: fc5a9e4f-d050-42db-ac56-08d9d02a210f
+x-ms-traffictypediagnostic: PAXPR04MB8831:EE_
+x-microsoft-antispam-prvs: <PAXPR04MB8831A576E4ACBEE8139C2D8EE34B9@PAXPR04MB8831.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:5797;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: s6cEfGQd5tWeTxdhhRFZPZrw/N2Yxhxa0JLB1VRFofKKkYy4GKeQ/SdI/xpcW7ordBaMeDI26oPZvSG5/1WyRMi4N607y1KiWaqhnrA0MxwOIKYInyjvkUI/GyJLRM6KyUHomGy8gtl7cwZ8J0tUqgpYGQScNlp0sxuhwfq8ZKqwVUixUnpfUhwLfuJo1XVN8Fr8v0lbNMdEOExZ9WHuka9nzgpXv5mz1x4iqLOqDmIASlu2ZZofvCLOKnAe4d3PXu8tB4y81f+T5RhOr6qORygmME1uDrOt73obU+l1iVZ11ikb4yZAptEF2Rx9G+fuIw7h1U96hLi746kIawfnRIgb1LsHk6o3rVKToLlL+xp1V0n5BYjuPuB9VpaZuMlbrj/NqU+1UPK6MWEwiX7C6BB39SwGpPs2RzZeVFUWw0XnPEyjsYjZv9SNuCgdwgujEMbeV/0PcafzxYy/gpAKwZ10DdY2wsuWJwwi9jm4wC+gIMO4SMVaZ0/DhdoYUErd/01JrBO3ePDXtAWp782nOZ9QjTVWytzgcbpkqTwaMDLfZzNHlAlmJ/nVmm9JsE/guxNnIN0uirmwuFPzPivnrw32mmg8AHWYgXxFW8QkJVrUickgcAa6ovXySyJCs5zCXdpIjzXcA3NnEtrITDbTLT6n238p7Euh5ZBOdTmt9bo2HkHZ2dh2W4anidXSu4RTrmbMADKXc3jV8iVZXMnPCw==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PAXPR04MB9089.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(4636009)(366004)(8936002)(6506007)(508600001)(4326008)(7696005)(66556008)(186003)(26005)(66446008)(55016003)(122000001)(64756008)(66946007)(76116006)(66476007)(5660300002)(38100700002)(9686003)(316002)(83380400001)(54906003)(38070700005)(8676002)(6916009)(52536014)(33656002)(7416002)(86362001)(4744005)(2906002)(71200400001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Yfl1q6Gy8mD9rMr4Xtmc1TTwBGit4VYPbJRPJGgMKWn220ft5wvzxEDF9EK5?=
+ =?us-ascii?Q?8heNhe+LMlc970x95OLwILHjMciO0Qtrd0gT4ubBvs1/hRHPNd1scUCmZ1iC?=
+ =?us-ascii?Q?hP4iy3w+fVv7lx3PjERwmay2e+8JbufjV0StlmgWFBIJxPBge6y7Jw+4nT9T?=
+ =?us-ascii?Q?TbbMMUBtuukfj1jAG0ek0FmZwL7ndrGzDn/JVwUYK4FcARidO9cPdxvqUA+R?=
+ =?us-ascii?Q?q9iAm3PBWX24mc3MDF6QjDIWS4GokJFkG7T3B6mHoWji6fOMjTioyZklDXeB?=
+ =?us-ascii?Q?GHW2A/3ZMiqcdb/CPZEriIBGEEKM3NSplgeOTUPMTqKNUESbDL1l3DUNdHiS?=
+ =?us-ascii?Q?+OrHbXmy1I/OAUTz4m4VSa8dQr+/K5YDaoeIEz72N8OWXOAMKpifn2Lqz32g?=
+ =?us-ascii?Q?u7c+5vMbKqlCMGINpCMV8rXmmxaBT8vaM7JP3vF8u9ZDCZyoGtgT8MJ6a0Qc?=
+ =?us-ascii?Q?PHTPT7697d8CPMjJk7XqerfenKXM0oHcuXsOeGPgh3oPVRWhwY5ae/jwocKb?=
+ =?us-ascii?Q?3Roih1WV/1S+2xGrUtBgGOCqhmSWnzCjdchV66RzdRBD8Q+EhSHROc8bs3Ix?=
+ =?us-ascii?Q?gRZ67Yx5VZwVdn4ANoKeN6kUoN25dyTVCcGKvxvZR6w0eqHyMunwtCcJR7EF?=
+ =?us-ascii?Q?GrhrrLZsq3z+s05MKd8Q8wi7oXu4ZFJBkAiQ52uhj43o3w1uUzveyB2YkZK9?=
+ =?us-ascii?Q?RHGHbPxGDxKTJfIvagAxJZxztTob+rT8rH9YIjQybhwFuwmosUL6I6VwTb5J?=
+ =?us-ascii?Q?WO6wM75J1el7vSzCmp4lhVqapuObkVtR5R08HaKc1D8FiTR/NE1t1tIIjmhV?=
+ =?us-ascii?Q?8fxrsSigrRrz5YpCb/C9jAIbs70xNXQokAJkwahW7Yn/7FUPlr09aPYC3o0M?=
+ =?us-ascii?Q?DdP1AOvBMDzHmc4JAkPUzhrtmrIyDmElTY1Sv+GQjf1Wj8+QwdjRuNRTHJ5q?=
+ =?us-ascii?Q?auSxoggcdyl5g+IrkASSgPAck8CS6lgSC7I5bhvJiISanr6s6nklq1MgzOHQ?=
+ =?us-ascii?Q?PtBpH0e3JJiWZh/dYnraQ50iKOY+pd2FL4in42YB/rEocfDoP/SRKRe9rxlG?=
+ =?us-ascii?Q?lFMBbe+zv0a6mKEWsG8a2d//mL/UnZhiPRT4LDNV5fXqRod8kpWbhqGJ5T/O?=
+ =?us-ascii?Q?djdEniZBJwLV6xdu/fOrZgJ6sriVe7z8hKwcfAgiy1NiPpxj06l9IGiPu2SZ?=
+ =?us-ascii?Q?i7oaQwtefSRYQK+MD9iTZpcO2T3afel6KnbQIkMd/ZpUtSZ7Og5LibHqNaig?=
+ =?us-ascii?Q?6adyfF+WKhAqkhhhCwrl+iG4KQ4IEiAGR12Cezp1sIe7eNht6DzFbSDK/EJC?=
+ =?us-ascii?Q?srXLXMgGx90Tpm49aelNQl2OFTgYoqEwvui1vf9H31bKgEOWP0MipStri7mz?=
+ =?us-ascii?Q?RlOT3EViY+KyN6l1d+yDWv0l53uY2HlwpRKFRYmlj6QSG7CysHbcWKsdXp0D?=
+ =?us-ascii?Q?q0LgCJeg2JpqPbIDuhZonjgGIQLG/0+oyRokooZl+K8EA2ob1ZCqB0T0lIKf?=
+ =?us-ascii?Q?/ir9CAQNdkGpbGmlWewOBulGtZ/AiOL8rh4fuGOckVZSfn8XGHuV3H4WK4dq?=
+ =?us-ascii?Q?ei/mQCQuJ1X047C1em1Iadq3lMWKKgc+Niqgkiw8pMLzatbGqYTK4xDik25p?=
+ =?us-ascii?Q?hQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9089.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fc5a9e4f-d050-42db-ac56-08d9d02a210f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Jan 2022 09:02:41.0577 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: A975re9hDVsFGyvl0YBKDImV0NgMoxaznJ9LYv7VY9Zwsf5k55bMoy/4UCwtjPkK6jWM+pV4PG88bzwMta92RA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8831
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,104 +130,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dumazet@google.com, netdev <netdev@vger.kernel.org>,
- alexandr.lobakin@intel.com, brian King <brking@linux.vnet.ibm.com>,
- "kuba@kernel.org >> Jakub Kicinski" <kuba@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "timur@kernel.org" <timur@kernel.org>,
+ "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "tiwai@suse.com" <tiwai@suse.com>, "perex@perex.cz" <perex@perex.cz>,
+ "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Greeting's
+Hi
 
-Mainline kernel 5.16.0-rc5 panics when DLPAR ADD of vNIC device on my 
-Powerpc LPAR
+>=20
+> >  			/* sai may support mclk/bclk =3D 1 */
+> > -			if (of_find_property(np, "fsl,mclk-equal-bclk", NULL))
+> > +			if (of_find_property(np, "fsl,mclk-equal-bclk", NULL))
+> {
+> >  				link_data->one2one_ratio =3D true;
+> > +			} else {
+> > +				int i;
+> > +
+> > +				/*
+> > +				 * i.MX8MQ don't support one2one ratio,
+> then
+> > +				 * with ak4497 only 16bit case is supported.
+> > +				 */
+> > +				for (i =3D 0; i < ARRAY_SIZE(ak4497_fs_mul); i++)
+> {
+>=20
+> Shouldn't this be keyed off checking that we are actually running with an
+> ak4497?
 
-Perform below dlpar commands in a loop from linux OS
+No need. Here just update the ak4497_fs_mul table, before it is used the
+codec type is checked.
 
-drmgr -r -c slot -s U9080.HEX.134C488-V1-C3 -w 5 -d 1
-drmgr -a -c slot -s U9080.HEX.134C488-V1-C3 -w 5 -d 1
-
-after 7th iteration, the kernel panics with below messages
-
-console messages:
-[102056] ibmvnic 30000003 env3: Sending CRQ: 801e000864000000 
-0060000000000000
-<intr> ibmvnic 30000003 env3: Handling CRQ: 809e000800000000 
-0000000000000000
-[102056] ibmvnic 30000003 env3: Disabling tx_scrq[0] irq
-[102056] ibmvnic 30000003 env3: Disabling tx_scrq[1] irq
-[102056] ibmvnic 30000003 env3: Disabling rx_scrq[0] irq
-[102056] ibmvnic 30000003 env3: Disabling rx_scrq[1] irq
-[102056] ibmvnic 30000003 env3: Disabling rx_scrq[2] irq
-[102056] ibmvnic 30000003 env3: Disabling rx_scrq[3] irq
-[102056] ibmvnic 30000003 env3: Disabling rx_scrq[4] irq
-[102056] ibmvnic 30000003 env3: Disabling rx_scrq[5] irq
-[102056] ibmvnic 30000003 env3: Disabling rx_scrq[6] irq
-[102056] ibmvnic 30000003 env3: Disabling rx_scrq[7] irq
-[102056] ibmvnic 30000003 env3: Replenished 8 pools
-Kernel attempted to read user page (10) - exploit attempt? (uid: 0)
-BUG: Kernel NULL pointer dereference on read at 0x00000010
-Faulting instruction address: 0xc000000000a3c840
-Oops: Kernel access of bad area, sig: 11 [#1]
-LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-Modules linked in: bridge stp llc ib_core rpadlpar_io rpaphp nfnetlink 
-tcp_diag udp_diag inet_diag unix_diag af_packet_diag netlink_diag 
-bonding rfkill ibmvnic sunrpc pseries_rng xts vmx_crypto gf128mul 
-sch_fq_codel binfmt_misc ip_tables ext4 mbcache jbd2 dm_service_time 
-sd_mod t10_pi sg ibmvfc scsi_transport_fc ibmveth dm_multipath dm_mirror 
-dm_region_hash dm_log dm_mod fuse
-CPU: 9 PID: 102056 Comm: kworker/9:2 Kdump: loaded Not tainted 
-5.16.0-rc5-autotest-g6441998e2e37 #1
-Workqueue: events_long __ibmvnic_reset [ibmvnic]
-NIP:  c000000000a3c840 LR: c0080000029b5378 CTR: c000000000a3c820
-REGS: c0000000548e37e0 TRAP: 0300   Not tainted 
-(5.16.0-rc5-autotest-g6441998e2e37)
-MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28248484  XER: 00000004
-CFAR: c0080000029bdd24 DAR: 0000000000000010 DSISR: 40000000 IRQMASK: 0
-GPR00: c0080000029b55d0 c0000000548e3a80 c0000000028f0200 0000000000000000
-GPR04: c000000c7d1a7e00 fffffffffffffff6 0000000000000027 c000000c7d1a7e08
-GPR08: 0000000000000023 0000000000000000 0000000000000010 c0080000029bdd10
-GPR12: c000000000a3c820 c000000c7fca6680 0000000000000000 c000000133016bf8
-GPR16: 00000000000003fe 0000000000001000 0000000000000002 0000000000000008
-GPR20: c000000133016eb0 0000000000000000 0000000000000000 0000000000000003
-GPR24: c000000133016000 c000000133017168 0000000020000000 c000000133016a00
-GPR28: 0000000000000006 c000000133016a00 0000000000000001 c000000133016000
-NIP [c000000000a3c840] napi_enable+0x20/0xc0
-LR [c0080000029b5378] __ibmvnic_open+0xf0/0x430 [ibmvnic]
-Call Trace:
-[c0000000548e3a80] [0000000000000006] 0x6 (unreliable)
-[c0000000548e3ab0] [c0080000029b55d0] __ibmvnic_open+0x348/0x430 [ibmvnic]
-[c0000000548e3b40] [c0080000029bcc28] __ibmvnic_reset+0x500/0xdf0 [ibmvnic]
-[c0000000548e3c60] [c000000000176228] process_one_work+0x288/0x570
-[c0000000548e3d00] [c000000000176588] worker_thread+0x78/0x660
-[c0000000548e3da0] [c0000000001822f0] kthread+0x1c0/0x1d0
-[c0000000548e3e10] [c00000000000cf64] ret_from_kernel_thread+0x5c/0x64
-Instruction dump:
-7d2948f8 792307e0 4e800020 60000000 3c4c01eb 384239e0 f821ffd1 39430010
-38a0fff6 e92d1100 f9210028 39200000 <e9030010> f9010020 60420000 e9210020
----[ end trace 5f8033b08fd27706 ]---
-radix-mmu: Page sizes from device-tree:
-
-the fault instruction points to
-
-[root@ltcden11-lp1 boot]# gdb -batch 
-vmlinuz-5.16.0-rc5-autotest-g6441998e2e37 -ex 'list *(0xc000000000a3c840)'
-0xc000000000a3c840 is in napi_enable (net/core/dev.c:6966).
-6961    void napi_enable(struct napi_struct *n)
-6962    {
-6963        unsigned long val, new;
-6964
-6965        do {
-6966            val = READ_ONCE(n->state);
-6967            BUG_ON(!test_bit(NAPI_STATE_SCHED, &val));
-6968
-6969            new = val & ~(NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC);
-6970            if (n->dev->threaded && n->thread)
-
--- 
-Regard's
-
-Abdul Haleem
-IBM Linux Technology Center
-
+Best regards
+Wang Shengjiu
