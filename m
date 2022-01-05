@@ -2,92 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5B348568E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 17:14:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6286048582C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Jan 2022 19:27:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JTZLz1dJpz3bN7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jan 2022 03:14:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JTdHd1lC9z30hZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jan 2022 05:27:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G5a/cLDn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CKGRX3KD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=G5a/cLDn; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=CKGRX3KD; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JTdGt6VXtz2xXV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jan 2022 05:26:30 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JTZLB6xDVz2y7J
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jan 2022 03:14:10 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 205FCm2K027500; 
- Wed, 5 Jan 2022 16:14:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=6eTp/MWldCknR3BxbRr2//E7agbIxaGW9bm0MMpaJt8=;
- b=G5a/cLDnTIWiJydmDdx8eC68sTZWw89xm5tf3B0pDcEWdFgYTC1lg0ntyR/8tCMhrTbE
- oyLMqwtaTjIqUT+t+tPdyC/n5q/mnWIxM8M3KKhLMOV9Sojfzo65ZMM1ybp/SxgEM9Xp
- guw2m8vfcjWNm099CjO6v6+yBkVxPf2gSGM5w/Vz6ABlhVWes8JEoaGtZVwJrsT1S5f6
- u4ZM+otZ9rz2tYugkcoQvqI1CiY+ALRNXs7tsV3/f+C8aMSi8B5AaikbicgUF3ewlIfP
- dBB5W/rYaYJs/LGMBPUhtJb8gUhA7SBCDK+pUy9GbVhxtXgWXaeNqRT/6boUTbwQ/ly/ aw== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3dcnpbk4rg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Jan 2022 16:14:04 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 205GE14r015203;
- Wed, 5 Jan 2022 16:14:02 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03ams.nl.ibm.com with ESMTP id 3daek9u5f9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Jan 2022 16:14:02 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 205GE0gx43319656
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 5 Jan 2022 16:14:00 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EBD625204E;
- Wed,  5 Jan 2022 16:13:59 +0000 (GMT)
-Received: from [9.145.180.154] (unknown [9.145.180.154])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id BA99F52054;
- Wed,  5 Jan 2022 16:13:59 +0000 (GMT)
-Message-ID: <25527544-b0ac-596c-3876-560493b99f6b@linux.ibm.com>
-Date: Wed, 5 Jan 2022 17:13:59 +0100
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 7CCB9618A3;
+ Wed,  5 Jan 2022 18:26:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D05EC36AE0;
+ Wed,  5 Jan 2022 18:26:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1641407186;
+ bh=8Rh8+9kEcw2RkgbbTKDwnxgNPZN6KjYhzQ4LulQYlI8=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=CKGRX3KDi7O5SWP21eFGrSVbESaze1Rrg0ae72infu6yO57lj2Ddp2a0wC0twWD+C
+ teuKBy5rH5zD4nrbcapMXqj1Pci+o4LWAcO4OZtXo/UE/hq/4BHc4D/15PvC7juJn0
+ +V9Tinwwgam7VJdNtHLJp/MoYdyhQsdmAH58BU/zEwnkRGd0955mgcFHkhPHn0Yjfl
+ K/QAamnfji1qyDYS9ZVG76CaP8/ZpmFc/Us/O6xT5py5Zge0nB0P1/xPuzxPID8tkD
+ zYD3MHToD24F3JxNJBFBRV1DD/cLwzqhjNBnezp6IxXyTbMyE+O+s+JZEvq5VJsyad
+ X3HXLhLL2txRw==
+Date: Wed, 5 Jan 2022 10:26:25 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
+Subject: Re: [5.16.0-rc5][ppc][net] kernel oops when hotplug remove of vNIC
+ interface
+Message-ID: <20220105102625.2738186e@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <63380c22-a163-2664-62be-2cf401065e73@linux.vnet.ibm.com>
+References: <63380c22-a163-2664-62be-2cf401065e73@linux.vnet.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.1
-Subject: Re: [PATCH v4] powerpc/pseries: read the lpar name from the firmware
-Content-Language: en-US
-From: Laurent Dufour <ldufour@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <20211207171109.22793-1-ldufour@linux.ibm.com>
-In-Reply-To: <20211207171109.22793-1-ldufour@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: P15voHhJVxlRPFlDjZE2izYBYt0jT4rt
-X-Proofpoint-GUID: P15voHhJVxlRPFlDjZE2izYBYt0jT4rt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-05_03,2022-01-04_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- spamscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0 adultscore=0
- mlxscore=0 malwarescore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2201050108
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,113 +63,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: dumazet@google.com, netdev <netdev@vger.kernel.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>, Dany Madden <drt@linux.ibm.com>,
+ alexandr.lobakin@intel.com, brian King <brking@linux.vnet.ibm.com>,
+ Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Happy New Year, Michael!
+On Wed, 5 Jan 2022 13:56:53 +0530 Abdul Haleem wrote:
+> Greeting's
+>=20
+> Mainline kernel 5.16.0-rc5 panics when DLPAR ADD of vNIC device on my=20
+> Powerpc LPAR
+>=20
+> Perform below dlpar commands in a loop from linux OS
+>=20
+> drmgr -r -c slot -s U9080.HEX.134C488-V1-C3 -w 5 -d 1
+> drmgr -a -c slot -s U9080.HEX.134C488-V1-C3 -w 5 -d 1
+>=20
+> after 7th iteration, the kernel panics with below messages
+>=20
+> console messages:
+> [102056] ibmvnic 30000003 env3: Sending CRQ: 801e000864000000=20
+> 0060000000000000
+> <intr> ibmvnic 30000003 env3: Handling CRQ: 809e000800000000=20
+> 0000000000000000
+> [102056] ibmvnic 30000003 env3: Disabling tx_scrq[0] irq
+> [102056] ibmvnic 30000003 env3: Disabling tx_scrq[1] irq
+> [102056] ibmvnic 30000003 env3: Disabling rx_scrq[0] irq
+> [102056] ibmvnic 30000003 env3: Disabling rx_scrq[1] irq
+> [102056] ibmvnic 30000003 env3: Disabling rx_scrq[2] irq
+> [102056] ibmvnic 30000003 env3: Disabling rx_scrq[3] irq
+> [102056] ibmvnic 30000003 env3: Disabling rx_scrq[4] irq
+> [102056] ibmvnic 30000003 env3: Disabling rx_scrq[5] irq
+> [102056] ibmvnic 30000003 env3: Disabling rx_scrq[6] irq
+> [102056] ibmvnic 30000003 env3: Disabling rx_scrq[7] irq
+> [102056] ibmvnic 30000003 env3: Replenished 8 pools
+> Kernel attempted to read user page (10) - exploit attempt? (uid: 0)
+> BUG: Kernel NULL pointer dereference on read at 0x00000010
+> Faulting instruction address: 0xc000000000a3c840
+> Oops: Kernel access of bad area, sig: 11 [#1]
+> LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA pSeries
+> Modules linked in: bridge stp llc ib_core rpadlpar_io rpaphp nfnetlink=20
+> tcp_diag udp_diag inet_diag unix_diag af_packet_diag netlink_diag=20
+> bonding rfkill ibmvnic sunrpc pseries_rng xts vmx_crypto gf128mul=20
+> sch_fq_codel binfmt_misc ip_tables ext4 mbcache jbd2 dm_service_time=20
+> sd_mod t10_pi sg ibmvfc scsi_transport_fc ibmveth dm_multipath dm_mirror=
+=20
+> dm_region_hash dm_log dm_mod fuse
+> CPU: 9 PID: 102056 Comm: kworker/9:2 Kdump: loaded Not tainted=20
+> 5.16.0-rc5-autotest-g6441998e2e37 #1
+> Workqueue: events_long __ibmvnic_reset [ibmvnic]
+> NIP:=C2=A0 c000000000a3c840 LR: c0080000029b5378 CTR: c000000000a3c820
+> REGS: c0000000548e37e0 TRAP: 0300=C2=A0=C2=A0 Not tainted=20
+> (5.16.0-rc5-autotest-g6441998e2e37)
+> MSR:=C2=A0 8000000000009033 <SF,EE,ME,IR,DR,RI,LE>=C2=A0 CR: 28248484=C2=
+=A0 XER: 00000004
+> CFAR: c0080000029bdd24 DAR: 0000000000000010 DSISR: 40000000 IRQMASK: 0
+> GPR00: c0080000029b55d0 c0000000548e3a80 c0000000028f0200 0000000000000000
+> GPR04: c000000c7d1a7e00 fffffffffffffff6 0000000000000027 c000000c7d1a7e08
+> GPR08: 0000000000000023 0000000000000000 0000000000000010 c0080000029bdd10
+> GPR12: c000000000a3c820 c000000c7fca6680 0000000000000000 c000000133016bf8
+> GPR16: 00000000000003fe 0000000000001000 0000000000000002 0000000000000008
+> GPR20: c000000133016eb0 0000000000000000 0000000000000000 0000000000000003
+> GPR24: c000000133016000 c000000133017168 0000000020000000 c000000133016a00
+> GPR28: 0000000000000006 c000000133016a00 0000000000000001 c000000133016000
+> NIP [c000000000a3c840] napi_enable+0x20/0xc0
+> LR [c0080000029b5378] __ibmvnic_open+0xf0/0x430 [ibmvnic]
+> Call Trace:
+> [c0000000548e3a80] [0000000000000006] 0x6 (unreliable)
+> [c0000000548e3ab0] [c0080000029b55d0] __ibmvnic_open+0x348/0x430 [ibmvnic]
+> [c0000000548e3b40] [c0080000029bcc28] __ibmvnic_reset+0x500/0xdf0 [ibmvni=
+c]
+> [c0000000548e3c60] [c000000000176228] process_one_work+0x288/0x570
+> [c0000000548e3d00] [c000000000176588] worker_thread+0x78/0x660
+> [c0000000548e3da0] [c0000000001822f0] kthread+0x1c0/0x1d0
+> [c0000000548e3e10] [c00000000000cf64] ret_from_kernel_thread+0x5c/0x64
+> Instruction dump:
+> 7d2948f8 792307e0 4e800020 60000000 3c4c01eb 384239e0 f821ffd1 39430010
+> 38a0fff6 e92d1100 f9210028 39200000 <e9030010> f9010020 60420000 e9210020
+> ---[ end trace 5f8033b08fd27706 ]---
+> radix-mmu: Page sizes from device-tree:
+>=20
+> the fault instruction points to
+>=20
+> [root@ltcden11-lp1 boot]# gdb -batch=20
+> vmlinuz-5.16.0-rc5-autotest-g6441998e2e37 -ex 'list *(0xc000000000a3c840)'
+> 0xc000000000a3c840 is in napi_enable (net/core/dev.c:6966).
+> 6961=C2=A0=C2=A0=C2=A0 void napi_enable(struct napi_struct *n)
+> 6962=C2=A0=C2=A0=C2=A0 {
+> 6963=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 unsigned long val, new;
+> 6964
+> 6965=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 do {
+> 6966=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 val =3D READ=
+_ONCE(n->state);
 
-Do you consider taking that patch soon?
+If n is NULL here that's gotta be a driver problem.
 
-Thanks,
-Laurent.
+Adding Dany & Suka.
 
-On 07/12/2021, 18:11:09, Laurent Dufour wrote:
-> The LPAR name may be changed after the LPAR has been started in the HMC.
-> In that case lparstat command is not reporting the updated value because it
-> reads it from the device tree which is read at boot time.
-> 
-> However this value could be read from RTAS.
-> 
-> Adding this value in the /proc/powerpc/lparcfg output allows to read the
-> updated value.
-> 
-> Cc: Nathan Lynch <nathanl@linux.ibm.com>
-> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-> ---
-> v4:
->  address Nathan's new comments limiting size of the buffer.
-> v3:
->  address Michael's comments.
-> v2:
->  address Nathan's comments.
->  change title to partition_name aligning with existing partition_id
-> ---
->  arch/powerpc/platforms/pseries/lparcfg.c | 54 ++++++++++++++++++++++++
->  1 file changed, 54 insertions(+)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-> index f71eac74ea92..058d9a5fe545 100644
-> --- a/arch/powerpc/platforms/pseries/lparcfg.c
-> +++ b/arch/powerpc/platforms/pseries/lparcfg.c
-> @@ -311,6 +311,59 @@ static void parse_mpp_x_data(struct seq_file *m)
->  		seq_printf(m, "coalesce_pool_spurr=%ld\n", mpp_x_data.pool_spurr_cycles);
->  }
->  
-> +/*
-> + * PAPR defines, in section "7.3.16 System Parameters Option", the token 55 to
-> + * read the LPAR name, and the largest output data to 4000 + 2 bytes length.
-> + */
-> +#define SPLPAR_LPAR_NAME_TOKEN	55
-> +#define GET_SYS_PARM_BUF_SIZE	4002
-> +#if GET_SYS_PARM_BUF_SIZE > RTAS_DATA_BUF_SIZE
-> +#error "GET_SYS_PARM_BUF_SIZE is larger than RTAS_DATA_BUF_SIZE"
-> +#endif
-> +static void read_lpar_name(struct seq_file *m)
-> +{
-> +	int rc, len, token;
-> +	union {
-> +		char raw_buffer[GET_SYS_PARM_BUF_SIZE];
-> +		struct {
-> +			__be16 len;
-> +			char name[GET_SYS_PARM_BUF_SIZE-2];
-> +		};
-> +	} *local_buffer;
-> +
-> +	token = rtas_token("ibm,get-system-parameter");
-> +	if (token == RTAS_UNKNOWN_SERVICE)
-> +		return;
-> +
-> +	local_buffer = kmalloc(sizeof(*local_buffer), GFP_KERNEL);
-> +	if (!local_buffer)
-> +		return;
-> +
-> +	do {
-> +		spin_lock(&rtas_data_buf_lock);
-> +		memset(rtas_data_buf, 0, sizeof(*local_buffer));
-> +		rc = rtas_call(token, 3, 1, NULL, SPLPAR_LPAR_NAME_TOKEN,
-> +			       __pa(rtas_data_buf), sizeof(*local_buffer));
-> +		if (!rc)
-> +			memcpy(local_buffer->raw_buffer, rtas_data_buf,
-> +			       sizeof(local_buffer->raw_buffer));
-> +		spin_unlock(&rtas_data_buf_lock);
-> +	} while (rtas_busy_delay(rc));
-> +
-> +	if (!rc) {
-> +		/* Force end of string */
-> +		len = min((int) be16_to_cpu(local_buffer->len),
-> +			  (int) sizeof(local_buffer->name)-1);
-> +		local_buffer->name[len] = '\0';
-> +
-> +		seq_printf(m, "partition_name=%s\n", local_buffer->name);
-> +	} else
-> +		pr_err_once("Error calling get-system-parameter (0x%x)\n", rc);
-> +
-> +	kfree(local_buffer);
-> +}
-> +
-> +
->  #define SPLPAR_CHARACTERISTICS_TOKEN 20
->  #define SPLPAR_MAXLENGTH 1026*(sizeof(char))
->  
-> @@ -496,6 +549,7 @@ static int pseries_lparcfg_data(struct seq_file *m, void *v)
->  
->  	if (firmware_has_feature(FW_FEATURE_SPLPAR)) {
->  		/* this call handles the ibm,get-system-parameter contents */
-> +		read_lpar_name(m);
->  		parse_system_parameter_string(m);
->  		parse_ppp_data(m);
->  		parse_mpp_data(m);
+> 6967=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 BUG_ON(!test=
+_bit(NAPI_STATE_SCHED, &val));
+> 6968
+> 6969=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 new =3D val =
+& ~(NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC);
+> 6970=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 if (n->dev->=
+threaded && n->thread)
+>=20
 
