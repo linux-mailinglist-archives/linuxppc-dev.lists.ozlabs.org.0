@@ -2,70 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C83486BD7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jan 2022 22:24:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E1A486BB6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jan 2022 22:14:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JVK9P3tG2z30Lt
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 08:24:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JVJyH6G8Lz30Mb
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 08:14:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=VFCxEpkt;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CutrWWLq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b29;
- helo=mail-yb1-xb29.google.com; envelope-from=ngompa13@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=VFCxEpkt; dkim-atps=neutral
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com
- [IPv6:2607:f8b0:4864:20::b29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=CutrWWLq; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JVBh43VxYz2xBq
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 03:31:46 +1100 (AEDT)
-Received: by mail-yb1-xb29.google.com with SMTP id c6so6909334ybk.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jan 2022 08:31:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=ZM6UOM3FnObRgkqEaRi7ZwsD77LyLEAv2E7+Qwz8Kpo=;
- b=VFCxEpktrpxVRGftdbTMwrw0K0F4iRBgf/FyutcTsvjBshi4XyaAR9z8aQ1XSsuPMW
- XZwBWhC7xGFrRA7qJ7ZCdRCnCl3IG07J41NrYQOdtNeZqyCkfb5gxVv2gzovjf1S25Cj
- nJ29mE0DJcinUaYPSRFG5CMLPZ07BcCe7mxdeI68C44G5pvX4NxPtvOQ8OJOdUKqp5MW
- C5sEj1X1RkO53v91PxhkmXXMFrJzFHg/ztn4QrrH3hd7EKUzxrmaIm7JXC15fZEf4G8u
- 1vEdnf77nA9yfZBXMbnpXAZTi/STZdYof23Fsi08VjH8kIwtknhGklWB+Jhh+1ZfaWgr
- yZlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=ZM6UOM3FnObRgkqEaRi7ZwsD77LyLEAv2E7+Qwz8Kpo=;
- b=IW0KIulLh+iX5cB9drwJc+gBkuRg40cdSXiqUDulSTr2us9wv2TI3S73F5tRCT9+93
- 3gLGClGYYcM9eDISiTJjfRYqp0d5/vC9lIuvx4lGf7v/7RR08Z21xjVsNjE348MSgo8+
- cq+2/T4CgG2GdqWJyJ4xTc9443VqwqsxY8Dz0/blkXcGiE5E2WxwtTjBYC/MBnA9yFN+
- IuYyDUuVqTTQzsDgOFCuBhrSPMGpzhjrkmUQLMxbjMv7DBXLuL3c9ka0r+FWRqwgN19e
- NtQhaBwZoErRyIY/pp8/nIoGTElsiCzT6WmcWulDtxXt3RuAqT4sHi996QM5zQlSx1UA
- jj0w==
-X-Gm-Message-State: AOAM530ugy8HjqNgwwI/SmIa2hJEYdIIWdpwYC1WVQeIZlF0I1dSF5B3
- 5dMT8g5U3ipXAkSarafzrd3F0DGCbcBFVtpC6Xg=
-X-Google-Smtp-Source: ABdhPJzNdTP4XFd9P9NPS3ZzTPTsau2wGRp5cUn725XM9mHDW1ZcoJ4wEL3J1x4enMFKNDk4Az+hl/frDFPXPcgZERY=
-X-Received: by 2002:a25:d708:: with SMTP id o8mr65492245ybg.582.1641486699930; 
- Thu, 06 Jan 2022 08:31:39 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JVJxV25vdz2xBV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 08:13:49 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 206IVb3g017615; 
+ Thu, 6 Jan 2022 21:13:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=KuEOMtUyfPPM9MezCJTSQ3xStJ2buUjqJB18gGW8+Z4=;
+ b=CutrWWLqC0wenAD7aTQK9y5IWQ7WPi5gXR13bEihGS2oyiHRHz8X3ftIuNTW14GzkOxg
+ SaQlGRfx8JQFPNwFUcBaN7OVnsNNGV+Gz+3/g58ByAXcGUgouo55ZAAKuL/TLxkqWRiq
+ BwV2F5XBZBuQjj9b6BvcjDdx5RY5F+KyJD0V17jGW/v/4NtLLeNXHU8+550W/+5boEP6
+ gZynsbX12AmTO1OlQ2bwBq+Avd2tBBaF11pnW+YX6h5t0pmip+y/YcP+gWZJqHGWKmxs
+ DwJUthbbm0tl/J1WPdhypyBrWCDvB/v5RbBs4jnxKRdjLRw7CINSv7ePEmY6kTi8I06+ 7g== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3de5sfjmsd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Jan 2022 21:13:47 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 206L4jKK021871;
+ Thu, 6 Jan 2022 21:13:46 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma02dal.us.ibm.com with ESMTP id 3de5r9km6h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 06 Jan 2022 21:13:46 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 206LDjDa28770704
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 6 Jan 2022 21:13:45 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5FC116A054;
+ Thu,  6 Jan 2022 21:13:45 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2586C6A04D;
+ Thu,  6 Jan 2022 21:13:45 +0000 (GMT)
+Received: from localhost (unknown [9.160.191.186])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  6 Jan 2022 21:13:44 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Laurent Dufour <ldufour@linux.ibm.com>
+Subject: Re: [PATCH v5] powerpc/pseries: read the lpar name from the firmware
+In-Reply-To: <20220106161339.74656-1-ldufour@linux.ibm.com>
+References: <20220106161339.74656-1-ldufour@linux.ibm.com>
+Date: Thu, 06 Jan 2022 15:13:44 -0600
+Message-ID: <878rvsva7r.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
-References: <a16c31f3caf448dda5d9315e056585b6fafc22c5.1623302442.git.christophe.leroy@csgroup.eu>
- <6c7a6762-6bec-842b-70b4-4a53297687d1@gmx.com>
-In-Reply-To: <6c7a6762-6bec-842b-70b4-4a53297687d1@gmx.com>
-From: Neal Gompa <ngompa13@gmail.com>
-Date: Thu, 6 Jan 2022 11:31:04 -0500
-Message-ID: <CAEg-Je9UJDJ=hvLLqQDsHijWnxh1Z1CwaLKCFm+-bLTfCFingg@mail.gmail.com>
-Subject: Re: [PATCH] fs: btrfs: Disable BTRFS on platforms having 256K pages
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Fri, 07 Jan 2022 08:23:36 +1100
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: MauGligxdyA9gUZfrr9DY5zagpl3FgWe
+X-Proofpoint-GUID: MauGligxdyA9gUZfrr9DY5zagpl3FgWe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-06_09,2022-01-06_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0
+ impostorscore=0 mlxscore=0 mlxlogscore=999 clxscore=1015
+ lowpriorityscore=0 suspectscore=0 malwarescore=0 spamscore=0 adultscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201060133
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,38 +97,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hexagon@vger.kernel.org, Hector Martin <marcan@marcan.st>,
- Josef Bacik <josef@toxicpanda.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- linuxppc-dev@lists.ozlabs.org, Btrfs BTRFS <linux-btrfs@vger.kernel.org>
+Cc: tyreld@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 5, 2022 at 7:05 AM Qu Wenruo <quwenruo.btrfs@gmx.com> wrote:
+Laurent Dufour <ldufour@linux.ibm.com> writes:
+> The LPAR name may be changed after the LPAR has been started in the HMC.
+> In that case lparstat command is not reporting the updated value because it
+> reads it from the device tree which is read at boot time.
 >
-> Hi Christophe,
+> However this value could be read from RTAS.
 >
-> I'm recently enhancing the subpage support for btrfs, and my current
-> branch should solve the problem for btrfs to support larger page sizes.
+> Adding this value in the /proc/powerpc/lparcfg output allows to read the
+> updated value.
 >
-> But unfortunately my current test environment can only provide page size
-> with 64K or 4K, no 16K or 128K/256K support.
+> However the hypervisor, like Qemu/KVM, may not support this RTAS
+> parameter. In that case the value reported in lparcfg is read from the
+> device tree and so is not updated accordingly.
 >
-> Mind to test my new branch on 128K page size systems?
-> (256K page size support is still lacking though, which will be addressed
-> in the future)
->
-> https://github.com/adam900710/linux/tree/metadata_subpage_switch
->
+> Cc: Nathan Lynch <nathanl@linux.ibm.com>
+> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> ---
+> v5:
+>  fallback to the device tree value if RTAS is not providing the value.
+> v4:
+>  address Nathan's new comments limiting size of the buffer.
+> v3:
+>  address Michael's comments.
+> v2:
+>  address Nathan's comments.
+>  change title to partition_name aligning with existing partition_id
 
-The Linux Asahi folks have a 16K page environment (M1 Macs)...
+Thanks Laurent.
 
-Hector, could you look at it too?
-
-
-
---=20
-=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
-=BC=81/ Always, there's only one truth!
+Reviewed-by: Nathan Lynch <nathanl@linux.ibm.com>
