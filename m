@@ -1,51 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 364CD486D0E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jan 2022 23:07:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA836486CF5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jan 2022 22:55:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JVL7j0pLhz30LQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 09:07:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JVKsy6dmYz3bbS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 08:55:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=iogearbox.net (client-ip=213.133.104.62;
- helo=www62.your-server.de; envelope-from=daniel@iogearbox.net;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 1241 seconds by postgrey-1.36 at boromir;
- Fri, 07 Jan 2022 09:07:23 AEDT
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=wanadoo.fr
+ (client-ip=80.12.242.129; helo=smtp.smtpout.orange.fr;
+ envelope-from=christophe.jaillet@wanadoo.fr; receiver=<UNKNOWN>)
+Received: from smtp.smtpout.orange.fr (smtp07.smtpout.orange.fr
+ [80.12.242.129])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JVL7H1CNrz2xsm
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 09:07:23 +1100 (AEDT)
-Received: from sslproxy03.your-server.de ([88.198.220.132])
- by www62.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
- (Exim 4.92.3) (envelope-from <daniel@iogearbox.net>)
- id 1n5aaK-000DAv-QH; Thu, 06 Jan 2022 22:46:12 +0100
-Received: from [85.1.206.226] (helo=linux.home)
- by sslproxy03.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <daniel@iogearbox.net>)
- id 1n5aaK-000Xvd-GZ; Thu, 06 Jan 2022 22:46:12 +0100
-Subject: Re: [PATCH 00/13] powerpc/bpf: Some fixes and updates
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>
-References: <cover.1641468127.git.naveen.n.rao@linux.vnet.ibm.com>
-From: Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <f4f3437d-084f-0858-8795-76e4a0fa5627@iogearbox.net>
-Date: Thu, 6 Jan 2022 22:46:11 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JVKsY51Jzz2xKR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 08:55:29 +1100 (AEDT)
+Received: from pop-os.home ([90.11.185.88]) by smtp.orange.fr with ESMTPA
+ id 5abzntURZ2lVY5ac0nSlBx; Thu, 06 Jan 2022 22:47:57 +0100
+X-ME-Helo: pop-os.home
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Thu, 06 Jan 2022 22:47:57 +0100
+X-ME-IP: 90.11.185.88
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: arnd@arndb.de, hch@infradead.org, akpm@linux-foundation.org,
+ mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org
+Subject: [PATCH 02/16] floppy: Remove usage of the deprecated
+ "pci-dma-compat.h" API
+Date: Thu,  6 Jan 2022 22:47:54 +0100
+Message-Id: <3b8dfc91908327b983a44adc18bd6a6f4c4b2d9f.1641500561.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
+References: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-In-Reply-To: <cover.1641468127.git.naveen.n.rao@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.3/26414/Thu Jan  6 10:26:00 2022)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,29 +48,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ykaliuta@redhat.com, johan.almbladh@anyfinetworks.com,
- linuxppc-dev@lists.ozlabs.org, song@kernel.org, bpf@vger.kernel.org,
- Jiri Olsa <jolsa@redhat.com>, Hari Bathini <hbathini@linux.ibm.com>
+Cc: kernel-janitors@vger.kernel.org,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Naveen,
+In [1], Christoph Hellwig has proposed to remove the wrappers in
+include/linux/pci-dma-compat.h.
 
-On 1/6/22 12:45 PM, Naveen N. Rao wrote:
-> A set of fixes and updates to powerpc BPF JIT:
-> - Patches 1-3 fix issues with the existing powerpc JIT and are tagged
->    for -stable.
-> - Patch 4 fixes a build issue with bpf selftests on powerpc.
-> - Patches 5-9 handle some corner cases and make some small improvements.
-> - Patches 10-13 optimize how function calls are handled in ppc64.
-> 
-> Patches 7 and 8 were previously posted, and while patch 7 has no
-> changes, patch 8 has been reworked to handle BPF_EXIT differently.
+Some reasons why this API should be removed have been given by Julia
+Lawall in [2].
 
-Is the plan to route these via ppc trees? Fwiw, patch 1 and 4 look generic
-and in general good to me, we could also take these two via bpf-next tree
-given outside of arch/powerpc/? Whichever works best.
+A coccinelle script has been used to perform the needed transformation.
+It can be found in [3].
 
-Thanks,
-Daniel
+[1]: https://lore.kernel.org/kernel-janitors/20200421081257.GA131897@infradead.org/
+[2]: https://lore.kernel.org/kernel-janitors/alpine.DEB.2.22.394.2007120902170.2424@hadrien/
+[3]: https://lore.kernel.org/kernel-janitors/20200716192821.321233-1-christophe.jaillet@wanadoo.fr/
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+---
+Reviewed in: https://lore.kernel.org/kernel-janitors/YdLAqi+WQu4ZhAxE@infradead.org/
+---
+ arch/powerpc/include/asm/floppy.h | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/floppy.h b/arch/powerpc/include/asm/floppy.h
+index 7af9a68fd949..f8ce178b43b7 100644
+--- a/arch/powerpc/include/asm/floppy.h
++++ b/arch/powerpc/include/asm/floppy.h
+@@ -134,17 +134,19 @@ static int hard_dma_setup(char *addr, unsigned long size, int mode, int io)
+ 	int dir;
+ 
+ 	doing_vdma = 0;
+-	dir = (mode == DMA_MODE_READ) ? PCI_DMA_FROMDEVICE : PCI_DMA_TODEVICE;
++	dir = (mode == DMA_MODE_READ) ? DMA_FROM_DEVICE : DMA_TO_DEVICE;
+ 
+ 	if (bus_addr 
+ 	    && (addr != prev_addr || size != prev_size || dir != prev_dir)) {
+ 		/* different from last time -- unmap prev */
+-		pci_unmap_single(isa_bridge_pcidev, bus_addr, prev_size, prev_dir);
++		dma_unmap_single(&isa_bridge_pcidev->dev, bus_addr, prev_size,
++				 prev_dir);
+ 		bus_addr = 0;
+ 	}
+ 
+ 	if (!bus_addr)	/* need to map it */
+-		bus_addr = pci_map_single(isa_bridge_pcidev, addr, size, dir);
++		bus_addr = dma_map_single(&isa_bridge_pcidev->dev, addr, size,
++					  dir);
+ 
+ 	/* remember this one as prev */
+ 	prev_addr = addr;
+-- 
+2.32.0
+
