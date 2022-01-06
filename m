@@ -2,57 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070AC486B2B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jan 2022 21:29:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C83486BD7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jan 2022 22:24:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JVHyK6jTMz3bcp
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 07:29:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JVK9P3tG2z30Lt
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 08:24:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F+qwbyGH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=VFCxEpkt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b29;
+ helo=mail-yb1-xb29.google.com; envelope-from=ngompa13@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=F+qwbyGH; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=VFCxEpkt; dkim-atps=neutral
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com
+ [IPv6:2607:f8b0:4864:20::b29])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JVHx11h0Jz2xv0
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 07:28:21 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 7D836B823F8;
- Thu,  6 Jan 2022 20:28:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B656C36AE3;
- Thu,  6 Jan 2022 20:28:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1641500897;
- bh=21uqmI0sF0iqFXzWvfwSr8yWzQwcFoXEvQOSpJlA73Q=;
- h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
- b=F+qwbyGHuzSd59HvZAdcWL05m/1dwoHw0g/OWlN9NjtsNLYA9CjiZ2ElVAOi8ifoU
- nwjK6pBaLzl9SFkc64aiFm9xXA/60dEPD5gfqwFNH9Ja1YK+GMSCdk5QV54Gm3K5Lq
- x9wN2hC7VsVxD8mKZpexdSqzLaCZoixn7AOiYc1YrO1/PSpONTvYJtNOCNe76RdbWL
- 00LAaDGFeYt1WoPPpAmE0J8p5+xuLVnLB7jyIwYoJydwywAweOIBdZ5DmzezjNWGTV
- 6/WHdrxYrWqndNnjrbAlWzgPj4yMz7CWcbQyHCiYvRGKunDcR+7p3bQmPPBO9u/ZM2
- SBTXbdFyaBxBg==
-From: Mark Brown <broonie@kernel.org>
-To: perex@perex.cz, tiwai@suse.com, Xiubo.Lee@gmail.com,
- alsa-devel@alsa-project.org, festevam@gmail.com, nicoleotsuka@gmail.com,
- timur@kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <1641292835-19085-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1641292835-19085-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 0/3] ASoC: imx-card: several improvement and fixes
-Message-Id: <164150089509.2243486.810361187856950551.b4-ty@kernel.org>
-Date: Thu, 06 Jan 2022 20:28:15 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JVBh43VxYz2xBq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 03:31:46 +1100 (AEDT)
+Received: by mail-yb1-xb29.google.com with SMTP id c6so6909334ybk.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jan 2022 08:31:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=ZM6UOM3FnObRgkqEaRi7ZwsD77LyLEAv2E7+Qwz8Kpo=;
+ b=VFCxEpktrpxVRGftdbTMwrw0K0F4iRBgf/FyutcTsvjBshi4XyaAR9z8aQ1XSsuPMW
+ XZwBWhC7xGFrRA7qJ7ZCdRCnCl3IG07J41NrYQOdtNeZqyCkfb5gxVv2gzovjf1S25Cj
+ nJ29mE0DJcinUaYPSRFG5CMLPZ07BcCe7mxdeI68C44G5pvX4NxPtvOQ8OJOdUKqp5MW
+ C5sEj1X1RkO53v91PxhkmXXMFrJzFHg/ztn4QrrH3hd7EKUzxrmaIm7JXC15fZEf4G8u
+ 1vEdnf77nA9yfZBXMbnpXAZTi/STZdYof23Fsi08VjH8kIwtknhGklWB+Jhh+1ZfaWgr
+ yZlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=ZM6UOM3FnObRgkqEaRi7ZwsD77LyLEAv2E7+Qwz8Kpo=;
+ b=IW0KIulLh+iX5cB9drwJc+gBkuRg40cdSXiqUDulSTr2us9wv2TI3S73F5tRCT9+93
+ 3gLGClGYYcM9eDISiTJjfRYqp0d5/vC9lIuvx4lGf7v/7RR08Z21xjVsNjE348MSgo8+
+ cq+2/T4CgG2GdqWJyJ4xTc9443VqwqsxY8Dz0/blkXcGiE5E2WxwtTjBYC/MBnA9yFN+
+ IuYyDUuVqTTQzsDgOFCuBhrSPMGpzhjrkmUQLMxbjMv7DBXLuL3c9ka0r+FWRqwgN19e
+ NtQhaBwZoErRyIY/pp8/nIoGTElsiCzT6WmcWulDtxXt3RuAqT4sHi996QM5zQlSx1UA
+ jj0w==
+X-Gm-Message-State: AOAM530ugy8HjqNgwwI/SmIa2hJEYdIIWdpwYC1WVQeIZlF0I1dSF5B3
+ 5dMT8g5U3ipXAkSarafzrd3F0DGCbcBFVtpC6Xg=
+X-Google-Smtp-Source: ABdhPJzNdTP4XFd9P9NPS3ZzTPTsau2wGRp5cUn725XM9mHDW1ZcoJ4wEL3J1x4enMFKNDk4Az+hl/frDFPXPcgZERY=
+X-Received: by 2002:a25:d708:: with SMTP id o8mr65492245ybg.582.1641486699930; 
+ Thu, 06 Jan 2022 08:31:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <a16c31f3caf448dda5d9315e056585b6fafc22c5.1623302442.git.christophe.leroy@csgroup.eu>
+ <6c7a6762-6bec-842b-70b4-4a53297687d1@gmx.com>
+In-Reply-To: <6c7a6762-6bec-842b-70b4-4a53297687d1@gmx.com>
+From: Neal Gompa <ngompa13@gmail.com>
+Date: Thu, 6 Jan 2022 11:31:04 -0500
+Message-ID: <CAEg-Je9UJDJ=hvLLqQDsHijWnxh1Z1CwaLKCFm+-bLTfCFingg@mail.gmail.com>
+Subject: Re: [PATCH] fs: btrfs: Disable BTRFS on platforms having 256K pages
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailman-Approved-At: Fri, 07 Jan 2022 08:23:36 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,49 +77,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-hexagon@vger.kernel.org, Hector Martin <marcan@marcan.st>,
+ Josef Bacik <josef@toxicpanda.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ linuxppc-dev@lists.ozlabs.org, Btrfs BTRFS <linux-btrfs@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 4 Jan 2022 18:40:32 +0800, Shengjiu Wang wrote:
-> Several improvement and fixes for AK codecs supported on i.MX platfroms
-> 
-> Shengjiu Wang (3):
->   ASoC: imx-card: Need special setting for ak4497 on i.MX8MQ
->   ASoC: imx-card: Fix mclk calculation issue for akcodec
->   ASoC: imx-card: improve the sound quality for low rate
-> 
-> [...]
+On Wed, Jan 5, 2022 at 7:05 AM Qu Wenruo <quwenruo.btrfs@gmx.com> wrote:
+>
+> Hi Christophe,
+>
+> I'm recently enhancing the subpage support for btrfs, and my current
+> branch should solve the problem for btrfs to support larger page sizes.
+>
+> But unfortunately my current test environment can only provide page size
+> with 64K or 4K, no 16K or 128K/256K support.
+>
+> Mind to test my new branch on 128K page size systems?
+> (256K page size support is still lacking though, which will be addressed
+> in the future)
+>
+> https://github.com/adam900710/linux/tree/metadata_subpage_switch
+>
 
-Applied to
+The Linux Asahi folks have a 16K page environment (M1 Macs)...
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Hector, could you look at it too?
 
-Thanks!
 
-[1/3] ASoC: imx-card: Need special setting for ak4497 on i.MX8MQ
-      commit: 3349b3d0c63b8b6fcca58156d72407f0b2e101ac
-[2/3] ASoC: imx-card: Fix mclk calculation issue for akcodec
-      commit: f331ae5fa59fbfb748317b290648fc3f1a50d932
-[3/3] ASoC: imx-card: improve the sound quality for low rate
-      commit: 3969341813eb56d2dfc39bb64229359a6ae3c195
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+--=20
+=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
+=BC=81/ Always, there's only one truth!
