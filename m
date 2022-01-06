@@ -1,103 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C6C4863EE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jan 2022 12:49:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 658504863EF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jan 2022 12:49:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JV4Pm6zRgz30Lc
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jan 2022 22:49:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JV4QY1rYNz3cRH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Jan 2022 22:49:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pwA6R4zg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kqP3WwoI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=pwA6R4zg; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=kqP3WwoI; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JV4Lr48RRz30JB
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jan 2022 22:46:28 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 206B6iiT018340; 
- Thu, 6 Jan 2022 11:46:10 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JV4Lw6n0Bz30Nb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Jan 2022 22:46:32 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 206B1U7r028395; 
+ Thu, 6 Jan 2022 11:46:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=rJOIvohYLtxf2Gq6pKt9yzLd4MrYXsStnK384+ihmmc=;
- b=pwA6R4zgrvff05vGXKdyyp4Nq50GmoBpJvTNEqu77s6IWHfl9KJNw2RCFZVgkeUXiwFc
- n2q/Arf4lP5nn9u+PdJiCOM/Ec0pvwaZwaLouxW4Tgw5tvN+84oBEOqWlb04/MdKMgDd
- jUQGfRADZoESep1YKhWurmYR/6s1uLyLIDuSxz+XNcvwzZLjRHRak2cjVl/gS/X+9XwL
- 8m4MdkYxi7/erT8uZqFNUBJJsTWHNimJcTpdovSH3dFYe2pb3/5BstxMyZvsfzYy/Baz
- 1SFMsJVleR1s2CiHT89a0SG2Xm1PG93rz73QDcRLgavZCdouifbrXAk7L6xcvGtjfKDs UA== 
+ bh=vPNChRcvudTNrb7UM6T93IGyor9st/nqg37tQiXtZC0=;
+ b=kqP3WwoIw7ok+OAiiG+kgw35nQqOwh6fF86c99p32zpsoV97LCSAExoIE5j7SpwoKI2W
+ GDHzMpIZVF4ljoyKOGAo+8a8HygPSg+c5YxndJ6jSf3X0sWdxYJojrf7gqqNMTiGRF9A
+ B/f77EQXQQuReUnvp2YMG2ySsk1QUxXPHSkFQMkM0OLZQKoMCH+fYiIyPnaDd0h90QSl
+ qoPa2/Q0W8a3aBQQQPtqVK0pVy1eIUziV3tBQTh8xFv0OU1stVAxhBgKHWsaH40otuB5
+ CPQ+hF1rvRYxPBpvxYgydQQVsP7WxAWuRfWvmFCF2sioax4AZppuKb8+DyJD+Bk9GPBA RQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3ddud7vxfd-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ddy6grqvb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Jan 2022 11:46:09 +0000
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 206Be1oY004529;
- Thu, 6 Jan 2022 11:46:09 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3ddud7vxey-1
+ Thu, 06 Jan 2022 11:46:13 +0000
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 206BKcdh012694;
+ Thu, 6 Jan 2022 11:46:13 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ddy6grquu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Jan 2022 11:46:09 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 206BhJ5m013100;
- Thu, 6 Jan 2022 11:46:07 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04fra.de.ibm.com with ESMTP id 3ddmugchn2-1
+ Thu, 06 Jan 2022 11:46:13 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 206BhGdv027562;
+ Thu, 6 Jan 2022 11:46:10 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06ams.nl.ibm.com with ESMTP id 3ddmrr4s46-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 06 Jan 2022 11:46:07 +0000
+ Thu, 06 Jan 2022 11:46:10 +0000
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com
  (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 206Bk4C348300446
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 206Bk7vo29163936
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 6 Jan 2022 11:46:04 GMT
+ Thu, 6 Jan 2022 11:46:07 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 179EDA4068;
+ by IMSVA (Postfix) with ESMTP id 63E7BA405F;
+ Thu,  6 Jan 2022 11:46:07 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 827BAA4062;
  Thu,  6 Jan 2022 11:46:04 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 52212A4062;
- Thu,  6 Jan 2022 11:46:01 +0000 (GMT)
 Received: from naverao1-tp.ibm.com (unknown [9.43.91.118])
  by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  6 Jan 2022 11:46:01 +0000 (GMT)
+ Thu,  6 Jan 2022 11:46:04 +0000 (GMT)
 From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Daniel Borkmann <daniel@iogearbox.net>,
  Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Subject: [PATCH 03/13] powerpc/bpf: Update ldimm64 instructions during extra
- pass
-Date: Thu,  6 Jan 2022 17:15:07 +0530
-Message-Id: <7cc162af77ba918eb3ecd26ec9e7824bc44b1fae.1641468127.git.naveen.n.rao@linux.vnet.ibm.com>
+Subject: [PATCH 04/13] tools/bpf: Rename 'struct event' to avoid naming
+ conflict
+Date: Thu,  6 Jan 2022 17:15:08 +0530
+Message-Id: <c13cb3767d26257ca4387b8296b632b433a58db6.1641468127.git.naveen.n.rao@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1641468127.git.naveen.n.rao@linux.vnet.ibm.com>
 References: <cover.1641468127.git.naveen.n.rao@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: rlfzlnLi8Hm7w9-59TNFnW9VVBklD9C5
-X-Proofpoint-ORIG-GUID: cD0JcllM-d8ktZXvBYqvZ8lmJlV0Q08g
+X-Proofpoint-ORIG-GUID: zZQDcgiBsm9mzEjgzVclVR_5U3WBabmK
+X-Proofpoint-GUID: skXkiLy30zEcJxpW_1nR2ESw8pHqyLQx
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
  definitions=2022-01-06_04,2022-01-06_01,2021-12-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- impostorscore=0 adultscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0
- clxscore=1015 mlxlogscore=621 malwarescore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2112160000 definitions=main-2201060081
+ malwarescore=0 bulkscore=0
+ impostorscore=0 mlxscore=0 mlxlogscore=718 phishscore=0 lowpriorityscore=0
+ adultscore=0 spamscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2112160000
+ definitions=main-2201060081
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,136 +116,66 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These instructions are updated after the initial JIT, so redo codegen
-during the extra pass. Rename bpf_jit_fixup_subprog_calls() to clarify
-that this is more than just subprog calls.
+On ppc64le, trying to build bpf seltests throws the below warning:
+  In file included from runqslower.bpf.c:5:
+  ./runqslower.h:7:8: error: redefinition of 'event'
+  struct event {
+	 ^
+  /home/naveen/linux/tools/testing/selftests/bpf/tools/build/runqslower/vmlinux.h:156602:8:
+  note: previous definition is here
+  struct event {
+	 ^
 
-Fixes: 69c087ba6225b5 ("bpf: Add bpf_for_each_map_elem() helper")
-Cc: stable@vger.kernel.org # v5.15
+This happens since 'struct event' is defined in
+drivers/net/ethernet/alteon/acenic.h . Rename the one in runqslower to a
+more appropriate 'runq_event' to avoid the naming conflict.
+
 Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 ---
- arch/powerpc/net/bpf_jit_comp.c   | 29 +++++++++++++++++++++++------
- arch/powerpc/net/bpf_jit_comp32.c |  6 ++++++
- arch/powerpc/net/bpf_jit_comp64.c |  7 ++++++-
- 3 files changed, 35 insertions(+), 7 deletions(-)
+ tools/bpf/runqslower/runqslower.bpf.c | 2 +-
+ tools/bpf/runqslower/runqslower.c     | 2 +-
+ tools/bpf/runqslower/runqslower.h     | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index d6ffdd0f2309d0..56dd1f4e3e4447 100644
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -23,15 +23,15 @@ static void bpf_jit_fill_ill_insns(void *area, unsigned int size)
- 	memset32(area, BREAKPOINT_INSTRUCTION, size / 4);
- }
+diff --git a/tools/bpf/runqslower/runqslower.bpf.c b/tools/bpf/runqslower/runqslower.bpf.c
+index ab9353f2fd46ab..9a5c1f008fe603 100644
+--- a/tools/bpf/runqslower/runqslower.bpf.c
++++ b/tools/bpf/runqslower/runqslower.bpf.c
+@@ -68,7 +68,7 @@ int handle__sched_switch(u64 *ctx)
+ 	 */
+ 	struct task_struct *prev = (struct task_struct *)ctx[1];
+ 	struct task_struct *next = (struct task_struct *)ctx[2];
+-	struct event event = {};
++	struct runq_event event = {};
+ 	u64 *tsp, delta_us;
+ 	long state;
+ 	u32 pid;
+diff --git a/tools/bpf/runqslower/runqslower.c b/tools/bpf/runqslower/runqslower.c
+index d8971584495213..ff7f5e8485e937 100644
+--- a/tools/bpf/runqslower/runqslower.c
++++ b/tools/bpf/runqslower/runqslower.c
+@@ -100,7 +100,7 @@ static int bump_memlock_rlimit(void)
  
--/* Fix the branch target addresses for subprog calls */
--static int bpf_jit_fixup_subprog_calls(struct bpf_prog *fp, u32 *image,
--				       struct codegen_context *ctx, u32 *addrs)
-+/* Fix updated addresses (for subprog calls, ldimm64, et al) during extra pass */
-+static int bpf_jit_fixup_addresses(struct bpf_prog *fp, u32 *image,
-+				   struct codegen_context *ctx, u32 *addrs)
+ void handle_event(void *ctx, int cpu, void *data, __u32 data_sz)
  {
- 	const struct bpf_insn *insn = fp->insnsi;
- 	bool func_addr_fixed;
- 	u64 func_addr;
- 	u32 tmp_idx;
--	int i, ret;
-+	int i, j, ret;
+-	const struct event *e = data;
++	const struct runq_event *e = data;
+ 	struct tm *tm;
+ 	char ts[32];
+ 	time_t t;
+diff --git a/tools/bpf/runqslower/runqslower.h b/tools/bpf/runqslower/runqslower.h
+index 9db225425e5ff9..4f70f07200c23d 100644
+--- a/tools/bpf/runqslower/runqslower.h
++++ b/tools/bpf/runqslower/runqslower.h
+@@ -4,7 +4,7 @@
  
- 	for (i = 0; i < fp->len; i++) {
- 		/*
-@@ -66,6 +66,23 @@ static int bpf_jit_fixup_subprog_calls(struct bpf_prog *fp, u32 *image,
- 			 * of the JITed sequence remains unchanged.
- 			 */
- 			ctx->idx = tmp_idx;
-+		} else if (insn[i].code == (BPF_LD | BPF_IMM | BPF_DW)) {
-+			tmp_idx = ctx->idx;
-+			ctx->idx = addrs[i] / 4;
-+#ifdef CONFIG_PPC32
-+			PPC_LI32(ctx->b2p[insn[i].dst_reg] - 1, (u32)insn[i + 1].imm);
-+			PPC_LI32(ctx->b2p[insn[i].dst_reg], (u32)insn[i].imm);
-+			for (j = ctx->idx - addrs[i] / 4; j < 4; j++)
-+				EMIT(PPC_RAW_NOP());
-+#else
-+			func_addr = ((u64)(u32)insn[i].imm) | (((u64)(u32)insn[i + 1].imm) << 32);
-+			PPC_LI64(b2p[insn[i].dst_reg], func_addr);
-+			/* overwrite rest with nops */
-+			for (j = ctx->idx - addrs[i] / 4; j < 5; j++)
-+				EMIT(PPC_RAW_NOP());
-+#endif
-+			ctx->idx = tmp_idx;
-+			i++;
- 		}
- 	}
+ #define TASK_COMM_LEN 16
  
-@@ -200,13 +217,13 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
- 		/*
- 		 * Do not touch the prologue and epilogue as they will remain
- 		 * unchanged. Only fix the branch target address for subprog
--		 * calls in the body.
-+		 * calls in the body, and ldimm64 instructions.
- 		 *
- 		 * This does not change the offsets and lengths of the subprog
- 		 * call instruction sequences and hence, the size of the JITed
- 		 * image as well.
- 		 */
--		bpf_jit_fixup_subprog_calls(fp, code_base, &cgctx, addrs);
-+		bpf_jit_fixup_addresses(fp, code_base, &cgctx, addrs);
- 
- 		/* There is no need to perform the usual passes. */
- 		goto skip_codegen_passes;
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index 997a47fa615b30..2258d3886d02ec 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -293,6 +293,8 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 		bool func_addr_fixed;
- 		u64 func_addr;
- 		u32 true_cond;
-+		u32 tmp_idx;
-+		int j;
- 
- 		/*
- 		 * addrs[] maps a BPF bytecode address into a real offset from
-@@ -908,8 +910,12 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 		 * 16 byte instruction that uses two 'struct bpf_insn'
- 		 */
- 		case BPF_LD | BPF_IMM | BPF_DW: /* dst = (u64) imm */
-+			tmp_idx = ctx->idx;
- 			PPC_LI32(dst_reg_h, (u32)insn[i + 1].imm);
- 			PPC_LI32(dst_reg, (u32)insn[i].imm);
-+			/* padding to allow full 4 instructions for later patching */
-+			for (j = ctx->idx - tmp_idx; j < 4; j++)
-+				EMIT(PPC_RAW_NOP());
- 			/* Adjust for two bpf instructions */
- 			addrs[++i] = ctx->idx * 4;
- 			break;
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index 472d4a551945dd..3d018ecc475b2b 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -319,6 +319,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 		u64 imm64;
- 		u32 true_cond;
- 		u32 tmp_idx;
-+		int j;
- 
- 		/*
- 		 * addrs[] maps a BPF bytecode address into a real offset from
-@@ -848,9 +849,13 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_context *
- 		case BPF_LD | BPF_IMM | BPF_DW: /* dst = (u64) imm */
- 			imm64 = ((u64)(u32) insn[i].imm) |
- 				    (((u64)(u32) insn[i+1].imm) << 32);
-+			tmp_idx = ctx->idx;
-+			PPC_LI64(dst_reg, imm64);
-+			/* padding to allow full 5 instructions for later patching */
-+			for (j = ctx->idx - tmp_idx; j < 5; j++)
-+				EMIT(PPC_RAW_NOP());
- 			/* Adjust for two bpf instructions */
- 			addrs[++i] = ctx->idx * 4;
--			PPC_LI64(dst_reg, imm64);
- 			break;
- 
- 		/*
+-struct event {
++struct runq_event {
+ 	char task[TASK_COMM_LEN];
+ 	__u64 delta_us;
+ 	pid_t pid;
 -- 
 2.34.1
 
