@@ -1,109 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C654876D7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 12:52:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB26A487725
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 12:56:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JVhRH4jqlz30R0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 22:52:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JVhWn5kMDz3bPP
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 22:56:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UJ+T/jGZ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=DYJoYIvM;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=bNOaWUaT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=UJ+T/jGZ; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
+ envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
+ header.s=susede2_rsa header.b=DYJoYIvM; 
+ dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=bNOaWUaT; 
+ dkim-atps=neutral
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JVhQZ2gW8z30Ll
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 22:51:49 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 207AcbK7011446; 
- Fri, 7 Jan 2022 11:51:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=zN9hBf5/b8hYf+c4edxKBImj472NvKS4LOJuAwc0DvY=;
- b=UJ+T/jGZ6Q77u2n9YNk8oIKWyeGq2RJZ23x+ky1n4jeCMfDy5I4abNAOf608qs25vnc6
- j4y5KU9/LV5oMKrz8sPDRMLEz+kcSAsmuxEJLWlCh/x+fSCoZ3R0b1nFq8dBsu5xveDc
- XlFg2T0heyHpIuBvYnsw+scCeFfk4qkl5hoPqpcBh9rq/PPuM4J8zd9TozVyl2z0y8vx
- +x6o2+fnpAzb/OZVm3ou6D9mlcIx56PVAb/JnpzqitZY0haRNX5BmXV+jyRYbr2X3qAM
- VUxiQArd+1UAaz4Vg12oVZ+bNRJ2xypOak6WMlr6gTN1bZkRfSyM/EfvGsnbvoELgZLr rw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3de4whr174-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Jan 2022 11:51:25 +0000
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 207BU69A022708;
- Fri, 7 Jan 2022 11:51:25 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3de4whr16n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Jan 2022 11:51:24 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 207Bkmdv024963;
- Fri, 7 Jan 2022 11:51:23 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma05fra.de.ibm.com with ESMTP id 3de4y2njcn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 07 Jan 2022 11:51:23 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 207BpKPD34734338
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 7 Jan 2022 11:51:20 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A5955A4051;
- Fri,  7 Jan 2022 11:51:20 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 332E7A404D;
- Fri,  7 Jan 2022 11:51:20 +0000 (GMT)
-Received: from localhost (unknown [9.43.90.227])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  7 Jan 2022 11:51:19 +0000 (GMT)
-Date: Fri, 07 Jan 2022 17:21:19 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: Re: [PATCH v2 8/8] powerpc/bpf: Reallocate BPF registers to volatile
- registers when possible on PPC32
-To: andrii@kernel.org, ast@kernel.org, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, daniel@iogearbox.net,
- john.fastabend@gmail.com, kafai@fb.com, kpsingh@chromium.org,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras
- <paulus@samba.org>, sandipan@linux.ibm.com,
- songliubraving@fb.com, yhs@fb.com
-References: <cover.1616430991.git.christophe.leroy@csgroup.eu>
- <b94562d7d2bb21aec89de0c40bb3cd91054b65a2.1616430991.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <b94562d7d2bb21aec89de0c40bb3cd91054b65a2.1616430991.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JVhW86VrNz30Lt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 22:55:48 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out2.suse.de (Postfix) with ESMTP id 095101F39C;
+ Fri,  7 Jan 2022 11:55:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1641556543; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=NLOYJhZxOiXByA38wXhVENRBwHFkUqymDefaIYtjAww=;
+ b=DYJoYIvMIuaAn4jT6wzepOZddowzB3R6YLybX2O6n7TCAQCZlR4zDeU0GcYPnKW505nABj
+ su4oZEJ0oCH/m55uGP7Yy8WYS2BMfpXyjxmpyLh4GOyEj5o4ZfyvIZxpFvDygtVE3Fuflf
+ UZa4paGKe6qZiNlPFieplKDZDzlXTZ8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1641556543;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=NLOYJhZxOiXByA38wXhVENRBwHFkUqymDefaIYtjAww=;
+ b=bNOaWUaTqMbaig6Oa1FbHF72xkJH1yRNSzF6PLDJzt5jO3qibt3lGaCHNMAjYvcm6B/ewl
+ K+WzVdl2lkZBQJAw==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+ by relay2.suse.de (Postfix) with ESMTP id 668BAA3B83;
+ Fri,  7 Jan 2022 11:55:38 +0000 (UTC)
+From: Michal Suchanek <msuchanek@suse.de>
+To: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-integrity@vger.kernel.org
+Subject: [PATCH v3 0/6] KEXEC_SIG with appended signature
+Date: Fri,  7 Jan 2022 12:53:44 +0100
+Message-Id: <cover.1641555875.git.msuchanek@suse.de>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: astroid/v0.16-1-g4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1641556157.ms6rd82ggh.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: S78ijfzqiXBSNKzrbMvcxNOETxg8mHnP
-X-Proofpoint-ORIG-GUID: DuApjOv2WQaYAnZrm_G8vRjmt5RC5w9p
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-07_04,2022-01-07_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 clxscore=1011
- lowpriorityscore=0 mlxscore=0 adultscore=0 spamscore=0 priorityscore=1501
- impostorscore=0 suspectscore=0 malwarescore=0 bulkscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2201070078
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,195 +69,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Nayna <nayna@linux.vnet.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ David Howells <dhowells@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Rob Herring <robh@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Baoquan He <bhe@redhat.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ James Morris <jmorris@namei.org>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Michal Suchanek <msuchanek@suse.de>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
+ linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
-> When the BPF routine doesn't call any function, the non volatile
-> registers can be reallocated to volatile registers in order to
-> avoid having to save them/restore on the stack.
->=20
-> Before this patch, the test #359 ADD default X is:
->=20
->    0:	7c 64 1b 78 	mr      r4,r3
->    4:	38 60 00 00 	li      r3,0
->    8:	94 21 ff b0 	stwu    r1,-80(r1)
->    c:	60 00 00 00 	nop
->   10:	92 e1 00 2c 	stw     r23,44(r1)
->   14:	93 01 00 30 	stw     r24,48(r1)
->   18:	93 21 00 34 	stw     r25,52(r1)
->   1c:	93 41 00 38 	stw     r26,56(r1)
->   20:	39 80 00 00 	li      r12,0
->   24:	39 60 00 00 	li      r11,0
->   28:	3b 40 00 00 	li      r26,0
->   2c:	3b 20 00 00 	li      r25,0
->   30:	7c 98 23 78 	mr      r24,r4
->   34:	7c 77 1b 78 	mr      r23,r3
->   38:	39 80 00 42 	li      r12,66
->   3c:	39 60 00 00 	li      r11,0
->   40:	7d 8c d2 14 	add     r12,r12,r26
->   44:	39 60 00 00 	li      r11,0
->   48:	7d 83 63 78 	mr      r3,r12
->   4c:	82 e1 00 2c 	lwz     r23,44(r1)
->   50:	83 01 00 30 	lwz     r24,48(r1)
->   54:	83 21 00 34 	lwz     r25,52(r1)
->   58:	83 41 00 38 	lwz     r26,56(r1)
->   5c:	38 21 00 50 	addi    r1,r1,80
->   60:	4e 80 00 20 	blr
->=20
-> After this patch, the same test has become:
->=20
->    0:	7c 64 1b 78 	mr      r4,r3
->    4:	38 60 00 00 	li      r3,0
->    8:	94 21 ff b0 	stwu    r1,-80(r1)
->    c:	60 00 00 00 	nop
->   10:	39 80 00 00 	li      r12,0
->   14:	39 60 00 00 	li      r11,0
->   18:	39 00 00 00 	li      r8,0
->   1c:	38 e0 00 00 	li      r7,0
->   20:	7c 86 23 78 	mr      r6,r4
->   24:	7c 65 1b 78 	mr      r5,r3
->   28:	39 80 00 42 	li      r12,66
->   2c:	39 60 00 00 	li      r11,0
->   30:	7d 8c 42 14 	add     r12,r12,r8
->   34:	39 60 00 00 	li      r11,0
->   38:	7d 83 63 78 	mr      r3,r12
->   3c:	38 21 00 50 	addi    r1,r1,80
->   40:	4e 80 00 20 	blr
->=20
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/net/bpf_jit.h        | 16 ++++++++++++++++
->  arch/powerpc/net/bpf_jit64.h      |  2 +-
->  arch/powerpc/net/bpf_jit_comp.c   |  2 ++
->  arch/powerpc/net/bpf_jit_comp32.c | 30 ++++++++++++++++++++++++++++--
->  arch/powerpc/net/bpf_jit_comp64.c |  4 ++++
->  5 files changed, 51 insertions(+), 3 deletions(-)
->=20
-> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-> index a45b8266355d..776abef4d2a0 100644
-> --- a/arch/powerpc/net/bpf_jit.h
-> +++ b/arch/powerpc/net/bpf_jit.h
-> @@ -116,6 +116,15 @@ static inline bool is_nearbranch(int offset)
->  #define SEEN_STACK	0x40000000 /* uses BPF stack */
->  #define SEEN_TAILCALL	0x80000000 /* uses tail calls */
-> =20
-> +#define SEEN_VREG_MASK	0x1ff80000 /* Volatile registers r3-r12 */
-> +#define SEEN_NVREG_MASK	0x0003ffff /* Non volatile registers r14-r31 */
-> +
-> +#ifdef CONFIG_PPC64
-> +extern const int b2p[MAX_BPF_JIT_REG + 2];
-> +#else
-> +extern const int b2p[MAX_BPF_JIT_REG + 1];
-> +#endif
-> +
->  struct codegen_context {
->  	/*
->  	 * This is used to track register usage as well
-> @@ -129,6 +138,7 @@ struct codegen_context {
->  	unsigned int seen;
->  	unsigned int idx;
->  	unsigned int stack_size;
-> +	int b2p[ARRAY_SIZE(b2p)];
->  };
-> =20
->  static inline void bpf_flush_icache(void *start, void *end)
-> @@ -147,11 +157,17 @@ static inline void bpf_set_seen_register(struct cod=
-egen_context *ctx, int i)
->  	ctx->seen |=3D 1 << (31 - i);
->  }
-> =20
-> +static inline void bpf_clear_seen_register(struct codegen_context *ctx, =
-int i)
-> +{
-> +	ctx->seen &=3D ~(1 << (31 - i));
-> +}
-> +
->  void bpf_jit_emit_func_call_rel(u32 *image, struct codegen_context *ctx,=
- u64 func);
->  int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, struct codegen_c=
-ontext *ctx,
->  		       u32 *addrs, bool extra_pass);
->  void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx);
->  void bpf_jit_build_epilogue(u32 *image, struct codegen_context *ctx);
-> +void bpf_jit_realloc_regs(struct codegen_context *ctx);
-> =20
->  #endif
-> =20
-> diff --git a/arch/powerpc/net/bpf_jit64.h b/arch/powerpc/net/bpf_jit64.h
-> index b05f2e67bba1..7b713edfa7e2 100644
-> --- a/arch/powerpc/net/bpf_jit64.h
-> +++ b/arch/powerpc/net/bpf_jit64.h
-> @@ -39,7 +39,7 @@
->  #define TMP_REG_2	(MAX_BPF_JIT_REG + 1)
-> =20
->  /* BPF to ppc register mappings */
-> -static const int b2p[] =3D {
-> +const int b2p[MAX_BPF_JIT_REG + 2] =3D {
->  	/* function return value */
->  	[BPF_REG_0] =3D 8,
->  	/* function arguments */
-> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_c=
-omp.c
-> index efac89964873..798ac4350a82 100644
-> --- a/arch/powerpc/net/bpf_jit_comp.c
-> +++ b/arch/powerpc/net/bpf_jit_comp.c
-> @@ -143,6 +143,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog =
-*fp)
->  	}
-> =20
->  	memset(&cgctx, 0, sizeof(struct codegen_context));
-> +	memcpy(cgctx.b2p, b2p, sizeof(cgctx.b2p));
-> =20
->  	/* Make sure that the stack is quadword aligned. */
->  	cgctx.stack_size =3D round_up(fp->aux->stack_depth, 16);
-> @@ -167,6 +168,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog =
-*fp)
->  		}
->  	}
-> =20
-> +	bpf_jit_realloc_regs(&cgctx);
->  	/*
->  	 * Pretend to build prologue, given the features we've seen.  This will
->  	 * update ctgtx.idx as it pretends to output instructions, then we can
-> diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit=
-_comp32.c
-> index 29ce802d7534..003843273b43 100644
-> --- a/arch/powerpc/net/bpf_jit_comp32.c
-> +++ b/arch/powerpc/net/bpf_jit_comp32.c
-> @@ -37,7 +37,7 @@
->  #define TMP_REG	(MAX_BPF_JIT_REG + 0)
-> =20
->  /* BPF to ppc register mappings */
-> -static const int b2p[] =3D {
-> +const int b2p[MAX_BPF_JIT_REG + 1] =3D {
->  	/* function return value */
->  	[BPF_REG_0] =3D 12,
->  	/* function arguments */
-> @@ -60,7 +60,7 @@ static const int b2p[] =3D {
-> =20
->  static int bpf_to_ppc(struct codegen_context *ctx, int reg)
->  {
-> -	return b2p[reg];
-> +	return ctx->b2p[reg];
->  }
-> =20
->  /* PPC NVR range -- update this if we ever use NVRs below r17 */
-> @@ -77,6 +77,32 @@ static int bpf_jit_stack_offsetof(struct codegen_conte=
-xt *ctx, int reg)
->  	return BPF_PPC_STACKFRAME(ctx) - 4;
->  }
-> =20
-> +void bpf_jit_realloc_regs(struct codegen_context *ctx)
-> +{
-> +	if (ctx->seen & SEEN_FUNC)
-> +		return;
+Hello,
 
-Can't you remap BPF_REG_5, BPF_REG_AX and TMP_REG regardless of=20
-SEEN_FUNC?
+This is a refresh of the KEXEC_SIG series.
 
-- Naveen
+This adds KEXEC_SIG support on powerpc and deduplicates the code dealing
+with appended signatures in the kernel.
+
+powerpc supports IMA_KEXEC but that's an exception rather than the norm.
+On the other hand, KEXEC_SIG is portable across platforms.
+
+For distributions to have uniform security features across platforms one
+option should be used on all platforms.
+
+Thanks
+
+Michal
+
+Previous revision: https://lore.kernel.org/linuxppc-dev/cover.1637862358.git.msuchanek@suse.de/
+Patched kernel tree: https://github.com/hramrach/kernel/tree/kexec_sig
+
+Michal Suchanek (6):
+  s390/kexec_file: Don't opencode appended signature check.
+  powerpc/kexec_file: Add KEXEC_SIG support.
+  kexec_file: Don't opencode appended signature verification.
+  module: strip the signature marker in the verification function.
+  module: Use key_being_used_for for log messages in
+    verify_appended_signature
+  module: Move duplicate mod_check_sig users code to mod_parse_sig
+
+ arch/powerpc/Kconfig                     | 16 +++++++
+ arch/powerpc/kexec/elf_64.c              | 14 ++++++
+ arch/s390/Kconfig                        |  2 +-
+ arch/s390/kernel/machine_kexec_file.c    | 43 ++----------------
+ crypto/asymmetric_keys/asymmetric_type.c |  1 +
+ include/linux/module_signature.h         |  1 +
+ include/linux/verification.h             |  4 ++
+ kernel/module-internal.h                 |  2 -
+ kernel/module.c                          | 12 +++--
+ kernel/module_signature.c                | 56 +++++++++++++++++++++++-
+ kernel/module_signing.c                  | 33 +++++++-------
+ security/integrity/ima/ima_modsig.c      | 22 ++--------
+ 12 files changed, 119 insertions(+), 87 deletions(-)
+
+-- 
+2.31.1
 
