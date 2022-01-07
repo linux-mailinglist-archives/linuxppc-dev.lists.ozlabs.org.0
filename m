@@ -2,62 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E915848704C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 03:23:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6616487059
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 03:26:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JVRpF6dr8z3bcY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 13:23:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JVRt75lJpz3bcK
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 13:26:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.222.177;
- helo=mail-qk1-f177.google.com; envelope-from=pku.leo@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.160.181;
+ helo=mail-qt1-f181.google.com; envelope-from=pku.leo@gmail.com;
  receiver=<UNKNOWN>)
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com
- [209.85.222.177])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com
+ [209.85.160.181])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JVRnl2JRGz2yNW
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 13:22:32 +1100 (AEDT)
-Received: by mail-qk1-f177.google.com with SMTP id de30so4660954qkb.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jan 2022 18:22:32 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JVRsj6y89z2yfg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 13:26:01 +1100 (AEDT)
+Received: by mail-qt1-f181.google.com with SMTP id y17so4217588qtx.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jan 2022 18:26:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=Ozs941wKBNQg3LxRfsqbP6OaMzoQiK3QsZ3gg9gac/I=;
- b=7zv8dBtvVyVXkZiLmZua0bsSjM5IKLd5eEz0aefLzd4KSwFv2vwxxOJeIQES+Kkg2Q
- EcTxLfnr5G8QH4xxy2rIg7lOp2oGLIL2h7hFSVWx/HvfbUSt5gN6B1+etz15PJw8Vm2l
- xJVGo8554fY3klC2wau73pQ1XD0u1ObUI5r+q9ulEzPlocvngvWgnhFUhfyqeVcb7R3/
- +mVlczo9++IN6QzAhLwUqH7npJRMm+t9UOy/Vbr8sk7RH++dirIP/n6sIwcdglx2vQp3
- JqYfA3B/CS5Ii3Fq6cENYdt6Df58rC22u6NDr6th9+OJFHLEEITs5BNKP9goTkva4cmp
- XXyA==
-X-Gm-Message-State: AOAM530ZfcSrPpID6C+Z3RvWBDj/bkWWHFGeT6Il0TylIqFY2oPOgSWX
- lXidoYlOuSPVkPFUCZd1/SafsPxHUQunpQ==
-X-Google-Smtp-Source: ABdhPJz3a3RuFkeRYCGTiPsx5ZxXx1cbryJrQN7OqvE925fyJU+00wPxJQAtkeBkRPdObCTses95TA==
-X-Received: by 2002:a37:844:: with SMTP id 65mr44427623qki.683.1641522148291; 
- Thu, 06 Jan 2022 18:22:28 -0800 (PST)
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com.
- [209.85.219.46])
- by smtp.gmail.com with ESMTPSA id j16sm2845003qtx.92.2022.01.06.18.22.27
+ bh=87V7qqVxSV9ymSZhSZ8xp9p8szVy6J09JVmD0DH7rzE=;
+ b=rYEXe1VlASEn7vXlMI0sAOc1kLmA3uO7poyLIhKzr/4zYlebVb1SfZgB8L8HZL1u8s
+ f8QnSCgQKH5q0Y/Az5kiuIwNGpBQ7T/5xhaaXe+HTcAGCubgjIxC437cUIKUBYEdNZec
+ ohE+Ob2KqKLk4YKZcnWe3tVc9mUGU/o7aHcTC9Ts9lFo/UKgpIKYq0ikzdxjrL2L5Sil
+ LIsSDXYnZwV/iEu0/90DHwXZF+mRb981ig5eT+fLrotoeuD2PHRyKoHSvnSPXhUFHmOO
+ bAz+3um3f6E+9qBv5nUIOg6hnU1bcnjIWyEwDrp8KVjOosMJiVTkvhlhgMjwi0pdignn
+ IS8A==
+X-Gm-Message-State: AOAM530+b2u/iTFkQUUFh4NUCe1Jpm09qHT+C3gPhgTZkDOQBBqvrOXI
+ DYa844QHSpDctaYqa8k+EE2Olta7CuXzWGrJ
+X-Google-Smtp-Source: ABdhPJyg8BdUQ3CLdPTDbV1gikPjvTMCQJ1wv0xJcW5/S+H7NBmgf0xJSWRd+jQXBwqLH+27U0eFUw==
+X-Received: by 2002:a05:622a:1c6:: with SMTP id
+ t6mr54597762qtw.211.1641522358826; 
+ Thu, 06 Jan 2022 18:25:58 -0800 (PST)
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com.
+ [209.85.219.52])
+ by smtp.gmail.com with ESMTPSA id bl28sm756401qkb.17.2022.01.06.18.25.57
  for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jan 2022 18:22:28 -0800 (PST)
-Received: by mail-qv1-f46.google.com with SMTP id o10so4195762qvc.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jan 2022 18:22:27 -0800 (PST)
-X-Received: by 2002:a05:6214:1d01:: with SMTP id
- e1mr4141088qvd.72.1641522147639; 
- Thu, 06 Jan 2022 18:22:27 -0800 (PST)
+ Thu, 06 Jan 2022 18:25:58 -0800 (PST)
+Received: by mail-qv1-f52.google.com with SMTP id fo11so4203093qvb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jan 2022 18:25:57 -0800 (PST)
+X-Received: by 2002:a05:6214:252a:: with SMTP id
+ gg10mr57453503qvb.19.1641522357806; 
+ Thu, 06 Jan 2022 18:25:57 -0800 (PST)
 MIME-Version: 1.0
-References: <20211230014543.1799867-1-jiasheng@iscas.ac.cn>
-In-Reply-To: <20211230014543.1799867-1-jiasheng@iscas.ac.cn>
+References: <20211211090845.252700-1-wangborong@cdjrlc.com>
+In-Reply-To: <20211211090845.252700-1-wangborong@cdjrlc.com>
 From: Li Yang <leoyang.li@nxp.com>
-Date: Fri, 7 Jan 2022 10:22:15 +0800
-X-Gmail-Original-Message-ID: <CADRPPNSsLYzv6ueSqVu4b3yep7JYLJBJcNwbiBVG61ADyqaPBw@mail.gmail.com>
-Message-ID: <CADRPPNSsLYzv6ueSqVu4b3yep7JYLJBJcNwbiBVG61ADyqaPBw@mail.gmail.com>
-Subject: Re: [PATCH] soc: fsl: qe: Check of ioremap return value
-To: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Date: Fri, 7 Jan 2022 10:25:46 +0800
+X-Gmail-Original-Message-ID: <CADRPPNRe=qgH0n2XMTEro2+dYXcz82x=PcvhjiPX1GRGkkbfjg@mail.gmail.com>
+Message-ID: <CADRPPNRe=qgH0n2XMTEro2+dYXcz82x=PcvhjiPX1GRGkkbfjg@mail.gmail.com>
+Subject: Re: [PATCH] soc: fsl: qe: fix typo in a comment
+To: wangborong@cdjrlc.com
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -78,40 +79,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Dec 30, 2021 at 9:47 AM Jiasheng Jiang <jiasheng@iscas.ac.cn> wrote:
+On Sat, Dec 11, 2021 at 5:12 PM Jason Wang <wangborong@cdjrlc.com> wrote:
 >
-> As the possible failure of the ioremap(), the par_io could be NULL.
-> Therefore it should be better to check it and return error in order to
-> guarantee the success of the initiation.
-> But, I also notice that all the caller like mpc85xx_qe_par_io_init() in
-> `arch/powerpc/platforms/85xx/common.c` don't check the return value of
-> the par_io_init().
-> Actually, par_io_init() needs to check to handle the potential error.
-> I will submit another patch to fix that.
-> Anyway, par_io_init() itsely should be fixed.
->
-> Fixes: 7aa1aa6ecec2 ("QE: Move QE from arch/powerpc to drivers/soc")
-> Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+> The double `is' in the comment in line 150 is repeated. Remove one
+> of them from the comment.
 
-Applied for next.  Thanks.
+Looks like you also removed a redundant tab in a new line.  We
+probably can squeeze this trivial cleanup in, but we need to mention
+it.
+
+>
+> Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
+
+Applied for next with commit message updated.
 
 > ---
->  drivers/soc/fsl/qe/qe_io.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/soc/fsl/qe/qe.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/soc/fsl/qe/qe_io.c b/drivers/soc/fsl/qe/qe_io.c
-> index e277c827bdf3..a5e2d0e5ab51 100644
-> --- a/drivers/soc/fsl/qe/qe_io.c
-> +++ b/drivers/soc/fsl/qe/qe_io.c
-> @@ -35,6 +35,8 @@ int par_io_init(struct device_node *np)
->         if (ret)
->                 return ret;
->         par_io = ioremap(res.start, resource_size(&res));
-> +       if (!par_io)
-> +               return -ENOMEM;
+> diff --git a/drivers/soc/fsl/qe/qe.c b/drivers/soc/fsl/qe/qe.c
+> index 4d38c80f8be8..b3c226eb5292 100644
+> --- a/drivers/soc/fsl/qe/qe.c
+> +++ b/drivers/soc/fsl/qe/qe.c
+> @@ -147,7 +147,7 @@ EXPORT_SYMBOL(qe_issue_cmd);
+>   * memory mapped space.
+>   * The BRG clock is the QE clock divided by 2.
+>   * It was set up long ago during the initial boot phase and is
+> - * is given to us.
+> + * given to us.
+>   * Baud rate clocks are zero-based in the driver code (as that maps
+>   * to port numbers). Documentation uses 1-based numbering.
+>   */
+> @@ -421,7 +421,7 @@ static void qe_upload_microcode(const void *base,
 >
->         if (!of_property_read_u32(np, "num-ports", &num_ports))
->                 num_par_io_ports = num_ports;
+>         for (i = 0; i < be32_to_cpu(ucode->count); i++)
+>                 iowrite32be(be32_to_cpu(code[i]), &qe_immr->iram.idata);
+> -
+> +
+>         /* Set I-RAM Ready Register */
+>         iowrite32be(QE_IRAM_READY, &qe_immr->iram.iready);
+>  }
 > --
-> 2.25.1
+> 2.34.1
 >
