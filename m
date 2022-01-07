@@ -2,46 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29364870CF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 03:56:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CD2C4870BE
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 03:48:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JVSXS44lyz3c9d
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 13:56:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JVSMS0fYlz3bN7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 13:48:20 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NjuuNA3S;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=marcan.st (client-ip=2a01:298:fe:f::2; helo=mail.marcansoft.com;
- envelope-from=marcan@marcan.st; receiver=<UNKNOWN>)
-X-Greylist: delayed 594 seconds by postgrey-1.36 at boromir;
- Fri, 07 Jan 2022 13:55:46 AEDT
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=NjuuNA3S; dkim-atps=neutral
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JVSX229Pmz30FH
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 13:55:45 +1100 (AEDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- (Authenticated sender: marcan@marcan.st)
- by mail.marcansoft.com (Postfix) with ESMTPSA id 70AEA43320;
- Fri,  7 Jan 2022 02:45:40 +0000 (UTC)
-Message-ID: <d8cd9082-4514-9c6c-85c7-418356f1f66d@marcan.st>
-Date: Fri, 7 Jan 2022 11:45:38 +0900
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JVSLn0kXVz30K4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 13:47:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1641523665; x=1673059665;
+ h=date:from:to:cc:subject:message-id:mime-version:
+ content-transfer-encoding;
+ bh=BCs7kJI+VNw4bVi+DkdjWFsGpd3dk9XFF9SXY/M11I8=;
+ b=NjuuNA3SKja66CUHrs7ip5GQoCvxf00X1OgQPktuRTN7vaMbJU8p6N+d
+ zko/e7T5MyON2P2meFoR0tQJwDb42+7WXJreVINnl045vozUbJQc8tnBd
+ HkRa08e9L90bm6I123xRDeLZnW1YC0w2Z3R5pV3A6ZVjZlS2gwW70sZfu
+ /SBhM9IwlEaPwJyIAt6atzMYjhiKePD2QWjkNQCU4uokws925lOg5CgjX
+ g6Yk+dRtaRu+UBwUzYwLqNUfXNjFM8Nq5Yo2vH2Bvqtw8giCFgOntncwZ
+ Sy3wKUSbDEmF69zdcolYdY3vrnEHC+NOHsP5XdoR3rV4l/nNxIU2axSiN w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10219"; a="267089057"
+X-IronPort-AV: E=Sophos;i="5.88,268,1635231600"; d="scan'208";a="267089057"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jan 2022 18:46:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,268,1635231600"; d="scan'208";a="473167725"
+Received: from lkp-server01.sh.intel.com (HELO e357b3ef1427) ([10.239.97.150])
+ by orsmga006.jf.intel.com with ESMTP; 06 Jan 2022 18:46:38 -0800
+Received: from kbuild by e357b3ef1427 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1n5fH4-000ICC-2L; Fri, 07 Jan 2022 02:46:38 +0000
+Date: Fri, 07 Jan 2022 10:46:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 80fdcf45da5a677ff7f284210b0f86f443a836a0
+Message-ID: <61d7a96d.sX9Dqc5ifJ0xdQWg%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.1
-Subject: Re: [PATCH] fs: btrfs: Disable BTRFS on platforms having 256K pages
-Content-Language: en-US
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>, Neal Gompa <ngompa13@gmail.com>
-References: <a16c31f3caf448dda5d9315e056585b6fafc22c5.1623302442.git.christophe.leroy@csgroup.eu>
- <6c7a6762-6bec-842b-70b4-4a53297687d1@gmx.com>
- <CAEg-Je9UJDJ=hvLLqQDsHijWnxh1Z1CwaLKCFm+-bLTfCFingg@mail.gmail.com>
- <db88497c-ea17-27ca-6158-2a987acb7a1c@gmx.com>
-From: Hector Martin <marcan@marcan.st>
-In-Reply-To: <db88497c-ea17-27ca-6158-2a987acb7a1c@gmx.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -54,49 +67,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hexagon@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- linuxppc-dev@lists.ozlabs.org, Btrfs BTRFS <linux-btrfs@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2022/01/07 9:13, Qu Wenruo wrote:
-> 
-> 
-> On 2022/1/7 00:31, Neal Gompa wrote:
->> On Wed, Jan 5, 2022 at 7:05 AM Qu Wenruo <quwenruo.btrfs@gmx.com> wrote:
->>>
->>> Hi Christophe,
->>>
->>> I'm recently enhancing the subpage support for btrfs, and my current
->>> branch should solve the problem for btrfs to support larger page sizes.
->>>
->>> But unfortunately my current test environment can only provide page size
->>> with 64K or 4K, no 16K or 128K/256K support.
->>>
->>> Mind to test my new branch on 128K page size systems?
->>> (256K page size support is still lacking though, which will be addressed
->>> in the future)
->>>
->>> https://github.com/adam900710/linux/tree/metadata_subpage_switch
->>>
->>
->> The Linux Asahi folks have a 16K page environment (M1 Macs)...
-> 
-> Su Yue kindly helped me testing 16K page size, and it's pretty OK there.
-> 
-> So I'm not that concerned.
-> 
-> It's 128K page size that I'm a little concerned, and I have not machine
-> supporting that large page size to do the test.
-> 
-> Thanks,
-> Qu
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 80fdcf45da5a677ff7f284210b0f86f443a836a0  Automatic merge of 'master' into merge (2021-12-29 09:33)
 
-I'm happy to test things on 16K in the future if you need me to :-)
+elapsed time: 734m
 
--- 
-Hector Martin (marcan@marcan.st)
-Public Key: https://mrcn.st/pub
+configs tested: 89
+configs skipped: 3
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm64                               defconfig
+arm64                            allyesconfig
+arm                            lart_defconfig
+arm                          iop32x_defconfig
+powerpc                         wii_defconfig
+powerpc                      chrp32_defconfig
+arc                    vdk_hs38_smp_defconfig
+sh                   secureedge5410_defconfig
+arm                           viper_defconfig
+arm                           sunxi_defconfig
+arm                  randconfig-c002-20220106
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allmodconfig
+s390                                defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+powerpc                          allyesconfig
+x86_64               randconfig-a012-20220106
+x86_64               randconfig-a014-20220106
+x86_64               randconfig-a013-20220106
+x86_64               randconfig-a011-20220106
+x86_64               randconfig-a016-20220106
+x86_64               randconfig-a015-20220106
+i386                 randconfig-a012-20220106
+i386                 randconfig-a014-20220106
+i386                 randconfig-a011-20220106
+i386                 randconfig-a013-20220106
+i386                 randconfig-a016-20220106
+i386                 randconfig-a015-20220106
+arc                  randconfig-r043-20220106
+riscv                randconfig-r042-20220106
+s390                 randconfig-r044-20220106
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                                  kexec
+x86_64                           allyesconfig
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
+
+clang tested configs:
+arm                  colibri_pxa300_defconfig
+mips                       lemote2f_defconfig
+powerpc                 xes_mpc85xx_defconfig
+i386                 randconfig-a003-20220106
+i386                 randconfig-a002-20220106
+i386                 randconfig-a001-20220106
+i386                 randconfig-a004-20220106
+i386                 randconfig-a006-20220106
+i386                 randconfig-a005-20220106
+hexagon              randconfig-r041-20220106
+hexagon              randconfig-r045-20220106
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
