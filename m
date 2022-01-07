@@ -2,80 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866D6486E96
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 01:19:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 463AC486EA9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 01:20:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JVP482ncBz30FH
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 11:19:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JVP5B0w1Fz30Qw
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 11:20:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256 header.s=badeba3b8450 header.b=f6fQjpoW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=ubRsDgaO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=gmx.com
- (client-ip=212.227.15.15; helo=mout.gmx.net;
- envelope-from=quwenruo.btrfs@gmx.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256
- header.s=badeba3b8450 header.b=f6fQjpoW; 
- dkim-atps=neutral
-X-Greylist: delayed 330 seconds by postgrey-1.36 at boromir;
- Fri, 07 Jan 2022 11:19:15 AEDT
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::530;
+ helo=mail-pg1-x530.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com
+ header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256
+ header.s=20210112 header.b=ubRsDgaO; dkim-atps=neutral
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
+ [IPv6:2607:f8b0:4864:20::530])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JVP3R2rvRz2x9G
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 11:19:14 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
- s=badeba3b8450; t=1641514744;
- bh=EyPi8Y3Gc+gTu2ILQBh3edI82bKKE2zEKRdiyUFahW4=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=f6fQjpoWAZtZ3bTC3ttU7oRM71zxarXaRNGOFvakmye6wOeX/o/FYCDJZblf+AJr9
- VS1qfmKyPiUVRmXWDY0x87gUu7rGXBr33rdmOO4sQ9bqn8VJwP3LtnDXdPdT0pswi4
- PA1hb1YiKxmFWwQPPR/LwtFoAwoW4EXljTZBdpgA=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [0.0.0.0] ([149.28.201.231]) by mail.gmx.net (mrgmx005
- [212.227.17.184]) with ESMTPSA (Nemesis) id 1MStCe-1mxUEN0uR4-00UK15; Fri, 07
- Jan 2022 01:13:10 +0100
-Message-ID: <db88497c-ea17-27ca-6158-2a987acb7a1c@gmx.com>
-Date: Fri, 7 Jan 2022 08:13:01 +0800
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JVP4T3Hytz2xF9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 11:20:08 +1100 (AEDT)
+Received: by mail-pg1-x530.google.com with SMTP id z30so503454pge.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Jan 2022 16:20:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20210112.gappssmtp.com; s=20210112;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=X7KaqNcHCCOkAU37GOJO3qlHigFSzpcBdrbhs9RDte8=;
+ b=ubRsDgaOTkfgqjXYczjyRXzKHPC623ahI7l/PK74JBcBqFmIbMpIrs1xWrpWwmG8xm
+ 3U1o8HkcKpc2dFL+Frg8xTuYxGuc+SYbxIHaEwoEg3UatR4Ro0gj6mnGkNubHCz60I3W
+ oiF5D7pIUW4VHTS31vbQ2Ey3f38VmwTduwYCpe2jcByjior8eB3QBETgp/OIL+1IGjIT
+ hX10jgULJnoliAdsVKyYUq2IjtfdvrigFgdXgqPGPjHtmLsMrHiaqkDVbocBooG7oDw7
+ GNewpIj8j03H8rJ3O8Tv0Yh5tAIpGPZtK/STok+lCs5l4YxW4dz4KN4fWJRz3npSzTaJ
+ 9VgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=X7KaqNcHCCOkAU37GOJO3qlHigFSzpcBdrbhs9RDte8=;
+ b=HbhG0yw067Y/qjGyzgbWwAWu1bEmzo9x1XDQze/Vz92knaZbo5ObUfBlVcUpUU8Ndn
+ oZgBA5ohtaguzel5o9vV98wItZi/2sx8VgSD15tMzzmuJZyGm442aBpnUiF8y1BrVtf3
+ /5Q39fRMGVVDyEFdli1+Uy5+q1Os6FG/gYOTQT44UOvbJi9ryQcsL7NGJYDcOGF8dRhH
+ gMYYqiCN6PVAqPqhBr5Ghk4U7451C3vBQrAiB90Qh8WQ0YOgmLOFb7jHpagl1rWRXGLk
+ 2zpig/PhLJVSUIYU3oSEf8utva0cE36rSacuIz1oHG8V/i64SD53zTb/oiJMfs8jvSGg
+ VgVQ==
+X-Gm-Message-State: AOAM532JLhePChNN8xc03ZztIsYcM9MKKGVbDv7HfPCXcTOYC3RC6lib
+ n85E6LOU+4SHMTTXQarrtWB+hg==
+X-Google-Smtp-Source: ABdhPJzULnKcypv8WIXnTMPEvNj/K+WRa8PL+yP2if89CKSD+qv/FGHa0W+YeYJg/BcRzq5Qg9ZgYw==
+X-Received: by 2002:a63:fd53:: with SMTP id m19mr53560148pgj.563.1641514803247; 
+ Thu, 06 Jan 2022 16:20:03 -0800 (PST)
+Received: from [192.168.10.153] (203-7-124-83.dyn.iinet.net.au. [203.7.124.83])
+ by smtp.gmail.com with ESMTPSA id ip2sm6794471pjb.34.2022.01.06.16.19.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Jan 2022 16:20:02 -0800 (PST)
+Message-ID: <21736a11-1b0f-d4b6-bdd5-2560fc8ffcf1@ozlabs.ru>
+Date: Fri, 7 Jan 2022 11:19:56 +1100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.1
-Subject: Re: [PATCH] fs: btrfs: Disable BTRFS on platforms having 256K pages
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101
+ Thunderbird/96.0
+Subject: Re: [PATCH v2 3/7] KVM: PPC: Fix mmio length message
 Content-Language: en-US
-To: Neal Gompa <ngompa13@gmail.com>
-References: <a16c31f3caf448dda5d9315e056585b6fafc22c5.1623302442.git.christophe.leroy@csgroup.eu>
- <6c7a6762-6bec-842b-70b4-4a53297687d1@gmx.com>
- <CAEg-Je9UJDJ=hvLLqQDsHijWnxh1Z1CwaLKCFm+-bLTfCFingg@mail.gmail.com>
-From: Qu Wenruo <quwenruo.btrfs@gmx.com>
-In-Reply-To: <CAEg-Je9UJDJ=hvLLqQDsHijWnxh1Z1CwaLKCFm+-bLTfCFingg@mail.gmail.com>
+To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
+References: <20220106200304.4070825-1-farosas@linux.ibm.com>
+ <20220106200304.4070825-4-farosas@linux.ibm.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+In-Reply-To: <20220106200304.4070825-4-farosas@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:anCYYKhzpZMxqykyFCq+8YxKtyr10cQ84WLxzimaPuneijGdCqz
- DCTt+qxKufcuCSCYh5BvF0kfQ7B0Ov4gS934FXjKQjR28CPsyZEYGntV8kpnaTxozhsyQRC
- PmkBHzOARVbxjBbf8Gsxv62DXHnI2kJv+jLn2ZfjzaKplUnXZJaOCfBKAPin1Ic1yimFXpN
- iHdKDG80XWbzbUv4D+TQg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/XiueiDLzmo=:DyLgDEzc1bS6uoCMd3pKaE
- nu20UT8/Gr1E9Dw3cqLjfb6DChegSoY/HMAcisopK7RY4NL6x3FwY/EwLJJLAFwmzzM5QKvW7
- OebA20FB4eV6lGz5RE2+SfvOpfmwzmdirbsscf2MOsnlC6jKQcmcUUKH1X2xkO/cbkHL4sPxv
- XOASNmxpn+bCX+ULWpL6QjYAzi4dcOCspIjlOcxRoIeWRzDdU/3b1U+pxx/Xc6GOouIYghGP8
- j8a6TGhyBswn9oaF1D7AdBsp1Hs+eMDcp2urCGrBY7+YEQgS86acYywPnqdVVzstbStKffPl+
- Ua62O24XV2JVm/w1J38bnh/8I9VXWmjyxFFuEGev82haCdqwCdQXre3W3zVJhPwntbP+lrMmb
- ewu1Wupj16d1Rqkh+uQ/wN9qirgFvZcRoZymP9DbhFF6zUOMkrBQ3FY41w91zBFJb9emq8RKi
- 1dieGTlKA4sh/r8GmkoxxK04GBuJBIz94BnZM4ZKLIa6WC3KPRvn8januseX7f177fHoKzgyS
- okc/Qg6sdzeGWGwx3RA8RaFvBS6A8hpCDVBJkGIoQgHmUWmRotYqwQ52F8Poa5TxMLFzCuXXs
- K6HI965l2hRWRTgDKRNBFuc3OR0Ii/VKbhvl6m/POEkO4H+3lFHJtXO/lS3uHgveE//HcuIRy
- YcN1RbeqneGn26oGSXd+4DU1HoQ0s6syHtbAajcSNZoIqoR5DPPOeN2HZ2HU1H7ve7MxlQzef
- GMnUDBY8koLgGLP9jwCcF+WcOnFVwAz7FjTulZlDhXld/QvmG4LXVkQxbdBnT5DFz2ol0GmyW
- lK+6dKUy97BWHIA4nvP4WRfTUbGw0ZWWIHycLN+IFLvO2UU3vYg0MwWZpT9n0+GVFMpwXKPIP
- 5ohPg41DuJQpWVJHnz68wD/xT8k56SjVJHXdNPq9pNbRvdaMEIhcR/KGVCH9ZFlCUwbQiU73e
- ys1Q7rz7J2xwQUQixF8VKp5X4wI1zf/3EtpIEnlrkWxGiS+9omTd98gYZQhbK3dpGsH9ajvJf
- J2iw8z0FRcDmPjodQhXggVd1Gg5r1lHQ0eF1NmD6XjLJuy5m8DChNSSa0bRWN0Hc4MfxCE4KY
- 5GM56UOf0Tea/M=
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,51 +86,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hexagon@vger.kernel.org, Hector Martin <marcan@marcan.st>,
- Josef Bacik <josef@toxicpanda.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- linuxppc-dev@lists.ozlabs.org, Btrfs BTRFS <linux-btrfs@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 2022/1/7 00:31, Neal Gompa wrote:
-> On Wed, Jan 5, 2022 at 7:05 AM Qu Wenruo <quwenruo.btrfs@gmx.com> wrote:
->>
->> Hi Christophe,
->>
->> I'm recently enhancing the subpage support for btrfs, and my current
->> branch should solve the problem for btrfs to support larger page sizes.
->>
->> But unfortunately my current test environment can only provide page siz=
-e
->> with 64K or 4K, no 16K or 128K/256K support.
->>
->> Mind to test my new branch on 128K page size systems?
->> (256K page size support is still lacking though, which will be addresse=
-d
->> in the future)
->>
->> https://github.com/adam900710/linux/tree/metadata_subpage_switch
->>
->
-> The Linux Asahi folks have a 16K page environment (M1 Macs)...
+On 07/01/2022 07:03, Fabiano Rosas wrote:
+> We check against 'bytes' but print 'run->mmio.len' which at that point
+> has an old value.
+> 
+> e.g. 16-byte load:
+> 
+> before:
+> __kvmppc_handle_load: bad MMIO length: 8
+> 
+> now:
+> __kvmppc_handle_load: bad MMIO length: 16
+> 
+> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+> ---
+>   arch/powerpc/kvm/powerpc.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 92e552ab5a77..0b0818d032e1 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -1246,7 +1246,7 @@ static int __kvmppc_handle_load(struct kvm_vcpu *vcpu,
+>   
+>   	if (bytes > sizeof(run->mmio.data)) {
+>   		printk(KERN_ERR "%s: bad MMIO length: %d\n", __func__,
+> -		       run->mmio.len);
+> +		       bytes);
 
-Su Yue kindly helped me testing 16K page size, and it's pretty OK there.
 
-So I'm not that concerned.
+"return EMULATE_FAIL;" here and below as there is really no point in 
+trashing kvm_run::mmio (not much harm too but still) and this code does 
+not handle more than 8 bytes anyway.
 
-It's 128K page size that I'm a little concerned, and I have not machine
-supporting that large page size to do the test.
 
-Thanks,
-Qu
 
->
-> Hector, could you look at it too?
->
->
->
+>   	}
+>   
+>   	run->mmio.phys_addr = vcpu->arch.paddr_accessed;
+> @@ -1335,7 +1335,7 @@ int kvmppc_handle_store(struct kvm_vcpu *vcpu,
+>   
+>   	if (bytes > sizeof(run->mmio.data)) {
+>   		printk(KERN_ERR "%s: bad MMIO length: %d\n", __func__,
+> -		       run->mmio.len);
+> +		       bytes);
+>   	}
+>   
+>   	run->mmio.phys_addr = vcpu->arch.paddr_accessed;
+
+-- 
+Alexey
