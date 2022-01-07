@@ -1,54 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1A1486D90
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 00:10:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 866D6486E96
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 01:19:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JVMWg22YHz3Wtr
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 10:10:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JVP482ncBz30FH
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Jan 2022 11:19:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=eaYopRoH;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256 header.s=badeba3b8450 header.b=f6fQjpoW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JVMW13pPhz30Bc
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 10:09:33 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=eaYopRoH; 
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=gmx.com
+ (client-ip=212.227.15.15; helo=mout.gmx.net;
+ envelope-from=quwenruo.btrfs@gmx.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256
+ header.s=badeba3b8450 header.b=f6fQjpoW; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+X-Greylist: delayed 330 seconds by postgrey-1.36 at boromir;
+ Fri, 07 Jan 2022 11:19:15 AEDT
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JVMW130qnz4xts;
- Fri,  7 Jan 2022 10:09:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1641510573;
- bh=B+bWhhgzDSj+fEAQVcMQLTtKkWLuJI8V8ABaSomc3R0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=eaYopRoHSCly3KuF1RT//gnvMY/nRhG9qGnvHOkbkpX7NPp5Xxe0QcnEwTKkzN2Wb
- ODNKaaPw4toaKi0gfn4+x1NuQklg4fDWzSzBgQS/IGBmHBmZfjp7XfLkLgwUWvlLW4
- XkWM+3p9ajCtUQaKZ+q+do3N0kOLvmEX4SNu+TdhifWylLLmcwMmuenroD09gQoE7g
- 2B91JXTz63WNhPGFFYNGl3XE1Tgr1TlS5vKqsdFgEcnIJlHBwnqiJob7VtintImJ28
- izl6Ejt73W3dUop4dWdtufMHjsVWCHprr0x4/KFRMehDZIh6WF3yAD3xXPnL+X9BkX
- rAun794XQgv/w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Laurent Dufour <ldufour@linux.ibm.com>
-Subject: Re: [PATCH v4] powerpc/pseries: read the lpar name from the firmware
-In-Reply-To: <25527544-b0ac-596c-3876-560493b99f6b@linux.ibm.com>
-References: <20211207171109.22793-1-ldufour@linux.ibm.com>
- <25527544-b0ac-596c-3876-560493b99f6b@linux.ibm.com>
-Date: Fri, 07 Jan 2022 10:09:32 +1100
-Message-ID: <87h7ag31hv.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JVP3R2rvRz2x9G
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Jan 2022 11:19:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+ s=badeba3b8450; t=1641514744;
+ bh=EyPi8Y3Gc+gTu2ILQBh3edI82bKKE2zEKRdiyUFahW4=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=f6fQjpoWAZtZ3bTC3ttU7oRM71zxarXaRNGOFvakmye6wOeX/o/FYCDJZblf+AJr9
+ VS1qfmKyPiUVRmXWDY0x87gUu7rGXBr33rdmOO4sQ9bqn8VJwP3LtnDXdPdT0pswi4
+ PA1hb1YiKxmFWwQPPR/LwtFoAwoW4EXljTZBdpgA=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from [0.0.0.0] ([149.28.201.231]) by mail.gmx.net (mrgmx005
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1MStCe-1mxUEN0uR4-00UK15; Fri, 07
+ Jan 2022 01:13:10 +0100
+Message-ID: <db88497c-ea17-27ca-6158-2a987acb7a1c@gmx.com>
+Date: Fri, 7 Jan 2022 08:13:01 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.1
+Subject: Re: [PATCH] fs: btrfs: Disable BTRFS on platforms having 256K pages
+Content-Language: en-US
+To: Neal Gompa <ngompa13@gmail.com>
+References: <a16c31f3caf448dda5d9315e056585b6fafc22c5.1623302442.git.christophe.leroy@csgroup.eu>
+ <6c7a6762-6bec-842b-70b4-4a53297687d1@gmx.com>
+ <CAEg-Je9UJDJ=hvLLqQDsHijWnxh1Z1CwaLKCFm+-bLTfCFingg@mail.gmail.com>
+From: Qu Wenruo <quwenruo.btrfs@gmx.com>
+In-Reply-To: <CAEg-Je9UJDJ=hvLLqQDsHijWnxh1Z1CwaLKCFm+-bLTfCFingg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:anCYYKhzpZMxqykyFCq+8YxKtyr10cQ84WLxzimaPuneijGdCqz
+ DCTt+qxKufcuCSCYh5BvF0kfQ7B0Ov4gS934FXjKQjR28CPsyZEYGntV8kpnaTxozhsyQRC
+ PmkBHzOARVbxjBbf8Gsxv62DXHnI2kJv+jLn2ZfjzaKplUnXZJaOCfBKAPin1Ic1yimFXpN
+ iHdKDG80XWbzbUv4D+TQg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:/XiueiDLzmo=:DyLgDEzc1bS6uoCMd3pKaE
+ nu20UT8/Gr1E9Dw3cqLjfb6DChegSoY/HMAcisopK7RY4NL6x3FwY/EwLJJLAFwmzzM5QKvW7
+ OebA20FB4eV6lGz5RE2+SfvOpfmwzmdirbsscf2MOsnlC6jKQcmcUUKH1X2xkO/cbkHL4sPxv
+ XOASNmxpn+bCX+ULWpL6QjYAzi4dcOCspIjlOcxRoIeWRzDdU/3b1U+pxx/Xc6GOouIYghGP8
+ j8a6TGhyBswn9oaF1D7AdBsp1Hs+eMDcp2urCGrBY7+YEQgS86acYywPnqdVVzstbStKffPl+
+ Ua62O24XV2JVm/w1J38bnh/8I9VXWmjyxFFuEGev82haCdqwCdQXre3W3zVJhPwntbP+lrMmb
+ ewu1Wupj16d1Rqkh+uQ/wN9qirgFvZcRoZymP9DbhFF6zUOMkrBQ3FY41w91zBFJb9emq8RKi
+ 1dieGTlKA4sh/r8GmkoxxK04GBuJBIz94BnZM4ZKLIa6WC3KPRvn8januseX7f177fHoKzgyS
+ okc/Qg6sdzeGWGwx3RA8RaFvBS6A8hpCDVBJkGIoQgHmUWmRotYqwQ52F8Poa5TxMLFzCuXXs
+ K6HI965l2hRWRTgDKRNBFuc3OR0Ii/VKbhvl6m/POEkO4H+3lFHJtXO/lS3uHgveE//HcuIRy
+ YcN1RbeqneGn26oGSXd+4DU1HoQ0s6syHtbAajcSNZoIqoR5DPPOeN2HZ2HU1H7ve7MxlQzef
+ GMnUDBY8koLgGLP9jwCcF+WcOnFVwAz7FjTulZlDhXld/QvmG4LXVkQxbdBnT5DFz2ol0GmyW
+ lK+6dKUy97BWHIA4nvP4WRfTUbGw0ZWWIHycLN+IFLvO2UU3vYg0MwWZpT9n0+GVFMpwXKPIP
+ 5ohPg41DuJQpWVJHnz68wD/xT8k56SjVJHXdNPq9pNbRvdaMEIhcR/KGVCH9ZFlCUwbQiU73e
+ ys1Q7rz7J2xwQUQixF8VKp5X4wI1zf/3EtpIEnlrkWxGiS+9omTd98gYZQhbK3dpGsH9ajvJf
+ J2iw8z0FRcDmPjodQhXggVd1Gg5r1lHQ0eF1NmD6XjLJuy5m8DChNSSa0bRWN0Hc4MfxCE4KY
+ 5GM56UOf0Tea/M=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,119 +87,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linux-hexagon@vger.kernel.org, Hector Martin <marcan@marcan.st>,
+ Josef Bacik <josef@toxicpanda.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ linuxppc-dev@lists.ozlabs.org, Btrfs BTRFS <linux-btrfs@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Laurent Dufour <ldufour@linux.ibm.com> writes:
-> Happy New Year, Michael!
+
+
+On 2022/1/7 00:31, Neal Gompa wrote:
+> On Wed, Jan 5, 2022 at 7:05 AM Qu Wenruo <quwenruo.btrfs@gmx.com> wrote:
+>>
+>> Hi Christophe,
+>>
+>> I'm recently enhancing the subpage support for btrfs, and my current
+>> branch should solve the problem for btrfs to support larger page sizes.
+>>
+>> But unfortunately my current test environment can only provide page siz=
+e
+>> with 64K or 4K, no 16K or 128K/256K support.
+>>
+>> Mind to test my new branch on 128K page size systems?
+>> (256K page size support is still lacking though, which will be addresse=
+d
+>> in the future)
+>>
+>> https://github.com/adam900710/linux/tree/metadata_subpage_switch
+>>
 >
-> Do you consider taking that patch soon?
+> The Linux Asahi folks have a 16K page environment (M1 Macs)...
 
-I did but I was hoping you and Nathan could come to an agreement.
+Su Yue kindly helped me testing 16K page size, and it's pretty OK there.
 
-Looks like you did while I was sleeping, perfect :)
+So I'm not that concerned.
 
-I'll pick up v5.
+It's 128K page size that I'm a little concerned, and I have not machine
+supporting that large page size to do the test.
 
-cheers
+Thanks,
+Qu
 
-
-> On 07/12/2021, 18:11:09, Laurent Dufour wrote:
->> The LPAR name may be changed after the LPAR has been started in the HMC.
->> In that case lparstat command is not reporting the updated value because it
->> reads it from the device tree which is read at boot time.
->> 
->> However this value could be read from RTAS.
->> 
->> Adding this value in the /proc/powerpc/lparcfg output allows to read the
->> updated value.
->> 
->> Cc: Nathan Lynch <nathanl@linux.ibm.com>
->> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
->> ---
->> v4:
->>  address Nathan's new comments limiting size of the buffer.
->> v3:
->>  address Michael's comments.
->> v2:
->>  address Nathan's comments.
->>  change title to partition_name aligning with existing partition_id
->> ---
->>  arch/powerpc/platforms/pseries/lparcfg.c | 54 ++++++++++++++++++++++++
->>  1 file changed, 54 insertions(+)
->> 
->> diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
->> index f71eac74ea92..058d9a5fe545 100644
->> --- a/arch/powerpc/platforms/pseries/lparcfg.c
->> +++ b/arch/powerpc/platforms/pseries/lparcfg.c
->> @@ -311,6 +311,59 @@ static void parse_mpp_x_data(struct seq_file *m)
->>  		seq_printf(m, "coalesce_pool_spurr=%ld\n", mpp_x_data.pool_spurr_cycles);
->>  }
->>  
->> +/*
->> + * PAPR defines, in section "7.3.16 System Parameters Option", the token 55 to
->> + * read the LPAR name, and the largest output data to 4000 + 2 bytes length.
->> + */
->> +#define SPLPAR_LPAR_NAME_TOKEN	55
->> +#define GET_SYS_PARM_BUF_SIZE	4002
->> +#if GET_SYS_PARM_BUF_SIZE > RTAS_DATA_BUF_SIZE
->> +#error "GET_SYS_PARM_BUF_SIZE is larger than RTAS_DATA_BUF_SIZE"
->> +#endif
->> +static void read_lpar_name(struct seq_file *m)
->> +{
->> +	int rc, len, token;
->> +	union {
->> +		char raw_buffer[GET_SYS_PARM_BUF_SIZE];
->> +		struct {
->> +			__be16 len;
->> +			char name[GET_SYS_PARM_BUF_SIZE-2];
->> +		};
->> +	} *local_buffer;
->> +
->> +	token = rtas_token("ibm,get-system-parameter");
->> +	if (token == RTAS_UNKNOWN_SERVICE)
->> +		return;
->> +
->> +	local_buffer = kmalloc(sizeof(*local_buffer), GFP_KERNEL);
->> +	if (!local_buffer)
->> +		return;
->> +
->> +	do {
->> +		spin_lock(&rtas_data_buf_lock);
->> +		memset(rtas_data_buf, 0, sizeof(*local_buffer));
->> +		rc = rtas_call(token, 3, 1, NULL, SPLPAR_LPAR_NAME_TOKEN,
->> +			       __pa(rtas_data_buf), sizeof(*local_buffer));
->> +		if (!rc)
->> +			memcpy(local_buffer->raw_buffer, rtas_data_buf,
->> +			       sizeof(local_buffer->raw_buffer));
->> +		spin_unlock(&rtas_data_buf_lock);
->> +	} while (rtas_busy_delay(rc));
->> +
->> +	if (!rc) {
->> +		/* Force end of string */
->> +		len = min((int) be16_to_cpu(local_buffer->len),
->> +			  (int) sizeof(local_buffer->name)-1);
->> +		local_buffer->name[len] = '\0';
->> +
->> +		seq_printf(m, "partition_name=%s\n", local_buffer->name);
->> +	} else
->> +		pr_err_once("Error calling get-system-parameter (0x%x)\n", rc);
->> +
->> +	kfree(local_buffer);
->> +}
->> +
->> +
->>  #define SPLPAR_CHARACTERISTICS_TOKEN 20
->>  #define SPLPAR_MAXLENGTH 1026*(sizeof(char))
->>  
->> @@ -496,6 +549,7 @@ static int pseries_lparcfg_data(struct seq_file *m, void *v)
->>  
->>  	if (firmware_has_feature(FW_FEATURE_SPLPAR)) {
->>  		/* this call handles the ibm,get-system-parameter contents */
->> +		read_lpar_name(m);
->>  		parse_system_parameter_string(m);
->>  		parse_ppp_data(m);
->>  		parse_mpp_data(m);
+>
+> Hector, could you look at it too?
+>
+>
+>
