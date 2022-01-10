@@ -2,64 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C71B48A2BF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 23:30:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A762D48A369
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 00:07:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JXpRx02q5z3cPf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 09:30:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JXqGq4TTFz3bY0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 10:07:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=MH0jAjQg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=X/BYePGB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::92b;
- helo=mail-ua1-x92b.google.com; envelope-from=michael.heltne@gmail.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::636;
+ helo=mail-pl1-x636.google.com; envelope-from=seanjc@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=MH0jAjQg; dkim-atps=neutral
-Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com
- [IPv6:2607:f8b0:4864:20::92b])
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=X/BYePGB; dkim-atps=neutral
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
+ [IPv6:2607:f8b0:4864:20::636])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JXYBr6l2Nz2xrr
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 23:33:07 +1100 (AEDT)
-Received: by mail-ua1-x92b.google.com with SMTP id h11so1160431uar.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 04:33:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:from:date:message-id:subject:to;
- bh=8wtp+4C35POrc+VUiMHsQrGqfzUrJfI9Qv6QZUZ8DW0=;
- b=MH0jAjQgj80s6cTJOnGRe6wIdkvEL1mh7IhQsb+6Zb3RpDstrKsUbFt+WWRt3i/Evr
- WKbGkZZDZQo7L1O5EG3/Y57kQXmbmmEttgGUootY/heHP4CKSt8UIRDtEtzcDXwXvP2o
- pCf7Wfjyt7fwlFAPaceDdzwONgBesdyWO5FxrznnNiunhKiqfSebf6u6mJT3v70qW44W
- Z+VxkEllfMMaphDO+g0gWAQnMaSuR4zHhxK4SIuhufyApSZLWfR/A5OwzABU9+o5cVIY
- NjFoltJUXk16gtqUYwK74nOMAw1YMbMOdkAdlRmwIi2sl5YQwh9Fygb8XXmS9tHG4OdQ
- iSsA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JXqG72TzVz2xvv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 10:06:53 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id z3so14369336plg.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 15:06:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=y+VBsHBfwIdG2OzWHPdI/WIqfhyYeKNFkPIFzGKgGjs=;
+ b=X/BYePGBzH1Y0U06VN7h0LTAx5XkiSMJkjX4bzEruFI1kwOUOCZ/UQD5Hz1I4ruAQl
+ PKrgHenyxeASQaRZZvzIOgMnuzQdonH1VvyAbdvdjbchbZ2+uMZc22CuQapKF6//7uez
+ U7SEtzQCYOhll5kuSGrRuD3424eXtMM1K2q20cLcgofjiBKZpwYAGGu/G+SgPu+Ah0Ai
+ cMXFe7zrtF2HSeLvPaMRp85OO6XQzOWT5yW68a8WQ+brErvfPeLpyOXHT8jSayE1ssES
+ B/xCP4larnCmFQsqFp3LTl28pqvPRHXZOcO2unNP2YugKO4xbE5RD1x5r36xyKuMboWr
+ viJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
- bh=8wtp+4C35POrc+VUiMHsQrGqfzUrJfI9Qv6QZUZ8DW0=;
- b=2JxBcSmRaN89vPbuN1D+oHEj2CyxKTlqG3hbxgf1xZlD62jhw2d6DOcFkEvzkF7PCf
- A8aaNKwx3Ps7WI6S5VZsFg00HPZy8coIGqF2IOVaMJLVji3GcPHOaSb4IdlZ255H7mS7
- 0MksTqZBtLoLNCIs9yyiD88F8JJIEfYG77N7g++dLcoUV8olVxfBCbmtpQOSxRXkXuUH
- XwAo8KU9Lmw5Bm/+B36h5MocXCzWRXoHuScSLey81jkdPiOvYNmpZ/O13uB5X9lP6MI8
- o8uyb8L8sRB8kvjAJz3sKR/brQFXQt14DB/hUENuBPBnsh6o1jJUuj+6h5YzPdyGc8k3
- Xf1A==
-X-Gm-Message-State: AOAM533+Sh/yb7yG7oBVcfcVvXvz9xAzq3RzCgTD1qx9xIVI9VaQWECU
- SFjX8azIAICkMqYmI/G6HNlObYlYfACleulbvy/HjEKV9z0=
-X-Google-Smtp-Source: ABdhPJxZEPYS2U7jR2WsTd7Cg//HhSI2eNF8PWCfXVDPm7YBR2XMOK6X9Gmk8Kpm2lpxf3Pe0O4/E/OfMo98NGojfd4=
-X-Received: by 2002:ab0:77da:: with SMTP id y26mr11307226uar.68.1641817983768; 
- Mon, 10 Jan 2022 04:33:03 -0800 (PST)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=y+VBsHBfwIdG2OzWHPdI/WIqfhyYeKNFkPIFzGKgGjs=;
+ b=WumukuiHKepp1RTPnP0CuZyxMg+b4eUkjeHqAdKifFcWKwF/qLLq4Td1OC+2zJGfqe
+ uzKZkm8yHA5vylInbJEbktQ2SXsFEys7Qkd5rqkXg2u4BTLOr5e0K1XRHnD+XvUUrmyk
+ nYvUODc++P4D7jrmI6PkAllu/UyQT7R2Cd+DVjWJqigeYJKWCPIjQ4bDsRdyhat1ciVD
+ NlflC09LlWJ2QNQ6NGn2LXJyXi+G3UsZsy4IuZe0uyWB471A9E/OifrZ8wsv60OkCnU7
+ WUctS66dIxAkZx4yVJ59jKsrPp7CxVezi2CIzUJCds+5C+szIb69VLo5IRL6NgABdBiS
+ AJBg==
+X-Gm-Message-State: AOAM533eVFslHm53Sssg9IS0xNdgf0MLHgz2RiXWBQShOoJKm16oCA02
+ 4m63cqhv4ebsJ6YrKNS/o4sKwQ==
+X-Google-Smtp-Source: ABdhPJwuqul2WTZrr6xhkm1p+58Y11+q37mOxYmOZK51ca5s/4q/F/MIfrRIm+VTh9ySZMN7V9F+qQ==
+X-Received: by 2002:a17:90a:d90b:: with SMTP id
+ c11mr37450pjv.211.1641856009160; 
+ Mon, 10 Jan 2022 15:06:49 -0800 (PST)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com.
+ [35.185.214.157])
+ by smtp.gmail.com with ESMTPSA id d1sm4554170pgd.66.2022.01.10.15.06.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Jan 2022 15:06:48 -0800 (PST)
+Date: Mon, 10 Jan 2022 23:06:44 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: Chao Gao <chao.gao@intel.com>
+Subject: Re: [PATCH 3/6] KVM: Remove opaque from
+ kvm_arch_check_processor_compat
+Message-ID: <Ydy8BCfE0jhJd5uE@google.com>
+References: <20211227081515.2088920-1-chao.gao@intel.com>
+ <20211227081515.2088920-4-chao.gao@intel.com>
 MIME-Version: 1.0
-From: Mike <michael.heltne@gmail.com>
-Date: Mon, 10 Jan 2022 13:32:53 +0100
-Message-ID: <CANtoAtPcRGHafb7LddtrY5g43m82txS_mY3WO_ZtJ+pfuLvKaw@mail.gmail.com>
-Subject: [5.16.0] build error on unrecognized opcode: ptesync
-To: linuxppc-dev@lists.ozlabs.org
-Content-Type: multipart/alternative; boundary="000000000000b55cb205d53989ce"
-X-Mailman-Approved-At: Tue, 11 Jan 2022 09:28:57 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211227081515.2088920-4-chao.gao@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,42 +83,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: x86@kernel.org, Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ Atish Patra <atish.patra@wdc.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>,
+ Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+ Huacai Chen <chenhuacai@kernel.org>, linux-riscv@lists.infradead.org,
+ kvmarm@lists.cs.columbia.edu,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>, kevin.tian@intel.com,
+ Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, tglx@linutronix.de,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Fabiano Rosas <farosas@linux.ibm.com>, Anup Patel <anup.patel@wdc.com>,
+ linux-kernel@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
+ James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org,
+ pbonzini@redhat.com, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000b55cb205d53989ce
-Content-Type: text/plain; charset="UTF-8"
+On Mon, Dec 27, 2021, Chao Gao wrote:
+> No arch implementation uses this opaque now.
 
-Hey, so I originally sat down to compile the fast headers V2 patch, but
-quickly discovered other things at play, and grabbed 5.16.0 a few hours
-after it lifted off,  arch/powerpc/mm/mmu_context.c I had to specifically
-say had to include -maltivec or it barfed on a 'dssall', I'm fine with
-that, I've spent years in kernel land, I can deal with that, then came
-arch/powerpc/lib/step.c with the ptesync. This seems like a totally normal
-instruction that shouldn't need any extra flags or anything, yet the
-assembler throws up, and no flag I can think of fixes it. This is a G4
-7447. I reverted back to the Debian 5.15. defconfig before dropping this
-mail as I had tweaked my config to be more G4.
-
-Best regards.
-Michael Heltne
-
---000000000000b55cb205d53989ce
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto">Hey, so I originally sat down to compile the fast headers=
- V2 patch, but quickly discovered other things at play, and grabbed 5.16.0 =
-a few hours after it lifted off,=C2=A0 arch/powerpc/mm/mmu_context.c I had =
-to specifically say had to include -maltivec or it barfed on a &#39;dssall&=
-#39;, I&#39;m fine with that, I&#39;ve spent years in kernel land, I can de=
-al with that, then came arch/powerpc/lib/step.c with the ptesync. This seem=
-s like a totally normal instruction that shouldn&#39;t need any extra flags=
- or anything, yet the assembler throws up, and no flag I can think of fixes=
- it. This is a G4 7447. I reverted back to the Debian 5.15. defconfig befor=
-e dropping this mail as I had tweaked my config to be more G4.<div dir=3D"a=
-uto"><br></div><div dir=3D"auto">Best regards.</div><div dir=3D"auto">Micha=
-el Heltne</div></div>
-
---000000000000b55cb205d53989ce--
+Except for the RISC-V part, this can be a pure revert of commit b99040853738 ("KVM:
+Pass kvm_init()'s opaque param to additional arch funcs").  I think it makes sense
+to process it as a revert, with a short blurb in the changelog to note that RISC-V
+is manually modified as RISC-V support came along in the interim.
