@@ -1,42 +1,128 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F05F489301
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 09:05:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC75489359
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 09:30:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JXRGN2f6bz3bbR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 19:05:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JXRq156r8z30gg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 19:30:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ghiti.fr
- (client-ip=217.70.183.195; helo=relay3-d.mail.gandi.net;
- envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
- [217.70.183.195])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::60d;
+ helo=fra01-pr2-obe.outbound.protection.outlook.com;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com
+ (mail-pr2fra01on060d.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e18::60d])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JXRFv1W5Hz2xrm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 19:05:22 +1100 (AEDT)
-Received: (Authenticated sender: alex@ghiti.fr)
- by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 4688960005;
- Mon, 10 Jan 2022 08:05:02 +0000 (UTC)
-Message-ID: <b67e091d-7be0-7f8b-4ef2-0a97936a1d34@ghiti.fr>
-Date: Mon, 10 Jan 2022 09:05:02 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.1
-Subject: Re: [PATCH v7 1/3] riscv: Introduce CONFIG_RELOCATABLE
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JXRpX0N3Kz2xWd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 19:30:10 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gMK1d7FcOfQdQ6EhxjEo7j0tt2vOVyiOJbw8gd+w5n76TV++YiX+aCna36p8oiTTSiSibklnTINFvkzszNZwJDKT1y457v3veVE/M1atYarf1VN1AzjDsX6eDxjdVjKFOBOaCEDJh34p1vOM4klWCtoGYi9KRkmt4FctqoG9ftc0Hq+7ttTp4ZE4wqfEEsUVEINK0XcL+sWXhpy2B4ytrnO8r5hUd0exiaWH025gfx5sFwUZ+GX6j/3gPhcXWPHwTAKSGC/DseKD5fK9pxzZTZyHCkRzklTdXjk3l8sOojHKZDqspOzvGzZwvLsUIPlTfloodcfFQMe9oxeclxpTMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aTpBRdQud1U4UERXIBWUiD2mJk6qaiDMkSWCzosv5gM=;
+ b=SWFZqQDfNKOK4ulR9bhfUwfk9aarvUMnWt2RWAjpUmRjuUofoCRBqPS5gF5cOfypZsS5msPYGJwvIjk3NJKEGanZTDl7+dOG6b9iAf2BYmZseRPgY8+XnFHla9OOq1R8rYu3/4muRMMFw/3diOx1pbl9r8ntc72KjAlNgdaNuOEZnwstnXE7sIPWy2GDclV27/moJ0+vhNiZOTbGyWpL+xrLOja8X6hfG+eQ67Sl1nRMvpUNF94PoQpbF88vrmGu6IZPLiTA18pc1hk0eavznoMxgElqh7fDFiSrCdg02CSCAVFFw9rHzkddfjN4fXrUYkmFvhUQycv6wZ62C6ztsQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB1750.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:a::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4867.7; Mon, 10 Jan 2022 08:29:44 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::9d4f:1090:9b36:3fc5]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::9d4f:1090:9b36:3fc5%4]) with mapi id 15.20.4867.011; Mon, 10 Jan 2022
+ 08:29:44 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>, Chris Mason <clm@fb.com>, Josef Bacik
+ <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>
+Subject: Re: [PATCH] fs: btrfs: Disable BTRFS on platforms having 256K pages
+Thread-Topic: [PATCH] fs: btrfs: Disable BTRFS on platforms having 256K pages
+Thread-Index: AQHYAcNpI/31rIPGmkSciqlE7DHs+Kxb9OiA
+Date: Mon, 10 Jan 2022 08:29:44 +0000
+Message-ID: <3db6dbe8-7190-a2b1-f092-22bbbac6fedd@csgroup.eu>
+References: <a16c31f3caf448dda5d9315e056585b6fafc22c5.1623302442.git.christophe.leroy@csgroup.eu>
+ <6c7a6762-6bec-842b-70b4-4a53297687d1@gmx.com>
+In-Reply-To: <6c7a6762-6bec-842b-70b4-4a53297687d1@gmx.com>
+Accept-Language: fr-FR, en-US
 Content-Language: en-US
-From: Alexandre ghiti <alex@ghiti.fr>
-To: Palmer Dabbelt <palmer@dabbelt.com>
-References: <mhng-4d503326-d18d-4155-a595-91dc15cfb4f1@palmerdabbelt-glaptop>
- <5846825d-cd7e-5085-569e-17cfaf36630f@ghiti.fr>
- <c6da1d52-380a-715a-8432-87e6a79bf7be@ghiti.fr>
-In-Reply-To: <c6da1d52-380a-715a-8432-87e6a79bf7be@ghiti.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 028f179d-ad3f-49b0-a298-08d9d4135abc
+x-ms-traffictypediagnostic: MRZP264MB1750:EE_
+x-microsoft-antispam-prvs: <MRZP264MB175050B6C91B0916DF816734ED509@MRZP264MB1750.FRAP264.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:2733;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: lu3drHF3XcpY3gwSQH1Nc3ViU3ltH9bpC5cEAvpvh3jFBGbWh3/uO3ITjDubPSO4FAuxUQteFVHMWhUeT2Eoyu5lMNLTa23RbuMKBBxNQTyEiA/TJtq7RemxHxj2NE/2dR/uB/imzHJ+DqpiOacne4lZo3JOKZJHzNoEH56bB3XG/DUV7wVrko7PD7OQ/Q0/X3llTVlOJ4pruBOJqv8Sg3Hgnz9yoCFx1nKMzwdqdJxrzyDs44X2+DYDwCZmY/JpSmvuVuacsf9+Bu69XBLEY7SIBTvx/uuVvCil0rELwm41WQKvlhQl9B1wf+DHY+KVGUA8tsAklS68xL/c/VEU+kD0UsV3f7+YLFlLNj66P5wd+5zqV+nvjk5EK7wYt/+tu2ITfTIx9XOfdtdvcz3yOnCk0nHV08GCswF7V42i4IBjJNqGg9jr5DeYdDi9/LKx8nGSPqAQIf/klSZJkXvCKMoefE4OUoKPBKLfvibkVMBAjPpb7+QNYtqljPj8ukdZ8gb31d9yWb/ByYm9XmtAVR/QM5lD1aJBlFHz8yIol/NC0K0rnjAGsOSAGBqUeZwCQE2H2FhReHH8smi/NRFQPaLidZ0u7o7fTU/6u4uTD8qBhi/905vuUGUobFbjgeh/lwlaQKvxxvX9nPITPgyy41SBvcrqjDLQOQD17KHQaepgSMWOPEjMOhdO4s+eoMpNBC3d2096iuTXE2XBTpBlrEbHeBLqfM0nHNNGyZ9RbBp/dgjJeGgJ+eBjFj/cX5XJHr628FXsXlf2Hs9nPd8/N+GMWJLHNTFwbV+Vy/mJqwbgLHgPm7w0FJ4/XhPtaL3CQaDTUD4pxWsvKcK9Vwduu7iXIgE1zp/rV8UCcxC8YdE=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(4636009)(366004)(8936002)(31686004)(44832011)(8676002)(6512007)(6486002)(64756008)(71200400001)(66556008)(66476007)(66446008)(91956017)(86362001)(76116006)(26005)(5660300002)(66946007)(31696002)(186003)(6506007)(316002)(83380400001)(2616005)(4326008)(122000001)(38070700005)(38100700002)(110136005)(54906003)(2906002)(966005)(508600001)(53546011)(66574015)(36756003)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dTllWEFmVDlBU1d0T1lTSXdldU1BK2QwVkFIOExOT0pvUWZNUTRFbUNEVjZT?=
+ =?utf-8?B?VUNwbHhjaEpnOWI5RnJhemU1TmtWYXFwdXVlUTBpK0JKanB5VkFpVmFwTzIr?=
+ =?utf-8?B?bmM5UXAwM2VkSXlEcHhuVU9mWXRockZrR05CY0Y2MTlUa1hkVDdjUDY5bWZv?=
+ =?utf-8?B?Z0EzYjdsdWRmM0hiRVpZbWhmZmtFbFBoUTE4Z2VXeTVCTGVXZFFNSW16T2l1?=
+ =?utf-8?B?aWxRejdzMHRYdnBRMWxabDRLWkpEdzNRYm1VajBUdkhDRHJ2Q3pUbjJpT2l5?=
+ =?utf-8?B?VUVWakZ1czNSNlBWWktudFd5TDg1U2FiYXlJbEloQnVkOGpEd2VwOGdsL1lv?=
+ =?utf-8?B?NlhRY25odUxadVh4RXBDRWxneUllVmNPdFFxSXBDeWJmY2x5QW8zNWVXS1Bn?=
+ =?utf-8?B?T09OU2NxZ3BESDZ2akRuNVQ1RFczMFhJSkJBbk8yR2RhSXhvQVQwc1JjOU40?=
+ =?utf-8?B?NFZBU0ZwUGtnUU04bkZnVVRWNWV3WW1KMTQ0V0VVUEx1UFhUb3NQZmR1Q3RV?=
+ =?utf-8?B?K2RCKzdCQWlUeXFGaE5nSElxV2R0MnRUeXdpL2xiRFRnaGRId2FwWlNKSkgw?=
+ =?utf-8?B?WTlBcHNvaHlJNFBnV1ZjRUdsbmh3SjZzclprZVBLV3VtZDlKQ0V6dnFhdURq?=
+ =?utf-8?B?MXVQVXI1aUNnNFVrVUUza2wwdG1NQURhVFBDbjR1VU1FeXhnUlBIQUtQZXg3?=
+ =?utf-8?B?VG9zbk8rL29NWE9nYlB6dzJSZng5RDMycDZscEd3Rk8xNTMvSnhLVjZTMXl3?=
+ =?utf-8?B?cnNJNll0ZkJXUFNOSmhSMlQyMDBOdzAxencwcWE3NzFiSm1NZnFqL2VKTk9h?=
+ =?utf-8?B?Wnp2N2NaZ3piNndCVFZVbThLS3QyMllZSnd6UlFJOE9rdmRKYmdXcmY2Tlgz?=
+ =?utf-8?B?SXFIczdBQ3BQT0hpcFlaMnlNbWxlTFhzdi9vdzNnVzNmNXZYaXpVU0hxZkJm?=
+ =?utf-8?B?QkJzS3h6dkNRVjRTTWE1am12a0RRNm9SS1BraVpZd3JCUFNPbC9EcXl2NXRZ?=
+ =?utf-8?B?endSS2NjRGV3VjVvNy93dHZOUEF1Zll4VnpTZFc4cWlUQSs0c1o5R3pjTVRC?=
+ =?utf-8?B?eXp3emlvZUQxdVlSdktscC9Ia1NLMG9XdkRBWWFnbDJCMHhOekhRd2ZIMEpu?=
+ =?utf-8?B?cUdFWWtVbGJlekFDVTZ6NWowWEErWmRJMkxPZkVxeUtObXQyQld0U0pRc2Zs?=
+ =?utf-8?B?NmNYbGFVTXJ3czZ6MFJNeE5PZkZKK2JtMlIvVHNFQnFCNjVoL1huSU53SXAr?=
+ =?utf-8?B?MGtDalovOGNjUmZ5YW1sUm1iTmYyMWI0bHdEOFFJckI5NHVmdCs4Wnc4OFMv?=
+ =?utf-8?B?Z0hZaWxKNG9WUkwzOEp2dlo4QStKYmV0R3VqTVZ5d0ZaU2NURkVXa3prRVB0?=
+ =?utf-8?B?bmZobTB2ZTRyVHg2SldXYnVKOHRIcWp2M1BRNVdudmk0MUY0bytrNTJ6YWZu?=
+ =?utf-8?B?TXVablF5d3lwcjYvalpmMWRYUE9Xb1R5enlaRkUzaytWT0NRMkJ0RnZER1lF?=
+ =?utf-8?B?cHlpV3IyZVNXc0ozSll4MkJJU2IvWkwrWUNNeUxlWFp3QW85TWF0OTVsMWxm?=
+ =?utf-8?B?K2JBeHFITXM0RUVPMHQ1Rk9ZV2tCL3l4K1d2NHRLSStjb1NRRnJzdmtYdGhv?=
+ =?utf-8?B?V294bDQ1YjAyYU1RNDlPbmJQQVhhcFp2c0hSZk1RMVgrMDhZaEVWSVE1MUNq?=
+ =?utf-8?B?SXlLTVNhMnY0KzVWa1pQOVVBaXVCSVJvN01YNVFjV3d6M2hMYkFaQWRtQ1JB?=
+ =?utf-8?B?cU9pT0dpMVZWc3gxeXNpOWlLZE1lR3FFNEVtdWF1eUFOMEtlY2pYUzRTM3RB?=
+ =?utf-8?B?VVk4eTNZS2s4UFlNb1lPY1I4VUV3ZUNya0paY1FpanNPYjBScGsvcWdpMHhJ?=
+ =?utf-8?B?WU5zRHdKWW9UVFdvelppeFl2UXJnOHVVUUlqcGVRKy8ySDZ2bzJGakVQclll?=
+ =?utf-8?B?eGxIVnB1bDE0WGZqRm5YbFZueWVORkJ5NmppOFYyMnBPUlFVVm9FVTZuYWJP?=
+ =?utf-8?B?YVJSdkVqMFRlc2RqV3hxVldSc295MzhDOWJ3TGdYSTM1SVQySnhQVVZoTjNT?=
+ =?utf-8?B?SkxMbitxTkV4SEM1MHd4OVcyWDh1NHY3dDRKVFRMMm5iMFdSNU5qbjgxV3p3?=
+ =?utf-8?B?L0p5d2RvUFJiTzZpNjdvUWxJbmVUMDR2V09OVVVxNm44TTJZb2RRK0g5bVVH?=
+ =?utf-8?B?ZDZ2NG1haXNSeERwT29aaTBGQVYvWlRBaDFtUVhxSmNReXNyOVFPd0JFd1Vk?=
+ =?utf-8?Q?Bw8hDPeAYllhqbxjxw00s3Nv3cdbQepp8gUSuTbXvY=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1CDF836275BD8E4DACC3EFBD2A1624BC@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 028f179d-ad3f-49b0-a298-08d9d4135abc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jan 2022 08:29:44.0789 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Nqd2EDeuQpLpPU6yhW4ihhU9cNcr+jwNLAenOT6x2dRsMMe+8f9xX0HthRSDAqCpLEHbsu/LwccLcWZ0cGSOEZH8gmorGchHmj8byqF2KnQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1750
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,267 +134,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aou@eecs.berkeley.edu, linux-kernel@vger.kernel.org, paulus@samba.org,
- Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org,
- alexandre.ghiti@canonical.com, linuxppc-dev@lists.ozlabs.org
+Cc: "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Palmer,
-
-Do you think this could go in for-next?
-
-Thanks,
-
-Alex
-
-On 12/6/21 10:44, Alexandre ghiti wrote:
-> @Palmer, can I do anything for that to be pulled in 5.17?
->
-> Thanks,
->
-> Alex
->
-> On 10/27/21 07:04, Alexandre ghiti wrote:
->> Hi Palmer,
->>
->> On 10/26/21 11:29 PM, Palmer Dabbelt wrote:
->>> On Sat, 09 Oct 2021 10:20:20 PDT (-0700), alex@ghiti.fr wrote:
->>>> Arf, I have sent this patchset with the wrong email address. @Palmer
->>>> tell me if you want me to resend it correctly.
->>> Sorry for being kind of slow here.  It's fine: there's a "From:" in
->>> the patch, and git picks those up so it'll match the signed-off-by
->>> line.  I send pretty much all my patches that way, as I never managed
->>> to get my Google address working correctly.
->>>
->>>> Thanks,
->>>>
->>>> Alex
->>>>
->>>> On 10/9/21 7:12 PM, Alexandre Ghiti wrote:
->>>>> From: Alexandre Ghiti <alex@ghiti.fr>
->>>>>
->>>>> This config allows to compile 64b kernel as PIE and to relocate it at
->>>>> any virtual address at runtime: this paves the way to KASLR.
->>>>> Runtime relocation is possible since relocation metadata are
->>>>> embedded into
->>>>> the kernel.
->>> IMO this should really be user selectable, at a bare minimum so it's
->>> testable.
->>> I just sent along a patch to do that (my power's off at home, so email
->>> is a bit
->>> wacky right now).
->>>
->>> I haven't put this on for-next yet as I'm not sure if you had a fix
->>> for the
->>> kasan issue (which IIUC would conflict with this).
->>
->> The kasan issue only revealed that I need to move the kasan shadow
->> memory around with sv48 support, that's not related to the relocatable
->> kernel.
->>
->> Thanks,
->>
->> Alex
->>
->>
->>>>> Note that relocating at runtime introduces an overhead even if the
->>>>> kernel is loaded at the same address it was linked at and that the
->>>>> compiler
->>>>> options are those used in arm64 which uses the same RELA relocation
->>>>> format.
->>>>>
->>>>> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->>>>> ---
->>>>>   arch/riscv/Kconfig              | 12 ++++++++
->>>>>   arch/riscv/Makefile             |  7 +++--
->>>>>   arch/riscv/kernel/vmlinux.lds.S |  6 ++++
->>>>>   arch/riscv/mm/Makefile          |  4 +++
->>>>>   arch/riscv/mm/init.c            | 54 
->>>>> ++++++++++++++++++++++++++++++++-
->>>>>   5 files changed, 80 insertions(+), 3 deletions(-)
->>>>>
->>>>> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
->>>>> index ea16fa2dd768..043ba92559fa 100644
->>>>> --- a/arch/riscv/Kconfig
->>>>> +++ b/arch/riscv/Kconfig
->>>>> @@ -213,6 +213,18 @@ config PGTABLE_LEVELS
->>>>>   config LOCKDEP_SUPPORT
->>>>>       def_bool y
->>>>>
->>>>> +config RELOCATABLE
->>>>> +    bool
->>>>> +    depends on MMU && 64BIT && !XIP_KERNEL
->>>>> +    help
->>>>> +          This builds a kernel as a Position Independent Executable
->>>>> (PIE),
->>>>> +          which retains all relocation metadata required to
->>>>> relocate the
->>>>> +          kernel binary at runtime to a different virtual address
->>>>> than the
->>>>> +          address it was linked at.
->>>>> +          Since RISCV uses the RELA relocation format, this 
->>>>> requires a
->>>>> +          relocation pass at runtime even if the kernel is loaded
->>>>> at the
->>>>> +          same address it was linked at.
->>>>> +
->>>>>   source "arch/riscv/Kconfig.socs"
->>>>>   source "arch/riscv/Kconfig.erratas"
->>>>>
->>>>> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
->>>>> index 0eb4568fbd29..2f509915f246 100644
->>>>> --- a/arch/riscv/Makefile
->>>>> +++ b/arch/riscv/Makefile
->>>>> @@ -9,9 +9,12 @@
->>>>>   #
->>>>>
->>>>>   OBJCOPYFLAGS    := -O binary
->>>>> -LDFLAGS_vmlinux :=
->>>>> +ifeq ($(CONFIG_RELOCATABLE),y)
->>>>> +    LDFLAGS_vmlinux += -shared -Bsymbolic -z notext -z norelro
->>>>> +    KBUILD_CFLAGS += -fPIE
->>>>> +endif
->>>>>   ifeq ($(CONFIG_DYNAMIC_FTRACE),y)
->>>>> -    LDFLAGS_vmlinux := --no-relax
->>>>> +    LDFLAGS_vmlinux += --no-relax
->>>>>       KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
->>>>>       CC_FLAGS_FTRACE := -fpatchable-function-entry=8
->>>>>   endif
->>>>> diff --git a/arch/riscv/kernel/vmlinux.lds.S
->>>>> b/arch/riscv/kernel/vmlinux.lds.S
->>>>> index 5104f3a871e3..862a8c09723c 100644
->>>>> --- a/arch/riscv/kernel/vmlinux.lds.S
->>>>> +++ b/arch/riscv/kernel/vmlinux.lds.S
->>>>> @@ -133,6 +133,12 @@ SECTIONS
->>>>>
->>>>>       BSS_SECTION(PAGE_SIZE, PAGE_SIZE, 0)
->>>>>
->>>>> +    .rela.dyn : ALIGN(8) {
->>>>> +        __rela_dyn_start = .;
->>>>> +        *(.rela .rela*)
->>>>> +        __rela_dyn_end = .;
->>>>> +    }
->>>>> +
->>>>>   #ifdef CONFIG_EFI
->>>>>       . = ALIGN(PECOFF_SECTION_ALIGNMENT);
->>>>>       __pecoff_data_virt_size = ABSOLUTE(. - __pecoff_text_end);
->>>>> diff --git a/arch/riscv/mm/Makefile b/arch/riscv/mm/Makefile
->>>>> index 7ebaef10ea1b..2d33ec574bbb 100644
->>>>> --- a/arch/riscv/mm/Makefile
->>>>> +++ b/arch/riscv/mm/Makefile
->>>>> @@ -1,6 +1,10 @@
->>>>>   # SPDX-License-Identifier: GPL-2.0-only
->>>>>
->>>>>   CFLAGS_init.o := -mcmodel=medany
->>>>> +ifdef CONFIG_RELOCATABLE
->>>>> +CFLAGS_init.o += -fno-pie
->>>>> +endif
->>>>> +
->>>>>   ifdef CONFIG_FTRACE
->>>>>   CFLAGS_REMOVE_init.o = $(CC_FLAGS_FTRACE)
->>>>>   CFLAGS_REMOVE_cacheflush.o = $(CC_FLAGS_FTRACE)
->>>>> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
->>>>> index c0cddf0fc22d..42041c12d496 100644
->>>>> --- a/arch/riscv/mm/init.c
->>>>> +++ b/arch/riscv/mm/init.c
->>>>> @@ -20,6 +20,9 @@
->>>>>   #include <linux/dma-map-ops.h>
->>>>>   #include <linux/crash_dump.h>
->>>>>   #include <linux/hugetlb.h>
->>>>> +#ifdef CONFIG_RELOCATABLE
->>>>> +#include <linux/elf.h>
->>>>> +#endif
->>>>>
->>>>>   #include <asm/fixmap.h>
->>>>>   #include <asm/tlbflush.h>
->>>>> @@ -103,7 +106,7 @@ static void __init print_vm_layout(void)
->>>>>       print_mlm("lowmem", (unsigned long)PAGE_OFFSET,
->>>>>             (unsigned long)high_memory);
->>>>>   #ifdef CONFIG_64BIT
->>>>> -    print_mlm("kernel", (unsigned long)KERNEL_LINK_ADDR,
->>>>> +    print_mlm("kernel", (unsigned long)kernel_map.virt_addr,
->>>>>             (unsigned long)ADDRESS_SPACE_END);
->>>>>   #endif
->>>>>   }
->>>>> @@ -518,6 +521,44 @@ static __init pgprot_t pgprot_from_va(uintptr_t
->>>>> va)
->>>>>   #error "setup_vm() is called from head.S before relocate so it
->>>>> should not use absolute addressing."
->>>>>   #endif
->>>>>
->>>>> +#ifdef CONFIG_RELOCATABLE
->>>>> +extern unsigned long __rela_dyn_start, __rela_dyn_end;
->>>>> +
->>>>> +static void __init relocate_kernel(void)
->>>>> +{
->>>>> +    Elf64_Rela *rela = (Elf64_Rela *)&__rela_dyn_start;
->>>>> +    /*
->>>>> +     * This holds the offset between the linked virtual address and
->>>>> the
->>>>> +     * relocated virtual address.
->>>>> +     */
->>>>> +    uintptr_t reloc_offset = kernel_map.virt_addr - 
->>>>> KERNEL_LINK_ADDR;
->>>>> +    /*
->>>>> +     * This holds the offset between kernel linked virtual 
->>>>> address and
->>>>> +     * physical address.
->>>>> +     */
->>>>> +    uintptr_t va_kernel_link_pa_offset = KERNEL_LINK_ADDR -
->>>>> kernel_map.phys_addr;
->>>>> +
->>>>> +    for ( ; rela < (Elf64_Rela *)&__rela_dyn_end; rela++) {
->>>>> +        Elf64_Addr addr = (rela->r_offset - 
->>>>> va_kernel_link_pa_offset);
->>>>> +        Elf64_Addr relocated_addr = rela->r_addend;
->>>>> +
->>>>> +        if (rela->r_info != R_RISCV_RELATIVE)
->>>>> +            continue;
->>>>> +
->>>>> +        /*
->>>>> +         * Make sure to not relocate vdso symbols like rt_sigreturn
->>>>> +         * which are linked from the address 0 in vmlinux since
->>>>> +         * vdso symbol addresses are actually used as an offset from
->>>>> +         * mm->context.vdso in VDSO_OFFSET macro.
->>>>> +         */
->>>>> +        if (relocated_addr >= KERNEL_LINK_ADDR)
->>>>> +            relocated_addr += reloc_offset;
->>>>> +
->>>>> +        *(Elf64_Addr *)addr = relocated_addr;
->>>>> +    }
->>>>> +}
->>>>> +#endif /* CONFIG_RELOCATABLE */
->>>>> +
->>>>>   #ifdef CONFIG_XIP_KERNEL
->>>>>   static void __init create_kernel_page_table(pgd_t *pgdir,
->>>>>                           __always_unused bool early)
->>>>> @@ -625,6 +666,17 @@ asmlinkage void __init setup_vm(uintptr_t 
->>>>> dtb_pa)
->>>>>       BUG_ON((kernel_map.virt_addr + kernel_map.size) >
->>>>> ADDRESS_SPACE_END - SZ_4K);
->>>>>   #endif
->>>>>
->>>>> +#ifdef CONFIG_RELOCATABLE
->>>>> +    /*
->>>>> +     * Early page table uses only one PGDIR, which makes it possible
->>>>> +     * to map PGDIR_SIZE aligned on PGDIR_SIZE: if the relocation
->>>>> offset
->>>>> +     * makes the kernel cross over a PGDIR_SIZE boundary, raise a 
->>>>> bug
->>>>> +     * since a part of the kernel would not get mapped.
->>>>> +     */
->>>>> +    BUG_ON(PGDIR_SIZE - (kernel_map.virt_addr & (PGDIR_SIZE - 1)) <
->>>>> kernel_map.size);
->>>>> +    relocate_kernel();
->>>>> +#endif
->>>>> +
->>>>>       pt_ops.alloc_pte = alloc_pte_early;
->>>>>       pt_ops.get_pte_virt = get_pte_virt_early;
->>>>>   #ifndef __PAGETABLE_PMD_FOLDED
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+SGkgUXUsDQoNCkxlIDA1LzAxLzIwMjIgw6AgMDA6MzIsIFF1IFdlbnJ1byBhIMOpY3JpdMKgOg0K
+PiBIaSBDaHJpc3RvcGhlLA0KPiANCj4gSSdtIHJlY2VudGx5IGVuaGFuY2luZyB0aGUgc3VicGFn
+ZSBzdXBwb3J0IGZvciBidHJmcywgYW5kIG15IGN1cnJlbnQNCj4gYnJhbmNoIHNob3VsZCBzb2x2
+ZSB0aGUgcHJvYmxlbSBmb3IgYnRyZnMgdG8gc3VwcG9ydCBsYXJnZXIgcGFnZSBzaXplcy4NCj4g
+DQo+IEJ1dCB1bmZvcnR1bmF0ZWx5IG15IGN1cnJlbnQgdGVzdCBlbnZpcm9ubWVudCBjYW4gb25s
+eSBwcm92aWRlIHBhZ2Ugc2l6ZQ0KPiB3aXRoIDY0SyBvciA0Sywgbm8gMTZLIG9yIDEyOEsvMjU2
+SyBzdXBwb3J0Lg0KPiANCj4gTWluZCB0byB0ZXN0IG15IG5ldyBicmFuY2ggb24gMTI4SyBwYWdl
+IHNpemUgc3lzdGVtcz8NCj4gKDI1NksgcGFnZSBzaXplIHN1cHBvcnQgaXMgc3RpbGwgbGFja2lu
+ZyB0aG91Z2gsIHdoaWNoIHdpbGwgYmUgYWRkcmVzc2VkDQo+IGluIHRoZSBmdXR1cmUpDQoNCg0K
+SSBkb24ndCBoYXZlIGFueSBzeXN0ZW0gd2l0aCBkaXNrLCBJIG9ubHkgdXNlIGZsYXNoZGlza3Mg
+d2l0aCBVQklGUyANCmZpbGVzeXN0ZW0uDQoNClRoZSByZWFzb24gd2h5IEkgZGlkIHRoaXMgY29t
+bWl0IHdhcyBiZWNhdXNlIG9mIGEgYnVpbGQgZmFpbHVyZSByZXBvcnRlZCANCmJ5IEtlcm5lbCBC
+dWlsZCBSb2JvdCwgdGhhdCdzIGl0Lg0KDQpBbHNvIG5vdGUgdGhhdCBwb3dlcnBjIGRvZXNuJ3Qg
+aGF2ZSAxMjhLIHBhZ2VzLiBPbmx5IDQvMTYvNjQvMjU2Lg0KDQpBbmQgZm9yIDI1NiBpdCByZXF1
+aXJlcyBhIHNwZWNpYWwgdmVyc2lvbiBvZiBsZCBhbmQgYmludXRpbHMgdGhhdCBJIA0KZG9uJ3Qg
+aGF2ZS4NCg0KSSBoYXZlIGEgYm9hcmQgd2hlcmUgSSBjYW4gZG8gMTZrIHBhZ2VzLCBidXQgYWdh
+aW4gdGhhdCBib2FyZCBoYXMgbm8gZGlzay4NCg0KQ2hyaXN0b3BoZQ0KDQo+IA0KPiBodHRwczov
+L2dpdGh1Yi5jb20vYWRhbTkwMDcxMC9saW51eC90cmVlL21ldGFkYXRhX3N1YnBhZ2Vfc3dpdGNo
+DQo+IA0KPiBUaGFua3MsDQo+IFF1DQo+IA0KPiBPbiAyMDIxLzYvMTAgMTM6MjMsIENocmlzdG9w
+aGUgTGVyb3kgd3JvdGU6DQo+PiBXaXRoIGEgY29uZmlnIGhhdmluZyBQQUdFX1NJWkUgc2V0IHRv
+IDI1NkssIEJUUkZTIGJ1aWxkIGZhaWxzDQo+PiB3aXRoIHRoZSBmb2xsb3dpbmcgbWVzc2FnZQ0K
+Pj4NCj4+IMKgIGluY2x1ZGUvbGludXgvY29tcGlsZXJfdHlwZXMuaDozMjY6Mzg6IGVycm9yOiBj
+YWxsIHRvIA0KPj4gJ19fY29tcGlsZXRpbWVfYXNzZXJ0Xzc5MScgZGVjbGFyZWQgd2l0aCBhdHRy
+aWJ1dGUgZXJyb3I6IEJVSUxEX0JVR19PTiANCj4+IGZhaWxlZDogKEJUUkZTX01BWF9DT01QUkVT
+U0VEICUgUEFHRV9TSVpFKSAhPSAwDQo+Pg0KPj4gQlRSRlNfTUFYX0NPTVBSRVNTRUQgYmVpbmcg
+MTI4SywgQlRSRlMgY2Fubm90IHN1cHBvcnQgcGxhdGZvcm1zIHdpdGgNCj4+IDI1NksgcGFnZXMg
+YXQgdGhlIHRpbWUgYmVpbmcuDQo+Pg0KPj4gVGhlcmUgYXJlIHR3byBwbGF0Zm9ybXMgdGhhdCBj
+YW4gc2VsZWN0IDI1NksgcGFnZXM6DQo+PiDCoCAtIGhleGFnb24NCj4+IMKgIC0gcG93ZXJwYw0K
+Pj4NCj4+IERpc2FibGUgQlRSRlMgd2hlbiAyNTZLIHBhZ2Ugc2l6ZSBpcyBzZWxlY3RlZC4NCj4+
+DQo+PiBSZXBvcnRlZC1ieToga2VybmVsIHRlc3Qgcm9ib3QgPGxrcEBpbnRlbC5jb20+DQo+PiBT
+aWduZWQtb2ZmLWJ5OiBDaHJpc3RvcGhlIExlcm95IDxjaHJpc3RvcGhlLmxlcm95QGNzZ3JvdXAu
+ZXU+DQo+PiAtLS0NCj4+IMKgIGZzL2J0cmZzL0tjb25maWcgfCAyICsrDQo+PiDCoCAxIGZpbGUg
+Y2hhbmdlZCwgMiBpbnNlcnRpb25zKCspDQo+Pg0KPj4gZGlmZiAtLWdpdCBhL2ZzL2J0cmZzL0tj
+b25maWcgYi9mcy9idHJmcy9LY29uZmlnDQo+PiBpbmRleCA2OGI5NWFkODIxMjYuLjUyMGEwZjZh
+N2Q5ZSAxMDA2NDQNCj4+IC0tLSBhL2ZzL2J0cmZzL0tjb25maWcNCj4+ICsrKyBiL2ZzL2J0cmZz
+L0tjb25maWcNCj4+IEBAIC0xOCw2ICsxOCw4IEBAIGNvbmZpZyBCVFJGU19GUw0KPj4gwqDCoMKg
+wqDCoCBzZWxlY3QgUkFJRDZfUFENCj4+IMKgwqDCoMKgwqAgc2VsZWN0IFhPUl9CTE9DS1MNCj4+
+IMKgwqDCoMKgwqAgc2VsZWN0IFNSQ1UNCj4+ICvCoMKgwqAgZGVwZW5kcyBvbiAhUFBDXzI1Nktf
+UEFHRVPCoMKgwqAgIyBwb3dlcnBjDQo+PiArwqDCoMKgIGRlcGVuZHMgb24gIVBBR0VfU0laRV8y
+NTZLQsKgwqDCoCAjIGhleGFnb24NCj4+DQo+PiDCoMKgwqDCoMKgIGhlbHANCj4+IMKgwqDCoMKg
+wqDCoMKgIEJ0cmZzIGlzIGEgZ2VuZXJhbCBwdXJwb3NlIGNvcHktb24td3JpdGUgZmlsZXN5c3Rl
+bSB3aXRoIGV4dGVudHMs
