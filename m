@@ -2,76 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A762D48A369
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 00:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8566048A3FF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 00:51:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JXqGq4TTFz3bY0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 10:07:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JXrG53C6Wz30MT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 10:51:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=X/BYePGB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=ItfE+s4n;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::636;
- helo=mail-pl1-x636.google.com; envelope-from=seanjc@google.com;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=X/BYePGB; dkim-atps=neutral
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
- [IPv6:2607:f8b0:4864:20::636])
+ unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com
+ header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256
+ header.s=20210112 header.b=ItfE+s4n; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JXqG72TzVz2xvv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 10:06:53 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id z3so14369336plg.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 15:06:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=y+VBsHBfwIdG2OzWHPdI/WIqfhyYeKNFkPIFzGKgGjs=;
- b=X/BYePGBzH1Y0U06VN7h0LTAx5XkiSMJkjX4bzEruFI1kwOUOCZ/UQD5Hz1I4ruAQl
- PKrgHenyxeASQaRZZvzIOgMnuzQdonH1VvyAbdvdjbchbZ2+uMZc22CuQapKF6//7uez
- U7SEtzQCYOhll5kuSGrRuD3424eXtMM1K2q20cLcgofjiBKZpwYAGGu/G+SgPu+Ah0Ai
- cMXFe7zrtF2HSeLvPaMRp85OO6XQzOWT5yW68a8WQ+brErvfPeLpyOXHT8jSayE1ssES
- B/xCP4larnCmFQsqFp3LTl28pqvPRHXZOcO2unNP2YugKO4xbE5RD1x5r36xyKuMboWr
- viJg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JXrFD2mYVz30Cr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 10:51:11 +1100 (AEDT)
+Received: by mail-pj1-x102b.google.com with SMTP id
+ lr15-20020a17090b4b8f00b001b19671cbebso2582537pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 15:51:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20210112.gappssmtp.com; s=20210112;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=g4elZEGZLbtyoXvKlR1aoQZ5uI6OqTEZ0ihc5xTsWHM=;
+ b=ItfE+s4nge1QQhJwmD9D/rdEqltMHF12wvZaPS8mrC5P0AfKtOnkchOoqnXnZBifON
+ 2z91S6wROPs07mjG33MJo4E1GGPBBJBfKgkDX7eCJFnOhtkTcSvIvlJh0kPcrtXInEWh
+ C7tUwT3v7e4qw+9i3eEpNNQwEQhjCocgK0HQSkqnW8Bz7Xu6G7qJOz5hfomibP1HVOAD
+ 5udnVVxeCHsIiiHSXYXGeYbL65owzDTmK9D932PPoCJrjHBOjpKAuu5EBswTi+hMdZkz
+ hnQy5qefk5l8yw6kq0T7ZOZQ3phWmKJ+e74GKwpQeDHAhZNWz1EnDbv6lOi+buVOwHfS
+ OpzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=y+VBsHBfwIdG2OzWHPdI/WIqfhyYeKNFkPIFzGKgGjs=;
- b=WumukuiHKepp1RTPnP0CuZyxMg+b4eUkjeHqAdKifFcWKwF/qLLq4Td1OC+2zJGfqe
- uzKZkm8yHA5vylInbJEbktQ2SXsFEys7Qkd5rqkXg2u4BTLOr5e0K1XRHnD+XvUUrmyk
- nYvUODc++P4D7jrmI6PkAllu/UyQT7R2Cd+DVjWJqigeYJKWCPIjQ4bDsRdyhat1ciVD
- NlflC09LlWJ2QNQ6NGn2LXJyXi+G3UsZsy4IuZe0uyWB471A9E/OifrZ8wsv60OkCnU7
- WUctS66dIxAkZx4yVJ59jKsrPp7CxVezi2CIzUJCds+5C+szIb69VLo5IRL6NgABdBiS
- AJBg==
-X-Gm-Message-State: AOAM533eVFslHm53Sssg9IS0xNdgf0MLHgz2RiXWBQShOoJKm16oCA02
- 4m63cqhv4ebsJ6YrKNS/o4sKwQ==
-X-Google-Smtp-Source: ABdhPJwuqul2WTZrr6xhkm1p+58Y11+q37mOxYmOZK51ca5s/4q/F/MIfrRIm+VTh9ySZMN7V9F+qQ==
-X-Received: by 2002:a17:90a:d90b:: with SMTP id
- c11mr37450pjv.211.1641856009160; 
- Mon, 10 Jan 2022 15:06:49 -0800 (PST)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com.
- [35.185.214.157])
- by smtp.gmail.com with ESMTPSA id d1sm4554170pgd.66.2022.01.10.15.06.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jan 2022 15:06:48 -0800 (PST)
-Date: Mon, 10 Jan 2022 23:06:44 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Chao Gao <chao.gao@intel.com>
-Subject: Re: [PATCH 3/6] KVM: Remove opaque from
- kvm_arch_check_processor_compat
-Message-ID: <Ydy8BCfE0jhJd5uE@google.com>
-References: <20211227081515.2088920-1-chao.gao@intel.com>
- <20211227081515.2088920-4-chao.gao@intel.com>
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=g4elZEGZLbtyoXvKlR1aoQZ5uI6OqTEZ0ihc5xTsWHM=;
+ b=qfMFjlIGpOapbZruqF3kGb2eTnMRZeJkuELUu+0tSwqndms8R976iO4NA8W9piyPJe
+ NEUFgEJCTl64D2O61IDEK71siOJD+1FzHCurEqcj5KndoLDXCNIjtdP+pr7vhNtqUiz3
+ aNfDpjhuzxhj0JzTPvqyW9bFZ0Cz2dUIiowXpgHBSdwTCJF27xUyHFrepwvd2/bIBdUD
+ oCJEkSWDmIk7PnU7tMLioW3ZCmWt91ZqsXSeg9L2mjM3FwDzX/TaP2XykcwjZzOM1qtz
+ RXRz1WCVbMzRSsS7wkwpSiWf9P4yHOzXBLDf5U1z521jQknf8KECcUWrKVLTbFfJ+kU5
+ b6rg==
+X-Gm-Message-State: AOAM532dRzQVbfIjQGqiWluhK5trlR3BWzBqpU2KOo8ONqzCP9ggXwal
+ ZCQaU7AIEtksBmdMclB20iw6Mg==
+X-Google-Smtp-Source: ABdhPJz3Oz+IIfqsYM3c7rT02Fu1G6CWKBEK2E2E7ymL5UvrtkLHrNNpLQcnI6qolCJ+dps09CJ8Bw==
+X-Received: by 2002:a05:6a00:1693:b0:44c:64a3:d318 with SMTP id
+ k19-20020a056a00169300b0044c64a3d318mr2041347pfc.81.1641858667919; 
+ Mon, 10 Jan 2022 15:51:07 -0800 (PST)
+Received: from [192.168.10.24] (203-7-124-83.dyn.iinet.net.au. [203.7.124.83])
+ by smtp.gmail.com with ESMTPSA id
+ l13sm37253pgq.34.2022.01.10.15.51.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jan 2022 15:51:07 -0800 (PST)
+Message-ID: <bf61f021-15b3-7093-f991-cdcda93d059d@ozlabs.ru>
+Date: Tue, 11 Jan 2022 10:51:02 +1100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211227081515.2088920-4-chao.gao@intel.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:96.0) Gecko/20100101
+ Thunderbird/96.0
+Subject: Re: [PATCH v3 5/6] KVM: PPC: mmio: Return to guest after emulation
+ failure
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas
+ <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
+References: <20220107210012.4091153-1-farosas@linux.ibm.com>
+ <20220107210012.4091153-6-farosas@linux.ibm.com>
+ <1641799578.6dxlxsaaos.astroid@bobo.none>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+In-Reply-To: <1641799578.6dxlxsaaos.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,43 +92,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
- David Hildenbrand <david@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
- Atish Patra <atish.patra@wdc.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>,
- Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
- Huacai Chen <chenhuacai@kernel.org>, linux-riscv@lists.infradead.org,
- kvmarm@lists.cs.columbia.edu,
- Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
- Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>, kevin.tian@intel.com,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, tglx@linutronix.de,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Fabiano Rosas <farosas@linux.ibm.com>, Anup Patel <anup.patel@wdc.com>,
- linux-kernel@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org,
- pbonzini@redhat.com, Vitaly Kuznetsov <vkuznets@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Dec 27, 2021, Chao Gao wrote:
-> No arch implementation uses this opaque now.
 
-Except for the RISC-V part, this can be a pure revert of commit b99040853738 ("KVM:
-Pass kvm_init()'s opaque param to additional arch funcs").  I think it makes sense
-to process it as a revert, with a short blurb in the changelog to note that RISC-V
-is manually modified as RISC-V support came along in the interim.
+
+On 1/10/22 18:36, Nicholas Piggin wrote:
+> Excerpts from Fabiano Rosas's message of January 8, 2022 7:00 am:
+>> If MMIO emulation fails we don't want to crash the whole guest by
+>> returning to userspace.
+>>
+>> The original commit bbf45ba57eae ("KVM: ppc: PowerPC 440 KVM
+>> implementation") added a todo:
+>>
+>>    /* XXX Deliver Program interrupt to guest. */
+>>
+>> and later the commit d69614a295ae ("KVM: PPC: Separate loadstore
+>> emulation from priv emulation") added the Program interrupt injection
+>> but in another file, so I'm assuming it was missed that this block
+>> needed to be altered.
+>>
+>> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+>> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+>> ---
+>>   arch/powerpc/kvm/powerpc.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+>> index 6daeea4a7de1..56b0faab7a5f 100644
+>> --- a/arch/powerpc/kvm/powerpc.c
+>> +++ b/arch/powerpc/kvm/powerpc.c
+>> @@ -309,7 +309,7 @@ int kvmppc_emulate_mmio(struct kvm_vcpu *vcpu)
+>>   		kvmppc_get_last_inst(vcpu, INST_GENERIC, &last_inst);
+>>   		kvmppc_core_queue_program(vcpu, 0);
+>>   		pr_info("%s: emulation failed (%08x)\n", __func__, last_inst);
+>> -		r = RESUME_HOST;
+>> +		r = RESUME_GUEST;
+> 
+> So at this point can the pr_info just go away?
+> 
+> I wonder if this shouldn't be a DSI rather than a program check.
+> DSI with DSISR[37] looks a bit more expected. Not that Linux
+> probably does much with it but at least it would give a SIGBUS
+> rather than SIGILL.
+
+It does not like it is more expected to me, it is not about wrong memory 
+attributes, it is the instruction itself which cannot execute.
+
+DSISR[37]:
+Set to 1 if the access is due to a lq, stq, lwat, ldat, lbarx, lharx, 
+lwarx, ldarx, lqarx, stwat,
+stdat, stbcx., sthcx., stwcx., stdcx., or stqcx. instruction that 
+addresses storage that is Write
+Through Required or Caching Inhibited; or if the access is due to a copy 
+or paste. instruction
+that addresses storage that is Caching Inhibited; or if the access is 
+due to a lwat, ldat, stwat, or
+stdat instruction that addresses storage that is Guarded; otherwise set 
+to 0.
