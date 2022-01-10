@@ -1,70 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98AF489AD9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 14:54:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D54489B3E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 15:29:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JXb0s5F0Xz3cDV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 00:54:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=mKenB4Cl;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tHBKSy4U;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JXbn24wJgz3cBs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 01:29:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=mKenB4Cl; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=tHBKSy4U; 
- dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.133; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JXZvl0xjGz2yQ9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 00:50:10 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 0DC7D212BB;
- Mon, 10 Jan 2022 13:50:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1641822608; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=y8UfsVs9ewQVYRAbN7Ug1IzhKfCrKnLEWfDZ94pDZQ8=;
- b=mKenB4Clw5CYe+TAg15IUaDmLkwbLOVkUcU8tymww/MniKePlDSYxOY4aDwwfdbHke7Bgw
- DWtBIuf/zidfvBtVfPMkZOO+XHaRnWdMWYwyoXPNS+FoDyy0aKTz2zKX1F0KVCtAIdXK8K
- SNJVdWvN0kn9xPKJP/tQDfZsjx8dBS8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1641822608;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=y8UfsVs9ewQVYRAbN7Ug1IzhKfCrKnLEWfDZ94pDZQ8=;
- b=tHBKSy4UOfGBis4IGWS254lpdyHkmiPEhyj48Ig1bycfLuI0amwmH5IgzM1xlooypS3zng
- LK+y4Yd+6fGmSNDA==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
- by relay2.suse.de (Postfix) with ESMTP id BB06EA3B8D;
- Mon, 10 Jan 2022 13:50:07 +0000 (UTC)
-From: Michal Suchanek <msuchanek@suse.de>
-To: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
- linux-integrity@vger.kernel.org
-Subject: [PATCH v4 6/6] module: Move duplicate mod_check_sig users code to
- mod_parse_sig
-Date: Mon, 10 Jan 2022 14:49:58 +0100
-Message-Id: <59d134a3eae4fa802ed9135385cee6fe4838ec01.1641822505.git.msuchanek@suse.de>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1641822505.git.msuchanek@suse.de>
-References: <cover.1641822505.git.msuchanek@suse.de>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JXbmb41q3z2xBZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 01:29:01 +1100 (AEDT)
+Received: from mail-wr1-f50.google.com ([209.85.221.50]) by
+ mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1M6YEz-1n0dCy3T33-006sQQ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan
+ 2022 15:28:57 +0100
+Received: by mail-wr1-f50.google.com with SMTP id q8so27037790wra.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 06:28:57 -0800 (PST)
+X-Gm-Message-State: AOAM531uw2zxC3k3HiR9A/JptF4YqAFoZlKu1o6oxjmvsPtotDJUXp9M
+ qEE13F2yVnw5FmHQq2fIBNDTg//vWt61lbjFxzQ=
+X-Google-Smtp-Source: ABdhPJwP2dj7vwEXcQpaQSkksNl0ZEmP7KqS5c95/LhZe5KvkABgHfbU/HDC2zAjxcbRJXknKfqyiFGKdYDX7S/ttBs=
+X-Received: by 2002:a05:6000:16c7:: with SMTP id
+ h7mr17539097wrf.317.1641824936821; 
+ Mon, 10 Jan 2022 06:28:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211228143958.3409187-1-guoren@kernel.org>
+ <20211228143958.3409187-12-guoren@kernel.org>
+In-Reply-To: <20211228143958.3409187-12-guoren@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Mon, 10 Jan 2022 15:28:40 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a0H2Nq=bFdzWGzzGuFWP85JA7=Td6_rb8GqOF3bYCRJBw@mail.gmail.com>
+Message-ID: <CAK8P3a0H2Nq=bFdzWGzzGuFWP85JA7=Td6_rb8GqOF3bYCRJBw@mail.gmail.com>
+Subject: Re: [PATCH V2 11/17] riscv: compat: Add elf.h implementation
+To: Guo Ren <guoren@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:0xG9b1RspXENxVvIUAz8uEUUvjxHsPglytF+f5yOY/sa7JLjobW
+ JfZWGdx3UBeUlh2CsZ3PpMd2vIjnAaJgu8P8h197SYFop76A26mtoxEQrrLpBDDjbysqV77
+ q6IfArD0e8TumQMAHp0IPylmT2verWL/F4aYiYRy2mv8ikZBXxiGqEXh8tCvFJDJHCwPiIZ
+ wZQd+BgqKpIujfiXwvzfw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:TrQq5ztPIRg=:YFswH+69cse02KpEsbkazK
+ yJ388TmIbiQxEIj2pJYyjFR5MP1LQT4BMoaalmlz60dvPzuzBxrkX4ldvpQSXRNP+HyKzWI7K
+ aDb2kgRZUGpX2b+GPJJG/fAN7vqL/ksrUmUs0eApWiBB5r30eHlJdw23yLhlcSyzLF7f51hFv
+ ss+i9TJdWq8Bp5TrrWHDHtUyCrl+Nr+No8rGru7lM5ZjE7gBBEie8la7KdEGLOj3ZONNPrEht
+ OhtQb5nxfEqlJmEManWdwAGJPFmpTbGxrCBrMJNx3C1YbZS+kfkBkX0x9GkG8KxGvlgyGzTjb
+ Md2G6LWbHIi8sl8hGXhuzMatmxIpcdz90P5QJnOPhqI/RoHGdxthbcHrEUgUTTQlYPHFezZIA
+ JXjabuuXWeIODj2uyzzFoLWvuY8QsCIUimpZ5NJTR8DZ7qiMvcQhMiL4BGsE/vPDTi2xOckCK
+ W4nqGfTbewZHqc1Nlb5tiaUsMl508amufpYRX/RR0fVL7aOL1jG879i/uZ5P4bHxW4HEcoUCA
+ Wa94LyF8/U21F9nHcLzrp55A38dSAvGdvFii3g2KQxFbY4kdcMVoWV8EYl1m786ToXi/B3rnH
+ KXc67BkU0m0/gFZiDHIcWnQBnfhFsruQu+wwlB/TRYOnpoi3DBbn0FK28Td3+FDB634ckOQh4
+ 1xoodFNWp4hYNq1WxgQwpHVWVeTAoiXNlX4BlehVoMczaQepIYSrQg8xr5GZta64ns8sWBmxx
+ YttlurB/KhYOuaTgm9EAjcE2MnbUpyakG4IDwCqrvplNezMnrkOh0s5zSHD1fK+XFjfiGi7AX
+ aZtkmgrr6pI9WUniEbiW/DSxnTiHSteC9o9fPmXKBfAztSAvI4=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,230 +71,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nayna <nayna@linux.vnet.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
- David Howells <dhowells@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Rob Herring <robh@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Baoquan He <bhe@redhat.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- James Morris <jmorris@namei.org>,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
- Michal Suchanek <msuchanek@suse.de>, "Serge E. Hallyn" <serge@hallyn.com>,
- Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
- Heiko Carstens <hca@linux.ibm.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
- linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
+Cc: linux-s390 <linux-s390@vger.kernel.org>,
+ the arch/x86 maintainers <x86@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Drew Fustini <drew@beagleboard.org>, gregkh <gregkh@linuxfoundation.org>,
+ Wang Junqiang <wangjunqiang@iscas.ac.cn>, Anup Patel <anup.patel@wdc.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Christoph Hellwig <hch@infradead.org>, Guo Ren <guoren@linux.alibaba.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, liush <liush@allwinnertech.com>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, inux-parisc@vger.kernel.org,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Multiple users of mod_check_sig check for the marker, then call
-mod_check_sig, extract signature length, and remove the signature.
+On Tue, Dec 28, 2021 at 3:39 PM <guoren@kernel.org> wrote:
+>
+> From: Guo Ren <guoren@linux.alibaba.com>
+>
+> Implement necessary type and macro for compat elf. See the code
+> comment for detail.
+>
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
 
-Put this code in one place together with mod_check_sig.
+This looks mostly correct,
 
-This changes the error from ENOENT to ENODATA for ima_read_modsig in the
-case the signature marker is missing.
+> +/*
+> + * FIXME: not sure SET_PERSONALITY for compat process is right!
+> + */
+> +#define SET_PERSONALITY(ex)                                               \
+> +do {    if ((ex).e_ident[EI_CLASS] == ELFCLASS32)                         \
+> +               set_thread_flag(TIF_32BIT);                                \
+> +       else                                                               \
+> +               clear_thread_flag(TIF_32BIT);                              \
+> +       set_personality(PER_LINUX | (current->personality & (~PER_MASK))); \
+> +} while (0)
 
-This also changes the buffer length in ima_read_modsig from size_t to
-unsigned long. This reduces the possible value range on 32bit but the
-length refers to kernel in-memory buffer which cannot be longer than
-ULONG_MAX.
+This means the personality after exec is always set to PER_LINUX, not
+PER_LINUX32, which I think is wrong: you want the PER_LINUX32
+setting to stick, just like the upper bits do in the default implementation.
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
----
-v3: - Philipp Rudo <prudo@redhat.com>: Update the commit with note about
-      change of raturn value
-    - Preserve the EBADMSG error code while moving code araound
-v4: - remove unused variable ms in module_signing
-    - note about buffer length
----
- include/linux/module_signature.h    |  1 +
- kernel/module_signature.c           | 56 ++++++++++++++++++++++++++++-
- kernel/module_signing.c             | 27 +++-----------
- security/integrity/ima/ima_modsig.c | 22 ++----------
- 4 files changed, 63 insertions(+), 43 deletions(-)
+What the other ones do is:
 
-diff --git a/include/linux/module_signature.h b/include/linux/module_signature.h
-index 7eb4b00381ac..1343879b72b3 100644
---- a/include/linux/module_signature.h
-+++ b/include/linux/module_signature.h
-@@ -42,5 +42,6 @@ struct module_signature {
- 
- int mod_check_sig(const struct module_signature *ms, size_t file_len,
- 		  const char *name);
-+int mod_parse_sig(const void *data, size_t *len, size_t *sig_len, const char *name);
- 
- #endif /* _LINUX_MODULE_SIGNATURE_H */
-diff --git a/kernel/module_signature.c b/kernel/module_signature.c
-index 00132d12487c..b8eb30182183 100644
---- a/kernel/module_signature.c
-+++ b/kernel/module_signature.c
-@@ -8,14 +8,36 @@
- 
- #include <linux/errno.h>
- #include <linux/printk.h>
-+#include <linux/string.h>
- #include <linux/module_signature.h>
- #include <asm/byteorder.h>
- 
-+/**
-+ * mod_check_sig_marker - check that the given data has signature marker at the end
-+ *
-+ * @data:	Data with appended signature
-+ * @len:	Length of data. Signature marker length is subtracted on success.
-+ */
-+static inline int mod_check_sig_marker(const void *data, size_t *len)
-+{
-+	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
-+
-+	if (markerlen > *len)
-+		return -ENODATA;
-+
-+	if (memcmp(data + *len - markerlen, MODULE_SIG_STRING,
-+		   markerlen))
-+		return -ENODATA;
-+
-+	*len -= markerlen;
-+	return 0;
-+}
-+
- /**
-  * mod_check_sig - check that the given signature is sane
-  *
-  * @ms:		Signature to check.
-- * @file_len:	Size of the file to which @ms is appended.
-+ * @file_len:	Size of the file to which @ms is appended (without the marker).
-  * @name:	What is being checked. Used for error messages.
-  */
- int mod_check_sig(const struct module_signature *ms, size_t file_len,
-@@ -44,3 +66,35 @@ int mod_check_sig(const struct module_signature *ms, size_t file_len,
- 
- 	return 0;
- }
-+
-+/**
-+ * mod_parse_sig - check that the given signature is sane and determine signature length
-+ *
-+ * @data:	Data with appended signature.
-+ * @len:	Length of data. Signature and marker length is subtracted on success.
-+ * @sig_len:	Length of signature. Filled on success.
-+ * @name:	What is being checked. Used for error messages.
-+ */
-+int mod_parse_sig(const void *data, size_t *len, size_t *sig_len, const char *name)
-+{
-+	const struct module_signature *sig;
-+	int rc;
-+
-+	rc = mod_check_sig_marker(data, len);
-+	if (rc)
-+		return rc;
-+
-+	if (*len < sizeof(*sig))
-+		return -EBADMSG;
-+
-+	sig = (const struct module_signature *)(data + (*len - sizeof(*sig)));
-+
-+	rc = mod_check_sig(sig, *len, name);
-+	if (rc)
-+		return rc;
-+
-+	*sig_len = be32_to_cpu(sig->sig_len);
-+	*len -= *sig_len + sizeof(*sig);
-+
-+	return 0;
-+}
-diff --git a/kernel/module_signing.c b/kernel/module_signing.c
-index 20857d2a15ca..1d4cb03cce21 100644
---- a/kernel/module_signing.c
-+++ b/kernel/module_signing.c
-@@ -25,35 +25,16 @@ int verify_appended_signature(const void *data, unsigned long *len,
- 			      struct key *trusted_keys,
- 			      enum key_being_used_for purpose)
- {
--	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
--	struct module_signature *ms;
--	unsigned long sig_len, modlen = *len;
-+	unsigned long sig_len;
- 	int ret;
- 
--	pr_devel("==>%s %s(,%lu)\n", __func__, key_being_used_for[purpose], modlen);
-+	pr_devel("==>%s %s(,%lu)\n", __func__, key_being_used_for[purpose], *len);
- 
--	if (markerlen > modlen)
--		return -ENODATA;
--
--	if (memcmp(data + modlen - markerlen, MODULE_SIG_STRING,
--		   markerlen))
--		return -ENODATA;
--	modlen -= markerlen;
--
--	if (modlen <= sizeof(*ms))
--		return -EBADMSG;
--
--	ms = data + modlen - sizeof(*ms);
--
--	ret = mod_check_sig(ms, modlen, key_being_used_for[purpose]);
-+	ret = mod_parse_sig(data, len, &sig_len, key_being_used_for[purpose]);
- 	if (ret)
- 		return ret;
- 
--	sig_len = be32_to_cpu(ms->sig_len);
--	modlen -= sig_len + sizeof(*ms);
--	*len = modlen;
--
--	return verify_pkcs7_signature(data, modlen, data + modlen, sig_len,
-+	return verify_pkcs7_signature(data, *len, data + *len, sig_len,
- 				      trusted_keys,
- 				      purpose,
- 				      NULL, NULL);
-diff --git a/security/integrity/ima/ima_modsig.c b/security/integrity/ima/ima_modsig.c
-index fb25723c65bc..b40c8fdf6139 100644
---- a/security/integrity/ima/ima_modsig.c
-+++ b/security/integrity/ima/ima_modsig.c
-@@ -37,33 +37,17 @@ struct modsig {
-  *
-  * Return: 0 on success, error code otherwise.
-  */
--int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t buf_len,
-+int ima_read_modsig(enum ima_hooks func, const void *buf, loff_t len,
- 		    struct modsig **modsig)
- {
--	const size_t marker_len = strlen(MODULE_SIG_STRING);
--	const struct module_signature *sig;
- 	struct modsig *hdr;
--	size_t sig_len;
--	const void *p;
-+	unsigned long sig_len, buf_len = len;
- 	int rc;
- 
--	if (buf_len <= marker_len + sizeof(*sig))
--		return -ENOENT;
--
--	p = buf + buf_len - marker_len;
--	if (memcmp(p, MODULE_SIG_STRING, marker_len))
--		return -ENOENT;
--
--	buf_len -= marker_len;
--	sig = (const struct module_signature *)(p - sizeof(*sig));
--
--	rc = mod_check_sig(sig, buf_len, func_tokens[func]);
-+	rc = mod_parse_sig(buf, &buf_len, &sig_len, func_tokens[func]);
- 	if (rc)
- 		return rc;
- 
--	sig_len = be32_to_cpu(sig->sig_len);
--	buf_len -= sig_len + sizeof(*sig);
--
- 	/* Allocate sig_len additional bytes to hold the raw PKCS#7 data. */
- 	hdr = kzalloc(sizeof(*hdr) + sig_len, GFP_KERNEL);
- 	if (!hdr)
--- 
-2.31.1
+| arch/parisc/include/asm/elf.h-
+set_personality((current->personality & ~PER_MASK) | PER_LINUX); \
 
+This looks like the same problem you introduce here: always forcing PER_LINUX
+instead of PER_LINUX32 makes it impossible to use PER_LINUX32.
+
+| arch/alpha/include/asm/elf.h:#define SET_PERSONALITY(EX)
+                           \
+| arch/alpha/include/asm/elf.h-   set_personality(((EX).e_flags &
+EF_ALPHA_32BIT)         \
+| arch/alpha/include/asm/elf.h-      ? PER_LINUX_32BIT : PER_LINUX)
+| arch/csky/include/asm/elf.h:#define SET_PERSONALITY(ex)
+set_personality(PER_LINUX)
+| arch/nds32/include/asm/elf.h:#define SET_PERSONALITY(ex)
+set_personality(PER_LINUX)
+
+These look even worse: instead of forcing the lower bits to
+PER_LINUX/PER_LINUX32 and
+leaving the upper bits untouched, these also clear the upper bits
+unconditionally.
+
+| arch/arm64/include/asm/elf.h:#define SET_PERSONALITY(ex)
+                                   \
+| arch/arm64/include/asm/elf.h-   current->personality &=
+~READ_IMPLIES_EXEC;                     \
+| arch/x86/um/asm/elf.h:#define SET_PERSONALITY(ex) do {} while(0)
+| arch/x86/include/asm/elf.h:#define set_personality_64bit()      do {
+} while (0)
+| arch/x86/kernel/process_64.c:static void __set_personality_ia32(void)
+|         current->personality |= force_personality32;
+
+Inconsistent: does not enforce PER_LINUX/PER_LINUX32 as the default
+implementation
+does, but just leaves the value untouched (other than (re)setting
+READ_IMPLIES_EXEC).
+I think this is harmless otherwise, as we generally ignore the lower
+bits, except for the
+bit of code that checks for PER_LINUX32 in override_architecture() to mangle the
+output of sys_newuname() or in /proc/cpuinfo.
+
+| arch/s390/include/asm/elf.h-    if
+(personality(current->personality) != PER_LINUX32)   \
+| arch/s390/include/asm/elf.h-            set_personality(PER_LINUX |
+                   \
+| arch/s390/include/asm/elf.h-
+(current->personality & ~PER_MASK));    \
+| arch/powerpc/include/asm/elf.h- if
+(personality(current->personality) != PER_LINUX32)   \
+| arch/powerpc/include/asm/elf.h-         set_personality(PER_LINUX |
+                   \
+| arch/powerpc/include/asm/elf.h-
+(current->personality & (~PER_MASK)));  \
+| arch/sparc/include/asm/elf_64.h-        if
+(personality(current->personality) != PER_LINUX32)   \
+| arch/sparc/include/asm/elf_64.h-
+set_personality(PER_LINUX |             \
+| arch/sparc/include/asm/elf_64.h-
+(current->personality & (~PER_MASK)));  \
+
+This is probably the behavior you want to copy.
+
+      Arnd
