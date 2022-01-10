@@ -1,64 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B252489A0B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 14:36:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 993DA489ACC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 14:50:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JXZbg0FqWz3cPC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 00:36:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JXZwP42pMz30LJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 00:50:45 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Cxi4DKWB;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=M5mR11XF;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.17.10; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
+ envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
+ header.s=susede2_rsa header.b=Cxi4DKWB; 
+ dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=M5mR11XF; 
+ dkim-atps=neutral
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JXZb04Trlz30L4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 00:35:40 +1100 (AEDT)
-Received: from mail-wm1-f46.google.com ([209.85.128.46]) by
- mrelayeu.kundenserver.de (mreue107 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1M9nAB-1n1fe12UZp-005qiP for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan
- 2022 14:35:36 +0100
-Received: by mail-wm1-f46.google.com with SMTP id
- q141-20020a1ca793000000b00347b48dfb53so5194945wme.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 05:35:35 -0800 (PST)
-X-Gm-Message-State: AOAM533EMYeZdzcb43w0QhDm9c2M6QFj8+F/x5t1Bf3rTQzUi9vOSJqE
- obiwZN5qPh3eAWBtShuBd6KH9DPVf5/dKIsXO7w=
-X-Google-Smtp-Source: ABdhPJxi0Z/ZiBz/NSOKjhoGPprS74nLPOzeNY5wtnvdjs0k7wca4Io+stHgBpdw9GGPmWr9NuMWVabYObO8sOckUL0=
-X-Received: by 2002:a1c:4c19:: with SMTP id z25mr8601383wmf.173.1641821735504; 
- Mon, 10 Jan 2022 05:35:35 -0800 (PST)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JXZvk0GZrz2yNr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 00:50:09 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out2.suse.de (Postfix) with ESMTP id 3CFF81F395;
+ Mon, 10 Jan 2022 13:50:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1641822606; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=dsFwmuk0CX7ltVsRVZVwGSb46zqyAdrIjBZaVQwQYsw=;
+ b=Cxi4DKWB9qWnepRS9zf3XEXXuVPiwup7TAHvK+JLUGGtm0BerCUq/suWnWzntdzQYGF3vp
+ 4A7gSVRUNwFiTa0Pn5a/y453sqAHJcRcsarbauzov8BOEh8AuFd4prI5YG3MIQrHAareCG
+ 45Ry/WuimBqKLNFDp47Y0yZLBSubD2M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1641822606;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=dsFwmuk0CX7ltVsRVZVwGSb46zqyAdrIjBZaVQwQYsw=;
+ b=M5mR11XFV1E1tlCtH8DkYBxALX63UOfVbEIwxOyXJ/UNwj3kNqIG/LUHUFY+E3Z4bsllSl
+ CmTHDgKRABSaB6AQ==
+Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
+ by relay2.suse.de (Postfix) with ESMTP id 28230A3B83;
+ Mon, 10 Jan 2022 13:50:03 +0000 (UTC)
+From: Michal Suchanek <msuchanek@suse.de>
+To: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-integrity@vger.kernel.org
+Subject: [PATCH v4 0/6] KEXEC_SIG with appended signature
+Date: Mon, 10 Jan 2022 14:49:52 +0100
+Message-Id: <cover.1641822505.git.msuchanek@suse.de>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20211228143958.3409187-1-guoren@kernel.org>
- <20211228143958.3409187-4-guoren@kernel.org>
-In-Reply-To: <20211228143958.3409187-4-guoren@kernel.org>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Mon, 10 Jan 2022 14:35:19 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2zn9M6X09WsjJ9HYiS9WnO_YPCvJLSBk+HaH+yZHQqfA@mail.gmail.com>
-Message-ID: <CAK8P3a2zn9M6X09WsjJ9HYiS9WnO_YPCvJLSBk+HaH+yZHQqfA@mail.gmail.com>
-Subject: Re: [PATCH V2 03/17] asm-generic: fcntl: compat: Remove duplicate
- definitions
-To: Guo Ren <guoren@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:a624zTBUPTdGB6t26pRWABhZ68zOTTNJ5OmGnM+aS1OIvkvoWE7
- OPV+9HWWx4UiSt7OZ7xMlmw2YZjoUQAtqkZiqmhTfnFRFjEv+OxG77+KDwFElbmzcgkhsF/
- cq6aTWI8A4ppgcDHjM3r8VxiacRkP+3Yz40ENrVlJA80bRkRdovWB9nlX3mmG/f+BcTtOan
- BPndXe7+TlQ9MF8PKJZ9Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:X2Bc2BBNFTM=:pmZed2hZy09EffyCgGvGD9
- TuREaBme81VOBwbzz70wiSrmtuWg6CNna5QSV6MCd8Z0IeLZ0zi0Y4wmtzzjUPfXOVa/dLexV
- vZJH4KUw4aU3lXylT3y+wCp6hcT72C8FTSCvua52ILvHq4+LV5bdaaepfCNqtljS6dauf4lGZ
- D2tuD24imTIVXIa213PdokAOClFsglIuCRe7McZDuStFPjOSSw9U5iRsyr1DXdMzrk2Nx2XZI
- WyR95ZptmeH1Hu9OG8u1tFq16h913xMGG0tDc8hhq2rp0EQwmEKFrPi2Ft6tAYv8FjRJ349u9
- PW5cgp5dxuVv8OPORvxvcsZMdUaGk/4F9jui1vixNTKvegx2QwW6xVI2TKmaMUx4cAxFxpdhA
- dqZcmyMt+R0MQvSzCODxknq7SV2pZf8PNZyNVkledTfPlwUoQaTRGi9jND6m4WcndWO77U7rR
- iYcpgtyhBHnJVEDuj/ZGht3LT/47EzQ2HsFRr2r+1xjmeEX0LAK+ssxqG8z4mTcSq1iFxz08u
- 45yB41TsYuID7qwrrN3AnzS1GxdI5d/VCOMUUB/wHmv+x9dJUcWvDGzGL7XGmB+8SdabG/b/8
- 384YkKOoke/HozvefMXdL1tP2P0gkRVUN8TpFH5apqI8UQHOqHEXD3tfDXHtIxxRTrl1NSgr8
- tjluKjVHpe92KvsesFvYwZuFm1cD+KvNKAIFiIZe14Smty3f0qFaBrhy79O0r2+otws8=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,73 +69,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Guo Ren <guoren@linux.alibaba.com>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- "J. Bruce Fields" <bfields@fieldses.org>,
- sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>, inux-parisc@vger.kernel.org,
- linux-s390 <linux-s390@vger.kernel.org>,
- the arch/x86 maintainers <x86@kernel.org>, linux-csky@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Drew Fustini <drew@beagleboard.org>, gregkh <gregkh@linuxfoundation.org>,
- Wang Junqiang <wangjunqiang@iscas.ac.cn>, Anup Patel <anup.patel@wdc.com>,
- Jeff Layton <jlayton@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, liush <liush@allwinnertech.com>,
- Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Wei Fu <wefu@redhat.com>
+Cc: Nayna <nayna@linux.vnet.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ David Howells <dhowells@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Rob Herring <robh@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Baoquan He <bhe@redhat.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ James Morris <jmorris@namei.org>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Michal Suchanek <msuchanek@suse.de>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
+ linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 28, 2021 at 3:39 PM <guoren@kernel.org> wrote:
->
-> From: Guo Ren <guoren@linux.alibaba.com>
->
-> Remove duplicate F_GETLK64,F_SETLK64,F_SETLKW64 definitions in
-> arch/*/include/asm/compat.h.
->
-> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> Signed-off-by: Guo Ren <guoren@kernel.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
+Hello,
 
-Unfortunately, this one does not look correct to me:
+This is a refresh of the KEXEC_SIG series.
 
-> @@ -116,7 +116,7 @@
->  #define F_GETSIG       11      /* for sockets. */
->  #endif
->
-> -#ifndef CONFIG_64BIT
-> +#if !defined(CONFIG_64BIT) || defined(CONFIG_COMPAT)
->  #ifndef F_GETLK64
->  #define F_GETLK64      12      /*  using 'struct flock64' */
->  #define F_SETLK64      13
+This adds KEXEC_SIG support on powerpc and deduplicates the code dealing
+with appended signatures in the kernel.
 
-The problem here is that include/uapi/ headers cannot contain checks for
-CONFIG_* symbols because those may have different meanings in user space
-compared to kernel.
+powerpc supports IMA_KEXEC but that's an exception rather than the norm.
+On the other hand, KEXEC_SIG is portable across platforms.
 
-This is a preexisting problem in the header, but I think the change
-makes it worse.
+For distributions to have uniform security features across platforms one
+option should be used on all platforms.
 
-With the current behavior, user space will always see the definitions,
-unless it happens to have its own definition for CONFIG_64BIT already.
-On 64-bit parisc, this has the effect of defining the macros to the
-same values as F_SETOWN/F_SETSIG/F_GETSIG, which is potentially
-harmful. On MIPS, it uses values that are different from the 32-bit numbers
-but are otherwise unused. Everywhere else, we get the definition from
-the 32-bit architecture in user space, which will do nothing in the kernel.
+Thanks
 
-The correct check for a uapi header would be to test for
-__BITS_PER_LONG==32. We should probably do that here, but
-this won't help you move the definitions, and it is a user-visible change
-as the incorrect definition will no longer be visible. [Adding Jeff and Bruce
-(the flock mainainers) to Cc for additional feedback on this]
+Michal
 
-For your series, I would suggest just moving the macro definitions to
-include/linux/compat.h along with the 'struct compat_flock64'
-definition, and leaving the duplicate one in the uapi header unchanged
-until we have decided on a solution.
+Previous revision: https://lore.kernel.org/linuxppc-dev/cover.1637862358.git.msuchanek@suse.de/
+Patched kernel tree: https://github.com/hramrach/kernel/tree/kexec_sig
 
-        Arnd
+Michal Suchanek (6):
+  s390/kexec_file: Don't opencode appended signature check.
+  powerpc/kexec_file: Add KEXEC_SIG support.
+  kexec_file: Don't opencode appended signature verification.
+  module: strip the signature marker in the verification function.
+  module: Use key_being_used_for for log messages in
+    verify_appended_signature
+  module: Move duplicate mod_check_sig users code to mod_parse_sig
+
+ arch/powerpc/Kconfig                     | 16 +++++++
+ arch/powerpc/kexec/elf_64.c              | 12 +++++
+ arch/s390/Kconfig                        |  2 +-
+ arch/s390/kernel/machine_kexec_file.c    | 41 +----------------
+ crypto/asymmetric_keys/asymmetric_type.c |  1 +
+ include/linux/module_signature.h         |  1 +
+ include/linux/verification.h             |  5 +++
+ kernel/module-internal.h                 |  2 -
+ kernel/module.c                          | 12 +++--
+ kernel/module_signature.c                | 56 +++++++++++++++++++++++-
+ kernel/module_signing.c                  | 34 +++++++-------
+ security/integrity/ima/ima_modsig.c      | 22 ++--------
+ 12 files changed, 116 insertions(+), 88 deletions(-)
+
+-- 
+2.31.1
+
