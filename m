@@ -1,91 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C414895FA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 11:08:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D0C48967E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 11:37:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JXV0N1RMVz2yMC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 21:08:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JXVdV4syBz30LS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Jan 2022 21:37:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Uz+N99PX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fCsfg/7t;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Uz+N99PX; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=fCsfg/7t; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JXTzb4ly1z2y8P
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 21:08:11 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20A88WZH000542; 
- Mon, 10 Jan 2022 10:08:03 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JXVcl3Rjhz2xs2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 21:36:55 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20A9JU4d015927; 
+ Mon, 10 Jan 2022 10:36:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=nFvr2dV+OqCZAoMlMrn+XMtwH6JsPOzoQzLmIDjrq5w=;
- b=Uz+N99PXoomJe4v2bmz6kokDr/S7ITrgWL1v38vS5wKhOAWDxZR/fHXkD3H7YGDFOf2H
- ClKbYAiF8b7FKji1ZxttgBqDBsyzt6/RgahBEMEmP9sdqBLtY3N4j7Tv13SR1LAexmIS
- JM64l89w3WyuQoFDuxSYE08vJuO0izPBrA74VmeMShTQ+PB9gD7xk+r5QphCtd2X5fDQ
- H21vd6sLTzDp40NeS3NTH04Nnx8VZnLetySHGmEn/imU3Zw2EJq2GIKOTIJ6KIvfhlfi
- PSPMk28ZYlxgR6OZKMSpD/GL3FzpN0FIyElxuWPq6yCrWTlkTZKWe7BUqxJuCv/NHpy5 Mg== 
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dfmjdx8h3-1
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ZoUnCLx6kjEmuveUKaImqiaxecsAA+7RnbJQhwjzrM0=;
+ b=fCsfg/7tPy82KdxBzcIB+ho93RTnShbpTTCYK9WAoxO3XvvvsMDrv+NA/9f+4aUmLpxR
+ 8OXHMrnIW2ZW8YLCSxAvz9pZ7opBfH9hNKwEFxrVMn3DWMcwvajJOI7uwySBFiRQYEqo
+ mEvM9qH80Tr9zyzhgKGQlWLn0pu4sQYaw/Sa9Ui6T76NGs70ferZd0Trkys4VCa0pF1g
+ OxVJ0DaLNYvdDTI5F622xUOYDClZ9APwh8ZbgzHAC58zG3kEjkiMBylNKMhelOj9cCid
+ L/Cy7OsQ7TIi+v2LF7/7eh7odJX9MsnNNAHrLL0H5R99+uWKxxWRcT37HKKBUX3iolIA eQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dfm5rq9cx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 10 Jan 2022 10:08:03 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20A9w5H6028243;
- Mon, 10 Jan 2022 10:08:01 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03fra.de.ibm.com with ESMTP id 3df288th4g-1
+ Mon, 10 Jan 2022 10:36:27 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20AASwsf004498;
+ Mon, 10 Jan 2022 10:36:26 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dfm5rq9c9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 10 Jan 2022 10:08:01 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 20A9x0er47579512
+ Mon, 10 Jan 2022 10:36:26 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20AARnrX024077;
+ Mon, 10 Jan 2022 10:36:24 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma06fra.de.ibm.com with ESMTP id 3df1vj2twk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 10 Jan 2022 10:36:23 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 20AAaLbe34996484
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 10 Jan 2022 09:59:00 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0276E42042;
- Mon, 10 Jan 2022 10:07:59 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CB87642056;
- Mon, 10 Jan 2022 10:07:57 +0000 (GMT)
-Received: from naverao1-tp.ibm.com (unknown [9.43.113.57])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 10 Jan 2022 10:07:57 +0000 (GMT)
+ Mon, 10 Jan 2022 10:36:21 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AD6E9A4057;
+ Mon, 10 Jan 2022 10:36:21 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3D2F5A409A;
+ Mon, 10 Jan 2022 10:36:21 +0000 (GMT)
+Received: from localhost (unknown [9.43.113.57])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 10 Jan 2022 10:36:21 +0000 (GMT)
+Date: Mon, 10 Jan 2022 16:06:20 +0530
 From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/security: Provide stubs for when PPC_BARRIER_NOSPEC
- isn't enabled
-Date: Mon, 10 Jan 2022 15:37:45 +0530
-Message-Id: <20220110100745.711970-1-naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
+Subject: Re: [PATCH 01/13] bpf: Guard against accessing NULL pt_regs in
+ bpf_get_task_stack()
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Daniel Borkmann <daniel@iogearbox.net>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <cover.1641468127.git.naveen.n.rao@linux.vnet.ibm.com>
+ <d5ef83c361cc255494afd15ff1b4fb02a36e1dcf.1641468127.git.naveen.n.rao@linux.vnet.ibm.com>
+ <b10434ec-f2bc-44b0-0b0a-414bff75edd8@csgroup.eu>
+In-Reply-To: <b10434ec-f2bc-44b0-0b0a-414bff75edd8@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/v0.16-1-g4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1641810817.8yruuwqpg4.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ei8r6PHAjekeU_k8VkdSQHczwO1Hp8CQ
-X-Proofpoint-ORIG-GUID: ei8r6PHAjekeU_k8VkdSQHczwO1Hp8CQ
+X-Proofpoint-GUID: 5-tz77TpCPWohDNjT2tdzPEpEJKmg42_
+X-Proofpoint-ORIG-GUID: LjJohthc_mYADmvRBH0R1OvWuc-366g0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-10_04,2022-01-07_01,2021-12-02_01
+ definitions=2022-01-10_04,2022-01-10_01,2021-12-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 spamscore=0 bulkscore=0 suspectscore=0 phishscore=0
- impostorscore=0 mlxscore=0 priorityscore=1501 clxscore=1011
- mlxlogscore=999 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2110150000 definitions=main-2201100071
+ lowpriorityscore=0
+ priorityscore=1501 phishscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0
+ adultscore=0 clxscore=1015 impostorscore=0 spamscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201100074
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,67 +112,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, lkp@intel.com
+Cc: "ykaliuta@redhat.com" <ykaliuta@redhat.com>,
+ "johan.almbladh@anyfinetworks.com" <johan.almbladh@anyfinetworks.com>,
+ Jiri Olsa <jolsa@redhat.com>, "song@kernel.org" <song@kernel.org>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-kernel test robot reported the below build error with a randconfig:
-  powerpc64-linux-ld: arch/powerpc/net/bpf_jit_comp64.o:(.toc+0x0):
-  undefined reference to `powerpc_security_features'
+Christophe Leroy wrote:
+>=20
+>=20
+> Le 06/01/2022 =C3=A0 12:45, Naveen N. Rao a =C3=A9crit=C2=A0:
+>> task_pt_regs() can return NULL on powerpc for kernel threads. This is
+>> then used in __bpf_get_stack() to check for user mode, resulting in a
+>> kernel oops. Guard against this by checking return value of
+>> task_pt_regs() before trying to obtain the call chain.
+>=20
+> I started looking at that some time ago, and I'm wondering whether it is=20
+> worth keeping that powerpc particularity.
+>=20
+> We used to have a potentially different pt_regs depending on how we=20
+> entered kernel, especially on PPC32, but since the following commits it=20
+> is not the case anymore.
+>=20
+> 06d67d54741a ("powerpc: make process.c suitable for both 32-bit and 64-bi=
+t")
+> db297c3b07af ("powerpc/32: Don't save thread.regs on interrupt entry")
+> b5cfc9cd7b04 ("powerpc/32: Fix critical and debug interrupts on BOOKE")
+>=20
+> We could therefore just do like other architectures, define
+>=20
+> #define task_pt_regs(p) ((struct pt_regs *)(THREAD_SIZE +=20
+> task_stack_page(p)) - 1)
+>=20
+> And then remove the regs field we have in thread_struct.
 
-This can happen if CONFIG_PPC_BARRIER_NOSPEC is not enabled. Address
-this by providing stub functions for security_ftr_enabled() and related
-helpers when the config option is not enabled.
+Sure, I don't have an opinion on that, but I think this patch will still=20
+be needed for -stable.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
----
- arch/powerpc/include/asm/security_features.h | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+>=20
+>=20
+>>=20
+>> Fixes: fa28dcb82a38f8 ("bpf: Introduce helper bpf_get_task_stack()")
+>> Cc: stable@vger.kernel.org # v5.9+
+>> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+>> ---
+>>   kernel/bpf/stackmap.c | 5 +++--
+>>   1 file changed, 3 insertions(+), 2 deletions(-)
+>>=20
+>> diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
+>> index 6e75bbee39f0b5..0dcaed4d3f4cec 100644
+>> --- a/kernel/bpf/stackmap.c
+>> +++ b/kernel/bpf/stackmap.c
+>> @@ -525,13 +525,14 @@ BPF_CALL_4(bpf_get_task_stack, struct task_struct =
+*, task, void *, buf,
+>>   	   u32, size, u64, flags)
+>>   {
+>>   	struct pt_regs *regs;
+>> -	long res;
+>> +	long res =3D -EINVAL;
+>>  =20
+>>   	if (!try_get_task_stack(task))
+>>   		return -EFAULT;
+>>  =20
+>>   	regs =3D task_pt_regs(task);
+>> -	res =3D __bpf_get_stack(regs, task, NULL, buf, size, flags);
+>> +	if (regs)
+>> +		res =3D __bpf_get_stack(regs, task, NULL, buf, size, flags);
+>=20
+> Should there be a comment explaining that on powerpc, 'regs' can be NULL=20
+> for a kernel thread ?
 
-diff --git a/arch/powerpc/include/asm/security_features.h b/arch/powerpc/include/asm/security_features.h
-index 27574f218b371f..f2b990052641a0 100644
---- a/arch/powerpc/include/asm/security_features.h
-+++ b/arch/powerpc/include/asm/security_features.h
-@@ -8,10 +8,6 @@
- #ifndef _ASM_POWERPC_SECURITY_FEATURES_H
- #define _ASM_POWERPC_SECURITY_FEATURES_H
- 
--
--extern u64 powerpc_security_features;
--extern bool rfi_flush;
--
- /* These are bit flags */
- enum stf_barrier_type {
- 	STF_BARRIER_NONE	= 0x1,
-@@ -20,6 +16,10 @@ enum stf_barrier_type {
- 	STF_BARRIER_SYNC_ORI	= 0x8,
- };
- 
-+#ifdef CONFIG_PPC_BARRIER_NOSPEC
-+extern u64 powerpc_security_features;
-+extern bool rfi_flush;
-+
- void setup_stf_barrier(void);
- void do_stf_barrier_fixups(enum stf_barrier_type types);
- void setup_count_cache_flush(void);
-@@ -45,6 +45,13 @@ enum stf_barrier_type stf_barrier_type_get(void);
- static inline enum stf_barrier_type stf_barrier_type_get(void) { return STF_BARRIER_NONE; }
- #endif
- 
-+#else /* CONFIG_PPC_BARRIER_NOSPEC */
-+static inline void security_ftr_set(u64 feature) { }
-+static inline void security_ftr_clear(u64 feature) { }
-+static inline bool security_ftr_enabled(u64 feature) { return false; }
-+static inline enum stf_barrier_type stf_barrier_type_get(void) { return STF_BARRIER_NONE; }
-+#endif /* CONFIG_PPC_BARRIER_NOSPEC */
-+
- // Features indicating support for Spectre/Meltdown mitigations
- 
- // The L1-D cache can be flushed with ori r30,r30,0
+I guess this won't be required if we end up with the change you are=20
+proposing above?
 
-base-commit: bdcf18e133f656b2c97390a594fc95e37849e682
--- 
-2.34.1
+
+- Naveen
 
