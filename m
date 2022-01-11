@@ -2,130 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E069248AE3E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 14:15:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4EE48AF9B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 15:33:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JYB4q5PvTz3bPT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 00:15:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JYCqB50G3z2ymc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 01:33:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=qoUr+cpA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OdT1lgja;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.20.47; helo=eur05-db8-obe.outbound.protection.outlook.com;
- envelope-from=vladimir.oltean@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=qoUr+cpA; 
- dkim-atps=neutral
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com
- (mail-db8eur05on2047.outbound.protection.outlook.com [40.107.20.47])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=OdT1lgja; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JYB400gr4z2yPL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan 2022 00:14:21 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=b4LeU8Ysfh4BbqeebLsktk6ytdvL2OGTSDa748mvlgxW7hFkV3tgP4HOSgWZiTkaawllhgJr0exitc87uBQJACcvuGWNTk5iTrst8YCXiZgbwj/TwLNaliH6fdxbHVWT3OIMRycraPrtRV08ihtkn2Qo2K6TD1E5gGPy+mbwj0mVhanOnJH7INFwXauHSIBy4/vIbkBn5Zi5rQFtcPqsbZIl8JEPeNWGtzvcWR1zy0ErH06urO/g+85TZsYrB1gffnO2cokZiwRMtBrIOTaaRkjHS+uH/1UKmaJl+kvFpFBf4ETyAVSr2SXvn8/sF57HScqY7XF5fDvg4AWfHorQbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mtT/yqQWs6RWrXbBUqML/LkGZmsvQOUBxoQudH45W6o=;
- b=cSDHcOCr/BEjVZDX/UEW0BK+bRm5WJlZhUrY6fcLBrqRmDLn+OUe/YCJKehedCe7Ic5CasojXSWCgjqPhsIeX0YXlgyu5YEpfKiX527Ro0hYC5dFzj9mBWmnS7L/atLFV+AnnwVqriZoA27i+Mr+EXbtH/Id7fK5p+yzKFE+BHzkmEKfHosBFGi4irBx6abcuRJg4BkI9KN/fJhVZJREzm0p47WeQqqOhV6QfBMfC3EhuWoGNkPAu8ujWV5Bql7kWrlDHMXVXOPl5PVW4BSoRhuFKg+7Aum8qjqSRH4+WePtDBcb6t4bo3JPtrBjJjIDBV5UR2jaO2JigudMlkx5Nw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mtT/yqQWs6RWrXbBUqML/LkGZmsvQOUBxoQudH45W6o=;
- b=qoUr+cpAjBHBCVX2MaBzZVQRVOMt3evz5f5Tri71FosNHGTHwbLdnQVN4ou1sQc1d1rQ8Wje4VDZKeiuLlxwKtpCkmX/QI7kMIKuiksbjZRnJ62F1AXa7O2dwar388mINeEj4J3RLGHUBB9Da0s0V7Hx6Rfqie2n4yQbgZS0SHQ=
-Received: from VI1PR04MB5136.eurprd04.prod.outlook.com (2603:10a6:803:55::19)
- by VI1PR04MB3200.eurprd04.prod.outlook.com (2603:10a6:802:d::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4888.9; Tue, 11 Jan
- 2022 13:13:56 +0000
-Received: from VI1PR04MB5136.eurprd04.prod.outlook.com
- ([fe80::c84:1f0b:cc79:9226]) by VI1PR04MB5136.eurprd04.prod.outlook.com
- ([fe80::c84:1f0b:cc79:9226%3]) with mapi id 15.20.4867.012; Tue, 11 Jan 2022
- 13:13:56 +0000
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Maxim Kiselev <bigunclemax@gmail.com>
-Subject: Re: [PATCH] powerpc: dts: t1040rdb: fix ports names for Seville
- Ethernet switch
-Thread-Topic: [PATCH] powerpc: dts: t1040rdb: fix ports names for Seville
- Ethernet switch
-Thread-Index: AQHX/WognYLuoHin80+YgXjEGjdBC6xK/32AgAAG3gCAAYlvgIAPYBoAgAHvc4A=
-Date: Tue, 11 Jan 2022 13:13:56 +0000
-Message-ID: <20220111131355.djuyn6bbirqtsama@skbuf>
-References: <20211230104329.677138-1-bigunclemax@gmail.com>
- <20211230130003.pzwzac5xttnnksz6@skbuf>
- <CALHCpMg8ZeQUcbA1EeUpXMcay0u=QZfnZZGpPb_HAXJeHoUQvQ@mail.gmail.com>
- <20211231125247.ugne3h44pmpzliin@skbuf>
- <CALHCpMgO2bqxPcaxwg29gEGF4te1HCgCa7SdNFVoxa6JDzrCrA@mail.gmail.com>
-In-Reply-To: <CALHCpMgO2bqxPcaxwg29gEGF4te1HCgCa7SdNFVoxa6JDzrCrA@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: dc0235c1-f62d-4e45-cf78-08d9d5043927
-x-ms-traffictypediagnostic: VI1PR04MB3200:EE_
-x-microsoft-antispam-prvs: <VI1PR04MB32007D0040B4CE8E3E6F41F3E0519@VI1PR04MB3200.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:5516;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 0W8TrSp2fTGrZO1RV+rf4dUUUJnp4dAs4teSXUdE6veSpYUVAEwD8X9pkwQRxq8UmpveQ1v80h9zZqwn+cW8uzz0/siaaLmjJbt7Fw7xbi0eFnfUQasUAm3voznnjqLUPZSlIM0xXp3eLfcm1+2D9FZxVnkomF7Cm28YIQcaENRpbZQlRwYCDbamXpnUd/zQi8FI+FMxAOzCPZbwVcEPtp6EowbresQabASjZTQyqpNYhuNoGf06lE6Sd9uPVnTsALYispUd6YrSpwEC+iTOb4rN5QM+uVlMPJPh7sRFJt4t2KSx54gQ1vQvIZUJtAaXw34e8x1I6y1NIDrS3BEL+uPTWuk6Ad1MLFGqaDY2Ys48UvJygKYAdUXfG8vVAYsZAJeH0Y3v+IAzq/vBAVBoWqbNhwcZ9jHMBHujMeS8OJMHQBhnLAZiLEGLDaztrVPeFbcXwK+0fAhwVZp2xAJXcf8n2uD/BJF0A5nT4f7iuSeM6XOMaJPOutrxXzU6GmZ2gVWbQPYJmWI4a2w8a4p7kGzlcretaRuxp2NLMJv/eziGGexpyb+qNmYvgtibPD6A+TePSiLuNNTUvZ6CXxs/di8OSSUqPcIAY5YVwvyW/MA/sdz4ZuJW1hXlNKMUhzQy4HN/psa6lm6IbRYlUxWkPOSKc9V+LbMwkb4bxo3exDqJRV6Q4MhzHcC0FPmWxjlrNa1er9ygGw/oFv+jsv4x7g==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VI1PR04MB5136.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(7916004)(4636009)(366004)(66476007)(2906002)(54906003)(6486002)(508600001)(5660300002)(6916009)(4744005)(66556008)(316002)(66446008)(64756008)(1076003)(38070700005)(86362001)(4326008)(91956017)(76116006)(8676002)(38100700002)(26005)(7416002)(71200400001)(122000001)(8936002)(44832011)(6512007)(9686003)(66946007)(33716001)(186003)(6506007);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?YARafaFnTL6IXIVAo6NRZbtzywHJTIgqGmR+NVwddI/fZxDV3umr6zIdSCdz?=
- =?us-ascii?Q?+00KmDRtjby3+c78eUxN9KcDsvonWs9uOf7KMUIvsPwxHzyngIlFoHOmHShw?=
- =?us-ascii?Q?bA3op73+92kddPdZ/cnsaDeZBfEXzXSOXly00mxyvDfGpqArkVqYLhUq9U8X?=
- =?us-ascii?Q?2aq6esy0OtEr9vzXnU70q7rdo6gG9QXcCKDz3spxd1tphZJnTIZ3/Q+0dBB/?=
- =?us-ascii?Q?eadFlQWrxy9Igfhsfc6zBcY9lVnORkq+bAmAxYuyuKQQbSoskUiZg7vGGmBB?=
- =?us-ascii?Q?of5IyEemlp4SuToU2wLYBLBlmIgkQiukrYvO3F+SeWEjNWOh2eQId+fVfpb3?=
- =?us-ascii?Q?kWwzP4xCVdjPDQRE350RZtmVgUf9aJ0DLq4QFkhhozjouS6NVisS1hhRvxVi?=
- =?us-ascii?Q?js5SgShlrSCIM+S7O00f8iA6wp2mXa1+PJObg4urKL9fmK9Hwu2uVe1zUalg?=
- =?us-ascii?Q?y61gBx4tfP7UBdChvvRc2j5Rv3tzdTNGSthjIWZe5rSOVN012jx6//M13Wgk?=
- =?us-ascii?Q?YMWj5G0meeHknWbR67U43NHG5XOxrneYx7jlEPrWLsTHMgxKARk7q60OqsCY?=
- =?us-ascii?Q?soIDWCHNRpamkoSfaxXoc0QRYOoIXF6JQoLLffOM/Nm40nNwWGIp717hD+W1?=
- =?us-ascii?Q?mlRBQEPZTAiqzDsjRlRqaUWeR8qvvzrHt9TLtI7VQRxzK6kOm/hVXFXJX15D?=
- =?us-ascii?Q?FF0Fs7fP7VeA3rE48imsVYG2Gq0YScUtgG/TwtIZe3i20Tl/srj5P/J1FkWb?=
- =?us-ascii?Q?12Ha53m1ajPV/Y6WrAvzUHAA8UmBgI+zK4wzfWk5rGjjmB4CqZHpSM1YydEU?=
- =?us-ascii?Q?Ai/oLCvZ7vXJs+BxKxVSt/hHZ0lF3G0a+ONmga7ijZB1+1H5aaQboMy6qlZp?=
- =?us-ascii?Q?n1Pdv7k5hVe+qFja/KhN97O5xt8csXWAZzizVQgPnyus1d77qtsHY4AZzu0k?=
- =?us-ascii?Q?2k+jNYa1Vkc593g1zf7ZtCjxsX0PaddrsNUoPfoDNTuDssRf+7rEXKzkrF5w?=
- =?us-ascii?Q?Ti/w1vP372VCb4ZU6IDnwY35e2xh5k/c0jnMja6DzejIkia65/Ea18fZz/Hu?=
- =?us-ascii?Q?Xiz0dI9AnM2yQy8pod4Yuq0ITOTiz4ShctrP7A1P97X8m1sjb1AxKpmQ6cDy?=
- =?us-ascii?Q?cD48IAzzMwIwA3TrSfIEUyIIVdSZVIAr6m4ENNegYkCGhVKwMqWia/CUr7Oj?=
- =?us-ascii?Q?iCMiGeqFjSSyljKpHplpY8MzCwIiJnHJxfpa4OcGglaPU9QBSrcycpc5CxsH?=
- =?us-ascii?Q?XNFWJxk4saATMpl1AMyNZro8/Be7JgBX5610c5FQ7klqCaV9aeOnQ4dIJelh?=
- =?us-ascii?Q?fCLHqpHBBKf45c62s0FTpcSeYy2GJmvORvHC8QhJ9a5eTsD9pJS62lghEZ2/?=
- =?us-ascii?Q?hUdSwR8fZ/upFrp70KHe2YeICiz63D5Bq+8/gKb2nKrHDcLuWdweXpOeE4UW?=
- =?us-ascii?Q?oAUXB7ifZtQuLjMtSnZsouKwsPo/5xaqwfLoYNxKahnKjD7Lber85YBFPnuQ?=
- =?us-ascii?Q?FB2LgnoNEezwxGJiv1G/vihmtymoMoXjvuTWvelrd9UYocxno5tNxIrefkWe?=
- =?us-ascii?Q?sdCfPsDquz8v3VqNXYjPjqfsSp9Rg3Ex1E4iD1DvMVpKfpKuL8Z1zrU8yb1w?=
- =?us-ascii?Q?GyUi6DNoAllhsQ7R9tdzpUU=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <714CD808197DFB4E9FE119FEAEC09384@eurprd04.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JYCpQ1NRVz2yP9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan 2022 01:32:45 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20BESDDx000572; 
+ Tue, 11 Jan 2022 14:32:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=zO0Hes+/NAVtG3EmAoPEjZ1KFQFpAlZ3V/lj/oihMpU=;
+ b=OdT1lgjaJmijlkubGb4sWcqLRIxCbeqFsebA73lVxugI3+Hh0HXQ6OODPs9WNaW+H9iS
+ sOTeUAPCzQN4Ru6ZWx9HVplbPU+DyOm368EODs2kaRiNAxnFVtjMGjbMvmp49O4nw6DY
+ kIvBB+kpFvlx4otEFbvDOMHvxwP+KLgeFVhFw6KkOEa5sKGgzOF7XYYE1LcootI0DavF
+ oGYuQgiaUFGOLT3gAu8qrAvUQBw1s/xkhga6eiOwLTPlPPuzdaW/jaJwqCNa6KB/rbnn
+ T1C/hzW3XR0Ylfu5dEAT8TbQJE6WuRdignb1VNSsrnJtYdoLTP/ugCsFDAAlbHSddnIQ iQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dhbp782dx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 11 Jan 2022 14:32:37 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20BEWNHi013853;
+ Tue, 11 Jan 2022 14:32:37 GMT
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dhbp782d9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 11 Jan 2022 14:32:37 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20BEM8Y2002271;
+ Tue, 11 Jan 2022 14:32:35 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma05wdc.us.ibm.com with ESMTP id 3df28ane04-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 11 Jan 2022 14:32:35 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 20BEWYbD24379698
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 11 Jan 2022 14:32:34 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B7112BE07F;
+ Tue, 11 Jan 2022 14:32:34 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D0275BE04F;
+ Tue, 11 Jan 2022 14:32:33 +0000 (GMT)
+Received: from localhost (unknown [9.163.2.124])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Tue, 11 Jan 2022 14:32:33 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org
+Subject: Re: [PATCH v3 6/6] KVM: PPC: mmio: Reject instructions that access
+ more than mmio.data size
+In-Reply-To: <1641800177.nr6ngd1fot.astroid@bobo.none>
+References: <20220107210012.4091153-1-farosas@linux.ibm.com>
+ <20220107210012.4091153-7-farosas@linux.ibm.com>
+ <1641800177.nr6ngd1fot.astroid@bobo.none>
+Date: Tue, 11 Jan 2022 11:32:31 -0300
+Message-ID: <87v8yq8hs0.fsf@linux.ibm.com>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5136.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc0235c1-f62d-4e45-cf78-08d9d5043927
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jan 2022 13:13:56.4506 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NYGtmY50bnACm58INtHaVYSuYqskabTbuCzD9kTT8s85vVMMj5HBJI4c8Oy+o7wPZVbZoOrQD99o4Pq6KyATNw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB3200
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: qq9wb2Q69jG6rN9I2drL6sKIkVGJTIFr
+X-Proofpoint-ORIG-GUID: O2UZMGiUcyaDfTh0KUfJC4DEC6_eXF8K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-11_04,2022-01-11_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0
+ lowpriorityscore=0 suspectscore=0 spamscore=0 malwarescore=0
+ mlxlogscore=999 clxscore=1015 impostorscore=0 priorityscore=1501
+ mlxscore=0 adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2110150000 definitions=main-2201110087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,28 +107,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "fido_max@inbox.ru" <fido_max@inbox.ru>, Rob Herring <robh+dt@kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Maxim,
+Nicholas Piggin <npiggin@gmail.com> writes:
 
-On Mon, Jan 10, 2022 at 07:40:38AM +0000, Maxim Kiselev wrote:
-> Here are photos of my boards.
+> Excerpts from Fabiano Rosas's message of January 8, 2022 7:00 am:
+>> The MMIO interface between the kernel and userspace uses a structure
+>> that supports a maximum of 8-bytes of data. Instructions that access
+>> more than that need to be emulated in parts.
+>> 
+>> We currently don't have generic support for splitting the emulation in
+>> parts and each set of instructions needs to be explicitly included.
+>> 
+>> There's already an error message being printed when a load or store
+>> exceeds the mmio.data buffer but we don't fail the emulation until
+>> later at kvmppc_complete_mmio_load and even then we allow userspace to
+>> make a partial copy of the data, which ends up overwriting some fields
+>> of the mmio structure.
+>> 
+>> This patch makes the emulation fail earlier at kvmppc_handle_load|store,
+>> which will send a Program interrupt to the guest. This is better than
+>> allowing the guest to proceed with partial data.
+>> 
+>> Note that this was caught in a somewhat artificial scenario using
+>> quadword instructions (lq/stq), there's no account of an actual guest
+>> in the wild running instructions that are not properly emulated.
+>> 
+>> (While here, fix the error message to check against 'bytes' and not
+>> 'run->mmio.len' which at this point has an old value.)
+>
+> This looks good to me
+>
+> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+>
+>> 
+>> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+>> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+>> ---
+>>  arch/powerpc/kvm/powerpc.c | 6 ++++--
+>>  1 file changed, 4 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+>> index 56b0faab7a5f..a1643ca988e0 100644
+>> --- a/arch/powerpc/kvm/powerpc.c
+>> +++ b/arch/powerpc/kvm/powerpc.c
+>> @@ -1246,7 +1246,8 @@ static int __kvmppc_handle_load(struct kvm_vcpu *vcpu,
+>>  
+>>  	if (bytes > sizeof(run->mmio.data)) {
+>>  		printk(KERN_ERR "%s: bad MMIO length: %d\n", __func__,
+>> -		       run->mmio.len);
+>> +		       bytes);
+>
+> I wonder though this should probably be ratelimited, informational (or 
+> at least warning because it's a host message), and perhaps a bit more
+> explanatory that it's a guest problem (or at least lack of host support
+> for particular guest MMIO sizes).
 
-Your patch is OK to change t1040rdb.dts, but please preserve the existing
-port mappings in a new arch/powerpc/boot/dts/fsl/t1040rdb-rev-a.dts file.
-
-You will also need to modify the /model and /compatible nodes of the new
-device tree for Rev A, something like "fsl,T1040RDB-REV-A". Take a look
-at arch/arm64/boot/dts/freescale/fsl-lx2160a-bluebox3-rev-a.dts to see
-an example of what I'd like to be done.
-
-Thanks.=
+Yes, I'll ratelimit it an try to make it clear that this is something
+that happened inside the guest but it lacks support in KVM. Then
+hopefully people will tell to us if they ever need that support.
