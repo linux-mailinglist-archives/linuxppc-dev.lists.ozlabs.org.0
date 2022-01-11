@@ -1,64 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D852D48ACCF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 12:40:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E929048ACC8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 12:39:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JY7zh5tZ7z3cZR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 22:40:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JY7yz5PrYz3bWR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 22:39:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=LkEFaDSj;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=YRRHgZns;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=cNTa4UdE;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Gx/naHni;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
  envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=LkEFaDSj; 
+ header.s=susede2_rsa header.b=cNTa4UdE; 
  dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=YRRHgZns; 
+ header.s=susede2_ed25519 header.b=Gx/naHni; 
  dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JY7wn47Bxz2ymb
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JY7wn4FDvz2ypj
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 22:38:00 +1100 (AEDT)
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 54830212C5;
+ by smtp-out2.suse.de (Postfix) with ESMTP id 9ACCA1F3BE;
  Tue, 11 Jan 2022 11:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
  t=1641901077; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4J1Equr5SRHl8sUpAyd5zQDZ43Xlt/8Ec9OMeaSfxcY=;
- b=LkEFaDSjYtvEJzgiaGuHxPFdE1vr77ZW5l9NYBTED9urrJMxLhzudtg9AvAYiwFmv53a1t
- qIHI9N9f0xgndaKuFnZD75rbVOJsA+O5joGEe955yjiY3dI0IqOIroEnxJ5z4sDltcxSpm
- DoN8+gsGY2fk4CdmG0VndVAQTzeZfTQ=
+ bh=E5S+PDIMt0cv778Ug4dTHgOhwSV6I7mLY7fYsPSMbc8=;
+ b=cNTa4UdEI8NMT2ulyV45F/C/V13CVcxnHg2/esmZQ9mIhQ4wW8tFjineNtW9R8OYNjpyzQ
+ /zlZ9M4CizPX6Da//4DbLf1GFhpmIzRgQqK8WzvxT/I3jGEGk7/mfQepNvv2M1J7zCxtl2
+ fc3gS9gTAYfCRnrha03OmoNgg3j/HZY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
  s=susede2_ed25519; t=1641901077;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4J1Equr5SRHl8sUpAyd5zQDZ43Xlt/8Ec9OMeaSfxcY=;
- b=YRRHgZnsw5ZrPmPES1jjvJdzYMBXK7czudIVeXIi+3ggepCN9lo3K0h4rQmIcGqAvH9Lza
- yWvgJD+jfAFy4DAw==
+ bh=E5S+PDIMt0cv778Ug4dTHgOhwSV6I7mLY7fYsPSMbc8=;
+ b=Gx/naHnidUOgdbPPRqig0Wgs+UDBOAiZnhMMzrD37EGj9I3JOKbn2QGeVXTk7DLgO/rsjU
+ BxTzShMlokMLUABA==
 Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
- by relay2.suse.de (Postfix) with ESMTP id 0BEC0A3B8E;
+ by relay2.suse.de (Postfix) with ESMTP id 5459AA3B8F;
  Tue, 11 Jan 2022 11:37:57 +0000 (UTC)
 From: Michal Suchanek <msuchanek@suse.de>
 To: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
  linux-integrity@vger.kernel.org
-Subject: [PATCH v5 2/6] powerpc/kexec_file: Add KEXEC_SIG support.
-Date: Tue, 11 Jan 2022 12:37:44 +0100
-Message-Id: <d95f7c6865bcad5ee37dcbec240e79aa742f5e1d.1641900831.git.msuchanek@suse.de>
+Subject: [PATCH v5 3/6] kexec_file: Don't opencode appended signature
+ verification.
+Date: Tue, 11 Jan 2022 12:37:45 +0100
+Message-Id: <7834eb187ef67cd88fc67f10e831130e3717d776.1641900831.git.msuchanek@suse.de>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <cover.1641900831.git.msuchanek@suse.de>
 References: <cover.1641900831.git.msuchanek@suse.de>
@@ -98,105 +99,237 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Copy the code from s390x
+Module verification already implements appeded signature verification.
 
-Both powerpc and s390x use appended signature format (as opposed to EFI
-based patforms using PE format).
+Reuse it for kexec_file.
 
 Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 ---
-v3: - Philipp Rudo <prudo@redhat.com>: Update the comit message with
-      explanation why the s390 code is usable on powerpc.
-    - Include correct header for mod_check_sig
-    - Nayna <nayna@linux.vnet.ibm.com>: Mention additional IMA features
-      in kconfig text
+v3: - Philipp Rudo <prudo@redhat.com>: Update the dependency on
+      MODULE_SIG_FORMAT to MODULE_SIG
+    - Include linux/verification.h - previously added in earlier patch
+v4: - kernel test robot <lkp@intel.com>: Use unsigned long rather than size_t for data length
+    - Update the code in kernel/module_signing.c to use pointer rather
+      than memcpy as the kexec and IMA code does
 ---
- arch/powerpc/Kconfig        | 16 ++++++++++++++++
- arch/powerpc/kexec/elf_64.c | 36 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 52 insertions(+)
+ arch/powerpc/Kconfig                  |  2 +-
+ arch/powerpc/kexec/elf_64.c           | 19 +++------------
+ arch/s390/Kconfig                     |  2 +-
+ arch/s390/kernel/machine_kexec_file.c | 18 ++------------
+ include/linux/verification.h          |  3 +++
+ kernel/module-internal.h              |  2 --
+ kernel/module.c                       |  4 +++-
+ kernel/module_signing.c               | 34 ++++++++++++++++-----------
+ 8 files changed, 33 insertions(+), 51 deletions(-)
 
 diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index dea74d7717c0..1cde9b6c5987 100644
+index 1cde9b6c5987..4092187474ff 100644
 --- a/arch/powerpc/Kconfig
 +++ b/arch/powerpc/Kconfig
-@@ -560,6 +560,22 @@ config KEXEC_FILE
- config ARCH_HAS_KEXEC_PURGATORY
- 	def_bool KEXEC_FILE
+@@ -562,7 +562,7 @@ config ARCH_HAS_KEXEC_PURGATORY
  
-+config KEXEC_SIG
-+	bool "Verify kernel signature during kexec_file_load() syscall"
-+	depends on KEXEC_FILE && MODULE_SIG_FORMAT
-+	help
-+	  This option makes kernel signature verification mandatory for
-+	  the kexec_file_load() syscall.
-+
-+	  In addition to that option, you need to enable signature
-+	  verification for the corresponding kernel image type being
-+	  loaded in order for this to work.
-+
-+	  Note: on powerpc IMA_ARCH_POLICY also implements kexec'ed kernel
-+	  verification. In addition IMA adds kernel hashes to the measurement
-+	  list, extends IMA PCR in the TPM, and implements kernel image
-+	  blacklist by hash.
-+
- config RELOCATABLE
- 	bool "Build a relocatable kernel"
- 	depends on PPC64 || (FLATMEM && (44x || FSL_BOOKE))
+ config KEXEC_SIG
+ 	bool "Verify kernel signature during kexec_file_load() syscall"
+-	depends on KEXEC_FILE && MODULE_SIG_FORMAT
++	depends on KEXEC_FILE && MODULE_SIG
+ 	help
+ 	  This option makes kernel signature verification mandatory for
+ 	  the kexec_file_load() syscall.
 diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-index eeb258002d1e..98d1cb5135b4 100644
+index 98d1cb5135b4..64cd314cce0d 100644
 --- a/arch/powerpc/kexec/elf_64.c
 +++ b/arch/powerpc/kexec/elf_64.c
 @@ -23,6 +23,7 @@
  #include <linux/of_fdt.h>
  #include <linux/slab.h>
  #include <linux/types.h>
-+#include <linux/module_signature.h>
++#include <linux/verification.h>
+ #include <linux/module_signature.h>
  
  static void *elf64_load(struct kimage *image, char *kernel_buf,
- 			unsigned long kernel_len, char *initrd,
-@@ -151,7 +152,42 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 	return ret ? ERR_PTR(ret) : NULL;
- }
+@@ -156,9 +157,6 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
+ int elf64_verify_sig(const char *kernel, unsigned long kernel_len)
+ {
+ 	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
+-	struct module_signature *ms;
+-	unsigned long sig_len;
+-	int ret;
  
-+#ifdef CONFIG_KEXEC_SIG
-+int elf64_verify_sig(const char *kernel, unsigned long kernel_len)
-+{
-+	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
-+	struct module_signature *ms;
-+	unsigned long sig_len;
-+	int ret;
+ 	if (marker_len > kernel_len)
+ 		return -EKEYREJECTED;
+@@ -168,19 +166,8 @@ int elf64_verify_sig(const char *kernel, unsigned long kernel_len)
+ 		return -EKEYREJECTED;
+ 	kernel_len -= marker_len;
+ 
+-	ms = (void *)kernel + kernel_len - sizeof(*ms);
+-	ret = mod_check_sig(ms, kernel_len, "kexec");
+-	if (ret)
+-		return ret;
+-
+-	sig_len = be32_to_cpu(ms->sig_len);
+-	kernel_len -= sizeof(*ms) + sig_len;
+-
+-	return verify_pkcs7_signature(kernel, kernel_len,
+-				      kernel + kernel_len, sig_len,
+-				      VERIFY_USE_PLATFORM_KEYRING,
+-				      VERIFYING_MODULE_SIGNATURE,
+-				      NULL, NULL);
++	return verify_appended_signature(kernel, &kernel_len, VERIFY_USE_PLATFORM_KEYRING,
++					 "kexec_file");
+ }
+ #endif /* CONFIG_KEXEC_SIG */
+ 
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 2a5bb4f29cfe..cece7152ea35 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -544,7 +544,7 @@ config ARCH_HAS_KEXEC_PURGATORY
+ 
+ config KEXEC_SIG
+ 	bool "Verify kernel signature during kexec_file_load() syscall"
+-	depends on KEXEC_FILE && MODULE_SIG_FORMAT
++	depends on KEXEC_FILE && MODULE_SIG
+ 	help
+ 	  This option makes kernel signature verification mandatory for
+ 	  the kexec_file_load() syscall.
+diff --git a/arch/s390/kernel/machine_kexec_file.c b/arch/s390/kernel/machine_kexec_file.c
+index c944d71316c7..345f2eab6e04 100644
+--- a/arch/s390/kernel/machine_kexec_file.c
++++ b/arch/s390/kernel/machine_kexec_file.c
+@@ -29,9 +29,6 @@ const struct kexec_file_ops * const kexec_file_loaders[] = {
+ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
+ {
+ 	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
+-	struct module_signature *ms;
+-	unsigned long sig_len;
+-	int ret;
+ 
+ 	/* Skip signature verification when not secure IPLed. */
+ 	if (!ipl_secure_flag)
+@@ -45,19 +42,8 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
+ 		return -EKEYREJECTED;
+ 	kernel_len -= marker_len;
+ 
+-	ms = (void *)kernel + kernel_len - sizeof(*ms);
+-	ret = mod_check_sig(ms, kernel_len, "kexec");
+-	if (ret)
+-		return ret;
+-
+-	sig_len = be32_to_cpu(ms->sig_len);
+-	kernel_len -= sizeof(*ms) + sig_len;
+-
+-	return verify_pkcs7_signature(kernel, kernel_len,
+-				      kernel + kernel_len, sig_len,
+-				      VERIFY_USE_PLATFORM_KEYRING,
+-				      VERIFYING_MODULE_SIGNATURE,
+-				      NULL, NULL);
++	return verify_appended_signature(kernel, &kernel_len, VERIFY_USE_PLATFORM_KEYRING,
++					"kexec_file");
+ }
+ #endif /* CONFIG_KEXEC_SIG */
+ 
+diff --git a/include/linux/verification.h b/include/linux/verification.h
+index a655923335ae..32db9287a7b0 100644
+--- a/include/linux/verification.h
++++ b/include/linux/verification.h
+@@ -60,5 +60,8 @@ extern int verify_pefile_signature(const void *pebuf, unsigned pelen,
+ 				   enum key_being_used_for usage);
+ #endif
+ 
++int verify_appended_signature(const void *data, unsigned long *len,
++			      struct key *trusted_keys, const char *what);
 +
-+	if (marker_len > kernel_len)
-+		return -EKEYREJECTED;
-+
-+	if (memcmp(kernel + kernel_len - marker_len, MODULE_SIG_STRING,
-+		   marker_len))
-+		return -EKEYREJECTED;
-+	kernel_len -= marker_len;
-+
-+	ms = (void *)kernel + kernel_len - sizeof(*ms);
-+	ret = mod_check_sig(ms, kernel_len, "kexec");
-+	if (ret)
-+		return ret;
-+
-+	sig_len = be32_to_cpu(ms->sig_len);
-+	kernel_len -= sizeof(*ms) + sig_len;
-+
-+	return verify_pkcs7_signature(kernel, kernel_len,
-+				      kernel + kernel_len, sig_len,
-+				      VERIFY_USE_PLATFORM_KEYRING,
-+				      VERIFYING_MODULE_SIGNATURE,
-+				      NULL, NULL);
-+}
-+#endif /* CONFIG_KEXEC_SIG */
-+
- const struct kexec_file_ops kexec_elf64_ops = {
- 	.probe = kexec_elf_probe,
- 	.load = elf64_load,
-+#ifdef CONFIG_KEXEC_SIG
-+	.verify_sig = elf64_verify_sig,
-+#endif
+ #endif /* CONFIG_SYSTEM_DATA_VERIFICATION */
+ #endif /* _LINUX_VERIFY_PEFILE_H */
+diff --git a/kernel/module-internal.h b/kernel/module-internal.h
+index 33783abc377b..80461e14bf29 100644
+--- a/kernel/module-internal.h
++++ b/kernel/module-internal.h
+@@ -27,5 +27,3 @@ struct load_info {
+ 		unsigned int sym, str, mod, vers, info, pcpu;
+ 	} index;
  };
+-
+-extern int mod_verify_sig(const void *mod, struct load_info *info);
+diff --git a/kernel/module.c b/kernel/module.c
+index 84a9141a5e15..8481933dfa92 100644
+--- a/kernel/module.c
++++ b/kernel/module.c
+@@ -57,6 +57,7 @@
+ #include <linux/bsearch.h>
+ #include <linux/dynamic_debug.h>
+ #include <linux/audit.h>
++#include <linux/verification.h>
+ #include <uapi/linux/module.h>
+ #include "module-internal.h"
+ 
+@@ -2894,7 +2895,8 @@ static int module_sig_check(struct load_info *info, int flags)
+ 	    memcmp(mod + info->len - markerlen, MODULE_SIG_STRING, markerlen) == 0) {
+ 		/* We truncate the module to discard the signature */
+ 		info->len -= markerlen;
+-		err = mod_verify_sig(mod, info);
++		err = verify_appended_signature(mod, &info->len,
++						VERIFY_USE_SECONDARY_KEYRING, "module");
+ 		if (!err) {
+ 			info->sig_ok = true;
+ 			return 0;
+diff --git a/kernel/module_signing.c b/kernel/module_signing.c
+index 8723ae70ea1f..30149969f21f 100644
+--- a/kernel/module_signing.c
++++ b/kernel/module_signing.c
+@@ -14,32 +14,38 @@
+ #include <crypto/public_key.h>
+ #include "module-internal.h"
+ 
+-/*
+- * Verify the signature on a module.
++/**
++ * verify_appended_signature - Verify the signature on a module with the
++ * signature marker stripped.
++ * @data: The data to be verified
++ * @len: Size of @data.
++ * @trusted_keys: Keyring to use for verification
++ * @what: Informational string for log messages
+  */
+-int mod_verify_sig(const void *mod, struct load_info *info)
++int verify_appended_signature(const void *data, unsigned long *len,
++			      struct key *trusted_keys, const char *what)
+ {
+-	struct module_signature ms;
+-	size_t sig_len, modlen = info->len;
++	struct module_signature *ms;
++	unsigned long sig_len, modlen = *len;
+ 	int ret;
+ 
+-	pr_devel("==>%s(,%zu)\n", __func__, modlen);
++	pr_devel("==>%s(,%lu)\n", __func__, modlen);
+ 
+-	if (modlen <= sizeof(ms))
++	if (modlen <= sizeof(*ms))
+ 		return -EBADMSG;
+ 
+-	memcpy(&ms, mod + (modlen - sizeof(ms)), sizeof(ms));
++	ms = data + modlen - sizeof(*ms);
+ 
+-	ret = mod_check_sig(&ms, modlen, "module");
++	ret = mod_check_sig(ms, modlen, what);
+ 	if (ret)
+ 		return ret;
+ 
+-	sig_len = be32_to_cpu(ms.sig_len);
+-	modlen -= sig_len + sizeof(ms);
+-	info->len = modlen;
++	sig_len = be32_to_cpu(ms->sig_len);
++	modlen -= sig_len + sizeof(*ms);
++	*len = modlen;
+ 
+-	return verify_pkcs7_signature(mod, modlen, mod + modlen, sig_len,
+-				      VERIFY_USE_SECONDARY_KEYRING,
++	return verify_pkcs7_signature(data, modlen, data + modlen, sig_len,
++				      trusted_keys,
+ 				      VERIFYING_MODULE_SIGNATURE,
+ 				      NULL, NULL);
+ }
 -- 
 2.31.1
 
