@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6324648A99C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 09:36:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CBE48A9A4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 09:37:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JY3vb1npGz30Nc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 19:36:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JY3x049rpz3cCG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 19:37:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=JKg+8y74;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=k+z4UCTm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,34 +19,36 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=JKg+8y74; 
+ header.s=bombadil.20210309 header.b=k+z4UCTm; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JY3tD43TJz2yfh
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JY3tC2Qvpz2yP9
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 19:35:27 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=CU5LQhHY97m/zrR0ou1Z0luP2bvz84uebvlIJdNgfcM=; b=JKg+8y749rXvzQFuLkcDh/W5q4
- GwaQU9CGaJSW8mOTGamOOFRFcdSnzWTAF91Rr0vwbFPbl3QmuKolvcmjDrP3oi+/4ZnsECQAwzv2/
- 6SaYHyAeeTH5JjGiEgz4aBJ02nEKhF1NEew1KrGdg+8Wv5rSI9SGLgtluzQdwtPnvUlGl5gIIFg9I
- ts5WnNwfbeAc1gcpAyPWACA/+90rSuusYDCXioQTcynhLvu7ynDgWFXqbkxeNKvUrccitJMWyUh7I
- BTA2oqP1C1LSXqgtomTQNPeM9xImKfeNxb4GWZEQL2N2n3ownSf4StS6PRd+4ziXhLXxz91mNyfru
- J3Pv/xDw==;
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=+0c6MseXPX7zRtfUKiUXoXASKsSqROUYFWkyRGrgS/E=; b=k+z4UCTmXBgFK382dQDwr3z2t6
+ kVefYkgvQp9eCA/CLiLCIrHBfw+PwMZAKdwFhPwN9ah2qsJAWtBmHuCNulfrdPe4aiBAie9ToSvlo
+ FlGdVO8ZBi+zFHSXuB3RSv1ZZQ0KbrHdGGonk7JWce5iq3TV5OpysFc2rOf+YpceQZP9S0+QJyD3x
+ +O/wDVGaV3SIiYOCFXy0HSr2UD9eB2djs4YBV2YFQUddvn/tzeRATyuMcX28UoYSh6y98mf1Jsmpp
+ K35fG3pM90lgaTLPjRQlgA+riGmgHbQy5JRMDoAT+XDSvuyYccO1nbJfd64HZ73mQHmRPvIgvPRMc
+ Qdgwt52A==;
 Received: from [2001:4bb8:18c:6af6:82da:93cd:da5b:aa3a] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1n7Ccg-00FKpV-1j; Tue, 11 Jan 2022 08:35:18 +0000
+ id 1n7Cci-00FKq3-QZ; Tue, 11 Jan 2022 08:35:21 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Arnd Bergmann <arnd@arndb.de>
-Subject: consolidate the compat fcntl definitions
-Date: Tue, 11 Jan 2022 09:35:10 +0100
-Message-Id: <20220111083515.502308-1-hch@lst.de>
+Subject: [PATCH 1/5] uapi: remove the unused HAVE_ARCH_STRUCT_FLOCK64 define
+Date: Tue, 11 Jan 2022 09:35:11 +0100
+Message-Id: <20220111083515.502308-2-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220111083515.502308-1-hch@lst.de>
+References: <20220111083515.502308-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
@@ -71,23 +73,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ include/uapi/asm-generic/fcntl.h       | 2 --
+ tools/include/uapi/asm-generic/fcntl.h | 2 --
+ 2 files changed, 4 deletions(-)
 
-currenty the compat fcnt definitions are duplicate for all compat
-architectures, and the native fcntl64 definitions aren't even usable
-from userspace due to a bogus CONFIG_64BIT ifdef.  This series tries
-to sort out all that.
+diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
+index ecd0f5bdfc1d6..caa482e3b01af 100644
+--- a/include/uapi/asm-generic/fcntl.h
++++ b/include/uapi/asm-generic/fcntl.h
+@@ -207,7 +207,6 @@ struct flock {
+ };
+ #endif
+ 
+-#ifndef HAVE_ARCH_STRUCT_FLOCK64
+ #ifndef __ARCH_FLOCK64_PAD
+ #define __ARCH_FLOCK64_PAD
+ #endif
+@@ -220,6 +219,5 @@ struct flock64 {
+ 	__kernel_pid_t  l_pid;
+ 	__ARCH_FLOCK64_PAD
+ };
+-#endif
+ 
+ #endif /* _ASM_GENERIC_FCNTL_H */
+diff --git a/tools/include/uapi/asm-generic/fcntl.h b/tools/include/uapi/asm-generic/fcntl.h
+index ac190958c9814..4a49d33ca4d55 100644
+--- a/tools/include/uapi/asm-generic/fcntl.h
++++ b/tools/include/uapi/asm-generic/fcntl.h
+@@ -202,7 +202,6 @@ struct flock {
+ };
+ #endif
+ 
+-#ifndef HAVE_ARCH_STRUCT_FLOCK64
+ #ifndef __ARCH_FLOCK64_PAD
+ #define __ARCH_FLOCK64_PAD
+ #endif
+@@ -215,6 +214,5 @@ struct flock64 {
+ 	__kernel_pid_t  l_pid;
+ 	__ARCH_FLOCK64_PAD
+ };
+-#endif
+ 
+ #endif /* _ASM_GENERIC_FCNTL_H */
+-- 
+2.30.2
 
-Diffstat:
- arch/arm64/include/asm/compat.h        |   20 --------------------
- arch/mips/include/asm/compat.h         |   23 ++---------------------
- arch/mips/include/uapi/asm/fcntl.h     |   28 +++-------------------------
- arch/parisc/include/asm/compat.h       |   16 ----------------
- arch/powerpc/include/asm/compat.h      |   20 --------------------
- arch/s390/include/asm/compat.h         |   20 --------------------
- arch/sparc/include/asm/compat.h        |   22 +---------------------
- arch/x86/include/asm/compat.h          |   24 +++---------------------
- include/linux/compat.h                 |   31 +++++++++++++++++++++++++++++++
- include/uapi/asm-generic/fcntl.h       |   21 +++++++--------------
- tools/include/uapi/asm-generic/fcntl.h |   21 +++++++--------------
- 11 files changed, 54 insertions(+), 192 deletions(-)
