@@ -1,76 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006D948A618
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 04:11:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7081448A615
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 04:10:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JXwhn5mZRz3bVL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 14:11:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JXwgD2rm4z303n
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 14:10:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=cxfkFqPR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=e+jBPQil;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634;
- helo=mail-pl1-x634.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=chao.gao@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=cxfkFqPR; dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com
- [IPv6:2607:f8b0:4864:20::634])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=e+jBPQil; dkim-atps=neutral
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JXwh95qPgz2yP9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 14:11:20 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id l8so12859877plt.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 19:11:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=zbUZ8MBTmVmuuh6nLO3oUSWnxXuwL880OdPfuGWzHYk=;
- b=cxfkFqPRjJsidUYoFqrkjQu+rytMjDJUVHRqWFdLhQu7zfbmc+PGsEdtTH6lq0LnJU
- f5llsTXt4jzLni4sIqAcUlN9VkfhJNiySYlWNNC80IBjoftWpG/WhY9heJDB24FqGmaG
- FAS3RDxvyPRGi8juK2nJRGYUBftDRSHQ+GD618Yb/syIM7tg4DpnVWnGwkVuVZpKHeMW
- kI7YgZVMdm3PbPuDtBH8+XvwzliKRslPcLotmZ3h2WyhJkvo/hZsHmLfpRfMPh1gQuLE
- p+xbSvu4WniS0b8Q0UD2Rao/OuI6yO+l3p3GlSi1Xvgm2a356mk5UVFvDeoRQJeHQm6J
- LT9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=zbUZ8MBTmVmuuh6nLO3oUSWnxXuwL880OdPfuGWzHYk=;
- b=QP5AEBPOhNbmypWeeMTZ8YXtuNo9XV4sdFNldNepSTzk3a1yT902yZotUysDB8xtH5
- MbLJeasSCP0ksWV1Yee1M2aqiExVhzVBZN/iyIHVbXw99P2QWwHwPl8M55BfRghoQJDJ
- GjsCbdshjvbt/JZaboOen/etJjslSUFwI4ZKKB1bSltc7aBgN+WVaX8PCQ2wWUh2wqlO
- PDGRyvOS5WMLdbOd0h7eTroohDj15b6WkIrlW/whpH/0JaKWm1+yXHOuu3DrwIrjRZlV
- zwt5WHod+If0V9wXiyFMYP91g5Y+fsQRtdwdBxEf8Ztpv4w4ogKjHRiMetCIayoOK3sD
- 6VjQ==
-X-Gm-Message-State: AOAM532dbna0q3hKdQIoZP2GnXHgleslNPa0fhLCZisfX0ldZE7PUmY8
- kZHGBUCb/kOC9Wl49wDTty4=
-X-Google-Smtp-Source: ABdhPJwvS1ggfWVk1+YTM2VQ1yaJh/hW9pOxZQQtZVk1N6qWAZQMXv//b71/0S/AB/keLx9+1yye6Q==
-X-Received: by 2002:a63:7a52:: with SMTP id j18mr2377642pgn.319.1641870676336; 
- Mon, 10 Jan 2022 19:11:16 -0800 (PST)
-Received: from localhost (124-171-74-95.tpgi.com.au. [124.171.74.95])
- by smtp.gmail.com with ESMTPSA id g5sm8697284pfj.143.2022.01.10.19.11.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jan 2022 19:11:16 -0800 (PST)
-Date: Tue, 11 Jan 2022 13:11:11 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/time: Fix build failure due to
- do_hard_irq_enable() on PPC32
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>
-References: <247e01e0e10f4dbc59b5ff89e81702eb1ee7641e.1641828571.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <247e01e0e10f4dbc59b5ff89e81702eb1ee7641e.1641828571.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JXwfc07n0z2yP9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 14:09:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1641870600; x=1673406600;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=RMI1RbSj7Nf4sUd+ZkqJlzpz1NnGp0vcp4SZw2pUIQ4=;
+ b=e+jBPQilxruSO/m4sITm9u8ViIs1eHr7Q/sbDoMqlGJk9NR1whmVUBu4
+ UkxU1baSYRJK+f6urS1fFJwVtq/+WxZGLUbZg/TCwACA+CGsz/N2FFcTk
+ ZKVjNBxOTV4dxBSBHd2MiR+QsGHkm93iZUIMeIolf8r2viAV9WVbvMV2x
+ vtIEx43PpIw7LphVl89cyvFKUl7hjWXp0gJfcq9jwOHFcZPUd+An1oYtQ
+ 5ZzstQYgOyXLbFn0bxsM0l5i8+Xy9OgOCLI2sNteb4uuZO7y+nCB8ECOc
+ 71azSCy9iAFzyPE8WBvVUyZcKUgm8X4FfvspsiTGmCptTO6IKFd7UV8gr g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10223"; a="242203712"
+X-IronPort-AV: E=Sophos;i="5.88,278,1635231600"; d="scan'208";a="242203712"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jan 2022 19:08:51 -0800
+X-IronPort-AV: E=Sophos;i="5.88,278,1635231600"; d="scan'208";a="622907157"
+Received: from gao-cwp.sh.intel.com (HELO gao-cwp) ([10.239.159.105])
+ by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jan 2022 19:08:40 -0800
+Date: Tue, 11 Jan 2022 11:19:34 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH 3/6] KVM: Remove opaque from
+ kvm_arch_check_processor_compat
+Message-ID: <20220111031933.GB2175@gao-cwp>
+References: <20211227081515.2088920-1-chao.gao@intel.com>
+ <20211227081515.2088920-4-chao.gao@intel.com>
+ <Ydy8BCfE0jhJd5uE@google.com>
 MIME-Version: 1.0
-Message-Id: <1641870650.jvmi84hc0s.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Ydy8BCfE0jhJd5uE@google.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,79 +69,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: x86@kernel.org, Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ Atish Patra <atish.patra@wdc.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>,
+ Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+ Huacai Chen <chenhuacai@kernel.org>, linux-riscv@lists.infradead.org,
+ kvmarm@lists.cs.columbia.edu,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>, kevin.tian@intel.com,
+ Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, tglx@linutronix.de,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Fabiano Rosas <farosas@linux.ibm.com>, Anup Patel <anup.patel@wdc.com>,
+ linux-kernel@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
+ James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org,
+ pbonzini@redhat.com, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christophe Leroy's message of January 11, 2022 1:29 am:
-> 	  CC      arch/powerpc/kernel/time.o
-> 	In file included from <command-line>:
-> 	./arch/powerpc/include/asm/hw_irq.h: In function 'do_hard_irq_enable':
-> 	././include/linux/compiler_types.h:335:45: error: call to '__compiletime=
-_assert_35' declared with attribute error: BUILD_BUG failed
-> 	  335 |         _compiletime_assert(condition, msg, __compiletime_assert=
-_, __COUNTER__)
-> 	      |                                             ^
-> 	././include/linux/compiler_types.h:316:25: note: in definition of macro =
-'__compiletime_assert'
-> 	  316 |                         prefix ## suffix();                     =
-        \
-> 	      |                         ^~~~~~
-> 	././include/linux/compiler_types.h:335:9: note: in expansion of macro '_=
-compiletime_assert'
-> 	  335 |         _compiletime_assert(condition, msg, __compiletime_assert=
-_, __COUNTER__)
-> 	      |         ^~~~~~~~~~~~~~~~~~~
-> 	./include/linux/build_bug.h:39:37: note: in expansion of macro 'compilet=
-ime_assert'
-> 	   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), =
-msg)
-> 	      |                                     ^~~~~~~~~~~~~~~~~~
-> 	./include/linux/build_bug.h:59:21: note: in expansion of macro 'BUILD_BU=
-G_ON_MSG'
-> 	   59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
-> 	      |                     ^~~~~~~~~~~~~~~~
-> 	./arch/powerpc/include/asm/hw_irq.h:483:9: note: in expansion of macro '=
-BUILD_BUG'
-> 	  483 |         BUILD_BUG();
-> 	      |         ^~~~~~~~~
->=20
-> should_hard_irq_enable() returns false on PPC32 so this BUILD_BUG() shoul=
-dn't trigger.
->=20
-> Force inlining of should_hard_irq_enable()
->=20
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Fixes: 0faf20a1ad16 ("powerpc/64s/interrupt: Don't enable MSR[EE] in irq =
-handlers unless perf is in use")
-> Cc: Nicholas Piggin <npiggin@gmail.com>
+On Mon, Jan 10, 2022 at 11:06:44PM +0000, Sean Christopherson wrote:
+>On Mon, Dec 27, 2021, Chao Gao wrote:
+>> No arch implementation uses this opaque now.
+>
+>Except for the RISC-V part, this can be a pure revert of commit b99040853738 ("KVM:
+>Pass kvm_init()'s opaque param to additional arch funcs").  I think it makes sense
+>to process it as a revert, with a short blurb in the changelog to note that RISC-V
+>is manually modified as RISC-V support came along in the interim.
 
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
+commit b99040853738 adds opaque param to kvm_arch_hardware_setup(), which isn't
+reverted in this patch. I.e., this patch is a partial revert of b99040853738
+plus manual changes to RISC-V. Given that, "process it as a revert" means
+clearly say in changelog that this commit contains a partial revert of commit
+b99040853738 ("KVM: Pass kvm_init()'s opaque param to additional arch funcs").
 
-Thanks,
-Nick
-
-> ---
->  arch/powerpc/include/asm/hw_irq.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm=
-/hw_irq.h
-> index a58fb4aa6c81..674e5aaafcbd 100644
-> --- a/arch/powerpc/include/asm/hw_irq.h
-> +++ b/arch/powerpc/include/asm/hw_irq.h
-> @@ -473,7 +473,7 @@ static inline bool arch_irq_disabled_regs(struct pt_r=
-egs *regs)
->  	return !(regs->msr & MSR_EE);
->  }
-> =20
-> -static inline bool should_hard_irq_enable(void)
-> +static __always_inline bool should_hard_irq_enable(void)
->  {
->  	return false;
->  }
-> --=20
-> 2.33.1
->=20
+Right?
