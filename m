@@ -1,77 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384CC48A63C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 04:24:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF4648A6DE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 05:38:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JXwyn0Dpgz3bTQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 14:24:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JXycP54xJz30NZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Jan 2022 15:38:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Xih5sPt5;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Fr0OK1Pm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
- helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
+ helo=mail-pj1-x1031.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Xih5sPt5; dkim-atps=neutral
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
+ header.s=20210112 header.b=Fr0OK1Pm; dkim-atps=neutral
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JXwy43QSsz2yRf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 14:23:22 +1100 (AEDT)
-Received: by mail-pj1-x102a.google.com with SMTP id
- c14-20020a17090a674e00b001b31e16749cso2466957pjm.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 19:23:22 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JXybg6vVrz2yRf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Jan 2022 15:37:33 +1100 (AEDT)
+Received: by mail-pj1-x1031.google.com with SMTP id
+ g11-20020a17090a7d0b00b001b2c12c7273so1087321pjl.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Jan 2022 20:37:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=cGcjhxHa1UfE+w3Pwk1V+Srw14TjijtJvFVLj26vVvk=;
- b=Xih5sPt5ya8F7x6OJi3Vgl+zKxKXV3Vs0d8C5NqtFAHFULSatRxOCF1Ohknsaeuu+M
- cr2Kpue/a1sHrxZ2FaEirnXxczrB7/JmtLS0Z5C3w3gNyhHYRKEB+9YIZzXs+chGGW46
- xolCyFc62sJyng+oDzpiipONXIFe7aqiTBwszfCB4SmoVYJ8HNjXiaxCm28VJCpzKk3M
- C0D2BUsSmgM3z5HOQE7l90mwxo8ciKZHi/fZdDihAabd16nu527RvS2z0QKcKcphbYBB
- DFbMzdVT0ScFhicrFzxReRPl7f8l6epdHVhNSsHpudkMRfzGdjYIWTiJFeL3APp+x4ZK
- C6TA==
+ h=date:from:subject:to:references:in-reply-to:mime-version:message-id
+ :content-transfer-encoding;
+ bh=wqBJsdI9GVnbAZsR64vukangM6ZJA+b32vA9RU1IroQ=;
+ b=Fr0OK1Pm/9oN9HtZ+jHwKQ5JxujZCue3hxCfqzruyxZTYHMa4lqxP8sA7GkVsEq9xX
+ 3IxTRRjmgWxmHHzWWl7fu89z6Qy/OuIsWLDIV7l4Qc/avGq4AIBtb6aH6zF113B0UB5K
+ /nfdJ+F+nbA4kRDBcrt+6WNXYL9kEW+Pr/oFT3OAABluZ1zrXtydTOCYpP4yfAV9iNE5
+ jOVA5ENx9FQIwaNrBjBdC+rx6c9w9wGaWyJLGafC400Cxi5nONx/ahS2iFW83eo1jt3C
+ JGhG+jiywmgSepl5/0T7ZvMCA9i7jQBPGAXdv72oOGx2o10t10lcXgbJgzgsztTjukH9
+ IpbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ h=x-gm-message-state:date:from:subject:to:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=cGcjhxHa1UfE+w3Pwk1V+Srw14TjijtJvFVLj26vVvk=;
- b=GeH7pziDTEzbbTqCRU7FvBXbKd7lhr9l215LJlfNFNKb5UUxO1yL91KiH2ezpIrW5G
- HV4TyiBT0rzDWDSzpDn2ks++OC90q2nsb+RstTZLI8tpyRqCf60ffxHDycuYGgaHX/WK
- XsuefiBDwnRCYKapDGrhy09EiTF9lrNkp+CTAKzz2ifP9AhpD3Cj49X/yZSS3+IVGBTx
- 4lL6D/SvXsnYitL2bZC8q7l94MyshHYJ+pOG6RC2QMJDfYwVGV9sCPm4ClYtDiVi8QIe
- 4r3Xvo74dWswfB5OvifQtJw7w70OqIQJxJjEgYyYcKHDsXKYEDFPAbyf2cAE3u89mWkF
- JSRQ==
-X-Gm-Message-State: AOAM531YLbI+EyYJTte9Rux+9Wouw4MNxEHLJvIttlfBYu4bw8iH3Lbd
- 7t+3o8y+gF6wOwjjo/e8K7U=
-X-Google-Smtp-Source: ABdhPJxdlbhSugTpZ/4WKbny7vCIqL/mMNTIu6//CvE+AzpbsW4CZp+RjANvZmnFBx6h99eWTKSIKQ==
-X-Received: by 2002:a63:cc4d:: with SMTP id q13mr2355485pgi.166.1641871399359; 
- Mon, 10 Jan 2022 19:23:19 -0800 (PST)
+ bh=wqBJsdI9GVnbAZsR64vukangM6ZJA+b32vA9RU1IroQ=;
+ b=T8Kz9d1hizu2Tmatg6im0H4IdyrKipEmrEmmp604IRprYREPjx32LSWzcNILRGSkuN
+ nz85o+Y9g6kjlD9jy1vq4lQTcIFThFey3+1FVv0+krEPWSmkQOUW0qm8R1L1vHfpEdJe
+ xx5glrsHHoFGbr5z8lk5O0uOqMYGkHlzUz03UDsz4r4fNBJbeHxvx5grL3KVG2txTEhj
+ kkYPk8Mg2KcxuwRYIxfjxNBejHdYjghbh1IxBrjHG2Wv4LuIz3kmwf02BLuWGnZqCIDA
+ CuP1YApBmdrerqDrjIznCOtVQwPr3VdfcgXxjiXTNfJqx9xaMiO8bYLzcAFhW0YPEEY4
+ DtAg==
+X-Gm-Message-State: AOAM532Ht46L7JEA1hhkEAKqaGM9TZc7dGKqcD8m+zqf5Jt9OcWHCwHn
+ tbZyKs8noa10hJEOhztDb6U=
+X-Google-Smtp-Source: ABdhPJwnUmrQV3BpUodFd57dY5gBefMKn5WCiUXYD2qYhM1RI3u8Bkuv2mk5olrZDWNe5Hlrx7fbjQ==
+X-Received: by 2002:a17:902:bd44:b0:14a:2c66:a06c with SMTP id
+ b4-20020a170902bd4400b0014a2c66a06cmr2801512plx.152.1641875850892; 
+ Mon, 10 Jan 2022 20:37:30 -0800 (PST)
 Received: from localhost (124-171-74-95.tpgi.com.au. [124.171.74.95])
- by smtp.gmail.com with ESMTPSA id em22sm431516pjb.23.2022.01.10.19.23.18
+ by smtp.gmail.com with ESMTPSA id bo15sm563973pjb.16.2022.01.10.20.37.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jan 2022 19:23:19 -0800 (PST)
-Date: Tue, 11 Jan 2022 13:23:14 +1000
+ Mon, 10 Jan 2022 20:37:30 -0800 (PST)
+Date: Tue, 11 Jan 2022 14:37:25 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 5/6] KVM: PPC: mmio: Return to guest after emulation
- failure
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, Fabiano Rosas
- <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
-References: <20220107210012.4091153-1-farosas@linux.ibm.com>
- <20220107210012.4091153-6-farosas@linux.ibm.com>
- <1641799578.6dxlxsaaos.astroid@bobo.none>
- <bf61f021-15b3-7093-f991-cdcda93d059d@ozlabs.ru>
-In-Reply-To: <bf61f021-15b3-7093-f991-cdcda93d059d@ozlabs.ru>
+Subject: Re: [PATCH v2 1/2] powerpc: Fix virt_addr_valid() check
+To: Andrew Morton <akpm@linux-foundation.org>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Kees Cook <keescook@chromium.org>, Laura Abbott
+ <labbott@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, Mark Rutland <mark.rutland@arm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>
+References: <20211225120621.13908-1-wangkefeng.wang@huawei.com>
+ <20211225120621.13908-2-wangkefeng.wang@huawei.com>
+ <09ed46a5-6df3-ffc0-8243-61612c06153a@huawei.com>
+In-Reply-To: <09ed46a5-6df3-ffc0-8243-61612c06153a@huawei.com>
 MIME-Version: 1.0
-Message-Id: <1641870717.tcavxuxzck.astroid@bobo.none>
+Message-Id: <1641871726.fshx7g5r92.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,77 +88,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Alexey Kardashevskiy's message of January 11, 2022 9:51 am:
->=20
->=20
-> On 1/10/22 18:36, Nicholas Piggin wrote:
->> Excerpts from Fabiano Rosas's message of January 8, 2022 7:00 am:
->>> If MMIO emulation fails we don't want to crash the whole guest by
->>> returning to userspace.
->>>
->>> The original commit bbf45ba57eae ("KVM: ppc: PowerPC 440 KVM
->>> implementation") added a todo:
->>>
->>>    /* XXX Deliver Program interrupt to guest. */
->>>
->>> and later the commit d69614a295ae ("KVM: PPC: Separate loadstore
->>> emulation from priv emulation") added the Program interrupt injection
->>> but in another file, so I'm assuming it was missed that this block
->>> needed to be altered.
->>>
->>> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
->>> Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
->>> ---
->>>   arch/powerpc/kvm/powerpc.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
->>> index 6daeea4a7de1..56b0faab7a5f 100644
->>> --- a/arch/powerpc/kvm/powerpc.c
->>> +++ b/arch/powerpc/kvm/powerpc.c
->>> @@ -309,7 +309,7 @@ int kvmppc_emulate_mmio(struct kvm_vcpu *vcpu)
->>>   		kvmppc_get_last_inst(vcpu, INST_GENERIC, &last_inst);
->>>   		kvmppc_core_queue_program(vcpu, 0);
->>>   		pr_info("%s: emulation failed (%08x)\n", __func__, last_inst);
->>> -		r =3D RESUME_HOST;
->>> +		r =3D RESUME_GUEST;
->>=20
->> So at this point can the pr_info just go away?
->>=20
->> I wonder if this shouldn't be a DSI rather than a program check.
->> DSI with DSISR[37] looks a bit more expected. Not that Linux
->> probably does much with it but at least it would give a SIGBUS
->> rather than SIGILL.
->=20
-> It does not like it is more expected to me, it is not about wrong memory=20
-> attributes, it is the instruction itself which cannot execute.
+Excerpts from Kefeng Wang's message of January 8, 2022 9:58 pm:
+> Hi PPC maintainers=EF=BC=8C ping..
 
-It's not an illegal instruction though, it can't execute because of the
-nature of the data / address it is operating on. That says d-side to me.
+Hmm. I might have confused myself about this. I'm going back and
+trying to work out what I was thinking when I suggested it. This
+works on 64e because vmalloc space is below the kernel linear map,
+right?
 
-DSISR[37] isn't perfect but if you squint it's not terrible. It's about
-certain instructions that have restrictions operating on other than
-normal cacheable mappings.
+On 64s it is the other way around and it is still possible to enable=20
+flatmem on 64s. Altough we might just not hit the problem there because=20
+__pa() will not mask away the vmalloc offset for 64s so it will still=20
+return something that's outside the pfn_valid range for flatmem. That's=20
+very subtle though.
+
+The checks added to __pa actually don't prevent vmalloc memory from
+being passed to it either on 64s, only a more basic test.
+
+I think 64s wants (addr >=3D PAGE_OFFSET && addr < KERN_VIRT_START) as
+the condition.  Could possibly add that check to __pa as well to
+catch vmalloc addresses.
 
 Thanks,
 Nick
 
-
 >=20
-> DSISR[37]:
-> Set to 1 if the access is due to a lq, stq, lwat, ldat, lbarx, lharx,=20
-> lwarx, ldarx, lqarx, stwat,
-> stdat, stbcx., sthcx., stwcx., stdcx., or stqcx. instruction that=20
-> addresses storage that is Write
-> Through Required or Caching Inhibited; or if the access is due to a copy=20
-> or paste. instruction
-> that addresses storage that is Caching Inhibited; or if the access is=20
-> due to a lwat, ldat, stwat, or
-> stdat instruction that addresses storage that is Guarded; otherwise set=20
-> to 0.
+> On 2021/12/25 20:06, Kefeng Wang wrote:
+>> When run ethtool eth0, the BUG occurred,
+>>
+>>    usercopy: Kernel memory exposure attempt detected from SLUB object no=
+t in SLUB page?! (offset 0, size 1048)!
+>>    kernel BUG at mm/usercopy.c:99
+>>    ...
+>>    usercopy_abort+0x64/0xa0 (unreliable)
+>>    __check_heap_object+0x168/0x190
+>>    __check_object_size+0x1a0/0x200
+>>    dev_ethtool+0x2494/0x2b20
+>>    dev_ioctl+0x5d0/0x770
+>>    sock_do_ioctl+0xf0/0x1d0
+>>    sock_ioctl+0x3ec/0x5a0
+>>    __se_sys_ioctl+0xf0/0x160
+>>    system_call_exception+0xfc/0x1f0
+>>    system_call_common+0xf8/0x200
+>>
+>> The code shows below,
+>>
+>>    data =3D vzalloc(array_size(gstrings.len, ETH_GSTRING_LEN));
+>>    copy_to_user(useraddr, data, gstrings.len * ETH_GSTRING_LEN))
+>>
+>> The data is alloced by vmalloc(), virt_addr_valid(ptr) will return true
+>> on PowerPC64, which leads to the panic.
+>>
+>> As commit 4dd7554a6456 ("powerpc/64: Add VIRTUAL_BUG_ON checks for __va
+>> and __pa addresses") does, make sure the virt addr above PAGE_OFFSET in
+>> the virt_addr_valid().
+>>
+>> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> ---
+>>   arch/powerpc/include/asm/page.h | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/=
+page.h
+>> index 254687258f42..300d4c105a3a 100644
+>> --- a/arch/powerpc/include/asm/page.h
+>> +++ b/arch/powerpc/include/asm/page.h
+>> @@ -132,7 +132,10 @@ static inline bool pfn_valid(unsigned long pfn)
+>>   #define virt_to_page(kaddr)	pfn_to_page(virt_to_pfn(kaddr))
+>>   #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
+>>  =20
+>> -#define virt_addr_valid(kaddr)	pfn_valid(virt_to_pfn(kaddr))
+>> +#define virt_addr_valid(vaddr)	({						\
+>> +	unsigned long _addr =3D (unsigned long)vaddr;				\
+>> +	(unsigned long)(_addr) >=3D PAGE_OFFSET && pfn_valid(virt_to_pfn(_addr=
+));	\
+>> +})
+>>  =20
+>>   /*
+>>    * On Book-E parts we need __va to parse the device tree and we can't
 >=20
