@@ -1,100 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D59648C46E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 14:11:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4644B48C7D4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 17:07:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JYnxp27Ldz30Jh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 00:11:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JYsrs123vz2yfn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 03:07:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IMJYWb8o;
+	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=default header.b=DMjgYNw7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
+ envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=IMJYWb8o; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
+ header.s=default header.b=DMjgYNw7; dkim-atps=neutral
+X-Greylist: delayed 506 seconds by postgrey-1.36 at boromir;
+ Thu, 13 Jan 2022 03:06:29 AEDT
+Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JYnwy4J72z2xs7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jan 2022 00:10:25 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20CC0nxE010267; 
- Wed, 12 Jan 2022 13:10:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=WE/h8p+zfUwl0XsOgyrkKm55pvwEA29XYRNXiHXrPs8=;
- b=IMJYWb8oloNk2epW2AqRtQWlsLoXMzEfJ6vfY7n8/M+w1pUA3Qs+z2+ZClahD28qRl9K
- 6YSiT7gSEcQDvfc9SauuKO+3A8gF0YWgBxh6fP33pLOAQ7pupGR/HaGyWPOsZ1pSlSOJ
- Gaz3oxUigsKBdx0zNaCcZQjpVWpj2a9L33YJu42/g1KEIw7lyArOnuQQvGGpvxZdo7BV
- QDhnddl8nbIpND+FmWzDbSFZL5bBbEcWmeGcNip5lqO5iWHH3vS1CZOqQNQIxGNFmIzb
- YY5SybTmwIew0WS3W8Jd/G0/q058H120JUDV1JhWFM2ZdGwbASvuc/Qec55T2TK7uwOc PA== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dhtht0fj2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jan 2022 13:10:21 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20CD70cq025221;
- Wed, 12 Jan 2022 13:10:19 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04ams.nl.ibm.com with ESMTP id 3df289bxym-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jan 2022 13:10:19 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 20CDAFwG34603438
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 12 Jan 2022 13:10:15 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C7CE1AE04D;
- Wed, 12 Jan 2022 13:10:15 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 977C5AE058;
- Wed, 12 Jan 2022 13:10:15 +0000 (GMT)
-Received: from [9.145.93.126] (unknown [9.145.93.126])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 12 Jan 2022 13:10:15 +0000 (GMT)
-Message-ID: <ba78ac07-d3c1-ad7a-12eb-9bc53cdb9c43@linux.ibm.com>
-Date: Wed, 12 Jan 2022 14:10:15 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JYsr551Rzz2xs7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jan 2022 03:06:29 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id 40F18256E7C;
+ Wed, 12 Jan 2022 10:57:56 -0500 (EST)
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id SPaO46H5gORm; Wed, 12 Jan 2022 10:57:55 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.efficios.com (Postfix) with ESMTP id 900C8256E7B;
+ Wed, 12 Jan 2022 10:57:55 -0500 (EST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com 900C8256E7B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+ s=default; t=1642003075;
+ bh=lvSIQ7nHyGdo5VdZlys2synMzTuviA6UG4EyMZOPiBk=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=DMjgYNw7ks9LENQdMdg89+EVk+CS+16fs1KF1c0b7eWV7O9zDFSBEdmkpCqepBgQe
+ /tRqGOwYQ0XMkfaWVdUf20FxqiEzCnZja/eKRO6101qSwp6TvGgIwAQ0dWOOC0uN68
+ 7WN6qbg8CnUUQCiELlK+YSh1AYRci2rvfg6Od0c2Dz+lVmUV1vqhUYhr4j6qoyztF8
+ UI+qz2X8B1GMGxjciyCUz9iHqsPwDAWrTFW218P+lDAT83iDI+8Upui1Fn0m3Pw2rt
+ +39h4ae9bV9d1xWkMrGHfrwwUVQSwnXFGYfeore4QoKc4UURmagVPz7IIosrsZZBZQ
+ qr2mMAyFXzo7w==
+X-Virus-Scanned: amavisd-new at efficios.com
+Received: from mail.efficios.com ([127.0.0.1])
+ by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id aitH9Lv6nELs; Wed, 12 Jan 2022 10:57:55 -0500 (EST)
+Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
+ by mail.efficios.com (Postfix) with ESMTP id 69C2F256E7A;
+ Wed, 12 Jan 2022 10:57:55 -0500 (EST)
+Date: Wed, 12 Jan 2022 10:57:55 -0500 (EST)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Andy Lutomirski <luto@kernel.org>
+Message-ID: <1254407188.24737.1642003075387.JavaMail.zimbra@efficios.com>
+In-Reply-To: <e1664cf686034204b8dd5dc1d2bf18e4058b00fd.1641659630.git.luto@kernel.org>
+References: <cover.1641659630.git.luto@kernel.org>
+ <e1664cf686034204b8dd5dc1d2bf18e4058b00fd.1641659630.git.luto@kernel.org>
+Subject: Re: [PATCH 06/23] powerpc/membarrier: Remove special barrier on mm
+ switch
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.1
-Subject: Re: [PATCH v5] powerpc/pseries: read the lpar name from the firmware
-Content-Language: en-US
-To: Michael Ellerman <michaele@au1.ibm.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-References: <20220106161339.74656-1-ldufour@linux.ibm.com>
- <c26f2961-dd19-b888-b601-af5ade74c140@linux.ibm.com>
- <87zgo128x0.fsf@mpe.ellerman.id.au>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <87zgo128x0.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: __8lH80r6UhtEQcTThHPRTptXKA3aFmv
-X-Proofpoint-ORIG-GUID: __8lH80r6UhtEQcTThHPRTptXKA3aFmv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-12_04,2022-01-11_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015
- malwarescore=0 bulkscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
- priorityscore=1501 adultscore=0 suspectscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2201120086
+X-Originating-IP: [167.114.26.124]
+X-Mailer: Zimbra 8.8.15_GA_4180 (ZimbraWebClient - FF96 (Linux)/8.8.15_GA_4177)
+Thread-Topic: powerpc/membarrier: Remove special barrier on mm switch
+Thread-Index: srPxMeA++0JyEL6ARp7mtgKf1UfwJw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,35 +80,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
+Cc: linux-arch <linux-arch@vger.kernel.org>, x86 <x86@kernel.org>,
+ riel <riel@surriel.com>, Peter Zijlstra <peterz@infradead.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Dave Hansen <dave.hansen@intel.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nicholas Piggin <npiggin@gmail.com>, linux-mm <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Nadav Amit <nadav.amit@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/01/2022, 23:40:27, Michael Ellerman wrote:
-> Tyrel Datwyler <tyreld@linux.ibm.com> writes:
->> On 1/6/22 8:13 AM, Laurent Dufour wrote:
->>> The LPAR name may be changed after the LPAR has been started in the HMC.
->>> In that case lparstat command is not reporting the updated value because it
->>> reads it from the device tree which is read at boot time.
->>>
->>> However this value could be read from RTAS.
->>>
->>> Adding this value in the /proc/powerpc/lparcfg output allows to read the
->>> updated value.
->>>
->>> However the hypervisor, like Qemu/KVM, may not support this RTAS
->>> parameter. In that case the value reported in lparcfg is read from the
->>> device tree and so is not updated accordingly.
->>>
->>> Cc: Nathan Lynch <nathanl@linux.ibm.com>
->>> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
->>
->> My only nit would be that in general for consistency with other function names
->> _RTAS_ and _DT_ should be lowercase. Seeing as they are statically scoped within
->> lparcfg.c maybe its ok. Otherwise,
+----- On Jan 8, 2022, at 11:43 AM, Andy Lutomirski luto@kernel.org wrote:
+
+> powerpc did the following on some, but not all, paths through
+> switch_mm_irqs_off():
 > 
-> Yeah I agree, I changed them to lower case when applying.
+>       /*
+>        * Only need the full barrier when switching between processes.
+>        * Barrier when switching from kernel to userspace is not
+>        * required here, given that it is implied by mmdrop(). Barrier
+>        * when switching from userspace to kernel is not needed after
+>        * store to rq->curr.
+>        */
+>       if (likely(!(atomic_read(&next->membarrier_state) &
+>                    (MEMBARRIER_STATE_PRIVATE_EXPEDITED |
+>                     MEMBARRIER_STATE_GLOBAL_EXPEDITED)) || !prev))
+>               return;
+> 
+> This is puzzling: if !prev, then one might expect that we are switching
+> from kernel to user, not user to kernel, which is inconsistent with the
+> comment.  But this is all nonsense, because the one and only caller would
+> never have prev == NULL and would, in fact, OOPS if prev == NULL.
+> 
+> In any event, this code is unnecessary, since the new generic
+> membarrier_finish_switch_mm() provides the same barrier without arch help.
+> 
+> arch/powerpc/include/asm/membarrier.h remains as an empty header,
+> because a later patch in this series will add code to it.
 
-Thanks Michael and Tyrel.
+My disagreement with "membarrier: Make the post-switch-mm barrier explicit"
+may affect this patch significantly, or even make it irrelevant.
 
+Thanks,
+
+Mathieu
+
+> 
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Signed-off-by: Andy Lutomirski <luto@kernel.org>
+> ---
+> arch/powerpc/include/asm/membarrier.h | 24 ------------------------
+> arch/powerpc/mm/mmu_context.c         |  1 -
+> 2 files changed, 25 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/membarrier.h
+> b/arch/powerpc/include/asm/membarrier.h
+> index de7f79157918..b90766e95bd1 100644
+> --- a/arch/powerpc/include/asm/membarrier.h
+> +++ b/arch/powerpc/include/asm/membarrier.h
+> @@ -1,28 +1,4 @@
+> #ifndef _ASM_POWERPC_MEMBARRIER_H
+> #define _ASM_POWERPC_MEMBARRIER_H
+> 
+> -static inline void membarrier_arch_switch_mm(struct mm_struct *prev,
+> -					     struct mm_struct *next,
+> -					     struct task_struct *tsk)
+> -{
+> -	/*
+> -	 * Only need the full barrier when switching between processes.
+> -	 * Barrier when switching from kernel to userspace is not
+> -	 * required here, given that it is implied by mmdrop(). Barrier
+> -	 * when switching from userspace to kernel is not needed after
+> -	 * store to rq->curr.
+> -	 */
+> -	if (IS_ENABLED(CONFIG_SMP) &&
+> -	    likely(!(atomic_read(&next->membarrier_state) &
+> -		     (MEMBARRIER_STATE_PRIVATE_EXPEDITED |
+> -		      MEMBARRIER_STATE_GLOBAL_EXPEDITED)) || !prev))
+> -		return;
+> -
+> -	/*
+> -	 * The membarrier system call requires a full memory barrier
+> -	 * after storing to rq->curr, before going back to user-space.
+> -	 */
+> -	smp_mb();
+> -}
+> -
+> #endif /* _ASM_POWERPC_MEMBARRIER_H */
+> diff --git a/arch/powerpc/mm/mmu_context.c b/arch/powerpc/mm/mmu_context.c
+> index 74246536b832..5f2daa6b0497 100644
+> --- a/arch/powerpc/mm/mmu_context.c
+> +++ b/arch/powerpc/mm/mmu_context.c
+> @@ -84,7 +84,6 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct
+> mm_struct *next,
+> 		asm volatile ("dssall");
+> 
+> 	if (!new_on_cpu)
+> -		membarrier_arch_switch_mm(prev, next, tsk);
+> 
+> 	/*
+> 	 * The actual HW switching method differs between the various
+> --
+> 2.33.1
+
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+http://www.efficios.com
