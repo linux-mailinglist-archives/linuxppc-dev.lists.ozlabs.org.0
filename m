@@ -1,78 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C3E48C313
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 12:27:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F2548C3C2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 13:09:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JYlfF6zZFz30LD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 22:27:33 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qchohL2w;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JYmZK66Chz3bbv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 23:09:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::130;
- helo=mail-lf1-x130.google.com; envelope-from=troglobit@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=qchohL2w; dkim-atps=neutral
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com
- [IPv6:2a00:1450:4864:20::130])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.133; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JYlbg684Fz2y7J
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan 2022 22:25:17 +1100 (AEDT)
-Received: by mail-lf1-x130.google.com with SMTP id k21so7137915lfu.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan 2022 03:25:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version:organization
- :content-transfer-encoding;
- bh=S/2qvW0xbWUNa+oQ156XsN0z42IWX/Qvd1EEymHQdKQ=;
- b=qchohL2w9nPqVM/GsKEmiRWAPMGXd9jcIqXWc7JZmRU0IG9L1WCuKlxYquJ5kkebRH
- y5x3PuIQz1sbvfCSWhPuxlYYfDjP3zcelz4PSltYSNuT+TQ6A5Vkl1o99wSbiOzRHWD1
- /QxCMGwY6eUCjxS2Fggs5F47+TENeObAVYs0X+aAGj1R8WjlB8Q5CeaCUsVI0yP/nxTF
- A4pYLC2/1QU9MJ/vXEsJ0CN4Yi3m9uhSgWxikaXsApZ7rTjRB6PkChyahcE7G9uWzSHq
- h6585tcUQpfer224HHFdFBl+GYHTTcblwFh/ktL2K1Et+7ycPiixSpyk6RmB12EYkJQ5
- K/RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :organization:content-transfer-encoding;
- bh=S/2qvW0xbWUNa+oQ156XsN0z42IWX/Qvd1EEymHQdKQ=;
- b=fkaY//m21a8wba+64eHypQzhuS8nzrhUUpINbWopPCYqhDPPJ4/+scf73vW7SmZp3G
- G1Lzlk89LUbHz49ICNsvZYTvWz9W+CjIQymoBgbn9TItX2jzcX/2Gmjsqm9D0xXA7umV
- wJf1gWAg+YYNQkvVy2YAfpJQkACspKvRBqazduTQF4QB3p2SFOCPH7s5SbH40nq3RyRa
- aevOMXBf0P5UY5OPSn+XP7IJHd6dMSf0gVDcb/i90LQz63mupfD9alntgZ4Qv3gMguBK
- 82vBeCAG5LzKGO4jJdsyZwRYHasqyRZ4Yn87PWZ7kW6mUiJYjIYFXk+sfheNqf2QHjbz
- yHrQ==
-X-Gm-Message-State: AOAM533xVq1UOnarDMg56xEeShPZnX7AdJQueKuZicAkIgcIhHqNnxom
- cIsCaBqVgDnRcEaCXO+On7SErCzdbzg=
-X-Google-Smtp-Source: ABdhPJw6JZoPv6qrZti9DLaYOfRITzhzq+d+8UsWg2m3AFz8DOcs94AMWFmp+TGLYHD3DjtbTMt0GA==
-X-Received: by 2002:a05:6512:1684:: with SMTP id
- bu4mr6626774lfb.293.1641986711325; 
- Wed, 12 Jan 2022 03:25:11 -0800 (PST)
-Received: from wbg.labs.westermo.se (h-155-4-221-110.NA.cust.bahnhof.se.
- [155.4.221.110])
- by smtp.gmail.com with ESMTPSA id d20sm1160963lfj.224.2022.01.12.03.25.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jan 2022 03:25:10 -0800 (PST)
-From: Joachim Wiberg <troglobit@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org, Scott Wood <oss@buserror.net>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: [PATCH 1/1] powerpc/e500/qemu-e500: allow core to idle without waiting
-Date: Wed, 12 Jan 2022 12:24:59 +0100
-Message-Id: <20220112112459.1033754-1-troglobit@gmail.com>
-X-Mailer: git-send-email 2.25.1
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JYmYq4yMkz2xsG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan 2022 23:08:45 +1100 (AEDT)
+Received: from mail-wr1-f49.google.com ([209.85.221.49]) by
+ mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MrhDg-1mbd8v2MlA-00nhAd for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan
+ 2022 13:08:41 +0100
+Received: by mail-wr1-f49.google.com with SMTP id h10so3871941wrb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan 2022 04:08:40 -0800 (PST)
+X-Gm-Message-State: AOAM532dFRapCMoCJx7aRfTVv61ab26eCNbVQOdYb4AdUTEE4a9qyWEq
+ ApqEzPY6OT5HMscaCdatg75HG/zRfUvGuMJZhD4=
+X-Google-Smtp-Source: ABdhPJyNUKzidEWwkYa+wfOUEohIKCR5feZK5S3WXkq+SYeCBRFZTq1mqc61Ubm+2cYuonDIFIyFwZ5WRZ3fGi7ACRI=
+X-Received: by 2002:adf:fd46:: with SMTP id h6mr7767440wrs.192.1641989320742; 
+ Wed, 12 Jan 2022 04:08:40 -0800 (PST)
 MIME-Version: 1.0
-Organization: Westermo Network Technologies AB
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 12 Jan 2022 22:27:01 +1100
+References: <20220111083515.502308-1-hch@lst.de>
+ <20220111083515.502308-5-hch@lst.de>
+ <CAK8P3a0mHC5=OOGV=sGnC9JqZWxzsJyZbTefnCtryQU3o3PY_g@mail.gmail.com>
+ <20220112075609.GA4854@lst.de>
+ <CAK8P3a1ONn=FiPU3669MjBMntS-1K5bgX4pHforUsYJ7yhwZ-g@mail.gmail.com>
+ <f86483fca8b0dc68ce243ba47998ff3296a3b6f8.camel@kernel.org>
+In-Reply-To: <f86483fca8b0dc68ce243ba47998ff3296a3b6f8.camel@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 12 Jan 2022 13:08:24 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3FgHQ+w+Sj00yOERRLWfVhx7NYsGJ1NBAXQ0=is3G=Kg@mail.gmail.com>
+Message-ID: <CAK8P3a3FgHQ+w+Sj00yOERRLWfVhx7NYsGJ1NBAXQ0=is3G=Kg@mail.gmail.com>
+Subject: Re: [PATCH 4/5] uapi: always define F_GETLK64/F_SETLK64/F_SETLKW64 in
+ fcntl.h
+To: Jeff Layton <jlayton@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:IP4v/PU0GUQmEBzFR34Nn696PyDeZ9BhaTPNbE7A3pojQkVXe/m
+ ZEp+GdH5sCDhCM6otRoyPErg2chJrhxB7o1O6X8HDWtiPcpjnNL4uCVgFCCFVBzVEvKuheo
+ FKxy45rSF9nb1sB0ZxG3zCtLY6maP0AKSovEa0MoZts9C/wSrMlO+4SYAiZOXLEudYNiezz
+ DWeNGAp0vF589mHKezFYQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:r7ZzGcufUeM=:dyfX/vNeyTrI5fksKegGMy
+ l6/9W6Bu9yjnjqKihmqfUDjODYpve7MZiypRRHJ8znd/giHdKXHAM/NlCbEMBZBJywOpYbP7n
+ DD0BlBuqwXnnUbGmgEWOZSi1+SJtHV+JUJh544L0i8xgEaNpEXnsBnHUq/WDsAdqCRRutbZiS
+ Q5/5UgqXW6BtY9KuSJSycgjqSXDXIBq7T4SqJqDnj5lR3wkCt++xC87mT9YB60GpuP0lgj5f8
+ +xxTqvAclciHC84SRzUa5r21yrDJoqK6m8pD4OfDON8Eud2GZSZQJdJrh0ffOiUdULlJ+Vq36
+ jxa9Bo9Unm+y+Q4k9SaPKTLHTRLmISU9eAnUWpkrWionC5qiwrTEYXUIqeglcVo9AkQKq0KQF
+ 95ewLki9tNSVNQkNYf6eFG6rhVXppewfhT1TlmAoOLIvlvFftPq/ngxcHBR42CkwoAB7w1TYw
+ bsJ4KBty0Svf6JVIlgLLfjG0345/AUInnC0E1m174UIu+mLeed7qa6AA0B62Y8KKy13fSFE17
+ jcC2MN8DWZdYRklxK99wctDuXsWNwWv+Tqry4jajNZheudhY1htQu6aT4xQUjbw1opUsdhv1E
+ ISfLAKCE/InIJWA899n3Gcbg8OXtryoYZ34Jo+KlD9ck1Vn659DAtgqUXcN5ytmPp8YjYLjrV
+ gA4ge83xkcWRTm0lbu0j8l2HchfPzeiSMIFcvgcyi1phz8QZWDpV6n1MtmOFI3PJxFkU=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,37 +73,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joachim Wiberg <troglobit@gmail.com>,
- Tobias Waldekranz <tobias@waldekranz.com>
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ "J. Bruce Fields" <bfields@fieldses.org>, Guo Ren <guoren@kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Tobias Waldekranz <tobias@waldekranz.com>
+On Wed, Jan 12, 2022 at 12:15 PM Jeff Layton <jlayton@kernel.org> wrote:
+> On Wed, 2022-01-12 at 09:28 +0100, Arnd Bergmann wrote:
+> > On Wed, Jan 12, 2022 at 8:56 AM Christoph Hellwig <hch@lst.de> wrote:
+> >
+> > Exactly, that is the tradeoff, which is why I'd like the flock maintainers
+> > to say which way they prefer. We can either do it more correctly (hiding
+> > the constants from user space when they are not usable), or with less
+> > change (removing the incorrect #ifdef). Either way sounds reasonable
+> > to me, I mainly care that this is explained in the changelog and that the
+> > maintainers are aware of the two options.
+> >
+>
+> I don't have a strong opinion here. If we were taking symbols away that
+> were previously visible to userland it would be one thing, but since
+> we're just adding symbols that may not have been there before, this
+> seems less likely to break anything.
 
-This means an idle guest won't needlessly consume an entire core on
-the host, waiting for work to show up.
+Changing
 
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-Signed-off-by: Joachim Wiberg <troglobit@gmail.com>
----
- arch/powerpc/platforms/85xx/qemu_e500.c | 5 +++++
- 1 file changed, 5 insertions(+)
+#ifndef CONFIG_64BIT
 
-diff --git a/arch/powerpc/platforms/85xx/qemu_e500.c b/arch/powerpc/platforms/85xx/qemu_e500.c
-index a4127b0b161f..4c4d577effd9 100644
---- a/arch/powerpc/platforms/85xx/qemu_e500.c
-+++ b/arch/powerpc/platforms/85xx/qemu_e500.c
-@@ -67,4 +67,9 @@ define_machine(qemu_e500) {
- 	.get_irq		= mpic_get_coreint_irq,
- 	.calibrate_decr		= generic_calibrate_decr,
- 	.progress		= udbg_progress,
-+#ifdef CONFIG_PPC64
-+	.power_save		= book3e_idle,
-+#else
-+	.power_save		= e500_idle,
-+#endif
- };
--- 
-2.25.1
+to
 
+#if __BITS_PER_LONG==32 || defined(__KERNEL__),
+
+would take symbols away, since the CONFIG_64BIT macro is never
+set in user space.
+
+> I probably lean toward Christoph's original solution instead of keeping
+> the conditional definitions. It's hard to imagine there are many
+> programs that care whether these other symbols are defined or not.
+>
+> You can add this to the original patch:
+>
+> Acked-by: Jeff Layton <jlayton@kernel.org>
+
+Sounds good, thanks
+
+         Arnd
