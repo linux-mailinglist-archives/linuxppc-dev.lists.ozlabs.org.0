@@ -2,72 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED42448C7F3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 17:11:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE4948C935
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 18:20:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JYsy74NhTz2yfg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 03:11:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JYvTW3dg8z3bW9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 04:20:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=default header.b=MslA3a46;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=paul-moore-com.20210112.gappssmtp.com header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=dR9/pPQ3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=efficios.com (client-ip=167.114.26.124; helo=mail.efficios.com;
- envelope-from=compudj@efficios.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=paul-moore.com
+ (client-ip=2a00:1450:4864:20::535; helo=mail-ed1-x535.google.com;
+ envelope-from=paul@paul-moore.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256
- header.s=default header.b=MslA3a46; dkim-atps=neutral
-Received: from mail.efficios.com (mail.efficios.com [167.114.26.124])
+ unprotected) header.d=paul-moore-com.20210112.gappssmtp.com
+ header.i=@paul-moore-com.20210112.gappssmtp.com header.a=rsa-sha256
+ header.s=20210112 header.b=dR9/pPQ3; dkim-atps=neutral
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com
+ [IPv6:2a00:1450:4864:20::535])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JYsxR4Fqzz2x9b
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jan 2022 03:11:07 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id 74F892575AE;
- Wed, 12 Jan 2022 11:11:05 -0500 (EST)
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10032)
- with ESMTP id n6a4qlMlEoz8; Wed, 12 Jan 2022 11:11:04 -0500 (EST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.efficios.com (Postfix) with ESMTP id D31042574B9;
- Wed, 12 Jan 2022 11:11:04 -0500 (EST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.efficios.com D31042574B9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=default; t=1642003864;
- bh=CHSmDKIBS772E6jxc42t8yoSsngTNxSjPK0HHOUA5VA=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=MslA3a46ckR2nV9LVnKj85R1OnbB+uazRPH19QB/LySc0eISWRVEySRMwsKTzK9Y5
- 8rFrndyVhIT+Dvw8/iZilkmb5I+PTe9Z2EOJ9u0ud9pedafqFNYfHjKf59LiaWolhm
- FxtFTeFLsTRB/a2WCtALoUFIsTjsaNMBLVvw2MBzDVfWuwpALDEMAfaxXcNEYq+VlU
- zyoFrRKgemGnS6WgHFM0glMU8lg0Uv8AmjlfUWg6rQN7EV9oRVglkM64gUwkORJHXv
- HE5i5UVfJyjeQA9EfuyOqmtcNMcRVnahpK865MtjOTLRTQE24tEvvwLOB4P9cmbxzB
- bdGmpJYRM9dsw==
-X-Virus-Scanned: amavisd-new at efficios.com
-Received: from mail.efficios.com ([127.0.0.1])
- by localhost (mail03.efficios.com [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id GGfJYmmZpaAh; Wed, 12 Jan 2022 11:11:04 -0500 (EST)
-Received: from mail03.efficios.com (mail03.efficios.com [167.114.26.124])
- by mail.efficios.com (Postfix) with ESMTP id BB4B425734C;
- Wed, 12 Jan 2022 11:11:04 -0500 (EST)
-Date: Wed, 12 Jan 2022 11:11:04 -0500 (EST)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Andy Lutomirski <luto@kernel.org>
-Message-ID: <1769209086.24770.1642003864649.JavaMail.zimbra@efficios.com>
-In-Reply-To: <d2f76c148fa039d2dea404c03e5fcd2f3dbf3750.1641659630.git.luto@kernel.org>
-References: <cover.1641659630.git.luto@kernel.org>
- <d2f76c148fa039d2dea404c03e5fcd2f3dbf3750.1641659630.git.luto@kernel.org>
-Subject: Re: [PATCH 07/23] membarrier: Rewrite sync_core_before_usermode()
- and improve documentation
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JYvSr37V7z2xsG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jan 2022 04:19:54 +1100 (AEDT)
+Received: by mail-ed1-x535.google.com with SMTP id q25so12791862edb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan 2022 09:19:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=65QBkl5auowwKruiCd5ekhebx9aA5QGzBldNP4dKx3o=;
+ b=dR9/pPQ3umiUBcOlQtP4NkG7UVl+VgSiD6Gj4ESG3BI5Rd7eU3PraGGHCWjtGvJoJ4
+ kWur2vjIEaqWlFGcRkft+wiCc3zVto+ZCKuCJcJVfVrlmU3v1Q8N3QxyRGY0HFiFKokK
+ rncMBQNjJs29Bp4qYGukrpNEgf1BoZIYNZVYdThJ2vbve7yQPf5RZXm9G8wXtg83mOqf
+ SzED2QYbQYhQowA9le+O2WzhI2joFFcqNVh0VnMuPZTBusvIHA4szTzmuLcTbnnLrYew
+ ONN7nPhum87e3WIZ9Jac30F2kq0Lu+/K0Z0qSTHRZGVjyjZzODhzhKRoEeFYOQ0LbAvN
+ 90zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=65QBkl5auowwKruiCd5ekhebx9aA5QGzBldNP4dKx3o=;
+ b=R53I09bfunur8vnraSRh+wZ04rz9wrmUzsVS2YZKQTv7lvyphq5v0U6N0uu2AnS+G7
+ 4MDid5SRTZXDB1AD/DdCved/Ee5r2QxO7FVSob6zjB6rL5J98ZKtzAF0LbJoSHXBhKZM
+ xZWsosghGuRJZrrTJHsgbyWjqJgP44bhgX+IuMgBHymwh8zJkykUWW4AyeEqRR6E6a8p
+ XeA+3vMFGv5Xfx05RIXPanIYJ25dtk+5x2pOYH1UdquXM6AOhnjUc3Ji3aTCBQCkX+/c
+ IcTFfZkMe1XQ6UZVJJcczir89Q4J9wR3P3QdjiF7Xexj4EvmowPqrudjft78axsjT+F9
+ PO4A==
+X-Gm-Message-State: AOAM531TKCzixSOmWR2rFWON4Etrn48XoEtafTSxLvLhTEm9fMmjbWi8
+ Cc/1a42fEY6sao8u1PkUaC77bB6x91x80iwL1TcF
+X-Google-Smtp-Source: ABdhPJwGYiCNrfdiEoAyumDRSQUhGOk5sh0PJ0caxAP6QVabEe2bblxKkriHKYt2iErce9Oc+wD+9RhZ2X3N1F2eWts=
+X-Received: by 2002:a17:907:1b0d:: with SMTP id
+ mp13mr552754ejc.29.1642007987184; 
+ Wed, 12 Jan 2022 09:19:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [167.114.26.124]
-X-Mailer: Zimbra 8.8.15_GA_4180 (ZimbraWebClient - FF96 (Linux)/8.8.15_GA_4177)
-Thread-Topic: membarrier: Rewrite sync_core_before_usermode() and improve
- documentation
-Thread-Index: COsoGErcEE/VA4sBucBykqi2Wwe69g==
+References: <20211026133147.35d19e00@canb.auug.org.au>
+ <87k0i0awdl.fsf@mpe.ellerman.id.au>
+ <CAHC9VhTj7gn3iAOYctVRKvv_Bk1iQMrmkA8FVJtYzdvBjqFmvg@mail.gmail.com>
+ <87tuh2aepp.fsf@mpe.ellerman.id.au>
+ <2012df5e-62ec-06fb-9f4d-e27dde184a3f@csgroup.eu>
+ <CAHC9VhRHs8Lx8+v+LHmJByxO_m330sfLWRsGDsFtQxyQ1860eg@mail.gmail.com>
+ <dc5705cf-d47a-57b0-65da-2a2af8d71b19@csgroup.eu>
+ <CAHC9VhQPizVLkr2+sqRCS0gS4+ZSw-AMkJM5V64-ku8AQe+QQg@mail.gmail.com>
+ <1a78709f-162e-0d78-0550-4e9ef213f9c6@csgroup.eu>
+ <102e59ba-fcf0-dd85-9338-75b7ce5fbd83@kaod.org>
+ <5f83d1fe-4e6e-1d08-b0c2-aec8ee852065@csgroup.eu>
+ <CAHC9VhTcV6jn4z7uGXZb=RZ5k7W4KW1vnoAUMHN6Zhkxsw1Xpg@mail.gmail.com>
+ <23e9c126-d167-254f-2f4b-391e9f01396c@csgroup.eu>
+In-Reply-To: <23e9c126-d167-254f-2f4b-391e9f01396c@csgroup.eu>
+From: Paul Moore <paul@paul-moore.com>
+Date: Wed, 12 Jan 2022 12:19:36 -0500
+Message-ID: <CAHC9VhTHZ-Brr4OrQJ3VLS_zXx1fcAMZ-32sz2=GonmWOgfbDg@mail.gmail.com>
+Subject: Re: linux-next: manual merge of the audit tree with the powerpc tree
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,193 +90,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, x86 <x86@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- riel <riel@surriel.com>, Peter Zijlstra <peterz@infradead.org>,
- Randy Dunlap <rdunlap@infradead.org>, Dave Hansen <dave.hansen@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>, linux-mm <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, stable <stable@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nadav Amit <nadav.amit@gmail.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Richard Guy Briggs <rgb@redhat.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------ On Jan 8, 2022, at 11:43 AM, Andy Lutomirski luto@kernel.org wrote:
+On Fri, Dec 17, 2021 at 9:11 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+> Le 17/12/2021 =C3=A0 00:04, Paul Moore a =C3=A9crit :
+> > On Thu, Dec 16, 2021 at 4:08 AM Christophe Leroy
+> > <christophe.leroy@csgroup.eu> wrote:
+> >> Thanks C=C3=A9dric, I've now been able to install debian PPC32 port of=
+ DEBIAN
+> >> 11 on QEMU and run the tests.
+> >>
+> >> I followed instructions in file README.md provided in the test suite.
+> >> I also modified tests/Makefile to force MODE :=3D 32
+> >>
+> >> I've got a lot of failures, am I missing some options in the kernel or
+> >> something ?
+> >>
+> >> Running as   user    root
+> >>           with context root:::
+> >>           on   system
+> >
+> > While SELinux is not required for audit, I don't think I've ever run
+> > it on system without SELinux.  In theory the audit-testsuite shouldn't
+> > rely on SELinux being present (other than the SELinux specific tests
+> > of course), but I'm not confident enough to say that the test suite
+> > will run without problem without SELinux.
+> >
+> > If it isn't too difficult, I would suggest enabling SELinux in your
+> > kernel build and ensuring the necessary userspace, policy, etc. is
+> > installed.  You don't need to worry about getting it all running
+> > correctly; the audit-testsuite should pass with SELinux in permissive
+> > mode.
+> >
+> > If you're still seeing all these failures after trying that let us know=
+.
+> >
+>
+> Still the same it seems:
+>
+> Running as   user    root
+>          with context unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c10=
+23
+>          on   system
+>
+> # Test 3 got: "256" (backlog_wait_time_actual_reset/test at line 151)
+> #   Expected: "0"
+> #  backlog_wait_time_actual_reset/test line 151 is: ok( $result, 0 );
+>   # Was an event found?
 
-> The old sync_core_before_usermode() comments suggested that a
-> non-icache-syncing return-to-usermode instruction is x86-specific and that
-> all other architectures automatically notice cross-modified code on return
-> to userspace.
-> 
-> This is misleading.  The incantation needed to modify code from one
-> CPU and execute it on another CPU is highly architecture dependent.
-> On x86, according to the SDM, one must modify the code, issue SFENCE
-> if the modification was WC or nontemporal, and then issue a "serializing
-> instruction" on the CPU that will execute the code.  membarrier() can do
-> the latter.
-> 
-> On arm, arm64 and powerpc, one must flush the icache and then flush the
-> pipeline on the target CPU, although the CPU manuals don't necessarily use
-> this language.
-> 
-> So let's drop any pretense that we can have a generic way to define or
-> implement membarrier's SYNC_CORE operation and instead require all
-> architectures to define the helper and supply their own documentation as to
-> how to use it.  This means x86, arm64, and powerpc for now.  Let's also
-> rename the function from sync_core_before_usermode() to
-> membarrier_sync_core_before_usermode() because the precise flushing details
-> may very well be specific to membarrier, and even the concept of
-> "sync_core" in the kernel is mostly an x86-ism.
-> 
-> (It may well be the case that, on real x86 processors, synchronizing the
-> icache (which requires no action at all) and "flushing the pipeline" is
-> sufficient, but trying to use this language would be confusing at best.
-> LFENCE does something awfully like "flushing the pipeline", but the SDM
-> does not permit LFENCE as an alternative to a "serializing instruction"
-> for this purpose.)
+My apologies, this thread was lost in the end-of-year holidays.
 
-A few comments below:
+At this point, and with that many failures, I think you'll need to
+spend some time debugging the test failures to see what is wrong.  I
+don't have a PPC32 system/VM and I don't have the time right now to
+build up a PPC32 test environment.
 
-[...]
-
-> +# On powerpc, a program can use MEMBARRIER_CMD_PRIVATE_EXPEDITED_SYNC_CORE
-> +# similarly to arm64.  It would be nice if the powerpc maintainers could
-> +# add a more clear explanantion.
-
-Any thoughts from ppc maintainers ?
-
-[...]
-
-> diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-> index e9da3dc71254..b47cd22b2eb1 100644
-> --- a/arch/x86/kernel/alternative.c
-> +++ b/arch/x86/kernel/alternative.c
-> @@ -17,7 +17,7 @@
-> #include <linux/kprobes.h>
-> #include <linux/mmu_context.h>
-> #include <linux/bsearch.h>
-> -#include <linux/sync_core.h>
-> +#include <asm/sync_core.h>
-
-All this churn wrt move from linux/sync_core.h to asm/sync_core.h
-should probably be moved to a separate cleanup patch.
-
-> #include <asm/text-patching.h>
-> #include <asm/alternative.h>
-> #include <asm/sections.h>
-> diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-> index 193204aee880..a2529e09f620 100644
-> --- a/arch/x86/kernel/cpu/mce/core.c
-> +++ b/arch/x86/kernel/cpu/mce/core.c
-> @@ -41,12 +41,12 @@
-> #include <linux/irq_work.h>
-> #include <linux/export.h>
-> #include <linux/set_memory.h>
-> -#include <linux/sync_core.h>
-> #include <linux/task_work.h>
-> #include <linux/hardirq.h>
-> 
-> #include <asm/intel-family.h>
-> #include <asm/processor.h>
-> +#include <asm/sync_core.h>
-> #include <asm/traps.h>
-> #include <asm/tlbflush.h>
-> #include <asm/mce.h>
-
-[...]
-
-> diff --git a/drivers/misc/sgi-gru/grufault.c b/drivers/misc/sgi-gru/grufault.c
-> index d7ef61e602ed..462c667bd6c4 100644
-> --- a/drivers/misc/sgi-gru/grufault.c
-> +++ b/drivers/misc/sgi-gru/grufault.c
-> @@ -20,8 +20,8 @@
-> #include <linux/io.h>
-> #include <linux/uaccess.h>
-> #include <linux/security.h>
-> -#include <linux/sync_core.h>
-> #include <linux/prefetch.h>
-> +#include <asm/sync_core.h>
-> #include "gru.h"
-> #include "grutables.h"
-> #include "grulib.h"
-> diff --git a/drivers/misc/sgi-gru/gruhandles.c
-> b/drivers/misc/sgi-gru/gruhandles.c
-> index 1d75d5e540bc..c8cba1c1b00f 100644
-> --- a/drivers/misc/sgi-gru/gruhandles.c
-> +++ b/drivers/misc/sgi-gru/gruhandles.c
-> @@ -16,7 +16,7 @@
-> #define GRU_OPERATION_TIMEOUT	(((cycles_t) local_cpu_data->itc_freq)*10)
-> #define CLKS2NSEC(c)		((c) *1000000000 / local_cpu_data->itc_freq)
-> #else
-> -#include <linux/sync_core.h>
-> +#include <asm/sync_core.h>
-> #include <asm/tsc.h>
-> #define GRU_OPERATION_TIMEOUT	((cycles_t) tsc_khz*10*1000)
-> #define CLKS2NSEC(c)		((c) * 1000000 / tsc_khz)
-> diff --git a/drivers/misc/sgi-gru/grukservices.c
-> b/drivers/misc/sgi-gru/grukservices.c
-> index 0ea923fe6371..ce03ff3f7c3a 100644
-> --- a/drivers/misc/sgi-gru/grukservices.c
-> +++ b/drivers/misc/sgi-gru/grukservices.c
-> @@ -16,10 +16,10 @@
-> #include <linux/miscdevice.h>
-> #include <linux/proc_fs.h>
-> #include <linux/interrupt.h>
-> -#include <linux/sync_core.h>
-> #include <linux/uaccess.h>
-> #include <linux/delay.h>
-> #include <linux/export.h>
-> +#include <asm/sync_core.h>
-> #include <asm/io_apic.h>
-> #include "gru.h"
-> #include "grulib.h"
-> diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-> index e8919995d8dd..e107f292fc42 100644
-> --- a/include/linux/sched/mm.h
-> +++ b/include/linux/sched/mm.h
-> @@ -7,7 +7,6 @@
-> #include <linux/sched.h>
-> #include <linux/mm_types.h>
-> #include <linux/gfp.h>
-> -#include <linux/sync_core.h>
-> 
-> /*
->  * Routines for handling mm_structs
-> diff --git a/include/linux/sync_core.h b/include/linux/sync_core.h
-> deleted file mode 100644
-> index 013da4b8b327..000000000000
-> --- a/include/linux/sync_core.h
-> +++ /dev/null
-> @@ -1,21 +0,0 @@
-> -/* SPDX-License-Identifier: GPL-2.0 */
-> -#ifndef _LINUX_SYNC_CORE_H
-> -#define _LINUX_SYNC_CORE_H
-> -
-> -#ifdef CONFIG_ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
-> -#include <asm/sync_core.h>
-> -#else
-> -/*
-> - * This is a dummy sync_core_before_usermode() implementation that can be used
-> - * on all architectures which return to user-space through core serializing
-> - * instructions.
-> - * If your architecture returns to user-space through non-core-serializing
-> - * instructions, you need to write your own functions.
-> - */
-> -static inline void sync_core_before_usermode(void)
-> -{
-> -}
-> -#endif
-> -
-> -#endif /* _LINUX_SYNC_CORE_H */
-> -
-
-Thanks,
-
-Mathieu
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-http://www.efficios.com
+--=20
+paul moore
+www.paul-moore.com
