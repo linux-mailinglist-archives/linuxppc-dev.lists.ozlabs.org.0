@@ -1,66 +1,109 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E35248BFE5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 09:29:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2E848C19C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 10:51:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JYghZ0LKmz3bbC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 19:29:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JYjWW69Jrz30Mr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 20:51:35 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cdl1uwFC;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.134; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JYgh23QH6z2xBx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan 2022 19:28:48 +1100 (AEDT)
-Received: from mail-wr1-f43.google.com ([209.85.221.43]) by
- mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MBll6-1nD6tU0npE-00C8RD for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan
- 2022 09:28:44 +0100
-Received: by mail-wr1-f43.google.com with SMTP id x4so2721061wru.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan 2022 00:28:43 -0800 (PST)
-X-Gm-Message-State: AOAM530yFbjH2uADvXzALMZOyuCNZeGUMIaH0T1TT6BBvpjjO4/LXPIO
- Wduu5qiDLyNJJAR7wxAnF1TkmGkysSwR900gsh0=
-X-Google-Smtp-Source: ABdhPJzCQAXjKL7v7gwqeNOizFH7EmO4xK5MJG/Z0khXPuJErSXk+hZMQMifsbbqaAU9IP9YduLhizzW87q9+u/zsmI=
-X-Received: by 2002:a05:6000:16c7:: with SMTP id
- h7mr6863134wrf.317.1641976123587; 
- Wed, 12 Jan 2022 00:28:43 -0800 (PST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=cdl1uwFC; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JYjVj3DSZz2xtv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan 2022 20:50:51 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20C7QTlQ017254; 
+ Wed, 12 Jan 2022 09:50:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=OBQFEbRX7vS7SRjntuk/9gX7EVtlY4nJJY60J+1eMx0=;
+ b=cdl1uwFC+vkdzS+J1H3TISe8KyIm29IlakDlnU5tSdWozcAYXkNJMyGIkSrijvQgZVUX
+ RJVLGc7scoNBhn9pNQSao0f+lRtIBwRZw0//L+gqEoSONe6a3eHwVYMaoKA7xsbU5c1X
+ VQNH2/AMXLLk0jg33ZYKpwEzWwgoMRKJYFzIubAWUd7XQMo4Il4iNNAEdTzX6S1G8/7N
+ vdz3WXiOI8QKY+DFdcnAUrUN7pOsJSOBfouBuilZhdG6a0vUw2bTemvTMuDKEiNj1+6k
+ o+yhQtAeZFnFqnkKUVJrmH3br47lhgfkHpX6Xbr22YGkoJqk/7Wm86A//rdr2ksyirWE 2A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3dhtkr2gpc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jan 2022 09:50:42 +0000
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20C9Vja1020835;
+ Wed, 12 Jan 2022 09:50:42 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3dhtkr2gnr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jan 2022 09:50:42 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20C9gRGI030828;
+ Wed, 12 Jan 2022 09:50:40 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma05fra.de.ibm.com with ESMTP id 3df289e79j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jan 2022 09:50:40 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 20C9obAI38207978
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 12 Jan 2022 09:50:37 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1C5C14C050;
+ Wed, 12 Jan 2022 09:50:37 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7A5A34C04E;
+ Wed, 12 Jan 2022 09:50:32 +0000 (GMT)
+Received: from [9.163.9.101] (unknown [9.163.9.101])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 12 Jan 2022 09:50:31 +0000 (GMT)
+Message-ID: <4eafb016-8b80-dae5-cd93-69adca33bfb7@linux.ibm.com>
+Date: Wed, 12 Jan 2022 15:20:29 +0530
 MIME-Version: 1.0
-References: <20220111083515.502308-1-hch@lst.de>
- <20220111083515.502308-5-hch@lst.de>
- <CAK8P3a0mHC5=OOGV=sGnC9JqZWxzsJyZbTefnCtryQU3o3PY_g@mail.gmail.com>
- <20220112075609.GA4854@lst.de>
-In-Reply-To: <20220112075609.GA4854@lst.de>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 12 Jan 2022 09:28:26 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1ONn=FiPU3669MjBMntS-1K5bgX4pHforUsYJ7yhwZ-g@mail.gmail.com>
-Message-ID: <CAK8P3a1ONn=FiPU3669MjBMntS-1K5bgX4pHforUsYJ7yhwZ-g@mail.gmail.com>
-Subject: Re: [PATCH 4/5] uapi: always define F_GETLK64/F_SETLK64/F_SETLKW64 in
- fcntl.h
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:VOJqlejMXaRdTb88eG//FZGDoydWp5kkuPsXP8s2oFMZ1a6qp4M
- njm3yW6J/auNV04skzU0EMO7gBr4ajoCecOHpDPlgVqEHDo+GwYj39j2LSMox6UDYjjk84p
- MANtA2882HLEZ9GY5e5RAkVu7a+r+71JFin2e8vDc0lzsKWASkrQdL86Bh8biocFr3KaHWn
- cN3ww15LraJBdX4dDICTg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:HjIeWfOe2HU=:Uw9A2AV9dUNMAEBEyz3Xks
- 8+aDjg+1LLikj0I+/PQoSN/LDfzeXuBKB/7atElrJtiPT2UMjVrDpaBfpf+Ln+xqKi92CxWRw
- lXMC1e6ga/P6uslI98NR5/AipKwTI/4gItAU+cXtRGi+BUENgsRdU/VFBJcFi4TgTkJVbFkwa
- Edb0BKIVa35j4kuJ1WtEgUYpxmadip1h1/6QFysQytyAXKsW9Nw3opNf58JTS6wsPjlJ2OSr9
- 64wTWb6YEKiwVfDZOU27gpa0Vz2g/Hwp7ltzkRcgD3iiKfS5m1w11R2ozhzSvjY2xyaC+nOr0
- XqMLlh72ofFhgxat2CQR5ni5dZkIZYNKcrQZzzPDjs61+HvzPRMj6qJre7ZI4S77Du01jLhoL
- uD01n4hCz8WTtquRJNBq9x8ZytYnSI7ZZp+DzlYXH6AHWzBQNDI1v2MlPNX4q9i8r4V9iOFOt
- WKkQp7SAtbIXQlSMtpx8e2as2DC1ejrK/Sm1WubqRwMM04yY/GyF6WSKAAAczQ/Pvu5ASw1Ys
- NN4Bj1duj5sxkEUN0Gw5uvBJj6U10qaJux17jHVfMclSs/xDdRadobMPr1oRxo85Qaj42YGQF
- 2rG27xMNjUnEskAqtMxOiuwyCC0151h0FWB8XW9p0LFE/oJ/7MP0tetRZ9Zh3mI0xSqs2OE3U
- 1f0l0KpQKjD8unDiOFTGhz1ZFtPCd7inu3XuYsttANSKOETk46qGmH8lLKlX5JHAeZVM=
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH 1/2] mm/cma: provide option to opt out from exposing pages
+ on activation failure
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
+References: <20211220193419.104242-1-hbathini@linux.ibm.com>
+ <20211220193419.104242-2-hbathini@linux.ibm.com>
+ <e4748b18-3de3-b3f9-464a-e5cfcf9f05d4@redhat.com>
+ <bc8c2655-d540-5d87-9811-054e87e84487@linux.ibm.com>
+ <21364354-83d1-5a56-378e-8ca07ccf9957@redhat.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <21364354-83d1-5a56-378e-8ca07ccf9957@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Izr7lUSFYi7ivtarlHQOEdYZwe3jNepZ
+X-Proofpoint-ORIG-GUID: _q2cqel33x_f-hYUMaJgZ06jRn8GVq3W
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-12_03,2022-01-11_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 mlxlogscore=999
+ clxscore=1015 spamscore=0 phishscore=0 bulkscore=0 priorityscore=1501
+ mlxscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201120061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,47 +115,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- the arch/x86 maintainers <x86@kernel.org>, Jeff Layton <jlayton@kernel.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "J. Bruce Fields" <bfields@fieldses.org>, Guo Ren <guoren@kernel.org>,
- sparclinux <sparclinux@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: mike.kravetz@oracle.com, mahesh@linux.ibm.com, sourabhjain@linux.ibm.com,
+ osalvador@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 12, 2022 at 8:56 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> On Tue, Jan 11, 2022 at 04:33:30PM +0100, Arnd Bergmann wrote:
-> > This is a very subtle change to the exported UAPI header contents:
-> > On 64-bit architectures, the three unusable numbers are now always
-> > shown, rather than depending on a user-controlled symbol.
->
-> Well, the change is bigger and less subtle.  Before this change the
-> constants were never visible to userspace at all (except on mips),
-> because the #ifdef CONFIG_64BIT it never set for userspace builds.
 
-I suppose you mean /always/ visible here, with that ifndef.
 
-> > This is probably what we want here for compatibility reasons, but I think
-> > it should be explained in the changelog text, and I'd like Jeff or Bruce
-> > to comment on it as well: the alternative here would be to make the
-> > uapi definition depend on __BITS_PER_LONG==32, which is
-> > technically the right thing to do but more a of a change.
->
-> I can change this to #if __BITS_PER_LONG==32 || defined(__KERNEL__),
-> but it will still be change in what userspace sees.
+On 11/01/22 8:06 pm, David Hildenbrand wrote:
+> On 06.01.22 13:01, Hari Bathini wrote:
+>>
+>> To answer the question, fadump does not want the memory to be used for
+>> kernel pages, if CMA activation fails...
+> 
+> Okay, so what you want is a reserved region, and if possible, let CMA
+> use that memory for other (movable allocation) purposes until you
+> actually need that area and free it up by using CMA. If CMA cannot use
+> the region because of zone issues, you just want that region to stay
+> reserved.
+> 
 
-Exactly, that is the tradeoff, which is why I'd like the flock maintainers
-to say which way they prefer. We can either do it more correctly (hiding
-the constants from user space when they are not usable), or with less
-change (removing the incorrect #ifdef). Either way sounds reasonable
-to me, I mainly care that this is explained in the changelog and that the
-maintainers are aware of the two options.
+Right.
 
-        Arnd
+> I guess the biggest different to other CMA users is that it can make use
+> of the memory even if not allocated via CMA -- because it's going to
+> make use of the the physical memory range indirectly via a HW facility,
+> not via any "struct page" access.
+> 
+> 
+> I wonder if we can make the terminology a bit clearer, the freeing part
+> is a bit confusing, because init_cma_reserved_pageblock() essentially
+> also frees pages, just to the MIGRATE_CMA lists ... what you want is to
+> treat it like a simple memblock allocation/reservation on error.
+
+> What about:
+> * cma->reserve_pages_on_error that defaults to false
+> * void __init cma_reserve_pages_on_error(struct cma *cma)
+
+Yeah, this change does make things bit more clearer.
+Will send out a v2 with the change..
+
