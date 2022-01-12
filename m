@@ -2,78 +2,127 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1222248C942
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 18:22:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1FE48CB4A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 19:51:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JYvWR0Hm3z3bPD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 04:22:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JYxVH4t1mz30DM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 05:51:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=UOi9kIvt;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=PGZt5QpI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::102e;
- helo=mail-pj1-x102e.google.com; envelope-from=seanjc@google.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=UOi9kIvt; dkim-atps=neutral
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com
- [IPv6:2607:f8b0:4864:20::102e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.14.51; helo=eur01-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=vladimir.oltean@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=PGZt5QpI; 
+ dkim-atps=neutral
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr140051.outbound.protection.outlook.com [40.107.14.51])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JYvVh3Djzz30NC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jan 2022 04:21:32 +1100 (AEDT)
-Received: by mail-pj1-x102e.google.com with SMTP id
- a1-20020a17090a688100b001b3fd52338eso5009619pjd.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Jan 2022 09:21:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=TYHRM7+kADwOp9diBRrPGp4L0N1LoYL1IUvHa0nGaUc=;
- b=UOi9kIvtR/IrJwzo5niwxDtXudsV6IxInf5Xux8zgZWocQk2IEmaYc0XSVBraMOzip
- 1p6oktTDeAT0Xo0Y1Hv38DXQkmSLxGT3a21Lcwuzm9HPptZ8CwyjAsbDUolqExCQJBvI
- 3/Ilf2Jr3LSRwS8m0x3JSZhofT299fDyux/e4JRm1BTZb8xRszyzcX2IlMX1MSEgYjMT
- 4xhdcYSj8HE0lJizFcqyvQ1F0sIsor9GOdwCIFkIY/f5YjDSO/UpiSWU7FnrM6Aap0Ov
- XAwRUtuXNr7yYBD4h8SO2lxl+txc3ZtlyhAeUA7I20RlONuBzpovIUUx1rYk6w6DmC66
- icRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=TYHRM7+kADwOp9diBRrPGp4L0N1LoYL1IUvHa0nGaUc=;
- b=DsUG/eM22hPnfg1VbMWiwzsXB392lALmSASpA8VY0g8jRdOZqLwqYdPn0JdoD5tlJu
- vHJAYmzxnagdQeys3FQy8v0qJO/7g99zJ5zBTZJwsJFj4RqLdqf6ZjrXAuo03+dYMfLe
- zdGiWwDS2FeZ15NcHns+IZpuF0VNmRlglcdnGjH9H9Vb+5ahENJ7AatSWw7BgiVzL8V8
- 8kkehXop0nRcJJNyqQLHbUfdodGR6Dxohd5/Tz2hwmvHpJVJOLvXC6MHsVdFNVPJc4SM
- 6p1a3T0AhGyUWTTyuw1SP+4PUKCbch3aOICRQPRAgIawDBF1MgBzsHM5Lj/UdcVqUj7f
- 8tZQ==
-X-Gm-Message-State: AOAM533d1NQEjjyqZjV8CEd86xWy+SzoFOcWNs20PdNFOJKJYUQCoohe
- kHVQBD2Y8ykui22/YWcuHnYDfg==
-X-Google-Smtp-Source: ABdhPJzFOOljTybPaAkOSjlPQwykizLUTnzjLoFkEgLqIZkrqe/Ahlwi51dGj1hKKqsANfiIKGdNKw==
-X-Received: by 2002:a63:7845:: with SMTP id t66mr576433pgc.103.1642008090029; 
- Wed, 12 Jan 2022 09:21:30 -0800 (PST)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com.
- [35.185.214.157])
- by smtp.gmail.com with ESMTPSA id qe10sm7011428pjb.5.2022.01.12.09.21.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jan 2022 09:21:29 -0800 (PST)
-Date: Wed, 12 Jan 2022 17:21:25 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Chao Gao <chao.gao@intel.com>
-Subject: Re: [PATCH 3/6] KVM: Remove opaque from
- kvm_arch_check_processor_compat
-Message-ID: <Yd8OFT80exMeCMVA@google.com>
-References: <20211227081515.2088920-1-chao.gao@intel.com>
- <20211227081515.2088920-4-chao.gao@intel.com>
- <Ydy8BCfE0jhJd5uE@google.com> <20220111031933.GB2175@gao-cwp>
- <Yd8N7PFqZbACzh2r@google.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JYxTQ4qG9z2xsG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jan 2022 05:50:33 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hzAjSejkubqMFb6p1jg6QxuQtuPAOIqfIDMSMY7DbxGOinVdQRpcIE3B3onecZoomuGOCmmm3KD8IZOHeFSFZF8qskKHqn8VMJpjJkrOIQmIwmyRi5fNUMuRsb5UR+cTP3Wc1vLe1L71sidRTdQX3YGPKbEkLzAFSHlzKVZdetaueNZqadssQ01xKmrasnvD5h3sL1CGML8eezR3UJilbt00Rb7PKiK5QUTM4K6Rgmo0BLnAL75D56Iga3LGzIF6WVSHOwgmvJl7MJqdvOhZBnT9qa58reaypBnN19HWhzbUs1eCT0DjKj08Pyf56G9gzt5+zHag6A3NkorBaHwmrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W2yHzROI6UYxP0UDeqstPApfK3kbLs8Ke5H81at1z8o=;
+ b=JmH4NiHsSin/nWj+KUZY4u4CtI3PwyOThlG/evwcmxwujdSQRIEs1NSIFoTxIeKHI/Ni4bz2C6+nrNiQuD4AENraXMDHb4GMW/Nx7k7x0DUmDD8fQk53s/OU7NEnAYSYLZKIrUayzbJ3ac7nhhDPe75oeV4LTLlE0MWbkNmE1bIoRnrDmlclZszzYDnm1tVC0c2NBAbAF6kX4JqzTwnJjZb9/afg/Ts3V28BJNRfHACqtZPbxtxBsNbIsKBcvplW8L/zIE0lmX37dUdlpP7GrQOUpu50Xb9qO/XIrF5W+Ci6HGFLU/Oh4SZLYJ2R8w0iMjFtcx5BEkrbOgrdhGuZrw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W2yHzROI6UYxP0UDeqstPApfK3kbLs8Ke5H81at1z8o=;
+ b=PGZt5QpIoBZ1LHl/VArNPlTiL9vAZHUplpFcb+JnpQGCs/X7Q9l4jjArBSRsThs3oDkpOFH4aiAO4Llp6pXmhltB5lMZdPdrXzOrDJWrO1qRNVlvNt73SP7ZOO+BkbfWYQNKZQlb8P0hjWZZKZJbc7jyC1KXLQrpG2P4pBH+d+A=
+Received: from VI1PR04MB5136.eurprd04.prod.outlook.com (2603:10a6:803:55::19)
+ by VI1PR0402MB3550.eurprd04.prod.outlook.com (2603:10a6:803:3::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4867.11; Wed, 12 Jan
+ 2022 18:50:11 +0000
+Received: from VI1PR04MB5136.eurprd04.prod.outlook.com
+ ([fe80::c84:1f0b:cc79:9226]) by VI1PR04MB5136.eurprd04.prod.outlook.com
+ ([fe80::c84:1f0b:cc79:9226%3]) with mapi id 15.20.4867.012; Wed, 12 Jan 2022
+ 18:50:11 +0000
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Maxim <bigunclemax@gmail.com>
+Subject: Re: [PATCH v2] powerpc: dts: t1040rdb: fix ports names for Seville
+ Ethernet switch
+Thread-Topic: [PATCH v2] powerpc: dts: t1040rdb: fix ports names for Seville
+ Ethernet switch
+Thread-Index: AQHYBxIPym2G7xq+TE+bIvwtYjnm9qxfvE4A
+Date: Wed, 12 Jan 2022 18:50:11 +0000
+Message-ID: <20220112185010.onk35fvuho6qldea@skbuf>
+References: <20220111152947.6zvt7j7366wsg6o2@skbuf>
+ <20220111173723.26212-1-bigunclemax@gmail.com>
+In-Reply-To: <20220111173723.26212-1-bigunclemax@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 74bac946-cf90-4daf-e2f4-08d9d5fc5ce8
+x-ms-traffictypediagnostic: VI1PR0402MB3550:EE_
+x-microsoft-antispam-prvs: <VI1PR0402MB355087CF90BDF18C5F5B872CE0529@VI1PR0402MB3550.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: WnlYlo8FLOX2CLLwN+38PlrDjFp7AWhfrYtRi5S/Jcs9Id78f/O7ZquAqGVbYquZlhsUWHaxwTMBf6LlTSqNRj8P45VOnGMyqJ9uCavpeXiPuRGe6COX9JvTMvkdUjPG4xMNt2cqvKGAqcgxO7pYmMz567gMHipaBUwXon+Rk0oSmL2rnWlxr9zWjpd9lqNewMXvxEAWxglhod3TVtSzl+xKzSFk5WB4JBjTK5ecIb4AiMCwDwJAvpX+zZkR16ta3cpt8G5VSIS/E2oGfmDZ/Urg9Uic4Grxwi8RYotHff6zHl1xMfsOfZhvbfVFe/3t3iDHodJ3vu0mHA4GtfKISM5kUY/z+y4tUPRPUgWTPpIHd83G+lDl2RD6ZMJaYmAdzwR7lPo9B3To43Mdw67y3taDc8dlds1qtdpRoKYA2lHzobF/eLnwGz/ATpSWtDYHV5F5TWb0wk35UbotDOlRt3eKr+UmGnb5Xkx9t1a4dtAOHWowye0AKPIrYwNisZfm3hZgrXdIusl5M3gsmwFj8Tr+xZWbPPXWFBMpY3cuuim0swtQfLQfLVTDE/S8dSG7pu1DRkoNc6xm3Z8S1mvG21F8kI6RTsm5Q1coWnsx1gpAxuf1+WslB24PVo9xCmge/FPWM1rpxPCPH2h9eNRqNWcnQaZPxDSIFWvh54cBvG5LGBtbUDh54vE60OLYbU1H
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:VI1PR04MB5136.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(7916004)(4636009)(366004)(5660300002)(66476007)(508600001)(26005)(66446008)(122000001)(38100700002)(4326008)(316002)(8936002)(76116006)(54906003)(186003)(91956017)(66946007)(1076003)(64756008)(33716001)(7416002)(6486002)(66556008)(6916009)(6506007)(8676002)(4744005)(9686003)(71200400001)(6512007)(38070700005)(44832011)(86362001)(2906002);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Ta4LXGMjI1xEK9e83Z0Q6otbMmjOMNvIMEABTy3kaFfA2oufuieDbloNrSf1?=
+ =?us-ascii?Q?KxYu4JCAFNvL9nCvoJe7YdFmnDY4fKc7H5jbDwMRfld5oUQGsyAvZX4H6IVq?=
+ =?us-ascii?Q?cfANjIc1DlFiMVsYwe0WZhr+ikZ7ofDH6B6GRq6yRpLMItZ32vZGLmEAJveW?=
+ =?us-ascii?Q?/5FSfw2Yn5PbirB5FORgrfHYDWOtV2yBheJJM3sfh+Q9l2n631zJ9HGf4I+3?=
+ =?us-ascii?Q?goDjOa3PAXFzskuKj8pu50MeIzLkONWIw+gMRZ4iNaANA3YDzbB5ux+til85?=
+ =?us-ascii?Q?SGejtirvGiH4gln7fp6Zhivk5krt3Th+XuVb61/3vhDVq8LDfmm0NqME1seL?=
+ =?us-ascii?Q?UsZXBt8qLbhNoBBCEFzGF9Dlc79UT6emyCUSbguIuDwgjV+5y27gr8yMyEaY?=
+ =?us-ascii?Q?Sx/B/O7AJwQfQ6NDqHozjIfj9K6ywuv2WJKMMJuf0CS4rrQmOfjeYRJgnIKW?=
+ =?us-ascii?Q?P2CxJFWtP9rvqd+LJ+IFZJ/lynIPXfmrfNYHD1DnZ16VUBnj8aQDGV/35O/Q?=
+ =?us-ascii?Q?V/Tr5kmrWjDOxVN1nGe90fimKQpd1fIjxzxilPBZErUqP1WLS/uPo27wjWhe?=
+ =?us-ascii?Q?7y1IqoB7XJVl4ZNioVbRL7gaVAdT2Z/XWeaXHZT5ojj/sNSIZqW27MEwVxjZ?=
+ =?us-ascii?Q?EiveDcWTftCh0cSlfVWT2pOSoc1gwJo5cae8rJ6FhCUD5kLwfxkw95UdxW70?=
+ =?us-ascii?Q?OsIGF7ggGNmdALeYg7pexd8MZ6V2y8AvyMouU2jJ37TdzXrQKvEm8XMSLK4W?=
+ =?us-ascii?Q?s9FkbLnfO5fpQGdiVR6wFz7cL5p+9QQ/JVc7PdGLNQwZ8HNGw7XViyINZTJn?=
+ =?us-ascii?Q?qRAT76z0Op+i6lBsjQ7EloRfiZ6h28i5ATV4tibLAbAP4CfJVW9zrpXDT9HF?=
+ =?us-ascii?Q?mM2Emzp/YPp7tMot5ysoGOYDm/hi7Oz2jOY8rs5N/8PRKsV0yMDtQNo3m6P7?=
+ =?us-ascii?Q?nQZFxIhWMUg0Y2gakoN2V/iALXU5R5bGmxdwrmweppjGxXp+1FnYR0IbKIUw?=
+ =?us-ascii?Q?16XqF0/oEtOJ/Nbz2v4Kfs5hzM2H/0mj6BUqh5ei3QAUEb67h6pUPGeJftFX?=
+ =?us-ascii?Q?86AAV3FHltqxUlZfPmngQ0JSlUyXtqA5IECFeJM1lke7HQ6anHAQxFmAkw0k?=
+ =?us-ascii?Q?6gxMv3/T3h3K4GHl/QnunavllHO0R6yvL8oD1/p02kgwOR9jnCFOM6m8kLBg?=
+ =?us-ascii?Q?8hxvPNEMqnP4K521IySQi1H6EzwPjk662lQx0TfsMhBmXyIJ2SWzhh4FeUEl?=
+ =?us-ascii?Q?dij3EUmBtgC6E/g2GOkKCpW73kbNv2OIEHFLYyiOtupx+Zaf26cYPS+U8fM4?=
+ =?us-ascii?Q?zHoZWJy5mM+TpSErpInvxU2rJHwr+1GhUyApKmT9Zq8V1AloKwcLxhZ/3upc?=
+ =?us-ascii?Q?zmOR97hyWMiusrzAITV/V6zcrPPha575xgpMW3lPbUSYqzdRuHvhrLWKVM6N?=
+ =?us-ascii?Q?XoakVjTNbjSxdM7EdSrXkgyjaiyi1p+EnQEtCeGNj3dNpr09Tqu44poY8ZKy?=
+ =?us-ascii?Q?N26BB20S3a+3pcC4OLm6QX5i+9T/GmNI8ZglpttUqzGMDoap38IbljGfZ9xh?=
+ =?us-ascii?Q?fiJGV7N3nz5PeUgs+rbYefMI1doV0djLl/WKum9zND8/+zcOxVTTb/pLsfOE?=
+ =?us-ascii?Q?biS+BrKwSmWGknRLfPuQh50=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <BAD58E329BB59B44BDAAC8AF177595D2@eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yd8N7PFqZbACzh2r@google.com>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5136.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74bac946-cf90-4daf-e2f4-08d9d5fc5ce8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jan 2022 18:50:11.6252 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: OkmioZiFAIeLItgQ3cwgbnKP8EiYN80/cZQUbylkK9uL/mhO2E3Uengcmk8nBO3xamOtgdD8VAclVMNIcrSWhA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB3550
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,62 +134,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
- David Hildenbrand <david@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
- Atish Patra <atish.patra@wdc.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>,
- Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
- Huacai Chen <chenhuacai@kernel.org>, linux-riscv@lists.infradead.org,
- kvmarm@lists.cs.columbia.edu,
- Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
- Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>, kevin.tian@intel.com,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Borislav Petkov <bp@alien8.de>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, tglx@linutronix.de,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Fabiano Rosas <farosas@linux.ibm.com>, Anup Patel <anup.patel@wdc.com>,
- linux-kernel@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
- James Morse <james.morse@arm.com>, kvm-riscv@lists.infradead.org,
- pbonzini@redhat.com, Vitaly Kuznetsov <vkuznets@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "andrew@lunn.ch" <andrew@lunn.ch>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "fido_max@inbox.ru" <fido_max@inbox.ru>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>,
+ "paulus@samba.org" <paulus@samba.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "davem@davemloft.net" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 12, 2022, Sean Christopherson wrote:
-> On Tue, Jan 11, 2022, Chao Gao wrote:
-> > On Mon, Jan 10, 2022 at 11:06:44PM +0000, Sean Christopherson wrote:
-> > >On Mon, Dec 27, 2021, Chao Gao wrote:
-> > >> No arch implementation uses this opaque now.
-> > >
-> > >Except for the RISC-V part, this can be a pure revert of commit b99040853738 ("KVM:
-> > >Pass kvm_init()'s opaque param to additional arch funcs").  I think it makes sense
-> > >to process it as a revert, with a short blurb in the changelog to note that RISC-V
-> > >is manually modified as RISC-V support came along in the interim.
-> > 
-> > commit b99040853738 adds opaque param to kvm_arch_hardware_setup(), which isn't
-> > reverted in this patch. I.e., this patch is a partial revert of b99040853738
-> > plus manual changes to RISC-V. Given that, "process it as a revert" means
-> > clearly say in changelog that this commit contains a partial revert of commit
-> > b99040853738 ("KVM: Pass kvm_init()'s opaque param to additional arch funcs").
-> > 
-> > Right?
-> 
-> What I meant is literally do
-> 
->   git revert -s b99040853738
-> 
-> and then manually handle RISC-V.
+On Tue, Jan 11, 2022 at 08:37:23PM +0300, Maxim wrote:
+> From: Maxim Kiselev <bigunclemax@gmail.com>
+>=20
+> On board rev A, the network interface labels for the switch ports
+> written on the front panel are different than on rev B and later.
+>=20
+> This patch fixes network interface names for the switch ports according
+> to labels that are written on the front panel of the board rev B.
+> They start from ETH3 and end at ETH10.
+>=20
+> This patch also introduces a separate device tree for rev A.
+> The main device tree is supposed to cover rev B and later.
+>=20
+> Signed-off-by: Maxim Kiselev <bigunclemax@gmail.com>
+> Reviewed-by: Maxim Kochetkov <fido_max@inbox.ru>
+> ---
 
-Doh, to be clear, "manually handle RISC-V _in the same commit_".
+Fixes: e69eb0824d8c ("powerpc: dts: t1040rdb: add ports for Seville Etherne=
+t switch")
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>=
