@@ -1,102 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0949948CC1D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Jan 2022 20:36:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021C048CF98
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 01:17:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JYyVG61S9z3cSW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 06:36:22 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lErzy3qW;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JZ4kk01GYz30Mr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 11:17:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
+ helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=lErzy3qW; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
+ [130.133.4.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JYySv3z2sz30Ny
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jan 2022 06:35:11 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20CIRTcD016316; 
- Wed, 12 Jan 2022 19:34:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=8Ozk8AMNRKFnQCEJsfN9wTAy3Jf74WfJoYw/ZixgF58=;
- b=lErzy3qW21tS16NFxPMOV7OnASRuYSa9ekI8mWJdXYcgU8QzEC6c9S4jrNX6S7LMjeZY
- qODqDET5hCVutkZEWBjJgY4vs0W3R6XlsYGtTTg9OyFC0TgOoMNcEQasfZb2hvvHcwg+
- RyeyyqX7spoJwIyYbdHpOdE9wYtVrkEUcIteXJ90a4wUE6hTSdZ5RZGgZIT5xlUmrHWP
- MgZSCl5InxEtxH/zKK1wz12vjIglXyH+XndyG23ojmlpg2aLEc3A79/vB6y908ol70l9
- TjLxftVRQPobqwXwOLynTgoKYcISLN5zLYRTh+VPTAYdGeaGc4302gQgkhP1063DsxLz iQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dj49jh7t1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jan 2022 19:34:59 +0000
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20CJUt6B011973;
- Wed, 12 Jan 2022 19:34:59 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dj49jh7sf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jan 2022 19:34:58 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20CJN4QK022760;
- Wed, 12 Jan 2022 19:34:56 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04ams.nl.ibm.com with ESMTP id 3df289ep9d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jan 2022 19:34:56 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 20CJYrng47055276
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 12 Jan 2022 19:34:53 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 52775AE053;
- Wed, 12 Jan 2022 19:34:53 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7FED2AE051;
- Wed, 12 Jan 2022 19:34:48 +0000 (GMT)
-Received: from hbathini-workstation.ibm.com.com (unknown [9.163.19.140])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 12 Jan 2022 19:34:48 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org,
- mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/2] powerpc/fadump: opt out from freeing pages on cma
- activation failure
-Date: Thu, 13 Jan 2022 01:03:40 +0530
-Message-Id: <20220112193340.149020-3-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220112193340.149020-1-hbathini@linux.ibm.com>
-References: <20220112193340.149020-1-hbathini@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JZ4kF54KMz2xWc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jan 2022 11:17:08 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+ by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
+ tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1n7nna-001faP-If; Thu, 13 Jan 2022 01:17:02 +0100
+Received: from p57bd9010.dip0.t-ipconnect.de ([87.189.144.16]
+ helo=[192.168.178.81]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
+ with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+ (envelope-from <glaubitz@physik.fu-berlin.de>)
+ id 1n7nna-0017mG-Bp; Thu, 13 Jan 2022 01:17:02 +0100
+Message-ID: <52b57080-efbd-c582-30df-f1d638e18e14@physik.fu-berlin.de>
+Date: Thu, 13 Jan 2022 01:17:01 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dNCm72Urdu393CqVIGa1vFH9fM5rH5pe
-X-Proofpoint-ORIG-GUID: Lfzo64ukQWg5tbf7RGJpScNXAtNA_-lc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-12_05,2022-01-11_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0
- malwarescore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
- priorityscore=1501 clxscore=1015 spamscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2201120114
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.1
+Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
+Content-Language: en-US
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
+ <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
+ <878ryfavaz.fsf@mpe.ellerman.id.au>
+ <04864fe5-fdd0-74b2-2bad-0303e4c2b15a@physik.fu-berlin.de>
+ <874k92bubv.fsf@mpe.ellerman.id.au>
+ <c21c7a0e-95f1-e6d2-a04c-fb99d801e8da@physik.fu-berlin.de>
+ <878rydac0d.fsf@mpe.ellerman.id.au>
+ <73c55cc9-369e-8989-4f6c-6801ce6a4d64@physik.fu-berlin.de>
+ <87k0hs8iyq.fsf@mpe.ellerman.id.au>
+ <fca7cf14-b598-d25a-8f71-8d1c16a84e5f@physik.fu-berlin.de>
+ <87ilux2ksi.fsf@mpe.ellerman.id.au>
+ <872c2364-a5db-0533-c8bd-91e03c067a2f@physik.fu-berlin.de>
+ <8aa4e710-df2d-8cb7-ba16-f6043c929a14@physik.fu-berlin.de>
+In-Reply-To: <8aa4e710-df2d-8cb7-ba16-f6043c929a14@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.144.16
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,52 +67,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hari Bathini <hbathini@linux.ibm.com>, mike.kravetz@oracle.com,
- mahesh@linux.ibm.com, sourabhjain@linux.ibm.com, osalvador@suse.de
+Cc: "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With commit a4e92ce8e4c8 ("powerpc/fadump: Reservationless firmware
-assisted dump"), Linux kernel's Contiguous Memory Allocator (CMA)
-based reservation was introduced in fadump. That change was aimed at
-using CMA to let applications utilize the memory reserved for fadump
-while blocking it from being used for kernel pages. The assumption
-was, even if CMA activation fails for whatever reason, the memory
-still remains reserved to avoid it from being used for kernel pages.
-But commit 072355c1cf2d ("mm/cma: expose all pages to the buddy if
-activation of an area fails") breaks this assumption as it started
-exposing all pages to buddy allocator on CMA activation failure.
-It led to warning messages like below while running crash-utility
-on vmcore of a kernel having above two commits:
+Hi Michael!
 
-  crash: seek error: kernel virtual address: <from reserved region>
+On 1/9/22 23:17, John Paul Adrian Glaubitz wrote:
+> On 1/7/22 12:20, John Paul Adrian Glaubitz wrote:
+>>> Can you separately test with (on the host):
+>>>
+>>>  # echo 0 > /sys/module/kvm_hv/parameters/dynamic_mt_modes
+>>
+>> I'm trying to turn off "dynamic_mt_modes" first and see if that makes any difference.
+>>
+>> I will report back.
+> 
+> So far the machine is running stable now and the VM built gcc-9 without
+> crashing the host. I will continue to monitor the machine and report back
+> if it crashes, but it looks like this could be it.
 
-To fix this problem, opt out from exposing pages to buddy allocator
-on CMA activation failure for fadump reserved memory.
+So, it seems that setting "dynamic_mt_modes" actually did the trick, the host is no longer
+crashing. However, I have observed on two occasions now that the build VM is just suddenly
+off as if someone has shut it down using the "force-off" option in the virt-manager user
+interface.
 
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
----
- arch/powerpc/kernel/fadump.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Not sure why that happens.
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index b7ceb041743c..82058b52e34a 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -112,6 +112,12 @@ static int __init fadump_cma_init(void)
- 		return 1;
- 	}
- 
-+	/*
-+	 *  If CMA activation fails, keep the pages reserved, instead of
-+	 *  exposing them to buddy allocator. Same as 'fadump=nocma' case.
-+	 */
-+	cma_reserve_pages_on_error(fadump_cma);
-+
- 	/*
- 	 * So we now have successfully initialized cma area for fadump.
- 	 */
+Adrian
+
 -- 
-2.34.1
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
