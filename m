@@ -1,110 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C53B48D7ED
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 13:29:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155CC48D810
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 13:36:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JZNyh68cBz3bSx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 23:29:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JZP746y4Wz30NB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 23:36:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ip5xELiB;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TL7hThfy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hYIWlIYn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::535;
+ helo=mail-ed1-x535.google.com; envelope-from=olteanv@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=Ip5xELiB; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=TL7hThfy; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.129.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=hYIWlIYn; dkim-atps=neutral
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com
+ [IPv6:2a00:1450:4864:20::535])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JZNxx6CNpz2xXy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jan 2022 23:28:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1642076895;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hnfVK2fyY9BtL+cahlLSPFYi/lDkJGG3ZpACsVHPbRc=;
- b=Ip5xELiBEHUKiYPVrIoC3pU9Z/VdsZP/Ndu+CaLS8NmmuiBVqmYRtTKxh3ZOzKgeBK4ZD9
- BXrdIpcfU8xyXxGzWOgybyIE+Y+4OksWe8NbK0Msw89j4cz5Y6M/+Ci7etCjwj3F2Hu668
- NWVtjvQupIg2STvodZ0P/ecMKizzKR4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1642076896;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hnfVK2fyY9BtL+cahlLSPFYi/lDkJGG3ZpACsVHPbRc=;
- b=TL7hThfyjyBwXiO0dGTq2AMANpW8P5G+xERe7lLWciKIhDveB7YGEjpc8Kzwir0q3TihLk
- cT5FWk3ihV0BIz3Xfxk8BAKJchU9fu4+ZAchHgS8Q8be7AYp8mycnja3Z/PVPDRViYpCSu
- /NoSVMosJjzzZDIGsfJP6aX+TTSHTNk=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-439-6_vWg4ziNh2iSYM4thz5cw-1; Thu, 13 Jan 2022 07:28:14 -0500
-X-MC-Unique: 6_vWg4ziNh2iSYM4thz5cw-1
-Received: by mail-ed1-f70.google.com with SMTP id
- i9-20020a05640242c900b003fe97faab62so5167632edc.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jan 2022 04:28:14 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JZP6L06Ypz2xD4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jan 2022 23:35:35 +1100 (AEDT)
+Received: by mail-ed1-x535.google.com with SMTP id t24so22438624edi.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Jan 2022 04:35:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:date:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=LftLg0r0Faw+W6UND9T0SXsUaqtJ0ZRucKUPsxlKlXc=;
+ b=hYIWlIYnpsLWMFOV8ltzNbs8XDcKpvGbzs+nnSbI/PBIgULVwJ7cEpXfqH+d4nHJh1
+ rEGAf0ZTTkAwky3PhZfJXabZaUcy9Khsn/GsO5ift9lfdrcPPKXOA/TaI+qJKpWNgTjk
+ 7H19U57b2TiDXmtRVczH+sYbHveb2BJvXk+OnE69uzL8um5TBqqlKT+Z0Jf2Wj7Vmgt+
+ FwUjaB8v3YVh7zbdqFrC/dSM2qXDz9Tt7MAVKXDcDWza0ttWs+OSWrsHqMOLk4IvCNhv
+ AJhKj+ARGsf+K9wcw11aJzcQ/FVIzdhDvKD1N0WvjOg4NBF+tGTf8iJbQZef2/J6pPIo
+ HZ7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:organization:in-reply-to
- :content-transfer-encoding;
- bh=hnfVK2fyY9BtL+cahlLSPFYi/lDkJGG3ZpACsVHPbRc=;
- b=tyDWj6UBUD4jCrH3/wvaw13IDfcLIJoHMT9bqxXRxo8ou6QW4Cp5IwzDXpCen5fRoZ
- 02FffT4Wf/hGiHQ5xjCV8ooKuwpGSM3e8IdbEj4H0nwwkqSuvHSDWeg8U5pz2cSA3rsT
- /WBT03O746J0SfjNnuuZZk+UpjMj/1fpmaAPrkGHgBcz2iBx84sYd4Z4bUdPisgZSFjL
- q4M6tsc+9ZFRUxAqzvCKuW//84Y0mCgPVrSmlNfVXsdjNjduB51hCJMzi9d5YqwDsEmK
- dnN1R42nhVUhWUmQGtmutbOqnMO2bgxIcydmNKBHcirR4TAUQEoGffH6FO3llh5jnhju
- 32yw==
-X-Gm-Message-State: AOAM532KpP6XdT9UPgbMaiZKmm+70WgjxUS9YmV6je2MmpiTEHfm+1on
- 3wsgdPrtooqxBPj9htnvC62JdAwv/BzMkpxa+vm3kJNtZ+peh11J9W1Mx9v/uNNb55L1Nl7xZlu
- BDcJczuS4kNfqzkgxOfyhVgqZ8g==
-X-Received: by 2002:a50:8d16:: with SMTP id s22mr3857828eds.141.1642076893362; 
- Thu, 13 Jan 2022 04:28:13 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyzDUme++gR+E7EfrqgLj1iyeR0r4RpB81KvaPod0mEHW3Q7ncqa9lY+1sUM8bAVvrgQ/bdNg==
-X-Received: by 2002:a50:8d16:: with SMTP id s22mr3857806eds.141.1642076893116; 
- Thu, 13 Jan 2022 04:28:13 -0800 (PST)
-Received: from ?IPV6:2003:cb:c703:e200:8511:ed0f:ac2c:42f7?
- (p200300cbc703e2008511ed0fac2c42f7.dip0.t-ipconnect.de.
- [2003:cb:c703:e200:8511:ed0f:ac2c:42f7])
- by smtp.gmail.com with ESMTPSA id la21sm830830ejc.137.2022.01.13.04.28.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jan 2022 04:28:12 -0800 (PST)
-Message-ID: <ae2862a0-c39c-ed2f-23fe-510c6c2fad5c@redhat.com>
-Date: Thu, 13 Jan 2022 13:28:11 +0100
+ h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=LftLg0r0Faw+W6UND9T0SXsUaqtJ0ZRucKUPsxlKlXc=;
+ b=CUWKYH0u+zUq1HFy1clcIUkEArCthfytdprCPekIF5Ngji6VaZWfF54IeDLs0s+dP9
+ b3LlQ2yyykY5BZoR/LvDCpjz5/M7wUDXEg/41vpgzpB4KdXaWnAw3MVVhfheBG5Z7poq
+ IJ5wsgn/nY8khkwFj9DWa7Fx075U57BdAPk7i3yBPK5yOEummIMTqdS/9JC+VwNwLdaM
+ jh1VF6lrFQaYVQSmmWcZqPNPcYo5Wed/6VKl666LCvXpCw+oQhagAwaVpW8Od8XKgnYC
+ 084GPa6Wn06hVQiHMFJBV7wvftMDtBCuCaNSpSW+hlBaRK96piOs/KGAiseZTDxw0poq
+ Ef1Q==
+X-Gm-Message-State: AOAM530hhm19eGUAjJnHMYJ24NZ2Z5HDgNYVCHbVKVF6Yi+BNpse0/CW
+ 2skXMCU5j3yVSW3efxffqv4=
+X-Google-Smtp-Source: ABdhPJyqdzUl4Aa3NbTKIeeuDRq1eL9MwIEfCFaL0CYvjb77VO6b8ZIIh7qD5UrrkpxX6b75E6U1RA==
+X-Received: by 2002:a17:906:4fcc:: with SMTP id
+ i12mr3386976ejw.529.1642077332873; 
+ Thu, 13 Jan 2022 04:35:32 -0800 (PST)
+Received: from skbuf ([188.25.255.2])
+ by smtp.gmail.com with ESMTPSA id lb11sm829889ejc.216.2022.01.13.04.35.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 13 Jan 2022 04:35:32 -0800 (PST)
+From: Vladimir Oltean <olteanv@gmail.com>
+X-Google-Original-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+Date: Thu, 13 Jan 2022 14:35:30 +0200
+To: Maxim Kiselev <bigunclemax@gmail.com>
+Subject: Re: [PATCH] powerpc: dts: t104xrdb: fix phy type for FMAN 4/5
+Message-ID: <20220113123530.dn33ze7yvg2jlnfv@skbuf>
+References: <20211230151123.1258321-1-bigunclemax@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [RFC PATCH v3 1/8] mm: page_alloc: avoid merging non-fallbackable
- pageblocks with others.
-To: Mike Rapoport <rppt@kernel.org>
-References: <20220105214756.91065-1-zi.yan@sent.com>
- <20220105214756.91065-2-zi.yan@sent.com>
- <7dc078ef-70f4-159e-b928-34f0fb0ffaea@redhat.com>
- <YeAO0vtyjWWMRliF@kernel.org>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <YeAO0vtyjWWMRliF@kernel.org>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211230151123.1258321-1-bigunclemax@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,73 +81,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mel Gorman <mgorman@techsingularity.net>, Eric Ren <renzhengeek@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
- iommu@lists.linux-foundation.org, Zi Yan <ziy@nvidia.com>,
- Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>,
- Vlastimil Babka <vbabka@suse.cz>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, fido_max@inbox.ru,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 13.01.22 12:36, Mike Rapoport wrote:
-> On Wed, Jan 12, 2022 at 11:54:49AM +0100, David Hildenbrand wrote:
->> On 05.01.22 22:47, Zi Yan wrote:
->>> From: Zi Yan <ziy@nvidia.com>
->>>
->>> This is done in addition to MIGRATE_ISOLATE pageblock merge avoidance.
->>> It prepares for the upcoming removal of the MAX_ORDER-1 alignment
->>> requirement for CMA and alloc_contig_range().
->>>
->>> MIGRARTE_HIGHATOMIC should not merge with other migratetypes like
->>> MIGRATE_ISOLATE and MIGRARTE_CMA[1], so this commit prevents that too.
->>> Also add MIGRARTE_HIGHATOMIC to fallbacks array for completeness.
->>>
->>> [1] https://lore.kernel.org/linux-mm/20211130100853.GP3366@techsingularity.net/
->>>
->>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>> ---
->>>  include/linux/mmzone.h |  6 ++++++
->>>  mm/page_alloc.c        | 28 ++++++++++++++++++----------
->>>  2 files changed, 24 insertions(+), 10 deletions(-)
->>>
+On Thu, Dec 30, 2021 at 06:11:21PM +0300, Maxim Kiselev wrote:
+> T1040RDB has two RTL8211E-VB phys which requires setting
+> of internal delays for correct work.
 > 
-> ...
+> Changing the phy-connection-type property to `rgmii-id`
+> will fix this issue.
 > 
->>> @@ -3545,8 +3553,8 @@ int __isolate_free_page(struct page *page, unsigned int order)
->>>  		struct page *endpage = page + (1 << order) - 1;
->>>  		for (; page < endpage; page += pageblock_nr_pages) {
->>>  			int mt = get_pageblock_migratetype(page);
->>> -			if (!is_migrate_isolate(mt) && !is_migrate_cma(mt)
->>> -			    && !is_migrate_highatomic(mt))
->>> +			/* Only change normal pageblock */
->>> +			if (migratetype_has_fallback(mt))
->>>  				set_pageblock_migratetype(page,
->>>  							  MIGRATE_MOVABLE);
->>>  		}
->>
->> That part is a nice cleanup IMHO. Although the "has fallback" part is a
->> bit imprecise. "migratetype_is_mergable()" might be a bit clearer.
->> ideally "migratetype_is_mergable_with_other_types()". Can we come up
->> with a nice name for that?
+> Signed-off-by: Maxim Kiselev <bigunclemax@gmail.com>
+> Reviewed-by: Maxim Kochetkov <fido_max@inbox.ru>
+> ---
+
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+
+>  arch/powerpc/boot/dts/fsl/t104xrdb.dtsi | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> migratetype_is_mergable() kinda implies "_with_other_types", no?
+> diff --git a/arch/powerpc/boot/dts/fsl/t104xrdb.dtsi b/arch/powerpc/boot/dts/fsl/t104xrdb.dtsi
+> index 099a598c74c00..bfe1ed5be3374 100644
+> --- a/arch/powerpc/boot/dts/fsl/t104xrdb.dtsi
+> +++ b/arch/powerpc/boot/dts/fsl/t104xrdb.dtsi
+> @@ -139,12 +139,12 @@ pca9546@77 {
+>  		fman@400000 {
+>  			ethernet@e6000 {
+>  				phy-handle = <&phy_rgmii_0>;
+> -				phy-connection-type = "rgmii";
+> +				phy-connection-type = "rgmii-id";
+>  			};
+>  
+>  			ethernet@e8000 {
+>  				phy-handle = <&phy_rgmii_1>;
+> -				phy-connection-type = "rgmii";
+> +				phy-connection-type = "rgmii-id";
+>  			};
+>  
+>  			mdio0: mdio@fc000 {
+> -- 
+> 2.32.0
 > 
-> I like migratetype_is_mergable() more than _has_fallback().
-> 
-> My $0.02 to bikeshedding :)
-
-:)
-
-Yeah, for me migratetype_is_mergable() would also be good enough. I
-think I was at first thinking one could mistake it with a dedicated
-migratetype. But such functions are historically called
-
-is_migrate_cma/is_migrate_cma/....
-
--- 
-Thanks,
-
-David / dhildenb
 
