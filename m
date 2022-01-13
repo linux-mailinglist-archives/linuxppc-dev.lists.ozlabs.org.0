@@ -2,127 +2,114 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C001148DBA8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 17:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4248948DD77
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 19:08:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JZVBn5Gv3z3bVW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 03:24:49 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=idfGUnJG;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JZXVL1Z7Qz3bcv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 05:08:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:fe5b::61e;
- helo=nam12-bn8-obe.outbound.protection.outlook.com;
- envelope-from=ziy@nvidia.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256
- header.s=selector2 header.b=idfGUnJG; 
- dkim-atps=neutral
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2061e.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:fe5b::61e])
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::606;
+ helo=fra01-mr2-obe.outbound.protection.outlook.com;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com
+ (mail-mr2fra01on0606.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e19::606])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JZVB06KQzz2x9g
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jan 2022 03:24:05 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JZXTm4tdkz2xsJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jan 2022 05:07:51 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SXupAUNtVNW/ikThdB//oewQcI+7ygisahdqB8mzuapbXrBhkJ6J5VfWymKGvrn7eoISdqHTgZRkiGjyh14ewLdWHHZoZI3OiID8o34GBUcUwuZ/wlCstGmclkaVrRsS/uxJATNeB9GQoPC391NYViJPaXO+mIN09TtgJ6+iPA783rB+irpMOuLVTJ2gYFe1NrLMlnmHFNXrZf8QFISJ769RJRPQaBNmx/TElQJJBeZK692EJANhK18YR3HhA1gmc3xyr7U7GZoApvr/Cr5xsgNNkp8Af07R/v5sOyNqymjUFw7vUFgeMt33wk/5+tkEdQD+MUnwxkBNkv9/iRLCWA==
+ b=XYwv5VIbhFQa/1TviR5KJfPnD0yIkPZY6wxheF3B2rZGNYOG2H55CgcVG0zw5QtN32mIiJEHgbjxjHtD6D3RJsSDVX5VilvfMf11OWzzHsTt+abgplMb8UY/xNumfkUjTl8mTNyW0ZxDJ6OkOJZDfFLpTrhe+zWDo/aneSoiMbSTynt1zBMrV0h4QCYS9aeYjhaGsZ3DCgnOXANdo0quB7qMn+Jf+vSRO0xEIwWk33o52NnJj6zFYqZpy+Xx5nt/1wrRlqfqBuSS4GyoQ+ttw9mjWD0eec/cxsoHWR/iBZ/oaxrz9zj159TSBs+3X22yHYq+U9C9hYD+Sgab3VBk+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nWF91S0CikNzG+ZBTet7wo1Octtg/sFJyuuCs9R0gD8=;
- b=HGwXLraO+eUbr+6/0/nA2RbvRhjFB4ykc5YZiunQJ/JTRqeBRXzXkC5n8uM2r+Pzj+OJ+BgajIjwU4Y3+93C27RoLd2+ebLSgLBcd/RsrIil8XcQkTxE+8L9Ie+E1ehCaDD5wKrekvQTmQeM9ulgYwu+psamEGMjRz6JN7c1xpL1vQF/38Fzh0VknTyOvhRx05IFqJtqTguF3mukKlZhpZlDtfVCkRROXb+jv9Gn2MP8ObEkCyaJ64n9V6AQfq3yjQaVlwdfSCyOyu+2PV+oXZ4bJOk4a28jT7FVSU1BWgCnBFnOye95W3zUzUfzjGwNB+ATc2xqMQ8hyO674smIZw==
+ bh=WFsCqJvZnvFgLUmkb94xyNLOtUw6zUBRPZiAaOBGaf4=;
+ b=maLOw05JWEQ0cL88a8nZdu4lZJ2LfOH55th1tlO9K37Uw1z3bcd+JIfDPs0ZM6yB+JmOKgbPVOrCTecdve5gHgFqY9ga/jYH/Fx0JF/xqBLQwTbicqaZnZHrgoBt7ctplmIJs0ygXlTbOLEOstushEa05bqmgJ5pWMn6b5C6/PF9iiFidDKCSv90aCg/maEhe/HqK8OSSfYYFdinH683yuGXs+wqs90Q1ZUTP/6V64EIBUq6/zVajqYyCrMLG0iF96/eS3Tji67A/Y9PASXnDu4z2hnIJoUzHUDFhM1kAdBi5d+UqAKg0ntHhu94dxIrg9ysHWTsjx7lINIQPpv8AA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nWF91S0CikNzG+ZBTet7wo1Octtg/sFJyuuCs9R0gD8=;
- b=idfGUnJGJC3Q8tEjIVWq/tLF+xIycVBJknq1tV2niarZp8aMIXMEltex48Iro3xXQermxoP0YvzsZerJK4HugapIoq0J6yHJqNppsz6rXQxylfKKrSszkp/qsisnWdIY4wNvk/saotSrQK7gHMLIx2UCK1O4rJvjke4V0eCQs5xHQM3BwN41FzdRVJY/W9xg8GdruIid9OATjBLeHPG1U5QfAmK8kgSqMASdE5ohOAP2l9MlgQIuq5BD0WUXyiQG010kFk7hMQ/tRAakbXjedKrCBKuNTpExF9ySnCcOF/aptg9M0P0op0GD3NO2bRfxfvsJhiyYBoXRgAqcDykCiQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN2PR12MB3823.namprd12.prod.outlook.com (2603:10b6:208:168::26)
- by MN2PR12MB4637.namprd12.prod.outlook.com (2603:10b6:208:3e::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4888.10; Thu, 13 Jan
- 2022 16:23:39 +0000
-Received: from MN2PR12MB3823.namprd12.prod.outlook.com
- ([fe80::a9db:9c46:183e:c213]) by MN2PR12MB3823.namprd12.prod.outlook.com
- ([fe80::a9db:9c46:183e:c213%3]) with mapi id 15.20.4888.011; Thu, 13 Jan 2022
- 16:23:39 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [RFC PATCH v3 2/8] mm: compaction: handle non-lru compound pages
- properly in isolate_migratepages_block().
-Date: Thu, 13 Jan 2022 11:23:37 -0500
-X-Mailer: MailMate (1.14r5853)
-Message-ID: <99D30A79-7B57-4FCB-8C7A-7F93B66490E6@nvidia.com>
-In-Reply-To: <71108865-5368-4725-AA5A-35A57C350D77@nvidia.com>
-References: <20220105214756.91065-1-zi.yan@sent.com>
- <20220105214756.91065-3-zi.yan@sent.com>
- <a5e029e8-f646-a414-f4f4-ba573171642f@redhat.com>
- <71108865-5368-4725-AA5A-35A57C350D77@nvidia.com>
-Content-Type: multipart/signed;
- boundary="=_MailMate_00D2A4F3-896C-489B-A3C9-7A9A87B83B6C_=";
- micalg=pgp-sha512; protocol="application/pgp-signature"
-X-ClientProxiedBy: MN2PR07CA0005.namprd07.prod.outlook.com
- (2603:10b6:208:1a0::15) To MN2PR12MB3823.namprd12.prod.outlook.com
- (2603:10b6:208:168::26)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ab17cd73-f38c-4fbe-6f60-08d9d6b10eb2
-X-MS-TrafficTypeDiagnostic: MN2PR12MB4637:EE_
-X-Microsoft-Antispam-PRVS: <MN2PR12MB46373F0627C37CB43464A2D5C2539@MN2PR12MB4637.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Ft2SL/3Zfp8vlpzKPxYWwoYJ3SQeTAU08I5gvlBT1IShEVkGUyC9yDgA/6cDZx0QTsP0zw15WCNe6DKwBMX/+hlKdU04Fpw/fxConrS0NJqUSxrXxvHY8y3s+YDRAqmtMXWg3nFmCGN9bx4E64/thwGNjM6lqzlIbk4duW+3OVAFJ1sYu17AODoR1CMbSVKy3q9knT6AaWuCKgH2GAyPZ6gWNQ1q5YDhEZu+9K18u76R4z0jJ32m9li6nanOP8R5I+Lywh786kPh/UkLIwcGbREAHOJy6c/Tka78rMUTCExAO3MMyiR0TXPCtWuDLzXCwbuj6JuPeUqGX7L3S/mKCyO6BfNW3nc4Z5tpFT3O8YN8zrWneizA9vn2iw0bosXDnyWo+vpjfVqLfJSEY2DanAyiJF03iaNOKbLQjdy0gNyGLW9NWU43oy+wXtAS92WJGW71wvBs7cUCiIQSWDAibmSj3g+PVbBC5U0/yMLK3/OeFwYhI7Uy+J1xcj9yWXmbw1uSEraRyb9VNon6Y/WyzXaZP0ulrHkCjvtThtfGsoGq+BcjyjtHnjN3Fw7f4DjGu9YxwgBOibmhs48C6YUF9q2DRZpQivCfJsDZ1P9dtunlL3IV19sf7LOEFRxx5x95BM4OyW8gcnMwQQi5brhMNJDvUjV9P1Ytawpwsf9JzHN7Fa9rLKwtiMS+o6YvdSMRnANRr1W1CxrQVUZC82pRx5KoCV9swlydiagdIcvPEZa6PIanF8mPuDZg3RwxctElSRxUML/pz0J/eOExa5w6NMYVTYhOzGQ3oVXu9HaSgw+15cSuhnon/TQRSu5gPRB2
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MN2PR12MB3823.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(53546011)(54906003)(6486002)(6506007)(316002)(83380400001)(21480400003)(7416002)(4326008)(86362001)(33656002)(36756003)(66556008)(66476007)(38100700002)(66946007)(966005)(8936002)(8676002)(2616005)(26005)(186003)(6512007)(6916009)(5660300002)(235185007)(2906002)(508600001)(72826004)(45980500001);
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MR1P264MB3954.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:24::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4888.11; Thu, 13 Jan
+ 2022 18:07:23 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::9d4f:1090:9b36:3fc5]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::9d4f:1090:9b36:3fc5%5]) with mapi id 15.20.4888.011; Thu, 13 Jan 2022
+ 18:07:23 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
+ <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/audit: Fix syscall_get_arch()
+Thread-Topic: [PATCH] powerpc/audit: Fix syscall_get_arch()
+Thread-Index: AQHYCKhqVymj08QpN02Rq4/+9C4x7w==
+Date: Thu, 13 Jan 2022 18:07:23 +0000
+Message-ID: <8196844f811cbbb43f03ae2d6caeab018375f2ff.1642097225.git.christophe.leroy@csgroup.eu>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 45b57d32-8986-4876-0151-08d9d6bf8c92
+x-ms-traffictypediagnostic: MR1P264MB3954:EE_
+x-microsoft-antispam-prvs: <MR1P264MB395468CA70F7CFA405B18F85ED539@MR1P264MB3954.FRAP264.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:121;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: AdRhu236TQ3fJ0K9w+TCBveh/Uiyf3Mnu6Gf1PZqfATYBTQcvuRrQYvcTnecqZgSI0YH6r6tHVUeEgvP1ix60IFYaeCf8ww96K5G0goXdetikkK4uxuD2M8mRLmm4FnmkC0mVafxn7TylKI/RpTqs/tKgVzZRecjvCQsu0vGkhytZjqJxo0hRiTSshFxDV7nq+pLIV2BFVbKcTWERI7apxPGvsI7S7ZWmiJnfy80uoJ6XYvkaPjO/i2NCIV/vkM221jtyroQ9cU9WBbHykbe4jN0Ten3nRTAFlleAcuOWmWW8Paqq5nNlPyBeA3V6x5egWFcST5H+cHmCBRZ+HCa/zSBhfxeJq0Hg3zkspH3CnMWdE8pNCbuj5PxZVCUNDOy6M9mkPEH8u2NWlG1nRvgdXc81lPZZTdSv7rKwWvNbO33z8JPGDOx0kp/HmUV90Njx3ryy+pL4xemtbksEwfAkYcGuuGV/B0cfuv+roM9/FLXC1yHKlkHJQ+uQHGWFSLtNntSQMuXEA5S2WkK2YSUU4FeJbXk1E2m7L1G8+NHHM8yny06POz+A04xMrZFWH3Es/gKLVwaI3vWknzPRVvQR8b8FdDElV/wEqhjr96x5T8EMj2O8ywXsKzQMc9QAXLW//gbrNMESNCTWuUZ5/TQhctmUVAqshutG7Ydq9Oj0JOFc8Fq62ra2O9QPs8cMvyIBTcY/ed4Fh9B5lAxqG0xVQ==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(4636009)(366004)(38070700005)(66946007)(54906003)(110136005)(76116006)(91956017)(316002)(186003)(6506007)(64756008)(66446008)(66556008)(5660300002)(2906002)(2616005)(26005)(66476007)(6486002)(8676002)(8936002)(508600001)(71200400001)(86362001)(36756003)(122000001)(6512007)(38100700002)(83380400001)(44832011)(4326008);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TpfSgzn2RU5Z+IuegFaTKSXjk7PMPiUz9sMighlAK/neqZsQG9PlA3Fkw8Pw?=
- =?us-ascii?Q?xIKX5zl1pUCCuzBriDzD0hSEmsYvQIpyDADMofkIWmyuX1OimKFJbrBfekxp?=
- =?us-ascii?Q?Xb1YzvOTxsX9mguuh6XBujvNtHbtotHj7SVFnZeT0MQhsjyhDrZzpvwM5QXj?=
- =?us-ascii?Q?RJQlI0Jm/rJMbEZ3ffXNVHwMA2mrUnGbsJetC2nY6NQxTsmybUuFWhmR9J6m?=
- =?us-ascii?Q?4ijThbVcBi9jKTpEhQshqpuqPA20hPrQWsRGosu5diefZrIU211dTOsMimf/?=
- =?us-ascii?Q?SnOG/jC6yjkmX6lcCndwMolB5tyY+PMkNO2ZC3yuFWN0IOzp3yILSjgAq+3W?=
- =?us-ascii?Q?A6rqK7j0tLY/qicIBwCrIN3byv4vF0h79CR1QzwIoBIDu6BrAMq7OXIRPzc7?=
- =?us-ascii?Q?uOzTTf+iObj8VFr3Pj8TUJjR13cuiDcWBNmUM7B7ect61BfosbQq7V761TKg?=
- =?us-ascii?Q?KrEz5+fCZd8XEu64z6yUk5QenrxkEoTBSw6rmQKbDsQaJBd3viBSWu11bbHZ?=
- =?us-ascii?Q?WR9lhahk5DbVraXbGJScVwocdaetv08Ls2kF8dTpbvc+eirkijR17pnyVXIK?=
- =?us-ascii?Q?Q6mDHmbefzWYFJ1pujTw3Tw5VKeS9X6Cfbd04tRw50ZVdrVDWlGYK0k6/Rln?=
- =?us-ascii?Q?pUkpcttu/T3gzUIHpbxwNmPyicKf8SjgMp1CfFiUIgasff3a8yrY+e9GPaNg?=
- =?us-ascii?Q?4BXrzKaaR4qwFD9IBRyMQsDHZXHQZPxBUee7uQ/Tabi05zBk/uYXfiH7OYwc?=
- =?us-ascii?Q?xeKQEEDIBHK3ngrhk4XuU72IGUwSTKwsHeQMLBffrwqXg+dQ4lwJ2OnnY5hi?=
- =?us-ascii?Q?wxy09DzNt46HEelSncmtPUNCl2gE59bzAL3SfD7VGXi8vrnJtPVo9kPuFRix?=
- =?us-ascii?Q?yRjgvXMw3FqQAeQjkFjD8ZVfCuzqB0nRBA+QoE/AEY7mEX6slozxEeIeWBdp?=
- =?us-ascii?Q?hnpT81iUFVyYKYdK1kulfOrMUDKx2BGy1+dOHilS56CjGWDRQKRpaBrSwkJc?=
- =?us-ascii?Q?9GPQZniT8nzyoBnJ88uvxkMoWpyAn6vxqAn3R/+8UjEPavqg27XQTfbeHKp5?=
- =?us-ascii?Q?9IJrWGJZbkXQbjtOYLH88wXdDVGrfiZSU8avsfFkzX7j7wQ9ApqNV3otKyb0?=
- =?us-ascii?Q?guhktO2iHlBrtLv4Y81C4mK5JntwoEK+mRRrctzxgubKuMC8bxwDRDBu9KsN?=
- =?us-ascii?Q?AzYq5/PVXR5mcq53wa9E81dn9Sq5uHNNGfN36iDo0QHGW6CqG0maYqH7OyQx?=
- =?us-ascii?Q?IuESs7NlHSgfzHQzNq/VVQli2fyjflz+SzqyIjCccKGJsBQCu4H9K729nNlF?=
- =?us-ascii?Q?e1js3ILMg/T0Yi5RT8TAfcD7VfN+nrDbX6EDebaX5V9lxEHQz7BkcOff1WLL?=
- =?us-ascii?Q?11+4H421CjA5Bi6xspqhpmM6dEoV1HvUrciscLBRPdKeEwwkrCMsOkoOd+px?=
- =?us-ascii?Q?WFw0vcUDxqj+5FzQP/NiKkjLB0Mu9erv4KwVpbNTZ31U8sb5lpQMx+gTj+Ww?=
- =?us-ascii?Q?MFybLxzaVNpWPp5YMptkA2YUqjrQyLWAjr5RnCBDTqxj9Ae4KcpGA2KPQvf/?=
- =?us-ascii?Q?9r3OH8ulpQnBzO+5Oik=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab17cd73-f38c-4fbe-6f60-08d9d6b10eb2
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3823.namprd12.prod.outlook.com
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?+srYGOQ/M8g5UvB1hUdBS7Ivl/TqqgtT2PFGxWGJcZkOBp4glVsQ6SoY/l?=
+ =?iso-8859-1?Q?L5nL1ymSkKSx4jRZCgtIUJzc9Zi/csDvH9Tb1T1Y/sRGzfReSrttz/wB8y?=
+ =?iso-8859-1?Q?2Dcq2FSVjpk9kEI1m9WOMSd7FO3DdaBxXg68jF/hwhoLJjb5LlmU9kBHGy?=
+ =?iso-8859-1?Q?anF/fyQ8hhOp697vzf6VYm7ulgDbbNTV6bZJ0olA4mnsSMugc7ZJh2h08h?=
+ =?iso-8859-1?Q?D/kCrKPD7QG0irsLfzXvuD0Vu36N5Dh9bFOoMqpPvU1IrUXZEotfuXe+lF?=
+ =?iso-8859-1?Q?T3XRuZ3sjn0d/mN44ji37REybTqxPo49VfIcer8xV5WLIg3P5rDV4Zw+gc?=
+ =?iso-8859-1?Q?zx+UwG9gVXr3Y6maPhGhi7oWuMi7ylXEQrSSx9IP2qrG+YirLg0K0H35WE?=
+ =?iso-8859-1?Q?tyikhSlZAiFcY+qbvRn2aEj1WoU/7MUuawqxL2eL0FYqD41MY/95rV9UZ+?=
+ =?iso-8859-1?Q?7WvUrNcv1ZnxjsVO7849qLqJJg3/wYFrG9GSDOxanrPoHbJieU4f09qzpl?=
+ =?iso-8859-1?Q?pfNoXrLXu77cbHG1DqvRC3JV9MfVRGoggODEicWo7KIz/NzZdT9LIkry/B?=
+ =?iso-8859-1?Q?dzESDrF2qnn8FR+W5R/bGDP6uKmXYZO0kGkVLxIb0s4dHLFhVTfZ+M/BjJ?=
+ =?iso-8859-1?Q?mT19cvgggStVlNHKhX3K2RohMxl/lma65xvtEkxRhbSQ68CK43BNtRUdb4?=
+ =?iso-8859-1?Q?FEBOUGQLC6MBNeLF52ZPQRra4OakKKKWJFYF7Nll1m0mGIOkdXCqgaA6CE?=
+ =?iso-8859-1?Q?yOrg7s1qMBl908ObJ0RUwQi1AayxCtGh3UAdfoIbFr+mKbuw4jlaKVR76U?=
+ =?iso-8859-1?Q?fF53k04skyYEUiHbFKcbytTK/X8jR20EpWECkyg6bD1T97NnlB//MtifGb?=
+ =?iso-8859-1?Q?NQVho6n8xky3/0whIHmv5MhO5r20j9+dhgGyapWsR6sq8oy1eFF4vV6ezz?=
+ =?iso-8859-1?Q?OW/LFzpmf7S4uw7NagsunSZR70DJkKbeEot2ryx81EyMzoTMtJJq6XOpKl?=
+ =?iso-8859-1?Q?h3M0pM3Y2YpvC7XPpGPEZ5qb2S8rFnyaLdi2tdJGnQUqXTYDDcy1pJS3cF?=
+ =?iso-8859-1?Q?gsrUA7HOCYLlBBuTrMh4ZDUnCbV03bfrcwrc95PDEH9jXs52O4H234b8dH?=
+ =?iso-8859-1?Q?OpxQKs6pWVgwPQ9B2ctIPZn3SEY+CrEUxvyMKIb0qOnXmsBJLGbISo6EqP?=
+ =?iso-8859-1?Q?I7U6X2lKPwlMdm0qKl+1o2qnogJUfZTtJp20VLaolfjLZzETmdwfmrgz0c?=
+ =?iso-8859-1?Q?KNwgOH5ydKzdJ9twu5DHLt6bjbdrTCLq/iaQhcDBVu12iTxpAk6TFjZxX2?=
+ =?iso-8859-1?Q?ztzrDOY1tbyVYrgQdFQYHFUKk1G+Ce4A2ZufPcTNQ3vbAipF0DWfRt8ssH?=
+ =?iso-8859-1?Q?2PrYbJO06WT/CTFR09TFAAlQLk1F4YSumzxidwPrceq70d/yecejB046Lc?=
+ =?iso-8859-1?Q?/B+2idaFsctwT86c7rRAeJNJHbYTI7JJ82i6Aq2brCoYn18OqTUV9XP9YX?=
+ =?iso-8859-1?Q?SdHRCocmi+e3XxqLfmBYSi72/W3q05emol4nWdll65QLEIjYC3ZNLaQ2k+?=
+ =?iso-8859-1?Q?hM5r5vO9EFZ5yJOwv+BVI+w0+w+U5oXdT+WPS6KrRo6eCY0sIriq1VwT/f?=
+ =?iso-8859-1?Q?aimt8bQSGay+NdswO9DGnOgnZxnd2lw20umR9aHC2DcM9H96XiSJeskGun?=
+ =?iso-8859-1?Q?wsAxzbp4ftccxZhcKemDywZyoMcXv8cjS7NaZGa7OmMIlH+gobScGHi0en?=
+ =?iso-8859-1?Q?Zxldto9ddv3HRzUEL0lcw4jQI=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: csgroup.eu
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2022 16:23:39.5484 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 152eqzJOxbMsaXhGxTAna4VX/pQQafU2rGuVGq9vE/FX86wT1oWVHDnGgAJfCHv2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4637
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45b57d32-8986-4876-0151-08d9d6bf8c92
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jan 2022 18:07:23.4487 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: cWR4yTdM6ALrH7quBtrhwOZxc/6ciyPmVoNKiYEzyxBhkSOYqeWUnvsKTgH8DqmGLy8lSIN1kdK0UYlWYukNvIb8aCCupZE0EmEfOObigGk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB3954
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,132 +121,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mel Gorman <mgorman@techsingularity.net>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org,
- Eric Ren <renzhengeek@gmail.com>, Robin Murphy <robin.murphy@arm.com>,
- Christoph Hellwig <hch@lst.de>, Vlastimil Babka <vbabka@suse.cz>,
- Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Dmitry V .
+ Levin" <ldv@altlinux.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---=_MailMate_00D2A4F3-896C-489B-A3C9-7A9A87B83B6C_=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Commit 770cec16cdc9 ("powerpc/audit: Simplify syscall_get_arch()")
+replaced test_tsk_thread_flag(task, TIF_32BIT)) by is_32bit_task().
 
-On 13 Jan 2022, at 9:57, Zi Yan wrote:
+But is_32bit_task() applies on current task while be want the test
+done on task 'task'
 
-> On 12 Jan 2022, at 6:01, David Hildenbrand wrote:
->
->> On 05.01.22 22:47, Zi Yan wrote:
->>> From: Zi Yan <ziy@nvidia.com>
->>>
->>> In isolate_migratepages_block(), a !PageLRU tail page can be encounte=
-red
->>> when the page is larger than a pageblock. Use compound head page for =
-the
->>> checks inside and skip the entire compound page when isolation succee=
-ds.
->>>
->>
->> This will currently never happen, due to the way we always isolate
->> MAX_ORDER -1 ranges, correct?
->
-> You are right.
->
->>
->> Better note that in the patch description, because currently it reads
->> like it's an actual fix "can be encountered".
->>
->
-> Will do. This is a preparation patch for the upcoming commits.
+So re-use test_tsk_thread_flag() instead.
 
-I will drop this one too. Like you mentioned in [1], there are no
-non-lru migratable compound pages. This is only used by my local
-test code.
+Reported-by: Dmitry V. Levin <ldv@altlinux.org>
+Fixes: 770cec16cdc9 ("powerpc/audit: Simplify syscall_get_arch()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/syscall.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-[1] https://lore.kernel.org/linux-mm/970ca2a4-416d-7e8f-37c7-510c5b050f4b=
-@redhat.com/
-
-
->
->>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>> ---
->>>  mm/compaction.c | 10 +++++++---
->>>  1 file changed, 7 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/mm/compaction.c b/mm/compaction.c
->>> index b4e94cda3019..ad9053fbbe06 100644
->>> --- a/mm/compaction.c
->>> +++ b/mm/compaction.c
->>> @@ -979,19 +979,23 @@ isolate_migratepages_block(struct compact_contr=
-ol *cc, unsigned long low_pfn,
->>>  		 * Skip any other type of page
->>>  		 */
->>>  		if (!PageLRU(page)) {
->>> +			struct page *head =3D compound_head(page);
->>>  			/*
->>>  			 * __PageMovable can return false positive so we need
->>>  			 * to verify it under page_lock.
->>>  			 */
->>> -			if (unlikely(__PageMovable(page)) &&
->>> -					!PageIsolated(page)) {
->>> +			if (unlikely(__PageMovable(head)) &&
->>> +					!PageIsolated(head)) {
->>>  				if (locked) {
->>>  					unlock_page_lruvec_irqrestore(locked, flags);
->>>  					locked =3D NULL;
->>>  				}
->>>
->>> -				if (!isolate_movable_page(page, isolate_mode))
->>> +				if (!isolate_movable_page(head, isolate_mode)) {
->>> +					low_pfn +=3D (1 << compound_order(head)) - 1 - (page - head);
->>> +					page =3D head;
->>>  					goto isolate_success;
->>> +				}
->>>  			}
->>>
->>>  			goto isolate_fail;
->>
->>
->> -- =
-
->> Thanks,
->>
->> David / dhildenb
->
->
-> --
-> Best Regards,
-> Yan, Zi
-
-
---
-Best Regards,
-Yan, Zi
-
---=_MailMate_00D2A4F3-896C-489B-A3C9-7A9A87B83B6C_=
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQJDBAEBCgAtFiEEh7yFAW3gwjwQ4C9anbJR82th+ooFAmHgUgkPHHppeUBudmlk
-aWEuY29tAAoJEJ2yUfNrYfqK5FMQALOMRAoZNz8wqr/FszEJvt0Y+/WKSOwIp59F
-xDsF4QztnneizNkbmSdhf6+KpxdyYK+xyOSto8LbgY/Py4WjMy9j/rMZuyZa09QR
-zx6VX27qZRQoDxypiWAzOg/k9l/7LeTSR79sOHTRNDVxcHzH9Jci1PKD7myMySe8
-aia8NMwhWWnUzMmqVlCsZRwzcHs9jjPHuMgIdWLtUTxA97V1eTFrJPGkxgzNZRBD
-oySQIhl60LJxniiakcb4/cLQQr3SJvCIz6DDYGUcK6EbYuJ4PbciVMfgF3skiVnk
-Tv6IErFnlh6Dkc+sjXc2MAgbMkJH2KpCyqV9nJncvF8MR3bfymUhaqia25wCWTk3
-c6+iWSpu3Qmp1sjCOnCwMvNAgzqVIJ1/LYEzEGh0UbhgYY9j/p1rYi3G2NOtQkmc
-OmqKzUYWFhEAY1PyERHfyWWd8ViTKn5DkUsOXY5WHpPw16XIL7n00uKzFENUZN3K
-pM32J2foG48YWZBKCu78ljfXw/XfQlYgNNKdEJXSV5lCcekNbzYhYmAGE41lC6e7
-H2BaNrcqm0iklrXOAmf10TuDbWb7iAUeKoo3XKKAO+QY4OIEnGuppunRA+F2RW2D
-i6KooZGOZfl7Wspdh4U1Z7Zfg/zCcGXVqYQlvUdTY5LVr+8ONrv4yTxAr2no1BZ+
-X8oMlNqi
-=99D7
------END PGP SIGNATURE-----
-
---=_MailMate_00D2A4F3-896C-489B-A3C9-7A9A87B83B6C_=--
+diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/=
+syscall.h
+index 52d05b465e3e..32f76833b736 100644
+--- a/arch/powerpc/include/asm/syscall.h
++++ b/arch/powerpc/include/asm/syscall.h
+@@ -105,7 +105,9 @@ static inline void syscall_get_arguments(struct task_st=
+ruct *task,
+=20
+ static inline int syscall_get_arch(struct task_struct *task)
+ {
+-	if (is_32bit_task())
++	if (IS_ENABLED(CONFIG_PPC32))
++		return AUDIT_ARCH_PPC;
++	else if (IS_ENABLED(CONFIG_COMPAT) && test_tsk_thread_flag(task, TIF_32BI=
+T))
+ 		return AUDIT_ARCH_PPC;
+ 	else if (IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN))
+ 		return AUDIT_ARCH_PPC64LE;
+--=20
+2.33.1
