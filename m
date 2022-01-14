@@ -1,115 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4248948DD77
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Jan 2022 19:08:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DFA48E2DF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 04:13:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JZXVL1Z7Qz3bcv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 05:08:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JZmbW1g1Cz3bbM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 14:13:43 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qKGXyktI;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::606;
- helo=fra01-mr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on0606.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e19::606])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JZXTm4tdkz2xsJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jan 2022 05:07:51 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XYwv5VIbhFQa/1TviR5KJfPnD0yIkPZY6wxheF3B2rZGNYOG2H55CgcVG0zw5QtN32mIiJEHgbjxjHtD6D3RJsSDVX5VilvfMf11OWzzHsTt+abgplMb8UY/xNumfkUjTl8mTNyW0ZxDJ6OkOJZDfFLpTrhe+zWDo/aneSoiMbSTynt1zBMrV0h4QCYS9aeYjhaGsZ3DCgnOXANdo0quB7qMn+Jf+vSRO0xEIwWk33o52NnJj6zFYqZpy+Xx5nt/1wrRlqfqBuSS4GyoQ+ttw9mjWD0eec/cxsoHWR/iBZ/oaxrz9zj159TSBs+3X22yHYq+U9C9hYD+Sgab3VBk+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WFsCqJvZnvFgLUmkb94xyNLOtUw6zUBRPZiAaOBGaf4=;
- b=maLOw05JWEQ0cL88a8nZdu4lZJ2LfOH55th1tlO9K37Uw1z3bcd+JIfDPs0ZM6yB+JmOKgbPVOrCTecdve5gHgFqY9ga/jYH/Fx0JF/xqBLQwTbicqaZnZHrgoBt7ctplmIJs0ygXlTbOLEOstushEa05bqmgJ5pWMn6b5C6/PF9iiFidDKCSv90aCg/maEhe/HqK8OSSfYYFdinH683yuGXs+wqs90Q1ZUTP/6V64EIBUq6/zVajqYyCrMLG0iF96/eS3Tji67A/Y9PASXnDu4z2hnIJoUzHUDFhM1kAdBi5d+UqAKg0ntHhu94dxIrg9ysHWTsjx7lINIQPpv8AA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MR1P264MB3954.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:24::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4888.11; Thu, 13 Jan
- 2022 18:07:23 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::9d4f:1090:9b36:3fc5]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::9d4f:1090:9b36:3fc5%5]) with mapi id 15.20.4888.011; Thu, 13 Jan 2022
- 18:07:23 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
- <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/audit: Fix syscall_get_arch()
-Thread-Topic: [PATCH] powerpc/audit: Fix syscall_get_arch()
-Thread-Index: AQHYCKhqVymj08QpN02Rq4/+9C4x7w==
-Date: Thu, 13 Jan 2022 18:07:23 +0000
-Message-ID: <8196844f811cbbb43f03ae2d6caeab018375f2ff.1642097225.git.christophe.leroy@csgroup.eu>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 45b57d32-8986-4876-0151-08d9d6bf8c92
-x-ms-traffictypediagnostic: MR1P264MB3954:EE_
-x-microsoft-antispam-prvs: <MR1P264MB395468CA70F7CFA405B18F85ED539@MR1P264MB3954.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:121;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: AdRhu236TQ3fJ0K9w+TCBveh/Uiyf3Mnu6Gf1PZqfATYBTQcvuRrQYvcTnecqZgSI0YH6r6tHVUeEgvP1ix60IFYaeCf8ww96K5G0goXdetikkK4uxuD2M8mRLmm4FnmkC0mVafxn7TylKI/RpTqs/tKgVzZRecjvCQsu0vGkhytZjqJxo0hRiTSshFxDV7nq+pLIV2BFVbKcTWERI7apxPGvsI7S7ZWmiJnfy80uoJ6XYvkaPjO/i2NCIV/vkM221jtyroQ9cU9WBbHykbe4jN0Ten3nRTAFlleAcuOWmWW8Paqq5nNlPyBeA3V6x5egWFcST5H+cHmCBRZ+HCa/zSBhfxeJq0Hg3zkspH3CnMWdE8pNCbuj5PxZVCUNDOy6M9mkPEH8u2NWlG1nRvgdXc81lPZZTdSv7rKwWvNbO33z8JPGDOx0kp/HmUV90Njx3ryy+pL4xemtbksEwfAkYcGuuGV/B0cfuv+roM9/FLXC1yHKlkHJQ+uQHGWFSLtNntSQMuXEA5S2WkK2YSUU4FeJbXk1E2m7L1G8+NHHM8yny06POz+A04xMrZFWH3Es/gKLVwaI3vWknzPRVvQR8b8FdDElV/wEqhjr96x5T8EMj2O8ywXsKzQMc9QAXLW//gbrNMESNCTWuUZ5/TQhctmUVAqshutG7Ydq9Oj0JOFc8Fq62ra2O9QPs8cMvyIBTcY/ed4Fh9B5lAxqG0xVQ==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(4636009)(366004)(38070700005)(66946007)(54906003)(110136005)(76116006)(91956017)(316002)(186003)(6506007)(64756008)(66446008)(66556008)(5660300002)(2906002)(2616005)(26005)(66476007)(6486002)(8676002)(8936002)(508600001)(71200400001)(86362001)(36756003)(122000001)(6512007)(38100700002)(83380400001)(44832011)(4326008);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?+srYGOQ/M8g5UvB1hUdBS7Ivl/TqqgtT2PFGxWGJcZkOBp4glVsQ6SoY/l?=
- =?iso-8859-1?Q?L5nL1ymSkKSx4jRZCgtIUJzc9Zi/csDvH9Tb1T1Y/sRGzfReSrttz/wB8y?=
- =?iso-8859-1?Q?2Dcq2FSVjpk9kEI1m9WOMSd7FO3DdaBxXg68jF/hwhoLJjb5LlmU9kBHGy?=
- =?iso-8859-1?Q?anF/fyQ8hhOp697vzf6VYm7ulgDbbNTV6bZJ0olA4mnsSMugc7ZJh2h08h?=
- =?iso-8859-1?Q?D/kCrKPD7QG0irsLfzXvuD0Vu36N5Dh9bFOoMqpPvU1IrUXZEotfuXe+lF?=
- =?iso-8859-1?Q?T3XRuZ3sjn0d/mN44ji37REybTqxPo49VfIcer8xV5WLIg3P5rDV4Zw+gc?=
- =?iso-8859-1?Q?zx+UwG9gVXr3Y6maPhGhi7oWuMi7ylXEQrSSx9IP2qrG+YirLg0K0H35WE?=
- =?iso-8859-1?Q?tyikhSlZAiFcY+qbvRn2aEj1WoU/7MUuawqxL2eL0FYqD41MY/95rV9UZ+?=
- =?iso-8859-1?Q?7WvUrNcv1ZnxjsVO7849qLqJJg3/wYFrG9GSDOxanrPoHbJieU4f09qzpl?=
- =?iso-8859-1?Q?pfNoXrLXu77cbHG1DqvRC3JV9MfVRGoggODEicWo7KIz/NzZdT9LIkry/B?=
- =?iso-8859-1?Q?dzESDrF2qnn8FR+W5R/bGDP6uKmXYZO0kGkVLxIb0s4dHLFhVTfZ+M/BjJ?=
- =?iso-8859-1?Q?mT19cvgggStVlNHKhX3K2RohMxl/lma65xvtEkxRhbSQ68CK43BNtRUdb4?=
- =?iso-8859-1?Q?FEBOUGQLC6MBNeLF52ZPQRra4OakKKKWJFYF7Nll1m0mGIOkdXCqgaA6CE?=
- =?iso-8859-1?Q?yOrg7s1qMBl908ObJ0RUwQi1AayxCtGh3UAdfoIbFr+mKbuw4jlaKVR76U?=
- =?iso-8859-1?Q?fF53k04skyYEUiHbFKcbytTK/X8jR20EpWECkyg6bD1T97NnlB//MtifGb?=
- =?iso-8859-1?Q?NQVho6n8xky3/0whIHmv5MhO5r20j9+dhgGyapWsR6sq8oy1eFF4vV6ezz?=
- =?iso-8859-1?Q?OW/LFzpmf7S4uw7NagsunSZR70DJkKbeEot2ryx81EyMzoTMtJJq6XOpKl?=
- =?iso-8859-1?Q?h3M0pM3Y2YpvC7XPpGPEZ5qb2S8rFnyaLdi2tdJGnQUqXTYDDcy1pJS3cF?=
- =?iso-8859-1?Q?gsrUA7HOCYLlBBuTrMh4ZDUnCbV03bfrcwrc95PDEH9jXs52O4H234b8dH?=
- =?iso-8859-1?Q?OpxQKs6pWVgwPQ9B2ctIPZn3SEY+CrEUxvyMKIb0qOnXmsBJLGbISo6EqP?=
- =?iso-8859-1?Q?I7U6X2lKPwlMdm0qKl+1o2qnogJUfZTtJp20VLaolfjLZzETmdwfmrgz0c?=
- =?iso-8859-1?Q?KNwgOH5ydKzdJ9twu5DHLt6bjbdrTCLq/iaQhcDBVu12iTxpAk6TFjZxX2?=
- =?iso-8859-1?Q?ztzrDOY1tbyVYrgQdFQYHFUKk1G+Ce4A2ZufPcTNQ3vbAipF0DWfRt8ssH?=
- =?iso-8859-1?Q?2PrYbJO06WT/CTFR09TFAAlQLk1F4YSumzxidwPrceq70d/yecejB046Lc?=
- =?iso-8859-1?Q?/B+2idaFsctwT86c7rRAeJNJHbYTI7JJ82i6Aq2brCoYn18OqTUV9XP9YX?=
- =?iso-8859-1?Q?SdHRCocmi+e3XxqLfmBYSi72/W3q05emol4nWdll65QLEIjYC3ZNLaQ2k+?=
- =?iso-8859-1?Q?hM5r5vO9EFZ5yJOwv+BVI+w0+w+U5oXdT+WPS6KrRo6eCY0sIriq1VwT/f?=
- =?iso-8859-1?Q?aimt8bQSGay+NdswO9DGnOgnZxnd2lw20umR9aHC2DcM9H96XiSJeskGun?=
- =?iso-8859-1?Q?wsAxzbp4ftccxZhcKemDywZyoMcXv8cjS7NaZGa7OmMIlH+gobScGHi0en?=
- =?iso-8859-1?Q?Zxldto9ddv3HRzUEL0lcw4jQI=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JZmZq2JGPz2yPP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jan 2022 14:13:07 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=qKGXyktI; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JZmZp5qZwz4xdl;
+ Fri, 14 Jan 2022 14:13:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1642129987;
+ bh=8Yq203lrwI/6CvDNyeW7ts27B3EwTRZJwnsZ2XiI3gk=;
+ h=From:To:Cc:Subject:Date:From;
+ b=qKGXyktILyZqYtch3Xexg9d+PUKM+pboAc1dpANuBtj4JHjkpD7X8BJahneYzCbmB
+ ohPiBFZ+oM2HXEmRUyv9ITHCTvbN+WLzqHDn07vR58GL4WrvMJDOiOFuJROp6RoCXl
+ /rkLXhMe/nTiRPw1dRekN9Rk2hEL/iRCbOLnRqi+upZJLR+bIdqza3wd9K5ZkEyHSr
+ ZJ0dP4w5g1eUw5VQ6GplpmjrIhuEcP47MJt8WR3Nw0Qm/3Ng8QMY9q1tYL3tZ/8vvw
+ sG7zRJn4ynwFgcuxTcZoeZKwZ+rXYyBXRy8wsEWRxjLfeipqNUwGXW7WaeS88uAYzx
+ Wi6xIABZAdoOg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <netdev@vger.kernel.org>,
+	<kuba@kernel.org>,
+	<davem@davemloft.net>
+Subject: [PATCH] net: apple: mace: Fix build since dev_addr constification
+Date: Fri, 14 Jan 2022 14:12:52 +1100
+Message-Id: <20220114031252.2419042-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 45b57d32-8986-4876-0151-08d9d6bf8c92
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jan 2022 18:07:23.4487 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: cWR4yTdM6ALrH7quBtrhwOZxc/6ciyPmVoNKiYEzyxBhkSOYqeWUnvsKTgH8DqmGLy8lSIN1kdK0UYlWYukNvIb8aCCupZE0EmEfOObigGk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB3954
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -121,47 +61,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Dmitry V .
- Levin" <ldv@altlinux.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 770cec16cdc9 ("powerpc/audit: Simplify syscall_get_arch()")
-replaced test_tsk_thread_flag(task, TIF_32BIT)) by is_32bit_task().
+Since commit adeef3e32146 ("net: constify netdev->dev_addr") the mace
+driver no longer builds with various errors (pmac32_defconfig):
 
-But is_32bit_task() applies on current task while be want the test
-done on task 'task'
+  linux/drivers/net/ethernet/apple/mace.c: In function ‘mace_probe’:
+  linux/drivers/net/ethernet/apple/mace.c:170:20: error: assignment of read-only location ‘*(dev->dev_addr + (sizetype)j)’
+    170 |   dev->dev_addr[j] = rev ? bitrev8(addr[j]): addr[j];
+        |                    ^
+  linux/drivers/net/ethernet/apple/mace.c: In function ‘mace_reset’:
+  linux/drivers/net/ethernet/apple/mace.c:349:32: warning: passing argument 2 of ‘__mace_set_address’ discards ‘const’ qualifier from pointer target type
+    349 |     __mace_set_address(dev, dev->dev_addr);
+        |                             ~~~^~~~~~~~~~
+  linux/drivers/net/ethernet/apple/mace.c:93:62: note: expected ‘void *’ but argument is of type ‘const unsigned char *’
+     93 | static void __mace_set_address(struct net_device *dev, void *addr);
+        |                                                        ~~~~~~^~~~
+  linux/drivers/net/ethernet/apple/mace.c: In function ‘__mace_set_address’:
+  linux/drivers/net/ethernet/apple/mace.c:388:36: error: assignment of read-only location ‘*(dev->dev_addr + (sizetype)i)’
+    388 |  out_8(&mb->padr, dev->dev_addr[i] = p[i]);
+        |                                    ^
 
-So re-use test_tsk_thread_flag() instead.
+Fix it by making the modifications to a local macaddr variable and then
+passing that to eth_hw_addr_set(), as well as adding some missing const
+qualifiers.
 
-Reported-by: Dmitry V. Levin <ldv@altlinux.org>
-Fixes: 770cec16cdc9 ("powerpc/audit: Simplify syscall_get_arch()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/include/asm/syscall.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/apple/mace.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/=
-syscall.h
-index 52d05b465e3e..32f76833b736 100644
---- a/arch/powerpc/include/asm/syscall.h
-+++ b/arch/powerpc/include/asm/syscall.h
-@@ -105,7 +105,9 @@ static inline void syscall_get_arguments(struct task_st=
-ruct *task,
-=20
- static inline int syscall_get_arch(struct task_struct *task)
+diff --git a/drivers/net/ethernet/apple/mace.c b/drivers/net/ethernet/apple/mace.c
+index 4b80e3a52a19..6f8c91eb1263 100644
+--- a/drivers/net/ethernet/apple/mace.c
++++ b/drivers/net/ethernet/apple/mace.c
+@@ -90,7 +90,7 @@ static void mace_set_timeout(struct net_device *dev);
+ static void mace_tx_timeout(struct timer_list *t);
+ static inline void dbdma_reset(volatile struct dbdma_regs __iomem *dma);
+ static inline void mace_clean_rings(struct mace_data *mp);
+-static void __mace_set_address(struct net_device *dev, void *addr);
++static void __mace_set_address(struct net_device *dev, const void *addr);
+ 
+ /*
+  * If we can't get a skbuff when we need it, we use this area for DMA.
+@@ -112,6 +112,7 @@ static int mace_probe(struct macio_dev *mdev, const struct of_device_id *match)
+ 	struct net_device *dev;
+ 	struct mace_data *mp;
+ 	const unsigned char *addr;
++	u8 macaddr[ETH_ALEN];
+ 	int j, rev, rc = -EBUSY;
+ 
+ 	if (macio_resource_count(mdev) != 3 || macio_irq_count(mdev) != 3) {
+@@ -167,8 +168,9 @@ static int mace_probe(struct macio_dev *mdev, const struct of_device_id *match)
+ 
+ 	rev = addr[0] == 0 && addr[1] == 0xA0;
+ 	for (j = 0; j < 6; ++j) {
+-		dev->dev_addr[j] = rev ? bitrev8(addr[j]): addr[j];
++		macaddr[j] = rev ? bitrev8(addr[j]): addr[j];
+ 	}
++	eth_hw_addr_set(dev, macaddr);
+ 	mp->chipid = (in_8(&mp->mace->chipid_hi) << 8) |
+ 			in_8(&mp->mace->chipid_lo);
+ 
+@@ -369,11 +371,12 @@ static void mace_reset(struct net_device *dev)
+ 	out_8(&mb->plscc, PORTSEL_GPSI + ENPLSIO);
+ }
+ 
+-static void __mace_set_address(struct net_device *dev, void *addr)
++static void __mace_set_address(struct net_device *dev, const void *addr)
  {
--	if (is_32bit_task())
-+	if (IS_ENABLED(CONFIG_PPC32))
-+		return AUDIT_ARCH_PPC;
-+	else if (IS_ENABLED(CONFIG_COMPAT) && test_tsk_thread_flag(task, TIF_32BI=
-T))
- 		return AUDIT_ARCH_PPC;
- 	else if (IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN))
- 		return AUDIT_ARCH_PPC64LE;
---=20
-2.33.1
+     struct mace_data *mp = netdev_priv(dev);
+     volatile struct mace __iomem *mb = mp->mace;
+-    unsigned char *p = addr;
++    const unsigned char *p = addr;
++    u8 macaddr[ETH_ALEN];
+     int i;
+ 
+     /* load up the hardware address */
+@@ -385,7 +388,10 @@ static void __mace_set_address(struct net_device *dev, void *addr)
+ 	    ;
+     }
+     for (i = 0; i < 6; ++i)
+-	out_8(&mb->padr, dev->dev_addr[i] = p[i]);
++        out_8(&mb->padr, macaddr[i] = p[i]);
++
++    eth_hw_addr_set(dev, macaddr);
++
+     if (mp->chipid != BROKEN_ADDRCHG_REV)
+         out_8(&mb->iac, 0);
+ }
+-- 
+2.31.1
+
