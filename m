@@ -1,59 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB1E48EDF2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 17:19:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB7A48EF5D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 18:50:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jb62W5bb2z3bZW
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jan 2022 03:19:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jb83C1Npmz3cCs
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jan 2022 04:50:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=buserror.net
+ (client-ip=165.227.176.147; helo=baldur.buserror.net;
+ envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jb6221RzNz3089
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jan 2022 03:19:19 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Jb61t1XJ5z9sS9;
- Fri, 14 Jan 2022 17:19:14 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id plKx03bhxQzX; Fri, 14 Jan 2022 17:19:14 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Jb61t0dW2z9sS8;
- Fri, 14 Jan 2022 17:19:14 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 05E8D8B77D;
- Fri, 14 Jan 2022 17:19:14 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id YOIqkl7SpmOc; Fri, 14 Jan 2022 17:19:13 +0100 (CET)
-Received: from [192.168.235.181] (unknown [192.168.235.181])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BFFD98B763;
- Fri, 14 Jan 2022 17:19:13 +0100 (CET)
-Message-ID: <ef6785d1-2c0d-24f5-e63f-9be29f5d41e8@csgroup.eu>
-Date: Fri, 14 Jan 2022 17:19:13 +0100
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jb82j6ZgRz2yLy
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jan 2022 04:50:05 +1100 (AEDT)
+Received: from [2601:449:8480:af0::946b]
+ by baldur.buserror.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <oss@buserror.net>)
+ id 1n8QhZ-0007hp-Gc; Fri, 14 Jan 2022 11:49:25 -0600
+Message-ID: <c007c87b1c0c1c254815defd6ec06886d2b55f77.camel@buserror.net>
+From: Scott Wood <oss@buserror.net>
+To: Joachim Wiberg <troglobit@gmail.com>, linuxppc-dev@lists.ozlabs.org, 
+ Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
+Date: Fri, 14 Jan 2022 11:49:24 -0600
+In-Reply-To: <20220112112459.1033754-1-troglobit@gmail.com>
+References: <20220112112459.1033754-1-troglobit@gmail.com>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4-1 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH 1/3] powerpc: Properly return error code from
- do_patch_instruction()
-Content-Language: fr-FR
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-References: <cover.1587654213.git.naveen.n.rao@linux.vnet.ibm.com>
- <b1dbbb34a389a6f59eb6c99102d94c0070ddaf98.1587654213.git.naveen.n.rao@linux.vnet.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <b1dbbb34a389a6f59eb6c99102d94c0070ddaf98.1587654213.git.naveen.n.rao@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0::946b
+X-SA-Exim-Rcpt-To: troglobit@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ tobias@waldekranz.com
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
+ autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+ *      [score: 0.0000]
+Subject: Re: [PATCH 1/1] powerpc/e500/qemu-e500: allow core to idle without
+ waiting
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,59 +63,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Tobias Waldekranz <tobias@waldekranz.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 23/04/2020 à 17:09, Naveen N. Rao a écrit :
-> With STRICT_KERNEL_RWX, we are currently ignoring return value from
-> __patch_instruction() in do_patch_instruction(), resulting in the error
-> not being propagated back. Fix the same.
+On Wed, 2022-01-12 at 12:24 +0100, Joachim Wiberg wrote:
+> From: Tobias Waldekranz <tobias@waldekranz.com>
 > 
-> Fixes: 37bc3e5fd764f ("powerpc/lib/code-patching: Use alternate map for patch_instruction()")
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-
-A similar patch was merged as 
-https://github.com/linuxppc/linux/commit/a3483c3dd18c136785a31406fe27210649fc4fba#diff-e084bb6dc223aec74e7fc4208b7b260acc571bd5b50c9b709ec3de175cb1a979
-
-Christophe
-
-
+> This means an idle guest won't needlessly consume an entire core on
+> the host, waiting for work to show up.
+> 
+> Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
+> Signed-off-by: Joachim Wiberg <troglobit@gmail.com>
 > ---
->   arch/powerpc/lib/code-patching.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>  arch/powerpc/platforms/85xx/qemu_e500.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-> index 3345f039a876..5c713a6c0bd8 100644
-> --- a/arch/powerpc/lib/code-patching.c
-> +++ b/arch/powerpc/lib/code-patching.c
-> @@ -138,7 +138,7 @@ static inline int unmap_patch_area(unsigned long addr)
->   
->   static int do_patch_instruction(unsigned int *addr, unsigned int instr)
->   {
-> -	int err;
-> +	int err, rc = 0;
->   	unsigned int *patch_addr = NULL;
->   	unsigned long flags;
->   	unsigned long text_poke_addr;
-> @@ -163,7 +163,7 @@ static int do_patch_instruction(unsigned int *addr, unsigned int instr)
->   	patch_addr = (unsigned int *)(text_poke_addr) +
->   			((kaddr & ~PAGE_MASK) / sizeof(unsigned int));
->   
-> -	__patch_instruction(addr, instr, patch_addr);
-> +	rc = __patch_instruction(addr, instr, patch_addr);
->   
->   	err = unmap_patch_area(text_poke_addr);
->   	if (err)
-> @@ -172,7 +172,7 @@ static int do_patch_instruction(unsigned int *addr, unsigned int instr)
->   out:
->   	local_irq_restore(flags);
->   
-> -	return err;
-> +	return rc ? rc : err;
->   }
->   #else /* !CONFIG_STRICT_KERNEL_RWX */
->   
+> diff --git a/arch/powerpc/platforms/85xx/qemu_e500.c
+> b/arch/powerpc/platforms/85xx/qemu_e500.c
+> index a4127b0b161f..4c4d577effd9 100644
+> --- a/arch/powerpc/platforms/85xx/qemu_e500.c
+> +++ b/arch/powerpc/platforms/85xx/qemu_e500.c
+> @@ -67,4 +67,9 @@ define_machine(qemu_e500) {
+>         .get_irq                = mpic_get_coreint_irq,
+>         .calibrate_decr         = generic_calibrate_decr,
+>         .progress               = udbg_progress,
+> +#ifdef CONFIG_PPC64
+> +       .power_save             = book3e_idle,
+> +#else
+> +       .power_save             = e500_idle,
+> +#endif
+>  };
+
+Acked-by: Scott Wood <oss@buserror.net>
+
+-Scott
+
+
