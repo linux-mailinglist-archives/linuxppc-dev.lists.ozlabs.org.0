@@ -1,57 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DB7A48EF5D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 18:50:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A3C48EF95
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 19:00:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jb83C1Npmz3cCs
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jan 2022 04:50:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jb8GS40jXz30Mb
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Jan 2022 05:00:16 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oKyppEqH;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=buserror.net
- (client-ip=165.227.176.147; helo=baldur.buserror.net;
- envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jb82j6ZgRz2yLy
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jan 2022 04:50:05 +1100 (AEDT)
-Received: from [2601:449:8480:af0::946b]
- by baldur.buserror.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <oss@buserror.net>)
- id 1n8QhZ-0007hp-Gc; Fri, 14 Jan 2022 11:49:25 -0600
-Message-ID: <c007c87b1c0c1c254815defd6ec06886d2b55f77.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: Joachim Wiberg <troglobit@gmail.com>, linuxppc-dev@lists.ozlabs.org, 
- Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-Date: Fri, 14 Jan 2022 11:49:24 -0600
-In-Reply-To: <20220112112459.1033754-1-troglobit@gmail.com>
-References: <20220112112459.1033754-1-troglobit@gmail.com>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=oKyppEqH; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jb8Fj3jQTz2ywt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Jan 2022 04:59:36 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20EGQU1w024895; 
+ Fri, 14 Jan 2022 17:59:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=P5Vd3yVstLi6afPxMMGNbzvXm3UB4fwXrtaJmDlPZro=;
+ b=oKyppEqHWDaWTgEXYmPX8NoPr7AoP8PYjcKqwtUhSPohMYTvuJWYCRCxDCRQjXH6IX8e
+ yBdFYkwXxnE18lsVuMRHexUt6yf18/mQBl/I63YDaKSCTq776qj25yK1G7dlQkgl18jB
+ ZFJSdiDpQ/t4bcjQbYy6exMt12P0Y3BNmEXx/Khl7OYTdlOzJW1epdti9UY8xrUxvL4A
+ C+sDu/anBSm0BfjsPu7H6vpsw+9m/YnC+JVgB7z+iKkLo5sA8xPri1Ny5VedEY+/gT6p
+ Y618iFDnIBakkHXAk7PkLvt2fsUil7jzExcHr4HZsSF+wNGW9+fORgqzS0Tg/bisSOtL fw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dkcpvssrx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jan 2022 17:59:25 +0000
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20EHY8fQ020522;
+ Fri, 14 Jan 2022 17:59:24 GMT
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dkcpvssrb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jan 2022 17:59:24 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20EHvqDH031312;
+ Fri, 14 Jan 2022 17:59:23 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma05wdc.us.ibm.com with ESMTP id 3df28cw4e0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jan 2022 17:59:23 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 20EHxJ3M8061710
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 14 Jan 2022 17:59:19 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 98A7B2805A;
+ Fri, 14 Jan 2022 17:59:19 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4AEE428059;
+ Fri, 14 Jan 2022 17:59:19 +0000 (GMT)
+Received: from localhost (unknown [9.160.3.20])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 14 Jan 2022 17:59:19 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Haren Myneni <haren@linux.ibm.com>, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Subject: Re: [RFC PATCH 3/3] powerpc/pseries/vas: Use migration_in_progress
+ to disable DLPAR
+In-Reply-To: <92d87ead72556e946d7fa6775c509de8b6d11935.camel@linux.ibm.com>
+References: <af4574e7553a632884a2f00fcb96bd82fa063fe9.camel@linux.ibm.com>
+ <92d87ead72556e946d7fa6775c509de8b6d11935.camel@linux.ibm.com>
+Date: Fri, 14 Jan 2022 11:59:18 -0600
+Message-ID: <871r1aurk9.fsf@li-e15d104c-2135-11b2-a85c-d7ef17e56be6.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2601:449:8480:af0::946b
-X-SA-Exim-Rcpt-To: troglobit@gmail.com, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
- tobias@waldekranz.com
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
- autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
- *      [score: 0.0000]
-Subject: Re: [PATCH 1/1] powerpc/e500/qemu-e500: allow core to idle without
- waiting
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: jKflnCsB3-2YeefBpvytET_JF-haLupn
+X-Proofpoint-GUID: RazNhfMf9inwisUmAXVSPK9pNwLwcgAU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-14_06,2022-01-14_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0
+ adultscore=0 lowpriorityscore=0 mlxlogscore=822 spamscore=0
+ priorityscore=1501 phishscore=0 impostorscore=0 malwarescore=0
+ suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201140111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,41 +106,14 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tobias Waldekranz <tobias@waldekranz.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2022-01-12 at 12:24 +0100, Joachim Wiberg wrote:
-> From: Tobias Waldekranz <tobias@waldekranz.com>
-> 
-> This means an idle guest won't needlessly consume an entire core on
-> the host, waiting for work to show up.
-> 
-> Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-> Signed-off-by: Joachim Wiberg <troglobit@gmail.com>
-> ---
->  arch/powerpc/platforms/85xx/qemu_e500.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/arch/powerpc/platforms/85xx/qemu_e500.c
-> b/arch/powerpc/platforms/85xx/qemu_e500.c
-> index a4127b0b161f..4c4d577effd9 100644
-> --- a/arch/powerpc/platforms/85xx/qemu_e500.c
-> +++ b/arch/powerpc/platforms/85xx/qemu_e500.c
-> @@ -67,4 +67,9 @@ define_machine(qemu_e500) {
->         .get_irq                = mpic_get_coreint_irq,
->         .calibrate_decr         = generic_calibrate_decr,
->         .progress               = udbg_progress,
-> +#ifdef CONFIG_PPC64
-> +       .power_save             = book3e_idle,
-> +#else
-> +       .power_save             = e500_idle,
-> +#endif
->  };
+Haren Myneni <haren@linux.ibm.com> writes:
 
-Acked-by: Scott Wood <oss@buserror.net>
+> Before migration starts, all secondary CPUs will be offline which
+> can invoke VAS DLPAR event.
 
--Scott
-
-
+I don't understand this statement, so I can't evaluate the patch. The
+current LPM implementation does not offline any CPUs.
