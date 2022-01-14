@@ -2,77 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52E8F48E85C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 11:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AAA748E863
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 11:38:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JZyM918JMz3bTr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 21:33:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JZySD0Qsfz3bV8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Jan 2022 21:38:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=VFEa3gAm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cNO6fcMv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12c;
- helo=mail-lf1-x12c.google.com; envelope-from=troglobit@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=VFEa3gAm; dkim-atps=neutral
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com
- [IPv6:2a00:1450:4864:20::12c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=cNO6fcMv; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JZyLR3lrkz2yLy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jan 2022 21:33:03 +1100 (AEDT)
-Received: by mail-lf1-x12c.google.com with SMTP id x7so28798263lfu.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jan 2022 02:33:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version:content-transfer-encoding;
- bh=yJuXNGeOhj8b3A5LNs6MNezqzocsK7Un5hWTdxP7AZY=;
- b=VFEa3gAmsLq3ppk2ykoPNVcO0FfrI6DmBQWsLc1f8Sgz0bsFalFIHhOXglmUYpPLDG
- NEMFCC+KQMvL98mf6hxw9EK6M9UWSrjw9fb+RbOfVl8kJP/u5i5XYPBu8toUM9RmA4B7
- NmtZmWx0IAGWCK5qDxi6aRekc7I+MhY7yTByohItIz7+ps6yZ2eL3kH6zFMcG3p35wLZ
- Qo3zLpmTzjRnp5rfGfB4iKe2URYFUsnu7NOFzovhr+lI5SYqWZ/bI6Q0tysgF3w1Ziys
- rqk4o2x8fA7y0hK4nctgL4B581ggNp9/xxt4WACahbcmlqN4tgU4GzIB+krWB6481+0W
- D7dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version:content-transfer-encoding;
- bh=yJuXNGeOhj8b3A5LNs6MNezqzocsK7Un5hWTdxP7AZY=;
- b=ISIsjfi3//cZFir/oZTrT9FqXHub8Hc3Fs03mIp1yu5U7+7IXzeBPa7VGe3de/+DVD
- +0Dxa047/nhhIjIckGPDnljbyJLNXk1e2gTJbzeuZLVd13+2y5jIVwkgFX9TVyhSpXTY
- 1gScLbdZRiq31se8Wv9TonB2nG7srcMNpOiml95GBQRRPu2oov05SA1VkERJVpFucWx3
- Blxhl4HCBgostHp08mhHe90K6AfmbMEseNsnsRmawey5r3ThkYVT8p97utbXRmZp1WVJ
- Nsp51e1+C3ZyQri83DnOYl0NKZ95YXiPryh2gczs6NcaX6XV/JrtYPfoW0pkf65OFoLm
- 6WdA==
-X-Gm-Message-State: AOAM5330MQdRVMFtEwP+rG8+1lIYYwuq1R391o3bpeF5qkQ97mmE55L7
- 2UMinHfwtl7MXHCWRn8OsuA=
-X-Google-Smtp-Source: ABdhPJxvibegZGhR6B7KTQSonpI+ZCqYMWpsWTL8XclhfofNfCNj8ICPw6SpFGqB5CQ4KlgdcxkAEA==
-X-Received: by 2002:ac2:4e06:: with SMTP id e6mr6439145lfr.295.1642156375913; 
- Fri, 14 Jan 2022 02:32:55 -0800 (PST)
-Received: from wbg (h-98-128-228-27.NA.cust.bahnhof.se. [98.128.228.27])
- by smtp.gmail.com with ESMTPSA id l5sm546121lfk.167.2022.01.14.02.32.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Jan 2022 02:32:55 -0800 (PST)
-From: Joachim Wiberg <troglobit@gmail.com>
-To: Scott Wood <oss@buserror.net>, linuxppc-dev@lists.ozlabs.org,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH 1/1] powerpc/e500/qemu-e500: allow core to idle without
- waiting
-In-Reply-To: <f6d4c1151e290bb71a18dcf6fd424fe15250e75d.camel@buserror.net>
-References: <20220112112459.1033754-1-troglobit@gmail.com>
- <f6d4c1151e290bb71a18dcf6fd424fe15250e75d.camel@buserror.net>
-Date: Fri, 14 Jan 2022 11:32:54 +0100
-Message-ID: <87ilumd2uh.fsf@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JZyRT6qpwz2xDv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Jan 2022 21:37:25 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20EARjT2012539; 
+ Fri, 14 Jan 2022 10:37:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=EcNXl8/gPzGyv/8m3LUG76Z8ix+1RROrUA5JY9DKowY=;
+ b=cNO6fcMvMZpULbIsnVt4/tQy+XJrTIiyLjcUgdrsesE84Y4DkjQuU2DCgAgFM1rE2c9A
+ lP46jZDZKCkwRvllrcMw0W5LOxW3vNdvfcweuE39zJab8mAKeMqnzcxCqDnsuC14Ft7y
+ CsM7l4STqSd5avc4JDwMOIsjcZJ24omLkCTLxHF1FAlQLJjE21NaRJPa6EfGv67/CHyA
+ oBlAXvuqxUQleqsosXM1QDOa2AM2Jr+A9JfB9t4EFmmsDTu1E4aq7ZjqVpINFVWpbK+a
+ SpTDyK3qP532l4B28xGrFPH2kBKMUo9OrZZDIgh1mEyETj7xAx2wTQyJZfR0byU5CqFH +Q== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dk620hn8j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jan 2022 10:37:16 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20EAWJt0025957;
+ Fri, 14 Jan 2022 10:37:14 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 3df289war5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jan 2022 10:37:14 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 20EAbCr948628122
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 14 Jan 2022 10:37:12 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9890C4207E;
+ Fri, 14 Jan 2022 10:37:12 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2D4B842077;
+ Fri, 14 Jan 2022 10:37:12 +0000 (GMT)
+Received: from localhost (unknown [9.43.21.93])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 14 Jan 2022 10:37:11 +0000 (GMT)
+Date: Fri, 14 Jan 2022 16:07:11 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/bpf: Always reallocate BPF_REG_5, BPF_REG_AX and
+ TMP_REG when possible
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ =?iso-8859-1?q?Paul=0A?= Mackerras <paulus@samba.org>
+References: <b04c246874b716911139c04bc004b3b14eed07ef.1641817763.git.christophe.leroy@csgroup.eu>
+ <1642147004.dum5th9cvl.naveen@linux.ibm.com>
+ <f6a5027a-6f3b-ee50-3439-56b5948d860a@csgroup.eu>
+In-Reply-To: <f6a5027a-6f3b-ee50-3439-56b5948d860a@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+User-Agent: astroid/v0.16-1-g4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1642156339.pkhk6znoh0.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: oxcCDnVZOOLuaoYOyK5cgLosAv_uVd0U
+X-Proofpoint-GUID: oxcCDnVZOOLuaoYOyK5cgLosAv_uVd0U
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-14_04,2022-01-14_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ bulkscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 impostorscore=0
+ clxscore=1015 phishscore=0 spamscore=0 lowpriorityscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
+ definitions=main-2201140070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,28 +104,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tobias Waldekranz <tobias@waldekranz.com>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 12, 2022 at 06:36, Scott Wood <oss@buserror.net> wrote:
-> On Wed, 2022-01-12 at 12:24 +0100, Joachim Wiberg wrote:
->> [snip]
->> +#ifdef CONFIG_PPC64
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.power_save=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=3D book3e_idle,
->> +#else
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.power_save=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=3D e500_idle,
->> +#endif
->> =C2=A0};
-> In the 32-bit case shouldn't this already be getting added by
-> setup_power_save()?  Though I see corenet_generic.c doing the same thing.=
-..
+Christophe Leroy wrote:
+>=20
+>=20
+> Le 14/01/2022 =C3=A0 08:58, Naveen N. Rao a =C3=A9crit=C2=A0:
+>> Christophe Leroy wrote:
+>>> BPF_REG_5, BPF_REG_AX and TMP_REG are mapped on non volatile registers
+>>> because there are not enough volatile registers, but they don't need
+>>> to be preserved on function calls.
+>>>
+>>> So when some volatile registers become available, those registers can
+>>> always be reallocated regardless of whether SEEN_FUNC is set or not.
+>>>
+>>> Suggested-by: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
+>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>> ---
+>>> =C2=A0arch/powerpc/net/bpf_jit.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 3 ---
+>>> =C2=A0arch/powerpc/net/bpf_jit_comp32.c | 14 +++++++++++---
+>>> =C2=A02 files changed, 11 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+>>> index b20a2a83a6e7..b75507fc8f6b 100644
+>>> --- a/arch/powerpc/net/bpf_jit.h
+>>> +++ b/arch/powerpc/net/bpf_jit.h
+>>> @@ -127,9 +127,6 @@
+>>> =C2=A0#define SEEN_FUNC=C2=A0=C2=A0=C2=A0 0x20000000 /* might call exte=
+rnal helpers */
+>>> =C2=A0#define SEEN_TAILCALL=C2=A0=C2=A0=C2=A0 0x40000000 /* uses tail c=
+alls */
+>>>
+>>> -#define SEEN_VREG_MASK=C2=A0=C2=A0=C2=A0 0x1ff80000 /* Volatile regist=
+ers r3-r12 */
+>>> -#define SEEN_NVREG_MASK=C2=A0=C2=A0=C2=A0 0x0003ffff /* Non volatile r=
+egisters=20
+>>> r14-r31 */
+>>> -
+>>> =C2=A0#ifdef CONFIG_PPC64
+>>> =C2=A0extern const int b2p[MAX_BPF_JIT_REG + 2];
+>>> =C2=A0#else
+>>> diff --git a/arch/powerpc/net/bpf_jit_comp32.c=20
+>>> b/arch/powerpc/net/bpf_jit_comp32.c
+>>> index d3a52cd42f53..cfec42c8a511 100644
+>>> --- a/arch/powerpc/net/bpf_jit_comp32.c
+>>> +++ b/arch/powerpc/net/bpf_jit_comp32.c
+>>> @@ -77,14 +77,22 @@ static int bpf_jit_stack_offsetof(struct=20
+>>> codegen_context *ctx, int reg)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 return BPF_PPC_STACKFRAME(ctx) - 4;
+>>> =C2=A0}
+>>>
+>>> +#define SEEN_VREG_MASK=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x1ff=
+80000 /* Volatile registers r3-r12 */
+>>> +#define SEEN_NVREG_FULL_MASK=C2=A0=C2=A0=C2=A0 0x0003ffff /* Non volat=
+ile registers=20
+>>> r14-r31 */
+>>> +#define SEEN_NVREG_TEMP_MASK=C2=A0=C2=A0=C2=A0 0x00001e01 /* BPF_REG_5=
+, BPF_REG_AX,=20
+>>> TMP_REG */
+>>=20
+>> Could have been named better: SEEN_NVREG_BPF_VGER_MASK, or such.
+>=20
+> Yes, I was suffering from a lack of inspiration.
+>=20
+> What does BPF_VGER mean ?
 
-We went for consistency with the corenet_generic.c setup, which as you
-noted does the same thing.
+That I was suffering from a lack of caffeine.
 
-Best regards
- /Joachim
+I meant to suggest BPF_VREG, to indicate those are BPF volatile=20
+registers.
+
+
+- Naveen
+
