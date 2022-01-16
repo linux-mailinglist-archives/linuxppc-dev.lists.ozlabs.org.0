@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCAB48FF5F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jan 2022 22:57:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D76B48FF66
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jan 2022 23:03:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JcTQg5GBFz30KR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 08:56:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JcTYf1Pjsz30KZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 09:03:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=JvdGu9kx;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=KKqMO7ku;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,37 +18,36 @@ Authentication-Results: lists.ozlabs.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256
- header.s=20171124 header.b=JvdGu9kx; dkim-atps=neutral
-X-Greylist: delayed 121 seconds by postgrey-1.36 at boromir;
- Mon, 17 Jan 2022 08:56:22 AEDT
+ header.s=20171124 header.b=KKqMO7ku; dkim-atps=neutral
 Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JcTPy54t5z2xKK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 08:56:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JcTY15rTBz2y8P
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 09:02:29 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
  s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
  References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
  Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
  Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
- bh=sRsITLO5u/pAQ1Z0Am0m1XUSe/AdN8DsI20qxqEL8YY=; b=JvdGu9kxitbSrUVCv5eEE9qaFX
- A7Q3oEa7bDSmRD501rse9cz01KSGAr6/far+2kA42XJA14k1QoRNod0FInePb3+OydE2n+stnjTO3
- rcq54CEiJjYbSQF+O1mIzxw6rEgK7EMFXSV1BQYFI3pls4nPvXUTq5YmIO2JFPmEV6Ig=;
+ bh=3knO7OSDFmDrjBjUFT/RKq5UesrI35HL2yAjB5FjxUQ=; b=KKqMO7ku8+sHLs6c2XiTL5FYUM
+ X/U+EMcydUfqksaFOUHi7pLm6xHOZxFzf/wmEtLiNY5hvjBtbjcWsi/5kEXmFvs9P4gLJBYJhM9St
+ X6imZ6F02flpYAKBRyXWkuX3Xj+VSpWJMcZmFzuz1gJKvEPG3rKLlyBOH+f4nnF3PFmM=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
  (envelope-from <andrew@lunn.ch>)
- id 1n9DVR-001Yvk-Ii; Sun, 16 Jan 2022 22:56:09 +0100
-Date: Sun, 16 Jan 2022 22:56:09 +0100
+ id 1n9DbP-001YxH-83; Sun, 16 Jan 2022 23:02:19 +0100
+Date: Sun, 16 Jan 2022 23:02:19 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Tobias Waldekranz <tobias@waldekranz.com>
-Subject: Re: [PATCH net 2/4] dt-bindings: net: Document fsl,erratum-a009885
-Message-ID: <YeSUeURzYvX27eT7@lunn.ch>
+Subject: Re: [PATCH net 1/4] net/fsl: xgmac_mdio: Add workaround for erratum
+ A-009885
+Message-ID: <YeSV67WeMTSDigUK@lunn.ch>
 References: <20220116211529.25604-1-tobias@waldekranz.com>
- <20220116211529.25604-3-tobias@waldekranz.com>
+ <20220116211529.25604-2-tobias@waldekranz.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220116211529.25604-3-tobias@waldekranz.com>
+In-Reply-To: <20220116211529.25604-2-tobias@waldekranz.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,11 +66,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jan 16, 2022 at 10:15:27PM +0100, Tobias Waldekranz wrote:
-> Update FMan binding documentation with the newly added workaround for
-> erratum A-009885.
+On Sun, Jan 16, 2022 at 10:15:26PM +0100, Tobias Waldekranz wrote:
+> Once an MDIO read transaction is initiated, we must read back the data
+> register within 16 MDC cycles after the transaction completes. Outside
+> of this window, reads may return corrupt data.
 > 
-> Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
+> Therefore, disable local interrupts in the critical section, to
+> maximize the probability that we can satisfy this requirement.
+
+Since this is for net, a Fixes: tag would be nice. Maybe that would be
+for the commit which added this driver, or maybe when the DTSI files
+for the SOCs which have this errata we added?
 
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
