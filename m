@@ -2,80 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E84A48FF2C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jan 2022 22:37:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5652948FF63
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Jan 2022 22:58:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JcT0D3l2kz30QR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 08:37:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JcTSs2J3jz3bVG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 08:58:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=waldekranz-com.20210112.gappssmtp.com header.i=@waldekranz-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=AeFRxDPo;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=fmxgnOFp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=waldekranz.com (client-ip=2a00:1450:4864:20::32c;
- helo=mail-wm1-x32c.google.com; envelope-from=tobias@waldekranz.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch
+ (client-ip=185.16.172.187; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=waldekranz-com.20210112.gappssmtp.com
- header.i=@waldekranz-com.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=AeFRxDPo; dkim-atps=neutral
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com
- [IPv6:2a00:1450:4864:20::32c])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256
+ header.s=20171124 header.b=fmxgnOFp; dkim-atps=neutral
+Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JcSWV1T5Jz2xCy
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 08:16:05 +1100 (AEDT)
-Received: by mail-wm1-x32c.google.com with SMTP id
- ay4-20020a05600c1e0400b0034a81a94607so17329216wmb.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Jan 2022 13:16:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=waldekranz-com.20210112.gappssmtp.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:organization:content-transfer-encoding;
- bh=mhkaL5juH4guy48KuGF+fYnZTlI1q0boY2IwcDBWEPQ=;
- b=AeFRxDPoC2zhcdlERdxoTZs/hjLPyAaR4LmBcGv+bnERRK1afCv7/Jb83hAm2MxNvF
- gUjoSiL49a55oqlWGKn+yHqb3uG3uySVzV+VOVSnptDokuyAvAKBrlVBftHHfobqOn19
- lwJ4g2GuC1VGFmfPJeYMur91L8yO1AdMJpx8GwxAVLXzZ9Hhg0COy+GlVMGW/s1Dsjc5
- jDHu17OnNA9+IRP5fNQlNabpSZy/StlcQ3BSuDqoYLR5ObxkWXnmK1JJtBMzahs00pNi
- 0qk5jyVvU7EQ8DoV1VbYVh6s7FdS6lCKclPiLmUHP09NNb3M0jXBAzZ6AZ6I3OnAR27h
- HesA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:organization:content-transfer-encoding;
- bh=mhkaL5juH4guy48KuGF+fYnZTlI1q0boY2IwcDBWEPQ=;
- b=0KhNfXc9s7yeHfenaXwIRhNLzJFtkNKyd6XJF+IK4KGdrIWk6OA/sjsMf9DifV+r0/
- gS4fPwTRnrCX/z1ruRLMgWJhBTdU6XKJ72fPjkMz29uSpTcuKrJgsT6tXwP58iOpgIiu
- 2X7cAi2pf/FwyLZiL/9uNGSncNxhS9UdY4DHaOC734sagAWdaazZtt6420heVIKYPFx1
- AHYShLQAArOj7ciR0/fyIk7xSv0kLrX4uETo8XDPkkY8mb3YhK6tKfQKUrSmmzZfvmbR
- XquY2+502GR5AHIOFDowc2vQRakZlwGpW46N1UvvSlCiIiFIocHQTXAC62TrGDHmIYM4
- 4S4w==
-X-Gm-Message-State: AOAM532eJsUyusrLwC0GRHjeEIldkulvH7NuDo+Yb7cr4+0tFXEN9mrM
- zPTOchutsViPh3ZxP52mCAks2g==
-X-Google-Smtp-Source: ABdhPJyl6EaOH2pNOGinkeqLhxtw/E//xARDY73P8G8xmFz/3e3RakxjgzdvwghHMOymGyyM/lgBAg==
-X-Received: by 2002:adf:eec9:: with SMTP id a9mr16478793wrp.178.1642367761748; 
- Sun, 16 Jan 2022 13:16:01 -0800 (PST)
-Received: from veiron.westermo.com (static-193-12-47-89.cust.tele2.se.
- [193.12.47.89])
- by smtp.gmail.com with ESMTPSA id l12sm8820445wrz.15.2022.01.16.13.16.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 16 Jan 2022 13:16:01 -0800 (PST)
-From: Tobias Waldekranz <tobias@waldekranz.com>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Subject: [PATCH net 4/4] net/fsl: xgmac_mdio: Fix incorrect iounmap when
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JcTSF0ykfz2xDY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 08:58:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+ s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+ Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+ Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+ bh=Y62WBf7WncHPVF1rPc3S4E5knHjrE+JJV2IuxkQAh3U=; b=fmxgnOFptHQcJCqzjXWVmbFkm9
+ VO8Lo4wAfNHSboCGaSwhYHYTx29Y24Kn/kw5WUZtK0DSSLWxwGufDNVsbrqkJnHTj4CggAeMRx7jr
+ TUlEkB0mudzVRSGnykFM10wFkj7THfBq3UPX86tuG1HAuogm/HSeMweyC6BiDPPOOMqo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+ (envelope-from <andrew@lunn.ch>)
+ id 1n9DTN-001Yup-Iv; Sun, 16 Jan 2022 22:54:01 +0100
+Date: Sun, 16 Jan 2022 22:54:01 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Tobias Waldekranz <tobias@waldekranz.com>
+Subject: Re: [PATCH net 4/4] net/fsl: xgmac_mdio: Fix incorrect iounmap when
  removing module
-Date: Sun, 16 Jan 2022 22:15:29 +0100
-Message-Id: <20220116211529.25604-5-tobias@waldekranz.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220116211529.25604-1-tobias@waldekranz.com>
+Message-ID: <YeST+TAREKIh2RXp@lunn.ch>
 References: <20220116211529.25604-1-tobias@waldekranz.com>
+ <20220116211529.25604-5-tobias@waldekranz.com>
 MIME-Version: 1.0
-Organization: Westermo
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Mon, 17 Jan 2022 08:35:45 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220116211529.25604-5-tobias@waldekranz.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,37 +60,24 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: devicetree@vger.kernel.org, madalin.bucur@nxp.com, robh+dt@kernel.org,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org
+ paulus@samba.org, kuba@kernel.org, netdev@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-As reported by sparse: In the remove path, the driver would attempt to
-unmap its own priv pointer - instead of the io memory that it mapped
-in probe.
+On Sun, Jan 16, 2022 at 10:15:29PM +0100, Tobias Waldekranz wrote:
+> As reported by sparse: In the remove path, the driver would attempt to
+> unmap its own priv pointer - instead of the io memory that it mapped
+> in probe.
 
-Fixes: 9f35a7342cff ("net/fsl: introduce Freescale 10G MDIO driver")
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
----
- drivers/net/ethernet/freescale/xgmac_mdio.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Hi Tobias
 
-diff --git a/drivers/net/ethernet/freescale/xgmac_mdio.c b/drivers/net/ethernet/freescale/xgmac_mdio.c
-index bf566ac3195b..266e562bd67a 100644
---- a/drivers/net/ethernet/freescale/xgmac_mdio.c
-+++ b/drivers/net/ethernet/freescale/xgmac_mdio.c
-@@ -331,9 +331,10 @@ static int xgmac_mdio_probe(struct platform_device *pdev)
- static int xgmac_mdio_remove(struct platform_device *pdev)
- {
- 	struct mii_bus *bus = platform_get_drvdata(pdev);
-+	struct mdio_fsl_priv *priv = bus->priv;
- 
- 	mdiobus_unregister(bus);
--	iounmap(bus->priv);
-+	iounmap(priv->mdio_base);
- 	mdiobus_free(bus);
- 
- 	return 0;
--- 
-2.25.1
+The change itself is O.K.
 
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+But you could also change to devm_ so the core will handle the unmap,
+it is very unlikely to unmap the wrong thing.
+
+     Andrew
