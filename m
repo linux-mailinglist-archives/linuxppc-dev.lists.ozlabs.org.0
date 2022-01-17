@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA5D490034
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 03:28:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9CC490035
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 03:28:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JcbRL1C78z3bTs
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 13:27:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JcbS30h79z3cBN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 13:28:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W53le1h8;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hdxljrK+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,42 +17,41 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=W53le1h8; dkim-atps=neutral
+ header.s=Intel header.b=hdxljrK+; dkim-atps=neutral
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JcbQj0YmPz2xYK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 13:27:24 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JcbQj6LxRz2xYK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 13:27:25 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1642386445; x=1673922445;
+ t=1642386446; x=1673922446;
  h=date:from:to:cc:subject:message-id:mime-version:
  content-transfer-encoding;
- bh=xrF3DgpbVRMMjxdmT/d1bOvDIJsl16BUofkPuHNA31I=;
- b=W53le1h822xxVj5CuzD5dBh3HKiodqNU0rfqhWl9pwesomwE9+K3lmYJ
- /rhF5epB1EyVP19yruT93Jny9uEqQLvwrQhXneqckAIapZsCBHjDptxFy
- Ts6LLfycGz58HHbtfbJxOPURJfdHpUINqPakWW4Kg6fTgMrVof1J2DmoF
- oNJJi7vVjOl4jC/ZcuIPL0h6/jss2yXH/ZbR5ZqLM5Rx7t6PX19ZLDhts
- tYqqbS02dJCR6Ewiz4Dm7fFv9xqWJ4coID3H7nKCA3q+JZSLLNMMDkSkb
- 60yUMn0Du0Dl/XYWzAzk7NgE7Yo1HreCEpTgUPImnH0HjbQ4IESOUOhMa A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10229"; a="268913477"
-X-IronPort-AV: E=Sophos;i="5.88,294,1635231600"; d="scan'208";a="268913477"
+ bh=sk6BVF/Fvyp9cXGisxpqdVkKply7JaDTZAdy+r8vTnU=;
+ b=hdxljrK+aYM7bTfqawq7RMTFSVL526zFtrmrBnhuxDY+Bf8NnxdtklcD
+ 35xWxnxYcyFa235opaE9bPo5ghKD54Y+WNxOXdTVzSSlyIvorx/1Bcz97
+ Kd+mmdK6hvhDd8P2P5CPdfNVZwCPJ4jsWcIQloNY9+WNBI1GHXUiQqFnt
+ /+ypExVZ0g5bgAR7u3+hKcX7Hv3jvvxxyF5zlHNLnaefKAFYmEPEl0L8K
+ pNwhBXWqq2WH44MnsNXqYyP0d/4lKyEB+B+XtHG/nDmAeePFRtcCC9YPd
+ 9YnfskOR17Iyf/KXbKmdp/c3/1di39b1f+S2kVx8d38oFhg6uyP+fQfUG w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10229"; a="268913479"
+X-IronPort-AV: E=Sophos;i="5.88,294,1635231600"; d="scan'208";a="268913479"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Jan 2022 18:26:22 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,294,1635231600"; d="scan'208";a="692912255"
+X-IronPort-AV: E=Sophos;i="5.88,294,1635231600"; d="scan'208";a="692912256"
 Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
  by orsmga005.jf.intel.com with ESMTP; 16 Jan 2022 18:26:21 -0800
 Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1n9Hiu-000BB8-RI; Mon, 17 Jan 2022 02:26:20 +0000
-Date: Mon, 17 Jan 2022 10:26:05 +0800
+ id 1n9Hiu-000BBB-SL; Mon, 17 Jan 2022 02:26:20 +0000
+Date: Mon, 17 Jan 2022 10:26:08 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- d37823c3528e5e0705fc7746bcbc2afffb619259
-Message-ID: <61e4d3bd.xc+xwyZ1MwlgHhEB%lkp@intel.com>
+Subject: [powerpc:merge] BUILD SUCCESS 863a7c25c334ed368b4508fccae92d6bb61e71a4
+Message-ID: <61e4d3c0.k/0f4ouu6KCqk5KT%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -73,12 +72,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: d37823c3528e5e0705fc7746bcbc2afffb619259  powerpc/32s: Fix kasan_init_region() for KASAN
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 863a7c25c334ed368b4508fccae92d6bb61e71a4  Automatic merge of 'master' into merge (2022-01-15 10:55)
 
-elapsed time: 740m
+elapsed time: 739m
 
-configs tested: 173
+configs tested: 177
 configs skipped: 3
 
 The following configs have been built successfully.
@@ -111,9 +110,6 @@ parisc                           allyesconfig
 xtensa                  cadence_csp_defconfig
 mips                     decstation_defconfig
 powerpc                     tqm8548_defconfig
-mips                       capcella_defconfig
-powerpc                  storcenter_defconfig
-sh                          urquell_defconfig
 powerpc                      pcm030_defconfig
 mips                            ar7_defconfig
 sh                 kfr2r09-romimage_defconfig
@@ -125,6 +121,10 @@ powerpc                       maple_defconfig
 sh                         microdev_defconfig
 sh                            titan_defconfig
 mips                        vocore2_defconfig
+openrisc                         alldefconfig
+mips                          rb532_defconfig
+m68k                           sun3_defconfig
+xtensa                  nommu_kc705_defconfig
 arc                                 defconfig
 sh                             sh03_defconfig
 powerpc                      ppc40x_defconfig
@@ -151,10 +151,11 @@ sh                   rts7751r2dplus_defconfig
 mips                         cobalt_defconfig
 arm                             pxa_defconfig
 sh                                  defconfig
+mips                       capcella_defconfig
 xtensa                       common_defconfig
 arm                  randconfig-c002-20220116
-ia64                                defconfig
 ia64                             allmodconfig
+ia64                                defconfig
 ia64                             allyesconfig
 m68k                             allmodconfig
 m68k                                defconfig
@@ -163,10 +164,10 @@ nios2                               defconfig
 arc                              allyesconfig
 nds32                             allnoconfig
 nds32                               defconfig
-nios2                            allyesconfig
 csky                                defconfig
 alpha                               defconfig
 alpha                            allyesconfig
+nios2                            allyesconfig
 h8300                            allyesconfig
 sh                               allmodconfig
 parisc                              defconfig
@@ -181,24 +182,24 @@ i386                   debian-10.3-kselftests
 i386                              debian-10.3
 mips                             allyesconfig
 mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
 powerpc                          allyesconfig
-x86_64                        randconfig-a004
+powerpc                          allmodconfig
+powerpc                           allnoconfig
 x86_64                        randconfig-a002
 x86_64                        randconfig-a006
-i386                          randconfig-a003
+x86_64                        randconfig-a004
 i386                          randconfig-a001
+i386                          randconfig-a003
 i386                          randconfig-a005
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-x86_64               randconfig-a016-20220117
 x86_64               randconfig-a012-20220117
 x86_64               randconfig-a013-20220117
 x86_64               randconfig-a011-20220117
-x86_64               randconfig-a014-20220117
 x86_64               randconfig-a015-20220117
+x86_64               randconfig-a014-20220117
+x86_64               randconfig-a016-20220117
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
 i386                          randconfig-a012
 i386                          randconfig-a014
 i386                          randconfig-a016
@@ -210,14 +211,14 @@ riscv                             allnoconfig
 riscv                               defconfig
 riscv                          rv32_defconfig
 riscv                            allmodconfig
-x86_64                    rhel-8.3-kselftests
 um                           x86_64_defconfig
 um                             i386_defconfig
 x86_64                           allyesconfig
 x86_64                              defconfig
 x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
 x86_64                                  kexec
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
 
 clang tested configs:
 arm                  randconfig-c002-20220116
@@ -230,19 +231,21 @@ s390                 randconfig-c005-20220116
 mips                          rm200_defconfig
 arm                             mxs_defconfig
 arm                         mv78xx0_defconfig
-powerpc                          g5_defconfig
+powerpc                 mpc8313_rdb_defconfig
+mips                      bmips_stb_defconfig
+powerpc                      acadia_defconfig
 powerpc                 mpc832x_rdb_defconfig
 mips                        omega2p_defconfig
 powerpc                    gamecube_defconfig
+arm64                            allyesconfig
 x86_64               randconfig-a005-20220117
 x86_64               randconfig-a004-20220117
 x86_64               randconfig-a001-20220117
 x86_64               randconfig-a006-20220117
 x86_64               randconfig-a002-20220117
 x86_64               randconfig-a003-20220117
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
 x86_64                        randconfig-a001
+x86_64                        randconfig-a003
 i386                          randconfig-a002
 i386                          randconfig-a006
 i386                          randconfig-a004
@@ -252,6 +255,7 @@ i386                 randconfig-a006-20220117
 i386                 randconfig-a004-20220117
 i386                 randconfig-a002-20220117
 i386                 randconfig-a003-20220117
+x86_64                        randconfig-a005
 x86_64                        randconfig-a012
 x86_64                        randconfig-a014
 x86_64                        randconfig-a016
