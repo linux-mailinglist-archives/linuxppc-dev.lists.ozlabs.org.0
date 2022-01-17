@@ -1,107 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3309F490357
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 09:00:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3684F490395
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 09:18:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JckqV0yNjz305K
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 19:00:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JclCJ0KNWz3002
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 19:18:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=km3F76Z9;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ARIRBjMG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=km3F76Z9; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=ARIRBjMG; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jckpm14Z2z2x9H
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 19:00:15 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20H7unur040957; 
- Mon, 17 Jan 2022 08:00:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=SzMfjj8dKQEYb8+oDNN5G/wJdH7yUOjXvV9x+tZndyY=;
- b=km3F76Z9xwgyuKBs0WKy5hsluFCD2gBZatllVsSDD543NlDG1ESKK+j4Jz1iPSJtWebk
- tm7eX6MKNAJmlWXFL1UFHXzKs9Vp81GqkehbfpiuoU2Wh7Z1vqG6/B3fsgyyjnkGkJJn
- DQmWNeos8OsH3xVu+buM8LfelkKyZtqAyRucNm/jyPTbk9QJ3/VBn2SwlPG+mAZOYxuz
- b8xijTQCTvwVYQPDIYEYQiETonzUoOTdWApLxVDrI6ZqskSnr1OS5SwGHIrnoxjkgPqo
- rmONZF0g+eJgtFvM0SIb5aRXYS95+Qhfz8axvIIoPUMUpdoHSFldx432eMRfITRc0Kyo Bg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dn4gxr1m1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Jan 2022 08:00:07 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20H807km010760;
- Mon, 17 Jan 2022 08:00:07 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dn4gxr1jy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Jan 2022 08:00:06 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20H7qgjt018773;
- Mon, 17 Jan 2022 08:00:05 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06fra.de.ibm.com with ESMTP id 3dknhhrq1r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Jan 2022 08:00:04 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 20H8012c45875526
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Jan 2022 08:00:01 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7BB454C059;
- Mon, 17 Jan 2022 08:00:01 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 49BD24C04A;
- Mon, 17 Jan 2022 07:59:57 +0000 (GMT)
-Received: from [9.163.1.44] (unknown [9.163.1.44])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 17 Jan 2022 07:59:56 +0000 (GMT)
-Message-ID: <53a7254d-a2fa-928a-df78-d773a53bbf4b@linux.ibm.com>
-Date: Mon, 17 Jan 2022 13:29:55 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JclBc0vNPz2x9g
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 19:17:26 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 64B8CB80C85;
+ Mon, 17 Jan 2022 08:17:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66080C36AE7;
+ Mon, 17 Jan 2022 08:17:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1642407440;
+ bh=7V2uwOg2XQE1qErJ/nwZj130Wi+eTJqoL9PiUIS/Pns=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=ARIRBjMGLNFTzyzqbzZQTigMaGQKjAFdQ0c4oJ4IhKR/qZYM8DV6yeq+hcYK5JfXA
+ MILnT071KlV1itZZMKNAiiFe/jzhUn3qA9tEbN7YrC2S/Zs3Cr7yu3NxPy+wrawLju
+ SNmb/dPtxcYjASeq6EnT8mZ0l6NDJNcJzC0iEKb4=
+Date: Mon, 17 Jan 2022 09:17:17 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2] powerpc: Add missing SPDX license identifiers to DTS
+ files
+Message-ID: <YeUmDV8vgHO592qt@kroah.com>
+References: <633873803244c2122381cb11228a6a9a7385abd4.1642402958.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH v2 1/2] mm/cma: provide option to opt out from exposing
- pages on activation failure
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
- linux-mm@kvack.org, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-References: <20220112193340.149020-1-hbathini@linux.ibm.com>
- <20220112193340.149020-2-hbathini@linux.ibm.com>
- <debd11c4-4a7a-e650-7bc6-965d58ef95cf@redhat.com>
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <debd11c4-4a7a-e650-7bc6-965d58ef95cf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: whZIziROwfJ9tU89IJ1qT0F15u1QWt35
-X-Proofpoint-ORIG-GUID: jbYsMs44m4Y8Qmy0Rnh0hdz0LRdcr-UV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-17_02,2022-01-14_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- adultscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 suspectscore=0
- phishscore=0 clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2201170048
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <633873803244c2122381cb11228a6a9a7385abd4.1642402958.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,45 +62,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: osalvador@suse.de, mahesh@linux.ibm.com, sourabhjain@linux.ibm.com,
- mike.kravetz@oracle.com
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ "linux-spdx@vger.kernel.org" <linux-spdx@vger.kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Jan 17, 2022 at 07:03:45AM +0000, Christophe Leroy wrote:
+> Several DTS files are missing SPDX license identifiers.
 
-On 13/01/22 2:00 pm, David Hildenbrand wrote:
->> +{
->> +	if (!cma)
->> +		return;
-> 
-> Do we really need that check for NULL?
-
-Probably not.
+Normally DTS files are not just GPLv2, are you sure this is intended?
 
 > 
->> +
->> +	cma->reserve_pages_on_error = true;
->> +}
->> +
->>   /**
->>    * cma_init_reserved_mem() - create custom contiguous area from reserved memory
->>    * @base: Base address of the reserved area
->> @@ -204,6 +214,7 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
->>   	cma->base_pfn = PFN_DOWN(base);
->>   	cma->count = size >> PAGE_SHIFT;
->>   	cma->order_per_bit = order_per_bit;
->> +	cma->reserve_pages_on_error = false;
-> 
-> I think you can drop that; should already be initialized to 0.
-> 
-> 
-> Apart from that
-> 
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> 
+> For files in fsl/ subdirectory, GPL v2 or later is used based
+> on the comments in the files.
 
-Thanks for the review, David.
-Posted v3 with the changes suggested above.
+You do not seem to have gotten the license correct for these, the text
+in the file comments disagrees with GPLv2+ only.
 
-- Hari
+Please be VERY careful when adding license tags to files like this, if
+this patch was accepted it would get very confusing as they are
+contradictions in the file itself suddenly.
+
+Also, when adding SPDX lines, remove the boiler-plate license text at
+the same time so that we can verify that the SPDX line is correct.  If
+you had done that here, it would be obvious that the patch is incorrect.
+
+As-is, this patch is not acceptable, sorry.
+
+greg k-h
