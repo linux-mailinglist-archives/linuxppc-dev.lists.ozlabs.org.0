@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0479E490E04
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 18:07:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76BB4490E28
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 18:08:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jcyxx6M8Xz3f7Q
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 04:07:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jcyyn2TJlz3f8k
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 04:08:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n6vduLhL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rePMvyqs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=n6vduLhL; 
+ header.s=k20201202 header.b=rePMvyqs; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jcynq6DxDz3cNQ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 04:00:15 +1100 (AEDT)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JcypM2BZ0z3cT1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 04:00:43 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 396ED611B9;
- Mon, 17 Jan 2022 17:00:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94CCBC36AE3;
- Mon, 17 Jan 2022 17:00:10 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 003E2B81142;
+ Mon, 17 Jan 2022 17:00:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01017C36AE7;
+ Mon, 17 Jan 2022 17:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1642438812;
- bh=IoB7Upsgx+3TaNkP2jKC4svaYwVImu5WjHntAS3c59E=;
+ s=k20201202; t=1642438839;
+ bh=fgpNcpGwTQOlUCWiGZGZm/cuplCzU4SORglq/H8Knog=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=n6vduLhLcdgiMRwBZ4aUYI5n4RIMRIvC7S8LvFnapYK0DGahw96MkvG4gvaSly8B0
- 7L8BgDDxxj3WY876wg/r/IwtavmVJD0kjEJG+0NNC3+EdI16Eh8i6/a6muZ7QrzRSP
- Lwb8kK5f+M9/HLptW5OeKLYGxa0IIWG8Fc+a01F+VPgIeNAYYotA44Y0ftf145A3Hp
- VuUuEYQIukztGoU+qiuvebPJyhCKdxgxND9zrZ0NwnGvGmav5dA3iYU41kZWydtrdm
- KxNMGwFnIcDjccjNEPxPwf8SPKvu5cUt7X642kAXDi1jwizYHLjdkXyS0ua03V+0su
- uZnklk2t+V+Yw==
+ b=rePMvyqs67cKnsozoGdD5jCYryZ6KIpvurQzfgm2Sw/20hS6f/+uWWHCs7t6SBAop
+ Lctt6sqmt/m+86WRHsHiVp15SLVw0iFKRy4A7PcNsSVUUn3KcLoGGWcjFeQ1+3zMvu
+ qGqSs+zHYZTCRvJQ9XlEMKyP+ByiKPpf51rVehoKcJLejFh3cQGAp5/5rsZ66aWBb4
+ QH40PwLGlI1OobO34rTqEnQ4ozCfYEQvg2Hxd/aHSC8eUaN9NVA3mAz9MwgMuuZAa1
+ FgWCl9DtHdAyfM5CSZN1wyzgYVM+8NV24T84cUHGz+KdT3tyE9SzLnyj1MOTwEERFA
+ xCXL1nT2Y6TXQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.16 30/52] powerpc/fadump: Fix inaccurate CPU state
- info in vmcore generated with panic
-Date: Mon, 17 Jan 2022 11:58:31 -0500
-Message-Id: <20220117165853.1470420-30-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.16 39/52] selftests/powerpc: Add a test of
+ sigreturning to the kernel
+Date: Mon, 17 Jan 2022 11:58:40 -0500
+Message-Id: <20220117165853.1470420-39-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220117165853.1470420-1-sashal@kernel.org>
 References: <20220117165853.1470420-1-sashal@kernel.org>
@@ -66,140 +66,191 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, sfr@canb.auug.org.au,
- srikar@linux.vnet.ibm.com, nathanl@linux.ibm.com, ego@linux.vnet.ibm.com,
- sxwjean@gmail.com, npiggin@gmail.com, nathan@kernel.org, nick.child@ibm.com,
- clg@kaod.org, aneesh.kumar@linux.ibm.com, parth@linux.ibm.com,
- yukuai3@huawei.com, linuxppc-dev@lists.ozlabs.org, robh@kernel.org,
- Hari Bathini <hbathini@linux.ibm.com>
+Cc: Sasha Levin <sashal@kernel.org>, shuah@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 06e629c25daa519be620a8c17359ae8fc7a2e903 ]
+[ Upstream commit a8968521cfdc3e339fe69473d6632e0aa8d7202a ]
 
-In panic path, fadump is triggered via a panic notifier function.
-Before calling panic notifier functions, smp_send_stop() gets called,
-which stops all CPUs except the panic'ing CPU. Commit 8389b37dffdc
-("powerpc: stop_this_cpu: remove the cpu from the online map.") and
-again commit bab26238bbd4 ("powerpc: Offline CPU in stop_this_cpu()")
-started marking CPUs as offline while stopping them. So, if a kernel
-has either of the above commits, vmcore captured with fadump via panic
-path would not process register data for all CPUs except the panic'ing
-CPU. Sample output of crash-utility with such vmcore:
+We have a general signal fuzzer, sigfuz, which can modify the MSR & NIP
+before sigreturn. But the chance of it hitting a kernel address and also
+clearing MSR_PR is fairly slim.
 
-  # crash vmlinux vmcore
-  ...
-        KERNEL: vmlinux
-      DUMPFILE: vmcore  [PARTIAL DUMP]
-          CPUS: 1
-          DATE: Wed Nov 10 09:56:34 EST 2021
-        UPTIME: 00:00:42
-  LOAD AVERAGE: 2.27, 0.69, 0.24
-         TASKS: 183
-      NODENAME: XXXXXXXXX
-       RELEASE: 5.15.0+
-       VERSION: #974 SMP Wed Nov 10 04:18:19 CST 2021
-       MACHINE: ppc64le  (2500 Mhz)
-        MEMORY: 8 GB
-         PANIC: "Kernel panic - not syncing: sysrq triggered crash"
-           PID: 3394
-       COMMAND: "bash"
-          TASK: c0000000150a5f80  [THREAD_INFO: c0000000150a5f80]
-           CPU: 1
-         STATE: TASK_RUNNING (PANIC)
+So add a specific test of sigreturn to a kernel address, both with and
+without attempting to clear MSR_PR (which the kernel must block).
 
-  crash> p -x __cpu_online_mask
-  __cpu_online_mask = $1 = {
-    bits = {0x2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}
-  }
-  crash>
-  crash>
-  crash> p -x __cpu_active_mask
-  __cpu_active_mask = $2 = {
-    bits = {0xff, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}
-  }
-  crash>
-
-While this has been the case since fadump was introduced, the issue
-was not identified for two probable reasons:
-
-  - In general, the bulk of the vmcores analyzed were from crash
-    due to exception.
-
-  - The above did change since commit 8341f2f222d7 ("sysrq: Use
-    panic() to force a crash") started using panic() instead of
-    deferencing NULL pointer to force a kernel crash. But then
-    commit de6e5d38417e ("powerpc: smp_send_stop do not offline
-    stopped CPUs") stopped marking CPUs as offline till kernel
-    commit bab26238bbd4 ("powerpc: Offline CPU in stop_this_cpu()")
-    reverted that change.
-
-To ensure post processing register data of all other CPUs happens
-as intended, let panic() function take the crash friendly path (read
-crash_smp_send_stop()) with the help of crash_kexec_post_notifiers
-option. Also, as register data for all CPUs is captured by f/w, skip
-IPI callbacks here for fadump, to avoid any complications in finding
-the right backtraces.
-
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20211207103719.91117-2-hbathini@linux.ibm.com
+Link: https://lore.kernel.org/r/20211209115944.4062384-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/fadump.c |  8 ++++++++
- arch/powerpc/kernel/smp.c    | 10 ++++++++++
- 2 files changed, 18 insertions(+)
+ .../selftests/powerpc/signal/.gitignore       |   1 +
+ .../testing/selftests/powerpc/signal/Makefile |   1 +
+ .../powerpc/signal/sigreturn_kernel.c         | 132 ++++++++++++++++++
+ 3 files changed, 134 insertions(+)
+ create mode 100644 tools/testing/selftests/powerpc/signal/sigreturn_kernel.c
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index b7ceb041743c9..60f5fc14aa235 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1641,6 +1641,14 @@ int __init setup_fadump(void)
- 	else if (fw_dump.reserve_dump_area_size)
- 		fw_dump.ops->fadump_init_mem_struct(&fw_dump);
+diff --git a/tools/testing/selftests/powerpc/signal/.gitignore b/tools/testing/selftests/powerpc/signal/.gitignore
+index ce3375cd8e73e..8f6c816099a48 100644
+--- a/tools/testing/selftests/powerpc/signal/.gitignore
++++ b/tools/testing/selftests/powerpc/signal/.gitignore
+@@ -4,3 +4,4 @@ signal_tm
+ sigfuz
+ sigreturn_vdso
+ sig_sc_double_restart
++sigreturn_kernel
+diff --git a/tools/testing/selftests/powerpc/signal/Makefile b/tools/testing/selftests/powerpc/signal/Makefile
+index d6ae54663aed7..84e201572466d 100644
+--- a/tools/testing/selftests/powerpc/signal/Makefile
++++ b/tools/testing/selftests/powerpc/signal/Makefile
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ TEST_GEN_PROGS := signal signal_tm sigfuz sigreturn_vdso sig_sc_double_restart
++TEST_GEN_PROGS += sigreturn_kernel
  
-+	/*
-+	 * In case of panic, fadump is triggered via ppc_panic_event()
-+	 * panic notifier. Setting crash_kexec_post_notifiers to 'true'
-+	 * lets panic() function take crash friendly path before panic
-+	 * notifiers are invoked.
-+	 */
-+	crash_kexec_post_notifiers = true;
+ CFLAGS += -maltivec
+ $(OUTPUT)/signal_tm: CFLAGS += -mhtm
+diff --git a/tools/testing/selftests/powerpc/signal/sigreturn_kernel.c b/tools/testing/selftests/powerpc/signal/sigreturn_kernel.c
+new file mode 100644
+index 0000000000000..0a1b6e591eeed
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/signal/sigreturn_kernel.c
+@@ -0,0 +1,132 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Test that we can't sigreturn to kernel addresses, or to kernel mode.
++ */
 +
- 	return 1;
- }
- subsys_initcall(setup_fadump);
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 7201fdcf02f1c..c338f9d8ab37a 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -61,6 +61,7 @@
- #include <asm/cpu_has_feature.h>
- #include <asm/ftrace.h>
- #include <asm/kup.h>
-+#include <asm/fadump.h>
- 
- #ifdef DEBUG
- #include <asm/udbg.h>
-@@ -638,6 +639,15 @@ void crash_smp_send_stop(void)
- {
- 	static bool stopped = false;
- 
-+	/*
-+	 * In case of fadump, register data for all CPUs is captured by f/w
-+	 * on ibm,os-term rtas call. Skip IPI callbacks to other CPUs before
-+	 * this rtas call to avoid tricky post processing of those CPUs'
-+	 * backtraces.
-+	 */
-+	if (should_fadump_crash())
-+		return;
++#define _GNU_SOURCE
 +
- 	if (stopped)
- 		return;
- 
++#include <stdio.h>
++#include <signal.h>
++#include <stdlib.h>
++#include <sys/types.h>
++#include <sys/wait.h>
++#include <unistd.h>
++
++#include "utils.h"
++
++#define MSR_PR (1ul << 14)
++
++static volatile unsigned long long sigreturn_addr;
++static volatile unsigned long long sigreturn_msr_mask;
++
++static void sigusr1_handler(int signo, siginfo_t *si, void *uc_ptr)
++{
++	ucontext_t *uc = (ucontext_t *)uc_ptr;
++
++	if (sigreturn_addr)
++		UCONTEXT_NIA(uc) = sigreturn_addr;
++
++	if (sigreturn_msr_mask)
++		UCONTEXT_MSR(uc) &= sigreturn_msr_mask;
++}
++
++static pid_t fork_child(void)
++{
++	pid_t pid;
++
++	pid = fork();
++	if (pid == 0) {
++		raise(SIGUSR1);
++		exit(0);
++	}
++
++	return pid;
++}
++
++static int expect_segv(pid_t pid)
++{
++	int child_ret;
++
++	waitpid(pid, &child_ret, 0);
++	FAIL_IF(WIFEXITED(child_ret));
++	FAIL_IF(!WIFSIGNALED(child_ret));
++	FAIL_IF(WTERMSIG(child_ret) != 11);
++
++	return 0;
++}
++
++int test_sigreturn_kernel(void)
++{
++	struct sigaction act;
++	int child_ret, i;
++	pid_t pid;
++
++	act.sa_sigaction = sigusr1_handler;
++	act.sa_flags = SA_SIGINFO;
++	sigemptyset(&act.sa_mask);
++
++	FAIL_IF(sigaction(SIGUSR1, &act, NULL));
++
++	for (i = 0; i < 2; i++) {
++		// Return to kernel
++		sigreturn_addr = 0xcull << 60;
++		pid = fork_child();
++		expect_segv(pid);
++
++		// Return to kernel virtual
++		sigreturn_addr = 0xc008ull << 48;
++		pid = fork_child();
++		expect_segv(pid);
++
++		// Return out of range
++		sigreturn_addr = 0xc010ull << 48;
++		pid = fork_child();
++		expect_segv(pid);
++
++		// Return to no-man's land, just below PAGE_OFFSET
++		sigreturn_addr = (0xcull << 60) - (64 * 1024);
++		pid = fork_child();
++		expect_segv(pid);
++
++		// Return to no-man's land, above TASK_SIZE_4PB
++		sigreturn_addr = 0x1ull << 52;
++		pid = fork_child();
++		expect_segv(pid);
++
++		// Return to 0xd space
++		sigreturn_addr = 0xdull << 60;
++		pid = fork_child();
++		expect_segv(pid);
++
++		// Return to 0xe space
++		sigreturn_addr = 0xeull << 60;
++		pid = fork_child();
++		expect_segv(pid);
++
++		// Return to 0xf space
++		sigreturn_addr = 0xfull << 60;
++		pid = fork_child();
++		expect_segv(pid);
++
++		// Attempt to set PR=0 for 2nd loop (should be blocked by kernel)
++		sigreturn_msr_mask = ~MSR_PR;
++	}
++
++	printf("All children killed as expected\n");
++
++	// Don't change address, just MSR, should return to user as normal
++	sigreturn_addr = 0;
++	sigreturn_msr_mask = ~MSR_PR;
++	pid = fork_child();
++	waitpid(pid, &child_ret, 0);
++	FAIL_IF(!WIFEXITED(child_ret));
++	FAIL_IF(WIFSIGNALED(child_ret));
++	FAIL_IF(WEXITSTATUS(child_ret) != 0);
++
++	return 0;
++}
++
++int main(void)
++{
++	return test_harness(test_sigreturn_kernel, "sigreturn_kernel");
++}
 -- 
 2.34.1
 
