@@ -1,92 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5874903E1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 09:31:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3F84903EA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 09:33:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JclW737YRz3bTd
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 19:31:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JclXy4mVRz30NN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 19:33:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R/8vBoKO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bJOJfBEY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=R/8vBoKO; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=bJOJfBEY; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JclVK4T4Pz2xDM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 19:31:05 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20H7XQc4023217; 
- Mon, 17 Jan 2022 08:30:51 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JclXD4391z2x9H
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 19:32:44 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20H5vRnG014618; 
+ Mon, 17 Jan 2022 08:32:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=+IuSd/xIT5nKaAqvVoQ7lLHCzBNPT7/QFQyMsJdGo10=;
- b=R/8vBoKOxaCfryw5DIxLvuHBk+du7NS8upIRmTHtMRH0h6alqQAViBfZBq3Qf/YgN8cL
- DA4YgVLFSvywQFkkU60q/sHhprGKIi7UTnSyeht3Aw8CUd1PVSRPAH4Tsg2P8ZALn0Pw
- U/sA7c4ULgmyZ74UzdfMtXQ37oBVa8Hi9KDbkHU9fnM4Hl1ELG1NgeFMrX34eiHiWzGM
- edsiP1VEAHVWZLOg5OzOjT5cfLOjsuIyVe5y4NVQY/wOLCA9JWh4nrnYZQs7/kqFZYdr
- uySvOsRbgGur5NwIZonrfloTvr52YICRrabMAqXhbiBas+D9QHS3vasWaMwqWtaYC1Hr 3g== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dn0jk4rf4-1
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Z3qE7rvusP/nu70ds0Tc+daqJpL/nOOb/I8fXQhGz4M=;
+ b=bJOJfBEYvk/uaBMsIY2UR7IjQ2Ot7NAEWrbvYuk+YdxpPYslSrk+BjYJNgpW0/gP6W5I
+ eDPlwaeuh4S/NOD6m2GjypgIS7mUfiZyiLCbeSS9e/aHeiRrb7dAIqK8/1dZ8GCe5OOL
+ NS/k7Xw+8Aky1I9bAM3wytoLBEpDO/vgFW6DyLgrSXNmBsHH6wtP3GrE1GB9mtuvtxDi
+ MzpastZNYlqDgI2PV3CeZF5TZXRCkTPGm9BDED+DC3v6cqg1FzLJ7dTUJmY+FT4+Cpl4
+ wM4paRv/fUED80B77PAF5BlS/WGDEBPksF66lIbcU9Gb2CFp9GwZ+3paEfACqHFOxHhR fg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3dn2s02kh6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Jan 2022 08:30:51 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20H8M4vl002076;
- Mon, 17 Jan 2022 08:30:50 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma04dal.us.ibm.com with ESMTP id 3dknw9q7wy-1
+ Mon, 17 Jan 2022 08:32:39 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20H8OVuu024455;
+ Mon, 17 Jan 2022 08:32:38 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3dn2s02kgq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 17 Jan 2022 08:30:50 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 20H8UmEP33685818
+ Mon, 17 Jan 2022 08:32:38 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20H8PQEf024861;
+ Mon, 17 Jan 2022 08:32:36 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 3dknw8sk0v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 17 Jan 2022 08:32:36 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 20H8WUxw41419078
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Jan 2022 08:30:48 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 031BDAE05C;
- Mon, 17 Jan 2022 08:30:48 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3BD06AE064;
- Mon, 17 Jan 2022 08:30:45 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.43.65.33])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 17 Jan 2022 08:30:44 +0000 (GMT)
-X-Mailer: emacs 28.0.91 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, nvdimm@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3] powerpc/papr_scm: Implement initial support for
- injecting smart errors
-In-Reply-To: <20220113120252.1145671-1-vaibhav@linux.ibm.com>
-References: <20220113120252.1145671-1-vaibhav@linux.ibm.com>
-Date: Mon, 17 Jan 2022 14:00:42 +0530
-Message-ID: <871r167oi5.fsf@linux.ibm.com>
+ Mon, 17 Jan 2022 08:32:30 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D2A9AAE053;
+ Mon, 17 Jan 2022 08:32:30 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 02EB3AE051;
+ Mon, 17 Jan 2022 08:32:29 +0000 (GMT)
+Received: from li-c7b85bcc-2727-11b2-a85c-a9ba7f3a2193.ibm.com.com (unknown
+ [9.43.43.186]) by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 17 Jan 2022 08:32:28 +0000 (GMT)
+From: Ganesh Goudar <ganeshgr@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v4] powerpc/mce: Avoid using irq_work_queue() in realmode
+Date: Mon, 17 Jan 2022 14:02:17 +0530
+Message-Id: <20220117083217.330110-1-ganeshgr@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: -GsnPePT11vJ1iOGVmICtim-tn1_kqbl
-X-Proofpoint-ORIG-GUID: -GsnPePT11vJ1iOGVmICtim-tn1_kqbl
+X-Proofpoint-ORIG-GUID: ypbnHYN1gPxYhAWV6ypJGTA0vbvO8bVQ
+X-Proofpoint-GUID: Lpbwc5oNCutnU_1TUVVkOKhP56_fyl8b
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
  definitions=2022-01-17_02,2022-01-14_01,2021-12-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 adultscore=0 bulkscore=0 phishscore=0 mlxlogscore=999
- mlxscore=0 clxscore=1011 impostorscore=0 spamscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxscore=0 impostorscore=0
+ lowpriorityscore=0 spamscore=0 clxscore=1015 priorityscore=1501
+ adultscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2110150000 definitions=main-2201170055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -99,308 +103,323 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com,
+ npiggin@gmail.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+In realmode mce handler we use irq_work_queue() to defer
+the processing of mce events, irq_work_queue() can only
+be called when translation is enabled because it touches
+memory outside RMA, hence we enable translation before
+calling irq_work_queue and disable on return, though it
+is not safe to do in realmode.
 
-> Presently PAPR doesn't support injecting smart errors on an
-> NVDIMM. This makes testing the NVDIMM health reporting functionality
-> difficult as simulating NVDIMM health related events need a hacked up
-> qemu version.
->
-> To solve this problem this patch proposes simulating certain set of
-> NVDIMM health related events in papr_scm. Specifically 'fatal' health
-> state and 'dirty' shutdown state. These error can be injected via the
-> user-space 'ndctl-inject-smart(1)' command. With the proposed patch and
-> corresponding ndctl patches following command flow is expected:
->
-> $ sudo ndctl list -DH -d nmem0
-> ...
->       "health_state":"ok",
->       "shutdown_state":"clean",
-> ...
->  # inject unsafe shutdown and fatal health error
-> $ sudo ndctl inject-smart nmem0 -Uf
-> ...
->       "health_state":"fatal",
->       "shutdown_state":"dirty",
-> ...
->  # uninject all errors
-> $ sudo ndctl inject-smart nmem0 -N
-> ...
->       "health_state":"ok",
->       "shutdown_state":"clean",
-> ...
->
-> The patch adds two members 'health_bitmap_mask' and
-> 'health_bitmap_override' inside struct papr_scm_priv which are then
-> bit blt'ed to the health bitmaps fetched from the hypervisor. In case
-> we are not able to fetch health information from the hypervisor we
-> service the health bitmap from these two members. These members are
-> accessible from sysfs at nmemX/papr/health_bitmap_override
->
-> A new PDSM named 'SMART_INJECT' is proposed that accepts newly
-> introduced 'struct nd_papr_pdsm_smart_inject' as payload thats
-> exchanged between libndctl and papr_scm to indicate the requested
-> smart-error states.
->
-> When the processing the PDSM 'SMART_INJECT', papr_pdsm_smart_inject()
-> constructs a pair or 'mask' and 'override' bitmaps from the payload
-> and bit-blt it to the 'health_bitmap_{mask, override}' members. This
-> ensures the after being fetched from the hypervisor, the health_bitmap
-> reflects requested smart-error states.
->
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-> ---
-> Changelog:
->
-> Since v2:
-> * Rebased the patch to ppc-next
-> * Added documentation for newly introduced sysfs attribute 'health_bitmap_override'
->
-> Since v1:
-> * Updated the patch description.
-> * Removed dependency of a header movement patch.
-> * Removed '__packed' attribute for 'struct nd_papr_pdsm_smart_inject' [Aneesh]
-> ---
->  Documentation/ABI/testing/sysfs-bus-papr-pmem | 13 +++
->  arch/powerpc/include/uapi/asm/papr_pdsm.h     | 18 ++++
->  arch/powerpc/platforms/pseries/papr_scm.c     | 94 ++++++++++++++++++-
->  3 files changed, 122 insertions(+), 3 deletions(-)
->
-> diff --git a/Documentation/ABI/testing/sysfs-bus-papr-pmem b/Documentation/ABI/testing/sysfs-bus-papr-pmem
-> index 95254cec92bf..8a0b2a7f7671 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-papr-pmem
-> +++ b/Documentation/ABI/testing/sysfs-bus-papr-pmem
-> @@ -61,3 +61,16 @@ Description:
->  		* "CchRHCnt" : Cache Read Hit Count
->  		* "CchWHCnt" : Cache Write Hit Count
->  		* "FastWCnt" : Fast Write Count
-> +
-> +What:		/sys/bus/nd/devices/nmemX/papr/health_bitmap_override
-> +Date:		Jan, 2022
-> +KernelVersion:	v5.17
-> +Contact:	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
-> +Description:
-> +		(RO) Reports the health bitmap override/mask bitmaps that are
-> +		applied to top bitmap received from PowerVM via the H_SCM_HEALTH
-> +		Hcall. Together these can be used to forcibly set/reset specific
-> +		bits returned from Hcall. These bitmaps are presently used to
-> +		simulate various health or shutdown states for an nvdimm and are
-> +		set by user-space tools like ndctl by issuing a PAPR DSM.
-> +
-> diff --git a/arch/powerpc/include/uapi/asm/papr_pdsm.h b/arch/powerpc/include/uapi/asm/papr_pdsm.h
-> index 82488b1e7276..17439925045c 100644
-> --- a/arch/powerpc/include/uapi/asm/papr_pdsm.h
-> +++ b/arch/powerpc/include/uapi/asm/papr_pdsm.h
-> @@ -116,6 +116,22 @@ struct nd_papr_pdsm_health {
->  	};
->  };
->  
-> +/* Flags for injecting specific smart errors */
-> +#define PDSM_SMART_INJECT_HEALTH_FATAL		(1 << 0)
-> +#define PDSM_SMART_INJECT_BAD_SHUTDOWN		(1 << 1)
-> +
-> +struct nd_papr_pdsm_smart_inject {
-> +	union {
-> +		struct {
-> +			/* One or more of PDSM_SMART_INJECT_ */
-> +			__u32 flags;
-> +			__u8 fatal_enable;
-> +			__u8 unsafe_shutdown_enable;
-> +		};
-> +		__u8 buf[ND_PDSM_PAYLOAD_MAX_SIZE];
-> +	};
-> +};
-> +
->  /*
->   * Methods to be embedded in ND_CMD_CALL request. These are sent to the kernel
->   * via 'nd_cmd_pkg.nd_command' member of the ioctl struct
-> @@ -123,12 +139,14 @@ struct nd_papr_pdsm_health {
->  enum papr_pdsm {
->  	PAPR_PDSM_MIN = 0x0,
->  	PAPR_PDSM_HEALTH,
-> +	PAPR_PDSM_SMART_INJECT,
->  	PAPR_PDSM_MAX,
->  };
->  
->  /* Maximal union that can hold all possible payload types */
->  union nd_pdsm_payload {
->  	struct nd_papr_pdsm_health health;
-> +	struct nd_papr_pdsm_smart_inject smart_inject;
->  	__u8 buf[ND_PDSM_PAYLOAD_MAX_SIZE];
->  } __packed;
->  
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index f48e87ac89c9..de4cf329cfb3 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -68,6 +68,10 @@
->  #define PAPR_SCM_PERF_STATS_EYECATCHER __stringify(SCMSTATS)
->  #define PAPR_SCM_PERF_STATS_VERSION 0x1
->  
-> +/* Use bitblt method to override specific bits in the '_bitmap_' */
-> +#define BITBLT_BITMAP(_bitmap_, _mask_, _override_)		\
-> +	(((_bitmap_) & ~(_mask_)) | ((_mask_) & (_override_)))
-> +
->  /* Struct holding a single performance metric */
->  struct papr_scm_perf_stat {
->  	u8 stat_id[8];
-> @@ -120,6 +124,12 @@ struct papr_scm_priv {
->  
->  	/* length of the stat buffer as expected by phyp */
->  	size_t stat_buffer_len;
-> +
-> +	/* The bits which needs to be overridden */
-> +	u64 health_bitmap_mask;
-> +
-> +	/* The overridden values for the bits having the masks set */
-> +	u64 health_bitmap_override;
->  };
->  
->  static int papr_scm_pmem_flush(struct nd_region *nd_region,
-> @@ -347,19 +357,28 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
->  static int __drc_pmem_query_health(struct papr_scm_priv *p)
->  {
->  	unsigned long ret[PLPAR_HCALL_BUFSIZE];
-> +	u64 bitmap = 0;
->  	long rc;
->  
->  	/* issue the hcall */
->  	rc = plpar_hcall(H_SCM_HEALTH, ret, p->drc_index);
-> -	if (rc != H_SUCCESS) {
-> +	if (rc == H_SUCCESS)
-> +		bitmap = ret[0] & ret[1];
-> +	else if (rc == H_FUNCTION)
-> +		dev_info_once(&p->pdev->dev,
-> +			      "Hcall H_SCM_HEALTH not implemented, assuming empty health bitmap");
-> +	else {
-> +
->  		dev_err(&p->pdev->dev,
->  			"Failed to query health information, Err:%ld\n", rc);
->  		return -ENXIO;
->  	}
->  
->  	p->lasthealth_jiffies = jiffies;
-> -	p->health_bitmap = ret[0] & ret[1];
-> -
-> +	/* Allow overriding specific health bits via bit blt. */
-> +	bitmap = BITBLT_BITMAP(bitmap, p->health_bitmap_mask,
-> +			       p->health_bitmap_override);
-> +	WRITE_ONCE(p->health_bitmap, bitmap);
+To avoid this, program the decrementer and call the event
+processing functions from timer handler.
 
-Why WRITE_ONCE ?
+Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+---
+V2:
+* Use arch_irq_work_raise to raise decrementer interrupt.
+* Avoid having atomic variable.
 
->  	dev_dbg(&p->pdev->dev,
->  		"Queried dimm health info. Bitmap:0x%016lx Mask:0x%016lx\n",
->  		ret[0], ret[1]);
-> @@ -669,6 +688,54 @@ static int papr_pdsm_health(struct papr_scm_priv *p,
->  	return rc;
->  }
->  
-> +/* Inject a smart error Add the dirty-shutdown-counter value to the pdsm */
-> +static int papr_pdsm_smart_inject(struct papr_scm_priv *p,
-> +				  union nd_pdsm_payload *payload)
-> +{
-> +	int rc;
-> +	u32 supported_flags = 0;
-> +	u64 mask = 0, override = 0;
-> +
-> +	/* Check for individual smart error flags and update mask and override */
-> +	if (payload->smart_inject.flags & PDSM_SMART_INJECT_HEALTH_FATAL) {
-> +		supported_flags |= PDSM_SMART_INJECT_HEALTH_FATAL;
-> +		mask |= PAPR_PMEM_HEALTH_FATAL;
-> +		override |= payload->smart_inject.fatal_enable ?
-> +			PAPR_PMEM_HEALTH_FATAL : 0;
-> +	}
-> +
-> +	if (payload->smart_inject.flags & PDSM_SMART_INJECT_BAD_SHUTDOWN) {
-> +		supported_flags |= PDSM_SMART_INJECT_BAD_SHUTDOWN;
-> +		mask |= PAPR_PMEM_SHUTDOWN_DIRTY;
-> +		override |= payload->smart_inject.unsafe_shutdown_enable ?
-> +			PAPR_PMEM_SHUTDOWN_DIRTY : 0;
-> +	}
-> +
-> +	dev_dbg(&p->pdev->dev, "[Smart-inject] Mask=%#llx override=%#llx\n",
-> +		mask, override);
-> +
-> +	/* Prevent concurrent access to dimm health bitmap related members */
-> +	rc = mutex_lock_interruptible(&p->health_mutex);
-> +	if (rc)
-> +		return rc;
-> +
-> +	/* Bitblt mask/override to corrosponding health_bitmap couterparts */
-> +	p->health_bitmap_mask = BITBLT_BITMAP(p->health_bitmap_mask,
-> +					      mask, override);
+V3:
+* Fix build error.
+  Reported by kernel test bot.
 
-is that correct? Should we do that mask & override ? Shouldn't this be 
-	p->health_bitmap_mask = BITBLT_BITMAP(p->health_bitmap_mask,
-					      mask, ~0x0UL);
+V4:
+* Rename some functions and variables
+* Remove mces_to_process counter and add a flag to indicate
+  there is a mce info to process.
+---
+ arch/powerpc/include/asm/machdep.h       |  2 +
+ arch/powerpc/include/asm/mce.h           | 13 +++++
+ arch/powerpc/include/asm/paca.h          |  1 +
+ arch/powerpc/kernel/mce.c                | 60 +++++++++++++-----------
+ arch/powerpc/kernel/time.c               |  2 +
+ arch/powerpc/platforms/pseries/pseries.h |  1 +
+ arch/powerpc/platforms/pseries/ras.c     | 31 +-----------
+ arch/powerpc/platforms/pseries/setup.c   |  1 +
+ 8 files changed, 53 insertions(+), 58 deletions(-)
 
-> +	p->health_bitmap_override = BITBLT_BITMAP(p->health_bitmap_override,
-> +						  mask, override);
-> +
-> +	/* Invalidate cached health bitmap */
-> +	p->lasthealth_jiffies = 0;
-> +
-> +	mutex_unlock(&p->health_mutex);
-> +
-> +	/* Return the supported flags back to userspace */
-> +	payload->smart_inject.flags = supported_flags;
-> +
-> +	return sizeof(struct nd_papr_pdsm_health);
-> +}
-> +
->  /*
->   * 'struct pdsm_cmd_desc'
->   * Identifies supported PDSMs' expected length of in/out payloads
-> @@ -702,6 +769,12 @@ static const struct pdsm_cmd_desc __pdsm_cmd_descriptors[] = {
->  		.size_out = sizeof(struct nd_papr_pdsm_health),
->  		.service = papr_pdsm_health,
->  	},
-> +
-> +	[PAPR_PDSM_SMART_INJECT] = {
-> +		.size_in = sizeof(struct nd_papr_pdsm_smart_inject),
-> +		.size_out = sizeof(struct nd_papr_pdsm_smart_inject),
-> +		.service = papr_pdsm_smart_inject,
-> +	},
->  	/* Empty */
->  	[PAPR_PDSM_MAX] = {
->  		.size_in = 0,
-> @@ -838,6 +911,20 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
->  	return 0;
->  }
->  
-> +static ssize_t health_bitmap_override_show(struct device *dev,
-> +					   struct device_attribute *attr,
-> +					   char *buf)
-> +{
-> +	struct nvdimm *dimm = to_nvdimm(dev);
-> +	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
-> +
-> +	return sprintf(buf, "mask=%#llx override=%#llx\n",
-> +		       READ_ONCE(p->health_bitmap_mask),
-> +		       READ_ONCE(p->health_bitmap_override));
-> +}
-> +
-> +static DEVICE_ATTR_ADMIN_RO(health_bitmap_override);
-> +
->  static ssize_t perf_stats_show(struct device *dev,
->  			       struct device_attribute *attr, char *buf)
->  {
-> @@ -952,6 +1039,7 @@ static struct attribute *papr_nd_attributes[] = {
->  	&dev_attr_flags.attr,
->  	&dev_attr_perf_stats.attr,
->  	&dev_attr_dirty_shutdown.attr,
-> +	&dev_attr_health_bitmap_override.attr,
->  	NULL,
->  };
->  
-> -- 
-> 2.34.1
+diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
+index 9c3c9f04129f..d22b222ba471 100644
+--- a/arch/powerpc/include/asm/machdep.h
++++ b/arch/powerpc/include/asm/machdep.h
+@@ -99,6 +99,8 @@ struct machdep_calls {
+ 	/* Called during machine check exception to retrive fixup address. */
+ 	bool		(*mce_check_early_recovery)(struct pt_regs *regs);
+ 
++	void            (*machine_check_log_err)(void);
++
+ 	/* Motherboard/chipset features. This is a kind of general purpose
+ 	 * hook used to control some machine specific features (like reset
+ 	 * lines, chip power control, etc...).
+diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
+index 331d944280b8..c9f0936bd3c9 100644
+--- a/arch/powerpc/include/asm/mce.h
++++ b/arch/powerpc/include/asm/mce.h
+@@ -235,8 +235,21 @@ extern void machine_check_print_event_info(struct machine_check_event *evt,
+ unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr);
+ extern void mce_common_process_ue(struct pt_regs *regs,
+ 				  struct mce_error_info *mce_err);
++void mce_irq_work_queue(void);
+ int mce_register_notifier(struct notifier_block *nb);
+ int mce_unregister_notifier(struct notifier_block *nb);
++
++#ifdef CONFIG_PPC_BOOK3S_64
++void mce_run_irq_context_handlers(void);
++#else
++static inline void mce_run_irq_context_handlers(void) { };
++#endif /* CONFIG_PPC_BOOK3S_64 */
++
++#ifdef CONFIG_PPC_BOOK3S_64
++void set_mce_pending_irq_work(void);
++void clear_mce_pending_irq_work(void);
++#endif /* CONFIG_PPC_BOOK3S_64 */
++
+ #ifdef CONFIG_PPC_BOOK3S_64
+ void flush_and_reload_slb(void);
+ void flush_erat(void);
+diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
+index dc05a862e72a..963030689cfa 100644
+--- a/arch/powerpc/include/asm/paca.h
++++ b/arch/powerpc/include/asm/paca.h
+@@ -280,6 +280,7 @@ struct paca_struct {
+ #endif
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	struct mce_info *mce_info;
++	u8 mce_pending_irq_work;
+ #endif /* CONFIG_PPC_BOOK3S_64 */
+ } ____cacheline_aligned;
+ 
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index fd829f7f25a4..6af798803ece 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -28,19 +28,9 @@
+ 
+ #include "setup.h"
+ 
+-static void machine_check_process_queued_event(struct irq_work *work);
+-static void machine_check_ue_irq_work(struct irq_work *work);
+ static void machine_check_ue_event(struct machine_check_event *evt);
+ static void machine_process_ue_event(struct work_struct *work);
+ 
+-static struct irq_work mce_event_process_work = {
+-        .func = machine_check_process_queued_event,
+-};
+-
+-static struct irq_work mce_ue_event_irq_work = {
+-	.func = machine_check_ue_irq_work,
+-};
+-
+ static DECLARE_WORK(mce_ue_event_work, machine_process_ue_event);
+ 
+ static BLOCKING_NOTIFIER_HEAD(mce_notifier_list);
+@@ -89,6 +79,13 @@ static void mce_set_error_info(struct machine_check_event *mce,
+ 	}
+ }
+ 
++void mce_irq_work_queue(void)
++{
++	/* Raise decrementer interrupt */
++	arch_irq_work_raise();
++	set_mce_pending_irq_work();
++}
++
+ /*
+  * Decode and save high level MCE information into per cpu buffer which
+  * is an array of machine_check_event structure.
+@@ -217,7 +214,7 @@ void release_mce_event(void)
+ 	get_mce_event(NULL, true);
+ }
+ 
+-static void machine_check_ue_irq_work(struct irq_work *work)
++static void machine_check_ue_work(void)
+ {
+ 	schedule_work(&mce_ue_event_work);
+ }
+@@ -239,7 +236,7 @@ static void machine_check_ue_event(struct machine_check_event *evt)
+ 	       evt, sizeof(*evt));
+ 
+ 	/* Queue work to process this event later. */
+-	irq_work_queue(&mce_ue_event_irq_work);
++	mce_irq_work_queue();
+ }
+ 
+ /*
+@@ -249,7 +246,6 @@ void machine_check_queue_event(void)
+ {
+ 	int index;
+ 	struct machine_check_event evt;
+-	unsigned long msr;
+ 
+ 	if (!get_mce_event(&evt, MCE_EVENT_RELEASE))
+ 		return;
+@@ -263,20 +259,7 @@ void machine_check_queue_event(void)
+ 	memcpy(&local_paca->mce_info->mce_event_queue[index],
+ 	       &evt, sizeof(evt));
+ 
+-	/*
+-	 * Queue irq work to process this event later. Before
+-	 * queuing the work enable translation for non radix LPAR,
+-	 * as irq_work_queue may try to access memory outside RMO
+-	 * region.
+-	 */
+-	if (!radix_enabled() && firmware_has_feature(FW_FEATURE_LPAR)) {
+-		msr = mfmsr();
+-		mtmsr(msr | MSR_IR | MSR_DR);
+-		irq_work_queue(&mce_event_process_work);
+-		mtmsr(msr);
+-	} else {
+-		irq_work_queue(&mce_event_process_work);
+-	}
++	mce_irq_work_queue();
+ }
+ 
+ void mce_common_process_ue(struct pt_regs *regs,
+@@ -338,7 +321,7 @@ static void machine_process_ue_event(struct work_struct *work)
+  * process pending MCE event from the mce event queue. This function will be
+  * called during syscall exit.
+  */
+-static void machine_check_process_queued_event(struct irq_work *work)
++static void machine_check_process_queued_event(void)
+ {
+ 	int index;
+ 	struct machine_check_event *evt;
+@@ -363,6 +346,27 @@ static void machine_check_process_queued_event(struct irq_work *work)
+ 	}
+ }
+ 
++void set_mce_pending_irq_work(void)
++{
++	local_paca->mce_pending_irq_work = 1;
++}
++
++void clear_mce_pending_irq_work(void)
++{
++	local_paca->mce_pending_irq_work = 0;
++}
++
++void mce_run_irq_context_handlers(void)
++{
++	if (unlikely(local_paca->mce_pending_irq_work)) {
++		if (ppc_md.machine_check_log_err)
++			ppc_md.machine_check_log_err();
++		machine_check_process_queued_event();
++		machine_check_ue_work();
++		clear_mce_pending_irq_work();
++	}
++}
++
+ void machine_check_print_event_info(struct machine_check_event *evt,
+ 				    bool user_mode, bool in_guest)
+ {
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index cae8f03a44fe..4cff842180e8 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -70,6 +70,7 @@
+ #include <asm/vdso_datapage.h>
+ #include <asm/firmware.h>
+ #include <asm/asm-prototypes.h>
++#include <asm/mce.h>
+ 
+ /* powerpc clocksource/clockevent code */
+ 
+@@ -594,6 +595,7 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(timer_interrupt)
+ 
+ 	if (test_irq_work_pending()) {
+ 		clear_irq_work_pending();
++		mce_run_irq_context_handlers();
+ 		irq_work_run();
+ 	}
+ 
+diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
+index 3544778e06d0..9cf0d33dfbf5 100644
+--- a/arch/powerpc/platforms/pseries/pseries.h
++++ b/arch/powerpc/platforms/pseries/pseries.h
+@@ -21,6 +21,7 @@ struct pt_regs;
+ extern int pSeries_system_reset_exception(struct pt_regs *regs);
+ extern int pSeries_machine_check_exception(struct pt_regs *regs);
+ extern long pseries_machine_check_realmode(struct pt_regs *regs);
++void pSeries_machine_check_log_err(void);
+ 
+ #ifdef CONFIG_SMP
+ extern void smp_init_pseries(void);
+diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
+index 56092dccfdb8..8613f9cc5798 100644
+--- a/arch/powerpc/platforms/pseries/ras.c
++++ b/arch/powerpc/platforms/pseries/ras.c
+@@ -23,11 +23,6 @@ static DEFINE_SPINLOCK(ras_log_buf_lock);
+ 
+ static int ras_check_exception_token;
+ 
+-static void mce_process_errlog_event(struct irq_work *work);
+-static struct irq_work mce_errlog_process_work = {
+-	.func = mce_process_errlog_event,
+-};
+-
+ #define EPOW_SENSOR_TOKEN	9
+ #define EPOW_SENSOR_INDEX	0
+ 
+@@ -729,40 +724,16 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
+ 	error_type = mce_log->error_type;
+ 
+ 	disposition = mce_handle_err_realmode(disposition, error_type);
+-
+-	/*
+-	 * Enable translation as we will be accessing per-cpu variables
+-	 * in save_mce_event() which may fall outside RMO region, also
+-	 * leave it enabled because subsequently we will be queuing work
+-	 * to workqueues where again per-cpu variables accessed, besides
+-	 * fwnmi_release_errinfo() crashes when called in realmode on
+-	 * pseries.
+-	 * Note: All the realmode handling like flushing SLB entries for
+-	 *       SLB multihit is done by now.
+-	 */
+ out:
+-	msr = mfmsr();
+-	mtmsr(msr | MSR_IR | MSR_DR);
+-
+ 	disposition = mce_handle_err_virtmode(regs, errp, mce_log,
+ 					      disposition);
+-
+-	/*
+-	 * Queue irq work to log this rtas event later.
+-	 * irq_work_queue uses per-cpu variables, so do this in virt
+-	 * mode as well.
+-	 */
+-	irq_work_queue(&mce_errlog_process_work);
+-
+-	mtmsr(msr);
+-
+ 	return disposition;
+ }
+ 
+ /*
+  * Process MCE rtas errlog event.
+  */
+-static void mce_process_errlog_event(struct irq_work *work)
++void pSeries_machine_check_log_err(void)
+ {
+ 	struct rtas_error_log *err;
+ 
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 8a62af5b9c24..9bdc487b8e35 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -1084,6 +1084,7 @@ define_machine(pseries) {
+ 	.system_reset_exception = pSeries_system_reset_exception,
+ 	.machine_check_early	= pseries_machine_check_realmode,
+ 	.machine_check_exception = pSeries_machine_check_exception,
++	.machine_check_log_err	= pSeries_machine_check_log_err,
+ #ifdef CONFIG_KEXEC_CORE
+ 	.machine_kexec          = pSeries_machine_kexec,
+ 	.kexec_cpu_down         = pseries_kexec_cpu_down,
+-- 
+2.31.1
+
