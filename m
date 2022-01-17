@@ -1,68 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B131490A30
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 15:21:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E07BA490A39
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 15:25:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JcvGL5cVtz30Lr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 01:21:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JcvLn60nNz3bVL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 01:25:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=E2nS0B3T;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jnzYvZoM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::532;
- helo=mail-pg1-x532.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a;
+ helo=mail-pg1-x52a.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=E2nS0B3T; dkim-atps=neutral
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com
- [IPv6:2607:f8b0:4864:20::532])
+ header.s=20210112 header.b=jnzYvZoM; dkim-atps=neutral
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
+ [IPv6:2607:f8b0:4864:20::52a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JcvFh5m1cz2yMs
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 01:20:39 +1100 (AEDT)
-Received: by mail-pg1-x532.google.com with SMTP id i8so11001533pgt.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 06:20:39 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JcvL91NVzz2yN3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 01:24:31 +1100 (AEDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 133so6709617pgb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 06:24:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
  bh=y9C7t1xNtINtph1aAC9wIr8lleaPpcggyvhTav+JFy8=;
- b=E2nS0B3TU/tVJ3UkZtX9g2RiE7wMDwSCzMO0+PfZRCVOnuJsDNm0/AMPKYQjBpYw4/
- gYSyltq8dysohdffnqdIsDCGNz7esnp1BKVKyYxNNC4dgf3nN8qp2E6S6BXbUKbUrNVh
- D9uXApoFnm/Gudw3RTXoPZDtDVhM36Q7P7VHksrShxeonh0ro4cCbiS00GTkEbZIe7Sa
- +bwtlMrMhL13gvt/Ardmu/iPhTaFfcgfUbzvHj9e2m7Vnjw2UfIk9lpJ4HC86WkxnPFI
- +KupYpena3qtAuh9n35fDZGJhyom6Yz7ZenphkPk1jyT540RHyK1dLzaYYB49PFQ/fO9
- zudQ==
+ b=jnzYvZoM1Lc0olVNrk7qq5I4S9oX13vhLImy/VeXYHv6XWtO5sgdbOgYLMrwvzWSbK
+ lzqmHR5qDwjCmIhFA627PXXbeQaBYO8XmClFkB8uXQ7yJes+tvebE0RMoltt0AlYRXUp
+ smouwoSdQ7CbJ93dn3xiVYKznPeWT9WeULlh4xLZJ51fP5M5CGTLGeNBjNWroGLY0n/p
+ l+266h67+M1i3KkS2S4t2OFehBsEV7hKbLFeNSo7NwLRQmBI+ymdLJAkJADPLjpRTYJk
+ ZygOLnzojPbCFGU27cuJQftNGTObRbcEpEsfB8TZ4R7d4NymN5IWXqbbwPUJikO2ewTH
+ ZkzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
  bh=y9C7t1xNtINtph1aAC9wIr8lleaPpcggyvhTav+JFy8=;
- b=yxv82l61zFqAJFaswHRYtA9vWG76j1bACGrzbOSFl4Bwc87jTp7HLFvIHi+V41mAU3
- uQXJrc8gyMRWdjsLCEsKpZxEMxCUClG+49NJFGuwNJAX5HC8mmEqP112RCSy+8Dr8qSO
- l6vhDQxh5y9dJCi5JTG/TlXU/vBsPgCDe9kihMZarOBoErytED8pEGlLmBdSFYdFC/vq
- Vqf3AYSJryifpEnlT6ERKDfIAOF7avgAaJQ4N0qHaPxly5YXhzH+ymPF5Oj7bbJp7rPj
- aluDNTxBOspS7QoWKohpTv1hzR9JrASmeaF9z2OT0z7RecTPoy6yPdWj5A8KPlxY0YNW
- v1gQ==
-X-Gm-Message-State: AOAM530Iq/UvvjUPelX4VAWOi7JtRLWFztmYv67afxH2aQzZPz2hIfpj
- pgWMFUJZ4Zb2ZOgwgpg3cVpNxQq/dLs=
-X-Google-Smtp-Source: ABdhPJw/LlJ5CTBx0kN6xrJcRYBgBoBp3MxsDK8RdJwQUYMpSBjCnFDxXAYdyoxbVnhLHjiJN4+SRw==
-X-Received: by 2002:a63:600c:: with SMTP id u12mr11851308pgb.200.1642429235500; 
- Mon, 17 Jan 2022 06:20:35 -0800 (PST)
+ b=bxnUbEtMHbnylzp4/qsRAB0brCTEuj/18XXNN/4GEEMhMbwttPxi8HDi8ZIGRVJ0r4
+ GzePP8W1TBTEGDt2ZFKBM9dBlj6TFjZnit4WFx1yXAynQKCWoHmwMTSZaunzxFZ5MCKj
+ AWNdtWmSP8iObx7wR4dqk9lYLn9WYxcbQzfnhZkmaYNQW45tk2QmLfys6iCKNsvzImNy
+ 2dhmZNzcn6Ndu9xyyk58JFCZvSSqA85VhS7YnfieS6Xd+qucNq1R76o3ynvA/RTTjcVs
+ 0PJHTA2rAj0xcmEd8g9levZYBKMoehiNk568+OuGFkAQF688UI3cE/+5WGVV+mTo+rau
+ hNrg==
+X-Gm-Message-State: AOAM533VTLyn0ZFxcPV+yY3iCob9t9K09uDzOzSnIFMn3XIjy1zdID6u
+ a+XHZdl+HtM3NFy0rGzgMvOY6MVgasQ=
+X-Google-Smtp-Source: ABdhPJyVdUXqsXyVy0EHW5jY1aKoYRCTDR/2tRbtQ6v0KpxUmCN+UDeWo/g5+UVcG4QpeXyXv3a4lA==
+X-Received: by 2002:a05:6a00:26c5:b0:4bd:4ad6:9c71 with SMTP id
+ p5-20020a056a0026c500b004bd4ad69c71mr21196807pfw.45.1642429468745; 
+ Mon, 17 Jan 2022 06:24:28 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (124-171-74-95.tpgi.com.au. [124.171.74.95])
- by smtp.gmail.com with ESMTPSA id y124sm13602777pfg.127.2022.01.17.06.20.33
+ by smtp.gmail.com with ESMTPSA id ga1sm7086325pjb.24.2022.01.17.06.24.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jan 2022 06:20:35 -0800 (PST)
+ Mon, 17 Jan 2022 06:24:28 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [RFC PATCH 1/3] powerpc/64s: Fix system call emulation
-Date: Tue, 18 Jan 2022 00:20:28 +1000
-Message-Id: <20220117142030.3038465-1-npiggin@gmail.com>
+Date: Tue, 18 Jan 2022 00:24:21 +1000
+Message-Id: <20220117142423.3038570-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -77,7 +78,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
