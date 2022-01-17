@@ -1,53 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC84490EFD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 18:14:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D30B4490EFF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Jan 2022 18:15:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jcz6g0bXpz3fkZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 04:14:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jcz7L5Y7Zz3cYL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 04:15:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p+2cN96U;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GQGJradU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=p+2cN96U; 
+ header.s=k20201202 header.b=GQGJradU; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JcyrK1tpSz3ddh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 04:02:25 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JcyrL1Dj5z3dfF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 04:02:26 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id E5D8CB8114B;
- Mon, 17 Jan 2022 17:02:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097A6C36AF2;
- Mon, 17 Jan 2022 17:02:20 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 81A0B61231;
+ Mon, 17 Jan 2022 17:02:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAEEC36AE3;
+ Mon, 17 Jan 2022 17:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1642438941;
- bh=MRETdH0R/JG+t6ZDfa9LEIzPGElTchgZ8fjTDMT/5lk=;
+ s=k20201202; t=1642438944;
+ bh=/+mI8nrRREij5JDaj6gEO/h76K+KA7kZdaVgSdBD+Fk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=p+2cN96UvCsWx73qSFjZV0JJWz0Dq4YxM7kscbhC9TLRQJM0kvny8P0HskJzDiPLd
- azPLQhjCYPGBsSu/0OmgsfcCSYqbVpRuHTmXYalvr36My5OhHg1X+5D3DIBRSdkAZ9
- 5zBRmieQbRzPFEGqzGstRlhuailnHyA3Bwj3RZCyNE+NpAt3Rt/NQm+4HqrancQPtG
- W8qEJWXR+BH2yZfb38UC7lwMgPqgVMnsVbAU/2R/FaIo8sMBDhJ99Dyz7AHcpXSPx+
- uCpmFuwtQRtebFbSU9vZthlTJNb15o2X4lIhCU2TgRhbZ7DFkZFjt0ujmYBmGpSggb
- 3cEazC3BubyqA==
+ b=GQGJradU2ZhiqDNGrl7G1uuFKHhyzMZr2N4o4H3wMZT/LdIhKNNxtHDjIF3qpnpod
+ Z5t8xW7M2aBrx0i7wOuJmqDHQOXsnIdo+G/KsitgfivNqgiDaCmlY8SsbHKPXjWEAs
+ ms6qA3VBcPsKPrcL5WUKMgP7JJlCtgtWzlkn5KX0eS8EspyN0CaAtZq8gkXYWj7jZs
+ LaTGj32Vvu6QZ0K+7SPn0RqlpZ6/vh52ikZGc9WBiE22x+xDWf2VEAVQnq8BIOJU/e
+ giZFERc3Eo9dwEgE8MU15TqimwWbfnxibVK0EJSc4Mm/LjOSf64UUqKERqEVYBnNjU
+ xNYjHk2GbaV4A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 24/44] powerpc/40x: Map 32Mbytes of memory at
- startup
-Date: Mon, 17 Jan 2022 12:01:07 -0500
-Message-Id: <20220117170127.1471115-24-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 25/44] selftests/powerpc/spectre_v2: Return skip
+ code when miss_percent is high
+Date: Mon, 17 Jan 2022 12:01:08 -0500
+Message-Id: <20220117170127.1471115-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220117170127.1471115-1-sashal@kernel.org>
 References: <20220117170127.1471115-1-sashal@kernel.org>
@@ -66,61 +68,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- npiggin@gmail.com
+Cc: Sasha Levin <sashal@kernel.org>,
+ Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
+ shuah@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
 
-[ Upstream commit 06e7cbc29e97b4713b4ea6def04ae8501a7d1a59 ]
+[ Upstream commit 3c42e9542050d49610077e083c7c3f5fd5e26820 ]
 
-As reported by Carlo, 16Mbytes is not enough with modern kernels
-that tend to be a bit big, so map another 16M page at boot.
+A mis-match between reported and actual mitigation is not restricted to the
+Vulnerable case. The guest might also report the mitigation as "Software
+count cache flush" and the host will still mitigate with branch cache
+disabled.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+So, instead of skipping depending on the detected mitigation, simply skip
+whenever the detected miss_percent is the expected one for a fully
+mitigated system, that is, above 95%.
+
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/89b5f974a7fa5011206682cd092e2c905530ff46.1632755552.git.christophe.leroy@csgroup.eu
+Link: https://lore.kernel.org/r/20211207130557.40566-1-cascardo@canonical.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/head_40x.S | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tools/testing/selftests/powerpc/security/spectre_v2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
-index 7d72ee5ab387c..e783860bea838 100644
---- a/arch/powerpc/kernel/head_40x.S
-+++ b/arch/powerpc/kernel/head_40x.S
-@@ -27,6 +27,7 @@
+diff --git a/tools/testing/selftests/powerpc/security/spectre_v2.c b/tools/testing/selftests/powerpc/security/spectre_v2.c
+index adc2b7294e5fd..83647b8277e7d 100644
+--- a/tools/testing/selftests/powerpc/security/spectre_v2.c
++++ b/tools/testing/selftests/powerpc/security/spectre_v2.c
+@@ -193,7 +193,7 @@ int spectre_v2_test(void)
+ 			 * We are not vulnerable and reporting otherwise, so
+ 			 * missing such a mismatch is safe.
+ 			 */
+-			if (state == VULNERABLE)
++			if (miss_percent > 95)
+ 				return 4;
  
- #include <linux/init.h>
- #include <linux/pgtable.h>
-+#include <linux/sizes.h>
- #include <asm/processor.h>
- #include <asm/page.h>
- #include <asm/mmu.h>
-@@ -650,7 +651,7 @@ start_here:
- 	b	.		/* prevent prefetch past rfi */
- 
- /* Set up the initial MMU state so we can do the first level of
-- * kernel initialization.  This maps the first 16 MBytes of memory 1:1
-+ * kernel initialization.  This maps the first 32 MBytes of memory 1:1
-  * virtual to physical and more importantly sets the cache mode.
-  */
- initial_mmu:
-@@ -687,6 +688,12 @@ initial_mmu:
- 	tlbwe	r4,r0,TLB_DATA		/* Load the data portion of the entry */
- 	tlbwe	r3,r0,TLB_TAG		/* Load the tag portion of the entry */
- 
-+	li	r0,62			/* TLB slot 62 */
-+	addis	r4,r4,SZ_16M@h
-+	addis	r3,r3,SZ_16M@h
-+	tlbwe	r4,r0,TLB_DATA		/* Load the data portion of the entry */
-+	tlbwe	r3,r0,TLB_TAG		/* Load the tag portion of the entry */
-+
- 	isync
- 
- 	/* Establish the exception vector base
+ 			return 1;
 -- 
 2.34.1
 
