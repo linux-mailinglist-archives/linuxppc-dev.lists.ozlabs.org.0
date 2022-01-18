@@ -2,66 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02791492CE7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 19:01:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCD3492F70
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 21:35:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jdc5k608mz30gW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 05:01:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JdgW93sJhz3bcc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 07:35:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cBQRrDoD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K0kYcIC+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=cBQRrDoD; dkim-atps=neutral
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=K0kYcIC+; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jdc504VwFz2ynQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 05:00:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1642528836; x=1674064836;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=CRtIESfBEA71HQ0JS1NDcLZUx6UJPI9YfbeDGWxPrcU=;
- b=cBQRrDoDw2i2XAiHsergMm5TZ0isOkIreCmvWeSJwDkUsvBBqIXuSMLX
- 7V89NVytvKaH8RiELVk8P0ERu+V3vfB7uaFXIFNjSX5WBjrVuJ1+la1G4
- 4McsvPcxUj5BAChgJUFU0rtsJfut/nMeokOgXq8D3oGXOwn9znQsAPzI/
- HMlxbXrZXqLkROqTKQZDcRMlzzg2mVCnvA4Xsb7nCeFygqTpCfRoDj8CQ
- B42O4z5gMjYevbr/1/zP1E0DQTw6F6A29dJcP73DnOJyNdJR/8zokQhK6
- XabiAQLwGgzdu2+CKrhCSAHg5W4SrGdpadCWC+3mCtDr2J6jjPoy1Nryv Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10230"; a="243700808"
-X-IronPort-AV: E=Sophos;i="5.88,297,1635231600"; d="scan'208";a="243700808"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2022 09:59:27 -0800
-X-IronPort-AV: E=Sophos;i="5.88,297,1635231600"; d="scan'208";a="625588407"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
- by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2022 09:59:16 -0800
-Date: Tue, 18 Jan 2022 09:59:15 -0800
-From: Ira Weiny <ira.weiny@intel.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: Re: [PATCH v3] powerpc/papr_scm: Implement initial support for
- injecting smart errors
-Message-ID: <20220118175915.GB209936@iweiny-DESK2.sc.intel.com>
-Mail-Followup-To: Vaibhav Jain <vaibhav@linux.ibm.com>,
- nvdimm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- Dan Williams <dan.j.williams@intel.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>
-References: <20220113120252.1145671-1-vaibhav@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JdgVQ07q5z2ymb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 07:34:21 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 58B7CB81800;
+ Tue, 18 Jan 2022 20:34:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0977C340E2;
+ Tue, 18 Jan 2022 20:34:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1642538055;
+ bh=a7eQGTBopVPgvTw08Y5Ltm/FC6r6uVERo3wx+LCHqWU=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=K0kYcIC+ocHAeSmsVl5YVeilSsemMYVs/7FnVOTdy8BPKTGJ0+XeIO4zdy6Oyx6J4
+ gvmGdbYRFnOthooppITBIhCdgyz5VMNlhhPtotsk+8FANRexcxQrlneor5Q2YVcE2F
+ CmHCmSMPnhWzE9kVLRBpaoU+vVjlqjj6+4M9qvrYzNkQs/td0XTy0Bw7vukTm1DuZ+
+ SN2TmF8RV4lIv/wxA8jYDpsa4ge4URHBtKkAxkKFeQV2nAfFxcr1+2Y1zvV8+ahhP4
+ QoUxZxdOFmz9pOqWtG70nLueeiGO/5s15fwqtda/mpO/a215vJJb9Loz0TvuLidvAw
+ 7Zp0zPFUZfPHQ==
+Date: Tue, 18 Jan 2022 12:34:13 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH net 1/4] net/fsl: xgmac_mdio: Add workaround for erratum
+ A-009885
+Message-ID: <20220118123413.70f469bd@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+In-Reply-To: <YeV2idN2wPzrHI0n@lunn.ch>
+References: <20220116211529.25604-1-tobias@waldekranz.com>
+ <20220116211529.25604-2-tobias@waldekranz.com>
+ <YeSV67WeMTSDigUK@lunn.ch> <87czkqdduh.fsf@waldekranz.com>
+ <YeV2idN2wPzrHI0n@lunn.ch>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220113120252.1145671-1-vaibhav@linux.ibm.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,42 +67,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, Shivaprasad G Bhat <sbhat@linux.ibm.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, madalin.bucur@nxp.com, robh+dt@kernel.org,
+ paulus@samba.org, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ davem@davemloft.net, Tobias Waldekranz <tobias@waldekranz.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 13, 2022 at 05:32:52PM +0530, Vaibhav Jain wrote:
-[snip]
+On Mon, 17 Jan 2022 15:00:41 +0100 Andrew Lunn wrote:
+> > Should I send a v2 even if nothing else
+> > pops up, or is this more of a if-you're-sending-a-v2-anyway type of
+> > comment?  
+> 
+> If you reply with a Fixes: patchwork will automagically append it like
+> it does Reviewed-by, Tested-by etc.
 
->  
-> +/* Inject a smart error Add the dirty-shutdown-counter value to the pdsm */
-> +static int papr_pdsm_smart_inject(struct papr_scm_priv *p,
-> +				  union nd_pdsm_payload *payload)
-> +{
-> +	int rc;
-> +	u32 supported_flags = 0;
-> +	u64 mask = 0, override = 0;
-> +
-> +	/* Check for individual smart error flags and update mask and override */
-> +	if (payload->smart_inject.flags & PDSM_SMART_INJECT_HEALTH_FATAL) {
-> +		supported_flags |= PDSM_SMART_INJECT_HEALTH_FATAL;
-> +		mask |= PAPR_PMEM_HEALTH_FATAL;
-> +		override |= payload->smart_inject.fatal_enable ?
-> +			PAPR_PMEM_HEALTH_FATAL : 0;
-> +	}
-> +
-> +	if (payload->smart_inject.flags & PDSM_SMART_INJECT_BAD_SHUTDOWN) {
-> +		supported_flags |= PDSM_SMART_INJECT_BAD_SHUTDOWN;
-> +		mask |= PAPR_PMEM_SHUTDOWN_DIRTY;
-> +		override |= payload->smart_inject.unsafe_shutdown_enable ?
-> +			PAPR_PMEM_SHUTDOWN_DIRTY : 0;
-> +	}
-> +
+That part is pretty finicky, it's supposed to work but when I apply
+these I only get review tags from Andrew and a Fixes tag already
+present on the last patch :(
 
-I'm struggling to see why there is a need for both a flag and an 8 bit 'enable'
-value?
-
-Ira
+A v2 with Fixes tags included in the posting would be best after all.
+Thanks!
