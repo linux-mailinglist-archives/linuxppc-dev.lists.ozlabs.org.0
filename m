@@ -2,73 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E6A491F36
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 07:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F060E491F8A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 07:51:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JdJ5y4hwyz3cST
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 17:00:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JdKDh5m5Kz30Ly
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 17:51:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ghD6idCa;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M5pLFwsd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
- helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=chao.gao@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=ghD6idCa; dkim-atps=neutral
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
- [IPv6:2607:f8b0:4864:20::1029])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=M5pLFwsd; dkim-atps=neutral
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JdJ3w0z0Fz2xrD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 16:58:35 +1100 (AEDT)
-Received: by mail-pj1-x1029.google.com with SMTP id
- d10-20020a17090a498a00b001b33bc40d01so856140pjh.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 21:58:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=E0p2IcIEyc/eQWKON69XxQ382HVwtD+ZPEK1c93NQxk=;
- b=ghD6idCaxrY/6MvE7DRNPnFWuJzwCZJTQ+YZFP7iZX6TzN1idGVwvax0s69PgqNo+w
- GK9Z5ihrRNM+1UTHqG+iCpWQxnDCbjIFJdDn4pJ+3tE9zpAS1cNFK3KhAbSsxHUNTfqI
- zvek6OhntDbT2fq8XjoZzmorC33mKr9jIwm8JtV2zhyZ8uI60NDxshGve/unpxaCoTBb
- gnCd2HBQf7EKNQCAQZitWx1Pojkk2+ETlYfb21Wgr6rDuehG6K3Qe8z1W5Hb7aktSghM
- yhjXe68MqXdOs+5ceFGnFRSCdz7hVoVx4+jW9sRo+xvlKmMUlwB5yXHbqgQZ414WQoHf
- 1/bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=E0p2IcIEyc/eQWKON69XxQ382HVwtD+ZPEK1c93NQxk=;
- b=h/qkCVMif30Qtt7a9KLFSudmWjOfMJ3kp6EODb1oR8kTaLQ4SaLrNmo893en5RXutY
- gML8ATfJBeb/A4Z5nx64SIwKqMu+ycayXM/KgmlhNxzGLk4uao/453Yc8g4AQhuVr37E
- LSV5MHns1ifSOfbfwKFhPYEOWLBEkcwWhDJ0gbTVMfSpszuRARe1gkpZG0omhG87BAi5
- wLb1YIdCbFjdReVIUXmMRWkyQj25b9UgwHnFGBIAFi49KA6HzT/gwzVqra2CLPx39RYX
- MrKp53yT8vd5fRuZeyxxAhY5fQdEnkMholWP2mS3kYiWKfqw7HL67MGaSiayT5MgIkvz
- FarA==
-X-Gm-Message-State: AOAM5321GpZFS2q0CxDswldLYrDVNYLMjppVUbEGogWq8qKnbXnO/WCf
- k3N3zIXSxBgee46IbZ/YurH5qXZTjj8=
-X-Google-Smtp-Source: ABdhPJySyJpZsDfUNvnGFf9eAHH4dj228XsdYUWR1MBJ/F/EIz84/wo3ymLEL9VmXvphpTpLQEsjxQ==
-X-Received: by 2002:a17:90b:1806:: with SMTP id
- lw6mr20009662pjb.210.1642485512576; 
- Mon, 17 Jan 2022 21:58:32 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (124-171-74-95.tpgi.com.au. [124.171.74.95])
- by smtp.gmail.com with ESMTPSA id h2sm1141137pjc.31.2022.01.17.21.58.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jan 2022 21:58:32 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 2/2] KVM: PPC: Book3S PR: Disable SCV when running AIL is
- disabled
-Date: Tue, 18 Jan 2022 15:58:21 +1000
-Message-Id: <20220118055821.3065241-3-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20220118055821.3065241-1-npiggin@gmail.com>
-References: <20220118055821.3065241-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JdKD01kZ9z2yLg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 17:50:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1642488640; x=1674024640;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Qle7iYX0bWtMWgGrX9XT60FWnCJkJa+OHVP1jvUZDP4=;
+ b=M5pLFwsd7qWlfA/w7f/OgyzEl49qvA8WUQEZZDqdtOkj2iIdoHMy8RDN
+ 8bcLadlDey2z2oX/d1ubtGTQ9Eft5cWGO0ZRNo3XnVw0VjZ9xn2b2cKwW
+ wLOG8X2rtj0/bIY7RMGLV0U6m+PamtEIUPWpqOBpj5lqZ2h1UpHAfkFQR
+ wbXfGSb92XHDY6g5MxIxrUvYUKcGTeVR/bBX8++witcwpclDV7518DLKW
+ HX8RvUXu9KBaAy5UeCIhYMXk9vmyM0Xupp+QzF973yplvs3cMM3kkwzih
+ RsUMkoCKbQPNpB//4+a5oj05sq0QnbuVj7yd2KUdjWsCqli/WtH65f0tT Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10230"; a="244548634"
+X-IronPort-AV: E=Sophos;i="5.88,296,1635231600"; d="scan'208";a="244548634"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jan 2022 22:49:29 -0800
+X-IronPort-AV: E=Sophos;i="5.88,296,1635231600"; d="scan'208";a="531648541"
+Received: from hyperv-sh4.sh.intel.com ([10.239.48.22])
+ by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jan 2022 22:49:17 -0800
+From: Chao Gao <chao.gao@intel.com>
+To: kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com,
+ kevin.tian@intel.com, tglx@linutronix.de
+Subject: [PATCH v2 0/4] Improve KVM's interaction with CPU hotplug
+Date: Tue, 18 Jan 2022 14:44:23 +0800
+Message-Id: <20220118064430.3882337-1-chao.gao@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,132 +64,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+Cc: Thomas Richter <tmricht@linux.ibm.com>, Wanpeng Li <wanpengli@tencent.com>,
+ David Hildenbrand <david@redhat.com>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
+ kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
+ Janosch Frank <frankja@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
+ Joerg Roedel <joro@8bytes.org>, Huacai Chen <chenhuacai@kernel.org>,
+ linux-riscv@lists.infradead.org,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Chao Gao <chao.gao@intel.com>, Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ John Garry <john.garry@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Shaokun Zhang <zhangshaokun@hisilicon.com>, Borislav Petkov <bp@alien8.de>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>
+ Paul Walmsley <paul.walmsley@sifive.com>, Atish Patra <atishp@atishpatra.org>,
+ Sumanth Korikkar <sumanthk@linux.ibm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Fabiano Rosas <farosas@linux.ibm.com>, Hector Martin <marcan@marcan.st>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>, James Morse <james.morse@arm.com>,
+ kvm-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PR KVM does not support running with AIL enabled, and SCV does is not
-supported with AIL disabled.
+Changes from v1->v2: (all comments/suggestions on v1 are from Sean, thanks)
+ - Merged v1's patch 2 into patch 1, and v1's patch 5 into patch 6.
+ - Use static_call for check_processor_compatibility().
+ - Generate patch 2 with "git revert" and do manual changes based on that.
+ - Loosen the WARN_ON() in kvm_arch_check_processor_compat() instead of
+   removing it.
+ - KVM always prevent incompatible CPUs from being brought up regardless of
+   running VMs.
+ - Use pr_warn instead of pr_info to emit logs when KVM finds offending
+   CPUs.
 
-Fix this by ensuring the SCV facility is disabled with FSCR while a
-CPU can be running with AIL=0. PowerNV host supports disabling AIL on a
-per-CPU basis, so SCV just needs to be disabled when a vCPU is run.
+KVM registers its CPU hotplug callback to CPU starting section. And in the
+callback, KVM enables hardware virtualization on hotplugged CPUs if any VM
+is running on existing CPUs.
 
-The pSeries machine can only switch AIL on a system-wide basis, so it
-must disable SCV support at boot if the configuration can potentially
-run a PR KVM guest.
+There are two problems in the process:
+1. KVM doesn't do compatibility checks before enabling hardware
+virtualization on hotplugged CPUs. This may cause #GP if VMX isn't
+supported or vmentry failure if some in-use VMX features are missing on
+hotplugged CPUs. Both break running VMs.
+2. Callbacks in CPU STARTING section cannot fail. So, even if KVM finds
+some incompatible CPUs, its callback cannot block CPU hotplug.
 
-Alternatives considered and rejected:
-- SCV support can not be disabled by PR KVM after boot, because it is
-  advertised to userspace with HWCAP.
-- AIL can not be disabled on a per-CPU basis. At least when running on
-  pseries it is a per-LPAR setting.
-- Support for real-mode SCV vectors will not be added because they are
-  at 0x17000 so making such a large fixed head space causes immediate
-  value limits to be exceeded, requiring a lot rework and more code.
-- Disabling SCV for any PR KVM possible kernel will cause a slowdown
-  when not using PR KVM.
-- A boot time option to disable SCV to use PR KVM is user-hostile.
-- System call instruction emulation for SCV facility unavailable
-  instructions is too complex and old emulation code was subtly broken
-  and removed.
+This series improves KVM's interaction with CPU hotplug to avoid
+incompatible CPUs breaking running VMs. Following changes are made:
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/exceptions-64s.S |  4 ++++
- arch/powerpc/kernel/setup_64.c       | 15 +++++++++++++++
- arch/powerpc/kvm/book3s_pr.c         | 20 ++++++++++++++------
- 3 files changed, 33 insertions(+), 6 deletions(-)
+1. move KVM's CPU hotplug callback to ONLINE section (suggested by Thomas)
+2. do compatibility checks on hotplugged CPUs.
+3. abort onlining incompatible CPUs
 
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 55caeee37c08..b66dd6f775a4 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -809,6 +809,10 @@ __start_interrupts:
-  * - MSR_EE|MSR_RI is clear (no reentrant exceptions)
-  * - Standard kernel environment is set up (stack, paca, etc)
-  *
-+ * KVM:
-+ * These interrupts do not elevate HV 0->1, so HV is not involved. PR KVM
-+ * ensures that FSCR[SCV] is disabled whenever it has to force AIL off.
-+ *
-  * Call convention:
-  *
-  * syscall register convention is in Documentation/powerpc/syscall64-abi.rst
-diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index d87f7c1103ce..5b8740ece1b2 100644
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -197,6 +197,21 @@ static void __init configure_exceptions(void)
- 
- 	/* Under a PAPR hypervisor, we need hypercalls */
- 	if (firmware_has_feature(FW_FEATURE_SET_MODE)) {
-+		/*
-+		 * PR KVM does not support AIL mode interrupts in the host, and
-+		 * SCV system call interrupt vectors are only implemented for
-+		 * AIL mode. Under pseries, AIL mode can only be enabled and
-+		 * disabled system-wide so when PR KVM is loaded, all CPUs in
-+		 * the host are set to AIL=0 mode. SCV can not be disabled
-+		 * dynamically because the feature is advertised to host
-+		 * userspace, so SCV support must not be enabled if PR KVM can
-+		 * possibly be run.
-+		 */
-+		if (IS_ENABLED(CONFIG_KVM_BOOK3S_PR_POSSIBLE) && !radix_enabled()) {
-+			init_task.thread.fscr &= ~FSCR_SCV;
-+			cur_cpu_spec->cpu_user_features2 &= ~PPC_FEATURE2_SCV;
-+		}
-+
- 		/* Enable AIL if possible */
- 		if (!pseries_enable_reloc_on_exc()) {
- 			init_task.thread.fscr &= ~FSCR_SCV;
-diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
-index 6bc9425acb32..9845bd509185 100644
---- a/arch/powerpc/kvm/book3s_pr.c
-+++ b/arch/powerpc/kvm/book3s_pr.c
-@@ -140,9 +140,12 @@ static void kvmppc_core_vcpu_load_pr(struct kvm_vcpu *vcpu, int cpu)
- #endif
- 
- 	/* Disable AIL if supported */
--	if (cpu_has_feature(CPU_FTR_HVMODE) &&
--	    cpu_has_feature(CPU_FTR_ARCH_207S))
--		mtspr(SPRN_LPCR, mfspr(SPRN_LPCR) & ~LPCR_AIL);
-+	if (cpu_has_feature(CPU_FTR_HVMODE)) {
-+		if (cpu_has_feature(CPU_FTR_ARCH_207S))
-+			mtspr(SPRN_LPCR, mfspr(SPRN_LPCR) & ~LPCR_AIL);
-+		if (cpu_has_feature(CPU_FTR_ARCH_300) && (current->thread.fscr & FSCR_SCV))
-+			mtspr(SPRN_FSCR, mfspr(SPRN_FSCR) & ~FSCR_SCV);
-+	}
- 
- 	vcpu->cpu = smp_processor_id();
- #ifdef CONFIG_PPC_BOOK3S_32
-@@ -175,9 +178,12 @@ static void kvmppc_core_vcpu_put_pr(struct kvm_vcpu *vcpu)
- 	kvmppc_save_tm_pr(vcpu);
- 
- 	/* Enable AIL if supported */
--	if (cpu_has_feature(CPU_FTR_HVMODE) &&
--	    cpu_has_feature(CPU_FTR_ARCH_207S))
--		mtspr(SPRN_LPCR, mfspr(SPRN_LPCR) | LPCR_AIL_3);
-+	if (cpu_has_feature(CPU_FTR_HVMODE)) {
-+		if (cpu_has_feature(CPU_FTR_ARCH_207S))
-+			mtspr(SPRN_LPCR, mfspr(SPRN_LPCR) | LPCR_AIL_3);
-+		if (cpu_has_feature(CPU_FTR_ARCH_300) && (current->thread.fscr & FSCR_SCV))
-+			mtspr(SPRN_FSCR, mfspr(SPRN_FSCR) | FSCR_SCV);
-+	}
- 
- 	vcpu->cpu = -1;
- }
-@@ -1037,6 +1043,8 @@ static int kvmppc_handle_fac(struct kvm_vcpu *vcpu, ulong fac)
- 
- void kvmppc_set_fscr(struct kvm_vcpu *vcpu, u64 fscr)
- {
-+	if (fscr & FSCR_SCV)
-+		fscr &= ~FSCR_SCV; /* SCV must not be enabled */
- 	if ((vcpu->arch.fscr & FSCR_TAR) && !(fscr & FSCR_TAR)) {
- 		/* TAR got dropped, drop it in shadow too */
- 		kvmppc_giveup_fac(vcpu, FSCR_TAR_LG);
+This series is a follow-up to the discussion about KVM and CPU hotplug
+https://lore.kernel.org/lkml/3d3296f0-9245-40f9-1b5a-efffdb082de9@redhat.com/T/
+
+Note: this series is tested only on Intel systems.
+
+Chao Gao (4):
+  KVM: x86: Move check_processor_compatibility from init ops to runtime
+    ops
+  Partially revert "KVM: Pass kvm_init()'s opaque param to additional
+    arch funcs"
+  KVM: Rename and move CPUHP_AP_KVM_STARTING to ONLINE section
+  KVM: Do compatibility checks on hotplugged CPUs
+
+ arch/arm64/kvm/arm.c               |  2 +-
+ arch/mips/kvm/mips.c               |  2 +-
+ arch/powerpc/kvm/powerpc.c         |  2 +-
+ arch/riscv/kvm/main.c              |  2 +-
+ arch/s390/kvm/kvm-s390.c           |  2 +-
+ arch/x86/include/asm/kvm-x86-ops.h |  1 +
+ arch/x86/include/asm/kvm_host.h    |  2 +-
+ arch/x86/kvm/svm/svm.c             |  4 +-
+ arch/x86/kvm/vmx/evmcs.c           |  2 +-
+ arch/x86/kvm/vmx/evmcs.h           |  2 +-
+ arch/x86/kvm/vmx/vmx.c             | 12 +++---
+ arch/x86/kvm/x86.c                 | 16 +++++---
+ include/linux/cpuhotplug.h         |  2 +-
+ include/linux/kvm_host.h           |  2 +-
+ virt/kvm/kvm_main.c                | 62 ++++++++++++++++++++----------
+ 15 files changed, 71 insertions(+), 44 deletions(-)
+
 -- 
-2.23.0
+2.25.1
 
