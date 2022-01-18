@@ -2,60 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693B2492C38
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 18:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07018492C61
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 18:30:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JdbFt1Ry6z30Mr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 04:23:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JdbQD5yKgz30NB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 04:30:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TK4R4ujo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=N4w7lW6J;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=TK4R4ujo; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=N4w7lW6J; dkim-atps=neutral
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JdbFD2mbZz2xtL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 04:22:40 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id BF02A60EF9;
- Tue, 18 Jan 2022 17:22:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824F7C340E0;
- Tue, 18 Jan 2022 17:22:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1642526556;
- bh=nprtLpXrRfvglwbXoOGOQ6/KtgrFZDOqeMJxXlz0s0A=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=TK4R4ujoiynCj4SK6WpD8pNaaMAAg1E7afe4kJAjp/SwXXskZVB7P7pfm42MyyhU5
- zIR+LqYy9RKz7cG08fXze2SfdT9cnp9J2oz2wPB9mCyUUg7L7QCaPn//bArAzOupZ1
- OLCNvKWWAJg3oRcBLCSgxFBP9D4uGmY8SNKv0aGbNen/jPdgpWVoHUe5ETbT3IHm7P
- SHe4/F0ZYGmohxfI7SiUlH/oSQDAnnz+tuvYj7uVFwBYtOxUqiSgwtUbgnryk+P/ct
- 9FUdHcNrkvGhrezFy1ZTRL7bOQ5eF7jhOQA90iMfVUwGWu7kTRNDmszkU+QVa/L+R8
- 4oAq7e+qRmxFw==
-Date: Tue, 18 Jan 2022 17:22:29 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
-Subject: Re: [PATCH v2 2/5] dt-bindings: tlv320aic31xx: Define PLL clock inputs
-Message-ID: <Yeb3VVmrUDIYw3AK@sirena.org.uk>
-References: <20220117132109.283365-1-ariel.dalessandro@collabora.com>
- <20220117132109.283365-3-ariel.dalessandro@collabora.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JdbPb1kh4z2y0B
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 04:29:53 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1642526995; x=1674062995;
+ h=to:cc:references:from:subject:message-id:date:
+ mime-version:in-reply-to:content-transfer-encoding;
+ bh=k4eJH2zoU91Kl9uf4FCGcvt/8O88IEchGIaQVuOy/n8=;
+ b=N4w7lW6JT5xN1b5ges7sZYr4xMqW+wqS4hycp5P1VEBImYxPc4R69nWx
+ e8R9sdto2HM5h9YpgwGwDPawrmN+mXtDk5oMU81kU6vGt6vpvHBQTGy3T
+ g8Uzqf3D7Uq1GDhXv9z70XTO2X9sZp7Or8AfxWOoJ8XqD+Bu6N9sY2GnF
+ IrO6ZlemqnDpF6WJ0X7jrI3WQ9EShb7o4FX1jkYuMrkN8nAQComVZsj/u
+ EYP0HCZJO2sMyprA7QMsnCgAP1ilyLhtwI1rytQFLAeRRd1h2EZ3u78nB
+ QYOx/J8SjsnX5qusLZ9BbVeqxgzup48cHnAr8y8/sK5+CtTNNx2f/vMSB g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10230"; a="308207848"
+X-IronPort-AV: E=Sophos;i="5.88,297,1635231600"; d="scan'208";a="308207848"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jan 2022 09:28:49 -0800
+X-IronPort-AV: E=Sophos;i="5.88,297,1635231600"; d="scan'208";a="764657295"
+Received: from ssrikan2-mobl2.amr.corp.intel.com (HELO [10.209.52.128])
+ ([10.209.52.128])
+ by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jan 2022 09:28:47 -0800
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, Kefeng Wang <wangkefeng.wang@huawei.com>,
+ x86@kernel.org
+References: <20211227145903.187152-1-wangkefeng.wang@huawei.com>
+ <20211227145903.187152-4-wangkefeng.wang@huawei.com>
+ <70ff58bc-3a92-55c2-2da8-c5877af72e44@intel.com>
+ <3858de1f-cdbc-ff52-2890-4254d0f48b0a@huawei.com>
+ <31a75f95-6e6e-b640-2d95-08a95ea8cf51@intel.com>
+ <1642472965.lgfksp6krp.astroid@bobo.none>
+From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [PATCH v2 3/3] x86: Support huge vmalloc mappings
+Message-ID: <4488d39f-0698-7bfd-b81c-1e609821818f@intel.com>
+Date: Tue, 18 Jan 2022 09:28:45 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="tabkMTr0FaHh+1SV"
-Content-Disposition: inline
-In-Reply-To: <20220117132109.283365-3-ariel.dalessandro@collabora.com>
-X-Cookie: Do YOU have redeeming social value?
+In-Reply-To: <1642472965.lgfksp6krp.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,44 +79,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org,
- michael@amarulasolutions.com, kuninori.morimoto.gx@renesas.com,
- Xiubo.Lee@gmail.com, tony@atomide.com, festevam@gmail.com,
- shengjiu.wang@gmail.com, tiwai@suse.com, linux-kernel@vger.kernel.org,
- lgirdwood@gmail.com, nicoleotsuka@gmail.com, robh+dt@kernel.org,
- bcousson@baylibre.com, perex@perex.cz, linux-omap@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Matthew Wilcox <willy@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 1/17/22 6:46 PM, Nicholas Piggin wrote:
+>> This all sounds very fragile to me.  Every time a new architecture would
+>> get added for huge vmalloc() support, the developer needs to know to go
+>> find that architecture's module_alloc() and add this flag.
+> This is documented in the Kconfig.
+> 
+>  #
+>  #  Archs that select this would be capable of PMD-sized vmaps (i.e.,
+>  #  arch_vmap_pmd_supported() returns true), and they must make no assumptions
+>  #  that vmalloc memory is mapped with PAGE_SIZE ptes. The VM_NO_HUGE_VMAP flag
+>  #  can be used to prohibit arch-specific allocations from using hugepages to
+>  #  help with this (e.g., modules may require it).
+>  #
+>  config HAVE_ARCH_HUGE_VMALLOC
+>          depends on HAVE_ARCH_HUGE_VMAP
+>          bool
+> 
+> Is it really fair to say it's *very* fragile? Surely it's reasonable to 
+> read the (not very long) documentation ad understand the consequences for
+> the arch code before enabling it.
 
---tabkMTr0FaHh+1SV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Very fragile or not, I think folks are likely to get it wrong.  It would
+be nice to have it default *everyone* to safe and slow and make *sure*
+they go look at the architecture modules code itself before enabling
+this for modules.
 
-On Mon, Jan 17, 2022 at 10:21:06AM -0300, Ariel D'Alessandro wrote:
-> Add constants for the different PLL clock inputs in tlv320aic31xx.
-
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
-
---tabkMTr0FaHh+1SV
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmHm91QACgkQJNaLcl1U
-h9Culwf/RPr3IjTPjy4XtWKgvBrp1Pai0Yj0+dMs5dFSjw/0kFwL+B1+1VUoq3vI
-h4UkHtRogVAXjQ+ciJgSGz6NRlSjg6rJbuZ3DcYse48EWDrbZj8y1MNwI4Y1AIkm
-QjXhSubuj/ahL+jWDJD3R4hXmdP3HrJJehztN73R1/chIwJDmJAXg1zSgU2NBsXy
-DXKQRc4meJcv8Poq9gtebfbz2prqrfbBc+GyJsPYPjMVwvC8JSJA0GYGJJG9vmj2
-OvRKjjRymO4WEawTzpCydcMlPtnZjUwmPl2u/TE9JamAxFxJC5CCaeybLOOET8kp
-Pww0euG+OUvlDiGuAyJ4du3StSJ5Mg==
-=v5Cq
------END PGP SIGNATURE-----
-
---tabkMTr0FaHh+1SV--
+Just from that Kconfig text, I don't think I'd know off the top of my
+head what do do for x86, or what code I needed to go touch.
