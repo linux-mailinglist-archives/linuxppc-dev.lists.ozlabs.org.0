@@ -1,61 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603CD491457
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 03:22:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB64491854
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 03:46:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JdCG01SWnz3bZg
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 13:22:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JdCpd1PD5z30Lt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 13:46:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cyhp/T4A;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Rc1D2DDu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e;
+ helo=mail-pg1-x52e.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=cyhp/T4A; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JdCFG4P91z2yP9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 13:21:22 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=Rc1D2DDu; dkim-atps=neutral
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
+ [IPv6:2607:f8b0:4864:20::52e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 90D82612D1;
- Tue, 18 Jan 2022 02:21:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5801EC36AE3;
- Tue, 18 Jan 2022 02:21:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1642472479;
- bh=wc9zOoYdRUlpL/9CmY8TpP2Rxm80a4UiTI/3souVWKU=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=cyhp/T4AFFnlFRcOCTcM7GSCyzG6t/NkFnKVdzaew24NoFOqlNp22CNB0R7HzH16Q
- oTzBY27j0PEAy/S9IQfgEZdm5enDYf+EnrIzP53xtSPObMO+smDGvEAavtM3W1dUGg
- 4eQ5n3lt5EfnHv/ykc/xTUxLWAGEKDxtQl4f6BUFQUp0h1quMF58DZsfY0ok+Bj1k+
- JmUgkKLUaTyDiggvsNvYcLJgIidG8KnL2lznL6lFHPKe+OTBYKZSIcwh/UNXVqTese
- yb6vI5BIHmJ1lH+bdFZ7o33hHGLTzK16UXr1WgDBWPuX8rln6tJphJSVA3n1kKl+zE
- q7XxWgE69qYow==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.16 026/217] bpf: Change value of MAX_TAIL_CALL_CNT
- from 32 to 33
-Date: Mon, 17 Jan 2022 21:16:29 -0500
-Message-Id: <20220118021940.1942199-26-sashal@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220118021940.1942199-1-sashal@kernel.org>
-References: <20220118021940.1942199-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JdCnv6Bnpz2ynK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 13:46:11 +1100 (AEDT)
+Received: by mail-pg1-x52e.google.com with SMTP id f8so12576788pgf.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Jan 2022 18:46:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=G7afKiI+gE5BvcSZZNsZkHZKk4Ry06NGlI7r6RoEIKE=;
+ b=Rc1D2DDu80wX82f3gReKMipNgtke5Ezoh5+9wP1vhbdzaMaDpuqodjUEIPM3EEkN6e
+ LgXUN0zYcVseRq4Frignh/DJoa5B+ejI/R86K6gVUs4KSmZonAsG8E+ISC0wxiWbybhF
+ sFXificRMOC2xpZ7KtIqyN2K0aiCO/s3go8noGaQHXcR+uqcDSh1kZsVYezqUxmq0/qz
+ OL7tPvDnqbGNxHrMNvu+qIsoAgVc3qknGLNJvsmigTagPY6FxXNh9CcCOocBbit0S/bj
+ QPOQoHItg72E/0+7MKT2m9nJCpmvz86e5RNpYYVLdt6+9paqz1AbJhAaBBdVWxJ7Li6P
+ etFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=G7afKiI+gE5BvcSZZNsZkHZKk4Ry06NGlI7r6RoEIKE=;
+ b=sPPE2CpUiZQ88QLFVd2abDHYjGWY5UWmMSmJyBgOVVHRkcdaUtrGVFhqOjgjXZH7qe
+ 0FSiduFaXwKQ/AwCJ8zIS/YOdtdWuS+oMKMBmU7xqnn+IrdGbE7jjcRHHO7tAU6PwGg8
+ WV0jymYDoHgjiRaGod8T2MB1mI9bqKhWWv1O55AiM72Kvvc44ieyeYBPNTiJrIiJgl+m
+ mB8Yn070+Wmg/l3Wv8hCyI5XRiGhYvxsRStfsIRevOMWW/5Q5CMXInief56hHOqU7hfG
+ P2HFXzMuU54YDhohZH0quNsAxDdbTCk3ycC7njHlpMiymh3m4UGcZoq9xlk5deauZOwd
+ fLyQ==
+X-Gm-Message-State: AOAM5321yQy0WArlMMUO4PwpSK7zttCpYWiXZ+tpW3k5XnE8fLONgT9t
+ dH7HD+2nNXp7UTvEHoWsHww=
+X-Google-Smtp-Source: ABdhPJwaTkO88Si8cY9Mt/mQhv8ZpVANJ2CdFYnmVifrVKXyLg/EiyceiwxjR12ycsrWtesBCh7+Uw==
+X-Received: by 2002:a63:8c57:: with SMTP id q23mr21680397pgn.625.1642473968155; 
+ Mon, 17 Jan 2022 18:46:08 -0800 (PST)
+Received: from localhost (124-171-74-95.tpgi.com.au. [124.171.74.95])
+ by smtp.gmail.com with ESMTPSA id i123sm12180204pfe.13.2022.01.17.18.46.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Jan 2022 18:46:07 -0800 (PST)
+Date: Tue, 18 Jan 2022 12:46:01 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 3/3] x86: Support huge vmalloc mappings
+To: Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet
+ <corbet@lwn.net>, Dave Hansen <dave.hansen@intel.com>,
+ linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, Kefeng Wang <wangkefeng.wang@huawei.com>,
+ x86@kernel.org
+References: <20211227145903.187152-1-wangkefeng.wang@huawei.com>
+ <20211227145903.187152-4-wangkefeng.wang@huawei.com>
+ <70ff58bc-3a92-55c2-2da8-c5877af72e44@intel.com>
+ <3858de1f-cdbc-ff52-2890-4254d0f48b0a@huawei.com>
+ <31a75f95-6e6e-b640-2d95-08a95ea8cf51@intel.com>
+In-Reply-To: <31a75f95-6e6e-b640-2d95-08a95ea8cf51@intel.com>
 MIME-Version: 1.0
+Message-Id: <1642472965.lgfksp6krp.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,465 +88,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: joannekoong@fb.com, revest@chromium.org, davemarchevsky@fb.com,
- zlim.lnx@gmail.com, dave.hansen@linux.intel.com, ast@kernel.org,
- andrii@kernel.org, sparclinux@vger.kernel.org, illusionist.neo@gmail.com,
- Tiezhu Yang <yangtiezhu@loongson.cn>, will@kernel.org,
- linux-riscv@lists.infradead.org, Sasha Levin <sashal@kernel.org>,
- linux-s390@vger.kernel.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Daniel Borkmann <daniel@iogearbox.net>, x86@kernel.org,
- john.fastabend@gmail.com, linux@armlinux.org.uk, mingo@redhat.com,
- catalin.marinas@arm.com, naveen.n.rao@linux.ibm.com, yhs@fb.com,
- borntraeger@linux.ibm.com, xi.wang@gmail.com, gor@linux.ibm.com, joe@cilium.io,
- aou@eecs.berkeley.edu, Johan Almbladh <johan.almbladh@anyfinetworks.com>,
- luke.r.nels@gmail.com, hca@linux.ibm.com, brouer@redhat.com,
- linux-mips@vger.kernel.org, bp@alien8.de, liuhangbin@gmail.com,
- paul.walmsley@sifive.com, tglx@linutronix.de,
- linux-arm-kernel@lists.infradead.org, tsbogend@alpha.franken.de,
- paulburton@kernel.org, yoshfuji@linux-ipv6.org, netdev@vger.kernel.org,
- dsahern@kernel.org, udknight@gmail.com,
- =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>, palmer@dabbelt.com,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Matthew Wilcox <willy@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Excerpts from Dave Hansen's message of December 29, 2021 2:14 am:
+> On 12/28/21 2:26 AM, Kefeng Wang wrote:
+>>>> There are some disadvantages about this feature[2], one of the main
+>>>> concerns is the possible memory fragmentation/waste in some scenarios,
+>>>> also archs must ensure that any arch specific vmalloc allocations that
+>>>> require PAGE_SIZE mappings(eg, module alloc with STRICT_MODULE_RWX)
+>>>> use the VM_NO_HUGE_VMAP flag to inhibit larger mappings.
+>>> That just says that x86 *needs* PAGE_SIZE allocations.=C2=A0 But, what
+>>> happens if VM_NO_HUGE_VMAP is not passed (like it was in v1)?=C2=A0 Wil=
+l the
+>>> subsequent permission changes just fragment the 2M mapping?
+>>=20
+>> Yes, without VM_NO_HUGE_VMAP, it could fragment the 2M mapping.
+>>=20
+>> When module alloc with STRICT_MODULE_RWX on x86, it calls
+>> __change_page_attr()
+>>=20
+>> from set_memory_ro/rw/nx which will split large page, so there is no
+>> need to make
+>>=20
+>> module alloc with HUGE_VMALLOC.
+>=20
+> This all sounds very fragile to me.  Every time a new architecture would
+> get added for huge vmalloc() support, the developer needs to know to go
+> find that architecture's module_alloc() and add this flag.
 
-[ Upstream commit ebf7f6f0a6cdcc17a3da52b81e4b3a98c4005028 ]
+This is documented in the Kconfig.
 
-In the current code, the actual max tail call count is 33 which is greater
-than MAX_TAIL_CALL_CNT (defined as 32). The actual limit is not consistent
-with the meaning of MAX_TAIL_CALL_CNT and thus confusing at first glance.
-We can see the historical evolution from commit 04fd61ab36ec ("bpf: allow
-bpf programs to tail-call other bpf programs") and commit f9dabe016b63
-("bpf: Undo off-by-one in interpreter tail call count limit"). In order
-to avoid changing existing behavior, the actual limit is 33 now, this is
-reasonable.
+ #
+ #  Archs that select this would be capable of PMD-sized vmaps (i.e.,
+ #  arch_vmap_pmd_supported() returns true), and they must make no assumpti=
+ons
+ #  that vmalloc memory is mapped with PAGE_SIZE ptes. The VM_NO_HUGE_VMAP =
+flag
+ #  can be used to prohibit arch-specific allocations from using hugepages =
+to
+ #  help with this (e.g., modules may require it).
+ #
+ config HAVE_ARCH_HUGE_VMALLOC
+         depends on HAVE_ARCH_HUGE_VMAP
+         bool
 
-After commit 874be05f525e ("bpf, tests: Add tail call test suite"), we can
-see there exists failed testcase.
+Is it really fair to say it's *very* fragile? Surely it's reasonable to=20
+read the (not very long) documentation ad understand the consequences for
+the arch code before enabling it.
 
-On all archs when CONFIG_BPF_JIT_ALWAYS_ON is not set:
- # echo 0 > /proc/sys/net/core/bpf_jit_enable
- # modprobe test_bpf
- # dmesg | grep -w FAIL
- Tail call error path, max count reached jited:0 ret 34 != 33 FAIL
+> They next
+> guy is going to forget, just like you did.
 
-On some archs:
- # echo 1 > /proc/sys/net/core/bpf_jit_enable
- # modprobe test_bpf
- # dmesg | grep -w FAIL
- Tail call error path, max count reached jited:1 ret 34 != 33 FAIL
+The miss here could just be a simple oversight or thinko, and caught by=20
+review, as happens to a lot of things.
 
-Although the above failed testcase has been fixed in commit 18935a72eb25
-("bpf/tests: Fix error in tail call limit tests"), it would still be good
-to change the value of MAX_TAIL_CALL_CNT from 32 to 33 to make the code
-more readable.
+>=20
+> Considering that this is not a hot path, a weak function would be a nice
+> choice:
+>=20
+> /* vmalloc() flags used for all module allocations. */
+> unsigned long __weak arch_module_vm_flags()
+> {
+> 	/*
+> 	 * Modules use a single, large vmalloc().  Different
+> 	 * permissions are applied later and will fragment
+> 	 * huge mappings.  Avoid using huge pages for modules.
+> 	 */
+> 	return VM_NO_HUGE_VMAP;
+> }
+>=20
+> Stick that in some the common module code, next to:
 
-The 32-bit x86 JIT was using a limit of 32, just fix the wrong comments and
-limit to 33 tail calls as the constant MAX_TAIL_CALL_CNT updated. For the
-mips64 JIT, use "ori" instead of "addiu" as suggested by Johan Almbladh.
-For the riscv JIT, use RV_REG_TCC directly to save one register move as
-suggested by Björn Töpel. For the other implementations, no function changes,
-it does not change the current limit 33, the new value of MAX_TAIL_CALL_CNT
-can reflect the actual max tail call count, the related tail call testcases
-in test_bpf module and selftests can work well for the interpreter and the
-JIT.
+Then they have to think about it even less, so I don't know if that's an=20
+improvement. I don't know what else an arch might be doing with these
+allocations, at least modules will blow up pretty quickly, who knows=20
+what other rare code relies on 4k vmalloc mappings?
 
-Here are the test results on x86_64:
+The huge vmalloc option is not supposed to be easy to enable. This is=20
+the same problem Andy was having with the TLB shootdown patches, he=20
+didn't read the documentation and thought it was supposed to be a=20
+trivial thing anybody could enable without thinking about it, and was
+dutifully pointing out the the nasty "bugs" the feature has in it if
+x86 were to enable it improperly.
 
- # uname -m
- x86_64
- # echo 0 > /proc/sys/net/core/bpf_jit_enable
- # modprobe test_bpf test_suite=test_tail_calls
- # dmesg | tail -1
- test_bpf: test_tail_calls: Summary: 8 PASSED, 0 FAILED, [0/8 JIT'ed]
- # rmmod test_bpf
- # echo 1 > /proc/sys/net/core/bpf_jit_enable
- # modprobe test_bpf test_suite=test_tail_calls
- # dmesg | tail -1
- test_bpf: test_tail_calls: Summary: 8 PASSED, 0 FAILED, [8/8 JIT'ed]
- # rmmod test_bpf
- # ./test_progs -t tailcalls
- #142 tailcalls:OK
- Summary: 1/11 PASSED, 0 SKIPPED, 0 FAILED
+Thanks,
+Nick
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
-Tested-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Acked-by: Björn Töpel <bjorn@kernel.org>
-Acked-by: Johan Almbladh <johan.almbladh@anyfinetworks.com>
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Link: https://lore.kernel.org/bpf/1636075800-3264-1-git-send-email-yangtiezhu@loongson.cn
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/net/bpf_jit_32.c         |  5 +++--
- arch/arm64/net/bpf_jit_comp.c     |  5 +++--
- arch/mips/net/bpf_jit_comp32.c    |  3 +--
- arch/mips/net/bpf_jit_comp64.c    |  2 +-
- arch/powerpc/net/bpf_jit_comp32.c |  4 ++--
- arch/powerpc/net/bpf_jit_comp64.c |  4 ++--
- arch/riscv/net/bpf_jit_comp32.c   |  6 ++----
- arch/riscv/net/bpf_jit_comp64.c   |  7 +++----
- arch/s390/net/bpf_jit_comp.c      |  6 +++---
- arch/sparc/net/bpf_jit_comp_64.c  |  2 +-
- arch/x86/net/bpf_jit_comp.c       | 10 +++++-----
- arch/x86/net/bpf_jit_comp32.c     |  4 ++--
- include/linux/bpf.h               |  2 +-
- include/uapi/linux/bpf.h          |  2 +-
- kernel/bpf/core.c                 |  3 ++-
- lib/test_bpf.c                    |  4 ++--
- tools/include/uapi/linux/bpf.h    |  2 +-
- 17 files changed, 35 insertions(+), 36 deletions(-)
-
-diff --git a/arch/arm/net/bpf_jit_32.c b/arch/arm/net/bpf_jit_32.c
-index eeb6dc0ecf463..e59b41e9ab0c1 100644
---- a/arch/arm/net/bpf_jit_32.c
-+++ b/arch/arm/net/bpf_jit_32.c
-@@ -1199,7 +1199,8 @@ static int emit_bpf_tail_call(struct jit_ctx *ctx)
- 
- 	/* tmp2[0] = array, tmp2[1] = index */
- 
--	/* if (tail_call_cnt > MAX_TAIL_CALL_CNT)
-+	/*
-+	 * if (tail_call_cnt >= MAX_TAIL_CALL_CNT)
- 	 *	goto out;
- 	 * tail_call_cnt++;
- 	 */
-@@ -1208,7 +1209,7 @@ static int emit_bpf_tail_call(struct jit_ctx *ctx)
- 	tc = arm_bpf_get_reg64(tcc, tmp, ctx);
- 	emit(ARM_CMP_I(tc[0], hi), ctx);
- 	_emit(ARM_COND_EQ, ARM_CMP_I(tc[1], lo), ctx);
--	_emit(ARM_COND_HI, ARM_B(jmp_offset), ctx);
-+	_emit(ARM_COND_CS, ARM_B(jmp_offset), ctx);
- 	emit(ARM_ADDS_I(tc[1], tc[1], 1), ctx);
- 	emit(ARM_ADC_I(tc[0], tc[0], 0), ctx);
- 	arm_bpf_put_reg64(tcc, tmp, ctx);
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index 3a8a7140a9bfb..356fb2116c6b2 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -287,13 +287,14 @@ static int emit_bpf_tail_call(struct jit_ctx *ctx)
- 	emit(A64_CMP(0, r3, tmp), ctx);
- 	emit(A64_B_(A64_COND_CS, jmp_offset), ctx);
- 
--	/* if (tail_call_cnt > MAX_TAIL_CALL_CNT)
-+	/*
-+	 * if (tail_call_cnt >= MAX_TAIL_CALL_CNT)
- 	 *     goto out;
- 	 * tail_call_cnt++;
- 	 */
- 	emit_a64_mov_i64(tmp, MAX_TAIL_CALL_CNT, ctx);
- 	emit(A64_CMP(1, tcc, tmp), ctx);
--	emit(A64_B_(A64_COND_HI, jmp_offset), ctx);
-+	emit(A64_B_(A64_COND_CS, jmp_offset), ctx);
- 	emit(A64_ADD_I(1, tcc, tcc, 1), ctx);
- 
- 	/* prog = array->ptrs[index];
-diff --git a/arch/mips/net/bpf_jit_comp32.c b/arch/mips/net/bpf_jit_comp32.c
-index bd996ede12f8e..044b11b65bcac 100644
---- a/arch/mips/net/bpf_jit_comp32.c
-+++ b/arch/mips/net/bpf_jit_comp32.c
-@@ -1381,8 +1381,7 @@ void build_prologue(struct jit_context *ctx)
- 	 * 16-byte area in the parent's stack frame. On a tail call, the
- 	 * calling function jumps into the prologue after these instructions.
- 	 */
--	emit(ctx, ori, MIPS_R_T9, MIPS_R_ZERO,
--	     min(MAX_TAIL_CALL_CNT + 1, 0xffff));
-+	emit(ctx, ori, MIPS_R_T9, MIPS_R_ZERO, min(MAX_TAIL_CALL_CNT, 0xffff));
- 	emit(ctx, sw, MIPS_R_T9, 0, MIPS_R_SP);
- 
- 	/*
-diff --git a/arch/mips/net/bpf_jit_comp64.c b/arch/mips/net/bpf_jit_comp64.c
-index 815ade7242278..6475828ffb36d 100644
---- a/arch/mips/net/bpf_jit_comp64.c
-+++ b/arch/mips/net/bpf_jit_comp64.c
-@@ -552,7 +552,7 @@ void build_prologue(struct jit_context *ctx)
- 	 * On a tail call, the calling function jumps into the prologue
- 	 * after this instruction.
- 	 */
--	emit(ctx, addiu, tc, MIPS_R_ZERO, min(MAX_TAIL_CALL_CNT + 1, 0xffff));
-+	emit(ctx, ori, tc, MIPS_R_ZERO, min(MAX_TAIL_CALL_CNT, 0xffff));
- 
- 	/* === Entry-point for tail calls === */
- 
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index 0da31d41d4131..8a4faa05f9e41 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -221,13 +221,13 @@ static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 o
- 	PPC_BCC(COND_GE, out);
- 
- 	/*
--	 * if (tail_call_cnt > MAX_TAIL_CALL_CNT)
-+	 * if (tail_call_cnt >= MAX_TAIL_CALL_CNT)
- 	 *   goto out;
- 	 */
- 	EMIT(PPC_RAW_CMPLWI(_R0, MAX_TAIL_CALL_CNT));
- 	/* tail_call_cnt++; */
- 	EMIT(PPC_RAW_ADDIC(_R0, _R0, 1));
--	PPC_BCC(COND_GT, out);
-+	PPC_BCC(COND_GE, out);
- 
- 	/* prog = array->ptrs[index]; */
- 	EMIT(PPC_RAW_RLWINM(_R3, b2p_index, 2, 0, 29));
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index 8b5157ccfebae..8571aafcc9e1e 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -228,12 +228,12 @@ static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 o
- 	PPC_BCC(COND_GE, out);
- 
- 	/*
--	 * if (tail_call_cnt > MAX_TAIL_CALL_CNT)
-+	 * if (tail_call_cnt >= MAX_TAIL_CALL_CNT)
- 	 *   goto out;
- 	 */
- 	PPC_BPF_LL(b2p[TMP_REG_1], 1, bpf_jit_stack_tailcallcnt(ctx));
- 	EMIT(PPC_RAW_CMPLWI(b2p[TMP_REG_1], MAX_TAIL_CALL_CNT));
--	PPC_BCC(COND_GT, out);
-+	PPC_BCC(COND_GE, out);
- 
- 	/*
- 	 * tail_call_cnt++;
-diff --git a/arch/riscv/net/bpf_jit_comp32.c b/arch/riscv/net/bpf_jit_comp32.c
-index e6497424cbf60..529a83b85c1c9 100644
---- a/arch/riscv/net/bpf_jit_comp32.c
-+++ b/arch/riscv/net/bpf_jit_comp32.c
-@@ -799,11 +799,10 @@ static int emit_bpf_tail_call(int insn, struct rv_jit_context *ctx)
- 	emit_bcc(BPF_JGE, lo(idx_reg), RV_REG_T1, off, ctx);
- 
- 	/*
--	 * temp_tcc = tcc - 1;
--	 * if (tcc < 0)
-+	 * if (--tcc < 0)
- 	 *   goto out;
- 	 */
--	emit(rv_addi(RV_REG_T1, RV_REG_TCC, -1), ctx);
-+	emit(rv_addi(RV_REG_TCC, RV_REG_TCC, -1), ctx);
- 	off = ninsns_rvoff(tc_ninsn - (ctx->ninsns - start_insn));
- 	emit_bcc(BPF_JSLT, RV_REG_TCC, RV_REG_ZERO, off, ctx);
- 
-@@ -829,7 +828,6 @@ static int emit_bpf_tail_call(int insn, struct rv_jit_context *ctx)
- 	if (is_12b_check(off, insn))
- 		return -1;
- 	emit(rv_lw(RV_REG_T0, off, RV_REG_T0), ctx);
--	emit(rv_addi(RV_REG_TCC, RV_REG_T1, 0), ctx);
- 	/* Epilogue jumps to *(t0 + 4). */
- 	__build_epilogue(true, ctx);
- 	return 0;
-diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
-index f2a779c7e225d..603630b6f3c5b 100644
---- a/arch/riscv/net/bpf_jit_comp64.c
-+++ b/arch/riscv/net/bpf_jit_comp64.c
-@@ -327,12 +327,12 @@ static int emit_bpf_tail_call(int insn, struct rv_jit_context *ctx)
- 	off = ninsns_rvoff(tc_ninsn - (ctx->ninsns - start_insn));
- 	emit_branch(BPF_JGE, RV_REG_A2, RV_REG_T1, off, ctx);
- 
--	/* if (TCC-- < 0)
-+	/* if (--TCC < 0)
- 	 *     goto out;
- 	 */
--	emit_addi(RV_REG_T1, tcc, -1, ctx);
-+	emit_addi(RV_REG_TCC, tcc, -1, ctx);
- 	off = ninsns_rvoff(tc_ninsn - (ctx->ninsns - start_insn));
--	emit_branch(BPF_JSLT, tcc, RV_REG_ZERO, off, ctx);
-+	emit_branch(BPF_JSLT, RV_REG_TCC, RV_REG_ZERO, off, ctx);
- 
- 	/* prog = array->ptrs[index];
- 	 * if (!prog)
-@@ -352,7 +352,6 @@ static int emit_bpf_tail_call(int insn, struct rv_jit_context *ctx)
- 	if (is_12b_check(off, insn))
- 		return -1;
- 	emit_ld(RV_REG_T3, off, RV_REG_T2, ctx);
--	emit_mv(RV_REG_TCC, RV_REG_T1, ctx);
- 	__build_epilogue(true, ctx);
- 	return 0;
- }
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index 233cc9bcd6527..9ff2bd83aad70 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -1369,7 +1369,7 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
- 				 jit->prg);
- 
- 		/*
--		 * if (tail_call_cnt++ > MAX_TAIL_CALL_CNT)
-+		 * if (tail_call_cnt++ >= MAX_TAIL_CALL_CNT)
- 		 *         goto out;
- 		 */
- 
-@@ -1381,9 +1381,9 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
- 		EMIT4_IMM(0xa7080000, REG_W0, 1);
- 		/* laal %w1,%w0,off(%r15) */
- 		EMIT6_DISP_LH(0xeb000000, 0x00fa, REG_W1, REG_W0, REG_15, off);
--		/* clij %w1,MAX_TAIL_CALL_CNT,0x2,out */
-+		/* clij %w1,MAX_TAIL_CALL_CNT-1,0x2,out */
- 		patch_2_clij = jit->prg;
--		EMIT6_PCREL_RIEC(0xec000000, 0x007f, REG_W1, MAX_TAIL_CALL_CNT,
-+		EMIT6_PCREL_RIEC(0xec000000, 0x007f, REG_W1, MAX_TAIL_CALL_CNT - 1,
- 				 2, jit->prg);
- 
- 		/*
-diff --git a/arch/sparc/net/bpf_jit_comp_64.c b/arch/sparc/net/bpf_jit_comp_64.c
-index 9a2f20cbd48b7..0bfe1c72a0c9e 100644
---- a/arch/sparc/net/bpf_jit_comp_64.c
-+++ b/arch/sparc/net/bpf_jit_comp_64.c
-@@ -867,7 +867,7 @@ static void emit_tail_call(struct jit_ctx *ctx)
- 	emit(LD32 | IMMED | RS1(SP) | S13(off) | RD(tmp), ctx);
- 	emit_cmpi(tmp, MAX_TAIL_CALL_CNT, ctx);
- #define OFFSET2 13
--	emit_branch(BGU, ctx->idx, ctx->idx + OFFSET2, ctx);
-+	emit_branch(BGEU, ctx->idx, ctx->idx + OFFSET2, ctx);
- 	emit_nop(ctx);
- 
- 	emit_alu_K(ADD, tmp, 1, ctx);
-diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-index bafe36e69227d..b87d98efd2240 100644
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -412,7 +412,7 @@ static void emit_indirect_jump(u8 **pprog, int reg, u8 *ip)
-  * ... bpf_tail_call(void *ctx, struct bpf_array *array, u64 index) ...
-  *   if (index >= array->map.max_entries)
-  *     goto out;
-- *   if (++tail_call_cnt > MAX_TAIL_CALL_CNT)
-+ *   if (tail_call_cnt++ >= MAX_TAIL_CALL_CNT)
-  *     goto out;
-  *   prog = array->ptrs[index];
-  *   if (prog == NULL)
-@@ -446,14 +446,14 @@ static void emit_bpf_tail_call_indirect(u8 **pprog, bool *callee_regs_used,
- 	EMIT2(X86_JBE, offset);                   /* jbe out */
- 
- 	/*
--	 * if (tail_call_cnt > MAX_TAIL_CALL_CNT)
-+	 * if (tail_call_cnt++ >= MAX_TAIL_CALL_CNT)
- 	 *	goto out;
- 	 */
- 	EMIT2_off32(0x8B, 0x85, tcc_off);         /* mov eax, dword ptr [rbp - tcc_off] */
- 	EMIT3(0x83, 0xF8, MAX_TAIL_CALL_CNT);     /* cmp eax, MAX_TAIL_CALL_CNT */
- 
- 	offset = ctx->tail_call_indirect_label - (prog + 2 - start);
--	EMIT2(X86_JA, offset);                    /* ja out */
-+	EMIT2(X86_JAE, offset);                   /* jae out */
- 	EMIT3(0x83, 0xC0, 0x01);                  /* add eax, 1 */
- 	EMIT2_off32(0x89, 0x85, tcc_off);         /* mov dword ptr [rbp - tcc_off], eax */
- 
-@@ -504,14 +504,14 @@ static void emit_bpf_tail_call_direct(struct bpf_jit_poke_descriptor *poke,
- 	int offset;
- 
- 	/*
--	 * if (tail_call_cnt > MAX_TAIL_CALL_CNT)
-+	 * if (tail_call_cnt++ >= MAX_TAIL_CALL_CNT)
- 	 *	goto out;
- 	 */
- 	EMIT2_off32(0x8B, 0x85, tcc_off);             /* mov eax, dword ptr [rbp - tcc_off] */
- 	EMIT3(0x83, 0xF8, MAX_TAIL_CALL_CNT);         /* cmp eax, MAX_TAIL_CALL_CNT */
- 
- 	offset = ctx->tail_call_direct_label - (prog + 2 - start);
--	EMIT2(X86_JA, offset);                        /* ja out */
-+	EMIT2(X86_JAE, offset);                       /* jae out */
- 	EMIT3(0x83, 0xC0, 0x01);                      /* add eax, 1 */
- 	EMIT2_off32(0x89, 0x85, tcc_off);             /* mov dword ptr [rbp - tcc_off], eax */
- 
-diff --git a/arch/x86/net/bpf_jit_comp32.c b/arch/x86/net/bpf_jit_comp32.c
-index da9b7cfa46329..429a89c5468b5 100644
---- a/arch/x86/net/bpf_jit_comp32.c
-+++ b/arch/x86/net/bpf_jit_comp32.c
-@@ -1323,7 +1323,7 @@ static void emit_bpf_tail_call(u8 **pprog, u8 *ip)
- 	EMIT2(IA32_JBE, jmp_label(jmp_label1, 2));
- 
- 	/*
--	 * if (tail_call_cnt > MAX_TAIL_CALL_CNT)
-+	 * if (tail_call_cnt++ >= MAX_TAIL_CALL_CNT)
- 	 *     goto out;
- 	 */
- 	lo = (u32)MAX_TAIL_CALL_CNT;
-@@ -1337,7 +1337,7 @@ static void emit_bpf_tail_call(u8 **pprog, u8 *ip)
- 	/* cmp ecx,lo */
- 	EMIT3(0x83, add_1reg(0xF8, IA32_ECX), lo);
- 
--	/* ja out */
-+	/* jae out */
- 	EMIT2(IA32_JAE, jmp_label(jmp_label1, 2));
- 
- 	/* add eax,0x1 */
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 755f38e893be1..9f20b0f539f78 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -1082,7 +1082,7 @@ struct bpf_array {
- };
- 
- #define BPF_COMPLEXITY_LIMIT_INSNS      1000000 /* yes. 1M insns */
--#define MAX_TAIL_CALL_CNT 32
-+#define MAX_TAIL_CALL_CNT 33
- 
- #define BPF_F_ACCESS_MASK	(BPF_F_RDONLY |		\
- 				 BPF_F_RDONLY_PROG |	\
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index ba5af15e25f5c..b12cfceddb6e9 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -1744,7 +1744,7 @@ union bpf_attr {
-  * 		if the maximum number of tail calls has been reached for this
-  * 		chain of programs. This limit is defined in the kernel by the
-  * 		macro **MAX_TAIL_CALL_CNT** (not accessible to user space),
-- * 		which is currently set to 32.
-+ *		which is currently set to 33.
-  * 	Return
-  * 		0 on success, or a negative error in case of failure.
-  *
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 2405e39d800fe..b52dc845ecea3 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -1574,7 +1574,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
- 
- 		if (unlikely(index >= array->map.max_entries))
- 			goto out;
--		if (unlikely(tail_call_cnt > MAX_TAIL_CALL_CNT))
-+
-+		if (unlikely(tail_call_cnt >= MAX_TAIL_CALL_CNT))
- 			goto out;
- 
- 		tail_call_cnt++;
-diff --git a/lib/test_bpf.c b/lib/test_bpf.c
-index adae39567264f..0c5cb2d6436a4 100644
---- a/lib/test_bpf.c
-+++ b/lib/test_bpf.c
-@@ -14683,7 +14683,7 @@ static struct tail_call_test tail_call_tests[] = {
- 			BPF_EXIT_INSN(),
- 		},
- 		.flags = FLAG_NEED_STATE | FLAG_RESULT_IN_STATE,
--		.result = (MAX_TAIL_CALL_CNT + 1 + 1) * MAX_TESTRUNS,
-+		.result = (MAX_TAIL_CALL_CNT + 1) * MAX_TESTRUNS,
- 	},
- 	{
- 		"Tail call count preserved across function calls",
-@@ -14705,7 +14705,7 @@ static struct tail_call_test tail_call_tests[] = {
- 		},
- 		.stack_depth = 8,
- 		.flags = FLAG_NEED_STATE | FLAG_RESULT_IN_STATE,
--		.result = (MAX_TAIL_CALL_CNT + 1 + 1) * MAX_TESTRUNS,
-+		.result = (MAX_TAIL_CALL_CNT + 1) * MAX_TESTRUNS,
- 	},
- 	{
- 		"Tail call error path, NULL target",
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index ba5af15e25f5c..b12cfceddb6e9 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -1744,7 +1744,7 @@ union bpf_attr {
-  * 		if the maximum number of tail calls has been reached for this
-  * 		chain of programs. This limit is defined in the kernel by the
-  * 		macro **MAX_TAIL_CALL_CNT** (not accessible to user space),
-- * 		which is currently set to 32.
-+ *		which is currently set to 33.
-  * 	Return
-  * 		0 on success, or a negative error in case of failure.
-  *
--- 
-2.34.1
-
+>=20
+>> void * __weak module_alloc(unsigned long size)
+>> {
+>>         return __vmalloc_node_range(size, 1, VMALLOC_START, VMALLOC_END,
+> ...
+>=20
+> Then, put arch_module_vm_flags() in *all* of the module_alloc()
+> implementations, including the generic one.  That way (even with a new
+> architecture) whoever copies-and-pastes their module_alloc()
+> implementation is likely to get it right.  The next guy who just does a
+> "select HAVE_ARCH_HUGE_VMALLOC" will hopefully just work.
+>=20
+> VM_FLUSH_RESET_PERMS could probably be dealt with in the same way.
+>=20
