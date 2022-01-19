@@ -2,78 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E616493039
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Jan 2022 22:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B961E493233
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 02:16:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JdjCy10Sgz3bcZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 08:51:58 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=waldekranz-com.20210112.gappssmtp.com header.i=@waldekranz-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=dxSQq+S4;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jdnm84xyyz3bcB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 12:16:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=waldekranz.com (client-ip=2a00:1450:4864:20::132;
- helo=mail-lf1-x132.google.com; envelope-from=tobias@waldekranz.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=waldekranz-com.20210112.gappssmtp.com
- header.i=@waldekranz-com.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=dxSQq+S4; dkim-atps=neutral
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com
- [IPv6:2a00:1450:4864:20::132])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JdjCD31q1z2yMj
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 08:51:17 +1100 (AEDT)
-Received: by mail-lf1-x132.google.com with SMTP id x7so884965lfu.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 13:51:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=waldekranz-com.20210112.gappssmtp.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:organization:content-transfer-encoding;
- bh=Fh88UieW6M3tWsjtjC/VnGD/KSjEuK5OFMLJWUnuCow=;
- b=dxSQq+S4FDQSUQHu6og87yfSFEKZ7VwwgvfVP0ypGeLxAWpyg6p84iP92YGMNP3PbB
- RNtvkOFn5BYHTjAGLoLMBYk3RTL+qJSWtnEHNQFeXnwQvKFk86F8Opbk9G0UQLy2fIoA
- bPUCNja0E7VUKDij25LC6ZaxL0oEZKhq5AkQMaCB6pXwv3kh8bza+q+EDV1auYPY+8Uk
- VL5RtYkp7L5SYJrr6pwHvIvdBw/07aMvd7pCLyyaWHJMCTh/qLr0qOhedf+tiPx3gral
- TdFIMrs4KzEVqcvsiEIZSzoXnG0CV/TzKz/DAiI7a/BzxLMe2xBtxfjsva++gKE0GiQT
- aWWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:organization:content-transfer-encoding;
- bh=Fh88UieW6M3tWsjtjC/VnGD/KSjEuK5OFMLJWUnuCow=;
- b=NGjp4+KCjrYErX8HiCp2OdST6B9+Byr95Avz/1CkoDl0jCz01m7vYA9t5IGIxCFpe3
- 68EwNVzsS+QBtbNOioEhhraXEKsoUSMRTug01WxsDBz3DEARS7vjwHpxJURY27Iy4h5F
- 904cZK697EA3RjB1eq4Wc6CHIuDV4ZGEVqlei2YEhsZCGzDi1n/OsUgI3Ko63tdC41ET
- pACsV4PGCdqqzQZq3Xe5kbLDpph6qx+Xhz8d5vvvrinEy2lfd+/8fubz4ccDcYlQMfxv
- NguNG2BU9pl74V+fipo1JwrrTESoZ6jPGnbI+zAlhJzTAEpgIN+/KylgNKReGlIaV0ip
- jQyA==
-X-Gm-Message-State: AOAM531LJJgXiAH/3vdzFEIZeqNlAptmLKsVgHCFXZ8Yy6wh+91eHCwx
- r864DCy0t2KjsC8cqjSkvSjm0Q==
-X-Google-Smtp-Source: ABdhPJxYJU4hIMsPmX47okJRLdOdBxNXXO11G7oGsTPSSdPTN2zTc/EXE0bTmhvpGf1opGlzns8huA==
-X-Received: by 2002:a2e:144f:: with SMTP id 15mr21537821lju.326.1642542670287; 
- Tue, 18 Jan 2022 13:51:10 -0800 (PST)
-Received: from veiron.westermo.com (static-193-12-47-89.cust.tele2.se.
- [193.12.47.89])
- by smtp.gmail.com with ESMTPSA id w5sm1704808ljm.55.2022.01.18.13.51.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Jan 2022 13:51:09 -0800 (PST)
-From: Tobias Waldekranz <tobias@waldekranz.com>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Subject: [PATCH v2 net 3/4] powerpc/fsl/dts: Enable WA for erratum A-009885 on
- fman3l MDIO buses
-Date: Tue, 18 Jan 2022 22:50:52 +0100
-Message-Id: <20220118215054.2629314-4-tobias@waldekranz.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220118215054.2629314-1-tobias@waldekranz.com>
-References: <20220118215054.2629314-1-tobias@waldekranz.com>
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com;
+ envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jdnlf6549z2xXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 12:16:11 +1100 (AEDT)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.57])
+ by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Jdng41pwRz1FCfC;
+ Wed, 19 Jan 2022 09:12:16 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Wed, 19 Jan 2022 09:16:01 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.21; Wed, 19 Jan 2022 09:15:56 +0800
+Message-ID: <8a24ef1d-1c93-416d-cfbe-e63aacfb25cc@huawei.com>
+Date: Wed, 19 Jan 2022 09:15:55 +0800
 MIME-Version: 1.0
-Organization: Westermo
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 1/2] powerpc: Fix virt_addr_valid() check
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin
+ <npiggin@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Benjamin
+ Herrenschmidt" <benh@kernel.crashing.org>, Kees Cook <keescook@chromium.org>, 
+ Laura Abbott <labbott@redhat.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Mark Rutland
+ <mark.rutland@arm.com>, Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras
+ <paulus@samba.org>
+References: <20211225120621.13908-1-wangkefeng.wang@huawei.com>
+ <20211225120621.13908-2-wangkefeng.wang@huawei.com>
+ <09ed46a5-6df3-ffc0-8243-61612c06153a@huawei.com>
+ <1641871726.fshx7g5r92.astroid@bobo.none>
+ <ca351bfc-3507-11ad-73f1-79ca772b55fd@csgroup.eu>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <ca351bfc-3507-11ad-73f1-79ca772b55fd@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggeme707-chm.china.huawei.com (10.1.199.103) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,45 +67,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, netdev@vger.kernel.org,
- Shruti Kanetkar <Shruti@freescale.com>, linux-kernel@vger.kernel.org,
- Emil Medve <Emilian.Medve@Freescale.com>,
- Igal Liberman <Igal.Liberman@freescale.com>, Rob Herring <robh+dt@kernel.org>,
- Paul Mackerras <paulus@samba.org>, Scott Wood <scottwood@freescale.com>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This block is used in (at least) T1024 and T1040, including their
-variants like T1023 etc.
 
-Fixes: d55ad2967d89 ("powerpc/mpc85xx: Create dts components for the FSL QorIQ DPAA FMan")
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
----
- arch/powerpc/boot/dts/fsl/qoriq-fman3l-0.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+On 2022/1/11 14:04, Christophe Leroy wrote:
+>
+> Le 11/01/2022 à 05:37, Nicholas Piggin a écrit :
+>> Excerpts from Kefeng Wang's message of January 8, 2022 9:58 pm:
+>>> Hi PPC maintainers， ping..
+>> Hmm. I might have confused myself about this. I'm going back and
+>> trying to work out what I was thinking when I suggested it. This
+>> works on 64e because vmalloc space is below the kernel linear map,
+>> right?
+>>
+>> On 64s it is the other way around and it is still possible to enable
+>> flatmem on 64s. Altough we might just not hit the problem there because
+>> __pa() will not mask away the vmalloc offset for 64s so it will still
+>> return something that's outside the pfn_valid range for flatmem. That's
+>> very subtle though.
+> That's the way it works on PPC32 at least, so for me it's not chocking
+> to have it work the same way on PPC64s.
+>
+> The main issue here is the way __pa() works. On PPC32 __pa = va -
+> PAGE_OFFSET, so it works correctly for any address.
+> On PPC64, __pa() works by masking out the 2 top bits instead of
+> substracting PAGE_OFFSET, so the test must add a verification that we
+> really have the 2 top bits set at first. This is what (addr >=
+> PAGE_OFFSET) does. Once this first test is done, we can perfectly rely
+> on pfn_valid() just like PPC32, I see absolutely no point in an
+> additionnal test checking the addr is below KERN_VIRT_START.
 
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3l-0.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3l-0.dtsi
-index c90702b04a53..48e5cd61599c 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3l-0.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3l-0.dtsi
-@@ -79,6 +79,7 @@ mdio0: mdio@fc000 {
- 		#size-cells = <0>;
- 		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
- 		reg = <0xfc000 0x1000>;
-+		fsl,erratum-a009885;
- 	};
- 
- 	xmdio0: mdio@fd000 {
-@@ -86,6 +87,7 @@ xmdio0: mdio@fd000 {
- 		#size-cells = <0>;
- 		compatible = "fsl,fman-memac-mdio", "fsl,fman-xmdio";
- 		reg = <0xfd000 0x1000>;
-+		fsl,erratum-a009885;
- 	};
- };
- 
--- 
-2.25.1
 
+Hi Christophe and Nicholas， for ppc32， I think we need check the upper 
+limit,
+
+eg,  addr >= PAGE_OFFSET && addr < high_memory
+
+arch/powerpc/mm/mem.c:  high_memory = (void *) __va(max_low_pfn * 
+PAGE_SIZE);
+
+for ppc32 max_low_pfn is the upper low memory pfn,  and For ppc64, 
+high_memory is
+
+the max memory pfn, it looks good too, correct me if I'm wrong, if the 
+above check
+
+is ok, I will send a new v3,  thanks.
+
+
+
+
+>
+>
+>> The checks added to __pa actually don't prevent vmalloc memory from
+>> being passed to it either on 64s, only a more basic test.
+> That's correct. It is the role of pfn_valid() to check that.
+>
+> Christophe
+>
+>> I think 64s wants (addr >= PAGE_OFFSET && addr < KERN_VIRT_START) as
+>> the condition.  Could possibly add that check to __pa as well to
+>> catch vmalloc addresses.
+>>
+>> Thanks,
+>> Nick
+>>
+>>
