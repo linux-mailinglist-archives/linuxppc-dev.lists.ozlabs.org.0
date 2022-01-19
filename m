@@ -1,37 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 433CC493936
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 12:07:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD0E49393C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 12:07:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jf2sQ1YdBz30jP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 22:07:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jf2sr6F4Dz3cbf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 22:07:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jf2rf62L5z30Nd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 22:06:26 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jf2rg5Rt0z3bNC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 22:06:27 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Jf2rd34Tcz4y3t;
- Wed, 19 Jan 2022 22:06:25 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Jf2rg1CJpz4y4Z;
+ Wed, 19 Jan 2022 22:06:27 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-In-Reply-To: <247e01e0e10f4dbc59b5ff89e81702eb1ee7641e.1641828571.git.christophe.leroy@csgroup.eu>
-References: <247e01e0e10f4dbc59b5ff89e81702eb1ee7641e.1641828571.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/time: Fix build failure due to
- do_hard_irq_enable() on PPC32
-Message-Id: <164259036177.3588160.5245172703887799778.b4-ty@ellerman.id.au>
-Date: Wed, 19 Jan 2022 22:06:01 +1100
+In-Reply-To: <7a50ef902494d1325227d47d33dada01e52e5518.1641818726.git.christophe.leroy@csgroup.eu>
+References: <7a50ef902494d1325227d47d33dada01e52e5518.1641818726.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v3] powerpc/32s: Fix kasan_init_region() for KASAN
+Message-Id: <164259036257.3588160.3465491440781256341.b4-ty@ellerman.id.au>
+Date: Wed, 19 Jan 2022 22:06:02 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -46,40 +44,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Maxime Bizon <mbizon@freebox.fr>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 10 Jan 2022 15:29:53 +0000, Christophe Leroy wrote:
-> 	  CC      arch/powerpc/kernel/time.o
-> 	In file included from <command-line>:
-> 	./arch/powerpc/include/asm/hw_irq.h: In function 'do_hard_irq_enable':
-> 	././include/linux/compiler_types.h:335:45: error: call to '__compiletime_assert_35' declared with attribute error: BUILD_BUG failed
-> 	  335 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-> 	      |                                             ^
-> 	././include/linux/compiler_types.h:316:25: note: in definition of macro '__compiletime_assert'
-> 	  316 |                         prefix ## suffix();                             \
-> 	      |                         ^~~~~~
-> 	././include/linux/compiler_types.h:335:9: note: in expansion of macro '_compiletime_assert'
-> 	  335 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-> 	      |         ^~~~~~~~~~~~~~~~~~~
-> 	./include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-> 	   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-> 	      |                                     ^~~~~~~~~~~~~~~~~~
-> 	./include/linux/build_bug.h:59:21: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-> 	   59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
-> 	      |                     ^~~~~~~~~~~~~~~~
-> 	./arch/powerpc/include/asm/hw_irq.h:483:9: note: in expansion of macro 'BUILD_BUG'
-> 	  483 |         BUILD_BUG();
-> 	      |         ^~~~~~~~~
+On Mon, 10 Jan 2022 15:29:25 +0000, Christophe Leroy wrote:
+> It has been reported some configuration where the kernel doesn't
+> boot with KASAN enabled.
+> 
+> This is due to wrong BAT allocation for the KASAN area:
+> 
+> 	---[ Data Block Address Translation ]---
+> 	0: 0xc0000000-0xcfffffff 0x00000000       256M Kernel rw      m
+> 	1: 0xd0000000-0xdfffffff 0x10000000       256M Kernel rw      m
+> 	2: 0xe0000000-0xefffffff 0x20000000       256M Kernel rw      m
+> 	3: 0xf8000000-0xf9ffffff 0x2a000000        32M Kernel rw      m
+> 	4: 0xfa000000-0xfdffffff 0x2c000000        64M Kernel rw      m
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/time: Fix build failure due to do_hard_irq_enable() on PPC32
-      https://git.kernel.org/powerpc/c/87b9d74fb0be80054c729e8d6a119ca0955cedf3
+[1/1] powerpc/32s: Fix kasan_init_region() for KASAN
+      https://git.kernel.org/powerpc/c/d37823c3528e5e0705fc7746bcbc2afffb619259
 
 cheers
