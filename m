@@ -1,52 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8452493908
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 11:56:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 433CC493936
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 12:07:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jf2db5LMxz3bTX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 21:56:51 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=XT6fF+tS;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jf2sQ1YdBz30jP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 22:07:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jf2cy0KjYz303n
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 21:56:18 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=XT6fF+tS; 
- dkim-atps=neutral
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jf2rf62L5z30Nd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 22:06:26 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Jf2cv62JSz4y3t;
- Wed, 19 Jan 2022 21:56:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1642589775;
- bh=a5TOJdaabKUWxNFLL45lVPFKNntGzhxVI0mhJR6Fs98=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=XT6fF+tSPx8JvwOsMd3QvNYyjpIXekEDTqZSt6K/UfZ7X8BGreoNaIZdtywfgFy5L
- qaK96Z41G9kPWE4bBUFcASgFwWfz081lNcujFk1941E68Q30F+1DTHxK8d2mtA8S4b
- 6eUT34++HwqjRZR8n2+dCenDlRe+wcavI8zrRYZn/HO9KHnOvpLUerPX7wttAX2+9T
- bqsWi/nWm49DIEQ6CiYqQcPId9AiKAZgnStF+SA4LXWzoEHpwHtMgPFVy2BzxGDF6m
- OVvOd1HE8KdU0GlV97QWUYYzJ2ae/BvBuQOC3mwLXuWxIuzOZ0L7REwTTKoO5be2J+
- ZrjJcxf33vECA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/perf: Fix task context setting for trace imc
-In-Reply-To: <20211124024600.18509-1-atrajeev@linux.vnet.ibm.com>
-References: <20211124024600.18509-1-atrajeev@linux.vnet.ibm.com>
-Date: Wed, 19 Jan 2022 21:56:12 +1100
-Message-ID: <87fspkt2nn.fsf@mpe.ellerman.id.au>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Jf2rd34Tcz4y3t;
+ Wed, 19 Jan 2022 22:06:25 +1100 (AEDT)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+In-Reply-To: <247e01e0e10f4dbc59b5ff89e81702eb1ee7641e.1641828571.git.christophe.leroy@csgroup.eu>
+References: <247e01e0e10f4dbc59b5ff89e81702eb1ee7641e.1641828571.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/time: Fix build failure due to
+ do_hard_irq_enable() on PPC32
+Message-Id: <164259036177.3588160.5245172703887799778.b4-ty@ellerman.id.au>
+Date: Wed, 19 Jan 2022 22:06:01 +1100
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,49 +46,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, rnsastry@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
-> Trace IMC (In-Memory collection counters) in powerpc is
-> useful for application level profiling. For trace_imc,
-> presently task context (task_ctx_nr) is set to
-> perf_hw_context. But perf_hw_context is to be used for
-> cpu PMU. So for trace_imc, even though it is per thread
-> PMU, it is preferred to use sw_context inorder to be able
-> to do application level monitoring. Hence change the
-> task_ctx_nr to use perf_sw_context.
+On Mon, 10 Jan 2022 15:29:53 +0000, Christophe Leroy wrote:
+> 	  CC      arch/powerpc/kernel/time.o
+> 	In file included from <command-line>:
+> 	./arch/powerpc/include/asm/hw_irq.h: In function 'do_hard_irq_enable':
+> 	././include/linux/compiler_types.h:335:45: error: call to '__compiletime_assert_35' declared with attribute error: BUILD_BUG failed
+> 	  335 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+> 	      |                                             ^
+> 	././include/linux/compiler_types.h:316:25: note: in definition of macro '__compiletime_assert'
+> 	  316 |                         prefix ## suffix();                             \
+> 	      |                         ^~~~~~
+> 	././include/linux/compiler_types.h:335:9: note: in expansion of macro '_compiletime_assert'
+> 	  335 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+> 	      |         ^~~~~~~~~~~~~~~~~~~
+> 	./include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+> 	   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+> 	      |                                     ^~~~~~~~~~~~~~~~~~
+> 	./include/linux/build_bug.h:59:21: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+> 	   59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
+> 	      |                     ^~~~~~~~~~~~~~~~
+> 	./arch/powerpc/include/asm/hw_irq.h:483:9: note: in expansion of macro 'BUILD_BUG'
+> 	  483 |         BUILD_BUG();
+> 	      |         ^~~~~~~~~
+> 
+> [...]
 
-It's not a software event though, so this is not obviously correct.
+Applied to powerpc/fixes.
 
-Can you explain more why this is OK, I guess perf_sw_context is misnamed
-these days? And can you add a comment in the code explaining why this
-hardware PMU is using perf_sw_context.
+[1/1] powerpc/time: Fix build failure due to do_hard_irq_enable() on PPC32
+      https://git.kernel.org/powerpc/c/87b9d74fb0be80054c729e8d6a119ca0955cedf3
 
 cheers
-
-> Fixes: 012ae244845f ("powerpc/perf: Trace imc PMU functions")
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-> ---
->  arch/powerpc/perf/imc-pmu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-> index e106909ff9c3..f3b3262bdf02 100644
-> --- a/arch/powerpc/perf/imc-pmu.c
-> +++ b/arch/powerpc/perf/imc-pmu.c
-> @@ -1457,7 +1457,7 @@ static int trace_imc_event_init(struct perf_event *event)
->  
->  	event->hw.idx = -1;
->  
-> -	event->pmu->task_ctx_nr = perf_hw_context;
-> +	event->pmu->task_ctx_nr = perf_sw_context;
->  	event->destroy = reset_global_refc;
->  	return 0;
->  }
-> -- 
-> 2.33.0
