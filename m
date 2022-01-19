@@ -1,57 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EADE5493AB8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 13:58:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A3F493B06
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 14:22:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jf5L55X3mz3cCg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 23:58:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jf5t81m2zz3bcC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 00:22:56 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Cc09zlkL;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jf5KZ417tz2yQH
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 23:58:06 +1100 (AEDT)
-Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.56])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Jf5Hx5S6gz9s5T;
- Wed, 19 Jan 2022 20:56:45 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Wed, 19 Jan 2022 20:57:59 +0800
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.21; Wed, 19 Jan 2022 20:57:58 +0800
-Message-ID: <f0dd59eb-6eb8-5b60-508d-7f4022f655ec@huawei.com>
-Date: Wed, 19 Jan 2022 20:57:58 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=Cc09zlkL; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jf5sW5t88z3035
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 00:22:23 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+ Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+ Sender:Reply-To:Content-ID:Content-Description;
+ bh=XdBwF/RjhbWIU5o6Jz7HpuQNLjSadEnmWI/i7GCW5y0=; b=Cc09zlkLM5/Ab6cb+M3cwSs7PG
+ huGqk0aJjbCMfwx7cGINmtqiWpkOY2MZWDoKt5SA8m0jllV54qtTq+XMW167egJYN43cWA6wmB1kT
+ NSiw6gsSlTYaYYCOytDuMJy4dFx/vs+lSzcFzo9SptNPM3xm07UEtjKPEEPZNEk8oivGNJkbVOLpd
+ 5E4WhC0Wuj3mmjvZ3xxOdSBKLgCT1DGgCxproJPPwnGtPAjYjE7oVogDUTUmyoh8RSR3wa/r3oLCM
+ BAkDt2EQRiO5AzaEt+RVfOvnIvPA1+sAN1KiGh40QWfqiVw95Gyi1Xn2ZGs2zJNxe5PnYpg//wkd6
+ sU6IJtWA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red
+ Hat Linux)) id 1nAAua-00AsKQ-Da; Wed, 19 Jan 2022 13:22:04 +0000
+Date: Wed, 19 Jan 2022 13:22:04 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
 Subject: Re: [PATCH v2 1/3] mm: vmalloc: Let user to control huge vmalloc
  default behavior
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, Andrew Morton
- <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
- <linux-arm-kernel@lists.infradead.org>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
- <linuxppc-dev@lists.ozlabs.org>, <x86@kernel.org>
+Message-ID: <YegQfIQibQi993dp@casper.infradead.org>
 References: <20211227145903.187152-1-wangkefeng.wang@huawei.com>
  <20211227145903.187152-2-wangkefeng.wang@huawei.com>
  <1642473992.qrnqczjfna.astroid@bobo.none>
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <1642473992.qrnqczjfna.astroid@bobo.none>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+ <f0dd59eb-6eb8-5b60-508d-7f4022f655ec@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggeme714-chm.china.huawei.com (10.1.199.110) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
+In-Reply-To: <f0dd59eb-6eb8-5b60-508d-7f4022f655ec@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,64 +65,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Wilcox <willy@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H.
- Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@samba.org>, Thomas
- Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>
+Cc: x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-doc@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, linux-mm@kvack.org,
+ Will Deacon <will@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Jan 19, 2022 at 08:57:58PM +0800, Kefeng Wang wrote:
+> Only parts of our products wants this feature,  we add some interfaces which
+> only
+> 
+> alloc hugevmalloc for them, eg,
+> vmap_hugepage/vmalloc_hugepage/remap_vmalloc_hugepage_range..
+> 
+> for our products, but it's not the choice of most products, also add
+> nohugevmalloc
+> 
+> for most products is expensive, so this is the reason for adding the patch.
+> 
+> more config/cmdline are more flexible for test/products，
 
-On 2022/1/18 10:52, Nicholas Piggin wrote:
-> Excerpts from Kefeng Wang's message of December 28, 2021 12:59 am:
->> Introduce HUGE_VMALLOC_DEFAULT_ENABLED and make it default y, this
->> let user to choose whether or not enable huge vmalloc mappings by
->> default.
->>
->> Meanwhile, add new hugevmalloc=on/off parameter to enable or disable
->> this feature at boot time, nohugevmalloc is still supported and
->> equivalent to hugevmalloc=off.
-> Runtime options are bad enough, Kconfig and boot options are even worse.
-
-nohugevmalloc is like blacklists, on the other hand, Add a 
-HUGE_VMALLOC_DEFAULT_ENABLED
-
-to close hugevmalloc default and enable it only via hugevmalloc=on is 
-whiteList.
-
-
-Only parts of our products wants this feature,  we add some interfaces 
-which only
-
-alloc hugevmalloc for them, eg, 
-vmap_hugepage/vmalloc_hugepage/remap_vmalloc_hugepage_range..
-
-for our products, but it's not the choice of most products, also add 
-nohugevmalloc
-
-for most products is expensive, so this is the reason for adding the patch.
-
-more config/cmdline are more flexible for test/products，
-
->
-> The 'nohugevmalloc' option mirrors 'nohugeiomap' and is not expected to
-> ever be understood by an administrator unless a kernel developer is
-> working with them to hunt down a regression.
->
-> IMO there should be no new options. You could switch it off for
-> CONFIG_BASE_SMALL perhaps, and otherwise just try to work on heuristics
-> first. Bring in new options once it's proven they're needed.
-
-but yes, this patch is optional， could others give some more comments 
-about this way？
-
-Thanks.
-
-> Aside from that, thanks for working on these ports, great work.
->
-> Thanks,
-> Nick
-> .
+But why do only some products want it?  What goes wrong if all products
+enable it?  Features should be auto-tuning, not relying on admins to
+understand them.
