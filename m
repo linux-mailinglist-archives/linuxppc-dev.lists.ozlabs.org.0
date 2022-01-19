@@ -1,92 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E76493C95
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 16:06:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB74493F4C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 18:47:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jf89L2zxjz30N4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 02:06:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JfClY3DShz30NW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 04:47:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tIm2CG0C;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j3pedC0Z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=tIm2CG0C; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=j3pedC0Z; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jf88d1dD4z2xv8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 02:05:36 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20JDwSoa005618; 
- Wed, 19 Jan 2022 15:05:23 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JfCkk68hwz303n
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 04:46:53 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20JHjx1w010630; 
+ Wed, 19 Jan 2022 17:46:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=k4RDsZfUlHh8Rt0M02e2isw9g3KmCjxqMe8EoXeQ/p8=;
- b=tIm2CG0CIK3SATx5NAlEE1pZ8DqqC4/tHltcrddumcYLu6tCjhCrIa2QnOMjhkLEqgEm
- 6x+VSP0pjflJhUd23+a/eh3DPcmQitkXN3cn7PeQcoRRZ82eh3ynAUIs2Tfhc/dg0/J8
- fim1yFbQc6sP8rGsKDnqOKIw91c4ThP3xjnI3kIoF4e99dkW44WXrcSxkj4TgtOJ7M3r
- cC0YW+FJ/0G+VRaFVbou4+EjyPeYJMj84lQkaJfJBL1Q1Wln4z/ZXyjAHFMyQQLL/vQe
- bJhoV25fe6S9gQFLxRhfq7NM0G2LBrzjuLfJVqejuIs2rQZA3Iby6Z5m3/HbtQBMXLuG uA== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dpm0g9qwa-1
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=lvl6HDgYIguMuowHKPJlfdYnyiGEdpvxcLcGwxkyQ+c=;
+ b=j3pedC0ZlKl2uEdqr02uI5Oeh5zaP6TsNvcSJ2eMnx/CpZcd2Ylu8KsLgBESKjD4i40p
+ 59KA7z9W3TiB0bVh7yz0Vhna727t5m+Uc3rKYfsVEOJ8Ft/+aobZAX07RjWRMOvSVGLs
+ +Ss8fesjTrd1dAgRcyqQ7AhdNvsl5blWVwsmDVmRuNr691eTKfWxiEtRjysbWDz2vAYp
+ bFKoOFZEeSQJ5LcK5Nz8vhPnZMIpvG5O5NHaX2n7AHO56acCN4sno98pvEbWj0BWrUz1
+ /jrt7UKomOHIbtmPKThN7/RFRJpzMSayYEI0YAwUwyk1BM1fAYCoHxouZ69HDyS1sc4V Nw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3dpj7yr4f0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jan 2022 15:05:22 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20JEw39T008140;
- Wed, 19 Jan 2022 15:05:20 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 3dknw9yb22-1
+ Wed, 19 Jan 2022 17:46:48 +0000
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20JHkgbY013213;
+ Wed, 19 Jan 2022 17:46:47 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3dpj7yr4ef-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jan 2022 15:05:20 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 20JF5GCV24838510
+ Wed, 19 Jan 2022 17:46:47 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20JHhkro028712;
+ Wed, 19 Jan 2022 17:46:46 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06ams.nl.ibm.com with ESMTP id 3dknhjs37n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 Jan 2022 17:46:45 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 20JHkh8Z30671110
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jan 2022 15:05:17 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CFBBE5205F;
- Wed, 19 Jan 2022 15:05:16 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.43.0.186])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id 12FC25204F;
- Wed, 19 Jan 2022 15:05:13 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
- Wed, 19 Jan 2022 20:35:12 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [PATCH v3] powerpc/papr_scm: Implement initial support for
- injecting smart errors
-In-Reply-To: <20220118175915.GB209936@iweiny-DESK2.sc.intel.com>
-References: <20220113120252.1145671-1-vaibhav@linux.ibm.com>
- <20220118175915.GB209936@iweiny-DESK2.sc.intel.com>
-Date: Wed, 19 Jan 2022 20:35:12 +0530
-Message-ID: <87czknkbpz.fsf@vajain21.in.ibm.com>
+ Wed, 19 Jan 2022 17:46:43 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B3919A405B;
+ Wed, 19 Jan 2022 17:46:43 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4F3FEA4060;
+ Wed, 19 Jan 2022 17:46:43 +0000 (GMT)
+Received: from localhost (unknown [9.43.127.26])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 19 Jan 2022 17:46:43 +0000 (GMT)
+Date: Wed, 19 Jan 2022 23:16:42 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [RFC PATCH 1/2] powerpc/64: remove system call instruction
+ emulation
+To: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
+References: <20220118055821.3065241-1-npiggin@gmail.com>
+ <20220118055821.3065241-2-npiggin@gmail.com>
+In-Reply-To: <20220118055821.3065241-2-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: astroid/v0.16-1-g4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1642590222.n896duq2fq.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: TL9zcTBvVWhoeWlo6VxzBOYLNCmAXd6j
-X-Proofpoint-GUID: TL9zcTBvVWhoeWlo6VxzBOYLNCmAXd6j
+X-Proofpoint-GUID: rhrnaZGcEq4FBzSkX-Dlt2T9gIeRW-xE
+X-Proofpoint-ORIG-GUID: yDQHQFNnUsdRYwgX2UvfDhg7bpzejNUN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-19_08,2022-01-19_01,2021-12-02_01
+ definitions=2022-01-19_10,2022-01-19_01,2021-12-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 malwarescore=0 phishscore=0 clxscore=1015 mlxscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 bulkscore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2201190086
+ mlxscore=0 lowpriorityscore=0
+ phishscore=0 clxscore=1011 mlxlogscore=999 adultscore=0 spamscore=0
+ malwarescore=0 impostorscore=0 suspectscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201190099
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,82 +109,194 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, Shivaprasad G Bhat <sbhat@linux.ibm.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org
+Cc: =?iso-8859-1?q?C=E9dric?= Le Goater <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Nicholas Piggin wrote:
+> emulate_step instruction emulation including sc instruction emulation
+> initially appeared in xmon. It then emulation code was then moved into
+> sstep.c where kprobes could use it too, and later hw_breakpoint and
+> uprobes started to use it.
+>=20
+> Until uprobes, the only instruction emulation users were for kernel
+> mode instructions.
+>=20
+> - xmon only steps / breaks on kernel addresses.
+> - kprobes is kernel only.
+> - hw_breakpoint only emulates kernel instructions, single steps user.
+>=20
+> At one point there was support for the kernel to execute sc
+> instructions, although that is long removed and it's not clear whether
+> there was any upstream instructions or this was used by out of tree
+> modules. So system call emulation is not required by the above users.
+>=20
+> uprobes uses emulate_step and it appears possible to emulate sc
+> instruction in userspace. This type of system call emulation is broken
+> and it's not clear it ever worked well.
+>=20
+> The big complication is that userspace takes an interrupt to the kernel
+> to emulate the instruction. The user->kernel interrupt sets up registers
+> and interrupt stack frame expecting to return to userspace, then system
+> call instruction emulation re-directs that stack frame to the kernel,
+> early in the system call interrupt handler. This means the the interrupt
+> return code takes the kernel->kernel restore path, which does not restore
+> everything as the system call interrupt handler would expect coming from
+> userspace. regs->iamr appears to get lost for example, because the
+> kernel->kernel return does not restore the user iamr. Accounting such as
+> irqflags tracing and CPU accounting does not get flipped back to user
+> mode as the system call handler expects, so those appear to enter the
+> kernel twice without returning to userspace.
+>=20
+> These things may be individually fixable with various complication, but
+> it is a big complexity to support this just for uprobes.
+>=20
+> uprobes emulates the instruction rather than stepping for performance
+> reasons. System calls instructions should not be a significant source
+> of uprobes and already expensive, so skipping emulation should not be
+> a significant problem.
 
-Hi Ira, Thanks for reviewing this patch.
+I agree with that assessment, though I think we will need to disable=20
+probing on 'sc'/'scv' instructions. Per the ISA, section 6.5.15 on=20
+'Trace Interrupt', we can't single step a system call instruction:
+    "Successful completion for an instruction means that the
+    instruction caused no other interrupt and, if the thread
+    is in Transactional state, did not cause the transaction
+    to fail in such a way that the instruction did not com-
+    plete (see Section 5.3.1 of Book II). Thus a Trace inter-
+    rupt never occurs for a System Call or System Call
+    Vectored instruction, or for a Trap instruction that traps,
+    or for a dcbf that is executed in Transactional state.
+    The instruction that causes a Trace interrupt is called
+    the =E2=80=9Ctraced instruction=E2=80=9D."
 
-Ira Weiny <ira.weiny@intel.com> writes:
+I am not aware of any use case requiring probes on a system call=20
+instruction, so I think we can disable probing on system call=20
+instructions (patch further below).
 
-> On Thu, Jan 13, 2022 at 05:32:52PM +0530, Vaibhav Jain wrote:
-> [snip]
->
->>  
->> +/* Inject a smart error Add the dirty-shutdown-counter value to the pdsm */
->> +static int papr_pdsm_smart_inject(struct papr_scm_priv *p,
->> +				  union nd_pdsm_payload *payload)
->> +{
->> +	int rc;
->> +	u32 supported_flags = 0;
->> +	u64 mask = 0, override = 0;
->> +
->> +	/* Check for individual smart error flags and update mask and override */
->> +	if (payload->smart_inject.flags & PDSM_SMART_INJECT_HEALTH_FATAL) {
->> +		supported_flags |= PDSM_SMART_INJECT_HEALTH_FATAL;
->> +		mask |= PAPR_PMEM_HEALTH_FATAL;
->> +		override |= payload->smart_inject.fatal_enable ?
->> +			PAPR_PMEM_HEALTH_FATAL : 0;
->> +	}
->> +
->> +	if (payload->smart_inject.flags & PDSM_SMART_INJECT_BAD_SHUTDOWN) {
->> +		supported_flags |= PDSM_SMART_INJECT_BAD_SHUTDOWN;
->> +		mask |= PAPR_PMEM_SHUTDOWN_DIRTY;
->> +		override |= payload->smart_inject.unsafe_shutdown_enable ?
->> +			PAPR_PMEM_SHUTDOWN_DIRTY : 0;
->> +	}
->> +
->
-> I'm struggling to see why there is a need for both a flag and an 8 bit 'enable'
-> value?
->
-This is to enable the inject/uninject error usecase with ndctl which
-lets user select individual error conditions like bad_shutdown or
-fatal-health state.
+>=20
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/lib/sstep.c | 36 ------------------------------------
+>  1 file changed, 36 deletions(-)
+>=20
+> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+> index a94b0cd0bdc5..ee3bc45fb23b 100644
+> --- a/arch/powerpc/lib/sstep.c
+> +++ b/arch/powerpc/lib/sstep.c
+> @@ -15,9 +15,6 @@
+>  #include <asm/cputable.h>
+>  #include <asm/disassemble.h>
+>=20
+> -extern char system_call_common[];
+> -extern char system_call_vectored_emulate[];
+> -
+>  #ifdef CONFIG_PPC64
+>  /* Bits in SRR1 that are copied from MSR */
+>  #define MSR_MASK	0xffffffff87c0ffffUL
+> @@ -3650,39 +3647,6 @@ int emulate_step(struct pt_regs *regs, ppc_inst_t =
+instr)
+>  		goto instr_done;
+>=20
+>  #ifdef CONFIG_PPC64
+> -	case SYSCALL:	/* sc */
+> -		/*
+> -		 * N.B. this uses knowledge about how the syscall
+> -		 * entry code works.  If that is changed, this will
+> -		 * need to be changed also.
+> -		 */
+> -		if (IS_ENABLED(CONFIG_PPC_FAST_ENDIAN_SWITCH) &&
+> -				cpu_has_feature(CPU_FTR_REAL_LE) &&
+> -				regs->gpr[0] =3D=3D 0x1ebe) {
+> -			regs_set_return_msr(regs, regs->msr ^ MSR_LE);
+> -			goto instr_done;
+> -		}
+> -		regs->gpr[9] =3D regs->gpr[13];
+> -		regs->gpr[10] =3D MSR_KERNEL;
+> -		regs->gpr[11] =3D regs->nip + 4;
+> -		regs->gpr[12] =3D regs->msr & MSR_MASK;
+> -		regs->gpr[13] =3D (unsigned long) get_paca();
+> -		regs_set_return_ip(regs, (unsigned long) &system_call_common);
+> -		regs_set_return_msr(regs, MSR_KERNEL);
+> -		return 1;
+> -
+> -#ifdef CONFIG_PPC_BOOK3S_64
+> -	case SYSCALL_VECTORED_0:	/* scv 0 */
+> -		regs->gpr[9] =3D regs->gpr[13];
+> -		regs->gpr[10] =3D MSR_KERNEL;
+> -		regs->gpr[11] =3D regs->nip + 4;
+> -		regs->gpr[12] =3D regs->msr & MSR_MASK;
+> -		regs->gpr[13] =3D (unsigned long) get_paca();
+> -		regs_set_return_ip(regs, (unsigned long) &system_call_vectored_emulate=
+);
+> -		regs_set_return_msr(regs, MSR_KERNEL);
+> -		return 1;
+> -#endif
+> -
 
-The nd_papr_pdsm_smart_inject.flag field indicates which error
-conditions needs to be tweaked and individual __u8 fields like
-'fatal_enable' are boolean values to indicate the inject/uninject state
-of that error condition.
+Given that we should not be probing syscall instructions, I think it is=20
+better to return -1 for these two, similar to the RFI below. With that=20
+change, for this patch:
+Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 
-For e.g to uninject fatal-health and inject unsafe-shutdown following
-nd_papr_pdsm_smart_inject payload can be sent:
-
-{
-.flags = PDSM_SMART_INJECT_HEALTH_FATAL |
-       PDSM_SMART_INJECT_BAD_SHUTDOWN,
-.fatal_enable = 0,
-.unsafe_shutdown_enable = 1,
-}
+>  	case RFI:
+>  		return -1;
+>  #endif
 
 
-To just to inject fatal-health following nd_papr_pdsm_smart_inject
-payload can be sent:
+Thanks,
+Naveen
 
-{
-.flags = PDSM_SMART_INJECT_HEALTH_FATAL,
-.fatal_enable = 1,
-.unsafe_shutdown_enable = <dont-care>,
-}
+--
+[PATCH] powerpc/uprobes: Reject uprobe on a system call instruction
+
+Per the ISA, a Trace interrupt is not generated for a system call
+[vectored] instruction. Reject uprobes on such instructions as we are
+not emulating a system call [vectored] instruction anymore.
+
+Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+---
+ arch/powerpc/include/asm/ppc-opcode.h | 1 +
+ arch/powerpc/kernel/uprobes.c         | 6 ++++++
+ 2 files changed, 7 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/a=
+sm/ppc-opcode.h
+index efad07081cc0e5..fedf843bcdddeb 100644
+--- a/arch/powerpc/include/asm/ppc-opcode.h
++++ b/arch/powerpc/include/asm/ppc-opcode.h
+@@ -411,6 +411,7 @@
+ #define PPC_RAW_DCBFPS(a, b)		(0x7c0000ac | ___PPC_RA(a) | ___PPC_RB(b) | =
+(4 << 21))
+ #define PPC_RAW_DCBSTPS(a, b)		(0x7c0000ac | ___PPC_RA(a) | ___PPC_RB(b) |=
+ (6 << 21))
+ #define PPC_RAW_SC()			(0x44000002)
++#define PPC_RAW_SCV()			(0x44000001)
+ #define PPC_RAW_SYNC()			(0x7c0004ac)
+ #define PPC_RAW_ISYNC()			(0x4c00012c)
+=20
+diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
+index c6975467d9ffdc..bedca31391d043 100644
+--- a/arch/powerpc/kernel/uprobes.c
++++ b/arch/powerpc/kernel/uprobes.c
+@@ -41,6 +41,12 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe=
+,
+ 	if (addr & 0x03)
+ 		return -EINVAL;
+=20
++	if (ppc_inst_val(ppc_inst_read(auprobe->insn)) =3D=3D PPC_RAW_SC() ||
++	    ppc_inst_val(ppc_inst_read(auprobe->insn)) =3D=3D PPC_RAW_SCV()) {
++		pr_info("Rejecting uprobe on system call instruction\n");
++		return -EINVAL;
++	}
++
+ 	if (cpu_has_feature(CPU_FTR_ARCH_31) &&
+ 	    ppc_inst_prefixed(ppc_inst_read(auprobe->insn)) &&
+ 	    (addr & 0x3f) =3D=3D 60) {
+
+base-commit: 863a7c25c334ed368b4508fccae92d6bb61e71a4
+--=20
+2.34.1
 
 
-> Ira
->
-
--- 
-Cheers
-~ Vaibhav
