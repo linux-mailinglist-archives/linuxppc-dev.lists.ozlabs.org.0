@@ -1,35 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD0E49393C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 12:07:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F8DC493935
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 12:06:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jf2sr6F4Dz3cbf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 22:07:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jf2rz71Kxz3cDR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 22:06:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jf2rg5Rt0z3bNC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 22:06:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jf2rc75CZz2xsb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 22:06:24 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Jf2rg1CJpz4y4Z;
- Wed, 19 Jan 2022 22:06:27 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Jf2rc4vYxz4xtf;
+ Wed, 19 Jan 2022 22:06:24 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-In-Reply-To: <7a50ef902494d1325227d47d33dada01e52e5518.1641818726.git.christophe.leroy@csgroup.eu>
-References: <7a50ef902494d1325227d47d33dada01e52e5518.1641818726.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v3] powerpc/32s: Fix kasan_init_region() for KASAN
-Message-Id: <164259036257.3588160.3465491440781256341.b4-ty@ellerman.id.au>
-Date: Wed, 19 Jan 2022 22:06:02 +1100
+To: mpe@ellerman.id.au, Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20220114031355.87480-1-atrajeev@linux.vnet.ibm.com>
+References: <20220114031355.87480-1-atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc/perf: Fix power_pmu_wants_prompt_pmi to be
+ defined only for CONFIG_PPC64
+Message-Id: <164259036339.3588160.18395880132158823688.b4-ty@ellerman.id.au>
+Date: Wed, 19 Jan 2022 22:06:03 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,30 +43,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Maxime Bizon <mbizon@freebox.fr>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: kjain@linux.ibm.com, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 10 Jan 2022 15:29:25 +0000, Christophe Leroy wrote:
-> It has been reported some configuration where the kernel doesn't
-> boot with KASAN enabled.
+On Fri, 14 Jan 2022 08:43:55 +0530, Athira Rajeev wrote:
+> power_pmu_wants_prompt_pmi is used to decide if PMI should
+> be taken prompt. This is valid only for ppc64 and is used
+> in CONFIG_PPC_BOOK3S_64 context. Hence include the function
+> under config check for PPC64
 > 
-> This is due to wrong BAT allocation for the KASAN area:
-> 
-> 	---[ Data Block Address Translation ]---
-> 	0: 0xc0000000-0xcfffffff 0x00000000       256M Kernel rw      m
-> 	1: 0xd0000000-0xdfffffff 0x10000000       256M Kernel rw      m
-> 	2: 0xe0000000-0xefffffff 0x20000000       256M Kernel rw      m
-> 	3: 0xf8000000-0xf9ffffff 0x2a000000        32M Kernel rw      m
-> 	4: 0xfa000000-0xfdffffff 0x2c000000        64M Kernel rw      m
+> Fixes warning for 32-bit compilation:
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/32s: Fix kasan_init_region() for KASAN
-      https://git.kernel.org/powerpc/c/d37823c3528e5e0705fc7746bcbc2afffb619259
+[1/1] powerpc/perf: Fix power_pmu_wants_prompt_pmi to be defined only for CONFIG_PPC64
+      https://git.kernel.org/powerpc/c/429a64f6e91fbfe4912d17247c27d0d66767b1c2
 
 cheers
