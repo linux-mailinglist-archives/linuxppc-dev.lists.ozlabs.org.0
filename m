@@ -2,83 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8048E4933EE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 05:07:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87478493401
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 05:18:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JdsYF2t3Cz3bbT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 15:07:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jdsnq3csNz3bTp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 15:18:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2021-07-09 header.b=lJnCGbCh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gAmqQ4rY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=205.220.177.32;
- helo=mx0b-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
+ helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2021-07-09 header.b=lJnCGbCh; 
- dkim-atps=neutral
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com
- [205.220.177.32])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=gAmqQ4rY; dkim-atps=neutral
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
+ [IPv6:2607:f8b0:4864:20::1035])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JdsXV5ZTvz2x9j
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 15:06:48 +1100 (AEDT)
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20INx5iq012817; 
- Wed, 19 Jan 2022 04:06:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2021-07-09;
- bh=bGCfCt6vCAi9RXyrfJqfylamdOtbNoBkaaat0IE/Mnw=;
- b=lJnCGbChCBWiNCJ81/oD1H2AgQZqUQa5nCeYEKv3GgIDNnniyAqdpYR6Amtq5UVy85+S
- bSf1F6fc782Zb3Hp+C/dNgfwXSix7WwLstwfNiw/46TSej1TijDQQYxcpVwee5QgPbXs
- 7qRvvqYwp1E1ZgJdwTidvqkrmMa2mDn9jRoaeO55cbOsT0QqUIBAR9kF8p5ggelQCa3G
- c12qT81DvBC9DrU2d50H1hksN5JKryq7e54/MdXUueGoXHOe0qsRXmf5/407TnolSx/k
- mH6KSOS3qms9+4ReTKr2kzH+nGTE/NnAmFSQ7vRhRr/fL6whaOCHGPK4AnnXhPGdKH9a 5A== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
- by mx0b-00069f02.pphosted.com with ESMTP id 3dnc4q3wwt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jan 2022 04:06:19 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
- by userp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 20J42AEu091613;
- Wed, 19 Jan 2022 04:06:18 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by userp3020.oracle.com with ESMTP id 3dkqqpnr7j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jan 2022 04:06:18 +0000
-Received: from userp3020.oracle.com (userp3020.oracle.com [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 20J46HPx110383;
- Wed, 19 Jan 2022 04:06:17 GMT
-Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
- by userp3020.oracle.com with ESMTP id 3dkqqpnr68-1;
- Wed, 19 Jan 2022 04:06:17 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: sreekanth.reddy@broadcom.com, mchehab@kernel.org, mdf@kernel.org,
- mpe@ellerman.id.au, mporter@kernel.crashing.org, hch@infradead.org,
- bhelgaas@google.com, airlied@linux.ie,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- benh@kernel.crashing.org, ink@jurassic.park.msu.ru,
- davem@davemloft.net, akpm@linux-foundation.org, hao.wu@intel.com,
- vkoul@kernel.org, sathya.prakash@broadcom.com, paulus@samba.org,
- trix@redhat.com, arnd@arndb.de, yilun.xu@intel.com,
- suganath-prabu.subramani@broadcom.com, alex.bou9@gmail.com,
- awalls@md.metrocast.net, rth@twiddle.net, mattst88@gmail.com
-Subject: Re: [PATCH 00/16] Remove usage of the deprecated "pci-dma-compat.h"
- API
-Date: Tue, 18 Jan 2022 23:06:09 -0500
-Message-Id: <164256513502.31841.5177778968152773786.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
-References: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jdsn8232Gz2xs4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 15:17:46 +1100 (AEDT)
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 59-20020a17090a09c100b001b34a13745eso4986067pjo.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 20:17:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=AKF/m4crRjUPKaEVyR47iJWpF9556rhB20qICdT0XMw=;
+ b=gAmqQ4rYYDr653fs21as+JGb8WVc3EmyhbYjx0q2IQ5dWwJZKJ4GnqrquUtrvSB9OB
+ yrB2KyU4M340MMrv250jTVTm9egqTgMtoitKsWrnZig7xF0hOskKydBZPGefcGE0csbP
+ AiWdymunWo98bs9atvLMSPnGTL+cKj+CVfnPBiHWx4Exxb8VTZv3RGeCwPszEkMQiHOl
+ 7RVADXLKYlCe8CIcbja61x2w0JRXJUjn5z1wkaIVivzwlVoMaedV2Yu12vPxNe4yUID6
+ AI9KiKUKOHS2QOSPlOzLqKoMbfHEMjJecKbks82ZSv6NLKRWAaGowwlsYIP1sXYCr2Nk
+ XDhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=AKF/m4crRjUPKaEVyR47iJWpF9556rhB20qICdT0XMw=;
+ b=uJK+9hdOBV/Lrsm3vMl0DjY+cUf7ShegpbPohH+q/2aAJv03HJWnSxJHQDGu1hapHH
+ BueD5nF3lXB0mi/83iVwaMJny5N+JtXI8lnkNLgbXRwcipjL+27YfKNW1AiLXdHvabgU
+ qzhsF+pp3Yiq24C9ZRRlFwgQv0z+QZlR8KypxvIrnsLh95exMgcG3jC/rcUNLbltzGLV
+ 0QHvoBAcZJF1tc6isk3hirPwbKx/iwEluOAcA80ExcCjvHO4HPNLgwg2jZYVwuyC4Ldl
+ K8+sj/apv1sAOwT6OiPQzIID02FMxOP70fbKZTMeozXPH9sm+i8aR6emiQhlM13OZgOY
+ 7egw==
+X-Gm-Message-State: AOAM533enHfLmGx+Dcv1mfxxcGxERWOo7CSyALGPImoP4NpFCg1vmZb2
+ N7jw2LI0owaqpv/sNjErx3E=
+X-Google-Smtp-Source: ABdhPJx3OvhLmFtcmBgPOWtTOgtFz5eNT+qAc0Hg/uqwpDFNuWOOlw66tKXtoYn5ZRQ3+6wnEZ9b/A==
+X-Received: by 2002:a17:902:6b89:b0:149:7aa8:d98c with SMTP id
+ p9-20020a1709026b8900b001497aa8d98cmr30797727plk.72.1642565863190; 
+ Tue, 18 Jan 2022 20:17:43 -0800 (PST)
+Received: from localhost (193-116-82-75.tpgi.com.au. [193.116.82.75])
+ by smtp.gmail.com with ESMTPSA id n5sm18226822pfo.39.2022.01.18.20.17.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Jan 2022 20:17:42 -0800 (PST)
+Date: Wed, 19 Jan 2022 14:17:37 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 3/3] x86: Support huge vmalloc mappings
+To: Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet
+ <corbet@lwn.net>, Dave Hansen <dave.hansen@intel.com>,
+ linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, Kefeng Wang <wangkefeng.wang@huawei.com>,
+ x86@kernel.org
+References: <20211227145903.187152-1-wangkefeng.wang@huawei.com>
+ <20211227145903.187152-4-wangkefeng.wang@huawei.com>
+ <70ff58bc-3a92-55c2-2da8-c5877af72e44@intel.com>
+ <3858de1f-cdbc-ff52-2890-4254d0f48b0a@huawei.com>
+ <31a75f95-6e6e-b640-2d95-08a95ea8cf51@intel.com>
+ <1642472965.lgfksp6krp.astroid@bobo.none>
+ <4488d39f-0698-7bfd-b81c-1e609821818f@intel.com>
+In-Reply-To: <4488d39f-0698-7bfd-b81c-1e609821818f@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: kv-6XMqJc6gHKjMkAhgWOkvxgVt6FLHh
-X-Proofpoint-ORIG-GUID: kv-6XMqJc6gHKjMkAhgWOkvxgVt6FLHh
+Message-Id: <1642565468.c0jax91tvn.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,44 +92,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linux-scsi@vger.kernel.org,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- linuxppc-dev@lists.ozlabs.org, linux-fpga@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- dmaengine@vger.kernel.org, linux-alpha@vger.kernel.org,
- sparclinux@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com,
- linux-media@vger.kernel.org
+Cc: Matthew Wilcox <willy@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Will Deacon <will@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 6 Jan 2022 22:45:13 +0100, Christophe JAILLET wrote:
+Excerpts from Dave Hansen's message of January 19, 2022 3:28 am:
+> On 1/17/22 6:46 PM, Nicholas Piggin wrote:
+>>> This all sounds very fragile to me.  Every time a new architecture woul=
+d
+>>> get added for huge vmalloc() support, the developer needs to know to go
+>>> find that architecture's module_alloc() and add this flag.
+>> This is documented in the Kconfig.
+>>=20
+>>  #
+>>  #  Archs that select this would be capable of PMD-sized vmaps (i.e.,
+>>  #  arch_vmap_pmd_supported() returns true), and they must make no assum=
+ptions
+>>  #  that vmalloc memory is mapped with PAGE_SIZE ptes. The VM_NO_HUGE_VM=
+AP flag
+>>  #  can be used to prohibit arch-specific allocations from using hugepag=
+es to
+>>  #  help with this (e.g., modules may require it).
+>>  #
+>>  config HAVE_ARCH_HUGE_VMALLOC
+>>          depends on HAVE_ARCH_HUGE_VMAP
+>>          bool
+>>=20
+>> Is it really fair to say it's *very* fragile? Surely it's reasonable to=20
+>> read the (not very long) documentation ad understand the consequences fo=
+r
+>> the arch code before enabling it.
+>=20
+> Very fragile or not, I think folks are likely to get it wrong.  It would
+> be nice to have it default *everyone* to safe and slow and make *sure*
 
-> This serie axes all the remaining usages of the deprecated "pci-dma-compat.h"
-> API.
-> 
-> All these patches have already been posted.
-> 
-> They have been generated with a coccinelle script.
-> The tricky parts are patches that use dma_alloc_coherent() because the correct
-> GFP flag has to be used in place of the previous embedded GFP_ATOMIC.
-> 
-> [...]
+It's not safe to enable though. That's the problem. If it was just=20
+modules then you'd have a point but it could be anything.
 
-Applied to 5.17/scsi-queue, thanks!
+> they go look at the architecture modules code itself before enabling
+> this for modules.
 
-[10/16] scsi: message: fusion: Remove usage of the deprecated "pci-dma-compat.h" API
-        https://git.kernel.org/mkp/scsi/c/b114dda6f2f1
-[11/16] scsi: mptbase: Use dma_alloc_coherent() in 'mpt_alloc_fw_memory()'
-        https://git.kernel.org/mkp/scsi/c/2d50607260a6
-[12/16] scsi: mptbase: Use dma_alloc_coherent()
-        https://git.kernel.org/mkp/scsi/c/5c5e6b6f61e0
-[13/16] scsi: mptsas: Use dma_alloc_coherent() in mptsas_exp_repmanufacture_info()
-        https://git.kernel.org/mkp/scsi/c/7a960b3a5e37
-[14/16] scsi: mptsas: Use dma_alloc_coherent()
-        https://git.kernel.org/mkp/scsi/c/76a334d756c5
-[15/16] scsi: mptctl: Use dma_alloc_coherent()
-        https://git.kernel.org/mkp/scsi/c/706dc3b91989
+This is required not just for modules for the whole arch code, it
+has to be looked at and decided this will work.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+> Just from that Kconfig text, I don't think I'd know off the top of my
+> head what do do for x86, or what code I needed to go touch.
+
+You have to make sure arch/x86 makes no assumptions that vmalloc memory
+is backed by PAGE_SIZE ptes. If you can't do that then you shouldn't=20
+enable the option. The option can not explain it any more because any
+arch could do anything with its mappings. The module code is an example,
+not the recipe.
+
+Thanks,
+Nick
