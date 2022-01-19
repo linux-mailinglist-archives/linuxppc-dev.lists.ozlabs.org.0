@@ -2,83 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87478493401
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 05:18:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D6A493408
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 05:25:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jdsnq3csNz3bTp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 15:18:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jdsxl4CYCz3bP1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Jan 2022 15:25:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gAmqQ4rY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=grq3+qHB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
- helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::429;
+ helo=mail-pf1-x429.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=gAmqQ4rY; dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
- [IPv6:2607:f8b0:4864:20::1035])
+ header.s=20210112 header.b=grq3+qHB; dkim-atps=neutral
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com
+ [IPv6:2607:f8b0:4864:20::429])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jdsn8232Gz2xs4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 15:17:46 +1100 (AEDT)
-Received: by mail-pj1-x1035.google.com with SMTP id
- 59-20020a17090a09c100b001b34a13745eso4986067pjo.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 20:17:46 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jdsx44FF8z2xtW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Jan 2022 15:24:38 +1100 (AEDT)
+Received: by mail-pf1-x429.google.com with SMTP id x83so1425166pfc.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Jan 2022 20:24:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=AKF/m4crRjUPKaEVyR47iJWpF9556rhB20qICdT0XMw=;
- b=gAmqQ4rYYDr653fs21as+JGb8WVc3EmyhbYjx0q2IQ5dWwJZKJ4GnqrquUtrvSB9OB
- yrB2KyU4M340MMrv250jTVTm9egqTgMtoitKsWrnZig7xF0hOskKydBZPGefcGE0csbP
- AiWdymunWo98bs9atvLMSPnGTL+cKj+CVfnPBiHWx4Exxb8VTZv3RGeCwPszEkMQiHOl
- 7RVADXLKYlCe8CIcbja61x2w0JRXJUjn5z1wkaIVivzwlVoMaedV2Yu12vPxNe4yUID6
- AI9KiKUKOHS2QOSPlOzLqKoMbfHEMjJecKbks82ZSv6NLKRWAaGowwlsYIP1sXYCr2Nk
- XDhg==
+ bh=AGVV8zCTM1F/gvLK0FPNhEpA+NHBaCvrq9l3vkw4x4s=;
+ b=grq3+qHBGEN7qxunXQqWh5CoMi58jiemeUthcaXihJi6BAqciOTh4c/DZQKh/m25lL
+ lFp2ft95h+eMbvs9xPyVBhha2SqqcJD6IncqcjjKl4SYO8qEwXjF4NqfwZDZFVpeb+Vs
+ 8lG9rvJvkvVpManjnKwggAdZH/uDmnQroYCFR681qhIqcLc1baTOwvtIVOl4TB1VMYux
+ ObqBj1I/v9EPb/EfIH+MjT/9YrL6q3IFE1b29QxVAbOFCvJB/VI3Z4ArphFaC8J6fQFK
+ rcflG+z3MogjMVPxstcOxbGpSnm89zvlHMhSIBNxOO7g7LfIXekfcHaFUPXgTjHOxGv1
+ jkRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=AKF/m4crRjUPKaEVyR47iJWpF9556rhB20qICdT0XMw=;
- b=uJK+9hdOBV/Lrsm3vMl0DjY+cUf7ShegpbPohH+q/2aAJv03HJWnSxJHQDGu1hapHH
- BueD5nF3lXB0mi/83iVwaMJny5N+JtXI8lnkNLgbXRwcipjL+27YfKNW1AiLXdHvabgU
- qzhsF+pp3Yiq24C9ZRRlFwgQv0z+QZlR8KypxvIrnsLh95exMgcG3jC/rcUNLbltzGLV
- 0QHvoBAcZJF1tc6isk3hirPwbKx/iwEluOAcA80ExcCjvHO4HPNLgwg2jZYVwuyC4Ldl
- K8+sj/apv1sAOwT6OiPQzIID02FMxOP70fbKZTMeozXPH9sm+i8aR6emiQhlM13OZgOY
- 7egw==
-X-Gm-Message-State: AOAM533enHfLmGx+Dcv1mfxxcGxERWOo7CSyALGPImoP4NpFCg1vmZb2
- N7jw2LI0owaqpv/sNjErx3E=
-X-Google-Smtp-Source: ABdhPJx3OvhLmFtcmBgPOWtTOgtFz5eNT+qAc0Hg/uqwpDFNuWOOlw66tKXtoYn5ZRQ3+6wnEZ9b/A==
-X-Received: by 2002:a17:902:6b89:b0:149:7aa8:d98c with SMTP id
- p9-20020a1709026b8900b001497aa8d98cmr30797727plk.72.1642565863190; 
- Tue, 18 Jan 2022 20:17:43 -0800 (PST)
+ bh=AGVV8zCTM1F/gvLK0FPNhEpA+NHBaCvrq9l3vkw4x4s=;
+ b=VNEPkErRQeTVXIEWI9AKL0cWOd8gFDa8khTt5530EzxI06M5wK8ULap8LGHRZLNYiZ
+ azhUwHXjtJ/OJWBSbxWzM+uG9QjRy+Q4wilHl+40ikIUH2mkGHcuxD4CltGnXNlm3Wib
+ EdxF/8kQX4nq857/kODOu8Yd52qQRwA/Fh+b9wakc1HW02qaAPOO7pE8d8OkTKknlZP+
+ sgVTifs7YtioNk9n6R8vzygVSgnGiShMR2jD70FEE2Y3lxxQ9SMJGM2Qfn/SBnpQJAd+
+ b7UNx87zVt3EVFs/Fuu1XdUo0I7b7RQcqd8djbkEY0KpCR/mkQ6O3OYtFrESDmnCyKy7
+ CfVg==
+X-Gm-Message-State: AOAM531ANCDpQ+9i2ZDjWGv0GNDgXYvcAce78KyrbpRcPbcCjRaFvJBC
+ R7wMBSo5bamF0QPRVm59Tek=
+X-Google-Smtp-Source: ABdhPJyaCdp1/XjTpzFaqL2tCksgwmgBTf2GWDBqhcSiAmOhf2U+x73gWvSJf5KlBKJ+onNqtkGz5g==
+X-Received: by 2002:aa7:888e:0:b0:4c4:3ad:9eee with SMTP id
+ z14-20020aa7888e000000b004c403ad9eeemr13985878pfe.13.1642566275615; 
+ Tue, 18 Jan 2022 20:24:35 -0800 (PST)
 Received: from localhost (193-116-82-75.tpgi.com.au. [193.116.82.75])
- by smtp.gmail.com with ESMTPSA id n5sm18226822pfo.39.2022.01.18.20.17.42
+ by smtp.gmail.com with ESMTPSA id 23sm8713798pge.45.2022.01.18.20.24.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Jan 2022 20:17:42 -0800 (PST)
-Date: Wed, 19 Jan 2022 14:17:37 +1000
+ Tue, 18 Jan 2022 20:24:35 -0800 (PST)
+Date: Wed, 19 Jan 2022 14:24:30 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 3/3] x86: Support huge vmalloc mappings
-To: Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet
- <corbet@lwn.net>, Dave Hansen <dave.hansen@intel.com>,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, Kefeng Wang <wangkefeng.wang@huawei.com>,
- x86@kernel.org
-References: <20211227145903.187152-1-wangkefeng.wang@huawei.com>
- <20211227145903.187152-4-wangkefeng.wang@huawei.com>
- <70ff58bc-3a92-55c2-2da8-c5877af72e44@intel.com>
- <3858de1f-cdbc-ff52-2890-4254d0f48b0a@huawei.com>
- <31a75f95-6e6e-b640-2d95-08a95ea8cf51@intel.com>
- <1642472965.lgfksp6krp.astroid@bobo.none>
- <4488d39f-0698-7bfd-b81c-1e609821818f@intel.com>
-In-Reply-To: <4488d39f-0698-7bfd-b81c-1e609821818f@intel.com>
+Subject: Re: [PATCH] powerpc/perf: Fix power_pmu_disable to call
+ clear_pmi_irq_pending only if PMI is pending
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, mpe@ellerman.id.au
+References: <20220115072020.93524-1-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20220115072020.93524-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1642565468.c0jax91tvn.astroid@bobo.none>
+Message-Id: <1642566179.l0008zwdzw.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -92,63 +81,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Wilcox <willy@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
- Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
- Will Deacon <will@kernel.org>
+Cc: kjain@linux.ibm.com, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Dave Hansen's message of January 19, 2022 3:28 am:
-> On 1/17/22 6:46 PM, Nicholas Piggin wrote:
->>> This all sounds very fragile to me.  Every time a new architecture woul=
-d
->>> get added for huge vmalloc() support, the developer needs to know to go
->>> find that architecture's module_alloc() and add this flag.
->> This is documented in the Kconfig.
->>=20
->>  #
->>  #  Archs that select this would be capable of PMD-sized vmaps (i.e.,
->>  #  arch_vmap_pmd_supported() returns true), and they must make no assum=
-ptions
->>  #  that vmalloc memory is mapped with PAGE_SIZE ptes. The VM_NO_HUGE_VM=
-AP flag
->>  #  can be used to prohibit arch-specific allocations from using hugepag=
-es to
->>  #  help with this (e.g., modules may require it).
->>  #
->>  config HAVE_ARCH_HUGE_VMALLOC
->>          depends on HAVE_ARCH_HUGE_VMAP
->>          bool
->>=20
->> Is it really fair to say it's *very* fragile? Surely it's reasonable to=20
->> read the (not very long) documentation ad understand the consequences fo=
-r
->> the arch code before enabling it.
+Excerpts from Athira Rajeev's message of January 15, 2022 5:20 pm:
+> Running selftest with CONFIG_PPC_IRQ_SOFT_MASK_DEBUG enabled in kernel
+> triggered below warning:
 >=20
-> Very fragile or not, I think folks are likely to get it wrong.  It would
-> be nice to have it default *everyone* to safe and slow and make *sure*
+> [  172.851380] ------------[ cut here ]------------
+> [  172.851391] WARNING: CPU: 8 PID: 2901 at arch/powerpc/include/asm/hw_i=
+rq.h:246 power_pmu_disable+0x270/0x280
+> [  172.851402] Modules linked in: dm_mod bonding nft_ct nf_conntrack nf_d=
+efrag_ipv6 nf_defrag_ipv4 ip_set nf_tables rfkill nfnetlink sunrpc xfs libc=
+rc32c pseries_rng xts vmx_crypto uio_pdrv_genirq uio sch_fq_codel ip_tables=
+ ext4 mbcache jbd2 sd_mod t10_pi sg ibmvscsi ibmveth scsi_transport_srp fus=
+e
+> [  172.851442] CPU: 8 PID: 2901 Comm: lost_exception_ Not tainted 5.16.0-=
+rc5-03218-g798527287598 #2
+> [  172.851451] NIP:  c00000000013d600 LR: c00000000013d5a4 CTR: c00000000=
+013b180
+> [  172.851458] REGS: c000000017687860 TRAP: 0700   Not tainted  (5.16.0-r=
+c5-03218-g798527287598)
+> [  172.851465] MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 4800488=
+4  XER: 20040000
+> [  172.851482] CFAR: c00000000013d5b4 IRQMASK: 1
+> [  172.851482] GPR00: c00000000013d5a4 c000000017687b00 c000000002a10600 =
+0000000000000004
+> [  172.851482] GPR04: 0000000082004000 c0000008ba08f0a8 0000000000000000 =
+00000008b7ed0000
+> [  172.851482] GPR08: 00000000446194f6 0000000000008000 c00000000013b118 =
+c000000000d58e68
+> [  172.851482] GPR12: c00000000013d390 c00000001ec54a80 0000000000000000 =
+0000000000000000
+> [  172.851482] GPR16: 0000000000000000 0000000000000000 c000000015d5c708 =
+c0000000025396d0
+> [  172.851482] GPR20: 0000000000000000 0000000000000000 c00000000a3bbf40 =
+0000000000000003
+> [  172.851482] GPR24: 0000000000000000 c0000008ba097400 c0000000161e0d00 =
+c00000000a3bb600
+> [  172.851482] GPR28: c000000015d5c700 0000000000000001 0000000082384090 =
+c0000008ba0020d8
+> [  172.851549] NIP [c00000000013d600] power_pmu_disable+0x270/0x280
+> [  172.851557] LR [c00000000013d5a4] power_pmu_disable+0x214/0x280
+> [  172.851565] Call Trace:
+> [  172.851568] [c000000017687b00] [c00000000013d5a4] power_pmu_disable+0x=
+214/0x280 (unreliable)
+> [  172.851579] [c000000017687b40] [c0000000003403ac] perf_pmu_disable+0x4=
+c/0x60
+> [  172.851588] [c000000017687b60] [c0000000003445e4] __perf_event_task_sc=
+hed_out+0x1d4/0x660
+> [  172.851596] [c000000017687c50] [c000000000d1175c] __schedule+0xbcc/0x1=
+2a0
+> [  172.851602] [c000000017687d60] [c000000000d11ea8] schedule+0x78/0x140
+> [  172.851608] [c000000017687d90] [c0000000001a8080] sys_sched_yield+0x20=
+/0x40
+> [  172.851615] [c000000017687db0] [c0000000000334dc] system_call_exceptio=
+n+0x18c/0x380
+> [  172.851622] [c000000017687e10] [c00000000000c74c] system_call_common+0=
+xec/0x268
+>=20
+> The warning indicates that MSR_EE being set(interrupt enabled) when
+> there was an overflown PMC detected. This could happen in
+> power_pmu_disable since it runs under interrupt soft disable
+> condition ( local_irq_save ) and not with interrupts hard disabled.
+> commit 2c9ac51b850d ("powerpc/perf: Fix PMU callbacks to clear
+> pending PMI before resetting an overflown PMC") intended to clear
+> PMI pending bit in Paca when disabling the PMU. It could happen
+> that PMC gets overflown while code is in power_pmu_disable
+> callback function. Hence add a check to see if PMI pending bit
+> is set in Paca before clearing it via clear_pmi_pending.
+>=20
+> Fixes: 2c9ac51b850d ("powerpc/perf: Fix PMU callbacks to clear pending PM=
+I before resetting an overflown PMC")
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> Reported-by: Sachin Sant <sachinp@linux.ibm.com>
+> Tested-by: Sachin Sant <sachinp@linux.ibm.com>
+> ---
+> Note: Address the warning reported here:
+> https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-December/238190.html
+> Patch is on top of powerpc/merge
+>=20
+>  arch/powerpc/perf/core-book3s.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-boo=
+k3s.c
+> index a684901b6965..dfb0ea0f0df3 100644
+> --- a/arch/powerpc/perf/core-book3s.c
+> +++ b/arch/powerpc/perf/core-book3s.c
+> @@ -1327,9 +1327,10 @@ static void power_pmu_disable(struct pmu *pmu)
+>  		 * Otherwise provide a warning if there is PMI pending, but
+>  		 * no counter is found overflown.
+>  		 */
+> -		if (any_pmc_overflown(cpuhw))
+> -			clear_pmi_irq_pending();
+> -		else
+> +		if (any_pmc_overflown(cpuhw)) {
+> +			if (pmi_irq_pending())
+> +				clear_pmi_irq_pending();
 
-It's not safe to enable though. That's the problem. If it was just=20
-modules then you'd have a point but it could be anything.
+And this works because MSR[EE] gets disabled by the masked interrupt=20
+handler if we have a PMI irq pending, is that right?
 
-> they go look at the architecture modules code itself before enabling
-> this for modules.
-
-This is required not just for modules for the whole arch code, it
-has to be looked at and decided this will work.
-
-> Just from that Kconfig text, I don't think I'd know off the top of my
-> head what do do for x86, or what code I needed to go touch.
-
-You have to make sure arch/x86 makes no assumptions that vmalloc memory
-is backed by PAGE_SIZE ptes. If you can't do that then you shouldn't=20
-enable the option. The option can not explain it any more because any
-arch could do anything with its mappings. The module code is an example,
-not the recipe.
+Can I be a pain and just ask for a little comment there otherwise I'll
+forget about it next time.
 
 Thanks,
 Nick
+
+> +		} else
+>  			WARN_ON(pmi_irq_pending());
+> =20
+>  		val =3D mmcra =3D cpuhw->mmcr.mmcra;
+> --=20
+> 2.33.0
+>=20
+>=20
