@@ -2,65 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F635494AC0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 10:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B85AB494BBD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 11:31:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JfcgF47BKz3cDC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 20:30:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jff2250wnz30NG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 21:31:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.187; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.131; helo=mout.kundenserver.de;
  envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jfcfq4bpkz2ywd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 20:29:55 +1100 (AEDT)
-Received: from mail-ot1-f51.google.com ([209.85.210.51]) by
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jff1W640Zz2x9j
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 21:31:10 +1100 (AEDT)
+Received: from mail-ed1-f45.google.com ([209.85.208.45]) by
  mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1Mv3Ds-1mJt8x2awq-00qwq0 for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan
- 2022 10:29:51 +0100
-Received: by mail-ot1-f51.google.com with SMTP id
- a12-20020a0568301dcc00b005919e149b4cso6778595otj.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 01:29:51 -0800 (PST)
-X-Gm-Message-State: AOAM533JGuARfBETeA6axk00fgwvX9ATU+EKlTbYUfz9gcdtX9nCeqZ2
- +cHaPgZW/bNdrYNZE8JEBlo8HNdcatSstql9bMI=
-X-Google-Smtp-Source: ABdhPJw23cQjee+wzKe1BZuP5Egl38StW0xVS2Lx2CrxQkm8C96LIXXcbD+ld7BJcIRLzViPyYDZ1TVXzpuf+zNTwjI=
-X-Received: by 2002:a05:6830:2095:: with SMTP id
- y21mr25066257otq.368.1642670990087; 
- Thu, 20 Jan 2022 01:29:50 -0800 (PST)
+ 1M9FX5-1nGG1H3jpX-006QIy for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan
+ 2022 11:31:04 +0100
+Received: by mail-ed1-f45.google.com with SMTP id j2so26552549edj.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 02:31:04 -0800 (PST)
+X-Gm-Message-State: AOAM530kRcrYjkOTFre3iFtKfQKVxTkj3Ucn9twvz3lK0kOFO8xtIAm6
+ Qt/u+a1E77gkMYvZfJh0YbglnBT+ZqwRvVhUCGk=
+X-Google-Smtp-Source: ABdhPJzWEQOVmrSCBjLkthqjYvCekql2pWig3E9/sv1NmQbjWn/17+5wGi2Yo7L626/g8+PxrkZBITeqW35NrwNIykU=
+X-Received: by 2002:adf:e193:: with SMTP id
+ az19mr26654977wrb.407.1642671389935; 
+ Thu, 20 Jan 2022 01:36:29 -0800 (PST)
 MIME-Version: 1.0
-References: <20220120073911.99857-7-guoren@kernel.org>
-In-Reply-To: <20220120073911.99857-7-guoren@kernel.org>
+References: <20220120073911.99857-11-guoren@kernel.org>
+In-Reply-To: <20220120073911.99857-11-guoren@kernel.org>
 From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 20 Jan 2022 10:29:33 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a00uYPBBphpipBoqCnGFwr_C9vDzS1p1iLN==YTVOARug@mail.gmail.com>
-Message-ID: <CAK8P3a00uYPBBphpipBoqCnGFwr_C9vDzS1p1iLN==YTVOARug@mail.gmail.com>
-Subject: Re: [PATCH V3 06/17] riscv: compat: Add basic compat date type
- implementation
+Date: Thu, 20 Jan 2022 10:36:13 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a2HaeFGdOr4Rm_ZcEP0rjh2Mo53=-ZRnEPtFfnmzfeE6g@mail.gmail.com>
+Message-ID: <CAK8P3a2HaeFGdOr4Rm_ZcEP0rjh2Mo53=-ZRnEPtFfnmzfeE6g@mail.gmail.com>
+Subject: Re: [PATCH V3 10/17] riscv: compat: Add elf.h implementation
 To: Guo Ren <guoren@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:KKX+9HNtA1mSU6MqbV/jXbUwxpLtyTxOis6xqiY8Iql1Mw2tmed
- 4pQ2xse4Ke0qy+egGetawqI6y4OVjCGUu9BZvpumkZ5gYr/i/p8rf74VcfTmk7NrPBE4m3J
- Eoj66qlekUKAD8zjGaPT/iEODJYnZ/Ex8gcj9dDfIUytEaepW31oMVbIKsbLGq7VXy57C/I
- RmlvKbDAfHtz3/1jJtxRQ==
+X-Provags-ID: V03:K1:fJPE/Ibuju59ipH4ZLpPSfDo6QNKRF/IIBP4BKrWqHhZ7Q1X6Gm
+ fzZcdBOJ+pK2Enqqe4b2us2y27YoprV/fFDLwUMrzIC2BTk4vWJ5Phjq1Y6tQxaUJPswdsO
+ 4hvjNZcelZItQaEcGoKqtvL6L+AcSHswn2Of+p0+HPNJP6qzNtsKf3T5DA+GyZ0+OuDGB0x
+ oPV4tRrWE4DixsOK22kEw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:XO1LaekllgM=:kE35Gc0ZktCHbAM4CE1qM5
- CRZuxP+I4Zqebk1rr9G1iquL6eyMKFlGEf5//bsnLfIRprtY+kPJLJe/4yw5xqA/B7Czri1Um
- USXVfye4b+o6/OPdVDjWuTsZGRwSM7nf6P3ZuY141k13omSm3+c61szu1AfcervMg+I53wTSy
- MxsGI2X6HPgxACtmize0AYewCuyrR9UYM/p278eiPoGQGcDvhxFYMZ7u7wL5EDmMP5IA2OKPc
- oL+l5bBNuOHnXbV5S6uskFvwytHEVg8PRPOY2ffoaNoivy8vJJVW2TMECHKWjkA9nTIbUtybX
- Wav6pcu0V3qneAyDj5eS2KnZmK7oZ4HDC9mrAiiFKyoRq753HQhVmhIITtU3KM+/pjD51w/2G
- C4SZWND/Wp4LuhuOqSuwpDpPbDDTGh+Mqzx3K9IWPNOncEBmq5iSB0zv7NvQMI1IiAK97KLHd
- zOU0oWRxxipET1T0HZ0vXaaJxSJRya7jzwefNfw54tOGFWzrcg1DKgoXN6JDRepsMICiLehsW
- DE4Z/IbicoCMj/UHiNhrE62XXhbGPas8aYjUH5C+AT/UcTmXm0CfYhzA6jfi5wiK14BhMtRF5
- yMD0bCg+6lhN+tjuuwMMZGSbknWnEacWGV/IYt136Fo3LXiAJL/kholpCV4PM6pTQlIbgCbMn
- jju0GrlJ+8z0xaEIErpY6XNejIR3jjrf7fnClW4yc9gPaP5Pn4o3ao9fsf+aHO760n/2GpWnS
- BIke5XSgco5kIRBYyQAHu35cFcaGlm+w6FztaN+VtPD6nF7WYARFdJZG5jJ61RehaH0nftBKO
- Tz2emAC8tXwt2c98kiemdRY0E4aUaEhbHtfA3tSiWTLatNz09s=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:M0ov9O3TPqA=:g0aTxYkGHZpD8YFxyunp0o
+ fdK/+Fa3p45Pp7uLkjeiIzMJQOXQN3RcVhONFhxKDbOQztO1VKIhVBQONYK7uSZ+CHfZfEf0h
+ 9i2CwliE0bcxo1RRezvmVRBMLMWN8ayRvPvj9rHW56kXcKfgXVvyI/iSXkQlqzf5RSTlzY6/m
+ OplQjWzHRCTWfVNj1FpJXXfJCbaCm16RhppvHT5C14woXGmvbX3d72LtUdWkYZgMdvSF58Uw4
+ 4yToeZhQ7ZrNUJZF81yb87BHPWNm6v+7zIb75M1r6RIN82dppgKmSpEaEowd4EgiAvBTDgF9k
+ ZUauuGV4y9/GJ+Nlvp7D/2pVNBO+8XIhB8lzrurE41b8g1pAwRZX8YXG+CBwvEiHk5F+17V/Z
+ 4RIujn0huGprQqOM0Bem4vIG+kD5rgOfnswFTnGjH+dygHvE4YzVddL+K3Hvbzz0U4DQEYuFh
+ qsOi1O9ghZsNjjPipVgPSRpnc5SkrDdgiQDJoKPBLLH0iNHbHa3bX9c+qgFNcyl8S4qB7xUmc
+ uD2Q6/PoUMs8goMNmLuYcwC8W3AgUuzPgbIsfJMo4kLjYerIBVVtb48S7qpXjWoD3II8XlWst
+ Jl2Iozo7U9O40Gc1+ca/SJec/mLC2QvGqwRs7ARTM5JIwIDXlrv9yIEo+zlDLSoytQtJzdNLa
+ sKWQKohtSgzqxWQvS5DAN5ZegSndo9FUmvK78mPMFLqBPNITXZJXUk494PLrNoce0UGHWpVTE
+ fAdRWSfQARgcDNPayMhTE/qKzWfTY8che66LER8AYVNtopADx6v65GokGVhWqqB0ZV3zcMxdk
+ Zlf25VcfjXCLjF/pWZwwLC8pStJZJ0a6xCSG3vh5D+2vXja9tqlde5hu40mdnvLy1wjHizK
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,20 +87,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 20, 2022 at 8:38 AM <guoren@kernel.org> wrote:
+On Thu, Jan 20, 2022 at 8:39 AM <guoren@kernel.org> wrote:
+> From: Guo Ren <guoren@linux.alibaba.com>
+>
+> Implement necessary type and macro for compat elf. See the code
+> comment for detail.
+>
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
 
-> @@ -0,0 +1,136 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef __ASM_COMPAT_H
-> +#define __ASM_COMPAT_H
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+
 > +
-> +#define compat_mode_t  compat_mode_t
-> +typedef u16            compat_mode_t;
+> +/*
+> + * FIXME: not sure SET_PERSONALITY for compat process is right!
+> + */
+> +#define SET_PERSONALITY(ex)                                    \
+> +do {    if ((ex).e_ident[EI_CLASS] == ELFCLASS32)              \
+> +               set_thread_flag(TIF_32BIT);                     \
+> +       else                                                    \
+> +               clear_thread_flag(TIF_32BIT);                   \
+> +       if (personality(current->personality) != PER_LINUX32)   \
+> +               set_personality(PER_LINUX |                     \
+> +                       (current->personality & (~PER_MASK)));  \
+> +} while (0)
+> +
 
-I think this one is wrong, as rv32 should get the native definition from
+The implementation looks good to me now,  you can remove that comment above it.
 
-include/uapi/asm-generic/posix_types.h:typedef unsigned int     __kernel_mode_t;
-
-I think it works if you just remove those two lines. The rest looks good to me.
-
-       Arnd
+        Arnd
