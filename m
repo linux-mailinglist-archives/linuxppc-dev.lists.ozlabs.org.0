@@ -2,64 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0360494AB5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 10:27:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F635494AC0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 10:30:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JfcbY5vJ3z3cBx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 20:27:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JfcgF47BKz3cDC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 20:30:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.17.13; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.187; helo=mout.kundenserver.de;
  envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jfcb65xgnz2xs7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 20:26:41 +1100 (AEDT)
-Received: from mail-oi1-f178.google.com ([209.85.167.178]) by
- mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MIxmm-1mrHrq1xUY-00KSwN for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan
- 2022 10:26:36 +0100
-Received: by mail-oi1-f178.google.com with SMTP id bb37so8524889oib.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 01:26:35 -0800 (PST)
-X-Gm-Message-State: AOAM5330gSzdNPsmvaqmKMKMaODNEJeZKlAlxWlAtW+c5FDmNgLPvAIC
- NRKsKnpf+c6zpHdxFLE5esggHmLQ5oZQ8G5bAEQ=
-X-Google-Smtp-Source: ABdhPJwUHTIEKGF9B/deLoD+NLX/BPhPwhEAEkpKqsuu70hdzaWxQnSHkYBLqgySPz6euydrj/73VVU+G7+wmpaPV1k=
-X-Received: by 2002:a05:6808:2206:: with SMTP id
- bd6mr6829962oib.11.1642670794688; 
- Thu, 20 Jan 2022 01:26:34 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jfcfq4bpkz2ywd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 20:29:55 +1100 (AEDT)
+Received: from mail-ot1-f51.google.com ([209.85.210.51]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1Mv3Ds-1mJt8x2awq-00qwq0 for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan
+ 2022 10:29:51 +0100
+Received: by mail-ot1-f51.google.com with SMTP id
+ a12-20020a0568301dcc00b005919e149b4cso6778595otj.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 01:29:51 -0800 (PST)
+X-Gm-Message-State: AOAM533JGuARfBETeA6axk00fgwvX9ATU+EKlTbYUfz9gcdtX9nCeqZ2
+ +cHaPgZW/bNdrYNZE8JEBlo8HNdcatSstql9bMI=
+X-Google-Smtp-Source: ABdhPJw23cQjee+wzKe1BZuP5Egl38StW0xVS2Lx2CrxQkm8C96LIXXcbD+ld7BJcIRLzViPyYDZ1TVXzpuf+zNTwjI=
+X-Received: by 2002:a05:6830:2095:: with SMTP id
+ y21mr25066257otq.368.1642670990087; 
+ Thu, 20 Jan 2022 01:29:50 -0800 (PST)
 MIME-Version: 1.0
-References: <20220120073911.99857-5-guoren@kernel.org>
-In-Reply-To: <20220120073911.99857-5-guoren@kernel.org>
+References: <20220120073911.99857-7-guoren@kernel.org>
+In-Reply-To: <20220120073911.99857-7-guoren@kernel.org>
 From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 20 Jan 2022 10:26:18 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3ixShQBKmdXWxf8QdB_aLeWr7TQB+7MqQBSgh0-shSSQ@mail.gmail.com>
-Message-ID: <CAK8P3a3ixShQBKmdXWxf8QdB_aLeWr7TQB+7MqQBSgh0-shSSQ@mail.gmail.com>
-Subject: Re: [PATCH V3 04/17] syscalls: compat: Fix the missing part for
- __SYSCALL_COMPAT
+Date: Thu, 20 Jan 2022 10:29:33 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a00uYPBBphpipBoqCnGFwr_C9vDzS1p1iLN==YTVOARug@mail.gmail.com>
+Message-ID: <CAK8P3a00uYPBBphpipBoqCnGFwr_C9vDzS1p1iLN==YTVOARug@mail.gmail.com>
+Subject: Re: [PATCH V3 06/17] riscv: compat: Add basic compat date type
+ implementation
 To: Guo Ren <guoren@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:PRSOyINzLVaEVJkjHlabpyH5wT0/mDa0PfvFUfhf4HvHynMCn04
- si6zWk1jfKnu1iHl6IrdmnOuIo449ivYk4DU+cuWhvFipwFqFlTXCgCGrxVyMRNYKHC3196
- 3HFAwxUSUahsdbspVu2Ic50+meyZCYv7MDDl36XN7GdkFz3nYaDtfjcnvRFVhZshCeUnV9U
- huMm+AP3E2tPkCwwrT4UQ==
+X-Provags-ID: V03:K1:KKX+9HNtA1mSU6MqbV/jXbUwxpLtyTxOis6xqiY8Iql1Mw2tmed
+ 4pQ2xse4Ke0qy+egGetawqI6y4OVjCGUu9BZvpumkZ5gYr/i/p8rf74VcfTmk7NrPBE4m3J
+ Eoj66qlekUKAD8zjGaPT/iEODJYnZ/Ex8gcj9dDfIUytEaepW31oMVbIKsbLGq7VXy57C/I
+ RmlvKbDAfHtz3/1jJtxRQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:xwLtRYkItOE=:6zrRaZsifNdy1Ql2oRizow
- /oVU1Hx8leI0ujOWz9iNcAVAFURWZeHQaHW7SOiUQ8w21VMwD0tW+rEeYnPZve6iHzsOQZE/X
- Nrs7aHMzlv9ePH5yoS0Ni5tOLEMr7uzj1WShILZyP2iS+q0+86ingCZwzHWa5DeOFbSy9f5/9
- WAht49+eRadhasR4RmL85Z0eq6hzksnWGnK1lUPbz7kH85vIVb2c6SO8gxexvuIZEvYrsHTFp
- f/TulXfooX8ysNHRXFZYFW+p9smPtiR4jubgfsgeeZEUGQEN/6sQnRAM0jDE/NGnbrJxZ8Aez
- kH33oQFoyMGRYLZBpn/ha4VJZst9HzhWFdKlhOxg9DM/Dt3yT6LXjyrHxMHLtWS/gkOi+1lBS
- fsfwYpUYMFryzwccZ9KNidI3UQqec3mnRH+M6pROdU+NVWiLqsOwd0lAbZnGWfH5A17mnv27S
- xuMbItWCTwOnDwyh/tRL49gHuvR1V3PPm+gRMi6Ttdq29bPTSxvPLfQzik4gCUNlq9lmZxo9E
- ipOBcAObBYztHDUEP15FAvMHc4sWzH4cVAyFLzCbvnrknlcMup4YjhTi4Q2olwtzgC2y3XvIH
- mYvmvDK8rjqIum43m0zDpoM1MSbrL2wFiGX+XTdRDK4Yh3x1BcBXSDAr4vOVcXoXlQOeOLrBb
- RAXlc1hSiBG1GzdekcTZ8saTydY7vUauF6UIu/z2t3GRb4DbVCYMqglQoKU6vECS7mBZWgUip
- Y7o9K8h5q09H4n7uiGH+n4TCAGTE/r5iztPIJ9n7j8pAvy1pKAiUg/htfdkSYw+j9rJ5T/Cjh
- mABtW57y8n3E5z/TCSAoFsnp5YvXlsrZl65Xf9LDoHgobXDPzw=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:XO1LaekllgM=:kE35Gc0ZktCHbAM4CE1qM5
+ CRZuxP+I4Zqebk1rr9G1iquL6eyMKFlGEf5//bsnLfIRprtY+kPJLJe/4yw5xqA/B7Czri1Um
+ USXVfye4b+o6/OPdVDjWuTsZGRwSM7nf6P3ZuY141k13omSm3+c61szu1AfcervMg+I53wTSy
+ MxsGI2X6HPgxACtmize0AYewCuyrR9UYM/p278eiPoGQGcDvhxFYMZ7u7wL5EDmMP5IA2OKPc
+ oL+l5bBNuOHnXbV5S6uskFvwytHEVg8PRPOY2ffoaNoivy8vJJVW2TMECHKWjkA9nTIbUtybX
+ Wav6pcu0V3qneAyDj5eS2KnZmK7oZ4HDC9mrAiiFKyoRq753HQhVmhIITtU3KM+/pjD51w/2G
+ C4SZWND/Wp4LuhuOqSuwpDpPbDDTGh+Mqzx3K9IWPNOncEBmq5iSB0zv7NvQMI1IiAK97KLHd
+ zOU0oWRxxipET1T0HZ0vXaaJxSJRya7jzwefNfw54tOGFWzrcg1DKgoXN6JDRepsMICiLehsW
+ DE4Z/IbicoCMj/UHiNhrE62XXhbGPas8aYjUH5C+AT/UcTmXm0CfYhzA6jfi5wiK14BhMtRF5
+ yMD0bCg+6lhN+tjuuwMMZGSbknWnEacWGV/IYt136Fo3LXiAJL/kholpCV4PM6pTQlIbgCbMn
+ jju0GrlJ+8z0xaEIErpY6XNejIR3jjrf7fnClW4yc9gPaP5Pn4o3ao9fsf+aHO760n/2GpWnS
+ BIke5XSgco5kIRBYyQAHu35cFcaGlm+w6FztaN+VtPD6nF7WYARFdJZG5jJ61RehaH0nftBKO
+ Tz2emAC8tXwt2c98kiemdRY0E4aUaEhbHtfA3tSiWTLatNz09s=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,14 +90,19 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Thu, Jan 20, 2022 at 8:38 AM <guoren@kernel.org> wrote:
->
-> From: Guo Ren <guoren@linux.alibaba.com>
->
-> Make "uapi asm unistd.h" could be used for architectures' COMPAT
-> mode. The __SYSCALL_COMPAT is first used in riscv.
->
-> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> Signed-off-by: Guo Ren <guoren@kernel.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> @@ -0,0 +1,136 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef __ASM_COMPAT_H
+> +#define __ASM_COMPAT_H
+> +
+> +#define compat_mode_t  compat_mode_t
+> +typedef u16            compat_mode_t;
+
+I think this one is wrong, as rv32 should get the native definition from
+
+include/uapi/asm-generic/posix_types.h:typedef unsigned int     __kernel_mode_t;
+
+I think it works if you just remove those two lines. The rest looks good to me.
+
+       Arnd
