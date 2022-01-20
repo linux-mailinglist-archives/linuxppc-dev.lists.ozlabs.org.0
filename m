@@ -1,65 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565DD494E27
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 13:46:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC32D494DCC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 13:20:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jfj261gSKz3bY6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 23:46:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JfhRg3YjPz3bcp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 23:20:31 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MKJncdpA;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.130; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jfj1g19Skz2yY7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 23:46:29 +1100 (AEDT)
-Received: from mail-oi1-f172.google.com ([209.85.167.172]) by
- mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1M9Frj-1nGI8D2TNX-006S9c for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan
- 2022 13:46:26 +0100
-Received: by mail-oi1-f172.google.com with SMTP id s9so8643391oib.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 04:46:25 -0800 (PST)
-X-Gm-Message-State: AOAM531uUXwtzmrso4eMi9sLhpujVnNAC5UnJ2MuAhjsPJSYuk6Hn32b
- dTAR32rqKG2W4JW1VBC5ANjGzD8uCnmF3mdQHIU=
-X-Google-Smtp-Source: ABdhPJydc5loEDqeQgQKrusgbi1aGxD+tZ0GQwF7Qc/YGyFSxdDyRJjWKaddNyUDdWoTK5tk0vBiI2MFsnHozVbpMM8=
-X-Received: by 2002:a05:6808:2206:: with SMTP id
- bd6mr7227920oib.11.1642679565024; 
- Thu, 20 Jan 2022 03:52:45 -0800 (PST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=MKJncdpA; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JfhQv2vf9z30Ky
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 23:19:50 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20KAvUFm006427; 
+ Thu, 20 Jan 2022 12:19:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=eU+WpzBVTMUzPLF0NFawum1x+6LlzgVqg0PBU/5+U1Y=;
+ b=MKJncdpAIib1jLn+x3Cca9uX4HDlgVRZmpt7dGRz6Xtjzlfc8b+G2HtytliCUjLiZBsu
+ Buj0UXfo6yuYJchOof6womlTM65SNzPpxZ8Aqe3XwFMTPZyVAfZGdFll3941APOkMqr9
+ d4YMRNdNdzBb7MXJr5nUhKL3r9wX3LxqJbvln7GRMPahKHgEAuQBQlbNflFS2hCGezFf
+ j/BnSO+ZXjVpKkL6arBS6AH4k9cgCbe4Je1CCYJJRi4sdL3WNhHLX446Lxv0orMWdjz+
+ 6GxaMyXyRMlujNW4YnTT6ZIXnmfat04sRflr2sglGfyL9+pSW/kcA1fYWDANqV4QMy8H Nw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dq6enhn9u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 20 Jan 2022 12:19:44 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20KCIfXi006647;
+ Thu, 20 Jan 2022 12:19:44 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dq6enhn91-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 20 Jan 2022 12:19:43 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20KCI30s024880;
+ Thu, 20 Jan 2022 12:19:41 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma03fra.de.ibm.com with ESMTP id 3dknway8r3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 20 Jan 2022 12:19:41 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 20KCJch842860948
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 20 Jan 2022 12:19:38 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 19096A4060;
+ Thu, 20 Jan 2022 12:19:38 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BFFF8A4054;
+ Thu, 20 Jan 2022 12:19:35 +0000 (GMT)
+Received: from li-c7b85bcc-2727-11b2-a85c-a9ba7f3a2193.ibm.com.com (unknown
+ [9.43.10.13])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 20 Jan 2022 12:19:35 +0000 (GMT)
+From: Ganesh Goudar <ganeshgr@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v5] powerpc/mce: Avoid using irq_work_queue() in realmode
+Date: Thu, 20 Jan 2022 17:49:31 +0530
+Message-Id: <20220120121931.517974-1-ganeshgr@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20220120073911.99857-4-guoren@kernel.org>
-In-Reply-To: <20220120073911.99857-4-guoren@kernel.org>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 20 Jan 2022 12:52:28 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1UmnjHk8B6hSULiKv3FKoY5BW9=4=ESerQzc+4=LR5Zw@mail.gmail.com>
-Message-ID: <CAK8P3a1UmnjHk8B6hSULiKv3FKoY5BW9=4=ESerQzc+4=LR5Zw@mail.gmail.com>
-Subject: Re: [PATCH V3 03/17] asm-generic: compat: Cleanup duplicate
- definitions
-To: Guo Ren <guoren@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:omSINcK4H3+dgqkie3lHVkKhvSc6HI72JbKQ+CplIQjnuJzvtVc
- knk4+m62qZDLP5kSH2h36y2vZQHbSNKIUpDbvhR7huAz4k8gVx1p6xCzij7+E/T2cL6a9sC
- /VJeFM9mJjJZCvI6M4DxxvbLIzvevwOvQF4coZ8+ErQARS4mI79GB9JO6yk95DtJXMSzZIp
- UG7KCSAbULiyYEPsg4XGg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:uhSjc0JOAD8=:ESI88QfLa9JJnGNuMu9hWx
- 2Il+b2W8V/dWMVK1NIJ5fQfCpRg/+y5tb3ZXbNulK1D4p2emQHSutCmcUH0jI8YM+597FF+Lh
- jItpwHZfOJkgTKJ3QLwHudcFtBEfTIWax7LzMec3+23SU+fN0KRxenTOMDq25EQVvCQ0Mksm/
- jpK+HxJO4w8E6UXOgncfc/l9rqjS8RNEN1kD2pWPVNL02PdYbhfM0u8YnBcl7N/TFrTUlb2W8
- 8EWSJTvELBzXoZd24zTyhMbmWwso2cYXi6/T/SGhixItdpvPAbPvWFG16+a3lepcNc6nWaFli
- ZPnY025q8W/pUi3qtX4XcNQ+YoMLG04R8/WgneoZN9dTLufUemsYVF/gIwytcoFdKQq2n5jQj
- eQHn630XI0+cRyXBgQXOCbwbvLKD7tpjTniZm8Laj4sXGGHKoCz+04TuAKU8ehB8ofD6Zvkz/
- bryPFhAxyEgtdigVaJGTcw2qX8dKnz21ISTDvzpVvqAbpPYZkmTYzzrQsVA5zhVrbAriw4jf/
- oM5Vzxzoa+CiRLerGvXCNTP1AUdPKA4O1crRrvJxVl7vILjN8JnN9FvTLhyBUFU5TM1Vz87wu
- onU/NaCvFphCflDrIx5dxUHunBdVFPRvgWVnMK/KkSSTmEb0n+jnGC28HMHxJIvOqjpIXx/1a
- +ooa2QbkxZnmfgAQtJkil/kgQwUoDZHcqR0s0esqV1YzdrPQcZBQRTRiBiNWoADAE80GPoxY0
- kkxs2V1e/Jh6Y8bqCKVrp641VC1Bezowbds8PoExt+8aiLgoej1t8bNH7CZ+o1GgxMHmxasf9
- QLDsa4SJKL8LFpUMTP0diurme2GkOelwU/UtH6wtyjc24i4hb0=
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: fPtOxvRwA27LJvki0XjequN2bh5VsWN0
+X-Proofpoint-ORIG-GUID: NKrJMOuzybwSUzrZ7vUlNGf1Sz36-yYw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-20_04,2022-01-20_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015
+ impostorscore=0 phishscore=0 adultscore=0 mlxscore=0 suspectscore=0
+ priorityscore=1501 malwarescore=0 lowpriorityscore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2110150000 definitions=main-2201200062
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,249 +104,334 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
- Arnd Bergmann <arnd@arndb.de>, gregkh <gregkh@linuxfoundation.org>,
- Drew Fustini <drew@beagleboard.org>, Anup Patel <anup@brainfault.org>,
- Wang Junqiang <wangjunqiang@iscas.ac.cn>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-csky@vger.kernel.org, inux-parisc@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
+Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, mahesh@linux.ibm.com,
+ npiggin@gmail.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  On Thu, Jan 20, 2022 at 8:38 AM <guoren@kernel.org> wrote:
->
-> From: Guo Ren <guoren@linux.alibaba.com>
->
-> There are 7 64bit architectures that support Linux COMPAT mode to
-> run 32bit applications. A lot of definitions are duplicate:
->  - COMPAT_USER_HZ
->  - COMPAT_RLIM_INFINITY
->  - COMPAT_OFF_T_MAX
->  - __compat_uid_t, __compat_uid_t
->  - compat_dev_t
->  - compat_ipc_pid_t
->  - struct compat_flock
->  - struct compat_flock64
->  - struct compat_statfs
->  - struct compat_ipc64_perm, compat_semid64_ds,
->           compat_msqid64_ds, compat_shmid64_ds
->
-> Cleanup duplicate definitions and merge them into asm-generic.
->
-> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> Signed-off-by: Guo Ren <guoren@kernel.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
+In realmode mce handler we use irq_work_queue() to defer
+the processing of mce events, irq_work_queue() can only
+be called when translation is enabled because it touches
+memory outside RMA, hence we enable translation before
+calling irq_work_queue and disable on return, though it
+is not safe to do in realmode.
 
-> ---
->  arch/arm64/include/asm/compat.h   | 108 +++-----------------------
->  arch/mips/include/asm/compat.h    |  24 ++----
->  arch/parisc/include/asm/compat.h  |  47 ++----------
->  arch/powerpc/include/asm/compat.h |  47 ++----------
->  arch/s390/include/asm/compat.h    | 109 +++-----------------------
->  arch/sparc/include/asm/compat.h   |  39 ++++------
->  arch/x86/include/asm/compat.h     | 114 +++-------------------------
->  include/asm-generic/compat.h      | 122 ++++++++++++++++++++++++++++++
->  8 files changed, 191 insertions(+), 419 deletions(-)
->
-> diff --git a/arch/arm64/include/asm/compat.h b/arch/arm64/include/asm/compat.h
-> index eaa6ca062d89..f54f295efae3 100644
-> --- a/arch/arm64/include/asm/compat.h
-> +++ b/arch/arm64/include/asm/compat.h
-> @@ -5,9 +5,18 @@
->  #ifndef __ASM_COMPAT_H
->  #define __ASM_COMPAT_H
->
-> +#define COMPAT_RLIM_INFINITY           0xffffffff
-...
-> +#ifndef COMPAT_RLIM_INFINITY
-> +#define COMPAT_RLIM_INFINITY   0x7fffffff
-> +#endif
+To avoid this, program the decrementer and call the event
+processing functions from timer handler.
 
-While this is a correct conversion, I think the default should
-be 0xffffffff, to match the asm-generic RLIM_INFINITY
-definition, with only mips and sparc getting the exception
+Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+---
+V2:
+* Use arch_irq_work_raise to raise decrementer interrupt.
+* Avoid having atomic variable.
 
-> -struct compat_flock {
-> -       short           l_type;
-> -       short           l_whence;
-> -       compat_off_t    l_start;
-> -       compat_off_t    l_len;
-> -       compat_pid_t    l_pid;
-> -};
-...
-> +#ifndef compat_flock
-> +struct compat_flock {
-> +       compat_short_t  l_type;
-> +       compat_short_t  l_whence;
-> +       compat_off_t    l_start;
-> +       compat_off_t    l_len;
-> +       compat_pid_t    l_pid;
-> +} __attribute__((packed));
-> +#endif
+V3:
+* Fix build error.
+  Reported by kernel test bot.
 
-You are adding __attribute__((packed)) here, which I think has
-no effect on the layout on the structure on any of the architectures
-but it does change the alignment requirements needlessly.
+V4:
+* Rename some functions and variables
+* Remove mces_to_process counter and add a flag to indicate
+  there is a mce info to process.
 
-Better leave it without the attribute.
+V5:
+* Fix the build warning, reported by kernel test robot.
+---
+ arch/powerpc/include/asm/machdep.h       |  2 +
+ arch/powerpc/include/asm/mce.h           | 13 +++++
+ arch/powerpc/include/asm/paca.h          |  1 +
+ arch/powerpc/kernel/mce.c                | 60 +++++++++++++-----------
+ arch/powerpc/kernel/time.c               |  2 +
+ arch/powerpc/platforms/pseries/pseries.h |  1 +
+ arch/powerpc/platforms/pseries/ras.c     | 32 +------------
+ arch/powerpc/platforms/pseries/setup.c   |  1 +
+ 8 files changed, 53 insertions(+), 59 deletions(-)
 
-> -struct compat_flock64 {
-> -       short           l_type;
-> -       short           l_whence;
-> -       compat_loff_t   l_start;
-> -       compat_loff_t   l_len;
-> -       compat_pid_t    l_pid;
-> -};
-...
-> +#ifndef compat_flock64
-> +struct compat_flock64 {
-> +       compat_short_t  l_type;
-> +       compat_short_t  l_whence;
-> +       compat_loff_t   l_start;
-> +       compat_loff_t   l_len;
-> +       compat_pid_t    l_pid;
-> +} __attribute__((packed));
-> +#endif
+diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
+index e821037f74f0..36d2f34aa352 100644
+--- a/arch/powerpc/include/asm/machdep.h
++++ b/arch/powerpc/include/asm/machdep.h
+@@ -99,6 +99,8 @@ struct machdep_calls {
+ 	/* Called during machine check exception to retrive fixup address. */
+ 	bool		(*mce_check_early_recovery)(struct pt_regs *regs);
+ 
++	void            (*machine_check_log_err)(void);
++
+ 	/* Motherboard/chipset features. This is a kind of general purpose
+ 	 * hook used to control some machine specific features (like reset
+ 	 * lines, chip power control, etc...).
+diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
+index 331d944280b8..c9f0936bd3c9 100644
+--- a/arch/powerpc/include/asm/mce.h
++++ b/arch/powerpc/include/asm/mce.h
+@@ -235,8 +235,21 @@ extern void machine_check_print_event_info(struct machine_check_event *evt,
+ unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr);
+ extern void mce_common_process_ue(struct pt_regs *regs,
+ 				  struct mce_error_info *mce_err);
++void mce_irq_work_queue(void);
+ int mce_register_notifier(struct notifier_block *nb);
+ int mce_unregister_notifier(struct notifier_block *nb);
++
++#ifdef CONFIG_PPC_BOOK3S_64
++void mce_run_irq_context_handlers(void);
++#else
++static inline void mce_run_irq_context_handlers(void) { };
++#endif /* CONFIG_PPC_BOOK3S_64 */
++
++#ifdef CONFIG_PPC_BOOK3S_64
++void set_mce_pending_irq_work(void);
++void clear_mce_pending_irq_work(void);
++#endif /* CONFIG_PPC_BOOK3S_64 */
++
+ #ifdef CONFIG_PPC_BOOK3S_64
+ void flush_and_reload_slb(void);
+ void flush_erat(void);
+diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
+index 295573a82c66..8330968ca346 100644
+--- a/arch/powerpc/include/asm/paca.h
++++ b/arch/powerpc/include/asm/paca.h
+@@ -288,6 +288,7 @@ struct paca_struct {
+ #endif
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	struct mce_info *mce_info;
++	u8 mce_pending_irq_work;
+ #endif /* CONFIG_PPC_BOOK3S_64 */
+ } ____cacheline_aligned;
+ 
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index 2503dd4713b9..6cd4b1409874 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -28,19 +28,9 @@
+ 
+ #include "setup.h"
+ 
+-static void machine_check_process_queued_event(struct irq_work *work);
+-static void machine_check_ue_irq_work(struct irq_work *work);
+ static void machine_check_ue_event(struct machine_check_event *evt);
+ static void machine_process_ue_event(struct work_struct *work);
+ 
+-static struct irq_work mce_event_process_work = {
+-        .func = machine_check_process_queued_event,
+-};
+-
+-static struct irq_work mce_ue_event_irq_work = {
+-	.func = machine_check_ue_irq_work,
+-};
+-
+ static DECLARE_WORK(mce_ue_event_work, machine_process_ue_event);
+ 
+ static BLOCKING_NOTIFIER_HEAD(mce_notifier_list);
+@@ -89,6 +79,13 @@ static void mce_set_error_info(struct machine_check_event *mce,
+ 	}
+ }
+ 
++void mce_irq_work_queue(void)
++{
++	/* Raise decrementer interrupt */
++	arch_irq_work_raise();
++	set_mce_pending_irq_work();
++}
++
+ /*
+  * Decode and save high level MCE information into per cpu buffer which
+  * is an array of machine_check_event structure.
+@@ -217,7 +214,7 @@ void release_mce_event(void)
+ 	get_mce_event(NULL, true);
+ }
+ 
+-static void machine_check_ue_irq_work(struct irq_work *work)
++static void machine_check_ue_work(void)
+ {
+ 	schedule_work(&mce_ue_event_work);
+ }
+@@ -239,7 +236,7 @@ static void machine_check_ue_event(struct machine_check_event *evt)
+ 	       evt, sizeof(*evt));
+ 
+ 	/* Queue work to process this event later. */
+-	irq_work_queue(&mce_ue_event_irq_work);
++	mce_irq_work_queue();
+ }
+ 
+ /*
+@@ -249,7 +246,6 @@ void machine_check_queue_event(void)
+ {
+ 	int index;
+ 	struct machine_check_event evt;
+-	unsigned long msr;
+ 
+ 	if (!get_mce_event(&evt, MCE_EVENT_RELEASE))
+ 		return;
+@@ -263,20 +259,7 @@ void machine_check_queue_event(void)
+ 	memcpy(&local_paca->mce_info->mce_event_queue[index],
+ 	       &evt, sizeof(evt));
+ 
+-	/*
+-	 * Queue irq work to process this event later. Before
+-	 * queuing the work enable translation for non radix LPAR,
+-	 * as irq_work_queue may try to access memory outside RMO
+-	 * region.
+-	 */
+-	if (!radix_enabled() && firmware_has_feature(FW_FEATURE_LPAR)) {
+-		msr = mfmsr();
+-		mtmsr(msr | MSR_IR | MSR_DR);
+-		irq_work_queue(&mce_event_process_work);
+-		mtmsr(msr);
+-	} else {
+-		irq_work_queue(&mce_event_process_work);
+-	}
++	mce_irq_work_queue();
+ }
+ 
+ void mce_common_process_ue(struct pt_regs *regs,
+@@ -338,7 +321,7 @@ static void machine_process_ue_event(struct work_struct *work)
+  * process pending MCE event from the mce event queue. This function will be
+  * called during syscall exit.
+  */
+-static void machine_check_process_queued_event(struct irq_work *work)
++static void machine_check_process_queued_event(void)
+ {
+ 	int index;
+ 	struct machine_check_event *evt;
+@@ -363,6 +346,27 @@ static void machine_check_process_queued_event(struct irq_work *work)
+ 	}
+ }
+ 
++void set_mce_pending_irq_work(void)
++{
++	local_paca->mce_pending_irq_work = 1;
++}
++
++void clear_mce_pending_irq_work(void)
++{
++	local_paca->mce_pending_irq_work = 0;
++}
++
++void mce_run_irq_context_handlers(void)
++{
++	if (unlikely(local_paca->mce_pending_irq_work)) {
++		if (ppc_md.machine_check_log_err)
++			ppc_md.machine_check_log_err();
++		machine_check_process_queued_event();
++		machine_check_ue_work();
++		clear_mce_pending_irq_work();
++	}
++}
++
+ void machine_check_print_event_info(struct machine_check_event *evt,
+ 				    bool user_mode, bool in_guest)
+ {
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 62361cc7281c..13a7360b6199 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -70,6 +70,7 @@
+ #include <asm/vdso_datapage.h>
+ #include <asm/firmware.h>
+ #include <asm/asm-prototypes.h>
++#include <asm/mce.h>
+ 
+ /* powerpc clocksource/clockevent code */
+ 
+@@ -638,6 +639,7 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(timer_interrupt)
+ 
+ 	if (test_irq_work_pending()) {
+ 		clear_irq_work_pending();
++		mce_run_irq_context_handlers();
+ 		irq_work_run();
+ 	}
+ 
+diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
+index 56c9ef9052e9..af162aeeae86 100644
+--- a/arch/powerpc/platforms/pseries/pseries.h
++++ b/arch/powerpc/platforms/pseries/pseries.h
+@@ -21,6 +21,7 @@ struct pt_regs;
+ extern int pSeries_system_reset_exception(struct pt_regs *regs);
+ extern int pSeries_machine_check_exception(struct pt_regs *regs);
+ extern long pseries_machine_check_realmode(struct pt_regs *regs);
++void pSeries_machine_check_log_err(void);
+ 
+ #ifdef CONFIG_SMP
+ extern void smp_init_pseries(void);
+diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
+index 74c9b1b5bc66..f2e9eb2195f1 100644
+--- a/arch/powerpc/platforms/pseries/ras.c
++++ b/arch/powerpc/platforms/pseries/ras.c
+@@ -23,11 +23,6 @@ static DEFINE_SPINLOCK(ras_log_buf_lock);
+ 
+ static int ras_check_exception_token;
+ 
+-static void mce_process_errlog_event(struct irq_work *work);
+-static struct irq_work mce_errlog_process_work = {
+-	.func = mce_process_errlog_event,
+-};
+-
+ #define EPOW_SENSOR_TOKEN	9
+ #define EPOW_SENSOR_INDEX	0
+ 
+@@ -717,7 +712,6 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
+ 	struct pseries_errorlog *pseries_log;
+ 	struct pseries_mc_errorlog *mce_log = NULL;
+ 	int disposition = rtas_error_disposition(errp);
+-	unsigned long msr;
+ 	u8 error_type;
+ 
+ 	if (!rtas_error_extended(errp))
+@@ -731,40 +725,16 @@ static int mce_handle_error(struct pt_regs *regs, struct rtas_error_log *errp)
+ 	error_type = mce_log->error_type;
+ 
+ 	disposition = mce_handle_err_realmode(disposition, error_type);
+-
+-	/*
+-	 * Enable translation as we will be accessing per-cpu variables
+-	 * in save_mce_event() which may fall outside RMO region, also
+-	 * leave it enabled because subsequently we will be queuing work
+-	 * to workqueues where again per-cpu variables accessed, besides
+-	 * fwnmi_release_errinfo() crashes when called in realmode on
+-	 * pseries.
+-	 * Note: All the realmode handling like flushing SLB entries for
+-	 *       SLB multihit is done by now.
+-	 */
+ out:
+-	msr = mfmsr();
+-	mtmsr(msr | MSR_IR | MSR_DR);
+-
+ 	disposition = mce_handle_err_virtmode(regs, errp, mce_log,
+ 					      disposition);
+-
+-	/*
+-	 * Queue irq work to log this rtas event later.
+-	 * irq_work_queue uses per-cpu variables, so do this in virt
+-	 * mode as well.
+-	 */
+-	irq_work_queue(&mce_errlog_process_work);
+-
+-	mtmsr(msr);
+-
+ 	return disposition;
+ }
+ 
+ /*
+  * Process MCE rtas errlog event.
+  */
+-static void mce_process_errlog_event(struct irq_work *work)
++void pSeries_machine_check_log_err(void)
+ {
+ 	struct rtas_error_log *err;
+ 
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 83a04d967a59..069d7b3bb142 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -1086,6 +1086,7 @@ define_machine(pseries) {
+ 	.system_reset_exception = pSeries_system_reset_exception,
+ 	.machine_check_early	= pseries_machine_check_realmode,
+ 	.machine_check_exception = pSeries_machine_check_exception,
++	.machine_check_log_err	= pSeries_machine_check_log_err,
+ #ifdef CONFIG_KEXEC_CORE
+ 	.machine_kexec          = pSeries_machine_kexec,
+ 	.kexec_cpu_down         = pseries_kexec_cpu_down,
+-- 
+2.31.1
 
-This one is different: on all architectures other than x86,
-the added packed attribute changes the size of the
-structure by removing the four padding bytes at the
-end. x86 originally added the attribute here to work around
-the weirdness of the x86-32 ABI that aligns 64-bit values
-on a 4-byte boundary.
-
-The easiest workaround would be to have x86 keep its
-custom definition. A slightly nicer version would drop the
-attribute on x86 as well but instead change the compat_loff_t
-definition to use compat_s64 instead of s64, giving it the
-correct alignment.
-
-> -struct compat_statfs {
-> -       int             f_type;
-> -       int             f_bsize;
-> -       int             f_blocks;
-> -       int             f_bfree;
-> -       int             f_bavail;
-> -       int             f_files;
-> -       int             f_ffree;
-> -       compat_fsid_t   f_fsid;
-> -       int             f_namelen;      /* SunOS ignores this field. */
-> -       int             f_frsize;
-> -       int             f_flags;
-> -       int             f_spare[4];
-> -};
-...
-> +#ifndef compat_statfs
-> +struct compat_statfs {
-> +       compat_uint_t   f_type;
-> +       compat_uint_t   f_bsize;
-> +       compat_uint_t   f_blocks;
-> +       compat_uint_t   f_bfree;
-> +       compat_uint_t   f_bavail;
-> +       compat_uint_t   f_files;
-> +       compat_uint_t   f_ffree;
-> +       __kernel_fsid_t f_fsid;
-> +       compat_uint_t   f_namelen;
-> +       compat_uint_t   f_frsize;
-> +       compat_uint_t   f_flags;
-> +       compat_uint_t   f_spare[4];
-> +} __attribute__((packed));
-> +#endif
-
-None of the architectures use the packed attribute at the moment,
-so please don't add one here.
-
-Changing compat_fsid_t to __kernel_fsid_t is harmless, but seems
-unnecessary.
-
-Changing the signed int to an unsigned int (regardless of notation)
-may be a change in behavior. s390 is the only architecture
-using unsigned members here at the moment, as of b8668fd0a7e1
-("s390/uapi: change struct statfs[64] member types to unsigned
-values").
-The description of that patch sounds like this was changed to fix
-a bug, but I don't see what the actual problem would be in the
-put_compat_statfs().
-
-For the moment I'd suggest leaving this with the signed version,
-with s390 being another exception next to mips. We can follow-up
-with merging s390 into the common definition using either the
-signed or unsigned types, but I think that needs to be a separate
-patch with a detailed explanation.
-
- +#ifndef compat_ipc64_perm
-> +struct compat_ipc64_perm {
-> +       compat_key_t key;
-> +       __compat_uid32_t uid;
-> +       __compat_gid32_t gid;
-> +       __compat_uid32_t cuid;
-> +       __compat_gid32_t cgid;
-> +       compat_mode_t   mode;
-> +       unsigned char   __pad1[4 - sizeof(compat_mode_t)];
-> +       compat_ushort_t seq;
-> +       compat_ushort_t __pad2;
-> +       compat_ulong_t  unused1;
-> +       compat_ulong_t  unused2;
-> +} __attribute__((packed));
-> +
-> +struct compat_semid64_ds {
-> +       struct compat_ipc64_perm sem_perm;
-> +       compat_ulong_t sem_otime;
-> +       compat_ulong_t sem_otime_high;
-> +       compat_ulong_t sem_ctime;
-> +       compat_ulong_t sem_ctime_high;
-> +       compat_ulong_t sem_nsems;
-> +       compat_ulong_t __unused3;
-> +       compat_ulong_t __unused4;
-> +} __attribute__((packed));
-> +
-> +struct compat_msqid64_ds {
-> +       struct compat_ipc64_perm msg_perm;
-> +       compat_ulong_t msg_stime;
-> +       compat_ulong_t msg_stime_high;
-> +       compat_ulong_t msg_rtime;
-> +       compat_ulong_t msg_rtime_high;
-> +       compat_ulong_t msg_ctime;
-> +       compat_ulong_t msg_ctime_high;
-> +       compat_ulong_t msg_cbytes;
-> +       compat_ulong_t msg_qnum;
-> +       compat_ulong_t msg_qbytes;
-> +       compat_pid_t   msg_lspid;
-> +       compat_pid_t   msg_lrpid;
-> +       compat_ulong_t __unused4;
-> +       compat_ulong_t __unused5;
-> +} __attribute__((packed));
-> +
-> +struct compat_shmid64_ds {
-> +       struct compat_ipc64_perm shm_perm;
-> +       compat_size_t  shm_segsz;
-> +       compat_ulong_t shm_atime;
-> +       compat_ulong_t shm_atime_high;
-> +       compat_ulong_t shm_dtime;
-> +       compat_ulong_t shm_dtime_high;
-> +       compat_ulong_t shm_ctime;
-> +       compat_ulong_t shm_ctime_high;
-> +       compat_pid_t   shm_cpid;
-> +       compat_pid_t   shm_lpid;
-> +       compat_ulong_t shm_nattch;
-> +       compat_ulong_t __unused4;
-> +       compat_ulong_t __unused5;
-> +} __attribute__((packed));
-> +#endif
-
-I checked these in detail, looking at the seven architectures, and your
-conversion looks exactly right (I had initially missed the part about
-compat_mode_t that you got right).
-
-As with compat_flock, the packed attribute has no impact on the layout
-here, but please drop it anyway for consistency.
-
-        Arnd
