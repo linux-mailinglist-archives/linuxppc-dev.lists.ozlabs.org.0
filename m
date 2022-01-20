@@ -2,62 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91184494D14
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 12:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9CF5494C86
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 12:10:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JfgPd3vwNz3bSk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 22:33:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jffv54KCrz3cTr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 22:10:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.17.13; helo=mout.kundenserver.de;
+ (client-ip=217.72.192.73; helo=mout.kundenserver.de;
  envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JfgPB3694z307j
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 22:33:17 +1100 (AEDT)
-Received: from mail-lf1-f43.google.com ([209.85.167.43]) by
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jfftf3WZDz30Mf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 22:10:17 +1100 (AEDT)
+Received: from mail-oo1-f41.google.com ([209.85.161.41]) by
  mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1Mzy6q-1mPr7E1ns6-00x6WO for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan
- 2022 12:33:14 +0100
-Received: by mail-lf1-f43.google.com with SMTP id h26so5708401lfv.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 03:33:14 -0800 (PST)
-X-Gm-Message-State: AOAM53375mhKg+N4x5BzWdYA5mmzpMcfx3bT4zxpqBDlnVlnJwzWWN4S
- EPmuFVN5gUu88U+VHno4edKdz1++8qz5einQLmY=
-X-Google-Smtp-Source: ABdhPJyF4dvXk+FcL9rU+G/uYHJOqasQkkfireul5EseychvyhuLX81WEAdVmBsalytJouvYJnpcpue784HKoQtJs8Q=
-X-Received: by 2002:adf:d21b:: with SMTP id j27mr1322485wrh.192.1642671701080; 
- Thu, 20 Jan 2022 01:41:41 -0800 (PST)
+ id 1N0FE1-1mPZPG1jXj-00xORP for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan
+ 2022 12:10:13 +0100
+Received: by mail-oo1-f41.google.com with SMTP id
+ v10-20020a4a860a000000b002ddc59f8900so1932364ooh.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 03:10:12 -0800 (PST)
+X-Gm-Message-State: AOAM5326MF3Iv4A74jmyjA4gjEDGGQBRsUqBD/nVns+oRYS18lC3+T0t
+ fh1SleiBePSgyPEqM3fL/1o/OaRzviKLP+sszgc=
+X-Google-Smtp-Source: ABdhPJxdLg6SDZjsvGmAsYmn2qy9+2h/ODrSB5K/8pY/EXdxIA8KLQS4DyhVSmna3jImvkgL6VaV1O46bPcTyjt0SVc=
+X-Received: by 2002:a05:6808:1490:: with SMTP id
+ e16mr6881848oiw.84.1642673470519; 
+ Thu, 20 Jan 2022 02:11:10 -0800 (PST)
 MIME-Version: 1.0
-References: <20220120073911.99857-17-guoren@kernel.org>
-In-Reply-To: <20220120073911.99857-17-guoren@kernel.org>
+References: <20220120073911.99857-18-guoren@kernel.org>
+In-Reply-To: <20220120073911.99857-18-guoren@kernel.org>
 From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 20 Jan 2022 10:41:25 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1nUcYjhEE5eyFAE_QqfjhRsZZ81ni8jyR8cPaP5QKJDg@mail.gmail.com>
-Message-ID: <CAK8P3a1nUcYjhEE5eyFAE_QqfjhRsZZ81ni8jyR8cPaP5QKJDg@mail.gmail.com>
-Subject: Re: [PATCH V3 16/17] riscv: compat: Add COMPAT Kbuild skeletal support
+Date: Thu, 20 Jan 2022 11:10:53 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1_qwRpfHRyF75WEqfxGxgVnfB15vNS-egQctx7R5-DvA@mail.gmail.com>
+Message-ID: <CAK8P3a1_qwRpfHRyF75WEqfxGxgVnfB15vNS-egQctx7R5-DvA@mail.gmail.com>
+Subject: Re: [PATCH V3 17/17] KVM: compat: riscv: Prevent KVM_COMPAT from
+ being selected
 To: Guo Ren <guoren@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:167eSNWL64w8b60gfXB1FiwKOptH5rK4lrUU6lFYmUvdHhpXcWE
- M7wQIV98J5kfnBf6PI0zXZaJHzmTJlV4b6VR0qHGP9wKtq9fqLU7QKYDBYUHmtPXseRSk25
- 6Eyo4BwEOcKVE4VzcnKdS20nyl6Vao4GFVlcOHnfP0qf2cUhtX0K5vl1bKUkW3lnqBqE6Tq
- ziNZGWnKwEIhI8pecOp1Q==
+X-Provags-ID: V03:K1:V+2lpM0/z4B7CFt83W8wQSERi2B8Ye9M0xhTGkecqUjLlgoHsrx
+ WeFDDT5QGlAKQ9d/zAHLUfaSbOh9aq021Rl0gLKzk+2wqjm5Pfl2mmKjgXUqEeP8QKfh+8E
+ KUoE0Rxiz00xsusvUqAhoDr9n6g4v74i+nuyKOs/0HXIp9PE29hNMu/rTBhwfhRxFWfxOtz
+ Eni7y5x2fw8bknlt97fwA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+Dj5aUqMco0=:KO4ZkMggqVPD916o4YvalO
- gol6KDLCqykpDcIdURKJmDePD5La1p4zvALKTZlm5ianyk1FD87Y56sgruguVxc0D/jjZS6d2
- MbmipoJLtBh+P9HV/X6mjiBakhx1MvDYoOLbejXV33WWtRCUvDADUqB22wAsuLgwoG/5aDC/3
- v/2DbXSXIlYVwXPGxp6UXj/DJh3io0Q+42XLZOh22LX+GV+nEJFcn1/W82zGumuoTMAJz4YNR
- Ty5OvSoG9hyOn0ryevc6XdD8few84QIDwhOkk2tSVJUcrDzUEvZA4n4UfNnyaOy+YIcM856Kp
- 1Mr/cBWm0CEUALae9cx/cSJ2/8blRCKMXIlCBkwWSWptONH54/rwaZpHWx45aeRENH5OdE8B/
- ybGWZnkSXuKw0jBvsZnllQDCFd/q6SOiEn34QPGCduLJquRfbGbJ4DAIpxilJ6D7hxMQg7XNC
- omRcHv6zQ2KqtPa3UZXDNcM3Xpi507Q9LAFHQfhZz/4WYf1M5Q5tCiXkCFNSJucd1xeWzqS4H
- TOBnvWgQy/gAwurpCTJYk8aQRCPnPoxEKT68H5AF/h3xMOXvpz083hUblVcTUNpzOIxOTDZfQ
- 6cxa7lZ2lkb3FPhVZwjW0z62cKCx3pdKez2O5gKVyCwKa5NMZAyEjvf4hm42xVL0Y8t3hBZrD
- i3M4QFsQvs6pBBKGj4g1/5bd3/6pmB9SCCiscUlyIc4z/7N9Y8d4gy6A54OHbVtFcpdvVhpPU
- Mc7+2LHoSfc3dP7pvmsubX7FqNEClRvZA382DdLgtf5KdJIIinNV9KbdXVyh5+GdQHKwxUoGU
- le30svZykbXbuk8tfWm0oU/HpFFOKFjoVw8d0R+hOwgwjyeMRI=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:E+BVfOF0zJk=:KMuzx03ok2IS8YPNDgui57
+ ko3glzdWM2bz1cr3wfrQ85cDJWEjWV8edEXfh8NSw/ESNFAegtHEMviaBkTNuIaDK/Bs0pOwx
+ as/osu9j4MeGvnsHV6pyzWkNdoMXk02eceUkpU9+Ff+wKPeauAWwI58pKCceMWUIVenPutO2w
+ 8p6r0XP9UHkuXuHK0ae2vTlvSfC2Qn8wCf9lR+xQ4cwEO2TnNQbl9hHCxsjNqUK53QOlVcC9s
+ G9Fkc0AaHqM3OgAHqpJ3ksTjsop0pQDJsP26E3LTY5ybnwdan1vEX4hOcUh5SqagOg6rkKQrE
+ JwCfJ6dYdI/pzeBrLDQA0XKJx/URtBkzJwaYF9XNGcSKDDLakvV95+nQ1/xOZDPqodahz3K9W
+ gBlQdLePySc5cJWo9JJIthX+hHbteBLN/fUyvgmpJKHyEJo7C2AKIu5+r1sjV3HV/aC+lsYas
+ GFbX3dYplDvARCca8BBGEoAVNu8OW2e6hVMX1pdzktI8LZnNRAnPr9TFHmehFyUZxaFeuzVpP
+ II34lFYUXuO3WyCobqK0dgxebLChzPELDhBLNXrCCbvN68G/sZtm0m3ZlKr/cmuSoGTTiPlLa
+ UCPLd3m8qIVFeuiFLCNSS3INiLslUZ6kLwREzGFzloO+LVR/zc0j960950tRTdHQHT5hrBYSP
+ VJ/E93V1MerQUQHMim8RUuMrM4v21g5X8TTG2O03lClXoA0TRK02DwEvzb57jnw5FTXmQKADw
+ 8lPTxiumYSz6ewqr+uXX4cOOKdxaeYWOf72b8ZjeJ6E+z1TIdvt1w6e5+7JbH3I9ZliCxOjHR
+ AeSVsxGtodZui9IzXMpxAWm98TSB5F03PnLrb2X76TUJ1KgE+Q=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,13 +93,29 @@ On Thu, Jan 20, 2022 at 8:39 AM <guoren@kernel.org> wrote:
 >
 > From: Guo Ren <guoren@linux.alibaba.com>
 >
-> Adds initial skeletal COMPAT Kbuild (Runing 32bit U-mode on 64bit
-> S-mode) support.
->  - Setup kconfig & dummy functions for compiling.
->  - Implement compat_start_thread by the way.
+> Current riscv doesn't support the 32bit KVM/arm API. Let's make it
+> clear by not selecting KVM_COMPAT.
 >
 > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> Signed-off-by: Guo Ren <guoren@kernel.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  virt/kvm/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+> index f4834c20e4a6..a8c5c9f06b3c 100644
+> --- a/virt/kvm/Kconfig
+> +++ b/virt/kvm/Kconfig
+> @@ -53,7 +53,7 @@ config KVM_GENERIC_DIRTYLOG_READ_PROTECT
+>
+>  config KVM_COMPAT
+>         def_bool y
+> -       depends on KVM && COMPAT && !(S390 || ARM64)
+> +       depends on KVM && COMPAT && !(S390 || ARM64 || RISCV)
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Maybe this should be flipped around into a positive list now?
+The remaining architectures would be mips, powerpc and x86, but it's unclear
+if this actually meant to work on all of them, or any potential ones
+added in the
+future.
+
+       Arnd
