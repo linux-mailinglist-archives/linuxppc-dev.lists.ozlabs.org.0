@@ -1,64 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9012E494EA0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 14:10:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2383C494E8A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 14:02:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JfjY53g79z3cKM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 00:10:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JfjNc6ySJz3bTQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 00:02:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=leemhuis.info (client-ip=2a01:488:42:1000:50ed:8234::;
- helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info;
+ smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de
- [IPv6:2a01:488:42:1000:50ed:8234::])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JfjXc5Tsmz30K4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 00:09:52 +1100 (AEDT)
-Received: from ip4d173d02.dynamic.kabel-deutschland.de ([77.23.61.2]
- helo=[192.168.66.200]); authenticated
- by wp530.webpack.hosteurope.de running ExIM with esmtpsa
- (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- id 1nAWxb-0007aQ-Q3; Thu, 20 Jan 2022 13:54:39 +0100
-Message-ID: <ce653a10-c004-75b1-5f70-e23c0c2aee68@leemhuis.info>
-Date: Thu, 20 Jan 2022 13:54:39 +0100
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JfjN96KQlz30Ky
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 00:02:33 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-33-Vn3vaJQAO5ObVFev711Zzw-1; Thu, 20 Jan 2022 13:02:29 +0000
+X-MC-Unique: Vn3vaJQAO5ObVFev711Zzw-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.28; Thu, 20 Jan 2022 13:02:27 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.028; Thu, 20 Jan 2022 13:02:27 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Arnd Bergmann' <arnd@arndb.de>, Guo Ren <guoren@kernel.org>
+Subject: RE: [PATCH V3 03/17] asm-generic: compat: Cleanup duplicate
+ definitions
+Thread-Topic: [PATCH V3 03/17] asm-generic: compat: Cleanup duplicate
+ definitions
+Thread-Index: AQHYDfvLsUgI09Yi+EGR4Ve6KMrB5Kxr3nRg
+Date: Thu, 20 Jan 2022 13:02:27 +0000
+Message-ID: <f2c1a3a10bf643d693afed6d23b3baf9@AcuMS.aculab.com>
+References: <20220120073911.99857-4-guoren@kernel.org>
+ <CAK8P3a1UmnjHk8B6hSULiKv3FKoY5BW9=4=ESerQzc+4=LR5Zw@mail.gmail.com>
+In-Reply-To: <CAK8P3a1UmnjHk8B6hSULiKv3FKoY5BW9=4=ESerQzc+4=LR5Zw@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: bug: usb: gadget: FSL_UDC_CORE Corrupted request list leads to
- unrecoverable loop.
-Content-Language: en-BS
-To: Leo Li <leoyang.li@nxp.com>,
- "jocke@infinera.com" <joakim.tjernlund@infinera.com>,
- "regressions@leemhuis.info" <regressions@leemhuis.info>,
- "Eugene_Bordenkircher@selinc.com" <Eugene_Bordenkircher@selinc.com>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <MWHPR2201MB152074F47BF142189365627B91879@MWHPR2201MB1520.namprd22.prod.outlook.com>
- <6659a2c7fd9fffac766b8389244e5885ccbd38bd.camel@infinera.com>
- <bb5c5d0f-2ae7-8426-0021-baeca8f7dd11@leemhuis.info>
- <MWHPR2201MB15209AA4F2457934BDD3293B91999@MWHPR2201MB1520.namprd22.prod.outlook.com>
- <726d3561-1842-72c7-d4cb-9a99211bb05c@leemhuis.info>
- <MWHPR2201MB1520A85FE05B281DAA30F44A91669@MWHPR2201MB1520.namprd22.prod.outlook.com>
- <AS8PR04MB89461BF7A3272E5A18ECD0948F669@AS8PR04MB8946.eurprd04.prod.outlook.com>
- <MWHPR2201MB15205A333F1F610D332038AC91669@MWHPR2201MB1520.namprd22.prod.outlook.com>
- <d0c52d26742b082f5a953a05630a9d70e0eb1356.camel@infinera.com>
- <527ebc333daa2a1d513ea217e5beb61a5acea3fb.camel@infinera.com>
- <AS8PR04MB894614C61E57A80EB4FF7C758F699@AS8PR04MB8946.eurprd04.prod.outlook.com>
- <f31008a0f4e71ff029aa611b0ebcfd83f10ec67f.camel@infinera.com>
- <AS8PR04MB89464D90D2E92A5D401474BD8F6B9@AS8PR04MB8946.eurprd04.prod.outlook.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <AS8PR04MB89464D90D2E92A5D401474BD8F6B9@AS8PR04MB8946.eurprd04.prod.outlook.com>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de; regressions@leemhuis.info; 1642684192;
- 539cd251; 
-X-HE-SMSGID: 1nAWxb-0007aQ-Q3
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,87 +66,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "balbi@kernel.org" <balbi@kernel.org>
+Cc: linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ liush <liush@allwinnertech.com>, Drew Fustini <drew@beagleboard.org>,
+ Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+ the arch/x86 maintainers <x86@kernel.org>, Linux
+ Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Christoph
+ Hellwig <hch@infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ gregkh <gregkh@linuxfoundation.org>, sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>, Wei Fu <wefu@redhat.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "inux-parisc@vger.kernel.org" <inux-parisc@vger.kernel.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi, this is your Linux kernel regression tracker speaking.
+RnJvbTogQXJuZCBCZXJnbWFubg0KPiBTZW50OiAyMCBKYW51YXJ5IDIwMjIgMTE6NTINCi4uDQo+
+IEFzIHdpdGggY29tcGF0X2Zsb2NrLCB0aGUgcGFja2VkIGF0dHJpYnV0ZSBoYXMgbm8gaW1wYWN0
+IG9uIHRoZSBsYXlvdXQNCj4gaGVyZSwgYnV0IHBsZWFzZSBkcm9wIGl0IGFueXdheSBmb3IgY29u
+c2lzdGVuY3kuDQoNCk5ldmVyIG1pbmQgdGhlIHN0cnVjdHVyZSBsYXlvdXQsIGJlY2F1c2UgJ3Bh
+Y2tlZCcgYWxsb3dzIHRoZQ0Kc3RydWN0dXJlIHRvIGJlIGFsaWduZWQgb24gYW55IGJvdW5kYXJ5
+IGl0IGZvcmNlcyB0aGUgY29tcGlsZXINCnRvIHVzZSBieXRlIG1lbW9yeSBhY2Nlc3NlcyBhbmQg
+c2hpZnRzIG9uIHNvbWUgYXJjaGl0ZWN0dXJlcy4NClRoaXMgaXMgYSBob3JyaWQgcGVyZm9ybWFu
+Y2UgcGVuYWx0eS4NCg0KJ3BhY2tlZCcgc2hvdWxkIG9ubHkgYmUgc3BlY2lmaWVkIGZvciBzdHJ1
+Y3R1cmVzIHRoYXQgY2FuDQpvY2N1ciBvbiBhbnkgYWRkcmVzcyBib3VuZGFyeS4NCmllIGJhc2lj
+YWxseSBuZXZlci4NCg0KSWYgeW91IG5lZWQgdG8gcmVtb3ZlIHRoZSBpbXBsaWNpdCBwYWQgYmVm
+b3JlIGEgZmllbGQgKGVnIDY0Yml0DQpmaWVsZHMgb24geDY0LTMyKSB0aGVuIHlvdSBjYW4gbWFy
+ayB0aGUgZmllbGQgaXRzZWxmIGFzICdwYWNrZWQnLg0KQWx0aG91Z2gsIGluIHRoYXQgY2FzZSwg
+cHV0dGluZyB0aGUgYXR0cmlidXRlIG9uIHRoZSB0eXBlIChjb21wYXRfczY0KQ0KaXMgZ2VuZXJh
+bGx5IGNsZWFuZXIuDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUs
+IEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJl
+Z2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
 
-On 04.12.21 01:40, Leo Li wrote:
->> -----Original Message-----
->> From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
->> Sent: Thursday, December 2, 2021 4:45 PM
->> To: regressions@leemhuis.info; Leo Li <leoyang.li@nxp.com>;
->> Eugene_Bordenkircher@selinc.com; linux-usb@vger.kernel.org; linuxppc-
->> dev@lists.ozlabs.org
->> Cc: gregkh@linuxfoundation.org; balbi@kernel.org
->> Subject: Re: bug: usb: gadget: FSL_UDC_CORE Corrupted request list leads to
->> unrecoverable loop.
->>
->> On Thu, 2021-12-02 at 20:35 +0000, Leo Li wrote:
->>>
->>>> -----Original Message-----
->>>> From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
->>>> Sent: Wednesday, December 1, 2021 8:19 AM
->>>> To: regressions@leemhuis.info; Leo Li <leoyang.li@nxp.com>;
->>>> Eugene_Bordenkircher@selinc.com; linux-usb@vger.kernel.org;
->>>> linuxppc- dev@lists.ozlabs.org
->>>> Cc: gregkh@linuxfoundation.org; balbi@kernel.org
->>>> Subject: Re: bug: usb: gadget: FSL_UDC_CORE Corrupted request list
->>>> leads to unrecoverable loop.
->>>>
->>>> On Tue, 2021-11-30 at 12:56 +0100, Joakim Tjernlund wrote:
->>>>> On Mon, 2021-11-29 at 23:48 +0000, Eugene Bordenkircher wrote:
->>>>>> Agreed,
->>>>>>
->>>>>> We are happy pick up the torch on this, but I'd like to try and
->>>>>> hear from
->>>> Joakim first before we do.  The patch set is his, so I'd like to
->>>> give him the opportunity.  I think he's the only one that can add a
->>>> truly proper description as well because he mentioned that this
->>>> includes a "few more fixes" than just the one we ran into.  I'd
->>>> rather hear from him than try to reverse engineer what was being
->> addressed.
->>>>>>
->>>>>> Joakim, if you are still watching the thread, would you like to
->>>>>> take a stab
->>>> at it?  If I don't hear from you in a couple days, we'll pick up the
->>>> torch and do what we can.
-
-Did anything happen? Sure, it's a old regression from the v3.4-rc4 days,
-but there iirc was already a tested proto-patch in that thread that
-fixes the issue. Or was progress made and I just missed it?
-
-Ciao, Thorsten
-
-P.S.: As a Linux kernel regression tracker I'm getting a lot of reports
-on my table. I can only look briefly into most of them. Unfortunately
-therefore I sometimes will get things wrong or miss something important.
-I hope that's not the case here; if you think it is, don't hesitate to
-tell me about it in a public reply, that's in everyone's interest.
-
-BTW, I have no personal interest in this issue, which is tracked using
-regzbot, my Linux kernel regression tracking bot
-(https://linux-regtracking.leemhuis.info/regzbot/). I'm only posting
-this mail to get things rolling again and hence don't need to be CC on
-all further activities wrt to this regression.
-
-#regzbot ignore-activity
-
->>>>> I am far away from this now and still on 4.19. I don't mind if you
->>>>> tweak
->>>> tweak the patches for better "upstreamability"
->>>>
->>>> Even better would be to migrate to the chipidea driver, I am told
->>>> just a few tweaks are needed but this is probably something NXP
->>>> should do as they have access to other SOC's using chipidea.
->>>
->>> I agree with this direction but the problem was with bandwidth.  As this
->> controller was only used on legacy platforms, it is harder to justify new effort
->> on it now.
->>
->> Legacy? All PPC is legacy and not supported now?
-> 
-> I'm not saying that they are not supported, but they are in maintenance only mode.
