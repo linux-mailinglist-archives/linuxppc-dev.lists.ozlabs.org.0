@@ -2,64 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3F3494DDD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 13:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91184494D14
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 12:33:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JfhZ372Vpz3cDy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 23:26:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JfgPd3vwNz3bSk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 22:33:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.130; helo=mout.kundenserver.de;
+ (client-ip=212.227.17.13; helo=mout.kundenserver.de;
  envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JfhYd41QFz30LY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 23:25:40 +1100 (AEDT)
-Received: from mail-wm1-f46.google.com ([209.85.128.46]) by
- mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MKuGD-1mrUBo06Pd-00LENY for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan
- 2022 13:25:37 +0100
-Received: by mail-wm1-f46.google.com with SMTP id
- az27-20020a05600c601b00b0034d2956eb04so13253469wmb.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 04:25:36 -0800 (PST)
-X-Gm-Message-State: AOAM5320gm0QCyvvSolBH85QPbHKIpE7DXJWjaZzI2jV88SQ1o0ZOclD
- SHvnSvJgR5y9pQNfxm+bgO8t/Jqg8M6Hktz8uos=
-X-Google-Smtp-Source: ABdhPJxEAFXYVk6DktXv3061JPbB7MqrKutmOAXqbVu5eyk6Pz36dhnH8dbuNkOxd7GlFiEfJn/5TzSKv0rhSZwiTMY=
-X-Received: by 2002:a7b:ce96:: with SMTP id q22mr8113766wmj.82.1642671479094; 
- Thu, 20 Jan 2022 01:37:59 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JfgPB3694z307j
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 22:33:17 +1100 (AEDT)
+Received: from mail-lf1-f43.google.com ([209.85.167.43]) by
+ mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1Mzy6q-1mPr7E1ns6-00x6WO for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan
+ 2022 12:33:14 +0100
+Received: by mail-lf1-f43.google.com with SMTP id h26so5708401lfv.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 03:33:14 -0800 (PST)
+X-Gm-Message-State: AOAM53375mhKg+N4x5BzWdYA5mmzpMcfx3bT4zxpqBDlnVlnJwzWWN4S
+ EPmuFVN5gUu88U+VHno4edKdz1++8qz5einQLmY=
+X-Google-Smtp-Source: ABdhPJyF4dvXk+FcL9rU+G/uYHJOqasQkkfireul5EseychvyhuLX81WEAdVmBsalytJouvYJnpcpue784HKoQtJs8Q=
+X-Received: by 2002:adf:d21b:: with SMTP id j27mr1322485wrh.192.1642671701080; 
+ Thu, 20 Jan 2022 01:41:41 -0800 (PST)
 MIME-Version: 1.0
-References: <20220120073911.99857-14-guoren@kernel.org>
-In-Reply-To: <20220120073911.99857-14-guoren@kernel.org>
+References: <20220120073911.99857-17-guoren@kernel.org>
+In-Reply-To: <20220120073911.99857-17-guoren@kernel.org>
 From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 20 Jan 2022 10:37:43 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a03-3QTC-vxmnbouK7wBd8iunPGZpX0-Jf6ntS1DY0E=w@mail.gmail.com>
-Message-ID: <CAK8P3a03-3QTC-vxmnbouK7wBd8iunPGZpX0-Jf6ntS1DY0E=w@mail.gmail.com>
-Subject: Re: [PATCH V3 13/17] riscv: compat: signal: Add rt_frame
- implementation
+Date: Thu, 20 Jan 2022 10:41:25 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1nUcYjhEE5eyFAE_QqfjhRsZZ81ni8jyR8cPaP5QKJDg@mail.gmail.com>
+Message-ID: <CAK8P3a1nUcYjhEE5eyFAE_QqfjhRsZZ81ni8jyR8cPaP5QKJDg@mail.gmail.com>
+Subject: Re: [PATCH V3 16/17] riscv: compat: Add COMPAT Kbuild skeletal support
 To: Guo Ren <guoren@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:xRB8w0/QbjoCLaihZ4x8KC1j6veZWKbnfyXwv+xB8SLJ708OHMF
- anMPrC60pKOASEbWcaxyfG8r3B+OzByxcKZSMecmitdhKKvuTooc1s3TQ02W5ZFDdNXwMi8
- sKaL8lc/CKBmH9YHj6RqmHTuLFm4JeAinHSUQ0FEgtcgHonkpxGtdFNJPcOXLIumzriIyF3
- B+FFgwYkIdlqh5rctUziA==
+X-Provags-ID: V03:K1:167eSNWL64w8b60gfXB1FiwKOptH5rK4lrUU6lFYmUvdHhpXcWE
+ M7wQIV98J5kfnBf6PI0zXZaJHzmTJlV4b6VR0qHGP9wKtq9fqLU7QKYDBYUHmtPXseRSk25
+ 6Eyo4BwEOcKVE4VzcnKdS20nyl6Vao4GFVlcOHnfP0qf2cUhtX0K5vl1bKUkW3lnqBqE6Tq
+ ziNZGWnKwEIhI8pecOp1Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:OUJ0XQwlGvI=:I9pCq/P8MtDXuxwa6lBl7x
- 5lo8z2E2ZuB7F4ZAcacUSZDnn20rZKl1iYsOqVoLsBm+DhFn7+DuAxolql3G3JCb2xCXNMm9/
- ybvo6Q3xD3tYvyQxU1Wr6GPQAKTeWKhBXqYprfHaAbA5zlg8kBIKeMNAHmdxCRV+r/WPH6ECq
- 0Xj/dki29hRgYg61GUhfjm2TTP30tiGwCf0SkNQ9poX/B3z2VQ/jDo0PjQ8JtyiMdOpd7uMX2
- QwGtz8Re1A3zA7n6RCUFpKY8dEQxsI8SpqqNQl6yfw2I3VKMCNwVx9NzbEh29IDosBCJkGHB5
- kW07fF/TbK/iPSwIKGuv7EIGR1+La6e10RqpxpVVYS+WCPN9z+kAbY8oq5XO7na4Y9Kvq8yN9
- uSHGV7+OBkxmT8Hpm3udd7EpSuF5tKntrsrfQe63OmcsmL8DMXXYjJl4NlUD23oT7WjOgTA/k
- skuGl+Ii9XfiK2IAIfR89+zesllsgKtN7o+ZPMU4lQkRxBi6cf+OelGQc25hzBZBsQtzCJzax
- 8Wi5tWiFS9HB7ZTAOW0JXFKHEkQtC1se+hEAeeWQi0/VBMb4d05clwI7gJMfQJNZjpKqXKwAo
- iRWFrs135DQlOcpE8mk314rtgpOppP83ELpuiv8uvEzK1HgeEjxYzdIyeEw16riHiDDs+pshK
- GFLj+FLDGr/wVpQa6q085wBXSPBocS3EY+ya2+BIzKCrmXRPD4GHHIzAzsxFy3Uf7ed9A74rM
- iaxOxrSNKbynR88MctCjfp3HZ9HtGqwKHAypeRFRmSINsyL+WMwcRwy/Sjp3gH846W9h7AIkt
- yl1VmNA+ntzr4yOZVwVcRE5gADYfipyxyjlSgHVvZDdL92Y1AA=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+Dj5aUqMco0=:KO4ZkMggqVPD916o4YvalO
+ gol6KDLCqykpDcIdURKJmDePD5La1p4zvALKTZlm5ianyk1FD87Y56sgruguVxc0D/jjZS6d2
+ MbmipoJLtBh+P9HV/X6mjiBakhx1MvDYoOLbejXV33WWtRCUvDADUqB22wAsuLgwoG/5aDC/3
+ v/2DbXSXIlYVwXPGxp6UXj/DJh3io0Q+42XLZOh22LX+GV+nEJFcn1/W82zGumuoTMAJz4YNR
+ Ty5OvSoG9hyOn0ryevc6XdD8few84QIDwhOkk2tSVJUcrDzUEvZA4n4UfNnyaOy+YIcM856Kp
+ 1Mr/cBWm0CEUALae9cx/cSJ2/8blRCKMXIlCBkwWSWptONH54/rwaZpHWx45aeRENH5OdE8B/
+ ybGWZnkSXuKw0jBvsZnllQDCFd/q6SOiEn34QPGCduLJquRfbGbJ4DAIpxilJ6D7hxMQg7XNC
+ omRcHv6zQ2KqtPa3UZXDNcM3Xpi507Q9LAFHQfhZz/4WYf1M5Q5tCiXkCFNSJucd1xeWzqS4H
+ TOBnvWgQy/gAwurpCTJYk8aQRCPnPoxEKT68H5AF/h3xMOXvpz083hUblVcTUNpzOIxOTDZfQ
+ 6cxa7lZ2lkb3FPhVZwjW0z62cKCx3pdKez2O5gKVyCwKa5NMZAyEjvf4hm42xVL0Y8t3hBZrD
+ i3M4QFsQvs6pBBKGj4g1/5bd3/6pmB9SCCiscUlyIc4z/7N9Y8d4gy6A54OHbVtFcpdvVhpPU
+ Mc7+2LHoSfc3dP7pvmsubX7FqNEClRvZA382DdLgtf5KdJIIinNV9KbdXVyh5+GdQHKwxUoGU
+ le30svZykbXbuk8tfWm0oU/HpFFOKFjoVw8d0R+hOwgwjyeMRI=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,15 +90,13 @@ On Thu, Jan 20, 2022 at 8:39 AM <guoren@kernel.org> wrote:
 >
 > From: Guo Ren <guoren@linux.alibaba.com>
 >
-> Implement compat_setup_rt_frame for sigcontext save & restore. The
-> main process is the same with signal, but the rv32 pt_regs' size
-> is different from rv64's, so we needs convert them.
+> Adds initial skeletal COMPAT Kbuild (Runing 32bit U-mode on 64bit
+> S-mode) support.
+>  - Setup kconfig & dummy functions for compiling.
+>  - Implement compat_start_thread by the way.
 >
 > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
 > Signed-off-by: Guo Ren <guoren@kernel.org>
 > Cc: Arnd Bergmann <arnd@arndb.de>
 
-I hope someone else can properly review this part, it's not my area
-but it looks complex enough that it could bring subtle bugs.
-
-       Arnd
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
