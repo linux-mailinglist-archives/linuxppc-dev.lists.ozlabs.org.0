@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D96494F1A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 14:36:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 760FC494F40
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 14:43:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jfk7g4Cmlz3bbj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 00:36:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JfkHq2LFpz3bdG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 00:43:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f6do9cXf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cN8TeiZR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,47 +17,46 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=f6do9cXf; 
+ header.s=k20201202 header.b=cN8TeiZR; 
  dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jfk6y74y6z2xrc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 00:36:10 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JfkH95q3tz2x9c
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 00:43:17 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id F3F996176C
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 13:36:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9D7C340EC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 13:36:07 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 0D94461762
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 13:43:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7858FC340E2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 13:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1642685767;
- bh=6jJqCWRTzzUUFc2Awke9IkkPGC7X5zNsQTSVKll9PUQ=;
+ s=k20201202; t=1642686195;
+ bh=D+Etye9r3fua1x02UnecAbZv0CalmuxTOWCQ+e8HzdE=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=f6do9cXfKBIhavH9kot/9wsjq2yObe2lT7dMc1dGUr3hFaIHULRpc6Im9hBAIcisC
- eDekM99GYajIpqxj6pk3pf8POql1UVa55NAT7X5tjRFB9UsnxZslxCWB5WZWqBDVJr
- 8gDeXdyIroIlE//1234wZAOr1J5PAF//PpO/tp0C8PN9cs8JcSeKYxBJeAO+fJX5f8
- Zzw9mWQdJHl7vQGGXNGqTETTdXAZvSS2AkRWCFWvBQVfO4iJLfOUyeTYEfGr+VvXtZ
- KkebSvrN6+FTyVOToFkMm3YZrKZfFcQi9tF8PdPBl3l8R5P30PQMDQ75SGyfnZ8nsJ
- hG4QcSP3+PQvg==
-Received: by mail-ua1-f41.google.com with SMTP id m90so10901453uam.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 05:36:07 -0800 (PST)
-X-Gm-Message-State: AOAM533bYnZz7/tQaWUkQsaKc2xeGWEXLyR9da4th67NMl/IK/DUZThV
- iQyCXyy1+0SfmXvEWgVKD9/uqBnSvZbidZVK6KU=
-X-Google-Smtp-Source: ABdhPJwONmW1aazI1eCt0g+A2J9M0/Dq8pC6p8K0QjKcU/9jXkiBA8g9Bq8N9trIX7DU0e3r8/DVXgSoIzqqFr0N4e8=
-X-Received: by 2002:a05:6102:34ec:: with SMTP id
- bi12mr12309550vsb.51.1642685766798; 
- Thu, 20 Jan 2022 05:36:06 -0800 (PST)
+ b=cN8TeiZRwruoIRJkOoV5cCJrRkANf7l3v6f2dnF2xlBmUXAwCKjGM3kmUmmr7lfcJ
+ 1APkSDv+D1H3WQp3uuaV0kT/S8OeoYHOyoCm+Uh5ZwvEw7IhawBDNn89d/q5eyXPa3
+ nAY2sqd8hpAZSIAYJGf70xVxfIBc+dqte1gPEuhjwCNzY97jFtY3PEtY924x+w0WZd
+ wAeTD/djlb2LaOfPp5PAZ48mZs2FwdBxQt7SiLMX8KePhQm69b789EqQ8wWQDq0dC/
+ 8Od7DRhnmvf6YwO+Awvtgi4eoym2J8Zy/zeuP32XDNFMzEGlHelD0Dh2qQJ7xmBcHR
+ 1Xfu4zn6tGfTQ==
+Received: by mail-vk1-f169.google.com with SMTP id n14so3597664vkk.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 05:43:15 -0800 (PST)
+X-Gm-Message-State: AOAM533k9CiAXjuQvleP5Xkbu/qxbcraCADkUt2rKenYN4o5K9x7f2S6
+ nHlAMQ1h1SoTxA6INDZvm+Q938W10FeqvpbYeVM=
+X-Google-Smtp-Source: ABdhPJxsPoD4QKSG5cjRmiwRNbBq9kp7PjD2iW5iWTPRRES5wTkmV/37UExZW0GDHhLl6tuiT3nFW4CEpN2qDzbKvC8=
+X-Received: by 2002:a1f:2844:: with SMTP id o65mr15161979vko.2.1642686194514; 
+ Thu, 20 Jan 2022 05:43:14 -0800 (PST)
 MIME-Version: 1.0
-References: <20220120073911.99857-11-guoren@kernel.org>
- <CAK8P3a2HaeFGdOr4Rm_ZcEP0rjh2Mo53=-ZRnEPtFfnmzfeE6g@mail.gmail.com>
-In-Reply-To: <CAK8P3a2HaeFGdOr4Rm_ZcEP0rjh2Mo53=-ZRnEPtFfnmzfeE6g@mail.gmail.com>
+References: <20220120073911.99857-16-guoren@kernel.org>
+ <CAK8P3a0Mr2m2dVoVss59cN-9X7GVBD29VQLo3m4xswRznk_WUQ@mail.gmail.com>
+In-Reply-To: <CAK8P3a0Mr2m2dVoVss59cN-9X7GVBD29VQLo3m4xswRznk_WUQ@mail.gmail.com>
 From: Guo Ren <guoren@kernel.org>
-Date: Thu, 20 Jan 2022 21:35:56 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTQnrCS1X6KQt0pbNFc01sYgBDgfb9RGT1G=rTEGK1mbRQ@mail.gmail.com>
-Message-ID: <CAJF2gTQnrCS1X6KQt0pbNFc01sYgBDgfb9RGT1G=rTEGK1mbRQ@mail.gmail.com>
-Subject: Re: [PATCH V3 10/17] riscv: compat: Add elf.h implementation
+Date: Thu, 20 Jan 2022 21:43:03 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTTGD_Ks2pO4jXx+QbiLV4nkjzk6mP-xKJOCvHtGTeFfOQ@mail.gmail.com>
+Message-ID: <CAJF2gTTGD_Ks2pO4jXx+QbiLV4nkjzk6mP-xKJOCvHtGTeFfOQ@mail.gmail.com>
+Subject: Re: [PATCH V3 15/17] riscv: compat: Add UXL_32 support in start_thread
 To: Arnd Bergmann <arnd@arndb.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,38 +86,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 20, 2022 at 9:33 PM Arnd Bergmann <arnd@arndb.de> wrote:
+On Thu, Jan 20, 2022 at 9:39 PM Arnd Bergmann <arnd@arndb.de> wrote:
 >
 > On Thu, Jan 20, 2022 at 8:39 AM <guoren@kernel.org> wrote:
-> > From: Guo Ren <guoren@linux.alibaba.com>
-> >
-> > Implement necessary type and macro for compat elf. See the code
-> > comment for detail.
-> >
-> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
->
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
->
 > > +
-> > +/*
-> > + * FIXME: not sure SET_PERSONALITY for compat process is right!
-> > + */
-> > +#define SET_PERSONALITY(ex)                                    \
-> > +do {    if ((ex).e_ident[EI_CLASS] == ELFCLASS32)              \
-> > +               set_thread_flag(TIF_32BIT);                     \
-> > +       else                                                    \
-> > +               clear_thread_flag(TIF_32BIT);                   \
-> > +       if (personality(current->personality) != PER_LINUX32)   \
-> > +               set_personality(PER_LINUX |                     \
-> > +                       (current->personality & (~PER_MASK)));  \
-> > +} while (0)
-> > +
+> > +#ifdef CONFIG_COMPAT
+> > +       if (is_compat_task())
+> > +               regs->status |= SR_UXL_32;
+> > +#endif
 >
-> The implementation looks good to me now,  you can remove that comment above it.
-Thx for pointing it out. I forgot.
+>
+> You should not need that #ifdef, as the is_compat_task() definition is
+> meant to drop the code at compile time, unless the SR_UXL_32
+> definition is not visible here.
+I almost put CONFIG_COMPAT in every compat related code, because I
+hope the next arch that wants to support COMPAT could easily find
+where to be modified.
 
 >
->         Arnd
+>          Arnd
 
 
 
