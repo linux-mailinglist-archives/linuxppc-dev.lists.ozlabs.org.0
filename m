@@ -1,66 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9CF5494C86
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 12:10:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA56494C81
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 12:10:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jffv54KCrz3cTr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 22:10:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JfftV0lsDz3bXd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Jan 2022 22:10:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=217.72.192.73; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jfftf3WZDz30Mf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 22:10:17 +1100 (AEDT)
-Received: from mail-oo1-f41.google.com ([209.85.161.41]) by
- mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1N0FE1-1mPZPG1jXj-00xORP for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan
- 2022 12:10:13 +0100
-Received: by mail-oo1-f41.google.com with SMTP id
- v10-20020a4a860a000000b002ddc59f8900so1932364ooh.7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 03:10:12 -0800 (PST)
-X-Gm-Message-State: AOAM5326MF3Iv4A74jmyjA4gjEDGGQBRsUqBD/nVns+oRYS18lC3+T0t
- fh1SleiBePSgyPEqM3fL/1o/OaRzviKLP+sszgc=
-X-Google-Smtp-Source: ABdhPJxdLg6SDZjsvGmAsYmn2qy9+2h/ODrSB5K/8pY/EXdxIA8KLQS4DyhVSmna3jImvkgL6VaV1O46bPcTyjt0SVc=
-X-Received: by 2002:a05:6808:1490:: with SMTP id
- e16mr6881848oiw.84.1642673470519; 
- Thu, 20 Jan 2022 02:11:10 -0800 (PST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com;
+ envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jfft04zHFz2yPp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 22:09:41 +1100 (AEDT)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.53])
+ by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4JffnP2sjDz1FCph;
+ Thu, 20 Jan 2022 19:05:45 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Thu, 20 Jan 2022 19:09:31 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.21; Thu, 20 Jan 2022 19:09:30 +0800
+Message-ID: <e1c7a290-45ac-25ab-018e-2289fad72413@huawei.com>
+Date: Thu, 20 Jan 2022 19:09:29 +0800
 MIME-Version: 1.0
-References: <20220120073911.99857-18-guoren@kernel.org>
-In-Reply-To: <20220120073911.99857-18-guoren@kernel.org>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 20 Jan 2022 11:10:53 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1_qwRpfHRyF75WEqfxGxgVnfB15vNS-egQctx7R5-DvA@mail.gmail.com>
-Message-ID: <CAK8P3a1_qwRpfHRyF75WEqfxGxgVnfB15vNS-egQctx7R5-DvA@mail.gmail.com>
-Subject: Re: [PATCH V3 17/17] KVM: compat: riscv: Prevent KVM_COMPAT from
- being selected
-To: Guo Ren <guoren@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:V+2lpM0/z4B7CFt83W8wQSERi2B8Ye9M0xhTGkecqUjLlgoHsrx
- WeFDDT5QGlAKQ9d/zAHLUfaSbOh9aq021Rl0gLKzk+2wqjm5Pfl2mmKjgXUqEeP8QKfh+8E
- KUoE0Rxiz00xsusvUqAhoDr9n6g4v74i+nuyKOs/0HXIp9PE29hNMu/rTBhwfhRxFWfxOtz
- Eni7y5x2fw8bknlt97fwA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:E+BVfOF0zJk=:KMuzx03ok2IS8YPNDgui57
- ko3glzdWM2bz1cr3wfrQ85cDJWEjWV8edEXfh8NSw/ESNFAegtHEMviaBkTNuIaDK/Bs0pOwx
- as/osu9j4MeGvnsHV6pyzWkNdoMXk02eceUkpU9+Ff+wKPeauAWwI58pKCceMWUIVenPutO2w
- 8p6r0XP9UHkuXuHK0ae2vTlvSfC2Qn8wCf9lR+xQ4cwEO2TnNQbl9hHCxsjNqUK53QOlVcC9s
- G9Fkc0AaHqM3OgAHqpJ3ksTjsop0pQDJsP26E3LTY5ybnwdan1vEX4hOcUh5SqagOg6rkKQrE
- JwCfJ6dYdI/pzeBrLDQA0XKJx/URtBkzJwaYF9XNGcSKDDLakvV95+nQ1/xOZDPqodahz3K9W
- gBlQdLePySc5cJWo9JJIthX+hHbteBLN/fUyvgmpJKHyEJo7C2AKIu5+r1sjV3HV/aC+lsYas
- GFbX3dYplDvARCca8BBGEoAVNu8OW2e6hVMX1pdzktI8LZnNRAnPr9TFHmehFyUZxaFeuzVpP
- II34lFYUXuO3WyCobqK0dgxebLChzPELDhBLNXrCCbvN68G/sZtm0m3ZlKr/cmuSoGTTiPlLa
- UCPLd3m8qIVFeuiFLCNSS3INiLslUZ6kLwREzGFzloO+LVR/zc0j960950tRTdHQHT5hrBYSP
- VJ/E93V1MerQUQHMim8RUuMrM4v21g5X8TTG2O03lClXoA0TRK02DwEvzb57jnw5FTXmQKADw
- 8lPTxiumYSz6ewqr+uXX4cOOKdxaeYWOf72b8ZjeJ6E+z1TIdvt1w6e5+7JbH3I9ZliCxOjHR
- AeSVsxGtodZui9IzXMpxAWm98TSB5F03PnLrb2X76TUJ1KgE+Q=
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH v2 1/2] powerpc: Fix virt_addr_valid() check
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin
+ <npiggin@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, "Benjamin
+ Herrenschmidt" <benh@kernel.crashing.org>, Kees Cook <keescook@chromium.org>, 
+ Laura Abbott <labbott@redhat.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Mark Rutland
+ <mark.rutland@arm.com>, Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras
+ <paulus@samba.org>
+References: <20211225120621.13908-1-wangkefeng.wang@huawei.com>
+ <20211225120621.13908-2-wangkefeng.wang@huawei.com>
+ <09ed46a5-6df3-ffc0-8243-61612c06153a@huawei.com>
+ <1641871726.fshx7g5r92.astroid@bobo.none>
+ <ca351bfc-3507-11ad-73f1-79ca772b55fd@csgroup.eu>
+ <8a24ef1d-1c93-416d-cfbe-e63aacfb25cc@huawei.com>
+ <017744c1-1252-a25c-3dcc-057ee18d0769@csgroup.eu>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <017744c1-1252-a25c-3dcc-057ee18d0769@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggeme704-chm.china.huawei.com (10.1.199.100) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,50 +69,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
- Arnd Bergmann <arnd@arndb.de>, gregkh <gregkh@linuxfoundation.org>,
- Drew Fustini <drew@beagleboard.org>, Anup Patel <anup@brainfault.org>,
- Wang Junqiang <wangjunqiang@iscas.ac.cn>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-csky@vger.kernel.org, inux-parisc@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 20, 2022 at 8:39 AM <guoren@kernel.org> wrote:
->
-> From: Guo Ren <guoren@linux.alibaba.com>
->
-> Current riscv doesn't support the 32bit KVM/arm API. Let's make it
-> clear by not selecting KVM_COMPAT.
->
-> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> ---
->  virt/kvm/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-> index f4834c20e4a6..a8c5c9f06b3c 100644
-> --- a/virt/kvm/Kconfig
-> +++ b/virt/kvm/Kconfig
-> @@ -53,7 +53,7 @@ config KVM_GENERIC_DIRTYLOG_READ_PROTECT
->
->  config KVM_COMPAT
->         def_bool y
-> -       depends on KVM && COMPAT && !(S390 || ARM64)
-> +       depends on KVM && COMPAT && !(S390 || ARM64 || RISCV)
 
-Maybe this should be flipped around into a positive list now?
-The remaining architectures would be mips, powerpc and x86, but it's unclear
-if this actually meant to work on all of them, or any potential ones
-added in the
-future.
+On 2022/1/20 15:31, Christophe Leroy wrote:
+>
+> Le 19/01/2022 à 02:15, Kefeng Wang a écrit :
+>> On 2022/1/11 14:04, Christophe Leroy wrote:
+>>> Le 11/01/2022 à 05:37, Nicholas Piggin a écrit :
+>>>> Excerpts from Kefeng Wang's message of January 8, 2022 9:58 pm:
+>>>>> Hi PPC maintainers， ping..
+>>>> Hmm. I might have confused myself about this. I'm going back and
+>>>> trying to work out what I was thinking when I suggested it. This
+>>>> works on 64e because vmalloc space is below the kernel linear map,
+>>>> right?
+>>>>
+>>>> On 64s it is the other way around and it is still possible to enable
+>>>> flatmem on 64s. Altough we might just not hit the problem there because
+>>>> __pa() will not mask away the vmalloc offset for 64s so it will still
+>>>> return something that's outside the pfn_valid range for flatmem. That's
+>>>> very subtle though.
+>>> That's the way it works on PPC32 at least, so for me it's not chocking
+>>> to have it work the same way on PPC64s.
+>>>
+>>> The main issue here is the way __pa() works. On PPC32 __pa = va -
+>>> PAGE_OFFSET, so it works correctly for any address.
+>>> On PPC64, __pa() works by masking out the 2 top bits instead of
+>>> substracting PAGE_OFFSET, so the test must add a verification that we
+>>> really have the 2 top bits set at first. This is what (addr >=
+>>> PAGE_OFFSET) does. Once this first test is done, we can perfectly rely
+>>> on pfn_valid() just like PPC32, I see absolutely no point in an
+>>> additionnal test checking the addr is below KERN_VIRT_START.
+>>
+>> Hi Christophe and Nicholas， for ppc32， I think we need check the upper
+>> limit,
+> Why ? Have you experimented any problem at all on PPC32 with the way it
+> is done at the moment ?
+>
+> I don't think we have to change PPC32 at all unless we have a real
+> reason to do it.
 
-       Arnd
+yes, I missed this commit in old kernel(lts5.10), you have fixed the 
+upper limit.
+
+commit 602946ec2f90d5bd965857753880db29d2d9a1e9
+Author: Christophe Leroy <christophe.leroy@csgroup.eu>
+Date:   Tue Oct 12 12:40:37 2021 +0200
+
+     powerpc: Set max_mapnr correctly
+
+
+>
+>> eg,  addr >= PAGE_OFFSET && addr < high_memory
+> Isn't it exactly what pfn_valid() already do today ?
+> Why change that at all ?
+>
+> Christophe
+>
+>> arch/powerpc/mm/mem.c:  high_memory = (void *) __va(max_low_pfn *
+>> PAGE_SIZE);
+>>
+>> for ppc32 max_low_pfn is the upper low memory pfn,  and For ppc64,
+>> high_memory is
+>>
+>> the max memory pfn, it looks good too, correct me if I'm wrong, if the
+>> above check
+>>
+>> is ok, I will send a new v3,  thanks.
+>>
+>>
+>>
+>>
+>>>
+>>>> The checks added to __pa actually don't prevent vmalloc memory from
+>>>> being passed to it either on 64s, only a more basic test.
+>>> That's correct. It is the role of pfn_valid() to check that.
+>>>
+>>> Christophe
+>>>
+>>>> I think 64s wants (addr >= PAGE_OFFSET && addr < KERN_VIRT_START) as
+>>>> the condition.  Could possibly add that check to __pa as well to
+>>>> catch vmalloc addresses.
+>>>>
+>>>> Thanks,
+>>>> Nick
+>>>>
+>>> >
