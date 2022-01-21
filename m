@@ -2,65 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71352496094
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 15:18:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31628496131
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 15:36:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JgM1V0vyQz3bmf
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 01:18:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JgMQ10g18z3bc9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 01:36:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=EH8zW3c2;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=A7FV0I9d;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=EH8zW3c2; dkim-atps=neutral
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ smtp.mailfrom=linuxfoundation.org (client-ip=145.40.73.55;
+ helo=sin.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=A7FV0I9d; 
+ dkim-atps=neutral
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JgM0n2p4Mz2xXy
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 01:17:55 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1642774681; x=1674310681;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=vTQH54AYg2pzcg7t+1Zr9OpTMSKBzcFnOwMKSyQjRRY=;
- b=EH8zW3c2k/QJlxbBLKMdex1w1kLXsAciZfQ/aXw9Zu5j904hxcFbGeka
- oeCiJK6AaXY3OcXB7xmcVNCDZFrsBBgfa7wi7GkPNAWVUS4d1jJDo3Zk2
- nt3eyIB5gqW3F/LSMpQibV952XhhA9fV9IMjJzmzx+MZ6tskDcYCpZ/j5
- 4XporVSr/qzJDAvgr8i1A/Y7T70K+3bKyunu8Z9jq/6Cl5xhh5tqYUjkM
- qViBp3UohgbzDFXz23nns+jdRAZ+OG3O9WuuIgkwH42WhdauimoGY18xW
- NdPTsU/pFJWUYuXCRK2v3wYxXK0SbJRw0TnQzqNmc37x8x8ZbcxjByxou Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10233"; a="226335178"
-X-IronPort-AV: E=Sophos;i="5.88,304,1635231600"; d="scan'208";a="226335178"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2022 06:16:51 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,304,1635231600"; d="scan'208";a="533287638"
-Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
- by orsmga008.jf.intel.com with ESMTP; 21 Jan 2022 06:16:49 -0800
-Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1nAuie-000FMx-AE; Fri, 21 Jan 2022 14:16:48 +0000
-Date: Fri, 21 Jan 2022 22:15:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- "masahiroy@kernel.org" <masahiroy@kernel.org>
-Subject: Re: [PATCH v3 4/5] powerpc/vdso: Remove cvdso_call_time macro
-Message-ID: <202201212229.iBniex24-lkp@intel.com>
-References: <2ddc46d3a6d2996c56547039709e171b0ed2ec46.1642759506.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JgMPL2F1tz30Q9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 01:35:49 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by sin.source.kernel.org (Postfix) with ESMTPS id 3603CCE23F3;
+ Fri, 21 Jan 2022 14:35:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0F2C340E1;
+ Fri, 21 Jan 2022 14:35:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1642775744;
+ bh=1F0QcO3YnTe35+nYpus7GLcDm6uFJD09iGcRztIPfOc=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=A7FV0I9dZrmbKehhKjWyoNoW/GU4q6nf6pGRhIFOpsLoF43k4VvoqOmbFEZRcNpE5
+ rLMrtDe38Q3N8mZrmP9be+ptl3W4haE5GL11UBHc1PoLizMQJ58H64ryhd/4PmxxXU
+ Eamn6hvtzcheNkIlq99rBJx2lqAFyfWhTb9inGTU=
+Date: Fri, 21 Jan 2022 15:35:36 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v3] powerpc: Add missing SPDX license identifiers
+Message-ID: <YerEuE6XlslE3Goo@kroah.com>
+References: <d2c52284244d6dcb3472d2041abe43b456d116df.1642762977.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2ddc46d3a6d2996c56547039709e171b0ed2ec46.1642759506.git.christophe.leroy@csgroup.eu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <d2c52284244d6dcb3472d2041abe43b456d116df.1642762977.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,177 +60,195 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- llvm@lists.linux.dev, kbuild-all@lists.01.org,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ "linux-spdx@vger.kernel.org" <linux-spdx@vger.kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+On Fri, Jan 21, 2022 at 11:03:20AM +0000, Christophe Leroy wrote:
+> Several files are missing SPDX license identifiers.
+> 
+> Following files are given the following SPDX identifier based on the comments in the top of the file:
+> 
+> 	boot/crtsavres.S:/* SPDX-License-Identifier: GPL-2.0+ */
 
-I love your patch! Yet something to improve:
+Are you sure that this is the correct license for this file?
 
-[auto build test ERROR on powerpc/next]
-[also build test ERROR on v5.16 next-20220121]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/powerpc-vdso-augment-VDSO32-functions-to-support-64-bits-build/20220121-180748
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-config: powerpc-randconfig-r021-20220120 (https://download.01.org/0day-ci/archive/20220121/202201212229.iBniex24-lkp@intel.com/config)
-compiler: clang version 14.0.0 (https://github.com/llvm/llvm-project 7b3d30728816403d1fd73cc5082e9fb761262bce)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install powerpc cross compiling tool for clang build
-        # apt-get install binutils-powerpc-linux-gnu
-        # https://github.com/0day-ci/linux/commit/09651dc41aab619a025925ace9f5b81e478e7334
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Christophe-Leroy/powerpc-vdso-augment-VDSO32-functions-to-support-64-bits-build/20220121-180748
-        git checkout 09651dc41aab619a025925ace9f5b81e478e7334
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc prepare
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   arch/powerpc/include/asm/io.h:557:56: note: expanded from macro '__do_insw'
-   #define __do_insw(p, b, n)      readsw((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
-                                          ~~~~~~~~~~~~~~~~~~~~~^
-   In file included from arch/powerpc/kernel/asm-offsets.c:21:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:9:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:619:
-   arch/powerpc/include/asm/io-defs.h:47:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-   DEF_PCI_AC_NORET(insl, (unsigned long p, void *b, unsigned long c),
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/powerpc/include/asm/io.h:616:3: note: expanded from macro 'DEF_PCI_AC_NORET'
-                   __do_##name al;                                 \
-                   ^~~~~~~~~~~~~~
-   <scratch space>:198:1: note: expanded from here
-   __do_insl
-   ^
-   arch/powerpc/include/asm/io.h:558:56: note: expanded from macro '__do_insl'
-   #define __do_insl(p, b, n)      readsl((PCI_IO_ADDR)_IO_BASE+(p), (b), (n))
-                                          ~~~~~~~~~~~~~~~~~~~~~^
-   In file included from arch/powerpc/kernel/asm-offsets.c:21:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:9:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:619:
-   arch/powerpc/include/asm/io-defs.h:49:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-   DEF_PCI_AC_NORET(outsb, (unsigned long p, const void *b, unsigned long c),
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/powerpc/include/asm/io.h:616:3: note: expanded from macro 'DEF_PCI_AC_NORET'
-                   __do_##name al;                                 \
-                   ^~~~~~~~~~~~~~
-   <scratch space>:200:1: note: expanded from here
-   __do_outsb
-   ^
-   arch/powerpc/include/asm/io.h:559:58: note: expanded from macro '__do_outsb'
-   #define __do_outsb(p, b, n)     writesb((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
-                                           ~~~~~~~~~~~~~~~~~~~~~^
-   In file included from arch/powerpc/kernel/asm-offsets.c:21:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:9:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:619:
-   arch/powerpc/include/asm/io-defs.h:51:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-   DEF_PCI_AC_NORET(outsw, (unsigned long p, const void *b, unsigned long c),
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/powerpc/include/asm/io.h:616:3: note: expanded from macro 'DEF_PCI_AC_NORET'
-                   __do_##name al;                                 \
-                   ^~~~~~~~~~~~~~
-   <scratch space>:202:1: note: expanded from here
-   __do_outsw
-   ^
-   arch/powerpc/include/asm/io.h:560:58: note: expanded from macro '__do_outsw'
-   #define __do_outsw(p, b, n)     writesw((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
-                                           ~~~~~~~~~~~~~~~~~~~~~^
-   In file included from arch/powerpc/kernel/asm-offsets.c:21:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:26:
-   In file included from include/linux/kernel_stat.h:9:
-   In file included from include/linux/interrupt.h:11:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/powerpc/include/asm/hardirq.h:6:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:13:
-   In file included from arch/powerpc/include/asm/io.h:619:
-   arch/powerpc/include/asm/io-defs.h:53:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-   DEF_PCI_AC_NORET(outsl, (unsigned long p, const void *b, unsigned long c),
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/powerpc/include/asm/io.h:616:3: note: expanded from macro 'DEF_PCI_AC_NORET'
-                   __do_##name al;                                 \
-                   ^~~~~~~~~~~~~~
-   <scratch space>:204:1: note: expanded from here
-   __do_outsl
-   ^
-   arch/powerpc/include/asm/io.h:561:58: note: expanded from macro '__do_outsl'
-   #define __do_outsl(p, b, n)     writesl((PCI_IO_ADDR)_IO_BASE+(p),(b),(n))
-                                           ~~~~~~~~~~~~~~~~~~~~~^
-   6 warnings generated.
->> arch/powerpc/kernel/vdso/gettimeofday.S:68:2: error: invalid instruction
-    cvdso_call_time __c_kernel_time
-    ^
-   arch/powerpc/kernel/vdso/gettimeofday.S:75:8: error: unsupported directive '.stabs'
-   .stabs "_restgpr_31_x:F-1",36,0,0,_restgpr_31_x; .globl _restgpr_31_x; _restgpr_31_x:
-          ^
-   arch/powerpc/kernel/vdso/gettimeofday.S:76:8: error: unsupported directive '.stabs'
-   .stabs "_rest32gpr_31_x:F-1",36,0,0,_rest32gpr_31_x; .globl _rest32gpr_31_x; _rest32gpr_31_x:
-          ^
-   make[2]: *** [arch/powerpc/kernel/vdso/Makefile:71: arch/powerpc/kernel/vdso/gettimeofday-32.o] Error 1
-   make[2]: Target 'include/generated/vdso32-offsets.h' not remade because of errors.
-   make[1]: *** [arch/powerpc/Makefile:423: vdso_prepare] Error 2
-   make[1]: Target 'prepare' not remade because of errors.
-   make: *** [Makefile:219: __sub-make] Error 2
-   make: Target 'prepare' not remade because of errors.
+Also you dropped the arch/powerpc/ prefix here...
 
 
-vim +68 arch/powerpc/kernel/vdso/gettimeofday.S
+> 	include/asm/epapr_hcalls.h:/* SPDX-License-Identifier: GPL-2.0+ OR BSD */
+> 	include/asm/fsl_hcalls.h:/* SPDX-License-Identifier: GPL-2.0+ OR BSD */
+> 	include/asm/ibmebus.h:/* SPDX-License-Identifier: GPL-2.0 OR OpenIB BSD */
+> 	include/asm/sfp-machine.h:/* SPDX-License-Identifier: LGPL-2.0+ */
+> 	kvm/mpic.c:// SPDX-License-Identifier: GPL-2.0
+> 	lib/crtsavres.S:/* SPDX-License-Identifier: GPL-2.0+ */
+> 	mm/book3s64/hash_4k.c:// SPDX-License-Identifier: LGPL-2.0
+> 	mm/book3s64/hash_64k.c:// SPDX-License-Identifier: LGPL-2.0
+> 	mm/book3s64/hash_hugepage.c:// SPDX-License-Identifier: LGPL-2.1
+> 	platforms/pseries/ibmebus.c:// SPDX-License-Identifier: GPL-2.0 OR OpenIB BSD
+> 	tools/head_check.sh:# SPDX-License-Identifier: GPL-2.0+
+> 	xmon/ppc.h:/* SPDX-License-Identifier: GPL-1.0+ */
+> 
+> Add to other files the default kernel license identifier, in extenso GPL-2.0.
+> 
+> DTS files are handled in a separate commit.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: linux-spdx@vger.kernel.org
+> ---
+> v3: Removed license text and license note in the files that have any.
+> 
+> v2: Changed from GPL-2.0 to a licence consistant with the file's comments for the few files listed in the commit message.
+> ---
+>  arch/powerpc/Makefile                         |  5 +--
+>  arch/powerpc/boot/44x.h                       |  5 +--
+>  arch/powerpc/boot/4xx.h                       |  5 +--
+>  arch/powerpc/boot/crtsavres.S                 | 16 +---------
+>  arch/powerpc/boot/dummy.c                     |  1 +
+>  arch/powerpc/boot/install.sh                  |  5 +--
+>  arch/powerpc/boot/ops.h                       |  6 ++--
+>  arch/powerpc/boot/serial.c                    |  6 ++--
+>  arch/powerpc/boot/simple_alloc.c              |  6 ++--
+>  arch/powerpc/include/asm/8xx_immap.h          |  1 +
+>  arch/powerpc/include/asm/asm-compat.h         |  1 +
+>  arch/powerpc/include/asm/asm-const.h          |  1 +
+>  arch/powerpc/include/asm/asm-offsets.h        |  1 +
+>  arch/powerpc/include/asm/cpm.h                |  1 +
+>  arch/powerpc/include/asm/dtl.h                |  1 +
+>  arch/powerpc/include/asm/edac.h               |  6 ++--
+>  arch/powerpc/include/asm/ehv_pic.h            |  5 +--
+>  arch/powerpc/include/asm/emergency-restart.h  |  1 +
+>  arch/powerpc/include/asm/epapr_hcalls.h       | 32 +------------------
+>  arch/powerpc/include/asm/fixmap.h             |  5 +--
+>  arch/powerpc/include/asm/floppy.h             |  5 +--
+>  arch/powerpc/include/asm/fs_pd.h              |  5 +--
+>  arch/powerpc/include/asm/fsl_hcalls.h         | 32 +------------------
+>  arch/powerpc/include/asm/hydra.h              |  5 +--
+>  arch/powerpc/include/asm/ibmebus.h            | 29 +----------------
+>  arch/powerpc/include/asm/kgdb.h               |  6 ++--
+>  arch/powerpc/include/asm/membarrier.h         |  1 +
+>  arch/powerpc/include/asm/module.lds.h         |  1 +
+>  arch/powerpc/include/asm/mpc52xx.h            |  5 +--
+>  arch/powerpc/include/asm/mpc52xx_psc.h        |  5 +--
+>  arch/powerpc/include/asm/pmac_feature.h       |  5 +--
+>  arch/powerpc/include/asm/ppc_asm.h            |  1 +
+>  arch/powerpc/include/asm/pte-walk.h           |  1 +
+>  arch/powerpc/include/asm/rheap.h              |  6 ++--
+>  arch/powerpc/include/asm/sfp-machine.h        | 16 +---------
+>  arch/powerpc/include/asm/vmalloc.h            |  1 +
+>  arch/powerpc/include/asm/word-at-a-time.h     |  1 +
+>  arch/powerpc/kernel/interrupt_64.S            |  1 +
+>  arch/powerpc/kernel/kgdb.c                    |  5 +--
+>  arch/powerpc/kernel/ptrace/ptrace.c           |  5 +--
+>  arch/powerpc/kernel/ptrace/ptrace32.c         |  5 +--
+>  arch/powerpc/kernel/signal.c                  |  5 +--
+>  arch/powerpc/kernel/signal.h                  |  5 +--
+>  arch/powerpc/kernel/vdso32/note.S             |  1 +
+>  arch/powerpc/kernel/vdso64/note.S             |  1 +
+>  arch/powerpc/kvm/mpic.c                       | 19 +----------
+>  arch/powerpc/lib/crtsavres.S                  | 16 +---------
+>  arch/powerpc/lib/restart_table.c              |  1 +
+>  arch/powerpc/lib/rheap.c                      |  6 ++--
+>  arch/powerpc/mm/book3s64/hash_4k.c            | 10 +-----
+>  arch/powerpc/mm/book3s64/hash_64k.c           | 10 +-----
+>  arch/powerpc/mm/book3s64/hash_hugepage.c      | 10 +-----
+>  arch/powerpc/mm/hugetlbpage.c                 |  1 +
+>  arch/powerpc/perf/req-gen/_end.h              |  1 +
+>  arch/powerpc/platforms/44x/fsp2.h             |  1 +
+>  arch/powerpc/platforms/4xx/pci.c              |  1 +
+>  arch/powerpc/platforms/4xx/pci.h              |  1 +
+>  arch/powerpc/platforms/52xx/efika.c           |  5 +--
+>  arch/powerpc/platforms/52xx/mpc52xx_common.c  |  6 +---
+>  arch/powerpc/platforms/52xx/mpc52xx_pci.c     |  5 +--
+>  arch/powerpc/platforms/52xx/mpc52xx_pic.c     |  6 +---
+>  arch/powerpc/platforms/85xx/ksi8560.c         |  6 ++--
+>  arch/powerpc/platforms/85xx/p1022_ds.c        |  5 +--
+>  arch/powerpc/platforms/85xx/p1022_rdk.c       |  5 +--
+>  arch/powerpc/platforms/8xx/ep88xc.c           |  5 +--
+>  arch/powerpc/platforms/8xx/mpc86xads.h        |  5 ++-
+>  arch/powerpc/platforms/8xx/mpc86xads_setup.c  |  5 +--
+>  arch/powerpc/platforms/8xx/mpc885ads.h        |  5 ++-
+>  arch/powerpc/platforms/8xx/mpc885ads_setup.c  |  5 +--
+>  arch/powerpc/platforms/8xx/mpc8xx.h           |  5 +--
+>  arch/powerpc/platforms/8xx/pic.c              |  1 +
+>  arch/powerpc/platforms/8xx/pic.h              |  1 +
+>  arch/powerpc/platforms/8xx/tqm8xx_setup.c     |  5 +--
+>  .../cell/spufs/spu_restore_dump.h_shipped     |  1 +
+>  .../cell/spufs/spu_save_dump.h_shipped        |  1 +
+>  arch/powerpc/platforms/chrp/gg2.h             |  5 +--
+>  .../platforms/embedded6xx/linkstation.c       |  5 +--
+>  arch/powerpc/platforms/embedded6xx/ls_uart.c  |  5 +--
+>  arch/powerpc/platforms/embedded6xx/mpc10x.h   |  6 ++--
+>  .../platforms/embedded6xx/storcenter.c        |  5 +--
+>  arch/powerpc/platforms/microwatt/Makefile     |  1 +
+>  arch/powerpc/platforms/microwatt/setup.c      |  1 +
+>  arch/powerpc/platforms/pseries/ibmebus.c      | 29 +----------------
+>  arch/powerpc/sysdev/cpm2.c                    |  5 +--
+>  arch/powerpc/sysdev/cpm2_pic.c                |  5 +--
+>  arch/powerpc/sysdev/ehv_pic.c                 |  5 +--
+>  arch/powerpc/sysdev/ge/ge_pic.c               |  5 +--
+>  arch/powerpc/sysdev/mpic.c                    |  5 +--
+>  arch/powerpc/sysdev/rtc_cmos_setup.c          |  6 ++--
+>  arch/powerpc/tools/ci-build.sh                |  1 +
+>  arch/powerpc/tools/head_check.sh              |  6 +---
+>  arch/powerpc/xmon/ppc.h                       | 15 ++-------
+>  92 files changed, 105 insertions(+), 422 deletions(-)
 
-a7f290dad32ee3 arch/powerpc/kernel/vdso32/gettimeofday.S Benjamin Herrenschmidt 2005-11-11  59  
-a7f290dad32ee3 arch/powerpc/kernel/vdso32/gettimeofday.S Benjamin Herrenschmidt 2005-11-11  60  
-fcb41a2030abe0 arch/powerpc/kernel/vdso32/gettimeofday.S Adhemerval Zanella     2013-04-22  61  /*
-fcb41a2030abe0 arch/powerpc/kernel/vdso32/gettimeofday.S Adhemerval Zanella     2013-04-22  62   * Exact prototype of time()
-fcb41a2030abe0 arch/powerpc/kernel/vdso32/gettimeofday.S Adhemerval Zanella     2013-04-22  63   *
-fcb41a2030abe0 arch/powerpc/kernel/vdso32/gettimeofday.S Adhemerval Zanella     2013-04-22  64   * time_t time(time *t);
-fcb41a2030abe0 arch/powerpc/kernel/vdso32/gettimeofday.S Adhemerval Zanella     2013-04-22  65   *
-fcb41a2030abe0 arch/powerpc/kernel/vdso32/gettimeofday.S Adhemerval Zanella     2013-04-22  66   */
-fcb41a2030abe0 arch/powerpc/kernel/vdso32/gettimeofday.S Adhemerval Zanella     2013-04-22  67  V_FUNCTION_BEGIN(__kernel_time)
-ab037dd87a2f94 arch/powerpc/kernel/vdso32/gettimeofday.S Christophe Leroy       2020-11-27 @68  	cvdso_call_time __c_kernel_time
-fcb41a2030abe0 arch/powerpc/kernel/vdso32/gettimeofday.S Adhemerval Zanella     2013-04-22  69  V_FUNCTION_END(__kernel_time)
-08c18b63d9656e arch/powerpc/kernel/vdso32/gettimeofday.S Christophe Leroy       2021-03-09  70  
+You might want to change less of these at once, as this is hard to
+review as-is.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> diff --git a/arch/powerpc/boot/crtsavres.S b/arch/powerpc/boot/crtsavres.S
+> index 085fb2b9a8b8..25e924459dcc 100644
+> --- a/arch/powerpc/boot/crtsavres.S
+> +++ b/arch/powerpc/boot/crtsavres.S
+> @@ -1,3 +1,4 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+>  /*
+>   * Special support for eabi and SVR4
+>   *
+> @@ -7,11 +8,6 @@
+>   *
+>   * Based on gcc/config/rs6000/crtsavres.asm from gcc
+>   *
+> - * This file is free software; you can redistribute it and/or modify it
+> - * under the terms of the GNU General Public License as published by the
+> - * Free Software Foundation; either version 2, or (at your option) any
+> - * later version.
+> - *
+>   * In addition to the permissions in the GNU General Public License, the
+>   * Free Software Foundation gives you unlimited permission to link the
+>   * compiled version of this file with other programs, and to distribute
+> @@ -20,16 +16,6 @@
+>   * respects; for example, they cover modification of the file, and
+>   * distribution when not linked into another program.)
+>   *
+> - * This file is distributed in the hope that it will be useful, but
+> - * WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+> - * General Public License for more details.
+> - *
+> - * You should have received a copy of the GNU General Public License
+> - * along with this program; see the file COPYING.  If not, write to
+> - * the Free Software Foundation, 51 Franklin Street, Fifth Floor,
+> - * Boston, MA 02110-1301, USA.
+> - *
+>   *    As a special exception, if you link this library with files
+>   *    compiled with GCC to produce an executable, this does not cause
+>   *    the resulting executable to be covered by the GNU General Public License.
+
+Look at that "special exception", why are you ignoring it here?  You
+can't do that :(
+
+Please do these in smaller batches, perhaps one patch per type of
+license and directory to make it easier to notice mistakes like this?
+
+thanks,
+
+greg k-h
