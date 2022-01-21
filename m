@@ -1,65 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E52495A6E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 08:13:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA53495ADE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 08:36:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jg9bG2nMPz3c9h
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 18:13:46 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k3uRWzp0;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JgB5b5R3nz3cNK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 18:36:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=k3uRWzp0; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jg9Zb2cH7z30L4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 18:13:11 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id D154161779
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 07:13:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A97C340E8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 07:13:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1642749188;
- bh=SYu90Dv3l/L+64SNcy50aiw16Lnx3umbKRTsGOMrQkg=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=k3uRWzp0SWvrQt4wpv0wp6HqoqMuube0dVeHTED+DvTqJqQ9JteKgAHFuRzMK7La9
- hdnPtmnF2+6oHL0sMYFETK3B/JMjsOW1iHomI2Xxura1sskJ+xnkPbfy35KWaVO1oF
- 26rdD0dYwJ3PYFSq+U3dWovrDZcwDzLVyfSAEZDEYRmJINM8Tmg0Ctmu12Rf81s5Ac
- gTKy8KVDZlLocphtUaf3ZDWDQa7DnN48hoqfKvLktVOOCow1KTrdDLQoLL6djNiLnt
- IAwyIbddJ0s5SrRTLwybw+lS0U5xtFSYhGyprgDLn7Xl/Wos5XISZ+lA6JoDVYmrwQ
- LJ4wkPbrGtrCw==
-Received: by mail-ua1-f47.google.com with SMTP id f24so15217215uab.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 23:13:08 -0800 (PST)
-X-Gm-Message-State: AOAM530fxxxxdBZ9NqlcZnP6AH3gt+dMX8V9cNT23NBziSrnsvEJvlOW
- NwN4FgzO7qdGiATvzv1KVTcBcAwYagMjWpQ3lvU=
-X-Google-Smtp-Source: ABdhPJx6xNJuRVb4aLVlJ7P9bbeDPtJXSmXNRd3kkpQg8PkHlzrym8B0ENWLs0YxpXjFKvxlitpnKg+MIWjsd2Jznqg=
-X-Received: by 2002:a67:c89e:: with SMTP id v30mr1186161vsk.2.1642749187280;
- Thu, 20 Jan 2022 23:13:07 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JgB581y0tz2yLX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 18:36:10 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4JgB5053Cdz9sT9;
+ Fri, 21 Jan 2022 08:36:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id NPFFJpROeVg5; Fri, 21 Jan 2022 08:36:04 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4JgB50478Fz9sT7;
+ Fri, 21 Jan 2022 08:36:04 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7C85B8B786;
+ Fri, 21 Jan 2022 08:36:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id CvuQQvWWDV_V; Fri, 21 Jan 2022 08:36:04 +0100 (CET)
+Received: from [192.168.4.125] (unknown [192.168.4.125])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E5A568B764;
+ Fri, 21 Jan 2022 08:36:03 +0100 (CET)
+Message-ID: <7eba6780-5ffd-54f4-feb0-b5e627ec6216@csgroup.eu>
+Date: Fri, 21 Jan 2022 08:36:04 +0100
 MIME-Version: 1.0
-References: <20220120073911.99857-14-guoren@kernel.org>
- <CAK8P3a03-3QTC-vxmnbouK7wBd8iunPGZpX0-Jf6ntS1DY0E=w@mail.gmail.com>
-In-Reply-To: <CAK8P3a03-3QTC-vxmnbouK7wBd8iunPGZpX0-Jf6ntS1DY0E=w@mail.gmail.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Fri, 21 Jan 2022 15:12:56 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTRMWj0yVLn2=16Gu1O-6tuqLaxcdduw0YnDK6vrizJEsQ@mail.gmail.com>
-Message-ID: <CAJF2gTRMWj0yVLn2=16Gu1O-6tuqLaxcdduw0YnDK6vrizJEsQ@mail.gmail.com>
-Subject: Re: [PATCH V3 13/17] riscv: compat: signal: Add rt_frame
- implementation
-To: Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v7 3/7] powerpc/pmem: Add flush routines using new pmem
+ store and sync instruction
+Content-Language: fr-FR
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+ linux-nvdimm@lists.01.org, dan.j.williams@intel.com
+References: <20200701072235.223558-1-aneesh.kumar@linux.ibm.com>
+ <20200701072235.223558-4-aneesh.kumar@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20200701072235.223558-4-aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,70 +66,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
- gregkh <gregkh@linuxfoundation.org>, Drew Fustini <drew@beagleboard.org>,
- Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-csky@vger.kernel.org, inux-parisc@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
+Cc: oohall@gmail.com, Jeff Moyer <jmoyer@redhat.com>, msuchanek@suse.de,
+ Jan Kara <jack@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 20, 2022 at 6:31 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Thu, Jan 20, 2022 at 8:39 AM <guoren@kernel.org> wrote:
-> >
-> > From: Guo Ren <guoren@linux.alibaba.com>
-> >
-> > Implement compat_setup_rt_frame for sigcontext save & restore. The
-> > main process is the same with signal, but the rv32 pt_regs' size
-> > is different from rv64's, so we needs convert them.
-> >
-> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> > Signed-off-by: Guo Ren <guoren@kernel.org>
-> > Cc: Arnd Bergmann <arnd@arndb.de>
->
-> I hope someone else can properly review this part, it's not my area
-> but it looks complex enough that it could bring subtle bugs.
-Here are ltp signal test results:
+Le 01/07/2020 à 09:22, Aneesh Kumar K.V a écrit :
+> Start using dcbstps; phwsync; sequence for flushing persistent memory range.
+> The new instructions are implemented as a variant of dcbf and hwsync and on
+> P8 and P9 they will be executed as those instructions. We avoid using them on
+> older hardware. This helps to avoid difficult to debug bugs.
+> 
 
-sigaction01                                        PASS       0
-sigaction02                                        PASS       0
-sigaltstack01                                      PASS       0
-sigaltstack02                                      PASS       0
-sighold02                                          PASS       0
-signal01                                           PASS       0
-signal02                                           PASS       0
-signal03                                           PASS       0
-signal04                                           PASS       0
-signal05                                           PASS       0
-signal06                                           CONF       32
-signalfd01                                         PASS       0
-signalfd4_01                                       PASS       0
-signalfd4_02                                       PASS       0
-sigpending02                                       PASS       0
-sigprocmask01                                      PASS       0
-sigrelse01                                         PASS       0
-sigsuspend01                                       PASS       0
-sigtimedwait01                                     PASS       0
-sigwait01                                          PASS       0
-sigwaitinfo01                                      CONF       32
+Before this patch, the flush was done for all.
+After this patch, IIUC the flush is done only on CPUs having feature 
+CPU_FTR_ARCH_207S.
+
+What about other CPUs ?
+
+I don't know much about PMEM, my concern is about the UACCESS_FLUSHCACHE 
+API introduced by commit 6c44741d75a2 ("powerpc/lib: Implement 
+UACCESS_FLUSHCACHE API")
+
+After your patch, __copy_from_user_flushcache() and memcpy_flushcache() 
+are not doing cache flush anymore.
+
+Is that intended ?
+
+I'm trying to optimise some ALSA driver that does copy_from_user + 
+cache_flush for DMA, and I was wondering if using 
+__copy_from_user_flushcache() was an alternative.
+
+Or is it __copy_from_user_inatomic_nocache() which has to be done for that ?
+
+Thanks
+Christophe
 
 
->
->        Arnd
-
-
-
--- 
-Best Regards
- Guo Ren
-
-ML: https://lore.kernel.org/linux-csky/
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>   arch/powerpc/include/asm/cacheflush.h |  1 +
+>   arch/powerpc/lib/pmem.c               | 50 ++++++++++++++++++++++++---
+>   2 files changed, 47 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/cacheflush.h b/arch/powerpc/include/asm/cacheflush.h
+> index de600b915a3c..54764c6e922d 100644
+> --- a/arch/powerpc/include/asm/cacheflush.h
+> +++ b/arch/powerpc/include/asm/cacheflush.h
+> @@ -6,6 +6,7 @@
+>   
+>   #include <linux/mm.h>
+>   #include <asm/cputable.h>
+> +#include <asm/cpu_has_feature.h>
+>   
+>   #ifdef CONFIG_PPC_BOOK3S_64
+>   /*
+> diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
+> index 0666a8d29596..5a61aaeb6930 100644
+> --- a/arch/powerpc/lib/pmem.c
+> +++ b/arch/powerpc/lib/pmem.c
+> @@ -9,20 +9,62 @@
+>   
+>   #include <asm/cacheflush.h>
+>   
+> +static inline void __clean_pmem_range(unsigned long start, unsigned long stop)
+> +{
+> +	unsigned long shift = l1_dcache_shift();
+> +	unsigned long bytes = l1_dcache_bytes();
+> +	void *addr = (void *)(start & ~(bytes - 1));
+> +	unsigned long size = stop - (unsigned long)addr + (bytes - 1);
+> +	unsigned long i;
+> +
+> +	for (i = 0; i < size >> shift; i++, addr += bytes)
+> +		asm volatile(PPC_DCBSTPS(%0, %1): :"i"(0), "r"(addr): "memory");
+> +
+> +
+> +	asm volatile(PPC_PHWSYNC ::: "memory");
+> +}
+> +
+> +static inline void __flush_pmem_range(unsigned long start, unsigned long stop)
+> +{
+> +	unsigned long shift = l1_dcache_shift();
+> +	unsigned long bytes = l1_dcache_bytes();
+> +	void *addr = (void *)(start & ~(bytes - 1));
+> +	unsigned long size = stop - (unsigned long)addr + (bytes - 1);
+> +	unsigned long i;
+> +
+> +	for (i = 0; i < size >> shift; i++, addr += bytes)
+> +		asm volatile(PPC_DCBFPS(%0, %1): :"i"(0), "r"(addr): "memory");
+> +
+> +
+> +	asm volatile(PPC_PHWSYNC ::: "memory");
+> +}
+> +
+> +static inline void clean_pmem_range(unsigned long start, unsigned long stop)
+> +{
+> +	if (cpu_has_feature(CPU_FTR_ARCH_207S))
+> +		return __clean_pmem_range(start, stop);
+> +}
+> +
+> +static inline void flush_pmem_range(unsigned long start, unsigned long stop)
+> +{
+> +	if (cpu_has_feature(CPU_FTR_ARCH_207S))
+> +		return __flush_pmem_range(start, stop);
+> +}
+> +
+>   /*
+>    * CONFIG_ARCH_HAS_PMEM_API symbols
+>    */
+>   void arch_wb_cache_pmem(void *addr, size_t size)
+>   {
+>   	unsigned long start = (unsigned long) addr;
+> -	flush_dcache_range(start, start + size);
+> +	clean_pmem_range(start, start + size);
+>   }
+>   EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
+>   
+>   void arch_invalidate_pmem(void *addr, size_t size)
+>   {
+>   	unsigned long start = (unsigned long) addr;
+> -	flush_dcache_range(start, start + size);
+> +	flush_pmem_range(start, start + size);
+>   }
+>   EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
+>   
+> @@ -35,7 +77,7 @@ long __copy_from_user_flushcache(void *dest, const void __user *src,
+>   	unsigned long copied, start = (unsigned long) dest;
+>   
+>   	copied = __copy_from_user(dest, src, size);
+> -	flush_dcache_range(start, start + size);
+> +	clean_pmem_range(start, start + size);
+>   
+>   	return copied;
+>   }
+> @@ -45,7 +87,7 @@ void *memcpy_flushcache(void *dest, const void *src, size_t size)
+>   	unsigned long start = (unsigned long) dest;
+>   
+>   	memcpy(dest, src, size);
+> -	flush_dcache_range(start, start + size);
+> +	clean_pmem_range(start, start + size);
+>   
+>   	return dest;
+>   }
