@@ -1,105 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9115B495C88
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 10:08:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DDD495C9C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 10:16:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JgD773YCMz3bjG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 20:08:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JgDJb4DRGz3cC7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 20:16:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OtvVQ6ds;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DViKZjc0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12b;
+ helo=mail-lf1-x12b.google.com; envelope-from=bigunclemax@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=OtvVQ6ds; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=DViKZjc0; dkim-atps=neutral
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com
+ [IPv6:2a00:1450:4864:20::12b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JgD6N63bWz2xBv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 20:07:24 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20L8Gnu9024228; 
- Fri, 21 Jan 2022 09:07:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=N1UE72BJ2MEkxmkbITUrTccBF6dtlFdU1mjz7WhN36c=;
- b=OtvVQ6dsD1h9+cEXp27aDY7NQuv+ceKs15B5GhVrDr8Rbi2kUzpU3OWL/CyZKRzqC353
- yO/UMwgz4po74ajkduVCGn5QXNLE6z/KhVO546onystYtJ4GhBnMwWkEQaBwNKf+SYrg
- F9mY1IeajGhumzcUJU1g5qD4FQvvpL9p+zKbpacIyIe/3mDsywGjH3CuFjpZds3K7DfZ
- Q1DzSFhSGeip3jzoeuB9avg2QfRpx+91KXYZAcedFKaWvTGCuQsAP1SG+cfN9koUw5vC
- h6MHSKhQTjBE+UpafshlPwbDcFc6iqMbcIxSXkmfkgwBKW5wqQLkzc6zHpRVsikQf9SJ oA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dqs6agw7h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 Jan 2022 09:07:12 +0000
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20L8HYp7027532;
- Fri, 21 Jan 2022 09:07:12 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dqs6agw72-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 Jan 2022 09:07:12 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20L92NwH005575;
- Fri, 21 Jan 2022 09:07:11 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma03dal.us.ibm.com with ESMTP id 3dqj1js111-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 Jan 2022 09:07:11 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 20L97ApJ29753824
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 Jan 2022 09:07:10 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4D6FAB2072;
- Fri, 21 Jan 2022 09:07:10 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E6E85B213B;
- Fri, 21 Jan 2022 09:07:06 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.43.32.214])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 21 Jan 2022 09:07:06 +0000 (GMT)
-X-Mailer: emacs 28.0.91 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
- linux-nvdimm@lists.01.org, dan.j.williams@intel.com
-Subject: Re: [PATCH v7 3/7] powerpc/pmem: Add flush routines using new pmem
- store and sync instruction
-In-Reply-To: <7eba6780-5ffd-54f4-feb0-b5e627ec6216@csgroup.eu>
-References: <20200701072235.223558-1-aneesh.kumar@linux.ibm.com>
- <20200701072235.223558-4-aneesh.kumar@linux.ibm.com>
- <7eba6780-5ffd-54f4-feb0-b5e627ec6216@csgroup.eu>
-Date: Fri, 21 Jan 2022 14:37:00 +0530
-Message-ID: <87sftho3t7.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JgDHx4W6gz2xXV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 20:15:40 +1100 (AEDT)
+Received: by mail-lf1-x12b.google.com with SMTP id b14so31812998lff.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 01:15:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=fusO5f+lHxDaOb0VSmz+4+tHP16TPs0f0afJOTsfjE4=;
+ b=DViKZjc0KCTHv8wOQQlnN6CuLmc8/xCiTlBVbrBCFEvqKQzBDQYosVt2+/Ecl7Q817
+ RoC4J/Q5lv0vWa6QvOH48BRboPuiGcGLZumd2rIG5tv2m0EniL9p6YQUhHlAzSD7NYLD
+ fE/Yg7IYVLXyrobpPbguB2YBZTUI3MgbfS2fnE+6MstwCkC8kDwxxRmzg9JjKoMfpbTl
+ Rd9+pTuaFPueeJJYDuxQNVIKmGiGo2Jop7LGxmMhvo58MviMwiZx9vbtMAkNazSOd2gY
+ Mb7kkGpBzGgN12B06GuH9c0lxQFpqBO4ZkuxDkLt1PPj5ZY/b2cdlwR8NrosG8tMmmQv
+ CUDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=fusO5f+lHxDaOb0VSmz+4+tHP16TPs0f0afJOTsfjE4=;
+ b=QhWd+Ei8CweCgzGPYv7SPvnlpLN0JtnM9UnfbMZSff4eYmFDfBfi8Y75JS3IK15gr+
+ D4Uq9znZ/LeHigA3989K8SZLH2vdx0jF5vhC0jm9KqVJl9QW+YSZBTzns0gmLouX+uI2
+ 4eNh7noLqXinDtkDKjKCFZnzm/SQOuhALg14FJ8wxLsfIcvU/FE5oXIf4Xw92Zkeb1ub
+ OOeVAQPOq+tgEW+AWwcSZuo5UyfJkfW5CohJfjL/1jthyy7n/lVkEuGWpOT0ECTRdlJj
+ 2rJ+ryz/5S5ZxGYGmHRbnp768GcAtBlRcxLtjz9WfRYvwIS/ZTBy8x5rtvYdBmp22DTf
+ 2l4g==
+X-Gm-Message-State: AOAM531obzCZygsoQybWx+ol2wRj4v2I7JIWq3Zv+yU2ztFYE58W5xZJ
+ 3QhtKs+BT29TAkDuzxp1Khk=
+X-Google-Smtp-Source: ABdhPJyq/AiVI/98A8fQ3Rfe6G7qDquOCgOGLHmgUGcerpGxZXW4bSGIamkROJRIV2WfGF5ar6fwkg==
+X-Received: by 2002:a19:7914:: with SMTP id u20mr3088831lfc.325.1642756534107; 
+ Fri, 21 Jan 2022 01:15:34 -0800 (PST)
+Received: from localhost.localdomain ([185.6.236.169])
+ by smtp.googlemail.com with ESMTPSA id m2sm191429lfh.163.2022.01.21.01.15.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 21 Jan 2022 01:15:33 -0800 (PST)
+From: Maxim Kiselev <bigunclemax@gmail.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v3] powerpc: dts: t1040rdb: fix ports names for Seville
+ Ethernet switch
+Date: Fri, 21 Jan 2022 12:14:47 +0300
+Message-Id: <20220121091447.3412907-1-bigunclemax@gmail.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <87czkmudh0.fsf@mpe.ellerman.id.au>
+References: <87czkmudh0.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 2pSSl9DIMjjRUIg41UlrZBGrhwygNAWy
-X-Proofpoint-ORIG-GUID: MIGigJyuDxEsSAjusDTt-hF0xaYs0YNx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-21_06,2022-01-20_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011
- lowpriorityscore=0 impostorscore=0 bulkscore=0 adultscore=0
- mlxlogscore=999 mlxscore=0 priorityscore=1501 malwarescore=0 spamscore=0
- suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2201110000 definitions=main-2201210060
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,165 +80,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: oohall@gmail.com, Jeff Moyer <jmoyer@redhat.com>, msuchanek@suse.de,
- Jan Kara <jack@suse.cz>
+Cc: andrew@lunn.ch, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ fido_max@inbox.ru, robh+dt@kernel.org, paulus@samba.org,
+ vladimir.oltean@nxp.com, bigunclemax@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+On board rev A, the network interface labels for the switch ports
+written on the front panel are different than on rev B and later.
 
-> Le 01/07/2020 =C3=A0 09:22, Aneesh Kumar K.V a =C3=A9crit=C2=A0:
->> Start using dcbstps; phwsync; sequence for flushing persistent memory ra=
-nge.
->> The new instructions are implemented as a variant of dcbf and hwsync and=
- on
->> P8 and P9 they will be executed as those instructions. We avoid using th=
-em on
->> older hardware. This helps to avoid difficult to debug bugs.
->>=20
->
-> Before this patch, the flush was done for all.
-> After this patch, IIUC the flush is done only on CPUs having feature=20
-> CPU_FTR_ARCH_207S.
->
-> What about other CPUs ?
->
-> I don't know much about PMEM, my concern is about the UACCESS_FLUSHCACHE=
-=20
-> API introduced by commit 6c44741d75a2 ("powerpc/lib: Implement=20
-> UACCESS_FLUSHCACHE API")
->
-> After your patch, __copy_from_user_flushcache() and memcpy_flushcache()=20
-> are not doing cache flush anymore.
->
-> Is that intended ?
+This patch fixes network interface names for the switch ports according
+to labels that are written on the front panel of the board rev B.
+They start from ETH3 and end at ETH10.
 
-yes, with the understanding that these functions are used with
-persistent memory . We restrict the persistent memory usage to p8 and
-above via commit c83040192f3763b243ece26073d61a895b4a230f
+This patch also introduces a separate device tree for rev A.
+The main device tree is supposed to cover rev B and later.
 
->
-> I'm trying to optimise some ALSA driver that does copy_from_user +=20
-> cache_flush for DMA, and I was wondering if using=20
-> __copy_from_user_flushcache() was an alternative.
->
-> Or is it __copy_from_user_inatomic_nocache() which has to be done for tha=
-t ?
->
-> Thanks
-> Christophe
->
->
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>   arch/powerpc/include/asm/cacheflush.h |  1 +
->>   arch/powerpc/lib/pmem.c               | 50 ++++++++++++++++++++++++---
->>   2 files changed, 47 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/arch/powerpc/include/asm/cacheflush.h b/arch/powerpc/includ=
-e/asm/cacheflush.h
->> index de600b915a3c..54764c6e922d 100644
->> --- a/arch/powerpc/include/asm/cacheflush.h
->> +++ b/arch/powerpc/include/asm/cacheflush.h
->> @@ -6,6 +6,7 @@
->>=20=20=20
->>   #include <linux/mm.h>
->>   #include <asm/cputable.h>
->> +#include <asm/cpu_has_feature.h>
->>=20=20=20
->>   #ifdef CONFIG_PPC_BOOK3S_64
->>   /*
->> diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
->> index 0666a8d29596..5a61aaeb6930 100644
->> --- a/arch/powerpc/lib/pmem.c
->> +++ b/arch/powerpc/lib/pmem.c
->> @@ -9,20 +9,62 @@
->>=20=20=20
->>   #include <asm/cacheflush.h>
->>=20=20=20
->> +static inline void __clean_pmem_range(unsigned long start, unsigned lon=
-g stop)
->> +{
->> +	unsigned long shift =3D l1_dcache_shift();
->> +	unsigned long bytes =3D l1_dcache_bytes();
->> +	void *addr =3D (void *)(start & ~(bytes - 1));
->> +	unsigned long size =3D stop - (unsigned long)addr + (bytes - 1);
->> +	unsigned long i;
->> +
->> +	for (i =3D 0; i < size >> shift; i++, addr +=3D bytes)
->> +		asm volatile(PPC_DCBSTPS(%0, %1): :"i"(0), "r"(addr): "memory");
->> +
->> +
->> +	asm volatile(PPC_PHWSYNC ::: "memory");
->> +}
->> +
->> +static inline void __flush_pmem_range(unsigned long start, unsigned lon=
-g stop)
->> +{
->> +	unsigned long shift =3D l1_dcache_shift();
->> +	unsigned long bytes =3D l1_dcache_bytes();
->> +	void *addr =3D (void *)(start & ~(bytes - 1));
->> +	unsigned long size =3D stop - (unsigned long)addr + (bytes - 1);
->> +	unsigned long i;
->> +
->> +	for (i =3D 0; i < size >> shift; i++, addr +=3D bytes)
->> +		asm volatile(PPC_DCBFPS(%0, %1): :"i"(0), "r"(addr): "memory");
->> +
->> +
->> +	asm volatile(PPC_PHWSYNC ::: "memory");
->> +}
->> +
->> +static inline void clean_pmem_range(unsigned long start, unsigned long =
-stop)
->> +{
->> +	if (cpu_has_feature(CPU_FTR_ARCH_207S))
->> +		return __clean_pmem_range(start, stop);
->> +}
->> +
->> +static inline void flush_pmem_range(unsigned long start, unsigned long =
-stop)
->> +{
->> +	if (cpu_has_feature(CPU_FTR_ARCH_207S))
->> +		return __flush_pmem_range(start, stop);
->> +}
->> +
->>   /*
->>    * CONFIG_ARCH_HAS_PMEM_API symbols
->>    */
->>   void arch_wb_cache_pmem(void *addr, size_t size)
->>   {
->>   	unsigned long start =3D (unsigned long) addr;
->> -	flush_dcache_range(start, start + size);
->> +	clean_pmem_range(start, start + size);
->>   }
->>   EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
->>=20=20=20
->>   void arch_invalidate_pmem(void *addr, size_t size)
->>   {
->>   	unsigned long start =3D (unsigned long) addr;
->> -	flush_dcache_range(start, start + size);
->> +	flush_pmem_range(start, start + size);
->>   }
->>   EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
->>=20=20=20
->> @@ -35,7 +77,7 @@ long __copy_from_user_flushcache(void *dest, const voi=
-d __user *src,
->>   	unsigned long copied, start =3D (unsigned long) dest;
->>=20=20=20
->>   	copied =3D __copy_from_user(dest, src, size);
->> -	flush_dcache_range(start, start + size);
->> +	clean_pmem_range(start, start + size);
->>=20=20=20
->>   	return copied;
->>   }
->> @@ -45,7 +87,7 @@ void *memcpy_flushcache(void *dest, const void *src, s=
-ize_t size)
->>   	unsigned long start =3D (unsigned long) dest;
->>=20=20=20
->>   	memcpy(dest, src, size);
->> -	flush_dcache_range(start, start + size);
->> +	clean_pmem_range(start, start + size);
->>=20=20=20
->>   	return dest;
->>   }
+Fixes: e69eb0824d8c ("powerpc: dts: t1040rdb: add ports for Seville Ethernet switch")
+Signed-off-by: Maxim Kiselev <bigunclemax@gmail.com>
+Reviewed-by: Maxim Kochetkov <fido_max@inbox.ru>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+---
+Here is the fix for the error in t1040rdb-rev-a.dts caused by containing '#include' directive inside '/include/'
+---
+ arch/powerpc/boot/dts/fsl/t1040rdb-rev-a.dts | 30 ++++++++++++++++++++
+ arch/powerpc/boot/dts/fsl/t1040rdb.dts       |  8 +++---
+ 2 files changed, 34 insertions(+), 4 deletions(-)
+ create mode 100644 arch/powerpc/boot/dts/fsl/t1040rdb-rev-a.dts
+
+diff --git a/arch/powerpc/boot/dts/fsl/t1040rdb-rev-a.dts b/arch/powerpc/boot/dts/fsl/t1040rdb-rev-a.dts
+new file mode 100644
+index 0000000000000..73f8c998c64df
+--- /dev/null
++++ b/arch/powerpc/boot/dts/fsl/t1040rdb-rev-a.dts
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * T1040RDB-REV-A Device Tree Source
++ *
++ * Copyright 2014 - 2015 Freescale Semiconductor Inc.
++ *
++ */
++
++#include "t1040rdb.dts"
++
++/ {
++	model = "fsl,T1040RDB-REV-A";
++	compatible = "fsl,T1040RDB-REV-A";
++};
++
++&seville_port0 {
++	label = "ETH5";
++};
++
++&seville_port2 {
++	label = "ETH7";
++};
++
++&seville_port4 {
++	label = "ETH9";
++};
++
++&seville_port6 {
++	label = "ETH11";
++};
+diff --git a/arch/powerpc/boot/dts/fsl/t1040rdb.dts b/arch/powerpc/boot/dts/fsl/t1040rdb.dts
+index af0c8a6f56138..b6733e7e65805 100644
+--- a/arch/powerpc/boot/dts/fsl/t1040rdb.dts
++++ b/arch/powerpc/boot/dts/fsl/t1040rdb.dts
+@@ -119,7 +119,7 @@ &seville_port0 {
+ 	managed = "in-band-status";
+ 	phy-handle = <&phy_qsgmii_0>;
+ 	phy-mode = "qsgmii";
+-	label = "ETH5";
++	label = "ETH3";
+ 	status = "okay";
+ };
+ 
+@@ -135,7 +135,7 @@ &seville_port2 {
+ 	managed = "in-band-status";
+ 	phy-handle = <&phy_qsgmii_2>;
+ 	phy-mode = "qsgmii";
+-	label = "ETH7";
++	label = "ETH5";
+ 	status = "okay";
+ };
+ 
+@@ -151,7 +151,7 @@ &seville_port4 {
+ 	managed = "in-band-status";
+ 	phy-handle = <&phy_qsgmii_4>;
+ 	phy-mode = "qsgmii";
+-	label = "ETH9";
++	label = "ETH7";
+ 	status = "okay";
+ };
+ 
+@@ -167,7 +167,7 @@ &seville_port6 {
+ 	managed = "in-band-status";
+ 	phy-handle = <&phy_qsgmii_6>;
+ 	phy-mode = "qsgmii";
+-	label = "ETH11";
++	label = "ETH9";
+ 	status = "okay";
+ };
+ 
+-- 
+2.32.0
+
