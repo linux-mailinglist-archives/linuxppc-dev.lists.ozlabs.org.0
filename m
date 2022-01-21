@@ -1,76 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C896496771
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 22:41:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AE849677C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 22:42:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JgXqv3b4rz3cDR
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 08:40:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JgXsW6qxsz3cJl
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 08:42:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lhqbeFLn;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J8dzxpak;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J8dzxpak;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::332;
- helo=mail-ot1-x332.google.com; envelope-from=sampaio.ime@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=rfontana@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=lhqbeFLn; dkim-atps=neutral
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com
- [IPv6:2607:f8b0:4864:20::332])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=J8dzxpak; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=J8dzxpak; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JgQTr1rSYz30RT
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 03:54:54 +1100 (AEDT)
-Received: by mail-ot1-x332.google.com with SMTP id
- m8-20020a9d4c88000000b00592bae7944bso12541946otf.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 08:54:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=HVA0ZWgzizXSbtVSNUIGHlKEL+CetSwxidS0XXuLPDw=;
- b=lhqbeFLn6LGWwaXmjOPj025/8uD2u6ghPM19YiK6cJI0mhCqlepHSe+COo5qrpuYrj
- Sl6tQM2aeFiwynHCEpE3AmawxvDoNYa46HXASqlYacYo/jQwc673zhFfithjVFOpFXq4
- wMa0NyFx/j25Ww4M4OL/nOUVvICnZ+Fk1posng1CxQ50V0w1A+I/ILNOAffBghZahGoA
- h8sg9o+LHpseXVWuqr9PKyzV/3hDbSpG2nLG2I2YSJk+g07XlsrvaurbNJYMGO3G37YW
- DjlvKNOAaIu0LDJVdA8MoxqUYd4NYzgYb/l9WBlYQWnYnu+5F+NGDNZRxUWtYq+HaI86
- GLSg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JgS8k252Gz2yg5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 05:10:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1642788606;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rqh1++d+JY4BasdGg/7RHLKqtDDn+ODlJo6mE4WZL2o=;
+ b=J8dzxpak8tVna2XhOunhEShqBvQLxpf075uUER+GUOH1IgLc3Huh5BtCSeOuLGUJ1w5KX2
+ mCMuk824y1KL7XPZabXncVymcujGFSQB1qFbRp1LsLlK9k8vd5bwU3oPdRD9HLBREBAgGY
+ 00pNEPB+A6n4Ye4Iu3lOZra9Izhta+Y=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1642788606;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rqh1++d+JY4BasdGg/7RHLKqtDDn+ODlJo6mE4WZL2o=;
+ b=J8dzxpak8tVna2XhOunhEShqBvQLxpf075uUER+GUOH1IgLc3Huh5BtCSeOuLGUJ1w5KX2
+ mCMuk824y1KL7XPZabXncVymcujGFSQB1qFbRp1LsLlK9k8vd5bwU3oPdRD9HLBREBAgGY
+ 00pNEPB+A6n4Ye4Iu3lOZra9Izhta+Y=
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
+ [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-38-kx0bW69zNgGgfp1IGn3Fbw-1; Fri, 21 Jan 2022 13:10:03 -0500
+X-MC-Unique: kx0bW69zNgGgfp1IGn3Fbw-1
+Received: by mail-ua1-f71.google.com with SMTP id
+ v10-20020ab036ca000000b003068cf1e17bso6052441uau.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 10:10:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=HVA0ZWgzizXSbtVSNUIGHlKEL+CetSwxidS0XXuLPDw=;
- b=Yiab+59u7Bp3u+EoYnmk8yprHJKoDuqvlAPBG5SqURTHUArk4GmQemHJpNFUixqG8B
- tt2rNybo76LxKJWZhi9dYuN6T4XFoEBh21NU0ReCUl+Xz14HStqhXWrYFB3Y79/GhUaQ
- M2wcpCC4AO8bv5zhV6oHz6W2Qg9733DkzAr1uRx7Zvp+JUVoSXKDdtEeZHdf1LF8TPoL
- JijNEnjT1KuEt7xzDvukvjAWRIYdhz8Chim5v1lWzZ3uzGD+WMnn72otMtrbZiy9D78m
- IlXuIEZEq3jcHZUW5t5z7PiYUekskvXyVHcf0LP+0+66+Bjay9uZ6mbtttjFSHa5MTgP
- WMpg==
-X-Gm-Message-State: AOAM530dD3uVoFzOAjPBKC7GX5wIf9AaSignwCLpStGMbtOl+dBWrNK7
- GDNDqkugIoUGumNnL8fw84c=
-X-Google-Smtp-Source: ABdhPJzGe5RaMv9muOHI7TUblJz0zvxsC6HtZXqdKfF4KHj5o321mFmDbasyCgJoXNohCMLyfEp3ew==
-X-Received: by 2002:a9d:60b:: with SMTP id 11mr3320985otn.384.1642784091086;
- Fri, 21 Jan 2022 08:54:51 -0800 (PST)
-Received: from thinkpad.localdomain ([2804:14d:5cd1:5d03:cf72:4317:3105:f6e5])
- by smtp.gmail.com with ESMTPSA id
- y8sm1089271oou.23.2022.01.21.08.54.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Jan 2022 08:54:50 -0800 (PST)
-From: Luiz Sampaio <sampaio.ime@gmail.com>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Subject: [PATCH 09/31] macintosh: changing LED_* from enum led_brightness to
- actual value
-Date: Fri, 21 Jan 2022 13:54:14 -0300
-Message-Id: <20220121165436.30956-10-sampaio.ime@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220121165436.30956-1-sampaio.ime@gmail.com>
-References: <20220121165436.30956-1-sampaio.ime@gmail.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=rqh1++d+JY4BasdGg/7RHLKqtDDn+ODlJo6mE4WZL2o=;
+ b=2ZMfTUctjmECm1/erqqpyWic+MG6Neui1QD4woFQYJQQf/jkGy5np4dVsRHQY0D3Bt
+ 2C7NyIGrUOV0F8T7IsxuMZSrk980Fu1aIe/bIoT613GkSr5ElijSDvNAtKSmVymwyfo2
+ nWeOJ4GYlfzLtHHDjh7qbXLS3hzyYgU84P7y4x+VXVPv2cpTizvwX0bmx7LFCtOb8m28
+ VAjiFlZWwu4EW5QRO/lpupVlyelZN7gYcAsIremYaYb4DfJYK0stcv4MZih77MdTC1Y8
+ RtRTwtwOgdFHL7lt3je+GgHhuzqr7R6BZioqgIrctNLCAMtQgK/V5XYWeLGhOk/xC3He
+ +rgQ==
+X-Gm-Message-State: AOAM532t0+rJFT927SOLrgi+Xb2K41ZtPxBAeqTSsYiJIpuyn0xefDZy
+ zL7nUEm9Ii9JSfx0HJetKkGnsiJa3eR62f+fL97d6FU+7ZH0hQH6dSrgDKcS7Lk3w4CtTVd3+tF
+ IuGRoRtmrvxION7u4uVO9DzNlDdcHn/eV5iBtFtuZcw==
+X-Received: by 2002:a67:c911:: with SMTP id w17mr2052003vsk.23.1642788602589; 
+ Fri, 21 Jan 2022 10:10:02 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJzIcdTU8wiDW6QlfD7iXb6wp73IfAqgwR1iqWVlTAgtLeEudcV3iLG/Aae+NYvTZGwrcZ+6r/lnRcWIx3JHH+o=
+X-Received: by 2002:a67:c911:: with SMTP id w17mr2051986vsk.23.1642788602329; 
+ Fri, 21 Jan 2022 10:10:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <d2c52284244d6dcb3472d2041abe43b456d116df.1642762977.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <d2c52284244d6dcb3472d2041abe43b456d116df.1642762977.git.christophe.leroy@csgroup.eu>
+From: Richard Fontana <rfontana@redhat.com>
+Date: Fri, 21 Jan 2022 13:09:51 -0500
+Message-ID: <CAC1cPGwb9eM=0VWiZx+G909Jt7a7=yx1CnVJ=kaFJfn4qxNWPw@mail.gmail.com>
+Subject: Re: [PATCH v3] powerpc: Add missing SPDX license identifiers
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=rfontana@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Sat, 22 Jan 2022 08:40:28 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,32 +99,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Luiz Sampaio <sampaio.ime@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ "linux-spdx@vger.kernel.org" <linux-spdx@vger.kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The enum led_brightness, which contains the declaration of LED_OFF,
-LED_ON, LED_HALF and LED_FULL is obsolete, as the led class now supports
-max_brightness.
----
- drivers/macintosh/via-pmu-led.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, Jan 21, 2022 at 6:03 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> Several files are missing SPDX license identifiers.
+>
+> Following files are given the following SPDX identifier based on the comments in the top of the file:
+>
+>         include/asm/epapr_hcalls.h:/* SPDX-License-Identifier: GPL-2.0+ OR BSD */
+>         include/asm/fsl_hcalls.h:/* SPDX-License-Identifier: GPL-2.0+ OR BSD */
 
-diff --git a/drivers/macintosh/via-pmu-led.c b/drivers/macintosh/via-pmu-led.c
-index ae067ab2373d..b0a727ad0157 100644
---- a/drivers/macintosh/via-pmu-led.c
-+++ b/drivers/macintosh/via-pmu-led.c
-@@ -54,7 +54,7 @@ static void pmu_led_set(struct led_classdev *led_cdev,
- 
- 	spin_lock_irqsave(&pmu_blink_lock, flags);
- 	switch (brightness) {
--	case LED_OFF:
-+	case 0:
- 		requested_change = 0;
- 		break;
- 	case LED_FULL:
--- 
-2.34.1
+"BSD" is not a defined SPDX identifier. I believe what you want here
+is "BSD-3-Clause" (see: https://spdx.org/licenses/BSD-3-Clause.html)
+
+Richard
 
