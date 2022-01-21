@@ -1,63 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBD94959E8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 07:26:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD2D495A09
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 07:36:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jg8XZ4WLLz3cCT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 17:26:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jg8mX1SnVz3cBN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 17:36:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QGovHoz1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GyeoGBec;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org;
  envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=QGovHoz1; 
+ header.s=k20201202 header.b=GyeoGBec; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jg8Ws4Hk0z3050
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 17:25:45 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jg8ls0hG7z3050
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 17:36:08 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 4DB3DB81F10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 06:25:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772B0C340EA
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 06:25:41 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTPS id 6B275CE22F3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 06:36:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35445C340E9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 06:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1642746341;
- bh=Isi0LP5N8Hd28Ba/kM6pY+YaZm5nWrdB7apzNizLGkI=;
+ s=k20201202; t=1642746964;
+ bh=OapTYucU006/664lVqAyS8BT5iSkNJKlZLbM69QQ02s=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=QGovHoz1oiofsdeaaXvjyotkiuHEDH0/CO+SlieoWuLCgx5KtV+Ai2Csju6ecvcNn
- xTbsrzAaDUp9BLR9AyNzODSTM1WIjQcjd/vxArKlUGwNgK09W1bVBsghi+Zm7UWemM
- uEtNuhsOXX8Ugo1Y4qHLm4MRe1sX1QcTL2nYe/FfR+RV6+/ofNF6GmJUNEvEHvHK+e
- w1SoJRREbXxjcdQQSlT7aN2dH/O/U5TVCUyEr9r+jtwrROIzQilSGVx4QeQK9dZVSh
- d1xgfZJVGsxLsNdaiWOd+utFZwUfcRwN3wT3+g6qcQI0ranll2u6k7n00Y/woKgW8j
- jDKVRZ3MkFA6w==
-Received: by mail-ua1-f48.google.com with SMTP id c36so15087164uae.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 22:25:41 -0800 (PST)
-X-Gm-Message-State: AOAM533t26T+14fOahNeRSm7cNqmUE6e7UiTIVI6Ot4+DfMBJw3d9dgb
- SdB+MelY9ozY5nppUyu2VJ/i6e2jbQx9XmOGWbc=
-X-Google-Smtp-Source: ABdhPJwB7ga72MDOno+HFBeeiGH/FKsBJy+/4qpm4/UjbqnmBZuKa8XMIWL0JsmA8KTM5bJQlsAjrV4ffWb0zfo7B4M=
-X-Received: by 2002:a67:e016:: with SMTP id c22mr1147085vsl.51.1642746340414; 
- Thu, 20 Jan 2022 22:25:40 -0800 (PST)
+ b=GyeoGBec3Mxxwihc80e8LN96Gzd5XeBsuNCOi7xxq0OUlO7wI66J+kph/004N5YlM
+ ZphpsSdABXAW0cGfBs8tDJ2kaQt1QFdvMTjCMTyr6Bg8OcqIWKmeOaRmmnBE13F1EM
+ AuEdwDMswd2hT0y57hMztgmKAEzQCaUypXzFkzAxSJ0+w8Q/Xs8m4tpDWn+VYnqnnN
+ z9Ejp2Exvg1liCnyEAPgNaaENyPLldmhKZgF1KSYkIDtAxyFKfemjvExbxV5m4Xmou
+ +f+05ibW2RAfW0HnazvCqTXvAO8o7EkoN+/B2BScAQl+D+PHtXxrtHd+6loQi9uk+g
+ TzEikaKl0BY1Q==
+Received: by mail-ua1-f46.google.com with SMTP id p7so7979664uao.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 22:36:04 -0800 (PST)
+X-Gm-Message-State: AOAM530Cpk7BZA7N6aNE1JEAC9jcZ1iAxKLD/ogxQp07IDsaTcAuhFIj
+ WLOTFjWYJ8P08+LzDfKmpWZu6pIY6hobq8axYqc=
+X-Google-Smtp-Source: ABdhPJwE7D6l9CEOckPMqifjprc+HPS6gXhdx42Itd64DW8S7D8rq3j2EK3bHxYHAPm3yMKSrqoSRwZpgjSjhZ4KQwc=
+X-Received: by 2002:ab0:728c:: with SMTP id w12mr1223277uao.108.1642746963165; 
+ Thu, 20 Jan 2022 22:36:03 -0800 (PST)
 MIME-Version: 1.0
-References: <20220120073911.99857-9-guoren@kernel.org>
- <CAK8P3a0LxB3we9wHOa4OPmNow6wz5NP49zeYhh7QXNv-MiR8UA@mail.gmail.com>
-In-Reply-To: <CAK8P3a0LxB3we9wHOa4OPmNow6wz5NP49zeYhh7QXNv-MiR8UA@mail.gmail.com>
+References: <20220120073911.99857-18-guoren@kernel.org>
+ <CAK8P3a1_qwRpfHRyF75WEqfxGxgVnfB15vNS-egQctx7R5-DvA@mail.gmail.com>
+In-Reply-To: <CAK8P3a1_qwRpfHRyF75WEqfxGxgVnfB15vNS-egQctx7R5-DvA@mail.gmail.com>
 From: Guo Ren <guoren@kernel.org>
-Date: Fri, 21 Jan 2022 14:25:29 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTQVUF4LSO0a6_MV8x-UAiJw32pAFyS1oPNLXhcEaemzqg@mail.gmail.com>
-Message-ID: <CAJF2gTQVUF4LSO0a6_MV8x-UAiJw32pAFyS1oPNLXhcEaemzqg@mail.gmail.com>
-Subject: Re: [PATCH V3 08/17] riscv: compat: syscall: Add compat_sys_call_table
- implementation
+Date: Fri, 21 Jan 2022 14:35:52 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTTCwOiTPJO1B6Asa2NUNR0D624t26nnA8S4vrSSax8R-Q@mail.gmail.com>
+Message-ID: <CAJF2gTTCwOiTPJO1B6Asa2NUNR0D624t26nnA8S4vrSSax8R-Q@mail.gmail.com>
+Subject: Re: [PATCH V3 17/17] KVM: compat: riscv: Prevent KVM_COMPAT from
+ being selected
 To: Arnd Bergmann <arnd@arndb.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -87,124 +87,42 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 20, 2022 at 10:43 PM Arnd Bergmann <arnd@arndb.de> wrote:
+On Thu, Jan 20, 2022 at 6:32 PM Arnd Bergmann <arnd@arndb.de> wrote:
 >
 > On Thu, Jan 20, 2022 at 8:39 AM <guoren@kernel.org> wrote:
 > >
-> >  /* The array of function pointers for syscalls. */
-> >  extern void * const sys_call_table[];
-> > +#ifdef CONFIG_COMPAT
-> > +extern void * const compat_sys_call_table[];
-> > +#endif
+> > From: Guo Ren <guoren@linux.alibaba.com>
+> >
+> > Current riscv doesn't support the 32bit KVM/arm API. Let's make it
+> > clear by not selecting KVM_COMPAT.
+> >
+> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> > ---
+> >  virt/kvm/Kconfig | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+> > index f4834c20e4a6..a8c5c9f06b3c 100644
+> > --- a/virt/kvm/Kconfig
+> > +++ b/virt/kvm/Kconfig
+> > @@ -53,7 +53,7 @@ config KVM_GENERIC_DIRTYLOG_READ_PROTECT
+> >
+> >  config KVM_COMPAT
+> >         def_bool y
+> > -       depends on KVM && COMPAT && !(S390 || ARM64)
+> > +       depends on KVM && COMPAT && !(S390 || ARM64 || RISCV)
 >
-> No need for the #ifdef, the normal convention is to just define the
-> extern declaration unconditionally for symbols that may or may not be defined.
-Okay
+> Maybe this should be flipped around into a positive list now?
+I think it's another patch to do that. Not in this series.
 
+> The remaining architectures would be mips, powerpc and x86, but it's unclear
+> if this actually meant to work on all of them, or any potential ones
+> added in the
+Yes, it's unclear and arch maintainers need to confirm that.
+
+> future.
 >
-> > +COMPAT_SYSCALL_DEFINE3(truncate64, const char __user *, pathname,
-> > +                      arg_u32p(length))
-> > +{
-> > +       return ksys_truncate(pathname, arg_u64(length));
-> > +}
->
-> Are you sure these are the right calling conventions? According to [1],
-> I think the 64-bit argument should be in an aligned pair of registers,
-> which means you need an extra pad argument as in the arm64 version
-> of these functions. Same for ftruncate64, pread64, pwrite64, and
-> readahead.
-
-[1] has abandoned.
-
-See:
-https://github.com/riscv-non-isa/riscv-elf-psabi-doc/blob/master/riscv-cc.adoc
-
-Ltp test results:
-
-ftruncate01                                        PASS       0
-ftruncate01_64                                     PASS       0
-ftruncate03                                        PASS       0
-ftruncate03_64                                     PASS       0
-ftruncate04                                        CONF       32
-ftruncate04_64                                     CONF       32
-
-truncate02                                         PASS       0
-truncate02_64                                      PASS       0
-truncate03                                         PASS       0
-truncate03_64                                      PASS       0
-
-pread01                                            PASS       0
-pread01_64                                         PASS       0
-pread02                                            PASS       0
-pread02_64                                         PASS       0
-pread03                                            PASS       0
-pread03_64                                         PASS       0
-
-pwrite01_64                                        PASS       0
-pwrite02_64                                        PASS       0
-pwrite03_64                                        PASS       0
-pwrite04_64                                        PASS       0
-
-readahead01                                        PASS       0
-readahead02                                        CONF       32
-
-
->
-> > +COMPAT_SYSCALL_DEFINE3(ftruncate64, unsigned int, fd, arg_u32p(length))
-> > +{
-> > +       return ksys_ftruncate(fd, arg_u64(length));
-> > +}
-> > +
-> > +COMPAT_SYSCALL_DEFINE6(fallocate, int, fd, int, mode,
-> > +                      arg_u32p(offset), arg_u32p(len))
-> > +{
-> > +       return ksys_fallocate(fd, mode, arg_u64(offset), arg_u64(len));
-> > +}
-> > +
-> > +COMPAT_SYSCALL_DEFINE5(pread64, unsigned int, fd, char __user *, buf,
-> > +                      size_t, count, arg_u32p(pos))
-> > +{
-> > +       return ksys_pread64(fd, buf, count, arg_u64(pos));
-> > +}
-> > +
-> > +COMPAT_SYSCALL_DEFINE5(pwrite64, unsigned int, fd,
-> > +                      const char __user *, buf, size_t, count, arg_u32p(pos))
-> > +{
-> > +       return ksys_pwrite64(fd, buf, count, arg_u64(pos));
-> > +}
-> > +
-> > +COMPAT_SYSCALL_DEFINE6(sync_file_range, int, fd, arg_u32p(offset),
-> > +                      arg_u32p(nbytes), unsigned int, flags)
-> > +{
-> > +       return ksys_sync_file_range(fd, arg_u64(offset), arg_u64(nbytes),
-> > +                                   flags);
-> > +}
-> > +
-> > +COMPAT_SYSCALL_DEFINE4(readahead, int, fd, arg_u32p(offset),
-> > +                      size_t, count)
-> > +{
-> > +       return ksys_readahead(fd, arg_u64(offset), count);
-> > +}
-> > +
-> > +COMPAT_SYSCALL_DEFINE6(fadvise64_64, int, fd, int, advice, arg_u32p(offset),
-> > +                      arg_u32p(len))
-> > +{
-> > +       return ksys_fadvise64_64(fd, arg_u64(offset), arg_u64(len), advice);
-> > +}
->
-> I still feel like these should be the common implementations next to the
-> native handlers inside of an #ifdef CONFIG_COMPAT.
->
-> The names clash with the custom versions defined for powerpc and sparc,
-> but the duplicates look compatible if you can account for the padded
-> argument and the lo/hi order of the pairs, so could just be removed here
-> (all other architectures use custom function names instead).
-I would try it later.
-
->
->         Arnd
->
-> [1] https://riscv.org/wp-content/uploads/2015/01/riscv-calling.pdf
+>        Arnd
 
 
 
