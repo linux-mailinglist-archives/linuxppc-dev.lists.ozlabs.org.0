@@ -1,85 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22AE849677C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 22:42:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A775D49677E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 22:43:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JgXsW6qxsz3cJl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 08:42:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JgXtH4Snkz3ckT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 08:43:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J8dzxpak;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=J8dzxpak;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VuKq2mgJ;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VuKq2mgJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
  helo=us-smtp-delivery-124.mimecast.com; envelope-from=rfontana@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=J8dzxpak; 
+ header.s=mimecast20190719 header.b=VuKq2mgJ; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=J8dzxpak; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=VuKq2mgJ; 
  dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (us-smtp-delivery-124.mimecast.com [170.10.129.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JgS8k252Gz2yg5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 05:10:11 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JgSKK3qbtz30Pf
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 05:17:40 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1642788606;
+ s=mimecast20190719; t=1642789056;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=rqh1++d+JY4BasdGg/7RHLKqtDDn+ODlJo6mE4WZL2o=;
- b=J8dzxpak8tVna2XhOunhEShqBvQLxpf075uUER+GUOH1IgLc3Huh5BtCSeOuLGUJ1w5KX2
- mCMuk824y1KL7XPZabXncVymcujGFSQB1qFbRp1LsLlK9k8vd5bwU3oPdRD9HLBREBAgGY
- 00pNEPB+A6n4Ye4Iu3lOZra9Izhta+Y=
+ bh=GaacSGyAu6TYOpVxBPJ/k9LHhTirl5xGNv6nlz2aQl4=;
+ b=VuKq2mgJboDoOjDAW53Oy4p9OaFLPygIpnceDhxVHhZsiIoNmuDDFpTGoBq1mihYuULEna
+ 8M3viC/yrN1rmV/KF93RBu7p5upqqYGcjA2BkBhNIzjtj/qVwgbqDnULYmBu2UhP08RV2W
+ r3xpM0dqVYT7fEB1Vo2ewcoWWQ0cFf8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1642788606;
+ s=mimecast20190719; t=1642789056;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=rqh1++d+JY4BasdGg/7RHLKqtDDn+ODlJo6mE4WZL2o=;
- b=J8dzxpak8tVna2XhOunhEShqBvQLxpf075uUER+GUOH1IgLc3Huh5BtCSeOuLGUJ1w5KX2
- mCMuk824y1KL7XPZabXncVymcujGFSQB1qFbRp1LsLlK9k8vd5bwU3oPdRD9HLBREBAgGY
- 00pNEPB+A6n4Ye4Iu3lOZra9Izhta+Y=
-Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
- [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GaacSGyAu6TYOpVxBPJ/k9LHhTirl5xGNv6nlz2aQl4=;
+ b=VuKq2mgJboDoOjDAW53Oy4p9OaFLPygIpnceDhxVHhZsiIoNmuDDFpTGoBq1mihYuULEna
+ 8M3viC/yrN1rmV/KF93RBu7p5upqqYGcjA2BkBhNIzjtj/qVwgbqDnULYmBu2UhP08RV2W
+ r3xpM0dqVYT7fEB1Vo2ewcoWWQ0cFf8=
+Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
+ [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-38-kx0bW69zNgGgfp1IGn3Fbw-1; Fri, 21 Jan 2022 13:10:03 -0500
-X-MC-Unique: kx0bW69zNgGgfp1IGn3Fbw-1
-Received: by mail-ua1-f71.google.com with SMTP id
- v10-20020ab036ca000000b003068cf1e17bso6052441uau.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 10:10:02 -0800 (PST)
+ us-mta-219-Es_IU0nRP1Oj5uXleu1I9g-1; Fri, 21 Jan 2022 13:17:34 -0500
+X-MC-Unique: Es_IU0nRP1Oj5uXleu1I9g-1
+Received: by mail-ua1-f69.google.com with SMTP id
+ t14-20020ab0550e000000b00305905ffc31so6060505uaa.16
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 10:17:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=rqh1++d+JY4BasdGg/7RHLKqtDDn+ODlJo6mE4WZL2o=;
- b=2ZMfTUctjmECm1/erqqpyWic+MG6Neui1QD4woFQYJQQf/jkGy5np4dVsRHQY0D3Bt
- 2C7NyIGrUOV0F8T7IsxuMZSrk980Fu1aIe/bIoT613GkSr5ElijSDvNAtKSmVymwyfo2
- nWeOJ4GYlfzLtHHDjh7qbXLS3hzyYgU84P7y4x+VXVPv2cpTizvwX0bmx7LFCtOb8m28
- VAjiFlZWwu4EW5QRO/lpupVlyelZN7gYcAsIremYaYb4DfJYK0stcv4MZih77MdTC1Y8
- RtRTwtwOgdFHL7lt3je+GgHhuzqr7R6BZioqgIrctNLCAMtQgK/V5XYWeLGhOk/xC3He
- +rgQ==
-X-Gm-Message-State: AOAM532t0+rJFT927SOLrgi+Xb2K41ZtPxBAeqTSsYiJIpuyn0xefDZy
- zL7nUEm9Ii9JSfx0HJetKkGnsiJa3eR62f+fL97d6FU+7ZH0hQH6dSrgDKcS7Lk3w4CtTVd3+tF
- IuGRoRtmrvxION7u4uVO9DzNlDdcHn/eV5iBtFtuZcw==
-X-Received: by 2002:a67:c911:: with SMTP id w17mr2052003vsk.23.1642788602589; 
- Fri, 21 Jan 2022 10:10:02 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzIcdTU8wiDW6QlfD7iXb6wp73IfAqgwR1iqWVlTAgtLeEudcV3iLG/Aae+NYvTZGwrcZ+6r/lnRcWIx3JHH+o=
-X-Received: by 2002:a67:c911:: with SMTP id w17mr2051986vsk.23.1642788602329; 
- Fri, 21 Jan 2022 10:10:02 -0800 (PST)
+ bh=GaacSGyAu6TYOpVxBPJ/k9LHhTirl5xGNv6nlz2aQl4=;
+ b=SOgvoJBWaqi4KFuGCbnCLR0fKA73GqMU6oJrqzbrNpzPduIKklbXVSGSCD6HMxFn2n
+ C051/TdoyNMw9zceqt8J6YgZlKfmSlF8zdTGRBmN90B9D2f3Vce4TQ6vwU54khSwtCuQ
+ TXRXbc+qtSQ+XTPjL7yL2GHyhy1EYjMcoR7hG0KW9OhP5B2aiuVFOPUFwYFvQ9eLV1D2
+ Z95x58P7ImkqmD7IPgfYGKGQk50lvs3S0LP8vIq8wZISc6nm/+JJP65Z6/wW0/jwXAOE
+ OWmDzXU5vrnj2/nlFjj8pJyrlNsVcFR3aVe+LSR5QOFJXHB98snUDBopoUGWZcS5ASnY
+ 2Gnw==
+X-Gm-Message-State: AOAM531o9vdlSV9K1y6LcR7hJS4GGhMEG27oZh2LxuaMmTaJ2PHAmxog
+ FJfndY7NEwUu0OpnN+06k0RXY6qB7+sxBftIaE80AO6K6aZYoeOyA5D5H+1TRLKGzDI8MzPQWMY
+ i5/BIWuiCHG1GTD9oGW5cBYrLAs480QBtZXWavLi1Xw==
+X-Received: by 2002:a1f:5702:: with SMTP id l2mr2301193vkb.33.1642789053499;
+ Fri, 21 Jan 2022 10:17:33 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyKQVWJ6KXJy3LfcxZ4flOAQ9SGhoyK4JC3P8EQNxA7sLFJZbBXV8PCImDr+/8PzRc9uNEajJchjCAEfDylnfU=
+X-Received: by 2002:a1f:5702:: with SMTP id l2mr2301185vkb.33.1642789053268;
+ Fri, 21 Jan 2022 10:17:33 -0800 (PST)
 MIME-Version: 1.0
 References: <d2c52284244d6dcb3472d2041abe43b456d116df.1642762977.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <d2c52284244d6dcb3472d2041abe43b456d116df.1642762977.git.christophe.leroy@csgroup.eu>
 From: Richard Fontana <rfontana@redhat.com>
-Date: Fri, 21 Jan 2022 13:09:51 -0500
-Message-ID: <CAC1cPGwb9eM=0VWiZx+G909Jt7a7=yx1CnVJ=kaFJfn4qxNWPw@mail.gmail.com>
+Date: Fri, 21 Jan 2022 13:17:22 -0500
+Message-ID: <CAC1cPGypAKcAAia4ipgTWNu33HLW=fb0CSroqR=SK-umrOJb-Q@mail.gmail.com>
 Subject: Re: [PATCH v3] powerpc: Add missing SPDX license identifiers
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Authentication-Results: relay.mimecast.com;
@@ -116,11 +116,16 @@ On Fri, Jan 21, 2022 at 6:03 AM Christophe Leroy
 >
 > Following files are given the following SPDX identifier based on the comments in the top of the file:
 >
->         include/asm/epapr_hcalls.h:/* SPDX-License-Identifier: GPL-2.0+ OR BSD */
->         include/asm/fsl_hcalls.h:/* SPDX-License-Identifier: GPL-2.0+ OR BSD */
+>         include/asm/ibmebus.h:/* SPDX-License-Identifier: GPL-2.0 OR OpenIB BSD */
+ [...]
+>         platforms/pseries/ibmebus.c:// SPDX-License-Identifier: GPL-2.0 OR OpenIB BSD
 
-"BSD" is not a defined SPDX identifier. I believe what you want here
-is "BSD-3-Clause" (see: https://spdx.org/licenses/BSD-3-Clause.html)
+"OpenIB BSD" is not a defined SPDX identifier. There is an SPDX
+identifier "Linux-OpenIB"
+https://spdx.org/licenses/Linux-OpenIB.html
+but I believe that is not a match to what's in these files
+(specifically, the wording of the disclaimer), rather I believe what
+you want here is BSD-2-Clause, but you may want to check that.
 
 Richard
 
