@@ -1,64 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3E349677F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 22:43:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 445B3496789
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 22:49:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JgXv14sz9z3bZ5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 08:43:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JgY1K1Cdsz3cCj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 08:49:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="key not found in DNS" header.d=jilayne.com header.i=@jilayne.com header.a=rsa-sha256 header.s=default header.b=XByOCaEv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Xlp+lpyR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=jilayne.com
- (client-ip=198.23.53.39; helo=mx1.supremebox.com;
- envelope-from=opensource@jilayne.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dkim=fail reason="key not found in DNS" header.d=jilayne.com
- header.i=@jilayne.com header.a=rsa-sha256 header.s=default header.b=XByOCaEv; 
- dkim-atps=neutral
-X-Greylist: delayed 2319 seconds by postgrey-1.36 at boromir;
- Sat, 22 Jan 2022 06:13:41 AEDT
-Received: from mx1.supremebox.com (mx1.supremebox.com [198.23.53.39])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JgTYx67Zjz30NC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 06:13:41 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=jilayne.com
- ; s=default;
- h=In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
- Message-ID:Content-Type:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=1OAlzCIuUjeLvlBnFQICkvFEYAeDYre3MxjkBJX88bw=; b=XByOCaEvALnIHGSUqyWHKoQ9df
- akBeBzyJaC5k0gzgmLSDRRMuLUvKDZMB9GPCQGC8rHP4aanQSQQRECU4hfvlP23rpFGkM7uMvVbFD
- XwMy/g7i1rQpm2Wle2/jnqrbB3K7zErGKwsm73iRzEVa+5+YC0LLK8kBmxk4PYsM65RQ=;
-Received: from 071-094-058-251.res.spectrum.com ([71.94.58.251]
- helo=[192.168.11.36]) by mx1.supremebox.com with esmtpa (Exim 4.92)
- (envelope-from <opensource@jilayne.com>)
- id 1nAykE-0003Sx-Fy; Fri, 21 Jan 2022 18:34:42 +0000
-Content-Type: multipart/alternative;
- boundary="------------TNMzHpz4M1xioeH582HBPMG0"
-Message-ID: <1dc97c33-1518-cc62-8b27-0588b17d1801@jilayne.com>
-Date: Fri, 21 Jan 2022 10:34:40 -0800
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Xlp+lpyR; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JgY0X0ZC5z2xt7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 08:48:27 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20LL61qp025020; 
+ Fri, 21 Jan 2022 21:48:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=RJwyNJEks06VC+Hzvzo6U+wpZJP45j0DyGPAljSVyMk=;
+ b=Xlp+lpyRFJ1Z/DDi9QHcVBRn/jB7IeUzQjoW9NJK82yOFHec4PCiLFPIehg5A2Ckl+de
+ sZ/UIinSUpl+E1WiGPbhQRoxTtfXNe+9Q6zIK8QDWuFKn46VhRAOYYfigzRxyZjtC2BW
+ KJ5pgZPVxJ3/RT463Hwd7XltpgoRfs104WTTjwiDB2ah1YvzlyKZqUwGfbZdkz1pfbGS
+ PqyIbqaMNs1ozMgo3Wueiv/OzWZyrjZN92sluo0/wYELFpxUJLtbqNJEIXVItgfe2/pw
+ Z7AaWjAdxdN0HuAAxQHDkUr4iOo06UidTyihBIxFuOqQEnnAGmWk822JlnIqZcm25YDK gQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dr378j3e8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 21 Jan 2022 21:48:20 +0000
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20LLFDIS021740;
+ Fri, 21 Jan 2022 21:48:19 GMT
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dr378j3dv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 21 Jan 2022 21:48:19 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20LLg8fg007719;
+ Fri, 21 Jan 2022 21:48:18 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma04wdc.us.ibm.com with ESMTP id 3dqj1fbupw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 21 Jan 2022 21:48:18 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 20LLmGUb23331154
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 21 Jan 2022 21:48:16 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3EE85C605A;
+ Fri, 21 Jan 2022 21:48:16 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 04F28C6055;
+ Fri, 21 Jan 2022 21:48:14 +0000 (GMT)
+Received: from sig-9-77-130-163.ibm.com (unknown [9.77.130.163])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 21 Jan 2022 21:48:14 +0000 (GMT)
+Message-ID: <cb790b1d369457eb124ad9daa4b4833fa12e0832.camel@linux.ibm.com>
+Subject: [RFC PATCH 0/3] powerpc/pseries/vas: VAS/NXGZIP support with LPM
+From: Haren Myneni <haren@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+ nathanl@linux.ibm.com
+Date: Fri, 21 Jan 2022 13:48:13 -0800
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: NW-CDkugp2kzmKIHR84HOJhsIp2_M2S7
+X-Proofpoint-GUID: wh_18a5VtwK_kA6LxvIHnXp-6wg8RUd0
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.5.0
-Subject: Re: [PATCH v3] powerpc: Add missing SPDX license identifiers
-Content-Language: en-US
-To: Richard Fontana <rfontana@redhat.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <d2c52284244d6dcb3472d2041abe43b456d116df.1642762977.git.christophe.leroy@csgroup.eu>
- <CAC1cPGypAKcAAia4ipgTWNu33HLW=fb0CSroqR=SK-umrOJb-Q@mail.gmail.com>
-From: J Lovejoy <opensource@jilayne.com>
-In-Reply-To: <CAC1cPGypAKcAAia4ipgTWNu33HLW=fb0CSroqR=SK-umrOJb-Q@mail.gmail.com>
-X-Sender-Ident-agJab5osgicCis: opensource@jilayne.com
-X-Mailman-Approved-At: Sat, 22 Jan 2022 08:40:28 +1100
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-21_10,2022-01-21_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 mlxlogscore=657 malwarescore=0 adultscore=0
+ mlxscore=0 impostorscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
+ definitions=main-2201210136
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,133 +106,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- "linux-spdx@vger.kernel.org" <linux-spdx@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: haren@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------TNMzHpz4M1xioeH582HBPMG0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-I just saw this and have not followed the entire thread from the 
-beginning, but if you are unsure if a given license text to something on 
-the SPDX License List, I highly recommend using the SPDX License-diff 
-browser extension / add-on (for Chrome or Firefox) - once you have that, 
-you can simply highlight a text in your browser window and it will tell 
-you if it matches or how far off it is if not.
+Virtual Accelerator Switchboard (VAS) is an engine stays on the
+chip. So all windows opened on a specific engine belongs to VAS
+the chip. The hypervisor expects the partition to close all
+active windows on the sources system and reopen them after
+migration on the destination machine.
 
-If a license is NOT a match to anything on the SPDX License List, please 
-submit it to the SPDX legal team here: 
-https://tools.spdx.org/app/submit_new_license/ (and preferably then tag 
-me in the Github issue, my Github ide is @jlovejoy ) Please make sure to 
-include that it's in the LInux kernel and a link to where you found it.
+This patch series adds VAS support with the partition migration.
+When the migration initiates, the VAS code gets suspend notifier
+which closes all active windows and sets VAS_WIN_MIGRATE_CLOSE as
+window status. Whereas receives resume notifier after migration
+to reopen all windows which has VAS_WIN_MIGRATE_CLOSE status.
 
-More about requesting a new license be added to the SPDX License List 
-can be found here: 
-https://github.com/spdx/license-list-XML/blob/master/DOCS/request-new-license.md
+These patches depend on VAS/DLPAR support patch series
+(https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-December/238331.html)
+Also the suspend/resume notifier code is added in a separate patch
+and will be posted later with the actual patches.
 
-Thanks!
-Jilayne
-SPDX legal team co-lead
+Haren Myneni (3):
+  powerpc/pseries/vas: Modify reconfig open/close functions for migration
+  powerpc/pseries/vas: Add VAS suspend/resume notifier
+  powerpc/pseries/vas: Disable window open during migration
+
+ arch/powerpc/include/asm/vas.h       |   2 +
+ arch/powerpc/platforms/pseries/vas.c | 199 ++++++++++++++++++++++++---
+ 2 files changed, 181 insertions(+), 20 deletions(-)
+
+-- 
+2.27.0
 
 
-On 1/21/22 10:17 AM, Richard Fontana wrote:
-> On Fri, Jan 21, 2022 at 6:03 AM Christophe Leroy
-> <christophe.leroy@csgroup.eu>  wrote:
->> Several files are missing SPDX license identifiers.
->>
->> Following files are given the following SPDX identifier based on the comments in the top of the file:
->>
->>          include/asm/ibmebus.h:/* SPDX-License-Identifier: GPL-2.0 OR OpenIB BSD */
->   [...]
->>          platforms/pseries/ibmebus.c:// SPDX-License-Identifier: GPL-2.0 OR OpenIB BSD
-> "OpenIB BSD" is not a defined SPDX identifier. There is an SPDX
-> identifier "Linux-OpenIB"
-> https://spdx.org/licenses/Linux-OpenIB.html
-> but I believe that is not a match to what's in these files
-> (specifically, the wording of the disclaimer), rather I believe what
-> you want here is BSD-2-Clause, but you may want to check that.
->
-> Richard
->
-
---------------TNMzHpz4M1xioeH582HBPMG0
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <font face="Red Hat Text">I just saw this and have not followed the
-      entire thread from the beginning, but if you are unsure if a given
-      license text to something on the SPDX License List, I highly
-      recommend using the SPDX License-diff browser extension / add-on
-      (for Chrome or Firefox) - once you have that, you can simply
-      highlight a text in your browser window and it will tell you if it
-      matches or how far off it is if not.<br>
-      <br>
-      If a license is NOT a match to anything on the SPDX License List,
-      please submit it to the SPDX legal team here:
-      <a class="moz-txt-link-freetext" href="https://tools.spdx.org/app/submit_new_license/">https://tools.spdx.org/app/submit_new_license/</a> (and preferably
-      then tag me in the Github issue, my Github ide is @jlovejoy )
-      Please make sure to include that it's in the LInux kernel and a
-      link to where you found it. <br>
-      <br>
-      More about requesting a new license be added to the SPDX License
-      List can be found here:
-<a class="moz-txt-link-freetext" href="https://github.com/spdx/license-list-XML/blob/master/DOCS/request-new-license.md">https://github.com/spdx/license-list-XML/blob/master/DOCS/request-new-license.md</a><br>
-      <br>
-      Thanks!<br>
-      Jilayne<br>
-      SPDX legal team co-lead<br>
-      <br>
-    </font><br>
-    <div class="moz-cite-prefix">On 1/21/22 10:17 AM, Richard Fontana
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-cite="mid:CAC1cPGypAKcAAia4ipgTWNu33HLW=fb0CSroqR=SK-umrOJb-Q@mail.gmail.com">
-      <pre class="moz-quote-pre" wrap="">On Fri, Jan 21, 2022 at 6:03 AM Christophe Leroy
-<a class="moz-txt-link-rfc2396E" href="mailto:christophe.leroy@csgroup.eu">&lt;christophe.leroy@csgroup.eu&gt;</a> wrote:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">
-Several files are missing SPDX license identifiers.
-
-Following files are given the following SPDX identifier based on the comments in the top of the file:
-
-        include/asm/ibmebus.h:/* SPDX-License-Identifier: GPL-2.0 OR OpenIB BSD */
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap=""> [...]
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">        platforms/pseries/ibmebus.c:// SPDX-License-Identifier: GPL-2.0 OR OpenIB BSD
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-"OpenIB BSD" is not a defined SPDX identifier. There is an SPDX
-identifier "Linux-OpenIB"
-<a class="moz-txt-link-freetext" href="https://spdx.org/licenses/Linux-OpenIB.html">https://spdx.org/licenses/Linux-OpenIB.html</a>
-but I believe that is not a match to what's in these files
-(specifically, the wording of the disclaimer), rather I believe what
-you want here is BSD-2-Clause, but you may want to check that.
-
-Richard
-
-</pre>
-    </blockquote>
-    <br>
-  </body>
-</html>
-
---------------TNMzHpz4M1xioeH582HBPMG0--
