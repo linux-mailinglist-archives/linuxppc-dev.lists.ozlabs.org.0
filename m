@@ -2,102 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083E4495CB2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 10:19:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59CCB495CC5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 10:23:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JgDNK6XXvz3Wtr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 20:19:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JgDSc1tRcz3cCJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 20:23:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=grrxCMpr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Rect2n4o;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=grrxCMpr; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Rect2n4o; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JgDRy50r3z2x9D
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 20:22:38 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JgDMc14QBz2xXV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 20:18:51 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20L9HF2T009402; 
- Fri, 21 Jan 2022 09:18:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=F8+h4B4yfo7p6fG5uH4NfAg2lSXxcM1Zk5O/ri3eMXA=;
- b=grrxCMprn/0kZDsIZwbZ52fHHpeTBgsrNFmNpiN9nySiLCuTpmuX5D7GvRsT6eUkODsV
- Maq/by7MXI8Whpwm3UlcAIOXQzQCZo4J9ACdtq1dNXqq9VX3QxNWsAXwLSnmguWigQOF
- EMHryIofU4zDLAyOZLq5+d8ixsL76CvUO5p5e9slvGNTywQwvEpdSZirxuVzVJMtLh35
- eZ2k9jHSBWmF22uul1E8yciaad/dzs66TrW2SJO1yWvcpI+8Vqgt3/zE9TmMf4x/SjD8
- g9xftlEYBxTp9s/mC7q9wHXcrK/v+Pp3YQa9i9QnvQIDEnlaNreLKrdPB4YD9/In2ulF xw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dqt2pg0e0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 Jan 2022 09:18:40 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20L9IdZP012033;
- Fri, 21 Jan 2022 09:18:39 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dqt2pg0dq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 Jan 2022 09:18:39 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20L9CO1V028231;
- Fri, 21 Jan 2022 09:18:38 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma03dal.us.ibm.com with ESMTP id 3dqj1js713-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 21 Jan 2022 09:18:38 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 20L9Iblc35324172
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 21 Jan 2022 09:18:37 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7765D136061;
- Fri, 21 Jan 2022 09:18:37 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 84FFE136060;
- Fri, 21 Jan 2022 09:18:34 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.43.32.214])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 21 Jan 2022 09:18:34 +0000 (GMT)
-X-Mailer: emacs 28.0.91 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>
-Subject: Re: [PATCH v7 1/7] powerpc/pmem: Restrict papr_scm to P8 and above.
-In-Reply-To: <20220121084056.GD3113@kunlun.suse.cz>
-References: <20200701072235.223558-1-aneesh.kumar@linux.ibm.com>
- <20200701072235.223558-2-aneesh.kumar@linux.ibm.com>
- <20220121084056.GD3113@kunlun.suse.cz>
-Date: Fri, 21 Jan 2022 14:48:32 +0530
-Message-ID: <87pmolo39z.fsf@linux.ibm.com>
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 16BC5619A3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 09:22:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166D6C340EB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 09:22:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1642756954;
+ bh=DoEBSYVdhxCk2hRPozcTctknq4n34sTJPxtSYV1nfhs=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=Rect2n4o+iX3RzSuMqm7blYH7Jp/hn6KvYVHNZi4gBL8iFIvMsCmxh1McTEwDN7si
+ Jp36PSgZTxLoEYXNkuZPZHbuOSaCX325CmGEKFE7qdL/bJYrG4zQFtGn5SCOJLFLuv
+ L3sc4NOwY7+X2UWdBb2ueG0AClbmiy7IwW458aaaf3XIv3BTv/IAj4XAqFCgdH7ih5
+ t6ToBIUrsVsbMOObBDp9gxf4Mq/Pzd4XB1xuRpofrh2pf52fyeSpwwMuzAAf2V+eki
+ 7yzqCn4T+d70ueboR1lGAMbTJ8dL8zQnETPkZDzy+/H5QLqca4OHltjQ5kVikRSe2h
+ DVpmSiH6xAKgg==
+Received: by mail-ua1-f48.google.com with SMTP id r15so15797588uao.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 01:22:34 -0800 (PST)
+X-Gm-Message-State: AOAM531GtipopwYWbgvkvnaiAQKNCDEFy4gleRnWTMtU59osggaDeXwR
+ 0LmdjJCFKZOFS8CW/HO7OiSxnU7F5ufzP6map6Q=
+X-Google-Smtp-Source: ABdhPJy/0MHzL1Lj83ABpPKlmasRjxPdpSw7edTfCXcU+fXON/ztRB09l8EfH009hsjqC4mDy1GaKsQom5NTP4rqtk4=
+X-Received: by 2002:a05:6102:34ec:: with SMTP id
+ bi12mr1057047vsb.51.1642756953041; 
+ Fri, 21 Jan 2022 01:22:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: G3HGKIbT-g2LCINDjTzbtIQYe1F5Im3X
-X-Proofpoint-ORIG-GUID: DxVX72VIX2cVhDyvW9Z1aOCCI93aJGbc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-21_06,2022-01-20_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- suspectscore=0 adultscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999
- clxscore=1015 spamscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2201210060
+References: <20220120073911.99857-9-guoren@kernel.org>
+ <CAK8P3a0LxB3we9wHOa4OPmNow6wz5NP49zeYhh7QXNv-MiR8UA@mail.gmail.com>
+ <CAJF2gTQVUF4LSO0a6_MV8x-UAiJw32pAFyS1oPNLXhcEaemzqg@mail.gmail.com>
+ <CAK8P3a1sOejkdOyoRUfw4ESS7ewX_8Wj9tQNrZ40OiuDqJnrmw@mail.gmail.com>
+In-Reply-To: <CAK8P3a1sOejkdOyoRUfw4ESS7ewX_8Wj9tQNrZ40OiuDqJnrmw@mail.gmail.com>
+From: Guo Ren <guoren@kernel.org>
+Date: Fri, 21 Jan 2022 17:22:22 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSzMym_PS36JgpWLQUdAO3nq+z7mdDWRT=EzQq+waPSpA@mail.gmail.com>
+Message-ID: <CAJF2gTSzMym_PS36JgpWLQUdAO3nq+z7mdDWRT=EzQq+waPSpA@mail.gmail.com>
+Subject: Re: [PATCH V3 08/17] riscv: compat: syscall: Add compat_sys_call_table
+ implementation
+To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,91 +74,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, linux-nvdimm@lists.01.org,
- Jeff Moyer <jmoyer@redhat.com>, oohall@gmail.com, dan.j.williams@intel.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ gregkh <gregkh@linuxfoundation.org>, Drew Fustini <drew@beagleboard.org>,
+ Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org, inux-parisc@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michal Such=C3=A1nek <msuchanek@suse.de> writes:
-
-> Hello,
+On Fri, Jan 21, 2022 at 4:57 PM Arnd Bergmann <arnd@arndb.de> wrote:
 >
-> On Wed, Jul 01, 2020 at 12:52:29PM +0530, Aneesh Kumar K.V wrote:
->> The PAPR based virtualized persistent memory devices are only supported =
-on
->> POWER9 and above. In the followup patch, the kernel will switch the pers=
-istent
->> memory cache flush functions to use a new `dcbf` variant instruction. Th=
-e new
->> instructions even though added in ISA 3.1 works even on P8 and P9 becaus=
-e these
->> are implemented as a variant of existing `dcbf` and `hwsync` and on P8 a=
-nd
->> P9 behaves as such.
->>=20
->> Considering these devices are only supported on P8 and above,  update th=
-e driver
->> to prevent a P7-compat guest from using persistent memory devices.
->>=20
->> We don't update of_pmem driver with the same condition, because, on bare=
--metal,
->> the firmware enables pmem support only on P9 and above. There the kernel=
- depends
->> on OPAL firmware to restrict exposing persistent memory related device t=
-ree
->> entries on older hardware. of_pmem.ko is written without any arch depend=
-ency and
->> we don't want to add ppc64 specific cpu feature check in of_pmem driver.
->>=20
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>  arch/powerpc/platforms/pseries/pmem.c | 6 ++++++
->>  1 file changed, 6 insertions(+)
->>=20
->> diff --git a/arch/powerpc/platforms/pseries/pmem.c b/arch/powerpc/platfo=
-rms/pseries/pmem.c
->> index f860a897a9e0..2347e1038f58 100644
->> --- a/arch/powerpc/platforms/pseries/pmem.c
->> +++ b/arch/powerpc/platforms/pseries/pmem.c
->> @@ -147,6 +147,12 @@ const struct of_device_id drc_pmem_match[] =3D {
->>=20=20
->>  static int pseries_pmem_init(void)
->>  {
->> +	/*
->> +	 * Only supported on POWER8 and above.
->> +	 */
->> +	if (!cpu_has_feature(CPU_FTR_ARCH_207S))
->> +		return 0;
->> +
+> On Fri, Jan 21, 2022 at 7:25 AM Guo Ren <guoren@kernel.org> wrote:
+> > On Thu, Jan 20, 2022 at 10:43 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> > > On Thu, Jan 20, 2022 at 8:39 AM <guoren@kernel.org> wrote:
 >
-> This looks superfluous.
+> > > Are you sure these are the right calling conventions? According to [1],
+> > > I think the 64-bit argument should be in an aligned pair of registers,
+> > > which means you need an extra pad argument as in the arm64 version
+> > > of these functions. Same for ftruncate64, pread64, pwrite64, and
+> > > readahead.
+> >
+> > [1] has abandoned.
+> >
+> > See:
+> > https://github.com/riscv-non-isa/riscv-elf-psabi-doc/blob/master/riscv-cc.adoc
 >
-> The hypervisor is responsible for publishing the pmem in devicetree when
-> present, kernel is responsible for using it when supported by the
-> kernel.
+> Ok, thanks for the reference, I picked the first one that came up in
+> a google search and didn't expect this to ever have changed.
 >
-> Or is there a problem that the flush instruction is not available in P7
-> compat mode?
-
-We want to avoid the usage of persistent memory on p7 compat mode
-because such a guest can LPM migrate to p7 systems. Now ideally I would
-expect hypervisor to avoid such migration, that is a p7 compat mode
-guest running on p10 using persistence memory migrating to p7
-(considering p7 never really had support for persistent memory).
-
-There was also the complexity w.r.t what instructions the userspace will
-use. So it was discussed at that point that we could comfortably state
-and prevent the usage of persistent memory on p7 and below.=20
+> > > I still feel like these should be the common implementations next to the
+> > > native handlers inside of an #ifdef CONFIG_COMPAT.
+> > >
+> > > The names clash with the custom versions defined for powerpc and sparc,
+> > > but the duplicates look compatible if you can account for the padded
+> > > argument and the lo/hi order of the pairs, so could just be removed here
+> > > (all other architectures use custom function names instead).
+> > I would try it later.
+>
+> This becomes easier then, as powerpc and sparc already have the non-padded
+> calling conventions, so you could just generalize those without looking at
+> the other architectures or adding the padding. The powerpc version already
+> has the dual-endian version, so using that will work on big-endian sparc and
+> on little-endian riscv as well, though we may need to come up with a better name
+> for the arg_u32/arg_u64/merge_64 macros in order to put that into a global
+> header without namespace collisions.
+Sounds good, thanks!
 
 >
-> Even then volatile regions should still work.
+>          Arnd
 
-That is a different problem altogether. We could really kill the usage of
-cache flush w.r.t volatile regions from the nvdimm driver right?=20
 
-For all these reason, disabling pmem on p7 was found to be the simplest sol=
-ution.=20
 
--aneesh
+-- 
+Best Regards
+ Guo Ren
+
+ML: https://lore.kernel.org/linux-csky/
