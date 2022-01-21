@@ -1,47 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F094957E3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 02:44:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBD94959E8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 07:26:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jg2HG4mGWz3cDR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 12:44:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jg8XZ4WLLz3cCT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Jan 2022 17:26:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QGovHoz1;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=heying24@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jg2Gq30f8z2yg5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 12:43:59 +1100 (AEDT)
-Received: from dggeme706-chm.china.huawei.com (unknown [172.30.72.53])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Jg2F95qVtz9sHP;
- Fri, 21 Jan 2022 09:42:37 +0800 (CST)
-Received: from huawei.com (10.67.174.47) by dggeme706-chm.china.huawei.com
- (10.1.199.102) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.21; Fri, 21
- Jan 2022 09:43:52 +0800
-From: He Ying <heying24@huawei.com>
-To: <catalin.marinas@arm.com>, <mpe@ellerman.id.au>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
- <christophe.leroy@csgroup.eu>, <sxwjean@gmail.com>, <peterz@infradead.org>,
- <keescook@chromium.org>
-Subject: [PATCH -v2] powerpc/process,
- kasan: Silence KASAN warnings in __get_wchan()
-Date: Thu, 20 Jan 2022 20:44:18 -0500
-Message-ID: <20220121014418.155675-1-heying24@huawei.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220119015025.136902-1-heying24@huawei.com>
-References: <20220119015025.136902-1-heying24@huawei.com>
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=QGovHoz1; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jg8Ws4Hk0z3050
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 17:25:45 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 4DB3DB81F10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 06:25:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772B0C340EA
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Jan 2022 06:25:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1642746341;
+ bh=Isi0LP5N8Hd28Ba/kM6pY+YaZm5nWrdB7apzNizLGkI=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=QGovHoz1oiofsdeaaXvjyotkiuHEDH0/CO+SlieoWuLCgx5KtV+Ai2Csju6ecvcNn
+ xTbsrzAaDUp9BLR9AyNzODSTM1WIjQcjd/vxArKlUGwNgK09W1bVBsghi+Zm7UWemM
+ uEtNuhsOXX8Ugo1Y4qHLm4MRe1sX1QcTL2nYe/FfR+RV6+/ofNF6GmJUNEvEHvHK+e
+ w1SoJRREbXxjcdQQSlT7aN2dH/O/U5TVCUyEr9r+jtwrROIzQilSGVx4QeQK9dZVSh
+ d1xgfZJVGsxLsNdaiWOd+utFZwUfcRwN3wT3+g6qcQI0ranll2u6k7n00Y/woKgW8j
+ jDKVRZ3MkFA6w==
+Received: by mail-ua1-f48.google.com with SMTP id c36so15087164uae.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Jan 2022 22:25:41 -0800 (PST)
+X-Gm-Message-State: AOAM533t26T+14fOahNeRSm7cNqmUE6e7UiTIVI6Ot4+DfMBJw3d9dgb
+ SdB+MelY9ozY5nppUyu2VJ/i6e2jbQx9XmOGWbc=
+X-Google-Smtp-Source: ABdhPJwB7ga72MDOno+HFBeeiGH/FKsBJy+/4qpm4/UjbqnmBZuKa8XMIWL0JsmA8KTM5bJQlsAjrV4ffWb0zfo7B4M=
+X-Received: by 2002:a67:e016:: with SMTP id c22mr1147085vsl.51.1642746340414; 
+ Thu, 20 Jan 2022 22:25:40 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.47]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggeme706-chm.china.huawei.com (10.1.199.102)
-X-CFilter-Loop: Reflected
+References: <20220120073911.99857-9-guoren@kernel.org>
+ <CAK8P3a0LxB3we9wHOa4OPmNow6wz5NP49zeYhh7QXNv-MiR8UA@mail.gmail.com>
+In-Reply-To: <CAK8P3a0LxB3we9wHOa4OPmNow6wz5NP49zeYhh7QXNv-MiR8UA@mail.gmail.com>
+From: Guo Ren <guoren@kernel.org>
+Date: Fri, 21 Jan 2022 14:25:29 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQVUF4LSO0a6_MV8x-UAiJw32pAFyS1oPNLXhcEaemzqg@mail.gmail.com>
+Message-ID: <CAJF2gTQVUF4LSO0a6_MV8x-UAiJw32pAFyS1oPNLXhcEaemzqg@mail.gmail.com>
+Subject: Re: [PATCH V3 08/17] riscv: compat: syscall: Add compat_sys_call_table
+ implementation
+To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,94 +71,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: chenjingwen6@huawei.com, huwanming@huaweil.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- heying24@huawei.com
+Cc: linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ gregkh <gregkh@linuxfoundation.org>, Drew Fustini <drew@beagleboard.org>,
+ Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org, inux-parisc@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The following KASAN warning was reported in our kernel.
+On Thu, Jan 20, 2022 at 10:43 PM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Thu, Jan 20, 2022 at 8:39 AM <guoren@kernel.org> wrote:
+> >
+> >  /* The array of function pointers for syscalls. */
+> >  extern void * const sys_call_table[];
+> > +#ifdef CONFIG_COMPAT
+> > +extern void * const compat_sys_call_table[];
+> > +#endif
+>
+> No need for the #ifdef, the normal convention is to just define the
+> extern declaration unconditionally for symbols that may or may not be defined.
+Okay
 
-  BUG: KASAN: stack-out-of-bounds in get_wchan+0x188/0x250
-  Read of size 4 at addr d216f958 by task ps/14437
+>
+> > +COMPAT_SYSCALL_DEFINE3(truncate64, const char __user *, pathname,
+> > +                      arg_u32p(length))
+> > +{
+> > +       return ksys_truncate(pathname, arg_u64(length));
+> > +}
+>
+> Are you sure these are the right calling conventions? According to [1],
+> I think the 64-bit argument should be in an aligned pair of registers,
+> which means you need an extra pad argument as in the arm64 version
+> of these functions. Same for ftruncate64, pread64, pwrite64, and
+> readahead.
 
-  CPU: 3 PID: 14437 Comm: ps Tainted: G           O      5.10.0 #1
-  Call Trace:
-  [daa63858] [c0654348] dump_stack+0x9c/0xe4 (unreliable)
-  [daa63888] [c035cf0c] print_address_description.constprop.3+0x8c/0x570
-  [daa63908] [c035d6bc] kasan_report+0x1ac/0x218
-  [daa63948] [c00496e8] get_wchan+0x188/0x250
-  [daa63978] [c0461ec8] do_task_stat+0xce8/0xe60
-  [daa63b98] [c0455ac8] proc_single_show+0x98/0x170
-  [daa63bc8] [c03cab8c] seq_read_iter+0x1ec/0x900
-  [daa63c38] [c03cb47c] seq_read+0x1dc/0x290
-  [daa63d68] [c037fc94] vfs_read+0x164/0x510
-  [daa63ea8] [c03808e4] ksys_read+0x144/0x1d0
-  [daa63f38] [c005b1dc] ret_from_syscall+0x0/0x38
-  --- interrupt: c00 at 0x8fa8f4
-      LR = 0x8fa8cc
+[1] has abandoned.
 
-  The buggy address belongs to the page:
-  page:98ebcdd2 refcount:0 mapcount:0 mapping:00000000 index:0x2 pfn:0x1216f
-  flags: 0x0()
-  raw: 00000000 00000000 01010122 00000000 00000002 00000000 ffffffff 00000000
-  raw: 00000000
-  page dumped because: kasan: bad access detected
+See:
+https://github.com/riscv-non-isa/riscv-elf-psabi-doc/blob/master/riscv-cc.adoc
 
-  Memory state around the buggy address:
-   d216f800: 00 00 00 00 00 f1 f1 f1 f1 00 00 00 00 00 00 00
-   d216f880: f2 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >d216f900: 00 00 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1 00
-                                            ^
-   d216f980: f2 f2 f2 f2 f2 f2 f2 00 00 00 00 00 00 00 00 00
-   d216fa00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Ltp test results:
 
-After looking into this issue, I find the buggy address belongs
-to the task stack region. It seems KASAN has something wrong.
-I look into the code of __get_wchan in x86 architecture and
-find the same issue has been resolved by the commit
-f7d27c35ddff ("x86/mm, kasan: Silence KASAN warnings in get_wchan()").
-The solution could be applied to powerpc architecture too.
+ftruncate01                                        PASS       0
+ftruncate01_64                                     PASS       0
+ftruncate03                                        PASS       0
+ftruncate03_64                                     PASS       0
+ftruncate04                                        CONF       32
+ftruncate04_64                                     CONF       32
 
-As Andrey Ryabinin said, get_wchan() is racy by design, it may
-access volatile stack of running task, thus it may access
-redzone in a stack frame and cause KASAN to warn about this.
+truncate02                                         PASS       0
+truncate02_64                                      PASS       0
+truncate03                                         PASS       0
+truncate03_64                                      PASS       0
 
-Use READ_ONCE_NOCHECK() to silence these warnings.
+pread01                                            PASS       0
+pread01_64                                         PASS       0
+pread02                                            PASS       0
+pread02_64                                         PASS       0
+pread03                                            PASS       0
+pread03_64                                         PASS       0
 
-Reported-by: Wanming Hu <huwanming@huaweil.com>
-Signed-off-by: He Ying <heying24@huawei.com>
-Signed-off-by: Chen Jingwen <chenjingwen6@huawei.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
----
-Changelog:
+pwrite01_64                                        PASS       0
+pwrite02_64                                        PASS       0
+pwrite03_64                                        PASS       0
+pwrite04_64                                        PASS       0
 
-v2:
-* Add missing Reported-by and SoB tags
----
- arch/powerpc/kernel/process.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+readahead01                                        PASS       0
+readahead02                                        CONF       32
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 984813a4d5dc..a75d20f23dac 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -2160,12 +2160,12 @@ static unsigned long ___get_wchan(struct task_struct *p)
- 		return 0;
- 
- 	do {
--		sp = *(unsigned long *)sp;
-+		sp = READ_ONCE_NOCHECK(*(unsigned long *)sp);
- 		if (!validate_sp(sp, p, STACK_FRAME_OVERHEAD) ||
- 		    task_is_running(p))
- 			return 0;
- 		if (count > 0) {
--			ip = ((unsigned long *)sp)[STACK_FRAME_LR_SAVE];
-+			ip = READ_ONCE_NOCHECK(((unsigned long *)sp)[STACK_FRAME_LR_SAVE]);
- 			if (!in_sched_functions(ip))
- 				return ip;
- 		}
+
+>
+> > +COMPAT_SYSCALL_DEFINE3(ftruncate64, unsigned int, fd, arg_u32p(length))
+> > +{
+> > +       return ksys_ftruncate(fd, arg_u64(length));
+> > +}
+> > +
+> > +COMPAT_SYSCALL_DEFINE6(fallocate, int, fd, int, mode,
+> > +                      arg_u32p(offset), arg_u32p(len))
+> > +{
+> > +       return ksys_fallocate(fd, mode, arg_u64(offset), arg_u64(len));
+> > +}
+> > +
+> > +COMPAT_SYSCALL_DEFINE5(pread64, unsigned int, fd, char __user *, buf,
+> > +                      size_t, count, arg_u32p(pos))
+> > +{
+> > +       return ksys_pread64(fd, buf, count, arg_u64(pos));
+> > +}
+> > +
+> > +COMPAT_SYSCALL_DEFINE5(pwrite64, unsigned int, fd,
+> > +                      const char __user *, buf, size_t, count, arg_u32p(pos))
+> > +{
+> > +       return ksys_pwrite64(fd, buf, count, arg_u64(pos));
+> > +}
+> > +
+> > +COMPAT_SYSCALL_DEFINE6(sync_file_range, int, fd, arg_u32p(offset),
+> > +                      arg_u32p(nbytes), unsigned int, flags)
+> > +{
+> > +       return ksys_sync_file_range(fd, arg_u64(offset), arg_u64(nbytes),
+> > +                                   flags);
+> > +}
+> > +
+> > +COMPAT_SYSCALL_DEFINE4(readahead, int, fd, arg_u32p(offset),
+> > +                      size_t, count)
+> > +{
+> > +       return ksys_readahead(fd, arg_u64(offset), count);
+> > +}
+> > +
+> > +COMPAT_SYSCALL_DEFINE6(fadvise64_64, int, fd, int, advice, arg_u32p(offset),
+> > +                      arg_u32p(len))
+> > +{
+> > +       return ksys_fadvise64_64(fd, arg_u64(offset), arg_u64(len), advice);
+> > +}
+>
+> I still feel like these should be the common implementations next to the
+> native handlers inside of an #ifdef CONFIG_COMPAT.
+>
+> The names clash with the custom versions defined for powerpc and sparc,
+> but the duplicates look compatible if you can account for the padded
+> argument and the lo/hi order of the pairs, so could just be removed here
+> (all other architectures use custom function names instead).
+I would try it later.
+
+>
+>         Arnd
+>
+> [1] https://riscv.org/wp-content/uploads/2015/01/riscv-calling.pdf
+
+
+
 -- 
-2.17.1
+Best Regards
+ Guo Ren
 
+ML: https://lore.kernel.org/linux-csky/
