@@ -2,54 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E02496A9D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 08:30:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D8E496BCA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 11:56:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jgnvk70YSz3cN4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 18:30:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JgtTf27X6z3bcg
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 21:56:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=pI1ceGoV;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Ozp+OPQT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217;
- helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c;
+ helo=mail-pl1-x62c.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=pI1ceGoV; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jgnv35JS9z2ynt
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 18:29:34 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=Ozp+OPQT; dkim-atps=neutral
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
+ [IPv6:2607:f8b0:4864:20::62c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 862CE60906;
- Sat, 22 Jan 2022 07:29:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2B9C004E1;
- Sat, 22 Jan 2022 07:29:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1642836570;
- bh=cMWRKsI8TI2NHT84jTQS/VsDVS8oI5QJbf0MXIj7kt0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=pI1ceGoVu3CvLVt/6heTjt81u7y+XDx/Uw6BOOSObPJW4WPvVtM5NhbPo6poe2GPQ
- tdZKznbXRQN+CEn4N451Wc8DtVhEyKoAlz4/PwX2FXWc6KDagqwQgHn9TU7nRGlxrr
- UIb/aGYJKpTrwLWT6QFH4a5O2fl+WFVq49KXzpCM=
-Date: Sat, 22 Jan 2022 08:29:21 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Nayna Jain <nayna@linux.ibm.com>
-Subject: Re: [RFC PATCH 0/2] powerpc/pseries: add support for local secure
- storage called Platform Keystore(PKS)
-Message-ID: <YeuyUVVdFADCuDr4@kroah.com>
-References: <20220122005637.28199-1-nayna@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JgtSt5grxz2yR8
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 21:55:40 +1100 (AEDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d7so11002236plr.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 02:55:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=BBZEebPO/GHU3Jj3Q+vstKPKR/t0QiMyGQljVRgLCTQ=;
+ b=Ozp+OPQTwu4IjpKBKU0QvPSRRDuILI3dH3nzXfVZGjGDccIKeWlrmHqd/6wrIfdF24
+ uQjfqh6TRjooOJ33+n7iDinsQP8N92Joev0uuu/ILJHwE8HptSBaOJU72BjPiLKP42A2
+ VdbHllZmAiiWwz4ZAkgMz3DsS0tFiyOhTxyAnZLn7JRI9DHw1UleY8ftF1CI9TwMZBp1
+ GfJeYu1Nko4/mgdeh82PfuYwNaMy00OE7/QIRDxoME/06VD+eOzQrNs6BIAaooAOqoVn
+ LYr0tYcwNznrXQ7atbHiIoGC660hD7qe4zV6pALPmt5rGpQT00lGw9ptfHLu1wAZTjFC
+ rlUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=BBZEebPO/GHU3Jj3Q+vstKPKR/t0QiMyGQljVRgLCTQ=;
+ b=xgyKLqXtl8bc2LKvrKk41F6GVAYI1Nqri54Tmr1bdClBtBuGiyMaEx2ehySURsAnrg
+ k0nPJn2X169BnulRdMYKvoNvtiAkTeQAharRzL0yU2G8yO6mvgT8UtCqE1RykTN0uV2r
+ VBwo7xwlvDqUerDUevEsMf6FaxCJttGFJJDxqDFiGA9HwQE0qhggD6S3n3BYzPErGr3E
+ myDBcifvzu7oJYFVVAGhDGlbGsKlmUhxRKlheuPz3dY7eZiW2yuIdIpl1edPNPA/8946
+ H3vt3lbh4L3hK+eVLKOcfJkWSo9PrBRsM9tDvpBcmd8OP+eG8XeOGO1/lD2/uNUnLFxP
+ xcRg==
+X-Gm-Message-State: AOAM531uliTzHmWb95uD5JElJZziTBt04C/pSDtDSGlsU5t5+PrON2aN
+ Z70fyH8LL4J4iKNSNU7xls9Ko3wp750=
+X-Google-Smtp-Source: ABdhPJwfUgOHs4/NzpQfigSyHVlMG/oahnLOFCCmQKYCoMwbzk/6dVoplhEfS8mYnRqUHkPV37nhhA==
+X-Received: by 2002:a17:90b:3884:: with SMTP id
+ mu4mr4692619pjb.82.1642848936809; 
+ Sat, 22 Jan 2022 02:55:36 -0800 (PST)
+Received: from bobo.ibm.com (193-116-82-75.tpgi.com.au. [193.116.82.75])
+ by smtp.gmail.com with ESMTPSA id h6sm1020809pfc.36.2022.01.22.02.55.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 22 Jan 2022 02:55:36 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] KVM: PPC: Book3S HV Nested: Fix nested HFSCR being clobbered
+ with multiple vCPUs
+Date: Sat, 22 Jan 2022 20:55:30 +1000
+Message-Id: <20220122105530.3477250-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220122005637.28199-1-nayna@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,41 +79,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Douglas Miller <dougmill@linux.vnet.ibm.com>,
- George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- gjoyce@ibm.com, Daniel Axtens <dja@axtens.net>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 21, 2022 at 07:56:35PM -0500, Nayna Jain wrote:
-> PowerVM provides an isolated Platform Keystore(PKS) storage allocation
-> for each partition with individually managed access controls to store
-> sensitive information securely. Linux Kernel can access this storage by
-> interfacing with hypervisor using a new set of hypervisor calls. 
-> 
-> PowerVM guest secure boot intend to use Platform Keystore for the
-> purpose of storing public keys. Secure boot requires public keys to
-> be able to verify the grub and boot kernel. To allow authenticated
->  manipulation of keys, it supports variables to store key authorities
-> - PK/KEK and code signing keys - db. It also supports denied list to
-> disallow booting even if signed with valid key. This is done via
-> denied list database - dbx or sbat. These variables would be stored in
-> PKS, and are managed and controlled by firmware.
-> 
-> The purpose of this patchset is to add support for users to
-> read/write/add/delete variables required for secure boot on PowerVM.
+The L0 is storing HFSCR requested by the L1 for the L2 in struct
+kvm_nested_guest when the L1 requests a vCPU enter L2. kvm_nested_guest
+is not a per-vCPU structure. Hilarity ensues.
 
-Ok, this is like the 3rd or 4th different platform-specific proposal for
-this type of functionality.  I think we need to give up on
-platform-specific user/kernel apis on this (random sysfs/securityfs
-files scattered around the tree), and come up with a standard place for
-all of this.
+Fix it by moving the nested hfscr into the vCPU structure together with
+the other per-vCPU nested fields.
 
-Please work with the other developers of the other drivers for this to
-make this unified so that userspace has a chance to use this in a sane
-manner.
+Fixes: 8b210a880b35 ("KVM: PPC: Book3S HV Nested: Make nested HFSCR state accessible")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/kvm_book3s_64.h | 1 -
+ arch/powerpc/include/asm/kvm_host.h      | 1 +
+ arch/powerpc/kvm/book3s_hv.c             | 3 +--
+ arch/powerpc/kvm/book3s_hv_nested.c      | 2 +-
+ 4 files changed, 3 insertions(+), 4 deletions(-)
 
-thanks,
+diff --git a/arch/powerpc/include/asm/kvm_book3s_64.h b/arch/powerpc/include/asm/kvm_book3s_64.h
+index fe07558173ef..827038a33064 100644
+--- a/arch/powerpc/include/asm/kvm_book3s_64.h
++++ b/arch/powerpc/include/asm/kvm_book3s_64.h
+@@ -39,7 +39,6 @@ struct kvm_nested_guest {
+ 	pgd_t *shadow_pgtable;		/* our page table for this guest */
+ 	u64 l1_gr_to_hr;		/* L1's addr of part'n-scoped table */
+ 	u64 process_table;		/* process table entry for this guest */
+-	u64 hfscr;			/* HFSCR that the L1 requested for this nested guest */
+ 	long refcnt;			/* number of pointers to this struct */
+ 	struct mutex tlb_lock;		/* serialize page faults and tlbies */
+ 	struct kvm_nested_guest *next;
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index a770443cd6e0..d9bf60bf0816 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -818,6 +818,7 @@ struct kvm_vcpu_arch {
+ 
+ 	/* For support of nested guests */
+ 	struct kvm_nested_guest *nested;
++	u64 nested_hfscr;	/* HFSCR that the L1 requested for the nested guest */
+ 	u32 nested_vcpu_id;
+ 	gpa_t nested_io_gpr;
+ #endif
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index d1817cd9a691..84c89f08ae9a 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -1816,7 +1816,6 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
+ 
+ static int kvmppc_handle_nested_exit(struct kvm_vcpu *vcpu)
+ {
+-	struct kvm_nested_guest *nested = vcpu->arch.nested;
+ 	int r;
+ 	int srcu_idx;
+ 
+@@ -1922,7 +1921,7 @@ static int kvmppc_handle_nested_exit(struct kvm_vcpu *vcpu)
+ 		 * it into a HEAI.
+ 		 */
+ 		if (!(vcpu->arch.hfscr_permitted & (1UL << cause)) ||
+-					(nested->hfscr & (1UL << cause))) {
++				(vcpu->arch.nested_hfscr & (1UL << cause))) {
+ 			vcpu->arch.trap = BOOK3S_INTERRUPT_H_EMUL_ASSIST;
+ 
+ 			/*
+diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+index 8f8daaeeb3b7..9d373f8963ee 100644
+--- a/arch/powerpc/kvm/book3s_hv_nested.c
++++ b/arch/powerpc/kvm/book3s_hv_nested.c
+@@ -363,7 +363,7 @@ long kvmhv_enter_nested_guest(struct kvm_vcpu *vcpu)
+ 	/* set L1 state to L2 state */
+ 	vcpu->arch.nested = l2;
+ 	vcpu->arch.nested_vcpu_id = l2_hv.vcpu_token;
+-	l2->hfscr = l2_hv.hfscr;
++	vcpu->arch.nested_hfscr = l2_hv.hfscr;
+ 	vcpu->arch.regs = l2_regs;
+ 
+ 	/* Guest must always run with ME enabled, HV disabled. */
+-- 
+2.23.0
 
-greg k-h
