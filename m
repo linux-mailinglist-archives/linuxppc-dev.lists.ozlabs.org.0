@@ -1,59 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC547496A23
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 06:21:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E02496A9D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 08:30:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jgl3N4XNTz30Qw
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 16:21:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jgnvk70YSz3cN4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 18:30:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="key not found in DNS" header.d=jilayne.com header.i=@jilayne.com header.a=rsa-sha256 header.s=default header.b=VNB+ryfQ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=pI1ceGoV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=jilayne.com
- (client-ip=198.23.53.42; helo=mx1.supremebox.com;
- envelope-from=opensource@jilayne.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dkim=fail reason="key not found in DNS" header.d=jilayne.com
- header.i=@jilayne.com header.a=rsa-sha256 header.s=default header.b=VNB+ryfQ; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217;
+ helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=pI1ceGoV; 
  dkim-atps=neutral
-Received: from mx1.supremebox.com (mx2.supremebox.com [198.23.53.42])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jgl2h6yFKz2yg5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 16:20:59 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=jilayne.com
- ; s=default;
- h=To:References:Message-Id:Content-Transfer-Encoding:Cc:Date:
- In-Reply-To:From:Subject:Mime-Version:Content-Type:Sender:Reply-To:Content-ID
- :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
- Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
- :List-Post:List-Owner:List-Archive;
- bh=5FYKB111pb8xtaFI9Q+oHKrMPS1x5Vtz4UWDNuEAXD0=; b=VNB+ryfQcVUN/qTlbD+h4NkKid
- taphaXvKEW+UctFaXgBvt8xRheHR4e3nIdtklmSykZj24c6d0yu8E2LfsrtZ/G9P+6mmCAI9Zi5hq
- zA5b/Imi5nbfZd8koFkmQ28DIKzyUyDWeV/F7Axz0ku9/djguV865WKarkOAMk3sblmI=;
-Received: from 071-094-058-251.res.spectrum.com ([71.94.58.251]
- helo=smtpclient.apple) by mx1.supremebox.com with esmtpa (Exim 4.92)
- (envelope-from <opensource@jilayne.com>)
- id 1nB8pZ-0001O3-CS; Sat, 22 Jan 2022 05:20:53 +0000
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
-Subject: Re: [PATCH v3] powerpc: Add missing SPDX license identifiers
-From: J Lovejoy <opensource@jilayne.com>
-In-Reply-To: <CAC1cPGypAKcAAia4ipgTWNu33HLW=fb0CSroqR=SK-umrOJb-Q@mail.gmail.com>
-Date: Fri, 21 Jan 2022 21:20:49 -0800
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E0A69FEE-9889-4DF2-AC39-3E8638E5BFEE@jilayne.com>
-References: <d2c52284244d6dcb3472d2041abe43b456d116df.1642762977.git.christophe.leroy@csgroup.eu>
- <CAC1cPGypAKcAAia4ipgTWNu33HLW=fb0CSroqR=SK-umrOJb-Q@mail.gmail.com>
-To: Richard Fontana <rfontana@redhat.com>
-X-Mailer: Apple Mail (2.3654.120.0.1.13)
-X-Sender-Ident-agJab5osgicCis: opensource@jilayne.com
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jgnv35JS9z2ynt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 18:29:34 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 862CE60906;
+ Sat, 22 Jan 2022 07:29:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2B9C004E1;
+ Sat, 22 Jan 2022 07:29:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1642836570;
+ bh=cMWRKsI8TI2NHT84jTQS/VsDVS8oI5QJbf0MXIj7kt0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=pI1ceGoVu3CvLVt/6heTjt81u7y+XDx/Uw6BOOSObPJW4WPvVtM5NhbPo6poe2GPQ
+ tdZKznbXRQN+CEn4N451Wc8DtVhEyKoAlz4/PwX2FXWc6KDagqwQgHn9TU7nRGlxrr
+ UIb/aGYJKpTrwLWT6QFH4a5O2fl+WFVq49KXzpCM=
+Date: Sat, 22 Jan 2022 08:29:21 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Nayna Jain <nayna@linux.ibm.com>
+Subject: Re: [RFC PATCH 0/2] powerpc/pseries: add support for local secure
+ storage called Platform Keystore(PKS)
+Message-ID: <YeuyUVVdFADCuDr4@kroah.com>
+References: <20220122005637.28199-1-nayna@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220122005637.28199-1-nayna@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,65 +61,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- "linux-spdx@vger.kernel.org" <linux-spdx@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-kernel@vger.kernel.org, Douglas Miller <dougmill@linux.vnet.ibm.com>,
+ George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ gjoyce@ibm.com, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-(trying this again, as first time, my message bounced)
+On Fri, Jan 21, 2022 at 07:56:35PM -0500, Nayna Jain wrote:
+> PowerVM provides an isolated Platform Keystore(PKS) storage allocation
+> for each partition with individually managed access controls to store
+> sensitive information securely. Linux Kernel can access this storage by
+> interfacing with hypervisor using a new set of hypervisor calls. 
+> 
+> PowerVM guest secure boot intend to use Platform Keystore for the
+> purpose of storing public keys. Secure boot requires public keys to
+> be able to verify the grub and boot kernel. To allow authenticated
+>  manipulation of keys, it supports variables to store key authorities
+> - PK/KEK and code signing keys - db. It also supports denied list to
+> disallow booting even if signed with valid key. This is done via
+> denied list database - dbx or sbat. These variables would be stored in
+> PKS, and are managed and controlled by firmware.
+> 
+> The purpose of this patchset is to add support for users to
+> read/write/add/delete variables required for secure boot on PowerVM.
 
-I just saw this and have not followed the entire thread from the =
-beginning, but if you are unsure if a given license text to something on =
-the SPDX License List, I highly recommend using the SPDX License-diff =
-browser extension / add-on (for Chrome or Firefox) - once you have that, =
-you can simply highlight a text in your browser window and it will tell =
-you if it matches or how far off it is if not.
+Ok, this is like the 3rd or 4th different platform-specific proposal for
+this type of functionality.  I think we need to give up on
+platform-specific user/kernel apis on this (random sysfs/securityfs
+files scattered around the tree), and come up with a standard place for
+all of this.
 
-If a license is NOT a match to anything on the SPDX License List, please =
-submit it to the SPDX legal team here: =
-https://tools.spdx.org/app/submit_new_license/ (and preferably then tag =
-me in the Github issue, my Github ide is @jlovejoy ) Please make sure to =
-include that it's in the LInux kernel and a link to where you found it.=20=
+Please work with the other developers of the other drivers for this to
+make this unified so that userspace has a chance to use this in a sane
+manner.
 
+thanks,
 
-More about requesting a new license be added to the SPDX License List =
-can be found here: =
-https://github.com/spdx/license-list-XML/blob/master/DOCS/request-new-lice=
-nse.md
-
-Thanks!
-Jilayne
-SPDX legal team co-lead
-
-> On Jan 21, 2022, at 10:17 AM, Richard Fontana <rfontana@redhat.com> =
-wrote:
->=20
-> On Fri, Jan 21, 2022 at 6:03 AM Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
->>=20
->> Several files are missing SPDX license identifiers.
->>=20
->> Following files are given the following SPDX identifier based on the =
-comments in the top of the file:
->>=20
->>        include/asm/ibmebus.h:/* SPDX-License-Identifier: GPL-2.0 OR =
-OpenIB BSD */
-> [...]
->>        platforms/pseries/ibmebus.c:// SPDX-License-Identifier: =
-GPL-2.0 OR OpenIB BSD
->=20
-> "OpenIB BSD" is not a defined SPDX identifier. There is an SPDX
-> identifier "Linux-OpenIB"
-> https://spdx.org/licenses/Linux-OpenIB.html
-> but I believe that is not a match to what's in these files
-> (specifically, the wording of the disclaimer), rather I believe what
-> you want here is BSD-2-Clause, but you may want to check that.
->=20
-> Richard
->=20
-
+greg k-h
