@@ -2,77 +2,90 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC10496887
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 01:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A10374968F7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 01:57:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JgcFf3pj0z3cDy
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 11:15:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JgdBt4VkTz30Mn
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Jan 2022 11:57:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qfn7cj1d;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KUPHG5TL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bugzilla.kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=qfn7cj1d; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=KUPHG5TL; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JgcDx1khVz2xB1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 11:14:25 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id B8314B82139
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 00:14:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 74B4EC340E7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 00:14:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1642810458;
- bh=AzgSz7dTTZRCEBWzQbP442fsYz6IGaQr9YAcf9Mt/1Q=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=qfn7cj1dUWfylSwgxzHzmchYQnGLNVy5j8DC/v26J0+bQATH4ZYeYdHLh+1IKCy9G
- xynbUgiY6ATqVodt59OCR/EQO/ZiK9FCKum8I20oCZisLZnQe/MPNNg95Q8Z67mFIX
- j9cFA7bFrX08QKaweIvxr1Uo6r6g4bb/LAVtFlfKtw4NbBMPJlQpJczC6OU/YJx80J
- UA9N8j2KBkkqdq4o7UQDQiApD7evXR7lxAGu9JIh7bRpz7xj2t3/a4W9bijzUCZ8RQ
- Zhxphx048Bg095nOLKRhGqny1aIZBLDhUYsFxnXpH/HweClIWS/2H46Yv5jIMlusG6
- OxQ/w0eSEVOhQ==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
- from userid 48) id 52B9DCC13A6; Sat, 22 Jan 2022 00:14:18 +0000 (UTC)
-From: bugzilla-daemon@bugzilla.kernel.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JgdB55J1dz2ymt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Jan 2022 11:57:01 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20LL5gAE013827; 
+ Sat, 22 Jan 2022 00:56:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=s/JXOWKByKkIT9+XKOfqX5/U2DNopOrY8Pl+/w9acnA=;
+ b=KUPHG5TL/P9dlZ1TRPoBYtDoPZpnf8TVt+j0SQ3JpYtX2GlVopYPHHhshYAOnjiEDvsp
+ 49wDzYfqGja+YBK2dt9Aeullo89N+NuWb9qsdqaCX5KP0+b3u5b73ddTTvnT0NuLTL9U
+ K4/0PnESP5aFDFGhEFXiUUkAcGP0Mi7cc3H8CGrHvjJ1mo0cwlM9RhbUGLrfpocPWOel
+ +fA/idSF6rwBkTrYHE3XJGMRXudDx5isQkSFYJrC01ghwni1/xlewpLEp4Arw017N4bT
+ kIK7LJaXQggMsUe4QZhs+DnLLqXvl6v6CV7073j6RSS40ZewMCgLnxcVBhExquwzfJ8A GQ== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dr1w3xm5u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 22 Jan 2022 00:56:52 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20M0WW35002286;
+ Sat, 22 Jan 2022 00:56:49 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma04fra.de.ibm.com with ESMTP id 3dqj1k89mb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 22 Jan 2022 00:56:49 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 20M0lLlM38797646
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 22 Jan 2022 00:47:21 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6236BA4055;
+ Sat, 22 Jan 2022 00:56:46 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 25083A4053;
+ Sat, 22 Jan 2022 00:56:44 +0000 (GMT)
+Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com.com (unknown
+ [9.211.59.92]) by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sat, 22 Jan 2022 00:56:43 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 213837] [bisected] "Kernel panic - not syncing: corrupted stack
- end detected inside scheduler" at building via distcc on a G5
-Date: Sat, 22 Jan 2022 00:14:18 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo CC platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEEDINFO
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: short_desc
-Message-ID: <bug-213837-206035-huZuIYXyui@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-213837-206035@https.bugzilla.kernel.org/>
-References: <bug-213837-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+Subject: [RFC PATCH 0/2] powerpc/pseries: add support for local secure storage
+ called Platform Keystore(PKS) 
+Date: Fri, 21 Jan 2022 19:56:35 -0500
+Message-Id: <20220122005637.28199-1-nayna@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: O4D5XP9l9J-q0IX33lPXhlnkhDgUmuJS
+X-Proofpoint-ORIG-GUID: O4D5XP9l9J-q0IX33lPXhlnkhDgUmuJS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-21_10,2022-01-21_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 spamscore=0
+ mlxscore=0 clxscore=1011 priorityscore=1501 malwarescore=0 mlxlogscore=770
+ lowpriorityscore=0 bulkscore=0 suspectscore=0 impostorscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
+ definitions=main-2201220001
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,37 +97,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Douglas Miller <dougmill@linux.vnet.ibm.com>,
+ Greg KH <gregkh@linuxfoundation.org>, George Wilson <gcwilson@linux.ibm.com>,
+ gjoyce@ibm.com, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D213837
+PowerVM provides an isolated Platform Keystore(PKS) storage allocation
+for each partition with individually managed access controls to store
+sensitive information securely. Linux Kernel can access this storage by
+interfacing with hypervisor using a new set of hypervisor calls. 
 
-Erhard F. (erhard_f@mailbox.org) changed:
+PowerVM guest secure boot intend to use Platform Keystore for the
+purpose of storing public keys. Secure boot requires public keys to
+be able to verify the grub and boot kernel. To allow authenticated
+ manipulation of keys, it supports variables to store key authorities
+- PK/KEK and code signing keys - db. It also supports denied list to
+disallow booting even if signed with valid key. This is done via
+denied list database - dbx or sbat. These variables would be stored in
+PKS, and are managed and controlled by firmware.
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-            Summary|"Kernel panic - not         |[bisected] "Kernel panic -
-                   |syncing: corrupted stack    |not syncing: corrupted
-                   |end detected inside         |stack end detected inside
-                   |scheduler" at building via  |scheduler" at building via
-                   |distcc on a G5              |distcc on a G5
+The purpose of this patchset is to add support for users to
+read/write/add/delete variables required for secure boot on PowerVM.
 
---- Comment #15 from Erhard F. (erhard_f@mailbox.org) ---
-This may look a bit odd at first to cause memory corruption while building
-stuff, but as I do the builds via distcc on another host (sources are fetch=
-ed
-via nfs from this host too) it seems possible.
+Nayna Jain (2):
+  pseries: define driver for Platform Keystore
+  pseries: define sysfs interface to expose PKS variables
 
-Problem is the 'bad' commit is a merge and reverting it on v5.16.2 for a te=
-st
-via git revert -m1 c2c11289021dfacec1658b2019faab10e12f383a  gets me some m=
-erge
-conflicts which I don't know to resolve properly..
+ Documentation/ABI/testing/sysfs-pksvar        |  77 +++
+ arch/powerpc/include/asm/hvcall.h             |  13 +-
+ arch/powerpc/include/asm/pks.h                |  84 +++
+ arch/powerpc/platforms/pseries/Kconfig        |  17 +
+ arch/powerpc/platforms/pseries/Makefile       |   2 +
+ arch/powerpc/platforms/pseries/pks.c          | 494 ++++++++++++++++++
+ arch/powerpc/platforms/pseries/pksvar-sysfs.c | 356 +++++++++++++
+ 7 files changed, 1042 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-pksvar
+ create mode 100644 arch/powerpc/include/asm/pks.h
+ create mode 100644 arch/powerpc/platforms/pseries/pks.c
+ create mode 100644 arch/powerpc/platforms/pseries/pksvar-sysfs.c
 
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.
-You are watching someone on the CC list of the bug.=
+-- 
+2.27.0
