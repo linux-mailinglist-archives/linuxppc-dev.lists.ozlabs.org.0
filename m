@@ -2,69 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E7849716C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jan 2022 13:04:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66FCE49716D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jan 2022 13:05:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JhWxz52h6z3dh7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jan 2022 23:04:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JhWyg2f0zz3dlR
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jan 2022 23:05:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IXwz+jZ5;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gSQMatjK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
- helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433;
+ helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=IXwz+jZ5; dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
+ header.s=20210112 header.b=gSQMatjK; dkim-atps=neutral
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
+ [IPv6:2607:f8b0:4864:20::433])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JhWsq63sSz3bT6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jan 2022 23:01:03 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id
- s2-20020a17090ad48200b001b501977b23so12966908pju.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jan 2022 04:01:03 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JhWss4QDKz3bVx
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jan 2022 23:01:05 +1100 (AEDT)
+Received: by mail-pf1-x433.google.com with SMTP id 128so13208137pfe.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jan 2022 04:01:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=x01Niqq4R3YNDZjgNcrK5Tu7K/civd4HHH8QIiSIp8o=;
- b=IXwz+jZ5cT1SbW8tVKUJkU+Vo+JkyN0eRDc58g52xkk+pTPJ6HHI7N7UTsOIJSJ78b
- DmVun06VNYYvDw8TIlVFbAuiILf1+u9+n6EsRMWJA9IEKgMjv9/DFYVsMS1ADEY/7mPy
- 8GuHbgY58Ok9rhK98/80BXrPFzSm3MVvQUL5bLdcwvDh+HiTTXb0Dh8TlUfMHBTuwYrQ
- 57hGzNVsW/Gm7AerKjER4WHx61jI2fdanMZou8GwELrTkqOEcYcC3EXKj2Ax6CuaQKwD
- sVQ0KfJrBz4w9WFRjyIu+PJ+sZgoALBZOECf7Qev1IjEIsd806R9kNUOA/sS2P9kVqKO
- WC2g==
+ bh=qp5jKk+UJYmHsTosJh5HwKS1PeRELtDkE45Uz+gEt9o=;
+ b=gSQMatjKLAr73jKctC2hjXdGMXEdcmRfGjyUq4m/0ZGRGIvyhMuDKFLZ9MQuvK7+tv
+ LVfi7/i9el0qMrlSAF0U+ND6Xx7Sa/Hj6kavO6v97YKDEwjD5NiQgUBQGIBDJIwIRPUO
+ 35TkLk1D+nXF0KOfjE65MZD018xCiwTvXXPGNMo29yh1htvHWXQiBhTaeQbsGSoakk8i
+ RHgu2SooPoev5RB/yjQVj4nobzZ1cl5TGJVwyvAsd22LEoknVOYyMyHbvbXegG+XK+8n
+ p7AWKs4kbTxQ6MkAIORYZV2KoyuFlYx3HYuMJv0RFjH8CCPVIZHHvlxNjEzr9sDi5vAm
+ Tn8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=x01Niqq4R3YNDZjgNcrK5Tu7K/civd4HHH8QIiSIp8o=;
- b=TMIdP1J4Ct3KxvAhSP1ppS8LgCwTdNc61RsPNiiRSTha6NUmQvee+X7g3myawoY2+4
- MaEfF0izAiPqxdCBARmayPqW8BUTBCNspqW/0DWt8fdP1li39z9Yy/+7nBBlhw84Uw0M
- gyqENUxzH34vdqfwfxKlhNX07rqpgNK6MpHOwMwISQ17rT2GVzIH3zhoSMmhzNmOcKG7
- xenEXc583N9gKlseB+aHSJfBfxaQBhfgZzswZEsjiNilYPVRHEhPw7e3Y2I0fIdLOj+2
- gUl2uhlZ5PRev3zPEOnZBhoT9/ZPZ0VhnoEbKxUqZTWdVv3R5Iwamb6noRrVZJ/PWtLQ
- izzQ==
-X-Gm-Message-State: AOAM531SnJgJMdvpnw3XA1fsOyn5BcTaMF+chsuD5RkigSe8AV7u9g5x
- 7AIav2uziWjm1FND+bPmYX/ObaDd+xY=
-X-Google-Smtp-Source: ABdhPJzjJ8H29yNLRTLxCCVYQyWdF+olZM9IlU99ovd4XYJmz1wwZUF67jOcbctdvOeQJlmypH+0OA==
-X-Received: by 2002:a17:902:7143:b0:14a:62ed:c2a7 with SMTP id
- u3-20020a170902714300b0014a62edc2a7mr10898186plm.80.1642939261511; 
- Sun, 23 Jan 2022 04:01:01 -0800 (PST)
+ bh=qp5jKk+UJYmHsTosJh5HwKS1PeRELtDkE45Uz+gEt9o=;
+ b=soa1nmfmvY5CprNsTVVezUvyS/S0EMPEQZhCBuLZ4v/9v70R2R6nenMGLS1mEqy9g6
+ f76kT6juRNC7sDDSrHUd41GJlUGlTLlGPV38Sm30J6DSe4dC4hrSBsjxybkgf3Vr1eXq
+ BcqEufD9MNLSjvPZexjE1xZsZ53NyqfJXk3124FIhUsHMG9C9wttXyJnGrM73jbZfytT
+ 8D7wltJnwpy33T0iDLidld6tHuGy7DlEwsQ2JYGdPI5eWnXTJYNOEfs7Qmr9/Ro84BDB
+ jO4v2BwGyPTL72+uwDr9ojTsK3yfXKboau7BYvmc0lppm81F/n4qmy1Aq+J0kXikg24e
+ KvAQ==
+X-Gm-Message-State: AOAM533WdS4t0KkmYobXIIuUXXN0UYql3+kiEBDIP8ttyXbxLkPrjLSN
+ 7+K4Hm3APHV8SxrFNXy5UC0Oz/6IgQM=
+X-Google-Smtp-Source: ABdhPJw0wBH39ArOzmmkKhfDF+aylPz81C9WDUCDiaEbreARhRo8/DGjE+PjXjq8Th4W6RppFIVz5Q==
+X-Received: by 2002:a63:10c:: with SMTP id 12mr8566069pgb.67.1642939263452;
+ Sun, 23 Jan 2022 04:01:03 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (193-116-82-75.tpgi.com.au. [193.116.82.75])
- by smtp.gmail.com with ESMTPSA id kx11sm9608213pjb.1.2022.01.23.04.00.59
+ by smtp.gmail.com with ESMTPSA id kx11sm9608213pjb.1.2022.01.23.04.01.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 23 Jan 2022 04:01:01 -0800 (PST)
+ Sun, 23 Jan 2022 04:01:03 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 5/6] KVM: PPC: Book3S Nested: Use explicit 4096 LPID maximum
-Date: Sun, 23 Jan 2022 22:00:42 +1000
-Message-Id: <20220123120043.3586018-6-npiggin@gmail.com>
+Subject: [PATCH 6/6] KVM: PPC: Book3S HV: Remove KVMPPC_NR_LPIDS
+Date: Sun, 23 Jan 2022 22:00:43 +1000
+Message-Id: <20220123120043.3586018-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20220123120043.3586018-1-npiggin@gmail.com>
 References: <20220123120043.3586018-1-npiggin@gmail.com>
@@ -86,123 +84,44 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rather than tie this to KVMPPC_NR_LPIDS which is becoming more dynamic,
-fix it to 4096 (12-bits) explicitly for now.
+KVMPPC_NR_LPIDS no longer represents any size restriction on the
+LPID space and can be removed. A CPU with more than 12 LPID bits
+implemented will now be able to create more than 4095 guests.
 
-kvmhv_get_nested() does not have to check against KVM_MAX_NESTED_GUESTS
-because the L1 partition table registration hcall already did that, and
-it checks against the partition table size.
-
-This patch also puts all the partition table size calculations into the
-same form, using 12 for the architected size field shift and 4 for the
-shift corresponding to the partition table entry size.
-
-Signed-of-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/kvm_host.h |  7 ++++++-
- arch/powerpc/kvm/book3s_64_mmu_hv.c |  2 +-
- arch/powerpc/kvm/book3s_hv_nested.c | 24 +++++++++++-------------
- 3 files changed, 18 insertions(+), 15 deletions(-)
+ arch/powerpc/include/asm/kvm_book3s_asm.h | 3 ---
+ arch/powerpc/kvm/book3s_64_mmu_hv.c       | 3 ---
+ 2 files changed, 6 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-index 5fd0564e5c94..e6fb03884dcc 100644
---- a/arch/powerpc/include/asm/kvm_host.h
-+++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -34,7 +34,12 @@
- #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
- #include <asm/kvm_book3s_asm.h>		/* for MAX_SMT_THREADS */
- #define KVM_MAX_VCPU_IDS	(MAX_SMT_THREADS * KVM_MAX_VCORES)
--#define KVM_MAX_NESTED_GUESTS	KVMPPC_NR_LPIDS
-+
-+/*
-+ * Limit the nested partition table to 4096 entries (because that's what
-+ * hardware supports). Both guest and host use this value.
-+ */
-+#define KVM_MAX_NESTED_GUESTS_SHIFT	12
+diff --git a/arch/powerpc/include/asm/kvm_book3s_asm.h b/arch/powerpc/include/asm/kvm_book3s_asm.h
+index e6bda70b1d93..c8882d9b86c2 100644
+--- a/arch/powerpc/include/asm/kvm_book3s_asm.h
++++ b/arch/powerpc/include/asm/kvm_book3s_asm.h
+@@ -14,9 +14,6 @@
+ #define XICS_MFRR		0xc
+ #define XICS_IPI		2	/* interrupt source # for IPIs */
  
- #else
- #define KVM_MAX_VCPU_IDS	KVM_MAX_VCPUS
+-/* LPIDs we support with this build -- runtime limit may be lower */
+-#define KVMPPC_NR_LPIDS			(1UL << 12)
+-
+ /* Maximum number of threads per physical core */
+ #define MAX_SMT_THREADS		8
+ 
 diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-index 5be92d5bc099..f983fb36cbf2 100644
+index f983fb36cbf2..aafd2a74304c 100644
 --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
 +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-@@ -266,7 +266,7 @@ int kvmppc_mmu_hv_init(void)
- 			return -EINVAL;
- 		nr_lpids = 1UL << mmu_lpid_bits;
- 	} else {
--		nr_lpids = KVM_MAX_NESTED_GUESTS;
-+		nr_lpids = 1UL << KVM_MAX_NESTED_GUESTS_SHIFT;
+@@ -269,9 +269,6 @@ int kvmppc_mmu_hv_init(void)
+ 		nr_lpids = 1UL << KVM_MAX_NESTED_GUESTS_SHIFT;
  	}
  
- 	if (nr_lpids > KVMPPC_NR_LPIDS)
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index 1eff969b095c..75169e0753ce 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -439,10 +439,11 @@ long kvmhv_nested_init(void)
- 	if (!radix_enabled())
- 		return -ENODEV;
- 
--	/* find log base 2 of KVMPPC_NR_LPIDS, rounding up */
--	ptb_order = __ilog2(KVMPPC_NR_LPIDS - 1) + 1;
--	if (ptb_order < 8)
--		ptb_order = 8;
-+	/* Partition table entry is 1<<4 bytes in size, hence the 4. */
-+	ptb_order = KVM_MAX_NESTED_GUESTS_SHIFT + 4;
-+	/* Minimum partition table size is 1<<12 bytes */
-+	if (ptb_order < 12)
-+		ptb_order = 12;
- 	pseries_partition_tb = kmalloc(sizeof(struct patb_entry) << ptb_order,
- 				       GFP_KERNEL);
- 	if (!pseries_partition_tb) {
-@@ -450,7 +451,7 @@ long kvmhv_nested_init(void)
- 		return -ENOMEM;
- 	}
- 
--	ptcr = __pa(pseries_partition_tb) | (ptb_order - 8);
-+	ptcr = __pa(pseries_partition_tb) | (ptb_order - 12);
- 	rc = plpar_hcall_norets(H_SET_PARTITION_TABLE, ptcr);
- 	if (rc != H_SUCCESS) {
- 		pr_err("kvm-hv: Parent hypervisor does not support nesting (rc=%ld)\n",
-@@ -534,16 +535,14 @@ long kvmhv_set_partition_table(struct kvm_vcpu *vcpu)
- 	long ret = H_SUCCESS;
- 
- 	srcu_idx = srcu_read_lock(&kvm->srcu);
--	/*
--	 * Limit the partition table to 4096 entries (because that's what
--	 * hardware supports), and check the base address.
--	 */
--	if ((ptcr & PRTS_MASK) > 12 - 8 ||
-+	/* Check partition size and base address. */
-+	if ((ptcr & PRTS_MASK) + 12 - 4 > KVM_MAX_NESTED_GUESTS_SHIFT ||
- 	    !kvm_is_visible_gfn(vcpu->kvm, (ptcr & PRTB_MASK) >> PAGE_SHIFT))
- 		ret = H_PARAMETER;
- 	srcu_read_unlock(&kvm->srcu, srcu_idx);
- 	if (ret == H_SUCCESS)
- 		kvm->arch.l1_ptcr = ptcr;
-+
- 	return ret;
- }
- 
-@@ -639,7 +638,7 @@ static void kvmhv_update_ptbl_cache(struct kvm_nested_guest *gp)
- 
- 	ret = -EFAULT;
- 	ptbl_addr = (kvm->arch.l1_ptcr & PRTB_MASK) + (gp->l1_lpid << 4);
--	if (gp->l1_lpid < (1ul << ((kvm->arch.l1_ptcr & PRTS_MASK) + 8))) {
-+	if (gp->l1_lpid < (1ul << ((kvm->arch.l1_ptcr & PRTS_MASK) + 12 - 4))) {
- 		int srcu_idx = srcu_read_lock(&kvm->srcu);
- 		ret = kvm_read_guest(kvm, ptbl_addr,
- 				     &ptbl_entry, sizeof(ptbl_entry));
-@@ -809,8 +808,7 @@ struct kvm_nested_guest *kvmhv_get_nested(struct kvm *kvm, int l1_lpid,
- {
- 	struct kvm_nested_guest *gp, *newgp;
- 
--	if (l1_lpid >= KVM_MAX_NESTED_GUESTS ||
--	    l1_lpid >= (1ul << ((kvm->arch.l1_ptcr & PRTS_MASK) + 12 - 4)))
-+	if (l1_lpid >= (1ul << ((kvm->arch.l1_ptcr & PRTS_MASK) + 12 - 4)))
- 		return NULL;
- 
- 	spin_lock(&kvm->mmu_lock);
+-	if (nr_lpids > KVMPPC_NR_LPIDS)
+-		nr_lpids = KVMPPC_NR_LPIDS;
+-
+ 	if (!cpu_has_feature(CPU_FTR_ARCH_300)) {
+ 		/* POWER7 has 10-bit LPIDs, POWER8 has 12-bit LPIDs */
+ 		if (cpu_has_feature(CPU_FTR_ARCH_207S))
 -- 
 2.23.0
 
