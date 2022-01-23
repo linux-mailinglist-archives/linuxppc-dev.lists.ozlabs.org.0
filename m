@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A7649749F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jan 2022 19:42:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D94594974B5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Jan 2022 19:43:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jhhn65G37z30hX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 05:42:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jhhny57dLz3cSn
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 05:43:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gYPbDS3x;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=C1SMT8g7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
- helo=mail-pj1-x1031.google.com; envelope-from=yury.norov@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029;
+ helo=mail-pj1-x1029.google.com; envelope-from=yury.norov@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=gYPbDS3x; dkim-atps=neutral
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
- [IPv6:2607:f8b0:4864:20::1031])
+ header.s=20210112 header.b=C1SMT8g7; dkim-atps=neutral
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com
+ [IPv6:2607:f8b0:4864:20::1029])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JhhmN5X88z30Ky
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 05:41:54 +1100 (AEDT)
-Received: by mail-pj1-x1031.google.com with SMTP id
- d12-20020a17090a628c00b001b4f47e2f51so15467076pjj.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jan 2022 10:41:54 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jhhmk6kB7z3bVd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 05:42:14 +1100 (AEDT)
+Received: by mail-pj1-x1029.google.com with SMTP id
+ g9-20020a17090a67c900b001b4f1d71e4fso14259330pjm.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Jan 2022 10:42:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:subject:date:message-id:in-reply-to:references:mime-version
  :content-transfer-encoding;
- bh=6C24rFRm4D9dQifkbAjpKYbgU7hbqSNfEMJXgU+U9KI=;
- b=gYPbDS3xW8Bof6/g8XIUI3VOyuWClFWj+Zb1KxH7n8eeylpaD7S+0cAQt0BGU2As3z
- duZ9/03UsRs07ChTiteduoXTEha9M3JOt6tS2tzofY+aoNv/yDnGgcW162IO7pfl0wRn
- ZdC0c7yMRUF0QVaQPTId/pywxUsN08BWrvHjR6PfR/383ALFfcq0bHBGeuYVyfzZTOTt
- y5IAqKFglXI7xWlG7X5EuweqyLRNOsqcKnZPCn+pO0ZCouINBgits28kN7Bj2Z0Eniua
- b/brsWqVckOYFra9U6GGgIJGIuiycyhOEhIHy1iVyx8K7y1oYTijPy9C6uKNewCLCHDK
- pV/w==
+ bh=VqjN8AVE4l1jGj4WKwwteMJXfvhHCp8LxE1b5uVHyhI=;
+ b=C1SMT8g72QpJmf2bGBlHtrMJyAm02anZRdJPiD2hXPa8KnxyJmdZw8KHlGAX0+WQGc
+ BZHWyBl2a5DTg8aenBofL3Pa+LSa4prxrtnLXqzJa+qJVVLWS9YDxbbC4POYvOHztAqw
+ IyapelEZ/75WdLGC84xm+UEAL5Cev9xJG06mFRsDSpCKQLMoLxgo8eFVJQqILZ1wkvcj
+ /C5aH5KAaWIXgqOmeQebx/JlfxVpZJzkpasVbNS7lD3Xygu7Dq/lNJpvZKtbbQBFVMYy
+ bxtmSmEeLKDAfMNUeFJyK+ebz4bFvez0SDfycUa2ySgs5dFSDYB8Y/ANERmbRLt77Z2M
+ N4zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=6C24rFRm4D9dQifkbAjpKYbgU7hbqSNfEMJXgU+U9KI=;
- b=6cri/5eCZTTjB6lBfCU+AyDM7bw0jA0S0GMZbHvDQBExYS8nb2WZqsebY9tcTu7KS+
- UpOBIoAlGlUhJtHG5Fcj/qu+Wwce1GAzJkpIpx89FTUwVdDmFoki7QohgRiCIk6OlYvM
- Zqoksa0x2q1O3A8vguAKLyKJoNL3c20MYbTnSh5IQRtC7g5S68dG8OHzBHMSqzR5Rs6+
- 0XtnQVAYpA19qmnwxaqLTB+G0RrWvXdtZeFmQXAH7LiQ1PfGzq/AMqU3hQirzBSmQMe5
- DXEb4za/drZLrxS5dDyf3Zwnvjwfcl5NzfCukzIBoA3woOur07GuYAr2MZBQO0Jx1f+s
- xIWg==
-X-Gm-Message-State: AOAM530dO98GUj6+TWOWRt96kbQJbbSN2shhq1C2eZj2aD85PybiNyp0
- 04lBE/eOalRsFogPyFBwZSQ=
-X-Google-Smtp-Source: ABdhPJwCUm5LGUQRIavV14WvbHJtSguBHM0RRlDYhBuujEK/erleabWJrnbTCB8LogwV7QJ8p8LuVA==
-X-Received: by 2002:a17:90b:4f87:: with SMTP id
- qe7mr7183731pjb.154.1642963310342; 
- Sun, 23 Jan 2022 10:41:50 -0800 (PST)
+ bh=VqjN8AVE4l1jGj4WKwwteMJXfvhHCp8LxE1b5uVHyhI=;
+ b=Gnqac2dYgaOwLdrFzXsD7DqIFcMnoECLL2guZOF/P6IVgj4C+XqWR+n0l5CCnbfUvd
+ hDYiX5XwaINg1LyM9PLfjoF8U6ZBvgcNbUyfhR3s0n/UR+0W8CXQgxu7V5kNGy2n4Zqv
+ C49TgMH3h8sxL/RrtN+3YpUYOpdIWcnz8KDe6JEj4eiv29wRTsj0BePMxSSItpCVe7IG
+ JWvcP62WwHfK4356xLp0PFIRmSe7TdfiUg1nVUaC8aXf7nPppucgbZyYbWQuASwrnODO
+ tSNfkzl1LfmZCZdBDxrirkg57lcQ+z1udvXAw0bz2GQiQLqQQE/qa/VOszG5rMkMZJ60
+ WjgA==
+X-Gm-Message-State: AOAM532vOq4O8RlXruy3oRkB2NLMI3e1bG7zHBLqaOzuJODlgyGSmUY2
+ Wxwc6bdRuuAIHTw5VBWTQ40=
+X-Google-Smtp-Source: ABdhPJyR3LEGx3dQjXbO/uCCX9t/QjIgjrhqlzEDELiIFsGeBhAD2N532FLMhxMOd5s6FzXSuCmH2g==
+X-Received: by 2002:a17:902:d883:b0:14a:4ba5:6e72 with SMTP id
+ b3-20020a170902d88300b0014a4ba56e72mr12062149plz.27.1642963332593; 
+ Sun, 23 Jan 2022 10:42:12 -0800 (PST)
 Received: from localhost (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id pj7sm1942706pjb.50.2022.01.23.10.41.49
+ by smtp.gmail.com with ESMTPSA id q140sm10315902pgq.7.2022.01.23.10.42.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 23 Jan 2022 10:41:50 -0800 (PST)
+ Sun, 23 Jan 2022 10:42:12 -0800 (PST)
 From: Yury Norov <yury.norov@gmail.com>
 To: Yury Norov <yury.norov@gmail.com>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -73,26 +73,11 @@ To: Yury Norov <yury.norov@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
  Alexey Klimov <aklimov@redhat.com>, linux-kernel@vger.kernel.org,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
- "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Valentin Schneider <valentin.schneider@arm.com>,
- Parth Shah <parth@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Hari Bathini <hbathini@linux.ibm.com>, Rob Herring <robh@kernel.org>,
- Laurent Dufour <ldufour@linux.ibm.com>, Petr Mladek <pmladek@suse.com>,
- John Ogness <john.ogness@linutronix.de>,
- Sudeep Holla <sudeep.holla@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Xiongwei Song <sxwjean@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 39/54] arch/powerpc: replace cpumask_weight with
- cpumask_weight_{eq, ...} where appropriate
-Date: Sun, 23 Jan 2022 10:39:10 -0800
-Message-Id: <20220123183925.1052919-40-yury.norov@gmail.com>
+ Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 46/54] soc: replace cpumask_weight with cpumask_weight_lt
+Date: Sun, 23 Jan 2022 10:39:17 -0800
+Message-Id: <20220123183925.1052919-47-yury.norov@gmail.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220123183925.1052919-1-yury.norov@gmail.com>
 References: <20220123183925.1052919-1-yury.norov@gmail.com>
@@ -113,66 +98,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PowerPC code uses cpumask_weight() to compare the weight of cpumask
-with a given number. We can do it more efficiently with
-cpumask_weight_{eq, ...} because conditional cpumask_weight may stop
+qman_test_stash() calls cpumask_weight() to compare the weight of
+cpumask with a given number. We can do it more efficiently with
+cpumask_weight_lt because conditional cpumask_weight may stop
 traversing the cpumask earlier, as soon as condition is met.
 
 Signed-off-by: Yury Norov <yury.norov@gmail.com>
 ---
- arch/powerpc/kernel/smp.c      | 2 +-
- arch/powerpc/kernel/watchdog.c | 2 +-
- arch/powerpc/xmon/xmon.c       | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/soc/fsl/qbman/qman_test_stash.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index b7fd6a72aa76..8bff748df402 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1656,7 +1656,7 @@ void start_secondary(void *unused)
- 		if (has_big_cores)
- 			sibling_mask = cpu_smallcore_mask;
+diff --git a/drivers/soc/fsl/qbman/qman_test_stash.c b/drivers/soc/fsl/qbman/qman_test_stash.c
+index b7e8e5ec884c..28b08568a349 100644
+--- a/drivers/soc/fsl/qbman/qman_test_stash.c
++++ b/drivers/soc/fsl/qbman/qman_test_stash.c
+@@ -561,7 +561,7 @@ int qman_test_stash(void)
+ {
+ 	int err;
  
--		if (cpumask_weight(mask) > cpumask_weight(sibling_mask(cpu)))
-+		if (cpumask_weight_gt(mask, cpumask_weight(sibling_mask(cpu))))
- 			shared_caches = true;
+-	if (cpumask_weight(cpu_online_mask) < 2) {
++	if (cpumask_weight_lt(cpu_online_mask, 2)) {
+ 		pr_info("%s(): skip - only 1 CPU\n", __func__);
+ 		return 0;
  	}
- 
-diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
-index bfc27496fe7e..62937a077de7 100644
---- a/arch/powerpc/kernel/watchdog.c
-+++ b/arch/powerpc/kernel/watchdog.c
-@@ -483,7 +483,7 @@ static void start_watchdog(void *arg)
- 
- 	wd_smp_lock(&flags);
- 	cpumask_set_cpu(cpu, &wd_cpus_enabled);
--	if (cpumask_weight(&wd_cpus_enabled) == 1) {
-+	if (cpumask_weight_eq(&wd_cpus_enabled, 1)) {
- 		cpumask_set_cpu(cpu, &wd_smp_cpus_pending);
- 		wd_smp_last_reset_tb = get_tb();
- 	}
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index fd72753e8ad5..b423812e94e0 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -469,7 +469,7 @@ static bool wait_for_other_cpus(int ncpus)
- 
- 	/* We wait for 2s, which is a metric "little while" */
- 	for (timeout = 20000; timeout != 0; --timeout) {
--		if (cpumask_weight(&cpus_in_xmon) >= ncpus)
-+		if (cpumask_weight_ge(&cpus_in_xmon, ncpus))
- 			return true;
- 		udelay(100);
- 		barrier();
-@@ -1338,7 +1338,7 @@ static int cpu_cmd(void)
- 			case 'S':
- 			case 't':
- 				cpumask_copy(&xmon_batch_cpus, &cpus_in_xmon);
--				if (cpumask_weight(&xmon_batch_cpus) <= 1) {
-+				if (cpumask_weight_le(&xmon_batch_cpus, 1)) {
- 					printf("There are no other cpus in xmon\n");
- 					break;
- 				}
 -- 
 2.30.2
 
