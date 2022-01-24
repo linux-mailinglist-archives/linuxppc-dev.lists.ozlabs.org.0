@@ -1,37 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B09549804B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 14:03:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44672498071
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 14:06:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jj9C83FBkz3bVc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 00:03:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jj9Gx1VwQz3bVK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 00:06:33 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=K+B0BTsG;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 324 seconds by postgrey-1.36 at boromir;
- Tue, 25 Jan 2022 00:02:54 AEDT
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Jj9Bk4HnXz2xXy
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 00:02:53 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0F327D6E;
- Mon, 24 Jan 2022 04:57:25 -0800 (PST)
-Received: from p8cg001049571a15.arm.com (unknown [10.163.43.190])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 449A63F774;
- Mon, 24 Jan 2022 04:57:20 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Subject: [RFC V1 04/31] powerpc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-Date: Mon, 24 Jan 2022 18:26:41 +0530
-Message-Id: <1643029028-12710-5-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1643029028-12710-1-git-send-email-anshuman.khandual@arm.com>
-References: <1643029028-12710-1-git-send-email-anshuman.khandual@arm.com>
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jj9GD3BDmz301M
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 00:05:56 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=K+B0BTsG; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Jj9GC5G7Tz4xNp;
+ Tue, 25 Jan 2022 00:05:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1643029555;
+ bh=7t1rm9GlFa473mv84fh1ElmnLncO0BXgnKQiLIDafkE=;
+ h=From:To:Cc:Subject:Date:From;
+ b=K+B0BTsGAeyfVExzLN+2cePyZpuzQtlvfjabGR/pTi+Il4oHXTuirLjY9ReEpztPy
+ c9AqZhfK/8wJkTnQ0kRsCwGMZCwVZOx6On9QzbRj58tE724xHsTW/Juj/EGzA4fU19
+ y/WAOt0pLvSKTFZz6vg/hbD3IYdVI1PR5Z9WOYoiqmPy9Jubgj20vtZ+SlvVI4UMX6
+ ZdNOHc0FecUCrvaGBAzMGXoqz1eG4UGdG/Vdu3xifcw4wxgjpvCQOnumKTy4de7mi9
+ ZcrGxrtT0y50g5rts/HgODX6zNqBMGjzVGuApsV+iyySH7OzzXkgXxtmnYbqSmAGpZ
+ xsJYgHQ04Q31Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/64: Move paca allocation later in boot
+Date: Tue, 25 Jan 2022 00:05:44 +1100
+Message-Id: <20220124130544.408675-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,148 +57,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>, linux-kernel@vger.kernel.org,
- hch@infradead.org, Paul Mackerras <paulus@samba.org>,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: mahesh@linux.ibm.com, sourabhjain@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This defines and exports a platform specific custom vm_get_page_prot() via
-subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
-macros can be dropped which are no longer needed. While here, this also
-localizes arch_vm_get_page_prot() as powerpc_vm_get_page_prot().
+Mahesh & Sourabh identified two problems[1][2] with ppc64_bolted_size()
+and paca allocation.
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+The first is that on a Radix capable machine but with "disable_radix" on
+the command line, there is a window during early boot where
+early_radix_enabled() is true, even though it will later become false.
+
+  early_init_devtree:                       <- early_radix_enabled() = false
+    early_init_dt_scan_cpus:                <- early_radix_enabled() = false
+        ...
+        check_cpu_pa_features:              <- early_radix_enabled() = false
+        ...                               ^ <- early_radix_enabled() = TRUE
+        allocate_paca:                    | <- early_radix_enabled() = TRUE
+            ...                           |
+            ppc64_bolted_size:            | <- early_radix_enabled() = TRUE
+                if (early_radix_enabled())| <- early_radix_enabled() = TRUE
+                    return ULONG_MAX;     |
+        ...                               |
+    ...                                   | <- early_radix_enabled() = TRUE
+    ...                                   | <- early_radix_enabled() = TRUE
+    mmu_early_init_devtree()              V
+    ...                                     <- early_radix_enabled() = false
+
+This causes ppc64_bolted_size() to return ULONG_MAX for the boot CPU's
+paca allocation, even though later it will return a different value.
+This is not currently a bug because the paca allocation is also limited
+by the RMA size, but that is very fragile.
+
+The second issue is that when using the Hash MMU, when we call
+ppc64_bolted_size() for the boot CPU's paca allocation, we have not yet
+detected whether 1T segments are available. That causes
+ppc64_bolted_size() to return 256MB, even if the machine can actually
+support up to 1T. This is usually OK, we generally have space below
+256MB for one paca, but for a kdump kernel placed above 256MB it causes
+the boot to fail.
+
+At boot we cannot discover all the features of the machine
+instantaneously, so there will always be some periods where we have
+incomplete knowledge of the system. However both the above problems stem
+from the fact that we allocate the boot CPU's paca (and paca pointers
+array) before we decide which MMU we are using, or discover its exact
+features.
+
+Moving the paca allocation slightly later still can solve both the
+issues described above, and means for a normal boot we don't do any
+permanent allocations until after we've discovered the MMU.
+
+Note that although we move the boot CPU's paca allocation later, we
+still have a temporary paca (boot_paca) accessible via r13, so code that
+does read only access to paca fields is safe. The only risk is that some
+code writes to the boot_paca, and that write will then be lost when we
+switch away from the boot_paca later in early_setup().
+
+The additional code that runs before the paca allocation is primarily
+mmu_early_init_devtree(), which is scanning the device tree and
+populating globals and cur_cpu_spec with MMU related flags. I do not see
+any additional code that writes to paca fields.
+
+[1]: https://lore.kernel.org/r/20211018084434.217772-2-sourabhjain@linux.ibm.com
+[2]: https://lore.kernel.org/r/20211018084434.217772-3-sourabhjain@linux.ibm.com
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/Kconfig               |  1 +
- arch/powerpc/include/asm/mman.h    |  3 +-
- arch/powerpc/include/asm/pgtable.h | 19 ------------
- arch/powerpc/mm/mmap.c             | 47 ++++++++++++++++++++++++++++++
- 4 files changed, 49 insertions(+), 21 deletions(-)
+ arch/powerpc/kernel/prom.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index b779603978e1..ddb4a3687c05 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -135,6 +135,7 @@ config PPC
- 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UACCESS_FLUSHCACHE
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
-+	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_KEEP_MEMBLOCK
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
-diff --git a/arch/powerpc/include/asm/mman.h b/arch/powerpc/include/asm/mman.h
-index 7cb6d18f5cd6..7b10c2031e82 100644
---- a/arch/powerpc/include/asm/mman.h
-+++ b/arch/powerpc/include/asm/mman.h
-@@ -24,7 +24,7 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
- }
- #define arch_calc_vm_prot_bits(prot, pkey) arch_calc_vm_prot_bits(prot, pkey)
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 3d30d40a0e9c..86c4f009563d 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -352,6 +352,9 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 	    be32_to_cpu(intserv[found_thread]));
+ 	boot_cpuid = found;
  
--static inline pgprot_t arch_vm_get_page_prot(unsigned long vm_flags)
-+static inline pgprot_t powerpc_vm_get_page_prot(unsigned long vm_flags)
- {
- #ifdef CONFIG_PPC_MEM_KEYS
- 	return (vm_flags & VM_SAO) ?
-@@ -34,7 +34,6 @@ static inline pgprot_t arch_vm_get_page_prot(unsigned long vm_flags)
- 	return (vm_flags & VM_SAO) ? __pgprot(_PAGE_SAO) : __pgprot(0);
++	// Pass the boot CPU's hard CPU id back to our caller
++	*((u32 *)data) = be32_to_cpu(intserv[found_thread]);
++
+ 	/*
+ 	 * PAPR defines "logical" PVR values for cpus that
+ 	 * meet various levels of the architecture:
+@@ -388,9 +391,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 		cur_cpu_spec->cpu_features &= ~CPU_FTR_SMT;
+ 	else if (!dt_cpu_ftrs_in_use())
+ 		cur_cpu_spec->cpu_features |= CPU_FTR_SMT;
+-	allocate_paca(boot_cpuid);
  #endif
- }
--#define arch_vm_get_page_prot(vm_flags) arch_vm_get_page_prot(vm_flags)
+-	set_hard_smp_processor_id(found, be32_to_cpu(intserv[found_thread]));
  
- static inline bool arch_validate_prot(unsigned long prot, unsigned long addr)
+ 	return 0;
+ }
+@@ -714,6 +715,7 @@ static inline void save_fscr_to_task(void) {}
+ 
+ void __init early_init_devtree(void *params)
  {
-diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index d564d0ecd4cd..3cbb6de20f9d 100644
---- a/arch/powerpc/include/asm/pgtable.h
-+++ b/arch/powerpc/include/asm/pgtable.h
-@@ -20,25 +20,6 @@ struct mm_struct;
- #include <asm/nohash/pgtable.h>
- #endif /* !CONFIG_PPC_BOOK3S */
++	u32 boot_cpu_hwid;
+ 	phys_addr_t limit;
  
--/* Note due to the way vm flags are laid out, the bits are XWR */
--#define __P000	PAGE_NONE
--#define __P001	PAGE_READONLY
--#define __P010	PAGE_COPY
--#define __P011	PAGE_COPY
--#define __P100	PAGE_READONLY_X
--#define __P101	PAGE_READONLY_X
--#define __P110	PAGE_COPY_X
--#define __P111	PAGE_COPY_X
--
--#define __S000	PAGE_NONE
--#define __S001	PAGE_READONLY
--#define __S010	PAGE_SHARED
--#define __S011	PAGE_SHARED
--#define __S100	PAGE_READONLY_X
--#define __S101	PAGE_READONLY_X
--#define __S110	PAGE_SHARED_X
--#define __S111	PAGE_SHARED_X
--
- #ifndef __ASSEMBLY__
+ 	DBG(" -> early_init_devtree(%px)\n", params);
+@@ -790,8 +792,6 @@ void __init early_init_devtree(void *params)
+ 	 * FIXME .. and the initrd too? */
+ 	move_device_tree();
  
- #ifndef MAX_PTRS_PER_PGD
-diff --git a/arch/powerpc/mm/mmap.c b/arch/powerpc/mm/mmap.c
-index c475cf810aa8..7f05e7903bd2 100644
---- a/arch/powerpc/mm/mmap.c
-+++ b/arch/powerpc/mm/mmap.c
-@@ -254,3 +254,50 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
- 		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
- 	}
- }
+-	allocate_paca_ptrs();
+-
+ 	DBG("Scanning CPUs ...\n");
+ 
+ 	dt_cpu_ftrs_scan();
+@@ -799,7 +799,7 @@ void __init early_init_devtree(void *params)
+ 	/* Retrieve CPU related informations from the flat tree
+ 	 * (altivec support, boot CPU ID, ...)
+ 	 */
+-	of_scan_flat_dt(early_init_dt_scan_cpus, NULL);
++	of_scan_flat_dt(early_init_dt_scan_cpus, &boot_cpu_hwid);
+ 	if (boot_cpuid < 0) {
+ 		printk("Failed to identify boot CPU !\n");
+ 		BUG();
+@@ -816,6 +816,11 @@ void __init early_init_devtree(void *params)
+ 
+ 	mmu_early_init_devtree();
+ 
++	// NB. paca is not installed until later in early_setup()
++	allocate_paca_ptrs();
++	allocate_paca(boot_cpuid);
++	set_hard_smp_processor_id(boot_cpuid, boot_cpu_hwid);
 +
-+static inline pgprot_t __vm_get_page_prot(unsigned long vm_flags)
-+{
-+	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
-+	case VM_NONE:
-+		return PAGE_NONE;
-+	case VM_READ:
-+		return PAGE_READONLY;
-+	case VM_WRITE:
-+		return PAGE_COPY;
-+	case VM_READ | VM_WRITE:
-+		return PAGE_COPY;
-+	case VM_EXEC:
-+		return PAGE_READONLY_X;
-+	case VM_EXEC | VM_READ:
-+		return PAGE_READONLY_X;
-+	case VM_EXEC | VM_WRITE:
-+		return PAGE_COPY_X;
-+	case VM_EXEC | VM_READ | VM_WRITE:
-+		return PAGE_COPY_X;
-+	case VM_SHARED:
-+		return PAGE_NONE;
-+	case VM_SHARED | VM_READ:
-+		return PAGE_READONLY;
-+	case VM_SHARED | VM_WRITE:
-+		return PAGE_SHARED;
-+	case VM_SHARED | VM_READ | VM_WRITE:
-+		return PAGE_SHARED;
-+	case VM_SHARED | VM_EXEC:
-+		return PAGE_READONLY_X;
-+	case VM_SHARED | VM_EXEC | VM_READ:
-+		return PAGE_READONLY_X;
-+	case VM_SHARED | VM_EXEC | VM_WRITE:
-+		return PAGE_SHARED_X;
-+	case VM_SHARED | VM_EXEC | VM_READ | VM_WRITE:
-+		return PAGE_SHARED_X;
-+	default:
-+		BUILD_BUG();
-+	}
-+}
-+
-+pgprot_t vm_get_page_prot(unsigned long vm_flags)
-+{
-+	return __pgprot(pgprot_val(__vm_get_page_prot(vm_flags)) |
-+	       pgprot_val(powerpc_vm_get_page_prot(vm_flags)));
-+}
-+EXPORT_SYMBOL(vm_get_page_prot);
+ #ifdef CONFIG_PPC_POWERNV
+ 	/* Scan and build the list of machine check recoverable ranges */
+ 	of_scan_flat_dt(early_init_dt_scan_recoverable_ranges, NULL);
 -- 
-2.25.1
+2.31.1
 
