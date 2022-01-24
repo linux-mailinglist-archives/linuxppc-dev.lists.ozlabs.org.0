@@ -2,70 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E89A9497CFF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 11:25:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1BDF497D0C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 11:26:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jj5jG5nG7z3cC7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 21:25:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jj5jz5X67z3bTg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 21:26:15 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CQhey9Tx;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mRiwMZyd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b;
- helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433;
+ helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=CQhey9Tx; dkim-atps=neutral
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
- [IPv6:2607:f8b0:4864:20::102b])
+ header.s=20210112 header.b=mRiwMZyd; dkim-atps=neutral
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
+ [IPv6:2607:f8b0:4864:20::433])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jj5gy5DjQz2xF0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 21:24:30 +1100 (AEDT)
-Received: by mail-pj1-x102b.google.com with SMTP id
- my12-20020a17090b4c8c00b001b528ba1cd7so11367524pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 02:24:30 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jj5gz6kCFz30N0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 21:24:31 +1100 (AEDT)
+Received: by mail-pf1-x433.google.com with SMTP id v74so12274585pfc.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 02:24:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=+WFzV9XS3Csa6Med5CeBjmDJAop+/yIbEE3PLYgiQyU=;
- b=CQhey9Txde2o8Q1BAMn1GGM0z+JReeeG2iJh4vLTY/TQEqym5GGRu3/XK45h4IFQQX
- rq1L4nKjPWFVM2DkThvhq4WP1dSxcV73/ExnqYTZCMnH/gUhJePMonBSbevjd5hpvZMS
- WY6CjbVu3iUxm3PjVCnIseLNpimz/LLrQn2oLFWVwe7hFaqwx/8sD0zhAPk3C2VMv3W7
- zuzPmUt8gV7s2ug9910W7mRMIW57wGXUezMzNhekV8NZNIpLMG2/exQmxuGZrsNB4huw
- 5xygu00CsGfkbIqcWp2WB16UJbtZBVHCEcDn+OjrTWcXeGMF0flwhe/2CV2V33ozNoRj
- jezA==
+ bh=a22onBB8xY9MCxFKi1knuvCfdysowRIRm8sOH5niTeE=;
+ b=mRiwMZydbhVvAUHqvJRZ0X2wo7stpkHqBgrBs9uD+T4vQn9TVZYuPSsTbj3XebXXOY
+ 2KOGZQ0TZM7c3LKu/Fh7FUWNyVKjmUfsNZfHOWc6o/Ap94dbBy6pxIeUfnSR9/4XZPiL
+ PUN628cs1RaS+I6lAirdseGo88dUwzQiwq9TksTz/2CloqVHtdoKDw1wnOKYOm+39/UA
+ vYMrWHrHyrd9aorxEHLeeup9xjiJ7hNuUl4E7QfVap0LVjzhCwVWdK66MOAOs/VZEQuo
+ gYvxeWwbhwuNH6HLBCgi6q2xtZ7T1errskSU+3qioRURjRbZaxIzSdUDtqhXRv7HzUzA
+ 382g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=+WFzV9XS3Csa6Med5CeBjmDJAop+/yIbEE3PLYgiQyU=;
- b=7yRbdhvoitFNfzgfwMvc6EVclsR+Ze2zcdkwtdkWNi7jwTPzgJrXDgqQxN1wzJiF47
- jqf1Y9bFJkkqysgRNWIrYZmPkZZgjaWtuB8BHDy8qjdzo2pzFPllDQEBxYemhoYB9gAq
- 3rpJ6QgqQlNdNd8cxb/invt/2lQta5CwXLLEwsJHfD5L99E2lQU1QZNnU243a8QtyJIu
- 6ZybzYQph+9Eqkyy3wtX0g4Ajq7usv5U/7rSLDbnR2IWmjMuLZeTZOfDiRBfGOtJbpLW
- TyUKuR7EpDk+k+Ri7f4kb+Geq+vlbPsckxUH/DToizElgJ72uOuQPx2OxQd0STldJNGu
- byXw==
-X-Gm-Message-State: AOAM533d1gND3P1QMXG1+dXYNbpfjnKy7BJXGljCeDxybYrCcRUbJQny
- U8q8q7wU04BbPw9v8aOiddh82HYAU10=
-X-Google-Smtp-Source: ABdhPJz5K8/ExjR5084/k3Ohi2yzbs8l3wuslROwDhkThGv/cC2CKIDxixiFj9DUTsw4h+5OPe2ERQ==
-X-Received: by 2002:a17:902:8498:b0:14a:1b37:9f2b with SMTP id
- c24-20020a170902849800b0014a1b379f2bmr14401801plo.85.1643019867584; 
- Mon, 24 Jan 2022 02:24:27 -0800 (PST)
+ bh=a22onBB8xY9MCxFKi1knuvCfdysowRIRm8sOH5niTeE=;
+ b=hMeq89PFk73w6FTCFCaVPqFAgskhQxKevXdIKNABq9D9Oa4pOsFp6yDY4WRDib59hX
+ cXsEn+iQ/CuTDp4Y7cAEQeag7KQeHFt8gnDsIuUAfWbwDNbvfydHQ8sncUw3dT1IjU77
+ BppM7Zsk7pewlG89n6/dh0Z9iNo+E/1MymSX3lSFWFqsBN4ERcJsbFmPlvYzD91EVhha
+ YpFQm7SUMqb7lWamwqVnFPr/NrPgpVv4UJGTL1JRBbJOSx91kW2+CHBNx5CT6lo712HR
+ yOJm9dp+QkBAKtT8y4m6Ol5XWlCADkeIIjX0HwUW5iUCsm2LXGRibOiqzE/yYm/pPytU
+ 2xDg==
+X-Gm-Message-State: AOAM531yPKujhSm1m4b2kix+2fm74Nx/jL/C/ntjJnGPxriselJmYbEL
+ xWgTb7rrdX725kgzg6tj7SVNe7nC1es=
+X-Google-Smtp-Source: ABdhPJz+UymtRlDjsyW3KuMJYRhr5WOEKT/DJLfRYtjoDNraFmiLnqe39jsiz0/MvbqtlHceMFtazQ==
+X-Received: by 2002:a05:6a00:2186:b0:4c6:50ea:6701 with SMTP id
+ h6-20020a056a00218600b004c650ea6701mr13301737pfi.12.1643019870003; 
+ Mon, 24 Jan 2022 02:24:30 -0800 (PST)
 Received: from bobo.ibm.com (193-116-82-75.tpgi.com.au. [193.116.82.75])
- by smtp.gmail.com with ESMTPSA id z14sm11724081pgr.34.2022.01.24.02.24.25
+ by smtp.gmail.com with ESMTPSA id z14sm11724081pgr.34.2022.01.24.02.24.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jan 2022 02:24:27 -0800 (PST)
+ Mon, 24 Jan 2022 02:24:29 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/2] KVM: PPC: Book3S PR: Disable SCV when running AIL is
- disabled
-Date: Mon, 24 Jan 2022 20:24:16 +1000
-Message-Id: <20220124102417.3741427-2-npiggin@gmail.com>
+Subject: [PATCH 2/2] KVM: PPC: Book3S PR: Disallow AIL != 0
+Date: Mon, 24 Jan 2022 20:24:17 +1000
+Message-Id: <20220124102417.3741427-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20220124102417.3741427-1-npiggin@gmail.com>
 References: <20220124102417.3741427-1-npiggin@gmail.com>
@@ -87,128 +85,76 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PR KVM does not support running with AIL enabled, and SCV does is not
-supported with AIL disabled.
+KVM PR does not implement address translation modes on interrupt, so it
+must not allow H_SET_MODE to succeed.
 
-Fix this by ensuring the SCV facility is disabled with FSCR while a
-CPU can be running with AIL=0. PowerNV host supports disabling AIL on a
-per-CPU basis, so SCV just needs to be disabled when a vCPU is run.
+This is not compatible with QEMU behaviour. The solution might be to
+have a cap-ail for this, but now it's broken either way so fix it in
+KVM to start with.
 
-The pSeries machine can only switch AIL on a system-wide basis, so it
-must disable SCV support at boot if the configuration can potentially
-run a PR KVM guest.
-
-SCV is not emulated for the PR guest at the moment, this just fixes the
-host crashes.
-
-Alternatives considered and rejected:
-- SCV support can not be disabled by PR KVM after boot, because it is
-  advertised to userspace with HWCAP.
-- AIL can not be disabled on a per-CPU basis. At least when running on
-  pseries it is a per-LPAR setting.
-- Support for real-mode SCV vectors will not be added because they are
-  at 0x17000 so making such a large fixed head space causes immediate
-  value limits to be exceeded, requiring a lot rework and more code.
-- Disabling SCV for any PR KVM possible kernel will cause a slowdown
-  when not using PR KVM.
-- A boot time option to disable SCV to use PR KVM is user-hostile.
-- System call instruction emulation for SCV facility unavailable
-  instructions is too complex and old emulation code was subtly broken
-  and removed.
+This allows PR Linux guests that are using the SCV facility to boot and
+run, because Linux disables the use of SCV if AIL can not be set to 3.
+This isn't a real fix because Linux or another OS could implement real
+mode SCV vectors and try to enable it. The right solution is for KVM to
+emulate scv interrupts from the facility unavailable interrupt.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S |  4 ++++
- arch/powerpc/kernel/setup_64.c       | 15 +++++++++++++++
- arch/powerpc/kvm/book3s_pr.c         | 20 ++++++++++++++------
- 3 files changed, 33 insertions(+), 6 deletions(-)
+ arch/powerpc/kvm/book3s_pr_papr.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 55caeee37c08..b66dd6f775a4 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -809,6 +809,10 @@ __start_interrupts:
-  * - MSR_EE|MSR_RI is clear (no reentrant exceptions)
-  * - Standard kernel environment is set up (stack, paca, etc)
-  *
-+ * KVM:
-+ * These interrupts do not elevate HV 0->1, so HV is not involved. PR KVM
-+ * ensures that FSCR[SCV] is disabled whenever it has to force AIL off.
-+ *
-  * Call convention:
-  *
-  * syscall register convention is in Documentation/powerpc/syscall64-abi.rst
-diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index be8577ac9397..ac52c69a3811 100644
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -197,6 +197,21 @@ static void __init configure_exceptions(void)
- 
- 	/* Under a PAPR hypervisor, we need hypercalls */
- 	if (firmware_has_feature(FW_FEATURE_SET_MODE)) {
-+		/*
-+		 * PR KVM does not support AIL mode interrupts in the host, and
-+		 * SCV system call interrupt vectors are only implemented for
-+		 * AIL mode. Under pseries, AIL mode can only be enabled and
-+		 * disabled system-wide so when PR KVM is loaded, all CPUs in
-+		 * the host are set to AIL=0 mode. SCV can not be disabled
-+		 * dynamically because the feature is advertised to host
-+		 * userspace, so SCV support must not be enabled if PR KVM can
-+		 * possibly be run.
-+		 */
-+		if (IS_ENABLED(CONFIG_KVM_BOOK3S_PR_POSSIBLE) && !radix_enabled()) {
-+			init_task.thread.fscr &= ~FSCR_SCV;
-+			cur_cpu_spec->cpu_user_features2 &= ~PPC_FEATURE2_SCV;
-+		}
-+
- 		/* Enable AIL if possible */
- 		if (!pseries_enable_reloc_on_exc()) {
- 			init_task.thread.fscr &= ~FSCR_SCV;
-diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
-index 34a801c3604a..4d1c84b94b77 100644
---- a/arch/powerpc/kvm/book3s_pr.c
-+++ b/arch/powerpc/kvm/book3s_pr.c
-@@ -140,9 +140,12 @@ static void kvmppc_core_vcpu_load_pr(struct kvm_vcpu *vcpu, int cpu)
- #endif
- 
- 	/* Disable AIL if supported */
--	if (cpu_has_feature(CPU_FTR_HVMODE) &&
--	    cpu_has_feature(CPU_FTR_ARCH_207S))
--		mtspr(SPRN_LPCR, mfspr(SPRN_LPCR) & ~LPCR_AIL);
-+	if (cpu_has_feature(CPU_FTR_HVMODE)) {
-+		if (cpu_has_feature(CPU_FTR_ARCH_207S))
-+			mtspr(SPRN_LPCR, mfspr(SPRN_LPCR) & ~LPCR_AIL);
-+		if (cpu_has_feature(CPU_FTR_ARCH_300) && (current->thread.fscr & FSCR_SCV))
-+			mtspr(SPRN_FSCR, mfspr(SPRN_FSCR) & ~FSCR_SCV);
-+	}
- 
- 	vcpu->cpu = smp_processor_id();
- #ifdef CONFIG_PPC_BOOK3S_32
-@@ -175,9 +178,12 @@ static void kvmppc_core_vcpu_put_pr(struct kvm_vcpu *vcpu)
- 	kvmppc_save_tm_pr(vcpu);
- 
- 	/* Enable AIL if supported */
--	if (cpu_has_feature(CPU_FTR_HVMODE) &&
--	    cpu_has_feature(CPU_FTR_ARCH_207S))
--		mtspr(SPRN_LPCR, mfspr(SPRN_LPCR) | LPCR_AIL_3);
-+	if (cpu_has_feature(CPU_FTR_HVMODE)) {
-+		if (cpu_has_feature(CPU_FTR_ARCH_207S))
-+			mtspr(SPRN_LPCR, mfspr(SPRN_LPCR) | LPCR_AIL_3);
-+		if (cpu_has_feature(CPU_FTR_ARCH_300) && (current->thread.fscr & FSCR_SCV))
-+			mtspr(SPRN_FSCR, mfspr(SPRN_FSCR) | FSCR_SCV);
-+	}
- 
- 	vcpu->cpu = -1;
+diff --git a/arch/powerpc/kvm/book3s_pr_papr.c b/arch/powerpc/kvm/book3s_pr_papr.c
+index 1f10e7dfcdd0..dc4f51ac84bc 100644
+--- a/arch/powerpc/kvm/book3s_pr_papr.c
++++ b/arch/powerpc/kvm/book3s_pr_papr.c
+@@ -281,6 +281,22 @@ static int kvmppc_h_pr_logical_ci_store(struct kvm_vcpu *vcpu)
+ 	return EMULATE_DONE;
  }
-@@ -1037,6 +1043,8 @@ static int kvmppc_handle_fac(struct kvm_vcpu *vcpu, ulong fac)
  
- void kvmppc_set_fscr(struct kvm_vcpu *vcpu, u64 fscr)
++static int kvmppc_h_pr_set_mode(struct kvm_vcpu *vcpu)
++{
++	unsigned long mflags = kvmppc_get_gpr(vcpu, 4);
++	unsigned long resource = kvmppc_get_gpr(vcpu, 5);
++
++	if (resource == H_SET_MODE_RESOURCE_ADDR_TRANS_MODE) {
++		/* KVM PR does not provide AIL!=0 to guests */
++		if (mflags == 0)
++			kvmppc_set_gpr(vcpu, 3, H_SUCCESS);
++		else
++			kvmppc_set_gpr(vcpu, 3, H_UNSUPPORTED_FLAG_START - 63);
++		return EMULATE_DONE;
++	}
++	return EMULATE_FAIL;
++}
++
+ #ifdef CONFIG_SPAPR_TCE_IOMMU
+ static int kvmppc_h_pr_put_tce(struct kvm_vcpu *vcpu)
  {
-+	if (fscr & FSCR_SCV)
-+		fscr &= ~FSCR_SCV; /* SCV must not be enabled */
- 	if ((vcpu->arch.fscr & FSCR_TAR) && !(fscr & FSCR_TAR)) {
- 		/* TAR got dropped, drop it in shadow too */
- 		kvmppc_giveup_fac(vcpu, FSCR_TAR_LG);
+@@ -384,6 +400,8 @@ int kvmppc_h_pr(struct kvm_vcpu *vcpu, unsigned long cmd)
+ 		return kvmppc_h_pr_logical_ci_load(vcpu);
+ 	case H_LOGICAL_CI_STORE:
+ 		return kvmppc_h_pr_logical_ci_store(vcpu);
++	case H_SET_MODE:
++		return kvmppc_h_pr_set_mode(vcpu);
+ 	case H_XIRR:
+ 	case H_CPPR:
+ 	case H_EOI:
+@@ -421,6 +439,7 @@ int kvmppc_hcall_impl_pr(unsigned long cmd)
+ 	case H_CEDE:
+ 	case H_LOGICAL_CI_LOAD:
+ 	case H_LOGICAL_CI_STORE:
++	case H_SET_MODE:
+ #ifdef CONFIG_KVM_XICS
+ 	case H_XIRR:
+ 	case H_CPPR:
+@@ -447,6 +466,7 @@ static unsigned int default_hcall_list[] = {
+ 	H_BULK_REMOVE,
+ 	H_PUT_TCE,
+ 	H_CEDE,
++	H_SET_MODE,
+ #ifdef CONFIG_KVM_XICS
+ 	H_XIRR,
+ 	H_CPPR,
 -- 
 2.23.0
 
