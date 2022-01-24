@@ -1,99 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9924986CD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 18:30:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B25649890F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 19:52:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JjH7T1wWjz3bYh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 04:30:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JjJyJ6x0Sz3bPS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 05:52:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nnzo2mwe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=e0jdHKVO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::32b;
+ helo=mail-ot1-x32b.google.com; envelope-from=alexdeucher@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=nnzo2mwe; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=e0jdHKVO; dkim-atps=neutral
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com
+ [IPv6:2607:f8b0:4864:20::32b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JjH6p0MLWz2xXJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 04:29:53 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20OGkXgN031102
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 17:29:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=looQvQL5vkzJtV6D9RCItlwWgLWyEu5n2KAr/InZVhQ=;
- b=nnzo2mweE8Fh0hYdH0OeMmmUDDQHO3Y+T9ftXhj1SFAh4G0WPvQSoQia5sGhWOINUww9
- a5mkeRTEa4Nc6j+mYwJRCYL5v/XwGj1Hlne/1IDjC8ACz+9wbSqM3P92D0t2uAB3Bni5
- VKNiTgqcz6chtYemDI+9kCQGUd7s8pygeQbHoN3uzHr/KJc8e4LjvpTHZ+xKK0UuSscW
- MjIHWtNLw/swQE6JWbTE3VvxolEKDq5xxfqXY/z9KcxrLsj6dn79MfYx9GxMAtXpUgjC
- j7kjIvFvBLIW6RlMbdRQmbQtL8mKmPx6HADErunE3VrYkk/6RKD2+Kaj9wI3dcxRjOL8 CA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dsyx8s67r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 17:29:50 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20OHDqU5021939
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 17:29:50 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dsyx8s67h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Jan 2022 17:29:50 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20OHR7Zq030320;
- Mon, 24 Jan 2022 17:29:49 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma04dal.us.ibm.com with ESMTP id 3dr9j9kwuu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Jan 2022 17:29:49 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 20OHTmde28901886
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 Jan 2022 17:29:48 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 78C5078067;
- Mon, 24 Jan 2022 17:29:48 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C355678084;
- Mon, 24 Jan 2022 17:29:47 +0000 (GMT)
-Received: from localhost (unknown [9.163.24.67])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Mon, 24 Jan 2022 17:29:47 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] KVM: PPC: Book3S HV P9: Optimise loads around context
- switch
-In-Reply-To: <20220123114725.3549202-1-npiggin@gmail.com>
-References: <20220123114725.3549202-1-npiggin@gmail.com>
-Date: Mon, 24 Jan 2022 14:29:45 -0300
-Message-ID: <87sftddoty.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JjJxf0Zmvz2yPV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 05:52:03 +1100 (AEDT)
+Received: by mail-ot1-x32b.google.com with SMTP id
+ z25-20020a0568301db900b005946f536d85so23492727oti.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 10:52:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=r9ORcgxwPP4ycG1Uxe8mTwFvOudbcps3q5Aj2rRnpck=;
+ b=e0jdHKVOQgUpteOMfqGIsKj6bppWqqtxb5ZahWfm3lk77uMULiAbyRMiAKafk9wKhT
+ obaUU1owPGL5j6q0WlyHQe9AZXD63iBfKn5yQBktSaUkSZYotefpB1vQhY2MmOd20UBa
+ fdBk/sNOEbcRNXpK/Co7No3CejVyF+9fEZtBPov/vxP85W1L74LxnkeMRUb11+lGqngi
+ KbyoW40hJ9R+ETAV8kSKkfrsiXWCw57UPUGDO88HRIlqTpbTn5NCBbuFoyhnfHe2+k+i
+ GhAQO4/ddpnm1G0bgPsxgqM79TPbDXHjC18GDBxasAnV+4V0d2cXD4/AM/CNIFipJ34V
+ Fudw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=r9ORcgxwPP4ycG1Uxe8mTwFvOudbcps3q5Aj2rRnpck=;
+ b=uWuSU6c1QyzGBO4EVVcqPGG6KXKGvQBCz+H8D6P7smY6mmgprmjYmdFl4abURv8LQN
+ I1VoH2evi98Tg6IbsgjsyxX5GmjdCyMurhU4WIKExgVIvOn4Aj9fjKSWncxM10ZnwazZ
+ m5dC2TZlOCo/QHRam3X5XgIryrxdXYlpkG8epzMbeRfXvVGlgX8S0ePcXoHrvj529fX8
+ cadZOL4rEMXQyi1WNDX7V8gZGLfkcMVpeuquSNg2edGxSr5IR1oaEsVWOJTtN6iG3nj5
+ ddwRNvQm5rQYjX7bPRJarvUJO0QcgZ+fQTIv8YUovlcwcbL6/wSaAuhzvOtVUe6E9j2z
+ /9pQ==
+X-Gm-Message-State: AOAM531GYZSt7oxdTxFIAN+HDl+2UnwbYeLw6Vmx113wD1AcezE5/w+N
+ 26qKX0zGs5j1xKAxyeUHfkVAm1cfNOuedmKS7Gs=
+X-Google-Smtp-Source: ABdhPJz1Khf3SO0+bH9fYxpAMD7XCc9wWdnY55JgNJ7kmV9RJ/cvxr18HoDYHDiBJbnuymI0c1uy0F3r7GxxZrlfypU=
+X-Received: by 2002:a9d:601a:: with SMTP id h26mr3092033otj.357.1643050319496; 
+ Mon, 24 Jan 2022 10:51:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Ff2PSzC3cSQqlYnFibKAnGCcfX9WY6_f
-X-Proofpoint-ORIG-GUID: MIZTkWea3DkP6BcMH-Z-PnBHD6kNCKyL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-24_08,2022-01-24_02,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0
- suspectscore=0 clxscore=1015 priorityscore=1501 mlxscore=0 bulkscore=0
- mlxlogscore=818 adultscore=0 impostorscore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2201240114
+References: <20220123125737.2658758-1-geert@linux-m68k.org>
+ <alpine.DEB.2.22.394.2201240851560.2674757@ramsan.of.borg>
+In-Reply-To: <alpine.DEB.2.22.394.2201240851560.2674757@ramsan.of.borg>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Mon, 24 Jan 2022 13:51:48 -0500
+Message-ID: <CADnq5_MUq0fX7wMLJyUUxxa+2xoRinonL-TzD8tUhXALRfY8-A@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.17-rc1
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,20 +77,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: alsa-devel@alsa-project.org, kvm@vger.kernel.org,
+ Network Development <netdev@vger.kernel.org>, linux-um@lists.infradead.org,
+ LKML <linux-kernel@vger.kernel.org>,
+ amd-gfx list <amd-gfx@lists.freedesktop.org>, linux-mips@vger.kernel.org,
+ Lakshmi Sowjanya D <lakshmi.sowjanya.d@intel.com>, sparclinux@vger.kernel.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Tobin C. Harding" <me@tobin.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
-
-> It is better to get all loads for the register values in flight
-> before starting to switch LPID, PID, and LPCR because those
-> mtSPRs are expensive and serialising.
+On Mon, Jan 24, 2022 at 5:25 AM Geert Uytterhoeven <geert@linux-m68k.org> w=
+rote:
 >
-> This also just tidies up the code for a potential future change
-> to the context switching sequence.
+> On Sun, 23 Jan 2022, Geert Uytterhoeven wrote:
+> > Below is the list of build error/warning regressions/improvements in
+> > v5.17-rc1[1] compared to v5.16[2].
+> >
+> > Summarized:
+> >  - build errors: +17/-2
+> >  - build warnings: +23/-25
+> >
+> > Note that there may be false regressions, as some logs are incomplete.
+> > Still, they're build errors/warnings.
+> >
+> > Happy fixing! ;-)
+> >
+> > Thanks to the linux-next team for providing the build service.
+> >
+> > [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/e783362eb54cd=
+99b2cac8b3a9aeac942e6f6ac07/ (all 99 configs)
+> > [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/df0cc57e057f1=
+8e44dac8e6c18aba47ab53202f9/ (98 out of 99 configs)
+> >
+> >
+> > *** ERRORS ***
+> >
+> > 17 error regressions:
+> >  + /kisskb/src/arch/powerpc/kernel/stacktrace.c: error: implicit declar=
+ation of function 'nmi_cpu_backtrace' [-Werror=3Dimplicit-function-declarat=
+ion]:  =3D> 171:2
+> >  + /kisskb/src/arch/powerpc/kernel/stacktrace.c: error: implicit declar=
+ation of function 'nmi_trigger_cpumask_backtrace' [-Werror=3Dimplicit-funct=
+ion-declaration]:  =3D> 226:2
 >
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> powerpc-gcc5/skiroot_defconfig
+>
+> >  + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible =
+function types from 'void (*)(long unsigned int)' to 'void (*)(long unsigne=
+d int,  long unsigned int,  long unsigned int,  long unsigned int,  long un=
+signed int)' [-Werror=3Dcast-function-type]:  =3D> 1756:13, 1639:13
+> >  + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible =
+function types from 'void (*)(struct mm_struct *)' to 'void (*)(long unsign=
+ed int,  long unsigned int,  long unsigned int,  long unsigned int,  long u=
+nsigned int)' [-Werror=3Dcast-function-type]:  =3D> 1674:29, 1662:29
+> >  + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible =
+function types from 'void (*)(struct mm_struct *, long unsigned int)' to 'v=
+oid (*)(long unsigned int,  long unsigned int,  long unsigned int,  long un=
+signed int,  long unsigned int)' [-Werror=3Dcast-function-type]:  =3D> 1767=
+:21
+> >  + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible =
+function types from 'void (*)(struct vm_area_struct *, long unsigned int)' =
+to 'void (*)(long unsigned int,  long unsigned int,  long unsigned int,  lo=
+ng unsigned int,  long unsigned int)' [-Werror=3Dcast-function-type]:  =3D>=
+ 1741:29, 1726:29
+> >  + /kisskb/src/arch/sparc/mm/srmmu.c: error: cast between incompatible =
+function types from 'void (*)(struct vm_area_struct *, long unsigned int,  =
+long unsigned int)' to 'void (*)(long unsigned int,  long unsigned int,  lo=
+ng unsigned int,  long unsigned int,  long unsigned int)' [-Werror=3Dcast-f=
+unction-type]:  =3D> 1694:29, 1711:29
+>
+> sparc64-gcc11/sparc-allmodconfig
+>
+> >  + /kisskb/src/arch/um/include/asm/processor-generic.h: error: called o=
+bject is not a function or function pointer:  =3D> 103:18
+> >  + /kisskb/src/drivers/vfio/pci/vfio_pci_rdwr.c: error: assignment make=
+s pointer from integer without a cast [-Werror=3Dint-conversion]:  =3D> 324=
+:9, 317:9
+> >  + /kisskb/src/drivers/vfio/pci/vfio_pci_rdwr.c: error: implicit declar=
+ation of function 'ioport_map' [-Werror=3Dimplicit-function-declaration]:  =
+=3D> 317:11
+> >  + /kisskb/src/drivers/vfio/pci/vfio_pci_rdwr.c: error: implicit declar=
+ation of function 'ioport_unmap' [-Werror=3Dimplicit-function-declaration]:=
+  =3D> 338:15
+>
+> um-x86_64/um-allyesconfig
+>
+> >  + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c: err=
+or: control reaches end of non-void function [-Werror=3Dreturn-type]:  =3D>=
+ 1560:1
 
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
+I don't really see what's going on here:
+
+#ifdef CONFIG_X86_64
+return cpu_data(first_cpu_of_numa_node).apicid;
+#else
+return first_cpu_of_numa_node;
+#endif
+
+Alex
+
+>
+> um-x86_64/um-all{mod,yes}config
+>
+> >  + /kisskb/src/drivers/net/ethernet/freescale/fec_mpc52xx.c: error: pas=
+sing argument 2 of 'mpc52xx_fec_set_paddr' discards 'const' qualifier from =
+pointer target type [-Werror=3Ddiscarded-qualifiers]:  =3D> 659:29
+>
+> powerpc-gcc5/ppc32_allmodconfig
+>
+> >  + /kisskb/src/drivers/pinctrl/pinctrl-thunderbay.c: error: assignment =
+discards 'const' qualifier from pointer target type [-Werror=3Ddiscarded-qu=
+alifiers]:  =3D> 815:8, 815:29
+>
+> arm64-gcc5.4/arm64-allmodconfig
+> arm64-gcc8/arm64-allmodconfig
+>
+> >  + /kisskb/src/lib/test_printf.c: error: "PTR" redefined [-Werror]:  =
+=3D> 247:0, 247
+> >  + /kisskb/src/sound/pci/ca0106/ca0106.h: error: "PTR" redefined [-Werr=
+or]:  =3D> 62, 62:0
+>
+> mips-gcc8/mips-allmodconfig
+> mipsel/mips-allmodconfig
+>
+> >  + error: arch/powerpc/kvm/book3s_64_entry.o: relocation truncated to f=
+it: R_PPC64_REL14 (stub) against symbol `machine_check_common' defined in .=
+text section in arch/powerpc/kernel/head_64.o:  =3D> (.text+0x3e4)
+>
+> powerpc-gcc5/powerpc-allyesconfig
+>
+> Gr{oetje,eeting}s,
+>
+>                                                 Geert
+>
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m6=
+8k.org
+>
+> In personal conversations with technical people, I call myself a hacker. =
+But
+> when I'm talking to journalists I just say "programmer" or something like=
+ that.
+>                                                             -- Linus Torv=
+alds
