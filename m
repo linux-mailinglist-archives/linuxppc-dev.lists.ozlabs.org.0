@@ -1,48 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D38A54994A6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 21:47:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7921F498B5C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 20:13:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JjMVd5xtGz3cCK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 07:47:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JjKPw2b9bz3bVB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 06:13:08 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=l0WJXVDa;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.130;
- helo=out30-130.freemail.mail.aliyun.com; envelope-from=yinan@linux.alibaba.com;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 312 seconds by postgrey-1.36 at boromir;
- Mon, 24 Jan 2022 23:20:44 AEDT
-Received: from out30-130.freemail.mail.aliyun.com
- (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
+ envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=desiato.20200630 header.b=l0WJXVDa; 
+ dkim-atps=neutral
+Received: from desiato.infradead.org (desiato.infradead.org
+ [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jj8G44RC8z30L1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 23:20:42 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R111e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04423; MF=yinan@linux.alibaba.com;
- NM=1; PH=DS; RN=3; SR=0; TI=SMTPD_---0V2kVahY_1643026507; 
-Received: from 30.240.98.205(mailfrom:yinan@linux.alibaba.com
- fp:SMTPD_---0V2kVahY_1643026507) by smtp.aliyun-inc.com(127.0.0.1);
- Mon, 24 Jan 2022 20:15:07 +0800
-Message-ID: <e9422643-a210-b77f-a037-da63a9d2e925@linux.alibaba.com>
-Date: Mon, 24 Jan 2022 20:15:06 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JjKP84Vlmz2yJw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 06:12:27 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+ :In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
+ Sender:Reply-To:Content-ID:Content-Description;
+ bh=630GZf2pl7dUC09jByd2lRVEJ71rHFIBrI9U48V8bzA=; b=l0WJXVDaYcmJ3/V3RWFezwDDer
+ C44GbJGe7OjLN0KX4PaF1IWCv0kAoNTjNLYvwuH+jZell6Ad2JgbYr55poxlvv5DL8vopnnR/7kMY
+ vn/kveSmXCK7I5QKtfyV0XYyRC15LtirFVJpZLpus0tksAvWxi6l/uO/J6VOZyNLBn7KViVZO+pmi
+ tCMavBPk+ocRsC6yujO5bPnGRcZhKLBisgW7TtJG3/FxTW3BAp4mXk9rBm2YHM6MqRSSbpG11QU3K
+ iU0eefreID+Mspii6FT8TND1o3Wgkgcez5ouyqVdYFPOacbzF1GFPC3zVTqT0YP/NTts2M908BtFX
+ 6ETemMoQ==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+ by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1nC4l3-003F5b-C0; Mon, 24 Jan 2022 19:12:05 +0000
+Message-ID: <aca104cf-5f5f-b696-754a-35e62dbe64c3@infradead.org>
+Date: Mon, 24 Jan 2022 11:11:56 -0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.5.0
-Subject: Re: [powerpc] ftrace warning kernel/trace/ftrace.c:2068 with
- code-patching selftests
-To: Sachin Sant <sachinp@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Steven Rostedt <rostedt@goodmis.org>
-References: <944D10DA-8200-4BA9-8D0A-3BED9AA99F82@linux.ibm.com>
-From: Yinan Liu <yinan@linux.alibaba.com>
-In-Reply-To: <944D10DA-8200-4BA9-8D0A-3BED9AA99F82@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: Build regressions/improvements in v5.17-rc1
+Content-Language: en-US
+To: Geert Uytterhoeven <geert@linux-m68k.org>,
+ Alex Deucher <alexdeucher@gmail.com>
+References: <20220123125737.2658758-1-geert@linux-m68k.org>
+ <alpine.DEB.2.22.394.2201240851560.2674757@ramsan.of.borg>
+ <CADnq5_MUq0fX7wMLJyUUxxa+2xoRinonL-TzD8tUhXALRfY8-A@mail.gmail.com>
+ <CAMuHMdWUWqHYbbavtMT-XAD_sarDPC5xnc3c0pX1ZAh3Wuzuzg@mail.gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <CAMuHMdWUWqHYbbavtMT-XAD_sarDPC5xnc3c0pX1ZAh3Wuzuzg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Tue, 25 Jan 2022 07:47:02 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,45 +68,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+ KVM list <kvm@vger.kernel.org>, Network Development <netdev@vger.kernel.org>,
+ linux-um <linux-um@lists.infradead.org>, LKML <linux-kernel@vger.kernel.org>,
+ amd-gfx list <amd-gfx@lists.freedesktop.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Lakshmi Sowjanya D <lakshmi.sowjanya.d@intel.com>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Tobin C. Harding" <me@tobin.cc>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-在 2022/1/24 下午5:19, Sachin Sant 写道:
-> While running stress_code_patching test from selftests/powerpc/mm
-> against 5.17-rc1 booted on a POWER10 LPAR following ftrace warning
-> is seen:
+
+
+On 1/24/22 10:55, Geert Uytterhoeven wrote:
+> Hi Alex,
 > 
-> WARNING: CPU: 1 PID: 2017392 at kernel/trace/ftrace.c:2068 ftrace_bug+0x274/0x2d8
-> Modules linked in: dm_mod bonding rfkill sunrpc pseries_rng xts vmx_crypto uio_pdrv_genirq uio sch_fq_codel ip_tables ext4 mbcache jbd2 sd_mod t10_pi sg ibmvscsi ibmveth scsi_transport_srp fuse
-> CPU: 1 PID: 2017392 Comm: stress_code_pat Not tainted 5.17.0-rc1-gdd81e1c7d5fb #1
-> NIP:  c0000000002d561c LR: c0000000002d5618 CTR: 00000000005b4448
-> REGS: c0000000332fb760 TRAP: 0700   Not tainted  (5.17.0-rc1-gdd81e1c7d5fb)
-> MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 48228224  XER: 00000009
-> CFAR: c0000000001f6b00 IRQMASK: 0
-> GPR00: c0000000002d5618 c0000000332fba00 c000000002a20000 0000000000000022
-> GPR04: 00000000ffff7fff c0000000332fb720 c0000000332fb718 0000000000000027
-> GPR08: c00000167cca7e10 0000000000000001 0000000000000027 c0000000028d6d08
-> GPR12: 0000000000008000 c00000167fa30780 0000000040000000 00007fff9a089798
-> GPR16: 00007fff9a089724 00007fff9a026be8 00007fff99fbf4f0 00007fff9a08d568
-> GPR20: 00007fffce533ed0 0000000000000001 00007fff9a0399d8 00007fffd9eccf94
-> GPR24: 0000000000000001 0000000000000000 c0000000332fbc70 c000000000fb0d18
-> GPR28: c000000000ff5080 c000000000fadd38 c0000000020032ec c0000000070800a8
-> NIP [c0000000002d561c] ftrace_bug+0x274/0x2d8
-> LR [c0000000002d5618] ftrace_bug+0x270/0x2d8
+> On Mon, Jan 24, 2022 at 7:52 PM Alex Deucher <alexdeucher@gmail.com> wrote:
+>> On Mon, Jan 24, 2022 at 5:25 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>>> On Sun, 23 Jan 2022, Geert Uytterhoeven wrote:
+>>>>  + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c: error: control reaches end of non-void function [-Werror=return-type]:  => 1560:1
+>>
+>> I don't really see what's going on here:
+>>
+>> #ifdef CONFIG_X86_64
+>> return cpu_data(first_cpu_of_numa_node).apicid;
+>> #else
+>> return first_cpu_of_numa_node;
+>> #endif
+> 
+> Ah, the actual failure causing this was not included:
+> 
+> In file included from /kisskb/src/arch/x86/um/asm/processor.h:41:0,
+>                  from /kisskb/src/include/linux/mutex.h:19,
+>                  from /kisskb/src/include/linux/kernfs.h:11,
+>                  from /kisskb/src/include/linux/sysfs.h:16,
+>                  from /kisskb/src/include/linux/kobject.h:20,
+>                  from /kisskb/src/include/linux/pci.h:35,
+>                  from
+> /kisskb/src/drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:25:
+> /kisskb/src/drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c: In
+> function 'kfd_cpumask_to_apic_id':
+> /kisskb/src/arch/um/include/asm/processor-generic.h:103:18: error:
+> called object is not a function or function pointer
+>  #define cpu_data (&boot_cpu_data)
+>                   ^
+> /kisskb/src/drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1556:9:
+> note: in expansion of macro 'cpu_data'
+>   return cpu_data(first_cpu_of_numa_node).apicid;
+>          ^
+> /kisskb/src/drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1560:1:
+> error: control reaches end of non-void function [-Werror=return-type]
+>  }
+>  ^
 
-Hi, Steven and Sachin
+ah yes, UML.
+I have a bunch of UML fixes that I have been hesitant to post.
 
-I don't have a powerpc machine for testing, I guess the ppc has a 
-similar problem with the s390. It's not clear to me why the compiler 
-does this. Maybe we can handle ppc like you did with the s390 before, 
-but I'm not sure if other architectures have similar issues. Or limit 
-BUILDTIME_MCOUNT_SORT to a smaller scope and make it only available for 
-x86 and arm?
+This is one of them.
+What do people think about this?
 
-steven, what's your opinion?
+thanks.
+
+---
+From: Randy Dunlap <rdunlap@infradead.org>
 
 
-Best regards
---yinan
+../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1556:9: note: in expansion of macro ‘cpu_data’
+  return cpu_data(first_cpu_of_numa_node).apicid;
+         ^~~~~~~~
+../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1560:1: error: control reaches end of non-void function [-Werror=return-type]
+
+../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_crat.c: In function ‘kfd_fill_iolink_info_for_cpu’:
+../arch/um/include/asm/processor-generic.h:103:19: error: called object is not a function or function pointer
+ #define cpu_data (&boot_cpu_data)
+                  ~^~~~~~~~~~~~~~~
+../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_crat.c:1688:27: note: in expansion of macro ‘cpu_data’
+  struct cpuinfo_x86 *c = &cpu_data(0);
+                           ^~~~~~~~
+../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_crat.c:1691:7: error: dereferencing pointer to incomplete type ‘struct cpuinfo_x86’
+  if (c->x86_vendor == X86_VENDOR_AMD)
+       ^~
+../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_crat.c:1691:23: error: ‘X86_VENDOR_AMD’ undeclared (first use in this function); did you mean ‘X86_VENDOR_ANY’?
+  if (c->x86_vendor == X86_VENDOR_AMD)
+                       ^~~~~~~~~~~~~~
+                       X86_VENDOR_ANY
+
+../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_crat.c: In function ‘kfd_create_vcrat_image_cpu’:
+../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_crat.c:1742:11: warning: unused variable ‘entries’ [-Wunused-variable]
+  uint32_t entries = 0;
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+---
+ drivers/gpu/drm/amd/amdkfd/kfd_crat.c     |    6 +++---
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c |    2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+--- linux-next-20220107.orig/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ linux-next-20220107/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -1552,7 +1552,7 @@ static int kfd_cpumask_to_apic_id(const
+ 	first_cpu_of_numa_node = cpumask_first(cpumask);
+ 	if (first_cpu_of_numa_node >= nr_cpu_ids)
+ 		return -1;
+-#ifdef CONFIG_X86_64
++#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
+ 	return cpu_data(first_cpu_of_numa_node).apicid;
+ #else
+ 	return first_cpu_of_numa_node;
+--- linux-next-20220107.orig/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
++++ linux-next-20220107/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
+@@ -1679,7 +1679,7 @@ static int kfd_fill_mem_info_for_cpu(int
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_X86_64
++#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
+ static int kfd_fill_iolink_info_for_cpu(int numa_node_id, int *avail_size,
+ 				uint32_t *num_entries,
+ 				struct crat_subtype_iolink *sub_type_hdr)
+@@ -1738,7 +1738,7 @@ static int kfd_create_vcrat_image_cpu(vo
+ 	struct crat_subtype_generic *sub_type_hdr;
+ 	int avail_size = *size;
+ 	int numa_node_id;
+-#ifdef CONFIG_X86_64
++#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
+ 	uint32_t entries = 0;
+ #endif
+ 	int ret = 0;
+@@ -1803,7 +1803,7 @@ static int kfd_create_vcrat_image_cpu(vo
+ 			sub_type_hdr->length);
+ 
+ 		/* Fill in Subtype: IO Link */
+-#ifdef CONFIG_X86_64
++#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
+ 		ret = kfd_fill_iolink_info_for_cpu(numa_node_id, &avail_size,
+ 				&entries,
+ 				(struct crat_subtype_iolink *)sub_type_hdr);
+
 
