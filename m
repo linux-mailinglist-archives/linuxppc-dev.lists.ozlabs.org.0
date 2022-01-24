@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E26499CD4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 23:14:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC3E499CE4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 23:14:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JjPQg40tkz3bTD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 09:14:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JjPRj597Nz3cRf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 09:14:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AC4eJfZl;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VOVXe++f;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,83 +18,82 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=AC4eJfZl; dkim-atps=neutral
+ header.s=pp1 header.b=VOVXe++f; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JjPPx1jyGz2x9S
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 09:13:25 +1100 (AEDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20OLlgks011899
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 22:13:23 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JjPR11hBGz2xYL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 09:14:21 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20OKgMs1010615
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 22:14:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=JzGFUDCRsAL1J0CfS0MLbrCg3QwYO48NFx3ZBRmIXP8=;
- b=AC4eJfZl0MwcHlH6ltmO5BYc6lo3ZbH5UQIdX2XhuRt6Zb9rN2eK0CTN5HE7v7BvZWi3
- txTTFzurWPE2Ko0FnQLHneu4jgbhkrVessdAv68ovRH5he2tY1vqdVJFdyi80OernMN7
- H4tlixhU6uWwV80XylaMAPViof1VHhvrDqkjqbBAAibR28OateGNab9+HSC0EQsM7fAL
- Ztyrm/DCQqwG8rO2eWR2lPoyOfby/YO69lrDktsKCW8LXbamQUJl9E9HfDcWjaV3w8vT
- vHCbpleO3puTjRAWWHfLu1Gb33WR3kytrDaAo3T8ZjMqK/jfrrOBm4ha49pVZ2INYtL5 kw== 
+ content-type; s=pp1; bh=irfJ4WByNTTml6Sp14UBLGICaOXXkBeBXUVEddFp3uk=;
+ b=VOVXe++frwYIFNL2mtm1idQgzg9Q7ZVRNkh5WBPk7wTZUOU3nzK/d5YVyLj6gdBq4yKl
+ nUaQUMgSdl7EQVcbR5BFO7s+7K3IYL6bZ9hzNt2JAMq5OrMgPzgdEsUkLFm5kPpBtRwJ
+ pEIedwkVnRN4gmCaVrU1vtGi7yW9rLic6k8ydmor5o0WdVuQhI6wNOfxNqkvc3zukbSc
+ mEinCarzsuzh8NRQNQFfypvEr8zyC7pTzytaH8vAo2ZKzOhb0lQwFaWUC6hyV1w4LERg
+ uFlS0/Z6J8igAxi5TLwix6eIdEDSi7LG/bsGrQZc8kFNUP/TbkGWTIruOQ3Lkp9rqcL6 ag== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dt4bb0enb-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dt3cf9nvf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 22:13:22 +0000
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20OM39Ms030025
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 22:13:22 GMT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 22:14:18 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20OM7xWd023169
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 22:14:18 GMT
 Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
  [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dt4bb0en4-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dt3cf9nvd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Jan 2022 22:13:22 +0000
+ Mon, 24 Jan 2022 22:14:18 +0000
 Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20OM78OY012268;
- Mon, 24 Jan 2022 22:13:21 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma04dal.us.ibm.com with ESMTP id 3dr9j9sqx2-1
+ by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20OM79J8012342;
+ Mon, 24 Jan 2022 22:14:17 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma04dal.us.ibm.com with ESMTP id 3dr9j9srjr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Jan 2022 22:13:21 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 20OMDKdY34537782
+ Mon, 24 Jan 2022 22:14:17 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 20OMEGZJ32571816
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 Jan 2022 22:13:20 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 65545BE059;
- Mon, 24 Jan 2022 22:13:20 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B563EBE053;
- Mon, 24 Jan 2022 22:13:19 +0000 (GMT)
+ Mon, 24 Jan 2022 22:14:16 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 173A7AC062;
+ Mon, 24 Jan 2022 22:14:16 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 05009AC06B;
+ Mon, 24 Jan 2022 22:14:14 +0000 (GMT)
 Received: from localhost (unknown [9.163.24.67])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Mon, 24 Jan 2022 22:13:19 +0000 (GMT)
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Mon, 24 Jan 2022 22:14:14 +0000 (GMT)
 From: Fabiano Rosas <farosas@linux.ibm.com>
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/6] KVM: PPC: Book3S HV: Update LPID allocator init for
- POWER9, Nested
-In-Reply-To: <20220123120043.3586018-3-npiggin@gmail.com>
+Subject: Re: [PATCH 3/6] KVM: PPC: Book3S HV: Use IDA allocator for LPID
+ allocator
+In-Reply-To: <20220123120043.3586018-4-npiggin@gmail.com>
 References: <20220123120043.3586018-1-npiggin@gmail.com>
- <20220123120043.3586018-3-npiggin@gmail.com>
-Date: Mon, 24 Jan 2022 19:13:17 -0300
-Message-ID: <87lez4eq9u.fsf@linux.ibm.com>
+ <20220123120043.3586018-4-npiggin@gmail.com>
+Date: Mon, 24 Jan 2022 19:13:40 -0300
+Message-ID: <87ilu8eq97.fsf@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: yZ6OCjtQN5Yc4xyGbG-ZT9ye-pZIfC32
-X-Proofpoint-ORIG-GUID: aETFTex8oXKY3QxS2MOxXWT39R8D1v_u
+X-Proofpoint-ORIG-GUID: 80M6lX6oc_UT4aDSdDHD7ytE57blV9Zz
+X-Proofpoint-GUID: HoAFFTD-n-5kXRIS8q8dc9JYfz49FULa
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
  definitions=2022-01-24_09,2022-01-24_02,2021-12-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0
- impostorscore=0 lowpriorityscore=0 malwarescore=0 bulkscore=0
- priorityscore=1501 suspectscore=0 clxscore=1015 mlxlogscore=999
- spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2201240143
+ impostorscore=0
+ malwarescore=0 bulkscore=0 spamscore=0 mlxscore=0 clxscore=1015
+ lowpriorityscore=0 adultscore=0 phishscore=0 mlxlogscore=999
+ suspectscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2201110000 definitions=main-2201240143
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,131 +112,66 @@ Sender: "Linuxppc-dev"
 
 Nicholas Piggin <npiggin@gmail.com> writes:
 
-> The LPID allocator init is changed to:
-> - use mmu_lpid_bits rather than hard-coding;
-> - use KVM_MAX_NESTED_GUESTS for nested hypervisors;
-> - not reserve the top LPID on POWER9 and newer CPUs.
->
-> The reserved LPID is made a POWER7/8-specific detail.
+> This removes the fixed-size lpid_inuse array.
 >
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
 
 Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
 
->  arch/powerpc/include/asm/kvm_book3s_asm.h |  2 +-
->  arch/powerpc/include/asm/reg.h            |  2 --
->  arch/powerpc/kvm/book3s_64_mmu_hv.c       | 29 ++++++++++++++++-------
->  arch/powerpc/kvm/book3s_hv_rmhandlers.S   |  8 +++++++
->  arch/powerpc/mm/init_64.c                 |  3 +++
->  5 files changed, 33 insertions(+), 11 deletions(-)
+>  arch/powerpc/kvm/powerpc.c | 25 +++++++++++++------------
+>  1 file changed, 13 insertions(+), 12 deletions(-)
 >
-> diff --git a/arch/powerpc/include/asm/kvm_book3s_asm.h b/arch/powerpc/include/asm/kvm_book3s_asm.h
-> index b6d31bff5209..e6bda70b1d93 100644
-> --- a/arch/powerpc/include/asm/kvm_book3s_asm.h
-> +++ b/arch/powerpc/include/asm/kvm_book3s_asm.h
-> @@ -15,7 +15,7 @@
->  #define XICS_IPI		2	/* interrupt source # for IPIs */
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 102993462872..c527a5751b46 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -2453,20 +2453,22 @@ long kvm_arch_vm_ioctl(struct file *filp,
+>  	return r;
+>  }
 >
->  /* LPIDs we support with this build -- runtime limit may be lower */
-> -#define KVMPPC_NR_LPIDS			(LPID_RSVD + 1)
-> +#define KVMPPC_NR_LPIDS			(1UL << 12)
+> -static unsigned long lpid_inuse[BITS_TO_LONGS(KVMPPC_NR_LPIDS)];
+> +static DEFINE_IDA(lpid_inuse);
+>  static unsigned long nr_lpids;
 >
->  /* Maximum number of threads per physical core */
->  #define MAX_SMT_THREADS		8
-> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-> index 1e14324c5190..1e8b2e04e626 100644
-> --- a/arch/powerpc/include/asm/reg.h
-> +++ b/arch/powerpc/include/asm/reg.h
-> @@ -473,8 +473,6 @@
->  #ifndef SPRN_LPID
->  #define SPRN_LPID	0x13F	/* Logical Partition Identifier */
->  #endif
-> -#define   LPID_RSVD_POWER7	0x3ff	/* Reserved LPID for partn switching */
-> -#define   LPID_RSVD		0xfff	/* Reserved LPID for partn switching */
->  #define	SPRN_HMER	0x150	/* Hypervisor maintenance exception reg */
->  #define   HMER_DEBUG_TRIG	(1ul << (63 - 17)) /* Debug trigger */
->  #define	SPRN_HMEER	0x151	/* Hyp maintenance exception enable reg */
-> diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> index 09fc52b6f390..5be92d5bc099 100644
-> --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> @@ -256,7 +256,7 @@ void kvmppc_map_vrma(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
->
->  int kvmppc_mmu_hv_init(void)
+>  long kvmppc_alloc_lpid(void)
 >  {
-> -	unsigned long rsvd_lpid;
-> +	unsigned long nr_lpids;
+> -	long lpid;
+> +	int lpid;
 >
->  	if (!mmu_has_feature(MMU_FTR_LOCKLESS_TLBIE))
->  		return -EINVAL;
-> @@ -264,16 +264,29 @@ int kvmppc_mmu_hv_init(void)
->  	if (cpu_has_feature(CPU_FTR_HVMODE)) {
->  		if (WARN_ON(mfspr(SPRN_LPID) != 0))
->  			return -EINVAL;
-> +		nr_lpids = 1UL << mmu_lpid_bits;
-> +	} else {
-> +		nr_lpids = KVM_MAX_NESTED_GUESTS;
->  	}
->
-> -	/* POWER8 and above have 12-bit LPIDs (10-bit in POWER7) */
-> -	if (cpu_has_feature(CPU_FTR_ARCH_207S))
-> -		rsvd_lpid = LPID_RSVD;
-> -	else
-> -		rsvd_lpid = LPID_RSVD_POWER7;
-> +	if (nr_lpids > KVMPPC_NR_LPIDS)
-> +		nr_lpids = KVMPPC_NR_LPIDS;
-> +
-> +	if (!cpu_has_feature(CPU_FTR_ARCH_300)) {
-> +		/* POWER7 has 10-bit LPIDs, POWER8 has 12-bit LPIDs */
-> +		if (cpu_has_feature(CPU_FTR_ARCH_207S))
-> +			WARN_ON(nr_lpids != 1UL << 12);
+> -	do {
+> -		lpid = find_first_zero_bit(lpid_inuse, KVMPPC_NR_LPIDS);
+> -		if (lpid >= nr_lpids) {
+> +	/* The host LPID must always be 0 (allocation starts at 1) */
+> +	lpid = ida_alloc_range(&lpid_inuse, 1, nr_lpids - 1, GFP_KERNEL);
+> +	if (lpid < 0) {
+> +		if (lpid == -ENOMEM)
+> +			pr_err("%s: Out of memory\n", __func__);
 > +		else
-> +			WARN_ON(nr_lpids != 1UL << 10);
-> +
-> +		/*
-> +		 * Reserve the last implemented LPID use in partition
-> +		 * switching for POWER7 and POWER8.
-> +		 */
-> +		nr_lpids -= 1;
+>  			pr_err("%s: No LPIDs free\n", __func__);
+> -			return -ENOMEM;
+> -		}
+> -	} while (test_and_set_bit(lpid, lpid_inuse));
+> +		return -ENOMEM;
 > +	}
 >
-> -	/* rsvd_lpid is reserved for use in partition switching */
-> -	kvmppc_init_lpid(rsvd_lpid);
-> +	kvmppc_init_lpid(nr_lpids);
->
->  	return 0;
+>  	return lpid;
 >  }
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> index d185dee26026..0c552885a032 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -50,6 +50,14 @@
->  #define STACK_SLOT_UAMOR	(SFS-88)
->  #define STACK_SLOT_FSCR		(SFS-96)
+> @@ -2474,15 +2476,14 @@ EXPORT_SYMBOL_GPL(kvmppc_alloc_lpid);
 >
-> +/*
-> + * Use the last LPID (all implemented LPID bits = 1) for partition switching.
-> + * This is reserved in the LPID allocator. POWER7 only implements 0x3ff, but
-> + * we write 0xfff into the LPID SPR anyway, which seems to work and just
-> + * ignores the top bits.
-> + */
-> +#define   LPID_RSVD		0xfff
-> +
->  /*
->   * Call kvmppc_hv_entry in real mode.
->   * Must be called with interrupts hard-disabled.
-> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-> index 35f46bf54281..ad1a41e3ff1c 100644
-> --- a/arch/powerpc/mm/init_64.c
-> +++ b/arch/powerpc/mm/init_64.c
-> @@ -371,6 +371,9 @@ void register_page_bootmem_memmap(unsigned long section_nr,
+>  void kvmppc_free_lpid(long lpid)
+>  {
+> -	clear_bit(lpid, lpid_inuse);
+> +	ida_free(&lpid_inuse, lpid);
+>  }
+>  EXPORT_SYMBOL_GPL(kvmppc_free_lpid);
 >
->  #ifdef CONFIG_PPC_BOOK3S_64
->  unsigned int mmu_lpid_bits;
-> +#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
-> +EXPORT_SYMBOL_GPL(mmu_lpid_bits);
-> +#endif
->  unsigned int mmu_pid_bits;
->
->  static bool disable_radix = !IS_ENABLED(CONFIG_PPC_RADIX_MMU_DEFAULT);
+> +/* nr_lpids_param includes the host LPID */
+>  void kvmppc_init_lpid(unsigned long nr_lpids_param)
+>  {
+> -	nr_lpids = min_t(unsigned long, KVMPPC_NR_LPIDS, nr_lpids_param);
+> -	memset(lpid_inuse, 0, sizeof(lpid_inuse));
+> -	set_bit(0, lpid_inuse); /* The host LPID must always be 0 */
+> +	nr_lpids = nr_lpids_param;
+>  }
+>  EXPORT_SYMBOL_GPL(kvmppc_init_lpid);
