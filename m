@@ -2,73 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BDF497D0C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 11:26:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4EA9497F8C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 13:29:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jj5jz5X67z3bTg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 21:26:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jj8S95ng2z3cCj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Jan 2022 23:29:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mRiwMZyd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UE45srOK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433;
- helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=mRiwMZyd; dkim-atps=neutral
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
- [IPv6:2607:f8b0:4864:20::433])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=UE45srOK; dkim-atps=neutral
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jj5gz6kCFz30N0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 21:24:31 +1100 (AEDT)
-Received: by mail-pf1-x433.google.com with SMTP id v74so12274585pfc.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 02:24:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=a22onBB8xY9MCxFKi1knuvCfdysowRIRm8sOH5niTeE=;
- b=mRiwMZydbhVvAUHqvJRZ0X2wo7stpkHqBgrBs9uD+T4vQn9TVZYuPSsTbj3XebXXOY
- 2KOGZQ0TZM7c3LKu/Fh7FUWNyVKjmUfsNZfHOWc6o/Ap94dbBy6pxIeUfnSR9/4XZPiL
- PUN628cs1RaS+I6lAirdseGo88dUwzQiwq9TksTz/2CloqVHtdoKDw1wnOKYOm+39/UA
- vYMrWHrHyrd9aorxEHLeeup9xjiJ7hNuUl4E7QfVap0LVjzhCwVWdK66MOAOs/VZEQuo
- gYvxeWwbhwuNH6HLBCgi6q2xtZ7T1errskSU+3qioRURjRbZaxIzSdUDtqhXRv7HzUzA
- 382g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=a22onBB8xY9MCxFKi1knuvCfdysowRIRm8sOH5niTeE=;
- b=hMeq89PFk73w6FTCFCaVPqFAgskhQxKevXdIKNABq9D9Oa4pOsFp6yDY4WRDib59hX
- cXsEn+iQ/CuTDp4Y7cAEQeag7KQeHFt8gnDsIuUAfWbwDNbvfydHQ8sncUw3dT1IjU77
- BppM7Zsk7pewlG89n6/dh0Z9iNo+E/1MymSX3lSFWFqsBN4ERcJsbFmPlvYzD91EVhha
- YpFQm7SUMqb7lWamwqVnFPr/NrPgpVv4UJGTL1JRBbJOSx91kW2+CHBNx5CT6lo712HR
- yOJm9dp+QkBAKtT8y4m6Ol5XWlCADkeIIjX0HwUW5iUCsm2LXGRibOiqzE/yYm/pPytU
- 2xDg==
-X-Gm-Message-State: AOAM531yPKujhSm1m4b2kix+2fm74Nx/jL/C/ntjJnGPxriselJmYbEL
- xWgTb7rrdX725kgzg6tj7SVNe7nC1es=
-X-Google-Smtp-Source: ABdhPJz+UymtRlDjsyW3KuMJYRhr5WOEKT/DJLfRYtjoDNraFmiLnqe39jsiz0/MvbqtlHceMFtazQ==
-X-Received: by 2002:a05:6a00:2186:b0:4c6:50ea:6701 with SMTP id
- h6-20020a056a00218600b004c650ea6701mr13301737pfi.12.1643019870003; 
- Mon, 24 Jan 2022 02:24:30 -0800 (PST)
-Received: from bobo.ibm.com (193-116-82-75.tpgi.com.au. [193.116.82.75])
- by smtp.gmail.com with ESMTPSA id z14sm11724081pgr.34.2022.01.24.02.24.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jan 2022 02:24:29 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] KVM: PPC: Book3S PR: Disallow AIL != 0
-Date: Mon, 24 Jan 2022 20:24:17 +1000
-Message-Id: <20220124102417.3741427-3-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20220124102417.3741427-1-npiggin@gmail.com>
-References: <20220124102417.3741427-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jj8RS2lf8z30MQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 23:28:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1643027332; x=1674563332;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ynT/qixLnUd/rCOCLxvQhigT+gasAy3POU2QKgKgKvQ=;
+ b=UE45srOKzaTsveNY96HP9nQv4lnslqnkE0XvMIpqM7SpdVeZRjtKb6+e
+ x4BEQoDIap66OL47vjFDAnviiGNP80Kw2RgxqDkPqR5y+pIHdyilpPSzV
+ X7yUSnc8ODVsjoAucJVyZELhcureA3wvqqnaYT8kZIyGoqcJIgN/Q1PWc
+ 3FGMa2tSC1Cla3qEeBnqAGjLI4OzRqbkts37/FVgcxsd1uBDVwWaCWZwm
+ 8NroCs632khg9/sftj1XVGPKsv/IEgUIp73YqT/dlLGMMN/JgpntUe8pm
+ 6VC0mkCzjIBIe9NuhbxLP2lww+PXw8aekZ6iUzyo3elQ6ZFdEASjFFBQR A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10236"; a="226013572"
+X-IronPort-AV: E=Sophos;i="5.88,311,1635231600"; d="scan'208";a="226013572"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jan 2022 04:27:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,311,1635231600"; d="scan'208";a="695405990"
+Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
+ by orsmga005.jf.intel.com with ESMTP; 24 Jan 2022 04:27:40 -0800
+Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1nByRf-000IJC-DB; Mon, 24 Jan 2022 12:27:39 +0000
+Date: Mon, 24 Jan 2022 20:27:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Luis Chamberlain <mcgrof@kernel.org>, Jessica Yu <jeyu@kernel.org>
+Subject: Re: [PATCH 7/7] powerpc: Select ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+ on book3s/32 and 8xx
+Message-ID: <202201242036.OjeEPlOb-lkp@intel.com>
+References: <ff7a8bdc9a90a77de2ebc059beb4f644b34186c1.1643015752.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ff7a8bdc9a90a77de2ebc059beb4f644b34186c1.1643015752.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,81 +71,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ kbuild-all@lists.01.org,
+ "kgdb-bugreport@lists.sourceforge.net" <kgdb-bugreport@lists.sourceforge.net>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-KVM PR does not implement address translation modes on interrupt, so it
-must not allow H_SET_MODE to succeed.
+Hi Christophe,
 
-This is not compatible with QEMU behaviour. The solution might be to
-have a cap-ail for this, but now it's broken either way so fix it in
-KVM to start with.
+I love your patch! Perhaps something to improve:
 
-This allows PR Linux guests that are using the SCV facility to boot and
-run, because Linux disables the use of SCV if AIL can not be set to 3.
-This isn't a real fix because Linux or another OS could implement real
-mode SCV vectors and try to enable it. The right solution is for KVM to
-emulate scv interrupts from the facility unavailable interrupt.
+[auto build test WARNING on mcgrof/modules-next]
+[also build test WARNING on powerpc/next linus/master jeyu/modules-next v5.17-rc1 next-20220124]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+url:    https://github.com/0day-ci/linux/commits/Christophe-Leroy/Allocate-module-text-and-data-separately/20220124-172517
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git modules-next
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20220124/202201242036.OjeEPlOb-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/2a5f7a254dd5c1efcfb852f5747632c85582016d
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Christophe-Leroy/Allocate-module-text-and-data-separately/20220124-172517
+        git checkout 2a5f7a254dd5c1efcfb852f5747632c85582016d
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash kernel/debug/kdb/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   kernel/debug/kdb/kdb_main.c: In function 'kdb_lsmod':
+>> kernel/debug/kdb/kdb_main.c:2027:38: warning: format '%p' expects a matching 'void *' argument [-Wformat=]
+    2027 |                 kdb_printf("/%8u  0x%px ", mod->data_layout.size);
+         |                                     ~^
+         |                                      |
+         |                                      void *
+
+
+vim +2027 kernel/debug/kdb/kdb_main.c
+
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2006  
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2007  #if defined(CONFIG_MODULES)
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2008  /*
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2009   * kdb_lsmod - This function implements the 'lsmod' command.  Lists
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2010   *	currently loaded kernel modules.
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2011   *	Mostly taken from userland lsmod.
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2012   */
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2013  static int kdb_lsmod(int argc, const char **argv)
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2014  {
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2015  	struct module *mod;
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2016  
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2017  	if (argc != 0)
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2018  		return KDB_ARGCOUNT;
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2019  
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2020  	kdb_printf("Module                  Size  modstruct     Used by\n");
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2021  	list_for_each_entry(mod, kdb_modules, list) {
+0d21b0e3477395e Rusty Russell    2013-01-12  2022  		if (mod->state == MODULE_STATE_UNFORMED)
+0d21b0e3477395e Rusty Russell    2013-01-12  2023  			continue;
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2024  
+299a20e0bead4b7 Christophe Leroy 2022-01-24  2025  		kdb_printf("%-20s%8u", mod->name, mod->core_layout.size);
+299a20e0bead4b7 Christophe Leroy 2022-01-24  2026  #ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+299a20e0bead4b7 Christophe Leroy 2022-01-24 @2027  		kdb_printf("/%8u  0x%px ", mod->data_layout.size);
+299a20e0bead4b7 Christophe Leroy 2022-01-24  2028  #endif
+299a20e0bead4b7 Christophe Leroy 2022-01-24  2029  		kdb_printf("  0x%px ", (void *)mod);
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2030  #ifdef CONFIG_MODULE_UNLOAD
+d5db139ab376464 Rusty Russell    2015-01-22  2031  		kdb_printf("%4d ", module_refcount(mod));
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2032  #endif
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2033  		if (mod->state == MODULE_STATE_GOING)
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2034  			kdb_printf(" (Unloading)");
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2035  		else if (mod->state == MODULE_STATE_COMING)
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2036  			kdb_printf(" (Loading)");
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2037  		else
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2038  			kdb_printf(" (Live)");
+568fb6f42ac6851 Christophe Leroy 2018-09-27  2039  		kdb_printf(" 0x%px", mod->core_layout.base);
+299a20e0bead4b7 Christophe Leroy 2022-01-24  2040  #ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+299a20e0bead4b7 Christophe Leroy 2022-01-24  2041  		kdb_printf("/0x%px", mod->data_layout.base);
+299a20e0bead4b7 Christophe Leroy 2022-01-24  2042  #endif
+5d5314d6795f3c1 Jason Wessel     2010-05-20  2043  
+
 ---
- arch/powerpc/kvm/book3s_pr_papr.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/arch/powerpc/kvm/book3s_pr_papr.c b/arch/powerpc/kvm/book3s_pr_papr.c
-index 1f10e7dfcdd0..dc4f51ac84bc 100644
---- a/arch/powerpc/kvm/book3s_pr_papr.c
-+++ b/arch/powerpc/kvm/book3s_pr_papr.c
-@@ -281,6 +281,22 @@ static int kvmppc_h_pr_logical_ci_store(struct kvm_vcpu *vcpu)
- 	return EMULATE_DONE;
- }
- 
-+static int kvmppc_h_pr_set_mode(struct kvm_vcpu *vcpu)
-+{
-+	unsigned long mflags = kvmppc_get_gpr(vcpu, 4);
-+	unsigned long resource = kvmppc_get_gpr(vcpu, 5);
-+
-+	if (resource == H_SET_MODE_RESOURCE_ADDR_TRANS_MODE) {
-+		/* KVM PR does not provide AIL!=0 to guests */
-+		if (mflags == 0)
-+			kvmppc_set_gpr(vcpu, 3, H_SUCCESS);
-+		else
-+			kvmppc_set_gpr(vcpu, 3, H_UNSUPPORTED_FLAG_START - 63);
-+		return EMULATE_DONE;
-+	}
-+	return EMULATE_FAIL;
-+}
-+
- #ifdef CONFIG_SPAPR_TCE_IOMMU
- static int kvmppc_h_pr_put_tce(struct kvm_vcpu *vcpu)
- {
-@@ -384,6 +400,8 @@ int kvmppc_h_pr(struct kvm_vcpu *vcpu, unsigned long cmd)
- 		return kvmppc_h_pr_logical_ci_load(vcpu);
- 	case H_LOGICAL_CI_STORE:
- 		return kvmppc_h_pr_logical_ci_store(vcpu);
-+	case H_SET_MODE:
-+		return kvmppc_h_pr_set_mode(vcpu);
- 	case H_XIRR:
- 	case H_CPPR:
- 	case H_EOI:
-@@ -421,6 +439,7 @@ int kvmppc_hcall_impl_pr(unsigned long cmd)
- 	case H_CEDE:
- 	case H_LOGICAL_CI_LOAD:
- 	case H_LOGICAL_CI_STORE:
-+	case H_SET_MODE:
- #ifdef CONFIG_KVM_XICS
- 	case H_XIRR:
- 	case H_CPPR:
-@@ -447,6 +466,7 @@ static unsigned int default_hcall_list[] = {
- 	H_BULK_REMOVE,
- 	H_PUT_TCE,
- 	H_CEDE,
-+	H_SET_MODE,
- #ifdef CONFIG_KVM_XICS
- 	H_XIRR,
- 	H_CPPR,
--- 
-2.23.0
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
