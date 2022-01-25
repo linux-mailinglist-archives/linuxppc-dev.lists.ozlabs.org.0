@@ -1,59 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE4849BC17
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 20:29:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A8649BC7F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 20:51:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jjxjk6bnHz3cQq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 06:28:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JjyCv4w7jz3cB0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 06:51:39 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=VELGeg2h;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.214.177;
- helo=mail-pl1-f177.google.com; envelope-from=moritz.fischer.private@gmail.com;
- receiver=<UNKNOWN>)
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com
- [209.85.214.177])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=VELGeg2h; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JjxjC503gz2yQK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 06:28:29 +1100 (AEDT)
-Received: by mail-pl1-f177.google.com with SMTP id j16so9779062plx.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 11:28:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=Rkz5i91jrZJto37j3RGSd05f/eRfvo2BCm796nin8Vs=;
- b=t9V9F+CQ91qU6oyNijHYhnOa5U4lMCAh9GGhLudUj0LVr2wI5lFlXOTM+p08fJIGr1
- 5CfCp6taEyBlo4E7213ZBhJCL1tysQ6LjHkQkjEyR9RzlzlJg1gPWkPBUSDZUd8Yo+VE
- fZcRL4zOvwUgnSQtCyHfBtVBtMQpWd4zipc0wSCSVZtqs27m2Dt+scvi7TbZBdvY4GFL
- VhS07ue8wiurKtm8zmPjwlkFyQt+rlfYmfZ2F+aoQZHNjMg75Z4cuvTsdIjhqlGsOcF+
- daSSToeNgzIFKGWLTwiyTWTOHqTgK8a647fpBR9LGjb5FBaG42KNNIvu/tBEtY033rrg
- x15w==
-X-Gm-Message-State: AOAM530c9O+n84Zt/0ZGN4/22tZwkEWY8tEPOYJxeQttwP+8h6dMXNah
- dgRWjhMdR5eDclBq7TUghSI=
-X-Google-Smtp-Source: ABdhPJyeNd/r+jQn3mMtMf9He8DTH104dq3dEwAvQtFQxWx1zXikeSDUCeamDKcdFDb0ku5F8bxZDQ==
-X-Received: by 2002:a17:902:6bc9:b0:149:fdf1:f031 with SMTP id
- m9-20020a1709026bc900b00149fdf1f031mr19734916plt.58.1643138906187; 
- Tue, 25 Jan 2022 11:28:26 -0800 (PST)
-Received: from localhost ([2601:647:5b00:ece0:aab:34ff:52ca:a7a5])
- by smtp.gmail.com with ESMTPSA id qe15sm1162214pjb.47.2022.01.25.11.28.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jan 2022 11:28:25 -0800 (PST)
-Date: Tue, 25 Jan 2022 11:28:24 -0800
-From: Moritz Fischer <mdf@kernel.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH 00/16] Remove usage of the deprecated "pci-dma-compat.h"
- API
-Message-ID: <YfBPWB9m5TWcZuFY@epycbox.lan>
-References: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JjyC63kBKz30N9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 06:50:57 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=XnOpHOntQOg5wjymzDOHXiPanYFDFvY26sbX++O0fnA=; b=VELGeg2hS4JKT8txctMPaShzdT
+ ZaTFITxIlYbm2Uj12Qxez0OYx7e1MYq2UoZXodMrCxvGeygRgn7gKfoteE1diO3iyBZJ8KUdAXnkd
+ eVAkqTeoOFrGj3sLsiX9+iWSotgN5NABPqUvVZLsX7KpOqjNgZ/+r6lfu3muAyMmARu6UsZ4kKGJk
+ IUwfX9k2+58not7Pl+Jj6UBm1ZuLWYel2TbXXc/qQqvVDrr1tJEXuVK2i/LQlI0eoA+KQtMZLL+rc
+ 82XvPYvLKUvHncE/yTFMR8MgTBVyT8p5PPrgBmYj2GxjTIvZFopD3jmNjkMNdUZk2hHBKLycT/68x
+ dZlX6Vag==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
+ (Red Hat Linux)) id 1nCRpw-009QFo-M3; Tue, 25 Jan 2022 19:50:40 +0000
+Date: Tue, 25 Jan 2022 11:50:40 -0800
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Michal Suchanek <msuchanek@suse.de>, Heiko Carstens <hca@linux.ibm.com>
+Subject: Re: [PATCH v4 1/6] s390/kexec_file: Don't opencode appended
+ signature check.
+Message-ID: <YfBUkIlvQc0U0ylo@bombadil.infradead.org>
+References: <cover.1641822505.git.msuchanek@suse.de>
+ <940cd6a0e88793060cdf5ddb7880c03564b38bdd.1641822505.git.msuchanek@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
+In-Reply-To: <940cd6a0e88793060cdf5ddb7880c03564b38bdd.1641822505.git.msuchanek@suse.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,116 +62,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: airlied@linux.ie, trix@redhat.com, linux-fpga@vger.kernel.org,
- linux-pci@vger.kernel.org, paulus@samba.org, sparclinux@vger.kernel.org,
- kernel-janitors@vger.kernel.org, linux-scsi@vger.kernel.org,
- sathya.prakash@broadcom.com, hch@infradead.org,
- MPT-FusionLinux.pdl@broadcom.com, hao.wu@intel.com, arnd@arndb.de,
- suganath-prabu.subramani@broadcom.com, sreekanth.reddy@broadcom.com,
- ink@jurassic.park.msu.ru, bhelgaas@google.com, mchehab@kernel.org,
- mattst88@gmail.com, rth@twiddle.net, awalls@md.metrocast.net,
- linux-kernel@vger.kernel.org, davem@davemloft.net, alex.bou9@gmail.com,
- vkoul@kernel.org, linux-alpha@vger.kernel.org, dmaengine@vger.kernel.org,
- mdf@kernel.org, akpm@linux-foundation.org, linux-media@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, yilun.xu@intel.com
+Cc: Nayna <nayna@linux.vnet.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+ keyrings@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Rob Herring <robh@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Baoquan He <bhe@redhat.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ James Morris <jmorris@namei.org>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-s390@vger.kernel.org, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
+ Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org,
+ Jessica Yu <jeyu@kernel.org>, linux-integrity@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 06, 2022 at 10:45:13PM +0100, Christophe JAILLET wrote:
-> This serie axes all the remaining usages of the deprecated "pci-dma-compat.h"
-> API.
+On Mon, Jan 10, 2022 at 02:49:53PM +0100, Michal Suchanek wrote:
+> Module verification already implements appeded signature check.
 > 
-> All these patches have already been posted.
+> Reuse it for kexec_file.
 > 
-> They have been generated with a coccinelle script.
-> The tricky parts are patches that use dma_alloc_coherent() because the correct
-> GFP flag has to be used in place of the previous embedded GFP_ATOMIC.
+> The kexec_file implementation uses EKEYREJECTED error in some cases when
+> there is no key and the common implementation uses ENOPKG or EBADMSG
+> instead.
 > 
-> Patches 1-3 are already Reviewed. References to the corresponding mail is
-> given below the ---
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> Acked-by: Heiko Carstens <hca@linux.ibm.com>
+> ---
+> v3: Philipp Rudo <prudo@redhat.com>: Update the commit with note about
+> change of return value
+> ---
+>  arch/s390/kernel/machine_kexec_file.c | 22 +++++-----------------
+>  1 file changed, 5 insertions(+), 17 deletions(-)
 > 
-> Patch 1-2,4-10 are just generated from the coccinelle script. Only too long
-> lines have been hand modified. dma_alloc_coherent() modification are NOT part
-> of these patches.
-> 
-> Patch 3 also includes some 'dma_set_mask_and_coherent()' instead of
-> 'pci_set_dma_mask()/pci_set_consistent_dma_mask()'.
-> I've left this additional modification because it was reviewed with it.
-> 
-> Patch 10-15 are the tricky parts. Explanation of which GFP flag is the right one
-> is given in each patch. It has been divided in several patches to ease review.
-> 
-> Patch 15 is the only one I'm slighly unsure with. The old code was using a
-> GFP_USER flag in the function. I'm not familiar with it.
-> I *guess*  that GFP_KERNEL is fine, but maybe it should also be GFP_USER or left
-> as GFP_ATOMIC so that nothing is changed.
-> 
-> Patch 16 is the last step that remove "pci-dma-compat.h" and its only usage.
-> 
-> 
-> All patches, exept 1-2,6 that are architecture specific, have been compile tested.
-> 
-> 
-> After all that, a few rst files, 1 or 2 strings in error messages and some
-> error branching labels should still need some attention. 
-> This is some minor issues.
-> 
-> 
-> Only the cover letter is sent to every one. Each patch is sent to the
-> corresponding maintainer(s) + Andrew Morton, Christoph Hellwig and Arnd Bergmann.
-> 
-> 
-> Best regards.
-> 
-> 
-> Christophe JAILLET (16):
->   alpha: Remove usage of the deprecated "pci-dma-compat.h" API
->   floppy: Remove usage of the deprecated "pci-dma-compat.h" API
->   fpga: dfl: pci: Remove usage of the deprecated "pci-dma-compat.h" API
->   media: Remove usage of the deprecated "pci-dma-compat.h" API
->   agp/intel: Remove usage of the deprecated "pci-dma-compat.h" API
->   sparc: Remove usage of the deprecated "pci-dma-compat.h" API
->   dmaengine: pch_dma: Remove usage of the deprecated "pci-dma-compat.h"
->     API
->   rapidio/tsi721: Remove usage of the deprecated "pci-dma-compat.h" API
->   media: v4l2-pci-skeleton: Remove usage of the deprecated
->     "pci-dma-compat.h" API
->   scsi: message: fusion: Remove usage of the deprecated
->     "pci-dma-compat.h" API
->   scsi: mptbase: Use dma_alloc_coherent() in 'mpt_alloc_fw_memory()'
->   scsi: mptbase: Use dma_alloc_coherent()
->   scsi: mptsas: Use dma_alloc_coherent() in
->     mptsas_exp_repmanufacture_info()
->   scsi: mptsas: Use dma_alloc_coherent()
->   scsi: mptctl: Use dma_alloc_coherent()
->   PCI: Remove usage of the deprecated "pci-dma-compat.h" API
-> 
->  arch/alpha/include/asm/floppy.h     |   7 +-
->  arch/alpha/kernel/pci_iommu.c       |  12 +--
->  arch/powerpc/include/asm/floppy.h   |   8 +-
->  arch/sparc/kernel/ioport.c          |   2 +-
->  drivers/char/agp/intel-gtt.c        |  26 ++---
->  drivers/dma/pch_dma.c               |   2 +-
->  drivers/fpga/dfl-pci.c              |  14 +--
->  drivers/media/pci/cx18/cx18-queue.h |   6 +-
->  drivers/media/pci/ivtv/ivtv-queue.h |  25 +++--
->  drivers/media/pci/ivtv/ivtv-udma.h  |   8 +-
->  drivers/message/fusion/mptbase.c    | 149 ++++++++++++++++------------
->  drivers/message/fusion/mptctl.c     |  82 +++++++++------
->  drivers/message/fusion/mptlan.c     |  90 +++++++++--------
->  drivers/message/fusion/mptsas.c     |  94 +++++++++---------
->  drivers/rapidio/devices/tsi721.c    |   8 +-
->  include/linux/pci-dma-compat.h      | 129 ------------------------
->  include/linux/pci.h                 |   3 -
->  samples/v4l/v4l2-pci-skeleton.c     |   2 +-
->  18 files changed, 289 insertions(+), 378 deletions(-)
->  delete mode 100644 include/linux/pci-dma-compat.h
-> 
-> -- 
-> 2.32.0
-> 
-Applied [03/16] to linux-fpga for-next.
+> diff --git a/arch/s390/kernel/machine_kexec_file.c b/arch/s390/kernel/machine_kexec_file.c
+> index 8f43575a4dd3..c944d71316c7 100644
+> --- a/arch/s390/kernel/machine_kexec_file.c
+> +++ b/arch/s390/kernel/machine_kexec_file.c
+> @@ -31,6 +31,7 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
+>  	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
+>  	struct module_signature *ms;
+>  	unsigned long sig_len;
+> +	int ret;
+>  
+>  	/* Skip signature verification when not secure IPLed. */
+>  	if (!ipl_secure_flag)
+> @@ -45,25 +46,12 @@ int s390_verify_sig(const char *kernel, unsigned long kernel_len)
+>  	kernel_len -= marker_len;
+>  
+>  	ms = (void *)kernel + kernel_len - sizeof(*ms);
+> -	kernel_len -= sizeof(*ms);
+> +	ret = mod_check_sig(ms, kernel_len, "kexec");
+> +	if (ret)
+> +		return ret;
+>  
+>  	sig_len = be32_to_cpu(ms->sig_len);
+> -	if (sig_len >= kernel_len)
+> -		return -EKEYREJECTED;
 
-Thanks,
-Moritz
+There is a small minor fix here, where by using mod_check_sig() now
+decreased the kernel_len by the sizeof(*ms). It is minor though.
+
+> -	kernel_len -= sig_len;
+> -
+> -	if (ms->id_type != PKEY_ID_PKCS7)
+> -		return -EKEYREJECTED;
+
+More importantly is the return value used here changes but given the
+Ack by Heiko I suspect this if fine and does not break old userspace,
+the only change here is the possible error value returned by the
+kexec_file_load() system call.
+
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+
+   Luis
