@@ -2,80 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC33249B4E0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 14:21:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B95849B56B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 14:55:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JjnZ65PvQz3bcn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 00:21:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JjpJj0ZVVz3bbR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 00:55:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=geSefv54;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=doyAyKlE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=baylibre-com.20210112.gappssmtp.com header.i=@baylibre-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=8JPKo2Wj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=osalvador@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=geSefv54; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=doyAyKlE; 
- dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=baylibre.com (client-ip=2a00:1450:4864:20::42e;
+ helo=mail-wr1-x42e.google.com; envelope-from=clabbe@baylibre.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=baylibre-com.20210112.gappssmtp.com
+ header.i=@baylibre-com.20210112.gappssmtp.com header.a=rsa-sha256
+ header.s=20210112 header.b=8JPKo2Wj; dkim-atps=neutral
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com
+ [IPv6:2a00:1450:4864:20::42e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JjnYP5M5mz30hZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 00:21:13 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 48BE31F380;
- Tue, 25 Jan 2022 13:21:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1643116871; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tjUs1q6Quu5nC0h0Hi0GuZYGA16F6GuJibeMLPKEWzU=;
- b=geSefv54LvjC2z6DIL70spVZaDzppWHExeEG5OxDnG8ux2UIBLU/SIC6rjyOeDqGx8UTJ5
- rtZpzd3NDtiVdLKiNm4v5kg7ZQuQTemoYg8K1s+C5AFgglm0JkeqKbDEdleQKcVrGbfjlh
- 6WTlFX0FQjrpiQqjYZeT2RUd8KHblWA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1643116871;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tjUs1q6Quu5nC0h0Hi0GuZYGA16F6GuJibeMLPKEWzU=;
- b=doyAyKlE0iwztVhHYXfNwIhvLng9A6f9n9xGSaOAj7D/+0C35msSljnb0rll8T8cizECN9
- h+VC6fPgSyqHt8CQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 91FB613DEB;
- Tue, 25 Jan 2022 13:21:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id c6QzIUb572FcSAAAMHmgww
- (envelope-from <osalvador@suse.de>); Tue, 25 Jan 2022 13:21:10 +0000
-Date: Tue, 25 Jan 2022 14:21:08 +0100
-From: Oscar Salvador <osalvador@suse.de>
-To: Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v4 3/7] mm: page_isolation: check specified range for
- unmovable pages
-Message-ID: <20220125132108.GB5609@linux>
-References: <20220119190623.1029355-1-zi.yan@sent.com>
- <20220119190623.1029355-4-zi.yan@sent.com>
- <b7c311d4b2cd377cdc4f92bc9ccf6af1@suse.de>
- <6AEF32AC-4E0D-41E0-8850-33B8BD955920@nvidia.com>
- <20220125131943.GA5609@linux>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JjpJ20BSjz30L4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 00:54:38 +1100 (AEDT)
+Received: by mail-wr1-x42e.google.com with SMTP id e8so18271672wrc.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 05:54:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=D4gfH4WoXONGxg/5IXwV1T9yFOu1r9ABY1KT+VoPdqY=;
+ b=8JPKo2WjlraxmnR2DwEn4bWVh/fzxiqndxcVsEA7aguJiSy7qPVYGp5G629rqhJ+ya
+ NpMVAJ2WoU7NDTUaCwdYK91UOXymf3RIPLwhBZJNhtG3IZNaxuUqZRwD9rRNMrb2/Dli
+ RbGsBEf9gTWBlarMsAB7DlS8x2qcR4t1RGTIq78wGbBidt37ibQTnO02tQEf1xOO1eE3
+ 07PEV2T6VygC5zEmSmXjIsXal0FdPn5EoGVWuMQZJevN3FHedTH/mPZZ7CNInz2syswP
+ jMliqh2D/6VwxWU/rjMmntOttFvcJxNEHvxvUA5KGN5Rg95d9Kdogat1/SBgZo+4oQis
+ CqBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=D4gfH4WoXONGxg/5IXwV1T9yFOu1r9ABY1KT+VoPdqY=;
+ b=HawcvoeVc6L5evOu6qh9sFa6yVJMuUtwtOzviw+JvYjAZtZU9LVAlR3vTnFDQaAqGJ
+ +Yz3E1vTlA5b67MCZRIKQH4MWqRvHWZBiBrR2nFsgo2Ai9lv6ElXHK8m8fSFi+Zs5GfU
+ xyOPXhjsWS+w7uSaEeTietl2Dfj/pUJiXATHSv+TcoM2vN+jssqMEb0hyUi4dezuA2mi
+ rfS3zDDkBSccjuqtdRfomMLKiXOLmpmKL/CimvCdu5rSdX5WZqXW0KCnQOcGro1RNWI+
+ 34vLIguFfKlfFwIgh7aF2ht3xHEgF3RLzq4ooZ69DRXMODsn8erAlyKVioVu576XB6RB
+ UZag==
+X-Gm-Message-State: AOAM530pxs0ksattQZo8GVnxmXAA5dKdGBgzdazFvyofumRpuf2ahz54
+ 0+xqePDdlptIebm8fioTwbmbhw==
+X-Google-Smtp-Source: ABdhPJx24SVgxveHSirOnsJuXcFCCz5p1muhRgFKnbcDI2KTmeitiwitdqyujOGmnsnrisBrPSpHYg==
+X-Received: by 2002:adf:d849:: with SMTP id k9mr6133481wrl.380.1643118872965; 
+ Tue, 25 Jan 2022 05:54:32 -0800 (PST)
+Received: from localhost.localdomain
+ (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
+ by smtp.googlemail.com with ESMTPSA id 8sm468917wmg.0.2022.01.25.05.54.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 25 Jan 2022 05:54:32 -0800 (PST)
+From: Corentin Labbe <clabbe@baylibre.com>
+To: benh@kernel.crashing.org
+Subject: [PATCH] macintosh: macio_asic: remove useless cast for driver.name
+Date: Tue, 25 Jan 2022 13:54:21 +0000
+Message-Id: <20220125135421.4081740-1-clabbe@baylibre.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220125131943.GA5609@linux>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,25 +80,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mel Gorman <mgorman@techsingularity.net>,
- David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org,
- Eric Ren <renzhengeek@gmail.com>, Robin Murphy <robin.murphy@arm.com>,
- Christoph Hellwig <hch@lst.de>, Vlastimil Babka <vbabka@suse.cz>,
- Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Corentin Labbe <clabbe@baylibre.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jan 25, 2022 at 02:19:46PM +0100, Oscar Salvador wrote:
-> I know that this has been discussed previously, and the cover-letter already
-> mentions it, but I think it would be great to have some sort of information about
-> the problem in the commit message as well, so people do not have to go and find
-> it somewhere else.
+pci_driver name is const char pointer, so the cast it not necessary.
 
-Sorry, the commit already points it out, but I meant to elaborate some more.
+Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
+---
+ drivers/macintosh/macio_asic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/macintosh/macio_asic.c b/drivers/macintosh/macio_asic.c
+index c1fdf2896021..1943a007e2d5 100644
+--- a/drivers/macintosh/macio_asic.c
++++ b/drivers/macintosh/macio_asic.c
+@@ -756,7 +756,7 @@ MODULE_DEVICE_TABLE (pci, pci_ids);
+ 
+ /* pci driver glue; this is a "new style" PCI driver module */
+ static struct pci_driver macio_pci_driver = {
+-	.name		= (char *) "macio",
++	.name		= "macio",
+ 	.id_table	= pci_ids,
+ 
+ 	.probe		= macio_pci_probe,
 -- 
-Oscar Salvador
-SUSE Labs
+2.34.1
+
