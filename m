@@ -1,65 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5598E49A20D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 02:30:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D010D49A78D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 04:04:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JjTn9204Nz30Ds
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 12:30:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JjWtG2jtfz3cG5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 14:04:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=RiuXdYQM;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=H1a+Ji8j;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
+ helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=desiato.20200630 header.b=RiuXdYQM; 
- dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org
- [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=H1a+Ji8j; dkim-atps=neutral
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
+ [IPv6:2607:f8b0:4864:20::630])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JjTmR34d1z2x9d
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 12:29:42 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
- :In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
- Sender:Reply-To:Content-ID:Content-Description;
- bh=P/pVADs/xaxzcSJh6qZOPmplhn33eeiTUUHUCQLTs+g=; b=RiuXdYQMDg6lKw2ZdUlIlVTWfh
- oErHs/5wEO/DUNbsdr0w7GaVRxJBfzd7AG8PtOi+t9cN6pVPCudDSZDAKyGihXSUqkeowAJh6z0yD
- s8vovFBzCqsjmB9NmzpySCD8j18MuGALijvQ9qibGMaMbRYAfNthbfqNbOs/9qeiivOL3HKiQXnlS
- 7oeJ9fdy6G7Pz0pBJIt3CCSLNOPlXB3Kh9aX8FJ4vVl2Lp5b6z6i+uzu7hWzeBkUSqmeapJUlw0ob
- Oqm5PYXOamSqtsgMaFBjjZkDm+CAYXDiJPVe4oe1NzkEAsOA1vebPKT288l+AOS9yTMSxSk56ZnK0
- GFXoAReA==;
-Received: from [2601:1c0:6280:3f0::aa0b]
- by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nCAeC-003KRf-IG; Tue, 25 Jan 2022 01:29:25 +0000
-Message-ID: <0ddcd3d8-6fca-dc6a-d9d8-f8df8715be95@infradead.org>
-Date: Mon, 24 Jan 2022 17:29:17 -0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JjWsb1kw1z2x9W
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 14:04:17 +1100 (AEDT)
+Received: by mail-pl1-x630.google.com with SMTP id j16so7269728plx.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Jan 2022 19:04:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=9NKJBn4Yha0jNSVXic9E3W6HICB1WHnhF4AQkFs3pUA=;
+ b=H1a+Ji8jB7AehEQXpREOcDxzeqBPDVnJ5K+Wd+l/FghliSD8Urmo0afH5o1zWRx0JG
+ hv8sHBxBrr0i60GNismljm0QNk/0FfD/v+0yBbUuQ1YLK2TewTjmrqfqCSbj2aYhytmk
+ D6b8f0K2Nut2MZU96i58mpmje4BmY/Iru2MP9KXVpaqKMPfdIYKi+A0xDeWU7RLi+0mI
+ emcYUlfEN46eIblcthnXBJwCJXZ2ifAf7DVI2R6aeAMDKOfcyLiCnMOSwztqGBmvHpHL
+ EcgICSX744/6PcLiysKd4yq2k1kJw+skcT7LvMVP+34KyIaeBP7P6+aQwcoeAdnXtZzw
+ I0uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=9NKJBn4Yha0jNSVXic9E3W6HICB1WHnhF4AQkFs3pUA=;
+ b=2YPVQNaFZZ1p/vNyau20mQpW2cX+k3+2KRtn+ALocin8Hvar3YQDti3jtQRpyzkM4g
+ hNn8R5N+cUDeBGAf2W4Eu3a5ldZu4uVLTqR15QoGtT3kw5piOGs/vc6ZX5aLs/Krm18M
+ xX/fsa9LedQbAPA4K7rXgQVOuc61bXyobyCplXhQ7XwnjcwYbObumqPirCENI3xOVqkM
+ IaUhce4Vm63XfgZg5FggmjFIsedOv0G/w9PwXQBBAixizNOVwIf6v7pii2rLywPmt8nW
+ u8rzIucaSVN1NxUjEm29pHtjuogEQrN0sXJhRbi2AOxgsW4c+mn40HuTczIYnZ+lLd2E
+ iUzQ==
+X-Gm-Message-State: AOAM533r00ZIwp4KTrLb8AccN4eGhuAzsG9SfRLHIM7EPUDeqibrdczx
+ GYm06ra0oH5EZ47WRlPkXkc=
+X-Google-Smtp-Source: ABdhPJz97N1SMqyFcUYiUrPcpeCjyCpGikBrPo4h0+/deFvinQYgQ2UM7n7NMWW4/uxRg8K4aAXdNg==
+X-Received: by 2002:a17:902:c40b:b0:14a:e2d5:3b1b with SMTP id
+ k11-20020a170902c40b00b0014ae2d53b1bmr17146901plk.45.1643079853937; 
+ Mon, 24 Jan 2022 19:04:13 -0800 (PST)
+Received: from localhost (193-116-82-75.tpgi.com.au. [193.116.82.75])
+ by smtp.gmail.com with ESMTPSA id z9sm17258805pfh.219.2022.01.24.19.04.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 24 Jan 2022 19:04:13 -0800 (PST)
+Date: Tue, 25 Jan 2022 13:04:07 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 0/2] powerpc: Disable syscall emulation and stepping
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20220124055741.3686496-1-npiggin@gmail.com>
+ <d3ab1142-5f62-6cbc-067c-6a34f4f28ef2@csgroup.eu>
+In-Reply-To: <d3ab1142-5f62-6cbc-067c-6a34f4f28ef2@csgroup.eu>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: Build regressions/improvements in v5.17-rc1
-Content-Language: en-US
-To: Felix Kuehling <felix.kuehling@amd.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Alex Deucher <alexdeucher@gmail.com>
-References: <20220123125737.2658758-1-geert@linux-m68k.org>
- <alpine.DEB.2.22.394.2201240851560.2674757@ramsan.of.borg>
- <CADnq5_MUq0fX7wMLJyUUxxa+2xoRinonL-TzD8tUhXALRfY8-A@mail.gmail.com>
- <CAMuHMdWUWqHYbbavtMT-XAD_sarDPC5xnc3c0pX1ZAh3Wuzuzg@mail.gmail.com>
- <aca104cf-5f5f-b696-754a-35e62dbe64c3@infradead.org>
- <500a3aa0-f51e-92ac-82d6-7ffc7f603e2c@amd.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <500a3aa0-f51e-92ac-82d6-7ffc7f603e2c@amd.com>
+Message-Id: <1643079479.32j7nee5j0.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,159 +82,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ALSA Development Mailing List <alsa-devel@alsa-project.org>,
- KVM list <kvm@vger.kernel.org>, Network Development <netdev@vger.kernel.org>,
- linux-um <linux-um@lists.infradead.org>, LKML <linux-kernel@vger.kernel.org>,
- amd-gfx list <amd-gfx@lists.freedesktop.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Lakshmi Sowjanya D <lakshmi.sowjanya.d@intel.com>,
- sparclinux <sparclinux@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Tobin C. Harding" <me@tobin.cc>
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
++Naveen (sorry missed cc'ing you at first)
 
+Excerpts from Christophe Leroy's message of January 24, 2022 4:39 pm:
+>=20
+>=20
+> Le 24/01/2022 =C3=A0 06:57, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> As discussed previously
+>>=20
+>> https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-January/238946.html
+>>=20
+>> I'm wondering whether PPC32 should be returning -1 for syscall
+>> instructions too here? That could be done in another patch anyway.
+>>=20
+>=20
+> The 'Programming Environments Manual for 32-Bit Implementations of the=20
+> PowerPC=E2=84=A2 Architecture' says:
+>=20
+> The following are not traced:
+> =E2=80=A2 rfi instruction
+> =E2=80=A2 sc and trap instructions that trap
+> =E2=80=A2 Other instructions that cause interrupts (other than trace inte=
+rrupts)
+> =E2=80=A2 The first instruction of any interrupt handler
+> =E2=80=A2 Instructions that are emulated by software
+>=20
+>=20
+> So I think PPC32 should return -1 as well.
 
-On 1/24/22 17:23, Felix Kuehling wrote:
-> 
-> Am 2022-01-24 um 14:11 schrieb Randy Dunlap:
->> On 1/24/22 10:55, Geert Uytterhoeven wrote:
->>> Hi Alex,
->>>
->>> On Mon, Jan 24, 2022 at 7:52 PM Alex Deucher <alexdeucher@gmail.com> wrote:
->>>> On Mon, Jan 24, 2022 at 5:25 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->>>>> On Sun, 23 Jan 2022, Geert Uytterhoeven wrote:
->>>>>>   + /kisskb/src/drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c: error: control reaches end of non-void function [-Werror=return-type]:  => 1560:1
->>>> I don't really see what's going on here:
->>>>
->>>> #ifdef CONFIG_X86_64
->>>> return cpu_data(first_cpu_of_numa_node).apicid;
->>>> #else
->>>> return first_cpu_of_numa_node;
->>>> #endif
->>> Ah, the actual failure causing this was not included:
->>>
->>> In file included from /kisskb/src/arch/x86/um/asm/processor.h:41:0,
->>>                   from /kisskb/src/include/linux/mutex.h:19,
->>>                   from /kisskb/src/include/linux/kernfs.h:11,
->>>                   from /kisskb/src/include/linux/sysfs.h:16,
->>>                   from /kisskb/src/include/linux/kobject.h:20,
->>>                   from /kisskb/src/include/linux/pci.h:35,
->>>                   from
->>> /kisskb/src/drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:25:
->>> /kisskb/src/drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c: In
->>> function 'kfd_cpumask_to_apic_id':
->>> /kisskb/src/arch/um/include/asm/processor-generic.h:103:18: error:
->>> called object is not a function or function pointer
->>>   #define cpu_data (&boot_cpu_data)
->>>                    ^
->>> /kisskb/src/drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1556:9:
->>> note: in expansion of macro 'cpu_data'
->>>    return cpu_data(first_cpu_of_numa_node).apicid;
->>>           ^
->>> /kisskb/src/drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1560:1:
->>> error: control reaches end of non-void function [-Werror=return-type]
->>>   }
->>>   ^
->> ah yes, UML.
->> I have a bunch of UML fixes that I have been hesitant to post.
->>
->> This is one of them.
->> What do people think about this?
-> 
-> Does it make sense to configure a UML kernel with a real device driver in the first place? Or should we just prevent enabling amdgpu for UML with a Kconfig dependency?
-> 
+I agree.
 
-Hi,
+What about the trap instructions? analyse_instr returns 0 for them
+which falls through to return 0 for emulate_step, should they
+return -1 as well or am I missing something?
 
-Your option IMO. I have seen both opinions given.
-I also meant to reply that someone could just add
-	depends on !UML
-for this device, like you are suggesting.
-
-I'm fine with it either way.
-
-thanks.
-
-> 
->>
->> thanks.
->>
->> ---
->> From: Randy Dunlap <rdunlap@infradead.org>
->>
->>
->> ../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1556:9: note: in expansion of macro ‘cpu_data’
->>    return cpu_data(first_cpu_of_numa_node).apicid;
->>           ^~~~~~~~
->> ../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1560:1: error: control reaches end of non-void function [-Werror=return-type]
->>
->> ../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_crat.c: In function ‘kfd_fill_iolink_info_for_cpu’:
->> ../arch/um/include/asm/processor-generic.h:103:19: error: called object is not a function or function pointer
->>   #define cpu_data (&boot_cpu_data)
->>                    ~^~~~~~~~~~~~~~~
->> ../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_crat.c:1688:27: note: in expansion of macro ‘cpu_data’
->>    struct cpuinfo_x86 *c = &cpu_data(0);
->>                             ^~~~~~~~
->> ../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_crat.c:1691:7: error: dereferencing pointer to incomplete type ‘struct cpuinfo_x86’
->>    if (c->x86_vendor == X86_VENDOR_AMD)
->>         ^~
->> ../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_crat.c:1691:23: error: ‘X86_VENDOR_AMD’ undeclared (first use in this function); did you mean ‘X86_VENDOR_ANY’?
->>    if (c->x86_vendor == X86_VENDOR_AMD)
->>                         ^~~~~~~~~~~~~~
->>                         X86_VENDOR_ANY
->>
->> ../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_crat.c: In function ‘kfd_create_vcrat_image_cpu’:
->> ../drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_crat.c:1742:11: warning: unused variable ‘entries’ [-Wunused-variable]
->>    uint32_t entries = 0;
->>
->> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
->> ---
->>   drivers/gpu/drm/amd/amdkfd/kfd_crat.c     |    6 +++---
->>   drivers/gpu/drm/amd/amdkfd/kfd_topology.c |    2 +-
->>   2 files changed, 4 insertions(+), 4 deletions(-)
->>
->> --- linux-next-20220107.orig/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
->> +++ linux-next-20220107/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
->> @@ -1552,7 +1552,7 @@ static int kfd_cpumask_to_apic_id(const
->>       first_cpu_of_numa_node = cpumask_first(cpumask);
->>       if (first_cpu_of_numa_node >= nr_cpu_ids)
->>           return -1;
->> -#ifdef CONFIG_X86_64
->> +#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
->>       return cpu_data(first_cpu_of_numa_node).apicid;
->>   #else
->>       return first_cpu_of_numa_node;
->> --- linux-next-20220107.orig/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
->> +++ linux-next-20220107/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
->> @@ -1679,7 +1679,7 @@ static int kfd_fill_mem_info_for_cpu(int
->>       return 0;
->>   }
->>   -#ifdef CONFIG_X86_64
->> +#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
->>   static int kfd_fill_iolink_info_for_cpu(int numa_node_id, int *avail_size,
->>                   uint32_t *num_entries,
->>                   struct crat_subtype_iolink *sub_type_hdr)
->> @@ -1738,7 +1738,7 @@ static int kfd_create_vcrat_image_cpu(vo
->>       struct crat_subtype_generic *sub_type_hdr;
->>       int avail_size = *size;
->>       int numa_node_id;
->> -#ifdef CONFIG_X86_64
->> +#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
->>       uint32_t entries = 0;
->>   #endif
->>       int ret = 0;
->> @@ -1803,7 +1803,7 @@ static int kfd_create_vcrat_image_cpu(vo
->>               sub_type_hdr->length);
->>             /* Fill in Subtype: IO Link */
->> -#ifdef CONFIG_X86_64
->> +#if defined(CONFIG_X86_64) && !defined(CONFIG_UML)
->>           ret = kfd_fill_iolink_info_for_cpu(numa_node_id, &avail_size,
->>                   &entries,
->>                   (struct crat_subtype_iolink *)sub_type_hdr);
->>
->>
-
--- 
-~Randy
+Thanks,
+Nick
