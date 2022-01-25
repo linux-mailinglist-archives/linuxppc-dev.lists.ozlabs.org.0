@@ -1,60 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D957E49B131
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 11:21:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF8F49B30E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 12:46:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JjjYW3FdGz3bZy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 21:21:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JjlS04jXBz3bb7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Jan 2022 22:46:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E0g1wqBL;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=E61Fp0d9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JjlRK2LKpz2xXd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 22:45:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=E0g1wqBL; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=E61Fp0d9; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JjjXr0B54z2xMw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Jan 2022 21:20:27 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id DDCC8B81752;
- Tue, 25 Jan 2022 10:20:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54366C340E5;
- Tue, 25 Jan 2022 10:20:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1643106023;
- bh=bPm0LjPdqkJuh3S4vN12VSn0qh8bPUdA5DbAm6JDSKI=;
- h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
- b=E0g1wqBLEi1ip7lwDDh6jAKSNrueJIO+J0FOpq62I7AyowojSutWWFQbU8me7o04V
- rsYRAH9ZkB1Ri9RGHM636oiMoGhse+mlfVjQ+X5ue3y/7EIiB4jhYyHBc7vDhxy92a
- f07gXfB7UvO0Gd5Wfu5xUWZmB+GlNVb/ewuAuZ0zlWLVeIfOhI8how56sbrGszcnSj
- ZgqVhR7FLfQ/qNHy3cWz1qYwGZDU+TEkFV+MjW0J1Z//bCqPB34erCS7otnbW7CEek
- nJtv5F3/F3zA8LBmta6Qe03PefruPPgKOq1peyynvmGAlK8ZqGvZS6b+z1WGf2q/4h
- 0/AuOhLHqfo0w==
-From: Mark Brown <broonie@kernel.org>
-To: Ariel D'Alessandro <ariel.dalessandro@collabora.com>,
- alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
- linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20220117132109.283365-1-ariel.dalessandro@collabora.com>
-References: <20220117132109.283365-1-ariel.dalessandro@collabora.com>
-Subject: Re: [PATCH v2 0/5] fsl-asoc-card: Add optional dt property for
- setting mclk-id
-Message-Id: <164310602006.74844.15557219169532586931.b4-ty@kernel.org>
-Date: Tue, 25 Jan 2022 10:20:20 +0000
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JjlRC2rn1z4xmj;
+ Tue, 25 Jan 2022 22:45:43 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1643111143;
+ bh=3viCN3BwdlfpdJwC0C4uIZqqjBgEpns0SlOnhYgOkr0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=E61Fp0d9lPbxt4mVc2WmjEkCp3SvcbRQwvg3KI/bAyVFVjc/CoT+hs+276kgSd2Wm
+ X5qAnrErfSGZlMzlPUORjg+hHEd4zBVBcLKVYtDLGvzrenMbcYtjE1ndLp4h26WJ2G
+ 3F+7Fc/e4q2JdyfVBPV22kfo0GH+xYhcc/p1sDxzz2eJRFNaSWUy8eCYDR4XW9GG+c
+ BTkfF+elughGlqeEfKtQBphaxVEu8GJPTuUYrukWENZLai6PGGLUvdiiQoAhWZf4IH
+ bdrSEDb3LytGHkciGXeh4SaPdLPt4aih6oUh+4KRyww/0YsEYo4+IFgrmwUVzeMtTU
+ Tibxe/2JBp5cg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 2/2] powerpc/uprobes: Reject uprobe on a system call
+ instruction
+In-Reply-To: <20220124055741.3686496-3-npiggin@gmail.com>
+References: <20220124055741.3686496-1-npiggin@gmail.com>
+ <20220124055741.3686496-3-npiggin@gmail.com>
+Date: Tue, 25 Jan 2022 22:45:38 +1100
+Message-ID: <874k5sm42l.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,57 +61,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kuninori.morimoto.gx@renesas.com, Xiubo.Lee@gmail.com, tony@atomide.com,
- festevam@gmail.com, tiwai@suse.com, lgirdwood@gmail.com,
- nicoleotsuka@gmail.com, robh+dt@kernel.org, bcousson@baylibre.com,
- perex@perex.cz, michael@amarulasolutions.com, shengjiu.wang@gmail.com
+Cc: "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 17 Jan 2022 10:21:04 -0300, Ariel D'Alessandro wrote:
-> This is a follow up of patchset:
-> 
->     [RFC patch 0/5] Support BCLK input clock in tlv320aic31xx
-> 
-> Sound cards may allow using different main clock inputs. In the generic
-> fsl-asoc-card driver, these values are hardcoded for each specific card
-> configuration.
-> 
-> [...]
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Per the ISA, a Trace interrupt is not generated for a system call
+> [vectored] instruction. Reject uprobes on such instructions as we are
+> not emulating a system call [vectored] instruction anymore.
 
-Applied to
+This should really be patch 1, otherwise there's a single commit window
+where we allow uprobes on sc but don't honour them.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> [np: Switch to pr_info_ratelimited]
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/include/asm/ppc-opcode.h | 1 +
+>  arch/powerpc/kernel/uprobes.c         | 6 ++++++
+>  2 files changed, 7 insertions(+)
+>
+> diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
+> index 9675303b724e..8bbe16ce5173 100644
+> --- a/arch/powerpc/include/asm/ppc-opcode.h
+> +++ b/arch/powerpc/include/asm/ppc-opcode.h
+> @@ -411,6 +411,7 @@
+>  #define PPC_RAW_DCBFPS(a, b)		(0x7c0000ac | ___PPC_RA(a) | ___PPC_RB(b) | (4 << 21))
+>  #define PPC_RAW_DCBSTPS(a, b)		(0x7c0000ac | ___PPC_RA(a) | ___PPC_RB(b) | (6 << 21))
+>  #define PPC_RAW_SC()			(0x44000002)
+> +#define PPC_RAW_SCV()			(0x44000001)
+>  #define PPC_RAW_SYNC()			(0x7c0004ac)
+>  #define PPC_RAW_ISYNC()			(0x4c00012c)
+>  
+> diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
+> index c6975467d9ff..3779fde804bd 100644
+> --- a/arch/powerpc/kernel/uprobes.c
+> +++ b/arch/powerpc/kernel/uprobes.c
+> @@ -41,6 +41,12 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *auprobe,
+>  	if (addr & 0x03)
+>  		return -EINVAL;
+>  
+> +	if (ppc_inst_val(ppc_inst_read(auprobe->insn)) == PPC_RAW_SC() ||
+> +	    ppc_inst_val(ppc_inst_read(auprobe->insn)) == PPC_RAW_SCV()) {
 
-Thanks!
+We should probably reject hypercall too?
 
-[1/5] dt-bindings: sound: Rename tlv320aic31xx-micbias as tlv320aic31xx
-      commit: 85f856f790b5fd427cb31b3f62755713174da0aa
-[2/5] dt-bindings: tlv320aic31xx: Define PLL clock inputs
-      commit: 6045ffd366283236f0de79c8a0e98ae766e9a8f9
-[3/5] ASoC: bindings: fsl-asoc-card: Add mclk-id optional property
-      commit: 55915f20ad9ae92015bf7b2c4ac854e5b720d63f
-[4/5] ASoC: fsl-asoc-card: Add optional dt property for setting mclk-id
-      commit: e6ec5a3936ee0c01f46e1d09dc758bb762e06dd9
-[5/5] ASoC: fsl-asoc-card: Remove BCLK default value for tlv320aic31xx card
-      commit: d4c4e2861560ab1cbf540bbda5bcdf4c92b17110
+There's also a lot of reserved fields in `sc`, so doing an exact match
+like this risks missing instructions that are badly formed but the CPU
+will happily execute as `sc`.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+We'd obviously never expect to see those in compiler generated code, but
+it'd still be safer to mask. We could probably just reject opcode 17
+entirely.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+And I guess for a subsequent patch, but we should be rejecting some
+others here as well shouldn't we? Like rfid etc.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+cheers
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
 
-Thanks,
-Mark
+> +		pr_info_ratelimited("Rejecting uprobe on system call instruction\n");
+> +		return -EINVAL;
+> +	}
+> +
+>  	if (cpu_has_feature(CPU_FTR_ARCH_31) &&
+>  	    ppc_inst_prefixed(ppc_inst_read(auprobe->insn)) &&
+>  	    (addr & 0x3f) == 60) {
+> -- 
+> 2.23.0
