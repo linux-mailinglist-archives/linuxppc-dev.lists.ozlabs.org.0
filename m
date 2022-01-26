@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DC049C8DF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 12:42:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B7049C8E1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 12:43:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JkMK760yPz3cQX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 22:42:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JkMKZ1rtJz3cVr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 22:42:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,22 +16,23 @@ Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JkMJg6YH5z2yPv
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JkMJg6hdvz306m
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 22:42:11 +1100 (AEDT)
 Received: from localhost.localdomain (ip5f5aecd1.dynamic.kabel-deutschland.de
  [95.90.236.209])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested) (Authenticated sender: pmenzel)
- by mx.molgen.mpg.de (Postfix) with ESMTPSA id C98BE61EA191D;
- Wed, 26 Jan 2022 12:42:05 +0100 (CET)
+ by mx.molgen.mpg.de (Postfix) with ESMTPSA id 17FF261EA191E;
+ Wed, 26 Jan 2022 12:42:08 +0100 (CET)
 From: Paul Menzel <pmenzel@molgen.mpg.de>
 To: Song Liu <song@kernel.org>
-Subject: [PATCH 1/3] lib/raid6/test/Makefile: Use `$(pound)` instead of `\#`
- for Make 4.3
-Date: Wed, 26 Jan 2022 12:41:42 +0100
-Message-Id: <20220126114144.370517-1-pmenzel@molgen.mpg.de>
+Subject: [PATCH 2/3] lib/raid6: Include <asm/ppc-opcode.h> for `VPERMXOR`
+Date: Wed, 26 Jan 2022 12:41:43 +0100
+Message-Id: <20220126114144.370517-2-pmenzel@molgen.mpg.de>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220126114144.370517-1-pmenzel@molgen.mpg.de>
+References: <20220126114144.370517-1-pmenzel@molgen.mpg.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -52,91 +53,40 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Buidling `raid6test` on Ubuntu 21.10 (ppc64le) with GNU Make 4.3 shows the
-errors below:
+On Ubuntu 21.10 (ppc64le) building `raid6test` with gcc (Ubuntu
+11.2.0-7ubuntu2) 11.2.0 fails with the error below.
 
-    $ cd lib/raid6/test/
-    $ make
-    <stdin>:1:1: error: stray ‘\’ in program
-    <stdin>:1:2: error: stray ‘#’ in program
-    <stdin>:1:11: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘<’ token
-    cp -f ../int.uc int.uc
-    awk -f ../unroll.awk -vN=1 < int.uc > int1.c
-    gcc -I.. -I ../../../include -g -O2                      -c -o int1.o int1.c
-    awk -f ../unroll.awk -vN=2 < int.uc > int2.c
-    gcc -I.. -I ../../../include -g -O2                      -c -o int2.o int2.c
-    awk -f ../unroll.awk -vN=4 < int.uc > int4.c
-    gcc -I.. -I ../../../include -g -O2                      -c -o int4.o int4.c
-    awk -f ../unroll.awk -vN=8 < int.uc > int8.c
-    gcc -I.. -I ../../../include -g -O2                      -c -o int8.o int8.c
-    awk -f ../unroll.awk -vN=16 < int.uc > int16.c
-    gcc -I.. -I ../../../include -g -O2                      -c -o int16.o int16.c
-    awk -f ../unroll.awk -vN=32 < int.uc > int32.c
-    gcc -I.. -I ../../../include -g -O2                      -c -o int32.o int32.c
-    rm -f raid6.a
-    ar cq raid6.a int1.o int2.o int4.o int8.o int16.o int32.o recov.o algos.o tables.o
-    ranlib raid6.a
-    gcc -I.. -I ../../../include -g -O2                      -o raid6test test.c raid6.a
-    /usr/bin/ld: raid6.a(algos.o):/dev/shm/linux/lib/raid6/test/algos.c:28: multiple definition of `raid6_call'; /scratch/local/ccIJjN8s.o:/dev/shm/linux/lib/raid6/test/test.c:22: first defined here
-    collect2: error: ld returned 1 exit status
-    make: *** [Makefile:72: raid6test] Error 1
+    gcc -I.. -I ../../../include -g -O2                      -I../../../arch/powerpc/include -DCONFIG_ALTIVEC -c -o vpermxor1.o vpermxor1.c
+    vpermxor1.c: In function ‘raid6_vpermxor1_gen_syndrome_real’:
+    vpermxor1.c:64:29: error: expected string literal before ‘VPERMXOR’
+       64 |                         asm(VPERMXOR(%0,%1,%2,%3):"=v"(wq0):"v"(gf_high), "v"(gf_low), "v"(wq0));
+          |                             ^~~~~~~~
+    make: *** [Makefile:58: vpermxor1.o] Error 1
 
-The errors come from the `HAS_ALTIVEC` test, which fails, and the POWER
-optimized versions are not built. That’s also reason nobody noticed on the
-other architectures.
-
-GNU Make 4.3 does not remove the backslash anymore. From the 4.3 release
-announcment:
-
-> * WARNING: Backward-incompatibility!
->   Number signs (#) appearing inside a macro reference or function invocation
->   no longer introduce comments and should not be escaped with backslashes:
->   thus a call such as:
->     foo := $(shell echo '#')
->   is legal.  Previously the number sign needed to be escaped, for example:
->     foo := $(shell echo '\#')
->   Now this latter will resolve to "\#".  If you want to write makefiles
->   portable to both versions, assign the number sign to a variable:
->     H := \#
->     foo := $(shell echo '$H')
->   This was claimed to be fixed in 3.81, but wasn't, for some reason.
->   To detect this change search for 'nocomment' in the .FEATURES variable.
-
-So, do the same as commit 9564a8cf422d (Kbuild: fix # escaping in .cmd
-files for future Make) and commit 929bef467771 (bpf: Use $(pound) instead
-of \# in Makefiles) and define and use a `$(pound)` variable.
-
-Reference for the change in make:
-https://git.savannah.gnu.org/cgit/make.git/commit/?id=c6966b323811c37acedff05b57
+So, include the header `asm/ppc-opcode.h` defining this macro also when
+not building the Linux kernel but only this too.
 
 Cc: Matt Brown <matthew.brown.dev@gmail.com>
 Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
 ---
- lib/raid6/test/Makefile | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ lib/raid6/vpermxor.uc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/raid6/test/Makefile b/lib/raid6/test/Makefile
-index a4c7cd74cff5..4fb7700a741b 100644
---- a/lib/raid6/test/Makefile
-+++ b/lib/raid6/test/Makefile
-@@ -4,6 +4,8 @@
- # from userspace.
- #
+diff --git a/lib/raid6/vpermxor.uc b/lib/raid6/vpermxor.uc
+index 10475dc423c1..1bfb127fbfe8 100644
+--- a/lib/raid6/vpermxor.uc
++++ b/lib/raid6/vpermxor.uc
+@@ -24,9 +24,9 @@
+ #ifdef CONFIG_ALTIVEC
  
-+pound := \#
-+
- CC	 = gcc
- OPTFLAGS = -O2			# Adjust as desired
- CFLAGS	 = -I.. -I ../../../include -g $(OPTFLAGS)
-@@ -42,7 +44,7 @@ else ifeq ($(HAS_NEON),yes)
-         OBJS   += neon.o neon1.o neon2.o neon4.o neon8.o recov_neon.o recov_neon_inner.o
-         CFLAGS += -DCONFIG_KERNEL_MODE_NEON=1
- else
--        HAS_ALTIVEC := $(shell printf '\#include <altivec.h>\nvector int a;\n' |\
-+        HAS_ALTIVEC := $(shell printf '$(pound)include <altivec.h>\nvector int a;\n' |\
-                          gcc -c -x c - >/dev/null && rm ./-.o && echo yes)
-         ifeq ($(HAS_ALTIVEC),yes)
-                 CFLAGS += -I../../../arch/powerpc/include
+ #include <altivec.h>
++#include <asm/ppc-opcode.h>
+ #ifdef __KERNEL__
+ #include <asm/cputable.h>
+-#include <asm/ppc-opcode.h>
+ #include <asm/switch_to.h>
+ #endif
+ 
 -- 
 2.34.1
 
