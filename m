@@ -2,70 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ADFE49D228
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 19:58:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB79B49D35C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 21:22:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JkY0W6dVdz3bc4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 05:58:51 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nSPmP24H;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JkZrc5yQYz3cN9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 07:22:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d31;
- helo=mail-io1-xd31.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
+ smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
+ helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=nSPmP24H; dkim-atps=neutral
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com
- [IPv6:2607:f8b0:4864:20::d31])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
+ [130.133.4.66])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JkXzq41VCz2ymc
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 05:58:13 +1100 (AEDT)
-Received: by mail-io1-xd31.google.com with SMTP id i62so789611ioa.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 10:58:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=wyngZyIrlUk01+iEOlsom8ih3d/SEkgg9mdbfxMjBKY=;
- b=nSPmP24HtC8iu/VFrAUpvAwud6+rPMJ5yo6pAqXOvx8fFTj3qP8h2gt4oObElaUDxR
- f3geinsOxRWyAkvxpMQMuC6w9f+VVqdUcLJZHjBFjS8O4FWjdtYWpO05/XfvZQ1jv+G6
- A12hipy+TxNMvNjpcKjyouHTj0MU3iYbtGCgzgZnzq95SFX3ybqPxkLD3yKVBLiK2qEW
- eVwkYkNemK6Lhy0uuo+/ByG56hxXfHg5XVTjDT2xeEb3pK9/lBCVknk3CHIW5uU/FGbj
- 3khZbEz1vNmkBKlYExdxxnYFNA4GZWHVxRLE1jHfl8bYfTr0FSOIopw44OxnNB3UpTC0
- yajQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=wyngZyIrlUk01+iEOlsom8ih3d/SEkgg9mdbfxMjBKY=;
- b=hoX2A8OEjeVfXBz1ifNwUOr443G6nGuKMPeG3tN2NUnUlxr5juCVmzKIjwC3W9TVBP
- 1ZzMtkqburwEhgaNLwlzp7w4cuDiWL0Ct8R33edcTtsifo0VKXVtMgQifT2EW39rpdPs
- YRdX/YwVRFgorrDKzJveMKiIS5XofXSdBUJB4BKpZdSVewL7nZ2PDYR5NxQwjZQ0/uGJ
- VGmwecDmMWhVEyYobIAB1Trl+N7/vzg+cHrkLBRaQoasJ+EPW1TEwXOxBricBIBeMX7J
- cnbp/dCFjZxmaCCo+VTXuspdIXAGhioHv05dYoOp1/fFGapBTaW9KVdDHSuIu18/6Rec
- RFyA==
-X-Gm-Message-State: AOAM5320V8Tqr2dsKv5Bq+zre30D+duVRMD0EB2GoSOHBsLc/OX3Qhf+
- 9ZUnnUj71CZ2y1D6He9AdedNE6wOUnjlClrUU0M=
-X-Google-Smtp-Source: ABdhPJwtMLliBG3wT1Y/vWDYL0Er0UPdS0WQquBtClo6suuooJ1hlgFqLRErD+rAPDLXUnNKXmqNSNQM0vMBhinPeq0=
-X-Received: by 2002:a05:6602:2d49:: with SMTP id
- d9mr14348785iow.64.1643223489670; 
- Wed, 26 Jan 2022 10:58:09 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JkZrC34Ktz30MG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 07:21:45 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+ by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
+ tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1nConT-0049yW-TI; Wed, 26 Jan 2022 21:21:39 +0100
+Received: from p5b13a6db.dip0.t-ipconnect.de ([91.19.166.219]
+ helo=[192.168.178.81]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
+ with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+ (envelope-from <glaubitz@physik.fu-berlin.de>)
+ id 1nConT-0006Dk-Mn; Wed, 26 Jan 2022 21:21:39 +0100
+Message-ID: <200a989d-0aa9-c50f-855a-159b4e8ea441@physik.fu-berlin.de>
+Date: Wed, 26 Jan 2022 21:21:39 +0100
 MIME-Version: 1.0
-References: <CANiq72n_FmDx=r-o9J8gYc6LpwRL5EGmhM6Xzwv27Xc7h1TNDw@mail.gmail.com>
- <cf6ac499-4190-cbe5-255c-f9edf07a4786@kaod.org>
-In-Reply-To: <cf6ac499-4190-cbe5-255c-f9edf07a4786@kaod.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 26 Jan 2022 19:57:58 +0100
-Message-ID: <CANiq72mV3AzmBDVJM+tQriEoDu_9LFBrK_vR6GC4qEmLw0UepQ@mail.gmail.com>
-Subject: Re: ppc: hard lockup / hang in v5.17-rc1 under QEMU
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
+Content-Language: en-US
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
+ <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
+ <878ryfavaz.fsf@mpe.ellerman.id.au>
+ <04864fe5-fdd0-74b2-2bad-0303e4c2b15a@physik.fu-berlin.de>
+ <874k92bubv.fsf@mpe.ellerman.id.au>
+ <c21c7a0e-95f1-e6d2-a04c-fb99d801e8da@physik.fu-berlin.de>
+ <878rydac0d.fsf@mpe.ellerman.id.au>
+ <73c55cc9-369e-8989-4f6c-6801ce6a4d64@physik.fu-berlin.de>
+ <87k0hs8iyq.fsf@mpe.ellerman.id.au>
+ <fca7cf14-b598-d25a-8f71-8d1c16a84e5f@physik.fu-berlin.de>
+ <87ilux2ksi.fsf@mpe.ellerman.id.au>
+ <872c2364-a5db-0533-c8bd-91e03c067a2f@physik.fu-berlin.de>
+ <8aa4e710-df2d-8cb7-ba16-f6043c929a14@physik.fu-berlin.de>
+ <52b57080-efbd-c582-30df-f1d638e18e14@physik.fu-berlin.de>
+In-Reply-To: <52b57080-efbd-c582-30df-f1d638e18e14@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.166.219
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,29 +68,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 26, 2022 at 4:03 PM C=C3=A9dric Le Goater <clg@kaod.org> wrote:
->
-> Indeed. I could reproduce.
+Hi Michael!
 
-Thanks for the quick confirmation!
+On 1/13/22 01:17, John Paul Adrian Glaubitz wrote:
+> On 1/9/22 23:17, John Paul Adrian Glaubitz wrote:
+>> On 1/7/22 12:20, John Paul Adrian Glaubitz wrote:
+>>>> Can you separately test with (on the host):
+>>>>
+>>>>  # echo 0 > /sys/module/kvm_hv/parameters/dynamic_mt_modes
+>>>
+>>> I'm trying to turn off "dynamic_mt_modes" first and see if that makes any difference.
+>>>
+>>> I will report back.
+>>
+>> So far the machine is running stable now and the VM built gcc-9 without
+>> crashing the host. I will continue to monitor the machine and report back
+>> if it crashes, but it looks like this could be it.
+> 
+> So, it seems that setting "dynamic_mt_modes" actually did the trick, the host is no longer
+> crashing. However, I have observed on two occasions now that the build VM is just suddenly
+> off as if someone has shut it down using the "force-off" option in the virt-manager user
+> interface.
 
-> Could you please send the QEMU command line and the full dmesg ? and
-> possibly open an issue on :
->
->    https://gitlab.com/qemu-project/qemu/-/issues/
->
-> I guess it's a QEMU modeling issue.
+Just as a heads-up. Ever since I set
 
-Of course -- done (details there):
+	echo 0 > /sys/module/kvm_hv/parameters/dynamic_mt_modes
 
-    https://gitlab.com/qemu-project/qemu/-/issues/842
+on the host machine, I never saw the crash again. So the issue seems to be related to the
+dynamic_mt_modes feature.
 
-Cheers,
-Miguel
+Thanks,
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
