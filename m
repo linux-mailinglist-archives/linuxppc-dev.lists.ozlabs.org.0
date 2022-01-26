@@ -2,53 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D397449D412
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 22:05:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C6B49D418
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 22:05:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JkbpF5hQHz3cPY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 08:05:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jkbpx1yk1z3cNB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 08:05:45 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=buttersideup.com header.i=@buttersideup.com header.a=rsa-sha256 header.s=2021022401 header.b=iReFAKfQ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=www18.qth.com (client-ip=69.16.238.59; helo=www18.qth.com;
- envelope-from=davidtg+robot@justpickone.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 1346 seconds by postgrey-1.36 at boromir;
- Thu, 27 Jan 2022 02:01:03 AEDT
-Received: from www18.qth.com (www18.qth.com [69.16.238.59])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=buttersideup.com (client-ip=81.174.144.187;
+ helo=ipv6test5.plus.com; envelope-from=tim@buttersideup.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=buttersideup.com header.i=@buttersideup.com
+ header.a=rsa-sha256 header.s=2021022401 header.b=iReFAKfQ; 
+ dkim-atps=neutral
+X-Greylist: delayed 472 seconds by postgrey-1.36 at boromir;
+ Thu, 27 Jan 2022 06:37:40 AEDT
+Received: from ipv6test5.plus.com (ipv6test5.plus.com [81.174.144.187])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JkRk73qzdz2xfy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 02:00:58 +1100 (AEDT)
-Received: from [73.207.192.158] (port=36496 helo=justpickone.org)
- by www18.qth.com with esmtpsa (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
- (envelope-from <davidtg+robot@justpickone.org>)
- id 1nCjRO-0001U6-JN; Wed, 26 Jan 2022 08:38:29 -0600
-Date: Wed, 26 Jan 2022 09:38:27 -0500
-From: David T-G <davidtg+robot@justpickone.org>
-To: "linux-raid@vger.kernel.org" <linux-raid@vger.kernel.org>
-Subject: Re: a pound's a pound the whole world 'round (was "Re: [PATCH 1/3]
- ... Use `$(pound)` instead ...")
-Message-ID: <20220126143827.GF14596@justpickone.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JkYsJ1T1sz2xtw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 06:37:40 +1100 (AEDT)
+Received: from [IPV6:2001:470:1b4a::e9a] (custard.lan
+ [IPv6:2001:470:1b4a::e9a])
+ by ipv6test5.plus.com (Postfix) with ESMTPSA id D46934970B1A;
+ Wed, 26 Jan 2022 19:29:40 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=buttersideup.com;
+ s=2021022401; t=1643225380;
+ h=from:from:sender:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=RuabK0xJIPI54XFQPZSBqYGVbq2/eb4MWWYfexa+gxI=;
+ b=iReFAKfQbZ2BKXA0wUt7tIvHpcjXrOxnQzj5ifgGIa/DyFcQ/LPd8ESvnuCkgoreIsOkZW
+ mCWE9sIy0A1ZcCOYswm8+3EcnhP/Q1jMi+3LgofqIbHCSBxOrdL5gp3sJ/jkmb5LRQL5Lo
+ rJJByX4+UsP/KGtURc4BqjSZmx942T0=
+Message-ID: <fa2149a4-83bf-58f9-1b9f-282c4afe0005@buttersideup.com>
+Date: Wed, 26 Jan 2022 19:29:40 +0000
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH 1/3] lib/raid6/test/Makefile: Use `$(pound)` instead of
+ `\#` for Make 4.3
+Content-Language: en-GB
+To: Paul Menzel <pmenzel@molgen.mpg.de>, David Laight <David.Laight@ACULAB.COM>
 References: <20220126114144.370517-1-pmenzel@molgen.mpg.de>
  <0214ae2639174812948a631ac4e142c8@AcuMS.aculab.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0214ae2639174812948a631ac4e142c8@AcuMS.aculab.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-AntiAbuse: This header was added to track abuse,
- please include it with any abuse report
-X-AntiAbuse: Primary Hostname - www18.qth.com
-X-AntiAbuse: Original Domain - lists.ozlabs.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - justpickone.org
-X-Get-Message-Sender-Via: www18.qth.com: authenticated_id:
- dmail@justpickone.org
-X-Authenticated-Sender: www18.qth.com: dmail@justpickone.org
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ <e2e25fc9-ff40-9183-6ca7-fab4708fa1d0@molgen.mpg.de>
+From: Tim Small <tim@buttersideup.com>
+In-Reply-To: <e2e25fc9-ff40-9183-6ca7-fab4708fa1d0@molgen.mpg.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Thu, 27 Jan 2022 08:04:49 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,38 +71,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-raid@vger.kernel.org, Song Liu <song@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Matt Brown <matthew.brown.dev@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-David, et al --
+On 26/01/2022 12:12, Paul Menzel wrote:
 
-...and then David Laight said...
-% 
-% From: Paul Menzel
-% > Sent: 26 January 2022 11:42
-% > 
-% ..
-% > +pound := \#
-% 
-% Please use 'hash' not 'pound'.
+> Sure, I can change that,
 
-Ahem ...  Everyone knows that hash is best served hot and that
-that symbol is an octothorpe.
+FWIW, the GNU Make documentation uses "Number signs" to refer to "#", 
+and I think that may cause the least confusion across speakers of 
+different dialects of English.
 
-
-% Only american greengrocers use that horrid name.
-[snip]
-
-*grin*
-
-
-HAND
-
-:-D
--- 
-David T-G
-See http://justpickone.org/davidtg/email/
-See http://justpickone.org/davidtg/tofu.txt
+Tim.
 
