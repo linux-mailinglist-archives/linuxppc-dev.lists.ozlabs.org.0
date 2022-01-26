@@ -2,63 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D3849C85C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 12:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DC049C8DF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 12:42:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JkLdd06Lgz30NC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 22:11:49 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=e6nLFKE/;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JkMK760yPz3cQX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 22:42:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=mika.westerberg@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=e6nLFKE/; dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
+ envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
+Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JkLcz4Jr1z2yMy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 22:11:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1643195475; x=1674731475;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=AZ52GxZm2Eq1pzG9AHFhzbjqb/WlLIS9HlqJiBwFpBE=;
- b=e6nLFKE/ULgvPsj6r3QCIUawmh2l8qGgL+IrnlLjhPwnOTG+gdP0QHfU
- 4G9rO7xcopN7Q8Ofmu3ixHlPeS7wu8VAH4RDHi/A9VWh43vavYMbdpQRQ
- IgW7evwIPlJPWQ4jy1vyfeawDOFin4Yhhzpdl/F6BOQAixURasoyt89s7
- Dyb3isD39Bpd/DW4IzwEM8MgdY1Fcwy3TEY0Ah3kUh2UGWHvg59qe+Vac
- 3W6U/ZWBXhIgi4yAXdZKqCqNIxzuxIXSHdqGwBQAQdh35cCE8r9zDl2YN
- 8r5QIVTjq1xhpaKKquwy7wbpOx2NCvndnN+TEyApvenGGi4rdIkKj6tAB w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10238"; a="246473441"
-X-IronPort-AV: E=Sophos;i="5.88,317,1635231600"; d="scan'208";a="246473441"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2022 03:10:09 -0800
-X-IronPort-AV: E=Sophos;i="5.88,317,1635231600"; d="scan'208";a="624802639"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.162])
- by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2022 03:10:06 -0800
-Received: by lahna (sSMTP sendmail emulation); Wed, 26 Jan 2022 13:10:03 +0200
-Date: Wed, 26 Jan 2022 13:10:03 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: Re: [PATCH 2/2] PCI/DPC: Disable DPC when link is in L2/L3 ready, L2
- and L3 state
-Message-ID: <YfEsC94BvFwd5MLy@lahna>
-References: <20220126071853.1940111-1-kai.heng.feng@canonical.com>
- <20220126071853.1940111-2-kai.heng.feng@canonical.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JkMJg6YH5z2yPv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 22:42:11 +1100 (AEDT)
+Received: from localhost.localdomain (ip5f5aecd1.dynamic.kabel-deutschland.de
+ [95.90.236.209])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested) (Authenticated sender: pmenzel)
+ by mx.molgen.mpg.de (Postfix) with ESMTPSA id C98BE61EA191D;
+ Wed, 26 Jan 2022 12:42:05 +0100 (CET)
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+To: Song Liu <song@kernel.org>
+Subject: [PATCH 1/3] lib/raid6/test/Makefile: Use `$(pound)` instead of `\#`
+ for Make 4.3
+Date: Wed, 26 Jan 2022 12:41:42 +0100
+Message-Id: <20220126114144.370517-1-pmenzel@molgen.mpg.de>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220126071853.1940111-2-kai.heng.feng@canonical.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,60 +46,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- koba.ko@canonical.com, Oliver O'Halloran <oohall@gmail.com>,
- bhelgaas@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-raid@vger.kernel.org, Paul Menzel <pmenzel@molgen.mpg.de>,
+ Matt Brown <matthew.brown.dev@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Buidling `raid6test` on Ubuntu 21.10 (ppc64le) with GNU Make 4.3 shows the
+errors below:
 
-On Wed, Jan 26, 2022 at 03:18:52PM +0800, Kai-Heng Feng wrote:
-> Since TLP and DLLP transmission is disabled for a Link in L2/L3 Ready,
-> L2 and L3, and DPC depends on AER, so also disable DPC here.
+    $ cd lib/raid6/test/
+    $ make
+    <stdin>:1:1: error: stray ‘\’ in program
+    <stdin>:1:2: error: stray ‘#’ in program
+    <stdin>:1:11: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘<’ token
+    cp -f ../int.uc int.uc
+    awk -f ../unroll.awk -vN=1 < int.uc > int1.c
+    gcc -I.. -I ../../../include -g -O2                      -c -o int1.o int1.c
+    awk -f ../unroll.awk -vN=2 < int.uc > int2.c
+    gcc -I.. -I ../../../include -g -O2                      -c -o int2.o int2.c
+    awk -f ../unroll.awk -vN=4 < int.uc > int4.c
+    gcc -I.. -I ../../../include -g -O2                      -c -o int4.o int4.c
+    awk -f ../unroll.awk -vN=8 < int.uc > int8.c
+    gcc -I.. -I ../../../include -g -O2                      -c -o int8.o int8.c
+    awk -f ../unroll.awk -vN=16 < int.uc > int16.c
+    gcc -I.. -I ../../../include -g -O2                      -c -o int16.o int16.c
+    awk -f ../unroll.awk -vN=32 < int.uc > int32.c
+    gcc -I.. -I ../../../include -g -O2                      -c -o int32.o int32.c
+    rm -f raid6.a
+    ar cq raid6.a int1.o int2.o int4.o int8.o int16.o int32.o recov.o algos.o tables.o
+    ranlib raid6.a
+    gcc -I.. -I ../../../include -g -O2                      -o raid6test test.c raid6.a
+    /usr/bin/ld: raid6.a(algos.o):/dev/shm/linux/lib/raid6/test/algos.c:28: multiple definition of `raid6_call'; /scratch/local/ccIJjN8s.o:/dev/shm/linux/lib/raid6/test/test.c:22: first defined here
+    collect2: error: ld returned 1 exit status
+    make: *** [Makefile:72: raid6test] Error 1
 
-Here too I think it is good to mention that the DPC "service" never
-implemented the PM hooks in the first place
+The errors come from the `HAS_ALTIVEC` test, which fails, and the POWER
+optimized versions are not built. That’s also reason nobody noticed on the
+other architectures.
 
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+GNU Make 4.3 does not remove the backslash anymore. From the 4.3 release
+announcment:
 
-One minor comment below, but other than that looks good,
+> * WARNING: Backward-incompatibility!
+>   Number signs (#) appearing inside a macro reference or function invocation
+>   no longer introduce comments and should not be escaped with backslashes:
+>   thus a call such as:
+>     foo := $(shell echo '#')
+>   is legal.  Previously the number sign needed to be escaped, for example:
+>     foo := $(shell echo '\#')
+>   Now this latter will resolve to "\#".  If you want to write makefiles
+>   portable to both versions, assign the number sign to a variable:
+>     H := \#
+>     foo := $(shell echo '$H')
+>   This was claimed to be fixed in 3.81, but wasn't, for some reason.
+>   To detect this change search for 'nocomment' in the .FEATURES variable.
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+So, do the same as commit 9564a8cf422d (Kbuild: fix # escaping in .cmd
+files for future Make) and commit 929bef467771 (bpf: Use $(pound) instead
+of \# in Makefiles) and define and use a `$(pound)` variable.
 
-> ---
->  drivers/pci/pcie/dpc.c | 61 +++++++++++++++++++++++++++++++-----------
->  1 file changed, 45 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-> index 3e9afee02e8d1..9585c10b7c577 100644
-> --- a/drivers/pci/pcie/dpc.c
-> +++ b/drivers/pci/pcie/dpc.c
-> @@ -343,13 +343,34 @@ void pci_dpc_init(struct pci_dev *pdev)
->  	}
->  }
->  
-> +static void dpc_enable(struct pcie_device *dev)
-> +{
-> +	struct pci_dev *pdev = dev->port;
-> +	u16 ctl;
-> +
-> +	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
-> +
+Reference for the change in make:
+https://git.savannah.gnu.org/cgit/make.git/commit/?id=c6966b323811c37acedff05b57
 
-Drop the empty line here.
+Cc: Matt Brown <matthew.brown.dev@gmail.com>
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+---
+ lib/raid6/test/Makefile | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> +	ctl = (ctl & 0xfff4) | PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
-> +	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-> +}
-> +
-> +static void dpc_disable(struct pcie_device *dev)
-> +{
-> +	struct pci_dev *pdev = dev->port;
-> +	u16 ctl;
-> +
-> +	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
-> +	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
-> +	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-> +}
+diff --git a/lib/raid6/test/Makefile b/lib/raid6/test/Makefile
+index a4c7cd74cff5..4fb7700a741b 100644
+--- a/lib/raid6/test/Makefile
++++ b/lib/raid6/test/Makefile
+@@ -4,6 +4,8 @@
+ # from userspace.
+ #
+ 
++pound := \#
++
+ CC	 = gcc
+ OPTFLAGS = -O2			# Adjust as desired
+ CFLAGS	 = -I.. -I ../../../include -g $(OPTFLAGS)
+@@ -42,7 +44,7 @@ else ifeq ($(HAS_NEON),yes)
+         OBJS   += neon.o neon1.o neon2.o neon4.o neon8.o recov_neon.o recov_neon_inner.o
+         CFLAGS += -DCONFIG_KERNEL_MODE_NEON=1
+ else
+-        HAS_ALTIVEC := $(shell printf '\#include <altivec.h>\nvector int a;\n' |\
++        HAS_ALTIVEC := $(shell printf '$(pound)include <altivec.h>\nvector int a;\n' |\
+                          gcc -c -x c - >/dev/null && rm ./-.o && echo yes)
+         ifeq ($(HAS_ALTIVEC),yes)
+                 CFLAGS += -I../../../arch/powerpc/include
+-- 
+2.34.1
+
