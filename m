@@ -1,62 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB79B49D35C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 21:22:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D397449D412
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 22:05:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JkZrc5yQYz3cN9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 07:22:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JkbpF5hQHz3cPY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 08:05:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
- helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
- receiver=<UNKNOWN>)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
- [130.133.4.66])
+ smtp.helo=www18.qth.com (client-ip=69.16.238.59; helo=www18.qth.com;
+ envelope-from=davidtg+robot@justpickone.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 1346 seconds by postgrey-1.36 at boromir;
+ Thu, 27 Jan 2022 02:01:03 AEDT
+Received: from www18.qth.com (www18.qth.com [69.16.238.59])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JkZrC34Ktz30MG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 07:21:45 +1100 (AEDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
- by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
- tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
- (envelope-from <glaubitz@zedat.fu-berlin.de>)
- id 1nConT-0049yW-TI; Wed, 26 Jan 2022 21:21:39 +0100
-Received: from p5b13a6db.dip0.t-ipconnect.de ([91.19.166.219]
- helo=[192.168.178.81]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
- with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
- (envelope-from <glaubitz@physik.fu-berlin.de>)
- id 1nConT-0006Dk-Mn; Wed, 26 Jan 2022 21:21:39 +0100
-Message-ID: <200a989d-0aa9-c50f-855a-159b4e8ea441@physik.fu-berlin.de>
-Date: Wed, 26 Jan 2022 21:21:39 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JkRk73qzdz2xfy
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 02:00:58 +1100 (AEDT)
+Received: from [73.207.192.158] (port=36496 helo=justpickone.org)
+ by www18.qth.com with esmtpsa (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <davidtg+robot@justpickone.org>)
+ id 1nCjRO-0001U6-JN; Wed, 26 Jan 2022 08:38:29 -0600
+Date: Wed, 26 Jan 2022 09:38:27 -0500
+From: David T-G <davidtg+robot@justpickone.org>
+To: "linux-raid@vger.kernel.org" <linux-raid@vger.kernel.org>
+Subject: Re: a pound's a pound the whole world 'round (was "Re: [PATCH 1/3]
+ ... Use `$(pound)` instead ...")
+Message-ID: <20220126143827.GF14596@justpickone.org>
+References: <20220126114144.370517-1-pmenzel@molgen.mpg.de>
+ <0214ae2639174812948a631ac4e142c8@AcuMS.aculab.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: Linux kernel: powerpc: KVM guest can trigger host crash on Power8
-Content-Language: en-US
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <87pmrtbbdt.fsf@mpe.ellerman.id.au>
- <05b88724-90b6-a38a-bb3b-7392f85c1934@physik.fu-berlin.de>
- <878ryfavaz.fsf@mpe.ellerman.id.au>
- <04864fe5-fdd0-74b2-2bad-0303e4c2b15a@physik.fu-berlin.de>
- <874k92bubv.fsf@mpe.ellerman.id.au>
- <c21c7a0e-95f1-e6d2-a04c-fb99d801e8da@physik.fu-berlin.de>
- <878rydac0d.fsf@mpe.ellerman.id.au>
- <73c55cc9-369e-8989-4f6c-6801ce6a4d64@physik.fu-berlin.de>
- <87k0hs8iyq.fsf@mpe.ellerman.id.au>
- <fca7cf14-b598-d25a-8f71-8d1c16a84e5f@physik.fu-berlin.de>
- <87ilux2ksi.fsf@mpe.ellerman.id.au>
- <872c2364-a5db-0533-c8bd-91e03c067a2f@physik.fu-berlin.de>
- <8aa4e710-df2d-8cb7-ba16-f6043c929a14@physik.fu-berlin.de>
- <52b57080-efbd-c582-30df-f1d638e18e14@physik.fu-berlin.de>
-In-Reply-To: <52b57080-efbd-c582-30df-f1d638e18e14@physik.fu-berlin.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.166.219
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0214ae2639174812948a631ac4e142c8@AcuMS.aculab.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - www18.qth.com
+X-AntiAbuse: Original Domain - lists.ozlabs.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - justpickone.org
+X-Get-Message-Sender-Via: www18.qth.com: authenticated_id:
+ dmail@justpickone.org
+X-Authenticated-Sender: www18.qth.com: dmail@justpickone.org
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Mailman-Approved-At: Thu, 27 Jan 2022 08:04:49 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,47 +61,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "debian-powerpc@lists.debian.org" <debian-powerpc@lists.debian.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael!
+David, et al --
 
-On 1/13/22 01:17, John Paul Adrian Glaubitz wrote:
-> On 1/9/22 23:17, John Paul Adrian Glaubitz wrote:
->> On 1/7/22 12:20, John Paul Adrian Glaubitz wrote:
->>>> Can you separately test with (on the host):
->>>>
->>>>  # echo 0 > /sys/module/kvm_hv/parameters/dynamic_mt_modes
->>>
->>> I'm trying to turn off "dynamic_mt_modes" first and see if that makes any difference.
->>>
->>> I will report back.
->>
->> So far the machine is running stable now and the VM built gcc-9 without
->> crashing the host. I will continue to monitor the machine and report back
->> if it crashes, but it looks like this could be it.
-> 
-> So, it seems that setting "dynamic_mt_modes" actually did the trick, the host is no longer
-> crashing. However, I have observed on two occasions now that the build VM is just suddenly
-> off as if someone has shut it down using the "force-off" option in the virt-manager user
-> interface.
+...and then David Laight said...
+% 
+% From: Paul Menzel
+% > Sent: 26 January 2022 11:42
+% > 
+% ..
+% > +pound := \#
+% 
+% Please use 'hash' not 'pound'.
 
-Just as a heads-up. Ever since I set
+Ahem ...  Everyone knows that hash is best served hot and that
+that symbol is an octothorpe.
 
-	echo 0 > /sys/module/kvm_hv/parameters/dynamic_mt_modes
 
-on the host machine, I never saw the crash again. So the issue seems to be related to the
-dynamic_mt_modes feature.
+% Only american greengrocers use that horrid name.
+[snip]
 
-Thanks,
-Adrian
+*grin*
 
+
+HAND
+
+:-D
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+David T-G
+See http://justpickone.org/davidtg/email/
+See http://justpickone.org/davidtg/tofu.txt
 
