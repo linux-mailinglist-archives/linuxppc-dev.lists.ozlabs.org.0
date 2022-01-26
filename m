@@ -1,129 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04BB249C3BD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 07:39:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F13649C3BF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 07:42:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JkDb96Q36z30QB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 17:39:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JkDfP48w5z3bY6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Jan 2022 17:42:05 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PbfTawcq;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::606;
- helo=fra01-mr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on0606.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e19::606])
+ smtp.mailfrom=bugzilla.kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@bugzilla.kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=PbfTawcq; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JkDZg62Z5z2yQ9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 17:38:50 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IQc+TrQDU3AqQ+b3Oys2mh5veNMdoMCyYT5Vp+sqD/c/8TTL2p+wq4WvUyHV+ym+0xMQFB1ZpOwfVVXpXg/IzQarMZ3ZcgY8NKuZ3Z3INEirhUfe1SDQaAZmMTOFXsrY9mPbFY/H8rawFcJaX1slZ/ekmO2+zGNouRogMpHjVpbNMFKxwr+qHtxaIxYa/xJnyjCp+pQbTg5mJhFMg+plkNTIMQrQP0lzbmVlnPGVKvftBGwTECgXyKIKAJRZ86tbhq1maAPJxPegKiYHmEOIiBEBsX9/J4qE8ZwIR0MyuXnxO+mZ/UzuLGfmb8O7Bbb2Gk7FEfC74nF1Hq/FCiB1uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dUd86j/Zkow3iianPHch57YCimU5xY+HA/U24e3pmjk=;
- b=j2HqrRjsqpum9xgZLRzIrBFRUx7S5I8wdd++TLZz6ZDpDOA26ok08HycjQel68Qmw35ryw7ND5DkjNpV0ALX8BAWWO5Fxkj4YLH6qyruFeHJ8GsReKkiR6dSKHfb8rXIS9QaXJ18RqDheA9boMRUrwYSMX1iClZomQexY6Ch8MT+WOYoH06SEhBOZo88TTUcRSrzXeN5zAqq8IanGunJlI7E7wRA9TY/R+MmnqUZQe8nfFzdryd6pfSow6BL1veQNMS8oYErdzUxe5JDsDF8IkT3WHvLE7EjBkeXhHqP6smfRh6PO5w0zXGp8oNLfSUwSt5HQplJz/RK3/tT7ahV+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB3451.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:14b::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.15; Wed, 26 Jan
- 2022 06:38:30 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c9a2:1db0:5469:54e1]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c9a2:1db0:5469:54e1%6]) with mapi id 15.20.4930.015; Wed, 26 Jan 2022
- 06:38:30 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Luis Chamberlain <mcgrof@kernel.org>
-Subject: Re: [PATCH 6/7] modules: Add CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-Thread-Topic: [PATCH 6/7] modules: Add
- CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-Thread-Index: AQHYEQPri54wm9k2kUic7oR3m4zr7qx0PdwAgACexIA=
-Date: Wed, 26 Jan 2022 06:38:30 +0000
-Message-ID: <b49235ef-1fc3-7b8f-7e23-79f461d83e18@csgroup.eu>
-References: <cover.1643015752.git.christophe.leroy@csgroup.eu>
- <848d857871f457f4df37e80fad468d615b237c24.1643015752.git.christophe.leroy@csgroup.eu>
- <YfBnNuXpR2l2AuCP@bombadil.infradead.org>
-In-Reply-To: <YfBnNuXpR2l2AuCP@bombadil.infradead.org>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 77b3bc4d-fabc-449f-b2dd-08d9e0967767
-x-ms-traffictypediagnostic: PR0P264MB3451:EE_
-x-microsoft-antispam-prvs: <PR0P264MB3451D227325A69A00E6EA0B1ED209@PR0P264MB3451.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: fY6Smy7HuhLdPWgiYKvvFrUnD+UTjaLkpJn1J+/zMiw0zq+ecw7vnz1cY5EChTrw4ZLP4BSoBnNggTv4eUUHh0/WW7geGDy6Y492uW0aqJTZeP80Zyy/U3B5MBJ8STqfXwwOq528KV2MSqjk7Eu4SzL/YdwKLwnJ3b2+uTEuN4myX0KTAbGD/6iLciob3pm9ZnbP7yorEsW5wkM9wn1oNxVAl4OIFHPisTMFQOopajwcV3Ou17FOqm/APlNkOH8b9dvf+b9/xP+XGO+XCt9NplLdRAxolL6IF7xMMsnG8e792xBwRJU00xgyjNPozkzHsCiXinhnKTHvkyi/FWFCfvKcp1o0kho+G2PaIg3YJL6G24xDicw+vBJPFWNFVGVy84CXluRdM+EOJofTzCvFbR/oqyanqvNuUHVq9W8nVZxQcaw8r8SVTwP5v/1IWfLUGGkdzD7fboMgRu90FQ+xh3bwgv0ZO8UBEj9ziwQxGOkwdglt+2hrRovrd4sXyZ+eo/XN+/glvIQvZx8TCIEHrtah6U8BsNOtkw3mPWxmcaV6eCOxqq2lOwYVdPkSHVc1es3KR6Q8IiIKqTO+w+n8Jj39/b99aPfJ+fAVrtLwUlgj+OPsNYLq10OYURlhkHITrt9EHZwExaqqZ6rnV8sjESNr3jvCg8g1WrLckSujfVLmywDf55lQTH9U7pTgsvPv63+kr5z1QGWzLvuUjV8aUH/0TZ1L1by8W8weAbzTI3HyBcxmzfWRazfP3lfBS8CB4do0DB2okMOUYr/lSu97oV+oJZk1cnRizd3l008GB1DrwIwnISxOHELYt23rKro2aabiRN4CtdJjBPicqzSSaJ3MYiQ9OMTy1rcfKCwnb7Pp8jUUmKdQ2Xh1zJ+5lJDt10sSZ8h/3mA2tMoW6MPbKQ==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(38070700005)(122000001)(508600001)(966005)(6486002)(5660300002)(7416002)(44832011)(2906002)(31686004)(6512007)(36756003)(64756008)(8936002)(8676002)(66556008)(66476007)(66946007)(316002)(76116006)(91956017)(86362001)(6916009)(54906003)(31696002)(66574015)(4326008)(83380400001)(66446008)(2616005)(71200400001)(38100700002)(186003)(26005)(6506007)(43740500002)(45980500001)(20210929001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cjN3SHgwWURwMWcrZmRpVCs1alhyZzZNRnhlQ25lVmprT1V5Nm5SOEhzTHNH?=
- =?utf-8?B?N0RIUEJQek9ycTRxMzBNLzd4VGRFa2lObFZrbGRwbGN5d1Vwa01YYVBWaUJ3?=
- =?utf-8?B?M05pYnNpYVA1cEtBSk9ZS3V4cWxEMWlkVks2ZWhZendYWGlhRGtsZTJWZVhR?=
- =?utf-8?B?dy9aNTJ1cEU1STJkMlRDN0Q1TzFvMHpOanNsSWUwa3ZkbDJHZ3dGTW9KNm5X?=
- =?utf-8?B?QTBrSXJvWWtVVzRBOHo3YXZWakZEZ1ZWZWYwMmVJeHQrNEU0bkpTUERUYjJq?=
- =?utf-8?B?eENra3BDVmNjcUpNOUszaDFTa2dZSFB6VmtqaGpnNWtXeHVkVVorWm5uMS9D?=
- =?utf-8?B?WitDZkNTWk42VTQ2aDZKZ0hiTnQ4eDF5S2ROWFZuQlVtRzRGUW1nN2RqWVNQ?=
- =?utf-8?B?Z2FtTWlkSkM3U2UyT3dGSXNvQnJQaTFEMTcwd0QxUFNDU2YwcXdxVy9HZFlq?=
- =?utf-8?B?TkZSQWpMeWhyWnlUalFVTWdZeE92ZWU5OHhDZzhoMFBiOWxLaDNnbDVySHFP?=
- =?utf-8?B?THo5R0RVZHZhMEVlanovclNjdlFGanRjVDJFVW9uMUNZZjZwc2k2RnFwZ2p0?=
- =?utf-8?B?Y0FLcHREUDBlQTRZVkIrM01iditnVDhXTUIwSGRFeVhnYm14TnU5T1c3YklQ?=
- =?utf-8?B?eGJWWEo3T1l3RFI3Y1dUYVY1N1IxSTNNa21wcEVLUXJhT1U4Z01EemhrUEFx?=
- =?utf-8?B?RTkvSlBLUXdMekRTL25DaS95ZDBHTmhQK3QyNk1qbDRmUGUydFBjVmZ1YkV5?=
- =?utf-8?B?WDluVDhPM0xqQ2tGczJ2bEtoNGJjKzFzb3BqSFdyL0xLVEdDU2JCSHJyUGQy?=
- =?utf-8?B?S09SRmV1RE1pdFFJL280YlhWR3k4bTJnM0QxUDdsSko1eGFQL0kxa3YzNEtN?=
- =?utf-8?B?U3NTWVcwcTNFQkY5ZGc4SGNJZThVNUdoOWZud1pnMGVoRGhObkF6ZTVFbkdo?=
- =?utf-8?B?Q2d6NUdZeDJQZitRdnh5QTdXWUMxd3QxMWRqKy9ZeEduWWtNemhDY1ZyM0Rm?=
- =?utf-8?B?WmhGSWJodmU1Y1JUWElCd1BTektBUkw1Y3JoQnNvSWhMY01xY0xHekhEajZV?=
- =?utf-8?B?YnNlRGVodFBHMkt6d21FSjhjN21nVnh1MkViVWM3SHlzV3F5MUpmTUdNcTJO?=
- =?utf-8?B?THlyWW9jV3VHaDFjeEZEamZGaWl3RUtaK1ovMDVlNk84TzBIYnBuQjRUSXdt?=
- =?utf-8?B?R3d1ZW9EOC9vY2ZVOGxBaTBtMzI3aGNSVVdMenN4MWdjOTZVMjZmdDgxeFZD?=
- =?utf-8?B?cnFvOXorKzB2Wjl3Qk9HTlA1VFhhbGEyTCt3cjBUek43eXVYbFM0Z2J5TzNw?=
- =?utf-8?B?T3dRUnBSNmJJY3lNNGFmWXFnY3MwTGJRMW9OaDIvWElzT0NPUElTWXBtOEpJ?=
- =?utf-8?B?bDZOWitPKzBOUmllaTZPRS9tMkNFU0hpdk5FdGZjNVpHVkpiczVVMVFEVk85?=
- =?utf-8?B?NFhrbGtRbmVrVkxzek1QT0xFNXBXbFdpSlBoZTdkZ0g1Wlh4MzFhUzhaeGdE?=
- =?utf-8?B?bTFtVlV0WDBETkphWmlOZzFieFcyMzBYMDV5Smk5cnpiTnk0QkovWFNuUHVm?=
- =?utf-8?B?aXdTaVdGSW5Wdk9qZm9EcGExMDdkWjU5QWZyajVtNmNIY3ErcVUyOXVnT2xQ?=
- =?utf-8?B?bXMvMEY3bmZHWlQ3RnU3aWlKMWtxWEFsa1JEdUZINURvUDkxYXovWlVHQlcr?=
- =?utf-8?B?Vm5qZnRqam9Ic2pOVFhIcS8vN2pGczJlL3VrYnhTbzlMOXNEN3BsZWhYTkRy?=
- =?utf-8?B?S0dNUWlVbFV0UDVsUm52Qk82RFBFVHhLTTZGNElhTlJBbVlhdW0xcit6N2FY?=
- =?utf-8?B?Q1BjTEpjZk9YN1B2L0h0Tk4xMjZldjloRG8zOHV6S3ZiTkZYMCtoN0U4VXJp?=
- =?utf-8?B?aEx1UXVxTTViTWNMdUxSSGpJbnVjWnVrV3YvYmVRbnhZOStuczZJUXd1TlNW?=
- =?utf-8?B?WjYrVmlyS1dUZjJpWUZSQ2ZUYUY3SnVva3pudmM5ZnhHeEo5Wit4Y29udUJQ?=
- =?utf-8?B?Qkk1ZmVKMjNjU1prUUJqTzhybnVwNkh4bU5hRnNsZEFHcjVOekNvbUFiNy9M?=
- =?utf-8?B?bnVrdWxwb2h4RGVDNWtZajBRd2J0RjFueDAvQWlOWTR4M2R6WFBtaVRLemx4?=
- =?utf-8?B?S1ZENHFITkQ4ZkM1MHA0cHR1ZWF3QnpsRVBHREVuM3hOeGtUUmpPVGh5MEds?=
- =?utf-8?B?bC92c01YazFlcmVUY1lNRGI0eG5maExlbVYxWkVndmJYMHBvWmx6TG13dUNi?=
- =?utf-8?Q?9pfSTmklcEQ/IABTAJjjJ3IBTls7ckSB0/GP9oyW/g=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1AAC6DC17686F04A922EA2975729582E@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JkDdf71Dnz2xF9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 17:41:26 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 1F4BBB81B86
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 06:41:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CE105C340E8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 06:41:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1643179279;
+ bh=cKASjijXeQliNfF4gcePQ08QWCZz2y7ravwkfjEkYpU=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=PbfTawcq7I8KlznnapydNGWMX3bVVdn4j4RV4/HBFCa2IqfNzMKqqP41NULv0q5Yj
+ KDBz544Sii+nw2ncYruIhparavDr49yLZpnW+rzWxHgGey3hzADbgR1DNE/+fpaWtS
+ erQa6r2ckt0MRGykQpCRezcWtwHz9SEB+eZTtdXofZqhCJ2mvRzNnOeQZSHLXSs3/A
+ 8+yB4wHdVyVC0kRMad08uMa7id395s3x/eTDOwnGJUOTNS8fMHj0C8jR6YKSdSy/MG
+ WmRl3jvnKoD+Fp9az32fHqdSQlysGCfRFBpAcx+jzuHd3zjqZiO40qEwa2KuMZNesY
+ +9nysLFolJfmQ==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
+ from userid 48) id AF633CC13A7; Wed, 26 Jan 2022 06:41:19 +0000 (UTC)
+From: bugzilla-daemon@bugzilla.kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 215389] pagealloc: memory corruption at building glibc-2.33 and
+ running its' testsuite
+Date: Wed, 26 Jan 2022 06:41:19 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: christophe.leroy@csgroup.eu
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-215389-206035-aQ0LL2PEqK@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-215389-206035@https.bugzilla.kernel.org/>
+References: <bug-215389-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77b3bc4d-fabc-449f-b2dd-08d9e0967767
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jan 2022 06:38:30.1386 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: UqEYRDkdo/d0tNaPatEW2eJqazrmiaqYFrMy4DM9cJP8Brvfp455B1UOn9zgWm5kgqOZ1MWyuGdy1vvmiRf8z2ACqeZv+oneY5jscjuXzp8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB3451
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,67 +84,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- Daniel Thompson <daniel.thompson@linaro.org>,
- "kgdb-bugreport@lists.sourceforge.net" <kgdb-bugreport@lists.sourceforge.net>,
- Jason Wessel <jason.wessel@windriver.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Douglas Anderson <dianders@chromium.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, Jessica Yu <jeyu@kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDI1LzAxLzIwMjIgw6AgMjI6MTAsIEx1aXMgQ2hhbWJlcmxhaW4gYSDDqWNyaXTCoDoN
-Cj4gT24gTW9uLCBKYW4gMjQsIDIwMjIgYXQgMDk6MjI6MzRBTSArMDAwMCwgQ2hyaXN0b3BoZSBM
-ZXJveSB3cm90ZToNCj4+IFRoaXMgY2FuIGFsc28gYmUgdXNlZnVsIG9uIG90aGVyIHBvd2VycGMv
-MzIgaW4gb3JkZXIgdG8gbWF4aW1pemUgdGhlDQo+PiBjaGFuY2Ugb2YgY29kZSBiZWluZyBjbG9z
-ZSBlbm91Z2ggdG8ga2VybmVsIGNvcmUgdG8gYXZvaWQgYnJhbmNoDQo+PiB0cmFtcG9saW5lcy4N
-Cj4gDQo+IEN1cmlvdXMgYWJvdXQgYWxsIHRoaXMgYnJhbmNoIHRyYW1wb2xpbmUgdGFsay4gRG8g
-eW91IGhhdmUgZGF0YSB0byBzaG93DQo+IG5lZ2F0aXZlIGltcGFjdCB3aXRoIHRoaW5ncyBhcy1p
-cz8NCg0KU2VlIA0KaHR0cHM6Ly9naXRodWIuY29tL2xpbnV4cHBjL2xpbnV4L2NvbW1pdC8yZWMx
-M2RmMTY3MDQwY2QxNTNjMjVjNGQ5NmQwZmZjNTczYWM0YzQwDQoNCk9yIA0KaHR0cHM6Ly9naXRo
-dWIuY29tL2xpbnV4cHBjL2xpbnV4L2NvbW1pdC83ZDQ4NWY2NDdjMWY0YTY5NzYyNjRjOTA0NDdm
-YjBkYmYwN2IxMTFkDQoNCg0KPiANCj4gQWxzbywgd2FzIHBvd2VycGMvMzIgYnJva2VuIHRoZW4g
-d2l0aG91dCB0aGlzPyBUaGUgY29tbWl0IGxvZyBzZWVtcyB0bw0KPiBzdWdnZXN0IHNvLCBidXQg
-SSBkb24ndCB0aGluayB0aGF0J3MgdGhlIGNhc2UuIEhvdyB3YXMgdGhpcyBpc3N1ZSBub3RpY2Vk
-Pw0KDQoNCllvdXIgcXVlc3Rpb24gaXMgcmVsYXRlZCB0byB0aGUgdHJhbXBvbGluZSB0b3BpYyBv
-ciB0aGUgZXhlYy9ub2V4ZWMgDQpmbGFnZ2luZyA/DQoNClJlZ2FyZGluZyB0cmFtcG9saW5lLCBl
-dmVyeXRoaW5nIGlzIHdvcmtpbmcgT0suIFRoYXQncyBqdXN0IGNoZXJyeSBvbiANCnRoZSBjYWtl
-LCB3aGVuIHB1dHRpbmcgZGF0YSBhd2F5IHlvdSBjYW4gaGF2ZSBtb3JlIGNvZGUgY2xvc2VyIHRv
-IHRoZSANCmtlcm5lbC4gQnV0IHRoYXQgd291bGQgbm90IGhhdmUgYmVlbiBhIHJlYXNvbiBpbiBp
-dHNlbGYgZm9yIHRoaXMgc2VyaWVzLg0KDQpSZWdhcmRpbmcgdGhlIGV4ZWMvbm9leGVjIGRpc2N1
-c3Npb24sIGl0J3MgYSByZWFsIGlzc3VlLiBwb3dlcnBjLzMyIA0KZG9lc24ndCBob25vciBwYWdl
-IGV4ZWMgZmxhZywgc28gd2hlbiB5b3Ugc2VsZWN0IFNUUklDVF9NT0RVTEVTX1JXWCBhbmQgDQpm
-bGFnIG1vZHVsZSBkYXRhIGFzIG5vLWV4ZWMsIGl0IHJlbWFpbnMgZXhlY3V0YWJsZS4gVGhhdCdz
-IGJlY2F1c2UgDQpwb3dlcnBjLzMyIE1NVSBkb2Vzbid0IGhhdmUgYSBwZXIgcGFnZSBleGVjIGZs
-YWcgYnV0IG9ubHkgYSBwZXIgDQoyNTZNYnl0ZXMgc2VnbWVudCBleGVjIGZsYWcuDQoNClR5cGlj
-YWwgUFBDMzIgbGF5b3VudDoNCjB4ZjAwMDAwMDAtMHhmZmZmZmZmZiA6IFZNQUxMT0MgQVJFQSA9
-PT4gTk8gRVhFQw0KMHhjMDAwMDAwMC0weGVmZmZmZmZmIDogTGluZWFyIGtlcm5lbCBtZW1vcnkg
-bWFwcGluZw0KMHhiMDAwMDAwMC0weGJmZmZmZmZmIDogTU9EVUxFUyBBUkVBID09PiBFWEVDDQow
-eDAwMDAwMDAwLTB4YWZmZmZmZmYgOiBVc2VyIHNwYWNlID09PiBFWEVDDQoNClNvIFNUUklDVF9N
-T0RVTEVTX1JXWCBpcyBicm9rZW4gb24gc29tZSBwb3dlcnBjLzMyDQoNCj4gDQo+IEFyZSB0aGVy
-ZSBvdGhlciBmdXR1cmUgQ1BVIGZhbWlsaWVzIGJlaW5nIHBsYW5uZWQgd2hlcmUgdGhpcyBpcyBh
-bGwgdHJ1ZSBmb3INCj4gYXMgd2VsbD8gQXJlIHRoZXkgZ29pbiB0byBiZSAzMi1iaXQgYXMgd2Vs
-bD8NCg0KRnV0dXJlIEkgZG9uJ3Qga25vdy4NCg0KUmVnYXJkaW5nIHRoZSB0cmFtcG9saW5lIHN0
-dWZmLCBJIHNlZSBhdCBsZWFzdCB0aGUgZm9sbG93aW5nIGV4aXN0aW5nIA0KYXJjaGl0ZWN0dXJl
-cyB3aXRoIGEgc2ltaWxhciBjb25zdHJhaW50Og0KDQpBUk06DQoNCmh0dHBzOi8vZWxpeGlyLmJv
-b3RsaW4uY29tL2xpbnV4L3Y1LjE2L3NvdXJjZS9hcmNoL2FybS9pbmNsdWRlL2FzbS9tZW1vcnku
-aCNMNTUNCg0KQVJNIGV2ZW4gaGFzIGEgY29uZmlnIGl0ZW0gdG8gYWxsb3cgdHJhbXBvbGluZXMg
-b3Igbm90LiBJIG1pZ2h0IGFkZCB0aGUgDQpzYW1lIHRvIHBvd2VycGMgdG8gcmVkdWNlIG51bWJl
-ciBvZiBwYWdlcyB1c2VkIGJ5IG1vZHVsZXMuDQoNCmh0dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29t
-L2xpbnV4L3Y1LjE2L3NvdXJjZS9hcmNoL2FybS9LY29uZmlnI0wxNTE0DQoNCk5EUzMyIGhhcyB0
-aGUgY29uc3RyYWludA0KDQpodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92NS4xNi9z
-b3VyY2UvYXJjaC9uZHMzMi9pbmNsdWRlL2FzbS9tZW1vcnkuaCNMNDENCg0KTklPUzIgaGFzIHRo
-ZSBjb25zdHJhaW50LCBhbGx0aG91Z2ggdGhleSBoYW5kbGVkIGl0IGluIGEgZGlmZmVyZW50IHdh
-eToNCg0KaHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20vbGludXgvdjUuMTYvc291cmNlL2FyY2gv
-bmlvczIva2VybmVsL21vZHVsZS5jI0wzMA0KDQoNCg0KRXZlbiBBUk02NCBiZW5lZml0cyBmcm9t
-IG1vZHVsZXMgY2xvc2VyIHRvIGtlcm5lbDoNCg0KaHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20v
-bGludXgvdjUuMTYvc291cmNlL2FyY2gvYXJtNjQvS2NvbmZpZyNMMTg0OA0KDQoNCkFub3RoZXIg
-ZnV0dXJlIG9wcG9ydHVuaXR5IHdpdGggdGhlIGFiaWxpdHkgdG8gYWxsb2NhdGUgbW9kdWxlIHBh
-cnRzIA0Kc2VwYXJhdGVseSBpcyB0aGUgcG9zc2liaWxpdHkgdG8gdGhlbiB1c2UgaHVnZSB2bWFs
-bG9jIG1hcHBpbmdzLg0KDQpUb2RheSBodWdlIHZtYWxsb2MgbWFwcGluZ3MgY2Fubm90IGJlIHVz
-ZWQgZm9yIG1vZHVsZXMsIHNlZSByZWNlbnQgDQpkaXNjdXNzaW9uIGF0IA0KaHR0cHM6Ly9wYXRj
-aHdvcmsub3psYWJzLm9yZy9wcm9qZWN0L2xpbnV4cHBjLWRldi9wYXRjaC8yMDIxMTIyNzE0NTkw
-My4xODcxNTItNC13YW5na2VmZW5nLndhbmdAaHVhd2VpLmNvbS8NCg0KQ2hyaXN0b3BoZQ==
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215389
+
+--- Comment #7 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
+Interesting ... Though confusing.
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
