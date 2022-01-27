@@ -1,41 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3734B49EC85
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 21:39:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8B549EDAA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 22:45:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JlC9k0bmYz3cTG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 07:39:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JlDdq6SJFz3cPY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 08:45:03 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OcxGmYgJ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org;
- envelope-from=srs0=3nbw=sl=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=svens@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=OcxGmYgJ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JlC9D0lJrz3bPW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 07:38:39 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 0DD69618FE;
- Thu, 27 Jan 2022 20:38:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E89CC340E4;
- Thu, 27 Jan 2022 20:38:34 +0000 (UTC)
-Date: Thu, 27 Jan 2022 15:38:32 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2] ftrace: Have architectures opt-in for mcount build time
- sorting
-Message-ID: <20220127153821.3bc1ac6e@gandalf.local.home>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jkzmv3GY3z2xY3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 23:05:18 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20RBEdqu019642; 
+ Thu, 27 Jan 2022 12:04:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=pp1; bh=S0Ka0//cH8D0ru7UT9NthTbr1NSd5r+MVf7IaIMAvew=;
+ b=OcxGmYgJcTIqblAopaF6KWjgnIU7csUQvhZ9TKt6Ar9daujx+CxS7bBbvtysBy4CfRbW
+ crgcppZ1l81hzAvA/qCugjTFs7fxWVlibuUElWSRQlwRf00DE4z1x2VF+himjClulxEJ
+ jZfct8y8DjWJe51T9HTBHptNsLbwfhRW3A4axzuMXT5KdkbCos9cPb5CF2l7dR/94Emb
+ KV9uKlJxwVAI6KhT3UEqifGzDbYYQYAzG6TcbZ3uOKQ2d0LsDTTgGwQ97ZtohS08axx8
+ kQ171KmATQa4X576EYXABwssGyYBwkDudPZRgkwEaM9KtKgJJWBpQZRFankKSJwNuQDj nw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3dusemtcex-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 27 Jan 2022 12:04:47 +0000
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20RBq7Zs022044;
+ Thu, 27 Jan 2022 12:04:46 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3dusemtcdt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 27 Jan 2022 12:04:46 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20RC3tKI009173;
+ Thu, 27 Jan 2022 12:04:44 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03fra.de.ibm.com with ESMTP id 3dr9j9nh0f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 27 Jan 2022 12:04:44 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 20RC4gn145744398
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 27 Jan 2022 12:04:42 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 06CBFAE04D;
+ Thu, 27 Jan 2022 12:04:42 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BD31EAE051;
+ Thu, 27 Jan 2022 12:04:41 +0000 (GMT)
+Received: from tuxmaker.linux.ibm.com (unknown [9.152.85.9])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Thu, 27 Jan 2022 12:04:41 +0000 (GMT)
+From: Sven Schnelle <svens@linux.ibm.com>
+To: Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [powerpc] ftrace warning kernel/trace/ftrace.c:2068 with
+ code-patching selftests
+References: <944D10DA-8200-4BA9-8D0A-3BED9AA99F82@linux.ibm.com>
+ <e9422643-a210-b77f-a037-da63a9d2e925@linux.alibaba.com>
+ <20220124114548.30241947@gandalf.local.home>
+ <0fa0daec-881a-314b-e28b-3828e80bbd90@linux.alibaba.com>
+ <YfFclROd+0/61q2d@FVFF77S0Q05N> <YfKGKWW5UfZ15kCW@FVFF77S0Q05N>
+Date: Thu, 27 Jan 2022 13:04:41 +0100
+In-Reply-To: <YfKGKWW5UfZ15kCW@FVFF77S0Q05N> (Mark Rutland's message of "Thu, 
+ 27 Jan 2022 11:46:49 +0000")
+Message-ID: <yt9dy231gzae.fsf@linux.ibm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.0.50 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 2jf1p-QO8CeMBW923-q0JRNZCd2DK9pj
+X-Proofpoint-GUID: kqDF-x1fQX-BJSmQ_Kl4QhowYmLpA66Z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-27_03,2022-01-27_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 phishscore=0
+ impostorscore=0 lowpriorityscore=0 adultscore=0 mlxscore=0 spamscore=0
+ mlxlogscore=782 suspectscore=0 priorityscore=1501 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2201270072
+X-Mailman-Approved-At: Fri, 28 Jan 2022 08:44:30 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,125 +112,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Kees Cook <keescook@chromium.org>,
- Russell King <linux@armlinux.org.uk>, Ard Biesheuvel <ardb@kernel.org>,
- Sachin Sant <sachinp@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>,
+Cc: keescook@chromium.org, linux-kernel@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>, Sachin Sant <sachinp@linux.ibm.com>,
  Yinan Liu <yinan@linux.alibaba.com>, linuxppc-dev@lists.ozlabs.org,
- Ingo Molnar <mingo@kernel.org>, linux-arm-kernel@lists.infradead.org
+ ardb@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-=46rom f7d4ef4e77464e08af38789ea5d3a9cfb80a3d78 Mon Sep 17 00:00:00 2001
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Date: Tue, 25 Jan 2022 09:19:10 -0500
-Subject: [PATCH] ftrace: Have architectures opt-in for mcount build time
- sorting
+Mark Rutland <mark.rutland@arm.com> writes:
 
-First S390 complained that the sorting of the mcount sections at build
-time caused the kernel to crash on their architecture. Now PowerPC is
-complaining about it too. And also ARM64 appears to be having issues.
+>> Isn't x86 relocatable in some configurations (e.g. for KASLR)?
+>> 
+>> I can't see how the sort works for those cases, because the mcount_loc entries
+>> are absolute, and either:
+>> 
+>> * The sorted entries will get overwritten by the unsorted relocation entries,
+>>   and won't be sorted.
+>> 
+>> * The sorted entries won't get overwritten, but then the absolute address will
+>>   be wrong since they hadn't been relocated.
+>> 
+>> How does that work?
 
-It may be necessary to also update the relocation table for the values
-in the mcount table. Not only do we have to sort the table, but also
-update the relocations that may be applied to the items in the table.
+From what i've seen when looking into this ftrace sort problem x86 has a
+a relocation tool, which is run before final linking: arch/x86/tools/relocs.c
+This tools converts all the required relocations to three types:
 
-If the system is not relocatable, then it is fine to sort, but if it is,
-some architectures may have issues (although x86 does not as it shifts all
-addresses the same).
+- 32 bit relocations
+- 64 bit relocations
+- inverse 32 bit relocations
 
-Add a HAVE_BUILDTIME_MCOUNT_SORT that an architecture can set to say it is
-safe to do the sorting at build time.
+These are added to the end of the image.
 
-Also update the config to compile in build time sorting in the sorttable
-code in scripts/ to depend on CONFIG_BUILDTIME_MCOUNT_SORT.
+The decompressor then iterates over that array, and just adds/subtracts
+the KASLR offset - see arch/x86/boot/compressed/misc.c, handle_relocations()
 
-Link: https://lore.kernel.org/all/944D10DA-8200-4BA9-8D0A-3BED9AA99F82@linu=
-x.ibm.com/
+So IMHO x86 never uses 'real' relocations during boot, and just
+adds/subtracts. That's why the order stays the same, and the compile
+time sort works.
 
-Cc: Yinan Liu <yinan@linux.alibaba.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>
-Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Tested-by: Mark Rutland <mark.rutland@arm.com> [arm64]
-Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-Fixes: 72b3942a173c ("scripts: ftrace - move the sort-processing in ftrace_=
-init")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
-Changes since v1: https://lore.kernel.org/all/20220127114249.03b1b52b@ganda=
-lf.local.home/
- - Have CONFIG_BUILDTIME_MCOUNT_SORT depend on DYNAMIC_FTRACE
-   otherwise it fails to build when DYNAMIC_FTRACE is not set
-   because it can not find the mcount section in the sorttable code.
-
- arch/arm/Kconfig     | 1 +
- arch/x86/Kconfig     | 1 +
- kernel/trace/Kconfig | 8 +++++++-
- scripts/Makefile     | 2 +-
- 4 files changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index c2724d986fa0..5256ebe57451 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -82,6 +82,7 @@ config ARM
- 	select HAVE_EBPF_JIT if !CPU_ENDIAN_BE32
- 	select HAVE_CONTEXT_TRACKING
- 	select HAVE_C_RECORDMCOUNT
-+	select HAVE_BUILDTIME_MCOUNT_SORT
- 	select HAVE_DEBUG_KMEMLEAK if !XIP_KERNEL
- 	select HAVE_DMA_CONTIGUOUS if MMU
- 	select HAVE_DYNAMIC_FTRACE if !XIP_KERNEL && !CPU_ENDIAN_BE32 && MMU
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 7399327d1eff..46080dea5dba 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -186,6 +186,7 @@ config X86
- 	select HAVE_CONTEXT_TRACKING_OFFSTACK	if HAVE_CONTEXT_TRACKING
- 	select HAVE_C_RECORDMCOUNT
- 	select HAVE_OBJTOOL_MCOUNT		if STACK_VALIDATION
-+	select HAVE_BUILDTIME_MCOUNT_SORT
- 	select HAVE_DEBUG_KMEMLEAK
- 	select HAVE_DMA_CONTIGUOUS
- 	select HAVE_DYNAMIC_FTRACE
-diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
-index 752ed89a293b..a5eb5e7fd624 100644
---- a/kernel/trace/Kconfig
-+++ b/kernel/trace/Kconfig
-@@ -70,10 +70,16 @@ config HAVE_C_RECORDMCOUNT
- 	help
- 	  C version of recordmcount available?
-=20
-+config HAVE_BUILDTIME_MCOUNT_SORT
-+       bool
-+       help
-+         An architecture selects this if it sorts the mcount_loc section
-+	 at build time.
-+
- config BUILDTIME_MCOUNT_SORT
-        bool
-        default y
--       depends on BUILDTIME_TABLE_SORT && !S390
-+       depends on HAVE_BUILDTIME_MCOUNT_SORT && DYNAMIC_FTRACE
-        help
-          Sort the mcount_loc section at build time.
-=20
-diff --git a/scripts/Makefile b/scripts/Makefile
-index b082d2f93357..cedc1f0e21d8 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -32,7 +32,7 @@ HOSTCFLAGS_sorttable.o +=3D -I$(srctree)/tools/arch/x86/i=
-nclude
- HOSTCFLAGS_sorttable.o +=3D -DUNWINDER_ORC_ENABLED
- endif
-=20
--ifdef CONFIG_DYNAMIC_FTRACE
-+ifdef CONFIG_BUILDTIME_MCOUNT_SORT
- HOSTCFLAGS_sorttable.o +=3D -DMCOUNT_SORT_ENABLED
- endif
-=20
---=20
-2.33.0
-
+/Sven
