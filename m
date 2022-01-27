@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC62D49E243
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 13:22:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CE649E2CF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 13:46:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jl08z6KyDz3cPk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 23:22:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jl0hT7355z3cQp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 23:46:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jl08V5Xrbz307j
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 23:22:18 +1100 (AEDT)
-Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.53])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Jl07N53Hkzbjh3;
- Thu, 27 Jan 2022 20:21:20 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Thu, 27 Jan 2022 20:22:11 +0800
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Thu, 27 Jan 2022 20:22:11 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: <linuxppc-dev@lists.ozlabs.org>, <mpe@ellerman.id.au>,
- <benh@kernel.crashing.org>, <paulus@samba.org>,
- <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3] powerpc: Fix virt_addr_valid() check
-Date: Thu, 27 Jan 2022 20:37:54 +0800
-Message-ID: <20220127123754.77825-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.26.2
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org;
+ envelope-from=srs0=3nbw=sl=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jl0h30jhlz30Qt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 23:46:10 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id DFF24B82229;
+ Thu, 27 Jan 2022 12:46:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E47C340E4;
+ Thu, 27 Jan 2022 12:46:02 +0000 (UTC)
+Date: Thu, 27 Jan 2022 07:46:01 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [powerpc] ftrace warning kernel/trace/ftrace.c:2068 with
+ code-patching selftests
+Message-ID: <20220127074601.41a3773d@rorschach.local.home>
+In-Reply-To: <YfKPmFJ2MGsem4VB@FVFF77S0Q05N>
+References: <944D10DA-8200-4BA9-8D0A-3BED9AA99F82@linux.ibm.com>
+ <e9422643-a210-b77f-a037-da63a9d2e925@linux.alibaba.com>
+ <20220124114548.30241947@gandalf.local.home>
+ <0fa0daec-881a-314b-e28b-3828e80bbd90@linux.alibaba.com>
+ <YfFclROd+0/61q2d@FVFF77S0Q05N> <YfKGKWW5UfZ15kCW@FVFF77S0Q05N>
+ <yt9dy231gzae.fsf@linux.ibm.com> <YfKPmFJ2MGsem4VB@FVFF77S0Q05N>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.113.25]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,67 +54,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, npiggin@gmail.com,
- Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: keescook@chromium.org, linux-kernel@vger.kernel.org,
+ Sven Schnelle <svens@linux.ibm.com>, Sachin Sant <sachinp@linux.ibm.com>,
+ Yinan Liu <yinan@linux.alibaba.com>, linuxppc-dev@lists.ozlabs.org,
+ ardb@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When run ethtool eth0 on PowerPC64, the BUG occurred,
+On Thu, 27 Jan 2022 12:27:04 +0000
+Mark Rutland <mark.rutland@arm.com> wrote:
 
-  usercopy: Kernel memory exposure attempt detected from SLUB object not in SLUB page?! (offset 0, size 1048)!
-  kernel BUG at mm/usercopy.c:99
-  ...
-  usercopy_abort+0x64/0xa0 (unreliable)
-  __check_heap_object+0x168/0x190
-  __check_object_size+0x1a0/0x200
-  dev_ethtool+0x2494/0x2b20
-  dev_ioctl+0x5d0/0x770
-  sock_do_ioctl+0xf0/0x1d0
-  sock_ioctl+0x3ec/0x5a0
-  __se_sys_ioctl+0xf0/0x160
-  system_call_exception+0xfc/0x1f0
-  system_call_common+0xf8/0x200
+> Ah, so those non-ELF relocations for the mcount_loc table just mean "apply the
+> KASLR offset here", which is equivalent for all entries.
+> 
+> That makes sense, thanks!
 
-The code shows below,
+And this is why we were having such a hard time understanding each other ;-)
 
-  data = vzalloc(array_size(gstrings.len, ETH_GSTRING_LEN));
-  copy_to_user(useraddr, data, gstrings.len * ETH_GSTRING_LEN))
+I started a new project called "shelf", which is a shell interface to
+read ELF files (Shelf on a ELF!).
 
-The data is alloced by vmalloc(), virt_addr_valid(ptr) will return true
-on PowerPC64, which leads to the panic.
+It uses my ccli library:
 
-As commit 4dd7554a6456 ("powerpc/64: Add VIRTUAL_BUG_ON checks for __va
-and __pa addresses") does, let's check the virt addr above PAGE_OFFSET in
-the virt_addr_valid() for PowerPC64, which will make sure that the passed
-address is a valid linear map address.
+   https://github.com/rostedt/libccli
 
-Meanwhile, PAGE_OFFSET is the virtual address of the start of lowmem,
-the check is suitable for PowerPC32 too.
+and can be found here:
 
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
-v3:
-- update changelog and remove a redundant cast 
- arch/powerpc/include/asm/page.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+   https://github.com/rostedt/shelf
 
-diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
-index 254687258f42..a8a29a23ce2d 100644
---- a/arch/powerpc/include/asm/page.h
-+++ b/arch/powerpc/include/asm/page.h
-@@ -132,7 +132,10 @@ static inline bool pfn_valid(unsigned long pfn)
- #define virt_to_page(kaddr)	pfn_to_page(virt_to_pfn(kaddr))
- #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
- 
--#define virt_addr_valid(kaddr)	pfn_valid(virt_to_pfn(kaddr))
-+#define virt_addr_valid(vaddr)	({						\
-+	unsigned long _addr = (unsigned long)vaddr;				\
-+	_addr >= PAGE_OFFSET && pfn_valid(virt_to_pfn(_addr));	\
-+})
- 
- /*
-  * On Book-E parts we need __va to parse the device tree and we can't
--- 
-2.26.2
+Build and install the latest libccli and then build this with just
+"make".
 
+  $ shelf vmlinux
+
+and then you can see what is stored in the mcount location:
+
+  shelf> dump symbol __start_mcount_loc - __stop_mcount_loc
+
+I plan on adding more to include the REL and RELA sections and show how
+they affect symbols and such.
+
+Feel free to contribute too ;-)
+
+-- Steve
