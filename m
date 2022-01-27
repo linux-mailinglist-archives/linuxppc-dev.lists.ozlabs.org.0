@@ -2,84 +2,112 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4CF549E065
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 12:15:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDA649E0DE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 12:28:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jkyg95hwVz3cG2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 22:15:17 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=ZVHblktj;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jkyyn36rVz3cP7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 22:28:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canonical.com (client-ip=185.125.188.122;
- helo=smtp-relay-internal-0.canonical.com;
- envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=canonical.com header.i=@canonical.com
- header.a=rsa-sha256 header.s=20210705 header.b=ZVHblktj; 
- dkim-atps=neutral
-Received: from smtp-relay-internal-0.canonical.com
- (smtp-relay-internal-0.canonical.com [185.125.188.122])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::61d;
+ helo=fra01-mr2-obe.outbound.protection.outlook.com;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com
+ (mail-mr2fra01on061d.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e19::61d])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JkyfX2wTkz2yPV
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 22:14:43 +1100 (AEDT)
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
- [209.85.161.72])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 9BB5F3F197
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 11:14:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1643282077;
- bh=ei0q12+pTEkVCSC3KLPxXTL3wN1Kz2V2e0OB+SXoUME=;
- h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
- To:Cc:Content-Type;
- b=ZVHblktjtJb4zmm6qxwYNHV/E7IVKctDR0Xi8qhJjDB9XxuUw2/ozucX3kxsw+ncb
- Y3Xc0KKMAhz22VhYK8dx0SRyyzxfVrErXNb1H/9QWMDfBI1xxUkWFCrZ3DtQU3DdmP
- mLAklBFPcsfBWrffkhFrObBGbJtGYvbWSwjvvB85emFAp/8e9N8tpy8jV/9sJS2nv1
- bU6LBlOPog3l8BC4T0Ws5kkL2idbGUyURXVgFHZ89pUONKQHgpiUuWfcHKZLR6b+tK
- 1/+oKNm7LzK8Ftw3lL71MkqcG/Q4o0O5mCp9dJ89Kz3WIXKr5EpehGLeb0LjG/oVWU
- orjXazh0AY2Gw==
-Received: by mail-oo1-f72.google.com with SMTP id
- h19-20020a4a6f13000000b002e3c2ae2affso1482160ooc.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 03:14:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=ei0q12+pTEkVCSC3KLPxXTL3wN1Kz2V2e0OB+SXoUME=;
- b=0mLoxK1zotGETQxxDZHp7aH7LQd4Wz2spPx+hPE70faKSWBRY8+krYAC2+TPZWV6p+
- QoBmaEKJzUPgzHOdAWbHjz4h5p3CK26B12ml08h5DnjOiZqbf7G2mSDIHgYNS7WUm8Hm
- XhTDtvn1M80r4/rc/Yg3mERzm7Zid0HNQH3yLbBfnTuyDceYZC/Xu9n2vueisrfCZnNJ
- CkTSwp6pYUAhvNQxUhxIEAYDgWt+e71/cyczKHB3xZ8l+eysCmE1QSG67hBPrEHMKLyK
- u6lv/a8vjWQprN9SdWIlAKjwdDLKLN/JHB1CGEYo/UMTD5n2TWgACjA7ef6/E5+ddhdx
- bijQ==
-X-Gm-Message-State: AOAM5302Lr0KJx7QKnQ7EZAfnTLaPv/Be7BJeQayEjxfkh8EqX5GrXdq
- HGIVzcJAvkCoJesp+WHwJdaGdOA2sh56GvVUNJcZ+YLsFQu4kFMH0DeTNBXv21DNHda+FMpThEY
- h8dWVs65I8KsU4ciH5ZUs61yqGtZAnUSzCiLtN3b0bPLphqfaHmYCG8hl4iQ=
-X-Received: by 2002:a05:6808:179e:: with SMTP id
- bg30mr1968522oib.57.1643282076595; 
- Thu, 27 Jan 2022 03:14:36 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwxEE5Ap4FJ4cUst9yvbfsRQokijydzPA6OcoO6QyYWtnn1PDvaX7TZkZkLGBEICFTLx1JnuD/+0yw+QuDnNaE=
-X-Received: by 2002:a05:6808:179e:: with SMTP id
- bg30mr1968509oib.57.1643282076282; 
- Thu, 27 Jan 2022 03:14:36 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JkyyD22cjz2xtw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 22:28:18 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OaN+ovFy4/Kdk2donS+euvj/0P9JQtPk1Izi4SOTtgYN4C9m+I2rB3FlUOZoRH2C0k8rs5XizGDGzs3rUwU+zcZnvjeVq+ruwuXoZ7cAAOp58nPM75OZBGfrx/fZnG+O0OTUzztyZdxEVJhCHwS90S4RVclQx0Rj/YXAufuKHiq/iMAvta8PwWrgbW+b5+cYTm/JMs49NZ+0dZRgbHnW7sZ91HZxvMz4E5C2Ghla5h8Q2EREujHghsXNiObMbPr1l0YpIetoVRSdb3gC5HBtAMCBKGvV56FkVRITzW05ptc7gFhlzYeWzoevMA0tGePYIDIGWb0CK4o3UohTpnDRQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qo/dSWpZJ4eG/DcYrkyN0wGp1TZTlfTMGe7iReDPThc=;
+ b=cyeJbl/87wl4biAg5LWws3Ow7I9h4lXiHrHsGAiEznY718FVqj6bPI5h5fbfMGHvKgXsoNwx6pANO1U71dThLxfFW7KuDcxe4bCCvVrQxjLi3P1lPnKAjJE0RJmYXFRm/29QOZPyzI35pt+cCdnSEKppUW4M6kZ00r/aHZHn7PDT5EBVlgXB3/JjFhp6e4klbV7L0ONIuN1nB6eCbkPTz0gvKvbgkG2SKP9Hwr562VATgZSrQ2jlawkAfXWCFMgJmU7YorEa8nOHQR2+H/4Yf+uSvb87bUAKzZF1GSGxQjxcKAx76bDMDRRq6lpA0JEDb1y/NUwBaeHP4EpXaIXtRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB3227.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:30::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.15; Thu, 27 Jan
+ 2022 11:27:56 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c9a2:1db0:5469:54e1]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c9a2:1db0:5469:54e1%6]) with mapi id 15.20.4930.017; Thu, 27 Jan 2022
+ 11:27:56 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Luis Chamberlain <mcgrof@kernel.org>, Jessica Yu <jeyu@kernel.org>
+Subject: [PATCH v2 0/5] Allocate module text and data separately
+Thread-Topic: [PATCH v2 0/5] Allocate module text and data separately
+Thread-Index: AQHYE3Du95G6zDF79UWzRpf5PWe+tA==
+Date: Thu, 27 Jan 2022 11:27:56 +0000
+Message-ID: <cover.1643282353.git.christophe.leroy@csgroup.eu>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: aaf3ef3f-627e-4b8c-e8cd-08d9e18810d3
+x-ms-traffictypediagnostic: MRZP264MB3227:EE_
+x-microsoft-antispam-prvs: <MRZP264MB3227CA7CB00F4E3A227EB032ED219@MRZP264MB3227.FRAP264.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 7BpsmAyOppkEikge4w+Pv0k46Oc8pfqQSU2EC5Tq8WA50kF0li49hamn9Jnc75/bRAMhOIzf8eJnRKgBpSVD3oHddd+O1EYw1sRq9VpuYtdD5ninoJN1j0ywwWsuaQKBM0YjWOoBb1WtW4IezkYuJ1Ph1fsQVjRUnRMlcRzYKbJafaobYy58AMEfS51ed2JjIWr2jUZrnxOUpC8MNtAhPJEOW/C0rO6WIfDExhbZYquUJJmYnt5lCqIH+ik1qDm6AAs9Dusn2XQF8GJvc4axLgpemCXx5BmQAm6n00wxAURTF22JQWKbhLNn7d0Rv18ejcb12/3B9CntBm9aQ3krDbJtA5y1SbqAiKd+ii04vwphHzzMPICk/uYi5G9lS8ruGPUMXHwWQUdaBT263jywYOoZN/CWRvOaSAcb/qtK2V08nTmIvUTRwHWU59oEMa8tfbgdpLKz2RCU+Ho0wglEOb3z8N4I3GBD3bzSTk0hkF+SDb4yweOQLCZ7wIkZGFUX19gxJ+fBItWaquxxUlXz2sz2NoNXNqwbj2CKuw7oa6FzNjTLnH9uYKbjUTXdXJO470PY8GlR3HJDUnjA9AQHSar0jMvFlAfVMZ5ptaMT2pAcPj4ZM3O3Dev2SRFdQuLSAXpu6ds4ObD48U+eS+nLIX4mV3q7dKSjcNMBxsL59bccJJpajjTrUsy1g3LdYAjmtc0GxSdpxNJehIVa+7wSuQ==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(366004)(86362001)(316002)(66946007)(6506007)(6512007)(76116006)(508600001)(66476007)(5660300002)(66446008)(66556008)(91956017)(44832011)(4326008)(64756008)(8936002)(8676002)(2616005)(36756003)(6486002)(71200400001)(38070700005)(2906002)(83380400001)(122000001)(26005)(186003)(38100700002)(110136005)(54906003)(20210929001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?H8LFrhnHSf+SpTNKNOrkfJdpav10Mbs7tNkpjTqnualOq+GRg3vE63BbPq?=
+ =?iso-8859-1?Q?pRU4zaFufHtE8KllHgbe9vCaL1co4V0sfebrLTSa+Nnc1AIvot5HO/3Kay?=
+ =?iso-8859-1?Q?r52aZTDiZpMdKPfEk7OrkHb34Fc/YPLO18oCNjpzNa5AYOXg1GufwD16Hf?=
+ =?iso-8859-1?Q?4lRp1Pkda+d0GqzX3I+6mJFHvUJQr+YbZkmhUpKY1p8upo+/Te3cSw6P11?=
+ =?iso-8859-1?Q?fugm8z/U831oFRsZgMw6wcKFGvzx+p6tJTMrChhu4HdjDVJOoQnZIWVGDM?=
+ =?iso-8859-1?Q?8+46YeJfoAiXWy+YfAYffzRPFOTlgueVrPgcHQoFnEic37RaXZ26/V1lxP?=
+ =?iso-8859-1?Q?VMof1QMr+66AGGST0NIicuq8wx65/uEoWXnD+8/Tun00n93Hg3g+XTNHiP?=
+ =?iso-8859-1?Q?CYcnujsp4fZMtxP1gjpsUYM99jnFaq3WZrfFQXPRYHR5CjdGVGCQBlROg5?=
+ =?iso-8859-1?Q?Qf0AAxDIcq6fCwRW+nZqvmmWoPvgytGhiQQjPbAIo5TcdSxyrlgwI3nQ/T?=
+ =?iso-8859-1?Q?ckpdFmi7Qbqd1vGm9rUIi1X2IsP96n4Ydi9zZeOKmZE7BceD2dpdjVnfja?=
+ =?iso-8859-1?Q?w1Iwy/wD+Dy3jncdEXK/Et3R6aJm3MHNVhvo3x9nQPqlWFqkzTmTW+ioPq?=
+ =?iso-8859-1?Q?2YIYC1ktplK3nwBlSzOkHSggosbKkMRRXWPx/xEdzg9kfLLXcp51EJN9Io?=
+ =?iso-8859-1?Q?Ro9E9KKvlUG4Ei3VsiW74VnJh/PLHu0/atBxpjymCRWqtxM5m/N5QgrfxP?=
+ =?iso-8859-1?Q?XuLrQALEOwv2l+x25KumRIHkmeb0EbiNjNzWgIkbJaiMWY7ijfIjiafcF7?=
+ =?iso-8859-1?Q?pq7u2aE8A20VaALOf+37wli0Uqld41SJ4gFGPAhOdj/uT2XCeZim+iCk5W?=
+ =?iso-8859-1?Q?/PoklfGAMEz5jaQArc/LTJFbhjLUqQHFV7q/T4GZ4ac2cj0+SDhgHOcOXa?=
+ =?iso-8859-1?Q?/86BYA3BnJZl79H4IObHqVJpOmt/EQlLHS3et/IU3hBK5MEf5GdF279Wjg?=
+ =?iso-8859-1?Q?1U3puAoRu+m6z88Nh/ccWvG5B8PvWdFcDa2H/bxD01ZZYLUvF3hpScL4Y+?=
+ =?iso-8859-1?Q?5ofyD7wLc+mT8PxcCemwntr+ARbZ3thMpaBvthJY+QNYU8B0QQyZpbUNK6?=
+ =?iso-8859-1?Q?Vn68VZEDFytFAIku59VOhfr6MnDHC7SnkGoWA0vChq9ith4kM4Mj5yoFQ4?=
+ =?iso-8859-1?Q?WHySgZDV1JziQMpSNrMk5TtyhBrSagn2cRHozCFlX97kdRx3tx3ndqgw7v?=
+ =?iso-8859-1?Q?bdtpPRLqOUTAlKULaod43Nf+Rth86TZ9bUXMfEAhjM3maFcMjxnUABa+JE?=
+ =?iso-8859-1?Q?maKFj8rGcf7arDXRQ7REjIzgtfTAVpc2ozu9NDuJnhYeZhPzBioNMBhmp0?=
+ =?iso-8859-1?Q?7zfAk1GwoCrcfEPlWWJ/ombzmJaNL+8Q5XyvZMms/9AhhEuCGPN67XTzOf?=
+ =?iso-8859-1?Q?/SyzndslXmW0IlSUaTVVEe2w3qRkCpFgvLH1gFGMDiefn2K64bsSOIwej/?=
+ =?iso-8859-1?Q?3epeIiN7rBAo577yzhwoV6fYlP+Dd2TNqIRwShwHOkzv/OR2xOft7sx/9l?=
+ =?iso-8859-1?Q?XM2LP4ooCRpViVZEtln7MNaGIHW+861Lo9j4mbzeE380YkyNaV1QU3zQuv?=
+ =?iso-8859-1?Q?QFOprZkzXDoc8UkmjsESscxD+5JfLa1H1MqtceQjjrXHsHRFBcJW4v0fuA?=
+ =?iso-8859-1?Q?DO29tv2cC3MSLPYinrESlnZ008TUGMx4tafS/FLYTkgs5nr6CFhplS/3Jb?=
+ =?iso-8859-1?Q?MX7bUcbVDEodMyL7b1Iv1tssE=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20220127025418.1989642-1-kai.heng.feng@canonical.com>
- <0259955f-8bbb-1778-f234-398f1356db8b@linux.intel.com>
-In-Reply-To: <0259955f-8bbb-1778-f234-398f1356db8b@linux.intel.com>
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date: Thu, 27 Jan 2022 19:14:25 +0800
-Message-ID: <CAAd53p6+KPAJchh9Jx59Fkkj5FidSxsW0yHjLqooFjvu-Y9u7w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] PCI/AER: Disable AER service when link is in L2/L3
- ready, L2 and L3 state
-To: Lu Baolu <baolu.lu@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: aaf3ef3f-627e-4b8c-e8cd-08d9e18810d3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jan 2022 11:27:56.2979 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: nCpE1MSvTCogdwjlI3jUFAMve5NqMZ+WqljQAsHd4R6Y2m5D3D0bsXfZsaeL6vOw2j9qRBYoTDRxhjjDB6cs5nH9C/gPwT3/1/xLrEk6OX0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB3227
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,65 +119,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joerg Roedel <jroedel@suse.de>,
- Lalithambika Krishnakumar <lalithambika.krishnakumar@intel.com>,
- linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, koba.ko@canonical.com,
- Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com,
- mika.westerberg@linux.intel.com
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "kgdb-bugreport@lists.sourceforge.net"
+ <kgdb-bugreport@lists.sourceforge.net>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 27, 2022 at 3:01 PM Lu Baolu <baolu.lu@linux.intel.com> wrote:
->
-> On 2022/1/27 10:54, Kai-Heng Feng wrote:
-> > Commit 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in
-> > hint") enables ACS, and some platforms lose its NVMe after resume from
-> > S3:
-> > [   50.947816] pcieport 0000:00:1b.0: DPC: containment event, status:0x1f01 source:0x0000
-> > [   50.947817] pcieport 0000:00:1b.0: DPC: unmasked uncorrectable error detected
-> > [   50.947829] pcieport 0000:00:1b.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Receiver ID)
-> > [   50.947830] pcieport 0000:00:1b.0:   device [8086:06ac] error status/mask=00200000/00010000
-> > [   50.947831] pcieport 0000:00:1b.0:    [21] ACSViol                (First)
-> > [   50.947841] pcieport 0000:00:1b.0: AER: broadcast error_detected message
-> > [   50.947843] nvme nvme0: frozen state error detected, reset controller
-> >
-> > It happens right after ACS gets enabled during resume.
-> >
-> > There's another case, when Thunderbolt reaches D3cold:
-> > [   30.100211] pcieport 0000:00:1d.0: AER: Uncorrected (Non-Fatal) error received: 0000:00:1d.0
-> > [   30.100251] pcieport 0000:00:1d.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Requester ID)
-> > [   30.100256] pcieport 0000:00:1d.0:   device [8086:7ab0] error status/mask=00100000/00004000
-> > [   30.100262] pcieport 0000:00:1d.0:    [20] UnsupReq               (First)
-> > [   30.100267] pcieport 0000:00:1d.0: AER:   TLP Header: 34000000 08000052 00000000 00000000
-> > [   30.100372] thunderbolt 0000:0a:00.0: AER: can't recover (no error_detected callback)
-> > [   30.100401] xhci_hcd 0000:3e:00.0: AER: can't recover (no error_detected callback)
-> > [   30.100427] pcieport 0000:00:1d.0: AER: device recovery failed
-> >
-> > So disable AER service to avoid the noises from turning power rails
-> > on/off when the device is in low power states (D3hot and D3cold), as
-> > PCIe spec "5.2 Link State Power Management" states that TLP and DLLP
-> > transmission is disabled for a Link in L2/L3 Ready (D3hot), L2 (D3cold
-> > with aux power) and L3 (D3cold).
-> >
-> > Bugzilla:https://bugzilla.kernel.org/show_bug.cgi?id=209149
-> > Bugzilla:https://bugzilla.kernel.org/show_bug.cgi?id=215453
-> > Fixes: 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in hint")
->
-> I don't know what this fix has to do with the commit 50310600ebda.
+This series allow architectures to request having modules data in
+vmalloc area instead of module area.
 
-Commit 50310600ebda only exposed the underlying issue. Do you think
-"Fixes:" tag should change to other commits?
+This is required on powerpc book3s/32 in order to set data non
+executable, because it is not possible to set executability on page
+basis, this is done per 256 Mbytes segments. The module area has exec
+right, vmalloc area has noexec. Without this change module data
+remains executable regardless of CONFIG_STRICT_MODULES_RWX.
 
-> Commit 50310600ebda only makes sure that PCI ACS is enabled whenever
-> Intel IOMMU is on. Before this commit, PCI ACS could also be enabled
-> and result in the same problem. Or anything I missed?
+This can also be useful on other powerpc/32 in order to maximize the
+chance of code being close enough to kernel core to avoid branch
+trampolines.
 
-The system in question didn't enable ACS before commit 50310600ebda.
+Changes in v2:
+- Dropped first two patches which are not necessary. They may be added back=
+ later as a follow-up series.
+- Fixed the printks in GDB
 
-Kai-Heng
+Christophe Leroy (5):
+  modules: Always have struct mod_tree_root
+  modules: Prepare for handling several RB trees
+  modules: Introduce data_layout
+  modules: Add CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+  powerpc: Select ARCH_WANTS_MODULES_DATA_IN_VMALLOC on book3s/32 and
+    8xx
 
->
-> Best regards,
-> baolu
+ arch/Kconfig                |   6 ++
+ arch/powerpc/Kconfig        |   1 +
+ include/linux/module.h      |   8 ++
+ kernel/debug/kdb/kdb_main.c |  10 +-
+ kernel/module.c             | 193 +++++++++++++++++++++++++-----------
+ 5 files changed, 156 insertions(+), 62 deletions(-)
+
+--=20
+2.33.1
