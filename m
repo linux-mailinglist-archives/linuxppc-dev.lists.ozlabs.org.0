@@ -2,73 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD3649DBC2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 08:36:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A660149DBC6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 08:39:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jkspb6Sncz3f6H
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 18:36:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jkstd3l5qz3ckj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 18:39:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aDTBTXhQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jWEbid/g;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633;
- helo=mail-pl1-x633.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034;
+ helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=aDTBTXhQ; dkim-atps=neutral
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
- [IPv6:2607:f8b0:4864:20::633])
+ header.s=20210112 header.b=jWEbid/g; dkim-atps=neutral
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
+ [IPv6:2607:f8b0:4864:20::1034])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JksmP5KHBz3fQv
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 18:34:28 +1100 (AEDT)
-Received: by mail-pl1-x633.google.com with SMTP id c9so1740690plg.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 23:34:28 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jkssy4wkKz2xKT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 18:39:18 +1100 (AEDT)
+Received: by mail-pj1-x1034.google.com with SMTP id d5so2085869pjk.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 23:39:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=0z6S/QM0Uvi3byPZUvWJmc24ntlSpzOJlQruqXOVpc0=;
- b=aDTBTXhQ5RZXiO1G2Ng3z2p9A30SqfEO9aRYeJLhglNFTqJKHjoIGk0Ps0efTdlsJ0
- x9BbEPCyC8svBSHV4B78BIJOepThLR/jaJ4YyhsM02/3t9qB55qwINmV/aSrBaMC5+XW
- klKheAOzwQO0Ag4DOesqw+zBSTxFjXsnTw+0mYMuqTrHUvZ6GufoZNOH1s1q1UO1gB6v
- 7wiyhlSrzDD+ZTXCGw/R2NCNh5PhLopQ1nXiyGHfJEOZqTf21jBIhcr3lWKjaGE3XBZd
- luP6jflZTmJ/CruBxs4Ldv7XDt0hNG6ditdQvqUaLbUIiDSEqu6n4hEZpUi/chvijf60
- /Slw==
+ bh=zDcFsjc/U+z2NtNNk1kzLD8WhIBKmJn7Y8FtuClVBJ0=;
+ b=jWEbid/gXo4AluxUVLAARpRKKQsvdVN4wF0XQeUziprTfS/XnaTMwk4XjAhCMr7I5l
+ vVDXApcgJkDUTeJL9TrVweTmsDTxgdC0u8tcCmL2BIFvkglNgOqcErp0pDqQbkuPkq8Z
+ khNilgPmME0W7XJL4+o3SS3lZ8ro9WDlwD27/MPs19sfSuMbeTESChv0P9naZu6bzalN
+ Jd6xO/gGCVfaeoDWajOIIN3Czik3z6r7kJOuSBKZWODReapdNxFsSjFeJirv4/+Vaqvl
+ dn842ASfiJWzGvcSDmk1Ec7KRJyDM9lZzZyGvKSMdbWLGXCaVbrDn073mHtMNkuxkAyn
+ vpZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=0z6S/QM0Uvi3byPZUvWJmc24ntlSpzOJlQruqXOVpc0=;
- b=XFpISnY1WdQ06zEmr+7kTS9OJiETKeH3tzGE63+X5Y3bUIKRtlVw6JtocVCTDf44XB
- BLIEIQ9/25JW0ACb1n2zrZLCrB5a3lC9hSUj1HGFSi8U4GdpDGUq+0kh2bNiVmwzdy88
- kRv9nzQYRj+V5c2FxbmQH8fvhaOejJJclgq6WU9lR9rzPmwpsc4z85ShZEBEpJyv9O/C
- S0bVkvj3qj9KeLp/+JYbQjVtFyTttRIk6NYslETA/iGuPxHa8y+ZmtKYBVx/FmjQOx+T
- cxg5QxMogFkj7sbfB8UYUfG4wKF1oB8Al6XeQ53xObHLKwJqf+/qU+ylgiFvzB6/XFPV
- D8/w==
-X-Gm-Message-State: AOAM532DSPT4gdckWxK9vVGEHJzAU2igcdTFEjK9ujkB2dWWRO73875O
- U5sBrI4fyGtMZzrGwHkWQHQ=
-X-Google-Smtp-Source: ABdhPJxlLYR/dkdYryTXXfmtY/KdmSWPkXwUUpGTZPpsw/Ji5if50Kapadwj5DU9pXgnpMtLvxwbCw==
-X-Received: by 2002:a17:902:6a83:: with SMTP id
- n3mr2036481plk.139.1643268865738; 
- Wed, 26 Jan 2022 23:34:25 -0800 (PST)
+ bh=zDcFsjc/U+z2NtNNk1kzLD8WhIBKmJn7Y8FtuClVBJ0=;
+ b=HVfEtpUzfEkQWb2jwA4LbM4oPCInoWpkGICklnRU5c4E88KH3ixUn9+wvNHRNnfq3I
+ YNniiH0GLsffNk/m5eUHknElW9ZzMv3lkecPZzi4jF9dzVgAjDJrO7IUzAHBMY8uVurP
+ hvd0KyJnxhBJm0C5zqz0SPG7KXsfWvLVMl5vGrtMFxwxb680iX5HVu+ZJB8ppeHzlomL
+ DDpR+9cfEKYz26rDz5bouX1IMA/W9KVDp6OgiefdLUzUmjf0waRl2o4nHP6eWGf3jQ6E
+ Bnvs9qjrj3LQgc1+djXG5hhBkqfxWhCH8464dAH+fRwrLuApCK3GE8NOYQdQhrCzeEPH
+ 8cww==
+X-Gm-Message-State: AOAM5305MA6umJVRSl/uidUzlVzDguZqbHZddA6TI7v4MB4pEoBRq8X9
+ dQY+5b8+G4y03XDoJ0CmK1E=
+X-Google-Smtp-Source: ABdhPJw5MoGxrbhsqMpz8+20oi68+hmH9kZCnBkqzwvUo6wwivxBaeFrh4gtFXgjj3SZ/E9AwXE3gA==
+X-Received: by 2002:a17:90b:1c89:: with SMTP id
+ oo9mr2910138pjb.146.1643269155613; 
+ Wed, 26 Jan 2022 23:39:15 -0800 (PST)
 Received: from localhost (193-116-82-75.tpgi.com.au. [193.116.82.75])
- by smtp.gmail.com with ESMTPSA id b20sm4494332pfv.134.2022.01.26.23.34.24
+ by smtp.gmail.com with ESMTPSA id n4sm7043315pjf.0.2022.01.26.23.39.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jan 2022 23:34:25 -0800 (PST)
-Date: Thu, 27 Jan 2022 17:34:20 +1000
+ Wed, 26 Jan 2022 23:39:15 -0800 (PST)
+Date: Thu, 27 Jan 2022 17:39:10 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v5 5/5] KVM: PPC: Book3s: mmio: Deliver DSI after
- emulation failure
-To: Fabiano Rosas <farosas@linux.ibm.com>, kvm-ppc@vger.kernel.org
-References: <20220125215655.1026224-1-farosas@linux.ibm.com>
- <20220125215655.1026224-6-farosas@linux.ibm.com>
-In-Reply-To: <20220125215655.1026224-6-farosas@linux.ibm.com>
+Subject: Re: [PATCH 0/2] powerpc: Disable syscall emulation and stepping
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, naverao1
+ <naverao1@imap.linux.ibm.com>
+References: <20220124055741.3686496-1-npiggin@gmail.com>
+ <d3ab1142-5f62-6cbc-067c-6a34f4f28ef2@csgroup.eu>
+ <1643079479.32j7nee5j0.astroid@bobo.none>
+ <d352c741-baaf-3be3-ef31-81ce6250876c@csgroup.eu>
+ <52b03748fdeff1bb2eb67f6038311e26@imap.linux.ibm.com>
+In-Reply-To: <52b03748fdeff1bb2eb67f6038311e26@imap.linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1643268801.z8aez7lyue.astroid@bobo.none>
+Message-Id: <1643268944.tltfmyu1ey.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,109 +85,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, linuxppc-dev@lists.ozlabs.org
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Fabiano Rosas's message of January 26, 2022 7:56 am:
-> MMIO emulation can fail if the guest uses an instruction that we are
-> not prepared to emulate. Since these instructions can be and most
-> likely are valid ones, this is (slightly) closer to an access fault
-> than to an illegal instruction, so deliver a Data Storage interrupt
-> instead of a Program interrupt.
+Excerpts from naverao1's message of January 25, 2022 8:48 pm:
+> On 2022-01-25 11:23, Christophe Leroy wrote:
+>> Le 25/01/2022 =C3=A0 04:04, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>> +Naveen (sorry missed cc'ing you at first)
+>>>=20
+>>> Excerpts from Christophe Leroy's message of January 24, 2022 4:39 pm:
+>>>>=20
+>>>>=20
+>>>> Le 24/01/2022 =C3=A0 06:57, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>>>> As discussed previously
+>>>>>=20
+>>>>> https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-January/238946.h=
+tml
+>>>>>=20
+>>>>> I'm wondering whether PPC32 should be returning -1 for syscall
+>>>>> instructions too here? That could be done in another patch anyway.
+>>>>>=20
+>>>>=20
+>>>> The 'Programming Environments Manual for 32-Bit Implementations of=20
+>>>> the
+>>>> PowerPC=E2=84=A2 Architecture' says:
+>>>>=20
+>>>> The following are not traced:
+>>>> =E2=80=A2 rfi instruction
+>>>> =E2=80=A2 sc and trap instructions that trap
+>>>> =E2=80=A2 Other instructions that cause interrupts (other than trace=20
+>>>> interrupts)
+>>>> =E2=80=A2 The first instruction of any interrupt handler
+>>>> =E2=80=A2 Instructions that are emulated by software
+>>>>=20
+>>>>=20
+>>>> So I think PPC32 should return -1 as well.
+>>>=20
+>>> I agree.
+>>>=20
+>>> What about the trap instructions? analyse_instr returns 0 for them
+>>> which falls through to return 0 for emulate_step, should they
+>>> return -1 as well or am I missing something?
 >=20
-> BookE ignores bad faults, so it will keep using a Program interrupt
-> because a DSI would cause a fault loop in the guest.
+> Yeah, good point about the trap instructions.
 >=20
-> Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+>>>=20
+>>=20
+>> For the traps I don't know. The manual says "trap instructions that
+>> trap" are not traced. It means that "trap instructions that _don't_
+>> trap" are traced. Taking into account that trap instructions don't trap
+>> at least 99.9% of the time, not sure if returning -1 is needed.
+>>=20
+>> Allthought that'd probably be the safest.
+>=20
+> 'trap' is a special case since it is predominantly used by debuggers
+> and/or tracing infrastructure. Kprobes and Uprobes do not allow probes
+> on a trap instruction. But, xmon can be asked to step on a trap
+> instruction and that can interfere with kprobes in weird ways.
+>=20
+> So, I think it is best if we also exclude trap instructions from being
+> single stepped.
+>=20
+>>=20
+>> But then what happens with other instruction that will sparsely=20
+>> generate
+>> an exception like a DSI or so ? If we do it for the traps then we=20
+>> should
+>> do it for this as well, and then it becomes a non ending story.
+>=20
+> For a DSI, we restart the same instruction after handling the page=20
+> fault.
+> The single step exception is raised on the subsequent successful
+> completion of the instruction.
 
-Thanks this looks good to me. (And thanks for updating patch 4/5 with
-the kvm debug print helper.)
+Although it can cause a signal, and the signal handler can decide
+to resume somewhere else. Or kernel mode equivalent it can go to a
+fixup handler and resume somewhere else.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+How are those handled?
 
-> ---
->  arch/powerpc/kvm/emulate_loadstore.c | 10 +++-------
->  arch/powerpc/kvm/powerpc.c           | 22 ++++++++++++++++++++++
->  2 files changed, 25 insertions(+), 7 deletions(-)
+Thanks,
+Nick
+
+> For most other interrupts (alignment, vsx
+> unavailable, ...), we end up emulating the single step exception itself
+> (see emulate_single_step()). So, those are ok if caused by an=20
+> instruction
+> being stepped.
 >=20
-> diff --git a/arch/powerpc/kvm/emulate_loadstore.c b/arch/powerpc/kvm/emul=
-ate_loadstore.c
-> index 48272a9b9c30..cfc9114b87d0 100644
-> --- a/arch/powerpc/kvm/emulate_loadstore.c
-> +++ b/arch/powerpc/kvm/emulate_loadstore.c
-> @@ -73,7 +73,6 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
->  {
->  	u32 inst;
->  	enum emulation_result emulated =3D EMULATE_FAIL;
-> -	int advance =3D 1;
->  	struct instruction_op op;
-> =20
->  	/* this default type might be overwritten by subcategories */
-> @@ -98,6 +97,8 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
->  		int type =3D op.type & INSTR_TYPE_MASK;
->  		int size =3D GETSIZE(op.type);
-> =20
-> +		vcpu->mmio_is_write =3D OP_IS_STORE(type);
-> +
->  		switch (type) {
->  		case LOAD:  {
->  			int instr_byte_swap =3D op.type & BYTEREV;
-> @@ -355,15 +356,10 @@ int kvmppc_emulate_loadstore(struct kvm_vcpu *vcpu)
->  		}
->  	}
-> =20
-> -	if (emulated =3D=3D EMULATE_FAIL) {
-> -		advance =3D 0;
-> -		kvmppc_core_queue_program(vcpu, 0);
-> -	}
-> -
->  	trace_kvm_ppc_instr(inst, kvmppc_get_pc(vcpu), emulated);
-> =20
->  	/* Advance past emulated instruction. */
-> -	if (advance)
-> +	if (emulated !=3D EMULATE_FAIL)
->  		kvmppc_set_pc(vcpu, kvmppc_get_pc(vcpu) + 4);
-> =20
->  	return emulated;
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index acb0d2a4bdb9..82d889db2b6b 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -309,6 +309,28 @@ int kvmppc_emulate_mmio(struct kvm_vcpu *vcpu)
->  		kvmppc_get_last_inst(vcpu, INST_GENERIC, &last_inst);
->  		kvm_debug_ratelimited("Guest access to device memory using unsupported=
- instruction (opcode: %#08x)\n",
->  				      last_inst);
-> +
-> +		/*
-> +		 * Injecting a Data Storage here is a bit more
-> +		 * accurate since the instruction that caused the
-> +		 * access could still be a valid one.
-> +		 */
-> +		if (!IS_ENABLED(CONFIG_BOOKE)) {
-> +			ulong dsisr =3D DSISR_BADACCESS;
-> +
-> +			if (vcpu->mmio_is_write)
-> +				dsisr |=3D DSISR_ISSTORE;
-> +
-> +			kvmppc_core_queue_data_storage(vcpu, vcpu->arch.vaddr_accessed, dsisr=
-);
-> +		} else {
-> +			/*
-> +			 * BookE does not send a SIGBUS on a bad
-> +			 * fault, so use a Program interrupt instead
-> +			 * to avoid a fault loop.
-> +			 */
-> +			kvmppc_core_queue_program(vcpu, 0);
-> +		}
-> +
->  		r =3D RESUME_GUEST;
->  		break;
->  	}
-> --=20
-> 2.34.1
 >=20
+> - Naveen
 >=20
