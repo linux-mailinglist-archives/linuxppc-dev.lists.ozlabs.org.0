@@ -2,57 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3032049E803
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 17:50:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF9449E7D0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 17:42:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jl6650kwwz3cXM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 03:50:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jl5wX1Q9qz3bTN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 03:42:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2016061301 header.b=d7VrOqHR;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=O0fr5Uop;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=walle.cc (client-ip=2a01:4f8:151:8464::1:2;
- helo=ssl.serverraum.org; envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62a;
+ helo=mail-pl1-x62a.google.com; envelope-from=keescook@chromium.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256
- header.s=mail2016061301 header.b=d7VrOqHR; 
- dkim-atps=neutral
-Received: from ssl.serverraum.org (ssl.serverraum.org
- [IPv6:2a01:4f8:151:8464::1:2])
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=O0fr5Uop; dkim-atps=neutral
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jl62q3TH4z3bPW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 03:47:47 +1100 (AEDT)
-Received: from mwalle01.kontron.local. (unknown [213.135.10.150])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by ssl.serverraum.org (Postfix) with ESMTPSA id 2090E2241C;
- Thu, 27 Jan 2022 17:41:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
- s=mail2016061301; t=1643301703;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XOy1hFtQHlx1/0vgkKqg2eHd76kTqiC0EUCydWlDtHA=;
- b=d7VrOqHRQZcH1m/5ekwnc3UZg1MLbjQ0Fw54SYqlUl6YrIyaL/LU43vIos3zfVKJ5dPCuj
- 3NCJNgs1oYIO9ltOugkUxKH7d7PML7Vf630bcM5pz1SJO1nC2+EeT12QXEV+DpCoCWwL5T
- 1ST1IDzMbKuh9vE+V7ZfkZeJE33L2OM=
-From: Michael Walle <michael@walle.cc>
-To: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 7/7] soc: fsl: guts: add serial_number support
-Date: Thu, 27 Jan 2022 17:41:25 +0100
-Message-Id: <20220127164125.3651285-8-michael@walle.cc>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220127164125.3651285-1-michael@walle.cc>
-References: <20220127164125.3651285-1-michael@walle.cc>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jl5vq4CZKz30Nx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 03:41:41 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d1so2930196plh.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 08:41:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=LCmRUqeagqrmDIv1M1xM4hNMczReVWZ0/XfgL3nr9rA=;
+ b=O0fr5UopoJBjwZittOtW82/OHDBeN0k2cD6+plRXAmiFvYevOGj4gFO0dQYyKT0RRT
+ Rc31VYh33jA3BNL24xRIJgAULfU5WLeVIZjdhZmmqFXcYSgZXpeFqRyfTda9dNjSgS/D
+ XmeiJxo75rWnG6wEFTTnUfZM+8oyLBw4tF5eU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=LCmRUqeagqrmDIv1M1xM4hNMczReVWZ0/XfgL3nr9rA=;
+ b=qLL5YHagzC6Pq4/HBkMJJqML/kL3vHNsYapR9JdntMPBSwavuf73R/gEcfoCMvTqxp
+ 6zplv+FarIkE/YtjHHq+uQAMh4P2cqUgb6ONyhAM6mk0oArvKdVcMHDLsQlOHYmtjeAe
+ Zd0DyLsBX50XqrgEcsXdIz5EHJ1DkfI7JIeWxvuoasP4Zg87vg3PJy8oDmZlDt8/z8cT
+ ks4vPb7gHQdadaFG4envWcH3WO6Pk0oQ+p+y8O/0ED1MSPbraoa1boeLPrSQ/Y/puj+5
+ Xzv5m3qA4bPtlVh3awUxUNPmEb24qwR1p8zi0gZbqYx6pBvh8T5KQLy510MtD8IlcL+T
+ jDJg==
+X-Gm-Message-State: AOAM5333YSjmTP5+619Xjj4VLhh/r6uGj2Q8ogBliF2k9LkhXAnaVyYi
+ tBSB3i8rrrk6+fulj83u4KQ+gA==
+X-Google-Smtp-Source: ABdhPJzJW6R3idJobTt3sSvhxG0E7Y46UI6zj21S0XR1zYmEqNiH6DhdfpsDs6RfS5jYQFRo54k6iA==
+X-Received: by 2002:a17:902:cec4:: with SMTP id
+ d4mr3980202plg.56.1643301699142; 
+ Thu, 27 Jan 2022 08:41:39 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id d20sm6605615pfv.74.2022.01.27.08.41.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 27 Jan 2022 08:41:38 -0800 (PST)
+Date: Thu, 27 Jan 2022 08:41:38 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [powerpc] ftrace warning kernel/trace/ftrace.c:2068 with
+ code-patching selftests
+Message-ID: <202201270834.4420E21F6@keescook>
+References: <944D10DA-8200-4BA9-8D0A-3BED9AA99F82@linux.ibm.com>
+ <e9422643-a210-b77f-a037-da63a9d2e925@linux.alibaba.com>
+ <20220124114548.30241947@gandalf.local.home>
+ <0fa0daec-881a-314b-e28b-3828e80bbd90@linux.alibaba.com>
+ <YfFclROd+0/61q2d@FVFF77S0Q05N> <YfKGKWW5UfZ15kCW@FVFF77S0Q05N>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YfKGKWW5UfZ15kCW@FVFF77S0Q05N>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,137 +82,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Sudeep Holla <Sudeep.Holla@arm.com>,
- Michael Walle <michael@walle.cc>, Arnd Bergmann <arnd@arndb.de>,
- Li Yang <leoyang.li@nxp.com>
+Cc: linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+ Sachin Sant <sachinp@linux.ibm.com>, Yinan Liu <yinan@linux.alibaba.com>,
+ linuxppc-dev@lists.ozlabs.org, ardb@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Most layerscapes provide a security fuse processor where the vendor
-will store a unique id per part. Unfortunately, we cannot use the
-corresponding efuse driver because this driver needs to be ready
-early during the boot phase. To get the unique identifier, we just
-need to access two registers. Thus we just search the device tree
-for the corresponding device, map its memory to read the id and then
-unmap it again.
+On Thu, Jan 27, 2022 at 11:46:49AM +0000, Mark Rutland wrote:
+> I'm not sure how x86 works here; AFAICT the relocations are performed during
+> decompression, but it looks like there's some special build-time processing
+> associated with that, and the vmlinux doesn't contain standard ELF relocations.
+> 
+> Kees, IIUC you added the x86_64 support there, can you shed any light on if/how
+> this works on x86?
 
-Because it is likely that the offset within the fuses is dependent
-on the SoC, we need a per SoC data. Also, the compatible string is
-different among the SoCs. For now, this add support for the LS1028A
-SoC.
+I think Sven beat me to it, and this was answered in
+https://lore.kernel.org/lkml/yt9dy231gzae.fsf@linux.ibm.com
+but let me know if anything needs further info.
 
-Signed-off-by: Michael Walle <michael@walle.cc>
----
-RFC because SFP binding is still pending and needs Rob's ack:
-https://lore.kernel.org/linux-devicetree/20220127163728.3650648-2-michael@walle.cc/
+An additional note is that x86 is built with "-2G addressing"
+(-mcmodel=kernel). There was some work done to make it actually
+PIE, which would allow the KASLR base to move further:
+https://github.com/KSPP/linux/issues/38
 
- drivers/soc/fsl/guts.c | 48 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 46 insertions(+), 2 deletions(-)
+-Kees
 
-diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
-index be961a9193f4..2d20a344f3c9 100644
---- a/drivers/soc/fsl/guts.c
-+++ b/drivers/soc/fsl/guts.c
-@@ -20,6 +20,11 @@ struct fsl_soc_die_attr {
- 	u32	mask;
- };
- 
-+struct fsl_soc_data {
-+	const char *sfp_compat;
-+	u32 uid_offset;
-+};
-+
- /* SoC die attribute definition for QorIQ platform */
- static const struct fsl_soc_die_attr fsl_soc_die[] = {
- 	/*
-@@ -110,6 +115,33 @@ static const struct fsl_soc_die_attr *fsl_soc_die_match(
- 	return NULL;
- }
- 
-+static u64 fsl_guts_get_soc_uid(const char *compat, unsigned int offset)
-+{
-+	struct device_node *np;
-+	void __iomem *sfp_base;
-+	u64 uid;
-+
-+	np = of_find_compatible_node(NULL, NULL, compat);
-+	if (!np)
-+		return 0;
-+
-+	sfp_base = of_iomap(np, 0);
-+
-+	uid = ioread32(sfp_base + offset);
-+	uid <<= 32;
-+	uid |= ioread32(sfp_base + offset + 4);
-+
-+	iounmap(sfp_base);
-+	of_node_put(np);
-+
-+	return uid;
-+}
-+
-+static const struct fsl_soc_data ls1028a_data = {
-+	.sfp_compat = "fsl,ls1028a-sfp",
-+	.uid_offset = 0x21c,
-+};
-+
- /*
-  * Table for matching compatible strings, for device tree
-  * guts node, for Freescale QorIQ SOCs.
-@@ -138,7 +170,7 @@ static const struct of_device_id fsl_guts_of_match[] = {
- 	{ .compatible = "fsl,ls1012a-dcfg", },
- 	{ .compatible = "fsl,ls1046a-dcfg", },
- 	{ .compatible = "fsl,lx2160a-dcfg", },
--	{ .compatible = "fsl,ls1028a-dcfg", },
-+	{ .compatible = "fsl,ls1028a-dcfg", .data = &ls1028a_data},
- 	{}
- };
- 
-@@ -147,16 +179,20 @@ static int __init fsl_guts_init(void)
- 	struct soc_device_attribute *soc_dev_attr;
- 	static struct soc_device *soc_dev;
- 	const struct fsl_soc_die_attr *soc_die;
-+	const struct fsl_soc_data *soc_data;
-+	const struct of_device_id *match;
- 	struct ccsr_guts __iomem *regs;
- 	const char *machine = NULL;
- 	struct device_node *np;
- 	bool little_endian;
-+	u64 soc_uid = 0;
- 	u32 svr;
- 	int ret;
- 
--	np = of_find_matching_node_and_match(NULL, fsl_guts_of_match, NULL);
-+	np = of_find_matching_node_and_match(NULL, fsl_guts_of_match, &match);
- 	if (!np)
- 		return 0;
-+	soc_data = match->data;
- 
- 	soc_dev_attr = kzalloc(sizeof(*soc_dev_attr), GFP_KERNEL);
- 	if (!soc_dev_attr)
-@@ -201,6 +237,13 @@ static int __init fsl_guts_init(void)
- 	if (!soc_dev_attr->revision)
- 		goto err_nomem;
- 
-+	if (soc_data)
-+		soc_uid = fsl_guts_get_soc_uid(soc_data->sfp_compat,
-+					       soc_data->uid_offset);
-+	if (soc_uid)
-+		soc_dev_attr->serial_number = kasprintf(GFP_KERNEL, "%016llX",
-+							soc_uid);
-+
- 	soc_dev = soc_device_register(soc_dev_attr);
- 	if (IS_ERR(soc_dev)) {
- 		ret = PTR_ERR(soc_dev);
-@@ -221,6 +264,7 @@ static int __init fsl_guts_init(void)
- 	kfree(soc_dev_attr->family);
- 	kfree(soc_dev_attr->soc_id);
- 	kfree(soc_dev_attr->revision);
-+	kfree(soc_dev_attr->serial_number);
- 
- 	return ret;
- }
 -- 
-2.30.2
-
+Kees Cook
