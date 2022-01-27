@@ -1,77 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A660149DBC6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 08:39:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B88C49DBCE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 08:45:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jkstd3l5qz3ckj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 18:39:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jkt0n2g5rz3cnJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 18:45:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jWEbid/g;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=MPA6fxlZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034;
- helo=mail-pj1-x1034.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
+ helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=jWEbid/g; dkim-atps=neutral
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com
- [IPv6:2607:f8b0:4864:20::1034])
+ header.s=20210112 header.b=MPA6fxlZ; dkim-atps=neutral
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
+ [IPv6:2607:f8b0:4864:20::1030])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jkssy4wkKz2xKT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 18:39:18 +1100 (AEDT)
-Received: by mail-pj1-x1034.google.com with SMTP id d5so2085869pjk.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 23:39:18 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jkt062Pwfz2xBL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 18:44:37 +1100 (AEDT)
+Received: by mail-pj1-x1030.google.com with SMTP id
+ l24-20020a17090aec1800b001b55738f633so4601252pjy.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 23:44:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=zDcFsjc/U+z2NtNNk1kzLD8WhIBKmJn7Y8FtuClVBJ0=;
- b=jWEbid/gXo4AluxUVLAARpRKKQsvdVN4wF0XQeUziprTfS/XnaTMwk4XjAhCMr7I5l
- vVDXApcgJkDUTeJL9TrVweTmsDTxgdC0u8tcCmL2BIFvkglNgOqcErp0pDqQbkuPkq8Z
- khNilgPmME0W7XJL4+o3SS3lZ8ro9WDlwD27/MPs19sfSuMbeTESChv0P9naZu6bzalN
- Jd6xO/gGCVfaeoDWajOIIN3Czik3z6r7kJOuSBKZWODReapdNxFsSjFeJirv4/+Vaqvl
- dn842ASfiJWzGvcSDmk1Ec7KRJyDM9lZzZyGvKSMdbWLGXCaVbrDn073mHtMNkuxkAyn
- vpZg==
+ bh=0CzpveXK5XtFoz+za4trHT+WN4EbOFc05ugqjjb2C6Y=;
+ b=MPA6fxlZUJJXejSLwqrHsigH41HGzIcj9yk37UiV386waSOUc/JAuohAHOwjefj0pe
+ SzMmD4VYHmHv/Tm058uP+RudZIzUHxSIDvu6TCRueqE6qtMQXd5/EWsWP0ErAqp8z844
+ 6McVi8t50AQrBP0LLM9nt5h7TT5PKn2UNMxlIX15WVnQ4TbyqLUjx5iMzJ/myEEo7fLz
+ yfo4/1Su/A4OPUcwCdMSRwwO1geIib00c9MUkfSKFiRE5Z9BngBuA9DqtpgH8cc/LIjg
+ O2nvoPDOyKaSEQYkk1txTbuf+RhMqw/PwlIDKxTOpwoAusrqhlUZiwESL/fJvyKdtEw0
+ h33A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=zDcFsjc/U+z2NtNNk1kzLD8WhIBKmJn7Y8FtuClVBJ0=;
- b=HVfEtpUzfEkQWb2jwA4LbM4oPCInoWpkGICklnRU5c4E88KH3ixUn9+wvNHRNnfq3I
- YNniiH0GLsffNk/m5eUHknElW9ZzMv3lkecPZzi4jF9dzVgAjDJrO7IUzAHBMY8uVurP
- hvd0KyJnxhBJm0C5zqz0SPG7KXsfWvLVMl5vGrtMFxwxb680iX5HVu+ZJB8ppeHzlomL
- DDpR+9cfEKYz26rDz5bouX1IMA/W9KVDp6OgiefdLUzUmjf0waRl2o4nHP6eWGf3jQ6E
- Bnvs9qjrj3LQgc1+djXG5hhBkqfxWhCH8464dAH+fRwrLuApCK3GE8NOYQdQhrCzeEPH
- 8cww==
-X-Gm-Message-State: AOAM5305MA6umJVRSl/uidUzlVzDguZqbHZddA6TI7v4MB4pEoBRq8X9
- dQY+5b8+G4y03XDoJ0CmK1E=
-X-Google-Smtp-Source: ABdhPJw5MoGxrbhsqMpz8+20oi68+hmH9kZCnBkqzwvUo6wwivxBaeFrh4gtFXgjj3SZ/E9AwXE3gA==
-X-Received: by 2002:a17:90b:1c89:: with SMTP id
- oo9mr2910138pjb.146.1643269155613; 
- Wed, 26 Jan 2022 23:39:15 -0800 (PST)
+ bh=0CzpveXK5XtFoz+za4trHT+WN4EbOFc05ugqjjb2C6Y=;
+ b=GQA3ozrnx+CMc/ntG7hDzycDWoAoVsQFbgb34OHQURytaVZKNyhdveHFpzwmiA2XqG
+ PKAkGkdTZIPp80h3CGygX2dhjyK5LwTKcgCh5aPa8SxFIvZD6o+lfmcMouqUT9Azyjvr
+ XuoH2WYx3bduaQCxCGCUAkqDIEkP7us+KoczHJKZ7bufSqiWkD6D9N+dI6c5YCqHs4Ei
+ v+LmLFsstbeFdXVgKG03pU0V6UxJt3RRX58Oiq+jhl9Xh8DFBjYGIYxwC2lTFp9O1G8A
+ 3Iw33U7Z3A0NbFIMmCUNzmXlCXav3pXIjyEYJLoBHh7g8hcdlfJv1XTwzD8NTwoeP0fh
+ OCuA==
+X-Gm-Message-State: AOAM530lQje/AcxyCq4NSjAiPdUp9MXMe6Gb5aBSAIQE934ydyiCc3nZ
+ LAztekFF4rJg1wqcLllz2jAgtVFqKmI=
+X-Google-Smtp-Source: ABdhPJxxKu1IaSK0Z8TIGd4qhs/dh/SfQGkOWraT+O5nVio3+J7r9itFFI9Z2yl29D9rCLQSKI5sIg==
+X-Received: by 2002:a17:902:c948:: with SMTP id
+ i8mr2070308pla.161.1643269474629; 
+ Wed, 26 Jan 2022 23:44:34 -0800 (PST)
 Received: from localhost (193-116-82-75.tpgi.com.au. [193.116.82.75])
- by smtp.gmail.com with ESMTPSA id n4sm7043315pjf.0.2022.01.26.23.39.14
+ by smtp.gmail.com with ESMTPSA id h9sm4684837pfi.124.2022.01.26.23.44.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jan 2022 23:39:15 -0800 (PST)
-Date: Thu, 27 Jan 2022 17:39:10 +1000
+ Wed, 26 Jan 2022 23:44:34 -0800 (PST)
+Date: Thu, 27 Jan 2022 17:44:29 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 0/2] powerpc: Disable syscall emulation and stepping
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, naverao1
- <naverao1@imap.linux.ibm.com>
+Subject: Re: [PATCH 2/2] powerpc/uprobes: Reject uprobe on a system call
+ instruction
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
 References: <20220124055741.3686496-1-npiggin@gmail.com>
- <d3ab1142-5f62-6cbc-067c-6a34f4f28ef2@csgroup.eu>
- <1643079479.32j7nee5j0.astroid@bobo.none>
- <d352c741-baaf-3be3-ef31-81ce6250876c@csgroup.eu>
- <52b03748fdeff1bb2eb67f6038311e26@imap.linux.ibm.com>
-In-Reply-To: <52b03748fdeff1bb2eb67f6038311e26@imap.linux.ibm.com>
+ <20220124055741.3686496-3-npiggin@gmail.com>
+ <874k5sm42l.fsf@mpe.ellerman.id.au>
+In-Reply-To: <874k5sm42l.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1643268944.tltfmyu1ey.astroid@bobo.none>
+Message-Id: <1643269209.jj1krtc1vx.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,96 +84,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from naverao1's message of January 25, 2022 8:48 pm:
-> On 2022-01-25 11:23, Christophe Leroy wrote:
->> Le 25/01/2022 =C3=A0 04:04, Nicholas Piggin a =C3=A9crit=C2=A0:
->>> +Naveen (sorry missed cc'ing you at first)
->>>=20
->>> Excerpts from Christophe Leroy's message of January 24, 2022 4:39 pm:
->>>>=20
->>>>=20
->>>> Le 24/01/2022 =C3=A0 06:57, Nicholas Piggin a =C3=A9crit=C2=A0:
->>>>> As discussed previously
->>>>>=20
->>>>> https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-January/238946.h=
-tml
->>>>>=20
->>>>> I'm wondering whether PPC32 should be returning -1 for syscall
->>>>> instructions too here? That could be done in another patch anyway.
->>>>>=20
->>>>=20
->>>> The 'Programming Environments Manual for 32-Bit Implementations of=20
->>>> the
->>>> PowerPC=E2=84=A2 Architecture' says:
->>>>=20
->>>> The following are not traced:
->>>> =E2=80=A2 rfi instruction
->>>> =E2=80=A2 sc and trap instructions that trap
->>>> =E2=80=A2 Other instructions that cause interrupts (other than trace=20
->>>> interrupts)
->>>> =E2=80=A2 The first instruction of any interrupt handler
->>>> =E2=80=A2 Instructions that are emulated by software
->>>>=20
->>>>=20
->>>> So I think PPC32 should return -1 as well.
->>>=20
->>> I agree.
->>>=20
->>> What about the trap instructions? analyse_instr returns 0 for them
->>> which falls through to return 0 for emulate_step, should they
->>> return -1 as well or am I missing something?
+Excerpts from Michael Ellerman's message of January 25, 2022 9:45 pm:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>> Per the ISA, a Trace interrupt is not generated for a system call
+>> [vectored] instruction. Reject uprobes on such instructions as we are
+>> not emulating a system call [vectored] instruction anymore.
 >=20
-> Yeah, good point about the trap instructions.
->=20
->>>=20
->>=20
->> For the traps I don't know. The manual says "trap instructions that
->> trap" are not traced. It means that "trap instructions that _don't_
->> trap" are traced. Taking into account that trap instructions don't trap
->> at least 99.9% of the time, not sure if returning -1 is needed.
->>=20
->> Allthought that'd probably be the safest.
->=20
-> 'trap' is a special case since it is predominantly used by debuggers
-> and/or tracing infrastructure. Kprobes and Uprobes do not allow probes
-> on a trap instruction. But, xmon can be asked to step on a trap
-> instruction and that can interfere with kprobes in weird ways.
->=20
-> So, I think it is best if we also exclude trap instructions from being
-> single stepped.
->=20
->>=20
->> But then what happens with other instruction that will sparsely=20
->> generate
->> an exception like a DSI or so ? If we do it for the traps then we=20
->> should
->> do it for this as well, and then it becomes a non ending story.
->=20
-> For a DSI, we restart the same instruction after handling the page=20
-> fault.
-> The single step exception is raised on the subsequent successful
-> completion of the instruction.
+> This should really be patch 1, otherwise there's a single commit window
+> where we allow uprobes on sc but don't honour them.
 
-Although it can cause a signal, and the signal handler can decide
-to resume somewhere else. Or kernel mode equivalent it can go to a
-fixup handler and resume somewhere else.
+Yep true. I also messed up Naveen's attribution! Will re-send (or maybe=20
+Naveen would take over the series).
 
-How are those handled?
+>=20
+>> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+>> [np: Switch to pr_info_ratelimited]
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>  arch/powerpc/include/asm/ppc-opcode.h | 1 +
+>>  arch/powerpc/kernel/uprobes.c         | 6 ++++++
+>>  2 files changed, 7 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/includ=
+e/asm/ppc-opcode.h
+>> index 9675303b724e..8bbe16ce5173 100644
+>> --- a/arch/powerpc/include/asm/ppc-opcode.h
+>> +++ b/arch/powerpc/include/asm/ppc-opcode.h
+>> @@ -411,6 +411,7 @@
+>>  #define PPC_RAW_DCBFPS(a, b)		(0x7c0000ac | ___PPC_RA(a) | ___PPC_RB(b)=
+ | (4 << 21))
+>>  #define PPC_RAW_DCBSTPS(a, b)		(0x7c0000ac | ___PPC_RA(a) | ___PPC_RB(b=
+) | (6 << 21))
+>>  #define PPC_RAW_SC()			(0x44000002)
+>> +#define PPC_RAW_SCV()			(0x44000001)
+>>  #define PPC_RAW_SYNC()			(0x7c0004ac)
+>>  #define PPC_RAW_ISYNC()			(0x4c00012c)
+>> =20
+>> diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes=
+.c
+>> index c6975467d9ff..3779fde804bd 100644
+>> --- a/arch/powerpc/kernel/uprobes.c
+>> +++ b/arch/powerpc/kernel/uprobes.c
+>> @@ -41,6 +41,12 @@ int arch_uprobe_analyze_insn(struct arch_uprobe *aupr=
+obe,
+>>  	if (addr & 0x03)
+>>  		return -EINVAL;
+>> =20
+>> +	if (ppc_inst_val(ppc_inst_read(auprobe->insn)) =3D=3D PPC_RAW_SC() ||
+>> +	    ppc_inst_val(ppc_inst_read(auprobe->insn)) =3D=3D PPC_RAW_SCV()) {
+>=20
+> We should probably reject hypercall too?
+>=20
+> There's also a lot of reserved fields in `sc`, so doing an exact match
+> like this risks missing instructions that are badly formed but the CPU
+> will happily execute as `sc`.
+
+Yeah, scv as well has lev !=3D 0 unsupported so should be excluded.
+>=20
+> We'd obviously never expect to see those in compiler generated code, but
+> it'd still be safer to mask. We could probably just reject opcode 17
+> entirely.
+>=20
+> And I guess for a subsequent patch, but we should be rejecting some
+> others here as well shouldn't we? Like rfid etc.
+
+Traps under discussion I guess. For uprobe, rfid will be just another
+privilege fault. Is that dealt with somehow or do all privileged and
+illegal instructions also need to be excluded from stepping? (I assume
+we must handle that in a general way somehow)
+
 
 Thanks,
 Nick
-
-> For most other interrupts (alignment, vsx
-> unavailable, ...), we end up emulating the single step exception itself
-> (see emulate_single_step()). So, those are ok if caused by an=20
-> instruction
-> being stepped.
->=20
->=20
-> - Naveen
->=20
