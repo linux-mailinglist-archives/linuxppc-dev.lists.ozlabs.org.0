@@ -1,56 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E589549E04E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 12:11:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CF549E065
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 12:15:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JkyZM5dQDz3cLN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 22:11:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jkyg95hwVz3cG2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 22:15:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NQBI3Hex;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=ZVHblktj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JkyYh3xL8z30NW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 22:10:32 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=canonical.com (client-ip=185.125.188.122;
+ helo=smtp-relay-internal-0.canonical.com;
+ envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=NQBI3Hex; 
+ unprotected) header.d=canonical.com header.i=@canonical.com
+ header.a=rsa-sha256 header.s=20210705 header.b=ZVHblktj; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from smtp-relay-internal-0.canonical.com
+ (smtp-relay-internal-0.canonical.com [185.125.188.122])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JkyYh3KRGz4xQq;
- Thu, 27 Jan 2022 22:10:32 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1643281832;
- bh=pT4cb/kI3u6Th4ludHBUFes+GalTPLIocBCrbIhBffk=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=NQBI3HexnTSXNmmdeznOdsDaIUT3ON6tf/FSyPd8mk8eHRzCsIiaNVGgK4uPiI3Za
- rjt34+dL44W0vKIRPSe72atbOgFfqbCzNaotmOjpt7xV8KGQRR6AXNs8GvwarlXr6S
- ZDpnr3Bl7LUBPuMgVSx0pJD3Ew8NDuzdVMi1WcjqbgqLpCkGdgbtE4DWMFf0sfuqID
- CNqJK24W++Jzv3hCGXXHDLXtsWQZ+hWm53dkgHzV4X8moVJECnY7uW3ifu/dR0p9kL
- Ql2yDcNRfO8eAiAH7esv85cqJuMX5hnW3gtp8jMOB5bvVSYMz0qLgZFpZ8YqwcozF7
- O/BDwTSoq5FCQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Dan Carpenter <dan.carpenter@oracle.com>, Christophe Leroy
- <christophe.leroy@csgroup.eu>
-Subject: Re: WARN_ON() is buggy for 32 bit systems
-In-Reply-To: <20220126134948.GA1978@kadam>
-References: <20220126115616.GY1978@kadam>
- <8bfa7bbe-7343-2d2f-d20b-d4789523c89c@csgroup.eu>
- <20220126134948.GA1978@kadam>
-Date: Thu, 27 Jan 2022 22:10:32 +1100
-Message-ID: <87y231l9hz.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JkyfX2wTkz2yPV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 22:14:43 +1100 (AEDT)
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 9BB5F3F197
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 11:14:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+ s=20210705; t=1643282077;
+ bh=ei0q12+pTEkVCSC3KLPxXTL3wN1Kz2V2e0OB+SXoUME=;
+ h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+ To:Cc:Content-Type;
+ b=ZVHblktjtJb4zmm6qxwYNHV/E7IVKctDR0Xi8qhJjDB9XxuUw2/ozucX3kxsw+ncb
+ Y3Xc0KKMAhz22VhYK8dx0SRyyzxfVrErXNb1H/9QWMDfBI1xxUkWFCrZ3DtQU3DdmP
+ mLAklBFPcsfBWrffkhFrObBGbJtGYvbWSwjvvB85emFAp/8e9N8tpy8jV/9sJS2nv1
+ bU6LBlOPog3l8BC4T0Ws5kkL2idbGUyURXVgFHZ89pUONKQHgpiUuWfcHKZLR6b+tK
+ 1/+oKNm7LzK8Ftw3lL71MkqcG/Q4o0O5mCp9dJ89Kz3WIXKr5EpehGLeb0LjG/oVWU
+ orjXazh0AY2Gw==
+Received: by mail-oo1-f72.google.com with SMTP id
+ h19-20020a4a6f13000000b002e3c2ae2affso1482160ooc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 03:14:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=ei0q12+pTEkVCSC3KLPxXTL3wN1Kz2V2e0OB+SXoUME=;
+ b=0mLoxK1zotGETQxxDZHp7aH7LQd4Wz2spPx+hPE70faKSWBRY8+krYAC2+TPZWV6p+
+ QoBmaEKJzUPgzHOdAWbHjz4h5p3CK26B12ml08h5DnjOiZqbf7G2mSDIHgYNS7WUm8Hm
+ XhTDtvn1M80r4/rc/Yg3mERzm7Zid0HNQH3yLbBfnTuyDceYZC/Xu9n2vueisrfCZnNJ
+ CkTSwp6pYUAhvNQxUhxIEAYDgWt+e71/cyczKHB3xZ8l+eysCmE1QSG67hBPrEHMKLyK
+ u6lv/a8vjWQprN9SdWIlAKjwdDLKLN/JHB1CGEYo/UMTD5n2TWgACjA7ef6/E5+ddhdx
+ bijQ==
+X-Gm-Message-State: AOAM5302Lr0KJx7QKnQ7EZAfnTLaPv/Be7BJeQayEjxfkh8EqX5GrXdq
+ HGIVzcJAvkCoJesp+WHwJdaGdOA2sh56GvVUNJcZ+YLsFQu4kFMH0DeTNBXv21DNHda+FMpThEY
+ h8dWVs65I8KsU4ciH5ZUs61yqGtZAnUSzCiLtN3b0bPLphqfaHmYCG8hl4iQ=
+X-Received: by 2002:a05:6808:179e:: with SMTP id
+ bg30mr1968522oib.57.1643282076595; 
+ Thu, 27 Jan 2022 03:14:36 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJwxEE5Ap4FJ4cUst9yvbfsRQokijydzPA6OcoO6QyYWtnn1PDvaX7TZkZkLGBEICFTLx1JnuD/+0yw+QuDnNaE=
+X-Received: by 2002:a05:6808:179e:: with SMTP id
+ bg30mr1968509oib.57.1643282076282; 
+ Thu, 27 Jan 2022 03:14:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20220127025418.1989642-1-kai.heng.feng@canonical.com>
+ <0259955f-8bbb-1778-f234-398f1356db8b@linux.intel.com>
+In-Reply-To: <0259955f-8bbb-1778-f234-398f1356db8b@linux.intel.com>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date: Thu, 27 Jan 2022 19:14:25 +0800
+Message-ID: <CAAd53p6+KPAJchh9Jx59Fkkj5FidSxsW0yHjLqooFjvu-Y9u7w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] PCI/AER: Disable AER service when link is in L2/L3
+ ready, L2 and L3 state
+To: Lu Baolu <baolu.lu@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,50 +91,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Joerg Roedel <jroedel@suse.de>,
+ Lalithambika Krishnakumar <lalithambika.krishnakumar@intel.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, koba.ko@canonical.com,
+ Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com,
+ mika.westerberg@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
-> On Wed, Jan 26, 2022 at 12:21:49PM +0000, Christophe Leroy wrote:
->> The code is enclosed in a #ifdef CONFIG_PPC64, it is not used for PPC32:
->> 
->> /arch/powerpc/include/asm/bug.h
->>    99  #ifdef CONFIG_PPC64
+On Thu, Jan 27, 2022 at 3:01 PM Lu Baolu <baolu.lu@linux.intel.com> wrote:
 >
-> Ah...
+> On 2022/1/27 10:54, Kai-Heng Feng wrote:
+> > Commit 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in
+> > hint") enables ACS, and some platforms lose its NVMe after resume from
+> > S3:
+> > [   50.947816] pcieport 0000:00:1b.0: DPC: containment event, status:0x1f01 source:0x0000
+> > [   50.947817] pcieport 0000:00:1b.0: DPC: unmasked uncorrectable error detected
+> > [   50.947829] pcieport 0000:00:1b.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Receiver ID)
+> > [   50.947830] pcieport 0000:00:1b.0:   device [8086:06ac] error status/mask=00200000/00010000
+> > [   50.947831] pcieport 0000:00:1b.0:    [21] ACSViol                (First)
+> > [   50.947841] pcieport 0000:00:1b.0: AER: broadcast error_detected message
+> > [   50.947843] nvme nvme0: frozen state error detected, reset controller
+> >
+> > It happens right after ACS gets enabled during resume.
+> >
+> > There's another case, when Thunderbolt reaches D3cold:
+> > [   30.100211] pcieport 0000:00:1d.0: AER: Uncorrected (Non-Fatal) error received: 0000:00:1d.0
+> > [   30.100251] pcieport 0000:00:1d.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Requester ID)
+> > [   30.100256] pcieport 0000:00:1d.0:   device [8086:7ab0] error status/mask=00100000/00004000
+> > [   30.100262] pcieport 0000:00:1d.0:    [20] UnsupReq               (First)
+> > [   30.100267] pcieport 0000:00:1d.0: AER:   TLP Header: 34000000 08000052 00000000 00000000
+> > [   30.100372] thunderbolt 0000:0a:00.0: AER: can't recover (no error_detected callback)
+> > [   30.100401] xhci_hcd 0000:3e:00.0: AER: can't recover (no error_detected callback)
+> > [   30.100427] pcieport 0000:00:1d.0: AER: device recovery failed
+> >
+> > So disable AER service to avoid the noises from turning power rails
+> > on/off when the device is in low power states (D3hot and D3cold), as
+> > PCIe spec "5.2 Link State Power Management" states that TLP and DLLP
+> > transmission is disabled for a Link in L2/L3 Ready (D3hot), L2 (D3cold
+> > with aux power) and L3 (D3cold).
+> >
+> > Bugzilla:https://bugzilla.kernel.org/show_bug.cgi?id=209149
+> > Bugzilla:https://bugzilla.kernel.org/show_bug.cgi?id=215453
+> > Fixes: 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in hint")
 >
-> You know, life would be a lot easier for me personally if we added an
-> #ifndef __CHECKER__ as well...  I can't compile PowerPC code so I can't
-> test a patch like that.
+> I don't know what this fix has to do with the commit 50310600ebda.
 
-Ubuntu & Fedora both have cross compilers packaged, or there's cross
-compilers on kernel.org. But I assume you mean you'd rather not bother
-compiling for powerpc, which is fair enough.
+Commit 50310600ebda only exposed the underlying issue. Do you think
+"Fixes:" tag should change to other commits?
 
-Do you mean something like below?
+> Commit 50310600ebda only makes sure that PCI ACS is enabled whenever
+> Intel IOMMU is on. Before this commit, PCI ACS could also be enabled
+> and result in the same problem. Or anything I missed?
 
-I'm not sure about that, as it would prevent sparse from checking the
-actual BUG_ON code we're using, vs the generic version which we never
-use on 64-bit. Is there a smatch specific macro we could check?
+The system in question didn't enable ACS before commit 50310600ebda.
 
-cheers
+Kai-Heng
 
-
-diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-index 02c08d1492f8..5cbfe9d8232d 100644
---- a/arch/powerpc/include/asm/bug.h
-+++ b/arch/powerpc/include/asm/bug.h
-@@ -96,7 +96,7 @@ __label_warn_on:						\
- 	break;							\
- } while (0)
- 
--#ifdef CONFIG_PPC64
-+#if defined(CONFIG_PPC64) && !defined(__CHECKER__)
- #define BUG_ON(x) do {						\
- 	if (__builtin_constant_p(x)) {				\
- 		if (x)						\
-
-
-
+>
+> Best regards,
+> baolu
