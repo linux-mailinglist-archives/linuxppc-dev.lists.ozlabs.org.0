@@ -2,76 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4143649DBDD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 08:47:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9BD49DFE1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 11:55:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jkt3w1hhLz3cbr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 18:47:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JkyD73hx6z3cJl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 21:55:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DL8Mh5ty;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QKs/rB31;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a;
- helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=DL8Mh5ty; dkim-atps=neutral
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
- [IPv6:2607:f8b0:4864:20::62a])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jkt3H0xX3z2xs4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 18:47:22 +1100 (AEDT)
-Received: by mail-pl1-x62a.google.com with SMTP id u11so1753451plh.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Jan 2022 23:47:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=ccbbHyPa2zNHaY1DTEmYbekClrFWWB6tGVPD92+73A4=;
- b=DL8Mh5tykZhwRpRlx6PJFlY4l+TJ1nDbLWtCJWqUPgUufRJcQlc87OeuQ/NuEY9Q5G
- Zks30HfjIunhbY2mjzrWf6Nxj0xs3OONqSulWD+5zL2qAELSaD+6fb/DvceJcL5XKa1A
- zbuCDk6/v8MpDP/hVjbsTdxUaj3N9Yb0wbwJ3bQbRdR368uKmm88twG0rjmWVbcXCm5a
- nKkTqGxMLxYv4KUXT0HgPwE8X1b89pNZ7/wZvH9OCJuWwPd6CZLrTc6mpFkb9Y/R3Nq8
- tSK9xz5SeD89C7w6LBVKHLv7n8i9dmvkmVkBzGI+LptF5O6i6ryaX+0DoFTZTcI9jDaM
- Hg3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=ccbbHyPa2zNHaY1DTEmYbekClrFWWB6tGVPD92+73A4=;
- b=kcBuJvM77QRwucWth3obFWwtHazd6cCuW0hMky9tnkKNHzdRTV34+D4JNiD00CN8nb
- fOBJNlwssDRSZryCL1+A1UsNM9wUlCfrqNxtUrrBxl7RA4cSJCZL4XkZtRnYPCPOf9va
- H4rn+5CG54gBF39jQr74pQt8CxFJr9/wznwsdnHmXuf2g8hPpqznDDMI+yelMqUriO4K
- 0c0aMjvUQjMd0nBjaYRB9U1D7abDZU0mKjAGrFoMiIJo4P2SmeyihMvhlJfkfsziXQr3
- ywYY9Ra+GwxiiJ/p9cxqQP2aEgOMk02mbJE8/Wl1loihycU99igWb0ElRCvXbZjjb8/N
- 1oIA==
-X-Gm-Message-State: AOAM533wCgAaUrYxbt60ISNk/ufEX39Mkv85dQ6FfQRgcjgh7Myx5yq0
- 1MduBzono2q7Zgd5OZ1qJcQ=
-X-Google-Smtp-Source: ABdhPJzTdfAMHZgt09EJywuiYpaTjuAUSIUWYp3MJHgXqIFFyR1hxS2GInBjux6BQyeantrGUFUIXw==
-X-Received: by 2002:a17:90a:b90b:: with SMTP id
- p11mr2900928pjr.189.1643269640138; 
- Wed, 26 Jan 2022 23:47:20 -0800 (PST)
-Received: from localhost (193-116-82-75.tpgi.com.au. [193.116.82.75])
- by smtp.gmail.com with ESMTPSA id y16sm4521122pfl.128.2022.01.26.23.47.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 26 Jan 2022 23:47:19 -0800 (PST)
-Date: Thu, 27 Jan 2022 17:47:14 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JkyCT4gRZz2yLX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 21:54:45 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=QKs/rB31; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JkyCS74VSz4xNm;
+ Thu, 27 Jan 2022 21:54:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1643280885;
+ bh=5lIaVIE45bKk0MuhVgUEHyZpIklqveSec/luVC/AxhQ=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=QKs/rB31RreZtBU21tuy5vImut9RZ/88u/OsWhz1NO9DBxPqQsc2i3L/K81ygbrVW
+ Py0fDRwCI6/VHui5vRW61oQqiB4I620Sn6cZZ8K508dMnq0khAhVw1EpAhgBBWZNYc
+ q9jZM73cwECdChuqejJGrTvv2iscbusCvOrZQHvmh5dShpUJLyPQxQYE+jmMackuHf
+ L66S9nnD+rhaq2OdZ1y5yaPWQVw0MgvxRsUlPQ3I+vPbmRuBjYzksTBf1EpAH9iBPn
+ Y/9OgoPZSP0fz/uZBc3JpIZ6lsDFAaRoQvQVOKdIYFSqq+HsF03LPG0sQ68vl2JvVm
+ N6k9kXG8LLFAw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, linuxppc-dev
+ <linuxppc-dev@lists.ozlabs.org>, linux-kernel
+ <linux-kernel@vger.kernel.org>
 Subject: Re: ppc: hard lockup / hang in v5.17-rc1 under QEMU
-To: =?iso-8859-1?q?C=E9dric?= Le Goater <clg@kaod.org>, Miguel Ojeda
- <miguel.ojeda.sandonis@gmail.com>
+In-Reply-To: <CANiq72n_FmDx=r-o9J8gYc6LpwRL5EGmhM6Xzwv27Xc7h1TNDw@mail.gmail.com>
 References: <CANiq72n_FmDx=r-o9J8gYc6LpwRL5EGmhM6Xzwv27Xc7h1TNDw@mail.gmail.com>
- <cf6ac499-4190-cbe5-255c-f9edf07a4786@kaod.org>
- <CANiq72mV3AzmBDVJM+tQriEoDu_9LFBrK_vR6GC4qEmLw0UepQ@mail.gmail.com>
-In-Reply-To: <CANiq72mV3AzmBDVJM+tQriEoDu_9LFBrK_vR6GC4qEmLw0UepQ@mail.gmail.com>
+Date: Thu, 27 Jan 2022 21:54:39 +1100
+Message-ID: <871r0tmosw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1643269597.wkij0f82dr.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,34 +60,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Miguel Ojeda's message of January 27, 2022 4:57 am:
-> On Wed, Jan 26, 2022 at 4:03 PM C=C3=A9dric Le Goater <clg@kaod.org> wrot=
-e:
->>
->> Indeed. I could reproduce.
->=20
-> Thanks for the quick confirmation!
->=20
->> Could you please send the QEMU command line and the full dmesg ? and
->> possibly open an issue on :
->>
->>    https://gitlab.com/qemu-project/qemu/-/issues/
->>
->> I guess it's a QEMU modeling issue.
->=20
-> Of course -- done (details there):
->=20
->     https://gitlab.com/qemu-project/qemu/-/issues/842
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+> Hi PPC folks,
+>
+> Our ppc64le CI deterministically triggers a hard lockup / hang under
+> QEMU since v5.17-rc1 (upgrading from v5.16).
+>
+> Bisecting points to 0faf20a1ad16 ("powerpc/64s/interrupt: Don't enable
+> MSR[EE] in irq handlers unless perf is in use").
 
-That sounds like my fault actually.
+Hi Miguel,
 
-https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-January/239178.html
+Thanks for the report.
 
-Thanks,
-Nick
+Nick has posted one fix for the commit you identified:
+
+  http://patchwork.ozlabs.org/project/linuxppc-dev/patch/20220124143930.3923442-1-npiggin@gmail.com/
+
+
+It looks like your kernel-ppc64le-release.config does not have the
+hardlockup detector enabled, so I suspect you're hitting the bug
+described in that patch.
+
+That fix will hit linux-next in the next day or so and should be in rc2.
+
+cheers
