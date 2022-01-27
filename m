@@ -2,72 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB7E49E3FC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 15:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C71DB49E4EB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Jan 2022 15:45:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jl2Kf1phnz3bct
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 01:00:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jl3KG5bRHz3cNH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 01:45:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rFkBWMy4;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hks7nMfH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d29;
+ helo=mail-io1-xd29.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=rFkBWMy4; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jl2Jz6TKVz30NS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 00:59:47 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=hks7nMfH; dkim-atps=neutral
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com
+ [IPv6:2607:f8b0:4864:20::d29])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id A591461B8D
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 13:59:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CE2C340EB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 13:59:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1643291985;
- bh=C8J8iNsm2mOjo9Dm060FJB/YllzVO4ruYOFz/KHhAH4=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=rFkBWMy4q7FrCVE/6vBfbjwGtNmsaorxpQllsGRpplinVT38CTUEh7vKsd2Ww0Aqn
- 17+1kRNv6dqo30enI5q6HHbly8xsEC/VgpIDkcBsIYFyIhRdGeVB2TJPccKxfFSoPE
- HXQnzOc7X7Leg266+fHMbWmXgaHCenTcNHmv8yR8WVtyQp37kvN4ZYAFE0MjFBEfbY
- UXwmawkZct7uSK+0aj51vx4lDNNcV2M3mznaKZIt0dC/4osdBiifOMgs4D+nwWPzJj
- T22jGPMoWwcvQfhMr+aQAe2gmOB0lsO1NUDALy2WAYkJ6ueX/JoQ0Yi4OeAXdXVQ2F
- 7LSrnhWtctfZA==
-Received: by mail-wr1-f53.google.com with SMTP id h21so4938597wrb.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 05:59:45 -0800 (PST)
-X-Gm-Message-State: AOAM530VpEJeDj8tY1qR2LIgfxvy7dJaXkLsWUPhYZwjeCfp34u3foda
- BFPjTftuXGceZZFXFRCENzDTiL6oKJYMYODJ0ug=
-X-Google-Smtp-Source: ABdhPJxBiMCluf7EE4Hhodg7Y2uall9vY53ZmOj35baIopT3e8YchA16oCTZmbmI5aox4Zffh9Z3UnW53WbZeQ3MVCo=
-X-Received: by 2002:a05:6000:15ca:: with SMTP id
- y10mr3043731wry.417.1643291983359; 
- Thu, 27 Jan 2022 05:59:43 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jl3Jg5wKKz30NW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 01:44:35 +1100 (AEDT)
+Received: by mail-io1-xd29.google.com with SMTP id 9so3846091iou.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 06:44:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=2TXXxAA22JP55U2d5KcEju2kMZrmD6a4AiOWrq8N6KU=;
+ b=hks7nMfHeG1O6/iSHwf3VQNmLIui784tr+mUrsdRtKWklyXM3EHK5UQMezkB1a53Fj
+ Xe8/FA2bEmcQXXOIsA9K+hyq5JnOFDJjKSZ+Mlpx4F/4CIYPQ3IKRC/nTGPu0ojoNMaY
+ h/BjBiqYDkljFlrXa7cEbL21DvAVb0rcYLV6HRHI3K7kv/f1+LE5KjPlHZYcwDV0LTDc
+ BPvPQTafXmAtuPE/44fxvNkq+fAkJ5qPkvNl3GhEAN49MSc7ec4sh7QYUzqST5eqgZO0
+ xuUBFysv9O05ffOPhGh6BUiTlkXg5JOIzjn4R0hND5ha77B2PBWgeFWNmWwnLAXjCRu9
+ F79g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=2TXXxAA22JP55U2d5KcEju2kMZrmD6a4AiOWrq8N6KU=;
+ b=xR+Hiq3toHT2U08aOvYAn0FDB2o6aw5AzQ0Eojii6l7VJ75MVgpo5sKagAdHjhgv7L
+ NADTJ091SNV31DluSwqzJVL1ScSoTP8zFln70NlAqHYpo8qtD4ImcVo38YEAXTj6Qlle
+ 5d/sa+9LKQWiHQxkwBqWCFp99FFkOGU67iqIV5DxEsSJr3lC62wMHKjQqYM5forcKxvK
+ HdY2FoXbfd9TXjQ2nbP8usMFFI1e9ECz4rTeRqPaMmbQ1mmqGd4HpLR8HNnd6LcoGpOz
+ vHRuTS0FtE/sV0QFYZuzEhSrUsuFmA2wXNuOCLjKFA1CW9AOTb9NJhSKT9IMLuvCXYff
+ qivQ==
+X-Gm-Message-State: AOAM5319/IJ81iwAnOMI8FyqCsFQ0qyBJfrHwsnknNuk5pz5ihnxRdMv
+ rkMmlkZbvPMX9hW6TspNelk+pffrSBfZTlKcMdk=
+X-Google-Smtp-Source: ABdhPJyjYQkK30yF9LrqatH2JvSYsgA0twQ9CE2bho07UqZJyO2P/gsHsIc4qJ2ONo8j3aAo3LNmiq32b4vlcas9oDE=
+X-Received: by 2002:a02:ac88:: with SMTP id x8mr1972396jan.264.1643294670931; 
+ Thu, 27 Jan 2022 06:44:30 -0800 (PST)
 MIME-Version: 1.0
-References: <e9422643-a210-b77f-a037-da63a9d2e925@linux.alibaba.com>
- <20220124114548.30241947@gandalf.local.home>
- <0fa0daec-881a-314b-e28b-3828e80bbd90@linux.alibaba.com>
- <YfFclROd+0/61q2d@FVFF77S0Q05N> <YfKGKWW5UfZ15kCW@FVFF77S0Q05N>
- <CAMj1kXHgpr0KYx5PYO_SpqaN8Ar2kfmc9Pb-d26uaYDpjwTz9w@mail.gmail.com>
- <YfKOENgR6sLnHQmA@FVFF77S0Q05N>
- <CAMj1kXGsmK9pBmgwmMEr302eCHtL=cqs4jqM_jOiK-bLO2gQog@mail.gmail.com>
- <YfKXM0wBfTh0V8+L@FVFF77S0Q05N>
- <CAMj1kXF3Fg2O=5prQnUWeNFeCqojP1z2zDXMwxFdcNtWLfL7Vg@mail.gmail.com>
- <YfKc8MDwenS1iXqQ@FVFF77S0Q05N>
-In-Reply-To: <YfKc8MDwenS1iXqQ@FVFF77S0Q05N>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 27 Jan 2022 14:59:31 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHnQcHmxRrTBQmj0Z2JJ6iWvNCQqSjvPqG_oedWpikfSA@mail.gmail.com>
-Message-ID: <CAMj1kXHnQcHmxRrTBQmj0Z2JJ6iWvNCQqSjvPqG_oedWpikfSA@mail.gmail.com>
-Subject: Re: [powerpc] ftrace warning kernel/trace/ftrace.c:2068 with
- code-patching selftests
-To: Mark Rutland <mark.rutland@arm.com>
+References: <CANiq72n_FmDx=r-o9J8gYc6LpwRL5EGmhM6Xzwv27Xc7h1TNDw@mail.gmail.com>
+ <871r0tmosw.fsf@mpe.ellerman.id.au>
+In-Reply-To: <871r0tmosw.fsf@mpe.ellerman.id.au>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 27 Jan 2022 15:44:20 +0100
+Message-ID: <CANiq72n3ReEAf6BNXL99Q9Ovg5kqpXDRSSDaWLd+mJKK7FxdCw@mail.gmail.com>
+Subject: Re: ppc: hard lockup / hang in v5.17-rc1 under QEMU
+To: Michael Ellerman <mpe@ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,125 +74,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Sachin Sant <sachinp@linux.ibm.com>,
- Yinan Liu <yinan@linux.alibaba.com>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 27 Jan 2022 at 14:24, Mark Rutland <mark.rutland@arm.com> wrote:
->
-> On Thu, Jan 27, 2022 at 02:07:03PM +0100, Ard Biesheuvel wrote:
-> > On Thu, 27 Jan 2022 at 13:59, Mark Rutland <mark.rutland@arm.com> wrote:
-> > >
-> > > On Thu, Jan 27, 2022 at 01:22:17PM +0100, Ard Biesheuvel wrote:
-> > > > On Thu, 27 Jan 2022 at 13:20, Mark Rutland <mark.rutland@arm.com> wrote:
-> > > > > On Thu, Jan 27, 2022 at 01:03:34PM +0100, Ard Biesheuvel wrote:
-> > > > >
-> > > > > > These architectures use place-relative extables for the same reason:
-> > > > > > place relative references are resolved at build time rather than at
-> > > > > > runtime during relocation, making a build time sort feasible.
-> > > > > >
-> > > > > > arch/alpha/include/asm/extable.h:#define ARCH_HAS_RELATIVE_EXTABLE
-> > > > > > arch/arm64/include/asm/extable.h:#define ARCH_HAS_RELATIVE_EXTABLE
-> > > > > > arch/ia64/include/asm/extable.h:#define ARCH_HAS_RELATIVE_EXTABLE
-> > > > > > arch/parisc/include/asm/uaccess.h:#define ARCH_HAS_RELATIVE_EXTABLE
-> > > > > > arch/powerpc/include/asm/extable.h:#define ARCH_HAS_RELATIVE_EXTABLE
-> > > > > > arch/riscv/include/asm/extable.h:#define ARCH_HAS_RELATIVE_EXTABLE
-> > > > > > arch/s390/include/asm/extable.h:#define ARCH_HAS_RELATIVE_EXTABLE
-> > > > > > arch/x86/include/asm/extable.h:#define ARCH_HAS_RELATIVE_EXTABLE
-> > > > > >
-> > > > > > Note that the swap routine becomes something like the below, given
-> > > > > > that the relative references need to be fixed up after the entry
-> > > > > > changes place in the sorted list.
-> > > > > >
-> > > > > > static void swap_ex(void *a, void *b, int size)
-> > > > > > {
-> > > > > >         struct exception_table_entry *x = a, *y = b, tmp;
-> > > > > >         int delta = b - a;
-> > > > > >
-> > > > > >         tmp = *x;
-> > > > > >         x->insn = y->insn + delta;
-> > > > > >         y->insn = tmp.insn - delta;
-> > > > > >         ...
-> > > > > > }
-> > > > > >
-> > > > > > As a bonus, the resulting footprint of the table in the image is
-> > > > > > reduced by 8x, given that every 8 byte pointer has an accompanying 24
-> > > > > > byte RELA record, so we go from 32 bytes to 4 bytes for every call to
-> > > > > > __gnu_mcount_mc.
-> > > > >
-> > > > > Absolutely -- it'd be great if we could do that for the callsite locations; the
-> > > > > difficulty is that the entries are generated by the compiler itself, so we'd
-> > > > > either need some build/link time processing to convert each absolute 64-bit
-> > > > > value to a relative 32-bit offset, or new compiler options to generate those as
-> > > > > relative offsets from the outset.
-> > > >
-> > > > Don't we use scripts/recordmcount.pl for that?
-> > >
-> > > Not quite -- we could adjust it to do so, but today it doesn't consider
-> > > existing mcount_loc entries, and just generates new ones where the compiler has
-> > > generated calls to mcount, which it finds by scanning the instructions in the
-> > > binary. Today it is not used:
-> > >
-> > > * On arm64 when we default to using `-fpatchable-function-entry=N`.  That makes
-> > >   the compiler insert 2 NOPs in the function prologue, and log the location of
-> > >   that NOP sled to a section called.  `__patchable_function_entries`.
-> > >
-> > >   We need the compiler to do that since we can't reliably identify 2 NOPs in a
-> > >   function prologue as being intended to be a patch site, as e.g. there could
-> > >   be notrace functions where the compiler had to insert NOPs for alignment of a
-> > >   subsequent brnach or similar.
-> > >
-> > > * On architectures with `-nop-mcount`. On these, it's necessary to use
-> > >   `-mrecord-mcount` to have the compiler log the patch-site, for the same
-> > >   reason as with `-fpatchable-function-entry`.
-> > >
-> > > * On architectures with `-mrecord-mcount` generally, since this avoids the
-> > >   overhead of scanning each object.
-> > >
-> > > * On x86 when objtool is used.
-> > >
-> >
-> > Right.
-> >
-> > I suppose that on arm64, we can work around this by passing
-> > --apply-dynamic-relocs to the linker, so that all R_AARCH64_RELATIVE
-> > targets are prepopulated with the link time value of the respective
-> > addresses. It does cause some bloat, which is why we disable that
-> > today, but we could make that dependent on ftrace being enabled.
->
-> We'd also need to teach the build-time sort to update the relocations, unless
-> you mean to also change the boot-time reloc code to RMW with the offset?
->
+Hi Michael,
 
-Why would that be necessary? Every RELA entry has the same effect on
-its target address, as it just adds a fixed offset.
-
-> I think for right now the best thing is to disable the build-time sort for
-> arm64, but maybe something like that is the right thing to do longer term.
+On Thu, Jan 27, 2022 at 11:54 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
 >
+> It looks like your kernel-ppc64le-release.config does not have the
+> hardlockup detector enabled, so I suspect you're hitting the bug
+> described in that patch.
 
-Fair enough.
+On -release it was a hang; but please note that on -debug the hard
+lockup was actually being detected (so it was also reproducible with
+the detectors enabled).
 
-> > I do wonder how much over head we accumulate, though, by having all
-> > these relocations, but I suppose that is the situation today in any
-> > case.
->
-> Yeah; I suspect if we want to do something about that we want to do it more
-> generally, and would probably need to do something like the x86 approach and
-> rewrite the relocs at build-time to something more compressed. If we applied
-> the dynamic relocs with the link-time address we'd only need 4 bytes to
-> identify each pointer to apply an offset to.
->
-> I'm not exactly sure how we could do that, nor what the trade-off look like in
-> practice.
->
+> That fix will hit linux-next in the next day or so and should be in rc2.
 
-It would make sense for -fpic codegen to use relative offsets in
-__mcount_loc, but since we don't actually use -fpic on arm64, that
-doesn't really help :-)
+I confirm the fix works for us -- thanks a lot!
+
+Cheers,
+Miguel
