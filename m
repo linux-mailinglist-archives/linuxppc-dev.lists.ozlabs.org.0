@@ -2,74 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635DC49FC9B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 16:16:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E7749FD03
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 16:43:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JlgzV1yfvz3cQN
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 02:16:54 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PQg4aU5F;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PQg4aU5F;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JlhZG27T8z3c7f
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 02:43:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=PQg4aU5F; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=PQg4aU5F; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jlgyk6s2bz30Mn
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 02:16:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1643382967;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=gp3X2Tu2ffVsRn9QFqpvFZ1PDzoe87OXdTEsBZY8VHU=;
- b=PQg4aU5FJ+Ac3iYbfA8MidBrAlDcn1XDZ2OYeOmXDbKi9rg1P+gDY8s+9QfpaInYy5uiqq
- tJ9fW9AKkDhJwcsAXuAe9W/dyzCs3lUHvY5rLHUolxh24TAF0Z4G3+uidaGrfTrxtFvx8g
- M9oLDUtnhzfK8P+TAXmse1A8sbIQ9Kw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1643382967;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=gp3X2Tu2ffVsRn9QFqpvFZ1PDzoe87OXdTEsBZY8VHU=;
- b=PQg4aU5FJ+Ac3iYbfA8MidBrAlDcn1XDZ2OYeOmXDbKi9rg1P+gDY8s+9QfpaInYy5uiqq
- tJ9fW9AKkDhJwcsAXuAe9W/dyzCs3lUHvY5rLHUolxh24TAF0Z4G3+uidaGrfTrxtFvx8g
- M9oLDUtnhzfK8P+TAXmse1A8sbIQ9Kw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-12-kNCsxwTgMkyB3PS66SdA0A-1; Fri, 28 Jan 2022 10:16:00 -0500
-X-MC-Unique: kNCsxwTgMkyB3PS66SdA0A-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0913F1923E34;
- Fri, 28 Jan 2022 15:15:52 +0000 (UTC)
-Received: from t480s.redhat.com (unknown [10.39.193.182])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A3AA579A19;
- Fri, 28 Jan 2022 15:15:41 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH RFC v1] drivers/base/node: consolidate node device subsystem
- initialization in node_dev_init()
-Date: Fri, 28 Jan 2022 16:15:40 +0100
-Message-Id: <20220128151540.164759-1-david@redhat.com>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4JlhYm31Blz30Mn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 02:43:05 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E493712FC;
+ Fri, 28 Jan 2022 07:43:01 -0800 (PST)
+Received: from FVFF77S0Q05N (unknown [10.57.13.45])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4654F3F793;
+ Fri, 28 Jan 2022 07:42:59 -0800 (PST)
+Date: Fri, 28 Jan 2022 15:42:48 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Sven Schnelle <svens@linux.ibm.com>
+Subject: Re: ftrace hangs waiting for rcu (was: Re: [PATCH] ftrace: Have
+ architectures opt-in for mcount build time sorting)
+Message-ID: <YfQCohKWJg9H+uID@FVFF77S0Q05N>
+References: <20220127114249.03b1b52b@gandalf.local.home>
+ <YfLjIOlGfFmbh1Zv@FVFF77S0Q05N> <yt9dy231yq90.fsf_-_@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yt9dy231yq90.fsf_-_@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,374 +45,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org,
- David Hildenbrand <david@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, linux-mm@kvack.org,
- Rich Felker <dalias@libc.org>, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
- "Rafael J. Wysocki" <rafael@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Oscar Salvador <osalvador@suse.de>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Kees Cook <keescook@chromium.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ hca@linux.ibm.com, LKML <linux-kernel@vger.kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@kernel.org>,
+ linux-s390@vgr.kernel.org, Sachin Sant <sachinp@linux.ibm.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Andrew Morton <akpm@linux-foundation.org>, Yinan Liu <yinan@linux.alibaba.com>,
+ linuxppc-dev@lists.ozlabs.org, Ard Biesheuvel <ardb@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-... and call node_dev_init() after memory_dev_init() from driver_init(),
-so before any of the existing arch/subsys calls. All online nodes should
-be known at that point.
+Hi Sven,
 
-This is in line with memory_dev_init(), which initializes the memory
-device subsystem and creates all memory block devices.
+On Thu, Jan 27, 2022 at 07:42:35PM +0100, Sven Schnelle wrote:
+> Mark Rutland <mark.rutland@arm.com> writes:
+> 
+> > * I intermittently see a hang when running the tests. I previously hit that
+> >   when originally trying to bisect this issue (and IIRC that bisected down to
+> >   some RCU changes, but I need to re-run that). When the tests hang I
+> >   magic-srsrq + L tells me:
+> >
+> >   [  271.938438] sysrq: Show Blocked State
+> >   [  271.939245] task:ftracetest      state:D stack:    0 pid: 5687 ppid:  5627 flags:0x00000200
+> >   [  271.940961] Call trace:
+> >   [  271.941472]  __switch_to+0x104/0x160
+> >   [  271.942213]  __schedule+0x2b0/0x6e0
+> >   [  271.942933]  schedule+0x5c/0xf0
+> >   [  271.943586]  schedule_timeout+0x184/0x1c4
+> >   [  271.944410]  wait_for_completion+0x8c/0x12c
+> >   [  271.945274]  __wait_rcu_gp+0x184/0x190
+> >   [  271.946047]  synchronize_rcu_tasks_rude+0x48/0x70
+> >   [  271.947007]  update_ftrace_function+0xa4/0xec
+> >   [  271.947897]  __unregister_ftrace_function+0xa4/0xf0
+> >   [  271.948898]  unregister_ftrace_function+0x34/0x70
+> >   [  271.949857]  wakeup_tracer_reset+0x4c/0x100
+> >   [  271.950713]  tracing_set_tracer+0xd0/0x2b0
+> >   [  271.951552]  tracing_set_trace_write+0xe8/0x150
+> >   [  271.952477]  vfs_write+0xfc/0x284
+> >   [  271.953171]  ksys_write+0x7c/0x110
+> >   [  271.953874]  __arm64_sys_write+0x2c/0x40
+> >   [  271.954678]  invoke_syscall+0x5c/0x130
+> >   [  271.955442]  el0_svc_common.constprop.0+0x108/0x130
+> >   [  271.956435]  do_el0_svc+0x74/0x90
+> >   [  271.957124]  el0_svc+0x2c/0x90
+> >   [  271.957757]  el0t_64_sync_handler+0xa8/0x12c
+> >   [  271.958629]  el0t_64_sync+0x1a0/0x1a4
 
-Similar to memory_dev_init(), panic() if anything goes wrong, we don't
-want to continue with such basic initialization errors.
+On arm64 I bisected this down to:
 
-The important part is that node_dev_init() gets called after
-memory_dev_init() and after cpu_dev_init(), but before any of the
-relevant archs call register_cpu() to register the new cpu device under
-the node device. The latter should be the case for the current users
-of topology_init().
+  7a30871b6a27de1a ("rcu-tasks: Introduce ->percpu_enqueue_shift for dynamic queue selection")
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: x86@kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-mips@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-riscv@lists.infradead.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: sparclinux@vger.kernel.org
-Cc: linux-mm@kvack.org
-Signed-off-by: David Hildenbrand <david@redhat.com>
+Which was going wrong because ilog2() rounds down, and so the shift was wrong
+for any nr_cpus that was not a power-of-two. Paul had already fixed that in
+rcu-next, and just sent a pull request to Linus:
 
----
+  https://lore.kernel.org/lkml/20220128143251.GA2398275@paulmck-ThinkPad-P17-Gen-1/
 
-RFC because I tested only on x86-64 and s390x, I think I cross-compiled all
-applicable architectures except riscv and sparc.
+With that applied, I no longer see these hangs.
 
-This is somewhat a preparation for detecting if a memory block
-(/sys/devices/system/memory/memory*) is managed by a single zone, and
-storing the zone for the memory block -- to get rid of
-test_pages_in_a_zone(). For that, we want to know all nodes that are
-applicable for a single memory block (mem->nid), which is determined when
-registering the node.
+Does your s390 test machine have a non-power-of-two nr_cpus, and does that fix
+the issue for you?
 
-While this change might not be strictly required for that change, this
-way it's easier to see when the nodes are gettin created and
-consequently when the node ids for a memory block are determined.
+On arm64 the startup tests didn't seem to trigger the hang, but I was able to
+trigger the hang fairly reliably with the ftrace selftests, e.g.
 
----
- arch/arm64/kernel/setup.c   |  3 ---
- arch/ia64/kernel/topology.c | 10 ----------
- arch/mips/kernel/topology.c |  5 -----
- arch/powerpc/kernel/sysfs.c | 17 -----------------
- arch/riscv/kernel/setup.c   |  3 ---
- arch/s390/kernel/numa.c     |  7 -------
- arch/sh/kernel/topology.c   |  5 -----
- arch/sparc/kernel/sysfs.c   | 12 ------------
- arch/x86/kernel/topology.c  |  5 -----
- drivers/base/init.c         |  1 +
- drivers/base/node.c         | 30 +++++++++++++++++-------------
- include/linux/node.h        |  4 ++++
- 12 files changed, 22 insertions(+), 80 deletions(-)
+  $ for N in $(seq 1 10); do ./ftracetest test.d/00basic/basic2.tc; done
 
-diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-index f70573928f1b..3505789cf4bd 100644
---- a/arch/arm64/kernel/setup.c
-+++ b/arch/arm64/kernel/setup.c
-@@ -406,9 +406,6 @@ static int __init topology_init(void)
- {
- 	int i;
- 
--	for_each_online_node(i)
--		register_one_node(i);
--
- 	for_each_possible_cpu(i) {
- 		struct cpu *cpu = &per_cpu(cpu_data.cpu, i);
- 		cpu->hotpluggable = cpu_can_disable(i);
-diff --git a/arch/ia64/kernel/topology.c b/arch/ia64/kernel/topology.c
-index e4992917a24b..94a848b06f15 100644
---- a/arch/ia64/kernel/topology.c
-+++ b/arch/ia64/kernel/topology.c
-@@ -70,16 +70,6 @@ static int __init topology_init(void)
- {
- 	int i, err = 0;
- 
--#ifdef CONFIG_NUMA
--	/*
--	 * MCD - Do we want to register all ONLINE nodes, or all POSSIBLE nodes?
--	 */
--	for_each_online_node(i) {
--		if ((err = register_one_node(i)))
--			goto out;
--	}
--#endif
--
- 	sysfs_cpus = kcalloc(NR_CPUS, sizeof(struct ia64_cpu), GFP_KERNEL);
- 	if (!sysfs_cpus)
- 		panic("kzalloc in topology_init failed - NR_CPUS too big?");
-diff --git a/arch/mips/kernel/topology.c b/arch/mips/kernel/topology.c
-index 08ad6371fbe0..9429d85a4703 100644
---- a/arch/mips/kernel/topology.c
-+++ b/arch/mips/kernel/topology.c
-@@ -12,11 +12,6 @@ static int __init topology_init(void)
- {
- 	int i, ret;
- 
--#ifdef CONFIG_NUMA
--	for_each_online_node(i)
--		register_one_node(i);
--#endif /* CONFIG_NUMA */
--
- 	for_each_present_cpu(i) {
- 		struct cpu *c = &per_cpu(cpu_devices, i);
- 
-diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
-index d45a415d5374..2069bbb90a9a 100644
---- a/arch/powerpc/kernel/sysfs.c
-+++ b/arch/powerpc/kernel/sysfs.c
-@@ -1110,14 +1110,6 @@ EXPORT_SYMBOL_GPL(cpu_remove_dev_attr_group);
- /* NUMA stuff */
- 
- #ifdef CONFIG_NUMA
--static void __init register_nodes(void)
--{
--	int i;
--
--	for (i = 0; i < MAX_NUMNODES; i++)
--		register_one_node(i);
--}
--
- int sysfs_add_device_to_node(struct device *dev, int nid)
- {
- 	struct node *node = node_devices[nid];
-@@ -1132,13 +1124,6 @@ void sysfs_remove_device_from_node(struct device *dev, int nid)
- 	sysfs_remove_link(&node->dev.kobj, kobject_name(&dev->kobj));
- }
- EXPORT_SYMBOL_GPL(sysfs_remove_device_from_node);
--
--#else
--static void __init register_nodes(void)
--{
--	return;
--}
--
- #endif
- 
- /* Only valid if CPU is present. */
-@@ -1155,8 +1140,6 @@ static int __init topology_init(void)
- {
- 	int cpu, r;
- 
--	register_nodes();
--
- 	for_each_possible_cpu(cpu) {
- 		struct cpu *c = &per_cpu(cpu_devices, cpu);
- 
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index b42bfdc67482..834eb652a7b9 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -301,9 +301,6 @@ static int __init topology_init(void)
- {
- 	int i, ret;
- 
--	for_each_online_node(i)
--		register_one_node(i);
--
- 	for_each_possible_cpu(i) {
- 		struct cpu *cpu = &per_cpu(cpu_devices, i);
- 
-diff --git a/arch/s390/kernel/numa.c b/arch/s390/kernel/numa.c
-index 51c5a9f6e525..23ab9f02f278 100644
---- a/arch/s390/kernel/numa.c
-+++ b/arch/s390/kernel/numa.c
-@@ -33,10 +33,3 @@ void __init numa_setup(void)
- 	NODE_DATA(0)->node_spanned_pages = memblock_end_of_DRAM() >> PAGE_SHIFT;
- 	NODE_DATA(0)->node_id = 0;
- }
--
--static int __init numa_init_late(void)
--{
--	register_one_node(0);
--	return 0;
--}
--arch_initcall(numa_init_late);
-diff --git a/arch/sh/kernel/topology.c b/arch/sh/kernel/topology.c
-index 76af6db9daa2..2d2a7509b565 100644
---- a/arch/sh/kernel/topology.c
-+++ b/arch/sh/kernel/topology.c
-@@ -46,11 +46,6 @@ static int __init topology_init(void)
- {
- 	int i, ret;
- 
--#ifdef CONFIG_NUMA
--	for_each_online_node(i)
--		register_one_node(i);
--#endif
--
- 	for_each_present_cpu(i) {
- 		struct cpu *c = &per_cpu(cpu_devices, i);
- 
-diff --git a/arch/sparc/kernel/sysfs.c b/arch/sparc/kernel/sysfs.c
-index 6d60d416f0dd..f19487e4cc71 100644
---- a/arch/sparc/kernel/sysfs.c
-+++ b/arch/sparc/kernel/sysfs.c
-@@ -244,22 +244,10 @@ static void __init check_mmu_stats(void)
- 		mmu_stats_supported = 1;
- }
- 
--static void register_nodes(void)
--{
--#ifdef CONFIG_NUMA
--	int i;
--
--	for (i = 0; i < MAX_NUMNODES; i++)
--		register_one_node(i);
--#endif
--}
--
- static int __init topology_init(void)
- {
- 	int cpu, ret;
- 
--	register_nodes();
--
- 	check_mmu_stats();
- 
- 	for_each_possible_cpu(cpu) {
-diff --git a/arch/x86/kernel/topology.c b/arch/x86/kernel/topology.c
-index bd83748e2bde..8617d1ed9d31 100644
---- a/arch/x86/kernel/topology.c
-+++ b/arch/x86/kernel/topology.c
-@@ -154,11 +154,6 @@ static int __init topology_init(void)
- {
- 	int i;
- 
--#ifdef CONFIG_NUMA
--	for_each_online_node(i)
--		register_one_node(i);
--#endif
--
- 	for_each_present_cpu(i)
- 		arch_register_cpu(i);
- 
-diff --git a/drivers/base/init.c b/drivers/base/init.c
-index a9f57c22fb9e..d8d0fe687111 100644
---- a/drivers/base/init.c
-+++ b/drivers/base/init.c
-@@ -35,5 +35,6 @@ void __init driver_init(void)
- 	auxiliary_bus_init();
- 	cpu_dev_init();
- 	memory_dev_init();
-+	node_dev_init();
- 	container_dev_init();
- }
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 87acc47e8951..a133981a12fc 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -1065,26 +1065,30 @@ static const struct attribute_group *cpu_root_attr_groups[] = {
- };
- 
- #define NODE_CALLBACK_PRI	2	/* lower than SLAB */
--static int __init register_node_type(void)
-+void __init node_dev_init(void)
- {
--	int ret;
-+	static struct notifier_block node_memory_callback_nb = {
-+		.notifier_call = node_memory_callback,
-+		.priority = NODE_CALLBACK_PRI,
-+	};
-+	int ret, i;
- 
-  	BUILD_BUG_ON(ARRAY_SIZE(node_state_attr) != NR_NODE_STATES);
-  	BUILD_BUG_ON(ARRAY_SIZE(node_state_attrs)-1 != NR_NODE_STATES);
- 
- 	ret = subsys_system_register(&node_subsys, cpu_root_attr_groups);
--	if (!ret) {
--		static struct notifier_block node_memory_callback_nb = {
--			.notifier_call = node_memory_callback,
--			.priority = NODE_CALLBACK_PRI,
--		};
--		register_hotmemory_notifier(&node_memory_callback_nb);
--	}
-+	if (ret)
-+		panic("%s() failed to register subsystem: %d\n", __func__, ret);
-+
-+	register_hotmemory_notifier(&node_memory_callback_nb);
- 
- 	/*
--	 * Note:  we're not going to unregister the node class if we fail
--	 * to register the node state class attribute files.
-+	 * Create all node devices, which will properly link the node
-+	 * to applicable memory block devices and already created cpu devices.
- 	 */
--	return ret;
-+	for_each_online_node(i) {
-+		ret = register_one_node(i);
-+		if (ret)
-+			panic("%s() failed to add node: %d\n", __func__, ret);
-+	}
- }
--postcore_initcall(register_node_type);
-diff --git a/include/linux/node.h b/include/linux/node.h
-index bb21fd631b16..f3be6ccfebed 100644
---- a/include/linux/node.h
-+++ b/include/linux/node.h
-@@ -112,6 +112,7 @@ static inline void link_mem_sections(int nid, unsigned long start_pfn,
- 
- extern void unregister_node(struct node *node);
- #ifdef CONFIG_NUMA
-+extern void node_dev_init(void);
- /* Core of the node registration - only memory hotplug should use this */
- extern int __register_one_node(int nid);
- 
-@@ -149,6 +150,9 @@ extern void register_hugetlbfs_with_node(node_registration_func_t doregister,
- 					 node_registration_func_t unregister);
- #endif
- #else
-+static inline void node_dev_init(void)
-+{
-+}
- static inline int __register_one_node(int nid)
- {
- 	return 0;
+... which prior to the fix, would hang between runs 2 to 5.
 
-base-commit: e783362eb54cd99b2cac8b3a9aeac942e6f6ac07
--- 
-2.34.1
+Thanks,
+Mark.
 
+> that's interesting. On s390 i'm seeing the same problem in CI, but with
+> the startup ftrace tests. So that's likely not arm64 spacific.
+> 
+> On s390, the last messages from ftrace are [    5.663568] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+> [    5.667099] futex hash table entries: 65536 (order: 12, 16777216 bytes, vmalloc)
+> [    5.739549] Running postponed tracer tests:
+> [    5.740662] Testing tracer function: PASSED
+> [    6.194635] Testing dynamic ftrace: PASSED
+> [    6.471213] Testing dynamic ftrace ops #1: 
+> [    6.558445] (1 0 1 0 0) 
+> [    6.558458] (1 1 2 0 0) 
+> [    6.699135] (2 1 3 0 764347) 
+> [    6.699252] (2 2 4 0 766466) 
+> [    6.759857] (3 2 4 0 1159604)
+> [..] hangs here
+> 
+> The backtrace looks like this, which is very similar to the one above:
+> 
+> crash> bt 1
+> PID: 1      TASK: 80e68100          CPU: 133  COMMAND: "swapper/0"
+>  #0 [380004df808] __schedule at cda39f0e
+>  #1 [380004df880] schedule at cda3a488
+>  #2 [380004df8b0] schedule_timeout at cda41ef6
+>  #3 [380004df978] wait_for_completion at cda3bd0a
+>  #4 [380004df9d8] __wait_rcu_gp at ccdddd92
+>  #5 [380004dfa30] synchronize_rcu_tasks_generic at ccdde0aa
+>  #6 [380004dfad8] ftrace_shutdown at cce7b050
+>  #7 [380004dfb18] unregister_ftrace_function at cce7b192
+>  #8 [380004dfb50] trace_selftest_ops at cda1e0fa
+>  #9 [380004dfba0] run_tracer_selftest at cda1e4f2
+> #10 [380004dfc00] trace_selftest_startup_function at ce74355c
+> #11 [380004dfc58] run_tracer_selftest at cda1e2fc
+> #12 [380004dfc98] init_trace_selftests at ce742d30
+> #13 [380004dfcd0] do_one_initcall at cccdca16
+> #14 [380004dfd68] do_initcalls at ce72e776
+> #15 [380004dfde0] kernel_init_freeable at ce72ea60
+> #16 [380004dfe50] kernel_init at cda333fe
+> #17 [380004dfe68] __ret_from_fork at cccdf920
+> #18 [380004dfe98] ret_from_fork at cda444ca
+> 
+> I didn't had success reproducing it so far, but it is good to know that
+> this also happens when running the ftrace testsuite.
+> 
+> I have several crashdumps, so i could try to pull out some information
+> if someone tells me what to look for.
+> 
+> Thanks,
+> Sven
