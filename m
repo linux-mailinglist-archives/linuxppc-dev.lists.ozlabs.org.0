@@ -2,116 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6294D49FCC3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 16:26:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 635DC49FC9B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 16:16:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JlhBj1zSZz3bsp
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 02:26:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JlgzV1yfvz3cQN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 02:16:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O66WXT1P;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PQg4aU5F;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PQg4aU5F;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
- [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jlh9z6JBwz2xsc
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 02:25:59 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=O66WXT1P; dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Jlh9x4K48z4xcS
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 02:25:57 +1100 (AEDT)
-Received: by gandalf.ozlabs.org (Postfix)
- id 4Jlh9x4Gnzz4xcT; Sat, 29 Jan 2022 02:25:57 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=O66WXT1P; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=PQg4aU5F; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=PQg4aU5F; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by gandalf.ozlabs.org (Postfix) with ESMTPS id 4Jlh9w5rcLz4xcS
- for <linuxppc-dev@ozlabs.org>; Sat, 29 Jan 2022 02:25:56 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20SFDr8b016419
- for <linuxppc-dev@ozlabs.org>; Fri, 28 Jan 2022 15:25:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=oV59mwBS7uLINR8s9L7VUsjZ2ZwCpOmCIR7/TmmmpYA=;
- b=O66WXT1PgqhgVXsOg/s1OeA2vva0FIVPbWNRmrPr2Dq1HxtpKsBYayep48nS3JGL4rMh
- jrl7f9DkEk+m7k6pLFW4Kcf8Di/OsxHNBkqV9CBjza6x9bB2ObLA6Zr+GVopP94NRvs9
- Fp+4lKWJrheV5yTYpCp5ubSTVo8v3b9ygOS1omnPr4EprcD39b8zUGpEoZZ63fbvFJFb
- TdE5m+LmYhG3LMgy40X6MvoYiIqKG9eIMeWp8Mu1/D2Rg0dhuP07qwTRNvJFKcRQUVUr
- Nfk7AGqVQva9DxwIxoBx3wn07zcIye/OMFs+uKPbvBgl+C58itq05eOUt3vO1r4BPmAe sQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dvd757fkn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Fri, 28 Jan 2022 15:25:53 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20SFF1IM022781
- for <linuxppc-dev@ozlabs.org>; Fri, 28 Jan 2022 15:25:53 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dvd757fjp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 Jan 2022 15:25:52 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20SEwfDp001766;
- Fri, 28 Jan 2022 15:07:07 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06fra.de.ibm.com with ESMTP id 3dr96k890c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 Jan 2022 15:07:07 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 20SEvOQ132440598
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 28 Jan 2022 14:57:24 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E85114C040;
- Fri, 28 Jan 2022 15:07:03 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9D6094C050;
- Fri, 28 Jan 2022 15:07:02 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.43.30.55])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri, 28 Jan 2022 15:07:02 +0000 (GMT)
-Date: Fri, 28 Jan 2022 20:36:59 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-To: Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [PATCH v3] PCI hotplug: rpaphp: Error out on busy status from
- get-sensor-state
-Message-ID: <20220128150659.noid5h5p53m6gxpm@in.ibm.com>
-References: <163853708110.360679.18375283379078566258.stgit@jupiter>
- <87y24tn7ms.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jlgyk6s2bz30Mn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 02:16:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1643382967;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=gp3X2Tu2ffVsRn9QFqpvFZ1PDzoe87OXdTEsBZY8VHU=;
+ b=PQg4aU5FJ+Ac3iYbfA8MidBrAlDcn1XDZ2OYeOmXDbKi9rg1P+gDY8s+9QfpaInYy5uiqq
+ tJ9fW9AKkDhJwcsAXuAe9W/dyzCs3lUHvY5rLHUolxh24TAF0Z4G3+uidaGrfTrxtFvx8g
+ M9oLDUtnhzfK8P+TAXmse1A8sbIQ9Kw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1643382967;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=gp3X2Tu2ffVsRn9QFqpvFZ1PDzoe87OXdTEsBZY8VHU=;
+ b=PQg4aU5FJ+Ac3iYbfA8MidBrAlDcn1XDZ2OYeOmXDbKi9rg1P+gDY8s+9QfpaInYy5uiqq
+ tJ9fW9AKkDhJwcsAXuAe9W/dyzCs3lUHvY5rLHUolxh24TAF0Z4G3+uidaGrfTrxtFvx8g
+ M9oLDUtnhzfK8P+TAXmse1A8sbIQ9Kw=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-12-kNCsxwTgMkyB3PS66SdA0A-1; Fri, 28 Jan 2022 10:16:00 -0500
+X-MC-Unique: kNCsxwTgMkyB3PS66SdA0A-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0913F1923E34;
+ Fri, 28 Jan 2022 15:15:52 +0000 (UTC)
+Received: from t480s.redhat.com (unknown [10.39.193.182])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A3AA579A19;
+ Fri, 28 Jan 2022 15:15:41 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH RFC v1] drivers/base/node: consolidate node device subsystem
+ initialization in node_dev_init()
+Date: Fri, 28 Jan 2022 16:15:40 +0100
+Message-Id: <20220128151540.164759-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87y24tn7ms.fsf@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: BTL2Dgl-aTmvI4OmkpERNumEbIAhU9WQ
-X-Proofpoint-GUID: 9iCdZOuf1aZnWDOWsy8nG-0yCjgUZGAu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-28_04,2022-01-28_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- lowpriorityscore=0 impostorscore=0 phishscore=0 priorityscore=1501
- malwarescore=0 bulkscore=0 mlxscore=0 spamscore=0 clxscore=1011
- suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2201110000 definitions=main-2201280095
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,90 +81,374 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: mahesh@linux.ibm.com
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>
+Cc: Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, linux-mm@kvack.org,
+ Rich Felker <dalias@libc.org>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Oscar Salvador <osalvador@suse.de>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2021-12-09 09:02:51 Thu, Nathan Lynch wrote:
-> Mahesh Salgaonkar <mahesh@linux.ibm.com> writes:
-> > To avoid this issue, fix the pci hotplug driver (rpaphp) to return an error
-> > if the slot presence state can not be detected immediately. Current
-> > implementation uses rtas_get_sensor() API which blocks the slot check state
-> > until rtas call returns success. Change rpaphp_get_sensor_state() to invoke
-> > rtas_call(get-sensor-state) directly and take actions based on rtas return
-> > status. This patch now errors out immediately on busy return status from
-> > rtas_call.
-> >
-> > Please note that, only on certain PHB failures, the slot presence check
-> > returns BUSY condition. In normal cases it returns immediately with a
-> > correct presence state value. Hence this change has no impact on normal pci
-> > dlpar operations.
-> 
-> I was wondering about this. This seems to be saying -2/990x cannot
-> happen in other cases. I couldn't find this specified in the
-> architecture. It seems a bit risky to me to *always* error out on
-> -2/990x - won't we have intermittent slot enable failures?
+... and call node_dev_init() after memory_dev_init() from driver_init(),
+so before any of the existing arch/subsys calls. All online nodes should
+be known at that point.
 
-Sorry for the late response. So instead of always returning error out
-how about we error out only if pe is going through EEH recovery ? During
-get_adapter_status I can check if pe->state is set to EEH_PE_RECOVERING
-and only then return error on busy else fallback to existing method of
-rtas_get_sensor. Let me send out another version with this approach.
+This is in line with memory_dev_init(), which initializes the memory
+device subsystem and creates all memory block devices.
 
-Thanks,
--Mahesh.
+Similar to memory_dev_init(), panic() if anything goes wrong, we don't
+want to continue with such basic initialization errors.
 
-> 
-> > +/*
-> > + * RTAS call get-sensor-state(DR_ENTITY_SENSE) return values as per PAPR:
-> > + *    -1: Hardware Error
-> > + *    -2: RTAS_BUSY
-> > + *    -3: Invalid sensor. RTAS Parameter Error.
-> > + * -9000: Need DR entity to be powered up and unisolated before RTAS call
-> > + * -9001: Need DR entity to be powered up, but not unisolated, before RTAS call
-> > + * -9002: DR entity unusable
-> > + *  990x: Extended delay - where x is a number in the range of 0-5
-> > + */
-> > +#define RTAS_HARDWARE_ERROR	-1
-> > +#define RTAS_INVALID_SENSOR	-3
-> > +#define SLOT_UNISOLATED		-9000
-> > +#define SLOT_NOT_UNISOLATED	-9001
-> > +#define SLOT_NOT_USABLE		-9002
-> > +
-> > +static int rtas_to_errno(int rtas_rc)
-> > +{
-> > +	int rc;
-> > +
-> > +	switch (rtas_rc) {
-> > +	case RTAS_HARDWARE_ERROR:
-> > +		rc = -EIO;
-> > +		break;
-> > +	case RTAS_INVALID_SENSOR:
-> > +		rc = -EINVAL;
-> > +		break;
-> > +	case SLOT_UNISOLATED:
-> > +	case SLOT_NOT_UNISOLATED:
-> > +		rc = -EFAULT;
-> > +		break;
-> > +	case SLOT_NOT_USABLE:
-> > +		rc = -ENODEV;
-> > +		break;
-> > +	case RTAS_BUSY:
-> > +	case RTAS_EXTENDED_DELAY_MIN...RTAS_EXTENDED_DELAY_MAX:
-> > +		rc = -EBUSY;
-> > +		break;
-> > +	default:
-> > +		err("%s: unexpected RTAS error %d\n", __func__, rtas_rc);
-> > +		rc = -ERANGE;
-> > +		break;
-> > +	}
-> > +	return rc;
-> > +}
-> 
-> These conversions look OK to me.
+The important part is that node_dev_init() gets called after
+memory_dev_init() and after cpu_dev_init(), but before any of the
+relevant archs call register_cpu() to register the new cpu device under
+the node device. The latter should be the case for the current users
+of topology_init().
 
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: x86@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-mm@kvack.org
+Signed-off-by: David Hildenbrand <david@redhat.com>
+
+---
+
+RFC because I tested only on x86-64 and s390x, I think I cross-compiled all
+applicable architectures except riscv and sparc.
+
+This is somewhat a preparation for detecting if a memory block
+(/sys/devices/system/memory/memory*) is managed by a single zone, and
+storing the zone for the memory block -- to get rid of
+test_pages_in_a_zone(). For that, we want to know all nodes that are
+applicable for a single memory block (mem->nid), which is determined when
+registering the node.
+
+While this change might not be strictly required for that change, this
+way it's easier to see when the nodes are gettin created and
+consequently when the node ids for a memory block are determined.
+
+---
+ arch/arm64/kernel/setup.c   |  3 ---
+ arch/ia64/kernel/topology.c | 10 ----------
+ arch/mips/kernel/topology.c |  5 -----
+ arch/powerpc/kernel/sysfs.c | 17 -----------------
+ arch/riscv/kernel/setup.c   |  3 ---
+ arch/s390/kernel/numa.c     |  7 -------
+ arch/sh/kernel/topology.c   |  5 -----
+ arch/sparc/kernel/sysfs.c   | 12 ------------
+ arch/x86/kernel/topology.c  |  5 -----
+ drivers/base/init.c         |  1 +
+ drivers/base/node.c         | 30 +++++++++++++++++-------------
+ include/linux/node.h        |  4 ++++
+ 12 files changed, 22 insertions(+), 80 deletions(-)
+
+diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
+index f70573928f1b..3505789cf4bd 100644
+--- a/arch/arm64/kernel/setup.c
++++ b/arch/arm64/kernel/setup.c
+@@ -406,9 +406,6 @@ static int __init topology_init(void)
+ {
+ 	int i;
+ 
+-	for_each_online_node(i)
+-		register_one_node(i);
+-
+ 	for_each_possible_cpu(i) {
+ 		struct cpu *cpu = &per_cpu(cpu_data.cpu, i);
+ 		cpu->hotpluggable = cpu_can_disable(i);
+diff --git a/arch/ia64/kernel/topology.c b/arch/ia64/kernel/topology.c
+index e4992917a24b..94a848b06f15 100644
+--- a/arch/ia64/kernel/topology.c
++++ b/arch/ia64/kernel/topology.c
+@@ -70,16 +70,6 @@ static int __init topology_init(void)
+ {
+ 	int i, err = 0;
+ 
+-#ifdef CONFIG_NUMA
+-	/*
+-	 * MCD - Do we want to register all ONLINE nodes, or all POSSIBLE nodes?
+-	 */
+-	for_each_online_node(i) {
+-		if ((err = register_one_node(i)))
+-			goto out;
+-	}
+-#endif
+-
+ 	sysfs_cpus = kcalloc(NR_CPUS, sizeof(struct ia64_cpu), GFP_KERNEL);
+ 	if (!sysfs_cpus)
+ 		panic("kzalloc in topology_init failed - NR_CPUS too big?");
+diff --git a/arch/mips/kernel/topology.c b/arch/mips/kernel/topology.c
+index 08ad6371fbe0..9429d85a4703 100644
+--- a/arch/mips/kernel/topology.c
++++ b/arch/mips/kernel/topology.c
+@@ -12,11 +12,6 @@ static int __init topology_init(void)
+ {
+ 	int i, ret;
+ 
+-#ifdef CONFIG_NUMA
+-	for_each_online_node(i)
+-		register_one_node(i);
+-#endif /* CONFIG_NUMA */
+-
+ 	for_each_present_cpu(i) {
+ 		struct cpu *c = &per_cpu(cpu_devices, i);
+ 
+diff --git a/arch/powerpc/kernel/sysfs.c b/arch/powerpc/kernel/sysfs.c
+index d45a415d5374..2069bbb90a9a 100644
+--- a/arch/powerpc/kernel/sysfs.c
++++ b/arch/powerpc/kernel/sysfs.c
+@@ -1110,14 +1110,6 @@ EXPORT_SYMBOL_GPL(cpu_remove_dev_attr_group);
+ /* NUMA stuff */
+ 
+ #ifdef CONFIG_NUMA
+-static void __init register_nodes(void)
+-{
+-	int i;
+-
+-	for (i = 0; i < MAX_NUMNODES; i++)
+-		register_one_node(i);
+-}
+-
+ int sysfs_add_device_to_node(struct device *dev, int nid)
+ {
+ 	struct node *node = node_devices[nid];
+@@ -1132,13 +1124,6 @@ void sysfs_remove_device_from_node(struct device *dev, int nid)
+ 	sysfs_remove_link(&node->dev.kobj, kobject_name(&dev->kobj));
+ }
+ EXPORT_SYMBOL_GPL(sysfs_remove_device_from_node);
+-
+-#else
+-static void __init register_nodes(void)
+-{
+-	return;
+-}
+-
+ #endif
+ 
+ /* Only valid if CPU is present. */
+@@ -1155,8 +1140,6 @@ static int __init topology_init(void)
+ {
+ 	int cpu, r;
+ 
+-	register_nodes();
+-
+ 	for_each_possible_cpu(cpu) {
+ 		struct cpu *c = &per_cpu(cpu_devices, cpu);
+ 
+diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+index b42bfdc67482..834eb652a7b9 100644
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -301,9 +301,6 @@ static int __init topology_init(void)
+ {
+ 	int i, ret;
+ 
+-	for_each_online_node(i)
+-		register_one_node(i);
+-
+ 	for_each_possible_cpu(i) {
+ 		struct cpu *cpu = &per_cpu(cpu_devices, i);
+ 
+diff --git a/arch/s390/kernel/numa.c b/arch/s390/kernel/numa.c
+index 51c5a9f6e525..23ab9f02f278 100644
+--- a/arch/s390/kernel/numa.c
++++ b/arch/s390/kernel/numa.c
+@@ -33,10 +33,3 @@ void __init numa_setup(void)
+ 	NODE_DATA(0)->node_spanned_pages = memblock_end_of_DRAM() >> PAGE_SHIFT;
+ 	NODE_DATA(0)->node_id = 0;
+ }
+-
+-static int __init numa_init_late(void)
+-{
+-	register_one_node(0);
+-	return 0;
+-}
+-arch_initcall(numa_init_late);
+diff --git a/arch/sh/kernel/topology.c b/arch/sh/kernel/topology.c
+index 76af6db9daa2..2d2a7509b565 100644
+--- a/arch/sh/kernel/topology.c
++++ b/arch/sh/kernel/topology.c
+@@ -46,11 +46,6 @@ static int __init topology_init(void)
+ {
+ 	int i, ret;
+ 
+-#ifdef CONFIG_NUMA
+-	for_each_online_node(i)
+-		register_one_node(i);
+-#endif
+-
+ 	for_each_present_cpu(i) {
+ 		struct cpu *c = &per_cpu(cpu_devices, i);
+ 
+diff --git a/arch/sparc/kernel/sysfs.c b/arch/sparc/kernel/sysfs.c
+index 6d60d416f0dd..f19487e4cc71 100644
+--- a/arch/sparc/kernel/sysfs.c
++++ b/arch/sparc/kernel/sysfs.c
+@@ -244,22 +244,10 @@ static void __init check_mmu_stats(void)
+ 		mmu_stats_supported = 1;
+ }
+ 
+-static void register_nodes(void)
+-{
+-#ifdef CONFIG_NUMA
+-	int i;
+-
+-	for (i = 0; i < MAX_NUMNODES; i++)
+-		register_one_node(i);
+-#endif
+-}
+-
+ static int __init topology_init(void)
+ {
+ 	int cpu, ret;
+ 
+-	register_nodes();
+-
+ 	check_mmu_stats();
+ 
+ 	for_each_possible_cpu(cpu) {
+diff --git a/arch/x86/kernel/topology.c b/arch/x86/kernel/topology.c
+index bd83748e2bde..8617d1ed9d31 100644
+--- a/arch/x86/kernel/topology.c
++++ b/arch/x86/kernel/topology.c
+@@ -154,11 +154,6 @@ static int __init topology_init(void)
+ {
+ 	int i;
+ 
+-#ifdef CONFIG_NUMA
+-	for_each_online_node(i)
+-		register_one_node(i);
+-#endif
+-
+ 	for_each_present_cpu(i)
+ 		arch_register_cpu(i);
+ 
+diff --git a/drivers/base/init.c b/drivers/base/init.c
+index a9f57c22fb9e..d8d0fe687111 100644
+--- a/drivers/base/init.c
++++ b/drivers/base/init.c
+@@ -35,5 +35,6 @@ void __init driver_init(void)
+ 	auxiliary_bus_init();
+ 	cpu_dev_init();
+ 	memory_dev_init();
++	node_dev_init();
+ 	container_dev_init();
+ }
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 87acc47e8951..a133981a12fc 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -1065,26 +1065,30 @@ static const struct attribute_group *cpu_root_attr_groups[] = {
+ };
+ 
+ #define NODE_CALLBACK_PRI	2	/* lower than SLAB */
+-static int __init register_node_type(void)
++void __init node_dev_init(void)
+ {
+-	int ret;
++	static struct notifier_block node_memory_callback_nb = {
++		.notifier_call = node_memory_callback,
++		.priority = NODE_CALLBACK_PRI,
++	};
++	int ret, i;
+ 
+  	BUILD_BUG_ON(ARRAY_SIZE(node_state_attr) != NR_NODE_STATES);
+  	BUILD_BUG_ON(ARRAY_SIZE(node_state_attrs)-1 != NR_NODE_STATES);
+ 
+ 	ret = subsys_system_register(&node_subsys, cpu_root_attr_groups);
+-	if (!ret) {
+-		static struct notifier_block node_memory_callback_nb = {
+-			.notifier_call = node_memory_callback,
+-			.priority = NODE_CALLBACK_PRI,
+-		};
+-		register_hotmemory_notifier(&node_memory_callback_nb);
+-	}
++	if (ret)
++		panic("%s() failed to register subsystem: %d\n", __func__, ret);
++
++	register_hotmemory_notifier(&node_memory_callback_nb);
+ 
+ 	/*
+-	 * Note:  we're not going to unregister the node class if we fail
+-	 * to register the node state class attribute files.
++	 * Create all node devices, which will properly link the node
++	 * to applicable memory block devices and already created cpu devices.
+ 	 */
+-	return ret;
++	for_each_online_node(i) {
++		ret = register_one_node(i);
++		if (ret)
++			panic("%s() failed to add node: %d\n", __func__, ret);
++	}
+ }
+-postcore_initcall(register_node_type);
+diff --git a/include/linux/node.h b/include/linux/node.h
+index bb21fd631b16..f3be6ccfebed 100644
+--- a/include/linux/node.h
++++ b/include/linux/node.h
+@@ -112,6 +112,7 @@ static inline void link_mem_sections(int nid, unsigned long start_pfn,
+ 
+ extern void unregister_node(struct node *node);
+ #ifdef CONFIG_NUMA
++extern void node_dev_init(void);
+ /* Core of the node registration - only memory hotplug should use this */
+ extern int __register_one_node(int nid);
+ 
+@@ -149,6 +150,9 @@ extern void register_hugetlbfs_with_node(node_registration_func_t doregister,
+ 					 node_registration_func_t unregister);
+ #endif
+ #else
++static inline void node_dev_init(void)
++{
++}
+ static inline int __register_one_node(int nid)
+ {
+ 	return 0;
+
+base-commit: e783362eb54cd99b2cac8b3a9aeac942e6f6ac07
 -- 
-Mahesh J Salgaonkar
+2.34.1
+
