@@ -2,74 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6EB49FA77
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 14:18:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC44249FB5F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 15:10:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JldLT5B9bz3cPj
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 00:18:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JlfVt4xyfz3cR4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 01:10:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cLb3S0yk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=KnoYpCRO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::135;
- helo=mail-lf1-x135.google.com; envelope-from=anders.roxell@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::42e;
+ helo=mail-wr1-x42e.google.com; envelope-from=daniel.thompson@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=cLb3S0yk; dkim-atps=neutral
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com
- [IPv6:2a00:1450:4864:20::135])
+ header.s=google header.b=KnoYpCRO; dkim-atps=neutral
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com
+ [IPv6:2a00:1450:4864:20::42e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JldKn696Sz2xXW
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 00:17:32 +1100 (AEDT)
-Received: by mail-lf1-x135.google.com with SMTP id n8so11743771lfq.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 05:17:32 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JlfVG0Q80z30Kn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 01:09:55 +1100 (AEDT)
+Received: by mail-wr1-x42e.google.com with SMTP id a13so11110756wrh.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 06:09:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=AYl20x8f64eY3Q6M51ieJFRc3attF791Qq3pPAooZU0=;
- b=cLb3S0ykwzyVoc8708XHRRYPgYryU5bGWXLkbayh8hQ+Un/CO5sfcMm3146Kk16CAx
- pHgU4SayyKOs+aagwTRyJTNcVzBZmRdx8bUfxUTjOy6Mm5C7QTVQb+FFKm73ykHWqwTo
- KxiiB/x5ZJ/i1jLRnvShGi37yl1tKPAtIH54w19tg7LbMVty6y9NceGKve3GxZV6oN97
- fEEWbewRQC2Og7Y1JzJu8CNuxaTzaeaDln6H1U+u9W1M//EYsAQxRd06ccuk0Sy0OR+L
- wVKeTQUtotZs/kL7WO7a8kLIld8P6g+1/YwN//75AxYd0UNZNhiFWaSyqzD0KXyuGv9k
- Hqyg==
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=c0MbAYZn48s/2sw8+6sJEGK9DVzD/LP2yU/tzes0Wew=;
+ b=KnoYpCROJNJ4KeVjiMHVRjI3Nw6MBdLiVMYBKyWi5SjTGkUNhmLXnrLxkxBTE/uvzm
+ 1i7z3jyz9HYmoZNAG5Loy00qH2mtg+iFqBgPPlltZlvuAUpVQzHJC/Zh5YvuO8bbiuKV
+ EhY0GkfgFO0pVCtVfHeoBwIMjXpF7AfmFwBBlSPZrfauweTohE5pmPCqYrkC4s7Xusfz
+ 4HPmI5qzz1+q+sdmUh4Ity1hlHsWh5wpsKT4x8GRkQTfDY1KyAL6lGRKpMiXEM/O84+/
+ bEb7k6+NG5FdGoGanjw1rOia/TgJAtC6p47O0pODeUAm6OEJWTT+h5i60wvVX+nLYbKo
+ twmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=AYl20x8f64eY3Q6M51ieJFRc3attF791Qq3pPAooZU0=;
- b=Ewzb9WbhoiJzEX3hVSst68jkEHO2d2Du4kUy8rHhTZfsOgJi9qDDQpuLavh872zKMA
- StVmY1thBf4RZvSASijdCHcdE+ID+GINuOYXIWG+oOZ8NuoaiP1nLjitxycVyNkZ+my9
- tQ/taURQX9TmjvI5L3H1HMqTpxFS9HQpVjvy2stBN9AWuxqKrG2m4RFNydXpp6AMDL2O
- O3xtjeKIKaIHGfy7z2Pxxp6Fgp1vi3cP4dOqfhCRB9wftAssTBzLj/OLIkqABYC6wy+c
- JoZlwKJMOHSNL5o2Hb4uOPslQmn6Wc05rAeCsftBH6wUEFsu1gREp0LTMoFhSwYjyC/8
- WxbA==
-X-Gm-Message-State: AOAM5331Tlquk7EtWGayy8rMxLE+tjWEeu5T8MxxlOyfLSYGhwIIc2Sm
- 2z+0DmWAXQR7xSap1cQaI4BpqA==
-X-Google-Smtp-Source: ABdhPJwAZ2Q1WGxi7/NXG6VtAjneijeqYVZkjzKgZBOzUxzKZ4f5lAR7n+3sy+lC9puoYXvODnO40w==
-X-Received: by 2002:a05:6512:3256:: with SMTP id
- c22mr6175723lfr.574.1643375847828; 
- Fri, 28 Jan 2022 05:17:27 -0800 (PST)
-Received: from localhost (c-9b28e555.07-21-73746f28.bbcust.telenor.se.
- [85.229.40.155])
- by smtp.gmail.com with ESMTPSA id f8sm705480ljn.16.2022.01.28.05.17.27
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=c0MbAYZn48s/2sw8+6sJEGK9DVzD/LP2yU/tzes0Wew=;
+ b=m6fZGOutJVohCr0PfD0lD9MAye0Ubztu7R/q3TK6bem7+1zTB7HSFfuX1aoE4EkJoe
+ HpmkfKF13ka8EHXmB3byGCC8DAotzcSltNXy/onrOcdxcwUcnTnB8gInL61cDi0wbIS7
+ bEgRqRoJZT6xS2fLp3Vo7rFsfu5yuoW9T+5qy9ffQCLV3GBldCx6XzWVpoW+Is1WIGd2
+ 4TlEQ3rN3FGJwTFHf2Uv4Y0jDq0oA1AocHCVKwG+e/iR3DOB8aLRJsTmRfQfCoINjedp
+ aBCXBQbN4QXwW/st4H7JxysOfY2eZjfdek5GDF0Q8yy/FZwJix0Jh9aQSSVFpizVpRfD
+ Sq4Q==
+X-Gm-Message-State: AOAM533ei/GTBL1J5yW/PMJUaSDj1ZmeTFNgMv/VIldA9NUbQMgVPAoK
+ oRL69Glht8BdfTMYdt86S45hiw==
+X-Google-Smtp-Source: ABdhPJwcwaW5k4PCVMl0xIx5mubfMQwAXKgrPRB+Y2ibDaLBwjoVmYeQufxi/ZaCrtP5AiArmXZMSw==
+X-Received: by 2002:adf:d1ed:: with SMTP id g13mr7395000wrd.477.1643378989779; 
+ Fri, 28 Jan 2022 06:09:49 -0800 (PST)
+Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net.
+ [80.7.220.175])
+ by smtp.gmail.com with ESMTPSA id w22sm4811774wra.59.2022.01.28.06.09.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jan 2022 05:17:27 -0800 (PST)
-From: Anders Roxell <anders.roxell@linaro.org>
-To: nathan@kernel.org,
-	ndesaulniers@google.com,
-	mpe@ellerman.id.au
-Subject: [PATCHv3] powerpc: mm: radix_tlb: rearrange the if-else block
-Date: Fri, 28 Jan 2022 14:17:13 +0100
-Message-Id: <20220128131713.299198-1-anders.roxell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ Fri, 28 Jan 2022 06:09:49 -0800 (PST)
+Date: Fri, 28 Jan 2022 14:09:47 +0000
+From: Daniel Thompson <daniel.thompson@linaro.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 4/5] modules: Add
+ CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+Message-ID: <20220128140947.n2xea77txqohfbfj@maple.lan>
+References: <cover.1643282353.git.christophe.leroy@csgroup.eu>
+ <af8519537d2a5c36b71a2f48ba9b81c07c93a5c4.1643282353.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af8519537d2a5c36b71a2f48ba9b81c07c93a5c4.1643282353.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,68 +82,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- llvm@lists.linux.dev, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "kgdb-bugreport@lists.sourceforge.net"
+ <kgdb-bugreport@lists.sourceforge.net>,
+ Jason Wessel <jason.wessel@windriver.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Douglas Anderson <dianders@chromium.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Jessica Yu <jeyu@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Clang warns:
+On Thu, Jan 27, 2022 at 11:28:09AM +0000, Christophe Leroy wrote:
+> Add CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC to allow architectures
+> to request having modules data in vmalloc area instead of module area.
+> 
+> This is required on powerpc book3s/32 in order to set data non
+> executable, because it is not possible to set executability on page
+> basis, this is done per 256 Mbytes segments. The module area has exec
+> right, vmalloc area has noexec.
+> 
+> This can also be useful on other powerpc/32 in order to maximize the
+> chance of code being close enough to kernel core to avoid branch
+> trampolines.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Jason Wessel <jason.wessel@windriver.com>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Douglas Anderson <dianders@chromium.org>
 
-arch/powerpc/mm/book3s64/radix_tlb.c:1191:23: error: variable 'hstart' is uninitialized when used here [-Werror,-Wuninitialized]
-                                __tlbiel_va_range(hstart, hend, pid,
-                                                  ^~~~~~
-arch/powerpc/mm/book3s64/radix_tlb.c:1175:23: note: initialize the variable 'hstart' to silence this warning
-                unsigned long hstart, hend;
-                                    ^
-                                     = 0
-arch/powerpc/mm/book3s64/radix_tlb.c:1191:31: error: variable 'hend' is uninitialized when used here [-Werror,-Wuninitialized]
-                                __tlbiel_va_range(hstart, hend, pid,
-                                                          ^~~~
-arch/powerpc/mm/book3s64/radix_tlb.c:1175:29: note: initialize the variable 'hend' to silence this warning
-                unsigned long hstart, hend;
-                                          ^
-                                           = 0
-2 errors generated.
+Thanks for diligence in making sure kdb is up to date!
 
-Rework the 'if (IS_ENABLE(CONFIG_TRANSPARENT_HUGEPAGE))' so hstart/hend
-always gets initialized, this will silence the warnings. That will also
-simplify the 'else' path. Clang is getting confused with these warnings,
-but the warnings is a false-positive.
+Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
 
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Suggested-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
----
- arch/powerpc/mm/book3s64/radix_tlb.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
-index 7724af19ed7e..5172d5cec2c0 100644
---- a/arch/powerpc/mm/book3s64/radix_tlb.c
-+++ b/arch/powerpc/mm/book3s64/radix_tlb.c
-@@ -1171,15 +1171,12 @@ static inline void __radix__flush_tlb_range(struct mm_struct *mm,
- 			}
- 		}
- 	} else {
--		bool hflush = false;
-+		bool hflush;
- 		unsigned long hstart, hend;
- 
--		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
--			hstart = (start + PMD_SIZE - 1) & PMD_MASK;
--			hend = end & PMD_MASK;
--			if (hstart < hend)
--				hflush = true;
--		}
-+		hstart = (start + PMD_SIZE - 1) & PMD_MASK;
-+		hend = end & PMD_MASK;
-+		hflush = IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && hstart < hend;
- 
- 		if (type == FLUSH_TYPE_LOCAL) {
- 			asm volatile("ptesync": : :"memory");
--- 
-2.34.1
-
+Daniel.
