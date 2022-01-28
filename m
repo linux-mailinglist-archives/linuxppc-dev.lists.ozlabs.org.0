@@ -1,67 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DC949F446
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 08:21:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6B949F6D0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 11:05:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JlTQY5px5z3c79
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 18:21:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JlY4N4pDvz3cCG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 21:05:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rT9QbL1W;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=D4X6aJpm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org;
- receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JlY3Z5FK0z2ymg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 21:04:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=rT9QbL1W; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=D4X6aJpm; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4JlY3Z4XnHz4xcY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 21:04:58 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4JlY3Z4VjNz4xcQ; Fri, 28 Jan 2022 21:04:58 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=D4X6aJpm; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JlTPq3BNQz2yfg
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 18:20:31 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id B7EA061BE2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 07:20:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DE6C340E6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 07:20:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1643354423;
- bh=T5hvP6N/YDzJivdP96HpAMsEBUvVss8W1EdZxq9UDZ4=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=rT9QbL1WnPZ2MHGbg0JvXIvyik13Be4VSHK3AZWcckQfOPTQ3p8BK92cMVnIvrzMg
- MakENSENL+JCT+fJfjBxHS6GxPMra9V8+ZT+KUn2jwKlTN9HxC166Gja/waPD3bzgq
- 4JCS1G112hbc461us35r3Eed4yccGu1Em4uTf4Rw0YIYh75HZuXZZml/IpW7r4V0pG
- TtUQAhmnS1cm9v7Gs28cGhDI9GH3HtS8WlxKplc7ac/dHKfNtZW1rl5KkFkQ3HGVJ7
- x1M30Rp1WyZU5Ga8NNdFkmoINdLWHcZ4E7GPUs+o2KFHLSSPp0zGvLb9FWhLrIWM/a
- CpHO/6lgegEkw==
-Received: by mail-ua1-f49.google.com with SMTP id c36so7079023uae.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 23:20:23 -0800 (PST)
-X-Gm-Message-State: AOAM533O2TcmawFHFWYOqYL2Z3GAl2Ea6icrCIs8sJFTqp4HCvAYEuAh
- LZx2EIkZgSlNGwEFTmVH/PcVUbWJlwkq5oIFisU=
-X-Google-Smtp-Source: ABdhPJy2RpgEjhRo6X4RJ0pAxWaXFERfP1D6JpGvXcxtvMy0oyK9vzxHewNF9PQNMbdvJh891BhmawJDHyR3Cg69bT8=
-X-Received: by 2002:ab0:3565:: with SMTP id e5mr3609249uaa.97.1643354422066;
- Thu, 27 Jan 2022 23:20:22 -0800 (PST)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4JlY3Z29Dqz4xcF;
+ Fri, 28 Jan 2022 21:04:57 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20S8Zo6o030036; 
+ Fri, 28 Jan 2022 10:04:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=oq/hNNKUkT/5vXLb+ebiZ0DeZkpawldkuhDqT6tsElQ=;
+ b=D4X6aJpm+KL4Q1nwufgYxUqc+5Pug8GPiRKPhBFuCNYy8WkDcE0aAD6d5DJm4H4U9wDX
+ r2QJW19NY3B82UJJwdtkSY9SSfuwe8BTVALvmLVdYHZjq9iJI5+49Ibq1M1SavhpmMFl
+ J/bjrSW2On3QgNBCtskRwv1ZTSQ7MvTTbsFXkFCtKSXrLY0FBVw6LpGP5yqiktcbvZGA
+ zqY3uTtMMFFg5V8G70xwnrULxnNC4TJ1DycKhh75awYVfU7OGKScaDmTyZUfZaNakF6l
+ 6kA2VmIUTaxFG0vSGQgN3+lfXTmlTqagulkAMt2z08cUZRzoYo86yo3NdOlSvcNwCM/q UA== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dv5a9h9k3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 28 Jan 2022 10:04:54 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20SA2dxE010192;
+ Fri, 28 Jan 2022 10:04:52 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma06fra.de.ibm.com with ESMTP id 3dr96k5k65-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 28 Jan 2022 10:04:52 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 20SA4ook19530236
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 28 Jan 2022 10:04:50 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2F8ABA405B;
+ Fri, 28 Jan 2022 10:04:50 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E2291A4064;
+ Fri, 28 Jan 2022 10:04:47 +0000 (GMT)
+Received: from sjain014.ibmuc.com (unknown [9.43.62.128])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 28 Jan 2022 10:04:47 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: powerpc: Set crashkernel offset to mid of RMA region
+Date: Fri, 28 Jan 2022 15:34:45 +0530
+Message-Id: <20220128100445.251233-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.34.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: q7GlqOUz26qoLbkuQbb404YwKohqd8pm
+X-Proofpoint-ORIG-GUID: q7GlqOUz26qoLbkuQbb404YwKohqd8pm
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20220120073911.99857-4-guoren@kernel.org>
- <CAK8P3a1UmnjHk8B6hSULiKv3FKoY5BW9=4=ESerQzc+4=LR5Zw@mail.gmail.com>
-In-Reply-To: <CAK8P3a1UmnjHk8B6hSULiKv3FKoY5BW9=4=ESerQzc+4=LR5Zw@mail.gmail.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Fri, 28 Jan 2022 15:20:11 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTRoVaD0yrh7_Lxwvn9KdYdUeiNH4YhiaY6+G=nt04r9Yw@mail.gmail.com>
-Message-ID: <CAJF2gTRoVaD0yrh7_Lxwvn9KdYdUeiNH4YhiaY6+G=nt04r9Yw@mail.gmail.com>
-Subject: Re: [PATCH V3 03/17] asm-generic: compat: Cleanup duplicate
- definitions
-To: Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-28_01,2022-01-27_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 phishscore=0
+ malwarescore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ suspectscore=0 mlxlogscore=999 spamscore=0 impostorscore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2201280062
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,270 +113,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
- gregkh <gregkh@linuxfoundation.org>, Drew Fustini <drew@beagleboard.org>,
- Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-csky@vger.kernel.org, inux-parisc@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
+Cc: mahesh@linux.vnet.ibm.com, hbathini@linux.ibm.com,
+ Abdul haleem <abdhalee@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jan 20, 2022 at 9:02 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
->   On Thu, Jan 20, 2022 at 8:38 AM <guoren@kernel.org> wrote:
-> >
-> > From: Guo Ren <guoren@linux.alibaba.com>
-> >
-> > There are 7 64bit architectures that support Linux COMPAT mode to
-> > run 32bit applications. A lot of definitions are duplicate:
-> >  - COMPAT_USER_HZ
-> >  - COMPAT_RLIM_INFINITY
-> >  - COMPAT_OFF_T_MAX
-> >  - __compat_uid_t, __compat_uid_t
-> >  - compat_dev_t
-> >  - compat_ipc_pid_t
-> >  - struct compat_flock
-> >  - struct compat_flock64
-> >  - struct compat_statfs
-> >  - struct compat_ipc64_perm, compat_semid64_ds,
-> >           compat_msqid64_ds, compat_shmid64_ds
-> >
-> > Cleanup duplicate definitions and merge them into asm-generic.
-> >
-> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> > Signed-off-by: Guo Ren <guoren@kernel.org>
-> > Cc: Arnd Bergmann <arnd@arndb.de>
->
-> > ---
-> >  arch/arm64/include/asm/compat.h   | 108 +++-----------------------
-> >  arch/mips/include/asm/compat.h    |  24 ++----
-> >  arch/parisc/include/asm/compat.h  |  47 ++----------
-> >  arch/powerpc/include/asm/compat.h |  47 ++----------
-> >  arch/s390/include/asm/compat.h    | 109 +++-----------------------
-> >  arch/sparc/include/asm/compat.h   |  39 ++++------
-> >  arch/x86/include/asm/compat.h     | 114 +++-------------------------
-> >  include/asm-generic/compat.h      | 122 ++++++++++++++++++++++++++++++
-> >  8 files changed, 191 insertions(+), 419 deletions(-)
-> >
-> > diff --git a/arch/arm64/include/asm/compat.h b/arch/arm64/include/asm/compat.h
-> > index eaa6ca062d89..f54f295efae3 100644
-> > --- a/arch/arm64/include/asm/compat.h
-> > +++ b/arch/arm64/include/asm/compat.h
-> > @@ -5,9 +5,18 @@
-> >  #ifndef __ASM_COMPAT_H
-> >  #define __ASM_COMPAT_H
-> >
-> > +#define COMPAT_RLIM_INFINITY           0xffffffff
-> ...
-> > +#ifndef COMPAT_RLIM_INFINITY
-> > +#define COMPAT_RLIM_INFINITY   0x7fffffff
-> > +#endif
->
-> While this is a correct conversion, I think the default should
-> be 0xffffffff, to match the asm-generic RLIM_INFINITY
-> definition, with only mips and sparc getting the exception
-Okay
+On large config LPARs (having 192 and more cores), Linux fails to boot
+due to insufficient memory in the first memblock. It is due to the
+memory reservation for the crash kernel which starts at 128MB offset of
+the first memblock. This memory reservation for the crash kernel doesn't
+leave enough space in the first memblock to accommodate other essential
+system resources.
 
->
-> > -struct compat_flock {
-> > -       short           l_type;
-> > -       short           l_whence;
-> > -       compat_off_t    l_start;
-> > -       compat_off_t    l_len;
-> > -       compat_pid_t    l_pid;
-> > -};
-> ...
-> > +#ifndef compat_flock
-> > +struct compat_flock {
-> > +       compat_short_t  l_type;
-> > +       compat_short_t  l_whence;
-> > +       compat_off_t    l_start;
-> > +       compat_off_t    l_len;
-> > +       compat_pid_t    l_pid;
-> > +} __attribute__((packed));
-> > +#endif
->
-> You are adding __attribute__((packed)) here, which I think has
-> no effect on the layout on the structure on any of the architectures
-> but it does change the alignment requirements needlessly.
->
-> Better leave it without the attribute.
-Okay
+The crash kernel start address was set to 128MB offset by default to
+ensure that the crash kernel get some memory below the RMA region which
+is used to be of size 256MB. But given that the RMA region size can be
+512MB or more, setting the crash kernel offset to mid of RMA size will
+leave enough space for kernel to allocate memory for other system
+resources.
 
->
-> > -struct compat_flock64 {
-> > -       short           l_type;
-> > -       short           l_whence;
-> > -       compat_loff_t   l_start;
-> > -       compat_loff_t   l_len;
-> > -       compat_pid_t    l_pid;
-> > -};
-> ...
-> > +#ifndef compat_flock64
-> > +struct compat_flock64 {
-> > +       compat_short_t  l_type;
-> > +       compat_short_t  l_whence;
-> > +       compat_loff_t   l_start;
-> > +       compat_loff_t   l_len;
-> > +       compat_pid_t    l_pid;
-> > +} __attribute__((packed));
-> > +#endif
->
-> This one is different: on all architectures other than x86,
-> the added packed attribute changes the size of the
-> structure by removing the four padding bytes at the
-> end. x86 originally added the attribute here to work around
-> the weirdness of the x86-32 ABI that aligns 64-bit values
-> on a 4-byte boundary.
->
-> The easiest workaround would be to have x86 keep its
-> custom definition. A slightly nicer version would drop the
-> attribute on x86 as well but instead change the compat_loff_t
-> definition to use compat_s64 instead of s64, giving it the
-> correct alignment.
-Okay, I would leave x86 origin first.
+Since the above crash kernel offset change is only applicable to the LPAR
+platform, the LPAR feature detection is pushed before the crash kernel
+reservation. The rest of LPAR specific initialization will still
+be done during pseries_probe_fw_features as usual.
 
->
-> > -struct compat_statfs {
-> > -       int             f_type;
-> > -       int             f_bsize;
-> > -       int             f_blocks;
-> > -       int             f_bfree;
-> > -       int             f_bavail;
-> > -       int             f_files;
-> > -       int             f_ffree;
-> > -       compat_fsid_t   f_fsid;
-> > -       int             f_namelen;      /* SunOS ignores this field. */
-> > -       int             f_frsize;
-> > -       int             f_flags;
-> > -       int             f_spare[4];
-> > -};
-> ...
-> > +#ifndef compat_statfs
-> > +struct compat_statfs {
-> > +       compat_uint_t   f_type;
-> > +       compat_uint_t   f_bsize;
-> > +       compat_uint_t   f_blocks;
-> > +       compat_uint_t   f_bfree;
-> > +       compat_uint_t   f_bavail;
-> > +       compat_uint_t   f_files;
-> > +       compat_uint_t   f_ffree;
-> > +       __kernel_fsid_t f_fsid;
-> > +       compat_uint_t   f_namelen;
-> > +       compat_uint_t   f_frsize;
-> > +       compat_uint_t   f_flags;
-> > +       compat_uint_t   f_spare[4];
-> > +} __attribute__((packed));
-> > +#endif
->
-> None of the architectures use the packed attribute at the moment,
-> so please don't add one here.
->
-> Changing compat_fsid_t to __kernel_fsid_t is harmless, but seems
-> unnecessary.
-Okay. I would add another
-typedef __kernel_fsid_t compat_fsid_t;
-in the file.
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Reported-and-tested-by: Abdul haleem <abdhalee@linux.vnet.ibm.com>
 
->
-> Changing the signed int to an unsigned int (regardless of notation)
-> may be a change in behavior. s390 is the only architecture
-> using unsigned members here at the moment, as of b8668fd0a7e1
-> ("s390/uapi: change struct statfs[64] member types to unsigned
-> values").
-> The description of that patch sounds like this was changed to fix
-> a bug, but I don't see what the actual problem would be in the
-> put_compat_statfs().
->
-> For the moment I'd suggest leaving this with the signed version,
-> with s390 being another exception next to mips. We can follow-up
-> with merging s390 into the common definition using either the
-> signed or unsigned types, but I think that needs to be a separate
-> patch with a detailed explanation.
-Okay, I would leave s390 origin first.
+---
+ arch/powerpc/kernel/rtas.c |  4 ++++
+ arch/powerpc/kexec/core.c  | 15 +++++++++++----
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
->
->  +#ifndef compat_ipc64_perm
-> > +struct compat_ipc64_perm {
-> > +       compat_key_t key;
-> > +       __compat_uid32_t uid;
-> > +       __compat_gid32_t gid;
-> > +       __compat_uid32_t cuid;
-> > +       __compat_gid32_t cgid;
-> > +       compat_mode_t   mode;
-> > +       unsigned char   __pad1[4 - sizeof(compat_mode_t)];
-> > +       compat_ushort_t seq;
-> > +       compat_ushort_t __pad2;
-> > +       compat_ulong_t  unused1;
-> > +       compat_ulong_t  unused2;
-> > +} __attribute__((packed));
-> > +
-> > +struct compat_semid64_ds {
-> > +       struct compat_ipc64_perm sem_perm;
-> > +       compat_ulong_t sem_otime;
-> > +       compat_ulong_t sem_otime_high;
-> > +       compat_ulong_t sem_ctime;
-> > +       compat_ulong_t sem_ctime_high;
-> > +       compat_ulong_t sem_nsems;
-> > +       compat_ulong_t __unused3;
-> > +       compat_ulong_t __unused4;
-> > +} __attribute__((packed));
-> > +
-> > +struct compat_msqid64_ds {
-> > +       struct compat_ipc64_perm msg_perm;
-> > +       compat_ulong_t msg_stime;
-> > +       compat_ulong_t msg_stime_high;
-> > +       compat_ulong_t msg_rtime;
-> > +       compat_ulong_t msg_rtime_high;
-> > +       compat_ulong_t msg_ctime;
-> > +       compat_ulong_t msg_ctime_high;
-> > +       compat_ulong_t msg_cbytes;
-> > +       compat_ulong_t msg_qnum;
-> > +       compat_ulong_t msg_qbytes;
-> > +       compat_pid_t   msg_lspid;
-> > +       compat_pid_t   msg_lrpid;
-> > +       compat_ulong_t __unused4;
-> > +       compat_ulong_t __unused5;
-> > +} __attribute__((packed));
-> > +
-> > +struct compat_shmid64_ds {
-> > +       struct compat_ipc64_perm shm_perm;
-> > +       compat_size_t  shm_segsz;
-> > +       compat_ulong_t shm_atime;
-> > +       compat_ulong_t shm_atime_high;
-> > +       compat_ulong_t shm_dtime;
-> > +       compat_ulong_t shm_dtime_high;
-> > +       compat_ulong_t shm_ctime;
-> > +       compat_ulong_t shm_ctime_high;
-> > +       compat_pid_t   shm_cpid;
-> > +       compat_pid_t   shm_lpid;
-> > +       compat_ulong_t shm_nattch;
-> > +       compat_ulong_t __unused4;
-> > +       compat_ulong_t __unused5;
-> > +} __attribute__((packed));
-> > +#endif
->
-> I checked these in detail, looking at the seven architectures, and your
-> conversion looks exactly right (I had initially missed the part about
-> compat_mode_t that you got right).
->
-> As with compat_flock, the packed attribute has no impact on the layout
-> here, but please drop it anyway for consistency.
->
->         Arnd
+ ---
+ Change in v3:
+	Dropped 1st and 2nd patch from v2. 1st and 2nd patch from v2 patch
+	series [1] try to discover 1T segment MMU feature support
+	BEFORE boot CPU paca allocation ([1] describes why it is needed).
+	MPE has posted a patch [2] that archives a similar objective by moving
+	boot CPU paca allocation after mmu_early_init_devtree().
 
+NOTE: This patch is dependent on the patch [2].
 
+[1] https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20211018084434.217772-3-sourabhjain@linux.ibm.com/
+[2] https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-January/239175.html
+ ---
 
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 733e6ef36758..06df7464fb57 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -1313,6 +1313,10 @@ int __init early_init_dt_scan_rtas(unsigned long node,
+ 	entryp = of_get_flat_dt_prop(node, "linux,rtas-entry", NULL);
+ 	sizep  = of_get_flat_dt_prop(node, "rtas-size", NULL);
+ 
++	/* need this feature to decide the crashkernel offset */
++	if (of_get_flat_dt_prop(node, "ibm,hypertas-functions", NULL))
++		powerpc_firmware_features |= FW_FEATURE_LPAR;
++
+ 	if (basep && entryp && sizep) {
+ 		rtas.base = *basep;
+ 		rtas.entry = *entryp;
+diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
+index 8b68d9f91a03..abf5897ae88c 100644
+--- a/arch/powerpc/kexec/core.c
++++ b/arch/powerpc/kexec/core.c
+@@ -134,11 +134,18 @@ void __init reserve_crashkernel(void)
+ 	if (!crashk_res.start) {
+ #ifdef CONFIG_PPC64
+ 		/*
+-		 * On 64bit we split the RMO in half but cap it at half of
+-		 * a small SLB (128MB) since the crash kernel needs to place
+-		 * itself and some stacks to be in the first segment.
++		 * On the LPAR platform place the crash kernel to mid of
++		 * RMA size (512MB or more) to ensure the crash kernel
++		 * gets enough space to place itself and some stack to be
++		 * in the first segment. At the same time normal kernel
++		 * also get enough space to allocate memory for essential
++		 * system resource in the first segment. Keep the crash
++		 * kernel starts at 128MB offset on other platforms.
+ 		 */
+-		crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
++		if (firmware_has_feature(FW_FEATURE_LPAR))
++			crashk_res.start = ppc64_rma_size / 2;
++		else
++			crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
+ #else
+ 		crashk_res.start = KDUMP_KERNELBASE;
+ #endif
 -- 
-Best Regards
- Guo Ren
+2.34.1
 
-ML: https://lore.kernel.org/linux-csky/
