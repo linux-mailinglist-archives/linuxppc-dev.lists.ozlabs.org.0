@@ -2,106 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF0E49F854
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 12:31:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E6649FA9D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 14:21:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JlZzD5kdHz3cCQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 22:31:20 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kP64T6oy;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JldQc1kJYz3cRJ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 00:21:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=a.fatoum@pengutronix.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=kP64T6oy; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JlZyR0F9Sz301M
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 22:30:38 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20S9CuDm032740; 
- Fri, 28 Jan 2022 11:30:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=mime-version :
- content-type : content-transfer-encoding : date : from : to : cc : subject
- : in-reply-to : references : message-id; s=pp1;
- bh=O4IVPk5PRXF339S6gpZVKKJ+UVjlIgEBdlZQuGAoImQ=;
- b=kP64T6oyaNVRNvN0iOb0r/uV5GlZdpm4V4YjmOsatNGWDfXsQU5ZS2i6YWpQexIquJyl
- 4wRlZZaAgXW88USlMNK+xqnHvF5mk2WjBZxffARobL+f9rZJjrvTDky8lyn/w2ybVP0e
- KnzBVAVXfW6PM6byQ+pnK/WVqfxyCN3CpKtKb3NOPSvHnt2vwLBLb8PLpo//Y2JCDUCM
- JJ/sutvkw3ay+IxW2bE222EZJVb9qxb9SBryzSQXpiuVOnXjQoPqeDv5mt6SYtXyAxbF
- gDdlXVMTVAep67OBwkN/W/qFSoxUzAqKQ+T3H3MCQZy0/1RbhHFB58aMAdw9CJboaLkd +Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3dvdnntjnv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 Jan 2022 11:30:31 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20SBMPjq025763;
- Fri, 28 Jan 2022 11:30:31 GMT
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3dvdnntjnm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 Jan 2022 11:30:31 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20SBCgrH015659;
- Fri, 28 Jan 2022 11:30:30 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com
- (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
- by ppma04wdc.us.ibm.com with ESMTP id 3dr9jcffbc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 28 Jan 2022 11:30:30 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 20SBUUqX32375150
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 28 Jan 2022 11:30:30 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 15E7E78096;
- Fri, 28 Jan 2022 11:30:30 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F3CF278124;
- Fri, 28 Jan 2022 11:30:25 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.10.229.42])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 28 Jan 2022 11:30:25 +0000 (GMT)
+X-Greylist: delayed 1509 seconds by postgrey-1.36 at boromir;
+ Sat, 29 Jan 2022 00:21:21 AEDT
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JldQ91H2Jz2yJv
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 00:21:20 +1100 (AEDT)
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1nDQnK-00008O-NY; Fri, 28 Jan 2022 13:56:02 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [BUG] mtd: cfi_cmdset_0002: write regression since v4.17-rc1
+To: Tokunori Ikegami <ikegami.t@gmail.com>,
+ Thorsten Leemhuis <regressions@leemhuis.info>,
+ linux-mtd@lists.infradead.org, Joakim.Tjernlund@infinera.com,
+ miquel.raynal@bootlin.com, vigneshr@ti.com, richard@nod.at,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <b687c259-6413-26c9-d4c9-b3afa69ea124@pengutronix.de>
+ <dff2abcc-5813-2f2c-35ba-f03cd1f35ac3@leemhuis.info>
+ <e11b76dc-5539-fb7e-da1c-a5005713d6b0@gmail.com>
+Message-ID: <3dbbcee5-81fc-cdf5-9f8b-b6ccb95beddc@pengutronix.de>
+Date: Fri, 28 Jan 2022 13:55:55 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Fri, 28 Jan 2022 17:00:25 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/2] powerpc/uprobes: Reject uprobe on a system call
- instruction
-In-Reply-To: <1643269209.jj1krtc1vx.astroid@bobo.none>
-References: <20220124055741.3686496-1-npiggin@gmail.com>
- <20220124055741.3686496-3-npiggin@gmail.com>
- <874k5sm42l.fsf@mpe.ellerman.id.au>
- <1643269209.jj1krtc1vx.astroid@bobo.none>
-Message-ID: <1d756bcb9c747cc618bc8c205183eebd@imap.linux.ibm.com>
-X-Sender: naveen.n.rao@linux.vnet.ibm.com
-User-Agent: Roundcube Webmail/1.1.12
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Ovdz0scUTUOsURsX4F7HkrulLcCFwfwx
-X-Proofpoint-ORIG-GUID: IKRnuvv5Tb8badW9C6QkqHyGuruCjzns
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-01-28_02,2022-01-27_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- lowpriorityscore=0 phishscore=0 mlxlogscore=824 bulkscore=0 adultscore=0
- spamscore=0 impostorscore=0 mlxscore=0 priorityscore=1501 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2201280069
+In-Reply-To: <e11b76dc-5539-fb7e-da1c-a5005713d6b0@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,94 +62,191 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ marek.vasut@gmail.com, Chris Packham <chris.packham@alliedtelesis.co.nz>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, cyrille.pitchen@wedev4u.fr,
+ Shaohui.Xie@nxp.com, Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2022-01-27 13:14, Nicholas Piggin wrote:
-> Excerpts from Michael Ellerman's message of January 25, 2022 9:45 pm:
->> Nicholas Piggin <npiggin@gmail.com> writes:
->>> Per the ISA, a Trace interrupt is not generated for a system call
->>> [vectored] instruction. Reject uprobes on such instructions as we are
->>> not emulating a system call [vectored] instruction anymore.
->> 
->> This should really be patch 1, otherwise there's a single commit 
->> window
->> where we allow uprobes on sc but don't honour them.
+Hello Tokunori-san,
+
+On 15.12.21 18:34, Tokunori Ikegami wrote:
+> Hi Ahmad-san,
+
+Thanks for your reply (and Thorsten for the reminder) and sorry for
+the delay. I had a lot of backlog after my time off.
+
+> Sorry for the regression issue by the change: dfeae1073583.
+> To make sure could you please try with the word write instead of the buffered writes?
+
+The issue is still there with #define FORCE_WORD_WRITE 1:
+
+  jffs2: Write clean marker to block at 0x000a0000 failed: -5
+  MTD do_write_oneword_once(): software timeout
+
+> FYI: There are some changes to disable the buffered writes as below.
+>   1. https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob;f=target/linux/ar71xx/patches-4.9/411-mtd-cfi_cmdset_0002-force-word-write.patch;h=ddd69f17e1ac16e8fc3a694c56231fee1e2ef149;hb=fec8fe806963c96a6506c2aebc3572d3a11f285f
+>   2. https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/mtd/chips/cfi_cmdset_0002.c?h=v5.16-rc5&id=7e4404113686868858a34210c28ae122e967aa64
 > 
-> Yep true. I also messed up Naveen's attribution! Will re-send (or maybe
-> Naveen would take over the series).
+> Note:
+>   Currently I am not able to investigate the issue on the product for the change before.
+> 
+>   By the way in the past I had investigated the similar issue on Buffalo WZR-HP-G300NH using the S29GL256N.
+>   It was not able to find the root cause by the investigation since not required actually at that time.
+>   Also actually the buffered writes were disabled on the OpenWrt firmware as the change [1] above.
+>   But I am not sure the reason detail to disable the buffered writes on the OpenWrt firmware.
+>   I thought the issue not caused by the change: dfeae1073583 since the issue happened without the change.
+> 
+>   So I am not sure why the above change [2] needed to disable the buffered writes on Buffalo WZR-HP-G300NH.
+>   Probably seems needed to disable the buffered writes on the other firmware also but not OpenWrt firmware.
+> 
+>   Anyway there are difference with your regression issue as below.
+>     1. Flash device: S29GL064N (Your regression issue), S29GL256N (WZR-HP-G300NH)
+>     2. Regression issue: Yes (Your regression issue), No (WZR-HP-G300NH as I investigated before)
 
-Yes, let me come up with a better, more complete patch for this.
+Doesn't seem to be a buffered write issue here though as the writes
+did work fine before dfeae1073583. Any other ideas?
+
+Cheers,
+Ahmad
 
 > 
->> 
->>> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
->>> [np: Switch to pr_info_ratelimited]
->>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->>> ---
->>>  arch/powerpc/include/asm/ppc-opcode.h | 1 +
->>>  arch/powerpc/kernel/uprobes.c         | 6 ++++++
->>>  2 files changed, 7 insertions(+)
->>> 
->>> diff --git a/arch/powerpc/include/asm/ppc-opcode.h 
->>> b/arch/powerpc/include/asm/ppc-opcode.h
->>> index 9675303b724e..8bbe16ce5173 100644
->>> --- a/arch/powerpc/include/asm/ppc-opcode.h
->>> +++ b/arch/powerpc/include/asm/ppc-opcode.h
->>> @@ -411,6 +411,7 @@
->>>  #define PPC_RAW_DCBFPS(a, b)		(0x7c0000ac | ___PPC_RA(a) | 
->>> ___PPC_RB(b) | (4 << 21))
->>>  #define PPC_RAW_DCBSTPS(a, b)		(0x7c0000ac | ___PPC_RA(a) | 
->>> ___PPC_RB(b) | (6 << 21))
->>>  #define PPC_RAW_SC()			(0x44000002)
->>> +#define PPC_RAW_SCV()			(0x44000001)
->>>  #define PPC_RAW_SYNC()			(0x7c0004ac)
->>>  #define PPC_RAW_ISYNC()			(0x4c00012c)
->>> 
->>> diff --git a/arch/powerpc/kernel/uprobes.c 
->>> b/arch/powerpc/kernel/uprobes.c
->>> index c6975467d9ff..3779fde804bd 100644
->>> --- a/arch/powerpc/kernel/uprobes.c
->>> +++ b/arch/powerpc/kernel/uprobes.c
->>> @@ -41,6 +41,12 @@ int arch_uprobe_analyze_insn(struct arch_uprobe 
->>> *auprobe,
->>>  	if (addr & 0x03)
->>>  		return -EINVAL;
->>> 
->>> +	if (ppc_inst_val(ppc_inst_read(auprobe->insn)) == PPC_RAW_SC() ||
->>> +	    ppc_inst_val(ppc_inst_read(auprobe->insn)) == PPC_RAW_SCV()) {
->> 
->> We should probably reject hypercall too?
->> 
->> There's also a lot of reserved fields in `sc`, so doing an exact match
->> like this risks missing instructions that are badly formed but the CPU
->> will happily execute as `sc`.
+> Regards,
+> Ikegami
 > 
-> Yeah, scv as well has lev != 0 unsupported so should be excluded.
->> 
->> We'd obviously never expect to see those in compiler generated code, 
->> but
->> it'd still be safer to mask. We could probably just reject opcode 17
->> entirely.
-
-Indeed, thanks.
-
->> 
->> And I guess for a subsequent patch, but we should be rejecting some
->> others here as well shouldn't we? Like rfid etc.
+> On 2021/12/14 16:23, Thorsten Leemhuis wrote:
+>> [TLDR: adding this regression to regzbot; most of this mail is compiled
+>> from a few templates paragraphs some of you might have seen already.]
+>>
+>> Hi, this is your Linux kernel regression tracker speaking.
+>>
+>> Top-posting for once, to make this easy accessible to everyone.
+>>
+>> Thanks for the report.
+>>
+>> Adding the regression mailing list to the list of recipients, as it
+>> should be in the loop for all regressions, as explained here:
+>> https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html
+>>
+>> To be sure this issue doesn't fall through the cracks unnoticed, I'm
+>> adding it to regzbot, my Linux kernel regression tracking bot:
+>>
+>> #regzbot ^introduced dfeae1073583
+>> #regzbot title mtd: cfi_cmdset_0002: flash write accesses on the
+>> hardware fail on a PowerPC MPC8313 to a 8-bit-parallel S29GL064N flash
+>> #regzbot ignore-activity
+>>
+>> Reminder: when fixing the issue, please add a 'Link:' tag with the URL
+>> to the report (the parent of this mail), then regzbot will automatically
+>> mark the regression as resolved once the fix lands in the appropriate
+>> tree. For more details about regzbot see footer.
+>>
+>> Sending this to everyone that got the initial report, to make all aware
+>> of the tracking. I also hope that messages like this motivate people to
+>> directly get at least the regression mailing list and ideally even
+>> regzbot involved when dealing with regressions, as messages like this
+>> wouldn't be needed then.
+>>
+>> Don't worry, I'll send further messages wrt to this regression just to
+>> the lists (with a tag in the subject so people can filter them away), as
+>> long as they are intended just for regzbot. With a bit of luck no such
+>> messages will be needed anyway.
+>>
+>> Ciao, Thorsten (wearing his 'Linux kernel regression tracker' hat).
+>>
+>> P.S.: As a Linux kernel regression tracker I'm getting a lot of reports
+>> on my table. I can only look briefly into most of them. Unfortunately
+>> therefore I sometimes will get things wrong or miss something important.
+>> I hope that's not the case here; if you think it is, don't hesitate to
+>> tell me about it in a public reply. That's in everyone's interest, as
+>> what I wrote above might be misleading to everyone reading this; any
+>> suggestion I gave thus might sent someone reading this down the wrong
+>> rabbit hole, which none of us wants.
+>>
+>> BTW, I have no personal interest in this issue, which is tracked using
+>> regzbot, my Linux kernel regression tracking bot
+>> (https://linux-regtracking.leemhuis.info/regzbot/). I'm only posting
+>> this mail to get things rolling again and hence don't need to be CC on
+>> all further activities wrt to this regression.
+>>
+>> On 13.12.21 14:24, Ahmad Fatoum wrote:
+>>> Hi,
+>>>
+>>> I've been investigating a breakage on a PowerPC MPC8313: The SoC is connected
+>>> via the "Enhanced Local Bus Controller" to a 8-bit-parallel S29GL064N flash,
+>>> which is represented as a memory-mapped cfi-flash.
+>>>
+>>> The regression began in v4.17-rc1 with
+>>>
+>>>    dfeae1073583 ("mtd: cfi_cmdset_0002: Change write buffer to check correct value")
+>>>
+>>> and causes all flash write accesses on the hardware to fail. Example output
+>>> after v5.1-rc2[1]:
+>>>
+>>>    root@host:~# mount -t jffs2 /dev/mtdblock0 /mnt
+>>>    MTD do_write_buffer_wait(): software timeout, address:0x000c000b.
+>>>    jffs2: Write clean marker to block at 0x000c0000 failed: -5
+>>>
+>>> This issue still persists with v5.16-rc. Reverting aforementioned patch fixes
+>>> it, but I am still looking for a change that keeps both Tokunori's and my
+>>> hardware happy.
+>>>
+>>> What Tokunori's patch did is that it strengthened the success condition
+>>> for flash writes:
+>>>
+>>>   - Prior to the patch, DQ polling was done until bits
+>>>     stopped toggling. This was taken as an indicator that the write succeeded
+>>>     and was reported up the stack. i.e. success condition is chip_ready()
+>>>
+>>>   - After the patch, polling continues until the just written data is
+>>>     actually read back, i.e. success condition is chip_good()
+>>>
+>>> This new condition never holds for me, when DQ stabilizes, it reads 0xFF,
+>>> never the just written data. The data is still written and can be read back
+>>> on subsequent reads, just not at that point of time in the poll loop.
+>>>
+>>> We haven't had write issues for the years predating that patch. As the
+>>> regression has been mainline for a while, I am wondering what about my setup
+>>> that makes it pop up here, but not elsewhere?
+>>>
+>>> I consulted the data sheet[2] and found Figure 27, which describes DQ polling
+>>> during embedded algorithms. DQ switches from status output to "True" (I assume
+>>> True == all bits set == 0xFF) until CS# is reasserted.
+>>>
+>>> I compared with another chip's datasheet, and it (Figure 8.4) doesn't describe
+>>> such an intermittent "True" state. In any case, the driver polls a few hundred
+>>> times, however, before giving up, so there should be enough CS# toggles.
+>>>
+>>>
+>>> Locally, I'll revert this patch for now. I think accepting 0xFF as a success
+>>> condition may be appropriate, but I don't yet have the rationale to back it up.
+>>>
+>>> I am investigating this some more, probably with a logic trace, but I wanted
+>>> to report this in case someone has pointers and in case other people run into
+>>> the same issue.
+>>>
+>>>
+>>> Cheers,
+>>> Ahmad
+>>>
+>>> [1] Prior to d9b8a67b3b95 ("mtd: cfi: fix deadloop in cfi_cmdset_0002.c do_write_buffer")
+>>>      first included with v5.1-rc2, failing writes just hung indefinitely in kernel space.
+>>>      That's fixed, but the writes still fail.
+>>>
+>>> [2]: 001-98525 Rev. *B, https://www.infineon.com/dgdl/Infineon-S29GL064N_S29GL032N_64_Mbit_32_Mbit_3_V_Page_Mode_MirrorBit_Flash-DataSheet-v03_00-EN.pdf?fileId=8ac78c8c7d0d8da4017d0ed556fd548b
+>>>
+>>> [3]: https://www.mouser.com/datasheet/2/268/SST39VF1601C-SST39VF1602C-16-Mbit-x16-Multi-Purpos-709008.pdf
+>>>       Note that "true data" means valid data here, not all bits one.
+>>>
 > 
-> Traps under discussion I guess. For uprobe, rfid will be just another
-> privilege fault. Is that dealt with somehow or do all privileged and
-> illegal instructions also need to be excluded from stepping? (I assume
-> we must handle that in a general way somehow)
-
-Yes, this is all handled in our interrupt code if we emulate any of 
-those
-privileged instructions. Otherwise, if a signal is generated, that would
-be caught by uprobe_deny_signal().
 
 
-Thanks,
-Naveen
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
