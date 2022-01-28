@@ -1,86 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E8A49F1E3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 04:30:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DC949F446
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 08:21:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JlNJt5jK6z3bZY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 14:30:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JlTQY5px5z3c79
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 18:21:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=nO5Y//Xo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rT9QbL1W;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canonical.com (client-ip=185.125.188.122;
- helo=smtp-relay-internal-0.canonical.com;
- envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=canonical.com header.i=@canonical.com
- header.a=rsa-sha256 header.s=20210705 header.b=nO5Y//Xo; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=rT9QbL1W; 
  dkim-atps=neutral
-Received: from smtp-relay-internal-0.canonical.com
- (smtp-relay-internal-0.canonical.com [185.125.188.122])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JlNJ71pdFz2yYJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 14:30:14 +1100 (AEDT)
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
- [209.85.161.71])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JlTPq3BNQz2yfg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 18:20:31 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id D9CFF40049
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 03:30:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1643340607;
- bh=o1I8UaIYrM6dC/0Rd0QRoVtyxyLa0HoViEvgtP4OM7I=;
- h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
- To:Cc:Content-Type;
- b=nO5Y//XoBV+zNQYzMG8F9jNmJkui9O+/Cssc0Wltivpqo5x4By6tmVM7LBcd+rMl6
- MnQpukQqOw9X8FBmcpq/cIbXVgoj5UAP8pHyIlkAgHSPlDSBDi/dw/vMAnddXbwnwe
- 61IgiU1OT5lKDJg+OL9Vo3ss1adKX+WCakDJrH83MSHgQl2QXiHRj6p1mCBUh7RoVd
- TvO+AHBS/UfQ1wqPpHjzEetjs0nKb1wSivtH0ch1W491DmlQTp9PWQ95Q+fFSVYK4u
- Wa1JElgtRYWw7BBjthmb2KvCnHq2pJTh15M7Gjcc58boe0r25tnNPeYss8hTqLPyJY
- ugCJL1p0DCS4A==
-Received: by mail-oo1-f71.google.com with SMTP id
- v30-20020a4a9761000000b002daad3afaf6so2663901ooi.18
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 19:30:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=o1I8UaIYrM6dC/0Rd0QRoVtyxyLa0HoViEvgtP4OM7I=;
- b=JkRbpm+XdzeIrzFVAA5hDSHdtyZWvkRa2OzZkSCJaMIXZK0mHCSsQZVr5QD/X/v9df
- sZpKSBo04+WFD4Tm8zz3P4k0GpByiMIFCtNebViS15FH6EfpsZSLhKofY0g+khwc06P8
- Zy16gB7TWOpT1l+vykEGiVN3ghQHDiv1DGNha1rLWU1SuaBtTEq3C6e71bVagNXRnj91
- HujHjA93EovaTtVozLlGnUvpnWhiqrWQukOEZKoYlo5RSaDtXPcWZNZ5RtHBx7T7aJIC
- CzfY2nDTXUDcidIm2ZHuxl+8SKEicuotxjadT8XUwc+soeZiHxcQoimIhNQpaBMJ1Fqn
- ucag==
-X-Gm-Message-State: AOAM5335MBpiNOPH7pNA1KHG+xua76E+rX74OAlQT+fM7pu4e86UBwY2
- jh9T3JUEkd8cvIeyqqw/fufJTasJb566udadXwI+cUTPwVRLpDwlmvtQii6Yq9W7RU5XNOkDZgN
- nb8R+kGYrhgb82zDH6Hc5y3wvNUNKdrIIijFb4s0L8ScSkhoLcFbYI7FngQw=
-X-Received: by 2002:a05:6808:191a:: with SMTP id
- bf26mr9172619oib.111.1643340606602; 
- Thu, 27 Jan 2022 19:30:06 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJz1jv4J88ak1rDj6mbh78ua15nyVyq1aqhXCtXon2huqpabC8PnLCHWXFERGI5wRDEfkfYL3kiys1HJTFSdoOQ=
-X-Received: by 2002:a05:6808:191a:: with SMTP id
- bf26mr9172601oib.111.1643340606215; 
- Thu, 27 Jan 2022 19:30:06 -0800 (PST)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id B7EA061BE2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 07:20:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DE6C340E6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 07:20:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1643354423;
+ bh=T5hvP6N/YDzJivdP96HpAMsEBUvVss8W1EdZxq9UDZ4=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=rT9QbL1WnPZ2MHGbg0JvXIvyik13Be4VSHK3AZWcckQfOPTQ3p8BK92cMVnIvrzMg
+ MakENSENL+JCT+fJfjBxHS6GxPMra9V8+ZT+KUn2jwKlTN9HxC166Gja/waPD3bzgq
+ 4JCS1G112hbc461us35r3Eed4yccGu1Em4uTf4Rw0YIYh75HZuXZZml/IpW7r4V0pG
+ TtUQAhmnS1cm9v7Gs28cGhDI9GH3HtS8WlxKplc7ac/dHKfNtZW1rl5KkFkQ3HGVJ7
+ x1M30Rp1WyZU5Ga8NNdFkmoINdLWHcZ4E7GPUs+o2KFHLSSPp0zGvLb9FWhLrIWM/a
+ CpHO/6lgegEkw==
+Received: by mail-ua1-f49.google.com with SMTP id c36so7079023uae.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Jan 2022 23:20:23 -0800 (PST)
+X-Gm-Message-State: AOAM533O2TcmawFHFWYOqYL2Z3GAl2Ea6icrCIs8sJFTqp4HCvAYEuAh
+ LZx2EIkZgSlNGwEFTmVH/PcVUbWJlwkq5oIFisU=
+X-Google-Smtp-Source: ABdhPJy2RpgEjhRo6X4RJ0pAxWaXFERfP1D6JpGvXcxtvMy0oyK9vzxHewNF9PQNMbdvJh891BhmawJDHyR3Cg69bT8=
+X-Received: by 2002:ab0:3565:: with SMTP id e5mr3609249uaa.97.1643354422066;
+ Thu, 27 Jan 2022 23:20:22 -0800 (PST)
 MIME-Version: 1.0
-References: <20220127025418.1989642-1-kai.heng.feng@canonical.com>
- <0259955f-8bbb-1778-f234-398f1356db8b@linux.intel.com>
- <CAAd53p6+KPAJchh9Jx59Fkkj5FidSxsW0yHjLqooFjvu-Y9u7w@mail.gmail.com>
- <11891652-40c6-f111-46b7-e96d1729815e@linux.intel.com>
-In-Reply-To: <11891652-40c6-f111-46b7-e96d1729815e@linux.intel.com>
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date: Fri, 28 Jan 2022 11:29:54 +0800
-Message-ID: <CAAd53p5rNFBK8t7bK_Jdds2c4dXpWtEb10iTtsc4zQEjGrf-Pg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] PCI/AER: Disable AER service when link is in L2/L3
- ready, L2 and L3 state
-To: Lu Baolu <baolu.lu@linux.intel.com>
+References: <20220120073911.99857-4-guoren@kernel.org>
+ <CAK8P3a1UmnjHk8B6hSULiKv3FKoY5BW9=4=ESerQzc+4=LR5Zw@mail.gmail.com>
+In-Reply-To: <CAK8P3a1UmnjHk8B6hSULiKv3FKoY5BW9=4=ESerQzc+4=LR5Zw@mail.gmail.com>
+From: Guo Ren <guoren@kernel.org>
+Date: Fri, 28 Jan 2022 15:20:11 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTRoVaD0yrh7_Lxwvn9KdYdUeiNH4YhiaY6+G=nt04r9Yw@mail.gmail.com>
+Message-ID: <CAJF2gTRoVaD0yrh7_Lxwvn9KdYdUeiNH4YhiaY6+G=nt04r9Yw@mail.gmail.com>
+Subject: Re: [PATCH V3 03/17] asm-generic: compat: Cleanup duplicate
+ definitions
+To: Arnd Bergmann <arnd@arndb.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -93,79 +73,270 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joerg Roedel <jroedel@suse.de>,
- Lalithambika Krishnakumar <lalithambika.krishnakumar@intel.com>,
- linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, koba.ko@canonical.com,
- Oliver O'Halloran <oohall@gmail.com>, bhelgaas@google.com,
- mika.westerberg@linux.intel.com
+Cc: linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ gregkh <gregkh@linuxfoundation.org>, Drew Fustini <drew@beagleboard.org>,
+ Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org, inux-parisc@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jan 28, 2022 at 10:57 AM Lu Baolu <baolu.lu@linux.intel.com> wrote:
+On Thu, Jan 20, 2022 at 9:02 PM Arnd Bergmann <arnd@arndb.de> wrote:
 >
-> On 1/27/22 7:14 PM, Kai-Heng Feng wrote:
-> > On Thu, Jan 27, 2022 at 3:01 PM Lu Baolu <baolu.lu@linux.intel.com> wrote:
-> >>
-> >> On 2022/1/27 10:54, Kai-Heng Feng wrote:
-> >>> Commit 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in
-> >>> hint") enables ACS, and some platforms lose its NVMe after resume from
-> >>> S3:
-> >>> [   50.947816] pcieport 0000:00:1b.0: DPC: containment event, status:0x1f01 source:0x0000
-> >>> [   50.947817] pcieport 0000:00:1b.0: DPC: unmasked uncorrectable error detected
-> >>> [   50.947829] pcieport 0000:00:1b.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Receiver ID)
-> >>> [   50.947830] pcieport 0000:00:1b.0:   device [8086:06ac] error status/mask=00200000/00010000
-> >>> [   50.947831] pcieport 0000:00:1b.0:    [21] ACSViol                (First)
-> >>> [   50.947841] pcieport 0000:00:1b.0: AER: broadcast error_detected message
-> >>> [   50.947843] nvme nvme0: frozen state error detected, reset controller
-> >>>
-> >>> It happens right after ACS gets enabled during resume.
-> >>>
-> >>> There's another case, when Thunderbolt reaches D3cold:
-> >>> [   30.100211] pcieport 0000:00:1d.0: AER: Uncorrected (Non-Fatal) error received: 0000:00:1d.0
-> >>> [   30.100251] pcieport 0000:00:1d.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Requester ID)
-> >>> [   30.100256] pcieport 0000:00:1d.0:   device [8086:7ab0] error status/mask=00100000/00004000
-> >>> [   30.100262] pcieport 0000:00:1d.0:    [20] UnsupReq               (First)
-> >>> [   30.100267] pcieport 0000:00:1d.0: AER:   TLP Header: 34000000 08000052 00000000 00000000
-> >>> [   30.100372] thunderbolt 0000:0a:00.0: AER: can't recover (no error_detected callback)
-> >>> [   30.100401] xhci_hcd 0000:3e:00.0: AER: can't recover (no error_detected callback)
-> >>> [   30.100427] pcieport 0000:00:1d.0: AER: device recovery failed
-> >>>
-> >>> So disable AER service to avoid the noises from turning power rails
-> >>> on/off when the device is in low power states (D3hot and D3cold), as
-> >>> PCIe spec "5.2 Link State Power Management" states that TLP and DLLP
-> >>> transmission is disabled for a Link in L2/L3 Ready (D3hot), L2 (D3cold
-> >>> with aux power) and L3 (D3cold).
-> >>>
-> >>> Bugzilla:https://bugzilla.kernel.org/show_bug.cgi?id=209149
-> >>> Bugzilla:https://bugzilla.kernel.org/show_bug.cgi?id=215453
-> >>> Fixes: 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in hint")
-> >>
-> >> I don't know what this fix has to do with the commit 50310600ebda.
+>   On Thu, Jan 20, 2022 at 8:38 AM <guoren@kernel.org> wrote:
 > >
-> > Commit 50310600ebda only exposed the underlying issue. Do you think
-> > "Fixes:" tag should change to other commits?
+> > From: Guo Ren <guoren@linux.alibaba.com>
 > >
-> >> Commit 50310600ebda only makes sure that PCI ACS is enabled whenever
-> >> Intel IOMMU is on. Before this commit, PCI ACS could also be enabled
-> >> and result in the same problem. Or anything I missed?
+> > There are 7 64bit architectures that support Linux COMPAT mode to
+> > run 32bit applications. A lot of definitions are duplicate:
+> >  - COMPAT_USER_HZ
+> >  - COMPAT_RLIM_INFINITY
+> >  - COMPAT_OFF_T_MAX
+> >  - __compat_uid_t, __compat_uid_t
+> >  - compat_dev_t
+> >  - compat_ipc_pid_t
+> >  - struct compat_flock
+> >  - struct compat_flock64
+> >  - struct compat_statfs
+> >  - struct compat_ipc64_perm, compat_semid64_ds,
+> >           compat_msqid64_ds, compat_shmid64_ds
 > >
-> > The system in question didn't enable ACS before commit 50310600ebda.
+> > Cleanup duplicate definitions and merge them into asm-generic.
+> >
+> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> > Signed-off-by: Guo Ren <guoren@kernel.org>
+> > Cc: Arnd Bergmann <arnd@arndb.de>
 >
-> This commit exposed the issue on your configuration doesn't mean the
-> fix should be back ported as far as that commit. I believe if you add
-> intel-iommu=on in the kernel parameter, the issue still exists even you
-> revert commit 50310600ebda or checkout a tag before it.
-
-That's true.
-
-I guess it's better to drop the "Fixes:" tag.
-
-Bjorn, should I send another version of it?
-
-Kai-Heng
+> > ---
+> >  arch/arm64/include/asm/compat.h   | 108 +++-----------------------
+> >  arch/mips/include/asm/compat.h    |  24 ++----
+> >  arch/parisc/include/asm/compat.h  |  47 ++----------
+> >  arch/powerpc/include/asm/compat.h |  47 ++----------
+> >  arch/s390/include/asm/compat.h    | 109 +++-----------------------
+> >  arch/sparc/include/asm/compat.h   |  39 ++++------
+> >  arch/x86/include/asm/compat.h     | 114 +++-------------------------
+> >  include/asm-generic/compat.h      | 122 ++++++++++++++++++++++++++++++
+> >  8 files changed, 191 insertions(+), 419 deletions(-)
+> >
+> > diff --git a/arch/arm64/include/asm/compat.h b/arch/arm64/include/asm/compat.h
+> > index eaa6ca062d89..f54f295efae3 100644
+> > --- a/arch/arm64/include/asm/compat.h
+> > +++ b/arch/arm64/include/asm/compat.h
+> > @@ -5,9 +5,18 @@
+> >  #ifndef __ASM_COMPAT_H
+> >  #define __ASM_COMPAT_H
+> >
+> > +#define COMPAT_RLIM_INFINITY           0xffffffff
+> ...
+> > +#ifndef COMPAT_RLIM_INFINITY
+> > +#define COMPAT_RLIM_INFINITY   0x7fffffff
+> > +#endif
+>
+> While this is a correct conversion, I think the default should
+> be 0xffffffff, to match the asm-generic RLIM_INFINITY
+> definition, with only mips and sparc getting the exception
+Okay
 
 >
-> Best regards,
-> baolu
+> > -struct compat_flock {
+> > -       short           l_type;
+> > -       short           l_whence;
+> > -       compat_off_t    l_start;
+> > -       compat_off_t    l_len;
+> > -       compat_pid_t    l_pid;
+> > -};
+> ...
+> > +#ifndef compat_flock
+> > +struct compat_flock {
+> > +       compat_short_t  l_type;
+> > +       compat_short_t  l_whence;
+> > +       compat_off_t    l_start;
+> > +       compat_off_t    l_len;
+> > +       compat_pid_t    l_pid;
+> > +} __attribute__((packed));
+> > +#endif
+>
+> You are adding __attribute__((packed)) here, which I think has
+> no effect on the layout on the structure on any of the architectures
+> but it does change the alignment requirements needlessly.
+>
+> Better leave it without the attribute.
+Okay
+
+>
+> > -struct compat_flock64 {
+> > -       short           l_type;
+> > -       short           l_whence;
+> > -       compat_loff_t   l_start;
+> > -       compat_loff_t   l_len;
+> > -       compat_pid_t    l_pid;
+> > -};
+> ...
+> > +#ifndef compat_flock64
+> > +struct compat_flock64 {
+> > +       compat_short_t  l_type;
+> > +       compat_short_t  l_whence;
+> > +       compat_loff_t   l_start;
+> > +       compat_loff_t   l_len;
+> > +       compat_pid_t    l_pid;
+> > +} __attribute__((packed));
+> > +#endif
+>
+> This one is different: on all architectures other than x86,
+> the added packed attribute changes the size of the
+> structure by removing the four padding bytes at the
+> end. x86 originally added the attribute here to work around
+> the weirdness of the x86-32 ABI that aligns 64-bit values
+> on a 4-byte boundary.
+>
+> The easiest workaround would be to have x86 keep its
+> custom definition. A slightly nicer version would drop the
+> attribute on x86 as well but instead change the compat_loff_t
+> definition to use compat_s64 instead of s64, giving it the
+> correct alignment.
+Okay, I would leave x86 origin first.
+
+>
+> > -struct compat_statfs {
+> > -       int             f_type;
+> > -       int             f_bsize;
+> > -       int             f_blocks;
+> > -       int             f_bfree;
+> > -       int             f_bavail;
+> > -       int             f_files;
+> > -       int             f_ffree;
+> > -       compat_fsid_t   f_fsid;
+> > -       int             f_namelen;      /* SunOS ignores this field. */
+> > -       int             f_frsize;
+> > -       int             f_flags;
+> > -       int             f_spare[4];
+> > -};
+> ...
+> > +#ifndef compat_statfs
+> > +struct compat_statfs {
+> > +       compat_uint_t   f_type;
+> > +       compat_uint_t   f_bsize;
+> > +       compat_uint_t   f_blocks;
+> > +       compat_uint_t   f_bfree;
+> > +       compat_uint_t   f_bavail;
+> > +       compat_uint_t   f_files;
+> > +       compat_uint_t   f_ffree;
+> > +       __kernel_fsid_t f_fsid;
+> > +       compat_uint_t   f_namelen;
+> > +       compat_uint_t   f_frsize;
+> > +       compat_uint_t   f_flags;
+> > +       compat_uint_t   f_spare[4];
+> > +} __attribute__((packed));
+> > +#endif
+>
+> None of the architectures use the packed attribute at the moment,
+> so please don't add one here.
+>
+> Changing compat_fsid_t to __kernel_fsid_t is harmless, but seems
+> unnecessary.
+Okay. I would add another
+typedef __kernel_fsid_t compat_fsid_t;
+in the file.
+
+>
+> Changing the signed int to an unsigned int (regardless of notation)
+> may be a change in behavior. s390 is the only architecture
+> using unsigned members here at the moment, as of b8668fd0a7e1
+> ("s390/uapi: change struct statfs[64] member types to unsigned
+> values").
+> The description of that patch sounds like this was changed to fix
+> a bug, but I don't see what the actual problem would be in the
+> put_compat_statfs().
+>
+> For the moment I'd suggest leaving this with the signed version,
+> with s390 being another exception next to mips. We can follow-up
+> with merging s390 into the common definition using either the
+> signed or unsigned types, but I think that needs to be a separate
+> patch with a detailed explanation.
+Okay, I would leave s390 origin first.
+
+>
+>  +#ifndef compat_ipc64_perm
+> > +struct compat_ipc64_perm {
+> > +       compat_key_t key;
+> > +       __compat_uid32_t uid;
+> > +       __compat_gid32_t gid;
+> > +       __compat_uid32_t cuid;
+> > +       __compat_gid32_t cgid;
+> > +       compat_mode_t   mode;
+> > +       unsigned char   __pad1[4 - sizeof(compat_mode_t)];
+> > +       compat_ushort_t seq;
+> > +       compat_ushort_t __pad2;
+> > +       compat_ulong_t  unused1;
+> > +       compat_ulong_t  unused2;
+> > +} __attribute__((packed));
+> > +
+> > +struct compat_semid64_ds {
+> > +       struct compat_ipc64_perm sem_perm;
+> > +       compat_ulong_t sem_otime;
+> > +       compat_ulong_t sem_otime_high;
+> > +       compat_ulong_t sem_ctime;
+> > +       compat_ulong_t sem_ctime_high;
+> > +       compat_ulong_t sem_nsems;
+> > +       compat_ulong_t __unused3;
+> > +       compat_ulong_t __unused4;
+> > +} __attribute__((packed));
+> > +
+> > +struct compat_msqid64_ds {
+> > +       struct compat_ipc64_perm msg_perm;
+> > +       compat_ulong_t msg_stime;
+> > +       compat_ulong_t msg_stime_high;
+> > +       compat_ulong_t msg_rtime;
+> > +       compat_ulong_t msg_rtime_high;
+> > +       compat_ulong_t msg_ctime;
+> > +       compat_ulong_t msg_ctime_high;
+> > +       compat_ulong_t msg_cbytes;
+> > +       compat_ulong_t msg_qnum;
+> > +       compat_ulong_t msg_qbytes;
+> > +       compat_pid_t   msg_lspid;
+> > +       compat_pid_t   msg_lrpid;
+> > +       compat_ulong_t __unused4;
+> > +       compat_ulong_t __unused5;
+> > +} __attribute__((packed));
+> > +
+> > +struct compat_shmid64_ds {
+> > +       struct compat_ipc64_perm shm_perm;
+> > +       compat_size_t  shm_segsz;
+> > +       compat_ulong_t shm_atime;
+> > +       compat_ulong_t shm_atime_high;
+> > +       compat_ulong_t shm_dtime;
+> > +       compat_ulong_t shm_dtime_high;
+> > +       compat_ulong_t shm_ctime;
+> > +       compat_ulong_t shm_ctime_high;
+> > +       compat_pid_t   shm_cpid;
+> > +       compat_pid_t   shm_lpid;
+> > +       compat_ulong_t shm_nattch;
+> > +       compat_ulong_t __unused4;
+> > +       compat_ulong_t __unused5;
+> > +} __attribute__((packed));
+> > +#endif
+>
+> I checked these in detail, looking at the seven architectures, and your
+> conversion looks exactly right (I had initially missed the part about
+> compat_mode_t that you got right).
+>
+> As with compat_flock, the packed attribute has no impact on the layout
+> here, but please drop it anyway for consistency.
+>
+>         Arnd
+
+
+
+-- 
+Best Regards
+ Guo Ren
+
+ML: https://lore.kernel.org/linux-csky/
