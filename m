@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689FE4A3210
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 22:40:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78FD84A3221
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 22:57:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JmSS51ky2z3cDN
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 08:40:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JmSpv36Bvz3cRs
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 08:57:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.131; helo=mout.kundenserver.de;
+ (client-ip=217.72.192.75; helo=mout.kundenserver.de;
  envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JmSRb48mcz2yK6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 08:40:25 +1100 (AEDT)
-Received: from mail-ot1-f46.google.com ([209.85.210.46]) by
- mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1M7ehh-1nAL5l23H3-0084rD for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan
- 2022 22:40:20 +0100
-Received: by mail-ot1-f46.google.com with SMTP id
- e21-20020a9d0195000000b005a3cd7c1e09so2500415ote.6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 13:40:19 -0800 (PST)
-X-Gm-Message-State: AOAM531uLpvJ4AYUHce7VAkQnVzDRXME4iWY28icHTG0Cu4Wt6OZ70Q+
- GHniq/a6yOt1EJ8l35zGvlv2g1kpNO3B0qSHhp0=
-X-Google-Smtp-Source: ABdhPJxSc4cWbyXoSGQiQtpLi4PNMIRU496vg4S4jN8fyO8Z/BY7E62yNehuKgdWMqyCyzVpdMc329RL2rEKIxjEMaU=
-X-Received: by 2002:a9d:73da:: with SMTP id m26mr8391513otk.72.1643492418274; 
- Sat, 29 Jan 2022 13:40:18 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JmSpS3m2Gz2yQC
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 08:56:47 +1100 (AEDT)
+Received: from mail-wr1-f47.google.com ([209.85.221.47]) by
+ mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MGz9p-1n0xQ13i2V-00E6fm for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan
+ 2022 22:56:42 +0100
+Received: by mail-wr1-f47.google.com with SMTP id l25so17743221wrb.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 13:56:42 -0800 (PST)
+X-Gm-Message-State: AOAM532k2vfKvYStEaYyIo+ZdQazPsTzJwUNxueXyQ6qwR+3nJI0NsEn
+ suvLmtO/MyfD9pTxmybu5iH2A+OWrQFL81M71Ik=
+X-Google-Smtp-Source: ABdhPJwc5Xijmfuq1knxS/SFbXOQYffcGfosuG5ZO2lbKDIA+jheKOcNNo8uA5Z4TCV2skF+ogyeNdBrzcg4f0zq/zU=
+X-Received: by 2002:a05:6000:144f:: with SMTP id
+ v15mr12082870wrx.407.1643493402481; 
+ Sat, 29 Jan 2022 13:56:42 -0800 (PST)
 MIME-Version: 1.0
 References: <20220129121728.1079364-1-guoren@kernel.org>
- <20220129121728.1079364-4-guoren@kernel.org>
-In-Reply-To: <20220129121728.1079364-4-guoren@kernel.org>
+ <20220129121728.1079364-7-guoren@kernel.org>
+In-Reply-To: <20220129121728.1079364-7-guoren@kernel.org>
 From: Arnd Bergmann <arnd@arndb.de>
-Date: Sat, 29 Jan 2022 22:40:02 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a0jK4quTT6txPakQuuAjyoMXRq1eM35pCFLo0PQNq+p2Q@mail.gmail.com>
-Message-ID: <CAK8P3a0jK4quTT6txPakQuuAjyoMXRq1eM35pCFLo0PQNq+p2Q@mail.gmail.com>
-Subject: Re: [PATCH V4 03/17] asm-generic: compat: Cleanup duplicate
- definitions
+Date: Sat, 29 Jan 2022 22:56:25 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3_kVB78-26sxdsEjb3MMcco6U55tc7siCBFZbJjyH6Sw@mail.gmail.com>
+Message-ID: <CAK8P3a3_kVB78-26sxdsEjb3MMcco6U55tc7siCBFZbJjyH6Sw@mail.gmail.com>
+Subject: Re: [PATCH V4 06/17] riscv: compat: Add basic compat date type
+ implementation
 To: Guo Ren <guoren@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:HwPiD/p6/eeHsGfaIcl5o38PkbPW+VVoRaEp9MTMMs7X9Q6rdW5
- Nkn/g3TSDxPaA4sux7JRc7cWbrgkw6XggrrWYrAQrhxQrSmHiigQM5vQ/48Oj5QCYLWXdTF
- GyIGGJ8sSmXTAc0VTvXbqmlPVznz/q39isGMQxzaKx/k2cSDT9eciD/kWdQujRs1NAVAaPP
- b3rFFUohAZIyGflb6JZRQ==
+X-Provags-ID: V03:K1:dKToKZ4aYeDVa+vMHk7FxXw6eQ5MFAOvAkkLFe5obeKeKD3Kr98
+ 38+xrbnKyBip47URe7kYvSxw1pHF+fe+TIagmkEsEyzFz3hUu0Gnga6WcSrtruC5VUv3Av1
+ 2T0VPOZT09fUI6JA1J6kq5f3yYUkT7+WoURjbQnvVLMAA+pKc3JhCNZAR/g7Dmvj3jUIowJ
+ i8n4lFLck1jlBQBGH7UzQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Io9H2hf2r4k=:DYjA0QpXNlB17fh7CJFSs1
- Ph3U1J6dkKj7+b+wJKf0pJxU5zzu9Srt013R8CjwUUbO4w6BRU0UwPqsqg/GO8endkcdSQQUY
- R+NXjfbw4itMvXyTY5pkPyo4l28A6/afQE6oOq2Prz2Bo4avtD8w8RcwoILjPyvsNm9ZeeZRk
- j/m1247k6JOAFIEWBpfylq4RmZI84s8QGZ8bChonDeftTl2kPVk/yHjKMC9ZsM1Soy/sYCDPk
- wwiDff+Ksh2CnLRKMcgRT38iz7xoYmU73aBDxEXMLpKSH1NXeid/6Q4AKhBYf/ed62peGlUmM
- I2HDsI1/qw37we+F/pAZI/9DJ/8MbTc8zaha4ObXQoFDTjqRxSBEWgG16iM8uFiIuccAc3tK3
- YxZVI0Plyy66AVDAKEzRygI/P1vLoH96GmKMhqMXDs8XcBRBlzc39t/05PvOunQlLV6PCJ3/+
- X49rNvux+3uZ0v0IYJq8jwlBxH8E+naAFttsWAeCxHbUqvzSaVDLaYNDwx7suaEoNvH2qtaZV
- nqzkn/YH2POPpR6PNII1Ssjjwukt82csBySfHugu6CUDTQAOQWsArSNyfdLQ+zwREz198k+WV
- 6uP1QwRkr28KnFXm/Qt/0d/LrAg4TbmZUcn4t2n0kDIyeVk6rPSkLIVTwvdgxSdkdeU0QykLB
- zrTHk27LtRusdMhM5OarICOzGMGdK9TjOHpWEe2+2N2QAMq10lKOdxXnWfzcXvzpq8r7E9hNY
- EtprgI42IL6XIatvOCsxS8Dg6mPIoDsTlMSAsMqvztFrSANn44hVsNjuOoHUpIG9SpkCSJM37
- sUEE6qeAPIyKR3pUKtKQHQw2hi8TgpFJ4nYuzI5HWuP5YnpDhY=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lnSnXu3EVyQ=:a+hTj/aPjV7yIN/QNGojJU
+ Kr2JWH+NG4DeoI7lndhhx59iKOmswyfYQm/7+6btfsCnk0xu6pC1uqHI6LeAFCfwN3xPH9XCP
+ ObE70bB5dYeHl7OYy9R+mFQEyKcq8syraMwgW0mpfrxB1AaXkvedY44BJ+EH1U1U5nd7S9Wrb
+ prFRMZKYiYzFb2FtvyOsH1Kxu7XAFblMb2tFn6OR0u1M9L8qlXOsI9TXchJ5TLKiopjmFERpk
+ PqQqBhf40HK8PQMHslGbNkNbVrpn1xb2QQssP3IR03kwwA5p7/Ee7ISAudXWxOk1cyUgKi6BW
+ uB30DS7bnmWF7qI/8H5WA/0OX6LqcVuM9Dmv16betc4rb+4RGyXElg+QAANoM/F19kuMXsvu5
+ a6t2m1LrZhvjhWDDAbuck1+h4RftcoRgsYAJVU4WiHTOOJRqx6Q36xEn0goJOWDAB0FX/AIzu
+ gDNdQQ63urdUNJE2cdPHtZ/wF9mOv4ETBUgrXyPekm+ShYmi+rtGkSlGiHbDrfpFv/w982/9s
+ 3nZXc2R04ciUTDJA50qirZ4uVMX+5zIuf3iPJg+AqBgiW0UudQAmQTUe40s4yafpzoyMx4O1t
+ +SGMVkHh+314J78k00r+KzoUhg7R23rO3fQOZpZYYyq9ZMvIZz4pD1yvH0gQaMEFabSSFxAeu
+ i71HpEgOOpWljQjC9+GO5KiLXASXXX0GVxXqKfZbyTZboBQ/vB3bRSXbdYTFTJ4ktGQf1OaC3
+ Rbpmgy6X7nxjBG5xgzHI685TOH6TjnXiyeulzwpEaO5cK2iwcIXC8PIBs2JOxwsLG1vKinY1Q
+ 5c/6oXEmGE+8F/eDBCptvq2X5/Gh/xFEMHky3QOn2OS6pfVyrM=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,28 +92,16 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Sat, Jan 29, 2022 at 1:17 PM <guoren@kernel.org> wrote:
+> +
+> +#define COMPAT_RLIM_INFINITY   0x7fffffff
 >
-> From: Guo Ren <guoren@linux.alibaba.com>
->
-> There are 7 64bit architectures that support Linux COMPAT mode to
-> run 32bit applications. A lot of definitions are duplicate:
->  - COMPAT_USER_HZ
->  - COMPAT_RLIM_INFINITY
->  - COMPAT_OFF_T_MAX
->  - __compat_uid_t, __compat_uid_t
->  - compat_dev_t
->  - compat_ipc_pid_t
->  - struct compat_flock
->  - struct compat_flock64
->  - struct compat_statfs
->  - struct compat_ipc64_perm, compat_semid64_ds,
->           compat_msqid64_ds, compat_shmid64_ds
->
-> Cleanup duplicate definitions and merge them into asm-generic.
->
-> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> Signed-off-by: Guo Ren <guoren@kernel.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> +#define F_GETLK64      12
+> +#define F_SETLK64      13
+> +#define F_SETLKW64     14
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+These now come from the generic definitions I think. The flock definitions
+are just the normal ones, and AFAICT the RLIM_INIFINITY definition here
+is actually wrong and should be the default 0xffffffffu to match the
+native (~0UL) definition.
+
+            Arnd
