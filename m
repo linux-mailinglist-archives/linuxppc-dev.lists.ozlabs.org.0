@@ -1,54 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29DEF4A30F7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 18:05:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10EC04A3102
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 18:26:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JmLKz0VNKz3dq6
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 04:05:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JmLq365P6z3cTn
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 04:26:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::61f;
- helo=fra01-mr2-obe.outbound.protection.outlook.com;
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::624;
+ helo=fra01-pr2-obe.outbound.protection.outlook.com;
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on061f.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e19::61f])
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com
+ (mail-pr2fra01on0624.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e18::624])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JmLGx245tz3bSk
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 04:02:33 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JmLpZ6kDpz30RT
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 04:26:29 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PzdIMkfYAmkDVNuC5iZTEa+JF/y3u6ACtcnoxro3KRT/FsrF5zKNrnMnkzuOFk89GL+uL29u5dH6qvJEG8+RTEbtlIEORha6L3aK9S4sFXoLc5TL+Eyns70Jnm9AYgEiErXcyTW/LulCOcVmZp9GPMtpgxYJOljvMCkmc7346Z3dHefuK03Cup/TpJkT4u5g1CIhrAS10BLmXo5Wz9cr1zpnMq37PMJMQoBGJlSZX8iMhWVBDS7pc0kczRWHbB7Og05pslfZeeJUHPfopaQV8QhfrFNG6WZhK+DL6HOXDenmqRa+86AYl2JCSPh672Ayw9Zup23FFIgHqO8SOWXsmQ==
+ b=TltKpYPJ1em+bjEvAzLjDkCqvTkuEfugWfu5Ihvpi6b1YyE5VNYDE4+T9jyZ9K+f8Iu09LJNyLXLgRXxUVtFyIjx0nXZlMBJFGLDcAxkDcq8VWlYLq2Qc5xSxc26Jcsg8pFD6/E4TgtXWXznOYqquK9H3QGeXjjfT5YQJP0XRJkT5zoUJv+vva3MRl3RdTZLGbw8EbRrTJmFbLqQnhDBpjDAts/BR333d2qFcAPxyHVOWTHpuKHI/gdzJLFCeAOvG8obJwwyezpBZezOGtrFDFXD5Nmjk23AFscgxD/dbzV9T+heKNjuiNQH2MbFn0mUYjNQkr+z0tAMiol78rGMNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hDmVjj830CtXExXD123euZ+os2WqKPyfIrNuhETOUf0=;
- b=GmBMH1vQPoffveeJA/PM3mu66uzJI8l3WPBZBVGMB/y/JtmkzqjdbnubmxOcG2djLuuhURUDMFDQoaH7uPCo9Qjh7s2wcxN6QfHc01iJZ9zAvrYYTGe4MonFxfYjP81sqoLM7ZehJ9Go+nXpDgrm+GekIUO/jNJz0c6W8qSnIUcO6EXro+ZduaBzPviQ8QTdDPAwYm50y8Ik7Llht7J6bfQEaMYBPUN43ZbW5pejks9bsG4Iodd4qCX+/N57RJYjszzSNQ4H1tG45nthmh+SbY1c+odwTKyJRGJNrLr4PZiLH+AsFkDQWzAHYh6/LQwboduK4re8mb/D3sG4nMUohw==
+ bh=lcOpz9eajQJFeiRyzrmAw6ZfxgpsuhE+U14bbWOHbts=;
+ b=TbAGWcwmoUNtwuRYbooDr1D3lT0AmVtKfkKIh2Bnnhpx6y7vh+HThN3rZ5iRqXMSp9o2RC3BZmr8NIGxfeOq+bweK1hqUofh/+S9nv0wS94NWunRDmolct6QrZD5MNO0QEOyN1obJlSBYaIigVAvWUfkgOUTYPmqTiAn+y4lJVuRW2f6cvuGM8pQeEx83NHi7RhSSdmsn5Pi5tug+3iFNkhYuqbnMgUnXfkUINmf3+w6wobujz4TeMzZT0+AtEQ/Vhw84gHOYem64DDvgR/gIgrnKHZ2sFqxAmjS8vhT/ljfATsM+QPoD+hPrWLmUIP4lWoyFt+F4GUrKErbQ5uYmQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB2584.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e3::17) with
+ by PR1P264MB3760.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:184::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.15; Sat, 29 Jan
- 2022 17:02:14 +0000
+ 2022 17:26:08 +0000
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::c9a2:1db0:5469:54e1]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::c9a2:1db0:5469:54e1%6]) with mapi id 15.20.4930.020; Sat, 29 Jan 2022
- 17:02:14 +0000
+ 17:26:08 +0000
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Luis Chamberlain <mcgrof@kernel.org>, Jessica Yu <jeyu@kernel.org>
-Subject: [PATCH v3 6/6] powerpc: Select ARCH_WANTS_MODULES_DATA_IN_VMALLOC on
- book3s/32 and 8xx
-Thread-Topic: [PATCH v3 6/6] powerpc: Select
- ARCH_WANTS_MODULES_DATA_IN_VMALLOC on book3s/32 and 8xx
-Thread-Index: AQHYFTH2Z+9BZHr+mkubHJQ6ewTMHg==
-Date: Sat, 29 Jan 2022 17:02:14 +0000
-Message-ID: <04a0d5550f331d68f7eab4b512d50978712f989e.1643475473.git.christophe.leroy@csgroup.eu>
-References: <cover.1643475473.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1643475473.git.christophe.leroy@csgroup.eu>
+To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+Subject: [PATCH] [Modified for 5.10] powerpc/32s: Fix kasan_init_region() for
+ KASAN
+Thread-Topic: [PATCH] [Modified for 5.10] powerpc/32s: Fix kasan_init_region()
+ for KASAN
+Thread-Index: AQHYFTVN6EqEPIrrqUGSKWDgaBIRQQ==
+Date: Sat, 29 Jan 2022 17:26:08 +0000
+Message-ID: <247bff242993dd6c8975a4f1248d822a448701ac.1643476812.git.christophe.leroy@csgroup.eu>
 Accept-Language: fr-FR, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -56,62 +54,62 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=csgroup.eu;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c8448cf0-569c-4b8b-c1a8-08d9e3491907
-x-ms-traffictypediagnostic: PR0P264MB2584:EE_
-x-microsoft-antispam-prvs: <PR0P264MB25847AFC69401D65E4663A16ED239@PR0P264MB2584.FRAP264.PROD.OUTLOOK.COM>
+x-ms-office365-filtering-correlation-id: 4311e9a6-e829-49e2-0023-08d9e34c700e
+x-ms-traffictypediagnostic: PR1P264MB3760:EE_
+x-microsoft-antispam-prvs: <PR1P264MB37604DB90E0F9CA8A1CA6E86ED239@PR1P264MB3760.FRAP264.PROD.OUTLOOK.COM>
 x-ms-oob-tlc-oobclassifiers: OLM:5797;
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: iwv5BXfDzUnohE3Dhxxj3ViUEOzp38nRo/dx/VgebUiBPwRV9YmfDJbKwgK6+r4yiqqWejLAao2JiSi38V40BrAL2jiV36cPOHBxFW7+/lBX5/yriRbsohIMXTfuTN2hzlIqQVKsAHGhp33IioH/W2YkuJtJl9D6ljuhQR7uo7h98qLjk/V/bHiyLyTRuZh4k2ytLgiu90u9DFIe0S3K7ByVv3VFeeSjeV+PNHbdXTJeap3QfOg5bnUXLWfK5kDmcKGz2aduCSu+qHbk+j4GzKfycFqAOVFS+SQ742DNj9NbcI3u5PVW9WMzmn5QUggMgKQnE5w3o1DCE9/+ngAWa2N8cIXonrpvNHytzGUiWcjlPrSjXspJ53xsLAYQEDOmSaaw6Ftq3lJM1s1agvzVINB+I+fENd52KLy0qKVwWbzaoNmEHEIFkf1sajYzqn7GcCF1nbbIWGIHuHsQbkB8UruowWYZuxuu+8iboawcu0AOlIq1hmk/A+PoVUoL0Yg3uzDishAkdhfZi0KrrNtC2VBxHXJ67/pZOgAuQRy6m3tWjLG35cxoMY+2Yy4rYm2/o09kxI7ujAevof/XCR8K9mOAW0glv2leh0Q3tWgZMZH5q1RFwBScWLF5dmhFnu+r0Io4cvHl6GY23JbZudnXxc8V6GFEadJtWkrQNwuyGnm8G+qzV/67a0RCfK1xxsc962Ofb/5VCQzYUCGXolleQwjvXPDS0VwHuLVQcQ9cVOY=
+x-microsoft-antispam-message-info: 6NXXt1vuWbPlKgfrYDqGEbF47SKtyEV10JIdaQB6kZtUpNKTi1QgJ/iMfxj6Idc3CfTfooQ7LUkArILrZ6JXTXQfY/3K6NPBLYOsg8t/pOHFaOR/AcYs9X90Hq/HR3uF1Vy4np7eufKUTPCCYp2wN4trABYLME+CDaz9qQDd4ViFXuDMrSVUP7QU7KVEuFS8ejnHv3bDAq+R+M7Q153X8r6Z9dvwTQwKp4aCWGgk3CYl5gC/4hoN+yRf7fHe63SMAy2z6BrnKqTYBxaQZAjtXZwk2zQ1K2UI8ZiIy44jQz0pePvQdkqhF6Lp+VD9R86U3eTbE3//QeiqkCE7i8S0gMPKguyJhMxdh1rRWMHpRs12Up0MEuY9QGsxqrMBkMEL7/REzQSH71pfkxWTrG/IhfOJnFLa72OMGY14CqYgHM8zcH53YPCfWpCQm8OK2mTMDRoUteMy6xBhyRl1s9DnNQPTnBjdybTIoUY4SfAMD018FcJa93JuBtnb9NlX81PGNcI3p/HPYC3XaPsXShgA6xbuNGezcyyDb1u+cRA33ESD/j3tFfqS8kQ/QbiKzntVHdRIwF8/4p3u+7vVjiU9iFYSTCV+QQ03fpKHa/8SILNO+uYqqT1KWlRIdWyCwaUPmEMWnyWb7pyLehu+EcizyMXQFrKyHalK5n0kx4aBR1AMzCrM8691hvP/c7nlIAvD2Q2kqaWaXRUEqSE3oK9ycFZCWMSAYGHk66QxvaJj5+SDEOHUdQj0Bv+yX2i6JpgX/P9jBzV3VGp21DsyJN3L7l1/okNW12wYKB8LZlb2tJQ=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(54906003)(110136005)(6512007)(2906002)(86362001)(6486002)(508600001)(4326008)(122000001)(38100700002)(91956017)(316002)(76116006)(26005)(64756008)(6506007)(8936002)(186003)(5660300002)(44832011)(66476007)(66556008)(71200400001)(66946007)(8676002)(66446008)(83380400001)(2616005)(7416002)(36756003)(38070700005)(32563001)(20210929001);
+ SFS:(13230001)(4636009)(366004)(26005)(44832011)(64756008)(8936002)(66946007)(66556008)(66446008)(71200400001)(66476007)(186003)(122000001)(5660300002)(316002)(8676002)(4326008)(91956017)(38100700002)(76116006)(2616005)(38070700005)(83380400001)(36756003)(6916009)(2906002)(54906003)(6506007)(6512007)(966005)(6486002)(86362001)(508600001)(20210929001);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?j73f71ns0JUnRc3p8L3L7g8Z4IvNoRIeizCMijE2bSQI4DpV3pUISSxIMv?=
- =?iso-8859-1?Q?mzb1QiLYfaneeZY6SxfvVc38aUbQJ4IG/vBvgeXZnp77QiDlCsY5Czwyie?=
- =?iso-8859-1?Q?jteFq/OG/nLKmFLKzc0Grz2cQhEbQkiwDhmtCHaRCqiLtfuefpZlGqaOMM?=
- =?iso-8859-1?Q?u/OKkZgwEOcPKatp9+Gf6bENwAUSeYMUFx8MksOVwlqGr76wkLEQ4Q84nA?=
- =?iso-8859-1?Q?IHEBpwM3xF4Cjfnz6z1R9jW96Uwu5WD2PJBpbbx29y2PzR2Wgl5STsbRSj?=
- =?iso-8859-1?Q?AxyfKAq6DsssLpsmtzRmN5L7DWpUAk63GC2+aaocPyJVO7JlXAwQqGS5m2?=
- =?iso-8859-1?Q?Ym5bC0veMAmaRPAZY1wxIh4VDIBqNRHtUSa0BZZsyalFKycBwBAVoZWsAP?=
- =?iso-8859-1?Q?n+0QOcL01AZwkS+mgmiFa7Q9kjdcNYXNDQpajtDYNyzz+tf9JnaqCO4UQU?=
- =?iso-8859-1?Q?B2WZcfc2Eepa/U5vPwhUert/GMlLz3dBMIhr9UqHK0hITi0BTTOEJid/rq?=
- =?iso-8859-1?Q?qXQ56ttalTeyXIp08TpJHYTZ+bE9+vrlrX3SHkmmxjWUnzMDDsCw7BrF91?=
- =?iso-8859-1?Q?l2KFsjE276J4nmv/5QpQPB5kNTfruNrjYhR05FnYh6vJ42QAUCjpsf/eZB?=
- =?iso-8859-1?Q?p0kv4q/ywLniv6gnF9VryRl255wgY71486gVzn1JbtQ0z6be01uot6JB+K?=
- =?iso-8859-1?Q?I02meSVAp37objuh2K4xdlrKcx+TbpX3mkEwwSNdUwEoWfu9mOTp1CHJsc?=
- =?iso-8859-1?Q?2q3/h4expdtXeYqCKoaF54ab/9GCXsrHV7oT2KyTmCJ7fqpEK3w3OHHrD+?=
- =?iso-8859-1?Q?2mkkeFQWpXPUC/aJIFb9FJiZS5QJYhfCpJvC1RsymC+5u2q+dzm6ClQZl0?=
- =?iso-8859-1?Q?4v3Zh0M5fi/UGDUPb5Xk5+hj9bIB5lIq5P8U8Mb1IsxL6p+CNswdYobuY1?=
- =?iso-8859-1?Q?wgovDwcHSMlH8u8O8JF+2NEpN5sjXKi4MO+W4ZSnTEOAHd+CkOw6ET8yMs?=
- =?iso-8859-1?Q?D9eJrYLHf9/ANSycaUa6LOAx621hXxWI6zAZ/ixf3eFCpuBUedX8lPM0wk?=
- =?iso-8859-1?Q?tEK6ZfGDpjABnYSyxaHrvryCfWyyKcnl//DS9dDMmzbGhBnyTASFLOYrpo?=
- =?iso-8859-1?Q?dWLXwo4zdR6aq1f4nJAh9z6dMK7GP+CT+tijozU7Ja3gGXTgH88/2h072t?=
- =?iso-8859-1?Q?8ReoWjkVPyV+ExjEVLLOOtD3QGmByXiwvQFENkjDhOftF8WDu+PS5zQ6vr?=
- =?iso-8859-1?Q?NSs9lprBNj5yIynZTo7kK7JSgV+EjLdYyvIhEEkW3qGxy+Xq3yajeWueYA?=
- =?iso-8859-1?Q?YxXNGl0qZT5knwTc4B/4zrChWa1O9Vwe3ePyCkF2VdLhJfFhwwQCYW0U5O?=
- =?iso-8859-1?Q?OMO9U30s0WUxE4CS/IqDOnXt3C9SEzyFaxMt8nnQJqWXFONh9p8pZjr3Lx?=
- =?iso-8859-1?Q?6EsAzGGs0RR8RsfqNegeiPu/+W8HNp3ITtYHNaNX/Ln1ARvEX8F7Ep8q2P?=
- =?iso-8859-1?Q?OGPY2hYc8epSLdNhT1jrJHFuSu76l93K0BSXx85uHjY9jpvAtqqeXZRCSt?=
- =?iso-8859-1?Q?lQ7FVMcbxQU3AqW4S27niYuqsS/xr+m3NbFAQJQ+voFMma7kfxx+NXPxlC?=
- =?iso-8859-1?Q?O2tDfDjVzVpQR7L4KRMS3qf9T9gj+ManbYnQKsqiZ3covKFzpsHiu5YPhE?=
- =?iso-8859-1?Q?++E7N8ShMfxyynz+40QXXjDXHsSIACrTukK0iZ/E408g9otiAm/yQL8fQ7?=
- =?iso-8859-1?Q?x1qHxTsBWsQmrHAFX7SizpTbY=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?zO9NySwInUL/WpzOqVjxdZtPmukO8kEfXIqij6vPo669wNMyBPqbmFaBb5?=
+ =?iso-8859-1?Q?UN+h+VXVT1QuFbpHfdq91CnOCj+B3RJNiRs7WXSTP+pwN8UEI7SZwO3QBe?=
+ =?iso-8859-1?Q?oWjreocglJXMytvwPL6sjq3VAXbq2GNIgQNJxRlhFLebhLDN6GGuJ0dd8O?=
+ =?iso-8859-1?Q?nD29qTds4+EiLFYUBK74qbtDSLny+OMs/+kp8TkJPyO2lmTCKB0XVKbfej?=
+ =?iso-8859-1?Q?6TcpPY8Ts7Yyuizshm4oFYNkheTRB5UebAj7pPuy+G5J8bT+9XarLZB/4y?=
+ =?iso-8859-1?Q?e9hgo5JK7/m1Kur/xT0HD/4QkG8Io5oy8F951AoYWYSi16gUvmsVfq/1gW?=
+ =?iso-8859-1?Q?n3TZWikT662I+NV1M7lsSAFFjsz52+BTZJNeRixUfOuOSe3/cQKnHwLp3x?=
+ =?iso-8859-1?Q?s/5l4s6EutsToROK8Ap4YOhiR4FMq2eSnX6CniMMlTOr31OwBvqrBvoTDO?=
+ =?iso-8859-1?Q?AG0iOTc5NfW8d8zZiHmk8iYn4F7TqWPqwhZkWtPTMUlQtRBbmkGU+5o51I?=
+ =?iso-8859-1?Q?sfFNHoVbpAtJoTzwGtG8fnhupDg3YNjwB2o0V9BWWZwxlrZ/HRrIgexYIC?=
+ =?iso-8859-1?Q?/mfN4OiQYWGgfkuurhnIhUnSttFMD2n3T9a+/eEnC8qNg7T1FRDj6orFKQ?=
+ =?iso-8859-1?Q?ZIrv+2FZeQPlQvqE1tAllpw7HWg+TphQps48Gfqk9cpHrp1YhhUAuwIN1p?=
+ =?iso-8859-1?Q?p39l2Ig9F3DnJWUvAsOV5jWSpjglv9LtCE521Xsufh30YGLhReu9LXmSuC?=
+ =?iso-8859-1?Q?Sfmy6EjhRpbh6F0abYX1uFNyfTQnBAomvgCVrBvtF2rpc7SQBqdQgFcATT?=
+ =?iso-8859-1?Q?lPsCl6ZgTDH2cYCAm8d389EPej+Wc0OmwrM8KF9+4+8zyPo3wMly6tLwK9?=
+ =?iso-8859-1?Q?9jSz7YLNatuhzmjKVe6VQLgd7L1p5ESa7Fq+GIkTra00xwqDdmcFWbcZs8?=
+ =?iso-8859-1?Q?7X16B6nTF4r8JeWdOdCD8kCYG9/fUc9W4JzTqNUUALhQ3cO0ouDXCSM8TE?=
+ =?iso-8859-1?Q?iIOvicEvNIMJKHoSduHy8XUvA5jZoNcvvTZ/xSP8Wc9P6rEK8luc23M/sX?=
+ =?iso-8859-1?Q?5SWV+WkbRrBAswqDsNQQG6s91/M+9gLELZ6UX0EgSxyFPmlgi+Ig97sG7D?=
+ =?iso-8859-1?Q?0cbGERIuc5Ytk43RAMLsBcgPtQPvgApO1VsLAdOEglNinybKoC5P1HpWWa?=
+ =?iso-8859-1?Q?6sUtGHWZ2RJG3ZDAkeY69Ishv9azQVDGBtWHjMi9ThOdic0JfHO8ToXKNx?=
+ =?iso-8859-1?Q?OPo9DNWj8xrRqIjLNXZwtmi5SyT+1AnYVL+44PjCx03tMy5lXajecpwhqi?=
+ =?iso-8859-1?Q?u7ScsEUVO9j8fV2LFwdR2TrZkjKTe15lnXQlO9u3Vd0jAqC+kKGPITyf/r?=
+ =?iso-8859-1?Q?AmpOXtIp4v53Cgu1OaFnjrqDLQnozY5bbLHnDjDVJk0FweuTgjBnzNqxR4?=
+ =?iso-8859-1?Q?AEY5N1M76vt6V3B9mkDHn2a8Ammu35B06oX7/gG7LlTl7rnOXNY4/8fYDM?=
+ =?iso-8859-1?Q?Pg4nlkmPaaJQ43YM01ftPLmyKYCqIwi4R3LoycANOj9xRkp3Q9q6VfgMqK?=
+ =?iso-8859-1?Q?Huqg/vxRmcfBTT99vSrrLTT+pYA24vGNV6G33xcTz73ECHvY3LKaWhXJxD?=
+ =?iso-8859-1?Q?KWAKs52Zw1pALqEwnWTCPOSSzyDGvCaZN9N/Wm95RTtZaEVlKMNkogfIiG?=
+ =?iso-8859-1?Q?So+Ju41wagHNe4w7YP1cSWzKy05wcTUUyfdg8eoQ+GG0cVkAn70QhcaBUr?=
+ =?iso-8859-1?Q?lRlcebz2Se3x2Xy42mOHWGl6w=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: csgroup.eu
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8448cf0-569c-4b8b-c1a8-08d9e3491907
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jan 2022 17:02:14.0755 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4311e9a6-e829-49e2-0023-08d9e34c700e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jan 2022 17:26:08.5840 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 6djKFQr0cHMhrf6Tp+sNdDrT700aVyYKZ+t5IOoSqzEcz7ADs6/oGc5Y6d9B96S1UVn3cQi5o4s5j6QmgEjsM9VVhqWgKvn1wakt6iQfqC8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2584
+X-MS-Exchange-CrossTenant-userprincipalname: HeIFErte1RS5xk8GFLlWrfJXjWNtgIk7awA88MYfILJEVeEiV3MXhxFA9XEvyYuHT01FdfOJc/9KCRSMtCvvirx+7oCEnaPF2HqI9fi08o0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB3760
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,56 +121,221 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "kgdb-bugreport@lists.sourceforge.net"
- <kgdb-bugreport@lists.sourceforge.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Maxime Bizon <mbizon@freebox.fr>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-book3s/32 and 8xx have a separate area for allocating modules,
-defined by MODULES_VADDR / MODULES_END.
+This is a backport for 5.10
 
-On book3s/32, it is not possible to protect against execution
-on a page basis. A full 256M segment is either Exec or NoExec.
-The module area is in an Exec segment while vmalloc area is
-in a NoExec segment.
+To apply, it also requires commit 37eb7ca91b69 ("powerpc/32s: Allocate
+one 256k IBAT instead of two consecutives 128k IBATs")
 
-In order to protect module data against execution, select
-ARCH_WANTS_MODULES_DATA_IN_VMALLOC.
+(cherry picked from commit d37823c3528e5e0705fc7746bcbc2afffb619259)
 
-For the 8xx (and possibly other 32 bits platform in the future),
-there is no such constraint on Exec/NoExec protection, however
-there is a critical distance between kernel functions and callers
-that needs to remain below 32Mbytes in order to avoid costly
-trampolines. By allocating data outside of module area, we
-increase the chance for module text to remain within acceptable
-distance from kernel core text.
+It has been reported some configuration where the kernel doesn't
+boot with KASAN enabled.
 
-So select ARCH_WANTS_MODULES_DATA_IN_VMALLOC for 8xx as well.
+This is due to wrong BAT allocation for the KASAN area:
 
+	---[ Data Block Address Translation ]---
+	0: 0xc0000000-0xcfffffff 0x00000000       256M Kernel rw      m
+	1: 0xd0000000-0xdfffffff 0x10000000       256M Kernel rw      m
+	2: 0xe0000000-0xefffffff 0x20000000       256M Kernel rw      m
+	3: 0xf8000000-0xf9ffffff 0x2a000000        32M Kernel rw      m
+	4: 0xfa000000-0xfdffffff 0x2c000000        64M Kernel rw      m
+
+A BAT must have both virtual and physical addresses alignment matching
+the size of the BAT. This is not the case for BAT 4 above.
+
+Fix kasan_init_region() by using block_size() function that is in
+book3s32/mmu.c. To be able to reuse it here, make it non static and
+change its name to bat_block_size() in order to avoid name conflict
+with block_size() defined in <linux/blkdev.h>
+
+Also reuse find_free_bat() to avoid an error message from setbat()
+when no BAT is available.
+
+And allocate memory outside of linear memory mapping to avoid
+wasting that precious space.
+
+With this change we get correct alignment for BATs and KASAN shadow
+memory is allocated outside the linear memory space.
+
+	---[ Data Block Address Translation ]---
+	0: 0xc0000000-0xcfffffff 0x00000000       256M Kernel rw
+	1: 0xd0000000-0xdfffffff 0x10000000       256M Kernel rw
+	2: 0xe0000000-0xefffffff 0x20000000       256M Kernel rw
+	3: 0xf8000000-0xfbffffff 0x7c000000        64M Kernel rw
+	4: 0xfc000000-0xfdffffff 0x7a000000        32M Kernel rw
+
+Fixes: 7974c4732642 ("powerpc/32s: Implement dedicated kasan_init_region()"=
+)
+Cc: stable@vger.kernel.org
+Reported-by: Maxime Bizon <mbizon@freebox.fr>
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
+Tested-by: Maxime Bizon <mbizon@freebox.fr>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/7a50ef902494d1325227d47d33dada01e52e5518.16=
+41818726.git.christophe.leroy@csgroup.eu
 ---
- arch/powerpc/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/include/asm/book3s/32/mmu-hash.h |  2 +
+ arch/powerpc/mm/book3s32/mmu.c                | 10 ++--
+ arch/powerpc/mm/kasan/book3s_32.c             | 59 ++++++++++---------
+ 3 files changed, 38 insertions(+), 33 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index b779603978e1..242eed8cedf8 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -152,6 +152,7 @@ config PPC
- 	select ARCH_WANT_IPC_PARSE_VERSION
- 	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
- 	select ARCH_WANT_LD_ORPHAN_WARN
-+	select ARCH_WANTS_MODULES_DATA_IN_VMALLOC	if PPC_BOOK3S_32 || PPC_8xx
- 	select ARCH_WEAK_RELEASE_ACQUIRE
- 	select BINFMT_ELF
- 	select BUILDTIME_TABLE_SORT
+diff --git a/arch/powerpc/include/asm/book3s/32/mmu-hash.h b/arch/powerpc/i=
+nclude/asm/book3s/32/mmu-hash.h
+index a8982d52f6b1..cbde06d0fb38 100644
+--- a/arch/powerpc/include/asm/book3s/32/mmu-hash.h
++++ b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
+@@ -102,6 +102,8 @@ extern s32 patch__hash_page_B, patch__hash_page_C;
+ extern s32 patch__flush_hash_A0, patch__flush_hash_A1, patch__flush_hash_A=
+2;
+ extern s32 patch__flush_hash_B;
+=20
++int __init find_free_bat(void);
++unsigned int bat_block_size(unsigned long base, unsigned long top);
+ #endif /* !__ASSEMBLY__ */
+=20
+ /* We happily ignore the smaller BATs on 601, we don't actually use
+diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.=
+c
+index addecf77dae3..602ab13127b4 100644
+--- a/arch/powerpc/mm/book3s32/mmu.c
++++ b/arch/powerpc/mm/book3s32/mmu.c
+@@ -72,7 +72,7 @@ unsigned long p_block_mapped(phys_addr_t pa)
+ 	return 0;
+ }
+=20
+-static int find_free_bat(void)
++int __init find_free_bat(void)
+ {
+ 	int b;
+ 	int n =3D mmu_has_feature(MMU_FTR_USE_HIGH_BATS) ? 8 : 4;
+@@ -96,7 +96,7 @@ static int find_free_bat(void)
+  * - block size has to be a power of two. This is calculated by finding th=
+e
+  *   highest bit set to 1.
+  */
+-static unsigned int block_size(unsigned long base, unsigned long top)
++unsigned int bat_block_size(unsigned long base, unsigned long top)
+ {
+ 	unsigned int max_size =3D SZ_256M;
+ 	unsigned int base_shift =3D (ffs(base) - 1) & 31;
+@@ -141,7 +141,7 @@ static unsigned long __init __mmu_mapin_ram(unsigned lo=
+ng base, unsigned long to
+ 	int idx;
+=20
+ 	while ((idx =3D find_free_bat()) !=3D -1 && base !=3D top) {
+-		unsigned int size =3D block_size(base, top);
++		unsigned int size =3D bat_block_size(base, top);
+=20
+ 		if (size < 128 << 10)
+ 			break;
+@@ -206,12 +206,12 @@ void mmu_mark_initmem_nx(void)
+ 	unsigned long size;
+=20
+ 	for (i =3D 0; i < nb - 1 && base < top;) {
+-		size =3D block_size(base, top);
++		size =3D bat_block_size(base, top);
+ 		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_TEXT);
+ 		base +=3D size;
+ 	}
+ 	if (base < top) {
+-		size =3D block_size(base, top);
++		size =3D bat_block_size(base, top);
+ 		if ((top - base) > size) {
+ 			size <<=3D 1;
+ 			if (strict_kernel_rwx_enabled() && base + size > border)
+diff --git a/arch/powerpc/mm/kasan/book3s_32.c b/arch/powerpc/mm/kasan/book=
+3s_32.c
+index 35b287b0a8da..450a67ef0bbe 100644
+--- a/arch/powerpc/mm/kasan/book3s_32.c
++++ b/arch/powerpc/mm/kasan/book3s_32.c
+@@ -10,48 +10,51 @@ int __init kasan_init_region(void *start, size_t size)
+ {
+ 	unsigned long k_start =3D (unsigned long)kasan_mem_to_shadow(start);
+ 	unsigned long k_end =3D (unsigned long)kasan_mem_to_shadow(start + size);
+-	unsigned long k_cur =3D k_start;
+-	int k_size =3D k_end - k_start;
+-	int k_size_base =3D 1 << (ffs(k_size) - 1);
++	unsigned long k_nobat =3D k_start;
++	unsigned long k_cur;
++	phys_addr_t phys;
+ 	int ret;
+-	void *block;
+=20
+-	block =3D memblock_alloc(k_size, k_size_base);
+-
+-	if (block && k_size_base >=3D SZ_128K && k_start =3D=3D ALIGN(k_start, k_=
+size_base)) {
+-		int shift =3D ffs(k_size - k_size_base);
+-		int k_size_more =3D shift ? 1 << (shift - 1) : 0;
+-
+-		setbat(-1, k_start, __pa(block), k_size_base, PAGE_KERNEL);
+-		if (k_size_more >=3D SZ_128K)
+-			setbat(-1, k_start + k_size_base, __pa(block) + k_size_base,
+-			       k_size_more, PAGE_KERNEL);
+-		if (v_block_mapped(k_start))
+-			k_cur =3D k_start + k_size_base;
+-		if (v_block_mapped(k_start + k_size_base))
+-			k_cur =3D k_start + k_size_base + k_size_more;
+-
+-		update_bats();
++	while (k_nobat < k_end) {
++		unsigned int k_size =3D bat_block_size(k_nobat, k_end);
++		int idx =3D find_free_bat();
++
++		if (idx =3D=3D -1)
++			break;
++		if (k_size < SZ_128K)
++			break;
++		phys =3D memblock_phys_alloc_range(k_size, k_size, 0,
++						 MEMBLOCK_ALLOC_ANYWHERE);
++		if (!phys)
++			break;
++
++		setbat(idx, k_nobat, phys, k_size, PAGE_KERNEL);
++		k_nobat +=3D k_size;
+ 	}
++	if (k_nobat !=3D k_start)
++		update_bats();
+=20
+-	if (!block)
+-		block =3D memblock_alloc(k_size, PAGE_SIZE);
+-	if (!block)
+-		return -ENOMEM;
++	if (k_nobat < k_end) {
++		phys =3D memblock_phys_alloc_range(k_end - k_nobat, PAGE_SIZE, 0,
++						 MEMBLOCK_ALLOC_ANYWHERE);
++		if (!phys)
++			return -ENOMEM;
++	}
+=20
+ 	ret =3D kasan_init_shadow_page_tables(k_start, k_end);
+ 	if (ret)
+ 		return ret;
+=20
+-	kasan_update_early_region(k_start, k_cur, __pte(0));
++	kasan_update_early_region(k_start, k_nobat, __pte(0));
+=20
+-	for (; k_cur < k_end; k_cur +=3D PAGE_SIZE) {
++	for (k_cur =3D k_nobat; k_cur < k_end; k_cur +=3D PAGE_SIZE) {
+ 		pmd_t *pmd =3D pmd_off_k(k_cur);
+-		void *va =3D block + k_cur - k_start;
+-		pte_t pte =3D pfn_pte(PHYS_PFN(__pa(va)), PAGE_KERNEL);
++		pte_t pte =3D pfn_pte(PHYS_PFN(phys + k_cur - k_nobat), PAGE_KERNEL);
+=20
+ 		__set_pte_at(&init_mm, k_cur, pte_offset_kernel(pmd, k_cur), pte, 0);
+ 	}
+ 	flush_tlb_kernel_range(k_start, k_end);
++	memset(kasan_mem_to_shadow(start), 0, k_end - k_start);
++
+ 	return 0;
+ }
 --=20
 2.33.1
