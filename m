@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78FD84A3221
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 22:57:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED61E4A328F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 00:03:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JmSpv36Bvz3cRs
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 08:57:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JmVH33bYpz3cRq
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 10:03:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=217.72.192.75; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.131; helo=mout.kundenserver.de;
  envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JmSpS3m2Gz2yQC
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 08:56:47 +1100 (AEDT)
-Received: from mail-wr1-f47.google.com ([209.85.221.47]) by
- mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MGz9p-1n0xQ13i2V-00E6fm for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan
- 2022 22:56:42 +0100
-Received: by mail-wr1-f47.google.com with SMTP id l25so17743221wrb.13
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 13:56:42 -0800 (PST)
-X-Gm-Message-State: AOAM532k2vfKvYStEaYyIo+ZdQazPsTzJwUNxueXyQ6qwR+3nJI0NsEn
- suvLmtO/MyfD9pTxmybu5iH2A+OWrQFL81M71Ik=
-X-Google-Smtp-Source: ABdhPJwc5Xijmfuq1knxS/SFbXOQYffcGfosuG5ZO2lbKDIA+jheKOcNNo8uA5Z4TCV2skF+ogyeNdBrzcg4f0zq/zU=
-X-Received: by 2002:a05:6000:144f:: with SMTP id
- v15mr12082870wrx.407.1643493402481; 
- Sat, 29 Jan 2022 13:56:42 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JmVGX027tz2yP9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 10:02:42 +1100 (AEDT)
+Received: from mail-ed1-f54.google.com ([209.85.208.54]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MkHhB-1mXmIp3V5F-00kicw for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan
+ 2022 00:02:38 +0100
+Received: by mail-ed1-f54.google.com with SMTP id p7so18361355edc.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 15:02:38 -0800 (PST)
+X-Gm-Message-State: AOAM533xRTLcs8HaAj31ehLNkDIC4OYZFua05jZQ2vur10YiV+A1Bfhk
+ 3XKuJvpYooR52G963p6Ja0JtRccL2pn4/9HZS/Y=
+X-Google-Smtp-Source: ABdhPJzI0D41s8yrwHglCZkVEr0x+bK1CMwYgZgaz1NErnnr1PsIuPoCJo0tLrBweMwgRCKK6bnEP4/locNb0Mfr0Gg=
+X-Received: by 2002:a05:6000:3c6:: with SMTP id
+ b6mr11705793wrg.12.1643494389446; 
+ Sat, 29 Jan 2022 14:13:09 -0800 (PST)
 MIME-Version: 1.0
 References: <20220129121728.1079364-1-guoren@kernel.org>
- <20220129121728.1079364-7-guoren@kernel.org>
-In-Reply-To: <20220129121728.1079364-7-guoren@kernel.org>
+ <20220129121728.1079364-9-guoren@kernel.org>
+In-Reply-To: <20220129121728.1079364-9-guoren@kernel.org>
 From: Arnd Bergmann <arnd@arndb.de>
-Date: Sat, 29 Jan 2022 22:56:25 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3_kVB78-26sxdsEjb3MMcco6U55tc7siCBFZbJjyH6Sw@mail.gmail.com>
-Message-ID: <CAK8P3a3_kVB78-26sxdsEjb3MMcco6U55tc7siCBFZbJjyH6Sw@mail.gmail.com>
-Subject: Re: [PATCH V4 06/17] riscv: compat: Add basic compat date type
+Date: Sat, 29 Jan 2022 23:12:53 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3JGP6fLVOyLgdNw2YpRSmArbEX8orUhRrN=GHmcdk=1g@mail.gmail.com>
+Message-ID: <CAK8P3a3JGP6fLVOyLgdNw2YpRSmArbEX8orUhRrN=GHmcdk=1g@mail.gmail.com>
+Subject: Re: [PATCH V4 08/17] riscv: compat: syscall: Add compat_sys_call_table
  implementation
 To: Guo Ren <guoren@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:dKToKZ4aYeDVa+vMHk7FxXw6eQ5MFAOvAkkLFe5obeKeKD3Kr98
- 38+xrbnKyBip47URe7kYvSxw1pHF+fe+TIagmkEsEyzFz3hUu0Gnga6WcSrtruC5VUv3Av1
- 2T0VPOZT09fUI6JA1J6kq5f3yYUkT7+WoURjbQnvVLMAA+pKc3JhCNZAR/g7Dmvj3jUIowJ
- i8n4lFLck1jlBQBGH7UzQ==
+X-Provags-ID: V03:K1:9NQurJM7Ow8sPBNjAms2XMStkjTZByIG167Rsh4ZGFmdpA3KKr1
+ INuQsilx/cMZ6fiQNNMLc6h2M6kNbuW+HkMDRA183ah2H21xvl50BURLupEtEJLuLZPXp42
+ UIGyKdwTyuPmfETAsTpzXtMDGRj4UMlO9HWANMIpQmXatiAL9Cu4jHuDKwz9w6XEgQ6WjUy
+ D6Y+RQW5j1sFqSyWRE4uw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lnSnXu3EVyQ=:a+hTj/aPjV7yIN/QNGojJU
- Kr2JWH+NG4DeoI7lndhhx59iKOmswyfYQm/7+6btfsCnk0xu6pC1uqHI6LeAFCfwN3xPH9XCP
- ObE70bB5dYeHl7OYy9R+mFQEyKcq8syraMwgW0mpfrxB1AaXkvedY44BJ+EH1U1U5nd7S9Wrb
- prFRMZKYiYzFb2FtvyOsH1Kxu7XAFblMb2tFn6OR0u1M9L8qlXOsI9TXchJ5TLKiopjmFERpk
- PqQqBhf40HK8PQMHslGbNkNbVrpn1xb2QQssP3IR03kwwA5p7/Ee7ISAudXWxOk1cyUgKi6BW
- uB30DS7bnmWF7qI/8H5WA/0OX6LqcVuM9Dmv16betc4rb+4RGyXElg+QAANoM/F19kuMXsvu5
- a6t2m1LrZhvjhWDDAbuck1+h4RftcoRgsYAJVU4WiHTOOJRqx6Q36xEn0goJOWDAB0FX/AIzu
- gDNdQQ63urdUNJE2cdPHtZ/wF9mOv4ETBUgrXyPekm+ShYmi+rtGkSlGiHbDrfpFv/w982/9s
- 3nZXc2R04ciUTDJA50qirZ4uVMX+5zIuf3iPJg+AqBgiW0UudQAmQTUe40s4yafpzoyMx4O1t
- +SGMVkHh+314J78k00r+KzoUhg7R23rO3fQOZpZYYyq9ZMvIZz4pD1yvH0gQaMEFabSSFxAeu
- i71HpEgOOpWljQjC9+GO5KiLXASXXX0GVxXqKfZbyTZboBQ/vB3bRSXbdYTFTJ4ktGQf1OaC3
- Rbpmgy6X7nxjBG5xgzHI685TOH6TjnXiyeulzwpEaO5cK2iwcIXC8PIBs2JOxwsLG1vKinY1Q
- 5c/6oXEmGE+8F/eDBCptvq2X5/Gh/xFEMHky3QOn2OS6pfVyrM=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:OnzBdCKKkXg=:uCMiXPVB7tI5pRm5LRtUig
+ aILQhRnFBkvi4YwGIKGsJNkm0p2s5/i9RuelfVbFL4ZLw18/vA/fFGGnlmeIFiAsKCLJQaYQY
+ IbnEFAzqoioh/MJFoLLyIqav75VdBg/Ik7vVdFSdxMuTHa4M7jmRkf44Bk0+CBikQe1pyRWfm
+ L6VcYgSoacKhFq/wNFxSKi6pDZQeR+Vo1eocV8vDSJryZFwpCXouEzWMnUueKar8EMysGU9r6
+ Kh/iXUiPHSEQmONj22qrSwykkGWOKoeMKAdc5jGP0H+T6bOQiRrP0yurXTZP2M+QC9QsFr4nh
+ KOWd94HgMsPJB29GksFindzI12apcLWI+YOqVY9TYzszCv7/PuWdNHAN2e49PLKAUoqLRygPq
+ Rm+YWIgqm9SzRWdDuXg65CUcEAsMPt7Po+/PDXBPCNg0s/J1mqLdd1JZA5+jKAoaz20BB9peB
+ JOPxaQivcng30A/T6SYR+nk4WFkV0EMAOXz3OF3bJ7EWrXHZ77x4pd7tq/aqSgEaRGg5NpJ4+
+ ukbe2gcWm0ILbIF3guVxwXLM2KnvQgtfmc+mj8SEvrl1RZ1Oez74o0TLIauxLXlEoVLyjnukI
+ np8hF//vMJlfiKsdAWYfXIO1KomB0gx3uyNzc4yvcHNICkNJhEsRaEnyrLJni5mApWbNVeqeg
+ kxn1aUqUCSzWWX+FFHSu2lqNkLlM4GomeMtnaSSnm+wtju+HLt5tTU00q/wnGW4kXvS/WIqks
+ Sao6SrkYcTf7bXxYxIXRzazYhZApvMjIyvfYgS0U0rGNQowCHqVDC9CJAM2952ei+57oFwZGp
+ AfHRUs/5knJ3QEkuQtD86CgyXnKdxoJnTsA2RP/8o9DRyAx5GM=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,17 +91,28 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jan 29, 2022 at 1:17 PM <guoren@kernel.org> wrote:
-> +
-> +#define COMPAT_RLIM_INFINITY   0x7fffffff
+> Implement compat sys_call_table and some system call functions:
+> truncate64, ftruncate64, fallocate, pread64, pwrite64,
+> sync_file_range, readahead, fadvise64_64 which need argument
+> translation.
 >
-> +#define F_GETLK64      12
-> +#define F_SETLK64      13
-> +#define F_SETLKW64     14
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
 
-These now come from the generic definitions I think. The flock definitions
-are just the normal ones, and AFAICT the RLIM_INIFINITY definition here
-is actually wrong and should be the default 0xffffffffu to match the
-native (~0UL) definition.
+This all looks really good, but I would change one detail:
 
-            Arnd
+> +#ifndef compat_arg_u64
+> +#define compat_arg_u64(name)           u32  name##_lo, u32  name##_hi
+> +#define compat_arg_u64_dual(name)      u32, name##_lo, u32, name##_hi
+> +#define compat_arg_u64_glue(name)      (((u64)name##_hi << 32) | \
+> +                                        ((u64)name##_lo & 0xffffffffUL))
+> +#endif
+
+I would make these endian-specific, and reverse them on big-endian
+architectures. That way it
+should be possible to share them across all compat architectures
+without needing the override
+option.
+
+        Arnd
