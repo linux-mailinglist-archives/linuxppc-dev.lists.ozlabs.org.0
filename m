@@ -1,74 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA704A2C78
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 08:27:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 645254A2D8C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 10:58:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jm5W14TB6z3bSk
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 18:27:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jm8sf1MZzz30jP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 20:58:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PfLG/Hx7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=denx.de header.i=@denx.de header.a=rsa-sha256 header.s=phobos-20191101 header.b=Ytd+bRoJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035;
- helo=mail-pj1-x1035.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=denx.de
+ (client-ip=2a01:238:438b:c500:173d:9f52:ddab:ee01; helo=phobos.denx.de;
+ envelope-from=agust@denx.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=PfLG/Hx7; dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com
- [IPv6:2607:f8b0:4864:20::1035])
+ unprotected) header.d=denx.de header.i=@denx.de header.a=rsa-sha256
+ header.s=phobos-20191101 header.b=Ytd+bRoJ; 
+ dkim-atps=neutral
+X-Greylist: delayed 455 seconds by postgrey-1.36 at boromir;
+ Sat, 29 Jan 2022 20:57:54 AEDT
+Received: from phobos.denx.de (phobos.denx.de
+ [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jm5T04Zwjz2xDD
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 18:25:24 +1100 (AEDT)
-Received: by mail-pj1-x1035.google.com with SMTP id r59so8646317pjg.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Jan 2022 23:25:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=maaBtp9rN8wYryMs18OoJVk6D+EX7D5VRAAjNiu1Ku0=;
- b=PfLG/Hx7kose59zE1d7qfi69eXP4rA3OFqoZmDVIEgNLifw1qa/ETTN2r8MmRiObPX
- 2xJ2zrlQzNtauYCHCJiAuQz6Zbtm3AtSbfEQeDaeWwT57lUoyWkE2rXSSDXm8zE9jqJC
- silk4pJC+8jz/FTInP6w27J63kkWFOu/XTEbAZxe3q0EfItukwuess9mC5rsGs5Gaxai
- j4YaITH0sdn3n1smqhv6N6uv4BCTva/a2kHHRW+jryWBF6j9SMzDn3hywePnRxZxIKlI
- ddde/AfIJ1oh2sm+DGt+aM9UpFSBHyc18PCYHJERNz+SbknY4ag8Dr91iMfiZZY0ZCtn
- gn2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=maaBtp9rN8wYryMs18OoJVk6D+EX7D5VRAAjNiu1Ku0=;
- b=vDaRaoCgvUKs6NwN0A8q5szTi0sqt+rAWRw+IIW7TnKPaCLWTGqy9pUF1nTi7tMkWU
- qVsBS5SXC9d3eMJA2hc9M5c8P2ruqlZ91vpybFYw/RYMNy7qAAWl0mHCODHFnxFpIxem
- WpQMBOaEyk2rj4Ha9xZWDOHKgnZO24FKW71ff6qIhn4Nr1UDhUc3i+GAQu6JKGhFRcak
- We7sGbgdV2NImh/gZrIz9CBSQ+7UYpfjaau2JL/74taNiMrNAfjbuNmYLB+7eNKLfZcR
- lZGO5IRpa4XGRs39NxAS3Ny6mA69HbbOuxQfZkdxYBJSvCGWjqeudPtvKXaMeFs0CGJ+
- 8pmA==
-X-Gm-Message-State: AOAM532eJ4L68T4QcHxFLdBQfcie/yqmusNi2qw12av8E8eOnaxcrcmA
- il+58yUpX/XUi6D3CM0+XPDFGwumYJ3WyA==
-X-Google-Smtp-Source: ABdhPJw7g9BylPk3/75UFf0xH3up7hpMpZ2SCq42Se224u1+eQJnfSdqHQrRMGtRuIktInayXVkGTA==
-X-Received: by 2002:a17:902:8d81:: with SMTP id
- v1mr11983194plo.20.1643441122440; 
- Fri, 28 Jan 2022 23:25:22 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com ([203.111.178.100])
- by smtp.gmail.com with ESMTPSA id 12sm3917449pgb.71.2022.01.28.23.25.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jan 2022 23:25:22 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/2] KVM: PPC: Book3S PR: Disallow AIL != 0
-Date: Sat, 29 Jan 2022 17:25:11 +1000
-Message-Id: <20220129072511.105523-3-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20220129072511.105523-1-npiggin@gmail.com>
-References: <20220129072511.105523-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jm8ry1NWWz2yPq
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 20:57:54 +1100 (AEDT)
+Received: from crub (p508b6e90.dip0.t-ipconnect.de [80.139.110.144])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ (Authenticated sender: agust@denx.de)
+ by phobos.denx.de (Postfix) with ESMTPSA id BD2D78210D;
+ Sat, 29 Jan 2022 10:50:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+ s=phobos-20191101; t=1643449808;
+ bh=wcVkdXf9yFZ5R/QSWp9DJkR9pJYiKAivTu+9LpeeBSQ=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=Ytd+bRoJLgNjHWWwFhyqm9CGOLMwNRGwOafo7NDZc5AmzDdttsgAIFY3xkIjrB4Ng
+ 2yFd7qr/HACHUWiU85gEFaTcYLue/uJf2SV/tqzNXaY59l8Is4x8uFCwyL23LzEYTr
+ 8UO1Tgtyr2jAe5yU3qYG1lQhQh4uV9POl+8TdBC7clfpgLomdxDW58mjttmtnYyWiy
+ MnlZ/R0j6MZQw7MonX8QU2Vu0C9nSv0TQC973aDjuYXi/axZYReZoirZRwi19FKmwl
+ d40aUvl1doehfxjKifA4qIX/wzhhnuTIREplC/9kniI3LRdEAcFEtbqG51ljS9K2rv
+ lDosRuD3nOpIQ==
+Date: Sat, 29 Jan 2022 10:50:07 +0100
+From: Anatolij Gustschin <agust@denx.de>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] powerpc: platforms: 52xx: Fix a resource leak in an
+ error handling path
+Message-ID: <20220129105007.6dfdea45@crub>
+In-Reply-To: <dec1496d46ccd5311d0f6e9f9ca4238be11bf6a6.1643440531.git.christophe.jaillet@wanadoo.fr>
+References: <dec1496d46ccd5311d0f6e9f9ca4238be11bf6a6.1643440531.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.5 at phobos.denx.de
+X-Virus-Status: Clean
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,86 +69,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, John Bonesio <bones@secretlab.ca>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-KVM PR does not implement address translation modes on interrupt, so it
-must not allow H_SET_MODE to succeed. The behaviour change caused by
-this mode is architected and not advisory (interrupts *must* behave
-differently).
+On Sat, 29 Jan 2022 08:16:04 +0100
+Christophe JAILLET christophe.jaillet@wanadoo.fr wrote:
 
-QEMU does not deal with differences in AIL support in the host. The
-solution to that is a spapr capability and corresponding KVM CAP, but
-this patch does not break things more than before (the host behaviour
-already differs, this change just disallows some modes that are not
-implemented properly).
+>The error handling path of mpc52xx_lpbfifo_probe() and a request_irq() is
+>not balanced by a corresponding free_irq().
+>
+>Add the missing call, as already done in the remove function.
+>
+>Fixes: 3c9059d79f5e ("powerpc/5200: add LocalPlus bus FIFO device driver")
+>Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>---
+>Another strange thing is that the remove function has:
+>	/* Release the bestcomm transmit task */
+>	free_irq(bcom_get_task_irq(lpbfifo.bcom_tx_task), &lpbfifo);
+>but I've not been able to find a corresponding request_irq().
 
-By happy coincidence, this allows PR Linux guests that are using the SCV
-facility to boot and run, because Linux disables the use of SCV if AIL
-can not be set to 3. This does not fix the underlying problem of missing
-SCV support (an OS could implement real-mode SCV vectors and try to
-enable the facility). The true fix for that is for KVM PR to emulate scv
-interrupts from the facility unavailable interrupt.
+This driver does not request the tx task irq itself, but a fifo
+client driver can request/free tx interrupts for submitted
+fifo write tasks, like mpc5200 fec and pata drivers do, so
+it is okay.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kvm/book3s_pr_papr.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+>Is it dead code? Is there something missing in the probe?
 
-diff --git a/arch/powerpc/kvm/book3s_pr_papr.c b/arch/powerpc/kvm/book3s_pr_papr.c
-index 1f10e7dfcdd0..dc4f51ac84bc 100644
---- a/arch/powerpc/kvm/book3s_pr_papr.c
-+++ b/arch/powerpc/kvm/book3s_pr_papr.c
-@@ -281,6 +281,22 @@ static int kvmppc_h_pr_logical_ci_store(struct kvm_vcpu *vcpu)
- 	return EMULATE_DONE;
- }
- 
-+static int kvmppc_h_pr_set_mode(struct kvm_vcpu *vcpu)
-+{
-+	unsigned long mflags = kvmppc_get_gpr(vcpu, 4);
-+	unsigned long resource = kvmppc_get_gpr(vcpu, 5);
-+
-+	if (resource == H_SET_MODE_RESOURCE_ADDR_TRANS_MODE) {
-+		/* KVM PR does not provide AIL!=0 to guests */
-+		if (mflags == 0)
-+			kvmppc_set_gpr(vcpu, 3, H_SUCCESS);
-+		else
-+			kvmppc_set_gpr(vcpu, 3, H_UNSUPPORTED_FLAG_START - 63);
-+		return EMULATE_DONE;
-+	}
-+	return EMULATE_FAIL;
-+}
-+
- #ifdef CONFIG_SPAPR_TCE_IOMMU
- static int kvmppc_h_pr_put_tce(struct kvm_vcpu *vcpu)
- {
-@@ -384,6 +400,8 @@ int kvmppc_h_pr(struct kvm_vcpu *vcpu, unsigned long cmd)
- 		return kvmppc_h_pr_logical_ci_load(vcpu);
- 	case H_LOGICAL_CI_STORE:
- 		return kvmppc_h_pr_logical_ci_store(vcpu);
-+	case H_SET_MODE:
-+		return kvmppc_h_pr_set_mode(vcpu);
- 	case H_XIRR:
- 	case H_CPPR:
- 	case H_EOI:
-@@ -421,6 +439,7 @@ int kvmppc_hcall_impl_pr(unsigned long cmd)
- 	case H_CEDE:
- 	case H_LOGICAL_CI_LOAD:
- 	case H_LOGICAL_CI_STORE:
-+	case H_SET_MODE:
- #ifdef CONFIG_KVM_XICS
- 	case H_XIRR:
- 	case H_CPPR:
-@@ -447,6 +466,7 @@ static unsigned int default_hcall_list[] = {
- 	H_BULK_REMOVE,
- 	H_PUT_TCE,
- 	H_CEDE,
-+	H_SET_MODE,
- #ifdef CONFIG_KVM_XICS
- 	H_XIRR,
- 	H_CPPR,
--- 
-2.23.0
+No.
 
+--
+Anatolij
