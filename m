@@ -1,54 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 241B84A2F6E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 13:28:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 529A74A2F6F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 13:29:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JmDBs0PLXz3dtY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 23:28:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JmDCY172mz3fPN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 23:29:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QiH+nw9z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hNexS/zf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=guoren@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=QiH+nw9z; 
+ header.s=k20201202 header.b=hNexS/zf; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JmD0M3qvvz3cTr
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 23:19:31 +1100 (AEDT)
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JmD0W6Z8lz3cl9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 23:19:39 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id DB04B60C3D;
+ by ams.source.kernel.org (Postfix) with ESMTPS id 06839B827B7;
+ Sat, 29 Jan 2022 12:19:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA85DC36AE3;
  Sat, 29 Jan 2022 12:19:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD13C340EB;
- Sat, 29 Jan 2022 12:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1643458769;
- bh=TkpF1bKo3WdGRomoemQuFbEscNstYtWDC/I865vm/5o=;
+ s=k20201202; t=1643458775;
+ bh=J65VF607Au+lXQP+8mKXArK6fDS/9hBK5qV8mWwi4fM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=QiH+nw9zDyHJc3hC6rPAh5+xb6u2xZ68pGImJn0IoRtvLm+UdUZQqHHisi2Or1C0/
- Qy8wvZ10rC3gyD1YLxRy73gMRgBDCbRa2TJ2fRi7/Cz51U+AbgCYjKYnIxjPQLiSew
- OmfjJyfd4DyNd4P+DhZKHvaD0WGYt/G57Vj0cBmt2mSxvofduwGjquK5Q6PwGBLkQu
- 9/40XHIn/rlwq6mrWrKQMr8Gjsd40DhTRuLLtALG/D/VliYRU+vrMDFH1MepxwLiAg
- GtROPKDkeWzGrG9r9guU+xlU8y4sEdYp8unqyYzNENBzjJ6rckmZkhMNSSAQ0kWLvh
- kyBGR8NbeOYhg==
+ b=hNexS/zfRcpJQb9tKy9uq83XaLRwvXw8cgOzwvW9WGM8zvfpjFXUMmOHV7wpYFjBp
+ R4zZeyMkYScimS69R0rmPSDQiLeoyC4tNXnoZopSCmrKnJ8CXAdNqsBzb1ez7gi6HN
+ 0Tyxrhtp5Mi9AKTv9oQEZpKazjfoFIi00SyeBHUBliq5cJENB09Lf+Pi7mLjn7YNBT
+ aPsDFmioeyhcJlUMm3AZSlSK9ucd2doig8+iZU2Wyg6rU0gRs5rtmxtw+5HhoIUawl
+ 66/hvRTiAyCZ/rB8cQbfhby7/PO6/fXx4w8NqSqdB00+lX+6mDb6AecdxvXlTOakZB
+ Pa6OVe+KOUrow==
 From: guoren@kernel.org
 To: guoren@kernel.org, palmer@dabbelt.com, arnd@arndb.de, anup@brainfault.org,
  gregkh@linuxfoundation.org, liush@allwinnertech.com, wefu@redhat.com,
  drew@beagleboard.org, wangjunqiang@iscas.ac.cn, hch@lst.de,
  hch@infradead.org
-Subject: [PATCH V4 16/17] riscv: compat: Add COMPAT Kbuild skeletal support
-Date: Sat, 29 Jan 2022 20:17:27 +0800
-Message-Id: <20220129121728.1079364-17-guoren@kernel.org>
+Subject: [PATCH V4 17/17] KVM: compat: riscv: Prevent KVM_COMPAT from being
+ selected
+Date: Sat, 29 Jan 2022 20:17:28 +0800
+Message-Id: <20220129121728.1079364-18-guoren@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220129121728.1079364-1-guoren@kernel.org>
 References: <20220129121728.1079364-1-guoren@kernel.org>
@@ -77,69 +80,29 @@ Sender: "Linuxppc-dev"
 
 From: Guo Ren <guoren@linux.alibaba.com>
 
-Adds initial skeletal COMPAT Kbuild (Runing 32bit U-mode on 64bit
-S-mode) support.
- - Setup kconfig & dummy functions for compiling.
- - Implement compat_start_thread by the way.
+Current riscv doesn't support the 32bit KVM API. Let's make it
+clear by not selecting KVM_COMPAT.
 
 Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
 Signed-off-by: Guo Ren <guoren@kernel.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/riscv/Kconfig | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ virt/kvm/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 5adcbd9b5e88..6f11df8c189f 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -73,6 +73,7 @@ config RISCV
- 	select HAVE_ARCH_KGDB if !XIP_KERNEL
- 	select HAVE_ARCH_KGDB_QXFER_PKT
- 	select HAVE_ARCH_MMAP_RND_BITS if MMU
-+	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if COMPAT
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE if 64BIT && MMU
-@@ -123,12 +124,18 @@ config ARCH_MMAP_RND_BITS_MIN
- 	default 18 if 64BIT
- 	default 8
+diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+index f4834c20e4a6..a8c5c9f06b3c 100644
+--- a/virt/kvm/Kconfig
++++ b/virt/kvm/Kconfig
+@@ -53,7 +53,7 @@ config KVM_GENERIC_DIRTYLOG_READ_PROTECT
  
-+config ARCH_MMAP_RND_COMPAT_BITS_MIN
-+	default 8
-+
- # max bits determined by the following formula:
- #  VA_BITS - PAGE_SHIFT - 3
- config ARCH_MMAP_RND_BITS_MAX
- 	default 24 if 64BIT # SV39 based
- 	default 17
+ config KVM_COMPAT
+        def_bool y
+-       depends on KVM && COMPAT && !(S390 || ARM64)
++       depends on KVM && COMPAT && !(S390 || ARM64 || RISCV)
  
-+config ARCH_MMAP_RND_COMPAT_BITS_MAX
-+	default 17
-+
- # set if we run in machine mode, cleared if we run in supervisor mode
- config RISCV_M_MODE
- 	bool
-@@ -406,6 +413,18 @@ config CRASH_DUMP
- 
- 	  For more details see Documentation/admin-guide/kdump/kdump.rst
- 
-+config COMPAT
-+	bool "Kernel support for 32-bit U-mode"
-+	default 64BIT
-+	depends on 64BIT && MMU
-+	help
-+	  This option enables support for a 32-bit U-mode running under a 64-bit
-+	  kernel at S-mode. riscv32-specific components such as system calls,
-+	  the user helper functions (vdso), signal rt_frame functions and the
-+	  ptrace interface are handled appropriately by the kernel.
-+
-+	  If you want to execute 32-bit userspace applications, say Y.
-+
- endmenu
- 
- menu "Boot options"
+ config HAVE_KVM_IRQ_BYPASS
+        bool
 -- 
 2.25.1
 
