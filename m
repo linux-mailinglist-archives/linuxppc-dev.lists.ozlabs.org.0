@@ -2,116 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025DD4A3103
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 18:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB204A314B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 19:02:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JmLqZ6lrSz3cRh
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 04:27:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JmMcK6lMTz3cRF
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 05:02:41 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kFDbs2pd;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::624;
- helo=fra01-pr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com
- (mail-pr2fra01on0624.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e18::624])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c;
+ helo=mail-pl1-x62c.google.com; envelope-from=ikegami.t@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=kFDbs2pd; dkim-atps=neutral
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
+ [IPv6:2607:f8b0:4864:20::62c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JmLpb4pw7z30RT
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 04:26:31 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=A2b9wjz4EbdFgcTzMDOBdypEW26g399hlSLf9eryemJsdGVGDPVBpkxLifW0enXo65SrMANE9CDkVrDpjeZYo+KadP/fRsZAaadhpQm0w5JKPw43lPk+Z9aaNEc+DHOS5ok46pgurQnNoi0iHZcxs/IsxQnzQkEBLpaLM062Bs6haL3H00n2g797LWkuzhk62Evh//z/UlCi9dunUIkC/17LH+vsKJtCPKTYhBaxKhvD7f++sNEnQ8OhtDUj+3A+kZH7dEqaCXcZ04JhYfwvUnsupVdPsJ2WmKFA6fGeX9lEt9AeRLH2buiBd9lBGUih4rANaCZSn3uU679HYvZYpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X/syTXPviOGvtjTBqpAT2QASuMj4CpK4s4Jc8XHVAk8=;
- b=I3u6Xx+HKMwfeaBTW4DNCpq5XPLWbOzTV6BbI0iD79Rci/Yskb00Q8EluRA7swM7U+g9mYFzutPsaeQVq2vEAwQEhR3UpcohkB7DWExnEWe79/ym2gnsPY+fbDojurY6z0aNzsXF9dQuOCJBeXKeg8167WELPouEnS8gNWyBZq+UcdxD1wRwCzrXf72hyj7BnoQvc65RLIn6OY7TuQMhsAP4oJB8b4rIktVZuNy9QqM4oEY4Q1CPVkt5JGhZsTxhVw1kXIJ4zcnadAjOW8SdOKGYJpMBTO3NeWd2/NYkI66wDnKFTFilAqusFZA2JORBUAKtvgxo0B7g4qOj0AjzXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB3760.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:184::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.15; Sat, 29 Jan
- 2022 17:26:11 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c9a2:1db0:5469:54e1]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c9a2:1db0:5469:54e1%6]) with mapi id 15.20.4930.020; Sat, 29 Jan 2022
- 17:26:11 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-Subject: [PATCH] [Modified for 5.16 and 5.15] powerpc/32s: Fix
- kasan_init_region() for KASAN
-Thread-Topic: [PATCH] [Modified for 5.16 and 5.15] powerpc/32s: Fix
- kasan_init_region() for KASAN
-Thread-Index: AQHYFTVO3eIgTpYLEk24BDdS4dem3w==
-Date: Sat, 29 Jan 2022 17:26:10 +0000
-Message-ID: <383707b74eac769f971ea72ea3db39aaf08e5111.1643476880.git.christophe.leroy@csgroup.eu>
-References: <247bff242993dd6c8975a4f1248d822a448701ac.1643476812.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <247bff242993dd6c8975a4f1248d822a448701ac.1643476812.git.christophe.leroy@csgroup.eu>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 787b3a2b-7c2e-484b-c9c2-08d9e34c717a
-x-ms-traffictypediagnostic: PR1P264MB3760:EE_
-x-microsoft-antispam-prvs: <PR1P264MB3760380E4A8C6242DF9E8B38ED239@PR1P264MB3760.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:5797;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 47nnk/HlLHkbKOOGIgokwiQ3j6eU/tLBKR3z+JC2PnYhh3yaNRJVVjMklICpcifbFYAcZ4Vowv1YXg5UuUMIcFwAC8svJwrfkdCnYgmkl//42V8M5I0FaVXKtZpGIrR2YKppSW94Mihks6FdZ0UZOnQ/33Q4PYl0xEI9KHJghWLtIuSXrI45KWl0uhJaoEHb4+wU5FGbWB3v2hStH0gC8KBDPu42W/5BMtvtcI1ytGyhKk82lgKvNj8oDfKhB6KMMMsxm6iZCss47cGcQKu4cPjJOpKEPBB9GU6BT11e4mKakzNA4leMftygRXoAmiE051DNgdaU5DALvJZNieQiefUziBxroaM60Y+XtRDfAZE5JjK+6uyuBLSRLZqnpNLEeW5aIjzejjAKUIii1R6CvCK30YAE/zCFLtt9Qi+knS+T/G0Ka3NkoWplJOx9ImnTGm++zG4uXVfr1LU+vUBjZ6Tv+nfxZCrciB8HpEvM/8aHOs0ALr8Rfl31gg/YpMeZ+McZLH7k7TpyB/abt73K2xAkgX7niH23MkseSVpy1zFrQ4mKO68Vte0rz1dEYyCaf8cMFbKukue4BSmXjLNAuHjyFcpUIjRtm52WJehK5Nw1mCkjUc/Fqky2BQ0mcpDUeS7k5x1lZ76VvFX9Pz9kTh931hszTQvNOmZGkPt30+Zm73/0T0a2IPs+42y6gQsMSv3eb+RVw8O0aT7n9yI8yi1ualPPiwEmloJPRkHzS1BpE/8auyy55pueIkc7hnjt4+6gocAG76MOmcFvibJtHVBoGbapoCb76x4Klwt8hjk=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(26005)(44832011)(64756008)(8936002)(66946007)(66556008)(66446008)(71200400001)(66476007)(186003)(122000001)(5660300002)(316002)(8676002)(4326008)(91956017)(38100700002)(76116006)(2616005)(38070700005)(83380400001)(36756003)(6916009)(2906002)(54906003)(6506007)(6512007)(966005)(6486002)(86362001)(508600001)(20210929001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?kyNVPK+IZ87czhLBlB1kyX7VsQ0qkt8bghJbKBpMojSunnIfac40YLadpG?=
- =?iso-8859-1?Q?zOqN3jDDf0qzdsjUeeh1gOxZWKakEnhO7Jbge+TDqNA5e7XqTVbI3JrSdm?=
- =?iso-8859-1?Q?WxG8BnIg2SwcxD2U6AW8xJy1XClG2QsZrTRBp1lkvMtj9FuLa4B+utlUMs?=
- =?iso-8859-1?Q?PrtBm1pUtXJtWFM/Uh45tAglBQzJPq7QrzSlig5XGsdM7/CSW+EwQK2GPL?=
- =?iso-8859-1?Q?VQ8lbZ4IvwGJrVoOeRXQt6tT8AnAQYSMZ4nrAaq2oqpiD+jNLtyuWjUf9g?=
- =?iso-8859-1?Q?vr6Agyq/YL0jNOZ8RG/ueDLIjXk5J08sS4GJAzrR3XCRVVErstk/Cb0BLC?=
- =?iso-8859-1?Q?ZV8H1IKhV/w3qh8g9cFlqGLvyofeAzyNpjODgKWBH2lzUPa3LgMdfSFEDE?=
- =?iso-8859-1?Q?L8xZGge1oj/Jln/TBupTF2OAB9fDor/M7RjOit1nd7CvMSp/s5Kg62UU3Y?=
- =?iso-8859-1?Q?TNVYSPVJ1Bu83eooG3t7BhZjPkQkNAuHCYTo2O4ghEHYSgM3oyqbuAVDem?=
- =?iso-8859-1?Q?kWHQJM5yE18EpfqFytk0S7LyPmMNLV7b3TWtl0DuR+Lx3XpShiMHqfyH4Q?=
- =?iso-8859-1?Q?K5r1y5GoVknkkAQQ+pj7AfgEsgNGHZlS7hlSzCjy1q7Z2XM3Rz86+y5Gl9?=
- =?iso-8859-1?Q?QxpCMN0I8nSf0JsJYudN/fkWXePWlgp+OvZjyVAyN+chES3gr/hsbw9mZy?=
- =?iso-8859-1?Q?FjsAfFfWoasBBf+yHGnVDhp8z2HFe0+gC3SpvS7YWhKGu5V07+/bnZoA/4?=
- =?iso-8859-1?Q?FGfIaCqy3TGYw6+hK+F52Z8bbCpAeoUAW8sn944QKvAt9SuW/cojNp21ld?=
- =?iso-8859-1?Q?6g4Ep8voma5GOcv/TGF0LGDn/uk5VwXFp0UXapc748UffhBpxNhaGFb+ep?=
- =?iso-8859-1?Q?0DL/afomKPQW8Rke013tmM3EaLNGXB8R/ZSFb2vv+BAGhUsa2aTao17ZZn?=
- =?iso-8859-1?Q?hC1px2aIv+2DYssrXid4T8hEIY/64Zhgcj/muibml+Y9NSeWymffm1m0DC?=
- =?iso-8859-1?Q?ceGwZ87rQTgeAXuuG1876iPS6hUvVkl97MTQJmF4Az4LaImkYlFfwv36YJ?=
- =?iso-8859-1?Q?eRgfZwiomcslxIzvWdzcT4aTD+jtEQK5bsX8pNfCmPOCU6TE3Z+kJVljdC?=
- =?iso-8859-1?Q?4tYjFrvTLimr1h2MH4qpKjwSMiWPeEsF+TAF9s/2KrdkiKryu+sDyyU0/j?=
- =?iso-8859-1?Q?DyD0L+watuPgSYXdUGwrmgA/dBWU8WmzBMy7U4+Uxi4przPESmITBcWGe9?=
- =?iso-8859-1?Q?oX9L10zEooO1kRN1mZk8cMx4u72cmqfKIcDI7kGxqdVNLyesYHG5njZldg?=
- =?iso-8859-1?Q?dhn0V/WGaHwMUZwz0dIDklxTtWfQDIoBRyl/2cBKwtAj8htJkiiAK/C3zX?=
- =?iso-8859-1?Q?+YFO2YyGwUr4hoxX1ZkQxaqxDt+Co87KFNIbPNixf567VX2g3D253SR9kQ?=
- =?iso-8859-1?Q?8L6hvbx7d7iZKT73x9NCRlAmSlZcg+EBhO2H8NvBPsCIYFNyFQvcwHdZJR?=
- =?iso-8859-1?Q?Yxig8LAWmw85g2x53l86W7r+9jNPhEPtGQXjlLMVGF1FxWLgttwla55HJG?=
- =?iso-8859-1?Q?H+b50yewjqUbUXd/Yke/GKKV53/ei6D6XXelAz9KGzicWC4MC0r03EZuCW?=
- =?iso-8859-1?Q?zGn2jXsFgbswpKiJqq+2HMOPeHBfb9mHH4ywVXdYcjHTvtNfX9is8+TLAp?=
- =?iso-8859-1?Q?k/XQZzGss1nH3vbDrZXB/SLtEvMnjEnjjgLeBzBwomw9uwEkNe30JenRqt?=
- =?iso-8859-1?Q?qTqpVqsYfggjIBNIWG6W4Rb9U=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JmMbc3Vxcz2yjY
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 05:02:02 +1100 (AEDT)
+Received: by mail-pl1-x62c.google.com with SMTP id k17so9051269plk.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 10:02:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=ocx6uLSE9SZhQHL4f62tymlhjTdr8qnlDcb3gjUZzVI=;
+ b=kFDbs2pdduz5Cagog17WvOBs2KSu01Er9gWb6vWwdvJWPYR7NnYWocW0oPqXCW/Z5u
+ NsNpC5IpTTnMLq3GgUOmemXhE7bsIj2DagGLJIcaBY3qwuOtRwLW+52AkqOSEyJORYCa
+ yy2nKDRtKsWAtIB6QTcPQ1bS52svibqGi21cxks2xPg+dUe3eWoc8fsXx3SivhMeRWTk
+ 7wQj1Stpt3gjAF2Qtcc+J6NfWe14UqtxrTESznqwdD08qceUa2TwiYYsnnmZ7en4pAmY
+ +CwJKrU9c3BSQARPIpXWHdzH4yKl45jt6kvuv6R3GUGQpfNThWv6jBGsGvEbDzlkr4sL
+ PHZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=ocx6uLSE9SZhQHL4f62tymlhjTdr8qnlDcb3gjUZzVI=;
+ b=XeIneRLJSP8CBBI0EFyrJfzwSqvLHjEZEwlHLC0TJKaeeV4xIWmnNxuCsZVZqeBheT
+ 1+ln9YsWuN0QqwTzEWCaI+zOad4I3eHgYAAMGxt0sFowzyjkuX367gyjy6Vj6LjLRK4k
+ dj+60os4v8s+2VSt7STVnJMfN+6eKWzQ83GSwVp2faMZ49lwDZzb/Ze4dpbYWytu8ST9
+ +fRhVqOXuJY0GzHIXZ3T7Mv7V2VSIh8RVdp732PDOa+IsTNV1igQxeHuX45PpQdk3lBj
+ Z6J54uu7pQVmFyj+dVbbO9Lcw2Zv/uzPcMmVuhJz3XX5p7Mn48HSNzDzJofvSkVsObLV
+ tDRg==
+X-Gm-Message-State: AOAM530IskogjNBBK9pK0BGpBdqUybmXVZ18TdkGQeyEaf5hOtrnDuDQ
+ Dn7FbexjYRkMBmG+WuN3b+M=
+X-Google-Smtp-Source: ABdhPJxGsvxhGzjVP0O6TjC9lEzfQMoYub87JkBduaepMi6Z39kaOucmpcjys0bXfaOntDjHHk9ZKA==
+X-Received: by 2002:a17:90a:c08d:: with SMTP id
+ o13mr15970283pjs.187.1643479317756; 
+ Sat, 29 Jan 2022 10:01:57 -0800 (PST)
+Received: from [192.168.122.100] (133-175-21-116.tokyo.ap.gmo-isp.jp.
+ [133.175.21.116])
+ by smtp.gmail.com with ESMTPSA id oo9sm6445748pjb.15.2022.01.29.10.01.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 29 Jan 2022 10:01:57 -0800 (PST)
+Message-ID: <0f2cfcac-83ca-51a9-f92c-ff6495dca1d7@gmail.com>
+Date: Sun, 30 Jan 2022 03:01:51 +0900
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 787b3a2b-7c2e-484b-c9c2-08d9e34c717a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jan 2022 17:26:10.9746 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sLgj7JBQHHginNwG4R3B3wORXMhM7AY8/BWrvRRPJeZ/XKO4h0Mm7FazL7AjZo8RlRNx8yenpC0aX0dMKB60fzNr0wbDKQ7LKif4qL2+Il0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB3760
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [BUG] mtd: cfi_cmdset_0002: write regression since v4.17-rc1
+Content-Language: en-US
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+ Thorsten Leemhuis <regressions@leemhuis.info>,
+ linux-mtd@lists.infradead.org, Joakim.Tjernlund@infinera.com,
+ miquel.raynal@bootlin.com, vigneshr@ti.com, richard@nod.at,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <b687c259-6413-26c9-d4c9-b3afa69ea124@pengutronix.de>
+ <dff2abcc-5813-2f2c-35ba-f03cd1f35ac3@leemhuis.info>
+ <e11b76dc-5539-fb7e-da1c-a5005713d6b0@gmail.com>
+ <3dbbcee5-81fc-cdf5-9f8b-b6ccb95beddc@pengutronix.de>
+From: Tokunori Ikegami <ikegami.t@gmail.com>
+In-Reply-To: <3dbbcee5-81fc-cdf5-9f8b-b6ccb95beddc@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,221 +92,167 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Maxime Bizon <mbizon@freebox.fr>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ marek.vasut@gmail.com, Chris Packham <chris.packham@alliedtelesis.co.nz>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, cyrille.pitchen@wedev4u.fr,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a backport for 5.16 and 5.15.
+Hi Ahmad-san,
 
-To apply, it also requires commit 37eb7ca91b69 ("powerpc/32s: Allocate
-one 256k IBAT instead of two consecutives 128k IBATs")
+Thanks for your investigation.
 
-(cherry picked from commit d37823c3528e5e0705fc7746bcbc2afffb619259)
+> The issue is still there with #define FORCE_WORD_WRITE 1:
+>
+>    jffs2: Write clean marker to block at 0x000a0000 failed: -5
+>    MTD do_write_oneword_once(): software timeout
+Which kernel version has been tested about this?
+Since the buffered writes disabled by 7e4404113686 for S29GL256N and 
+tested on kernel 5.10.16.
+So I would like to confirm if the issue depended on the CPU or kernel 
+version, etc.
+Note: The chips S29GL064N and S29GL256N seem different the flash Mb size 
+basically.
+> Doesn't seem to be a buffered write issue here though as the writes
+> did work fine before dfeae1073583. Any other ideas?
+At first I thought the issue is possible to be resolved by using the 
+word write instead of the buffered writes.
+Now I am thinking to disable the changes dfeae1073583 partially with any 
+condition if possible.
+By the way could you please let me know the chip information for more 
+detail? (For example model number, cycle and device ID, etc.)
 
-It has been reported some configuration where the kernel doesn't
-boot with KASAN enabled.
+Regards,
+Ikegami
 
-This is due to wrong BAT allocation for the KASAN area:
 
-	---[ Data Block Address Translation ]---
-	0: 0xc0000000-0xcfffffff 0x00000000       256M Kernel rw      m
-	1: 0xd0000000-0xdfffffff 0x10000000       256M Kernel rw      m
-	2: 0xe0000000-0xefffffff 0x20000000       256M Kernel rw      m
-	3: 0xf8000000-0xf9ffffff 0x2a000000        32M Kernel rw      m
-	4: 0xfa000000-0xfdffffff 0x2c000000        64M Kernel rw      m
+On 2021/12/14 16:23, Thorsten Leemhuis wrote:
 
-A BAT must have both virtual and physical addresses alignment matching
-the size of the BAT. This is not the case for BAT 4 above.
-
-Fix kasan_init_region() by using block_size() function that is in
-book3s32/mmu.c. To be able to reuse it here, make it non static and
-change its name to bat_block_size() in order to avoid name conflict
-with block_size() defined in <linux/blkdev.h>
-
-Also reuse find_free_bat() to avoid an error message from setbat()
-when no BAT is available.
-
-And allocate memory outside of linear memory mapping to avoid
-wasting that precious space.
-
-With this change we get correct alignment for BATs and KASAN shadow
-memory is allocated outside the linear memory space.
-
-	---[ Data Block Address Translation ]---
-	0: 0xc0000000-0xcfffffff 0x00000000       256M Kernel rw
-	1: 0xd0000000-0xdfffffff 0x10000000       256M Kernel rw
-	2: 0xe0000000-0xefffffff 0x20000000       256M Kernel rw
-	3: 0xf8000000-0xfbffffff 0x7c000000        64M Kernel rw
-	4: 0xfc000000-0xfdffffff 0x7a000000        32M Kernel rw
-
-Fixes: 7974c4732642 ("powerpc/32s: Implement dedicated kasan_init_region()"=
-)
-Cc: stable@vger.kernel.org
-Reported-by: Maxime Bizon <mbizon@freebox.fr>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Tested-by: Maxime Bizon <mbizon@freebox.fr>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/7a50ef902494d1325227d47d33dada01e52e5518.16=
-41818726.git.christophe.leroy@csgroup.eu
----
- arch/powerpc/include/asm/book3s/32/mmu-hash.h |  2 +
- arch/powerpc/mm/book3s32/mmu.c                | 10 ++--
- arch/powerpc/mm/kasan/book3s_32.c             | 59 ++++++++++---------
- 3 files changed, 38 insertions(+), 33 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/32/mmu-hash.h b/arch/powerpc/i=
-nclude/asm/book3s/32/mmu-hash.h
-index f5be185cbdf8..94ad7acfd056 100644
---- a/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-+++ b/arch/powerpc/include/asm/book3s/32/mmu-hash.h
-@@ -143,6 +143,8 @@ static __always_inline void update_user_segments(u32 va=
-l)
- 	update_user_segment(15, val);
- }
-=20
-+int __init find_free_bat(void);
-+unsigned int bat_block_size(unsigned long base, unsigned long top);
- #endif /* !__ASSEMBLY__ */
-=20
- /* We happily ignore the smaller BATs on 601, we don't actually use
-diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.=
-c
-index 33ab63d56435..203735caf691 100644
---- a/arch/powerpc/mm/book3s32/mmu.c
-+++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -76,7 +76,7 @@ unsigned long p_block_mapped(phys_addr_t pa)
- 	return 0;
- }
-=20
--static int find_free_bat(void)
-+int __init find_free_bat(void)
- {
- 	int b;
- 	int n =3D mmu_has_feature(MMU_FTR_USE_HIGH_BATS) ? 8 : 4;
-@@ -100,7 +100,7 @@ static int find_free_bat(void)
-  * - block size has to be a power of two. This is calculated by finding th=
-e
-  *   highest bit set to 1.
-  */
--static unsigned int block_size(unsigned long base, unsigned long top)
-+unsigned int bat_block_size(unsigned long base, unsigned long top)
- {
- 	unsigned int max_size =3D SZ_256M;
- 	unsigned int base_shift =3D (ffs(base) - 1) & 31;
-@@ -145,7 +145,7 @@ static unsigned long __init __mmu_mapin_ram(unsigned lo=
-ng base, unsigned long to
- 	int idx;
-=20
- 	while ((idx =3D find_free_bat()) !=3D -1 && base !=3D top) {
--		unsigned int size =3D block_size(base, top);
-+		unsigned int size =3D bat_block_size(base, top);
-=20
- 		if (size < 128 << 10)
- 			break;
-@@ -201,12 +201,12 @@ void mmu_mark_initmem_nx(void)
- 	unsigned long size;
-=20
- 	for (i =3D 0; i < nb - 1 && base < top;) {
--		size =3D block_size(base, top);
-+		size =3D bat_block_size(base, top);
- 		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_TEXT);
- 		base +=3D size;
- 	}
- 	if (base < top) {
--		size =3D block_size(base, top);
-+		size =3D bat_block_size(base, top);
- 		if ((top - base) > size) {
- 			size <<=3D 1;
- 			if (strict_kernel_rwx_enabled() && base + size > border)
-diff --git a/arch/powerpc/mm/kasan/book3s_32.c b/arch/powerpc/mm/kasan/book=
-3s_32.c
-index 35b287b0a8da..450a67ef0bbe 100644
---- a/arch/powerpc/mm/kasan/book3s_32.c
-+++ b/arch/powerpc/mm/kasan/book3s_32.c
-@@ -10,48 +10,51 @@ int __init kasan_init_region(void *start, size_t size)
- {
- 	unsigned long k_start =3D (unsigned long)kasan_mem_to_shadow(start);
- 	unsigned long k_end =3D (unsigned long)kasan_mem_to_shadow(start + size);
--	unsigned long k_cur =3D k_start;
--	int k_size =3D k_end - k_start;
--	int k_size_base =3D 1 << (ffs(k_size) - 1);
-+	unsigned long k_nobat =3D k_start;
-+	unsigned long k_cur;
-+	phys_addr_t phys;
- 	int ret;
--	void *block;
-=20
--	block =3D memblock_alloc(k_size, k_size_base);
--
--	if (block && k_size_base >=3D SZ_128K && k_start =3D=3D ALIGN(k_start, k_=
-size_base)) {
--		int shift =3D ffs(k_size - k_size_base);
--		int k_size_more =3D shift ? 1 << (shift - 1) : 0;
--
--		setbat(-1, k_start, __pa(block), k_size_base, PAGE_KERNEL);
--		if (k_size_more >=3D SZ_128K)
--			setbat(-1, k_start + k_size_base, __pa(block) + k_size_base,
--			       k_size_more, PAGE_KERNEL);
--		if (v_block_mapped(k_start))
--			k_cur =3D k_start + k_size_base;
--		if (v_block_mapped(k_start + k_size_base))
--			k_cur =3D k_start + k_size_base + k_size_more;
--
--		update_bats();
-+	while (k_nobat < k_end) {
-+		unsigned int k_size =3D bat_block_size(k_nobat, k_end);
-+		int idx =3D find_free_bat();
-+
-+		if (idx =3D=3D -1)
-+			break;
-+		if (k_size < SZ_128K)
-+			break;
-+		phys =3D memblock_phys_alloc_range(k_size, k_size, 0,
-+						 MEMBLOCK_ALLOC_ANYWHERE);
-+		if (!phys)
-+			break;
-+
-+		setbat(idx, k_nobat, phys, k_size, PAGE_KERNEL);
-+		k_nobat +=3D k_size;
- 	}
-+	if (k_nobat !=3D k_start)
-+		update_bats();
-=20
--	if (!block)
--		block =3D memblock_alloc(k_size, PAGE_SIZE);
--	if (!block)
--		return -ENOMEM;
-+	if (k_nobat < k_end) {
-+		phys =3D memblock_phys_alloc_range(k_end - k_nobat, PAGE_SIZE, 0,
-+						 MEMBLOCK_ALLOC_ANYWHERE);
-+		if (!phys)
-+			return -ENOMEM;
-+	}
-=20
- 	ret =3D kasan_init_shadow_page_tables(k_start, k_end);
- 	if (ret)
- 		return ret;
-=20
--	kasan_update_early_region(k_start, k_cur, __pte(0));
-+	kasan_update_early_region(k_start, k_nobat, __pte(0));
-=20
--	for (; k_cur < k_end; k_cur +=3D PAGE_SIZE) {
-+	for (k_cur =3D k_nobat; k_cur < k_end; k_cur +=3D PAGE_SIZE) {
- 		pmd_t *pmd =3D pmd_off_k(k_cur);
--		void *va =3D block + k_cur - k_start;
--		pte_t pte =3D pfn_pte(PHYS_PFN(__pa(va)), PAGE_KERNEL);
-+		pte_t pte =3D pfn_pte(PHYS_PFN(phys + k_cur - k_nobat), PAGE_KERNEL);
-=20
- 		__set_pte_at(&init_mm, k_cur, pte_offset_kernel(pmd, k_cur), pte, 0);
- 	}
- 	flush_tlb_kernel_range(k_start, k_end);
-+	memset(kasan_mem_to_shadow(start), 0, k_end - k_start);
-+
- 	return 0;
- }
---=20
-2.33.1
+>>> [TLDR: adding this regression to regzbot; most of this mail is compiled
+>>> from a few templates paragraphs some of you might have seen already.]
+>>>
+>>> Hi, this is your Linux kernel regression tracker speaking.
+>>>
+>>> Top-posting for once, to make this easy accessible to everyone.
+>>>
+>>> Thanks for the report.
+>>>
+>>> Adding the regression mailing list to the list of recipients, as it
+>>> should be in the loop for all regressions, as explained here:
+>>> https://www.kernel.org/doc/html/latest/admin-guide/reporting-issues.html
+>>>
+>>> To be sure this issue doesn't fall through the cracks unnoticed, I'm
+>>> adding it to regzbot, my Linux kernel regression tracking bot:
+>>>
+>>> #regzbot ^introduced dfeae1073583
+>>> #regzbot title mtd: cfi_cmdset_0002: flash write accesses on the
+>>> hardware fail on a PowerPC MPC8313 to a 8-bit-parallel S29GL064N flash
+>>> #regzbot ignore-activity
+>>>
+>>> Reminder: when fixing the issue, please add a 'Link:' tag with the URL
+>>> to the report (the parent of this mail), then regzbot will automatically
+>>> mark the regression as resolved once the fix lands in the appropriate
+>>> tree. For more details about regzbot see footer.
+>>>
+>>> Sending this to everyone that got the initial report, to make all aware
+>>> of the tracking. I also hope that messages like this motivate people to
+>>> directly get at least the regression mailing list and ideally even
+>>> regzbot involved when dealing with regressions, as messages like this
+>>> wouldn't be needed then.
+>>>
+>>> Don't worry, I'll send further messages wrt to this regression just to
+>>> the lists (with a tag in the subject so people can filter them away), as
+>>> long as they are intended just for regzbot. With a bit of luck no such
+>>> messages will be needed anyway.
+>>>
+>>> Ciao, Thorsten (wearing his 'Linux kernel regression tracker' hat).
+>>>
+>>> P.S.: As a Linux kernel regression tracker I'm getting a lot of reports
+>>> on my table. I can only look briefly into most of them. Unfortunately
+>>> therefore I sometimes will get things wrong or miss something important.
+>>> I hope that's not the case here; if you think it is, don't hesitate to
+>>> tell me about it in a public reply. That's in everyone's interest, as
+>>> what I wrote above might be misleading to everyone reading this; any
+>>> suggestion I gave thus might sent someone reading this down the wrong
+>>> rabbit hole, which none of us wants.
+>>>
+>>> BTW, I have no personal interest in this issue, which is tracked using
+>>> regzbot, my Linux kernel regression tracking bot
+>>> (https://linux-regtracking.leemhuis.info/regzbot/). I'm only posting
+>>> this mail to get things rolling again and hence don't need to be CC on
+>>> all further activities wrt to this regression.
+>>>
+>>> On 13.12.21 14:24, Ahmad Fatoum wrote:
+>>>> Hi,
+>>>>
+>>>> I've been investigating a breakage on a PowerPC MPC8313: The SoC is connected
+>>>> via the "Enhanced Local Bus Controller" to a 8-bit-parallel S29GL064N flash,
+>>>> which is represented as a memory-mapped cfi-flash.
+>>>>
+>>>> The regression began in v4.17-rc1 with
+>>>>
+>>>>     dfeae1073583 ("mtd: cfi_cmdset_0002: Change write buffer to check correct value")
+>>>>
+>>>> and causes all flash write accesses on the hardware to fail. Example output
+>>>> after v5.1-rc2[1]:
+>>>>
+>>>>     root@host:~# mount -t jffs2 /dev/mtdblock0 /mnt
+>>>>     MTD do_write_buffer_wait(): software timeout, address:0x000c000b.
+>>>>     jffs2: Write clean marker to block at 0x000c0000 failed: -5
+>>>>
+>>>> This issue still persists with v5.16-rc. Reverting aforementioned patch fixes
+>>>> it, but I am still looking for a change that keeps both Tokunori's and my
+>>>> hardware happy.
+>>>>
+>>>> What Tokunori's patch did is that it strengthened the success condition
+>>>> for flash writes:
+>>>>
+>>>>    - Prior to the patch, DQ polling was done until bits
+>>>>      stopped toggling. This was taken as an indicator that the write succeeded
+>>>>      and was reported up the stack. i.e. success condition is chip_ready()
+>>>>
+>>>>    - After the patch, polling continues until the just written data is
+>>>>      actually read back, i.e. success condition is chip_good()
+>>>>
+>>>> This new condition never holds for me, when DQ stabilizes, it reads 0xFF,
+>>>> never the just written data. The data is still written and can be read back
+>>>> on subsequent reads, just not at that point of time in the poll loop.
+>>>>
+>>>> We haven't had write issues for the years predating that patch. As the
+>>>> regression has been mainline for a while, I am wondering what about my setup
+>>>> that makes it pop up here, but not elsewhere?
+>>>>
+>>>> I consulted the data sheet[2] and found Figure 27, which describes DQ polling
+>>>> during embedded algorithms. DQ switches from status output to "True" (I assume
+>>>> True == all bits set == 0xFF) until CS# is reasserted.
+>>>>
+>>>> I compared with another chip's datasheet, and it (Figure 8.4) doesn't describe
+>>>> such an intermittent "True" state. In any case, the driver polls a few hundred
+>>>> times, however, before giving up, so there should be enough CS# toggles.
+>>>>
+>>>>
+>>>> Locally, I'll revert this patch for now. I think accepting 0xFF as a success
+>>>> condition may be appropriate, but I don't yet have the rationale to back it up.
+>>>>
+>>>> I am investigating this some more, probably with a logic trace, but I wanted
+>>>> to report this in case someone has pointers and in case other people run into
+>>>> the same issue.
+>>>>
+>>>>
+>>>> Cheers,
+>>>> Ahmad
+>>>>
+>>>> [1] Prior to d9b8a67b3b95 ("mtd: cfi: fix deadloop in cfi_cmdset_0002.c do_write_buffer")
+>>>>       first included with v5.1-rc2, failing writes just hung indefinitely in kernel space.
+>>>>       That's fixed, but the writes still fail.
+>>>>
+>>>> [2]: 001-98525 Rev. *B, https://www.infineon.com/dgdl/Infineon-S29GL064N_S29GL032N_64_Mbit_32_Mbit_3_V_Page_Mode_MirrorBit_Flash-DataSheet-v03_00-EN.pdf?fileId=8ac78c8c7d0d8da4017d0ed556fd548b
+>>>>
+>>>> [3]: https://www.mouser.com/datasheet/2/268/SST39VF1601C-SST39VF1602C-16-Mbit-x16-Multi-Purpos-709008.pdf
+>>>>        Note that "true data" means valid data here, not all bits one.
+>>>>
+>
