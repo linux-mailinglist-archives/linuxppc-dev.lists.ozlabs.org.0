@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D9B4A2B86
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 04:54:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 956E74A2C73
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 08:24:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jm0ns0b6rz3cSv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 14:54:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jm5Rj3PMVz3bZP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 18:24:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.54;
- helo=out30-54.freemail.mail.aliyun.com;
- envelope-from=jiapeng.chong@linux.alibaba.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 309 seconds by postgrey-1.36 at boromir;
- Sat, 29 Jan 2022 14:54:16 AEDT
-Received: from out30-54.freemail.mail.aliyun.com
- (out30-54.freemail.mail.aliyun.com [115.124.30.54])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=wanadoo.fr
+ (client-ip=80.12.242.124; helo=smtp.smtpout.orange.fr;
+ envelope-from=christophe.jaillet@wanadoo.fr; receiver=<UNKNOWN>)
+Received: from smtp.smtpout.orange.fr (smtp02.smtpout.orange.fr
+ [80.12.242.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jm0nN0dTtz2yMx
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 14:54:13 +1100 (AEDT)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R161e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04357;
- MF=jiapeng.chong@linux.alibaba.com; NM=1; PH=DS; RN=7; SR=0;
- TI=SMTPD_---0V35EraQ_1643428129; 
-Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com
- fp:SMTPD_---0V35EraQ_1643428129) by smtp.aliyun-inc.com(127.0.0.1);
- Sat, 29 Jan 2022 11:48:54 +0800
-From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/fadump: Use swap() instead of open coding it
-Date: Sat, 29 Jan 2022 11:48:47 +0800
-Message-Id: <20220129034847.76902-1-jiapeng.chong@linux.alibaba.com>
-X-Mailer: git-send-email 2.20.1.7.g153144c
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jm5RD5RLMz30CQ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 18:23:50 +1100 (AEDT)
+Received: from pop-os.home ([90.126.236.122]) by smtp.orange.fr with ESMTPA
+ id DhxynhQx2eHnVDhxznuAOZ; Sat, 29 Jan 2022 08:16:16 +0100
+X-ME-Helo: pop-os.home
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Sat, 29 Jan 2022 08:16:16 +0100
+X-ME-IP: 90.126.236.122
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Anatolij Gustschin <agust@denx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Grant Likely <grant.likely@secretlab.ca>, John Bonesio <bones@secretlab.ca>
+Subject: [PATCH] powerpc: platforms: 52xx: Fix a resource leak in an error
+ handling path
+Date: Sat, 29 Jan 2022 08:16:04 +0100
+Message-Id: <dec1496d46ccd5311d0f6e9f9ca4238be11bf6a6.1643440531.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -48,50 +48,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
- Abaci Robot <abaci@linux.alibaba.com>, linux-kernel@vger.kernel.org,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ linuxppc-dev@lists.ozlabs.org, kernel-janitors@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Clean the following coccicheck warning:
+The error handling path of mpc52xx_lpbfifo_probe() and a request_irq() is
+not balanced by a corresponding free_irq().
 
-./arch/powerpc/kernel/fadump.c:1291:34-35: WARNING opportunity for
-swap().
+Add the missing call, as already done in the remove function.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Fixes: 3c9059d79f5e ("powerpc/5200: add LocalPlus bus FIFO device driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- arch/powerpc/kernel/fadump.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+Another strange thing is that the remove function has:
+	/* Release the bestcomm transmit task */
+	free_irq(bcom_get_task_irq(lpbfifo.bcom_tx_task), &lpbfifo);
+but I've not been able to find a corresponding request_irq().
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index d0ad86b67e66..de08dd078081 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1271,7 +1271,6 @@ static void fadump_release_reserved_area(u64 start, u64 end)
- static void sort_and_merge_mem_ranges(struct fadump_mrange_info *mrange_info)
- {
- 	struct fadump_memory_range *mem_ranges;
--	struct fadump_memory_range tmp_range;
- 	u64 base, size;
- 	int i, j, idx;
- 
-@@ -1286,11 +1285,8 @@ static void sort_and_merge_mem_ranges(struct fadump_mrange_info *mrange_info)
- 			if (mem_ranges[idx].base > mem_ranges[j].base)
- 				idx = j;
- 		}
--		if (idx != i) {
--			tmp_range = mem_ranges[idx];
--			mem_ranges[idx] = mem_ranges[i];
--			mem_ranges[i] = tmp_range;
--		}
-+		if (idx != i)
-+			swap(mem_ranges[idx], mem_ranges[i]);
- 	}
- 
- 	/* Merge adjacent reserved ranges */
+Is it dead code? Is there something missing in the probe?
+(...Is it working?...)
+---
+ arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c b/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c
+index b91ebebd9ff2..e0049b7df212 100644
+--- a/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c
++++ b/arch/powerpc/platforms/52xx/mpc52xx_lpbfifo.c
+@@ -530,6 +530,7 @@ static int mpc52xx_lpbfifo_probe(struct platform_device *op)
+  err_bcom_rx_irq:
+ 	bcom_gen_bd_rx_release(lpbfifo.bcom_rx_task);
+  err_bcom_rx:
++	free_irq(lpbfifo.irq, &lpbfifo);
+  err_irq:
+ 	iounmap(lpbfifo.regs);
+ 	lpbfifo.regs = NULL;
 -- 
-2.20.1.7.g153144c
+2.32.0
 
