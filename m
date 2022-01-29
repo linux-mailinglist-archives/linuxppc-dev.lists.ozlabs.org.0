@@ -1,42 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DB84A0303
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Jan 2022 22:40:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 985814A2AF1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 02:19:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JlrTw4pDsz3bck
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 08:40:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JlxMH3YFdz3cNS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 12:19:55 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SjId7EXD;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=srs0=ovfh=sm=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=SjId7EXD; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JlrTS6l29z2yQK
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 08:39:56 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 92EB5B82700;
- Fri, 28 Jan 2022 21:39:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2412AC340E7;
- Fri, 28 Jan 2022 21:39:50 +0000 (UTC)
-Date: Fri, 28 Jan 2022 16:39:48 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Joe Lawrence <joe.lawrence@redhat.com>
-Subject: Re: [PATCH] ftrace: Have architectures opt-in for mcount build time
- sorting
-Message-ID: <20220128163948.721c8b12@gandalf.local.home>
-In-Reply-To: <YfRcC/ggq90jw7Uc@redhat.com>
-References: <20220127114249.03b1b52b@gandalf.local.home>
- <YfRcC/ggq90jw7Uc@redhat.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JlxLT12pBz2xsc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 12:19:12 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20SNaJ3H031290; 
+ Sat, 29 Jan 2022 01:19:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : content-type : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=3bCmiHj6FmpH0YGfAY8oBiTl7kfECfZALv/FwUMU6CE=;
+ b=SjId7EXDj1aMYIGNWBUkUnRYWakeGK5QdC7ML54beOtH9jecwbYGYJyxs+lfit5BwE6j
+ QfLX0yng+EZfIowtSX3f0WrZsJbYo9CVC2BPy0LPKG9trSHLHA2fEoNAg65lRPRSCejn
+ VKA7GfC4yV5qdpHJqwqQc/j2Sp4vGj+VbofeEW2RkeEbRlIqkqDlwVeZO3il4Thntu7s
+ UhNsfXOu5LowaX8UNOvqH/73dg38kDQvEBDUaBVwCjJ0KV/SyqhAEvz6m5s7Mmg8voqK
+ oui+7j58s5IXAItLjxzRrnkVdhBkQqDhIScwNH0fp2otM6GhLc2DpQLan0K9ow0z11D4 NA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3dvgqjdbvu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 29 Jan 2022 01:19:05 +0000
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20T1J4Bp019614;
+ Sat, 29 Jan 2022 01:19:04 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3dvgqjdbvp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 29 Jan 2022 01:19:04 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20T1HHIn023658;
+ Sat, 29 Jan 2022 01:19:03 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma02dal.us.ibm.com with ESMTP id 3dt1xcedc9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 29 Jan 2022 01:19:03 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 20T1Ixft16712076
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 29 Jan 2022 01:19:00 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E0CD4BE063;
+ Sat, 29 Jan 2022 01:18:59 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 61FD5BE06D;
+ Sat, 29 Jan 2022 01:18:58 +0000 (GMT)
+Received: from sig-9-77-130-163.ibm.com (unknown [9.77.130.163])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Sat, 29 Jan 2022 01:18:58 +0000 (GMT)
+Message-ID: <3ac406c37f4aa17e742325b5a86e073fd944428b.camel@linux.ibm.com>
+Subject: [PATCH 0/3] powerpc/pseries/vas: VAS/NXGZIP support with LPM
+From: Haren Myneni <haren@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+ nathanl@linux.ibm.com
+Date: Fri, 28 Jan 2022 17:18:56 -0800
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: quMaONuiAiGRDu9HPMQflu-TkRS6EKiw
+X-Proofpoint-ORIG-GUID: 7LELH2j9xtLjt4I3ub9Rk_ff2wRvA0BD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-28_08,2022-01-28_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=11
+ phishscore=0 impostorscore=0
+ bulkscore=0 priorityscore=1501 mlxlogscore=91 clxscore=1015 adultscore=0
+ suspectscore=0 lowpriorityscore=0 mlxscore=11 spamscore=11 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
+ definitions=main-2201290003
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,36 +106,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Kees Cook <keescook@chromium.org>,
- LKML <linux-kernel@vger.kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Sachin Sant <sachinp@linux.ibm.com>, Russell King <linux@armlinux.org.uk>,
- Andrew Morton <akpm@linux-foundation.org>, Yinan Liu <yinan@linux.alibaba.com>,
- linuxppc-dev@lists.ozlabs.org, Ard Biesheuvel <ardb@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: haren@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 28 Jan 2022 16:11:39 -0500
-Joe Lawrence <joe.lawrence@redhat.com> wrote:
 
-> The bisect finally landed on:
-> 
->   72b3942a173c387b27860ba1069636726e208777 is the first bad commit
->   commit 72b3942a173c387b27860ba1069636726e208777
->   Author: Yinan Liu <yinan@linux.alibaba.com>
->   Date:   Sun Dec 12 19:33:58 2021 +0800
-> 
->       scripts: ftrace - move the sort-processing in ftrace_init
-> 
-> and I can confirm that your updates today in "[for-linus][PATCH 00/10]
-> tracing: Fixes for 5.17-rc1" fix or avoid the issue.  I just wanted to
-> add my report in case this adds any future complications for mcount
-> build time sorting.  Let me know if any additional tests would be
-> helpful.
+Virtual Accelerator Switchboard (VAS) is an engine stays on the
+chip. So all windows opened on a specific engine belongs to VAS
+the chip. The hypervisor expects the partition to close all
+active windows on the sources system and reopen them after
+migration on the destination machine.
 
-Thanks for letting me know. That patch set has already landed in Linus's
-tree.
+This patch series adds VAS support with the partition migration.
+When the migration initiates, the VAS migration handler will be
+invoked before pseries_suspend() to close all active windows and
+mark them in-active with VAS_WIN_MIGRATE_CLOSE status. Whereas
+this migration handler is called after migration to reopen all
+windows which has VAS_WIN_MIGRATE_CLOSE status and make them
+active again. The user space gets paste instruction failure
+when it sends requests on these in-active windows.
+
+These patches depend on VAS/DLPAR support patch series
+
+Haren Myneni (3):
+  powerpc/pseries/vas: Modify reconfig open/close functions for
+    migration
+  powerpc/pseries/vas: Add VAS migration handler
+  powerpc/pseries/vas: Disable window open during migration
+
+ arch/powerpc/include/asm/vas.h            |   2 +
+ arch/powerpc/platforms/pseries/mobility.c |   5 +
+ arch/powerpc/platforms/pseries/vas.c      | 187 +++++++++++++++++++---
+ arch/powerpc/platforms/pseries/vas.h      |   6 +
+ 4 files changed, 181 insertions(+), 19 deletions(-)
+
+-- 
+2.27.0
 
 
--- Steve
