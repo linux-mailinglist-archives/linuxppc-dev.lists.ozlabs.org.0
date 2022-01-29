@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 371144A30F1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 18:03:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1514A30F2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Jan 2022 18:03:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JmLHx0y2Kz3bcC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 04:03:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JmLJR42QFz3cVM
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 04:03:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,33 +18,33 @@ Received: from FRA01-MR2-obe.outbound.protection.outlook.com
  [IPv6:2a01:111:f400:7e19::61f])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JmLGt6zNLz3bSk
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 04:02:30 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JmLGv3fh1z3bSk
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 04:02:31 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mlIwTWhhzB0KgRw9pNUZU1mGDBOI3kfWgnz4sFQxctjd4up8MgHSDPOgkmuS6za+hM/BOfFtKJWG1sstK9kHpodwv61sPxcVwCAuecQ02qOfTm+oId0MsypLhRAmbuT0ZCl2LCg3tv3vG03HcM6NZPhN5WTqucHWBtPbMfLvimDyu2pkphlKoWp8skiiDHPzpR6HFv5l87yrLVZVpBtmFGyRJjDWUBULx4MrKiQTcfCboUq2DWLTa5joMMihuUIxTCKDitcu+FjftTFEIcS0cVWesytmFf6588bRu/ZVQKc+O0/upv+OHJqwd5dw+ZQ4uZJg+ADMaYquneh/z84ekA==
+ b=hwj5rChqPGMlOGFbzFLQkN4dUem+WT/uqY4ya483X9lX4TnF3fJkVSsW1ruP04/OiA3gTt2p/F2TTXARUb3hYHQBdo/Ni41zvoUgbE1Gr/Vx/z+M/KFHWF6XZ3H9rKVDzy33dvUAXotdJPDpxkqKJ+pr3IXjAoU3bn3eNrKS+zcbmIjGzIJtvLiTM5xt9zOSjQe4Dmba6/GTCs/nRsoIhY8TtfhPfNpBNUXIIjSBkFLZfvoVHPaP0OWxkRK0vP+3ym+UgBuj+aQ3Mb1Z5v4rHvbffMEjBoBuE6nFqS5HM3wVmz1+CQxK8VZ3HTy8PAxc+uRazC+mMjeX70YTflilpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gLPBHDvXBMkQgGlRIh1tkuwHuf0uvhx2Y4O1zkh+ryw=;
- b=IwtV3Rl0eLpc26MnYR04jDyPdju1+/1pPkmuqAGxBFo81iq94cZobyTwWTtFo6fngzdU7MAQg/t+tlUemeJJcAO4M2ki52Wcp+NzqoBPjFsA4AvrgwELwNnQ+B2FWoUZN31Qsq5IF8iTiergVsKaOWe9fJsiMZ6oxz9beYj7vW4Lc7iJ2sW52AAvTlclNL3Si/hLoi5Gl2HDeFekFFICSR6cw6rCjDaMxTQJ60cVObjTfWa9rrUj1Cv1Lq5pVBRI+vzU/Nh7p4PPf0aLfhxKdJfhGJgJOLp/jcxpqjP0wP+Nc5c6xoka54dtgR53t85Ml+qQpH+KU44A1JGkg6K1nA==
+ bh=hTNNVKGZrQ6aWs2Xbf+ccCMIkXy5woQGxkZ8cpu0eKk=;
+ b=bElG2vwO9Gaeq/ViM3jPkXuK20heQptN/DYH+s1rD2bUsjog2P9aku6fFW2JlZW0NMf0bPWdIEuXVuZoKWMtpWj3GNW6rZDlJlJkcvr0BF0EDT7ndqxuQIUosa7pz3Xu3kSpp8WNnBmIntAWiI3lP2h+gYnrbiLPieTrRKC9CZFSgO7l3+hCNeI9vcwl4CthFJPMi3LWVj+yRV6C4ePCd3lu4zIjO8yfl8XSXLRVTHgyMlkFW5RHYmU9Vvjrgp1PUEqoUuEpiQjoafPmg/E0+/FCwBJ1wD4NuCOyHk7jWKmTss5UNV+hFELBzoEE41kz+6eLiT7gunbSpJUHXeYNwA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
  by PR0P264MB2584.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e3::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.15; Sat, 29 Jan
- 2022 17:02:05 +0000
+ 2022 17:02:07 +0000
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::c9a2:1db0:5469:54e1]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::c9a2:1db0:5469:54e1%6]) with mapi id 15.20.4930.020; Sat, 29 Jan 2022
- 17:02:05 +0000
+ 17:02:07 +0000
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Luis Chamberlain <mcgrof@kernel.org>, Jessica Yu <jeyu@kernel.org>
-Subject: [PATCH v3 2/6] modules: Prepare for handling several RB trees
-Thread-Topic: [PATCH v3 2/6] modules: Prepare for handling several RB trees
-Thread-Index: AQHYFTHxTvyQXbQLfkCX5PUzwy1VGA==
-Date: Sat, 29 Jan 2022 17:02:05 +0000
-Message-ID: <4332de93cfe4eaaf756825d5f72cc7c9fae13c34.1643475473.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 3/6] modules: Introduce data_layout
+Thread-Topic: [PATCH v3 3/6] modules: Introduce data_layout
+Thread-Index: AQHYFTHy2PWsHrGmbE6uWGTz7rHarg==
+Date: Sat, 29 Jan 2022 17:02:07 +0000
+Message-ID: <230bfd896f24ca7a9281783aaa8c0ebfebd0bc7e.1643475473.git.christophe.leroy@csgroup.eu>
 References: <cover.1643475473.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1643475473.git.christophe.leroy@csgroup.eu>
 Accept-Language: fr-FR, en-US
@@ -54,61 +54,61 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=csgroup.eu;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: f8beb2b4-6937-4366-c451-08d9e3491418
+x-ms-office365-filtering-correlation-id: c9907be1-0d72-41fd-9cb9-08d9e3491553
 x-ms-traffictypediagnostic: PR0P264MB2584:EE_
-x-microsoft-antispam-prvs: <PR0P264MB25848E466EBB815CB47DDB06ED239@PR0P264MB2584.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:5797;
+x-microsoft-antispam-prvs: <PR0P264MB2584BF801B0D45DFCFC2EC7DED239@PR0P264MB2584.FRAP264.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:2150;
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hWGKN3C4Ej/d4sZlgyU4S3Sd0Ju1XH5zpBai7ucXgvF99VmB+7Ed909QOn0KuZs/6wZPwUqV8aRbPvOhjWwSgWnIGLfvFr9Dl5KQ83sceKllHwEorLvFPUsFduUVw9PKwoDjhsWxH++hMteK8pP/767QbgQyFz/gHEx9hIDQW+hQ7AMIp1omi2Uyr0psNousiqjoviXSjQ0O2Ww4S512Qi0doFRNaBx1PQgi5RWHvy8a4h937oSiPaQ3aFHICnCqeR/swx7mQcMgBw3wz+5bOMkTo0rfW1oKyl650iXIzDA9O3bqL6wtUtUWIWeh02ID8Pih6nbKm71bsMgpfY1B+MZhAFB6L9JURozmB0j04vDvxHfofZLxARII/MeeUmN0GLjgj6oE0Bp7s18gyk+fAvQSkHC2EyVmRVJLjaVKAJkkDYRLU2IbbN1zrtpMvq5qPE7X2wpKs0w3vfxIgbsENbqYiXzv121YYe5KKIXuAR8Aac5ZE2NbRWGW3iwdlRBZZXPF3AkAX3JGVYKD0aizIss+8m8Na1Pijj24QveEPoPoitJCI16x68JCU7iLCLI+HpMId3ngZeFa58uzjvRSFRjYZFhwKQID3WGDc8AuDvF837nfIPNVaOXyIfJC8YrVckQ8kJPFRBQcHRxFYbsNbUmlw6Kupuc7dnmTZMIVD1d8kcsmJPrFC4qyeQpjqSZKChehMxwNM5ELKUsq4WxhrQ==
+x-microsoft-antispam-message-info: iq97BXGY3xTjE2pQr3Bv/DGSnbK/EvvQDwaXF0hz/28ju31ugMDHkrG6Zqzu7jhP4oxiPfW8MhyLjNSUSMEM0rBNtS/OYH2ftymealO8rpDR4vv1L4+GaOVcSJfsp1BqpnPi5Qa9yItlfF5qwcfFAqYmeWgvUhk9LHap4sqEzM0DPVrC7bkUSHTvQI7eWxRb2sNTkUut+qjYn03Qqnv3I6IO+Pnr+gpyT7sqwBUdXipbYb6ut5UhH+odk3+liUYAuln66zFfWe/Jxe0HUGmIbCT1ks88TDOcSRMd4Lt3eiQPzwqHwIqUW+7Em8Q/m9UvkitqXm2CyN676dUvQzEEhBwQk0XlDqQEXNo0Hw9c6BXsAr+fii37mGqqqpCXgVk5TYntXE7SgqHMA3+otLXdEMTiA5WAWdVycB6dTDCJRG9nN6vw71ObRjMumTnMcvaktIjN8yxCQbcE1MG4ZKUp+31Ga5LsE8a1eKH9XX6X1okamO3Ko8vWP/M48ZS0FYVB6Cwq27xk5uB2nSC+Ued7Owro8MdAxFiNkj7WE21Sj+lMVB+V74Hja55QlqFriy/o/xDpTVu+PDw4vDeNyuGPoIyMK1XcnM65vXHxRz4++xXqd4WzxmGrYD5hflfCflnudzCB7IUJ1hkmxbU+7lsqnOEDba9kJujxfFCL99wfvZZ7CGqvSnRQRebF1ltUntHXoIFqsUc1dxVRWSl2Fe/Kbg==
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
  SFS:(13230001)(4636009)(366004)(54906003)(110136005)(6512007)(2906002)(86362001)(6486002)(508600001)(4326008)(122000001)(38100700002)(91956017)(316002)(76116006)(26005)(64756008)(6506007)(8936002)(186003)(5660300002)(44832011)(66476007)(66556008)(71200400001)(66946007)(8676002)(66446008)(83380400001)(2616005)(36756003)(38070700005)(20210929001);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?JaN9RSDWGBfJlk/b/5Qfr7ACyycMar17QOeH+RCzl6lSu41ZgDUVo4cqHY?=
- =?iso-8859-1?Q?0JwAa92AB5P/ivhEzu/TVtA4v6fk7Nxnj3vX/0E5dXtxRzRIm2AVBNpfiY?=
- =?iso-8859-1?Q?NjTdW/usKK4hyrF2TKJq8NbpjNnNYcMu++nfNWk4bJbdzQWmmE83lY1wbC?=
- =?iso-8859-1?Q?FEjhzTMOlEW/U8q2Oh66h/O7MH9O7JNdatcoM0jlAGNBqEWgu+h/CZZzUH?=
- =?iso-8859-1?Q?yk+WeJ51FN/kQ50Q7ziidbeo2o7YyVbMs3Ao23i2MSPduSuLJD1CxR4MbQ?=
- =?iso-8859-1?Q?/5R4OKC6KiyymgqOnuhycozI95f/7TpqPL6paaXwqzzBwtl7EzCbnk3vQp?=
- =?iso-8859-1?Q?XlwN7AFd3MJr3BTqc9lQDoQwyHAtskxJNoBFm9vU4IVhw4a8gL9j7I+Ce7?=
- =?iso-8859-1?Q?vLijNCdoO24WTO6ZnlbVGBZHMwDord6zJldbesbux5FjTQlIkxxeSXz21A?=
- =?iso-8859-1?Q?FBrtDaTEKy6aaIULrpS1CQ3fKXDybxfGKZ+m1Dox5Zs3L0TMFTP7BY2EZ9?=
- =?iso-8859-1?Q?xUmotPo0hw6VKxkqnwif7VHBXuArtRt2vr8yiuPmbS4LqEKj/1NwcYkUdh?=
- =?iso-8859-1?Q?M4raa35ii38VDXc4TL4SsTwlKq0SxLl0QtG5SkROwJGzsnapxDpimDi0tK?=
- =?iso-8859-1?Q?FAkwzi0cyjTaCfjPmeLu29sXs+IQcnGt5YxWhz5NIbEusBDJ3iBN9RrThD?=
- =?iso-8859-1?Q?4EpiFB8/hpaAf12KVfkA1ikfPtXdhhc8d4oQz5zUy/yrJdPl9TqepiSMJU?=
- =?iso-8859-1?Q?XZ27hbhx1966XE3yXtbj5sEKeL5IDwxqwx0q5uM9tGP5F9t6Uwsat907hV?=
- =?iso-8859-1?Q?yg4IZJ6etr3rpGXuNfOnSMoI0UwvrXK5NxWTdldUWS+QXx6VER/uz07X96?=
- =?iso-8859-1?Q?nrV5mVTOWJCMvfFPaQ5tx5p9huQ2I9siKMSE7F1hg9qFHtGbWLwg9Z/pYp?=
- =?iso-8859-1?Q?5hsCdhuLEwibm+aRIcBXVzoEafyfPUozjJkYyXi8BjIhcgT8ePO8oCPVlD?=
- =?iso-8859-1?Q?sP+fELXDmUnWiS0Cx4GejLhAU5UkAssdPWybNymoueRK1q5j5tXip7vKTW?=
- =?iso-8859-1?Q?AZklJ64W2Ra9S++mQi2GNnt5qewGSI92ekMznULxSyK/O194bCkCuYsTYo?=
- =?iso-8859-1?Q?hE5ETIZ734MUH0oJdERepOA6eNtEXNwTo+D4oQkD6PtOZupPHdDs6gvV0j?=
- =?iso-8859-1?Q?OLItgbRZsRFb22Xd1uTqZ9CwTm8AkZbWw0Q664evllQE6ppq/dqanMuVK9?=
- =?iso-8859-1?Q?PZNdieAN6PD0WoiXmbt/ezEEFWyHCwaaHE7+J97QW3Bi59FM25Ow7C3IWI?=
- =?iso-8859-1?Q?003rQIGQuYRLMuDJEYrY4vv0hWLCJWlQtPEK/se0XJJMnxm+//8oWwjpcj?=
- =?iso-8859-1?Q?id5Is5o9DHPUYLC6SUyL51faUPb1gEAvQFnfEYLdJvMb/R1x8xx6Nj215I?=
- =?iso-8859-1?Q?3XPyy8kB7valDGzVxWgoHcCE0Kq8AnpLk/mSyIIau7GBqxHhBbbfcqvrDd?=
- =?iso-8859-1?Q?BmdwtdLh+OZ2BkM89u7tvdJvv29Wh+ehVks+cdlAoSiANevuXqEYMrhM9+?=
- =?iso-8859-1?Q?7RhnyGv/vB12/OUOwT2bPTt41fht+gULDHmvNNObU/+J7z8noTSFjpP4iM?=
- =?iso-8859-1?Q?k5M0K3CAMGQPtZwucMJAIYIRCJ5OyJmNrYjVXSVgIOyNoD/V/lEXGPAEKN?=
- =?iso-8859-1?Q?J/OZMwBSUkY8kWEoBiHmpuckwWnhTUXf1D4lIlgT80YbfQwHPrQr1+0y6q?=
- =?iso-8859-1?Q?sJvVtaMGkfCIWNIJ9UdpCl42s=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?0v+yEAVCI16SgamjFHO0Z3sbSWvruoIdxXXeoJfEMOWDUVyNlqiiVCXGGr?=
+ =?iso-8859-1?Q?zqXlMOkB8VgOGc0vuh51kbPLbI9MhsSP0RI1e1v+yFb09oFn9FQHkZk61f?=
+ =?iso-8859-1?Q?wzvM6LlaprgffxUqza9wYlOz5YTvwvy60ZI2ZgqQQXeYbmqu5WynrXq0l8?=
+ =?iso-8859-1?Q?XukqaMzxhx8rtaZpDKLdVmW1b6POgsfZFWbyaTO12IYoTQZfTw/yiw0I0X?=
+ =?iso-8859-1?Q?WGB8/Z0zxEj92lDGNvIfAsS5cyWfKaUrMyBP+LBUMkImkln9XCcqqqehxH?=
+ =?iso-8859-1?Q?UdtYVVkch8EzrTPqd5PmmJLEQm6cnFvV8NW1biP6gBZ72oPQYdAGN4LSbY?=
+ =?iso-8859-1?Q?B6YLNdyxb6XLmm8bZLFJXnCN/p/FbVtfHM+cF4wsUlL5NG3dANQgQ3QnH3?=
+ =?iso-8859-1?Q?IkULgyyhOPhT2wbaPe5lSrpWBUZSBl7m82YSAmQAxajosroc+jUmgz6E4r?=
+ =?iso-8859-1?Q?nhI6NZ9cRRN/+qvxx/KzxTsItrL1ZCA5fTsBjLNKwVNu0o2JCB54pCiW7E?=
+ =?iso-8859-1?Q?2NA+pKSLEt+ns5H/iBLpDifmMdyYeXT+BH46YxZezt8rq/G1S1MiPv892R?=
+ =?iso-8859-1?Q?51nw5NJH/NMUotFQsZeD5wZfTzzaOM/FZU6KlGT+JrmpnP9E4wIeo60H4t?=
+ =?iso-8859-1?Q?QDZztrlIPnB5sGSZZNQB7yBERhKH1wC3gWuKEoNUXqN2VtOILBwQ3pKp7w?=
+ =?iso-8859-1?Q?0qY+ACAQyq5a0xxTZvMzBB+N5Lb8+ZGCfkW3772TCEgFQ4sqh6UQl+Rdw/?=
+ =?iso-8859-1?Q?5yNfCKG1sbctk6n2xyRVwTzxOqyx51CrHo32Aw1yG836OnDuPWP7+Yoee7?=
+ =?iso-8859-1?Q?ODrWqudaCIHPkFQfpQVxDaygsVs9NGhQwKBeis0i8oD1iQjdwcRfrnoyi6?=
+ =?iso-8859-1?Q?jqXdlhxp2aUWMyGiW2JyAlEhA+QW4C2Xl1ReMDirnS0ShXf2LbvzTCCHHu?=
+ =?iso-8859-1?Q?btxErS2PwOjGnq7oY8iZK8KPt3brPZ0qlUq4bM2Lz52D1GzbcYG0P2RlZr?=
+ =?iso-8859-1?Q?4/YvtWyD5iDiUn9cdCS2IoEZ/IuSIqPdYS2nBVLihjFOQBJDw8eP4rIPOt?=
+ =?iso-8859-1?Q?0+pxdju4GNU5rxFe/aL0F2MmdYMYvZ090TdbwTqmEMNYM/FZG1CwwL8B56?=
+ =?iso-8859-1?Q?tYAkjlYI3HxHYYNt31Hbb91SbIuPhxZ381cD5ySzlZMM1L+m2IQPwvn1MU?=
+ =?iso-8859-1?Q?z0JKr7x4HoAf7SEWRkJVWpU05C/0xqf1sd8tiakf5G3UufzUjs/gEIoxGN?=
+ =?iso-8859-1?Q?7s6F+J+RazPPJnWCcK72fFzuc9POU+c/SzPDBtcDjac+AjnYaTFTYPCzMA?=
+ =?iso-8859-1?Q?witzE8AXHK3+kTPF0el+14O8YIju1YEB9d3MPGeI+9dhBPEaEpuAFLZV/R?=
+ =?iso-8859-1?Q?GRwLNqfiAFWdRa9N14T8kSyrhiXv8saJwTv1YAuy/FWXAnCYI0fSB6Icyz?=
+ =?iso-8859-1?Q?STBgOvCdiPpXvq+7xCaal67J6RZ3Vw3D306c1L49dshqG9cbcm+bZqaRwj?=
+ =?iso-8859-1?Q?GccwOfAgWj31hVEnxi2wGVqIOPV9jqopKCQRwI68DUclJs+GEz29MdlCQE?=
+ =?iso-8859-1?Q?tuWey+1//7jG6NhpF+JT9gTRKomymW0344FN6fKJB2J7X38saYUOpTJSnU?=
+ =?iso-8859-1?Q?aXWJe60+d6M5rmUBxI/FUQDTiBAKArkh14CN6Na/4iNKR8fO+zB0qta4ul?=
+ =?iso-8859-1?Q?npC9IHh7oNtumVvf8SEpVGB6CVcGPS5Gkch0hYpFSTcovPizmbBb2p6u5h?=
+ =?iso-8859-1?Q?VSFSaUIOEqCkTn6d1JnzmrQCI=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: csgroup.eu
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: f8beb2b4-6937-4366-c451-08d9e3491418
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jan 2022 17:02:05.8452 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9907be1-0d72-41fd-9cb9-08d9e3491553
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jan 2022 17:02:07.8773 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: LdH7KpXpLR/SPVoBEu5F8ZKXySA9jFWD/oO3FnfyWuPiW9sB0K30qo4RJusuH7jHu9KByUnzLuzMMX7KzbnmhWKLV4Ggy0gEW6HrN7Q2g+0=
+X-MS-Exchange-CrossTenant-userprincipalname: HyP7tzVeMg8dYNazcxzKki42tPitgbR/rJB6c4nNvHriB4MJ7VrMUIU8YMwX0aU+X8RzfSW5eodI+mWlmnNssZc4F+6pO+gjZihvr6mVRyg=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2584
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -131,128 +131,168 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In order to separate text and data, we need to setup
-two rb trees.
+In order to allow separation of data from text, add another layout,
+called data_layout. For architectures requesting separation of text
+and data, only text will go in core_layout and data will go in
+data_layout.
 
-Modify functions to give the tree as a parameter.
+For architectures which keep text and data together, make data_layout
+an alias of core_layout, that way data_layout can be used for all
+data manipulations, regardless of whether data is in core_layout or
+data_layout.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- kernel/module.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ kernel/module.c | 52 ++++++++++++++++++++++++++++---------------------
+ 1 file changed, 30 insertions(+), 22 deletions(-)
 
 diff --git a/kernel/module.c b/kernel/module.c
-index 080193e15d24..163e32e39064 100644
+index 163e32e39064..11f51e17fb9f 100644
 --- a/kernel/module.c
 +++ b/kernel/module.c
-@@ -162,14 +162,14 @@ static const struct latch_tree_ops mod_tree_ops =3D {
- 	.comp =3D mod_tree_comp,
- };
+@@ -81,6 +81,8 @@
+ /* If this is set, the section belongs in the init part of the module */
+ #define INIT_OFFSET_MASK (1UL << (BITS_PER_LONG-1))
 =20
--static noinline void __mod_tree_insert(struct mod_tree_node *node)
-+static noinline void __mod_tree_insert(struct mod_tree_node *node, struct =
-mod_tree_root *tree)
- {
--	latch_tree_insert(&node->node, &mod_tree.root, &mod_tree_ops);
-+	latch_tree_insert(&node->node, &tree->root, &mod_tree_ops);
- }
-=20
--static void __mod_tree_remove(struct mod_tree_node *node)
-+static void __mod_tree_remove(struct mod_tree_node *node, struct mod_tree_=
-root *tree)
- {
--	latch_tree_erase(&node->node, &mod_tree.root, &mod_tree_ops);
-+	latch_tree_erase(&node->node, &tree->root, &mod_tree_ops);
- }
-=20
++#define	data_layout core_layout
++
  /*
-@@ -181,28 +181,28 @@ static void mod_tree_insert(struct module *mod)
- 	mod->core_layout.mtn.mod =3D mod;
- 	mod->init_layout.mtn.mod =3D mod;
+  * Mutex protects:
+  * 1) List of modules (also safely readable with preempt_disable),
+@@ -2014,19 +2016,20 @@ static void module_enable_ro(const struct module *m=
+od, bool after_init)
+ 	set_vm_flush_reset_perms(mod->init_layout.base);
+ 	frob_text(&mod->core_layout, set_memory_ro);
 =20
--	__mod_tree_insert(&mod->core_layout.mtn);
-+	__mod_tree_insert(&mod->core_layout.mtn, &mod_tree);
- 	if (mod->init_layout.size)
--		__mod_tree_insert(&mod->init_layout.mtn);
-+		__mod_tree_insert(&mod->init_layout.mtn, &mod_tree);
+-	frob_rodata(&mod->core_layout, set_memory_ro);
++	frob_rodata(&mod->data_layout, set_memory_ro);
++
+ 	frob_text(&mod->init_layout, set_memory_ro);
+ 	frob_rodata(&mod->init_layout, set_memory_ro);
+=20
+ 	if (after_init)
+-		frob_ro_after_init(&mod->core_layout, set_memory_ro);
++		frob_ro_after_init(&mod->data_layout, set_memory_ro);
  }
 =20
- static void mod_tree_remove_init(struct module *mod)
+ static void module_enable_nx(const struct module *mod)
  {
- 	if (mod->init_layout.size)
--		__mod_tree_remove(&mod->init_layout.mtn);
-+		__mod_tree_remove(&mod->init_layout.mtn, &mod_tree);
+-	frob_rodata(&mod->core_layout, set_memory_nx);
+-	frob_ro_after_init(&mod->core_layout, set_memory_nx);
+-	frob_writable_data(&mod->core_layout, set_memory_nx);
++	frob_rodata(&mod->data_layout, set_memory_nx);
++	frob_ro_after_init(&mod->data_layout, set_memory_nx);
++	frob_writable_data(&mod->data_layout, set_memory_nx);
+ 	frob_rodata(&mod->init_layout, set_memory_nx);
+ 	frob_writable_data(&mod->init_layout, set_memory_nx);
  }
+@@ -2204,7 +2207,7 @@ static void free_module(struct module *mod)
+ 	percpu_modfree(mod);
 =20
- static void mod_tree_remove(struct module *mod)
- {
--	__mod_tree_remove(&mod->core_layout.mtn);
-+	__mod_tree_remove(&mod->core_layout.mtn, &mod_tree);
- 	mod_tree_remove_init(mod);
- }
+ 	/* Free lock-classes; relies on the preceding sync_rcu(). */
+-	lockdep_free_key_range(mod->core_layout.base, mod->core_layout.size);
++	lockdep_free_key_range(mod->data_layout.base, mod->data_layout.size);
 =20
--static struct module *mod_find(unsigned long addr)
-+static struct module *mod_find(unsigned long addr, struct mod_tree_root *t=
-ree)
- {
- 	struct latch_tree_node *ltn;
+ 	/* Finally, free the core (containing the module structure) */
+ 	module_memfree(mod->core_layout.base);
+@@ -2451,7 +2454,10 @@ static void layout_sections(struct module *mod, stru=
+ct load_info *info)
+ 			    || s->sh_entsize !=3D ~0UL
+ 			    || module_init_layout_section(sname))
+ 				continue;
+-			s->sh_entsize =3D get_offset(mod, &mod->core_layout.size, s, i);
++			if (m)
++				s->sh_entsize =3D get_offset(mod, &mod->data_layout.size, s, i);
++			else
++				s->sh_entsize =3D get_offset(mod, &mod->core_layout.size, s, i);
+ 			pr_debug("\t%s\n", sname);
+ 		}
+ 		switch (m) {
+@@ -2460,15 +2466,15 @@ static void layout_sections(struct module *mod, str=
+uct load_info *info)
+ 			mod->core_layout.text_size =3D mod->core_layout.size;
+ 			break;
+ 		case 1: /* RO: text and ro-data */
+-			mod->core_layout.size =3D debug_align(mod->core_layout.size);
+-			mod->core_layout.ro_size =3D mod->core_layout.size;
++			mod->data_layout.size =3D debug_align(mod->data_layout.size);
++			mod->data_layout.ro_size =3D mod->data_layout.size;
+ 			break;
+ 		case 2: /* RO after init */
+-			mod->core_layout.size =3D debug_align(mod->core_layout.size);
+-			mod->core_layout.ro_after_init_size =3D mod->core_layout.size;
++			mod->data_layout.size =3D debug_align(mod->data_layout.size);
++			mod->data_layout.ro_after_init_size =3D mod->data_layout.size;
+ 			break;
+ 		case 4: /* whole core */
+-			mod->core_layout.size =3D debug_align(mod->core_layout.size);
++			mod->data_layout.size =3D debug_align(mod->data_layout.size);
+ 			break;
+ 		}
+ 	}
+@@ -2721,12 +2727,12 @@ static void layout_symtab(struct module *mod, struc=
+t load_info *info)
+ 	}
 =20
--	ltn =3D latch_tree_find((void *)addr, &mod_tree.root, &mod_tree_ops);
-+	ltn =3D latch_tree_find((void *)addr, &tree->root, &mod_tree_ops);
- 	if (!ltn)
- 		return NULL;
+ 	/* Append room for core symbols at end of core part. */
+-	info->symoffs =3D ALIGN(mod->core_layout.size, symsect->sh_addralign ?: 1=
+);
+-	info->stroffs =3D mod->core_layout.size =3D info->symoffs + ndst * sizeof=
+(Elf_Sym);
+-	mod->core_layout.size +=3D strtab_size;
+-	info->core_typeoffs =3D mod->core_layout.size;
+-	mod->core_layout.size +=3D ndst * sizeof(char);
+-	mod->core_layout.size =3D debug_align(mod->core_layout.size);
++	info->symoffs =3D ALIGN(mod->data_layout.size, symsect->sh_addralign ?: 1=
+);
++	info->stroffs =3D mod->data_layout.size =3D info->symoffs + ndst * sizeof=
+(Elf_Sym);
++	mod->data_layout.size +=3D strtab_size;
++	info->core_typeoffs =3D mod->data_layout.size;
++	mod->data_layout.size +=3D ndst * sizeof(char);
++	mod->data_layout.size =3D debug_align(mod->data_layout.size);
 =20
-@@ -215,7 +215,7 @@ static void mod_tree_insert(struct module *mod) { }
- static void mod_tree_remove_init(struct module *mod) { }
- static void mod_tree_remove(struct module *mod) { }
+ 	/* Put string table section at end of init part of module. */
+ 	strsect->sh_flags |=3D SHF_ALLOC;
+@@ -2770,9 +2776,9 @@ static void add_kallsyms(struct module *mod, const st=
+ruct load_info *info)
+ 	 * Now populate the cut down core kallsyms for after init
+ 	 * and set types up while we still have access to sections.
+ 	 */
+-	mod->core_kallsyms.symtab =3D dst =3D mod->core_layout.base + info->symof=
+fs;
+-	mod->core_kallsyms.strtab =3D s =3D mod->core_layout.base + info->stroffs=
+;
+-	mod->core_kallsyms.typetab =3D mod->core_layout.base + info->core_typeoff=
+s;
++	mod->core_kallsyms.symtab =3D dst =3D mod->data_layout.base + info->symof=
+fs;
++	mod->core_kallsyms.strtab =3D s =3D mod->data_layout.base + info->stroffs=
+;
++	mod->core_kallsyms.typetab =3D mod->data_layout.base + info->core_typeoff=
+s;
+ 	src =3D mod->kallsyms->symtab;
+ 	for (ndst =3D i =3D 0; i < mod->kallsyms->num_symtab; i++) {
+ 		mod->kallsyms->typetab[i] =3D elf_type(src + i, info);
+@@ -3468,6 +3474,8 @@ static int move_module(struct module *mod, struct loa=
+d_info *info)
+ 		if (shdr->sh_entsize & INIT_OFFSET_MASK)
+ 			dest =3D mod->init_layout.base
+ 				+ (shdr->sh_entsize & ~INIT_OFFSET_MASK);
++		else if (!(shdr->sh_flags & SHF_EXECINSTR))
++			dest =3D mod->data_layout.base + shdr->sh_entsize;
+ 		else
+ 			dest =3D mod->core_layout.base + shdr->sh_entsize;
 =20
--static struct module *mod_find(unsigned long addr)
-+static struct module *mod_find(unsigned long addr, struct mod_tree_root *t=
-ree)
- {
- 	struct module *mod;
+@@ -4173,7 +4181,7 @@ static int load_module(struct load_info *info, const =
+char __user *uargs,
+ 	mutex_unlock(&module_mutex);
+  free_module:
+ 	/* Free lock-classes; relies on the preceding sync_rcu() */
+-	lockdep_free_key_range(mod->core_layout.base, mod->core_layout.size);
++	lockdep_free_key_range(mod->data_layout.base, mod->data_layout.size);
 =20
-@@ -234,22 +234,22 @@ static struct module *mod_find(unsigned long addr)
-  * Bounds of module text, for speeding up __module_address.
-  * Protected by module_mutex.
-  */
--static void __mod_update_bounds(void *base, unsigned int size)
-+static void __mod_update_bounds(void *base, unsigned int size, struct mod_=
-tree_root *tree)
- {
- 	unsigned long min =3D (unsigned long)base;
- 	unsigned long max =3D min + size;
-=20
--	if (min < module_addr_min)
--		module_addr_min =3D min;
--	if (max > module_addr_max)
--		module_addr_max =3D max;
-+	if (min < tree->addr_min)
-+		tree->addr_min =3D min;
-+	if (max > tree->addr_max)
-+		tree->addr_max =3D max;
- }
-=20
- static void mod_update_bounds(struct module *mod)
- {
--	__mod_update_bounds(mod->core_layout.base, mod->core_layout.size);
-+	__mod_update_bounds(mod->core_layout.base, mod->core_layout.size, &mod_tr=
-ee);
- 	if (mod->init_layout.size)
--		__mod_update_bounds(mod->init_layout.base, mod->init_layout.size);
-+		__mod_update_bounds(mod->init_layout.base, mod->init_layout.size, &mod_t=
-ree);
- }
-=20
- #ifdef CONFIG_KGDB_KDB
-@@ -4742,7 +4742,7 @@ struct module *__module_address(unsigned long addr)
-=20
- 	module_assert_mutex_or_preempt();
-=20
--	mod =3D mod_find(addr);
-+	mod =3D mod_find(addr, &mod_tree);
- 	if (mod) {
- 		BUG_ON(!within_module(addr, mod));
- 		if (mod->state =3D=3D MODULE_STATE_UNFORMED)
+ 	module_deallocate(mod, info);
+  free_copy:
 --=20
 2.33.1
