@@ -2,54 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844454A3575
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 10:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6DF54A35B7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 11:30:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JmmZv3GKdz3djc
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 20:47:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JmnWv4WYhz3bbm
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 21:30:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::61a;
- helo=fra01-mr2-obe.outbound.protection.outlook.com;
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::624;
+ helo=fra01-pr2-obe.outbound.protection.outlook.com;
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on061a.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e19::61a])
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com
+ (mail-pr2fra01on0624.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e18::624])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JmmXM1RZVz30DX
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 20:45:39 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JmnWS47shz2xWd
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 21:29:55 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TUeXFxrmHq9nE4bEyfY6JxM3xd33HxwJmQLkaejhsXWejEoKheC/LGdz8GYnhm0fiJ5crYxOmJfcz1NolyW87P+9YEPWGJkPHn20sW6qzz/2NKqIEsby38HUKArTCM2g2DmUQuURG1MyRH287IskQ4L3IghBplPgJd4uVQmUMXrm5YDwm/yXUXDQC34d4Io2MA2r5sd7Iu8CE5n/K8BvuQQpK+KQfTHjWkkE/G2KcOXLOjvSQ9zcqI2thxK96SYFaDV7LgDHriqSYlOFgmyXk3YcTRKIqeiXg45270MN444jtvezirqXnVEmM4u7ebZZKdIYyUF6UC8XpMB71PPpSg==
+ b=GUmNKuxL6bmNxJlwV74TlrwJHe23a1oqxuQtEg4o0esTSOGz5xbFtE1ExMMW+w1dVMSPz5+O9Oh7P0IQApIh2r8kqYCYWACl1txmigUF5yBfhYxeMo8sIGfzLcDK7uBdaXFef1gYCWvUE6czg1vqcLSRO7ZrIUOMKIiwAAf2Fyc32aPbv/SRCyP5xwaUU59QkChOHY0vTkn4paH269r0sPUtPFHCZ2a9Cyzdv4QhnzndaykVvV2EAkBPFGkWtQCzy71GTs3R4CW/27iavujRWlgG0avsEHDOipu0WVFg1Y4KTvxmpuqTjj1Z5eLXv1dR8w33yHJdVIwmKkFuQ4Ad2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yHxF4peXwsvgpdfVOc2MOb3MX3VpWCURlsgx5RAABYs=;
- b=FFzbxahQN4uPQS0VyZfQYA3AHD50ZIIeGPi3nyWCZJD0eCEz+E1lcxw2wdcYNiC8gTzUizatV21UkhB2xIgfQrIXpufKS/iAQ5nKsOoOpZbjffGZBirsENG27ZVIsNSYACFJsN6mzX8rXafse9J7utRRdsNHyYGnBV8ECijnPvn9sYCZ8tGC/PmzK161DNPQ/GD8Ho8Riez8WajZNuIx0uaKsPYp2wqwWOz0XU4/Pyrh6qjcNPdghZ1kPEwPnOQ4URCkQlmG+xEuop2xbxe8MeOIvBvpXEW6waEqyR8X/2P9A9wIdhTwIzK2rEfJAZx4lfdgYS09Ha90BvJetQb0lA==
+ bh=qQiR5WniVdcPVVeZv8tiwL9SfMWm8FRiPyDqkKClio8=;
+ b=h8EKxeJe4O9W0dyihKFhvThTUl+rpnzFvkCRPJs7PtEjoeo4SLIDFATEFSBNC5q5RyTZ1cchX4xZvbXmBTMIz5oYUWT68oTV4L1qAJAo9y0kF3hgFNdwsB2KfdvX0JgcEHfyrk2qtbkjGT464DozLpfJi5J/03EvI+MHayskXVSBtD5IwpOfEmGwApwWu9eNP2kAwFVG12IBEWqSNEtHMtila6iko4eu5DFpae0F4jG7cIRpaqJ3xNH4BGMfWnK5SbeCr4Qs7XQzbuW5ENl2RHTdJMEQleEhiDwjwm0rbZKAKDE3YPC/bmNL3fHNHfoVhAP3VcmfsQ4PpGjxgm9ioQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MR2P264MB0084.FRAP264.PROD.OUTLOOK.COM (2603:10a6:500:10::15) with
+ by PR0P264MB2886.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1d1::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.15; Sun, 30 Jan
- 2022 09:45:12 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.20; Sun, 30 Jan
+ 2022 10:29:34 +0000
 Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::c9a2:1db0:5469:54e1]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
  ([fe80::c9a2:1db0:5469:54e1%6]) with mapi id 15.20.4930.020; Sun, 30 Jan 2022
- 09:45:12 +0000
+ 10:29:34 +0000
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH] [Rebased for 5.4] powerpc/32: Fix boot failure with GCC
- latent entropy plugin
-Thread-Topic: [PATCH] [Rebased for 5.4] powerpc/32: Fix boot failure with GCC
- latent entropy plugin
-Thread-Index: AQHYFb4T+yOsvhjVoUOfadQsYca3gg==
-Date: Sun, 30 Jan 2022 09:45:12 +0000
-Message-ID: <2e04e534ae03013524fec4ca341d7e8c9aa9e8b2.1643535437.git.christophe.leroy@csgroup.eu>
-References: <e230a64554197468089375631e040b4249789fbd.1643535825.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <e230a64554197468089375631e040b4249789fbd.1643535825.git.christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
+ <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/32s: Make pte_update() non atomic on 603 core
+Thread-Topic: [PATCH] powerpc/32s: Make pte_update() non atomic on 603 core
+Thread-Index: AQHYFcRGBttrVlXBwkaPm4X9nqdB0g==
+Date: Sun, 30 Jan 2022 10:29:34 +0000
+Message-ID: <cc89d3c11fc9c742d0df3454a657a3a00be24046.1643538554.git.christophe.leroy@csgroup.eu>
 Accept-Language: fr-FR, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -57,62 +53,62 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=csgroup.eu;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 071f0f6a-089d-4494-0107-08d9e3d5364f
-x-ms-traffictypediagnostic: MR2P264MB0084:EE_
-x-microsoft-antispam-prvs: <MR2P264MB0084B1B929862B6108A3EBD3ED249@MR2P264MB0084.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:826;
+x-ms-office365-filtering-correlation-id: 978734e3-67f8-4610-bb79-08d9e3db68cc
+x-ms-traffictypediagnostic: PR0P264MB2886:EE_
+x-microsoft-antispam-prvs: <PR0P264MB288621B4CCC3B433596CE10EED249@PR0P264MB2886.FRAP264.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:2150;
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: P9ixT8nqoqGZwtCMh4tVeRTUVXBj6CWkbqx9rCey64vvuobFTBBn9K/3OsOwPdcs45JFP5wycgL4QbiJv8ae/KcYzWWJ7/4L6RZ7HzA/M4NDKnY4SJ7u5drSDPY8PrrJnMYKyo0c3jPPYLDbo1b/xFildhhMHMmh7Jmfq/+3czNTcuUK+Ssu8xc3/+ePoi0lUNR/MbCHSmwhRDwusgaeyMZ0pL4WE8ZQ0Hu8sF2DqRANDOAwtPJr9F7oQ96d/v4Pkpeo3Ge7avz1MmC0C4uBOSiHuZZk9dW/ZEhRcM/O0BUsujmsaoqRwo/1ABtlyk+FafMpQZpig9fExl4/xKJUQyx2xl+TJkW9MlLXP/5ayXtbrI++rPOUSDfPofaULrzGrHDeXAuipsQvdqhW+T1DNBS6MOA0mVWSS430U0D3Ymz9StaMm552bxVc6Cm3e0ZBUrU7AFQbDLqwPE2lbR/2BXzveeAOZaaIyb5DwJHg1wZLWzm7ErqsObPDvrNEEa+KEC4+Vh+bxGaRaLr3HmHILFVEOHeC6bo+N08IDRuoWF80N3UXLkt7BIiAqNcKmyptU8aanFbEObXl5Qo+lkzjv/j8EpO2zeOUs+oXIMFdjg6zV+0Mnek1GNXhVZtJd+vJV5GZD8UKF5R3x4vvbANEpMyMoxKOLcRq0R5AchhYA8iidtyQax9GCGms0HTQ9wqsrpmDBLVJ+RBNtZggU2Xlvn82/qREPMuvv0LW2z1XGWuGQhKHilZyjezOeGQHrBFD55FGCnciR0U4eHTefVJBvBXGIh+ArcCZzDIhobXjAHo=
+x-microsoft-antispam-message-info: 5OGSLt0aqFW4OoGt1pBlsMTIBsr9bsP55J0liMo7ImYjKV1mngMGxC3yvWBGMiBp994I3B+wlXPiFKW+cFEDVbHHMoFhOb+SS9N0ZIrpcCMj4RNyp8Zc5xrZdKUDSsrhOhlvalVrY+9fy0VbsEBmN89E9sGnF5IV3uVjFr4567qmDy4gO0IiPW3NZxsH3epw3suFBxHRZDsKeZsRaa8YSieJPUb6DHSyML+6OXtVw/V5/KwSWe1dPtaWJfRVVVpvGtoGRnARpeuFhXSVinYZyP7jKLr5UVcArmz8LKcxsZ0NZjNlWS96pviPxrtdm8UD3+BwZeOr5sdZzvA24KZsyXNuTehjPfcQEAZ8VJ1qhbKh2iVdX/fj7xH1p60ZIbGlcZFb74y9BOoK2yPkOf7ccOnHbbkvnRTBcA9MFQiPMXAdn5TeliEkYXBJG9zIFKKwRnW2ZTqPGhDte0ucChjuwz6GR9YVpkv59ao1Eg1AvXCW6sEeQ5Itd9qz8AJDwYfRpoLrYMlwBIrnNTwHv4rv7GSkeCohLT+R8durlcJ+J8JQQPJ4v/dhR0HNbdEAZsQ5FVcMLOULotqo3e/tYb31Szr+YYZF5wLiTvdVY3n7yrW9mXICv+lp7twOQpF7UNjvQ0aIOfLfk3JN8Qjwn52o6ZGtHHXf2aiBy4+9osTmhlKAPmsw0AL/l95BFwZjGCkHPGfbxQKmF/CAW7oSSAaJ1A==
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(2616005)(44832011)(26005)(83380400001)(186003)(2906002)(38100700002)(86362001)(122000001)(38070700005)(6506007)(76116006)(966005)(508600001)(8676002)(8936002)(6512007)(36756003)(64756008)(6486002)(4326008)(71200400001)(5660300002)(66446008)(54906003)(110136005)(66946007)(316002)(66556008)(91956017)(66476007)(20210929001);
+ SFS:(13230001)(4636009)(366004)(38100700002)(122000001)(6506007)(6512007)(508600001)(86362001)(2616005)(8936002)(186003)(36756003)(54906003)(83380400001)(316002)(71200400001)(91956017)(110136005)(26005)(6486002)(44832011)(38070700005)(2906002)(5660300002)(66946007)(66556008)(66476007)(66446008)(64756008)(76116006)(4326008)(8676002)(20210929001);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?+HZrIlbvzqgLKrX/v5ZsQH0s/AlsUexc7xKcnGRgU8ijeZX4enE1TPDXMF?=
- =?iso-8859-1?Q?B6OVl4SpS2OK5BHqtg6VH4/FeNavHtKbXS6Qtapk/XJw79MdVsiWEGpCCh?=
- =?iso-8859-1?Q?5VxqxsJybSUMKbmCmgpXvS8uQoxIwX2U9Kt2rO9jmrHhYnwmzT+DUQraF7?=
- =?iso-8859-1?Q?qqEqoJTZev1GiLkG56OgsATMnNPKlRHtUScW8YyV6CEP670E1ITR0ON7Fb?=
- =?iso-8859-1?Q?pJsvJMvwldq/gY36TdTNJmNRP4F23qxHoCFzdr8iMaIy5c6GoZTllU2NX+?=
- =?iso-8859-1?Q?K8iqVCXeZvkOE1nO/5aqE6Uvo+BAoJIFhijAcajmWJxhxRuejrvyHxZu6z?=
- =?iso-8859-1?Q?Y9Uk394kN19jrL+LnPWRaP+MNXDc5fZaa+ZLisdAo0vHcK+IwIrwm/xoze?=
- =?iso-8859-1?Q?VcC0Z2A5MoO1ZVW2R9yYi+XSvFQUuQCjgCih5vV+U1bXbIsVTsk+lmvvai?=
- =?iso-8859-1?Q?quftr9HlcKx3/Ef8EVZoXITzsQzEBVLSESzfiejp5cBfepVi/d/OX5jj2X?=
- =?iso-8859-1?Q?5gKxienNK5w8yXfDdJUv290MAk7YthogBtqT+iaVo7woTQJ1z+tkwXSRAx?=
- =?iso-8859-1?Q?WqUQ1oHavMNeRGSewoY3e2FSRVqylkhuCBEx1dnEREnt0OMHHunZiw1fSE?=
- =?iso-8859-1?Q?QxUs0wHeoFZDHoPfTBDa38ylaNcxAyZhxIROgvVuDhhYmJDfoUGuJe4YbY?=
- =?iso-8859-1?Q?KnoLMJsu1bWowjv2QFyOooyp5GwCLiIUH8aGxCMzhILb59VCK/OHIvbN4r?=
- =?iso-8859-1?Q?onmx8FsJtr+wGBvGpD9fq3wBi1RBAZLVPbPSrKTM1N+johqoFe6ZwMBW+O?=
- =?iso-8859-1?Q?Ffmhl5aD/Rq7rtirSQHodQ406XPDoHOolbh43qmo8qMSxXQlF3bRZnoSRu?=
- =?iso-8859-1?Q?eAlKyg9aDySwpRCvmuoe9wRAQ33i5HW2l4LUon3J7r9UKmFqhSaGF7p7bg?=
- =?iso-8859-1?Q?tFWjKmyZu55G839YaYvMB3aqrrtJWaq7dquEZkItonMRxLt9Ou4dvvRS07?=
- =?iso-8859-1?Q?KqbZWkaMM3fAI8fjUJw8163aSZgImZgo4BfwRoycAV1qESbdXLesF2JMI0?=
- =?iso-8859-1?Q?UbrAH8lMsK/w9nw9UBfiUWFskb1NBq360HGBc6dejGakotk/1Ql33uUtHk?=
- =?iso-8859-1?Q?iCPee4v6UfC4nLa0rxdyUqRZ3tqextsa7247Yuvt2ERnqWIZBK1I2rmX5I?=
- =?iso-8859-1?Q?x82yr4WXTRZ5Me8VyUuwpfOTS2Q3xOxrvy2sSuPeHx9z+jV86g1tDjFGK7?=
- =?iso-8859-1?Q?cYBj742f8NMb/pZbgWBU7GI8ULVMt/VNDx3lHQ48k5elWfXMmTmLt+KFBd?=
- =?iso-8859-1?Q?JmV4+EKMgd0zyVdb6HwCx5Nm8VU1DxZ9R/sM9UR7UltYMaIGWF2JFdMout?=
- =?iso-8859-1?Q?DPoK7jJPnD/Iia9bBWPYy02oqO9FFNQz2F2k7RPdCu2o48Z/xanl7ZazdQ?=
- =?iso-8859-1?Q?vvXQHRBktJNk+xersECKrtrCh4KJi2rye+ssl+OKkinan63qW/UAVVIqxn?=
- =?iso-8859-1?Q?sEsqALnxcWzJXxBxDBWpKbvOajmDdc76t4TUyL9El59HSrn1SNhVo1m2uq?=
- =?iso-8859-1?Q?6CCfK0skX2wzKJafKuyRcbLks04bw0Op7Y0pDC2UAdmNm8onhpIliKvN3T?=
- =?iso-8859-1?Q?x36bEjcpHo1morONPaq1cpw3s3zRe8PKR1sOjdmfI0Xgq7jVsV1k6mZ7me?=
- =?iso-8859-1?Q?YZoxJDQdNB4g0DQsQjcoHmdguO2rgXqPuqRds44dD33P2/+wqNFAisA6RC?=
- =?iso-8859-1?Q?2jXtH+8ODPIPHFvIYotmT2pVg=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?NAk4yLwoXtxgrat35h5RZ2IVQbIXBRU6KAyCeGFneMHCBEYMf7zQS9ygdJ?=
+ =?iso-8859-1?Q?2b41XDrTU1jcxy/S5ZdZRxY45Bvnj6d/cc6MYGKbN4rCpqovOXLtHP0MEf?=
+ =?iso-8859-1?Q?MtExj1MGZdBGTW8QCfFbBMYF64WRNr/6LXetW/p/7hpUB+Yr+kBygFLUsE?=
+ =?iso-8859-1?Q?jQAnTw/+CZYC/15ryX4nSYK+Ojp1YEfuqKTmUoO5gUtxFS8AWKFOkDhjvf?=
+ =?iso-8859-1?Q?BW+lIT/ik81bv6NhpqZ4B64QfHyA4Ep+hJ+K9kCNKPk1+2o2d9AKOva5w4?=
+ =?iso-8859-1?Q?9R/g83fwUvhPdrkQVQAxAdvJeRXdV/4cGAd9dNZVfdtfGQcicEO8buWiml?=
+ =?iso-8859-1?Q?j4t9YRc+Otl9LKekdkDqWr7h0ixRO+tgdj87e8xJITP6eV+NhGl8PZfOCa?=
+ =?iso-8859-1?Q?wqjFS0RJuozP0oWLJQXePjhmLMksJ+Epj4wLG3U/Gml14TmlYffne5N3yi?=
+ =?iso-8859-1?Q?0ks1MsZ7Aw2DV03i/Ry++bjJ3drefoAu8nMaYMD8WQNdFiW2o7G9rFTrAT?=
+ =?iso-8859-1?Q?mPgrdqryscTF5yNIdEJqr065PM+2QmuFN9qmG30K2GCmvIqyn/SIOPsByr?=
+ =?iso-8859-1?Q?mWig5qUSfV5yd1kuRsNzOHD1OCo2PfmBvFr/jqPfpRQINJtExTIkUJ39Yo?=
+ =?iso-8859-1?Q?l1Y2u94JPbJ4q6k/yur1z14c6nJ/Bpsbt78mf415SuAYy1ndgDFJ+qLN1b?=
+ =?iso-8859-1?Q?Mqj6FUga0kKtbEvFsYplXtTlJOq0o9txOPtCp0Z/NocZBEX83SdcQ7c2hS?=
+ =?iso-8859-1?Q?vOfxrOKldjWlEEhk/DS1qYXrVvrKq7qqbtqpIm96kwiUj8WLZej9pHHOqD?=
+ =?iso-8859-1?Q?FImljh9TyWIX1/OHXzrMpEO7sHo48Hd9xjclJ7zBhETpvIWa5w4QP7cTN6?=
+ =?iso-8859-1?Q?EalvBbp49Oz36V37c2ukWoXe1/TIZaIOOVEgnxfQOrzvlHMDMyNVWnHS73?=
+ =?iso-8859-1?Q?2f8DJBZTr9IGuhw9kl3RH5b/Pjx3d/NdRqonX2jcfBTpBVjFQ+N+eKHHdA?=
+ =?iso-8859-1?Q?WZH50pCazFHZOGydSa/01a4WeMbdS7TB56sP5Pa4MHDY8rvQdcKcYejieH?=
+ =?iso-8859-1?Q?IWXWadHutocuP1SnHOPvqxMOzK7ajzKblE9vr3KHz3aykUbn6PKavtZtpR?=
+ =?iso-8859-1?Q?iwE5y7XkPZvARiCqiXhRdxJ2FwQ7lAi8wNm7ft3exZ0rR3F4TyHXxcF/tz?=
+ =?iso-8859-1?Q?ggGwqMuwBvJD1wy/hnOISfsBAPtevpgQpiagd088qONofiZ/PAoKL50i2c?=
+ =?iso-8859-1?Q?XbJ094Wgr7P9ag6EtQpeyhjowwRsXq4avgf6w09fkssZElztoSgNl8GNcv?=
+ =?iso-8859-1?Q?n6xKszbuNKekCdgNQqxDmbNyyffQ+cixvMhn33BASKCd+I+PMCqSk6SNjV?=
+ =?iso-8859-1?Q?kJyll35TTk0XdT/NJzYsXIR+AN9Ns+TtlNQrPqR+aIgW7DoAPBxO8QxATJ?=
+ =?iso-8859-1?Q?XsQytK4m+lKTC0LC0SeFLAh3ALdyt7pqQ87VFy9Fmu4BLGP5GAbPDtjYcl?=
+ =?iso-8859-1?Q?yXXIN8stcn5XW/+2OnCZVi6c7wlGz43WkK2kHwloOtKasuhHKm8H0HfEqJ?=
+ =?iso-8859-1?Q?0KhT8WcGqvcRkaH76pGmeA2uKykIRpf8Y1MGdmqCNRTic7lO9IV/o4KTxq?=
+ =?iso-8859-1?Q?CfdnAQJvliBvgw6lEUVGmgZM6LLUUYg/3swWcMjbzNQ49WWKoiUGI1BH/D?=
+ =?iso-8859-1?Q?Oc1qz6FQFr2hpKngtBwpjyIMhms16n6uFPmIR4PW3Ve24NptOFtO8xGzQC?=
+ =?iso-8859-1?Q?slvqHlYp/eIUSki3u14txWgCY=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: csgroup.eu
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 071f0f6a-089d-4494-0107-08d9e3d5364f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jan 2022 09:45:12.6923 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 978734e3-67f8-4610-bb79-08d9e3db68cc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jan 2022 10:29:34.4432 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JjhEi5cbqrsKFqhxRm248ceQc7wHLJdZnyTtwZJhOBCOwYZiXuknOeoJzwEpi/JjkbrdyEKmFpKV2b13EGqAktIAz8lhcKg/svqfaMhKqoA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR2P264MB0084
+X-MS-Exchange-CrossTenant-userprincipalname: SxE5IiNeHwtiCbMdJ5on3q9MyEyHKz7ZYUi4UB1hCl7T2wRNKfI5jZ2tEbek6LuF14sILBj2f103eFL8OjXnS0ELcOMiLk1HFb9jWnY8iVs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2886
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -124,65 +120,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Erhard Furtner <erhard_f@mailbox.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is backport for 5.4
+On 603 core, TLB miss handler don't do any change to the
+page tables so pte_update() doesn't need to be atomic.
 
-(cherry picked from commit bba496656a73fc1d1330b49c7f82843836e9feb1)
-
-Boot fails with GCC latent entropy plugin enabled.
-
-This is due to early boot functions trying to access 'latent_entropy'
-global data while the kernel is not relocated at its final
-destination yet.
-
-As there is no way to tell GCC to use PTRRELOC() to access it,
-disable latent entropy plugin in early_32.o and feature-fixups.o and
-code-patching.o
-
-Fixes: 38addce8b600 ("gcc-plugins: Add latent_entropy plugin")
-Cc: stable@vger.kernel.org # v4.9+
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D215217
-Link: https://lore.kernel.org/r/2bac55483b8daf5b1caa163a45fa5f9cdbe18be4.16=
-40178426.git.christophe.leroy@csgroup.eu
 ---
- arch/powerpc/kernel/Makefile | 1 +
- arch/powerpc/lib/Makefile    | 3 +++
- 2 files changed, 4 insertions(+)
+ arch/powerpc/include/asm/book3s/32/pgtable.h | 37 ++++++++++++--------
+ 1 file changed, 22 insertions(+), 15 deletions(-)
 
-diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-index afbd47b0a75c..5819a577d267 100644
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -13,6 +13,7 @@ CFLAGS_prom_init.o      +=3D -fPIC
- CFLAGS_btext.o		+=3D -fPIC
- endif
+diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/in=
+clude/asm/book3s/32/pgtable.h
+index f8b94f78403f..772e00dc4ef1 100644
+--- a/arch/powerpc/include/asm/book3s/32/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
+@@ -298,28 +298,35 @@ static inline pte_basic_t pte_update(struct mm_struct=
+ *mm, unsigned long addr, p
+ 				     unsigned long clr, unsigned long set, int huge)
+ {
+ 	pte_basic_t old;
+-	unsigned long tmp;
 =20
-+CFLAGS_early_32.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
- CFLAGS_cputable.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
- CFLAGS_prom_init.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
- CFLAGS_btext.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index b8de3be10eb4..8656b8d2ce55 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -16,6 +16,9 @@ CFLAGS_code-patching.o +=3D -DDISABLE_BRANCH_PROFILING
- CFLAGS_feature-fixups.o +=3D -DDISABLE_BRANCH_PROFILING
- endif
-=20
-+CFLAGS_code-patching.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
-+CFLAGS_feature-fixups.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
+-	__asm__ __volatile__(
++	if (mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
++		unsigned long tmp;
 +
- obj-y +=3D alloc.o code-patching.o feature-fixups.o pmem.o
++		asm volatile(
+ #ifndef CONFIG_PTE_64BIT
+-"1:	lwarx	%0, 0, %3\n"
+-"	andc	%1, %0, %4\n"
++	"1:	lwarx	%0, 0, %3\n"
++	"	andc	%1, %0, %4\n"
+ #else
+-"1:	lwarx	%L0, 0, %3\n"
+-"	lwz	%0, -4(%3)\n"
+-"	andc	%1, %L0, %4\n"
++	"1:	lwarx	%L0, 0, %3\n"
++	"	lwz	%0, -4(%3)\n"
++	"	andc	%1, %L0, %4\n"
+ #endif
+-"	or	%1, %1, %5\n"
+-"	stwcx.	%1, 0, %3\n"
+-"	bne-	1b"
+-	: "=3D&r" (old), "=3D&r" (tmp), "=3Dm" (*p)
++	"	or	%1, %1, %5\n"
++	"	stwcx.	%1, 0, %3\n"
++	"	bne-	1b"
++		: "=3D&r" (old), "=3D&r" (tmp), "=3Dm" (*p)
+ #ifndef CONFIG_PTE_64BIT
+-	: "r" (p),
++		: "r" (p),
+ #else
+-	: "b" ((unsigned long)(p) + 4),
++		: "b" ((unsigned long)(p) + 4),
+ #endif
+-	  "r" (clr), "r" (set), "m" (*p)
+-	: "cc" );
++		  "r" (clr), "r" (set), "m" (*p)
++		: "cc" );
++	} else {
++		old =3D pte_val(*p);
++
++		*p =3D __pte((old & ~(pte_basic_t)clr) | set);
++	}
 =20
- ifndef CONFIG_KASAN
+ 	return old;
+ }
 --=20
 2.33.1
