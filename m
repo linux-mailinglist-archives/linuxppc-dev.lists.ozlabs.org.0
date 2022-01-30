@@ -2,65 +2,115 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19BA4A349C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 06:55:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD73F4A356E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 10:46:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JmgQR46gYz3bc6
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 16:55:11 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KbqY9Ycj;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JmmXq4rvmz3cRg
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 20:46:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=KbqY9Ycj; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::61a;
+ helo=fra01-mr2-obe.outbound.protection.outlook.com;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com
+ (mail-mr2fra01on061a.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e19::61a])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JmgPn6K4tz2xtp
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 16:54:37 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 26941B82768
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 05:54:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32F6C340F0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 05:54:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1643522071;
- bh=KTwtRKH/OVKhaNoB2dpS+9CRT5rYtiTrBbRTY58frfI=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=KbqY9YcjYQ53gmY2dHmrpw7RqkS4V6dNNJjtLBbW8U4K47uqz0ecQoZbQwgfGmZma
- tRCWkNjivI6OGFruhAjydv25WQ48WPT8wiGKtc8VkkqRijcv4FkBddBEiA9bZ6UpWM
- I5RJVntAdZO8XAOSx+Hzslf2/jqxqMaVH/0ebTmNHQjz/YBFdn/6EIt7d+vxsPHNSZ
- ZaFIL+Fyvt5HOclTxwg6T2ZdaTD4y5Z172agNJmW87mhTO2d74ig4seQ3g/0cZwPaa
- 1X8MVufLeenvPKvFey3paLO3ejlnzOfUnZP2orkztfEtq678+ZCjwp7m/wgaw/Qbsh
- 4OleGJIuGH/Uw==
-Received: by mail-vs1-f53.google.com with SMTP id b2so7979608vso.9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Jan 2022 21:54:31 -0800 (PST)
-X-Gm-Message-State: AOAM531tvLXRgV/9iO9NhU94NOMorrHaOkjdogLL6xfTEBf67b+svum8
- EJ3yGRDyKFe6Ubxrg4cjurE1B3LimuvSJpS773M=
-X-Google-Smtp-Source: ABdhPJw3SI5w6wpfoRZZErXNv34dgmNp5eduh3H4LQwaI7qbmi+2hfTO0XEH13fEEhf3iFH2jsVqfmVsSGc5OwjgZr4=
-X-Received: by 2002:a67:e0d9:: with SMTP id m25mr5857135vsl.51.1643522070834; 
- Sat, 29 Jan 2022 21:54:30 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JmmXK1Hc9z30DX
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 20:45:35 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ud4VSrOz6Wk26afIB0qabPQJJr41Nm/T+kyw74ZmyEgKqnd2bgLR9W3f6pJhE4PwrEWGST3lz2ekk/h80VEKg+4oRF3QnrAGUBjPCfl/k5ocVBhhk5cVfoUtnIJ2bqwKbk2oQSh5dYbokX8fzfaFwEfKVM8SbnvhPaeHolsG1TPdiZom84TEuSglKnh0LnjdPepJZp7OGL77VmOhWXRLVy0KwPxU4+xxLUb/2+2P4Oct4vZu/NOtYRfyPC3CGIJTr89kq87Yxq6dufEyUoHCTDnyIzAOBm1iZOyO3nwgjnuh9SUidGhxpbDCqM4wqhs367v7k7GPW2YtevsIjjJHFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hICisB2VemkgfsXUfFO2QPvOzDQC+oA4ZqChYt6MWE8=;
+ b=huh5Zis9PGcqGFyGZB0LCKfOK2uFde9l6a+2fhCzo5AlxbYO+5GakCQ+hfaznpHeB/EI2EskWaLImmzZfcOX59o2PDa8WouA1qX6UQ+B2dWNavdmg+5l6emNdm5aHDD6RbEynKmtbEqTgOh0M5zwCkcOdFwsuAnoOfw/wSu5Gdtq/98UYVWtP20/n6SSB/O0cLJTdwC2vB3GBVn3TEAelLUlD5jSTjTUo5ngjcpzqg2If0AktYIsMVj5GbfFrh3x0+6KzgX3n6mt47Kp3JmfpqODiH0kz1dDYD5wSp96DunbQV4/IiIls4xcnj0Yx9Ppt1+0L/26DDBRO3Krqirx/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MR2P264MB0084.FRAP264.PROD.OUTLOOK.COM (2603:10a6:500:10::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.15; Sun, 30 Jan
+ 2022 09:45:11 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c9a2:1db0:5469:54e1]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::c9a2:1db0:5469:54e1%6]) with mapi id 15.20.4930.020; Sun, 30 Jan 2022
+ 09:45:10 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH] [Rebased for 4.19 and 4.14] powerpc/32: Fix boot failure with
+ GCC latent entropy plugin
+Thread-Topic: [PATCH] [Rebased for 4.19 and 4.14] powerpc/32: Fix boot failure
+ with GCC latent entropy plugin
+Thread-Index: AQHYFb4SdIk4VY6uSEqn34ouj1+4xA==
+Date: Sun, 30 Jan 2022 09:45:10 +0000
+Message-ID: <e230a64554197468089375631e040b4249789fbd.1643535825.git.christophe.leroy@csgroup.eu>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: d729d4dd-0b9b-4242-e67a-08d9e3d53511
+x-ms-traffictypediagnostic: MR2P264MB0084:EE_
+x-microsoft-antispam-prvs: <MR2P264MB0084CBE598133F203A55C2D0ED249@MR2P264MB0084.FRAP264.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:826;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: ZcIMAtyNkrMLEISPXq4KJboZZy5ujDdWS2c08SPnwvAL9VlQdNRfBnM0AYpmcWHoIELqct8+nQKoWFxE08IhFNU7r/Eq4crGTvpB/AEEyZRzsAS0XaQd+3aGa8TScPXiI8T+Tc/1vcGP94EY/dD5lAgM5fopOFJqiR4++/smRsEXkF2YgJYW4rGO4WEpbAnMBSbfGYF+vVseXQ0o5fXptKHPr/YnOQWFvS0OkzEBSmq2ji77ciKihtIcZBUv44SLORN4sUkP1oLDYvQM/IOXQRAGLEwghLiyc1BqAEBVQMdswizSJjO6nr6RE9GGofjYI96dfBHO3wqeO3+C6ZAp3cNnteUCBaMIQAVe0xLK7hXlD+J1qLZFCeZTNxxCcfDYW1Q8yt5j1OulQloWMCCLbzBDkY0RpgDBm+h/Ol4engqMeIfXwUbUxzDnRaerni4Qb6cNU+gMbnVh6y0iYX8jlGYu6ey+k0BzSVGFsE/azRMtv97L7NCw73ed+cGB6i3ZKSRfCkPmyGcPSTLbWnpFNxF86l60LqKjPFRTqNzO+89cS7tNzmNplaSknxy9Wg4myyllIUiReMRIu1bexPUcdl2t6NiToOfuRxMOgy4PHXGlaKwQPZbYdN9PaFlrgheHWwsDOTTpvehvIZ9MdTpsVQe1Cntpi3GutkZkN2pLkPnxbyfPAcbgNSSR56g+LwaW6gTmqx5jnxsJUAYH/Rx4w1m5bWp6KfuyJnB2HJI607m8t3ty8HGKbZ82ONbymmBKzqe3KJc1nXaorNElYOXT7I8EnBvdlzJTsJCPdmCWDKs=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(366004)(2616005)(44832011)(26005)(83380400001)(186003)(2906002)(38100700002)(86362001)(122000001)(38070700005)(6506007)(76116006)(966005)(508600001)(8676002)(8936002)(6512007)(36756003)(64756008)(6486002)(4326008)(71200400001)(5660300002)(66446008)(54906003)(110136005)(66946007)(316002)(66556008)(91956017)(66476007)(20210929001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?M7OPCmEW724sI1TTQ3h+1Bo8WDG5VoGpiAGk1qImb8wX6w2TrWCU75MPGm?=
+ =?iso-8859-1?Q?9AVsqtlBWZyMBsETfaOPI8iUBtUCYnisMQwE51STL3vHiBxqpXK1HiHErH?=
+ =?iso-8859-1?Q?iPTS6Cf7BfLbyu6LlckMyIoKSv8AtcL1QWOJOQU3fwFQLy6zOnk07HP09G?=
+ =?iso-8859-1?Q?o8BzxcDcDZljZWo1RwnPTlEXLdfYOEST9qMpDojHCAMvfoKDOrXlR2TgKy?=
+ =?iso-8859-1?Q?miDWASaviU9E0C7xkDFKCr+8atKsS5N7gyTjfJ/wuYHEM4hfzIHMbTtIUJ?=
+ =?iso-8859-1?Q?r2n9pEGHPes6+r5s848ZgbrgnvWa/zYm8fNArdYbGsUxY9gBHaH6KxT23u?=
+ =?iso-8859-1?Q?f2rUvrCAthnZeRklgFqwxLKBPQI9H/TmH7SCUPraP9VdAmvi0NDBNhGgAP?=
+ =?iso-8859-1?Q?Uf7YrXht9MrGFUVU50GW5Lz6FE26Oysn/HoPbrb5bK46lwRePIXf6UqSAQ?=
+ =?iso-8859-1?Q?N3w2BzBXy+KVs0NDi6tnigeCyN3jeex73tu92BqJY+1qbOqHBERqdjIY1v?=
+ =?iso-8859-1?Q?FzamggVo6ukW6er6D2+zoAbOgDzR3xEZ5Z9eDNDAq0nAHMSodUBILatB9O?=
+ =?iso-8859-1?Q?sth0nRVW9kM5XeaPbvUkcJDv/xHnr5sYCW13dGS4B8awgff37SnNViZ6a/?=
+ =?iso-8859-1?Q?zq80fWldnIqlNgYpMMRiLw9YiCKT3qqZ1ZFM2X0wjRRDFbLR7tZHaTTIN0?=
+ =?iso-8859-1?Q?Tihrn64UO1SuNsAKJgqn4WnS0KZKEJzYOmQc9Xmz0TTTYSCDHIT2REQ5+O?=
+ =?iso-8859-1?Q?2Wef6gO+FUk0BjmUmx3VDhC1SaENOzhINfUR6sJs7l4/bDdKlKw+/ba3lo?=
+ =?iso-8859-1?Q?nj+KczPyJ25bT8lcBGLez+846LIkkzGU6CoqIvL1pLBjmC5biYxVT+SCDT?=
+ =?iso-8859-1?Q?0Qj8VQcYZx9jWBVblMONh1zpp5QqBrVUbP7fCi8LoVpXfvfK9YQM3V+ps3?=
+ =?iso-8859-1?Q?RQMSD6wRXNdn2CYhlp/unQbKfX0fQCJkA2DMUNIIUpGHqWHbFgTaUE0+zh?=
+ =?iso-8859-1?Q?96sOsSDaji7wfQP14/LUphEmc1YAxZI9C3i5Da/cveh4So+v7sBS9msEUv?=
+ =?iso-8859-1?Q?4V65Dz/ICo1hjHkNDzEvwdwHFPbB8NPMx3A32slMp3iDD58vT3/NlkaCzu?=
+ =?iso-8859-1?Q?ZlGAh6wOhufMRYdGuv14D5rk1mzbKsXAkIO+h82EX95k4cN6RaM/4xbYfR?=
+ =?iso-8859-1?Q?Yfniz9jpvbx2C5quEcwEwn+ynK+u9hFrJ+9eG4rV3WxnHCk4nHkVAuWTkW?=
+ =?iso-8859-1?Q?Z/h7L+EnpExsgbDLVXQAePvKzYh9nWhnVPo/l1pD8ui+fT0k7n1axF4Fi/?=
+ =?iso-8859-1?Q?sRvfWU1WswRukyCFo4eZIQDTo0Vxbmjl7oS09VqrGpsjJGm228TIWp64yD?=
+ =?iso-8859-1?Q?cXzwuQ3++shaJjESe6P4YLTrYjDGIC9Ay7BkUm8HB7UO8w3msmdS7s7Q4V?=
+ =?iso-8859-1?Q?pQ7Zq6LWi+9fqHrNki9qFtZwRiB/9QTQ+LudxH5gNCIP7AqYEqC/JrstM/?=
+ =?iso-8859-1?Q?93/OmWSr+X5fhAbjo9TzEfKleZsRuFp3g9BNp5mFm1ofj+KEiDA5bF7e7W?=
+ =?iso-8859-1?Q?SwlGnKvhWtW9BmrfRiJxzoE6e//XGWfCOV9bv7uCNUH5ovm3YtvUWE8hiU?=
+ =?iso-8859-1?Q?tp7lvZrDZ5CbqMdzBCG8QFBxObJP01Wojiay2gQ4LmEOMnJ9W6Hx6eHWsy?=
+ =?iso-8859-1?Q?YrNfOkXxr8iYgPQ01o5vwcXtlcTR9N6WtziNlw6Xn4+JXcTEmubHispIb9?=
+ =?iso-8859-1?Q?njwpb8bc17+nd/RAw8L3vfzlg=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20220129121728.1079364-1-guoren@kernel.org>
- <20220129121728.1079364-9-guoren@kernel.org>
- <CAK8P3a3JGP6fLVOyLgdNw2YpRSmArbEX8orUhRrN=GHmcdk=1g@mail.gmail.com>
-In-Reply-To: <CAK8P3a3JGP6fLVOyLgdNw2YpRSmArbEX8orUhRrN=GHmcdk=1g@mail.gmail.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Sun, 30 Jan 2022 13:54:20 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTQQnrUFNQ85vvoMkpxnCWuMw8iXtPZOJwWGaEA9f+rTwA@mail.gmail.com>
-Message-ID: <CAJF2gTQQnrUFNQ85vvoMkpxnCWuMw8iXtPZOJwWGaEA9f+rTwA@mail.gmail.com>
-Subject: Re: [PATCH V4 08/17] riscv: compat: syscall: Add compat_sys_call_table
- implementation
-To: Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: d729d4dd-0b9b-4242-e67a-08d9e3d53511
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jan 2022 09:45:10.6603 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Xr8R6fbN41YDCLdivgjRK65MyZ4fnahdYGDrkE4qJsByM2Jhh5TvvJicMStTW/m4C05gF+SmEgaZ+aNUMeYU7PQiBzFCVnn6omqCW2ORGgQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR2P264MB0084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,66 +122,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
- Parisc List <linux-parisc@vger.kernel.org>,
- gregkh <gregkh@linuxfoundation.org>, Drew Fustini <drew@beagleboard.org>,
- Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-csky@vger.kernel.org,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Christoph Hellwig <hch@infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
+Cc: Erhard Furtner <erhard_f@mailbox.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jan 30, 2022 at 6:41 AM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> > Implement compat sys_call_table and some system call functions:
-> > truncate64, ftruncate64, fallocate, pread64, pwrite64,
-> > sync_file_range, readahead, fadvise64_64 which need argument
-> > translation.
-> >
-> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> > Signed-off-by: Guo Ren <guoren@kernel.org>
-> > Cc: Arnd Bergmann <arnd@arndb.de>
->
-> This all looks really good, but I would change one detail:
->
-> > +#ifndef compat_arg_u64
-> > +#define compat_arg_u64(name)           u32  name##_lo, u32  name##_hi
-> > +#define compat_arg_u64_dual(name)      u32, name##_lo, u32, name##_hi
-> > +#define compat_arg_u64_glue(name)      (((u64)name##_hi << 32) | \
-> > +                                        ((u64)name##_lo & 0xffffffffUL))
-> > +#endif
->
-> I would make these endian-specific, and reverse them on big-endian
-> architectures. That way it
-> should be possible to share them across all compat architectures
-> without needing the override
-> option.
-I hope it could be another patch. Because it's not clear to
-_LITTLE_ENDIAN definition in archs.
+This is backport for 4.19 and 4.14
 
-eg: Names could be __ORDER_LITTLE_ENDIAN__ CPU_LITTLE_ENDIAN
-SYS_SUPPORTS_LITTLE_ENDIAN __LITTLE_ENDIAN
+(cherry picked from commit bba496656a73fc1d1330b49c7f82843836e9feb1)
 
-riscv is little-endian, but no any LITTLE_ENDIAN definition.
+Boot fails with GCC latent entropy plugin enabled.
 
-So let's keep them in the patch, first, Thx
+This is due to early boot functions trying to access 'latent_entropy'
+global data while the kernel is not relocated at its final
+destination yet.
 
->
->         Arnd
+As there is no way to tell GCC to use PTRRELOC() to access it,
+disable latent entropy plugin in early_32.o and feature-fixups.o and
+code-patching.o
 
+Fixes: 38addce8b600 ("gcc-plugins: Add latent_entropy plugin")
+Cc: stable@vger.kernel.org # v4.9+
+Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D215217
+Link: https://lore.kernel.org/r/2bac55483b8daf5b1caa163a45fa5f9cdbe18be4.16=
+40178426.git.christophe.leroy@csgroup.eu
+---
+ arch/powerpc/kernel/Makefile | 1 +
+ arch/powerpc/lib/Makefile    | 3 +++
+ 2 files changed, 4 insertions(+)
 
-
--- 
-Best Regards
- Guo Ren
-
-ML: https://lore.kernel.org/linux-csky/
+diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+index 1e64cfe22a83..bf19c5514d6c 100644
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -15,6 +15,7 @@ CFLAGS_prom_init.o      +=3D -fPIC
+ CFLAGS_btext.o		+=3D -fPIC
+ endif
+=20
++CFLAGS_setup_32.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
+ CFLAGS_cputable.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
+ CFLAGS_prom_init.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
+ CFLAGS_btext.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 670286808928..36f913084429 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -10,6 +10,9 @@ ccflags-$(CONFIG_PPC64)	:=3D $(NO_MINIMAL_TOC)
+ CFLAGS_REMOVE_code-patching.o =3D $(CC_FLAGS_FTRACE)
+ CFLAGS_REMOVE_feature-fixups.o =3D $(CC_FLAGS_FTRACE)
+=20
++CFLAGS_code-patching.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
++CFLAGS_feature-fixups.o +=3D $(DISABLE_LATENT_ENTROPY_PLUGIN)
++
+ obj-y +=3D string.o alloc.o code-patching.o feature-fixups.o
+=20
+ obj-$(CONFIG_PPC32)	+=3D div64.o copy_32.o crtsavres.o strlen_32.o
+--=20
+2.33.1
