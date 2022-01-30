@@ -1,114 +1,116 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6DF54A35B7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 11:30:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4599B4A35BF
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 11:37:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JmnWv4WYhz3bbm
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 21:30:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jmngy0F7lz3cCJ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Jan 2022 21:37:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lkxtK9PD;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::624;
- helo=fra01-pr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com
- (mail-pr2fra01on0624.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e18::624])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JmngB05wbz2yQH
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 21:36:38 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=lkxtK9PD; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org
+ [IPv6:2404:9400:2:0:216:3eff:fee2:21ea])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Jmng866TJz4xcl
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 21:36:36 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4Jmng863s0z4xcm; Sun, 30 Jan 2022 21:36:36 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=lkxtK9PD; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JmnWS47shz2xWd
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 21:29:55 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GUmNKuxL6bmNxJlwV74TlrwJHe23a1oqxuQtEg4o0esTSOGz5xbFtE1ExMMW+w1dVMSPz5+O9Oh7P0IQApIh2r8kqYCYWACl1txmigUF5yBfhYxeMo8sIGfzLcDK7uBdaXFef1gYCWvUE6czg1vqcLSRO7ZrIUOMKIiwAAf2Fyc32aPbv/SRCyP5xwaUU59QkChOHY0vTkn4paH269r0sPUtPFHCZ2a9Cyzdv4QhnzndaykVvV2EAkBPFGkWtQCzy71GTs3R4CW/27iavujRWlgG0avsEHDOipu0WVFg1Y4KTvxmpuqTjj1Z5eLXv1dR8w33yHJdVIwmKkFuQ4Ad2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qQiR5WniVdcPVVeZv8tiwL9SfMWm8FRiPyDqkKClio8=;
- b=h8EKxeJe4O9W0dyihKFhvThTUl+rpnzFvkCRPJs7PtEjoeo4SLIDFATEFSBNC5q5RyTZ1cchX4xZvbXmBTMIz5oYUWT68oTV4L1qAJAo9y0kF3hgFNdwsB2KfdvX0JgcEHfyrk2qtbkjGT464DozLpfJi5J/03EvI+MHayskXVSBtD5IwpOfEmGwApwWu9eNP2kAwFVG12IBEWqSNEtHMtila6iko4eu5DFpae0F4jG7cIRpaqJ3xNH4BGMfWnK5SbeCr4Qs7XQzbuW5ENl2RHTdJMEQleEhiDwjwm0rbZKAKDE3YPC/bmNL3fHNHfoVhAP3VcmfsQ4PpGjxgm9ioQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB2886.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1d1::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.20; Sun, 30 Jan
- 2022 10:29:34 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c9a2:1db0:5469:54e1]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c9a2:1db0:5469:54e1%6]) with mapi id 15.20.4930.020; Sun, 30 Jan 2022
- 10:29:34 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
- <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/32s: Make pte_update() non atomic on 603 core
-Thread-Topic: [PATCH] powerpc/32s: Make pte_update() non atomic on 603 core
-Thread-Index: AQHYFcRGBttrVlXBwkaPm4X9nqdB0g==
-Date: Sun, 30 Jan 2022 10:29:34 +0000
-Message-ID: <cc89d3c11fc9c742d0df3454a657a3a00be24046.1643538554.git.christophe.leroy@csgroup.eu>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 978734e3-67f8-4610-bb79-08d9e3db68cc
-x-ms-traffictypediagnostic: PR0P264MB2886:EE_
-x-microsoft-antispam-prvs: <PR0P264MB288621B4CCC3B433596CE10EED249@PR0P264MB2886.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:2150;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 5OGSLt0aqFW4OoGt1pBlsMTIBsr9bsP55J0liMo7ImYjKV1mngMGxC3yvWBGMiBp994I3B+wlXPiFKW+cFEDVbHHMoFhOb+SS9N0ZIrpcCMj4RNyp8Zc5xrZdKUDSsrhOhlvalVrY+9fy0VbsEBmN89E9sGnF5IV3uVjFr4567qmDy4gO0IiPW3NZxsH3epw3suFBxHRZDsKeZsRaa8YSieJPUb6DHSyML+6OXtVw/V5/KwSWe1dPtaWJfRVVVpvGtoGRnARpeuFhXSVinYZyP7jKLr5UVcArmz8LKcxsZ0NZjNlWS96pviPxrtdm8UD3+BwZeOr5sdZzvA24KZsyXNuTehjPfcQEAZ8VJ1qhbKh2iVdX/fj7xH1p60ZIbGlcZFb74y9BOoK2yPkOf7ccOnHbbkvnRTBcA9MFQiPMXAdn5TeliEkYXBJG9zIFKKwRnW2ZTqPGhDte0ucChjuwz6GR9YVpkv59ao1Eg1AvXCW6sEeQ5Itd9qz8AJDwYfRpoLrYMlwBIrnNTwHv4rv7GSkeCohLT+R8durlcJ+J8JQQPJ4v/dhR0HNbdEAZsQ5FVcMLOULotqo3e/tYb31Szr+YYZF5wLiTvdVY3n7yrW9mXICv+lp7twOQpF7UNjvQ0aIOfLfk3JN8Qjwn52o6ZGtHHXf2aiBy4+9osTmhlKAPmsw0AL/l95BFwZjGCkHPGfbxQKmF/CAW7oSSAaJ1A==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(38100700002)(122000001)(6506007)(6512007)(508600001)(86362001)(2616005)(8936002)(186003)(36756003)(54906003)(83380400001)(316002)(71200400001)(91956017)(110136005)(26005)(6486002)(44832011)(38070700005)(2906002)(5660300002)(66946007)(66556008)(66476007)(66446008)(64756008)(76116006)(4326008)(8676002)(20210929001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?NAk4yLwoXtxgrat35h5RZ2IVQbIXBRU6KAyCeGFneMHCBEYMf7zQS9ygdJ?=
- =?iso-8859-1?Q?2b41XDrTU1jcxy/S5ZdZRxY45Bvnj6d/cc6MYGKbN4rCpqovOXLtHP0MEf?=
- =?iso-8859-1?Q?MtExj1MGZdBGTW8QCfFbBMYF64WRNr/6LXetW/p/7hpUB+Yr+kBygFLUsE?=
- =?iso-8859-1?Q?jQAnTw/+CZYC/15ryX4nSYK+Ojp1YEfuqKTmUoO5gUtxFS8AWKFOkDhjvf?=
- =?iso-8859-1?Q?BW+lIT/ik81bv6NhpqZ4B64QfHyA4Ep+hJ+K9kCNKPk1+2o2d9AKOva5w4?=
- =?iso-8859-1?Q?9R/g83fwUvhPdrkQVQAxAdvJeRXdV/4cGAd9dNZVfdtfGQcicEO8buWiml?=
- =?iso-8859-1?Q?j4t9YRc+Otl9LKekdkDqWr7h0ixRO+tgdj87e8xJITP6eV+NhGl8PZfOCa?=
- =?iso-8859-1?Q?wqjFS0RJuozP0oWLJQXePjhmLMksJ+Epj4wLG3U/Gml14TmlYffne5N3yi?=
- =?iso-8859-1?Q?0ks1MsZ7Aw2DV03i/Ry++bjJ3drefoAu8nMaYMD8WQNdFiW2o7G9rFTrAT?=
- =?iso-8859-1?Q?mPgrdqryscTF5yNIdEJqr065PM+2QmuFN9qmG30K2GCmvIqyn/SIOPsByr?=
- =?iso-8859-1?Q?mWig5qUSfV5yd1kuRsNzOHD1OCo2PfmBvFr/jqPfpRQINJtExTIkUJ39Yo?=
- =?iso-8859-1?Q?l1Y2u94JPbJ4q6k/yur1z14c6nJ/Bpsbt78mf415SuAYy1ndgDFJ+qLN1b?=
- =?iso-8859-1?Q?Mqj6FUga0kKtbEvFsYplXtTlJOq0o9txOPtCp0Z/NocZBEX83SdcQ7c2hS?=
- =?iso-8859-1?Q?vOfxrOKldjWlEEhk/DS1qYXrVvrKq7qqbtqpIm96kwiUj8WLZej9pHHOqD?=
- =?iso-8859-1?Q?FImljh9TyWIX1/OHXzrMpEO7sHo48Hd9xjclJ7zBhETpvIWa5w4QP7cTN6?=
- =?iso-8859-1?Q?EalvBbp49Oz36V37c2ukWoXe1/TIZaIOOVEgnxfQOrzvlHMDMyNVWnHS73?=
- =?iso-8859-1?Q?2f8DJBZTr9IGuhw9kl3RH5b/Pjx3d/NdRqonX2jcfBTpBVjFQ+N+eKHHdA?=
- =?iso-8859-1?Q?WZH50pCazFHZOGydSa/01a4WeMbdS7TB56sP5Pa4MHDY8rvQdcKcYejieH?=
- =?iso-8859-1?Q?IWXWadHutocuP1SnHOPvqxMOzK7ajzKblE9vr3KHz3aykUbn6PKavtZtpR?=
- =?iso-8859-1?Q?iwE5y7XkPZvARiCqiXhRdxJ2FwQ7lAi8wNm7ft3exZ0rR3F4TyHXxcF/tz?=
- =?iso-8859-1?Q?ggGwqMuwBvJD1wy/hnOISfsBAPtevpgQpiagd088qONofiZ/PAoKL50i2c?=
- =?iso-8859-1?Q?XbJ094Wgr7P9ag6EtQpeyhjowwRsXq4avgf6w09fkssZElztoSgNl8GNcv?=
- =?iso-8859-1?Q?n6xKszbuNKekCdgNQqxDmbNyyffQ+cixvMhn33BASKCd+I+PMCqSk6SNjV?=
- =?iso-8859-1?Q?kJyll35TTk0XdT/NJzYsXIR+AN9Ns+TtlNQrPqR+aIgW7DoAPBxO8QxATJ?=
- =?iso-8859-1?Q?XsQytK4m+lKTC0LC0SeFLAh3ALdyt7pqQ87VFy9Fmu4BLGP5GAbPDtjYcl?=
- =?iso-8859-1?Q?yXXIN8stcn5XW/+2OnCZVi6c7wlGz43WkK2kHwloOtKasuhHKm8H0HfEqJ?=
- =?iso-8859-1?Q?0KhT8WcGqvcRkaH76pGmeA2uKykIRpf8Y1MGdmqCNRTic7lO9IV/o4KTxq?=
- =?iso-8859-1?Q?CfdnAQJvliBvgw6lEUVGmgZM6LLUUYg/3swWcMjbzNQ49WWKoiUGI1BH/D?=
- =?iso-8859-1?Q?Oc1qz6FQFr2hpKngtBwpjyIMhms16n6uFPmIR4PW3Ve24NptOFtO8xGzQC?=
- =?iso-8859-1?Q?slvqHlYp/eIUSki3u14txWgCY=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4Jmng769W4z4xcl
+ for <linuxppc-dev@ozlabs.org>; Sun, 30 Jan 2022 21:36:34 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 20UA7UPY020183
+ for <linuxppc-dev@ozlabs.org>; Sun, 30 Jan 2022 10:36:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=subject : from : to : cc
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=OzKWyRwa7gpNUCed9JxN+X0zv8TmBY2rjkTYX8KI6r8=;
+ b=lkxtK9PDroM9vbduDVq1yJs1wjFmPAhBPpEwTXb+kW2MXZwhVJ9ogelGO482QmKTndL3
+ mVQKlcqxz2i9NhZVwsvveFzumbIN34Fe9f8zyo4Dt+Gpr0jPWxsiE9Ti7z0CuYQ+v4Zc
+ BV+0ZRaO9eK5DQ6esEtVh+tRtsQlFCiqDtMr+cdAPTwn8uCId5oyQqMH7wad9ekcP6o3
+ 1yPH7hdG73434ggOJeT9x1jgtoUuEtjKuQoMb07YeJSrX9gL8ns0/KD59kKff0eA1gza
+ gKDtrJUEiLPrSjyyld7Ej1uMy9+DTYcGRqNH9UBemfmHHPdej9SleVMThtVGcVi4FVzp Fw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dwfhgdx3w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Sun, 30 Jan 2022 10:36:31 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 20UAWRVq039952
+ for <linuxppc-dev@ozlabs.org>; Sun, 30 Jan 2022 10:36:31 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dwfhgdx3n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 30 Jan 2022 10:36:31 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 20UAYQ7v021419;
+ Sun, 30 Jan 2022 10:36:29 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03ams.nl.ibm.com with ESMTP id 3dvw794ujq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 30 Jan 2022 10:36:29 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 20UAQeLw28049674
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 30 Jan 2022 10:26:40 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2BFEF11C04A;
+ Sun, 30 Jan 2022 10:36:24 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0B13E11C058;
+ Sun, 30 Jan 2022 10:36:23 +0000 (GMT)
+Received: from [192.168.0.48] (unknown [9.43.59.226])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sun, 30 Jan 2022 10:36:22 +0000 (GMT)
+Subject: [PATCH v4] PCI hotplug: rpaphp: Error out on busy status from
+ get-sensor-state
+From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+To: linuxppc-dev <linuxppc-dev@ozlabs.org>
+Date: Sun, 30 Jan 2022 16:06:22 +0530
+Message-ID: <164353890582.248886.2819122231737548076.stgit@jupiter>
+User-Agent: StGit/0.23
+Content-Type: text/plain; charset="utf-8"
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: cL3iHriSQ2ZRJ8eCvdtcpfHJ5Fhb_PTu
+X-Proofpoint-GUID: Kwl7KRaG7Rd7zdmOqo2dhRAI281-Sdy2
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 978734e3-67f8-4610-bb79-08d9e3db68cc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jan 2022 10:29:34.4432 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: SxE5IiNeHwtiCbMdJ5on3q9MyEyHKz7ZYUi4UB1hCl7T2wRNKfI5jZ2tEbek6LuF14sILBj2f103eFL8OjXnS0ELcOMiLk1HFb9jWnY8iVs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2886
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-01-30_03,2022-01-28_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 mlxscore=0
+ suspectscore=0 phishscore=0 impostorscore=0 malwarescore=0 spamscore=0
+ mlxlogscore=999 bulkscore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2201300073
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,76 +122,208 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Nathan Fontenot <nfont@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 603 core, TLB miss handler don't do any change to the
-page tables so pte_update() doesn't need to be atomic.
+When certain PHB HW failure causes phyp to recover PHB, it marks the PE
+state as temporarily unavailable until recovery is complete. This also
+triggers an EEH handler in Linux which needs to notify drivers, and perform
+recovery. But before notifying the driver about the pci error it uses
+get_adapter_state()->get-sesnor-state() operation of the hotplug_slot to
+determine if the slot contains a device or not. if the slot is empty, the
+recovery is skipped entirely.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+However on certain PHB failures, the rtas call get-sesnor-state() returns
+extended busy error (9902) until PHB is recovered by phyp. Once PHB is
+recovered, the get-sensor-state() returns success with correct presence
+status. The rtas call interface rtas_get_sensor() loops over the rtas call
+on extended delay return code (9902) until the return value is either
+success (0) or error (-1). This causes the EEH handler to get stuck for ~6
+seconds before it could notify that the pci error has been detected and
+stop any active operations. Hence with running I/O traffic, during this 6
+seconds, the network driver continues its operation and hits a timeout
+(netdev watchdog). On timeouts, network driver go into ffdc capture mode
+and reset path assuming the PCI device is in fatal condition. This
+sometimes causes EEH recovery to fail. This impacts the ssh connection and
+leads to the system being inaccessible.
+
+------------
+[52732.244731] DEBUG: ibm_read_slot_reset_state2()
+[52732.244762] DEBUG: ret = 0, rets[0]=5, rets[1]=1, rets[2]=4000, rets[3]=>
+[52732.244798] DEBUG: in eeh_slot_presence_check
+[52732.244804] DEBUG: error state check
+[52732.244807] DEBUG: Is slot hotpluggable
+[52732.244810] DEBUG: hotpluggable ops ?
+[52732.244953] DEBUG: Calling ops->get_adapter_status
+[52732.244958] DEBUG: calling rpaphp_get_sensor_state
+[52736.564262] ------------[ cut here ]------------
+[52736.564299] NETDEV WATCHDOG: enP64p1s0f3 (tg3): transmit queue 0 timed o>
+[52736.564324] WARNING: CPU: 1442 PID: 0 at net/sched/sch_generic.c:478 dev>
+[...]
+[52736.564505] NIP [c000000000c32368] dev_watchdog+0x438/0x440
+[52736.564513] LR [c000000000c32364] dev_watchdog+0x434/0x440
+------------
+
+To avoid this issue, fix the pci hotplug driver (rpaphp) to return an error
+if the slot presence state can not be detected immediately while pe is in
+EEH recovery state. Current implementation uses rtas_get_sensor() API which
+blocks the slot check state until rtas call returns success. Change
+rpaphp_get_sensor_state() to invoke rtas_call(get-sensor-state) directly
+only if the respective pe is in EEH recovery state, and take actions based
+on rtas return status.
+
+In normal cases (non-EEH case) rpaphp_get_sensor_state() will continue to
+invoke rtas_get_sensor() as it was earlier with no change in existing
+behavior.
+
+Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 ---
- arch/powerpc/include/asm/book3s/32/pgtable.h | 37 ++++++++++++--------
- 1 file changed, 22 insertions(+), 15 deletions(-)
+Change in V4:
+- Error out on sensor busy only if pe is going through EEH recovery instead
+  of always error out.
 
-diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/in=
-clude/asm/book3s/32/pgtable.h
-index f8b94f78403f..772e00dc4ef1 100644
---- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-@@ -298,28 +298,35 @@ static inline pte_basic_t pte_update(struct mm_struct=
- *mm, unsigned long addr, p
- 				     unsigned long clr, unsigned long set, int huge)
- {
- 	pte_basic_t old;
--	unsigned long tmp;
-=20
--	__asm__ __volatile__(
-+	if (mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
-+		unsigned long tmp;
+Change in V3:
+- Invoke rtas_call(get-sensor-state) directly from
+  rpaphp_get_sensor_state() directly and do special handling.
+- See v2 at
+  https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-November/237336.html
+
+Change in V2:
+- Alternate approach to fix the EEH issue instead of delaying slot presence
+  check proposed at
+  https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-November/236956.html
+
+Also refer:
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-November/237027.html
+---
+ drivers/pci/hotplug/rpaphp_pci.c |  100 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 97 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/pci/hotplug/rpaphp_pci.c b/drivers/pci/hotplug/rpaphp_pci.c
+index c380bdacd1466..d93f04b503c04 100644
+--- a/drivers/pci/hotplug/rpaphp_pci.c
++++ b/drivers/pci/hotplug/rpaphp_pci.c
+@@ -18,12 +18,107 @@
+ #include "../pci.h"		/* for pci_add_new_bus */
+ #include "rpaphp.h"
+ 
++/*
++ * RTAS call get-sensor-state(DR_ENTITY_SENSE) return values as per PAPR:
++ *    -1: Hardware Error
++ *    -2: RTAS_BUSY
++ *    -3: Invalid sensor. RTAS Parameter Error.
++ * -9000: Need DR entity to be powered up and unisolated before RTAS call
++ * -9001: Need DR entity to be powered up, but not unisolated, before RTAS call
++ * -9002: DR entity unusable
++ *  990x: Extended delay - where x is a number in the range of 0-5
++ */
++#define RTAS_HARDWARE_ERROR	-1
++#define RTAS_INVALID_SENSOR	-3
++#define SLOT_UNISOLATED		-9000
++#define SLOT_NOT_UNISOLATED	-9001
++#define SLOT_NOT_USABLE		-9002
 +
-+		asm volatile(
- #ifndef CONFIG_PTE_64BIT
--"1:	lwarx	%0, 0, %3\n"
--"	andc	%1, %0, %4\n"
-+	"1:	lwarx	%0, 0, %3\n"
-+	"	andc	%1, %0, %4\n"
- #else
--"1:	lwarx	%L0, 0, %3\n"
--"	lwz	%0, -4(%3)\n"
--"	andc	%1, %L0, %4\n"
-+	"1:	lwarx	%L0, 0, %3\n"
-+	"	lwz	%0, -4(%3)\n"
-+	"	andc	%1, %L0, %4\n"
- #endif
--"	or	%1, %1, %5\n"
--"	stwcx.	%1, 0, %3\n"
--"	bne-	1b"
--	: "=3D&r" (old), "=3D&r" (tmp), "=3Dm" (*p)
-+	"	or	%1, %1, %5\n"
-+	"	stwcx.	%1, 0, %3\n"
-+	"	bne-	1b"
-+		: "=3D&r" (old), "=3D&r" (tmp), "=3Dm" (*p)
- #ifndef CONFIG_PTE_64BIT
--	: "r" (p),
-+		: "r" (p),
- #else
--	: "b" ((unsigned long)(p) + 4),
-+		: "b" ((unsigned long)(p) + 4),
- #endif
--	  "r" (clr), "r" (set), "m" (*p)
--	: "cc" );
-+		  "r" (clr), "r" (set), "m" (*p)
-+		: "cc" );
-+	} else {
-+		old =3D pte_val(*p);
++static int rtas_to_errno(int rtas_rc)
++{
++	int rc;
 +
-+		*p =3D __pte((old & ~(pte_basic_t)clr) | set);
++	switch (rtas_rc) {
++	case RTAS_HARDWARE_ERROR:
++		rc = -EIO;
++		break;
++	case RTAS_INVALID_SENSOR:
++		rc = -EINVAL;
++		break;
++	case SLOT_UNISOLATED:
++	case SLOT_NOT_UNISOLATED:
++		rc = -EFAULT;
++		break;
++	case SLOT_NOT_USABLE:
++		rc = -ENODEV;
++		break;
++	case RTAS_BUSY:
++	case RTAS_EXTENDED_DELAY_MIN...RTAS_EXTENDED_DELAY_MAX:
++		rc = -EBUSY;
++		break;
++	default:
++		err("%s: unexpected RTAS error %d\n", __func__, rtas_rc);
++		rc = -ERANGE;
++		break;
 +	}
-=20
- 	return old;
- }
---=20
-2.33.1
++	return rc;
++}
++
++/*
++ * get_adapter_status() can be called by the EEH handler during EEH recovery.
++ * On certain PHB failures, the rtas call get-sensor-state() returns extended
++ * busy error (9902) until PHB is recovered by phyp. The rtas call interface
++ * rtas_get_sensor() loops over the rtas call on extended delay return code
++ * (9902) until the return value is either success (0) or error (-1). This
++ * causes the EEH handler to get stuck for ~6 seconds before it could notify
++ * that the pci error has been detected and stop any active operations. This
++ * sometimes causes EEH recovery to fail. To avoid this issue, invoke
++ * rtas_call(get-sensor-state) directly if the respective pe is in EEH recovery
++ * state and return -EBUSY error based on rtas return status. This will help
++ * the EEH handler to notify the driver about the pci error immediately and
++ * successfully proceed with EEH recovery steps.
++ */
++static int __rpaphp_get_sensor_state(struct slot *slot, int *state)
++{
++	int rc;
++#ifdef CONFIG_EEH
++	int token = rtas_token("get-sensor-state");
++	struct pci_dn *pdn;
++	struct eeh_pe *pe;
++	struct pci_controller *phb = PCI_DN(slot->dn)->phb;
++
++	if (token == RTAS_UNKNOWN_SERVICE)
++		return -ENOENT;
++
++	/*
++	 * Fallback to existing method for empty slot or pe isn't in EEH
++	 * recovery.
++	 */
++	if (list_empty(&PCI_DN(phb->dn)->child_list))
++		goto fallback;
++
++	pdn = list_first_entry(&PCI_DN(phb->dn)->child_list,
++			       struct pci_dn, list);
++	pe = eeh_dev_to_pe(pdn->edev);
++	if (pe && (pe->state & EEH_PE_RECOVERING)) {
++		rc = rtas_call(token, 2, 2, state, DR_ENTITY_SENSE,
++			       slot->index);
++		if (rc)
++			rc = rtas_to_errno(rc);
++		return rc;
++	}
++fallback:
++#endif
++	rc = rtas_get_sensor(DR_ENTITY_SENSE, slot->index, state);
++	return rc;
++}
++
+ int rpaphp_get_sensor_state(struct slot *slot, int *state)
+ {
+ 	int rc;
+ 	int setlevel;
+ 
+-	rc = rtas_get_sensor(DR_ENTITY_SENSE, slot->index, state);
++	rc = __rpaphp_get_sensor_state(slot, state);
+ 
+ 	if (rc < 0) {
+ 		if (rc == -EFAULT || rc == -EEXIST) {
+@@ -39,8 +134,7 @@ int rpaphp_get_sensor_state(struct slot *slot, int *state)
+ 				dbg("%s: power on slot[%s] failed rc=%d.\n",
+ 				    __func__, slot->name, rc);
+ 			} else {
+-				rc = rtas_get_sensor(DR_ENTITY_SENSE,
+-						     slot->index, state);
++				rc = __rpaphp_get_sensor_state(slot, state);
+ 			}
+ 		} else if (rc == -ENODEV)
+ 			info("%s: slot is unusable\n", __func__);
+
+
