@@ -2,64 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F0E4A4686
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 13:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7598F4A46CB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 13:20:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JnRYW0ZGmz3cCb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 23:03:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JnRw42Rnvz3cHN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 23:20:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fNYKVUnP;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=YFDDe5oi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+c8a487c16eeb054acd37+6735+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=fNYKVUnP; 
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=YFDDe5oi; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JnRXn5kySz2xsr
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 23:03:21 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id A64AEB82A73
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 12:03:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6423BC340EE
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 12:03:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1643630596;
- bh=Tnl+b+xRnsReNq4KI429Am7kpgJQ0umrjTVla4lsCuM=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=fNYKVUnPHi4fB2RDVXN/XPov3Pzxn5A1kXwyz+7LOx0xtVsOdQVaSlptA3l6sPO0f
- drJ5QpM53lfVQOzGgCce6B3pLahQ7QGSlaLrpdhyAkJ8SULgXKHPGWHnYSLBvsBQ/t
- fs/0QUMACIndc/Oow7jaQyp72tjLmz/jpvKWB2XfcgrdeWAoLhIVtNkmROpwMglSMu
- MW+xwZqT00PRi0JLtYRicH1AppTKRmYG0WNykLZJqhzgiPwG33xGGGt1Ay/gpwP/2v
- R401bXofdi6TFPmB02Zav6cD1va7JnpIDrlctwFhFD/4xkKrfZp28yMy+9f7Qys9S9
- Esu0cmt5m7xVQ==
-Received: by mail-vk1-f169.google.com with SMTP id m131so8101637vkm.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 04:03:16 -0800 (PST)
-X-Gm-Message-State: AOAM5327BjtMKFlgqGpARnJwJftlrQBr4m4fFYNyfQVofNsoUVfimDqa
- GSGEqzl/MvgNDrGQ3q6TuDO6I/bUjAWb82nfbP4=
-X-Google-Smtp-Source: ABdhPJzu/ltAZiRAPd2aiKC5Md3QokBpxOCcs120Jm2RVZ0hBQuqkRXhXkFbZurLz6s8XNLjpnUnIx3259o3xCGjxlQ=
-X-Received: by 2002:a1f:640e:: with SMTP id y14mr8092831vkb.2.1643630595330;
- Mon, 31 Jan 2022 04:03:15 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JnRvL3kVvz2xsY
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 23:19:22 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=l2WBiCb5duYJRA9nKpihqrJOH1Qjg6utSrFiu8qAdtc=; b=YFDDe5oib/xF9rn91S4g43Rqhm
+ G5RyYVlxzee62HumiUjUwRN5/WZwivUW+Do4klh4KThptaCn3Ire78uK3IfcDa3xjV2APYs0Fnt+H
+ 49djOCYkLbporPC+wJGvyhKobjjvOakfIUHuB+jH6mUs8mQzIFxHEGL8U1k8iaqzakEHIup6XqFId
+ 0rZoERJzMVUf/pGMhuqnQucX3J6B9e0dmQh+LeQqWbRqvKgupMzTu7PgbzqPhaN6J5zS++ikTBiJA
+ gsfLY0Xq9lG/UqCLoDBs4RJPlj/YMDt4O+NLOVNXlX+TSKxA2UloYw8OgqsByonZ/1pyKnm+TDqtJ
+ 82mb9G1g==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red
+ Hat Linux)) id 1nEVe8-009INd-1R; Mon, 31 Jan 2022 12:19:00 +0000
+Date: Mon, 31 Jan 2022 04:19:00 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: guoren@kernel.org
+Subject: Re: [PATCH V4 01/17] kconfig: Add SYSVIPC_COMPAT for all architectures
+Message-ID: <YffTtHYdvZA9kGLY@infradead.org>
+References: <20220129121728.1079364-1-guoren@kernel.org>
+ <20220129121728.1079364-2-guoren@kernel.org>
 MIME-Version: 1.0
-References: <20220131064933.3780271-1-hch@lst.de>
- <20220131064933.3780271-2-hch@lst.de>
-In-Reply-To: <20220131064933.3780271-2-hch@lst.de>
-From: Guo Ren <guoren@kernel.org>
-Date: Mon, 31 Jan 2022 20:03:04 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTRH0H-7XzH2-_4UK17CZXrVBf8Hfr59RuJPLgezZ1trdg@mail.gmail.com>
-Message-ID: <CAJF2gTRH0H-7XzH2-_4UK17CZXrVBf8Hfr59RuJPLgezZ1trdg@mail.gmail.com>
-Subject: Re: [PATCH 1/5] uapi: remove the unused HAVE_ARCH_STRUCT_FLOCK64
- define
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220129121728.1079364-2-guoren@kernel.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,74 +64,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Parisc List <linux-parisc@vger.kernel.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- sparclinux <sparclinux@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Guo Ren <guoren@linux.alibaba.com>, linux-parisc@vger.kernel.org,
+ arnd@arndb.de, gregkh@linuxfoundation.org, drew@beagleboard.org,
+ anup@brainfault.org, wangjunqiang@iscas.ac.cn, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-mips@vger.kernel.org, palmer@dabbelt.com, liush@allwinnertech.com,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ wefu@redhat.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Reviewed-by: Guo Ren <guoren@kernel.org>
+Looks good,
 
-On Mon, Jan 31, 2022 at 2:49 PM Christoph Hellwig <hch@lst.de> wrote:
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  include/uapi/asm-generic/fcntl.h       | 2 --
->  tools/include/uapi/asm-generic/fcntl.h | 2 --
->  2 files changed, 4 deletions(-)
->
-> diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
-> index ecd0f5bdfc1d6..caa482e3b01af 100644
-> --- a/include/uapi/asm-generic/fcntl.h
-> +++ b/include/uapi/asm-generic/fcntl.h
-> @@ -207,7 +207,6 @@ struct flock {
->  };
->  #endif
->
-> -#ifndef HAVE_ARCH_STRUCT_FLOCK64
->  #ifndef __ARCH_FLOCK64_PAD
->  #define __ARCH_FLOCK64_PAD
->  #endif
-> @@ -220,6 +219,5 @@ struct flock64 {
->         __kernel_pid_t  l_pid;
->         __ARCH_FLOCK64_PAD
->  };
-> -#endif
->
->  #endif /* _ASM_GENERIC_FCNTL_H */
-> diff --git a/tools/include/uapi/asm-generic/fcntl.h b/tools/include/uapi/asm-generic/fcntl.h
-> index ac190958c9814..4a49d33ca4d55 100644
-> --- a/tools/include/uapi/asm-generic/fcntl.h
-> +++ b/tools/include/uapi/asm-generic/fcntl.h
-> @@ -202,7 +202,6 @@ struct flock {
->  };
->  #endif
->
-> -#ifndef HAVE_ARCH_STRUCT_FLOCK64
->  #ifndef __ARCH_FLOCK64_PAD
->  #define __ARCH_FLOCK64_PAD
->  #endif
-> @@ -215,6 +214,5 @@ struct flock64 {
->         __kernel_pid_t  l_pid;
->         __ARCH_FLOCK64_PAD
->  };
-> -#endif
->
->  #endif /* _ASM_GENERIC_FCNTL_H */
-> --
-> 2.30.2
->
-
-
--- 
-Best Regards
- Guo Ren
-
-ML: https://lore.kernel.org/linux-csky/
+Reviewed-by: Christoph Hellwig <hch@lst.de>
