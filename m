@@ -2,72 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC164A5265
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 23:30:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 025624A5349
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 00:34:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JnjSK4lsxz3c9f
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 09:30:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jnksk59n6z3cBv
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 10:34:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=FWRJLJWX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Tm63bwn6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c2f;
- helo=mail-oo1-xc2f.google.com; envelope-from=groeck7@gmail.com;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=FWRJLJWX; dkim-atps=neutral
-Received: from mail-oo1-xc2f.google.com (mail-oo1-xc2f.google.com
- [IPv6:2607:f8b0:4864:20::c2f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Tm63bwn6; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JnjRk0dKhz2y7J
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 09:29:53 +1100 (AEDT)
-Received: by mail-oo1-xc2f.google.com with SMTP id
- q145-20020a4a3397000000b002e85c7234b1so3575882ooq.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 14:29:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=sender:date:from:to:cc:subject:message-id:mime-version
- :content-disposition;
- bh=HIrK/ll1TuZEnp2gfWjGUr6nhrl/RDbWrtbWrrFF7+Q=;
- b=FWRJLJWX37blE6SLGzHmlsU0MZaU9sC2V0CKgL2guyKi7ulFdCvCxfSgomLcISQkgy
- Ghq8SQIK4GU/McVbpX2lJ7OYShY6Lw5N7YDemT7S61dxt4UkLuWkbDmiWtLV762XImzN
- iPIwaCk0oidTkqG5YTSOx1D94ZX/cJ8UT38VexR809vDAIRCTgiUw9WdmH8i4zF4TaOY
- sjkQKwFCacqbbThjmKuhVAZ23rOdKjSaGbe/NcrwAPbrDF4+HCEGEKm+QiAzCwCa95P5
- wn42EJBxoXEh5EO4PWRYI2RctRR7vXFMjMJ7lAfqUaFIvg6vDktEasPwIfoCZezXf5fQ
- Un3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :mime-version:content-disposition;
- bh=HIrK/ll1TuZEnp2gfWjGUr6nhrl/RDbWrtbWrrFF7+Q=;
- b=n3tVOOk9ICt0sYxqRekSLobqO2Di5/t2woa4wp39wohAGYWKeZuF19STqWntkLIDXg
- MART2M4oESZEWFcGfWFZK2AZrNztfPgxEARDfDMqWaE5o13NZL4mhLrO/A2nxNKjFIMj
- 2exqZdI9GKFyXfhgH8ZErILI11G4KKDoEYKCsXCyIK2Oq9GZkXDt9VaE5fPmGvKdPGKG
- BuNNpbbjcvJBHAZqg+ZjQpM1/34P3RtyraFeGooxQ9+m5PbK6PnTqfhD8/JoVfLR1WWT
- lwOrYkz14WQd61mUsoqmua+JtEA/00TUXPZXapII+jLcllNa9NMBU+6evD0U8bgUbn1d
- IzDw==
-X-Gm-Message-State: AOAM530A7bVVbpKJ6bnZG+2+gVn6YJ7XX2sF8JrmI/KMgZX3h9ZewN85
- uK4lAMfIRDThFzKx19DiL1I=
-X-Google-Smtp-Source: ABdhPJx+o1YTpwbEBbSj59Y5iWO00V4GxVy7uT2QJWPM1Z04rC1/i4P0mk8FIqDSuUFbw+Zw9FPkQg==
-X-Received: by 2002:a4a:7656:: with SMTP id w22mr11304612ooe.79.1643668190906; 
- Mon, 31 Jan 2022 14:29:50 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
- by smtp.gmail.com with ESMTPSA id
- g4sm9441095otg.61.2022.01.31.14.29.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 31 Jan 2022 14:29:50 -0800 (PST)
-Date: Mon, 31 Jan 2022 14:29:49 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [patch V3 28/35] PCI/MSI: Simplify pci_irq_get_affinity()
-Message-ID: <20220131222949.GA3467472@roeck-us.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jnkrv6QFlz2xvP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 10:33:19 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id EC145B82CBC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 23:33:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C0F9AC340EF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 23:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1643671993;
+ bh=+/CO/XDzeBk3OjYW+6nbdc0JQnXjbLV1/S2wFI8u3bk=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=Tm63bwn6/uGbzUTLjwHRN8O+c2QBDzTuRcOwf5lCOFAhML1EroFVpJJ51Pq9yTROM
+ ThT2ZJyZrcI4VL3Kz6onrJYxHYb1KMyy6Ci3t1Ruvt1FImnshthgqgi7XsvjNS7H3y
+ 3xDn6WvCWBqq54INTQoVYmilvv8tkCE4F7wF3GPWwTmKSEVtRm79QbO5V23iyN/O95
+ dv4HU9fCywU3exghKUacV8OkM3viMBKYX6+R2ZQk6M6GKZdTxgdaHnzOxsJj9yuuA+
+ craO6kF9vbeW5aXhCWc/n4PdVmPBbxxXwc3yDfaxm8g+a52ZeAZb4RRsz1m+yzyI9L
+ SdaWKTpqerGTw==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
+ from userid 48) id 951DBC05FD1; Mon, 31 Jan 2022 23:33:13 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 215389] pagealloc: memory corruption at building glibc-2.33 and
+ running its' testsuite
+Date: Mon, 31 Jan 2022 23:33:13 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-215389-206035-4W4sAdcLtr@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-215389-206035@https.bugzilla.kernel.org/>
+References: <bug-215389-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,79 +84,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nishanth Menon <nm@ti.com>, Mark Rutland <mark.rutland@arm.com>,
- Stuart Yoder <stuyoder@gmail.com>, linux-pci@vger.kernel.org,
- Will Deacon <will@kernel.org>, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
- Ashok Raj <ashok.raj@intel.com>, Jassi Brar <jassisinghbrar@gmail.com>,
- Sinan Kaya <okaya@kernel.org>, Vinod Koul <vkoul@kernel.org>,
- Bjorn Helgaas <helgaas@kernel.org>, Megha Dey <megha.dey@intel.com>,
- Jason Gunthorpe <jgg@nvidia.com>, xen-devel@lists.xenproject.org,
- Kevin Tian <kevin.tian@intel.com>, Arnd Bergmann <arnd@arndb.de>,
- linuxppc-dev@lists.ozlabs.org, Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@kaod.org>, Santosh Shilimkar <ssantosh@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, linux-arm-kernel@lists.infradead.org,
- Juergen Gross <jgross@suse.com>, Tero Kristo <kristo@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- LKML <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
- Marc Zygnier <maz@kernel.org>, dmaengine@vger.kernel.org,
- Robin Murphy <robin.murphy@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 31, 2022 at 10:16:41PM +0100, Thomas Gleixner wrote:
-> Guenter,
-> 
-> On Mon, Jan 31 2022 at 07:21, Guenter Roeck wrote:
-> > Sure. Please see http://server.roeck-us.net/qemu/x86/.
-> > The logs are generated with with v5.16.4.
-> 
-> thanks for providing the data. It definitely helped me to leave the
-> state of not seeing the wood for the trees. Fix below.
-> 
-> Thanks,
-> 
->         tglx
-> ---
-> Subject: PCI/MSI: Remove bogus warning in pci_irq_get_affinity()
-> From: Thomas Gleixner <tglx@linutronix.de>
-> Date: Mon, 31 Jan 2022 22:02:46 +0100
-> 
-> The recent overhaul of pci_irq_get_affinity() introduced a regression when
-> pci_irq_get_affinity() is called for an MSI-X interrupt which was not
-> allocated with affinity descriptor information.
-> 
-> The original code just returned a NULL pointer in that case, but the rework
-> added a WARN_ON() under the assumption that the corresponding WARN_ON() in
-> the MSI case can be applied to MSI-X as well.
-> 
-> In fact the MSI warning in the original code does not make sense either
-> because it's legitimate to invoke pci_irq_get_affinity() for a MSI
-> interrupt which was not allocated with affinity descriptor information.
-> 
-> Remove it and just return NULL as the original code did.
-> 
-> Fixes: f48235900182 ("PCI/MSI: Simplify pci_irq_get_affinity()")
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215389
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+--- Comment #11 from Erhard F. (erhard_f@mailbox.org) ---
+(In reply to Christophe Leroy from comment #10)
+> I'm wondering whether you could be running out of vmalloc space. I initia=
+lly
+> thought you were using KASAN, but it seems not according to your .config.
+Correct, I was not using KASAN. I use it only for testing -rc kernels or wh=
+en I
+am particularly wary. This memory corruption I noticed during regular usage.
+Seems running the kernel with slub_debug=3DFZP page_poison=3D1 is a good th=
+ing. ;)
 
-Guenter
+> Could you try reducing CONFIG_LOWMEM_SIZE to 0x28000000 for instance and =
+see
+> if the memory corruption still happens ?
+Thanks, that did the trick! With CONFIG_LOWMEM_SIZE=3D0x28000000 the memory
+corruption is gone on VMAP_STACK enabled kernels. Tested it additionally on
+current 5.16.4 where this works too.
 
-> ---
->  drivers/pci/msi/msi.c |    3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> --- a/drivers/pci/msi/msi.c
-> +++ b/drivers/pci/msi/msi.c
-> @@ -1111,7 +1111,8 @@ const struct cpumask *pci_irq_get_affini
->  	if (!desc)
->  		return cpu_possible_mask;
->  
-> -	if (WARN_ON_ONCE(!desc->affinity))
-> +	/* MSI[X] interrupts can be allocated without affinity descriptor */
-> +	if (!desc->affinity)
->  		return NULL;
->  
->  	/*
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
