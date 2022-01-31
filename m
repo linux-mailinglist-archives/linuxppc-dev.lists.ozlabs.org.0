@@ -2,57 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5B54A3E00
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 07:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E3EF4A3ECB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 09:44:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JnJg84QkQz3cXY
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 17:53:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JnM6v0jsqz3cBW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 19:44:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=OX44eeG0;
+	dkim=pass (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=FligwSrc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+c8a487c16eeb054acd37+6735+infradead.org+hch@bombadil.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=amazon.com (client-ip=207.171.190.10;
+ helo=smtp-fw-33001.amazon.com; envelope-from=prvs=023802125=benh@amazon.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=OX44eeG0; 
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256
+ header.s=amazon201209 header.b=FligwSrc; 
  dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com
+ [207.171.190.10])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JnJb81R9kz2xsb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 17:49:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=6AGTRKiyo3n1kN0MLVro9fLjev96qAcQ9JxUzJQ4Exg=; b=OX44eeG08FsSiBoK0NTB6AN//9
- WIu9AG+Z0SnsQjPns4+rLEeJ03tiJ9hIOYUGPKGs1Kdsg18vV6uNY0yFPObKBNjxOUNM6qc4+gtPM
- qId7I7d85PzGJ5Gyqf4lAqPHZQTor9mjoU7h4CVHaZxXVNnaNwcnx7xoCAkSEQVpRIB0MoI/n13xY
- Ks30Ydhqt+0/wKst8QRww4+WaYdOEHk8FLpjLOAAqu5Zh+JyOF/Col3NH6cQiH+CEV37HfA5L1+0S
- VVVpT2KgipBJputRepPJaYMifn502BXBVHQPx2JUJYoTlgug2M85LVPyT1Rx5R5TJSOgHKSUaq598
- S1nRQ8xw==;
-Received: from [2001:4bb8:191:327d:13f5:1d0a:e266:6974] (helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nEQVb-008AX1-F1; Mon, 31 Jan 2022 06:49:51 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5/5] compat: consolidate the compat_flock{,64} definition
-Date: Mon, 31 Jan 2022 07:49:33 +0100
-Message-Id: <20220131064933.3780271-6-hch@lst.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220131064933.3780271-1-hch@lst.de>
-References: <20220131064933.3780271-1-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JnGSl0hP4z2xt0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 16:14:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+ t=1643606055; x=1675142055;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-id:content-transfer-encoding:mime-version;
+ bh=sYezgLX++Ilm0+TT6roWXiPSazQDCgKINxx+amJpcWE=;
+ b=FligwSrc92cRqAteRwforkKdUquo+kGY59bj8iFJCQBDDNK971Hfmh6U
+ YbS531YzCv6jscxqqllq9ToHotGlhDQ+xeSm4R4s6I5TrJcsiv8045faI
+ 0xzdferTdGU+kGMiG5gfYFmYKKAnycbDatvx3fELjYJ5I0y7HT4KgmdlC c=;
+X-IronPort-AV: E=Sophos;i="5.88,330,1635206400"; d="scan'208";a="172974595"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO
+ email-inbound-relay-iad-1d-8ac79c09.us-east-1.amazon.com) ([10.43.8.2])
+ by smtp-border-fw-33001.sea14.amazon.com with ESMTP; 31 Jan 2022 05:12:57 +0000
+Received: from EX13MTAUWB001.ant.amazon.com
+ (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
+ by email-inbound-relay-iad-1d-8ac79c09.us-east-1.amazon.com (Postfix) with
+ ESMTPS id 6D24480B3C; Mon, 31 Jan 2022 05:12:55 +0000 (UTC)
+Received: from EX13D21UWB002.ant.amazon.com (10.43.161.177) by
+ EX13MTAUWB001.ant.amazon.com (10.43.161.249) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.28; Mon, 31 Jan 2022 05:12:54 +0000
+Received: from EX13D21UWB003.ant.amazon.com (10.43.161.212) by
+ EX13D21UWB002.ant.amazon.com (10.43.161.177) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.28; Mon, 31 Jan 2022 05:12:54 +0000
+Received: from EX13D21UWB003.ant.amazon.com ([10.43.161.212]) by
+ EX13D21UWB003.ant.amazon.com ([10.43.161.212]) with mapi id 15.00.1497.028;
+ Mon, 31 Jan 2022 05:12:54 +0000
+From: "Herrenschmidt, Benjamin" <benh@amazon.com>
+To: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "luke.leighton@gmail.com" <luke.leighton@gmail.com>, "lkcl@lkcl.net"
+ <lkcl@lkcl.net>, "npiggin@gmail.com" <npiggin@gmail.com>,
+ "libre-soc-dev@lists.libre-soc.org" <libre-soc-dev@lists.libre-soc.org>,
+ "openpower-hdl-cores@mailinglist.openpowerfoundation.org"
+ <openpower-hdl-cores@mailinglist.openpowerfoundation.org>
+Subject: Re: [OpenPOWER-HDL-Cores] microwatt booting linux-5.7 under verilator
+Thread-Topic: [OpenPOWER-HDL-Cores] microwatt booting linux-5.7 under verilator
+Thread-Index: AQHYFmEzi+xyDaan+UC2lQvsqU8GqQ==
+Date: Mon, 31 Jan 2022 05:12:54 +0000
+Message-ID: <926247767e2ac3b59ad918508ba78bf14569fde1.camel@amazon.com>
+References: <CAPweEDw710zFK8KLZY5gsQxEkQKrDiFkNRgABY9HJZ1rxpeVCg@mail.gmail.com>
+ <1643598916.2hjoqtw60c.astroid@bobo.none>
+ <994E627C-0194-4634-8DBC-0845493E6744@gmail.com>
+In-Reply-To: <994E627C-0194-4634-8DBC-0845493E6744@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.43.162.55]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <73F08B28B723854F98483B65843D3C24@amazon.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Mailman-Approved-At: Mon, 31 Jan 2022 19:43:31 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,274 +91,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-parisc@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, Guo Ren <guoren@kernel.org>,
- sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Provide a single common definition for the compat_flock and
-compat_flock64 structures using the same tricks as for the native
-variants.  Another extra define is added for the packing required on
-x86.
-
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/arm64/include/asm/compat.h   | 16 ----------------
- arch/mips/include/asm/compat.h    | 19 ++-----------------
- arch/parisc/include/asm/compat.h  | 16 ----------------
- arch/powerpc/include/asm/compat.h | 16 ----------------
- arch/s390/include/asm/compat.h    | 16 ----------------
- arch/sparc/include/asm/compat.h   | 18 +-----------------
- arch/x86/include/asm/compat.h     | 20 +++-----------------
- include/linux/compat.h            | 31 +++++++++++++++++++++++++++++++
- 8 files changed, 37 insertions(+), 115 deletions(-)
-
-diff --git a/arch/arm64/include/asm/compat.h b/arch/arm64/include/asm/compat.h
-index 2763287654081..e0faec1984a1c 100644
---- a/arch/arm64/include/asm/compat.h
-+++ b/arch/arm64/include/asm/compat.h
-@@ -65,22 +65,6 @@ struct compat_stat {
- 	compat_ulong_t	__unused4[2];
- };
- 
--struct compat_flock {
--	short		l_type;
--	short		l_whence;
--	compat_off_t	l_start;
--	compat_off_t	l_len;
--	compat_pid_t	l_pid;
--};
--
--struct compat_flock64 {
--	short		l_type;
--	short		l_whence;
--	compat_loff_t	l_start;
--	compat_loff_t	l_len;
--	compat_pid_t	l_pid;
--};
--
- struct compat_statfs {
- 	int		f_type;
- 	int		f_bsize;
-diff --git a/arch/mips/include/asm/compat.h b/arch/mips/include/asm/compat.h
-index 6a350c1f70d7e..6d6e5a451f4d9 100644
---- a/arch/mips/include/asm/compat.h
-+++ b/arch/mips/include/asm/compat.h
-@@ -55,23 +55,8 @@ struct compat_stat {
- 	s32		st_pad4[14];
- };
- 
--struct compat_flock {
--	short		l_type;
--	short		l_whence;
--	compat_off_t	l_start;
--	compat_off_t	l_len;
--	s32		l_sysid;
--	compat_pid_t	l_pid;
--	s32		pad[4];
--};
--
--struct compat_flock64 {
--	short		l_type;
--	short		l_whence;
--	compat_loff_t	l_start;
--	compat_loff_t	l_len;
--	compat_pid_t	l_pid;
--};
-+#define __ARCH_COMPAT_FLOCK_EXTRA_SYSID		s32 l_sysid;
-+#define __ARCH_COMPAT_FLOCK_PAD			s32 pad[4];
- 
- struct compat_statfs {
- 	int		f_type;
-diff --git a/arch/parisc/include/asm/compat.h b/arch/parisc/include/asm/compat.h
-index c04f5a637c390..a1e4534d80509 100644
---- a/arch/parisc/include/asm/compat.h
-+++ b/arch/parisc/include/asm/compat.h
-@@ -53,22 +53,6 @@ struct compat_stat {
- 	u32			st_spare4[3];
- };
- 
--struct compat_flock {
--	short			l_type;
--	short			l_whence;
--	compat_off_t		l_start;
--	compat_off_t		l_len;
--	compat_pid_t		l_pid;
--};
--
--struct compat_flock64 {
--	short			l_type;
--	short			l_whence;
--	compat_loff_t		l_start;
--	compat_loff_t		l_len;
--	compat_pid_t		l_pid;
--};
--
- struct compat_statfs {
- 	s32		f_type;
- 	s32		f_bsize;
-diff --git a/arch/powerpc/include/asm/compat.h b/arch/powerpc/include/asm/compat.h
-index 83d8f70779cbc..5ef3c7c83c343 100644
---- a/arch/powerpc/include/asm/compat.h
-+++ b/arch/powerpc/include/asm/compat.h
-@@ -44,22 +44,6 @@ struct compat_stat {
- 	u32		__unused4[2];
- };
- 
--struct compat_flock {
--	short		l_type;
--	short		l_whence;
--	compat_off_t	l_start;
--	compat_off_t	l_len;
--	compat_pid_t	l_pid;
--};
--
--struct compat_flock64 {
--	short		l_type;
--	short		l_whence;
--	compat_loff_t	l_start;
--	compat_loff_t	l_len;
--	compat_pid_t	l_pid;
--};
--
- struct compat_statfs {
- 	int		f_type;
- 	int		f_bsize;
-diff --git a/arch/s390/include/asm/compat.h b/arch/s390/include/asm/compat.h
-index 0f14b3188b1bb..07f04d37068b6 100644
---- a/arch/s390/include/asm/compat.h
-+++ b/arch/s390/include/asm/compat.h
-@@ -102,22 +102,6 @@ struct compat_stat {
- 	u32		__unused5;
- };
- 
--struct compat_flock {
--	short		l_type;
--	short		l_whence;
--	compat_off_t	l_start;
--	compat_off_t	l_len;
--	compat_pid_t	l_pid;
--};
--
--struct compat_flock64 {
--	short		l_type;
--	short		l_whence;
--	compat_loff_t	l_start;
--	compat_loff_t	l_len;
--	compat_pid_t	l_pid;
--};
--
- struct compat_statfs {
- 	u32		f_type;
- 	u32		f_bsize;
-diff --git a/arch/sparc/include/asm/compat.h b/arch/sparc/include/asm/compat.h
-index 108078751bb5a..d78fb44942e0f 100644
---- a/arch/sparc/include/asm/compat.h
-+++ b/arch/sparc/include/asm/compat.h
-@@ -75,23 +75,7 @@ struct compat_stat64 {
- 	unsigned int	__unused5;
- };
- 
--struct compat_flock {
--	short		l_type;
--	short		l_whence;
--	compat_off_t	l_start;
--	compat_off_t	l_len;
--	compat_pid_t	l_pid;
--	short		__unused;
--};
--
--struct compat_flock64 {
--	short		l_type;
--	short		l_whence;
--	compat_loff_t	l_start;
--	compat_loff_t	l_len;
--	compat_pid_t	l_pid;
--	short		__unused;
--};
-+#define __ARCH_COMPAT_FLOCK_PAD		short __unused;
- 
- struct compat_statfs {
- 	int		f_type;
-diff --git a/arch/x86/include/asm/compat.h b/arch/x86/include/asm/compat.h
-index 8d19a212f4f26..de794d8958663 100644
---- a/arch/x86/include/asm/compat.h
-+++ b/arch/x86/include/asm/compat.h
-@@ -50,25 +50,11 @@ struct compat_stat {
- 	u32		__unused5;
- };
- 
--struct compat_flock {
--	short		l_type;
--	short		l_whence;
--	compat_off_t	l_start;
--	compat_off_t	l_len;
--	compat_pid_t	l_pid;
--};
--
- /*
-- * IA32 uses 4 byte alignment for 64 bit quantities,
-- * so we need to pack this structure.
-+ * IA32 uses 4 byte alignment for 64 bit quantities, so we need to pack the
-+ * compat flock64 structure.
-  */
--struct compat_flock64 {
--	short		l_type;
--	short		l_whence;
--	compat_loff_t	l_start;
--	compat_loff_t	l_len;
--	compat_pid_t	l_pid;
--} __attribute__((packed));
-+#define __ARCH_NEED_COMPAT_FLOCK64_PACKED
- 
- struct compat_statfs {
- 	int		f_type;
-diff --git a/include/linux/compat.h b/include/linux/compat.h
-index 1c758b0e03598..a0481fe6c5d51 100644
---- a/include/linux/compat.h
-+++ b/include/linux/compat.h
-@@ -258,6 +258,37 @@ struct compat_rlimit {
- 	compat_ulong_t	rlim_max;
- };
- 
-+#ifdef __ARCH_NEED_COMPAT_FLOCK64_PACKED
-+#define __ARCH_COMPAT_FLOCK64_PACK	__attribute__((packed))
-+#else
-+#define __ARCH_COMPAT_FLOCK64_PACK
-+#endif
-+
-+struct compat_flock {
-+	short			l_type;
-+	short			l_whence;
-+	compat_off_t		l_start;
-+	compat_off_t		l_len;
-+#ifdef __ARCH_COMPAT_FLOCK_EXTRA_SYSID
-+	__ARCH_COMPAT_FLOCK_EXTRA_SYSID
-+#endif
-+	compat_pid_t		l_pid;
-+#ifdef __ARCH_COMPAT_FLOCK_PAD
-+	__ARCH_COMPAT_FLOCK_PAD
-+#endif
-+};
-+
-+struct compat_flock64 {
-+	short		l_type;
-+	short		l_whence;
-+	compat_loff_t	l_start;
-+	compat_loff_t	l_len;
-+	compat_pid_t	l_pid;
-+#ifdef __ARCH_COMPAT_FLOCK64_PAD
-+	__ARCH_COMPAT_FLOCK64_PAD
-+#endif
-+} __ARCH_COMPAT_FLOCK64_PACK;
-+
- struct compat_rusage {
- 	struct old_timeval32 ru_utime;
- 	struct old_timeval32 ru_stime;
--- 
-2.30.2
-
+T24gTW9uLCAyMDIyLTAxLTMxIGF0IDA0OjE5ICswMDAwLCBsa2NsIHdyb3RlOg0KPiA+IEhvdyBk
+byB5b3UgZXZlbiByZWFkIHRoZSBTWVNDT04gcGFyYW1ldGVyIGZvciBmcmVxdWVuY3k/DQo+IA0K
+PiANCj4gU1lTQ09OIGlzIGp1c3QgYSB0ZXJtIGZvciBhIG1lbW9yeS1tYXBwZWQgd2lzaGJvbmUg
+Uk9NIHdoaWNoIGNvbnRhaW5zDQo+IGEgY3J1ZGUgZWFzaWx5LWRlY29kZWQgYmluYXJ5IGZvcm0g
+b2YgZGV2aWNldHJlZS4NCg0KVGFsa2luZyBvZiB3aGljaCwgaWYgd2UncmUgZ29pbmcgdG8gbWFr
+ZSB1c2UgaWYgaXQgKHdlIHNob3VsZCksIHdlDQpwcm9iYWJseSBuZWVkIHRvIGVuc3VyZSBpdCdz
+IGFsc28gcG9ydGVkIHRvIG1pY3Jvd2F0dCBvbiBMaXRlWC4gVGhvdWdoDQpMaXRlWCBoYXMgYW5v
+dGhlciBpc3N1ZSBpbiB0aGF0IGl0IHB1dHMgTU1JTyBlbHNld2hlcmUgaWlyYy4NCg0KVGhhdCBv
+ciB3ZSByZWx5IDEwMCUgb24gTGl0ZVggaGF2aW5nIGEgZ29vZCBEVCAoYW5kIHRodXMgdXNlIGEN
+CmRpZmZlcmVudCBwbGF0Zm9ybSBmb3IgaXQpLg0KPiANCj4gd2hlbiB5b3UgcmVhZCAweGMwMDAx
+MDAwIChzYXkpIGl0cyBjb250ZW50cyB0ZWxsIHlvdSB0aGUgY2xvY2sgc3BlZWQuDQo+IA0KPiAN
+Cj4gDQo+IGF0IDB4YzAwMDEwMDggaXMgdGhlIG51bWJlciBvZiBVQVJUcy4NCj4gDQo+IDB4YzAw
+MDEwMTAgY29udGFpbnMgdGhlIFVBUlQwIHNwZWVkIG9yIHdlbGwgeW91IGNhbiBzZWUgdGhlIHJl
+YWwNCj4gY29udGVudHMgc3lzY29uLnZoZGwNCj4gDQo+IA0KPiANCj4gaXQgaXMgX3JlYWxfIGJh
+c2ljIGJ1dCBjb250YWlucyBldmVyeXRoaW5nIHRoYXQNCj4gDQo+IGEgY29sZC1zdGFydCBCSU9T
+IG5lZWRzIHRvIGtub3csIHN1Y2ggYXMgImRvIGkgZXZlbiBoYXZlIERSQU0sIGRvIGkNCj4gaGF2
+ZSBhbiBTUEkgRmxhc2ggaSBjYW4gcmVhZCBhIHNlY29uZA0KPiANCj4gc3RhZ2UgYm9vdGxvYWRl
+ciBmcm9tIiBldGMgZXRjDQo+IA0KPiANCj4gDQo+IGh0dHBzOi8vZ2l0aHViLmNvbS9hbnRvbmJs
+YW5jaGFyZC9taWNyb3dhdHQvYmxvYi9tYXN0ZXIvc3lzY29uLnZoZGwNCj4gDQo+IA0KPiANCj4g
+UGF1bCBzYWlkIGl0IHdhcyBhbHdheXMgcGxhbm5lZCB0byBkbyByZWFkaW5nIG9mIHRoZXNlIHBh
+cmFtcywgdGhlDQo+IGVudHJpZXMgaW4gZGV2aWNldHJlZSBhcmUgYSB0ZW1wb3JhcnkgaGFjay4N
+Cj4gDQo+IA0KPiANCj4gbC4NCj4gDQo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fDQo+IA0KPiBPcGVuUE9XRVItSERMLUNvcmVzIG1haWxpbmcgbGlzdA0K
+PiANCj4gT3BlblBPV0VSLUhETC1Db3Jlc0BtYWlsaW5nbGlzdC5vcGVucG93ZXJmb3VuZGF0aW9u
+Lm9yZw0KPiANCj4gaHR0cDovL2xpc3RzLm1haWxpbmdsaXN0Lm9wZW5wb3dlcmZvdW5kYXRpb24u
+b3JnL21haWxtYW4vbGlzdGluZm8vb3BlbnBvd2VyLWhkbC1jb3Jlcw0K
