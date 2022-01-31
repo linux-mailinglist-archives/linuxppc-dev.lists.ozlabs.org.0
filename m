@@ -2,30 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4596A4A3CDA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 05:14:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7753B4A3CE2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 05:20:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JnF880yTnz3bZW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 15:14:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JnFGV2F7wz3bd3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 15:20:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=WhuMIB9N;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Received: from ozlabs.ru (unknown [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4JnF7g2lMcz2xrj
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 15:14:21 +1100 (AEDT)
-Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id A1A9280AC4;
- Sun, 30 Jan 2022 23:14:12 -0500 (EST)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel] powerpc/64: Add UADDR64 relocation support
-Date: Mon, 31 Jan 2022 15:14:07 +1100
-Message-Id: <20220131041407.435244-1-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.30.2
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::631;
+ helo=mail-ej1-x631.google.com; envelope-from=luke.leighton@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=WhuMIB9N; dkim-atps=neutral
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com
+ [IPv6:2a00:1450:4864:20::631])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JnFFs1qxNz2xrm
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 15:19:43 +1100 (AEDT)
+Received: by mail-ej1-x631.google.com with SMTP id me13so38810512ejb.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Jan 2022 20:19:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:in-reply-to:references:mime-version:content-transfer-encoding
+ :subject:to:from:message-id;
+ bh=MF0aflaLMdO2uFD7zIGRv19HrJp0ZAt9VWM65h1HO6c=;
+ b=WhuMIB9NWsOKnQLwAc74Txp6y7NucXGZmhMTQ9SxStUUTJLras25nU/KpKh/YFJfpE
+ Ti8SA1UbjvyqMBovJWnCpWd8/BJCt0wvgEFrR3j+rerlrMi34n8Gbm513kaMdIBlAEkc
+ L1e3f8Aqs6b0WJjAmIsW8pT0Iyvf95wIgwQGw7dMdA9wVnJUrCL4BCHHMvcSnyiAh/ch
+ WMzeM1YbcRvjYCjDhlTcHCCHrwP60GOpjdOwEeOLt+sC4yREumGey2UO4vXBhTG2PyRA
+ NLwfu5c2ZdkUM+6i7pDiBM/pnsP4X9T0ge4cBb1bNyQE5Z81UEpeaZ6EALPAFXL6Pha7
+ 70Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:in-reply-to:references:mime-version
+ :content-transfer-encoding:subject:to:from:message-id;
+ bh=MF0aflaLMdO2uFD7zIGRv19HrJp0ZAt9VWM65h1HO6c=;
+ b=RVdN7fyzJEjHXJmlnehTS4NWSC+FAqptRzfg3c1Cs6a7K1141d+XsfzUxugPjpZi7b
+ CdFVlH/ZJMP02ls1LlmMRz4BjNcZdumxlKYqZ6TCrddG/cY8u/KecowTdqRvLejQZC7v
+ v6t9tt25Y98oZW2QQxWvnaKEvgR0gLtmkHjbAgpmZdTmJ2W7t0F41ntlcl4trKOMvZDi
+ QDlvFqJo2vQlfqSf1iy+OklUFCK1slRXJkKk1ujq676D5h0Fcn6g8zXtnhkT/2UQOSl1
+ k0bomp1DDSTS/BXSvSTJNkkKNeOi7n3v/nLqsj5wVJgQpRxLQ5oKdOc1fX5cQj0D8NCr
+ FSWw==
+X-Gm-Message-State: AOAM5312oC/4imIR7dzt6vpSl5LU3JrLQ8FQ8qBlKJrn2cvDx34E1Tpd
+ GOfk+Oej4TAwHw8bZTkyUys=
+X-Google-Smtp-Source: ABdhPJw/yG9clS2Ze6Op6cem9oY+0S2zULlzlez0Bbxsi5xIfe6BLO9HfWaDeaVLovgGITiZNALOIw==
+X-Received: by 2002:a17:906:478b:: with SMTP id
+ cw11mr15649916ejc.302.1643602777284; 
+ Sun, 30 Jan 2022 20:19:37 -0800 (PST)
+Received: from [192.168.1.100] (92.40.189.183.threembb.co.uk. [92.40.189.183])
+ by smtp.gmail.com with ESMTPSA id
+ r3sm12921894ejd.129.2022.01.30.20.19.36
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Sun, 30 Jan 2022 20:19:36 -0800 (PST)
+Date: Mon, 31 Jan 2022 04:19:37 +0000
+In-Reply-To: <1643598916.2hjoqtw60c.astroid@bobo.none>
+References: <CAPweEDw710zFK8KLZY5gsQxEkQKrDiFkNRgABY9HJZ1rxpeVCg@mail.gmail.com>
+ <1643598916.2hjoqtw60c.astroid@bobo.none>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: microwatt booting linux-5.7 under verilator
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Libre-Soc General Development <libre-soc-dev@lists.libre-soc.org>,
+ linuxppc-dev@lists.ozlabs.org, Luke Kenneth Casson Leighton <lkcl@lkcl.net>,
+ openpower-hdl-cores <openpower-hdl-cores@mailinglist.openpowerfoundation.org>
+From: lkcl <luke.leighton@gmail.com>
+Message-ID: <994E627C-0194-4634-8DBC-0845493E6744@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,202 +86,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Alan Modra <amodra@au1.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When ld detects unaligned relocations, it emits R_PPC64_UADDR64
-relocations instead of R_PPC64_RELATIVE. Currently R_PPC64_UADDR64 are
-detected by arch/powerpc/tools/relocs_check.sh and expected not to work.
-Below is a simple chunk to trigger this behaviour:
-
-\#pragma GCC push_options
-\#pragma GCC optimize ("O0")
-struct entry {
-        const char *file;
-        int line;
-} __attribute__((packed));
-static const struct entry e1 = { .file = __FILE__, .line = __LINE__ };
-static const struct entry e2 = { .file = __FILE__, .line = __LINE__ };
-...
-prom_printf("e1=%s %lx %lx\n", e1.file, (unsigned long) e1.file, mfmsr());
-prom_printf("e2=%s %lx\n", e2.file, (unsigned long) e2.file);
-\#pragma GCC pop_options
 
 
-This adds support for UADDR64 for 64bit. This reuses __dynamic_symtab
-from the 32bit which supports more relocation types already.
+On January 31, 2022 3:31:41 AM UTC, Nicholas Piggin <npiggin@gmail=2Ecom> =
+wrote:
+>Hi Luke,
+>
+>Interesting to read about the project, thanks for the post=2E
 
-This adds a workaround for the number of relocations as the DT_RELACOUNT
-ELF Dynamic Array Tag does not include relocations other than
-R_PPC64_RELATIVE. This instead iterates over the entire .rela.dyn section.
+no problem=2E it's been i think 18 years since i last did linux kernel wor=
+k=2E
 
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
----
+>> i also had to fix a couple of things in the linux kernel source
+>> https://git=2Ekernel=2Eorg/pub/scm/linux/kernel/git/joel/microwatt=2Egi=
+t
+>
+>I think these have mostly (all?) been upstreamed now=2E
 
-Tested via qemu gdb stub (the kernel is loaded at 0x400000).
+i believe so, although last i checked (6 months?) there was some of dts st=
+ill to do=2E instructions online all tend to refer to joel or benh's tree(s=
+)
 
-Disasm:
+>> this led me to add support for CONFIG_KERNEL_UNCOMPRESSED
+>> and cut that time entirely, hence why you can see this in the console
+>log:
+>>=20
+>>     0x5b0e10 bytes of uncompressed data copied
+>
+>Interesting, it looks like your HAVE_KERNEL_UNCOMPRESSED support
+>patch is pretty trivial=2E=20
 
-c000000001a804d0 <e1>:
-c000000001a804d0:       b0 04 a8 01     .long 0x1a804b0
-                        c000000001a804d0: R_PPC64_RELATIVE      *ABS*-0x3ffffffffe57fb50
-c000000001a804d4:       00 00 00 c0     lfs     f0,0(0)
-c000000001a804d8:       fa 08 00 00     .long 0x8fa
+yeah i was really surprised, it was all there
 
-c000000001a804dc <e2>:
-        ...
-                        c000000001a804dc: R_PPC64_UADDR64       .rodata+0x4b0
+> We should be able to upstream it pretty
+>easily I think?
 
-Before relocation:
+don't see why not=2E
 
->>> p *(unsigned long *) 0x1e804d0
-$1 = 0xc000000001a804b0
->>> p *(unsigned long *) 0x1e804dc
-$2 = 0x0
+the next interesting thing which would save another hour when emulating HD=
+L at this astoundingly-slow speed of sub-1000 instructions per second would=
+ be in-place execution: no memcpy, just jump=2E
 
-After:
->>> p *(unsigned long *) 0x1e804d0
-$1 = 0x1e804b0
->>> p *(unsigned long *) 0x1e804dc
-$2 = 0x1e804b0
----
- arch/powerpc/kernel/reloc_64.S     | 47 +++++++++++++++++++++++++-----
- arch/powerpc/kernel/vmlinux.lds.S  |  3 +-
- arch/powerpc/tools/relocs_check.sh |  6 ----
- 3 files changed, 41 insertions(+), 15 deletions(-)
+i seem to recall this (inplace execution) being a standard option back in =
+2003 when i was doing xda-developers wince smartphone reverse-emgineering, =
+although with it being 19 years ago i could be wrong
 
-diff --git a/arch/powerpc/kernel/reloc_64.S b/arch/powerpc/kernel/reloc_64.S
-index 02d4719bf43a..a91175723d9d 100644
---- a/arch/powerpc/kernel/reloc_64.S
-+++ b/arch/powerpc/kernel/reloc_64.S
-@@ -10,6 +10,7 @@
- RELA = 7
- RELACOUNT = 0x6ffffff9
- R_PPC64_RELATIVE = 22
-+R_PPC64_UADDR64 = 43
- 
- /*
-  * r3 = desired final address of kernel
-@@ -25,6 +26,8 @@ _GLOBAL(relocate)
- 	add	r9,r9,r12	/* r9 has runtime addr of .rela.dyn section */
- 	ld	r10,(p_st - 0b)(r12)
- 	add	r10,r10,r12	/* r10 has runtime addr of _stext */
-+	ld	r13,(p_sym - 0b)(r12)
-+	add	r13,r13,r12	/* r13 has runtime addr of .dynsym */
- 
- 	/*
- 	 * Scan the dynamic section for the RELA and RELACOUNT entries.
-@@ -46,8 +49,8 @@ _GLOBAL(relocate)
- 	b	1b
- 4:	cmpdi	r7,0		/* check we have both RELA and RELACOUNT */
- 	cmpdi	cr1,r8,0
--	beq	6f
--	beq	cr1,6f
-+	beq	9f
-+	beq	cr1,9f
- 
- 	/*
- 	 * Work out linktime address of _stext and hence the
-@@ -60,25 +63,55 @@ _GLOBAL(relocate)
- 	subf	r10,r7,r10
- 	subf	r3,r10,r3	/* final_offset */
- 
-+	/*
-+	 * FIXME
-+	 * Here r8 is a number of relocations in .rela.dyn.
-+	 * When ld issues UADDR64 relocations, they end up at the end
-+	 * of the .rela.dyn section. However RELACOUNT does not include
-+	 * them so the loop below is going to finish after the last
-+	 * R_PPC64_RELATIVE as they normally go first.
-+	 * Work out the size of .rela.dyn at compile time.
-+	 */
-+	ld	r8,(p_rela_end - 0b)(r12)
-+	ld	r18,(p_rela - 0b)(r12)
-+	sub	r8,r8,r18
-+	li      r18,24		/* 24 == sizeof(elf64_rela) */
-+	divd	r8,r8,r18
-+
- 	/*
- 	 * Run through the list of relocations and process the
--	 * R_PPC64_RELATIVE ones.
-+	 * R_PPC64_RELATIVE and R_PPC64_UADDR64 ones.
- 	 */
- 	mtctr	r8
--5:	ld	r0,8(9)		/* ELF64_R_TYPE(reloc->r_info) */
-+5:	lwa	r0,8(r9)	/* ELF64_R_TYPE(reloc->r_info) */
- 	cmpdi	r0,R_PPC64_RELATIVE
- 	bne	6f
- 	ld	r6,0(r9)	/* reloc->r_offset */
- 	ld	r0,16(r9)	/* reloc->r_addend */
--	add	r0,r0,r3
-+	b	7f
-+
-+6:	cmpdi	r0,R_PPC64_UADDR64
-+	bne	8f
-+	ld	r6,0(r9)
-+	ld	r0,16(r9)
-+	lwa	r14,12(r9) 	/* ELF64_R_SYM(reloc->r_info) */
-+	mulli	r14,r14,24	/* 24 == sizeof(elf64_sym) */
-+	add	r14,r14,r13	/* elf64_sym[ELF64_R_SYM] */
-+	ld	r14,8(r14)
-+	add	r0,r0,r14
-+
-+7:	add	r0,r0,r3
- 	stdx	r0,r7,r6
--	addi	r9,r9,24
-+
-+8:	addi	r9,r9,24
- 	bdnz	5b
- 
--6:	blr
-+9:	blr
- 
- .balign 8
- p_dyn:	.8byte	__dynamic_start - 0b
- p_rela:	.8byte	__rela_dyn_start - 0b
-+p_rela_end:	.8byte __rela_dyn_end - 0b
-+p_sym:		.8byte __dynamic_symtab - 0b
- p_st:	.8byte	_stext - 0b
- 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 2bcca818136a..e9d9bda3ffaf 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -281,9 +281,7 @@ SECTIONS
- 	. = ALIGN(8);
- 	.dynsym : AT(ADDR(.dynsym) - LOAD_OFFSET)
- 	{
--#ifdef CONFIG_PPC32
- 		__dynamic_symtab = .;
--#endif
- 		*(.dynsym)
- 	}
- 	.dynstr : AT(ADDR(.dynstr) - LOAD_OFFSET) { *(.dynstr) }
-@@ -299,6 +297,7 @@ SECTIONS
- 	{
- 		__rela_dyn_start = .;
- 		*(.rela*)
-+		__rela_dyn_end = .;
- 	}
- #endif
- 	/* .exit.data is discarded at runtime, not link time,
-diff --git a/arch/powerpc/tools/relocs_check.sh b/arch/powerpc/tools/relocs_check.sh
-index 014e00e74d2b..956b9e236a60 100755
---- a/arch/powerpc/tools/relocs_check.sh
-+++ b/arch/powerpc/tools/relocs_check.sh
-@@ -54,9 +54,3 @@ fi
- num_bad=$(echo "$bad_relocs" | wc -l)
- echo "WARNING: $num_bad bad relocations"
- echo "$bad_relocs"
--
--# If we see this type of relocation it's an idication that
--# we /may/ be using an old version of binutils.
--if echo "$bad_relocs" | grep -q -F -w R_PPC64_UADDR64; then
--	echo "WARNING: You need at least binutils >= 2.19 to build a CONFIG_RELOCATABLE kernel"
--fi
--- 
-2.30.2
+other areas are the memset before VM is set up, followed by memset *again*=
+ on=2Eindividual pages once created=2E  those are an hour each
 
+another hour is spent on early device tree flat walking=2E
+
+one very big one (90+ mins) is the sysfs binary tree walk=2E  i'm sure eve=
+n just saving the last node in a 1-entry cache would improve time there, or=
+, better, a 4-entry cache (one per level)
+
+although it sounds weird talking in a timeframe that is literally 100,000 =
+times slower than what anyone else is used to, if improved it results in dr=
+amatic reduction in boot times for embedded IoT e=2Eg BMC systems=2E
+
+>> however in the interim, the attached patch suffices by manually
+>> altering the clock in microwatt=2Edts to match that of the SYSCON
+>> parameter=2E
+>
+>There is a dt_fixup_clock() that's used by a few platforms=2E Can we
+>read that parameter say in linux/arch/powerpc/boot/microwatt=2Ec
+>platform_init() and fix it up there?
+>
+>How do you even read the SYSCON parameter for frequency?
+
+SYSCON is just a term for a memory-mapped wishbone ROM which contains a cr=
+ude easily-decoded binary form of devicetree=2E
+
+when you read 0xc0001000 (say) its contents tell you the clock speed=2E
+
+at 0xc0001008 is the number of UARTs=2E
+0xc0001010 contains the UART0 speed or well you can see the real contents =
+syscon=2Evhdl
+
+it is _real_ basic but contains everything that
+a cold-start BIOS needs to know, such as "do i even have DRAM, do i have a=
+n SPI Flash i can read a second
+stage bootloader from" etc etc
+
+https://github=2Ecom/antonblanchard/microwatt/blob/master/syscon=2Evhdl
+
+Paul said it was always planned to do reading of these params, the entries=
+ in devicetree are a temporary hack=2E
+
+l=2E
