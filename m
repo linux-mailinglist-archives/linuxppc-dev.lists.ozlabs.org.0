@@ -1,65 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC5F4A5142
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 22:17:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A924A523E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 23:20:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jngr31v8Zz3bc9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 08:17:23 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=KmPtM4Xy;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=+0otG72A;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JnjDj2Nryz3cFh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 09:20:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=193.142.43.55;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=KmPtM4Xy; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=+0otG72A; 
- dkim-atps=neutral
-X-Greylist: delayed 35316 seconds by postgrey-1.36 at boromir;
- Tue, 01 Feb 2022 08:16:48 AEDT
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.135; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JngqN265Pz2y7J
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 08:16:48 +1100 (AEDT)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1643663802;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tU8NK9NTEirj5O/+bd9d0PukMKUVqECyFzPD3aLKDXk=;
- b=KmPtM4XylI1QpBV825qhL/YVm9F73QsW9H0dQ5UPcPGil3mXgUuoX3HprH/+a3ZG/ShNJr
- BjlGsc1ndAOmgHyQvIvZUOUD6HLDHOBCi/Ji6X9uEEf7jDK1BzH1apOdzDHBzBMfjkAtXZ
- 8BD8lWMmiKDXbdlCTK3THWqdS9xoq1KFr2G35OtVX67EMI6vGc6c9cosnIZIpe5sYh+au2
- PL1LZWmdvONdEfE18CsyjWjHM6gOUgcS0xyBIooTsaH48TF002qdkFf00iF1dJ2JVj/0SI
- eh6W7ozcJJE4CPYA3I/LgUWnchhhUB5lvUTPvZV1OWQ8MM0o/wu35qDKV5db6w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1643663802;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tU8NK9NTEirj5O/+bd9d0PukMKUVqECyFzPD3aLKDXk=;
- b=+0otG72AhE6uKJBBtoOAEgmDIjBRXfGv02FMllL7V8PEVFVne4ebGZPaDcAGYon+0st4ER
- /th5pds4YqGCrMCA==
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [patch V3 28/35] PCI/MSI: Simplify pci_irq_get_affinity()
-In-Reply-To: <c78df469-1a9f-5778-24d1-8f08a6bf5bcc@roeck-us.net>
-References: <87mtjc2lhe.ffs@tglx>
- <c78df469-1a9f-5778-24d1-8f08a6bf5bcc@roeck-us.net>
-Date: Mon, 31 Jan 2022 22:16:41 +0100
-Message-ID: <87ee4n38sm.ffs@tglx>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JnjDD0kTPz2ynt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 09:19:54 +1100 (AEDT)
+Received: from mail-ot1-f46.google.com ([209.85.210.46]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MGQWr-1n0dLP1D4P-00GtvS for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan
+ 2022 23:19:50 +0100
+Received: by mail-ot1-f46.google.com with SMTP id
+ x52-20020a05683040b400b0059ea92202daso14428658ott.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 14:19:49 -0800 (PST)
+X-Gm-Message-State: AOAM532yzgBDb5fRXWKFNSDhc6EegNzFSDyGY/xe0VqGeth0+Am+b1k2
+ I88ZSaPlnVaSFVNEd3relMvx3ZYVREqqyGX97YU=
+X-Google-Smtp-Source: ABdhPJzNvIQa/ifQ4mpIl/LfU521F5G6KLcdIXkWgKV/jA7MRG2n/k6e84fLlMfFqeGk7bXCvjxkFnVtwxdt/dBnQNc=
+X-Received: by 2002:a9d:654f:: with SMTP id q15mr12902241otl.119.1643667588784; 
+ Mon, 31 Jan 2022 14:19:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20220131064933.3780271-1-hch@lst.de>
+In-Reply-To: <20220131064933.3780271-1-hch@lst.de>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Mon, 31 Jan 2022 23:19:32 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1YzdC1ev0FP-Pe0YyjsY+H3dNWErPGtB=zfcs3kVmkyw@mail.gmail.com>
+Message-ID: <CAK8P3a1YzdC1ev0FP-Pe0YyjsY+H3dNWErPGtB=zfcs3kVmkyw@mail.gmail.com>
+Subject: Re: consolidate the compat fcntl definitions v2
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:OIJjmu5cdAAhRyPMAdMsNp5NW/3yqL2fv38wd+VoPdtznPqkhOP
+ K0ZE4eLRYobJjwboUXhl9nrG3bCAC5OmL1SFBFmM6nt2uUOLKZxZOZxasQxDksyh6jsJ7lU
+ TUkbaRsfMQIu5faOklmSjqZMfTXhVaUBW3+4Syrl3Ytgu3fhohq4uFsDDQQlniA5RHGx/xL
+ +kGXIYVVXzzw3Uym6oxAw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:aNRDaWFKBR8=:deYNy9ZQAyqbnnRXnyl6pl
+ 5mZRk7utEIlXRV8Obk9P4QCwXbDpvViT4cIYVEmDNLFoD+cH33t8ajl2KXOYJ/tVVbmnKq1kR
+ xJ91ucwRYRTp2uXkGTTsyB2tWkuzciL51mg+OvqpwkW3+/X4xvEdCQ7lNkKvjYjbVtZwPjnBU
+ wy8k8Np/SmT+Ap5pC0l6KzeM53C5SzPbuC3XXkgrxYEu9l4BsrzhPBKN2wx0CJ61a4YdAbwHv
+ 8vMi83JirOG3XIO2oSojNGVHDEpmO2rmois+iCxA5WYaAf0feiUJhkTDjdSHtsHfzuNJU5ilL
+ IEvjDlBenzdRKwclCG2gtpXtKD85ONDRNfaIZWCQTariaBdY7gWgvlTcYsCRbXIRAPns2mtJ/
+ JkA/JLOjakELzXxPNLNanymTF/e98Q3bj9cEX5UYVyOorShrk3pWSAyqQpaGph8ywUz4QPFdT
+ /aBx1lu2OOpp5a7dD9TRq9kpn9y0DyEDu0hFA0LY6eVmbFNSwXiRs20HQyHvvBnMUM5zDt0bH
+ W68OxdGgp4pdxD4tJdlqEBFsGep9/xPNkw3DJVWyAnnozZa6NqZrtgFAY9Zfty7fOLJqYKlPh
+ YJIy4ui81FqA9MZn1e3Ptsa9XmNMHxcM51JNr6LvKlNRdYjqSbZVMxVpeUudKL3Ow0nqLnft0
+ 21VhiPpQf1Cf1QxOUutPMF+QtSS6ME8dG9cUBo76Am1wdZk/nek00Hy4cE6wGb3o6zR4=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,73 +68,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nishanth Menon <nm@ti.com>, Mark Rutland <mark.rutland@arm.com>,
- Stuart Yoder <stuyoder@gmail.com>, linux-pci@vger.kernel.org,
- Will Deacon <will@kernel.org>, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
- Ashok Raj <ashok.raj@intel.com>, Jassi Brar <jassisinghbrar@gmail.com>,
- Sinan Kaya <okaya@kernel.org>, Vinod Koul <vkoul@kernel.org>,
- Bjorn Helgaas <helgaas@kernel.org>, Megha Dey <megha.dey@intel.com>,
- Jason Gunthorpe <jgg@nvidia.com>, xen-devel@lists.xenproject.org,
- Kevin Tian <kevin.tian@intel.com>, Arnd Bergmann <arnd@arndb.de>,
- linuxppc-dev@lists.ozlabs.org, Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@kaod.org>, Santosh Shilimkar <ssantosh@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, linux-arm-kernel@lists.infradead.org,
- Juergen Gross <jgross@suse.com>, Tero Kristo <kristo@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- LKML <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
- Marc Zygnier <maz@kernel.org>, dmaengine@vger.kernel.org,
- Robin Murphy <robin.murphy@arm.com>
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Guo Ren <guoren@kernel.org>, sparclinux <sparclinux@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Guenter,
+On Mon, Jan 31, 2022 at 7:49 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> Hi all,
+>
+> currenty the compat fcnt definitions are duplicate for all compat
+> architectures, and the native fcntl64 definitions aren't even usable
+> from userspace due to a bogus CONFIG_64BIT ifdef.  This series tries
+> to sort out all that.
+>
+> Changes since v1:
+>  - only make the F*64 defines uapi visible for 32-bit architectures
 
-On Mon, Jan 31 2022 at 07:21, Guenter Roeck wrote:
-> Sure. Please see http://server.roeck-us.net/qemu/x86/.
-> The logs are generated with with v5.16.4.
+Looks all good to me,
 
-thanks for providing the data. It definitely helped me to leave the
-state of not seeing the wood for the trees. Fix below.
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-Thanks,
+I think it would be best to merge this through the risc-v tree along
+with the coming compat support
+that depends on it. Alternatively, I can put it into my asm-generic
+tree for 5.18.
 
-        tglx
----
-Subject: PCI/MSI: Remove bogus warning in pci_irq_get_affinity()
-From: Thomas Gleixner <tglx@linutronix.de>
-Date: Mon, 31 Jan 2022 22:02:46 +0100
-
-The recent overhaul of pci_irq_get_affinity() introduced a regression when
-pci_irq_get_affinity() is called for an MSI-X interrupt which was not
-allocated with affinity descriptor information.
-
-The original code just returned a NULL pointer in that case, but the rework
-added a WARN_ON() under the assumption that the corresponding WARN_ON() in
-the MSI case can be applied to MSI-X as well.
-
-In fact the MSI warning in the original code does not make sense either
-because it's legitimate to invoke pci_irq_get_affinity() for a MSI
-interrupt which was not allocated with affinity descriptor information.
-
-Remove it and just return NULL as the original code did.
-
-Fixes: f48235900182 ("PCI/MSI: Simplify pci_irq_get_affinity()")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
----
- drivers/pci/msi/msi.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -1111,7 +1111,8 @@ const struct cpumask *pci_irq_get_affini
- 	if (!desc)
- 		return cpu_possible_mask;
- 
--	if (WARN_ON_ONCE(!desc->affinity))
-+	/* MSI[X] interrupts can be allocated without affinity descriptor */
-+	if (!desc->affinity)
- 		return NULL;
- 
- 	/*
+         Arnd
