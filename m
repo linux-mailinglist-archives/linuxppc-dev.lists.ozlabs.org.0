@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37204A3DFC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 07:51:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C08F4A3DFE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 07:52:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JnJcM5CFmz3cVL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 17:50:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JnJdl41TMz3cks
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 17:52:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Jv/vd++u;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=mhhqkt8M;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -22,26 +22,26 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JnJb16qj2z2xrm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 17:49:47 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JnJb22CCgz2xsb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 17:49:48 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=+0c6MseXPX7zRtfUKiUXoXASKsSqROUYFWkyRGrgS/E=; b=Jv/vd++uBZChNfqPCVfg8xLcXx
- ilLxoHcqoh+UEMk5nTsj7jkROaP7qoB7t3eWk5M1gnSi0iGEjEBv6fAtkMlFWWfI5EcGOW2JBynN5
- sB2x0m538o9zqZNL/1JeoPD/7GWB+9PtKbh9A5GtJ8JgRwMzDcmBrPbmVQYIpbO3Od0Yho7r4aeim
- a2E6nX1NbmJ6lokqxwpnZdeiNAwxSP0xnb8l5W/HPrAvcu+ctzf7A+4u+qDMDy1Gi4dEv8j6PhrM8
- 1Fn1hNtAk3BOs1wfpn/Fiotcw5TCsqkcyHn78CRUCXr8vG8sriKztZ3TXAcr0Y8qK7eu5x28WUS2/
- Coaon7uQ==;
+ bh=b+N+a7z4e4+IG2zz5LD0H6U61/ismic1My/Y7GI1FR8=; b=mhhqkt8MuYVjE3884SXEUGgAjU
+ LBxWLRLo7NvlNFvMPPqBabxurpv1cDybny9ZW6wCmFJZZC3pz9UBbs+mJbofyk0IuCkq/OczVKQeb
+ mvzWGeZNRCJU3Ud3rKI7QstMY/Vi842ur+xAmBmZkvyiUJhSBc1vbkeZONHAcL+cPdwqpmmnTzVYR
+ HhFsIbqnTiCxI+LczP3lT0cyvUrsItjMG2dSkhIuHAZTEQJFT9V5vfggGSuBmHA5u9yfTnQUP25E7
+ zp6zDRM8cnnpMpEec0GIPpllXNcwKWnTCm97Z+opP6CTNpHNtWicxJNlgWR7HIitDe3fFzZQxYII5
+ +e8yhUjg==;
 Received: from [2001:4bb8:191:327d:13f5:1d0a:e266:6974] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nEQVP-008AUe-Oz; Mon, 31 Jan 2022 06:49:40 +0000
+ id 1nEQVS-008AV6-M6; Mon, 31 Jan 2022 06:49:43 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 1/5] uapi: remove the unused HAVE_ARCH_STRUCT_FLOCK64 define
-Date: Mon, 31 Jan 2022 07:49:29 +0100
-Message-Id: <20220131064933.3780271-2-hch@lst.de>
+Subject: [PATCH 2/5] uapi: simplify __ARCH_FLOCK{,64}_PAD a little
+Date: Mon, 31 Jan 2022 07:49:30 +0100
+Message-Id: <20220131064933.3780271-3-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220131064933.3780271-1-hch@lst.de>
 References: <20220131064933.3780271-1-hch@lst.de>
@@ -69,48 +69,91 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Don't bother to define the symbols empty, just don't use them.  That
+makes the intent a little more clear.
+
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- include/uapi/asm-generic/fcntl.h       | 2 --
- tools/include/uapi/asm-generic/fcntl.h | 2 --
- 2 files changed, 4 deletions(-)
+ include/uapi/asm-generic/fcntl.h       | 12 ++++--------
+ tools/include/uapi/asm-generic/fcntl.h | 12 ++++--------
+ 2 files changed, 8 insertions(+), 16 deletions(-)
 
 diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
-index ecd0f5bdfc1d6..caa482e3b01af 100644
+index caa482e3b01af..c53897ca5d402 100644
 --- a/include/uapi/asm-generic/fcntl.h
 +++ b/include/uapi/asm-generic/fcntl.h
-@@ -207,7 +207,6 @@ struct flock {
- };
+@@ -193,22 +193,16 @@ struct f_owner_ex {
+ #define F_LINUX_SPECIFIC_BASE	1024
+ 
+ #ifndef HAVE_ARCH_STRUCT_FLOCK
+-#ifndef __ARCH_FLOCK_PAD
+-#define __ARCH_FLOCK_PAD
+-#endif
+-
+ struct flock {
+ 	short	l_type;
+ 	short	l_whence;
+ 	__kernel_off_t	l_start;
+ 	__kernel_off_t	l_len;
+ 	__kernel_pid_t	l_pid;
++#ifdef __ARCH_FLOCK_PAD
+ 	__ARCH_FLOCK_PAD
+-};
+ #endif
+-
+-#ifndef __ARCH_FLOCK64_PAD
+-#define __ARCH_FLOCK64_PAD
++};
  #endif
  
--#ifndef HAVE_ARCH_STRUCT_FLOCK64
- #ifndef __ARCH_FLOCK64_PAD
- #define __ARCH_FLOCK64_PAD
- #endif
-@@ -220,6 +219,5 @@ struct flock64 {
+ struct flock64 {
+@@ -217,7 +211,9 @@ struct flock64 {
+ 	__kernel_loff_t l_start;
+ 	__kernel_loff_t l_len;
  	__kernel_pid_t  l_pid;
++#ifdef __ARCH_FLOCK64_PAD
  	__ARCH_FLOCK64_PAD
++#endif
  };
--#endif
  
  #endif /* _ASM_GENERIC_FCNTL_H */
 diff --git a/tools/include/uapi/asm-generic/fcntl.h b/tools/include/uapi/asm-generic/fcntl.h
-index ac190958c9814..4a49d33ca4d55 100644
+index 4a49d33ca4d55..82054502b9748 100644
 --- a/tools/include/uapi/asm-generic/fcntl.h
 +++ b/tools/include/uapi/asm-generic/fcntl.h
-@@ -202,7 +202,6 @@ struct flock {
- };
+@@ -188,22 +188,16 @@ struct f_owner_ex {
+ #define F_LINUX_SPECIFIC_BASE	1024
+ 
+ #ifndef HAVE_ARCH_STRUCT_FLOCK
+-#ifndef __ARCH_FLOCK_PAD
+-#define __ARCH_FLOCK_PAD
+-#endif
+-
+ struct flock {
+ 	short	l_type;
+ 	short	l_whence;
+ 	__kernel_off_t	l_start;
+ 	__kernel_off_t	l_len;
+ 	__kernel_pid_t	l_pid;
++#ifdef __ARCH_FLOCK_PAD
+ 	__ARCH_FLOCK_PAD
+-};
+ #endif
+-
+-#ifndef __ARCH_FLOCK64_PAD
+-#define __ARCH_FLOCK64_PAD
++};
  #endif
  
--#ifndef HAVE_ARCH_STRUCT_FLOCK64
- #ifndef __ARCH_FLOCK64_PAD
- #define __ARCH_FLOCK64_PAD
- #endif
-@@ -215,6 +214,5 @@ struct flock64 {
+ struct flock64 {
+@@ -212,7 +206,9 @@ struct flock64 {
+ 	__kernel_loff_t l_start;
+ 	__kernel_loff_t l_len;
  	__kernel_pid_t  l_pid;
++#ifdef __ARCH_FLOCK64_PAD
  	__ARCH_FLOCK64_PAD
++#endif
  };
--#endif
  
  #endif /* _ASM_GENERIC_FCNTL_H */
 -- 
