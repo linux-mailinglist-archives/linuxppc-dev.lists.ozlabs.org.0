@@ -2,66 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85AB24A488C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 14:47:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 176B84A4846
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Jan 2022 14:36:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JnTrM2dC2z3cPp
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 00:46:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JnTc667K4z3cHC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 00:36:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f0rRPazR;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.134; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JnTqq4Gm9z2xBl
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 00:46:30 +1100 (AEDT)
-Received: from mail-oi1-f174.google.com ([209.85.167.174]) by
- mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1Mf0Ru-1mcSQy1RPe-00gViq for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan
- 2022 14:46:26 +0100
-Received: by mail-oi1-f174.google.com with SMTP id x193so26815902oix.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 05:46:26 -0800 (PST)
-X-Gm-Message-State: AOAM533n6gSol5Nx/f+xmKqxZoN2L5f0XUKYcqtBJm4nhVb+z6D5L+mp
- pNcq2+fvlmLnzIQ328Z1XKUDJD7Xwclblo61ax4=
-X-Google-Smtp-Source: ABdhPJxqzdad29yoPfVQVqkeuINyquIZpxlEvxSx06sdTnz4rryvUZKfSJUaDKGmBUmu6Be3uaLlJuvMhrTHZxz8Zkc=
-X-Received: by 2002:aca:f03:: with SMTP id 3mr13235991oip.102.1643635190773;
- Mon, 31 Jan 2022 05:19:50 -0800 (PST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=f0rRPazR; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JnTbS3HDqz30Mn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 00:35:48 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id A397C612A4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 13:35:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D75C340EE
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 13:35:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1643636143;
+ bh=QrkimEX74xj+Tvz3rNeNpKEQmjz6JrJN7PGpRIyz3b0=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=f0rRPazR/9+C94SxiifNdocl3SGFxenxe07xtZaYXDxyaby+hohZ350sabvBU03W/
+ bv6wpF7eOjV+0O/OEM3dir4bt0AfcWOMdlY5hvQUnMt740xEXr9hzKGpx2+ZtOaTRg
+ 0+jrwmQe5I9JXq0nwyFJ3Xxujmb8ZWlSZyROcnd0WFNSLyEZpbZLESZrq5dbge+ymj
+ NKBixHPDf3WXLMWKSibCG0hX9kHUoAoosS5Jj64qJ9l5wch1b0u1iMhlO9jB2qq7v+
+ K/EwmpwM/cZ3wx0LaYkR7mSy5o/48YZNaZA0EVFXmhh6FG7GIWbvJbd/kLixuXOISL
+ tAWrsbLlN432w==
+Received: by mail-vk1-f178.google.com with SMTP id n14so8212499vkk.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 05:35:42 -0800 (PST)
+X-Gm-Message-State: AOAM533l/5ODUGlGCotrZdWgk1VvkAelQQvazyMn6b4ENsIUMurewfPw
+ Z+y08aMQI6DnyY2LmA0QKDzpw/M3QNTLbt0nGvE=
+X-Google-Smtp-Source: ABdhPJxZNMeC16XdmOigVkjvMRdj8icFIyGyUX0uDul1X33dvN0Ph1ZLc80xzQSa/ftMMNKUf+Q3pGt5DpewCG2Ojxw=
+X-Received: by 2002:a05:6122:d07:: with SMTP id
+ az7mr8146058vkb.35.1643636142047; 
+ Mon, 31 Jan 2022 05:35:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20220129121728.1079364-1-guoren@kernel.org>
- <20220129121728.1079364-6-guoren@kernel.org>
- <YffUqErSVDgbGLTu@infradead.org>
- <CAK8P3a1jZyVBW70K6_u3mvXYNowV4DTBxivKc2L=HbRK8SgRXg@mail.gmail.com>
- <YffdbErmAjAWYuD9@infradead.org>
-In-Reply-To: <YffdbErmAjAWYuD9@infradead.org>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Mon, 31 Jan 2022 14:19:34 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a0VZt8PF1C4W0X4+SNhP=NbHAigq3N6fEawNpPd-RZDjw@mail.gmail.com>
-Message-ID: <CAK8P3a0VZt8PF1C4W0X4+SNhP=NbHAigq3N6fEawNpPd-RZDjw@mail.gmail.com>
-Subject: Re: [PATCH V4 05/17] riscv: Fixup difference with defconfig
-To: Christoph Hellwig <hch@infradead.org>
+References: <20220131064933.3780271-1-hch@lst.de>
+ <20220131064933.3780271-3-hch@lst.de>
+In-Reply-To: <20220131064933.3780271-3-hch@lst.de>
+From: Guo Ren <guoren@kernel.org>
+Date: Mon, 31 Jan 2022 21:35:31 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTRU=0KS5r=Q9tAcVz8aXbaYL7jGyxfxPCYkxWc4rEBG2g@mail.gmail.com>
+Message-ID: <CAJF2gTRU=0KS5r=Q9tAcVz8aXbaYL7jGyxfxPCYkxWc4rEBG2g@mail.gmail.com>
+Subject: Re: [PATCH 2/5] uapi: simplify __ARCH_FLOCK{,64}_PAD a little
+To: Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:EZCShChMx+P7xz8yqKDtr8YUEeElzWDN54AHOsQ5GvMoxXS2xEh
- L0G0CoT7MY3Kt/kSbrYF/AXdq0Wtjs0/sPcPb44os6e3GS2/QRRsXo36L+7i/GJR69Nxmq4
- 1tHHJzrCsUOE+/atPOS5wj/8guUwo/ulIELkC2BtQHyJ0+gzk+DeioiZepIkD9a7Rr0dMco
- dm8xvUq1+hSlcmkiOjA1w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:nLIYVSri5Oc=:pc+UJbFvkdmRgCgcUqnolM
- E2NQtXlIbdT6M4b76s9yBmjMaFQ0BidghigD4MZBzn6iW4Gf2iyxkEUNevFL1+KiDKrpU50xz
- 71jC4VhmS7NT/QfkYkw5InkZc0a79tc93mEDzbY1X1yJ2YrFG141Vsz7nd+P4+u0B3pPSn22P
- NJcrMwUScDXIo8C4nx0zNVsRSGyD/pVRuuK7IKld/0SoqbXGs6XbXLcdEJcacpaXvle++6W98
- FhCPLz91BUYYQdq6ULLzJ1+wGM6TWlCSo5U2pXPAMjCbavJuFI55D9NprfDDBwekyRnBaeSa9
- RRy63HBlYaREmgCGbGQflvsZSi8U2UiQHbCPMpkSN1XbWV5/pijnr4w5dsqYpV+Gxpvb01duX
- m8j/4eZdL7Nv4jYJhjbaMWoFYXS0JE9MfZBU8luq/2WeNHRsKjVsmAikM5SONEE4EXXZZAG1s
- OFpqExAvBvc3HEUK35BE3n6NiQf6umBrD02u5ZvnTjFgqVSSJ0DR4+0tGnF+ka711eI/FFq3D
- 2B61kzbjBX5zVt84cXzVhPf33P7D80vBTLOf0NcZxcX/nDXUO5Sx5gAseYXGKujdXbdgLpIK9
- HalPplpKLeAgJEuvOunm7JEyvK3yOs5g4wLtpUdqcmdyM0ZhD0bSDzwHU6H4w25MYpXBHFdKg
- NeMNStUC740TGrq8gJ8EJFs9P5C3YVd6ZiC5RxZby75vBzy2UFPBvBmNFNlQ4/f4h5amgHskq
- rxvUn0cqMCCwArYu3vKpxHcVu4f4wXNV0HTUV8o/v/K1z7QdMcRS7DKR7U2BLb2fk/bVgIOvQ
- 5YySHIWAjDtd9V4Rv+Jh0V+J+/LSHb9zIER9GQa2f9qGpdhb73pqwOfXUnpsXbcmTkKu1Rz
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,39 +71,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Guo Ren <guoren@linux.alibaba.com>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Guo Ren <guoren@kernel.org>, sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Anup Patel <anup@brainfault.org>,
- the arch/x86 maintainers <x86@kernel.org>, linux-csky@vger.kernel.org,
- Arnd Bergmann <arnd@arndb.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
  Parisc List <linux-parisc@vger.kernel.org>,
- Drew Fustini <drew@beagleboard.org>, liush <liush@allwinnertech.com>,
- Wang Junqiang <wangjunqiang@iscas.ac.cn>, Anup Patel <anup.patel@wdc.com>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, gregkh <gregkh@linuxfoundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Wei Fu <wefu@redhat.com>
+ sparclinux <sparclinux@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 31, 2022 at 2:00 PM Christoph Hellwig <hch@infradead.org> wrote:
+On Mon, Jan 31, 2022 at 2:49 PM Christoph Hellwig <hch@lst.de> wrote:
 >
-> On Mon, Jan 31, 2022 at 01:48:58PM +0100, Arnd Bergmann wrote:
-> > I thought that is what the patch does, there is already the normal 64-bit
-> > defconfig, and the new makefile target makes this shared with 32-bit
-> > to prevent them from diverging again.
+> Don't bother to define the symbols empty, just don't use them.  That
+> makes the intent a little more clear.
 >
-> I ment using a common fragment and the deriving both 32-bit and 64-bit
-> configs from it. The 64-bit specific fragment will be empty for now,
-> but we will sooner or later have an option that can only go into the
-> 64-bit defconfig.
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  include/uapi/asm-generic/fcntl.h       | 12 ++++--------
+>  tools/include/uapi/asm-generic/fcntl.h | 12 ++++--------
+>  2 files changed, 8 insertions(+), 16 deletions(-)
+>
+> diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
+> index caa482e3b01af..c53897ca5d402 100644
+> --- a/include/uapi/asm-generic/fcntl.h
+> +++ b/include/uapi/asm-generic/fcntl.h
+> @@ -193,22 +193,16 @@ struct f_owner_ex {
+>  #define F_LINUX_SPECIFIC_BASE  1024
+>
+>  #ifndef HAVE_ARCH_STRUCT_FLOCK
+> -#ifndef __ARCH_FLOCK_PAD
+> -#define __ARCH_FLOCK_PAD
+> -#endif
+> -
+>  struct flock {
+>         short   l_type;
+>         short   l_whence;
+>         __kernel_off_t  l_start;
+>         __kernel_off_t  l_len;
+>         __kernel_pid_t  l_pid;
+> +#ifdef __ARCH_FLOCK_PAD
+>         __ARCH_FLOCK_PAD
+> -};
+>  #endif
+> -
+> -#ifndef __ARCH_FLOCK64_PAD
+> -#define __ARCH_FLOCK64_PAD
+> +};
+>  #endif
+>
+>  struct flock64 {
+> @@ -217,7 +211,9 @@ struct flock64 {
+>         __kernel_loff_t l_start;
+>         __kernel_loff_t l_len;
+>         __kernel_pid_t  l_pid;
+> +#ifdef __ARCH_FLOCK64_PAD
+>         __ARCH_FLOCK64_PAD
+> +#endif
+>  };
+>
+>  #endif /* _ASM_GENERIC_FCNTL_H */
+> diff --git a/tools/include/uapi/asm-generic/fcntl.h b/tools/include/uapi/asm-generic/fcntl.h
+> index 4a49d33ca4d55..82054502b9748 100644
+> --- a/tools/include/uapi/asm-generic/fcntl.h
+> +++ b/tools/include/uapi/asm-generic/fcntl.h
+> @@ -188,22 +188,16 @@ struct f_owner_ex {
+>  #define F_LINUX_SPECIFIC_BASE  1024
+>
+>  #ifndef HAVE_ARCH_STRUCT_FLOCK
+> -#ifndef __ARCH_FLOCK_PAD
+> -#define __ARCH_FLOCK_PAD
+> -#endif
+> -
+>  struct flock {
+>         short   l_type;
+>         short   l_whence;
+>         __kernel_off_t  l_start;
+>         __kernel_off_t  l_len;
+>         __kernel_pid_t  l_pid;
+> +#ifdef __ARCH_FLOCK_PAD
+>         __ARCH_FLOCK_PAD
+> -};
+>  #endif
+> -
+> -#ifndef __ARCH_FLOCK64_PAD
+> -#define __ARCH_FLOCK64_PAD
+> +};
+>  #endif
+>
+>  struct flock64 {
+> @@ -212,7 +206,9 @@ struct flock64 {
+>         __kernel_loff_t l_start;
+>         __kernel_loff_t l_len;
+>         __kernel_pid_t  l_pid;
+> +#ifdef __ARCH_FLOCK64_PAD
+>         __ARCH_FLOCK64_PAD
+> +#endif
+>  };
+>
+>  #endif /* _ASM_GENERIC_FCNTL_H */
+> --
+> 2.30.2
+>
+Reviewed-by: Guo Ren <guoren@kernel.org>
 
-Ah right, that should work as well, not sure if it makes much of a difference.
+-- 
+Best Regards
+ Guo Ren
 
-I suggested this method because it is the same thing we do on powerpc.
-
-        Arnd
+ML: https://lore.kernel.org/linux-csky/
