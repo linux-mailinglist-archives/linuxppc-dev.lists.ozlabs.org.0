@@ -1,56 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B77174A5FC3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 16:11:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA5E4A5FC4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 16:12:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jp7gC49bqz3ddV
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 02:11:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jp7h30DxSz3bT3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 02:12:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AHbMjDBV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u91Fn4Zu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=AHbMjDBV; 
+ header.s=k20201202 header.b=u91Fn4Zu; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jp7Z11ynmz3cW2
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 02:06:49 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jp7Z74tW3z3cWG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 02:06:55 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 8C0E261683;
- Tue,  1 Feb 2022 15:06:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83EB5C340ED;
- Tue,  1 Feb 2022 15:06:41 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 52F56B82E90;
+ Tue,  1 Feb 2022 15:06:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A56C340EF;
+ Tue,  1 Feb 2022 15:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1643728006;
- bh=6RCP1MbfY3qIKsgFkltTUZn3CISwR+fj5txYEFK2Mmc=;
+ s=k20201202; t=1643728012;
+ bh=B5mITFiumuJZTB2AIFH0lHh9BQBvMeCTkP8v5i0x6Ac=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=AHbMjDBVv5SoA0kqfKwHnT+GA6pcUpJ0Q4Ugk9+SwePY2+vPh7KeWveVpkgtbgi0+
- ShegbA6FaJVC9QlIqzaa4QirpW/76U5dzYirCWLTmmBlydHcyfeNwC7M1MQmCK8oWj
- eVcSLo6MN2nWtcydL9NBNOSC0kzsUsW7gM9aTik0ZR0c08FOWzThDWLAoE/AM+p48g
- 8UgphfAK65nZJBas75e0LI3MNKH6zTdjCDdA6uVblGgyNW1GYNHJ/OJONPMgLolcXK
- bzBZi41RCtdSqWZzcZxpPDN1u13pC45dmx2qp0wBYjfBqG9VFvWRXt3ymC/vd0ssFy
- EOouSEvDv8sBg==
+ b=u91Fn4Zutliji7qQG1LCYGvrh00RB7xirHIlGqMtR2Ui3xl5E1qXbFBbyGMs1uDgl
+ YPl3K1Y+krHciRk559xBDFF94aEuZY4dMErQZmMUe9F4vor7B1Q3eHzdYQ2JmWsGG1
+ dLibmenE6HL9EyOqlGqso8Iiy3ViGC3DKAT+jCRIc3shog958qOUUejXZP916t3eXT
+ 4ZTFQ2FMAMWU6C2qKpdpKFIGhLPx7B4yj+BfKy/P/wBb50XUb6LS8K+b0OeMN1Cxbp
+ J3dlLyIX4LNJ5nXO3WuC8lUjyiXmuePjTQn+3d5UYKw4UeQsCje4PkOy6LGvkGJHX8
+ MA5NAXYpOm22A==
 From: guoren@kernel.org
 To: guoren@kernel.org, palmer@dabbelt.com, arnd@arndb.de, anup@brainfault.org,
  gregkh@linuxfoundation.org, liush@allwinnertech.com, wefu@redhat.com,
  drew@beagleboard.org, wangjunqiang@iscas.ac.cn, hch@lst.de
-Subject: [PATCH V5 07/21] syscalls: compat: Fix the missing part for
- __SYSCALL_COMPAT
-Date: Tue,  1 Feb 2022 23:05:31 +0800
-Message-Id: <20220201150545.1512822-8-guoren@kernel.org>
+Subject: [PATCH V5 08/21] riscv: Fixup difference with defconfig
+Date: Tue,  1 Feb 2022 23:05:32 +0800
+Message-Id: <20220201150545.1512822-9-guoren@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220201150545.1512822-1-guoren@kernel.org>
 References: <20220201150545.1512822-1-guoren@kernel.org>
@@ -79,62 +76,177 @@ Sender: "Linuxppc-dev"
 
 From: Guo Ren <guoren@linux.alibaba.com>
 
-Make "uapi asm unistd.h" could be used for architectures' COMPAT
-mode. The __SYSCALL_COMPAT is first used in riscv.
+Let's follow the origin patch's spirit:
 
+The only difference between rv32_defconfig and defconfig is that
+rv32_defconfig has  CONFIG_ARCH_RV32I=y.
+
+This is helpful to compare rv64-compat-rv32 v.s. rv32-linux.
+
+Fixes: 1b937e8faa87ccfb ("RISC-V: Add separate defconfig for 32bit systems")
 Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
 Signed-off-by: Guo Ren <guoren@kernel.org>
 Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
 ---
- include/uapi/asm-generic/unistd.h       | 4 ++--
- tools/include/uapi/asm-generic/unistd.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/riscv/Makefile               |   4 +
+ arch/riscv/configs/rv32_defconfig | 135 ------------------------------
+ 2 files changed, 4 insertions(+), 135 deletions(-)
+ delete mode 100644 arch/riscv/configs/rv32_defconfig
 
-diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
-index 1c48b0ae3ba3..45fa180cc56a 100644
---- a/include/uapi/asm-generic/unistd.h
-+++ b/include/uapi/asm-generic/unistd.h
-@@ -383,7 +383,7 @@ __SYSCALL(__NR_syslog, sys_syslog)
- 
- /* kernel/ptrace.c */
- #define __NR_ptrace 117
--__SYSCALL(__NR_ptrace, sys_ptrace)
-+__SC_COMP(__NR_ptrace, sys_ptrace, compat_sys_ptrace)
- 
- /* kernel/sched/core.c */
- #define __NR_sched_setparam 118
-@@ -779,7 +779,7 @@ __SYSCALL(__NR_rseq, sys_rseq)
- #define __NR_kexec_file_load 294
- __SYSCALL(__NR_kexec_file_load,     sys_kexec_file_load)
- /* 295 through 402 are unassigned to sync up with generic numbers, don't use */
--#if __BITS_PER_LONG == 32
-+#if defined(__SYSCALL_COMPAT) || __BITS_PER_LONG == 32
- #define __NR_clock_gettime64 403
- __SYSCALL(__NR_clock_gettime64, sys_clock_gettime)
- #define __NR_clock_settime64 404
-diff --git a/tools/include/uapi/asm-generic/unistd.h b/tools/include/uapi/asm-generic/unistd.h
-index 1c48b0ae3ba3..45fa180cc56a 100644
---- a/tools/include/uapi/asm-generic/unistd.h
-+++ b/tools/include/uapi/asm-generic/unistd.h
-@@ -383,7 +383,7 @@ __SYSCALL(__NR_syslog, sys_syslog)
- 
- /* kernel/ptrace.c */
- #define __NR_ptrace 117
--__SYSCALL(__NR_ptrace, sys_ptrace)
-+__SC_COMP(__NR_ptrace, sys_ptrace, compat_sys_ptrace)
- 
- /* kernel/sched/core.c */
- #define __NR_sched_setparam 118
-@@ -779,7 +779,7 @@ __SYSCALL(__NR_rseq, sys_rseq)
- #define __NR_kexec_file_load 294
- __SYSCALL(__NR_kexec_file_load,     sys_kexec_file_load)
- /* 295 through 402 are unassigned to sync up with generic numbers, don't use */
--#if __BITS_PER_LONG == 32
-+#if defined(__SYSCALL_COMPAT) || __BITS_PER_LONG == 32
- #define __NR_clock_gettime64 403
- __SYSCALL(__NR_clock_gettime64, sys_clock_gettime)
- #define __NR_clock_settime64 404
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index 8a107ed18b0d..a02e588c4947 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -148,3 +148,7 @@ PHONY += rv64_randconfig
+ rv64_randconfig:
+ 	$(Q)$(MAKE) KCONFIG_ALLCONFIG=$(srctree)/arch/riscv/configs/64-bit.config \
+ 		-f $(srctree)/Makefile randconfig
++
++PHONY += rv32_defconfig
++rv32_defconfig:
++	$(Q)$(MAKE) -f $(srctree)/Makefile defconfig 32-bit.config
+diff --git a/arch/riscv/configs/rv32_defconfig b/arch/riscv/configs/rv32_defconfig
+deleted file mode 100644
+index 8b56a7f1eb06..000000000000
+--- a/arch/riscv/configs/rv32_defconfig
++++ /dev/null
+@@ -1,135 +0,0 @@
+-CONFIG_SYSVIPC=y
+-CONFIG_POSIX_MQUEUE=y
+-CONFIG_NO_HZ_IDLE=y
+-CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_BPF_SYSCALL=y
+-CONFIG_IKCONFIG=y
+-CONFIG_IKCONFIG_PROC=y
+-CONFIG_CGROUPS=y
+-CONFIG_CGROUP_SCHED=y
+-CONFIG_CFS_BANDWIDTH=y
+-CONFIG_CGROUP_BPF=y
+-CONFIG_NAMESPACES=y
+-CONFIG_USER_NS=y
+-CONFIG_CHECKPOINT_RESTORE=y
+-CONFIG_BLK_DEV_INITRD=y
+-CONFIG_EXPERT=y
+-# CONFIG_SYSFS_SYSCALL is not set
+-CONFIG_SOC_SIFIVE=y
+-CONFIG_SOC_VIRT=y
+-CONFIG_ARCH_RV32I=y
+-CONFIG_SMP=y
+-CONFIG_HOTPLUG_CPU=y
+-CONFIG_VIRTUALIZATION=y
+-CONFIG_KVM=m
+-CONFIG_JUMP_LABEL=y
+-CONFIG_MODULES=y
+-CONFIG_MODULE_UNLOAD=y
+-CONFIG_NET=y
+-CONFIG_PACKET=y
+-CONFIG_UNIX=y
+-CONFIG_INET=y
+-CONFIG_IP_MULTICAST=y
+-CONFIG_IP_ADVANCED_ROUTER=y
+-CONFIG_IP_PNP=y
+-CONFIG_IP_PNP_DHCP=y
+-CONFIG_IP_PNP_BOOTP=y
+-CONFIG_IP_PNP_RARP=y
+-CONFIG_NETLINK_DIAG=y
+-CONFIG_NET_9P=y
+-CONFIG_NET_9P_VIRTIO=y
+-CONFIG_PCI=y
+-CONFIG_PCIEPORTBUS=y
+-CONFIG_PCI_HOST_GENERIC=y
+-CONFIG_PCIE_XILINX=y
+-CONFIG_DEVTMPFS=y
+-CONFIG_DEVTMPFS_MOUNT=y
+-CONFIG_BLK_DEV_LOOP=y
+-CONFIG_VIRTIO_BLK=y
+-CONFIG_BLK_DEV_SD=y
+-CONFIG_BLK_DEV_SR=y
+-CONFIG_SCSI_VIRTIO=y
+-CONFIG_ATA=y
+-CONFIG_SATA_AHCI=y
+-CONFIG_SATA_AHCI_PLATFORM=y
+-CONFIG_NETDEVICES=y
+-CONFIG_VIRTIO_NET=y
+-CONFIG_MACB=y
+-CONFIG_E1000E=y
+-CONFIG_R8169=y
+-CONFIG_MICROSEMI_PHY=y
+-CONFIG_INPUT_MOUSEDEV=y
+-CONFIG_SERIAL_8250=y
+-CONFIG_SERIAL_8250_CONSOLE=y
+-CONFIG_SERIAL_OF_PLATFORM=y
+-CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
+-CONFIG_HVC_RISCV_SBI=y
+-CONFIG_VIRTIO_CONSOLE=y
+-CONFIG_HW_RANDOM=y
+-CONFIG_HW_RANDOM_VIRTIO=y
+-CONFIG_SPI=y
+-CONFIG_SPI_SIFIVE=y
+-# CONFIG_PTP_1588_CLOCK is not set
+-CONFIG_DRM=y
+-CONFIG_DRM_RADEON=y
+-CONFIG_DRM_VIRTIO_GPU=y
+-CONFIG_FB=y
+-CONFIG_FRAMEBUFFER_CONSOLE=y
+-CONFIG_USB=y
+-CONFIG_USB_XHCI_HCD=y
+-CONFIG_USB_XHCI_PLATFORM=y
+-CONFIG_USB_EHCI_HCD=y
+-CONFIG_USB_EHCI_HCD_PLATFORM=y
+-CONFIG_USB_OHCI_HCD=y
+-CONFIG_USB_OHCI_HCD_PLATFORM=y
+-CONFIG_USB_STORAGE=y
+-CONFIG_USB_UAS=y
+-CONFIG_MMC=y
+-CONFIG_MMC_SPI=y
+-CONFIG_RTC_CLASS=y
+-CONFIG_VIRTIO_PCI=y
+-CONFIG_VIRTIO_BALLOON=y
+-CONFIG_VIRTIO_INPUT=y
+-CONFIG_VIRTIO_MMIO=y
+-CONFIG_RPMSG_CHAR=y
+-CONFIG_RPMSG_VIRTIO=y
+-CONFIG_EXT4_FS=y
+-CONFIG_EXT4_FS_POSIX_ACL=y
+-CONFIG_AUTOFS4_FS=y
+-CONFIG_MSDOS_FS=y
+-CONFIG_VFAT_FS=y
+-CONFIG_TMPFS=y
+-CONFIG_TMPFS_POSIX_ACL=y
+-CONFIG_NFS_FS=y
+-CONFIG_NFS_V4=y
+-CONFIG_NFS_V4_1=y
+-CONFIG_NFS_V4_2=y
+-CONFIG_ROOT_NFS=y
+-CONFIG_9P_FS=y
+-CONFIG_CRYPTO_USER_API_HASH=y
+-CONFIG_CRYPTO_DEV_VIRTIO=y
+-CONFIG_PRINTK_TIME=y
+-CONFIG_DEBUG_FS=y
+-CONFIG_DEBUG_PAGEALLOC=y
+-CONFIG_SCHED_STACK_END_CHECK=y
+-CONFIG_DEBUG_VM=y
+-CONFIG_DEBUG_VM_PGFLAGS=y
+-CONFIG_DEBUG_MEMORY_INIT=y
+-CONFIG_DEBUG_PER_CPU_MAPS=y
+-CONFIG_SOFTLOCKUP_DETECTOR=y
+-CONFIG_WQ_WATCHDOG=y
+-CONFIG_DEBUG_TIMEKEEPING=y
+-CONFIG_DEBUG_RT_MUTEXES=y
+-CONFIG_DEBUG_SPINLOCK=y
+-CONFIG_DEBUG_MUTEXES=y
+-CONFIG_DEBUG_RWSEMS=y
+-CONFIG_DEBUG_ATOMIC_SLEEP=y
+-CONFIG_STACKTRACE=y
+-CONFIG_DEBUG_LIST=y
+-CONFIG_DEBUG_PLIST=y
+-CONFIG_DEBUG_SG=y
+-# CONFIG_RCU_TRACE is not set
+-CONFIG_RCU_EQS_DEBUG=y
+-# CONFIG_FTRACE is not set
+-# CONFIG_RUNTIME_TESTING_MENU is not set
+-CONFIG_MEMTEST=y
 -- 
 2.25.1
 
