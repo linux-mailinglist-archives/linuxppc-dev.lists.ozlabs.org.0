@@ -2,70 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE874A5DC6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 14:57:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A5E4A5E32
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 15:25:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jp61h0Xfqz3cGn
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 00:57:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jp6fr4qYxz3cJS
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 01:25:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nULUMuvX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hAx6jmKc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=jejb@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=nULUMuvX; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jp60y23r2z2xBP
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 00:56:34 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=hAx6jmKc; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id C8E2B615AF
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 13:56:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4392AC340FA
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 13:56:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1643723789;
- bh=LR7K+KdhE8ua4Hf11bODf1Ipe6bgjP3NN3+/HtimckQ=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=nULUMuvXkvrb2wx3h/E78ZWoev9tF1+n30y0uhd+VeL4suK4h/7PaBEhJdpbFimhZ
- eHq0ecvW4j9hpvDyoZLt082QO0YUiD4dzL5ypbtytbtJmn7imennsvXbabeHBBV/vB
- 3HyaukGCDLsTs1HAwDF19bw+hwSBPkKz7r7PU1bCJuZxl9sFSOqZpTujWPyNpJr7z4
- SFGJYyGAlUcLKGJpL5WZ8M8ewKFW2/+hdSvUvDhleXoVNOU8+wdKNUvmjZ2EJo/7jc
- bNeohXIAvk6tn7PJhPBZ216d3Y87XjTjr7gYe/BUWcPiFfGHoxZ/8lWDlggv7ZX8Fr
- 9cFvpFMp+gkng==
-Received: by mail-vs1-f42.google.com with SMTP id g10so16161428vss.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Feb 2022 05:56:29 -0800 (PST)
-X-Gm-Message-State: AOAM532BqxXrtvGM/fK9I84Fjr2McCfSZvx74E5jq9rReJu5tEqfAU8A
- KwUtf8uiTncKKuVXaSdPI9+uQWOLpQD0P32985s=
-X-Google-Smtp-Source: ABdhPJySe8D0nEEAYvBRzFy6LwfvSeR3L3Y/oGIyxpX/nRoUeaoc3ecWWnv60QtmaYC3C4Lb9VuYZme6+tyqFZXZr7A=
-X-Received: by 2002:a67:f94e:: with SMTP id u14mr10667024vsq.2.1643723788142; 
- Tue, 01 Feb 2022 05:56:28 -0800 (PST)
-MIME-Version: 1.0
-References: <20220129121728.1079364-1-guoren@kernel.org>
- <20220129121728.1079364-17-guoren@kernel.org>
- <YffVZZg9GNcjgVdm@infradead.org>
- <CAJF2gTRXDotO1L1FMojQs6msrqvCzA782Pux8rg3AfZgA=y0ew@mail.gmail.com>
- <20220201074457.GC29119@lst.de>
- <CAJF2gTTc=zwD__zXwYbO8vmup5evWJtzyiAF9Pm-UVHLJRc5hQ@mail.gmail.com>
- <CAK8P3a2C7nDGQvopYzi1fe_LWyosp8t9dcBsduYK5k_s_OrCaA@mail.gmail.com>
- <CAJF2gTTgTzvGfa3nGzVo4C=fe+ZCGBWp=VhTMRt1vF1O1bnS5g@mail.gmail.com>
- <CAK8P3a3u8zo+MOOpDXaX8PY2ukN3J2VHnV8uDXQwc=0WgV6qFw@mail.gmail.com>
-In-Reply-To: <CAK8P3a3u8zo+MOOpDXaX8PY2ukN3J2VHnV8uDXQwc=0WgV6qFw@mail.gmail.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Tue, 1 Feb 2022 21:56:17 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTTtCboaEdC1MXkONUr1Nc6BcM4xM5tdE9t6_PiSdiGHLg@mail.gmail.com>
-Message-ID: <CAJF2gTTtCboaEdC1MXkONUr1Nc6BcM4xM5tdE9t6_PiSdiGHLg@mail.gmail.com>
-Subject: Re: [PATCH V4 16/17] riscv: compat: Add COMPAT Kbuild skeletal support
-To: Arnd Bergmann <arnd@arndb.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jp6f76sbBz2yfh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 01:25:19 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 211E3fIh002076; 
+ Tue, 1 Feb 2022 14:25:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : content-transfer-encoding : mime-version; s=pp1;
+ bh=mreXuaP/jhEfQGa2pduCiURq5d9Q94KDVgGiwjc7zzo=;
+ b=hAx6jmKcHJLBSUJ/gkK2q1brIyFMRnzYEFT8qfF+qLkoeJJAvn6Avt6HV+iNYuWvaxcu
+ t4tZAzm1jb8/bqL3atjoWlvEsHyRJURGAM8w+/G8Tnij7giOKrARO0gkwnwz9i2qPxcn
+ aZ/LeRxQUhmh784fC5jIHiDyjodEaRkPaGgwiR+kf+fQLoeieQuPl/K4HBhxkdcq1prP
+ Lv5Dw/IWGsxRLp/I7FIBGWflGepYIbovnsYyHBvEGfep0pFd3YOLW7D3HTSdFy1AT+cS
+ w25u0bEI9cBZ5sE/V15iNA1VcW/TtBCjmIoKH6nqufJYBkFfTfXuzTDbfOYVCdGVglIC kQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dxn4hvgky-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Feb 2022 14:25:02 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 211Dx1ur021079;
+ Tue, 1 Feb 2022 14:25:02 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3dxn4hvgk7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Feb 2022 14:25:02 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 211EIajb010966;
+ Tue, 1 Feb 2022 14:25:00 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma01dal.us.ibm.com with ESMTP id 3dvw7bdw8x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Feb 2022 14:25:00 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 211EOuNg34734354
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Feb 2022 14:24:56 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE6457808E;
+ Tue,  1 Feb 2022 14:24:56 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C3391780A0;
+ Tue,  1 Feb 2022 14:24:51 +0000 (GMT)
+Received: from jarvis.int.hansenpartnership.com (unknown [9.211.75.243])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Feb 2022 14:24:51 +0000 (GMT)
+Message-ID: <37779659ca96ac9c1f11bcc0ac0665895c795b54.camel@linux.ibm.com>
+Subject: Re: [PATCH v7 0/5] Allow guest access to EFI confidential computing
+ secret area
+From: James Bottomley <jejb@linux.ibm.com>
+To: Greg KH <gregkh@linuxfoundation.org>, Dov Murik <dovmurik@linux.ibm.com>
+Date: Tue, 01 Feb 2022 09:24:50 -0500
+In-Reply-To: <Yfk6vEuZFtgtA+G+@kroah.com>
+References: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
+ <Yfk6vEuZFtgtA+G+@kroah.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: KKTyI9pQI8Y36SJdNW1gn8e_DMUDwLR-
+X-Proofpoint-ORIG-GUID: S9dqeW5zLuNZ9BvqjN1WezAHnW6K66xY
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-01_06,2022-02-01_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ bulkscore=0 mlxscore=0 mlxlogscore=850 lowpriorityscore=0 suspectscore=0
+ impostorscore=0 adultscore=0 phishscore=0 malwarescore=0 spamscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202010078
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,88 +110,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
- Parisc List <linux-parisc@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Drew Fustini <drew@beagleboard.org>, Anup Patel <anup@brainfault.org>,
- Wang Junqiang <wangjunqiang@iscas.ac.cn>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-csky@vger.kernel.org,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Christoph Hellwig <hch@infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
+Reply-To: jejb@linux.ibm.com
+Cc: linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
+ mjg59@srcf.ucam.org, Lenny Szubowicz <lszubowi@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, gcwilson@linux.ibm.com,
+ Ard Biesheuvel <ardb@kernel.org>, Daniele Buono <dbuono@linux.vnet.ibm.com>,
+ Andi Kleen <ak@linux.intel.com>, Nayna Jain <nayna@linux.ibm.com>,
+ James Morris <jmorris@namei.org>, Jim Cadden <jcadden@ibm.com>,
+ Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@suse.de>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Ashish Kalra <ashish.kalra@amd.com>, dougmill@linux.vnet.ibm.com,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Tobin Feldman-Fitzthum <tobin@linux.ibm.com>, linux-coco@lists.linux.dev,
+ gjoyce@ibm.com, dja@axtens.net, Dave Hansen <dave.hansen@intel.com>,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Andrew Scull <ascull@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 1, 2022 at 7:48 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Tue, Feb 1, 2022 at 11:26 AM Guo Ren <guoren@kernel.org> wrote:
-> >
-> > Hi Arnd & Christoph,
-> >
-> > The UXL field controls the value of XLEN for U-mode, termed UXLEN,
-> > which may differ from the
-> > value of XLEN for S-mode, termed SXLEN. The encoding of UXL is the
-> > same as that of the MXL
-> > field of misa, shown in Table 3.1.
-> >
-> > Here is the patch. (We needn't exception helper, because we are in
-> > S-mode and UXL wouldn't affect.)
->
-> Looks good to me, just a few details that could be improved
->
-> > -#define compat_elf_check_arch(x) ((x)->e_machine == EM_RISCV)
-> > +#ifdef CONFIG_COMPAT
-> > +#define compat_elf_check_arch compat_elf_check_arch
-> > +extern bool compat_elf_check_arch(Elf32_Ehdr *hdr);
-> > +#endif
->
-> No need for the #ifdef
-Okay
+[cc's added]
+On Tue, 2022-02-01 at 14:50 +0100, Greg KH wrote:
+> On Tue, Feb 01, 2022 at 12:44:08PM +0000, Dov Murik wrote:
+[...]
+> > # ls -la /sys/kernel/security/coco/efi_secret
+> > total 0
+> > drwxr-xr-x 2 root root 0 Jun 28 11:55 .
+> > drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
+> > -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-
+> > 06879ce3da0b
+> > -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-
+> > d3a0b54312c6
+> > -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-
+> > ff17f78864d2
+> 
+> Please see my comments on the powerpc version of this type of thing:
+> 	
+> https://lore.kernel.org/r/20220122005637.28199-1-nayna@linux.ibm.com
 
-> > +}
->
-> > +void compat_mode_detect(void)
->
-> __init
-Okay
+If you want a debate, actually cc'ing the people on the other thread
+would have been a good start ...
 
->
-> > +{
-> > + unsigned long tmp = csr_read(CSR_STATUS);
-> > + csr_write(CSR_STATUS, (tmp & ~SR_UXL) | SR_UXL_32);
-> > +
-> > + if ((csr_read(CSR_STATUS) & SR_UXL) != SR_UXL_32) {
-> > + csr_write(CSR_STATUS, tmp);
-> > + return;
-> > + }
-> > +
-> > + csr_write(CSR_STATUS, tmp);
-> > + compat_mode_support = true;
-> > +
-> > + pr_info("riscv: compat: 32bit U-mode applications support\n");
-> > +}
->
-> I think an entry in /proc/cpuinfo would be more helpful than the pr_info at
-> boot time. Maybe a follow-up patch though, as there is no obvious place
-> to put it. On other architectures, you typically have a set of space
-> separated feature names, but riscv has a single string that describes
-> the ISA, and this feature is technically the support for a second ISA.
-Yes, it should be another patch after discussion.
+For those added, this patch series is at:
 
->
->          Arnd
+https://lore.kernel.org/all/20220201124413.1093099-1-dovmurik@linux.ibm.com/
+
+> You all need to work together to come up with a unified place for
+> this and stop making it platform-specific.
+
+I'm not entirely sure of that.  If you look at the differences between
+EFI variables and the COCO proposal: the former has an update API
+which, in the case of signed variables, is rather complex and a UC16
+content requirement.  The latter is binary data with read only/delete. 
+Plus each variable in EFI is described by a GUID, so having a directory
+of random guids, some of which behave like COCO secrets and some of
+which are EFI variables is going to be incredibly confusing (and also
+break all our current listing tools which seems somewhat undesirable).
+
+So we could end up with 
+
+<common path prefix>/efivar
+<common path prefix>/coco
+
+To achieve the separation, but I really don't see what this buys us. 
+Both filesystems would likely end up with different backends because of
+the semantic differences and we can easily start now in different
+places (effectively we've already done this for efi variables) and
+unify later if that is the chosen direction, so it doesn't look like a
+blocker.
+
+> Until then, we can't take this.
+
+I don't believe anyone was asking you to take it.
+
+James
 
 
-
--- 
-Best Regards
- Guo Ren
-
-ML: https://lore.kernel.org/linux-csky/
