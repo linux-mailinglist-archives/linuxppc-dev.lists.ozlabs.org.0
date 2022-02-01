@@ -2,60 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156044A5568
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 04:03:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 562524A557B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 04:07:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JnqWm5sfQz3cD3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 14:03:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JnqcR0nzrz3bN7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 14:07:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZQzE690K;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nRKJAEGl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
  envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=ZQzE690K; 
+ header.s=k20201202 header.b=nRKJAEGl; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JnqW60GW7z2yY0
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 14:03:13 +1100 (AEDT)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jnqbn3lvtz2yZt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 14:07:17 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 975076137B
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 03:03:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01ED3C340F0
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 03:03:10 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id CD326B82B2E
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 03:07:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1C6C340EE
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 03:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1643684591;
- bh=XVG1nkFm0M1TCidUznP2TjJ4k7rtxluAMuLqFYECopI=;
+ s=k20201202; t=1643684832;
+ bh=RWGziZvAcSIC9lUYmms3EZhw2d4HrnjQmDEh+l0erd0=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=ZQzE690KnsPNVYlRelHHw4EeFA4Jh/r5vKcvtuiOydieiU8Liq2oqgCNk7gtUcHV4
- EilIbP1NDsAjYPZGEFwo/FmmGbNq/GujzXKx4pPCZdj7FDTccE1/8SrT4/BX+oSV+Z
- vm5X+RlBGs/dXhEliSU20eYIh4CgbHKLXjuX6FiHaW6GrG80PDOHU9XpO1i1jmAvQ9
- LptLGGrVzo2TsFbzuPH6Y+9iql+3HsAO/6AIZa2qeUW2iO+CST1ze0OCiRP9iV7dMc
- Ml0Xt6aCQpcPnot6fpI+lu4SestIj4cUA6n68/KfrC+JgKMTPuRh24dFzsAq+hMG6z
- gXhJhGK+x+wVg==
-Received: by mail-vk1-f176.google.com with SMTP id m131so9608592vkm.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 19:03:10 -0800 (PST)
-X-Gm-Message-State: AOAM530lCm9eyVvHo+q0i2CIViKyZ6Uxt2d1q0+LEE+vhnGY3EUkhDkp
- uiTtHq+4mk78GQGfs8o3SHrX5zwyOtCkO0u5PhM=
-X-Google-Smtp-Source: ABdhPJyTwJmAqC5mahTByendT7OWLMOo9DeE/UbaKoq5G8/wz8pyIXc4EKka2k1cOl+QuJDHOAJtlYKIILY9yL9r3E4=
-X-Received: by 2002:a1f:640e:: with SMTP id y14mr9686384vkb.2.1643684589884;
- Mon, 31 Jan 2022 19:03:09 -0800 (PST)
+ b=nRKJAEGl2qxCqQhvDxA4ZerW+APO5/FLlhafvP9scG8v2Y5CkLbLJBqcSsExHqVrB
+ OX3evy0z35wsv6qKv8mZoLVMa9qhZ1JkGvn3/V5K+Ya8eJn5j5/QKrGZBzURxRUn2Q
+ YrwUm3dBk4pdrkxsVuT2Zw0kpPdbNeI3lRto/qWn/AwYDThqnNgPdgQO6+xgbPlVK8
+ J2wExTTQsRWHgs9YwMash9dOsKTFXvNWShyPq2ydx536GMBm456Ot1Yqeod+Qn7cgU
+ rA83rDdC4gyCEOxoxw81Zd0o6CbjHFppo0ZVE6yH7x2guN6pA/Sn5hTf9qKA32tLYG
+ QHimT44JTmTSg==
+Received: by mail-vs1-f51.google.com with SMTP id u14so14445896vsg.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Jan 2022 19:07:12 -0800 (PST)
+X-Gm-Message-State: AOAM5332VcbxnxIXEgr+y/u2B6XAdhAUwlRKQE+4isCHHk5hxFYixmr0
+ x89sOZRLw+xFBfG5HXi5xpmeRV+Yv/aOHyn1BBA=
+X-Google-Smtp-Source: ABdhPJzr8oODyGThDZRWf00Gu124HUnNsdtS2vrpuLxr9Y8ThaVajON5m3RaTZJVL7lWmE7wHYjPKw8pKHhLgKGL2D4=
+X-Received: by 2002:a67:e947:: with SMTP id p7mr9249674vso.59.1643684831581;
+ Mon, 31 Jan 2022 19:07:11 -0800 (PST)
 MIME-Version: 1.0
 References: <20220131064933.3780271-1-hch@lst.de>
  <20220131064933.3780271-5-hch@lst.de>
-In-Reply-To: <20220131064933.3780271-5-hch@lst.de>
+ <CAJF2gTRj3DN4YJCM2VXqpyJNY7G-PCG4APcLkMk0CKzg-+SsdA@mail.gmail.com>
+In-Reply-To: <CAJF2gTRj3DN4YJCM2VXqpyJNY7G-PCG4APcLkMk0CKzg-+SsdA@mail.gmail.com>
 From: Guo Ren <guoren@kernel.org>
-Date: Tue, 1 Feb 2022 11:02:59 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTRj3DN4YJCM2VXqpyJNY7G-PCG4APcLkMk0CKzg-+SsdA@mail.gmail.com>
-Message-ID: <CAJF2gTRj3DN4YJCM2VXqpyJNY7G-PCG4APcLkMk0CKzg-+SsdA@mail.gmail.com>
+Date: Tue, 1 Feb 2022 11:07:00 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSvV5PKVkyHZ1jixQYAPDZHwwfG+2=PH_VAQD6Y0XdQVg@mail.gmail.com>
+Message-ID: <CAJF2gTSvV5PKVkyHZ1jixQYAPDZHwwfG+2=PH_VAQD6Y0XdQVg@mail.gmail.com>
 Subject: Re: [PATCH 4/5] uapi: always define F_GETLK64/F_SETLK64/F_SETLKW64 in
  fcntl.h
 To: Christoph Hellwig <hch@lst.de>
@@ -84,183 +85,197 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 31, 2022 at 2:49 PM Christoph Hellwig <hch@lst.de> wrote:
+On Tue, Feb 1, 2022 at 11:02 AM Guo Ren <guoren@kernel.org> wrote:
 >
-> The F_GETLK64/F_SETLK64/F_SETLKW64 fcntl opcodes are only implemented
-> for the 32-bit syscall APIs, but are also needed for compat handling
-> on 64-bit kernels.
->
-> Consolidate them in unistd.h instead of definining the internal compat
-> definitions in compat.h, which is rather errror prone (e.g. parisc
-> gets the values wrong currently).
->
-> Note that before this change they were never visible to userspace due
-> to the fact that CONFIG_64BIT is only set for kernel builds.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/arm64/include/asm/compat.h        | 4 ----
->  arch/mips/include/asm/compat.h         | 4 ----
->  arch/mips/include/uapi/asm/fcntl.h     | 4 ++--
->  arch/powerpc/include/asm/compat.h      | 4 ----
->  arch/s390/include/asm/compat.h         | 4 ----
->  arch/sparc/include/asm/compat.h        | 4 ----
->  arch/x86/include/asm/compat.h          | 4 ----
->  include/uapi/asm-generic/fcntl.h       | 4 ++--
->  tools/include/uapi/asm-generic/fcntl.h | 2 --
->  9 files changed, 4 insertions(+), 30 deletions(-)
->
-> diff --git a/arch/arm64/include/asm/compat.h b/arch/arm64/include/asm/compat.h
-> index eaa6ca062d89b..2763287654081 100644
-> --- a/arch/arm64/include/asm/compat.h
-> +++ b/arch/arm64/include/asm/compat.h
-> @@ -73,10 +73,6 @@ struct compat_flock {
->         compat_pid_t    l_pid;
->  };
->
-> -#define F_GETLK64      12      /*  using 'struct flock64' */
-> -#define F_SETLK64      13
-> -#define F_SETLKW64     14
-> -
->  struct compat_flock64 {
->         short           l_type;
->         short           l_whence;
-> diff --git a/arch/mips/include/asm/compat.h b/arch/mips/include/asm/compat.h
-> index bbb3bc5a42fd8..6a350c1f70d7e 100644
-> --- a/arch/mips/include/asm/compat.h
-> +++ b/arch/mips/include/asm/compat.h
-> @@ -65,10 +65,6 @@ struct compat_flock {
->         s32             pad[4];
->  };
->
-> -#define F_GETLK64      33
-> -#define F_SETLK64      34
-> -#define F_SETLKW64     35
-Oops we can't remove above, right?
+> On Mon, Jan 31, 2022 at 2:49 PM Christoph Hellwig <hch@lst.de> wrote:
+> >
+> > The F_GETLK64/F_SETLK64/F_SETLKW64 fcntl opcodes are only implemented
+> > for the 32-bit syscall APIs, but are also needed for compat handling
+> > on 64-bit kernels.
+> >
+> > Consolidate them in unistd.h instead of definining the internal compat
+> > definitions in compat.h, which is rather errror prone (e.g. parisc
+> > gets the values wrong currently).
+> >
+> > Note that before this change they were never visible to userspace due
+> > to the fact that CONFIG_64BIT is only set for kernel builds.
+> >
+> > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > ---
+> >  arch/arm64/include/asm/compat.h        | 4 ----
+> >  arch/mips/include/asm/compat.h         | 4 ----
+> >  arch/mips/include/uapi/asm/fcntl.h     | 4 ++--
+> >  arch/powerpc/include/asm/compat.h      | 4 ----
+> >  arch/s390/include/asm/compat.h         | 4 ----
+> >  arch/sparc/include/asm/compat.h        | 4 ----
+> >  arch/x86/include/asm/compat.h          | 4 ----
+> >  include/uapi/asm-generic/fcntl.h       | 4 ++--
+> >  tools/include/uapi/asm-generic/fcntl.h | 2 --
+> >  9 files changed, 4 insertions(+), 30 deletions(-)
+> >
+> > diff --git a/arch/arm64/include/asm/compat.h b/arch/arm64/include/asm/compat.h
+> > index eaa6ca062d89b..2763287654081 100644
+> > --- a/arch/arm64/include/asm/compat.h
+> > +++ b/arch/arm64/include/asm/compat.h
+> > @@ -73,10 +73,6 @@ struct compat_flock {
+> >         compat_pid_t    l_pid;
+> >  };
+> >
+> > -#define F_GETLK64      12      /*  using 'struct flock64' */
+> > -#define F_SETLK64      13
+> > -#define F_SETLKW64     14
+> > -
+> >  struct compat_flock64 {
+> >         short           l_type;
+> >         short           l_whence;
+> > diff --git a/arch/mips/include/asm/compat.h b/arch/mips/include/asm/compat.h
+> > index bbb3bc5a42fd8..6a350c1f70d7e 100644
+> > --- a/arch/mips/include/asm/compat.h
+> > +++ b/arch/mips/include/asm/compat.h
+> > @@ -65,10 +65,6 @@ struct compat_flock {
+> >         s32             pad[4];
+> >  };
+> >
+> > -#define F_GETLK64      33
+> > -#define F_SETLK64      34
+> > -#define F_SETLKW64     35
+> Oops we can't remove above, right?
+No problem, I missing, it's okay.
 
-> -
->  struct compat_flock64 {
->         short           l_type;
->         short           l_whence;
-> diff --git a/arch/mips/include/uapi/asm/fcntl.h b/arch/mips/include/uapi/asm/fcntl.h
-> index 9e44ac810db94..0369a38e3d4f2 100644
-> --- a/arch/mips/include/uapi/asm/fcntl.h
-> +++ b/arch/mips/include/uapi/asm/fcntl.h
-> @@ -44,11 +44,11 @@
->  #define F_SETOWN       24      /*  for sockets. */
->  #define F_GETOWN       23      /*  for sockets. */
+All come from arch/mips/include/uapi/asm/fcntl.h
+
 >
-> -#ifndef __mips64
-> +#if __BITS_PER_LONG == 32 || defined(__KERNEL__)
->  #define F_GETLK64      33      /*  using 'struct flock64' */
->  #define F_SETLK64      34
->  #define F_SETLKW64     35
-> -#endif
-> +#endif /* __BITS_PER_LONG == 32 || defined(__KERNEL__) */
+> > -
+> >  struct compat_flock64 {
+> >         short           l_type;
+> >         short           l_whence;
+> > diff --git a/arch/mips/include/uapi/asm/fcntl.h b/arch/mips/include/uapi/asm/fcntl.h
+> > index 9e44ac810db94..0369a38e3d4f2 100644
+> > --- a/arch/mips/include/uapi/asm/fcntl.h
+> > +++ b/arch/mips/include/uapi/asm/fcntl.h
+> > @@ -44,11 +44,11 @@
+> >  #define F_SETOWN       24      /*  for sockets. */
+> >  #define F_GETOWN       23      /*  for sockets. */
+> >
+> > -#ifndef __mips64
+> > +#if __BITS_PER_LONG == 32 || defined(__KERNEL__)
+> >  #define F_GETLK64      33      /*  using 'struct flock64' */
+> >  #define F_SETLK64      34
+> >  #define F_SETLKW64     35
+> > -#endif
+> > +#endif /* __BITS_PER_LONG == 32 || defined(__KERNEL__) */
+> >
+> >  #if _MIPS_SIM != _MIPS_SIM_ABI64
+> >  #define __ARCH_FLOCK_EXTRA_SYSID       long l_sysid;
+> > diff --git a/arch/powerpc/include/asm/compat.h b/arch/powerpc/include/asm/compat.h
+> > index 7afc96fb6524b..83d8f70779cbc 100644
+> > --- a/arch/powerpc/include/asm/compat.h
+> > +++ b/arch/powerpc/include/asm/compat.h
+> > @@ -52,10 +52,6 @@ struct compat_flock {
+> >         compat_pid_t    l_pid;
+> >  };
+> >
+> > -#define F_GETLK64      12      /*  using 'struct flock64' */
+> > -#define F_SETLK64      13
+> > -#define F_SETLKW64     14
+> > -
+> >  struct compat_flock64 {
+> >         short           l_type;
+> >         short           l_whence;
+> > diff --git a/arch/s390/include/asm/compat.h b/arch/s390/include/asm/compat.h
+> > index cdc7ae72529d8..0f14b3188b1bb 100644
+> > --- a/arch/s390/include/asm/compat.h
+> > +++ b/arch/s390/include/asm/compat.h
+> > @@ -110,10 +110,6 @@ struct compat_flock {
+> >         compat_pid_t    l_pid;
+> >  };
+> >
+> > -#define F_GETLK64       12
+> > -#define F_SETLK64       13
+> > -#define F_SETLKW64      14
+> > -
+> >  struct compat_flock64 {
+> >         short           l_type;
+> >         short           l_whence;
+> > diff --git a/arch/sparc/include/asm/compat.h b/arch/sparc/include/asm/compat.h
+> > index bd949fcf9d63b..108078751bb5a 100644
+> > --- a/arch/sparc/include/asm/compat.h
+> > +++ b/arch/sparc/include/asm/compat.h
+> > @@ -84,10 +84,6 @@ struct compat_flock {
+> >         short           __unused;
+> >  };
+> >
+> > -#define F_GETLK64      12
+> > -#define F_SETLK64      13
+> > -#define F_SETLKW64     14
+> > -
+> >  struct compat_flock64 {
+> >         short           l_type;
+> >         short           l_whence;
+> > diff --git a/arch/x86/include/asm/compat.h b/arch/x86/include/asm/compat.h
+> > index 7516e4199b3c6..8d19a212f4f26 100644
+> > --- a/arch/x86/include/asm/compat.h
+> > +++ b/arch/x86/include/asm/compat.h
+> > @@ -58,10 +58,6 @@ struct compat_flock {
+> >         compat_pid_t    l_pid;
+> >  };
+> >
+> > -#define F_GETLK64      12      /*  using 'struct flock64' */
+> > -#define F_SETLK64      13
+> > -#define F_SETLKW64     14
+> > -
+> >  /*
+> >   * IA32 uses 4 byte alignment for 64 bit quantities,
+> >   * so we need to pack this structure.
+> > diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
+> > index 98f4ff165b776..8c05d3d89ff18 100644
+> > --- a/include/uapi/asm-generic/fcntl.h
+> > +++ b/include/uapi/asm-generic/fcntl.h
+> > @@ -116,13 +116,13 @@
+> >  #define F_GETSIG       11      /* for sockets. */
+> >  #endif
+> >
+> > -#ifndef CONFIG_64BIT
+> > +#if __BITS_PER_LONG == 32 || defined(__KERNEL__)
+> >  #ifndef F_GETLK64
+> >  #define F_GETLK64      12      /*  using 'struct flock64' */
+> >  #define F_SETLK64      13
+> >  #define F_SETLKW64     14
+> >  #endif
+> > -#endif
+> > +#endif /* __BITS_PER_LONG == 32 || defined(__KERNEL__) */
+> >
+> >  #ifndef F_SETOWN_EX
+> >  #define F_SETOWN_EX    15
+> > diff --git a/tools/include/uapi/asm-generic/fcntl.h b/tools/include/uapi/asm-generic/fcntl.h
+> > index bf961a71802e0..6e16722026f39 100644
+> > --- a/tools/include/uapi/asm-generic/fcntl.h
+> > +++ b/tools/include/uapi/asm-generic/fcntl.h
+> > @@ -115,13 +115,11 @@
+> >  #define F_GETSIG       11      /* for sockets. */
+> >  #endif
+> >
+> > -#ifndef CONFIG_64BIT
+> >  #ifndef F_GETLK64
+> >  #define F_GETLK64      12      /*  using 'struct flock64' */
+> >  #define F_SETLK64      13
+> >  #define F_SETLKW64     14
+> >  #endif
+> > -#endif
+> >
+> >  #ifndef F_SETOWN_EX
+> >  #define F_SETOWN_EX    15
+> > --
+> > 2.30.2
+> >
 >
->  #if _MIPS_SIM != _MIPS_SIM_ABI64
->  #define __ARCH_FLOCK_EXTRA_SYSID       long l_sysid;
-> diff --git a/arch/powerpc/include/asm/compat.h b/arch/powerpc/include/asm/compat.h
-> index 7afc96fb6524b..83d8f70779cbc 100644
-> --- a/arch/powerpc/include/asm/compat.h
-> +++ b/arch/powerpc/include/asm/compat.h
-> @@ -52,10 +52,6 @@ struct compat_flock {
->         compat_pid_t    l_pid;
->  };
 >
-> -#define F_GETLK64      12      /*  using 'struct flock64' */
-> -#define F_SETLK64      13
-> -#define F_SETLKW64     14
-> -
->  struct compat_flock64 {
->         short           l_type;
->         short           l_whence;
-> diff --git a/arch/s390/include/asm/compat.h b/arch/s390/include/asm/compat.h
-> index cdc7ae72529d8..0f14b3188b1bb 100644
-> --- a/arch/s390/include/asm/compat.h
-> +++ b/arch/s390/include/asm/compat.h
-> @@ -110,10 +110,6 @@ struct compat_flock {
->         compat_pid_t    l_pid;
->  };
->
-> -#define F_GETLK64       12
-> -#define F_SETLK64       13
-> -#define F_SETLKW64      14
-> -
->  struct compat_flock64 {
->         short           l_type;
->         short           l_whence;
-> diff --git a/arch/sparc/include/asm/compat.h b/arch/sparc/include/asm/compat.h
-> index bd949fcf9d63b..108078751bb5a 100644
-> --- a/arch/sparc/include/asm/compat.h
-> +++ b/arch/sparc/include/asm/compat.h
-> @@ -84,10 +84,6 @@ struct compat_flock {
->         short           __unused;
->  };
->
-> -#define F_GETLK64      12
-> -#define F_SETLK64      13
-> -#define F_SETLKW64     14
-> -
->  struct compat_flock64 {
->         short           l_type;
->         short           l_whence;
-> diff --git a/arch/x86/include/asm/compat.h b/arch/x86/include/asm/compat.h
-> index 7516e4199b3c6..8d19a212f4f26 100644
-> --- a/arch/x86/include/asm/compat.h
-> +++ b/arch/x86/include/asm/compat.h
-> @@ -58,10 +58,6 @@ struct compat_flock {
->         compat_pid_t    l_pid;
->  };
->
-> -#define F_GETLK64      12      /*  using 'struct flock64' */
-> -#define F_SETLK64      13
-> -#define F_SETLKW64     14
-> -
->  /*
->   * IA32 uses 4 byte alignment for 64 bit quantities,
->   * so we need to pack this structure.
-> diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
-> index 98f4ff165b776..8c05d3d89ff18 100644
-> --- a/include/uapi/asm-generic/fcntl.h
-> +++ b/include/uapi/asm-generic/fcntl.h
-> @@ -116,13 +116,13 @@
->  #define F_GETSIG       11      /* for sockets. */
->  #endif
->
-> -#ifndef CONFIG_64BIT
-> +#if __BITS_PER_LONG == 32 || defined(__KERNEL__)
->  #ifndef F_GETLK64
->  #define F_GETLK64      12      /*  using 'struct flock64' */
->  #define F_SETLK64      13
->  #define F_SETLKW64     14
->  #endif
-> -#endif
-> +#endif /* __BITS_PER_LONG == 32 || defined(__KERNEL__) */
->
->  #ifndef F_SETOWN_EX
->  #define F_SETOWN_EX    15
-> diff --git a/tools/include/uapi/asm-generic/fcntl.h b/tools/include/uapi/asm-generic/fcntl.h
-> index bf961a71802e0..6e16722026f39 100644
-> --- a/tools/include/uapi/asm-generic/fcntl.h
-> +++ b/tools/include/uapi/asm-generic/fcntl.h
-> @@ -115,13 +115,11 @@
->  #define F_GETSIG       11      /* for sockets. */
->  #endif
->
-> -#ifndef CONFIG_64BIT
->  #ifndef F_GETLK64
->  #define F_GETLK64      12      /*  using 'struct flock64' */
->  #define F_SETLK64      13
->  #define F_SETLKW64     14
->  #endif
-> -#endif
->
->  #ifndef F_SETOWN_EX
->  #define F_SETOWN_EX    15
 > --
-> 2.30.2
+> Best Regards
+>  Guo Ren
 >
+> ML: https://lore.kernel.org/linux-csky/
+
 
 
 -- 
