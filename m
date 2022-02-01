@@ -2,56 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D3C4A5DAC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 14:50:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BE874A5DC6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 14:57:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jp5t760Rwz3cN6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 00:50:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jp61h0Xfqz3cGn
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 00:57:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=IED3C+Bc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nULUMuvX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75;
- helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=IED3C+Bc; 
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=nULUMuvX; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jp5sR6kZnz30N0
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 00:50:02 +1100 (AEDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jp60y23r2z2xBP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 00:56:34 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id EDACDB82E07;
- Tue,  1 Feb 2022 13:49:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 306EDC340ED;
- Tue,  1 Feb 2022 13:49:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1643723397;
- bh=/Hg8E9Pk4hej0EhFBXxNBNhhet6Vx2vqNwjmgDpTRT4=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=IED3C+BcZFpGUJ6n5jyXgyP7/J2rum9VuGPj0zhpf00AMfFEFgDm0qqNj6jNinT0i
- ACxR7aryfmVWeWnN2QwtkFUap/gzab7t1c/Elv0ElIe7+adv7yHEBQhwbCGAsIMFJk
- zJW0ih3DwBlb5Q20OSCQhW4UYvDUoUbi4obnqG+M=
-Date: Tue, 1 Feb 2022 14:49:54 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Daniel Axtens <dja@axtens.net>
-Subject: Re: [RFC PATCH 0/2] powerpc/pseries: add support for local secure
- storage called Platform Keystore(PKS)
-Message-ID: <Yfk6gucNmJuR/egi@kroah.com>
-References: <20220122005637.28199-1-nayna@linux.ibm.com>
- <YeuyUVVdFADCuDr4@kroah.com>
- <87sftec74i.fsf@dja-thinkpad.axtens.net>
+ by dfw.source.kernel.org (Postfix) with ESMTPS id C8E2B615AF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 13:56:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4392AC340FA
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 13:56:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1643723789;
+ bh=LR7K+KdhE8ua4Hf11bODf1Ipe6bgjP3NN3+/HtimckQ=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=nULUMuvXkvrb2wx3h/E78ZWoev9tF1+n30y0uhd+VeL4suK4h/7PaBEhJdpbFimhZ
+ eHq0ecvW4j9hpvDyoZLt082QO0YUiD4dzL5ypbtytbtJmn7imennsvXbabeHBBV/vB
+ 3HyaukGCDLsTs1HAwDF19bw+hwSBPkKz7r7PU1bCJuZxl9sFSOqZpTujWPyNpJr7z4
+ SFGJYyGAlUcLKGJpL5WZ8M8ewKFW2/+hdSvUvDhleXoVNOU8+wdKNUvmjZ2EJo/7jc
+ bNeohXIAvk6tn7PJhPBZ216d3Y87XjTjr7gYe/BUWcPiFfGHoxZ/8lWDlggv7ZX8Fr
+ 9cFvpFMp+gkng==
+Received: by mail-vs1-f42.google.com with SMTP id g10so16161428vss.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Feb 2022 05:56:29 -0800 (PST)
+X-Gm-Message-State: AOAM532BqxXrtvGM/fK9I84Fjr2McCfSZvx74E5jq9rReJu5tEqfAU8A
+ KwUtf8uiTncKKuVXaSdPI9+uQWOLpQD0P32985s=
+X-Google-Smtp-Source: ABdhPJySe8D0nEEAYvBRzFy6LwfvSeR3L3Y/oGIyxpX/nRoUeaoc3ecWWnv60QtmaYC3C4Lb9VuYZme6+tyqFZXZr7A=
+X-Received: by 2002:a67:f94e:: with SMTP id u14mr10667024vsq.2.1643723788142; 
+ Tue, 01 Feb 2022 05:56:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87sftec74i.fsf@dja-thinkpad.axtens.net>
+References: <20220129121728.1079364-1-guoren@kernel.org>
+ <20220129121728.1079364-17-guoren@kernel.org>
+ <YffVZZg9GNcjgVdm@infradead.org>
+ <CAJF2gTRXDotO1L1FMojQs6msrqvCzA782Pux8rg3AfZgA=y0ew@mail.gmail.com>
+ <20220201074457.GC29119@lst.de>
+ <CAJF2gTTc=zwD__zXwYbO8vmup5evWJtzyiAF9Pm-UVHLJRc5hQ@mail.gmail.com>
+ <CAK8P3a2C7nDGQvopYzi1fe_LWyosp8t9dcBsduYK5k_s_OrCaA@mail.gmail.com>
+ <CAJF2gTTgTzvGfa3nGzVo4C=fe+ZCGBWp=VhTMRt1vF1O1bnS5g@mail.gmail.com>
+ <CAK8P3a3u8zo+MOOpDXaX8PY2ukN3J2VHnV8uDXQwc=0WgV6qFw@mail.gmail.com>
+In-Reply-To: <CAK8P3a3u8zo+MOOpDXaX8PY2ukN3J2VHnV8uDXQwc=0WgV6qFw@mail.gmail.com>
+From: Guo Ren <guoren@kernel.org>
+Date: Tue, 1 Feb 2022 21:56:17 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTTtCboaEdC1MXkONUr1Nc6BcM4xM5tdE9t6_PiSdiGHLg@mail.gmail.com>
+Message-ID: <CAJF2gTTtCboaEdC1MXkONUr1Nc6BcM4xM5tdE9t6_PiSdiGHLg@mail.gmail.com>
+Subject: Re: [PATCH V4 16/17] riscv: compat: Add COMPAT Kbuild skeletal support
+To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,98 +77,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mjg59@srcf.ucam.org, Nayna Jain <nayna@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Douglas Miller <dougmill@linux.vnet.ibm.com>,
- George Wilson <gcwilson@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- gjoyce@ibm.com
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Drew Fustini <drew@beagleboard.org>, Anup Patel <anup@brainfault.org>,
+ Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Christoph Hellwig <hch@infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 24, 2022 at 11:25:17AM +1100, Daniel Axtens wrote:
-> Hi Greg,
-> 
-> > Ok, this is like the 3rd or 4th different platform-specific proposal for
-> > this type of functionality.  I think we need to give up on
-> > platform-specific user/kernel apis on this (random sysfs/securityfs
-> > files scattered around the tree), and come up with a standard place for
-> > all of this.
-> 
-> I agree that we do have a number of platforms exposing superficially
-> similar functionality. Indeed, back in 2019 I had a crack at a unified
-> approach: [1] [2].
-> 
-> Looking back at it now, I am not sure it ever would have worked because
-> the semantics of the underlying firmware stores are quite
-> different. Here are the ones I know about:
-> 
->  - OpenPower/PowerNV Secure Variables:
->  
->    * Firmware semantics:
->      - flat variable space
->      - variables are fixed in firmware, can neither be created nor
->         destroyed
->      - variable names are ASCII
->      - no concept of policy/attributes
->      
->    * Current kernel interface semantics:
->      - names are case sensitive
->      - directory per variable     
-> 
-> 
->  - (U)EFI variables:
->  
->    * Firmware semantics:
->      - flat variable space
->      - variables can be created/destroyed but the semantics are fiddly
->         [3]
->      - variable names are UTF-16 + UUID
->      - variables have 32-bit attributes
-> 
->    * efivarfs interface semantics:
->      - file per variable
->      - attributes are the first 4 bytes of the file
->      - names are partially case-insensitive (UUID part) and partially
->         case-sensitive ('name' part)
-> 
->    * sysfs interface semantics (as used by CONFIG_GOOGLE_SMI)
->      - directory per variable
->      - attributes are a separate sysfs file
->      - to create a variable you write a serialised structure to
->         `/sys/firmware/efi/vars/new_var`, to delete a var you write
->         to `.../del_var`
->      - names are case-sensitive including the UUID
-> 
-> 
->  - PowerVM Partition Key Store Variables:
->  
->    * Firmware semantics:
->      - _not_ a flat space, there are 3 domains ("consumers"): firmware,
->         bootloader and OS (not yet supported by the patch set)
->      - variables can be created and destroyed but the semantics are
->         fiddly and fiddly in different ways to UEFI [4]
->      - variable names are arbitrary byte strings: the hypervisor permits
->         names to contain nul and /.
->      - variables have 32-bit attributes ("policy") that don't align with
->         UEFI attributes
-> 
->    * No stable kernel interface yet
-> 
-> Even if we could come up with some stable kernel interface features
-> (e.g. decide if we want file per variable vs directory per variable), I
-> don't know how easy it would be to deal with the underlying semantic
-> differences - I think userspace would still need substantial
-> per-platform knowledge.
-> 
-> Or have I misunderstood what you're asking for? (If you want them all to
-> live under /sys/firmware, these ones all already do...)
+On Tue, Feb 1, 2022 at 7:48 PM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Tue, Feb 1, 2022 at 11:26 AM Guo Ren <guoren@kernel.org> wrote:
+> >
+> > Hi Arnd & Christoph,
+> >
+> > The UXL field controls the value of XLEN for U-mode, termed UXLEN,
+> > which may differ from the
+> > value of XLEN for S-mode, termed SXLEN. The encoding of UXL is the
+> > same as that of the MXL
+> > field of misa, shown in Table 3.1.
+> >
+> > Here is the patch. (We needn't exception helper, because we are in
+> > S-mode and UXL wouldn't affect.)
+>
+> Looks good to me, just a few details that could be improved
+>
+> > -#define compat_elf_check_arch(x) ((x)->e_machine == EM_RISCV)
+> > +#ifdef CONFIG_COMPAT
+> > +#define compat_elf_check_arch compat_elf_check_arch
+> > +extern bool compat_elf_check_arch(Elf32_Ehdr *hdr);
+> > +#endif
+>
+> No need for the #ifdef
+Okay
 
-I want them to be unified in some way, right now there are lots of
-proposals for the same type of thing, but in different places (sysfs,
-securityfs, somewhere else), and with different names.
+> > +}
+>
+> > +void compat_mode_detect(void)
+>
+> __init
+Okay
 
-Please work together.
+>
+> > +{
+> > + unsigned long tmp = csr_read(CSR_STATUS);
+> > + csr_write(CSR_STATUS, (tmp & ~SR_UXL) | SR_UXL_32);
+> > +
+> > + if ((csr_read(CSR_STATUS) & SR_UXL) != SR_UXL_32) {
+> > + csr_write(CSR_STATUS, tmp);
+> > + return;
+> > + }
+> > +
+> > + csr_write(CSR_STATUS, tmp);
+> > + compat_mode_support = true;
+> > +
+> > + pr_info("riscv: compat: 32bit U-mode applications support\n");
+> > +}
+>
+> I think an entry in /proc/cpuinfo would be more helpful than the pr_info at
+> boot time. Maybe a follow-up patch though, as there is no obvious place
+> to put it. On other architectures, you typically have a set of space
+> separated feature names, but riscv has a single string that describes
+> the ISA, and this feature is technically the support for a second ISA.
+Yes, it should be another patch after discussion.
 
-thanks,
+>
+>          Arnd
 
-greg k-h
+
+
+-- 
+Best Regards
+ Guo Ren
+
+ML: https://lore.kernel.org/linux-csky/
