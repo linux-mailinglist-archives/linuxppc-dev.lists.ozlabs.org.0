@@ -1,102 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD2D4A633E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 19:08:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27AAC4A67F8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 23:28:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JpCbk1YXgz3bPS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 05:08:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JpKM56Ltjz30QB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 09:28:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F9Dj3Poh;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bg03rr/b;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail2 header.b=Nj2VpdP9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=dgilbert@redhat.com;
+ smtp.mailfrom=protonmail.com (client-ip=185.70.41.103;
+ helo=mail-41103.protonmail.ch; envelope-from=povik+lin@protonmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=F9Dj3Poh; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bg03rr/b; 
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256
+ header.s=protonmail2 header.b=Nj2VpdP9; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 546 seconds by postgrey-1.36 at boromir;
+ Wed, 02 Feb 2022 09:04:40 AEDT
+Received: from mail-41103.protonmail.ch (mail-41103.protonmail.ch
+ [185.70.41.103])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JpCZx6C8Mz30jP
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 05:07:51 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1643738868;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=WbBlRRySTSYfyiFCmjcFdtwLEhU3rffLIxhLq8iPqzY=;
- b=F9Dj3PohgOi1IolFwY3vNwIpr8JQPW/iIzkunf12z8TkMY2uDKGja89qOdsGyLQrjBjLu9
- 6z2JaGaryIaVYI8UPGBF/bi5+abSmn9ucB4rS92m1PEYwANj8unJ4Pikl1M7WR7I3cgEea
- 69tpgvCWptlOl+/ugljRE3QTwu0JFzE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1643738869;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=WbBlRRySTSYfyiFCmjcFdtwLEhU3rffLIxhLq8iPqzY=;
- b=Bg03rr/bnAfcb46AjxD49Hb6HG/SRJgkRIdvcsLvAnYm5FWwxH3FWZ1/NPO/b9RNBoZYny
- mlv59w17ApwtXigYXNnw/kpprS2ZpNTxyT9Wr7uNv9Oc+FLWtXm+ooL7xqcyqG8ftOJDA5
- 4oLE4nweUFQqgC9ncn9dSG58kyxRW48=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-616-wkjVkCnvOnao1-JH3ilGXw-1; Tue, 01 Feb 2022 13:07:46 -0500
-X-MC-Unique: wkjVkCnvOnao1-JH3ilGXw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- s1-20020a1ca901000000b0034ece94dd8cso2042134wme.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Feb 2022 10:07:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=WbBlRRySTSYfyiFCmjcFdtwLEhU3rffLIxhLq8iPqzY=;
- b=H5rh8Lu8gP9Dlp7mzedyw8DGPEUuxjMzIsAmAKrMP/9VNCmwM1VUduFxyzYwrPEQ9H
- hSSufZeh8X1Xp0pvteE4EoXlRiJPGqg7BxHN9ZxlVWo5W8WAQ9LGH536XmnLtGMMH8ba
- oYsxYqYqlzPEw0mDT0zz5H+mJOUBkKOrSnARNwos0CWCpEI7gChyPyhnyBldR/F+fy4Z
- IY3Nj4MPlYPFmoZa31rAQEvsbh6CT0XVBE6trWUkfcSIvFfDp373BqI4eQl864w072Ck
- wWo6U07LlFC1cXRb7xT6soYHqMIO7SQNkErrBuE5yGXLnsgB/6PwBco1xhTR4NVp+3oE
- JiUA==
-X-Gm-Message-State: AOAM531lMaC40+HaIv6nWhTBwYfjzmfltGfNyfM+McjZnUiLHvuYkdpU
- FnkKE/13LX9DTaZDYxyAGwdvP3zB4YjBgHqM6Vm+Lfjp/3PRCqgesSSV581mK/nrmTYHfDfKL2Y
- UmSeqsY6sZcIIa3f1umLApB55rA==
-X-Received: by 2002:adf:ef05:: with SMTP id e5mr2411056wro.413.1643738865327; 
- Tue, 01 Feb 2022 10:07:45 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwEMGb5gkaJl9q84gkPJPKSY0nbPh9TUR5tTp3lEGzAv+bm64PK8deuOj2kLWisFBBgOydY2Q==
-X-Received: by 2002:adf:ef05:: with SMTP id e5mr2411018wro.413.1643738864991; 
- Tue, 01 Feb 2022 10:07:44 -0800 (PST)
-Received: from work-vm (cpc109025-salf6-2-0-cust480.10-2.cable.virginm.net.
- [82.30.61.225])
- by smtp.gmail.com with ESMTPSA id o14sm17659694wry.104.2022.02.01.10.07.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Feb 2022 10:07:44 -0800 (PST)
-Date: Tue, 1 Feb 2022 18:07:41 +0000
-From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To: James Bottomley <jejb@linux.ibm.com>
-Subject: Re: [PATCH v7 0/5] Allow guest access to EFI confidential computing
- secret area
-Message-ID: <Yfl27cDpAUYy59ss@work-vm>
-References: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
- <Yfk6vEuZFtgtA+G+@kroah.com>
- <37779659ca96ac9c1f11bcc0ac0665895c795b54.camel@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JpJr80MsMz2xKT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 09:04:39 +1100 (AEDT)
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com
+ [51.77.79.158])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail-41103.protonmail.ch (Postfix) with ESMTPS id 4JpJdb0srwz4wwwl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 21:55:31 +0000 (UTC)
+Authentication-Results: mail-41103.protonmail.ch;
+ dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com
+ header.b="Nj2VpdP9"
+Date: Tue, 01 Feb 2022 21:55:14 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+ s=protonmail2; t=1643752520;
+ bh=91s3sGuD9seTYS3Ogxew71E+mOhxkkUpmHyteD5lQYM=;
+ h=Date:To:From:Cc:Reply-To:Subject:Message-ID:From:To:Cc;
+ b=Nj2VpdP9IUK4HWRBFBe0ppWR8BeLgyd7zTXh2q9IK+6d+2YUPyJyv8Iic7GUrFc1k
+ 9eDmYS5GlnGLQLdEpQaXGoloKuW98BQLzBLxBtBCT4Ef8Ca9bT6ayuZdcIM4aRTQxF
+ y89V15ex58Lo+DPUhE7kl2l5f1EvMtDMIUrFKvov9YFxW8WV5e0QwB0e9TgBZCMvW2
+ qZFHJ2YScB32TyldQZNI2Lxgfo9IXFSTdETuO13GdeSzrScLpddU7mLaoBPRRzZPQs
+ ddY6Xc+yTdwSA9oYKUTE6FgCFl99x/6tT6sNs5Im75YvJ+/SoFpMTVXSm0ucOD1lKr
+ nhMw6v51t5rrg==
+To: Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
+ Wolfram Sang <wsa@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
+From: =?utf-8?Q?Martin_Povi=C5=A1er?= <povik+lin@protonmail.com>
+Subject: [PATCH] i2c: pasemi: Drop I2C classes from platform driver variant
+Message-ID: <20220201215435.61967-1-povik+lin@protonmail.com>
 MIME-Version: 1.0
-In-Reply-To: <37779659ca96ac9c1f11bcc0ac0665895c795b54.camel@linux.ibm.com>
-User-Agent: Mutt/2.1.5 (2021-12-30)
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dgilbert@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=10.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+ DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+ T_SCC_BODY_TEXT_LINE shortcircuit=no autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on
+ mailout.protonmail.ch
+X-Mailman-Approved-At: Wed, 02 Feb 2022 09:27:27 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,103 +75,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-efi@vger.kernel.org, Brijesh Singh <brijesh.singh@amd.com>,
- mjg59@srcf.ucam.org, Lenny Szubowicz <lszubowi@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, gcwilson@linux.ibm.com,
- Ard Biesheuvel <ardb@kernel.org>, Daniele Buono <dbuono@linux.vnet.ibm.com>,
- Andi Kleen <ak@linux.intel.com>, Nayna Jain <nayna@linux.ibm.com>,
- James Morris <jmorris@namei.org>, Dov Murik <dovmurik@linux.ibm.com>,
- Jim Cadden <jcadden@ibm.com>, Peter Gonda <pgonda@google.com>,
- Borislav Petkov <bp@suse.de>, "Serge E. Hallyn" <serge@hallyn.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Ashish Kalra <ashish.kalra@amd.com>,
- dougmill@linux.vnet.ibm.com, Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
- linux-coco@lists.linux.dev, gjoyce@ibm.com, dja@axtens.net,
- Dave Hansen <dave.hansen@intel.com>, Greg KH <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Andrew Scull <ascull@google.com>
+Reply-To: =?utf-8?Q?Martin_Povi=C5=A1er?= <povik+lin@protonmail.com>
+Cc: =?utf-8?Q?Martin_Povi=C5=A1er?= <povik+lin@protonmail.com>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linux-i2c@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* James Bottomley (jejb@linux.ibm.com) wrote:
-> [cc's added]
-> On Tue, 2022-02-01 at 14:50 +0100, Greg KH wrote:
-> > On Tue, Feb 01, 2022 at 12:44:08PM +0000, Dov Murik wrote:
-> [...]
-> > > # ls -la /sys/kernel/security/coco/efi_secret
-> > > total 0
-> > > drwxr-xr-x 2 root root 0 Jun 28 11:55 .
-> > > drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
-> > > -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-
-> > > 06879ce3da0b
-> > > -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-
-> > > d3a0b54312c6
-> > > -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-
-> > > ff17f78864d2
-> > 
-> > Please see my comments on the powerpc version of this type of thing:
-> > 	
-> > https://lore.kernel.org/r/20220122005637.28199-1-nayna@linux.ibm.com
-> 
-> If you want a debate, actually cc'ing the people on the other thread
-> would have been a good start ...
-> 
-> For those added, this patch series is at:
-> 
-> https://lore.kernel.org/all/20220201124413.1093099-1-dovmurik@linux.ibm.com/
-> 
-> > You all need to work together to come up with a unified place for
-> > this and stop making it platform-specific.
-> 
-> I'm not entirely sure of that.  If you look at the differences between
-> EFI variables and the COCO proposal: the former has an update API
-> which, in the case of signed variables, is rather complex and a UC16
-> content requirement.  The latter is binary data with read only/delete. 
-> Plus each variable in EFI is described by a GUID, so having a directory
-> of random guids, some of which behave like COCO secrets and some of
-> which are EFI variables is going to be incredibly confusing (and also
-> break all our current listing tools which seems somewhat undesirable).
-> 
-> So we could end up with 
-> 
-> <common path prefix>/efivar
-> <common path prefix>/coco
-> 
-> To achieve the separation, but I really don't see what this buys us. 
-> Both filesystems would likely end up with different backends because of
-> the semantic differences and we can easily start now in different
-> places (effectively we've already done this for efi variables) and
-> unify later if that is the chosen direction, so it doesn't look like a
-> blocker.
-> 
-> > Until then, we can't take this.
-> 
-> I don't believe anyone was asking you to take it.
+Drop I2C device-probing classes from platform variant of the PASemi
+controller as it is only used on platforms where I2C devices should
+be instantiated in devicetree. (The I2C_CLASS_DEPRECATED flag is not
+raised as up to this point no devices relied on the old behavior.)
 
-I have some sympathy in wanting some unification; (I'm not sure that
-list of comparison even includes the TDX world).
-But I'm not sure if they're the same thing - these are strictly
-constants, they're not changable.
+Fixes: d88ae2932df0 ("i2c: pasemi: Add Apple platform driver")
+Signed-off-by: Martin Povi=C5=A1er <povik+lin@protonmail.com>
+---
+ drivers/i2c/busses/i2c-pasemi-core.c | 1 -
+ drivers/i2c/busses/i2c-pasemi-pci.c  | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-But it is a messy list of differences - especially things like the
-UTF-16 stuff
-I guess the PowerVM key naming contains nul and / can be ignored
-- if anyone is silly enough to create keys with those names then they
-can not access them; so at least that would solve that problem.
+diff --git a/drivers/i2c/busses/i2c-pasemi-core.c b/drivers/i2c/busses/i2c-=
+pasemi-core.c
+index 4e161a4089d8..7728c8460dc0 100644
+--- a/drivers/i2c/busses/i2c-pasemi-core.c
++++ b/drivers/i2c/busses/i2c-pasemi-core.c
+@@ -333,7 +333,6 @@ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus)
+ =09smbus->adapter.owner =3D THIS_MODULE;
+ =09snprintf(smbus->adapter.name, sizeof(smbus->adapter.name),
+ =09=09 "PA Semi SMBus adapter (%s)", dev_name(smbus->dev));
+-=09smbus->adapter.class =3D I2C_CLASS_HWMON | I2C_CLASS_SPD;
+ =09smbus->adapter.algo =3D &smbus_algorithm;
+ =09smbus->adapter.algo_data =3D smbus;
 
-I don't really understand the talk of 32bit attributes in either the
-uEFI or PowerVM key store case.
+diff --git a/drivers/i2c/busses/i2c-pasemi-pci.c b/drivers/i2c/busses/i2c-p=
+asemi-pci.c
+index 1ab1f28744fb..cfc89e04eb94 100644
+--- a/drivers/i2c/busses/i2c-pasemi-pci.c
++++ b/drivers/i2c/busses/i2c-pasemi-pci.c
+@@ -56,6 +56,7 @@ static int pasemi_smb_pci_probe(struct pci_dev *dev,
+ =09if (!smbus->ioaddr)
+ =09=09return -EBUSY;
 
-Is that GOOGLE_SMI stuff already there? If so I guess there's not much
-we can do  - but it's a shame that there's the directory per variable.
++=09smbus->adapter.class =3D I2C_CLASS_HWMON | I2C_CLASS_SPD;
+ =09error =3D pasemi_i2c_common_probe(smbus);
+ =09if (error)
+ =09=09return error;
+--
+2.33.0
 
-Dave
-
-
-
-> James
-> 
-> 
--- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
 
