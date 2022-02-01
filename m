@@ -1,70 +1,113 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB594A5A01
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 11:27:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 663764A5AAB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 11:54:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jp1Mj1STmz3cBZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 21:27:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jp1yW13zDz3bPT
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 21:54:11 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g7mEjtgi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XIUmFnVH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jp1xk2cCcz2xtv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 21:53:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=g7mEjtgi; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=XIUmFnVH; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Jp1xj00Y2z4xhm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 21:53:29 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4Jp1xh74Trz4xcR; Tue,  1 Feb 2022 21:53:28 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=XIUmFnVH; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jp1M16FNLz30N0
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 21:26:53 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 9727AB82D52
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 10:26:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DC3C340F4
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Feb 2022 10:26:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1643711209;
- bh=YpNRNg5/ihQ4PP48BMlGgoh7uAQDP7LsHHGYiX5QI0o=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=g7mEjtgirOS2Zivm7Bm9R3ebuvol2S+TsbQ41/4gKPs5b7l3SaQRLA7OfWhuBfh+r
- ZsMv6Gx0LVyeoYf6Xw9b8FXf+4zN71F68WAL3NJIoc5v+3ZO3cePjYb5mxR/sqNKvw
- 5W/tmf2gXB6rLPPozNKA/T7oMkoB9a2+e0N7AXblHqLEKhrp2fAjL+hpdg5FJfbGjx
- 1MvghQ0dvPxKarNL6/Hk3zSGP0X647C+hEoYSiHMeJYECu/KJP1YKZ6gNCfsHUlquW
- KjB21XgD60/n2rSLeJDQgjhx27CSgJIRFvMa1IIHQqKmprAgwQIaJuOjURhfycG0ri
- OLVKaiaLRszLQ==
-Received: by mail-vk1-f174.google.com with SMTP id o15so10128760vki.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Feb 2022 02:26:49 -0800 (PST)
-X-Gm-Message-State: AOAM531duviJ0XoxBFjoyhmKHv2yXs07thMBs1S4WHusv47JfioEzTDE
- frRqxMeY7/yOIvmxhZkDvK3r2ssAYea28HSLtXw=
-X-Google-Smtp-Source: ABdhPJwLhW//fixKVbaTjokrn8h3L9Q3pUBjKK03Q8LXfMtVREM4+ggbuel+/v83NuiYDPmVXHHyZJPscKX3YUkbjfo=
-X-Received: by 2002:a05:6122:91d:: with SMTP id
- j29mr9618418vka.8.1643711208229; 
- Tue, 01 Feb 2022 02:26:48 -0800 (PST)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4Jp1xh2PVTz4xRB;
+ Tue,  1 Feb 2022 21:53:27 +1100 (AEDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 211A2NKb020565; 
+ Tue, 1 Feb 2022 10:53:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=cM3RzJAO+/lPdf7SNoFYvC2YlCfZJIoKOuV9w8lWcrw=;
+ b=XIUmFnVHJtgAUIZ4A/064w/QLRmF6vTZFAv+PtIVi0/PU5fDSjENITj5AQqiMWTLE/cg
+ Y9Vs1sH3EY9NanfbPu+Rdg7g0IiCNIbUKacBg37gyVpwD8VQwoKcLY+DodCLBSeYTtzX
+ +HuJHjP073RIg7nwYzco1+fX8VaVZQf+nw5cO+nZHpjqQ4b/tLug+3zLKcJHwNWGuAOo
+ UsT7kgUGloem2FPWYWyg7V8DsNM+6gBGVOxZ7rDFd1HmZqqdbNVUNfZ6KMy4ZXvRCMoZ
+ +zaw6IAhc16PMXegxsW2q+V7XyP0thSUUk7NJdUE1J64LOIhViUAAP1aDTu901jvaXMq bA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3dy2ru8su2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Feb 2022 10:53:23 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 211Ai6vh018949;
+ Tue, 1 Feb 2022 10:53:23 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3dy2ru8stg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Feb 2022 10:53:23 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 211AmXrW006439;
+ Tue, 1 Feb 2022 10:53:21 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03fra.de.ibm.com with ESMTP id 3dvw79j978-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Feb 2022 10:53:21 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 211ArIAd46203206
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Feb 2022 10:53:18 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1608BA404D;
+ Tue,  1 Feb 2022 10:53:18 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E5992A405D;
+ Tue,  1 Feb 2022 10:53:12 +0000 (GMT)
+Received: from hbathini-workstation.ibm.com.com (unknown [9.211.70.16])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  1 Feb 2022 10:53:12 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [RESEND PATCH v2] powerpc/fadump: register for fadump as early as
+ possible
+Date: Tue,  1 Feb 2022 16:23:05 +0530
+Message-Id: <20220201105305.155511-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20220129121728.1079364-1-guoren@kernel.org>
- <20220129121728.1079364-17-guoren@kernel.org>
- <YffVZZg9GNcjgVdm@infradead.org>
- <CAJF2gTRXDotO1L1FMojQs6msrqvCzA782Pux8rg3AfZgA=y0ew@mail.gmail.com>
- <20220201074457.GC29119@lst.de>
- <CAJF2gTTc=zwD__zXwYbO8vmup5evWJtzyiAF9Pm-UVHLJRc5hQ@mail.gmail.com>
- <CAK8P3a2C7nDGQvopYzi1fe_LWyosp8t9dcBsduYK5k_s_OrCaA@mail.gmail.com>
-In-Reply-To: <CAK8P3a2C7nDGQvopYzi1fe_LWyosp8t9dcBsduYK5k_s_OrCaA@mail.gmail.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Tue, 1 Feb 2022 18:26:37 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTTgTzvGfa3nGzVo4C=fe+ZCGBWp=VhTMRt1vF1O1bnS5g@mail.gmail.com>
-Message-ID: <CAJF2gTTgTzvGfa3nGzVo4C=fe+ZCGBWp=VhTMRt1vF1O1bnS5g@mail.gmail.com>
-Subject: Re: [PATCH V4 16/17] riscv: compat: Add COMPAT Kbuild skeletal support
-To: Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: oldLWWnZFoXTwpJCdwya0WISei97IXWc
+X-Proofpoint-ORIG-GUID: ovTHen19IbKSO1U2wIiLrJ4qqAnIoWin
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-01_03,2022-02-01_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ lowpriorityscore=0 mlxscore=0 phishscore=0 suspectscore=0 clxscore=1011
+ adultscore=0 impostorscore=0 mlxlogscore=999 spamscore=0 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202010058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,169 +119,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
- Parisc List <linux-parisc@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Drew Fustini <drew@beagleboard.org>, Anup Patel <anup@brainfault.org>,
- Wang Junqiang <wangjunqiang@iscas.ac.cn>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-csky@vger.kernel.org,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Christoph Hellwig <hch@infradead.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
+Cc: Kairui Song <kasong@redhat.com>, Petr Tesarik <ptesarik@suse.cz>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
+ Dave Young <dyoung@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Arnd & Christoph,
+Crash recovery (fadump) is setup in the userspace by some service.
+This service rebuilds initrd with dump capture capability, if it is
+not already dump capture capable before proceeding to register for
+firmware assisted dump (echo 1 > /sys/kernel/fadump/registered). But
+arming the kernel with crash recovery support does not have to wait
+for userspace configuration. So, register for fadump while setting
+it up itself. This can at worst lead to a scenario, where /proc/vmcore
+is ready afer crash but the initrd does not know how/where to offload
+it, which is always better than not having a /proc/vmcore at all due
+to incomplete configuration in the userspace at the time of crash.
 
-The UXL field controls the value of XLEN for U-mode, termed UXLEN,
-which may differ from the
-value of XLEN for S-mode, termed SXLEN. The encoding of UXL is the
-same as that of the MXL
-field of misa, shown in Table 3.1.
+Commit 0823c68b054b ("powerpc/fadump: re-register firmware-assisted
+dump if already registered") ensures this change does not break
+userspace.
 
-Here is the patch. (We needn't exception helper, because we are in
-S-mode and UXL wouldn't affect.)
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+---
 
- arch/riscv/include/asm/elf.h       |  5 ++++-
- arch/riscv/include/asm/processor.h |  1 +
- arch/riscv/kernel/process.c        | 22 ++++++++++++++++++++++
- arch/riscv/kernel/setup.c          |  5 +++++
- 4 files changed, 32 insertions(+), 1 deletion(-)
+* Resending the patch after rebasing on latest code.
 
-diff --git a/arch/riscv/include/asm/elf.h b/arch/riscv/include/asm/elf.h
-index 37f1cbdaa242..6baa49c4fba1 100644
---- a/arch/riscv/include/asm/elf.h
-+++ b/arch/riscv/include/asm/elf.h
-@@ -35,7 +35,10 @@
-  */
- #define elf_check_arch(x) ((x)->e_machine == EM_RISCV)
+Changes in V2:
+* Updated the changelog with bit more explanation about userspace issue
+  with/without this change.
+* Added a comment in the code for why setup_fadump function is changed
+  from subsys_init() to subsys_init_sync() call.
 
--#define compat_elf_check_arch(x) ((x)->e_machine == EM_RISCV)
-+#ifdef CONFIG_COMPAT
-+#define compat_elf_check_arch compat_elf_check_arch
-+extern bool compat_elf_check_arch(Elf32_Ehdr *hdr);
-+#endif
 
- #define CORE_DUMP_USE_REGSET
- #define ELF_EXEC_PAGESIZE (PAGE_SIZE)
-diff --git a/arch/riscv/include/asm/processor.h
-b/arch/riscv/include/asm/processor.h
-index 9544c138d9ce..8b288ac0d704 100644
---- a/arch/riscv/include/asm/processor.h
-+++ b/arch/riscv/include/asm/processor.h
-@@ -64,6 +64,7 @@ extern void start_thread(struct pt_regs *regs,
- #ifdef CONFIG_COMPAT
- extern void compat_start_thread(struct pt_regs *regs,
-  unsigned long pc, unsigned long sp);
-+extern void compat_mode_detect(void);
+ arch/powerpc/kernel/fadump.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
- #define DEFAULT_MAP_WINDOW_64 TASK_SIZE_64
- #else
-diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
-index 9ebf9a95e5ea..496d09c5d384 100644
---- a/arch/riscv/kernel/process.c
-+++ b/arch/riscv/kernel/process.c
-@@ -101,6 +101,28 @@ void start_thread(struct pt_regs *regs, unsigned long pc,
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index d03e488cfe9c..97d80df4563f 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -1637,9 +1637,11 @@ int __init setup_fadump(void)
+ 		if (fw_dump.ops->fadump_process(&fw_dump) < 0)
+ 			fadump_invalidate_release_mem();
+ 	}
+-	/* Initialize the kernel dump memory structure for FAD registration. */
+-	else if (fw_dump.reserve_dump_area_size)
++	/* Initialize the kernel dump memory structure and register with f/w */
++	else if (fw_dump.reserve_dump_area_size) {
+ 		fw_dump.ops->fadump_init_mem_struct(&fw_dump);
++		register_fadump();
++	}
+ 
+ 	/*
+ 	 * In case of panic, fadump is triggered via ppc_panic_event()
+@@ -1651,7 +1653,12 @@ int __init setup_fadump(void)
+ 
+ 	return 1;
  }
+-subsys_initcall(setup_fadump);
++/*
++ * Replace subsys_initcall() with subsys_initcall_sync() as there is dependency
++ * with crash_save_vmcoreinfo_init() to ensure vmcoreinfo initialization is done
++ * before regisering with f/w.
++ */
++subsys_initcall_sync(setup_fadump);
+ #else /* !CONFIG_PRESERVE_FA_DUMP */
+ 
+ /* Scan the Firmware Assisted dump configuration details. */
+-- 
+2.34.1
 
- #ifdef CONFIG_COMPAT
-+static bool compat_mode_support __read_mostly = false;
-+
-+bool compat_elf_check_arch(Elf32_Ehdr *hdr)
-+{
-+ if (compat_mode_support && (hdr->e_machine == EM_RISCV))
-+ return true;
-+
-+ return false;
-+}
-+
-+void compat_mode_detect(void)
-+{
-+ unsigned long tmp = csr_read(CSR_STATUS);
-+ csr_write(CSR_STATUS, (tmp & ~SR_UXL) | SR_UXL_32);
-+
-+ if ((csr_read(CSR_STATUS) & SR_UXL) != SR_UXL_32) {
-+ csr_write(CSR_STATUS, tmp);
-+ return;
-+ }
-+
-+ csr_write(CSR_STATUS, tmp);
-+ compat_mode_support = true;
-+
-+ pr_info("riscv: compat: 32bit U-mode applications support\n");
-+}
-+
- void compat_start_thread(struct pt_regs *regs, unsigned long pc,
-  unsigned long sp)
- {
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index b42bfdc67482..be131219d549 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -12,6 +12,7 @@
- #include <linux/mm.h>
- #include <linux/memblock.h>
- #include <linux/sched.h>
-+#include <linux/compat.h>
- #include <linux/console.h>
- #include <linux/screen_info.h>
- #include <linux/of_fdt.h>
-@@ -294,6 +295,10 @@ void __init setup_arch(char **cmdline_p)
-  setup_smp();
- #endif
-
-+#ifdef CONFIG_COMPAT
-+ compat_mode_detect();
-+#endif
-+
-  riscv_fill_hwcap();
- }
-On Tue, Feb 1, 2022 at 5:36 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Tue, Feb 1, 2022 at 10:13 AM Guo Ren <guoren@kernel.org> wrote:
-> > On Tue, Feb 1, 2022 at 3:45 PM Christoph Hellwig <hch@lst.de> wrote:
-> > > On Mon, Jan 31, 2022 at 09:50:58PM +0800, Guo Ren wrote:
-> > > > On Mon, Jan 31, 2022 at 8:26 PM Christoph Hellwig <hch@infradead.org> wrote:
-> > > > >
-> > > > > Given that most rv64 implementations can't run in rv32 mode, what is the
-> > > > > failure mode if someone tries it with the compat mode enabled?
-> > > > A static linked simple hello_world could still run on a non-compat
-> > > > support hardware. But most rv32 apps would meet different userspace
-> > > > segment faults.
-> > > >
-> > > > Current code would let the machine try the rv32 apps without detecting
-> > > > whether hw support or not.
-> > >
-> > > Hmm, we probably want some kind of check for not even offer running
-> > > rv32 binaries.  I guess trying to write UXL some time during early
-> > > boot and catching the resulting exception would be the way to go?
-> >
-> > Emm... I think it's unnecessary. Free rv32 app running won't cause
-> > system problem, just as a wrong elf running. They are U-mode
-> > privileged.
->
-> While it's not a security issue, I think it would be helpful to get a
-> user-readable error message and a machine-readable /proc/cpuinfo
-> flag to see if a particular system can run rv32 binaries rather than
-> relying on SIGILL to kill a process.
---
-2.25.1
-
-
->
->         Arnd
-
-
-
---
-Best Regards
- Guo Ren
-
-ML: https://lore.kernel.org/linux-csky/
