@@ -1,71 +1,110 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA814A6065
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 16:45:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BC24A60EA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Feb 2022 17:02:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jp8R44q3Vz3bVL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 02:45:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jp8np4htkz3bcX
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 03:02:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=brainfault-org.20210112.gappssmtp.com header.i=@brainfault-org.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=dNCxlG7n;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LDheT5Ut;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LDheT5Ut;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=brainfault.org
- (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com;
- envelope-from=anup@brainfault.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=brainfault-org.20210112.gappssmtp.com
- header.i=@brainfault-org.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=dNCxlG7n; dkim-atps=neutral
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com
- [IPv6:2a00:1450:4864:20::329])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=LDheT5Ut; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=LDheT5Ut; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jp8QM0B5Xz2xMQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 02:45:13 +1100 (AEDT)
-Received: by mail-wm1-x329.google.com with SMTP id v123so13049794wme.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Feb 2022 07:45:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=brainfault-org.20210112.gappssmtp.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=LCcU9g3LWk+Ni1MDTb90PSlSH2Ejv1l38RdD5isGmzA=;
- b=dNCxlG7n/ZWCDBHispxymrFtrSs4c9YqEglHxbiG1ucYsKtBOTQqyfDQwy3eotCMjP
- uLM2L/H5EOfuyuixCibGBeRPuEqC7JcUChO4/5W88/l97mdNAgNvT/xqYmtLFgbKxh5n
- w5nISZOS0HKXiiexKQd+CqHtqM0kejpiHufa6rVenmJHxnYBkcSCvAZ+K0lfDvYe8v8/
- paGmxHQs3RqMpJLOQQe5QQ5vAOhsHvaHBxJGkYOele0OKszptBqf8ga7cK7KXkXhM0iv
- Gsb4gJ97geGtk3lJlPWcjuPmCn1m0Qbge+0Fy+Y8HGop/fCzxMmzbROs7ofYWtG8VEDd
- mjlQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jp8n44XZ4z2xYG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 03:01:25 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1643731281;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9TOgZSvYLjnxXgPMR3aA+UnxenzdhiCu/Ec4ih921w8=;
+ b=LDheT5Utq2k5CZu62EmXM/eyjXAv6VxLn7cXpPej1HrgyH99DlCMLxZf0YRrwzMJg1ygOY
+ 5985xoiOeSk4uej3hJPUjMVetpTLETCaLQprCP0EiCk5pvJeAj+JvE0b8+Q6MwqNBMV6Wz
+ 8lxmhM5cCOH1U3bhwLGrwNH1bgs8yA8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1643731281;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9TOgZSvYLjnxXgPMR3aA+UnxenzdhiCu/Ec4ih921w8=;
+ b=LDheT5Utq2k5CZu62EmXM/eyjXAv6VxLn7cXpPej1HrgyH99DlCMLxZf0YRrwzMJg1ygOY
+ 5985xoiOeSk4uej3hJPUjMVetpTLETCaLQprCP0EiCk5pvJeAj+JvE0b8+Q6MwqNBMV6Wz
+ 8lxmhM5cCOH1U3bhwLGrwNH1bgs8yA8=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-76-qVhkEOn1NbWrhipJMYh2dQ-1; Tue, 01 Feb 2022 11:01:03 -0500
+X-MC-Unique: qVhkEOn1NbWrhipJMYh2dQ-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ i22-20020a50fd16000000b00405039f2c59so8923139eds.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Feb 2022 08:01:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=LCcU9g3LWk+Ni1MDTb90PSlSH2Ejv1l38RdD5isGmzA=;
- b=Dt2W0aripkOVSBaUMD32U8dgHjRCOP4sBxI+4A0Y60iS4ewdn3H0jCqf0keELtODFH
- 5YYGRyTqiUy3+BMA5eDGrsZmZrv7ErknaXV36z8RY6AOCF6Otx5u89euubvkRyHotO9m
- 8ryDwsyLmRDmR8vwyRJTKe5gr0RDHOrzOD5vEtS3g+X/08op5+aOEAycFMQm/1QKthdm
- o4FSMYdqFScyZ839EbkqX0PH2pUj6NMS6pHRqLQGDzoOpXDHt0TH7dchhjUOtfnhBwqf
- i4bAXPw9R7SNqhU1ePL5w70ojXNGEgwu7GG28aoeMIZcAk1ecloOWX7jkwa6NzEc8QNv
- ZMOA==
-X-Gm-Message-State: AOAM5318r/NzmLmC4SW9GGUSrQXBPhv1H+QwGQTE3pgScgFtnikEGcvc
- i384+qHrIjHcxfzHRgxflMsXJMpk+6a1H2DN6C9ArA==
-X-Google-Smtp-Source: ABdhPJzLJXIjzEoU+zr9xqvCLUKq64QKzCzT5/D/E4v9iXKOT2PZW4bgO0vZKGKExLFNyrBqW6Lzx4h6BrcWo4/kvAI=
-X-Received: by 2002:a7b:c929:: with SMTP id h9mr2237691wml.176.1643730307764; 
- Tue, 01 Feb 2022 07:45:07 -0800 (PST)
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=9TOgZSvYLjnxXgPMR3aA+UnxenzdhiCu/Ec4ih921w8=;
+ b=o0WmyZJqwHG2SL7HbbT7gVTN8gHWqLGyu/AJe94a7MKhKU2O2Po+fOn0p7WjqukJP7
+ tJQmyHe+F8wElCMvaQk4JYwmAtVX5QWCcJNqfh5Zn5nohxu7P7TFfg+pn6aGEz0hpnz8
+ QByoT2fOHvz1mJG68+AvqcJroxem0ZK1n/NO9PaI2mKGCHb9kJJlJcHtheysm/c/Jpi7
+ pbrVWJxprm6CpBeZpGv2gPG7LSs+wBOSkGDbGj1VZLOovgytesT0ZChidoM2SODEDiu2
+ 8TbDZ3rlSlBrdmDxNcYQkhx5B7+aMVsYuhfRRuwaT8Rlg938aVRqZQtqSVUW1+AKxW5B
+ H9ZA==
+X-Gm-Message-State: AOAM5332fNkTQFFPcG+Lv6lMUiukEd0Sb3hc5Fn8s0rDYFFRbgsdrvZN
+ o7JilPV/zV8JZvtWs/NLyUfPZay26joav/70vdfpCVisqROcb6vJHdzc5RFQ0oGC2aQkw1PjqdU
+ QczDxHqwn5uyEl+ocwY4/wWvNqA==
+X-Received: by 2002:a17:907:72d6:: with SMTP id
+ du22mr21767243ejc.179.1643731257031; 
+ Tue, 01 Feb 2022 08:00:57 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyi6gqf6sTZV2adqJ/EwU8K0kh4yabr0HjJDqz0uGv4IXAxFUKBb//nn4tH0Br/W6v0yRG1zw==
+X-Received: by 2002:a17:907:72d6:: with SMTP id
+ du22mr21767209ejc.179.1643731256826; 
+ Tue, 01 Feb 2022 08:00:56 -0800 (PST)
+Received: from ?IPV6:2001:b07:6468:f312:c8dd:75d4:99ab:290a?
+ ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
+ by smtp.googlemail.com with ESMTPSA id
+ gh33sm14883510ejc.17.2022.02.01.08.00.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 01 Feb 2022 08:00:56 -0800 (PST)
+Message-ID: <f8359e15-412a-03d6-1b0c-a9f253816497@redhat.com>
+Date: Tue, 1 Feb 2022 17:00:54 +0100
 MIME-Version: 1.0
-References: <20220201150545.1512822-1-guoren@kernel.org>
- <20220201150545.1512822-22-guoren@kernel.org>
-In-Reply-To: <20220201150545.1512822-22-guoren@kernel.org>
-From: Anup Patel <anup@brainfault.org>
-Date: Tue, 1 Feb 2022 21:14:56 +0530
-Message-ID: <CAAhSdy27nVvh9F08kPgffJe-Y-gOOc9cnQtCLFAE0GbDhHVbiQ@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
 Subject: Re: [PATCH V5 21/21] KVM: compat: riscv: Prevent KVM_COMPAT from
  being selected
-To: Guo Ren <guoren@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+To: Anup Patel <anup@brainfault.org>, Guo Ren <guoren@kernel.org>
+References: <20220201150545.1512822-1-guoren@kernel.org>
+ <20220201150545.1512822-22-guoren@kernel.org>
+ <CAAhSdy27nVvh9F08kPgffJe-Y-gOOc9cnQtCLFAE0GbDhHVbiQ@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <CAAhSdy27nVvh9F08kPgffJe-Y-gOOc9cnQtCLFAE0GbDhHVbiQ@mail.gmail.com>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=pbonzini@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,44 +133,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-+Paolo
+On 2/1/22 16:44, Anup Patel wrote:
+> +Paolo
+> 
+> On Tue, Feb 1, 2022 at 8:38 PM <guoren@kernel.org> wrote:
+>>
+>> From: Guo Ren <guoren@linux.alibaba.com>
+>>
+>> Current riscv doesn't support the 32bit KVM API. Let's make it
+>> clear by not selecting KVM_COMPAT.
+>>
+>> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+>> Signed-off-by: Guo Ren <guoren@kernel.org>
+>> Cc: Arnd Bergmann <arnd@arndb.de>
+>> Cc: Anup Patel <anup@brainfault.org>
+> 
+> This looks good to me.
+> 
+> Reviewed-by: Anup Patel <anup@brainfault.org>
 
-On Tue, Feb 1, 2022 at 8:38 PM <guoren@kernel.org> wrote:
->
-> From: Guo Ren <guoren@linux.alibaba.com>
->
-> Current riscv doesn't support the 32bit KVM API. Let's make it
-> clear by not selecting KVM_COMPAT.
->
-> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> Signed-off-by: Guo Ren <guoren@kernel.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Anup Patel <anup@brainfault.org>
+Hi Anup,
 
-This looks good to me.
+feel free to send this via a pull request (perhaps together with Mark 
+Rutland's entry/exit rework).
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+Paolo
 
-Regards,
-Anup
-
-> ---
->  virt/kvm/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-> index f4834c20e4a6..a8c5c9f06b3c 100644
-> --- a/virt/kvm/Kconfig
-> +++ b/virt/kvm/Kconfig
-> @@ -53,7 +53,7 @@ config KVM_GENERIC_DIRTYLOG_READ_PROTECT
->
->  config KVM_COMPAT
->         def_bool y
-> -       depends on KVM && COMPAT && !(S390 || ARM64)
-> +       depends on KVM && COMPAT && !(S390 || ARM64 || RISCV)
->
->  config HAVE_KVM_IRQ_BYPASS
->         bool
-> --
-> 2.25.1
->
