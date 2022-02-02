@@ -1,42 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8EB84A6DF7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 10:39:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D904A7094
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 13:19:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JpcFl3tbPz3cT7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 20:39:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jpgpd544Zz3bSs
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 23:19:37 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=u76Vu7FI;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=s2082Jsn;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4JpcFL0VL4z2x9B
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 20:38:59 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E7BA61FB;
- Wed,  2 Feb 2022 01:38:56 -0800 (PST)
-Received: from [10.163.43.221] (unknown [10.163.43.221])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 202483F40C;
- Wed,  2 Feb 2022 01:38:52 -0800 (PST)
-Subject: Re: [PATCH] mm: Merge pte_mkhuge() call into arch_make_huge_pte()
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>
-References: <1643780286-18798-1-git-send-email-anshuman.khandual@arm.com>
- <a969f100-02fb-63f7-4469-b3c8e23d8cfb@csgroup.eu>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <59ec5352-77eb-4c95-731e-100bcfa7003a@arm.com>
-Date: Wed, 2 Feb 2022 15:08:47 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ envelope-from=osalvador@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
+ header.s=susede2_rsa header.b=u76Vu7FI; 
+ dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=s2082Jsn; 
+ dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jpgny44pXz2yJv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 23:19:02 +1100 (AEDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id AF82C210F6;
+ Wed,  2 Feb 2022 12:18:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1643804337; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dyPSpPed0+9M2XwlKQxCWeOGFdixxutcj0lTKCCpUgE=;
+ b=u76Vu7FI2iLzLD3FOVgP2Vix8282DDpGEUlqFJuJoAb7GsoqZiiQsX/AprPIwhS/GWi56p
+ hD+5Ugm1z+vcC2tF3t7VCAeaDd4J+dj0QTX3rdLFl2N7ndUKlhA7S+LDyQ54YGDmYJubxZ
+ g1MR8ScpZe9y57RPNVrdPTNnYe+HjjY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1643804337;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dyPSpPed0+9M2XwlKQxCWeOGFdixxutcj0lTKCCpUgE=;
+ b=s2082Jsn9mldjm1PkVxfSrWcQSpPxDldSrSOzFSMI7rwrn/600G2/luQBlMLKmomZx067+
+ PsS1l+MmKwK7JVAA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4142913E18;
+ Wed,  2 Feb 2022 12:18:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 4KsvDLB2+mElIgAAMHmgww
+ (envelope-from <osalvador@suse.de>); Wed, 02 Feb 2022 12:18:56 +0000
+Date: Wed, 2 Feb 2022 13:18:54 +0100
+From: Oscar Salvador <osalvador@suse.de>
+To: Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH v4 3/7] mm: page_isolation: check specified range for
+ unmovable pages
+Message-ID: <Yfp2rv0K6d3cNmwg@localhost.localdomain>
+References: <20220119190623.1029355-1-zi.yan@sent.com>
+ <20220119190623.1029355-4-zi.yan@sent.com>
 MIME-Version: 1.0
-In-Reply-To: <a969f100-02fb-63f7-4469-b3c8e23d8cfb@csgroup.eu>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220119190623.1029355-4-zi.yan@sent.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,97 +83,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>,
+ David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+ Eric Ren <renzhengeek@gmail.com>, Robin Murphy <robin.murphy@arm.com>,
+ Christoph Hellwig <hch@lst.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Jan 19, 2022 at 02:06:19PM -0500, Zi Yan wrote:
+> From: Zi Yan <ziy@nvidia.com>
+> 
+> Enable set_migratetype_isolate() to check specified sub-range for
+> unmovable pages during isolation. Page isolation is done
+> at max(MAX_ORDER_NR_PAEGS, pageblock_nr_pages) granularity, but not all
+> pages within that granularity are intended to be isolated. For example,
+> alloc_contig_range(), which uses page isolation, allows ranges without
+> alignment. This commit makes unmovable page check only look for
+> interesting pages, so that page isolation can succeed for any
+> non-overlapping ranges.
+
+Another thing that came to my mind.
+Prior to this patch, has_unmovable_pages() was checking on pageblock
+granularity, starting at pfn#0 of the pageblock.
+With this patch, you no longer check on pageblock granularity, which
+means you might isolate a pageblock, but some pages that sneaked in
+might actually be unmovable.
+
+E.g:
+
+Let's say you have a pageblock that spans (pfn#512,pfn#1024),
+and you pass alloc_contig_range() (pfn#514,pfn#1024).
+has_unmovable_pages() will start checking the pageblock at pfn#514,
+and so it will mis pfn#512 and pfn#513. Isn't that a problem, if those
+pfn turn out to be actually unmovable?
 
 
-On 2/2/22 11:50 AM, Christophe Leroy wrote:
-> 
-> Le 02/02/2022 à 06:38, Anshuman Khandual a écrit :
->> Each call into pte_mkhuge() is invariably followed by arch_make_huge_pte().
->> Instead arch_make_huge_pte() can accommodate pte_mkhuge() at the beginning.
->> This updates generic fallback stub for arch_make_huge_pte() and available
->> platforms definitions. This makes huge pte creation much cleaner and easier
->> to follow.
-> I think it is a good cleanup. I always wonder why commit d9ed9faac283 
-> ("mm: add new arch_make_huge_pte() method for tile support") didn't move 
-> the pte_mkhuge() into arch_make_huge_pte().
-
-+1
-
-> 
-> When I implemented arch_make_huge_pte() for powerpc 8xx, in one case 
-> arch_make_huge_pte() have to undo the things done by pte_mkhuge(), see below
-> 
-> As a second step we could probably try to get rid of pte_mkhuge() 
-> completely, at least in the core.
-
-Sure.
-
-> 
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: Mike Kravetz <mike.kravetz@oracle.com>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: sparclinux@vger.kernel.org
->> Cc: linux-mm@kvack.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> 
->> ---
->>   arch/arm64/mm/hugetlbpage.c                      | 1 +
->>   arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h | 1 +
->>   arch/sparc/mm/hugetlbpage.c                      | 1 +
->>   include/linux/hugetlb.h                          | 2 +-
->>   mm/hugetlb.c                                     | 3 +--
->>   mm/vmalloc.c                                     | 1 -
->>   6 files changed, 5 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
->> index ffb9c229610a..228226c5fa80 100644
->> --- a/arch/arm64/mm/hugetlbpage.c
->> +++ b/arch/arm64/mm/hugetlbpage.c
->> @@ -347,6 +347,7 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags)
->>   {
->>   	size_t pagesize = 1UL << shift;
->>   
->> +	entry = pte_mkhuge(entry);
->>   	if (pagesize == CONT_PTE_SIZE) {
->>   		entry = pte_mkcont(entry);
->>   	} else if (pagesize == CONT_PMD_SIZE) {
->> diff --git a/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h b/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
->> index 64b6c608eca4..e41e095158c7 100644
->> --- a/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
->> +++ b/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
->> @@ -70,6 +70,7 @@ static inline pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags
->>   {
->>   	size_t size = 1UL << shift;
->>   
->> +	entry = pte_mkhuge(entry);
-> Could drop that and replace the below by:
-> 
-> 	if (size == SZ_16K)
-> 		return __pte(pte_val(entry) | _PAGE_SPS);
-> 	else
-> 		return __pte(pte_val(entry) | _PAGE_SPS | _PAGE_HUGE);
-> 	
-> 
-
-Sure, will change as stated above.
+-- 
+Oscar Salvador
+SUSE Labs
