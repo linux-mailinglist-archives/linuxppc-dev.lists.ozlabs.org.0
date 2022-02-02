@@ -1,74 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBCA64A68BE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 00:48:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 648B84A69D1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 03:03:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JpM7p5BKgz3bmf
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 10:48:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JpQ7H1jLCz3bc6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 13:03:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=urfUC2Te;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rVuAgKNe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::134;
- helo=mail-lf1-x134.google.com; envelope-from=linus.walleij@linaro.org;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=urfUC2Te; dkim-atps=neutral
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com
- [IPv6:2a00:1450:4864:20::134])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=rVuAgKNe; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JpM791fXpz2yfh
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 10:47:46 +1100 (AEDT)
-Received: by mail-lf1-x134.google.com with SMTP id z4so37138125lft.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Feb 2022 15:47:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=tDl91pCxTReCNE1aU2nzUISNbuzO3L0SJItkPcl6pUM=;
- b=urfUC2Te907xmj6E2xNYtO5fCaL7szA/68O2FXd8oWgZWUkuO3zgR+aiv8Qa8hvW9K
- bMIpu009wuaNGvAZ+EB/np1qhOOFVwPiKqdIL0qGCkgnvH8PqNv9aTgEvvqAeVb4DGnQ
- CfSuUdvWHbr2xOUC2ebAtv2k+uXCv5gVTEcmOo0h4VsgyoUd5e7ecwTbsggUJ4XCncEB
- /SPJ7YrK0nmO3Kb/UaTc9gQmWZzM8rMAfcWypdTG4j3wRgVMKWEbqziJCGO09LcnOmwc
- YkBelE4cu7jMmFnTj3xW283XL/zIQTFkmAkWl8OZ1RyS3RuMy3AwJGbVOeU5nmL8Gqa/
- +uIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=tDl91pCxTReCNE1aU2nzUISNbuzO3L0SJItkPcl6pUM=;
- b=osDlPVJJO75CVLaI57RXXtwg1T0aQhO2ToQwNa+VtC+4ixHNNz/0J45pX6pruEowVc
- wKWM86mENY6PFbW5dfYaxbNFp+QQvH3ZewaP7y7eNSCshIvndl0OAsvuLKijj7PN757D
- GQVv1JuP2ylGT+C3Ns9ddBquKYRaeaiQkXvTx9+rjIMkQahUpNugmHHa5+E8HmjzLIKF
- nkmL6gJvZ7Zcgg0aVZFuowIXWrTQ4Lq1MJatZBkfI1CG17O/XMnSsWSrAfSWh9Qicgnv
- 4CDj3elGCWyYBbCmr4xN4uJRlgss3vXo0eQ9KvveQV154Mw4YMb1kmaA3Vm/qc0/AJYf
- Vv8A==
-X-Gm-Message-State: AOAM531XQXIWEoBc8/ofFbzQvffRoi/wLhH9zTZatHHeobKD98ZQmfwa
- nyd+2Lc0LCb6Av4fIAZFpQGDYg==
-X-Google-Smtp-Source: ABdhPJzYRFKveyx4qbvl5fhnYo3J6NQY4iqSZXvFmmwqmIdcBYyS6ujxmuOYjqn2ftOlU7ARNsnNog==
-X-Received: by 2002:ac2:5ccc:: with SMTP id f12mr21482408lfq.335.1643759259268; 
- Tue, 01 Feb 2022 15:47:39 -0800 (PST)
-Received: from localhost.localdomain
- (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
- by smtp.gmail.com with ESMTPSA id o8sm4280202lft.135.2022.02.01.15.47.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Feb 2022 15:47:38 -0800 (PST)
-From: Linus Walleij <linus.walleij@linaro.org>
-To: Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH] spi: mpc512x-psc: Fix compile errors
-Date: Wed,  2 Feb 2022 00:45:35 +0100
-Message-Id: <20220201234535.569973-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JpQ6X6hLjz2xKT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 13:02:28 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 5C28B615DB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 02:02:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454A5C340F6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 02:02:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1643767344;
+ bh=Lu17CtWHMQyIMd+r/gZ3QnCD3blDyX01IGU77gYzPwo=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=rVuAgKNepQhlXkSgJ4nOfKqdZ1m2QgRk9ZkvH8SvfvWkeorNEQdY83E2n5eXKfc79
+ VCuJEViT4M9HIVIMPr3BsvqjoERHgklnIISy31sSuU4uK2OLJWs1IQstgOysSW8fQ3
+ A4+TDqM4i+9dG2f1hGh94TQRtV9FMnT0rwP8iPWmKTMSzCFTVSM/jumBKMQgjTroNE
+ +jwQ76K54dK8UrZ95Lj5eu9y4l1FTA2KToTqrC9gowaW+jPXRuZTVpoBs8+clZOz6I
+ Yl2FZr99TUgkOSak2L7h6irEIbDEWdhFCcdReiCBHO2TFXtVzEQRwjOz0Twz2ZkMOl
+ aMu8vburo8Amg==
+Received: by mail-ua1-f48.google.com with SMTP id r8so3532780uaj.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Feb 2022 18:02:24 -0800 (PST)
+X-Gm-Message-State: AOAM5315TZJ08x2A0ZIHmztPRcZu7gm7/TOmDSbQrGAEcCUr8GZeQMEK
+ iRjqCmPOCp7cV3BbjZbhjo8taDoPlX+VGYBkjLE=
+X-Google-Smtp-Source: ABdhPJzjbMxJZrbhxn6pmM0yG+DXrY57H4w+bp7CFApaAn/IyFQRMevzGEcLPsnqGd8f9H2BAFJtp6v6SwrSYMY64Dg=
+X-Received: by 2002:a67:e0d9:: with SMTP id m25mr10551317vsl.51.1643767343232; 
+ Tue, 01 Feb 2022 18:02:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20220201150545.1512822-1-guoren@kernel.org>
+ <20220201150545.1512822-16-guoren@kernel.org>
+In-Reply-To: <20220201150545.1512822-16-guoren@kernel.org>
+From: Guo Ren <guoren@kernel.org>
+Date: Wed, 2 Feb 2022 10:02:12 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSpz94OBM_Ob92MdGOHt7p2akPS0Jco9B0rC0XJToh0eg@mail.gmail.com>
+Message-ID: <CAJF2gTSpz94OBM_Ob92MdGOHt7p2akPS0Jco9B0rC0XJToh0eg@mail.gmail.com>
+Subject: Re: [PATCH V5 15/21] riscv: compat: Add hw capability check for elf
+To: Guo Ren <guoren@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Arnd Bergmann <arnd@arndb.de>, Anup Patel <anup@brainfault.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ liush <liush@allwinnertech.com>, Wei Fu <wefu@redhat.com>, 
+ Drew Fustini <drew@beagleboard.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>, 
+ Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,50 +77,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
- Anatolij Gustschin <agust@denx.de>, linuxppc-dev@lists.ozlabs.org,
- kernel test robot <lkp@intel.com>,
- =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-My patch created compilation bugs in the MPC512x-PSC driver.
-Fix them up.
+On Tue, Feb 1, 2022 at 11:07 PM <guoren@kernel.org> wrote:
+>
+> From: Guo Ren <guoren@linux.alibaba.com>
+>
+> Detect hardware COMPAT (32bit U-mode) capability in rv64. If not
+> support COMPAT mode in hw, compat_elf_check_arch would return
+> false by compat_binfmt_elf.c
+>
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/riscv/include/asm/elf.h |  3 ++-
+>  arch/riscv/kernel/process.c  | 32 ++++++++++++++++++++++++++++++++
+>  2 files changed, 34 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/riscv/include/asm/elf.h b/arch/riscv/include/asm/elf.h
+> index aee40040917b..3a4293dc7229 100644
+> --- a/arch/riscv/include/asm/elf.h
+> +++ b/arch/riscv/include/asm/elf.h
+> @@ -40,7 +40,8 @@
+>   * elf64_hdr e_machine's offset are different. The checker is
+>   * a little bit simple compare to other architectures.
+>   */
+> -#define compat_elf_check_arch(x) ((x)->e_machine == EM_RISCV)
+> +extern bool compat_elf_check_arch(Elf32_Ehdr *hdr);
+> +#define compat_elf_check_arch  compat_elf_check_arch
+>
+>  #define CORE_DUMP_USE_REGSET
+>  #define ELF_EXEC_PAGESIZE      (PAGE_SIZE)
+> diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+> index 1a666ad299b4..758847cba391 100644
+> --- a/arch/riscv/kernel/process.c
+> +++ b/arch/riscv/kernel/process.c
+> @@ -83,6 +83,38 @@ void show_regs(struct pt_regs *regs)
+>                 dump_backtrace(regs, NULL, KERN_DEFAULT);
+>  }
+>
+> +#ifdef CONFIG_COMPAT
+> +static bool compat_mode_support __read_mostly;
+> +
+> +bool compat_elf_check_arch(Elf32_Ehdr *hdr)
+> +{
+> +       if (compat_mode_support && (hdr->e_machine == EM_RISCV))
+> +               return true;
+> +       else
+> +               return false;
+> +}
+> +
+> +static int compat_mode_detect(void)
+Forgot __init, here
 
-Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Cc: Anatolij Gustschin <agust@denx.de>
-Cc: linuxppc-dev@lists.ozlabs.org
-Reported-by: kernel test robot <lkp@intel.com>
-Fixes: 2818824ced4b (" spi: mpc512x-psc: Convert to use GPIO descriptors")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-(This is because I don't have a PPC cross compiler.)
----
- drivers/spi/spi-mpc512x-psc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> +{
+> +       unsigned long tmp = csr_read(CSR_STATUS);
+> +
+> +       csr_write(CSR_STATUS, (tmp & ~SR_UXL) | SR_UXL_32);
+> +
+> +       if ((csr_read(CSR_STATUS) & SR_UXL) != SR_UXL_32) {
+> +               pr_info("riscv: 32bit compat mode detect failed\n");
+> +               compat_mode_support = false;
+> +       } else {
+> +               compat_mode_support = true;
+> +               pr_info("riscv: 32bit compat mode detected\n");
+> +       }
+> +
+> +       csr_write(CSR_STATUS, tmp);
+> +
+> +       return 0;
+> +}
+> +arch_initcall(compat_mode_detect);
+> +#endif
+> +
+>  void start_thread(struct pt_regs *regs, unsigned long pc,
+>         unsigned long sp)
+>  {
+> --
+> 2.25.1
+>
 
-diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
-index 8a488d8e4c1b..03630359ce70 100644
---- a/drivers/spi/spi-mpc512x-psc.c
-+++ b/drivers/spi/spi-mpc512x-psc.c
-@@ -127,7 +127,7 @@ static void mpc512x_psc_spi_activate_cs(struct spi_device *spi)
- 	out_be32(psc_addr(mps, ccr), ccr);
- 	mps->bits_per_word = cs->bits_per_word;
- 
--	if (cs->gpiod) {
-+	if (spi->cs_gpiod) {
- 		if (mps->cs_control)
- 			/* boardfile override */
- 			mps->cs_control(spi, (spi->mode & SPI_CS_HIGH) ? 1 : 0);
-@@ -373,7 +373,6 @@ static int mpc512x_psc_spi_unprep_xfer_hw(struct spi_master *master)
- static int mpc512x_psc_spi_setup(struct spi_device *spi)
- {
- 	struct mpc512x_psc_spi_cs *cs = spi->controller_state;
--	int ret;
- 
- 	if (spi->bits_per_word % 8)
- 		return -EINVAL;
+
 -- 
-2.34.1
+Best Regards
+ Guo Ren
 
+ML: https://lore.kernel.org/linux-csky/
