@@ -2,78 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD204A7606
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 17:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2C14A77B3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 19:17:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JpnVY2l52z3bc6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 03:36:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JpqlQ07QCz3cRn
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 05:17:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=M/SKFXYh;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hsKjmKbg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S48S6MVn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=osalvador@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=M/SKFXYh; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=hsKjmKbg; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=broonie@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=S48S6MVn; 
  dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JpnTv0JY1z2xrt
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Feb 2022 03:35:30 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jpqkn1TtRz2xb8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Feb 2022 05:16:49 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 97A6E1F384;
- Wed,  2 Feb 2022 16:35:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1643819726; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=4Dd4PVcW8Gh92qdOSXS52+1meGC/lQXnewRPI3vvCWE=;
- b=M/SKFXYhXQ0yaSChw6wIxQwQ5d7HBnBbnYDlWEH+hnqD2gnRU3+xCI+6AWEYpiwh1tZdAu
- KtJW8t4cx4QWxS5Zk62NXbTFdF8LzZ/KzDdwHjY0IPBREvgkfYKKJBsC6NFxl0sOiX45a/
- hZg94FHTstR+iwC2GeJTfVyDJOOjisk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1643819726;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=4Dd4PVcW8Gh92qdOSXS52+1meGC/lQXnewRPI3vvCWE=;
- b=hsKjmKbgvjeh8w2ffnsVRR8qq8GIDQrxEVIgm82LLhaDtX8FUazOVZXfsAC08LwbHR+9cf
- G0oQWZAD3QabcgCw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DC30813E99;
- Wed,  2 Feb 2022 16:35:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id HM+JMcyy+mFZNgAAMHmgww
- (envelope-from <osalvador@suse.de>); Wed, 02 Feb 2022 16:35:24 +0000
-Date: Wed, 2 Feb 2022 17:35:22 +0100
-From: Oscar Salvador <osalvador@suse.de>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v4 3/7] mm: page_isolation: check specified range for
- unmovable pages
-Message-ID: <YfqyyiB4HOxjStY/@localhost.localdomain>
-References: <20220119190623.1029355-1-zi.yan@sent.com>
- <20220119190623.1029355-4-zi.yan@sent.com>
- <Yfp2rv0K6d3cNmwg@localhost.localdomain>
- <21c196f8-18ca-d720-4241-00c9461854d3@redhat.com>
+ by ams.source.kernel.org (Postfix) with ESMTPS id 102B2B83238;
+ Wed,  2 Feb 2022 18:16:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C113C004E1;
+ Wed,  2 Feb 2022 18:16:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1643825799;
+ bh=l0AT3Zz97rtWMBtgue/gT0zconI+43qODz67uMRZOOw=;
+ h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+ b=S48S6MVnU3vitex52P58eWgrBA/WaDudypwCiXghUQ4wR9DhWQXGF2X3I75aWpkBH
+ OoCL1HdRLfY5psTC/E10PH0rFVsnJ1YP7Pnfb941VCiMiiPzuKhz2LKMZi7065zN5B
+ nO1WhFXhwvg4X8evGi7QLPS1CMP9nkHX8kQNrBvVkLOtcG9ipiN3Ftl3uqTu+ZnK68
+ e7h74AkQzEC2GeI5YLtAPSk4l4BzJ0AALb3oFY7GvX2L17Gk6aZwIb+a+Mvo3RuBGA
+ kJNIauPWgpgbCZmDgl8kAU2UtTfokhipXF81QdtDtAopD8An+qN6Ank/bMzzyKN9ix
+ qeOn5qWm+1WzA==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
+In-Reply-To: <20220201234535.569973-1-linus.walleij@linaro.org>
+References: <20220201234535.569973-1-linus.walleij@linaro.org>
+Subject: Re: [PATCH] spi: mpc512x-psc: Fix compile errors
+Message-Id: <164382579833.3628373.8560517182774707854.b4-ty@kernel.org>
+Date: Wed, 02 Feb 2022 18:16:38 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <21c196f8-18ca-d720-4241-00c9461854d3@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,27 +64,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mel Gorman <mgorman@techsingularity.net>, Eric Ren <renzhengeek@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
- iommu@lists.linux-foundation.org, Zi Yan <ziy@nvidia.com>,
- Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>,
- Vlastimil Babka <vbabka@suse.cz>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Anatolij Gustschin <agust@denx.de>, linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>, Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 02, 2022 at 01:25:28PM +0100, David Hildenbrand wrote:
-> That's the whole idea for being able to allocate parts of an unmovable
-> pageblock that are movable.
+On Wed, 2 Feb 2022 00:45:35 +0100, Linus Walleij wrote:
+> My patch created compilation bugs in the MPC512x-PSC driver.
+> Fix them up.
 > 
-> If the first part is unmovable but the second part is movable, nothing
-> should stop us from trying to allocate the second part.
+> 
 
-Yeah, I see, I was a bit slow there, but I see the point now.
- 
-Thanks David
+Applied to
 
--- 
-Oscar Salvador
-SUSE Labs
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/1] spi: mpc512x-psc: Fix compile errors
+      commit: 8d37f2710f022837635d9f97db3ac8c853e86979
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
