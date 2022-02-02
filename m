@@ -1,94 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BDEF4A6D77
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 10:04:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8EB84A6DF7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 10:39:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JpbTN1tm1z3cPP
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 20:04:24 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WYfQroQl;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JpcFl3tbPz3cT7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 20:39:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=WYfQroQl; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JpbSZ123Pz30Mg
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 20:03:41 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2127BaA9003119; 
- Wed, 2 Feb 2022 09:03:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=o6CASbL39jGOvJT/f4lnwIj4vwO5HWj+YmtE/MIN+/8=;
- b=WYfQroQl5G4ACT9/5kKlH2UVVk7Au7kqa8aX975j6Y8Kd5QKNKKSzyK5BNJ+6Ltd8xkN
- 7ayo3/Cn3DA95LA3x8tx69XDwC9oJgPEEEXSkVbuJ4eg59LG3zJncs2iApWLEy4PSx9z
- sXQDe7vMtok01sR529Vta9U6fJGl0B+nS3kKsckYVEqX48+48PzcbfbWnIJvBU1wcJks
- h+zDkPH//OD4jXUDbns1k0+PzR6IRzmyW0KH72p3U7XdnLhdMSZITbizDEjeWbOc7gqL
- YyD2gwNDZ49mZiuClfbvb0z63d5cEPNb9Rz429rNr9UhboLcfEMu1vO47CYtsqJLLPsd PQ== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dynbmsty9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Feb 2022 09:03:18 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21292dkn030654;
- Wed, 2 Feb 2022 09:03:18 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma02dal.us.ibm.com with ESMTP id 3dvw7b9uwe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Feb 2022 09:03:17 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21293Gsq21168398
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Feb 2022 09:03:16 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 44BDEC605D;
- Wed,  2 Feb 2022 09:03:16 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6A3BCC605A;
- Wed,  2 Feb 2022 09:03:13 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.43.57.115])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  2 Feb 2022 09:03:12 +0000 (GMT)
-X-Mailer: emacs 29.0.50 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, nvdimm@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v4] powerpc/papr_scm: Implement initial support for
- injecting smart errors
-In-Reply-To: <20220124202204.1488346-1-vaibhav@linux.ibm.com>
-References: <20220124202204.1488346-1-vaibhav@linux.ibm.com>
-Date: Wed, 02 Feb 2022 14:33:10 +0530
-Message-ID: <8735l18wtt.fsf@linux.ibm.com>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4JpcFL0VL4z2x9B
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 20:38:59 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E7BA61FB;
+ Wed,  2 Feb 2022 01:38:56 -0800 (PST)
+Received: from [10.163.43.221] (unknown [10.163.43.221])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 202483F40C;
+ Wed,  2 Feb 2022 01:38:52 -0800 (PST)
+Subject: Re: [PATCH] mm: Merge pte_mkhuge() call into arch_make_huge_pte()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>
+References: <1643780286-18798-1-git-send-email-anshuman.khandual@arm.com>
+ <a969f100-02fb-63f7-4469-b3c8e23d8cfb@csgroup.eu>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <59ec5352-77eb-4c95-731e-100bcfa7003a@arm.com>
+Date: Wed, 2 Feb 2022 15:08:47 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 4F-1E3cGoWwhB0NOCyo5jc1fCFPdV1_i
-X-Proofpoint-ORIG-GUID: 4F-1E3cGoWwhB0NOCyo5jc1fCFPdV1_i
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-02_03,2022-02-01_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- mlxlogscore=999 phishscore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 malwarescore=0 clxscore=1015 spamscore=0
- adultscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2201110000 definitions=main-2202020047
+In-Reply-To: <a969f100-02fb-63f7-4469-b3c8e23d8cfb@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,299 +48,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
 
-> Presently PAPR doesn't support injecting smart errors on an
-> NVDIMM. This makes testing the NVDIMM health reporting functionality
-> difficult as simulating NVDIMM health related events need a hacked up
-> qemu version.
->
-> To solve this problem this patch proposes simulating certain set of
-> NVDIMM health related events in papr_scm. Specifically 'fatal' health
-> state and 'dirty' shutdown state. These error can be injected via the
-> user-space 'ndctl-inject-smart(1)' command. With the proposed patch and
-> corresponding ndctl patches following command flow is expected:
->
-> $ sudo ndctl list -DH -d nmem0
-> ...
->       "health_state":"ok",
->       "shutdown_state":"clean",
-> ...
->  # inject unsafe shutdown and fatal health error
-> $ sudo ndctl inject-smart nmem0 -Uf
-> ...
->       "health_state":"fatal",
->       "shutdown_state":"dirty",
-> ...
->  # uninject all errors
-> $ sudo ndctl inject-smart nmem0 -N
-> ...
->       "health_state":"ok",
->       "shutdown_state":"clean",
-> ...
->
-> The patch adds a new member 'health_bitmap_inject_mask' inside struct
-> papr_scm_priv which is then bitwise ANDed to the health bitmap fetched from the
-> hypervisor. The value for 'health_bitmap_inject_mask' is accessible from sysfs
-> at nmemX/papr/health_bitmap_inject.
->
-> A new PDSM named 'SMART_INJECT' is proposed that accepts newly
-> introduced 'struct nd_papr_pdsm_smart_inject' as payload thats
-> exchanged between libndctl and papr_scm to indicate the requested
-> smart-error states.
->
-> When the processing the PDSM 'SMART_INJECT', papr_pdsm_smart_inject()
-> constructs a pair or 'inject_mask' and 'clear_mask' bitmaps from the payload
-> and bit-blt it to the 'health_bitmap_inject_mask'. This ensures the after being
-> fetched from the hypervisor, the health_bitmap reflects requested smart-error
-> states.
->
 
- Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+On 2/2/22 11:50 AM, Christophe Leroy wrote:
+> 
+> Le 02/02/2022 à 06:38, Anshuman Khandual a écrit :
+>> Each call into pte_mkhuge() is invariably followed by arch_make_huge_pte().
+>> Instead arch_make_huge_pte() can accommodate pte_mkhuge() at the beginning.
+>> This updates generic fallback stub for arch_make_huge_pte() and available
+>> platforms definitions. This makes huge pte creation much cleaner and easier
+>> to follow.
+> I think it is a good cleanup. I always wonder why commit d9ed9faac283 
+> ("mm: add new arch_make_huge_pte() method for tile support") didn't move 
+> the pte_mkhuge() into arch_make_huge_pte().
 
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-> ---
-> Changelog:
->
-> Since v3:
-> * Renamed the sysfs entry from 'health_bitmap_override' to
-> 'health_bitmap_inject'.
-> * Simplified the variable names and removed the 'health_bitmap_{mask,override}'
-> members. Instead replaced them with a single 'health_bitmap_inject_mask'
-> member. [Aneesh]
-> * Updated the sysfs documentations and commit description.
-> * Used READ/WRITE_ONCE macros at places where 'health_bitmap_inject_mask' may be
-> accessed concurrently.
->
-> Since v2:
-> * Rebased the patch to ppc-next
-> * Added documentation for newly introduced sysfs attribute 'health_bitmap_override'
->
-> Since v1:
-> * Updated the patch description.
-> * Removed dependency of a header movement patch.
-> * Removed '__packed' attribute for 'struct nd_papr_pdsm_smart_inject' [Aneesh]
-> ---
->  Documentation/ABI/testing/sysfs-bus-papr-pmem | 12 +++
->  arch/powerpc/include/uapi/asm/papr_pdsm.h     | 18 ++++
->  arch/powerpc/platforms/pseries/papr_scm.c     | 90 ++++++++++++++++++-
->  3 files changed, 117 insertions(+), 3 deletions(-)
->
-> diff --git a/Documentation/ABI/testing/sysfs-bus-papr-pmem b/Documentation/ABI/testing/sysfs-bus-papr-pmem
-> index 95254cec92bf..4ac0673901e7 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-papr-pmem
-> +++ b/Documentation/ABI/testing/sysfs-bus-papr-pmem
-> @@ -61,3 +61,15 @@ Description:
->  		* "CchRHCnt" : Cache Read Hit Count
->  		* "CchWHCnt" : Cache Write Hit Count
->  		* "FastWCnt" : Fast Write Count
-> +
-> +What:		/sys/bus/nd/devices/nmemX/papr/health_bitmap_inject
-> +Date:		Jan, 2022
-> +KernelVersion:	v5.17
-> +Contact:	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, nvdimm@lists.linux.dev,
-> +Description:
-> +		(RO) Reports the health bitmap inject bitmap that is applied to
-> +		bitmap received from PowerVM via the H_SCM_HEALTH. This is used
-> +		to forcibly set specific bits returned from Hcall. These is then
-> +		used to simulate various health or shutdown states for an nvdimm
-> +		and are set by user-space tools like ndctl by issuing a PAPR DSM.
-> +
-> diff --git a/arch/powerpc/include/uapi/asm/papr_pdsm.h b/arch/powerpc/include/uapi/asm/papr_pdsm.h
-> index 82488b1e7276..17439925045c 100644
-> --- a/arch/powerpc/include/uapi/asm/papr_pdsm.h
-> +++ b/arch/powerpc/include/uapi/asm/papr_pdsm.h
-> @@ -116,6 +116,22 @@ struct nd_papr_pdsm_health {
->  	};
->  };
->  
-> +/* Flags for injecting specific smart errors */
-> +#define PDSM_SMART_INJECT_HEALTH_FATAL		(1 << 0)
-> +#define PDSM_SMART_INJECT_BAD_SHUTDOWN		(1 << 1)
-> +
-> +struct nd_papr_pdsm_smart_inject {
-> +	union {
-> +		struct {
-> +			/* One or more of PDSM_SMART_INJECT_ */
-> +			__u32 flags;
-> +			__u8 fatal_enable;
-> +			__u8 unsafe_shutdown_enable;
-> +		};
-> +		__u8 buf[ND_PDSM_PAYLOAD_MAX_SIZE];
-> +	};
-> +};
-> +
->  /*
->   * Methods to be embedded in ND_CMD_CALL request. These are sent to the kernel
->   * via 'nd_cmd_pkg.nd_command' member of the ioctl struct
-> @@ -123,12 +139,14 @@ struct nd_papr_pdsm_health {
->  enum papr_pdsm {
->  	PAPR_PDSM_MIN = 0x0,
->  	PAPR_PDSM_HEALTH,
-> +	PAPR_PDSM_SMART_INJECT,
->  	PAPR_PDSM_MAX,
->  };
->  
->  /* Maximal union that can hold all possible payload types */
->  union nd_pdsm_payload {
->  	struct nd_papr_pdsm_health health;
-> +	struct nd_papr_pdsm_smart_inject smart_inject;
->  	__u8 buf[ND_PDSM_PAYLOAD_MAX_SIZE];
->  } __packed;
->  
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index f48e87ac89c9..20aafd387840 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -120,6 +120,10 @@ struct papr_scm_priv {
->  
->  	/* length of the stat buffer as expected by phyp */
->  	size_t stat_buffer_len;
-> +
-> +	/* The bits which needs to be overridden */
-> +	u64 health_bitmap_inject_mask;
-> +
->  };
->  
->  static int papr_scm_pmem_flush(struct nd_region *nd_region,
-> @@ -347,19 +351,29 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
->  static int __drc_pmem_query_health(struct papr_scm_priv *p)
->  {
->  	unsigned long ret[PLPAR_HCALL_BUFSIZE];
-> +	u64 bitmap = 0;
->  	long rc;
->  
->  	/* issue the hcall */
->  	rc = plpar_hcall(H_SCM_HEALTH, ret, p->drc_index);
-> -	if (rc != H_SUCCESS) {
-> +	if (rc == H_SUCCESS)
-> +		bitmap = ret[0] & ret[1];
-> +	else if (rc == H_FUNCTION)
-> +		dev_info_once(&p->pdev->dev,
-> +			      "Hcall H_SCM_HEALTH not implemented, assuming empty health bitmap");
-> +	else {
-> +
->  		dev_err(&p->pdev->dev,
->  			"Failed to query health information, Err:%ld\n", rc);
->  		return -ENXIO;
->  	}
->  
->  	p->lasthealth_jiffies = jiffies;
-> -	p->health_bitmap = ret[0] & ret[1];
-> -
-> +	/* Allow injecting specific health bits via inject mask. */
-> +	if (p->health_bitmap_inject_mask)
-> +		bitmap = (bitmap & ~p->health_bitmap_inject_mask) |
-> +			p->health_bitmap_inject_mask;
-> +	WRITE_ONCE(p->health_bitmap, bitmap);
->  	dev_dbg(&p->pdev->dev,
->  		"Queried dimm health info. Bitmap:0x%016lx Mask:0x%016lx\n",
->  		ret[0], ret[1]);
-> @@ -669,6 +683,56 @@ static int papr_pdsm_health(struct papr_scm_priv *p,
->  	return rc;
->  }
->  
-> +/* Inject a smart error Add the dirty-shutdown-counter value to the pdsm */
-> +static int papr_pdsm_smart_inject(struct papr_scm_priv *p,
-> +				  union nd_pdsm_payload *payload)
-> +{
-> +	int rc;
-> +	u32 supported_flags = 0;
-> +	u64 inject_mask = 0, clear_mask = 0;
-> +	u64 mask;
-> +
-> +	/* Check for individual smart error flags and update inject/clear masks */
-> +	if (payload->smart_inject.flags & PDSM_SMART_INJECT_HEALTH_FATAL) {
-> +		supported_flags |= PDSM_SMART_INJECT_HEALTH_FATAL;
-> +		if (payload->smart_inject.fatal_enable)
-> +			inject_mask |= PAPR_PMEM_HEALTH_FATAL;
-> +		else
-> +			clear_mask |= PAPR_PMEM_HEALTH_FATAL;
-> +	}
-> +
-> +	if (payload->smart_inject.flags & PDSM_SMART_INJECT_BAD_SHUTDOWN) {
-> +		supported_flags |= PDSM_SMART_INJECT_BAD_SHUTDOWN;
-> +		if (payload->smart_inject.unsafe_shutdown_enable)
-> +			inject_mask |= PAPR_PMEM_SHUTDOWN_DIRTY;
-> +		else
-> +			clear_mask |= PAPR_PMEM_SHUTDOWN_DIRTY;
-> +	}
-> +
-> +	dev_dbg(&p->pdev->dev, "[Smart-inject] inject_mask=%#llx clear_mask=%#llx\n",
-> +		inject_mask, clear_mask);
-> +
-> +	/* Prevent concurrent access to dimm health bitmap related members */
-> +	rc = mutex_lock_interruptible(&p->health_mutex);
-> +	if (rc)
-> +		return rc;
-> +
-> +	/* Use inject/clear masks to set health_bitmap_inject_mask */
-> +	mask = READ_ONCE(p->health_bitmap_inject_mask);
-> +	mask = (mask & ~clear_mask) | inject_mask;
-> +	WRITE_ONCE(p->health_bitmap_inject_mask, mask);
-> +
-> +	/* Invalidate cached health bitmap */
-> +	p->lasthealth_jiffies = 0;
-> +
-> +	mutex_unlock(&p->health_mutex);
-> +
-> +	/* Return the supported flags back to userspace */
-> +	payload->smart_inject.flags = supported_flags;
-> +
-> +	return sizeof(struct nd_papr_pdsm_health);
-> +}
-> +
->  /*
->   * 'struct pdsm_cmd_desc'
->   * Identifies supported PDSMs' expected length of in/out payloads
-> @@ -702,6 +766,12 @@ static const struct pdsm_cmd_desc __pdsm_cmd_descriptors[] = {
->  		.size_out = sizeof(struct nd_papr_pdsm_health),
->  		.service = papr_pdsm_health,
->  	},
-> +
-> +	[PAPR_PDSM_SMART_INJECT] = {
-> +		.size_in = sizeof(struct nd_papr_pdsm_smart_inject),
-> +		.size_out = sizeof(struct nd_papr_pdsm_smart_inject),
-> +		.service = papr_pdsm_smart_inject,
-> +	},
->  	/* Empty */
->  	[PAPR_PDSM_MAX] = {
->  		.size_in = 0,
-> @@ -838,6 +908,19 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
->  	return 0;
->  }
->  
-> +static ssize_t health_bitmap_inject_show(struct device *dev,
-> +					 struct device_attribute *attr,
-> +					 char *buf)
-> +{
-> +	struct nvdimm *dimm = to_nvdimm(dev);
-> +	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
-> +
-> +	return sprintf(buf, "%#llx\n",
-> +		       READ_ONCE(p->health_bitmap_inject_mask));
-> +}
-> +
-> +static DEVICE_ATTR_ADMIN_RO(health_bitmap_inject);
-> +
->  static ssize_t perf_stats_show(struct device *dev,
->  			       struct device_attribute *attr, char *buf)
->  {
-> @@ -952,6 +1035,7 @@ static struct attribute *papr_nd_attributes[] = {
->  	&dev_attr_flags.attr,
->  	&dev_attr_perf_stats.attr,
->  	&dev_attr_dirty_shutdown.attr,
-> +	&dev_attr_health_bitmap_inject.attr,
->  	NULL,
->  };
->  
-> -- 
-> 2.34.1
++1
+
+> 
+> When I implemented arch_make_huge_pte() for powerpc 8xx, in one case 
+> arch_make_huge_pte() have to undo the things done by pte_mkhuge(), see below
+> 
+> As a second step we could probably try to get rid of pte_mkhuge() 
+> completely, at least in the core.
+
+Sure.
+
+> 
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: Mike Kravetz <mike.kravetz@oracle.com>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Cc: sparclinux@vger.kernel.org
+>> Cc: linux-mm@kvack.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> 
+>> ---
+>>   arch/arm64/mm/hugetlbpage.c                      | 1 +
+>>   arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h | 1 +
+>>   arch/sparc/mm/hugetlbpage.c                      | 1 +
+>>   include/linux/hugetlb.h                          | 2 +-
+>>   mm/hugetlb.c                                     | 3 +--
+>>   mm/vmalloc.c                                     | 1 -
+>>   6 files changed, 5 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+>> index ffb9c229610a..228226c5fa80 100644
+>> --- a/arch/arm64/mm/hugetlbpage.c
+>> +++ b/arch/arm64/mm/hugetlbpage.c
+>> @@ -347,6 +347,7 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags)
+>>   {
+>>   	size_t pagesize = 1UL << shift;
+>>   
+>> +	entry = pte_mkhuge(entry);
+>>   	if (pagesize == CONT_PTE_SIZE) {
+>>   		entry = pte_mkcont(entry);
+>>   	} else if (pagesize == CONT_PMD_SIZE) {
+>> diff --git a/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h b/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
+>> index 64b6c608eca4..e41e095158c7 100644
+>> --- a/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
+>> +++ b/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
+>> @@ -70,6 +70,7 @@ static inline pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags
+>>   {
+>>   	size_t size = 1UL << shift;
+>>   
+>> +	entry = pte_mkhuge(entry);
+> Could drop that and replace the below by:
+> 
+> 	if (size == SZ_16K)
+> 		return __pte(pte_val(entry) | _PAGE_SPS);
+> 	else
+> 		return __pte(pte_val(entry) | _PAGE_SPS | _PAGE_HUGE);
+> 	
+> 
+
+Sure, will change as stated above.
