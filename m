@@ -2,96 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 331884A6AD8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 05:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F13174A6B7F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 06:31:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JpT8m0ds1z3cHC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 15:19:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JpVlX5Gbhz3cGq
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 16:31:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YA0ynaQ3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hKREiWGx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ellerman.id.au (client-ip=2404:9400:2221:ea00::3;
+ helo=gandalf.ozlabs.org; envelope-from=michael@ellerman.id.au;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=YA0ynaQ3; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=hKREiWGx; 
+ dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JpT823jp4z2xrt
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 15:18:57 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2124FpKj005245; 
- Wed, 2 Feb 2022 04:18:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=ima2qDQ/aE/Z0N3orOJ+E1eW5baW8ZkO/X7Y1RZy3Ec=;
- b=YA0ynaQ3sA+w7egWQgZhmQz2PIGLjuWEs8nEWhTnYYndvEqIEaFZU38pCVNi+suJXq0G
- vN2YwDdT2bZ8GLriv8EmWA0PZIP0MMCmTaH1AMawpkfBmTzXl3va9EB2eD/JYmXZZY3R
- FqGFKk6z85ZvPFz2my9kvJIUSe0Dpn7yyOf/EEBjl7VkMk8I/4RQXLkj11ubxZFhppgx
- Rkc3jsgAE0CKrOiVtwczn+WXlHinDLjDlyjNUDJDmniXHkHiewAWHbnfGAhyOlmjc+qg
- 45y/h8OWmbLbPuIWpJXKL3Bp9io7e693oQPwIDUn00pZ4PPEQy/Ye38P5lBQdwOEnyWK Yg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dyjs680yr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Feb 2022 04:18:51 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2124IoxP010162;
- Wed, 2 Feb 2022 04:18:50 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3dyjs680yj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Feb 2022 04:18:50 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2124CNPn000530;
- Wed, 2 Feb 2022 04:18:49 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma01fra.de.ibm.com with ESMTP id 3dvw79g8by-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 02 Feb 2022 04:18:48 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 2124Ijn433161504
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 2 Feb 2022 04:18:45 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 81D41AE04D;
- Wed,  2 Feb 2022 04:18:45 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5DF8DAE045;
- Wed,  2 Feb 2022 04:18:42 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.163.12.225])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  2 Feb 2022 04:18:41 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH V2] powerpc/perf: Fix task context setting for trace imc
-Date: Wed,  2 Feb 2022 09:48:37 +0530
-Message-Id: <20220202041837.65968-1-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.33.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JpVkt6KHnz2yg5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 16:30:45 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JpVkr41tMz4xNm;
+ Wed,  2 Feb 2022 16:30:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1643779845;
+ bh=5p/N1C/UQRPwh66WGVyOjoYt8fI253nWVH+fnIcpwXY=;
+ h=From:To:Cc:Subject:Date:From;
+ b=hKREiWGx542YLQSjxQx/OoGglDDstSON5pu/0AfZY/vmq8B0GTApYUoLSyEmEhC73
+ dSUH6s1A3ZbC3r+L0lYg2Y/BfJvQTZzz7Q1WggWWg37B0uybDBGMrrGy5dK9KXTYLw
+ FXP9qLa3ZGe9tqgIOKEdSW0CdT2LcdCVxZyCZp62L4uRlG8y+R0rowZUu2C+h/38AD
+ tw6GWDJavjpn1Os6TQkUQ86hHcU5p8HcnUNio3W6nTNfWI2aHzZQcjFf6shsT8DstI
+ VAEso3JSaMBaMYl4sSYNSDksoozLktAxKicmSG/TSOuqKwR7/XAd9s/on8gpBqaDm5
+ wL5whEAh6U4VA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH v2] powerpc/ptdump: Fix sparse warning in hashpagetable.c
+Date: Wed,  2 Feb 2022 16:30:39 +1100
+Message-Id: <20220202053039.691917-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HDthEgzedCxq88GHBYXS4jbF_mYfABMb
-X-Proofpoint-ORIG-GUID: ovvmVeLqri8IRyonCRZpi3AZ6h6sYS1s
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-02_01,2022-02-01_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 mlxlogscore=999
- malwarescore=0 adultscore=0 impostorscore=0 bulkscore=0 suspectscore=0
- mlxscore=0 priorityscore=1501 spamscore=0 phishscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2202020017
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,60 +62,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Trace IMC (In-Memory collection counters) in powerpc is
-useful for application level profiling. For trace_imc,
-presently task context (task_ctx_nr) is set to
-perf_hw_context. But perf_hw_context is to be used for
-cpu PMU. So for trace_imc, even though it is per thread
-PMU, it is preferred to use sw_context inorder to be able
-to do application level monitoring. Hence change the
-task_ctx_nr to use perf_sw_context.
+As reported by sparse:
 
-Fixes: 012ae244845f ("powerpc/perf: Trace imc PMU functions")
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+  arch/powerpc/mm/ptdump/hashpagetable.c:264:29: warning: restricted __be64 degrades to integer
+  arch/powerpc/mm/ptdump/hashpagetable.c:265:49: warning: restricted __be64 degrades to integer
+  arch/powerpc/mm/ptdump/hashpagetable.c:267:36: warning: incorrect type in assignment (different base types)
+  arch/powerpc/mm/ptdump/hashpagetable.c:267:36:    expected unsigned long long [usertype]
+  arch/powerpc/mm/ptdump/hashpagetable.c:267:36:    got restricted __be64 [usertype] v
+  arch/powerpc/mm/ptdump/hashpagetable.c:268:36: warning: incorrect type in assignment (different base types)
+  arch/powerpc/mm/ptdump/hashpagetable.c:268:36:    expected unsigned long long [usertype]
+  arch/powerpc/mm/ptdump/hashpagetable.c:268:36:    got restricted __be64 [usertype] r
+
+The values returned by plpar_pte_read_4() are CPU endian, not __be64, so
+assigning them to struct hash_pte confuses sparse. As a minimal fix open
+code a struct to hold the values with CPU endian types.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
-Changelog:
-v1 -> v2:
- Added comment in code on why perf_sw_context is used.
-Notes:
- trace_imc_event_init currently uses context as
- perf_hw_context. But ideally there can only be a single
- PMU for perf_hw_context events which is core PMU.
- Reference:
- commit 26657848502b ("perf/core: Verify we have a single perf_hw_context PMU")
- Reason for using "perf_sw_context" instead of invalid_context
- is that, task level monitoring is restricted with
- invalid_context.
+ arch/powerpc/mm/ptdump/hashpagetable.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
- arch/powerpc/perf/imc-pmu.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+v2: Don't use struct hash_pte at all.
 
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index e106909ff9c3..8fe57601e61d 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -1457,7 +1457,13 @@ static int trace_imc_event_init(struct perf_event *event)
+Replaces v1 http://patchwork.ozlabs.org/project/linuxppc-dev/patch/bbc196451dd34521d239023ccca488db35b8fff1.1643567900.git.christophe.leroy@csgroup.eu/
+
+diff --git a/arch/powerpc/mm/ptdump/hashpagetable.c b/arch/powerpc/mm/ptdump/hashpagetable.c
+index c7f824d294b2..9a601587836b 100644
+--- a/arch/powerpc/mm/ptdump/hashpagetable.c
++++ b/arch/powerpc/mm/ptdump/hashpagetable.c
+@@ -238,7 +238,10 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
  
- 	event->hw.idx = -1;
- 
--	event->pmu->task_ctx_nr = perf_hw_context;
-+	/*
-+	 * There can only be a single PMU for
-+	 * perf_hw_context events which is assigned
-+	 * to core PMU. Hence use "perf_sw_context" for
-+	 * trace_imc.
-+	 */
-+	event->pmu->task_ctx_nr = perf_sw_context;
- 	event->destroy = reset_global_refc;
- 	return 0;
- }
+ static int pseries_find(unsigned long ea, int psize, bool primary, u64 *v, u64 *r)
+ {
+-	struct hash_pte ptes[4];
++	struct {
++		unsigned long v;
++		unsigned long r;
++	} ptes[4];
+ 	unsigned long vsid, vpn, hash, hpte_group, want_v;
+ 	int i, j, ssize = mmu_kernel_ssize;
+ 	long lpar_rc = 0;
 -- 
-2.33.0
+2.34.1
 
