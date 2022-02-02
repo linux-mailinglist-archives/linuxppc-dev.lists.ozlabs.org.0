@@ -2,110 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CDD64A70BB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 13:26:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E98FC4A7143
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 14:11:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JpgyS0NBKz3cD1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 23:26:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jphyn4VPfz3cQC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 00:11:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=O4SWGD+b;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=O4SWGD+b;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IMqqRLes;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=O4SWGD+b; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=O4SWGD+b; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=IMqqRLes; dkim-atps=neutral
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jpgxd0wPsz2yJv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Feb 2022 23:25:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1643804733;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Riry/Ie+x1sinW7wNxc+GkihNaf8lfeZqesrgvEVnb0=;
- b=O4SWGD+b/2ln9MnRfZhsEpgO0IVa0dPrOXW5i/TtBfjqvj0EeDNWCgvji+c/Cfb8HLZvGH
- 9QewEbyg+IVd1a4MtzPOXaZQrLWkE8bZVrDqagt86Ylvnp7HSyUeuh/UDG5B1KY0dSkfdq
- KN8Z96Ysti+adfIlW9J7nDDiIOMN0V8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1643804733;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Riry/Ie+x1sinW7wNxc+GkihNaf8lfeZqesrgvEVnb0=;
- b=O4SWGD+b/2ln9MnRfZhsEpgO0IVa0dPrOXW5i/TtBfjqvj0EeDNWCgvji+c/Cfb8HLZvGH
- 9QewEbyg+IVd1a4MtzPOXaZQrLWkE8bZVrDqagt86Ylvnp7HSyUeuh/UDG5B1KY0dSkfdq
- KN8Z96Ysti+adfIlW9J7nDDiIOMN0V8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-618-BDoXDr9EN266HVqbGmy1Cw-1; Wed, 02 Feb 2022 07:25:31 -0500
-X-MC-Unique: BDoXDr9EN266HVqbGmy1Cw-1
-Received: by mail-ej1-f72.google.com with SMTP id
- ky6-20020a170907778600b0068e4bd99fd1so8043023ejc.15
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Feb 2022 04:25:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent
- :content-language:to:cc:references:from:organization:subject
- :in-reply-to:content-transfer-encoding;
- bh=Riry/Ie+x1sinW7wNxc+GkihNaf8lfeZqesrgvEVnb0=;
- b=fQOvhE6eIIYx/Mu7/15wRCm6PpMhtip/5ULRQZHL5IYrHoJzSi8xDQ1OUvzyhHIIHF
- tj9R5/p6PYSTgKM5vBAsrSzzou8A85Nz/WcwrqsSPgl7UfGnpHfqpoELaPhSI+KNXixZ
- OHZbGp1CLJ4Vom/dizkKCxHGJegD0xZcnMJYxcdsbSJcNbRcx9Xe87tEM8V6Tjdr3jfo
- FQ0ioamgTbnmugEfoaRQVD1oh9xSOP4gz0sHrhlO5Vt4d5JCXqcYbHc13WUfluu9ZhAZ
- OEOYvmbHYd0dmyS+Dl0WIGeS/5OGQH0IiD4h5hJBmC2AiU0RcugW5gADzOD/T4dFWpna
- 7lbA==
-X-Gm-Message-State: AOAM531FNuo9AYi/BVU4pLNUt9sylK0m6Bggh+avMRxnmddmYQlnvo9F
- XnzoB/iat/B7kHhUohp3a2k8uU1uE+rxXxlnJyqIxmXyqo2ude2FB8LsHVW58Z66Y3w8/WXeoAi
- EPZYqGX6zrWq2Y6RsA47+aQ9gZw==
-X-Received: by 2002:a05:6402:7d0:: with SMTP id
- u16mr30060272edy.9.1643804730536; 
- Wed, 02 Feb 2022 04:25:30 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJxgTNVg4PsKEjgBZhYvXrFMFKGRSAUL0S3jbEcFB9ylZ3e4FOsTEFQdbkPIWl6zZX7rsjy0bA==
-X-Received: by 2002:a05:6402:7d0:: with SMTP id
- u16mr30060236edy.9.1643804730176; 
- Wed, 02 Feb 2022 04:25:30 -0800 (PST)
-Received: from ?IPV6:2003:cb:c709:f800:a55c:e484:3cd9:3632?
- (p200300cbc709f800a55ce4843cd93632.dip0.t-ipconnect.de.
- [2003:cb:c709:f800:a55c:e484:3cd9:3632])
- by smtp.gmail.com with ESMTPSA id f6sm20889436edy.18.2022.02.02.04.25.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 02 Feb 2022 04:25:29 -0800 (PST)
-Message-ID: <21c196f8-18ca-d720-4241-00c9461854d3@redhat.com>
-Date: Wed, 2 Feb 2022 13:25:28 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jphy275lQz2yQC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Feb 2022 00:11:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1643807467; x=1675343467;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=W7Xd/SmOofESVKW25ArdGQVtat4JBdY/RG2oQKuqufc=;
+ b=IMqqRLescZ3/1dNtQXLpfpLxjH1L8xUSuN4Ax9DxefxpW0XKW6lMIWWl
+ yIT77AQNaUZzGFN4nf6N0FWRtt1yuy9lDZ4JZvVI37pEXP0nBJXbHUfeC
+ mow5Hrayq8+JPaSd7Tzp7ygnTppLQNOV/Ghs2+/4HbmDM+kjQx2+/f1AJ
+ BWN/gVJwYZ5a4WN43KI2Qz1JzDpWuSDOHgxhBqDw3GV0sVcnWsqRzuLRm
+ 3ay9+j+VR36DT6ZHVPaxfJLqUNSi6rCLisYDtLN0pgwa6oL9KsLrK0Tz8
+ u48fvpdG1JKxg1pl1HE9IORnXduAG2GAnt4HEhh3JMwqH4cyK/e9b89Uu w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10245"; a="248130540"
+X-IronPort-AV: E=Sophos;i="5.88,336,1635231600"; d="scan'208";a="248130540"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Feb 2022 05:09:59 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,336,1635231600"; d="scan'208";a="698889327"
+Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
+ by orsmga005.jf.intel.com with ESMTP; 02 Feb 2022 05:09:57 -0800
+Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1nFFOX-000UcG-60; Wed, 02 Feb 2022 13:09:57 +0000
+Date: Wed, 2 Feb 2022 21:09:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 1/2] KVM: PPC: Book3S PR: Disable SCV when AIL could
+ be disabled
+Message-ID: <202202022141.phJ3zWBF-lkp@intel.com>
+References: <20220129072511.105523-2-npiggin@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-To: Oscar Salvador <osalvador@suse.de>, Zi Yan <ziy@nvidia.com>
-References: <20220119190623.1029355-1-zi.yan@sent.com>
- <20220119190623.1029355-4-zi.yan@sent.com>
- <Yfp2rv0K6d3cNmwg@localhost.localdomain>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH v4 3/7] mm: page_isolation: check specified range for
- unmovable pages
-In-Reply-To: <Yfp2rv0K6d3cNmwg@localhost.localdomain>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220129072511.105523-2-npiggin@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,65 +70,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mel Gorman <mgorman@techsingularity.net>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org,
- Eric Ren <renzhengeek@gmail.com>, Robin Murphy <robin.murphy@arm.com>,
- Christoph Hellwig <hch@lst.de>, Vlastimil Babka <vbabka@suse.cz>,
- Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: kbuild-all@lists.01.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 02.02.22 13:18, Oscar Salvador wrote:
-> On Wed, Jan 19, 2022 at 02:06:19PM -0500, Zi Yan wrote:
->> From: Zi Yan <ziy@nvidia.com>
->>
->> Enable set_migratetype_isolate() to check specified sub-range for
->> unmovable pages during isolation. Page isolation is done
->> at max(MAX_ORDER_NR_PAEGS, pageblock_nr_pages) granularity, but not all
->> pages within that granularity are intended to be isolated. For example,
->> alloc_contig_range(), which uses page isolation, allows ranges without
->> alignment. This commit makes unmovable page check only look for
->> interesting pages, so that page isolation can succeed for any
->> non-overlapping ranges.
-> 
-> Another thing that came to my mind.
-> Prior to this patch, has_unmovable_pages() was checking on pageblock
-> granularity, starting at pfn#0 of the pageblock.
-> With this patch, you no longer check on pageblock granularity, which
-> means you might isolate a pageblock, but some pages that sneaked in
-> might actually be unmovable.
-> 
-> E.g:
-> 
-> Let's say you have a pageblock that spans (pfn#512,pfn#1024),
-> and you pass alloc_contig_range() (pfn#514,pfn#1024).
-> has_unmovable_pages() will start checking the pageblock at pfn#514,
-> and so it will mis pfn#512 and pfn#513. Isn't that a problem, if those
-> pfn turn out to be actually unmovable?
+Hi Nicholas,
 
-That's the whole idea for being able to allocate parts of an unmovable
-pageblock that are movable.
+I love your patch! Yet something to improve:
 
-If the first part is unmovable but the second part is movable, nothing
-should stop us from trying to allocate the second part.
+[auto build test ERROR on powerpc/topic/ppc-kvm]
+[also build test ERROR on powerpc/next v5.17-rc2 next-20220202]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-Of course, we want to remember the original migratetype of the
-pageblock, to restore that after isolation -- otherwise we'll end up
-converting all such pageblocks to MIGRATE_MOVABLE. The next patch does
-that IIRC.
+url:    https://github.com/0day-ci/linux/commits/Nicholas-Piggin/KVM-PPC-Book3S-PR-Fixes-for-AIL-and-SCV/20220129-152655
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
+config: powerpc-randconfig-r005-20220131 (https://download.01.org/0day-ci/archive/20220202/202202022141.phJ3zWBF-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/a751cf4de8f5854152b969afed947b0640ab0c33
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Nicholas-Piggin/KVM-PPC-Book3S-PR-Fixes-for-AIL-and-SCV/20220129-152655
+        git checkout a751cf4de8f5854152b969afed947b0640ab0c33
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/kvm/
 
-However, devil is in the detail, and I still have to review those parts
-of this series.
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   arch/powerpc/kvm/book3s_pr.c: In function 'kvmppc_core_vcpu_load_pr':
+>> arch/powerpc/kvm/book3s_pr.c:146:74: error: 'struct thread_struct' has no member named 'fscr'
+     146 |                 if (cpu_has_feature(CPU_FTR_ARCH_300) && (current->thread.fscr & FSCR_SCV))
+         |                                                                          ^
+   arch/powerpc/kvm/book3s_pr.c: In function 'kvmppc_core_vcpu_put_pr':
+   arch/powerpc/kvm/book3s_pr.c:184:74: error: 'struct thread_struct' has no member named 'fscr'
+     184 |                 if (cpu_has_feature(CPU_FTR_ARCH_300) && (current->thread.fscr & FSCR_SCV))
+         |                                                                          ^
 
 
-Note that there are no current users of alloc_contig_range() that
-allocate < MAX_ORDER - 1 -- except CMA, but for CMA we immediately exit
-has_unmovable_pages() either way.
+vim +146 arch/powerpc/kvm/book3s_pr.c
 
--- 
-Thanks,
+   141	
+   142		/* Disable AIL if supported */
+   143		if (cpu_has_feature(CPU_FTR_HVMODE)) {
+   144			if (cpu_has_feature(CPU_FTR_ARCH_207S))
+   145				mtspr(SPRN_LPCR, mfspr(SPRN_LPCR) & ~LPCR_AIL);
+ > 146			if (cpu_has_feature(CPU_FTR_ARCH_300) && (current->thread.fscr & FSCR_SCV))
+   147				mtspr(SPRN_FSCR, mfspr(SPRN_FSCR) & ~FSCR_SCV);
+   148		}
+   149	
+   150		vcpu->cpu = smp_processor_id();
+   151	#ifdef CONFIG_PPC_BOOK3S_32
+   152		current->thread.kvm_shadow_vcpu = vcpu->arch.shadow_vcpu;
+   153	#endif
+   154	
+   155		if (kvmppc_is_split_real(vcpu))
+   156			kvmppc_fixup_split_real(vcpu);
+   157	
+   158		kvmppc_restore_tm_pr(vcpu);
+   159	}
+   160	
 
-David / dhildenb
-
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
