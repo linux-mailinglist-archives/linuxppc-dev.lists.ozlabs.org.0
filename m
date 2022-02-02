@@ -1,64 +1,109 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E98FC4A7143
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 14:11:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B87B4A71D2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Feb 2022 14:46:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jphyn4VPfz3cQC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 00:11:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jpjl934rNz3cQJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 00:46:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IMqqRLes;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DkU8Rpw7;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DkU8Rpw7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=IMqqRLes; dkim-atps=neutral
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=DkU8Rpw7; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=DkU8Rpw7; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.129.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jphy275lQz2yQC
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Feb 2022 00:11:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1643807467; x=1675343467;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=W7Xd/SmOofESVKW25ArdGQVtat4JBdY/RG2oQKuqufc=;
- b=IMqqRLescZ3/1dNtQXLpfpLxjH1L8xUSuN4Ax9DxefxpW0XKW6lMIWWl
- yIT77AQNaUZzGFN4nf6N0FWRtt1yuy9lDZ4JZvVI37pEXP0nBJXbHUfeC
- mow5Hrayq8+JPaSd7Tzp7ygnTppLQNOV/Ghs2+/4HbmDM+kjQx2+/f1AJ
- BWN/gVJwYZ5a4WN43KI2Qz1JzDpWuSDOHgxhBqDw3GV0sVcnWsqRzuLRm
- 3ay9+j+VR36DT6ZHVPaxfJLqUNSi6rCLisYDtLN0pgwa6oL9KsLrK0Tz8
- u48fvpdG1JKxg1pl1HE9IORnXduAG2GAnt4HEhh3JMwqH4cyK/e9b89Uu w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10245"; a="248130540"
-X-IronPort-AV: E=Sophos;i="5.88,336,1635231600"; d="scan'208";a="248130540"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Feb 2022 05:09:59 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.88,336,1635231600"; d="scan'208";a="698889327"
-Received: from lkp-server01.sh.intel.com (HELO 276f1b88eecb) ([10.239.97.150])
- by orsmga005.jf.intel.com with ESMTP; 02 Feb 2022 05:09:57 -0800
-Received: from kbuild by 276f1b88eecb with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1nFFOX-000UcG-60; Wed, 02 Feb 2022 13:09:57 +0000
-Date: Wed, 2 Feb 2022 21:09:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 1/2] KVM: PPC: Book3S PR: Disable SCV when AIL could
- be disabled
-Message-ID: <202202022141.phJ3zWBF-lkp@intel.com>
-References: <20220129072511.105523-2-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JpjkL5lLFz2xrt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Feb 2022 00:46:00 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1643809557;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YxruncnGKSYEtQADjLUNkNWhCcGBbzpK2sbDwkeQUpo=;
+ b=DkU8Rpw78T3QRSsSfeTel/rw9Ah6qfxCS4j08kyO/akcm+r2HoDdZvontPKJz98SSrhkrq
+ RjjhA6x12oBPdYUIO2eq3WQah7pghe5rfAyUnNs0ydnpusbUxHr2kVBvifqTPJJXSN65Gr
+ RGMl+2+/2hPHrrCFYovyk+DYhLzIKvE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1643809557;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YxruncnGKSYEtQADjLUNkNWhCcGBbzpK2sbDwkeQUpo=;
+ b=DkU8Rpw78T3QRSsSfeTel/rw9Ah6qfxCS4j08kyO/akcm+r2HoDdZvontPKJz98SSrhkrq
+ RjjhA6x12oBPdYUIO2eq3WQah7pghe5rfAyUnNs0ydnpusbUxHr2kVBvifqTPJJXSN65Gr
+ RGMl+2+/2hPHrrCFYovyk+DYhLzIKvE=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-575-jT9cVls7NJa88PxLSWmxMw-1; Wed, 02 Feb 2022 08:45:54 -0500
+X-MC-Unique: jT9cVls7NJa88PxLSWmxMw-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ w3-20020a50c443000000b0040696821132so10400874edf.22
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Feb 2022 05:45:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:organization:in-reply-to
+ :content-transfer-encoding;
+ bh=YxruncnGKSYEtQADjLUNkNWhCcGBbzpK2sbDwkeQUpo=;
+ b=NOj54r/6rzRBH18EOuFpV/FAsKHgGrqMSabE5ZoOrkZbj6n1SryAxtS/wzqB13W7G9
+ DWUfdFNWrJBjijyJIlQg0fXcKdhUx53NF6Vit8ALQ6CJGbXcDktYq6SJBAzyt7pCY4k/
+ Cj2ksHixbzQ4TXx81Hy7CQm5/3vdwvPyK4MId1yuTJvyC4OcUPxEWVLiAmvAcC7hIipe
+ hqqWod3w5aI9aS+3wVBMavsaWnbvjaWj1VQEZ6hjNhikFsErJgOYp4J4PZkU/DpO3iWS
+ H89K/Jo/XSd+kzDqUzmg/URI7Wl/4OqURSnyhlGSE2e4OCJPqa+cKwRPUE7RvA5xmGln
+ x0lw==
+X-Gm-Message-State: AOAM531yqC/XmWFqiZxaJNTnsUlDDbxkvmk6rCDxT6Z6L0GizppchR9t
+ k39UTVFKm5+DV8M6JGgc/aw4coW6EL/11OASAdWrGquGGnB8vDK6C06JqZtuRAVdzd7iqauRwZp
+ eOp3BqffLzgbnxbdEWvUXhOX2YQ==
+X-Received: by 2002:a05:6402:5248:: with SMTP id
+ t8mr30084269edd.14.1643809552842; 
+ Wed, 02 Feb 2022 05:45:52 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxqE4L2UK0676VaeKIuCkwGMt3tw/zzsCSLR83dbtSZbWUp25WGEt3s5690JhdDTieh82ha0w==
+X-Received: by 2002:a05:6402:5248:: with SMTP id
+ t8mr30084241edd.14.1643809552570; 
+ Wed, 02 Feb 2022 05:45:52 -0800 (PST)
+Received: from ?IPV6:2003:cb:c709:f800:a55c:e484:3cd9:3632?
+ (p200300cbc709f800a55ce4843cd93632.dip0.t-ipconnect.de.
+ [2003:cb:c709:f800:a55c:e484:3cd9:3632])
+ by smtp.gmail.com with ESMTPSA id z8sm15746580ejc.151.2022.02.02.05.45.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 02 Feb 2022 05:45:52 -0800 (PST)
+Message-ID: <c25ad11e-6700-3a11-1a44-f69b4a7fc9e2@redhat.com>
+Date: Wed, 2 Feb 2022 14:45:50 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220129072511.105523-2-npiggin@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH RFC v1] drivers/base/node: consolidate node device
+ subsystem initialization in node_dev_init()
+To: linux-kernel@vger.kernel.org
+References: <20220128151540.164759-1-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20220128151540.164759-1-david@redhat.com>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,74 +115,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
+ Rich Felker <dalias@libc.org>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
+ x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Oscar Salvador <osalvador@suse.de>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nicholas,
+On 28.01.22 16:15, David Hildenbrand wrote:
+> ... and call node_dev_init() after memory_dev_init() from driver_init(),
+> so before any of the existing arch/subsys calls. All online nodes should
+> be known at that point.
+> 
+> This is in line with memory_dev_init(), which initializes the memory
+> device subsystem and creates all memory block devices.
+> 
+> Similar to memory_dev_init(), panic() if anything goes wrong, we don't
+> want to continue with such basic initialization errors.
+> 
+> The important part is that node_dev_init() gets called after
+> memory_dev_init() and after cpu_dev_init(), but before any of the
+> relevant archs call register_cpu() to register the new cpu device under
+> the node device. The latter should be the case for the current users
+> of topology_init().
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Albert Ou <aou@eecs.berkeley.edu>
+> Cc: Heiko Carstens <hca@linux.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: x86@kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-I love your patch! Yet something to improve:
+If there are no further comments, then I'll resend as !RFC with a
+slightly extended patch description, testing at least under arm64 and
+ppc64 as they are relatively easy to test for me.
 
-[auto build test ERROR on powerpc/topic/ppc-kvm]
-[also build test ERROR on powerpc/next v5.17-rc2 next-20220202]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+-- 
+Thanks,
 
-url:    https://github.com/0day-ci/linux/commits/Nicholas-Piggin/KVM-PPC-Book3S-PR-Fixes-for-AIL-and-SCV/20220129-152655
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
-config: powerpc-randconfig-r005-20220131 (https://download.01.org/0day-ci/archive/20220202/202202022141.phJ3zWBF-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 11.2.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/0day-ci/linux/commit/a751cf4de8f5854152b969afed947b0640ab0c33
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Nicholas-Piggin/KVM-PPC-Book3S-PR-Fixes-for-AIL-and-SCV/20220129-152655
-        git checkout a751cf4de8f5854152b969afed947b0640ab0c33
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/kvm/
+David / dhildenb
 
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   arch/powerpc/kvm/book3s_pr.c: In function 'kvmppc_core_vcpu_load_pr':
->> arch/powerpc/kvm/book3s_pr.c:146:74: error: 'struct thread_struct' has no member named 'fscr'
-     146 |                 if (cpu_has_feature(CPU_FTR_ARCH_300) && (current->thread.fscr & FSCR_SCV))
-         |                                                                          ^
-   arch/powerpc/kvm/book3s_pr.c: In function 'kvmppc_core_vcpu_put_pr':
-   arch/powerpc/kvm/book3s_pr.c:184:74: error: 'struct thread_struct' has no member named 'fscr'
-     184 |                 if (cpu_has_feature(CPU_FTR_ARCH_300) && (current->thread.fscr & FSCR_SCV))
-         |                                                                          ^
-
-
-vim +146 arch/powerpc/kvm/book3s_pr.c
-
-   141	
-   142		/* Disable AIL if supported */
-   143		if (cpu_has_feature(CPU_FTR_HVMODE)) {
-   144			if (cpu_has_feature(CPU_FTR_ARCH_207S))
-   145				mtspr(SPRN_LPCR, mfspr(SPRN_LPCR) & ~LPCR_AIL);
- > 146			if (cpu_has_feature(CPU_FTR_ARCH_300) && (current->thread.fscr & FSCR_SCV))
-   147				mtspr(SPRN_FSCR, mfspr(SPRN_FSCR) & ~FSCR_SCV);
-   148		}
-   149	
-   150		vcpu->cpu = smp_processor_id();
-   151	#ifdef CONFIG_PPC_BOOK3S_32
-   152		current->thread.kvm_shadow_vcpu = vcpu->arch.shadow_vcpu;
-   153	#endif
-   154	
-   155		if (kvmppc_is_split_real(vcpu))
-   156			kvmppc_fixup_split_real(vcpu);
-   157	
-   158		kvmppc_restore_tm_pr(vcpu);
-   159	}
-   160	
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
