@@ -2,54 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEC184A7C48
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 01:06:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F004A7E13
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 03:44:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JpzTs4LW2z3bcp
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 11:06:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jq3145tWjz3cRW
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 13:44:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=0tFyjfZi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IfifaL/Y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=0tFyjfZi; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=IfifaL/Y; 
  dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JpzTD6Z2Sz3bNC
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Feb 2022 11:05:36 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
- MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=xQooU1SeAas1UxR3X3UmWtN5zzl8oAjoZoNwYOADmzQ=; b=0tFyjfZigtDVzKO8NKFpEoPnFT
- +BCli90uB8dnN9Zb3T7haQ6WAVu9sc6f+G7578f6V+Ed7sq0Cjjc49k/pzlpBvQ2AIereclmGEPDp
- ON5m/YH0TmOLFNw8nDW0zc0VzUNFsfpDuhwNgjgmnGdkTPKnVx0HsdMG4TpsddoUk6Oc2Rhr8PlgS
- T9Se5iyhiWEbWWL6h4rbGDsFYCfK5t9NDYSf5hnBO2g+lA6lpIcMDGwHHhG2XV6ksmXUVKGwsRsiP
- V02pOQjQdh3QBDPMCF3VRYFQyMJVOfRTh0KfBezd9cKBgnMqC0/KCgCvhcdI2i173NI43neERYj8I
- mdDf5KHg==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1nFPcx-00H7nP-G0; Thu, 03 Feb 2022 00:05:31 +0000
-Date: Wed, 2 Feb 2022 16:05:31 -0800
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Aaron Tomlin <atomlin@redhat.com>
-Subject: Re: [PATCH v3 0/6] Allocate module text and data separately
-Message-ID: <YfscSzltd4UcZSCO@bombadil.infradead.org>
-References: <cover.1643475473.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jq30J4qvWz2yPY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Feb 2022 13:44:16 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id B2B246156A
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Feb 2022 02:44:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FCCC340ED
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Feb 2022 02:44:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1643856252;
+ bh=V51eVJiRBfBtAiPpggOpCZR3uh94Yz/dWJnManIUqRA=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=IfifaL/YvkQeOydK0cgYgy7MaOnD1ofDN9TZ9U0AAgJgX5vkoOM/UCN+eqFDFX8e0
+ SIROG24sqmSXhudRlXA3k1jWkp77oSEpy958cVODa3+sWBKJFg5/KfQgGGdSVjxxIs
+ tBS1ttU+VD/lfGZc6laeZXX3nMQbkvJraFwXMBoSDxQnFXqyuk7KNTCbNzoNPaUxXu
+ obu4PEKMkaRLF0VBJAceVG1kvUSawTvpCDv+XjctdvSnwyZA7NM+d+opMx9qUChsMA
+ QIiebpV47EWTVL21TA8YNmrdIhNU6Tt7q6oAVfTnyRCqH7wGOKGMQC/DtV00pJqZ7Z
+ uKgAZRx6fuHVA==
+Received: by mail-ua1-f49.google.com with SMTP id p26so2677315uaa.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Feb 2022 18:44:12 -0800 (PST)
+X-Gm-Message-State: AOAM533rDRudU6UDVao0Kxu//JX8JM5IfnLRuBb70vJwkRV5916LF0ln
+ +s7XHoV2Um68i9cPhzXjTb28bvPhBLKQAFFp+o0=
+X-Google-Smtp-Source: ABdhPJwcymlbtGZh6tQbwNbq4eIqK1FMhWR2Ntg5Vpt7lVSBlW8sS85pNzZxGeDyQITxXLpJvbICejijlor03wlRbBs=
+X-Received: by 2002:ab0:2092:: with SMTP id r18mr12760634uak.66.1643856251122; 
+ Wed, 02 Feb 2022 18:44:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1643475473.git.christophe.leroy@csgroup.eu>
+References: <20220201150545.1512822-1-guoren@kernel.org>
+ <20220201150545.1512822-16-guoren@kernel.org>
+ <20220202075159.GB18398@lst.de>
+In-Reply-To: <20220202075159.GB18398@lst.de>
+From: Guo Ren <guoren@kernel.org>
+Date: Thu, 3 Feb 2022 10:44:00 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTTxzFo1kdkCDH=2RKkQ1gEzOnUCjxotcsjrqivG4qg-Dw@mail.gmail.com>
+Message-ID: <CAJF2gTTxzFo1kdkCDH=2RKkQ1gEzOnUCjxotcsjrqivG4qg-Dw@mail.gmail.com>
+Subject: Re: [PATCH V5 15/21] riscv: compat: Add hw capability check for elf
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,37 +73,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "kgdb-bugreport@lists.sourceforge.net"
- <kgdb-bugreport@lists.sourceforge.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, Jessica Yu <jeyu@kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Drew Fustini <drew@beagleboard.org>, Anup Patel <anup@brainfault.org>,
+ Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, liush <liush@allwinnertech.com>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jan 29, 2022 at 05:02:03PM +0000, Christophe Leroy wrote:
-> This series allow architectures to request having modules data in
-> vmalloc area instead of module area.
-> 
-> This is required on powerpc book3s/32 in order to set data non
-> executable, because it is not possible to set executability on page
-> basis, this is done per 256 Mbytes segments. The module area has exec
-> right, vmalloc area has noexec. Without this change module data
-> remains executable regardless of CONFIG_STRICT_MODULES_RWX.
-> 
-> This can also be useful on other powerpc/32 in order to maximize the
-> chance of code being close enough to kernel core to avoid branch
-> trampolines.
-> 
+On Wed, Feb 2, 2022 at 3:52 PM Christoph Hellwig <hch@lst.de> wrote:
+>
+> On Tue, Feb 01, 2022 at 11:05:39PM +0800, guoren@kernel.org wrote:
+> > +bool compat_elf_check_arch(Elf32_Ehdr *hdr)
+> > +{
+> > +     if (compat_mode_support && (hdr->e_machine == EM_RISCV))
+> > +             return true;
+> > +     else
+> > +             return false;
+> > +}
+>
+> This can be simplified to:
+>
+>         return compat_mode_support && hdr->e_machine == EM_RISCV;
+Good point.
 
-This looks good, however I'd like to see Aaron's changes go in first,
-and then yours. Aaron's changes still need to be tested by 0-day and I
-need to finish review, but that's the order of how I'd prefer to see
-changes merged / tested. I'll try to review his changes, dump them to
-modules-next and then I'd like to trouble you to rebase ontop of that.
+>
+> I'd also rename compat_mode_support to compat_mode_supported
+Okay
 
-We should get all this tested early for the next release.
+>
+> > +
+> > +static int compat_mode_detect(void)
+> > +{
+> > +     unsigned long tmp = csr_read(CSR_STATUS);
+> > +
+> > +     csr_write(CSR_STATUS, (tmp & ~SR_UXL) | SR_UXL_32);
+> > +
+> > +     if ((csr_read(CSR_STATUS) & SR_UXL) != SR_UXL_32) {
+> > +             pr_info("riscv: 32bit compat mode detect failed\n");
+> > +             compat_mode_support = false;
+> > +     } else {
+> > +             compat_mode_support = true;
+> > +             pr_info("riscv: 32bit compat mode detected\n");
+> > +     }
+>
+> I don't think we need these printks here.
+Okay
 
-  Luis
+>
+> Also this could be simplified to:
+>
+>         compat_mode_supported = (csr_read(CSR_STATUS) & SR_UXL) == SR_UXL_32;
+Okay
+
+
+
+-- 
+Best Regards
+ Guo Ren
+
+ML: https://lore.kernel.org/linux-csky/
