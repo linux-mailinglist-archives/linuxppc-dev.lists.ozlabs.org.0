@@ -2,57 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51A54A8B5D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 19:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D523E4A8CBD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 20:52:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JqRgx3tYJz3cD0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 05:16:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JqTp74ZwHz3cQp
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 06:51:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n4Qn8EYh;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=EERLXhvv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=n4Qn8EYh; 
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=EERLXhvv; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JqRgJ0prjz2xsS
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 05:15:55 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 4E4B0618C2;
- Thu,  3 Feb 2022 18:15:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E280C340E8;
- Thu,  3 Feb 2022 18:15:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1643912153;
- bh=BY3UZV02Xh9Phpvcf/vyWzWl1za0GoBYITY+12OY2kw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=n4Qn8EYhsbP3e7GPUom9sYrKL/AYoHQKeoy0sQRJojfA1+H/nlD/IwU0tOCQ3lDsS
- TjKhyYAgqHhWCQPc2B6bYKH61/FMgjSEWkEeyT88c3t4QTwkRVy7fFpgB3NvF9oe6/
- vBa1aqhZmA6bgn1D4nGKqaralwRGnD7Rx5OZC+ae6HDTeO9pgSy/ZLdX3bOwyCS7fx
- S2rjWgc/cfKNCi4QkZMET2M0dORLomhvoUP27SawXqvXaUC3qq/eCSQoCGHl/mhk9z
- 3U9O2uAflljkuQw+bXLuSOTPLPVQ05ZpaDgUjmUXTSDBvHeIwbK+d+J9FRCG1uUFk9
- a6puoTle2uGkw==
-Date: Thu, 3 Feb 2022 20:15:43 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [RFC V1 04/31] powerpc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-Message-ID: <Yfwbz5qu20bjFZOP@kernel.org>
-References: <1643029028-12710-1-git-send-email-anshuman.khandual@arm.com>
- <1643029028-12710-5-git-send-email-anshuman.khandual@arm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JqTnR0Mlkz2ybK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 06:51:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:
+ Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+ Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
+ bh=ft7cClkc6vBpNUXHJ0m3xjhOU7udO/ZG3yRM4g1vYT4=; b=EERLXhvvt+cUvphZ6I2kMdQwAc
+ gjUUegQLCgS6JEACSczf7sBm1sx0ciVihEcBEg6gWVwkeuOFzmzWE1IIcpdMUUXszGrQuqLXGzihh
+ LeMchQTAwicUQZfUfwK2iMpfkQkiMsn3DWsB1QiR74LXTelFtBWOg1RxqQpd9mrtJf6TSXko8SokG
+ LDqGoCCTv/a3N84VLojdahz+Az++nC/dlh+pCXF7cvWQr73/CSO//N38EjPDx8WMmQQ8IX57cCbyh
+ eJKVSWYNzH5Z7YDCP3hNbckQeEzhtIKKnUKhBOPdzT69CFjUx+fIyWUbbataKpfPiqQS+5XJN4joB
+ +evkUpRQ==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
+ (Red Hat Linux)) id 1nFi8H-002dkz-Se; Thu, 03 Feb 2022 19:51:05 +0000
+Date: Thu, 3 Feb 2022 11:51:05 -0800
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Lucas De Marchi <lucas.de.marchi@gmail.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Aaron Tomlin <atomlin@redhat.com>,
+ Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+Subject: Re: [PATCH v3 4/6] modules: Add
+ CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+Message-ID: <YfwyKR1xFaApWjRb@bombadil.infradead.org>
+References: <cover.1643475473.git.christophe.leroy@csgroup.eu>
+ <b59ed8781ef9af995c5bfa762de1f42fdfc57c74.1643475473.git.christophe.leroy@csgroup.eu>
+ <YfsbcXD74BwJ9ci2@bombadil.infradead.org>
+ <228849f5-f6a4-eb45-5e1e-a9b3eccb28b3@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <1643029028-12710-5-git-send-email-anshuman.khandual@arm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <228849f5-f6a4-eb45-5e1e-a9b3eccb28b3@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,161 +69,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, hch@infradead.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ "kgdb-bugreport@lists.sourceforge.net" <kgdb-bugreport@lists.sourceforge.net>,
+ Aaron Tomlin <atomlin@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Douglas Anderson <dianders@chromium.org>,
+ Jason Wessel <jason.wessel@windriver.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, Jessica Yu <jeyu@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jan 24, 2022 at 06:26:41PM +0530, Anshuman Khandual wrote:
-> This defines and exports a platform specific custom vm_get_page_prot() via
-> subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
-> macros can be dropped which are no longer needed. While here, this also
-> localizes arch_vm_get_page_prot() as powerpc_vm_get_page_prot().
-> 
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  arch/powerpc/Kconfig               |  1 +
->  arch/powerpc/include/asm/mman.h    |  3 +-
->  arch/powerpc/include/asm/pgtable.h | 19 ------------
->  arch/powerpc/mm/mmap.c             | 47 ++++++++++++++++++++++++++++++
->  4 files changed, 49 insertions(+), 21 deletions(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index b779603978e1..ddb4a3687c05 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -135,6 +135,7 @@ config PPC
->  	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
->  	select ARCH_HAS_UACCESS_FLUSHCACHE
->  	select ARCH_HAS_UBSAN_SANITIZE_ALL
-> +	select ARCH_HAS_VM_GET_PAGE_PROT
->  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
->  	select ARCH_KEEP_MEMBLOCK
->  	select ARCH_MIGHT_HAVE_PC_PARPORT
-> diff --git a/arch/powerpc/include/asm/mman.h b/arch/powerpc/include/asm/mman.h
-> index 7cb6d18f5cd6..7b10c2031e82 100644
-> --- a/arch/powerpc/include/asm/mman.h
-> +++ b/arch/powerpc/include/asm/mman.h
-> @@ -24,7 +24,7 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
->  }
->  #define arch_calc_vm_prot_bits(prot, pkey) arch_calc_vm_prot_bits(prot, pkey)
->  
-> -static inline pgprot_t arch_vm_get_page_prot(unsigned long vm_flags)
-> +static inline pgprot_t powerpc_vm_get_page_prot(unsigned long vm_flags)
->  {
->  #ifdef CONFIG_PPC_MEM_KEYS
->  	return (vm_flags & VM_SAO) ?
-> @@ -34,7 +34,6 @@ static inline pgprot_t arch_vm_get_page_prot(unsigned long vm_flags)
->  	return (vm_flags & VM_SAO) ? __pgprot(_PAGE_SAO) : __pgprot(0);
->  #endif
->  }
-> -#define arch_vm_get_page_prot(vm_flags) arch_vm_get_page_prot(vm_flags)
->  
->  static inline bool arch_validate_prot(unsigned long prot, unsigned long addr)
->  {
-> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-> index d564d0ecd4cd..3cbb6de20f9d 100644
-> --- a/arch/powerpc/include/asm/pgtable.h
-> +++ b/arch/powerpc/include/asm/pgtable.h
-> @@ -20,25 +20,6 @@ struct mm_struct;
->  #include <asm/nohash/pgtable.h>
->  #endif /* !CONFIG_PPC_BOOK3S */
->  
-> -/* Note due to the way vm flags are laid out, the bits are XWR */
-> -#define __P000	PAGE_NONE
-> -#define __P001	PAGE_READONLY
-> -#define __P010	PAGE_COPY
-> -#define __P011	PAGE_COPY
-> -#define __P100	PAGE_READONLY_X
-> -#define __P101	PAGE_READONLY_X
-> -#define __P110	PAGE_COPY_X
-> -#define __P111	PAGE_COPY_X
-> -
-> -#define __S000	PAGE_NONE
-> -#define __S001	PAGE_READONLY
-> -#define __S010	PAGE_SHARED
-> -#define __S011	PAGE_SHARED
-> -#define __S100	PAGE_READONLY_X
-> -#define __S101	PAGE_READONLY_X
-> -#define __S110	PAGE_SHARED_X
-> -#define __S111	PAGE_SHARED_X
-> -
->  #ifndef __ASSEMBLY__
->  
->  #ifndef MAX_PTRS_PER_PGD
-> diff --git a/arch/powerpc/mm/mmap.c b/arch/powerpc/mm/mmap.c
-> index c475cf810aa8..7f05e7903bd2 100644
-> --- a/arch/powerpc/mm/mmap.c
-> +++ b/arch/powerpc/mm/mmap.c
-> @@ -254,3 +254,50 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
->  		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
->  	}
->  }
-> +
-> +static inline pgprot_t __vm_get_page_prot(unsigned long vm_flags)
-> +{
-> +	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
-> +	case VM_NONE:
-> +		return PAGE_NONE;
-> +	case VM_READ:
-> +		return PAGE_READONLY;
-> +	case VM_WRITE:
-> +		return PAGE_COPY;
-> +	case VM_READ | VM_WRITE:
-> +		return PAGE_COPY;
-> +	case VM_EXEC:
-> +		return PAGE_READONLY_X;
-> +	case VM_EXEC | VM_READ:
-> +		return PAGE_READONLY_X;
-> +	case VM_EXEC | VM_WRITE:
-> +		return PAGE_COPY_X;
-> +	case VM_EXEC | VM_READ | VM_WRITE:
-> +		return PAGE_COPY_X;
-> +	case VM_SHARED:
-> +		return PAGE_NONE;
-> +	case VM_SHARED | VM_READ:
-> +		return PAGE_READONLY;
-> +	case VM_SHARED | VM_WRITE:
-> +		return PAGE_SHARED;
-> +	case VM_SHARED | VM_READ | VM_WRITE:
-> +		return PAGE_SHARED;
-> +	case VM_SHARED | VM_EXEC:
-> +		return PAGE_READONLY_X;
-> +	case VM_SHARED | VM_EXEC | VM_READ:
-> +		return PAGE_READONLY_X;
-> +	case VM_SHARED | VM_EXEC | VM_WRITE:
-> +		return PAGE_SHARED_X;
-> +	case VM_SHARED | VM_EXEC | VM_READ | VM_WRITE:
-> +		return PAGE_SHARED_X;
-> +	default:
-> +		BUILD_BUG();
-> +	}
-> +}
-> +
-> +pgprot_t vm_get_page_prot(unsigned long vm_flags)
-> +{
-> +	return __pgprot(pgprot_val(__vm_get_page_prot(vm_flags)) |
-> +	       pgprot_val(powerpc_vm_get_page_prot(vm_flags)));
-
-Any reason to keep powerpc_vm_get_page_prot() rather than open code it
-here?
-
-This applies to other architectures that implement arch_vm_get_page_prot()
-and/or arch_filter_pgprot() as well.
-
-> +}
-> +EXPORT_SYMBOL(vm_get_page_prot);
-> -- 
-> 2.25.1
+On Thu, Feb 03, 2022 at 07:05:13AM +0000, Christophe Leroy wrote:
 > 
 > 
+> Le 03/02/2022 à 01:01, Luis Chamberlain a écrit :
+> > On Sat, Jan 29, 2022 at 05:02:09PM +0000, Christophe Leroy wrote:
+> >> diff --git a/kernel/module.c b/kernel/module.c
+> >> index 11f51e17fb9f..f3758115ebaa 100644
+> >> --- a/kernel/module.c
+> >> +++ b/kernel/module.c
+> >> @@ -81,7 +81,9 @@
+> >>   /* If this is set, the section belongs in the init part of the module */
+> >>   #define INIT_OFFSET_MASK (1UL << (BITS_PER_LONG-1))
+> >>   
+> >> +#ifndef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+> >>   #define	data_layout core_layout
+> >> +#endif
+> >>   
+> >>   /*
+> >>    * Mutex protects:
+> >> @@ -111,6 +113,12 @@ static struct mod_tree_root {
+> >>   #define module_addr_min mod_tree.addr_min
+> >>   #define module_addr_max mod_tree.addr_max
+> >>   
+> >> +#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+> >> +static struct mod_tree_root mod_data_tree __cacheline_aligned = {
+> >> +	.addr_min = -1UL,
+> >> +};
+> >> +#endif
+> >> +
+> >>   #ifdef CONFIG_MODULES_TREE_LOOKUP
+> >>   
+> >>   /*
+> >> @@ -186,6 +194,11 @@ static void mod_tree_insert(struct module *mod)
+> >>   	__mod_tree_insert(&mod->core_layout.mtn, &mod_tree);
+> >>   	if (mod->init_layout.size)
+> >>   		__mod_tree_insert(&mod->init_layout.mtn, &mod_tree);
+> >> +
+> >> +#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+> >> +	mod->data_layout.mtn.mod = mod;
+> >> +	__mod_tree_insert(&mod->data_layout.mtn, &mod_data_tree);
+> >> +#endif
+> > 
+> > 
+> > kernel/ directory has quite a few files, module.c is the second to
+> > largest file, and it has tons of stuff. Aaron is doing work to
+> > split things out to make code easier to read and so that its easier
+> > to review changes. See:
+> > 
+> > https://lkml.kernel.org/r/20220130213214.1042497-1-atomlin@redhat.com
+> > 
+> > I think this is a good patch example which could benefit from that work.
+> > So I'd much prefer to see that work go in first than this, so to see if
+> > we can make the below changes more compartamentalized.
+> > 
+> > Curious, how much testing has been put into this series?
+> 
+> 
+> I tested the change up to (including) patch 4 to verify it doesn't 
+> introduce regression when not using 
+> CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC,
 
--- 
-Sincerely yours,
-Mike.
+> Then I tested with patch 5. I first tried with the 'hello world' test 
+> module. After that I loaded several important modules and checked I 
+> didn't get any regression, both with and without STRICT_MODULES_RWX and 
+> I checked the consistency in /proc/vmallocinfo
+>   /proc/modules /sys/class/modules/*
+
+I wonder if we have a test for STRICT_MODULES_RWX.
+
+> I also tested with a hacked module_alloc() to force branch trampolines.
+
+So to verify that reducing these trampolines actually helps on an
+architecture? I wonder if we can generalize this somehow to let archs
+verify such strategies can help.
+
+I was hoping for a bit more wider testing, like actually users, etc.
+It does not seem like so. So we can get to that by merging this soon
+into modules-next and having this bleed out issues with linux-next.
+We are in good time to do this now.
+
+The kmod tree has tons of tests:
+
+https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/
+
+Can you use that to verify there are no regressions?
+
+Aaron, Michal, if you can do the same that'd be appreciated.
+
+
+  Luis
