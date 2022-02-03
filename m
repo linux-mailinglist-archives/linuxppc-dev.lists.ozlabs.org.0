@@ -1,33 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C354A7E82
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 04:58:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 081AA4A7F23
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 06:39:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jq4f25pl8z3cQ8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 14:58:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jq6tq5Mvdz3cRh
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 16:39:47 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rMj6cjmE;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Jq4dY0xy1z3bV6
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Feb 2022 14:58:06 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 303381FB;
- Wed,  2 Feb 2022 19:58:03 -0800 (PST)
-Received: from p8cg001049571a15.arm.com (unknown [10.163.44.35])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 375473F774;
- Wed,  2 Feb 2022 19:57:58 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Subject: [PATCH V2] mm: Merge pte_mkhuge() call into arch_make_huge_pte()
-Date: Thu,  3 Feb 2022 09:27:49 +0530
-Message-Id: <1643860669-26307-1-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ellerman.id.au (client-ip=2404:9400:2221:ea00::3;
+ helo=gandalf.ozlabs.org; envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=rMj6cjmE; 
+ dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jq6t74zpWz3bT6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Feb 2022 16:39:10 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Jq6sz71xZz4xmk;
+ Thu,  3 Feb 2022 16:39:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1643866745;
+ bh=5ypoksyewD1/1A0wIikcTAQpbuRBIVCFLpLku2DM1UQ=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=rMj6cjmEUS8Wn69koaMHGmWtpyj6ZO2nAuoyXA+oWiHfj2yhSyVXHPcjxkz5zmpZD
+ WdOsbHhM5IN8Sxx+y5AE3lyjCEc+r5KfaNZza81P6gEszI/6eIqJvUMkHlMNrCqRMu
+ MD3TSoNfM8O0TEuisU+c7WgVCaJ0RpIOaxUzrqSEcepCdb37tklQLk/xwJqw3N68Zc
+ ulZFnLmU1XaXdjsexrU4b+S2Ms2cXvBTRrkylee8pfYCCllBETW7Tbn5AerQ5uFqCQ
+ 6bgj65lt4gPCXOpWLgub/FKbqZZkFeTJz7NSunJt46xMtkybfJYQqzJUkDijOk7idk
+ 3YDBVgFFETn3w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Luis Chamberlain <mcgrof@kernel.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 5/5] powerpc: Select
+ ARCH_WANTS_MODULES_DATA_IN_VMALLOC on book3s/32 and 8xx
+In-Reply-To: <YfsVhcpVTW0+YCl5@bombadil.infradead.org>
+References: <cover.1643282353.git.christophe.leroy@csgroup.eu>
+ <a20285472ad0a0a13a1d93c4707180be5b4fa092.1643282353.git.christophe.leroy@csgroup.eu>
+ <YfsVhcpVTW0+YCl5@bombadil.infradead.org>
+Date: Thu, 03 Feb 2022 16:39:02 +1100
+Message-ID: <87h79gmrux.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,142 +66,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Will Deacon <will@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- linux-arm-kernel@lists.infradead.org, Mike Kravetz <mike.kravetz@oracle.com>
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "kgdb-bugreport@lists.sourceforge.net"
+ <kgdb-bugreport@lists.sourceforge.net>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ Jessica Yu <jeyu@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Each call into pte_mkhuge() is invariably followed by arch_make_huge_pte().
-Instead arch_make_huge_pte() can accommodate pte_mkhuge() at the beginning.
-This updates generic fallback stub for arch_make_huge_pte() and available
-platforms definitions. This makes huge pte creation much cleaner and easier
-to follow.
+Luis Chamberlain <mcgrof@kernel.org> writes:
+> On Thu, Jan 27, 2022 at 11:28:12AM +0000, Christophe Leroy wrote:
+>> book3s/32 and 8xx have a separate area for allocating modules,
+>> defined by MODULES_VADDR / MODULES_END.
+>> 
+>> On book3s/32, it is not possible to protect against execution
+>> on a page basis. A full 256M segment is either Exec or NoExec.
+>> The module area is in an Exec segment while vmalloc area is
+>> in a NoExec segment.
+>> 
+>> In order to protect module data against execution, select
+>> ARCH_WANTS_MODULES_DATA_IN_VMALLOC.
+>> 
+>> For the 8xx (and possibly other 32 bits platform in the future),
+>> there is no such constraint on Exec/NoExec protection, however
+>> there is a critical distance between kernel functions and callers
+>> that needs to remain below 32Mbytes in order to avoid costly
+>> trampolines. By allocating data outside of module area, we
+>> increase the chance for module text to remain within acceptable
+>> distance from kernel core text.
+>> 
+>> So select ARCH_WANTS_MODULES_DATA_IN_VMALLOC for 8xx as well.
+>> 
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>> Cc: Paul Mackerras <paulus@samba.org>
+>
+> Cc list first and then the SOB.
 
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: sparclinux@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
-This applies on v5.17-rc2
+Just delete the Cc: list, it's meaningless.
 
-Changes in V2:
-
-- Direct PTE encode in arch_make_huge_pte() on powerpc platform per Christophe
-
-Changes in V1:
-
-https://lore.kernel.org/all/1643780286-18798-1-git-send-email-anshuman.khandual@arm.com/
-
- arch/arm64/mm/hugetlbpage.c                      | 1 +
- arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h | 4 ++--
- arch/sparc/mm/hugetlbpage.c                      | 1 +
- include/linux/hugetlb.h                          | 2 +-
- mm/hugetlb.c                                     | 3 +--
- mm/vmalloc.c                                     | 1 -
- 6 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-index ffb9c229610a..228226c5fa80 100644
---- a/arch/arm64/mm/hugetlbpage.c
-+++ b/arch/arm64/mm/hugetlbpage.c
-@@ -347,6 +347,7 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags)
- {
- 	size_t pagesize = 1UL << shift;
- 
-+	entry = pte_mkhuge(entry);
- 	if (pagesize == CONT_PTE_SIZE) {
- 		entry = pte_mkcont(entry);
- 	} else if (pagesize == CONT_PMD_SIZE) {
-diff --git a/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h b/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
-index 64b6c608eca4..de092b04ee1a 100644
---- a/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
-@@ -71,9 +71,9 @@ static inline pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags
- 	size_t size = 1UL << shift;
- 
- 	if (size == SZ_16K)
--		return __pte(pte_val(entry) & ~_PAGE_HUGE);
-+		return __pte(pte_val(entry) | _PAGE_SPS);
- 	else
--		return entry;
-+		return __pte(pte_val(entry) | _PAGE_SPS | _PAGE_HUGE);
- }
- #define arch_make_huge_pte arch_make_huge_pte
- #endif
-diff --git a/arch/sparc/mm/hugetlbpage.c b/arch/sparc/mm/hugetlbpage.c
-index 0f49fada2093..d8e0e3c7038d 100644
---- a/arch/sparc/mm/hugetlbpage.c
-+++ b/arch/sparc/mm/hugetlbpage.c
-@@ -181,6 +181,7 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags)
- {
- 	pte_t pte;
- 
-+	entry = pte_mkhuge(entry);
- 	pte = hugepage_shift_to_tte(entry, shift);
- 
- #ifdef CONFIG_SPARC64
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index d1897a69c540..52c462390aee 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -754,7 +754,7 @@ static inline void arch_clear_hugepage_flags(struct page *page) { }
- static inline pte_t arch_make_huge_pte(pte_t entry, unsigned int shift,
- 				       vm_flags_t flags)
- {
--	return entry;
-+	return pte_mkhuge(entry);
- }
- #endif
- 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 61895cc01d09..5ca253c1b4e4 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4637,7 +4637,6 @@ static pte_t make_huge_pte(struct vm_area_struct *vma, struct page *page,
- 					   vma->vm_page_prot));
- 	}
- 	entry = pte_mkyoung(entry);
--	entry = pte_mkhuge(entry);
- 	entry = arch_make_huge_pte(entry, shift, vma->vm_flags);
- 
- 	return entry;
-@@ -6172,7 +6171,7 @@ unsigned long hugetlb_change_protection(struct vm_area_struct *vma,
- 			unsigned int shift = huge_page_shift(hstate_vma(vma));
- 
- 			old_pte = huge_ptep_modify_prot_start(vma, address, ptep);
--			pte = pte_mkhuge(huge_pte_modify(old_pte, newprot));
-+			pte = huge_pte_modify(old_pte, newprot);
- 			pte = arch_make_huge_pte(pte, shift, vma->vm_flags);
- 			huge_ptep_modify_prot_commit(vma, address, ptep, old_pte, pte);
- 			pages++;
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 4165304d3547..d0b14dd73adc 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -118,7 +118,6 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- 		if (size != PAGE_SIZE) {
- 			pte_t entry = pfn_pte(pfn, prot);
- 
--			entry = pte_mkhuge(entry);
- 			entry = arch_make_huge_pte(entry, ilog2(size), 0);
- 			set_huge_pte_at(&init_mm, addr, pte, entry);
- 			pfn += PFN_DOWN(size);
--- 
-2.25.1
-
+cheers
