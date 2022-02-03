@@ -1,63 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D523E4A8CBD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 20:52:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF47D4A8D71
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 21:31:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JqTp74ZwHz3cQp
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 06:51:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JqVgT4YqGz3bbv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 07:31:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=EERLXhvv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X1uXczWk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=EERLXhvv; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=X1uXczWk; 
  dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JqTnR0Mlkz2ybK
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 06:51:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:
- Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
- Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
- bh=ft7cClkc6vBpNUXHJ0m3xjhOU7udO/ZG3yRM4g1vYT4=; b=EERLXhvvt+cUvphZ6I2kMdQwAc
- gjUUegQLCgS6JEACSczf7sBm1sx0ciVihEcBEg6gWVwkeuOFzmzWE1IIcpdMUUXszGrQuqLXGzihh
- LeMchQTAwicUQZfUfwK2iMpfkQkiMsn3DWsB1QiR74LXTelFtBWOg1RxqQpd9mrtJf6TSXko8SokG
- LDqGoCCTv/a3N84VLojdahz+Az++nC/dlh+pCXF7cvWQr73/CSO//N38EjPDx8WMmQQ8IX57cCbyh
- eJKVSWYNzH5Z7YDCP3hNbckQeEzhtIKKnUKhBOPdzT69CFjUx+fIyWUbbataKpfPiqQS+5XJN4joB
- +evkUpRQ==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
- (Red Hat Linux)) id 1nFi8H-002dkz-Se; Thu, 03 Feb 2022 19:51:05 +0000
-Date: Thu, 3 Feb 2022 11:51:05 -0800
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Lucas De Marchi <lucas.de.marchi@gmail.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Aaron Tomlin <atomlin@redhat.com>,
- Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-Subject: Re: [PATCH v3 4/6] modules: Add
- CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-Message-ID: <YfwyKR1xFaApWjRb@bombadil.infradead.org>
-References: <cover.1643475473.git.christophe.leroy@csgroup.eu>
- <b59ed8781ef9af995c5bfa762de1f42fdfc57c74.1643475473.git.christophe.leroy@csgroup.eu>
- <YfsbcXD74BwJ9ci2@bombadil.infradead.org>
- <228849f5-f6a4-eb45-5e1e-a9b3eccb28b3@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JqVfl56fTz30LP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 07:30:39 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id D30C3B835A1;
+ Thu,  3 Feb 2022 20:30:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC51C340F1;
+ Thu,  3 Feb 2022 20:30:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1643920233;
+ bh=PgnNCRpAxiyodWJyZyyGogYzjGJ0Rm0cnQHlJk9t4W0=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=X1uXczWkcaNHHmRm9IpIdILI2yqMOH8rMa0MYwoh79JInTbpzfASPfJKRKXPmR+CI
+ 21LSGFLuFgPI5ekYRNOZMbFE7fGaZWrKfWCMJG+scF96ihRRovIoD6Aa4SbOdtxhJY
+ a5Hh1AAYPO2WXT0xsEl4i8gTQEXDTxMaBldY+XHo4NPRbaQPdlnQWrzhKOPPy52G+W
+ H/Zsi5GgU3pbXOiKnLCJpmHsTWLA1R7YqfC54hEYEssm+vFev+LX7zm1T3j5owH9La
+ tsM/wAWKu48XlqX9WL86YnxvtPosX2RcB+3t0KxzwI7BOUBue4EaIL1a5xUJvC9oSp
+ 6RpTiuwBHHW1w==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.16 22/52] powerpc/fixmap: Fix VM debug warning on
+ unmap
+Date: Thu,  3 Feb 2022 15:29:16 -0500
+Message-Id: <20220203202947.2304-22-sashal@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220203202947.2304-1-sashal@kernel.org>
+References: <20220203202947.2304-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <228849f5-f6a4-eb45-5e1e-a9b3eccb28b3@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,106 +66,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- Daniel Thompson <daniel.thompson@linaro.org>,
- "kgdb-bugreport@lists.sourceforge.net" <kgdb-bugreport@lists.sourceforge.net>,
- Aaron Tomlin <atomlin@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Douglas Anderson <dianders@chromium.org>,
- Jason Wessel <jason.wessel@windriver.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, Jessica Yu <jeyu@kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Sasha Levin <sashal@kernel.org>, anshuman.khandual@arm.com,
+ aneesh.kumar@linux.ibm.com, palmerdabbelt@google.com, npiggin@gmail.com,
+ geert@linux-m68k.org, joel@jms.id.au, Maxime Bizon <mbizon@freebox.fr>,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, shorne@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Feb 03, 2022 at 07:05:13AM +0000, Christophe Leroy wrote:
-> 
-> 
-> Le 03/02/2022 à 01:01, Luis Chamberlain a écrit :
-> > On Sat, Jan 29, 2022 at 05:02:09PM +0000, Christophe Leroy wrote:
-> >> diff --git a/kernel/module.c b/kernel/module.c
-> >> index 11f51e17fb9f..f3758115ebaa 100644
-> >> --- a/kernel/module.c
-> >> +++ b/kernel/module.c
-> >> @@ -81,7 +81,9 @@
-> >>   /* If this is set, the section belongs in the init part of the module */
-> >>   #define INIT_OFFSET_MASK (1UL << (BITS_PER_LONG-1))
-> >>   
-> >> +#ifndef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-> >>   #define	data_layout core_layout
-> >> +#endif
-> >>   
-> >>   /*
-> >>    * Mutex protects:
-> >> @@ -111,6 +113,12 @@ static struct mod_tree_root {
-> >>   #define module_addr_min mod_tree.addr_min
-> >>   #define module_addr_max mod_tree.addr_max
-> >>   
-> >> +#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-> >> +static struct mod_tree_root mod_data_tree __cacheline_aligned = {
-> >> +	.addr_min = -1UL,
-> >> +};
-> >> +#endif
-> >> +
-> >>   #ifdef CONFIG_MODULES_TREE_LOOKUP
-> >>   
-> >>   /*
-> >> @@ -186,6 +194,11 @@ static void mod_tree_insert(struct module *mod)
-> >>   	__mod_tree_insert(&mod->core_layout.mtn, &mod_tree);
-> >>   	if (mod->init_layout.size)
-> >>   		__mod_tree_insert(&mod->init_layout.mtn, &mod_tree);
-> >> +
-> >> +#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-> >> +	mod->data_layout.mtn.mod = mod;
-> >> +	__mod_tree_insert(&mod->data_layout.mtn, &mod_data_tree);
-> >> +#endif
-> > 
-> > 
-> > kernel/ directory has quite a few files, module.c is the second to
-> > largest file, and it has tons of stuff. Aaron is doing work to
-> > split things out to make code easier to read and so that its easier
-> > to review changes. See:
-> > 
-> > https://lkml.kernel.org/r/20220130213214.1042497-1-atomlin@redhat.com
-> > 
-> > I think this is a good patch example which could benefit from that work.
-> > So I'd much prefer to see that work go in first than this, so to see if
-> > we can make the below changes more compartamentalized.
-> > 
-> > Curious, how much testing has been put into this series?
-> 
-> 
-> I tested the change up to (including) patch 4 to verify it doesn't 
-> introduce regression when not using 
-> CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC,
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-> Then I tested with patch 5. I first tried with the 'hello world' test 
-> module. After that I loaded several important modules and checked I 
-> didn't get any regression, both with and without STRICT_MODULES_RWX and 
-> I checked the consistency in /proc/vmallocinfo
->   /proc/modules /sys/class/modules/*
+[ Upstream commit aec982603aa8cc0a21143681feb5f60ecc69d718 ]
 
-I wonder if we have a test for STRICT_MODULES_RWX.
+Unmapping a fixmap entry is done by calling __set_fixmap()
+with FIXMAP_PAGE_CLEAR as flags.
 
-> I also tested with a hacked module_alloc() to force branch trampolines.
+Today, powerpc __set_fixmap() calls map_kernel_page().
 
-So to verify that reducing these trampolines actually helps on an
-architecture? I wonder if we can generalize this somehow to let archs
-verify such strategies can help.
+map_kernel_page() is not happy when called a second time
+for the same page.
 
-I was hoping for a bit more wider testing, like actually users, etc.
-It does not seem like so. So we can get to that by merging this soon
-into modules-next and having this bleed out issues with linux-next.
-We are in good time to do this now.
+	WARNING: CPU: 0 PID: 1 at arch/powerpc/mm/pgtable.c:194 set_pte_at+0xc/0x1e8
+	CPU: 0 PID: 1 Comm: swapper Not tainted 5.16.0-rc3-s3k-dev-01993-g350ff07feb7d-dirty #682
+	NIP:  c0017cd4 LR: c00187f0 CTR: 00000010
+	REGS: e1011d50 TRAP: 0700   Not tainted  (5.16.0-rc3-s3k-dev-01993-g350ff07feb7d-dirty)
+	MSR:  00029032 <EE,ME,IR,DR,RI>  CR: 42000208  XER: 00000000
 
-The kmod tree has tons of tests:
+	GPR00: c0165fec e1011e10 c14c0000 c0ee2550 ff800000 c0f3d000 00000000 c001686c
+	GPR08: 00001000 b00045a9 00000001 c0f58460 c0f50000 00000000 c0007e10 00000000
+	GPR16: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+	GPR24: 00000000 00000000 c0ee2550 00000000 c0f57000 00000ff8 00000000 ff800000
+	NIP [c0017cd4] set_pte_at+0xc/0x1e8
+	LR [c00187f0] map_kernel_page+0x9c/0x100
+	Call Trace:
+	[e1011e10] [c0736c68] vsnprintf+0x358/0x6c8 (unreliable)
+	[e1011e30] [c0165fec] __set_fixmap+0x30/0x44
+	[e1011e40] [c0c13bdc] early_iounmap+0x11c/0x170
+	[e1011e70] [c0c06cb0] ioremap_legacy_serial_console+0x88/0xc0
+	[e1011e90] [c0c03634] do_one_initcall+0x80/0x178
+	[e1011ef0] [c0c0385c] kernel_init_freeable+0xb4/0x250
+	[e1011f20] [c0007e34] kernel_init+0x24/0x140
+	[e1011f30] [c0016268] ret_from_kernel_thread+0x5c/0x64
+	Instruction dump:
+	7fe3fb78 48019689 80010014 7c630034 83e1000c 5463d97e 7c0803a6 38210010
+	4e800020 81250000 712a0001 41820008 <0fe00000> 9421ffe0 93e1001c 48000030
 
-https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/
+Implement unmap_kernel_page() which clears an existing pte.
 
-Can you use that to verify there are no regressions?
+Reported-by: Maxime Bizon <mbizon@freebox.fr>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Tested-by: Maxime Bizon <mbizon@freebox.fr>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/b0b752f6f6ecc60653e873f385c6f0dce4e9ab6a.1638789098.git.christophe.leroy@csgroup.eu
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/include/asm/book3s/32/pgtable.h | 1 +
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 2 ++
+ arch/powerpc/include/asm/fixmap.h            | 6 ++++--
+ arch/powerpc/include/asm/nohash/32/pgtable.h | 1 +
+ arch/powerpc/include/asm/nohash/64/pgtable.h | 1 +
+ arch/powerpc/mm/pgtable.c                    | 9 +++++++++
+ 6 files changed, 18 insertions(+), 2 deletions(-)
 
-Aaron, Michal, if you can do the same that'd be appreciated.
+diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
+index 609c80f671943..f8b94f78403f1 100644
+--- a/arch/powerpc/include/asm/book3s/32/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
+@@ -178,6 +178,7 @@ static inline bool pte_user(pte_t pte)
+ #ifndef __ASSEMBLY__
+ 
+ int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
++void unmap_kernel_page(unsigned long va);
+ 
+ #endif /* !__ASSEMBLY__ */
+ 
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index 33e073d6b0c41..875730d5af408 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -1082,6 +1082,8 @@ static inline int map_kernel_page(unsigned long ea, unsigned long pa, pgprot_t p
+ 	return hash__map_kernel_page(ea, pa, prot);
+ }
+ 
++void unmap_kernel_page(unsigned long va);
++
+ static inline int __meminit vmemmap_create_mapping(unsigned long start,
+ 						   unsigned long page_size,
+ 						   unsigned long phys)
+diff --git a/arch/powerpc/include/asm/fixmap.h b/arch/powerpc/include/asm/fixmap.h
+index 947b5b9c44241..a832aeafe5601 100644
+--- a/arch/powerpc/include/asm/fixmap.h
++++ b/arch/powerpc/include/asm/fixmap.h
+@@ -111,8 +111,10 @@ static inline void __set_fixmap(enum fixed_addresses idx,
+ 		BUILD_BUG_ON(idx >= __end_of_fixed_addresses);
+ 	else if (WARN_ON(idx >= __end_of_fixed_addresses))
+ 		return;
+-
+-	map_kernel_page(__fix_to_virt(idx), phys, flags);
++	if (pgprot_val(flags))
++		map_kernel_page(__fix_to_virt(idx), phys, flags);
++	else
++		unmap_kernel_page(__fix_to_virt(idx));
+ }
+ 
+ #define __early_set_fixmap	__set_fixmap
+diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
+index b67742e2a9b22..d959c2a73fbf4 100644
+--- a/arch/powerpc/include/asm/nohash/32/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
+@@ -64,6 +64,7 @@ extern int icache_44x_need_flush;
+ #ifndef __ASSEMBLY__
+ 
+ int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
++void unmap_kernel_page(unsigned long va);
+ 
+ #endif /* !__ASSEMBLY__ */
+ 
+diff --git a/arch/powerpc/include/asm/nohash/64/pgtable.h b/arch/powerpc/include/asm/nohash/64/pgtable.h
+index 9d2905a474103..2225991c69b55 100644
+--- a/arch/powerpc/include/asm/nohash/64/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/64/pgtable.h
+@@ -308,6 +308,7 @@ static inline void __ptep_set_access_flags(struct vm_area_struct *vma,
+ #define __swp_entry_to_pte(x)		__pte((x).val)
+ 
+ int map_kernel_page(unsigned long ea, unsigned long pa, pgprot_t prot);
++void unmap_kernel_page(unsigned long va);
+ extern int __meminit vmemmap_create_mapping(unsigned long start,
+ 					    unsigned long page_size,
+ 					    unsigned long phys);
+diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+index ce94823831442..b7385e637e3e3 100644
+--- a/arch/powerpc/mm/pgtable.c
++++ b/arch/powerpc/mm/pgtable.c
+@@ -203,6 +203,15 @@ void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
+ 	__set_pte_at(mm, addr, ptep, pte, 0);
+ }
+ 
++void unmap_kernel_page(unsigned long va)
++{
++	pmd_t *pmdp = pmd_off_k(va);
++	pte_t *ptep = pte_offset_kernel(pmdp, va);
++
++	pte_clear(&init_mm, va, ptep);
++	flush_tlb_kernel_range(va, va + PAGE_SIZE);
++}
++
+ /*
+  * This is called when relaxing access to a PTE. It's also called in the page
+  * fault path when we don't hit any of the major fault cases, ie, a minor
+-- 
+2.34.1
 
-
-  Luis
