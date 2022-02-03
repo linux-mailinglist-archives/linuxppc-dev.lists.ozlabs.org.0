@@ -2,55 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF47D4A8D71
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 21:31:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 322554A8DE4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Feb 2022 21:34:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JqVgT4YqGz3bbv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 07:31:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JqVkp6DjLz3cNv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 07:34:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X1uXczWk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U+XNiew2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=sashal@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=X1uXczWk; 
+ header.s=k20201202 header.b=U+XNiew2; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JqVfl56fTz30LP
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 07:30:39 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JqVk86w58z30LP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 07:33:36 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id D30C3B835A1;
- Thu,  3 Feb 2022 20:30:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC51C340F1;
- Thu,  3 Feb 2022 20:30:31 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 8F709B835AE;
+ Thu,  3 Feb 2022 20:33:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7481C340E8;
+ Thu,  3 Feb 2022 20:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1643920233;
- bh=PgnNCRpAxiyodWJyZyyGogYzjGJ0Rm0cnQHlJk9t4W0=;
+ s=k20201202; t=1643920412;
+ bh=9SYEMbtA7pXPrneI3BrYTIUPJZ3VOf9fuzVoZuj+E0Y=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=X1uXczWkcaNHHmRm9IpIdILI2yqMOH8rMa0MYwoh79JInTbpzfASPfJKRKXPmR+CI
- 21LSGFLuFgPI5ekYRNOZMbFE7fGaZWrKfWCMJG+scF96ihRRovIoD6Aa4SbOdtxhJY
- a5Hh1AAYPO2WXT0xsEl4i8gTQEXDTxMaBldY+XHo4NPRbaQPdlnQWrzhKOPPy52G+W
- H/Zsi5GgU3pbXOiKnLCJpmHsTWLA1R7YqfC54hEYEssm+vFev+LX7zm1T3j5owH9La
- tsM/wAWKu48XlqX9WL86YnxvtPosX2RcB+3t0KxzwI7BOUBue4EaIL1a5xUJvC9oSp
- 6RpTiuwBHHW1w==
+ b=U+XNiew2dzYvSIjD1nIEnIwX97y7S0+7dbM0gZepuPlOSqlCD8SkgbWVaMeJYxdaw
+ tSfJ6Y+zftLFkMqANZqAOGcqVp3kPRontMuzVlkS5d4M0y+1M5oidZxwrx+EIcOZkr
+ jBuGFVnwFMrSsB7aO+zQa7VPKGSHQgplyEB56xjJhcK3vwL7SUv3if6JN6+dmWEfR3
+ iGDG/OOAtSlRXPOyHwrAxWm1ecVvLsFUkGAWmEUNuk/sTWuiJiSOiTUHhoNAhJkZ7O
+ wVmkVM5KJrCj/A1FsTnsYuQsTSrcGT/Acl6TjP4s2KJ/cq0HaTDbJVTDmUWwQQqQoe
+ C7FZ/x/t4EcWQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.16 22/52] powerpc/fixmap: Fix VM debug warning on
+Subject: [PATCH AUTOSEL 5.15 22/41] powerpc/fixmap: Fix VM debug warning on
  unmap
-Date: Thu,  3 Feb 2022 15:29:16 -0500
-Message-Id: <20220203202947.2304-22-sashal@kernel.org>
+Date: Thu,  3 Feb 2022 15:32:26 -0500
+Message-Id: <20220203203245.3007-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220203202947.2304-1-sashal@kernel.org>
-References: <20220203202947.2304-1-sashal@kernel.org>
+In-Reply-To: <20220203203245.3007-1-sashal@kernel.org>
+References: <20220203203245.3007-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -66,10 +68,11 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, anshuman.khandual@arm.com,
- aneesh.kumar@linux.ibm.com, palmerdabbelt@google.com, npiggin@gmail.com,
- geert@linux-m68k.org, joel@jms.id.au, Maxime Bizon <mbizon@freebox.fr>,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, shorne@gmail.com
+Cc: Sasha Levin <sashal@kernel.org>, sfr@canb.auug.org.au,
+ anshuman.khandual@arm.com, aneesh.kumar@linux.ibm.com,
+ palmerdabbelt@google.com, npiggin@gmail.com, geert@linux-m68k.org,
+ guoren@kernel.org, joel@jms.id.au, Maxime Bizon <mbizon@freebox.fr>,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -141,7 +144,7 @@ index 609c80f671943..f8b94f78403f1 100644
  #endif /* !__ASSEMBLY__ */
  
 diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 33e073d6b0c41..875730d5af408 100644
+index 5d34a8646f081..6866d860d4f30 100644
 --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
 +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
 @@ -1082,6 +1082,8 @@ static inline int map_kernel_page(unsigned long ea, unsigned long pa, pgprot_t p
@@ -171,7 +174,7 @@ index 947b5b9c44241..a832aeafe5601 100644
  
  #define __early_set_fixmap	__set_fixmap
 diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
-index b67742e2a9b22..d959c2a73fbf4 100644
+index d6ba821a56ced..63ea4693ccea6 100644
 --- a/arch/powerpc/include/asm/nohash/32/pgtable.h
 +++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
 @@ -64,6 +64,7 @@ extern int icache_44x_need_flush;
@@ -195,7 +198,7 @@ index 9d2905a474103..2225991c69b55 100644
  					    unsigned long page_size,
  					    unsigned long phys);
 diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index ce94823831442..b7385e637e3e3 100644
+index cd16b407f47e1..9a93c1a5aa1d1 100644
 --- a/arch/powerpc/mm/pgtable.c
 +++ b/arch/powerpc/mm/pgtable.c
 @@ -203,6 +203,15 @@ void set_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
