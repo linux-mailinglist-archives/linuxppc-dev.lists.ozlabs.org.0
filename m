@@ -2,100 +2,111 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349264A9442
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 08:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB994A95A3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 09:56:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jqmjn6BDjz3cBH
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 18:04:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JqqCm6nNhz3cPP
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 19:56:52 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=J0VMFgpu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ADoW3vOK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com;
+ smtp.mailfrom=ozlabs.org (client-ip=2404:9400:2221:ea00::3;
+ helo=gandalf.ozlabs.org;
+ envelope-from=srs0=c2ht=st=linux.ibm.com=sourabhjain@ozlabs.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=J0VMFgpu; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=ADoW3vOK; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JqqC15NV7z2xtp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 19:56:13 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4JqqC05MBCz4xmk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 19:56:12 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4JqqC05FJyz4xcP; Fri,  4 Feb 2022 19:56:12 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ADoW3vOK; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jqmj20yqPz2yPV
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 18:03:33 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21436OhC017326
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 4 Feb 2022 07:03:30 GMT
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4JqqC02JX0z4xQp;
+ Fri,  4 Feb 2022 19:56:11 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2146cVWB021958; 
+ Fri, 4 Feb 2022 08:56:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : content-type :
- subject : message-id : date : cc : to : content-transfer-encoding :
- mime-version; s=pp1; bh=ofUCs5NpEEv286PmHRuhnpmYeLbQ/rz0lmUodXWT/Dk=;
- b=J0VMFgpu/qv8/TxFWCpCZGQnLR9twlsnFXOOEJMjCBEMohR4RGxCXsUhg2As3qDKEoI6
- zqz09f2BCQpfN/LRaxbyVouKc6KeWV1N+kPnmobL1vYWVnxotSM084iRaQ1AqvYin/IX
- E3AiL0YQwUglFnUAmyC9pWYAc1V3DQY1ytKlvSHRwGQKOUFZr3MdJgqlr/KUk69ulbzS
- NoS+6kQ4FReyJYNMKadulsJm4ATVrGmjQ4lZfaalhsgKVEMyVbogW1KY2hvdiBf1CDHY
- 5aRQMoLgDG7t/ItAWZ1vAtnW/LNJ+t3cUdtx/rl+aNeh2o67K6oEfbIccRl9yUhtpyfA ag== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e0qx8y3ya-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Feb 2022 07:03:30 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21470Gvw004940
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 4 Feb 2022 07:03:30 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e0qx8y3xa-1
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=XFLvbShyGVKXP28JjJVKiIOEsH7rXY831nM16dVKgYw=;
+ b=ADoW3vOKgJbL4oTy+coWRxSejYICT+QKPtyv9aCgDcT7HFW/BAz75PyTpbjxpXhi6SFl
+ QEpyIIjBYVdEr1eWkyIaoZOsKDdTWC8orcmtDK80cd4+dTBTNKhycIy6J47QoNNt2B/d
+ SNUWbDieD8raiuGmHKTEYANMZpG0cQ13qbsXm2QBjquNzY1MJLp4G/oqvdtdVRc0l9ts
+ 0hzhSiF3ca1mFO4CT++fm00nM0qWi+Hj4UGGhbNPOo2tU0OW3nTXrvXNaY/nPSSRdCtj
+ dvHftvPF+bnYvtgJaPmAX9mpeqy1y9FqB1Dw6St+oUSAS2whH0wWXhzGLnRAta68Y8Hb xg== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3e0vrrmgtc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Feb 2022 07:03:30 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21472rwG014579;
- Fri, 4 Feb 2022 07:03:28 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03fra.de.ibm.com with ESMTP id 3e0r0n1w77-1
+ Fri, 04 Feb 2022 08:56:08 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2148rWK2008941;
+ Fri, 4 Feb 2022 08:56:07 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 3e0r10awnn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 04 Feb 2022 07:03:28 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21473QKl27984172
+ Fri, 04 Feb 2022 08:56:06 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 2148u41J45220220
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 4 Feb 2022 07:03:26 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D6BC642042;
- Fri,  4 Feb 2022 07:03:25 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E06D442054;
- Fri,  4 Feb 2022 07:03:24 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.195.44.254])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  4 Feb 2022 07:03:24 +0000 (GMT)
-From: Sachin Sant <sachinp@linux.ibm.com>
-Content-Type: text/plain;
-	charset=utf-8
-Subject: [powerpc/perf] WARN_ONCE arch/powerpc/include/asm/interrupt.h:365
- with perf tests
-Message-Id: <19CAFB8D-6D28-48F0-A23B-1D2744F85544@linux.ibm.com>
-Date: Fri, 4 Feb 2022 12:33:23 +0530
-To: linuxppc-dev@lists.ozlabs.org
-X-Mailer: Apple Mail (2.3654.120.0.1.13)
+ Fri, 4 Feb 2022 08:56:04 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CE0084C04A;
+ Fri,  4 Feb 2022 08:56:04 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1218E4C058;
+ Fri,  4 Feb 2022 08:56:03 +0000 (GMT)
+Received: from sjain014.ibmuc.com (unknown [9.43.124.60])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  4 Feb 2022 08:56:02 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: powerpc: Set crashkernel offset to mid of RMA region
+Date: Fri,  4 Feb 2022 14:26:01 +0530
+Message-Id: <20220204085601.107257-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.34.1
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SmcndyunUhQvESaVu2xYWQ9-i6L-2u0O
-X-Proofpoint-ORIG-GUID: exzy5QHE9TLX4JiAERiQDcCY2_yQrPaM
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: xsX3mDoUf8XRvyt0hGhrNqt7ECsl39_p
+X-Proofpoint-ORIG-GUID: xsX3mDoUf8XRvyt0hGhrNqt7ECsl39_p
+Content-Transfer-Encoding: 8bit
 X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-04_02,2022-02-03_01,2021-12-02_01
+ definitions=2022-02-04_03,2022-02-03_01,2021-12-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0
- lowpriorityscore=0 mlxscore=0 adultscore=0 phishscore=0 malwarescore=0
- impostorscore=0 spamscore=0 priorityscore=1501 bulkscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2202040035
+ lowpriorityscore=0
+ spamscore=0 mlxlogscore=999 priorityscore=1501 phishscore=0 suspectscore=0
+ impostorscore=0 bulkscore=0 clxscore=1015 malwarescore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202040044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,119 +118,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: mahesh@linux.vnet.ibm.com, hbathini@linux.ibm.com,
+ Abdul haleem <abdhalee@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While running perftool [1] test against 5.17-rc2 booted on Power 9 LPAR
-following warning is seen:
+On large config LPARs (having 192 and more cores), Linux fails to boot
+due to insufficient memory in the first memblock. It is due to the
+memory reservation for the crash kernel which starts at 128MB offset of
+the first memblock. This memory reservation for the crash kernel doesn't
+leave enough space in the first memblock to accommodate other essential
+system resources.
 
-[  442.002150] ------------[ cut here ]------------
-[  442.002164] WARNING: CPU: 7 PID: 76 at arch/powerpc/include/asm/interrup=
-t.h:365 interrupt_nmi_exit_prepare+0x150/0x160
-[  442.002175] Modules linked in: dm_mod nft_compat nft_ct nf_conntrack nf_=
-defrag_ipv6 nf_defrag_ipv4 ip_set rfkill nf_tables nfnetlink pseries_rng ui=
-o_pdrv_genirq uio nfsd auth_rpcgss nfs_acl lockd drm grace sunrpc sch_fq_co=
-del drm_panel_orientation_quirks i2c_core xfs libcrc32c sr_mod sd_mod cdrom=
- t10_pi xts ibmvscsi ibmveth scsi_transport_srp vmx_crypto fuse
-[  442.002216] CPU: 7 PID: 76 Comm: kworker/7:1 Kdump: loaded Not tainted 5=
-.17.0-rc2-00167-gdcb85f85fa6f #1
-[  442.002222] Workqueue: events perf_sched_delayed
-[  442.002228] NIP:  c00000000002b840 LR: c00000000002b818 CTR: c0000000003=
-43240
-[  442.002232] REGS: c00000002c08f460 TRAP: 0700   Not tainted  (5.17.0-rc2=
--00167-gdcb85f85fa6f)
-[  442.002237] MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 88002484  XE=
-R: 000000cf
-[  442.002247] CFAR: c00000000002b7ac IRQMASK: 3
-[  442.002247] GPR00: c00000000002b818 c00000002c08f700 c000000002a1fe00 00=
-00000000000000
-[  442.002247] GPR04: c00000002c08f758 0000000000000008 00000003fdcc0000 00=
-000003fdcc0000
-[  442.002247] GPR08: 0000000000000001 c000000007fc6280 0000000000000021 00=
-0000003b9aca00
-[  442.002247] GPR12: 0000000000002000 c000000007fc6280 c0000000001925f8 c0=
-00000028ce0100
-[  442.002247] GPR16: 0000000000000000 0000000000000000 0000000000000000 00=
-00000000000000
-[  442.002247] GPR20: 0000000000000000 c000000002a53a00 c000000002b0a8a0 00=
-00000000000000
-[  442.002247] GPR24: c000000002550de0 0000000000000001 c000000001059d60 00=
-00000000000000
-[  442.002247] GPR28: 0000000060000000 c008000000100000 c00000002c08f810 c0=
-0000002c08f758
-[  442.002299] NIP [c00000000002b840] interrupt_nmi_exit_prepare+0x150/0x160
-[  442.002305] LR [c00000000002b818] interrupt_nmi_exit_prepare+0x128/0x160
-[  442.002310] Call Trace:
-[  442.002312] [c00000002c08f700] [c00000000013bcac] perf_event_interrupt+0=
-x3c/0x70 (unreliable)
-[  442.002320] [c00000002c08f730] [c00000000002b8c4] performance_monitor_ex=
-ception_nmi+0x74/0xb0
-[  442.002327] [c00000002c08f780] [c00000000002bd44] performance_monitor_ex=
-ception+0x44/0x60
-[  442.002332] [c00000002c08f7a0] [c00000000000af28] performance_monitor_co=
-mmon_virt+0x208/0x210
-[  442.002339] --- interrupt: f00 at __patch_instruction+0x10/0x60
-[  442.002344] NIP:  c0000000000b0bc0 LR: c0000000000b1080 CTR: 00000000000=
-0ae84
-[  442.002348] REGS: c00000002c08f810 TRAP: 0f00   Not tainted  (5.17.0-rc2=
--00167-gdcb85f85fa6f)
-[  442.002352] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR=
-: 44002484  XER: 000000cf
-[  442.002365] CFAR: 0000000000000000 IRQMASK: 1
-[  442.002365] GPR00: c0000000000b1114 c00000002c08fab0 c000000002a1fe00 c0=
-000000001a59f8
-[  442.002365] GPR04: 0000000060000000 c0080000001059f8 8e011a00000000c0 ff=
-ffffffffffffff
-[  442.002365] GPR08: c0000000001a018e 0000000060000000 00000000000000c0 00=
-00000000000040
-[  442.002365] GPR12: 0000000084002484 c000000007fc6280 c0000000001925f8 c0=
-00000028ce0100
-[  442.002365] GPR16: 0000000000000000 0000000000000000 0000000000000000 00=
-00000000000000
-[  442.002365] GPR20: 0000000000000000 c000000002a53a00 c000000002b0a8a0 00=
-00000000000000
-[  442.002365] GPR24: c000000002550de0 0000000000000001 c000000001059d60 00=
-00000000000000
-[  442.002365] GPR28: 0000000060000000 c008000000100000 0000000000000000 c0=
-000000001a59f8
-[  442.002414] NIP [c0000000000b0bc0] __patch_instruction+0x10/0x60
-[  442.002419] LR [c0000000000b1080] patch_instruction+0xf0/0x1c0
-[  442.002423] --- interrupt: f00
-[  442.002426] [c00000002c08fab0] [c0000000000b1114] patch_instruction+0x18=
-4/0x1c0 (unreliable)
-[  442.002432] [c00000002c08fb00] [c00000000005dc48] arch_jump_label_transf=
-orm+0x38/0x78
-[  442.002438] [c00000002c08fb20] [c00000000036a948] __jump_label_update+0x=
-148/0x180
-[  442.002444] [c00000002c08fbc0] [c00000000036afd8] static_key_disable_cpu=
-slocked+0xe8/0x130
-[  442.002450] [c00000002c08fc30] [c00000000036b050] static_key_disable+0x3=
-0/0x50
-[  442.002454] [c00000002c08fc60] [c000000000343978] perf_sched_delayed+0x9=
-8/0xc0
-[  442.002460] [c00000002c08fc90] [c0000000001849dc] process_one_work+0x27c=
-/0x550
-[  442.002466] [c00000002c08fd30] [c000000000184d58] worker_thread+0xa8/0x6=
-20
-[  442.002472] [c00000002c08fdc0] [c000000000192710] kthread+0x120/0x130
-[  442.002477] [c00000002c08fe10] [c00000000000ce64] ret_from_kernel_thread=
-+0x5c/0x64
-[  442.002482] Instruction dump:
-[  442.002486] e87e0100 480893a5 60000000 2c230000 4182ff58 39400000 f87e01=
-00 b14d0930
-[  442.002494] 4bffff48 60000000 60000000 60420000 <0fe00000> 60000000 6000=
-0000 60420000
-[  442.002503] ---[ end trace 0000000000000000 ]---
-[  442.002511] Can't find PMC that caused IRQ
+The crash kernel start address was set to 128MB offset by default to
+ensure that the crash kernel get some memory below the RMA region which
+is used to be of size 256MB. But given that the RMA region size can be
+512MB or more, setting the crash kernel offset to mid of RMA size will
+leave enough space for the kernel to allocate memory for other system
+resources.
 
-Since this warning is printed only once I can=E2=80=99t recreate it easily.=
- I have seen this only
-on P9 (hash MMU) and only with 5.17-rc1 onwards.
+Since the above crash kernel offset change is only applicable to the LPAR
+platform, the LPAR feature detection is pushed before the crash kernel
+reservation. The rest of LPAR specific initialization will still
+be done during pseries_probe_fw_features as usual.
 
-- Sachin
+This patch is dependent on changes to paca allocation for boot CPU. It
+expect boot CPU to discover 1T segment support which is introduced by
+the patch posted here:
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-January/239175.html
 
-[1] - https://github.com/sacsant/avocado-misc-tests/blob/ci/perf/perftool.p=
-y=
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Reported-by: Abdul haleem <abdhalee@linux.vnet.ibm.com>
+---
+ arch/powerpc/kernel/rtas.c |  6 ++++++
+ arch/powerpc/kexec/core.c  | 15 +++++++++++----
+ 2 files changed, 17 insertions(+), 4 deletions(-)
+ 
+ ---
+Chnages in v4:
+	- fix build issue for 32-bit.
+
+Changes in v3:
+	https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-January/239371.html
+ ---
+
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 733e6ef36758..1f42aabbbab3 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -1313,6 +1313,12 @@ int __init early_init_dt_scan_rtas(unsigned long node,
+ 	entryp = of_get_flat_dt_prop(node, "linux,rtas-entry", NULL);
+ 	sizep  = of_get_flat_dt_prop(node, "rtas-size", NULL);
+ 
++#ifdef CONFIG_PPC64
++	/* need this feature to decide the crashkernel offset */
++	if (of_get_flat_dt_prop(node, "ibm,hypertas-functions", NULL))
++		powerpc_firmware_features |= FW_FEATURE_LPAR;
++#endif
++
+ 	if (basep && entryp && sizep) {
+ 		rtas.base = *basep;
+ 		rtas.entry = *entryp;
+diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
+index 8b68d9f91a03..abf5897ae88c 100644
+--- a/arch/powerpc/kexec/core.c
++++ b/arch/powerpc/kexec/core.c
+@@ -134,11 +134,18 @@ void __init reserve_crashkernel(void)
+ 	if (!crashk_res.start) {
+ #ifdef CONFIG_PPC64
+ 		/*
+-		 * On 64bit we split the RMO in half but cap it at half of
+-		 * a small SLB (128MB) since the crash kernel needs to place
+-		 * itself and some stacks to be in the first segment.
++		 * On the LPAR platform place the crash kernel to mid of
++		 * RMA size (512MB or more) to ensure the crash kernel
++		 * gets enough space to place itself and some stack to be
++		 * in the first segment. At the same time normal kernel
++		 * also get enough space to allocate memory for essential
++		 * system resource in the first segment. Keep the crash
++		 * kernel starts at 128MB offset on other platforms.
+ 		 */
+-		crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
++		if (firmware_has_feature(FW_FEATURE_LPAR))
++			crashk_res.start = ppc64_rma_size / 2;
++		else
++			crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
+ #else
+ 		crashk_res.start = KDUMP_KERNELBASE;
+ #endif
+-- 
+2.34.1
+
