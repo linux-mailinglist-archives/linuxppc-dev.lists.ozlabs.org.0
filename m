@@ -2,76 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182AF4A9A6F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 14:57:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE2C4A9B88
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 15:57:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jqxtp5xgzz3cQD
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Feb 2022 00:57:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JqzDP5G95z3bcp
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Feb 2022 01:57:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=JO/7l+c1;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=MUNrpRSB;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gCpye0WX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=osalvador@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=JO/7l+c1; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=MUNrpRSB; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=gCpye0WX; 
  dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jqxt43rQxz30NB
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Feb 2022 00:57:00 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JqzCg6GR5z301M
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Feb 2022 01:57:19 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 7486C210FF;
- Fri,  4 Feb 2022 13:56:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1643983015; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gGlRq3+CNTWfW49gGBzQLhF40kVTe7aTlQ7x7spjq8U=;
- b=JO/7l+c1xHeI4exZG42xeX15TbqNl1uXCvW5lzCmIEbwm2lTb0G2bcBFDVsaxos8NZ2NqM
- VHzJillMKNZWh/+5wd+Rgk4C1NBdlRCtqEdgz98vQnRZS9dJjoEzksgj+x/dkoqLxqWhaT
- 3EE0G0Bp5Dt86XVhELp2m3Bu3PUrSoI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1643983015;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gGlRq3+CNTWfW49gGBzQLhF40kVTe7aTlQ7x7spjq8U=;
- b=MUNrpRSBuyViOD2u/bAKGDP7r5uJgCcXQXn8MBPrWRQ4md5s2dLna6QTC/YYP11aAdMoiU
- ofAFCLWfH4FWueDQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 85A7113B04;
- Fri,  4 Feb 2022 13:56:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id nEA4HaYw/WEffwAAMHmgww
- (envelope-from <osalvador@suse.de>); Fri, 04 Feb 2022 13:56:54 +0000
-Date: Fri, 4 Feb 2022 14:56:52 +0100
-From: Oscar Salvador <osalvador@suse.de>
-To: Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v4 4/7] mm: make alloc_contig_range work at pageblock
- granularity
-Message-ID: <Yf0wpFmtckRRzLFg@localhost.localdomain>
-References: <20220119190623.1029355-1-zi.yan@sent.com>
- <20220119190623.1029355-5-zi.yan@sent.com>
+ by ams.source.kernel.org (Postfix) with ESMTPS id CF193B837C9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 14:57:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 64DE5C004E1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 14:57:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1643986634;
+ bh=nwjynrj3+pJxZEuTeuXYT18fIC1m/YN9VvR5a9PYPjY=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=gCpye0WXiGRMG07WGIbdFYPAapc8oJweUPnw6WpY2T2p3Mvmj2taDpnUp0Ma9aizy
+ hVuwDVpcFUxiGVoxoxuxyLfPCwLpxPsYNKTQWLKorBFRlGju0IXCbTrclzDTMieaq5
+ CJYfl+56u2VyNcM0JrTjfF8tl+Hc47q4YGgHIJPkUThSbDo8wskhOCpyG6wOfxs9zZ
+ IPTzqWGe4d7RMFUMxEmhv9/Lzcwj4c+q+NYV6jNG3XcC4vmhSdxAfbqYYNRpRHJ8ie
+ ftuubcd6k+zRtNJPOjpjKdlA2/3zoBfpc8g7S/TlReyGjtY1t0WCPF//b4xD6KlpQ0
+ OZkjfTxjtc8WA==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
+ from userid 48) id 4243FC05F98; Fri,  4 Feb 2022 14:57:14 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 215169] UBSAN: shift-out-of-bounds in
+ arch/powerpc/mm/kasan/book3s_32.c:22:23
+Date: Fri, 04 Feb 2022 14:57:14 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-215169-206035-W0yi9mKtQN@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-215169-206035@https.bugzilla.kernel.org/>
+References: <bug-215169-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220119190623.1029355-5-zi.yan@sent.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,129 +82,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mel Gorman <mgorman@techsingularity.net>,
- David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org,
- Eric Ren <renzhengeek@gmail.com>, Robin Murphy <robin.murphy@arm.com>,
- Christoph Hellwig <hch@lst.de>, Vlastimil Babka <vbabka@suse.cz>,
- Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jan 19, 2022 at 02:06:20PM -0500, Zi Yan wrote:
-> From: Zi Yan <ziy@nvidia.com>
-> 
-> alloc_contig_range() worked at MAX_ORDER-1 granularity to avoid merging
-> pageblocks with different migratetypes. It might unnecessarily convert
-> extra pageblocks at the beginning and at the end of the range. Change
-> alloc_contig_range() to work at pageblock granularity.
-> 
-> It is done by restoring pageblock types and split >pageblock_order free
-> pages after isolating at MAX_ORDER-1 granularity and migrating pages
-> away at pageblock granularity. The reason for this process is that
-> during isolation, some pages, either free or in-use, might have >pageblock
-> sizes and isolating part of them can cause free accounting issues.
-> Restoring the migratetypes of the pageblocks not in the interesting
-> range later is much easier.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215169
 
-Hi Zi Yan,
+Erhard F. (erhard_f@mailbox.org) changed:
 
-Due to time constraints I only glanced over, so some comments below
-about stuff that caught my eye:
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|NEW                         |RESOLVED
+         Resolution|---                         |CODE_FIX
 
-> +static inline void split_free_page_into_pageblocks(struct page *free_page,
-> +				int order, struct zone *zone)
-> +{
-> +	unsigned long pfn;
-> +
-> +	spin_lock(&zone->lock);
-> +	del_page_from_free_list(free_page, zone, order);
-> +	for (pfn = page_to_pfn(free_page);
-> +	     pfn < page_to_pfn(free_page) + (1UL << order);
+--- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
+Fix landed in 5.16.3 and LTS-kernels. Thanks!
 
-It migt make sense to have a end_pfn variable so that does not have to
-be constantly evaluated. Or maybe the compiler is clever enough to only
-evualuate it once.
+--=20
+You may reply to this email to add a comment.
 
-> +	     pfn += pageblock_nr_pages) {
-> +		int mt = get_pfnblock_migratetype(pfn_to_page(pfn), pfn);
-> +
-> +		__free_one_page(pfn_to_page(pfn), pfn, zone, pageblock_order,
-> +				mt, FPI_NONE);
-> +	}
-> +	spin_unlock(&zone->lock);
-
-It is possible that free_page's order is already pageblock_order, so I
-would add a one-liner upfront to catch that case and return, otherwise
-we do the delete_from_freelist-and-free_it_again dance.
-
-> +	/* Save the migratepages of the pageblocks before start and after end */
-> +	num_pageblock_to_save = (alloc_start - isolate_start) / pageblock_nr_pages
-> +				+ (isolate_end - alloc_end) / pageblock_nr_pages;
-> +	saved_mt =
-> +		kmalloc_array(num_pageblock_to_save,
-> +			      sizeof(unsigned char), GFP_KERNEL);
-> +	if (!saved_mt)
-> +		return -ENOMEM;
-> +
-> +	num = save_migratetypes(saved_mt, isolate_start, alloc_start);
-> +
-> +	num = save_migratetypes(&saved_mt[num], alloc_end, isolate_end);
-
-I really hope we can put all this magic within start_isolate_page_range,
-and the counterparts in undo_isolate_page_range.
-
-Also, I kinda dislike the &saved_mt thing. I thought about some other
-approaches but nothing that wasn't too specific for this case, and I
-guess we want that function to be as generic as possible.
-
-> +	/*
-> +	 * Split free page spanning [alloc_end, isolate_end) and put the
-> +	 * pageblocks in the right migratetype list
-> +	 */
-> +	for (outer_end = alloc_end; outer_end < isolate_end;) {
-> +		unsigned long begin_pfn = outer_end;
-> +
-> +		order = 0;
-> +		while (!PageBuddy(pfn_to_page(outer_end))) {
-> +			if (++order >= MAX_ORDER) {
-> +				outer_end = begin_pfn;
-> +				break;
-> +			}
-> +			outer_end &= ~0UL << order;
-> +		}
-> +
-> +		if (outer_end != begin_pfn) {
-> +			order = buddy_order(pfn_to_page(outer_end));
-> +
-> +			/*
-> +			 * split the free page has start page and put the pageblocks
-> +			 * in the right migratetype list
-> +			 */
-> +			VM_BUG_ON(outer_end + (1UL << order) <= begin_pfn);
-
-How could this possibily happen?
-
-> +			{
-> +				struct page *free_page = pfn_to_page(outer_end);
-> +
-> +				split_free_page_into_pageblocks(free_page, order, cc.zone);
-> +			}
-> +			outer_end += 1UL << order;
-> +		} else
-> +			outer_end = begin_pfn + 1;
->  	}
-
-I think there are cases could optimize for. If the page has already been
-split in pageblock by the outer_start loop, we could skip this outer_end
-logic altogether.
-
-E.g: An order-10 page is split in two pageblocks. There's nothing else
-to be done, right? We could skip this. 
-
-
--- 
-Oscar Salvador
-SUSE Labs
+You are receiving this mail because:
+You are watching the assignee of the bug.=
