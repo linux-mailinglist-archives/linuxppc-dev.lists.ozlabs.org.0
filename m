@@ -1,29 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311BA4A92D7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 04:49:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96BA74A92DA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 04:54:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JqhNz6ZbHz3cSn
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 14:49:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JqhW22tdHz3cPP
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 14:54:38 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=py5DyMPX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Received: from ozlabs.ru (unknown [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4JqhNW2l2kz2yPY
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 14:48:57 +1100 (AEDT)
-Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 6CCC1804BD;
- Thu,  3 Feb 2022 22:48:48 -0500 (EST)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
+ helo=mail-pf1-x431.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=py5DyMPX; dkim-atps=neutral
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
+ [IPv6:2607:f8b0:4864:20::431])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JqhVL01lgz2x9S
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 14:54:00 +1100 (AEDT)
+Received: by mail-pf1-x431.google.com with SMTP id i17so3975837pfq.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Feb 2022 19:54:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=z/bBuduF3oCGr/9TPSvcyZJxxIyPDXJVhz5vzHqeask=;
+ b=py5DyMPX3huE7Q0DbHS2yqq6dJsp076EVYTvITNFUnu9S+gBn0CjooBf/0M98DwzvB
+ UyyCbs4qLAw1EL6N4p054eReDzG99j2F/BlaJgZssXtkjYJqD0I6OeX2qnWA/F4zeGgp
+ fxdan2O8bSBKd2jU+nhB2fM1s2MkyTebro9nglmKjQ0TLgE8nAChphi7kEnmM1ph5FUN
+ 8N2udv96ZKTXyZ31bBw6pBtEMGvZBqcnWXxxIA693Yj8/5jX3M49N5FhprafG+UiNsGG
+ te/79vB+9EZAGvs9xqvKYZEYujZxQfadoN0j1Nq1P0M+YjOZ6yKAYQETHqEObKqYvhVi
+ Shbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=z/bBuduF3oCGr/9TPSvcyZJxxIyPDXJVhz5vzHqeask=;
+ b=MO+6MW2GYZ/RTGU25jv4lZIPGUBxj/sWQNFclC/BJjCBBd6fI9s2odcERYAd9gHzpT
+ Fmyeli4CeeSKDFbaUoplAU8C89ovbMov796bB24jILUPCBm97CsfjIVZT1tHTmX3siOd
+ PtY+uN/NZvd9sA/VvjuXRGN5rv7vK8yl7mcJBqKU2myqE6BUg3v1z7ajE1IwY07aQ1RC
+ Mw6FUJ4PwKwPqYjUokUaWihaErcnFJ5yYDCMQenus5trgTM7hs4Dpxd2txG2iEGD1NOK
+ mDoJTXpPxbEFrZ+RE9DS47s14Lf9fgyyCKWHrNZnbgZdcDDbD1iV1Ok4zetnDBzyaExX
+ IzPw==
+X-Gm-Message-State: AOAM531GjxdUC0p40tCpt1jOo0eL4VTuLiIBLpAaH4K4pFLXPUtDFmsm
+ oBfXyZ6FGnottoD7gyaVSx6ELQtijvs9xw==
+X-Google-Smtp-Source: ABdhPJwB2hR8fExnmyOTKDlcJQ9Njn3bNum09SfPG2DKuTr2Z68Vd/O/5b1yfi1wrAlCcCcNIcOiag==
+X-Received: by 2002:a63:d145:: with SMTP id c5mr937744pgj.217.1643946835609;
+ Thu, 03 Feb 2022 19:53:55 -0800 (PST)
+Received: from bobo.ibm.com ([124.170.17.156])
+ by smtp.gmail.com with ESMTPSA id pi1sm13021395pjb.10.2022.02.03.19.53.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Feb 2022 19:53:55 -0800 (PST)
+From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel v2] powerpc/64: Add UADDR64 relocation support
-Date: Fri,  4 Feb 2022 14:48:44 +1100
-Message-Id: <20220204034844.1187993-1-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.30.2
+Subject: [PATCH] powerpc/64s/hash: Make hash faults work in NMI context
+Date: Fri,  4 Feb 2022 13:53:48 +1000
+Message-Id: <20220204035348.545435-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -37,227 +77,228 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Alan Modra <amodra@au1.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Laurent Dufour <ldufour@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When ld detects unaligned relocations, it emits R_PPC64_UADDR64
-relocations instead of R_PPC64_RELATIVE. Currently R_PPC64_UADDR64 are
-detected by arch/powerpc/tools/relocs_check.sh and expected not to work.
-Below is a simple chunk to trigger this behaviour (this disables
-optimization for the demonstration purposes only, this also happens with
--O1/-O2 when CONFIG_PRINTK_INDEX=y, for example):
+Hash faults are not resoved in NMI context, instead causing the access
+to fail. This is done because perf interrupts can get backtraces
+including walking the user stack, and taking a hash fault on those could
+deadlock on the HPTE lock if the perf interrupt hits while the same HPTE
+lock is being held by the hash fault code. The user-access for the stack
+walking will notice the access failed and deal with that in the perf
+code.
 
-\#pragma GCC push_options
-\#pragma GCC optimize ("O0")
-struct entry {
-        const char *file;
-        int line;
-} __attribute__((packed));
-static const struct entry e1 = { .file = __FILE__, .line = __LINE__ };
-static const struct entry e2 = { .file = __FILE__, .line = __LINE__ };
-...
-prom_printf("e1=%s %lx %lx\n", e1.file, (unsigned long) e1.file, mfmsr());
-prom_printf("e2=%s %lx\n", e2.file, (unsigned long) e2.file);
-\#pragma GCC pop_options
+The reason to allow perf interrupts in is to better profile hash faults.
 
+The problem with this is any hash fault on a kernel access that happens
+in NMI context will crash, because kernel accesses must not fail.
 
-This adds support for UADDR64 for 64bit. This reuses __dynamic_symtab
-from the 32bit which supports more relocation types already.
+Hard lockups, system reset, machine checks that access vmalloc space
+including modules and including stack backtracing and symbol lookup in
+modules, per-cpu data, etc could all run into this problem.
 
-Because RELACOUNT includes only R_PPC64_RELATIVE, this replaces it with
-RELASZ which is the size of all relocation records.
+Fix this by disallowing perf interrupts in the hash fault code (the
+direct hash fault is covered by MSR[EE]=0 so the PMI disable just needs
+to extend to the preload case). This simplifies the tricky logic in hash
+faults and perf, at the cost of reduced profiling of hash faults.
 
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+perf can still latch addresses when interrupts are disabled, it just
+won't get the stack trace at that point, so it would still find hot
+spots, just sometimes with confusing stack chains.
+
+An alternative could be to allow perf interrupts here but always do the
+slowpath stack walk if we are in nmi context, but that slows down all
+perf interrupt stack walking on hash though and it does not remove as
+much tricky code.
+
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Reported-by: Laurent Dufour <ldufour@linux.ibm.com>
+Tested-by: Laurent Dufour <ldufour@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-Changes:
-v2:
-* replaced RELACOUNT with RELASZ/RELAENT
-* removed FIXME
+ arch/powerpc/include/asm/interrupt.h  |  2 +-
+ arch/powerpc/mm/book3s64/hash_utils.c | 54 ++++-----------------------
+ arch/powerpc/perf/callchain.h         |  9 +----
+ arch/powerpc/perf/callchain_64.c      | 27 --------------
+ 4 files changed, 10 insertions(+), 82 deletions(-)
 
----
-
-Tested via qemu gdb stub (the kernel is loaded at 0x400000).
-
-Disasm:
-
-c000000001a804d0 <e1>:
-c000000001a804d0:       b0 04 a8 01     .long 0x1a804b0
-                        c000000001a804d0: R_PPC64_RELATIVE      *ABS*-0x3ffffffffe57fb50
-c000000001a804d4:       00 00 00 c0     lfs     f0,0(0)
-c000000001a804d8:       fa 08 00 00     .long 0x8fa
-
-c000000001a804dc <e2>:
-        ...
-                        c000000001a804dc: R_PPC64_UADDR64       .rodata+0x4b0
-
-Before relocation:
->>> p *(unsigned long *) 0x1e804d0
-$1 = 0xc000000001a804b0
->>> p *(unsigned long *) 0x1e804dc
-$2 = 0x0
-
-After relocation in __boot_from_prom:
->>> p *(unsigned long *) 0x1e804d0
-$1 = 0x1e804b0
->>> p *(unsigned long *) 0x1e804dc
-$2 = 0x1e804b0
-
-After relocation in __after_prom_start:
->>> p *(unsigned long *) 0x1e804d0
-$1 = 0xc000000001a804b0
->>> p *(unsigned long *) 0x1e804dc
-$2 = 0xc000000001a804b0
->>>
----
- arch/powerpc/kernel/reloc_64.S     | 56 ++++++++++++++++++++----------
- arch/powerpc/kernel/vmlinux.lds.S  |  2 --
- arch/powerpc/tools/relocs_check.sh |  7 +---
- 3 files changed, 39 insertions(+), 26 deletions(-)
-
-diff --git a/arch/powerpc/kernel/reloc_64.S b/arch/powerpc/kernel/reloc_64.S
-index 02d4719bf43a..f7dcc25e93d0 100644
---- a/arch/powerpc/kernel/reloc_64.S
-+++ b/arch/powerpc/kernel/reloc_64.S
-@@ -8,8 +8,10 @@
- #include <asm/ppc_asm.h>
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index fc28f46d2f9d..5404f7abbcf8 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -612,7 +612,7 @@ DECLARE_INTERRUPT_HANDLER_RAW(do_slb_fault);
+ DECLARE_INTERRUPT_HANDLER(do_bad_segment_interrupt);
  
- RELA = 7
--RELACOUNT = 0x6ffffff9
-+RELASZ = 8
-+RELAENT = 9
- R_PPC64_RELATIVE = 22
-+R_PPC64_UADDR64 = 43
+ /* hash_utils.c */
+-DECLARE_INTERRUPT_HANDLER_RAW(do_hash_fault);
++DECLARE_INTERRUPT_HANDLER(do_hash_fault);
+ 
+ /* fault.c */
+ DECLARE_INTERRUPT_HANDLER(do_page_fault);
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 7abf82a698d3..985cabdd7f67 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1621,8 +1621,7 @@ int hash_page(unsigned long ea, unsigned long access, unsigned long trap,
+ }
+ EXPORT_SYMBOL_GPL(hash_page);
+ 
+-DECLARE_INTERRUPT_HANDLER(__do_hash_fault);
+-DEFINE_INTERRUPT_HANDLER(__do_hash_fault)
++DEFINE_INTERRUPT_HANDLER(do_hash_fault)
+ {
+ 	unsigned long ea = regs->dar;
+ 	unsigned long dsisr = regs->dsisr;
+@@ -1681,35 +1680,6 @@ DEFINE_INTERRUPT_HANDLER(__do_hash_fault)
+ 	}
+ }
+ 
+-/*
+- * The _RAW interrupt entry checks for the in_nmi() case before
+- * running the full handler.
+- */
+-DEFINE_INTERRUPT_HANDLER_RAW(do_hash_fault)
+-{
+-	/*
+-	 * If we are in an "NMI" (e.g., an interrupt when soft-disabled), then
+-	 * don't call hash_page, just fail the fault. This is required to
+-	 * prevent re-entrancy problems in the hash code, namely perf
+-	 * interrupts hitting while something holds H_PAGE_BUSY, and taking a
+-	 * hash fault. See the comment in hash_preload().
+-	 *
+-	 * We come here as a result of a DSI at a point where we don't want
+-	 * to call hash_page, such as when we are accessing memory (possibly
+-	 * user memory) inside a PMU interrupt that occurred while interrupts
+-	 * were soft-disabled.  We want to invoke the exception handler for
+-	 * the access, or panic if there isn't a handler.
+-	 */
+-	if (unlikely(in_nmi())) {
+-		do_bad_page_fault_segv(regs);
+-		return 0;
+-	}
+-
+-	__do_hash_fault(regs);
+-
+-	return 0;
+-}
+-
+ #ifdef CONFIG_PPC_MM_SLICES
+ static bool should_hash_preload(struct mm_struct *mm, unsigned long ea)
+ {
+@@ -1776,26 +1746,18 @@ static void hash_preload(struct mm_struct *mm, pte_t *ptep, unsigned long ea,
+ #endif /* CONFIG_PPC_64K_PAGES */
+ 
+ 	/*
+-	 * __hash_page_* must run with interrupts off, as it sets the
+-	 * H_PAGE_BUSY bit. It's possible for perf interrupts to hit at any
+-	 * time and may take a hash fault reading the user stack, see
+-	 * read_user_stack_slow() in the powerpc/perf code.
+-	 *
+-	 * If that takes a hash fault on the same page as we lock here, it
+-	 * will bail out when seeing H_PAGE_BUSY set, and retry the access
+-	 * leading to an infinite loop.
++	 * __hash_page_* must run with interrupts off, including PMI interrupts
++	 * off, as it sets the H_PAGE_BUSY bit.
+ 	 *
+-	 * Disabling interrupts here does not prevent perf interrupts, but it
+-	 * will prevent them taking hash faults (see the NMI test in
+-	 * do_hash_page), then read_user_stack's copy_from_user_nofault will
+-	 * fail and perf will fall back to read_user_stack_slow(), which
+-	 * walks the Linux page tables.
++	 * It's otherwise possible for perf interrupts to hit at any time and
++	 * may take a hash fault reading the user stack, which could take a
++	 * hash miss and deadlock on the same H_PAGE_BUSY bit.
+ 	 *
+ 	 * Interrupts must also be off for the duration of the
+ 	 * mm_is_thread_local test and update, to prevent preempt running the
+ 	 * mm on another CPU (XXX: this may be racy vs kthread_use_mm).
+ 	 */
+-	local_irq_save(flags);
++	powerpc_local_irq_pmu_save(flags);
+ 
+ 	/* Is that local to this CPU ? */
+ 	if (mm_is_thread_local(mm))
+@@ -1820,7 +1782,7 @@ static void hash_preload(struct mm_struct *mm, pte_t *ptep, unsigned long ea,
+ 				   mm_ctx_user_psize(&mm->context),
+ 				   pte_val(*ptep));
+ 
+-	local_irq_restore(flags);
++	powerpc_local_irq_pmu_restore(flags);
+ }
  
  /*
-  * r3 = desired final address of kernel
-@@ -25,29 +27,36 @@ _GLOBAL(relocate)
- 	add	r9,r9,r12	/* r9 has runtime addr of .rela.dyn section */
- 	ld	r10,(p_st - 0b)(r12)
- 	add	r10,r10,r12	/* r10 has runtime addr of _stext */
-+	ld	r13,(p_sym - 0b)(r12)
-+	add	r13,r13,r12	/* r13 has runtime addr of .dynsym */
+diff --git a/arch/powerpc/perf/callchain.h b/arch/powerpc/perf/callchain.h
+index d6fa6e25234f..19a8d051ddf1 100644
+--- a/arch/powerpc/perf/callchain.h
++++ b/arch/powerpc/perf/callchain.h
+@@ -2,7 +2,6 @@
+ #ifndef _POWERPC_PERF_CALLCHAIN_H
+ #define _POWERPC_PERF_CALLCHAIN_H
  
- 	/*
--	 * Scan the dynamic section for the RELA and RELACOUNT entries.
-+	 * Scan the dynamic section for the RELA, RELASZ and RELAENT entries.
- 	 */
- 	li	r7,0
- 	li	r8,0
- 1:	ld	r6,0(r11)	/* get tag */
- 	cmpdi	r6,0
--	beq	4f		/* end of list */
-+	beq	5f		/* end of list */
- 	cmpdi	r6,RELA
- 	bne	2f
- 	ld	r7,8(r11)	/* get RELA pointer in r7 */
--	b	3f
--2:	addis	r6,r6,(-RELACOUNT)@ha
--	cmpdi	r6,RELACOUNT@l
-+	b	4f
-+2:	cmpdi	r6,RELASZ
- 	bne	3f
--	ld	r8,8(r11)	/* get RELACOUNT value in r8 */
--3:	addi	r11,r11,16
-+	ld	r8,8(r11)	/* get RELASZ value in r8 */
-+	b	4f
-+3:	cmpdi	r6,RELAENT
-+	bne	4f
-+	ld	r12,8(r11)	/* get RELAENT value in r12 */
-+4:	addi	r11,r11,16
- 	b	1b
--4:	cmpdi	r7,0		/* check we have both RELA and RELACOUNT */
-+5:	cmpdi	r7,0		/* check we have RELA, RELASZ, RELAENT */
- 	cmpdi	cr1,r8,0
--	beq	6f
--	beq	cr1,6f
-+	beq	10f
-+	beq	cr1,10f
-+	cmpdi	r12,0
-+	beq	10f
+-int read_user_stack_slow(const void __user *ptr, void *buf, int nb);
+ void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
+ 			    struct pt_regs *regs);
+ void perf_callchain_user_32(struct perf_callchain_entry_ctx *entry,
+@@ -26,17 +25,11 @@ static inline int __read_user_stack(const void __user *ptr, void *ret,
+ 				    size_t size)
+ {
+ 	unsigned long addr = (unsigned long)ptr;
+-	int rc;
  
- 	/*
- 	 * Work out linktime address of _stext and hence the
-@@ -62,23 +71,34 @@ _GLOBAL(relocate)
+ 	if (addr > TASK_SIZE - size || (addr & (size - 1)))
+ 		return -EFAULT;
  
- 	/*
- 	 * Run through the list of relocations and process the
--	 * R_PPC64_RELATIVE ones.
-+	 * R_PPC64_RELATIVE and R_PPC64_UADDR64 ones.
- 	 */
-+	divd	r8,r8,r12	/* RELASZ / RELAENT */
- 	mtctr	r8
--5:	ld	r0,8(9)		/* ELF64_R_TYPE(reloc->r_info) */
-+5:	lwa	r0,8(r9)	/* ELF64_R_TYPE(reloc->r_info) */
- 	cmpdi	r0,R_PPC64_RELATIVE
--	bne	6f
-+	bne	7f
- 	ld	r6,0(r9)	/* reloc->r_offset */
- 	ld	r0,16(r9)	/* reloc->r_addend */
--	add	r0,r0,r3
-+	b	8f
-+7:	cmpdi	r0,R_PPC64_UADDR64
-+	bne	9f
-+	ld	r6,0(r9)
-+	ld	r0,16(r9)
-+	lwa	r14,12(r9) 	/* ELF64_R_SYM(reloc->r_info) */
-+	mulli	r14,r14,24	/* 24 == sizeof(elf64_sym) */
-+	add	r14,r14,r13	/* elf64_sym[ELF64_R_SYM] */
-+	ld	r14,8(r14)
-+	add	r0,r0,r14
-+8:	add	r0,r0,r3
- 	stdx	r0,r7,r6
--	addi	r9,r9,24
-+9:	add	r9,r9,r12
- 	bdnz	5b
+-	rc = copy_from_user_nofault(ret, ptr, size);
 -
--6:	blr
-+10:	blr
- 
- .balign 8
- p_dyn:	.8byte	__dynamic_start - 0b
- p_rela:	.8byte	__rela_dyn_start - 0b
-+p_sym:		.8byte __dynamic_symtab - 0b
- p_st:	.8byte	_stext - 0b
- 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 2bcca818136a..fe22d940412f 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -281,9 +281,7 @@ SECTIONS
- 	. = ALIGN(8);
- 	.dynsym : AT(ADDR(.dynsym) - LOAD_OFFSET)
- 	{
--#ifdef CONFIG_PPC32
- 		__dynamic_symtab = .;
--#endif
- 		*(.dynsym)
- 	}
- 	.dynstr : AT(ADDR(.dynstr) - LOAD_OFFSET) { *(.dynstr) }
-diff --git a/arch/powerpc/tools/relocs_check.sh b/arch/powerpc/tools/relocs_check.sh
-index 014e00e74d2b..63792af00417 100755
---- a/arch/powerpc/tools/relocs_check.sh
-+++ b/arch/powerpc/tools/relocs_check.sh
-@@ -39,6 +39,7 @@ $objdump -R "$vmlinux" |
- 	#	R_PPC_NONE
- 	grep -F -w -v 'R_PPC64_RELATIVE
- R_PPC64_NONE
-+R_PPC64_UADDR64
- R_PPC_ADDR16_LO
- R_PPC_ADDR16_HI
- R_PPC_ADDR16_HA
-@@ -54,9 +55,3 @@ fi
- num_bad=$(echo "$bad_relocs" | wc -l)
- echo "WARNING: $num_bad bad relocations"
- echo "$bad_relocs"
+-	if (IS_ENABLED(CONFIG_PPC64) && !radix_enabled() && rc)
+-		return read_user_stack_slow(ptr, ret, size);
 -
--# If we see this type of relocation it's an idication that
--# we /may/ be using an old version of binutils.
--if echo "$bad_relocs" | grep -q -F -w R_PPC64_UADDR64; then
--	echo "WARNING: You need at least binutils >= 2.19 to build a CONFIG_RELOCATABLE kernel"
--fi
+-	return rc;
++	return copy_from_user_nofault(ret, ptr, size);
+ }
+ 
+ #endif /* _POWERPC_PERF_CALLCHAIN_H */
+diff --git a/arch/powerpc/perf/callchain_64.c b/arch/powerpc/perf/callchain_64.c
+index 8d0df4226328..488e8a21a11e 100644
+--- a/arch/powerpc/perf/callchain_64.c
++++ b/arch/powerpc/perf/callchain_64.c
+@@ -18,33 +18,6 @@
+ 
+ #include "callchain.h"
+ 
+-/*
+- * On 64-bit we don't want to invoke hash_page on user addresses from
+- * interrupt context, so if the access faults, we read the page tables
+- * to find which page (if any) is mapped and access it directly. Radix
+- * has no need for this so it doesn't use read_user_stack_slow.
+- */
+-int read_user_stack_slow(const void __user *ptr, void *buf, int nb)
+-{
+-
+-	unsigned long addr = (unsigned long) ptr;
+-	unsigned long offset;
+-	struct page *page;
+-	void *kaddr;
+-
+-	if (get_user_page_fast_only(addr, FOLL_WRITE, &page)) {
+-		kaddr = page_address(page);
+-
+-		/* align address to page boundary */
+-		offset = addr & ~PAGE_MASK;
+-
+-		memcpy(buf, kaddr + offset, nb);
+-		put_page(page);
+-		return 0;
+-	}
+-	return -EFAULT;
+-}
+-
+ static int read_user_stack_64(const unsigned long __user *ptr, unsigned long *ret)
+ {
+ 	return __read_user_stack(ptr, ret, sizeof(*ret));
 -- 
-2.30.2
+2.23.0
 
