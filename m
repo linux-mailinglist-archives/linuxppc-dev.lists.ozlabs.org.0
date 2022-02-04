@@ -2,41 +2,30 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872734A9285
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 03:58:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 311BA4A92D7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 04:49:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JqgG124Czz3bV0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 13:58:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JqhNz6ZbHz3cSn
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Feb 2022 14:49:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4JqgFW3Kg5z2yPV
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 13:57:48 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 24FFF1435;
- Thu,  3 Feb 2022 18:57:45 -0800 (PST)
-Received: from [10.163.45.195] (unknown [10.163.45.195])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 981FE3F774;
- Thu,  3 Feb 2022 18:57:41 -0800 (PST)
-Subject: Re: [RFC V1 04/31] powerpc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-To: Mike Rapoport <rppt@kernel.org>
-References: <1643029028-12710-1-git-send-email-anshuman.khandual@arm.com>
- <1643029028-12710-5-git-send-email-anshuman.khandual@arm.com>
- <Yfwbz5qu20bjFZOP@kernel.org>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <46e15116-78fb-e6fe-e0f0-fe776f9348c3@arm.com>
-Date: Fri, 4 Feb 2022 08:27:37 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Received: from ozlabs.ru (unknown [107.174.27.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4JqhNW2l2kz2yPY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Feb 2022 14:48:57 +1100 (AEDT)
+Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id 6CCC1804BD;
+ Thu,  3 Feb 2022 22:48:48 -0500 (EST)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel v2] powerpc/64: Add UADDR64 relocation support
+Date: Fri,  4 Feb 2022 14:48:44 +1100
+Message-Id: <20220204034844.1187993-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <Yfwbz5qu20bjFZOP@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,155 +37,227 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, hch@infradead.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Alan Modra <amodra@au1.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+When ld detects unaligned relocations, it emits R_PPC64_UADDR64
+relocations instead of R_PPC64_RELATIVE. Currently R_PPC64_UADDR64 are
+detected by arch/powerpc/tools/relocs_check.sh and expected not to work.
+Below is a simple chunk to trigger this behaviour (this disables
+optimization for the demonstration purposes only, this also happens with
+-O1/-O2 when CONFIG_PRINTK_INDEX=y, for example):
+
+\#pragma GCC push_options
+\#pragma GCC optimize ("O0")
+struct entry {
+        const char *file;
+        int line;
+} __attribute__((packed));
+static const struct entry e1 = { .file = __FILE__, .line = __LINE__ };
+static const struct entry e2 = { .file = __FILE__, .line = __LINE__ };
+...
+prom_printf("e1=%s %lx %lx\n", e1.file, (unsigned long) e1.file, mfmsr());
+prom_printf("e2=%s %lx\n", e2.file, (unsigned long) e2.file);
+\#pragma GCC pop_options
 
 
-On 2/3/22 11:45 PM, Mike Rapoport wrote:
-> On Mon, Jan 24, 2022 at 06:26:41PM +0530, Anshuman Khandual wrote:
->> This defines and exports a platform specific custom vm_get_page_prot() via
->> subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
->> macros can be dropped which are no longer needed. While here, this also
->> localizes arch_vm_get_page_prot() as powerpc_vm_get_page_prot().
->>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Paul Mackerras <paulus@samba.org>
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>  arch/powerpc/Kconfig               |  1 +
->>  arch/powerpc/include/asm/mman.h    |  3 +-
->>  arch/powerpc/include/asm/pgtable.h | 19 ------------
->>  arch/powerpc/mm/mmap.c             | 47 ++++++++++++++++++++++++++++++
->>  4 files changed, 49 insertions(+), 21 deletions(-)
->>
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index b779603978e1..ddb4a3687c05 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -135,6 +135,7 @@ config PPC
->>  	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
->>  	select ARCH_HAS_UACCESS_FLUSHCACHE
->>  	select ARCH_HAS_UBSAN_SANITIZE_ALL
->> +	select ARCH_HAS_VM_GET_PAGE_PROT
->>  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
->>  	select ARCH_KEEP_MEMBLOCK
->>  	select ARCH_MIGHT_HAVE_PC_PARPORT
->> diff --git a/arch/powerpc/include/asm/mman.h b/arch/powerpc/include/asm/mman.h
->> index 7cb6d18f5cd6..7b10c2031e82 100644
->> --- a/arch/powerpc/include/asm/mman.h
->> +++ b/arch/powerpc/include/asm/mman.h
->> @@ -24,7 +24,7 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
->>  }
->>  #define arch_calc_vm_prot_bits(prot, pkey) arch_calc_vm_prot_bits(prot, pkey)
->>  
->> -static inline pgprot_t arch_vm_get_page_prot(unsigned long vm_flags)
->> +static inline pgprot_t powerpc_vm_get_page_prot(unsigned long vm_flags)
->>  {
->>  #ifdef CONFIG_PPC_MEM_KEYS
->>  	return (vm_flags & VM_SAO) ?
->> @@ -34,7 +34,6 @@ static inline pgprot_t arch_vm_get_page_prot(unsigned long vm_flags)
->>  	return (vm_flags & VM_SAO) ? __pgprot(_PAGE_SAO) : __pgprot(0);
->>  #endif
->>  }
->> -#define arch_vm_get_page_prot(vm_flags) arch_vm_get_page_prot(vm_flags)
->>  
->>  static inline bool arch_validate_prot(unsigned long prot, unsigned long addr)
->>  {
->> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
->> index d564d0ecd4cd..3cbb6de20f9d 100644
->> --- a/arch/powerpc/include/asm/pgtable.h
->> +++ b/arch/powerpc/include/asm/pgtable.h
->> @@ -20,25 +20,6 @@ struct mm_struct;
->>  #include <asm/nohash/pgtable.h>
->>  #endif /* !CONFIG_PPC_BOOK3S */
->>  
->> -/* Note due to the way vm flags are laid out, the bits are XWR */
->> -#define __P000	PAGE_NONE
->> -#define __P001	PAGE_READONLY
->> -#define __P010	PAGE_COPY
->> -#define __P011	PAGE_COPY
->> -#define __P100	PAGE_READONLY_X
->> -#define __P101	PAGE_READONLY_X
->> -#define __P110	PAGE_COPY_X
->> -#define __P111	PAGE_COPY_X
->> -
->> -#define __S000	PAGE_NONE
->> -#define __S001	PAGE_READONLY
->> -#define __S010	PAGE_SHARED
->> -#define __S011	PAGE_SHARED
->> -#define __S100	PAGE_READONLY_X
->> -#define __S101	PAGE_READONLY_X
->> -#define __S110	PAGE_SHARED_X
->> -#define __S111	PAGE_SHARED_X
->> -
->>  #ifndef __ASSEMBLY__
->>  
->>  #ifndef MAX_PTRS_PER_PGD
->> diff --git a/arch/powerpc/mm/mmap.c b/arch/powerpc/mm/mmap.c
->> index c475cf810aa8..7f05e7903bd2 100644
->> --- a/arch/powerpc/mm/mmap.c
->> +++ b/arch/powerpc/mm/mmap.c
->> @@ -254,3 +254,50 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
->>  		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
->>  	}
->>  }
->> +
->> +static inline pgprot_t __vm_get_page_prot(unsigned long vm_flags)
->> +{
->> +	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
->> +	case VM_NONE:
->> +		return PAGE_NONE;
->> +	case VM_READ:
->> +		return PAGE_READONLY;
->> +	case VM_WRITE:
->> +		return PAGE_COPY;
->> +	case VM_READ | VM_WRITE:
->> +		return PAGE_COPY;
->> +	case VM_EXEC:
->> +		return PAGE_READONLY_X;
->> +	case VM_EXEC | VM_READ:
->> +		return PAGE_READONLY_X;
->> +	case VM_EXEC | VM_WRITE:
->> +		return PAGE_COPY_X;
->> +	case VM_EXEC | VM_READ | VM_WRITE:
->> +		return PAGE_COPY_X;
->> +	case VM_SHARED:
->> +		return PAGE_NONE;
->> +	case VM_SHARED | VM_READ:
->> +		return PAGE_READONLY;
->> +	case VM_SHARED | VM_WRITE:
->> +		return PAGE_SHARED;
->> +	case VM_SHARED | VM_READ | VM_WRITE:
->> +		return PAGE_SHARED;
->> +	case VM_SHARED | VM_EXEC:
->> +		return PAGE_READONLY_X;
->> +	case VM_SHARED | VM_EXEC | VM_READ:
->> +		return PAGE_READONLY_X;
->> +	case VM_SHARED | VM_EXEC | VM_WRITE:
->> +		return PAGE_SHARED_X;
->> +	case VM_SHARED | VM_EXEC | VM_READ | VM_WRITE:
->> +		return PAGE_SHARED_X;
->> +	default:
->> +		BUILD_BUG();
->> +	}
->> +}
->> +
->> +pgprot_t vm_get_page_prot(unsigned long vm_flags)
->> +{
->> +	return __pgprot(pgprot_val(__vm_get_page_prot(vm_flags)) |
->> +	       pgprot_val(powerpc_vm_get_page_prot(vm_flags)));
-> Any reason to keep powerpc_vm_get_page_prot() rather than open code it
-> here?
-> 
-> This applies to other architectures that implement arch_vm_get_page_prot()
-> and/or arch_filter_pgprot() as well.
+This adds support for UADDR64 for 64bit. This reuses __dynamic_symtab
+from the 32bit which supports more relocation types already.
 
-Just to minimize the code churn ! But I will be happy to open code them
-here (and in other platforms) if that will be preferred.
+Because RELACOUNT includes only R_PPC64_RELATIVE, this replaces it with
+RELASZ which is the size of all relocation records.
+
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+Changes:
+v2:
+* replaced RELACOUNT with RELASZ/RELAENT
+* removed FIXME
+
+---
+
+Tested via qemu gdb stub (the kernel is loaded at 0x400000).
+
+Disasm:
+
+c000000001a804d0 <e1>:
+c000000001a804d0:       b0 04 a8 01     .long 0x1a804b0
+                        c000000001a804d0: R_PPC64_RELATIVE      *ABS*-0x3ffffffffe57fb50
+c000000001a804d4:       00 00 00 c0     lfs     f0,0(0)
+c000000001a804d8:       fa 08 00 00     .long 0x8fa
+
+c000000001a804dc <e2>:
+        ...
+                        c000000001a804dc: R_PPC64_UADDR64       .rodata+0x4b0
+
+Before relocation:
+>>> p *(unsigned long *) 0x1e804d0
+$1 = 0xc000000001a804b0
+>>> p *(unsigned long *) 0x1e804dc
+$2 = 0x0
+
+After relocation in __boot_from_prom:
+>>> p *(unsigned long *) 0x1e804d0
+$1 = 0x1e804b0
+>>> p *(unsigned long *) 0x1e804dc
+$2 = 0x1e804b0
+
+After relocation in __after_prom_start:
+>>> p *(unsigned long *) 0x1e804d0
+$1 = 0xc000000001a804b0
+>>> p *(unsigned long *) 0x1e804dc
+$2 = 0xc000000001a804b0
+>>>
+---
+ arch/powerpc/kernel/reloc_64.S     | 56 ++++++++++++++++++++----------
+ arch/powerpc/kernel/vmlinux.lds.S  |  2 --
+ arch/powerpc/tools/relocs_check.sh |  7 +---
+ 3 files changed, 39 insertions(+), 26 deletions(-)
+
+diff --git a/arch/powerpc/kernel/reloc_64.S b/arch/powerpc/kernel/reloc_64.S
+index 02d4719bf43a..f7dcc25e93d0 100644
+--- a/arch/powerpc/kernel/reloc_64.S
++++ b/arch/powerpc/kernel/reloc_64.S
+@@ -8,8 +8,10 @@
+ #include <asm/ppc_asm.h>
+ 
+ RELA = 7
+-RELACOUNT = 0x6ffffff9
++RELASZ = 8
++RELAENT = 9
+ R_PPC64_RELATIVE = 22
++R_PPC64_UADDR64 = 43
+ 
+ /*
+  * r3 = desired final address of kernel
+@@ -25,29 +27,36 @@ _GLOBAL(relocate)
+ 	add	r9,r9,r12	/* r9 has runtime addr of .rela.dyn section */
+ 	ld	r10,(p_st - 0b)(r12)
+ 	add	r10,r10,r12	/* r10 has runtime addr of _stext */
++	ld	r13,(p_sym - 0b)(r12)
++	add	r13,r13,r12	/* r13 has runtime addr of .dynsym */
+ 
+ 	/*
+-	 * Scan the dynamic section for the RELA and RELACOUNT entries.
++	 * Scan the dynamic section for the RELA, RELASZ and RELAENT entries.
+ 	 */
+ 	li	r7,0
+ 	li	r8,0
+ 1:	ld	r6,0(r11)	/* get tag */
+ 	cmpdi	r6,0
+-	beq	4f		/* end of list */
++	beq	5f		/* end of list */
+ 	cmpdi	r6,RELA
+ 	bne	2f
+ 	ld	r7,8(r11)	/* get RELA pointer in r7 */
+-	b	3f
+-2:	addis	r6,r6,(-RELACOUNT)@ha
+-	cmpdi	r6,RELACOUNT@l
++	b	4f
++2:	cmpdi	r6,RELASZ
+ 	bne	3f
+-	ld	r8,8(r11)	/* get RELACOUNT value in r8 */
+-3:	addi	r11,r11,16
++	ld	r8,8(r11)	/* get RELASZ value in r8 */
++	b	4f
++3:	cmpdi	r6,RELAENT
++	bne	4f
++	ld	r12,8(r11)	/* get RELAENT value in r12 */
++4:	addi	r11,r11,16
+ 	b	1b
+-4:	cmpdi	r7,0		/* check we have both RELA and RELACOUNT */
++5:	cmpdi	r7,0		/* check we have RELA, RELASZ, RELAENT */
+ 	cmpdi	cr1,r8,0
+-	beq	6f
+-	beq	cr1,6f
++	beq	10f
++	beq	cr1,10f
++	cmpdi	r12,0
++	beq	10f
+ 
+ 	/*
+ 	 * Work out linktime address of _stext and hence the
+@@ -62,23 +71,34 @@ _GLOBAL(relocate)
+ 
+ 	/*
+ 	 * Run through the list of relocations and process the
+-	 * R_PPC64_RELATIVE ones.
++	 * R_PPC64_RELATIVE and R_PPC64_UADDR64 ones.
+ 	 */
++	divd	r8,r8,r12	/* RELASZ / RELAENT */
+ 	mtctr	r8
+-5:	ld	r0,8(9)		/* ELF64_R_TYPE(reloc->r_info) */
++5:	lwa	r0,8(r9)	/* ELF64_R_TYPE(reloc->r_info) */
+ 	cmpdi	r0,R_PPC64_RELATIVE
+-	bne	6f
++	bne	7f
+ 	ld	r6,0(r9)	/* reloc->r_offset */
+ 	ld	r0,16(r9)	/* reloc->r_addend */
+-	add	r0,r0,r3
++	b	8f
++7:	cmpdi	r0,R_PPC64_UADDR64
++	bne	9f
++	ld	r6,0(r9)
++	ld	r0,16(r9)
++	lwa	r14,12(r9) 	/* ELF64_R_SYM(reloc->r_info) */
++	mulli	r14,r14,24	/* 24 == sizeof(elf64_sym) */
++	add	r14,r14,r13	/* elf64_sym[ELF64_R_SYM] */
++	ld	r14,8(r14)
++	add	r0,r0,r14
++8:	add	r0,r0,r3
+ 	stdx	r0,r7,r6
+-	addi	r9,r9,24
++9:	add	r9,r9,r12
+ 	bdnz	5b
+-
+-6:	blr
++10:	blr
+ 
+ .balign 8
+ p_dyn:	.8byte	__dynamic_start - 0b
+ p_rela:	.8byte	__rela_dyn_start - 0b
++p_sym:		.8byte __dynamic_symtab - 0b
+ p_st:	.8byte	_stext - 0b
+ 
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index 2bcca818136a..fe22d940412f 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -281,9 +281,7 @@ SECTIONS
+ 	. = ALIGN(8);
+ 	.dynsym : AT(ADDR(.dynsym) - LOAD_OFFSET)
+ 	{
+-#ifdef CONFIG_PPC32
+ 		__dynamic_symtab = .;
+-#endif
+ 		*(.dynsym)
+ 	}
+ 	.dynstr : AT(ADDR(.dynstr) - LOAD_OFFSET) { *(.dynstr) }
+diff --git a/arch/powerpc/tools/relocs_check.sh b/arch/powerpc/tools/relocs_check.sh
+index 014e00e74d2b..63792af00417 100755
+--- a/arch/powerpc/tools/relocs_check.sh
++++ b/arch/powerpc/tools/relocs_check.sh
+@@ -39,6 +39,7 @@ $objdump -R "$vmlinux" |
+ 	#	R_PPC_NONE
+ 	grep -F -w -v 'R_PPC64_RELATIVE
+ R_PPC64_NONE
++R_PPC64_UADDR64
+ R_PPC_ADDR16_LO
+ R_PPC_ADDR16_HI
+ R_PPC_ADDR16_HA
+@@ -54,9 +55,3 @@ fi
+ num_bad=$(echo "$bad_relocs" | wc -l)
+ echo "WARNING: $num_bad bad relocations"
+ echo "$bad_relocs"
+-
+-# If we see this type of relocation it's an idication that
+-# we /may/ be using an old version of binutils.
+-if echo "$bad_relocs" | grep -q -F -w R_PPC64_UADDR64; then
+-	echo "WARNING: You need at least binutils >= 2.19 to build a CONFIG_RELOCATABLE kernel"
+-fi
+-- 
+2.30.2
+
