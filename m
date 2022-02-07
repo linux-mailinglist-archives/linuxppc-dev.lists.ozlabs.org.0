@@ -1,41 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7015E4AC33A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Feb 2022 16:28:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3F04AC650
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Feb 2022 17:45:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jsqlr0lR3z3cNZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 02:28:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JssSs4wtPz3bYw
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 03:45:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=srs0=xgpx=sw=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JsqhC6VMvz3Wtp
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 02:24:59 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
+ envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
+Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 81594614A3;
- Mon,  7 Feb 2022 15:24:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78B2C340F0;
- Mon,  7 Feb 2022 15:24:55 +0000 (UTC)
-Date: Mon, 7 Feb 2022 10:24:54 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [RFC PATCH 2/3] powerpc/ftrace: Override
- ftrace_location_lookup() for MPROFILE_KERNEL
-Message-ID: <20220207102454.41b1d6b5@gandalf.local.home>
-In-Reply-To: <fadc5f2a295d6cb9f590bbbdd71fc2f78bf3a085.1644216043.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1644216043.git.naveen.n.rao@linux.vnet.ibm.com>
- <fadc5f2a295d6cb9f590bbbdd71fc2f78bf3a085.1644216043.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JssSS5f4mz2yYJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 03:44:54 +1100 (AEDT)
+Received: from [192.168.0.2] (ip5f5aee58.dynamic.kabel-deutschland.de
+ [95.90.238.88])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested) (Authenticated sender: pmenzel)
+ by mx.molgen.mpg.de (Postfix) with ESMTPSA id 9E65D61E64846;
+ Mon,  7 Feb 2022 17:44:47 +0100 (CET)
+Message-ID: <565038d7-7374-1005-31bf-df2f051845ff@molgen.mpg.de>
+Date: Mon, 7 Feb 2022 17:44:47 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Content-Language: en-US
+To: "Paul E. McKenney" <paulmck@kernel.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: =?UTF-8?Q?rcutorture=e2=80=99s_init_segfaults_in_ppc64le_VM?=
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -48,70 +48,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Borkmann <daniel@iogearbox.net>,
- Yauheni Kaliuta <yauheni.kaliuta@redhat.com>, Jiri Olsa <jolsa@redhat.com>,
- Jordan Niethe <jniethe5@gmail.com>, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Hari Bathini <hbathini@linux.ibm.com>
+Cc: rcu@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon,  7 Feb 2022 12:37:21 +0530
-"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
+Dear Linux folks,
 
-> --- a/arch/powerpc/kernel/trace/ftrace.c
-> +++ b/arch/powerpc/kernel/trace/ftrace.c
-> @@ -1137,3 +1137,14 @@ char *arch_ftrace_match_adjust(char *str, const char *search)
->  		return str;
->  }
->  #endif /* PPC64_ELF_ABI_v1 */
-> +
-> +#ifdef CONFIG_MPROFILE_KERNEL
-> +unsigned long ftrace_location_lookup(unsigned long ip)
-> +{
-> +	/*
-> +	 * Per livepatch.h, ftrace location is always within the first
-> +	 * 16 bytes of a function on powerpc with -mprofile-kernel.
-> +	 */
-> +	return ftrace_location_range(ip, ip + 16);
 
-I think this is the wrong approach for the implementation and error prone.
+On the POWER8 server IBM S822LC running Ubuntu 21.10, building Linux 
+5.17-rc2+ with rcutorture tests
 
-> +}
-> +#endif
-> -- 
+     $ tools/testing/selftests/rcutorture/bin/torture.sh --duration 10
 
-What I believe is a safer approach is to use the record address and add the
-range to it.
+the built init
 
-That is, you know that the ftrace modification site is a range (multiple
-instructions), where in the ftrace infrastructure, only one ip represents
-that range. What you want is if you pass in an ip, and that ip is within
-that range, you return the ip that represents that range to ftrace.
+     $ file tools/testing/selftests/rcutorture/initrd/init
+     tools/testing/selftests/rcutorture/initrd/init: ELF 64-bit LSB 
+executable, 64-bit PowerPC or cisco 7500, version 1 (SYSV), statically 
+linked, BuildID[sha1]=0ded0e45649184a296f30d611f7a03cc51ecb616, for 
+GNU/Linux 3.10.0, stripped
 
-It looks like we need to change the compare function in the bsearch.
+segfaults in QEMU. From one of the log files
 
-Perhaps add a new macro to define the size of the range to be searched,
-instead of just using MCOUNT_INSN_SIZE? Then we may not even need this new
-lookup function?
+ 
+/dev/shm/linux/tools/testing/selftests/rcutorture/res/2022.02.01-21.52.37-torture/results-rcutorture/TREE03/console.log
 
-static int ftrace_cmp_recs(const void *a, const void *b)
+     [    1.119803][    T1] Run /init as init process
+     [    1.122011][    T1] init[1]: segfault (11) at f0656d90 nip 
+10000a18 lr 0 code 1 in init[10000000+d0000]
+     [    1.124863][    T1] init[1]: code: 2c2903e7 f9210030 4081ff84 
+4bffff58 00000000 01000000 00000580 3c40100f
+     [    1.128823][    T1] init[1]: code: 38427c00 7c290b78 782106e4 
+38000000 <f821ff81> 7c0803a6 f8010000 e9028010
+
+Executing the init, which just seems to be an endless loop, from 
+userspace work:
+
+     $ strace ./tools/testing/selftests/rcutorture/initrd/init
+     execve("./tools/testing/selftests/rcutorture/initrd/init", 
+["./tools/testing/selftests/rcutor"...], 0x7ffffdb9e860 /* 31 vars */) = 0
+     brk(NULL)                               = 0x1001d940000
+     brk(0x1001d940b98)                      = 0x1001d940b98
+     set_tid_address(0x1001d9400d0)          = 2890832
+     set_robust_list(0x1001d9400e0, 24)      = 0
+     uname({sysname="Linux", 
+nodename="flughafenberlinbrandenburgwillybrandt.molgen.mpg.de", ...}) = 0
+     prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, 
+rlim_max=RLIM64_INFINITY}) = 0
+     readlink("/proc/self/exe", "/dev/shm/linux/tools/testing/sel"..., 
+4096) = 61
+     getrandom("\xf1\x30\x4c\x9e\x82\x8d\x26\xd7", 8, GRND_NONBLOCK) = 8
+     brk(0x1001d970b98)                      = 0x1001d970b98
+     brk(0x1001d980000)                      = 0x1001d980000
+     mprotect(0x100e0000, 65536, PROT_READ)  = 0
+     clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=1, tv_nsec=0}, 
+0x7ffffb22c8a8) = 0
+     clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=1, tv_nsec=0}, 
+0x7ffffb22c8a8) = 0
+     clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=1, tv_nsec=0}, 
+^C{tv_sec=0, tv_nsec=872674044}) = ? ERESTART_RESTARTBLOCK (Interrupted 
+by signal)
+     strace: Process 2890832 detached
+
+Any ideas, what `mkinitrd.sh` [2] should do differently?
+
+```
+cat > init.c << '___EOF___'
+#ifndef NOLIBC
+#include <unistd.h>
+#include <sys/time.h>
+#endif
+
+volatile unsigned long delaycount;
+
+int main(int argc, int argv[])
 {
-	const struct dyn_ftrace *key = a;
-	const struct dyn_ftrace *rec = b;
+	int i;
+	struct timeval tv;
+	struct timeval tvb;
 
-	if (key->flags < rec->ip)
-		return -1;
-	if (key->ip >= rec->ip + ARCH_IP_SIZE)
-		return 1;
+	for (;;) {
+		sleep(1);
+		/* Need some userspace time. */
+		if (gettimeofday(&tvb, NULL))
+			continue;
+		do {
+			for (i = 0; i < 1000 * 100; i++)
+				delaycount = i * i;
+			if (gettimeofday(&tv, NULL))
+				break;
+			tv.tv_sec -= tvb.tv_sec;
+			if (tv.tv_sec > 1)
+				break;
+			tv.tv_usec += tv.tv_sec * 1000 * 1000;
+			tv.tv_usec -= tvb.tv_usec;
+		} while (tv.tv_usec < 1000);
+	}
 	return 0;
 }
+___EOF___
 
-Where ARCH_IP_SIZE is defined to MCOUNT_INSN_SIZE by default, but an arch
-could define it to something else, like 16.
+# build using nolibc on supported archs (smaller executable) and fall
+# back to regular glibc on other ones.
+if echo -e "#if __x86_64__||__i386__||__i486__||__i586__||__i686__" \
+            "||__ARM_EABI__||__aarch64__\nyes\n#endif" \
+    | ${CROSS_COMPILE}gcc -E -nostdlib -xc - \
+    | grep -q '^yes'; then
+	# architecture supported by nolibc
+         ${CROSS_COMPILE}gcc -fno-asynchronous-unwind-tables -fno-ident \
+		-nostdlib -include ../../../../include/nolibc/nolibc.h \
+		-s -static -Os -o init init.c -lgcc
+else
+	${CROSS_COMPILE}gcc -s -static -Os -o init init.c
+fi
+```
 
-Would that work for you, or am I missing something?
 
--- Steve
+Kind regards,
+
+Paul
+
+
+[1]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/rcutorture/doc/initrd.txt
+[2]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/rcutorture/bin/mkinitrd.sh
