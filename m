@@ -1,69 +1,111 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900614AB3B3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Feb 2022 06:38:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3057D4AB3BC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Feb 2022 06:55:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JsZgw2fTDz3bT0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Feb 2022 16:38:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jsb305V1Lz3bVZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Feb 2022 16:55:24 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NnK4HUt9;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.221.49; helo=mail-wr1-f49.google.com;
- envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
- [209.85.221.49])
+ smtp.mailfrom=ozlabs.org (client-ip=2404:9400:2221:ea00::3;
+ helo=gandalf.ozlabs.org;
+ envelope-from=srs0=66mm=sw=linux.ibm.com=sourabhjain@ozlabs.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=NnK4HUt9; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JsZgP41bhz2xX8
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Feb 2022 16:38:23 +1100 (AEDT)
-Received: by mail-wr1-f49.google.com with SMTP id s18so22626121wrv.7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 06 Feb 2022 21:38:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=byr958ymnG7EGtbbRHy8FEsvmnA+OZjvX3uXRPh6Z4E=;
- b=Bxa5V3IwEM7A+U6iJ6xltIZY0fATG318Rky7FshzT2V9KWMViWsqjwHtSDOhYNJXtx
- ouamvDE01snm0FXRH+fMFKvuGZA+e2s8ULzJOZBiVGgxN4OxMa2juvTUqDzxPlSqOdEy
- 1S9a4HVHH/gdH1Tz3Hu1MgGitzSbYYPu9z54SQoseOnFZkJt+6oaF2+X3DaWvPVFGlM8
- RfB+bo+0CGT53ZXNIbAo5RO4O5IIATuEtdDjtlRNCASnczrY3lji0e8XKPpeDB+BBq+K
- bia6V97Uw54v5XY2/TSN7ynghTSBEBK0hDnFn8x9uUg9ksw15CidDwYGnRhZoJPNlgsI
- E3AQ==
-X-Gm-Message-State: AOAM533dX5DFAZMvREdgUfHLRl5NRME9aQMoJLH3QnY6TTOmzwjBpGbs
- 9gjYT28qg1ubKq+lsZQxthk=
-X-Google-Smtp-Source: ABdhPJwPLsGKwDunoy8I0Myez3SxQ6VYLq3bfG33of6vYqoVy/EKGY4dAvht6XnNrJZEz+OnSQ488A==
-X-Received: by 2002:adf:d1c6:: with SMTP id b6mr8399158wrd.669.1644212299712; 
- Sun, 06 Feb 2022 21:38:19 -0800 (PST)
-Received: from ?IPV6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
- by smtp.gmail.com with ESMTPSA id f14sm8693006wmq.40.2022.02.06.21.38.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 06 Feb 2022 21:38:18 -0800 (PST)
-Message-ID: <35f29dbd-04ec-037e-007c-7a079caf0d5b@kernel.org>
-Date: Mon, 7 Feb 2022 06:38:16 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jsb2G19vmz2xX8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Feb 2022 16:54:44 +1100 (AEDT)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Jsb282PSfz4xjx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Feb 2022 16:54:40 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4Jsb282Kbtz4xdh; Mon,  7 Feb 2022 16:54:40 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=NnK4HUt9; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4Jsb275Kz5z4xdJ;
+ Mon,  7 Feb 2022 16:54:38 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2171Re7Y016625; 
+ Mon, 7 Feb 2022 05:54:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=l3VciTFAIp8QIkWUZ4XdGQploRgsF1fgee2yAOk2TkE=;
+ b=NnK4HUt98fERB+O+21mSqd3BYDCckXsxU6AehTNSfL8dh3/+o660/jr5e7HJBchAoIDg
+ PfNazA2veMMbx/DiXHTqXm98BBC0P0kafZNoz7IQEJOXqL+7z5MU056u5q7ZXLBSDi7U
+ W/nhxanfx0PMEL1L+utoWiYB4gN32t6N7VYa+N6SLeRHwTCqmTOUeouFX6OagNoaZqp/
+ A8ry1cweGcuPmz3/gen9JB0iq6eSLewUM/o38A+O33DdZ4NWEdPIAws00fuDKNnZ+oFk
+ 3w7FGkqyJBN61mIigfFArgeoEa3Z1Te4p8wWeiXvySnrj1je6pcJK/k5MbPrdpd8vNEi kw== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e22u73f09-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Feb 2022 05:54:36 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2175mYLG018186;
+ Mon, 7 Feb 2022 05:54:33 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma02fra.de.ibm.com with ESMTP id 3e1gv904hr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Feb 2022 05:54:33 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 2175sVpQ42402054
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 7 Feb 2022 05:54:31 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 706A342042;
+ Mon,  7 Feb 2022 05:54:31 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B05354203F;
+ Mon,  7 Feb 2022 05:54:29 +0000 (GMT)
+Received: from sjain014.ibmuc.com (unknown [9.43.49.24])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  7 Feb 2022 05:54:29 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: [RESEND PATCH v4] powerpc: Set crashkernel offset to mid of RMA region
+Date: Mon,  7 Feb 2022 11:24:28 +0530
+Message-Id: <20220207055428.38259-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.34.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 7h3g7Nr5NUhcik1aNd1wXP7rSl3addAj
+X-Proofpoint-GUID: 7h3g7Nr5NUhcik1aNd1wXP7rSl3addAj
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2 3/3] vstatus: Display an informational message when the
- VSTATUS character is pressed or TIOCSTAT ioctl is called.
-Content-Language: en-US
-To: Walt Drummond <walt@drummond.us>, agordeev@linux.ibm.com, arnd@arndb.de,
- benh@kernel.crashing.org, borntraeger@de.ibm.com, chris@zankel.net,
- davem@davemloft.net, gregkh@linuxfoundation.org, hca@linux.ibm.com,
- deller@gmx.de, ink@jurassic.park.msu.ru,
- James.Bottomley@HansenPartnership.com, mattst88@gmail.com,
- jcmvbkbc@gmail.com, mpe@ellerman.id.au, paulus@samba.org, rth@twiddle.net,
- dalias@libc.org, tsbogend@alpha.franken.de, gor@linux.ibm.com,
- ysato@users.osdn.me
-References: <20220206154856.2355838-1-walt@drummond.us>
- <20220206154856.2355838-4-walt@drummond.us>
-From: Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20220206154856.2355838-4-walt@drummond.us>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-07_02,2022-02-03_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0
+ bulkscore=0 lowpriorityscore=0 mlxscore=0 mlxlogscore=999
+ priorityscore=1501 spamscore=0 phishscore=0 suspectscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202070036
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,49 +117,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, ar@cs.msu.ru,
- linuxppc-dev@lists.ozlabs.org
+Cc: mahesh@linux.vnet.ibm.com, hbathini@linux.ibm.com,
+ Abdul haleem <abdhalee@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 06. 02. 22, 16:48, Walt Drummond wrote:
-> When triggered by pressing the VSTATUS key or calling the TIOCSTAT
-> ioctl, the n_tty line discipline will display a message on the user's
-> tty that provides basic information about the system and an
-> 'interesting' process in the current foreground process group, eg:
-> 
->    load: 0.58  cmd: sleep 744474 [sleeping] 0.36r 0.00u 0.00s 0% 772k
-> 
-> The status message provides:
->   - System load average
->   - Command name and process id (from the perspective of the session)
->   - Scheduler state
->   - Total wall-clock run time
->   - User space run time
->   - System space run time
->   - Percentage of on-cpu time
->   - Resident set size
-> 
-> The message is only displayed when the tty has the VSTATUS character
-> set, the local flags ICANON and IEXTEN are enabled and NOKERNINFO is
-> disabled; it is always displayed when TIOCSTAT is called regardless of
-> tty settings.
-> 
-> Signed-off-by: Walt Drummond <walt@drummond.us>
-> ---
+On large config LPARs (having 192 and more cores), Linux fails to boot
+due to insufficient memory in the first memblock. It is due to the
+memory reservation for the crash kernel which starts at 128MB offset of
+the first memblock. This memory reservation for the crash kernel doesn't
+leave enough space in the first memblock to accommodate other essential
+system resources.
 
-It looks like my comments were addressed. However you did not document 
-the chances since v1 here. IOW, [v2] tag missing here.
+The crash kernel start address was set to 128MB offset by default to
+ensure that the crash kernel get some memory below the RMA region which
+is used to be of size 256MB. But given that the RMA region size can be
+512MB or more, setting the crash kernel offset to mid of RMA size will
+leave enough space for the kernel to allocate memory for other system
+resources.
 
-And please add the CCs I added last time, so that relevant people still 
-can comment.
+Since the above crash kernel offset change is only applicable to the LPAR
+platform, the LPAR feature detection is pushed before the crash kernel
+reservation. The rest of LPAR specific initialization will still
+be done during pseries_probe_fw_features as usual.
 
-thanks,
+This patch is dependent on changes to paca allocation for boot CPU. It
+expect boot CPU to discover 1T segment support which is introduced by
+the patch posted here:
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-January/239175.html
+
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Reported-by: Abdul haleem <abdhalee@linux.vnet.ibm.com>
+---
+ arch/powerpc/kernel/rtas.c |  6 ++++++
+ arch/powerpc/kexec/core.c  | 15 +++++++++++----
+ 2 files changed, 17 insertions(+), 4 deletions(-)
+
+ ---
+Resend: add version number to the subject.
+
+Chnages in v4:
+	- fix build issue for 32-bit.
+
+Changes in v3:
+	https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-January/239371.html
+ ---
+
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 733e6ef36758..1f42aabbbab3 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -1313,6 +1313,12 @@ int __init early_init_dt_scan_rtas(unsigned long node,
+ 	entryp = of_get_flat_dt_prop(node, "linux,rtas-entry", NULL);
+ 	sizep  = of_get_flat_dt_prop(node, "rtas-size", NULL);
+ 
++#ifdef CONFIG_PPC64
++	/* need this feature to decide the crashkernel offset */
++	if (of_get_flat_dt_prop(node, "ibm,hypertas-functions", NULL))
++		powerpc_firmware_features |= FW_FEATURE_LPAR;
++#endif
++
+ 	if (basep && entryp && sizep) {
+ 		rtas.base = *basep;
+ 		rtas.entry = *entryp;
+diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
+index 8b68d9f91a03..abf5897ae88c 100644
+--- a/arch/powerpc/kexec/core.c
++++ b/arch/powerpc/kexec/core.c
+@@ -134,11 +134,18 @@ void __init reserve_crashkernel(void)
+ 	if (!crashk_res.start) {
+ #ifdef CONFIG_PPC64
+ 		/*
+-		 * On 64bit we split the RMO in half but cap it at half of
+-		 * a small SLB (128MB) since the crash kernel needs to place
+-		 * itself and some stacks to be in the first segment.
++		 * On the LPAR platform place the crash kernel to mid of
++		 * RMA size (512MB or more) to ensure the crash kernel
++		 * gets enough space to place itself and some stack to be
++		 * in the first segment. At the same time normal kernel
++		 * also get enough space to allocate memory for essential
++		 * system resource in the first segment. Keep the crash
++		 * kernel starts at 128MB offset on other platforms.
+ 		 */
+-		crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
++		if (firmware_has_feature(FW_FEATURE_LPAR))
++			crashk_res.start = ppc64_rma_size / 2;
++		else
++			crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
+ #else
+ 		crashk_res.start = KDUMP_KERNELBASE;
+ #endif
 -- 
-js
-suse labs
+2.34.1
+
