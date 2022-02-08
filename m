@@ -2,65 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 990364AE027
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 18:59:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 105434AE103
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 19:41:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JtW3c2wW0z3bZR
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 04:59:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JtX085c6Gz3bcg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 05:41:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rG+oCYxF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=G2S7x10M;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JP21Chhn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=song@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=rG+oCYxF; 
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
+ envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
+ header.s=susede2_rsa header.b=G2S7x10M; 
+ dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=JP21Chhn; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JtW2x6XY8z30Nx
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 04:58:33 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JtWzR5GfWz30LY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 05:40:35 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out2.suse.de (Postfix) with ESMTP id 8DE1D1F387;
+ Tue,  8 Feb 2022 18:40:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1644345630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jdw+TI4CIqxgVnyNgubuTkK3R4ZTBSmLHhOkGr2VwbM=;
+ b=G2S7x10Mrrf2/Pa/VZkTCIlv7iL0i+FD2NbkgDsTy/GD6Vznw+so0ylyvTh9qrR6r7J93J
+ 04Ue5FWUdyaq6uRCuCrIoSwIjWj/LQNqtOZKyN/cL79m8zoUd2cQQSWFaHW3YME2Nsl1R1
+ /O6De15sOs6wELkTrUGF3GPKQ8cJHsc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1644345630;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jdw+TI4CIqxgVnyNgubuTkK3R4ZTBSmLHhOkGr2VwbM=;
+ b=JP21ChhnYhMUXNASGjs5KkXOyZc8Vg8hIeeV8nPZmnJizD+KuyALDb9msBVTnWZdZTjGOt
+ xeQkzWNQ/EVRJkBA==
+Received: from kunlun.suse.cz (unknown [10.100.128.76])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 63794617EA
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 17:58:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54632C340F2
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 17:58:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1644343110;
- bh=YThmeioGVlRtQGh5OkQwpRe54M5yvmgR9ZY/n50LRIY=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=rG+oCYxFv8HGDE6JoDSt9jBuo5VXMBl9ZD21V1pI8Ly2ATbN0U6AihbWH7ZKUxVYg
- 6tqqHIQBN1GXuL1sNGr6qjbG8LiyUCQXR8oyQZNAJRM1tn8EU4h3TglYrk7TwojFOK
- 4ddzUKPQ9CioZw1ibmDZKbSA1qZR/lHo+SPhfnULmYYPeJsvPcplPA8plYyCoPVGir
- Imi5JWQdKPMqVFWDcrGkp+EiUnZu/As5YvnbCnh6WxPlDBGLgarmCunI4IIyyMYINE
- NnF4FMHPoUt0ttCsOKTpbMea2wNwXY3or2lEdowsDLIAVZ0TWcZWBEDd9ycxrZvYVy
- T7YKlonapgbcw==
-Received: by mail-yb1-f178.google.com with SMTP id e145so32123096yba.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Feb 2022 09:58:30 -0800 (PST)
-X-Gm-Message-State: AOAM531uYLGERQQkQbTsxB9GmtUm7ysDE6bD9yCc8/HyyOdTTvydv/3Y
- /CKG3jf4le9naVbMRAADlt/socACZ3hiGp/5O5Q=
-X-Google-Smtp-Source: ABdhPJzy11YzMMOoas+Js5GboaV4Yyyap0cbD7IRCueOQVmr35FHuCdTWPMom70FNX4AcXsbM4shWGa8FMe3A0xxqbw=
-X-Received: by 2002:a05:6902:1208:: with SMTP id
- s8mr6117418ybu.654.1644343109274; 
- Tue, 08 Feb 2022 09:58:29 -0800 (PST)
+ by relay2.suse.de (Postfix) with ESMTPS id 236BDA3B84;
+ Tue,  8 Feb 2022 18:40:30 +0000 (UTC)
+Date: Tue, 8 Feb 2022 19:40:29 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Luis Chamberlain <mcgrof@kernel.org>
+Subject: Re: [PATCH v3 4/6] modules: Add
+ CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+Message-ID: <20220208184029.GB3113@kunlun.suse.cz>
+References: <cover.1643475473.git.christophe.leroy@csgroup.eu>
+ <b59ed8781ef9af995c5bfa762de1f42fdfc57c74.1643475473.git.christophe.leroy@csgroup.eu>
+ <YfsbcXD74BwJ9ci2@bombadil.infradead.org>
+ <228849f5-f6a4-eb45-5e1e-a9b3eccb28b3@csgroup.eu>
+ <YfwyKR1xFaApWjRb@bombadil.infradead.org>
 MIME-Version: 1.0
-References: <20220208152148.48534-1-pmenzel@molgen.mpg.de>
-In-Reply-To: <20220208152148.48534-1-pmenzel@molgen.mpg.de>
-From: Song Liu <song@kernel.org>
-Date: Tue, 8 Feb 2022 09:58:18 -0800
-X-Gmail-Original-Message-ID: <CAPhsuW5zwFQsOHLOQ9b9eCC6Lh+frtB_c6vTP2yjg=nrAUpSEQ@mail.gmail.com>
-Message-ID: <CAPhsuW5zwFQsOHLOQ9b9eCC6Lh+frtB_c6vTP2yjg=nrAUpSEQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] lib/raid6/test/Makefile: Use `$(pound)` instead of
- `\#` for Make 4.3
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YfwyKR1xFaApWjRb@bombadil.infradead.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,104 +83,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, linux-raid <linux-raid@vger.kernel.org>,
- Networking <netdev@vger.kernel.org>, KP Singh <kpsingh@kernel.org>,
- Yonghong Song <yhs@fb.com>, bpf <bpf@vger.kernel.org>,
- Matt Brown <matthew.brown.dev@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Martin KaFai Lau <kafai@fb.com>, open list <linux-kernel@vger.kernel.org>
+Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ Daniel Thompson <daniel.thompson@linaro.org>,
+ Douglas Anderson <dianders@chromium.org>,
+ "kgdb-bugreport@lists.sourceforge.net" <kgdb-bugreport@lists.sourceforge.net>,
+ Jessica Yu <jeyu@kernel.org>, Lucas De Marchi <lucas.demarchi@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Lucas De Marchi <lucas.de.marchi@gmail.com>,
+ Jason Wessel <jason.wessel@windriver.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, Aaron Tomlin <atomlin@redhat.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 8, 2022 at 7:22 AM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
->
-> Buidling `raid6test` on Ubuntu 21.10 (ppc64le) with GNU Make 4.3 shows th=
-e
-> errors below:
->
->     $ cd lib/raid6/test/
->     $ make
->     <stdin>:1:1: error: stray =E2=80=98\=E2=80=99 in program
->     <stdin>:1:2: error: stray =E2=80=98#=E2=80=99 in program
->     <stdin>:1:11: error: expected =E2=80=98=3D=E2=80=99, =E2=80=98,=E2=80=
-=99, =E2=80=98;=E2=80=99, =E2=80=98asm=E2=80=99 or =E2=80=98__attribute__=
-=E2=80=99 before =E2=80=98<=E2=80=99 token
->     cp -f ../int.uc int.uc
->     awk -f ../unroll.awk -vN=3D1 < int.uc > int1.c
->     gcc -I.. -I ../../../include -g -O2                      -c -o int1.o=
- int1.c
->     awk -f ../unroll.awk -vN=3D2 < int.uc > int2.c
->     gcc -I.. -I ../../../include -g -O2                      -c -o int2.o=
- int2.c
->     awk -f ../unroll.awk -vN=3D4 < int.uc > int4.c
->     gcc -I.. -I ../../../include -g -O2                      -c -o int4.o=
- int4.c
->     awk -f ../unroll.awk -vN=3D8 < int.uc > int8.c
->     gcc -I.. -I ../../../include -g -O2                      -c -o int8.o=
- int8.c
->     awk -f ../unroll.awk -vN=3D16 < int.uc > int16.c
->     gcc -I.. -I ../../../include -g -O2                      -c -o int16.=
-o int16.c
->     awk -f ../unroll.awk -vN=3D32 < int.uc > int32.c
->     gcc -I.. -I ../../../include -g -O2                      -c -o int32.=
-o int32.c
->     rm -f raid6.a
->     ar cq raid6.a int1.o int2.o int4.o int8.o int16.o int32.o recov.o alg=
-os.o tables.o
->     ranlib raid6.a
->     gcc -I.. -I ../../../include -g -O2                      -o raid6test=
- test.c raid6.a
->     /usr/bin/ld: raid6.a(algos.o):/dev/shm/linux/lib/raid6/test/algos.c:2=
-8: multiple definition of `raid6_call'; /scratch/local/ccIJjN8s.o:/dev/shm/=
-linux/lib/raid6/test/test.c:22: first defined here
->     collect2: error: ld returned 1 exit status
->     make: *** [Makefile:72: raid6test] Error 1
->
-> The errors come from the `HAS_ALTIVEC` test, which fails, and the POWER
-> optimized versions are not built. That=E2=80=99s also reason nobody notic=
-ed on the
-> other architectures.
->
-> GNU Make 4.3 does not remove the backslash anymore. From the 4.3 release
-> announcment:
->
-> > * WARNING: Backward-incompatibility!
-> >   Number signs (#) appearing inside a macro reference or function invoc=
-ation
-> >   no longer introduce comments and should not be escaped with backslash=
-es:
-> >   thus a call such as:
-> >     foo :=3D $(shell echo '#')
-> >   is legal.  Previously the number sign needed to be escaped, for examp=
-le:
-> >     foo :=3D $(shell echo '\#')
-> >   Now this latter will resolve to "\#".  If you want to write makefiles
-> >   portable to both versions, assign the number sign to a variable:
-> >     H :=3D \#
-> >     foo :=3D $(shell echo '$H')
-> >   This was claimed to be fixed in 3.81, but wasn't, for some reason.
-> >   To detect this change search for 'nocomment' in the .FEATURES variabl=
-e.
->
-> So, do the same as commit 9564a8cf422d ("Kbuild: fix # escaping in .cmd
-> files for future Make") and commit 929bef467771 ("bpf: Use $(pound) inste=
-ad
-> of \# in Makefiles") and define and use a `$(pound)` variable.
->
-> Reference for the change in make:
-> https://git.savannah.gnu.org/cgit/make.git/commit/?id=3Dc6966b323811c37ac=
-edff05b57
->
-> Cc: Matt Brown <matthew.brown.dev@gmail.com>
-> Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Hello,
 
-I removed all the "`", fixed some unwrapped commit log, shortened some line=
-s
-and applied the set to md-next. Please review that version and let me know =
-if
-anything need to change.
+On Thu, Feb 03, 2022 at 11:51:05AM -0800, Luis Chamberlain wrote:
+> On Thu, Feb 03, 2022 at 07:05:13AM +0000, Christophe Leroy wrote:
+> > Le 03/02/2022 à 01:01, Luis Chamberlain a écrit :
+> > > On Sat, Jan 29, 2022 at 05:02:09PM +0000, Christophe Leroy wrote:
+> > >> diff --git a/kernel/module.c b/kernel/module.c
+> > >> index 11f51e17fb9f..f3758115ebaa 100644
+> > >> --- a/kernel/module.c
+> > >> +++ b/kernel/module.c
+> > >> @@ -81,7 +81,9 @@
+> > >>   /* If this is set, the section belongs in the init part of the module */
+> > >>   #define INIT_OFFSET_MASK (1UL << (BITS_PER_LONG-1))
+> > >>   
+> > >> +#ifndef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+> > >>   #define	data_layout core_layout
+> > >> +#endif
+> > >>   
+> > >>   /*
+> > >>    * Mutex protects:
+> > >> @@ -111,6 +113,12 @@ static struct mod_tree_root {
+> > >>   #define module_addr_min mod_tree.addr_min
+> > >>   #define module_addr_max mod_tree.addr_max
+> > >>   
+> > >> +#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+> > >> +static struct mod_tree_root mod_data_tree __cacheline_aligned = {
+> > >> +	.addr_min = -1UL,
+> > >> +};
+> > >> +#endif
+> > >> +
+> > >>   #ifdef CONFIG_MODULES_TREE_LOOKUP
+> > >>   
+> > >>   /*
+> > >> @@ -186,6 +194,11 @@ static void mod_tree_insert(struct module *mod)
+> > >>   	__mod_tree_insert(&mod->core_layout.mtn, &mod_tree);
+> > >>   	if (mod->init_layout.size)
+> > >>   		__mod_tree_insert(&mod->init_layout.mtn, &mod_tree);
+> > >> +
+> > >> +#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
+> > >> +	mod->data_layout.mtn.mod = mod;
+> > >> +	__mod_tree_insert(&mod->data_layout.mtn, &mod_data_tree);
+> > >> +#endif
+> > > 
+> > > 
+> > > kernel/ directory has quite a few files, module.c is the second to
+> > > largest file, and it has tons of stuff. Aaron is doing work to
+> > > split things out to make code easier to read and so that its easier
+> > > to review changes. See:
+> > > 
+> > > https://lkml.kernel.org/r/20220130213214.1042497-1-atomlin@redhat.com
+> > > 
+> > > I think this is a good patch example which could benefit from that work.
+> > > So I'd much prefer to see that work go in first than this, so to see if
+> > > we can make the below changes more compartamentalized.
+> > > 
+> > > Curious, how much testing has been put into this series?
+> > 
+> > 
+> > I tested the change up to (including) patch 4 to verify it doesn't 
+> > introduce regression when not using 
+> > CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC,
+> 
+> > Then I tested with patch 5. I first tried with the 'hello world' test 
+> > module. After that I loaded several important modules and checked I 
+> > didn't get any regression, both with and without STRICT_MODULES_RWX and 
+> > I checked the consistency in /proc/vmallocinfo
+> >   /proc/modules /sys/class/modules/*
+> 
+> I wonder if we have a test for STRICT_MODULES_RWX.
+> 
+> > I also tested with a hacked module_alloc() to force branch trampolines.
+> 
+> So to verify that reducing these trampolines actually helps on an
+> architecture? I wonder if we can generalize this somehow to let archs
+> verify such strategies can help.
+> 
+> I was hoping for a bit more wider testing, like actually users, etc.
+> It does not seem like so. So we can get to that by merging this soon
+> into modules-next and having this bleed out issues with linux-next.
+> We are in good time to do this now.
+> 
+> The kmod tree has tons of tests:
+> 
+> https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/
+> 
+> Can you use that to verify there are no regressions?
 
-Thanks,
-Song
+openSUSE has the testsuite packaged so it's easy to run on arbitrary
+kernel but only on ppc64(le) because there is no ppc there anymore.
+
+So yes, it does not regress Book3S/64 as far as kmod testsuite is
+conderned and building s390x non-modular kernel also still worka but
+that's not saying much.
+
+Thanks
+
+Michal
