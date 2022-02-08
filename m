@@ -2,59 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6BB4AD952
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 14:17:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 031584AD9B7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 14:24:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JtNpy58GJz3bcC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 00:17:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JtNyl4yY1z3bSx
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 00:24:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k2Mb2BQl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aTGP0ADJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=frederic@kernel.org;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=pc@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=k2Mb2BQl; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=aTGP0ADJ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JtNpH6D57z301M
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 00:17:11 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 5B686616D6;
- Tue,  8 Feb 2022 13:17:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9BFC004E1;
- Tue,  8 Feb 2022 13:17:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1644326226;
- bh=pyYWSe+Jjk7H9EMWk07P5RtmfXzKKM1LErV2wfS8qKg=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=k2Mb2BQlgKuqbJaDUtjCkPOrmzwYLXU48ytWbBxEOlY5sBc9caCg1cY5DFmj+Q0Q5
- VtQDkm/UyWabPnK13Y4FZilRsArQJb6LvzhbwSWxpiJofz2EMt42FvqfR2U4cXnqCn
- BTgXhYEtoXNWR8IrOUU7SihX8Nkj9aadSVugloSDB7u9GRd8Ffiz2k3PimkHOGfASe
- uJqt0eoPytb+fHeBNjqsLQglRLI37wL6wnK4bxiXNr0Mp1hwRGiAZQ1oKpM6tXESyA
- 097YSjs9s2skEMTczes+grTL11i90cg9DB8WePmZayo5N2tdxYiMkfWpn6ZkqSowYM
- KHZR/mL9ePDxw==
-Date: Tue, 8 Feb 2022 14:17:03 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Paul Menzel <pmenzel@molgen.mpg.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JtNxz59QHz301M
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 00:23:51 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 218AFQnH025080; 
+ Tue, 8 Feb 2022 13:23:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=NFuth8SxiHwdmFbcPnyaVO1InzUXePr0k67t1UmkMEM=;
+ b=aTGP0ADJI14AB+qhFWvzuFyeodxrfD04gp+4dgtNwMe3Ej750mbD3v/IAso6I+smpNGl
+ Z+yPqXzrR0LANby6wvEt1gpSbI9fh2Ad9nwXiN5fE/IZHCaqeXdzj8DVRaJe6FxT9fRl
+ SkfTGtnmc4n4GSko6UKV1Nu+ezFryKAECMmLIAFgTVZyt9ArIRICQvnEhySu7xqGLNFQ
+ zBlWoFIafCXCsuQrte/rR05pXWdSOu+3yscjiqazNTUNHBq2hPsVhEhhjXd3SPPdyBxi
+ NEIkNAnYmaZoVH30ZoXZf3AMZwBv/V1Sg+FMekt1/8WlTNLEmUA1u7nUmTdSds5BxKcR vQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e22trhw5g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Feb 2022 13:23:34 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 218BvqJw023388;
+ Tue, 8 Feb 2022 13:23:34 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e22trhw53-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Feb 2022 13:23:34 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 218DDqXW007058;
+ Tue, 8 Feb 2022 13:23:32 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma04dal.us.ibm.com with ESMTP id 3e1gvb7tre-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Feb 2022 13:23:32 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 218DNVwO11338066
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 8 Feb 2022 13:23:31 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6F9E3112062;
+ Tue,  8 Feb 2022 13:23:31 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 61763112061;
+ Tue,  8 Feb 2022 13:23:30 +0000 (GMT)
+Received: from li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com (unknown
+ [9.65.233.120]) by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Tue,  8 Feb 2022 13:23:30 +0000 (GMT)
+Date: Tue, 8 Feb 2022 07:23:28 -0600
+From: "Paul A. Clarke" <pc@us.ibm.com>
+To: Frederic Weisbecker <frederic@kernel.org>
 Subject: Re: ppc64le: `NOHZ tick-stop error: Non-RCU local softirq work is
  pending, handler #20!!!` when turning off SMT
-Message-ID: <20220208131703.GA538566@lothringen>
+Message-ID: <YgJu0DZ6rz4kq9JR@li-24c3614c-2adc-11b2-a85c-85f334518bdb.ibm.com>
 References: <0baca95b-771f-2217-1098-2d0eee568ea7@molgen.mpg.de>
+ <20220208131703.GA538566@lothringen>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0baca95b-771f-2217-1098-2d0eee568ea7@molgen.mpg.de>
+In-Reply-To: <20220208131703.GA538566@lothringen>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: IchAwxR61oGk0GZE9eikQPycGdF7avgf
+X-Proofpoint-GUID: rLUYCc53TXB1MU5eT9jJpepkvxp_L9gc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-08_04,2022-02-07_02,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxlogscore=720
+ impostorscore=0 phishscore=0 suspectscore=0 malwarescore=0 mlxscore=0
+ spamscore=0 priorityscore=1501 clxscore=1011 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202080082
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,72 +106,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Frederic Weisbecker <fweisbec@gmail.com>,
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>,
+ Frederic Weisbecker <fweisbec@gmail.com>, LKML <linux-kernel@vger.kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- Ingo Molnar <mingo@kernel.org>, LKML <linux-kernel@vger.kernel.org>
+ Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 08, 2022 at 08:32:37AM +0100, Paul Menzel wrote:
-> Dear Linux folks,
+On Tue, Feb 08, 2022 at 02:17:03PM +0100, Frederic Weisbecker wrote:
+> On Tue, Feb 08, 2022 at 08:32:37AM +0100, Paul Menzel wrote:
+> > once warned about a NOHZ tick-stop error, when I executed `sudo
+> > /usr/sbin/ppc64_cpu --smt=off` (so that KVM would work).
 > 
-> 
-> On the POWER8 server IBM S822LC running Ubuntu 21.10, Linux 5.17-rc1+ built
-> with
-> 
->     $ grep HZ /boot/config-5.17.0-rc1+
->     CONFIG_NO_HZ_COMMON=y
->     # CONFIG_HZ_PERIODIC is not set
->     CONFIG_NO_HZ_IDLE=y
->     # CONFIG_NO_HZ_FULL is not set
->     CONFIG_NO_HZ=y
->     # CONFIG_HZ_100 is not set
->     CONFIG_HZ_250=y
->     # CONFIG_HZ_300 is not set
->     # CONFIG_HZ_1000 is not set
->     CONFIG_HZ=250
-> 
-> once warned about a NOHZ tick-stop error, when I executed `sudo
-> /usr/sbin/ppc64_cpu --smt=off` (so that KVM would work).
+> I see, so I assume this sets some CPUs offline, right?
 
-I see, so I assume this sets some CPUs offline, right?
+ppc64_cpu --smt=off sets all but the first CPU per core offline.
 
-> 
-> ```
-> $ dmesg
-> [    0.000000] Linux version 5.17.0-rc1+
-> (pmenzel@flughafenberlinbrandenburgwillybrandt.molgen.mpg.de) (Ubuntu clang
-> version 13.0.0-2, LLD 13.0.0) #1 SMP Fri Jan 28 17:13:04 CET 2022
-> […]
-> [271272.030262] NOHZ tick-stop error: Non-RCU local softirq work is pending,
-> handler #20!!!
-> [271272.305726] NOHZ tick-stop error: Non-RCU local softirq work is pending,
-> handler #20!!!
-> [271272.549790] NOHZ tick-stop error: Non-RCU local softirq work is pending,
-> handler #20!!!
-> [271274.885167] NOHZ tick-stop error: Non-RCU local softirq work is pending,
-> handler #20!!!
-> [271275.113896] NOHZ tick-stop error: Non-RCU local softirq work is pending,
-> handler #20!!!
-> [271275.412902] NOHZ tick-stop error: Non-RCU local softirq work is pending,
-> handler #20!!!
-> [271275.625245] NOHZ tick-stop error: Non-RCU local softirq work is pending,
-> handler #20!!!
-> [271275.833107] NOHZ tick-stop error: Non-RCU local softirq work is pending,
-> handler #20!!!
-> [271276.041391] NOHZ tick-stop error: Non-RCU local softirq work is pending,
-> handler #20!!!
-> [271277.244880] NOHZ tick-stop error: Non-RCU local softirq work is pending,
-> handler #20!!!
-> ```
-
-That's IRQ_POLL_SOFTIRQ. The problem here is probably that some of these
-softirqs are pending even though ksoftirqd has been parked.
-
-I see there is irq_poll_cpu_dead() that migrates the pending queue once
-the CPU is finally dead, so this is well handled.
-
-I'm preparing a patch to fix the warning.
-
-Thanks.
+PC
