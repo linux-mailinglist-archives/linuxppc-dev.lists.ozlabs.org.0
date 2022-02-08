@@ -1,96 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC1F4AE24F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 20:34:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E364AE27F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 21:11:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JtY9r2Y1Nz3cDy
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 06:34:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JtZ083Q58z3bjG
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 07:11:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sZR/mhw1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=S6Eh7lva;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::636;
+ helo=mail-ej1-x636.google.com; envelope-from=zhouzhouyi@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=sZR/mhw1; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=S6Eh7lva; dkim-atps=neutral
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com
+ [IPv6:2a00:1450:4864:20::636])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JtY970WWfz2xDY
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 06:34:02 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 218GwVOf016682
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 8 Feb 2022 19:34:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=subject : to :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=D0+zPirGzmj2MKXZ83ZkqFOuSdKOMrX1azDf7qztEYo=;
- b=sZR/mhw1A/7tUtCdmmXLBApJyRUkrGP+bUpQNqOf/9Sa3zW/FaVqfMb0LTESUtn2/TrE
- bMoG+DRxE8nyzD9XkY9Gk9LI9K4HrKig9cXRAuk9UtT2ItW2xSrrplM1K2Zjx97UCYk5
- siqZBIw19hhOICSdEudYpUf5yAn2COJg+zuLZ8C6q6ahaDzI1OE9huKDxXHRTQIb5kvF
- qn5n07CJCJBc++9qDoFG907hVd0KqXt7GvzTVxzwg5EB3664FNXve88qfVkk6sAsFNym
- k02b8MWd9qZJSHJAWJfukXI+SCtE27GSIw+4gkerfHib/aa4xUVh1HCQeMb0ITcA/zXB MA== 
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e3e1u0xm0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Feb 2022 19:34:00 +0000
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 218JHvOR013472
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 8 Feb 2022 19:33:58 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma02wdc.us.ibm.com with ESMTP id 3e2f8nd2ku-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Feb 2022 19:33:58 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 218JXv0v18940186
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 8 Feb 2022 19:33:57 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 58D23BE04F;
- Tue,  8 Feb 2022 19:33:57 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B86B1BE05A;
- Tue,  8 Feb 2022 19:33:56 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.160.68.97])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue,  8 Feb 2022 19:33:56 +0000 (GMT)
-Subject: Re: [PATCH] powerpc/pseries: make pseries_devicetree_update() static
-To: Nathan Lynch <nathanl@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20220207221247.354454-1-nathanl@linux.ibm.com>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-Message-ID: <337c3819-1b8b-2d20-ce78-3e067b203056@linux.ibm.com>
-Date: Tue, 8 Feb 2022 11:33:55 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JtYzS3GLlz30LY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 07:10:43 +1100 (AEDT)
+Received: by mail-ej1-x636.google.com with SMTP id k25so962983ejp.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Feb 2022 12:10:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=LqpS1C58rEre6k1Ish5WUbwOdRiZi0f8EFHi+i5WIvo=;
+ b=S6Eh7lva1WoZBEDwp+ntAxc6UTzGvE268VB2ZOvJrE3kx7bfpIdHK2pFiNWZq8DDb1
+ C5GOG1D17V4xl4okMH6Jh+QNoYUs99YVS4y0/rLJh+jM9sDWjxkmV0zJFkQMZeTRmlHG
+ kCaCv1UGhByN9XKDjE9H/OTbwelG6rz4igNyLeBlDfgtBh+MHgapRuALdkl6K+ZCvn0Q
+ mrSZk57aoLP1gddt2x4654GT9Gk5Cb2lb5jMqNJNuqzdfee0miBBMmukdIIb+GhItwgJ
+ WtUqRETIkXiw+3CehiKM0L6xbyQOZSpdo3InuusC0ZgEfDiyidann1XdezKcrYFj9TKV
+ Dkew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=LqpS1C58rEre6k1Ish5WUbwOdRiZi0f8EFHi+i5WIvo=;
+ b=vcgESXcNTp0UncEWIGEB+kZDBXq1BGu81CSliaimh5O9g5BL2VuLHifvkTaBLz/vn9
+ f12mAwUGBL7h/N1sbyDAY2ePB5kAyIOw8zYUCQ2INwNKXKN0Omkv3/r20AoyRk4argB2
+ FS4zTvjOoPXnqSt9CpBRNE7lxMWomCvw6X8aK6pG1uicJZrfs7sc8cGwaP/9QKCuqYOi
+ nXlW9+CgzX9XRGgRQg47somoCNrSsI97tO9uSm4i94dx8h5bSmNnznMNRy5d7QWBfFY7
+ b4eCD/R4w24cV+8/B8tTaKH+4Dkf1rIMoVg31unhWDrYFB4qHDZKD3rkUzyyMgd1eTjh
+ 3MsA==
+X-Gm-Message-State: AOAM5305H/ZRtHIHopVluMBv4Pn0+0L8OAbGONTFMIfmc/+PPQm6eEgD
+ SAw8UBSR7WYzGMvwoDdYZPBPzg8f5yrT3ObNnvg=
+X-Google-Smtp-Source: ABdhPJwTfhhiIuNgwW0z2YamYq660O9jrbcrgJBsQqaEJJ7UuuabvkknKnwttu0PEpBZ2QtMVSdpwn6Q8t32jw2L/HI=
+X-Received: by 2002:a17:907:6d17:: with SMTP id
+ sa23mr4821509ejc.551.1644351038635; 
+ Tue, 08 Feb 2022 12:10:38 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20220207221247.354454-1-nathanl@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: y1jk7DnVi68DaPcSs7Yj-J-E5obl7vkZ
-X-Proofpoint-ORIG-GUID: y1jk7DnVi68DaPcSs7Yj-J-E5obl7vkZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-08_06,2022-02-07_02,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- malwarescore=0 bulkscore=0 priorityscore=1501 suspectscore=0 mlxscore=0
- phishscore=0 spamscore=0 mlxlogscore=999 lowpriorityscore=0 clxscore=1015
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202080115
+References: <159db05f-539c-fe29-608b-91b036588033@molgen.mpg.de>
+ <CAABZP2xampOLo8k93OLgaOfv9LreJ+f0g0_1mXwqtrv_LKewQg@mail.gmail.com>
+ <3534d781-7d01-b42a-8974-0b1c367946f0@molgen.mpg.de>
+ <CAABZP2zFDY-hrZqE=-c0uW8vFMH+Q9XezYd2DcBX4Wm+sxzK1g@mail.gmail.com>
+ <04a597dc-64aa-57e6-f7fb-17bd2ec58159@molgen.mpg.de>
+ <CAABZP2yb7-xa4F_2c6tuzkv7x902wU-hqgD_pqRooGC6C7S20A@mail.gmail.com>
+ <20220130174421.GS4285@paulmck-ThinkPad-P17-Gen-1>
+ <CAABZP2w8ysVFmxRo7CMSHunnU0GqtS=+bU6tLqcsXDUyf60-Dw@mail.gmail.com>
+ <20220201175023.GW4285@paulmck-ThinkPad-P17-Gen-1>
+ <CAABZP2zsyf238t6FGaszY+vwuBocFWQj=7k2pGd2OA3E7G525g@mail.gmail.com>
+In-Reply-To: <CAABZP2zsyf238t6FGaszY+vwuBocFWQj=7k2pGd2OA3E7G525g@mail.gmail.com>
+From: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Date: Wed, 9 Feb 2022 04:10:26 +0800
+Message-ID: <CAABZP2xS8zPZxve=Yx=UKMGYxjKmgjL-GA4YOngH7BSn5Tf7Gw@mail.gmail.com>
+Subject: Re: BUG: Kernel NULL pointer dereference on write at 0x00000000
+ (rtmsg_ifinfo_build_skb)
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,15 +86,478 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>, netdev@vger.kernel.org,
+ Josh Triplett <josh@joshtriplett.org>, LKML <linux-kernel@vger.kernel.org>,
+ rcu <rcu@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/7/22 2:12 PM, Nathan Lynch wrote:
-> pseries_devicetree_update() has only one call site, in the same file in
-> which it is defined. Make it static.
-> 
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-> ---
+Hi Paul
 
-Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Below are my preliminary test results tested on PPC VM supplied by
+Open source lab of Oregon State University, thank you for your
+support!
+
+[Preliminary test results on ppc64le virtual guest]
+
+1. Conclusion
+Some other kernel configuration besides RCU may lead to "BUG: Kernel
+NULL pointer dereference" at boot
+
+
+2. Test Environment
+2.1 host hardware
+8 core ppc64le virtual guest with 16G ram and 160G disk
+cpu        : POWER9 (architected), altivec supported
+clock        : 2200.000000MHz
+revision    : 2.2 (pvr 004e 1202)
+
+2.2 host software
+Operating System: Ubuntu 20.04.3 LTS, Compiler: gcc version 9.3.0
+
+
+3. Test Procedure
+3.1 kernel source
+next-20220203
+
+3.2 build and boot the kernel with CONFIG_DRM_BOCHS=3Dm and
+CONFIG_RCU_TORTURE_TEST=3Dy
+test result: "BUG: Kernel NULL pointer dereference" at boot
+config file: http://154.223.142.244/Feb2022/config-5.17.0-rc2-next.bochs.to=
+rture
+boot msg: http://154.223.142.244/Feb2022/dmesg.torture.bochs
+
+3.3 build and boot the kernel with CONFIG_DRM_BOCHS=3Dm
+test result: "BUG: Kernel NULL pointer dereference" at boot
+config file: http://154.223.142.244/Feb2022/config-5.17.0-rc2-next.bochs
+boot msg: http://154.223.142.244/Feb2022/dmesg.bochs
+
+3.4 build and boot the kernel with CONFIG_RCU_TORTURE_TEST=3Dy (without
+CONFIG_DRM_BOCHS)
+test result: boot without error
+config file: http://154.223.142.244/Feb2022/config-5.17.0-rc2-next.torture
+boot msg: http://154.223.142.244/Feb2022/dmesg.torture
+
+3.5 build and boot the kernel with CONFIG_RCU_TORTURE_TEST=3Dm (without
+CONFIG_DRM_BOCHS)
+test result: boot without error
+config file: http://154.223.142.244/Feb2022/config-5.17.0-rc2-next
+boot msg: http://154.223.142.244/Feb2022/dmesg
+
+4. Acknowledgement
+Thank Open source lab of Oregon State University and Paul Menzel and
+all other community members who support my tiny research.
+
+Thanks
+Zhouyi
+
+On Wed, Feb 2, 2022 at 10:39 AM Zhouyi Zhou <zhouzhouyi@gmail.com> wrote:
+>
+> Thank Paul for your encouragement!
+>
+> On Wed, Feb 2, 2022 at 1:50 AM Paul E. McKenney <paulmck@kernel.org> wrot=
+e:
+> >
+> > On Mon, Jan 31, 2022 at 09:08:40AM +0800, Zhouyi Zhou wrote:
+> > > Thank Paul for joining us!
+> > >
+> > > On Mon, Jan 31, 2022 at 1:44 AM Paul E. McKenney <paulmck@kernel.org>=
+ wrote:
+> > > >
+> > > > On Sun, Jan 30, 2022 at 09:24:44PM +0800, Zhouyi Zhou wrote:
+> > > > > Dear Paul
+> > > > >
+> > > > > On Sun, Jan 30, 2022 at 4:19 PM Paul Menzel <pmenzel@molgen.mpg.d=
+e> wrote:
+> > > > > >
+> > > > > > Dear Zhouyi,
+> > > > > >
+> > > > > >
+> > > > > > Am 30.01.22 um 01:21 schrieb Zhouyi Zhou:
+> > > > > >
+> > > > > > > Thank you for your instructions, I learned a lot from this pr=
+ocess.
+> > > > > >
+> > > > > > Same on my end.
+> > > > > >
+> > > > > > > On Sun, Jan 30, 2022 at 12:52 AM Paul Menzel <pmenzel@molgen.=
+mpg.de> wrote:
+> > > > > >
+> > > > > > >> Am 29.01.22 um 03:23 schrieb Zhouyi Zhou:
+> > > > > > >>
+> > > > > > >>> I don't have an IBM machine, but I tried to analyze the pro=
+blem using
+> > > > > > >>> my x86_64 kvm virtual machine, I can't reproduce the bug us=
+ing my
+> > > > > > >>> x86_64 kvm virtual machine.
+> > > > > > >>
+> > > > > > >> No idea, if it=E2=80=99s architecture specific.
+> > > > > > >>
+> > > > > > >>> I saw the panic is caused by registration of sit device (A =
+sit device
+> > > > > > >>> is a type of virtual network device that takes our IPv6 tra=
+ffic,
+> > > > > > >>> encapsulates/decapsulates it in IPv4 packets, and sends/rec=
+eives it
+> > > > > > >>> over the IPv4 Internet to another host)
+> > > > > > >>>
+> > > > > > >>> sit device is registered in function sit_init_net:
+> > > > > > >>> 1895    static int __net_init sit_init_net(struct net *net)
+> > > > > > >>> 1896    {
+> > > > > > >>> 1897        struct sit_net *sitn =3D net_generic(net, sit_n=
+et_id);
+> > > > > > >>> 1898        struct ip_tunnel *t;
+> > > > > > >>> 1899        int err;
+> > > > > > >>> 1900
+> > > > > > >>> 1901        sitn->tunnels[0] =3D sitn->tunnels_wc;
+> > > > > > >>> 1902        sitn->tunnels[1] =3D sitn->tunnels_l;
+> > > > > > >>> 1903        sitn->tunnels[2] =3D sitn->tunnels_r;
+> > > > > > >>> 1904        sitn->tunnels[3] =3D sitn->tunnels_r_l;
+> > > > > > >>> 1905
+> > > > > > >>> 1906        if (!net_has_fallback_tunnels(net))
+> > > > > > >>> 1907            return 0;
+> > > > > > >>> 1908
+> > > > > > >>> 1909        sitn->fb_tunnel_dev =3D alloc_netdev(sizeof(str=
+uct ip_tunnel), "sit0",
+> > > > > > >>> 1910                           NET_NAME_UNKNOWN,
+> > > > > > >>> 1911                           ipip6_tunnel_setup);
+> > > > > > >>> 1912        if (!sitn->fb_tunnel_dev) {
+> > > > > > >>> 1913            err =3D -ENOMEM;
+> > > > > > >>> 1914            goto err_alloc_dev;
+> > > > > > >>> 1915        }
+> > > > > > >>> 1916        dev_net_set(sitn->fb_tunnel_dev, net);
+> > > > > > >>> 1917        sitn->fb_tunnel_dev->rtnl_link_ops =3D &sit_lin=
+k_ops;
+> > > > > > >>> 1918        /* FB netdevice is special: we have one, and on=
+ly one per netns.
+> > > > > > >>> 1919         * Allowing to move it to another netns is clea=
+rly unsafe.
+> > > > > > >>> 1920         */
+> > > > > > >>> 1921        sitn->fb_tunnel_dev->features |=3D NETIF_F_NETN=
+S_LOCAL;
+> > > > > > >>> 1922
+> > > > > > >>> 1923        err =3D register_netdev(sitn->fb_tunnel_dev);
+> > > > > > >>> register_netdev on line 1923 will call if_nlmsg_size indire=
+ctly.
+> > > > > > >>>
+> > > > > > >>> On the other hand, the function that calls the paniced strl=
+en is if_nlmsg_size:
+> > > > > > >>> (gdb) disassemble if_nlmsg_size
+> > > > > > >>> Dump of assembler code for function if_nlmsg_size:
+> > > > > > >>>      0xffffffff81a0dc20 <+0>:    nopl   0x0(%rax,%rax,1)
+> > > > > > >>>      0xffffffff81a0dc25 <+5>:    push   %rbp
+> > > > > > >>>      0xffffffff81a0dc26 <+6>:    push   %r15
+> > > > > > >>>      0xffffffff81a0dd04 <+228>:    je     0xffffffff81a0de2=
+0 <if_nlmsg_size+512>
+> > > > > > >>>      0xffffffff81a0dd0a <+234>:    mov    0x10(%rbp),%rdi
+> > > > > > >>>      ...
+> > > > > > >>>    =3D> 0xffffffff81a0dd0e <+238>:    callq  0xffffffff8175=
+32d0 <strlen>
+> > > > > > >>>      0xffffffff81a0dd13 <+243>:    add    $0x10,%eax
+> > > > > > >>>      0xffffffff81a0dd16 <+246>:    movslq %eax,%r12
+> > > > > > >>
+> > > > > > >> Excuse my ignorance, would that look the same for ppc64le?
+> > > > > > >> Unfortunately, I didn=E2=80=99t save the problematic `vmlinu=
+z` file, but on a
+> > > > > > >> current build (without rcutorture) I have the line below, wh=
+ere strlen
+> > > > > > >> shows up.
+> > > > > > >>
+> > > > > > >>       (gdb) disassemble if_nlmsg_size
+> > > > > > >>       [=E2=80=A6]
+> > > > > > >>       0xc000000000f7f82c <+332>: bl      0xc000000000a10e30 =
+<strlen>
+> > > > > > >>       [=E2=80=A6]
+> > > > > > >>
+> > > > > > >>> and the C code for 0xffffffff81a0dd0e is following (line 52=
+4):
+> > > > > > >>> 515    static size_t rtnl_link_get_size(const struct net_de=
+vice *dev)
+> > > > > > >>> 516    {
+> > > > > > >>> 517        const struct rtnl_link_ops *ops =3D dev->rtnl_li=
+nk_ops;
+> > > > > > >>> 518        size_t size;
+> > > > > > >>> 519
+> > > > > > >>> 520        if (!ops)
+> > > > > > >>> 521            return 0;
+> > > > > > >>> 522
+> > > > > > >>> 523        size =3D nla_total_size(sizeof(struct nlattr)) +=
+ /* IFLA_LINKINFO */
+> > > > > > >>> 524               nla_total_size(strlen(ops->kind) + 1);  /=
+* IFLA_INFO_KIND */
+> > > > > > >>
+> > > > > > >> How do I connect the disassemby output with the correspondin=
+g line?
+> > > > > > > I use "make  ARCH=3Dpowerpc CC=3Dpowerpc64le-linux-gnu-gcc-9
+> > > > > > > CROSS_COMPILE=3Dpowerpc64le-linux-gnu- -j 16" to cross compil=
+e kernel
+> > > > > > > for powerpc64le in my Ubuntu 20.04 x86_64.
+> > > > > > >
+> > > > > > > gdb-multiarch ./vmlinux
+> > > > > > > (gdb)disassemble if_nlmsg_size
+> > > > > > > [...]
+> > > > > > > 0xc00000000191bf40 <+112>:    bl      0xc000000001c28ad0 <str=
+len>
+> > > > > > > [...]
+> > > > > > > (gdb) break *0xc00000000191bf40
+> > > > > > > Breakpoint 1 at 0xc00000000191bf40: file ./include/net/netlin=
+k.h, line 1112.
+> > > > > > >
+> > > > > > > But in include/net/netlink.h:1112, I can't find the call to s=
+trlen
+> > > > > > > 1110static inline int nla_total_size(int payload)
+> > > > > > > 1111{
+> > > > > > > 1112        return NLA_ALIGN(nla_attr_size(payload));
+> > > > > > > 1113}
+> > > > > > > This may be due to the compiler wrongly encode the debug info=
+rmation, I guess.
+> > > > > >
+> > > > > > `rtnl_link_get_size()` contains:
+> > > > > >
+> > > > > >              size =3D nla_total_size(sizeof(struct nlattr)) + /=
+*
+> > > > > > IFLA_LINKINFO */
+> > > > > >                     nla_total_size(strlen(ops->kind) + 1);  /*
+> > > > > > IFLA_INFO_KIND */
+> > > > > >
+> > > > > > Is that inlined(?) and the code at fault?
+> > > > > Yes, that is inlined! because
+> > > > > (gdb) disassemble if_nlmsg_size
+> > > > > Dump of assembler code for function if_nlmsg_size:
+> > > > > [...]
+> > > > > 0xc00000000191bf38 <+104>:    beq     0xc00000000191c1f0 <if_nlms=
+g_size+800>
+> > > > > 0xc00000000191bf3c <+108>:    ld      r3,16(r31)
+> > > > > 0xc00000000191bf40 <+112>:    bl      0xc000000001c28ad0 <strlen>
+> > > > > [...]
+> > > > > (gdb)
+> > > > > (gdb) break *0xc00000000191bf40
+> > > > > Breakpoint 1 at 0xc00000000191bf40: file ./include/net/netlink.h,=
+ line 1112.
+> > > > > (gdb) break *0xc00000000191bf38
+> > > > > Breakpoint 2 at 0xc00000000191bf38: file net/core/rtnetlink.c, li=
+ne 520.
+> > > >
+> > > > I suggest building your kernel with CONFIG_DEBUG_INFO=3Dy if you ar=
+e not
+> > > > already doing so.  That gives gdb a lot more information about thin=
+gs
+> > > > like inlining.
+> > > I check my .config file, CONFIG_DEBUG_INFO=3Dy is here:
+> > > linux-next$ grep CONFIG_DEBUG_INFO .config
+> > > CONFIG_DEBUG_INFO=3Dy
+> > > Then I invoke "make clean" and rebuild the kernel, the behavior of gd=
+b
+> > > and vmlinux remain unchanged, sorry for that
+> >
+> > Glad you were already on top of this one!
+> I am very pleased to contribute my tiny effort to the process of
+> making Linux better ;-)
+> >
+> > > I am trying to reproduce the bug on my bare metal x86_64 machines in
+> > > the coming days, and am also trying to work with Mr Menzel after he
+> > > comes back to the office.
+> >
+> > This URL used to allow community members such as yourself to request
+> > access to Power systems: https://osuosl.org/services/powerdev/
+> I have filled the request form on
+> https://osuosl.org/services/powerdev/ and now wait for them to deploy
+> the environment for me.
+>
+> Thanks again
+> Zhouyi
+> >
+> > In case that helps.
+> >
+> >                                                         Thanx, Paul
+> >
+> > > Thanks
+> > > Zhouyi
+> > > >
+> > > >                                                         Thanx, Paul
+> > > >
+> > > > > > >>> But ops is assigned the value of sit_link_ops in function s=
+it_init_net
+> > > > > > >>> line 1917, so I guess something must happened between the c=
+alls.
+> > > > > > >>>
+> > > > > > >>> Do we have KASAN in IBM machine? would KASAN help us find o=
+ut what
+> > > > > > >>> happened in between?
+> > > > > > >>
+> > > > > > >> Unfortunately, KASAN is not support on Power, I have, as far=
+ as I can
+> > > > > > >> see. From `arch/powerpc/Kconfig`:
+> > > > > > >>
+> > > > > > >>           select HAVE_ARCH_KASAN                  if PPC32 &=
+& PPC_PAGE_SHIFT <=3D 14
+> > > > > > >>           select HAVE_ARCH_KASAN_VMALLOC          if PPC32 &=
+& PPC_PAGE_SHIFT <=3D 14
+> > > > > > >>
+> > > > > > > en, agree, I invoke "make  menuconfig  ARCH=3Dpowerpc
+> > > > > > > CC=3Dpowerpc64le-linux-gnu-gcc-9 CROSS_COMPILE=3Dpowerpc64le-=
+linux-gnu- -j
+> > > > > > > 16", I can't find KASAN under Memory Debugging, I guess we sh=
+ould find
+> > > > > > > the bug by bisecting instead.
+> > > > > >
+> > > > > > I do not know, if it is a regression, as it was the first time =
+I tried
+> > > > > > to run a Linux kernel built with rcutorture on real hardware.
+> > > > > I tried to add some debug statements to the kernel to locate the =
+bug
+> > > > > more accurately,  you can try it when you're not busy in the futu=
+re,
+> > > > > or just ignore it if the following patch looks not very effective=
+ ;-)
+> > > > > diff --git a/net/core/dev.c b/net/core/dev.c
+> > > > > index 1baab07820f6..969ac7c540cc 100644
+> > > > > --- a/net/core/dev.c
+> > > > > +++ b/net/core/dev.c
+> > > > > @@ -9707,6 +9707,9 @@ int register_netdevice(struct net_device *d=
+ev)
+> > > > >       *    Prevent userspace races by waiting until the network
+> > > > >       *    device is fully setup before sending notifications.
+> > > > >       */
+> > > > > +    if (dev->rtnl_link_ops)
+> > > > > +        printk(KERN_INFO "%lx IFLA_INFO_KIND %s %s\n", dev->rtnl=
+_link_ops,
+> > > > > +               dev->rtnl_link_ops->kind, __FUNCTION__);
+> > > > >      if (!dev->rtnl_link_ops ||
+> > > > >          dev->rtnl_link_state =3D=3D RTNL_LINK_INITIALIZED)
+> > > > >          rtmsg_ifinfo(RTM_NEWLINK, dev, ~0U, GFP_KERNEL);
+> > > > > @@ -9788,6 +9791,9 @@ int register_netdev(struct net_device *dev)
+> > > > >
+> > > > >      if (rtnl_lock_killable())
+> > > > >          return -EINTR;
+> > > > > +    if (dev->rtnl_link_ops)
+> > > > > +        printk(KERN_INFO "%lx IFLA_INFO_KIND %s %s\n", dev->rtnl=
+_link_ops,
+> > > > > +               dev->rtnl_link_ops->kind, __FUNCTION__);
+> > > > >      err =3D register_netdevice(dev);
+> > > > >      rtnl_unlock();
+> > > > >      return err;
+> > > > > diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+> > > > > index e476403231f0..e08986ae6238 100644
+> > > > > --- a/net/core/rtnetlink.c
+> > > > > +++ b/net/core/rtnetlink.c
+> > > > > @@ -520,6 +520,8 @@ static size_t rtnl_link_get_size(const struct
+> > > > > net_device *dev)
+> > > > >      if (!ops)
+> > > > >          return 0;
+> > > > >
+> > > > > +    printk(KERN_INFO "%lx IFLA_INFO_KIND %s %s\n", ops,
+> > > > > +           ops->kind, __FUNCTION__);
+> > > > >      size =3D nla_total_size(sizeof(struct nlattr)) + /* IFLA_LIN=
+KINFO */
+> > > > >             nla_total_size(strlen(ops->kind) + 1);  /* IFLA_INFO_=
+KIND */
+> > > > >
+> > > > > @@ -1006,6 +1008,9 @@ static size_t rtnl_proto_down_size(const st=
+ruct
+> > > > > net_device *dev)
+> > > > >  static noinline size_t if_nlmsg_size(const struct net_device *de=
+v,
+> > > > >                       u32 ext_filter_mask)
+> > > > >  {
+> > > > > +    if (dev->rtnl_link_ops)
+> > > > > +        printk(KERN_INFO "%lx IFLA_INFO_KIND  %s %s\n", dev->rtn=
+l_link_ops,
+> > > > > +               dev->rtnl_link_ops->kind, __FUNCTION__);
+> > > > >      return NLMSG_ALIGN(sizeof(struct ifinfomsg))
+> > > > >             + nla_total_size(IFNAMSIZ) /* IFLA_IFNAME */
+> > > > >             + nla_total_size(IFALIASZ) /* IFLA_IFALIAS */
+> > > > > @@ -3825,7 +3830,9 @@ struct sk_buff *rtmsg_ifinfo_build_skb(int =
+type,
+> > > > > struct net_device *dev,
+> > > > >      struct net *net =3D dev_net(dev);
+> > > > >      struct sk_buff *skb;
+> > > > >      int err =3D -ENOBUFS;
+> > > > > -
+> > > > > +    if (dev->rtnl_link_ops)
+> > > > > +        printk(KERN_INFO "%lx IFLA_INFO_KIND %s %s\n", dev->rtnl=
+_link_ops,
+> > > > > +               dev->rtnl_link_ops->kind, __FUNCTION__);
+> > > > >      skb =3D nlmsg_new(if_nlmsg_size(dev, 0), flags);
+> > > > >      if (skb =3D=3D NULL)
+> > > > >          goto errout;
+> > > > > @@ -3861,7 +3868,9 @@ static void rtmsg_ifinfo_event(int type, st=
+ruct
+> > > > > net_device *dev,
+> > > > >
+> > > > >      if (dev->reg_state !=3D NETREG_REGISTERED)
+> > > > >          return;
+> > > > > -
+> > > > > +    if (dev->rtnl_link_ops)
+> > > > > +        printk(KERN_INFO "%lx IFLA_INFO_KIND  %s %s\n", dev->rtn=
+l_link_ops,
+> > > > > +               dev->rtnl_link_ops->kind, __FUNCTION__);
+> > > > >      skb =3D rtmsg_ifinfo_build_skb(type, dev, change, event, fla=
+gs, new_nsid,
+> > > > >                       new_ifindex);
+> > > > >      if (skb)
+> > > > > @@ -3871,6 +3880,9 @@ static void rtmsg_ifinfo_event(int type, st=
+ruct
+> > > > > net_device *dev,
+> > > > >  void rtmsg_ifinfo(int type, struct net_device *dev, unsigned int=
+ change,
+> > > > >            gfp_t flags)
+> > > > >  {
+> > > > > +    if (dev->rtnl_link_ops)
+> > > > > +        printk(KERN_INFO "%lx IFLA_INFO_KIND  %s %s\n", dev->rtn=
+l_link_ops,
+> > > > > +               dev->rtnl_link_ops->kind, __FUNCTION__);
+> > > > >      rtmsg_ifinfo_event(type, dev, change, rtnl_get_event(0), fla=
+gs,
+> > > > >                 NULL, 0);
+> > > > >  }
+> > > > > diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+> > > > > index c0b138c20992..fa5b2725811c 100644
+> > > > > --- a/net/ipv6/sit.c
+> > > > > +++ b/net/ipv6/sit.c
+> > > > > @@ -1919,6 +1919,8 @@ static int __net_init sit_init_net(struct n=
+et *net)
+> > > > >       * Allowing to move it to another netns is clearly unsafe.
+> > > > >       */
+> > > > >      sitn->fb_tunnel_dev->features |=3D NETIF_F_NETNS_LOCAL;
+> > > > > -
+> > > > > +    printk(KERN_INFO "%lx IFLA_INFO_KIND %s %s\n",
+> > > > > +           sitn->fb_tunnel_dev->rtnl_link_ops,
+> > > > > +           sitn->fb_tunnel_dev->rtnl_link_ops->kind, __FUNCTION_=
+_);
+> > > > >      err =3D register_netdev(sitn->fb_tunnel_dev);
+> > > > >      if (err)
+> > > > >          goto err_reg_dev;
+> > > > > >
+> > > > > > >>> Hope I can be of more helpful.
+> > > > > > >>
+> > > > > > >> Some distributions support multi-arch, so they easily allow
+> > > > > > >> crosscompiling for different architectures.
+> > > > > > > I use "make  ARCH=3Dpowerpc CC=3Dpowerpc64le-linux-gnu-gcc-9
+> > > > > > > CROSS_COMPILE=3Dpowerpc64le-linux-gnu- -j 16" to cross compil=
+e kernel
+> > > > > > > for powerpc64le in my Ubuntu 20.04 x86_64. But I can't boot t=
+he
+> > > > > > > compiled kernel using "qemu-system-ppc64le -M pseries -nograp=
+hic -smp
+> > > > > > > 4 -net none -m 4G -kernel arch/powerpc/boot/zImage". I will c=
+ontinue
+> > > > > > > to explore it.
+> > > > > >
+> > > > > > Oh, that does not sound good. But I have not tried that in a lo=
+ng time
+> > > > > > either. It=E2=80=99s a separate issue, but maybe some of the PP=
+C
+> > > > > > maintainers/folks could help.
+> > > > > I will do further research on this later.
+> > > > >
+> > > > > Thanks for your time
+> > > > > Kind regards
+> > > > > Zhouyi
+> > > > > >
+> > > > > >
+> > > > > > Kind regards,
+> > > > > >
+> > > > > > Paul
