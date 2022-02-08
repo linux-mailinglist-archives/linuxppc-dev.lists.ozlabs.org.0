@@ -2,42 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2FB4ACE82
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 02:58:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D5A4ACFFB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 04:57:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jt5lF0tfSz3bY6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 12:58:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jt8NQ3qH7z3c7f
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 14:57:26 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tUM0j/7X;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=heyquark.com (client-ip=217.70.178.240;
- helo=mslow1.mail.gandi.net; envelope-from=ash@heyquark.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=riteshh@linux.ibm.com;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 504 seconds by postgrey-1.36 at boromir;
- Tue, 08 Feb 2022 10:43:21 AEDT
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jt2lF3h5mz2xKK
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 10:43:20 +1100 (AEDT)
-Received: from relay12.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::232])
- by mslow1.mail.gandi.net (Postfix) with ESMTP id 2E92FCDB92
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Feb 2022 23:34:58 +0000 (UTC)
-Received: (Authenticated sender: ash@heyquark.com)
- by relay12.mail.gandi.net (Postfix) with ESMTPSA id 02369200002;
- Mon,  7 Feb 2022 23:34:32 +0000 (UTC)
-Message-ID: <0020d47c-0e23-822c-33f5-ccb7ea4c1072@heyquark.com>
-Date: Tue, 8 Feb 2022 10:34:29 +1100
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=tUM0j/7X; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jt8M865pfz3bPJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 14:56:20 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2182I3nl021099; 
+ Tue, 8 Feb 2022 03:56:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : to : cc :
+ subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=pp1; bh=ONdp6KgAz/SdXmdbrZafej/l0I0v7+YNbAlyMkZUBmk=;
+ b=tUM0j/7X/7s8VTCM0vlqhS1AUu9CiusC1GPsnnBwYBD1BhVWTHpDsfXWFM7HTFV5PhnW
+ 46yrHtZmYuejtVpXFWpqK8211Sa/E28zkSiajIyQDYvvd0yZhPbgq+dzIlKaKiFByxRi
+ CzRj702WuGj41lqsiE4Qz2tYbQ1F4OwM0vbOO9dZPmB4RrP1uiHVfu3edW2Jfo1g7mC8
+ EqTZihJi5+WDWZ3zP/SIHC0qKsXc0vmilAwi2vKq307loWVkqSxLFcSjEhQzTAzNZIzf
+ +vjZFGte6yELgY8JoN9yHYK5fo4mc0SBqP+7TohMlx114jF/C+STpORyYpie2BDeBldl lg== 
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3e3fm4hc05-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Feb 2022 03:56:13 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2183qSkQ029092;
+ Tue, 8 Feb 2022 03:56:11 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06ams.nl.ibm.com with ESMTP id 3e1ggjt2yq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Feb 2022 03:56:11 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 2183u8Xg44106222
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 8 Feb 2022 03:56:08 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2847D52057;
+ Tue,  8 Feb 2022 03:56:08 +0000 (GMT)
+Received: from localhost (unknown [9.43.111.247])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id A9AB55204E;
+ Tue,  8 Feb 2022 03:56:07 +0000 (GMT)
+Date: Tue, 8 Feb 2022 09:26:06 +0530
+From: Ritesh Harjani <riteshh@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCHv2] selftests/powerpc/copyloops: Add memmove_64 test
+Message-ID: <20220208035606.mxjd6k4jqswallxp@riteshh-domain>
+References: <57242c1fe7aba6b7f0fcd0490303bfd5f222ee00.1631512686.git.riteshh@linux.ibm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <57242c1fe7aba6b7f0fcd0490303bfd5f222ee00.1631512686.git.riteshh@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 0Emz8gSkO-Yjpsd-68cmYm45zsqwVI2h
+X-Proofpoint-GUID: 0Emz8gSkO-Yjpsd-68cmYm45zsqwVI2h
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Content-Language: en-US
-To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org
-From: Ash Logan <ash@heyquark.com>
-Subject: [RFC] Upstreaming Linux for Nintendo Wii U
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Tue, 08 Feb 2022 12:58:12 +1100
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-08_01,2022-02-07_02,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 malwarescore=0
+ spamscore=0 bulkscore=0 impostorscore=0 priorityscore=1501 phishscore=0
+ mlxlogscore=999 clxscore=1011 adultscore=0 lowpriorityscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202080016
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,126 +96,180 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linkmauve@linkmauve.fr, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- linuxppc-dev@lists.ozlabs.org, j.ne@posteo.net
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+Found this, while checking my older emails. Sorry about not checking on this
+before. Have addressed the review comments here [1]
 
-I'm the lead dev on a downstream kernel with support for the Wii U[1],
-Nintendo's previous-gen game console. You might have seen Emmanuel
-<linkmauve@linkmauve.fr> submitting some of the more self-contained
-drivers recently[2][3]. I've gotten to the point where I'd like to look
-at upstreaming the platform. Since we need to refactor all the patches
-for upstreaming anyway, I thought it would be good to talk to the
-experts ahead of time ;)
+This still applies cleanly on 5.17-rc3 and passes.
 
-Some quick details about the platform:
-- Tri-core PowerPC "Espresso" (750CL) @ 1.24GHz
-- 2GiB DDR3-1600 (and a little over 32MiB of SRAM)
-- "Latte" proprietary SoC with USB, SDIO, SATA, crypto, ARM9
-coprocessor, Radeon R7xx GPU
-- Curiously, the entire graphics pipeline from the original Wii, usually
-powered off
+riteshh-> ./copyloops/memmove_64
+test: memmove
+tags: git_version:v5.17-rc3-1-g84f773abc114
+success: memmove
 
-The bulk of the interesting work for Linux is in the SoC, which is
-pretty similar to the original Wii's in layout (we expect to share a lot
-of drivers), with the addition of some more modern blocks.
+[1]: https://lore.kernel.org/all/87sfybl5f9.fsf@mpe.ellerman.id.au/
 
-The state of the downstream work:
-- Basic platform init works, "easy" drivers like SDIO, SATA, accelerated
-cryptography, etc. all here - some are even upstreamed already.
-- Bootloader duties are performed by linux-loader[4], a small firmware
-for the ARM coprocessor that idles once Linux starts.
-- linux-loader handles a dtbImage right now and has a hardcoded memory
-area to pass commandline parameters, parsed from a config file. I don't
-expect that to be acceptable, eventually I'd like to move it to loading
-vmlinuz directly and pulling the dtb off the SD card, similar to the
-Raspberry Pi. Alternatively, petitboot, but kexec doesn't seem to work
-right now.
-- Linux itself runs tolerably (though given the hardware it should be
-faster), with framebuffer graphics and basic support for most hardware,
-with the notable exceptions of the WiFi card and the GPU.
-- No SMP - will cover this later.
+-ritesh
 
-That's about the state of things. I'm not sure how much is or isn't
-upstreamable, but right now I'm only thinking about getting the basic
-platform support up and some core hardware. On that front, there are a
-few decisions that need to be made and help that needs to be had, which
-is where I hope you all can give some insight:
-
-- USB only works with patches to the USB core[5] that appear to have
-failed upstreaming before[6]. I don't really understand these well
-enough to say what particular hardware restriction they're working
-around. I do know that there's a curious restriction on DMA addressing
-where most SoC blocks (including USB) can't see the SRAM at address 0,
-but we worked around this using reserved-mem in the devicetree. Almost
-all of the peripherals on Wii U are connected over USB, so having a
-working stack is pretty important.
-- The Radeon, despite being a mostly standard card, has its GPUF0MMReg
-area mapped into the SoC's mmio, with no PCI bus in sight. The Linux
-drivers (radeon, too old for amdgpu) seem to expect PCI, so some pretty
-extensive patching would be needed to get that moving - not to mention
-things like the proprietary HDMI encoder, which seems similar to the
-PS4's[7]. Downstream, we have an fbdev driver, which I obviously don't
-expect to get accepted.
-- Both of those issues together means I'm not convinced an initial port
-would have any viable output device. I would like to fix USB, though
-barring that we could use a flat framebuffer that linux-loader leaves
-enabled.
-- Right now I've made a new platform (like ps3) rather than joining the
-GameCube and Wii in embedded6xx, since that is marked as BROKEN_ON_SMP.
-The Wii U is a 3-core system, though a CPU bug[8] prevents existing
-userspaces working with it. Bit of a "cross that bridge when we get
-there" situation, though I'm reluctant to prevent that possibility by
-using a BROKEN_ON_SMP platform.
-- Like the Wii before it, the Wii U has a small amount of RAM at address
-zero, a gap, then a large amount of RAM at a higher address. Instead of
-the "map everything and reserve the gap" approach of the Wii, we loop
-over each memblock and map only true RAM[9]. This seems to work, but as
-far as I can tell is unique amongst powerpc32 platforms, so it's worth
-pointing out. (Note: I've been told this doesn't work anymore after some
-KUAP changes[10], so this point might be moot; haven't investigated)
-- Due to the aformentioned DMA restrictions and possibly a fatal
-bytemasking bug on uncached mappings[11], I have been wondering if it'd
-be better to just give up on the SRAM at address 0 altogether and use it
-as VRAM or something, loading the kernel at a higher address.
-- Like the Wii, the Wii U also takes a bit of a loose approach to cache
-coherency, and has several SoC peripherals with big-endian registers,
-requiring driver patching. USB already has devicetree quirks, but others
-require more drastic measures. I expect we'll take that on a
-driver-by-driver basis.
-
-In terms of platform bringup, the key issue is whether to be embedded6xx
-or not and what output device to use. Beyond that it's just things like
-IRQ controller drivers, should be pretty straightforward. I think on our
-end, we'll start rebasing to 5.15 (LTS) and start sending patches from
-there. I know getting closer to HEAD is preferable, this project has
-just moved very slowly in the past and being on LTS has been a lifesaver.
-
-Please let me know your thoughts, suggestions and questions, I'm new to
-this and want to make sure we're sending you the best submissions we can.
-
-Thanks,
-Ash
-https://heyquark.com/aboutme
-
-[1] https://linux-wiiu.org
-[2] https://lkml.org/lkml/2021/5/19/391
-[3] https://lkml.org/lkml/2021/10/14/1150
-[4] https://gitlab.com/linux-wiiu/linux-loader
-[5] https://gitlab.com/linux-wiiu/linux-wiiu/-/merge_requests/8/diffs
-[6] https://lists.ozlabs.org/pipermail/linuxppc-dev/2010-March/080705.html
-[7]
-https://github.com/eeply/ps4-linux/commit/b2e54fcc05d4ed77bcea4ba3f3bdc33cb3b318e0
-[8]
-https://fail0verflow.com/blog/2014/console-hacking-2013-omake/#espresso
-(3rd paragraph, "In fact, the SMPization of the 750 in the Espresso is
-not perfect...")
-[9]
-https://gitlab.com/linux-wiiu/linux-wiiu/-/blob/fabcfd93d47ba0d2105eec7f3b5d7785f2a69445/arch/powerpc/mm/pgtable_32.c#L273-L282
-[10] https://lkml.org/lkml/2021/6/3/204
-[11] https://bugs.dolphin-emu.org/issues/12565
+On 21/09/13 11:47AM, Ritesh Harjani wrote:
+> While debugging an issue, we wanted to check whether the arch specific
+> kernel memmove implementation is correct.
+> This selftest could help test that.
+>
+> Suggested-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Signed-off-by: Ritesh Harjani <riteshh@linux.ibm.com>
+> ---
+> v1 -> v2: Integrated memmove_64 test within copyloops tests
+> [v1]: https://patchwork.ozlabs.org/patch/1518082
+>
+>  .../selftests/powerpc/copyloops/.gitignore    |  1 +
+>  .../selftests/powerpc/copyloops/Makefile      |  9 ++-
+>  .../selftests/powerpc/copyloops/asm/ppc_asm.h |  1 +
+>  .../selftests/powerpc/copyloops/mem_64.S      |  1 +
+>  .../powerpc/copyloops/memcpy_stubs.S          |  8 +++
+>  .../powerpc/copyloops/memmove_validate.c      | 58 +++++++++++++++++++
+>  6 files changed, 77 insertions(+), 1 deletion(-)
+>  create mode 120000 tools/testing/selftests/powerpc/copyloops/mem_64.S
+>  create mode 100644 tools/testing/selftests/powerpc/copyloops/memcpy_stubs.S
+>  create mode 100644 tools/testing/selftests/powerpc/copyloops/memmove_validate.c
+>
+> diff --git a/tools/testing/selftests/powerpc/copyloops/.gitignore b/tools/testing/selftests/powerpc/copyloops/.gitignore
+> index 994b11af765c..7283e8b07b75 100644
+> --- a/tools/testing/selftests/powerpc/copyloops/.gitignore
+> +++ b/tools/testing/selftests/powerpc/copyloops/.gitignore
+> @@ -13,3 +13,4 @@ copyuser_64_exc_t0
+>  copyuser_64_exc_t1
+>  copyuser_64_exc_t2
+>  copy_mc_64
+> +memmove_64
+> diff --git a/tools/testing/selftests/powerpc/copyloops/Makefile b/tools/testing/selftests/powerpc/copyloops/Makefile
+> index 3095b1f1c02b..77594e697f2f 100644
+> --- a/tools/testing/selftests/powerpc/copyloops/Makefile
+> +++ b/tools/testing/selftests/powerpc/copyloops/Makefile
+> @@ -13,7 +13,8 @@ TEST_GEN_PROGS := copyuser_64_t0 copyuser_64_t1 copyuser_64_t2 \
+>  		copyuser_p7_t0 copyuser_p7_t1 \
+>  		memcpy_64_t0 memcpy_64_t1 memcpy_64_t2 \
+>  		memcpy_p7_t0 memcpy_p7_t1 copy_mc_64 \
+> -		copyuser_64_exc_t0 copyuser_64_exc_t1 copyuser_64_exc_t2
+> +		copyuser_64_exc_t0 copyuser_64_exc_t1 copyuser_64_exc_t2 \
+> +		memmove_64
+>
+>  EXTRA_SOURCES := validate.c ../harness.c stubs.S
+>
+> @@ -56,3 +57,9 @@ $(OUTPUT)/copyuser_64_exc_t%: copyuser_64.S exc_validate.c ../harness.c \
+>  		-D COPY_LOOP=test___copy_tofrom_user_base \
+>  		-D SELFTEST_CASE=$(subst copyuser_64_exc_t,,$(notdir $@)) \
+>  		-o $@ $^
+> +
+> +$(OUTPUT)/memmove_64: mem_64.S memcpy_64.S memmove_validate.c ../harness.c \
+> +		memcpy_stubs.S
+> +	$(CC) $(CPPFLAGS) $(CFLAGS) \
+> +		-D TEST_MEMMOVE=test_memmove \
+> +		-o $@ $^
+> diff --git a/tools/testing/selftests/powerpc/copyloops/asm/ppc_asm.h b/tools/testing/selftests/powerpc/copyloops/asm/ppc_asm.h
+> index 58c1cef3e399..003e1b3d9300 100644
+> --- a/tools/testing/selftests/powerpc/copyloops/asm/ppc_asm.h
+> +++ b/tools/testing/selftests/powerpc/copyloops/asm/ppc_asm.h
+> @@ -26,6 +26,7 @@
+>  #define _GLOBAL(A) FUNC_START(test_ ## A)
+>  #define _GLOBAL_TOC(A) _GLOBAL(A)
+>  #define _GLOBAL_TOC_KASAN(A) _GLOBAL(A)
+> +#define _GLOBAL_KASAN(A) _GLOBAL(A)
+>
+>  #define PPC_MTOCRF(A, B)	mtocrf A, B
+>
+> diff --git a/tools/testing/selftests/powerpc/copyloops/mem_64.S b/tools/testing/selftests/powerpc/copyloops/mem_64.S
+> new file mode 120000
+> index 000000000000..db254c9a5f5c
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/copyloops/mem_64.S
+> @@ -0,0 +1 @@
+> +../../../../../arch/powerpc/lib/mem_64.S
+> \ No newline at end of file
+> diff --git a/tools/testing/selftests/powerpc/copyloops/memcpy_stubs.S b/tools/testing/selftests/powerpc/copyloops/memcpy_stubs.S
+> new file mode 100644
+> index 000000000000..d9baa832fa49
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/copyloops/memcpy_stubs.S
+> @@ -0,0 +1,8 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#include <asm/ppc_asm.h>
+> +
+> +FUNC_START(memcpy)
+> +	b test_memcpy
+> +
+> +FUNC_START(backwards_memcpy)
+> +	b test_backwards_memcpy
+> diff --git a/tools/testing/selftests/powerpc/copyloops/memmove_validate.c b/tools/testing/selftests/powerpc/copyloops/memmove_validate.c
+> new file mode 100644
+> index 000000000000..1a23218b5757
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/copyloops/memmove_validate.c
+> @@ -0,0 +1,58 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +#include <malloc.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <assert.h>
+> +#include "utils.h"
+> +
+> +void *TEST_MEMMOVE(const void *s1, const void *s2, size_t n);
+> +
+> +#define BUF_LEN 65536
+> +#define MAX_OFFSET 512
+> +
+> +size_t max(size_t a, size_t b)
+> +{
+> +	if (a >= b)
+> +		return a;
+> +	return b;
+> +}
+> +
+> +static int testcase_run(void)
+> +{
+> +	size_t i, src_off, dst_off, len;
+> +
+> +	char *usermap = memalign(BUF_LEN, BUF_LEN);
+> +	char *kernelmap = memalign(BUF_LEN, BUF_LEN);
+> +
+> +	assert(usermap != NULL);
+> +	assert(kernelmap != NULL);
+> +
+> +	memset(usermap, 0, BUF_LEN);
+> +	memset(kernelmap, 0, BUF_LEN);
+> +
+> +	for (i = 0; i < BUF_LEN; i++) {
+> +		usermap[i] = i & 0xff;
+> +		kernelmap[i] = i & 0xff;
+> +	}
+> +
+> +	for (src_off = 0; src_off < MAX_OFFSET; src_off++) {
+> +		for (dst_off = 0; dst_off < MAX_OFFSET; dst_off++) {
+> +			for (len = 1; len < MAX_OFFSET - max(src_off, dst_off); len++) {
+> +
+> +				memmove(usermap + dst_off, usermap + src_off, len);
+> +				TEST_MEMMOVE(kernelmap + dst_off, kernelmap + src_off, len);
+> +				if (memcmp(usermap, kernelmap, MAX_OFFSET) != 0) {
+> +					printf("memmove failed at %ld %ld %ld\n",
+> +							src_off, dst_off, len);
+> +					abort();
+> +				}
+> +			}
+> +		}
+> +	}
+> +	return 0;
+> +}
+> +
+> +int main(void)
+> +{
+> +	return test_harness(testcase_run, "memmove");
+> +}
+> --
+> 2.31.1
+>
