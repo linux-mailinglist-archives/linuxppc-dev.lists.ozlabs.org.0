@@ -1,46 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488264AD84C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 13:28:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6BB4AD952
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 14:17:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JtMjt0R2Zz3bcF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 23:28:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JtNpy58GJz3bcC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 00:17:46 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k2Mb2BQl;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
- envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
-Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=frederic@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=k2Mb2BQl; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JtMjS1s1Vz30Qt
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 23:27:55 +1100 (AEDT)
-Received: from [192.168.0.2] (ip5f5aebc2.dynamic.kabel-deutschland.de
- [95.90.235.194])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested) (Authenticated sender: pmenzel)
- by mx.molgen.mpg.de (Postfix) with ESMTPSA id 30C4D61E6478B;
- Tue,  8 Feb 2022 13:27:53 +0100 (CET)
-Message-ID: <8d86aa4c-a61f-0a51-7a80-46860cdd8536@molgen.mpg.de>
-Date: Tue, 8 Feb 2022 13:27:52 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JtNpH6D57z301M
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 00:17:11 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 5B686616D6;
+ Tue,  8 Feb 2022 13:17:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9BFC004E1;
+ Tue,  8 Feb 2022 13:17:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1644326226;
+ bh=pyYWSe+Jjk7H9EMWk07P5RtmfXzKKM1LErV2wfS8qKg=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=k2Mb2BQlgKuqbJaDUtjCkPOrmzwYLXU48ytWbBxEOlY5sBc9caCg1cY5DFmj+Q0Q5
+ VtQDkm/UyWabPnK13Y4FZilRsArQJb6LvzhbwSWxpiJofz2EMt42FvqfR2U4cXnqCn
+ BTgXhYEtoXNWR8IrOUU7SihX8Nkj9aadSVugloSDB7u9GRd8Ffiz2k3PimkHOGfASe
+ uJqt0eoPytb+fHeBNjqsLQglRLI37wL6wnK4bxiXNr0Mp1hwRGiAZQ1oKpM6tXESyA
+ 097YSjs9s2skEMTczes+grTL11i90cg9DB8WePmZayo5N2tdxYiMkfWpn6ZkqSowYM
+ KHZR/mL9ePDxw==
+Date: Tue, 8 Feb 2022 14:17:03 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: Re: ppc64le: `NOHZ tick-stop error: Non-RCU local softirq work is
+ pending, handler #20!!!` when turning off SMT
+Message-ID: <20220208131703.GA538566@lothringen>
+References: <0baca95b-771f-2217-1098-2d0eee568ea7@molgen.mpg.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: =?UTF-8?Q?Re=3a_rcutorture=e2=80=99s_init_segfaults_in_ppc64le_VM?=
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- "Paul E. McKenney" <paulmck@kernel.org>
-References: <565038d7-7374-1005-31bf-df2f051845ff@molgen.mpg.de>
- <871r0dmzzm.fsf@mpe.ellerman.id.au>
- <e7498a9d-7420-ff52-99e4-8194f3d177f0@molgen.mpg.de>
-In-Reply-To: <e7498a9d-7420-ff52-99e4-8194f3d177f0@molgen.mpg.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <0baca95b-771f-2217-1098-2d0eee568ea7@molgen.mpg.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,173 +66,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rcu@vger.kernel.org, Zhouyi Zhou <zhouzhouyi@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Willy Tarreau <w@1wt.eu>
+Cc: Frederic Weisbecker <fweisbec@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Ingo Molnar <mingo@kernel.org>, LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[Correct sha1 for test for 2022.02.01-21.52.37]
+On Tue, Feb 08, 2022 at 08:32:37AM +0100, Paul Menzel wrote:
+> Dear Linux folks,
+> 
+> 
+> On the POWER8 server IBM S822LC running Ubuntu 21.10, Linux 5.17-rc1+ built
+> with
+> 
+>     $ grep HZ /boot/config-5.17.0-rc1+
+>     CONFIG_NO_HZ_COMMON=y
+>     # CONFIG_HZ_PERIODIC is not set
+>     CONFIG_NO_HZ_IDLE=y
+>     # CONFIG_NO_HZ_FULL is not set
+>     CONFIG_NO_HZ=y
+>     # CONFIG_HZ_100 is not set
+>     CONFIG_HZ_250=y
+>     # CONFIG_HZ_300 is not set
+>     # CONFIG_HZ_1000 is not set
+>     CONFIG_HZ=250
+> 
+> once warned about a NOHZ tick-stop error, when I executed `sudo
+> /usr/sbin/ppc64_cpu --smt=off` (so that KVM would work).
 
+I see, so I assume this sets some CPUs offline, right?
 
-Am 08.02.22 um 13:12 schrieb Paul Menzel:
-> Dear Michael,
 > 
-> 
-> Thank you for looking into this.
-> 
-> Am 08.02.22 um 11:09 schrieb Michael Ellerman:
->> Paul Menzel writes:
-> 
+> ```
+> $ dmesg
+> [    0.000000] Linux version 5.17.0-rc1+
+> (pmenzel@flughafenberlinbrandenburgwillybrandt.molgen.mpg.de) (Ubuntu clang
+> version 13.0.0-2, LLD 13.0.0) #1 SMP Fri Jan 28 17:13:04 CET 2022
 > […]
-> 
->>> On the POWER8 server IBM S822LC running Ubuntu 21.10, building Linux
->>> 5.17-rc2+ with rcutorture tests
->>
->> I'm not sure if that's the host kernel version or the version you're
->> using of rcutorture? Can you tell us the sha1 of your host kernel and of
->> the tree you're running rcutorture from?
-> 
-> The host system runs Linux 5.17-rc1+ started with kexec. Unfortunately, 
-> I am unable to find the exact sha1.
-> 
->      $ more /proc/version
->      Linux version 5.17.0-rc1+ (pmenzel@flughafenberlinbrandenburgwillybrandt.molgen.mpg.de) (Ubuntu clang version 13.0.0-2, LLD 13.0.0) #1 SMP Fri Jan 28 17:13:04 CET 2022
-> 
-> The Linux tree, from where I run rcutorture from, is at commit 
-> dfd42facf1e4 (Linux 5.17-rc3) with four patches on top:
-> 
->      $ git log --oneline -6
->      207cec79e752 (HEAD -> master, origin/master, origin/HEAD) Problems with rcutorture on ppc64le: allmodconfig(2) and other failures
->      8c82f96fbe57 ata: libata-sata: improve sata_link_debounce()
->      a447541d925f ata: libata-sata: remove debounce delay by default
->      afd84e1eeafc ata: libata-sata: introduce struct sata_deb_timing
->      f4caf7e48b75 ata: libata-sata: Simplify sata_link_resume() interface
->      dfd42facf1e4 (tag: v5.17-rc3) Linux 5.17-rc3
+> [271272.030262] NOHZ tick-stop error: Non-RCU local softirq work is pending,
+> handler #20!!!
+> [271272.305726] NOHZ tick-stop error: Non-RCU local softirq work is pending,
+> handler #20!!!
+> [271272.549790] NOHZ tick-stop error: Non-RCU local softirq work is pending,
+> handler #20!!!
+> [271274.885167] NOHZ tick-stop error: Non-RCU local softirq work is pending,
+> handler #20!!!
+> [271275.113896] NOHZ tick-stop error: Non-RCU local softirq work is pending,
+> handler #20!!!
+> [271275.412902] NOHZ tick-stop error: Non-RCU local softirq work is pending,
+> handler #20!!!
+> [271275.625245] NOHZ tick-stop error: Non-RCU local softirq work is pending,
+> handler #20!!!
+> [271275.833107] NOHZ tick-stop error: Non-RCU local softirq work is pending,
+> handler #20!!!
+> [271276.041391] NOHZ tick-stop error: Non-RCU local softirq work is pending,
+> handler #20!!!
+> [271277.244880] NOHZ tick-stop error: Non-RCU local softirq work is pending,
+> handler #20!!!
+> ```
 
-I was able to reproduce this with the above, but the report and the 
-attached logs at the end are from:
+That's IRQ_POLL_SOFTIRQ. The problem here is probably that some of these
+softirqs are pending even though ksoftirqd has been parked.
 
-     $ git log --oneline -6 b37a34a8cf5a
-     b37a34a8cf5a Problems with rcutorture on ppc64le: allmodconfig(2) 
-and other failures
-     9a78ddead89a ata: libata-sata: improve sata_link_debounce()
-     567da2eaf099 ata: libata-sata: remove debounce delay by default
-     70ae61851660 ata: libata-sata: introduce struct sata_deb_timing
-     9ebb6433d9c3 ata: libata-sata: Simplify sata_link_resume() interface
-     26291c54e111 (tag: v5.17-rc2) Linux 5.17-rc2
+I see there is irq_poll_cpu_dead() that migrates the pending queue once
+the CPU is finally dead, so this is well handled.
 
->>>       $ tools/testing/selftests/rcutorture/bin/torture.sh --duration 10
->>>
->>> the built init
->>>
->>>       $ file tools/testing/selftests/rcutorture/initrd/init
->>>       tools/testing/selftests/rcutorture/initrd/init: ELF 64-bit LSB executable, 64-bit PowerPC or cisco 7500, version 1 (SYSV), statically linked, BuildID[sha1]=0ded0e45649184a296f30d611f7a03cc51ecb616, for GNU/Linux 3.10.0, stripped
->>
->> Mine looks pretty much identical:
->>
->>    $ file tools/testing/selftests/rcutorture/initrd/init
->>    tools/testing/selftests/rcutorture/initrd/init: ELF 64-bit LSB executable, 64-bit PowerPC or cisco 7500, version 1 (SYSV), statically linked, BuildID[sha1]=86078bf6e5d54ab0860d36aa9a65d52818b972c8, for GNU/Linux 3.10.0, stripped
->>
->>> segfaults in QEMU. From one of the log files
->>
->> But mine doesn't segfault, it runs fine and the test completes.
->>
->> What qemu version are you using?
->>
->> I tried 4.2.1 and 6.2.0, both worked.
-> 
->      $ qemu-system-ppc64le --version
->      QEMU emulator version 6.0.0 (Debian 1:6.0+dfsg-2expubuntu1.1)
->      Copyright (c) 2003-2021 Fabrice Bellard and the QEMU Project 
-> developers
-> 
->>> /dev/shm/linux/tools/testing/selftests/rcutorture/res/2022.02.01-21.52.37-torture/results-rcutorture/TREE03/console.log 
->>>
-> 
-> Sorry, that was the wrong path/test. The correct one for the excerpt 
-> below is:
-> 
-> 
-> /dev/shm/linux/tools/testing/selftests/rcutorture/res/2022.02.01-21.52.37-torture/results-locktorture-kasan/LOCK01/console.log 
-> 
-> 
-> (For TREE03, QEMU does not start the Linux kernel at all, that means no 
-> output after:
-> 
->      Booting Linux via __start() @ 0x0000000000400000 ...
-> )
-> 
->>>       [    1.119803][    T1] Run /init as init process
->>>       [    1.122011][    T1] init[1]: segfault (11) at f0656d90 nip 10000a18 lr 0 code 1 in init[10000000+d0000]
->>>       [    1.124863][    T1] init[1]: code: 2c2903e7 f9210030 4081ff84 4bffff58 00000000 01000000 00000580 3c40100f
->>>       [    1.128823][    T1] init[1]: code: 38427c00 7c290b78 782106e4 38000000 <f821ff81> 7c0803a6 f8010000 e9028010
->>
->> The disassembly from 3c40100f is:
->>    lis     r2,4111
->>    addi    r2,r2,31744
->>    mr      r9,r1
->>    rldicr  r1,r1,0,59
->>    li      r0,0
->>    stdu    r1,-128(r1)        <- fault
->>    mtlr    r0
->>    std     r0,0(r1)
->>    ld      r8,-32752(r2)
->>
->>
->> I think you'll find that's the code at the ELF entry point. You can
->> check with:
->>
->>   $ readelf -e tools/testing/selftests/rcutorture/initrd/init | grep 
->> Entry
->>     Entry point address:               0x10000c0c
->>
->>   $ objdump -d tools/testing/selftests/rcutorture/initrd/init | grep 
->> -m 1 -A 8 10000c0c
->>      10000c0c:   0e 10 40 3c     lis     r2,4110
->>      10000c10:   00 7b 42 38     addi    r2,r2,31488
->>      10000c14:   78 0b 29 7c     mr      r9,r1
->>      10000c18:   e4 06 21 78     rldicr  r1,r1,0,59
->>      10000c1c:   00 00 00 38     li      r0,0
->>      10000c20:   81 ff 21 f8     stdu    r1,-128(r1)
->>      10000c24:   a6 03 08 7c     mtlr    r0
->>      10000c28:   00 00 01 f8     std     r0,0(r1)
->>      10000c2c:   10 80 02 e9     ld      r8,-32752(r2)
->>
->> The fault you're seeing is the first store using the stack pointer (r1),
->> which is setup by the kernel.
->>
->> The fault address f0656d90 is weirdly low, the stack should be up near 
->> 128TB.
->>
->> I'm not sure how we end up with a bad r1.
->>
->> Can you dump some info about the kernel that was built, something like:
->>
->> $ file 
->> /dev/shm/linux/tools/testing/selftests/rcutorture/res/2022.02.01-21.52.37-torture/results-rcutorture/TREE03/vmlinux 
->>
->> And maybe paste/attach the full log, maybe there's a clue somewhere.
-> 
-> You can now download the content of 
-> `/dev/shm/linux/tools/testing/selftests/rcutorture/res/2022.02.01-21.52.37-torture/results-locktorture-kasan/LOCK01` 
-> [1, 65 MB].
-> 
-> Can you reproduce the segmentation fault with the line below?
-> 
->      $ qemu-system-ppc64 -enable-kvm -nographic -smp cores=1,threads=8 
-> -net none -enable-kvm -M pseries -nodefaults -device spapr-vscsi -serial 
-> stdio -m 512 -kernel 
-> /dev/shm/linux/tools/testing/selftests/rcutorture/res/2022.02.01-21.52.37-torture/results-locktorture-kasan/LOCK01/vmlinux 
-> -append "debug_boot_weak_hash panic=-1 console=ttyS0 
-> torture.disable_onoff_at_boot locktorture.onoff_interval=3 
-> locktorture.onoff_holdoff=30 locktorture.stat_interval=15 
-> locktorture.shutdown_secs=60 locktorture.verbose=1"
-> 
-> 
-> Kind regards,
-> 
-> Paul
-> 
-> 
-> [1]: https://owww.molgen.mpg.de/~pmenzel/rcutorture-2022.02.01-21.52.37-torture-locktorture-kasan-lock01.tar.xz
+I'm preparing a patch to fix the warning.
+
+Thanks.
