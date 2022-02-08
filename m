@@ -2,69 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944F84AD158
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 07:09:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 238F14AD1B4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 07:44:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JtCJL27RRz30MQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 17:09:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JtD4s6Jrgz30NG
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 17:44:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JosSCXEX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RslopWNb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::534;
- helo=mail-ed1-x534.google.com; envelope-from=zhouzhouyi@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=song@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=JosSCXEX; dkim-atps=neutral
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com
- [IPv6:2a00:1450:4864:20::534])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=RslopWNb; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JtD4B2Q8zz2xDD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 17:43:38 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JtCHd6hgLz2xDD
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 17:08:29 +1100 (AEDT)
-Received: by mail-ed1-x534.google.com with SMTP id cf2so19130606edb.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Feb 2022 22:08:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=HSoBw25ClBPC/8rhLlCFfHxN+d20Sf4n2fpZSweaWsQ=;
- b=JosSCXEX0fv6ktN3jvNLDjKjamlYP6AEuWx59C6UDKvzYPJ0CUMnOw6VTpLcsyOkoA
- 90dvm+5ktI3MXUyO0K5exU78HANaH++erJWugoRuqZfC7wHWNX+BhSdZrYsR0wIowggq
- C/r0JQGBVW7TSvLcabhWutmGNz9Sx+TR+6EOPTqcK+92ZqQ6OrecvewVUSQpCZjoKDPu
- jP+hzWO5aHcJFMiXI7sSMsPXr6LR6xKYmNfCCNfG00gwkFCDqbJt7XeyvR+d2yEtEmPU
- 2mHtVrBkLYTh4bt/BAevIFgTNVPm82zBuda407Jpz7ImTJZ23IAl0Mb2J5GvgKNkEBKh
- pXwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=HSoBw25ClBPC/8rhLlCFfHxN+d20Sf4n2fpZSweaWsQ=;
- b=3NIAIipsSvg+aSJQatcLUqUv6PdRjUuVcIvr2cx+6DIkrCTL8wuPPdZviuDZftLYUZ
- eSA3SxDxkd74daT9m07JJCZb9pkhB6v+Ix+X6AHFknegyVWFj3Z4JNL1oXzuI31l+Y8/
- 6SyTOdy1+uhLoIQdWsUABrFlTtX44SDyS5gFij+77Qb/zdl06V2tBN3kwt1B3RffOqE+
- 6g1xMO8odA5WNQW08+briK0/EVbf0bDhJtKIWxaGK2A70gAmiy0nKL05ZH4YO8Z8US1v
- QtlmZSu7bcGF15YPwJngYygqEmbwSCmwdvTp1RpV+b5jjB8osxOi3sEKmpm86ooCYB6d
- BDGg==
-X-Gm-Message-State: AOAM530SyUlyW0aMbgaNe8+xif1cbhv0zhx9klH+fd7DNZPVr1efbzEx
- /hrqKRBLc9Sa9OYuDt5SMarlOTxYlP7CvIjCNik=
-X-Google-Smtp-Source: ABdhPJxtPJx92R9zg25Ywv6jUvrUJa9JuHS6yZ5Nd6hlF0s3kiGqSOn/4Mv9RHul5+MQhbhOtpLd/O5txX8k/iSzO38=
-X-Received: by 2002:a05:6402:35c3:: with SMTP id
- z3mr2805237edc.17.1644300505846; 
- Mon, 07 Feb 2022 22:08:25 -0800 (PST)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 75CCD61545
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 06:43:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E022DC004E1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 06:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1644302614;
+ bh=wZJ925KAUIP6JYq90oIjNq8pV7b7hYaseDnPHj0lpAU=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=RslopWNbTAelsxada8BhxXCGBa5tYJnzIynyJHFkcPvdIx8/MWcLEcHy8p3ygNo7j
+ iEwsBXNk5U46YhuHeyk4cX6/4Ooqnu1lUQpsM7g6F8leUVQStzoMFtUAVKwt58Z1k0
+ zecpQbez6iTm7kpZOj2m2gw9RiPIwT3G5V848aHtRDUDX81WsAflWV1JmiDAamBzF8
+ 02M9pnPB66RlnYXOA9oBbZ9YVm0fHFge20waiPoFEFITfh7Ra3ISVjtWaspj4MJ3f5
+ L08Upa2e16NBOAzwZ9TR14DuaOT+sXqpUgCsTR/AjWkSf5GRJuUiaobZDVWdFwiyd8
+ yHABOniLeqO6A==
+Received: by mail-yb1-f177.google.com with SMTP id 192so20898766ybd.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Feb 2022 22:43:34 -0800 (PST)
+X-Gm-Message-State: AOAM532JNp4pDCIlPLrRQD9aRTfavU6B6xWqhIkuadDUTk91+5P1JGit
+ iuNYZJx8x+eP+PPIsv8aRZ0An1zSmlfMmNkIN28=
+X-Google-Smtp-Source: ABdhPJxCyPmwCAK12TCeY5tZ8FBhb7TYvwG6IT9cMvC31GOY2Is6dJ+4DeQyS9y9u9ys8CjymjTxuFJ/gtRofjOtPsU=
+X-Received: by 2002:a81:6502:: with SMTP id z2mr3634421ywb.148.1644302613958; 
+ Mon, 07 Feb 2022 22:43:33 -0800 (PST)
 MIME-Version: 1.0
-References: <565038d7-7374-1005-31bf-df2f051845ff@molgen.mpg.de>
- <20220207175139.GD4285@paulmck-ThinkPad-P17-Gen-1>
- <CAABZP2y10vv+fUWO+NWY=ckAX-cOkCPfQ1jsoSA=i2PzeFMkUg@mail.gmail.com>
-In-Reply-To: <CAABZP2y10vv+fUWO+NWY=ckAX-cOkCPfQ1jsoSA=i2PzeFMkUg@mail.gmail.com>
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Date: Tue, 8 Feb 2022 14:08:14 +0800
-Message-ID: <CAABZP2xUX0CPGhhXkux8xmBXsekXA=f6bqf-FeeaogSZxAc+NQ@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_rcutorture=E2=80=99s_init_segfaults_in_ppc64le_VM?=
-To: "Paul E. McKenney" <paulmck@kernel.org>
+References: <20220126114144.370517-1-pmenzel@molgen.mpg.de>
+In-Reply-To: <20220126114144.370517-1-pmenzel@molgen.mpg.de>
+From: Song Liu <song@kernel.org>
+Date: Mon, 7 Feb 2022 22:43:22 -0800
+X-Gmail-Original-Message-ID: <CAPhsuW7N+NYU=pbLCUR0vhY-RuKMO=8pkL-7tE=t4yncCqm7ZA@mail.gmail.com>
+Message-ID: <CAPhsuW7N+NYU=pbLCUR0vhY-RuKMO=8pkL-7tE=t4yncCqm7ZA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] lib/raid6/test/Makefile: Use `$(pound)` instead of
+ `\#` for Make 4.3
+To: Paul Menzel <pmenzel@molgen.mpg.de>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,170 +71,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rcu <rcu@vger.kernel.org>, Paul Menzel <pmenzel@molgen.mpg.de>,
- linuxppc-dev@lists.ozlabs.org, w@1wt.eu
+Cc: linux-raid <linux-raid@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Matt Brown <matthew.brown.dev@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Hi Paul,
 
-The mailing list forward the emails to me in periodic style, very
-sorry not seeing Willy's email until I visited
-https://lore.kernel.org/rcu/20220207180901.GB14608@1wt.eu/T/#u,  I am
-also very interested in testing Willy's proposal.
+Sorry for the delayed reply.
 
-Thanks a lot
-Zhouyi
+On Wed, Jan 26, 2022 at 3:42 AM Paul Menzel <pmenzel@molgen.mpg.de> wrote:
+>
+> Buidling `raid6test` on Ubuntu 21.10 (ppc64le) with GNU Make 4.3 shows th=
+e
+> errors below:
 
-On Tue, Feb 8, 2022 at 1:46 PM Zhouyi Zhou <zhouzhouyi@gmail.com> wrote:
+Please do not use `xxx` in the commit log (and subject).
+
 >
-> Dear Paul
+>     $ cd lib/raid6/test/
+>     $ make
+>     <stdin>:1:1: error: stray =E2=80=98\=E2=80=99 in program
+>     <stdin>:1:2: error: stray =E2=80=98#=E2=80=99 in program
+>     <stdin>:1:11: error: expected =E2=80=98=3D=E2=80=99, =E2=80=98,=E2=80=
+=99, =E2=80=98;=E2=80=99, =E2=80=98asm=E2=80=99 or =E2=80=98__attribute__=
+=E2=80=99 before =E2=80=98<=E2=80=99 token
+>     cp -f ../int.uc int.uc
+>     awk -f ../unroll.awk -vN=3D1 < int.uc > int1.c
+>     gcc -I.. -I ../../../include -g -O2                      -c -o int1.o=
+ int1.c
+>     awk -f ../unroll.awk -vN=3D2 < int.uc > int2.c
+>     gcc -I.. -I ../../../include -g -O2                      -c -o int2.o=
+ int2.c
+>     awk -f ../unroll.awk -vN=3D4 < int.uc > int4.c
+>     gcc -I.. -I ../../../include -g -O2                      -c -o int4.o=
+ int4.c
+>     awk -f ../unroll.awk -vN=3D8 < int.uc > int8.c
+>     gcc -I.. -I ../../../include -g -O2                      -c -o int8.o=
+ int8.c
+>     awk -f ../unroll.awk -vN=3D16 < int.uc > int16.c
+>     gcc -I.. -I ../../../include -g -O2                      -c -o int16.=
+o int16.c
+>     awk -f ../unroll.awk -vN=3D32 < int.uc > int32.c
+>     gcc -I.. -I ../../../include -g -O2                      -c -o int32.=
+o int32.c
+>     rm -f raid6.a
+>     ar cq raid6.a int1.o int2.o int4.o int8.o int16.o int32.o recov.o alg=
+os.o tables.o
+>     ranlib raid6.a
+>     gcc -I.. -I ../../../include -g -O2                      -o raid6test=
+ test.c raid6.a
+>     /usr/bin/ld: raid6.a(algos.o):/dev/shm/linux/lib/raid6/test/algos.c:2=
+8: multiple definition of `raid6_call'; /scratch/local/ccIJjN8s.o:/dev/shm/=
+linux/lib/raid6/test/test.c:22: first defined here
+>     collect2: error: ld returned 1 exit status
+>     make: *** [Makefile:72: raid6test] Error 1
 >
-> I am also very interested in the topic.
-> The Open source lab of Oregon State University has lent me a 8 core
-> power ppc64el VM for 3 months, I guess I can try reproducing this bug
-> in the Virtual Machine by executing qemu in non hardware accelerated
-> mode (using -no-kvm argument).
-> I am currently doing research on
-> https://lore.kernel.org/rcu/20220201175023.GW4285@paulmck-ThinkPad-P17-Gen-1/T/#mc7e5f8ec99e3794bec1e38fbbb130e71172e4759,
-> I think I can give a preliminary short report on that previous topic
-> tomorrow. And I am very interested in doing a search on the new topic
-> the day after tomorrow.
+> The errors come from the `HAS_ALTIVEC` test, which fails, and the POWER
+> optimized versions are not built. That=E2=80=99s also reason nobody notic=
+ed on the
+> other architectures.
 >
-> Thank you both for providing me an opportunity to improve myself ;-)
+> GNU Make 4.3 does not remove the backslash anymore. From the 4.3 release
+> announcment:
 >
-> Thanks again
-> Zhouyi
+> > * WARNING: Backward-incompatibility!
+> >   Number signs (#) appearing inside a macro reference or function invoc=
+ation
+> >   no longer introduce comments and should not be escaped with backslash=
+es:
+> >   thus a call such as:
+> >     foo :=3D $(shell echo '#')
+> >   is legal.  Previously the number sign needed to be escaped, for examp=
+le:
+> >     foo :=3D $(shell echo '\#')
+> >   Now this latter will resolve to "\#".  If you want to write makefiles
+> >   portable to both versions, assign the number sign to a variable:
+> >     H :=3D \#
+> >     foo :=3D $(shell echo '$H')
+> >   This was claimed to be fixed in 3.81, but wasn't, for some reason.
+> >   To detect this change search for 'nocomment' in the .FEATURES variabl=
+e.
 >
-> On Tue, Feb 8, 2022 at 12:10 PM Paul E. McKenney <paulmck@kernel.org> wrote:
-> >
-> > On Mon, Feb 07, 2022 at 05:44:47PM +0100, Paul Menzel wrote:
-> > > Dear Linux folks,
-> > >
-> > >
-> > > On the POWER8 server IBM S822LC running Ubuntu 21.10, building Linux
-> > > 5.17-rc2+ with rcutorture tests
-> > >
-> > >     $ tools/testing/selftests/rcutorture/bin/torture.sh --duration 10
-> > >
-> > > the built init
-> > >
-> > >     $ file tools/testing/selftests/rcutorture/initrd/init
-> > >     tools/testing/selftests/rcutorture/initrd/init: ELF 64-bit LSB
-> > > executable, 64-bit PowerPC or cisco 7500, version 1 (SYSV), statically
-> > > linked, BuildID[sha1]=0ded0e45649184a296f30d611f7a03cc51ecb616, for
-> > > GNU/Linux 3.10.0, stripped
-> > >
-> > > segfaults in QEMU. From one of the log files
-> > >
-> > >
-> > > /dev/shm/linux/tools/testing/selftests/rcutorture/res/2022.02.01-21.52.37-torture/results-rcutorture/TREE03/console.log
-> > >
-> > >     [    1.119803][    T1] Run /init as init process
-> > >     [    1.122011][    T1] init[1]: segfault (11) at f0656d90 nip 10000a18
-> > > lr 0 code 1 in init[10000000+d0000]
-> > >     [    1.124863][    T1] init[1]: code: 2c2903e7 f9210030 4081ff84
-> > > 4bffff58 00000000 01000000 00000580 3c40100f
-> > >     [    1.128823][    T1] init[1]: code: 38427c00 7c290b78 782106e4
-> > > 38000000 <f821ff81> 7c0803a6 f8010000 e9028010
-> > >
-> > > Executing the init, which just seems to be an endless loop, from userspace
-> > > work:
-> > >
-> > >     $ strace ./tools/testing/selftests/rcutorture/initrd/init
-> > >     execve("./tools/testing/selftests/rcutorture/initrd/init",
-> > > ["./tools/testing/selftests/rcutor"...], 0x7ffffdb9e860 /* 31 vars */) = 0
-> > >     brk(NULL)                               = 0x1001d940000
-> > >     brk(0x1001d940b98)                      = 0x1001d940b98
-> > >     set_tid_address(0x1001d9400d0)          = 2890832
-> > >     set_robust_list(0x1001d9400e0, 24)      = 0
-> > >     uname({sysname="Linux",
-> > > nodename="flughafenberlinbrandenburgwillybrandt.molgen.mpg.de", ...}) = 0
-> > >     prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024,
-> > > rlim_max=RLIM64_INFINITY}) = 0
-> > >     readlink("/proc/self/exe", "/dev/shm/linux/tools/testing/sel"..., 4096)
-> > > = 61
-> > >     getrandom("\xf1\x30\x4c\x9e\x82\x8d\x26\xd7", 8, GRND_NONBLOCK) = 8
-> > >     brk(0x1001d970b98)                      = 0x1001d970b98
-> > >     brk(0x1001d980000)                      = 0x1001d980000
-> > >     mprotect(0x100e0000, 65536, PROT_READ)  = 0
-> > >     clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=1, tv_nsec=0},
-> > > 0x7ffffb22c8a8) = 0
-> > >     clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=1, tv_nsec=0},
-> > > 0x7ffffb22c8a8) = 0
-> > >     clock_nanosleep(CLOCK_REALTIME, 0, {tv_sec=1, tv_nsec=0}, ^C{tv_sec=0,
-> > > tv_nsec=872674044}) = ? ERESTART_RESTARTBLOCK (Interrupted by signal)
-> > >     strace: Process 2890832 detached
-> >
-> > Huh.  In PowerPC, is there some difference between system calls
-> > executed in initrd and those same system calls executed in userspace?
-> >
-> > And just to make sure, the above strace was from exactly the same
-> > binary "init" file that is included in initrd, correct?
-> >
-> > Adding Willy Tarreau for his thoughts.
-> >
-> >                                                         Thanx, Paul
-> >
-> > > Any ideas, what `mkinitrd.sh` [2] should do differently?
-> > >
-> > > ```
-> > > cat > init.c << '___EOF___'
-> > > #ifndef NOLIBC
-> > > #include <unistd.h>
-> > > #include <sys/time.h>
-> > > #endif
-> > >
-> > > volatile unsigned long delaycount;
-> > >
-> > > int main(int argc, int argv[])
-> > > {
-> > >       int i;
-> > >       struct timeval tv;
-> > >       struct timeval tvb;
-> > >
-> > >       for (;;) {
-> > >               sleep(1);
-> > >               /* Need some userspace time. */
-> > >               if (gettimeofday(&tvb, NULL))
-> > >                       continue;
-> > >               do {
-> > >                       for (i = 0; i < 1000 * 100; i++)
-> > >                               delaycount = i * i;
-> > >                       if (gettimeofday(&tv, NULL))
-> > >                               break;
-> > >                       tv.tv_sec -= tvb.tv_sec;
-> > >                       if (tv.tv_sec > 1)
-> > >                               break;
-> > >                       tv.tv_usec += tv.tv_sec * 1000 * 1000;
-> > >                       tv.tv_usec -= tvb.tv_usec;
-> > >               } while (tv.tv_usec < 1000);
-> > >       }
-> > >       return 0;
-> > > }
-> > > ___EOF___
-> > >
-> > > # build using nolibc on supported archs (smaller executable) and fall
-> > > # back to regular glibc on other ones.
-> > > if echo -e "#if __x86_64__||__i386__||__i486__||__i586__||__i686__" \
-> > >            "||__ARM_EABI__||__aarch64__\nyes\n#endif" \
-> > >    | ${CROSS_COMPILE}gcc -E -nostdlib -xc - \
-> > >    | grep -q '^yes'; then
-> > >       # architecture supported by nolibc
-> > >         ${CROSS_COMPILE}gcc -fno-asynchronous-unwind-tables -fno-ident \
-> > >               -nostdlib -include ../../../../include/nolibc/nolibc.h \
-> > >               -s -static -Os -o init init.c -lgcc
-> > > else
-> > >       ${CROSS_COMPILE}gcc -s -static -Os -o init init.c
-> > > fi
-> > > ```
-> > >
-> > >
-> > > Kind regards,
-> > >
-> > > Paul
-> > >
-> > >
-> > > [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/rcutorture/doc/initrd.txt
-> > > [2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/rcutorture/bin/mkinitrd.sh
+> So, do the same as commit 9564a8cf422d (Kbuild: fix # escaping in .cmd
+> files for future Make) and commit 929bef467771 (bpf: Use $(pound) instead
+> of \# in Makefiles) and define and use a `$(pound)` variable.
+
+Please run ./scripts/checkpatch.pl against the patch files, and fix
+errors/warnings
+as much as possible.
+
+Thanks,
+Song
+
+>
+> Reference for the change in make:
+> https://git.savannah.gnu.org/cgit/make.git/commit/?id=3Dc6966b323811c37ac=
+edff05b57
+>
+> Cc: Matt Brown <matthew.brown.dev@gmail.com>
+> Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> ---
+>  lib/raid6/test/Makefile | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/lib/raid6/test/Makefile b/lib/raid6/test/Makefile
+> index a4c7cd74cff5..4fb7700a741b 100644
+> --- a/lib/raid6/test/Makefile
+> +++ b/lib/raid6/test/Makefile
+> @@ -4,6 +4,8 @@
+>  # from userspace.
+>  #
+>
+> +pound :=3D \#
+> +
+>  CC      =3D gcc
+>  OPTFLAGS =3D -O2                 # Adjust as desired
+>  CFLAGS  =3D -I.. -I ../../../include -g $(OPTFLAGS)
+> @@ -42,7 +44,7 @@ else ifeq ($(HAS_NEON),yes)
+>          OBJS   +=3D neon.o neon1.o neon2.o neon4.o neon8.o recov_neon.o =
+recov_neon_inner.o
+>          CFLAGS +=3D -DCONFIG_KERNEL_MODE_NEON=3D1
+>  else
+> -        HAS_ALTIVEC :=3D $(shell printf '\#include <altivec.h>\nvector i=
+nt a;\n' |\
+> +        HAS_ALTIVEC :=3D $(shell printf '$(pound)include <altivec.h>\nve=
+ctor int a;\n' |\
+>                           gcc -c -x c - >/dev/null && rm ./-.o && echo ye=
+s)
+>          ifeq ($(HAS_ALTIVEC),yes)
+>                  CFLAGS +=3D -I../../../arch/powerpc/include
+> --
+> 2.34.1
+>
