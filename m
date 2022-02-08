@@ -2,89 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D5A4ACFFB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 04:57:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B44594AD071
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 05:55:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jt8NQ3qH7z3c7f
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 14:57:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jt9gC179Jz3bVG
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Feb 2022 15:55:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tUM0j/7X;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=P3azDx6E;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=riteshh@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::e29;
+ helo=mail-vs1-xe29.google.com; envelope-from=michael.heltne@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=tUM0j/7X; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=P3azDx6E; dkim-atps=neutral
+Received: from mail-vs1-xe29.google.com (mail-vs1-xe29.google.com
+ [IPv6:2607:f8b0:4864:20::e29])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jt8M865pfz3bPJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 14:56:20 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2182I3nl021099; 
- Tue, 8 Feb 2022 03:56:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : content-type : in-reply-to :
- mime-version; s=pp1; bh=ONdp6KgAz/SdXmdbrZafej/l0I0v7+YNbAlyMkZUBmk=;
- b=tUM0j/7X/7s8VTCM0vlqhS1AUu9CiusC1GPsnnBwYBD1BhVWTHpDsfXWFM7HTFV5PhnW
- 46yrHtZmYuejtVpXFWpqK8211Sa/E28zkSiajIyQDYvvd0yZhPbgq+dzIlKaKiFByxRi
- CzRj702WuGj41lqsiE4Qz2tYbQ1F4OwM0vbOO9dZPmB4RrP1uiHVfu3edW2Jfo1g7mC8
- EqTZihJi5+WDWZ3zP/SIHC0qKsXc0vmilAwi2vKq307loWVkqSxLFcSjEhQzTAzNZIzf
- +vjZFGte6yELgY8JoN9yHYK5fo4mc0SBqP+7TohMlx114jF/C+STpORyYpie2BDeBldl lg== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3e3fm4hc05-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Feb 2022 03:56:13 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2183qSkQ029092;
- Tue, 8 Feb 2022 03:56:11 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06ams.nl.ibm.com with ESMTP id 3e1ggjt2yq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 08 Feb 2022 03:56:11 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 2183u8Xg44106222
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 8 Feb 2022 03:56:08 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2847D52057;
- Tue,  8 Feb 2022 03:56:08 +0000 (GMT)
-Received: from localhost (unknown [9.43.111.247])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id A9AB55204E;
- Tue,  8 Feb 2022 03:56:07 +0000 (GMT)
-Date: Tue, 8 Feb 2022 09:26:06 +0530
-From: Ritesh Harjani <riteshh@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCHv2] selftests/powerpc/copyloops: Add memmove_64 test
-Message-ID: <20220208035606.mxjd6k4jqswallxp@riteshh-domain>
-References: <57242c1fe7aba6b7f0fcd0490303bfd5f222ee00.1631512686.git.riteshh@linux.ibm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <57242c1fe7aba6b7f0fcd0490303bfd5f222ee00.1631512686.git.riteshh@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0Emz8gSkO-Yjpsd-68cmYm45zsqwVI2h
-X-Proofpoint-GUID: 0Emz8gSkO-Yjpsd-68cmYm45zsqwVI2h
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jt9fX22T8z2xF0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Feb 2022 15:54:42 +1100 (AEDT)
+Received: by mail-vs1-xe29.google.com with SMTP id g10so2112895vss.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Feb 2022 20:54:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:from:date:message-id:subject:to;
+ bh=fD1hXo7qbnaSareXBr4uvCy8YTTwxcAvgF9/GXRp2Rg=;
+ b=P3azDx6EqoNGBwRScKbwSdobHCcjQPDa0qWkZ22zM6ylu4/sAsp/wWiRKYBijRFT+1
+ C7iJ7ZE4vuaZNIeSRp21/HyjX3hKJvGVmqUsHhNOhDiKqCpYwSjoCTjb0Qj+A6tvcSuR
+ e1zqurlzGuHJkYgScvRpXAxrL02/I4IjFtK21hsBEWJ8drPXEWljEphCoeja8FDWZ55C
+ aeutSlQGLWZ0Yd13ONrgrfB+2htuA0ZDFPxmTJDwB3vo4S7cZFzGSg32bKVO9gLrCzV2
+ /C49VWRzGoCs7ho03bERwcghIoc7j9aVZD2kcNQscsr2ApT2nUEFgH13VBiVVb7A6vJL
+ MOqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+ bh=fD1hXo7qbnaSareXBr4uvCy8YTTwxcAvgF9/GXRp2Rg=;
+ b=O7SWIBaPFBd0POtcJCW0Jaep9YJrPEAdb2YwoTmuDkBL/zUuFqPUxQBZ5F29AgeoAY
+ iuhAZFXp+kOF1tkU78ZOeEc1RSaeVojt0aloLBv7iUd6qlC+jwYZI5uYIkS0qP9Z9lYW
+ 6yHzpgZ8TG6scIQCFbplCTsx7ftLGS1kubh47+c6zr1Vs6w9cS4pdBM5o0BCSwJsSbCO
+ OJOcpsJTVHYl6lp3g1muLPqx6D1HR812LYp0T0TzV5Kotu4L882OH5N2vSSLPn0KC3IA
+ wL4t78Abkue53EVWhuBPnywG9BSRT9hoW6LlqMWwn05ad5IzyyuJc8xot+wGo/iVmqt5
+ MunQ==
+X-Gm-Message-State: AOAM531AhIcKUtxcI8Ld7DXH5W/L3m/mn2gPcSp/IOqx1ugCMuO2+dfc
+ 2aK9XawrV0FULcTZGgCBxZBIXTiCqLEv/Ju8bdxfORinnn4vDw==
+X-Google-Smtp-Source: ABdhPJwt6vJ4yp+wtZ2AJS6YvuCDgqBLi13K+6b8Fr1rplk27PDNcVoxGMgCjLA9yOPURl2oQR1AGANbck/BFi5IAgA=
+X-Received: by 2002:a05:6102:2416:: with SMTP id
+ j22mr1123383vsi.8.1644296078743; 
+ Mon, 07 Feb 2022 20:54:38 -0800 (PST)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-08_01,2022-02-07_02,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- spamscore=0 bulkscore=0 impostorscore=0 priorityscore=1501 phishscore=0
- mlxlogscore=999 clxscore=1011 adultscore=0 lowpriorityscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202080016
+From: Mike <michael.heltne@gmail.com>
+Date: Tue, 8 Feb 2022 07:57:14 +0100
+Message-ID: <CANtoAtMZwWqdL+xaw9u-7SNgjCHb_MbWKy8AFrG8_OhqNxf7QQ@mail.gmail.com>
+Subject: [PATCH] powerpc: fix building after binutils changes. - but the
+ 'lwsync' question
+To: "open list:LINUX FOR POWERPC..." <linuxppc-dev@lists.ozlabs.org>
+Content-Type: multipart/mixed; boundary="000000000000ae794c05d77a83c5"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,180 +72,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Found this, while checking my older emails. Sorry about not checking on this
-before. Have addressed the review comments here [1]
+--000000000000ae794c05d77a83c5
+Content-Type: text/plain; charset="UTF-8"
 
-This still applies cleanly on 5.17-rc3 and passes.
+We are seeing errors like ' Error: unrecognized opcode: `ptesync''
+'dssall' and 'stbcix' as a result of binutils changes Unless 'stbcix'
+and friends aren't as exclusively PPC6 as I've gathered from
+binutils/opcode/ppc-opc.c there shouldn't be much of a problem, but i
+suspect a lot more needs to be done? The following builds for PPC32
+but also considered a cry from a powerpc64 user:
+https://github.com/threader/linux/commit/226efa05733457bb5c483f30aab6d5c6a304422c
 
-riteshh-> ./copyloops/memmove_64
-test: memmove
-tags: git_version:v5.17-rc3-1-g84f773abc114
-success: memmove
+I've been running my PowerBook G4 with this 'lwsync' patch for a few
+weeks now, but due to, uhm, soft bones, i haven't ran any benchmarks
+or have been to distracted to do so, but thought maybe timing an 'apt'
+operation in single user mode might reveal something, if it's being
+used properly at all....?
 
-[1]: https://lore.kernel.org/all/87sfybl5f9.fsf@mpe.ellerman.id.au/
+Now I remembered reading something from 2013 on 'lwsync',
+https://gcc.gnu.org/legacy-ml/gcc-patches/2006-11/msg01238.html
+https://gcc.gnu.org/legacy-ml/gcc-patches/2012-07/msg01062.html
 
--ritesh
+so that would end up something like
+--- a/media/thread/12fd50d6-d14c-42af-ad1d-a595e5f080cd/dev/linux-main/linux/arch/powerpc/lib/sstep.c
++++ b/home/thread/dev/linus/linux/arch/powerpc/lib/sstep.c
+@@ -3265,7 +3265,11 @@ void emulate_update_regs(struct pt_regs *regs,
+struct instruction_op *op)
+                        eieio();
+                        break;
+                case BARRIER_LWSYNC:
++#if defined (CONFIG_40x || CONFIG_44x || CONFIG_E500 ||
+CONFIG_PPA8548 || CONFIG_TQM8548 || CONFIG_MPC8540_ADS ||
+CONFIG_PPC_BOOK3S_603)
++                       asm volatile("sync" : : : "memory");
++#else
+                        asm volatile("lwsync" : : : "memory");
++#endif
+                        break;
+ #ifdef CONFIG_PPC64
+                case BARRIER_PTESYNC:
 
-On 21/09/13 11:47AM, Ritesh Harjani wrote:
-> While debugging an issue, we wanted to check whether the arch specific
-> kernel memmove implementation is correct.
-> This selftest could help test that.
->
-> Suggested-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> Signed-off-by: Ritesh Harjani <riteshh@linux.ibm.com>
-> ---
-> v1 -> v2: Integrated memmove_64 test within copyloops tests
-> [v1]: https://patchwork.ozlabs.org/patch/1518082
->
->  .../selftests/powerpc/copyloops/.gitignore    |  1 +
->  .../selftests/powerpc/copyloops/Makefile      |  9 ++-
->  .../selftests/powerpc/copyloops/asm/ppc_asm.h |  1 +
->  .../selftests/powerpc/copyloops/mem_64.S      |  1 +
->  .../powerpc/copyloops/memcpy_stubs.S          |  8 +++
->  .../powerpc/copyloops/memmove_validate.c      | 58 +++++++++++++++++++
->  6 files changed, 77 insertions(+), 1 deletion(-)
->  create mode 120000 tools/testing/selftests/powerpc/copyloops/mem_64.S
->  create mode 100644 tools/testing/selftests/powerpc/copyloops/memcpy_stubs.S
->  create mode 100644 tools/testing/selftests/powerpc/copyloops/memmove_validate.c
->
-> diff --git a/tools/testing/selftests/powerpc/copyloops/.gitignore b/tools/testing/selftests/powerpc/copyloops/.gitignore
-> index 994b11af765c..7283e8b07b75 100644
-> --- a/tools/testing/selftests/powerpc/copyloops/.gitignore
-> +++ b/tools/testing/selftests/powerpc/copyloops/.gitignore
-> @@ -13,3 +13,4 @@ copyuser_64_exc_t0
->  copyuser_64_exc_t1
->  copyuser_64_exc_t2
->  copy_mc_64
-> +memmove_64
-> diff --git a/tools/testing/selftests/powerpc/copyloops/Makefile b/tools/testing/selftests/powerpc/copyloops/Makefile
-> index 3095b1f1c02b..77594e697f2f 100644
-> --- a/tools/testing/selftests/powerpc/copyloops/Makefile
-> +++ b/tools/testing/selftests/powerpc/copyloops/Makefile
-> @@ -13,7 +13,8 @@ TEST_GEN_PROGS := copyuser_64_t0 copyuser_64_t1 copyuser_64_t2 \
->  		copyuser_p7_t0 copyuser_p7_t1 \
->  		memcpy_64_t0 memcpy_64_t1 memcpy_64_t2 \
->  		memcpy_p7_t0 memcpy_p7_t1 copy_mc_64 \
-> -		copyuser_64_exc_t0 copyuser_64_exc_t1 copyuser_64_exc_t2
-> +		copyuser_64_exc_t0 copyuser_64_exc_t1 copyuser_64_exc_t2 \
-> +		memmove_64
->
->  EXTRA_SOURCES := validate.c ../harness.c stubs.S
->
-> @@ -56,3 +57,9 @@ $(OUTPUT)/copyuser_64_exc_t%: copyuser_64.S exc_validate.c ../harness.c \
->  		-D COPY_LOOP=test___copy_tofrom_user_base \
->  		-D SELFTEST_CASE=$(subst copyuser_64_exc_t,,$(notdir $@)) \
->  		-o $@ $^
-> +
-> +$(OUTPUT)/memmove_64: mem_64.S memcpy_64.S memmove_validate.c ../harness.c \
-> +		memcpy_stubs.S
-> +	$(CC) $(CPPFLAGS) $(CFLAGS) \
-> +		-D TEST_MEMMOVE=test_memmove \
-> +		-o $@ $^
-> diff --git a/tools/testing/selftests/powerpc/copyloops/asm/ppc_asm.h b/tools/testing/selftests/powerpc/copyloops/asm/ppc_asm.h
-> index 58c1cef3e399..003e1b3d9300 100644
-> --- a/tools/testing/selftests/powerpc/copyloops/asm/ppc_asm.h
-> +++ b/tools/testing/selftests/powerpc/copyloops/asm/ppc_asm.h
-> @@ -26,6 +26,7 @@
->  #define _GLOBAL(A) FUNC_START(test_ ## A)
->  #define _GLOBAL_TOC(A) _GLOBAL(A)
->  #define _GLOBAL_TOC_KASAN(A) _GLOBAL(A)
-> +#define _GLOBAL_KASAN(A) _GLOBAL(A)
->
->  #define PPC_MTOCRF(A, B)	mtocrf A, B
->
-> diff --git a/tools/testing/selftests/powerpc/copyloops/mem_64.S b/tools/testing/selftests/powerpc/copyloops/mem_64.S
-> new file mode 120000
-> index 000000000000..db254c9a5f5c
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/copyloops/mem_64.S
-> @@ -0,0 +1 @@
-> +../../../../../arch/powerpc/lib/mem_64.S
-> \ No newline at end of file
-> diff --git a/tools/testing/selftests/powerpc/copyloops/memcpy_stubs.S b/tools/testing/selftests/powerpc/copyloops/memcpy_stubs.S
-> new file mode 100644
-> index 000000000000..d9baa832fa49
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/copyloops/memcpy_stubs.S
-> @@ -0,0 +1,8 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#include <asm/ppc_asm.h>
-> +
-> +FUNC_START(memcpy)
-> +	b test_memcpy
-> +
-> +FUNC_START(backwards_memcpy)
-> +	b test_backwards_memcpy
-> diff --git a/tools/testing/selftests/powerpc/copyloops/memmove_validate.c b/tools/testing/selftests/powerpc/copyloops/memmove_validate.c
-> new file mode 100644
-> index 000000000000..1a23218b5757
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/copyloops/memmove_validate.c
-> @@ -0,0 +1,58 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +#include <malloc.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <assert.h>
-> +#include "utils.h"
-> +
-> +void *TEST_MEMMOVE(const void *s1, const void *s2, size_t n);
-> +
-> +#define BUF_LEN 65536
-> +#define MAX_OFFSET 512
-> +
-> +size_t max(size_t a, size_t b)
-> +{
-> +	if (a >= b)
-> +		return a;
-> +	return b;
-> +}
-> +
-> +static int testcase_run(void)
-> +{
-> +	size_t i, src_off, dst_off, len;
-> +
-> +	char *usermap = memalign(BUF_LEN, BUF_LEN);
-> +	char *kernelmap = memalign(BUF_LEN, BUF_LEN);
-> +
-> +	assert(usermap != NULL);
-> +	assert(kernelmap != NULL);
-> +
-> +	memset(usermap, 0, BUF_LEN);
-> +	memset(kernelmap, 0, BUF_LEN);
-> +
-> +	for (i = 0; i < BUF_LEN; i++) {
-> +		usermap[i] = i & 0xff;
-> +		kernelmap[i] = i & 0xff;
-> +	}
-> +
-> +	for (src_off = 0; src_off < MAX_OFFSET; src_off++) {
-> +		for (dst_off = 0; dst_off < MAX_OFFSET; dst_off++) {
-> +			for (len = 1; len < MAX_OFFSET - max(src_off, dst_off); len++) {
-> +
-> +				memmove(usermap + dst_off, usermap + src_off, len);
-> +				TEST_MEMMOVE(kernelmap + dst_off, kernelmap + src_off, len);
-> +				if (memcmp(usermap, kernelmap, MAX_OFFSET) != 0) {
-> +					printf("memmove failed at %ld %ld %ld\n",
-> +							src_off, dst_off, len);
-> +					abort();
-> +				}
-> +			}
-> +		}
-> +	}
-> +	return 0;
-> +}
-> +
-> +int main(void)
-> +{
-> +	return test_harness(testcase_run, "memmove");
-> +}
-> --
-> 2.31.1
->
+
+Best regards.
+Michael Heltne
+
+--000000000000ae794c05d77a83c5
+Content-Type: application/x-patch; name="threader_ppc_build-0.patch"
+Content-Disposition: attachment; filename="threader_ppc_build-0.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <17e87ea4fa4c36249c71>
+X-Attachment-Id: 17e87ea4fa4c36249c71
+
+RnJvbSAyMjZlZmEwNTczMzQ1N2JiNWM0ODNmMzBhYWI2ZDVjNmEzMDQ0MjJjIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiB0aHJlYWRlciA8bWljaGFlbC5oZWx0bmVAZ21haWwuY29tPgpE
+YXRlOiBTdW4sIDIzIEphbiAyMDIyIDE0OjE3OjEwICswMTAwClN1YmplY3Q6IFtQQVRDSF0gYXJj
+aDogcG93ZXJwYzogZml4IGJ1aWxkaW5nIGFmdGVyIGJpbnV0aWxzIGNoYW5nZXMuICdkc3NhbGwn
+CiBpbiBtbXVfY29udGV4dC5jIGlzIGFuIGFsdGl2ZWMgaW5zdHJ1Y3Rpb24sIGJ1aWxkIHRoYXQg
+YWNjb3JkaW5nbHkuICdwdGVzeW5jJwogaXMgYSBQUEM2NCBpbnN0cnVjdGlvbiwgc28gZG9udCBn
+byB0aGVyZSBmb3IgaWYgbm90LiBBbmQgYXBwYXJlbnRseSBpZmRlZgogX19wb3dlcnBjNjRfXyBp
+c250IGVub3VnaCBpbiBhbGwgY29uZmlndXJhdGlvbnMgYW5kICdzdGJjaXgnIGFuZCBmcmllbmRz
+LCBhbGwKIFBPV0VSNiBpbnN0cnVjdGlvbnMgaG9wZWZ1bGx5IG5vdCBuZWVkZWQgYnkgQ09ORklH
+X1BQQzY0IGluIGdlbmVyYWwsIHdhbnRlZAogdG8gcGxheS4KCiAgICAgICAgICAgICAgICAgU2ln
+bmVkLW9mZi1ieTogTWljYWhlbCBCIEhlbHRuZSA8bWljaGFlbC5oZWx0bmVAZ21haWwuY29tPgot
+LS0KIGFyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9pby5oIHwgNyArKysrLS0tCiBhcmNoL3Bvd2Vy
+cGMvbGliL3NzdGVwLmMgICAgICB8IDQgKysrLQogYXJjaC9wb3dlcnBjL21tL01ha2VmaWxlICAg
+ICAgfCAzICsrKwogYXJjaC9wb3dlcnBjL21tL3BhZ2VhdHRyLmMgICAgfCA0ICsrLS0KIDQgZmls
+ZXMgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQg
+YS9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vaW8uaCBiL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2Fz
+bS9pby5oCmluZGV4IGJlYmE0OTc5YmZmOTM5Li5kM2E5YzkxY2QwNmE4YiAxMDA2NDQKLS0tIGEv
+YXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL2lvLmgKKysrIGIvYXJjaC9wb3dlcnBjL2luY2x1ZGUv
+YXNtL2lvLmgKQEAgLTMzNCw3ICszMzQsNyBAQCBzdGF0aWMgaW5saW5lIHZvaWQgX19yYXdfd3Jp
+dGVsKHVuc2lnbmVkIGludCB2LCB2b2xhdGlsZSB2b2lkIF9faW9tZW0gKmFkZHIpCiB9CiAjZGVm
+aW5lIF9fcmF3X3dyaXRlbCBfX3Jhd193cml0ZWwKIAotI2lmZGVmIF9fcG93ZXJwYzY0X18KKyNp
+ZmRlZiBDT05GSUdfUFBDNjQKIHN0YXRpYyBpbmxpbmUgdW5zaWduZWQgbG9uZyBfX3Jhd19yZWFk
+cShjb25zdCB2b2xhdGlsZSB2b2lkIF9faW9tZW0gKmFkZHIpCiB7CiAJcmV0dXJuICoodm9sYXRp
+bGUgdW5zaWduZWQgbG9uZyBfX2ZvcmNlICopUENJX0ZJWF9BRERSKGFkZHIpOwpAQCAtMzUyLDcg
+KzM1Miw4IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBfX3Jhd193cml0ZXFfYmUodW5zaWduZWQgbG9u
+ZyB2LCB2b2xhdGlsZSB2b2lkIF9faW9tZW0gKmFkZHIpCiAJX19yYXdfd3JpdGVxKChfX2ZvcmNl
+IHVuc2lnbmVkIGxvbmcpY3B1X3RvX2JlNjQodiksIGFkZHIpOwogfQogI2RlZmluZSBfX3Jhd193
+cml0ZXFfYmUgX19yYXdfd3JpdGVxX2JlCi0KKyNlbmRpZgorI2lmZGVmIENPTkZJR19QT1dFUjZf
+Q1BVCiAvKgogICogUmVhbCBtb2RlIHZlcnNpb25zIG9mIHRoZSBhYm92ZS4gVGhvc2UgaW5zdHJ1
+Y3Rpb25zIGFyZSBvbmx5IHN1cHBvc2VkCiAgKiB0byBiZSB1c2VkIGluIGh5cGVydmlzb3IgcmVh
+bCBtb2RlIGFzIHBlciB0aGUgYXJjaGl0ZWN0dXJlIHNwZWMuCkBAIC00MTcsNyArNDE4LDcgQEAg
+c3RhdGljIGlubGluZSB1NjQgX19yYXdfcm1fcmVhZHEodm9sYXRpbGUgdm9pZCBfX2lvbWVtICpw
+YWRkcikKIAkJCSAgICAgOiAiPXIiIChyZXQpIDogInIiIChwYWRkcikgOiAibWVtb3J5Iik7CiAJ
+cmV0dXJuIHJldDsKIH0KLSNlbmRpZiAvKiBfX3Bvd2VycGM2NF9fICovCisjZW5kaWYgLyogQ09O
+RklHX1BPV0VSNl9DUFUgKi8KIAogLyoKICAqCmRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMvbGli
+L3NzdGVwLmMgYi9hcmNoL3Bvd2VycGMvbGliL3NzdGVwLmMKaW5kZXggYTk0YjBjZDBiZGM1Y2Eu
+LjRmZmQ2NzkxYjAzZWMwIDEwMDY0NAotLS0gYS9hcmNoL3Bvd2VycGMvbGliL3NzdGVwLmMKKysr
+IGIvYXJjaC9wb3dlcnBjL2xpYi9zc3RlcC5jCkBAIC0xNDY1LDcgKzE0NjUsNyBAQCBpbnQgYW5h
+bHlzZV9pbnN0cihzdHJ1Y3QgaW5zdHJ1Y3Rpb25fb3AgKm9wLCBjb25zdCBzdHJ1Y3QgcHRfcmVn
+cyAqcmVncywKIAkJc3dpdGNoICgod29yZCA+PiAxKSAmIDB4M2ZmKSB7CiAJCWNhc2UgNTk4Ogkv
+KiBzeW5jICovCiAJCQlvcC0+dHlwZSA9IEJBUlJJRVIgKyBCQVJSSUVSX1NZTkM7Ci0jaWZkZWYg
+X19wb3dlcnBjNjRfXworI2lmZGVmIENPTkZJR19QUEM2NAogCQkJc3dpdGNoICgod29yZCA+PiAy
+MSkgJiAzKSB7CiAJCQljYXNlIDE6CQkvKiBsd3N5bmMgKi8KIAkJCQlvcC0+dHlwZSA9IEJBUlJJ
+RVIgKyBCQVJSSUVSX0xXU1lOQzsKQEAgLTMyNjcsOSArMzI2NywxMSBAQCB2b2lkIGVtdWxhdGVf
+dXBkYXRlX3JlZ3Moc3RydWN0IHB0X3JlZ3MgKnJlZ3MsIHN0cnVjdCBpbnN0cnVjdGlvbl9vcCAq
+b3ApCiAJCWNhc2UgQkFSUklFUl9MV1NZTkM6CiAJCQlhc20gdm9sYXRpbGUoImx3c3luYyIgOiA6
+IDogIm1lbW9yeSIpOwogCQkJYnJlYWs7CisjaWZkZWYgQ09ORklHX1BQQzY0CiAJCWNhc2UgQkFS
+UklFUl9QVEVTWU5DOgogCQkJYXNtIHZvbGF0aWxlKCJwdGVzeW5jIiA6IDogOiAibWVtb3J5Iik7
+CiAJCQlicmVhazsKKyNlbmRpZgogCQl9CiAJCWJyZWFrOwogCmRpZmYgLS1naXQgYS9hcmNoL3Bv
+d2VycGMvbW0vTWFrZWZpbGUgYi9hcmNoL3Bvd2VycGMvbW0vTWFrZWZpbGUKaW5kZXggZGY4MTcy
+ZGEyMzAxYjcuLjJmODdlNzczMTU5OTdhIDEwMDY0NAotLS0gYS9hcmNoL3Bvd2VycGMvbW0vTWFr
+ZWZpbGUKKysrIGIvYXJjaC9wb3dlcnBjL21tL01ha2VmaWxlCkBAIC00LDYgKzQsOSBAQAogIwog
+CiBjY2ZsYWdzLSQoQ09ORklHX1BQQzY0KQk6PSAkKE5PX01JTklNQUxfVE9DKQoraWZlcSAoJChD
+T05GSUdfQUxUSVZFQykseSkKK0NGTEFHU19tbXVfY29udGV4dC5vICs9ICQoY2FsbCBjYy1vcHRp
+b24sIC1tYWx0aXZlYywgLW1hYmk9YWx0aXZlYykKK2VuZGlmCiAKIG9iai15CQkJCTo9IGZhdWx0
+Lm8gbWVtLm8gcGd0YWJsZS5vIG1tYXAubyBtYWNjZXNzLm8gcGFnZWF0dHIubyBcCiAJCQkJICAg
+aW5pdF8kKEJJVFMpLm8gcGd0YWJsZV8kKEJJVFMpLm8gXApkaWZmIC0tZ2l0IGEvYXJjaC9wb3dl
+cnBjL21tL3BhZ2VhdHRyLmMgYi9hcmNoL3Bvd2VycGMvbW0vcGFnZWF0dHIuYwppbmRleCBlZGVh
+Mzg4ZTlkM2ZiYi4uY2NkMDRhMzg2ZTI4ZmMgMTAwNjQ0Ci0tLSBhL2FyY2gvcG93ZXJwYy9tbS9w
+YWdlYXR0ci5jCisrKyBiL2FyY2gvcG93ZXJwYy9tbS9wYWdlYXR0ci5jCkBAIC01NCwxMSArNTQs
+MTEgQEAgc3RhdGljIGludCBjaGFuZ2VfcGFnZV9hdHRyKHB0ZV90ICpwdGVwLCB1bnNpZ25lZCBs
+b25nIGFkZHIsIHZvaWQgKmRhdGEpCiAJfQogCiAJcHRlX3VwZGF0ZSgmaW5pdF9tbSwgYWRkciwg
+cHRlcCwgfjBVTCwgcHRlX3ZhbChwdGUpLCAwKTsKLQorI2lmZGVmIENPTkZJR19QUEM2NAogCS8q
+IFNlZSBwdGVzeW5jIGNvbW1lbnQgaW4gcmFkaXhfX3NldF9wdGVfYXQoKSAqLwogCWlmIChyYWRp
+eF9lbmFibGVkKCkpCiAJCWFzbSB2b2xhdGlsZSgicHRlc3luYyI6IDogOiJtZW1vcnkiKTsKLQor
+I2VuZGlmCiAJZmx1c2hfdGxiX2tlcm5lbF9yYW5nZShhZGRyLCBhZGRyICsgUEFHRV9TSVpFKTsK
+IAogCXNwaW5fdW5sb2NrKCZpbml0X21tLnBhZ2VfdGFibGVfbG9jayk7Cg==
+--000000000000ae794c05d77a83c5
+Content-Type: text/x-patch; charset="US-ASCII"; name="threader_ppc_lwsync.patch"
+Content-Disposition: attachment; filename="threader_ppc_lwsync.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_kzdrr5j61>
+X-Attachment-Id: f_kzdrr5j61
+
+Ci0tLSBhL21lZGlhL3RocmVhZC8xMmZkNTBkNi1kMTRjLTQyYWYtYWQxZC1hNTk1ZTVmMDgwY2Qv
+ZGV2L2xpbnV4LW1haW4vbGludXgvYXJjaC9wb3dlcnBjL2xpYi9zc3RlcC5jCisrKyBiL2hvbWUv
+dGhyZWFkL2Rldi9saW51cy9saW51eC9hcmNoL3Bvd2VycGMvbGliL3NzdGVwLmMKQEAgLTMyNjUs
+NyArMzI2NSwxMSBAQCB2b2lkIGVtdWxhdGVfdXBkYXRlX3JlZ3Moc3RydWN0IHB0X3JlZ3MgKnJl
+Z3MsCnN0cnVjdCBpbnN0cnVjdGlvbl9vcCAqb3ApCiAgICAgICAgICAgICAgICAgICAgICAgIGVp
+ZWlvKCk7CiAgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOwogICAgICAgICAgICAgICAgY2Fz
+ZSBCQVJSSUVSX0xXU1lOQzoKKyNpZiBkZWZpbmVkIChDT05GSUdfNDB4IHx8IENPTkZJR180NHgg
+fHwgQ09ORklHX0U1MDAgfHwKQ09ORklHX1BQQTg1NDggfHwgQ09ORklHX1RRTTg1NDggfHwgQ09O
+RklHX01QQzg1NDBfQURTIHx8CkNPTkZJR19QUENfQk9PSzNTXzYwMykKKyAgICAgICAgICAgICAg
+ICAgICAgICAgYXNtIHZvbGF0aWxlKCJzeW5jIiA6IDogOiAibWVtb3J5Iik7CisjZWxzZQogICAg
+ICAgICAgICAgICAgICAgICAgICBhc20gdm9sYXRpbGUoImx3c3luYyIgOiA6IDogIm1lbW9yeSIp
+OworI2VuZGlmCiAgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOwogI2lmZGVmIENPTkZJR19Q
+UEM2NAogICAgICAgICAgICAgICAgY2FzZSBCQVJSSUVSX1BURVNZTkM6Cg==
+--000000000000ae794c05d77a83c5--
