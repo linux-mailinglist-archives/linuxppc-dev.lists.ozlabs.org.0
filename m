@@ -2,113 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828C24AE603
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 01:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 463784AE634
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 01:44:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jtgfy1mjXz2yQ9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 11:26:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jth2x73RTz3bZg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 11:44:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hERzfYX3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=VhrPBaW9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431;
+ helo=mail-pf1-x431.google.com; envelope-from=davidcomponentone@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hERzfYX3; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=VhrPBaW9; dkim-atps=neutral
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com
+ [IPv6:2607:f8b0:4864:20::431])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jtgf81tl2z2xsr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 11:26:07 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 218MLA19005311; 
- Wed, 9 Feb 2022 00:25:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=ZPFpO/s5Ar3lz1CQqNzWAhq5HebnCKhs9fdwrCFRj6s=;
- b=hERzfYX3x/vYEkbd/ZyZEqXst6fgk+SVLVesTOCIVEqpmZWEoSEcdqfXomlJh4B+xPS8
- Vzb0bOHE0SBboQVZKTqTASzVors0Vt8v5CfUlosnaSJvoWvTJSl4t+uZojOxKjGWoxRT
- of8RINXA2/rPj2lSar2yrGVEdry4/zssMABuduj8INl1Yxxoy7095qYfonNriO6lKfz7
- vRXYtG1cpVmnkfl72gA0/5mbjKMVCLo5Ps7KoEBMsW0bXAl410yxqhms9HWaQplEO69m
- QnbOogPtww0qN6SerGrt4sti7B8Gdv1fNeTXrGOtoG4GuYj+fD7RI2K8BL9FZcP1oKsA Xg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e4182j4x9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Feb 2022 00:25:38 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2190PbTV002111;
- Wed, 9 Feb 2022 00:25:37 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e4182j4ww-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Feb 2022 00:25:36 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2190Nh8E026794;
- Wed, 9 Feb 2022 00:25:35 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma03wdc.us.ibm.com with ESMTP id 3e1gvb7dfy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Feb 2022 00:25:35 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 2190PXUA35258666
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 9 Feb 2022 00:25:33 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6CB0BC605B;
- Wed,  9 Feb 2022 00:25:33 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AB8CAC6059;
- Wed,  9 Feb 2022 00:25:31 +0000 (GMT)
-Received: from [9.211.92.120] (unknown [9.211.92.120])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  9 Feb 2022 00:25:31 +0000 (GMT)
-Message-ID: <e0309177-123a-18b5-a5c1-3a9266a22de0@linux.vnet.ibm.com>
-Date: Tue, 8 Feb 2022 19:25:31 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v7 0/5] Allow guest access to EFI confidential computing
- secret area
-Content-Language: en-US
-To: Greg KH <gregkh@linuxfoundation.org>,
- Matthew Garrett <mjg59@srcf.ucam.org>,
- linux-efi <linux-efi@vger.kernel.org>
-References: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
- <Yfk6vEuZFtgtA+G+@kroah.com>
- <37779659ca96ac9c1f11bcc0ac0665895c795b54.camel@linux.ibm.com>
- <20220202040157.GA8019@srcf.ucam.org> <YfogOurPZb7+Yelo@kroah.com>
- <20220202065443.GA9249@srcf.ucam.org> <YfotMyQiQ66xfCOQ@kroah.com>
- <20220202071023.GA9489@srcf.ucam.org>
- <CAMj1kXFTyc9KnMsnvs+mt80DbJL8VGKKcQ0J=4NrGYGSAG8sRw@mail.gmail.com>
- <20220202080401.GA9861@srcf.ucam.org> <Yfo/5gYgb9Sv24YB@kroah.com>
-From: Nayna <nayna@linux.vnet.ibm.com>
-In-Reply-To: <Yfo/5gYgb9Sv24YB@kroah.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: b4UEhf1SnClyxzzgBwDvJSRo4uONgLbd
-X-Proofpoint-GUID: QuzRJnKjQvfnEB4nqGFOkDHaX8mQ0no9
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jth2D31mNz2xsr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 11:43:31 +1100 (AEDT)
+Received: by mail-pf1-x431.google.com with SMTP id z13so1421046pfa.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Feb 2022 16:43:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=fMOnOpTGKn9/jVrcDzClYggaX4u+eL9NpYQ7bzh9GdY=;
+ b=VhrPBaW9Pd7tSs4NlnRE27lUVYOlLlE6vXz5Tgjv+0TtyrRrh8+9fB/ddGQblRsR3X
+ Pyuovi/mmJE0lZxnk/y4Qdp+sMcVsfqpkbJ2dlLOiWIkRrXVeePBfglBxOEeM0mC7MCH
+ ZQhuKSysbxnPNF7Jdnt5x9cZijs/gw9FqPXWy/uyFzw22fOx73dCciWdd9NT1hhWA6xY
+ aaHh0shXwOHETOlYJSXDqsw0jEpyxNmoKYyAWmsqcz0QhbpUDpWc24kxkNpksKamO13V
+ 0bI9S3GcfULUayOPY2ARCDwyaHYqyHzAno9GPxpBdTTSKrx7n019ZSWC7Ok4KJ/p+mIi
+ lPyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=fMOnOpTGKn9/jVrcDzClYggaX4u+eL9NpYQ7bzh9GdY=;
+ b=lSkq6llAeYl+a/NYwCInIc8gInqPf57tFung0pKayRmskD8M40LB0CuqV5Wp3ClEvB
+ NR1J/jrZWRICirthLBImcAdk6Y1Cfrk+RbKW2WU8B8bC1qIx0QGAkGJt4j5U3BB2T2ek
+ Ar8pC18pYONcQwVk2VzyKpI9nM7LgSKVt5oagE1X4D0kvl2qXO/Y000dL82W9ywzeSqx
+ 9nLLix27EvnUWGMyNcLERKuGqmWdLZgHOAN3NkG7InJ6yhFfsASbi2sy0Qci3nzOIM8Y
+ 0Lf29AGlXko6OFE919hF0jtiVTjkZBYqcBn8ikZdSEUHxIhZ/CoMbZuqt1KnGOHcd/zl
+ HBBw==
+X-Gm-Message-State: AOAM533JuwxivyEFzs8TS5VJKgwaTDo3/Gxt5n/xu10yyh7G/aOHAxVf
+ CtiBlJYs7rvhNs4aAfdn+g0=
+X-Google-Smtp-Source: ABdhPJxztLUaN8ctWe7jK8i2Ne76K3cV0pjkNHm76KdEOQhk6tD3/DaipquI7XsjKgga/7Jp9/9BZA==
+X-Received: by 2002:a65:4b8f:: with SMTP id t15mr5718920pgq.140.1644367408679; 
+ Tue, 08 Feb 2022 16:43:28 -0800 (PST)
+Received: from localhost.localdomain (192.243.120.166.16clouds.com.
+ [192.243.120.166])
+ by smtp.gmail.com with ESMTPSA id f22sm17352169pfj.206.2022.02.08.16.43.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 08 Feb 2022 16:43:28 -0800 (PST)
+From: davidcomponentone@gmail.com
+To: tyreld@linux.ibm.com
+Subject: [PATCH] scsi: ibmvfc: replace snprintf with sysfs_emit
+Date: Wed,  9 Feb 2022 08:43:15 +0800
+Message-Id: <b4c150c86f539d3bac3fc8885252adb9f24ee48f.1644286482.git.yang.guang5@zte.com.cn>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-08_07,2022-02-07_02,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0
- malwarescore=0 lowpriorityscore=0 mlxlogscore=999 priorityscore=1501
- clxscore=1015 impostorscore=0 bulkscore=0 spamscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202080136
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,140 +78,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Brijesh Singh <brijesh.singh@amd.com>,
- Lenny Szubowicz <lszubowi@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- gcwilson@linux.ibm.com, Ard Biesheuvel <ardb@kernel.org>,
- Daniele Buono <dbuono@linux.vnet.ibm.com>, Andi Kleen <ak@linux.intel.com>,
- Nayna Jain <nayna@linux.ibm.com>, James Morris <jmorris@namei.org>,
- Dov Murik <dovmurik@linux.ibm.com>, Jim Cadden <jcadden@ibm.com>,
- Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@suse.de>,
- "Serge E. Hallyn" <serge@hallyn.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Ashish Kalra <ashish.kalra@amd.com>, dougmill@linux.vnet.ibm.com,
- James Bottomley <jejb@linux.ibm.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Tobin Feldman-Fitzthum <tobin@linux.ibm.com>, linux-coco@lists.linux.dev,
- gjoyce@ibm.com, Daniel Axtens <dja@axtens.net>,
- Dave Hansen <dave.hansen@intel.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-security-module@vger.kernel.org,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, Andrew Scull <ascull@google.com>
+Cc: linux-scsi@vger.kernel.org, martin.petersen@oracle.com, jejb@linux.ibm.com,
+ davidcomponentone@gmail.com, linux-kernel@vger.kernel.org,
+ Yang Guang <yang.guang5@zte.com.cn>, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, Zeal Robot <zealci@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Yang Guang <yang.guang5@zte.com.cn>
 
-On 2/2/22 03:25, Greg KH wrote:
-> On Wed, Feb 02, 2022 at 08:04:01AM +0000, Matthew Garrett wrote:
->> On Wed, Feb 02, 2022 at 08:22:03AM +0100, Ard Biesheuvel wrote:
->>> On Wed, 2 Feb 2022 at 08:10, Matthew Garrett <mjg59@srcf.ucam.org> wrote:
->>>> Which other examples are you thinking of? I think this conversation may
->>>> have accidentally become conflated with a different prior one and now
->>>> we're talking at cross purposes.
->>> This came up a while ago during review of one of the earlier revisions
->>> of this patch set.
->>>
->>> https://lore.kernel.org/linux-efi/YRZuIIVIzMfgjtEl@google.com/
->>>
->>> which describes another two variations on the theme, for pKVM guests
->>> as well as Android bare metal.
->> Oh, I see! That makes much more sense - sorry, I wasn't Cc:ed on that,
->> so thought this was related to the efivars/Power secure boot. My
->> apologies, sorry for the noise. In that case, given the apparent
->> agreement between the patch owners that a consistent interface would
->> work for them, I think I agree with Greg that we should strive for that.
->> Given the described behaviour of the Google implementation, it feels
->> like the semantics in this implementation would be sufficient for them
->> as well, but having confirmation of that would be helpful.
->>
->> On the other hand, I also agree that a new filesystem for this is
->> overkill. I did that for efivarfs and I think the primary lesson from
->> that is that people who aren't familiar with the vfs shouldn't be
->> writing filesystems. Securityfs seems entirely reasonable, and it's
->> consistent with other cases where we expose firmware-provided data
->> that's security relevant.
->>
->> The only thing I personally struggle with here is whether "coco" is the
->> best name for it, and whether there are reasonable use cases that
->> wouldn't be directly related to confidential computing (eg, if the
->> firmware on a bare-metal platform had a mechanism for exposing secrets
->> to the OS based on some specific platform security state, it would seem
->> reasonable to expose it via this mechanism but it may not be what we'd
->> normally think of as Confidential Computing).
->>
->> But I'd also say that while we only have one implementation currently
->> sending patches, it's fine for the code to live in that implementation
->> and then be abstracted out once we have another.
-> Well right now the Android code looks the cleanest and should be about
-> ready to be merged into my tree.
->
-> But I can almost guarantee that that interface is not what anyone else
-> wants to use, so if you think somehow that everyone else is going to
-> want to deal with a char device node and a simple mmap, with a DT
-> description of the thing, hey, I'm all for it :)
->
-> Seriously, people need to come up with something sane or this is going
-> to be a total mess.
->
+coccinelle report:
+./drivers/scsi/ibmvscsi/ibmvfc.c:3453:8-16:
+WARNING: use scnprintf or sprintf
+./drivers/scsi/ibmvscsi/ibmvfc.c:3416:8-16:
+WARNING: use scnprintf or sprintf
+./drivers/scsi/ibmvscsi/ibmvfc.c:3436:8-16:
+WARNING: use scnprintf or sprintf
+./drivers/scsi/ibmvscsi/ibmvfc.c:3426:8-16:
+WARNING: use scnprintf or sprintf
+./drivers/scsi/ibmvscsi/ibmvfc.c:3445:8-16:
+WARNING: use scnprintf or sprintf
+./drivers/scsi/ibmvscsi/ibmvfc.c:3406:8-16:
+WARNING: use scnprintf or sprintf
 
-Thanks for adding us to this discussion. I think somehow my last post 
-got html content and didn't make to mailing list, so am posting it 
-again. Sorry to those who are receiving it twice.
+Use sysfs_emit instead of scnprintf or sprintf makes more sense.
 
-If I have understood the discussion right, the key idea discussed here 
-is to unify multiple different interfaces(this one, and [1]) exposing 
-secrets for confidential computing usecase via securityfs.
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
+Signed-off-by: David Yang <davidcomponentone@gmail.com>
+---
+ drivers/scsi/ibmvscsi/ibmvfc.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-And the suggestion is to see if the proposed pseries interface [2] can 
-unify with the coco interface.
-
-At high level, pseries interface is reading/writing/adding/deleting 
-variables using the sysfs interface, but the underlying semantics and 
-actual usecases are quite different.
-
-The variables exposed via pseries proposed interface are:
-
-* Variables owned by firmware as read-only.
-* Variables owned by bootloader as read-only.
-* Variables owned by OS and get updated as signed updates. These support 
-both read/write.
-* Variables owned by OS and get directly updated(unsigned) eg config 
-information or some boot variables. These support both read/write.
-
-It can be extended to support variables which contain secrets like 
-symmetric keys, are owned by OS and stored in platform keystore.
-
-Naming convention wise also, there are differences like pseries 
-variables do not use GUIDs.
-
-The initial patchset discusses secure boot usecase, but it would be 
-extended for other usecases as well.
-
-First, I feel the purpose itself is different here. If we still 
-continue, I fear if we will get into similar situation as Matthew 
-mentioned in context of efivars -
-
-"the patches to add support for
-manipulating the Power secure boot keys originally attempted to make it
-look like efivars, but the underlying firmware semantics are
-sufficiently different that even exposing the same kernel interface
-wouldn't be a sufficient abstraction and userland would still need to
-behave differently. Exposing an interface that looks consistent but
-isn't is arguably worse for userland than exposing explicitly distinct
-interfaces."
-
-With that, I believe the scope of pseries interface is different and 
-much broader than being discussed here. So, I wonder if it would be 
-better to still keep pseries interface separate from this and have its 
-own platform specific interface.
-
-I would be happy to hear the ideas.
-
-[1] https://lore.kernel.org/linux-efi/YRZuIIVIzMfgjtEl@google.com/
-
-[2] https://lore.kernel.org/all/20220122005637.28199-1-nayna@linux.ibm.com/
-
-Thanks & Regards,
-
-      - Nayna
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index d0eab5700dc5..d5a197d17e0a 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -3403,7 +3403,7 @@ static ssize_t ibmvfc_show_host_partition_name(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
++	return sysfs_emit(buf, "%s\n",
+ 			vhost->login_buf->resp.partition_name);
+ }
+ 
+@@ -3413,7 +3413,7 @@ static ssize_t ibmvfc_show_host_device_name(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
++	return sysfs_emit(buf, "%s\n",
+ 			vhost->login_buf->resp.device_name);
+ }
+ 
+@@ -3423,7 +3423,7 @@ static ssize_t ibmvfc_show_host_loc_code(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
++	return sysfs_emit(buf, "%s\n",
+ 			vhost->login_buf->resp.port_loc_code);
+ }
+ 
+@@ -3433,7 +3433,7 @@ static ssize_t ibmvfc_show_host_drc_name(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
++	return sysfs_emit(buf, "%s\n",
+ 			vhost->login_buf->resp.drc_name);
+ }
+ 
+@@ -3442,7 +3442,7 @@ static ssize_t ibmvfc_show_host_npiv_version(struct device *dev,
+ {
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+-	return snprintf(buf, PAGE_SIZE, "%d\n", be32_to_cpu(vhost->login_buf->resp.version));
++	return sysfs_emit(buf, "%d\n", be32_to_cpu(vhost->login_buf->resp.version));
+ }
+ 
+ static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
+@@ -3450,7 +3450,7 @@ static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
+ {
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+-	return snprintf(buf, PAGE_SIZE, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
++	return sysfs_emit(buf, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
+ }
+ 
+ /**
+@@ -3471,7 +3471,7 @@ static ssize_t ibmvfc_show_log_level(struct device *dev,
+ 	int len;
+ 
+ 	spin_lock_irqsave(shost->host_lock, flags);
+-	len = snprintf(buf, PAGE_SIZE, "%d\n", vhost->log_level);
++	len = sysfs_emit(buf, "%d\n", vhost->log_level);
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
+ 	return len;
+ }
+@@ -3509,7 +3509,7 @@ static ssize_t ibmvfc_show_scsi_channels(struct device *dev,
+ 	int len;
+ 
+ 	spin_lock_irqsave(shost->host_lock, flags);
+-	len = snprintf(buf, PAGE_SIZE, "%d\n", vhost->client_scsi_channels);
++	len = sysfs_emit(buf, "%d\n", vhost->client_scsi_channels);
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
+ 	return len;
+ }
+-- 
+2.30.2
 
