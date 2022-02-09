@@ -2,43 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9296E4AEA82
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 07:44:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F57A4AEB5D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 08:44:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jtr312GpYz3cQX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 17:44:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JtsMt0mTGz3bPS
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 18:44:26 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fWL1oo4x;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=molgen.mpg.de (client-ip=141.14.17.11; helo=mx1.molgen.mpg.de;
- envelope-from=pmenzel@molgen.mpg.de; receiver=<UNKNOWN>)
-Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
+ envelope-from=chao.gao@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=fWL1oo4x; dkim-atps=neutral
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jtr2W6cD4z2yPL
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 17:44:19 +1100 (AEDT)
-Received: from [192.168.0.2] (ip5f5aee30.dynamic.kabel-deutschland.de
- [95.90.238.48])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested) (Authenticated sender: pmenzel)
- by mx.molgen.mpg.de (Postfix) with ESMTPSA id 441A661E64846;
- Wed,  9 Feb 2022 07:44:16 +0100 (CET)
-Message-ID: <b56fe3a2-b145-9d4e-acf2-4991204b3102@molgen.mpg.de>
-Date: Wed, 9 Feb 2022 07:44:15 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JtsMC1MSTz2yLv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 18:43:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1644392631; x=1675928631;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=7VeRspiyxXCh3lSSnfqh2HL4gkG0CHa04PfTnd3ABnE=;
+ b=fWL1oo4xzzL5BXPljzs05eUtnq6lZkZNoBObfr51B/b3Ai87vNOQ7VIQ
+ A+YYbGC5dW1i18AU8IqLFUleUPj/YjhAWNlgI51/JA1qx4WnJxBM61fMs
+ 87KF8Id09xELVMwkBha6QxR1xNEAVOB6uOvc2LgPr30IalnkVvnIKFH9O
+ iWQEKaWVE/UwNnli13MrozLx5wUE6bAYHyCMvkjjUC3dit3qvpvrTHHPm
+ O9qXUYI/odTRY5ew/3kI/qntiGyNF9ieIquVY0Yw2GYwi3aFu7gIHrgBh
+ Xo8xsLJBt7bxN2MykggNt8MCeIOGYEJvzDNqM9VPDBohmcotqAYvVovDk Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10252"; a="229117904"
+X-IronPort-AV: E=Sophos;i="5.88,355,1635231600"; d="scan'208";a="229117904"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2022 23:41:52 -0800
+X-IronPort-AV: E=Sophos;i="5.88,355,1635231600"; d="scan'208";a="540984661"
+Received: from hyperv-sh4.sh.intel.com ([10.239.48.22])
+ by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2022 23:41:40 -0800
+From: Chao Gao <chao.gao@intel.com>
+To: kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com,
+ kevin.tian@intel.com, tglx@linutronix.de
+Subject: [PATCH v3 2/5] Partially revert "KVM: Pass kvm_init()'s opaque param
+ to additional arch funcs"
+Date: Wed,  9 Feb 2022 15:41:03 +0800
+Message-Id: <20220209074109.453116-3-chao.gao@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220209074109.453116-1-chao.gao@intel.com>
+References: <20220209074109.453116-1-chao.gao@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: Re: [PATCH v5 2/6] powerpc/kexec_file: Add KEXEC_SIG support.
-Content-Language: en-US
-To: Michal Suchanek <msuchanek@suse.de>, keyrings@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org
-References: <cover.1641900831.git.msuchanek@suse.de>
- <d95f7c6865bcad5ee37dcbec240e79aa742f5e1d.1641900831.git.msuchanek@suse.de>
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <d95f7c6865bcad5ee37dcbec240e79aa742f5e1d.1641900831.git.msuchanek@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -51,152 +67,190 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nayna <nayna@linux.vnet.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
- David Howells <dhowells@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>, Baoquan He <bhe@redhat.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- James Morris <jmorris@namei.org>,
- Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+Cc: x86@kernel.org, Wanpeng Li <wanpengli@tencent.com>,
+ David Hildenbrand <david@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>,
+ Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+ Huacai Chen <chenhuacai@kernel.org>, linux-riscv@lists.infradead.org,
+ kvmarm@lists.cs.columbia.edu, Dave Hansen <dave.hansen@linux.intel.com>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
- "Serge E. Hallyn" <serge@hallyn.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Rob Herring <robh@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
- Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>,
- linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
+ Chao Gao <chao.gao@intel.com>, Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Borislav Petkov <bp@alien8.de>, Atish Patra <atishp@atishpatra.org>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
+ Juergen Gross <jgross@suse.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Fabiano Rosas <farosas@linux.ibm.com>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>, James Morse <james.morse@arm.com>,
+ kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dear Michal,
+This partially reverts commit b99040853738 ("KVM: Pass kvm_init()'s opaque
+param to additional arch funcs") remove opaque from
+kvm_arch_check_processor_compat because no one uses this opaque now.
+Address conflicts for ARM (due to file movement) and manually handle RISC-V
+which comes after the commit.
 
+And changes about kvm_arch_hardware_setup() in original commit are still
+needed so they are not reverted.
 
-Thank you for the patch.
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+---
+ arch/arm64/kvm/arm.c       |  2 +-
+ arch/mips/kvm/mips.c       |  2 +-
+ arch/powerpc/kvm/powerpc.c |  2 +-
+ arch/riscv/kvm/main.c      |  2 +-
+ arch/s390/kvm/kvm-s390.c   |  2 +-
+ arch/x86/kvm/x86.c         |  2 +-
+ include/linux/kvm_host.h   |  2 +-
+ virt/kvm/kvm_main.c        | 16 +++-------------
+ 8 files changed, 10 insertions(+), 20 deletions(-)
 
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index a069d5925f77..60494c576242 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -73,7 +73,7 @@ int kvm_arch_hardware_setup(void *opaque)
+ 	return 0;
+ }
+ 
+-int kvm_arch_check_processor_compat(void *opaque)
++int kvm_arch_check_processor_compat(void)
+ {
+ 	return 0;
+ }
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index a25e0b73ee70..092d09fb6a7e 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -140,7 +140,7 @@ int kvm_arch_hardware_setup(void *opaque)
+ 	return 0;
+ }
+ 
+-int kvm_arch_check_processor_compat(void *opaque)
++int kvm_arch_check_processor_compat(void)
+ {
+ 	return 0;
+ }
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 2ad0ccd202d5..30c817f3fa0c 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -423,7 +423,7 @@ int kvm_arch_hardware_setup(void *opaque)
+ 	return 0;
+ }
+ 
+-int kvm_arch_check_processor_compat(void *opaque)
++int kvm_arch_check_processor_compat(void)
+ {
+ 	return kvmppc_core_check_processor_compat();
+ }
+diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
+index 2e5ca43c8c49..992877e78393 100644
+--- a/arch/riscv/kvm/main.c
++++ b/arch/riscv/kvm/main.c
+@@ -20,7 +20,7 @@ long kvm_arch_dev_ioctl(struct file *filp,
+ 	return -EINVAL;
+ }
+ 
+-int kvm_arch_check_processor_compat(void *opaque)
++int kvm_arch_check_processor_compat(void)
+ {
+ 	return 0;
+ }
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 9c6d45d0d345..99c70d881cb6 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -252,7 +252,7 @@ int kvm_arch_hardware_enable(void)
+ 	return 0;
+ }
+ 
+-int kvm_arch_check_processor_compat(void *opaque)
++int kvm_arch_check_processor_compat(void)
+ {
+ 	return 0;
+ }
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index b71549a52ae0..e9777ffc50c2 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -11548,7 +11548,7 @@ void kvm_arch_hardware_unsetup(void)
+ 	static_call(kvm_x86_hardware_unsetup)();
+ }
+ 
+-int kvm_arch_check_processor_compat(void *opaque)
++int kvm_arch_check_processor_compat(void)
+ {
+ 	struct cpuinfo_x86 *c = &cpu_data(smp_processor_id());
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index b3810976a27f..3c7b654e43fb 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1413,7 +1413,7 @@ int kvm_arch_hardware_enable(void);
+ void kvm_arch_hardware_disable(void);
+ int kvm_arch_hardware_setup(void *opaque);
+ void kvm_arch_hardware_unsetup(void);
+-int kvm_arch_check_processor_compat(void *opaque);
++int kvm_arch_check_processor_compat(void);
+ int kvm_arch_vcpu_runnable(struct kvm_vcpu *vcpu);
+ bool kvm_arch_vcpu_in_kernel(struct kvm_vcpu *vcpu);
+ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 034c567a680c..be614a6325e4 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -5599,22 +5599,14 @@ struct kvm_vcpu * __percpu *kvm_get_running_vcpus(void)
+         return &kvm_running_vcpu;
+ }
+ 
+-struct kvm_cpu_compat_check {
+-	void *opaque;
+-	int *ret;
+-};
+-
+-static void check_processor_compat(void *data)
++static void check_processor_compat(void *rtn)
+ {
+-	struct kvm_cpu_compat_check *c = data;
+-
+-	*c->ret = kvm_arch_check_processor_compat(c->opaque);
++	*(int *)rtn = kvm_arch_check_processor_compat();
+ }
+ 
+ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
+ 		  struct module *module)
+ {
+-	struct kvm_cpu_compat_check c;
+ 	int r;
+ 	int cpu;
+ 
+@@ -5642,10 +5634,8 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
+ 	if (r < 0)
+ 		goto out_free_1;
+ 
+-	c.ret = &r;
+-	c.opaque = opaque;
+ 	for_each_online_cpu(cpu) {
+-		smp_call_function_single(cpu, check_processor_compat, &c, 1);
++		smp_call_function_single(cpu, check_processor_compat, &r, 1);
+ 		if (r < 0)
+ 			goto out_free_2;
+ 	}
+-- 
+2.25.1
 
-Am 11.01.22 um 12:37 schrieb Michal Suchanek:
-
-Could you please remove the dot/period at the end of the git commit 
-message summary?
-
-> Copy the code from s390x
-> 
-> Both powerpc and s390x use appended signature format (as opposed to EFI
-> based patforms using PE format).
-
-patforms → platforms
-
-How can this be tested?
-
-> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> ---
-> v3: - Philipp Rudo <prudo@redhat.com>: Update the comit message with
->        explanation why the s390 code is usable on powerpc.
->      - Include correct header for mod_check_sig
->      - Nayna <nayna@linux.vnet.ibm.com>: Mention additional IMA features
->        in kconfig text
-> ---
->   arch/powerpc/Kconfig        | 16 ++++++++++++++++
->   arch/powerpc/kexec/elf_64.c | 36 ++++++++++++++++++++++++++++++++++++
->   2 files changed, 52 insertions(+)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index dea74d7717c0..1cde9b6c5987 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -560,6 +560,22 @@ config KEXEC_FILE
->   config ARCH_HAS_KEXEC_PURGATORY
->   	def_bool KEXEC_FILE
->   
-> +config KEXEC_SIG
-> +	bool "Verify kernel signature during kexec_file_load() syscall"
-> +	depends on KEXEC_FILE && MODULE_SIG_FORMAT
-> +	help
-> +	  This option makes kernel signature verification mandatory for
-> +	  the kexec_file_load() syscall.
-> +
-> +	  In addition to that option, you need to enable signature
-> +	  verification for the corresponding kernel image type being
-> +	  loaded in order for this to work.
-> +
-> +	  Note: on powerpc IMA_ARCH_POLICY also implements kexec'ed kernel
-> +	  verification. In addition IMA adds kernel hashes to the measurement
-> +	  list, extends IMA PCR in the TPM, and implements kernel image
-> +	  blacklist by hash.
-
-So, what is the takeaway for the user? IMA_ARCH_POLICY is preferred? 
-What is the disadvantage, and two implementations(?) needed then? More 
-overhead?
-
-> +
->   config RELOCATABLE
->   	bool "Build a relocatable kernel"
->   	depends on PPC64 || (FLATMEM && (44x || FSL_BOOKE))
-> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-> index eeb258002d1e..98d1cb5135b4 100644
-> --- a/arch/powerpc/kexec/elf_64.c
-> +++ b/arch/powerpc/kexec/elf_64.c
-> @@ -23,6 +23,7 @@
->   #include <linux/of_fdt.h>
->   #include <linux/slab.h>
->   #include <linux/types.h>
-> +#include <linux/module_signature.h>
->   
->   static void *elf64_load(struct kimage *image, char *kernel_buf,
->   			unsigned long kernel_len, char *initrd,
-> @@ -151,7 +152,42 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
->   	return ret ? ERR_PTR(ret) : NULL;
->   }
->   
-> +#ifdef CONFIG_KEXEC_SIG
-> +int elf64_verify_sig(const char *kernel, unsigned long kernel_len)
-> +{
-> +	const unsigned long marker_len = sizeof(MODULE_SIG_STRING) - 1;
-> +	struct module_signature *ms;
-> +	unsigned long sig_len;
-
-Use size_t to match the signature of `verify_pkcs7_signature()`?
-
-> +	int ret;
-> +
-> +	if (marker_len > kernel_len)
-> +		return -EKEYREJECTED;
-> +
-> +	if (memcmp(kernel + kernel_len - marker_len, MODULE_SIG_STRING,
-> +		   marker_len))
-> +		return -EKEYREJECTED;
-> +	kernel_len -= marker_len;
-> +
-> +	ms = (void *)kernel + kernel_len - sizeof(*ms);
-> +	ret = mod_check_sig(ms, kernel_len, "kexec");
-> +	if (ret)
-> +		return ret;
-> +
-> +	sig_len = be32_to_cpu(ms->sig_len);
-> +	kernel_len -= sizeof(*ms) + sig_len;
-> +
-> +	return verify_pkcs7_signature(kernel, kernel_len,
-> +				      kernel + kernel_len, sig_len,
-> +				      VERIFY_USE_PLATFORM_KEYRING,
-> +				      VERIFYING_MODULE_SIGNATURE,
-> +				      NULL, NULL);
-> +}
-> +#endif /* CONFIG_KEXEC_SIG */
-> +
->   const struct kexec_file_ops kexec_elf64_ops = {
->   	.probe = kexec_elf_probe,
->   	.load = elf64_load,
-> +#ifdef CONFIG_KEXEC_SIG
-> +	.verify_sig = elf64_verify_sig,
-> +#endif
->   };
-
-
-Kind regards,
-
-Paul
