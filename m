@@ -2,122 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE0AC4AEC8A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 09:36:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B694AEDBA
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 10:14:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JttWs41fHz3bcn
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 19:36:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JtvMS4CmTz3bZb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 20:14:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com header.b=po7RzDwI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qRVuC7b9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=2a01:111:f400:feae::72c;
- helo=apc01-psa-obe.outbound.protection.outlook.com;
- envelope-from=wangqing@vivo.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com
- header.b=po7RzDwI; dkim-atps=neutral
-Received: from APC01-PSA-obe.outbound.protection.outlook.com
- (mail-psaapc01on2072c.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:feae::72c])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=dovmurik@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=qRVuC7b9; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JttW21rbXz2xKK
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 19:35:29 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QeVmF4hMYkEiroPQL94EHYnxQwdhXVzxdaDs5/v9knOg04itgwgFkFVk+CsibimbWOqAUgkU4JB5JPpaK5PRiMHIexV5VR323MtDbNDUEBXU6KOVszU9SGxy4JGLimgfRJlQTa5iQkQD1z/y0OT++Z/rlKV2Ke4075G2qC3Y7xvfKu8RzFzDkuNdFzo8yEb+uV3e2TisUd5WCReECafKMWYABbgFdEPxO5k+aAOXE4f8vEo4LSKV22B8WyFAUOU3VFKqcjFqcEp/4rTA/I+2DjyBJSlOLxMKqd/t6rdCaX+6mDCOcMUmnhFMqqFcbxHG7xX+AYMv4Vg5LWFqIF7QzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7EMeIToNUcDG98+WDxBUEUpyIpe0q47jndIFve+3ivE=;
- b=EyoM8dsEo2HGO5Mt3t8+2lGiBJkslyWewbjbWKtwTn9UEekf7pg/JCy+MUH8YLWIQyWg3q/mTs87V+8ZyyEvQBZhx9JnjWHP8kwSumvCpTYRDFgmpmfA3XRBglK5RA1QF1hVQt73OUEPbTfyNJqd2osWKrDJT0J6Rn+v60v9pOgXODNeeZa2vf4szHW6Ys/22K2aWoWfi+PQJVjj8W/6p0TZtIkC/b/5KU2ynuIZ8yxKanu+kSWGQuH6lpne8mjGE4AqQ6axB8CXTCRBBOOL4jFtNKPbQ0/bzN1iv/cfFb//iGE3WdlgWK9osfnA63k7XGmTqp5uPdh7g500/u+1DQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com; 
- s=selector2-vivo0-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7EMeIToNUcDG98+WDxBUEUpyIpe0q47jndIFve+3ivE=;
- b=po7RzDwIsHTUpeFL5GVkTfhwZMMT/7melL4jmfZNpPQeT2vbrBsNL+tmBdUlBYHOqUYu+A5ohvIp/5mG4keYACRooJMSwlBb2E5+siTnwhBE49yl7ijCC2AI7ZkaHAegFJ0R3efbLpEYtUyEEFIaBBk1ngfQG9hW75Xxf94E2rg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SL2PR06MB3082.apcprd06.prod.outlook.com (2603:1096:100:37::17)
- by KL1PR0601MB4068.apcprd06.prod.outlook.com (2603:1096:820:2a::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.11; Wed, 9 Feb
- 2022 08:35:05 +0000
-Received: from SL2PR06MB3082.apcprd06.prod.outlook.com
- ([fe80::80b4:e787:47a9:41bb]) by SL2PR06MB3082.apcprd06.prod.outlook.com
- ([fe80::80b4:e787:47a9:41bb%4]) with mapi id 15.20.4975.011; Wed, 9 Feb 2022
- 08:35:05 +0000
-From: Qing Wang <wangqing@vivo.com>
-To: Anatolij Gustschin <agust@denx.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc: delete redundant conversion
-Date: Wed,  9 Feb 2022 00:34:55 -0800
-Message-Id: <1644395696-3545-1-git-send-email-wangqing@vivo.com>
-X-Mailer: git-send-email 2.7.4
-Content-Type: text/plain
-X-ClientProxiedBy: HK2PR03CA0048.apcprd03.prod.outlook.com
- (2603:1096:202:17::18) To SL2PR06MB3082.apcprd06.prod.outlook.com
- (2603:1096:100:37::17)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JtvLg2fbGz2yPL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 20:13:30 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21975wJM007609; 
+ Wed, 9 Feb 2022 09:13:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=Wvm5YIaS7ro2Fs/QQiFJb+9ymuruMtS8dhHGq+seETY=;
+ b=qRVuC7b9aJ3jd3dcXaKg30zoW/AbmzqvLvvqMudTwSdx/G2iMqvqA8uB7i2Jja90DXWg
+ DvAwC96urYT4buuE7pq8hdva6KkgIkIZi0YK7A7TK3l8k7f1pBkOR0FsDXBpEQ9AunUf
+ 7daYqTkoA0PWa/SzNrz4Dlnaqu2n9x79aojvg2jt4yoVsCldrQuHguETCanxDvI8pmWR
+ 2oPkVpENF0DNe4Y9uEz2g3j/iVaw5w82185VeTZ/OEuO2REOA38B4hJJLeJb3OpEwj3J
+ 6e0lMdMRtu00kga4FA0Q6YHJchApotYyvrRWaNfS0J89q6q96Id0NS6d7fBoAUhx+4EV oA== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e3ny977gf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Feb 2022 09:13:22 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21994u8E025375;
+ Wed, 9 Feb 2022 09:13:22 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma02dal.us.ibm.com with ESMTP id 3e3gq00pq4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Feb 2022 09:13:22 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 2199DJYx26280242
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 9 Feb 2022 09:13:19 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 325C2112067;
+ Wed,  9 Feb 2022 09:13:19 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3E5CC112061;
+ Wed,  9 Feb 2022 09:13:17 +0000 (GMT)
+Received: from [9.65.240.79] (unknown [9.65.240.79])
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  9 Feb 2022 09:13:17 +0000 (GMT)
+Message-ID: <0d33cac6-99a7-e756-e0e3-37124784e3bb@linux.ibm.com>
+Date: Wed, 9 Feb 2022 11:13:15 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 9abae3bc-77b2-4208-397c-08d9eba71245
-X-MS-TrafficTypeDiagnostic: KL1PR0601MB4068:EE_
-X-Microsoft-Antispam-PRVS: <KL1PR0601MB406850F2A36B1CCA65480DCDBD2E9@KL1PR0601MB4068.apcprd06.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:510;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: aBYWf444cxAiUJTaR4tzFYIJXSgBiM3J09qkTWzE0GCAiKiIJ94DaqJAV1ec3ZDfeB7CTJ1wiFwWFKHtcLdC0IInTa8uOhYUNT2AomfGBiovgEMvmIHh/dFfN7+Kfw508WP/fWXaLGmvwip7rhvhmz58/Io2cvdYrIGNExbt+uuMcxWXnrt9/B9NCHGUy7zpePzy2rWU46/2pBvcOOb9V/zrNCDJfcK9yC8uQrtz1qinmOs/dB784RRRurc2A+gUKZu9bWsO70kRbRhjhMhOdtW2T/FHWyfun6muTnPy3Ujvu47Be3DCGgQCKvg3fzZAg3btzz1J/UiqronaZgMjaQxCWDjoPsi6uBp1YffEJFeiP2hoDNP567N3BJRfACAed04z53RZwET6H5xOsT6d6i1sZ3EvSoeWGN096YO94ZSfKdYkgsP2drce1HGDLv5YgwwLoZpX6xWYjNPGjg/J087J3JwXIBb+RnnJtzVKT/le2LI3TcRcA4uyh7Q9KQF6nQFucpQojbv9LswycHsLFP5IWzHfWpBEI/KNRfYc/i12o8A0tqHHD1nkSmifcjqpxpNV6xK26MqzuIXZAfpwsQ+xQqowNmFQXcex+fNLoZlGix75EJ4R9Fy8rrnZH+TvcsNWACCIU9HqJI3zNK+eLzk44qzS9dhOuvHu3EfaxhCAJUfhfETVDi5ZxuizV1IHKsMV/V/D7U5zE3grwhwZww==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SL2PR06MB3082.apcprd06.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(86362001)(38100700002)(186003)(38350700002)(6486002)(83380400001)(508600001)(4744005)(2906002)(8936002)(316002)(107886003)(36756003)(110136005)(2616005)(26005)(4326008)(5660300002)(6666004)(6512007)(66476007)(66946007)(66556008)(8676002)(52116002)(6506007);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?gaZW8FiVYjObH/rQC6IaKpISZkZRGjX/ZavBtIvnW0DkZFjdxdRmklepclq0?=
- =?us-ascii?Q?wO9+hboL066+xHIcsWFnpijlddqA2MJ8W2XGiy54EgBGPBQOBkaMqL9ZBTvB?=
- =?us-ascii?Q?8RYQszaw953VRjOga7D0H6y7fjNNNpf/SxGfzWidHq/2f4ANAn3aAqqMdPk8?=
- =?us-ascii?Q?FhUFO2z76rn4zx4yOnIB9YOFmtyjcRWBS2Ben9qAm/52QBrIR27VJ5yjfpYI?=
- =?us-ascii?Q?SsZzQhvuSea8fd0EqJUaTMwSPeR6HrG4Zfh/naKEmMM57FhM4DItGHxGlKG7?=
- =?us-ascii?Q?xquGkBJrGSlBq3LP/Ham5Ch0THE0Q86KpR5kJxhv+dsGKoqPymu70G3Z6lM/?=
- =?us-ascii?Q?GLmKgZLSc6QSpCdYOQgnbEpMIk91Js1VVS8uGcVTFse3ROHniu0oS/FRcUiU?=
- =?us-ascii?Q?Ph9Suoh+DDF9wnUjfVUl8G9exWPB6qhbZMlK2AAu5604jkkXoFO3IqsDmItx?=
- =?us-ascii?Q?39BeAAPW10jJYkixV7PyFAxDiZEwJ2M6imU4iD77HvO8STi0HUj/0MRvh95q?=
- =?us-ascii?Q?1rBvhGPpmMYcr6aNtC1VlmQZyFbmLsQiaSXaucKOKrSPXBEpA+dJHzFjDtV1?=
- =?us-ascii?Q?frDwVYX7W4tf4MmEI5IyiqF7kXNdtqhkWdHbVA5II34R6v060oiq1cedH88o?=
- =?us-ascii?Q?/cQcZ5eKK/EJIiRtV+RRvGG3q7fokwLJzf3mDSE8J/X4EWeA2WphxtfuYsDC?=
- =?us-ascii?Q?nrRkJUXfZdUEckMWWspuWxbAdDSGJogEIJBR2VbhpVc9nzJfh0bP2htM7QnQ?=
- =?us-ascii?Q?W6H0JKkBUOzfrFap4Pvl7ubMdwikzw3ZSJO+J6Yk9uiTsOWb4yCsKyJQt47c?=
- =?us-ascii?Q?83mQT03No7dctODdEg8IbN5tWubg/QmL9fgdeT01MGHZ//j3BT7Kihe2i14q?=
- =?us-ascii?Q?p8PmssCWAzndKfbi2MDl5vOGjaDZ6HDcqiqMblSB/Bkjg5QbpjfDgPkWksE0?=
- =?us-ascii?Q?TKsH31Ocpf4YXaWhrObTsqVpO7m2nFUzbALwG/9B/NWhGJLIARdACQFG02tu?=
- =?us-ascii?Q?gdQZAjLaEjiFQQLofgKD2dCgVgoPzg20hlk6/Vn7AdQSzfh9JxoLszMXmqeL?=
- =?us-ascii?Q?X//3uNJVp1uchDdm5iRCi2T8nMB6UuA8EJISxwzUsgtz+6DiwzXpWUR7qrZH?=
- =?us-ascii?Q?269MVryI6ZSDbx4YyH2cH5rE6awpB8eCLOqDsSD3RPr3Qzg8fbai41ntCmI/?=
- =?us-ascii?Q?CKyfTmLWJtgB0m7VpKXgJN2S8PhJU9LNctkfxx/uxlx35rjWeQ/TNA1YlSin?=
- =?us-ascii?Q?7nPOoJE44FTsPTyB9U5CGp6QFZGPuFz5uwjoCIzf5KAmB7CSMfs1naetso4i?=
- =?us-ascii?Q?KT12Xor5NEMtnEjtzweEpYICj5Ot3u0aLr88KGrLJdITT3cfEQurQPAA5Ps0?=
- =?us-ascii?Q?sYqrUkkgNOtAwdJpSay5X6tfwXhfokkh/vWIm2qq6nwhUszDx2JW6PZpU8fy?=
- =?us-ascii?Q?PBapBFOCY1b/gVAUZv4nnd9RI44CbdZRbBVVUevsentp3LluDSiuc+fDsULd?=
- =?us-ascii?Q?qBrqANjwJwQE6/fgKQ7M+lozZCgaNLkmvPJqjFXxn13rliBzNi9q1kXorE/O?=
- =?us-ascii?Q?bNSghYhRw2mcLmU7xsWgMKpLmT0UbFa2pUP8sUOFjcLwTBLx64HniUW3by4B?=
- =?us-ascii?Q?mrvDDdMksGDp6za67Kazd6M=3D?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9abae3bc-77b2-4208-397c-08d9eba71245
-X-MS-Exchange-CrossTenant-AuthSource: SL2PR06MB3082.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2022 08:35:05.2290 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ckUbdtBxnjJknpamgceBubVs4jSzDAZStKFZrzBiE2qjFjpkJuviXtDqTNhD2+WwY03q0krjiSvAWakB3CnaGg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR0601MB4068
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Subject: Re: [RFC PATCH 2/2] pseries: define sysfs interface to expose PKS
+ variables
+Content-Language: en-US
+To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20220122005637.28199-1-nayna@linux.ibm.com>
+ <20220122005637.28199-3-nayna@linux.ibm.com>
+From: Dov Murik <dovmurik@linux.ibm.com>
+In-Reply-To: <20220122005637.28199-3-nayna@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Ryuf2rR1vgn2ZkvPJiIheYi1GKSMlzaC
+X-Proofpoint-ORIG-GUID: Ryuf2rR1vgn2ZkvPJiIheYi1GKSMlzaC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-09_04,2022-02-09_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ impostorscore=0 clxscore=1015 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202090060
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -129,34 +103,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Wang Qing <wangqing@vivo.com>
+Cc: linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>,
+ Douglas Miller <dougmill@linux.vnet.ibm.com>,
+ Greg KH <gregkh@linuxfoundation.org>, George Wilson <gcwilson@linux.ibm.com>,
+ gjoyce@ibm.com, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Wang Qing <wangqing@vivo.com>
+Hi Nayna,
 
-do_div() does a 64-by-32 division
-No need to transform gpt->ipb_freq to u64
 
-Signed-off-by: Wang Qing <wangqing@vivo.com>
----
- arch/powerpc/platforms/52xx/mpc52xx_gpt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 22/01/2022 2:56, Nayna Jain wrote:
+> PowerVM guest secure boot intend to use Platform Keystore(PKS) for the
+> purpose of storing public keys to verify digital signature.
+> 
+> Define sysfs interface to expose PKS variables to userspace to allow
+> read/write/add/delete operations. Each variable is shown as a read/write
+> attribute file. The size of the file represents the size of the current
+> content of the variable.
+> 
+> create_var and delete_var attribute files are always present which allow
+> users to create/delete variables. These are write only attributes.The
+> design has tried to be compliant with sysfs semantic to represent single
+> value per attribute. Thus, rather than mapping a complete data structure
+> representation to create_var, it only accepts a single formatted string
+> to create an empty variable.
+> 
+> The sysfs interface is designed such as to expose PKS configuration
+> properties, operating system variables and firmware variables.
+> Current version exposes configuration and operating system variables.
+> The support for exposing firmware variables will be added in the future
+> version.
+> 
+> Example of pksvar sysfs interface:
+> 
+> # cd /sys/firmware/pksvar/
+> # ls
+> config  os
+> 
+> # cd config
+> 
+> # ls -ltrh
+> total 0
+> -r--r--r-- 1 root root 64K Jan 21 17:55 version
+> -r--r--r-- 1 root root 64K Jan 21 17:55 used_space
+> -r--r--r-- 1 root root 64K Jan 21 17:55 total_size
+> -r--r--r-- 1 root root 64K Jan 21 17:55 supported_policies
+> -r--r--r-- 1 root root 64K Jan 21 17:55 max_object_size
+> -r--r--r-- 1 root root 64K Jan 21 17:55 max_object_label_size
+> -r--r--r-- 1 root root 64K Jan 21 17:55 flags
+> 
+> # cd os
+> 
+> # ls -ltrh
+> total 0
+> -rw------- 1 root root 104 Jan 21 17:56 var4
+> -rw------- 1 root root 104 Jan 21 17:56 var3
+> -rw------- 1 root root 831 Jan 21 17:56 GLOBAL_PK
+> -rw------- 1 root root 831 Jan 21 17:56 GLOBAL_KEK
+> -rw------- 1 root root  76 Jan 21 17:56 GLOBAL_dbx
+> -rw------- 1 root root 831 Jan 21 17:56 GLOBAL_db
+> --w------- 1 root root 64K Jan 21 17:56 delete_var
+> --w------- 1 root root 64K Jan 21 17:56 create_var
+> 
+> 1. Read variable
+> 
+> # hexdump -C GLOBAL_db
+> 00000000  00 00 00 00 a1 59 c0 a5  e4 94 a7 4a 87 b5 ab 15  |.....Y.....J....|
+> 00000010  5c 2b f0 72 3f 03 00 00  00 00 00 00 23 03 00 00  |\+.r?.......#...|
+> ....
+> 00000330  02 a8 e8 ed 0f 20 60 3f  40 04 7c a8 91 21 37 eb  |..... `?@.|..!7.|
+> 00000340  f3 f1 4e                                          |..N|
+> 00000343
+> 
+> 2. Write variable
+> 
+> cat /tmp/data.bin > <variable_name>
+> 
+> 3. Create variable
+> 
+> # echo "var1" > create_var
 
-diff --git a/arch/powerpc/platforms/52xx/mpc52xx_gpt.c b/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
-index f862b48..0cb2482
---- a/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
-+++ b/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
-@@ -502,7 +502,7 @@ u64 mpc52xx_gpt_timer_period(struct mpc52xx_gpt_priv *gpt)
- 	if (prescale == 0)
- 		prescale = 0x10000;
- 	period = period * prescale * 1000000000ULL;
--	do_div(period, (u64)gpt->ipb_freq);
-+	do_div(period, gpt->ipb_freq);
- 	return period;
- }
- EXPORT_SYMBOL(mpc52xx_gpt_timer_period);
--- 
-2.7.4
+It would be easier to understand if the user could create a new variable
+like a regular new file, something like:
+
+# cat /tmp/data.bin > var1
+
+but I understand there are also comma-seperated-policy-strings which
+should go somewhere; not sure how this fits (or if there are other
+examples for similar interfaces in other sysfs parts).
+
+
+
+> # ls -ltrh
+> total 0
+> -rw------- 1 root root 104 Jan 21 17:56 var4
+> -rw------- 1 root root 104 Jan 21 17:56 var3
+> -rw------- 1 root root 831 Jan 21 17:56 GLOBAL_PK
+> -rw------- 1 root root 831 Jan 21 17:56 GLOBAL_KEK
+> -rw------- 1 root root  76 Jan 21 17:56 GLOBAL_dbx
+> -rw------- 1 root root 831 Jan 21 17:56 GLOBAL_db
+> --w------- 1 root root 64K Jan 21 17:56 delete_var
+> --w------- 1 root root 64K Jan 21 17:57 create_var
+> -rw------- 1 root root   0 Jan 21 17:57 var1.tmp
+> 
+> Current design creates a zero size temporary variable. This implies
+> it is not yet persisted to PKS. Only once data is written to newly
+> created temporary variable and if it is successfully stored in the
+> PKS, that the variable is permanent. The temporary variable will get
+> removed on reboot. The code currently doesn't remove .tmp suffix
+> immediately when persisted. The future version will fix this.
+> 
+> To avoid the additional .tmp semantic, alternative option is to consider
+> any zero size variable as temporary variable. This option is under
+> evaluation. This would avoid any runtime sysfs magic to replace .tmp
+> variable with real variable.
+> 
+> Also, the formatted string to pass to create_var will have following
+> format in the future version:
+> <variable_name>:<comma-separated-policy strings>
+> 
+> 4. Delete variable
+> # echo "var3" > delete_var
+
+If it's possible here, I think it would be easier to understand (and
+use) if you implement unlink(), so deleting var3 would be:
+
+# rm var3
+
+(and then there's no need for the special 'delete_var' entry.)
+
+
+-Dov
+
+> # ls -ltrh
+> total 0
+> -rw------- 1 root root 104 Jan 21 17:56 var4
+> -rw------- 1 root root 831 Jan 21 17:56 GLOBAL_PK
+> -rw------- 1 root root 831 Jan 21 17:56 GLOBAL_KEK
+> -rw------- 1 root root  76 Jan 21 17:56 GLOBAL_dbx
+> -rw------- 1 root root 831 Jan 21 17:56 GLOBAL_db
+> --w------- 1 root root 64K Jan 21 17:57 create_var
+> -rw------- 1 root root   0 Jan 21 17:57 var1.tmp
+> --w------- 1 root root 64K Jan 21 17:58 delete_var
+> 
+> The var3 file is removed at runtime, if variable is successfully
+> removed from the PKS storage.
+> 
+> NOTE: We are evaluating two design for userspace interface: using the
+> sysfs or defining a new filesystem based. Any feedback on this sysfs based
+> approach would be highly appreciated. We have tried to follow one value
+> per attribute semantic. If that or any other semantics aren't followed
+> properly, please let us know.
+> 
+> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+> ---
+>  Documentation/ABI/testing/sysfs-pksvar        |  77 ++++
+>  arch/powerpc/platforms/pseries/Kconfig        |   7 +
+>  arch/powerpc/platforms/pseries/Makefile       |   1 +
+>  arch/powerpc/platforms/pseries/pksvar-sysfs.c | 356 ++++++++++++++++++
+>  4 files changed, 441 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-pksvar
+>  create mode 100644 arch/powerpc/platforms/pseries/pksvar-sysfs.c
+> 
 
