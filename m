@@ -1,59 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6279B4AFEBE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 21:55:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 806DF4AFDBF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 20:53:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JvBw817Dyz3bVL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Feb 2022 07:55:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jv9Y810Zzz3cNk
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Feb 2022 06:53:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YBA2dck1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=kMS+/VC4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=chao.gao@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::42d;
+ helo=mail-pf1-x42d.google.com; envelope-from=seanjc@google.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=YBA2dck1; dkim-atps=neutral
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=kMS+/VC4; dkim-atps=neutral
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com
+ [IPv6:2607:f8b0:4864:20::42d])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JtsKw0Rf0z301M
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 18:42:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1644392564; x=1675928564;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ptt8R/RvwFaVk8njj6dZCgZ7G353iPS7PsxtHDnt7q4=;
- b=YBA2dck1EcNrL31PySohuUFpLNX6N4uQ4Wb/2XTvgswy7RFiSY22wNXG
- fUKbDckHBNrj04CQwTydScLuJoMXaM0ZDy9OQFjgoBcLuVO799S271XGD
- s9v4OAZxLTPq+nPz2z8Pn5teoR0MC5qovuro3qk+WFVyb+aUJtTkcvF4s
- 2iDkSfaICSl3ieTNiaR60HSBIdHlV79HhKJgaa7TYgAccd+dp5NN5OUnn
- GtSLdFbB+U2gOEN/dBfJCWOZiBeW6i/gyd9NNbvE2A3H0B5MFKwTfBtoL
- cegywG2f9VDB6ZcubUjpeNuMtDEm9DNQlN15sGYVOvVGd9fzO53NzUOj9 Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10252"; a="232712935"
-X-IronPort-AV: E=Sophos;i="5.88,355,1635231600"; d="scan'208";a="232712935"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2022 23:41:34 -0800
-X-IronPort-AV: E=Sophos;i="5.88,355,1635231600"; d="scan'208";a="540984524"
-Received: from hyperv-sh4.sh.intel.com ([10.239.48.22])
- by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2022 23:41:21 -0800
-From: Chao Gao <chao.gao@intel.com>
-To: kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com,
- kevin.tian@intel.com, tglx@linutronix.de
-Subject: [PATCH v3 0/5] Improve KVM's interaction with CPU hotplug
-Date: Wed,  9 Feb 2022 15:41:01 +0800
-Message-Id: <20220209074109.453116-1-chao.gao@intel.com>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jv9XP4MPCz3bPT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Feb 2022 06:52:51 +1100 (AEDT)
+Received: by mail-pf1-x42d.google.com with SMTP id r19so6120921pfh.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Feb 2022 11:52:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=nFEbKA8UOj2F0aYmafhYdx9MoDnLhZL6FzGdA3foG6Y=;
+ b=kMS+/VC4xCdhdLklBPMZrl1DDgsPdemkNlQ+9xJdsF7MXhYOau3XWTVe4FOrwEqNCE
+ AtJl33LpEFo6tfuoyyjy0zXo24YUgl2rkRpZDMF8C8XU1aeb1hng1SUX4zjzRKukMAQ9
+ 27hgmz8ku+LmTHBmD6JLUcxGm2ViDLqKuaJNEonZsgpd0HlXbksTP9GkQqwkK3nofxzk
+ 9N3WOhuOj7Zmr/5Cp7EeaMz/pprsSKTROefT+5wZO27PB8CVnklUVAkPBIVMBiLCrHCw
+ jl9lkCtgzT6We8ITi8RRxUdBU2p3bPtKzg04MIXkdCVNZOh+d/Fln2r4rSPfvBbdqxfm
+ cNnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=nFEbKA8UOj2F0aYmafhYdx9MoDnLhZL6FzGdA3foG6Y=;
+ b=5qNo3t7ORWJ5qV4zF4mCdek+0TPpPQ4DFFzCHZfWFVbP40hcvnhmKBL3ntHzE6rGSe
+ zTXqBlmiL2Xp1oG6XeHm1wGT6x3B8jz4aN2a8ocbLBnEZMeQ3zxKJSoDqo+EVrvQaIad
+ 6L70BMBiTl1Gyze7DdLQD5nGxnn3ZuLZ45uwt1HN5yCAooOGOjfsPCcCcbr/432TFDuh
+ md34L3wt2B9Jc4cfxTUk4ffRDdzIy2SMQv6MwKb9gv7m9DX8B5eIRhfJttGluZomIUH/
+ fm4+iy0GlIwIHqmQCR0nul+Zl2447xB3Fu4MrWAnQIDSwzFGt+6isZIXCacZWFoKPQ+U
+ K9Wg==
+X-Gm-Message-State: AOAM533lIH4ov3/o55a/xKy+UnsNanlGlg2F6aX8Y+uOsvnquJFNpTnw
+ O3Xa4tr3cfNhK8Jj98gaOGMYdw==
+X-Google-Smtp-Source: ABdhPJxEijFR2ADtO2dJpv7+eOnsj3GAeQVvJQZsu/Pn1kY2yGlTgcOn0LgYSwuqCOLhd8P+Pi4JPg==
+X-Received: by 2002:a05:6a00:23d0:: with SMTP id
+ g16mr3889078pfc.19.1644436367723; 
+ Wed, 09 Feb 2022 11:52:47 -0800 (PST)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com.
+ [35.185.214.157])
+ by smtp.gmail.com with ESMTPSA id pi9sm7744343pjb.46.2022.02.09.11.52.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 09 Feb 2022 11:52:47 -0800 (PST)
+Date: Wed, 9 Feb 2022 19:52:43 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: Chao Gao <chao.gao@intel.com>
+Subject: Re: [PATCH v3 2/5] Partially revert "KVM: Pass kvm_init()'s opaque
+ param to additional arch funcs"
+Message-ID: <YgQbi1VcxA5OTo77@google.com>
+References: <20220209074109.453116-1-chao.gao@intel.com>
+ <20220209074109.453116-3-chao.gao@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 10 Feb 2022 07:54:32 +1100
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220209074109.453116-3-chao.gao@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,118 +83,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- David Hildenbrand <david@redhat.com>,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+Cc: x86@kernel.org, Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>,
  linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
  Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
- kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
- Janosch Frank <frankja@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
- Joerg Roedel <joro@8bytes.org>, Huacai Chen <chenhuacai@kernel.org>,
- linux-riscv@lists.infradead.org,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>,
+ Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+ Huacai Chen <chenhuacai@kernel.org>, linux-riscv@lists.infradead.org,
+ kvmarm@lists.cs.columbia.edu, Dave Hansen <dave.hansen@linux.intel.com>,
  Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
- Ingo Molnar <mingo@redhat.com>, "Darrick J. Wong" <djwong@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
  Palmer Dabbelt <palmer@dabbelt.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>,
- Chao Gao <chao.gao@intel.com>, Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>, kevin.tian@intel.com,
  Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
  Suzuki K Poulose <suzuki.poulose@arm.com>, Heiko Carstens <hca@linux.ibm.com>,
- John Garry <john.garry@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
- Shaokun Zhang <zhangshaokun@hisilicon.com>,
- Tom Zanussi <tom.zanussi@linux.intel.com>, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Atish Patra <atishp@atishpatra.org>,
- Sumanth Korikkar <sumanthk@linux.ibm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
+ Borislav Petkov <bp@alien8.de>, Atish Patra <atishp@atishpatra.org>,
+ tglx@linutronix.de, Alexandru Elisei <alexandru.elisei@arm.com>,
  linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
+ Juergen Gross <jgross@suse.com>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
  Fabiano Rosas <farosas@linux.ibm.com>,
- Mel Gorman <mgorman@techsingularity.net>,
- Thomas Richter <tmricht@linux.ibm.com>,
  Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
  Bharata B Rao <bharata@linux.ibm.com>, James Morse <james.morse@arm.com>,
- kvm-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
+ kvm-riscv@lists.infradead.org, Anup Patel <anup@brainfault.org>,
+ pbonzini@redhat.com, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Changes from v2->v3:
- - rebased to the latest kvm/next branch. 
- - patch 1: rename {svm,vmx}_check_processor_compat to follow the name
-	    convention
- - patch 3: newly added to provide more information when hardware enabling
-	    fails
- - patch 4: reset hardware_enable_failed if hardware enabling fails. And
-	    remove redundent kernel log.
- - patch 5: add a pr_err() for setup_vmcs_config() path.
+On Wed, Feb 09, 2022, Chao Gao wrote:
+> This partially reverts commit b99040853738 ("KVM: Pass kvm_init()'s opaque
+> param to additional arch funcs") remove opaque from
+> kvm_arch_check_processor_compat because no one uses this opaque now.
+> Address conflicts for ARM (due to file movement) and manually handle RISC-V
+> which comes after the commit.
+> 
+> And changes about kvm_arch_hardware_setup() in original commit are still
+> needed so they are not reverted.
+> 
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> ---
 
-Changes from v1->v2: (all comments/suggestions on v1 are from Sean, thanks)
- - Merged v1's patch 2 into patch 1, and v1's patch 5 into patch 6.
- - Use static_call for check_processor_compatibility().
- - Generate patch 2 with "git revert" and do manual changes based on that.
- - Loosen the WARN_ON() in kvm_arch_check_processor_compat() instead of
-   removing it.
- - KVM always prevent incompatible CPUs from being brought up regardless of
-   running VMs.
- - Use pr_warn instead of pr_info to emit logs when KVM finds offending
-   CPUs.
-
-KVM registers its CPU hotplug callback to CPU starting section. And in the
-callback, KVM enables hardware virtualization on hotplugged CPUs if any VM
-is running on existing CPUs.
-
-There are two problems in the process:
-1. KVM doesn't do compatibility checks before enabling hardware
-virtualization on hotplugged CPUs. This may cause #GP if VMX isn't
-supported or vmentry failure if some in-use VMX features are missing on
-hotplugged CPUs. Both break running VMs.
-2. Callbacks in CPU STARTING section cannot fail. So, even if KVM finds
-some incompatible CPUs, its callback cannot block CPU hotplug.
-
-This series improves KVM's interaction with CPU hotplug to avoid
-incompatible CPUs breaking running VMs. Following changes are made:
-
-1. move KVM's CPU hotplug callback to ONLINE section (suggested by Thomas)
-2. do compatibility checks on hotplugged CPUs.
-3. abort onlining incompatible CPUs
-
-This series is a follow-up to the discussion about KVM and CPU hotplug
-https://lore.kernel.org/lkml/3d3296f0-9245-40f9-1b5a-efffdb082de9@redhat.com/T/
-
-Note: this series is tested only on Intel systems.
-
-Chao Gao (4):
-  KVM: x86: Move check_processor_compatibility from init ops to runtime
-    ops
-  Partially revert "KVM: Pass kvm_init()'s opaque param to additional
-    arch funcs"
-  KVM: Rename and move CPUHP_AP_KVM_STARTING to ONLINE section
-  KVM: Do compatibility checks on hotplugged CPUs
-
-Sean Christopherson (1):
-  KVM: Provide more information in kernel log if hardware enabling fails
-
- arch/arm64/kvm/arm.c               |  2 +-
- arch/mips/kvm/mips.c               |  2 +-
- arch/powerpc/kvm/powerpc.c         |  2 +-
- arch/riscv/kvm/main.c              |  2 +-
- arch/s390/kvm/kvm-s390.c           |  2 +-
- arch/x86/include/asm/kvm-x86-ops.h |  1 +
- arch/x86/include/asm/kvm_host.h    |  2 +-
- arch/x86/kvm/svm/svm.c             |  4 +-
- arch/x86/kvm/vmx/evmcs.c           |  2 +-
- arch/x86/kvm/vmx/evmcs.h           |  2 +-
- arch/x86/kvm/vmx/vmx.c             | 22 +++++----
- arch/x86/kvm/x86.c                 | 16 +++++--
- include/linux/cpuhotplug.h         |  2 +-
- include/linux/kvm_host.h           |  2 +-
- virt/kvm/kvm_main.c                | 73 +++++++++++++++++++-----------
- 15 files changed, 83 insertions(+), 53 deletions(-)
-
--- 
-2.25.1
-
+Reviewed-by: Sean Christopherson <seanjc@google.com>
