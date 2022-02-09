@@ -1,104 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606444AF8C9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 18:51:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6279B4AFEBE
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 21:55:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jv6rM4HkWz3cMQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Feb 2022 04:51:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JvBw817Dyz3bVL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Feb 2022 07:55:04 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h6SLGacB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YBA2dck1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=chao.gao@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=h6SLGacB; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=YBA2dck1; dkim-atps=neutral
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jv6qh3dYjz2xb1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Feb 2022 04:50:55 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 219HXOnu010863; 
- Wed, 9 Feb 2022 17:50:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=QeqGal7MgbMhenMGOE838rSOY3uP/BzQ/XkJwqD0plE=;
- b=h6SLGacBZkYizKPd9+3hiUu9OQmXJV7iqGiUq+g/CPtTyAr/hOjMHS3+X1aLPwvgc5l8
- AhN8fSBtMfGhPRYS99aNHfbTn6Laoiq0Qey8beGTNtH7XihOxtf/lz/Lewb+AHMna1FK
- +EF/sF3r0feEdXOAdYjCAnk+fPV6bl3VszzgTvfljYCzYbpV8YB565JkGhWSh6fwAmDq
- WokXsWgiExFkyELJfQfQH3gC1LOOpI4umtTwDzZ4R4jTnCD2R8ebWwuwqIYHPKLkT7it
- q9FWEzH4hfzrH2fcr/RVhbWaHxTVmjoywoX97XDKI4IuOrxVfnqxz/UA4KAp7x7v7Uzn gQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e3tsttcvr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Feb 2022 17:50:17 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 219Hh0nl017532;
- Wed, 9 Feb 2022 17:50:17 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e3tsttct8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Feb 2022 17:50:16 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 219HXPxW021373;
- Wed, 9 Feb 2022 17:50:14 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma01fra.de.ibm.com with ESMTP id 3e1gv9qg56-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Feb 2022 17:50:14 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 219HoBXR24641898
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 9 Feb 2022 17:50:11 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 686C0A4067;
- Wed,  9 Feb 2022 17:50:11 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0825CA4064;
- Wed,  9 Feb 2022 17:50:11 +0000 (GMT)
-Received: from localhost (unknown [9.43.32.201])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  9 Feb 2022 17:50:10 +0000 (GMT)
-Date: Wed, 09 Feb 2022 17:50:09 +0000
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [RFC PATCH 2/3] powerpc/ftrace: Override ftrace_location_lookup()
- for MPROFILE_KERNEL
-To: Steven Rostedt <rostedt@goodmis.org>
-References: <cover.1644216043.git.naveen.n.rao@linux.vnet.ibm.com>
- <fadc5f2a295d6cb9f590bbbdd71fc2f78bf3a085.1644216043.git.naveen.n.rao@linux.vnet.ibm.com>
- <20220207102454.41b1d6b5@gandalf.local.home>
-In-Reply-To: <20220207102454.41b1d6b5@gandalf.local.home>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JtsKw0Rf0z301M
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Feb 2022 18:42:37 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1644392564; x=1675928564;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ptt8R/RvwFaVk8njj6dZCgZ7G353iPS7PsxtHDnt7q4=;
+ b=YBA2dck1EcNrL31PySohuUFpLNX6N4uQ4Wb/2XTvgswy7RFiSY22wNXG
+ fUKbDckHBNrj04CQwTydScLuJoMXaM0ZDy9OQFjgoBcLuVO799S271XGD
+ s9v4OAZxLTPq+nPz2z8Pn5teoR0MC5qovuro3qk+WFVyb+aUJtTkcvF4s
+ 2iDkSfaICSl3ieTNiaR60HSBIdHlV79HhKJgaa7TYgAccd+dp5NN5OUnn
+ GtSLdFbB+U2gOEN/dBfJCWOZiBeW6i/gyd9NNbvE2A3H0B5MFKwTfBtoL
+ cegywG2f9VDB6ZcubUjpeNuMtDEm9DNQlN15sGYVOvVGd9fzO53NzUOj9 Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10252"; a="232712935"
+X-IronPort-AV: E=Sophos;i="5.88,355,1635231600"; d="scan'208";a="232712935"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2022 23:41:34 -0800
+X-IronPort-AV: E=Sophos;i="5.88,355,1635231600"; d="scan'208";a="540984524"
+Received: from hyperv-sh4.sh.intel.com ([10.239.48.22])
+ by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2022 23:41:21 -0800
+From: Chao Gao <chao.gao@intel.com>
+To: kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com,
+ kevin.tian@intel.com, tglx@linutronix.de
+Subject: [PATCH v3 0/5] Improve KVM's interaction with CPU hotplug
+Date: Wed,  9 Feb 2022 15:41:01 +0800
+Message-Id: <20220209074109.453116-1-chao.gao@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1644426751.786cjrgqey.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -_rZY9735z-lbnaeR_XjQGVNW1GJwLL2
-X-Proofpoint-GUID: OyACoGB9tlRavdZ1b-quXMIPAIsdqHSX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-09_09,2022-02-09_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 spamscore=0
- malwarescore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0
- impostorscore=0 mlxlogscore=999 clxscore=1015 adultscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202090096
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 10 Feb 2022 07:54:32 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,90 +65,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Borkmann <daniel@iogearbox.net>,
- Yauheni Kaliuta <yauheni.kaliuta@redhat.com>,
- Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- bpf@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Hari Bathini <hbathini@linux.ibm.com>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ David Hildenbrand <david@redhat.com>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
+ kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
+ Janosch Frank <frankja@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
+ Joerg Roedel <joro@8bytes.org>, Huacai Chen <chenhuacai@kernel.org>,
+ linux-riscv@lists.infradead.org,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, "Darrick J. Wong" <djwong@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Chao Gao <chao.gao@intel.com>, Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ John Garry <john.garry@huawei.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Shaokun Zhang <zhangshaokun@hisilicon.com>,
+ Tom Zanussi <tom.zanussi@linux.intel.com>, Borislav Petkov <bp@alien8.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Atish Patra <atishp@atishpatra.org>,
+ Sumanth Korikkar <sumanthk@linux.ibm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Fabiano Rosas <farosas@linux.ibm.com>,
+ Mel Gorman <mgorman@techsingularity.net>,
+ Thomas Richter <tmricht@linux.ibm.com>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>, James Morse <james.morse@arm.com>,
+ kvm-riscv@lists.infradead.org, Marc Zyngier <maz@kernel.org>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Steven Rostedt wrote:
-> On Mon,  7 Feb 2022 12:37:21 +0530
-> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
->=20
->> --- a/arch/powerpc/kernel/trace/ftrace.c
->> +++ b/arch/powerpc/kernel/trace/ftrace.c
->> @@ -1137,3 +1137,14 @@ char *arch_ftrace_match_adjust(char *str, const c=
-har *search)
->>  		return str;
->>  }
->>  #endif /* PPC64_ELF_ABI_v1 */
->> +
->> +#ifdef CONFIG_MPROFILE_KERNEL
->> +unsigned long ftrace_location_lookup(unsigned long ip)
->> +{
->> +	/*
->> +	 * Per livepatch.h, ftrace location is always within the first
->> +	 * 16 bytes of a function on powerpc with -mprofile-kernel.
->> +	 */
->> +	return ftrace_location_range(ip, ip + 16);
->=20
-> I think this is the wrong approach for the implementation and error prone=
-.
->=20
->> +}
->> +#endif
->> --=20
->=20
-> What I believe is a safer approach is to use the record address and add t=
-he
-> range to it.
->=20
-> That is, you know that the ftrace modification site is a range (multiple
-> instructions), where in the ftrace infrastructure, only one ip represents
-> that range. What you want is if you pass in an ip, and that ip is within
-> that range, you return the ip that represents that range to ftrace.
->=20
-> It looks like we need to change the compare function in the bsearch.
->=20
-> Perhaps add a new macro to define the size of the range to be searched,
-> instead of just using MCOUNT_INSN_SIZE? Then we may not even need this ne=
-w
-> lookup function?
->=20
-> static int ftrace_cmp_recs(const void *a, const void *b)
-> {
-> 	const struct dyn_ftrace *key =3D a;
-> 	const struct dyn_ftrace *rec =3D b;
->=20
-> 	if (key->flags < rec->ip)
-> 		return -1;
-> 	if (key->ip >=3D rec->ip + ARCH_IP_SIZE)
-> 		return 1;
-> 	return 0;
-> }
->=20
-> Where ARCH_IP_SIZE is defined to MCOUNT_INSN_SIZE by default, but an arch
-> could define it to something else, like 16.
->=20
-> Would that work for you, or am I missing something?
+Changes from v2->v3:
+ - rebased to the latest kvm/next branch. 
+ - patch 1: rename {svm,vmx}_check_processor_compat to follow the name
+	    convention
+ - patch 3: newly added to provide more information when hardware enabling
+	    fails
+ - patch 4: reset hardware_enable_failed if hardware enabling fails. And
+	    remove redundent kernel log.
+ - patch 5: add a pr_err() for setup_vmcs_config() path.
 
-Yes, I hadn't realized that [un]register_ftrace_direct() and=20
-modify_ftrace_direct() internally lookup the correct ftrace location,=20
-and act on that. So, changing ftrace_cmp_recs() does look like it will=20
-work well for powerpc. Thanks for this suggestion.
+Changes from v1->v2: (all comments/suggestions on v1 are from Sean, thanks)
+ - Merged v1's patch 2 into patch 1, and v1's patch 5 into patch 6.
+ - Use static_call for check_processor_compatibility().
+ - Generate patch 2 with "git revert" and do manual changes based on that.
+ - Loosen the WARN_ON() in kvm_arch_check_processor_compat() instead of
+   removing it.
+ - KVM always prevent incompatible CPUs from being brought up regardless of
+   running VMs.
+ - Use pr_warn instead of pr_info to emit logs when KVM finds offending
+   CPUs.
 
-However, I think we will not be able to use a fixed range.  I would like=20
-to reserve instructions from function entry till the branch to=20
-_mcount(), and it can be two or four instructions depending on whether a=20
-function has a global entry point. For this, I am considering adding a=20
-field in 'struct dyn_arch_ftrace', and a hook in ftrace_process_locs()=20
-to initialize the same. I may need to override ftrace_cmp_recs().
+KVM registers its CPU hotplug callback to CPU starting section. And in the
+callback, KVM enables hardware virtualization on hotplugged CPUs if any VM
+is running on existing CPUs.
 
+There are two problems in the process:
+1. KVM doesn't do compatibility checks before enabling hardware
+virtualization on hotplugged CPUs. This may cause #GP if VMX isn't
+supported or vmentry failure if some in-use VMX features are missing on
+hotplugged CPUs. Both break running VMs.
+2. Callbacks in CPU STARTING section cannot fail. So, even if KVM finds
+some incompatible CPUs, its callback cannot block CPU hotplug.
 
-Thanks,
-- Naveen
+This series improves KVM's interaction with CPU hotplug to avoid
+incompatible CPUs breaking running VMs. Following changes are made:
+
+1. move KVM's CPU hotplug callback to ONLINE section (suggested by Thomas)
+2. do compatibility checks on hotplugged CPUs.
+3. abort onlining incompatible CPUs
+
+This series is a follow-up to the discussion about KVM and CPU hotplug
+https://lore.kernel.org/lkml/3d3296f0-9245-40f9-1b5a-efffdb082de9@redhat.com/T/
+
+Note: this series is tested only on Intel systems.
+
+Chao Gao (4):
+  KVM: x86: Move check_processor_compatibility from init ops to runtime
+    ops
+  Partially revert "KVM: Pass kvm_init()'s opaque param to additional
+    arch funcs"
+  KVM: Rename and move CPUHP_AP_KVM_STARTING to ONLINE section
+  KVM: Do compatibility checks on hotplugged CPUs
+
+Sean Christopherson (1):
+  KVM: Provide more information in kernel log if hardware enabling fails
+
+ arch/arm64/kvm/arm.c               |  2 +-
+ arch/mips/kvm/mips.c               |  2 +-
+ arch/powerpc/kvm/powerpc.c         |  2 +-
+ arch/riscv/kvm/main.c              |  2 +-
+ arch/s390/kvm/kvm-s390.c           |  2 +-
+ arch/x86/include/asm/kvm-x86-ops.h |  1 +
+ arch/x86/include/asm/kvm_host.h    |  2 +-
+ arch/x86/kvm/svm/svm.c             |  4 +-
+ arch/x86/kvm/vmx/evmcs.c           |  2 +-
+ arch/x86/kvm/vmx/evmcs.h           |  2 +-
+ arch/x86/kvm/vmx/vmx.c             | 22 +++++----
+ arch/x86/kvm/x86.c                 | 16 +++++--
+ include/linux/cpuhotplug.h         |  2 +-
+ include/linux/kvm_host.h           |  2 +-
+ virt/kvm/kvm_main.c                | 73 +++++++++++++++++++-----------
+ 15 files changed, 83 insertions(+), 53 deletions(-)
+
+-- 
+2.25.1
 
