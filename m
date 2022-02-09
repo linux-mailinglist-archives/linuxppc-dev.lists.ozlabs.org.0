@@ -1,35 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B394AF6DA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 17:37:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F5C4AF6E1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Feb 2022 17:37:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jv5Bc57w9z3dk7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Feb 2022 03:37:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jv5CJ1bbrz3cbn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Feb 2022 03:37:48 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2016061301 header.b=prVn7lvZ;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2016061301 header.b=dVOhokUY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=walle.cc (client-ip=176.9.125.105; helo=ssl.serverraum.org;
- envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
+ smtp.mailfrom=walle.cc (client-ip=2a01:4f8:151:8464::1:2;
+ helo=ssl.serverraum.org; envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256
- header.s=mail2016061301 header.b=prVn7lvZ; 
+ header.s=mail2016061301 header.b=dVOhokUY; 
  dkim-atps=neutral
-Received: from ssl.serverraum.org (ssl.serverraum.org [176.9.125.105])
+Received: from ssl.serverraum.org (ssl.serverraum.org
+ [IPv6:2a01:4f8:151:8464::1:2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jv5636W0Nz3bPK
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jv5636XVWz3bPM
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Feb 2022 03:33:15 +1100 (AEDT)
 Received: from mwalle01.kontron.local. (unknown [213.135.10.150])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by ssl.serverraum.org (Postfix) with ESMTPSA id 4249A223F6;
+ by ssl.serverraum.org (Postfix) with ESMTPSA id 90B4F223F7;
  Wed,  9 Feb 2022 17:33:08 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
  s=mail2016061301; t=1644424388;
@@ -37,16 +38,16 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iYb0ENCyRXUgcKmTLP8nEQL4yL3Qe7lBbJ2Pb+Opzlo=;
- b=prVn7lvZnIJqGf5WBUK86fnd8CVzCXHIitZvO1IDYALHUaPnm72yZkT8etQ4e+s27bg8wI
- 5mm5cG5YnsZ3BPeL3cBjaMoSdBM2P2i+SKl0Vo5/SK3h6zHMBqviOFM/O2m8z+mFj81EqU
- 0Sl1rwvZmyVUTv1YaQYq/L6N/BJunLA=
+ bh=oWIl78GqYSzWlRAKxA/9nteEF71Uw8hQ3rTS+tBIPlE=;
+ b=dVOhokUYMqLfVeJ/hfbDGAB4ZMMGKSFbdkIKc7kM6ZFNm8T5yfb2mvuSKDkcabvm7HjLtJ
+ RF97V036OLZGnfOOq9mFjUCuASle2BfQWYkg9vCsr9cJSQtQZ2bw4To513RjkoB0qRn//U
+ K6IwaOvICq1+EREdsJvpYg347EadHa8=
 From: Michael Walle <michael@walle.cc>
 To: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/7] soc: fsl: guts: use of_root instead of own reference
-Date: Wed,  9 Feb 2022 17:32:40 +0100
-Message-Id: <20220209163242.430265-6-michael@walle.cc>
+Subject: [PATCH v2 6/7] soc: fsl: guts: drop platform driver
+Date: Wed,  9 Feb 2022 17:32:41 +0100
+Message-Id: <20220209163242.430265-7-michael@walle.cc>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220209163242.430265-1-michael@walle.cc>
 References: <20220209163242.430265-1-michael@walle.cc>
@@ -70,49 +71,206 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is already a global of_root reference. Use that instead of getting
-one on our own. We don't need to care about the reference count either
-this way.
+This driver cannot be unloaded and it will be needed very early in the
+boot process because other driver (weakly) depend on it (eg. for chip
+errata handling). Drop all the platform driver and devres stuff and
+simply make it a core_initcall.
 
 Signed-off-by: Michael Walle <michael@walle.cc>
 ---
- drivers/soc/fsl/guts.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/soc/fsl/guts.c | 134 ++++++++++++++++++++++-------------------
+ 1 file changed, 71 insertions(+), 63 deletions(-)
 
 diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
-index f992064a7f58..13d07cc19f45 100644
+index 13d07cc19f45..370be923aa0f 100644
 --- a/drivers/soc/fsl/guts.c
 +++ b/drivers/soc/fsl/guts.c
-@@ -112,7 +112,7 @@ static const struct fsl_soc_die_attr *fsl_soc_die_match(
+@@ -110,21 +110,59 @@ static const struct fsl_soc_die_attr *fsl_soc_die_match(
+ 	return NULL;
+ }
  
- static int fsl_guts_probe(struct platform_device *pdev)
+-static int fsl_guts_probe(struct platform_device *pdev)
++/*
++ * Table for matching compatible strings, for device tree
++ * guts node, for Freescale QorIQ SOCs.
++ */
++static const struct of_device_id fsl_guts_of_match[] = {
++	{ .compatible = "fsl,qoriq-device-config-1.0", },
++	{ .compatible = "fsl,qoriq-device-config-2.0", },
++	{ .compatible = "fsl,p1010-guts", },
++	{ .compatible = "fsl,p1020-guts", },
++	{ .compatible = "fsl,p1021-guts", },
++	{ .compatible = "fsl,p1022-guts", },
++	{ .compatible = "fsl,p1023-guts", },
++	{ .compatible = "fsl,p2020-guts", },
++	{ .compatible = "fsl,bsc9131-guts", },
++	{ .compatible = "fsl,bsc9132-guts", },
++	{ .compatible = "fsl,mpc8536-guts", },
++	{ .compatible = "fsl,mpc8544-guts", },
++	{ .compatible = "fsl,mpc8548-guts", },
++	{ .compatible = "fsl,mpc8568-guts", },
++	{ .compatible = "fsl,mpc8569-guts", },
++	{ .compatible = "fsl,mpc8572-guts", },
++	{ .compatible = "fsl,ls1021a-dcfg", },
++	{ .compatible = "fsl,ls1043a-dcfg", },
++	{ .compatible = "fsl,ls2080a-dcfg", },
++	{ .compatible = "fsl,ls1088a-dcfg", },
++	{ .compatible = "fsl,ls1012a-dcfg", },
++	{ .compatible = "fsl,ls1046a-dcfg", },
++	{ .compatible = "fsl,lx2160a-dcfg", },
++	{ .compatible = "fsl,ls1028a-dcfg", },
++	{}
++};
++
++static int __init fsl_guts_init(void)
  {
--	struct device_node *root, *np = pdev->dev.of_node;
-+	struct device_node *np = pdev->dev.of_node;
+-	struct device_node *np = pdev->dev.of_node;
  	struct soc_device_attribute *soc_dev_attr;
  	static struct soc_device *soc_dev;
- 	struct device *dev = &pdev->dev;
-@@ -138,17 +138,13 @@ static int fsl_guts_probe(struct platform_device *pdev)
+-	struct device *dev = &pdev->dev;
+ 	const struct fsl_soc_die_attr *soc_die;
+ 	struct ccsr_guts __iomem *regs;
+ 	const char *machine = NULL;
++	struct device_node *np;
+ 	bool little_endian;
+ 	u32 svr;
++	int ret;
++
++	np = of_find_matching_node_and_match(NULL, fsl_guts_of_match, NULL);
++	if (!np)
++		return 0;
+ 
+ 	regs = of_iomap(np, 0);
+-	if (IS_ERR(regs))
++	if (IS_ERR(regs)) {
++		of_node_put(np);
+ 		return PTR_ERR(regs);
++	}
+ 
+ 	little_endian = of_property_read_bool(np, "little-endian");
+ 	if (little_endian)
+@@ -132,92 +170,62 @@ static int fsl_guts_probe(struct platform_device *pdev)
+ 	else
+ 		svr = ioread32be(&regs->svr);
+ 	iounmap(regs);
++	of_node_put(np);
+ 
+ 	/* Register soc device */
+-	soc_dev_attr = devm_kzalloc(dev, sizeof(*soc_dev_attr), GFP_KERNEL);
++	soc_dev_attr = kzalloc(sizeof(*soc_dev_attr), GFP_KERNEL);
  	if (!soc_dev_attr)
  		return -ENOMEM;
  
--	root = of_find_node_by_path("/");
--	if (of_property_read_string(root, "model", &machine))
--		of_property_read_string_index(root, "compatible", 0, &machine);
-+	if (of_property_read_string(of_root, "model", &machine))
-+		of_property_read_string_index(of_root, "compatible", 0, &machine);
+ 	if (of_property_read_string(of_root, "model", &machine))
+ 		of_property_read_string_index(of_root, "compatible", 0, &machine);
  	if (machine) {
- 		soc_dev_attr->machine = devm_kstrdup(dev, machine, GFP_KERNEL);
--		if (!soc_dev_attr->machine) {
--			of_node_put(root);
-+		if (!soc_dev_attr->machine)
- 			return -ENOMEM;
--		}
+-		soc_dev_attr->machine = devm_kstrdup(dev, machine, GFP_KERNEL);
++		soc_dev_attr->machine = kstrdup(machine, GFP_KERNEL);
+ 		if (!soc_dev_attr->machine)
+-			return -ENOMEM;
++			goto err_nomem;
  	}
--	of_node_put(root);
  
  	soc_die = fsl_soc_die_match(svr, fsl_soc_die);
  	if (soc_die) {
+-		soc_dev_attr->family = devm_kasprintf(dev, GFP_KERNEL,
+-						      "QorIQ %s", soc_die->die);
++		soc_dev_attr->family = kasprintf(GFP_KERNEL, "QorIQ %s",
++						 soc_die->die);
+ 	} else {
+-		soc_dev_attr->family = devm_kasprintf(dev, GFP_KERNEL, "QorIQ");
++		soc_dev_attr->family = kasprintf(GFP_KERNEL, "QorIQ");
+ 	}
+ 	if (!soc_dev_attr->family)
+-		return -ENOMEM;
+-	soc_dev_attr->soc_id = devm_kasprintf(dev, GFP_KERNEL,
+-					     "svr:0x%08x", svr);
++		goto err_nomem;
++
++	soc_dev_attr->soc_id = kasprintf(GFP_KERNEL, "svr:0x%08x", svr);
+ 	if (!soc_dev_attr->soc_id)
+-		return -ENOMEM;
+-	soc_dev_attr->revision = devm_kasprintf(dev, GFP_KERNEL, "%d.%d",
+-					       (svr >>  4) & 0xf, svr & 0xf);
++		goto err_nomem;
++
++	soc_dev_attr->revision = kasprintf(GFP_KERNEL, "%d.%d",
++					   (svr >>  4) & 0xf, svr & 0xf);
+ 	if (!soc_dev_attr->revision)
+-		return -ENOMEM;
++		goto err_nomem;
+ 
+ 	soc_dev = soc_device_register(soc_dev_attr);
+-	if (IS_ERR(soc_dev))
+-		return PTR_ERR(soc_dev);
++	if (IS_ERR(soc_dev)) {
++		ret = PTR_ERR(soc_dev);
++		goto err;
++	}
+ 
+ 	pr_info("Machine: %s\n", soc_dev_attr->machine);
+ 	pr_info("SoC family: %s\n", soc_dev_attr->family);
+ 	pr_info("SoC ID: %s, Revision: %s\n",
+ 		soc_dev_attr->soc_id, soc_dev_attr->revision);
+-	return 0;
+-}
+ 
+-/*
+- * Table for matching compatible strings, for device tree
+- * guts node, for Freescale QorIQ SOCs.
+- */
+-static const struct of_device_id fsl_guts_of_match[] = {
+-	{ .compatible = "fsl,qoriq-device-config-1.0", },
+-	{ .compatible = "fsl,qoriq-device-config-2.0", },
+-	{ .compatible = "fsl,p1010-guts", },
+-	{ .compatible = "fsl,p1020-guts", },
+-	{ .compatible = "fsl,p1021-guts", },
+-	{ .compatible = "fsl,p1022-guts", },
+-	{ .compatible = "fsl,p1023-guts", },
+-	{ .compatible = "fsl,p2020-guts", },
+-	{ .compatible = "fsl,bsc9131-guts", },
+-	{ .compatible = "fsl,bsc9132-guts", },
+-	{ .compatible = "fsl,mpc8536-guts", },
+-	{ .compatible = "fsl,mpc8544-guts", },
+-	{ .compatible = "fsl,mpc8548-guts", },
+-	{ .compatible = "fsl,mpc8568-guts", },
+-	{ .compatible = "fsl,mpc8569-guts", },
+-	{ .compatible = "fsl,mpc8572-guts", },
+-	{ .compatible = "fsl,ls1021a-dcfg", },
+-	{ .compatible = "fsl,ls1043a-dcfg", },
+-	{ .compatible = "fsl,ls2080a-dcfg", },
+-	{ .compatible = "fsl,ls1088a-dcfg", },
+-	{ .compatible = "fsl,ls1012a-dcfg", },
+-	{ .compatible = "fsl,ls1046a-dcfg", },
+-	{ .compatible = "fsl,lx2160a-dcfg", },
+-	{ .compatible = "fsl,ls1028a-dcfg", },
+-	{}
+-};
+-MODULE_DEVICE_TABLE(of, fsl_guts_of_match);
++	return 0;
+ 
+-static struct platform_driver fsl_guts_driver = {
+-	.driver = {
+-		.name = "fsl-guts",
+-		.of_match_table = fsl_guts_of_match,
+-	},
+-	.probe = fsl_guts_probe,
+-};
++err_nomem:
++	ret = -ENOMEM;
++err:
++	kfree(soc_dev_attr->machine);
++	kfree(soc_dev_attr->family);
++	kfree(soc_dev_attr->soc_id);
++	kfree(soc_dev_attr->revision);
++	kfree(soc_dev_attr);
+ 
+-static int __init fsl_guts_init(void)
+-{
+-	return platform_driver_register(&fsl_guts_driver);
++	return ret;
+ }
+ core_initcall(fsl_guts_init);
 -- 
 2.30.2
 
