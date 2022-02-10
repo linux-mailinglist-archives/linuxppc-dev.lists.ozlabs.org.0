@@ -2,75 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53654B16F5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Feb 2022 21:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F63D4B1A3D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 01:16:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JvpKY2Mh0z3cmp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 07:30:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JvvL50D9Yz3cDY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 11:16:29 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IxkmG76b;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=pcjmfLwA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::236;
- helo=mail-lj1-x236.google.com; envelope-from=rikard.falkeborn@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d33;
+ helo=mail-io1-xd33.google.com; envelope-from=yury.norov@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=IxkmG76b; dkim-atps=neutral
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com
- [IPv6:2a00:1450:4864:20::236])
+ header.s=20210112 header.b=pcjmfLwA; dkim-atps=neutral
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com
+ [IPv6:2607:f8b0:4864:20::d33])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JvpGs4nVcz3bW9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Feb 2022 07:28:20 +1100 (AEDT)
-Received: by mail-lj1-x236.google.com with SMTP id o9so4826805ljq.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Feb 2022 12:28:20 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JvvKL4nK6z2xtp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Feb 2022 11:15:49 +1100 (AEDT)
+Received: by mail-io1-xd33.google.com with SMTP id s18so9489396ioa.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Feb 2022 16:15:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=8+PCp8VzJ36gwuUuZGOgQHhyJLFNLNE5NPa+Wd4bAXE=;
- b=IxkmG76bFLc42upQAfX2viuaO+Zvq3ggpHoSw+8vGvIebuVzIO6ZrfDobBHGTLCz/0
- XxSVDXbvnnPdX3AHIcnKxds+3eXeP98U5QwwlsvBgxzCuJ3xghhmj7P86XOeZInnm2kW
- 67PWvKh7LRd5qrbmweNMQYdV0+luLt0NEUzLnF4niDSeBadknLCZ3GpsON+l75M/58Ht
- 1yRKzdRE4XmQETPnFD8jjo594ks3Xl9ftEIqDM1GTyhEjB5nDjZPonp4G0gEFFV0ydNM
- eINwZkxY/ZrWyOHBSgTUWbnOkBoGzuezMESL9NHSo+GuU/Akj2EKuJo32/wyI1sFGeR2
- Jfqg==
+ h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+ :content-transfer-encoding;
+ bh=PIovVUUoTXrNkGptnZalq8qTG6elYmmkmcndd2InBI8=;
+ b=pcjmfLwAiS/XGbn7H5lJSwo1VmJtz/MoynS0X5Dcg+dWgAtP50rspk13S0E5pJvDty
+ S6taB1oBu2sz0cRmYD0OrRjqt2eHBVSewuL1cld2PkhQsvFtl9InCW6guWZsBAakxHMk
+ QeAHrP+IGJZPPsIbTyETpTaKJMX41JIs46ZQl2s+qGfwWzoybsFUJSxmhqN/EcMYGjqu
+ aLAgKKOq45uiO1viWnPybbeWGhqL5zctU9mMIOJebmWir+BUuJeDQnU4GPsD0okN+NS4
+ pJvRQWhfbiVaTp3GfeFPrI0rEQUVFFs+HDyaa7lPxlLEpozQBg6i1VzRnx8jLoMxeYZM
+ MW4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=8+PCp8VzJ36gwuUuZGOgQHhyJLFNLNE5NPa+Wd4bAXE=;
- b=pvhAK8ng9tNijX0BBK+g7RuJ5hfxhc+LcjJ3kDJvwX9wjwW5ssjjZb40E5x/R7MJLv
- 96K41SV9SBSysEf8aCMN1WMl6sI995qNSVOHR+EhnZkTqHQt81pjRM/+Yf7mVvYIxnu6
- Enw207JgOOncC256uxxiQy4mReIOIKl6X6yl0YWYCV0yk1/b5b7v2dkEA/YC4mJbcFt7
- KQECudycSn7Y+88nrICRzJXV9EF+zQJzf2q8LM1/mpRCaSHEzX/gY/JnAaow6kPhwhFp
- zetfLyH+8anKhBxrtep2lDujSHZgyAUY2GfRB/7sKpO7LTfY+q2N+YSBkQyYrqAR80pB
- Mq4Q==
-X-Gm-Message-State: AOAM530C4ObboJrBgBDiQw0B4+GXKn8eOE1QtKONltzMEuyMuoBVWXyx
- J71kYtvyBAr8h2gp81/jBU4pWkV1qzo=
-X-Google-Smtp-Source: ABdhPJxnkMhH+WCNQmT2YfTiDN+Fw9oTWgT0Xe73gy81YT+zJxyQZKdlb9nW6RBG26W2nxeMV9nUfQ==
-X-Received: by 2002:a2e:bc20:: with SMTP id b32mr5976744ljf.214.1644524896908; 
- Thu, 10 Feb 2022 12:28:16 -0800 (PST)
-Received: from localhost.localdomain (h-155-4-221-129.NA.cust.bahnhof.se.
- [155.4.221.129])
- by smtp.gmail.com with ESMTPSA id d19sm1223881lfg.108.2022.02.10.12.28.16
+ bh=PIovVUUoTXrNkGptnZalq8qTG6elYmmkmcndd2InBI8=;
+ b=7sGIuipLjBLqp2eAkbe86cBrVsPtXrHv38P27VEbl/nzRqUWqkh4qidcCxtAzu1T0p
+ NBvKuIYDiIe/kz47T6ZBZhsgQyApUQBMGclFIyOxgx0te8OBUo3Wcm6RKyiQdhR9vR4+
+ Y8mCLUAR3TW+BqjJLnCsun/uNCI6WCB7y8c1EC7BYzQpqTkUOEkag+JBZ7LrbnZaojkL
+ PSRFmNBpKzW0O4F/RO9R+cX9VxMG0NfOb3U7702NHweZrLq2telXDgFfh9b6eLLZFs61
+ dFPlJsHe20rjA2IT/MLrRSEWEICqoc9YY4XUB4f3/ZywmNK8HLQmOWsgzgGDfPiPE+un
+ 3yIA==
+X-Gm-Message-State: AOAM532CSOnDJL+SzktXTh/MrH6Rqbrw06d+izhII+Pd4hFp56jOT+Ar
+ 30HzbJNY6RXFEw7ygfXhHnY=
+X-Google-Smtp-Source: ABdhPJxRcsurSAFIVa51O5zD9bcY1kB5OJeXxGfVrQ9MyMfVmVSnWSLVAohEIbusFvdw1qpbmH+QRA==
+X-Received: by 2002:a05:6638:d0c:: with SMTP id
+ q12mr5411794jaj.310.1644538546802; 
+ Thu, 10 Feb 2022 16:15:46 -0800 (PST)
+Received: from localhost ([12.28.44.171])
+ by smtp.gmail.com with ESMTPSA id h3sm12329728ioe.19.2022.02.10.16.15.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Feb 2022 12:28:16 -0800 (PST)
-From: Rikard Falkeborn <rikard.falkeborn@gmail.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>,
+ Thu, 10 Feb 2022 16:15:46 -0800 (PST)
+From: Yury Norov <yury.norov@gmail.com>
+To: Yury Norov <yury.norov@gmail.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ David Laight <David.Laight@aculab.com>, Joe Perches <joe@perches.com>,
+ Dennis Zhou <dennis@kernel.org>, Emil Renner Berthing <kernel@esmil.dk>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Alexey Klimov <aklimov@redhat.com>, linux-kernel@vger.kernel.org,
  Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: [PATCH 3/3] crypto/nx: Constify static attribute_group structs
-Date: Thu, 10 Feb 2022 21:28:05 +0100
-Message-Id: <20220210202805.7750-4-rikard.falkeborn@gmail.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220210202805.7750-1-rikard.falkeborn@gmail.com>
-References: <20220210202805.7750-1-rikard.falkeborn@gmail.com>
+ Paul Mackerras <paulus@samba.org>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Parth Shah <parth@linux.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Hari Bathini <hbathini@linux.ibm.com>, Rob Herring <robh@kernel.org>,
+ Laurent Dufour <ldufour@linux.ibm.com>, Petr Mladek <pmladek@suse.com>,
+ John Ogness <john.ogness@linutronix.de>,
+ Sudeep Holla <sudeep.holla@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Xiongwei Song <sxwjean@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 38/49] arch/powerpc: replace cpumask_weight with
+ cpumask_weight_{eq, ...} where appropriate
+Date: Thu, 10 Feb 2022 14:49:22 -0800
+Message-Id: <20220210224933.379149-39-yury.norov@gmail.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220210224933.379149-1-yury.norov@gmail.com>
+References: <20220210224933.379149-1-yury.norov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,44 +108,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org,
- Rikard Falkeborn <rikard.falkeborn@gmail.com>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The only usage of these is to pass their address to
-sysfs_{create,remove}_group(), which takes pointers to const struct
-attribute_group. Make them const to allow the compiler to put them in
-read-only memory.
+PowerPC code uses cpumask_weight() to compare the weight of cpumask with
+a given number. We can do it more efficiently with cpumask_weight_{eq, ...}
+because conditional cpumask_weight may stop traversing the cpumask earlier,
+as soon as condition is (or can't be)  met.
 
-Signed-off-by: Rikard Falkeborn <rikard.falkeborn@gmail.com>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
 ---
- drivers/crypto/nx/nx-common-pseries.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/smp.c      | 2 +-
+ arch/powerpc/kernel/watchdog.c | 2 +-
+ arch/powerpc/xmon/xmon.c       | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/nx/nx-common-pseries.c b/drivers/crypto/nx/nx-common-pseries.c
-index 4e304f6081e4..7584a34ba88c 100644
---- a/drivers/crypto/nx/nx-common-pseries.c
-+++ b/drivers/crypto/nx/nx-common-pseries.c
-@@ -962,7 +962,7 @@ static struct attribute *nx842_sysfs_entries[] = {
- 	NULL,
- };
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index b7fd6a72aa76..8bff748df402 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -1656,7 +1656,7 @@ void start_secondary(void *unused)
+ 		if (has_big_cores)
+ 			sibling_mask = cpu_smallcore_mask;
  
--static struct attribute_group nx842_attribute_group = {
-+static const struct attribute_group nx842_attribute_group = {
- 	.name = NULL,		/* put in device directory */
- 	.attrs = nx842_sysfs_entries,
- };
-@@ -992,7 +992,7 @@ static struct attribute *nxcop_caps_sysfs_entries[] = {
- 	NULL,
- };
+-		if (cpumask_weight(mask) > cpumask_weight(sibling_mask(cpu)))
++		if (cpumask_weight_gt(mask, cpumask_weight(sibling_mask(cpu))))
+ 			shared_caches = true;
+ 	}
  
--static struct attribute_group nxcop_caps_attr_group = {
-+static const struct attribute_group nxcop_caps_attr_group = {
- 	.name	=	"nx_gzip_caps",
- 	.attrs	=	nxcop_caps_sysfs_entries,
- };
+diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
+index bfc27496fe7e..62937a077de7 100644
+--- a/arch/powerpc/kernel/watchdog.c
++++ b/arch/powerpc/kernel/watchdog.c
+@@ -483,7 +483,7 @@ static void start_watchdog(void *arg)
+ 
+ 	wd_smp_lock(&flags);
+ 	cpumask_set_cpu(cpu, &wd_cpus_enabled);
+-	if (cpumask_weight(&wd_cpus_enabled) == 1) {
++	if (cpumask_weight_eq(&wd_cpus_enabled, 1)) {
+ 		cpumask_set_cpu(cpu, &wd_smp_cpus_pending);
+ 		wd_smp_last_reset_tb = get_tb();
+ 	}
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index fd72753e8ad5..b423812e94e0 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -469,7 +469,7 @@ static bool wait_for_other_cpus(int ncpus)
+ 
+ 	/* We wait for 2s, which is a metric "little while" */
+ 	for (timeout = 20000; timeout != 0; --timeout) {
+-		if (cpumask_weight(&cpus_in_xmon) >= ncpus)
++		if (cpumask_weight_ge(&cpus_in_xmon, ncpus))
+ 			return true;
+ 		udelay(100);
+ 		barrier();
+@@ -1338,7 +1338,7 @@ static int cpu_cmd(void)
+ 			case 'S':
+ 			case 't':
+ 				cpumask_copy(&xmon_batch_cpus, &cpus_in_xmon);
+-				if (cpumask_weight(&xmon_batch_cpus) <= 1) {
++				if (cpumask_weight_le(&xmon_batch_cpus, 1)) {
+ 					printf("There are no other cpus in xmon\n");
+ 					break;
+ 				}
 -- 
-2.35.1
+2.32.0
 
