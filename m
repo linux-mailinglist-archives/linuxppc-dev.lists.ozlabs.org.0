@@ -1,60 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A234B0A94
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Feb 2022 11:31:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 845634B0AB4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Feb 2022 11:34:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JvY2065sKz3cFX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Feb 2022 21:31:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JvY5v19C5z3cCv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Feb 2022 21:34:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TCawh+Ud;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PXSYfz1z;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d;
+ helo=mail-pf1-x42d.google.com; envelope-from=davidcomponentone@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=PXSYfz1z; dkim-atps=neutral
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com
+ [IPv6:2607:f8b0:4864:20::42d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JvY1M2sJnz3bP1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Feb 2022 21:30:47 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=TCawh+Ud; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JvY1J0XpGz4xdh;
- Thu, 10 Feb 2022 21:30:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1644489045;
- bh=/j80aUQlKa/S6QbooAK3y3Gg9NwGU+PKEkWBN3ktOAM=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=TCawh+Udct1RMjVH8ZU19XAOaHAEWi8UE1gSqYxtxWKCdRgozgSyMUWR+VA7h+4A3
- Y2Gyi5C40KuLmrAQqF/6A+MsFAN+YhOqhEfvn2Y+2ycFiYtPbcbTshYBObJyP8KJpD
- tNOxEYpjJyuyllbretPziOS745L4qVaZMOpvP4gCycccURrg7tABnvGHCU0WMDfdnc
- pPjeHrx9ubrYDqQVG9HhvZVJg0KptHYyoMC5QExkKEF4mRtdrzhg24JzeaTF3mQcwc
- 2uscyDi9MUqhI1cZoTyihNTNMY8RpFcVwAawyAl3q5b1LQ+bP6NK6OGjQFoPNiLAgA
- c4imi8H1U2f+A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Andrew
- Morton <akpm@linux-foundation.org>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>,
- Arnd Bergmann <arnd@arndb.de>, Kees Cook <keescook@chromium.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v3 08/12] asm-generic: Refactor
- dereference_[kernel]_function_descriptor()
-In-Reply-To: <93a2006a5d90292baf69cb1c34af5785da53efde.1634457599.git.christophe.leroy@csgroup.eu>
-References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
- <93a2006a5d90292baf69cb1c34af5785da53efde.1634457599.git.christophe.leroy@csgroup.eu>
-Date: Thu, 10 Feb 2022 21:30:43 +1100
-Message-ID: <8735kr814c.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JvY5F5hzMz3bP1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Feb 2022 21:34:08 +1100 (AEDT)
+Received: by mail-pf1-x42d.google.com with SMTP id l19so3642091pfu.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Feb 2022 02:34:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=yZrnHVGdRb2E3LKqHBhEp3nq9Ei2BPCgAdM7PxxwMUI=;
+ b=PXSYfz1zlVDEi9sS6GcnqRPXe6uYTBJ9eWKA+Lz9jSghUhglwdFclzfXxQyE3j/5yJ
+ 825mmWLFHknGcmPg8a471WS8c+Rr1LFzJiJ12GpN8vwGUTfx0mEzrhYJCwrNCA3PJ1I7
+ /k8med1t4oqKWNDv0et45hVWUgsLCFIxG3SRD7nurNmnIvgdi8L9SLL+OlIixTgMscd2
+ h+CtSTrwCrToMb1Jk4YWSPRjxuqkGaSRLUs+wRmKXxbmPa1KaTRR0OjIqkozDvTht89m
+ ZsMMZYvdQSzX2V7X5miQUOtXopp+4Z6W0tsz6yKvygUnTeOES3VhwXXLGAPLE5uKtaFb
+ DHIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=yZrnHVGdRb2E3LKqHBhEp3nq9Ei2BPCgAdM7PxxwMUI=;
+ b=OK9vVY2lNcdBoT7DNet7oDN8d5UWzmODVgrUJXQ0KxySVjLn39069/RHuilzrXn0ZE
+ wxs9AjLH7PvO4YOhN+GRgY0sBXPH0HamZdjU3hZRXWLdC/qaeZq2JDTsbknJ7YsnAhSH
+ 9Qhr5UoJOff6A/n8vozUZUVo+LrXmksO8iftwBzfHGOqd9OYlXVTID3VVNFiWd6s12+6
+ xOWpeT8tJBV/6DI9L2t1bOPczhl2J2EnWg4w7JDIbs94sDLHuxpn6PAvItLlfz8fqQaj
+ RBp1CeNdTXa3DNXf9+HA/uOXFQXiWDryG5Tg+x0He+LhVLEn+9n32fmSnJJ5VaOpJ3Kl
+ 0ZKg==
+X-Gm-Message-State: AOAM531Gb5BEVTG4ElnDVKNUv0Yd1kwYjfJ1uf6mWofPjcaR89ST7YYt
+ DBE+NqyXl2TQtQt0YQ9At/A=
+X-Google-Smtp-Source: ABdhPJz+7MqFtDttNvkV2X42b/qYinotvqOCw91RqjewAExO8EGpTeo1aV5tFMRxmG3VHYU0H1nRfQ==
+X-Received: by 2002:a63:358c:: with SMTP id c134mr5647595pga.116.1644489247124; 
+ Thu, 10 Feb 2022 02:34:07 -0800 (PST)
+Received: from localhost.localdomain (192.243.120.166.16clouds.com.
+ [192.243.120.166])
+ by smtp.gmail.com with ESMTPSA id p21sm10044134pfo.97.2022.02.10.02.34.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 10 Feb 2022 02:34:06 -0800 (PST)
+From: davidcomponentone@gmail.com
+To: tyreld@linux.ibm.com
+Subject: [PATCH v2] scsi: ibmvfc: replace snprintf with sysfs_emit
+Date: Thu, 10 Feb 2022 18:33:51 +0800
+Message-Id: <6e673c1aeb3140ab7ac89a56e79be624e713f152.1644397683.git.yang.guang5@zte.com.cn>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,41 +78,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-scsi@vger.kernel.org, martin.petersen@oracle.com, jejb@linux.ibm.com,
+ davidcomponentone@gmail.com, linux-kernel@vger.kernel.org,
+ Yang Guang <yang.guang5@zte.com.cn>, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, Zeal Robot <zealci@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> diff --git a/kernel/extable.c b/kernel/extable.c
-> index b0ea5eb0c3b4..1ef13789bea9 100644
-> --- a/kernel/extable.c
-> +++ b/kernel/extable.c
-> @@ -159,12 +160,32 @@ int kernel_text_address(unsigned long addr)
->  }
->  
->  /*
-> - * On some architectures (PPC64, IA64) function pointers
-> + * On some architectures (PPC64, IA64, PARISC) function pointers
->   * are actually only tokens to some data that then holds the
->   * real function address. As a result, to find if a function
->   * pointer is part of the kernel text, we need to do some
->   * special dereferencing first.
->   */
-> +#ifdef CONFIG_HAVE_FUNCTION_DESCRIPTORS
-> +void *dereference_function_descriptor(void *ptr)
-> +{
-> +	func_desc_t *desc = ptr;
-> +	void *p;
-> +
-> +	if (!get_kernel_nofault(p, (void *)&desc->addr))
-> +		ptr = p;
-> +	return ptr;
-> +}
+From: Yang Guang <yang.guang5@zte.com.cn>
 
-This needs an EXPORT_SYMBOL_GPL(), otherwise the build breaks after
-patch 10 with CONFIG_LKDTM=m.
+coccinelle report:
+./drivers/scsi/ibmvscsi/ibmvfc.c:3453:8-16:
+WARNING: use scnprintf or sprintf
+./drivers/scsi/ibmvscsi/ibmvfc.c:3416:8-16:
+WARNING: use scnprintf or sprintf
+./drivers/scsi/ibmvscsi/ibmvfc.c:3436:8-16:
+WARNING: use scnprintf or sprintf
+./drivers/scsi/ibmvscsi/ibmvfc.c:3426:8-16:
+WARNING: use scnprintf or sprintf
+./drivers/scsi/ibmvscsi/ibmvfc.c:3445:8-16:
+WARNING: use scnprintf or sprintf
+./drivers/scsi/ibmvscsi/ibmvfc.c:3406:8-16:
+WARNING: use scnprintf or sprintf
 
-cheers
+Use sysfs_emit instead of scnprintf or sprintf makes more sense.
+
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
+Signed-off-by: David Yang <davidcomponentone@gmail.com>
+
+---
+Change from v1-v2:
+- Adjust some format
+
+---
+ drivers/scsi/ibmvscsi/ibmvfc.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index d0eab5700dc5..ec63c45bf66b 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -3403,8 +3403,7 @@ static ssize_t ibmvfc_show_host_partition_name(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
+-			vhost->login_buf->resp.partition_name);
++	return sysfs_emit(buf, "%s\n", vhost->login_buf->resp.partition_name);
+ }
+ 
+ static ssize_t ibmvfc_show_host_device_name(struct device *dev,
+@@ -3413,8 +3412,7 @@ static ssize_t ibmvfc_show_host_device_name(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
+-			vhost->login_buf->resp.device_name);
++	return sysfs_emit(buf, "%s\n", vhost->login_buf->resp.device_name);
+ }
+ 
+ static ssize_t ibmvfc_show_host_loc_code(struct device *dev,
+@@ -3423,8 +3421,7 @@ static ssize_t ibmvfc_show_host_loc_code(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
+-			vhost->login_buf->resp.port_loc_code);
++	return sysfs_emit(buf, "%s\n", vhost->login_buf->resp.port_loc_code);
+ }
+ 
+ static ssize_t ibmvfc_show_host_drc_name(struct device *dev,
+@@ -3433,8 +3430,7 @@ static ssize_t ibmvfc_show_host_drc_name(struct device *dev,
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
+-			vhost->login_buf->resp.drc_name);
++	return sysfs_emit(buf, "%s\n", vhost->login_buf->resp.drc_name);
+ }
+ 
+ static ssize_t ibmvfc_show_host_npiv_version(struct device *dev,
+@@ -3442,7 +3438,8 @@ static ssize_t ibmvfc_show_host_npiv_version(struct device *dev,
+ {
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+-	return snprintf(buf, PAGE_SIZE, "%d\n", be32_to_cpu(vhost->login_buf->resp.version));
++
++	return sysfs_emit(buf, "%u\n", be32_to_cpu(vhost->login_buf->resp.version));
+ }
+ 
+ static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
+@@ -3450,7 +3447,8 @@ static ssize_t ibmvfc_show_host_capabilities(struct device *dev,
+ {
+ 	struct Scsi_Host *shost = class_to_shost(dev);
+ 	struct ibmvfc_host *vhost = shost_priv(shost);
+-	return snprintf(buf, PAGE_SIZE, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
++
++	return sysfs_emit(buf, "%llx\n", be64_to_cpu(vhost->login_buf->resp.capabilities));
+ }
+ 
+ /**
+@@ -3471,7 +3469,7 @@ static ssize_t ibmvfc_show_log_level(struct device *dev,
+ 	int len;
+ 
+ 	spin_lock_irqsave(shost->host_lock, flags);
+-	len = snprintf(buf, PAGE_SIZE, "%d\n", vhost->log_level);
++	len = sysfs_emit(buf, "%d\n", vhost->log_level);
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
+ 	return len;
+ }
+@@ -3509,7 +3507,7 @@ static ssize_t ibmvfc_show_scsi_channels(struct device *dev,
+ 	int len;
+ 
+ 	spin_lock_irqsave(shost->host_lock, flags);
+-	len = snprintf(buf, PAGE_SIZE, "%d\n", vhost->client_scsi_channels);
++	len = sysfs_emit(buf, "%d\n", vhost->client_scsi_channels);
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
+ 	return len;
+ }
+-- 
+2.30.2
+
