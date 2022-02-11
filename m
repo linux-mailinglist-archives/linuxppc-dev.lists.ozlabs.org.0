@@ -1,28 +1,29 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7476B4B1C72
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 03:32:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E791A4B1C75
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 03:33:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JvyMM1Ctnz3cmM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 13:32:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JvyMn3wN4z3dg2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 13:33:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
  envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4JvyLK13ztz3cPh
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Feb 2022 13:31:52 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4JvyLS6x9Pz3cD1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Feb 2022 13:32:00 +1100 (AEDT)
 Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 4E62B8224F;
- Thu, 10 Feb 2022 21:31:44 -0500 (EST)
+ by ozlabs.ru (Postfix) with ESMTP id 5FA6982251;
+ Thu, 10 Feb 2022 21:31:52 -0500 (EST)
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 To: llvm@lists.linux.dev
-Subject: [PATCH kernel 2/3] powerpc/llvm: Sample config for LLVM LTO
-Date: Fri, 11 Feb 2022 13:31:24 +1100
-Message-Id: <20220211023125.1790960-3-aik@ozlabs.ru>
+Subject: [PATCH kernel 3/3] powerpc/llvm/lto: Workaround conditional branches
+ in FTR_SECTION_ELSE
+Date: Fri, 11 Feb 2022 13:31:25 +1100
+Message-Id: <20220211023125.1790960-4-aik@ozlabs.ru>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220211023125.1790960-1-aik@ozlabs.ru>
 References: <20220211023125.1790960-1-aik@ozlabs.ru>
@@ -50,446 +51,84 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The config is a copy of ppc64_defconfig with a few tweaks. This could be
-a smaller config to merge into ppc64_defconfig but unfortunately
-merger does not allow disabling already enabled options.
+LTO invites ld/lld to optimize the output binary and this may affect
+the FTP alternative section if alt branches use "bc" (Branch Conditional)
+which only allows 16 bit offsets. This manifests in errors like:
 
-This is a command line to compile the kernel using the upstream llvm:
+ld.lld: error: InputSection too large for range extension thunk vmlinux.o:(__ftr_alt_97+0xF0)
 
-make -j64 O=/home/aik/pbuild/kernels-llvm/ \
- "KCFLAGS=-Wmissing-braces -Wno-array-bounds" \
- ARCH=powerpc LLVM_IAS=1 ppc64le_lto_defconfig CC=clang LLVM=1
+This works around the problem by replacing "bc" and its alias(es) in
+FTR_SECTION_ELSE with "b" which allows 26 bit offsets.
 
-Forces CONFIG_BTRFS_FS=y to make CONFIG_ZSTD_COMPRESS=y to fix:
-ld.lld: error: linking module flags 'Code Model': IDs have conflicting values in 'lib/built-in.a(entropy_common.o at 5332)' and 'ld-temp.o'
+This catches the problem instructions in vmlinux.o before it LTO'ed:
 
-because modules are linked with -mcmodel=large but the kernel uses -mcmodel=medium
+$ objdump -d -M raw -j __ftr_alt_97 vmlinux.o | egrep '\S+\s*\<bc\>'
+  30:   00 00 82 40     bc      4,eq,30 <__ftr_alt_97+0x30>
+  f0:   00 00 82 40     bc      4,eq,f0 <__ftr_alt_97+0xf0>
 
-Enables CONFIG_USERFAULTFD=y as otherwise vm_userfaultfd_ctx becomes
-0 bytes long and clang sanitizer crashes as
-https://bugs.llvm.org/show_bug.cgi?id=500375
-
-Disables CONFIG_FTR_FIXUP_SELFTEST as it uses FTR_SECTION_ELSE with
-conditional branches. There are other places like this and the following
-patches address that.
-
-Disables CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT as CONFIG_HAS_LTO_CLANG
-depends on it being disabled. In order to avoid disabling way too many
-options (like DYNAMIC_FTRACE/FUNCTION_TRACER), this converts
-FTRACE_MCOUNT_USE_RECORDMCOUNT from def_bool to bool.
-
-Note that even with this config there is a good chance that LTO
-is going to fail linking vmlinux because of the "bc" problem.
+The change in copyuser_64.S is needed even when building default
+configs, the other two changes are needed if the kernel config grows.
 
 Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- arch/powerpc/Makefile                    |   4 +
- arch/powerpc/configs/ppc64_lto_defconfig | 381 +++++++++++++++++++++++
- 2 files changed, 385 insertions(+)
- create mode 100644 arch/powerpc/configs/ppc64_lto_defconfig
+ arch/powerpc/kernel/exceptions-64s.S | 6 +++++-
+ arch/powerpc/lib/copyuser_64.S       | 3 ++-
+ arch/powerpc/lib/memcpy_64.S         | 3 ++-
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 5f16ac1583c5..23f1ade8abc9 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -308,6 +308,10 @@ PHONY += ppc64le_defconfig
- ppc64le_defconfig:
- 	$(call merge_into_defconfig,ppc64_defconfig,le)
- 
-+PHONY += ppc64le_lto_defconfig
-+ppc64le_lto_defconfig:
-+	$(call merge_into_defconfig,ppc64_lto_defconfig,le)
-+
- PHONY += ppc64le_guest_defconfig
- ppc64le_guest_defconfig:
- 	$(call merge_into_defconfig,ppc64_defconfig,le guest)
-diff --git a/arch/powerpc/configs/ppc64_lto_defconfig b/arch/powerpc/configs/ppc64_lto_defconfig
-new file mode 100644
-index 000000000000..67f82b422b7d
---- /dev/null
-+++ b/arch/powerpc/configs/ppc64_lto_defconfig
-@@ -0,0 +1,381 @@
-+CONFIG_SYSVIPC=y
-+CONFIG_POSIX_MQUEUE=y
-+CONFIG_NO_HZ=y
-+CONFIG_HIGH_RES_TIMERS=y
-+CONFIG_TASKSTATS=y
-+CONFIG_TASK_DELAY_ACCT=y
-+CONFIG_IKCONFIG=y
-+CONFIG_IKCONFIG_PROC=y
-+CONFIG_LOG_BUF_SHIFT=18
-+CONFIG_LOG_CPU_MAX_BUF_SHIFT=13
-+CONFIG_NUMA_BALANCING=y
-+CONFIG_CGROUPS=y
-+CONFIG_MEMCG=y
-+CONFIG_CGROUP_SCHED=y
-+CONFIG_CGROUP_FREEZER=y
-+CONFIG_CPUSETS=y
-+CONFIG_CGROUP_DEVICE=y
-+CONFIG_CGROUP_CPUACCT=y
-+CONFIG_CGROUP_PERF=y
-+CONFIG_CGROUP_BPF=y
-+CONFIG_BLK_DEV_INITRD=y
-+CONFIG_BPF_SYSCALL=y
-+# CONFIG_COMPAT_BRK is not set
-+CONFIG_PROFILING=y
-+CONFIG_PPC64=y
-+CONFIG_NR_CPUS=2048
-+CONFIG_PPC_SPLPAR=y
-+CONFIG_DTL=y
-+CONFIG_PPC_SMLPAR=y
-+CONFIG_IBMEBUS=y
-+CONFIG_PPC_SVM=y
-+CONFIG_PPC_MAPLE=y
-+CONFIG_PPC_PASEMI=y
-+CONFIG_PPC_PASEMI_IOMMU=y
-+CONFIG_PPC_PS3=y
-+CONFIG_PS3_DISK=m
-+CONFIG_PS3_ROM=m
-+CONFIG_PS3_FLASH=m
-+CONFIG_PS3_LPM=m
-+CONFIG_PPC_IBM_CELL_BLADE=y
-+CONFIG_RTAS_FLASH=m
-+CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
-+CONFIG_CPU_FREQ_GOV_POWERSAVE=y
-+CONFIG_CPU_FREQ_GOV_USERSPACE=y
-+CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
-+CONFIG_CPU_FREQ_PMAC64=y
-+CONFIG_HZ_100=y
-+CONFIG_PPC_TRANSACTIONAL_MEM=y
-+CONFIG_KEXEC=y
-+CONFIG_KEXEC_FILE=y
-+CONFIG_CRASH_DUMP=y
-+CONFIG_FA_DUMP=y
-+CONFIG_IRQ_ALL_CPUS=y
-+CONFIG_SCHED_SMT=y
-+CONFIG_HOTPLUG_PCI=y
-+CONFIG_HOTPLUG_PCI_RPA=m
-+CONFIG_HOTPLUG_PCI_RPA_DLPAR=m
-+CONFIG_PCCARD=y
-+CONFIG_ELECTRA_CF=y
-+CONFIG_VIRTUALIZATION=y
-+CONFIG_KVM_BOOK3S_64=m
-+CONFIG_KVM_BOOK3S_64_HV=m
-+CONFIG_VHOST_NET=m
-+CONFIG_KPROBES=y
-+CONFIG_JUMP_LABEL=y
-+CONFIG_MODULES=y
-+CONFIG_MODULE_UNLOAD=y
-+CONFIG_MODVERSIONS=y
-+CONFIG_MODULE_SRCVERSION_ALL=y
-+CONFIG_PARTITION_ADVANCED=y
-+CONFIG_BINFMT_MISC=m
-+CONFIG_MEMORY_HOTPLUG=y
-+CONFIG_MEMORY_HOTREMOVE=y
-+CONFIG_KSM=y
-+CONFIG_TRANSPARENT_HUGEPAGE=y
-+CONFIG_NET=y
-+CONFIG_PACKET=y
-+CONFIG_UNIX=y
-+CONFIG_XFRM_USER=m
-+CONFIG_NET_KEY=m
-+CONFIG_INET=y
-+CONFIG_IP_MULTICAST=y
-+CONFIG_IP_PNP=y
-+CONFIG_IP_PNP_DHCP=y
-+CONFIG_IP_PNP_BOOTP=y
-+CONFIG_NET_IPIP=y
-+CONFIG_SYN_COOKIES=y
-+CONFIG_INET_AH=m
-+CONFIG_INET_ESP=m
-+CONFIG_INET_IPCOMP=m
-+CONFIG_IPV6=y
-+CONFIG_NETFILTER=y
-+# CONFIG_NETFILTER_ADVANCED is not set
-+CONFIG_BRIDGE=m
-+CONFIG_NET_SCHED=y
-+CONFIG_NET_CLS_BPF=m
-+CONFIG_NET_CLS_ACT=y
-+CONFIG_NET_ACT_BPF=m
-+CONFIG_BPF_JIT=y
-+CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
-+CONFIG_BLK_DEV_FD=y
-+CONFIG_BLK_DEV_LOOP=y
-+CONFIG_BLK_DEV_NBD=m
-+CONFIG_BLK_DEV_RAM=y
-+CONFIG_BLK_DEV_RAM_SIZE=65536
-+CONFIG_VIRTIO_BLK=m
-+CONFIG_BLK_DEV_SD=y
-+CONFIG_CHR_DEV_ST=m
-+CONFIG_BLK_DEV_SR=y
-+CONFIG_CHR_DEV_SG=y
-+CONFIG_SCSI_CONSTANTS=y
-+CONFIG_SCSI_FC_ATTRS=y
-+CONFIG_SCSI_CXGB3_ISCSI=m
-+CONFIG_SCSI_CXGB4_ISCSI=m
-+CONFIG_SCSI_BNX2_ISCSI=m
-+CONFIG_BE2ISCSI=m
-+CONFIG_SCSI_MPT2SAS=m
-+CONFIG_SCSI_IBMVSCSI=y
-+CONFIG_SCSI_IBMVFC=m
-+CONFIG_SCSI_SYM53C8XX_2=m
-+CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE=0
-+CONFIG_SCSI_IPR=y
-+CONFIG_SCSI_QLA_FC=m
-+CONFIG_SCSI_QLA_ISCSI=m
-+CONFIG_SCSI_LPFC=m
-+CONFIG_SCSI_VIRTIO=m
-+CONFIG_SCSI_DH=y
-+CONFIG_SCSI_DH_RDAC=m
-+CONFIG_SCSI_DH_ALUA=m
-+CONFIG_ATA=y
-+CONFIG_SATA_AHCI=y
-+CONFIG_SATA_SIL24=y
-+CONFIG_SATA_MV=y
-+CONFIG_SATA_SVW=y
-+CONFIG_PATA_AMD=y
-+CONFIG_PATA_MACIO=y
-+CONFIG_ATA_GENERIC=y
-+CONFIG_MD=y
-+CONFIG_BLK_DEV_MD=y
-+CONFIG_MD_LINEAR=y
-+CONFIG_MD_RAID0=y
-+CONFIG_MD_RAID1=y
-+CONFIG_MD_RAID10=m
-+CONFIG_MD_RAID456=m
-+CONFIG_MD_MULTIPATH=m
-+CONFIG_MD_FAULTY=m
-+CONFIG_BLK_DEV_DM=y
-+CONFIG_DM_CRYPT=m
-+CONFIG_DM_SNAPSHOT=m
-+CONFIG_DM_MIRROR=m
-+CONFIG_DM_ZERO=m
-+CONFIG_DM_MULTIPATH=m
-+CONFIG_DM_MULTIPATH_QL=m
-+CONFIG_DM_MULTIPATH_ST=m
-+CONFIG_DM_UEVENT=y
-+CONFIG_ADB_PMU=y
-+CONFIG_PMAC_SMU=y
-+CONFIG_WINDFARM=y
-+CONFIG_WINDFARM_PM81=y
-+CONFIG_WINDFARM_PM91=y
-+CONFIG_WINDFARM_PM112=y
-+CONFIG_WINDFARM_PM121=y
-+CONFIG_BONDING=m
-+CONFIG_DUMMY=m
-+CONFIG_NETCONSOLE=y
-+CONFIG_TUN=m
-+CONFIG_VIRTIO_NET=m
-+CONFIG_VORTEX=m
-+CONFIG_ACENIC=m
-+CONFIG_ACENIC_OMIT_TIGON_I=y
-+CONFIG_PCNET32=m
-+CONFIG_TIGON3=y
-+CONFIG_BNX2X=m
-+CONFIG_CHELSIO_T1=m
-+CONFIG_BE2NET=m
-+CONFIG_IBMVETH=m
-+CONFIG_EHEA=m
-+CONFIG_IBMVNIC=m
-+CONFIG_E100=y
-+CONFIG_E1000=y
-+CONFIG_E1000E=y
-+CONFIG_IXGB=m
-+CONFIG_IXGBE=m
-+CONFIG_I40E=m
-+CONFIG_MLX4_EN=m
-+CONFIG_MYRI10GE=m
-+CONFIG_S2IO=m
-+CONFIG_PASEMI_MAC=y
-+CONFIG_NETXEN_NIC=m
-+CONFIG_SUNGEM=y
-+CONFIG_GELIC_NET=m
-+CONFIG_GELIC_WIRELESS=y
-+CONFIG_SPIDER_NET=m
-+CONFIG_BROADCOM_PHY=m
-+CONFIG_MARVELL_PHY=y
-+CONFIG_PPP=m
-+CONFIG_PPP_BSDCOMP=m
-+CONFIG_PPP_DEFLATE=m
-+CONFIG_PPPOE=m
-+CONFIG_PPP_ASYNC=m
-+CONFIG_PPP_SYNC_TTY=m
-+CONFIG_INPUT_EVDEV=m
-+CONFIG_INPUT_MISC=y
-+CONFIG_INPUT_PCSPKR=m
-+# CONFIG_SERIO_SERPORT is not set
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_ICOM=m
-+CONFIG_SERIAL_JSM=m
-+CONFIG_HVC_CONSOLE=y
-+CONFIG_HVC_RTAS=y
-+CONFIG_HVCS=m
-+CONFIG_VIRTIO_CONSOLE=m
-+CONFIG_IBM_BSR=m
-+CONFIG_RAW_DRIVER=y
-+CONFIG_I2C_CHARDEV=y
-+CONFIG_I2C_AMD8111=y
-+CONFIG_I2C_PASEMI=y
-+CONFIG_FB=y
-+CONFIG_FIRMWARE_EDID=y
-+CONFIG_FB_OF=y
-+CONFIG_FB_MATROX=y
-+CONFIG_FB_MATROX_MILLENIUM=y
-+CONFIG_FB_MATROX_MYSTIQUE=y
-+CONFIG_FB_MATROX_G=y
-+CONFIG_FB_MATROX_I2C=m
-+CONFIG_FB_MATROX_MAVEN=m
-+CONFIG_FB_RADEON=y
-+CONFIG_FB_IBM_GXT4500=y
-+CONFIG_FB_PS3=m
-+CONFIG_LCD_CLASS_DEVICE=y
-+# CONFIG_VGA_CONSOLE is not set
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_LOGO=y
-+CONFIG_SOUND=m
-+CONFIG_SND=m
-+CONFIG_SND_OSSEMUL=y
-+CONFIG_SND_MIXER_OSS=m
-+CONFIG_SND_PCM_OSS=m
-+CONFIG_SND_SEQUENCER=m
-+CONFIG_SND_SEQ_DUMMY=m
-+CONFIG_SND_SEQUENCER_OSS=m
-+CONFIG_SND_POWERMAC=m
-+CONFIG_SND_AOA=m
-+CONFIG_SND_AOA_FABRIC_LAYOUT=m
-+CONFIG_SND_AOA_ONYX=m
-+CONFIG_SND_AOA_TAS=m
-+CONFIG_SND_AOA_TOONIE=m
-+CONFIG_HID_GYRATION=y
-+CONFIG_HID_PANTHERLORD=y
-+CONFIG_HID_PETALYNX=y
-+CONFIG_HID_SAMSUNG=y
-+CONFIG_HID_SUNPLUS=y
-+CONFIG_USB_HIDDEV=y
-+CONFIG_USB=y
-+CONFIG_USB_MON=m
-+CONFIG_USB_EHCI_HCD=y
-+# CONFIG_USB_EHCI_HCD_PPC_OF is not set
-+CONFIG_USB_OHCI_HCD=y
-+CONFIG_USB_STORAGE=m
-+CONFIG_USB_APPLEDISPLAY=m
-+CONFIG_NEW_LEDS=y
-+CONFIG_LEDS_CLASS=m
-+CONFIG_LEDS_POWERNV=m
-+CONFIG_INFINIBAND=m
-+CONFIG_INFINIBAND_USER_MAD=m
-+CONFIG_INFINIBAND_USER_ACCESS=m
-+CONFIG_INFINIBAND_MTHCA=m
-+CONFIG_INFINIBAND_CXGB4=m
-+CONFIG_MLX4_INFINIBAND=m
-+CONFIG_INFINIBAND_IPOIB=m
-+CONFIG_INFINIBAND_IPOIB_CM=y
-+CONFIG_INFINIBAND_SRP=m
-+CONFIG_INFINIBAND_ISER=m
-+CONFIG_EDAC=y
-+CONFIG_EDAC_PASEMI=y
-+CONFIG_RTC_CLASS=y
-+CONFIG_RTC_DRV_DS1307=y
-+CONFIG_VIRTIO_PCI=m
-+CONFIG_VIRTIO_BALLOON=m
-+CONFIG_LIBNVDIMM=y
-+CONFIG_RAS=y
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT2_FS_XATTR=y
-+CONFIG_EXT2_FS_POSIX_ACL=y
-+CONFIG_EXT2_FS_SECURITY=y
-+CONFIG_EXT4_FS=y
-+CONFIG_EXT4_FS_POSIX_ACL=y
-+CONFIG_EXT4_FS_SECURITY=y
-+CONFIG_REISERFS_FS=m
-+CONFIG_REISERFS_FS_XATTR=y
-+CONFIG_REISERFS_FS_POSIX_ACL=y
-+CONFIG_REISERFS_FS_SECURITY=y
-+CONFIG_JFS_FS=m
-+CONFIG_JFS_POSIX_ACL=y
-+CONFIG_JFS_SECURITY=y
-+CONFIG_XFS_FS=y
-+CONFIG_XFS_POSIX_ACL=y
-+CONFIG_BTRFS_FS=y
-+CONFIG_BTRFS_FS_POSIX_ACL=y
-+CONFIG_NILFS2_FS=m
-+CONFIG_FS_DAX=y
-+CONFIG_AUTOFS4_FS=m
-+CONFIG_FUSE_FS=m
-+CONFIG_OVERLAY_FS=m
-+CONFIG_ISO9660_FS=y
-+CONFIG_UDF_FS=m
-+CONFIG_MSDOS_FS=y
-+CONFIG_VFAT_FS=m
-+CONFIG_PROC_KCORE=y
-+CONFIG_TMPFS=y
-+CONFIG_TMPFS_POSIX_ACL=y
-+CONFIG_HUGETLBFS=y
-+CONFIG_HFS_FS=m
-+CONFIG_HFSPLUS_FS=m
-+CONFIG_CRAMFS=m
-+CONFIG_SQUASHFS=m
-+CONFIG_SQUASHFS_XATTR=y
-+CONFIG_SQUASHFS_LZO=y
-+CONFIG_SQUASHFS_XZ=y
-+CONFIG_NFS_FS=y
-+CONFIG_NFS_V3_ACL=y
-+CONFIG_NFS_V4=y
-+CONFIG_ROOT_NFS=y
-+CONFIG_NFSD=m
-+CONFIG_NFSD_V3_ACL=y
-+CONFIG_NFSD_V4=y
-+CONFIG_CIFS=m
-+CONFIG_CIFS_XATTR=y
-+CONFIG_CIFS_POSIX=y
-+CONFIG_NLS_DEFAULT="utf8"
-+CONFIG_NLS_CODEPAGE_437=y
-+CONFIG_NLS_ASCII=y
-+CONFIG_NLS_ISO8859_1=y
-+CONFIG_NLS_UTF8=y
-+CONFIG_CRYPTO_TEST=m
-+CONFIG_CRYPTO_PCBC=m
-+CONFIG_CRYPTO_HMAC=y
-+CONFIG_CRYPTO_CRC32C_VPMSUM=m
-+CONFIG_CRYPTO_MD5_PPC=m
-+CONFIG_CRYPTO_MICHAEL_MIC=m
-+CONFIG_CRYPTO_SHA1_PPC=m
-+CONFIG_CRYPTO_SHA256=y
-+CONFIG_CRYPTO_TGR192=m
-+CONFIG_CRYPTO_WP512=m
-+CONFIG_CRYPTO_ANUBIS=m
-+CONFIG_CRYPTO_BLOWFISH=m
-+CONFIG_CRYPTO_CAST6=m
-+CONFIG_CRYPTO_KHAZAD=m
-+CONFIG_CRYPTO_SALSA20=m
-+CONFIG_CRYPTO_SERPENT=m
-+CONFIG_CRYPTO_TEA=m
-+CONFIG_CRYPTO_TWOFISH=m
-+CONFIG_CRYPTO_LZO=m
-+CONFIG_CRYPTO_DEV_NX=y
-+CONFIG_CRYPTO_DEV_NX_ENCRYPT=m
-+CONFIG_CRYPTO_DEV_VMX=y
-+CONFIG_PRINTK_TIME=y
-+CONFIG_PRINTK_CALLER=y
-+CONFIG_MAGIC_SYSRQ=y
-+CONFIG_DEBUG_KERNEL=y
-+CONFIG_DEBUG_STACK_USAGE=y
-+CONFIG_DEBUG_STACKOVERFLOW=y
-+CONFIG_SOFTLOCKUP_DETECTOR=y
-+CONFIG_HARDLOCKUP_DETECTOR=y
-+CONFIG_DEBUG_MUTEXES=y
-+CONFIG_FUNCTION_TRACER=y
-+CONFIG_FTRACE_SYSCALLS=y
-+CONFIG_SCHED_TRACER=y
-+CONFIG_STACK_TRACER=y
-+CONFIG_BLK_DEV_IO_TRACE=y
-+CONFIG_CODE_PATCHING_SELFTEST=y
-+CONFIG_FTR_FIXUP_SELFTEST=n
-+CONFIG_MSI_BITMAP_SELFTEST=y
-+CONFIG_XMON=y
-+CONFIG_BOOTX_TEXT=y
-+CONFIG_LTO=y
-+CONFIG_LTO_CLANG_THIN=y
-+CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT=n
-+CONFIG_USERFAULTFD=y
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 55caeee37c08..b8d9a2f5f3a5 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -476,9 +476,13 @@ DEFINE_FIXED_SYMBOL(\name\()_common_real, text)
+ 		.if IHSRR_IF_HVMODE
+ 		BEGIN_FTR_SECTION
+ 		bne	masked_Hinterrupt
++		b	4f
+ 		FTR_SECTION_ELSE
+-		bne	masked_interrupt
++		nop
++		nop
+ 		ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
++		bne	masked_interrupt
++4:
+ 		.elseif IHSRR
+ 		bne	masked_Hinterrupt
+ 		.else
+diff --git a/arch/powerpc/lib/copyuser_64.S b/arch/powerpc/lib/copyuser_64.S
+index db8719a14846..d07f95eebc65 100644
+--- a/arch/powerpc/lib/copyuser_64.S
++++ b/arch/powerpc/lib/copyuser_64.S
+@@ -75,10 +75,11 @@ _GLOBAL(__copy_tofrom_user_base)
+  * set is Power6.
+  */
+ test_feature = (SELFTEST_CASE == 1)
++	beq	.Ldst_aligned
+ BEGIN_FTR_SECTION
+ 	nop
+ FTR_SECTION_ELSE
+-	bne	.Ldst_unaligned
++	b	.Ldst_unaligned
+ ALT_FTR_SECTION_END(CPU_FTR_UNALIGNED_LD_STD | CPU_FTR_CP_USE_DCBTZ, \
+ 		    CPU_FTR_UNALIGNED_LD_STD)
+ .Ldst_aligned:
+diff --git a/arch/powerpc/lib/memcpy_64.S b/arch/powerpc/lib/memcpy_64.S
+index 016c91e958d8..286c7e2d0883 100644
+--- a/arch/powerpc/lib/memcpy_64.S
++++ b/arch/powerpc/lib/memcpy_64.S
+@@ -50,10 +50,11 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_VMX_COPY)
+    At the time of writing the only CPU that has this combination of bits
+    set is Power6. */
+ test_feature = (SELFTEST_CASE == 1)
++	beq      .ldst_aligned
+ BEGIN_FTR_SECTION
+ 	nop
+ FTR_SECTION_ELSE
+-	bne	.Ldst_unaligned
++	b	.Ldst_unaligned
+ ALT_FTR_SECTION_END(CPU_FTR_UNALIGNED_LD_STD | CPU_FTR_CP_USE_DCBTZ, \
+                     CPU_FTR_UNALIGNED_LD_STD)
+ .Ldst_aligned:
 -- 
 2.30.2
 
