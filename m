@@ -2,56 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 878164B1B9A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 02:49:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC344B1C23
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 03:24:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JvxNw1hXWz3cQc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 12:49:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jvy9L2XDfz3cQS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 13:24:06 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qYDJADX8;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QAIEOiXW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JvxNG48h4z30K4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Feb 2022 12:48:30 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=qYDJADX8; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JvxND3dLJz4xRB;
- Fri, 11 Feb 2022 12:48:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1644544108;
- bh=oiur8ROejXDAFfftCT4xiG8PdwuDd8kRMQstnmOp138=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=qYDJADX8qT7w4qPH8/4rcADkwBUxflRX0kT6rXATHLjhXoRbHKsfeFpMq6CxJyNXv
- cUDVhWz0XMdy5CSSHgSYXMrGMLEq39hnadmzvkAsWBkA846yOdpcBbZiOSbZbY/QYy
- ESB9GW6QDAXDVTrRwLxqYsZIhMb+tfL9xf3FP6bnkGhpLc8+K54DQ4+cAabEaiZ0ak
- 5rjKBv9Q142TMn7wUkMQgCza8RPJ4poBsUrCM0ZxSUmzfUHdfwZI9I6JBkP1Fq7gZs
- Pm6kNSUCz0N61mWE8kEEyq4fzL7m44rk1Paphgei+c8X1l1Qcu/+XMSZ1VSBCZWzzp
- GZxUhZ+2pmRMA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Paul Menzel <pmenzel@molgen.mpg.de>, "Paul E. McKenney"
- <paulmck@kernel.org>
-Subject: Re: =?utf-8?Q?rcutorture=E2=80=99s?= init segfaults in ppc64le VM
-In-Reply-To: <e7498a9d-7420-ff52-99e4-8194f3d177f0@molgen.mpg.de>
-References: <565038d7-7374-1005-31bf-df2f051845ff@molgen.mpg.de>
- <871r0dmzzm.fsf@mpe.ellerman.id.au>
- <e7498a9d-7420-ff52-99e4-8194f3d177f0@molgen.mpg.de>
-Date: Fri, 11 Feb 2022 12:48:23 +1100
-Message-ID: <87y22irx5k.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=QAIEOiXW; dkim-atps=neutral
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jvy8g1jHYz2xXX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Feb 2022 13:23:29 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1644546211; x=1676082211;
+ h=date:from:to:cc:subject:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5JwwMHjunUH+gpRcwWVZfgh47N4o+iE+1N66sut+wvg=;
+ b=QAIEOiXWK8s//PBMn1xOC8i0L6vyJjl3ChMLSNIQW6ckX1XFpAGkQsQg
+ pbBOUCXBmW/kv9B95wdQatFfGn9SWhy6ROhb4W0H4Ez/k68cm3hAVReTX
+ UUYz2PGW1A7BbiMAtDT820YW1hq/EPLq/ny5CqDmgqPzgooA+Pykig51X
+ G40G3B8HZXSRMNqmRzqju2AomRAWZceKkf2Ha5diYsV8hb5HbSTEdYotC
+ PZHeXvTgB1roegbiZzmoW2xVbC8ZIinRVDP/UtIBXNLpiXIKyceP+kzF6
+ QuR+masSGZz/pcj0XcVooJ9qDrB1ZdnHiMqVJ0cZekfQTvgRcJbegyNLw Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10254"; a="336064491"
+X-IronPort-AV: E=Sophos;i="5.88,359,1635231600"; d="scan'208";a="336064491"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Feb 2022 18:22:26 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,359,1635231600"; d="scan'208";a="679370790"
+Received: from lkp-server01.sh.intel.com (HELO d95dc2dabeb1) ([10.239.97.150])
+ by fmsmga001.fm.intel.com with ESMTP; 10 Feb 2022 18:22:25 -0800
+Received: from kbuild by d95dc2dabeb1 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1nILZo-00042U-VX; Fri, 11 Feb 2022 02:22:24 +0000
+Date: Fri, 11 Feb 2022 10:22:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 9bb162fa26ed76031ed0e7dbc77ccea0bf977758
+Message-ID: <6205c84b.YVyWa1HCzdb29HVK%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,136 +68,205 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rcu@vger.kernel.org, Zhouyi Zhou <zhouzhouyi@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Willy Tarreau <w@1wt.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Paul Menzel <pmenzel@molgen.mpg.de> writes:
-> Am 08.02.22 um 11:09 schrieb Michael Ellerman:
->> Paul Menzel writes:
->
-> [=E2=80=A6]
->
->>> On the POWER8 server IBM S822LC running Ubuntu 21.10, building Linux
->>> 5.17-rc2+ with rcutorture tests
->>=20
->> I'm not sure if that's the host kernel version or the version you're
->> using of rcutorture? Can you tell us the sha1 of your host kernel and of
->> the tree you're running rcutorture from?
->
-> The host system runs Linux 5.17-rc1+ started with kexec. Unfortunately,=20
-> I am unable to find the exact sha1.
->
->      $ more /proc/version
->      Linux version 5.17.0-rc1+=20
-> (pmenzel@flughafenberlinbrandenburgwillybrandt.molgen.mpg.de) (Ubuntu=20
-> clang version 13.0.0-2, LLD 13.0.0) #1 SMP Fri Jan 28
-> 17:13:04 CET 2022
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 9bb162fa26ed76031ed0e7dbc77ccea0bf977758  powerpc/603: Fix boot failure with DEBUG_PAGEALLOC and KFENCE
 
-OK. In general rc1 kernels can have issues, so it might be worth
-rebooting the host into either v5.17-rc3 or a distro or stable kernel.
-Just to rule out any issues on the host.
+elapsed time: 723m
 
-> The Linux tree, from where I run rcutorture from, is at commit=20
-> dfd42facf1e4 (Linux 5.17-rc3) with four patches on top:
->
->      $ git log --oneline -6
->      207cec79e752 (HEAD -> master, origin/master, origin/HEAD) Problems=20
-> with rcutorture on ppc64le: allmodconfig(2) and other failures
->      8c82f96fbe57 ata: libata-sata: improve sata_link_debounce()
->      a447541d925f ata: libata-sata: remove debounce delay by default
->      afd84e1eeafc ata: libata-sata: introduce struct sata_deb_timing
->      f4caf7e48b75 ata: libata-sata: Simplify sata_link_resume() interface
->      dfd42facf1e4 (tag: v5.17-rc3) Linux 5.17-rc3
->
->>>       $ tools/testing/selftests/rcutorture/bin/torture.sh --duration 10
->>>
->>> the built init
->>>
->>>       $ file tools/testing/selftests/rcutorture/initrd/init
->>>       tools/testing/selftests/rcutorture/initrd/init: ELF 64-bit LSB ex=
-ecutable, 64-bit PowerPC or cisco 7500, version 1 (SYSV), statically linked=
-, BuildID[sha1]=3D0ded0e45649184a296f30d611f7a03cc51ecb616, for GNU/Linux 3=
-.10.0, stripped
->>=20
->> Mine looks pretty much identical:
->>=20
->>    $ file tools/testing/selftests/rcutorture/initrd/init
->>    tools/testing/selftests/rcutorture/initrd/init: ELF 64-bit LSB execut=
-able, 64-bit PowerPC or cisco 7500, version 1 (SYSV), statically linked, Bu=
-ildID[sha1]=3D86078bf6e5d54ab0860d36aa9a65d52818b972c8, for GNU/Linux 3.10.=
-0, stripped
->>=20
->>> segfaults in QEMU. From one of the log files
->>=20
->> But mine doesn't segfault, it runs fine and the test completes.
->>=20
->> What qemu version are you using?
->>=20
->> I tried 4.2.1 and 6.2.0, both worked.
->
->      $ qemu-system-ppc64le --version
->      QEMU emulator version 6.0.0 (Debian 1:6.0+dfsg-2expubuntu1.1)
->      Copyright (c) 2003-2021 Fabrice Bellard and the QEMU Project develop=
-ers
+configs tested: 174
+configs skipped: 97
 
-OK, that's one difference between our setups, but I'd be surprised if it
-explains this bug, but I guess anything's possible.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+powerpc              randconfig-c003-20220210
+i386                          randconfig-c001
+xtensa                         virt_defconfig
+powerpc64                           defconfig
+powerpc                     sequoia_defconfig
+arm                          iop32x_defconfig
+h8300                               defconfig
+sh                           se7722_defconfig
+sh                         ecovec24_defconfig
+alpha                               defconfig
+arm                         lpc18xx_defconfig
+powerpc                       ppc64_defconfig
+arm                        mini2440_defconfig
+arm                       multi_v4t_defconfig
+openrisc                 simple_smp_defconfig
+sh                           se7206_defconfig
+sh                            hp6xx_defconfig
+parisc                generic-64bit_defconfig
+arm                         cm_x300_defconfig
+sh                            titan_defconfig
+x86_64                           alldefconfig
+powerpc                      ppc40x_defconfig
+sh                        sh7757lcr_defconfig
+arm                        shmobile_defconfig
+mips                           ip32_defconfig
+m68k                            q40_defconfig
+powerpc                        warp_defconfig
+s390                                defconfig
+riscv                    nommu_k210_defconfig
+powerpc                 mpc834x_itx_defconfig
+arm                             ezx_defconfig
+arm                        cerfcube_defconfig
+powerpc                     tqm8541_defconfig
+arm                           h3600_defconfig
+powerpc                       eiger_defconfig
+arm                         s3c6400_defconfig
+csky                             alldefconfig
+powerpc                      ep88xc_defconfig
+ia64                         bigsur_defconfig
+sh                        dreamcast_defconfig
+arc                     nsimosci_hs_defconfig
+mips                             allmodconfig
+powerpc64                        alldefconfig
+sh                                  defconfig
+m68k                        m5407c3_defconfig
+sh                   sh7770_generic_defconfig
+arm                             pxa_defconfig
+m68k                       m5249evb_defconfig
+csky                                defconfig
+powerpc                    klondike_defconfig
+arc                              alldefconfig
+um                                  defconfig
+s390                          debug_defconfig
+sh                          r7785rp_defconfig
+arm                      footbridge_defconfig
+alpha                            allyesconfig
+m68k                          hp300_defconfig
+powerpc                     tqm8555_defconfig
+xtensa                              defconfig
+arm                      jornada720_defconfig
+arm                           sunxi_defconfig
+powerpc                 linkstation_defconfig
+sh                         microdev_defconfig
+arc                    vdk_hs38_smp_defconfig
+arm                        multi_v7_defconfig
+sh                           se7750_defconfig
+m68k                          amiga_defconfig
+alpha                            alldefconfig
+powerpc                      arches_defconfig
+powerpc                 mpc837x_rdb_defconfig
+arm                  randconfig-c002-20220210
+arm                  randconfig-c002-20220209
+arm                  randconfig-c002-20220211
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+s390                 randconfig-r044-20220209
+arc                  randconfig-r043-20220208
+arc                  randconfig-r043-20220209
+riscv                randconfig-r042-20220210
+riscv                randconfig-r042-20220209
+arc                  randconfig-r043-20220210
+s390                 randconfig-r044-20220210
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+riscv                          rv32_defconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                                  kexec
 
->>> /dev/shm/linux/tools/testing/selftests/rcutorture/res/2022.02.01-21.52.=
-37-torture/results-rcutorture/TREE03/console.log
->
-> Sorry, that was the wrong path/test. The correct one for the excerpt=20
-> below is:
->
->=20=20
-> /dev/shm/linux/tools/testing/selftests/rcutorture/res/2022.02.01-21.52.37=
--torture/results-locktorture-kasan/LOCK01/console.log
->
-> (For TREE03, QEMU does not start the Linux kernel at all, that means no=20
-> output after:
->
->      Booting Linux via __start() @ 0x0000000000400000 ...
+clang tested configs:
+riscv                randconfig-c006-20220209
+x86_64                        randconfig-c007
+powerpc              randconfig-c003-20220209
+i386                          randconfig-c001
+mips                 randconfig-c004-20220209
+arm                  randconfig-c002-20220209
+riscv                randconfig-c006-20220210
+powerpc              randconfig-c003-20220210
+arm                  randconfig-c002-20220210
+mips                 randconfig-c004-20220210
+powerpc                     ksi8560_defconfig
+powerpc                      ppc44x_defconfig
+mips                            e55_defconfig
+x86_64                           allyesconfig
+arm                          ep93xx_defconfig
+powerpc                    gamecube_defconfig
+powerpc                    ge_imp3a_defconfig
+arm                        multi_v5_defconfig
+mips                       rbtx49xx_defconfig
+hexagon                             defconfig
+powerpc                 mpc836x_mds_defconfig
+powerpc                     tqm5200_defconfig
+powerpc                       ebony_defconfig
+mips                      pic32mzda_defconfig
+powerpc                     kilauea_defconfig
+powerpc                     mpc5200_defconfig
+powerpc                     akebono_defconfig
+mips                          ath79_defconfig
+arm                           omap1_defconfig
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+hexagon              randconfig-r045-20220210
+hexagon              randconfig-r045-20220208
+hexagon              randconfig-r041-20220210
+hexagon              randconfig-r041-20220208
 
-OK yeah I see that too.
-
-Removing "threadirqs" from tools/testing/selftests/rcutorture/configs/rcu/T=
-REE03.boot
-seems to fix it.
-
-I still see some preempt related warnings, we clearly have some bugs
-with preempt enabled.
-
-> You can now download the content of=20
-> `/dev/shm/linux/tools/testing/selftests/rcutorture/res/2022.02.01-21.52.3=
-7-torture/results-locktorture-kasan/LOCK01`=20
-> [1, 65 MB].
->
-> Can you reproduce the segmentation fault with the line below?
->
->      $ qemu-system-ppc64 -enable-kvm -nographic -smp cores=3D1,threads=3D=
-8=20
-> -net none -enable-kvm -M pseries -nodefaults -device spapr-vscsi -serial=
-=20
-> stdio -m 512 -kernel=20
-> /dev/shm/linux/tools/testing/selftests/rcutorture/res/2022.02.01-21.52.37=
--torture/results-locktorture-kasan/LOCK01/vmlinux=20
-> -append "debug_boot_weak_hash panic=3D-1 console=3DttyS0=20
-> torture.disable_onoff_at_boot locktorture.onoff_interval=3D3=20
-> locktorture.onoff_holdoff=3D30 locktorture.stat_interval=3D15=20
-> locktorture.shutdown_secs=3D60 locktorture.verbose=3D1"
-
-That works fine for me, boots and runs the test, then shuts down.
-
-I assume you see the segfault on every boot, not intermittently?
-
-So the differences between our setups are the host kernel and the qemu
-version. Can you try a different host kernel easily?
-
-The other thing would be to try a different qemu version, you might need
-to build from source, but it's not that hard :)
-
-cheers
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
