@@ -2,98 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D18F4B2776
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 14:56:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7CB4B27A4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 15:17:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JwFXG6WRVz3cCG
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Feb 2022 00:56:30 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XqY433t5;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JwG0d1pC2z3cSS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Feb 2022 01:17:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=XqY433t5; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JwFWW15Yvz3bXR
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Feb 2022 00:55:50 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21BCFhd5027637; 
- Fri, 11 Feb 2022 13:55:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=mBPgybp6OrwydxljgX7Um006NukbHAzD/i6637UsiS8=;
- b=XqY433t5sTYdyAuAmqahZ+yYPaJ5dSMij2ro0bivqhEYT4pt036uTKYkr1Ef91d7D0ep
- NeVeIwIOnb6IKGX+w1NAQk1cMvREoncN8EIJXSr51ESg7QlQe0sf10D0IN3HfesmI0fe
- F0UxLJWm1nlqUWRsPZW6rnx9zRN74jP9n5xaMAN9/3pwGq4sEclmWS+Fnbmp8DU1E49z
- KKLlWpxkPNjoSArMpnbZyN3i1nDEtcILhpStfT/LFMxUBOIdWv0DCxcgjeUc3jUeBAaW
- UW4HOMNjmvaMrvd4j45PJ7Ziz+w04zbbUFr4+t3qj4Ac6Fy4MclJnLSlRRuElzoIlc+r WA== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e5mrjwmrn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 11 Feb 2022 13:55:39 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21BDWM8i016162;
- Fri, 11 Feb 2022 13:55:37 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06fra.de.ibm.com with ESMTP id 3e1ggjyyn8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 11 Feb 2022 13:55:37 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21BDtYYN32833958
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 11 Feb 2022 13:55:34 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D183AA406B;
- Fri, 11 Feb 2022 13:55:34 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8DFFAA405E;
- Fri, 11 Feb 2022 13:55:32 +0000 (GMT)
-Received: from [9.43.15.152] (unknown [9.43.15.152])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 11 Feb 2022 13:55:32 +0000 (GMT)
-Message-ID: <fa5f1b27-8b46-764c-973e-c2c8656e8ceb@linux.ibm.com>
-Date: Fri, 11 Feb 2022 19:25:31 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JwG071m7Jz3bZc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Feb 2022 01:17:08 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4JwG011dw5z9sRw;
+ Fri, 11 Feb 2022 15:17:05 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id HZT9oE91O7UG; Fri, 11 Feb 2022 15:17:05 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4JwG006MCNz9sSB;
+ Fri, 11 Feb 2022 15:17:04 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BF5198B77D;
+ Fri, 11 Feb 2022 15:17:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id bHkdPldf_hbx; Fri, 11 Feb 2022 15:17:04 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.6.91])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 834FB8B764;
+ Fri, 11 Feb 2022 15:17:04 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21BEGsgZ1222519
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Fri, 11 Feb 2022 15:16:54 +0100
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21BEGqk71222518;
+ Fri, 11 Feb 2022 15:16:52 +0100
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/64: Force inlining of prevent_user_access() and
+ set_kuap()
+Date: Fri, 11 Feb 2022 15:16:51 +0100
+Message-Id: <eff9b2b211957fa2e8707e46f31674097fd563a3.1644588972.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2 1/2] selftest/vm: Use correct PAGE_SHIFT value for ppc64
-Content-Language: en-US
-To: Mike Rapoport <rppt@kernel.org>
-References: <20220211063330.99648-1-aneesh.kumar@linux.ibm.com>
- <YgY7lDToiQ0pM6U6@kernel.org>
- <27a71056-489a-4099-b094-64766bea84db@linux.ibm.com>
- <YgZke383drSXTekO@kernel.org>
-From: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-In-Reply-To: <YgZke383drSXTekO@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: TC787ZeHA1cZwOxiUecA2XnKv0MaIcd7
-X-Proofpoint-GUID: TC787ZeHA1cZwOxiUecA2XnKv0MaIcd7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-11_04,2022-02-11_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 malwarescore=0
- mlxlogscore=999 clxscore=1015 spamscore=0 phishscore=0 impostorscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202110076
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1644589010; l=4649; s=20211009;
+ h=from:subject:message-id; bh=XrCDeAP4/Azx/7fNFKAhTR51cLiMLmTo9ZiA/wTB8ek=;
+ b=/SDkwx2AgbWZDY0kFyXfMFNomKERjDG1jekOQl0RP7IWfyHQn5G0CjxuDem8kAJrlXgjmwXIArFI
+ jakEEfTsAiRiJWDtcNoKl7AiYFOtlWED8wIESa9PnTjqjtRjiKgY
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,191 +74,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/11/22 18:58, Mike Rapoport wrote:
-> Hi Aneesh,
-> 
-> On Fri, Feb 11, 2022 at 05:22:13PM +0530, Aneesh Kumar K V wrote:
->> On 2/11/22 16:03, Mike Rapoport wrote:
->>> On Fri, Feb 11, 2022 at 12:03:28PM +0530, Aneesh Kumar K.V wrote:
->>>> Keep it simple by using a #define and limiting hugepage size to 2M.
->>>> This keeps the test simpler instead of dynamically finding the page size
->>>> and huge page size.
->>>>
->>>> Without this tests are broken w.r.t reading /proc/self/pagemap
->>>>
->>>> 	if (pread(pagemap_fd, ent, sizeof(ent),
->>>> 			(uintptr_t)ptr >> (PAGE_SHIFT - 3)) != sizeof(ent))
->>>> 		err(2, "read pagemap");
->>>>
->>>> Cc: Shuah Khan <shuah@kernel.org>
->>>> Cc: linux-kselftest@vger.kernel.org
->>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>> ---
->>>>    tools/testing/selftests/vm/ksm_tests.c        | 9 ++++++++-
->>>>    tools/testing/selftests/vm/transhuge-stress.c | 9 ++++++++-
->>>>    2 files changed, 16 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/tools/testing/selftests/vm/ksm_tests.c b/tools/testing/selftests/vm/ksm_tests.c
->>>> index 1436e1a9a3d3..cae72872152b 100644
->>>> --- a/tools/testing/selftests/vm/ksm_tests.c
->>>> +++ b/tools/testing/selftests/vm/ksm_tests.c
->>>> @@ -22,7 +22,14 @@
->>>>    #define KSM_MERGE_ACROSS_NODES_DEFAULT true
->>>>    #define MB (1ul << 20)
->>>> -#define PAGE_SHIFT 12
->>>> +#ifdef __powerpc64__
->>>> +#define PAGE_SHIFT	16
->>>> +#else
->>>> +#define PAGE_SHIFT	12
->>>> +#endif
->>>
->>> Page size can be other than 4096 for other configurations as well. And even
->>> on ppc64 it's not necessarily 64k.
->>>
->>
->> But most common test config is with 64K page size.
->>
->>> Ideally page size in selftests/vm should be sysconf(_SC_PAGESIZE)
->>
->>
->> yes. As explained in commit message, the idea was to keep it simpler.
-> 
-> I think it's simple enough (compile tested on x86 only):
-> 
->  From 219577d87041f19f2c00dc7c23e0fd5aad8b02d5 Mon Sep 17 00:00:00 2001
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> Date: Fri, 11 Feb 2022 15:24:13 +0200
-> Subject: [PATCH] selftest/vm: add helpers to detect PAGE_SIZE and PAGE_SHIFT
-> 
-> PAGE_SIZE is not 4096 in many configurations, particularily ppc64 uses
-> 64K pages in majority of cases.
-> 
-> Add helpers to detect PAGE_SIZE and PAGE_SHIFT dynamically.
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->   tools/testing/selftests/vm/gup_test.c         |  3 +-
->   tools/testing/selftests/vm/ksm_tests.c        |  8 +----
->   tools/testing/selftests/vm/transhuge-stress.c |  9 ++----
->   tools/testing/selftests/vm/util.h             | 29 +++++++++++++++++++
->   4 files changed, 34 insertions(+), 15 deletions(-)
->   create mode 100644 tools/testing/selftests/vm/util.h
-> 
-> diff --git a/tools/testing/selftests/vm/gup_test.c b/tools/testing/selftests/vm/gup_test.c
-> index fe043f67798b..cda837a14736 100644
-> --- a/tools/testing/selftests/vm/gup_test.c
-> +++ b/tools/testing/selftests/vm/gup_test.c
-> @@ -10,8 +10,9 @@
->   #include <assert.h>
->   #include "../../../../mm/gup_test.h"
->   
-> +#include "util.h"
-> +
->   #define MB (1UL << 20)
-> -#define PAGE_SIZE sysconf(_SC_PAGESIZE)
->   
->   /* Just the flags we need, copied from mm.h: */
->   #define FOLL_WRITE	0x01	/* check pte is writable */
-> diff --git a/tools/testing/selftests/vm/ksm_tests.c b/tools/testing/selftests/vm/ksm_tests.c
-> index cae72872152b..7faafd24446f 100644
-> --- a/tools/testing/selftests/vm/ksm_tests.c
-> +++ b/tools/testing/selftests/vm/ksm_tests.c
-> @@ -12,6 +12,7 @@
->   
->   #include "../kselftest.h"
->   #include "../../../../include/vdso/time64.h"
-> +#include "util.h"
->   
->   #define KSM_SYSFS_PATH "/sys/kernel/mm/ksm/"
->   #define KSM_FP(s) (KSM_SYSFS_PATH s)
-> @@ -22,17 +23,10 @@
->   #define KSM_MERGE_ACROSS_NODES_DEFAULT true
->   #define MB (1ul << 20)
->   
-> -#ifdef __powerpc64__
-> -#define PAGE_SHIFT	16
-> -#else
-> -#define PAGE_SHIFT	12
-> -#endif
->   /*
->    * On ppc64 this will only work with radix 2M hugepage size
->    */
->   #define HPAGE_SHIFT 21
-> -
-> -#define PAGE_SIZE (1 << PAGE_SHIFT)
->   #define HPAGE_SIZE (1 << HPAGE_SHIFT)
->   
->   #define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
-> diff --git a/tools/testing/selftests/vm/transhuge-stress.c b/tools/testing/selftests/vm/transhuge-stress.c
-> index b1f8d98355c5..baf90a745d28 100644
-> --- a/tools/testing/selftests/vm/transhuge-stress.c
-> +++ b/tools/testing/selftests/vm/transhuge-stress.c
-> @@ -16,17 +16,12 @@
->   #include <string.h>
->   #include <sys/mman.h>
->   
-> -#ifdef __powerpc64__
-> -#define PAGE_SHIFT	16
-> -#else
-> -#define PAGE_SHIFT	12
-> -#endif
-> +#include "util.h"
-> +
->   /*
->    * On ppc64 this will only work with radix 2M hugepage size
->    */
->   #define HPAGE_SHIFT 21
-> -
-> -#define PAGE_SIZE (1 << PAGE_SHIFT)
->   #define HPAGE_SIZE (1 << HPAGE_SHIFT)
->   
->   #define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
-> diff --git a/tools/testing/selftests/vm/util.h b/tools/testing/selftests/vm/util.h
-> new file mode 100644
-> index 000000000000..1c85d7583bac
-> --- /dev/null
-> +++ b/tools/testing/selftests/vm/util.h
-> @@ -0,0 +1,29 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +
-> +#ifndef __KSELFTEST_VM_UTIL_H
-> +#define __KSELFTEST_VM_UTIL_H
-> +
-> +#include <string.h> /* ffsl() */
-> +#include <unistd.h> /* _SC_PAGESIZE */
-> +
-> +static unsigned __page_size;
-> +static unsigned __page_shift;
-> +
-> +static inline unsigned page_size(void)
-> +{
-> +	if (!__page_size)
-> +		__page_size = sysconf(_SC_PAGESIZE);
-> +	return __page_size;
-> +}
-> +
-> +static inline unsigned page_shift(void)
-> +{
-> +	if (!__page_shift)
-> +		__page_shift = (ffsl(page_size()) - 1);
-> +	return __page_shift;
-> +}
-> +
-> +#define PAGE_SHIFT	(page_shift())
-> +#define PAGE_SIZE	(page_size())
-> +
-> +#endif /* __KSELFTEST_VM_UTIL_H */
+A ppc64_defconfig build exhibits about 10 copied of
+prevent_user_access(). It also have one copy of set_kuap().
 
-This is on top of patch 1 I sent i guess. Should I add it to the series 
-because v2 also consolidate allocate_transhuge()? Or do you want to sent 
-it as an independent patch?
+	c000000000017340 <.prevent_user_access.constprop.0>:
+	c00000000001a038:	4b ff d3 09 	bl      c000000000017340 <.prevent_user_access.constprop.0>
+	c00000000001aabc:	4b ff c8 85 	bl      c000000000017340 <.prevent_user_access.constprop.0>
+	c00000000001ab38:	4b ff c8 09 	bl      c000000000017340 <.prevent_user_access.constprop.0>
+	c00000000001ade0:	4b ff c5 61 	bl      c000000000017340 <.prevent_user_access.constprop.0>
+	c000000000039b90 <.prevent_user_access.constprop.0>:
+	c00000000003ac08:	4b ff ef 89 	bl      c000000000039b90 <.prevent_user_access.constprop.0>
+	c00000000003b9d0:	4b ff e1 c1 	bl      c000000000039b90 <.prevent_user_access.constprop.0>
+	c00000000003ba54:	4b ff e1 3d 	bl      c000000000039b90 <.prevent_user_access.constprop.0>
+	c00000000003bbfc:	4b ff df 95 	bl      c000000000039b90 <.prevent_user_access.constprop.0>
+	c00000000015dde0 <.prevent_user_access.constprop.0>:
+	c0000000001612c0:	4b ff cb 21 	bl      c00000000015dde0 <.prevent_user_access.constprop.0>
+	c000000000161b54:	4b ff c2 8d 	bl      c00000000015dde0 <.prevent_user_access.constprop.0>
+	c000000000188cf0 <.prevent_user_access.constprop.0>:
+	c00000000018d658:	4b ff b6 99 	bl      c000000000188cf0 <.prevent_user_access.constprop.0>
+	c00000000030fe20 <.prevent_user_access.constprop.0>:
+	c0000000003123d4:	4b ff da 4d 	bl      c00000000030fe20 <.prevent_user_access.constprop.0>
+	c000000000313970:	4b ff c4 b1 	bl      c00000000030fe20 <.prevent_user_access.constprop.0>
+	c0000000005e6bd0 <.prevent_user_access.constprop.0>:
+	c0000000005e7d8c:	4b ff ee 45 	bl      c0000000005e6bd0 <.prevent_user_access.constprop.0>
+	c0000000007bcae0 <.prevent_user_access.constprop.0>:
+	c0000000007bda10:	4b ff f0 d1 	bl      c0000000007bcae0 <.prevent_user_access.constprop.0>
+	c0000000007bda54:	4b ff f0 8d 	bl      c0000000007bcae0 <.prevent_user_access.constprop.0>
+	c0000000007bdd28:	4b ff ed b9 	bl      c0000000007bcae0 <.prevent_user_access.constprop.0>
+	c0000000007c0390:	4b ff c7 51 	bl      c0000000007bcae0 <.prevent_user_access.constprop.0>
+	c00000000094e4f0 <.prevent_user_access.constprop.0>:
+	c000000000950e40:	4b ff d6 b1 	bl      c00000000094e4f0 <.prevent_user_access.constprop.0>
+	c00000000097d2d0 <.prevent_user_access.constprop.0>:
+	c0000000009813fc:	4b ff be d5 	bl      c00000000097d2d0 <.prevent_user_access.constprop.0>
+	c000000000acd540 <.prevent_user_access.constprop.0>:
+	c000000000ad1d60:	4b ff b7 e1 	bl      c000000000acd540 <.prevent_user_access.constprop.0>
+	c000000000e5d680 <.prevent_user_access.constprop.0>:
+	c000000000e64b60:	4b ff 8b 21 	bl      c000000000e5d680 <.prevent_user_access.constprop.0>
+	c000000000e64b6c:	4b ff 8b 15 	bl      c000000000e5d680 <.prevent_user_access.constprop.0>
+	c000000000e64c38:	4b ff 8a 49 	bl      c000000000e5d680 <.prevent_user_access.constprop.0>
 
--aneesh
+When building signal_64.c with -Winline the following messages appear:
+
+	./arch/powerpc/include/asm/book3s/64/kup.h:331:20: error: inlining failed in call to 'set_kuap': call is unlikely and code size would grow [-Werror=inline]
+	./arch/powerpc/include/asm/book3s/64/kup.h:401:20: error: inlining failed in call to 'prevent_user_access.constprop': call is unlikely and code size would grow [-Werror=inline]
+
+Those functions are used on hot pathes and have been
+expected to be inlined at all time.
+
+Force them inline.
+
+This patch reduces the kernel text size by 700 bytes, confirming
+that not inlining those functions is not worth it.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/book3s/64/kup.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
+index 69fcf63eec94..54cf46808157 100644
+--- a/arch/powerpc/include/asm/book3s/64/kup.h
++++ b/arch/powerpc/include/asm/book3s/64/kup.h
+@@ -328,7 +328,7 @@ static inline unsigned long get_kuap(void)
+ 	return mfspr(SPRN_AMR);
+ }
+ 
+-static inline void set_kuap(unsigned long value)
++static __always_inline void set_kuap(unsigned long value)
+ {
+ 	if (!mmu_has_feature(MMU_FTR_BOOK3S_KUAP))
+ 		return;
+@@ -398,7 +398,7 @@ static __always_inline void allow_user_access(void __user *to, const void __user
+ 
+ #endif /* !CONFIG_PPC_KUAP */
+ 
+-static inline void prevent_user_access(unsigned long dir)
++static __always_inline void prevent_user_access(unsigned long dir)
+ {
+ 	set_kuap(AMR_KUAP_BLOCKED);
+ 	if (static_branch_unlikely(&uaccess_flush_key))
+-- 
+2.34.1
 
