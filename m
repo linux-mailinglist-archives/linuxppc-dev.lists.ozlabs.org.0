@@ -1,128 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BFEB4B2823
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 15:42:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B57AB4B281F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 15:41:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JwGY90tjHz3cPT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Feb 2022 01:42:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JwGXc2XGMz3cPP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Feb 2022 01:41:52 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mjY/vsvS;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::605;
- helo=fra01-pr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com
- (mail-pr2fra01on0605.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e18::605])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=mjY/vsvS; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JwGWr5sBsz3bbC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Feb 2022 01:41:11 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Fpnyx9zkaWMSUsNp4kBiOvoOtQNA0fe9U2bZRsh+lCWspPEmPME/qOCCqVw4FhWmB6dy1BW04rcoG3ECFWwFvaK8ED+0Tr7FytqK6A89yaqTLRiExpj4YITJkqFh305Cy2K4aEVAY8yDTQ5QXxiIsrRakkIjpsqlxS83KpvpQdlDL77uUcgB7l7am+BRUdizrx9QHDPVr2IZKBSwKZ9cDlM95GLcIFoPxg79dNdeskDxktdQoo7+iEbudUAAV2j6nGf1C2ibXEoSLWWW3YrYv4iY4/2iSSpW4Ez/kGnLQDRad/RnXzhAeE6/Lh6uAqkwOelZkACquVYwo0hz04Fecg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=teqS40ATljObvx9yV3MzqGApTUSz1Q8V8A0TLlgp6rA=;
- b=dydq27cUqEvqFxU/+r0lmuSMPTvo5ePwccqzEH8kLH3+Rv+hpIYLlvqRVHuHfm+Pqs9JA+sb7KSty8rhEzaJUKu3J5uX8g6f41QGTPUamGWl4qLGI8WEJMgdxmR/zCEK2OEpKVphK/aAE+StALGPQzkT5245qk65Xlya12VciKXZi9LD71tWZiSJqJE8Lx55fC2XGbkcE0h4KtglHCrezNR9cTZ3f2ybEuLYMIhqTZfIT6myHeOcud9x+0glOCJAr0mwzYGaE1cRMUciEM+t168zcmZsdCRi+CsmiDFerllcPdKEpZlMmjHbfVklAn6zEy/HaoH7mUJpqGsTH18nFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MR1P264MB2882.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:37::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.12; Fri, 11 Feb
- 2022 14:40:49 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c9a2:1db0:5469:54e1]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c9a2:1db0:5469:54e1%9]) with mapi id 15.20.4975.011; Fri, 11 Feb 2022
- 14:40:49 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Daniel Borkmann
- <daniel@iogearbox.net>, Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>
-Subject: Re: [RFC PATCH 0/3] powerpc64/bpf: Add support for BPF Trampolines
-Thread-Topic: [RFC PATCH 0/3] powerpc64/bpf: Add support for BPF Trampolines
-Thread-Index: AQHYG/GPWbNig1tz50Kf4rwZD273ZayOctWA
-Date: Fri, 11 Feb 2022 14:40:49 +0000
-Message-ID: <918b842d-f674-bbdb-c772-b43a00f1b155@csgroup.eu>
-References: <cover.1644216043.git.naveen.n.rao@linux.vnet.ibm.com>
-In-Reply-To: <cover.1644216043.git.naveen.n.rao@linux.vnet.ibm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2a0e6860-e776-4ad8-bae3-08d9ed6c7f36
-x-ms-traffictypediagnostic: MR1P264MB2882:EE_
-x-microsoft-antispam-prvs: <MR1P264MB28825C9E620EF9CFDF23C4C0ED309@MR1P264MB2882.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: apocuxWa5y0DdJ7llkveyz7QPqwG245lr2t34Eq5IVuHYTAv9YGDPsCJ3nNvKgBCZscMpyImSP8t+xZR5+nANQRYHU1tv1OPT+uH6zH0Wkb+ohaRgJAwZf9IJIwYtwATq4J2Okw45RsjFN2dw+TMr+sff9WOhJVZ0/GFY940vK3T4fmLeZ116RuElpqSFLLkwY1J4H4wgN8FkdFQcSRYq3/6Rg4jLN+Ttqm4A/lk5KfnZqgwolHj+wF4LDhzFoMcsQbeP8kHVbJSng5IL5/GApvSZ8994LOkTSwGYncoNawOx7lO4Nepo2uxuciK/xJMYHRnl85Lo3x8dPiuGYK6782JYvSrr7AGJZopjRTP4m8xOM2C9Xmi1rKXTBlWGD/HjiBDFLkzjHUJnyCQmJzZLll1eH1zdlCdexu+AJgk04Gh4txCFFIez8gO8Fp1VIPa2LleSkUDcbziSSeBr4NLOw0qb9pnPlN/09DCuvMmmudiDWJsLbD9E2zniAjN7kMFp0kNsmD7rR/zh8FOOSnsbU8rwXTOlL53ZvvLN+FvUwB45kGHYzaMNNCZExzcuK5SW1RwAVsqYSWBVVqifslJINbQbT7fnJ2i2Vw0M4O+tBjG/FCbpt/0E9vRRda4N/N4w07z/cN11e0Rn1B9xLJ9msojS5V0ai4bzkbFTJnqxkO86D5uinqo09J3sID/weQjbCj79/2H2FjTsRuSpkwsIIhhRr8hYRHqw0sCZIQiJ/IrWtMeZuF586CiOuxeAGJXDh0nC/DeHzKpk/VlGDiaGw==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(7416002)(6506007)(38070700005)(66946007)(76116006)(6486002)(6512007)(64756008)(8676002)(66476007)(31686004)(8936002)(66556008)(36756003)(66446008)(54906003)(316002)(110136005)(186003)(508600001)(44832011)(86362001)(71200400001)(26005)(2616005)(38100700002)(66574015)(91956017)(4326008)(2906002)(83380400001)(4744005)(122000001)(5660300002)(31696002)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MTJFclEwWDJZSXdjYkI5bGpkMXZOQkNlMjVmS2Q5b0d0TS9BWFJFcU9KcVBY?=
- =?utf-8?B?S1FLbFFKZTNtVHcxTlR0d1RGTlRUZG9XNURjdDRoRzRnMkhqWGIrYmZZS1lt?=
- =?utf-8?B?dUM1YnRKRmoyazBtUVoyNVJvbm83d3ROaDFicTh3UWtoVnVoVHljS3RtTUtt?=
- =?utf-8?B?Y0pNbWs2bTRBays3Qkh0dmpHbTVnWm1BZlF3R3MxVFpwV1o1ZXVTcGduNThh?=
- =?utf-8?B?a1IzSUtaMFRvNDliQXlUV2xhRFZ6cDM1THZGYi91MWVYOVFLV3JVaDhscWhH?=
- =?utf-8?B?Tjk2NHlSb3JGYVJSOTExeml0UGxXcXBIYkJ4WTc5d1ZTcTBVRWFhR3lUN04w?=
- =?utf-8?B?OUdBVUloQTZ1eEtOb3VocTRBczVkVDQzcFkvSmZtV3d6TE5kMHg0OFE0V0l2?=
- =?utf-8?B?SUh0MnFtVjg3bGNNQm5QUW02ZGdlQ1lmLzlXelR6K2xtQUtQbFdDZlRGVnFF?=
- =?utf-8?B?UUJWL0c0Y3Q0S2NnNU5uQnRUK3F3WTFtZDVybDBCZTdObzF2ZHJOelpyNkIx?=
- =?utf-8?B?K2RrWFExYXJhbnp1eWpnb1QxVzZkM0hxdTQwbGtjNHlTRlFoYW1XbkpDUjE1?=
- =?utf-8?B?M0k4d2hiWjhld1RFQm5ZL2RtUmJDNTJUMTdqRzF1ZE1jdVhqYU1mcXRGTElp?=
- =?utf-8?B?SjhXVE1DUWkvWW8vSnpGblJ4Yk1NbFRBc2FuTDlWUFNUNitHVnA0R0FwbXlL?=
- =?utf-8?B?TUw2bExxOFdwWVNyaGZaV1hjZkVhajF6cHpCekRuWXc3MS9nL1VpekhpRHV3?=
- =?utf-8?B?bXRxL29Wc2dlbklIWW1YRjhnMllFMFNkejN2MUFYUS9waTJxa0M3VUZlNkI2?=
- =?utf-8?B?WllsZWt5S0NpOXpYamE0K3UwY2pPYnV3Qjl6VmhoWi8vRHJpQmI5YzY4bDBo?=
- =?utf-8?B?OFo3ajAxbGhjUnNvTjR6UklmOUZzTVVkRFV5Zkt4cHZzVmhvaHRPRFBsUlJN?=
- =?utf-8?B?UCtMNTRkR0Q4dHloRlFOUy9WdThDM0JSQm1MbXVtZGhPOThFMnpUaWx5cXhH?=
- =?utf-8?B?U1BmbWgxNFVxSGR1cDl5a1JFQ0o5SzlHMzFXSG5YQXlRM2F5Vkg0K3lvcTdP?=
- =?utf-8?B?L3lxLzJ0QzhIVmNteG9wRUlsMlFKWDlVTDdYRXF2YkppRGVBZm01U1NIN3A4?=
- =?utf-8?B?SHhOWk9WWWpNZ0FUempHMUtIZkRhT0Jiem5tNzJvaUlrODBKbWtIL01aL29H?=
- =?utf-8?B?TG9lQ2lBb2ZqZ0ZrbmV6Q3lYWWZJVS9SbStwTFIvM0RaM2NTWDB1czdjVW9K?=
- =?utf-8?B?TkFBTnUxS0tXaDZpMXlITVRWaFoxWW84cXo1Q242YjdHWkdUbC96ZnQwYXh6?=
- =?utf-8?B?RzlLR2F4UjBJVGVQWDFicHlGNXpIVVRlbUFJVDZ2VVNPU3BIcGxVVDBIMFZq?=
- =?utf-8?B?RklJTFZkUHZYOVVYMWFWVExVNUkzTGw1cWhFdkJsWW1vVzUrQ2Q2Q2x0dSts?=
- =?utf-8?B?LzJyWFB3UFdGY1FSMDc4MVVLV0JrRFhjZ2hJdnluVDVsY3pqSWxPejFHay81?=
- =?utf-8?B?cG4veEJYdUhaTlVXQUJNMWZSYVRrUGZxMEp6MzI4aS9nZ2l6emVtNmlnTVhl?=
- =?utf-8?B?ejhuc0lLSks2NXdPZnI1NjVRMGlwZnpleUdlWFE3cHpqVkl3alRWQWFHNzR1?=
- =?utf-8?B?WXp4SWs2bVBDSm52RndZcnl5c1liMlFuM2FTdGJvbThxZkw3bWwxanBrK3BE?=
- =?utf-8?B?K2V3SityaG96MnNOUWxtb3FkQkgyRHFOdVZpeW1XUEg1SFczU1dNc1BKTExP?=
- =?utf-8?B?YVNwZTVyY3NmSitPZWtReExybnA4MWFubnlmdXlPSzR5cXRwaUI5azJmdW43?=
- =?utf-8?B?MzVTVGY3Ykh6bXNnWE9lVUhGVjVad3ZPaXpyTjRQbnRIV1FyR09CTU0rRTk2?=
- =?utf-8?B?YXFtU1JFY3BWeHZIekxMUk1pc1pSZXhZTHRnM1ovejJJV2FVU3huR3g1cnRQ?=
- =?utf-8?B?VU9iSnJFYUlyakVXU3lxcG5xVHJLN0RoUkh3OUI1emlLcFNrcHFyQmE3RUpK?=
- =?utf-8?B?bEFLRHJZNm0vbGFjaGQxcVBib2hQUmtXU3kzMklJMFF0NEVhSWRjTHdkcXRi?=
- =?utf-8?B?VjdsY1MyRkZFZm5Lc2MxRGoyV3RTclVtb2hJd1VuVzBQUnBOWC9OVXZTSlBN?=
- =?utf-8?B?dHI5SzRGbElvaFVMRGFvUnBlYVQxQXJ0cUZ3SmZzZC9yOFcwV3VzVThFZW5o?=
- =?utf-8?B?MWtGb2NXc1RqUWZxdFU2Rjl4MDEzNWF0K3BBQnFpNm13bGl5NWxLaThFa3Rs?=
- =?utf-8?Q?RDnyqh4UZFq1p16eE5GsdFXIh4K6Xs45UunqFI+v50=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <184AB79BD660DE4BA06144E1A52B842B@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JwGWp6hC6z3bbC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Feb 2022 01:41:10 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21BDqZKs022372; 
+ Fri, 11 Feb 2022 14:41:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=JATZNJqZJS/wZvYHSnvOH8jVCuRr6CNr/sRNhLdJ4ak=;
+ b=mjY/vsvSR19zgTuoGusKCtsW9TeV98X8ackJJQV/vX7MZLhcOhzXWw2lHAoVAcG2VvNl
+ EV8UbvTCCGyMFR+gJjiX/Cj75rETN+6J3Mmpk7pNboSaJmABbensXPbWAt3d0n/Jkr0n
+ ir/dSeqCtZzk+OmgmPW0i43oTxnw7JsCbi4AUGfBYM2J26hLE4LmRrs4Th3LE76Aug7v
+ DpKjWalkZzBtfwq8sQ1uctRj2KvURIDx7o04NvEohjxRGWYFAbMn0X2lswHWQtws0l41
+ 09R3vOKWDi4xBdxd6AM+CjBlzOFnuHjx5Zm5Td65LCmyFwmjOq/AGqkUJtBHzAreerZa yA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e5gbvu9rc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 11 Feb 2022 14:41:00 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21BEY503008097;
+ Fri, 11 Feb 2022 14:41:00 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e5gbvu9r5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 11 Feb 2022 14:41:00 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21BEXQml028101;
+ Fri, 11 Feb 2022 14:40:59 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma02dal.us.ibm.com with ESMTP id 3e3gq1wqd8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 11 Feb 2022 14:40:59 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 21BEew3s27918688
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 11 Feb 2022 14:40:58 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E08DCB2068;
+ Fri, 11 Feb 2022 14:40:57 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 131A5B2064;
+ Fri, 11 Feb 2022 14:40:55 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.43.15.152])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 11 Feb 2022 14:40:54 +0000 (GMT)
+X-Mailer: emacs 29.0.50 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ mpe@ellerman.id.au, Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2] powerpc/mm: Update default hugetlb size early
+In-Reply-To: <87tud5a8x5.fsf@linux.ibm.com>
+References: <20220211065215.101767-1-aneesh.kumar@linux.ibm.com>
+ <831ee5f6-8605-02d2-b7e5-543aec4857c3@redhat.com>
+ <05d6615a-50c7-1b23-1bab-0e0b64dd4e81@linux.ibm.com>
+ <b77816ef-80fd-40b7-cf6e-6de2a3125eb1@redhat.com>
+ <87tud5a8x5.fsf@linux.ibm.com>
+Date: Fri, 11 Feb 2022 20:10:51 +0530
+Message-ID: <87r189a2ks.fsf@linux.ibm.com>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a0e6860-e776-4ad8-bae3-08d9ed6c7f36
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Feb 2022 14:40:49.5484 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0hSa1Wi6qzoieZzhKFQ1ipfOV/rI3mpQo17WFMx/JkREU35X1L/CJVQpPSqZgBb9HihPZt30Tt3b51AlM7O7wOAlDzYtIAFzDl2+4bu5b/A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2882
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: _gui-2i-9z0ym3Kf6yOaLq8ZIkvW11ka
+X-Proofpoint-GUID: uhvW8ZloxLwm2bz_0p9lHB6N-kQBwEC_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-11_04,2022-02-11_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ mlxlogscore=999 spamscore=0 mlxscore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 phishscore=0 impostorscore=0 clxscore=1015 lowpriorityscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202110080
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,23 +109,159 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Yauheni Kaliuta <yauheni.kaliuta@redhat.com>,
- Jordan Niethe <jniethe5@gmail.com>, Jiri Olsa <jolsa@redhat.com>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Hari Bathini <hbathini@linux.ibm.com>
+Cc: linux-mm@kvack.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDA3LzAyLzIwMjIgw6AgMDg6MDcsIE5hdmVlbiBOLiBSYW8gYSDDqWNyaXTCoDoNCj4g
-VGhpcyBpcyBhbiBlYXJseSBSRkMgc2VyaWVzIHRoYXQgYWRkcyBzdXBwb3J0IGZvciBCUEYgVHJh
-bXBvbGluZXMgb24NCj4gcG93ZXJwYzY0LiBTb21lIG9mIHRoZSBzZWxmdGVzdHMgYXJlIHBhc3Np
-bmcgZm9yIG1lLCBidXQgdGhpcyBuZWVkcyBtb3JlDQo+IHRlc3RpbmcgYW5kIEkndmUgbGlrZWx5
-IG1pc3NlZCBhIGZldyB0aGluZ3MgYXMgd2VsbC4gQSByZXZpZXcgb2YgdGhlDQo+IHBhdGNoZXMg
-YW5kIGZlZWRiYWNrIGFib3V0IHRoZSBvdmVyYWxsIGFwcHJvYWNoIHdpbGwgYmUgZ3JlYXQuDQo+
-IA0KPiBUaGlzIHNlcmllcyBkZXBlbmRzIG9uIHNvbWUgb2YgdGhlIG90aGVyIEJQRiBKSVQgZml4
-ZXMgYW5kIGVuaGFuY2VtZW50cw0KPiBwb3N0ZWQgcHJldmlvdXNseSwgYXMgd2VsbCBhcyBvbiBm
-dHJhY2UgZGlyZWN0IGVuYWJsZW1lbnQgb24gcG93ZXJwYw0KPiB3aGljaCBoYXMgYWxzbyBiZWVu
-IHBvc3RlZCBpbiB0aGUgcGFzdC4NCg0KSXMgdGhlcmUgYW55IHJlYXNvbiB0byBsaW1pdCB0aGlz
-IHRvIHBvd2VycGM2NCA/DQoNCkNocmlzdG9waGU=
+Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com> writes:
+
+> David Hildenbrand <david@redhat.com> writes:
+>
+>> On 11.02.22 10:16, Aneesh Kumar K V wrote:
+>>> On 2/11/22 14:00, David Hildenbrand wrote:
+>>>> On 11.02.22 07:52, Aneesh Kumar K.V wrote:
+>>>>> commit: d9c234005227 ("Do not depend on MAX_ORDER when grouping pages by mobility")
+....
+....
+
+> I could build a kernel with FORCE_MAX_ZONEORDER=8 and pageblock_order =
+> 8. We need to disable THP for such a kernel to boot, because THP do
+> check for PMD_ORDER < MAX_ORDER. I was able to boot that kernel on a
+> virtualized platform, but then gigantic_page_runtime_supported is not
+> supported on such config with hash translation.
+>
+> On non virtualized platform I am hitting crashes like below during boot.
+>
+> [   47.637865][   C42] =============================================================================                                                                                                                                                                                                              
+> [   47.637907][   C42] BUG pgtable-2^11 (Not tainted): Object already free                                                                                     
+> [   47.637925][   C42] -----------------------------------------------------------------------------                                                           
+> [   47.637925][   C42]                                                                                                                                         
+> [   47.637945][   C42] Allocated in __pud_alloc+0x84/0x2a0 age=278 cpu=40 pid=1409                                                                             
+> [   47.637974][   C42]  __slab_alloc.isra.0+0x40/0x60                                                                                                          
+> [   47.637995][   C42]  kmem_cache_alloc+0x1a8/0x510                                                                                                           
+> [   47.638010][   C42]  __pud_alloc+0x84/0x2a0                                                                                                                 
+> [   47.638024][   C42]  copy_page_range+0x38c/0x1b90                                                                                                           
+> [   47.638040][   C42]  dup_mm+0x548/0x880                                                                                                                     
+> [   47.638058][   C42]  copy_process+0xdc0/0x1e90                                                                                                              
+> [   47.638076][   C42]  kernel_clone+0xd4/0x9d0                                                                                                                
+> [   47.638094][   C42]  __do_sys_clone+0x88/0xe0                                                                                                               
+> [   47.638112][   C42]  system_call_exception+0x368/0x3a0                                                                                                      
+> [   47.638128][   C42]  system_call_common+0xec/0x250                                                                                                          
+> [   47.638147][   C42] Freed in __tlb_remove_table+0x1d4/0x200 age=263 cpu=57 pid=326                                                                          
+> [   47.638172][   C42]  kmem_cache_free+0x44c/0x680                                                                                                            
+> [   47.638187][   C42]  __tlb_remove_table+0x1d4/0x200                                                                                                         
+> [   47.638204][   C42]  tlb_remove_table_rcu+0x54/0xa0                                                                                                         
+> [   47.638222][   C42]  rcu_core+0xdd4/0x15d0                                                                                                                  
+> [   47.638239][   C42]  __do_softirq+0x360/0x69c                                                                                                               
+> [   47.638257][   C42]  run_ksoftirqd+0x54/0xc0                                                                                                                
+> [   47.638273][   C42]  smpboot_thread_fn+0x28c/0x2f0                                                                                                          
+> [   47.638290][   C42]  kthread+0x1a4/0x1b0                                                                                                                    
+> [   47.638305][   C42]  ret_from_kernel_thread+0x5c/0x64                                                                                                       
+> [   47.638320][   C42] Slab 0xc00c00000000d600 objects=10 used=9 fp=0xc0000000035a8000 flags=0x7ffff000010201(locked|slab|head|node=0|zone=0|lastcpupid=0x7ffff)                                                                                                                                                              
+> [   47.638352][   C42] Object 0xc0000000035a8000 @offset=163840 fp=0x0000000000000000                                                                          
+> [   47.638352][   C42]                                                                                                                                         
+> [   47.638373][   C42] Redzone  c0000000035a4000: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................                                            
+> [   47.638394][   C42] Redzone  c0000000035a4010: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................                                            
+> [   47.638414][   C42] Redzone  c0000000035a4020: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................                                            
+> [   47.638435][   C42] Redzone  c0000000035a4030: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................                                            
+> [   47.638455][   C42] Redzone  c0000000035a4040: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................                                            
+> [   47.638474][   C42] Redzone  c0000000035a4050: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................                                            
+> [   47.638494][   C42] Redzone  c0000000035a4060: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................                                            
+> [   47.638514][   C42] Redzone  c0000000035a4070: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................                                            
+> [   47.638534][   C42] Redzone  c0000000035a4080: bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb bb  ................                                            
+
+Ok that turned out to be unrelated. I was using a wrong kernel. I can
+boot kernel with pageblock_order > MAX_ORDER and run hugetlb related
+test fine. I do get the below warning which you had already called out
+in your patch.
+
+[    3.952124] WARNING: CPU: 16 PID: 719 at mm/vmstat.c:1103 __fragmentation_index+0x14/0x70                                                                   
+[    3.952136] Modules linked in:                                                                                                                              
+[    3.952141] CPU: 16 PID: 719 Comm: kswapd0 Tainted: G    B             5.17.0-rc3-00044-g69052ffa0e08 #68                                                   
+[    3.952149] NIP:  c000000000465264 LR: c000000000468544 CTR: 0000000000000000                                                                               
+[    3.952154] REGS: c000000014a4f7e0 TRAP: 0700   Tainted: G    B              (5.17.0-rc3-00044-g69052ffa0e08)
+[    3.952161] MSR:  9000000000029033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 44042422  XER: 20000000
+[    3.952174] CFAR: c000000000468540 IRQMASK: 0                  
+               GPR00: c000000000468544 c000000014a4fa80 c000000001ea9500 0000000000000008 
+               GPR04: c000000014a4faa0 00000000001fd700 0000000000004003 00000000001fd92d 
+               GPR08: c000001fffd1c7a0 0000000000000008 0000000000000008 0000000000000000 
+               GPR12: 0000000000002200 c000001fffff2880 0000000000000000 c000000013cfd240                                                                      
+               GPR16: c000000011940600 c000001fffd21058 0000000000000d00 c000000001407d30                                                                      
+               GPR20: ffffffffffffffaf c000001fffd21098 0000000000000000 c000000002ab7328                                                                      
+               GPR24: c000000011940600 c000001fffd21300 0000000000000000 0000000000000008 
+               GPR28: c000001fffd1c280 0000000000000008 0000000000000000 0000000000000004                                                                      
+[    3.952231] NIP [c000000000465264] __fragmentation_index+0x14/0x70                                                                                          
+[    3.952237] LR [c000000000468544] fragmentation_index+0xb4/0xe0                                                                                             
+[    3.952244] Call Trace:                                        
+[    3.952247] [c000000014a4fa80] [c00000000023e248] lock_release+0x138/0x470 (unreliable)
+[    3.952256] [c000000014a4fac0] [c00000000047cd84] compaction_suitable+0x94/0x270
+[    3.952263] [c000000014a4fb10] [c0000000004802b8] wakeup_kcompactd+0xc8/0x2a0
+[    3.952270] [c000000014a4fb60] [c000000000457568] balance_pgdat+0x798/0x8d0
+[    3.952277] [c000000014a4fca0] [c000000000457d14] kswapd+0x674/0x7b0                                                                                        
+[    3.952283] [c000000014a4fdc0] [c0000000001d7e84] kthread+0x144/0x150                                                                                       
+[    3.952290] [c000000014a4fe10] [c00000000000cd74] ret_from_kernel_thread+0x5c/0x64
+[    3.952297] Instruction dump:                                      
+[    3.952301] 7d2021ad 40c2fff4 e8ed0030 38a00000 7caa39ae 4e800020 60000000 7c0802a6 
+[    3.952311] 60000000 28030007 7c6a1b78 40810010 <0fe00000> 60000000 60000000 e9040008 
+[    3.952322] irq event stamp: 0                                        
+[    3.952325] hardirqs last  enabled at (0): [<0000000000000000>] 0x0                                                                                         
+[    3.952331] hardirqs last disabled at (0): [<c000000000196030>] copy_process+0x970/0x1de0                                                                   
+[    3.952339] softirqs last  enabled at (0): [<c000000000196030>] copy_process+0x970/0x1de0                                                                   
+[    3.952345] softirqs last disabled at (0): [<0000000000000000>] 0x0                                                                                         
+
+I am not sure whether there is any value in selecting MAX_ORDER = 8 on
+ppc64. If not we could do a patch as below for ppc64.
+
+commit 09ed79c4fda92418914546f36c2750670503d7a0
+Author: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Date:   Fri Feb 11 17:15:10 2022 +0530
+
+    powerpc/mm: Disable MAX_ORDER value 8 on book3s64 with 64K pagesize
+    
+    With transparent hugepage support we expect HPAGE_PMD_ORDER < MAX_ORDER.
+    Without this we BUG() during boot as below
+    
+    cpu 0x6: Vector: 700 (Program Check) at [c000000012143880]
+        pc: c000000001b4ddbc: hugepage_init+0x108/0x2c4
+        lr: c000000001b4dd98: hugepage_init+0xe4/0x2c4
+        sp: c000000012143b20
+       msr: 8000000002029033
+      current = 0xc0000000120d0f80
+      paca    = 0xc00000001ec7e900   irqmask: 0x03   irq_happened: 0x01
+        pid   = 1, comm = swapper/0
+    kernel BUG at mm/huge_memory.c:413!
+    [c000000012143b20] c0000000022c0468 blacklisted_initcalls+0x120/0x1c8 (unreliable)
+    [c000000012143bb0] c000000000012104 do_one_initcall+0x94/0x520
+    [c000000012143c90] c000000001b04da0 kernel_init_freeable+0x444/0x508
+    [c000000012143da0] c000000000012d8c kernel_init+0x44/0x188
+    [c000000012143e10] c00000000000cbf4 ret_from_kernel_thread+0x5c/0x64
+    
+    Hence a FORCE_MAX_ZONEORDER of value < 9 doesn't make sense with THP
+    enabled. We also cannot have value > 9 because we are limitted by
+    SECTION_SIZE_BITS
+    
+     #if (MAX_ORDER - 1 + PAGE_SHIFT) > SECTION_SIZE_BITS
+     #error Allocator MAX_ORDER exceeds SECTION_SIZE
+     #endif
+    
+    We can select MAX_ORDER value 8 by disabling THP support but then that
+    results in pageblock_order > MAX_ORDER - 1 which is not fully tested/supported.
+    
+    Cc: David Hildenbrand <david@redhat.com>
+    Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index b779603978e1..a050f5f46df3 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -807,7 +807,7 @@ config DATA_SHIFT
+ 
+ config FORCE_MAX_ZONEORDER
+ 	int "Maximum zone order"
+-	range 8 9 if PPC64 && PPC_64K_PAGES
++	range 9 9 if PPC64 && PPC_64K_PAGES
+ 	default "9" if PPC64 && PPC_64K_PAGES
+ 	range 13 13 if PPC64 && !PPC_64K_PAGES
+ 	default "13" if PPC64 && !PPC_64K_PAGES
+
