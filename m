@@ -2,51 +2,109 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E124B244D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 12:30:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 702404B248A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 12:38:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JwBHZ3GQhz3cQ8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 22:30:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JwBTD0df9z3bbH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 22:38:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aA2uFoAh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Kyp1VP9K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JwBGv293hz3bVK
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Feb 2022 22:29:43 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=aA2uFoAh; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JwBGr2lfdz4xRB;
- Fri, 11 Feb 2022 22:29:40 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1644578982;
- bh=jVoIClN15+OtLQuv2Kdtn7rJzhfibLfv/3zw6QaPCWg=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=aA2uFoAhqcTnM5aYJUTHpBDSIhoHEqhd+F+G/yoE8Ifa9EFZJdFmdbWvwgvc21ZUd
- In/GxrGv/88X/cuscJlxnjiOmxH1ej2HLJwJKyrx5A7O+JtU5XD8ifQTpyVnqoC8vI
- W+YP1aXhw6Q2XxbtBgGSY7eaIVFoQt1UKjkaOJAi61/Vf2/pSMmCGuNl5FoeiGJyZ3
- /zjZtGC3wrdPnYya2Ne7T9bsbs3IETUmLeXirke52q5RRuH5G+bUlvy02T3jiLsU4J
- 13qggON3Is8nx6XbvdckUtKyWDPor+2vJSbuluNC1Z87h6mN3sPR76f9p20mACdFm8
- Zf/xetor5pTUw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ash Logan <ash@heyquark.com>, benh@kernel.crashing.org, paulus@samba.org
-Subject: Re: [RFC] Upstreaming Linux for Nintendo Wii U
-In-Reply-To: <0020d47c-0e23-822c-33f5-ccb7ea4c1072@heyquark.com>
-References: <0020d47c-0e23-822c-33f5-ccb7ea4c1072@heyquark.com>
-Date: Fri, 11 Feb 2022 22:29:36 +1100
-Message-ID: <87ee49sktb.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Kyp1VP9K; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JwBST1gW6z3bVf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Feb 2022 22:38:00 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21B8MiZa001247; 
+ Fri, 11 Feb 2022 11:37:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=MWlKOgEikHFkQbZ2J6EozVGERprdr0dxmmmtMQPQ/GI=;
+ b=Kyp1VP9KrRAJxQAU+eXEildp/HeeuivZoTcQt3tNy3crG1ZqqpsvadLHKDG76Dj6Ec0E
+ Qt6UUUNfkyY919jTCzCm3dzVJm1z8AbsX+RY/ULK6+USaKSo5Pk2oWJjHE7QBkDISQtD
+ /QWtUg44Cqe5DyUB66mXKStFLg0V5zXFUbWXU0j4dI2CLuNtZIhToXWa2GNejqzBxm/b
+ xjBlI5i7sZZ+dTjSg94Aj+avXVdHWmGt5lQgy9suAvLLQ7qQZsEI334O4zlEFYbGRf7s
+ JPzEZflp8TfuTXRAxJjoCie//O7hJw3/KLVhP6t8zPdbyawFzv7KyXJXECGQXFZ+pMTM uA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e59swe05y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 11 Feb 2022 11:37:07 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21BBMqah008544;
+ Fri, 11 Feb 2022 11:37:06 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e59swe04w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 11 Feb 2022 11:37:06 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21BBW7aM031482;
+ Fri, 11 Feb 2022 11:37:03 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06ams.nl.ibm.com with ESMTP id 3e1ggks99e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 11 Feb 2022 11:37:03 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 21BBb1oT39125434
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 11 Feb 2022 11:37:01 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6F448AE045;
+ Fri, 11 Feb 2022 11:37:01 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 00F84AE04D;
+ Fri, 11 Feb 2022 11:37:01 +0000 (GMT)
+Received: from localhost (unknown [9.43.26.72])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 11 Feb 2022 11:37:00 +0000 (GMT)
+Date: Fri, 11 Feb 2022 17:06:59 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [RFC PATCH 2/3] powerpc/ftrace: Override ftrace_location_lookup()
+ for MPROFILE_KERNEL
+To: Steven Rostedt <rostedt@goodmis.org>
+References: <cover.1644216043.git.naveen.n.rao@linux.vnet.ibm.com>
+ <fadc5f2a295d6cb9f590bbbdd71fc2f78bf3a085.1644216043.git.naveen.n.rao@linux.vnet.ibm.com>
+ <20220207102454.41b1d6b5@gandalf.local.home>
+ <1644426751.786cjrgqey.naveen@linux.ibm.com>
+ <20220209161017.2bbdb01a@gandalf.local.home>
+ <1644501274.apfdo9z1hy.naveen@linux.ibm.com>
+ <20220210095944.1fe98b74@gandalf.local.home>
+ <1644508338.5ucomwqtts.naveen@linux.ibm.com>
+ <20220210120152.00d24b64@gandalf.local.home>
+In-Reply-To: <20220210120152.00d24b64@gandalf.local.home>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1644579392.dotfvngs71.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: aXE9rOkXWLfOtWMO1n9rJTvmZrqufkyp
+X-Proofpoint-ORIG-GUID: THFEPOkaLdLyov42li4LOlLizcBY7b16
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-11_04,2022-02-11_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ adultscore=0 spamscore=0 clxscore=1015 mlxlogscore=999 malwarescore=0
+ suspectscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202110066
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,74 +116,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linkmauve@linkmauve.fr, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- linuxppc-dev@lists.ozlabs.org, j.ne@posteo.net
+Cc: Daniel Borkmann <daniel@iogearbox.net>,
+ Yauheni Kaliuta <yauheni.kaliuta@redhat.com>,
+ Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ bpf@vger.kernel.org, Jiri Olsa <jolsa@redhat.com>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ash Logan <ash@heyquark.com> writes:
-> Hello,
+Steven Rostedt wrote:
+> On Thu, 10 Feb 2022 16:40:28 +0000
+> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
+>=20
+>> The other option is to mark ftrace_cmp_recs() as a __weak function, but=20
+>> I have a vague recollection of you suggesting #ifdef rather than a=20
+>> __weak function in the past. I might be mis-remembering, so if you think=
+=20
+>> making this a __weak function is better, I can do that.
+>=20
+> No. If I wanted that I would have suggested it. I think this is the
+> prettiest of the ugly solutions out there ;-)
 
-Hi Ash,
+Understood :)
 
-I can't really answer all your questions, but I can chime in on one or
-two things ...
+>=20
+> As I said, I can't think of a better solution, and we can go with this
+> until something else comes along.
 
-> - Right now I've made a new platform (like ps3) rather than joining the
-> GameCube and Wii in embedded6xx, since that is marked as BROKEN_ON_SMP.
-> The Wii U is a 3-core system, though a CPU bug[8] prevents existing
-> userspaces working with it. Bit of a "cross that bridge when we get
-> there" situation, though I'm reluctant to prevent that possibility by
-> using a BROKEN_ON_SMP platform.
-
-I'm happy for it to be a new platform. I'd almost prefer it to be a
-separate platform, that way you can make changes in your platform code
-without worrying (as much) about breaking other platforms.
-
-> - Like the Wii before it, the Wii U has a small amount of RAM at address
-> zero, a gap, then a large amount of RAM at a higher address. Instead of
-> the "map everything and reserve the gap" approach of the Wii, we loop
-> over each memblock and map only true RAM[9]. This seems to work, but as
-> far as I can tell is unique amongst powerpc32 platforms, so it's worth
-> pointing out. (Note: I've been told this doesn't work anymore after some
-> KUAP changes[10], so this point might be moot; haven't investigated)
-
-We'd need more detail on that I guess. Currently all the 32-bit
-platforms use the flat memory model, which assumes RAM is a single
-contiguous block. Though that doesn't mean it all has to be used or
-mapped, like the Wii does. To properly support your layout you should be
-using sparsemem, but it's possible that's more trouble than it's worth,
-I'm not sure. How far apart are the low and high blocks of RAM, and what
-are their sizes?
-
-> - Due to the aformentioned DMA restrictions and possibly a fatal
-> bytemasking bug on uncached mappings[11], I have been wondering if it'd
-> be better to just give up on the SRAM at address 0 altogether and use it
-> as VRAM or something, loading the kernel at a higher address.
-
-Don't you have exceptions entering down at low addresses? Even so you
-could possibly trampoline them up to the kernel at a high address.
- 
-> In terms of platform bringup, the key issue is whether to be embedded6xx
-> or not and what output device to use. Beyond that it's just things like
-> IRQ controller drivers, should be pretty straightforward. I think on our
-> end, we'll start rebasing to 5.15 (LTS) and start sending patches from
-> there. I know getting closer to HEAD is preferable, this project has
-> just moved very slowly in the past and being on LTS has been a lifesaver.
-
-As I said I'm happy for it to be a new platform. If there ends up being
-a lot of shared code we can always refactor, but embedded6xx is only
-~1500 LOC anyway.
-
-One thing that has come up with previous console port submissions is the
-requirement for patches to be signed off. The docs are here if you
-aren't familiar with them:
-  https://www.kernel.org/doc/html/latest/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
-
-Otherwise your plan sounds good to me, 4.19 is pretty old so getting up
-to 5.15 would be a good start. Then submit whatever bits you can and
-chip away at it.
-
-cheers
+Thanks,
+- Naveen
