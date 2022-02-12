@@ -1,93 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9DC4B2AC2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Feb 2022 17:45:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD7B4B31A6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Feb 2022 01:06:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JwKHT0jTvz3dj8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Feb 2022 03:45:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JwW3Y2LLGz3cNB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Feb 2022 11:06:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sent.com header.i=@sent.com header.a=rsa-sha256 header.s=fm2 header.b=D3VqJlhl;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=YQN1sACl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=JZ4+ncYz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=sent.com (client-ip=66.111.4.221;
- helo=new1-smtp.messagingengine.com; envelope-from=zi.yan@sent.com;
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::229;
+ helo=mail-lj1-x229.google.com; envelope-from=ndesaulniers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=sent.com header.i=@sent.com header.a=rsa-sha256
- header.s=fm2 header.b=D3VqJlhl; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm2 header.b=YQN1sACl; 
- dkim-atps=neutral
-Received: from new1-smtp.messagingengine.com (new1-smtp.messagingengine.com
- [66.111.4.221])
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=JZ4+ncYz; dkim-atps=neutral
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com
+ [IPv6:2a00:1450:4864:20::229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JwKC54gMBz3bZF
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Feb 2022 03:41:53 +1100 (AEDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailnew.nyi.internal (Postfix) with ESMTP id 7367F58037F;
- Fri, 11 Feb 2022 11:41:51 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute4.internal (MEProxy); Fri, 11 Feb 2022 11:41:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sent.com; h=cc
- :cc:content-transfer-encoding:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to
- :reply-to:sender:subject:subject:to:to; s=fm2; bh=8yuexR1+nrtHGS
- O8wGNcV0MvB+tGU4p0S4nQ2u6/h9Y=; b=D3VqJlhlbyWtV6r6GqE/sdQHhhzfao
- jEbpnb9Wr0ZReRqYHRz6KCXTCd0yivunmYqzFRoQLkQegNx2uHlUfqnjdWV/uzSJ
- zU8M0dPa33aRq+dlCTIv1HKtBD/Kh7pykEWL/ODQJPonFg0wqPv8sIrL0qYanslJ
- /JLrIUPIaJr4Z6KM4Og/F2X8lkSYDPbN7ITWDitlcOlpiq78n71xOGLIXJXz0Odg
- DRLO19YIQToJHSo/aJlV9Z59lWZxCAiI+H1agFbgcJWflqv/7sa6Z/DEHrtZkp3d
- sm83CKxYJVqNKbxcCcoENzJCEn26apNqoREHw+PQFH0GDXE8WDR4bjCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:reply-to:sender:subject:subject:to:to
- :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm2; bh=8yuexR1+nrtHGSO8wGNcV0MvB+tGU4p0S4nQ2u6/h9Y=; b=YQN1sACl
- 87xj+F47lfbNUuu2eOmgbTwH2DjTS/HIzp4OOKxqbF9Ccp5g2TMpkwWX2gBWSZNt
- EIPNTSk5Nl922Lg6gwveaU2GuyEA3/UfkKtvPP7p+AGcRnn4sIlGCdRzlTfHo2x1
- OxQNvyL/puQhqVLBtDsJccw8y7Iaq1sUjOQ2m/rnf7M6NoneAkAyKwJj4wZzSkaB
- WxyqKOeTGmYirNdGfaMPZnppY7uXdXPT4AHgxf5NVJMRxE3UDqkMzGCzf8L0gtEi
- VzZ9ycKNj3Y88HlVS7sXcuD+X/zVMZSnrQ0sI1ttCUNu1pmn/5U64GI9YlSxP+j6
- Ee5VZdGDqCSGFw==
-X-ME-Sender: <xms:z5EGYoD0HNOZcFFbJ4BM6mXHloZ_7ZKKhfRmcpgqUKvf_v9Nj3klng>
- <xme:z5EGYqg29ZRCUlsrXWU4LEuzwwgbc33fWkpaJRahLkzsJe-fXsry7pQWrWrRrho17
- Ml7Nmn8zyL2dMmaxw>
-X-ME-Received: <xmr:z5EGYrmNw8VWdjs_Tz1ZRVcOLW6HyNjege8PTS3V998EKzdu4gQzO5LRhGwaiyvxWsdezm1N>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrieefgdeklecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpefhvffufffkofgjfhhrggfgsedtqhertdertddtnecuhfhrohhmpegkihcujggr
- nhcuoeiiihdrhigrnhesshgvnhhtrdgtohhmqeenucggtffrrghtthgvrhhnpeeijeeuvd
- euudeuhfeghfehieeuvdetvdeugfeigeevteeuieeuhedtgeduheefleenucevlhhushht
- vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpeiiihdrhigrnhesshgvnh
- htrdgtohhm
-X-ME-Proxy: <xmx:z5EGYuz5Bj9-JaqGriH-MKRe3zFXlOgPQ60DeTL5Jzmwi573abPhjQ>
- <xmx:z5EGYtQ1VmRFqGNTnFcrQNIS2JDX1K0F3ipTVIQHg82r79TtOBAQjQ>
- <xmx:z5EGYpb_ZyVuWCbl_iOa2f738FO1CUfDztTRyhGyeaILcTWnSeqCNQ>
- <xmx:z5EGYpp4NsHG7dNpBbY_x8GNgLUNpaRSeSapkd1LGcqN-l8MqDZo0Q>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 11 Feb 2022 11:41:50 -0500 (EST)
-From: Zi Yan <zi.yan@sent.com>
-To: David Hildenbrand <david@redhat.com>,
-	linux-mm@kvack.org
-Subject: [PATCH v5 6/6] arch: powerpc: adjust fadump alignment to be pageblock
- aligned.
-Date: Fri, 11 Feb 2022 11:41:35 -0500
-Message-Id: <20220211164135.1803616-7-zi.yan@sent.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220211164135.1803616-1-zi.yan@sent.com>
-References: <20220211164135.1803616-1-zi.yan@sent.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JwW2s65Cvz30Lp
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Feb 2022 11:05:23 +1100 (AEDT)
+Received: by mail-lj1-x229.google.com with SMTP id c15so14496342ljf.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Feb 2022 16:05:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=3wE/nOdJLWv1mzpBtdK/cJVk9Tp2iFdl54BX0oVeteY=;
+ b=JZ4+ncYzNYerj+moSCDWO1WJoiIH1M96FVDcYdw6NEPzkI0vfciZXqQRAJ/ExwSKWm
+ 4su7BW04KWOmgtSLfMWfmFwwPLUoxQMXYWPRUVsT0VuYtJ20G92SikYuCtyrx5evufpO
+ N26KJe6Z+HgUlAL/2VpEhB+DoS4ngCWobKH+HY7DUT67+fxZm239uiFhBRDD9YYE1yMS
+ e5fCMS0jPdtR9S7RB6LBOirrAFXoAK/6zoreaVyBSpBP1PpepUVqlOCB1ZYioEKq6Hkr
+ o0LQgL6mBPPLbsxzPWnWfoZAKZ8O48BoDo1avbbjjBi0eQWRjzpXbSLNlmahWCrqKf3U
+ JMiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=3wE/nOdJLWv1mzpBtdK/cJVk9Tp2iFdl54BX0oVeteY=;
+ b=sCuBcU/bihgKlXrysvUb12LCPPNxZejR4JwWwcc6EpgcYAUKttgyBbHs6wexALA8Az
+ oO2qq2MnZyDEMa95/yk44veFgKAL79f9QKJEML8ljhwp/VorwxuYqaxRUE6sW4JwuxLC
+ jMmZ1eD8GNqcw1gnz2joUEPS6oyE8P7pDoaFTsT+nL9ruZ+ha9xKQSRZpI5bXF+WtMOv
+ Vri+fqgFyaF4HPHJ8Jc7nD8tywdb8Q6PkbaWL4UUrshsxlfSpZEe84mpEtDkZ11oEa8D
+ XbM13uKmc//FoGuMgqt03AgT+MLDfET1ZBrwHqY/BfdkIQAYRMGdezRZrViveK6C8yKM
+ 3lOw==
+X-Gm-Message-State: AOAM533+moZpTGknJBVDOd3BV+5fk7n2Q9dHyXIMNE7dMqNFciPFMRle
+ xVtid0mNBrvSswl/nuAgewrGKi3qBfzHmwx2PkTkog==
+X-Google-Smtp-Source: ABdhPJwmPtH/n7FoQO5chtGDWHS6OG9MEkuqrVz6CbXbgX3B755ZqK+C3HYjz81i7WU+P0JnqoED8Mf0MZ6V58/814Q=
+X-Received: by 2002:a05:651c:1253:: with SMTP id
+ h19mr2394779ljh.338.1644624316161; 
+ Fri, 11 Feb 2022 16:05:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+References: <20220211023125.1790960-1-aik@ozlabs.ru>
+ <20220211023125.1790960-3-aik@ozlabs.ru>
+In-Reply-To: <20220211023125.1790960-3-aik@ozlabs.ru>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Fri, 11 Feb 2022 16:05:04 -0800
+Message-ID: <CAKwvOdmJspxuNh-K-CeLJh4X4GGVYJWH29HnjJwuRL+jcN9G5w@mail.gmail.com>
+Subject: Re: [PATCH kernel 2/3] powerpc/llvm: Sample config for LLVM LTO
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,44 +75,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Zi Yan <ziy@nvidia.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>, Zi Yan <ziy@nvidia.com>,
- Oscar Salvador <osalvador@suse.de>, Robin Murphy <robin.murphy@arm.com>,
- linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- Mike Rapoport <rppt@kernel.org>, Eric Ren <renzhengeek@gmail.com>,
- virtualization@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>, Vlastimil Babka <vbabka@suse.cz>,
- Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Fabiano Rosas <farosas@linux.ibm.com>,
+ llvm@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>,
+ Nathan Chancellor <nathan@kernel.org>, Joel Stanley <joel@jms.id.au>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Zi Yan <ziy@nvidia.com>
+On Thu, Feb 10, 2022 at 6:31 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+>
+> The config is a copy of ppc64_defconfig with a few tweaks. This could be
+> a smaller config to merge into ppc64_defconfig but unfortunately
+> merger does not allow disabling already enabled options.
 
-CMA only requires pageblock alignment now. Change CMA alignment in
-fadump too.
+Cool series!
 
-Signed-off-by: Zi Yan <ziy@nvidia.com>
----
- arch/powerpc/include/asm/fadump-internal.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> This is a command line to compile the kernel using the upstream llvm:
+>
+> make -j64 O=/home/aik/pbuild/kernels-llvm/ \
+>  "KCFLAGS=-Wmissing-braces -Wno-array-bounds" \
+>  ARCH=powerpc LLVM_IAS=1 ppc64le_lto_defconfig CC=clang LLVM=1
 
-diff --git a/arch/powerpc/include/asm/fadump-internal.h b/arch/powerpc/incl=
-ude/asm/fadump-internal.h
-index 52189928ec08..fbfca85b4200 100644
---- a/arch/powerpc/include/asm/fadump-internal.h
-+++ b/arch/powerpc/include/asm/fadump-internal.h
-@@ -20,9 +20,7 @@
- #define memblock_num_regions(memblock_type)	(memblock.memblock_type.cnt)
-=20
- /* Alignment per CMA requirement. */
--#define FADUMP_CMA_ALIGNMENT	(PAGE_SIZE <<				\
--				 max_t(unsigned long, MAX_ORDER - 1,	\
--				 pageblock_order))
-+#define FADUMP_CMA_ALIGNMENT	(PAGE_SIZE << pageblock_order)
-=20
- /* FAD commands */
- #define FADUMP_REGISTER			1
---=20
-2.34.1
+That command line invocation is kind of a mess, and many things
+shouldn't be necessary.
 
+O= is just noise; if folks are doing in tree builds then that doesn't
+add anything meaningful.
+KCFLAGS= why? I know -Warray-bounds is being worked on actively, but
+do we have instances of -Wmissing-braces at the moment? Let's get
+those fixed up.
+LLVM_IAS=1 is implied by LLVM=1.
+CC=clang is implied by LLVM=1
+
+why add a new config? I think it would be simpler to just show command
+line invocations of `./scripts/config -e` and `make`. No new config
+required.
+
+>
+> Forces CONFIG_BTRFS_FS=y to make CONFIG_ZSTD_COMPRESS=y to fix:
+> ld.lld: error: linking module flags 'Code Model': IDs have conflicting values in 'lib/built-in.a(entropy_common.o at 5332)' and 'ld-temp.o'
+>
+> because modules are linked with -mcmodel=large but the kernel uses -mcmodel=medium
+
+Please file a bug about this.
+https://github.com/ClangBuiltLinux/linux/issues
+
+>
+> Enables CONFIG_USERFAULTFD=y as otherwise vm_userfaultfd_ctx becomes
+> 0 bytes long and clang sanitizer crashes as
+> https://bugs.llvm.org/show_bug.cgi?id=500375
+
+The above hyperlink doesn't work for me. Upstream llvm just moved from
+bugzilla to github issue tracker.
+
+https://github.com/llvm/llvm-project/issues
+
+>
+> Disables CONFIG_FTR_FIXUP_SELFTEST as it uses FTR_SECTION_ELSE with
+> conditional branches. There are other places like this and the following
+> patches address that.
+>
+> Disables CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT as CONFIG_HAS_LTO_CLANG
+> depends on it being disabled. In order to avoid disabling way too many
+> options (like DYNAMIC_FTRACE/FUNCTION_TRACER), this converts
+> FTRACE_MCOUNT_USE_RECORDMCOUNT from def_bool to bool.
+>
+> Note that even with this config there is a good chance that LTO
+> is going to fail linking vmlinux because of the "bc" problem.
+
+I think rather than adding a new config with LTO enabled and a few
+things turned off, it would be better to not allow LTO to be
+selectable if those things are turned on, until the combination of the
+two are fixed.
+
+-- 
+Thanks,
+~Nick Desaulniers
