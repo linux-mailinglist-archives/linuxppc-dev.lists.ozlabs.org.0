@@ -1,66 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D8C4B339C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Feb 2022 08:37:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B0D4B346F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Feb 2022 12:14:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jwj400W2Vz3cTY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Feb 2022 18:37:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jwnv20TTpz3cBH
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Feb 2022 22:14:38 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=izvQ7W58;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jwj3T6tDxz2yYJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Feb 2022 18:36:33 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Jwj3L05r6z9sSl;
- Sat, 12 Feb 2022 08:36:30 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id YH9d5bLukDHE; Sat, 12 Feb 2022 08:36:29 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Jwj3K69Qlz9sSf;
- Sat, 12 Feb 2022 08:36:29 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BBADA8B766;
- Sat, 12 Feb 2022 08:36:29 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 5Wjtjkt5FelZ; Sat, 12 Feb 2022 08:36:29 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.6.139])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8DB268B763;
- Sat, 12 Feb 2022 08:36:29 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21C7aJMJ1582946
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Sat, 12 Feb 2022 08:36:20 +0100
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21C7aHCA1582945;
- Sat, 12 Feb 2022 08:36:17 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: Reduce csum_add() complexity for PPC64
-Date: Sat, 12 Feb 2022 08:36:17 +0100
-Message-Id: <a4ca63dd4c4b09e1906d08fb814af5a41d0f3fcb.1644651363.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JwntN0s5Jz30Md
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Feb 2022 22:14:04 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=izvQ7W58; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JwntK4rT9z4xcY;
+ Sat, 12 Feb 2022 22:14:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1644664441;
+ bh=2ijfFjoJAnTi6NsxLzCJtDzBFE4CJNp0RKvyw4uKgZk=;
+ h=From:To:Subject:Date:From;
+ b=izvQ7W58F3o8TdXEYreNIMxaxP9QOV/z1F6jclskNnnM0ZNASado7NPKTGrEOzC0B
+ ruYFiKqlUVhp/AgA7gK5XdOOenhYnPmkFFXRb9bPRxNcSERxOjRlAE85XinXl1wzLz
+ FpSF6XPr/uVt0gxZ1irfsgC7hdm3isgwhrKhqhhB3mGh8XXHewBPSfO0Afav9sMlZb
+ dkSxoSW86d+k/2QfhJKxt+rvZn5qaFFHUeBqHSAHgfIqhb6KuiRCTdm4tz52+HbHA6
+ tFKW9gDejoGIeMFKxkvDoQ6eiBio0Y+MEIDVGMa34//BPeVbd8QD41Y0yDeW9JcPZM
+ qlcu80wIhSjbA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc: Fix STACKTRACE=n build
+Date: Sat, 12 Feb 2022 22:13:49 +1100
+Message-Id: <20220212111349.2806972-1-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1644651376; l=1197; s=20211009;
- h=from:subject:message-id; bh=U5EmRa7z4Ma/DFv0qhSDVvJA4tBg+isoQi09WUvKg+8=;
- b=KJrT27Qc+2p02+9Sde8X9nsa3+2JOSXSvKurff5AknJt2FnwWPSgmPCM19veBsggrnd9GslHzzE+
- 6AjZY8AfDa+UjYwLIYA38FtPm+KNUcDSIjYQMP+LrONI1J3dwBMU
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,48 +58,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PPC64 does everything in C, gcc is able to skip calculation
-when one of the operands in zero.
+Our skiroot_defconfig doesn't enable FTRACE, and so doesn't get
+STACKTRACE enabled either. That leads to a build failure since commit
+1614b2b11fab ("arch: Make ARCH_STACKWALK independent of STACKTRACE")
+made stacktrace.c build even when STACKTRACE=n.
 
-Move the constant folding in PPC32 part.
+  arch/powerpc/kernel/stacktrace.c: In function ‘handle_backtrace_ipi’:
+  arch/powerpc/kernel/stacktrace.c:171:2: error: implicit declaration of function ‘nmi_cpu_backtrace’
+    171 |  nmi_cpu_backtrace(regs);
+        |  ^~~~~~~~~~~~~~~~~
+  arch/powerpc/kernel/stacktrace.c: In function ‘arch_trigger_cpumask_backtrace’:
+  arch/powerpc/kernel/stacktrace.c:226:2: error: implicit declaration of function ‘nmi_trigger_cpumask_backtrace’
+    226 |  nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_backtrace_ipi);
+        |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This helps GCC and reduces ppc64_defconfig by 170 bytes.
+This happens because our headers haven't defined
+arch_trigger_cpumask_backtrace, which causes lib/nmi_backtrace.c not to
+build nmi_cpu_backtrace().
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+The code in question doesn't actually depend on STACKTRACE=y, that was
+just added because arch_trigger_cpumask_backtrace() lived in
+stacktrace.c for convenience. So drop the dependency on
+CONFIG_STACKTRACE, that causes lib/nmi_backtrace.c to build
+nmi_cpu_backtrace() etc. and fixes the build.
+
+Fixes: 1614b2b11fab ("arch: Make ARCH_STACKWALK independent of STACKTRACE")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/include/asm/checksum.h | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/powerpc/include/asm/nmi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/checksum.h b/arch/powerpc/include/asm/checksum.h
-index 3288a1bf5e8d..e4e25b46ac49 100644
---- a/arch/powerpc/include/asm/checksum.h
-+++ b/arch/powerpc/include/asm/checksum.h
-@@ -95,16 +95,15 @@ static __always_inline __wsum csum_add(__wsum csum, __wsum addend)
- {
- #ifdef __powerpc64__
- 	u64 res = (__force u64)csum;
--#endif
-+
-+	res += (__force u64)addend;
-+	return (__force __wsum)((u32)res + (res >> 32));
-+#else
- 	if (__builtin_constant_p(csum) && csum == 0)
- 		return addend;
- 	if (__builtin_constant_p(addend) && addend == 0)
- 		return csum;
+diff --git a/arch/powerpc/include/asm/nmi.h b/arch/powerpc/include/asm/nmi.h
+index 160abcb8e9fa..ea0e487f87b1 100644
+--- a/arch/powerpc/include/asm/nmi.h
++++ b/arch/powerpc/include/asm/nmi.h
+@@ -9,7 +9,7 @@ long soft_nmi_interrupt(struct pt_regs *regs);
+ static inline void arch_touch_nmi_watchdog(void) {}
+ #endif
  
--#ifdef __powerpc64__
--	res += (__force u64)addend;
--	return (__force __wsum)((u32)res + (res >> 32));
--#else
- 	asm("addc %0,%0,%1;"
- 	    "addze %0,%0;"
- 	    : "+r" (csum) : "r" (addend) : "xer");
+-#if defined(CONFIG_NMI_IPI) && defined(CONFIG_STACKTRACE)
++#ifdef CONFIG_NMI_IPI
+ extern void arch_trigger_cpumask_backtrace(const cpumask_t *mask,
+ 					   bool exclude_self);
+ #define arch_trigger_cpumask_backtrace arch_trigger_cpumask_backtrace
 -- 
 2.34.1
 
