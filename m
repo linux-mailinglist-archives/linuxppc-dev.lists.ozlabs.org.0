@@ -2,57 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3F04B5612
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 17:23:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 046714B5676
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 17:36:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jy8fn1Tvcz3cN3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 03:23:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jy8xL3TYnz3cV0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 03:36:22 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AD+OGCC9;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
- helo=metis.ext.pengutronix.de; envelope-from=a.fatoum@pengutronix.de;
- receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jy8fL0X4Wz3bYq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 03:23:20 +1100 (AEDT)
-Received: from gallifrey.ext.pengutronix.de
- ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
- by metis.ext.pengutronix.de with esmtp (Exim 4.92)
- (envelope-from <a.fatoum@pengutronix.de>)
- id 1nJe7f-0008Lp-1r; Mon, 14 Feb 2022 17:22:43 +0100
-Message-ID: <579eab10-594c-d6b2-0ddb-ea6ab8e02856@pengutronix.de>
-Date: Mon, 14 Feb 2022 17:22:34 +0100
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=AD+OGCC9; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jy8wf5LRnz3bYh
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 03:35:46 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 11DFF614EA;
+ Mon, 14 Feb 2022 16:35:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D20C340E9;
+ Mon, 14 Feb 2022 16:35:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1644856542;
+ bh=NCPtyXY6GSVFAxA9xMH/uI0qVAvzui4f6HWShmHq7S4=;
+ h=From:To:Cc:Subject:Date:From;
+ b=AD+OGCC91QW3gC/dZKsZFSSWI0QKTWjyYSyPe3ESJoZsA18Yxd+6C2XmKbO+BufBV
+ pgOTeKAy/H78mpdds/cyxQ3VhN4bBP5a5vjc0WbkFTjxn+hvTh5aHadh4RocZ3TKWZ
+ eb6b0ouxjuiSDysMNzxh//PeMK4OQFXVj3bLmv5B1B7q8Uq/AO4RDRlThvSeYzr3Ly
+ Gc0VXxNLiJ5WO1pIX67udGR/GCDjJQpiIxvmjGV1mzioNZwxT26v6bU0vORAmaN8AJ
+ nAspwe5m/jH1WNhsqM0Qybjj0jz1yeUDm3LP9c3MsBrk2+9J1cYolEm51L9D0B9ZO/
+ R/tiDrFKWPKmA==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, linux-api@vger.kernel.org, arnd@arndb.de,
+ linux-kernel@vger.kernel.org
+Subject: [PATCH 00/14] clean up asm/uaccess.h, kill set_fs for good
+Date: Mon, 14 Feb 2022 17:34:38 +0100
+Message-Id: <20220214163452.1568807-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [BUG] mtd: cfi_cmdset_0002: write regression since v4.17-rc1
-Content-Language: en-US
-To: Tokunori Ikegami <ikegami.t@gmail.com>,
- Thorsten Leemhuis <regressions@leemhuis.info>,
- linux-mtd@lists.infradead.org, Joakim.Tjernlund@infinera.com,
- miquel.raynal@bootlin.com, vigneshr@ti.com, richard@nod.at,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-References: <b687c259-6413-26c9-d4c9-b3afa69ea124@pengutronix.de>
- <dff2abcc-5813-2f2c-35ba-f03cd1f35ac3@leemhuis.info>
- <e11b76dc-5539-fb7e-da1c-a5005713d6b0@gmail.com>
- <3dbbcee5-81fc-cdf5-9f8b-b6ccb95beddc@pengutronix.de>
- <0f2cfcac-83ca-51a9-f92c-ff6495dca1d7@gmail.com>
- <b231b498-c8d2-28af-ce66-db8c168047f7@pengutronix.de>
- <66ee55d9-4f20-6722-6097-e53c2108ea07@gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <66ee55d9-4f20-6722-6097-e53c2108ea07@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,52 +64,230 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- marek.vasut@gmail.com, Chris Packham <chris.packham@alliedtelesis.co.nz>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, cyrille.pitchen@wedev4u.fr,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
+Cc: mark.rutland@arm.com, dalias@libc.org, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, peterz@infradead.org, jcmvbkbc@gmail.com,
+ guoren@kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ linux-riscv@lists.infradead.org, will@kernel.org, ardb@kernel.org,
+ linux-s390@vger.kernel.org, bcain@codeaurora.org, deller@gmx.de,
+ x86@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org,
+ mingo@redhat.com, geert@linux-m68k.org, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, hca@linux.ibm.com, linux-alpha@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
+ openrisc@lists.librecores.org, green.hu@gmail.com, shorne@gmail.com,
+ linux-arm-kernel@lists.infradead.org, monstr@monstr.eu,
+ tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, nickhu@andestech.com,
+ linux-mips@vger.kernel.org, dinguyen@kernel.org, ebiederm@xmission.com,
+ richard@nod.at, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
+ davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Tokunori-san,
+From: Arnd Bergmann <arnd@arndb.de>
 
-On 13.02.22 17:47, Tokunori Ikegami wrote:
-> Hi Ahmad-san,
-> 
-> Thanks for your confirmations. Sorry for late to reply.
+Christoph Hellwig and a few others spent a huge effort on removing
+set_fs() from most of the important architectures, but about half the
+other architectures were never completed even though most of them don't
+actually use set_fs() at all.
 
-No worries. I appreciate you taking the time.
+I did a patch for microblaze at some point, which turned out to be fairly
+generic, and now ported it to most other architectures, using new generic
+implementations of access_ok() and __{get,put}_kernel_nocheck().
 
-> Could you please try the patch attached to disable the chip_good() change as before?
-> I think this should work for S29GL964N since the chip_ready() is used and works as mentioned.
+Three architectures (sparc64, ia64, and sh) needed some extra work,
+which I also completed.
 
-yes, this resolves my issue:
-Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+The final series contains extra cleanup changes that touch all
+architectures. Please review and test these, so we can merge them
+for v5.18.
 
->>>> Doesn't seem to be a buffered write issue here though as the writes
->>>> did work fine before dfeae1073583. Any other ideas?
->>> At first I thought the issue is possible to be resolved by using the word write instead of the buffered writes.
->>> Now I am thinking to disable the changes dfeae1073583 partially with any condition if possible.
->> What seems to work for me is checking if chip_good or chip_ready
->> and map_word is equal to 0xFF. I can't justify why this is ok though.
->> (Worst case bus is floating at this point of time and Hi-Z is read
->> as 0xff on CPU data lines...)
-> 
-> Sorry I am not sure about this.
-> I thought the chip_ready() itself is correct as implemented as the data sheet in the past.
-> But it did not work correctly so changed to use chip_good() instead as it is also correct.
+The series is available at
+https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/log/?h=set_fs
+for testing.
 
-What exactly in the datasheet makes you believe chip_good is not appropriate?
+       Arnd
 
-Cheers,
-Ahmad
+Arnd Bergmann (14):
+  uaccess: fix integer overflow on access_ok()
+  sparc64: add __{get,put}_kernel_nocheck()
+  nds32: fix access_ok() checks in get/put_user
+  x86: use more conventional access_ok() definition
+  uaccess: add generic __{get,put}_kernel_nofault
+  mips: use simpler access_ok()
+  uaccess: generalize access_ok()
+  arm64: simplify access_ok()
+  m68k: drop custom __access_ok()
+  uaccess: remove most CONFIG_SET_FS users
+  sparc64: remove CONFIG_SET_FS support
+  sh: remove CONFIG_SET_FS support
+  ia64: remove CONFIG_SET_FS support
+  uaccess: drop set_fs leftovers
 
+ arch/Kconfig                              |   3 -
+ arch/alpha/Kconfig                        |   1 -
+ arch/alpha/include/asm/processor.h        |   4 -
+ arch/alpha/include/asm/thread_info.h      |   2 -
+ arch/alpha/include/asm/uaccess.h          |  53 +--------
+ arch/arc/Kconfig                          |   1 -
+ arch/arc/include/asm/segment.h            |  20 ----
+ arch/arc/include/asm/thread_info.h        |   3 -
+ arch/arc/include/asm/uaccess.h            |  30 -----
+ arch/arm/include/asm/uaccess.h            |  22 +---
+ arch/arm/kernel/swp_emulate.c             |   2 +-
+ arch/arm/kernel/traps.c                   |   2 +-
+ arch/arm/lib/uaccess_with_memcpy.c        |  10 --
+ arch/arm64/include/asm/uaccess.h          |  29 +----
+ arch/csky/Kconfig                         |   1 -
+ arch/csky/include/asm/processor.h         |   2 -
+ arch/csky/include/asm/segment.h           |  10 --
+ arch/csky/include/asm/thread_info.h       |   2 -
+ arch/csky/include/asm/uaccess.h           |  12 --
+ arch/csky/kernel/asm-offsets.c            |   1 -
+ arch/csky/kernel/signal.c                 |   2 +-
+ arch/h8300/Kconfig                        |   1 -
+ arch/h8300/include/asm/processor.h        |   1 -
+ arch/h8300/include/asm/segment.h          |  40 -------
+ arch/h8300/include/asm/thread_info.h      |   3 -
+ arch/h8300/kernel/entry.S                 |   1 -
+ arch/h8300/kernel/head_ram.S              |   1 -
+ arch/h8300/mm/init.c                      |   6 -
+ arch/h8300/mm/memory.c                    |   1 -
+ arch/hexagon/Kconfig                      |   1 -
+ arch/hexagon/include/asm/thread_info.h    |   6 -
+ arch/hexagon/include/asm/uaccess.h        |  25 ----
+ arch/hexagon/kernel/process.c             |   1 -
+ arch/ia64/Kconfig                         |   1 -
+ arch/ia64/include/asm/processor.h         |   4 -
+ arch/ia64/include/asm/thread_info.h       |   2 -
+ arch/ia64/include/asm/uaccess.h           |  26 ++---
+ arch/ia64/kernel/unaligned.c              |  60 ++++++----
+ arch/m68k/include/asm/uaccess.h           |  14 +--
+ arch/microblaze/Kconfig                   |   1 -
+ arch/microblaze/include/asm/thread_info.h |   6 -
+ arch/microblaze/include/asm/uaccess.h     |  43 +------
+ arch/microblaze/kernel/asm-offsets.c      |   1 -
+ arch/microblaze/kernel/process.c          |   1 -
+ arch/mips/include/asm/uaccess.h           |  47 +-------
+ arch/nds32/Kconfig                        |   1 -
+ arch/nds32/include/asm/thread_info.h      |   4 -
+ arch/nds32/include/asm/uaccess.h          |  40 +++----
+ arch/nds32/kernel/process.c               |   5 +-
+ arch/nds32/mm/alignment.c                 |   3 -
+ arch/nios2/Kconfig                        |   1 -
+ arch/nios2/include/asm/thread_info.h      |   9 --
+ arch/nios2/include/asm/uaccess.h          |  23 +---
+ arch/nios2/kernel/signal.c                |  20 ++--
+ arch/openrisc/Kconfig                     |   1 -
+ arch/openrisc/include/asm/thread_info.h   |   7 --
+ arch/openrisc/include/asm/uaccess.h       |  42 +------
+ arch/parisc/include/asm/futex.h           |   2 +-
+ arch/parisc/include/asm/uaccess.h         |  11 +-
+ arch/parisc/lib/memcpy.c                  |   2 +-
+ arch/powerpc/include/asm/uaccess.h        |  13 +--
+ arch/powerpc/lib/sstep.c                  |   4 +-
+ arch/riscv/include/asm/uaccess.h          |  33 +-----
+ arch/riscv/kernel/perf_callchain.c        |   2 +-
+ arch/s390/include/asm/uaccess.h           |  13 +--
+ arch/sh/Kconfig                           |   1 -
+ arch/sh/include/asm/processor.h           |   1 -
+ arch/sh/include/asm/segment.h             |  33 ------
+ arch/sh/include/asm/thread_info.h         |   2 -
+ arch/sh/include/asm/uaccess.h             |  24 +---
+ arch/sh/kernel/io_trapped.c               |   9 +-
+ arch/sh/kernel/process_32.c               |   2 -
+ arch/sh/kernel/traps_32.c                 |  30 +++--
+ arch/sparc/Kconfig                        |   1 -
+ arch/sparc/include/asm/processor_32.h     |   6 -
+ arch/sparc/include/asm/processor_64.h     |   4 -
+ arch/sparc/include/asm/switch_to_64.h     |   4 +-
+ arch/sparc/include/asm/thread_info_64.h   |   4 +-
+ arch/sparc/include/asm/uaccess.h          |   3 -
+ arch/sparc/include/asm/uaccess_32.h       |  31 +----
+ arch/sparc/include/asm/uaccess_64.h       | 135 +++++++++++++---------
+ arch/sparc/kernel/process_32.c            |   2 -
+ arch/sparc/kernel/process_64.c            |  12 --
+ arch/sparc/kernel/signal_32.c             |   2 +-
+ arch/sparc/kernel/traps_64.c              |   2 -
+ arch/sparc/lib/NGmemcpy.S                 |   3 +-
+ arch/sparc/mm/init_64.c                   |   3 -
+ arch/um/include/asm/uaccess.h             |   7 +-
+ arch/x86/include/asm/uaccess.h            |  44 ++-----
+ arch/xtensa/Kconfig                       |   1 -
+ arch/xtensa/include/asm/asm-uaccess.h     |  71 ------------
+ arch/xtensa/include/asm/processor.h       |   7 --
+ arch/xtensa/include/asm/thread_info.h     |   3 -
+ arch/xtensa/include/asm/uaccess.h         |  26 +----
+ arch/xtensa/kernel/asm-offsets.c          |   3 -
+ drivers/hid/uhid.c                        |   2 +-
+ drivers/scsi/sg.c                         |   5 -
+ fs/exec.c                                 |   6 -
+ include/asm-generic/access_ok.h           |  51 ++++++++
+ include/asm-generic/uaccess.h             |  46 +-------
+ include/linux/syscalls.h                  |   4 -
+ include/linux/uaccess.h                   |  59 +++-------
+ include/rdma/ib.h                         |   2 +-
+ kernel/events/callchain.c                 |   4 -
+ kernel/events/core.c                      |   3 -
+ kernel/exit.c                             |  14 ---
+ kernel/kthread.c                          |   5 -
+ kernel/stacktrace.c                       |   3 -
+ kernel/trace/bpf_trace.c                  |   4 -
+ mm/maccess.c                              | 119 -------------------
+ mm/memory.c                               |   8 --
+ net/bpfilter/bpfilter_kern.c              |   2 +-
+ 112 files changed, 315 insertions(+), 1239 deletions(-)
+ delete mode 100644 arch/arc/include/asm/segment.h
+ delete mode 100644 arch/csky/include/asm/segment.h
+ delete mode 100644 arch/h8300/include/asm/segment.h
+ delete mode 100644 arch/sh/include/asm/segment.h
+ create mode 100644 include/asm-generic/access_ok.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.29.2
+
+Cc: linux@armlinux.org.uk
+Cc: will@kernel.org
+Cc: guoren@kernel.org
+Cc: bcain@codeaurora.org
+Cc: geert@linux-m68k.org
+Cc: monstr@monstr.eu
+Cc: tsbogend@alpha.franken.de
+Cc: nickhu@andestech.com
+Cc: green.hu@gmail.com
+Cc: dinguyen@kernel.org
+Cc: shorne@gmail.com
+Cc: deller@gmx.de
+Cc: mpe@ellerman.id.au
+Cc: peterz@infradead.org
+Cc: mingo@redhat.com
+Cc: mark.rutland@arm.com
+Cc: hca@linux.ibm.com
+Cc: dalias@libc.org
+Cc: davem@davemloft.net
+Cc: richard@nod.at
+Cc: x86@kernel.org
+Cc: jcmvbkbc@gmail.com
+Cc: ebiederm@xmission.com
+Cc: arnd@arndb.de
+Cc: akpm@linux-foundation.org
+Cc: ardb@kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-hexagon@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-mips@vger.kernel.org
+Cc: openrisc@lists.librecores.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-um@lists.infradead.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-mm@kvack.org
