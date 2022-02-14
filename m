@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889124B4190
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 07:08:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61A524B4227
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 07:56:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jxv166mGdz3cTQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 17:08:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jxw4C0M6Yz3cVL
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 17:56:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,26 +16,25 @@ Received: from mx1.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jxv0d3667z3bPD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 17:08:14 +1100 (AEDT)
-Received: from [192.168.0.2] (ip5f5aebfe.dynamic.kabel-deutschland.de
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jxw3l1Nfkz2ybD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 17:56:02 +1100 (AEDT)
+Received: from localhost.localdomain (ip5f5aebfe.dynamic.kabel-deutschland.de
  [95.90.235.254])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested) (Authenticated sender: pmenzel)
- by mx.molgen.mpg.de (Postfix) with ESMTPSA id D7FA161EA1924
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 07:08:07 +0100 (CET)
-Message-ID: <d141d8c3-5c72-02ab-6b31-c32cd02f8291@molgen.mpg.de>
-Date: Mon, 14 Feb 2022 07:08:07 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Content-Language: en-US
-To: linuxppc-dev@lists.ozlabs.org
+ by mx.molgen.mpg.de (Postfix) with ESMTPSA id 95F0661EA1924;
+ Mon, 14 Feb 2022 07:55:57 +0100 (CET)
 From: Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: No Linux logs when doing `ppc64_cpu --smt=off/8`
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Geoff Levand <geoff@infradead.org>
+Subject: [PATCH] powerpc/boot: Add `otheros-too-big.bld` to .gitignore
+Date: Mon, 14 Feb 2022 07:55:43 +0100
+Message-Id: <20220214065543.198992-1-pmenzel@molgen.mpg.de>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,18 +46,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dear PPC folks,
+Currently, `git status` lists the file as untracked by git, so tell git
+to ignore it.
 
+Fixes: aa3bc365ee73 ("powerpc/ps3: Add check for otheros image size")
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+---
+ arch/powerpc/boot/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
 
-On the POWER8 server IBM S822LC running `ppc64_cpu --smt=off` or 
-`ppc64_cpu --smt=8`, Linux 5.17-rc4 does not log anything. I would have 
-expected a message about the change in number of processing units.
+diff --git a/arch/powerpc/boot/.gitignore b/arch/powerpc/boot/.gitignore
+index 1eee61b82341..a4716d138cfc 100644
+--- a/arch/powerpc/boot/.gitignore
++++ b/arch/powerpc/boot/.gitignore
+@@ -16,6 +16,7 @@ kernel-vmlinux.strip.c
+ kernel-vmlinux.strip.gz
+ mktree
+ otheros.bld
++otheros-too-big.bld
+ uImage
+ cuImage.*
+ dtbImage.*
+-- 
+2.34.1
 
-
-Kind regards,
-
-Paul
