@@ -1,76 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14B64B3F6B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 03:28:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 420AF4B3F79
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 03:31:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jxp6k24D7z3bcZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 13:28:14 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LshJzQgY;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JxpBj6Jh8z3cMQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 13:31:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436;
- helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=LshJzQgY; dkim-atps=neutral
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com
- [IPv6:2607:f8b0:4864:20::436])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jxp615v6bz30Qt
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 13:27:36 +1100 (AEDT)
-Received: by mail-pf1-x436.google.com with SMTP id e17so7250473pfv.5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Feb 2022 18:27:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=AaSZ8bOGwql7Qx9wRu1tITsPjnFVoUrvxEqnlZJxyhM=;
- b=LshJzQgYkxrugP1ejfqhUtcP8sdrPch7NjbTop/ZKCpIJClDPQXqXe0LtzemWPvN9N
- VKMME89lg4hvckj652TQoPCQGVixYwKrKQT+tk2+kvtJrrITNTnN0KYaEPHDNxaawVvb
- BizwG5mJvUQpem5WewHmy4SmZgYC4NWKn1iqBoOdqB4HJZ91btWymeY+aYOc365/DB8b
- kAgLlBsgmWwnXhM70fqGxtx1iNMDMxEgrhD6gbw+4IxuYvfFLdaXg/X2qrxOHl+13UDB
- 0NAn8AcW+xoD4tVFaZOhKzUOHc3lqj8ZNlPx7PDbvlm8sQ63OtMLDecI8R/ToqJvOv4U
- rDKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=AaSZ8bOGwql7Qx9wRu1tITsPjnFVoUrvxEqnlZJxyhM=;
- b=SBRb9mTkO7i7yAOg61+7e7vwscfy77SJdGTiQ6umw+ROZj45zwRdV0RwdvnHcZ58nJ
- oDjEURQ0qJmNqNmLn/x7wxqI4z9eZabdS4In533b9xtUw60A92gXL1tifo8MGJY4zdvr
- kUlj0gSNwQBNe4kbe7wV5HZlXIvSzVsCOm583uI3BKM6DbcHywXoANDoZ1bWw6jGOuhH
- E7D2ud+wkxhodNNkdzFxNSlJyTZhMBfj0kpaH3lD3FRD9q/M4Zxfz6W/tZ60PrrirFlZ
- KpmGZAWaDnx/YfXrVubcHDz2m6wReqppXz7+Ay8yBgi7gIxUbDrqM7NTZ7RHZxcVNioy
- Ltww==
-X-Gm-Message-State: AOAM532OC6ng06/nnMtIqp/0+jLRnErGfIBI+xS1xIxAEumIeMk1W+aA
- qxgBccJv1DR0IVGkUpSO1u8=
-X-Google-Smtp-Source: ABdhPJymYxFvwHCslcC9RqOzDT9Aucx7AmIxmp1aspbhR5EzNKT7TWPPVlI61T3rD8uUxspledw7Ww==
-X-Received: by 2002:a65:6056:: with SMTP id a22mr9259695pgp.21.1644805654168; 
- Sun, 13 Feb 2022 18:27:34 -0800 (PST)
-Received: from localhost (27-33-251-132.static.tpgi.com.au. [27.33.251.132])
- by smtp.gmail.com with ESMTPSA id b14sm34694755pfm.17.2022.02.13.18.27.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Feb 2022 18:27:33 -0800 (PST)
-Date: Mon, 14 Feb 2022 12:27:28 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 02/10] powerpc/pseries/vas: Add notifier for DLPAR core
- removal/add
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-References: <7d175313528ea7aae20d9141f0efa2e57f44c9f4.camel@linux.ibm.com>
- <68ec2a354a932670fabd600a18eccbfcacd84464.camel@linux.ibm.com>
-In-Reply-To: <68ec2a354a932670fabd600a18eccbfcacd84464.camel@linux.ibm.com>
-MIME-Version: 1.0
-Message-Id: <1644804881.mp6yrf6sdz.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4JxpBJ0FD1z2x9p
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 13:31:18 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5317DED1;
+ Sun, 13 Feb 2022 18:31:15 -0800 (PST)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.47.15])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 088413F718;
+ Sun, 13 Feb 2022 18:31:11 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH 04/30] powerpc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+Date: Mon, 14 Feb 2022 08:00:27 +0530
+Message-Id: <1644805853-21338-5-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1644805853-21338-1-git-send-email-anshuman.khandual@arm.com>
+References: <1644805853-21338-1-git-send-email-anshuman.khandual@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,108 +41,164 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
+Cc: linux-arch@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Haren Myneni's message of January 22, 2022 5:54 am:
->=20
-> The hypervisor assigns credits for each LPAR based on number of
-> cores configured in that system. So expects to release credits
-> (means windows) when the core is removed. This patch adds notifier
-> for core removal/add so that the OS closes windows if the system
-> looses credits due to core removal and reopen windows when the
-> credits available later.
+This defines and exports a platform specific custom vm_get_page_prot() via
+subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
+macros can be dropped which are no longer needed. While here, this also
+localizes arch_vm_get_page_prot() as powerpc_vm_get_page_prot() and moves
+it near vm_get_page_prot().
 
-This could be improved. As far as I can tell,
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+ arch/powerpc/Kconfig               |  1 +
+ arch/powerpc/include/asm/mman.h    | 12 ------
+ arch/powerpc/include/asm/pgtable.h | 19 ----------
+ arch/powerpc/mm/mmap.c             | 59 ++++++++++++++++++++++++++++++
+ 4 files changed, 60 insertions(+), 31 deletions(-)
 
- The hypervisor assigns vas credits (windows) for each LPAR based on the=20
- number of cores configured in that system. The OS is expected to=20
- release credits when cores are removed, and may allocate more when=20
- cores are added.
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index b779603978e1..ddb4a3687c05 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -135,6 +135,7 @@ config PPC
+ 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UACCESS_FLUSHCACHE
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
++	select ARCH_HAS_VM_GET_PAGE_PROT
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select ARCH_KEEP_MEMBLOCK
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+diff --git a/arch/powerpc/include/asm/mman.h b/arch/powerpc/include/asm/mman.h
+index 7cb6d18f5cd6..1b024e64c8ec 100644
+--- a/arch/powerpc/include/asm/mman.h
++++ b/arch/powerpc/include/asm/mman.h
+@@ -24,18 +24,6 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
+ }
+ #define arch_calc_vm_prot_bits(prot, pkey) arch_calc_vm_prot_bits(prot, pkey)
+ 
+-static inline pgprot_t arch_vm_get_page_prot(unsigned long vm_flags)
+-{
+-#ifdef CONFIG_PPC_MEM_KEYS
+-	return (vm_flags & VM_SAO) ?
+-		__pgprot(_PAGE_SAO | vmflag_to_pte_pkey_bits(vm_flags)) :
+-		__pgprot(0 | vmflag_to_pte_pkey_bits(vm_flags));
+-#else
+-	return (vm_flags & VM_SAO) ? __pgprot(_PAGE_SAO) : __pgprot(0);
+-#endif
+-}
+-#define arch_vm_get_page_prot(vm_flags) arch_vm_get_page_prot(vm_flags)
+-
+ static inline bool arch_validate_prot(unsigned long prot, unsigned long addr)
+ {
+ 	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_SAO))
+diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+index d564d0ecd4cd..3cbb6de20f9d 100644
+--- a/arch/powerpc/include/asm/pgtable.h
++++ b/arch/powerpc/include/asm/pgtable.h
+@@ -20,25 +20,6 @@ struct mm_struct;
+ #include <asm/nohash/pgtable.h>
+ #endif /* !CONFIG_PPC_BOOK3S */
+ 
+-/* Note due to the way vm flags are laid out, the bits are XWR */
+-#define __P000	PAGE_NONE
+-#define __P001	PAGE_READONLY
+-#define __P010	PAGE_COPY
+-#define __P011	PAGE_COPY
+-#define __P100	PAGE_READONLY_X
+-#define __P101	PAGE_READONLY_X
+-#define __P110	PAGE_COPY_X
+-#define __P111	PAGE_COPY_X
+-
+-#define __S000	PAGE_NONE
+-#define __S001	PAGE_READONLY
+-#define __S010	PAGE_SHARED
+-#define __S011	PAGE_SHARED
+-#define __S100	PAGE_READONLY_X
+-#define __S101	PAGE_READONLY_X
+-#define __S110	PAGE_SHARED_X
+-#define __S111	PAGE_SHARED_X
+-
+ #ifndef __ASSEMBLY__
+ 
+ #ifndef MAX_PTRS_PER_PGD
+diff --git a/arch/powerpc/mm/mmap.c b/arch/powerpc/mm/mmap.c
+index c475cf810aa8..ee275937fe19 100644
+--- a/arch/powerpc/mm/mmap.c
++++ b/arch/powerpc/mm/mmap.c
+@@ -254,3 +254,62 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
+ 		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
+ 	}
+ }
++
++static inline pgprot_t __vm_get_page_prot(unsigned long vm_flags)
++{
++	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
++	case VM_NONE:
++		return PAGE_NONE;
++	case VM_READ:
++		return PAGE_READONLY;
++	case VM_WRITE:
++	case VM_WRITE | VM_READ:
++		return PAGE_COPY;
++	case VM_EXEC:
++	case VM_EXEC | VM_READ:
++		return PAGE_READONLY_X;
++	case VM_EXEC | VM_WRITE:
++	case VM_EXEC | VM_WRITE | VM_READ:
++		return PAGE_COPY_X;
++	case VM_SHARED:
++		return PAGE_NONE;
++	case VM_SHARED | VM_READ:
++		return PAGE_READONLY;
++	case VM_SHARED | VM_WRITE:
++	case VM_SHARED | VM_WRITE | VM_READ:
++		return PAGE_SHARED;
++	case VM_SHARED | VM_EXEC:
++	case VM_SHARED | VM_EXEC | VM_READ:
++		return PAGE_READONLY_X;
++	case VM_SHARED | VM_EXEC | VM_WRITE:
++	case VM_SHARED | VM_EXEC | VM_WRITE | VM_READ:
++		return PAGE_SHARED_X;
++	default:
++		BUILD_BUG();
++	}
++}
++
++#ifdef CONFIG_PPC64
++static pgprot_t powerpc_vm_get_page_prot(unsigned long vm_flags)
++{
++#ifdef CONFIG_PPC_MEM_KEYS
++	return (vm_flags & VM_SAO) ?
++		__pgprot(_PAGE_SAO | vmflag_to_pte_pkey_bits(vm_flags)) :
++		__pgprot(0 | vmflag_to_pte_pkey_bits(vm_flags));
++#else
++	return (vm_flags & VM_SAO) ? __pgprot(_PAGE_SAO) : __pgprot(0);
++#endif
++}
++#else
++static pgprot_t powerpc_vm_get_page_prot(unsigned long vm_flags)
++{
++	return __pgprot(0);
++}
++#endif /* CONFIG_PPC64 */
++
++pgprot_t vm_get_page_prot(unsigned long vm_flags)
++{
++	return __pgprot(pgprot_val(__vm_get_page_prot(vm_flags)) |
++	       pgprot_val(powerpc_vm_get_page_prot(vm_flags)));
++}
++EXPORT_SYMBOL(vm_get_page_prot);
+-- 
+2.25.1
 
-Or can you only re-use credits that you previously lost?
-
->=20
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/vas.c | 37 ++++++++++++++++++++++++++++
->  1 file changed, 37 insertions(+)
->=20
-> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platform=
-s/pseries/vas.c
-> index c0737379cc7b..d2c8292bfb33 100644
-> --- a/arch/powerpc/platforms/pseries/vas.c
-> +++ b/arch/powerpc/platforms/pseries/vas.c
-> @@ -538,6 +538,39 @@ static int __init get_vas_capabilities(u8 feat, enum=
- vas_cop_feat_type type,
->  	return 0;
->  }
-> =20
-> +/*
-> + * Total number of default credits available (target_credits)
-> + * in LPAR depends on number of cores configured. It varies based on
-> + * whether processors are in shared mode or dedicated mode.
-> + * Get the notifier when CPU configuration is changed with DLPAR
-> + * operation so that get the new target_credits (vas default capabilitie=
-s)
-> + * and then update the existing windows usage if needed.
-> + */
-> +static int pseries_vas_notifier(struct notifier_block *nb,
-> +				unsigned long action, void *data)
-> +{
-> +	struct of_reconfig_data *rd =3D data;
-> +	struct device_node *dn =3D rd->dn;
-> +	const __be32 *intserv =3D NULL;
-> +	int len, rc =3D 0;
-> +
-> +	if ((action =3D=3D OF_RECONFIG_ATTACH_NODE) ||
-> +		(action =3D=3D OF_RECONFIG_DETACH_NODE))
-
-I suppose the OF notifier is the way to do it (cc Nathan).
-
-Could this patch be folded in with where it acually does something? It=20
-makes it easier to review and understand how the notifier is used.
-
-
-> +		intserv =3D of_get_property(dn, "ibm,ppc-interrupt-server#s",
-> +					  &len);
-> +	/*
-> +	 * Processor config is not changed
-> +	 */
-> +	if (!intserv)
-> +		return NOTIFY_OK;
-> +
-> +	return rc;
-> +}
-> +
-> +static struct notifier_block pseries_vas_nb =3D {
-> +	.notifier_call =3D pseries_vas_notifier,
-> +};
-> +
->  static int __init pseries_vas_init(void)
->  {
->  	struct hv_vas_cop_feat_caps *hv_cop_caps;
-> @@ -591,6 +624,10 @@ static int __init pseries_vas_init(void)
->  			goto out_cop;
->  	}
-> =20
-> +	/* Processors can be added/removed only on LPAR */
-
-What does this comment mean? DLPAR?
-
-Thanks,
-Nick
-
-> +	if (copypaste_feat && firmware_has_feature(FW_FEATURE_LPAR))
-> +		of_reconfig_notifier_register(&pseries_vas_nb);
-> +
->  	pr_info("GZIP feature is available\n");
-> =20
->  out_cop:
-> --=20
-> 2.27.0
->=20
->=20
->=20
