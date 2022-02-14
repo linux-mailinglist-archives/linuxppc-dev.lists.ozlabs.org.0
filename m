@@ -1,65 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C37BD4B5A9A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 20:41:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 917944B5AA6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 20:47:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JyF2c1yh3z3cVs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 06:41:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JyF9L1Cr1z3cVq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 06:47:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FB6LCtzh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TI55dNwj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=FB6LCtzh; 
+ header.s=k20201202 header.b=TI55dNwj; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JyF1z0cJMz3bbj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 06:40:38 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JyF8c5311z2yfc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 06:46:24 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 899FEB8166D
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 19:40:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A3B2C340EE
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 19:40:35 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 64773B81257
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 19:46:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5B0C340E9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 19:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1644867635;
- bh=5szbHF9etsKpvbwWwwc9H/Y1QakuvzjKYGUIBcYFA80=;
+ s=k20201202; t=1644867980;
+ bh=kZ0Ha+ZttRWbRYErkpKyuJC1dyK+QrO2i6Uu5KgHMvM=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=FB6LCtzhqken/QDOPyOwZ7wQpXfPikw3pdTyiG/plTo//u4LL21KcLieW6f3UDasd
- m+oZrXFq0g+10OYhhpfWoc66p3wYzH1yqgc9M/Ir+axOtsEuq/9I0L4rsyEdsA4DqV
- Akh3HKGFbae964Ns+9AAqIR8q2ETEq6jdm91TNaeypazn0g9zThClRvdRy2dhtQTVB
- huhrfM1rfEAPboTNO6qI3jB+K2Wk2ktxzMPEDCNV3Ppxg1UY9wNqs0jqFbwMJdfyF3
- wJOEIVpvplY+7kpXA5brHQ6R6B4+dmKM9rSodPkMt8v0CZbn+igDN37PabkIb6gL30
- unIqB3cjmS6Lw==
-Received: by mail-wm1-f44.google.com with SMTP id
- l123-20020a1c2581000000b0037b9d960079so114843wml.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 11:40:35 -0800 (PST)
-X-Gm-Message-State: AOAM533AvAy8diwveqs5eN+/AWJ/FloYBCA8YlzUGEogu41WU07d+SeS
- 7BFQgfgN5QjFPiRIpPF62d9MSVUXX0BGiCNcylQ=
-X-Google-Smtp-Source: ABdhPJzTYqCeBLA8ZZTCXfIkkUBrupnk+RLzKXVQdywxm2I/SfNIqW0R0tvlKvR6EMssd+gXW/CMf7zH4TFa2LGJB14=
-X-Received: by 2002:a05:600c:1d27:b0:37c:74bb:2b4d with SMTP id
- l39-20020a05600c1d2700b0037c74bb2b4dmr252362wms.82.1644867623104; Mon, 14 Feb
- 2022 11:40:23 -0800 (PST)
+ b=TI55dNwjd34X3cSV/R8wDeTsb/jSwyQlCZyHL8eu7Ic1oIyOUVL+4rSQVgDcoP8Sj
+ 1PVP/2FxK28M6D6pl5spQ8ViEdjm0asBiIQ3QaGMRSNGXtdQwYM0C1pyauS+768E7z
+ /7ozMU3ZgPrBst3JRTF6f4wLTGM0Y2MXaeKVBAVqNtdt1rwDh6l/uj/fP+2o65aVwU
+ DK4OU3Cu8+XjClTput1qYc3H4kir+aqyouyEftPTymyGX5nkytf3U4k4kODfZt5krg
+ f2J2BVoV77x29P9gcslC02lh0sSCMwpso6r1gtaCVIUlvY0e+uOPgwPCjSsCIMFRg4
+ daQLLHhhTNb0g==
+Received: by mail-ej1-f47.google.com with SMTP id jg20so14721181ejc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 11:46:20 -0800 (PST)
+X-Gm-Message-State: AOAM530HLNICShRRuO7Y6/EoQHyybjfeabWMPPpto2vQe8qbWbWxYqVw
+ mB9iiCkZYI/aRhZXkE/7RGwXRctumV1dVHk4bGc=
+X-Google-Smtp-Source: ABdhPJyfeYwWpAfp1t9O1z8BIiteD6oMiQUhUFLNHvAQyjgPbxD0FyJauHtAzbL5TNr8UyIGWRM1U9VPuoeyXIyyYo0=
+X-Received: by 2002:adf:f6ce:: with SMTP id y14mr445399wrp.219.1644867968239; 
+ Mon, 14 Feb 2022 11:46:08 -0800 (PST)
 MIME-Version: 1.0
 References: <20220214163452.1568807-1-arnd@kernel.org>
- <20220214163452.1568807-11-arnd@kernel.org>
- <YgqL/NJ3YHEAhj4i@infradead.org>
-In-Reply-To: <YgqL/NJ3YHEAhj4i@infradead.org>
+ <20220214163452.1568807-5-arnd@kernel.org>
+ <YgqLFYqIqkIsNC92@infradead.org>
+In-Reply-To: <YgqLFYqIqkIsNC92@infradead.org>
 From: Arnd Bergmann <arnd@kernel.org>
-Date: Mon, 14 Feb 2022 20:40:07 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3eOw=QpxWFnODE61EFt8oGPJ7dcusfbPSD1vdEsUmekQ@mail.gmail.com>
-Message-ID: <CAK8P3a3eOw=QpxWFnODE61EFt8oGPJ7dcusfbPSD1vdEsUmekQ@mail.gmail.com>
-Subject: Re: [PATCH 10/14] uaccess: remove most CONFIG_SET_FS users
+Date: Mon, 14 Feb 2022 20:45:52 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1F3JaYaJPy9bSCG1+YV6EN05PE0DbwpD_GT1qRwFSJ-w@mail.gmail.com>
+Message-ID: <CAK8P3a1F3JaYaJPy9bSCG1+YV6EN05PE0DbwpD_GT1qRwFSJ-w@mail.gmail.com>
+Subject: Re: [PATCH 04/14] x86: use more conventional access_ok() definition
 To: Christoph Hellwig <hch@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -106,28 +105,26 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
  "Eric W . Biederman" <ebiederm@xmission.com>,
  alpha <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
  Linus Torvalds <torvalds@linux-foundation.org>,
- David Miller <davem@davemloft.net>
+ David Miller <davem@davemloft.net>, Al Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 14, 2022 at 6:06 PM Christoph Hellwig <hch@infradead.org> wrote:
+On Mon, Feb 14, 2022 at 6:02 PM Christoph Hellwig <hch@infradead.org> wrote:
 >
-> On Mon, Feb 14, 2022 at 05:34:48PM +0100, Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > On almost all architectures, there are no remaining callers
-> > of set_fs(), so CONFIG_SET_FS can be disabled, along with
-> > removing the thread_info field and any references to it.
-> >
-> > This turns access_ok() into a cheaper check against TASK_SIZE_MAX.
+> On Mon, Feb 14, 2022 at 05:34:42PM +0100, Arnd Bergmann wrote:
+> > +#define __range_not_ok(addr, size, limit)    (!__access_ok(addr, size))
+> > +#define __chk_range_not_ok(addr, size, limit)        (!__access_ok((void __user *)addr, size))
 >
-> Wouldn't it make more sense to just merge this into the last patch?
+> Can we just kill these off insted of letting themm obsfucate the code?
 
-Yes, sounds good. I wasn't sure at first if there is enough buy-in to get
-all architectures cleaned up, and I hadn't done the ia64 patch, so it
-seemed more important to do this part early, but now it seems that it
-will all go in at the same time, so doing this as part of a big removal
-at the end makes sense.
+As Al pointed out, they turned out to be necessary on sparc64, but the only
+definitions are on sparc64 and x86, so it's possible that they serve a similar
+purpose here, in which case changing the limit from TASK_SIZE to
+TASK_SIZE_MAX is probably wrong as well.
 
-        Arnd
+So either I need to revert the original definition as I did on sparc64, or
+they can be removed completely. Hopefully Al or the x86 maintainers
+can clarify.
+
+         Arnd
