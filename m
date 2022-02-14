@@ -2,124 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0AB4B5521
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 16:47:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C82F84B5570
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 16:56:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jy7sG1RBqz3bcj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 02:47:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jy82y2LfVz3cPv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 02:56:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ItVeSVN7;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=u2FyfK++;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=DZL+qohe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:7e83::622;
- helo=nam02-dm3-obe.outbound.protection.outlook.com;
- envelope-from=ziy@nvidia.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256
- header.s=selector2 header.b=ItVeSVN7; 
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
+ envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
+ header.s=susede2_rsa header.b=u2FyfK++; 
+ dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=DZL+qohe; 
  dkim-atps=neutral
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com
- (mail-dm3nam07on20622.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e83::622])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jy82F1r0wz3bXR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 02:55:32 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out2.suse.de (Postfix) with ESMTP id A75051F38B;
+ Mon, 14 Feb 2022 15:55:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1644854129; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=k9MmC9qkXYRWrTYfRcCJEivsJms60nX4tIrMOUzEtWM=;
+ b=u2FyfK++GVdTzQOjqWcqZGLBUUzrDhYKtU57FNklJOt/e4NK7Ftz0UbOcIPXvf2tiz8yjC
+ lOg4m1lH1HgqVUk5WhL9P0848EpI0TeXdVvzmIRoxnDQUtvmgcKuSfY1LwMOO9hOAfDpie
+ JLjWKG8CZYhVYy8OF3M7nq+jfqPZ6Gw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1644854129;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=k9MmC9qkXYRWrTYfRcCJEivsJms60nX4tIrMOUzEtWM=;
+ b=DZL+qoheqv/LmFulfWwBj6ooEqSB1jfA3QUYZzmGmg+dkmwxT83ob8JmlxLvtLwJu6Pvpa
+ ANP+ga/h5qpfxHCg==
+Received: from kunlun.suse.cz (unknown [10.100.128.76])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jy7rS6S9bz3bXR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 02:47:01 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iMKS2+tlQUrSL2Kj5qZjGxbpwq1zLNEQmMaHfMBcJy2L21Q4NXtqMJ4cDsLMydz65+ChUxkVuuLzhccdzXBc7BQkGE9NxicGve8Of9vYzosLYfxWRis79hLwrOS6ctSpC7N1igSTGJ6/7F89qcqwiFpsKLEqP0DBUg/1ZruCVO/hD54tkJ21Bh9CvsDIlR+KUZ6IugrKQ/ASIjg8QcmaHo45dMeOdmQZKR47kKhImGuzH+g/rFAvpZn2PBnlNyM2iJNudlRIuQjoAZpI8z3vmId6fsOwklEHqxlHcBJtH8TqZeN+hdxVBAceGErNMs6M/jG96CFip4PqYrrumlzATg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bD/r7dQDDGCi56LVUBpUB3spun/5YlvXCT1jS6YL3W4=;
- b=iWxZc6Tn4YJxQn25J7HJvCgxLnQR5USuu9gscYVLsiUHX9Yp9/6iWUg9nJH6bduQ7zrPb4REBl7IQESR2CaphGoZUnqF8RBh8rv28/vEGwzLTIt+gRPXUN+uLil6tlYDlJ8gi5zuABD5oo4bYSA98OifwYNn74nk6RC1ze5N219H4SqU4WttiTXM8hxyWMcrC/ACHOcVHYP4xcgBx5Nhq3hZRZLp5LIhBZvtZLXeiZyxVTir4xo9wHj+t+VzDkggZwBFQbpxYYtOxpS6MLM3BLX+qBqWVqbO1JBWv/GfLFbfxVojD7JQCoADfP+jAncUFvykanFfev1LmD3OJ2izvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bD/r7dQDDGCi56LVUBpUB3spun/5YlvXCT1jS6YL3W4=;
- b=ItVeSVN7ZS62ixbkgGV8XupQHl5ir7Fxn0Mwmx5b8FHZ8/2zGnTZzxFMIFw7jmHydxFYbmdfyJ7K9XMbsjEC8UCS3wFfqiKPnn7w28GQqVViWAVzDZSvu+VKQHY8X9mgl3JeKwIkXVlq3aA7aSNZCnoLPHpXqHrXC/rzkz4WtDK4yJl5htNL52uA/AZaZc8B7mXS4W3NEGy/6ZZjGL5pjYW46ujVC75lfFIqdhB9l2hhXyFcyqqNg1XWypiRSNyLEhCS4tpfcd2ncdfyo1KZNhrYT3xMaSNYvMDd1MeHiDtyxeAhBrOSBupsL4L0gD1WDady3U0unvOU+yIRDbGIgw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN2PR12MB3823.namprd12.prod.outlook.com (2603:10b6:208:168::26)
- by DM6PR12MB2970.namprd12.prod.outlook.com (2603:10b6:5:3b::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.11; Mon, 14 Feb
- 2022 15:46:53 +0000
-Received: from MN2PR12MB3823.namprd12.prod.outlook.com
- ([fe80::cb5:94df:b338:9b5e]) by MN2PR12MB3823.namprd12.prod.outlook.com
- ([fe80::cb5:94df:b338:9b5e%4]) with mapi id 15.20.4975.019; Mon, 14 Feb 2022
- 15:46:53 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v5 3/6] mm: make alloc_contig_range work at pageblock
- granularity
-Date: Mon, 14 Feb 2022 10:46:50 -0500
-X-Mailer: MailMate (1.14r5869)
-Message-ID: <B07EF2EA-A311-48DD-9973-0EAEC95F4074@nvidia.com>
-In-Reply-To: <20220214072601.GA17306@lst.de>
-References: <20220211164135.1803616-1-zi.yan@sent.com>
- <20220211164135.1803616-4-zi.yan@sent.com> <20220214072601.GA17306@lst.de>
-Content-Type: multipart/signed;
- boundary="=_MailMate_2AA612D6-0AD1-40B3-940C-A2AEA3CA3263_=";
- micalg=pgp-sha512; protocol="application/pgp-signature"
-X-ClientProxiedBy: BL1PR13CA0197.namprd13.prod.outlook.com
- (2603:10b6:208:2be::22) To MN2PR12MB3823.namprd12.prod.outlook.com
- (2603:10b6:208:168::26)
+ by relay2.suse.de (Postfix) with ESMTPS id E4E27A3B89;
+ Mon, 14 Feb 2022 15:55:25 +0000 (UTC)
+Date: Mon, 14 Feb 2022 16:55:24 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Mimi Zohar <zohar@linux.ibm.com>
+Subject: Re: [PATCH v5 2/6] powerpc/kexec_file: Add KEXEC_SIG support.
+Message-ID: <20220214155524.GN3113@kunlun.suse.cz>
+References: <cover.1641900831.git.msuchanek@suse.de>
+ <d95f7c6865bcad5ee37dcbec240e79aa742f5e1d.1641900831.git.msuchanek@suse.de>
+ <cff97dbe262919ff709a5ad2c4af6a702cc72a95.camel@linux.ibm.com>
+ <a8d717a44e5e919676e9b1e197cac781db46da87.camel@linux.ibm.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b052ce2a-671f-40c1-52fb-08d9efd13887
-X-MS-TrafficTypeDiagnostic: DM6PR12MB2970:EE_
-X-Microsoft-Antispam-PRVS: <DM6PR12MB297008BC34F889CCA3666FCEC2339@DM6PR12MB2970.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EclHlYzciRFPo5/hESi7dlFN8/ULNacxjAasg3J6iMNMYE68SXzi1S5QLkWoklZ5GokmkP/ulml/8OxHXZZ2uIqZ5qq9oqmb2HV+55hdp04R1l3YCNHvdCWhJZBquczU9pEV+kl7bKM6ULhLImXdiAvdjcIcppYTDBSFcKRH/1m5zS7ld4T7KdiEZQYNBYZ8P5hryW4ahj9nWGUid5ZjfpnPBlkFRMbGV7jhqMHmrSy6zC8+7dXBCwkwRNENVCax6QnUyWY7B+zdT3Q3LiSYiOi2gi1Gbk3YfgeIh2XxdcLXbmEOhXBfyyyoWQk+lDdjKPsKTcPh4dYrTUvpv9YZcPKlbevHnaXm/d96RkMWX9sGHbPB50aErosSIpt1VptjH2Yo4KyZfVBfhfwEng1m8eeJuWdPpaYwvEP9Jjj7qgmQsBYeCCPnhNQXRpVVB+LHNgJXaiLOV/7kYwOXLyd9U88rttEv3XBG/109+VLPrX3V2pEDoKANej1E3n4wvyLZOZi8ElfZQaVmqud+BA7LRGT9/aphRowq01OCLbd3HIjHSqu2r45M4m9HbUWD1KXzZdGSosADw/UHr38nz2I86MKOarRbyxe631aT37Yms0PAVjO/j71HrvGenXyjpgc2mxDgEnhDU8KYdlelKDqRvu5u9pSSJFy3swHGh25tMdMd4ZCTpfnaDIJYVjpP5yhWs1JZY2SyCY9X73Fu+LjMxyzr6gIQwijyVKx4FwF3s/E=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MN2PR12MB3823.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(6916009)(54906003)(316002)(38100700002)(6486002)(508600001)(36756003)(33656002)(26005)(2906002)(186003)(53546011)(6512007)(5660300002)(235185007)(7416002)(86362001)(83380400001)(2616005)(66556008)(21480400003)(66946007)(6506007)(8676002)(4326008)(66476007)(8936002)(45980500001)(72826004);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3SVLMthNnnzt6eLxsCxrt23RwLZizaGmzz2+iVcoseIUftPnzML208KyBUoJ?=
- =?us-ascii?Q?0gJMqG1X3sCellFI7dTcyCAaM86cDZDtYb4OmzQErByz2V1uzfRsUdj6TfBX?=
- =?us-ascii?Q?fhaEzaTbF5GxRaLxURWLKnj+/fW9V5NTXR2vkhJWfyyglm3PpHXWpqs3L5F6?=
- =?us-ascii?Q?BTRG7n/yYFVjZ84Qk/0IZQNv6S2oMDiMDW0f7i5n3SN+Lh07hmRFB4sH/i9c?=
- =?us-ascii?Q?djdk0wwGZ2SOWgHVq0t4UsBomiAEJpj19TeFFT3yjJKOqiGjjtpjGsceB2Ve?=
- =?us-ascii?Q?Atd95VQ7zr9415ipgN3/MW9K3CEWfMcBZKjurjDLjnLroveDcOx5bpmXLZPO?=
- =?us-ascii?Q?cNQXfrIBa+1WygB5zQx1zc/5psACukdDKtJe8inUt6c5WnpJ4gy5sTykEh6Q?=
- =?us-ascii?Q?FI+5Bm0Uz5zjE48s2lIFVicX5g1bfdSaRXVB3YJqjBQgN7RKVVNybhPHy4UA?=
- =?us-ascii?Q?t0aBIph16mBa+/Wh9k+YsAjkqGZ/sTvLfD4ykzXGxsMmeNAQx9E+TIgmzdMP?=
- =?us-ascii?Q?2JuLHSQ7p6cvMTv41KuyLR9ef7VaeZVs63OBe172kvnD5Ini6y3YxKvjyjUx?=
- =?us-ascii?Q?kqwCwKwG6GIAB8hK6mNxcxTMnFzYWymR+QFHwdNuIzI71zX1gAlnvQBip6jz?=
- =?us-ascii?Q?EzxK+c13Wi5azz4pEaAv7xqBU0t2qACrbxkBxI1Kaw7QhqOVh3l+89+/awyp?=
- =?us-ascii?Q?Mx7tDG+f0hmOc7uwlFCGC4D/VaD3K5rVVMqrawF2mV2oHT6o5mIi6kjXRvmJ?=
- =?us-ascii?Q?FqnweC+XFNYLZtlIBqIEu5M86PkePG4iOllrk5c0jJwKJywtrBLrOg5tSCBN?=
- =?us-ascii?Q?iaytFgAXkwFZpYnuH7ioLtv+yMj79V9fme2S7LhlHGjHOzJHWePpH0uHzzCG?=
- =?us-ascii?Q?rnFUWjrIfzumu7wVSOlCpDae2rkMdjKcTQkNRZWCnEbBmbYC+GDB7DG+Flvb?=
- =?us-ascii?Q?iOUa5ZaL12wh0tp6B9fcU6qM+G1nk/caVn5rdDVfdZ+6nFFg+CcXGZo4H+wB?=
- =?us-ascii?Q?4XAmNBR9amwh4NZ079XiMYZHpwKkHL4Gqu0kXF16FDae8f7eYWLdtd7tb3yO?=
- =?us-ascii?Q?m9koidB11DmqhYNG/I0rSsXn3G+r6dg5AhYCNy9gatSYnHkLbk6GEKyWwgTH?=
- =?us-ascii?Q?/zPt1mgMH/UQTFp4KNfnAsd7734kPwr9vN9KMU6txE3yzvfqL7ce3Fe/mig4?=
- =?us-ascii?Q?eYMl//3L213tTU2rWxv61p96ZsvHPU+xcAQ53LIGtjjDERykk+ui4AnownV0?=
- =?us-ascii?Q?JSeiKWnyQYFRx8BcrAJWPmGj90IwqDPbU5+1IFTtOvjBXz3xQKsfJketET7j?=
- =?us-ascii?Q?CEq3TGYwp02RSXJdOfiC09wxyPQ5Z14KJzzYUhXzBopOky6L+bykShynXiZj?=
- =?us-ascii?Q?u8KZbW/BYkw66CTX2mQyEKMDcWCSmhI3nBRXNxEWpIFwBIWkw3zfn5HEjR97?=
- =?us-ascii?Q?/wFFywRMSeYLDR+ZByb4I5upTGvhMHal+/+yzgf/cQUtvX/M2WrJVgZAHTUa?=
- =?us-ascii?Q?7in0sRUa3AJ+KSwksoEn0m6fEyTR/fcNZbdmIDJl4h+gAwfJz8HO7+ggrRHz?=
- =?us-ascii?Q?iDtGZPiG2Z1eeuQa6iQ=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b052ce2a-671f-40c1-52fb-08d9efd13887
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3823.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2022 15:46:52.9137 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OqO5VvBNApiNzS8lKNylnf6LiuBSj/+L4YxTCAhVcZxRGZ6aDoKedsYfafaAK/cA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB2970
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a8d717a44e5e919676e9b1e197cac781db46da87.camel@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -131,64 +78,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mel Gorman <mgorman@techsingularity.net>,
- David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org,
- Mike Rapoport <rppt@kernel.org>, Eric Ren <renzhengeek@gmail.com>,
- Oscar Salvador <osalvador@suse.de>, Robin Murphy <robin.murphy@arm.com>,
- Vlastimil Babka <vbabka@suse.cz>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Nayna <nayna@linux.vnet.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+ David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Rob Herring <robh@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Baoquan He <bhe@redhat.com>, Christian Borntraeger <borntraeger@de.ibm.com>,
+ James Morris <jmorris@namei.org>,
+ Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Daniel Axtens <dja@axtens.net>,
+ Philipp Rudo <prudo@redhat.com>, Frank van der Linden <fllinden@amazon.com>,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, linux-crypto@vger.kernel.org,
+ linux-security-module@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>, buendgen@de.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---=_MailMate_2AA612D6-0AD1-40B3-940C-A2AEA3CA3263_=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Hello,
 
-On 14 Feb 2022, at 2:26, Christoph Hellwig wrote:
+On Mon, Feb 14, 2022 at 10:14:16AM -0500, Mimi Zohar wrote:
+> Hi Michal,
+> 
+> On Sun, 2022-02-13 at 21:59 -0500, Mimi Zohar wrote:
+> 
+> > 
+> > On Tue, 2022-01-11 at 12:37 +0100, Michal Suchanek wrote:
+> > > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> > > index dea74d7717c0..1cde9b6c5987 100644
+> > > --- a/arch/powerpc/Kconfig
+> > > +++ b/arch/powerpc/Kconfig
+> > > @@ -560,6 +560,22 @@ config KEXEC_FILE
+> > >  config ARCH_HAS_KEXEC_PURGATORY
+> > >         def_bool KEXEC_FILE
+> > >  
+> > > +config KEXEC_SIG
+> > > +       bool "Verify kernel signature during kexec_file_load() syscall"
+> > > +       depends on KEXEC_FILE && MODULE_SIG_FORMAT
+> > > +       help
+> > > +         This option makes kernel signature verification mandatory for
 
->> +int
->> +isolate_single_pageblock(unsigned long boundary_pfn, gfp_t gfp_flags,=
- int isolate_before_boundary);
->
-> Please avoid the completely unreadably long line. i.e.
->
-> int isolate_single_pageblock(unsigned long boundary_pfn, gfp_t gfp_flag=
-s,
-> 		int isolate_before_boundary);
->
-> Same in various other spots.
+This is actually wrong. KEXEC_SIG makes it mandatory that any signature
+that is appended is valid and made by a key that is part of the platform
+keyiring (which is also wrong, built-in keys should be also accepted).
+KEXEC_SIG_FORCE or an IMA policy makes it mandatory that the signature
+is present.
 
-OK. Thanks for pointing it out. checkpatch.pl did not report any
-warning about this. It seems that the column limit has been relaxed
-to 100. Anyway, I will make it shorter.
+> > > +         the kexec_file_load() syscall.
+> > 
+> > When KEXEC_SIG is enabled on other architectures, IMA does not define a
+> > kexec 'appraise' policy rule.  Refer to the policy rules in
+> > security/ima/ima_efi.c.  Similarly the kexec 'appraise' policy rule in
 
---
-Best Regards,
-Yan, Zi
+I suppose you mean security/integrity/ima/ima_efi.c
 
---=_MailMate_2AA612D6-0AD1-40B3-940C-A2AEA3CA3263_=
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-Content-Type: application/pgp-signature; name="signature.asc"
+I also think it's misguided because KEXEC_SIG in itself does not enforce
+the signature. KEXEC_SIG_FORCE does.
 
------BEGIN PGP SIGNATURE-----
+> > arch/powerpc/kernel/ima_policy.c should not be defined.
 
-iQJDBAEBCgAtFiEEh7yFAW3gwjwQ4C9anbJR82th+ooFAmIKeWoPHHppeUBudmlk
-aWEuY29tAAoJEJ2yUfNrYfqK3aYP/3sWaU6QEZYstiqLTQhAShiUR+KjYQgx5WEZ
-rXg2fA40Jz1ozDOBwPV+7WhULBNgIuP14HxZdnUFAZtd356R8RTeLIhAB5hak5Q2
-M48+kJnm34adOHJ49ePci83t3Q1kAmm2OzSBu8q5wTdjks8ZFooo7nkExz3OAidi
-Cb96rvN8E8LUupMXltFrhECsOxb9z8ndl1LYN4UR9t/h3V8Hd4Uzoz57wqzttzNb
-YHTxnhCzOwl2uXtULNMc+SvJ/NqYogosKCVc4UpHNCrm1l9QhnDhN+okhV7IPo4c
-j+ey7ddNN2zcbI+M0+4P3b0KbwFSVfNcGTvpp4dS61onJ/bjeqF28fa2eaX+R/sa
-+rZd+3cz1IR9EOSPDR24Lbx2o9k28yYIluGdvlEpDvdZqTQSrrEdpX+rNXc0fUDv
-Bdtlb+TJFiPnN6lVZRZLwjVDIfwYFUtZ2ZxeZeX0y3ncm8/+yyW4aNdra0AlmMKF
-Qumm07h96SRPkr3cbE9LOuQWnpw2ifaGsEi/yNgru/SV4QITLTID2bjt28XjroAG
-K8VBLS+YuSSZ6Vh4BTcnvyApUFpULyHr/dx0MpDb9wpGjW13Kx1Uq861sYpbnKCz
-VWfbpmueTivay01BsrmXu+ZuKbluhlZSW7J6zu6Y+Jy0vV9VZu0Km/PARUAVeeFn
-gc8kanmn
-=Cmfg
------END PGP SIGNATURE-----
+I suppose you mean arch/powerpc/kernel/ima_arch.c - see above.
 
---=_MailMate_2AA612D6-0AD1-40B3-940C-A2AEA3CA3263_=--
+
+Thanks for taking the time to reseach and summarize the differences.
+
+> The discussion shouldn't only be about IMA vs. KEXEC_SIG kernel image
+> signature verification.  Let's try and reframe the problem a bit.
+> 
+> 1. Unify and simply the existing kexec signature verification so
+> verifying the KEXEC kernel image signature works irrespective of
+> signature type - PE, appended signature.
+> 
+> solution: enable KEXEC_SIG  (This patch set, with the above powerpc IMA
+> policy changes.)
+> 
+> 2. Measure and include the kexec kernel image in a log for attestation,
+> if desired.
+> 
+> solution: enable IMA_ARCH_POLICY 
+> - Powerpc: requires trusted boot to be enabled.
+> - EFI:   requires  secure boot to be enabled.  The IMA efi policy
+> doesn't differentiate between secure and trusted boot.
+> 
+> 3. Carry the kexec kernel image measurement across kexec, if desired
+> and supported on the architecture.
+> 
+> solution: enable IMA_KEXEC
+> 
+> Comparison: 
+> - Are there any differences between IMA vs. KEXEC_SIG measuring the
+> kexec kernel image?
+> 
+> One of the main differences is "what" is included in the measurement
+> list differs.  In both cases, the 'd-ng' field of the IMA measurement
+> list template (e.g. ima-ng, ima-sig, ima-modsig) is the full file hash
+> including the appended signature.  With IMA and the 'ima-modsig'
+> template, an additional hash without the appended signature is defined,
+> as well as including the appended signature in the 'sig' field.
+> 
+> Including the file hash and appended signature in the measurement list
+> allows an attestation server, for example, to verify the appended
+> signature without having to know the file hash without the signature.
+
+I don't understand this part. Isn't the hash *with* signature always
+included, and the distinguishing part about IMA is the hash *without*
+signature which is the same irrespective of signature type (PE, appended
+xattr) and irrespective of the keyt used for signoing?
+
+> Other differences are already included in the Kconfig KEXEC_SIG "Notes"
+> section.
+
+Which besides what is already described above would be blacklisting
+specific binaries, which is much more effective if you have hashes of
+binaries without signature.
+
+Thanks
+
+Michal
