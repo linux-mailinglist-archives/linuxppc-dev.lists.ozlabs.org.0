@@ -1,59 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30EAA4B59DC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 19:28:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A614B5A2F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 19:47:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JyCQX3f4Sz2xD4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 05:28:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JyCr75LyGz3cNB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 05:47:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=vWu3W4we;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=RJZZX4DX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d;
+ helo=mail-pj1-x102d.google.com; envelope-from=ikegami.t@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=vWu3W4we; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=RJZZX4DX; dkim-atps=neutral
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
+ [IPv6:2607:f8b0:4864:20::102d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JyCPn60m1z3bck
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 05:27:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
- :Reply-To:Content-ID:Content-Description;
- bh=93oBqhRfGyp81erZawUocVFg/qlY90+qZLcs405SMv0=; b=vWu3W4we2fdhM5wZ76QSxQy5W2
- lKa4zewyd1VhEAHkacc//5dUs2MWC/eFl5uS+/Yt/ba4EL1D4WD0oRaR/OlEJ/8dISj6Q6Ri35dJJ
- SFs+dhwZ3ldCkowTYS7WVBWxcj7vz4orDa/gXd7rw7H9rzNnSIDvJE0+E175Nhk7ZQxCb+TdmKvfm
- xqdQUFyPFx5hxn/fZZJpKgdH/0qAwn5KW9iB7hMG5sp5pIiQH5Yv20zsDNkAPQzUnPXdJeGOfiDkw
- hsAPjmI4M4uCR/zkLGm2NL2lgfcM0zG8W+gXLWnnxjDdauXtfshakyPg/avDGdvvwqnfz3VRowfdI
- Cs3A1gZQ==;
-Received: from [2602:306:c5a2:a380:b27b:25ff:fe2c:51a8]
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nJg4K-00D9vw-RT; Mon, 14 Feb 2022 18:27:25 +0000
-Message-ID: <aa6c446a-02f8-02d3-bd1a-19b5d729eb91@infradead.org>
-Date: Mon, 14 Feb 2022 10:27:20 -0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JyCqS5lPSz3bSk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 05:46:27 +1100 (AEDT)
+Received: by mail-pj1-x102d.google.com with SMTP id
+ n19-20020a17090ade9300b001b9892a7bf9so7332122pjv.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 10:46:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=DgckHGaAkZcrGYa6I90wSGex+wSps1HIk1YzJ1huHBo=;
+ b=RJZZX4DXXXc2Vva5RTK54qqa2xE6JBudRSuqI1jH8ljthTNxhlQbRoXtDtgKJ/Vtd3
+ 9ARstZWodppgVy/ebyhHmFuYiBxh2UAqBhQ/E2HUbJnV47uO0Je2ybKWozhvnHoZFa/n
+ PJQElJg2hTvwZbmARt5NeCK94ASxd9CeE+VG/w+N1dmHyu0dDtOclUaqiUiNGpkFSUQg
+ FZd/gMLsHHcB5kTYNCETi/yTUZV4pWlqn5DSfzTBdjoGNc8fIJcLvalCCW8W3xbvIE7v
+ wuorMvmulrHFt/gA587y5lKfUCWoYEIdYQ5T7VeAAMwZtcUqBjcMest87frN83K7Je1T
+ nMHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=DgckHGaAkZcrGYa6I90wSGex+wSps1HIk1YzJ1huHBo=;
+ b=U0dqjEeG2BdeDkFEQql7VjpMcsg44VVJjPYgfCCHE1oES8dM9+iXZahooBj+/P2npX
+ AN9UFcjLC9yhdRoljd2hInFs8Qsy6FyOwzjPZV+G9jvLOBdL2hz3oJ6FEBem4XZlhIUu
+ 89q43XiOEEiBgrtJBFLj71ORiQJ93RP6X/YB2BdOatfXxEVRcDi2YZQaAKWegrhfJ81T
+ R+4JG/cwvoMLKj5okA8R4zAgZ/0oeAJdQ9Zs93yqAcd4p9EaTwme0nfU5N0z6uKSQhkB
+ +GlwBv4KAvuVpIwnr0/adycPO1hob8dg3wG1v3XxUKJXfuRExwN1Uuv5mvopbQD7DY7T
+ xfmg==
+X-Gm-Message-State: AOAM531tb53qmjLmlyI4O0h5wpSHHHoYTYWM7kigDadWcgOI6gDFHByt
+ 0Bn9aH8lZGeyy+g+4UsEt/4=
+X-Google-Smtp-Source: ABdhPJwJMB9C8naMZb2fI5M9G0VerPo7wYHQv0HzQTYEZm+nvYJla2KU96FqYyucOl71Ghs2t/6Q6g==
+X-Received: by 2002:a17:90b:4f87:: with SMTP id qe7mr40474pjb.77.1644864385890; 
+ Mon, 14 Feb 2022 10:46:25 -0800 (PST)
+Received: from [192.168.122.100] (133-175-21-116.tokyo.ap.gmo-isp.jp.
+ [133.175.21.116])
+ by smtp.gmail.com with ESMTPSA id v2sm14583655pjt.55.2022.02.14.10.46.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 14 Feb 2022 10:46:25 -0800 (PST)
+Message-ID: <cedb1604-e024-2738-5b33-15703a653803@gmail.com>
+Date: Tue, 15 Feb 2022 03:46:18 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH] powerpc/boot: Add `otheros-too-big.bld` to .gitignore
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [BUG] mtd: cfi_cmdset_0002: write regression since v4.17-rc1
 Content-Language: en-US
-To: Paul Menzel <pmenzel@molgen.mpg.de>, Michael Ellerman
- <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-References: <20220214065543.198992-1-pmenzel@molgen.mpg.de>
-From: Geoff Levand <geoff@infradead.org>
-In-Reply-To: <20220214065543.198992-1-pmenzel@molgen.mpg.de>
-Content-Type: text/plain; charset=UTF-8
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+ Thorsten Leemhuis <regressions@leemhuis.info>,
+ linux-mtd@lists.infradead.org, Joakim.Tjernlund@infinera.com,
+ miquel.raynal@bootlin.com, vigneshr@ti.com, richard@nod.at,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <b687c259-6413-26c9-d4c9-b3afa69ea124@pengutronix.de>
+ <dff2abcc-5813-2f2c-35ba-f03cd1f35ac3@leemhuis.info>
+ <e11b76dc-5539-fb7e-da1c-a5005713d6b0@gmail.com>
+ <3dbbcee5-81fc-cdf5-9f8b-b6ccb95beddc@pengutronix.de>
+ <0f2cfcac-83ca-51a9-f92c-ff6495dca1d7@gmail.com>
+ <b231b498-c8d2-28af-ce66-db8c168047f7@pengutronix.de>
+ <66ee55d9-4f20-6722-6097-e53c2108ea07@gmail.com>
+ <579eab10-594c-d6b2-0ddb-ea6ab8e02856@pengutronix.de>
+From: Tokunori Ikegami <ikegami.t@gmail.com>
+In-Reply-To: <579eab10-594c-d6b2-0ddb-ea6ab8e02856@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -66,18 +96,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ marek.vasut@gmail.com, Chris Packham <chris.packham@alliedtelesis.co.nz>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, cyrille.pitchen@wedev4u.fr,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Paul,
+Hi Ahmad-san,
 
-On 2/13/22 22:55, Paul Menzel wrote:
-> Currently, `git status` lists the file as untracked by git, so tell git
-> to ignore it.
+On 2022/02/15 1:22, Ahmad Fatoum wrote:
+> Hello Tokunori-san,
+>
+> On 13.02.22 17:47, Tokunori Ikegami wrote:
+>> Hi Ahmad-san,
+>>
+>> Thanks for your confirmations. Sorry for late to reply.
+> No worries. I appreciate you taking the time.
+>
+>> Could you please try the patch attached to disable the chip_good() change as before?
+>> I think this should work for S29GL964N since the chip_ready() is used and works as mentioned.
+> yes, this resolves my issue:
+> Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Thanks for your testing. I have just sent the patch to review.
+>
+>>>>> Doesn't seem to be a buffered write issue here though as the writes
+>>>>> did work fine before dfeae1073583. Any other ideas?
+>>>> At first I thought the issue is possible to be resolved by using the word write instead of the buffered writes.
+>>>> Now I am thinking to disable the changes dfeae1073583 partially with any condition if possible.
+>>> What seems to work for me is checking if chip_good or chip_ready
+>>> and map_word is equal to 0xFF. I can't justify why this is ok though.
+>>> (Worst case bus is floating at this point of time and Hi-Z is read
+>>> as 0xff on CPU data lines...)
+>> Sorry I am not sure about this.
+>> I thought the chip_ready() itself is correct as implemented as the data sheet in the past.
+>> But it did not work correctly so changed to use chip_good() instead as it is also correct.
+> What exactly in the datasheet makes you believe chip_good is not appropriate?
+I just mentioned about the actual issue behaviors as not worked 
+chip_good() on S29GL964N and not worked chip_ready() on 
+MX29GL512FHT2I-11G before etc.
+Anyway let me recheck the data sheet details as just checked it again 
+quickly but needed more investigation to understand.
 
-Thanks for your contribution.
+Regards,
+Ikegami
 
-Acked-by: Geoff Levand <geoff@infradead.org>
-
+>
+> Cheers,
+> Ahmad
+>
+>
