@@ -1,66 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917944B5AA6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 20:47:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D0B14B5ACC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 21:00:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JyF9L1Cr1z3cVq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 06:47:02 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TI55dNwj;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JyFTD5SN9z3cY0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 07:00:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=TI55dNwj; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JyF8c5311z2yfc
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 06:46:24 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 64773B81257
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 19:46:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5B0C340E9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 19:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1644867980;
- bh=kZ0Ha+ZttRWbRYErkpKyuJC1dyK+QrO2i6Uu5KgHMvM=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=TI55dNwjd34X3cSV/R8wDeTsb/jSwyQlCZyHL8eu7Ic1oIyOUVL+4rSQVgDcoP8Sj
- 1PVP/2FxK28M6D6pl5spQ8ViEdjm0asBiIQ3QaGMRSNGXtdQwYM0C1pyauS+768E7z
- /7ozMU3ZgPrBst3JRTF6f4wLTGM0Y2MXaeKVBAVqNtdt1rwDh6l/uj/fP+2o65aVwU
- DK4OU3Cu8+XjClTput1qYc3H4kir+aqyouyEftPTymyGX5nkytf3U4k4kODfZt5krg
- f2J2BVoV77x29P9gcslC02lh0sSCMwpso6r1gtaCVIUlvY0e+uOPgwPCjSsCIMFRg4
- daQLLHhhTNb0g==
-Received: by mail-ej1-f47.google.com with SMTP id jg20so14721181ejc.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 11:46:20 -0800 (PST)
-X-Gm-Message-State: AOAM530HLNICShRRuO7Y6/EoQHyybjfeabWMPPpto2vQe8qbWbWxYqVw
- mB9iiCkZYI/aRhZXkE/7RGwXRctumV1dVHk4bGc=
-X-Google-Smtp-Source: ABdhPJyfeYwWpAfp1t9O1z8BIiteD6oMiQUhUFLNHvAQyjgPbxD0FyJauHtAzbL5TNr8UyIGWRM1U9VPuoeyXIyyYo0=
-X-Received: by 2002:adf:f6ce:: with SMTP id y14mr445399wrp.219.1644867968239; 
- Mon, 14 Feb 2022 11:46:08 -0800 (PST)
-MIME-Version: 1.0
-References: <20220214163452.1568807-1-arnd@kernel.org>
- <20220214163452.1568807-5-arnd@kernel.org>
- <YgqLFYqIqkIsNC92@infradead.org>
-In-Reply-To: <YgqLFYqIqkIsNC92@infradead.org>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Mon, 14 Feb 2022 20:45:52 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1F3JaYaJPy9bSCG1+YV6EN05PE0DbwpD_GT1qRwFSJ-w@mail.gmail.com>
-Message-ID: <CAK8P3a1F3JaYaJPy9bSCG1+YV6EN05PE0DbwpD_GT1qRwFSJ-w@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JyFSk5y44z2yLP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 07:00:21 +1100 (AEDT)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 2A25C68AA6; Mon, 14 Feb 2022 21:00:11 +0100 (CET)
+Date: Mon, 14 Feb 2022 21:00:11 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Arnd Bergmann <arnd@kernel.org>
 Subject: Re: [PATCH 04/14] x86: use more conventional access_ok() definition
-To: Christoph Hellwig <hch@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <20220214200011.GA3786@lst.de>
+References: <20220214163452.1568807-1-arnd@kernel.org>
+ <20220214163452.1568807-5-arnd@kernel.org> <YgqLFYqIqkIsNC92@infradead.org>
+ <CAK8P3a1F3JaYaJPy9bSCG1+YV6EN05PE0DbwpD_GT1qRwFSJ-w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a1F3JaYaJPy9bSCG1+YV6EN05PE0DbwpD_GT1qRwFSJ-w@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,8 +56,8 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
  "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
  Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
  Russell King - ARM Linux <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
+ Christoph Hellwig <hch@lst.de>, Christoph Hellwig <hch@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
  "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
  "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
  Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>,
@@ -110,21 +82,24 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 14, 2022 at 6:02 PM Christoph Hellwig <hch@infradead.org> wrote:
->
-> On Mon, Feb 14, 2022 at 05:34:42PM +0100, Arnd Bergmann wrote:
-> > +#define __range_not_ok(addr, size, limit)    (!__access_ok(addr, size))
-> > +#define __chk_range_not_ok(addr, size, limit)        (!__access_ok((void __user *)addr, size))
->
-> Can we just kill these off insted of letting themm obsfucate the code?
+On Mon, Feb 14, 2022 at 08:45:52PM +0100, Arnd Bergmann wrote:
+> As Al pointed out, they turned out to be necessary on sparc64, but the only
+> definitions are on sparc64 and x86, so it's possible that they serve a similar
+> purpose here, in which case changing the limit from TASK_SIZE to
+> TASK_SIZE_MAX is probably wrong as well.
+> 
+> So either I need to revert the original definition as I did on sparc64, or
+> they can be removed completely. Hopefully Al or the x86 maintainers
+> can clarify.
 
-As Al pointed out, they turned out to be necessary on sparc64, but the only
-definitions are on sparc64 and x86, so it's possible that they serve a similar
-purpose here, in which case changing the limit from TASK_SIZE to
-TASK_SIZE_MAX is probably wrong as well.
+Looking at the x86 users I think:
 
-So either I need to revert the original definition as I did on sparc64, or
-they can be removed completely. Hopefully Al or the x86 maintainers
-can clarify.
+ - valid_user_frame should go away and the caller should use get_user
+   instead of __get_user
+ - the one in copy_code can just go away, as there is another check
+   in copy_from_user_nmi
+ - copy_stack_frame should just use access_ok
+ - as does copy_from_user_nmi
 
-         Arnd
+but yes, having someone who actually knows this code look over it
+would be very helpful.
