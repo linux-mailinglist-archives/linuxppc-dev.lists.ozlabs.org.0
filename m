@@ -1,100 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F43D4B4CA6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 11:51:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FFF4B4CAA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 11:53:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jy1Ht3l7gz3f5j
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 21:51:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jy1KY0nLGz3dhV
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 21:53:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=coBkViJH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Pohzy8te;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=coBkViJH; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=Pohzy8te; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jy15k0X12z3cMd
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 21:43:05 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21EACXiA019451; 
- Mon, 14 Feb 2022 10:42:49 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jy15r6Sl8z3cV2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 21:43:12 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21EA989O012418; 
+ Mon, 14 Feb 2022 10:42:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=MVQHIIBpzH6OZ8xpkM6q+31SYym7l8sm9Kl7rsQBP7U=;
- b=coBkViJHQqQHXJC8GVFAl9dLV/GTXEah+6npMCHbCg96E3U8g9QNTZzwKZJpE8FlZQMM
- 4TW3A6yVpVWphtTNU9CG3im5TrDYhd+HI7pgsDYjRgG6FyGoALzGCmuii6+tzbZrysVf
- JyAy5c5PDs0j6GnyUmlnTWUFwxrrLOCtdfULgbbWlaBjKYucjiwE7Y62VSbvDJs5W5l7
- JYhqzSOIFgi+VposOIozepA9x6CT7SXSgeFZGyT7mMgbxWEhDhwc+ECi55g1YD4ZshEl
- WPMkMsUd+viQsD0MjXjkQtK/dNa/xU3u8P6AqHiSqrIsf1A4SB2DPOdpmU5WX8EBIfFK vw== 
+ bh=jciDulqJWPzW2WJ3Xrcy9hExfdSEWKkmsuYqrMQx61o=;
+ b=Pohzy8te5LeI2NdGyXNJBT4mXzdIQuuHDaEUWgxY3p6FG5VTfzSMgH0nxfQtwWoG4yDE
+ oTMd4upFpa1obp8aeH5sCisDCWnca/o9POFKaiPWjSSsPSRoVcYr78v5/MHaYBK2ti3S
+ qKV2aOELrRxKcPd6eVtItfoVGn+g0AF1KA9G8Fb39mMcOt8EAPORpqjt/kkt5D6nbwrU
+ lmcRSDTCb51mK5/RL5s8uQjkWBmlsBI0WJDGH5VKkWx3kjCk6GgJV27sHDuYuH/exh7I
+ zANkjzJJPQXbOi8iL+MTLupD1DgDRNIuPv1VSpnMWYERI8IzfGXwJw7APKQwCCfFzDMB nw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e79fvnjae-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e7c4dtpeq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Feb 2022 10:42:48 +0000
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21E9tmCO020614;
- Mon, 14 Feb 2022 10:42:48 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e79fvnj9j-1
+ Mon, 14 Feb 2022 10:42:56 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21EAA2qR011285;
+ Mon, 14 Feb 2022 10:42:56 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e7c4dtpdv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Feb 2022 10:42:48 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21EAXU9h012170;
- Mon, 14 Feb 2022 10:42:45 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma03ams.nl.ibm.com with ESMTP id 3e64h9m0xn-1
+ Mon, 14 Feb 2022 10:42:56 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21EAXsHJ005422;
+ Mon, 14 Feb 2022 10:42:54 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma01fra.de.ibm.com with ESMTP id 3e64h937rc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Feb 2022 10:42:45 +0000
+ Mon, 14 Feb 2022 10:42:54 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
  [9.149.105.62])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21EAgg7M44237208
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 21EAgjGw47645078
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Feb 2022 10:42:42 GMT
+ Mon, 14 Feb 2022 10:42:45 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4F33AAE04D;
+ by IMSVA (Postfix) with ESMTP id 06680AE058;
+ Mon, 14 Feb 2022 10:42:45 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B1BE5AE04D;
  Mon, 14 Feb 2022 10:42:42 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 03476AE05A;
- Mon, 14 Feb 2022 10:42:40 +0000 (GMT)
 Received: from li-NotSettable.ibm.com.com (unknown [9.43.124.167])
  by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 14 Feb 2022 10:42:39 +0000 (GMT)
+ Mon, 14 Feb 2022 10:42:42 +0000 (GMT)
 From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH powerpc/next 13/17] powerpc/bpf: Cleanup bpf_jit.h
-Date: Mon, 14 Feb 2022 16:11:47 +0530
-Message-Id: <58f5b66b2f8546bbbee620f62103a8e97a63eb7c.1644834730.git.naveen.n.rao@linux.vnet.ibm.com>
+Subject: [PATCH powerpc/next 14/17] powerpc/bpf: Move bpf_jit64.h into
+ bpf_jit_comp64.c
+Date: Mon, 14 Feb 2022 16:11:48 +0530
+Message-Id: <b873a8e6eff7d91bf2a2cabdd53082aadfe20761.1644834730.git.naveen.n.rao@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <cover.1644834730.git.naveen.n.rao@linux.vnet.ibm.com>
 References: <cover.1644834730.git.naveen.n.rao@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: KeL6gA27nvDW6lUMnFk9fih_eR2R2L_p
-X-Proofpoint-ORIG-GUID: RZifukq6SG65Aqu1bNHMqyII-4_zsAfP
+X-Proofpoint-GUID: Y1qYPZT-u3RhJr0PNd6A8t7xp3IpX1AJ
+X-Proofpoint-ORIG-GUID: 2Dj-yHXCr5IrAtfH_ON039csJv-Hr2GL
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
  definitions=2022-02-14_02,2022-02-14_03,2021-12-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0
- malwarescore=0 suspectscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0
- impostorscore=0 priorityscore=1501 phishscore=0 mlxlogscore=962
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202140058
+ malwarescore=0 bulkscore=0
+ adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
+ suspectscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202140064
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,57 +116,156 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-- PPC_EX32() is only used by ppc32 JIT. Move it to bpf_jit_comp32.c
-- PPC_LI64() is only valid in ppc64. #ifdef it
-- PPC_FUNC_ADDR() is not used anymore. Remove it.
+There is no need for a separate header anymore. Move the contents of
+bpf_jit64.h into bpf_jit_comp64.c
 
 Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 ---
- arch/powerpc/net/bpf_jit.h        | 10 +---------
- arch/powerpc/net/bpf_jit_comp32.c |  2 ++
- 2 files changed, 3 insertions(+), 9 deletions(-)
+ arch/powerpc/net/bpf_jit64.h      | 69 -------------------------------
+ arch/powerpc/net/bpf_jit_comp64.c | 54 +++++++++++++++++++++++-
+ 2 files changed, 53 insertions(+), 70 deletions(-)
+ delete mode 100644 arch/powerpc/net/bpf_jit64.h
 
-diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-index 0832235a274983..d9bdc9df2e48ed 100644
---- a/arch/powerpc/net/bpf_jit.h
-+++ b/arch/powerpc/net/bpf_jit.h
-@@ -59,10 +59,7 @@
- 				EMIT(PPC_RAW_ORI(d, d, IMM_L(i)));	      \
- 		} } while(0)
- 
--#ifdef CONFIG_PPC32
--#define PPC_EX32(r, i)		EMIT(PPC_RAW_LI((r), (i) < 0 ? -1 : 0))
+diff --git a/arch/powerpc/net/bpf_jit64.h b/arch/powerpc/net/bpf_jit64.h
+deleted file mode 100644
+index 199348b7296653..00000000000000
+--- a/arch/powerpc/net/bpf_jit64.h
++++ /dev/null
+@@ -1,69 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-/*
+- * bpf_jit64.h: BPF JIT compiler for PPC64
+- *
+- * Copyright 2016 Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+- *		  IBM Corporation
+- */
+-#ifndef _BPF_JIT64_H
+-#define _BPF_JIT64_H
+-
+-#include "bpf_jit.h"
+-
+-/*
+- * Stack layout:
+- * Ensure the top half (upto local_tmp_var) stays consistent
+- * with our redzone usage.
+- *
+- *		[	prev sp		] <-------------
+- *		[   nv gpr save area	] 5*8		|
+- *		[    tail_call_cnt	] 8		|
+- *		[    local_tmp_var	] 16		|
+- * fp (r31) -->	[   ebpf stack space	] upto 512	|
+- *		[     frame header	] 32/112	|
+- * sp (r1) --->	[    stack pointer	] --------------
+- */
+-
+-/* for gpr non volatile registers BPG_REG_6 to 10 */
+-#define BPF_PPC_STACK_SAVE	(5*8)
+-/* for bpf JIT code internal usage */
+-#define BPF_PPC_STACK_LOCALS	24
+-/* stack frame excluding BPF stack, ensure this is quadword aligned */
+-#define BPF_PPC_STACKFRAME	(STACK_FRAME_MIN_SIZE + \
+-				 BPF_PPC_STACK_LOCALS + BPF_PPC_STACK_SAVE)
+-
+-#ifndef __ASSEMBLY__
+-
+-/* BPF register usage */
+-#define TMP_REG_1	(MAX_BPF_JIT_REG + 0)
+-#define TMP_REG_2	(MAX_BPF_JIT_REG + 1)
+-
+-/* BPF to ppc register mappings */
+-const int b2p[MAX_BPF_JIT_REG + 2] = {
+-	/* function return value */
+-	[BPF_REG_0] = 8,
+-	/* function arguments */
+-	[BPF_REG_1] = 3,
+-	[BPF_REG_2] = 4,
+-	[BPF_REG_3] = 5,
+-	[BPF_REG_4] = 6,
+-	[BPF_REG_5] = 7,
+-	/* non volatile registers */
+-	[BPF_REG_6] = 27,
+-	[BPF_REG_7] = 28,
+-	[BPF_REG_8] = 29,
+-	[BPF_REG_9] = 30,
+-	/* frame pointer aka BPF_REG_10 */
+-	[BPF_REG_FP] = 31,
+-	/* eBPF jit internal registers */
+-	[BPF_REG_AX] = 12,
+-	[TMP_REG_1] = 9,
+-	[TMP_REG_2] = 10
+-};
+-
+-/* PPC NVR range -- update this if we ever use NVRs below r27 */
+-#define BPF_PPC_NVR_MIN		27
+-
+-#endif /* !__ASSEMBLY__ */
+-
 -#endif
--
-+#ifdef CONFIG_PPC64
- #define PPC_LI64(d, i)		do {					      \
- 		if ((long)(i) >= -2147483648 &&				      \
- 				(long)(i) < 2147483648)			      \
-@@ -85,11 +82,6 @@
- 				EMIT(PPC_RAW_ORI(d, d, (uintptr_t)(i) &       \
- 							0xffff));             \
- 		} } while (0)
--
--#ifdef CONFIG_PPC64
--#define PPC_FUNC_ADDR(d,i) do { PPC_LI64(d, i); } while(0)
--#else
--#define PPC_FUNC_ADDR(d,i) do { PPC_LI32(d, i); } while(0)
- #endif
+diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+index eeda636cd7be64..3e4ed556094770 100644
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -17,7 +17,59 @@
+ #include <linux/bpf.h>
+ #include <asm/security_features.h>
  
- /*
-diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-index cf66b25ed7c865..063e3a1be9270d 100644
---- a/arch/powerpc/net/bpf_jit_comp32.c
-+++ b/arch/powerpc/net/bpf_jit_comp32.c
-@@ -36,6 +36,8 @@
- /* BPF register usage */
- #define TMP_REG	(MAX_BPF_JIT_REG + 0)
- 
-+#define PPC_EX32(r, i)		EMIT(PPC_RAW_LI((r), (i) < 0 ? -1 : 0))
+-#include "bpf_jit64.h"
++#include "bpf_jit.h"
 +
- /* BPF to ppc register mappings */
- const int b2p[MAX_BPF_JIT_REG + 1] = {
- 	/* function return value */
++/*
++ * Stack layout:
++ * Ensure the top half (upto local_tmp_var) stays consistent
++ * with our redzone usage.
++ *
++ *		[	prev sp		] <-------------
++ *		[   nv gpr save area	] 5*8		|
++ *		[    tail_call_cnt	] 8		|
++ *		[    local_tmp_var	] 16		|
++ * fp (r31) -->	[   ebpf stack space	] upto 512	|
++ *		[     frame header	] 32/112	|
++ * sp (r1) --->	[    stack pointer	] --------------
++ */
++
++/* for gpr non volatile registers BPG_REG_6 to 10 */
++#define BPF_PPC_STACK_SAVE	(5*8)
++/* for bpf JIT code internal usage */
++#define BPF_PPC_STACK_LOCALS	24
++/* stack frame excluding BPF stack, ensure this is quadword aligned */
++#define BPF_PPC_STACKFRAME	(STACK_FRAME_MIN_SIZE + \
++				 BPF_PPC_STACK_LOCALS + BPF_PPC_STACK_SAVE)
++
++/* BPF register usage */
++#define TMP_REG_1	(MAX_BPF_JIT_REG + 0)
++#define TMP_REG_2	(MAX_BPF_JIT_REG + 1)
++
++/* BPF to ppc register mappings */
++const int b2p[MAX_BPF_JIT_REG + 2] = {
++	/* function return value */
++	[BPF_REG_0] = 8,
++	/* function arguments */
++	[BPF_REG_1] = 3,
++	[BPF_REG_2] = 4,
++	[BPF_REG_3] = 5,
++	[BPF_REG_4] = 6,
++	[BPF_REG_5] = 7,
++	/* non volatile registers */
++	[BPF_REG_6] = 27,
++	[BPF_REG_7] = 28,
++	[BPF_REG_8] = 29,
++	[BPF_REG_9] = 30,
++	/* frame pointer aka BPF_REG_10 */
++	[BPF_REG_FP] = 31,
++	/* eBPF jit internal registers */
++	[BPF_REG_AX] = 12,
++	[TMP_REG_1] = 9,
++	[TMP_REG_2] = 10
++};
++
++/* PPC NVR range -- update this if we ever use NVRs below r27 */
++#define BPF_PPC_NVR_MIN		27
+ 
+ static inline bool bpf_has_stack_frame(struct codegen_context *ctx)
+ {
 -- 
 2.35.1
 
