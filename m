@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C38B44B57D5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 18:03:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D097C4B57D9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 18:03:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jy9XH2fk9z3cVj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 04:03:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jy9Y63F7Fz3cTZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 04:03:54 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ilmpEja/;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=QlojU+/F;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,38 +19,38 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=ilmpEja/; 
+ header.s=bombadil.20210309 header.b=QlojU+/F; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jy9Wf0r53z2xD4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 04:02:38 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jy9XL1N9pz3cVw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 04:03:14 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
  :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=sdZnUMzq4+z5JAUxazcphNdGaICd1jOM0lzfsOlGGP4=; b=ilmpEja/277DxKyEOCWtwolukQ
- TPjFvPd+06Duh+vtGjhRV7kysY6QfnRhDUQM2LPMmQJPp0CcDS7ZITxDjyFmd5QuKSeULHTzQv/dY
- 64hhQASYsNjqn2sxQ8pG09hu68ESlQPBP+ZUUGQuXU+5Zf2NM0DQ50AjfVah1yfzmf28PCovqXoHo
- BshQ9GNqU4Vd+l0inCSwLOM/Kv9mqXQWM0bcy2OkcRImPWSvuzdM6R2QSbW7WDXWrev49VJC5rIfa
- zjELqfCR0DFOQ+1CmCyyesRY7ojy5sRUvp347Q343uxXWWK10wDz2za7INHW8lBnzV6aVrB5MveY8
- 5H/+OeNA==;
+ bh=l2WBiCb5duYJRA9nKpihqrJOH1Qjg6utSrFiu8qAdtc=; b=QlojU+/FbZdIPV2CfVg0g9FlaD
+ X9kD9i79czFm+XrIeETqIBZWp7KUAm9gvK8opnry/mfeikiv8qulZrrIaoXhzvURd/9eHLViQwxv5
+ LXc/98qskY802/1wdBsFyrYTQ+nvdvOcj9mkxEJaE5tu86xQ3mVdrUG3zLa6PvZZs/wj4/RphKMgX
+ Aw4bQl2nwAmM1vfC+2xAC6FWvZxY0AyRmh3Vm08qT5mHqejiG45EXR3L32AXhzoztk3bs49LY+vd9
+ B71zul4Ag63ikl89BxppR2RYdf6sfYunHxkkekkdUEP6CO/3vpDXnf6oETlru/9IYq/AaSIK3lD//
+ 3fbzMB6w==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red
- Hat Linux)) id 1nJejt-00GFoH-Dz; Mon, 14 Feb 2022 17:02:13 +0000
-Date: Mon, 14 Feb 2022 09:02:13 -0800
+ Hat Linux)) id 1nJekS-00GG7B-B1; Mon, 14 Feb 2022 17:02:48 +0000
+Date: Mon, 14 Feb 2022 09:02:48 -0800
 From: Christoph Hellwig <hch@infradead.org>
 To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH 04/14] x86: use more conventional access_ok() definition
-Message-ID: <YgqLFYqIqkIsNC92@infradead.org>
+Subject: Re: [PATCH 05/14] uaccess: add generic __{get,put}_kernel_nofault
+Message-ID: <YgqLONpDAru08JBZ@infradead.org>
 References: <20220214163452.1568807-1-arnd@kernel.org>
- <20220214163452.1568807-5-arnd@kernel.org>
+ <20220214163452.1568807-6-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220214163452.1568807-5-arnd@kernel.org>
+In-Reply-To: <20220214163452.1568807-6-arnd@kernel.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
  bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -86,8 +86,6 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 14, 2022 at 05:34:42PM +0100, Arnd Bergmann wrote:
-> +#define __range_not_ok(addr, size, limit)	(!__access_ok(addr, size))
-> +#define __chk_range_not_ok(addr, size, limit)	(!__access_ok((void __user *)addr, size))
+Looks good,
 
-Can we just kill these off insted of letting themm obsfucate the code?
+Reviewed-by: Christoph Hellwig <hch@lst.de>
