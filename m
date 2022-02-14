@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24BB34B57FD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 18:07:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8784B580B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 18:07:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jy9cg516mz3cWl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 04:06:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jy9dg0Zzlz3cW2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 04:07:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=A3sA4gEo;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=NQx4FkYe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,38 +19,38 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=A3sA4gEo; 
+ header.s=bombadil.20210309 header.b=NQx4FkYe; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jy9c34bmGz2xBl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 04:06:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jy9d20GBKz2xBl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 04:07:18 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
  :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=0CqmZAPRvnTQjgxBDbgMZYquENsTA/VPZyRN6//m2xw=; b=A3sA4gEo4nM3H7a0dm/JzGaUgV
- QIajZXmGp6ANWQ7bYVPcoCtAlCwsaPV2mcLSTAMkTtOvct+SPoXoviqH9efT8NLhfT4S3LRw6YQXd
- op4oq2yv8hzQnJjEyzM3+ydZNTbB02+bfC5eJ50MyESjem8R8c2VVjXeHHcWxOdarSNfzvCwtBQpI
- InHc/8TWyFNrwCcTQldIWT4TQ5FyAGciNKaQWRRlcxgPeWZKydhmkMkbIzvof2xUER3lSjyAJ9oA3
- 03ZxL6nD2oE4+Za+YPHuF/EueN4CdELKexFzVobCRN7YS+wtQRgWFdzsDIrcKnFVoJEqcho3LJJfk
- H411B1+g==;
+ bh=8eiqmWZNaqGdpgWNCwPX7gQKQvW9O9nBC/IyuCh5Uu4=; b=NQx4FkYetmttIR/NEzS5oFNUJ1
+ BWCBKtBDtrvX3DAWLa5AHjZdfYdnXv7FjdwcSzL2savzYKFpI5lASGYMwkIMqucgnXjQPE34Wn7gu
+ 8M3f5r3UHVh4xrbUW6OGb2BdNNHu5TEUyOxW4cWbJETnpHoCzg2syNTuuzIoyZ3z2d74fOTRgIzLE
+ gi9PTlFWO384ydDhR2BYapX3HCpvz3Ev+lPbXiiPGJWS2Rir5CtHBihibt3df1WUog3nlAglNFwge
+ SR1bH3Ql6wR2kB6boSvOhKZPud54w/M5Oj73ph5T6NViIfVSmPOQ3F8tUeuO5eYcRAhCTLQ7sPIMg
+ +OiVycgw==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red
- Hat Linux)) id 1nJenc-00GHV7-F2; Mon, 14 Feb 2022 17:06:04 +0000
-Date: Mon, 14 Feb 2022 09:06:04 -0800
+ Hat Linux)) id 1nJeoP-00GHvG-Sg; Mon, 14 Feb 2022 17:06:53 +0000
+Date: Mon, 14 Feb 2022 09:06:53 -0800
 From: Christoph Hellwig <hch@infradead.org>
 To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH 10/14] uaccess: remove most CONFIG_SET_FS users
-Message-ID: <YgqL/NJ3YHEAhj4i@infradead.org>
+Subject: Re: [PATCH 11/14] sparc64: remove CONFIG_SET_FS support
+Message-ID: <YgqMLYJs0RMecMck@infradead.org>
 References: <20220214163452.1568807-1-arnd@kernel.org>
- <20220214163452.1568807-11-arnd@kernel.org>
+ <20220214163452.1568807-12-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220214163452.1568807-11-arnd@kernel.org>
+In-Reply-To: <20220214163452.1568807-12-arnd@kernel.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
  bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -86,13 +86,12 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 14, 2022 at 05:34:48PM +0100, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> On almost all architectures, there are no remaining callers
-> of set_fs(), so CONFIG_SET_FS can be disabled, along with
-> removing the thread_info field and any references to it.
-> 
-> This turns access_ok() into a cheaper check against TASK_SIZE_MAX.
+>  void prom_world(int enter)
+>  {
+> -	if (!enter)
+> -		set_fs(get_fs());
+> -
+>  	__asm__ __volatile__("flushw");
+>  }
 
-Wouldn't it make more sense to just merge this into the last patch?
+The enter argument is now unused.
