@@ -2,106 +2,123 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30DA4B591D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 18:53:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C444B5942
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 19:00:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JyBdv1db4z3cHS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 04:53:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JyBpg1xL1z3cQs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 05:00:43 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fewXgRXs;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=AEYqAeVU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:7eae::61c;
+ helo=nam11-bn8-obe.outbound.protection.outlook.com;
+ envelope-from=ziy@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=fewXgRXs; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256
+ header.s=selector2 header.b=AEYqAeVU; 
+ dkim-atps=neutral
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2061c.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7eae::61c])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JyBd63scKz3bYq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 04:52:25 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21EFhdPB012468; 
- Mon, 14 Feb 2022 17:52:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=fRPquwuW8qfyOuoD5PevBKzhtO7/iuKYb7YoEXWc2zY=;
- b=fewXgRXsLQhcvs481DRc1VIa9vX7Qv/66B8bzHiTZD6FMUQsCJvPf5vAIFdg0p/5v7C1
- cC8JVZpL9RygXWZqlrRAGFRONPbaDv/2/9j5rl0ndWMthOIx/MEUuZOOHYP5CJezRF37
- WdZAf3SokDrXknfATw/tXmqIzalzviV3VVMR57KQOwIJi0MOLk6BAn4EhD4g+Y9mFzXG
- iefN5h1XiTAN27jk68GWZGcj8PqngOWovnZyHvzEGAJuQKx2otf8uT6VrdNoOqJnkoQe
- mdzvqadb8ESqn2RUjsezCPvj1s+J2uvDNotim4DoJwqJ9DPj62rUMsEo0+ZztwRuNkAW dQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e7c4e5a24-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Feb 2022 17:52:03 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21EHmYgb024211;
- Mon, 14 Feb 2022 17:52:03 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e7c4e5a1e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Feb 2022 17:52:03 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21EHbtVT026816;
- Mon, 14 Feb 2022 17:52:01 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03ams.nl.ibm.com with ESMTP id 3e64h9qrpr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Feb 2022 17:52:01 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 21EHfeTi46137692
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Feb 2022 17:41:40 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1890DA4065;
- Mon, 14 Feb 2022 17:51:59 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A1017A4060;
- Mon, 14 Feb 2022 17:51:58 +0000 (GMT)
-Received: from localhost (unknown [9.43.124.167])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 14 Feb 2022 17:51:58 +0000 (GMT)
-Date: Mon, 14 Feb 2022 23:21:56 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 12/13] powerpc/ftrace: Prepare ftrace_64_mprofile.S for
- reuse by PPC32
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Jiri Kosina
- <jikos@kernel.org>, Joe Lawrence <joe.lawrence@redhat.com>, Josh Poimboeuf
- <jpoimboe@redhat.com>, Miroslav Benes <mbenes@suse.cz>, Ingo Molnar
- <mingo@redhat.com>, Petr Mladek <pmladek@suse.com>, Steven Rostedt
- <rostedt@goodmis.org>
-References: <cover.1640017960.git.christophe.leroy@csgroup.eu>
- <82a732915dc71ee766e31809350939331944006d.1640017960.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <82a732915dc71ee766e31809350939331944006d.1640017960.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JyBns1qfKz3bVL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 04:59:58 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZgLIXLhBWdX2TcRwth3xiSEdsMcRl8HZwdWWmCouI45sdDJReJlWHhw4E8WCmwBvMOSroFW8KylU2CAbZyglMRJCteDtg6P7qEA/oBhDPG2M+ykDufFFflsa8g4j6yjIHBD6/RCOWlOgGNhjEirgWD7V2iZ6R8Us64T+AnPD7UMTS/BxseHXxztvIIRkZ9+F50YLJN7c0hJ3RKf3A7dUHdzPSH4r2S/WcN3ftuGKFNtSUJgc9lvqaaWoYOtXvzIsyNMubFpeJi6RPxOrZo7eHn4EAxcBzf/nJoFas7SdqMR33lCfE3873VGhhvQNG8pQpZCzmcmi19xi3yzRiMfHCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7LLGNECXTxj2X85KV2FMmkg6haP1g1eBjRbiEZhA+4Q=;
+ b=cMT9bkeSGqeXS+FwvDJJRrB23ZZJUiJ4R2bJ0KYJ9YnDS4Rq8HnHszomfIf8CbYD0gCgmg2rtwADSojmLLEV3NpO2CFzqR1GDNUbyZVOOTa0UnIkWfjA2f8Re1RAnkioNJBM/tn30JfoJx7DaPwozeAs75h7NTfI1JNwVybEkJ+A0S7GgVo1xfM6tX7trXRv3nBTWAo6wxaASASQhsj9Clu28Lfe5fmzDX3k+GxXwjLjMnvgM0mHb0ZUIbnrWFKYkBtXXFB8aXfFSIqHRpSKebIKULUIsl/hIelpNzqqONG3UKWZ9Jw1pVjrFqxvJj7s3lQn3Hn3+l520eWsJlotOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7LLGNECXTxj2X85KV2FMmkg6haP1g1eBjRbiEZhA+4Q=;
+ b=AEYqAeVUb/JTznA6MWU+Wn6K2An4rRQcXUCA9uyN6DcZzHbhsUJw30CClX7DxRwC6nBFu6P89r2FD5xswykc/dtXKifodKvglWa3Z5ybMDV/GtQhQaDpKDIoYT5/j4+vRgBaOSSRmQ3cEt3Qhaee9ddnuSrctUkOiwV3uZcWW/imNduje1oLgrAWpqWFq5k18n/xlv/97R6e2zZWD6fJGvCCpNBbijR3XLuAptZmL0k7Sv7QExCO7RRVJ6FudOuSbC5HT1VBndQfyOctZa4f3MQVZBEBk6/hzY2aHyYsfdQk92rePn3to0Udwc4YNVYNT6OyspEbC2VaYeTURrmYDw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN2PR12MB3823.namprd12.prod.outlook.com (2603:10b6:208:168::26)
+ by BN9PR12MB5227.namprd12.prod.outlook.com (2603:10b6:408:100::6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.15; Mon, 14 Feb
+ 2022 17:59:37 +0000
+Received: from MN2PR12MB3823.namprd12.prod.outlook.com
+ ([fe80::cb5:94df:b338:9b5e]) by MN2PR12MB3823.namprd12.prod.outlook.com
+ ([fe80::cb5:94df:b338:9b5e%4]) with mapi id 15.20.4975.019; Mon, 14 Feb 2022
+ 17:59:37 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v1 1/2] cma: factor out minimum alignment requirement
+Date: Mon, 14 Feb 2022 12:59:34 -0500
+X-Mailer: MailMate (1.14r5869)
+Message-ID: <3807992C-588C-4187-9232-89F478D17AE9@nvidia.com>
+In-Reply-To: <20220214174132.219303-2-david@redhat.com>
+References: <20220214174132.219303-1-david@redhat.com>
+ <20220214174132.219303-2-david@redhat.com>
+Content-Type: multipart/signed;
+ boundary="=_MailMate_DCDACDE6-76E1-42D1-9F2E-DC2CBA67259D_=";
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+X-ClientProxiedBy: BL1PR13CA0066.namprd13.prod.outlook.com
+ (2603:10b6:208:2b8::11) To MN2PR12MB3823.namprd12.prod.outlook.com
+ (2603:10b6:208:168::26)
 MIME-Version: 1.0
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1644860537.hyunv1mld0.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HHrAwynjC0tZxVMXEag7CCqPQklgAug1
-X-Proofpoint-ORIG-GUID: 0pFoWuFbKJHIjrYfR2q_vw0OCvLFxAEO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-14_07,2022-02-14_03,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0
- adultscore=0 clxscore=1011 lowpriorityscore=0 impostorscore=0
- suspectscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202140104
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 4f89c438-299e-489d-a4dc-08d9efe3c3ae
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5227:EE_
+X-Microsoft-Antispam-PRVS: <BN9PR12MB52272832EEBBFDE0A665B9AAC2339@BN9PR12MB5227.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4714;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: m0cH1po9VA4pCRQPgEpZzMmnRpfi0FGEK5s36+Y0/VFWmmeMzGGXoeXLXD7ncf49IqIwzkMtVzgaO5UhrY962M2/Y6kvJfMd2iv+trvmx5Prto//AKmDnTwvowFWRE52D2nHgSLc7rq7hOL7LAGPNjLUwXOoEpVr8b13GryNp38xIS5JpwqeP5wGrLidgWsJ0GyZ7sdHtiwM4VWm4ee7BwlyJSy7tUq7AwYPQVOJR1jk+R7CgNTQl4MHLVC4faedyYEUq6vijak4mpf5JHQ/Jdk7Kl4IDeDWyrHgMZrE7tVl1aSM06WhMZqOexz7fG76cE4LaCQNKluL0H1pc7HXVGAV3e+LnQM1Zv6AzCJebt5YqxuqKxC8kqcTa64o8OrDiJYcXmh41TBf2Cosvxfvg9/wejTpwzb/xQUTskPdoTDqsSVvGFUcGjExSP0PasvIFVzlIUb6hXe7JqIhuwBEPQJdg2EC4e+dXZzYSyO4ArCUPrtf3mIg41C7tqyDfHJGb2miXAfGYcGX2yo+/Xd4MuICp5Ysm7KOVlWQtiG/5zEbQOJ5fdpMJrtc1tb3RCFnSAdL23E2DSi0VJPayakmpWW98euTNVR1J8RcAjlfWSjLg1c3xCUax16NhPlxs5B2ymJWR8J0iGOUgh8YL9yIDq+EOskGpb6rJgxlR86onRBNPT+i8NoSqzZkgt+OjA3re9HMhcfc8SKthk2k/LWOjnCZfnvJd1ArzSg8RPQ3Zys=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MN2PR12MB3823.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(366004)(235185007)(7416002)(2616005)(5660300002)(83380400001)(8936002)(508600001)(21480400003)(6512007)(6666004)(36756003)(33656002)(53546011)(6486002)(6506007)(26005)(186003)(66476007)(6916009)(86362001)(38100700002)(54906003)(316002)(66946007)(66556008)(2906002)(8676002)(4326008)(45980500001)(72826004);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?vOR36d3QKlaCW8fTkBKuooKRENKFOE7QAzNIHJMcfDtRK7j7zOSM1CFXXxo2?=
+ =?us-ascii?Q?11g9qaO6XTIzV47uXnTe+c77FidgxNTNpW5IRCsoIXOhaXHuAUbIb3CPhVQk?=
+ =?us-ascii?Q?vYbS3oDglPAgwoCJRSnxvbDZw0F0MG0apcu/5SLVrbEL5+X+Ze0Exgs0DXu/?=
+ =?us-ascii?Q?eGA0NiaDGmpAivp2OlD5PSeRvtAZ8K3EHCu+WMqAD/o6SjgHqTtY/ntJ5Mkz?=
+ =?us-ascii?Q?fgKkTyVdTJ/cS2J2yr4jbYsm0azCffL74Agy+k0GBbJMeihpvZFUK95jFCKY?=
+ =?us-ascii?Q?EQ4HpgFLOv9wuRvBg67uWpL3UK0y/xn9D0rA6ZZAuZ9C9P6HK1FWalUUjRhP?=
+ =?us-ascii?Q?XV8gd0ntLWuNXJD2tEAOH/0X5JcPezmDzK+vzdSU+EB2cs3Yo2IbUi6oKwVS?=
+ =?us-ascii?Q?G/e6Yw95DoV+ExEAD4QNMyChVTTSibwT3Q1ywxpJ262Q62jCUCwAGYe5fq6z?=
+ =?us-ascii?Q?VpRxm+9e6w0sMguiFQYV8d+UaRd4qZe6rGgyaPjKWa58rHN0/fDfS31U87xT?=
+ =?us-ascii?Q?r9LlufFqmTcwJiFcBz+2DCC1fLEhhDuDSKmwLEgK6JzP90AZxdveH84QtvaV?=
+ =?us-ascii?Q?Mz4eTeTmFJ4/7ah+rBZm7uDekLlvIQeGI/Lm5RS/hl9rhGjznnPQ8IbLNmvr?=
+ =?us-ascii?Q?kycTInLW/gdrhAIeYlpacNmBq7nFqy4Xh1VjebGu9lkLu8t1EZSsAmBW3/+7?=
+ =?us-ascii?Q?ZwdvpTL/RTuGwNYKr4ay7tQCr7pbHl1fHcEskBX5TjFlyYH1GVsCiy5PDvlZ?=
+ =?us-ascii?Q?aAn2kA1sihYSH1Ym/rjK0EhVbwUKdiYspZADWuhy3WlVTYwX9ylOjO7l4I7b?=
+ =?us-ascii?Q?DlxWlKZVRhWRoMS2mOeNkfEtxkNa/L3YdDUHVjah2ceiP5tTJKaWO1L9G0fc?=
+ =?us-ascii?Q?9fhGYR6RWsx8BFXTHWo0OwWSlepgemmXKCMciV9z9G0heVX4YPeFNxN/Dzea?=
+ =?us-ascii?Q?3UL8lfskMINQThiT3ufFFjVF0Ah3ZA+vbEPuhyT/+kMgByfwF3VwSfB2Qtjz?=
+ =?us-ascii?Q?af+AsEqfZi4jOgtjl4G85vS+riL6tA4e2yelmx3HoT8ZEOIHH2ieFzVlcve/?=
+ =?us-ascii?Q?UuVfSOZmdEKNnLraZRpb3aL63PncxdxmfeD32mGGZcL30C6a6lj042PvqSr9?=
+ =?us-ascii?Q?S6wS7c9a+SS3mYx6Eb99MsZZgshBeHJGiVpuvKz1Sl1Y1PmwAi1MwZ6L03kN?=
+ =?us-ascii?Q?bRtxL7ai3Qfle5TGHymmzIBDUQOcC4xcdcJ9Su0UVWmTgWlKuILNoBzjb7Es?=
+ =?us-ascii?Q?ESVS9wEmH1JDNc7CVxfquGoZ/ps892tUWYQW0dLoZFRDIhC2Y1+r/XMBvVAD?=
+ =?us-ascii?Q?H/mnN8RP0fXnu3jg/LbGsBA1jA3/rzdjZAMZ1smO78EZLe5xU6ONJ1z3QnQ7?=
+ =?us-ascii?Q?b4OUUnQF+8br+ASsoBQEUuFLltow5ZAjcadmB3yPcxj+LwArrqId20U8FW2r?=
+ =?us-ascii?Q?BaqZqjmw/+EtCR6MMdzNNN5+gyFRNWpoFx/bdDx2JLhoIw2SVPcuZI3MN5RI?=
+ =?us-ascii?Q?5QHr4IWMyKW5/XXVZtkRmJJZNh1KbMdOJ7liaZHPunTgTs3qjH1EpjzPEmnI?=
+ =?us-ascii?Q?0l6Qv2pF7n79inx6tWs=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f89c438-299e-489d-a4dc-08d9efe3c3ae
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3823.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2022 17:59:37.2221 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: stytwWeA6ih/a+qk4RLe4VkHMKKpYNNEO1Wnkf37ghBtUaXTfBSRrGYTZtQHelCO
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5227
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,248 +130,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "live-patching@vger.kernel.org" <live-patching@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: devicetree@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ linux-mm@kvack.org, Minchan Kim <minchan@kernel.org>,
+ iommu@lists.linux-foundation.org, Rob Herring <robh+dt@kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Robin Murphy <robin.murphy@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Frank Rowand <frowand.list@gmail.com>, Christoph Hellwig <hch@lst.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
-> PPC64 mprofile versions and PPC32 are very similar.
->=20
-> Modify PPC64 version so that if can be reused for PPC32.
->=20
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+--=_MailMate_DCDACDE6-76E1-42D1-9F2E-DC2CBA67259D_=
+Content-Type: text/plain
+
+On 14 Feb 2022, at 12:41, David Hildenbrand wrote:
+
+> Let's factor out determining the minimum alignment requirement for CMA
+> and add a helpful comment.
+>
+> No functional change intended.
+>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 > ---
->  .../powerpc/kernel/trace/ftrace_64_mprofile.S | 73 +++++++++++++------
->  1 file changed, 51 insertions(+), 22 deletions(-)
+>  arch/powerpc/include/asm/fadump-internal.h |  5 -----
+>  arch/powerpc/kernel/fadump.c               |  2 +-
+>  drivers/of/of_reserved_mem.c               |  9 +++------
+>  include/linux/cma.h                        |  9 +++++++++
+>  kernel/dma/contiguous.c                    |  4 +---
+>  mm/cma.c                                   | 20 +++++---------------
+>  6 files changed, 19 insertions(+), 30 deletions(-)
 
-While I agree that ppc32 and -mprofile-kernel ftrace code are very=20
-similar, I think this patch adds way too many #ifdefs. IMHO, this
-makes the resultant code quite difficult to follow.
+LGTM. Thanks. Reviewed-by: Zi Yan <ziy@nvidia.com>
 
 
-- Naveen
+--
+Best Regards,
+Yan, Zi
 
->=20
-> diff --git a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S b/arch/powerp=
-c/kernel/trace/ftrace_64_mprofile.S
-> index 6071e0122797..56da60e98327 100644
-> --- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-> +++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-> @@ -34,13 +34,16 @@
->   */
->  _GLOBAL(ftrace_regs_caller)
->  	/* Save the original return address in A's stack frame */
-> -	std	r0,LRSAVE(r1)
-> +#ifdef CONFIG_MPROFILE_KERNEL
-> +	PPC_STL	r0,LRSAVE(r1)
-> +#endif
-> =20
->  	/* Create our stack frame + pt_regs */
-> -	stdu	r1,-SWITCH_FRAME_SIZE(r1)
-> +	PPC_STLU	r1,-SWITCH_FRAME_SIZE(r1)
-> =20
->  	/* Save all gprs to pt_regs */
->  	SAVE_GPR(0, r1)
-> +#ifdef CONFIG_PPC64
->  	SAVE_GPRS(2, 11, r1)
-> =20
->  	/* Ok to continue? */
-> @@ -49,10 +52,13 @@ _GLOBAL(ftrace_regs_caller)
->  	beq	ftrace_no_trace
-> =20
->  	SAVE_GPRS(12, 31, r1)
-> +#else
-> +	stmw	r2, GPR2(r1)
-> +#endif
-> =20
->  	/* Save previous stack pointer (r1) */
->  	addi	r8, r1, SWITCH_FRAME_SIZE
-> -	std	r8, GPR1(r1)
-> +	PPC_STL	r8, GPR1(r1)
-> =20
->  	/* Load special regs for save below */
->  	mfmsr   r8
-> @@ -63,10 +69,11 @@ _GLOBAL(ftrace_regs_caller)
->  	/* Get the _mcount() call site out of LR */
->  	mflr	r7
->  	/* Save it as pt_regs->nip */
-> -	std     r7, _NIP(r1)
-> +	PPC_STL	r7, _NIP(r1)
->  	/* Save the read LR in pt_regs->link */
-> -	std     r0, _LINK(r1)
-> +	PPC_STL	r0, _LINK(r1)
-> =20
-> +#ifdef CONFIG_PPC64
->  	/* Save callee's TOC in the ABI compliant location */
->  	std	r2, 24(r1)
->  	ld	r2,PACATOC(r13)	/* get kernel TOC in r2 */
-> @@ -74,8 +81,12 @@ _GLOBAL(ftrace_regs_caller)
->  	addis	r3,r2,function_trace_op@toc@ha
->  	addi	r3,r3,function_trace_op@toc@l
->  	ld	r5,0(r3)
-> +#else
-> +	lis	r3,function_trace_op@ha
-> +	lwz	r5,function_trace_op@l(r3)
-> +#endif
-> =20
-> -#ifdef CONFIG_LIVEPATCH
-> +#ifdef CONFIG_LIVEPATCH_64
->  	mr	r14,r7		/* remember old NIP */
->  #endif
->  	/* Calculate ip from nip-4 into r3 for call below */
-> @@ -85,10 +96,10 @@ _GLOBAL(ftrace_regs_caller)
->  	mr	r4, r0
-> =20
->  	/* Save special regs */
-> -	std     r8, _MSR(r1)
-> -	std     r9, _CTR(r1)
-> -	std     r10, _XER(r1)
-> -	std     r11, _CCR(r1)
-> +	PPC_STL	r8, _MSR(r1)
-> +	PPC_STL	r9, _CTR(r1)
-> +	PPC_STL	r10, _XER(r1)
-> +	PPC_STL	r11, _CCR(r1)
-> =20
->  	/* Load &pt_regs in r6 for call below */
->  	addi    r6, r1 ,STACK_FRAME_OVERHEAD
-> @@ -100,27 +111,32 @@ ftrace_regs_call:
->  	nop
-> =20
->  	/* Load ctr with the possibly modified NIP */
-> -	ld	r3, _NIP(r1)
-> +	PPC_LL	r3, _NIP(r1)
->  	mtctr	r3
-> -#ifdef CONFIG_LIVEPATCH
-> +#ifdef CONFIG_LIVEPATCH_64
->  	cmpd	r14, r3		/* has NIP been altered? */
->  #endif
-> =20
->  	/* Restore gprs */
-> -	REST_GPR(0, r1)
-> +#ifdef CONFIG_PPC64
->  	REST_GPRS(2, 31, r1)
-> +#else
-> +	lmw	r2, GPR2(r1)
-> +#endif
-> =20
->  	/* Restore possibly modified LR */
-> -	ld	r0, _LINK(r1)
-> +	PPC_LL	r0, _LINK(r1)
->  	mtlr	r0
-> =20
-> +#ifdef CONFIG_PPC64
->  	/* Restore callee's TOC */
->  	ld	r2, 24(r1)
-> +#endif
-> =20
->  	/* Pop our stack frame */
->  	addi r1, r1, SWITCH_FRAME_SIZE
-> =20
-> -#ifdef CONFIG_LIVEPATCH
-> +#ifdef CONFIG_LIVEPATCH_64
->          /* Based on the cmpd above, if the NIP was altered handle livepa=
-tch */
->  	bne-	livepatch_handler
->  #endif
-> @@ -129,6 +145,7 @@ ftrace_regs_call:
->  _GLOBAL(ftrace_stub)
->  	blr
-> =20
-> +#ifdef CONFIG_PPC64
->  ftrace_no_trace:
->  	mflr	r3
->  	mtctr	r3
-> @@ -136,25 +153,31 @@ ftrace_no_trace:
->  	addi	r1, r1, SWITCH_FRAME_SIZE
->  	mtlr	r0
->  	bctr
-> +#endif
-> =20
->  _GLOBAL(ftrace_caller)
->  	/* Save the original return address in A's stack frame */
-> -	std	r0, LRSAVE(r1)
-> +#ifdef CONFIG_MPROFILE_KERNEL
-> +	PPC_STL	r0, LRSAVE(r1)
-> +#endif
-> =20
->  	/* Create our stack frame + pt_regs */
-> -	stdu	r1, -SWITCH_FRAME_SIZE(r1)
-> +	PPC_STLU	r1, -SWITCH_FRAME_SIZE(r1)
-> =20
->  	/* Save all gprs to pt_regs */
->  	SAVE_GPRS(3, 10, r1)
-> =20
-> +#ifdef CONFIG_PPC64
->  	lbz	r3, PACA_FTRACE_ENABLED(r13)
->  	cmpdi	r3, 0
->  	beq	ftrace_no_trace
-> +#endif
-> =20
->  	/* Get the _mcount() call site out of LR */
->  	mflr	r7
-> -	std     r7, _NIP(r1)
-> +	PPC_STL     r7, _NIP(r1)
-> =20
-> +#ifdef CONFIG_PPC64
->  	/* Save callee's TOC in the ABI compliant location */
->  	std	r2, 24(r1)
->  	ld	r2, PACATOC(r13)	/* get kernel TOC in r2 */
-> @@ -162,6 +185,10 @@ _GLOBAL(ftrace_caller)
->  	addis	r3, r2, function_trace_op@toc@ha
->  	addi	r3, r3, function_trace_op@toc@l
->  	ld	r5, 0(r3)
-> +#else
-> +	lis	r3,function_trace_op@ha
-> +	lwz	r5,function_trace_op@l(r3)
-> +#endif
-> =20
->  #ifdef CONFIG_LIVEPATCH_64
->  	SAVE_GPR(14, r1)
-> @@ -171,7 +198,7 @@ _GLOBAL(ftrace_caller)
->  	subi    r3, r7, MCOUNT_INSN_SIZE
-> =20
->  	/* Put the original return address in r4 as parent_ip */
-> -	std	r0, _LINK(r1)
-> +	PPC_STL	r0, _LINK(r1)
->  	mr	r4, r0
-> =20
->  	/* Load &pt_regs in r6 for call below */
-> @@ -183,7 +210,7 @@ ftrace_call:
->  	bl	ftrace_stub
->  	nop
-> =20
-> -	ld	r3, _NIP(r1)
-> +	PPC_LL	r3, _NIP(r1)
->  	mtctr	r3
->  #ifdef CONFIG_LIVEPATCH_64
->  	cmpd	r14, r3		/* has NIP been altered? */
-> @@ -193,11 +220,13 @@ ftrace_call:
->  	/* Restore gprs */
->  	REST_GPRS(3, 10, r1)
-> =20
-> +#ifdef CONFIG_PPC64
->  	/* Restore callee's TOC */
->  	ld	r2, 24(r1)
-> +#endif
-> =20
->  	/* Restore possibly modified LR */
-> -	ld	r0, _LINK(r1)
-> +	PPC_LL	r0, _LINK(r1)
->  	mtlr	r0
-> =20
->  	/* Pop our stack frame */
-> @@ -209,7 +238,7 @@ ftrace_call:
->  #endif
->  	bctr			/* jump after _mcount site */
-> =20
-> -#ifdef CONFIG_LIVEPATCH
-> +#ifdef CONFIG_LIVEPATCH_64
->  	/*
->  	 * This function runs in the mcount context, between two functions. As
->  	 * such it can only clobber registers which are volatile and used in
-> --=20
-> 2.33.1
->=20
+--=_MailMate_DCDACDE6-76E1-42D1-9F2E-DC2CBA67259D_=
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJDBAEBCgAtFiEEh7yFAW3gwjwQ4C9anbJR82th+ooFAmIKmIcPHHppeUBudmlk
+aWEuY29tAAoJEJ2yUfNrYfqK9VIP/1E5rSNrwRY2Y0JGuut3WbyFC5S4DZDP5ykS
+R6PmfL2Fpo5QgUvgMqvraRLfvbdu7De4HJCg4LLRJr8grdp4UAR2NtrTR+CY1Fd2
+G0LL8jaz7sZu31C170tWW7UMuPvLp0Q+1Lb/D7AWM5PgKch//9H/GFj3P0Hmt7Ze
+GtJh2u199mmJG7bk7xd6MseXgmmJTLZG0DfjRAeipBFzc2cweWD5IL6+ahKe5WX3
+zx22BSARaggpsMiJGxAn4Bp1PS6pvl4JLpVg/m+Kotv+o4TsEgYizpnlU/yoAtIj
+X+iD+CMFb/CfRhlqqYk2szRsDZLG5nOVpJUNqpmpVfh85mqvjdn9eQN91GcEhCMn
+ZBTfIHv2hcutfrDbVjnC10DW+7vQqJHH5CSvNQslYkgakM5QTYOTPy/5ftIl8FoM
++ZoIXKXGmfMGBnXNmKkx8QEetMNjU53KwpIL7UFdsp7YN+Q6VWiR3May7WIHRCwQ
+4911m1l64sxDCnVckz7/6hT6KCBoMq5IKEyd5jOMYOCfl6t0Vkok5GKlEgC/YHcK
+S5pnA7hcJyrNrFlHSkxbChJVkUkkkUafAl3PxsmmNg8MWLuGPElHb8N0pk1RLKGL
+M5+/PsyKxR6LSFlKVYSdfX8tbXhjK5gzfyJnMqTosSX1LtNCCS1vkP8FEL8hzcvm
+guqSQBY+
+=0hvN
+-----END PGP SIGNATURE-----
+
+--=_MailMate_DCDACDE6-76E1-42D1-9F2E-DC2CBA67259D_=--
