@@ -2,34 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420AF4B3F79
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 03:31:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 463B34B3FBE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 03:42:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JxpBj6Jh8z3cMQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 13:31:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JxpQd61Z1z3bbn
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 13:42:01 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=FZ765lD0;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4JxpBJ0FD1z2x9p
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 13:31:18 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5317DED1;
- Sun, 13 Feb 2022 18:31:15 -0800 (PST)
-Received: from p8cg001049571a15.arm.com (unknown [10.163.47.15])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 088413F718;
- Sun, 13 Feb 2022 18:31:11 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Subject: [PATCH 04/30] powerpc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-Date: Mon, 14 Feb 2022 08:00:27 +0530
-Message-Id: <1644805853-21338-5-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1644805853-21338-1-git-send-email-anshuman.khandual@arm.com>
-References: <1644805853-21338-1-git-send-email-anshuman.khandual@arm.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
+ helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=FZ765lD0; dkim-atps=neutral
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JxpPz0t0Wz2yfh
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 13:41:26 +1100 (AEDT)
+Received: by mail-pj1-x102a.google.com with SMTP id
+ k60-20020a17090a4cc200b001b932781f3eso8582506pjh.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Feb 2022 18:41:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=z7kShygQGpUZ+981WdwwM+bjxkSwThliigTgcgZ4q8Y=;
+ b=FZ765lD0sJGFCpm3+Jb7CNLNzVKB5MradNNPr/6q7MCgQJP5FdYx2y5U2d7cptTRyr
+ H7I+Vy8wr0sy6NHM40+U8rgeiriCwJlw57u608Kfbnf2NESJTKpTFGFeEMhcNjojOd21
+ DXvgNoAt4a0Fn8mCWFtgsZnqaX26GDFu/QpUNL63Qw9KBcrtcM4VAaFywh5xiyAGL9gN
+ W8+ytecjbdV69CiEMTUPEaqAdHlcsVgq6k1Ufb9BFksVFvyigZmErgoyaocJluo6qpwK
+ OPrccIVVtz1BMj4UJfa7eib6bLA+FQtf46i/u7ZJECyjV83K9YufUlAYlLCsvO+poozH
+ ZzsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=z7kShygQGpUZ+981WdwwM+bjxkSwThliigTgcgZ4q8Y=;
+ b=HWrjC13vlTRCT84qwwL6uEUPgxh8b7mJ58qjhN3wve004RehUxahARRF95CRv9JsZM
+ 5lbXBRUV6peUEAo0Qpnxg3L2cnH0gTmM8Po6NutIDkZmyUQABwC1vyCxU76dR2ySf7SP
+ RC+hm3xFZJtFabIdwP+qZmVn81/7aVWRp2LG54btzFM7Pty538Rss/xf0cJPIdIsyhSo
+ EiJkcvCwSeFPNpKNMaOU89hv4Wir70+d+IkIPU4OiSScomTjaEXJ0Zst38ZJXIYkqYJs
+ rGYWTyzVGn1QM8ni+crCjH7Y0tc+C7gJ5nCYJbi1GF3Nv7t3hNlOqv9EH5eSzNGsANBO
+ DgOA==
+X-Gm-Message-State: AOAM531mMRQeas7B9OKM3Wp6E8TqG/GRxAwUK7lNnkZGlwtM+ljZMdif
+ PKL4AS3KTSMkK9TrFf2UrWXYuXLOaf5MnA==
+X-Google-Smtp-Source: ABdhPJx6jfaw+WQ7DzhRBMPuvo+vTWOEb8QTwNegf6e8kDIFxsJbDX5HhrAJ7dPkAbSv5zrr1pEGaQ==
+X-Received: by 2002:a17:903:3009:: with SMTP id
+ o9mr12255023pla.163.1644806483690; 
+ Sun, 13 Feb 2022 18:41:23 -0800 (PST)
+Received: from localhost (27-33-251-132.static.tpgi.com.au. [27.33.251.132])
+ by smtp.gmail.com with ESMTPSA id y42sm34247303pfa.5.2022.02.13.18.41.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 13 Feb 2022 18:41:23 -0800 (PST)
+Date: Mon, 14 Feb 2022 12:41:18 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 03/10] powerpc/pseries/vas: Save LPID in
+ pseries_vas_window struct
+To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ mpe@ellerman.id.au
+References: <7d175313528ea7aae20d9141f0efa2e57f44c9f4.camel@linux.ibm.com>
+ <df3c8452ec619744bdd5a0fde901645537c1b7b4.camel@linux.ibm.com>
+In-Reply-To: <df3c8452ec619744bdd5a0fde901645537c1b7b4.camel@linux.ibm.com>
+MIME-Version: 1.0
+Message-Id: <1644805860.xhvkad4duc.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,164 +84,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This defines and exports a platform specific custom vm_get_page_prot() via
-subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
-macros can be dropped which are no longer needed. While here, this also
-localizes arch_vm_get_page_prot() as powerpc_vm_get_page_prot() and moves
-it near vm_get_page_prot().
+Excerpts from Haren Myneni's message of January 22, 2022 5:55 am:
+>=20
+> The kernel sets the VAS window with partition PID when is opened in
+> the hypervisor. During DLPAR operation, windows can be closed and
+> reopened in the hypervisor when the credit is available. So saves
+> this PID in pseries_vas_window struct when the window is opened
+> initially and reuse it later during DLPAR operation.
 
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- arch/powerpc/Kconfig               |  1 +
- arch/powerpc/include/asm/mman.h    | 12 ------
- arch/powerpc/include/asm/pgtable.h | 19 ----------
- arch/powerpc/mm/mmap.c             | 59 ++++++++++++++++++++++++++++++
- 4 files changed, 60 insertions(+), 31 deletions(-)
+This probably shouldn't be called lpid, while you're changing it.
+"partition PID" and "LPAR PID" is also confusing. I know the name
+somewhat comes from the specifiction, but pid/PID would be fine,
+it's clear we are talking about "this LPAR" when in pseries code.
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index b779603978e1..ddb4a3687c05 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -135,6 +135,7 @@ config PPC
- 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UACCESS_FLUSHCACHE
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
-+	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_KEEP_MEMBLOCK
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
-diff --git a/arch/powerpc/include/asm/mman.h b/arch/powerpc/include/asm/mman.h
-index 7cb6d18f5cd6..1b024e64c8ec 100644
---- a/arch/powerpc/include/asm/mman.h
-+++ b/arch/powerpc/include/asm/mman.h
-@@ -24,18 +24,6 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
- }
- #define arch_calc_vm_prot_bits(prot, pkey) arch_calc_vm_prot_bits(prot, pkey)
- 
--static inline pgprot_t arch_vm_get_page_prot(unsigned long vm_flags)
--{
--#ifdef CONFIG_PPC_MEM_KEYS
--	return (vm_flags & VM_SAO) ?
--		__pgprot(_PAGE_SAO | vmflag_to_pte_pkey_bits(vm_flags)) :
--		__pgprot(0 | vmflag_to_pte_pkey_bits(vm_flags));
--#else
--	return (vm_flags & VM_SAO) ? __pgprot(_PAGE_SAO) : __pgprot(0);
--#endif
--}
--#define arch_vm_get_page_prot(vm_flags) arch_vm_get_page_prot(vm_flags)
--
- static inline bool arch_validate_prot(unsigned long prot, unsigned long addr)
- {
- 	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_SAO))
-diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index d564d0ecd4cd..3cbb6de20f9d 100644
---- a/arch/powerpc/include/asm/pgtable.h
-+++ b/arch/powerpc/include/asm/pgtable.h
-@@ -20,25 +20,6 @@ struct mm_struct;
- #include <asm/nohash/pgtable.h>
- #endif /* !CONFIG_PPC_BOOK3S */
- 
--/* Note due to the way vm flags are laid out, the bits are XWR */
--#define __P000	PAGE_NONE
--#define __P001	PAGE_READONLY
--#define __P010	PAGE_COPY
--#define __P011	PAGE_COPY
--#define __P100	PAGE_READONLY_X
--#define __P101	PAGE_READONLY_X
--#define __P110	PAGE_COPY_X
--#define __P111	PAGE_COPY_X
--
--#define __S000	PAGE_NONE
--#define __S001	PAGE_READONLY
--#define __S010	PAGE_SHARED
--#define __S011	PAGE_SHARED
--#define __S100	PAGE_READONLY_X
--#define __S101	PAGE_READONLY_X
--#define __S110	PAGE_SHARED_X
--#define __S111	PAGE_SHARED_X
--
- #ifndef __ASSEMBLY__
- 
- #ifndef MAX_PTRS_PER_PGD
-diff --git a/arch/powerpc/mm/mmap.c b/arch/powerpc/mm/mmap.c
-index c475cf810aa8..ee275937fe19 100644
---- a/arch/powerpc/mm/mmap.c
-+++ b/arch/powerpc/mm/mmap.c
-@@ -254,3 +254,62 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
- 		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
- 	}
- }
-+
-+static inline pgprot_t __vm_get_page_prot(unsigned long vm_flags)
-+{
-+	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
-+	case VM_NONE:
-+		return PAGE_NONE;
-+	case VM_READ:
-+		return PAGE_READONLY;
-+	case VM_WRITE:
-+	case VM_WRITE | VM_READ:
-+		return PAGE_COPY;
-+	case VM_EXEC:
-+	case VM_EXEC | VM_READ:
-+		return PAGE_READONLY_X;
-+	case VM_EXEC | VM_WRITE:
-+	case VM_EXEC | VM_WRITE | VM_READ:
-+		return PAGE_COPY_X;
-+	case VM_SHARED:
-+		return PAGE_NONE;
-+	case VM_SHARED | VM_READ:
-+		return PAGE_READONLY;
-+	case VM_SHARED | VM_WRITE:
-+	case VM_SHARED | VM_WRITE | VM_READ:
-+		return PAGE_SHARED;
-+	case VM_SHARED | VM_EXEC:
-+	case VM_SHARED | VM_EXEC | VM_READ:
-+		return PAGE_READONLY_X;
-+	case VM_SHARED | VM_EXEC | VM_WRITE:
-+	case VM_SHARED | VM_EXEC | VM_WRITE | VM_READ:
-+		return PAGE_SHARED_X;
-+	default:
-+		BUILD_BUG();
-+	}
-+}
-+
-+#ifdef CONFIG_PPC64
-+static pgprot_t powerpc_vm_get_page_prot(unsigned long vm_flags)
-+{
-+#ifdef CONFIG_PPC_MEM_KEYS
-+	return (vm_flags & VM_SAO) ?
-+		__pgprot(_PAGE_SAO | vmflag_to_pte_pkey_bits(vm_flags)) :
-+		__pgprot(0 | vmflag_to_pte_pkey_bits(vm_flags));
-+#else
-+	return (vm_flags & VM_SAO) ? __pgprot(_PAGE_SAO) : __pgprot(0);
-+#endif
-+}
-+#else
-+static pgprot_t powerpc_vm_get_page_prot(unsigned long vm_flags)
-+{
-+	return __pgprot(0);
-+}
-+#endif /* CONFIG_PPC64 */
-+
-+pgprot_t vm_get_page_prot(unsigned long vm_flags)
-+{
-+	return __pgprot(pgprot_val(__vm_get_page_prot(vm_flags)) |
-+	       pgprot_val(powerpc_vm_get_page_prot(vm_flags)));
-+}
-+EXPORT_SYMBOL(vm_get_page_prot);
--- 
-2.25.1
+>=20
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/vas.c | 7 ++++---
+>  arch/powerpc/platforms/pseries/vas.h | 1 +
+>  2 files changed, 5 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/arch/powerpc/platforms/pseries/vas.c
+> b/arch/powerpc/platforms/pseries/vas.c
+> index d2c8292bfb33..2ef56157634f 100644
+> --- a/arch/powerpc/platforms/pseries/vas.c
+> +++ b/arch/powerpc/platforms/pseries/vas.c
+> @@ -107,7 +107,6 @@ static int h_deallocate_vas_window(u64 winid)
+>  static int h_modify_vas_window(struct pseries_vas_window *win)
+>  {
+>  	long rc;
+> -	u32 lpid =3D mfspr(SPRN_PID);
+> =20
+>  	/*
+>  	 * AMR value is not supported in Linux VAS implementation.
+> @@ -115,7 +114,7 @@ static int h_modify_vas_window(struct
+> pseries_vas_window *win)
+>  	 */
+>  	do {
+>  		rc =3D plpar_hcall_norets(H_MODIFY_VAS_WINDOW,
+> -					win->vas_win.winid, lpid, 0,
+> +					win->vas_win.winid, win->lpid,
+> 0,
+>  					VAS_MOD_WIN_FLAGS, 0);
+> =20
+>  		rc =3D hcall_return_busy_check(rc);
+> @@ -125,7 +124,7 @@ static int h_modify_vas_window(struct
+> pseries_vas_window *win)
+>  		return 0;
+> =20
+>  	pr_err("H_MODIFY_VAS_WINDOW error: %ld, winid %u lpid %u\n",
+> -			rc, win->vas_win.winid, lpid);
+> +			rc, win->vas_win.winid, win->lpid);
+>  	return -EIO;
+>  }
+> =20
+> @@ -338,6 +337,8 @@ static struct vas_window *vas_allocate_window(int
+> vas_id, u64 flags,
+>  		}
+>  	}
+> =20
+> +	txwin->lpid =3D mfspr(SPRN_PID);
+> +
+>  	/*
+>  	 * Allocate / Deallocate window hcalls and setup / free IRQs
+>  	 * have to be protected with mutex.
+> diff --git a/arch/powerpc/platforms/pseries/vas.h
+> b/arch/powerpc/platforms/pseries/vas.h
+> index fa7ce74f1e49..0538760d13be 100644
+> --- a/arch/powerpc/platforms/pseries/vas.h
+> +++ b/arch/powerpc/platforms/pseries/vas.h
+> @@ -115,6 +115,7 @@ struct pseries_vas_window {
+>  	u64 domain[6];		/* Associativity domain Ids */
+>  				/* this window is allocated */
+>  	u64 util;
+> +	u32 lpid;
 
+Comment could be "PID associated with this window".
+
+BTW, is the TID parameter deprecated? Doesn't seem that we use that.
+
+Thanks,
+Nick
