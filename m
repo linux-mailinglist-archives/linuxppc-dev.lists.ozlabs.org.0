@@ -2,74 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034FF4B3F39
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 03:15:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B14B64B3F6B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 03:28:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jxnqg3YcDz3bP9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 13:15:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jxp6k24D7z3bcZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 13:28:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qfCXD8Uq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LshJzQgY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
- helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436;
+ helo=mail-pf1-x436.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=qfCXD8Uq; dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
+ header.s=20210112 header.b=LshJzQgY; dkim-atps=neutral
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com
+ [IPv6:2607:f8b0:4864:20::436])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jxnq33w7Yz30Qt
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 13:14:37 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id m7so13195943pjk.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Feb 2022 18:14:37 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jxp615v6bz30Qt
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 13:27:36 +1100 (AEDT)
+Received: by mail-pf1-x436.google.com with SMTP id e17so7250473pfv.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Feb 2022 18:27:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=xrtoLJ5J549pujtiwpbIbMkZnhiuCZ4WzmBRZ6hluNQ=;
- b=qfCXD8UqUusIAyujfYGuYuZR9gqfK4vC6rk+lJnuyYrOVBMg795Ic+M0baZcdDJrSZ
- mmyOiZ0gms3FzRuD5X3isi3JnvQeIqWsdeiXKyCvuevKcMuL/4AjW8XyqNCv7Fj2wML1
- 3kfYxlXzEfYbPiwUeg5V+ZREUyDba8otD2SbDTYo7vLLtE/9Bld1PejKVZw6AorAolW7
- ns6L8dXeOjftycJm5MAorC3McizxSIZEBwsD4uk9Agi5dq1xcuaMYPin2Ad7cHAc9wbw
- cQAhD3i/+r5ReUxcx/tP8BnAmmzPA83qESynPtq3p4WEuYpCDs7oROwC3lIb499ErD7K
- 2imQ==
+ bh=AaSZ8bOGwql7Qx9wRu1tITsPjnFVoUrvxEqnlZJxyhM=;
+ b=LshJzQgYkxrugP1ejfqhUtcP8sdrPch7NjbTop/ZKCpIJClDPQXqXe0LtzemWPvN9N
+ VKMME89lg4hvckj652TQoPCQGVixYwKrKQT+tk2+kvtJrrITNTnN0KYaEPHDNxaawVvb
+ BizwG5mJvUQpem5WewHmy4SmZgYC4NWKn1iqBoOdqB4HJZ91btWymeY+aYOc365/DB8b
+ kAgLlBsgmWwnXhM70fqGxtx1iNMDMxEgrhD6gbw+4IxuYvfFLdaXg/X2qrxOHl+13UDB
+ 0NAn8AcW+xoD4tVFaZOhKzUOHc3lqj8ZNlPx7PDbvlm8sQ63OtMLDecI8R/ToqJvOv4U
+ rDKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=xrtoLJ5J549pujtiwpbIbMkZnhiuCZ4WzmBRZ6hluNQ=;
- b=QzQmX+xNGPHbwJ5LjMS09YRVK5ylBzBHw/l+8YHRrCFAzF0GDAq9hdDHCYVWAu5ZAf
- xwjGmuMsqxw8A8sHi3YOgFsfWcvXGsTMyIYzcIh0idx/zs85TGy2rAzqweNoRC2VNRir
- v8CH37PvDh9pfz7bLNSdwQIaMXJRUDdAuxljOokgpU2Aoll23QWheJG46oUyHJCeMv/u
- eGIfzZUgJgifXyNoxP95/TfGOl61aldVIblgVMM/IQVUlqqL+Vjv8mgb5uA8tmdXBYW0
- wVtQBwBNJt7FjSKFRoDrov+QJXczKMRCABifEm4sfQ9Y9InuyTX6AmyzLwAww3+CI347
- uD4w==
-X-Gm-Message-State: AOAM532ebA6ulQhovNiD/9fvXYPjDw6Ny2us1ZKRdkiltE6lX7xPdVGB
- 4w45w/IQtY3GrIvBV3nZan8=
-X-Google-Smtp-Source: ABdhPJzhLPY+sMauUUlclRcl/HP8uzc48vmjc2y/Vc0XTE6eYnO9qSrExCmjy2nnIKxnGw9i/jCp7g==
-X-Received: by 2002:a17:90a:f0d4:: with SMTP id
- fa20mr12165934pjb.1.1644804874736; 
- Sun, 13 Feb 2022 18:14:34 -0800 (PST)
+ bh=AaSZ8bOGwql7Qx9wRu1tITsPjnFVoUrvxEqnlZJxyhM=;
+ b=SBRb9mTkO7i7yAOg61+7e7vwscfy77SJdGTiQ6umw+ROZj45zwRdV0RwdvnHcZ58nJ
+ oDjEURQ0qJmNqNmLn/x7wxqI4z9eZabdS4In533b9xtUw60A92gXL1tifo8MGJY4zdvr
+ kUlj0gSNwQBNe4kbe7wV5HZlXIvSzVsCOm583uI3BKM6DbcHywXoANDoZ1bWw6jGOuhH
+ E7D2ud+wkxhodNNkdzFxNSlJyTZhMBfj0kpaH3lD3FRD9q/M4Zxfz6W/tZ60PrrirFlZ
+ KpmGZAWaDnx/YfXrVubcHDz2m6wReqppXz7+Ay8yBgi7gIxUbDrqM7NTZ7RHZxcVNioy
+ Ltww==
+X-Gm-Message-State: AOAM532OC6ng06/nnMtIqp/0+jLRnErGfIBI+xS1xIxAEumIeMk1W+aA
+ qxgBccJv1DR0IVGkUpSO1u8=
+X-Google-Smtp-Source: ABdhPJymYxFvwHCslcC9RqOzDT9Aucx7AmIxmp1aspbhR5EzNKT7TWPPVlI61T3rD8uUxspledw7Ww==
+X-Received: by 2002:a65:6056:: with SMTP id a22mr9259695pgp.21.1644805654168; 
+ Sun, 13 Feb 2022 18:27:34 -0800 (PST)
 Received: from localhost (27-33-251-132.static.tpgi.com.au. [27.33.251.132])
- by smtp.gmail.com with ESMTPSA id x12sm24281249pgp.25.2022.02.13.18.14.33
+ by smtp.gmail.com with ESMTPSA id b14sm34694755pfm.17.2022.02.13.18.27.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 13 Feb 2022 18:14:34 -0800 (PST)
-Date: Mon, 14 Feb 2022 12:14:28 +1000
+ Sun, 13 Feb 2022 18:27:33 -0800 (PST)
+Date: Mon, 14 Feb 2022 12:27:28 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 01/10] powerpc/pseries/vas: Use common names in VAS
- capability structure
+Subject: Re: [PATCH v3 02/10] powerpc/pseries/vas: Add notifier for DLPAR core
+ removal/add
 To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
  mpe@ellerman.id.au
 References: <7d175313528ea7aae20d9141f0efa2e57f44c9f4.camel@linux.ibm.com>
- <1de60767b71bcc714cf613ff8f660afc430a0720.camel@linux.ibm.com>
-In-Reply-To: <1de60767b71bcc714cf613ff8f660afc430a0720.camel@linux.ibm.com>
+ <68ec2a354a932670fabd600a18eccbfcacd84464.camel@linux.ibm.com>
+In-Reply-To: <68ec2a354a932670fabd600a18eccbfcacd84464.camel@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1644804791.k88oankrue.astroid@bobo.none>
+Message-Id: <1644804881.mp6yrf6sdz.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,94 +82,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Excerpts from Haren Myneni's message of January 22, 2022 5:54 am:
 >=20
-> target/used/avail_creds provides credits usage to user space via
-> sysfs and the same interface can be used on PowerNV in future.
-> Remove "lpar" from these names so that applicable on both PowerVM
-> and PowerNV.
+> The hypervisor assigns credits for each LPAR based on number of
+> cores configured in that system. So expects to release credits
+> (means windows) when the core is removed. This patch adds notifier
+> for core removal/add so that the OS closes windows if the system
+> looses credits due to core removal and reopen windows when the
+> credits available later.
 
-But not in this series? This is just to save you having to do more
-renaming later?
+This could be improved. As far as I can tell,
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+ The hypervisor assigns vas credits (windows) for each LPAR based on the=20
+ number of cores configured in that system. The OS is expected to=20
+ release credits when cores are removed, and may allocate more when=20
+ cores are added.
+
+Or can you only re-use credits that you previously lost?
 
 >=20
 > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 > ---
->  arch/powerpc/platforms/pseries/vas.c | 10 +++++-----
->  arch/powerpc/platforms/pseries/vas.h |  6 +++---
->  2 files changed, 8 insertions(+), 8 deletions(-)
+>  arch/powerpc/platforms/pseries/vas.c | 37 ++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
 >=20
 > diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platform=
 s/pseries/vas.c
-> index d243ddc58827..c0737379cc7b 100644
+> index c0737379cc7b..d2c8292bfb33 100644
 > --- a/arch/powerpc/platforms/pseries/vas.c
 > +++ b/arch/powerpc/platforms/pseries/vas.c
-> @@ -310,8 +310,8 @@ static struct vas_window *vas_allocate_window(int vas=
-_id, u64 flags,
-> =20
->  	cop_feat_caps =3D &caps->caps;
-> =20
-> -	if (atomic_inc_return(&cop_feat_caps->used_lpar_creds) >
-> -			atomic_read(&cop_feat_caps->target_lpar_creds)) {
-> +	if (atomic_inc_return(&cop_feat_caps->used_creds) >
-> +			atomic_read(&cop_feat_caps->target_creds)) {
->  		pr_err("Credits are not available to allocate window\n");
->  		rc =3D -EINVAL;
->  		goto out;
-> @@ -385,7 +385,7 @@ static struct vas_window *vas_allocate_window(int vas=
-_id, u64 flags,
->  	free_irq_setup(txwin);
->  	h_deallocate_vas_window(txwin->vas_win.winid);
->  out:
-> -	atomic_dec(&cop_feat_caps->used_lpar_creds);
-> +	atomic_dec(&cop_feat_caps->used_creds);
->  	kfree(txwin);
->  	return ERR_PTR(rc);
+> @@ -538,6 +538,39 @@ static int __init get_vas_capabilities(u8 feat, enum=
+ vas_cop_feat_type type,
+>  	return 0;
 >  }
-> @@ -445,7 +445,7 @@ static int vas_deallocate_window(struct vas_window *v=
-win)
+> =20
+> +/*
+> + * Total number of default credits available (target_credits)
+> + * in LPAR depends on number of cores configured. It varies based on
+> + * whether processors are in shared mode or dedicated mode.
+> + * Get the notifier when CPU configuration is changed with DLPAR
+> + * operation so that get the new target_credits (vas default capabilitie=
+s)
+> + * and then update the existing windows usage if needed.
+> + */
+> +static int pseries_vas_notifier(struct notifier_block *nb,
+> +				unsigned long action, void *data)
+> +{
+> +	struct of_reconfig_data *rd =3D data;
+> +	struct device_node *dn =3D rd->dn;
+> +	const __be32 *intserv =3D NULL;
+> +	int len, rc =3D 0;
+> +
+> +	if ((action =3D=3D OF_RECONFIG_ATTACH_NODE) ||
+> +		(action =3D=3D OF_RECONFIG_DETACH_NODE))
+
+I suppose the OF notifier is the way to do it (cc Nathan).
+
+Could this patch be folded in with where it acually does something? It=20
+makes it easier to review and understand how the notifier is used.
+
+
+> +		intserv =3D of_get_property(dn, "ibm,ppc-interrupt-server#s",
+> +					  &len);
+> +	/*
+> +	 * Processor config is not changed
+> +	 */
+> +	if (!intserv)
+> +		return NOTIFY_OK;
+> +
+> +	return rc;
+> +}
+> +
+> +static struct notifier_block pseries_vas_nb =3D {
+> +	.notifier_call =3D pseries_vas_notifier,
+> +};
+> +
+>  static int __init pseries_vas_init(void)
+>  {
+>  	struct hv_vas_cop_feat_caps *hv_cop_caps;
+> @@ -591,6 +624,10 @@ static int __init pseries_vas_init(void)
+>  			goto out_cop;
 >  	}
 > =20
->  	list_del(&win->win_list);
-> -	atomic_dec(&caps->used_lpar_creds);
-> +	atomic_dec(&caps->used_creds);
->  	mutex_unlock(&vas_pseries_mutex);
+> +	/* Processors can be added/removed only on LPAR */
+
+What does this comment mean? DLPAR?
+
+Thanks,
+Nick
+
+> +	if (copypaste_feat && firmware_has_feature(FW_FEATURE_LPAR))
+> +		of_reconfig_notifier_register(&pseries_vas_nb);
+> +
+>  	pr_info("GZIP feature is available\n");
 > =20
->  	put_vas_user_win_ref(&vwin->task_ref);
-> @@ -521,7 +521,7 @@ static int __init get_vas_capabilities(u8 feat, enum =
-vas_cop_feat_type type,
->  	}
->  	caps->max_lpar_creds =3D be16_to_cpu(hv_caps->max_lpar_creds);
->  	caps->max_win_creds =3D be16_to_cpu(hv_caps->max_win_creds);
-> -	atomic_set(&caps->target_lpar_creds,
-> +	atomic_set(&caps->target_creds,
->  		   be16_to_cpu(hv_caps->target_lpar_creds));
->  	if (feat =3D=3D VAS_GZIP_DEF_FEAT) {
->  		caps->def_lpar_creds =3D be16_to_cpu(hv_caps->def_lpar_creds);
-> diff --git a/arch/powerpc/platforms/pseries/vas.h b/arch/powerpc/platform=
-s/pseries/vas.h
-> index 4ecb3fcabd10..fa7ce74f1e49 100644
-> --- a/arch/powerpc/platforms/pseries/vas.h
-> +++ b/arch/powerpc/platforms/pseries/vas.h
-> @@ -72,9 +72,9 @@ struct vas_cop_feat_caps {
->  	};
->  	/* Total LPAR available credits. Can be different from max LPAR */
->  	/* credits due to DLPAR operation */
-> -	atomic_t	target_lpar_creds;
-> -	atomic_t	used_lpar_creds; /* Used credits so far */
-> -	u16		avail_lpar_creds; /* Remaining available credits */
-> +	atomic_t	target_creds;
-> +	atomic_t	used_creds;	/* Used credits so far */
-> +	u16		avail_creds;	/* Remaining available credits */
->  };
-> =20
->  /*
+>  out_cop:
 > --=20
 > 2.27.0
 >=20
