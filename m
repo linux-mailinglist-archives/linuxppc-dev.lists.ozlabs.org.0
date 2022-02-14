@@ -2,106 +2,124 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 654674B54BF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 16:26:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0AB4B5521
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 16:47:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jy7P36nM1z3cRF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 02:26:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jy7sG1RBqz3bcj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 02:47:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=N8x+p0bv;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ItVeSVN7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=nvidia.com (client-ip=2a01:111:f400:7e83::622;
+ helo=nam02-dm3-obe.outbound.protection.outlook.com;
+ envelope-from=ziy@nvidia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=N8x+p0bv; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256
+ header.s=selector2 header.b=ItVeSVN7; 
+ dkim-atps=neutral
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com
+ (mail-dm3nam07on20622.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e83::622])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jy7NL49Zzz3bXn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 02:26:09 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21EFOPpi012649; 
- Mon, 14 Feb 2022 15:25:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=CTbUY2hl0sfw79lUnt28hPNQO1kDDJya8WniS70Dynk=;
- b=N8x+p0bvLO1Zl7MdcxW+DIV9bJvL4pURIaEQcjS8moT9zhkS/KlJfnMg2c8aruvNVq4w
- oe5dXUkkJUFgQO48sf5u+Frm3BcpqiTIxVO4D6YbE3n8qPkunLYswv+mSscBQmqq7Spb
- cIqtdOVrhJIQ8XKuLCKk8DzFhZ0WBgGjrRDLZ8+sADMK2YJBEo0MglvbYyv0QrN1Don5
- 2nYC3c98cPszCYtfu71Rg/AESU4s6hxxAmAWrg9OQOUF2cG+MQ+jioJ7dcEPCA8qNgZq
- kfnzs5H6bFTS3yT24UhmUmz+q6kv0XGaV4+BjrVHqF6JUSTRr4SITmuLVmBgO1+S9DWM 9Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e7920vk9b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Feb 2022 15:25:42 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21EFOxa0014955;
- Mon, 14 Feb 2022 15:25:41 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e7920vk8a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Feb 2022 15:25:41 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21EFBrql025996;
- Mon, 14 Feb 2022 15:25:39 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma05fra.de.ibm.com with ESMTP id 3e64h9dvh1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Feb 2022 15:25:38 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21EFPaFr45744402
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Feb 2022 15:25:36 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6C3C14C046;
- Mon, 14 Feb 2022 15:25:36 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C9A9F4C052;
- Mon, 14 Feb 2022 15:25:35 +0000 (GMT)
-Received: from localhost (unknown [9.43.124.167])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 14 Feb 2022 15:25:35 +0000 (GMT)
-Date: Mon, 14 Feb 2022 20:55:33 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 09/13] powerpc/ftrace: Implement
- CONFIG_DYNAMIC_FTRACE_WITH_ARGS
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Jiri Kosina
- <jikos@kernel.org>, Joe Lawrence <joe.lawrence@redhat.com>, Josh Poimboeuf
- <jpoimboe@redhat.com>, Miroslav Benes <mbenes@suse.cz>, Ingo Molnar
- <mingo@redhat.com>, Petr Mladek <pmladek@suse.com>, Steven Rostedt
- <rostedt@goodmis.org>
-References: <cover.1640017960.git.christophe.leroy@csgroup.eu>
- <5831f711a778fcd6eb51eb5898f1faae4378b35b.1640017960.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <5831f711a778fcd6eb51eb5898f1faae4378b35b.1640017960.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jy7rS6S9bz3bXR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 02:47:01 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=iMKS2+tlQUrSL2Kj5qZjGxbpwq1zLNEQmMaHfMBcJy2L21Q4NXtqMJ4cDsLMydz65+ChUxkVuuLzhccdzXBc7BQkGE9NxicGve8Of9vYzosLYfxWRis79hLwrOS6ctSpC7N1igSTGJ6/7F89qcqwiFpsKLEqP0DBUg/1ZruCVO/hD54tkJ21Bh9CvsDIlR+KUZ6IugrKQ/ASIjg8QcmaHo45dMeOdmQZKR47kKhImGuzH+g/rFAvpZn2PBnlNyM2iJNudlRIuQjoAZpI8z3vmId6fsOwklEHqxlHcBJtH8TqZeN+hdxVBAceGErNMs6M/jG96CFip4PqYrrumlzATg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bD/r7dQDDGCi56LVUBpUB3spun/5YlvXCT1jS6YL3W4=;
+ b=iWxZc6Tn4YJxQn25J7HJvCgxLnQR5USuu9gscYVLsiUHX9Yp9/6iWUg9nJH6bduQ7zrPb4REBl7IQESR2CaphGoZUnqF8RBh8rv28/vEGwzLTIt+gRPXUN+uLil6tlYDlJ8gi5zuABD5oo4bYSA98OifwYNn74nk6RC1ze5N219H4SqU4WttiTXM8hxyWMcrC/ACHOcVHYP4xcgBx5Nhq3hZRZLp5LIhBZvtZLXeiZyxVTir4xo9wHj+t+VzDkggZwBFQbpxYYtOxpS6MLM3BLX+qBqWVqbO1JBWv/GfLFbfxVojD7JQCoADfP+jAncUFvykanFfev1LmD3OJ2izvA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bD/r7dQDDGCi56LVUBpUB3spun/5YlvXCT1jS6YL3W4=;
+ b=ItVeSVN7ZS62ixbkgGV8XupQHl5ir7Fxn0Mwmx5b8FHZ8/2zGnTZzxFMIFw7jmHydxFYbmdfyJ7K9XMbsjEC8UCS3wFfqiKPnn7w28GQqVViWAVzDZSvu+VKQHY8X9mgl3JeKwIkXVlq3aA7aSNZCnoLPHpXqHrXC/rzkz4WtDK4yJl5htNL52uA/AZaZc8B7mXS4W3NEGy/6ZZjGL5pjYW46ujVC75lfFIqdhB9l2hhXyFcyqqNg1XWypiRSNyLEhCS4tpfcd2ncdfyo1KZNhrYT3xMaSNYvMDd1MeHiDtyxeAhBrOSBupsL4L0gD1WDady3U0unvOU+yIRDbGIgw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN2PR12MB3823.namprd12.prod.outlook.com (2603:10b6:208:168::26)
+ by DM6PR12MB2970.namprd12.prod.outlook.com (2603:10b6:5:3b::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.11; Mon, 14 Feb
+ 2022 15:46:53 +0000
+Received: from MN2PR12MB3823.namprd12.prod.outlook.com
+ ([fe80::cb5:94df:b338:9b5e]) by MN2PR12MB3823.namprd12.prod.outlook.com
+ ([fe80::cb5:94df:b338:9b5e%4]) with mapi id 15.20.4975.019; Mon, 14 Feb 2022
+ 15:46:53 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v5 3/6] mm: make alloc_contig_range work at pageblock
+ granularity
+Date: Mon, 14 Feb 2022 10:46:50 -0500
+X-Mailer: MailMate (1.14r5869)
+Message-ID: <B07EF2EA-A311-48DD-9973-0EAEC95F4074@nvidia.com>
+In-Reply-To: <20220214072601.GA17306@lst.de>
+References: <20220211164135.1803616-1-zi.yan@sent.com>
+ <20220211164135.1803616-4-zi.yan@sent.com> <20220214072601.GA17306@lst.de>
+Content-Type: multipart/signed;
+ boundary="=_MailMate_2AA612D6-0AD1-40B3-940C-A2AEA3CA3263_=";
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+X-ClientProxiedBy: BL1PR13CA0197.namprd13.prod.outlook.com
+ (2603:10b6:208:2be::22) To MN2PR12MB3823.namprd12.prod.outlook.com
+ (2603:10b6:208:168::26)
 MIME-Version: 1.0
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1644852011.qg7ud9elo2.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: U_R1WC4bISAb4FaYFWLfhme_IU7ZkUnM
-X-Proofpoint-ORIG-GUID: LZ_RkunqBHntcveHRdbfJBKGSEYZeo5L
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-14_06,2022-02-14_03,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- mlxlogscore=999 clxscore=1015 mlxscore=0 lowpriorityscore=0 spamscore=0
- priorityscore=1501 phishscore=0 adultscore=0 impostorscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202140093
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: b052ce2a-671f-40c1-52fb-08d9efd13887
+X-MS-TrafficTypeDiagnostic: DM6PR12MB2970:EE_
+X-Microsoft-Antispam-PRVS: <DM6PR12MB297008BC34F889CCA3666FCEC2339@DM6PR12MB2970.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: EclHlYzciRFPo5/hESi7dlFN8/ULNacxjAasg3J6iMNMYE68SXzi1S5QLkWoklZ5GokmkP/ulml/8OxHXZZ2uIqZ5qq9oqmb2HV+55hdp04R1l3YCNHvdCWhJZBquczU9pEV+kl7bKM6ULhLImXdiAvdjcIcppYTDBSFcKRH/1m5zS7ld4T7KdiEZQYNBYZ8P5hryW4ahj9nWGUid5ZjfpnPBlkFRMbGV7jhqMHmrSy6zC8+7dXBCwkwRNENVCax6QnUyWY7B+zdT3Q3LiSYiOi2gi1Gbk3YfgeIh2XxdcLXbmEOhXBfyyyoWQk+lDdjKPsKTcPh4dYrTUvpv9YZcPKlbevHnaXm/d96RkMWX9sGHbPB50aErosSIpt1VptjH2Yo4KyZfVBfhfwEng1m8eeJuWdPpaYwvEP9Jjj7qgmQsBYeCCPnhNQXRpVVB+LHNgJXaiLOV/7kYwOXLyd9U88rttEv3XBG/109+VLPrX3V2pEDoKANej1E3n4wvyLZOZi8ElfZQaVmqud+BA7LRGT9/aphRowq01OCLbd3HIjHSqu2r45M4m9HbUWD1KXzZdGSosADw/UHr38nz2I86MKOarRbyxe631aT37Yms0PAVjO/j71HrvGenXyjpgc2mxDgEnhDU8KYdlelKDqRvu5u9pSSJFy3swHGh25tMdMd4ZCTpfnaDIJYVjpP5yhWs1JZY2SyCY9X73Fu+LjMxyzr6gIQwijyVKx4FwF3s/E=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MN2PR12MB3823.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(366004)(6916009)(54906003)(316002)(38100700002)(6486002)(508600001)(36756003)(33656002)(26005)(2906002)(186003)(53546011)(6512007)(5660300002)(235185007)(7416002)(86362001)(83380400001)(2616005)(66556008)(21480400003)(66946007)(6506007)(8676002)(4326008)(66476007)(8936002)(45980500001)(72826004);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3SVLMthNnnzt6eLxsCxrt23RwLZizaGmzz2+iVcoseIUftPnzML208KyBUoJ?=
+ =?us-ascii?Q?0gJMqG1X3sCellFI7dTcyCAaM86cDZDtYb4OmzQErByz2V1uzfRsUdj6TfBX?=
+ =?us-ascii?Q?fhaEzaTbF5GxRaLxURWLKnj+/fW9V5NTXR2vkhJWfyyglm3PpHXWpqs3L5F6?=
+ =?us-ascii?Q?BTRG7n/yYFVjZ84Qk/0IZQNv6S2oMDiMDW0f7i5n3SN+Lh07hmRFB4sH/i9c?=
+ =?us-ascii?Q?djdk0wwGZ2SOWgHVq0t4UsBomiAEJpj19TeFFT3yjJKOqiGjjtpjGsceB2Ve?=
+ =?us-ascii?Q?Atd95VQ7zr9415ipgN3/MW9K3CEWfMcBZKjurjDLjnLroveDcOx5bpmXLZPO?=
+ =?us-ascii?Q?cNQXfrIBa+1WygB5zQx1zc/5psACukdDKtJe8inUt6c5WnpJ4gy5sTykEh6Q?=
+ =?us-ascii?Q?FI+5Bm0Uz5zjE48s2lIFVicX5g1bfdSaRXVB3YJqjBQgN7RKVVNybhPHy4UA?=
+ =?us-ascii?Q?t0aBIph16mBa+/Wh9k+YsAjkqGZ/sTvLfD4ykzXGxsMmeNAQx9E+TIgmzdMP?=
+ =?us-ascii?Q?2JuLHSQ7p6cvMTv41KuyLR9ef7VaeZVs63OBe172kvnD5Ini6y3YxKvjyjUx?=
+ =?us-ascii?Q?kqwCwKwG6GIAB8hK6mNxcxTMnFzYWymR+QFHwdNuIzI71zX1gAlnvQBip6jz?=
+ =?us-ascii?Q?EzxK+c13Wi5azz4pEaAv7xqBU0t2qACrbxkBxI1Kaw7QhqOVh3l+89+/awyp?=
+ =?us-ascii?Q?Mx7tDG+f0hmOc7uwlFCGC4D/VaD3K5rVVMqrawF2mV2oHT6o5mIi6kjXRvmJ?=
+ =?us-ascii?Q?FqnweC+XFNYLZtlIBqIEu5M86PkePG4iOllrk5c0jJwKJywtrBLrOg5tSCBN?=
+ =?us-ascii?Q?iaytFgAXkwFZpYnuH7ioLtv+yMj79V9fme2S7LhlHGjHOzJHWePpH0uHzzCG?=
+ =?us-ascii?Q?rnFUWjrIfzumu7wVSOlCpDae2rkMdjKcTQkNRZWCnEbBmbYC+GDB7DG+Flvb?=
+ =?us-ascii?Q?iOUa5ZaL12wh0tp6B9fcU6qM+G1nk/caVn5rdDVfdZ+6nFFg+CcXGZo4H+wB?=
+ =?us-ascii?Q?4XAmNBR9amwh4NZ079XiMYZHpwKkHL4Gqu0kXF16FDae8f7eYWLdtd7tb3yO?=
+ =?us-ascii?Q?m9koidB11DmqhYNG/I0rSsXn3G+r6dg5AhYCNy9gatSYnHkLbk6GEKyWwgTH?=
+ =?us-ascii?Q?/zPt1mgMH/UQTFp4KNfnAsd7734kPwr9vN9KMU6txE3yzvfqL7ce3Fe/mig4?=
+ =?us-ascii?Q?eYMl//3L213tTU2rWxv61p96ZsvHPU+xcAQ53LIGtjjDERykk+ui4AnownV0?=
+ =?us-ascii?Q?JSeiKWnyQYFRx8BcrAJWPmGj90IwqDPbU5+1IFTtOvjBXz3xQKsfJketET7j?=
+ =?us-ascii?Q?CEq3TGYwp02RSXJdOfiC09wxyPQ5Z14KJzzYUhXzBopOky6L+bykShynXiZj?=
+ =?us-ascii?Q?u8KZbW/BYkw66CTX2mQyEKMDcWCSmhI3nBRXNxEWpIFwBIWkw3zfn5HEjR97?=
+ =?us-ascii?Q?/wFFywRMSeYLDR+ZByb4I5upTGvhMHal+/+yzgf/cQUtvX/M2WrJVgZAHTUa?=
+ =?us-ascii?Q?7in0sRUa3AJ+KSwksoEn0m6fEyTR/fcNZbdmIDJl4h+gAwfJz8HO7+ggrRHz?=
+ =?us-ascii?Q?iDtGZPiG2Z1eeuQa6iQ=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b052ce2a-671f-40c1-52fb-08d9efd13887
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3823.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2022 15:46:52.9137 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OqO5VvBNApiNzS8lKNylnf6LiuBSj/+L4YxTCAhVcZxRGZ6aDoKedsYfafaAK/cA
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB2970
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,78 +131,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "live-patching@vger.kernel.org" <live-patching@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Mel Gorman <mgorman@techsingularity.net>,
+ David Hildenbrand <david@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+ Mike Rapoport <rppt@kernel.org>, Eric Ren <renzhengeek@gmail.com>,
+ Oscar Salvador <osalvador@suse.de>, Robin Murphy <robin.murphy@arm.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
-> Implement CONFIG_DYNAMIC_FTRACE_WITH_ARGS. It accelerates the call
-> of livepatching.
->=20
-> Also note that powerpc being the last one to convert to
-> CONFIG_DYNAMIC_FTRACE_WITH_ARGS, it will now be possible to remove
-> klp_arch_set_pc() on all architectures.
->=20
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/Kconfig                 |  1 +
->  arch/powerpc/include/asm/ftrace.h    | 17 +++++++++++++++++
->  arch/powerpc/include/asm/livepatch.h |  4 +---
->  3 files changed, 19 insertions(+), 3 deletions(-)
->=20
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index cdac2115eb00..e2b1792b2aae 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -210,6 +210,7 @@ config PPC
->  	select HAVE_DEBUG_KMEMLEAK
->  	select HAVE_DEBUG_STACKOVERFLOW
->  	select HAVE_DYNAMIC_FTRACE
-> +	select HAVE_DYNAMIC_FTRACE_WITH_ARGS	if MPROFILE_KERNEL || PPC32
->  	select HAVE_DYNAMIC_FTRACE_WITH_REGS	if MPROFILE_KERNEL || PPC32
->  	select HAVE_EBPF_JIT
->  	select HAVE_EFFICIENT_UNALIGNED_ACCESS	if !(CPU_LITTLE_ENDIAN && POWER7=
-_CPU)
-> diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm=
-/ftrace.h
-> index b3f6184f77ea..45c3d6f11daa 100644
-> --- a/arch/powerpc/include/asm/ftrace.h
-> +++ b/arch/powerpc/include/asm/ftrace.h
-> @@ -22,6 +22,23 @@ static inline unsigned long ftrace_call_adjust(unsigne=
-d long addr)
->  struct dyn_arch_ftrace {
->  	struct module *mod;
->  };
-> +
-> +#ifdef CONFIG_DYNAMIC_FTRACE_WITH_ARGS
-> +struct ftrace_regs {
-> +	struct pt_regs regs;
-> +};
-> +
-> +static __always_inline struct pt_regs *arch_ftrace_get_regs(struct ftrac=
-e_regs *fregs)
-> +{
-> +	return &fregs->regs;
-> +}
+--=_MailMate_2AA612D6-0AD1-40B3-940C-A2AEA3CA3263_=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-I think this is wrong. We need to differentiate between ftrace_caller()=20
-and ftrace_regs_caller() here, and only return pt_regs if coming in=20
-through ftrace_regs_caller() (i.e., FL_SAVE_REGS is set).
+On 14 Feb 2022, at 2:26, Christoph Hellwig wrote:
 
-> +
-> +static __always_inline void ftrace_instruction_pointer_set(struct ftrace=
-_regs *fregs,
-> +							   unsigned long ip)
-> +{
-> +	regs_set_return_ip(&fregs->regs, ip);
+>> +int
+>> +isolate_single_pageblock(unsigned long boundary_pfn, gfp_t gfp_flags,=
+ int isolate_before_boundary);
+>
+> Please avoid the completely unreadably long line. i.e.
+>
+> int isolate_single_pageblock(unsigned long boundary_pfn, gfp_t gfp_flag=
+s,
+> 		int isolate_before_boundary);
+>
+> Same in various other spots.
 
-Should we use that helper here? regs_set_return_ip() also updates some=20
-other state related to taking interrupts and I don't think it makes=20
-sense for use with ftrace.
+OK. Thanks for pointing it out. checkpatch.pl did not report any
+warning about this. It seems that the column limit has been relaxed
+to 100. Anyway, I will make it shorter.
 
+--
+Best Regards,
+Yan, Zi
 
-- Naveen
+--=_MailMate_2AA612D6-0AD1-40B3-940C-A2AEA3CA3263_=
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQJDBAEBCgAtFiEEh7yFAW3gwjwQ4C9anbJR82th+ooFAmIKeWoPHHppeUBudmlk
+aWEuY29tAAoJEJ2yUfNrYfqK3aYP/3sWaU6QEZYstiqLTQhAShiUR+KjYQgx5WEZ
+rXg2fA40Jz1ozDOBwPV+7WhULBNgIuP14HxZdnUFAZtd356R8RTeLIhAB5hak5Q2
+M48+kJnm34adOHJ49ePci83t3Q1kAmm2OzSBu8q5wTdjks8ZFooo7nkExz3OAidi
+Cb96rvN8E8LUupMXltFrhECsOxb9z8ndl1LYN4UR9t/h3V8Hd4Uzoz57wqzttzNb
+YHTxnhCzOwl2uXtULNMc+SvJ/NqYogosKCVc4UpHNCrm1l9QhnDhN+okhV7IPo4c
+j+ey7ddNN2zcbI+M0+4P3b0KbwFSVfNcGTvpp4dS61onJ/bjeqF28fa2eaX+R/sa
++rZd+3cz1IR9EOSPDR24Lbx2o9k28yYIluGdvlEpDvdZqTQSrrEdpX+rNXc0fUDv
+Bdtlb+TJFiPnN6lVZRZLwjVDIfwYFUtZ2ZxeZeX0y3ncm8/+yyW4aNdra0AlmMKF
+Qumm07h96SRPkr3cbE9LOuQWnpw2ifaGsEi/yNgru/SV4QITLTID2bjt28XjroAG
+K8VBLS+YuSSZ6Vh4BTcnvyApUFpULyHr/dx0MpDb9wpGjW13Kx1Uq861sYpbnKCz
+VWfbpmueTivay01BsrmXu+ZuKbluhlZSW7J6zu6Y+Jy0vV9VZu0Km/PARUAVeeFn
+gc8kanmn
+=Cmfg
+-----END PGP SIGNATURE-----
+
+--=_MailMate_2AA612D6-0AD1-40B3-940C-A2AEA3CA3263_=--
