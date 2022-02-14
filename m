@@ -1,78 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A2824B58CE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 18:43:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B30DA4B591D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Feb 2022 18:53:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JyBRH0zHKz3ckd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 04:43:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JyBdv1db4z3cHS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 04:53:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=E7On9Hcn;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UcCfwGuS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fewXgRXs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=E7On9Hcn; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=UcCfwGuS; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=fewXgRXs; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JyBPF1BjGz3cNl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 04:42:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1644860526;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HkzlRRdo6yqhnTQGH6gMkxF53RbjGfg491HfYhh8cbk=;
- b=E7On9Hcn5owpYWnC643sQDncD+bub6FKhSSvW/aGP8bVZVwBkqw38nnFNxrFieNnyV1mQx
- EyGzJkCnyyhJCdxMVm1g8PJtzASkYraWgLTKVOKbeje77sxTHscFiB3S5A5dIM77x+uYjA
- pEN7AIXGinImBGe7Vrd9mfWFuRQLdTM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1644860527;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HkzlRRdo6yqhnTQGH6gMkxF53RbjGfg491HfYhh8cbk=;
- b=UcCfwGuSYCIQ7+ayUeNx0qcGti2DwC0We4EKCqtBMJjpILW785cm6NAEcGq7pDNOGrBJFm
- JT6LuPnuIg6aWgG7A7qRXs2EbTZdSQmFzRcfa+NWLO6bsEemuHzO5EjTiHvrjlMEp6jwYY
- ly/YtEUstM4MAYjreHWKvRQtI5tygic=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-498-WRmKjxQsNriFtkzQAXa43A-1; Mon, 14 Feb 2022 12:41:59 -0500
-X-MC-Unique: WRmKjxQsNriFtkzQAXa43A-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
- [10.5.11.11])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1CE881091DA0;
- Mon, 14 Feb 2022 17:41:57 +0000 (UTC)
-Received: from t480s.redhat.com (unknown [10.39.194.147])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5DB017DE56;
- Mon, 14 Feb 2022 17:41:52 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/2] mm: enforce pageblock_order < MAX_ORDER
-Date: Mon, 14 Feb 2022 18:41:32 +0100
-Message-Id: <20220214174132.219303-3-david@redhat.com>
-In-Reply-To: <20220214174132.219303-1-david@redhat.com>
-References: <20220214174132.219303-1-david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JyBd63scKz3bYq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 04:52:25 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21EFhdPB012468; 
+ Mon, 14 Feb 2022 17:52:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=fRPquwuW8qfyOuoD5PevBKzhtO7/iuKYb7YoEXWc2zY=;
+ b=fewXgRXsLQhcvs481DRc1VIa9vX7Qv/66B8bzHiTZD6FMUQsCJvPf5vAIFdg0p/5v7C1
+ cC8JVZpL9RygXWZqlrRAGFRONPbaDv/2/9j5rl0ndWMthOIx/MEUuZOOHYP5CJezRF37
+ WdZAf3SokDrXknfATw/tXmqIzalzviV3VVMR57KQOwIJi0MOLk6BAn4EhD4g+Y9mFzXG
+ iefN5h1XiTAN27jk68GWZGcj8PqngOWovnZyHvzEGAJuQKx2otf8uT6VrdNoOqJnkoQe
+ mdzvqadb8ESqn2RUjsezCPvj1s+J2uvDNotim4DoJwqJ9DPj62rUMsEo0+ZztwRuNkAW dQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e7c4e5a24-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Feb 2022 17:52:03 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21EHmYgb024211;
+ Mon, 14 Feb 2022 17:52:03 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e7c4e5a1e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Feb 2022 17:52:03 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21EHbtVT026816;
+ Mon, 14 Feb 2022 17:52:01 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03ams.nl.ibm.com with ESMTP id 3e64h9qrpr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 14 Feb 2022 17:52:01 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 21EHfeTi46137692
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 14 Feb 2022 17:41:40 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1890DA4065;
+ Mon, 14 Feb 2022 17:51:59 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A1017A4060;
+ Mon, 14 Feb 2022 17:51:58 +0000 (GMT)
+Received: from localhost (unknown [9.43.124.167])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 14 Feb 2022 17:51:58 +0000 (GMT)
+Date: Mon, 14 Feb 2022 23:21:56 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 12/13] powerpc/ftrace: Prepare ftrace_64_mprofile.S for
+ reuse by PPC32
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Jiri Kosina
+ <jikos@kernel.org>, Joe Lawrence <joe.lawrence@redhat.com>, Josh Poimboeuf
+ <jpoimboe@redhat.com>, Miroslav Benes <mbenes@suse.cz>, Ingo Molnar
+ <mingo@redhat.com>, Petr Mladek <pmladek@suse.com>, Steven Rostedt
+ <rostedt@goodmis.org>
+References: <cover.1640017960.git.christophe.leroy@csgroup.eu>
+ <82a732915dc71ee766e31809350939331944006d.1640017960.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <82a732915dc71ee766e31809350939331944006d.1640017960.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1644860537.hyunv1mld0.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: HHrAwynjC0tZxVMXEag7CCqPQklgAug1
+X-Proofpoint-ORIG-GUID: 0pFoWuFbKJHIjrYfR2q_vw0OCvLFxAEO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-14_07,2022-02-14_03,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 bulkscore=0
+ adultscore=0 clxscore=1011 lowpriorityscore=0 impostorscore=0
+ suspectscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202140104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,206 +113,248 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- David Hildenbrand <david@redhat.com>,
- Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
- virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
- Minchan Kim <minchan@kernel.org>, iommu@lists.linux-foundation.org,
- Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
- Frank Rowand <frowand.list@gmail.com>, Christoph Hellwig <hch@lst.de>,
- Vlastimil Babka <vbabka@suse.cz>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: "live-patching@vger.kernel.org" <live-patching@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some places in the kernel don't really expect pageblock_order >=
-MAX_ORDER, and it looks like this is only possible in corner cases:
+Christophe Leroy wrote:
+> PPC64 mprofile versions and PPC32 are very similar.
+>=20
+> Modify PPC64 version so that if can be reused for PPC32.
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  .../powerpc/kernel/trace/ftrace_64_mprofile.S | 73 +++++++++++++------
+>  1 file changed, 51 insertions(+), 22 deletions(-)
 
-1) CONFIG_DEFERRED_STRUCT_PAGE_INIT we'll end up freeing pageblock_order
-   pages via __free_pages_core(), which cannot possibly work.
+While I agree that ppc32 and -mprofile-kernel ftrace code are very=20
+similar, I think this patch adds way too many #ifdefs. IMHO, this
+makes the resultant code quite difficult to follow.
 
-2) find_zone_movable_pfns_for_nodes() will roundup the ZONE_MOVABLE
-   start PFN to MAX_ORDER_NR_PAGES. Consequently with a bigger
-   pageblock_order, we could have a single pageblock partially managed by
-   two zones.
 
-3) compaction code runs into __fragmentation_index() with order
-   >= MAX_ORDER, when checking WARN_ON_ONCE(order >= MAX_ORDER). [1]
+- Naveen
 
-4) mm/page_reporting.c won't be reporting any pages with default
-   page_reporting_order == pageblock_order, as we'll be skipping the
-   reporting loop inside page_reporting_process_zone().
-
-5) __rmqueue_fallback() will never be able to steal with
-   ALLOC_NOFRAGMENT.
-
-pageblock_order >= MAX_ORDER is weird either way: it's a pure
-optimization for making alloc_contig_range(), as used for allcoation of
-gigantic pages, a little more reliable to succeed. However, if there is
-demand for somewhat reliable allocation of gigantic pages, affected setups
-should be using CMA or boottime allocations instead.
-
-So let's make sure that pageblock_order < MAX_ORDER and simplify.
-
-[1] https://lkml.kernel.org/r/87r189a2ks.fsf@linux.ibm.com
-
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- drivers/virtio/virtio_mem.c     |  9 +++------
- include/linux/cma.h             |  3 +--
- include/linux/pageblock-flags.h |  7 +++++--
- mm/Kconfig                      |  3 +++
- mm/page_alloc.c                 | 32 ++++++++------------------------
- 5 files changed, 20 insertions(+), 34 deletions(-)
-
-diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
-index 38becd8d578c..e7d6b679596d 100644
---- a/drivers/virtio/virtio_mem.c
-+++ b/drivers/virtio/virtio_mem.c
-@@ -2476,13 +2476,10 @@ static int virtio_mem_init_hotplug(struct virtio_mem *vm)
- 				      VIRTIO_MEM_DEFAULT_OFFLINE_THRESHOLD);
- 
- 	/*
--	 * We want subblocks to span at least MAX_ORDER_NR_PAGES and
--	 * pageblock_nr_pages pages. This:
--	 * - Is required for now for alloc_contig_range() to work reliably -
--	 *   it doesn't properly handle smaller granularity on ZONE_NORMAL.
-+	 * TODO: once alloc_contig_range() works reliably with pageblock
-+	 * granularity on ZONE_NORMAL, use pageblock_nr_pages instead.
- 	 */
--	sb_size = max_t(uint64_t, MAX_ORDER_NR_PAGES,
--			pageblock_nr_pages) * PAGE_SIZE;
-+	sb_size = PAGE_SIZE * MAX_ORDER_NR_PAGES;
- 	sb_size = max_t(uint64_t, vm->device_block_size, sb_size);
- 
- 	if (sb_size < memory_block_size_bytes() && !force_bbm) {
-diff --git a/include/linux/cma.h b/include/linux/cma.h
-index 75fe188ec4a1..b1ba94f1cc9c 100644
---- a/include/linux/cma.h
-+++ b/include/linux/cma.h
-@@ -25,8 +25,7 @@
-  * -- can deal with only some pageblocks of a higher-order page being
-  *  MIGRATE_CMA, we can use pageblock_nr_pages.
-  */
--#define CMA_MIN_ALIGNMENT_PAGES max_t(phys_addr_t, MAX_ORDER_NR_PAGES, \
--				      pageblock_nr_pages)
-+#define CMA_MIN_ALIGNMENT_PAGES MAX_ORDER_NR_PAGES
- #define CMA_MIN_ALIGNMENT_BYTES (PAGE_SIZE * CMA_MIN_ALIGNMENT_PAGES)
- 
- struct cma;
-diff --git a/include/linux/pageblock-flags.h b/include/linux/pageblock-flags.h
-index 973fd731a520..83c7248053a1 100644
---- a/include/linux/pageblock-flags.h
-+++ b/include/linux/pageblock-flags.h
-@@ -37,8 +37,11 @@ extern unsigned int pageblock_order;
- 
- #else /* CONFIG_HUGETLB_PAGE_SIZE_VARIABLE */
- 
--/* Huge pages are a constant size */
--#define pageblock_order		HUGETLB_PAGE_ORDER
-+/*
-+ * Huge pages are a constant size, but don't exceed the maximum allocation
-+ * granularity.
-+ */
-+#define pageblock_order		min_t(unsigned int, HUGETLB_PAGE_ORDER, MAX_ORDER - 1)
- 
- #endif /* CONFIG_HUGETLB_PAGE_SIZE_VARIABLE */
- 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 3326ee3903f3..4c91b92e7537 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -262,6 +262,9 @@ config HUGETLB_PAGE_SIZE_VARIABLE
- 	  HUGETLB_PAGE_ORDER when there are multiple HugeTLB page sizes available
- 	  on a platform.
- 
-+	  Note that the pageblock_order cannot exceed MAX_ORDER - 1 and will be
-+	  clamped down to MAX_ORDER - 1.
-+
- config CONTIG_ALLOC
- 	def_bool (MEMORY_ISOLATION && COMPACTION) || CMA
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 3589febc6d31..04cf964b57b5 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1072,14 +1072,12 @@ static inline void __free_one_page(struct page *page,
- 		int migratetype, fpi_t fpi_flags)
- {
- 	struct capture_control *capc = task_capc(zone);
-+	unsigned int max_order = pageblock_order;
- 	unsigned long buddy_pfn;
- 	unsigned long combined_pfn;
--	unsigned int max_order;
- 	struct page *buddy;
- 	bool to_tail;
- 
--	max_order = min_t(unsigned int, MAX_ORDER - 1, pageblock_order);
--
- 	VM_BUG_ON(!zone_is_initialized(zone));
- 	VM_BUG_ON_PAGE(page->flags & PAGE_FLAGS_CHECK_AT_PREP, page);
- 
-@@ -2260,19 +2258,8 @@ void __init init_cma_reserved_pageblock(struct page *page)
- 	} while (++p, --i);
- 
- 	set_pageblock_migratetype(page, MIGRATE_CMA);
--
--	if (pageblock_order >= MAX_ORDER) {
--		i = pageblock_nr_pages;
--		p = page;
--		do {
--			set_page_refcounted(p);
--			__free_pages(p, MAX_ORDER - 1);
--			p += MAX_ORDER_NR_PAGES;
--		} while (i -= MAX_ORDER_NR_PAGES);
--	} else {
--		set_page_refcounted(page);
--		__free_pages(page, pageblock_order);
--	}
-+	set_page_refcounted(page);
-+	__free_pages(page, pageblock_order);
- 
- 	adjust_managed_page_count(page, pageblock_nr_pages);
- 	page_zone(page)->cma_pages += pageblock_nr_pages;
-@@ -7389,16 +7376,15 @@ static inline void setup_usemap(struct zone *zone) {}
- /* Initialise the number of pages represented by NR_PAGEBLOCK_BITS */
- void __init set_pageblock_order(void)
- {
--	unsigned int order;
-+	unsigned int order = MAX_ORDER - 1;
- 
- 	/* Check that pageblock_nr_pages has not already been setup */
- 	if (pageblock_order)
- 		return;
- 
--	if (HPAGE_SHIFT > PAGE_SHIFT)
-+	/* Don't let pageblocks exceed the maximum allocation granularity. */
-+	if (HPAGE_SHIFT > PAGE_SHIFT && HUGETLB_PAGE_ORDER < order)
- 		order = HUGETLB_PAGE_ORDER;
--	else
--		order = MAX_ORDER - 1;
- 
- 	/*
- 	 * Assume the largest contiguous order of interest is a huge page.
-@@ -8986,14 +8972,12 @@ struct page *has_unmovable_pages(struct zone *zone, struct page *page,
- #ifdef CONFIG_CONTIG_ALLOC
- static unsigned long pfn_max_align_down(unsigned long pfn)
- {
--	return pfn & ~(max_t(unsigned long, MAX_ORDER_NR_PAGES,
--			     pageblock_nr_pages) - 1);
-+	return ALIGN_DOWN(pfn, MAX_ORDER_NR_PAGES);
- }
- 
- static unsigned long pfn_max_align_up(unsigned long pfn)
- {
--	return ALIGN(pfn, max_t(unsigned long, MAX_ORDER_NR_PAGES,
--				pageblock_nr_pages));
-+	return ALIGN(pfn, MAX_ORDER_NR_PAGES);
- }
- 
- #if defined(CONFIG_DYNAMIC_DEBUG) || \
--- 
-2.34.1
-
+>=20
+> diff --git a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S b/arch/powerp=
+c/kernel/trace/ftrace_64_mprofile.S
+> index 6071e0122797..56da60e98327 100644
+> --- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
+> +++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
+> @@ -34,13 +34,16 @@
+>   */
+>  _GLOBAL(ftrace_regs_caller)
+>  	/* Save the original return address in A's stack frame */
+> -	std	r0,LRSAVE(r1)
+> +#ifdef CONFIG_MPROFILE_KERNEL
+> +	PPC_STL	r0,LRSAVE(r1)
+> +#endif
+> =20
+>  	/* Create our stack frame + pt_regs */
+> -	stdu	r1,-SWITCH_FRAME_SIZE(r1)
+> +	PPC_STLU	r1,-SWITCH_FRAME_SIZE(r1)
+> =20
+>  	/* Save all gprs to pt_regs */
+>  	SAVE_GPR(0, r1)
+> +#ifdef CONFIG_PPC64
+>  	SAVE_GPRS(2, 11, r1)
+> =20
+>  	/* Ok to continue? */
+> @@ -49,10 +52,13 @@ _GLOBAL(ftrace_regs_caller)
+>  	beq	ftrace_no_trace
+> =20
+>  	SAVE_GPRS(12, 31, r1)
+> +#else
+> +	stmw	r2, GPR2(r1)
+> +#endif
+> =20
+>  	/* Save previous stack pointer (r1) */
+>  	addi	r8, r1, SWITCH_FRAME_SIZE
+> -	std	r8, GPR1(r1)
+> +	PPC_STL	r8, GPR1(r1)
+> =20
+>  	/* Load special regs for save below */
+>  	mfmsr   r8
+> @@ -63,10 +69,11 @@ _GLOBAL(ftrace_regs_caller)
+>  	/* Get the _mcount() call site out of LR */
+>  	mflr	r7
+>  	/* Save it as pt_regs->nip */
+> -	std     r7, _NIP(r1)
+> +	PPC_STL	r7, _NIP(r1)
+>  	/* Save the read LR in pt_regs->link */
+> -	std     r0, _LINK(r1)
+> +	PPC_STL	r0, _LINK(r1)
+> =20
+> +#ifdef CONFIG_PPC64
+>  	/* Save callee's TOC in the ABI compliant location */
+>  	std	r2, 24(r1)
+>  	ld	r2,PACATOC(r13)	/* get kernel TOC in r2 */
+> @@ -74,8 +81,12 @@ _GLOBAL(ftrace_regs_caller)
+>  	addis	r3,r2,function_trace_op@toc@ha
+>  	addi	r3,r3,function_trace_op@toc@l
+>  	ld	r5,0(r3)
+> +#else
+> +	lis	r3,function_trace_op@ha
+> +	lwz	r5,function_trace_op@l(r3)
+> +#endif
+> =20
+> -#ifdef CONFIG_LIVEPATCH
+> +#ifdef CONFIG_LIVEPATCH_64
+>  	mr	r14,r7		/* remember old NIP */
+>  #endif
+>  	/* Calculate ip from nip-4 into r3 for call below */
+> @@ -85,10 +96,10 @@ _GLOBAL(ftrace_regs_caller)
+>  	mr	r4, r0
+> =20
+>  	/* Save special regs */
+> -	std     r8, _MSR(r1)
+> -	std     r9, _CTR(r1)
+> -	std     r10, _XER(r1)
+> -	std     r11, _CCR(r1)
+> +	PPC_STL	r8, _MSR(r1)
+> +	PPC_STL	r9, _CTR(r1)
+> +	PPC_STL	r10, _XER(r1)
+> +	PPC_STL	r11, _CCR(r1)
+> =20
+>  	/* Load &pt_regs in r6 for call below */
+>  	addi    r6, r1 ,STACK_FRAME_OVERHEAD
+> @@ -100,27 +111,32 @@ ftrace_regs_call:
+>  	nop
+> =20
+>  	/* Load ctr with the possibly modified NIP */
+> -	ld	r3, _NIP(r1)
+> +	PPC_LL	r3, _NIP(r1)
+>  	mtctr	r3
+> -#ifdef CONFIG_LIVEPATCH
+> +#ifdef CONFIG_LIVEPATCH_64
+>  	cmpd	r14, r3		/* has NIP been altered? */
+>  #endif
+> =20
+>  	/* Restore gprs */
+> -	REST_GPR(0, r1)
+> +#ifdef CONFIG_PPC64
+>  	REST_GPRS(2, 31, r1)
+> +#else
+> +	lmw	r2, GPR2(r1)
+> +#endif
+> =20
+>  	/* Restore possibly modified LR */
+> -	ld	r0, _LINK(r1)
+> +	PPC_LL	r0, _LINK(r1)
+>  	mtlr	r0
+> =20
+> +#ifdef CONFIG_PPC64
+>  	/* Restore callee's TOC */
+>  	ld	r2, 24(r1)
+> +#endif
+> =20
+>  	/* Pop our stack frame */
+>  	addi r1, r1, SWITCH_FRAME_SIZE
+> =20
+> -#ifdef CONFIG_LIVEPATCH
+> +#ifdef CONFIG_LIVEPATCH_64
+>          /* Based on the cmpd above, if the NIP was altered handle livepa=
+tch */
+>  	bne-	livepatch_handler
+>  #endif
+> @@ -129,6 +145,7 @@ ftrace_regs_call:
+>  _GLOBAL(ftrace_stub)
+>  	blr
+> =20
+> +#ifdef CONFIG_PPC64
+>  ftrace_no_trace:
+>  	mflr	r3
+>  	mtctr	r3
+> @@ -136,25 +153,31 @@ ftrace_no_trace:
+>  	addi	r1, r1, SWITCH_FRAME_SIZE
+>  	mtlr	r0
+>  	bctr
+> +#endif
+> =20
+>  _GLOBAL(ftrace_caller)
+>  	/* Save the original return address in A's stack frame */
+> -	std	r0, LRSAVE(r1)
+> +#ifdef CONFIG_MPROFILE_KERNEL
+> +	PPC_STL	r0, LRSAVE(r1)
+> +#endif
+> =20
+>  	/* Create our stack frame + pt_regs */
+> -	stdu	r1, -SWITCH_FRAME_SIZE(r1)
+> +	PPC_STLU	r1, -SWITCH_FRAME_SIZE(r1)
+> =20
+>  	/* Save all gprs to pt_regs */
+>  	SAVE_GPRS(3, 10, r1)
+> =20
+> +#ifdef CONFIG_PPC64
+>  	lbz	r3, PACA_FTRACE_ENABLED(r13)
+>  	cmpdi	r3, 0
+>  	beq	ftrace_no_trace
+> +#endif
+> =20
+>  	/* Get the _mcount() call site out of LR */
+>  	mflr	r7
+> -	std     r7, _NIP(r1)
+> +	PPC_STL     r7, _NIP(r1)
+> =20
+> +#ifdef CONFIG_PPC64
+>  	/* Save callee's TOC in the ABI compliant location */
+>  	std	r2, 24(r1)
+>  	ld	r2, PACATOC(r13)	/* get kernel TOC in r2 */
+> @@ -162,6 +185,10 @@ _GLOBAL(ftrace_caller)
+>  	addis	r3, r2, function_trace_op@toc@ha
+>  	addi	r3, r3, function_trace_op@toc@l
+>  	ld	r5, 0(r3)
+> +#else
+> +	lis	r3,function_trace_op@ha
+> +	lwz	r5,function_trace_op@l(r3)
+> +#endif
+> =20
+>  #ifdef CONFIG_LIVEPATCH_64
+>  	SAVE_GPR(14, r1)
+> @@ -171,7 +198,7 @@ _GLOBAL(ftrace_caller)
+>  	subi    r3, r7, MCOUNT_INSN_SIZE
+> =20
+>  	/* Put the original return address in r4 as parent_ip */
+> -	std	r0, _LINK(r1)
+> +	PPC_STL	r0, _LINK(r1)
+>  	mr	r4, r0
+> =20
+>  	/* Load &pt_regs in r6 for call below */
+> @@ -183,7 +210,7 @@ ftrace_call:
+>  	bl	ftrace_stub
+>  	nop
+> =20
+> -	ld	r3, _NIP(r1)
+> +	PPC_LL	r3, _NIP(r1)
+>  	mtctr	r3
+>  #ifdef CONFIG_LIVEPATCH_64
+>  	cmpd	r14, r3		/* has NIP been altered? */
+> @@ -193,11 +220,13 @@ ftrace_call:
+>  	/* Restore gprs */
+>  	REST_GPRS(3, 10, r1)
+> =20
+> +#ifdef CONFIG_PPC64
+>  	/* Restore callee's TOC */
+>  	ld	r2, 24(r1)
+> +#endif
+> =20
+>  	/* Restore possibly modified LR */
+> -	ld	r0, _LINK(r1)
+> +	PPC_LL	r0, _LINK(r1)
+>  	mtlr	r0
+> =20
+>  	/* Pop our stack frame */
+> @@ -209,7 +238,7 @@ ftrace_call:
+>  #endif
+>  	bctr			/* jump after _mcount site */
+> =20
+> -#ifdef CONFIG_LIVEPATCH
+> +#ifdef CONFIG_LIVEPATCH_64
+>  	/*
+>  	 * This function runs in the mcount context, between two functions. As
+>  	 * such it can only clobber registers which are volatile and used in
+> --=20
+> 2.33.1
+>=20
