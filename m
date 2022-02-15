@@ -2,39 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 365384B6ABA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 12:25:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D20044B6ACA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 12:27:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jydzf5nvcz3cYY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 22:25:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jyf2k2qqZz3cLN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 22:27:42 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=M5vUQHwI;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4JydzC5jn4z30jV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 22:24:38 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF7F21476;
- Tue, 15 Feb 2022 03:24:36 -0800 (PST)
-Received: from FVFF77S0Q05N (unknown [10.57.89.144])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 160403F718;
- Tue, 15 Feb 2022 03:24:29 -0800 (PST)
-Date: Tue, 15 Feb 2022 11:24:26 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: David Laight <David.Laight@ACULAB.COM>
-Subject: Re: [PATCH 08/14] arm64: simplify access_ok()
-Message-ID: <YguNamXeOtGVPyJf@FVFF77S0Q05N>
-References: <20220214163452.1568807-1-arnd@kernel.org>
- <20220214163452.1568807-9-arnd@kernel.org>
- <CAMj1kXHixUFjV=4m3tzfGz7AiRWc-VczymbKuZq7dyZZNuLKxQ@mail.gmail.com>
- <153bb1887f484ed79ce8224845a4b2ea@AcuMS.aculab.com>
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jyf230fKbz30Ld
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 22:27:07 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=M5vUQHwI; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Jyf1z0Wlgz4xcY;
+ Tue, 15 Feb 2022 22:27:02 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1644924423;
+ bh=2bjEo/l1VuKsDDnpXHRYc8XcSJyXSTPJfQq6nV/jw5E=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=M5vUQHwI7ONB8kQMJ2wuRbKHkhWQnv9vfiQPxHQjVjnkycLnHlI60AS+hKyV0yFO9
+ a/JDvNI9HrfJb/XGRVYj8rYKZZ/oUnBgy3sDzTxpuFxk2LHP7dReNi0dbOQ06aNMKZ
+ BCxeS8wb2bhs3FOz6CvIS2a6TgbRPXtbuHY0YGWsoeWokXouX3GAIOWlUdjse87WrN
+ W7EL7hEB14XBpCq8wvmtkT/d7butip3fEdhlj4X3Vsk3nqJSkJUNE95w/FHY3dPKao
+ CoJR36nYvgRQGtHj5UaAmRA2bx2lE7yJ1c4QHG54XUPkZwaGTsYgIu0Tvhdc2GbryG
+ 3YwasqFGBQRuQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Wedson Almeida Filho <wedsonaf@google.com>
+Subject: Re: [PATCH] powerpc/module_64: use module_init_section instead of
+ patching names
+In-Reply-To: <CAMKQLN+Q3asVqP3MZVFZO66CvZVVfGOZn=pMXmiNqZ7t2i55wg@mail.gmail.com>
+References: <20220202055123.2144842-1-wedsonaf@google.com>
+ <CAMKQLN+Q3asVqP3MZVFZO66CvZVVfGOZn=pMXmiNqZ7t2i55wg@mail.gmail.com>
+Date: Tue, 15 Feb 2022 22:27:02 +1100
+Message-ID: <8735kknzeh.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <153bb1887f484ed79ce8224845a4b2ea@AcuMS.aculab.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,162 +61,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>, Guo Ren <guoren@kernel.org>,
- "open list:SPARC + UltraSPARC \(sparc/sparc64\)" <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
- Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
- linux-arch <linux-arch@vger.kernel.org>,
- "open list:S390" <linux-s390@vger.kernel.org>,
- Brian Cain <bcain@codeaurora.org>,
- "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
- Helge Deller <deller@gmx.de>, X86 ML <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- 'Ard Biesheuvel' <ardb@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
- Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>,
- linux-um <linux-um@lists.infradead.org>, Richard Weinberger <richard@nod.at>,
- linux-m68k <linux-m68k@lists.linux-m68k.org>,
- "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
- Greentime Hu <green.hu@gmail.com>, Stafford Horne <shorne@gmail.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Arnd Bergmann <arnd@kernel.org>, "monstr@monstr.eu" <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Hu <nickhu@andestech.com>,
- "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
- Max Filippov <jcmvbkbc@gmail.com>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, "open list:MIPS" <linux-mips@vger.kernel.org>,
- "dinguyen@kernel.org" <dinguyen@kernel.org>,
- "Eric W. Biederman" <ebiederm@xmission.com>,
- alpha <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Robin Murphy <robin.murphy@arm.com>, "David S. Miller" <davem@davemloft.net>
+Cc: paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 15, 2022 at 09:30:41AM +0000, David Laight wrote:
-> From: Ard Biesheuvel
-> > Sent: 15 February 2022 08:18
-> > 
-> > On Mon, 14 Feb 2022 at 17:37, Arnd Bergmann <arnd@kernel.org> wrote:
-> > >
-> > > From: Arnd Bergmann <arnd@arndb.de>
-> > >
-> > > arm64 has an inline asm implementation of access_ok() that is derived from
-> > > the 32-bit arm version and optimized for the case that both the limit and
-> > > the size are variable. With set_fs() gone, the limit is always constant,
-> > > and the size usually is as well, so just using the default implementation
-> > > reduces the check into a comparison against a constant that can be
-> > > scheduled by the compiler.
-> > >
-> > > On a defconfig build, this saves over 28KB of .text.
-> > >
-> > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > > ---
-> > >  arch/arm64/include/asm/uaccess.h | 28 +++++-----------------------
-> > >  1 file changed, 5 insertions(+), 23 deletions(-)
-> > >
-> > > diff --git a/arch/arm64/include/asm/uaccess.h b/arch/arm64/include/asm/uaccess.h
-> > > index 357f7bd9c981..e8dce0cc5eaa 100644
-> > > --- a/arch/arm64/include/asm/uaccess.h
-> > > +++ b/arch/arm64/include/asm/uaccess.h
-> > > @@ -26,6 +26,8 @@
-> > >  #include <asm/memory.h>
-> > >  #include <asm/extable.h>
-> > >
-> > > +static inline int __access_ok(const void __user *ptr, unsigned long size);
-> > > +
-> > >  /*
-> > >   * Test whether a block of memory is a valid user space address.
-> > >   * Returns 1 if the range is valid, 0 otherwise.
-> > > @@ -33,10 +35,8 @@
-> > >   * This is equivalent to the following test:
-> > >   * (u65)addr + (u65)size <= (u65)TASK_SIZE_MAX
-> > >   */
-> > > -static inline unsigned long __access_ok(const void __user *addr, unsigned long size)
-> > > +static inline int access_ok(const void __user *addr, unsigned long size)
-> > >  {
-> > > -       unsigned long ret, limit = TASK_SIZE_MAX - 1;
-> > > -
-> > >         /*
-> > >          * Asynchronous I/O running in a kernel thread does not have the
-> > >          * TIF_TAGGED_ADDR flag of the process owning the mm, so always untag
-> > > @@ -46,27 +46,9 @@ static inline unsigned long __access_ok(const void __user *addr, unsigned long s
-> > >             (current->flags & PF_KTHREAD || test_thread_flag(TIF_TAGGED_ADDR)))
-> > >                 addr = untagged_addr(addr);
-> > >
-> > > -       __chk_user_ptr(addr);
-> > > -       asm volatile(
-> > > -       // A + B <= C + 1 for all A,B,C, in four easy steps:
-> > > -       // 1: X = A + B; X' = X % 2^64
-> > > -       "       adds    %0, %3, %2\n"
-> > > -       // 2: Set C = 0 if X > 2^64, to guarantee X' > C in step 4
-> > > -       "       csel    %1, xzr, %1, hi\n"
-> > > -       // 3: Set X' = ~0 if X >= 2^64. For X == 2^64, this decrements X'
-> > > -       //    to compensate for the carry flag being set in step 4. For
-> > > -       //    X > 2^64, X' merely has to remain nonzero, which it does.
-> > > -       "       csinv   %0, %0, xzr, cc\n"
-> > > -       // 4: For X < 2^64, this gives us X' - C - 1 <= 0, where the -1
-> > > -       //    comes from the carry in being clear. Otherwise, we are
-> > > -       //    testing X' - C == 0, subject to the previous adjustments.
-> > > -       "       sbcs    xzr, %0, %1\n"
-> > > -       "       cset    %0, ls\n"
-> > > -       : "=&r" (ret), "+r" (limit) : "Ir" (size), "0" (addr) : "cc");
-> > > -
-> > > -       return ret;
-> > > +       return likely(__access_ok(addr, size));
-> > >  }
-> > > -#define __access_ok __access_ok
-> > > +#define access_ok access_ok
-> > >
-> > >  #include <asm-generic/access_ok.h>
-> > >
-> > > --
-> > > 2.29.2
-> > >
-> > 
-> > With set_fs() out of the picture, wouldn't it be sufficient to check
-> > that bit #55 is clear? (the bit that selects between TTBR0 and TTBR1)
-> > That would also remove the need to strip the tag from the address.
-> > 
-> > Something like
-> > 
-> >     asm goto("tbnz  %0, #55, %2     \n"
-> >              "tbnz  %1, #55, %2     \n"
-> >              :: "r"(addr), "r"(addr + size - 1) :: notok);
-> >     return 1;
-> > notok:
-> >     return 0;
-> > 
-> > with an additional sanity check on the size which the compiler could
-> > eliminate for compile-time constant values.
-> 
-> Is there are reason not to just use:
-> 	size < 1u << 48 && !((addr | (addr + size - 1)) & 1u << 55)
+Wedson Almeida Filho <wedsonaf@google.com> writes:
+> Hi Michael,
+>
+> On Wed, 2 Feb 2022 at 05:53, Wedson Almeida Filho <wedsonaf@google.com> wrote:
+>>
+>> Without this patch, module init sections are disabled by patching their
+>> names in arch-specific code when they're loaded (which prevents code in
+>> layout_sections from finding init sections). This patch uses the new
+>> arch-specific module_init_section instead.
+>>
+>> This allows modules that have .init_array sections to have the
+>> initialisers properly called (on load, before init). Without this patch,
+>> the initialisers are not called because .init_array is renamed to
+>> _init_array, and thus isn't found by code in find_module_sections().
+>>
+>> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+>> ---
+>>  arch/powerpc/kernel/module_64.c | 11 ++++++-----
+>>  1 file changed, 6 insertions(+), 5 deletions(-)
+...
+>
+> Would any additional clarification from my part be helpful here?
 
-That has a few problems, including being an ABI change for tasks not using the
-relaxed tag ABI and not working for 52-bit VAs.
+Just more patience ;)
 
-If we really want to relax the tag checking aspect, there are simpler options,
-including variations on Ard's approach above.
+> I got an email saying it was under review (and checks passed) but
+> nothing appears to have happened since.
 
-> Ugg, is arm64 addressing as horrid as it looks - with the 'kernel'
-> bit in the middle of the virtual address space?
+I actually put it in next late last week, but the emails got delayed due
+to various gremlins.
 
-It's just sign-extension/canonical addressing, except bits [63:56] are
-configurable between a few uses, so the achitecture says bit 55 is the one to
-look at in all configurations to figure out if an address is high/low (in
-addition to checking the remaining bits are canonical).
-
-Thanks,
-Mark.
+cheers
