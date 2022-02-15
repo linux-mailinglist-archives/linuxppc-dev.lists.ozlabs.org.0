@@ -1,65 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB07F4B672E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 10:13:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7F34B675C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 10:19:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jyb4B1z41z3cKM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 20:13:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JybBb3dynz3cQp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 20:19:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CLHePkmH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KxuS+MXG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=CLHePkmH; 
+ header.s=k20201202 header.b=KxuS+MXG; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jyb3W6ZpRz2xKK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 20:13:11 +1100 (AEDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jyb9x2bFNz2xrc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 20:18:45 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 3CA25616C4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 09:13:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9301C340F1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 09:13:08 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 70B5F60A76
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 09:18:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467A4C340EC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 09:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1644916388;
- bh=nPLs5v71E/xzzKRq/jdD2UxtX1DBSgxHKB2i8EHy1KY=;
+ s=k20201202; t=1644916723;
+ bh=auvbexz8OfCE17jezkrwExlxQUSMdLXG0OAD2bmLs8A=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=CLHePkmHVvog2B9hZC9aG4LabFSm7MI26At0uDw7kKPNYpb3lXWOmUP31vrn/n3jp
- 21c83PolyTPYs5hRtHSTmetuMdjz8MVwbtB9QE4JUqwfDE9UaiWLco96WTCCiREXeo
- ierknOIrVYt+cFHPhwjyPUqaAdv+eYt2hib0l9mVhvFWKgaTt9gitGLgKmM8vAP2ER
- AePVXGloKhok6IjT1wO1H+WVX/SWPGV2/x59O7cRGdhpYbEJd41Qa4hwZk6q55miTE
- kziCS4wP1Lkxi5K05R+6K/1DypZ1QzcheN727Vb2P8JghtAuyZKDU7SLg9/rJcHwJ6
- ZWZc1SanLSgow==
-Received: by mail-ed1-f41.google.com with SMTP id z13so12715958edc.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 01:13:08 -0800 (PST)
-X-Gm-Message-State: AOAM5300Turh2fvH5+stutxN8aQYhBUmHyUvBJat1AjA/DTutxqr71l7
- +0bp6WwlxFkML7N5lznYYetNELFX7xrCy8kHM1g=
-X-Google-Smtp-Source: ABdhPJwP302M1cXBE3IXsZS/v83gWi9XJR2q13sQJhY9b6tnSpJCd4099durtVh9QEm0yhQ4WeUq4MKNAAS9P/JPfzc=
-X-Received: by 2002:adf:f6ce:: with SMTP id y14mr2380558wrp.219.1644916376776; 
- Tue, 15 Feb 2022 01:12:56 -0800 (PST)
+ b=KxuS+MXGyT93bwm1F3n5t6L7s8XZ6iu0mZ2D3LY2EN+3Aco22AP9qXFro/PV+PSeY
+ oMfyI7SeLeoRWWY6znQksIat5oHvm302T+mCH2sk2zICN7+XqbioFmiFAuteTgdeJV
+ 4nuEvNatRYg8PdTBe3w6oTRo6U6A0KA1oHI4/OosA1NsTPqimvvhu8QynGNL15OP0Y
+ MLyigS2ZvbF4zMJOhl/apKzph0CzX2vmpgTqYFyjh78OGsVWUSES12w7IbkXqOxQLP
+ Ob6iO5C5zDziXLo/264NyE6eBsxkMrDV5w4YmTy9De7U8ossl4OvwFSxvvQZ2Trahi
+ E+BG1Zs709l8Q==
+Received: by mail-ed1-f45.google.com with SMTP id z13so12736655edc.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 01:18:43 -0800 (PST)
+X-Gm-Message-State: AOAM532jHKUbSL9HL6dnB/YNQ/p96fwUcLjuPAz9WagTH0r/5m+NxHQ1
+ PjRtII2pQAhFW2U4ttoxBP1rgG6riyVNB0Ak6Ao=
+X-Google-Smtp-Source: ABdhPJytLoTfipZUwnG73E442/QjIxHnERGjQ2aeR9o7LjnpbatwjsLI+Mk7641j6VpHXtVWtwvDTIufUdUsOw5At+o=
+X-Received: by 2002:a5d:5446:: with SMTP id w6mr2390801wrv.12.1644916711299;
+ Tue, 15 Feb 2022 01:18:31 -0800 (PST)
 MIME-Version: 1.0
 References: <20220214163452.1568807-1-arnd@kernel.org>
- <20220214163452.1568807-9-arnd@kernel.org>
- <CAMj1kXHixUFjV=4m3tzfGz7AiRWc-VczymbKuZq7dyZZNuLKxQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXHixUFjV=4m3tzfGz7AiRWc-VczymbKuZq7dyZZNuLKxQ@mail.gmail.com>
+ <20220214163452.1568807-4-arnd@kernel.org>
+ <YgqK1ihlJvRFHJ9h@infradead.org>
+In-Reply-To: <YgqK1ihlJvRFHJ9h@infradead.org>
 From: Arnd Bergmann <arnd@kernel.org>
-Date: Tue, 15 Feb 2022 10:12:40 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2VfvDkueaJNTA9SiB+PFsi_Q17AX+aL46ueooW2ahmQw@mail.gmail.com>
-Message-ID: <CAK8P3a2VfvDkueaJNTA9SiB+PFsi_Q17AX+aL46ueooW2ahmQw@mail.gmail.com>
-Subject: Re: [PATCH 08/14] arm64: simplify access_ok()
-To: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 15 Feb 2022 10:18:15 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1XkWNQcFEhJQ0+qWzih1YRQDS_N8xiosN7FHn3yoTJpQ@mail.gmail.com>
+Message-ID: <CAK8P3a1XkWNQcFEhJQ0+qWzih1YRQDS_N8xiosN7FHn3yoTJpQ@mail.gmail.com>
+Subject: Re: [PATCH 03/14] nds32: fix access_ok() checks in get/put_user
+To: Christoph Hellwig <hch@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,70 +74,65 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
  linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
  Peter Zijlstra <peterz@infradead.org>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>, Guo Ren <guoren@kernel.org>,
- "open list:SPARC + UltraSPARC \(sparc/sparc64\)" <sparclinux@vger.kernel.org>,
- "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>,
  linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
- Christoph Hellwig <hch@lst.de>, linux-arch <linux-arch@vger.kernel.org>,
- "open list:S390" <linux-s390@vger.kernel.org>,
- Brian Cain <bcain@codeaurora.org>, Helge Deller <deller@gmx.de>,
- X86 ML <x86@kernel.org>, Russell King <linux@armlinux.org.uk>,
- linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Ard Biesheuvel <ardb@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Brian Cain <bcain@codeaurora.org>,
+ "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+ Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, Ingo Molnar <mingo@redhat.com>,
  Geert Uytterhoeven <geert@linux-m68k.org>,
  "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
- Robin Murphy <robin.murphy@arm.com>,
  "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
  Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>,
- alpha <linux-alpha@vger.kernel.org>, linux-um <linux-um@lists.infradead.org>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ linux-um <linux-um@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Richard Weinberger <richard@nod.at>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
  Openrisc <openrisc@lists.librecores.org>, Greentime Hu <green.hu@gmail.com>,
  Stafford Horne <shorne@gmail.com>,
  Linux ARM <linux-arm-kernel@lists.infradead.org>,
  Michal Simek <monstr@monstr.eu>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
- Nick Hu <nickhu@andestech.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Linux API <linux-api@vger.kernel.org>,
+ Nick Hu <nickhu@andestech.com>, Parisc List <linux-parisc@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Linux API <linux-api@vger.kernel.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Dinh Nguyen <dinguyen@kernel.org>, "Eric W. Biederman" <ebiederm@xmission.com>,
- Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
+ "# 3.4.x" <stable@vger.kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
+ "Eric W . Biederman" <ebiederm@xmission.com>,
+ alpha <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
  Linus Torvalds <torvalds@linux-foundation.org>,
- "David S. Miller" <davem@davemloft.net>
+ David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Feb 15, 2022 at 9:17 AM Ard Biesheuvel <ardb@kernel.org> wrote:
-> On Mon, 14 Feb 2022 at 17:37, Arnd Bergmann <arnd@kernel.org> wrote:
+On Mon, Feb 14, 2022 at 6:01 PM Christoph Hellwig <hch@infradead.org> wrote:
+>
+> On Mon, Feb 14, 2022 at 05:34:41PM +0100, Arnd Bergmann wrote:
 > > From: Arnd Bergmann <arnd@arndb.de>
 > >
+> > The get_user()/put_user() functions are meant to check for
+> > access_ok(), while the __get_user()/__put_user() functions
+> > don't.
+> >
+> > This broke in 4.19 for nds32, when it gained an extraneous
+> > check in __get_user(), but lost the check it needs in
+> > __put_user().
 >
-> With set_fs() out of the picture, wouldn't it be sufficient to check
-> that bit #55 is clear? (the bit that selects between TTBR0 and TTBR1)
-> That would also remove the need to strip the tag from the address.
->
-> Something like
->
->     asm goto("tbnz  %0, #55, %2     \n"
->              "tbnz  %1, #55, %2     \n"
->              :: "r"(addr), "r"(addr + size - 1) :: notok);
->     return 1;
-> notok:
->     return 0;
->
-> with an additional sanity check on the size which the compiler could
-> eliminate for compile-time constant values.
+> Can we follow the lead of MIPS (which this was originally copied
+> from I think) and kill the pointless __get/put_user_check wrapper
+> that just obsfucate the code?
 
-That should work, but I don't see it as a clear enough advantage to
-have a custom implementation. For the constant-size case, it probably
-isn't better than a compiler-scheduled comparison against a
-constant limit, but it does hurt maintainability when the next person
-wants to change the behavior of access_ok() globally.
+I had another look, but I think that would be a bigger change than
+I want to have in a fix for stable backports, as nds32 also uses
+the _check versions in __{get,put}_user_error.
 
-If we want to get into micro-optimizing uaccess, I think a better target
-would be a CONFIG_CC_HAS_ASM_GOTO_OUTPUT version
-of __get_user()/__put_user as we have on x86 and powerpc.
+If we instead clean it up in a separate patch, it should be done for
+all eight architectures that do the same thing, but at that point,
+the time seems better spent at coming up with a new set of
+calling conventions that work with asm-goto.
 
          Arnd
