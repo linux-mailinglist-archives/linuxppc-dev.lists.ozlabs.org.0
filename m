@@ -2,67 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C16AF4B602B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 02:50:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 449D74B6138
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 03:48:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JyPDg0GTGz3c5j
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 12:50:27 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=iaQxBnfn;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JyQWf5t9Sz3cVT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 13:48:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b33;
- helo=mail-yb1-xb33.google.com; envelope-from=wedsonaf@google.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=ftp.linux.org.uk (client-ip=2607:5300:60:148a::1;
+ helo=zeniv-ca.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=iaQxBnfn; dkim-atps=neutral
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com
- [IPv6:2607:f8b0:4864:20::b33])
+Received: from zeniv-ca.linux.org.uk (zeniv-ca.linux.org.uk
+ [IPv6:2607:5300:60:148a::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JyPD36cyMz3bTP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 12:49:54 +1100 (AEDT)
-Received: by mail-yb1-xb33.google.com with SMTP id 124so23496678ybn.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Feb 2022 17:49:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=FJj1WBzKHeHq7xycI/vstmM3MgrQelS5LPmPdKG2Z3E=;
- b=iaQxBnfnmpmtqAOkM7vQnm9gu8pVdJjB1Um1XNTsT9hdbvwpt5VzEy/ogrvfM3wL1A
- luQdviok/PdDEqUlA9cE8BlDs5K/BgMcoD78ezH7jmwmLR7vf1GbbweN4gP1RrOHo+Zv
- UC+bgIuZ03xtmldU0X1lOtFQMzFB2Y9EXluB5hO/ZJ3fzBqK/zsoWyH4XQC4zxl0TdzA
- NhgzVCFB/zSvHiG/CKPYpkqEI8JwNNTYU4dYEJTTZcumGx4+xempMO/Z0DZw55Bw+Rev
- EsYTPMAo9auvX8eLThdp5uz1iUizJ2bVPBdRGDCxWGg/Y2tWfe539o4fljMND/rGE6bs
- zGNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=FJj1WBzKHeHq7xycI/vstmM3MgrQelS5LPmPdKG2Z3E=;
- b=fyLVM1Z1lqMru1qu7W3B7Eds1ISa8ffi3tqwWrIEOmccJh+T8pUPHta93okd3HxtVG
- p7LKaNG2h6zsARJxhyLTvN2teTWXR/K9THw+F22/t1aRnBEl+Wu/ZqsbGgbylbpRLYQV
- rTLgZiU4nhdmSb1wodzahO38Iazik6kBME5zFQYBANAD/MUIWtPF69cAIEzwxv1Ezln9
- LYcDUpp/pK8Hk8bhOinRMSJ31RcNp0ELheEmzR33Mz7vDz2g5fOJlgUcCUnxLNycW5Cb
- xDUflPDbId1tSExR6CsF4agCMr2a0eRT+QvrWgYvhyjWYlyFEtaPC6UifPMciTa2I1L/
- 5H0A==
-X-Gm-Message-State: AOAM5312vS7iLovD8AzS3iORRonXVSolG7BhCm+VocFSq+dnf06TjHxX
- vD+nxqCtiVQ8YCNlUrDNLazVSZrbBCGaumnnaQMx
-X-Google-Smtp-Source: ABdhPJy+H1L4z3tZTUtJLjIPjqTxMpQkQuBqADy+loxDTVrSCqFR3Jj29hjSCFtNNnzq0gZZW1arF/8sOQO5i1aMwEw=
-X-Received: by 2002:a5b:443:: with SMTP id s3mr1797685ybp.117.1644889790701;
- Mon, 14 Feb 2022 17:49:50 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JyQWD4QZWz2x9Q
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 13:48:07 +1100 (AEDT)
+Received: from viro by zeniv-ca.linux.org.uk with local (Exim 4.94.2 #2 (Red
+ Hat Linux)) id 1nJnrt-001qwH-NG; Tue, 15 Feb 2022 02:47:05 +0000
+Date: Tue, 15 Feb 2022 02:47:05 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 04/14] x86: use more conventional access_ok() definition
+Message-ID: <YgsUKcXGR7r4nINj@zeniv-ca.linux.org.uk>
+References: <20220214163452.1568807-1-arnd@kernel.org>
+ <20220214163452.1568807-5-arnd@kernel.org>
+ <YgqLFYqIqkIsNC92@infradead.org>
+ <CAK8P3a1F3JaYaJPy9bSCG1+YV6EN05PE0DbwpD_GT1qRwFSJ-w@mail.gmail.com>
+ <CAHk-=whq6_Nh3cB3FieP481VcRyCu69X3=wO1yLHGmcZEj69SA@mail.gmail.com>
+ <Ygq4wy9fikDYmuHU@zeniv-ca.linux.org.uk>
 MIME-Version: 1.0
-References: <20220202055123.2144842-1-wedsonaf@google.com>
-In-Reply-To: <20220202055123.2144842-1-wedsonaf@google.com>
-From: Wedson Almeida Filho <wedsonaf@google.com>
-Date: Tue, 15 Feb 2022 01:49:39 +0000
-Message-ID: <CAMKQLN+Q3asVqP3MZVFZO66CvZVVfGOZn=pMXmiNqZ7t2i55wg@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/module_64: use module_init_section instead of
- patching names
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Ygq4wy9fikDYmuHU@zeniv-ca.linux.org.uk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,74 +48,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel <linux-kernel@vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
+ linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
+ Ard Biesheuvel <ardb@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Brian Cain <bcain@codeaurora.org>,
+ "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+ Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, Christoph Hellwig <hch@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>,
+ linux-um <linux-um@lists.infradead.org>, Richard Weinberger <richard@nod.at>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Openrisc <openrisc@lists.librecores.org>, Greentime Hu <green.hu@gmail.com>,
+ Stafford Horne <shorne@gmail.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Arnd Bergmann <arnd@kernel.org>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Nick Hu <nickhu@andestech.com>, Parisc List <linux-parisc@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Linux API <linux-api@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Dinh Nguyen <dinguyen@kernel.org>,
+ "Eric W . Biederman" <ebiederm@xmission.com>,
+ alpha <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+On Mon, Feb 14, 2022 at 08:17:07PM +0000, Al Viro wrote:
+> On Mon, Feb 14, 2022 at 12:01:05PM -0800, Linus Torvalds wrote:
+> > On Mon, Feb 14, 2022 at 11:46 AM Arnd Bergmann <arnd@kernel.org> wrote:
+> > >
+> > > As Al pointed out, they turned out to be necessary on sparc64, but the only
+> > > definitions are on sparc64 and x86, so it's possible that they serve a similar
+> > > purpose here, in which case changing the limit from TASK_SIZE to
+> > > TASK_SIZE_MAX is probably wrong as well.
+> > 
+> > x86-64 has always(*) used TASK_SIZE_MAX for access_ok(), and the
+> > get_user() assembler implementation does the same.
+> > 
+> > I think any __range_not_ok() users that use TASK_SIZE are entirely
+> > historical, and should be just fixed.
+> 
+> IIRC, that was mostly userland stack trace collection in perf.
+> I'll try to dig in archives and see what shows up - it's been
+> a while ago...
 
-On Wed, 2 Feb 2022 at 05:53, Wedson Almeida Filho <wedsonaf@google.com> wrote:
->
-> Without this patch, module init sections are disabled by patching their
-> names in arch-specific code when they're loaded (which prevents code in
-> layout_sections from finding init sections). This patch uses the new
-> arch-specific module_init_section instead.
->
-> This allows modules that have .init_array sections to have the
-> initialisers properly called (on load, before init). Without this patch,
-> the initialisers are not called because .init_array is renamed to
-> _init_array, and thus isn't found by code in find_module_sections().
->
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-> ---
->  arch/powerpc/kernel/module_64.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-> index 5d77d3f5fbb5..6a45e6ddbe58 100644
-> --- a/arch/powerpc/kernel/module_64.c
-> +++ b/arch/powerpc/kernel/module_64.c
-> @@ -277,6 +277,12 @@ static Elf64_Sym *find_dot_toc(Elf64_Shdr *sechdrs,
->         return NULL;
->  }
->
-> +bool module_init_section(const char *name)
-> +{
-> +       /* We don't handle .init for the moment: always return false. */
-> +       return false;
-> +}
-> +
->  int module_frob_arch_sections(Elf64_Ehdr *hdr,
->                               Elf64_Shdr *sechdrs,
->                               char *secstrings,
-> @@ -286,7 +292,6 @@ int module_frob_arch_sections(Elf64_Ehdr *hdr,
->
->         /* Find .toc and .stubs sections, symtab and strtab */
->         for (i = 1; i < hdr->e_shnum; i++) {
-> -               char *p;
->                 if (strcmp(secstrings + sechdrs[i].sh_name, ".stubs") == 0)
->                         me->arch.stubs_section = i;
->                 else if (strcmp(secstrings + sechdrs[i].sh_name, ".toc") == 0) {
-> @@ -298,10 +303,6 @@ int module_frob_arch_sections(Elf64_Ehdr *hdr,
->                         dedotify_versions((void *)hdr + sechdrs[i].sh_offset,
->                                           sechdrs[i].sh_size);
->
-> -               /* We don't handle .init for the moment: rename to _init */
-> -               while ((p = strstr(secstrings + sechdrs[i].sh_name, ".init")))
-> -                       p[0] = '_';
-> -
->                 if (sechdrs[i].sh_type == SHT_SYMTAB)
->                         dedotify((void *)hdr + sechdrs[i].sh_offset,
->                                  sechdrs[i].sh_size / sizeof(Elf64_Sym),
-> --
-> 2.35.0.rc2.247.g8bbb082509-goog
+After some digging:
 
-Would any additional clarification from my part be helpful here?
+	access_ok() needs only to make sure that MMU won't go anywhere near
+the kernel page tables; address limit for 32bit threads is none of its
+concern, so TASK_SIZE_MAX is right for it.
 
-I got an email saying it was under review (and checks passed) but
-nothing appears to have happened since.
+	valid_user_frame() in arch/x86/events/core.c: used while walking
+the userland call chain.  The reason it's not access_ok() is only that
+perf_callchain_user() might've been called from interrupt that came while
+we'd been under KERNEL_DS.
+	That had been back in 2015 and it had been obsoleted since 2017, commit
+88b0193d9418 (perf/callchain: Force USER_DS when invoking perf_callchain_user()).
+We had been guaranteed USER_DS ever since.
+	IOW, it could've reverted to use of access_ok() at any point after that.
+TASK_SIZE vs TASK_SIZE_MAX is pretty much an accident there - might've been
+TASK_SIZE_MAX from the very beginning.
 
-Cheers,
--Wedson
+	copy_stack_frame() in arch/x86/kernel/stacktrace.c: similar story,
+except the commit that made sure callers will have USER_DS - cac9b9a4b083
+(stacktrace: Force USER_DS for stack_trace_save_user()) in this case.
+Also could've been using access_ok() just fine.  Amusingly, access_ok()
+used to be there, until it had been replaced with explicit check on
+Jul 22 2019 - 4 days after that had been made useless by fix in the caller...
+
+	copy_from_user_nmi().  That one is a bit more interesting.
+We have a call chain from perf_output_sample_ustack() (covered by
+force_uaccess_begin() these days, not that it mattered for x86 now),
+there's something odd in dumpstack.c:copy_code() (with explicit check
+for TASK_SIZE_MAX in the caller) and there's a couple of callers in
+Intel PMU code.
+	AFAICS, there's no reason whatsoever to use TASK_SIZE
+in that one - the point is to prevent copyin from the kernel
+memory, and in that respect TASK_SIZE_MAX isn't any worse.
+The check in copy_code() probably should go.
+
+	So all of those guys should be simply switched to access_ok().
+Might be worth making that a preliminary patch - it's independent
+from everything else and there's no point folding it into any of the
+patches in the series.
