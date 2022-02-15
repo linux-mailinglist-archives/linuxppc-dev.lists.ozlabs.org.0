@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B024B5F20
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 01:33:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 366B64B5F36
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 01:38:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JyMWl55t6z3cXr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 11:33:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JyMdh6DpTz3cSW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 11:38:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,21 +18,21 @@ Received: from zeniv-ca.linux.org.uk (zeniv-ca.linux.org.uk
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JyMWF1cLrz2xD4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 11:32:53 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JyMdH4LWVz2x9p
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 11:38:11 +1100 (AEDT)
 Received: from viro by zeniv-ca.linux.org.uk with local (Exim 4.94.2 #2 (Red
- Hat Linux)) id 1nJll2-001pbW-H6; Tue, 15 Feb 2022 00:31:52 +0000
-Date: Tue, 15 Feb 2022 00:31:52 +0000
+ Hat Linux)) id 1nJlqf-001pf0-Dy; Tue, 15 Feb 2022 00:37:41 +0000
+Date: Tue, 15 Feb 2022 00:37:41 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH 05/14] uaccess: add generic __{get,put}_kernel_nofault
-Message-ID: <Ygr0eAA+ZR1eX0wb@zeniv-ca.linux.org.uk>
+Subject: Re: [PATCH 09/14] m68k: drop custom __access_ok()
+Message-ID: <Ygr11RGjj3C9uAUg@zeniv-ca.linux.org.uk>
 References: <20220214163452.1568807-1-arnd@kernel.org>
- <20220214163452.1568807-6-arnd@kernel.org>
+ <20220214163452.1568807-10-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220214163452.1568807-6-arnd@kernel.org>
+In-Reply-To: <20220214163452.1568807-10-arnd@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,21 +66,51 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 14, 2022 at 05:34:43PM +0100, Arnd Bergmann wrote:
+On Mon, Feb 14, 2022 at 05:34:47PM +0100, Arnd Bergmann wrote:
 > From: Arnd Bergmann <arnd@arndb.de>
 > 
-> All architectures that don't provide __{get,put}_kernel_nofault() yet
-> can implement this on top of __{get,put}_user.
+> While most m68k platforms use separate address spaces for user
+> and kernel space, at least coldfire does not, and the other
+> ones have a TASK_SIZE that is less than the entire 4GB address
+> range.
 > 
-> Add a generic version that lets everything use the normal
-> copy_{from,to}_kernel_nofault() code based on these, removing the last
-> use of get_fs()/set_fs() from architecture-independent code.
+> Using the generic implementation of __access_ok() stops coldfire
+> user space from trivially accessing kernel memory, and is probably
+> the right thing elsewhere for consistency as well.
 
-I'd put the list of those architectures (AFAICS, that's alpha, ia64,
-microblaze, nds32, nios2, openrisc, sh, sparc32, xtensa) into commit
-message - it's not that hard to find out, but...
+Perhaps simply wrap that sucker into #ifdef CONFIG_CPU_HAS_ADDRESS_SPACES
+(and trim the comment down to "coldfire and 68000 will pick generic
+variant")?
 
-And AFAICS, you've missed nios2 - see
-#define __put_user(x, ptr) put_user(x, ptr)
-in there.  nds32 oddities are dealt with earlier in the series, this
-one is not...
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/m68k/include/asm/uaccess.h | 13 -------------
+>  1 file changed, 13 deletions(-)
+> 
+> diff --git a/arch/m68k/include/asm/uaccess.h b/arch/m68k/include/asm/uaccess.h
+> index d6bb5720365a..64914872a5c9 100644
+> --- a/arch/m68k/include/asm/uaccess.h
+> +++ b/arch/m68k/include/asm/uaccess.h
+> @@ -10,19 +10,6 @@
+>  #include <linux/compiler.h>
+>  #include <linux/types.h>
+>  #include <asm/extable.h>
+> -
+> -/* We let the MMU do all checking */
+> -static inline int __access_ok(const void __user *addr,
+> -			    unsigned long size)
+> -{
+> -	/*
+> -	 * XXX: for !CONFIG_CPU_HAS_ADDRESS_SPACES this really needs to check
+> -	 * for TASK_SIZE!
+> -	 * Removing this helper is probably sufficient.
+> -	 */
+> -	return 1;
+> -}
+> -#define __access_ok __access_ok
+>  #include <asm-generic/access_ok.h>
+>  
+>  /*
+> -- 
+> 2.29.2
+> 
