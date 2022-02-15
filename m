@@ -1,74 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3F14B6C8C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 13:44:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AAA4B6D38
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 14:18:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jygln1qs0z3f2w
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Feb 2022 23:44:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JyhV36HNRz3cRC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 00:18:03 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=en41RouE;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=en41RouE; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JyghW42K6z3cVd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 23:42:03 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Jyggw2JLkz9sT7;
- Tue, 15 Feb 2022 13:41:32 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id SRpNZ_o7l7nY; Tue, 15 Feb 2022 13:41:32 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Jyggn4tztz9sSm;
- Tue, 15 Feb 2022 13:41:25 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 916668B77A;
- Tue, 15 Feb 2022 13:41:25 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id N2TMBdkgVMz3; Tue, 15 Feb 2022 13:41:25 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.6.174])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 96E508B786;
- Tue, 15 Feb 2022 13:41:24 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21FCfIXI080657
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 15 Feb 2022 13:41:18 +0100
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21FCfHUW080656;
- Tue, 15 Feb 2022 13:41:17 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Andrew Morton <akpm@linux-foundation.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
- Kees Cook <keescook@chromium.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v4 13/13] lkdtm: Add a test for function descriptors protection
-Date: Tue, 15 Feb 2022 13:41:08 +0100
-Message-Id: <7eeba50d16a35e9d799820e43304150225f20197.1644928018.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1644928018.git.christophe.leroy@csgroup.eu>
-References: <cover.1644928018.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JyhTK4kHXz2xYQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 00:17:25 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id DB2A3B81977
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 13:17:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE23C340F2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 13:17:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1644931038;
+ bh=yV4ORJd5b6IZao4Zu1H2u9bAD/0nkvfeGMC8j+boEO0=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=en41RouE/EA/f7wz63guGOJgQDzTzpSHu1gIzDlk0eh3+3mMTSAf00BnXMZlARt6s
+ lMs/qZOv6PL6+MghQnSbA+7NV4vESrRm3svOh5B/rWCfo6LLtIapnoPyUEXNUCVUxZ
+ SM5/eNjHSVB0faWLDASH4Z3RBCxDND/GXUOk0wBzYzTo35C9/bozc9mrIpu4PzzP4L
+ vdJ0tSnn6vVBCH3McB/vLyXMNRN/hK/qgW/7ElOPsieLxNJU0DX0VVdQVgbX81UPGp
+ 543MNrYS2T69bw5l7VfHlP0ByvGETR6i+fo7tz93ZNH2MLTYoNKcSPZjc3aKvb3lb/
+ rnqKGi4/pbe3g==
+Received: by mail-wm1-f52.google.com with SMTP id n8so6477497wms.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Feb 2022 05:17:18 -0800 (PST)
+X-Gm-Message-State: AOAM530ett0Lji73Bv7dZAPKZFwwFfcwzgFS+WwSv15SQYrzlUV/mIVC
+ 7pbhm1o9Aycg+mzfBcNlHqz6lrOVn8ud8jig4jE=
+X-Google-Smtp-Source: ABdhPJzhbiTSvbv50mQWSJ7smaLZnr2q978YJ0F6+MeQ3SrwEp5s0NrkvRE5+WnWUVexqYiFblH5E9BGGqHgxsxWGyI=
+X-Received: by 2002:a05:600c:4ecb:: with SMTP id
+ g11mr3088436wmq.98.1644931026534; 
+ Tue, 15 Feb 2022 05:17:06 -0800 (PST)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1644928861; l=3305; s=20211009;
- h=from:subject:message-id; bh=7pxIz3r53UiI2i88RT0ONtGzhkJvXG7XjRb8xVmF5zM=;
- b=ERtgdYkFhBYCi2IAjLAfew4SVUaaYDpeMuhg/snPDyUuo9ai1hJvII99U4C2FXCF0t7eEeToN8Qz
- NR7oLIMCD3hpyXRHmVC/Ht2czXUyYwuEjSvm2TQPUSrrtghXPhNi
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+References: <20220214163452.1568807-1-arnd@kernel.org>
+ <20220214163452.1568807-6-arnd@kernel.org>
+ <Ygr0eAA+ZR1eX0wb@zeniv-ca.linux.org.uk>
+In-Reply-To: <Ygr0eAA+ZR1eX0wb@zeniv-ca.linux.org.uk>
+From: Arnd Bergmann <arnd@kernel.org>
+Date: Tue, 15 Feb 2022 14:16:50 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a2+qG=Q9Si_2D7wjM7Qao2JCnYqKgU=W-SFwoG+fT-U3A@mail.gmail.com>
+Message-ID: <CAK8P3a2+qG=Q9Si_2D7wjM7Qao2JCnYqKgU=W-SFwoG+fT-U3A@mail.gmail.com>
+Subject: Re: [PATCH 05/14] uaccess: add generic __{get,put}_kernel_nofault
+To: Al Viro <viro@zeniv.linux.org.uk>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,113 +73,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
+ linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Guo Ren <guoren@kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
+ Christoph Hellwig <hch@lst.de>, linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Brian Cain <bcain@codeaurora.org>,
+ Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>,
+ alpha <linux-alpha@vger.kernel.org>, linux-um <linux-um@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Openrisc <openrisc@lists.librecores.org>, Greentime Hu <green.hu@gmail.com>,
+ Stafford Horne <shorne@gmail.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Parisc List <linux-parisc@vger.kernel.org>, Nick Hu <nickhu@andestech.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Linux API <linux-api@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Dinh Nguyen <dinguyen@kernel.org>,
+ "Eric W . Biederman" <ebiederm@xmission.com>,
+ Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add WRITE_OPD to check that you can't modify function
-descriptors.
+On Tue, Feb 15, 2022 at 1:31 AM Al Viro <viro@zeniv.linux.org.uk> wrote:
+>
+> On Mon, Feb 14, 2022 at 05:34:43PM +0100, Arnd Bergmann wrote:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> >
+> > All architectures that don't provide __{get,put}_kernel_nofault() yet
+> > can implement this on top of __{get,put}_user.
+> >
+> > Add a generic version that lets everything use the normal
+> > copy_{from,to}_kernel_nofault() code based on these, removing the last
+> > use of get_fs()/set_fs() from architecture-independent code.
+>
+> I'd put the list of those architectures (AFAICS, that's alpha, ia64,
+> microblaze, nds32, nios2, openrisc, sh, sparc32, xtensa) into commit
+> message - it's not that hard to find out, but...
 
-Gives the following result when function descriptors are
-not protected:
+done.
 
-	lkdtm: Performing direct entry WRITE_OPD
-	lkdtm: attempting bad 16 bytes write at c00000000269b358
-	lkdtm: FAIL: survived bad write
-	lkdtm: do_nothing was hijacked!
+> And AFAICS, you've missed nios2 - see
+> #define __put_user(x, ptr) put_user(x, ptr)
+> in there.  nds32 oddities are dealt with earlier in the series, this
+> one is not...
 
-Looks like a standard compiler barrier() is not enough to force
-GCC to use the modified function descriptor. Had to add a fake empty
-inline assembly to force GCC to reload the function descriptor.
+Ok, fixed my bug in nios2 __put_user() as well now. This one is not nearly
+as bad as nds32, at least without my patches it should work as expected.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Kees Cook <keescook@chromium.org>
----
- drivers/misc/lkdtm/core.c               |  1 +
- drivers/misc/lkdtm/lkdtm.h              |  1 +
- drivers/misc/lkdtm/perms.c              | 22 ++++++++++++++++++++++
- tools/testing/selftests/lkdtm/tests.txt |  1 +
- 4 files changed, 25 insertions(+)
+Unfortunately I also noticed that __get_user() on microblaze and nios2
+is completely broken for 64-bit arguments, where these copy eight bytes
+into a four byte buffer. I'll try to come up with a fix for this as well then.
 
-diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-index f69b964b9952..e2228b6fc09b 100644
---- a/drivers/misc/lkdtm/core.c
-+++ b/drivers/misc/lkdtm/core.c
-@@ -149,6 +149,7 @@ static const struct crashtype crashtypes[] = {
- 	CRASHTYPE(WRITE_RO),
- 	CRASHTYPE(WRITE_RO_AFTER_INIT),
- 	CRASHTYPE(WRITE_KERN),
-+	CRASHTYPE(WRITE_OPD),
- 	CRASHTYPE(REFCOUNT_INC_OVERFLOW),
- 	CRASHTYPE(REFCOUNT_ADD_OVERFLOW),
- 	CRASHTYPE(REFCOUNT_INC_NOT_ZERO_OVERFLOW),
-diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
-index d6137c70ebbe..305fc2ec3f25 100644
---- a/drivers/misc/lkdtm/lkdtm.h
-+++ b/drivers/misc/lkdtm/lkdtm.h
-@@ -106,6 +106,7 @@ void __init lkdtm_perms_init(void);
- void lkdtm_WRITE_RO(void);
- void lkdtm_WRITE_RO_AFTER_INIT(void);
- void lkdtm_WRITE_KERN(void);
-+void lkdtm_WRITE_OPD(void);
- void lkdtm_EXEC_DATA(void);
- void lkdtm_EXEC_STACK(void);
- void lkdtm_EXEC_KMALLOC(void);
-diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-index 1cf24c4a79e9..2c6aba3ff32b 100644
---- a/drivers/misc/lkdtm/perms.c
-+++ b/drivers/misc/lkdtm/perms.c
-@@ -44,6 +44,11 @@ static noinline void do_overwritten(void)
- 	return;
- }
- 
-+static noinline void do_almost_nothing(void)
-+{
-+	pr_info("do_nothing was hijacked!\n");
-+}
-+
- static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
- {
- 	if (!have_function_descriptors())
-@@ -144,6 +149,23 @@ void lkdtm_WRITE_KERN(void)
- 	do_overwritten();
- }
- 
-+void lkdtm_WRITE_OPD(void)
-+{
-+	size_t size = sizeof(func_desc_t);
-+	void (*func)(void) = do_nothing;
-+
-+	if (!have_function_descriptors()) {
-+		pr_info("XFAIL: Platform doesn't use function descriptors.\n");
-+		return;
-+	}
-+	pr_info("attempting bad %zu bytes write at %px\n", size, do_nothing);
-+	memcpy(do_nothing, do_almost_nothing, size);
-+	pr_err("FAIL: survived bad write\n");
-+
-+	asm("" : "=m"(func));
-+	func();
-+}
-+
- void lkdtm_EXEC_DATA(void)
- {
- 	execute_location(data_area, CODE_WRITE);
-diff --git a/tools/testing/selftests/lkdtm/tests.txt b/tools/testing/selftests/lkdtm/tests.txt
-index 6b36b7f5dcf9..243c781f0780 100644
---- a/tools/testing/selftests/lkdtm/tests.txt
-+++ b/tools/testing/selftests/lkdtm/tests.txt
-@@ -44,6 +44,7 @@ ACCESS_NULL
- WRITE_RO
- WRITE_RO_AFTER_INIT
- WRITE_KERN
-+WRITE_OPD
- REFCOUNT_INC_OVERFLOW
- REFCOUNT_ADD_OVERFLOW
- REFCOUNT_INC_NOT_ZERO_OVERFLOW
--- 
-2.34.1
-
+         Arnd
