@@ -1,56 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DEA4B8789
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 13:25:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 869574B87CA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 13:34:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzHHL0C6mz3cXZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:25:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzHTq03rQz3dyZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:34:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
- helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
- receiver=<UNKNOWN>)
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
- [130.133.4.66])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzHGv48lrz2xCp
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 23:25:26 +1100 (AEDT)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
- by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
- tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
- (envelope-from <glaubitz@zedat.fu-berlin.de>)
- id 1nKJMq-001i9z-E2; Wed, 16 Feb 2022 13:25:08 +0100
-Received: from p5b13a545.dip0.t-ipconnect.de ([91.19.165.69]
- helo=[192.168.178.81]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
- with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
- (envelope-from <glaubitz@physik.fu-berlin.de>)
- id 1nKJMq-003dqC-70; Wed, 16 Feb 2022 13:25:08 +0100
-Message-ID: <9cac37da-f719-13f8-1a21-2aac7a574479@physik.fu-berlin.de>
-Date: Wed, 16 Feb 2022 13:25:07 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzHNV0m2Gz3cN4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 23:30:18 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4JzHNV3Lbxz4xv6; Wed, 16 Feb 2022 23:30:18 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JzHNV2n5mz4xnG;
+ Wed, 16 Feb 2022 23:30:18 +1100 (AEDT)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: mpe@ellerman.id.au, Sourabh Jain <sourabhjain@linux.ibm.com>,
+ linuxppc-dev@ozlabs.org
+In-Reply-To: <20220204085601.107257-1-sourabhjain@linux.ibm.com>
+References: <20220204085601.107257-1-sourabhjain@linux.ibm.com>
+Subject: Re: powerpc: Set crashkernel offset to mid of RMA region
+Message-Id: <164501434135.521186.4294901426151721880.b4-ty@ellerman.id.au>
+Date: Wed, 16 Feb 2022 23:25:41 +1100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: Re: [PATCH v4 00/13] Fix LKDTM for PPC64/IA64/PARISC v4
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Andrew Morton <akpm@linux-foundation.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
- Kees Cook <keescook@chromium.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <cover.1644928018.git.christophe.leroy@csgroup.eu>
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <cover.1644928018.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.165.69
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,32 +46,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Abdul haleem <abdhalee@linux.vnet.ibm.com>, hbathini@linux.ibm.com,
+ mahesh@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
-
-On 2/15/22 13:40, Christophe Leroy wrote:
-> PPC64/IA64/PARISC have function descriptors. LKDTM doesn't work
-> on those three architectures because LKDTM messes up function
-> descriptors with functions.
+On Fri, 4 Feb 2022 14:26:01 +0530, Sourabh Jain wrote:
+> On large config LPARs (having 192 and more cores), Linux fails to boot
+> due to insufficient memory in the first memblock. It is due to the
+> memory reservation for the crash kernel which starts at 128MB offset of
+> the first memblock. This memory reservation for the crash kernel doesn't
+> leave enough space in the first memblock to accommodate other essential
+> system resources.
 > 
-> This series does some cleanup in the three architectures and
-> refactors function descriptors so that it can then easily use it
-> in a generic way in LKDTM.
+> [...]
 
-I'll test the series on ia64 later this week. I have an Itanium box at
-home for testing kernel patches.
+Applied to powerpc/next.
 
-Adrian
+[1/1] powerpc: Set crashkernel offset to mid of RMA region
+      https://git.kernel.org/powerpc/c/7c5ed82b800d8615cdda00729e7b62e5899f0b13
 
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+cheers
