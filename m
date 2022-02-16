@@ -2,54 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DEC84B86DD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 12:39:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7674B8733
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 12:56:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzGGB13cKz3cCG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 22:39:46 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=hk6pjK68;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzGdG2GzLz3cVs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 22:56:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzGFV2Qrkz3bN9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 22:39:10 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=hk6pjK68; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JzGFS4qC7z4xdL;
- Wed, 16 Feb 2022 22:39:08 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
- s=201702; t=1645011549;
- bh=Egw/62UndvF/rSgoiC0v9UOOeoa36BkLsTqXaQwqXJs=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=hk6pjK683tnT7c/587MB/rLJwW2MCHE6WC0ljzTBa0wMORMmbFz/t2WQ0wVvIvT/s
- EHUjdNOB3I8zzT/63WlLqj+pSzqzsZZQo8oyBGXYZqzYaXy/MuyVBbEisbLr2r3TdE
- i/ixabbDKcNGCrqDmbqSbjus0HE9Y/vR5EAa5NpKQM1h3N+VC40kBaQj/ac9op2RCJ
- PhhjcUezz1pAO2Xos2B8pQ0tBKTBkEL5ZXZL53QpKMfPpZNbtbskdKW4f9RLHDlJWY
- gcPSnNSY9s+Rq0jMJUCHIMDkidVOOtbSeM9mT4KVB4u7KCubenwMT9jxSAiE0gD8Kc
- Fe6tNgjh7cknQ==
-Date: Wed, 16 Feb 2022 22:39:06 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Sachin Sant <sachinp@linux.ibm.com>
-Subject: Re: [next-20220215] WARNING at fs/iomap/buffered-io.c:75 with xfstests
-Message-ID: <20220216223906.173b7f41@canb.auug.org.au>
-In-Reply-To: <CF1506AF-E82B-412B-BD7B-A9F0B9971CB3@linux.ibm.com>
-References: <5AD0BD6A-2C31-450A-924E-A581CD454073@linux.ibm.com>
- <20220216183919.13b32e1e@canb.auug.org.au>
- <CF1506AF-E82B-412B-BD7B-A9F0B9971CB3@linux.ibm.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
+ envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzGcm0pP3z2xtL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 22:55:47 +1100 (AEDT)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.56])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4JzGZZ181wz9sgD;
+ Wed, 16 Feb 2022 19:53:58 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Wed, 16 Feb 2022 19:55:35 +0800
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Wed, 16 Feb 2022 19:55:35 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: <linuxppc-dev@lists.ozlabs.org>, <mpe@ellerman.id.au>,
+ <benh@kernel.crashing.or>, <paulus@samba.org>,
+ <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: [PATCH v4 1/2] Revert "powerpc: Set max_mapnr correctly"
+Date: Wed, 16 Feb 2022 20:11:07 +0800
+Message-ID: <20220216121109.157605-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/1.Lit0Q=.I5R4ggwSR6QO0=";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.113.25]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,62 +54,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xfs@vger.kernel.org, riteshh@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, linux-next@vger.kernel.org
+Cc: akpm@linux-foundation.org, songyuanzheng@huawei.com, npiggin@gmail.com,
+ Kefeng Wang <wangkefeng.wang@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/1.Lit0Q=.I5R4ggwSR6QO0=
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+This reverts commit 602946ec2f90d5bd965857753880db29d2d9a1e9.
 
-Hi Sachin,
+If CONFIG_HIGHMEM enabled, highmem will be disappeared with max_mapnr
+set to max_low_pfn, see mem_init(), 
 
-On Wed, 16 Feb 2022 15:17:14 +0530 Sachin Sant <sachinp@linux.ibm.com> wrot=
-e:
->
-> >> While running xfstests on IBM Power10 logical partition (LPAR) booted
-> >> with 5.17.0-rc4-next-20220215 following warning was seen:
-> >>=20
-> >> The warning is seen when test tries to unmount the file system. This p=
-roblem is seen
-> >> while running generic/475 sub test. Have attached captured messages du=
-ring the test
-> >> run of generic/475.
-> >>=20
-> >> xfstest is a recent add to upstream regression bucket. I don=E2=80=99t=
- have any previous data
-> >> to attempt a git bisect.  =20
-> >=20
-> > If you have time, could you test v5.17-rc4-2-gd567f5db412e (the commit
-> > in Linus' tree that next-20220215 is based on) and if that OK, then a
-> > bisect from that to 5.17.0-rc4-next-20220215 may be helpful. =20
->=20
-> Unfortunately I cannot recreate the problem consistently. I tried same te=
-st run with both
-> mainline as well as linux-next20220215. In both attempts I wasn=E2=80=99t=
- able to recreate it.
+  for (pfn = highmem_mapnr; pfn < max_mapnr; ++pfn) {
+        ...
+	free_highmem_page();
+  }
 
-No worries, thanks anyway.
---=20
-Cheers,
-Stephen Rothwell
+Revert it and will fix virt_addr_valid() check in the next patch.
 
---Sig_/1.Lit0Q=.I5R4ggwSR6QO0=
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: 602946ec2f90 ("powerpc: Set max_mapnr correctly")
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+v4:
+- new patch
+ arch/powerpc/mm/mem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index 8e301cd8925b..4d221d033804 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -255,7 +255,7 @@ void __init mem_init(void)
+ #endif
+ 
+ 	high_memory = (void *) __va(max_low_pfn * PAGE_SIZE);
+-	set_max_mapnr(max_low_pfn);
++	set_max_mapnr(max_pfn);
+ 
+ 	kasan_late_init();
+ 
+-- 
+2.26.2
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmIM4loACgkQAVBC80lX
-0GxSfAf/R/U7hR+s4IMzwJpJGvfwh3de8T4tAUVBw3EQuYtdDbYOWeuU5160vFzz
-DiEDtTsAPxMXHT+nTGQJBItacqXfilXEtbMjhZXxbhsGVdnjM0fcjEwII0m02BQ1
-lOvzTeKuUo2ypeSG123lt524LgaNv4TTut7d3P7iJ6Kyujh24Q2fY6hle9UyRsqS
-kJIJ0EqiyARURqDx+cDV4Qekjx8NpKA6jXGAFTX9CHHzt+NFAMHuaU90IRItJmtP
-BpruTqAcx1AuN3MJcm1qQM7V3r8r7ROrxW5WQkQiRugycqRvEjXrQebnaFnMdWvf
-fskkIN27xM7lP+2cjoFckgtKBvmSFA==
-=ixok
------END PGP SIGNATURE-----
-
---Sig_/1.Lit0Q=.I5R4ggwSR6QO0=--
