@@ -1,103 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404C84B7D71
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 03:22:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D51E4B7E70
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 04:17:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jz1vM5hTBz3cQx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 13:22:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jz36r70Fyz3cHW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 14:17:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DlZz0FMM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=c8DizGjQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
+ envelope-from=chao.gao@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=DlZz0FMM; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=c8DizGjQ; dkim-atps=neutral
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jz1td1yjhz3bXg
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 13:22:00 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21G1Bd7G002616; 
- Wed, 16 Feb 2022 02:21:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=TaUSjDQJxei8AvAUOzuKrDzZ/eiENrarNgb+ePwLd/Q=;
- b=DlZz0FMMHh/PRvDE9qhnCkN81sWGBHAeghQY9JXXulXJ0ooooHiRqXKEglrC+k79nfnH
- sGoXVo69NP4cNrVGYtvmMEwfOBzp4yLxKcqy+L651ghDemwQ59JBqMDTjxOnLTKqUli9
- i7fX0bCLeh4eYAddFLYDU6FFTyO2mzIgyjJkTXVqaCeu0BCgkcxAAcegWQXjtQ8YPcJs
- iS7LXH7vzuq2VwcT5uZPDQnUJdtbT2O2RXowLewJQJ5J4d7ZOEhOVnIXtdN6qlPzJG49
- wUTMIK1htY021SX5ou3nuvcDUkPBqFBvP45HPgEo7m6yb/r0UtgzN5cxq7ZF22JCBYp6 lA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3e8qcvh3rw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Feb 2022 02:21:54 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21G2JuJs006947;
- Wed, 16 Feb 2022 02:21:54 GMT
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3e8qcvh3rp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Feb 2022 02:21:54 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21G27pZk003064;
- Wed, 16 Feb 2022 02:21:53 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma02dal.us.ibm.com with ESMTP id 3e64hbyh9y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Feb 2022 02:21:53 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21G2LqRZ21365158
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Feb 2022 02:21:52 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5DE5028060;
- Wed, 16 Feb 2022 02:21:52 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B67402805C;
- Wed, 16 Feb 2022 02:21:51 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.160.92.72])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 16 Feb 2022 02:21:51 +0000 (GMT)
-Message-ID: <e65e7d29ca28a01eb5806007177e4202271ad712.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 07/10] powerpc/vas: Add paste address mmap fault handler
-From: Haren Myneni <haren@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au
-Date: Tue, 15 Feb 2022 18:21:49 -0800
-In-Reply-To: <1644808853.k17l68pv15.astroid@bobo.none>
-References: <7d175313528ea7aae20d9141f0efa2e57f44c9f4.camel@linux.ibm.com>
- <d87bbb6c81e7b6c3d3b2d45f0549f27183172562.camel@linux.ibm.com>
- <1644808853.k17l68pv15.astroid@bobo.none>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jz36B4Lvpz2yPY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 14:17:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1644981427; x=1676517427;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=OL/CJpx3e1GRIpNB1pTJCWsC1hGcn+U6/rlTNg6FcmQ=;
+ b=c8DizGjQKkPi2G5Gas/9yNrBKR9co2ZlJ5wzQ7LsnOZ+3X4b68H6yBZ+
+ 1bwk05TIV+9Qc22OfEiX7jsSrc2v4DXmVh0uSV7QG2xBRLLQQzMmLn7A0
+ SeVM0L+0haykGQYDVwK0b23QGkvTakmVh9ftcqPKIkX9capitCVNoSA53
+ nRnBnslJijefsXZGUZwkZHL8q+r4zGwELk8GcXjRmhYohaAai+PnWfPsy
+ rCuKS/67h2ff1h9ILbfYOiHih0rSEi/tMHX9O9uv7m9FWhTFJi3SIg4o4
+ w1ES6oBT4GXqFfKC7Hv9GPzREMi4J8UCTpxVKaQbTUvZTkOYN0D5LbHkh Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10259"; a="275091937"
+X-IronPort-AV: E=Sophos;i="5.88,371,1635231600"; d="scan'208";a="275091937"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Feb 2022 19:16:04 -0800
+X-IronPort-AV: E=Sophos;i="5.88,371,1635231600"; d="scan'208";a="773798219"
+Received: from hyperv-sh4.sh.intel.com ([10.239.48.22])
+ by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Feb 2022 19:15:54 -0800
+From: Chao Gao <chao.gao@intel.com>
+To: seanjc@google.com, maz@kernel.org, kvm@vger.kernel.org,
+ pbonzini@redhat.com, kevin.tian@intel.com, tglx@linutronix.de
+Subject: [PATCH v4 2/6] Partially revert "KVM: Pass kvm_init()'s opaque param
+ to additional arch funcs"
+Date: Wed, 16 Feb 2022 11:15:17 +0800
+Message-Id: <20220216031528.92558-3-chao.gao@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220216031528.92558-1-chao.gao@intel.com>
+References: <20220216031528.92558-1-chao.gao@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: dRrJef5TykAc3G_vAG6z0Oa2yOVTU86a
-X-Proofpoint-GUID: IQqFppVpZqJyjs-LkSvcsid3lrf-Invh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-15_07,2022-02-14_04,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0
- lowpriorityscore=0 mlxscore=0 impostorscore=0 suspectscore=0 bulkscore=0
- adultscore=0 spamscore=0 priorityscore=1501 clxscore=1015 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2202160008
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,192 +67,189 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: x86@kernel.org, Wanpeng Li <wanpengli@tencent.com>,
+ David Hildenbrand <david@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+ linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>,
+ Anup Patel <anup@brainfault.org>, Joerg Roedel <joro@8bytes.org>,
+ Huacai Chen <chenhuacai@kernel.org>, linux-riscv@lists.infradead.org,
+ kvmarm@lists.cs.columbia.edu, Dave Hansen <dave.hansen@linux.intel.com>,
+ Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
+ Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Chao Gao <chao.gao@intel.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Vasily Gorbik <gor@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Borislav Petkov <bp@alien8.de>, Atish Patra <atishp@atishpatra.org>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>, James Morse <james.morse@arm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, kvm-riscv@lists.infradead.org,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2022-02-14 at 13:37 +1000, Nicholas Piggin wrote:
-> Excerpts from Haren Myneni's message of January 22, 2022 5:59 am:
-> > The user space opens VAS windows and issues NX requests by pasting
-> > CRB on the corresponding paste address mmap. When the system looses
-> 
-> s/loose/lose/g throughout the series.
-> 
-> > credits due to core removal, the kernel has to close the window in
-> > the hypervisor
-> 
-> By the way what if the kernel does not close the window and we try
-> to access the memory? The hypervisor will inject faults?
+This partially reverts commit b99040853738 ("KVM: Pass kvm_init()'s opaque
+param to additional arch funcs") remove opaque from
+kvm_arch_check_processor_compat because no one uses this opaque now.
+Address conflicts for ARM (due to file movement) and manually handle RISC-V
+which comes after the commit.
 
-The requests on the already opened windows will be successful even the
-LPAR lost credits (due to core removal). But the hypervisor expects the
-LPAR to behave like good citizen and give up resources with core
-removal. So we do not see any issue with current upstream code for
-DLPAR removal.
+And changes about kvm_arch_hardware_setup() in original commit are still
+needed so they are not reverted.
 
-But we will have an issue with the migration. The hypervisor knows the
-actulal number of credits assigned to the source LPAR before migration.
-So assigns the same number on the destination. 
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/arm64/kvm/arm.c       |  2 +-
+ arch/mips/kvm/mips.c       |  2 +-
+ arch/powerpc/kvm/powerpc.c |  2 +-
+ arch/riscv/kvm/main.c      |  2 +-
+ arch/s390/kvm/kvm-s390.c   |  2 +-
+ arch/x86/kvm/x86.c         |  2 +-
+ include/linux/kvm_host.h   |  2 +-
+ virt/kvm/kvm_main.c        | 16 +++-------------
+ 8 files changed, 10 insertions(+), 20 deletions(-)
 
-> 
-> > and make the window inactive by unmapping this paste
-> > address. Also the OS has to handle NX request page faults if the
-> > user
-> > space issue NX requests.
-> > 
-> > This handler remap the new paste address with the same VMA when the
-> > window is active again (due to core add with DLPAR). Otherwise
-> > returns paste failure.
-> 
-> This patch should come before (or combined with) the patch that zaps 
-> PTEs. Putting it afterwards is logically backward. Even if you don't
-> really expect the series to half work in a half bisected state, it
-> just makes the changes easier to follow.
-> 
-> Thanks,
-> Nick
-> 
-> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> > ---
-> >  arch/powerpc/platforms/book3s/vas-api.c | 60
-> > +++++++++++++++++++++++++
-> >  1 file changed, 60 insertions(+)
-> > 
-> > diff --git a/arch/powerpc/platforms/book3s/vas-api.c
-> > b/arch/powerpc/platforms/book3s/vas-api.c
-> > index 2d06bd1b1935..5ceba75c13eb 100644
-> > --- a/arch/powerpc/platforms/book3s/vas-api.c
-> > +++ b/arch/powerpc/platforms/book3s/vas-api.c
-> > @@ -351,6 +351,65 @@ static int coproc_release(struct inode *inode,
-> > struct file *fp)
-> >  	return 0;
-> >  }
-> >  
-> > +/*
-> > + * This fault handler is invoked when the VAS/NX generates page
-> > fault on
-> > + * the paste address.
-> 
-> The core generates the page fault here, right? paste destination is 
-> translated by the core MMU (the instruction is executed in the core,
-> afterall).
-
-correct. Will update. 
-> 
-> > Happens if the kernel closes window in hypervisor
-> > + * (on PowerVM) due to lost credit or the paste address is not
-> > mapped.
-> 
-> Call it pseries everywhere if you're talking about the API and Linux
-> code, rather than some specific quirk or issue of of the PowerVM
-> implementation.
-> 
-> > + */
-> > +static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
-> > +{
-> > +	struct vm_area_struct *vma = vmf->vma;
-> > +	struct file *fp = vma->vm_file;
-> > +	struct coproc_instance *cp_inst = fp->private_data;
-> > +	struct vas_window *txwin;
-> > +	u64 paste_addr;
-> > +	int ret;
-> > +
-> > +	/*
-> > +	 * window is not opened. Shouldn't expect this error.
-> > +	 */
-> > +	if (!cp_inst || !cp_inst->txwin) {
-> > +		pr_err("%s(): No send window open?\n", __func__);
-> 
-> Probably don't put PR_ERROR logs with question marks in them. The
-> administrator knows less than you to answer the question.
-> 
-> "Unexpected fault on paste address with TX window closed" etc.
-> 
-> Then you don't need the comment either because the message explains
-> it.
-> 
-> > +		return VM_FAULT_SIGBUS;
-> > +	}
-> > +
-> > +	txwin = cp_inst->txwin;
-> > +	/*
-> > +	 * Fault is coming due to missing from the original mmap.
-> 
-> Rather than a vague comment like this (which we already know a fault 
-> comes from a missing or insufficient PTE), you could point to exactly
-> the code which zaps the PTEs.
-> 
-> > +	 * Can happen only when the window is closed due to lost
-> > +	 * credit before mmap() or the user space issued NX request
-> > +	 * without mapping.
-> > +	 */
-> > +	if (txwin->task_ref.vma != vmf->vma) {
-> > +		pr_err("%s(): No previous mapping with paste
-> > address\n",
-> > +			__func__);
-> > +		return VM_FAULT_SIGBUS;
-> > +	}
-> > +
-> > +	mutex_lock(&txwin->task_ref.mmap_mutex);
-> > +	/*
-> > +	 * The window may be inactive due to lost credit (Ex: core
-> > +	 * removal with DLPAR). When the window is active again when
-> > +	 * the credit is available, remap with the new paste address.
-> 
-> Remap also typically means mapping the same physical memory at a 
-> different virtual address. So when you say remap with the new paste
-> address, in Linux mm terms that means you're mapping the same window
-> at a different virtual address.
-> 
-> But you're faulting a different physical address into the same
-> virtual.
-
-Yes, we get different physical address and this handler maps the this
-paste address at the existing virtual address. will update this
-comment.
-> 
-> > +	 */
-> > +	if (txwin->status == VAS_WIN_ACTIVE) {
-> > +		paste_addr = cp_inst->coproc->vops->paste_addr(txwin);
-> > +		if (paste_addr) {
-> > +			ret = vmf_insert_pfn(vma, vma->vm_start,
-> > +					(paste_addr >> PAGE_SHIFT));
-> > +			mutex_unlock(&txwin->task_ref.mmap_mutex);
-> > +			return ret;
-> > +		}
-> > +	}
-> > +	mutex_unlock(&txwin->task_ref.mmap_mutex);
-> 
-> Here a comment about how userspace is supposed to handle the
-> window-closed condition might be appropriate.
-> 
-> Thanks,
-> Nick
-> 
-> > +
-> > +	return VM_FAULT_SIGBUS;
-> > +
-> > +}
-> > +static const struct vm_operations_struct vas_vm_ops = {
-> > +	.fault = vas_mmap_fault,
-> > +};
-> > +
-> >  static int coproc_mmap(struct file *fp, struct vm_area_struct
-> > *vma)
-> >  {
-> >  	struct coproc_instance *cp_inst = fp->private_data;
-> > @@ -417,6 +476,7 @@ static int coproc_mmap(struct file *fp, struct
-> > vm_area_struct *vma)
-> >  			paste_addr, vma->vm_start, rc);
-> >  
-> >  	txwin->task_ref.vma = vma;
-> > +	vma->vm_ops = &vas_vm_ops;
-> >  
-> >  out:
-> >  	mutex_unlock(&txwin->task_ref.mmap_mutex);
-> > -- 
-> > 2.27.0
-> > 
-> > 
-> > 
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index ecc5958e27fe..0165cf3aac3a 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -73,7 +73,7 @@ int kvm_arch_hardware_setup(void *opaque)
+ 	return 0;
+ }
+ 
+-int kvm_arch_check_processor_compat(void *opaque)
++int kvm_arch_check_processor_compat(void)
+ {
+ 	return 0;
+ }
+diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+index a25e0b73ee70..092d09fb6a7e 100644
+--- a/arch/mips/kvm/mips.c
++++ b/arch/mips/kvm/mips.c
+@@ -140,7 +140,7 @@ int kvm_arch_hardware_setup(void *opaque)
+ 	return 0;
+ }
+ 
+-int kvm_arch_check_processor_compat(void *opaque)
++int kvm_arch_check_processor_compat(void)
+ {
+ 	return 0;
+ }
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 2ad0ccd202d5..30c817f3fa0c 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -423,7 +423,7 @@ int kvm_arch_hardware_setup(void *opaque)
+ 	return 0;
+ }
+ 
+-int kvm_arch_check_processor_compat(void *opaque)
++int kvm_arch_check_processor_compat(void)
+ {
+ 	return kvmppc_core_check_processor_compat();
+ }
+diff --git a/arch/riscv/kvm/main.c b/arch/riscv/kvm/main.c
+index 2e5ca43c8c49..992877e78393 100644
+--- a/arch/riscv/kvm/main.c
++++ b/arch/riscv/kvm/main.c
+@@ -20,7 +20,7 @@ long kvm_arch_dev_ioctl(struct file *filp,
+ 	return -EINVAL;
+ }
+ 
+-int kvm_arch_check_processor_compat(void *opaque)
++int kvm_arch_check_processor_compat(void)
+ {
+ 	return 0;
+ }
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 577f1ead6a51..0053b81c6b02 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -252,7 +252,7 @@ int kvm_arch_hardware_enable(void)
+ 	return 0;
+ }
+ 
+-int kvm_arch_check_processor_compat(void *opaque)
++int kvm_arch_check_processor_compat(void)
+ {
+ 	return 0;
+ }
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 9b484ed61f37..ffb88f0b7265 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -11509,7 +11509,7 @@ void kvm_arch_hardware_unsetup(void)
+ 	static_call(kvm_x86_hardware_unsetup)();
+ }
+ 
+-int kvm_arch_check_processor_compat(void *opaque)
++int kvm_arch_check_processor_compat(void)
+ {
+ 	struct cpuinfo_x86 *c = &cpu_data(smp_processor_id());
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index f11039944c08..2ad78e729bf7 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1413,7 +1413,7 @@ int kvm_arch_hardware_enable(void);
+ void kvm_arch_hardware_disable(void);
+ int kvm_arch_hardware_setup(void *opaque);
+ void kvm_arch_hardware_unsetup(void);
+-int kvm_arch_check_processor_compat(void *opaque);
++int kvm_arch_check_processor_compat(void);
+ int kvm_arch_vcpu_runnable(struct kvm_vcpu *vcpu);
+ bool kvm_arch_vcpu_in_kernel(struct kvm_vcpu *vcpu);
+ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 83c57bcc6eb6..ee47d33d69e1 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -5643,22 +5643,14 @@ void kvm_unregister_perf_callbacks(void)
+ }
+ #endif
+ 
+-struct kvm_cpu_compat_check {
+-	void *opaque;
+-	int *ret;
+-};
+-
+-static void check_processor_compat(void *data)
++static void check_processor_compat(void *rtn)
+ {
+-	struct kvm_cpu_compat_check *c = data;
+-
+-	*c->ret = kvm_arch_check_processor_compat(c->opaque);
++	*(int *)rtn = kvm_arch_check_processor_compat();
+ }
+ 
+ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
+ 		  struct module *module)
+ {
+-	struct kvm_cpu_compat_check c;
+ 	int r;
+ 	int cpu;
+ 
+@@ -5686,10 +5678,8 @@ int kvm_init(void *opaque, unsigned vcpu_size, unsigned vcpu_align,
+ 	if (r < 0)
+ 		goto out_free_1;
+ 
+-	c.ret = &r;
+-	c.opaque = opaque;
+ 	for_each_online_cpu(cpu) {
+-		smp_call_function_single(cpu, check_processor_compat, &c, 1);
++		smp_call_function_single(cpu, check_processor_compat, &r, 1);
+ 		if (r < 0)
+ 			goto out_free_2;
+ 	}
+-- 
+2.25.1
 
