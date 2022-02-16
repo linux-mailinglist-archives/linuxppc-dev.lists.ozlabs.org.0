@@ -1,36 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81B34B87AF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 13:30:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDEA04B87BE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 13:33:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzHP52Yf6z3clg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:30:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzHRk2rYKz3fCd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:33:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzHNL3pt1z2xrG
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 23:30:10 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzHNR45whz3bN9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 23:30:15 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JzHNL4Hw3z4xdL;
- Wed, 16 Feb 2022 23:30:10 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JzHNQ5CMyz4xn3;
+ Wed, 16 Feb 2022 23:30:14 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-In-Reply-To: <68932ec2ba6b868d35006b96e90f0890f3da3c05.1638273868.git.christophe.leroy@csgroup.eu>
-References: <68932ec2ba6b868d35006b96e90f0890f3da3c05.1638273868.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH 1/2] powerpc/32: Remove remaining .stabs annotations
-Message-Id: <164501434587.521186.16713102586513485319.b4-ty@ellerman.id.au>
-Date: Wed, 16 Feb 2022 23:25:45 +1100
+In-Reply-To: <43c3c76a1175ae6dc1a3d3b5c3f7ecb48f683eea.1640344012.git.christophe.leroy@csgroup.eu>
+References: <43c3c76a1175ae6dc1a3d3b5c3f7ecb48f683eea.1640344012.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v3 1/2] powerpc/set_memory: Avoid spinlock recursion in
+ change_page_attr()
+Message-Id: <164501434734.521186.493750224564400396.b4-ty@ellerman.id.au>
+Date: Wed, 16 Feb 2022 23:25:47 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,24 +45,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>,
+Cc: Maxime Bizon <mbizon@freebox.fr>, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 30 Nov 2021 13:04:49 +0100, Christophe Leroy wrote:
-> STABS debug format has been superseded long time ago by DWARF.
+On Fri, 24 Dec 2021 11:07:33 +0000, Christophe Leroy wrote:
+> Commit 1f9ad21c3b38 ("powerpc/mm: Implement set_memory() routines")
+> included a spin_lock() to change_page_attr() in order to
+> safely perform the three step operations. But then
+> commit 9f7853d7609d ("powerpc/mm: Fix set_memory_*() against
+> concurrent accesses") modify it to use pte_update() and do
+> the operation safely against concurrent access.
 > 
-> Remove the few remaining .stabs annotations from old 32 bits code.
-> 
-> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/2] powerpc/32: Remove remaining .stabs annotations
-      https://git.kernel.org/powerpc/c/12318163737cd8808d13faa6e2393774191a6182
-[2/2] powerpc/32: Remove _ENTRY() macro
-      https://git.kernel.org/powerpc/c/27e21e8f128a56d3462f0fe2fd3a59c02cc002b1
+[1/2] powerpc/set_memory: Avoid spinlock recursion in change_page_attr()
+      https://git.kernel.org/powerpc/c/a4c182ecf33584b9b2d1aa9dad073014a504c01f
+[2/2] powerpc: Add set_memory_{p/np}() and remove set_memory_attr()
+      https://git.kernel.org/powerpc/c/f222ab83df92acf72691a2021e1f0d99880dcdf1
 
 cheers
