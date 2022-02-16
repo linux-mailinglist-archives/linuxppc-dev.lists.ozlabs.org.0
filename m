@@ -1,64 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F35E44B8A4F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 14:36:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5E64B8DBC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 17:20:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzJrK3HFhz3dnX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 00:36:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzNVP3MHcz3cVL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 03:20:45 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=awiYRJK7;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::534;
+ helo=mail-pg1-x534.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=awiYRJK7; dkim-atps=neutral
+Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com
+ [IPv6:2607:f8b0:4864:20::534])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzJqr2mdvz2xC6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 00:35:34 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mtapsc-5-x7kvjQ_dNbmfJSCohruuVA-1; Wed, 16 Feb 2022 13:35:28 +0000
-X-MC-Unique: x7kvjQ_dNbmfJSCohruuVA-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.28; Wed, 16 Feb 2022 13:35:25 +0000
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.028; Wed, 16 Feb 2022 13:35:25 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Arnd Bergmann' <arnd@kernel.org>, Linus Torvalds
- <torvalds@linux-foundation.org>, Christoph Hellwig <hch@lst.de>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-api@vger.kernel.org"
- <linux-api@vger.kernel.org>, "arnd@arndb.de" <arnd@arndb.de>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>
-Subject: RE: [PATCH v2 02/18] uaccess: fix nios2 and microblaze get_user_8()
-Thread-Topic: [PATCH v2 02/18] uaccess: fix nios2 and microblaze get_user_8()
-Thread-Index: AQHYIzdfY+IsqXyFuUGlEUsFmAHn6KyWK9Eg
-Date: Wed, 16 Feb 2022 13:35:25 +0000
-Message-ID: <4a7e026b07c94668a18cb4857ad6b7a5@AcuMS.aculab.com>
-References: <20220216131332.1489939-1-arnd@kernel.org>
- <20220216131332.1489939-3-arnd@kernel.org>
-In-Reply-To: <20220216131332.1489939-3-arnd@kernel.org>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzNTh2w0Nz3089
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 03:20:05 +1100 (AEDT)
+Received: by mail-pg1-x534.google.com with SMTP id 195so2565909pgc.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 08:20:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=SUEK1OPatjz/xS89rOiQIJkojmQppC70TLq4uXsnOCU=;
+ b=awiYRJK7xVss9qUlz/+ZAsH80T6s71tCIdTOeiyrQ0x99UFr0wnuctr63kQIRgErZp
+ Pjfqzv1BqeebYXL4GcrP/MyMzdMDlGQjvfr6bbW2B//BH8jrUYt1XEZHs+OKMGfIVuiv
+ RJpsPjfFgg4A8/+DgzM1yTr8QymR2qoNgB2u0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=SUEK1OPatjz/xS89rOiQIJkojmQppC70TLq4uXsnOCU=;
+ b=eGSYlRTaSFvYU8v04UCWGSpF0pUC+18Q5nh2Bw2FycbAZAgK8tjrPSJDk88T1XY1fA
+ +b47hktHhqIffHn7Z6fWhPK8O77H0MNhZJDK+TcmbL7tDKv8k4VGtl5zgv9JQ8xwVenY
+ CtrTmRipDnyXtjg0NxpV/7mIjZHJJ5SDY4Py14FW6LBjDTfkPo5xPmVYwWw6R0wq0hbX
+ NQVYXltLWG3Me4DFkjP6C+qmDZU/1zr8wTYZ6xwOPgICE7dJEgk2yLnCY0Ju4FCsAZqj
+ w1Qu+qI3YXDuCNY06wA8kUvo2Cplk5IqQtK8NsyB2AyxWXmcA2n6gO6voo4qmlNpVgTe
+ eolw==
+X-Gm-Message-State: AOAM533FgB+rXH0hE/lYee2Eya5++QhhWEgZitHE+LMHzafjsPbhZ7B7
+ PtHxHkGHqPRGoADS8lClDy+tfA==
+X-Google-Smtp-Source: ABdhPJwkMae/H/K70R+Ctzw/galxZ1wgyt9T2ZBccthHmsi3muEDVk9x1KPlstE3Ys6++5ijnUTmdw==
+X-Received: by 2002:a63:86:0:b0:36c:48e8:627e with SMTP id
+ 128-20020a630086000000b0036c48e8627emr2940332pga.53.1645028403498; 
+ Wed, 16 Feb 2022 08:20:03 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id x4sm1535073pjq.2.2022.02.16.08.20.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 16 Feb 2022 08:20:03 -0800 (PST)
+Date: Wed, 16 Feb 2022 08:20:02 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v4 00/13] Fix LKDTM for PPC64/IA64/PARISC v4
+Message-ID: <202202160818.7C3862B@keescook>
+References: <cover.1644928018.git.christophe.leroy@csgroup.eu>
+ <202202150807.D584917D34@keescook>
+ <87y22bm25y.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87y22bm25y.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,85 +79,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "dalias@libc.org" <dalias@libc.org>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "jcmvbkbc@gmail.com" <jcmvbkbc@gmail.com>,
- "guoren@kernel.org" <guoren@kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "will@kernel.org" <will@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "bcain@codeaurora.org" <bcain@codeaurora.org>, "deller@gmx.de" <deller@gmx.de>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "geert@linux-m68k.org" <geert@linux-m68k.org>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
- "hca@linux.ibm.com" <hca@linux.ibm.com>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
- "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
- "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
- "green.hu@gmail.com" <green.hu@gmail.com>,
- "shorne@gmail.com" <shorne@gmail.com>, "monstr@monstr.eu" <monstr@monstr.eu>,
- "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "nickhu@andestech.com" <nickhu@andestech.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "dinguyen@kernel.org" <dinguyen@kernel.org>,
- "ebiederm@xmission.com" <ebiederm@xmission.com>,
- "richard@nod.at" <richard@nod.at>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "davem@davemloft.net" <davem@davemloft.net>
+Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Helge Deller <deller@gmx.de>, linux-kernel@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Arnd Bergmann
-> Sent: 16 February 2022 13:13
->=20
-> These two architectures implement 8-byte get_user() through
-> a memcpy() into a four-byte variable, which won't fit.
->=20
-> Use a temporary 64-bit variable instead here, and use a double
-> cast the way that risc-v and openrisc do to avoid compile-time
-> warnings.
->=20
-...
->  =09case 4:=09=09=09=09=09=09=09=09\
-> -=09=09__get_user_asm("lw", (ptr), __gu_val, __gu_err);=09\
-> +=09=09__get_user_asm("lw", (ptr), x, __gu_err);=09=09\
->  =09=09break;=09=09=09=09=09=09=09\
-> -=09case 8:=09=09=09=09=09=09=09=09\
-> -=09=09__gu_err =3D __copy_from_user(&__gu_val, ptr, 8);=09=09\
-> -=09=09if (__gu_err)=09=09=09=09=09=09\
-> -=09=09=09__gu_err =3D -EFAULT;=09=09=09=09\
-> +=09case 8: {=09=09=09=09=09=09=09\
-> +=09=09__u64 __x =3D 0;=09=09=09=09=09=09\
-> +=09=09__gu_err =3D raw_copy_from_user(&__x, ptr, 8) ?=09=09\
-> +=09=09=09=09=09=09=09-EFAULT : 0;=09\
-> +=09=09(x) =3D (typeof(x))(typeof((x) - (x)))__x;=09=09\
->  =09=09break;=09=09=09=09=09=09=09\
+On Wed, Feb 16, 2022 at 11:22:33PM +1100, Michael Ellerman wrote:
+> Kees Cook <keescook@chromium.org> writes:
+> > On Tue, Feb 15, 2022 at 01:40:55PM +0100, Christophe Leroy wrote:
+> >> PPC64/IA64/PARISC have function descriptors. LKDTM doesn't work
+> >> on those three architectures because LKDTM messes up function
+> >> descriptors with functions.
+> >> 
+> >> This series does some cleanup in the three architectures and
+> >> refactors function descriptors so that it can then easily use it
+> >> in a generic way in LKDTM.
+> >
+> > Thanks for doing this! It looks good to me. :)
+> 
+> How should we merge this series, it's a bit all over the map.
+> 
+> I could put it in a topic branch?
 
-Wouldn't it be better to just fetch two 32bit values:
-Something like (for LE - nios2 is definitely LE:
-=09=09__u32 val_lo, val_hi;
-=09=09__get_user_asm("lw", (ptr), val_lo, __gu_err);
-=09=09__get_user_asm("lw", (ptr) + 4, val_hi, __gu_err);
-=09=09x =3D val_lo | val_hi << 32;
-=09=09break;
+That's fine by me -- I had assumed it'd go via the ppc tree. But if
+you'd rather I take it as a topic branch I can do that too.
 
-=09David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
-
+-- 
+Kees Cook
