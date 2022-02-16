@@ -1,36 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDEA04B87BE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 13:33:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B034B87B4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 13:32:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzHRk2rYKz3fCd
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:33:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzHQS5n0sz3dtg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:32:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzHNR45whz3bN9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 23:30:15 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzHNN0wLdz3bbj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 23:30:12 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JzHNQ5CMyz4xn3;
- Wed, 16 Feb 2022 23:30:14 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JzHNN2gNGz4xn1;
+ Wed, 16 Feb 2022 23:30:12 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-In-Reply-To: <43c3c76a1175ae6dc1a3d3b5c3f7ecb48f683eea.1640344012.git.christophe.leroy@csgroup.eu>
-References: <43c3c76a1175ae6dc1a3d3b5c3f7ecb48f683eea.1640344012.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v3 1/2] powerpc/set_memory: Avoid spinlock recursion in
- change_page_attr()
-Message-Id: <164501434734.521186.493750224564400396.b4-ty@ellerman.id.au>
-Date: Wed, 16 Feb 2022 23:25:47 +1100
+In-Reply-To: <b04c246874b716911139c04bc004b3b14eed07ef.1641817763.git.christophe.leroy@csgroup.eu>
+References: <b04c246874b716911139c04bc004b3b14eed07ef.1641817763.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/bpf: Always reallocate BPF_REG_5,
+ BPF_REG_AX and TMP_REG when possible
+Message-Id: <164501434813.521186.4786277291117198839.b4-ty@ellerman.id.au>
+Date: Wed, 16 Feb 2022 23:25:48 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,27 +46,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Maxime Bizon <mbizon@freebox.fr>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 24 Dec 2021 11:07:33 +0000, Christophe Leroy wrote:
-> Commit 1f9ad21c3b38 ("powerpc/mm: Implement set_memory() routines")
-> included a spin_lock() to change_page_attr() in order to
-> safely perform the three step operations. But then
-> commit 9f7853d7609d ("powerpc/mm: Fix set_memory_*() against
-> concurrent accesses") modify it to use pte_update() and do
-> the operation safely against concurrent access.
+On Mon, 10 Jan 2022 12:29:42 +0000, Christophe Leroy wrote:
+> BPF_REG_5, BPF_REG_AX and TMP_REG are mapped on non volatile registers
+> because there are not enough volatile registers, but they don't need
+> to be preserved on function calls.
+> 
+> So when some volatile registers become available, those registers can
+> always be reallocated regardless of whether SEEN_FUNC is set or not.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/2] powerpc/set_memory: Avoid spinlock recursion in change_page_attr()
-      https://git.kernel.org/powerpc/c/a4c182ecf33584b9b2d1aa9dad073014a504c01f
-[2/2] powerpc: Add set_memory_{p/np}() and remove set_memory_attr()
-      https://git.kernel.org/powerpc/c/f222ab83df92acf72691a2021e1f0d99880dcdf1
+[1/1] powerpc/bpf: Always reallocate BPF_REG_5, BPF_REG_AX and TMP_REG when possible
+      https://git.kernel.org/powerpc/c/a8936569a07bf27cc9cfc2a39a1e5ea91273b2d4
 
 cheers
