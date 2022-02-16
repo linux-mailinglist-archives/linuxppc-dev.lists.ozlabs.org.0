@@ -2,34 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A5F4B87B5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 13:32:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C6F4B87B2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 13:31:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzHQt2SYzz3cRs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:32:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzHPV6w7Wz3dhH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:31:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzHNN4PHnz3cB2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 23:30:12 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzHNM0Nj1z2xrG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 23:30:11 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JzHNN6HHwz4xmx;
- Wed, 16 Feb 2022 23:30:12 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JzHNM292zz4xml;
+ Wed, 16 Feb 2022 23:30:11 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-In-Reply-To: <7304a889dbe885aefad8a8333673c81ee4b8f7a6.1642751874.git.christophe.leroy@csgroup.eu>
-References: <7304a889dbe885aefad8a8333673c81ee4b8f7a6.1642751874.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc: Use the newly added is_tsk_32bit_task() macro
-Message-Id: <164501434972.521186.548176126612170796.b4-ty@ellerman.id.au>
-Date: Wed, 16 Feb 2022 23:25:49 +1100
+In-Reply-To: <6c608fd4795e2d8ea1a0a449405a0087f76d8bb3.1642752375.git.christophe.leroy@csgroup.eu>
+References: <6c608fd4795e2d8ea1a0a449405a0087f76d8bb3.1642752375.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 1/3] powerpc/lib/sstep: Use l1_dcache_bytes() instead of
+ opencoding
+Message-Id: <164501435210.521186.7862995446067984760.b4-ty@ellerman.id.au>
+Date: Wed, 16 Feb 2022 23:25:52 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,15 +50,20 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 21 Jan 2022 07:58:47 +0000, Christophe Leroy wrote:
-> Two places deserve using the macro is_tsk_32bit_task() added by
-> commit 252745240ba0 ("powerpc/audit: Fix syscall_get_arch()")
+On Fri, 21 Jan 2022 08:06:27 +0000, Christophe Leroy wrote:
+> Don't opencode dcache size retrieval based on whether that's ppc32 or ppc64.
+> 
+> Use l1_dcache_bytes()
 > 
 > 
 
 Applied to powerpc/next.
 
-[1/1] powerpc: Use the newly added is_tsk_32bit_task() macro
-      https://git.kernel.org/powerpc/c/9d44d1bd93b9a881f407b3202dc13fbd85fb5f1a
+[1/3] powerpc/lib/sstep: Use l1_dcache_bytes() instead of opencoding
+      https://git.kernel.org/powerpc/c/67484e0de9c93b4a9187bb49f45dfdaa8dc03c0b
+[2/3] powerpc/lib/sstep: Remove unneeded #ifdef __powerpc64__
+      https://git.kernel.org/powerpc/c/7c3bba91999075f4cfcab0542e4eb74d2d63554b
+[3/3] powerpc/lib/sstep: use truncate_if_32bit()
+      https://git.kernel.org/powerpc/c/6836f099039e6c72fb548bf527345aa4345c3308
 
 cheers
