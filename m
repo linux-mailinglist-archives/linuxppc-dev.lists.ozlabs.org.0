@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C754B7C99
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 02:49:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 528034B7CFD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 02:59:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jz18W3dV7z3cVK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 12:48:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jz1Nn5gNVz3cNB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 12:59:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DRmfx08x;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RmJB1j4b;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,78 +18,78 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=DRmfx08x; dkim-atps=neutral
+ header.s=pp1 header.b=RmJB1j4b; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jz17p6zVNz30LQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 12:48:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jz1N24Ympz30QX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 12:58:58 +1100 (AEDT)
 Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21G1dIc5028349; 
- Wed, 16 Feb 2022 01:48:17 GMT
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21G1dOxf028570; 
+ Wed, 16 Feb 2022 01:58:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : subject :
  from : to : cc : date : in-reply-to : references : content-type :
  mime-version : content-transfer-encoding; s=pp1;
- bh=wdm9VOjYkXWGKYQ92h6odAQwq7tEXp9NpRlStUnph0U=;
- b=DRmfx08xYRFH5exFpAhGZ9PFgx7a5Xn4sIldpqPaQ7jburP1A2DLuVQzuxk81AP5XV0C
- NUQC5QIKHFRUGyoqOye/ofFGcwLz7AFUZJgScr57gxMixsJhbG2Fk8UJKIfq5xs8ltVp
- oJ5+kE41hLblnVsnYLa2Gz/6+Nh1XdJEBIDkyBi73ljWpLgp10K5rkkmJRv3C2qYA5ke
- dduhbmKe8vX//jPGM8XIxy3W6iG6flUQqkV1s/Ixkm+HhpEsSYorNkaJI0IO6sFgt7FJ
- hdr3ejj/PPYqHYKpOfAHO7hrjDC788jzgEFpZUAPgQoyUde5nptgWsL1lm5l8WzCzvRn dA== 
+ bh=GVP4XAq+DvfE7cN6k49coKwW/fcTxV6oDCgZUKkDppw=;
+ b=RmJB1j4bitd9FXLcsZQ6tHug4GiisuBWengP31BGk843+md6G9cG5f0wk//vBY5qwrhE
+ /lVO21Mk0+VyyxrhQPcKyGmnI1wGuC7kAeXzaIGVzaUm3OytRdqGwHtv2tuxMpvyRIMn
+ csHOWF1fBWmAD4ycRqP7EYK8qBxl4Ajxe2sat6iIYQGJE9gn1paM1JkBQTEpmrP4aluu
+ czKLIOc965Agzxf5DKO0+d7fw44ROdN1mwLNa6GWyGxg5Uboj8HoUTP4Gpc3h3US6gHP
+ 2xxZkvWacwdwMrkcTJZUtC5qZIQvwll0gmG9Wcb6lxWmPA0AaB+I3V3JgClRhAdWFSFH Uw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e8qfpr983-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e8qfprdeh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Feb 2022 01:48:17 +0000
+ Wed, 16 Feb 2022 01:58:53 +0000
 Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21G1mHJ1020859;
- Wed, 16 Feb 2022 01:48:17 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e8qfpr97q-1
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21G1uNpp015602;
+ Wed, 16 Feb 2022 01:58:53 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e8qfprdeb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Feb 2022 01:48:16 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21G1WJ92022749;
- Wed, 16 Feb 2022 01:48:15 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma03wdc.us.ibm.com with ESMTP id 3e64hb623q-1
+ Wed, 16 Feb 2022 01:58:53 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21G1Xtjw001967;
+ Wed, 16 Feb 2022 01:58:52 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma02dal.us.ibm.com with ESMTP id 3e64hby50k-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Feb 2022 01:48:15 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21G1mFp222413670
+ Wed, 16 Feb 2022 01:58:52 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 21G1wptR23003452
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Feb 2022 01:48:15 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3C572124066;
- Wed, 16 Feb 2022 01:48:15 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 88C98124053;
- Wed, 16 Feb 2022 01:48:14 +0000 (GMT)
+ Wed, 16 Feb 2022 01:58:51 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7402628066;
+ Wed, 16 Feb 2022 01:58:51 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8E4C02805E;
+ Wed, 16 Feb 2022 01:58:50 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.160.92.72])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 16 Feb 2022 01:48:14 +0000 (GMT)
-Message-ID: <429106a0fe5c129aa78de7aa9c7237ee37be3d3d.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 05/10] powerpc/pseries/vas: Close windows with DLPAR
- core removal
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed, 16 Feb 2022 01:58:50 +0000 (GMT)
+Message-ID: <8e7681618955384661d9b71f83f0c2bf1c61d099.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 06/10] powerpc/vas: Map paste address only if window
+ is active
 From: Haren Myneni <haren@linux.ibm.com>
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
  mpe@ellerman.id.au
-Date: Tue, 15 Feb 2022 17:48:12 -0800
-In-Reply-To: <1644806848.01buhj7y5b.astroid@bobo.none>
+Date: Tue, 15 Feb 2022 17:58:49 -0800
+In-Reply-To: <1644808630.pfiol54rgg.astroid@bobo.none>
 References: <7d175313528ea7aae20d9141f0efa2e57f44c9f4.camel@linux.ibm.com>
- <5bf38aba31d340f7a4a662f82746b1784891673b.camel@linux.ibm.com>
- <1644806848.01buhj7y5b.astroid@bobo.none>
+ <4ecd08a1b92590d6220920245c23526a68dc531c.camel@linux.ibm.com>
+ <1644808630.pfiol54rgg.astroid@bobo.none>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: -EU0tp9-OM06crIpLBQeauFydkeBxLYr
-X-Proofpoint-ORIG-GUID: PnFMnC-atagULui9GRg48zWLZDOWJ4l4
+X-Proofpoint-GUID: s9p_wWHW_vSJ9clyN9JCfVjjT9B0yOkI
+X-Proofpoint-ORIG-GUID: DpPIm69rHT8enipF_v1xijRPh1U5AVWg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
  definitions=2022-02-15_07,2022-02-14_04,2021-12-02_01
@@ -114,303 +114,94 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2022-02-14 at 13:17 +1000, Nicholas Piggin wrote:
-> Excerpts from Haren Myneni's message of January 22, 2022 5:57 am:
-> > The hypervisor reduces the available credits if the core is removed
-> > from the LPAR. So there is possibility of using excessive credits
-> > (windows) in the LPAR and the hypervisor expects the system to
-> > close
-> > the excessive windows. Even though the user space can continue to
-> > use
-> > these windows to send compression requests to NX, the hypervisor
-> > expects
-> > the LPAR to reduce these windows usage so that NX load can be
-> > equally
-> > distributed across all LPARs in the system.
+On Mon, 2022-02-14 at 13:20 +1000, Nicholas Piggin wrote:
+> Excerpts from Haren Myneni's message of January 22, 2022 5:58 am:
+> > The paste address mapping is done with mmap() after the window is
+> > opened with ioctl. But the window can be closed due to lost credit
+> > due to core removal before mmap(). So if the window is not active,
+> > return mmap() failure with -EACCES and expects the user space
+> > reissue
+> > mmap() when the window is active or open new window when the credit
+> > is available.
 > > 
-> > When the DLPAR notifier is received, get the new VAS capabilities
-> > from
-> > the hypervisor and close the excessive windows in the hypervisor.
-> > Also
-> > the kernel unmaps the paste address so that the user space receives
-> > paste
-> > failure until these windows are active with the later DLPAR (core
-> > add).
-> 
-> The changelog needs work. Unmapping the window and the ramifications
-> of
-> that needs more description here or in comments.
-
-Thanks will change. 
-> 
 > > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 > > ---
-> >  arch/powerpc/include/asm/vas.h          |   1 +
-> >  arch/powerpc/platforms/book3s/vas-api.c |   2 +
-> >  arch/powerpc/platforms/pseries/vas.c    | 117
-> > ++++++++++++++++++++++--
-> >  arch/powerpc/platforms/pseries/vas.h    |   1 +
-> >  4 files changed, 112 insertions(+), 9 deletions(-)
+> >  arch/powerpc/platforms/book3s/vas-api.c | 21 ++++++++++++++++++++-
+> >  1 file changed, 20 insertions(+), 1 deletion(-)
 > > 
-> > diff --git a/arch/powerpc/include/asm/vas.h
-> > b/arch/powerpc/include/asm/vas.h
-> > index f1efe86563cc..ddc05a8fc2e3 100644
-> > --- a/arch/powerpc/include/asm/vas.h
-> > +++ b/arch/powerpc/include/asm/vas.h
-> > @@ -74,6 +74,7 @@ struct vas_user_win_ref {
-> >  	struct mm_struct *mm;	/* Linux process mm_struct */
-> >  	struct mutex mmap_mutex;	/* protects paste address mmap() */
-> >  					/* with DLPAR close/open
-> > windows */
-> > +	struct vm_area_struct *vma;	/* Save VMA and used in DLPAR ops
-> > */
-> >  };
-> >  
-> >  /*
 > > diff --git a/arch/powerpc/platforms/book3s/vas-api.c
 > > b/arch/powerpc/platforms/book3s/vas-api.c
-> > index 2b0ced611f32..a63fd48e34a7 100644
+> > index a63fd48e34a7..2d06bd1b1935 100644
 > > --- a/arch/powerpc/platforms/book3s/vas-api.c
 > > +++ b/arch/powerpc/platforms/book3s/vas-api.c
-> > @@ -399,6 +399,8 @@ static int coproc_mmap(struct file *fp, struct
-> > vm_area_struct *vma)
-> >  	pr_devel("%s(): paste addr %llx at %lx, rc %d\n", __func__,
-> >  			paste_addr, vma->vm_start, rc);
-> >  
-> > +	txwin->task_ref.vma = vma;
-> > +
-> >  	return rc;
-> >  }
-> >  
-> > diff --git a/arch/powerpc/platforms/pseries/vas.c
-> > b/arch/powerpc/platforms/pseries/vas.c
-> > index d9ff73d7704d..75ccd0a599ec 100644
-> > --- a/arch/powerpc/platforms/pseries/vas.c
-> > +++ b/arch/powerpc/platforms/pseries/vas.c
-> > @@ -370,13 +370,28 @@ static struct vas_window
-> > *vas_allocate_window(int vas_id, u64 flags,
-> >  	if (rc)
-> >  		goto out_free;
-> >  
-> > -	vas_user_win_add_mm_context(&txwin->vas_win.task_ref);
-> >  	txwin->win_type = cop_feat_caps->win_type;
-> >  	mutex_lock(&vas_pseries_mutex);
-> > -	list_add(&txwin->win_list, &caps->list);
-> > +	/*
-> > +	 * Possible to loose the acquired credit with DLPAR core
-> 
-> s/loose/lose/g
-> 
-> > +	 * removal after the window is opened. So if there are any
-> > +	 * closed windows (means with lost credits), do not give new
-> > +	 * window to user space. New windows will be opened only
-> > +	 * after the existing windows are reopened when credits are
-> > +	 * available.
-> > +	 */
-> > +	if (!caps->close_wins) {
-> > +		list_add(&txwin->win_list, &caps->list);
-> > +		caps->num_wins++;
-> > +		mutex_unlock(&vas_pseries_mutex);
-> > +		vas_user_win_add_mm_context(&txwin->vas_win.task_ref);
-> > +		return &txwin->vas_win;
-> > +	}
-> >  	mutex_unlock(&vas_pseries_mutex);
-> >  
-> > -	return &txwin->vas_win;
-> > +	put_vas_user_win_ref(&txwin->vas_win.task_ref);
-> > +	rc = -EBUSY;
-> > +	pr_err("No credit is available to allocate window\n");
-> >  
-> >  out_free:
-> >  	/*
-> > @@ -439,14 +454,24 @@ static int vas_deallocate_window(struct
-> > vas_window *vwin)
-> >  
-> >  	caps = &vascaps[win->win_type].caps;
-> >  	mutex_lock(&vas_pseries_mutex);
-> > -	rc = deallocate_free_window(win);
-> > -	if (rc) {
-> > -		mutex_unlock(&vas_pseries_mutex);
-> > -		return rc;
-> > -	}
-> > +	/*
-> > +	 * VAS window is already closed in the hypervisor when
-> > +	 * lost the credit. So just remove the entry from
-> > +	 * the list, remove task references and free vas_window
-> > +	 * struct.
-> > +	 */
-> > +	if (win->vas_win.status & VAS_WIN_NO_CRED_CLOSE) {
-> > +		rc = deallocate_free_window(win);
-> > +		if (rc) {
-> > +			mutex_unlock(&vas_pseries_mutex);
-> > +			return rc;
-> > +		}
-> > +	} else
-> > +		vascaps[win->win_type].close_wins--;
-> >  
-> >  	list_del(&win->win_list);
-> >  	atomic_dec(&caps->used_creds);
-> > +	vascaps[win->win_type].num_wins--;
-> >  	mutex_unlock(&vas_pseries_mutex);
-> >  
-> >  	put_vas_user_win_ref(&vwin->task_ref);
-> > @@ -622,6 +647,72 @@ static int reconfig_open_windows(struct
-> > vas_caps *vcaps, int creds)
-> >  	return rc;
-> >  }
-> >  
-> > +/*
-> > + * The hypervisor reduces the available credits if the LPAR lost
-> > core. It
-> > + * means the excessive windows should not be active and the user
-> > space
-> > + * should not be using these windows to send compression requests
-> > to NX.
-> > + * So the kernel closes the excessive windows and unmap the paste
-> > address
-> > + * such that the user space receives paste instruction failure.
-> > Then up to
-> > + * the user space to fall back to SW compression and manage with
-> > the
-> > + * existing windows.
-> > + */
-> > +static int reconfig_close_windows(struct vas_caps *vcap, int
-> > excess_creds)
-> > +{
-> > +	struct pseries_vas_window *win, *tmp;
-> > +	struct vas_user_win_ref *task_ref;
-> > +	struct vm_area_struct *vma;
-> > +	int rc = 0;
-> > +
-> > +	list_for_each_entry_safe(win, tmp, &vcap->list, win_list) {
-> > +		/*
-> > +		 * This window is already closed due to lost credit
-> > +		 * before. Go for next window.
-> > +		 */
-> > +		if (win->vas_win.status & VAS_WIN_NO_CRED_CLOSE)
-> > +			continue;
-> > +
-> > +		task_ref = &win->vas_win.task_ref;
-> > +		mutex_lock(&task_ref->mmap_mutex);
-> > +		vma = task_ref->vma;
-> > +		/*
-> > +		 * Number of available credits are reduced, So select
-> > +		 * and close windows.
-> > +		 */
-> > +		win->vas_win.status |= VAS_WIN_NO_CRED_CLOSE;
-> > +
-> > +		mmap_write_lock(task_ref->mm);
-> > +		/*
-> > +		 * vma is set in the original mapping. But this mapping
-> > +		 * is done with mmap() after the window is opened with
-> > ioctl.
-> > +		 * so we may not see the original mapping if the core
-> > remove
-> > +		 * is done before the original mmap() and after the
-> > ioctl.
-> > +		 */
-> > +		if (vma)
-> > +			zap_page_range(vma, vma->vm_start,
-> > +					vma->vm_end - vma->vm_start);
-> > +
-> > +		mmap_write_unlock(task_ref->mm);
-> > +		mutex_unlock(&task_ref->mmap_mutex);
-> > +		/*
-> > +		 * Close VAS window in the hypervisor, but do not
-> > +		 * free vas_window struct since it may be reused
-> > +		 * when the credit is available later (DLPAR with
-> > +		 * adding cores). This struct will be used
-> > +		 * later when the process issued with close(FD).
-> > +		 */
-> > +		rc = deallocate_free_window(win);
-> > +		if (rc)
-> > +			return rc;
-> > +
-> > +		vcap->close_wins++;
-> > +
-> > +		if (!--excess_creds)
-> > +			break;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  /*
-> >   * Get new VAS capabilities when the core add/removal
-> > configuration
-> >   * changes. Reconfig window configurations based on the credits
-> > @@ -633,7 +724,7 @@ static int vas_reconfig_capabilties(u8 type)
-> >  	struct vas_cop_feat_caps *caps;
-> >  	int lpar_creds, new_creds;
-> >  	struct vas_caps *vcaps;
-> > -	int rc = 0;
-> > +	int rc = 0, active_wins;
-> >  
-> >  	if (type >= VAS_MAX_FEAT_TYPE) {
-> >  		pr_err("Invalid credit type %d\n", type);
-> > @@ -671,6 +762,14 @@ static int vas_reconfig_capabilties(u8 type)
-> >  		 * the previous DLPAR (core removal).
-> >  		 */
-> >  		rc = reconfig_open_windows(vcaps, new_creds -
-> > lpar_creds);
-> > +	} else {
-> > +		/*
-> > +		 * # active windows is more than new LPAR available
-> > +		 * credits. So close the excessive windows.
-> > +		 */
-> > +		active_wins = vcaps->num_wins - vcaps->close_wins;
-> > +		if (active_wins > new_creds)
-> > +			rc = reconfig_close_windows(vcaps, active_wins
-> > - new_creds);
+> > @@ -379,10 +379,27 @@ static int coproc_mmap(struct file *fp,
+> > struct vm_area_struct *vma)
+> >  		return -EACCES;
 > >  	}
 > >  
-> >  out:
-> > diff --git a/arch/powerpc/platforms/pseries/vas.h
-> > b/arch/powerpc/platforms/pseries/vas.h
-> > index 45b62565955b..8ce9b84693e8 100644
-> > --- a/arch/powerpc/platforms/pseries/vas.h
-> > +++ b/arch/powerpc/platforms/pseries/vas.h
-> > @@ -79,6 +79,7 @@ struct vas_caps {
-> >  	struct vas_cop_feat_caps caps;
-> >  	struct list_head list;	/* List of open windows */
-> >  	int close_wins;		/* closed windows in the hypervisor
-> > for DLPAR */
-> > +	int num_wins;		/* Number of windows opened */
+> > +	/*
+> > +	 * The initial mapping is done after the window is opened
+> > +	 * with ioctl. But this window might have been closed
+> > +	 * due to lost credit (core removal on PowerVM) before mmap().
 > 
-> num -> nr is usually best.
+> What does "initial mapping" mean?
 > 
-> And I know you like to abbreviate names, but it helps unfamiliar
-> readers 
-> to use a few more letters. num_wins -> nr_windows or even better 
-> nr_open_windows.
+> mapping ~= mmap, in kernel speak.
+
+yes, the initial mapping is done with the actual mmap() call. 
 > 
-> Same comment about location of the field. Also it's not quite clear
+> You will have to differentiate the concepts.
+> 
+> > +	 * So if the window is not active, return mmap() failure
+> > +	 * with -EACCES and expects the user space reconfigure (mmap)
+> > +	 * window when it is active again or open new window when
+> > +	 * the credit is available.
+> > +	 */
+> > +	mutex_lock(&txwin->task_ref.mmap_mutex);
+> > +	if (txwin->status != VAS_WIN_ACTIVE) {
+> > +		pr_err("%s(): Window is not active\n", __func__);
+> > +		rc = -EACCES;
+> > +		goto out;
+> > +	}
+> > +
+> >  	paste_addr = cp_inst->coproc->vops->paste_addr(txwin);
+> >  	if (!paste_addr) {
+> >  		pr_err("%s(): Window paste address failed\n",
+> > __func__);
+> > -		return -EINVAL;
+> > +		rc = -EINVAL;
+> > +		goto out;
+> >  	}
+> >  
+> >  	pfn = paste_addr >> PAGE_SHIFT;
+> > @@ -401,6 +418,8 @@ static int coproc_mmap(struct file *fp, struct
+> > vm_area_struct *vma)
+> >  
+> >  	txwin->task_ref.vma = vma;
+> >  
+> > +out:
+> > +	mutex_unlock(&txwin->task_ref.mmap_mutex);
+> 
+> If the hypervisor can revoke a window at any point with DLPAR, it's
+> not 
+> clear *why* this is needed. The hypervisor could cause your window
 > to 
-> me what the relationship is between your open windows here and used 
-> credits in the vas_cop_feat_caps structure. In other comments and 
-> changelogs you use credit and window interchangeably.
+> close right after this mmap() returns, right? So an explanation for 
+> exactly what this patch is needed for beyond that would help.
 
-will change to nr_close_windows and nr_windows. 
+Yes, the window can be closed by OS due to DLPAR after the mmap()
+returns successfully which is a normal case - paste instruction failure
+ until the window is reopened again.
 
-used_credits is used for how many windows / credits are used by user
-space. But when OS lost the credit, this window will be used in the
-hypervisor, but not from the user space point of view. It should expect
-this window is not active and should be available later. 
+But ths patch is mainly for window open by user space and dlpar happens
+before the user space issue mmap().    
 
-But OS will be closing this window in the hypervisor. So used
-close_wins / num_wins are used to track the actual number of windows
-opened/closed in the hypervisor. 
+I will add more description in the commit log. 
 
 Thanks
 Haren
+
 > 
-> 
-> >  	u8 feat;		/* Feature type */
-> >  };
-> >  
-> > -- 
-> > 2.27.0
-> > 
-> > 
-> > 
+> Thanks,
+> Nick
 
