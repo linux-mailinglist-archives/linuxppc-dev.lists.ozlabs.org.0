@@ -1,35 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 969DE4B87B3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 13:31:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A5F4B87B5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 13:32:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzHQ30yDSz3dnr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:31:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzHQt2SYzz3cRs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:32:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzHNM4L4kz2xYG
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 23:30:11 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzHNN4PHnz3cB2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 23:30:12 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4JzHNM68mqz4xmt;
- Wed, 16 Feb 2022 23:30:11 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JzHNN6HHwz4xmx;
+ Wed, 16 Feb 2022 23:30:12 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
-In-Reply-To: <1e6162f334167e75f1140082932e3a354b16daba.1642413973.git.christophe.leroy@csgroup.eu>
-References: <1e6162f334167e75f1140082932e3a354b16daba.1642413973.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/32s: Enable STRICT_MODULE_RWX for the 603 core
-Message-Id: <164501434892.521186.15893809567759741150.b4-ty@ellerman.id.au>
-Date: Wed, 16 Feb 2022 23:25:48 +1100
+In-Reply-To: <7304a889dbe885aefad8a8333673c81ee4b8f7a6.1642751874.git.christophe.leroy@csgroup.eu>
+References: <7304a889dbe885aefad8a8333673c81ee4b8f7a6.1642751874.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc: Use the newly added is_tsk_32bit_task() macro
+Message-Id: <164501434972.521186.548176126612170796.b4-ty@ellerman.id.au>
+Date: Wed, 16 Feb 2022 23:25:49 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,20 +49,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 17 Jan 2022 10:06:39 +0000, Christophe Leroy wrote:
-> The book3s/32 MMU doesn't support per page execution protection and
-> doesn't support RO protection for kernel pages.
+On Fri, 21 Jan 2022 07:58:47 +0000, Christophe Leroy wrote:
+> Two places deserve using the macro is_tsk_32bit_task() added by
+> commit 252745240ba0 ("powerpc/audit: Fix syscall_get_arch()")
 > 
-> However, on the 603 which implements software loaded TLBs, execution
-> protection is honored by the TLB Miss handler which doesn't load
-> Instruction TLB for non executable pages. And RO protection is
-> honored by clearing the C bit for RO pages, leading to DSI.
 > 
-> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/32s: Enable STRICT_MODULE_RWX for the 603 core
-      https://git.kernel.org/powerpc/c/0670010f3b10aeaad0dfdf0dad0bcd020fc70eb5
+[1/1] powerpc: Use the newly added is_tsk_32bit_task() macro
+      https://git.kernel.org/powerpc/c/9d44d1bd93b9a881f407b3202dc13fbd85fb5f1a
 
 cheers
