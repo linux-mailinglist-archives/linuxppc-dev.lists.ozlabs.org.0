@@ -2,54 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7FD44B8F9E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 18:47:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB54E4B9087
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 19:42:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzQQ13Ctrz3cWF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 04:47:05 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=YFMvYdQj;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzRf92xXvz3cNK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 05:42:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=YFMvYdQj; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
+ spf=none (no SPF record) smtp.mailfrom=ravnborg.org
+ (client-ip=91.221.196.228; helo=mx2.smtp.larsendata.com;
+ envelope-from=sam@ravnborg.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 359 seconds by postgrey-1.36 at boromir;
+ Thu, 17 Feb 2022 05:42:16 AEDT
+Received: from mx2.smtp.larsendata.com (mx2.smtp.larsendata.com
+ [91.221.196.228])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzQPH06PCz2yMy
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 04:46:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=VbUBhMXlxHu1hd9TNvXiS+teJ/r1jPmqMT3yZi5DiXA=; b=YFMvYdQjx1CUVz3+iDv8dWZBQn
- TFKDs1U168DEQITKZe9AaZx16SKrXTx2ksq/NMGVl2W0EEwQuncChNlonnFXmyWZzd7nO4br2waQp
- FIgkLzZrsrUvnq4nuBcjXKyy1fnyqNj0lXhyCpSmqyKt5ZGUkkIfJBO65Hk2cQ3ChaRe9XHHz6jPB
- M8XvXJn08fOJCd660xA/nwi0ZEmXjq1ZazXF393WWBkQ9c0yMG9Hvb8tcJwbOf9eiruvfcfTVHanP
- CvnueVd5fYDaynrO0Gp+6KNCoLblmKTPC7IS0DJIQdOQwx2xahxTeVrMwQOJITjRwRUbk2Li5Ykps
- tZvmgLqw==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red
- Hat Linux)) id 1nKONT-00Eupq-5V; Wed, 16 Feb 2022 17:46:07 +0000
-Date: Wed, 16 Feb 2022 17:46:07 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Subject: Re: [next-20220215] WARNING at fs/iomap/buffered-io.c:75 with xfstests
-Message-ID: <Yg04X73lr5YK5kwH@casper.infradead.org>
-References: <5AD0BD6A-2C31-450A-924E-A581CD454073@linux.ibm.com>
- <20220216173504.GM8313@magnolia>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzRdh3Mwfz3bb9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 05:42:16 +1100 (AEDT)
+Received: from mail01.mxhotel.dk (mail01.mxhotel.dk [91.221.196.236])
+ by mx2.smtp.larsendata.com (Halon) with ESMTPS
+ id 0f791715-8f58-11ec-b2df-0050568cd888;
+ Wed, 16 Feb 2022 18:41:32 +0000 (UTC)
+Received: from ravnborg.org (80-162-45-141-cable.dk.customer.tdc.net
+ [80.162.45.141])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ (Authenticated sender: sam@ravnborg.org)
+ by mail01.mxhotel.dk (Postfix) with ESMTPSA id B2BEB194B1C;
+ Wed, 16 Feb 2022 19:41:12 +0100 (CET)
+Date: Wed, 16 Feb 2022 19:41:09 +0100
+X-Report-Abuse-To: abuse@mxhotel.dk
+From: Sam Ravnborg <sam@ravnborg.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH v2 15/18] sparc64: remove CONFIG_SET_FS support
+Message-ID: <Yg1FRZcrhlh5C//V@ravnborg.org>
+References: <20220216131332.1489939-1-arnd@kernel.org>
+ <20220216131332.1489939-16-arnd@kernel.org>
+ <Yg1D08+olCSGmnYU@ravnborg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220216173504.GM8313@magnolia>
+In-Reply-To: <Yg1D08+olCSGmnYU@ravnborg.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,57 +57,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xfs@vger.kernel.org, riteshh@linux.ibm.com,
- linux-next@vger.kernel.org, Sachin Sant <sachinp@linux.ibm.com>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: mark.rutland@arm.com, dalias@libc.org, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, peterz@infradead.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, guoren@kernel.org, sparclinux@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
+ will@kernel.org, Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, bcain@codeaurora.org, deller@gmx.de,
+ x86@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org,
+ ardb@kernel.org, mingo@redhat.com, geert@linux-m68k.org,
+ linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+ arnd@arndb.de, hca@linux.ibm.com, linux-alpha@vger.kernel.org,
+ linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
+ viro@zeniv.linux.org.uk, shorne@gmail.com, monstr@monstr.eu,
+ tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, nickhu@andestech.com,
+ jcmvbkbc@gmail.com, linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dinguyen@kernel.org, ebiederm@xmission.com, richard@nod.at,
+ akpm@linux-foundation.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ davem@davemloft.net, green.hu@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 16, 2022 at 09:35:04AM -0800, Darrick J. Wong wrote:
-> On Wed, Feb 16, 2022 at 12:55:02PM +0530, Sachin Sant wrote:
-> > [ 2547.662818] ------------[ cut here ]------------
-> > [ 2547.662832] WARNING: CPU: 24 PID: 2463718 at fs/iomap/buffered-io.c:75 iomap_page_release+0x1b0/0x1e0
-> 
-> ...and I think this is complaining about this debugging test in
-> iomap_page_release:
-> 
-> 	WARN_ON_ONCE(bitmap_full(iop->uptodate, nr_blocks) !=
-> 			folio_test_uptodate(folio));
-> 
-> which checks that we're not releasing or invalidating a page that's
-> partially uptodate on a blocksize < pagesize filesystem (or so I gather
-> from "POWER10 LPAR" (64k pages?) and "XFS" (4k blocks?))...
+Hi Arnd,
 
-This happens _all_ _the_ _time_ in my testing.  If your block size is
-less than page size, you can expect it.
-
-What it's supposed to be testing is that we remembered to set the
-uptodate flag once all blocks in this page are uptodate.  What's
-tripping the check is iomap_writepage_map()'s stupid clearing of the
-uptodate flag on the folio:
-
-        if (unlikely(error)) {
-...
-                if (!count) {
-                        folio_clear_uptodate(folio);
-                        folio_unlock(folio);
-                        goto done;
-
-What particularly annoys me about this is that the folio _was_ uptodate,
-and it was dirty, so it has newer data in it than is on disk, but we're
-going to re-read the folio from disk and throw away that user data.
-
-> Given that in this case we've already cleared SB_ACTIVE from the
-> superblock s_flags, I wonder if we could amend that code to read:
+On Wed, Feb 16, 2022 at 07:34:59PM +0100, Sam Ravnborg wrote:
+> Hi Arnd.
 > 
-> 	if (inode->i_sb->s_flags & SB_ACTIVE)
-> 		WARN_ON_ONCE(bitmap_full(iop->uptodate, nr_blocks) !=
-> 				folio_test_uptodate(folio));
+> On Wed, Feb 16, 2022 at 02:13:29PM +0100, Arnd Bergmann wrote:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> > 
+> > sparc64 uses address space identifiers to differentiate between kernel
+> > and user space, using ASI_P for kernel threads but ASI_AIUS for normal
+> > user space, with the option of changing between them.
+> > 
+> > As nothing really changes the ASI any more, just hardcode ASI_AIUS
+> > everywhere. Kernel threads are not allowed to access __user pointers
+> > anyway.
+> > 
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > ---
+> >  arch/sparc/include/asm/processor_64.h   |  4 ----
+> >  arch/sparc/include/asm/switch_to_64.h   |  4 +---
+> >  arch/sparc/include/asm/thread_info_64.h |  4 +---
+> >  arch/sparc/include/asm/uaccess_64.h     | 20 +-------------------
+> >  arch/sparc/kernel/process_64.c          | 12 ------------
+> >  arch/sparc/kernel/traps_64.c            |  2 --
+> >  arch/sparc/lib/NGmemcpy.S               |  3 +--
+> >  arch/sparc/mm/init_64.c                 |  7 ++++---
+> >  8 files changed, 8 insertions(+), 48 deletions(-)
 > 
-> Since we don't really care about memory pages that aren't fully up to
-> date if we're in the midst of freeing all the incore filesystem state.
-> 
-> Thoughts?
+> I think you somehow missed the Kconfig change, and also the related
+> sparc32 change which continue to have set_fs() after this patch.
+I now notice the sparc32 bits are in the last patch.
+To avoid breaking bisect-ability on sparc64 I think you need to merge
+the sparc32 changes with this patch, unless the sparc64 changes can
+coexist with CONFIG_SET_FS continue to be set.
 
-Seems like papering over a bad design decision to me.
+	Sam
