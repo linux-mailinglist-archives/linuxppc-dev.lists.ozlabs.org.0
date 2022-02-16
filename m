@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE8A4B89A9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 14:21:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DE64B89B3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 14:21:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzJWN1YHbz3dxZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 00:21:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzJX36mvMz3f0p
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 00:21:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RtZeNhuM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sjI1N/Ys;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org;
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
  envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=RtZeNhuM; 
+ header.s=k20201202 header.b=sjI1N/Ys; 
  dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzJQh2xgLz3cjX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 00:17:16 +1100 (AEDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzJQs1BS5z3cbG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 00:17:25 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id 5ABD2CE26F6;
- Wed, 16 Feb 2022 13:17:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2C4C340F9;
- Wed, 16 Feb 2022 13:17:04 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id D795961655;
+ Wed, 16 Feb 2022 13:17:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB5FC340F1;
+ Wed, 16 Feb 2022 13:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1645017433;
- bh=XYviTV8III28kBrCQmsfuK51xOc09ZOif7iEHrUTuIg=;
+ s=k20201202; t=1645017443;
+ bh=MxlH7OSdWg2oRBDys6vsaBDtcNFNrqae9GgCDj46MDk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=RtZeNhuMWLMdUCgp7sQPtFKueCz8UIMqyfmOJ7eTRpRAZj+EX1IydRbAp51tHxwWq
- 5ne2vxMm/JuLMAmzyha4cuHaIahixOHFYVc5gGcfZri8EF8XqsDBKKhTiX2FVDpISR
- Pagw3akqo4xNGkF8Pb3UNLVmcr6ZFwFviZKx75YteMrlQ/LSVcu+z3apLlbK8geLHf
- v3iSy1y9VzaMo/+yVZXWf0Swp3oDEXhPv7eE6oQXabEKWYYUYMRDAqB7mO4dBnJnsi
- bzLr4K/tjkFnSoB/60v9gCoDQiRG0gDzcN5E85Rk8eBnmYUibpTvgJRV9oTUxC2Xso
- Mffr2yyPA6wPQ==
+ b=sjI1N/Ysf6UohThwc+VXydeUqwNugfP8doF9H67EicATD6oaAkDsrCNS3AC/ubFNd
+ ziBIxKGEAeyq4Bw3XdZgjBuNcKHeB1enctrHaLGU2ykGVgZHDsnbC5Wzwde0sZPsGo
+ WD7WBQJHRS/PhCcVbk/s6TQX9q0zFJnPZsK3bgY0sTLsXoxe2RYo46AhoXLG6T8vLY
+ ptfvBD5j0ki8uiIVLlwxNojr8S73bqQ6CnNgAESnFCyQrATHgA3qg0Clpwhp7O6ene
+ UNjiTeS5j4av8zOGlm3gJWoU7z2Cw6gaTV6tNodGA/Zj7EYErzSRxKmSguUvyWCtWL
+ X2GGlpG3o7PVg==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
  Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
  linux-mm@kvack.org, linux-api@vger.kernel.org, arnd@arndb.de,
  linux-kernel@vger.kernel.org, viro@zeniv.linux.org.uk
-Subject: [PATCH v2 09/18] mips: use simpler access_ok()
-Date: Wed, 16 Feb 2022 14:13:23 +0100
-Message-Id: <20220216131332.1489939-10-arnd@kernel.org>
+Subject: [PATCH v2 10/18] m68k: fix access_ok for coldfire
+Date: Wed, 16 Feb 2022 14:13:24 +0100
+Message-Id: <20220216131332.1489939-11-arnd@kernel.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20220216131332.1489939-1-arnd@kernel.org>
 References: <20220216131332.1489939-1-arnd@kernel.org>
@@ -85,76 +85,47 @@ Sender: "Linuxppc-dev"
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-Before unifying the mips version of __access_ok() with the generic
-code, this converts it to the same algorithm. This is a change in
-behavior on mips64, as now address in the user segment, the lower
-2^62 bytes, is taken to be valid, relying on a page fault for
-addresses that are within that segment but not valid on that CPU.
+While most m68k platforms use separate address spaces for user
+and kernel space, at least coldfire does not, and the other
+ones have a TASK_SIZE that is less than the entire 4GB address
+range.
 
-The new version should be the most effecient way to do this, but
-it gets rid of the special handling for size=0 that most other
-architectures ignore as well.
+Using the default implementation of __access_ok() stops coldfire
+user space from trivially accessing kernel memory.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/mips/include/asm/uaccess.h | 22 ++++------------------
- 1 file changed, 4 insertions(+), 18 deletions(-)
+ arch/m68k/include/asm/uaccess.h | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
-index db9a8e002b62..d7c89dc3426c 100644
---- a/arch/mips/include/asm/uaccess.h
-+++ b/arch/mips/include/asm/uaccess.h
-@@ -19,6 +19,7 @@
- #ifdef CONFIG_32BIT
+diff --git a/arch/m68k/include/asm/uaccess.h b/arch/m68k/include/asm/uaccess.h
+index 79617c0b2f91..8eb625e75452 100644
+--- a/arch/m68k/include/asm/uaccess.h
++++ b/arch/m68k/include/asm/uaccess.h
+@@ -12,14 +12,21 @@
+ #include <asm/extable.h>
  
- #define __UA_LIMIT 0x80000000UL
-+#define TASK_SIZE_MAX	__UA_LIMIT
- 
- #define __UA_ADDR	".word"
- #define __UA_LA		"la"
-@@ -33,6 +34,7 @@
- extern u64 __ua_limit;
- 
- #define __UA_LIMIT	__ua_limit
-+#define TASK_SIZE_MAX	XKSSEG
- 
- #define __UA_ADDR	".dword"
- #define __UA_LA		"dla"
-@@ -42,22 +44,6 @@ extern u64 __ua_limit;
- 
- #endif /* CONFIG_64BIT */
- 
--/*
-- * Is a address valid? This does a straightforward calculation rather
-- * than tests.
-- *
-- * Address valid if:
-- *  - "addr" doesn't have any high-bits set
-- *  - AND "size" doesn't have any high-bits set
-- *  - AND "addr+size" doesn't have any high-bits set
-- *  - OR we are in kernel mode.
-- *
-- * __ua_size() is a trick to avoid runtime checking of positive constant
-- * sizes; for those we already know at compile time that the size is ok.
-- */
--#define __ua_size(size)							\
--	((__builtin_constant_p(size) && (signed long) (size) > 0) ? 0 : (size))
--
- /*
-  * access_ok: - Checks if a user space pointer is valid
-  * @addr: User space pointer to start of block to check
-@@ -79,9 +65,9 @@ extern u64 __ua_limit;
- static inline int __access_ok(const void __user *p, unsigned long size)
+ /* We let the MMU do all checking */
+-static inline int access_ok(const void __user *addr,
++static inline int access_ok(const void __user *ptr,
+ 			    unsigned long size)
  {
- 	unsigned long addr = (unsigned long)p;
--	unsigned long end = addr + size - !!size;
-+	unsigned long limit = TASK_SIZE_MAX;
- 
--	return (__UA_LIMIT & (addr | end | __ua_size(size))) == 0;
++	unsigned long limit = TASK_SIZE;
++	unsigned long addr = (unsigned long)ptr;
++
+ 	/*
+ 	 * XXX: for !CONFIG_CPU_HAS_ADDRESS_SPACES this really needs to check
+ 	 * for TASK_SIZE!
++	 * Removing this helper is probably sufficient.
+ 	 */
+-	return 1;
++	if (IS_ENABLED(CONFIG_CPU_HAS_ADDRESS_SPACES))
++		return 1;
++
 +	return (size <= limit) && (addr <= (limit - size));
  }
  
- #define access_ok(addr, size)					\
+ /*
 -- 
 2.29.2
 
