@@ -2,80 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035424B8455
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 10:33:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B7C4B84BB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 10:48:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzCSn3pGwz3cT4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 20:33:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzCnN4bdsz2yHL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 20:48:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=vhPVK/gv;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=LXM33yEi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nknqioiA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=nstange@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=vhPVK/gv; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=LXM33yEi; 
- dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=nknqioiA; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzCS22Rymz2x9D
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 20:33:05 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id D50A81F383;
- Wed, 16 Feb 2022 09:33:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1645003982; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cm5AQQp0a7+cF9FKJnrJKZk4PS3iUbRyEAyckm/X4TI=;
- b=vhPVK/gvcTeqGBs9PnYXK4vPKKb2z+G7rOsc8UTYubnPh7KXtGvAREA4Tg+qSeGmQmTnuu
- n681xPpLBFJGu/757/412/e9Bgfxj8MBl2kipf6SWGvmcarr1xKuc4x5UVRVwCQzDozurC
- v0o0znmF/Wsg6OUSFtIANGT127H4YCU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1645003982;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cm5AQQp0a7+cF9FKJnrJKZk4PS3iUbRyEAyckm/X4TI=;
- b=LXM33yEiPiyv6aaYrqzs/Q92dsp+Cvlz2r3wOQM0Jl5hTEzJjWNCwgkuOC+1Wnh8qfM1F3
- ysWjjVIVMn01PkCg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7737213A9F;
- Wed, 16 Feb 2022 09:33:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id ldw7G87EDGJTcQAAMHmgww
- (envelope-from <nstange@suse.de>); Wed, 16 Feb 2022 09:33:02 +0000
-From: Nicolai Stange <nstange@suse.de>
-To: Petr Vorel <pvorel@suse.cz>
-Subject: Re: [PATCH v2 1/2] crypto: vmx: Turn CRYPTO_DEV_VMX_ENCRYPT into
- tristate
-References: <20220215185936.15576-1-pvorel@suse.cz>
- <20220215185936.15576-2-pvorel@suse.cz>
-Date: Wed, 16 Feb 2022 10:33:01 +0100
-In-Reply-To: <20220215185936.15576-2-pvorel@suse.cz> (Petr Vorel's message of
- "Tue, 15 Feb 2022 19:59:35 +0100")
-Message-ID: <87tuczf96a.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.3 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzCmd58qFz30Dy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 20:47:29 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21G7dLF0010047; 
+ Wed, 16 Feb 2022 09:47:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=kR8m9EWj7jcTe1gTm3selny9gj9T7VDVcZkY1fHgLCo=;
+ b=nknqioiASeUrescXPiiEbkM8I9L8PEfcIQbhnHo1sIdWzN7wegl46xVoGLyf8akkaTyS
+ pzN7FjSSZggo06TNVrYfFW+1MjWfLlSxRnawUftFz3o3MgSX3XXPGFyyvSmuLAm+uuiX
+ 9rZt4qcfDjWKITDvhheXZT5k23xxIJzRKGuhRGMgFv6rBRcc3aOy8Ymv49vEBpccV5zT
+ tn8E1SkGSF1bmSmlVl9ztJg79hkxa5zsYZPbuG3tpvOwFlnWiXxKF+2lHXgCzQy0gg8C
+ jjMz+N2Jv/4IbY114pQpBAJfxhJKOoeb/2Q2saSDXwbzBxyJzpWxSkFc+Vn3dO/L69cS gA== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e8thydk11-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Feb 2022 09:47:20 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21G9ggx9025424;
+ Wed, 16 Feb 2022 09:47:19 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 3e64ha6re4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Feb 2022 09:47:19 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 21G9lGgm45154628
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Feb 2022 09:47:16 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C9CED5205F;
+ Wed, 16 Feb 2022 09:47:16 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.79.185.42])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 9BF015204F;
+ Wed, 16 Feb 2022 09:47:15 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
+Subject: Re: [next-20220215] WARNING at fs/iomap/buffered-io.c:75 with xfstests
+From: Sachin Sant <sachinp@linux.ibm.com>
+In-Reply-To: <20220216183919.13b32e1e@canb.auug.org.au>
+Date: Wed, 16 Feb 2022 15:17:14 +0530
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <CF1506AF-E82B-412B-BD7B-A9F0B9971CB3@linux.ibm.com>
+References: <5AD0BD6A-2C31-450A-924E-A581CD454073@linux.ibm.com>
+ <20220216183919.13b32e1e@canb.auug.org.au>
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+X-Mailer: Apple Mail (2.3654.120.0.1.13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: NjCmUYVGpq2UjuWV_UIa2hlJvaZMqo1d
+X-Proofpoint-ORIG-GUID: NjCmUYVGpq2UjuWV_UIa2hlJvaZMqo1d
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-16_04,2022-02-14_04,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0
+ clxscore=1011 mlxscore=0 suspectscore=0 lowpriorityscore=0 mlxlogscore=842
+ impostorscore=0 spamscore=0 adultscore=0 priorityscore=1501 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
+ definitions=main-2202160054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,185 +99,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, Nicolai Stange <nstange@suse.de>,
- linux-kbuild@vger.kernel.org, Nayna Jain <nayna@linux.ibm.com>,
- Paulo Flabiano Smorigo <pfsmorigo@gmail.com>, linux-crypto@vger.kernel.org,
- leitao@debian.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-xfs@vger.kernel.org, riteshh@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, linux-next@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Petr,
 
-Petr Vorel <pvorel@suse.cz> writes:
+>> While running xfstests on IBM Power10 logical partition (LPAR) booted
+>> with 5.17.0-rc4-next-20220215 following warning was seen:
+>>=20
+>> The warning is seen when test tries to unmount the file system. This =
+problem is seen
+>> while running generic/475 sub test. Have attached captured messages =
+during the test
+>> run of generic/475.
+>>=20
+>> xfstest is a recent add to upstream regression bucket. I don=E2=80=99t =
+have any previous data
+>> to attempt a git bisect.=20
+>=20
+> If you have time, could you test v5.17-rc4-2-gd567f5db412e (the commit
+> in Linus' tree that next-20220215 is based on) and if that OK, then a
+> bisect from that to 5.17.0-rc4-next-20220215 may be helpful.
 
-> and remove CRYPTO_DEV_VMX, which looked redundant when only
-> CRYPTO_DEV_VMX_ENCRYPT used it. Also it forces CRYPTO_GHASH to be
-> builtin even CRYPTO_DEV_VMX_ENCRYPT was configured as module.
-
-I'm confused by the description. CRYPTO_DEV_VMX_ENCRYPT has been a
-tristate since ever? And thus, with CRYPTO_DEV_VMX_ENCRYPT=3Dm,
-CRYPTO_GHASH=3Dm would be possible as far as vmx is concerned?
-
-What this patch really does is to merge CRYPTO_DEV_VMX into
-CRYPTO_DEV_VMX_ENCRYPT AFAICS.
-
-These two seem indeed redundant to me, but for consistency with the
-other crypto drivers (e.g. bcm, ccree, ...), I'd rather keep
-CRYPTO_DEV_VMX and merge CRYPTO_DEV_VMX_ENCRYPT into it.
-
-
-> Update powerpc defconfigs and description in MAINTAINERS.
-
-The change to MAINTAINERS is completely unrelated? If anything, it had
-to come with a separate patch then.
+Unfortunately I cannot recreate the problem consistently. I tried same =
+test run with both
+mainline as well as linux-next20220215. In both attempts I wasn=E2=80=99t =
+able to recreate it.
 
 
->
-> Signed-off-by: Petr Vorel <pvorel@suse.cz>
-> ---
-> new in v2
->
-> This might be a bit aggressive, but IMHO CRYPTO_DEV_VMX only complicated
-> things for nothing.
-
-I agree on the redundancy, but as said, CRYPTO_DEV_VMX_ENCRYPT should
-probably the one to get dropped in favor of CRYPTO_DEV_VMX.
-
-
-> But if you do *not* agree with removing it, I just add
-> select to drivers/crypto/vmx/Kconfig (which forces dependencies to be
-> always modules.)
->
-> If it's ok for you to remove, please also check whether the description
-> is ok. get_maintainer.pl script has size limitation:
->
-> $ ./scripts/get_maintainer.pl drivers/crypto/vmx/Kconfig
-> ...
-> linux-crypto@vger.kernel.org (open list:IBM Power VMX Cryptographic Accel=
-eration Instru...)
->
-> maybe the name should be shorter.
->
-> Kind regards,
-> Petr
->
->  MAINTAINERS                            | 2 +-
->  arch/powerpc/configs/powernv_defconfig | 2 +-
->  arch/powerpc/configs/ppc64_defconfig   | 2 +-
->  arch/powerpc/configs/pseries_defconfig | 2 +-
->  drivers/crypto/Kconfig                 | 6 ------
->  drivers/crypto/vmx/Kconfig             | 4 ++--
->  6 files changed, 6 insertions(+), 12 deletions(-)
-
-If you were to drop CONFIG_CRYPTO_DEV_VMX (like it's implemented in this
-patch), then something had to be done about
-
-  obj-$(CONFIG_CRYPTO_DEV_VMX) +=3D vmx/
-
-in drivers/crypto/Makefile as well.
-
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ea3e6c914384..80e562579180 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -9207,7 +9207,7 @@ L:	target-devel@vger.kernel.org
->  S:	Supported
->  F:	drivers/scsi/ibmvscsi_tgt/
->=20=20
-> -IBM Power VMX Cryptographic instructions
-> +IBM Power VMX Cryptographic Acceleration Instructions Driver
->  M:	Breno Leit=C3=A3o <leitao@debian.org>
->  M:	Nayna Jain <nayna@linux.ibm.com>
->  M:	Paulo Flabiano Smorigo <pfsmorigo@gmail.com>
-> diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/config=
-s/powernv_defconfig
-> index 49f49c263935..4b250d05dcdf 100644
-> --- a/arch/powerpc/configs/powernv_defconfig
-> +++ b/arch/powerpc/configs/powernv_defconfig
-> @@ -337,7 +337,7 @@ CONFIG_CRYPTO_TEA=3Dm
->  CONFIG_CRYPTO_TWOFISH=3Dm
->  CONFIG_CRYPTO_LZO=3Dm
->  CONFIG_CRYPTO_DEV_NX=3Dy
-> -CONFIG_CRYPTO_DEV_VMX=3Dy
-> +CONFIG_CRYPTO_DEV_VMX_ENCRYPT=3Dm
->  CONFIG_VIRTUALIZATION=3Dy
->  CONFIG_KVM_BOOK3S_64=3Dm
->  CONFIG_KVM_BOOK3S_64_HV=3Dm
-> diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/=
-ppc64_defconfig
-> index c8b0e80d613b..ebd33b94debb 100644
-> --- a/arch/powerpc/configs/ppc64_defconfig
-> +++ b/arch/powerpc/configs/ppc64_defconfig
-> @@ -355,7 +355,7 @@ CONFIG_CRYPTO_TWOFISH=3Dm
->  CONFIG_CRYPTO_LZO=3Dm
->  CONFIG_CRYPTO_DEV_NX=3Dy
->  CONFIG_CRYPTO_DEV_NX_ENCRYPT=3Dm
-> -CONFIG_CRYPTO_DEV_VMX=3Dy
-> +CONFIG_CRYPTO_DEV_VMX_ENCRYPT=3Dm
->  CONFIG_PRINTK_TIME=3Dy
->  CONFIG_PRINTK_CALLER=3Dy
->  CONFIG_MAGIC_SYSRQ=3Dy
-> diff --git a/arch/powerpc/configs/pseries_defconfig b/arch/powerpc/config=
-s/pseries_defconfig
-> index b571d084c148..304673817ef1 100644
-> --- a/arch/powerpc/configs/pseries_defconfig
-> +++ b/arch/powerpc/configs/pseries_defconfig
-> @@ -315,7 +315,7 @@ CONFIG_CRYPTO_TWOFISH=3Dm
->  CONFIG_CRYPTO_LZO=3Dm
->  CONFIG_CRYPTO_DEV_NX=3Dy
->  CONFIG_CRYPTO_DEV_NX_ENCRYPT=3Dm
-> -CONFIG_CRYPTO_DEV_VMX=3Dy
-> +CONFIG_CRYPTO_DEV_VMX_ENCRYPT=3Dm
->  CONFIG_VIRTUALIZATION=3Dy
->  CONFIG_KVM_BOOK3S_64=3Dm
->  CONFIG_KVM_BOOK3S_64_HV=3Dm
-> diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
-> index 4f705674f94f..956f956607a5 100644
-> --- a/drivers/crypto/Kconfig
-> +++ b/drivers/crypto/Kconfig
-> @@ -761,12 +761,6 @@ config CRYPTO_DEV_QCOM_RNG
->  	  To compile this driver as a module, choose M here. The
->  	  module will be called qcom-rng. If unsure, say N.
->=20=20
-> -config CRYPTO_DEV_VMX
-> -	bool "Support for VMX cryptographic acceleration instructions"
-> -	depends on PPC64 && VSX
-> -	help
-> -	  Support for VMX cryptographic acceleration instructions.
-> -
-
-As said, I'd keep this one (while moving the GHASH dependency here) ...
-
-
->  source "drivers/crypto/vmx/Kconfig"
-
-... and drop this one.
-
-Thanks,
-
-Nicolai
-
-
->=20=20
->  config CRYPTO_DEV_IMGTEC_HASH
-> diff --git a/drivers/crypto/vmx/Kconfig b/drivers/crypto/vmx/Kconfig
-> index c85fab7ef0bd..1a3808b719f3 100644
-> --- a/drivers/crypto/vmx/Kconfig
-> +++ b/drivers/crypto/vmx/Kconfig
-> @@ -1,7 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  config CRYPTO_DEV_VMX_ENCRYPT
-> -	tristate "Encryption acceleration support on P8 CPU"
-> -	depends on CRYPTO_DEV_VMX
-> +	tristate "Power VMX cryptographic acceleration instructions driver"
-> +	depends on PPC64 && VSX
->  	select CRYPTO_GHASH
->  	default m
->  	help
-
---=20
-SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 N=C3=BCrnberg, G=
-ermany
-(HRB 36809, AG N=C3=BCrnberg), GF: Ivo Totev
+Thanks
+-Sachin=
