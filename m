@@ -2,53 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FFD04B897F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 14:19:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A58B4B898D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 14:20:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzJTB6HYXz3dmY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 00:19:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzJTt0GJrz3dqY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 00:20:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Y2Mjm03t;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FvFA19Kg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Y2Mjm03t; 
+ header.s=k20201202 header.b=FvFA19Kg; 
  dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzJQ6276Wz3bb7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 00:16:46 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzJQH620qz3cWS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 00:16:55 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id 63D25CE26EE;
- Wed, 16 Feb 2022 13:16:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5098AC340F3;
- Wed, 16 Feb 2022 13:16:34 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 5C7486164A;
+ Wed, 16 Feb 2022 13:16:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47582C340F1;
+ Wed, 16 Feb 2022 13:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1645017403;
- bh=FL3MwLnWcBo8JSN1gcn5jt3T6ZS9T2mg8wS4azHPBik=;
+ s=k20201202; t=1645017413;
+ bh=+iR2qnnFcrsCPQoMglxV/90U3LFjDlY0u/606L67UPs=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Y2Mjm03t4E3XFheH9yqQ6BGU3tXKnLCiOO/OwTUtf1lgBYcrWial86jpIz7PtRFIw
- avWAsmqN07Ju1N9aZWFEK6djiU4xxVsrWrIldgYbLMAINPBCIE+Gm9knAbw2ZJ5YQU
- 0At6HGqJSzJ5Apl70hqpM+UJUgnBEg8NWGL9S7AWW9MhT9XDK6p1AAJUM3JogLfwD2
- 1lrWss7flCDtYrrnfWGqToUCjUhfOxjIFu9y4/66Sjvu+ZaCBq+vjebdXEQiJu+If4
- gZzt/RXBM8sHm8w1g75IDg7GXTr01G1sdmyHMVFaBZouzSWgTlBFAfWq558NJn3p1E
- Mzr/8UqWDZOoA==
+ b=FvFA19KgOFHw//5AD53hF0IwW2eLEb8iC830WFN6MdVoW4fyh5i/2kJHpxFd7pdlD
+ 7UX6fEewGCq+cZvaT2PObS6XOZnZypDPzvRcYa/W0nzWewDgb+0xXamh2omZfLYFmr
+ 8N4H7mpvMOTDqe2QPH8s/NhnVxUv6/h988kxIKpvMvfqvjGNNvINW6t4henTJIKwJt
+ jzLnL5Fc+Su69zkh5g1Nf3EInYTi+sp1khBbBbK8Lt97/7IVApa2FzdwQAvU7AyEeL
+ nEYQi1fYgk8k2uZixKdw/j3+QwXzCx+3pjcEKGsjL9tNOzijYs/MTwOK3SPeQjakHj
+ 3w2JGHUIm9rGg==
 From: Arnd Bergmann <arnd@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>,
  Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
  linux-mm@kvack.org, linux-api@vger.kernel.org, arnd@arndb.de,
  linux-kernel@vger.kernel.org, viro@zeniv.linux.org.uk
-Subject: [PATCH v2 06/18] x86: use more conventional access_ok() definition
-Date: Wed, 16 Feb 2022 14:13:20 +0100
-Message-Id: <20220216131332.1489939-7-arnd@kernel.org>
+Subject: [PATCH v2 07/18] nios2: drop access_ok() check from __put_user()
+Date: Wed, 16 Feb 2022 14:13:21 +0100
+Message-Id: <20220216131332.1489939-8-arnd@kernel.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20220216131332.1489939-1-arnd@kernel.org>
 References: <20220216131332.1489939-1-arnd@kernel.org>
@@ -85,67 +86,89 @@ Sender: "Linuxppc-dev"
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-The way that access_ok() is defined on x86 is slightly different from
-most other architectures, and a bit more complex.
+Unlike other architectures, the nios2 version of __put_user() has an
+extra check for access_ok(), preventing it from being used to implement
+__put_kernel_nofault().
 
-The generic version tends to result in the best output on all
-architectures, as it results in single comparison against a constant
-limit for calls with a known size.
-
-There are a few callers of __range_not_ok(), all of which use TASK_SIZE
-as the limit rather than TASK_SIZE_MAX, but I could not see any reason
-for picking this. Changing these to call __access_ok() instead uses the
-default limit, but keeps the behavior otherwise.
-
-x86 is the only architecture with a WARN_ON_IN_IRQ() checking
-access_ok(), but it's probably best to leave that in place.
+Split up put_user() along the same lines as __get_user()/get_user()
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/x86/include/asm/uaccess.h | 25 +++----------------------
- 1 file changed, 3 insertions(+), 22 deletions(-)
+ arch/nios2/include/asm/uaccess.h | 56 +++++++++++++++++++-------------
+ 1 file changed, 33 insertions(+), 23 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 79c4869ccdd6..a59ba2578e64 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -16,33 +16,14 @@
-  * Test whether a block of memory is a valid user space address.
-  * Returns 0 if the range is valid, nonzero otherwise.
-  */
--static inline bool __chk_range_not_ok(unsigned long addr, unsigned long size)
-+static inline bool __access_ok(void __user *ptr, unsigned long size)
- {
- 	unsigned long limit = TASK_SIZE_MAX;
-+	unsigned long addr = ptr;
- 
--	/*
--	 * If we have used "sizeof()" for the size,
--	 * we know it won't overflow the limit (but
--	 * it might overflow the 'addr', so it's
--	 * important to subtract the size from the
--	 * limit, not add it to the address).
--	 */
--	if (__builtin_constant_p(size))
--		return unlikely(addr > limit - size);
--
--	/* Arbitrary sizes? Be careful about overflow */
--	addr += size;
--	if (unlikely(addr < size))
--		return true;
--	return unlikely(addr > limit);
-+	return (size <= limit) && (addr <= (limit - size));
+diff --git a/arch/nios2/include/asm/uaccess.h b/arch/nios2/include/asm/uaccess.h
+index ca9285a915ef..a5cbe07cf0da 100644
+--- a/arch/nios2/include/asm/uaccess.h
++++ b/arch/nios2/include/asm/uaccess.h
+@@ -167,34 +167,44 @@ do {									\
+ 	: "r" (val), "r" (ptr), "i" (-EFAULT));				\
  }
  
--#define __access_ok(addr, size)						\
--({									\
--	__chk_user_ptr(addr);						\
--	!__chk_range_not_ok((unsigned long __force)(addr), size);	\
--})
--
- #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
- static inline bool pagefault_disabled(void);
- # define WARN_ON_IN_IRQ()	\
+-#define put_user(x, ptr)						\
++#define __put_user_common(__pu_val, __pu_ptr)				\
+ ({									\
+ 	long __pu_err = -EFAULT;					\
+-	__typeof__(*(ptr)) __user *__pu_ptr = (ptr);			\
+-	__typeof__(*(ptr)) __pu_val = (__typeof(*ptr))(x);		\
+-	if (access_ok(__pu_ptr, sizeof(*__pu_ptr))) {	\
+-		switch (sizeof(*__pu_ptr)) {				\
+-		case 1:							\
+-			__put_user_asm(__pu_val, "stb", __pu_ptr, __pu_err); \
+-			break;						\
+-		case 2:							\
+-			__put_user_asm(__pu_val, "sth", __pu_ptr, __pu_err); \
+-			break;						\
+-		case 4:							\
+-			__put_user_asm(__pu_val, "stw", __pu_ptr, __pu_err); \
+-			break;						\
+-		default:						\
+-			/* XXX: This looks wrong... */			\
+-			__pu_err = 0;					\
+-			if (copy_to_user(__pu_ptr, &(__pu_val),		\
+-				sizeof(*__pu_ptr)))			\
+-				__pu_err = -EFAULT;			\
+-			break;						\
+-		}							\
++	switch (sizeof(*__pu_ptr)) {					\
++	case 1:								\
++		__put_user_asm(__pu_val, "stb", __pu_ptr, __pu_err);	\
++		break;							\
++	case 2:								\
++		__put_user_asm(__pu_val, "sth", __pu_ptr, __pu_err);	\
++		break;							\
++	case 4:								\
++		__put_user_asm(__pu_val, "stw", __pu_ptr, __pu_err);	\
++		break;							\
++	default:							\
++		/* XXX: This looks wrong... */				\
++		__pu_err = 0;						\
++		if (__copy_to_user(__pu_ptr, &(__pu_val),		\
++			sizeof(*__pu_ptr)))				\
++			__pu_err = -EFAULT;				\
++		break;							\
+ 	}								\
+ 	__pu_err;							\
+ })
+ 
+-#define __put_user(x, ptr) put_user(x, ptr)
++#define __put_user(x, ptr)						\
++({									\
++	__auto_type __pu_ptr = (ptr);					\
++	typeof(*__pu_ptr) __pu_val = (typeof(*__pu_ptr))(x);		\
++	__put_user_common(__pu_val, __pu_ptr);				\
++})
++
++#define put_user(x, ptr)						\
++({									\
++	__auto_type __pu_ptr = (ptr);					\
++	typeof(*__pu_ptr) __pu_val = (typeof(*__pu_ptr))(x);		\
++	access_ok(__pu_ptr, sizeof(*__pu_ptr)) ?			\
++		__put_user_common(__pu_val, __pu_ptr) :			\
++		-EFAULT;						\
++})
+ 
+ #endif /* _ASM_NIOS2_UACCESS_H */
 -- 
 2.29.2
 
