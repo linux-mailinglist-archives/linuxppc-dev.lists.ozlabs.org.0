@@ -2,63 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5394B937B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:02:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1C64B9389
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:03:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzX4X5M48z3cQq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 09:02:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzX6H2hR9z3cY9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 09:03:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cqP4swvB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SKBiXg1q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=cqP4swvB; 
+ header.s=k20201202 header.b=SKBiXg1q; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzX3w2Xrpz2xB1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 09:01:48 +1100 (AEDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzX5d3h85z2yK2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 09:03:17 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id F1AB661B43
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 22:01:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BC5C340F6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 22:01:44 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 24D6961B44
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 22:03:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B121C004E1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 22:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1645048904;
- bh=3GAgFKFSz4rrd4LtvDFKA/i0kbB+vNidxSnLES7CC90=;
+ s=k20201202; t=1645048993;
+ bh=ay/5589FenTcDxawo4c9r5D5w/FgYtE3zMvoHKiKBw4=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=cqP4swvBSmEmDzilwiAl6hoaKg+rYJVULzcStt6ho4zk1m5ypcExNPVLQZgKy8sx8
- R95M9l3Bjf0n6qwkM2R2kbFNjXShLM9o6q74b6gcclX4vX9wZchI/bUwCZeWYrCTSY
- gsvEv/BA+uLXbpZD65b9rkIEwfFd/eZctL7fHkU/euGbob7Ar/pXDUC3v7xjDMgGwp
- YEgysit9Yo3IdSh1MHlmzjnxgpnmc5WeIMir/51AHJDH6J1zR1tdpEN4fjuXYfhGI7
- eo7HxAH95JU9to+vLgzK1WVTuLSUb/RJdq0M67nN7rgrrV6xt/h4H+7UQ7KLfthF4v
- 8wivpc2dGDTlA==
-Received: by mail-wm1-f49.google.com with SMTP id o34so1988542wms.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 14:01:44 -0800 (PST)
-X-Gm-Message-State: AOAM5333BZW3awClhgTzRj7S71a2NQG/t2LkVbWFBPxRBOvZ+dzx6lAa
- 3ZVbS1HjlABHesObotiIOMmBHU8r/1a5bh5nW8E=
-X-Google-Smtp-Source: ABdhPJyTINkf1ZMgp+ijDiSYfGY6PCVSFYe6JpwLrHI4jPiDeP7SC/Zo0zGySiauKL0SyOBYxrfLHIczbDoJsvG/Low=
-X-Received: by 2002:a05:600c:1d27:b0:37c:74bb:2b4d with SMTP id
- l39-20020a05600c1d2700b0037c74bb2b4dmr3428429wms.82.1645048892813; Wed, 16
- Feb 2022 14:01:32 -0800 (PST)
+ b=SKBiXg1qMAxSOG7O/+fAEZVno6RY18W0gjWd48YvWVehxkUtMksFHxAKOXPaf1Nim
+ qHK3jdeXyT7izApYt/dKY/APNToDbzS30oZ/3+FsRDGwHCYVq4RDe7vcie8TG09GCB
+ VJT0268zX83XvVza5Mt2NT9M5MRvq5jsvfN9DDwEAft1MUWYI2uGvfXze8xcMLyYPl
+ W5bKKzwddcuQftrn4B+eRiSOdBTv8tp7msayxnS9iimb1X7zN2rzIA/p/RbCumDYFK
+ ozI4OSbpqbFd1JHV5fS/CeCxidkU8UzvVlyBvKvVSqnpavPgI6V4RqMDH4eF/+tdlu
+ AnRmCFW169S3A==
+Received: by mail-ej1-f43.google.com with SMTP id lw4so2312287ejb.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 14:03:13 -0800 (PST)
+X-Gm-Message-State: AOAM532WSSknp/48vonPfYOSS2AzGbq2K11w9cqV6r/RLhSQoSL0ZvLi
+ GU62QGwhtXF0buOatY030zViQm0WrK+rEyqEbYU=
+X-Google-Smtp-Source: ABdhPJyk0zQXj5EZ1uP9z1YUTizioO4kJ6rvneTTyuZji8J8rGr64s8uMSDVOcQeT3f3UOdAxVtCGFpnKRwe/RHh9ys=
+X-Received: by 2002:adf:cf0c:0:b0:1e6:22fe:4580 with SMTP id
+ o12-20020adfcf0c000000b001e622fe4580mr53483wrj.12.1645048981311; Wed, 16 Feb
+ 2022 14:03:01 -0800 (PST)
 MIME-Version: 1.0
 References: <20220216131332.1489939-1-arnd@kernel.org>
- <20220216131332.1489939-16-arnd@kernel.org>
- <Yg1D08+olCSGmnYU@ravnborg.org> <Yg1FRZcrhlh5C//V@ravnborg.org>
-In-Reply-To: <Yg1FRZcrhlh5C//V@ravnborg.org>
+ <20220216131332.1489939-19-arnd@kernel.org>
+ <Yg1F/VT4vRX4aHEt@ravnborg.org>
+In-Reply-To: <Yg1F/VT4vRX4aHEt@ravnborg.org>
 From: Arnd Bergmann <arnd@kernel.org>
-Date: Wed, 16 Feb 2022 23:01:16 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1kV=0G9WYkdjYCiBu=fuT1fbPGHVD9cgHX3ht6J3MFEw@mail.gmail.com>
-Message-ID: <CAK8P3a1kV=0G9WYkdjYCiBu=fuT1fbPGHVD9cgHX3ht6J3MFEw@mail.gmail.com>
-Subject: Re: [PATCH v2 15/18] sparc64: remove CONFIG_SET_FS support
+Date: Wed, 16 Feb 2022 23:02:45 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a2gx2w=RDECNbrO4Zu3ZUTfz2UrLbNSz+ieCgMEFiK3TA@mail.gmail.com>
+Message-ID: <CAK8P3a2gx2w=RDECNbrO4Zu3ZUTfz2UrLbNSz+ieCgMEFiK3TA@mail.gmail.com>
+Subject: Re: [PATCH v2 18/18] uaccess: drop maining CONFIG_SET_FS users
 To: Sam Ravnborg <sam@ravnborg.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -107,25 +108,40 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 16, 2022 at 7:41 PM Sam Ravnborg <sam@ravnborg.org> wrote:
-> On Wed, Feb 16, 2022 at 07:34:59PM +0100, Sam Ravnborg wrote:
+On Wed, Feb 16, 2022 at 7:44 PM Sam Ravnborg <sam@ravnborg.org> wrote:
+>
+> Hi Arnd,
+>
+> Fix spelling in $subject...
 
+done
+
+> sparc/Kconfig b/arch/sparc/Kconfig
+> > index 9f6f9bce5292..9276f321b3e3 100644
+> > --- a/arch/sparc/Kconfig
+> > +++ b/arch/sparc/Kconfig
+> > @@ -46,7 +46,6 @@ config SPARC
+> >       select LOCKDEP_SMALL if LOCKDEP
+> >       select NEED_DMA_MAP_STATE
+> >       select NEED_SG_DMA_LENGTH
+> > -     select SET_FS
+> >       select TRACE_IRQFLAGS_SUPPORT
 > >
-> > I think you somehow missed the Kconfig change, and also the related
-> > sparc32 change which continue to have set_fs() after this patch.
+> >  config SPARC32
+> > @@ -101,6 +100,7 @@ config SPARC64
+> >       select HAVE_SETUP_PER_CPU_AREA
+> >       select NEED_PER_CPU_EMBED_FIRST_CHUNK
+> >       select NEED_PER_CPU_PAGE_FIRST_CHUNK
+> > +     select SET_FS
+> This looks wrong - looks like some merge went wrong here.
 
-Right, thanks for pointing out the issue.
+Fixed now.
 
-> I now notice the sparc32 bits are in the last patch.
-> To avoid breaking bisect-ability on sparc64 I think you need to merge
-> the sparc32 changes with this patch, unless the sparc64 changes can
-> coexist with CONFIG_SET_FS continue to be set.
+>
+> Other than the above the sparc32 changes looks fine, and with the Kconf
+> stuff fixed:
+> Acked-by: Sam Ravnborg <sam@ravnborg.org> # for sparc32 changes
 
-I originally had them in the reverse order and broke bisectability during my
-rebase. The end result is still fine, but now I need to move the 'select
-SET_FS' from CONFIG_SPARC to CONFIG_SPARC32 in this patch
-and then remove it again from there in the last step.
+Thanks!
 
-I've done that in my local copy now.
-
-         Arnd
+      Arnd
