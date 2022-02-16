@@ -2,104 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352B14B8578
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 11:23:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DEC84B86DD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 12:39:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzDZL5GBfz3cTX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 21:23:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzGGB13cKz3cCG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 22:39:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oHIrkyZ7;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=hk6pjK68;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=oHIrkyZ7; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzDYc4p6Pz2yLM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 21:22:59 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21G8fLpZ026688; 
- Wed, 16 Feb 2022 10:22:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=I+WjO5xI2/ImzJN0uVUW04ktj12m5fdzsXHV5sKgwLs=;
- b=oHIrkyZ7VTrVtGwysrqUpk82i9czusb0nJoxq7GfKDob1TGLN7eEQP35+Oivx/31WsDu
- eOZKPWJSfL9y8ZxUwonhojCMeSTWF/OzPNGSATn9ck0MeTpwLTnmvB4Li88bd1m6G05v
- IIqnEjR4IccexyVEIc36EDH4b1b0YbfuoI2X7s5bc5ny1NW9s/XmFrgwY34VbZa2midS
- IdbOozxH99/Qd7s8DzLFYKUxNxCerUhjv2cyE3j/2TN28e3+U5QeEorc+CxCQq85kQ/P
- 7na8YCer2p5W9ClhB7MEmZOtMjeKPtvRBsm9/jAqz0zkKKs0wCRPYU17OAi3N+nY9x63 Lg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3e8w64tu74-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Feb 2022 10:22:32 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21GAJnYS012271;
- Wed, 16 Feb 2022 10:22:32 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3e8w64tu6n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Feb 2022 10:22:31 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21GAE6xl006450;
- Wed, 16 Feb 2022 10:22:30 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma03fra.de.ibm.com with ESMTP id 3e64ha5gc9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 16 Feb 2022 10:22:30 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21GAMRQ144564936
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 16 Feb 2022 10:22:27 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A34EAAE061;
- Wed, 16 Feb 2022 10:22:27 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3D84DAE04D;
- Wed, 16 Feb 2022 10:22:27 +0000 (GMT)
-Received: from localhost (unknown [9.43.36.29])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 16 Feb 2022 10:22:27 +0000 (GMT)
-Date: Wed, 16 Feb 2022 15:52:25 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v1 4/4] powerpc/ftrace: Style cleanup in ftrace_mprofile.S
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>,
- Ingo Molnar <mingo@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>, Steven Rostedt <rostedt@goodmis.org>
-References: <ff535e86d3a69376a6d89168511d4e403835f18b.1644949750.git.christophe.leroy@csgroup.eu>
- <973506292d0c7b05c06530c8e11803ce38e5eda2.1644949750.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <973506292d0c7b05c06530c8e11803ce38e5eda2.1644949750.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzGFV2Qrkz3bN9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 22:39:10 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=hk6pjK68; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4JzGFS4qC7z4xdL;
+ Wed, 16 Feb 2022 22:39:08 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+ s=201702; t=1645011549;
+ bh=Egw/62UndvF/rSgoiC0v9UOOeoa36BkLsTqXaQwqXJs=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=hk6pjK683tnT7c/587MB/rLJwW2MCHE6WC0ljzTBa0wMORMmbFz/t2WQ0wVvIvT/s
+ EHUjdNOB3I8zzT/63WlLqj+pSzqzsZZQo8oyBGXYZqzYaXy/MuyVBbEisbLr2r3TdE
+ i/ixabbDKcNGCrqDmbqSbjus0HE9Y/vR5EAa5NpKQM1h3N+VC40kBaQj/ac9op2RCJ
+ PhhjcUezz1pAO2Xos2B8pQ0tBKTBkEL5ZXZL53QpKMfPpZNbtbskdKW4f9RLHDlJWY
+ gcPSnNSY9s+Rq0jMJUCHIMDkidVOOtbSeM9mT4KVB4u7KCubenwMT9jxSAiE0gD8Kc
+ Fe6tNgjh7cknQ==
+Date: Wed, 16 Feb 2022 22:39:06 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Sachin Sant <sachinp@linux.ibm.com>
+Subject: Re: [next-20220215] WARNING at fs/iomap/buffered-io.c:75 with xfstests
+Message-ID: <20220216223906.173b7f41@canb.auug.org.au>
+In-Reply-To: <CF1506AF-E82B-412B-BD7B-A9F0B9971CB3@linux.ibm.com>
+References: <5AD0BD6A-2C31-450A-924E-A581CD454073@linux.ibm.com>
+ <20220216183919.13b32e1e@canb.auug.org.au>
+ <CF1506AF-E82B-412B-BD7B-A9F0B9971CB3@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1645006896.w35papydkp.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ordY11RA-sbo_4gvuUUINqtLxliHkWpI
-X-Proofpoint-GUID: cJjXIv9Z5iayrRoJlsdh50Hi-WJuKvWz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-16_04,2022-02-14_04,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 clxscore=1011
- malwarescore=0 suspectscore=0 adultscore=0 priorityscore=1501 spamscore=0
- mlxscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2202160058
+Content-Type: multipart/signed; boundary="Sig_/1.Lit0Q=.I5R4ggwSR6QO0=";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,24 +61,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-xfs@vger.kernel.org, riteshh@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, linux-next@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
-> Add some line breaks to better match the file's style, add
-> some space after comma and fix a couple of misplaced blanks.
+--Sig_/1.Lit0Q=.I5R4ggwSR6QO0=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi Sachin,
+
+On Wed, 16 Feb 2022 15:17:14 +0530 Sachin Sant <sachinp@linux.ibm.com> wrot=
+e:
+>
+> >> While running xfstests on IBM Power10 logical partition (LPAR) booted
+> >> with 5.17.0-rc4-next-20220215 following warning was seen:
+> >>=20
+> >> The warning is seen when test tries to unmount the file system. This p=
+roblem is seen
+> >> while running generic/475 sub test. Have attached captured messages du=
+ring the test
+> >> run of generic/475.
+> >>=20
+> >> xfstest is a recent add to upstream regression bucket. I don=E2=80=99t=
+ have any previous data
+> >> to attempt a git bisect.  =20
+> >=20
+> > If you have time, could you test v5.17-rc4-2-gd567f5db412e (the commit
+> > in Linus' tree that next-20220215 is based on) and if that OK, then a
+> > bisect from that to 5.17.0-rc4-next-20220215 may be helpful. =20
 >=20
-> Suggested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/kernel/trace/ftrace_mprofile.S | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
+> Unfortunately I cannot recreate the problem consistently. I tried same te=
+st run with both
+> mainline as well as linux-next20220215. In both attempts I wasn=E2=80=99t=
+ able to recreate it.
 
-Thanks. For the series:
-Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+No worries, thanks anyway.
+--=20
+Cheers,
+Stephen Rothwell
 
+--Sig_/1.Lit0Q=.I5R4ggwSR6QO0=
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-- Naveen
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmIM4loACgkQAVBC80lX
+0GxSfAf/R/U7hR+s4IMzwJpJGvfwh3de8T4tAUVBw3EQuYtdDbYOWeuU5160vFzz
+DiEDtTsAPxMXHT+nTGQJBItacqXfilXEtbMjhZXxbhsGVdnjM0fcjEwII0m02BQ1
+lOvzTeKuUo2ypeSG123lt524LgaNv4TTut7d3P7iJ6Kyujh24Q2fY6hle9UyRsqS
+kJIJ0EqiyARURqDx+cDV4Qekjx8NpKA6jXGAFTX9CHHzt+NFAMHuaU90IRItJmtP
+BpruTqAcx1AuN3MJcm1qQM7V3r8r7ROrxW5WQkQiRugycqRvEjXrQebnaFnMdWvf
+fskkIN27xM7lP+2cjoFckgtKBvmSFA==
+=ixok
+-----END PGP SIGNATURE-----
+
+--Sig_/1.Lit0Q=.I5R4ggwSR6QO0=--
