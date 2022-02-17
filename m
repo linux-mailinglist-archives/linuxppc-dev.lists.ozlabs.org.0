@@ -2,75 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405CC4B9DD6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 11:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8CF4B9E98
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 12:30:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzsJJ540cz3cSM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 21:58:40 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=QjyBknuE;
-	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=kqtJMiiu;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jzt1W0mlxz3cQs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 22:30:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=pvorel@suse.cz; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256
- header.s=susede2_rsa header.b=QjyBknuE; 
- dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=kqtJMiiu; 
- dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzsHb3X1Jz306m
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 21:58:03 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 2D10A21991;
- Thu, 17 Feb 2022 10:58:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
- t=1645095481; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BWifxgAR/Z495cVFocnolcIW5XpC70uze6lvb8LtCTg=;
- b=QjyBknuEto9Q9s36hn0fOg9mYBlkG30wBXmAflfbDDykG40GO+NGmXHi2GDybQ/PZPCHxU
- Gxkwt6vzmnavAmxHHjoJ3doHeWQEpezRyHN+eXcm1t0lrx3z7OXBXnwxd4dXZaQP7iR6ib
- yGGN4enmc1Ch9Z0Fsd12v4qOexLInxE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
- s=susede2_ed25519; t=1645095481;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BWifxgAR/Z495cVFocnolcIW5XpC70uze6lvb8LtCTg=;
- b=kqtJMiiuDYJxUG1xYWedaAyqSl6ER1f5n+1Aza1p+QfHxJQB14HQ358hl+AbmAWdVG83XH
- yNNiCWRtqCK2okAQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D20C013DD8;
- Thu, 17 Feb 2022 10:58:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id WBGmMTgqDmJdTgAAMHmgww
- (envelope-from <pvorel@suse.cz>); Thu, 17 Feb 2022 10:58:00 +0000
-From: Petr Vorel <pvorel@suse.cz>
-To: linux-crypto@vger.kernel.org
-Subject: [PATCH v3 2/2] crypto: vmx - add missing dependencies
-Date: Thu, 17 Feb 2022 11:57:51 +0100
-Message-Id: <20220217105751.6330-3-pvorel@suse.cz>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220217105751.6330-1-pvorel@suse.cz>
-References: <20220217105751.6330-1-pvorel@suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jzt141Cpdz3bV4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 22:30:28 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Jzt0x2QyZz9sS8;
+ Thu, 17 Feb 2022 12:30:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id XUnYJCICrvgh; Thu, 17 Feb 2022 12:30:25 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Jzt0x1Ty7z9sQv;
+ Thu, 17 Feb 2022 12:30:25 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 25F258B77C;
+ Thu, 17 Feb 2022 12:30:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 4HxbiZsXw0US; Thu, 17 Feb 2022 12:30:25 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.6.225])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DC7C08B763;
+ Thu, 17 Feb 2022 12:30:24 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21HBUEOe399195
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Thu, 17 Feb 2022 12:30:14 +0100
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21HBUC30399194;
+ Thu, 17 Feb 2022 12:30:12 +0100
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net v2] net: Force inlining of checksum functions in
+ net/checksum.h
+Date: Thu, 17 Feb 2022 12:30:10 +0100
+Message-Id: <6e2d915b5fc8a7edc3557bcde2fa06d82edcf974.1645097288.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1645097408; l=8024; s=20211009;
+ h=from:subject:message-id; bh=HcE97JbRKL/kvh1JeDkyVDbNMuB70rD3eT2NwCu2/Kw=;
+ b=bEJ9jjTQGGBmJg6n/t9KzGdpavvqwn2W6x8Ax6i92YSI6+mSoN/O9CyiChojjrkhC8uYVkUPQpLe
+ oEd8FwurBZ4lur5Rq/y0y8f3YDxEUEJU3q3V6oeacFQxHd0j/6Ru
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,67 +73,251 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, Nicolai Stange <nstange@suse.de>,
- linux-kbuild@vger.kernel.org, Nayna Jain <nayna@linux.ibm.com>,
- Petr Vorel <pvorel@suse.cz>, Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
- leitao@debian.org, linuxppc-dev@lists.ozlabs.org
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Masahiro Yamada <yamada.masahiro@socionext.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-vmx-crypto module depends on CRYPTO_AES, CRYPTO_CBC, CRYPTO_CTR or
-CRYPTO_XTS, thus add them.
+All functions defined as static inline in net/checksum.h are
+meant to be inlined for performance reason.
 
-These dependencies are likely to be enabled, but if
-CRYPTO_DEV_VMX=y && !CRYPTO_MANAGER_DISABLE_TESTS
-and either of CRYPTO_AES, CRYPTO_CBC, CRYPTO_CTR or CRYPTO_XTS is built
-as module or disabled, alg_test() from crypto/testmgr.c complains during
-boot about failing to allocate the generic fallback implementations
-(2 == ENOENT):
+But since commit ac7c3e4ff401 ("compiler: enable
+CONFIG_OPTIMIZE_INLINING forcibly") the compiler is allowed to
+uninline functions when it wants.
 
-[    0.540953] Failed to allocate xts(aes) fallback: -2
-[    0.541014] alg: skcipher: failed to allocate transform for p8_aes_xts: -2
-[    0.541120] alg: self-tests for p8_aes_xts (xts(aes)) failed (rc=-2)
-[    0.544440] Failed to allocate ctr(aes) fallback: -2
-[    0.544497] alg: skcipher: failed to allocate transform for p8_aes_ctr: -2
-[    0.544603] alg: self-tests for p8_aes_ctr (ctr(aes)) failed (rc=-2)
-[    0.547992] Failed to allocate cbc(aes) fallback: -2
-[    0.548052] alg: skcipher: failed to allocate transform for p8_aes_cbc: -2
-[    0.548156] alg: self-tests for p8_aes_cbc (cbc(aes)) failed (rc=-2)
-[    0.550745] Failed to allocate transformation for 'aes': -2
-[    0.550801] alg: cipher: Failed to load transform for p8_aes: -2
-[    0.550892] alg: self-tests for p8_aes (aes) failed (rc=-2)
+Fair enough in the general case, but for tiny performance critical
+checksum helpers that's counter-productive.
 
-Fixes: c07f5d3da643 ("crypto: vmx - Adding support for XTS")
-Fixes: d2e3ae6f3aba ("crypto: vmx - Enabling VMX module for PPC64")
+The problem mainly arises when selecting CONFIG_CC_OPTIMISE_FOR_SIZE,
+Those helpers being 'static inline' in header files you suddenly find
+them duplicated many times in the resulting vmlinux.
 
-Suggested-by: Nicolai Stange <nstange@suse.de>
-Signed-off-by: Petr Vorel <pvorel@suse.cz>
+Here is a typical exemple when building powerpc pmac32_defconfig
+with CONFIG_CC_OPTIMISE_FOR_SIZE. csum_sub() appears 4 times:
+
+	c04a23cc <csum_sub>:
+	c04a23cc:	7c 84 20 f8 	not     r4,r4
+	c04a23d0:	7c 63 20 14 	addc    r3,r3,r4
+	c04a23d4:	7c 63 01 94 	addze   r3,r3
+	c04a23d8:	4e 80 00 20 	blr
+		...
+	c04a2ce8:	4b ff f6 e5 	bl      c04a23cc <csum_sub>
+		...
+	c04a2d2c:	4b ff f6 a1 	bl      c04a23cc <csum_sub>
+		...
+	c04a2d54:	4b ff f6 79 	bl      c04a23cc <csum_sub>
+		...
+	c04a754c <csum_sub>:
+	c04a754c:	7c 84 20 f8 	not     r4,r4
+	c04a7550:	7c 63 20 14 	addc    r3,r3,r4
+	c04a7554:	7c 63 01 94 	addze   r3,r3
+	c04a7558:	4e 80 00 20 	blr
+		...
+	c04ac930:	4b ff ac 1d 	bl      c04a754c <csum_sub>
+		...
+	c04ad264:	4b ff a2 e9 	bl      c04a754c <csum_sub>
+		...
+	c04e3b08 <csum_sub>:
+	c04e3b08:	7c 84 20 f8 	not     r4,r4
+	c04e3b0c:	7c 63 20 14 	addc    r3,r3,r4
+	c04e3b10:	7c 63 01 94 	addze   r3,r3
+	c04e3b14:	4e 80 00 20 	blr
+		...
+	c04e5788:	4b ff e3 81 	bl      c04e3b08 <csum_sub>
+		...
+	c04e65c8:	4b ff d5 41 	bl      c04e3b08 <csum_sub>
+		...
+	c0512d34 <csum_sub>:
+	c0512d34:	7c 84 20 f8 	not     r4,r4
+	c0512d38:	7c 63 20 14 	addc    r3,r3,r4
+	c0512d3c:	7c 63 01 94 	addze   r3,r3
+	c0512d40:	4e 80 00 20 	blr
+		...
+	c0512dfc:	4b ff ff 39 	bl      c0512d34 <csum_sub>
+		...
+	c05138bc:	4b ff f4 79 	bl      c0512d34 <csum_sub>
+		...
+
+Restore the expected behaviour by using __always_inline for all
+functions defined in net/checksum.h
+
+vmlinux size is even reduced by 256 bytes with this patch:
+
+	   text	   data	    bss	    dec	    hex	filename
+	6980022	2515362	 194384	9689768	 93daa8	vmlinux.before
+	6979862	2515266	 194384	9689512	 93d9a8	vmlinux.now
+
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-changes v2->v3:
-* more less the same, just in drivers/crypto/Kconfig (previously it was
-  in drivers/crypto/vmx/Kconfig)
-* change commit subject to be compatible
+v2: Rebased on net tree
 
- drivers/crypto/Kconfig | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/net/checksum.h | 40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
-index 923fa1effb4a..0eafb2a49f04 100644
---- a/drivers/crypto/Kconfig
-+++ b/drivers/crypto/Kconfig
-@@ -764,7 +764,11 @@ config CRYPTO_DEV_QCOM_RNG
- config CRYPTO_DEV_VMX
- 	tristate "Power VMX cryptographic acceleration instructions driver"
- 	depends on PPC64 && VSX
-+	select CRYPTO_AES
-+	select CRYPTO_CBC
-+	select CRYPTO_CTR
- 	select CRYPTO_GHASH
-+	select CRYPTO_XTS
- 	help
- 	  Support for VMX cryptographic acceleration instructions on Power8 CPU.
- 	  This module supports acceleration for AES and GHASH in hardware. If you
+diff --git a/include/net/checksum.h b/include/net/checksum.h
+index 5218041e5c8f..1e2e011c51f6 100644
+--- a/include/net/checksum.h
++++ b/include/net/checksum.h
+@@ -22,7 +22,7 @@
+ #include <asm/checksum.h>
+ 
+ #ifndef _HAVE_ARCH_COPY_AND_CSUM_FROM_USER
+-static inline
++static __always_inline
+ __wsum csum_and_copy_from_user (const void __user *src, void *dst,
+ 				      int len)
+ {
+@@ -33,7 +33,7 @@ __wsum csum_and_copy_from_user (const void __user *src, void *dst,
+ #endif
+ 
+ #ifndef HAVE_CSUM_COPY_USER
+-static __inline__ __wsum csum_and_copy_to_user
++static __always_inline __wsum csum_and_copy_to_user
+ (const void *src, void __user *dst, int len)
+ {
+ 	__wsum sum = csum_partial(src, len, ~0U);
+@@ -45,7 +45,7 @@ static __inline__ __wsum csum_and_copy_to_user
+ #endif
+ 
+ #ifndef _HAVE_ARCH_CSUM_AND_COPY
+-static inline __wsum
++static __always_inline __wsum
+ csum_partial_copy_nocheck(const void *src, void *dst, int len)
+ {
+ 	memcpy(dst, src, len);
+@@ -54,7 +54,7 @@ csum_partial_copy_nocheck(const void *src, void *dst, int len)
+ #endif
+ 
+ #ifndef HAVE_ARCH_CSUM_ADD
+-static inline __wsum csum_add(__wsum csum, __wsum addend)
++static __always_inline __wsum csum_add(__wsum csum, __wsum addend)
+ {
+ 	u32 res = (__force u32)csum;
+ 	res += (__force u32)addend;
+@@ -62,12 +62,12 @@ static inline __wsum csum_add(__wsum csum, __wsum addend)
+ }
+ #endif
+ 
+-static inline __wsum csum_sub(__wsum csum, __wsum addend)
++static __always_inline __wsum csum_sub(__wsum csum, __wsum addend)
+ {
+ 	return csum_add(csum, ~addend);
+ }
+ 
+-static inline __sum16 csum16_add(__sum16 csum, __be16 addend)
++static __always_inline __sum16 csum16_add(__sum16 csum, __be16 addend)
+ {
+ 	u16 res = (__force u16)csum;
+ 
+@@ -75,12 +75,12 @@ static inline __sum16 csum16_add(__sum16 csum, __be16 addend)
+ 	return (__force __sum16)(res + (res < (__force u16)addend));
+ }
+ 
+-static inline __sum16 csum16_sub(__sum16 csum, __be16 addend)
++static __always_inline __sum16 csum16_sub(__sum16 csum, __be16 addend)
+ {
+ 	return csum16_add(csum, ~addend);
+ }
+ 
+-static inline __wsum csum_shift(__wsum sum, int offset)
++static __always_inline __wsum csum_shift(__wsum sum, int offset)
+ {
+ 	/* rotate sum to align it with a 16b boundary */
+ 	if (offset & 1)
+@@ -88,42 +88,42 @@ static inline __wsum csum_shift(__wsum sum, int offset)
+ 	return sum;
+ }
+ 
+-static inline __wsum
++static __always_inline __wsum
+ csum_block_add(__wsum csum, __wsum csum2, int offset)
+ {
+ 	return csum_add(csum, csum_shift(csum2, offset));
+ }
+ 
+-static inline __wsum
++static __always_inline __wsum
+ csum_block_add_ext(__wsum csum, __wsum csum2, int offset, int len)
+ {
+ 	return csum_block_add(csum, csum2, offset);
+ }
+ 
+-static inline __wsum
++static __always_inline __wsum
+ csum_block_sub(__wsum csum, __wsum csum2, int offset)
+ {
+ 	return csum_block_add(csum, ~csum2, offset);
+ }
+ 
+-static inline __wsum csum_unfold(__sum16 n)
++static __always_inline __wsum csum_unfold(__sum16 n)
+ {
+ 	return (__force __wsum)n;
+ }
+ 
+-static inline __wsum csum_partial_ext(const void *buff, int len, __wsum sum)
++static __always_inline __wsum csum_partial_ext(const void *buff, int len, __wsum sum)
+ {
+ 	return csum_partial(buff, len, sum);
+ }
+ 
+ #define CSUM_MANGLED_0 ((__force __sum16)0xffff)
+ 
+-static inline void csum_replace_by_diff(__sum16 *sum, __wsum diff)
++static __always_inline void csum_replace_by_diff(__sum16 *sum, __wsum diff)
+ {
+ 	*sum = csum_fold(csum_add(diff, ~csum_unfold(*sum)));
+ }
+ 
+-static inline void csum_replace4(__sum16 *sum, __be32 from, __be32 to)
++static __always_inline void csum_replace4(__sum16 *sum, __be32 from, __be32 to)
+ {
+ 	__wsum tmp = csum_sub(~csum_unfold(*sum), (__force __wsum)from);
+ 
+@@ -136,7 +136,7 @@ static inline void csum_replace4(__sum16 *sum, __be32 from, __be32 to)
+  *  m : old value of a 16bit field
+  *  m' : new value of a 16bit field
+  */
+-static inline void csum_replace2(__sum16 *sum, __be16 old, __be16 new)
++static __always_inline void csum_replace2(__sum16 *sum, __be16 old, __be16 new)
+ {
+ 	*sum = ~csum16_add(csum16_sub(~(*sum), old), new);
+ }
+@@ -150,7 +150,7 @@ void inet_proto_csum_replace16(__sum16 *sum, struct sk_buff *skb,
+ void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
+ 				     __wsum diff, bool pseudohdr);
+ 
+-static inline void inet_proto_csum_replace2(__sum16 *sum, struct sk_buff *skb,
++static __always_inline void inet_proto_csum_replace2(__sum16 *sum, struct sk_buff *skb,
+ 					    __be16 from, __be16 to,
+ 					    bool pseudohdr)
+ {
+@@ -158,7 +158,7 @@ static inline void inet_proto_csum_replace2(__sum16 *sum, struct sk_buff *skb,
+ 				 (__force __be32)to, pseudohdr);
+ }
+ 
+-static inline __wsum remcsum_adjust(void *ptr, __wsum csum,
++static __always_inline __wsum remcsum_adjust(void *ptr, __wsum csum,
+ 				    int start, int offset)
+ {
+ 	__sum16 *psum = (__sum16 *)(ptr + offset);
+@@ -175,12 +175,12 @@ static inline __wsum remcsum_adjust(void *ptr, __wsum csum,
+ 	return delta;
+ }
+ 
+-static inline void remcsum_unadjust(__sum16 *psum, __wsum delta)
++static __always_inline void remcsum_unadjust(__sum16 *psum, __wsum delta)
+ {
+ 	*psum = csum_fold(csum_sub(delta, (__force __wsum)*psum));
+ }
+ 
+-static inline __wsum wsum_negate(__wsum val)
++static __always_inline __wsum wsum_negate(__wsum val)
+ {
+ 	return (__force __wsum)-((__force u32)val);
+ }
 -- 
-2.35.1
+2.34.1
 
