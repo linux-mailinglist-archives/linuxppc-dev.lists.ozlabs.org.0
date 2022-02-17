@@ -1,65 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8674BA415
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 16:15:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F5C4BA4AD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 16:42:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jzz0y2lfyz3cbF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 02:15:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jzzbz4XtXz3cbD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 02:42:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ smtp.helo=relay5.hostedemail.com (client-ip=64.99.140.39;
+ helo=relay5.hostedemail.com; envelope-from=joe@perches.com;
  receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from relay5.hostedemail.com (relay5.hostedemail.com [64.99.140.39])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jzz0T1qHVz3cBq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 02:15:19 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-93-EQ4SPIr8P7WTnj341oLK3g-1; Thu, 17 Feb 2022 15:15:13 +0000
-X-MC-Unique: EQ4SPIr8P7WTnj341oLK3g-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.28; Thu, 17 Feb 2022 15:15:12 +0000
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.028; Thu, 17 Feb 2022 15:15:12 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Christophe Leroy' <christophe.leroy@csgroup.eu>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>, Nick Desaulniers
- <ndesaulniers@google.com>, Masahiro Yamada <yamada.masahiro@socionext.com>
-Subject: RE: [PATCH net v3] net: Force inlining of checksum functions in
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzzbT54HHz3cDB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 02:42:11 +1100 (AEDT)
+Received: from omf09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+ by unirelay08.hostedemail.com (Postfix) with ESMTP id 1AFCB2042F;
+ Thu, 17 Feb 2022 15:42:07 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by
+ omf09.hostedemail.com (Postfix) with ESMTPA id AF56320032; 
+ Thu, 17 Feb 2022 15:42:05 +0000 (UTC)
+Message-ID: <1f6cabc8b183056546571b391770e1eea8524fd3.camel@perches.com>
+Subject: Re: [PATCH net v3] net: Force inlining of checksum functions in
  net/checksum.h
-Thread-Topic: [PATCH net v3] net: Force inlining of checksum functions in
- net/checksum.h
-Thread-Index: AQHYI/ioJk+yETn/QkyN152xjKaZ96yXvR4wgAAXuo+AAALtMA==
-Date: Thu, 17 Feb 2022 15:15:11 +0000
-Message-ID: <3c2b682a7d804b5e8749428b50342c82@AcuMS.aculab.com>
+From: Joe Perches <joe@perches.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+Date: Thu, 17 Feb 2022 07:42:04 -0800
+In-Reply-To: <978951d76d8cb84bab347c7623bc163e9a038452.1645100305.git.christophe.leroy@csgroup.eu>
 References: <978951d76d8cb84bab347c7623bc163e9a038452.1645100305.git.christophe.leroy@csgroup.eu>
- <35bcd5df0fb546008ff4043dbea68836@AcuMS.aculab.com>
- <d38e5e1c-29b6-8cc6-7409-d0bdd5772f23@csgroup.eu>
- <9b8ef186-c7fe-822c-35df-342c9e86cc88@csgroup.eu>
-In-Reply-To: <9b8ef186-c7fe-822c-35df-342c9e86cc88@csgroup.eu>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.40.4-1ubuntu2 
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: AF56320032
+X-Spam-Status: No, score=-4.42
+X-Stat-Signature: nz9e5z1u3yz1f5rpbt3m7jkkokhucyw8
+X-Rspamd-Server: rspamout02
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX19KaPmP/R/KoYWstS8VZiTyOYA8oslrR+Y=
+X-HE-Tag: 1645112525-592173
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,73 +56,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Masahiro Yamada <yamada.masahiro@socionext.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogQ2hyaXN0b3BoZSBMZXJveQ0KPiBTZW50OiAxNyBGZWJydWFyeSAyMDIyIDE0OjU1DQo+
-IA0KPiBMZSAxNy8wMi8yMDIyIMOgIDE1OjUwLCBDaHJpc3RvcGhlIExlcm95IGEgw6ljcml0wqA6
-DQo+ID4gQWRkaW5nIEluZ28sIEFuZHJldyBhbmQgTmljayBhcyB0aGV5IHdlcmUgaW52b2x2ZWQg
-aW4gdGhlIHN1YmpldCwNCj4gPg0KPiA+IExlIDE3LzAyLzIwMjIgw6AgMTQ6MzYsIERhdmlkIExh
-aWdodCBhIMOpY3JpdMKgOg0KPiA+PiBGcm9tOiBDaHJpc3RvcGhlIExlcm95DQo+ID4+PiBTZW50
-OiAxNyBGZWJydWFyeSAyMDIyIDEyOjE5DQo+ID4+Pg0KPiA+Pj4gQWxsIGZ1bmN0aW9ucyBkZWZp
-bmVkIGFzIHN0YXRpYyBpbmxpbmUgaW4gbmV0L2NoZWNrc3VtLmggYXJlDQo+ID4+PiBtZWFudCB0
-byBiZSBpbmxpbmVkIGZvciBwZXJmb3JtYW5jZSByZWFzb24uDQo+ID4+Pg0KPiA+Pj4gQnV0IHNp
-bmNlIGNvbW1pdCBhYzdjM2U0ZmY0MDEgKCJjb21waWxlcjogZW5hYmxlDQo+ID4+PiBDT05GSUdf
-T1BUSU1JWkVfSU5MSU5JTkcgZm9yY2libHkiKSB0aGUgY29tcGlsZXIgaXMgYWxsb3dlZCB0bw0K
-PiA+Pj4gdW5pbmxpbmUgZnVuY3Rpb25zIHdoZW4gaXQgd2FudHMuDQo+ID4+Pg0KPiA+Pj4gRmFp
-ciBlbm91Z2ggaW4gdGhlIGdlbmVyYWwgY2FzZSwgYnV0IGZvciB0aW55IHBlcmZvcm1hbmNlIGNy
-aXRpY2FsDQo+ID4+PiBjaGVja3N1bSBoZWxwZXJzIHRoYXQncyBjb3VudGVyLXByb2R1Y3RpdmUu
-DQo+ID4+DQo+ID4+IFRoZXJlIGlzbid0IGEgcmVhbCBqdXN0aWZpY2F0aW9uIGZvciBhbGxvd2lu
-ZyB0aGUgY29tcGlsZXINCj4gPj4gdG8gJ25vdCBpbmxpbmUnIGZ1bmN0aW9ucyBpbiB0aGF0IGNv
-bW1pdC4NCj4gPg0KPiA+IERvIHlvdSBtZWFuIHRoYXQgdGhlIHR3byBmb2xsb3dpbmcgY29tbWl0
-cyBzaG91bGQgYmUgcmV2ZXJ0ZWQ6DQo+ID4NCj4gPiAtIDg4OWIzYzEyNDVkZSAoImNvbXBpbGVy
-OiByZW1vdmUgQ09ORklHX09QVElNSVpFX0lOTElOSU5HIGVudGlyZWx5IikNCj4gPiAtIDRjNGUy
-NzZmNjQ5MSAoIm5ldDogRm9yY2UgaW5saW5pbmcgb2YgY2hlY2tzdW0gZnVuY3Rpb25zIGluDQo+
-ID4gbmV0L2NoZWNrc3VtLmgiKQ0KPiANCj4gT2YgY291cnNlIG5vdCB0aGUgYWJvdmUgb25lIChj
-b3B5L3Bhc3RlIGVycm9yKSwgYnV0Og0KPiAtIGFjN2MzZTRmZjQwMSAoImNvbXBpbGVyOiBlbmFi
-bGUgQ09ORklHX09QVElNSVpFX0lOTElOSU5HIGZvcmNpYmx5IikNCg0KVGhhdCdzIHRoZSBvbmUg
-SSBsb29rZWQgYXQuDQoNCj4gPj4gSXQgcmF0aGVyIHNlZW1zIGJhY2t3YXJkcy4NCj4gPj4gVGhl
-IGtlcm5lbCBzb3VyY2VzIGRvbid0IHJlYWxseSBoYXZlIGFueXRoaW5nIG1hcmtlZCAnaW5saW5l
-Jw0KPiA+PiB0aGF0IHNob3VsZG4ndCBhbHdheXMgYmUgaW5saW5lZC4NCj4gPj4gSWYgdGhlcmUg
-YXJlIGFueSBzdWNoIGZ1bmN0aW9ucyB0aGV5IGFyZSBmZXcgYW5kIGZhciBiZXR3ZWVuLg0KPiA+
-Pg0KPiA+PiBJJ3ZlIGhhZCBlbm91Z2ggdHJvdWJsZSAoZWxzZXdoZXJlKSBnZXR0aW5nIGdjYyB0
-byBpbmxpbmUNCj4gPj4gc3RhdGljIGZ1bmN0aW9ucyB0aGF0IGFyZSBvbmx5IGNhbGxlZCBvbmNl
-Lg0KPiA+PiBJIGVuZGVkIHVwIHVzaW5nICdhbHdheXNfaW5saW5lJy4NCj4gPj4gKFRoYXQgaXMg
-NGsgb2YgZW1iZWRkZWQgb2JqZWN0IGNvZGUgdGhhdCB3aWxsIGJlIHRvbyBzbG93DQo+ID4+IGlm
-IGl0IGV2ZXIgc3BpbGxzIGEgcmVnaXN0ZXIgdG8gc3RhY2suKQ0KPiA+Pg0KPiA+DQo+ID4gSSBh
-Z3JlZSB3aXRoIHlvdSB0aGF0IHRoYXQgY2hhbmdlIGlzIGEgbmlnaHRtYXJlIHdpdGggbWFueSBz
-bWFsbA0KPiA+IGZ1bmN0aW9ucyB0aGF0IHdlIHJlYWxseSB3YW50IGlubGluZWQsIGFuZCB3aGVu
-IHdlIGZvcmNlIGlubGluaW5nIHdlDQo+ID4gbW9zdCBvZiB0aGUgdGltZSBnZXQgYSBzbWFsbGVy
-IGJpbmFyeS4NCj4gPg0KPiA+IEFuZCBpdCBiZWNvbWVzIGV2ZW4gbW9yZSBwcm9ibGVtYXRpYyB3
-aGVuIHdlIHN0YXJ0IGFkZGluZw0KPiA+IGluc3RydW1lbnRhdGlvbiBsaWtlIHN0YWNrIHByb3Rl
-Y3Rvci4NCj4gPg0KPiA+IEFjY29yZGluZyB0byB0aGUgb3JpZ2luYWwgY29tbWl0cyBob3dldmVy
-IHRoaXMgd2FzIHN1cHBvc2VkIHRvIHByb3ZpZGUNCj4gPiByZWFsIGJlbmVmaXQ6DQo+ID4NCj4g
-PiAtIDYwYTNjZGQwNjM5NCAoIng4NjogYWRkIG9wdGltaXplZCBpbmxpbmluZyIpDQo+ID4gLSA5
-MDEyZDAxMTY2MGUgKCJjb21waWxlcjogYWxsb3cgYWxsIGFyY2hlcyB0byBlbmFibGUNCj4gPiBD
-T05GSUdfT1BUSU1JWkVfSU5MSU5JTkciKQ0KPiA+DQo+ID4gQnV0IHdoZW4gSSBidWlsZCBwcGM2
-NGxlX2RlZmNvbmZpZyArIENPTkZJR19DQ19PUFRJTUlTRV9GT1JfU0laRSBJIGdldDoNCj4gPiAg
-wqDCoMKgIDExMiB0aW1lc8KgIHF1ZXVlZF9zcGluX3VubG9jaygpDQo+ID4gIMKgwqDCoCAxMjIg
-dGltZXPCoCBtbWlvd2Jfc3Bpbl91bmxvY2soKQ0KPiA+ICDCoMKgwqAgMTUxIHRpbWVzwqAgY3B1
-X29ubGluZSgpDQo+ID4gIMKgwqDCoCAyMjUgdGltZXPCoCBfX3Jhd19zcGluX3VubG9jaygpDQoN
-ClllcywgeW91IGVpdGhlciB3YW50IHRoZW0gaW5saW5lZCwgb3IgYSBzaW5nbGUgY29weSBvZiB0
-aGUgcmVhbCBmdW5jdGlvbi4NCkkgaGF2ZSBzZWVuIGEgbGlua2VyIGRlLWR1cGxpY2F0ZSBmdW5j
-dGlvbnMgd2l0aCBpZGVudGljYWwgYm9kaWVzLg0KQnV0IEkgZG9uJ3QgdGhhdCBnbGQgZG9lcyB0
-aGF0IGZvciB0aGUga2VybmVsLg0KKFdhcyBjb25mdXNpbmcgYmVjYXVzZSBib3RoIGRpZCBzdHJ1
-Y3R1cmUtPm1lbWJlciA9IDAgYnV0IGZvciBlbnRpcmVseQ0KZGlmZmVyZW50IHR5cGVzLikNCg0K
-PiA+IFNvIEkgd2FzIHdvbmRlcmluZywgd291bGQgd2UgaGF2ZSBhIHdheSB0byBmb3JjZSBpbmxp
-bmluZyBvZiBmdW5jdGlvbnMNCj4gPiBtYXJrZWQgaW5saW5lIGluIGhlYWRlciBmaWxlcyB3aGls
-ZSBsZWF2aW5nIEdDQyBoYW5kbGluZyB0aGUgb25lcyBpbiBDDQo+ID4gZmlsZXMgdGhlIHdheSBp
-dCB3YW50cyA/DQoNClRoZSB2aWV3IGZvciB0aG9zZSAoaW4gbmV0ZGV2IGF0IGxlYXN0KSBpcyBq
-dXN0IG5vdCB0byBtYXJrIHRoZSBpbmxpbmUNCmFuZCBsZXQgdGhlIGNvbXBpbGVyIGRlY2lkZS4N
-CkFsdGhvdWdoLCBJTUhPLCBpdCB0ZW5kcyB0byBnZXQgaXQgd3JvbmcgcXVpdGUgb2Z0ZW4uDQpP
-ZnRlbiBiZWNhdXNlIGl0IGRlY2lkZXMgbm90IHRvIGlubGluZSBiZWZvcmUgdGhlIG9wdGltaXNl
-cg0KcmVtb3ZlcyBhbGwgdGhlIGNvbnN0YW50IGNvbmRpdGlvbmFscy4NCg0KS2VybmVsIGRldmVs
-b3BlcnMgb3VnaHQgdG8gYmUgY2xldmVyIGVub3VnaCB0byBub3QgaW5saW5lDQpmdW5jdGlvbnMg
-dGhhdCBhcmUgYmlnLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRl
-LCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpS
-ZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
+On Thu, 2022-02-17 at 13:19 +0100, Christophe Leroy wrote:
+> All functions defined as static inline in net/checksum.h are
+> meant to be inlined for performance reason.
+> 
+> But since commit ac7c3e4ff401 ("compiler: enable
+> CONFIG_OPTIMIZE_INLINING forcibly") the compiler is allowed to
+> uninline functions when it wants.
+> 
+> Fair enough in the general case, but for tiny performance critical
+> checksum helpers that's counter-productive.
+
+Thanks.  Trivial style notes:
+
+> diff --git a/include/net/checksum.h b/include/net/checksum.h
+[]
+> @@ -22,7 +22,7 @@
+>  #include <asm/checksum.h>
+>  
+>  #ifndef _HAVE_ARCH_COPY_AND_CSUM_FROM_USER
+> -static inline
+> +static __always_inline
+>  __wsum csum_and_copy_from_user (const void __user *src, void *dst,
+>  				      int len)
+>  {
+
+__wsum might be better placed on the previous line.
+
+[]
+
+> @@ -45,7 +45,7 @@ static __inline__ __wsum csum_and_copy_to_user
+>  #endif
+>  
+>  #ifndef _HAVE_ARCH_CSUM_AND_COPY
+> -static inline __wsum
+> +static __always_inline __wsum
+>  csum_partial_copy_nocheck(const void *src, void *dst, int len)
+
+To be consistent with the location of the __wsum return value
+when splitting the function definitions across multiple lines.
+
+(like the below)
+
+> @@ -88,42 +88,43 @@ static inline __wsum csum_shift(__wsum sum, int offset)
+>  	return sum;
+>  }
+>  
+> -static inline __wsum
+> +static __always_inline __wsum
+>  csum_block_add(__wsum csum, __wsum csum2, int offset)
+>  {
+>  	return csum_add(csum, csum_shift(csum2, offset));
+>  }
+>  
+> -static inline __wsum
+> +static __always_inline __wsum
+>  csum_block_add_ext(__wsum csum, __wsum csum2, int offset, int len)
+>  {
+>  	return csum_block_add(csum, csum2, offset);
+>  }
+>  
+> -static inline __wsum
+> +static __always_inline __wsum
+>  csum_block_sub(__wsum csum, __wsum csum2, int offset)
+>  {
+>  	return csum_block_add(csum, ~csum2, offset);
+>  }
+>  
+> -static inline __wsum csum_unfold(__sum16 n)
+> +static __always_inline __wsum csum_unfold(__sum16 n)
+>  {
+>  	return (__force __wsum)n;
+>  }
+>  
+
+[]
+
+> -static inline __wsum csum_partial_ext(const void *buff, int len, __wsum sum)
+> +static __always_inline
+> +__wsum csum_partial_ext(const void *buff, int len, __wsum sum)
+>  {
+>  	return csum_partial(buff, len, sum);
+>  }
+
+And this __wsum could be moved too.
+
+> @@ -150,15 +151,15 @@ void inet_proto_csum_replace16(__sum16 *sum, struct sk_buff *skb,
+[]
+> -static inline __wsum remcsum_adjust(void *ptr, __wsum csum,
+> +static __always_inline __wsum remcsum_adjust(void *ptr, __wsum csum,
+>  				    int start, int offset)
+>  {
+>  	__sum16 *psum = (__sum16 *)(ptr + offset);
+
+And this one could be split like the above
+
+static __always_inline __wsum
+remcsum_adjust(void *ptr, __wsum csum, int start, int offset)
+
 
