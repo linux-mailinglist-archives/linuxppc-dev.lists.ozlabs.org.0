@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5BCD4B9FF6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 13:19:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 400D34BA15F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 14:37:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Jzv600qsKz3cZL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 23:19:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jzwq25pczz3dfZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 00:37:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,49 +16,49 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jzv5Y6RBdz3Wtr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 23:19:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzwpC5whjz3cPC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 00:36:17 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4Jzv5S3MH0z9sS8;
- Thu, 17 Feb 2022 13:19:24 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4Jzwp64hKWz9sST;
+ Thu, 17 Feb 2022 14:36:14 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id xBzLmjhg3TyM; Thu, 17 Feb 2022 13:19:24 +0100 (CET)
+ with ESMTP id bdsLnYI5f0-W; Thu, 17 Feb 2022 14:36:14 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4Jzv5S2R32z9sRv;
- Thu, 17 Feb 2022 13:19:24 +0100 (CET)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Jzwp63jSCz9sSQ;
+ Thu, 17 Feb 2022 14:36:14 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 445198B77C;
- Thu, 17 Feb 2022 13:19:24 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3F7E68B77C;
+ Thu, 17 Feb 2022 14:36:14 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id rNFXPKHIWOLA; Thu, 17 Feb 2022 13:19:24 +0100 (CET)
+ with ESMTP id gmNETUs1Pp2y; Thu, 17 Feb 2022 14:36:14 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.6.225])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 087DE8B763;
- Thu, 17 Feb 2022 13:19:23 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F3FE98B763;
+ Thu, 17 Feb 2022 14:36:13 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21HCJEXX405815
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21HDa4xv407928
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Thu, 17 Feb 2022 13:19:14 +0100
+ Thu, 17 Feb 2022 14:36:04 +0100
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21HCJDt2405814;
- Thu, 17 Feb 2022 13:19:13 +0100
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21HDa2lE407925;
+ Thu, 17 Feb 2022 14:36:02 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net v3] net: Force inlining of checksum functions in
+Subject: [PATCH net v4] net: Force inlining of checksum functions in
  net/checksum.h
-Date: Thu, 17 Feb 2022 13:19:07 +0100
-Message-Id: <978951d76d8cb84bab347c7623bc163e9a038452.1645100305.git.christophe.leroy@csgroup.eu>
+Date: Thu, 17 Feb 2022 14:35:49 +0100
+Message-Id: <4c4e276f6491d127c61b627c9ff13f0a71dab092.1645104881.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1645100346; l=8199; s=20211009;
- h=from:subject:message-id; bh=v6MTJe/nEEUeoiXp6PfSr9gz+VNgRLmJ7rahEeCQNs8=;
- b=2zarvVpKFu+fjJa3ALxyIoRqQkLIOLjVcYlHZkTz1CGAEgqTtzd//2JkGlluTGBvKqb35E7HUWmU
- nhjlJSdyCJpmB9+yo3JcN/RGCVZ60de0b6ozXl9dYlRWtDiTfCvi
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1645104947; l=8482; s=20211009;
+ h=from:subject:message-id; bh=nLoTS03q6niZXTFFFgpm8ElmTrYEQmex7BJzqocdnLo=;
+ b=k1qawNxGrW4us7WMJL9HYnNhC4Z7yjlNzEdHHr+o9yaJDLvn3rxivCgirLbPCTrs/008V1VD04De
+ k6ZMSd3gDqJsS9qk4rtlRa60VNMVbO9ycGKilX8dFQLK5b9wttgN
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -73,8 +73,9 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: netdev@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>,
+ linux-kernel@vger.kernel.org, Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -150,17 +151,21 @@ vmlinux size is even reduced by 256 bytes with this patch:
 
 Fixes: ac7c3e4ff401 ("compiler: enable CONFIG_OPTIMIZE_INLINING forcibly")
 Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
+v4: Added Cc: as complained by netdev patchwork and handled checkpatch checks. (Sorry for the noise, I'm not used to netdev process)
+
 v3: Added fixes tag and handled checkpatch warning about length of lines.
 
 v2: Rebased on net tree
 ---
- include/net/checksum.h | 45 +++++++++++++++++++++---------------------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+ include/net/checksum.h | 47 +++++++++++++++++++++---------------------
+ 1 file changed, 24 insertions(+), 23 deletions(-)
 
 diff --git a/include/net/checksum.h b/include/net/checksum.h
-index 5218041e5c8f..712b554a23be 100644
+index 5218041e5c8f..02d0c2d01014 100644
 --- a/include/net/checksum.h
 +++ b/include/net/checksum.h
 @@ -22,7 +22,7 @@
@@ -289,7 +294,7 @@ index 5218041e5c8f..712b554a23be 100644
  {
  	*sum = ~csum16_add(csum16_sub(~(*sum), old), new);
  }
-@@ -150,15 +151,15 @@ void inet_proto_csum_replace16(__sum16 *sum, struct sk_buff *skb,
+@@ -150,16 +151,16 @@ void inet_proto_csum_replace16(__sum16 *sum, struct sk_buff *skb,
  void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
  				     __wsum diff, bool pseudohdr);
  
@@ -305,10 +310,12 @@ index 5218041e5c8f..712b554a23be 100644
  }
  
 -static inline __wsum remcsum_adjust(void *ptr, __wsum csum,
+-				    int start, int offset)
 +static __always_inline __wsum remcsum_adjust(void *ptr, __wsum csum,
- 				    int start, int offset)
++					     int start, int offset)
  {
  	__sum16 *psum = (__sum16 *)(ptr + offset);
+ 	__wsum delta;
 @@ -175,12 +176,12 @@ static inline __wsum remcsum_adjust(void *ptr, __wsum csum,
  	return delta;
  }
