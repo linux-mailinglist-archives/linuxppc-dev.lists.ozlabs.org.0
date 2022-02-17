@@ -2,93 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10CBF4BA61E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 17:37:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 219C24BA665
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 17:50:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K00q83tD8z3cmQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 03:37:24 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jfclaZOT;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K016251fjz3cRn
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 03:50:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=jfclaZOT; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K00mQ1FJZz3cX7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 03:35:01 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21HG8J2T023534; 
- Thu, 17 Feb 2022 16:34:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=cDgPKq0rF08mHbTrnamH9zPTGXEqsI89NrXedHEVJcE=;
- b=jfclaZOTGMylAaiPcXJ3hYUgPVVpyg2LiM97G/cz6JSh7CBSr0tpIlCKmUifz4+lNGDY
- ruLnTCnQvuF79WdhdjJcnfgNvJcDSGTp/m8jcq/lLYnm0lHkEWDfKN8L9hDpOnYBZ21l
- YeYaLHI04gozshwYVF29GKtsJKvaIVnxgtdH46uGg+lQinLR3BYDdbdX2PX3WRBiDsO1
- 7nwh8aALNP+Gq6+aj/tgk+OQt21Op6hjfNa0Qf9LZJq9WmeqPw8wviidVv3mqELJp2Qr
- 2HPhWpB4T6Qr52BdnyLwPhfSYc5eZQ8dRlmAYLsXKei7sz8EA9B/VWUxt1jnZr/iyeon SQ== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e9r00kqyh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Feb 2022 16:34:52 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21HGHwQf007286;
- Thu, 17 Feb 2022 16:34:50 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma01fra.de.ibm.com with ESMTP id 3e64ha22t5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Feb 2022 16:34:50 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21HGYluZ44237082
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Feb 2022 16:34:47 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 06D2152063;
- Thu, 17 Feb 2022 16:34:47 +0000 (GMT)
-Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown
- [9.43.54.12])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id E32E552054;
- Thu, 17 Feb 2022 16:34:41 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
- linux-kernel@vger.kernel.org, peterz@infradead.org,
- dan.j.williams@intel.com, ira.weiny@intel.com, vishal.l.verma@intel.com
-Subject: [PATCH v6 4/4] docs: ABI: sysfs-bus-nvdimm: Document sysfs event
- format entries for nvdimm pmu
-Date: Thu, 17 Feb 2022 22:03:57 +0530
-Message-Id: <20220217163357.276036-5-kjain@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20220217163357.276036-1-kjain@linux.ibm.com>
-References: <20220217163357.276036-1-kjain@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dQGoFh_EawfI0Ivhh17qY8uiFzdXHGM5
-X-Proofpoint-ORIG-GUID: dQGoFh_EawfI0Ivhh17qY8uiFzdXHGM5
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K015c55hfz3cNT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 03:49:54 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-105-or7gv4dQNTyuquFpTqc4SQ-1; Thu, 17 Feb 2022 16:49:50 +0000
+X-MC-Unique: or7gv4dQNTyuquFpTqc4SQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.28; Thu, 17 Feb 2022 16:49:49 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.028; Thu, 17 Feb 2022 16:49:49 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Masahiro Yamada' <masahiroy@kernel.org>
+Subject: RE: [PATCH net v3] net: Force inlining of checksum functions in
+ net/checksum.h
+Thread-Topic: [PATCH net v3] net: Force inlining of checksum functions in
+ net/checksum.h
+Thread-Index: AQHYI/ioJk+yETn/QkyN152xjKaZ96yXvR4wgAAXuo+AAALtMIAAE/+AgAAGkIA=
+Date: Thu, 17 Feb 2022 16:49:49 +0000
+Message-ID: <2e38265880db45afa96cfb51223f7418@AcuMS.aculab.com>
+References: <978951d76d8cb84bab347c7623bc163e9a038452.1645100305.git.christophe.leroy@csgroup.eu>
+ <35bcd5df0fb546008ff4043dbea68836@AcuMS.aculab.com>
+ <d38e5e1c-29b6-8cc6-7409-d0bdd5772f23@csgroup.eu>
+ <9b8ef186-c7fe-822c-35df-342c9e86cc88@csgroup.eu>
+ <3c2b682a7d804b5e8749428b50342c82@AcuMS.aculab.com>
+ <CAK7LNASWTJ-ax9u5yOwHV9vHCBAcQTazV-oXtqVFVFedOA0Eqw@mail.gmail.com>
+In-Reply-To: <CAK7LNASWTJ-ax9u5yOwHV9vHCBAcQTazV-oXtqVFVFedOA0Eqw@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-17_06,2022-02-17_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- spamscore=0 suspectscore=0 phishscore=0 clxscore=1015 malwarescore=0
- mlxlogscore=999 mlxscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202170075
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,70 +70,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: santosh@fossix.org, maddy@linux.ibm.com, rnsastry@linux.ibm.com,
- aneesh.kumar@linux.ibm.com, atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
- vaibhav@linux.ibm.com, tglx@linutronix.de
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Details are added for the event, cpumask and format attributes
-in the ABI documentation.
-
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
-Changelog:
-Resend v5 -> v6
-- No logic change, just a rebase to latest upstream.
-
-- Link to the patchset Resend v5: https://lkml.org/lkml/2021/11/15/3979
-
- Documentation/ABI/testing/sysfs-bus-nvdimm | 35 ++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
-
-diff --git a/Documentation/ABI/testing/sysfs-bus-nvdimm b/Documentation/ABI/testing/sysfs-bus-nvdimm
-index bff84a16812a..64004d5e4840 100644
---- a/Documentation/ABI/testing/sysfs-bus-nvdimm
-+++ b/Documentation/ABI/testing/sysfs-bus-nvdimm
-@@ -6,3 +6,38 @@ Description:
- 
- The libnvdimm sub-system implements a common sysfs interface for
- platform nvdimm resources. See Documentation/driver-api/nvdimm/.
-+
-+What:           /sys/bus/event_source/devices/nmemX/format
-+Date:           February 2022
-+KernelVersion:  5.18
-+Contact:        Kajol Jain <kjain@linux.ibm.com>
-+Description:	(RO) Attribute group to describe the magic bits
-+		that go into perf_event_attr.config for a particular pmu.
-+		(See ABI/testing/sysfs-bus-event_source-devices-format).
-+
-+		Each attribute under this group defines a bit range of the
-+		perf_event_attr.config. Supported attribute is listed
-+		below::
-+		  event  = "config:0-4"  - event ID
-+
-+		For example::
-+			ctl_res_cnt = "event=0x1"
-+
-+What:           /sys/bus/event_source/devices/nmemX/events
-+Date:           February 2022
-+KernelVersion:  5.18
-+Contact:        Kajol Jain <kjain@linux.ibm.com>
-+Description:	(RO) Attribute group to describe performance monitoring events
-+                for the nvdimm memory device. Each attribute in this group
-+                describes a single performance monitoring event supported by
-+                this nvdimm pmu.  The name of the file is the name of the event.
-+                (See ABI/testing/sysfs-bus-event_source-devices-events). A
-+                listing of the events supported by a given nvdimm provider type
-+                can be found in Documentation/driver-api/nvdimm/$provider.
-+
-+What:          /sys/bus/event_source/devices/nmemX/cpumask
-+Date:          February 2022
-+KernelVersion:  5.18
-+Contact:        Kajol Jain <kjain@linux.ibm.com>
-+Description:	(RO) This sysfs file exposes the cpumask which is designated to
-+		to retrieve nvdimm pmu event counter data.
--- 
-2.31.1
+RnJvbTogTWFzYWhpcm8gWWFtYWRhDQo+IFNlbnQ6IDE3IEZlYnJ1YXJ5IDIwMjIgMTY6MTcNCi4u
+Lg0KPiBOby4gIE5vdCB0aGF0IG9uZS4NCj4gDQo+IFRoZSBjb21taXQgeW91IHByZXN1bWFibHkg
+d2FudCB0byByZXZlcnQgaXM6DQo+IA0KPiBhNzcxZjJiODJhYTIgKCJbUEFUQ0hdIEFkZCBhIHNl
+Y3Rpb24gYWJvdXQgaW5saW5pbmcgdG8NCj4gRG9jdW1lbnRhdGlvbi9Db2RpbmdTdHlsZSIpDQo+
+IA0KPiBUaGlzIGlzIG5vdyByZWZlcnJlZCB0byBhcyAiX19hbHdheXNfaW5saW5lIGRpc2Vhc2Ui
+LCB0aG91Z2guDQoNClRoYXQgZGVzY3JpcHRpb24gaXMgbGFyZ2VseSBmaW5lLg0KDQpJbmFwcHJv
+cHJpYXRlICdpbmxpbmUnIG91Z2h0IHRvIGJlIHJlbW92ZWQuDQpUaGVuICdpbmxpbmUnIG1lYW5z
+IC0gJ3JlYWxseSBkbyBpbmxpbmUgdGhpcycuDQoNCkFueW9uZSByZW1lbWJlciBtYXNzaXZlIDEw
+MCsgbGluZSAjZGVmaW5lcyBiZWluZw0KdXNlZCB0byBnZXQgY29kZSBpbmxpbmVkICd0byBtYWtl
+IGl0IGZhc3RlcicuDQpTb21ldGltZXMgYmVpbmcgZXhwYW5kZWQgc2V2ZXJhbCB0aW1lcyBpbiBz
+dWNjZXNzaW9uLg0KTWF5IGhhdmUgaGVscGVkIGEgNjgwMjAsIGJ1dCBsaWtlbHkgdG8gYmUgYSBs
+b3NzIG9uDQptb2Rlcm4gY3B1IHdpdGggbGFyZ2UgSS1jYWNoZSBhbmQgc2xvdyBtZW1vcnkuDQoN
+CglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwg
+TW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzog
+MTM5NzM4NiAoV2FsZXMpDQo=
 
