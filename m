@@ -1,67 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1C64B9389
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Feb 2022 23:03:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9514B958B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 02:37:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JzX6H2hR9z3cY9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 09:03:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JzcrZ5C2rz30Mj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 12:37:18 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SKBiXg1q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=edu3aKwK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1130;
+ helo=mail-yw1-x1130.google.com; envelope-from=wedsonaf@google.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=SKBiXg1q; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=edu3aKwK; dkim-atps=neutral
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com
+ [IPv6:2607:f8b0:4864:20::1130])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4JzX5d3h85z2yK2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 09:03:17 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 24D6961B44
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 22:03:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B121C004E1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 22:03:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1645048993;
- bh=ay/5589FenTcDxawo4c9r5D5w/FgYtE3zMvoHKiKBw4=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=SKBiXg1qMAxSOG7O/+fAEZVno6RY18W0gjWd48YvWVehxkUtMksFHxAKOXPaf1Nim
- qHK3jdeXyT7izApYt/dKY/APNToDbzS30oZ/3+FsRDGwHCYVq4RDe7vcie8TG09GCB
- VJT0268zX83XvVza5Mt2NT9M5MRvq5jsvfN9DDwEAft1MUWYI2uGvfXze8xcMLyYPl
- W5bKKzwddcuQftrn4B+eRiSOdBTv8tp7msayxnS9iimb1X7zN2rzIA/p/RbCumDYFK
- ozI4OSbpqbFd1JHV5fS/CeCxidkU8UzvVlyBvKvVSqnpavPgI6V4RqMDH4eF/+tdlu
- AnRmCFW169S3A==
-Received: by mail-ej1-f43.google.com with SMTP id lw4so2312287ejb.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 14:03:13 -0800 (PST)
-X-Gm-Message-State: AOAM532WSSknp/48vonPfYOSS2AzGbq2K11w9cqV6r/RLhSQoSL0ZvLi
- GU62QGwhtXF0buOatY030zViQm0WrK+rEyqEbYU=
-X-Google-Smtp-Source: ABdhPJyk0zQXj5EZ1uP9z1YUTizioO4kJ6rvneTTyuZji8J8rGr64s8uMSDVOcQeT3f3UOdAxVtCGFpnKRwe/RHh9ys=
-X-Received: by 2002:adf:cf0c:0:b0:1e6:22fe:4580 with SMTP id
- o12-20020adfcf0c000000b001e622fe4580mr53483wrj.12.1645048981311; Wed, 16 Feb
- 2022 14:03:01 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4JzZt70KYcz2ynt
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 11:08:30 +1100 (AEDT)
+Received: by mail-yw1-x1130.google.com with SMTP id
+ 00721157ae682-2d646fffcc2so15896577b3.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Feb 2022 16:08:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=MJswp/06z6H2zTidNluNJt5ucFccyexftvmJcY3aUJo=;
+ b=edu3aKwKRZZvgZ+3Mv5JKsCI8h6eWJiJlaVfXQqpb4qEW9uFQXWWBMMnUGtpKO0QCa
+ QNEdU9+SnPoPKKprTln2NYIats33kIpC9A1zQvr3+m/ub59mYDmKW1oUDOf/7EEQNInV
+ +AC1DQFIRp+1nFPGJI+Gy5pr7yEyqeXWKWoqQ/hWRIizbEEqN5vLBW0qHCTep77hnkX0
+ YN2iwUgtlt3pYFL6o/d1J0ErDwAbswMBi0ChNNns126kdgDqll9Hq+7fSjyCw7itb3t+
+ 9nT3EbSpUQoxdPzmZqoYBYLrIMVJs8+OnvAQpxBzqGc9Lgt8gCKcWVDRkB8ZNKBVozRO
+ 2BjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=MJswp/06z6H2zTidNluNJt5ucFccyexftvmJcY3aUJo=;
+ b=yHjJQqTvgQ/e04OUAfZ/2YfYSOFM+HornEuwMzExP3ES/6NjeYwkkiq/x4kX3FhVyk
+ NyzmmD7Mg3PhawSMIC9q/3L9JCKZoQJ+CnuDjYyrggxaAKg9UObwVAIxWUM6nHd6wwTQ
+ +3bNpHIh8Ktp1FRagZflgEjIWs4sgOwVYRee6Jr6ekQpzieZu3il2EcvWe8K+XMh+gyI
+ gX90+Ff/uw+Be6M/sqHLhvrq52+U3qG+hQiSj+HRtczc//GDIB7mDbo3H1K2tQmC8ch5
+ 2o6UsDU47R2kagFbdhZ684CavfcuF8BAX+r0mxbx26f3agQ2b3+uGcRZ04PcaaznaAsB
+ OIrA==
+X-Gm-Message-State: AOAM532vosTFNUnhXT9x8aW8if8WeNCQPMxRm7VONsVx9KjHhDZ5iQcO
+ red7AnsEUN8UaROAHlLTM/GuRK9v1Kyp9QJ2gjkg
+X-Google-Smtp-Source: ABdhPJwI84Dtw8jNHVgF7S0S2h65D1i+hK2lqsMSC1l0s2mxEOLNgAFiNO08Ui8MHdSwZFiPoMLmW7GiSIqirBAnNGY=
+X-Received: by 2002:a0d:d0c6:0:b0:2d0:3a5a:f30b with SMTP id
+ s189-20020a0dd0c6000000b002d03a5af30bmr352653ywd.476.1645056507846; Wed, 16
+ Feb 2022 16:08:27 -0800 (PST)
 MIME-Version: 1.0
-References: <20220216131332.1489939-1-arnd@kernel.org>
- <20220216131332.1489939-19-arnd@kernel.org>
- <Yg1F/VT4vRX4aHEt@ravnborg.org>
-In-Reply-To: <Yg1F/VT4vRX4aHEt@ravnborg.org>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Wed, 16 Feb 2022 23:02:45 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2gx2w=RDECNbrO4Zu3ZUTfz2UrLbNSz+ieCgMEFiK3TA@mail.gmail.com>
-Message-ID: <CAK8P3a2gx2w=RDECNbrO4Zu3ZUTfz2UrLbNSz+ieCgMEFiK3TA@mail.gmail.com>
-Subject: Re: [PATCH v2 18/18] uaccess: drop maining CONFIG_SET_FS users
-To: Sam Ravnborg <sam@ravnborg.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20220202055123.2144842-1-wedsonaf@google.com>
+ <CAMKQLN+Q3asVqP3MZVFZO66CvZVVfGOZn=pMXmiNqZ7t2i55wg@mail.gmail.com>
+ <8735kknzeh.fsf@mpe.ellerman.id.au>
+In-Reply-To: <8735kknzeh.fsf@mpe.ellerman.id.au>
+From: Wedson Almeida Filho <wedsonaf@google.com>
+Date: Thu, 17 Feb 2022 00:08:16 +0000
+Message-ID: <CAMKQLN+axK+Uf2=DAf6FzLX-2CbB3XWat3_aC27-oVirsu8zEw@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/module_64: use module_init_section instead of
+ patching names
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: multipart/alternative; boundary="000000000000c985d005d82b9046"
+X-Mailman-Approved-At: Thu, 17 Feb 2022 12:36:47 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,75 +79,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Linux-MM <linux-mm@kvack.org>, Guo Ren <guoren@kernel.org>,
- sparclinux <sparclinux@vger.kernel.org>,
- "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
- Christoph Hellwig <hch@lst.de>, linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Brian Cain <bcain@codeaurora.org>,
- Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
- Russell King - ARM Linux <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
- "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
- Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>,
- alpha <linux-alpha@vger.kernel.org>, linux-um <linux-um@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Openrisc <openrisc@lists.librecores.org>, Al Viro <viro@zeniv.linux.org.uk>,
- Stafford Horne <shorne@gmail.com>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Parisc List <linux-parisc@vger.kernel.org>, Nick Hu <nickhu@andestech.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Linux API <linux-api@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Dinh Nguyen <dinguyen@kernel.org>,
- "Eric W . Biederman" <ebiederm@xmission.com>,
- Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- David Miller <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
+Cc: paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 16, 2022 at 7:44 PM Sam Ravnborg <sam@ravnborg.org> wrote:
->
-> Hi Arnd,
->
-> Fix spelling in $subject...
+--000000000000c985d005d82b9046
+Content-Type: text/plain; charset="UTF-8"
 
-done
+On Tue, 15 Feb 2022 at 11:27, Michael Ellerman <mpe@ellerman.id.au> wrote:
 
-> sparc/Kconfig b/arch/sparc/Kconfig
-> > index 9f6f9bce5292..9276f321b3e3 100644
-> > --- a/arch/sparc/Kconfig
-> > +++ b/arch/sparc/Kconfig
-> > @@ -46,7 +46,6 @@ config SPARC
-> >       select LOCKDEP_SMALL if LOCKDEP
-> >       select NEED_DMA_MAP_STATE
-> >       select NEED_SG_DMA_LENGTH
-> > -     select SET_FS
-> >       select TRACE_IRQFLAGS_SUPPORT
+> Wedson Almeida Filho <wedsonaf@google.com> writes:
+> > Hi Michael,
 > >
-> >  config SPARC32
-> > @@ -101,6 +100,7 @@ config SPARC64
-> >       select HAVE_SETUP_PER_CPU_AREA
-> >       select NEED_PER_CPU_EMBED_FIRST_CHUNK
-> >       select NEED_PER_CPU_PAGE_FIRST_CHUNK
-> > +     select SET_FS
-> This looks wrong - looks like some merge went wrong here.
-
-Fixed now.
-
+> > On Wed, 2 Feb 2022 at 05:53, Wedson Almeida Filho <wedsonaf@google.com>
+> wrote:
+> >>
+> >> Without this patch, module init sections are disabled by patching their
+> >> names in arch-specific code when they're loaded (which prevents code in
+> >> layout_sections from finding init sections). This patch uses the new
+> >> arch-specific module_init_section instead.
+> >>
+> >> This allows modules that have .init_array sections to have the
+> >> initialisers properly called (on load, before init). Without this patch,
+> >> the initialisers are not called because .init_array is renamed to
+> >> _init_array, and thus isn't found by code in find_module_sections().
+> >>
+> >> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> >> ---
+> >>  arch/powerpc/kernel/module_64.c | 11 ++++++-----
+> >>  1 file changed, 6 insertions(+), 5 deletions(-)
+> ...
+> >
+> > Would any additional clarification from my part be helpful here?
 >
-> Other than the above the sparc32 changes looks fine, and with the Kconf
-> stuff fixed:
-> Acked-by: Sam Ravnborg <sam@ravnborg.org> # for sparc32 changes
+> Just more patience ;)
+>
+> > I got an email saying it was under review (and checks passed) but
+> > nothing appears to have happened since.
+>
+> I actually put it in next late last week, but the emails got delayed due
+> to various gremlins.
+>
 
-Thanks!
+Yes, I see it, thank you!
 
-      Arnd
+Cheers
+
+--000000000000c985d005d82b9046
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><br><div class=3D"gmail_quo=
+te"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, 15 Feb 2022 at 11:27, Mic=
+hael Ellerman &lt;<a href=3D"mailto:mpe@ellerman.id.au">mpe@ellerman.id.au<=
+/a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0=
+px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">W=
+edson Almeida Filho &lt;<a href=3D"mailto:wedsonaf@google.com" target=3D"_b=
+lank">wedsonaf@google.com</a>&gt; writes:<br>
+&gt; Hi Michael,<br>
+&gt;<br>
+&gt; On Wed, 2 Feb 2022 at 05:53, Wedson Almeida Filho &lt;<a href=3D"mailt=
+o:wedsonaf@google.com" target=3D"_blank">wedsonaf@google.com</a>&gt; wrote:=
+<br>
+&gt;&gt;<br>
+&gt;&gt; Without this patch, module init sections are disabled by patching =
+their<br>
+&gt;&gt; names in arch-specific code when they&#39;re loaded (which prevent=
+s code in<br>
+&gt;&gt; layout_sections from finding init sections). This patch uses the n=
+ew<br>
+&gt;&gt; arch-specific module_init_section instead.<br>
+&gt;&gt;<br>
+&gt;&gt; This allows modules that have .init_array sections to have the<br>
+&gt;&gt; initialisers properly called (on load, before init). Without this =
+patch,<br>
+&gt;&gt; the initialisers are not called because .init_array is renamed to<=
+br>
+&gt;&gt; _init_array, and thus isn&#39;t found by code in find_module_secti=
+ons().<br>
+&gt;&gt;<br>
+&gt;&gt; Signed-off-by: Wedson Almeida Filho &lt;<a href=3D"mailto:wedsonaf=
+@google.com" target=3D"_blank">wedsonaf@google.com</a>&gt;<br>
+&gt;&gt; ---<br>
+&gt;&gt;=C2=A0 arch/powerpc/kernel/module_64.c | 11 ++++++-----<br>
+&gt;&gt;=C2=A0 1 file changed, 6 insertions(+), 5 deletions(-)<br>
+...<br>
+&gt;<br>
+&gt; Would any additional clarification from my part be helpful here?<br>
+<br>
+Just more patience ;)<br>
+<br>
+&gt; I got an email saying it was under review (and checks passed) but<br>
+&gt; nothing appears to have happened since.<br>
+<br>
+I actually put it in next late last week, but the emails got delayed due<br=
+>
+to various gremlins.<br></blockquote><div><br></div><div>Yes, I see it, tha=
+nk you!</div><div><br></div><div>Cheers=C2=A0</div><div>=C2=A0</div></div><=
+/div>
+
+--000000000000c985d005d82b9046--
