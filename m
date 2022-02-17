@@ -1,101 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A404B9F11
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 12:39:26 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A8E84B9F9D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 13:03:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JztCJ0BTFz3cDB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 22:39:24 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=i4NaFTMW;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4JztlL0ct8z3dsc
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 23:03:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=i4NaFTMW; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jzt922FMdz3bVd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 22:37:25 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21HBBe4U009513; 
- Thu, 17 Feb 2022 11:36:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=6mlvZRSwlsDh5IrGJe/XwEIms3DwVqrOxjdrt0QYtbY=;
- b=i4NaFTMWFL2qMTIXxqLfmvM73ABxxvOzqmc5qPnuve8pK4HFL3XIXycerMN+P8FVB1kf
- 4Cp8f27hrh4YEn/ZnVRAAPCDWH8QuGPVpnCEO5/8spOFXU4GkMkiolPwaxxQ0GCnciCv
- 6UdOO4Ua5aqeY3sH+n0fcHnIAEQyqLiROieSRGSM65G/MGeFxN8cgxmKB7vyhvLJ8S96
- tCtHwTs4BMy009LBRTHrr1ym/XhDrNcBfvoYFsh1isv6evyTAPVnpaPukBXFLO8EWBlK
- 3BWT9WCrzhQjly3fG4L1tTZawyE04YdTtqWGKLN0rtyX/vcLoxx5Rb+21WBW29j2O2i4 7A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e9n988q1w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Feb 2022 11:36:57 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21HBCkbI011474;
- Thu, 17 Feb 2022 11:36:57 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3e9n988q10-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Feb 2022 11:36:57 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21HBaqxS017593;
- Thu, 17 Feb 2022 11:36:54 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma04ams.nl.ibm.com with ESMTP id 3e64hahbce-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 17 Feb 2022 11:36:54 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21HBaqn947186420
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 17 Feb 2022 11:36:52 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0D31B52074;
- Thu, 17 Feb 2022 11:36:52 +0000 (GMT)
-Received: from li-NotSettable.ibm.com.com (unknown [9.43.115.39])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 9AF085204E;
- Thu, 17 Feb 2022 11:36:49 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Steven Rostedt <rostedt@goodmis.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Masami Hiramatsu <mhiramat@kernel.org>
-Subject: [PATCH 3/3] kprobes: Allow probing on any address belonging to ftrace
-Date: Thu, 17 Feb 2022 17:06:25 +0530
-Message-Id: <78480d05821d45e09fb234f61f9037e26d42f02d.1645096227.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <cover.1645096227.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1645096227.git.naveen.n.rao@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jztk545sQz3cZv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 23:02:37 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4Jztjt0h4Tz9sS8;
+ Thu, 17 Feb 2022 13:02:26 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 7QMqHOalYBL3; Thu, 17 Feb 2022 13:02:26 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4Jztjr3TVvz9sST;
+ Thu, 17 Feb 2022 13:02:24 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 617998B783;
+ Thu, 17 Feb 2022 13:02:24 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id O7UuHt6ePd_a; Thu, 17 Feb 2022 13:02:24 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.6.225])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1D0678B77E;
+ Thu, 17 Feb 2022 13:02:24 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21HC2FRo400833
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Thu, 17 Feb 2022 13:02:15 +0100
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21HC2DQ2400831;
+ Thu, 17 Feb 2022 13:02:13 +0100
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v1 1/4] powerpc/ftrace: Don't use lmw/stmw in
+ ftrace_regs_caller()
+Date: Thu, 17 Feb 2022 13:01:56 +0100
+Message-Id: <ec286d2cc6989668a96f14543275437d2f3f0e3a.1645099283.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1645099315; l=1304; s=20211009;
+ h=from:subject:message-id; bh=a5SXTmNHRsDZErob3HMcylE9GgHIQeQ3cYBbiuJRKcM=;
+ b=8Oh2uOKVAafJJtp/3RQH3Fu4bQdEy/Mtn9S0Ci0nQbZ71PBpU474m891U2vwRTcnBwT4IPKABOPH
+ AtDhi4VKAPe85OOsIGUukp2AvVH3OPZWxeQ9v6YAT0X8NYK7MdiB
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: s2pY3YpUXKKedvIx171jzWymSrmlo6RM
-X-Proofpoint-GUID: 05TTG-txgITAc8F4zkEq4gAnsVDojiOQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-17_04,2022-02-17_01,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 impostorscore=0
- adultscore=0 spamscore=0 clxscore=1015 priorityscore=1501 mlxlogscore=999
- bulkscore=0 phishscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2202170051
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,52 +75,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On certain architectures, ftrace can reserve multiple instructions at
-function entry. Rather than rejecting kprobe on addresses other than the
-exact ftrace call instruction, use the address returned by ftrace to
-probe at the correct address when CONFIG_KPROBES_ON_FTRACE is enabled.
+For the same reason as commit a85c728cb5e1 ("powerpc/32: Don't use
+lmw/stmw for saving/restoring non volatile regs"), don't use
+lmw/stmw in ftrace_regs_caller().
 
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Use the same macros for PPC32 and PPC64.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- kernel/kprobes.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/powerpc/kernel/trace/ftrace_mprofile.S | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 94cab8c9ce56cc..0a797ede3fdf37 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1497,6 +1497,10 @@ bool within_kprobe_blacklist(unsigned long addr)
- static kprobe_opcode_t *_kprobe_addr(kprobe_opcode_t *addr,
- 			const char *symbol_name, unsigned int offset)
- {
-+#ifdef CONFIG_KPROBES_ON_FTRACE
-+	unsigned long ftrace_addr = 0;
+diff --git a/arch/powerpc/kernel/trace/ftrace_mprofile.S b/arch/powerpc/kernel/trace/ftrace_mprofile.S
+index 89639e64acd1..76dab07fd8fd 100644
+--- a/arch/powerpc/kernel/trace/ftrace_mprofile.S
++++ b/arch/powerpc/kernel/trace/ftrace_mprofile.S
+@@ -43,18 +43,16 @@ _GLOBAL(ftrace_regs_caller)
+ 
+ 	/* Save all gprs to pt_regs */
+ 	SAVE_GPR(0, r1)
+-#ifdef CONFIG_PPC64
+ 	SAVE_GPRS(2, 11, r1)
+ 
++#ifdef CONFIG_PPC64
+ 	/* Ok to continue? */
+ 	lbz	r3, PACA_FTRACE_ENABLED(r13)
+ 	cmpdi	r3, 0
+ 	beq	ftrace_no_trace
 +#endif
-+
- 	if ((symbol_name && addr) || (!symbol_name && !addr))
- 		goto invalid;
  
-@@ -1507,6 +1511,14 @@ static kprobe_opcode_t *_kprobe_addr(kprobe_opcode_t *addr,
- 	}
+ 	SAVE_GPRS(12, 31, r1)
+-#else
+-	stmw	r2, GPR2(r1)
+-#endif
  
- 	addr = (kprobe_opcode_t *)(((char *)addr) + offset);
-+
-+#ifdef CONFIG_KPROBES_ON_FTRACE
-+	if (addr)
-+		ftrace_addr = ftrace_location((unsigned long)addr);
-+	if (ftrace_addr)
-+		return (kprobe_opcode_t *)ftrace_addr;
-+#endif
-+
- 	if (addr)
- 		return addr;
+ 	/* Save previous stack pointer (r1) */
+ 	addi	r8, r1, SWITCH_FRAME_SIZE
+@@ -120,11 +118,7 @@ ftrace_regs_call:
+ #endif
  
+ 	/* Restore gprs */
+-#ifdef CONFIG_PPC64
+ 	REST_GPRS(2, 31, r1)
+-#else
+-	lmw	r2, GPR2(r1)
+-#endif
+ 
+ 	/* Restore possibly modified LR */
+ 	PPC_LL	r0, _LINK(r1)
 -- 
-2.35.1
+2.34.1
 
