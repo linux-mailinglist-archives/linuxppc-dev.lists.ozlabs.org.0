@@ -2,70 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408714BA97B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 20:16:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 878214BAA2C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 20:49:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K04LF5QrXz3cWt
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 06:16:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K054M0j1rz3ckR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 06:49:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=amacapital-net.20210112.gappssmtp.com header.i=@amacapital-net.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=aC4vKGs+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ye7jyNUu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=amacapital.net (client-ip=2a00:1450:4864:20::635;
- helo=mail-ej1-x635.google.com; envelope-from=luto@amacapital.net;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=amacapital-net.20210112.gappssmtp.com
- header.i=@amacapital-net.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=aC4vKGs+; dkim-atps=neutral
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com
- [IPv6:2a00:1450:4864:20::635])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=Ye7jyNUu; dkim-atps=neutral
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K04KZ6Gw5z3cPF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 06:15:28 +1100 (AEDT)
-Received: by mail-ej1-x635.google.com with SMTP id qx21so9500603ejb.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 11:15:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amacapital-net.20210112.gappssmtp.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=+RZ8CAgnGa1bk5gBxds4oezzFjZLQMV+wOvrmesI1Hw=;
- b=aC4vKGs+W+TwIvfSuol31sXb0DdwmBd+7ynpizLCKhXxCJFdEAZpxJvcWGa/FztIyE
- kaM//DxAJXCDh5aNx4GSOgCqArnp/pPXpeZOwL6NCOz09LePB9aHf9rLmhVNdEQhmOfG
- zcHXwBp2FYlRXI6tXnhZ/KCBgXws1BhNZED9tFrHvUNz3V476fnXQSLMeM+Shpqaev6m
- W07DvhrokY4sorGqrqwhi0S/cnzs7UTqO0cIGR6WWEAN8VmZadQ9VO/+zsTblOwHPeWg
- SsUN3Cw66rH7ga20AFYG5KTR6BdWsnByVkv9VANJJ9bhC1jZcqQ2NhN41BgDZLcdhMyk
- TY3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=+RZ8CAgnGa1bk5gBxds4oezzFjZLQMV+wOvrmesI1Hw=;
- b=VKFW/MgxSwVr7uvdwjac++0iWi0AhEBpIjxJzkLLaDqsNb53uL4nl8rHBTIAT1ifbg
- d31QHZVtdsaQt27Yjj7j79LK8VX33xoU/IyHyEGrWImwiayzqcB4ZUzoMP95qMnCyjtB
- FeAhHnRJlrc87KVcfnqpho6beYTE7XoHsonXb9xMO6trdPxxHTOBIl9FiaGDSp1+R9qY
- jSOMkYabQ2gQtJaiylMz19xY5MSY2sWNJjz5llumK0EMmAmY5Bz1dvvxV71Bqq2OJUVV
- kaZqbrDBYy+9GGeB2qTHYq1Xltt6JCieia5qBmVZE4yTswyV7EnbiML0mcgv2/m/1UgQ
- WZsQ==
-X-Gm-Message-State: AOAM5335vkxwTEjtFKfiMo7dXd30aPC3yxuQJ5BUi0CEGj9LHEt1k0L7
- xbMEoUkhUc+Kp3FXCqk0d/eM2AYFnZM2wCs5RLwU1w==
-X-Google-Smtp-Source: ABdhPJw48Oadf8QR2zY/o5TdRU0UiMjXS1n08+Rvo/jef0cepMooOXBMnDr3m4SH0a9wsDyMLo89s3cuvktj12QRONA=
-X-Received: by 2002:a17:906:4b52:b0:6cd:3863:b35e with SMTP id
- j18-20020a1709064b5200b006cd3863b35emr3488094ejv.415.1645125322737; Thu, 17
- Feb 2022 11:15:22 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K053f6Vzyz3bcy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 06:48:24 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1645127311; x=1676663311;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=HSCKqfDMdMI/r89h9i7FEF/tyXYo2PHT5q86Bt1G8+0=;
+ b=Ye7jyNUuuAfsTJitDxSphWRPjSXLO038uSV43LDljfmAlUO64qWeAPjK
+ nld3M66W5TtM4uwKIAjI85XLXwYMV9DB1/R13hSR07UZ/kRL/VejO5S+o
+ rr88fDoClWLdR9AIJ8bVm7WKe3WjbxxdrbfDRDrPTz+NREEycfaie3nlC
+ 2f7Ta+QY9SEPXnPvxV7WrUPnDV4tUOFJvZbaRXuGn9NMXIfLqfKwdueHh
+ Y9yJnIa0kayVYltpUpD/2DVgIoAVrbN09b/d2XIM/C1pU8/kWym6+vqoa
+ R//0e7IDFG8UfYokgU1w2fdubhJDpmE6Mxt7BXUSuS7o7MfMeoDnlTkbR Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10261"; a="250700988"
+X-IronPort-AV: E=Sophos;i="5.88,376,1635231600"; d="scan'208";a="250700988"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Feb 2022 11:47:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.88,376,1635231600"; d="scan'208";a="571969855"
+Received: from lkp-server01.sh.intel.com (HELO 6f05bf9e3301) ([10.239.97.150])
+ by orsmga001.jf.intel.com with ESMTP; 17 Feb 2022 11:47:01 -0800
+Received: from kbuild by 6f05bf9e3301 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1nKmk1-0000U9-6S; Thu, 17 Feb 2022 19:47:01 +0000
+Date: Fri, 18 Feb 2022 03:46:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Masami Hiramatsu <mhiramat@kernel.org>
+Subject: Re: [PATCH 1/3] powerpc/ftrace: Reserve instructions from function
+ entry for ftrace
+Message-ID: <202202180014.IWuzQ9al-lkp@intel.com>
+References: <8843d65ac0878232433573d10ebee30457748624.1645096227.git.naveen.n.rao@linux.vnet.ibm.com>
 MIME-Version: 1.0
-References: <20220216131332.1489939-1-arnd@kernel.org>
- <20220216131332.1489939-14-arnd@kernel.org>
-In-Reply-To: <20220216131332.1489939-14-arnd@kernel.org>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Thu, 17 Feb 2022 11:15:11 -0800
-Message-ID: <CALCETrVOvYPN4_6hS8wpm2v9bGZupZ5x4=vZAseG57OUgvLGfw@mail.gmail.com>
-Subject: Re: [PATCH v2 13/18] uaccess: generalize access_ok()
-To: Arnd Bergmann <arnd@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8843d65ac0878232433573d10ebee30457748624.1645096227.git.naveen.n.rao@linux.vnet.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,59 +75,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, dalias@libc.org, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, peterz@infradead.org, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, guoren@kernel.org, sparclinux@vger.kernel.org,
- linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
- will@kernel.org, Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, bcain@codeaurora.org, deller@gmx.de,
- x86@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org,
- ardb@kernel.org, mingo@redhat.com, geert@linux-m68k.org,
- linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
- arnd@arndb.de, hca@linux.ibm.com, linux-alpha@vger.kernel.org,
- linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- viro@zeniv.linux.org.uk, shorne@gmail.com, monstr@monstr.eu,
- tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, nickhu@andestech.com,
- jcmvbkbc@gmail.com, linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
- dinguyen@kernel.org, ebiederm@xmission.com, richard@nod.at,
- akpm@linux-foundation.org, Linus Torvalds <torvalds@linux-foundation.org>,
- davem@davemloft.net, green.hu@gmail.com
+Cc: linuxppc-dev@lists.ozlabs.org, bpf@vger.kernel.org, kbuild-all@lists.01.org,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 16, 2022 at 5:19 AM Arnd Bergmann <arnd@kernel.org> wrote:
->
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> There are many different ways that access_ok() is defined across
-> architectures, but in the end, they all just compare against the
-> user_addr_max() value or they accept anything.
->
-> Provide one definition that works for most architectures, checking
-> against TASK_SIZE_MAX for user processes or skipping the check inside
-> of uaccess_kernel() sections.
->
-> For architectures without CONFIG_SET_FS(), this should be the fastest
-> check, as it comes down to a single comparison of a pointer against a
-> compile-time constant, while the architecture specific versions tend to
-> do something more complex for historic reasons or get something wrong.
+Hi "Naveen,
 
-This isn't actually optimal.  On x86, TASK_SIZE_MAX is a bizarre
-constant that has a very specific value to work around a bug^Wdesign
-error^Wfeature of Intel CPUs.  TASK_SIZE_MAX is the maximum address at
-which userspace is permitted to allocate memory, but there is a huge
-gap between user and kernel addresses, and any value in the gap would
-be adequate for the comparison.  If we wanted to optimize this, simply
-checking the high bit (which x86 can do without any immediate
-constants at all) would be sufficient and, for an access known to fit
-in 32 bits, one could get even fancier and completely ignore the size
-of the access.  (For accesses not known to fit in 32 bits, I suspect
-some creativity could still come up with a construction that's
-substantially faster than the one in your patch.)
+I love your patch! Perhaps something to improve:
 
-So there's plenty of room for optimization here.
+[auto build test WARNING on 1b43a74f255c5c00db25a5fedfd75ca0dc029022]
 
-(This is not in any respect a NAK -- it's just an observation that
-this could be even better.)
+url:    https://github.com/0day-ci/linux/commits/Naveen-N-Rao/powerpc-ftrace-Reserve-instructions-from-function-entry-for-ftrace/20220217-200314
+base:   1b43a74f255c5c00db25a5fedfd75ca0dc029022
+config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20220218/202202180014.IWuzQ9al-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.2.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/0day-ci/linux/commit/6a1891335e377e5def312e7c182aef676f04c926
+        git remote add linux-review https://github.com/0day-ci/linux
+        git fetch --no-tags linux-review Naveen-N-Rao/powerpc-ftrace-Reserve-instructions-from-function-entry-for-ftrace/20220217-200314
+        git checkout 6a1891335e377e5def312e7c182aef676f04c926
+        # save the config file to linux build tree
+        mkdir build_dir
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/kernel/trace/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+>> arch/powerpc/kernel/trace/ftrace.c:504:5: warning: no previous prototype for 'ftrace_location_get_offset' [-Wmissing-prototypes]
+     504 | int ftrace_location_get_offset(const struct dyn_ftrace *rec)
+         |     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+vim +/ftrace_location_get_offset +504 arch/powerpc/kernel/trace/ftrace.c
+
+   502	
+   503	#if defined(CONFIG_MPROFILE_KERNEL) || defined(CONFIG_PPC32)
+ > 504	int ftrace_location_get_offset(const struct dyn_ftrace *rec)
+   505	{
+   506		if (IS_ENABLED(CONFIG_MPROFILE_KERNEL))
+   507			/*
+   508			 * On ppc64le with -mprofile-kernel, function entry can have:
+   509			 *   addis r2, r12, M
+   510			 *   addi  r2, r2, N
+   511			 *   mflr  r0
+   512			 *   bl    _mcount
+   513			 *
+   514			 * The first two instructions are for TOC setup and represent the global entry
+   515			 * point for cross-module calls, and may be missing if the function is never called
+   516			 * from other modules.
+   517			 */
+   518			return ((unsigned long)rec->arch.mod & 0x1) ? FUNC_MCOUNT_OFFSET_PPC64_GEP :
+   519								      FUNC_MCOUNT_OFFSET_PPC64_LEP;
+   520		else
+   521			/*
+   522			 * On ppc32, function entry always has:
+   523			 *   mflr r0
+   524			 *   stw  r0, 4(r1)
+   525			 *   bl   _mcount
+   526			 */
+   527			return FUNC_MCOUNT_OFFSET_PPC32;
+   528	}
+   529	
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
