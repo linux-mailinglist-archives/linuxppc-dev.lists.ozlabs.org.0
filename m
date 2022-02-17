@@ -2,49 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206CD4B9ACA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 09:20:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5F54B9B2E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 09:35:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4JznpB5J8qz3cTJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 19:20:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Jzp7H1p09z30Nx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Feb 2022 19:35:39 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OviyTm76;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=heying24@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Jznnj3zPWz30NP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 19:20:18 +1100 (AEDT)
-Received: from dggeme756-chm.china.huawei.com (unknown [172.30.72.54])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4JznlV5lmXz9sm2;
- Thu, 17 Feb 2022 16:18:30 +0800 (CST)
-Received: from [10.67.110.136] (10.67.110.136) by
- dggeme756-chm.china.huawei.com (10.3.19.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.21; Thu, 17 Feb 2022 16:20:08 +0800
-Subject: Re: [PATCH -v2] powerpc/process, kasan: Silence KASAN warnings in
- __get_wchan()
-To: <catalin.marinas@arm.com>, <mpe@ellerman.id.au>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
- <christophe.leroy@csgroup.eu>, <sxwjean@gmail.com>, <peterz@infradead.org>,
- <keescook@chromium.org>
-References: <20220119015025.136902-1-heying24@huawei.com>
- <20220121014418.155675-1-heying24@huawei.com>
-From: He Ying <heying24@huawei.com>
-Message-ID: <06c5f730-c383-34f9-778f-6845ca36c718@huawei.com>
-Date: Thu, 17 Feb 2022 16:20:08 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=OviyTm76; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Jzp6W58JHz30Nx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 19:34:58 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21H8BPnE005051; 
+ Thu, 17 Feb 2022 08:34:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=SlFkSE8TI8EEWhz8vgdgRSxXF89n3LuoOfc0LPX2F2g=;
+ b=OviyTm76ZspASOWMbusGCXVfzyX9mm+CRKYB7m4deO8wJ2wdgzGCc6KaoiGCUUsSQ38X
+ FEz6beSgriF150dDY3gTAwBpUvVxdcMWKj8cvquuw9MT5H8Sjaf/7t7qqhfdmjtJB568
+ 7e15jHTx0O877NdCsXr69v0uf58WZ0iWcb/jJ4SkpEJ7CANaoBccUJzbVsJpGqQ0H/7o
+ axDyv4NFHB8q38eYI+FuUavmgQfHO1wuB/tUdaXtNH6nCt6oeyIIc5ExMh8O+hf6Ovce
+ lOIo02vnVRoRVedUM0eq2k0yZiVj1L65HzWGOT5oJRLpxGDx7tRbj2pJzk+H70ddewm/ 2g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e9d0jpae3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Feb 2022 08:34:47 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21H8ELre019833;
+ Thu, 17 Feb 2022 08:34:46 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3e9d0jpadq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Feb 2022 08:34:46 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21H881Fo013800;
+ Thu, 17 Feb 2022 08:34:45 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma02dal.us.ibm.com with ESMTP id 3e64hd1nds-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 17 Feb 2022 08:34:45 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 21H8YiZi42271048
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 17 Feb 2022 08:34:45 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D3D34AC05F;
+ Thu, 17 Feb 2022 08:34:44 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A82C8AC059;
+ Thu, 17 Feb 2022 08:34:41 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.43.122.166])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 17 Feb 2022 08:34:41 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linux-mm@kvack.org, akpm@linux-foundation.org
+Subject: [PATCH] selftest/vm: Fix map_fixed_noreplace test failure
+Date: Thu, 17 Feb 2022 14:04:17 +0530
+Message-Id: <20220217083417.373823-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-In-Reply-To: <20220121014418.155675-1-heying24@huawei.com>
-Content-Type: text/plain; charset="gbk"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.110.136]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggeme756-chm.china.huawei.com (10.3.19.102)
-X-CFilter-Loop: Reflected
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: qvnGKmUAeawgUighlxymFLcl8joEiIPI
+X-Proofpoint-ORIG-GUID: YEwhqtPEKSm3TXxzh81kY-YSNiLaP0B7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-17_03,2022-02-16_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ clxscore=1015 bulkscore=0 phishscore=0 mlxlogscore=999 suspectscore=0
+ spamscore=0 adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
+ definitions=main-2202170037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,98 +102,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: chenjingwen6@huawei.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, huwanming@huaweil.com
+Cc: Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kselftest@vger.kernel.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Shuah Khan <shuah@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+On the latest RHEL the test fails due to executable mapped at 256MB address
 
+ # ./map_fixed_noreplace
+mmap() @ 0x10000000-0x10050000 p=0xffffffffffffffff result=File exists
+10000000-10010000 r-xp 00000000 fd:04 34905657                           /root/rpmbuild/BUILD/kernel-5.14.0-56.el9/linux-5.14.0-56.el9.ppc64le/tools/testing/selftests/vm/map_fixed_noreplace
+10010000-10020000 r--p 00000000 fd:04 34905657                           /root/rpmbuild/BUILD/kernel-5.14.0-56.el9/linux-5.14.0-56.el9.ppc64le/tools/testing/selftests/vm/map_fixed_noreplace
+10020000-10030000 rw-p 00010000 fd:04 34905657                           /root/rpmbuild/BUILD/kernel-5.14.0-56.el9/linux-5.14.0-56.el9.ppc64le/tools/testing/selftests/vm/map_fixed_noreplace
+10029b90000-10029bc0000 rw-p 00000000 00:00 0                            [heap]
+7fffbb510000-7fffbb750000 r-xp 00000000 fd:04 24534                      /usr/lib64/libc.so.6
+7fffbb750000-7fffbb760000 r--p 00230000 fd:04 24534                      /usr/lib64/libc.so.6
+7fffbb760000-7fffbb770000 rw-p 00240000 fd:04 24534                      /usr/lib64/libc.so.6
+7fffbb780000-7fffbb7a0000 r--p 00000000 00:00 0                          [vvar]
+7fffbb7a0000-7fffbb7b0000 r-xp 00000000 00:00 0                          [vdso]
+7fffbb7b0000-7fffbb800000 r-xp 00000000 fd:04 24514                      /usr/lib64/ld64.so.2
+7fffbb800000-7fffbb810000 r--p 00040000 fd:04 24514                      /usr/lib64/ld64.so.2
+7fffbb810000-7fffbb820000 rw-p 00050000 fd:04 24514                      /usr/lib64/ld64.so.2
+7fffd93f0000-7fffd9420000 rw-p 00000000 00:00 0                          [stack]
+Error: couldn't map the space we need for the test
 
-Kindly ping. This patch may be missed. Would you please pick it? Or does 
-it need more review?
+Fix this by finding a free address using mmap instead of hardcoding BASE_ADDRESS.
 
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Jann Horn <jannh@google.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: linux-kselftest@vger.kernel.org
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ .../selftests/vm/map_fixed_noreplace.c        | 49 ++++++++++++++-----
+ 1 file changed, 37 insertions(+), 12 deletions(-)
 
-ÔÚ 2022/1/21 9:44, He Ying Ð´µÀ:
-> The following KASAN warning was reported in our kernel.
->
->    BUG: KASAN: stack-out-of-bounds in get_wchan+0x188/0x250
->    Read of size 4 at addr d216f958 by task ps/14437
->
->    CPU: 3 PID: 14437 Comm: ps Tainted: G           O      5.10.0 #1
->    Call Trace:
->    [daa63858] [c0654348] dump_stack+0x9c/0xe4 (unreliable)
->    [daa63888] [c035cf0c] print_address_description.constprop.3+0x8c/0x570
->    [daa63908] [c035d6bc] kasan_report+0x1ac/0x218
->    [daa63948] [c00496e8] get_wchan+0x188/0x250
->    [daa63978] [c0461ec8] do_task_stat+0xce8/0xe60
->    [daa63b98] [c0455ac8] proc_single_show+0x98/0x170
->    [daa63bc8] [c03cab8c] seq_read_iter+0x1ec/0x900
->    [daa63c38] [c03cb47c] seq_read+0x1dc/0x290
->    [daa63d68] [c037fc94] vfs_read+0x164/0x510
->    [daa63ea8] [c03808e4] ksys_read+0x144/0x1d0
->    [daa63f38] [c005b1dc] ret_from_syscall+0x0/0x38
->    --- interrupt: c00 at 0x8fa8f4
->        LR = 0x8fa8cc
->
->    The buggy address belongs to the page:
->    page:98ebcdd2 refcount:0 mapcount:0 mapping:00000000 index:0x2 pfn:0x1216f
->    flags: 0x0()
->    raw: 00000000 00000000 01010122 00000000 00000002 00000000 ffffffff 00000000
->    raw: 00000000
->    page dumped because: kasan: bad access detected
->
->    Memory state around the buggy address:
->     d216f800: 00 00 00 00 00 f1 f1 f1 f1 00 00 00 00 00 00 00
->     d216f880: f2 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->    >d216f900: 00 00 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1 00
->                                              ^
->     d216f980: f2 f2 f2 f2 f2 f2 f2 00 00 00 00 00 00 00 00 00
->     d216fa00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->
-> After looking into this issue, I find the buggy address belongs
-> to the task stack region. It seems KASAN has something wrong.
-> I look into the code of __get_wchan in x86 architecture and
-> find the same issue has been resolved by the commit
-> f7d27c35ddff ("x86/mm, kasan: Silence KASAN warnings in get_wchan()").
-> The solution could be applied to powerpc architecture too.
->
-> As Andrey Ryabinin said, get_wchan() is racy by design, it may
-> access volatile stack of running task, thus it may access
-> redzone in a stack frame and cause KASAN to warn about this.
->
-> Use READ_ONCE_NOCHECK() to silence these warnings.
->
-> Reported-by: Wanming Hu <huwanming@huaweil.com>
-> Signed-off-by: He Ying <heying24@huawei.com>
-> Signed-off-by: Chen Jingwen <chenjingwen6@huawei.com>
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> ---
-> Changelog:
->
-> v2:
-> * Add missing Reported-by and SoB tags
-> ---
->   arch/powerpc/kernel/process.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-> index 984813a4d5dc..a75d20f23dac 100644
-> --- a/arch/powerpc/kernel/process.c
-> +++ b/arch/powerpc/kernel/process.c
-> @@ -2160,12 +2160,12 @@ static unsigned long ___get_wchan(struct task_struct *p)
->   		return 0;
->   
->   	do {
-> -		sp = *(unsigned long *)sp;
-> +		sp = READ_ONCE_NOCHECK(*(unsigned long *)sp);
->   		if (!validate_sp(sp, p, STACK_FRAME_OVERHEAD) ||
->   		    task_is_running(p))
->   			return 0;
->   		if (count > 0) {
-> -			ip = ((unsigned long *)sp)[STACK_FRAME_LR_SAVE];
-> +			ip = READ_ONCE_NOCHECK(((unsigned long *)sp)[STACK_FRAME_LR_SAVE]);
->   			if (!in_sched_functions(ip))
->   				return ip;
->   		}
+diff --git a/tools/testing/selftests/vm/map_fixed_noreplace.c b/tools/testing/selftests/vm/map_fixed_noreplace.c
+index d91bde511268..eed44322d1a6 100644
+--- a/tools/testing/selftests/vm/map_fixed_noreplace.c
++++ b/tools/testing/selftests/vm/map_fixed_noreplace.c
+@@ -17,9 +17,6 @@
+ #define MAP_FIXED_NOREPLACE 0x100000
+ #endif
+ 
+-#define BASE_ADDRESS	(256ul * 1024 * 1024)
+-
+-
+ static void dump_maps(void)
+ {
+ 	char cmd[32];
+@@ -28,18 +25,46 @@ static void dump_maps(void)
+ 	system(cmd);
+ }
+ 
++static unsigned long find_base_addr(unsigned long size)
++{
++	void *addr;
++	unsigned long flags;
++
++	flags = MAP_PRIVATE | MAP_ANONYMOUS;
++	addr = mmap(NULL, size, PROT_NONE, flags, -1, 0);
++	if (addr == MAP_FAILED) {
++		printf("Error: couldn't map the space we need for the test\n");
++		return 0;
++	}
++
++	if (munmap(addr, size) != 0) {
++		printf("Error: couldn't map the space we need for the test\n");
++		return 0;
++	}
++	return (unsigned long)addr;
++}
++
+ int main(void)
+ {
++	unsigned long base_addr;
+ 	unsigned long flags, addr, size, page_size;
+ 	char *p;
+ 
+ 	page_size = sysconf(_SC_PAGE_SIZE);
+ 
++	//let's find a base addr that is free before we start the tests
++	size = 5 * page_size;
++	base_addr = find_base_addr(size);
++	if (!base_addr) {
++		printf("Error: couldn't map the space we need for the test\n");
++		return 1;
++	}
++
+ 	flags = MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED_NOREPLACE;
+ 
+ 	// Check we can map all the areas we need below
+ 	errno = 0;
+-	addr = BASE_ADDRESS;
++	addr = base_addr;
+ 	size = 5 * page_size;
+ 	p = mmap((void *)addr, size, PROT_NONE, flags, -1, 0);
+ 
+@@ -60,7 +85,7 @@ int main(void)
+ 	printf("unmap() successful\n");
+ 
+ 	errno = 0;
+-	addr = BASE_ADDRESS + page_size;
++	addr = base_addr + page_size;
+ 	size = 3 * page_size;
+ 	p = mmap((void *)addr, size, PROT_NONE, flags, -1, 0);
+ 	printf("mmap() @ 0x%lx-0x%lx p=%p result=%m\n", addr, addr + size, p);
+@@ -80,7 +105,7 @@ int main(void)
+ 	 *     +4 |  free  | new
+ 	 */
+ 	errno = 0;
+-	addr = BASE_ADDRESS;
++	addr = base_addr;
+ 	size = 5 * page_size;
+ 	p = mmap((void *)addr, size, PROT_NONE, flags, -1, 0);
+ 	printf("mmap() @ 0x%lx-0x%lx p=%p result=%m\n", addr, addr + size, p);
+@@ -101,7 +126,7 @@ int main(void)
+ 	 *     +4 |  free  |
+ 	 */
+ 	errno = 0;
+-	addr = BASE_ADDRESS + (2 * page_size);
++	addr = base_addr + (2 * page_size);
+ 	size = page_size;
+ 	p = mmap((void *)addr, size, PROT_NONE, flags, -1, 0);
+ 	printf("mmap() @ 0x%lx-0x%lx p=%p result=%m\n", addr, addr + size, p);
+@@ -121,7 +146,7 @@ int main(void)
+ 	 *     +4 |  free  | new
+ 	 */
+ 	errno = 0;
+-	addr = BASE_ADDRESS + (3 * page_size);
++	addr = base_addr + (3 * page_size);
+ 	size = 2 * page_size;
+ 	p = mmap((void *)addr, size, PROT_NONE, flags, -1, 0);
+ 	printf("mmap() @ 0x%lx-0x%lx p=%p result=%m\n", addr, addr + size, p);
+@@ -141,7 +166,7 @@ int main(void)
+ 	 *     +4 |  free  |
+ 	 */
+ 	errno = 0;
+-	addr = BASE_ADDRESS;
++	addr = base_addr;
+ 	size = 2 * page_size;
+ 	p = mmap((void *)addr, size, PROT_NONE, flags, -1, 0);
+ 	printf("mmap() @ 0x%lx-0x%lx p=%p result=%m\n", addr, addr + size, p);
+@@ -161,7 +186,7 @@ int main(void)
+ 	 *     +4 |  free  |
+ 	 */
+ 	errno = 0;
+-	addr = BASE_ADDRESS;
++	addr = base_addr;
+ 	size = page_size;
+ 	p = mmap((void *)addr, size, PROT_NONE, flags, -1, 0);
+ 	printf("mmap() @ 0x%lx-0x%lx p=%p result=%m\n", addr, addr + size, p);
+@@ -181,7 +206,7 @@ int main(void)
+ 	 *     +4 |  free  |  new
+ 	 */
+ 	errno = 0;
+-	addr = BASE_ADDRESS + (4 * page_size);
++	addr = base_addr + (4 * page_size);
+ 	size = page_size;
+ 	p = mmap((void *)addr, size, PROT_NONE, flags, -1, 0);
+ 	printf("mmap() @ 0x%lx-0x%lx p=%p result=%m\n", addr, addr + size, p);
+@@ -192,7 +217,7 @@ int main(void)
+ 		return 1;
+ 	}
+ 
+-	addr = BASE_ADDRESS;
++	addr = base_addr;
+ 	size = 5 * page_size;
+ 	if (munmap((void *)addr, size) != 0) {
+ 		dump_maps();
+-- 
+2.35.1
+
