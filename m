@@ -2,128 +2,145 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67D4F4BB619
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 11:02:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB094BB6C5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 11:22:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K0S0q5xDFz3cXY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 21:02:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K0SRt2ZCPz3cX0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 21:22:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256 header.s=selector2 header.b=SlCPkIur;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::619;
- helo=fra01-mr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on0619.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e19::619])
+ smtp.mailfrom=infinera.com (client-ip=2a01:111:f400:fe5b::62a;
+ helo=nam12-bn8-obe.outbound.protection.outlook.com;
+ envelope-from=joakim.tjernlund@infinera.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
+ header.s=selector2 header.b=SlCPkIur; 
+ dkim-atps=neutral
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2062a.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe5b::62a])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K0S0N6fqtz30Bc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 21:01:55 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K0SR31y0tz3cCJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 21:21:33 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Wx8ttGtpTcWLq+bkAi6jGJ6EpNPbePEbncK77cBcDXLGMFOa4jQpO0BcadOiN6ptGeckKAbBW1MkFweKO8jG3wHH40QVHLTGKXgbe1QahRmfzDFQo8elhy+23kNKNsAP6Vm/7IBm6H+vlyluw3uHE6Z+egnlsiaPSfsjrBfOk7I/BiAVbo78iApqCym1Iq+epivtAFjlV3DNdvNnH1U9J8Ioh2jsbcad1nbw0UH9YZlAXG4t0xTtkIDUgqdSCG2raQjUU7P00UaBOG3cZVkdkgOMpB2GxDvKeazAvOTHqpguKlw4HrUZMFypi9bfviv0K9cdXKFcE5x9ZHn8A7ThiA==
+ b=VEr81ozKmp0+r1LMUWyzbPqCkHhxb11FKeoCghg7j2TsZyAnURZFo9DZlSa1VYmXV45BedxYseWzYWpHxuj2D5kTRuRgs76bvB3l5WJqcC+UuEWTGcniGXZneYvNbT9wrxLKYMBuMKp9KcXSujebsfZDJm1TVQiAoOyo5oGbP5U5RHkj1ejfwliRodHpFDkU3dtgoBgncL3RWux5E0ZO2nka1b+83cSmInDR1PS835sc6x2NQNahBORHIRpk9Q6GlYHGyqbWW07U5LWw1JJ4iO2xbiGGNl4VbVzOIeRCiUv2qeIxCkO1AdVPTettVvTvvz6uPomGA0vDCRRgU39GZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rLNY9qDCIO4RGr52QiJIclJO0ZTdmVBLN4g+EzPyQ70=;
- b=gL43lh4ybRf847m0skDCVoG2i9hCmgB2XIDFhBEK3BNTSnmMsdoC4esxYTDtWjimrInoOAkwUgs27s0FODxHcnHdaMkH8AT4/jSVGWsxvda804zAdZ/HnYyFsZf2Jes2o7WllTWlNBpysTXlC+l7CJuL3YHPELzFfEk7MBl1WUnbZxFjFUh+4lhvFtzCa1dywwk3dpDPJjzjrOLfBOETK6CCRbfkEphf8pR9gQTasLBKPPnwMzyrtszKnQ10yM75PiIoTUj9ip05JmhTe85zBQ11efCXpapt1sih6Rbzqk9O6uGC9jtxeH64hWgy4wV/ARWeOVOTeBloM4l/8ENRkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRXP264MB0774.FRAP264.PROD.OUTLOOK.COM (2603:10a6:500:17::17) with
+ bh=y6dJSbSQzC/LwupH0OUSZVwVWJ4d+sz2w6qg1mqCNtk=;
+ b=ZDYBzKmWQY382LVhRWgcG9k7tlz2Ict8Qa6uXP+XwROxJK3QOJ5UFE0Rm+4UOkYTYDIGzqu0eEHdrgFSf9Pqonu/llsslxoM89fThl493Rn+m1WH2mMYKr9YkcUkN82dQ9/ZdUCCI/xEC45jzvWjKqTJlHIbO7MUtNuNC+09NODtZ+e3PQ94M3ugDasKFWLWc5TTEKNpnAjdm8aYDZ4bUOzdQrSlVzyn0zGiDL6UZj/Ytal9Monq6WAjY2a6vbGt60uU1Or5rOwTeGx70JgvClDbUwa+kJhMF2wddU//YBJ2z+JK9qdYy5jkeoH21ffHkkqvMtW57tB8o6gc+Ses8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=y6dJSbSQzC/LwupH0OUSZVwVWJ4d+sz2w6qg1mqCNtk=;
+ b=SlCPkIurBzkGf6WXbqqJwwoHCMz01t1o26CdpeozcdXZZu6xljEchGMn+updUMFoohDZeezkasCG9Hbp5tkvjEW1m55acqTJdI5G64o34EUOrERMkgcBGc+jV6bzk3NyQu4AOCI8aZu4hWZkdmBRDy0svWc3YeM7DqjyOcQjxtE=
+Received: from PH0PR10MB4615.namprd10.prod.outlook.com (2603:10b6:510:36::24)
+ by DM6PR10MB3964.namprd10.prod.outlook.com (2603:10b6:5:1d1::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.14; Fri, 18 Feb
- 2022 10:01:32 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::8142:2e6f:219b:646d]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::8142:2e6f:219b:646d%4]) with mapi id 15.20.4995.022; Fri, 18 Feb 2022
- 10:01:32 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Al Viro <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v2 00/18] clean up asm/uaccess.h, kill set_fs for good
-Thread-Topic: [PATCH v2 00/18] clean up asm/uaccess.h, kill set_fs for good
-Thread-Index: AQHYIzcr/0MVz4zz9E+FaRkUlMFJvKyXVyqAgAE2QACAAIkqAA==
-Date: Fri, 18 Feb 2022 10:01:32 +0000
-Message-ID: <c5710bc5-0440-b828-d91e-6961081573af@csgroup.eu>
-References: <20220216131332.1489939-1-arnd@kernel.org>
- <00496df2-f9f2-2547-3ca3-7989e4713d6b@csgroup.eu>
- <Yg77bNZfNhSk0bVQ@zeniv-ca.linux.org.uk>
-In-Reply-To: <Yg77bNZfNhSk0bVQ@zeniv-ca.linux.org.uk>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4975.17; Fri, 18 Feb
+ 2022 10:21:12 +0000
+Received: from PH0PR10MB4615.namprd10.prod.outlook.com
+ ([fe80::b4c9:b890:c6c2:1d48]) by PH0PR10MB4615.namprd10.prod.outlook.com
+ ([fe80::b4c9:b890:c6c2:1d48%8]) with mapi id 15.20.4975.021; Fri, 18 Feb 2022
+ 10:21:12 +0000
+From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+To: Thorsten Leemhuis <regressions@leemhuis.info>, Leo Li
+ <leoyang.li@nxp.com>, "Eugene_Bordenkircher@selinc.com"
+ <Eugene_Bordenkircher@selinc.com>, "linux-usb@vger.kernel.org"
+ <linux-usb@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: bug: usb: gadget: FSL_UDC_CORE Corrupted request list leads to
+ unrecoverable loop.
+Thread-Topic: bug: usb: gadget: FSL_UDC_CORE Corrupted request list leads to
+ unrecoverable loop.
+Thread-Index: AdfM5PT/NvfAW0+iTcC+AdIF01azggAtEqGAAKVd5oACc0lYgABIbVXQAbnCUAAA0DL90AAM8XwQAABPhqAAGbtsgAA3RpcAAD9HUaAABKxzgAA1v9lwCVXoO4AFpnkjgAAGlK90
+Date: Fri, 18 Feb 2022 10:21:12 +0000
+Message-ID: <PH0PR10MB4615990F8589556B65005387F4379@PH0PR10MB4615.namprd10.prod.outlook.com>
+References: <MWHPR2201MB152074F47BF142189365627B91879@MWHPR2201MB1520.namprd22.prod.outlook.com>
+ <bb5c5d0f-2ae7-8426-0021-baeca8f7dd11@leemhuis.info>
+ <MWHPR2201MB15209AA4F2457934BDD3293B91999@MWHPR2201MB1520.namprd22.prod.outlook.com>
+ <726d3561-1842-72c7-d4cb-9a99211bb05c@leemhuis.info>
+ <MWHPR2201MB1520A85FE05B281DAA30F44A91669@MWHPR2201MB1520.namprd22.prod.outlook.com>
+ <AS8PR04MB89461BF7A3272E5A18ECD0948F669@AS8PR04MB8946.eurprd04.prod.outlook.com>
+ <MWHPR2201MB15205A333F1F610D332038AC91669@MWHPR2201MB1520.namprd22.prod.outlook.com>
+ <d0c52d26742b082f5a953a05630a9d70e0eb1356.camel@infinera.com>
+ <527ebc333daa2a1d513ea217e5beb61a5acea3fb.camel@infinera.com>
+ <AS8PR04MB894614C61E57A80EB4FF7C758F699@AS8PR04MB8946.eurprd04.prod.outlook.com>
+ <f31008a0f4e71ff029aa611b0ebcfd83f10ec67f.camel@infinera.com>
+ <AS8PR04MB89464D90D2E92A5D401474BD8F6B9@AS8PR04MB8946.eurprd04.prod.outlook.com>
+ <ce653a10-c004-75b1-5f70-e23c0c2aee68@leemhuis.info>
+ <b6aa24cc-6ddc-7dda-b098-0033e4f6aa03@leemhuis.info>
+In-Reply-To: <b6aa24cc-6ddc-7dda-b098-0033e4f6aa03@leemhuis.info>
+Accept-Language: en-GB, en-US
+Content-Language: en-GB
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
+suggested_attachment_session_id: b0d03e82-a63e-d67a-7421-bc71ea97240b
 authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
+ header.d=none;dmarc=none action=none header.from=infinera.com;
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 6e039961-d5be-4533-85a1-08d9f2c5a449
-x-ms-traffictypediagnostic: MRXP264MB0774:EE_
-x-microsoft-antispam-prvs: <MRXP264MB077444B3E4FF9E9C2AB8D159ED379@MRXP264MB0774.FRAP264.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-ms-office365-filtering-correlation-id: 5ace759d-5df1-411a-ba7a-08d9f2c86389
+x-ms-traffictypediagnostic: DM6PR10MB3964:EE_
+x-microsoft-antispam-prvs: <DM6PR10MB39647D74124DF556EC28CE22F4379@DM6PR10MB3964.namprd10.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 6znA45T6jhZDGgmS9hdOSWO+FX6qaf2PSVUEOIFKPrtFeRE+tcFQQWj3XJo4gBk4LH4wwIGbu5i5c65m+dnMUBUexr4bnRLKG0kpWFO1XC55ElXbPpKIEbZ2Z7WAINnHLjkgV0qCl+yFuOBPA4g/UE8H+mIcUTuFZGqkQIzdlW2eWu7sNT6Glo55u21Hzqp6RW4u3CQUnPSlnkfVAg5g7SO7cN9nGHDRkEr92Ill3kgcQT2+PCm1mEXUIikQXGveQMX4HhGGdMhB+xeTGHajjg2XXqksA3vZgydzo3yWVdIiGwK5+8PuZ+/6m9aKIJiTNHu/2ZXXZRnCyNYvIJEUD247RYOql1aLzlz3PgpbWriqmh25xORH8sI6V7d0Px2OwTnU6KT0VaMk3VA9GQeb1dJbK3yvwRCh9JDl6/J9u2EzEUvvUcX+X44vbt4GZjPLnptF5Dz7PhcGASHKUUEx1jE9jYi6VTX8GWix/VyDo2Sm/w41JrZWAW/Uq7BD5zNStkEEdwYwfBk1TeXjIhSHHf3MeHJ0Dza1xn3z+oM60GbnQzlabWF+ClCSeLI7GRbe4jbsYpfiY4+SCVqPllRbyy6DX4k3jSjR+M18+HRqmqO7IvmEu8pKcvkzvCUhwQ5AU0d6T3BXVGAUZVdgxPmCMg+kBJeu/jPc5qnM5hxeiLpdRb89wZyI0BTliLnz3PNXCBptU/fVEoB9BQ/NAAp1AOvFSupg2OahVahazAmWrlMiwb2ruaUIds8AMlnganKle59Lkw7nMKDrugWBMUHcpg==
+x-microsoft-antispam-message-info: hti0iohu7JJ9FXFGx2jngaFCsXMxXHCzx0auZtnN50X6Dl+AWGS4Y1pXEzQF/ggV5it3BcNzDAjAZmvoJ5oEfpSzAAXPhUGyHdI9N9yQVAdOg2NlIzsHOwsshOwgXpJt8jjYONYXLHclFeQEcfeLI73ooXpy6AhDeYfh4DV2JjYBfA2Li9yr2hfbO7EsP5H8XjjAvaxfs5lIl+Fd4kiKQkD01APfQgQnqPv//AMwyKTDb9/cxmlD/HYEU+lzOJrcInYSV5kZ5oZGGBv/IRD1kjmALgKAW/QlTkBo01h/fXANJKThNu0ZS9sKDo5TQyzFn85AkF+0HH2QwyK+X91AvYVz4Cw23HH2l2hyBfa9XRxcxHg8ri24mOTm0ztTbPzR7qz0jA6mHmsr0/pIJF884niccGfKqTjCuspId1L1W3vqtXh09SGZECEUD7MkUsjTlZOfuEkdU4+gha3awKmDCUXrq6Ok4YgPVm2Q8Z+x5gwpa2BDypGVrVBTNf5ye1vvqhN+0jviFxWlrn3RekGvFY+90U4qgiCa5z6R8KUZHnZERRZ1oeNUK1zlWopjArV/Ue0RpzJIzo1bqr+cMwyxv4cuMpAF4Ki2rx/VdCkfEjvLZN1LrZiVk3aYuhGWiDsPzsrF/P9/1lDVZZdCqOHkAkEeFAna6yAzLPfx69unb9rKjX/JGZF6Bb0ZSQ6CMFKJ1TgHqfFw29Z3nhGVWVFDibX6OrVUk1Pn1GU4V98WMn1HLpYlBDlJL0l8mO5lO009lSV0b6iJNTpOsVTFU3sbqlm2p9/G4YgRuBRIrwJbxoE=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(186003)(26005)(122000001)(508600001)(6486002)(316002)(31696002)(54906003)(110136005)(8676002)(38070700005)(4326008)(38100700002)(64756008)(66556008)(66446008)(86362001)(8936002)(66476007)(71200400001)(76116006)(66946007)(2906002)(2616005)(6512007)(66574015)(36756003)(31686004)(5660300002)(44832011)(6506007)(83380400001)(7406005)(7416002)(91956017)(45980500001)(43740500002);
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB4615.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(366004)(71200400001)(508600001)(45080400002)(91956017)(2906002)(4326008)(8676002)(76116006)(66946007)(66556008)(66476007)(66446008)(64756008)(83380400001)(122000001)(7696005)(33656002)(6506007)(110136005)(54906003)(26005)(38100700002)(186003)(53546011)(5660300002)(52536014)(9686003)(8936002)(86362001)(38070700005)(316002)(55016003)(4001150100001);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZlhvYVdaOHZHN1pwZ2REQW0wb1RFK1hxd2VmNGxxa1czb0xpSE15VVJucC8w?=
- =?utf-8?B?TlVVci9YZXNDVDdORkMvb0hVd3pNS3A4ODFQYnBXUlhqeDYxNWt0Q0hWL1l6?=
- =?utf-8?B?eHRhRjJOeml4TEIyZnJ2blMrRTNvZmJsMEpWU25JZHlBVlBwb0NmMVN0Z0ZI?=
- =?utf-8?B?aXdoZWRzRUpWNVU3N1RQSFVKVnJCQlRneFVMM2FJM3RiQWd1MjUwVWZUcTJl?=
- =?utf-8?B?SkJiTzlkVXBhTjFFWGllem9xUHQ1TUJHc084Z0lTM01SeXU4R0cyc1VrME9V?=
- =?utf-8?B?TVRpbG9pdUE2U0JIcjkzNXUvelpJU2E4bjM3R3MxdVRmYmNKanlCVm9Zc3Bj?=
- =?utf-8?B?WGpEcWdtTFZRa0hMNWtBampZbHRQQVN0Yml3U2NOQWVjWGFLVExYMm0xdmx4?=
- =?utf-8?B?WDRBTDQvaSt2cjcyMlk2elNmUU16aE42TWoyWFdReEdVVFp1bXIxRVhmZ2xk?=
- =?utf-8?B?U1VZbytsc1kySUJzM0U1ZzRWVmJ0a21GU3pJNmk1cENmK0NDVFFPOVRieGJK?=
- =?utf-8?B?eFloRjFKUGNDWW5CSVJLZllqK0I0ZnViY3RYWmdzRy9rTFZmdmowZEI1Z1F5?=
- =?utf-8?B?ZUFRQ3FkdGJ0Z0tpa2hLNjJpNWpxSW9tZ3g3Z0ZyVGplYzV5UnRia3AweUhE?=
- =?utf-8?B?M1cwQWF0YlZTOGJmU3UvTzFqWnpwbmR6NVdoM3h1cXpMVUdCTmtMc0NUazNz?=
- =?utf-8?B?RVhoVmM0S2Jqd2tFZTJlY2lpZzJ5SXZkN2Z2ZHZYVjhkTFlkUjBqQVRFWWxF?=
- =?utf-8?B?bVBNUHZIb0RobnhxbS8yRG1NdGxSQlhwMUxkR2k2TkIyeTFhWnRVRXB4ajli?=
- =?utf-8?B?blFQWUVnSzk4bExGckpXWUViMXNzdldUQlRlUVZsNWw1cEZnTUNNandCYk9O?=
- =?utf-8?B?cDlOUGJYb3J5dEpIV09SVFJycXJCejQ1N1E4TVZEdVoraVZ5emxiNC9ZMUpO?=
- =?utf-8?B?NjJ4SUg2Z2traGlZNUpjSjN5WVkzWUFaemdwd3ZDbjlQRTVYdkRhekNTVTZU?=
- =?utf-8?B?TlM3M0ZxRCs0Z0p4ZTY2MEY3ZXpEU3JOcGxtbmJGZUR4dmhhUmxNclVGT1kz?=
- =?utf-8?B?dGR5bXBjNU5sVzQ3ZDRQV0NVVVl1TzVUVmIzUjJoV0RlYnFkTTJLTDhZQ2xS?=
- =?utf-8?B?R3BFRXNveHZvOW05bko3VithSENORkZDaUh2NVE0ZGN3YzBsMXEwWUdmRUsy?=
- =?utf-8?B?TE1RT2F1SzNZS3pZVWtZY2V5aVp3S0w2MFhoZTAyNVduK2pmZnJTeC8xTFdQ?=
- =?utf-8?B?cTJCY1crOTh4TUFWbUlvSXVlcE5aYkdOUnoxLzdtRkFsTUE2R2J2WDhPQUlL?=
- =?utf-8?B?WVdEQTdDYkFhWWl1RGtnWkovOStVZ003L3ZJdEJvak5mWktoR3QwR3gvM005?=
- =?utf-8?B?Ujk4STkxcjN5bzlJUXM0YUZsb3RwNnNTYW5DZnJyWkhXMDdVbTBLR1FpVzJ2?=
- =?utf-8?B?MUdMYmtxS2xNeGg3NnpNMTZvZXVYU2JKRGdXOHh1R2Z4TzFxUG9OWWxPNStM?=
- =?utf-8?B?S0Z0WTJoRDZYWmpvdDI2ZTJSdnVOU2ZoanpOQ0ZITEhkdmVwV0Ixd3dJd1o5?=
- =?utf-8?B?dExMZWRMOVNFRXpWRVdQMmFJV1VyU1lnYWtLMFFqTUhIV2QwRFR1WEQ5S0JT?=
- =?utf-8?B?WG94VXh3ZFc4a2NqYlJpdldpVFR3Tkt2eS84N1E3a3FNbER0Rk8xbG05amcz?=
- =?utf-8?B?N3pYOW5XbW9UNllFd2FDMTRYcXJnYU1qYWdtcFQ2clFiU2dvenBTUlVyT1Fr?=
- =?utf-8?B?WW5uVVh1RDVETDIrTzhZN2NJUUkzM3JyRTB6T0tVbitPZkM1c0pKSmROdC9Y?=
- =?utf-8?B?L1gzWFB1UU1iY2VXeWQ3ZGQ3S3hZTkhQME5xL09OeEowdHVhZnFZQ2Q3V3Jz?=
- =?utf-8?B?THJ3Uk9lSkNORnFMa1ZmUndUYitpTzNtZmxpM2I5N2QvUFhBTXlJWS9Mb0xu?=
- =?utf-8?B?SGEzM1NOSUZxMUVuOGpmMXQzWDlPc21Tamt5MnVxWkl0SWNlKzAvTzBMYzh0?=
- =?utf-8?B?c3BNSmw5dXJLN014M0RDeFA5WXkxSzUrbDQyY3BqdXRNSW8yMWdndGtIQmVx?=
- =?utf-8?B?NnZvQVdML29DdnVTTGtWMElaVlp1ckZRUU1FTUVNekE1NVJVWHlrdHFEaVFW?=
- =?utf-8?B?OWtYaVdDbEZFNWJNR1UvSXFsYm1PNHROK0pkdDRXWW1MRnhMTUdJR1FYUm1v?=
- =?utf-8?B?S0xkdjVxQkZ2SWdUWjlOQWRVK0VzaXBnWTFiR2VUVXgrOEM4aWRPQ214OVhi?=
- =?utf-8?Q?d5XU+gKNAx+DwbAmKRfFPUtW1DDQAcAyhXib2MHGCE=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <536145C92E644D43B274A77FE4354E3A@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?akIwpjl8N35EPf+34Krj7a1aXkkYKS4oNfN4X/JqDP2BVG3JbKSUIPEnrw?=
+ =?iso-8859-1?Q?7kR5cH3Uv118QYFJnAq1uyKfgyFMGsf3GHO9VCl7eGiW9z4fjfm7AxnCkr?=
+ =?iso-8859-1?Q?1K5eZpcHGTzGGknGtoK2Nxj4c/oxHILFlhEb799iiga9WuUgdSlJAC4lH/?=
+ =?iso-8859-1?Q?JF/WfzLql2A0Jjlj8RPQDcEdHiRokmOmX1wmwRA7VNusRt3t7FbzsbbzvL?=
+ =?iso-8859-1?Q?a2dEjh4Q/dlWMTnIEBGg0GpQtOFDYQfPq0561KUKB7A+zeXjskEgyouSJ5?=
+ =?iso-8859-1?Q?h5IOHsDg4BJil4T2lz+xXe1DyjvONH4leKqB0Pizta5z+yf6sO5FQszY7J?=
+ =?iso-8859-1?Q?5j29yXZ1eg8oVQv8yD6UWFeiuumUhr1zdurnmqyY7tq78u4g7T+Oc1o8si?=
+ =?iso-8859-1?Q?OzDlxfS3votSBSbY/wmXCWsWJieLuo7t2GOoUMdDXmVRMvOCaJwpcvi7WM?=
+ =?iso-8859-1?Q?Rrusq4AzcvAof7acmA2L/8KIAUCAkGTgphT1TtjUwEOub+le4EL+DgnA4K?=
+ =?iso-8859-1?Q?27MXyti2yrfJAwjBElXpbdM7DSjYBneR0wgpZ6v/XqEGPDZDbFZhLPm0uG?=
+ =?iso-8859-1?Q?LHO5XmLb4ndca6ApW1dnb+Pz4hO80vugmj3zAz73aG+j3qedvrOv50m/DR?=
+ =?iso-8859-1?Q?zxYfv1+/NMb2O7pHWV7BrophGEGzsjQbK7qIPCdX0/L/poXJES84a1Uxo6?=
+ =?iso-8859-1?Q?Mvl6cy1ovmPP6nbMAS53Xv6bxDueRvztGGW5CRiquU+PxJykNBT4yhjNob?=
+ =?iso-8859-1?Q?iTyDC2u0zu8frtGazlqmoTGPdgvYoCpZimfaSfKXmMWQRmuvYtbsj2IGH5?=
+ =?iso-8859-1?Q?vTHgKhqs45fRvKS/NBU02k6CujdNiG9lv/Z59eMeb2cxsxnlP71apsY/2R?=
+ =?iso-8859-1?Q?SehtEriITcJqbjpXwSagBt4fpdWywSWhyB2lljVwi3k+XajxFiCfZftt4P?=
+ =?iso-8859-1?Q?b/Iog231MwmEQ+EW4Ok27W2Gg+dD7fauVcf5u2vdOADWFaLWxDYrYfsxh2?=
+ =?iso-8859-1?Q?fvjDSKz5HgRQEPqwNG2xAfCzadX1f+GYYfNLVT2bSeMsYFFo0vWQHG3uE3?=
+ =?iso-8859-1?Q?DjFLHd5Y2S0KdMoX8sdnWxMENtSCaZ7WMWrhN6AlmVh4AnflD8kGYRYd1q?=
+ =?iso-8859-1?Q?Lv6oiHqNAv+0hljtSu8Nv2WJYv9d9I/BOg3BrmHtYB+oH9vbsPbhGAPNDa?=
+ =?iso-8859-1?Q?oLt3Qikwx0nAcbkmqwhxsscyUWB+ioSyA1QMlscsl5OYcyudfePI1u8ij3?=
+ =?iso-8859-1?Q?SIuTrki06iGlb9I2/q6mKM0QiPeOFnH0g6MejDAdnEYuFzfFFDbYdDowe6?=
+ =?iso-8859-1?Q?m+IAm/L4t5LYK4UuhFzzwArL53WCOQnWRSMBjyDDefa4jBualrwxfuCf0X?=
+ =?iso-8859-1?Q?mDZ+SPYA91N9imxwKZHfMM2BT2GzZpUJeg061i9Augba9OtgAKxZHbTpmw?=
+ =?iso-8859-1?Q?hV7pOHOXMQ5G0AQWsIIjBxx1qFzmuuYOeqzJ2PR1a5mh1cK9pAlp8AUGA6?=
+ =?iso-8859-1?Q?2Xj99C/fr+XFYiOEI+lOzvOnYLDq5KnJAt9CIBF495btnx9Q4xHUBJVLiE?=
+ =?iso-8859-1?Q?K9+rHKCN+V/sXV9bwtz16cs2yVCFKMv0XZYHkFEx7G9+ftrWigT/1+Y7fH?=
+ =?iso-8859-1?Q?YPL6G1h9jS7OLEZl4raS6OAKGDWaJarR0itPEa+cccyarCb6Zn3Hy4dBvB?=
+ =?iso-8859-1?Q?Jyzxth8uo+bqM6CfaXY=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
+X-OriginatorOrg: infinera.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e039961-d5be-4533-85a1-08d9f2c5a449
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Feb 2022 10:01:32.7303 (UTC)
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4615.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5ace759d-5df1-411a-ba7a-08d9f2c86389
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Feb 2022 10:21:12.5425 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dqLoSBWXwHsbv1m2nVBxblyd+itzTAL68jkFLsPdrNl1wHsb873aouwEs6WbG75ZvH4fk9DwDcTlosL3HMAUtJcB2263zVv+lu8tb8xPGHI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRXP264MB0774
+X-MS-Exchange-CrossTenant-userprincipalname: xpQcWeavhCK9vynp9ut2gLI0fjG5pnedxbHWlxcLYxj4bd6MuhGRba5pKwD8VW+Z02wrzM+Hre00e84QCxZ+8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB3964
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,82 +152,145 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "dalias@libc.org" <dalias@libc.org>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "jcmvbkbc@gmail.com" <jcmvbkbc@gmail.com>,
- "guoren@kernel.org" <guoren@kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "will@kernel.org" <will@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "bcain@codeaurora.org" <bcain@codeaurora.org>,
- "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
- "deller@gmx.de" <deller@gmx.de>, "x86@kernel.org" <x86@kernel.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>, "mingo@redhat.com" <mingo@redhat.com>,
- "geert@linux-m68k.org" <geert@linux-m68k.org>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
- "arnd@arndb.de" <arnd@arndb.de>, "hca@linux.ibm.com" <hca@linux.ibm.com>,
- "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "richard@nod.at" <richard@nod.at>,
- "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
- "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
- "green.hu@gmail.com" <green.hu@gmail.com>,
- "shorne@gmail.com" <shorne@gmail.com>, "monstr@monstr.eu" <monstr@monstr.eu>,
- "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
- "nickhu@andestech.com" <nickhu@andestech.com>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "dinguyen@kernel.org" <dinguyen@kernel.org>,
- "ebiederm@xmission.com" <ebiederm@xmission.com>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- "davem@davemloft.net" <davem@davemloft.net>
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "balbi@kernel.org" <balbi@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDE4LzAyLzIwMjIgw6AgMDI6NTAsIEFsIFZpcm8gYSDDqWNyaXTCoDoNCj4gT24gVGh1
-LCBGZWIgMTcsIDIwMjIgYXQgMDc6MjA6MTFBTSArMDAwMCwgQ2hyaXN0b3BoZSBMZXJveSB3cm90
-ZToNCj4gDQo+PiBBbmQgd2UgaGF2ZSBhbHNvDQo+PiB1c2VyX2FjY2Vzc19iZWdpbigpL3VzZXJf
-cmVhZF9hY2Nlc3NfYmVnaW4oKS91c2VyX3dyaXRlX2FjY2Vzc19iZWdpbigpDQo+PiB3aGljaCBj
-YWxsIGFjY2Vzc19vaygpIHRoZW4gZG8gdGhlIHJlYWwgd29yay4gQ291bGQgYmUgbWFkZSBnZW5l
-cmljIHdpdGgNCj4+IGNhbGwgdG8gc29tZSBhcmNoIHNwZWNpZmljIF9fdXNlcl9hY2Nlc3NfYmVn
-aW4oKSBhbmQgZnJpZW5kcyBhZnRlciB0aGUNCj4+IGFjY2Vzc19vaygpIGFuZCBldmVudHVhbGx5
-IHRoZSBtaWdodF9mYXVsdCgpLg0KPiANCj4gTm90IGEgZ29vZCBpZGVhLCBjb25zaWRlcmluZyB0
-aGUgZmFjdCB0aGF0IHdlIGRvIG5vdCB3YW50IHRvIGludml0ZQ0KPiB1c2VzIG9mICJmYXN0ZXIi
-IHZhcmlhbnRzLi4uDQoNCkknbSBub3Qgc3VyZSBJIHVuZGVyc3RhbmQgeW91ciBjb25jZXJuLg0K
-DQpUb2RheSBpbiBwb3dlcnBjIHdlIGhhdmU6DQoNCglzdGF0aWMgX19tdXN0X2NoZWNrIGlubGlu
-ZSBib29sDQoJdXNlcl9yZWFkX2FjY2Vzc19iZWdpbihjb25zdCB2b2lkIF9fdXNlciAqcHRyLCBz
-aXplX3QgbGVuKQ0KCXsNCgkJaWYgKHVubGlrZWx5KCFhY2Nlc3Nfb2socHRyLCBsZW4pKSkNCgkJ
-CXJldHVybiBmYWxzZTsNCg0KCQltaWdodF9mYXVsdCgpOw0KDQoJCWFsbG93X3JlYWRfZnJvbV91
-c2VyKHB0ciwgbGVuKTsNCgkJcmV0dXJuIHRydWU7DQoJfQ0KDQpXZSBjb3VsZCBpbnN0ZWFkIGhh
-dmUgYSBnZW5lcmljDQoNCglzdGF0aWMgX19tdXN0X2NoZWNrIGlubGluZSBib29sDQoJdXNlcl9y
-ZWFkX2FjY2Vzc19iZWdpbihjb25zdCB2b2lkIF9fdXNlciAqcHRyLCBzaXplX3QgbGVuKQ0KCXsN
-CgkJaWYgKHVubGlrZWx5KCFhY2Nlc3Nfb2socHRyLCBsZW4pKSkNCgkJCXJldHVybiBmYWxzZTsN
-Cg0KCQltaWdodF9mYXVsdCgpOw0KDQoJCXJldHVybiBhcmNoX3VzZXJfcmVhZF9hY2Nlc3NfYmVn
-aW4ocHRyLCBsZW4pOw0KCX0NCg0KQW5kIHRoZW4gYSBwb3dlcnBjIHNwZWNpZmljDQoNCglzdGF0
-aWMgX19tdXN0X2NoZWNrIF9fYWx3YXlzX2lubGluZSBib29sDQoJYXJjaF91c2VyX3JlYWRfYWNj
-ZXNzX2JlZ2luKGNvbnN0IHZvaWQgX191c2VyICpwdHIsIHNpemVfdCBsZW4pDQoJew0KCQlhbGxv
-d19yZWFkX2Zyb21fdXNlcihwdHIsIGxlbik7DQoJCXJldHVybiB0cnVlOw0KCX0NCgkjZGVmaW5l
-IGFyY2hfdXNlcl9yZWFkX2FjY2Vzc19iZWdpbiBhcmNoX3VzZXJfcmVhZF9hY2Nlc3NfYmVnaW4N
-Cg0KQW5kIGEgZ2VuZXJpYyBmYWxsYmFjayBmb3IgYXJjaF91c2VyX3JlYWRfYWNjZXNzX2JlZ2lu
-KCkgdGhhdCBkb2VzIA0Kbm90aGluZyBhdCBhbGwuDQoNCkRvIHlvdSBtZWFuIHRoYXQgaW4gdGhh
-dCBjYXNlIHBlb3BsZSBtaWdodCBiZSB0ZW1wdGVkIHRvIHVzZSANCmFyY2hfdXNlcl9yZWFkX2Fj
-Y2Vzc19iZWdpbigpIGluc3RlYWQgb2YgdXNpbmcgdXNlcl9yZWFkX2FjY2Vzc19iZWdpbigpID8N
-Cg0KSWYgdGhhdCdzIHRoZSBjYXNlIGlzbid0IGl0IHNvbWV0aGluZyB3ZSBjb3VsZCB2ZXJpZnkg
-dmlhIGNoZWNrcGF0Y2gucGwgPw0KDQpUb2RheSBpdCBzZWVtcyB0byBiZSBwcm9ibGVtYXRpYyB0
-aGF0IGZ1bmN0aW9ucyBpbiBhc20vdWFjY2Vzcy5oIHVzZSANCmFjY2Vzc19vaygpLiBTdWNoIGFu
-IGFwcHJvYWNoIHdvdWxkIGFsbG93IHRvIGdldCByaWQgb2YgYWNjZXNzX29rKCkgdXNlIA0KaW4g
-YXJjaGl0ZWN0dXJlJ3MgdWFjY2Vzcy5oDQoNCkNocmlzdG9waGU=
+I think you could apply them as is, only criticism was the commit msgs.=0A=
+=0A=
+ Jocke=0A=
+=0A=
+________________________________________=0A=
+From: Thorsten Leemhuis <regressions@leemhuis.info>=0A=
+Sent: 18 February 2022 08:11=0A=
+To: Leo Li; Joakim Tjernlund; Eugene_Bordenkircher@selinc.com; linux-usb@vg=
+er.kernel.org; linuxppc-dev@lists.ozlabs.org=0A=
+Cc: gregkh@linuxfoundation.org; balbi@kernel.org=0A=
+Subject: Re: bug: usb: gadget: FSL_UDC_CORE Corrupted request list leads to=
+ unrecoverable loop.=0A=
+=0A=
+Hi, this is your Linux kernel regression tracker speaking. Top-posting=0A=
+for once, to make this easy accessible to everyone.=0A=
+=0A=
+Sadly it looks to me like nobody is going to address this (quite old)=0A=
+regression (that afaic only very few people will hit), despite the rough=0A=
+patch to fix it that was already posted and tested in this thread.=0A=
+=0A=
+Well, guess that's how it is sometimes. Marking it as "on back burner"=0A=
+in regzbot to reduce the noise there:=0A=
+=0A=
+#regzbot backburner: Tested patch available, but things nevertheless got=0A=
+stuck=0A=
+=0A=
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)=0A=
+=0A=
+P.S.: As the Linux kernel's regression tracker I'm getting a lot of=0A=
+reports on my table. I can only look briefly into most of them and lack=0A=
+knowledge about most of the areas they concern. I thus unfortunately=0A=
+will sometimes get things wrong or miss something important. I hope=0A=
+that's not the case here; if you think it is, don't hesitate to tell me=0A=
+in a public reply, it's in everyone's interest to set the public record=0A=
+straight.=0A=
+=0A=
+#regzbot poke=0A=
+=0A=
+=0A=
+=0A=
+On 20.01.22 13:54, Thorsten Leemhuis wrote:=0A=
+> Hi, this is your Linux kernel regression tracker speaking.=0A=
+>=0A=
+> On 04.12.21 01:40, Leo Li wrote:=0A=
+>>> -----Original Message-----=0A=
+>>> From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>=0A=
+>>> Sent: Thursday, December 2, 2021 4:45 PM=0A=
+>>> To: regressions@leemhuis.info; Leo Li <leoyang.li@nxp.com>;=0A=
+>>> Eugene_Bordenkircher@selinc.com; linux-usb@vger.kernel.org; linuxppc-=
+=0A=
+>>> dev@lists.ozlabs.org=0A=
+>>> Cc: gregkh@linuxfoundation.org; balbi@kernel.org=0A=
+>>> Subject: Re: bug: usb: gadget: FSL_UDC_CORE Corrupted request list lead=
+s to=0A=
+>>> unrecoverable loop.=0A=
+>>>=0A=
+>>> On Thu, 2021-12-02 at 20:35 +0000, Leo Li wrote:=0A=
+>>>>=0A=
+>>>>> -----Original Message-----=0A=
+>>>>> From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>=0A=
+>>>>> Sent: Wednesday, December 1, 2021 8:19 AM=0A=
+>>>>> To: regressions@leemhuis.info; Leo Li <leoyang.li@nxp.com>;=0A=
+>>>>> Eugene_Bordenkircher@selinc.com; linux-usb@vger.kernel.org;=0A=
+>>>>> linuxppc- dev@lists.ozlabs.org=0A=
+>>>>> Cc: gregkh@linuxfoundation.org; balbi@kernel.org=0A=
+>>>>> Subject: Re: bug: usb: gadget: FSL_UDC_CORE Corrupted request list=0A=
+>>>>> leads to unrecoverable loop.=0A=
+>>>>>=0A=
+>>>>> On Tue, 2021-11-30 at 12:56 +0100, Joakim Tjernlund wrote:=0A=
+>>>>>> On Mon, 2021-11-29 at 23:48 +0000, Eugene Bordenkircher wrote:=0A=
+>>>>>>> Agreed,=0A=
+>>>>>>>=0A=
+>>>>>>> We are happy pick up the torch on this, but I'd like to try and=0A=
+>>>>>>> hear from=0A=
+>>>>> Joakim first before we do.  The patch set is his, so I'd like to=0A=
+>>>>> give him the opportunity.  I think he's the only one that can add a=
+=0A=
+>>>>> truly proper description as well because he mentioned that this=0A=
+>>>>> includes a "few more fixes" than just the one we ran into.  I'd=0A=
+>>>>> rather hear from him than try to reverse engineer what was being=0A=
+>>> addressed.=0A=
+>>>>>>>=0A=
+>>>>>>> Joakim, if you are still watching the thread, would you like to=0A=
+>>>>>>> take a stab=0A=
+>>>>> at it?  If I don't hear from you in a couple days, we'll pick up the=
+=0A=
+>>>>> torch and do what we can.=0A=
+>=0A=
+> Did anything happen? Sure, it's a old regression from the v3.4-rc4 days,=
+=0A=
+> but there iirc was already a tested proto-patch in that thread that=0A=
+> fixes the issue. Or was progress made and I just missed it?=0A=
+>=0A=
+> Ciao, Thorsten=0A=
+>=0A=
+> P.S.: As a Linux kernel regression tracker I'm getting a lot of reports=
+=0A=
+> on my table. I can only look briefly into most of them. Unfortunately=0A=
+> therefore I sometimes will get things wrong or miss something important.=
+=0A=
+> I hope that's not the case here; if you think it is, don't hesitate to=0A=
+> tell me about it in a public reply, that's in everyone's interest.=0A=
+>=0A=
+> BTW, I have no personal interest in this issue, which is tracked using=0A=
+> regzbot, my Linux kernel regression tracking bot=0A=
+> (https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Flinu=
+x-regtracking.leemhuis.info%2Fregzbot%2F&amp;data=3D04%7C01%7Cjoakim.tjernl=
+und%40infinera.com%7C8784242cb55d4627e61608d9f2adec23%7C285643de5f5b4b03a15=
+30ae2dc8aaf77%7C1%7C0%7C637807651100768999%7CUnknown%7CTWFpbGZsb3d8eyJWIjoi=
+MC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=
+=3DdQS2xwqJjHY4DqSawLZKoe0XZaBAqPLul5YgPdQWFio%3D&amp;reserved=3D0). I'm on=
+ly posting=0A=
+> this mail to get things rolling again and hence don't need to be CC on=0A=
+> all further activities wrt to this regression.=0A=
+>=0A=
+> #regzbot ignore-activity=0A=
+>=0A=
+>>>>>> I am far away from this now and still on 4.19. I don't mind if you=
+=0A=
+>>>>>> tweak=0A=
+>>>>> tweak the patches for better "upstreamability"=0A=
+>>>>>=0A=
+>>>>> Even better would be to migrate to the chipidea driver, I am told=0A=
+>>>>> just a few tweaks are needed but this is probably something NXP=0A=
+>>>>> should do as they have access to other SOC's using chipidea.=0A=
+>>>>=0A=
+>>>> I agree with this direction but the problem was with bandwidth.  As th=
+is=0A=
+>>> controller was only used on legacy platforms, it is harder to justify n=
+ew effort=0A=
+>>> on it now.=0A=
+>>>=0A=
+>>> Legacy? All PPC is legacy and not supported now?=0A=
+>>=0A=
+>> I'm not saying that they are not supported, but they are in maintenance =
+only mode.=0A=
