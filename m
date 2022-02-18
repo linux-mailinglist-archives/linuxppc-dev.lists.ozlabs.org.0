@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF4F4BB238
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 07:30:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 332844BB247
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 07:31:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K0MJk5YRNz3ckm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 17:30:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K0MKJ55Fvz3cXY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 17:31:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,21 +16,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K0MJH4ptZz3bT3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 17:30:23 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K0MJt5lkPz3cBq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 17:30:54 +1100 (AEDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 8EFA667373; Fri, 18 Feb 2022 07:30:19 +0100 (CET)
-Date: Fri, 18 Feb 2022 07:30:19 +0100
+ id 6D3F568BFE; Fri, 18 Feb 2022 07:30:50 +0100 (CET)
+Date: Fri, 18 Feb 2022 07:30:50 +0100
 From: Christoph Hellwig <hch@lst.de>
 To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v2 08/18] uaccess: add generic __{get,put}_kernel_nofault
-Message-ID: <20220218063019.GF22576@lst.de>
+Subject: Re: [PATCH v2 10/18] m68k: fix access_ok for coldfire
+Message-ID: <20220218063050.GG22576@lst.de>
 References: <20220216131332.1489939-1-arnd@kernel.org>
- <20220216131332.1489939-9-arnd@kernel.org>
+ <20220216131332.1489939-11-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220216131332.1489939-9-arnd@kernel.org>
+In-Reply-To: <20220216131332.1489939-11-arnd@kernel.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,6 +65,6 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Looks good:
+Looks good,
 
 Reviewed-by: Christoph Hellwig <hch@lst.de>
