@@ -2,65 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45324BB346
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 08:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D0B4BB3E4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 09:08:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K0NfM2f52z3cc6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 18:31:07 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J06iflXs;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K0PTC2BWBz3cjj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 19:08:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=J06iflXs; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kaod.org (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=clg@kaod.org;
+ receiver=<UNKNOWN>)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K0Ndk1Y1Nz3cQb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 18:30:34 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id E0EBEB82588
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 07:30:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0170C340FA
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 07:30:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1645169427;
- bh=4Rk51yI7cy+h8GrR+wkZuFO6d6ZOgVmodthZQla/xGE=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=J06iflXsHwt+ig2v+EdVte9FIMjMd1UJqVEFlBSPatvSar0H1DsjIJrEzO4UZmsLA
- FgLQDKYJQffQRf2jOqj4RvkvbARrp3Zx559O0fjC1X/ZrQnz8/9phWPGirREw3xDmP
- KiiIouYIXRMgjfFJDvoPYvqstcEIa4USPsx0YasFmINbZVvuxO9R4NCI9YhttU3l3w
- hYtMGLNSqPqWYJC3UtSm4OZH9d6VfgkASC0oY7FoLJOtuZDxJ7GGHkw6hTV4w0Lp7v
- R945NbM7PE+UNf3FI0ZmnSCg/psBouNJRccT0U1ZuUR8CSpx8DJXZFWbuaqYEmJYR4
- Q869KtnC6rt2g==
-Received: by mail-ed1-f48.google.com with SMTP id i11so12254170eda.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Feb 2022 23:30:27 -0800 (PST)
-X-Gm-Message-State: AOAM533rRTUv0DurZsjlgCttSf4fQjEA3fkWf544UaToq74hRciR/b/s
- gZZMpCRgHYhHnNHR4NhAz6ZBzD7/f6ALe1y6zIg=
-X-Google-Smtp-Source: ABdhPJz4trlMwdvjT8y0UPggztkdijECp2hMuaf6QP4pGa8b+VYFZp4/tSgCA0YRdkm1OA4dObRIZr3wh6XhtS+RfLY=
-X-Received: by 2002:adf:ea01:0:b0:1e4:b3e6:1f52 with SMTP id
- q1-20020adfea01000000b001e4b3e61f52mr4942117wrm.317.1645169415535; Thu, 17
- Feb 2022 23:30:15 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K0PSh1Fvnz30Bc
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 19:07:44 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21I5b7bw028673; 
+ Fri, 18 Feb 2022 08:07:25 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3ea55jk0kq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 18 Feb 2022 08:07:25 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21I83q29031650;
+ Fri, 18 Feb 2022 08:07:23 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 3e64harajw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 18 Feb 2022 08:07:23 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 21I87IGZ47317484
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 18 Feb 2022 08:07:18 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7609E11C05E;
+ Fri, 18 Feb 2022 08:07:18 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2354211C052;
+ Fri, 18 Feb 2022 08:07:18 +0000 (GMT)
+Received: from smtp.tlslab.ibm.com (unknown [9.101.4.1])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Fri, 18 Feb 2022 08:07:18 +0000 (GMT)
+Received: from yukon.ibmuc.com (unknown [9.171.87.94])
+ by smtp.tlslab.ibm.com (Postfix) with ESMTP id EEF3D22016E;
+ Fri, 18 Feb 2022 09:07:16 +0100 (CET)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: Dany Madden <drt@linux.ibm.com>,
+ Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+Subject: [PATCH] net/ibmvnic: Cleanup workaround doing an EOI after partition
+ migration
+Date: Fri, 18 Feb 2022 09:07:08 +0100
+Message-Id: <20220218080708.636587-1-clg@kaod.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20220216131332.1489939-1-arnd@kernel.org>
- <20220216131332.1489939-6-arnd@kernel.org>
- <20220218062851.GC22576@lst.de>
-In-Reply-To: <20220218062851.GC22576@lst.de>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Fri, 18 Feb 2022 08:29:59 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1Dhn1Gsap1Wss2xpKBwe3jWLAmMYtL7S1-26tZ5D_2fQ@mail.gmail.com>
-Message-ID: <CAK8P3a1Dhn1Gsap1Wss2xpKBwe3jWLAmMYtL7S1-26tZ5D_2fQ@mail.gmail.com>
-Subject: Re: [PATCH v2 05/18] x86: remove __range_not_ok()
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: DgrUA7rvY7eTV1GkQq-VlxrLSK10lOV3
+X-Proofpoint-ORIG-GUID: DgrUA7rvY7eTV1GkQq-VlxrLSK10lOV3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-18_03,2022-02-17_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 mlxlogscore=870
+ priorityscore=1501 spamscore=0 mlxscore=0 phishscore=0 clxscore=1034
+ suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2201110000 definitions=main-2202180051
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,96 +88,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Linux-MM <linux-mm@kvack.org>, Guo Ren <guoren@kernel.org>,
- sparclinux <sparclinux@vger.kernel.org>,
- "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Brian Cain <bcain@codeaurora.org>,
- Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
- Russell King - ARM Linux <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
- "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
- Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>,
- alpha <linux-alpha@vger.kernel.org>, linux-um <linux-um@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Openrisc <openrisc@lists.librecores.org>, Al Viro <viro@zeniv.linux.org.uk>,
- Stafford Horne <shorne@gmail.com>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Parisc List <linux-parisc@vger.kernel.org>, Nick Hu <nickhu@andestech.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Linux API <linux-api@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Dinh Nguyen <dinguyen@kernel.org>,
- "Eric W . Biederman" <ebiederm@xmission.com>,
- Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- David Miller <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 18, 2022 at 7:28 AM Christoph Hellwig <hch@lst.de> wrote:
-> On Wed, Feb 16, 2022 at 02:13:19PM +0100, Arnd Bergmann wrote:
-> > --- a/arch/x86/events/core.c
-> > +++ b/arch/x86/events/core.c
-> > @@ -2794,7 +2794,7 @@ perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *re
-> >  static inline int
-> >  valid_user_frame(const void __user *fp, unsigned long size)
-> >  {
-> > -     return (__range_not_ok(fp, size, TASK_SIZE) == 0);
-> > +     return __access_ok(fp, size);
-> >  }
->
-> valid_user_frame just need to go away and the following __get_user calls
-> replaced with normal get_user ones.
+There were a fair amount of changes to workaround a firmware bug leaving
+a pending interrupt after migration of the ibmvnic device :
 
-As I understand it, that would not work here because get_user() calls
-access_ok() rather than __access_ok(), and on x86 that can not be
-called in NMI context.
+commit 2df5c60e198c ("net/ibmvnic: Ignore H_FUNCTION return from H_EOI
+       		    to tolerate XIVE mode")
+commit 284f87d2f387 ("Revert "net/ibmvnic: Fix EOI when running in
+       		    XIVE mode"")
+commit 11d49ce9f794 ("net/ibmvnic: Fix EOI when running in XIVE mode.")
+commit f23e0643cd0b ("ibmvnic: Clear pending interrupt after device reset=
+")
 
-It is a bit odd that x86 is the only architecture that has this check,
-but adding
-it was clearly intentional, see 7c4788950ba5 ("x86/uaccess, sched/preempt:
-Verify access_ok() context").
+Here is the final one taking into account the XIVE interrupt mode.
 
-> > diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
-> > index 53de044e5654..da534fb7b5c6 100644
-> > --- a/arch/x86/kernel/dumpstack.c
-> > +++ b/arch/x86/kernel/dumpstack.c
-> > @@ -85,7 +85,7 @@ static int copy_code(struct pt_regs *regs, u8 *buf, unsigned long src,
-> >        * Make sure userspace isn't trying to trick us into dumping kernel
-> >        * memory by pointing the userspace instruction pointer at it.
-> >        */
-> > -     if (__chk_range_not_ok(src, nbytes, TASK_SIZE_MAX))
-> > +     if (!__access_ok((void __user *)src, nbytes))
-> >               return -EINVAL;
->
-> This one is not needed at all as copy_from_user_nmi already checks the
-> access range.
+Cc: Sukadev Bhattiprolu <sukadev@linux.ibm.com>
+Cc: Dany Madden <drt@linux.ibm.com>
+Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+---
+ drivers/net/ethernet/ibm/ibmvnic.c | 35 ++++++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 9 deletions(-)
 
-Ok, removing this.
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ib=
+m/ibmvnic.c
+index 29617a86b299..61975cb9c1a4 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -60,6 +60,7 @@
+ #include <asm/hvcall.h>
+ #include <linux/atomic.h>
+ #include <asm/vio.h>
++#include <asm/xive.h>
+ #include <asm/iommu.h>
+ #include <linux/uaccess.h>
+ #include <asm/firmware.h>
+@@ -3562,6 +3563,30 @@ static int disable_scrq_irq(struct ibmvnic_adapter=
+ *adapter,
+ 	return rc;
+ }
+=20
++/* We can not use the IRQ chip EOI handler because that has the
++ * unintended effect of changing the interrupt priority.
++ */
++static void ibmvnic_xics_eoi(struct device *dev, struct ibmvnic_sub_crq_=
+queue *scrq)
++{
++	u64 val =3D 0xff000000 | scrq->hw_irq;
++	unsigned long rc;
++
++	rc =3D plpar_hcall_norets(H_EOI, val);
++	if (rc)
++		dev_err(dev, "H_EOI FAILED irq 0x%llx. rc=3D%ld\n", val, rc);
++}
++
++/* Due to a firmware bug, the hypervisor can send an interrupt to a
++ * transmit or receive queue just prior to a partition migration.
++ * Force an EOI after migration.
++ */
++static void ibmvnic_clear_pending_interrupt(struct device *dev,
++					    struct ibmvnic_sub_crq_queue *scrq)
++{
++	if (!xive_enabled())
++		ibmvnic_xics_eoi(dev, scrq);
++}
++
+ static int enable_scrq_irq(struct ibmvnic_adapter *adapter,
+ 			   struct ibmvnic_sub_crq_queue *scrq)
+ {
+@@ -3575,15 +3600,7 @@ static int enable_scrq_irq(struct ibmvnic_adapter =
+*adapter,
+=20
+ 	if (test_bit(0, &adapter->resetting) &&
+ 	    adapter->reset_reason =3D=3D VNIC_RESET_MOBILITY) {
+-		u64 val =3D (0xff000000) | scrq->hw_irq;
+-
+-		rc =3D plpar_hcall_norets(H_EOI, val);
+-		/* H_EOI would fail with rc =3D H_FUNCTION when running
+-		 * in XIVE mode which is expected, but not an error.
+-		 */
+-		if (rc && (rc !=3D H_FUNCTION))
+-			dev_err(dev, "H_EOI FAILED irq 0x%llx. rc=3D%ld\n",
+-				val, rc);
++		ibmvnic_clear_pending_interrupt(dev, scrq);
+ 	}
+=20
+ 	rc =3D plpar_hcall_norets(H_VIOCTL, adapter->vdev->unit_address,
+--=20
+2.34.1
 
-> > diff --git a/arch/x86/kernel/stacktrace.c b/arch/x86/kernel/stacktrace.c
-> > index 15b058eefc4e..ee117fcf46ed 100644
-> > --- a/arch/x86/kernel/stacktrace.c
-> > +++ b/arch/x86/kernel/stacktrace.c
-> > @@ -90,7 +90,7 @@ copy_stack_frame(const struct stack_frame_user __user *fp,
-> >  {
-> >       int ret;
-> >
-> > -     if (__range_not_ok(fp, sizeof(*frame), TASK_SIZE))
-> > +     if (!__access_ok(fp, sizeof(*frame)))
-> >               return 0;
->
-> Just switch the __get_user calls below to get_user instead.
-
-Same as the first one, I think we can't do this in NMI context.
-
-         Arnd
