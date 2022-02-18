@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1484BB21D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 07:29:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D704BB22A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 07:30:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K0MHZ5KBVz3cVq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 17:29:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K0MJ31cmYz3dhP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 17:30:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,21 +16,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K0MH967pvz3cZb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 17:29:25 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K0MHd1l1Jz3cXw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 17:29:49 +1100 (AEDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 4C1A567373; Fri, 18 Feb 2022 07:29:21 +0100 (CET)
-Date: Fri, 18 Feb 2022 07:29:21 +0100
+ id 229CB67373; Fri, 18 Feb 2022 07:29:45 +0100 (CET)
+Date: Fri, 18 Feb 2022 07:29:44 +0100
 From: Christoph Hellwig <hch@lst.de>
 To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v2 06/18] x86: use more conventional access_ok() definition
-Message-ID: <20220218062921.GD22576@lst.de>
+Subject: Re: [PATCH v2 07/18] nios2: drop access_ok() check from __put_user()
+Message-ID: <20220218062944.GE22576@lst.de>
 References: <20220216131332.1489939-1-arnd@kernel.org>
- <20220216131332.1489939-7-arnd@kernel.org>
+ <20220216131332.1489939-8-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220216131332.1489939-7-arnd@kernel.org>
+In-Reply-To: <20220216131332.1489939-8-arnd@kernel.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,6 +65,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Looks good,
+On Wed, Feb 16, 2022 at 02:13:21PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> Unlike other architectures, the nios2 version of __put_user() has an
+> extra check for access_ok(), preventing it from being used to implement
+> __put_kernel_nofault().
+> 
+> Split up put_user() along the same lines as __get_user()/get_user()
+
+Looks good:
 
 Reviewed-by: Christoph Hellwig <hch@lst.de>
