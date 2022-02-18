@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88654BB26E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 07:35:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A885C4BB27E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 07:36:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K0MPy2xLtz3cmZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 17:35:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K0MR31QZyz3dkC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 17:36:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,21 +16,22 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K0MPX4gcVz2xWd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 17:34:56 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K0MQd6j7Cz3bSs
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 17:35:53 +1100 (AEDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 4666768BFE; Fri, 18 Feb 2022 07:34:50 +0100 (CET)
-Date: Fri, 18 Feb 2022 07:34:50 +0100
+ id 4DEC168BFE; Fri, 18 Feb 2022 07:35:49 +0100 (CET)
+Date: Fri, 18 Feb 2022 07:35:49 +0100
 From: Christoph Hellwig <hch@lst.de>
 To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v2 13/18] uaccess: generalize access_ok()
-Message-ID: <20220218063450.GI22576@lst.de>
+Subject: Re: [PATCH v2 14/18] lib/test_lockup: fix kernel pointer check for
+ separate address spaces
+Message-ID: <20220218063549.GJ22576@lst.de>
 References: <20220216131332.1489939-1-arnd@kernel.org>
- <20220216131332.1489939-14-arnd@kernel.org>
+ <20220216131332.1489939-15-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220216131332.1489939-14-arnd@kernel.org>
+In-Reply-To: <20220216131332.1489939-15-arnd@kernel.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,7 +66,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> +#include <asm-generic/access_ok.h>
+On Wed, Feb 16, 2022 at 02:13:28PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> test_kernel_ptr() uses access_ok() to figure out if a given address
+> points to user space instead of kernel space. However on architectures
+> that set CONFIG_ALTERNATE_USER_ADDRESS_SPACE, a pointer can be valid
+> for both, and the check always fails because access_ok() returns true.
+> 
+> Make the check for user space pointers conditional on the type of
+> address space layout.
 
-Instead of the asm-generic games, shouldn't we just define access_ok in
-<linux/uaccess.h> if not already defined by the architecture?
+What is this code even trying to do?  It looks extremly broken.
