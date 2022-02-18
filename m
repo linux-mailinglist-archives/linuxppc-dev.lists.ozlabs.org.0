@@ -2,32 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CF74BAF6D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 03:11:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E6D4BAF69
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 03:10:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K0FYN51yxz3dht
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 13:11:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K0FXX70mzz3cQJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 13:10:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K0FX76JYyz3cFX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 13:10:15 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K0FX45vctz3cFX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 13:10:12 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4K0FX33bvXz4xcd;
- Fri, 18 Feb 2022 13:10:11 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4K0FX032d3z4xZp;
+ Fri, 18 Feb 2022 13:10:08 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Jason Wang <wangborong@cdjrlc.com>, mpe@ellerman.id.au
-In-Reply-To: <20211220030243.603435-1-wangborong@cdjrlc.com>
-References: <20211220030243.603435-1-wangborong@cdjrlc.com>
-Subject: Re: [PATCH] powerpc/kvm: no need to initialise statics to 0
-Message-Id: <164515018949.908917.14452521807329931842.b4-ty@ellerman.id.au>
-Date: Fri, 18 Feb 2022 13:09:49 +1100
+To: linuxppc-dev@lists.ozlabs.org, Alexey Kardashevskiy <aik@ozlabs.ru>
+In-Reply-To: <20220111005404.162219-1-aik@ozlabs.ru>
+References: <20220111005404.162219-1-aik@ozlabs.ru>
+Subject: Re: [PATCH kernel v5] KVM: PPC: Merge powerpc's debugfs entry content
+ into generic entry
+Message-Id: <164515019044.908917.13867805067598579515.b4-ty@ellerman.id.au>
+Date: Fri, 18 Feb 2022 13:09:50 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,22 +44,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- paulus@samba.org
+Cc: Cédric Le Goater <clg@kaod.org>, kvm@vger.kernel.org, kvm-ppc@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 20 Dec 2021 11:02:43 +0800, Jason Wang wrote:
-> Static variables do not need to be initialised to 0, because compiler
-> will initialise all uninitialised statics to 0. Thus, remove the
-> unneeded initialization.
+On Tue, 11 Jan 2022 11:54:04 +1100, Alexey Kardashevskiy wrote:
+> At the moment KVM on PPC creates 4 types of entries under the kvm debugfs:
+> 1) "%pid-%fd" per a KVM instance (for all platforms);
+> 2) "vm%pid" (for PPC Book3s HV KVM);
+> 3) "vm%u_vcpu%u_timing" (for PPC Book3e KVM);
+> 4) "kvm-xive-%p" (for XIVE PPC Book3s KVM, the same for XICS);
 > 
+> The problem with this is that multiple VMs per process is not allowed for
+> 2) and 3) which makes it possible for userspace to trigger errors when
+> creating duplicated debugfs entries.
 > 
+> [...]
 
 Applied to powerpc/topic/ppc-kvm.
 
-[1/1] powerpc/kvm: no need to initialise statics to 0
-      https://git.kernel.org/powerpc/c/8e0f353a44ff3d65d933b8c0e4fb15dc89d46617
+[1/1] KVM: PPC: Merge powerpc's debugfs entry content into generic entry
+      https://git.kernel.org/powerpc/c/faf01aef0570757bfbf1d655e984742c1dd38068
 
 cheers
