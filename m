@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583464BED89
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 00:02:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E7B4BED8A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 00:03:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K2d9T4DDdz3cTK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 10:02:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K2dBB3K6gz3cYR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 10:02:58 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GD+HH9G1;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=W7+WcQon;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432;
- helo=mail-pf1-x432.google.com; envelope-from=melanieplageman@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536;
+ helo=mail-pg1-x536.google.com; envelope-from=melanieplageman@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=GD+HH9G1; dkim-atps=neutral
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
- [IPv6:2607:f8b0:4864:20::432])
+ header.s=20210112 header.b=W7+WcQon; dkim-atps=neutral
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
+ [IPv6:2607:f8b0:4864:20::536])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K0gY16Krjz3cQ4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Feb 2022 05:42:29 +1100 (AEDT)
-Received: by mail-pf1-x432.google.com with SMTP id l19so2996997pfu.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 10:42:30 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K0gY60gdRz3cQj
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Feb 2022 05:42:33 +1100 (AEDT)
+Received: by mail-pg1-x536.google.com with SMTP id l73so8581681pge.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 10:42:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=EkymO2cXo8u4iSmYrUr7FnoXj72C6tZYNpfdDviMOVo=;
- b=GD+HH9G1aw2T0H+c9H3Ryk4K4clDEqR6kBgmh+ybYGEhmOg8EZh5Wo4ZxIk4XCSesY
- cyddMcI04UUPDj/dmgKJqBjBn0Q3JBehRcOikNCsZNvjNJTE8go8QKuVfoEZJF9lcycS
- pkx0m+YQ8aw+/Pv4z5ztuiaFKZfag2uHbQvWfJZZ+FqJIWFZYiEhLAiv6Ff7A5Mp9Giu
- yoCU0vnb+2pJMjtwZy2675+dwZm3wGYbiR0nMaGId7bcA3a5PV2ZWecQlJYv3X5cc9Sw
- 3tiY991yvjnkoFQHP17j7Xnk56xfUZvlHhdnj4hrwlN8FVsdfDdHSNS4XOVYZ6YvP8ju
- lYxQ==
+ bh=g7nqOGY4TY+vmWCFgHHJJ6SJZGD1lDi6QuXxkYn/JbY=;
+ b=W7+WcQonDxk3UPONlSTVhlNDY8TS48sVtuorDKBztSniSB71RWw4QsVlAAbanRr/ze
+ vs0Y+hqhD54iRQtE4EqnF42w+ohc2J4UQSBMBof16AKZJ2jOJNiHnMmyiSNbkntDsRKK
+ woMwECyw+inIIfBnMqaJFhT7hYFNZBbug0GXcl8r++Bt090UCcy/IfILDRgW0zy9acaC
+ LYuEcGo0/MLJxlktO1KG7drN/JW4d6RpY7kzR32TQlGhejURvBnQ7ch7NuCg8dWcH1LT
+ 9dKqUVoI2BC9/jcwC0JUrhtI682FmbMvnugb5S2IVDBCCeESH7biqQraKUnwDLlejRah
+ tfeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=EkymO2cXo8u4iSmYrUr7FnoXj72C6tZYNpfdDviMOVo=;
- b=oXb09Ko40JBfUEdrXoSoRxlcYf+3OpInXAx0eALT1EnxR/uO6zE6n9CuOK0YGsFgux
- gDJlTvTQkFlOWiVqAwiGS8Yfvzj0mDqVN7VTktbcMyQVyAfwkLWGyqgc/orBFFDozF8D
- +Ms9K+6+uTuoRoe/uBQvuPUygiQr1NeY6/+pPFSUxNdau7Ja4V6s3HZIub1YTRp3r7Ex
- DxIOkV4gRNHpydp13DhLlKnYRjjYsfomq93y6XkpTgddc5yXYOr8lZwtRtN/R2gazrpW
- qooJheyx+bBhr7F1MDD6tUWCLUeoB7HIIUSO9qOgCy58Z01W0lUuCb6BAp3282Zlw82S
- mYsw==
-X-Gm-Message-State: AOAM532XU/IYuGIPNkE+nY70tGH1/CfxckUVbWuvJUTKxD/mhBZCoGWl
- OgZFodmbK+7lH6P6W4R2oKM=
-X-Google-Smtp-Source: ABdhPJwTQjDu6FOGV6lkRBTSQZVlHD66eEEgjiWe1xEsdqQiVwWV3IclSMUGYua+t+CSo3cPnfNO9Q==
-X-Received: by 2002:a63:445f:0:b0:373:d43f:2b42 with SMTP id
- t31-20020a63445f000000b00373d43f2b42mr3804983pgk.125.1645209748167; 
- Fri, 18 Feb 2022 10:42:28 -0800 (PST)
+ bh=g7nqOGY4TY+vmWCFgHHJJ6SJZGD1lDi6QuXxkYn/JbY=;
+ b=D8rjKUbC2jBWxSE/eBC1leATtHkslJeHI9QiAjG03f49TaBWf81NadrfuKaLcpL7SY
+ 18GgSTLobigIP/TUTDP2FiV1ZVv7VsUl8D7z0Kb0bv84QD8oJiEISXTcWABcXVhWg8B8
+ 7kpPdA1FRQEYyWxNu49oe+JqZOh+kIFKPqFSKAe9VoqAnUFIDzaWPaWwDHpOApzQv5k6
+ xOOM2R4rpxsn4mcfyKvbYjYZbRVW1tuBKZzjHiJHZ0bhG6+5ER6KUHnxMQ9Bu4Flcusd
+ 4weHSBII/SS+lZZ3Hfbgc8pm2cjuBSP40dOxR6nEMBUe1E5UZkn8NYhYfYYgaEOSRnGQ
+ Vxpw==
+X-Gm-Message-State: AOAM532eZoroRKvcvhuVQcsOYMIKOgfz8x5dISeW+2yTZa4g01J5v+lj
+ FF2xeFp31V+c6gbdmnVg7IA=
+X-Google-Smtp-Source: ABdhPJxBDP2NlrsFO/QvhW1y6vyFhXp7WPAy8pBV0Tr+1A9FJiQroodyjttynDYAFnPr93u9pbyOqA==
+X-Received: by 2002:a63:f506:0:b0:373:13fe:90a with SMTP id
+ w6-20020a63f506000000b0037313fe090amr7426142pgh.254.1645209752190; 
+ Fri, 18 Feb 2022 10:42:32 -0800 (PST)
 Received: from vm-111.3frfxmc3btcupaqenzdpat1uec.xx.internal.cloudapp.net
  ([13.77.171.140]) by smtp.gmail.com with ESMTPSA id
- m17-20020a17090ab79100b001b89fd7e298sm130132pjr.4.2022.02.18.10.42.27
+ m17-20020a17090ab79100b001b89fd7e298sm130132pjr.4.2022.02.18.10.42.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Feb 2022 10:42:27 -0800 (PST)
+ Fri, 18 Feb 2022 10:42:31 -0800 (PST)
 From: "Melanie Plageman (Microsoft)" <melanieplageman@gmail.com>
 To: mikelley@microsoft.com, jejb@linux.ibm.com, kys@microsoft.com,
  martin.petersen@oracle.com, mst@redhat.com, benh@kernel.crashing.org,
@@ -76,14 +76,13 @@ To: mikelley@microsoft.com, jejb@linux.ibm.com, kys@microsoft.com,
  storagedev@microchip.com, virtualization@lists.linux-foundation.org,
  linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-scsi@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com
-Subject: [PATCH RFC v1 1/5] scsi: core: Rename host_tagset to hctx_share_tags
-Date: Fri, 18 Feb 2022 18:41:53 +0000
-Message-Id: <20220218184157.176457-2-melanieplageman@gmail.com>
+Subject: [PATCH RFC v1 2/5] scsi: map_queues() takes tag set instead of host
+Date: Fri, 18 Feb 2022 18:41:54 +0000
+Message-Id: <20220218184157.176457-3-melanieplageman@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220218184157.176457-1-melanieplageman@gmail.com>
 References: <20220218184157.176457-1-melanieplageman@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Tue, 22 Feb 2022 10:00:38 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -102,225 +101,245 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Scsi_Host->host_tagset, which is set by LLD using the
-scsi_host_template, determines whether or not to set the
-BLK_MQ_F_TAG_HCTX_SHARED flag in the blk_mq_tag_set. This then
-determines whether or not hardware contexts share blk_mq_tags.
+Change the scsi_host_template->map_queues() to accept a blk_mq_tag_set
+instead of a Scsi_Host as a function parameter.
 
-The name host_tagset is misleading, as it sounds like it indicates
-whether there is a host-wide blk_mq_tag_set.  Rename it to
-hctx_share_tags to make this more evident, and so it doesn’t sound like
-the opposite of the per_device_tag_set option that is introduced in a
-subsequent patch.  No functional change.
+A future commit will introduce the concept of device tag sets. Thus
+map_queues() cannot assume that the target blk_mq_tag_set is accessible
+through Scsi_Host->tag_set.
+
+Generalize map_queues() by changing its input to a blk_mq_tag_set.
+
+This commit makes no functional change, as the Scsi_Host->tag_set is
+passed as the argument to the LLD map_queues function.
 
 Signed-off-by: Melanie Plageman <melanieplageman@gmail.com>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v2_hw.c    |  2 +-
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c    |  2 +-
- drivers/scsi/hosts.c                      |  2 +-
- drivers/scsi/ibmvscsi/ibmvfc.c            |  2 +-
- drivers/scsi/megaraid/megaraid_sas_base.c |  4 ++--
- drivers/scsi/mpt3sas/mpt3sas_base.c       |  6 +++---
- drivers/scsi/mpt3sas/mpt3sas_scsih.c      |  6 +++---
- drivers/scsi/scsi_debug.c                 |  2 +-
- drivers/scsi/scsi_lib.c                   |  2 +-
- drivers/scsi/smartpqi/smartpqi_init.c     |  2 +-
- include/scsi/scsi_host.h                  | 10 ++++------
- 11 files changed, 19 insertions(+), 21 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_v2_hw.c    | 5 +++--
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c    | 5 +++--
+ drivers/scsi/megaraid/megaraid_sas_base.c | 4 +++-
+ drivers/scsi/mpi3mr/mpi3mr_os.c           | 4 ++--
+ drivers/scsi/mpt3sas/mpt3sas_scsih.c      | 3 ++-
+ drivers/scsi/qla2xxx/qla_os.c             | 7 ++++---
+ drivers/scsi/scsi_debug.c                 | 5 +++--
+ drivers/scsi/scsi_lib.c                   | 4 ++--
+ drivers/scsi/smartpqi/smartpqi_init.c     | 5 +++--
+ drivers/scsi/virtio_scsi.c                | 5 +++--
+ include/scsi/scsi_host.h                  | 2 +-
+ 11 files changed, 29 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-index 64ed3e472e65..a3cf413f6990 100644
+index a3cf413f6990..e850797e4c18 100644
 --- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
 +++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-@@ -3584,7 +3584,7 @@ static struct scsi_host_template sht_v2_hw = {
- 	.shost_groups		= host_v2_hw_groups,
- 	.host_reset		= hisi_sas_host_reset,
- 	.map_queues		= map_queues_v2_hw,
--	.host_tagset		= 1,
-+	.hctx_share_tags	= 1,
- };
+@@ -3538,10 +3538,11 @@ static struct attribute *host_v2_hw_attrs[] = {
  
- static const struct hisi_sas_hw hisi_sas_v2_hw = {
+ ATTRIBUTE_GROUPS(host_v2_hw);
+ 
+-static int map_queues_v2_hw(struct Scsi_Host *shost)
++static int map_queues_v2_hw(struct blk_mq_tag_set *set)
+ {
++	struct Scsi_Host *shost = set->driver_data;
+ 	struct hisi_hba *hisi_hba = shost_priv(shost);
+-	struct blk_mq_queue_map *qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
++	struct blk_mq_queue_map *qmap = &set->map[HCTX_TYPE_DEFAULT];
+ 	const struct cpumask *mask;
+ 	unsigned int queue, cpu;
+ 
 diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index a01a3a7b706b..169eb5fbecfc 100644
+index 169eb5fbecfc..75a2b4ccbd95 100644
 --- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
 +++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -3172,7 +3172,7 @@ static struct scsi_host_template sht_v3_hw = {
- 	.shost_groups		= host_v3_hw_groups,
- 	.tag_alloc_policy	= BLK_TAG_ALLOC_RR,
- 	.host_reset             = hisi_sas_host_reset,
--	.host_tagset		= 1,
-+	.hctx_share_tags	= 1,
- };
+@@ -3135,10 +3135,11 @@ static int debugfs_set_bist_v3_hw(struct hisi_hba *hisi_hba, bool enable)
+ 	return 0;
+ }
  
- static const struct hisi_sas_hw hisi_sas_v3_hw = {
-diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
-index f69b77cbf538..a364243fac7c 100644
---- a/drivers/scsi/hosts.c
-+++ b/drivers/scsi/hosts.c
-@@ -426,7 +426,7 @@ struct Scsi_Host *scsi_host_alloc(struct scsi_host_template *sht, int privsize)
- 	shost->sg_prot_tablesize = sht->sg_prot_tablesize;
- 	shost->cmd_per_lun = sht->cmd_per_lun;
- 	shost->no_write_same = sht->no_write_same;
--	shost->host_tagset = sht->host_tagset;
-+	shost->hctx_share_tags = sht->hctx_share_tags;
+-static int hisi_sas_map_queues(struct Scsi_Host *shost)
++static int hisi_sas_map_queues(struct blk_mq_tag_set *set)
+ {
++	struct Scsi_Host *shost = set->driver_data;
+ 	struct hisi_hba *hisi_hba = shost_priv(shost);
+-	struct blk_mq_queue_map *qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
++	struct blk_mq_queue_map *qmap = &set->map[HCTX_TYPE_DEFAULT];
  
- 	if (shost_eh_deadline == -1 || !sht->eh_host_reset_handler)
- 		shost->eh_deadline = -1;
-diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index d0eab5700dc5..950be46c041f 100644
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -3625,7 +3625,7 @@ static struct scsi_host_template driver_template = {
- 	.max_sectors = IBMVFC_MAX_SECTORS,
- 	.shost_groups = ibmvfc_host_groups,
- 	.track_queue_depth = 1,
--	.host_tagset = 1,
-+	.hctx_share_tags = 1,
- };
- 
- /**
+ 	return blk_mq_pci_map_queues(qmap, hisi_hba->pci_dev,
+ 				     BASE_VECTORS_V3_HW);
 diff --git a/drivers/scsi/megaraid/megaraid_sas_base.c b/drivers/scsi/megaraid/megaraid_sas_base.c
-index 82e1e24257bc..05db8f0b1e7e 100644
+index 05db8f0b1e7e..d579cb41355e 100644
 --- a/drivers/scsi/megaraid/megaraid_sas_base.c
 +++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -6950,14 +6950,14 @@ static int megasas_io_attach(struct megasas_instance *instance)
- 	 * Single msix_vectors in kdump, so shared host tag is also disabled.
- 	 */
+@@ -3168,12 +3168,14 @@ megasas_bios_param(struct scsi_device *sdev, struct block_device *bdev,
+ 	return 0;
+ }
  
--	host->host_tagset = 0;
-+	host->hctx_share_tags = 0;
- 	host->nr_hw_queues = 1;
+-static int megasas_map_queues(struct Scsi_Host *shost)
++static int megasas_map_queues(struct blk_mq_tag_set *set)
+ {
++	struct Scsi_Host *shost;
+ 	struct megasas_instance *instance;
+ 	int qoff = 0, offset;
+ 	struct blk_mq_queue_map *map;
  
- 	if ((instance->adapter_type != MFI_SERIES) &&
- 		(instance->msix_vectors > instance->low_latency_index_start) &&
- 		host_tagset_enable &&
- 		instance->smp_affinity_enable) {
--		host->host_tagset = 1;
-+		host->hctx_share_tags = 1;
- 		host->nr_hw_queues = instance->msix_vectors -
- 			instance->low_latency_index_start + instance->iopoll_q_count;
- 		if (instance->iopoll_q_count)
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
-index 511726f92d9a..eb85d74bd9d8 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_base.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-@@ -3414,12 +3414,12 @@ _base_enable_msix(struct MPT3SAS_ADAPTER *ioc)
- 		ioc->smp_affinity_enable = 0;
++	shost = set->driver_data;
+ 	instance = (struct megasas_instance *)shost->hostdata;
  
- 	if (!ioc->smp_affinity_enable || ioc->reply_queue_count <= 1)
--		ioc->shost->host_tagset = 0;
-+		ioc->shost->hctx_share_tags = 0;
- 
- 	/*
--	 * Enable io uring poll queues only if host_tagset is enabled.
-+	 * Enable io uring poll queues only if hctx_share_tags is enabled.
- 	 */
--	if (ioc->shost->host_tagset)
-+	if (ioc->shost->hctx_share_tags)
- 		iopoll_q_count = poll_queues;
- 
- 	if (iopoll_q_count) {
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-index 00792767c620..74cdf72ef837 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-@@ -12322,10 +12322,10 @@ _scsih_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		goto out_thread_fail;
+ 	if (shost->nr_hw_queues == 1)
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index 284117da9086..38e27e3b392e 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -3167,8 +3167,9 @@ static int mpi3mr_bios_param(struct scsi_device *sdev,
+  *
+  * Return: return zero.
+  */
+-static int mpi3mr_map_queues(struct Scsi_Host *shost)
++static int mpi3mr_map_queues(struct blk_mq_tag_set *set)
+ {
++	struct Scsi_Host *shost = set->driver_data;
+ 	struct mpi3mr_ioc *mrioc = shost_priv(shost);
+ 	int i, qoff, offset;
+ 	struct blk_mq_queue_map *map = NULL;
+@@ -3205,7 +3206,6 @@ static int mpi3mr_map_queues(struct Scsi_Host *shost)
  	}
  
--	shost->host_tagset = 0;
-+	shost->hctx_share_tags = 0;
+ 	return 0;
+-
+ }
  
- 	if (ioc->is_gen35_ioc && host_tagset_enable)
--		shost->host_tagset = 1;
-+		shost->hctx_share_tags = 1;
+ /**
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+index 74cdf72ef837..4e3a9fff023e 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+@@ -11868,8 +11868,9 @@ scsih_scan_finished(struct Scsi_Host *shost, unsigned long time)
+  * scsih_map_queues - map reply queues with request queues
+  * @shost: SCSI host pointer
+  */
+-static int scsih_map_queues(struct Scsi_Host *shost)
++static int scsih_map_queues(struct blk_mq_tag_set *set)
+ {
++	struct Scsi_Host *shost = set->driver_data;
+ 	struct MPT3SAS_ADAPTER *ioc =
+ 	    (struct MPT3SAS_ADAPTER *)shost->hostdata;
+ 	struct blk_mq_queue_map *map;
+diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
+index abcd30917263..915fee7f9d08 100644
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -335,7 +335,7 @@ MODULE_PARM_DESC(ql2xabts_wait_nvme,
  
- 	ioc->is_driver_loading = 1;
- 	if ((mpt3sas_base_attach(ioc))) {
-@@ -12351,7 +12351,7 @@ _scsih_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ static void qla2x00_clear_drv_active(struct qla_hw_data *);
+ static void qla2x00_free_device(scsi_qla_host_t *);
+-static int qla2xxx_map_queues(struct Scsi_Host *shost);
++static int qla2xxx_map_queues(struct blk_mq_tag_set *tag_set);
+ static void qla2x00_destroy_deferred_work(struct qla_hw_data *);
  
- 	shost->nr_hw_queues = 1;
  
--	if (shost->host_tagset) {
-+	if (shost->hctx_share_tags) {
- 		shost->nr_hw_queues =
- 		    ioc->reply_queue_count - ioc->high_iops_queues;
+@@ -7881,11 +7881,12 @@ qla_pci_reset_done(struct pci_dev *pdev)
+ 	clear_bit(ABORT_ISP_ACTIVE, &base_vha->dpc_flags);
+ }
  
+-static int qla2xxx_map_queues(struct Scsi_Host *shost)
++static int qla2xxx_map_queues(struct blk_mq_tag_set *set)
+ {
+ 	int rc;
++	struct Scsi_Host *shost = set->driver_data;
+ 	scsi_qla_host_t *vha = (scsi_qla_host_t *)shost->hostdata;
+-	struct blk_mq_queue_map *qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
++	struct blk_mq_queue_map *qmap = &set->map[HCTX_TYPE_DEFAULT];
+ 
+ 	if (USER_CTRL_IRQ(vha->hw) || !vha->hw->mqiobase)
+ 		rc = blk_mq_map_queues(qmap);
 diff --git a/drivers/scsi/scsi_debug.c b/drivers/scsi/scsi_debug.c
-index 2104973a35cd..af7ad912fabc 100644
+index af7ad912fabc..a0327ef6ef83 100644
 --- a/drivers/scsi/scsi_debug.c
 +++ b/drivers/scsi/scsi_debug.c
-@@ -7614,7 +7614,7 @@ static int sdebug_driver_probe(struct device *dev)
- 	 */
- 	hpnt->nr_hw_queues = submit_queues;
- 	if (sdebug_host_max_queue)
--		hpnt->host_tagset = 1;
-+		hpnt->hctx_share_tags = 1;
+@@ -7272,15 +7272,16 @@ static int resp_not_ready(struct scsi_cmnd *scp, struct sdebug_dev_info *devip)
+ 	return check_condition_result;
+ }
  
- 	/* poll queues are possible for nr_hw_queues > 1 */
- 	if (hpnt->nr_hw_queues == 1 || (poll_queues < 1)) {
+-static int sdebug_map_queues(struct Scsi_Host *shost)
++static int sdebug_map_queues(struct blk_mq_tag_set *set)
+ {
+ 	int i, qoff;
++	struct Scsi_Host *shost = set->driver_data;
+ 
+ 	if (shost->nr_hw_queues == 1)
+ 		return 0;
+ 
+ 	for (i = 0, qoff = 0; i < HCTX_MAX_TYPES; i++) {
+-		struct blk_mq_queue_map *map = &shost->tag_set.map[i];
++		struct blk_mq_queue_map *map = &set->map[i];
+ 
+ 		map->nr_queues  = 0;
+ 
 diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 0a70aa763a96..61795bab83f7 100644
+index 61795bab83f7..bba66e29d38c 100644
 --- a/drivers/scsi/scsi_lib.c
 +++ b/drivers/scsi/scsi_lib.c
-@@ -1987,7 +1987,7 @@ int scsi_mq_setup_tags(struct Scsi_Host *shost)
- 	tag_set->flags |=
- 		BLK_ALLOC_POLICY_TO_MQ_FLAG(shost->hostt->tag_alloc_policy);
- 	tag_set->driver_data = shost;
--	if (shost->host_tagset)
-+	if (shost->hctx_share_tags)
- 		tag_set->flags |= BLK_MQ_F_TAG_HCTX_SHARED;
+@@ -1864,10 +1864,10 @@ static int scsi_init_hctx(struct blk_mq_hw_ctx *hctx, void *data,
  
- 	return blk_mq_alloc_tag_set(tag_set);
+ static int scsi_map_queues(struct blk_mq_tag_set *set)
+ {
+-	struct Scsi_Host *shost = container_of(set, struct Scsi_Host, tag_set);
++	struct Scsi_Host *shost = set->driver_data;
+ 
+ 	if (shost->hostt->map_queues)
+-		return shost->hostt->map_queues(shost);
++		return shost->hostt->map_queues(set);
+ 	return blk_mq_map_queues(&set->map[HCTX_TYPE_DEFAULT]);
+ }
+ 
 diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index f0897d587454..31c0c2054d6a 100644
+index 31c0c2054d6a..d81ead36d9f1 100644
 --- a/drivers/scsi/smartpqi/smartpqi_init.c
 +++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -7187,7 +7187,7 @@ static int pqi_register_scsi(struct pqi_ctrl_info *ctrl_info)
- 	shost->irq = pci_irq_vector(ctrl_info->pci_dev, 0);
- 	shost->unique_id = shost->irq;
- 	shost->nr_hw_queues = ctrl_info->num_queue_groups;
--	shost->host_tagset = 1;
-+	shost->hctx_share_tags = 1;
- 	shost->hostdata[0] = (unsigned long)ctrl_info;
+@@ -6332,11 +6332,12 @@ static int pqi_slave_alloc(struct scsi_device *sdev)
+ 	return 0;
+ }
  
- 	rc = scsi_add_host(shost, &ctrl_info->pci_dev->dev);
+-static int pqi_map_queues(struct Scsi_Host *shost)
++static int pqi_map_queues(struct blk_mq_tag_set *set)
+ {
++	struct Scsi_Host *shost = set->driver_data;
+ 	struct pqi_ctrl_info *ctrl_info = shost_to_hba(shost);
+ 
+-	return blk_mq_pci_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT],
++	return blk_mq_pci_map_queues(&set->map[HCTX_TYPE_DEFAULT],
+ 					ctrl_info->pci_dev, 0);
+ }
+ 
+diff --git a/drivers/scsi/virtio_scsi.c b/drivers/scsi/virtio_scsi.c
+index 0e6110da69e7..6595e142e2e4 100644
+--- a/drivers/scsi/virtio_scsi.c
++++ b/drivers/scsi/virtio_scsi.c
+@@ -711,10 +711,11 @@ static int virtscsi_abort(struct scsi_cmnd *sc)
+ 	return virtscsi_tmf(vscsi, cmd);
+ }
+ 
+-static int virtscsi_map_queues(struct Scsi_Host *shost)
++static int virtscsi_map_queues(struct blk_mq_tag_set *set)
+ {
++	struct Scsi_Host *shost = set->driver_data;
+ 	struct virtio_scsi *vscsi = shost_priv(shost);
+-	struct blk_mq_queue_map *qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
++	struct blk_mq_queue_map *qmap = &set->map[HCTX_TYPE_DEFAULT];
+ 
+ 	return blk_mq_virtio_map_queues(qmap, vscsi->vdev, 2);
+ }
 diff --git a/include/scsi/scsi_host.h b/include/scsi/scsi_host.h
-index 72e1a347baa6..f7f330f9255b 100644
+index f7f330f9255b..1255e8c164f6 100644
 --- a/include/scsi/scsi_host.h
 +++ b/include/scsi/scsi_host.h
-@@ -456,8 +456,7 @@ struct scsi_host_template {
- 	/* True if the controller does not support WRITE SAME */
- 	unsigned no_write_same:1;
- 
--	/* True if the host uses host-wide tagspace */
--	unsigned host_tagset:1;
-+	unsigned hctx_share_tags:1;
+@@ -277,7 +277,7 @@ struct scsi_host_template {
+ 	 *
+ 	 * Status: OPTIONAL
+ 	 */
+-	int (* map_queues)(struct Scsi_Host *shost);
++	int (* map_queues)(struct blk_mq_tag_set *set);
  
  	/*
- 	 * Countdown for host blocking with no commands outstanding.
-@@ -617,8 +616,8 @@ struct Scsi_Host {
- 	 * In scsi-mq mode, the number of hardware queues supported by the LLD.
- 	 *
- 	 * Note: it is assumed that each hardware queue has a queue depth of
--	 * can_queue. In other words, the total queue depth per host
--	 * is nr_hw_queues * can_queue. However, for when host_tagset is set,
-+	 * can_queue. In other words, the total queue depth per host is
-+	 * nr_hw_queues * can_queue. However, when hctx_share_tags is set,
- 	 * the total queue depth is can_queue.
- 	 */
- 	unsigned nr_hw_queues;
-@@ -650,8 +649,7 @@ struct Scsi_Host {
- 	/* The controller does not support WRITE SAME */
- 	unsigned no_write_same:1;
- 
--	/* True if the host uses host-wide tagspace */
--	unsigned host_tagset:1;
-+	unsigned hctx_share_tags:1;
- 
- 	/* Host responded with short (<36 bytes) INQUIRY result */
- 	unsigned short_inquiry:1;
+ 	 * SCSI interface of blk_poll - poll for IO completions.
 -- 
 2.25.1
 
