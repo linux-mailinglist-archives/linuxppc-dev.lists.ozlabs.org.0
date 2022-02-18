@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB3D4BB28E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 07:36:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 706A34BB29E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 07:37:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K0MRc3mCLz3dp3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 17:36:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K0MSh75XZz3ddn
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 17:37:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,21 +16,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K0MRB1P25z3cNC
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 17:36:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K0MSH1GHGz3cDn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 17:37:19 +1100 (AEDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 0636E68BFE; Fri, 18 Feb 2022 07:36:18 +0100 (CET)
-Date: Fri, 18 Feb 2022 07:36:17 +0100
+ id 342C768BFE; Fri, 18 Feb 2022 07:37:15 +0100 (CET)
+Date: Fri, 18 Feb 2022 07:37:14 +0100
 From: Christoph Hellwig <hch@lst.de>
 To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v2 16/18] sh: remove CONFIG_SET_FS support
-Message-ID: <20220218063617.GK22576@lst.de>
+Subject: Re: [PATCH v2 18/18] uaccess: drop maining CONFIG_SET_FS users
+Message-ID: <20220218063714.GL22576@lst.de>
 References: <20220216131332.1489939-1-arnd@kernel.org>
- <20220216131332.1489939-17-arnd@kernel.org>
+ <20220216131332.1489939-19-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220216131332.1489939-17-arnd@kernel.org>
+In-Reply-To: <20220216131332.1489939-19-arnd@kernel.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,6 +65,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Looks good:
+s/maining/remaining/ ?
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Or maybe rather:
+
+uaccess: remove CONFIG_SET_FS
+
+because it is all gone now.
+
+> With CONFIG_SET_FS gone, so drop all remaining references to
+> set_fs()/get_fs(), mm_segment_t and uaccess_kernel().
+
+And this sentence does not parse.
