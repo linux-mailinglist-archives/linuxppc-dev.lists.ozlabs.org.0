@@ -1,38 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E6D4BAF69
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 03:10:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E048D4BAF82
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 03:21:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K0FXX70mzz3cQJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 13:10:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K0FnS35g8z3cXZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Feb 2022 13:21:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=ftp.linux.org.uk (client-ip=2607:5300:60:148a::1;
+ helo=zeniv-ca.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
+ receiver=<UNKNOWN>)
+Received: from zeniv-ca.linux.org.uk (zeniv-ca.linux.org.uk
+ [IPv6:2607:5300:60:148a::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K0FX45vctz3cFX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 13:10:12 +1100 (AEDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4K0FX032d3z4xZp;
- Fri, 18 Feb 2022 13:10:08 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <20220111005404.162219-1-aik@ozlabs.ru>
-References: <20220111005404.162219-1-aik@ozlabs.ru>
-Subject: Re: [PATCH kernel v5] KVM: PPC: Merge powerpc's debugfs entry content
- into generic entry
-Message-Id: <164515019044.908917.13867805067598579515.b4-ty@ellerman.id.au>
-Date: Fri, 18 Feb 2022 13:09:50 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K0Fn324njz30Dy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 13:21:27 +1100 (AEDT)
+Received: from viro by zeniv-ca.linux.org.uk with local (Exim 4.94.2 #2 (Red
+ Hat Linux)) id 1nKstJ-002dCt-8P; Fri, 18 Feb 2022 02:21:01 +0000
+Date: Fri, 18 Feb 2022 02:21:01 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH v2 00/18] clean up asm/uaccess.h, kill set_fs for good
+Message-ID: <Yg8CjZwjWYIibrsd@zeniv-ca.linux.org.uk>
+References: <20220216131332.1489939-1-arnd@kernel.org>
+ <00496df2-f9f2-2547-3ca3-7989e4713d6b@csgroup.eu>
+ <CAK8P3a3_dPbjB23QffnYMtw+5ojfwChrVC8LLMQqNctU7Nh+mQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a3_dPbjB23QffnYMtw+5ojfwChrVC8LLMQqNctU7Nh+mQ@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,27 +45,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Cédric Le Goater <clg@kaod.org>, kvm@vger.kernel.org, kvm-ppc@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "dalias@libc.org" <dalias@libc.org>,
+ "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ "jcmvbkbc@gmail.com" <jcmvbkbc@gmail.com>,
+ "guoren@kernel.org" <guoren@kernel.org>,
+ "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+ "will@kernel.org" <will@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "bcain@codeaurora.org" <bcain@codeaurora.org>,
+ "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+ "deller@gmx.de" <deller@gmx.de>, "x86@kernel.org" <x86@kernel.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ Christoph Hellwig <hch@lst.de>, "mingo@redhat.com" <mingo@redhat.com>,
+ "geert@linux-m68k.org" <geert@linux-m68k.org>,
+ "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
+ "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+ "arnd@arndb.de" <arnd@arndb.de>, "hca@linux.ibm.com" <hca@linux.ibm.com>,
+ "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "richard@nod.at" <richard@nod.at>,
+ "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+ "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
+ "green.hu@gmail.com" <green.hu@gmail.com>,
+ "shorne@gmail.com" <shorne@gmail.com>, "monstr@monstr.eu" <monstr@monstr.eu>,
+ "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
+ "nickhu@andestech.com" <nickhu@andestech.com>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "dinguyen@kernel.org" <dinguyen@kernel.org>,
+ "ebiederm@xmission.com" <ebiederm@xmission.com>,
+ "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ "davem@davemloft.net" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 11 Jan 2022 11:54:04 +1100, Alexey Kardashevskiy wrote:
-> At the moment KVM on PPC creates 4 types of entries under the kvm debugfs:
-> 1) "%pid-%fd" per a KVM instance (for all platforms);
-> 2) "vm%pid" (for PPC Book3s HV KVM);
-> 3) "vm%u_vcpu%u_timing" (for PPC Book3e KVM);
-> 4) "kvm-xive-%p" (for XIVE PPC Book3s KVM, the same for XICS);
-> 
-> The problem with this is that multiple VMs per process is not allowed for
-> 2) and 3) which makes it possible for userspace to trigger errors when
-> creating duplicated debugfs entries.
-> 
-> [...]
+On Thu, Feb 17, 2022 at 08:49:59AM +0100, Arnd Bergmann wrote:
 
-Applied to powerpc/topic/ppc-kvm.
+> Same here: architectures can already provide a __put_user_fn()
+> and __get_user_fn(), to get the generic versions of the interface,
+> but few architectures use that. You can actually get all the interfaces
+> by just providing raw_copy_from_user() and raw_copy_to_user(),
+> but the get_user/put_user versions you get from that are fairly
+> inefficient.
 
-[1/1] KVM: PPC: Merge powerpc's debugfs entry content into generic entry
-      https://git.kernel.org/powerpc/c/faf01aef0570757bfbf1d655e984742c1dd38068
+FWIW, __{get,put}_user_{8,16,32,64} would probably make it easier to
+unify.  That's where the really variable part tends to be, anyway.
+IMO __get_user_fn() had been a mistake.
 
-cheers
+One thing I somewhat dislike about the series is the boilerplate in
+asm/uaccess.h instances - #include <asm-generic/access-ok.h> in
+a lot of them might make sense as a transitory state, but getting
+stuck with those indefinitely...
+
+	BTW, do we need user_addr_max() anymore?  The definition in
+asm-generic/access-ok.h is the only one, so ifndef around it is pointless.
