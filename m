@@ -1,102 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F37FE4BCA90
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Feb 2022 21:04:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82DB04BCA92
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Feb 2022 21:04:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K1KJd27mdz3dng
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Feb 2022 07:04:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K1KKh6ZJ4z3dkc
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Feb 2022 07:04:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CDRZ8d0U;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gxIrQMLl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=CDRZ8d0U; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=gxIrQMLl; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K1KHx4dwdz30Bc
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Feb 2022 07:03:25 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21JJAodk032665; 
- Sat, 19 Feb 2022 20:03:21 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K1KK11l3Nz2x9P
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Feb 2022 07:04:20 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21JJGuY3030554; 
+ Sat, 19 Feb 2022 20:04:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=GIVlS+hGhX1kXJ3QSioA2YylX1KnP3QtJv2x3eIo5rs=;
- b=CDRZ8d0U2ZEf14Ht0oYH0juUYShVYkgbKCURk/xChgJLQr9vO2lQXUNwpDPyx/yUjVes
- J5Y5IfpSeuVNvPesc0NFiV4oXffkQIdt5ZXQq/bBsveoVYS0qaZy+XWHDUnMnQ336NKr
- NPlbfqjkDxJt7V4O4Kov8pqN33qRxLk9xIgKGgaNNkMzKEIbp2xu/ARxElG3d65IiUWw
- +EXaKkHUxGEhkquooGm4oVUrvghri5+Oo69Vuybq4E14xKEgwG2Ifkpb2p5x58z9BIQt
- 5DbnXbjELT4qLw6nCoaSahJo5tZ7b5e2LYMDq1KEdDIKqF9/GjirrXBy2yPJDCEPZZp6 vA== 
+ from : to : cc : date : content-type : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=ASf2tseN+TigZhVFH+u8PVSP92z5KGKTNc4Eim/0cPY=;
+ b=gxIrQMLlg4GIW9+t7szIutT43COL1jkLqDT8i/tvPE8dYKIFgM2e9tRJmJmuC38l/Gdy
+ GNcKMaXhb9iIhtCK5R6cBfPl1fAFepx3WVBGUfeAcc5icFeCl1wK4dG4wvjXkVGNHqL+
+ cTTp2/CUHM0K4u3dCSStSUc72G8m9WSrwky26ZBBQogho/gLQAf/m4pTUuuT3DcMdbsY
+ zkMglQfUgbkhDDiFS/zEAEJG2J8HtTTa1ScKn6TYU55d1kTyUAGRvrmlWpYrxtCqmH0i
+ pe+JFp8FMnFFkdA/9nOgcom0f8V0YJX1MdBzmrsJSZj+UkLMzIEERQJ2ChVIp8szg3Bz Cg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3eb5pmh33e-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3eb6js0jca-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 19 Feb 2022 20:03:20 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21JJrvKG023567;
- Sat, 19 Feb 2022 20:03:20 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3eb5pmh337-1
+ Sat, 19 Feb 2022 20:04:16 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21JJcsHD027362;
+ Sat, 19 Feb 2022 20:04:15 GMT
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3eb6js0jc1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 19 Feb 2022 20:03:20 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21JJwC4B002694;
- Sat, 19 Feb 2022 20:03:19 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma04dal.us.ibm.com with ESMTP id 3ear697mtk-1
+ Sat, 19 Feb 2022 20:04:15 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21JK47Kk018055;
+ Sat, 19 Feb 2022 20:04:15 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma05wdc.us.ibm.com with ESMTP id 3ear68p5cc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 19 Feb 2022 20:03:19 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21JK3HZ416056880
+ Sat, 19 Feb 2022 20:04:15 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 21JK4DwA31982076
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 19 Feb 2022 20:03:17 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0E7946A047;
- Sat, 19 Feb 2022 20:03:17 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E01226A058;
- Sat, 19 Feb 2022 20:03:15 +0000 (GMT)
+ Sat, 19 Feb 2022 20:04:13 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4AA76AC059;
+ Sat, 19 Feb 2022 20:04:13 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3B76FAC065;
+ Sat, 19 Feb 2022 20:04:12 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.160.92.72])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Sat, 19 Feb 2022 20:03:15 +0000 (GMT)
-Message-ID: <790aac27437fdd13b6e1dac36682b123f9050b04.camel@linux.ibm.com>
-Subject: [PATCH v4 9/9] powerpc/pseries/vas: Write 'nr_total_credits' for
- QoS credits change
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Sat, 19 Feb 2022 20:04:12 +0000 (GMT)
+Message-ID: <4a23d5ec655fd00da97b0b0b46174a3a3894bfb0.camel@linux.ibm.com>
+Subject: [PATCH v3 0/4] powerpc/pseries/vas: VAS/NXGZIP support with LPM
 From: Haren Myneni <haren@linux.ibm.com>
 To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
  nathanl@linux.ibm.com
-Date: Sat, 19 Feb 2022 12:03:13 -0800
-In-Reply-To: <94434bf320affdde36090c72eeb1372f1d9978ae.camel@linux.ibm.com>
-References: <94434bf320affdde36090c72eeb1372f1d9978ae.camel@linux.ibm.com>
+Date: Sat, 19 Feb 2022 12:04:10 -0800
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 7-dLhc9eqtBvrGLRfveCS0Zmf2Lk5LEm
-X-Proofpoint-GUID: V3YfZA5AsP4vaR_tnJF0gY0SqtQuKDCk
+X-Proofpoint-GUID: VMiIymaX9Ro5tSACMqAJbudj26KGurA-
+X-Proofpoint-ORIG-GUID: Y1UsTs6mONwdcFkBAQJPj5fnHrzJAlmO
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
  definitions=2022-02-19_04,2022-02-18_01,2021-12-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxscore=0
- lowpriorityscore=0 clxscore=1015 suspectscore=0 mlxlogscore=999
- priorityscore=1501 phishscore=0 impostorscore=0 spamscore=0 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ lowpriorityscore=0
+ impostorscore=0 mlxscore=0 malwarescore=0 adultscore=0 phishscore=0
+ spamscore=0 clxscore=1015 bulkscore=0 priorityscore=1501 mlxlogscore=427
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2201110000 definitions=main-2202190130
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -109,111 +105,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: haren@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-pseries supports two types of credits - Default (uses normal priority
-FIFO) and Qality of service (QoS uses high priority FIFO). The user
-decides the number of QoS credits and sets this value with HMC
-interface. With the core add/removal, this value can be changed in HMC
-which invokes drmgr to communicate to the kernel.
+Virtual Accelerator Switchboard (VAS) is an engine stays on the
+chip. So all windows opened on a specific engine belongs to VAS
+the chip. The hypervisor expects the partition to close all
+active windows on the sources system and reopen them after
+migration on the destination machine.
 
-This patch adds an interface so that drmgr command can write the new
-target QoS credits in sysfs. But the kernel gets the new QoS
-capabilities from the hypervisor whenever nr_total_credits is updated
-to make sure sync with the values in the hypervisor.
+This patch series adds VAS support with the partition migration.
+When the migration initiates, the VAS migration handler will be
+invoked before pseries_suspend() to close all active windows and
+mark them in-active with VAS_WIN_MIGRATE_CLOSE status. Whereas
+this migration handler is called after migration to reopen all
+windows which has VAS_WIN_MIGRATE_CLOSE status and make them
+active again. The user space gets paste instruction failure
+when it sends requests on these in-active windows.
 
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/vas-sysfs.c | 33 +++++++++++++++++++++-
- arch/powerpc/platforms/pseries/vas.c       |  2 +-
- arch/powerpc/platforms/pseries/vas.h       |  1 +
- 3 files changed, 34 insertions(+), 2 deletions(-)
+These patches depend on VAS/DLPAR support patch series
 
-diff --git a/arch/powerpc/platforms/pseries/vas-sysfs.c b/arch/powerpc/platforms/pseries/vas-sysfs.c
-index e24d3edb3021..20745cd75f27 100644
---- a/arch/powerpc/platforms/pseries/vas-sysfs.c
-+++ b/arch/powerpc/platforms/pseries/vas-sysfs.c
-@@ -25,6 +25,33 @@ struct vas_caps_entry {
- 
- #define to_caps_entry(entry) container_of(entry, struct vas_caps_entry, kobj)
- 
-+/*
-+ * This function is used to get the notification from the drmgr when
-+ * QoS credits are changed. Though receiving the target total QoS
-+ * credits here, get the official QoS capabilities from the hypervisor.
-+ */
-+static ssize_t nr_total_credits_store(struct vas_cop_feat_caps *caps,
-+				       const char *buf, size_t count)
-+{
-+	int err;
-+	u16 creds;
-+
-+	/*
-+	 * Nothing to do for default credit type.
-+	 */
-+	if (caps->win_type == VAS_GZIP_DEF_FEAT_TYPE)
-+		return -EOPNOTSUPP;
-+
-+	err = kstrtou16(buf, 0, &creds);
-+	if (!err)
-+		err = vas_reconfig_capabilties(caps->win_type);
-+
-+	if (err)
-+		return -EINVAL;
-+
-+	return count;
-+}
-+
- #define sysfs_caps_entry_read(_name)					\
- static ssize_t _name##_show(struct vas_cop_feat_caps *caps, char *buf) 	\
- {									\
-@@ -41,6 +68,10 @@ struct vas_sysfs_entry {
- 	sysfs_caps_entry_read(_name);		\
- 	static struct vas_sysfs_entry _name##_attribute = __ATTR(_name,	\
- 				0444, _name##_show, NULL);
-+#define VAS_ATTR(_name)							\
-+	sysfs_caps_entry_read(_name);					\
-+	static struct vas_sysfs_entry _name##_attribute = __ATTR(_name, \
-+				0644, _name##_show, _name##_store)
- 
- /*
-  * Create sysfs interface:
-@@ -65,7 +96,7 @@ struct vas_sysfs_entry {
-  *	Number of credits used by the user space.
-  */
- 
--VAS_ATTR_RO(nr_total_credits);
-+VAS_ATTR(nr_total_credits);
- VAS_ATTR_RO(nr_used_credits);
- 
- static struct attribute *vas_capab_attrs[] = {
-diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index ca0ad191229d..591c7597db5a 100644
---- a/arch/powerpc/platforms/pseries/vas.c
-+++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -722,7 +722,7 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds)
-  * changes. Reconfig window configurations based on the credits
-  * availability from this new capabilities.
-  */
--static int vas_reconfig_capabilties(u8 type)
-+int vas_reconfig_capabilties(u8 type)
- {
- 	struct hv_vas_cop_feat_caps *hv_caps;
- 	struct vas_cop_feat_caps *caps;
-diff --git a/arch/powerpc/platforms/pseries/vas.h b/arch/powerpc/platforms/pseries/vas.h
-index f1bdb776021e..4ddb1001a0aa 100644
---- a/arch/powerpc/platforms/pseries/vas.h
-+++ b/arch/powerpc/platforms/pseries/vas.h
-@@ -130,5 +130,6 @@ struct pseries_vas_window {
- };
- 
- int sysfs_add_vas_caps(struct vas_cop_feat_caps *caps);
-+int vas_reconfig_capabilties(u8 type);
- int __init sysfs_pseries_vas_init(struct vas_all_caps *vas_caps);
- #endif /* _VAS_H */
+Changes in v2:
+- Added new patch "Define global hv_cop_caps struct" to eliminate
+  memory allocation failure during migration (suggestion by
+  Nathan Lynch)
+
+Changes in v3:
+- Rebase on 5.17-rc4
+- Naming changes for VAS capability struct elemets based on the V4 DLPAR
+  support patch series.
+
+Haren Myneni (4):
+  powerpc/pseries/vas: Define global hv_cop_caps struct
+  powerpc/pseries/vas: Modify reconfig open/close functions for
+    migration
+  powerpc/pseries/vas: Add VAS migration handler
+  powerpc/pseries/vas: Disable window open during migration
+
+ arch/powerpc/include/asm/vas.h            |   2 +
+ arch/powerpc/platforms/pseries/mobility.c |   5 +
+ arch/powerpc/platforms/pseries/vas.c      | 234 +++++++++++++++++-----
+ arch/powerpc/platforms/pseries/vas.h      |   6 +
+ 4 files changed, 201 insertions(+), 46 deletions(-)
+
 -- 
 2.27.0
 
