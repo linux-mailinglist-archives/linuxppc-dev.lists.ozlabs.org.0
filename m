@@ -2,74 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269314BC473
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Feb 2022 02:13:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3544BC6C9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Feb 2022 08:38:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K0rCZ3TXlz3cbg
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Feb 2022 12:12:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K10mL6yy5z3cTG
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Feb 2022 18:38:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qm4/3QAV;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=KsxrcfYa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+89c436a5482820edb7f2+6754+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Qm4/3QAV; 
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=KsxrcfYa; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K0rBb5FCCz3cZR
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Feb 2022 12:12:07 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 795A96134A
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Feb 2022 01:12:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DBD30C340E9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Feb 2022 01:12:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1645233124;
- bh=OCHcjjW6qA7w4OJyz9wME3tPK5UmhOPrMNjW6Ml8Oio=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=Qm4/3QAVHdYqvQChO98CEoFkC0+Ewn/oQwR6ECL6Qk8aYM0QN+G8HR+HEpzmD+glf
- wFFxxotM3EukM++Nx1JL4CtxgGJp8VtjGprpIuJecLSekC8mrZOofr37G/Fi1Wy1T/
- tbuhLy15xuMZzLaKIcTMy+HP3m/68gESf9oWgGR/3Im+f/N+PjfeUMILtKTttgActV
- IUrL5JH2d/FnNONIAdq25BE6Ui2FCGpMlaQGymi16/B+GbLAbVAEl/i7vfcE+8PpyG
- wGJEwZo7dOYdJgdlFA/XmfJIrAXuGoDSu40JtXF6wFT59bUb5aoZ8unbwefzAMa4bb
- OZKILAxt3ylhA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
- from userid 48) id C9392C05FCE; Sat, 19 Feb 2022 01:12:04 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 215622] WARNING: possible irq lock inversion dependency detected
-Date: Sat, 19 Feb 2022 01:12:04 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-215622-206035-vJp8C6IfWT@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-215622-206035@https.bugzilla.kernel.org/>
-References: <bug-215622-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K10ld51sRz3bP1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Feb 2022 18:37:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=h57KiAEVSKkzXdNc8Dx5lCWM++DN28M84mRcDiV5fkY=; b=KsxrcfYaerfj7S4ITWFvQAQ0x6
+ 24aeSlzHZ3cmMdzzDJjwD5MH7BiCBtomrZK+sUouoLD9vIJHuUOIq8hNC2rT9TREsjqowo7ZigLPU
+ llG/bACQNWJM62cm7Wc1o0o5yl4BeuJOK1InpRSg6F2nlLE+wMwB6Sr0Gv2APOv6ZKnh4XB2/bx0q
+ pO/NM0jEjfo63HNdo4QypAR7fM098sBkqtoJnexaTDGT2EC9VuGERlxc6rMnA1xJW3+p1h+TLVuCS
+ Lhtn1UlZlZPW5MAURTUYVTtlIOcC7djUDixNNJ6pg7uXqJlAMgXvaRfk2N49sHxK0dt49GFiuTp9+
+ u3rD/Uaw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red
+ Hat Linux)) id 1nLKIh-00GNfs-Pt; Sat, 19 Feb 2022 07:37:03 +0000
+Date: Fri, 18 Feb 2022 23:37:03 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: "Melanie Plageman (Microsoft)" <melanieplageman@gmail.com>
+Subject: Re: [PATCH RFC v1 0/5] Add SCSI per device tagsets
+Message-ID: <YhCeHweaO5ugY5aC@infradead.org>
+References: <20220218184157.176457-1-melanieplageman@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220218184157.176457-1-melanieplageman@gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,19 +63,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: tyreld@linux.ibm.com, linux-hyperv@vger.kernel.org, mst@redhat.com,
+ jasowang@redhat.com, mikelley@microsoft.com,
+ R-QLogic-Storage-Upstream@marvell.com, paulus@samba.org, kys@microsoft.com,
+ wei.liu@kernel.org, sthemmin@microsoft.com, linux-scsi@vger.kernel.org,
+ sathya.prakash@broadcom.com, decui@microsoft.com, kashyap.desai@broadcom.com,
+ njavali@marvell.com, MPT-FusionLinux.pdl@broadcom.com, haiyangz@microsoft.com,
+ mpi3mr-linuxdrv.pdl@broadcom.com, suganath-prabu.subramani@broadcom.com,
+ jejb@linux.ibm.com, john.garry@huawei.com, stefanha@redhat.com,
+ storagedev@microchip.com, virtualization@lists.linux-foundation.org,
+ megaraidlinux.pdl@broadcom.com, sreekanth.reddy@broadcom.com,
+ martin.petersen@oracle.com, shivasharan.srikanteshwara@broadcom.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ sumit.saxena@broadcom.com, andres@anarazel.de, pbonzini@redhat.com,
+ don.brace@microchip.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D215622
+On Fri, Feb 18, 2022 at 06:41:52PM +0000, Melanie Plageman (Microsoft) wrote:
+> Currently a single blk_mq_tag_set is associated with a Scsi_Host. When SCSI
+> controllers are limited, attaching multiple devices to the same controller is
+> required. In cloud environments with relatively high latency persistent storage,
+> requiring all devices on a controller to share a single blk_mq_tag_set
+> negatively impacts performance.
 
---- Comment #1 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 300485
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D300485&action=3Dedit
-kernel .config (5.17-rc4, PowerMac G5 11,2)
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+So add more controllers instead of completely breaking the architecture.
