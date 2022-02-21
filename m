@@ -2,58 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D8DB4BD2C8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Feb 2022 01:16:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE5C4BD34E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Feb 2022 03:04:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K22sV37bSz3cPj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Feb 2022 11:16:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K25Fp4pDQz3cQp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Feb 2022 13:04:14 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=A3W6zbWg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YxyzZV7A;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=mhiramat@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2d;
+ helo=mail-qv1-xf2d.google.com; envelope-from=cgel.zte@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=A3W6zbWg; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K22rt2B1Vz2yZt
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Feb 2022 11:15:58 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=YxyzZV7A; dkim-atps=neutral
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com
+ [IPv6:2607:f8b0:4864:20::f2d])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id D2A6860DCE;
- Mon, 21 Feb 2022 00:15:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B509C340E8;
- Mon, 21 Feb 2022 00:15:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1645402556;
- bh=FAHiQRsRhdAMMfAapmFl44a3/9FTSkSi6leb9aKOKcA=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=A3W6zbWgqlygo5WCNFb0oHIBKSNtZ7Sf7inAorLorqvgrgfZL+ANqoYv8amuWMiKn
- q2W4LyWNsGMsjgm1Ck0rCalUkCvnUUPQYnr6NwGUpJPv/htT3YjRh5YeDyElHd3QnP
- 9sLlyewF/dEEremdms2IETorBzO+YmpTRtdUfS3O/8p0gTZCGpDyhzXPW5TiMys0Vf
- r2/+BDfwL7+Izf0KZXhIztMCDyWbt+UgpGlhcMNJZa7Bu92+EdWbzZ8KAT8F0C+al9
- NggPSitm9tLMhvCeQPafFC/bJPy+YzwWSDdJX3y8EbI2zu6JwSar1ZZpL/Hqng2i5Z
- XqdBmQnWEAu9w==
-Date: Mon, 21 Feb 2022 09:15:52 +0900
-From: Masami Hiramatsu <mhiramat@kernel.org>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 3/3] kprobes: Allow probing on any address belonging to
- ftrace
-Message-Id: <20220221091552.f2b24bde8142df1d3fd63b42@kernel.org>
-In-Reply-To: <78480d05821d45e09fb234f61f9037e26d42f02d.1645096227.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1645096227.git.naveen.n.rao@linux.vnet.ibm.com>
- <78480d05821d45e09fb234f61f9037e26d42f02d.1645096227.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K25F51Y9qz2xrd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Feb 2022 13:03:35 +1100 (AEDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id e22so28184138qvf.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Feb 2022 18:03:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=IfnVO7g/7CxNyjGwJs8ebOgPHTkowomqY0vYzJnQWEU=;
+ b=YxyzZV7Ag9r/75/hPkMlxBZKN1rdYRDbkqra+lJ+le34W3Q5rwmQTGZyIf77lM1l8d
+ 8AQ1GX/RDHXZbWhA07H7FCi4zq3ez3izY2z10YpcR5KVZRR/Yb3ZCA3hcwHXTNQh5qMV
+ jIcTYUuTc1LEcxW+RWsOmP3UDVf+KVBSSGiVvpVHFX4h9uNlrJHTXnGQEVibPrFB4wWI
+ iFDOYrdYt3/2CY6FJo+WEG6YtYOFkIgh+F4VqXYdrzojflPJyqir2iMpLE6Y+gYvKaql
+ gljZJLM/f5UyV93jUlmjSOerjuFh9F9FvicFYzRqZmDQKSbkJ0z/0gly9AE1I/E2V0YP
+ weWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=IfnVO7g/7CxNyjGwJs8ebOgPHTkowomqY0vYzJnQWEU=;
+ b=ggMGUw2fmgAuPvhzF7rlhSOPNXN7y3KjzB+a+k/z7wAW/+tuxjpGL0R8IUaeM3jBXA
+ X1VU34BfLCYib1/jtGI2GEG39M4zcrpGIWp4fpaggX+fVveWwv8uXrb1s16c25MPC3Lz
+ q1uMhASDX3TADe5kIV28Sauo+sVdMPQhhe+Hk7QfvBlXz21EK99G0YoP6jKs2zI70Jgt
+ OB+qHcmZ/zxsX5NtcLnzVHRudjVjfI8bExGqLeAC9NAuAov1NCBYO5QfH8Uc5jHt/vBl
+ GIXv1+PVKBCtsbBOBlNbab9htdDlZRzVZ717fNO1jfAi81qhvCUpvIjU2XLcsVFMYBZ5
+ p8uA==
+X-Gm-Message-State: AOAM5317khcWII6zGIUjWsDUoty6iibQUzjQuDr/StVruYqKZdoUsE2t
+ zFLxDFNSjBY4XU5eq2RjcvU=
+X-Google-Smtp-Source: ABdhPJxKoVUYoG24d5EjClZyQdLEGq9z9gFN3oVKJvpQFPtE4bTKdHpZUX9MNAf19i9XBrjLu3hkPQ==
+X-Received: by 2002:a05:622a:1041:b0:2de:332:fe28 with SMTP id
+ f1-20020a05622a104100b002de0332fe28mr5793243qte.141.1645409010597; 
+ Sun, 20 Feb 2022 18:03:30 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+ by smtp.gmail.com with ESMTPSA id v19sm26617207qkp.131.2022.02.20.18.03.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 20 Feb 2022 18:03:30 -0800 (PST)
+From: cgel.zte@gmail.com
+X-Google-Original-From: chi.minghao@zte.com.cn
+To: oss@buserror.net
+Subject: [PATCH] platforms/83xx: Use of_device_get_match_data()
+Date: Mon, 21 Feb 2022 02:03:23 +0000
+Message-Id: <20220221020323.1925215-1-chi.minghao@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,73 +79,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
- bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Zeal Robot <zealci@zte.com.cn>, linux-kernel@vger.kernel.org,
+ Minghao Chi <chi.minghao@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 17 Feb 2022 17:06:25 +0530
-"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
+From: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
 
-> On certain architectures, ftrace can reserve multiple instructions at
-> function entry. Rather than rejecting kprobe on addresses other than the
-> exact ftrace call instruction, use the address returned by ftrace to
-> probe at the correct address when CONFIG_KPROBES_ON_FTRACE is enabled.
-> 
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> ---
->  kernel/kprobes.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-> index 94cab8c9ce56cc..0a797ede3fdf37 100644
-> --- a/kernel/kprobes.c
-> +++ b/kernel/kprobes.c
-> @@ -1497,6 +1497,10 @@ bool within_kprobe_blacklist(unsigned long addr)
->  static kprobe_opcode_t *_kprobe_addr(kprobe_opcode_t *addr,
->  			const char *symbol_name, unsigned int offset)
->  {
-> +#ifdef CONFIG_KPROBES_ON_FTRACE
-> +	unsigned long ftrace_addr = 0;
-> +#endif
-> +
->  	if ((symbol_name && addr) || (!symbol_name && !addr))
->  		goto invalid;
->  
-> @@ -1507,6 +1511,14 @@ static kprobe_opcode_t *_kprobe_addr(kprobe_opcode_t *addr,
->  	}
->  
->  	addr = (kprobe_opcode_t *)(((char *)addr) + offset);
-> +
-> +#ifdef CONFIG_KPROBES_ON_FTRACE
-> +	if (addr)
-> +		ftrace_addr = ftrace_location((unsigned long)addr);
-> +	if (ftrace_addr)
-> +		return (kprobe_opcode_t *)ftrace_addr;
+Use of_device_get_match_data() to simplify the code.
 
-As I said, this must be
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
+---
+ arch/powerpc/platforms/83xx/suspend.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-if (ftrace_addr != addr)
-	return -EILSEQ;
-
-This will prevent users from being confused by the results of probing
-that 'func' and 'func+4' are the same. (now only 'func' is allowed to
-be probed.)
-
-Thank you,
-
-> +#endif
-> +
->  	if (addr)
->  		return addr;
->  
-> -- 
-> 2.35.1
-> 
-
-
+diff --git a/arch/powerpc/platforms/83xx/suspend.c b/arch/powerpc/platforms/83xx/suspend.c
+index bb147d34d4a6..9ae9268b683c 100644
+--- a/arch/powerpc/platforms/83xx/suspend.c
++++ b/arch/powerpc/platforms/83xx/suspend.c
+@@ -322,17 +322,12 @@ static const struct platform_suspend_ops mpc83xx_suspend_ops = {
+ static const struct of_device_id pmc_match[];
+ static int pmc_probe(struct platform_device *ofdev)
+ {
+-	const struct of_device_id *match;
+ 	struct device_node *np = ofdev->dev.of_node;
+ 	struct resource res;
+ 	const struct pmc_type *type;
+ 	int ret = 0;
+ 
+-	match = of_match_device(pmc_match, &ofdev->dev);
+-	if (!match)
+-		return -EINVAL;
+-
+-	type = match->data;
++	type = of_device_get_match_data(&ofdev->dev);
+ 
+ 	if (!of_device_is_available(np))
+ 		return -ENODEV;
 -- 
-Masami Hiramatsu <mhiramat@kernel.org>
+2.25.1
+
