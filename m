@@ -1,89 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B3F94BED8F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 00:04:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179F24BED90
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 00:05:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K2dDN2Vdqz3dd4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 10:04:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K2dF72L5Yz3dfG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 10:05:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Pc1SubqI;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RlH3NvdX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a;
- helo=mail-pf1-x42a.google.com; envelope-from=melanieplageman@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Pc1SubqI; dkim-atps=neutral
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
- [IPv6:2607:f8b0:4864:20::42a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=RlH3NvdX; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K0gYH0C8Vz3cR1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Feb 2022 05:42:42 +1100 (AEDT)
-Received: by mail-pf1-x42a.google.com with SMTP id i6so2973027pfc.9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Feb 2022 10:42:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=MTDO2ijH97Okb1V/c6+V1GCrGsDIxaa5nQMyVR65+So=;
- b=Pc1SubqIG7PeXuoDJlxerZb7XZz2VYt5/HIAP8fhBnPYFUTEbRoPc/hD0zar1bma3V
- 4HokjUXlFlCzkXeRBqZNmGCQ3l8CKYg2jhW1k3CKkxdouixmWBwlfbye2k3T5UVN4AWn
- 52n/4TpQSOJ6fiHWHFjwReUOQC0he3x2HgAi44cVWeTV8w05Sa1D9bOyeAsYJF4B+JWR
- mBc9C6T9ZP/m0MlZ+TuVliGVdVQimrRNJyC5IpsM6L0bfkOB3XBCD/HU3/YKOhebN7mq
- J+lsn34usoaevMCZEEoXO5bPVPzQN4y1vAeuDaooWztwMJK90R8IU55MMcJYkL/7yE9H
- qIww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=MTDO2ijH97Okb1V/c6+V1GCrGsDIxaa5nQMyVR65+So=;
- b=3o17kxWCQwum5xG8wA9YkId/O7r5PTxe39lpJeDwsac9zS5fWtI3PiXJ4j8sNmGkjK
- KNvdt4Do4NQsAyJdtmncHC9sogf4Zz6q8Ia5yli4NRVg8sXPxUGp00fsExj+mPodJ1tz
- 3s4FfKEJ4PwscvHdwKM1SOSK7CIi1QapesIlnkWhJ8DYp6nzX655x0rkJSrgrVjxsBqI
- 3YYz7fg02OPmH0KhKcnuZrorzsD2N4Rgx48+W2Msp/jyOZWT7mseh8THNrkBrnHzwrbT
- 0EIujqD86FOUtc8Eb9SP5ak95lRNGqPepqH+WLSKDT6qCPtwn8rnVDPKZyIpGEACltCt
- b5xQ==
-X-Gm-Message-State: AOAM53006yp2FeC6hKCLVTB3CHX8VYrVgP/3YbIYk7uIbMsLpqI0JsxX
- wjluafn8z5gZMtdK96BCdUE=
-X-Google-Smtp-Source: ABdhPJwlYmGekFiFlVU1QipHTqjBlqB1DVOw04uJcuNNV1Cz3CVl3v/qDadRl9ArZAyNjW9xzofVrg==
-X-Received: by 2002:a65:6e4b:0:b0:373:8350:cef3 with SMTP id
- be11-20020a656e4b000000b003738350cef3mr7362940pgb.219.1645209761285; 
- Fri, 18 Feb 2022 10:42:41 -0800 (PST)
-Received: from vm-111.3frfxmc3btcupaqenzdpat1uec.xx.internal.cloudapp.net
- ([13.77.171.140]) by smtp.gmail.com with ESMTPSA id
- m17-20020a17090ab79100b001b89fd7e298sm130132pjr.4.2022.02.18.10.42.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Feb 2022 10:42:40 -0800 (PST)
-From: "Melanie Plageman (Microsoft)" <melanieplageman@gmail.com>
-To: mikelley@microsoft.com, jejb@linux.ibm.com, kys@microsoft.com,
- martin.petersen@oracle.com, mst@redhat.com, benh@kernel.crashing.org,
- decui@microsoft.com, don.brace@microchip.com,
- R-QLogic-Storage-Upstream@marvell.com, haiyangz@microsoft.com,
- jasowang@redhat.com, john.garry@huawei.com, kashyap.desai@broadcom.com,
- mpe@ellerman.id.au, njavali@marvell.com, pbonzini@redhat.com,
- paulus@samba.org, sathya.prakash@broadcom.com,
- shivasharan.srikanteshwara@broadcom.com, sreekanth.reddy@broadcom.com,
- stefanha@redhat.com, sthemmin@microsoft.com,
- suganath-prabu.subramani@broadcom.com, sumit.saxena@broadcom.com,
- tyreld@linux.ibm.com, wei.liu@kernel.org, linuxppc-dev@lists.ozlabs.org,
- megaraidlinux.pdl@broadcom.com, mpi3mr-linuxdrv.pdl@broadcom.com,
- storagedev@microchip.com, virtualization@lists.linux-foundation.org,
- linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-scsi@vger.kernel.org, MPT-FusionLinux.pdl@broadcom.com
-Subject: [PATCH RFC v1 5/5] scsi: storvsc: Hardware queues share blk_mq_tags
-Date: Fri, 18 Feb 2022 18:41:57 +0000
-Message-Id: <20220218184157.176457-6-melanieplageman@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220218184157.176457-1-melanieplageman@gmail.com>
-References: <20220218184157.176457-1-melanieplageman@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K2F8m5tfqz2xF0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Feb 2022 19:00:24 +1100 (AEDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21L7INOd028179; 
+ Mon, 21 Feb 2022 08:00:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=content-type :
+ message-id : date : mime-version : subject : to : cc : references : from :
+ in-reply-to; s=pp1; bh=14h8owOmeET2XDgoTJN9Q5RPpNNLmDV0vyg678Gvsz4=;
+ b=RlH3NvdXNTGYL5ntQ8SjKscvjM1P+cclqxvhjHLsedDMQa25MSat8MReNqL7x+zpVpzq
+ VpkBucvXrSNUiVfz2QR/HvN5s/6IJGeZjxBgZQp6IPCxrO/AgIvSLNUhVc6ol3C5G7XO
+ EvLKLF6LEaEsCJ/aXueuCH0npR1pETfWouwnBy5FYfbwufslLEJtLvSWgk8WZdsItWMS
+ DLcI+QinEDyAM1wIqpcp7noIKgq4rPWC0POZFt84wg/5NKxv+agAhMVy0wX//U2cDwBM
+ evohgpkET6SaEubZ0y2SWSypmn7nPvVH4sdh+Wp/ofca/wg1la04EThDf+zOYiu2xlH8 lw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ec67wrpcf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 21 Feb 2022 08:00:17 +0000
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21L7MOFC010040;
+ Mon, 21 Feb 2022 08:00:17 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ec67wrpbd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 21 Feb 2022 08:00:17 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21L7wmg1023821;
+ Mon, 21 Feb 2022 08:00:14 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma01fra.de.ibm.com with ESMTP id 3ear68qtcf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 21 Feb 2022 08:00:14 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 21L80CIg47907146
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 21 Feb 2022 08:00:12 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 10641AE05D;
+ Mon, 21 Feb 2022 08:00:12 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 33C86AE055;
+ Mon, 21 Feb 2022 08:00:10 +0000 (GMT)
+Received: from [9.43.125.156] (unknown [9.43.125.156])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 21 Feb 2022 08:00:09 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------iTQSlpFmgfSF78KAYGiW05eM"
+Message-ID: <6928a518-627c-c900-9480-f325f624ae84@linux.ibm.com>
+Date: Mon, 21 Feb 2022 13:30:08 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v3 RESEND 1/3] powerpc/pseries: Parse control memory
+ access error
+Content-Language: en-US
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+References: <20220107141428.67862-1-ganeshgr@linux.ibm.com>
+From: Ganesh <ganeshgr@linux.ibm.com>
+In-Reply-To: <20220107141428.67862-1-ganeshgr@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: QDD90yphCyj-vR6hf6DFn03x78hlK8OY
+X-Proofpoint-ORIG-GUID: OrqYX1_QBC_yePePlpHp9r-BNUvkzHVz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-21_02,2022-02-18_01,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0
+ bulkscore=0 impostorscore=0 mlxlogscore=982 mlxscore=0 lowpriorityscore=0
+ clxscore=1011 suspectscore=0 phishscore=0 priorityscore=1501 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
+ definitions=main-2202210047
 X-Mailman-Approved-At: Tue, 22 Feb 2022 10:00:38 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -96,74 +110,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andres@anarazel.de
+Cc: mahesh@linux.ibm.com, npiggin@gmail.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Decouple the number of tags available from the number of hardware queues
-by sharing a single blk_mq_tags amongst all hardware queues.
+This is a multi-part message in MIME format.
+--------------iTQSlpFmgfSF78KAYGiW05eM
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-When storage latency is relatively high, having too many tags available
-can harm the performance of mixed workloads.
-By sharing blk_mq_tags amongst hardware queues, nr_requests can be set
-to the appropriate number of tags for the device.
 
-Signed-off-by: Melanie Plageman <melanieplageman@gmail.com>
+On 1/7/22 19:44, Ganesh Goudar wrote:
+
+> Add support to parse and log control memory access
+> error for pseries. These changes are made according to
+> PAPR v2.11 10.3.2.2.12.
+>
+> Signed-off-by: Ganesh Goudar<ganeshgr@linux.ibm.com>
+> ---
+>   arch/powerpc/platforms/pseries/ras.c | 36 ++++++++++++++++++++++++----
+>   1 file changed, 32 insertions(+), 4 deletions(-)
+>
+>
+>   		mce_err.error_type = MCE_ERROR_TYPE_UNKNOWN;
+
+Hi mpe, Any comments on this patch series?
+
+--------------iTQSlpFmgfSF78KAYGiW05eM
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">
+      <pre>On 1/7/22 19:44, Ganesh Goudar wrote:</pre>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20220107141428.67862-1-ganeshgr@linux.ibm.com">
+      <pre class="moz-quote-pre" wrap="">Add support to parse and log control memory access
+error for pseries. These changes are made according to
+PAPR v2.11 10.3.2.2.12.
+
+Signed-off-by: Ganesh Goudar <a class="moz-txt-link-rfc2396E" href="mailto:ganeshgr@linux.ibm.com">&lt;ganeshgr@linux.ibm.com&gt;</a>
 ---
-As an example, on a 16-core VM coupled with a 1 TiB storage device having a
-combined (VM + disk) max BW of 200 MB/s and IOPS of 5000, configured with 16
-hardware queues and with nr_requests set to 56 and queue_depth set to 15, the
-following fio job description illustrates the benefit of hardware queues sharing
-blk_mq_tags:
+ arch/powerpc/platforms/pseries/ras.c | 36 ++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
-[global]
-time_based=1
-ioengine=io_uring
-direct=1
-runtime=60
 
-[read_hogs]
-bs=16k
-iodepth=10000
-rw=randread
-filesize=10G
-numjobs=15
-directory=/mnt/test
+ 		mce_err.error_type = MCE_ERROR_TYPE_UNKNOWN;
+</pre>
+    </blockquote>
+    <pre>Hi mpe, Any comments on this patch series?</pre>
+  </body>
+</html>
 
-[wal]
-bs=8k
-iodepth=3
-filesize=4G
-rw=write
-numjobs=1
-directory=/mnt/test
-
-with hctx_share_tags set, the "wal" job does 271 IOPS, averaging 13120 usec
-completion latency and the "read_hogs" jobs average around 4700 IOPS.
-
-without hctx_share_tags set, the "wal" job does 85 IOPS and averages around
-45308 usec completion latency and the "read_hogs" job average around 4900 IOPS.
-
-Note that reducing nr_requests to a number sufficient to increase WAL IOPS
-results in unacceptably low IOPS for the random reads when only one random read
-job is running.
-
- drivers/scsi/storvsc_drv.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
-index 0ed764bcabab..5048e7fcf959 100644
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1997,6 +1997,7 @@ static struct scsi_host_template scsi_driver = {
- 	.track_queue_depth =	1,
- 	.change_queue_depth =	storvsc_change_queue_depth,
- 	.per_device_tag_set =	1,
-+	.hctx_share_tags = 1,
- };
- 
- enum {
--- 
-2.25.1
+--------------iTQSlpFmgfSF78KAYGiW05eM--
 
