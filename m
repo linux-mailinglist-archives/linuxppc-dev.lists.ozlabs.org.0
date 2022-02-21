@@ -1,68 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E155F4BE3DE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Feb 2022 18:57:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021184BEB95
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Feb 2022 21:07:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K2VQD33xNz3cXM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 04:57:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K2YHV2bgnz3cD3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 07:07:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=185.176.79.56;
- helo=frasgout.his.huawei.com; envelope-from=john.garry@huawei.com;
+ smtp.mailfrom=zedat.fu-berlin.de (client-ip=130.133.4.66;
+ helo=outpost1.zedat.fu-berlin.de; envelope-from=glaubitz@zedat.fu-berlin.de;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 1014 seconds by postgrey-1.36 at boromir;
- Tue, 22 Feb 2022 04:57:30 AEDT
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com
- [185.176.79.56])
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de
+ [130.133.4.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K2VPk35bNz30DX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Feb 2022 04:57:25 +1100 (AEDT)
-Received: from fraeml706-chm.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4K2Twb3c5Sz67WcM;
- Tue, 22 Feb 2022 01:35:43 +0800 (CST)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- fraeml706-chm.china.huawei.com (10.206.15.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2308.21; Mon, 21 Feb 2022 18:40:25 +0100
-Received: from [10.47.94.94] (10.47.94.94) by lhreml724-chm.china.huawei.com
- (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Mon, 21 Feb
- 2022 17:40:23 +0000
-Message-ID: <9e7925d6-067c-0b3a-a788-f036272496e6@huawei.com>
-Date: Mon, 21 Feb 2022 17:40:23 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K2YH31jQKz2yK2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Feb 2022 07:06:53 +1100 (AEDT)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+ by outpost.zedat.fu-berlin.de (Exim 4.94) with esmtps (TLS1.2)
+ tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (envelope-from <glaubitz@zedat.fu-berlin.de>)
+ id 1nMEx5-000y2E-0O; Mon, 21 Feb 2022 21:06:31 +0100
+Received: from p57ae5149.dip0.t-ipconnect.de ([87.174.81.73]
+ helo=[192.168.178.35]) by inpost2.zedat.fu-berlin.de (Exim 4.94)
+ with esmtpsa (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+ (envelope-from <glaubitz@physik.fu-berlin.de>)
+ id 1nMEx4-003eHP-Q3; Mon, 21 Feb 2022 21:06:30 +0100
+Message-ID: <5326a8e6-3888-dca4-7e7f-73a85d53aa68@physik.fu-berlin.de>
+Date: Mon, 21 Feb 2022 21:06:29 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.1
-Subject: Re: [PATCH RFC v1 0/5] Add SCSI per device tagsets
-To: "Melanie Plageman (Microsoft)" <melanieplageman@gmail.com>,
- <mikelley@microsoft.com>, <jejb@linux.ibm.com>, <kys@microsoft.com>,
- <martin.petersen@oracle.com>, <mst@redhat.com>, <benh@kernel.crashing.org>,
- <decui@microsoft.com>, <don.brace@microchip.com>,
- <R-QLogic-Storage-Upstream@marvell.com>, <haiyangz@microsoft.com>,
- <jasowang@redhat.com>, <kashyap.desai@broadcom.com>, <mpe@ellerman.id.au>,
- <njavali@marvell.com>, <pbonzini@redhat.com>, <paulus@samba.org>,
- <sathya.prakash@broadcom.com>, <shivasharan.srikanteshwara@broadcom.com>,
- <sreekanth.reddy@broadcom.com>, <stefanha@redhat.com>,
- <sthemmin@microsoft.com>, <suganath-prabu.subramani@broadcom.com>,
- <sumit.saxena@broadcom.com>, <tyreld@linux.ibm.com>, <wei.liu@kernel.org>,
- <linuxppc-dev@lists.ozlabs.org>, <megaraidlinux.pdl@broadcom.com>,
- <mpi3mr-linuxdrv.pdl@broadcom.com>, <storagedev@microchip.com>,
- <virtualization@lists.linux-foundation.org>, <linux-hyperv@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
- <MPT-FusionLinux.pdl@broadcom.com>
-References: <20220218184157.176457-1-melanieplageman@gmail.com>
-From: John Garry <john.garry@huawei.com>
-In-Reply-To: <20220218184157.176457-1-melanieplageman@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [PATCH v4 00/13] Fix LKDTM for PPC64/IA64/PARISC v4
+Content-Language: en-US
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
+ Kees Cook <keescook@chromium.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <cover.1644928018.git.christophe.leroy@csgroup.eu>
+ <9cac37da-f719-13f8-1a21-2aac7a574479@physik.fu-berlin.de>
+In-Reply-To: <9cac37da-f719-13f8-1a21-2aac7a574479@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.94.94]
-X-ClientProxiedBy: lhreml718-chm.china.huawei.com (10.201.108.69) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.174.81.73
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,20 +63,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andres@anarazel.de
+Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 18/02/2022 18:41, Melanie Plageman (Microsoft) wrote:
-> For example: a device provisioned with high IOPS and BW limits on the same
-> controller as a smaller and slower device can starve the slower device of tags.
-> This is especially noticeable when the slower device's workload has low I/O
-> depth tasks.
+Hi!
 
-If you check hctx_may_queue() in the block code then it is noticeable 
-that a fair allocation of HW queue depth is allocated per request queue 
-to ensure we don't get starvation.
+On 2/16/22 13:25, John Paul Adrian Glaubitz wrote:
+>> This series does some cleanup in the three architectures and
+>> refactors function descriptors so that it can then easily use it
+>> in a generic way in LKDTM.
+> 
+> I'll test the series on ia64 later this week. I have an Itanium box at
+> home for testing kernel patches.
 
-Thanks,
-John
+Series applied on top of 038101e6b2cd5c55f888f85db42ea2ad3aecb4b6 and
+successfully tested on my HP Integrity RX2600 server.
+
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
