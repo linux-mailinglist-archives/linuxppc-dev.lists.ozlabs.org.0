@@ -1,106 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 969AC4BFA7E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 15:11:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E62B04BFADD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 15:23:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K31Ly754jz3bcl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 01:11:54 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Av4MWnqz;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Av4MWnqz;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K31cf1hy4z3bbN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 01:23:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=Av4MWnqz; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Av4MWnqz; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.129.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K31LD6Vm0z2xKJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 01:11:14 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1645539070;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lnCQY82//h+7hOXmxejXJs5Zu5Mwgiv01JTXqpBbWA8=;
- b=Av4MWnqztM+zzm9YV5ZHp0PAKRWvR50Rr6fRI6qanqOCMuJZHX0rbBDqbVpMGLPJ4yWYNn
- acsudXEQisSbAg1vW8A1TDRoir5biYgY2vmHkoHiYe0aXn498NTHkKNOcFB8bL/7uv9rne
- eatspIU5PkozTeg+W7/vsMlmJ5n+qhU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1645539070;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lnCQY82//h+7hOXmxejXJs5Zu5Mwgiv01JTXqpBbWA8=;
- b=Av4MWnqztM+zzm9YV5ZHp0PAKRWvR50Rr6fRI6qanqOCMuJZHX0rbBDqbVpMGLPJ4yWYNn
- acsudXEQisSbAg1vW8A1TDRoir5biYgY2vmHkoHiYe0aXn498NTHkKNOcFB8bL/7uv9rne
- eatspIU5PkozTeg+W7/vsMlmJ5n+qhU=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-625-XJHZVZxJNme9oTcpLavdRw-1; Tue, 22 Feb 2022 09:11:08 -0500
-X-MC-Unique: XJHZVZxJNme9oTcpLavdRw-1
-Received: by mail-ed1-f69.google.com with SMTP id
- d11-20020a50c88b000000b00410ba7a14acso12015640edh.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Feb 2022 06:11:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=lnCQY82//h+7hOXmxejXJs5Zu5Mwgiv01JTXqpBbWA8=;
- b=d1f3gD+ocIsJBuuYc9P+J8Pf2Y277vWYRqUVUmhqfXL5J2gbITSlQWn1hUmdYLLfBU
- 2Se/m0coQskw/erjsgnSZUfyb1g3oONadgseUNhZ/8ioBFo6N8oSK1P9poH8nL6NHsWt
- fO3rTw82p8kGdf+YIlbPAlI6ronmt+LX7JRqQCYgJ3+P5jKw37pxBVspc0VdHAgWoTQo
- hj6r3TeBf+DhMxpZaTLmNFWoxFQCm6kFvxEkQ4DEa2kqC2LznRLO4y3IPHlJAvGJkzzu
- CjXZjHmb4yO1e5KKJMVb4sgtFfx3wt9fdG/+7SkaEAly9Q8G5aFCbF81tmSWiq/iNnBW
- ux6A==
-X-Gm-Message-State: AOAM531VUv3grWYQR1GKFmM5lMIs2tU1MwSwCkPPzqyTI/wgH0elFpBU
- VkRmh8nnRtjEv6kBxBLyQBKzKyR3lTl4NdZNLp9+KnO27mAw0eRq47WmQPPYpI55PsfIrYeifOW
- CBeTpUa0rim7r8uPEu/0/LbF1Xg==
-X-Received: by 2002:a05:6402:17d9:b0:410:aaaf:6467 with SMTP id
- s25-20020a05640217d900b00410aaaf6467mr27476727edy.38.1645539067517; 
- Tue, 22 Feb 2022 06:11:07 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwLmmut1NqVLLa4YqtgbhxFtdrQeMpDiZdJ2gg+2/N4SxmRmGgIj4l8Z/ZjKKNWQQifTNO7gg==
-X-Received: by 2002:a05:6402:17d9:b0:410:aaaf:6467 with SMTP id
- s25-20020a05640217d900b00410aaaf6467mr27476692edy.38.1645539067212; 
- Tue, 22 Feb 2022 06:11:07 -0800 (PST)
-Received: from ?IPV6:2001:b07:6468:f312:c8dd:75d4:99ab:290a?
- ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
- by smtp.googlemail.com with ESMTPSA id 16sm6283189eji.94.2022.02.22.06.11.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 22 Feb 2022 06:11:06 -0800 (PST)
-Message-ID: <bf6cf0d0-31bd-5751-4fbe-8193dbd716a9@redhat.com>
-Date: Tue, 22 Feb 2022 15:11:05 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K31cD3KG8z2xsc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 01:23:22 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4K31c80XrNz9sSK;
+ Tue, 22 Feb 2022 15:23:20 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id WN1arV81VE_3; Tue, 22 Feb 2022 15:23:19 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4K31c76sfQz9sSG;
+ Tue, 22 Feb 2022 15:23:19 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DC2968B778;
+ Tue, 22 Feb 2022 15:23:19 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id EGWq3rOP56Dx; Tue, 22 Feb 2022 15:23:19 +0100 (CET)
+Received: from [192.168.7.78] (unknown [192.168.7.78])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 986568B764;
+ Tue, 22 Feb 2022 15:23:19 +0100 (CET)
+Message-ID: <468b04e9-4fa6-883d-fb9a-96a1371c6d8d@csgroup.eu>
+Date: Tue, 22 Feb 2022 15:23:19 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH v4 0/3] KVM: PPC: Book3S PR: Fixes for AIL and SCV
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20220222064727.2314380-1-npiggin@gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20220222064727.2314380-1-npiggin@gmail.com>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=pbonzini@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
+Subject: Re: [PATCH 3/3] powerpc/bpf: Reallocate BPF registers to volatile
+ registers when possible on PPC64
+Content-Language: fr-FR
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210727065539.299598-1-jniethe5@gmail.com>
+ <20210727065539.299598-3-jniethe5@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20210727065539.299598-3-jniethe5@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,24 +64,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org
+Cc: naveen.n.rao@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2/22/22 07:47, Nicholas Piggin wrote:
-> Patch 3 requires a KVM_CAP_PPC number allocated. QEMU maintainers are
-> happy with it (link in changelog) just waiting on KVM upstreaming. Do
-> you have objections to the series going to ppc/kvm tree first, or
-> another option is you could take patch 3 alone first (it's relatively
-> independent of the other 2) and ppc/kvm gets it from you?
 
-Hi Nick,
 
-I have pushed a topic branch kvm-cap-ppc-210 to kvm.git with just the 
-definition and documentation of the capability.  ppc/kvm can apply your 
-patch based on it (and drop the relevant parts of patch 3).  I'll send 
-it to Linus this week.
+Le 27/07/2021 à 08:55, Jordan Niethe a écrit :
+> Implement commit 40272035e1d0 ("powerpc/bpf: Reallocate BPF registers to
+> volatile registers when possible on PPC32") for PPC64.
+> 
+> When the BPF routine doesn't call any function, the non volatile
+> registers can be reallocated to volatile registers in order to avoid
+> having to save them/restore on the stack. To keep track of which
+> registers can be reallocated to make sure registers are set seen when
+> used.
+> 
+> Before this patch, the test #359 ADD default X is:
+>     0:   nop
+>     4:   nop
+>     8:   std     r27,-40(r1)
+>     c:   std     r28,-32(r1)
+>    10:   xor     r8,r8,r8
+>    14:   rotlwi  r8,r8,0
+>    18:   xor     r28,r28,r28
+>    1c:   rotlwi  r28,r28,0
+>    20:   mr      r27,r3
+>    24:   li      r8,66
+>    28:   add     r8,r8,r28
+>    2c:   rotlwi  r8,r8,0
+>    30:   ld      r27,-40(r1)
+>    34:   ld      r28,-32(r1)
+>    38:   mr      r3,r8
+>    3c:   blr
+> 
+> After this patch, the same test has become:
+>     0:   nop
+>     4:   nop
+>     8:   xor     r8,r8,r8
+>     c:   rotlwi  r8,r8,0
+>    10:   xor     r5,r5,r5
+>    14:   rotlwi  r5,r5,0
+>    18:   mr      r4,r3
+>    1c:   li      r8,66
+>    20:   add     r8,r8,r5
+>    24:   rotlwi  r8,r8,0
+>    28:   mr      r3,r8
+>    2c:   blr
+> 
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 
-Paolo
+If this series is still applicable, it needs to be rebased of Naveen's 
+series https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=286000
+
+Christophe
 
