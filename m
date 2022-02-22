@@ -1,68 +1,127 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0804BFBCB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 16:03:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE4C4BFC93
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 16:29:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K32V05Zsdz3dx5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 02:03:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K333x0Mknz3cRp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 02:29:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::619;
+ helo=fra01-mr2-obe.outbound.protection.outlook.com;
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com
+ (mail-mr2fra01on0619.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e19::619])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K32Rj0S2Pz3cVL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 02:01:05 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4K32RM19WHz9sSm;
- Tue, 22 Feb 2022 16:00:47 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id cXlVZuWkRwWK; Tue, 22 Feb 2022 16:00:47 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4K32RF3gP2z9sSp;
- Tue, 22 Feb 2022 16:00:41 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6D33E8B764;
- Tue, 22 Feb 2022 16:00:41 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id QOwbd7_ZHCjS; Tue, 22 Feb 2022 16:00:41 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.7.78])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C5D458B77B;
- Tue, 22 Feb 2022 16:00:40 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21MF0ZRV1087076
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 22 Feb 2022 16:00:35 +0100
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21MF0VtJ1087075;
- Tue, 22 Feb 2022 16:00:31 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K333N3Vl9z2x9V
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 02:28:29 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fb7MAWiLQ1gymcz1Q+h4T5/xlVeW4jfEfLBXg5pNtZx1bZF4gzLW8isKhSfkqhG+9tV0iFe8Fhzio23rxwyvQ4njU8JudpKwwYLryPE9FddLwZ3k1uTMfPLXE9rhXnvUuqE7iMJKtRUzG18jabLlpOuWAIsU51JCR6XFweGuxOPFk6S4gKvfVE3Tfg6BER4GT60K8Qsf2z8z0raVxeZkfcWL+ENewyvgjIRB6SGyMehHGxHtIMN08vDPMaq17/EYBPb/SeGAht5EM1FatMOiiupeuzOtX2jd/vdkc1tRM8E8TwruAD2NukFUu3FOdNjq8eh5DpY5dbDQr4ekhKkiRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nztWWEMSsRchS/0G9ch7E9xFZMCJPLZXavqmZaJkD90=;
+ b=IKsMvAaMXYp9iOkzkM9gqdhKhJVS/Y89M+EF/RzHSza0TEGVoLTa3Emi3PP+xrIErSfQ3WzmasLZqlLtCN4gZGqz6wFYlALRHbSrGBEVQFkGB0lWHehVE49yDvTLVPlceSxfXp07OXKOq0NbsnWgIGl/Tijpjkx9DNHMJjGIaw3zOiWLB4c1MQkNbkYGyfkuitiZEF9eB/bdr8bwKwx4dRABVwVNRU0wpbAnQnlyRebSFSVcWfLwqSjtGEqM3ugPCLvxi25uXRem6zBy3SQuU5TSX1w6kM+eNFst8P4kWLmL7VU1HxMbvyXE8B6Wg2CoGyeudI0Uf7TsIkkIsMQbtQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by PR1P264MB4232.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:257::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.16; Tue, 22 Feb
+ 2022 15:28:08 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::8142:2e6f:219b:646d]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::8142:2e6f:219b:646d%5]) with mapi id 15.20.5017.021; Tue, 22 Feb 2022
+ 15:28:08 +0000
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Luis Chamberlain <mcgrof@kernel.org>, Aaron Tomlin <atomlin@redhat.com>
-Subject: [PATCH v5 4/6] module: Add CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-Date: Tue, 22 Feb 2022 16:00:21 +0100
-Message-Id: <fe41ba636a1e229ab3c47543670182d68e38b1e5.1645541930.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1645541930.git.christophe.leroy@csgroup.eu>
-References: <cover.1645541930.git.christophe.leroy@csgroup.eu>
+To: "cgel.zte@gmail.com" <cgel.zte@gmail.com>, "oss@buserror.net"
+ <oss@buserror.net>
+Subject: Re: [PATCH] platforms/83xx: Use of_device_get_match_data()
+Thread-Topic: [PATCH] platforms/83xx: Use of_device_get_match_data()
+Thread-Index: AQHYJsdUSbBzncA20Uq1q5dqZ9MYcqyftAaA
+Date: Tue, 22 Feb 2022 15:28:08 +0000
+Message-ID: <428e2e84-522b-c61e-8701-97f2d482fd26@csgroup.eu>
+References: <20220221020323.1925215-1-chi.minghao@zte.com.cn>
+In-Reply-To: <20220221020323.1925215-1-chi.minghao@zte.com.cn>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: e050f26d-14a3-479d-6803-08d9f617edcb
+x-ms-traffictypediagnostic: PR1P264MB4232:EE_
+x-microsoft-antispam-prvs: <PR1P264MB42320CAEBA088993548111E3ED3B9@PR1P264MB4232.FRAP264.PROD.OUTLOOK.COM>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: huim3Ek6fu6pKex2akDoE1Sah9IJ/Fn8x2OSL3TIUh+n9kYglfsQHE3EgksylBKfjTeJj4Im42guPkMkLU4Is0EoaPG7YgjJr0n5dwOKx20Ezf9w0018SN1lN+J5HByah7uD47SGCRU4+aVT/lb7iuX4+j75IF0ILTtJmqmI3zp1yLIc5IuFMTk3sC6JbsY1+ANn1cL4i4nInbrVdETV/o6gNWByMzODxGqKy94ojiHvPpGcFaJ9irkkN0EPABYRj0hHNEIp3Abb6MO6sncIFGO5gRfIUcIMx4IfqMphdDIrSV3Aqn5emj3hmVFHNL0Fr5FT4Kd3yObEgPx0Zg9/XizOKvnAiTW9n2vorWEy0VWpwynOzqnFeDU6my3wL9Ch/9dsLgOT4yV/V8QvulecCMLBi7cDTdp/w/sk6ec2zKvScLJXbHcmZCZPyWYRBrgR560V8uIiGyPC6bIiVeKjw2I7mf0BAw3qB9/8pvcFBQu9eTCYSaJJzeSgkNwOyd+EnORjBLLOXRd/++eeeUqf08JnQ57VTBZqlmsegJkC56Zk2C4d/YE8/gpTEOy3FbsRoC1MwIfPkYsl4kjsOrbme0Nu56P6i3T/pI4mA8IB8oMUdNaTfQnB2Nx9rm+LovZ6D043G1Sorx6aw5P1hjSC1QvEK4bL0/TgYwRWOS8CUqx97Pmoww7O7TTiiTAGSOHnAS8G6tdPv3JRXWKO9mf1GBjV/TKrPX5ujZtdnxcvQ5iOd3U7gtfY/rwJohPCrHiVGsxhN6SoHII30Ftca70clw==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(366004)(76116006)(91956017)(83380400001)(110136005)(54906003)(38070700005)(316002)(66574015)(66556008)(2616005)(5660300002)(31686004)(2906002)(66446008)(8676002)(66476007)(6506007)(36756003)(6512007)(6486002)(508600001)(38100700002)(8936002)(71200400001)(64756008)(44832011)(66946007)(86362001)(26005)(31696002)(4326008)(122000001)(186003)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?M0RUNm5MYkNOTXkxVlBBeVZ0cUM2Z3BJbUJ2cXlLK2pqOGhrQ2dQMTQxRWF5?=
+ =?utf-8?B?MEh1YlhFUDE1ZzYrU3ZPZ3B2bnpSaG9pcFQrS3V3UVpJNXBkWmN5U1NxN29L?=
+ =?utf-8?B?bkl1YlVpMklSR3FzM0VZZGxXem8wK2MyTkpzZ0ErajNYaXN5WUJlc080N0pt?=
+ =?utf-8?B?ZVBQWE5WUU96clVvMllORVo0bDdzeER0OU9RWm80T3JVbHg2c2JZTFI5VU1i?=
+ =?utf-8?B?Vkx4a04rOGdnd055K0ZLSVhOQTJQMjVwWGhmQTNBMncrcURPblJ6MGwzZ0t6?=
+ =?utf-8?B?R3U1QUFtMWk0Rk1MaDd5WjhZWDdTOHRYWFZvOWxGVXo1ZDBaRVJLTmZQcDNw?=
+ =?utf-8?B?b1JERjBmKzRLb2VXWTdMcEYwMGsrWFg1bmZVenptTHBwUzd0dTZQdUo1dUFC?=
+ =?utf-8?B?bU1xb29rbldiZ1MwZ2tTRTBIYktaMjZXYklCallMZi9VTmhueFRjdHg3TmRy?=
+ =?utf-8?B?TitXVDhOd1pBNUJ5QXREdmQzWGhQa0diUTEyTkd2WEZRb2IyU1UvcHVoTE0y?=
+ =?utf-8?B?ZkU1M21QSFJMaDU1ME5oUGR6Y1JPQmd5Tm55a2xTTEE2dWR2dVNXL3FKM1ZL?=
+ =?utf-8?B?L2NOb3ZVTkdpSkZCUUYzWGdxd0d1Ui9NTTUxcHEwUTVPZWszM2x2VjVCVTJU?=
+ =?utf-8?B?YkRTUSt1a3VVdytJRmgxN3dlOG8vWVNFUlg2cm8xOTlrRXF6bC9ULyt6bmpG?=
+ =?utf-8?B?c1hibmYrV3djTUdMYUxIeVZiMDR0Tk9GRWtLOHJTemlVbkxVem03SzQ2VDlo?=
+ =?utf-8?B?NC8vZzNyMnBRM3lZblAwdUFCWU1HOXRCa0tXdVlQeUtGME9wRkxOZDdUUXNG?=
+ =?utf-8?B?TURvVisvY2ZUZWRoaml6bmlPNG52VlAzc09KaVpBVTJUeTR3N1N1QzUvQmVF?=
+ =?utf-8?B?MVFKbFBWajZHNlpiT0dzYXBZNEEzc29HUlg2ZWdYUjdxSERUUE9CeXJuQmR4?=
+ =?utf-8?B?VVBsM041ZjZxck80V2FxM29mVVJGdVF3UkNVUlVGTEFyNVZaU2FLUmlLM2ZU?=
+ =?utf-8?B?c2Z5UWpsaEt3d0FMb25EUHdOYjRvdExmdTJPdVN6UlFodjRIZ1F3aTNENC9h?=
+ =?utf-8?B?TGJsMjNnZlEwUVdaQ2pRSlZPVmVSdFZibXRLUHRtY1crOWZGZ1FiQ2M4K3Rt?=
+ =?utf-8?B?cE4rdnl5R011K3VzZjlIeHFHWXNlRE11MUh1UURUKzN3OStRd3NjTkpBYlpy?=
+ =?utf-8?B?WFk3WE9WWkVPUm5oUDNlR1dFSDNJeE4rS1B4U25yejNDNS8rOVRKQzJMRUth?=
+ =?utf-8?B?elk4UmVhaXZFM1lMSEtZOHVGZjQwNFFNRHdzNldCN2tkOHlKcnZmeWhHeFZH?=
+ =?utf-8?B?VmRBQTBZemR4RTRhNTVHWTFQMURrWkdRTUI3QjJHS3pkQ3B3KzkwNitsbm1I?=
+ =?utf-8?B?RmdjS3lGUXhFVGp1dGttSGNvQTlhN2JTelJZL2paMktGODNVN0Fna05UMmdY?=
+ =?utf-8?B?ZFVIVktMS1psVzBUa2FjMktySzRCN3A0UXRQQy81RXo3blQ1STllQ2xSdFBo?=
+ =?utf-8?B?MWZPWnM2SVpVVmN0V2ZZK0pvZStSK0VGMmNSam5HK2ZYZFZGaTlIUFBBZEJW?=
+ =?utf-8?B?aTRUUkJld2xPK0ZMZVlPcUdDQmdPOWNDRVVTSjkvR01ubkRqcENoVU1MdlVS?=
+ =?utf-8?B?cS90bzJsRUdBc0pWVGNna3dCaStCeEVqZFZYUXp5NXhmaUo2NmpOenhFTURp?=
+ =?utf-8?B?WmpPeGVGaW5VNGtXSEVxM1IrUWd6WUtMYkVrbHRjV0p0b0wyMnNmTzNnWEF6?=
+ =?utf-8?B?enl4M3J4ZElxNEFpOG4yVUNBNjd1dGk4cHdNZlVVazR1M2xNMkFEY0htSDFY?=
+ =?utf-8?B?Tk02bmQvTkV1RjhRNFpERjhkYWlxMTNXQU5QMVhrU3JMZnlHQ2hBRTJNUzFW?=
+ =?utf-8?B?TzFTZW9SaEhrMVZ4N2dwc2I4YlVrTnZMNU5jd29iL1ZKaDR1RkhTUmhVMlZi?=
+ =?utf-8?B?ZWNKMkRRcjVGNWVMUmsxN1B0N1dNQ1FvNm5ObFVQdlBuYWRhZTFZV0pMUkJl?=
+ =?utf-8?B?SWxya2NhVkdaNk5VRDVLNER2NmdpTFRXZnp6N1BBQzd2ajBoQitPZXZIdmY2?=
+ =?utf-8?B?dGxJMk13MVoyaEV4TmR0MGI0QXV1U09QNXczQitFRWw5MFJDSlJZczRYTDhD?=
+ =?utf-8?B?SDFLQ0UyaXArazhwMzVOUThzMUxnMHJ3T3dBQkFzdG9ueGlpWGZLQVVQdkFB?=
+ =?utf-8?B?WTZhOEVKNnBxQitsME5LOFlVSWRiMG1PUmZlR2MrNTQ5dUFrSjAvMW95Q282?=
+ =?utf-8?Q?LnHIqyB85o8zbWT8kMtQDPhjSjXjdRKjMOF0kVLEWk=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <445F09CD0007624B9075ADF43B4DBDAD@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1645542019; l=10326; s=20211009;
- h=from:subject:message-id; bh=jfohywy7Pj0RCHc9nfFEkluhtuy5nMPObt52zQJtLMw=;
- b=eA/6vfTfI7bqW8XwFoEf2DmsuFFhBE9N/jvxa+cIXZEaO1I65UT8aQjeZG6axGUnTtQeFsjpxGfX
- Qx7x64s2DRbHxCBzciuWlY+wHjiZVAslNq9pK/4rtpYl+7FCnMTO
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: e050f26d-14a3-479d-6803-08d9f617edcb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Feb 2022 15:28:08.3534 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: B140sqoeiceA7NRqMAzSma+9PEBJKnWokRRxntkHZ+v3ejj4k0D3VanUQTlpvzd6+m38LVailVB5ZegkfEJJ+Z0yvItsmW8jMxc3OxCIalU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB4232
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,307 +133,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>,
- kgdb-bugreport@lists.sourceforge.net, linux-kernel@vger.kernel.org,
- Douglas Anderson <dianders@chromium.org>, linux-mm@kvack.org,
- Jason Wessel <jason.wessel@windriver.com>, linuxppc-dev@lists.ozlabs.org,
- linux-modules@vger.kernel.org
+Cc: Zeal Robot <zealci@zte.com.cn>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Minghao Chi <chi.minghao@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC to allow architectures
-to request having modules data in vmalloc area instead of module area.
-
-This is required on powerpc book3s/32 in order to set data non
-executable, because it is not possible to set executability on page
-basis, this is done per 256 Mbytes segments. The module area has exec
-right, vmalloc area has noexec.
-
-This can also be useful on other powerpc/32 in order to maximize the
-chance of code being close enough to kernel core to avoid branch
-trampolines.
-
-Cc: Jason Wessel <jason.wessel@windriver.com>
-Acked-by: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/Kconfig                |  6 ++++
- include/linux/module.h      |  8 +++++
- kernel/debug/kdb/kdb_main.c | 10 +++++--
- kernel/module/internal.h    |  3 ++
- kernel/module/main.c        | 58 +++++++++++++++++++++++++++++++++++--
- kernel/module/procfs.c      |  8 +++--
- kernel/module/tree_lookup.c |  8 +++++
- 7 files changed, 95 insertions(+), 6 deletions(-)
-
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 678a80713b21..b5d1f2c19c27 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -882,6 +882,12 @@ config MODULES_USE_ELF_REL
- 	  Modules only use ELF REL relocations.  Modules with ELF RELA
- 	  relocations will give an error.
- 
-+config ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+	bool
-+	help
-+	  For architectures like powerpc/32 which have constraints on module
-+	  allocation and need to allocate module data outside of module area.
-+
- config HAVE_IRQ_EXIT_ON_IRQ_STACK
- 	bool
- 	help
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 7ec9715de7dc..134c1df04b14 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -422,6 +422,9 @@ struct module {
- 	/* Core layout: rbtree is accessed frequently, so keep together. */
- 	struct module_layout core_layout __module_layout_align;
- 	struct module_layout init_layout;
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+	struct module_layout data_layout;
-+#endif
- 
- 	/* Arch-specific module values */
- 	struct mod_arch_specific arch;
-@@ -569,6 +572,11 @@ bool is_module_text_address(unsigned long addr);
- static inline bool within_module_core(unsigned long addr,
- 				      const struct module *mod)
- {
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+	if ((unsigned long)mod->data_layout.base <= addr &&
-+	    addr < (unsigned long)mod->data_layout.base + mod->data_layout.size)
-+		return true;
-+#endif
- 	return (unsigned long)mod->core_layout.base <= addr &&
- 	       addr < (unsigned long)mod->core_layout.base + mod->core_layout.size;
- }
-diff --git a/kernel/debug/kdb/kdb_main.c b/kernel/debug/kdb/kdb_main.c
-index 5369bf45c5d4..94de2889a062 100644
---- a/kernel/debug/kdb/kdb_main.c
-+++ b/kernel/debug/kdb/kdb_main.c
-@@ -2027,8 +2027,11 @@ static int kdb_lsmod(int argc, const char **argv)
- 		if (mod->state == MODULE_STATE_UNFORMED)
- 			continue;
- 
--		kdb_printf("%-20s%8u  0x%px ", mod->name,
--			   mod->core_layout.size, (void *)mod);
-+		kdb_printf("%-20s%8u", mod->name, mod->core_layout.size);
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+		kdb_printf("/%8u", mod->data_layout.size);
-+#endif
-+		kdb_printf("  0x%px ", (void *)mod);
- #ifdef CONFIG_MODULE_UNLOAD
- 		kdb_printf("%4d ", module_refcount(mod));
- #endif
-@@ -2039,6 +2042,9 @@ static int kdb_lsmod(int argc, const char **argv)
- 		else
- 			kdb_printf(" (Live)");
- 		kdb_printf(" 0x%px", mod->core_layout.base);
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+		kdb_printf("/0x%px", mod->data_layout.base);
-+#endif
- 
- #ifdef CONFIG_MODULE_UNLOAD
- 		{
-diff --git a/kernel/module/internal.h b/kernel/module/internal.h
-index 5ad6233d409a..6911c7533ede 100644
---- a/kernel/module/internal.h
-+++ b/kernel/module/internal.h
-@@ -20,7 +20,9 @@
- /* Maximum number of characters written by module_flags() */
- #define MODULE_FLAGS_BUF_SIZE (TAINT_FLAGS_COUNT + 4)
- 
-+#ifndef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
- #define	data_layout core_layout
-+#endif
- 
- /*
-  * Modules' sections will be aligned on page boundaries
-@@ -154,6 +156,7 @@ struct mod_tree_root {
- };
- 
- extern struct mod_tree_root mod_tree;
-+extern struct mod_tree_root mod_data_tree;
- 
- #ifdef CONFIG_MODULES_TREE_LOOKUP
- void mod_tree_insert(struct module *mod);
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index bd26280f2880..f4d95a2ff08f 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -78,6 +78,12 @@ struct mod_tree_root mod_tree __cacheline_aligned = {
- 	.addr_min = -1UL,
- };
- 
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+struct mod_tree_root mod_data_tree __cacheline_aligned = {
-+	.addr_min = -1UL,
-+};
-+#endif
-+
- #define module_addr_min mod_tree.addr_min
- #define module_addr_max mod_tree.addr_max
- 
-@@ -107,6 +113,9 @@ static void mod_update_bounds(struct module *mod)
- 	__mod_update_bounds(mod->core_layout.base, mod->core_layout.size, &mod_tree);
- 	if (mod->init_layout.size)
- 		__mod_update_bounds(mod->init_layout.base, mod->init_layout.size, &mod_tree);
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+	__mod_update_bounds(mod->data_layout.base, mod->data_layout.size, &mod_data_tree);
-+#endif
- }
- 
- static void module_assert_mutex_or_preempt(void)
-@@ -940,6 +949,17 @@ static ssize_t show_coresize(struct module_attribute *mattr,
- static struct module_attribute modinfo_coresize =
- 	__ATTR(coresize, 0444, show_coresize, NULL);
- 
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+static ssize_t show_datasize(struct module_attribute *mattr,
-+			     struct module_kobject *mk, char *buffer)
-+{
-+	return sprintf(buffer, "%u\n", mk->mod->data_layout.size);
-+}
-+
-+static struct module_attribute modinfo_datasize =
-+	__ATTR(datasize, 0444, show_datasize, NULL);
-+#endif
-+
- static ssize_t show_initsize(struct module_attribute *mattr,
- 			     struct module_kobject *mk, char *buffer)
- {
-@@ -968,6 +988,9 @@ struct module_attribute *modinfo_attrs[] = {
- 	&modinfo_srcversion,
- 	&modinfo_initstate,
- 	&modinfo_coresize,
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+	&modinfo_datasize,
-+#endif
- 	&modinfo_initsize,
- 	&modinfo_taint,
- #ifdef CONFIG_MODULE_UNLOAD
-@@ -1233,6 +1256,9 @@ static void free_module(struct module *mod)
- 
- 	/* Finally, free the core (containing the module structure) */
- 	module_memfree(mod->core_layout.base);
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+	vfree(mod->data_layout.base);
-+#endif
- }
- 
- void *__symbol_get(const char *symbol)
-@@ -2163,6 +2189,24 @@ static int move_module(struct module *mod, struct load_info *info)
- 	} else
- 		mod->init_layout.base = NULL;
- 
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+	/* Do the allocs. */
-+	ptr = vmalloc(mod->data_layout.size);
-+	/*
-+	 * The pointer to this block is stored in the module structure
-+	 * which is inside the block. Just mark it as not being a
-+	 * leak.
-+	 */
-+	kmemleak_not_leak(ptr);
-+	if (!ptr) {
-+		module_memfree(mod->core_layout.base);
-+		module_memfree(mod->init_layout.base);
-+		return -ENOMEM;
-+	}
-+
-+	memset(ptr, 0, mod->data_layout.size);
-+	mod->data_layout.base = ptr;
-+#endif
- 	/* Transfer each section which specifies SHF_ALLOC */
- 	pr_debug("final section addresses:\n");
- 	for (i = 0; i < info->hdr->e_shnum; i++) {
-@@ -2338,6 +2382,9 @@ static void module_deallocate(struct module *mod, struct load_info *info)
- 	module_arch_freeing_init(mod);
- 	module_memfree(mod->init_layout.base);
- 	module_memfree(mod->core_layout.base);
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+	vfree(mod->data_layout.base);
-+#endif
- }
- 
- int __weak module_finalize(const Elf_Ehdr *hdr,
-@@ -3049,13 +3096,20 @@ bool is_module_address(unsigned long addr)
- struct module *__module_address(unsigned long addr)
- {
- 	struct module *mod;
-+	struct mod_tree_root *tree;
- 
--	if (addr < module_addr_min || addr > module_addr_max)
-+	if (addr >= mod_tree.addr_min && addr <= mod_tree.addr_max)
-+		tree = &mod_tree;
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+	else if (addr >= mod_data_tree.addr_min && addr <= mod_data_tree.addr_max)
-+		tree = &mod_data_tree;
-+#endif
-+	else
- 		return NULL;
- 
- 	module_assert_mutex_or_preempt();
- 
--	mod = mod_find(addr, &mod_tree);
-+	mod = mod_find(addr, tree);
- 	if (mod) {
- 		BUG_ON(!within_module(addr, mod));
- 		if (mod->state == MODULE_STATE_UNFORMED)
-diff --git a/kernel/module/procfs.c b/kernel/module/procfs.c
-index 2717e130788e..9a8f4f0f6329 100644
---- a/kernel/module/procfs.c
-+++ b/kernel/module/procfs.c
-@@ -67,13 +67,17 @@ static int m_show(struct seq_file *m, void *p)
- 	struct module *mod = list_entry(p, struct module, list);
- 	char buf[MODULE_FLAGS_BUF_SIZE];
- 	void *value;
-+	unsigned int size;
- 
- 	/* We always ignore unformed modules. */
- 	if (mod->state == MODULE_STATE_UNFORMED)
- 		return 0;
- 
--	seq_printf(m, "%s %u",
--		   mod->name, mod->init_layout.size + mod->core_layout.size);
-+	size = mod->init_layout.size + mod->core_layout.size;
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+	size += mod->data_layout.size;
-+#endif
-+	seq_printf(m, "%s %u", mod->name, size);
- 	print_unload_info(m, mod);
- 
- 	/* Informative for users. */
-diff --git a/kernel/module/tree_lookup.c b/kernel/module/tree_lookup.c
-index 995fe68059db..8ec5cfd60496 100644
---- a/kernel/module/tree_lookup.c
-+++ b/kernel/module/tree_lookup.c
-@@ -83,6 +83,11 @@ void mod_tree_insert(struct module *mod)
- 	__mod_tree_insert(&mod->core_layout.mtn, &mod_tree);
- 	if (mod->init_layout.size)
- 		__mod_tree_insert(&mod->init_layout.mtn, &mod_tree);
-+
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+	mod->data_layout.mtn.mod = mod;
-+	__mod_tree_insert(&mod->data_layout.mtn, &mod_data_tree);
-+#endif
- }
- 
- void mod_tree_remove_init(struct module *mod)
-@@ -95,6 +100,9 @@ void mod_tree_remove(struct module *mod)
- {
- 	__mod_tree_remove(&mod->core_layout.mtn, &mod_tree);
- 	mod_tree_remove_init(mod);
-+#ifdef CONFIG_ARCH_WANTS_MODULES_DATA_IN_VMALLOC
-+	__mod_tree_remove(&mod->data_layout.mtn, &mod_data_tree);
-+#endif
- }
- 
- struct module *mod_find(unsigned long addr, struct mod_tree_root *tree)
--- 
-2.34.1
-
+UmVzZW5kaW5nIGFzIEkgYWNjaWRlbnRhbHkgc2VudCBteSByZXNwb25zZSB0byB0aGUgbGlzdCBv
+bmx5Lg0KDQpMZSAyMS8wMi8yMDIyIMOgIDAzOjAzLCBjZ2VsLnp0ZUBnbWFpbC5jb20gYSDDqWNy
+aXTCoDoNCj4gRnJvbTogTWluZ2hhbyBDaGkgKENHRUwgWlRFKSA8Y2hpLm1pbmdoYW9AenRlLmNv
+bS5jbj4NCj4gDQo+IFVzZSBvZl9kZXZpY2VfZ2V0X21hdGNoX2RhdGEoKSB0byBzaW1wbGlmeSB0
+aGUgY29kZS4NCj4gDQo+IFJlcG9ydGVkLWJ5OiBaZWFsIFJvYm90IDx6ZWFsY2lAenRlLmNvbS5j
+bj4NCj4gU2lnbmVkLW9mZi1ieTogTWluZ2hhbyBDaGkgKENHRUwgWlRFKSA8Y2hpLm1pbmdoYW9A
+enRlLmNvbS5jbj4NCj4gLS0tDQo+ICAgYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy84M3h4L3N1c3Bl
+bmQuYyB8IDcgKy0tLS0tLQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgNiBk
+ZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zLzgz
+eHgvc3VzcGVuZC5jIGIvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy84M3h4L3N1c3BlbmQuYw0KPiBp
+bmRleCBiYjE0N2QzNGQ0YTYuLjlhZTkyNjhiNjgzYyAxMDA2NDQNCj4gLS0tIGEvYXJjaC9wb3dl
+cnBjL3BsYXRmb3Jtcy84M3h4L3N1c3BlbmQuYw0KPiArKysgYi9hcmNoL3Bvd2VycGMvcGxhdGZv
+cm1zLzgzeHgvc3VzcGVuZC5jDQo+IEBAIC0zMjIsMTcgKzMyMiwxMiBAQCBzdGF0aWMgY29uc3Qg
+c3RydWN0IHBsYXRmb3JtX3N1c3BlbmRfb3BzIG1wYzgzeHhfc3VzcGVuZF9vcHMgPSB7DQo+ICAg
+c3RhdGljIGNvbnN0IHN0cnVjdCBvZl9kZXZpY2VfaWQgcG1jX21hdGNoW107DQo+ICAgc3RhdGlj
+IGludCBwbWNfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqb2ZkZXYpDQo+ICAgew0KPiAt
+CWNvbnN0IHN0cnVjdCBvZl9kZXZpY2VfaWQgKm1hdGNoOw0KPiAgIAlzdHJ1Y3QgZGV2aWNlX25v
+ZGUgKm5wID0gb2ZkZXYtPmRldi5vZl9ub2RlOw0KPiAgIAlzdHJ1Y3QgcmVzb3VyY2UgcmVzOw0K
+PiAgIAljb25zdCBzdHJ1Y3QgcG1jX3R5cGUgKnR5cGU7DQo+ICAgCWludCByZXQgPSAwOw0KPiAg
+IA0KPiAtCW1hdGNoID0gb2ZfbWF0Y2hfZGV2aWNlKHBtY19tYXRjaCwgJm9mZGV2LT5kZXYpOw0K
+PiAtCWlmICghbWF0Y2gpDQo+IC0JCXJldHVybiAtRUlOVkFMOw0KPiAtDQo+IC0JdHlwZSA9IG1h
+dGNoLT5kYXRhOw0KPiArCXR5cGUgPSBvZl9kZXZpY2VfZ2V0X21hdGNoX2RhdGEoJm9mZGV2LT5k
+ZXYpOw0KDQpXaGF0IGhhcHBlbnMgd2hlbiBvZl9kZXZpY2VfZ2V0X21hdGNoX2RhdGEoKSByZXR1
+cm5zIE5VTEwgPw0KDQo+ICAgDQo+ICAgCWlmICghb2ZfZGV2aWNlX2lzX2F2YWlsYWJsZShucCkp
+DQo+ICAgCQlyZXR1cm4gLUVOT0RFVjs=
