@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1784BFCD4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 16:36:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D04EC4BFD29
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Feb 2022 16:37:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K33D80qMkz3bZf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 02:36:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K33FS0tBZz3cjX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 02:37:16 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=PjYqXlXh;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=EXbyg4oE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,34 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=PjYqXlXh; 
+ header.s=bombadil.20210309 header.b=EXbyg4oE; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K33CX545Qz3bPT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K33CX3dKjz3bPP
  for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 02:35:36 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=XYJlVwldNVCJqO/+tuKojN3UlpP6EWuPoimLYHKi/jc=; b=PjYqXlXh0/xMADYjBN4lX4q5Ly
- AuFycvSAdpIXN9YbLSHqw0K2dYILwjr7wgIeGZEPaMgVELz5o/txiNNKILc4nXrxHan9rtYYBwlmt
- 7GaftcZ0rDAFxBm9a1LqzQTCL93a6M9uf1PyDLGYGiRgPK7ZuYIRQDsrVP9eN9dOO9swFx1vDeZc+
- yZPvyf1fh6NCG0uMF/LNlnZNoPYsVTSxgQ7mhLCFFvpZJhhnjfKuephjOMuwK1KFrmapY7foUzQ7p
- 05RnloFRKzpM7mJ1akDcM3wUeCLyhzdFOE+AL1st9GwnxOLIxR7uY8XZpOgAYp4TpNIfEYTRusOAm
- VVgxXFDQ==;
+ bh=hwGHho6vVoG5zxL+r+gO/HrLW55gSYiZK1xOFy8bPWY=; b=EXbyg4oElbNBCkXxF5PHE19cjU
+ Fhh8CM69nTRceyzTldor3WTO4HGvmvQXWPAh2WGra1WaTbxlQ5XzvwoMBUILahCpilzLJA96AAAkQ
+ TxbPVjzqLsMLHXjWbfzEQdEzhkxzcS9SI8zzxJt5k4gy+nwhAHszCs3y9seiMTLWuA8wDaiKoiqC5
+ R2eiLkkdWQMz990U+MVaVkdNuIk/Vpp0/S/BdvNauv1e7YcyxIPyfk9ydUE1i1051hAU9G59sMV3x
+ I/UwQdy2sd/TJAeypMn9AZP0W9cKSL4qQ8b8g2Cf7svHpTJvkKFLcjADA+rDauJKsTjC/CcM8rhTP
+ BJ9+5XEA==;
 Received: from [2001:4bb8:198:f8fc:c22a:ebfc:be8d:63c2] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nMXCB-00AGo7-Po; Tue, 22 Feb 2022 15:35:20 +0000
+ id 1nMXCE-00AGpk-IC; Tue, 22 Feb 2022 15:35:23 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: iommu@lists.linux-foundation.org
-Subject: [PATCH 01/11] dma-direct: use is_swiotlb_active in dma_direct_map_page
-Date: Tue, 22 Feb 2022 16:35:04 +0100
-Message-Id: <20220222153514.593231-2-hch@lst.de>
+Subject: [PATCH 02/11] swiotlb: make swiotlb_exit a no-op if SWIOTLB_FORCE is
+ set
+Date: Tue, 22 Feb 2022 16:35:05 +0100
+Message-Id: <20220222153514.593231-3-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220222153514.593231-1-hch@lst.de>
 References: <20220222153514.593231-1-hch@lst.de>
@@ -77,27 +78,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use the more specific is_swiotlb_active check instead of checking the
-global swiotlb_force variable.
+If force bouncing is enabled we can't release the bufffers.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- kernel/dma/direct.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/dma/swiotlb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
-index 4632b0f4f72eb..4dc16e08c7e1a 100644
---- a/kernel/dma/direct.h
-+++ b/kernel/dma/direct.h
-@@ -91,7 +91,7 @@ static inline dma_addr_t dma_direct_map_page(struct device *dev,
- 		return swiotlb_map(dev, phys, size, dir, attrs);
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index f1e7ea160b433..36fbf1181d285 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -378,6 +378,9 @@ void __init swiotlb_exit(void)
+ 	unsigned long tbl_vaddr;
+ 	size_t tbl_size, slots_size;
  
- 	if (unlikely(!dma_capable(dev, dma_addr, size, true))) {
--		if (swiotlb_force != SWIOTLB_NO_FORCE)
-+		if (is_swiotlb_active(dev))
- 			return swiotlb_map(dev, phys, size, dir, attrs);
++	if (swiotlb_force == SWIOTLB_FORCE)
++		return;
++
+ 	if (!mem->nslabs)
+ 		return;
  
- 		dev_WARN_ONCE(dev, 1,
 -- 
 2.30.2
 
