@@ -2,73 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED10B4C0CF8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 08:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8984C0D00
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 08:06:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K3Rq52MjXz3cDN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 18:04:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K3RsS2bs3z3bb0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 18:06:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=SFEe18GZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=l2Zv8k2I;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433;
- helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f;
+ helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=SFEe18GZ; dkim-atps=neutral
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com
- [IPv6:2607:f8b0:4864:20::433])
+ header.s=20210112 header.b=l2Zv8k2I; dkim-atps=neutral
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
+ [IPv6:2607:f8b0:4864:20::42f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K3RpS267Sz30NP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 18:03:44 +1100 (AEDT)
-Received: by mail-pf1-x433.google.com with SMTP id x18so14479467pfh.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Feb 2022 23:03:44 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K3Rrr0Q4tz30DX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 18:05:45 +1100 (AEDT)
+Received: by mail-pf1-x42f.google.com with SMTP id i21so14475473pfd.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Feb 2022 23:05:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=gupKki8ZFXAdVURypM2M8owgaI7l79b9ZDR0Ot9XDYI=;
- b=SFEe18GZmI4nglBdXgOa7qIo30HqS8pHuAY/vKf4VEo7euEC7/NYCnhrxnib1irv57
- EronwtkkrWLP6g445uUnrSbhu000N3yEiXrRAu/J6lO20zUFWxqzC19G7aWu/eETEwUW
- uMjIuokSf62XpVPgIssY2n6SgNEJ5wDQ/Jw6yJAjllVZI2pMLivcPea7sZgSW6TW0o73
- J1jy5GljnF8YzWXZoZDQH1jGA8VLt62Zv3YHSKam8GOetIMFwd8XxTM/tR4Qcf1ZE47r
- qWAj1JSRpT/XXFfWlKlB0au5CKkF4ZILsGVRfZrkKt3w3EnzjxOM82mBbyvdWq3hHjPa
- oU/w==
+ bh=5LC81SARYxdsYS2Ld425RfRTzSP3MtBYAdx/AXz4sZM=;
+ b=l2Zv8k2IR8bKgryOWswsYVJfyvzIpg9JDILFsQsVdnumr3PXoK60YCFHT/iy6FHT6w
+ UULCuVgqtAAZt/HF8n+5AfVL8BSBZBwA1tgRDxTABeSraNeDsFHI7TcXv1TS3Fj4Z3Lt
+ qCsltCVBE7ujUqoZjVm7nmhVrAI/zgyU+wMdMRAalTWMhuD258zjGLbYUm8nIByRTsZb
+ mA9/ChHt8BR63t/Tt9Wsc6xxuHkZXQNWfzWRAsxpIAdIg/4KTBxuQRGrJhQkvD7LI0fr
+ MbSa1T2UUMdeSHcU3vV8wR1dgOd6Xkc7HR19uWOzEALSstEyAW2x8L2UEDbyP/oIJEMP
+ DCaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=gupKki8ZFXAdVURypM2M8owgaI7l79b9ZDR0Ot9XDYI=;
- b=e/ekvDdtSF0IfvcYJtLjWDDEIE3l93Ps9/lKXVQilYeYxjKQGchoLmPUkXdRlFLLzQ
- Q2c4Io5uZaw9aZHrpX3P+IdyW2Wlm9hsT7Tx9Bw7n2qPGr62SqM0hDVEgYiyNUwpMGK1
- 7I3fLWYS1aCA3Zm6gUHMbQWe/+vfiCpetps4STxc9BJ0shCvlYcsBA+i4OLRLmdjLq7o
- akzpFAR/4ULfS+WLOXbj418MCJoJUfosbDhAyxJ3OM5DCikC7h3zguN7+WRQFL0nZguD
- HROY+e/YrNJ3q/U8dohd56Qn1F90azQ6P2TxC+/SqLRG19dEY60M3tvMKu+axKjct8yb
- zKAA==
-X-Gm-Message-State: AOAM531nh0lGi7ZX1BIW+8T2B0ZxpoitgDihKgGvPD36i72CjNhkgklv
- 672ZJqmkul0dEeeVp/9nZ/4=
-X-Google-Smtp-Source: ABdhPJyGdrsDgvM4PU62KtTBsD/Sb8HitH9OPtGY/9D2WuFdR77CvlQzDCmVj81OZQS2FgLeCE30hg==
-X-Received: by 2002:a63:4918:0:b0:34d:e4e5:5b47 with SMTP id
- w24-20020a634918000000b0034de4e55b47mr23052188pga.422.1645599821738; 
- Tue, 22 Feb 2022 23:03:41 -0800 (PST)
+ bh=5LC81SARYxdsYS2Ld425RfRTzSP3MtBYAdx/AXz4sZM=;
+ b=uhy08l24tsapxWOqqSKVHJecROZSGxJtb02V4vEPyNRohSX3qpqC96Uv+fMQyWD/h5
+ 59u+7b5rnp6WVxPNgJV4tT2S566zVwVQk2qjxuvnWmYLiutTNzZUGWAPkYJu5uo841BG
+ CkoLnNduB8X9OSZlSr/Vawq3C0lc07TWjEAnUNDoI8nsVL4b1hPlZVf4GPQ/Klw180hX
+ M1RUauu0zxLAV7KcGTaZC09Ic/RmpCTrYmuMhfLKFk/lAG/h153pjDdEj+bnees/FxIp
+ Crptlxn6mNP8omZXWn+jzOVkmwVV/noT86hnkczjCVYCclGllUR5BIaogyOKItMkvw0Y
+ V2dA==
+X-Gm-Message-State: AOAM532Fo0/Sv8B6+WJB1U/p/c2Tzf4gXYm14Bd5/kgqqSW4G/2HzWt9
+ Ue2oq9BnNr6fD3dI6L6oNck=
+X-Google-Smtp-Source: ABdhPJz2NeO2vXi46SW/nfmFjTJNjakP3E/xWmVk3mLiSdIWAWb1A25FEd/DiSCEA2u9PLbXEnAlUg==
+X-Received: by 2002:a63:cc52:0:b0:372:7f35:cf84 with SMTP id
+ q18-20020a63cc52000000b003727f35cf84mr22544356pgi.211.1645599943608; 
+ Tue, 22 Feb 2022 23:05:43 -0800 (PST)
 Received: from localhost (60-240-120-95.tpgi.com.au. [60.240.120.95])
- by smtp.gmail.com with ESMTPSA id bd14sm8944029pfb.165.2022.02.22.23.03.40
+ by smtp.gmail.com with ESMTPSA id
+ g21-20020a17090a7d1500b001b968e82819sm1696637pjl.10.2022.02.22.23.05.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 22 Feb 2022 23:03:41 -0800 (PST)
-Date: Wed, 23 Feb 2022 17:03:36 +1000
+ Tue, 22 Feb 2022 23:05:43 -0800 (PST)
+Date: Wed, 23 Feb 2022 17:05:37 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 3/9] powerpc/vas: Add paste address mmap fault handler
+Subject: Re: [PATCH v4 4/9] powerpc/vas: Return paste instruction failure if
+ no active window
 To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
  mpe@ellerman.id.au, nathanl@linux.ibm.com
 References: <94434bf320affdde36090c72eeb1372f1d9978ae.camel@linux.ibm.com>
- <8356adc31f70935cb16a80a459b58f792eb48f80.camel@linux.ibm.com>
-In-Reply-To: <8356adc31f70935cb16a80a459b58f792eb48f80.camel@linux.ibm.com>
+ <eacf8d7610c4dbc408d76b1ada965eab01b14bd9.camel@linux.ibm.com>
+In-Reply-To: <eacf8d7610c4dbc408d76b1ada965eab01b14bd9.camel@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1645599802.tiaaw8nvca.astroid@bobo.none>
+Message-Id: <1645599884.mn9fi17enu.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -86,162 +88,124 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Haren Myneni's message of February 20, 2022 5:55 am:
+Excerpts from Haren Myneni's message of February 20, 2022 5:58 am:
 >=20
-> The user space opens VAS windows and issues NX requests by pasting
-> CRB on the corresponding paste address mmap. When the system lost
-> credits due to core removal, the kernel has to close the window in
-> the hypervisor and make the window inactive by unmapping this paste
-> address. Also the OS has to handle NX request page faults if the user
-> space issue NX requests.
+> The VAS window may not be active if the system looses credits and
+> the NX generates page fault when it receives request on unmap
+> paste address.
 >=20
-> This handler maps the new paste address with the same VMA when the
-> window is active again (due to core add with DLPAR). Otherwise
-> returns paste failure.
->=20
+> The kernel handles the fault by remap new paste address if the
+> window is active again, Otherwise return the paste instruction
+> failure if the executed instruction that caused the fault was
+> a paste.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Looks good, thanks for fixin the SIGBUS thing, was that my
+fault? I vaguely remember writing some of this patch :P
 
+Thanks,
+Nick
+
+>=20
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 > ---
->  arch/powerpc/include/asm/vas.h          | 10 ++++
->  arch/powerpc/platforms/book3s/vas-api.c | 68 +++++++++++++++++++++++++
->  2 files changed, 78 insertions(+)
+>  arch/powerpc/include/asm/ppc-opcode.h   |  2 +
+>  arch/powerpc/platforms/book3s/vas-api.c | 55 ++++++++++++++++++++++++-
+>  2 files changed, 56 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/va=
-s.h
-> index 57573d9c1e09..27251af18c65 100644
-> --- a/arch/powerpc/include/asm/vas.h
-> +++ b/arch/powerpc/include/asm/vas.h
-> @@ -29,6 +29,12 @@
->  #define VAS_THRESH_FIFO_GT_QTR_FULL	2
->  #define VAS_THRESH_FIFO_GT_EIGHTH_FULL	3
-> =20
-> +/*
-> + * VAS window Linux status bits
-> + */
-> +#define VAS_WIN_ACTIVE		0x0	/* Used in platform independent */
-> +					/* vas mmap() */
-> +
->  /*
->   * Get/Set bit fields
->   */
-> @@ -59,6 +65,9 @@ struct vas_user_win_ref {
->  	struct pid *pid;	/* PID of owner */
->  	struct pid *tgid;	/* Thread group ID of owner */
->  	struct mm_struct *mm;	/* Linux process mm_struct */
-> +	struct mutex mmap_mutex;	/* protects paste address mmap() */
-> +					/* with DLPAR close/open windows */
-> +	struct vm_area_struct *vma;	/* Save VMA and used in DLPAR ops */
->  };
-> =20
->  /*
-> @@ -67,6 +76,7 @@ struct vas_user_win_ref {
->  struct vas_window {
->  	u32 winid;
->  	u32 wcreds_max;	/* Window credits */
-> +	u32 status;	/* Window status used in OS */
->  	enum vas_cop_type cop;
->  	struct vas_user_win_ref task_ref;
->  	char *dbgname;
+> diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include=
+/asm/ppc-opcode.h
+> index 9675303b724e..82f1f0041c6f 100644
+> --- a/arch/powerpc/include/asm/ppc-opcode.h
+> +++ b/arch/powerpc/include/asm/ppc-opcode.h
+> @@ -262,6 +262,8 @@
+>  #define PPC_INST_MFSPR_PVR		0x7c1f42a6
+>  #define PPC_INST_MFSPR_PVR_MASK		0xfc1ffffe
+>  #define PPC_INST_MTMSRD			0x7c000164
+> +#define PPC_INST_PASTE			0x7c20070d
+> +#define PPC_INST_PASTE_MASK		0xfc2007ff
+>  #define PPC_INST_POPCNTB		0x7c0000f4
+>  #define PPC_INST_POPCNTB_MASK		0xfc0007fe
+>  #define PPC_INST_RFEBB			0x4c000124
 > diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platf=
 orms/book3s/vas-api.c
-> index 4d82c92ddd52..f359e7b2bf90 100644
+> index f359e7b2bf90..f3e421511ea6 100644
 > --- a/arch/powerpc/platforms/book3s/vas-api.c
 > +++ b/arch/powerpc/platforms/book3s/vas-api.c
-> @@ -316,6 +316,7 @@ static int coproc_ioc_tx_win_open(struct file *fp, un=
-signed long arg)
->  		return PTR_ERR(txwin);
->  	}
-> =20
-> +	mutex_init(&txwin->task_ref.mmap_mutex);
->  	cp_inst->txwin =3D txwin;
-> =20
->  	return 0;
-> @@ -350,6 +351,70 @@ static int coproc_release(struct inode *inode, struc=
+> @@ -351,6 +351,41 @@ static int coproc_release(struct inode *inode, struc=
 t file *fp)
 >  	return 0;
 >  }
 > =20
 > +/*
-> + * This fault handler is invoked when the core generates page fault on
-> + * the paste address. Happens if the kernel closes window in hypervisor
-> + * (on pseries) due to lost credit or the paste address is not mapped.
+> + * If the executed instruction that caused the fault was a paste, then
+> + * clear regs CR0[EQ], advance NIP, and return 0. Else return error code=
+.
 > + */
-> +static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
+> +static int do_fail_paste(void)
 > +{
-> +	struct vm_area_struct *vma =3D vmf->vma;
-> +	struct file *fp =3D vma->vm_file;
-> +	struct coproc_instance *cp_inst =3D fp->private_data;
-> +	struct vas_window *txwin;
-> +	u64 paste_addr;
-> +	int ret;
+> +	struct pt_regs *regs =3D current->thread.regs;
+> +	u32 instword;
+> +
+> +	if (WARN_ON_ONCE(!regs))
+> +		return -EINVAL;
+> +
+> +	if (WARN_ON_ONCE(!user_mode(regs)))
+> +		return -EINVAL;
 > +
 > +	/*
-> +	 * window is not opened. Shouldn't expect this error.
+> +	 * If we couldn't translate the instruction, the driver should
+> +	 * return success without handling the fault, it will be retried
+> +	 * or the instruction fetch will fault.
 > +	 */
-> +	if (!cp_inst || !cp_inst->txwin) {
-> +		pr_err("%s(): Unexpected fault on paste address with TX window closed\=
-n",
-> +				__func__);
-> +		return VM_FAULT_SIGBUS;
-> +	}
+> +	if (get_user(instword, (u32 __user *)(regs->nip)))
+> +		return -EAGAIN;
 > +
-> +	txwin =3D cp_inst->txwin;
 > +	/*
-> +	 * When the LPAR lost credits due to core removal or during
-> +	 * migration, invalidate the existing mapping for the current
-> +	 * paste addresses and set windows in-active (zap_page_range in
-> +	 * reconfig_close_windows()).
-> +	 * New mapping will be done later after migration or new credits
-> +	 * available. So continue to receive faults if the user space
-> +	 * issue NX request.
+> +	 * Not a paste instruction, driver may fail the fault.
 > +	 */
-> +	if (txwin->task_ref.vma !=3D vmf->vma) {
-> +		pr_err("%s(): No previous mapping with paste address\n",
-> +			__func__);
-> +		return VM_FAULT_SIGBUS;
-> +	}
+> +	if ((instword & PPC_INST_PASTE_MASK) !=3D PPC_INST_PASTE)
+> +		return -ENOENT;
 > +
-> +	mutex_lock(&txwin->task_ref.mmap_mutex);
-> +	/*
-> +	 * The window may be inactive due to lost credit (Ex: core
-> +	 * removal with DLPAR). If the window is active again when
-> +	 * the credit is available, map the new paste address at the
-> +	 * the window virtual address.
-> +	 */
-> +	if (txwin->status =3D=3D VAS_WIN_ACTIVE) {
-> +		paste_addr =3D cp_inst->coproc->vops->paste_addr(txwin);
-> +		if (paste_addr) {
-> +			ret =3D vmf_insert_pfn(vma, vma->vm_start,
-> +					(paste_addr >> PAGE_SHIFT));
-> +			mutex_unlock(&txwin->task_ref.mmap_mutex);
-> +			return ret;
-> +		}
-> +	}
-> +	mutex_unlock(&txwin->task_ref.mmap_mutex);
+> +	regs->ccr &=3D ~0xe0000000;	/* Clear CR0[0-2] to fail paste */
+> +	regs_add_return_ip(regs, 4);	/* Emulate the paste */
 > +
-> +	return VM_FAULT_SIGBUS;
-> +
+> +	return 0;
 > +}
-> +static const struct vm_operations_struct vas_vm_ops =3D {
-> +	.fault =3D vas_mmap_fault,
-> +};
 > +
->  static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
->  {
->  	struct coproc_instance *cp_inst =3D fp->private_data;
-> @@ -398,6 +463,9 @@ static int coproc_mmap(struct file *fp, struct vm_are=
-a_struct *vma)
->  	pr_devel("%s(): paste addr %llx at %lx, rc %d\n", __func__,
->  			paste_addr, vma->vm_start, rc);
+>  /*
+>   * This fault handler is invoked when the core generates page fault on
+>   * the paste address. Happens if the kernel closes window in hypervisor
+> @@ -408,9 +443,27 @@ static vm_fault_t vas_mmap_fault(struct vm_fault *vm=
+f)
+>  	}
+>  	mutex_unlock(&txwin->task_ref.mmap_mutex);
 > =20
-> +	txwin->task_ref.vma =3D vma;
-> +	vma->vm_ops =3D &vas_vm_ops;
-> +
->  	return rc;
+> -	return VM_FAULT_SIGBUS;
+> +	/*
+> +	 * Received this fault due to closing the actual window.
+> +	 * It can happen during migration or lost credits.
+> +	 * Since no mapping, return the paste instruction failure
+> +	 * to the user space.
+> +	 */
+> +	ret =3D do_fail_paste();
+> +	/*
+> +	 * The user space can retry several times until success (needed
+> +	 * for migration) or should fallback to SW compression or
+> +	 * manage with the existing open windows if available.
+> +	 * Looking at sysfs interface, it can determine whether these
+> +	 * failures are coming during migration or core removal:
+> +	 * nr_used_credits > nr_total_credits when lost credits
+> +	 */
+> +	if (!ret || (ret =3D=3D -EAGAIN))
+> +		return VM_FAULT_NOPAGE;
+> =20
+> +	return VM_FAULT_SIGBUS;
 >  }
-> =20
+> +
+>  static const struct vm_operations_struct vas_vm_ops =3D {
+>  	.fault =3D vas_mmap_fault,
+>  };
 > --=20
 > 2.27.0
 >=20
