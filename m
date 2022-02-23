@@ -1,133 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF204C19C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 18:18:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 136EF4C1B6D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 20:08:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K3jS66MrZz3bbn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 04:18:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K3ltw2sK2z3cNW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 06:08:40 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel-com.20210112.gappssmtp.com header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=oOBuralf;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::625;
- helo=fra01-mr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on0625.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e19::625])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::636;
+ helo=mail-pl1-x636.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20210112.gappssmtp.com
+ header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256
+ header.s=20210112 header.b=oOBuralf; dkim-atps=neutral
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com
+ [IPv6:2607:f8b0:4864:20::636])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K3jRZ3wDlz30NP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 04:18:17 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XrJgHH3Uh+MSSkZ8yeZGzYQb/vsErqeQRsWxcU5Zvxo3YTzNT8F/5J6HhdDr3PYrefEAlBnOX7tpypouthn3418kbXK8ExlEsc5bpp465nfxDOSzyBcZV6PVAxuvqKRXpqBDuYdwNssqcuI443H9i954hXZe8SqZBBJd8gsZsKsqzEQHD8cG+noPfOpu2BSY7cBbXnrxETe6GrBFtlMMG/6AGB3iMOKQmvsHAIeM5FtoEz0USxD7fPreyLf/lmbiJ8/U06PPM9CBqO2vtLNKoD2bIfcoYLfZfU7yQHeRJ4R16F3y/ff+awq5fgEmtaDkqEnq8kqSodkZUrpQ+KWghw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7rM8/F+BQo+clkAER7HP5WhpPpTLC6MnQsyHO1gN1Uw=;
- b=Bp1df9b1i3isPDZFHBNtI9GD+DDqDcWV3UpBOUPKa564z3tn7pnFuNk9NpCAlcmClIJCVso2s1KEIXNh8ITYHwkDMjPXQnM9R+3D4FuVTIuMpQtUHthgC11nI6S8YvlUOqxam75Bx6ldNibWtbjgS/twxQllAPTIZdmtup5pdD3MDaGgFtSLX3h3aegqA4T3YChDD4vfymXiWqMJ9bA/riRAO+y8FwcK/cEaShGs/soyppXUnJgbQhcDtykNo3vEcYp2oneFTdMyVr3nU8PP9hvleFUIn/nqGo9YL1mbWlstjOwc2tGuMGO00kZWGcAX+4Kojmt94c1F7CzbBcdbNg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB2230.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:193::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.16; Wed, 23 Feb
- 2022 17:17:56 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::8142:2e6f:219b:646d]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::8142:2e6f:219b:646d%5]) with mapi id 15.20.5017.021; Wed, 23 Feb 2022
- 17:17:56 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
- <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Andrew Morton
- <akpm@linux-foundation.org>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>, Arnd
- Bergmann <arnd@arndb.de>, Kees Cook <keescook@chromium.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [RFC PATCH] lkdtm: Replace lkdtm_rodata_do_nothing() by
- do_nothing()
-Thread-Topic: [RFC PATCH] lkdtm: Replace lkdtm_rodata_do_nothing() by
- do_nothing()
-Thread-Index: AQHXw3s+6c9UQ+pWBkyusfSb2ZFtUKyiK6CA
-Date: Wed, 23 Feb 2022 17:17:56 +0000
-Message-ID: <26d37781-9824-3306-240d-6ce6044c2412@csgroup.eu>
-References: <fe36bf23fb14e7eff92a95a1092ed38edb01d5f5.1634491011.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <fe36bf23fb14e7eff92a95a1092ed38edb01d5f5.1634491011.git.christophe.leroy@csgroup.eu>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 4d0cd990-3656-4380-e131-08d9f6f06f13
-x-ms-traffictypediagnostic: PR1P264MB2230:EE_
-x-microsoft-antispam-prvs: <PR1P264MB223073409853F2E4E04238E2ED3C9@PR1P264MB2230.FRAP264.PROD.OUTLOOK.COM>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: zpuionsf4cVRMaC0kFomF3C0lLRJI+IwaZnOv1wcl+tIgBb9HUM3dxKppEjsXe6QO9rkSIZ6JPlSu76NHrLKDLiW1uWewj7rxQBWs+UoRLDBvW7oOZIbi7waWNixFwfzXppAv/FuHz3w7Imvtqqu9XDMaDWexUKWiQoee7SHOhwClIkqoQ6gJxQjVT7k85XIvrO1Ww/UH3hNsSsPrkpWZFIKmO/3WM7whYkvklSOAFR3aXKrFl1PUo/EuuNtLnaD6ybapxRmEYNr05my5RkAo7P0QhyU3ZluG0mOtehxTjwBIT0/jYV5/hOcyVINsUOSqlmt1stIeirJBhpWqc6GJYfne5mw/P3y1bcJ/Qp0fP4X9YlGtHviUmNoD/DSykuvuKS1ewKytWuOIrxhatLYEI1Lr5yzbIhy9sZJX+ZnRQwdwDsmfcfkCaOnza0eRKAIGdmmUmYmUG+ZH33/1nRJG4aUEudOCvREUK9xZ71zi7OG8R+hT3OKc0ysVqvT0CEpbZ4wJuRpV/kEdO7XR2dXw0ax5/3QwgQKBAsQ0PczTew2YV7hYxtHFj7o9Uwh+Fuo0A/xZnMjqyi04PqFBB32YMd6fmWhaKyrF/9G4xEv+mXfDcMhr6mdP4Cn66QY5q+zuo8G9WLRexqjTbAH0yP43M7Ie3yZVOuLFYfA2xyF+055tH/ONuglRHepj0u7gkq4O/7cGxFUo7idotRCCWnsOYDwbEo88Nq6JfVigkuCvqEOl3+Dj4PK+W4GkJlZFKlbJV6IZjDp6FL9562jGsEFNw==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(66476007)(6506007)(36756003)(186003)(4326008)(5660300002)(6512007)(2616005)(8676002)(66446008)(26005)(31696002)(31686004)(2906002)(86362001)(122000001)(66556008)(508600001)(6486002)(38100700002)(64756008)(71200400001)(8936002)(44832011)(66946007)(91956017)(83380400001)(38070700005)(66574015)(316002)(110136005)(76116006)(54906003)(7416002)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?T3BlMmFocFhsZWUxcjJwZjNEaWxRSXh2Q1drTXFOY01tbTVjSXBPY1RKdlZZ?=
- =?utf-8?B?WmwvUnFsYWlxWUM3WEo1RDVvWmJjanplWHBMVHlqcVVyeHRLSEVaRjQ4K3d2?=
- =?utf-8?B?R3hjTVpiRmRscE9VaG1tTkt6WWlDUUxFN21QVStwdHNzQU9haUdEUnJ3MTAv?=
- =?utf-8?B?R3hKQkFTYnRveVkwZGo0RWZPdjJYSDFkT1pJUHJIUitBRXdkV0xnalZLU1o0?=
- =?utf-8?B?KzRsV0VGcXo5ZjVJRkhlTzc5MndFZnExK1pyU0dXNDNLSU9PNWpKNGNjRm4y?=
- =?utf-8?B?NWFNN2RGdmcwNHJRNk9sTjdCZW9LcUhpWEk4OUVxTVkvaDI0TXljekFSWS9E?=
- =?utf-8?B?NUovbWtRQTNyQzBKd3lSVC93ZWhKRTdSMHNQUkJFSG44Mm9HalJUay8yckda?=
- =?utf-8?B?c0tCc1lQemFxZUh1TE42OEc0bXVTbFU5dVNzY1cxakpEOG5JTzhPS3ljWTBs?=
- =?utf-8?B?ZXpYMWc3WFlJTmZoU2FyM1F5eFhIYjJYUGN3cUZLT0laU1hRa1VBc2UzQ0xU?=
- =?utf-8?B?aE9BM21mc3hHc0syazRGMWg1bjRmZkU5VlFFOGJmVzRMU1d5NDZ6TjlRc2tU?=
- =?utf-8?B?emt5VFBJQWh3N1JvZURZalZWaTdQcVhZZnBQVUxiZTJRSkdEeWtWaGpudktZ?=
- =?utf-8?B?emZUa2hodHU2RHRQTi9ucXJwSE1UWS8xZEM1cFpZS2RZMFlxd21hSW40U1Fl?=
- =?utf-8?B?UlJKUGF3RUFGSjZKdUZ4Z09mLzh5UmVEQXpYV0JVd1M4Szk5UVlJalY2NGd2?=
- =?utf-8?B?YXpCc0dLU2RWTnBnQ3NvMDJaemo2bGEzY3djR3JJcXRHRWlCOWowQlN6NEtM?=
- =?utf-8?B?aFpQN29SOVExYVRMUmF2eTIyWnU1bkpzSWdkKzVaTXVpZHY0MHpXRndLTUNw?=
- =?utf-8?B?ZEloSEpPSmowenlKcE1yT2N2clRQNVgwMnRvTkNPMnJXeDFLNTVMZ0NSV09z?=
- =?utf-8?B?MWFoVW5RNGh2bTRFL25xZDlnUkpRL3o0ZWI4TnpsQWhUMGxNUWg4Q0JTdkI2?=
- =?utf-8?B?UXc5SFJ5N1I1bXViQmMvUVlFdUNvMDU0cCtqU3VrNnFXSUFVSldGaWlSVGR6?=
- =?utf-8?B?d0dyNFVSS0I2STZUcUgrMlBobVJ4azJNSVhXVyt0TUF4Y1p0a1cvaXg5b01Z?=
- =?utf-8?B?V3BJdFE2a2dwR25uTFJtOE9aVW5iQTQ3cXRrdVpmY3VFMXJzZ005OFF1SVlv?=
- =?utf-8?B?TWtrU0ZhanV1SDFTUnBEWEsxZUk1Z2h3dW93V01vaVRPaTBGK2l4TVBwUVdu?=
- =?utf-8?B?aUdrSktDQlJKcnEvbzFKVHRwOHRsTEtNSFpzZC8wa3JkYkxHVXdOUEJvS29W?=
- =?utf-8?B?Qk85ZU5tT0trbTR3aHdIcDhmOFNncm5pZmdjYXVENGZhZTg0Zk9WVEV2UEgv?=
- =?utf-8?B?VjB3cHBzUXhHdUtNR0FNZEd5NnNmVTBYOUdYK2ZDRm8xOEZMOEpsQ1J6Vytj?=
- =?utf-8?B?dS9ZOUhmUEpMd0p4U3NKQVNlU0RiUGE1VGdDQlh5eU85T01UVUlZRG4vQlJT?=
- =?utf-8?B?SzNMUGFaWFVDcU4xL3h3WElCRFpJRlFLMUxvdWdHT284dDZ6NXR4aTgwa3Qz?=
- =?utf-8?B?VFJ0VVdSNGVZQUo3eEc4VUgzYjhlNkV2aTk0VlNzZGorRHdiR091dHd4Q2pL?=
- =?utf-8?B?K2pWS1RQL1RjS0d6eFFjTjAxSHAxSjlYWHZjTC84WVpSNjRRbW9XMjd4anRn?=
- =?utf-8?B?YW1mMWwrUzhsR1NIL1g1ME1kd1ByMllGVU5YVTFUaXpmV2VvSmJxZzQvMTQ1?=
- =?utf-8?B?SjVpMWNxN3ZZZmhZQmY3YmFwY1VCZFY1TVFMRG5jaEo3dkJWY1V4Q3QxZUdY?=
- =?utf-8?B?Y0RNcWdrc281Uk83VFNIOUsyRjg4TTVmVUIyaFNqWE1DdWJndjBkVlV6TG1q?=
- =?utf-8?B?ODZ0cXZUM29QYlRWL0QvdmZyNlpUTFJXbWcyYUM5YUdTNUNlOUFwUitkU2Vl?=
- =?utf-8?B?Z3JiZ05ZSDFhT1BjV1YrUHpVUWdGOTEzOXVFcDRZZ3Z5ZXpXVDJPVUM5MEFS?=
- =?utf-8?B?a0tScVRPZDdyTUFZQmh1QUpNcDhBVGhGS2V0WG9aQlBrKzduQkx5T0lRR2Fn?=
- =?utf-8?B?dHpHVTNqYy92UnFEcEo4ZW41azhKN2VjOTVJcFZiM3Q2b3dZODBnS1NPbjJJ?=
- =?utf-8?B?M3VEWUl6WVdqUi81dkF0RHYzdHEzMjBVQU0rYjZqZjNrNk9weC80S2hSMTQv?=
- =?utf-8?B?ZWNKSHB0dTkxOWhqL25rUkwvSk1USWJydjBleGRaNmRJWkRYNml5YktoUmls?=
- =?utf-8?Q?Lgqa71kxTrvxxbIpttH/KIIU9CUn681k0IdYJ0umX4=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <15590CE0773E1E419153015EC015227A@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K3ltF5xPnz3bV6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 06:08:04 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id q1so11056521plx.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 11:08:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20210112.gappssmtp.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=s5kpUzxnrVzEuxJL9YdhAPavDhDEx3huwZzW3QhMnqc=;
+ b=oOBuralfQkRqJWEG6w3RE13fM87S4Bdw+VaWFv6W0Tbu+D/QPJMcbmtJv4uAhVSD5q
+ pBuHfW73zvDqJ4Nglp7r8ruPaHFT/vEyOhuapkzxExi1NLkhKjU7uVr5gIopZMBoWWzY
+ g6esTKz5FreNqArsjrHzMTmfLlBifKZdqyAHRqEra5OS35E8dn9j3FXhLL9ZFvlimty9
+ ERaCqlFGR+j8PzpXswl6kgQfEhYY3XtCT4v425MgCKDhoWRCcl+xBnI8ZAU/5Nj1AgSV
+ 6k2ExjHuFWfxWhgt6nJK2ZXjCjTGO1XRNV8t7wGz5+dY52NWGX/TA+63KYTmcepcS7N+
+ TdDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=s5kpUzxnrVzEuxJL9YdhAPavDhDEx3huwZzW3QhMnqc=;
+ b=YfNqOh4xv7fZezZuADxdiJemFyipnhzhHuezyiUlbKLf3D0wzH8dRyigoY6K3EXtA2
+ RCJtSksV1hogSE0OYbs2p32tJ8QzcPGo7D/Jv9874yqGUHTIC9apznDuIsU3uq5jXlO/
+ G0JErzG1Vf27OtZD0Shc+BOEtxgupKGA8+Bx1kvhOZd2A07TwRsac9XI+Q4nThCz1GEj
+ Fut6nFDgYwaV7+0LBfYKvFz8R5KRVmz8eWdeYojMZEy9qzzKQ5fixKldbUrS2MX34Spm
+ gVXOyq3JGcMZqtpAkmpQGGpgQ/2+3ZD2phN14v+/7lowY7P2Gwtd4mhM17XH605pV6aV
+ oxfw==
+X-Gm-Message-State: AOAM530t25kn3UBZppl7sJwNFgvLrYNXiGqgsqbK5pZ9Q4HKNJpLFWiH
+ /paUIsvbNmiY6/nKzB9tnApnLdrY+yrXPRuDgOkJVg==
+X-Google-Smtp-Source: ABdhPJzhtUBaBdesBQ5pwR9+dzHt8CxKBDk+IB3hd3lqfzeO01k3FItoDCHj4NIADGDpXtkD3/zVT/o5qkswbWwGdHI=
+X-Received: by 2002:a17:903:32c1:b0:14f:8ba2:2326 with SMTP id
+ i1-20020a17090332c100b0014f8ba22326mr420585plr.34.1645643282781; Wed, 23 Feb
+ 2022 11:08:02 -0800 (PST)
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d0cd990-3656-4380-e131-08d9f6f06f13
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Feb 2022 17:17:56.4856 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: U9Q6bX266l51r5hK7NuWwwB+HWCU9ejtUrjdwHv8n9yBVC6lasLsaKVvk3Soq+LXnbea9bdyhhF7p6zQ/v6m9Vliq9GDtmu7F+e5lRDm3wI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB2230
+References: <20220217163357.276036-1-kjain@linux.ibm.com>
+ <CAPcyv4jwpMbz0woftSfm3EO05pr3ZG9rVMJCkYVsapKYSOn3xw@mail.gmail.com>
+In-Reply-To: <CAPcyv4jwpMbz0woftSfm3EO05pr3ZG9rVMJCkYVsapKYSOn3xw@mail.gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 23 Feb 2022 11:07:52 -0800
+Message-ID: <CAPcyv4hkLA_KJsKO_avTDZCVL2zGhcRNxVc+2P2uR6-5b2uwVA@mail.gmail.com>
+Subject: Re: [PATCH v6 0/4] Add perf interface to expose nvdimm
+To: Kajol Jain <kjain@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -139,102 +77,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Linux NVDIMM <nvdimm@lists.linux.dev>, Santosh Sivaraj <santosh@fossix.org>,
+ maddy@linux.ibm.com, "Weiny, Ira" <ira.weiny@intel.com>,
+ rnsastry@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ atrajeev@linux.vnet.ibm.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Vishal L Verma <vishal.l.verma@intel.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SGkgS2VlcywNCg0KTGUgMTcvMTAvMjAyMSDDoCAxOToxOSwgQ2hyaXN0b3BoZSBMZXJveSBhIMOp
-Y3JpdMKgOg0KPiBBbGwgRVhFQyB0ZXN0cyBhcmUgYmFzZWQgb24gcnVubmluZyBhIGNvcHkgb2Yg
-ZG9fbm90aGluZygpDQo+IGV4Y2VwdCBsa2R0bV9FWEVDX1JPREFUQSB3aGljaCB1c2VzIGEgZGlm
-ZmVyZW50IGZ1bmN0aW9uDQo+IGNhbGxlZCBsa2R0bV9yb2RhdGFfZG9fbm90aGluZygpLg0KPiAN
-Cj4gT24gYXJjaGl0ZWN0dXJlcyB1c2luZyBmdW5jdGlvbiBkZXNjcmlwdG9ycywgRVhFQyB0ZXN0
-cyBhcmUNCj4gcGVyZm9ybWVkIHVzaW5nIGV4ZWN1dGVfbG9jYXRpb24oKSB3aGljaCBpcyBhIGZ1
-bmN0aW9uDQo+IHRoYXQgbW9zdCBvZiB0aGUgdGltZSBjb3BpZXMgZG9fbm90aGluZygpIGF0IHRo
-ZSB0ZXN0ZWQNCj4gbG9jYXRpb24gdGhlbiBkdXBsaWNhdGVzIGRvX25vdGhpbmcoKSBmdW5jdGlv
-biBkZXNjcmlwdG9yDQo+IGFuZCB1cGRhdGVzIGl0IHdpdGggdGhlIGFkZHJlc3Mgb2YgdGhlIGNv
-cHkgb2YgZG9fbm90aGluZygpLg0KPiANCj4gQnV0IGZvciBFWEVDX1JPREFUQSB0ZXN0LCBleGVj
-dXRlX2xvY2F0aW9uKCkgdXNlcw0KPiBsa2R0bV9yb2RhdGFfZG9fbm90aGluZygpIHdoaWNoIGlz
-IGFscmVhZHkgaW4gcm9kYXRhIHNlY3Rpb24NCj4gYXQgYnVpbGQgdGltZSBpbnN0ZWFkIG9mIHVz
-aW5nIGEgY29weSBvZiBkb19ub3RoaW5nKCkuIEhvd2V2ZXINCj4gaXQgc3RpbGwgdXNlcyB0aGUg
-ZnVuY3Rpb24gZGVzY3JpcHRvciBvZiBkb19ub3RoaW5nKCkuIFRoZXJlDQo+IGlzIGEgcmlzayB0
-aGF0IHJ1bm5pbmcgbGtkdG1fcm9kYXRhX2RvX25vdGhpbmcoKSB3aXRoIHRoZQ0KPiBmdW5jdGlv
-biBkZXNjcmlwdG9yIG9mIGRvX3RoaW5nKCkgaXMgd3JvbmcuDQo+IA0KPiBUbyByZW1vdmUgdGhl
-IGFib3ZlIHJpc2ssIGNoYW5nZSB0aGUgYXBwcm9hY2ggYW5kIGRvIHRoZSBzYW1lDQo+IGFzIGZv
-ciBvdGhlciBFWEVDIHRlc3RzOiB1c2UgYSBjb3B5IG9mIGRvX25vdGhpbmcoKS4gVGhlIGNvcHkN
-Cj4gY2Fubm90IGJlIGRvbmUgZHVyaW5nIHRoZSB0ZXN0IGJlY2F1c2UgUk9EQVRBIGFyZWEgaXMg
-d3JpdGUNCj4gcHJvdGVjdGVkLiBEbyB0aGUgY29weSBkdXJpbmcgaW5pdCwgYmVmb3JlIFJPREFU
-QSBiZWNvbWVzDQo+IHdyaXRlIHByb3RlY3RlZC4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IENocmlz
-dG9waGUgTGVyb3kgPGNocmlzdG9waGUubGVyb3lAY3Nncm91cC5ldT4NCg0KQW55IG9waW5pb24g
-b24gdGhpcyBwYXRjaCA/DQoNClRoYW5rcw0KQ2hyaXN0b3BoZQ0KDQo+IC0tLQ0KPiBUaGlzIGFw
-cGxpZXMgb24gdG9wIG9mIHNlcmllcyB2MyAiRml4IExLRFRNIGZvciBQUEM2NC9JQTY0L1BBUklT
-QyINCj4gDQo+ICAgZHJpdmVycy9taXNjL2xrZHRtL01ha2VmaWxlIHwgMTEgLS0tLS0tLS0tLS0N
-Cj4gICBkcml2ZXJzL21pc2MvbGtkdG0vbGtkdG0uaCAgfCAgMyAtLS0NCj4gICBkcml2ZXJzL21p
-c2MvbGtkdG0vcGVybXMuYyAgfCAgOSArKysrKysrLS0NCj4gICBkcml2ZXJzL21pc2MvbGtkdG0v
-cm9kYXRhLmMgfCAxMSAtLS0tLS0tLS0tLQ0KPiAgIDQgZmlsZXMgY2hhbmdlZCwgNyBpbnNlcnRp
-b25zKCspLCAyNyBkZWxldGlvbnMoLSkNCj4gICBkZWxldGUgbW9kZSAxMDA2NDQgZHJpdmVycy9t
-aXNjL2xrZHRtL3JvZGF0YS5jDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9taXNjL2xrZHRt
-L01ha2VmaWxlIGIvZHJpdmVycy9taXNjL2xrZHRtL01ha2VmaWxlDQo+IGluZGV4IGUyOTg0Y2U1
-MWZlNC4uM2Q0NWEyYjMwMDdkIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL21pc2MvbGtkdG0vTWFr
-ZWZpbGUNCj4gKysrIGIvZHJpdmVycy9taXNjL2xrZHRtL01ha2VmaWxlDQo+IEBAIC02LDIxICs2
-LDEwIEBAIGxrZHRtLSQoQ09ORklHX0xLRFRNKQkJKz0gYnVncy5vDQo+ICAgbGtkdG0tJChDT05G
-SUdfTEtEVE0pCQkrPSBoZWFwLm8NCj4gICBsa2R0bS0kKENPTkZJR19MS0RUTSkJCSs9IHBlcm1z
-Lm8NCj4gICBsa2R0bS0kKENPTkZJR19MS0RUTSkJCSs9IHJlZmNvdW50Lm8NCj4gLWxrZHRtLSQo
-Q09ORklHX0xLRFRNKQkJKz0gcm9kYXRhX29iamNvcHkubw0KPiAgIGxrZHRtLSQoQ09ORklHX0xL
-RFRNKQkJKz0gdXNlcmNvcHkubw0KPiAgIGxrZHRtLSQoQ09ORklHX0xLRFRNKQkJKz0gc3RhY2ts
-ZWFrLm8NCj4gICBsa2R0bS0kKENPTkZJR19MS0RUTSkJCSs9IGNmaS5vDQo+ICAgbGtkdG0tJChD
-T05GSUdfTEtEVE0pCQkrPSBmb3J0aWZ5Lm8NCj4gICBsa2R0bS0kKENPTkZJR19QUENfQk9PSzNT
-XzY0KQkrPSBwb3dlcnBjLm8NCj4gICANCj4gLUtBU0FOX1NBTklUSVpFX3JvZGF0YS5vCQk6PSBu
-DQo+ICAgS0FTQU5fU0FOSVRJWkVfc3RhY2tsZWFrLm8JOj0gbg0KPiAtS0NPVl9JTlNUUlVNRU5U
-X3JvZGF0YS5vCTo9IG4NCj4gLUNGTEFHU19SRU1PVkVfcm9kYXRhLm8JCSs9ICQoQ0NfRkxBR1Nf
-TFRPKQ0KPiAtDQo+IC1PQkpDT1BZRkxBR1MgOj0NCj4gLU9CSkNPUFlGTEFHU19yb2RhdGFfb2Jq
-Y29weS5vCTo9IFwNCj4gLQkJCS0tcmVuYW1lLXNlY3Rpb24gLm5vaW5zdHIudGV4dD0ucm9kYXRh
-LGFsbG9jLHJlYWRvbmx5LGxvYWQsY29udGVudHMNCj4gLXRhcmdldHMgKz0gcm9kYXRhLm8gcm9k
-YXRhX29iamNvcHkubw0KPiAtJChvYmopL3JvZGF0YV9vYmpjb3B5Lm86ICQob2JqKS9yb2RhdGEu
-byBGT1JDRQ0KPiAtCSQoY2FsbCBpZl9jaGFuZ2VkLG9iamNvcHkpDQo+IGRpZmYgLS1naXQgYS9k
-cml2ZXJzL21pc2MvbGtkdG0vbGtkdG0uaCBiL2RyaXZlcnMvbWlzYy9sa2R0bS9sa2R0bS5oDQo+
-IGluZGV4IDE4OGJkMGZkNjU3NS4uOTA1NTU1ZDRjMmNmIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJz
-L21pc2MvbGtkdG0vbGtkdG0uaA0KPiArKysgYi9kcml2ZXJzL21pc2MvbGtkdG0vbGtkdG0uaA0K
-PiBAQCAtMTM3LDkgKzEzNyw2IEBAIHZvaWQgbGtkdG1fUkVGQ09VTlRfU1VCX0FORF9URVNUX1NB
-VFVSQVRFRCh2b2lkKTsNCj4gICB2b2lkIGxrZHRtX1JFRkNPVU5UX1RJTUlORyh2b2lkKTsNCj4g
-ICB2b2lkIGxrZHRtX0FUT01JQ19USU1JTkcodm9pZCk7DQo+ICAgDQo+IC0vKiByb2RhdGEuYyAq
-Lw0KPiAtdm9pZCBsa2R0bV9yb2RhdGFfZG9fbm90aGluZyh2b2lkKTsNCj4gLQ0KPiAgIC8qIHVz
-ZXJjb3B5LmMgKi8NCj4gICB2b2lkIF9faW5pdCBsa2R0bV91c2VyY29weV9pbml0KHZvaWQpOw0K
-PiAgIHZvaWQgX19leGl0IGxrZHRtX3VzZXJjb3B5X2V4aXQodm9pZCk7DQo+IGRpZmYgLS1naXQg
-YS9kcml2ZXJzL21pc2MvbGtkdG0vcGVybXMuYyBiL2RyaXZlcnMvbWlzYy9sa2R0bS9wZXJtcy5j
-DQo+IGluZGV4IDJjNmFiYTNmZjMyYi4uOWI5NTFjYTQ4MzYzIDEwMDY0NA0KPiAtLS0gYS9kcml2
-ZXJzL21pc2MvbGtkdG0vcGVybXMuYw0KPiArKysgYi9kcml2ZXJzL21pc2MvbGtkdG0vcGVybXMu
-Yw0KPiBAQCAtMjcsNiArMjcsNyBAQCBzdGF0aWMgY29uc3QgdW5zaWduZWQgbG9uZyByb2RhdGEg
-PSAweEFBNTVBQTU1Ow0KPiAgIA0KPiAgIC8qIFRoaXMgaXMgbWFya2VkIF9fcm9fYWZ0ZXJfaW5p
-dCwgc28gaXQgc2hvdWxkIHVsdGltYXRlbHkgYmUgLnJvZGF0YS4gKi8NCj4gICBzdGF0aWMgdW5z
-aWduZWQgbG9uZyByb19hZnRlcl9pbml0IF9fcm9fYWZ0ZXJfaW5pdCA9IDB4NTVBQTU1MDA7DQo+
-ICtzdGF0aWMgdTggcm9kYXRhX2FyZWFbRVhFQ19TSVpFXSBfX3JvX2FmdGVyX2luaXQ7DQo+ICAg
-DQo+ICAgLyoNCj4gICAgKiBUaGlzIGp1c3QgcmV0dXJucyB0byB0aGUgY2FsbGVyLiBJdCBpcyBk
-ZXNpZ25lZCB0byBiZSBjb3BpZWQgaW50bw0KPiBAQCAtMTkzLDggKzE5NCw3IEBAIHZvaWQgbGtk
-dG1fRVhFQ19WTUFMTE9DKHZvaWQpDQo+ICAgDQo+ICAgdm9pZCBsa2R0bV9FWEVDX1JPREFUQSh2
-b2lkKQ0KPiAgIHsNCj4gLQlleGVjdXRlX2xvY2F0aW9uKGRlcmVmZXJlbmNlX2Z1bmN0aW9uX2Rl
-c2NyaXB0b3IobGtkdG1fcm9kYXRhX2RvX25vdGhpbmcpLA0KPiAtCQkJIENPREVfQVNfSVMpOw0K
-PiArCWV4ZWN1dGVfbG9jYXRpb24ocm9kYXRhX2FyZWEsIENPREVfQVNfSVMpOw0KPiAgIH0NCj4g
-ICANCj4gICB2b2lkIGxrZHRtX0VYRUNfVVNFUlNQQUNFKHZvaWQpDQo+IEBAIC0yNjksNCArMjY5
-LDkgQEAgdm9pZCBfX2luaXQgbGtkdG1fcGVybXNfaW5pdCh2b2lkKQ0KPiAgIHsNCj4gICAJLyog
-TWFrZSBzdXJlIHdlIGNhbiB3cml0ZSB0byBfX3JvX2FmdGVyX2luaXQgdmFsdWVzIGR1cmluZyBf
-X2luaXQgKi8NCj4gICAJcm9fYWZ0ZXJfaW5pdCB8PSAweEFBOw0KPiArDQo+ICsJbWVtY3B5KHJv
-ZGF0YV9hcmVhLCBkZXJlZmVyZW5jZV9mdW5jdGlvbl9kZXNjcmlwdG9yKGRvX25vdGhpbmcpLA0K
-PiArCSAgICAgICBFWEVDX1NJWkUpOw0KPiArCWZsdXNoX2ljYWNoZV9yYW5nZSgodW5zaWduZWQg
-bG9uZylyb2RhdGFfYXJlYSwNCj4gKwkJCSAgICh1bnNpZ25lZCBsb25nKXJvZGF0YV9hcmVhICsg
-RVhFQ19TSVpFKTsNCj4gICB9DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL21pc2MvbGtkdG0vcm9k
-YXRhLmMgYi9kcml2ZXJzL21pc2MvbGtkdG0vcm9kYXRhLmMNCj4gZGVsZXRlZCBmaWxlIG1vZGUg
-MTAwNjQ0DQo+IGluZGV4IGJhYWNiODc2ZDFkOS4uMDAwMDAwMDAwMDAwDQo+IC0tLSBhL2RyaXZl
-cnMvbWlzYy9sa2R0bS9yb2RhdGEuYw0KPiArKysgL2Rldi9udWxsDQo+IEBAIC0xLDExICswLDAg
-QEANCj4gLS8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wDQo+IC0vKg0KPiAtICog
-VGhpcyBpbmNsdWRlcyBmdW5jdGlvbnMgdGhhdCBhcmUgbWVhbnQgdG8gbGl2ZSBlbnRpcmVseSBp
-biAucm9kYXRhDQo+IC0gKiAodmlhIG9iamNvcHkgdHJpY2tzKSwgdG8gdmFsaWRhdGUgdGhlIG5v
-bi1leGVjdXRhYmlsaXR5IG9mIC5yb2RhdGEuDQo+IC0gKi8NCj4gLSNpbmNsdWRlICJsa2R0bS5o
-Ig0KPiAtDQo+IC12b2lkIG5vaW5zdHIgbGtkdG1fcm9kYXRhX2RvX25vdGhpbmcodm9pZCkNCj4g
-LXsNCj4gLQkvKiBEb2VzIG5vdGhpbmcuIFdlIGp1c3Qgd2FudCBhbiBhcmNoaXRlY3R1cmUgYWdu
-b3N0aWMgInJldHVybiIuICovDQo+IC19
+On Fri, Feb 18, 2022 at 10:06 AM Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> On Thu, Feb 17, 2022 at 8:34 AM Kajol Jain <kjain@linux.ibm.com> wrote:
+> >
+> > Patchset adds performance stats reporting support for nvdimm.
+> > Added interface includes support for pmu register/unregister
+> > functions. A structure is added called nvdimm_pmu to be used for
+> > adding arch/platform specific data such as cpumask, nvdimm device
+> > pointer and pmu event functions like event_init/add/read/del.
+> > User could use the standard perf tool to access perf events
+> > exposed via pmu.
+> >
+> > Interface also defines supported event list, config fields for the
+> > event attributes and their corresponding bit values which are exported
+> > via sysfs. Patch 3 exposes IBM pseries platform nmem* device
+> > performance stats using this interface.
+> >
+> > Result from power9 pseries lpar with 2 nvdimm device:
+> >
+> > Ex: List all event by perf list
+> >
+> > command:# perf list nmem
+> >
+> >   nmem0/cache_rh_cnt/                                [Kernel PMU event]
+> >   nmem0/cache_wh_cnt/                                [Kernel PMU event]
+> >   nmem0/cri_res_util/                                [Kernel PMU event]
+> >   nmem0/ctl_res_cnt/                                 [Kernel PMU event]
+> >   nmem0/ctl_res_tm/                                  [Kernel PMU event]
+> >   nmem0/fast_w_cnt/                                  [Kernel PMU event]
+> >   nmem0/host_l_cnt/                                  [Kernel PMU event]
+> >   nmem0/host_l_dur/                                  [Kernel PMU event]
+> >   nmem0/host_s_cnt/                                  [Kernel PMU event]
+> >   nmem0/host_s_dur/                                  [Kernel PMU event]
+> >   nmem0/med_r_cnt/                                   [Kernel PMU event]
+> >   nmem0/med_r_dur/                                   [Kernel PMU event]
+> >   nmem0/med_w_cnt/                                   [Kernel PMU event]
+> >   nmem0/med_w_dur/                                   [Kernel PMU event]
+> >   nmem0/mem_life/                                    [Kernel PMU event]
+> >   nmem0/poweron_secs/                                [Kernel PMU event]
+> >   ...
+> >   nmem1/mem_life/                                    [Kernel PMU event]
+> >   nmem1/poweron_secs/                                [Kernel PMU event]
+> >
+> > Patch1:
+> >         Introduces the nvdimm_pmu structure
+> > Patch2:
+> >         Adds common interface to add arch/platform specific data
+> >         includes nvdimm device pointer, pmu data along with
+> >         pmu event functions. It also defines supported event list
+> >         and adds attribute groups for format, events and cpumask.
+> >         It also adds code for cpu hotplug support.
+> > Patch3:
+> >         Add code in arch/powerpc/platform/pseries/papr_scm.c to expose
+> >         nmem* pmu. It fills in the nvdimm_pmu structure with pmu name,
+> >         capabilities, cpumask and event functions and then registers
+> >         the pmu by adding callbacks to register_nvdimm_pmu.
+> > Patch4:
+> >         Sysfs documentation patch
+> >
+> > Changelog
+> > ---
+> > Resend v5 -> v6
+> > - No logic change, just a rebase to latest upstream and
+> >   tested the patchset.
+> >
+> > - Link to the patchset Resend v5: https://lkml.org/lkml/2021/11/15/3979
+> >
+> > v5 -> Resend v5
+> > - Resend the patchset
+> >
+> > - Link to the patchset v5: https://lkml.org/lkml/2021/9/28/643
+> >
+> > v4 -> v5:
+> > - Remove multiple variables defined in nvdimm_pmu structure include
+> >   name and pmu functions(event_int/add/del/read) as they are just
+> >   used to copy them again in pmu variable. Now we are directly doing
+> >   this step in arch specific code as suggested by Dan Williams.
+> >
+> > - Remove attribute group field from nvdimm pmu structure and
+> >   defined these attribute groups in common interface which
+> >   includes format, event list along with cpumask as suggested by
+> >   Dan Williams.
+> >   Since we added static defination for attrbute groups needed in
+> >   common interface, removes corresponding code from papr.
+> >
+> > - Add nvdimm pmu event list with event codes in the common interface.
+> >
+> > - Remove Acked-by/Reviewed-by/Tested-by tags as code is refactored
+> >   to handle review comments from Dan.
+>
+> I don't think review comments should invalidate the Acked-by tags in
+> this case. Nothing fundamentally changed in the approach, and I would
+> like to have the perf ack before taking this through the nvdimm tree.
+>
+> Otherwise this looks good to me.
+>
+> Peter, might you have a chance to re-Ack this series, or any concerns
+> about me retrieving those Acks from the previous postings?
+
+Reached Peter offline and he refreshed his Acked-by.
