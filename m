@@ -1,104 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EEE4C0E60
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 09:40:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CC04C0E9C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 09:55:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K3Ty54vjpz3bZL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 19:40:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K3VHH0kCKz3cPT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 19:55:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FXW/z8Ct;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=imGt0TTB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=guoren@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=FXW/z8Ct; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=imGt0TTB; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K3TxR1TXvz3Wtt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 19:39:54 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21N8MSit021994; 
- Wed, 23 Feb 2022 08:39:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=0tD0kglXJ41AE5xjCmYNmeJrBt/xto9E+PyH5CI8WFU=;
- b=FXW/z8CtwPL3mHgarbAnAHv2HNwmIOffvYlUSnQcyZG1agwGInmd1bN8fcVocbsjNgN9
- LYPzD0VNMvACUUQ+r4o+LEk4i1qEXc/v1GNVqZAagmEzzzt9P1m3wRe/4uRY+xydfsrC
- t5HHnmQFQH+dmW++lK9dTLn0YwgRZFYys1OeuM1+fvkK1ZS1UQ36OufJl6Ynw6EIFY/R
- 6I0ksgiBIsXuM6ccsKupJ4EdtkgaPG7J7ffqHZ6HO9q9iAr8vAC9OtDAzdcbXtdATuxa
- RiL5TX3KW4Gxk0TBA+a0EbDwXy6VD60QJqPuYkJw5IiMiT1N96VxciZUGPZnadOSKtlX Mg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3eddpcc94k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Feb 2022 08:39:50 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21N86Qsn014480;
- Wed, 23 Feb 2022 08:39:50 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3eddpcc946-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Feb 2022 08:39:50 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21N8YLt3022308;
- Wed, 23 Feb 2022 08:39:49 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma01dal.us.ibm.com with ESMTP id 3ed22dq4e0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Feb 2022 08:39:49 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21N8djxh42795316
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 23 Feb 2022 08:39:45 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 858F1AC066;
- Wed, 23 Feb 2022 08:39:45 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 73AF0AC065;
- Wed, 23 Feb 2022 08:39:44 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.160.92.72])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 23 Feb 2022 08:39:44 +0000 (GMT)
-Message-ID: <c7df18eb08b34c519501b8702c2103357e15babe.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 9/9] powerpc/pseries/vas: Write 'nr_total_credits'
- for QoS credits change
-From: Haren Myneni <haren@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au, nathanl@linux.ibm.com
-Date: Wed, 23 Feb 2022 00:39:42 -0800
-In-Reply-To: <1645601513.45xu2b6rs6.astroid@bobo.none>
-References: <94434bf320affdde36090c72eeb1372f1d9978ae.camel@linux.ibm.com>
- <790aac27437fdd13b6e1dac36682b123f9050b04.camel@linux.ibm.com>
- <1645601513.45xu2b6rs6.astroid@bobo.none>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K3VGY4Lv6z3bNg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 19:54:45 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id C0353B81EAC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 08:54:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFF8C34100
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 08:54:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1645606479;
+ bh=E/2Z4Vy9mxZGDI8XrK5Vjz10Eu6BNFSrCZQ+fcA0AuU=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=imGt0TTBca8jC8OZdr7AeYQItk1jNw9+HsQXjcRpe7dvnhuuo+D2FGWv5SCqGxF/t
+ 89ZHbUAaf5SwjwTx7Mt4ZqPdNeElhdp8nWkV66UGwLRewTfdEoO8LiSGAM7Ldma7H4
+ IkX6xbe87WEt8tIeJ5OQ30micEoR4LwOZ3+zYhBmkdQ9CAL8Z9ancmRC1vKkxuNvLL
+ 40T/YrsZW/YbGmUVbKtwuLF0XMrwHjgQ7saZ4nyjOp6WyL+W2AkU5ivkNQbkPPQZaN
+ nvneaDydNHlO0ihSQqWE3wc7YdZxW8WaqK64QH2XemEL9z55fnGjfOa1ab1WWrEVD/
+ LG4LyHVisZZfQ==
+Received: by mail-vk1-f179.google.com with SMTP id f12so11815245vkl.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 00:54:39 -0800 (PST)
+X-Gm-Message-State: AOAM532WOWNzhhTOsUKMZ6lmk3g2uamBGUdHZBy4Y2EzyELTvxuXMjST
+ PHL9ZQYrqMe31N1tB8cDRBEviWIX6Hbxq6QlqlU=
+X-Google-Smtp-Source: ABdhPJwWW6G4x9OFAhhFWSWfocQLhP1I117Bx4K85d+PzjcITJADDiakZphcZmjJzU/UZPrPS/vziQCTmEPnC0Gezro=
+X-Received: by 2002:a05:6122:24b:b0:320:a9b7:f709 with SMTP id
+ t11-20020a056122024b00b00320a9b7f709mr12200542vko.2.1645606477843; Wed, 23
+ Feb 2022 00:54:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3td0VJmjLtzcEWlhtksVt02DbdZqsvlz
-X-Proofpoint-GUID: J0xXGQLJ9N492xoko79NDYmCYm7Ij3VD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-23_03,2022-02-21_02,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- impostorscore=0 clxscore=1015 adultscore=0 spamscore=0 lowpriorityscore=0
- phishscore=0 malwarescore=0 priorityscore=1501 mlxscore=0 bulkscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202230045
+References: <20220201150545.1512822-10-guoren@kernel.org>
+ <mhng-c74f1c06-0caa-4a71-82fa-7cf58a1ac0ca@palmer-ri-x1c9>
+In-Reply-To: <mhng-c74f1c06-0caa-4a71-82fa-7cf58a1ac0ca@palmer-ri-x1c9>
+From: Guo Ren <guoren@kernel.org>
+Date: Wed, 23 Feb 2022 16:54:27 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTS8EnPeTRj72UE2KehAqFEZ5PFVAQWgBvWRbLkGsOyXCg@mail.gmail.com>
+Message-ID: <CAJF2gTS8EnPeTRj72UE2KehAqFEZ5PFVAQWgBvWRbLkGsOyXCg@mail.gmail.com>
+Subject: Re: [PATCH V5 09/21] riscv: compat: Add basic compat data type
+ implementation
+To: Palmer Dabbelt <palmer@dabbelt.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,87 +74,201 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg KH <gregkh@linuxfoundation.org>, Drew Fustini <drew@beagleboard.org>,
+ Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2022-02-23 at 17:33 +1000, Nicholas Piggin wrote:
-> Excerpts from Haren Myneni's message of February 20, 2022 6:03 am:
-> > pseries supports two types of credits - Default (uses normal
-> > priority
-> > FIFO) and Qality of service (QoS uses high priority FIFO). The user
-> > decides the number of QoS credits and sets this value with HMC
-> > interface. With the core add/removal, this value can be changed in
-> > HMC
-> > which invokes drmgr to communicate to the kernel.
-> > 
-> > This patch adds an interface so that drmgr command can write the
-> > new
-> > target QoS credits in sysfs. But the kernel gets the new QoS
-> > capabilities from the hypervisor whenever nr_total_credits is
-> > updated
-> > to make sure sync with the values in the hypervisor.
-> > 
-> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+On Wed, Feb 23, 2022 at 9:42 AM Palmer Dabbelt <palmer@dabbelt.com> wrote:
+>
+> On Tue, 01 Feb 2022 07:05:33 PST (-0800), guoren@kernel.org wrote:
+> > From: Guo Ren <guoren@linux.alibaba.com>
+> >
+> > Implement riscv asm/compat.h for struct compat_xxx,
+> > is_compat_task, compat_user_regset, regset convert.
+> >
+> > The rv64 compat.h has inherited most of the structs
+> > from the generic one.
+> >
+> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> > Signed-off-by: Guo Ren <guoren@kernel.org>
+> > Cc: Arnd Bergmann <arnd@arndb.de>
+> > Cc: Palmer Dabbelt <palmer@dabbelt.com>
 > > ---
-> >  arch/powerpc/platforms/pseries/vas-sysfs.c | 33
-> > +++++++++++++++++++++-
-> >  arch/powerpc/platforms/pseries/vas.c       |  2 +-
-> >  arch/powerpc/platforms/pseries/vas.h       |  1 +
-> >  3 files changed, 34 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/platforms/pseries/vas-sysfs.c
-> > b/arch/powerpc/platforms/pseries/vas-sysfs.c
-> > index e24d3edb3021..20745cd75f27 100644
-> > --- a/arch/powerpc/platforms/pseries/vas-sysfs.c
-> > +++ b/arch/powerpc/platforms/pseries/vas-sysfs.c
-> > @@ -25,6 +25,33 @@ struct vas_caps_entry {
-> >  
-> >  #define to_caps_entry(entry) container_of(entry, struct
-> > vas_caps_entry, kobj)
-> >  
+> >  arch/riscv/include/asm/compat.h      | 129 +++++++++++++++++++++++++++
+> >  arch/riscv/include/asm/thread_info.h |   1 +
+> >  2 files changed, 130 insertions(+)
+> >  create mode 100644 arch/riscv/include/asm/compat.h
+> >
+> > diff --git a/arch/riscv/include/asm/compat.h b/arch/riscv/include/asm/compat.h
+> > new file mode 100644
+> > index 000000000000..2ac955b51148
+> > --- /dev/null
+> > +++ b/arch/riscv/include/asm/compat.h
+> > @@ -0,0 +1,129 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +#ifndef __ASM_COMPAT_H
+> > +#define __ASM_COMPAT_H
+> > +
+> > +#define COMPAT_UTS_MACHINE   "riscv\0\0"
+> > +
 > > +/*
-> > + * This function is used to get the notification from the drmgr
-> > when
-> > + * QoS credits are changed. Though receiving the target total QoS
-> > + * credits here, get the official QoS capabilities from the
-> > hypervisor.
+> > + * Architecture specific compatibility types
 > > + */
-> > +static ssize_t nr_total_credits_store(struct vas_cop_feat_caps
-> > *caps,
-> > +				       const char *buf, size_t count)
+> > +#include <linux/types.h>
+> > +#include <linux/sched.h>
+> > +#include <linux/sched/task_stack.h>
+> > +#include <asm-generic/compat.h>
+> > +
+> > +static inline int is_compat_task(void)
 > > +{
-> > +	int err;
-> > +	u16 creds;
+> > +     return test_thread_flag(TIF_32BIT);
+> > +}
 > > +
-> > +	/*
-> > +	 * Nothing to do for default credit type.
-> > +	 */
-> > +	if (caps->win_type == VAS_GZIP_DEF_FEAT_TYPE)
-> > +		return -EOPNOTSUPP;
+> > +struct compat_user_regs_struct {
+> > +     compat_ulong_t pc;
+> > +     compat_ulong_t ra;
+> > +     compat_ulong_t sp;
+> > +     compat_ulong_t gp;
+> > +     compat_ulong_t tp;
+> > +     compat_ulong_t t0;
+> > +     compat_ulong_t t1;
+> > +     compat_ulong_t t2;
+> > +     compat_ulong_t s0;
+> > +     compat_ulong_t s1;
+> > +     compat_ulong_t a0;
+> > +     compat_ulong_t a1;
+> > +     compat_ulong_t a2;
+> > +     compat_ulong_t a3;
+> > +     compat_ulong_t a4;
+> > +     compat_ulong_t a5;
+> > +     compat_ulong_t a6;
+> > +     compat_ulong_t a7;
+> > +     compat_ulong_t s2;
+> > +     compat_ulong_t s3;
+> > +     compat_ulong_t s4;
+> > +     compat_ulong_t s5;
+> > +     compat_ulong_t s6;
+> > +     compat_ulong_t s7;
+> > +     compat_ulong_t s8;
+> > +     compat_ulong_t s9;
+> > +     compat_ulong_t s10;
+> > +     compat_ulong_t s11;
+> > +     compat_ulong_t t3;
+> > +     compat_ulong_t t4;
+> > +     compat_ulong_t t5;
+> > +     compat_ulong_t t6;
+> > +};
 > > +
-> > +	err = kstrtou16(buf, 0, &creds);
-> > +	if (!err)
-> > +		err = vas_reconfig_capabilties(caps->win_type);
-> 
-> So what's happening here? The creds value is ignored? Can it just
-> be a write-only file which is named appropriately to indicate it
-> can be written-to to trigger an update?
+> > +static inline void regs_to_cregs(struct compat_user_regs_struct *cregs,
+> > +                              struct pt_regs *regs)
+> > +{
+> > +     cregs->pc       = (compat_ulong_t) regs->epc;
+> > +     cregs->ra       = (compat_ulong_t) regs->ra;
+> > +     cregs->sp       = (compat_ulong_t) regs->sp;
+> > +     cregs->gp       = (compat_ulong_t) regs->gp;
+> > +     cregs->tp       = (compat_ulong_t) regs->tp;
+> > +     cregs->t0       = (compat_ulong_t) regs->t0;
+> > +     cregs->t1       = (compat_ulong_t) regs->t1;
+> > +     cregs->t2       = (compat_ulong_t) regs->t2;
+> > +     cregs->s0       = (compat_ulong_t) regs->s0;
+> > +     cregs->s1       = (compat_ulong_t) regs->s1;
+> > +     cregs->a0       = (compat_ulong_t) regs->a0;
+> > +     cregs->a1       = (compat_ulong_t) regs->a1;
+> > +     cregs->a2       = (compat_ulong_t) regs->a2;
+> > +     cregs->a3       = (compat_ulong_t) regs->a3;
+> > +     cregs->a4       = (compat_ulong_t) regs->a4;
+> > +     cregs->a5       = (compat_ulong_t) regs->a5;
+> > +     cregs->a6       = (compat_ulong_t) regs->a6;
+> > +     cregs->a7       = (compat_ulong_t) regs->a7;
+> > +     cregs->s2       = (compat_ulong_t) regs->s2;
+> > +     cregs->s3       = (compat_ulong_t) regs->s3;
+> > +     cregs->s4       = (compat_ulong_t) regs->s4;
+> > +     cregs->s5       = (compat_ulong_t) regs->s5;
+> > +     cregs->s6       = (compat_ulong_t) regs->s6;
+> > +     cregs->s7       = (compat_ulong_t) regs->s7;
+> > +     cregs->s8       = (compat_ulong_t) regs->s8;
+> > +     cregs->s9       = (compat_ulong_t) regs->s9;
+> > +     cregs->s10      = (compat_ulong_t) regs->s10;
+> > +     cregs->s11      = (compat_ulong_t) regs->s11;
+> > +     cregs->t3       = (compat_ulong_t) regs->t3;
+> > +     cregs->t4       = (compat_ulong_t) regs->t4;
+> > +     cregs->t5       = (compat_ulong_t) regs->t5;
+> > +     cregs->t6       = (compat_ulong_t) regs->t6;
+> > +};
+> > +
+> > +static inline void cregs_to_regs(struct compat_user_regs_struct *cregs,
+> > +                              struct pt_regs *regs)
+> > +{
+> > +     regs->epc       = (unsigned long) cregs->pc;
+> > +     regs->ra        = (unsigned long) cregs->ra;
+> > +     regs->sp        = (unsigned long) cregs->sp;
+> > +     regs->gp        = (unsigned long) cregs->gp;
+> > +     regs->tp        = (unsigned long) cregs->tp;
+> > +     regs->t0        = (unsigned long) cregs->t0;
+> > +     regs->t1        = (unsigned long) cregs->t1;
+> > +     regs->t2        = (unsigned long) cregs->t2;
+> > +     regs->s0        = (unsigned long) cregs->s0;
+> > +     regs->s1        = (unsigned long) cregs->s1;
+> > +     regs->a0        = (unsigned long) cregs->a0;
+> > +     regs->a1        = (unsigned long) cregs->a1;
+> > +     regs->a2        = (unsigned long) cregs->a2;
+> > +     regs->a3        = (unsigned long) cregs->a3;
+> > +     regs->a4        = (unsigned long) cregs->a4;
+> > +     regs->a5        = (unsigned long) cregs->a5;
+> > +     regs->a6        = (unsigned long) cregs->a6;
+> > +     regs->a7        = (unsigned long) cregs->a7;
+> > +     regs->s2        = (unsigned long) cregs->s2;
+> > +     regs->s3        = (unsigned long) cregs->s3;
+> > +     regs->s4        = (unsigned long) cregs->s4;
+> > +     regs->s5        = (unsigned long) cregs->s5;
+> > +     regs->s6        = (unsigned long) cregs->s6;
+> > +     regs->s7        = (unsigned long) cregs->s7;
+> > +     regs->s8        = (unsigned long) cregs->s8;
+> > +     regs->s9        = (unsigned long) cregs->s9;
+> > +     regs->s10       = (unsigned long) cregs->s10;
+> > +     regs->s11       = (unsigned long) cregs->s11;
+> > +     regs->t3        = (unsigned long) cregs->t3;
+> > +     regs->t4        = (unsigned long) cregs->t4;
+> > +     regs->t5        = (unsigned long) cregs->t5;
+> > +     regs->t6        = (unsigned long) cregs->t6;
+> > +};
+> > +
+> > +#endif /* __ASM_COMPAT_H */
+> > diff --git a/arch/riscv/include/asm/thread_info.h b/arch/riscv/include/asm/thread_info.h
+> > index 60da0dcacf14..9392e35c689d 100644
+> > --- a/arch/riscv/include/asm/thread_info.h
+> > +++ b/arch/riscv/include/asm/thread_info.h
+> > @@ -91,6 +91,7 @@ struct thread_info {
+> >  #define TIF_SECCOMP          8       /* syscall secure computing */
+> >  #define TIF_NOTIFY_SIGNAL    9       /* signal notifications exist */
+> >  #define TIF_UPROBE           10      /* uprobe breakpoint or singlestep */
+> > +#define TIF_32BIT            11      /* 32bit process */
+>
+> Presumably that's just meant for 32-bit processes on rv64?  Probably
+> best to have the comment say that explicitly.
+/* compat-mode 32bit process */
 
-Yes, new credits value is ignored. When the user changes QoS credits
-with the HMC interface, it should reflect in QoS capability in the
-hypervisor. So ignoring the credit value here and get the capability
-value from the hypervisor.
+>
+> >  #define _TIF_SYSCALL_TRACE   (1 << TIF_SYSCALL_TRACE)
+> >  #define _TIF_NOTIFY_RESUME   (1 << TIF_NOTIFY_RESUME)
 
-This file should be read/write - the user space should be able to read
-the current configured value for both credit types - default and QoS
 
-Can I say nr_total_credits_update?
 
-Thanks
-Haren
+-- 
+Best Regards
+ Guo Ren
 
-> 
-> Thanks,
-> Nick
-
+ML: https://lore.kernel.org/linux-csky/
