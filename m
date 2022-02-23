@@ -2,76 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455AD4C0FD4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 11:05:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B376E4C10E1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 12:00:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K3Wrc3rjrz3bcv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 21:05:52 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=U5CR9B8f;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K3Y3T01L6z3cSH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 22:00:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
- helo=mail-pj1-x102f.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=U5CR9B8f; dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
- [IPv6:2607:f8b0:4864:20::102f])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.133; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K3Wr00jwcz2xXX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 21:05:19 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id om7so2137867pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 02:05:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=Ob8dpkMGWxh+j1xSkwsfyIqfP0rbzYHrzqb1bsuDuOY=;
- b=U5CR9B8fVzyNGCUIVUf22V5TsrnF/7n5uUWf2gxsGiuA8PYnpc+MRCHTat72DE9Fy5
- cyREI1WysLdiEzZo4T556P48sy1Aubddfrh9Xb2KscgogjKaHTBHtsfM4q0b353q0W54
- LYw5IMTq0/hbDRCKQ72ScXrhMmSfO/f4HovNYCSZ9HV6NXBpOcjeCbu4rLL+m3YPjJ5m
- YYh7VNaO41Xxw14JdAoHaFAYfe6UiBVaQCeGG2y44VsiDEkQaoBskjj2EfMMWGjv7bLy
- MWVenC7+O+ehURTQQ2ZOQXN3D9vk+Yn3qyUq46DyzdwMinKxjwdmvvkf45sYeHY1pzah
- Hi9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=Ob8dpkMGWxh+j1xSkwsfyIqfP0rbzYHrzqb1bsuDuOY=;
- b=d4ia3X1WF6FwnrFAsA/og8lDAzuod5KSQPOmTJvAiN6+tcm82fpBbxjRg4D85a3NpW
- 6ysyp2dHnZkqw8RY3LWLj6fni94k63TBXugpiL++4zJslbBLJLOvc8uj1pL2ay4ylcYU
- 4FRtcHRpL+jKelmsHNmZSO75alCBsR+VS8No/xVNtp3Z7FOJ5MJ4IHmC7XcVmT/HSkwj
- mBVAF83vod8Jy1yE7x6BLcpkzpHoYoTvR/OluBtI7z+1wLgG4lXHMkl95VnK+MIESflA
- meON9rGKfTP/8gDX82sgKe7FJDn+2FE8lod3pk7bx2iFVYPvLb2cvf+vfarWrrZhtsVg
- mxfg==
-X-Gm-Message-State: AOAM532L8DTttjAqFTC4tJAlpTDZQW6QFJXxqca5AlPbT72Bf0jfswAQ
- M7lnbz6O9Y9swcHJra+LiyE=
-X-Google-Smtp-Source: ABdhPJzYDpzZ8Di4zJ1ZPJlz6WE1/Zx4KFqSZ9+G6T+2MSlk/omK2cFFYNiLBL9pjDo8CuiALQM9NA==
-X-Received: by 2002:a17:90a:4fa1:b0:1bb:8ad8:581c with SMTP id
- q30-20020a17090a4fa100b001bb8ad8581cmr8520883pjh.105.1645610718550; 
- Wed, 23 Feb 2022 02:05:18 -0800 (PST)
-Received: from localhost (60-240-120-95.tpgi.com.au. [60.240.120.95])
- by smtp.gmail.com with ESMTPSA id l20sm21950217pfc.53.2022.02.23.02.05.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Feb 2022 02:05:18 -0800 (PST)
-Date: Wed, 23 Feb 2022 20:05:12 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 4/4] powerpc/pseries/vas: Disable window open during
- migration
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au, nathanl@linux.ibm.com
-References: <4a23d5ec655fd00da97b0b0b46174a3a3894bfb0.camel@linux.ibm.com>
- <e89d39b0860eab0b528e454aff5fc465066025a4.camel@linux.ibm.com>
-In-Reply-To: <e89d39b0860eab0b528e454aff5fc465066025a4.camel@linux.ibm.com>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K3Y332dKjz30RD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 21:59:57 +1100 (AEDT)
+Received: from mail-wr1-f46.google.com ([209.85.221.46]) by
+ mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1N8oOk-1oGbDb067i-015uEs for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb
+ 2022 11:59:53 +0100
+Received: by mail-wr1-f46.google.com with SMTP id d17so4058383wrc.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 02:59:52 -0800 (PST)
+X-Gm-Message-State: AOAM531FSlsKA/NA0EAcKjmha1M9HZM86IfL9AhrXSdyuM6WKRtqaCiQ
+ lfXsWuhUJqDkeme4zebWaf0gAePIwq6LC7E8QC4=
+X-Google-Smtp-Source: ABdhPJz3tjc3IejYq+UPcpb0b0B/1/NsttPG6/6KnMrBytsQxjHYO0/p2daBPMgz1AgVYfLNcxR3Ydw+Oyz4L5S8GiA=
+X-Received: by 2002:adf:90c1:0:b0:1e4:ad27:22b9 with SMTP id
+ i59-20020adf90c1000000b001e4ad2722b9mr23150986wri.219.1645613992251; Wed, 23
+ Feb 2022 02:59:52 -0800 (PST)
 MIME-Version: 1.0
-Message-Id: <1645610684.3sbe7da1hv.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20220201150545.1512822-1-guoren@kernel.org>
+ <mhng-36783ff3-37c2-454b-9337-8cb124195255@palmer-ri-x1c9>
+In-Reply-To: <mhng-36783ff3-37c2-454b-9337-8cb124195255@palmer-ri-x1c9>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 23 Feb 2022 11:59:36 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a1W3Ns1WYiSGXb3Qn6-p+SPsx1UGqXdTkk2taPB72OZUA@mail.gmail.com>
+Message-ID: <CAK8P3a1W3Ns1WYiSGXb3Qn6-p+SPsx1UGqXdTkk2taPB72OZUA@mail.gmail.com>
+Subject: Re: [PATCH V5 00/21] riscv: compat: Add COMPAT mode support for rv64
+To: Palmer Dabbelt <palmer@dabbelt.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:+XSzde2/zhmz0Y9d0jzFGW4Fp2liSFJCCUir0D1P6McXmp5ek+i
+ PwG76jTiAnApTH9nQq2AB4v8fp6g56h5qsR+yFKl1IBGFJWYRMhH0YsAHWxMeM4qV0TRMhu
+ bF2aZNfMDX1ehH8SsxQNXTfNj4QlcjM1vnyeR4MMkdGU9HWyCGqdaW0UCUY/HXGGaqiWXnD
+ aiHYaDERFuYV2wd95WYWw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lskyLvOKVmU=:RJvJ7r/U/0LRNSuYLxXQcb
+ VwgkcJFSdn9m/zy09q1MJy3YVgEE0kW1Up2QLUkzXkUU2mpEwd+rbrj2fFfh8jXHyvQwq4o/L
+ p+mhfOfxmdkeMDYgTVkkgbwLEvZCrklLcm1jUB4EyoHumNIxdGl8kYHOat0thIIjGwarTFTjT
+ jg/bK709mpclogcWNhicpqUAyehsRHazF4jSllb4tPGVaXUAxlRCVTrWwojZ4mHc3UQgTwzaM
+ 5rftlNsrSebmCAkHkp9gMYVCSocU4pRvZniXioaOUGgaPf8zKDLPRgoyFsi9S0OqAy6qCGGko
+ lmOcwXJ5fyonhhBxHCpFQAkDWDTdCvXMMPsg/h8Ffv4sqV0pUc2WGs0mJFyrlLrLXnqKBaoXx
+ SPafIvmVxGG9sjWp+hY60KPvtqx4suyQWwmPN2rNektOZoyviPdyTzn7/Ch6NRpVXX214BZol
+ A7Z2zivmt4dgUzwtwWgTu6956JIv6Svx5DjhQKV6VEHiXbSYHCDkJUW8e6Qx4OYuw3ygNaL9A
+ K91gORjym9H8+QLMOrwaeR8y6tr8TxaYptZfycPrs97473upKDS7b31cv0+H7f2W7bY7l5+Zj
+ YcEMOSxITBYIR0PCvgHxmDEnm/nWw4sNS5W9RjWQDPqT++4tpzeQu/NgRenI4nkT2ljlbH+3/
+ voLz1ddIgRqClBTyPAe2+J8q0VUmwx3xD3K3ao9DC4pmeznJTRLIqKipabu+9Vipztu0=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,72 +69,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg KH <gregkh@linuxfoundation.org>, Drew Fustini <drew@beagleboard.org>,
+ Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Guo Ren <guoren@kernel.org>, liush <liush@allwinnertech.com>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Haren Myneni's message of February 20, 2022 6:08 am:
->=20
-> The current partition migration implementation does not freeze the
-> user space and the user space can continue open VAS windows. So
-> when migration_in_progress flag is enabled, VAS open window
-> API returns -EBUSY.
+On Wed, Feb 23, 2022 at 2:43 AM Palmer Dabbelt <palmer@dabbelt.com> wrote:
+>
+> On Tue, 01 Feb 2022 07:05:24 PST (-0800), guoren@kernel.org wrote:
+> > From: Guo Ren <guoren@linux.alibaba.com>
+> >
+> > Currently, most 64-bit architectures (x86, parisc, powerpc, arm64,
+> > s390, mips, sparc) have supported COMPAT mode. But they all have
+> > history issues and can't use standard linux unistd.h. RISC-V would
+> > be first standard __SYSCALL_COMPAT user of include/uapi/asm-generic
+> > /unistd.h.
+>
+> TBH, I'd always sort of hoped we wouldn't have to do this: it's a lot of
+> ABI surface to keep around for a use case I'm not really sure is ever
+> going to get any traction (it's not like we have legacy 32-bit
+> userspaces floating around, the 32-bit userspace is newer than the
+> 64-bit userspace).
 
-Seems like it could be merged with the previous patch. Unless
-you're trying to specifically call out the -EBUSY chane to the
-API?
+The low-end embedded market isn't usually that newsworthy, but the
+machines ship in huge quantities, and they all run 32-bit user
+space for good reasons:
 
-Thanks,
-Nick
+The cheapest Linux systems at the moment use a low-end MIPS or
+Arm core with a single DDR2 (32MB to 128MB) or DDR3 (128MB
+to 512MB) memory chip that for now is a bit cheaper than a larger
+LP-DDR4 (256MB+). The smaller configurations will go away over
+time as they get outpriced by systems with LP-DDR4, but a 32-bit
+system with 256MB will keep beating a 64-bit-only system with
+512MB on price, and will run most workloads better than a 64-bit
+system with the same amount of RAM.
 
->=20
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/vas.c | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platform=
-s/pseries/vas.c
-> index df22827969db..4be80112b05e 100644
-> --- a/arch/powerpc/platforms/pseries/vas.c
-> +++ b/arch/powerpc/platforms/pseries/vas.c
-> @@ -30,6 +30,7 @@ static struct hv_vas_cop_feat_caps hv_cop_caps;
-> =20
->  static struct vas_caps vascaps[VAS_MAX_FEAT_TYPE];
->  static DEFINE_MUTEX(vas_pseries_mutex);
-> +static bool migration_in_progress;
-> =20
->  static long hcall_return_busy_check(long rc)
->  {
-> @@ -356,8 +357,11 @@ static struct vas_window *vas_allocate_window(int va=
-s_id, u64 flags,
->  	 * same fault IRQ is not freed by the OS before.
->  	 */
->  	mutex_lock(&vas_pseries_mutex);
-> -	rc =3D allocate_setup_window(txwin, (u64 *)&domain[0],
-> -				   cop_feat_caps->win_type);
-> +	if (migration_in_progress)
-> +		rc =3D -EBUSY;
-> +	else
-> +		rc =3D allocate_setup_window(txwin, (u64 *)&domain[0],
-> +					   cop_feat_caps->win_type);
->  	mutex_unlock(&vas_pseries_mutex);
->  	if (rc)
->  		goto out;
-> @@ -890,6 +894,11 @@ int vas_migration_handler(int action)
-> =20
->  	mutex_lock(&vas_pseries_mutex);
-> =20
-> +	if (action =3D=3D VAS_SUSPEND)
-> +		migration_in_progress =3D true;
-> +	else
-> +		migration_in_progress =3D false;
-> +
->  	for (i =3D 0; i < VAS_MAX_FEAT_TYPE; i++) {
->  		vcaps =3D &vascaps[i];
->  		caps =3D &vcaps->caps;
-> --=20
-> 2.27.0
->=20
->=20
->=20
+On the Arm side, I hope that these systems will migrate to Armv8
+based designs (Cortex-A53/A35 or newer) running 64-bit kernel
+with 32-bit user space to replace the currently dominant but aging
+32-bit Cortex-A7 cores. As you say, RISC-V is at a disadvantage
+here because there is no existing 32-bit ecosystem, but it may take
+a chunk of that market anyway based on licensing cost. Between
+doing this using pure 32-bit cores or on mixed 32/64-bit cores,
+I found Guo Ren's explanation very sensible, it lets you use the
+same chip both as a low-end embedded version with SiP
+memory, or using an external DDR3/LPDDR4 chip with enough
+capacity to run a generic 64-bit distro.
+
+> My assumption is that users who actually wanted the
+> memory savings (likely a very small number) would be better served with
+> rv64/ilp32, as that'll allow the larger registers that the hardware
+> supports.  From some earlier discussions it looks like rv64/ilp32 isn't
+> going to be allowed, though, so this seems like the only way to go.
+
+Right, between rv32 user space and a hypothetical rv64-ilp32 target,
+I think it's clear that the former is better because it means introducing
+only one fringe ABI rather than two incompatible ones with minor
+performance differences.
+
+        Arnd
