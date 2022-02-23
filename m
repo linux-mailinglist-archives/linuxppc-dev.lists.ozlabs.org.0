@@ -1,71 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623E04C1C50
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 20:34:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3C74C1CE9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 21:12:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K3mT65M4Xz3cPd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 06:34:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K3nJM4Lvqz3cPd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 07:12:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=NGFREi7R;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=F/2f/aEU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::432;
- helo=mail-pf1-x432.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::52c;
+ helo=mail-ed1-x52c.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=NGFREi7R; dkim-atps=neutral
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com
- [IPv6:2607:f8b0:4864:20::432])
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=F/2f/aEU; 
+ dkim-atps=neutral
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com
+ [IPv6:2a00:1450:4864:20::52c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K3mSQ309Kz3bVx
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 06:34:12 +1100 (AEDT)
-Received: by mail-pf1-x432.google.com with SMTP id l19so16344307pfu.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 11:34:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=Xx/nJWtKVQ2r/ghOXNBRnDRbIE8tV+oqAzOXtwE9kSk=;
- b=NGFREi7RSyhoYdxZH62APfuJu96ZfTSnPYczoNDq3FSnlXjP36rJtsApFddUhDQaxn
- JS2RlR7sDyWXhntPdpagf9gOdxsybBiqrqogzOWijA3Dmev4Mgr/Jtx4HYBTgKBoodfB
- S6dl220f0XV8muWKQAz+uRlRpFqN8095CatAc=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K3nHf5Kccz3bbL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 07:11:40 +1100 (AEDT)
+Received: by mail-ed1-x52c.google.com with SMTP id w3so46008059edu.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 12:11:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=+S6BFzj6o5ckty5iXSThNrfkPsdFE94/fVb8NP4+aFs=;
+ b=F/2f/aEUKxSuzDdCknAbug+t8clrlE0v7gj9NkhphhHftuFg6XGIjvpJXVx+ZHKhn9
+ jOIdz4l7lK+/F1JhXkxR/PARyehOhzu1/S93ijWQKe7fGKOKTiRs9R81aIq3OYNVOgnf
+ G4UcKLBEtMgH8cssPIzV42vV3R64/Z0YRVhdY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=Xx/nJWtKVQ2r/ghOXNBRnDRbIE8tV+oqAzOXtwE9kSk=;
- b=2Uv97qDZfSoqivpcpdgryoq66y1ypkBZ8ckSLV450rmN6Bgs+lx2fbWPsu+v5dGKNA
- iOAGL79rNAE2xA3Sz+8NI4KPjdfsKyQNLXo+kN8kNuZU9XZiihC6ZWr8UEmzgS45BFPp
- E7Oa0I9qzcYwmN7CrgP2kKvZf+u+nRyJcBUlOF+vxtx6l9xD9DZx17aPdJarksBGMIZb
- aXLyjZmEMTtkFOHP3IKf/+LmkoTkrTjHQMtRhJ5nqVvyO+H93N1W7mLln/JTFMHVAVcz
- 6HROXtZBRbJ2mSEgQyIIjKpEtzmHHXamT72FN/4uZLXt6/zQSJYjuA+47sDTgoKcuJnt
- VBLw==
-X-Gm-Message-State: AOAM531AJnq4NdTX0e7JhQKVW790Wz6TP3SGpkG8lcabbRZjWgcy33x+
- 95p+VtasiQ2q1zkzt8CAQ066sg==
-X-Google-Smtp-Source: ABdhPJxX/URmFtB+GXqYaAMCGSemAGI+Rp5Jz/r2/uASmwJg/jbwKZ3HQtTIl5ed4mWRIOcd7rbayw==
-X-Received: by 2002:a63:d306:0:b0:34e:4330:efea with SMTP id
- b6-20020a63d306000000b0034e4330efeamr901399pgg.174.1645644849526; 
- Wed, 23 Feb 2022 11:34:09 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id j12sm297782pfu.79.2022.02.23.11.34.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Feb 2022 11:34:09 -0800 (PST)
-Date: Wed, 23 Feb 2022 11:34:08 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/32: Clear volatile regs on syscall exit
-Message-ID: <202202231131.08B7EC1@keescook>
-References: <28b040bd2357a1879df0ca1b74094323f778a472.1645636285.git.christophe.leroy@csgroup.eu>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=+S6BFzj6o5ckty5iXSThNrfkPsdFE94/fVb8NP4+aFs=;
+ b=rdFIeAQZBUYFVcGN2PjH7mONQfGUOkBLsO8oT1YdshdMmdYgNzcX4Zd2CMGZUBvNJO
+ pc7z2Nb2Z2DTC7FXinn8Jf0AJHeAkKK6Vu9LaceNyIEsltCJkKqckR5LX1oEe53DnN9W
+ yooInAAnXgwmaUcWqGfWwVXsL3B7MUCZ5YnKhG2e1C8plBV9ZD7asIhBD6bBekooE3i0
+ u+hZ458sfZjC6zX5iZNuxEJJjsADdO/Fn+BiDPj00W78o2JOREzHxKf2Ww6/a2voCXEU
+ 2qyD9a6v3PPGn+mLSGtrR5JTuTWfzbo5R/TawBT5Aaoi8HATFm5Kx7Y30C3VsKnePst0
+ cFdg==
+X-Gm-Message-State: AOAM530s3+6oVwGboUBgX8nj42dC52I5zIff7Q+BgUABb+zQ3AavS28/
+ hddQB9o67yM/W/PA+amO9ItAoT7s7WTPwbjwQoE=
+X-Google-Smtp-Source: ABdhPJxgq+Q0TxZE31bc8mQzpk23XQwoBpmlJsA1z7plrV7J+kvOwF8KmrRI3Zp1LKGbrwrwyoE3XQ==
+X-Received: by 2002:a50:ef0b:0:b0:413:2c17:d967 with SMTP id
+ m11-20020a50ef0b000000b004132c17d967mr1025013eds.307.1645647093547; 
+ Wed, 23 Feb 2022 12:11:33 -0800 (PST)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com.
+ [209.85.221.54])
+ by smtp.gmail.com with ESMTPSA id ay16sm263553ejb.61.2022.02.23.12.11.33
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 23 Feb 2022 12:11:33 -0800 (PST)
+Received: by mail-wr1-f54.google.com with SMTP id j17so14755360wrc.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 12:11:33 -0800 (PST)
+X-Received: by 2002:a05:6512:130b:b0:443:c2eb:399d with SMTP id
+ x11-20020a056512130b00b00443c2eb399dmr822016lfu.27.1645646720244; Wed, 23 Feb
+ 2022 12:05:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <28b040bd2357a1879df0ca1b74094323f778a472.1645636285.git.christophe.leroy@csgroup.eu>
+References: <20220216131332.1489939-1-arnd@kernel.org>
+ <20220216131332.1489939-10-arnd@kernel.org>
+ <20220221132456.GA7139@alpha.franken.de>
+In-Reply-To: <20220221132456.GA7139@alpha.franken.de>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 23 Feb 2022 12:05:04 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wjdHz6OU3M9T5zE9Fc9SNdDs52iOE+eVn-wuUT6UDpBLg@mail.gmail.com>
+Message-ID: <CAHk-=wjdHz6OU3M9T5zE9Fc9SNdDs52iOE+eVn-wuUT6UDpBLg@mail.gmail.com>
+Subject: Re: [PATCH v2 09/18] mips: use simpler access_ok()
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,82 +87,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
+ linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Guo Ren <guoren@kernel.org>,
+ linux-sparc <sparclinux@vger.kernel.org>,
+ linux-hexagon <linux-hexagon@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
+ Christoph Hellwig <hch@lst.de>, linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Brian Cain <bcain@codeaurora.org>,
+ Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>,
+ alpha <linux-alpha@vger.kernel.org>, linux-um <linux-um@lists.infradead.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Openrisc <openrisc@lists.librecores.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Stafford Horne <shorne@gmail.com>, Arnd Bergmann <arnd@kernel.org>,
+ Michal Simek <monstr@monstr.eu>, linux-parisc <linux-parisc@vger.kernel.org>,
+ Nick Hu <nickhu@andestech.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ Linux API <linux-api@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Dinh Nguyen <dinguyen@kernel.org>, "Eric W. Biederman" <ebiederm@xmission.com>,
+ Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ David Miller <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 23, 2022 at 06:11:36PM +0100, Christophe Leroy wrote:
-> Commit a82adfd5c7cb ("hardening: Introduce CONFIG_ZERO_CALL_USED_REGS")
-> added zeroing of used registers at function exit.
-> 
-> At the time being, PPC64 clears volatile registers on syscall exit but
-> PPC32 doesn't do it for performance reason.
-> 
-> Add that clearing in PPC32 syscall exit as well, but only when
-> CONFIG_ZERO_CALL_USED_REGS is selected.
-> 
-> On an 8xx, the null_syscall selftest gives:
-> - Without CONFIG_ZERO_CALL_USED_REGS		: 288 cycles
-> - With CONFIG_ZERO_CALL_USED_REGS		: 305 cycles
-> - With CONFIG_ZERO_CALL_USED_REGS + this patch	: 319 cycles
-> 
-> Note that (independent of this patch), with pmac32_defconfig,
-> vmlinux size is as follows with/without CONFIG_ZERO_CALL_USED_REGS:
-> 
->    text	   	data	    bss	    dec	    hex		filename
-> 9578869		2525210	 194400	12298479	bba8ef	vmlinux.without
-> 10318045	2525210  194400	13037655	c6f057	vmlinux.with
-> 
-> That is a 7.7% increase on text size, 6.0% on overall size.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/kernel/entry_32.S | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-> index 7748c278d13c..199f23092c02 100644
-> --- a/arch/powerpc/kernel/entry_32.S
-> +++ b/arch/powerpc/kernel/entry_32.S
-> @@ -151,6 +151,21 @@ syscall_exit_finish:
->  	bne	3f
->  	mtcr	r5
->  
-> +#ifdef CONFIG_ZERO_CALL_USED_REGS
-> +	/* Zero volatile regs that may contain sensitive kernel data */
-> +	li	r0,0
-> +	li	r4,0
-> +	li	r5,0
-> +	li	r6,0
-> +	li	r7,0
-> +	li	r8,0
-> +	li	r9,0
-> +	li	r10,0
-> +	li	r11,0
-> +	li	r12,0
-> +	mtctr	r0
-> +	mtxer	r0
-> +#endif
+On Mon, Feb 21, 2022 at 5:25 AM Thomas Bogendoerfer
+<tsbogend@alpha.franken.de> wrote:
+>
+> With this patch
+[ .. snip snip ..]
+> I at least get my simple test cases fixed, but I'm not sure this is
+> correct.
 
-I think this should probably be unconditional -- if this is actually
-leaking kernel pointers (or data) that's pretty bad. :|
+I think you really want to do that anyway, just to get things like
+wild kernel pointers right (ie think get_kernel_nofault() and friends
+for ftrace etc).
 
-If you really want to leave it build-time selectable, maybe add a new
-config that gets "select"ed by CONFIG_ZERO_CALL_USED_REGS?
+They shouldn't happen in any normal situation, but those kinds of
+unverified pointers is why we _have_ get_kernel_nofault() in the first
+place.
 
-(And you may want to consider wiping all "unused" registers at syscall
-entry as well.)
+On x86-64, the roughly equivalent situation is that addresses that
+aren't in canonical format do not take a #PF (page fault), they take a
+#GP (general protection) fault.
 
--Kees
+So I think you want to do that fixup_exception() for any possible addresses.
 
->  1:	lwz	r2,GPR2(r1)
->  	lwz	r1,GPR1(r1)
->  	rfi
-> -- 
-> 2.34.1
-> 
+> Is there a reason to not also #define TASK_SIZE_MAX   __UA_LIMIT like
+> for the 32bit case ?
 
--- 
-Kees Cook
+I would suggest against using a non-constant TASK_SIZE_MAX. Being
+constant is literally one reason why it exists, when TASK_SIZE itself
+has often been about other things (ie "32-bit process").
+
+Having to load variables for things like get_user() is annoying, if
+you could do it with a simple constant instead (where that "simple"
+part is to avoid having to load big values from a constant pool -
+often constants like "high bit set" can be loaded and compared against
+more efficiently).
+
+               Linus
