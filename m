@@ -1,128 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6534C1135
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 12:24:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30BC4C1137
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 12:25:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K3YbZ1bfwz3cWm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 22:24:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K3YcK29P2z3bV1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 22:25:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com header.b=AuIKpYr0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mursHhk4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=2a01:111:f400:febc::722;
- helo=apc01-hk2-obe.outbound.protection.outlook.com;
- envelope-from=guozhengkui@vivo.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com
- header.b=AuIKpYr0; dkim-atps=neutral
-Received: from APC01-HK2-obe.outbound.protection.outlook.com
- (mail-hk2apc01on0722.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:febc::722])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=borntraeger@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=mursHhk4; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K3SyJ2tbpz2xtb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 18:55:34 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FXZ0RTTZrieUB+SzdOUI7bK7EzWBQI6LLl6JNbX/RXtOr4rz+BW2wKSXzvt7ghfv8du964z/i4bQU+0gwv4f85YlRvALz5FQGgWxGY1PAbgFKAebC4XgNBRRSLt5DkrW62zf7c6g405rzowJek+Kb5xcHGRoG+6tDk7S21uiEfMo7a7UPltCbj8LTbhXKx+5QCfgc3z9JOGaUczbHmqOJt6JLz3hjp+fiPPe6vL1Fujp0UzZVsrsW/5LAAKKGtwKB/2tO8YbLQrv4H5nJD8jAjtWyrP6VwKWXkqcWr7bEVusbpMvBCHCsapIQBjiUCzUtZ8YA5Sud1wPyBnD8rX56A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=koO6CWe2PYIzdbOlW1L7EyNIx7lbaAFzkaGpPat6UW0=;
- b=khYYmEfsU50aZaCZ+S55MXCdIWVC5O9KWZB2ZcNNSRJrDOzPu6hwmHnjXxXCnBVzMAC/SpLhEERBUfbgWfUuOs0fvZ29U8194Ei0R227lty9Cw9wLK4xJT/PF69aayjKXbbtocVZrjlc8SxMp4aQ92ls23FSw5zd/zWx7a8p9lBM4bSim7Sjw8l6It/m4NZkFAHF8kRgzlYNlKCDsNo7ZK1RI6gHk6XQDnEGJPXwHIORt2pMBwnj/vBQSOzYi9ZtBaxNxw7NKgHL99WJMJVT+jYOpkj90pPsh43ABJYYJC0IEPtjK126Q8KdVYkaBaKNdYmofR4cutJqDZ0/WtAXsg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com; 
- s=selector2-vivo0-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=koO6CWe2PYIzdbOlW1L7EyNIx7lbaAFzkaGpPat6UW0=;
- b=AuIKpYr0Rw4y6Su0DyzI9mXfiHyLhz5bCaNi21t+AmcgfiyBAiGw9VZHGStg1QoU4dDPBeDWAFUbYhYn5V4vx2n10qpC1vdJlMlfPxD9gSCfQHcHUtKHC3lu8gh63cAKw3u0nCFAACX/7jYnixGOCocpbI57TGEb7IgpReCIdFA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from HK2PR06MB3492.apcprd06.prod.outlook.com (2603:1096:202:2f::10)
- by SG2PR06MB3872.apcprd06.prod.outlook.com (2603:1096:4:de::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.16; Wed, 23 Feb
- 2022 07:55:12 +0000
-Received: from HK2PR06MB3492.apcprd06.prod.outlook.com
- ([fe80::f097:dde5:9bd0:8beb]) by HK2PR06MB3492.apcprd06.prod.outlook.com
- ([fe80::f097:dde5:9bd0:8beb%5]) with mapi id 15.20.4995.027; Wed, 23 Feb 2022
- 07:55:12 +0000
-From: Guo Zhengkui <guozhengkui@vivo.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Guo Zhengkui <guozhengkui@vivo.com>, Russell Currey <ruscur@russell.cc>,
- Wedson Almeida Filho <wedsonaf@google.com>,
- linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND
- 64-BIT)), linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] powerpc/module_64: fix array_size.cocci warning
-Date: Wed, 23 Feb 2022 15:54:23 +0800
-Message-Id: <20220223075426.20939-1-guozhengkui@vivo.com>
-X-Mailer: git-send-email 2.20.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0102.apcprd01.prod.exchangelabs.com
- (2603:1096:3:15::28) To HK2PR06MB3492.apcprd06.prod.outlook.com
- (2603:1096:202:2f::10)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K3VjP3bD8z2xCp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 20:14:32 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21N8FvAb025084; 
+ Wed, 23 Feb 2022 09:14:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=aoWMY7F1ZTQ4UTKwplNFjBsMTWANHUTvR1bVCpzVsUI=;
+ b=mursHhk4xZyHsE6GQcTdtKwOXN2V9gRZa72dZ3bAIGNMwv+hvRtdWCQpfB77dHmqIukD
+ sdc/55owIffX7154W5ppO55NdO1bqe1Cbf1JqYEi78Qlx23L+asnvQl6IjBeRG4yd8fd
+ fX/f6OEbiUyj6id/AGxBUK88HhEp2dr83Ny6HHxOTZmggh9MDDydtTLerRRrvwbogE1K
+ fiHGxQVRdT15Chd+ry1++2uRbIOoLL9ly/OFtfIlr0yTv4AzcUPOtX/naRxHURLVlq6E
+ o9zHDF9+JnIH6rSa2v+nwcqBfRpVg2/teMtZdTtS5CmM14f7xK/KM9+yZU0MmM2e/QKF JA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3edh8xh0xt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Feb 2022 09:14:26 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21N90P2N017315;
+ Wed, 23 Feb 2022 09:14:26 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3edh8xh0x9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Feb 2022 09:14:26 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21N9D2tw030210;
+ Wed, 23 Feb 2022 09:14:24 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma01fra.de.ibm.com with ESMTP id 3ear6972es-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 23 Feb 2022 09:14:24 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 21N9EMn346662118
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 23 Feb 2022 09:14:22 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E452F52051;
+ Wed, 23 Feb 2022 09:14:21 +0000 (GMT)
+Received: from [9.171.70.253] (unknown [9.171.70.253])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 93EC652063;
+ Wed, 23 Feb 2022 09:14:21 +0000 (GMT)
+Message-ID: <6b123068-c982-1fcd-d09e-1a8f465147e3@linux.ibm.com>
+Date: Wed, 23 Feb 2022 10:14:21 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1ea48a0e-6531-4803-f251-08d9f6a1d109
-X-MS-TrafficTypeDiagnostic: SG2PR06MB3872:EE_
-X-Microsoft-Antispam-PRVS: <SG2PR06MB3872AD9F666BFE2988E6E5BBC73C9@SG2PR06MB3872.apcprd06.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ja4z3NeDmzbgU8Jm9VC/Lai2Tb7JJQmqVdanj5Hn5L/8wH9Ly35lFX6GhOl68UosO7gnna9fMuiBjAKsADPIBn3YMofHk3tZK8PoUHFPmq/UIdtGtvvraOui8y43CUdpwUAanYoFITAYNXWMtQSesrQ1Csg0qvoXjyNQD5+0OY0s99fLbdwCJzP+cO489HFXyBiAlypzuiShxLX3HGThQ4GGBvIp5fFswNM0aqIqZ3jaCEe0iP3ngSc0tqdko1QXP5u9iVzKE1QX3TOTnDg9bXiMy/omjou8RnlcVctvZhzCILtn+5xd8F8bHjwQEM8eZKBIcYHOyabqI4ELxsvHupWvF9dITzCaRWhgAyxce6J0j8HHJMXPMK0x3JqSumWQ5wb1Xlvz+Qjzrfid6YC5rMHyyTbMmZ3WFu/cIL9HguChvd//4QYVdXlaKbxmqA2Ym5xxWTsBqOBRnPRF0NKlpQckcx5+p/mg2qp95j0tIeQhqjcyf4sSLRx0u7YekgGXk1F/TEQ7FCT535KfEZhFsuUeE3lSVULXPSRVG7ZmIe5yMRlOhg2x2g3U1QpE6pQ00qKIPkk1AdguusM0i0h34HXTF6RD93KT4NvMt8R8jqisHEgLZxONh9kqXb+zmZTT/zgPB6XEmhuN3YiT1O7HysvBM9ZWzMzTPcg459kUU5krwcd8ySXEgwt0zSChF72XFNWrK8JF/YKooEgY6F1JnA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:HK2PR06MB3492.apcprd06.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(8936002)(508600001)(1076003)(83380400001)(186003)(2616005)(38350700002)(26005)(2906002)(36756003)(107886003)(38100700002)(110136005)(6486002)(86362001)(4326008)(52116002)(5660300002)(66556008)(66476007)(6506007)(66946007)(316002)(6512007)(6666004)(8676002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Ks6Cz0+CfU9P12y6lxLHTIvX7o0hlOnslTZsN3iYXcGaO+VwhvkHClUVZ0Zs?=
- =?us-ascii?Q?Pc58gAaIyCvaThAsOEVtHWkt8jZQKC+buInEdf8dFH7wELtRKVZtJWEUR3SJ?=
- =?us-ascii?Q?Qd4JI51EbFzvOTj0KTAzgO0CHhFal1HK3f74V0zuhf8/ZJ4SzmDPnQuybFjJ?=
- =?us-ascii?Q?9pwTHZn2NLjHgZi4p6f8E/4oScCJ02PvH8cRQ0RUSlq/PpMDZeLD64ztSt21?=
- =?us-ascii?Q?z3hf23Z2YHyHATnt1c4Ny7IMDn838eEyGM78daM2dumH2QXI2GJB20CfRg6J?=
- =?us-ascii?Q?GvEECBqxeuyWn6iFGLHwqgVvjKt+phfto0Q98TXg+ruBy3O5eUOdu8EUhYDP?=
- =?us-ascii?Q?SXMMc/lwM+OC7j91o443iDJmP2/ahwYsPerA0GVixkAYYsFWPSbtcfDb7bxH?=
- =?us-ascii?Q?Q+IV8513gQ1I9L8Q90SUI8tEa1QXJOHigv17PKKnCsIeWxS97f4FPonkkKij?=
- =?us-ascii?Q?QLyz4ykuMp0bjBRqqJ9z2HjKrzA2Tbj8dnUqgmnVL2U7OeBnd27Hh1lZA8jW?=
- =?us-ascii?Q?+zIA+jbWfuOmjC9D3a40m0gPAR57yau3U2Sl/UeRWhv5QOV5Jbzt3O6ZGQ2Y?=
- =?us-ascii?Q?+Qmai7yLJ40KUfWIiO/uRfFYJbEAOtOKVMx12SF5lpNxKow2b5wMQCXMP/Jp?=
- =?us-ascii?Q?yKhYb3UW3fsC9CF/bVV9TEZxNUmDEZHrTjw5ngHp1KhZPuAVAcT9Hu5otIMD?=
- =?us-ascii?Q?rlviSOK5GsitIOJJN96LdlRFJbiSok+BLZe09O41bwTy1f2KyCjkeKK6T3iR?=
- =?us-ascii?Q?FDdZJ6ZSywl7Fpuhz+oNyj/wHn9COqILNv7LEcKDZQe7QWi131awpno9ONPP?=
- =?us-ascii?Q?0nKBzVzYxzh6RtZiOO31fMgVDQXRs8q2ZSG52rrM+qRK7UVgXMRhAmT+oWBY?=
- =?us-ascii?Q?6FwkPRJ9My+MxM/e3l9dLD9gaQJeu4L2HhgVuSNk0J7sxImczHI3gFy0wHCO?=
- =?us-ascii?Q?DuW445T0iAdDL8hfUWjvn8LmGK+LYoMmcZ/ZgH3Wg0i3+yzeM1PTnQ9uJtWC?=
- =?us-ascii?Q?3ipfHtwLmFsG78N3X2WA8JxR2h5TNu0PIbSnGJpBHK6douWgYZsoVQ1r2uK/?=
- =?us-ascii?Q?P9dRcFAOQ318Dg2m0Akb25/3TBzGlK6C+pJapVKSGnP6rFMrGv0g1QDeJCTE?=
- =?us-ascii?Q?jLOM+6T3RK05gOTv5haMNvmMLBNESt6r7UjuAsBlUpDbP0N+DOwTUFfYJ9Ty?=
- =?us-ascii?Q?0X6OTRsUfQdKQGtXr+2aNUWLLFH1LDIgYAFGXw8pSASC2Zc0U3P6NMtryv9w?=
- =?us-ascii?Q?QwfgEftp/xouTEzb/5EOCkj7n9YDjpVXM4Mr+fR2Ko+WLyxS93hD5h2jX7B5?=
- =?us-ascii?Q?7tePi/sLNcfdGSuqXjdUBkHuLkrmf0HF13ua23kqV+V03v7PgO9xtgix3PlJ?=
- =?us-ascii?Q?6fxF0skdmArNwFUTJm5oIf1Dwl/4FryzXV69fPk1C5VrGM5zIcfkfKzhyDiZ?=
- =?us-ascii?Q?qViYSeP/SyxRP6y+L2eLe0fSXBGA+NVgT598qtqviklhmUdWllBoawCXhN2h?=
- =?us-ascii?Q?7UMSFi7tFBDfrKd5xe9d2BNutS/muGh9cO2lZhI54jPwPqKFmFDtnXojZmb6?=
- =?us-ascii?Q?MiJW9mRqCtOB4+hjhuwIPZR7t20CU4Bs8AnovvVxRv9ueXx7R/9W5dYS1gNV?=
- =?us-ascii?Q?4K44LScSY/UJx+gVbqex+fI=3D?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ea48a0e-6531-4803-f251-08d9f6a1d109
-X-MS-Exchange-CrossTenant-AuthSource: HK2PR06MB3492.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2022 07:55:12.2205 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: H3/KjqVE1elXotnyiZbM0at18klwVVqPOJgU8jHNi6dJZhS4Bs4sLxsqMmYG9YQDsi6i3M1B8bvQPn2RQmpTLQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SG2PR06MB3872
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v4 0/3] KVM: PPC: Book3S PR: Fixes for AIL and SCV
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
+ linuxppc-dev@lists.ozlabs.org
+References: <20220222064727.2314380-1-npiggin@gmail.com>
+ <bf6cf0d0-31bd-5751-4fbe-8193dbd716a9@redhat.com>
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <bf6cf0d0-31bd-5751-4fbe-8193dbd716a9@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Nf98TFWB_TXWzDeHVAcKkVLDXEyKiLxh
+X-Proofpoint-GUID: LK6Epq12RwGYz57TWhe0_fvTfla7u34-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
+ definitions=2022-02-23_03,2022-02-21_02,2021-12-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ spamscore=0 clxscore=1011 suspectscore=0 phishscore=0 mlxlogscore=991
+ adultscore=0 mlxscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202230049
 X-Mailman-Approved-At: Wed, 23 Feb 2022 22:23:29 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -135,44 +109,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@vivo.com
+Cc: kvm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix following coccicheck warning:
-./arch/powerpc/kernel/module_64.c:432:40-41: WARNING: Use ARRAY_SIZE.
 
-ARRAY_SIZE(arr) is a macro provided by the kernel. It makes sure that arr
-is an array, so it's safer than sizeof(arr) / sizeof(arr[0]) and more
-standard.
 
-Signed-off-by: Guo Zhengkui <guozhengkui@vivo.com>
----
- arch/powerpc/kernel/module_64.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Am 22.02.22 um 15:11 schrieb Paolo Bonzini:
+> On 2/22/22 07:47, Nicholas Piggin wrote:
+>> Patch 3 requires a KVM_CAP_PPC number allocated. QEMU maintainers are
+>> happy with it (link in changelog) just waiting on KVM upstreaming. Do
+>> you have objections to the series going to ppc/kvm tree first, or
+>> another option is you could take patch 3 alone first (it's relatively
+>> independent of the other 2) and ppc/kvm gets it from you?
+> 
+> Hi Nick,
+> 
+> I have pushed a topic branch kvm-cap-ppc-210 to kvm.git with just the definition and documentation of the capability.  ppc/kvm can apply your patch based on it (and drop the relevant parts of patch 3).  I'll send it to Linus this week.
 
-diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-index 6a45e6ddbe58..94d14cf99bca 100644
---- a/arch/powerpc/kernel/module_64.c
-+++ b/arch/powerpc/kernel/module_64.c
-@@ -14,6 +14,7 @@
- #include <linux/ftrace.h>
- #include <linux/bug.h>
- #include <linux/uaccess.h>
-+#include <linux/kernel.h>
- #include <asm/module.h>
- #include <asm/firmware.h>
- #include <asm/code-patching.h>
-@@ -429,7 +430,7 @@ static inline int create_stub(const Elf64_Shdr *sechdrs,
- 	if (is_mprofile_ftrace_call(name))
- 		return create_ftrace_stub(entry, addr, me);
- 
--	for (i = 0; i < sizeof(ppc64_stub_insns) / sizeof(u32); i++) {
-+	for (i = 0; i < ARRAY_SIZE(ppc64_stub_insns); i++) {
- 		if (patch_instruction(&entry->jump[i],
- 				      ppc_inst(ppc64_stub_insns[i])))
- 			return 0;
--- 
-2.20.1
+We to have be careful with the 210 cap that was merged from the s390 tree.
 
