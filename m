@@ -1,39 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C37C84C0D7D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 08:42:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D581A4C0D91
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 08:47:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K3Sft0VSJz3cRv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 18:42:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K3SnH1dGpz3bb4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 18:47:47 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=KuGl+SxV;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Missing IP4:
- 193.174.2.0/24) smtp.helo=elvis.franken.de (client-ip=193.175.24.41;
- helo=elvis.franken.de; envelope-from=tsbogend@alpha.franken.de;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+94e795790efaf498204f+6758+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
- by lists.ozlabs.org (Postfix) with ESMTP id 4K3SfS4X3Jz2xXX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 18:41:50 +1100 (AEDT)
-Received: from uucp (helo=alpha)
- by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
- id 1nMmHJ-0002z4-00; Wed, 23 Feb 2022 08:41:37 +0100
-Received: by alpha.franken.de (Postfix, from userid 1000)
- id 9B37FC2742; Wed, 23 Feb 2022 08:41:27 +0100 (CET)
-Date: Wed, 23 Feb 2022 08:41:27 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v2 09/18] mips: use simpler access_ok()
-Message-ID: <20220223074127.GA8287@alpha.franken.de>
-References: <20220216131332.1489939-1-arnd@kernel.org>
- <20220216131332.1489939-10-arnd@kernel.org>
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=KuGl+SxV; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K3SmY5dbpz2xY3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 18:47:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=iy5Ofm6AWn5S0+TPzZqllkgh84EUFfIT9WUD1UClXn4=; b=KuGl+SxVwgaXgh5hLAVT1UAi4x
+ Mdf6Uz6m2y23+0SrvtSnU9O8BhDGXxKAatQH1UV+1HLTZS6EKiTcNTlvQr6XJI6pv0KEXE3xvFiKZ
+ R/Jky7QdCF8UDa+v3Z/QM6f/ERD1b/x8syFTQf7TpLLbwqST8AacGpmpD66qiLMZMpUOKXyZjimX2
+ dqd43SyR3QIvd4Ydjgs3/d/7SKJAn7H0MEg/DJhCNfnBiuUH1CugGaRKAQv+oCwF98QBvMo4HOU/T
+ ucaRKTd4ozFy8kNCn3ThNjnNyyDuUTB+nnvKoGQIx86jvBLxFv0AD8qU8mHYnOj4lkd3DtKX03IFR
+ DEkug9Yw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red
+ Hat Linux)) id 1nMmLj-00DALX-99; Wed, 23 Feb 2022 07:46:11 +0000
+Date: Tue, 22 Feb 2022 23:46:11 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH 00/16] Remove usage of the deprecated "pci-dma-compat.h"
+ API
+Message-ID: <YhXmQwvjMFPQFPUr@infradead.org>
+References: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220216131332.1489939-10-arnd@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,44 +64,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, dalias@libc.org, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, peterz@infradead.org, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, guoren@kernel.org, sparclinux@vger.kernel.org,
- linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
- will@kernel.org, Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, bcain@codeaurora.org, deller@gmx.de,
- x86@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org,
- ardb@kernel.org, mingo@redhat.com, geert@linux-m68k.org,
- linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
- arnd@arndb.de, hca@linux.ibm.com, linux-alpha@vger.kernel.org,
- linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- viro@zeniv.linux.org.uk, shorne@gmail.com, monstr@monstr.eu,
- linux-parisc@vger.kernel.org, nickhu@andestech.com, jcmvbkbc@gmail.com,
- linux-api@vger.kernel.org, linux-kernel@vger.kernel.org, dinguyen@kernel.org,
- ebiederm@xmission.com, richard@nod.at, akpm@linux-foundation.org,
- Linus Torvalds <torvalds@linux-foundation.org>, davem@davemloft.net,
- green.hu@gmail.com
+Cc: airlied@linux.ie, trix@redhat.com, linux-fpga@vger.kernel.org,
+ linux-pci@vger.kernel.org, paulus@samba.org, sparclinux@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, linux-scsi@vger.kernel.org,
+ sathya.prakash@broadcom.com, hch@infradead.org,
+ MPT-FusionLinux.pdl@broadcom.com, hao.wu@intel.com, arnd@arndb.de,
+ suganath-prabu.subramani@broadcom.com, sreekanth.reddy@broadcom.com,
+ ink@jurassic.park.msu.ru, bhelgaas@google.com, mchehab@kernel.org,
+ mattst88@gmail.com, rth@twiddle.net, awalls@md.metrocast.net,
+ linux-kernel@vger.kernel.org, davem@davemloft.net, alex.bou9@gmail.com,
+ vkoul@kernel.org, linux-alpha@vger.kernel.org, dmaengine@vger.kernel.org,
+ mdf@kernel.org, akpm@linux-foundation.org, linux-media@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, yilun.xu@intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 16, 2022 at 02:13:23PM +0100, Arnd Bergmann wrote:
-> diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
-> index db9a8e002b62..d7c89dc3426c 100644
-> --- a/arch/mips/include/asm/uaccess.h
-> +++ b/arch/mips/include/asm/uaccess.h
-> @@ -19,6 +19,7 @@
->  #ifdef CONFIG_32BIT
->  
->  #define __UA_LIMIT 0x80000000UL
-> +#define TASK_SIZE_MAX	__UA_LIMIT
+Hi Christophe,
 
-using KSEG0 instead would IMHO be the better choice. This gives the
-chance to remove __UA_LIMIT completly after cleaning up ptrace.c
+do you know what the state is in current linux-next?
 
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+I think we'll just want to queue up anything left at this point in the
+dma-mapping or PCI tree and get it done.
