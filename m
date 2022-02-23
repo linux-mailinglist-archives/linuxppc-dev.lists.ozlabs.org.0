@@ -1,73 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86964C0F53
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 10:39:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9379D4C0F55
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 10:40:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K3WG707m5z3c7S
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 20:39:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K3WGw6V6sz3cVW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 20:40:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=MxmbMS3h;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=m7s4uOOR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535;
- helo=mail-pg1-x535.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c;
+ helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=MxmbMS3h; dkim-atps=neutral
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
- [IPv6:2607:f8b0:4864:20::535])
+ header.s=20210112 header.b=m7s4uOOR; dkim-atps=neutral
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
+ [IPv6:2607:f8b0:4864:20::42c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K3WFR3dlJz3Wtt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 20:38:49 +1100 (AEDT)
-Received: by mail-pg1-x535.google.com with SMTP id 132so19409932pga.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 01:38:50 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K3WFx0fyKz3cGb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 20:39:16 +1100 (AEDT)
+Received: by mail-pf1-x42c.google.com with SMTP id z15so9034444pfe.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 01:39:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :message-id:content-transfer-encoding;
- bh=QWmVk+uQwhsnCRAImyHq4I8gKf9caQOuFW2XLD9d4Lg=;
- b=MxmbMS3hEJkirCFe9LZFxRKnzKjn1d0Vx93rQwgGu6NSWj5NY1NzSZZYDqXszDo12K
- ft50VcN96dFJlqOtrh+jV6dWlODK4ve5Fog96FHHIOUtysrivdHHNmty/mMDuvZU2rMl
- ZwBaK7niaEtfkYrVXbozack+eC/Zh4AYbk5t3QQEc7xMl+gLJxoJBEV7TKk1iN/LWKLG
- JmpYZcwbinyzF6f03WC9S9opESAgcE4JGii5TSRU+2iaz/2zXple9CfYqYL29zQjq3Oj
- jV0wgYWu91LzPq4IIERKVUUZWateIVzREj9H2QwpqKh2FD+FXZKOzSVDhxJ2TjcFkb2P
- HU9A==
+ bh=ezoZaW8LbVpWwKTVq3DItEIPEejYqAiaztYKDVZjTZg=;
+ b=m7s4uOOR5ivXHOnS/pug7e6Vuvk3xvM3/gpeC/d6yPt+W7gDVB68919icCqLgs+lpt
+ RO82+MgNSZ8+3X6fO8zV86LFbBPY/+I8Le1KJygYKEca48YyjmCv1YKscUtCFPqmDAi3
+ jQMFgmastKMpbRCf7CZ1E+II96/NBKWKey1jaiOnyTJZekbd0SgFU4NAoYaRRqz1nYn7
+ SUSKr2ITweWrRh+Wd0h2lYPFMqin9GTi6RgK3Ghj5Ad3DFkITBGW6zMBuS8MmYJcbqpr
+ 08GfF7NTK021AXZjMzADIj2G+lOwB7QkTrY0D3ob/AC4+3OvtzhWigPg6Fz4n3TKl+we
+ tbxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=QWmVk+uQwhsnCRAImyHq4I8gKf9caQOuFW2XLD9d4Lg=;
- b=6yj3AeC72df/pDJtZhMe+y45+F3ApCpfMEBTDuDzohsCtPyDc8nNCAslK3TXIGPeUi
- iLJsyRmiWMwai2uWEA9gR0/N0tLIMBXwLfJU1mSkOocJaGx6Q/tCV/sMk6WrSkQIQchs
- DQHgbxSsCtWvStmx35XR32/co9NAP5xj1HHqH5t7xmixwf/P9u73x0inOOVy3QsuYwvA
- TkVkvpX0YBLgoXVt7bMrhrhq3jo6dWAG9CdqQbw2pz6ETAcYC4dr8eyc6oxusgg2wP36
- QnPLso48J9nJgBQKkIRSKi0fxlU5Yc/DuNdsDG8XhC4H6qTiJILKGZsLggTczZg75fp6
- Da7Q==
-X-Gm-Message-State: AOAM531pjObwqimNJFhO6aeR3aUWDOR+OyvysyslEQTS8drQ46SArLvB
- x50yGxy/cLVpHJ7V7hUS2W9FWK+eqOU=
-X-Google-Smtp-Source: ABdhPJxKHmFqaPC4jZXmgW5p5dgwR1m/PoLBMjtNZaGP84fG3S3Xq9IdsLYlLDVs2TY1xaqumMOrvQ==
-X-Received: by 2002:a63:4f42:0:b0:373:cc0b:5b67 with SMTP id
- p2-20020a634f42000000b00373cc0b5b67mr20358872pgl.605.1645609127930; 
- Wed, 23 Feb 2022 01:38:47 -0800 (PST)
+ bh=ezoZaW8LbVpWwKTVq3DItEIPEejYqAiaztYKDVZjTZg=;
+ b=eD6aCVTlrYZhNUeOetWaWUKmbj9vTK1BpjTMSZKSe3byTBqza5PsAu92mLHBZVqKfp
+ mh6Fw7WVzbPw8RQJvqiSkq2b1XysFvOxkB8I/50VUiBudre1J2sDZo9oHcsYlKP3/Erv
+ I1lr1jSD0JXZdno7R+2IAQ2xllyBI+tVCqqfzPbU8ffpE0zJJaos7hwz967V7cAhUUZk
+ dYG/WmDIB9orf8RBKuN5e5S4QuwbRnfemtIvVfyrHgC7DPIRM6950oO4D9madCkNkkEh
+ mr8+40I8Prma2JBw9h3SX+ztWCFrDofeyWdKKJB5PiJpF7NaBu90S3OdMHyGPySbF5eP
+ fLOw==
+X-Gm-Message-State: AOAM532Zj4VtLdNUD7q3RoovgwZkIuHfEM/9nSFTCIiG4fzYTbYhwmZZ
+ lBOFi0IXBpIrtdPMII3u+JU=
+X-Google-Smtp-Source: ABdhPJxF/aPTh1hLbV/NpiClQk3ZWFKyyY+NFtYBSx+uBKfkUdcAOKHJrSq63HgorQJj/dJG0b5Z7w==
+X-Received: by 2002:a05:6a00:21c6:b0:49f:dcb7:2bf2 with SMTP id
+ t6-20020a056a0021c600b0049fdcb72bf2mr28758380pfj.19.1645609154588; 
+ Wed, 23 Feb 2022 01:39:14 -0800 (PST)
 Received: from localhost (60-240-120-95.tpgi.com.au. [60.240.120.95])
- by smtp.gmail.com with ESMTPSA id 84sm19123161pfx.181.2022.02.23.01.38.47
+ by smtp.gmail.com with ESMTPSA id w4sm22964506pgs.28.2022.02.23.01.39.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Feb 2022 01:38:47 -0800 (PST)
-Date: Wed, 23 Feb 2022 19:38:42 +1000
+ Wed, 23 Feb 2022 01:39:14 -0800 (PST)
+Date: Wed, 23 Feb 2022 19:39:08 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 0/4] powerpc/pseries/vas: VAS/NXGZIP support with LPM
+Subject: Re: [PATCH v3 1/4] powerpc/pseries/vas: Define global hv_cop_caps
+ struct
 To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
  mpe@ellerman.id.au, nathanl@linux.ibm.com
 References: <4a23d5ec655fd00da97b0b0b46174a3a3894bfb0.camel@linux.ibm.com>
-In-Reply-To: <4a23d5ec655fd00da97b0b0b46174a3a3894bfb0.camel@linux.ibm.com>
+ <d93b6cd28887e8ecf08b550d3483c0b50db64a4d.camel@linux.ibm.com>
+In-Reply-To: <d93b6cd28887e8ecf08b550d3483c0b50db64a4d.camel@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1645608873.sgy6idnhcp.astroid@bobo.none>
+Message-Id: <1645609131.5qjkawfw8a.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,57 +87,142 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Haren Myneni's message of February 20, 2022 6:04 am:
+Excerpts from Haren Myneni's message of February 20, 2022 6:05 am:
 >=20
-> Virtual Accelerator Switchboard (VAS) is an engine stays on the
-> chip. So all windows opened on a specific engine belongs to VAS
-> the chip.
+> The coprocessor capabilities struct is used to get default and
+> QoS capabilities from the hypervisor during init, DLPAR event and
+> migration. So instead of allocating this struct for each event,
+> define global struct and reuse it which allows the migration code
+> to avoid adding an error path.
+>=20
+> Also disable copy/paste feature flag if any capabilities HCALL
+> is failed.
+>=20
 
-The problem is more that PAPR does not virtualise the VAS windows,
-right? That's a whole other gripe but nothing you can do about it
-here.
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-Thanks,
-Nick
-
-> The hypervisor expects the partition to close all
-> active windows on the sources system and reopen them after
-> migration on the destination machine.
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> Acked-by: Nathan Lynch <nathanl@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/vas.c | 47 ++++++++++++----------------
+>  1 file changed, 20 insertions(+), 27 deletions(-)
 >=20
-> This patch series adds VAS support with the partition migration.
-> When the migration initiates, the VAS migration handler will be
-> invoked before pseries_suspend() to close all active windows and
-> mark them in-active with VAS_WIN_MIGRATE_CLOSE status. Whereas
-> this migration handler is called after migration to reopen all
-> windows which has VAS_WIN_MIGRATE_CLOSE status and make them
-> active again. The user space gets paste instruction failure
-> when it sends requests on these in-active windows.
->=20
-> These patches depend on VAS/DLPAR support patch series
->=20
-> Changes in v2:
-> - Added new patch "Define global hv_cop_caps struct" to eliminate
->   memory allocation failure during migration (suggestion by
->   Nathan Lynch)
->=20
-> Changes in v3:
-> - Rebase on 5.17-rc4
-> - Naming changes for VAS capability struct elemets based on the V4 DLPAR
->   support patch series.
->=20
-> Haren Myneni (4):
->   powerpc/pseries/vas: Define global hv_cop_caps struct
->   powerpc/pseries/vas: Modify reconfig open/close functions for
->     migration
->   powerpc/pseries/vas: Add VAS migration handler
->   powerpc/pseries/vas: Disable window open during migration
->=20
->  arch/powerpc/include/asm/vas.h            |   2 +
->  arch/powerpc/platforms/pseries/mobility.c |   5 +
->  arch/powerpc/platforms/pseries/vas.c      | 234 +++++++++++++++++-----
->  arch/powerpc/platforms/pseries/vas.h      |   6 +
->  4 files changed, 201 insertions(+), 46 deletions(-)
->=20
+> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platform=
+s/pseries/vas.c
+> index 591c7597db5a..3bb219f54806 100644
+> --- a/arch/powerpc/platforms/pseries/vas.c
+> +++ b/arch/powerpc/platforms/pseries/vas.c
+> @@ -26,6 +26,7 @@
+> =20
+>  static struct vas_all_caps caps_all;
+>  static bool copypaste_feat;
+> +static struct hv_vas_cop_feat_caps hv_cop_caps;
+> =20
+>  static struct vas_caps vascaps[VAS_MAX_FEAT_TYPE];
+>  static DEFINE_MUTEX(vas_pseries_mutex);
+> @@ -724,7 +725,6 @@ static int reconfig_close_windows(struct vas_caps *vc=
+ap, int excess_creds)
+>   */
+>  int vas_reconfig_capabilties(u8 type)
+>  {
+> -	struct hv_vas_cop_feat_caps *hv_caps;
+>  	struct vas_cop_feat_caps *caps;
+>  	int old_nr_creds, new_nr_creds;
+>  	struct vas_caps *vcaps;
+> @@ -738,17 +738,13 @@ int vas_reconfig_capabilties(u8 type)
+>  	vcaps =3D &vascaps[type];
+>  	caps =3D &vcaps->caps;
+> =20
+> -	hv_caps =3D kmalloc(sizeof(*hv_caps), GFP_KERNEL);
+> -	if (!hv_caps)
+> -		return -ENOMEM;
+> -
+>  	mutex_lock(&vas_pseries_mutex);
+>  	rc =3D h_query_vas_capabilities(H_QUERY_VAS_CAPABILITIES, vcaps->feat,
+> -				      (u64)virt_to_phys(hv_caps));
+> +				      (u64)virt_to_phys(&hv_cop_caps));
+>  	if (rc)
+>  		goto out;
+> =20
+> -	new_nr_creds =3D be16_to_cpu(hv_caps->target_lpar_creds);
+> +	new_nr_creds =3D be16_to_cpu(hv_cop_caps.target_lpar_creds);
+> =20
+>  	old_nr_creds =3D atomic_read(&caps->nr_total_credits);
+> =20
+> @@ -780,7 +776,6 @@ int vas_reconfig_capabilties(u8 type)
+> =20
+>  out:
+>  	mutex_unlock(&vas_pseries_mutex);
+> -	kfree(hv_caps);
+>  	return rc;
+>  }
+>  /*
+> @@ -822,9 +817,8 @@ static struct notifier_block pseries_vas_nb =3D {
+> =20
+>  static int __init pseries_vas_init(void)
+>  {
+> -	struct hv_vas_cop_feat_caps *hv_cop_caps;
+>  	struct hv_vas_all_caps *hv_caps;
+> -	int rc;
+> +	int rc =3D 0;
+> =20
+>  	/*
+>  	 * Linux supports user space COPY/PASTE only with Radix
+> @@ -850,38 +844,37 @@ static int __init pseries_vas_init(void)
+> =20
+>  	sysfs_pseries_vas_init(&caps_all);
+> =20
+> -	hv_cop_caps =3D kmalloc(sizeof(*hv_cop_caps), GFP_KERNEL);
+> -	if (!hv_cop_caps) {
+> -		rc =3D -ENOMEM;
+> -		goto out;
+> -	}
+>  	/*
+>  	 * QOS capabilities available
+>  	 */
+>  	if (caps_all.feat_type & VAS_GZIP_QOS_FEAT_BIT) {
+>  		rc =3D get_vas_capabilities(VAS_GZIP_QOS_FEAT,
+> -					  VAS_GZIP_QOS_FEAT_TYPE, hv_cop_caps);
+> +					  VAS_GZIP_QOS_FEAT_TYPE, &hv_cop_caps);
+> =20
+>  		if (rc)
+> -			goto out_cop;
+> +			goto out;
+>  	}
+>  	/*
+>  	 * Default capabilities available
+>  	 */
+> -	if (caps_all.feat_type & VAS_GZIP_DEF_FEAT_BIT) {
+> +	if (caps_all.feat_type & VAS_GZIP_DEF_FEAT_BIT)
+>  		rc =3D get_vas_capabilities(VAS_GZIP_DEF_FEAT,
+> -					  VAS_GZIP_DEF_FEAT_TYPE, hv_cop_caps);
+> -		if (rc)
+> -			goto out_cop;
+> -	}
+> +					  VAS_GZIP_DEF_FEAT_TYPE, &hv_cop_caps);
+> =20
+> -	if (copypaste_feat && firmware_has_feature(FW_FEATURE_LPAR))
+> -		of_reconfig_notifier_register(&pseries_vas_nb);
+> +	if (!rc && copypaste_feat) {
+> +		if (firmware_has_feature(FW_FEATURE_LPAR))
+> +			of_reconfig_notifier_register(&pseries_vas_nb);
+> =20
+> -	pr_info("GZIP feature is available\n");
+> +		pr_info("GZIP feature is available\n");
+> +	} else {
+> +		/*
+> +		 * Should not happen, but only when get default
+> +		 * capabilities HCALL failed. So disable copy paste
+> +		 * feature.
+> +		 */
+> +		copypaste_feat =3D false;
+> +	}
+> =20
+> -out_cop:
+> -	kfree(hv_cop_caps);
+>  out:
+>  	kfree(hv_caps);
+>  	return rc;
 > --=20
 > 2.27.0
 >=20
