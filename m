@@ -1,77 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59A44C0FAA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 10:55:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 180BA4C0FAD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 10:56:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K3WcW0YM2z3cQY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 20:55:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K3WdC2m9Jz3cGG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 20:55:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GbYnQQeU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U47O+P9c;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b;
- helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=GbYnQQeU; dkim-atps=neutral
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
- [IPv6:2607:f8b0:4864:20::62b])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=U47O+P9c; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K3Wbq60MCz2xsS
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 20:54:46 +1100 (AEDT)
-Received: by mail-pl1-x62b.google.com with SMTP id l8so18136577pls.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 01:54:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=eDjZFiKDYU654cC5jz7aMa4gZQ72K1bQ4WFxHSe2GP8=;
- b=GbYnQQeU+CyX8H6ngd/2mjU1yawG9c7uw1CEvXBealOIruk9RXATd0D3jtpDrzakx/
- HjuhYN3X6w9yp/CtPfDy7MZSygit358LnEYIfb/PCXyCavIORzFMnk3Kj6Lt6W4oC70R
- Hku6ix2G+t9deY3xHmbuX8WdcJtiA9gZNFRQh0UkF72IDgC3UofJl/cbX4Rp9aW+t6G8
- L3Q04zUZgWLaggVt9xWVZP/b37+djbDOCFIZ+1xuR/w+P74JZeh4Ga5b3LsZLZcwyYzL
- 1Ufh38Ow26jEsliU8gqVZL0IyrdCcdtHzTyb0TpzyahRMBTftwGUFptykHEjMTz0kmib
- pGGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=eDjZFiKDYU654cC5jz7aMa4gZQ72K1bQ4WFxHSe2GP8=;
- b=hIZoRO4yZRkJ1WBRRrUFUqUAJNyZ4RRT5/CU/kWQEZ0HN1zsi9mnHqIs2uQGSc9vQl
- 4ti637HIXV5WbGcwkPLMKQl08/zmj5BXRcUX+5ruKXTrzfggLUnZatPEyDxJlKnJor/t
- WRx80Upb8Hd43W4qPQOYRlC8fUBSIdj9atFenk6nHTONcI647FO1iBskeov6R+JD9mt3
- +7Rz90Z6paOmizU9v8zAA6CXwZCjrsRwBUJ/vkmKSRa4M7gUhuH/usWpcRKltTu8t0qM
- JV40F/yC4Dolzrn+7GG2rdXCySA1sWoJ9nTEkNNPs2RdqJF4twVRAC3YgHzgP4orKoFS
- 4odA==
-X-Gm-Message-State: AOAM532uWCYtXAzjf9imt8kGP5PclIxBBRoJfyxtg67ZB1MfmL+bA/dB
- tADw0VmzPQWYxRVQO/c+RjI=
-X-Google-Smtp-Source: ABdhPJzbeSCzC2FxvBkq6z+4QIBdVAddEG52IpIoMG5vCmU1H8nvJKEA7LSBtaUMLPiK12AMCQl5ug==
-X-Received: by 2002:a17:902:ea81:b0:14f:a4ce:ef79 with SMTP id
- x1-20020a170902ea8100b0014fa4ceef79mr15764684plb.136.1645610083892; 
- Wed, 23 Feb 2022 01:54:43 -0800 (PST)
-Received: from localhost (60-240-120-95.tpgi.com.au. [60.240.120.95])
- by smtp.gmail.com with ESMTPSA id b11sm23794534pgs.55.2022.02.23.01.54.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Feb 2022 01:54:43 -0800 (PST)
-Date: Wed, 23 Feb 2022 19:54:37 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 2/4] powerpc/pseries/vas: Modify reconfig open/close
- functions for migration
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au, nathanl@linux.ibm.com
-References: <4a23d5ec655fd00da97b0b0b46174a3a3894bfb0.camel@linux.ibm.com>
- <fb9f17bd5ee7a4df453138769b709c60cdc42641.camel@linux.ibm.com>
-In-Reply-To: <fb9f17bd5ee7a4df453138769b709c60cdc42641.camel@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K3WcT1NzMz3cPk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 20:55:20 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id B82B561718
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 09:55:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25895C340FD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 09:55:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1645610117;
+ bh=44NmsF00BHRCCX+io8dKsCu88FeTZVWw0HoNNpaMYm0=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=U47O+P9c3OP9gJaLa5ARz/RngFoRoKc+2sBmBVK0Bz8Lb+gCZs9JhFyW8ZD4KpLnE
+ aCJdnezylbQGviDGvsgyXgDqu7ro8N45c7LUUuupHzAwutQ7rmtJufNMhmXtotdJZz
+ xXvQN3VEO2MvpU8Xesiv+C1nE579b15f2L+Ra3qQDi/sSRGOlC1X/mykoPPrpLW4Ma
+ Bw2xU4m/fmHh6fCqaRd8WRgcUojG2FrKve4oygABxEzdkJb80xGLsuG8Rchlz3AFbV
+ LULQv+EYcmb8HjIlFo0iaaQRZcKuEa4QTAtPtW819lCzzi88+iju2KQ1qtcLyiN6dP
+ SaaDpSOoMVR2A==
+Received: by mail-vs1-f53.google.com with SMTP id i27so2492325vsr.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 01:55:17 -0800 (PST)
+X-Gm-Message-State: AOAM532a0lALUlQXLQckQHF1S81eAx0l3lLrAibkgzA7JcvIIBmI8wll
+ t+fCiDhJ6cuFbgXODnNaQDPZ2yMERnPWMfjSLJA=
+X-Google-Smtp-Source: ABdhPJxAjLNt3QP3aKg3EP5BlfDhWFYqgUu+Z9DM853k9CcDkGXVN88Tiyqmsbe6FD//q7/KxE3NRDeVWpCwFPCF418=
+X-Received: by 2002:a67:b846:0:b0:31b:9365:b799 with SMTP id
+ o6-20020a67b846000000b0031b9365b799mr10892862vsh.51.1645610115864; Wed, 23
+ Feb 2022 01:55:15 -0800 (PST)
 MIME-Version: 1.0
-Message-Id: <1645609170.yvpqkmicgp.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20220201150545.1512822-17-guoren@kernel.org>
+ <mhng-2ad760ea-cfeb-4243-b703-8909bb102cf8@palmer-ri-x1c9>
+In-Reply-To: <mhng-2ad760ea-cfeb-4243-b703-8909bb102cf8@palmer-ri-x1c9>
+From: Guo Ren <guoren@kernel.org>
+Date: Wed, 23 Feb 2022 17:55:04 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQGMfXUSMqQNAq-_RecEcqTegXnAT+gk-G=Ljo6EKU_yw@mail.gmail.com>
+Message-ID: <CAJF2gTQGMfXUSMqQNAq-_RecEcqTegXnAT+gk-G=Ljo6EKU_yw@mail.gmail.com>
+Subject: Re: [PATCH V5 16/21] riscv: compat: vdso: Add rv32 VDSO base code
+ implementation
+To: Palmer Dabbelt <palmer@dabbelt.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,264 +74,351 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg KH <gregkh@linuxfoundation.org>, Drew Fustini <drew@beagleboard.org>,
+ Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ liush <liush@allwinnertech.com>, sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Haren Myneni's message of February 20, 2022 6:05 am:
->=20
-> VAS is a hardware engine stays on the chip. So when the partition
-> migrates, all VAS windows on the source system have to be closed
-> and reopen them on the destination after migration.
->=20
-> This patch make changes to the current reconfig_open/close_windows
-> functions to support migration:
-> - Set VAS_WIN_MIGRATE_CLOSE to the window status when closes and
->   reopen windows with the same status during resume.
-> - Continue to close all windows even if deallocate HCALL failed
->   (should not happen) since no way to stop migration with the
->   current LPM implementation.
+On Wed, Feb 23, 2022 at 9:42 AM Palmer Dabbelt <palmer@dabbelt.com> wrote:
+>
+> On Tue, 01 Feb 2022 07:05:40 PST (-0800), guoren@kernel.org wrote:
+> > From: Guo Ren <guoren@linux.alibaba.com>
+> >
+> > There is no vgettimeofday supported in rv32 that makes simple to
+> > generate rv32 vdso code which only needs riscv64 compiler. Other
+> > architectures need change compiler or -m (machine parameter) to
+> > support vdso32 compiling. If rv32 support vgettimeofday (which
+> > cause C compile) in future, we would add CROSS_COMPILE to support
+> > that makes more requirement on compiler enviornment.
+>
+> IMO this is the wrong way to go, as there's some subtle differences
+> between elf32 and elf64 (the .gnu.hash layout, for example).  I'm kind
+> of surprised userspace tolerates this sort of thing at all, but given
+> how easy it is to target rv32 from all toolchains (we don't need
+> libraries here, so just -march should do it) I don't think it's worth
+> chasing around the likely long-tail issues that will arise.
+I would keep the patch in next version. When "multi-arch toolchain" or
+"rv32 HAVE_GENERIC_VDSO" isready in the future, let's switch to the
+rv32 compiler.
 
-Hmm.  pseries_migrate_partition *can* fail?
+>
+> > linux-rv64/arch/riscv/kernel/compat_vdso/compat_vdso.so.dbg:
+> > file format elf64-littleriscv
+> >
+> > Disassembly of section .text:
+> >
+> > 0000000000000800 <__vdso_rt_sigreturn>:
+> >  800:   08b00893                li      a7,139
+> >  804:   00000073                ecall
+> >  808:   0000                    unimp
+> >         ...
+> >
+> > 000000000000080c <__vdso_getcpu>:
+> >  80c:   0a800893                li      a7,168
+> >  810:   00000073                ecall
+> >  814:   8082                    ret
+> >         ...
+> >
+> > 0000000000000818 <__vdso_flush_icache>:
+> >  818:   10300893                li      a7,259
+> >  81c:   00000073                ecall
+> >  820:   8082                    ret
+> >
+> > linux-rv32/arch/riscv/kernel/vdso/vdso.so.dbg:
+> > file format elf32-littleriscv
+> >
+> > Disassembly of section .text:
+> >
+> > 00000800 <__vdso_rt_sigreturn>:
+> >  800:   08b00893                li      a7,139
+> >  804:   00000073                ecall
+> >  808:   0000                    unimp
+> >         ...
+> >
+> > 0000080c <__vdso_getcpu>:
+> >  80c:   0a800893                li      a7,168
+> >  810:   00000073                ecall
+> >  814:   8082                    ret
+> >         ...
+> >
+> > 00000818 <__vdso_flush_icache>:
+> >  818:   10300893                li      a7,259
+> >  81c:   00000073                ecall
+> >  820:   8082                    ret
+> >
+> > Finally, reuse all *.S from vdso in compat_vdso that makes
+> > implementation clear and readable.
+> >
+> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> > Signed-off-by: Guo Ren <guoren@kernel.org>
+> > Cc: Arnd Bergmann <arnd@arndb.de>
+> > Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> > ---
+> >  arch/riscv/Makefile                           |  5 ++
+> >  arch/riscv/include/asm/vdso.h                 |  9 +++
+> >  arch/riscv/kernel/Makefile                    |  1 +
+> >  arch/riscv/kernel/compat_vdso/.gitignore      |  2 +
+> >  arch/riscv/kernel/compat_vdso/Makefile        | 68 +++++++++++++++++++
+> >  arch/riscv/kernel/compat_vdso/compat_vdso.S   |  8 +++
+> >  .../kernel/compat_vdso/compat_vdso.lds.S      |  3 +
+> >  arch/riscv/kernel/compat_vdso/flush_icache.S  |  3 +
+> >  .../compat_vdso/gen_compat_vdso_offsets.sh    |  5 ++
+> >  arch/riscv/kernel/compat_vdso/getcpu.S        |  3 +
+> >  arch/riscv/kernel/compat_vdso/note.S          |  3 +
+> >  arch/riscv/kernel/compat_vdso/rt_sigreturn.S  |  3 +
+> >  arch/riscv/kernel/vdso/vdso.S                 |  6 +-
+> >  13 files changed, 118 insertions(+), 1 deletion(-)
+> >  create mode 100644 arch/riscv/kernel/compat_vdso/.gitignore
+> >  create mode 100644 arch/riscv/kernel/compat_vdso/Makefile
+> >  create mode 100644 arch/riscv/kernel/compat_vdso/compat_vdso.S
+> >  create mode 100644 arch/riscv/kernel/compat_vdso/compat_vdso.lds.S
+> >  create mode 100644 arch/riscv/kernel/compat_vdso/flush_icache.S
+> >  create mode 100755 arch/riscv/kernel/compat_vdso/gen_compat_vdso_offsets.sh
+> >  create mode 100644 arch/riscv/kernel/compat_vdso/getcpu.S
+> >  create mode 100644 arch/riscv/kernel/compat_vdso/note.S
+> >  create mode 100644 arch/riscv/kernel/compat_vdso/rt_sigreturn.S
+> >
+> > diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+> > index a02e588c4947..f73d50552e09 100644
+> > --- a/arch/riscv/Makefile
+> > +++ b/arch/riscv/Makefile
+> > @@ -106,12 +106,17 @@ libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+> >  PHONY += vdso_install
+> >  vdso_install:
+> >       $(Q)$(MAKE) $(build)=arch/riscv/kernel/vdso $@
+> > +     $(if $(CONFIG_COMPAT),$(Q)$(MAKE) \
+> > +             $(build)=arch/riscv/kernel/compat_vdso $@)
+> >
+> >  ifeq ($(KBUILD_EXTMOD),)
+> >  ifeq ($(CONFIG_MMU),y)
+> >  prepare: vdso_prepare
+> >  vdso_prepare: prepare0
+> >       $(Q)$(MAKE) $(build)=arch/riscv/kernel/vdso include/generated/vdso-offsets.h
+> > +     $(if $(CONFIG_COMPAT),$(Q)$(MAKE) \
+> > +             $(build)=arch/riscv/kernel/compat_vdso include/generated/compat_vdso-offsets.h)
+> > +
+> >  endif
+> >  endif
+> >
+> > diff --git a/arch/riscv/include/asm/vdso.h b/arch/riscv/include/asm/vdso.h
+> > index bc6f75f3a199..af981426fe0f 100644
+> > --- a/arch/riscv/include/asm/vdso.h
+> > +++ b/arch/riscv/include/asm/vdso.h
+> > @@ -21,6 +21,15 @@
+> >
+> >  #define VDSO_SYMBOL(base, name)                                                      \
+> >       (void __user *)((unsigned long)(base) + __vdso_##name##_offset)
+> > +
+> > +#ifdef CONFIG_COMPAT
+> > +#include <generated/compat_vdso-offsets.h>
+> > +
+> > +#define COMPAT_VDSO_SYMBOL(base, name)                                               \
+> > +     (void __user *)((unsigned long)(base) + compat__vdso_##name##_offset)
+> > +
+> > +#endif /* CONFIG_COMPAT */
+> > +
+> >  #endif /* !__ASSEMBLY__ */
+> >
+> >  #endif /* CONFIG_MMU */
+> > diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+> > index 954dc7043ad2..88e79f481c21 100644
+> > --- a/arch/riscv/kernel/Makefile
+> > +++ b/arch/riscv/kernel/Makefile
+> > @@ -67,3 +67,4 @@ obj-$(CONFIG_JUMP_LABEL)    += jump_label.o
+> >
+> >  obj-$(CONFIG_EFI)            += efi.o
+> >  obj-$(CONFIG_COMPAT)         += compat_syscall_table.o
+> > +obj-$(CONFIG_COMPAT)         += compat_vdso/
+> > diff --git a/arch/riscv/kernel/compat_vdso/.gitignore b/arch/riscv/kernel/compat_vdso/.gitignore
+> > new file mode 100644
+> > index 000000000000..19d83d846c1e
+> > --- /dev/null
+> > +++ b/arch/riscv/kernel/compat_vdso/.gitignore
+> > @@ -0,0 +1,2 @@
+> > +# SPDX-License-Identifier: GPL-2.0-only
+> > +compat_vdso.lds
+> > diff --git a/arch/riscv/kernel/compat_vdso/Makefile b/arch/riscv/kernel/compat_vdso/Makefile
+> > new file mode 100644
+> > index 000000000000..7bbbbf94307f
+> > --- /dev/null
+> > +++ b/arch/riscv/kernel/compat_vdso/Makefile
+> > @@ -0,0 +1,68 @@
+> > +# SPDX-License-Identifier: GPL-2.0-only
+> > +
+> > +# Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+> > +# the inclusion of generic Makefile.
+> > +ARCH_REL_TYPE_ABS := R_RISCV_32|R_RISCV_64|R_RISCV_JUMP_SLOT
+> > +include $(srctree)/lib/vdso/Makefile
+> > +# Symbols present in the compat_vdso
+> > +compat_vdso-syms  = rt_sigreturn
+> > +compat_vdso-syms += getcpu
+> > +compat_vdso-syms += flush_icache
+> > +
+> > +# Files to link into the compat_vdso
+> > +obj-compat_vdso = $(patsubst %, %.o, $(compat_vdso-syms)) note.o
+> > +
+> > +ccflags-y := -fno-stack-protector
+> > +
+> > +# Build rules
+> > +targets := $(obj-compat_vdso) compat_vdso.so compat_vdso.so.dbg compat_vdso.lds
+> > +obj-compat_vdso := $(addprefix $(obj)/, $(obj-compat_vdso))
+> > +
+> > +obj-y += compat_vdso.o
+> > +CPPFLAGS_compat_vdso.lds += -P -C -U$(ARCH)
+> > +
+> > +# Disable profiling and instrumentation for VDSO code
+> > +GCOV_PROFILE := n
+> > +KCOV_INSTRUMENT := n
+> > +KASAN_SANITIZE := n
+> > +UBSAN_SANITIZE := n
+> > +
+> > +# Force dependency
+> > +$(obj)/compat_vdso.o: $(obj)/compat_vdso.so
+> > +
+> > +# link rule for the .so file, .lds has to be first
+> > +$(obj)/compat_vdso.so.dbg: $(obj)/compat_vdso.lds $(obj-compat_vdso) FORCE
+> > +     $(call if_changed,compat_vdsold)
+> > +LDFLAGS_compat_vdso.so.dbg = -shared -S -soname=linux-compat_vdso.so.1 \
+> > +     --build-id=sha1 --hash-style=both --eh-frame-hdr
+> > +
+> > +# strip rule for the .so file
+> > +$(obj)/%.so: OBJCOPYFLAGS := -S
+> > +$(obj)/%.so: $(obj)/%.so.dbg FORCE
+> > +     $(call if_changed,objcopy)
+> > +
+> > +# Generate VDSO offsets using helper script
+> > +gen-compat_vdsosym := $(srctree)/$(src)/gen_compat_vdso_offsets.sh
+> > +quiet_cmd_compat_vdsosym = VDSOSYM $@
+> > +     cmd_compat_vdsosym = $(NM) $< | $(gen-compat_vdsosym) | LC_ALL=C sort > $@
+> > +
+> > +include/generated/compat_vdso-offsets.h: $(obj)/compat_vdso.so.dbg FORCE
+> > +     $(call if_changed,compat_vdsosym)
+> > +
+> > +# actual build commands
+> > +# The DSO images are built using a special linker script
+> > +# Make sure only to export the intended __compat_vdso_xxx symbol offsets.
+> > +quiet_cmd_compat_vdsold = VDSOLD  $@
+> > +      cmd_compat_vdsold = $(LD) $(ld_flags) -T $(filter-out FORCE,$^) -o $@.tmp && \
+> > +                   $(OBJCOPY) $(patsubst %, -G __compat_vdso_%, $(compat_vdso-syms)) $@.tmp $@ && \
+> > +                   rm $@.tmp
+> > +
+> > +# install commands for the unstripped file
+> > +quiet_cmd_compat_vdso_install = INSTALL $@
+> > +      cmd_compat_vdso_install = cp $(obj)/$@.dbg $(MODLIB)/compat_vdso/$@
+> > +
+> > +compat_vdso.so: $(obj)/compat_vdso.so.dbg
+> > +     @mkdir -p $(MODLIB)/compat_vdso
+> > +     $(call cmd,compat_vdso_install)
+> > +
+> > +compat_vdso_install: compat_vdso.so
+> > diff --git a/arch/riscv/kernel/compat_vdso/compat_vdso.S b/arch/riscv/kernel/compat_vdso/compat_vdso.S
+> > new file mode 100644
+> > index 000000000000..fea4a8b0c45d
+> > --- /dev/null
+> > +++ b/arch/riscv/kernel/compat_vdso/compat_vdso.S
+> > @@ -0,0 +1,8 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +
+> > +#define      vdso_start      compat_vdso_start
+> > +#define      vdso_end        compat_vdso_end
+> > +
+> > +#define      __VDSO_PATH     "arch/riscv/kernel/compat_vdso/compat_vdso.so"
+> > +
+> > +#include <../vdso/vdso.S>
+> > diff --git a/arch/riscv/kernel/compat_vdso/compat_vdso.lds.S b/arch/riscv/kernel/compat_vdso/compat_vdso.lds.S
+> > new file mode 100644
+> > index 000000000000..02a9ec5dc7f6
+> > --- /dev/null
+> > +++ b/arch/riscv/kernel/compat_vdso/compat_vdso.lds.S
+> > @@ -0,0 +1,3 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +
+> > +#include <../vdso/vdso.lds.S>
+> > diff --git a/arch/riscv/kernel/compat_vdso/flush_icache.S b/arch/riscv/kernel/compat_vdso/flush_icache.S
+> > new file mode 100644
+> > index 000000000000..88e21a84a974
+> > --- /dev/null
+> > +++ b/arch/riscv/kernel/compat_vdso/flush_icache.S
+> > @@ -0,0 +1,3 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +
+> > +#include <../vdso/flush_icache.S>
+> > diff --git a/arch/riscv/kernel/compat_vdso/gen_compat_vdso_offsets.sh b/arch/riscv/kernel/compat_vdso/gen_compat_vdso_offsets.sh
+> > new file mode 100755
+> > index 000000000000..8ac070c783b3
+> > --- /dev/null
+> > +++ b/arch/riscv/kernel/compat_vdso/gen_compat_vdso_offsets.sh
+> > @@ -0,0 +1,5 @@
+> > +#!/bin/sh
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +
+> > +LC_ALL=C
+> > +sed -n -e 's/^[0]\+\(0[0-9a-fA-F]*\) . \(__vdso_[a-zA-Z0-9_]*\)$/\#define compat\2_offset\t0x\1/p'
+> > diff --git a/arch/riscv/kernel/compat_vdso/getcpu.S b/arch/riscv/kernel/compat_vdso/getcpu.S
+> > new file mode 100644
+> > index 000000000000..946449a15a94
+> > --- /dev/null
+> > +++ b/arch/riscv/kernel/compat_vdso/getcpu.S
+> > @@ -0,0 +1,3 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +
+> > +#include <../vdso/getcpu.S>
+> > diff --git a/arch/riscv/kernel/compat_vdso/note.S b/arch/riscv/kernel/compat_vdso/note.S
+> > new file mode 100644
+> > index 000000000000..67c50898b8e5
+> > --- /dev/null
+> > +++ b/arch/riscv/kernel/compat_vdso/note.S
+> > @@ -0,0 +1,3 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +
+> > +#include <../vdso/note.S>
+> > diff --git a/arch/riscv/kernel/compat_vdso/rt_sigreturn.S b/arch/riscv/kernel/compat_vdso/rt_sigreturn.S
+> > new file mode 100644
+> > index 000000000000..f4c98f18c053
+> > --- /dev/null
+> > +++ b/arch/riscv/kernel/compat_vdso/rt_sigreturn.S
+> > @@ -0,0 +1,3 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +
+> > +#include <../vdso/rt_sigreturn.S>
+> > diff --git a/arch/riscv/kernel/vdso/vdso.S b/arch/riscv/kernel/vdso/vdso.S
+> > index df222245be05..83f1c899e8d8 100644
+> > --- a/arch/riscv/kernel/vdso/vdso.S
+> > +++ b/arch/riscv/kernel/vdso/vdso.S
+> > @@ -7,12 +7,16 @@
+> >  #include <linux/linkage.h>
+> >  #include <asm/page.h>
+> >
+> > +#ifndef __VDSO_PATH
+> > +#define __VDSO_PATH "arch/riscv/kernel/vdso/vdso.so"
+> > +#endif
+> > +
+> >       __PAGE_ALIGNED_DATA
+> >
+> >       .globl vdso_start, vdso_end
+> >       .balign PAGE_SIZE
+> >  vdso_start:
+> > -     .incbin "arch/riscv/kernel/vdso/vdso.so"
+> > +     .incbin __VDSO_PATH
+> >       .balign PAGE_SIZE
+> >  vdso_end:
 
-> - If the DLPAR CPU event happens while migration is in progress,
->   set VAS_WIN_NO_CRED_CLOSE to the window status. Close window
->   happens with the first event (migration or DLPAR) and Reopen
->   window happens only with the last event (migration or DLPAR).
 
-Can DLPAR happen while migration is in progress? Couldn't
-this cause your source and destination credits to go out of
-whack?
 
-Why do you need two close window types, what if you finish
-LPM and just open as many as possible regardless how they
-are closed?
+-- 
+Best Regards
+ Guo Ren
 
-Thanks,
-Nick
-
->=20
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/vas.h       |  2 +
->  arch/powerpc/platforms/pseries/vas.c | 88 ++++++++++++++++++++++------
->  2 files changed, 73 insertions(+), 17 deletions(-)
->=20
-> diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/va=
-s.h
-> index 6baf7b9ffed4..83afcb6c194b 100644
-> --- a/arch/powerpc/include/asm/vas.h
-> +++ b/arch/powerpc/include/asm/vas.h
-> @@ -36,6 +36,8 @@
->  					/* vas mmap() */
->  /* Window is closed in the hypervisor due to lost credit */
->  #define VAS_WIN_NO_CRED_CLOSE	0x00000001
-> +/* Window is closed due to migration */
-> +#define VAS_WIN_MIGRATE_CLOSE	0x00000002
-> =20
->  /*
->   * Get/Set bit fields
-> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platform=
-s/pseries/vas.c
-> index 3bb219f54806..fbcf311da0ec 100644
-> --- a/arch/powerpc/platforms/pseries/vas.c
-> +++ b/arch/powerpc/platforms/pseries/vas.c
-> @@ -457,11 +457,12 @@ static int vas_deallocate_window(struct vas_window =
-*vwin)
->  	mutex_lock(&vas_pseries_mutex);
->  	/*
->  	 * VAS window is already closed in the hypervisor when
-> -	 * lost the credit. So just remove the entry from
-> -	 * the list, remove task references and free vas_window
-> +	 * lost the credit or with migration. So just remove the entry
-> +	 * from the list, remove task references and free vas_window
->  	 * struct.
->  	 */
-> -	if (win->vas_win.status & VAS_WIN_NO_CRED_CLOSE) {
-> +	if (!(win->vas_win.status & VAS_WIN_NO_CRED_CLOSE) &&
-> +		!(win->vas_win.status & VAS_WIN_MIGRATE_CLOSE)) {
->  		rc =3D deallocate_free_window(win);
->  		if (rc) {
->  			mutex_unlock(&vas_pseries_mutex);
-> @@ -578,12 +579,14 @@ static int __init get_vas_capabilities(u8 feat, enu=
-m vas_cop_feat_type type,
->   * by setting the remapping to new paste address if the window is
->   * active.
->   */
-> -static int reconfig_open_windows(struct vas_caps *vcaps, int creds)
-> +static int reconfig_open_windows(struct vas_caps *vcaps, int creds,
-> +				 bool migrate)
->  {
->  	long domain[PLPAR_HCALL9_BUFSIZE] =3D {VAS_DEFAULT_DOMAIN_ID};
->  	struct vas_cop_feat_caps *caps =3D &vcaps->caps;
->  	struct pseries_vas_window *win =3D NULL, *tmp;
->  	int rc, mv_ents =3D 0;
-> +	int flag;
-> =20
->  	/*
->  	 * Nothing to do if there are no closed windows.
-> @@ -602,8 +605,10 @@ static int reconfig_open_windows(struct vas_caps *vc=
-aps, int creds)
->  	 * (dedicated). If 1 core is added, this LPAR can have 20 more
->  	 * credits. It means the kernel can reopen 20 windows. So move
->  	 * 20 entries in the VAS windows lost and reopen next 20 windows.
-> +	 * For partition migration, reopen all windows that are closed
-> +	 * during resume.
->  	 */
-> -	if (vcaps->nr_close_wins > creds)
-> +	if ((vcaps->nr_close_wins > creds) && !migrate)
->  		mv_ents =3D vcaps->nr_close_wins - creds;
-> =20
->  	list_for_each_entry_safe(win, tmp, &vcaps->list, win_list) {
-> @@ -613,12 +618,35 @@ static int reconfig_open_windows(struct vas_caps *v=
-caps, int creds)
->  		mv_ents--;
->  	}
-> =20
-> +	/*
-> +	 * Open windows if they are closed only with migration or
-> +	 * DLPAR (lost credit) before.
-> +	 */
-> +	if (migrate)
-> +		flag =3D VAS_WIN_MIGRATE_CLOSE;
-> +	else
-> +		flag =3D VAS_WIN_NO_CRED_CLOSE;
-> +
->  	list_for_each_entry_safe_from(win, tmp, &vcaps->list, win_list) {
-> +		/*
-> +		 * This window is closed with DLPAR and migration events.
-> +		 * So reopen the window with the last event.
-> +		 * The user space is not suspended with the current
-> +		 * migration notifier. So the user space can issue DLPAR
-> +		 * CPU hotplug while migration in progress. In this case
-> +		 * this window will be opened with the last event.
-> +		 */
-> +		if ((win->vas_win.status & VAS_WIN_NO_CRED_CLOSE) &&
-> +			(win->vas_win.status & VAS_WIN_MIGRATE_CLOSE)) {
-> +			win->vas_win.status &=3D ~flag;
-> +			continue;
-> +		}
-> +
->  		/*
->  		 * Nothing to do on this window if it is not closed
-> -		 * with VAS_WIN_NO_CRED_CLOSE
-> +		 * with this flag
->  		 */
-> -		if (!(win->vas_win.status & VAS_WIN_NO_CRED_CLOSE))
-> +		if (!(win->vas_win.status & flag))
->  			continue;
-> =20
->  		rc =3D allocate_setup_window(win, (u64 *)&domain[0],
-> @@ -634,7 +662,7 @@ static int reconfig_open_windows(struct vas_caps *vca=
-ps, int creds)
->  		/*
->  		 * Set window status to active
->  		 */
-> -		win->vas_win.status &=3D ~VAS_WIN_NO_CRED_CLOSE;
-> +		win->vas_win.status &=3D ~flag;
->  		mutex_unlock(&win->vas_win.task_ref.mmap_mutex);
->  		win->win_type =3D caps->win_type;
->  		if (!--vcaps->nr_close_wins)
-> @@ -661,20 +689,32 @@ static int reconfig_open_windows(struct vas_caps *v=
-caps, int creds)
->   * the user space to fall back to SW compression and manage with the
->   * existing windows.
->   */
-> -static int reconfig_close_windows(struct vas_caps *vcap, int excess_cred=
-s)
-> +static int reconfig_close_windows(struct vas_caps *vcap, int excess_cred=
-s,
-> +									bool migrate)
->  {
->  	struct pseries_vas_window *win, *tmp;
->  	struct vas_user_win_ref *task_ref;
->  	struct vm_area_struct *vma;
-> -	int rc =3D 0;
-> +	int rc =3D 0, flag;
-> +
-> +	if (migrate)
-> +		flag =3D VAS_WIN_MIGRATE_CLOSE;
-> +	else
-> +		flag =3D VAS_WIN_NO_CRED_CLOSE;
-> =20
->  	list_for_each_entry_safe(win, tmp, &vcap->list, win_list) {
->  		/*
->  		 * This window is already closed due to lost credit
-> -		 * before. Go for next window.
-> +		 * or for migration before. Go for next window.
-> +		 * For migration, nothing to do since this window
-> +		 * closed for DLPAR and will be reopened even on
-> +		 * the destination system with other DLPAR operation.
->  		 */
-> -		if (win->vas_win.status & VAS_WIN_NO_CRED_CLOSE)
-> +		if ((win->vas_win.status & VAS_WIN_MIGRATE_CLOSE) ||
-> +			(win->vas_win.status & VAS_WIN_NO_CRED_CLOSE)) {
-> +			win->vas_win.status |=3D flag;
->  			continue;
-> +		}
-> =20
->  		task_ref =3D &win->vas_win.task_ref;
->  		mutex_lock(&task_ref->mmap_mutex);
-> @@ -683,7 +723,7 @@ static int reconfig_close_windows(struct vas_caps *vc=
-ap, int excess_creds)
->  		 * Number of available credits are reduced, So select
->  		 * and close windows.
->  		 */
-> -		win->vas_win.status |=3D VAS_WIN_NO_CRED_CLOSE;
-> +		win->vas_win.status |=3D flag;
-> =20
->  		mmap_write_lock(task_ref->mm);
->  		/*
-> @@ -706,12 +746,24 @@ static int reconfig_close_windows(struct vas_caps *=
-vcap, int excess_creds)
->  		 * later when the process issued with close(FD).
->  		 */
->  		rc =3D deallocate_free_window(win);
-> -		if (rc)
-> +		/*
-> +		 * This failure is from the hypervisor.
-> +		 * No way to stop migration for these failures.
-> +		 * So ignore error and continue closing other windows.
-> +		 */
-> +		if (rc && !migrate)
->  			return rc;
-> =20
->  		vcap->nr_close_wins++;
-> =20
-> -		if (!--excess_creds)
-> +		/*
-> +		 * For migration, do not depend on lpar_creds in case if
-> +		 * mismatch with the hypervisor value (should not happen).
-> +		 * So close all active windows in the list and will be
-> +		 * reopened windows based on the new lpar_creds on the
-> +		 * destination system during resume.
-> +		 */
-> +		if (!migrate && !--excess_creds)
->  			break;
->  	}
-> =20
-> @@ -761,7 +813,8 @@ int vas_reconfig_capabilties(u8 type)
->  		 * target, reopen windows if they are closed due to
->  		 * the previous DLPAR (core removal).
->  		 */
-> -		rc =3D reconfig_open_windows(vcaps, new_nr_creds - old_nr_creds);
-> +		rc =3D reconfig_open_windows(vcaps, new_nr_creds - old_nr_creds,
-> +					   false);
->  	} else {
->  		/*
->  		 * # active windows is more than new LPAR available
-> @@ -771,7 +824,8 @@ int vas_reconfig_capabilties(u8 type)
->  		nr_active_wins =3D vcaps->nr_open_windows - vcaps->nr_close_wins;
->  		if (nr_active_wins > new_nr_creds)
->  			rc =3D reconfig_close_windows(vcaps,
-> -					nr_active_wins - new_nr_creds);
-> +					nr_active_wins - new_nr_creds,
-> +					false);
->  	}
-> =20
->  out:
-> --=20
-> 2.27.0
->=20
->=20
->=20
+ML: https://lore.kernel.org/linux-csky/
