@@ -1,63 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B376E4C10E1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 12:00:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B894C1134
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 12:24:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K3Y3T01L6z3cSH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 22:00:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K3YZn0g0cz3cGG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 22:24:01 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=K1JUDrM5;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.133; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=hbh25y@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=K1JUDrM5; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K3Y332dKjz30RD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 21:59:57 +1100 (AEDT)
-Received: from mail-wr1-f46.google.com ([209.85.221.46]) by
- mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1N8oOk-1oGbDb067i-015uEs for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb
- 2022 11:59:53 +0100
-Received: by mail-wr1-f46.google.com with SMTP id d17so4058383wrc.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 02:59:52 -0800 (PST)
-X-Gm-Message-State: AOAM531FSlsKA/NA0EAcKjmha1M9HZM86IfL9AhrXSdyuM6WKRtqaCiQ
- lfXsWuhUJqDkeme4zebWaf0gAePIwq6LC7E8QC4=
-X-Google-Smtp-Source: ABdhPJz3tjc3IejYq+UPcpb0b0B/1/NsttPG6/6KnMrBytsQxjHYO0/p2daBPMgz1AgVYfLNcxR3Ydw+Oyz4L5S8GiA=
-X-Received: by 2002:adf:90c1:0:b0:1e4:ad27:22b9 with SMTP id
- i59-20020adf90c1000000b001e4ad2722b9mr23150986wri.219.1645613992251; Wed, 23
- Feb 2022 02:59:52 -0800 (PST)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K3RnB0lZXz2x9Z
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 18:02:37 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id c1so4345113pgk.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Feb 2022 23:02:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=WPDmTe+hCTvs80jt4/49UAsxs25Y+NKSQwRiuv6cnUk=;
+ b=K1JUDrM55xOwRD2LV3t4ZsSEYEZIFuZkVhoIYOp5IBUh8VTeMb33DgDyN8v3mcZl75
+ SkGpfNqDl/p548LdibYrbvsvSXw6XOuspxhoDnNlG4eeD37y6ZRsf6FHg30ybPyNE9CJ
+ lN3qsn/ZOryh9a87Fm40odUiCwY0oGsAk6a1Qw/Kgs8nNLkNeKfSgTvjrivRBe/0RjPc
+ AeQVdAOgJG4p46J+uaOL9YpCOFvuz5iMGvRFINL17OwlNFFMENQSZgF2zUkFlD9Jg5f+
+ vFUykyn2f+86MSg//095SQB85p38o2UTL7kFNP9ZYnjTh6xCFGquyM2DFdMP8SgFBZIT
+ F9KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=WPDmTe+hCTvs80jt4/49UAsxs25Y+NKSQwRiuv6cnUk=;
+ b=iAujgprTJMu0Muf2MXtqD3UKllS8QssNj/gkbJnWpR6N/K2/DXXzrPP5aUH9y44LNN
+ 2mhaCGfMV9HZ67bnFAX+q6TA9RwzkFMSLXTdbaTp1hGNE39Lt1QM1xG4vE06NZM9XXEI
+ WuGv3xgc8ypEw34cq93msqiptFOnQIK9tJlt3gNaoYm00TJ0fxqAkM04EdCuOslPQaKe
+ nuFv+S/zAg2Ix1UI/G/Gi6eoqINvJsIJmjlu9p84VV+XMhZGy6ai0rhKN5EWO2P9yVNS
+ GSkn3s+n4bPZ86KUyZOq0Lt1oHmN9hYPc7y5+rCEHrX7/u2zcprD8dnfm+Y+4a0r6/AC
+ 6u7A==
+X-Gm-Message-State: AOAM531HYIQJfq5tLrjB8DgVjaZL/XXLiF4gvHA/gHIdkYIxRJLJA+s4
+ jf41z+xrg4RfhVDn0NwhHDQ=
+X-Google-Smtp-Source: ABdhPJySLkvZrZ7DCwipOS93XXYsHjLEryc1FsRRn4QNjccIV8lxj6oFoh1K87CNJTejrZSPzFa1IQ==
+X-Received: by 2002:a62:1d42:0:b0:4c7:f78d:6f62 with SMTP id
+ d63-20020a621d42000000b004c7f78d6f62mr28125329pfd.33.1645599755708; 
+ Tue, 22 Feb 2022 23:02:35 -0800 (PST)
+Received: from slim.das-security.cn ([103.84.139.54])
+ by smtp.gmail.com with ESMTPSA id m21sm22748406pgh.69.2022.02.22.23.02.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 22 Feb 2022 23:02:35 -0800 (PST)
+From: Hangyu Hua <hbh25y@gmail.com>
+To: christophe.leroy@csgroup.eu, mpe@ellerman.id.au, benh@kernel.crashing.org,
+ paulus@samba.org, peng.hao2@zte.com.cn, wen.yang99@zte.com.cn
+Subject: [PATCH] powerpc: 8xx: fix a return value error in mpc8xx_pic_init
+Date: Wed, 23 Feb 2022 15:02:23 +0800
+Message-Id: <20220223070223.26845-1-hbh25y@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220201150545.1512822-1-guoren@kernel.org>
- <mhng-36783ff3-37c2-454b-9337-8cb124195255@palmer-ri-x1c9>
-In-Reply-To: <mhng-36783ff3-37c2-454b-9337-8cb124195255@palmer-ri-x1c9>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 23 Feb 2022 11:59:36 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a1W3Ns1WYiSGXb3Qn6-p+SPsx1UGqXdTkk2taPB72OZUA@mail.gmail.com>
-Message-ID: <CAK8P3a1W3Ns1WYiSGXb3Qn6-p+SPsx1UGqXdTkk2taPB72OZUA@mail.gmail.com>
-Subject: Re: [PATCH V5 00/21] riscv: compat: Add COMPAT mode support for rv64
-To: Palmer Dabbelt <palmer@dabbelt.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:+XSzde2/zhmz0Y9d0jzFGW4Fp2liSFJCCUir0D1P6McXmp5ek+i
- PwG76jTiAnApTH9nQq2AB4v8fp6g56h5qsR+yFKl1IBGFJWYRMhH0YsAHWxMeM4qV0TRMhu
- bF2aZNfMDX1ehH8SsxQNXTfNj4QlcjM1vnyeR4MMkdGU9HWyCGqdaW0UCUY/HXGGaqiWXnD
- aiHYaDERFuYV2wd95WYWw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lskyLvOKVmU=:RJvJ7r/U/0LRNSuYLxXQcb
- VwgkcJFSdn9m/zy09q1MJy3YVgEE0kW1Up2QLUkzXkUU2mpEwd+rbrj2fFfh8jXHyvQwq4o/L
- p+mhfOfxmdkeMDYgTVkkgbwLEvZCrklLcm1jUB4EyoHumNIxdGl8kYHOat0thIIjGwarTFTjT
- jg/bK709mpclogcWNhicpqUAyehsRHazF4jSllb4tPGVaXUAxlRCVTrWwojZ4mHc3UQgTwzaM
- 5rftlNsrSebmCAkHkp9gMYVCSocU4pRvZniXioaOUGgaPf8zKDLPRgoyFsi9S0OqAy6qCGGko
- lmOcwXJ5fyonhhBxHCpFQAkDWDTdCvXMMPsg/h8Ffv4sqV0pUc2WGs0mJFyrlLrLXnqKBaoXx
- SPafIvmVxGG9sjWp+hY60KPvtqx4suyQWwmPN2rNektOZoyviPdyTzn7/Ch6NRpVXX214BZol
- A7Z2zivmt4dgUzwtwWgTu6956JIv6Svx5DjhQKV6VEHiXbSYHCDkJUW8e6Qx4OYuw3ygNaL9A
- K91gORjym9H8+QLMOrwaeR8y6tr8TxaYptZfycPrs97473upKDS7b31cv0+H7f2W7bY7l5+Zj
- YcEMOSxITBYIR0PCvgHxmDEnm/nWw4sNS5W9RjWQDPqT++4tpzeQu/NgRenI4nkT2ljlbH+3/
- voLz1ddIgRqClBTyPAe2+J8q0VUmwx3xD3K3ao9DC4pmeznJTRLIqKipabu+9Vipztu0=
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Wed, 23 Feb 2022 22:23:29 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,75 +80,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
- Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg KH <gregkh@linuxfoundation.org>, Drew Fustini <drew@beagleboard.org>,
- Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-csky@vger.kernel.org,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Guo Ren <guoren@kernel.org>, liush <liush@allwinnertech.com>,
- sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Hangyu Hua <hbh25y@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 23, 2022 at 2:43 AM Palmer Dabbelt <palmer@dabbelt.com> wrote:
->
-> On Tue, 01 Feb 2022 07:05:24 PST (-0800), guoren@kernel.org wrote:
-> > From: Guo Ren <guoren@linux.alibaba.com>
-> >
-> > Currently, most 64-bit architectures (x86, parisc, powerpc, arm64,
-> > s390, mips, sparc) have supported COMPAT mode. But they all have
-> > history issues and can't use standard linux unistd.h. RISC-V would
-> > be first standard __SYSCALL_COMPAT user of include/uapi/asm-generic
-> > /unistd.h.
->
-> TBH, I'd always sort of hoped we wouldn't have to do this: it's a lot of
-> ABI surface to keep around for a use case I'm not really sure is ever
-> going to get any traction (it's not like we have legacy 32-bit
-> userspaces floating around, the 32-bit userspace is newer than the
-> 64-bit userspace).
+mpc8xx_pic_init() should return -ENOMEM instead of 0 when
+irq_domain_add_linear() return NULL. This cause mpc8xx_pics_init to continue
+executing even if mpc8xx_pic_host is NULL.
 
-The low-end embedded market isn't usually that newsworthy, but the
-machines ship in huge quantities, and they all run 32-bit user
-space for good reasons:
+Fixes: cc76404feaed ("powerpc/8xx: Fix possible device node reference leak")
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+---
+ arch/powerpc/platforms/8xx/pic.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-The cheapest Linux systems at the moment use a low-end MIPS or
-Arm core with a single DDR2 (32MB to 128MB) or DDR3 (128MB
-to 512MB) memory chip that for now is a bit cheaper than a larger
-LP-DDR4 (256MB+). The smaller configurations will go away over
-time as they get outpriced by systems with LP-DDR4, but a 32-bit
-system with 256MB will keep beating a 64-bit-only system with
-512MB on price, and will run most workloads better than a 64-bit
-system with the same amount of RAM.
+diff --git a/arch/powerpc/platforms/8xx/pic.c b/arch/powerpc/platforms/8xx/pic.c
+index f2ba837249d6..04a6abf14c29 100644
+--- a/arch/powerpc/platforms/8xx/pic.c
++++ b/arch/powerpc/platforms/8xx/pic.c
+@@ -153,6 +153,7 @@ int __init mpc8xx_pic_init(void)
+ 	if (mpc8xx_pic_host == NULL) {
+ 		printk(KERN_ERR "MPC8xx PIC: failed to allocate irq host!\n");
+ 		ret = -ENOMEM;
++		goto out;
+ 	}
+ 
+ 	ret = 0;
+-- 
+2.25.1
 
-On the Arm side, I hope that these systems will migrate to Armv8
-based designs (Cortex-A53/A35 or newer) running 64-bit kernel
-with 32-bit user space to replace the currently dominant but aging
-32-bit Cortex-A7 cores. As you say, RISC-V is at a disadvantage
-here because there is no existing 32-bit ecosystem, but it may take
-a chunk of that market anyway based on licensing cost. Between
-doing this using pure 32-bit cores or on mixed 32/64-bit cores,
-I found Guo Ren's explanation very sensible, it lets you use the
-same chip both as a low-end embedded version with SiP
-memory, or using an external DDR3/LPDDR4 chip with enough
-capacity to run a generic 64-bit distro.
-
-> My assumption is that users who actually wanted the
-> memory savings (likely a very small number) would be better served with
-> rv64/ilp32, as that'll allow the larger registers that the hardware
-> supports.  From some earlier discussions it looks like rv64/ilp32 isn't
-> going to be allowed, though, so this seems like the only way to go.
-
-Right, between rv32 user space and a hypothetical rv64-ilp32 target,
-I think it's clear that the former is better because it means introducing
-only one fringe ABI rather than two incompatible ones with minor
-performance differences.
-
-        Arnd
