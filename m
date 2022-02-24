@@ -2,37 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884294C30AC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 16:59:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA0F4C3108
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 17:13:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K4Hf85z85z3cHS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 02:59:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K4Hxl2Pz3z3bZF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 03:12:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=MMxNIcwA;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b30;
+ helo=mail-yb1-xb30.google.com; envelope-from=anders.roxell@linaro.org;
  receiver=<UNKNOWN>)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=MMxNIcwA; dkim-atps=neutral
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com
+ [IPv6:2607:f8b0:4864:20::b30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K4Hdg0S3tz2xtp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 02:59:01 +1100 (AEDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 88B5268AFE; Thu, 24 Feb 2022 16:58:54 +0100 (CET)
-Date: Thu, 24 Feb 2022 16:58:54 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Subject: Re: cleanup swiotlb initialization
-Message-ID: <20220224155854.GA30938@lst.de>
-References: <20220222153514.593231-1-hch@lst.de>
- <09cb4ad3-88e7-3744-b4b8-a6d745ecea9e@oracle.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K4Hx726fZz2xtp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 03:12:24 +1100 (AEDT)
+Received: by mail-yb1-xb30.google.com with SMTP id p19so458260ybc.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 08:12:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=M6/DsYcMdCQ5Jv7h2HtppDAD63hulQRUnEll08wdM0w=;
+ b=MMxNIcwAG1rEPw9GYtGcc1MbySE+4/aZhxOK9Arfa8JLcnH0cfZ64TEtJey0SODZ7C
+ QBiByPS+i5aydu3vs8H0awLJPCpykYptJU2HmxOfIPQy8vs+fSr3SUJJNxd/KVNH/kNZ
+ gjoFbkx/CDEUSFXXCM5T51pKHiPWXVwYVlaXGo94O4Cmtc1DR+BED9zBq+ATBB0gXAsU
+ 9w8HCZaC1ZZAwHI9UCrFptnAwn1x1krO6meiyDfKd7+rSVqIb0MYvV2xW4o0BAq/KmF8
+ q69HHptkg51lHY1WR5Ir2y0+/4WIeubhQ74U4NMz+V9vB19oH7Z86WtRP9Ikzr/QZWt6
+ IMHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=M6/DsYcMdCQ5Jv7h2HtppDAD63hulQRUnEll08wdM0w=;
+ b=7w7yPOxMVrcs1Zg973nJnPq5bPMegfh30+ChijIQ9TpM+9dAAf9CMR9EG4cqZmUNB3
+ hBWWT1wBzrJP/z28DOOLYCZIXRhwey8e5m6y3fz/TV+EF0CrkS/pI2owt7yGUo7ccFhd
+ mHVPBhjUwGtgM9p0tCVWkMu8b0fMGpaaGSmjIkLc4ymydsjvKwzz+AwsjY1EYi1VCd5r
+ wybcB4cg39asPCyLzM5QGcMwvhp5wd8Pkq2pLJeYdp+KO5zonmR40iyzs7JKxo6t4lat
+ +8pDh/BdHJhBypSxi/SKtmFIcafQMhtQaUhdT094oCHDk927x7eMvTAt6dzSk7qYGZqX
+ L0xA==
+X-Gm-Message-State: AOAM530Y9NYUA76QjimAKF0yEPMjdquqtpO08ZJWW78YJuZ/JHZ04VvL
+ iw9Lj2X9uJScjcHPoTEIFLNj71mffRYltVqmDNMBPA==
+X-Google-Smtp-Source: ABdhPJx1PBFTzicPX+FhslEYT6ZwXv/E5aXyEeLEMZmHKuUh6nEpZizMLlaeQ3T+XDiafTBRLEZRxAV7na7hyyARMPw=
+X-Received: by 2002:a25:ad9b:0:b0:624:5db2:2084 with SMTP id
+ z27-20020a25ad9b000000b006245db22084mr3073965ybi.132.1645719140249; Thu, 24
+ Feb 2022 08:12:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <09cb4ad3-88e7-3744-b4b8-a6d745ecea9e@oracle.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+References: <20220223135820.2252470-1-anders.roxell@linaro.org>
+ <20220223135820.2252470-2-anders.roxell@linaro.org>
+ <871qzsphfv.fsf@mpe.ellerman.id.au>
+In-Reply-To: <871qzsphfv.fsf@mpe.ellerman.id.au>
+From: Anders Roxell <anders.roxell@linaro.org>
+Date: Thu, 24 Feb 2022 17:12:09 +0100
+Message-ID: <CADYN=9L7L7+DOA6qYj4aOgg9rBhOrUCk5b4K5tr6wZ709WpsyA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] powerpc: fix build errors
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,78 +76,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>, linux-s390@vger.kernel.org,
- linux-hyperv@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
- linux-ia64@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>,
- Joerg Roedel <joro@8bytes.org>, x86@kernel.org, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, iommu@lists.linux-foundation.org,
- tboot-devel@lists.sourceforge.net, linux-pci@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-riscv@lists.infradead.org,
- David Woodhouse <dwmw2@infradead.org>, Christoph Hellwig <hch@lst.de>,
- linux-arm-kernel@lists.infradead.org, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks.
+On Thu, 24 Feb 2022 at 13:39, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> Hi Anders,
 
-This looks really strange as early_amd_iommu_init should not interact much
-with the changes.  I'll see if I can find a AMD system to test on.
+Hi Michael,
 
-On Wed, Feb 23, 2022 at 07:57:49PM -0500, Boris Ostrovsky wrote:
-> [   37.377313] BUG: unable to handle page fault for address: ffffc90042880018
-> [   37.378219] #PF: supervisor read access in kernel mode
-> [   37.378219] #PF: error_code(0x0000) - not-present page
-> [   37.378219] PGD 7c2f2ee067 P4D 7c2f2ee067 PUD 7bf019b067 PMD 105a30067 PTE 0
-> [   37.378219] Oops: 0000 [#1] PREEMPT SMP NOPTI
-> [   37.378219] CPU: 14 PID: 1 Comm: swapper/0 Not tainted 5.17.0-rc5swiotlb #9
-> [   37.378219] Hardware name: Oracle Corporation ORACLE SERVER E1-2c/ASY,Generic,SM,E1-2c, BIOS 49004900 12/23/2020
-> [   37.378219] RIP: e030:init_iommu_one+0x248/0x2f0
-> [   37.378219] Code: 48 89 43 68 48 85 c0 74 c4 be 00 20 00 00 48 89 df e8 ea ee ff ff 48 89 43 78 48 85 c0 74 ae c6 83 98 00 00 00 00 48 8b 43 38 <48> 8b 40 18 a8 01 74 07 83 8b a8 04 00 00 01 f6 83 a8 04 00 00 01
-> [   37.378219] RSP: e02b:ffffc9004044bd18 EFLAGS: 00010286
-> [   37.378219] RAX: ffffc90042880000 RBX: ffff888107260800 RCX: 0000000000000000
-> [   37.378219] RDX: 0000000080000000 RSI: ffffea00041cab80 RDI: 00000000ffffffff
-> [   37.378219] RBP: ffffc9004044bd38 R08: 0000000000000901 R09: ffffea00041cab00
-> [   37.378219] R10: 0000000000000002 R11: 0000000000000000 R12: ffffc90040435008
-> [   37.378219] R13: 0000000000080000 R14: 00000000efa00000 R15: 0000000000000000
-> [   37.378219] FS:  0000000000000000(0000) GS:ffff88fef4180000(0000) knlGS:0000000000000000
-> [   37.378219] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   37.378219] CR2: ffffc90042880018 CR3: 000000000260a000 CR4: 0000000000050660
-> [   37.378219] Call Trace:
-> [   37.378219]  <TASK>
-> [   37.378219]  early_amd_iommu_init+0x3c5/0x72d
-> [   37.378219]  ? iommu_setup+0x284/0x284
-> [   37.378219]  state_next+0x158/0x68f
-> [   37.378219]  ? iommu_setup+0x284/0x284
-> [   37.378219]  iommu_go_to_state+0x28/0x2d
-> [   37.378219]  amd_iommu_init+0x15/0x4b
-> [   37.378219]  ? iommu_setup+0x284/0x284
-> [   37.378219]  pci_iommu_init+0x12/0x37
-> [   37.378219]  do_one_initcall+0x48/0x210
-> [   37.378219]  kernel_init_freeable+0x229/0x28c
-> [   37.378219]  ? rest_init+0xe0/0xe0
-> [   37.963966]  kernel_init+0x1a/0x130
-> [   37.979415]  ret_from_fork+0x22/0x30
-> [   37.991436]  </TASK>
-> [   37.999465] Modules linked in:
-> [   38.007413] CR2: ffffc90042880018
-> [   38.019416] ---[ end trace 0000000000000000 ]---
-> [   38.023418] RIP: e030:init_iommu_one+0x248/0x2f0
-> [   38.023418] Code: 48 89 43 68 48 85 c0 74 c4 be 00 20 00 00 48 89 df e8 ea ee ff ff 48 89 43 78 48 85 c0 74 ae c6 83 98 00 00 00 00 48 8b 43 38 <48> 8b 40 18 a8 01 74 07 83 8b a8 04 00 00 01 f6 83 a8 04 00 00 01
-> [   38.023418] RSP: e02b:ffffc9004044bd18 EFLAGS: 00010286
-> [   38.023418] RAX: ffffc90042880000 RBX: ffff888107260800 RCX: 0000000000000000
-> [   38.155413] RDX: 0000000080000000 RSI: ffffea00041cab80 RDI: 00000000ffffffff
-> [   38.175965] Freeing initrd memory: 62640K
-> [   38.155413] RBP: ffffc9004044bd38 R08: 0000000000000901 R09: ffffea00041cab00
-> [   38.155413] R10: 0000000000000002 R11: 0000000000000000 R12: ffffc90040435008
-> [   38.155413] R13: 0000000000080000 R14: 00000000efa00000 R15: 0000000000000000
-> [   38.155413] FS:  0000000000000000(0000) GS:ffff88fef4180000(0000) knlGS:0000000000000000
-> [   38.287414] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   38.309557] CR2: ffffc90042880018 CR3: 000000000260a000 CR4: 0000000000050660
-> [   38.332403] Kernel panic - not syncing: Fatal exception
-> [   38.351414] Rebooting in 20 seconds..
 >
+> Thanks for these, just a few comments below ...
+
+I will resolve the comments below and resend a v2 shortly.
+
+Cheers,
+Anders
+
 >
+> Anders Roxell <anders.roxell@linaro.org> writes:
+> > Building tinyconfig with gcc (Debian 11.2.0-16) and assembler (Debian
+> > 2.37.90.20220207) the following build error shows up:
+> >
+> >  {standard input}: Assembler messages:
+> >  {standard input}:1190: Error: unrecognized opcode: `stbcix'
+> >  {standard input}:1433: Error: unrecognized opcode: `lwzcix'
+> >  {standard input}:1453: Error: unrecognized opcode: `stbcix'
+> >  {standard input}:1460: Error: unrecognized opcode: `stwcix'
+> >  {standard input}:1596: Error: unrecognized opcode: `stbcix'
+> >  ...
+> >
+> > Rework to add assembler directives [1] around the instruction. Going
+> > through the them one by one shows that the changes should be safe.  Like
+> > __get_user_atomic_128_aligned() is only called in p9_hmi_special_emu(),
+> > which according to the name is specific to power9.  And __raw_rm_read*()
+> > are only called in things that are powernv or book3s_hv specific.
+> >
+> > [1] https://sourceware.org/binutils/docs/as/PowerPC_002dPseudo.html#PowerPC_002dPseudo
+> >
+> > Cc: <stable@vger.kernel.org>
+> > Co-developed-by: Arnd Bergmann <arnd@arndb.de>
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+> > ---
+> >  arch/powerpc/include/asm/io.h        | 46 +++++++++++++++++++++++-----
+> >  arch/powerpc/include/asm/uaccess.h   |  3 ++
+> >  arch/powerpc/platforms/powernv/rng.c |  6 +++-
+> >  3 files changed, 46 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+> > index beba4979bff9..5ff6dec489f8 100644
+> > --- a/arch/powerpc/include/asm/io.h
+> > +++ b/arch/powerpc/include/asm/io.h
+> > @@ -359,25 +359,37 @@ static inline void __raw_writeq_be(unsigned long v, volatile void __iomem *addr)
+> >   */
+> >  static inline void __raw_rm_writeb(u8 val, volatile void __iomem *paddr)
+> >  {
+> > -     __asm__ __volatile__("stbcix %0,0,%1"
+> > +     __asm__ __volatile__(".machine \"push\"\n"
+> > +                          ".machine \"power6\"\n"
+> > +                          "stbcix %0,0,%1\n"
+> > +                          ".machine \"pop\"\n"
+> >               : : "r" (val), "r" (paddr) : "memory");
 >
-> -boris
----end quoted text---
+> As Segher said it'd be cleaner without the embedded quotes.
+>
+> > @@ -441,7 +465,10 @@ static inline unsigned int name(unsigned int port)       \
+> >       unsigned int x;                                 \
+> >       __asm__ __volatile__(                           \
+> >               "sync\n"                                \
+> > +             ".machine \"push\"\n"                   \
+> > +             ".machine \"power6\"\n"                 \
+> >               "0:"    op "    %0,0,%1\n"              \
+> > +             ".machine \"pop\"\n"                    \
+> >               "1:     twi     0,%0,0\n"               \
+> >               "2:     isync\n"                        \
+> >               "3:     nop\n"                          \
+> > @@ -465,7 +492,10 @@ static inline void name(unsigned int val, unsigned int port) \
+> >  {                                                    \
+> >       __asm__ __volatile__(                           \
+> >               "sync\n"                                \
+> > +             ".machine \"push\"\n"                   \
+> > +             ".machine \"power6\"\n"                 \
+> >               "0:" op " %0,0,%1\n"                    \
+> > +             ".machine \"pop\"\n"                    \
+> >               "1:     sync\n"                         \
+> >               "2:\n"                                  \
+> >               EX_TABLE(0b, 2b)                        \
+>
+> It's not visible from the diff, but the above two are __do_in_asm and
+> __do_out_asm and are inside an ifdef CONFIG_PPC32.
+>
+> AFAICS they're only used for:
+>
+> __do_in_asm(_rec_inb, "lbzx")
+> __do_in_asm(_rec_inw, "lhbrx")
+> __do_in_asm(_rec_inl, "lwbrx")
+> __do_out_asm(_rec_outb, "stbx")
+> __do_out_asm(_rec_outw, "sthbrx")
+> __do_out_asm(_rec_outl, "stwbrx")
+>
+> Which are all old instructions, so I don't think we need the machine
+> power6 for those two macros?
+>
+> > diff --git a/arch/powerpc/platforms/powernv/rng.c b/arch/powerpc/platforms/powernv/rng.c
+> > index b4386714494a..5bf30ef6d928 100644
+> > --- a/arch/powerpc/platforms/powernv/rng.c
+> > +++ b/arch/powerpc/platforms/powernv/rng.c
+> > @@ -43,7 +43,11 @@ static unsigned long rng_whiten(struct powernv_rng *rng, unsigned long val)
+> >       unsigned long parity;
+> >
+> >       /* Calculate the parity of the value */
+> > -     asm ("popcntd %0,%1" : "=r" (parity) : "r" (val));
+> > +     asm (".machine \"push\"\n"
+> > +          ".machine \"power7\"\n"
+> > +          "popcntd %0,%1\n"
+> > +          ".machine \"pop\"\n"
+> > +          : "=r" (parity) : "r" (val));
+>
+> This was actually present in an older CPU, but it doesn't really matter,
+> this is fine.
+>
+> cheers
