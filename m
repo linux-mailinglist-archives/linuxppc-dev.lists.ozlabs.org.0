@@ -2,103 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7DB4C2699
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 09:53:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8AC24C269E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 09:55:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K46B74QWKz3cBH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 19:53:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K46F00FgPz3cCt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 19:55:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KO0izK1R;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aWeiycBZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=KO0izK1R; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=aWeiycBZ; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K46926Vp4z30Pf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 19:52:06 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21O5a9R0027195; 
- Thu, 24 Feb 2022 08:52:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=2t8ecI3yy8Il2zdL41/YOmI9kpF4rXGLf2zGhAVANNI=;
- b=KO0izK1R0iXXPEFaqhgPJ4yGezvQXd2LjTjp9vLotw0il5ImjWq/iQr/3EEKCA3udaDS
- rJUVsKO+GyZ8nPV8JxEhyUdEzmLgn8ZYCvxnyl9dOrMZwrqXejFyXk5U6Ylt3CdBNs4V
- RoNkT/ILFmL0rTpfCUG5zJ5Dd5MtRjjM0KWJO2FPN3/Zxe2uHdfGS20uFQ65rl8NsGGR
- VjzpGDQfbPo8Z4UDO+cKeagwqVg9bXjD+GAdr9oYpE6QOVV66JDDLEtfeRYhUnPeSWl+
- ZxYADxAvYBYTmElc2cBtZ3S7DexKxEG9wFAfbLrRXugZiGYl94DGTSKHogaDvFP5HGnE Og== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3edwkeak1m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Feb 2022 08:52:01 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21O8n2o6022650;
- Thu, 24 Feb 2022 08:52:00 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3edwkeak1c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Feb 2022 08:52:00 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21O8iQbH014003;
- Thu, 24 Feb 2022 08:51:59 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma03dal.us.ibm.com with ESMTP id 3ear6casu3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 24 Feb 2022 08:51:59 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21O8puIY13370008
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 24 Feb 2022 08:51:56 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 42514124069;
- Thu, 24 Feb 2022 08:51:56 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1358F12405B;
- Thu, 24 Feb 2022 08:51:55 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.160.92.72])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 24 Feb 2022 08:51:54 +0000 (GMT)
-Message-ID: <52bd10b05bd45d620ed16d09e7e74d628f9f2555.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 2/4] powerpc/pseries/vas: Modify reconfig open/close
- functions for migration
-From: Haren Myneni <haren@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au, nathanl@linux.ibm.com
-Date: Thu, 24 Feb 2022 00:51:53 -0800
-In-Reply-To: <1645609170.yvpqkmicgp.astroid@bobo.none>
-References: <4a23d5ec655fd00da97b0b0b46174a3a3894bfb0.camel@linux.ibm.com>
- <fb9f17bd5ee7a4df453138769b709c60cdc42641.camel@linux.ibm.com>
- <1645609170.yvpqkmicgp.astroid@bobo.none>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K46DP1c1Pz2x9V
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 19:55:01 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 1BE97B82359;
+ Thu, 24 Feb 2022 08:54:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4D7C340E9;
+ Thu, 24 Feb 2022 08:54:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1645692897;
+ bh=QM405ssLEIlPDzKb6YOqlwf2/ZaWnbU9moIwYlAjDfk=;
+ h=From:To:Cc:Subject:Date:From;
+ b=aWeiycBZv7OP8FyEq6NgDCVhPem75nkYpt3BoaYZnKEg3YLecsOlVMEUVDlUZCfs1
+ 9se8n/U85Zt5SDK6va5zx3X+HOjqMWqQ11n89nqBD1SU1+r9kJs++73qOnVMKtSJDW
+ 5uJ7N6DsrnQbsyIalk5hNFUk44fYQV5DfQ2KXGhkZFfWbtvYrcizcQZtM5hJf9j26X
+ uFWnvkXOrvPsazwJ/471X1TX3JBQHhjkl+lBBXu5sf07/ost510DdnBWHd6kIIt61O
+ ud+BEcdRATLPDLzkC0oqw1F6/SGpwnP8BU6vGh0neAqRVOW9/QQ3TV8okj3zhB0bhw
+ xJ9xQBSRtQzoA==
+From: guoren@kernel.org
+To: guoren@kernel.org, palmer@dabbelt.com, arnd@arndb.de, anup@brainfault.org,
+ gregkh@linuxfoundation.org, liush@allwinnertech.com, wefu@redhat.com,
+ drew@beagleboard.org, wangjunqiang@iscas.ac.cn, hch@lst.de
+Subject: [PATCH V6 00/20] riscv: compat: Add COMPAT mode support for rv64
+Date: Thu, 24 Feb 2022 16:53:50 +0800
+Message-Id: <20220224085410.399351-1-guoren@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: hAmzQfhegb0Cs_OAfgrYjWeQKWg8MkVQ
-X-Proofpoint-ORIG-GUID: 8Th41QxQnknOEpzscmcBg3HvoQXnGxzj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-02-23_09,2022-02-23_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015
- mlxscore=0 lowpriorityscore=0 phishscore=0 adultscore=0 suspectscore=0
- bulkscore=0 mlxlogscore=999 priorityscore=1501 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202240050
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,318 +62,417 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Guo Ren <guoren@linux.alibaba.com>, linux-parisc@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2022-02-23 at 19:54 +1000, Nicholas Piggin wrote:
-> Excerpts from Haren Myneni's message of February 20, 2022 6:05 am:
-> > VAS is a hardware engine stays on the chip. So when the partition
-> > migrates, all VAS windows on the source system have to be closed
-> > and reopen them on the destination after migration.
-> > 
-> > This patch make changes to the current reconfig_open/close_windows
-> > functions to support migration:
-> > - Set VAS_WIN_MIGRATE_CLOSE to the window status when closes and
-> >   reopen windows with the same status during resume.
-> > - Continue to close all windows even if deallocate HCALL failed
-> >   (should not happen) since no way to stop migration with the
-> >   current LPM implementation.
-> 
-> Hmm.  pseries_migrate_partition *can* fail?
+From: Guo Ren <guoren@linux.alibaba.com>
 
-Yes, it can fail. If pseries_suspend() fails, all VAS windows will be
-reopened again without migration. vas_migration_handler(VAS_RESUME) is
-called whether pseries_suspend() returns 0 or not.
+Currently, most 64-bit architectures (x86, parisc, powerpc, arm64,
+s390, mips, sparc) have supported COMPAT mode. But they all have
+history issues and can't use standard linux unistd.h. RISC-V would
+be first standard __SYSCALL_COMPAT user of include/uapi/asm-generic
+/unistd.h.
 
-> 
-> > - If the DLPAR CPU event happens while migration is in progress,
-> >   set VAS_WIN_NO_CRED_CLOSE to the window status. Close window
-> >   happens with the first event (migration or DLPAR) and Reopen
-> >   window happens only with the last event (migration or DLPAR).
-> 
-> Can DLPAR happen while migration is in progress? Couldn't
-> this cause your source and destination credits to go out of
-> whack?
+The patchset are based on v5.17-rc5, you can compare rv64-compat
+v.s. rv32-native in qemu with following steps:
 
-Should not be, If the DLPAR event happens while migration is in
-progress, windows will be closed in the hypervisor (and mark inactive
-with migration status bit in OS) for migration. For DLPAR event, mark
-the DLPAR_CLOSED status bits for the necessary windows. Then after the
-migration, we open windows in the hypervisor and set them active in OS
-that have only migration status. Open the other remaining windows only
-after the other DLPAR core add event. 
+ - Prepare rv32 rootfs & fw_jump.bin by buildroot.org
+   $ git clone git://git.busybox.net/buildroot
+   $ cd buildroot
+   $ make qemu_riscv32_virt_defconfig O=qemu_riscv32_virt_defconfig
+   $ make -C qemu_riscv32_virt_defconfig
+   $ make qemu_riscv64_virt_defconfig O=qemu_riscv64_virt_defconfig
+   $ make -C qemu_riscv64_virt_defconfig
+   (Got fw_jump.bin & rootfs.ext2 in qemu_riscvXX_virt_defconfig/images)
 
-Regarding the traget credits on the destination, we get the new
-capabilities after migration and use the new value for reopen. 
+ - Prepare Linux rv32 & rv64 Image
+   $ git clone git@github.com:c-sky/csky-linux.git -b riscv_compat_v6 linux
+   $ cd linux
+   $ echo "CONFIG_STRICT_KERNEL_RWX=n" >> arch/riscv/configs/defconfig
+   $ echo "CONFIG_STRICT_MODULE_RWX=n" >> arch/riscv/configs/defconfig
+   $ make ARCH=riscv CROSS_COMPILE=riscv32-buildroot-linux-gnu- O=../build-rv32/ rv32_defconfig
+   $ make ARCH=riscv CROSS_COMPILE=riscv32-buildroot-linux-gnu- O=../build-rv32/ Image
+   $ make ARCH=riscv CROSS_COMPILE=riscv64-buildroot-linux-gnu- O=../build-rv64/ defconfig
+   $ make ARCH=riscv CROSS_COMPILE=riscv64-buildroot-linux-gnu- O=../build-rv64/ Image
 
-Ex: Used the following test case -
-- Configuted 2 dedicated cores (40 credits) and exeuted the test case
-which opened 35 credits / windows
-- Removed 1 core, means available 20 credits. So closed 15 windows and
-set them with DLPAR closed status
-- Migration start: Closed the remaining 20 windows and set all windows
-(means 35) migration status
-- After migration, opened windows that have only migration status - 20
-windows, and also clear migration stats for the remaining 15 widnows
-- Add core which gives the system 20 more credits, So opened the
-remaining 15 windows and these have only DLPAR closed status. 
+ - Prepare Qemu: (rv32 compat was made by LIU Zhiwei <zhiwei_liu@c-sky.com>)
+   $ git clone git@github.com:alistair23/qemu.git -b riscv-to-apply.for-upstream linux
+   $ cd qemu
+   $ ./configure --target-list="riscv64-softmmu riscv32-softmmu"
+   $ make
 
-> 
-> Why do you need two close window types, what if you finish
-> LPM and just open as many as possible regardless how they
-> are closed?
+Now let's compare rv64-compat with rv32-native memory footprint with almost the same
+defconfig, rootfs, opensbi in one qemu.
 
-Adding 2 different status bits to support DLPAR and LPM closed staus.
-As I mentioned above, windows will be active only after both bits are
-cleared.
+ - Run rv64 with rv32 rootfs in compat mode:
+   $ ./build/qemu-system-riscv64 -cpu rv64 -M virt -m 64m -nographic -bios qemu_riscv64_virt_defconfig/images/fw_jump.bin -kernel build-rv64/Image -drive file qemu_riscv32_virt_defconfig/images/rootfs.ext2,format=raw,id=hd0 -device virtio-blk-device,drive=hd0 -append "rootwait root=/dev/vda ro console=ttyS0 earlycon=sbi" -netdev user,id=net0 -device virtio-net-device,netdev=net0
 
-Thanks
-Haren
+QEMU emulator version 6.2.50 (v6.2.0-29-g196d7182c8)
+OpenSBI v0.9
+[    0.000000] Linux version 5.16.0-rc6-00017-g750f87086bdd-dirty (guoren@guoren-Z87-HD3) (riscv64-unknown-linux-gnu-gcc (GCC) 10.2.0, GNU ld (GNU Binutils) 2.37) #96 SMP Tue Dec 28 21:01:55 CST 2021
+[    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80200000
+[    0.000000] Machine model: riscv-virtio,qemu
+[    0.000000] earlycon: sbi0 at I/O port 0x0 (options '')
+[    0.000000] printk: bootconsole [sbi0] enabled
+[    0.000000] efi: UEFI not found.
+[    0.000000] Zone ranges:
+[    0.000000]   DMA32    [mem 0x0000000080200000-0x0000000083ffffff]
+[    0.000000]   Normal   empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080200000-0x0000000083ffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080200000-0x0000000083ffffff]
+[    0.000000] SBI specification v0.2 detected
+[    0.000000] SBI implementation ID=0x1 Version=0x9
+[    0.000000] SBI TIME extension detected
+[    0.000000] SBI IPI extension detected
+[    0.000000] SBI RFENCE extension detected
+[    0.000000] SBI v0.2 HSM extension detected
+[    0.000000] riscv: ISA extensions acdfhimsu
+[    0.000000] riscv: ELF capabilities acdfim
+[    0.000000] percpu: Embedded 17 pages/cpu s30696 r8192 d30744 u69632
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 15655
+[    0.000000] Kernel command line: rootwait root=/dev/vda ro console=ttyS0 earlycon=sbi
+[    0.000000] Dentry cache hash table entries: 8192 (order: 4, 65536 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 4096 (order: 3, 32768 bytes, linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] Virtual kernel memory layout:
+[    0.000000]       fixmap : 0xffffffcefee00000 - 0xffffffceff000000   (2048 kB)
+[    0.000000]       pci io : 0xffffffceff000000 - 0xffffffcf00000000   (  16 MB)
+[    0.000000]      vmemmap : 0xffffffcf00000000 - 0xffffffcfffffffff   (4095 MB)
+[    0.000000]      vmalloc : 0xffffffd000000000 - 0xffffffdfffffffff   (65535 MB)
+[    0.000000]       lowmem : 0xffffffe000000000 - 0xffffffe003e00000   (  62 MB)
+[    0.000000]       kernel : 0xffffffff80000000 - 0xffffffffffffffff   (2047 MB)
+[    0.000000] Memory: 52788K/63488K available (6184K kernel code, 888K rwdata, 1917K rodata, 294K init, 297K bss, 10700K reserved, 0K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] rcu:     RCU restricting CPUs from NR_CPUS=8 to nr_cpu_ids=1.
+[    0.000000] rcu:     RCU debug extended QS entry/exit.
+[    0.000000]  Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] riscv-intc: 64 local interrupts mapped
+[    0.000000] plic: plic@c000000: mapped 53 interrupts with 1 handlers for 2 contexts.
+...
+Welcome to Buildroot
+buildroot login: root
+# cat /proc/cpuinfo
+processor       : 0
+hart            : 0
+isa             : rv64imafdcsuh
+mmu             : sv48
 
-> 
-> Thanks,
-> Nick
-> 
-> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> > ---
-> >  arch/powerpc/include/asm/vas.h       |  2 +
-> >  arch/powerpc/platforms/pseries/vas.c | 88 ++++++++++++++++++++++
-> > ------
-> >  2 files changed, 73 insertions(+), 17 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/vas.h
-> > b/arch/powerpc/include/asm/vas.h
-> > index 6baf7b9ffed4..83afcb6c194b 100644
-> > --- a/arch/powerpc/include/asm/vas.h
-> > +++ b/arch/powerpc/include/asm/vas.h
-> > @@ -36,6 +36,8 @@
-> >  					/* vas mmap() */
-> >  /* Window is closed in the hypervisor due to lost credit */
-> >  #define VAS_WIN_NO_CRED_CLOSE	0x00000001
-> > +/* Window is closed due to migration */
-> > +#define VAS_WIN_MIGRATE_CLOSE	0x00000002
-> >  
-> >  /*
-> >   * Get/Set bit fields
-> > diff --git a/arch/powerpc/platforms/pseries/vas.c
-> > b/arch/powerpc/platforms/pseries/vas.c
-> > index 3bb219f54806..fbcf311da0ec 100644
-> > --- a/arch/powerpc/platforms/pseries/vas.c
-> > +++ b/arch/powerpc/platforms/pseries/vas.c
-> > @@ -457,11 +457,12 @@ static int vas_deallocate_window(struct
-> > vas_window *vwin)
-> >  	mutex_lock(&vas_pseries_mutex);
-> >  	/*
-> >  	 * VAS window is already closed in the hypervisor when
-> > -	 * lost the credit. So just remove the entry from
-> > -	 * the list, remove task references and free vas_window
-> > +	 * lost the credit or with migration. So just remove the entry
-> > +	 * from the list, remove task references and free vas_window
-> >  	 * struct.
-> >  	 */
-> > -	if (win->vas_win.status & VAS_WIN_NO_CRED_CLOSE) {
-> > +	if (!(win->vas_win.status & VAS_WIN_NO_CRED_CLOSE) &&
-> > +		!(win->vas_win.status & VAS_WIN_MIGRATE_CLOSE)) {
-> >  		rc = deallocate_free_window(win);
-> >  		if (rc) {
-> >  			mutex_unlock(&vas_pseries_mutex);
-> > @@ -578,12 +579,14 @@ static int __init get_vas_capabilities(u8
-> > feat, enum vas_cop_feat_type type,
-> >   * by setting the remapping to new paste address if the window is
-> >   * active.
-> >   */
-> > -static int reconfig_open_windows(struct vas_caps *vcaps, int
-> > creds)
-> > +static int reconfig_open_windows(struct vas_caps *vcaps, int
-> > creds,
-> > +				 bool migrate)
-> >  {
-> >  	long domain[PLPAR_HCALL9_BUFSIZE] = {VAS_DEFAULT_DOMAIN_ID};
-> >  	struct vas_cop_feat_caps *caps = &vcaps->caps;
-> >  	struct pseries_vas_window *win = NULL, *tmp;
-> >  	int rc, mv_ents = 0;
-> > +	int flag;
-> >  
-> >  	/*
-> >  	 * Nothing to do if there are no closed windows.
-> > @@ -602,8 +605,10 @@ static int reconfig_open_windows(struct
-> > vas_caps *vcaps, int creds)
-> >  	 * (dedicated). If 1 core is added, this LPAR can have 20 more
-> >  	 * credits. It means the kernel can reopen 20 windows. So move
-> >  	 * 20 entries in the VAS windows lost and reopen next 20
-> > windows.
-> > +	 * For partition migration, reopen all windows that are closed
-> > +	 * during resume.
-> >  	 */
-> > -	if (vcaps->nr_close_wins > creds)
-> > +	if ((vcaps->nr_close_wins > creds) && !migrate)
-> >  		mv_ents = vcaps->nr_close_wins - creds;
-> >  
-> >  	list_for_each_entry_safe(win, tmp, &vcaps->list, win_list) {
-> > @@ -613,12 +618,35 @@ static int reconfig_open_windows(struct
-> > vas_caps *vcaps, int creds)
-> >  		mv_ents--;
-> >  	}
-> >  
-> > +	/*
-> > +	 * Open windows if they are closed only with migration or
-> > +	 * DLPAR (lost credit) before.
-> > +	 */
-> > +	if (migrate)
-> > +		flag = VAS_WIN_MIGRATE_CLOSE;
-> > +	else
-> > +		flag = VAS_WIN_NO_CRED_CLOSE;
-> > +
-> >  	list_for_each_entry_safe_from(win, tmp, &vcaps->list, win_list)
-> > {
-> > +		/*
-> > +		 * This window is closed with DLPAR and migration
-> > events.
-> > +		 * So reopen the window with the last event.
-> > +		 * The user space is not suspended with the current
-> > +		 * migration notifier. So the user space can issue
-> > DLPAR
-> > +		 * CPU hotplug while migration in progress. In this
-> > case
-> > +		 * this window will be opened with the last event.
-> > +		 */
-> > +		if ((win->vas_win.status & VAS_WIN_NO_CRED_CLOSE) &&
-> > +			(win->vas_win.status & VAS_WIN_MIGRATE_CLOSE))
-> > {
-> > +			win->vas_win.status &= ~flag;
-> > +			continue;
-> > +		}
-> > +
-> >  		/*
-> >  		 * Nothing to do on this window if it is not closed
-> > -		 * with VAS_WIN_NO_CRED_CLOSE
-> > +		 * with this flag
-> >  		 */
-> > -		if (!(win->vas_win.status & VAS_WIN_NO_CRED_CLOSE))
-> > +		if (!(win->vas_win.status & flag))
-> >  			continue;
-> >  
-> >  		rc = allocate_setup_window(win, (u64 *)&domain[0],
-> > @@ -634,7 +662,7 @@ static int reconfig_open_windows(struct
-> > vas_caps *vcaps, int creds)
-> >  		/*
-> >  		 * Set window status to active
-> >  		 */
-> > -		win->vas_win.status &= ~VAS_WIN_NO_CRED_CLOSE;
-> > +		win->vas_win.status &= ~flag;
-> >  		mutex_unlock(&win->vas_win.task_ref.mmap_mutex);
-> >  		win->win_type = caps->win_type;
-> >  		if (!--vcaps->nr_close_wins)
-> > @@ -661,20 +689,32 @@ static int reconfig_open_windows(struct
-> > vas_caps *vcaps, int creds)
-> >   * the user space to fall back to SW compression and manage with
-> > the
-> >   * existing windows.
-> >   */
-> > -static int reconfig_close_windows(struct vas_caps *vcap, int
-> > excess_creds)
-> > +static int reconfig_close_windows(struct vas_caps *vcap, int
-> > excess_creds,
-> > +									
-> > bool migrate)
-> >  {
-> >  	struct pseries_vas_window *win, *tmp;
-> >  	struct vas_user_win_ref *task_ref;
-> >  	struct vm_area_struct *vma;
-> > -	int rc = 0;
-> > +	int rc = 0, flag;
-> > +
-> > +	if (migrate)
-> > +		flag = VAS_WIN_MIGRATE_CLOSE;
-> > +	else
-> > +		flag = VAS_WIN_NO_CRED_CLOSE;
-> >  
-> >  	list_for_each_entry_safe(win, tmp, &vcap->list, win_list) {
-> >  		/*
-> >  		 * This window is already closed due to lost credit
-> > -		 * before. Go for next window.
-> > +		 * or for migration before. Go for next window.
-> > +		 * For migration, nothing to do since this window
-> > +		 * closed for DLPAR and will be reopened even on
-> > +		 * the destination system with other DLPAR operation.
-> >  		 */
-> > -		if (win->vas_win.status & VAS_WIN_NO_CRED_CLOSE)
-> > +		if ((win->vas_win.status & VAS_WIN_MIGRATE_CLOSE) ||
-> > +			(win->vas_win.status & VAS_WIN_NO_CRED_CLOSE))
-> > {
-> > +			win->vas_win.status |= flag;
-> >  			continue;
-> > +		}
-> >  
-> >  		task_ref = &win->vas_win.task_ref;
-> >  		mutex_lock(&task_ref->mmap_mutex);
-> > @@ -683,7 +723,7 @@ static int reconfig_close_windows(struct
-> > vas_caps *vcap, int excess_creds)
-> >  		 * Number of available credits are reduced, So select
-> >  		 * and close windows.
-> >  		 */
-> > -		win->vas_win.status |= VAS_WIN_NO_CRED_CLOSE;
-> > +		win->vas_win.status |= flag;
-> >  
-> >  		mmap_write_lock(task_ref->mm);
-> >  		/*
-> > @@ -706,12 +746,24 @@ static int reconfig_close_windows(struct
-> > vas_caps *vcap, int excess_creds)
-> >  		 * later when the process issued with close(FD).
-> >  		 */
-> >  		rc = deallocate_free_window(win);
-> > -		if (rc)
-> > +		/*
-> > +		 * This failure is from the hypervisor.
-> > +		 * No way to stop migration for these failures.
-> > +		 * So ignore error and continue closing other windows.
-> > +		 */
-> > +		if (rc && !migrate)
-> >  			return rc;
-> >  
-> >  		vcap->nr_close_wins++;
-> >  
-> > -		if (!--excess_creds)
-> > +		/*
-> > +		 * For migration, do not depend on lpar_creds in case
-> > if
-> > +		 * mismatch with the hypervisor value (should not
-> > happen).
-> > +		 * So close all active windows in the list and will be
-> > +		 * reopened windows based on the new lpar_creds on the
-> > +		 * destination system during resume.
-> > +		 */
-> > +		if (!migrate && !--excess_creds)
-> >  			break;
-> >  	}
-> >  
-> > @@ -761,7 +813,8 @@ int vas_reconfig_capabilties(u8 type)
-> >  		 * target, reopen windows if they are closed due to
-> >  		 * the previous DLPAR (core removal).
-> >  		 */
-> > -		rc = reconfig_open_windows(vcaps, new_nr_creds -
-> > old_nr_creds);
-> > +		rc = reconfig_open_windows(vcaps, new_nr_creds -
-> > old_nr_creds,
-> > +					   false);
-> >  	} else {
-> >  		/*
-> >  		 * # active windows is more than new LPAR available
-> > @@ -771,7 +824,8 @@ int vas_reconfig_capabilties(u8 type)
-> >  		nr_active_wins = vcaps->nr_open_windows - vcaps-
-> > >nr_close_wins;
-> >  		if (nr_active_wins > new_nr_creds)
-> >  			rc = reconfig_close_windows(vcaps,
-> > -					nr_active_wins - new_nr_creds);
-> > +					nr_active_wins - new_nr_creds,
-> > +					false);
-> >  	}
-> >  
-> >  out:
-> > -- 
-> > 2.27.0
-> > 
-> > 
-> > 
+# file /bin/busybox
+/bin/busybox: setuid ELF 32-bit LSB shared object, UCB RISC-V, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-riscv32-ilp32d.so.1, for GNU/Linux 5.15.0, stripped
+# ca[   78.386630] random: fast init done
+# cat /proc/meminfo
+MemTotal:          53076 kB
+MemFree:           40264 kB
+MemAvailable:      40244 kB
+Buffers:             236 kB
+Cached:             1560 kB
+SwapCached:            0 kB
+Active:             1700 kB
+Inactive:            516 kB
+Active(anon):         40 kB
+Inactive(anon):      424 kB
+Active(file):       1660 kB
+Inactive(file):       92 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:                 0 kB
+Writeback:             0 kB
+AnonPages:           444 kB
+Mapped:             1188 kB
+Shmem:                44 kB
+KReclaimable:        952 kB
+Slab:               5744 kB
+SReclaimable:        952 kB
+SUnreclaim:         4792 kB
+KernelStack:         624 kB
+PageTables:          156 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:       26536 kB
+Committed_AS:       1748 kB
+VmallocTotal:   67108863 kB
+VmallocUsed:         652 kB
+VmallocChunk:          0 kB
+Percpu:               80 kB
+#
+
+ - Run rv32 with rv32 rootfs:
+   $ ./build/qemu-system-riscv32 -cpu rv32 -M virt -m 64m -nographic -bios qemu_riscv32_virt_defconfig/images/fw_jump.bin -kernel build-rv32/Image -drive file qemu_riscv32_virt_defconfig/images/rootfs.ext2,format=raw,id=hd0 -device virtio-blk-device,drive=hd0 -append "rootwait root=/dev/vda ro console=ttyS0 earlycon=sbi" -netdev user,id=net0 -device virtio-net-device,netdev=net0
+
+QEMU emulator version 6.2.50 (v6.2.0-29-g196d7182c8)
+OpenSBI v0.9
+[    0.000000] Linux version 5.16.0-rc6-00017-g750f87086bdd-dirty (guoren@guoren-Z87-HD3) (riscv32-buildroot-linux-gnu-gcc.br_real (Buildroot 2021.11-201-g7600ca7960-dirty) 10.3.0, GNU ld (GNU Binutils) 2.36.1) #7 SMP Tue Dec 28 21:02:21 CST 2021
+[    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80400000
+[    0.000000] Machine model: riscv-virtio,qemu
+[    0.000000] earlycon: sbi0 at I/O port 0x0 (options '')
+[    0.000000] printk: bootconsole [sbi0] enabled
+[    0.000000] efi: UEFI not found.
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000080400000-0x0000000083ffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080400000-0x0000000083ffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080400000-0x0000000083ffffff]
+[    0.000000] SBI specification v0.2 detected
+[    0.000000] SBI implementation ID=0x1 Version=0x9
+[    0.000000] SBI TIME extension detected
+[    0.000000] SBI IPI extension detected
+[    0.000000] SBI RFENCE extension detected
+[    0.000000] SBI v0.2 HSM extension detected
+[    0.000000] riscv: ISA extensions acdfhimsu
+[    0.000000] riscv: ELF capabilities acdfim
+[    0.000000] percpu: Embedded 12 pages/cpu s16600 r8192 d24360 u49152
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 15240
+[    0.000000] Kernel command line: rootwait root=/dev/vda ro console=ttyS0 earlycon=sbi
+[    0.000000] Dentry cache hash table entries: 8192 (order: 3, 32768 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 4096 (order: 2, 16384 bytes, linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] Virtual kernel memory layout:
+[    0.000000]       fixmap : 0x9dc00000 - 0x9e000000   (4096 kB)
+[    0.000000]       pci io : 0x9e000000 - 0x9f000000   (  16 MB)
+[    0.000000]      vmemmap : 0x9f000000 - 0x9fffffff   (  15 MB)
+[    0.000000]      vmalloc : 0xa0000000 - 0xbfffffff   ( 511 MB)
+[    0.000000]       lowmem : 0xc0000000 - 0xc3c00000   (  60 MB)
+[    0.000000] Memory: 51924K/61440K available (6117K kernel code, 695K rwdata, 1594K rodata, 255K init, 241K bss, 9516K reserved, 0K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] rcu:     RCU restricting CPUs from NR_CPUS=8 to nr_cpu_ids=1.
+[    0.000000] rcu:     RCU debug extended QS entry/exit.
+[    0.000000]  Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] riscv-intc: 32 local interrupts mapped
+[    0.000000] plic: plic@c000000: mapped 53 interrupts with 1 handlers for 2 contexts.
+...
+Welcome to Buildroot
+buildroot login: root
+# cat /proc/cpuinfo
+processor       : 0
+hart            : 0
+isa             : rv32imafdcsuh
+mmu             : sv32
+
+# file /bin/busybox
+/bin/busybox: setuid ELF 32-bit LSB shared object, UCB RISC-V, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-riscv32-ilp32d.so.1, for GNU/Linux 5.15.0, stripped
+[   79.320589] random: fast init done
+# cat /proc/meminfo
+MemTotal:          52176 kB
+MemFree:           41012 kB
+MemAvailable:      42176 kB
+Buffers:             644 kB
+Cached:             2724 kB
+SwapCached:            0 kB
+Active:             3128 kB
+Inactive:            752 kB
+Active(anon):         40 kB
+Inactive(anon):      516 kB
+Active(file):       3088 kB
+Inactive(file):      236 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:                 4 kB
+Writeback:             0 kB
+AnonPages:           556 kB
+Mapped:             2172 kB
+Shmem:                44 kB
+KReclaimable:        656 kB
+Slab:               3684 kB
+SReclaimable:        656 kB
+SUnreclaim:         3028 kB
+KernelStack:         312 kB
+PageTables:           88 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:       26088 kB
+Committed_AS:       2088 kB
+VmallocTotal:     524287 kB
+VmallocUsed:          12 kB
+VmallocChunk:          0 kB
+Percpu:               60 kB
+#
+
+ Some conclusions:
+ - kernel statics:
+   64: Memory: 52788K/63488K available (6184K kernel code, 888K rwdata, 1917K rodata, 294K init, 297K bss, 10700K reserved)
+   32: Memory: 51924K/61440K available (6117K kernel code, 695K rwdata, 1594K rodata, 255K init, 241K bss,  9516K reserved)
+   rv32 better than rv64:                  1%               22%           17%          13%        19%         11%
+   The code size is very similar, but data size rv32 would be better.
+
+ - rv32 kernel runtime KernelStack, Slab... are smaller,
+   rv64: MemTotal: 53076 kB,        MemFree: 40264 kB
+   rv32: MemTotal: 52176 + 2048 kB, MemFree: 41012  + 2048 kB
+   rv32 better than rv64:       2%                         6%
+
+   (Because opensbi problem, we could add another 2MB for rv32.)
+   Overall in 64MB memory situation, rv64-compat is 6% worse than rv32-full
+   at memory footprint. If the user space memory usage increases, I think
+   the gap will be further reduced.
+
+Changes in v6:
+ - Rebase on linux-5.17-rc5
+ - Optimize hw capability check for elf
+ - Optimize comment in thread_info.h
+ - Optimize start_thread with SR_UXL setting
+ - Optimize vdso.c with direct panic
+
+Changes in v5:
+ - Rebase on linux-5.17-rc2
+ - Include consolidate the fcntl patches by Christoph Hellwig
+ - Remove F_GETLK64/F_SETLK64/F_SETLKW64 from asm/compat.h
+ - Change COMPAT_RLIM_INFINITY from 0x7fffffff to 0xffffffff
+ - Bring back "Add hw-cap detect in setup_arch patch" in v1
+
+Changes in v4:
+ - Rebase on linux-5.17-rc1
+ - Optimize compat_sys_call_table implementation with Arnd's advice
+ - Add reviewed-by for Arnd. Thx :)
+ - Remove FIXME comment in elf.h
+ - Optimize Cleanup duplicate definitions in compat.h with Arnd's advice
+
+Changes in v3:
+ - Rebase on newest master (pre linux-5.17-rc1)
+ - Using newest qemu version v7 for test
+ - Remove fcntl common modification
+ - Fixup SET_PERSONALITY in elf.h by Arnd
+ - Fixup KVM Kconfig
+ - Update Acked-by & Reviewed-by
+
+Changes in v2:
+ - Add __ARCH_WANT_COMPAT_STAT suggested
+ - Cleanup fcntl compatduplicate definitions
+ - Cleanup compat.h
+ - Move rv32_defconfig into Makefile
+ - Fixup rv64 rootfs boot failed, remove hw_compat_mode_detect
+ - Move SYSVIPC_COMPAT into init/Kconfig
+ - Simplify compat_elf_check
+
+
+Christoph Hellwig (3):
+  uapi: simplify __ARCH_FLOCK{,64}_PAD a little
+  uapi: always define F_GETLK64/F_SETLK64/F_SETLKW64 in fcntl.h
+  compat: consolidate the compat_flock{,64} definition
+
+Guo Ren (17):
+  kconfig: Add SYSVIPC_COMPAT for all architectures
+  fs: stat: compat: Add __ARCH_WANT_COMPAT_STAT
+  asm-generic: compat: Cleanup duplicate definitions
+  syscalls: compat: Fix the missing part for __SYSCALL_COMPAT
+  riscv: Fixup difference with defconfig
+  riscv: compat: Add basic compat data type implementation
+  riscv: compat: Re-implement TASK_SIZE for COMPAT_32BIT
+  riscv: compat: syscall: Add compat_sys_call_table implementation
+  riscv: compat: syscall: Add entry.S implementation
+  riscv: compat: process: Add UXL_32 support in start_thread
+  riscv: compat: Add elf.h implementation
+  riscv: compat: Add hw capability check for elf
+  riscv: compat: vdso: Add rv32 VDSO base code implementation
+  riscv: compat: vdso: Add setup additional pages implementation
+  riscv: compat: signal: Add rt_frame implementation
+  riscv: compat: ptrace: Add compat_arch_ptrace implement
+  riscv: compat: Add COMPAT Kbuild skeletal support
+
+ arch/arm64/Kconfig                            |   4 -
+ arch/arm64/include/asm/compat.h               |  91 +------
+ arch/arm64/include/asm/unistd.h               |   1 +
+ arch/mips/Kconfig                             |   5 -
+ arch/mips/include/asm/compat.h                |  41 +--
+ arch/mips/include/asm/unistd.h                |   2 +
+ arch/mips/include/uapi/asm/fcntl.h            |  30 +--
+ arch/parisc/Kconfig                           |   4 -
+ arch/parisc/include/asm/compat.h              |  45 +---
+ arch/parisc/include/asm/unistd.h              |   1 +
+ arch/powerpc/Kconfig                          |   5 -
+ arch/powerpc/include/asm/compat.h             |  50 +---
+ arch/powerpc/include/asm/unistd.h             |   1 +
+ arch/riscv/Kconfig                            |  19 ++
+ arch/riscv/Makefile                           |   9 +
+ arch/riscv/configs/rv32_defconfig             | 135 ----------
+ arch/riscv/include/asm/compat.h               | 129 ++++++++++
+ arch/riscv/include/asm/csr.h                  |   7 +
+ arch/riscv/include/asm/elf.h                  |  52 +++-
+ arch/riscv/include/asm/mmu.h                  |   1 +
+ arch/riscv/include/asm/pgtable.h              |  13 +-
+ arch/riscv/include/asm/syscall.h              |   1 +
+ arch/riscv/include/asm/thread_info.h          |   1 +
+ arch/riscv/include/asm/unistd.h               |  11 +
+ arch/riscv/include/asm/vdso.h                 |   9 +
+ arch/riscv/include/uapi/asm/unistd.h          |   2 +-
+ arch/riscv/kernel/Makefile                    |   3 +
+ arch/riscv/kernel/compat_signal.c             | 243 ++++++++++++++++++
+ arch/riscv/kernel/compat_syscall_table.c      |  19 ++
+ arch/riscv/kernel/compat_vdso/.gitignore      |   2 +
+ arch/riscv/kernel/compat_vdso/Makefile        |  68 +++++
+ arch/riscv/kernel/compat_vdso/compat_vdso.S   |   8 +
+ .../kernel/compat_vdso/compat_vdso.lds.S      |   3 +
+ arch/riscv/kernel/compat_vdso/flush_icache.S  |   3 +
+ .../compat_vdso/gen_compat_vdso_offsets.sh    |   5 +
+ arch/riscv/kernel/compat_vdso/getcpu.S        |   3 +
+ arch/riscv/kernel/compat_vdso/note.S          |   3 +
+ arch/riscv/kernel/compat_vdso/rt_sigreturn.S  |   3 +
+ arch/riscv/kernel/entry.S                     |  18 +-
+ arch/riscv/kernel/process.c                   |  31 +++
+ arch/riscv/kernel/ptrace.c                    |  87 ++++++-
+ arch/riscv/kernel/signal.c                    |  13 +-
+ arch/riscv/kernel/sys_riscv.c                 |   6 +-
+ arch/riscv/kernel/vdso.c                      | 103 +++++---
+ arch/riscv/kernel/vdso/vdso.S                 |   6 +-
+ arch/s390/Kconfig                             |   3 -
+ arch/s390/include/asm/compat.h                |  99 +------
+ arch/s390/include/asm/unistd.h                |   1 +
+ arch/sparc/Kconfig                            |   5 -
+ arch/sparc/include/asm/compat.h               |  61 ++---
+ arch/sparc/include/asm/unistd.h               |   1 +
+ arch/x86/Kconfig                              |   4 -
+ arch/x86/include/asm/compat.h                 | 104 ++------
+ arch/x86/include/asm/unistd.h                 |   1 +
+ fs/open.c                                     |  24 ++
+ fs/read_write.c                               |  16 ++
+ fs/stat.c                                     |   2 +-
+ fs/sync.c                                     |   9 +
+ include/asm-generic/compat.h                  | 113 ++++++++
+ include/linux/compat.h                        |  68 +++++
+ include/uapi/asm-generic/fcntl.h              |  23 +-
+ include/uapi/asm-generic/unistd.h             |   4 +-
+ init/Kconfig                                  |   4 +
+ mm/fadvise.c                                  |  11 +
+ mm/readahead.c                                |   7 +
+ tools/include/uapi/asm-generic/fcntl.h        |  21 +-
+ tools/include/uapi/asm-generic/unistd.h       |   4 +-
+ 67 files changed, 1185 insertions(+), 696 deletions(-)
+ delete mode 100644 arch/riscv/configs/rv32_defconfig
+ create mode 100644 arch/riscv/include/asm/compat.h
+ create mode 100644 arch/riscv/kernel/compat_signal.c
+ create mode 100644 arch/riscv/kernel/compat_syscall_table.c
+ create mode 100644 arch/riscv/kernel/compat_vdso/.gitignore
+ create mode 100644 arch/riscv/kernel/compat_vdso/Makefile
+ create mode 100644 arch/riscv/kernel/compat_vdso/compat_vdso.S
+ create mode 100644 arch/riscv/kernel/compat_vdso/compat_vdso.lds.S
+ create mode 100644 arch/riscv/kernel/compat_vdso/flush_icache.S
+ create mode 100755 arch/riscv/kernel/compat_vdso/gen_compat_vdso_offsets.sh
+ create mode 100644 arch/riscv/kernel/compat_vdso/getcpu.S
+ create mode 100644 arch/riscv/kernel/compat_vdso/note.S
+ create mode 100644 arch/riscv/kernel/compat_vdso/rt_sigreturn.S
+
+-- 
+2.25.1
 
