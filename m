@@ -2,41 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9CA34C29BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 11:42:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB9234C2A71
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 12:14:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K48c00nQjz3cLN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 21:42:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K49K1259Vz3bd4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 22:14:13 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Jirg0vzi;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4K48bY68FRz2yPj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 21:41:44 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB6B0ED1;
- Thu, 24 Feb 2022 02:41:43 -0800 (PST)
-Received: from [10.163.48.178] (unknown [10.163.48.178])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1BF8A3F70D;
- Thu, 24 Feb 2022 02:41:36 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH 05/11] swiotlb: pass a gfp_mask argument to
- swiotlb_init_late
-To: Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org
-References: <20220222153514.593231-1-hch@lst.de>
- <20220222153514.593231-6-hch@lst.de>
-Message-ID: <e3eb6441-129e-35fe-b07c-fea86908222c@arm.com>
-Date: Thu, 24 Feb 2022 16:11:39 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
+ helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=Jirg0vzi; dkim-atps=neutral
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
+ [IPv6:2607:f8b0:4864:20::102a])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K49JH6RYVz2xC6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 22:13:33 +1100 (AEDT)
+Received: by mail-pj1-x102a.google.com with SMTP id
+ g7-20020a17090a708700b001bb78857ccdso5413745pjk.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 03:13:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=WjQC5Y7ro/c9MdCjVexTb0YJtz1qK4y19XmmyHlyFew=;
+ b=Jirg0vziGW8V3SRKvS+PjhON7lmoM4owOMTYOfacsP7PA1kucpsNi1ShKnC1Xkovyw
+ o6U9yMSJlGTp/9bdcko9RMowA7lWuUecDmFzi+XEIU8N0VGjsiQpJZu1tXNBvuyMs/p2
+ rbCJzpbTs4etXqH/zrJ3B4vY3NwUmDan5gFm5+guije2IkK/PL83p0+na++9vFREa4W4
+ ArHXY4YXbYTIFTn95zCxQOQz6HcTe5XGs4vkROZUfpVuMcPdX7MbSwcnlAglD3ApP9Jx
+ lWwz3Oy0jJU+P8hF7OM/qdSde4sPYz/DR+kmgZ6Fea+azQZS46sldPZe+9sBPmJhsJ8u
+ +1sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=WjQC5Y7ro/c9MdCjVexTb0YJtz1qK4y19XmmyHlyFew=;
+ b=QnNohILWaEXdOmARIq53IhAOkeTVgXBNiBe0KVoMgTb+LHQvrMEc4FnbS+MGlLH4CV
+ wowKPODdEV2scgDCDEcse1PNoLMDpbjDlTjV3+xhbxUnnDllBVrYTLxLAVhD1B6nbJQR
+ YLRlo/xpcH9gs6nhr8bSbGI87UQ2IxxuloSJ7jFMaNuaiipZk1u68AN17M7FB5F/cDpI
+ E/r/DjYr1jK4n5K55zL1iyxF9qR2jBW1OEi3hKlmBz1f5YKWGqFyzvc4ws3I4+9wSVtD
+ vknMyDoD/msJq6itlknvFnOeZnZIY3/0rX/wDjGdmtK6PI1aLeMhK7Hg68ntJEdkuRaS
+ BQqQ==
+X-Gm-Message-State: AOAM533Yg9EtoZAvEVPXNInbuEg2WrF8OI1hfu61dHvOUOfK9f0Wp8T1
+ U3s5Ib9UeSzlmMHkdJLuHek=
+X-Google-Smtp-Source: ABdhPJyounr1R+DBw3MY3a4cGgCM4BABVn40lZPd0jyri1ZanC2IX019OiKZipTBZMe59x5+BtL/Dw==
+X-Received: by 2002:a17:90b:400c:b0:1bc:7190:5696 with SMTP id
+ ie12-20020a17090b400c00b001bc71905696mr2284455pjb.109.1645701211364; 
+ Thu, 24 Feb 2022 03:13:31 -0800 (PST)
+Received: from localhost (115-64-212-59.static.tpgi.com.au. [115.64.212.59])
+ by smtp.gmail.com with ESMTPSA id q1sm2911458pfs.112.2022.02.24.03.13.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 24 Feb 2022 03:13:30 -0800 (PST)
+Date: Thu, 24 Feb 2022 21:13:25 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 2/3] powerpc: fix build errors
+To: Arnd Bergmann <arnd@arndb.de>
+References: <20220223135820.2252470-1-anders.roxell@linaro.org>
+ <20220223135820.2252470-2-anders.roxell@linaro.org>
+ <1645670923.t0z533n7uu.astroid@bobo.none>
+ <1645678884.dsm10mudmp.astroid@bobo.none>
+ <CAK8P3a28XEN7aH-WdR=doBQKGskiTAeNsjbfvaD5YqEZNM=v0g@mail.gmail.com>
+ <1645694174.z03tip9set.astroid@bobo.none>
+ <CAK8P3a1LgZkAV2wX03hAgx527MuiFt5ABWFp1bGdsTGc=8OmMg@mail.gmail.com>
+In-Reply-To: <CAK8P3a1LgZkAV2wX03hAgx527MuiFt5ABWFp1bGdsTGc=8OmMg@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20220222153514.593231-6-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Message-Id: <1645700767.qxyu8a9wl9.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,82 +87,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>, linux-s390@vger.kernel.org,
- linux-hyperv@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
- linux-ia64@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>,
- Joerg Roedel <joro@8bytes.org>, x86@kernel.org, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, tboot-devel@lists.sourceforge.net,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- David Woodhouse <dwmw2@infradead.org>, linux-riscv@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Anders Roxell <anders.roxell@linaro.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ "# 3.4.x" <stable@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Arnd Bergmann's message of February 24, 2022 8:20 pm:
+> On Thu, Feb 24, 2022 at 11:11 AM Nicholas Piggin <npiggin@gmail.com> wrot=
+e:
+>> Excerpts from Arnd Bergmann's message of February 24, 2022 6:55 pm:
+>> > On Thu, Feb 24, 2022 at 6:05 AM Nicholas Piggin <npiggin@gmail.com> wr=
+ote:
+>> > We had the same thing on Arm a few years ago when binutils
+>> > started enforcing this more strictly, and it does catch actual
+>> > bugs. I think annotating individual inline asm statements is
+>> > the best choice here, as that documents what the intention is.
+>>
+>> A few cases where there are differences in privileged instructions
+>> (that won't be compiler generated), that will be done anyway.
+>>
+>> For new instructions added to the ISA though? I think it's ugly and
+>> unecesaary. There is no ambiguity about the intention when you see
+>> a lharx instruction is there?
+>>
+>> It would delinate instructions that can't be used on all processors
+>> but I don't see  much advantage there, it's not an exhaustive check
+>> because we have other restrictions on instructions in the kernel
+>> environment. And why would inline asm be special but not the rest
+>> of the asm? Would you propose to put these .machine directives
+>> everywhere in thousands of lines of asm code in the kernel? I
+>> don't know that it's an improvement. And inline asm is a small
+>> fraction of instructions.
+>=20
+> Most of the code is fine, as we tend to only build .S files that
+> are for the given target CPU,
 
+That's not true on powerpc at least. grep FTR_SECTION.
 
-On 2/22/22 9:05 PM, Christoph Hellwig wrote:
-> Let the caller chose a zone to allocate from.
+Not all of them are different ISA, but it's more than just the
+CPU_FTR_ARCH ones which only started about POWER7.
 
-This is being used later via xen_swiotlb_gfp() on arm platform.
+> the explicit .machine directives are
+> only needed when you have a file that mixes instructions for
+> incompatible machines, using a runtime detection.
 
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/x86/pci/sta2x11-fixup.c | 2 +-
->  include/linux/swiotlb.h      | 2 +-
->  kernel/dma/swiotlb.c         | 4 ++--
->  3 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/pci/sta2x11-fixup.c b/arch/x86/pci/sta2x11-fixup.c
-> index e0c039a75b2db..c7e6faf59a861 100644
-> --- a/arch/x86/pci/sta2x11-fixup.c
-> +++ b/arch/x86/pci/sta2x11-fixup.c
-> @@ -57,7 +57,7 @@ static void sta2x11_new_instance(struct pci_dev *pdev)
->  		int size = STA2X11_SWIOTLB_SIZE;
->  		/* First instance: register your own swiotlb area */
->  		dev_info(&pdev->dev, "Using SWIOTLB (size %i)\n", size);
-> -		if (swiotlb_init_late(size))
-> +		if (swiotlb_init_late(size, GFP_DMA))
->  			dev_emerg(&pdev->dev, "init swiotlb failed\n");
->  	}
->  	list_add(&instance->list, &sta2x11_instance_list);
-> diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
-> index b48b26bfa0edb..1befd6b2ccf5e 100644
-> --- a/include/linux/swiotlb.h
-> +++ b/include/linux/swiotlb.h
-> @@ -40,7 +40,7 @@ extern void swiotlb_init(int verbose);
->  int swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose);
->  unsigned long swiotlb_size_or_default(void);
->  extern int swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs);
-> -int swiotlb_init_late(size_t size);
-> +int swiotlb_init_late(size_t size, gfp_t gfp_mask);
->  extern void __init swiotlb_update_mem_attributes(void);
->  
->  phys_addr_t swiotlb_tbl_map_single(struct device *hwdev, phys_addr_t phys,
-> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> index 5f64b02fbb732..a653fcf1fe6c2 100644
-> --- a/kernel/dma/swiotlb.c
-> +++ b/kernel/dma/swiotlb.c
-> @@ -290,7 +290,7 @@ swiotlb_init(int verbose)
->   * initialize the swiotlb later using the slab allocator if needed.
->   * This should be just like above, but with some error catching.
->   */
-> -int swiotlb_init_late(size_t size)
-> +int swiotlb_init_late(size_t size, gfp_t gfp_mask)
->  {
->  	unsigned long nslabs = ALIGN(size >> IO_TLB_SHIFT, IO_TLB_SEGSIZE);
->  	unsigned long bytes;
-> @@ -309,7 +309,7 @@ int swiotlb_init_late(size_t size)
->  	bytes = nslabs << IO_TLB_SHIFT;
->  
->  	while ((SLABS_PER_PAGE << order) > IO_TLB_MIN_SLABS) {
-> -		vstart = (void *)__get_free_pages(GFP_DMA | __GFP_NOWARN,
-> +		vstart = (void *)__get_free_pages(gfp_mask | __GFP_NOWARN,
->  						  order);
->  		if (vstart)
->  			break;
-> 
+Right. There are .S files are in that category. And a lot of
+it for inline and .S we probably skirt entirely due to using raw=20
+instruction encoding because of old toolchains (which gets no error=20
+checking at all) which we really should tidy up and trim.
 
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>=20
+>> Right that should be caught if you just pass -m<superset> architecture
+>> to the assembler that does not include the mtpmr. 32-bit is a lot more
+>> complicated than 64s like this though, so it's pssible in some cases
+>> you will want more checking and -m<subset> + some .machine directives
+>> will work better.
+>>
+>> Once you add the .machine directive to your inline asm though, you lose
+>> *all* such static checking for the instruction. So it's really not a
+>> panacea and has its own downsides.
+>=20
+> Again, there should be a minimum number of those .machine directives
+> in inline asm as well, which tends to work out fine as long as the
+> entire kernel is built with the correct -march=3D option for the minimum
+> supported CPU, and stays away from inline asm that requires a higher
+> CPU level.
+
+There's really no advantage to them, and they're ugly and annoying
+and if we applied the concept consistently for all asm they would grow=20
+to a very large number.
+
+The idea they'll give you good static checking just doesn't really
+pan out.
+
+Thanks,
+Nick
