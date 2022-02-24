@@ -1,66 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D7A4C28F6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 11:12:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFA44C28B8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 10:59:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K47y80sxZz3bV4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 21:12:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K47gD4SZ8z3cM5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 20:59:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=217.72.192.75; helo=mout.kundenserver.de;
+ (client-ip=212.227.126.135; helo=mout.kundenserver.de;
  envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K47x45l54z30H3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 21:11:50 +1100 (AEDT)
-Received: from mail-lj1-f181.google.com ([209.85.208.181]) by
- mrelayeu.kundenserver.de (mreue108 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MIx7U-1ngLqS2aFe-00KQTZ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb
- 2022 11:11:46 +0100
-Received: by mail-lj1-f181.google.com with SMTP id t14so2063289ljh.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 02:11:46 -0800 (PST)
-X-Gm-Message-State: AOAM531lk4GiZCjIGtnprIJNQ3wUnPxQQ0lXG6bKCj0cBdx8i74R0FAB
- Xf7xcYhiGTTaXFToqA1v7AFgg32xvvufF6N6Yt0=
-X-Google-Smtp-Source: ABdhPJzPVQaW1f3Bbzw+kTDiMg4Tajz+c6SJ2JtQUsJaSw6D1lJ8eGh3OG9MaDTzij1odC2MMgMswcl0VWfIMCexGbY=
-X-Received: by 2002:a5d:59aa:0:b0:1ed:9f45:c2ff with SMTP id
- p10-20020a5d59aa000000b001ed9f45c2ffmr1412807wrr.192.1645694019453; Thu, 24
- Feb 2022 01:13:39 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K47fp3gzwz2x9Q
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 20:59:29 +1100 (AEDT)
+Received: from mail-ed1-f44.google.com ([209.85.208.44]) by
+ mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MVaQW-1nmQyv0cqq-00RWv7 for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb
+ 2022 10:59:25 +0100
+Received: by mail-ed1-f44.google.com with SMTP id bq11so2053355edb.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 01:59:24 -0800 (PST)
+X-Gm-Message-State: AOAM531mn6ZnvJnIY2gTZ7+XCiUQKah0Z9cc1MeVJ9sIlM8lSi0XFoys
+ rwqikVcly6yhfWrQkmnU8KOue6tv8kHwNdylQSU=
+X-Google-Smtp-Source: ABdhPJxKnbR5fQtLrHkUQmPSDD+xkHkCuZRWZe5PlaQucJaWZYHMl1I+Wr1dE0VfS6g2+fYVY4BPWlfD5Z76idC1Sco=
+X-Received: by 2002:adf:a446:0:b0:1ed:c41b:cf13 with SMTP id
+ e6-20020adfa446000000b001edc41bcf13mr1559929wra.407.1645695092672; Thu, 24
+ Feb 2022 01:31:32 -0800 (PST)
 MIME-Version: 1.0
 References: <20220224085410.399351-1-guoren@kernel.org>
- <20220224085410.399351-17-guoren@kernel.org>
-In-Reply-To: <20220224085410.399351-17-guoren@kernel.org>
+ <20220224085410.399351-12-guoren@kernel.org>
+In-Reply-To: <20220224085410.399351-12-guoren@kernel.org>
 From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 24 Feb 2022 10:13:23 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a13_VBpTidoF_pUdV5g0MFqpSe17rgw=XUv69CCFCN0_g@mail.gmail.com>
-Message-ID: <CAK8P3a13_VBpTidoF_pUdV5g0MFqpSe17rgw=XUv69CCFCN0_g@mail.gmail.com>
-Subject: Re: [PATCH V6 16/20] riscv: compat: vdso: Add rv32 VDSO base code
+Date: Thu, 24 Feb 2022 10:31:16 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3wg9S_zPad74FiJzYBn0M9bQyunuKzmH3z_QQrags5ng@mail.gmail.com>
+Message-ID: <CAK8P3a3wg9S_zPad74FiJzYBn0M9bQyunuKzmH3z_QQrags5ng@mail.gmail.com>
+Subject: Re: [PATCH V6 11/20] riscv: compat: syscall: Add compat_sys_call_table
  implementation
 To: Guo Ren <guoren@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:YwC9hPLRemzSS9iv93W2npwB1GRdGAsFE8MLUPSDO72VQNcjDvp
- AtafuyY3Tq3nIJgTYHEHalw8MaaKm2adU0dkPylHs0fD5vm1e+lX253h2DAfb5VAtRUrh5N
- gyfLk+wOgXnkUp9cau3ApC5PHL6hCOyt8dVjVPiPvpcpfx5jTo7JaYeQMfvHN5b+teSkzLS
- 7AofxhParZfGUpYpXbTIw==
+X-Provags-ID: V03:K1:1ZUYRet6GgYL2kBD6z39LhH9rQHSacstRMZ/PcLIWHQva65OBb7
+ rhb13YndUIp9G1VXHJChJ8EIeRSQsZvOZBVEU8NIWYabkqPZTlrYKrNpG9J/vrLmgRJ78i9
+ mgtlr/X7SZuUovgh74P7OFQuN86QtHMKK/J8NqHijlXnIDaqGPx0CrSOmsvXxOyMjqNl6MJ
+ 1ncEltnKbT4s+FZ8SChGg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:hEYwuA0NSFI=:RHxqmSKF0NnoMj7gdiXB0h
- YACgmsfXI3JcLyWXNWh3HGoh4n4E0xkJnFpBC8Mm31rWpG2Sdqgsij6/Bz6+CS7hlyPCa3gSb
- kfUsz6+8vJBFI1dCtWbV2KdVx0hUrCtVqbw7R5EbYjTHFtxW0MefrFMuLAUoGqW5tMIgUIg9E
- plkZ5zCPdXKbQRfHAvJ0aV/y8FMSG9LRDkmW8RCc3/zB/F0Xs1/ZNuFb9t+bkhqwDmXlx/Nxh
- ANpFqrIQ+raXyZwV1W+FrservbXqqATP6qp58VAqjgZlbwM5GEyfn9q8xK1ffFuSrzzeGRvZH
- Qj6ef15FOqeQTpwEKgPl8Nmfv8B1XVTrif5p6ovAHnr30M56msdWg/7AzpeunZ+Ip7v/R5MaW
- E2shJizWeQZ7YmqZ7OJPY0SiAwbCDc3A4s1SsdxGcFl+meGkaN5YlBqeF/i02MLBx2a8vXtTV
- to1FrRaB6TXDI/5BlyfRlAG6QyBHcUi4mtmwYkQnFn4JeR3yvVutw4DX6DSlGJI92AnljzsmK
- hrmFF6iVsDXvgGmpQBgmnmGq5QZKF4qTm9qASWfnfsbimyOBSGxJ/JweWzqeweoxJ2gzCbUq+
- ifKenmxNoTakAGEc95/LXNkRmbFLZw+cE4e84rSyNQ2TNLcUG4NfacySadKcvp/1wY4P66ap5
- wrkafTIeF/bs467i301JGiM1Ok26SysPw74JrabGQXagwQgz8B6YY0eEgfpyOdYax8ypmqfQg
- XlTPKcqV0bDHWd3Bv5n1hZ35KXCJKH/uBkgL3FhusPBoIWZwcM2Ic2yqc3jv68ABMxP+CNrES
- 2PIxhSVpU5mLxGg8eGlCPMrZv8BexwQH/T9nBx0VGt0vdMrIK0=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:JJMoQ7vo2Qw=:1hVq87c5ciK/RGrnWJnsl7
+ JylDoGXxtKr2uiiJqZlCrDRcuWglR77wD/08/zuArZHYmU2CGcJL6SLsCiHjddxiry60uBMVo
+ qV3YyvfEp90oC7zsbQIIQJkwntF9We2/fL3TLbIyc1G4SXw+vUKihevluwbvXwma2zcBTt5NY
+ NZCotC8nfoAfXvMloQ0qIDxL+McDHyg6k0GSzK3TvfirN/KjC9e7beNGbtod48dYWMgIfRV1c
+ AmFA2zv+UF2K0niTJ7LfEgMF300Lrqsw3kopbTNJ4+iMUTb1uNrZFcsG9/ziT8KiQQDSr3lfc
+ PM/LBAYeGFmFv81qtZSPjU4ZniADlGtLGgfa+1YCJ4EE05UbQAfu27YhCJ4gBsOSjuOikHT+X
+ aS5L9kdweVo8WNiE7h+pBqYxUH45XiQUdf7qQ/gaqWUUvvhK3oZdXkzvPJpkK9czfr37cYDzV
+ 3BTeQMKhYtHqnT9751FJkm78Pyd8fM3OvkhpI2RkoLbmeeJo44QxNZPPk/E+J0KdY4nt9bDJl
+ 6mL01KYirXvg1d+BP/2lMCP+VyFl6oeu7M7b4FHadxwt22eHDzmZhnO7ES7LpTNs7PIFLO/4a
+ 7lL3y0XPNyX6cgvdeJLKx8fJDytH/gxQPJ1Ix9p/U9JiwV561T2JaezamVGngstMzlOvr8Rc3
+ hPqZHFbRny7yL/xUg3WeZaGL1akLtsaBA+xJVTKU991bkIDDZWzGfv/Ph/ckCLrNXNw6qjMD7
+ GlDgtBbbyDSN6A6pC3cjImz7ZazAV2USzGzOnxtnqMtg+pKQwjMfuSQpqf1HQrD0MRngcbTpm
+ rsW2Re5B300/QM7uLdBJ4xvddsKv3EVkD5NIhwVrfYD0MNj0+4=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,20 +94,28 @@ On Thu, Feb 24, 2022 at 9:54 AM <guoren@kernel.org> wrote:
 >
 > From: Guo Ren <guoren@linux.alibaba.com>
 >
-> There is no vgettimeofday supported in rv32 that makes simple to
-> generate rv32 vdso code which only needs riscv64 compiler. Other
-> architectures need change compiler or -m (machine parameter) to
-> support vdso32 compiling. If rv32 support vgettimeofday (which
-> cause C compile) in future, we would add CROSS_COMPILE to support
-> that makes more requirement on compiler enviornment.
+> Implement compat sys_call_table and some system call functions:
+> truncate64, ftruncate64, fallocate, pread64, pwrite64,
+> sync_file_range, readahead, fadvise64_64 which need argument
+> translation.
+>
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
 
-I think it's just a bug that rv32 doesn't have the vdso version of the
-time syscalls. Fixing that is of course independent of the compat support,
-but I think you need that anyway, and it would be better to start
-out by building the compat vdso with the correct
-architecture level.
+Here, I was hoping you'd convert some of the other architectures to use
+the same code, but the changes you did do look correct.
 
-At least this should be a lot easier than on arch/arm64 because you
-can assume that an rv64 compiler is able to also build rv32 output.
+Please at least add the missing bit for big-endian architectures here:
 
-        Arnd
++#if !defined(compat_arg_u64) && !defined(CONFIG_CPU_BIG_ENDIAN)
++#define compat_arg_u64(name)           u32  name##_lo, u32  name##_hi
++#define compat_arg_u64_dual(name)      u32, name##_lo, u32, name##_hi
++#define compat_arg_u64_glue(name)      (((u64)name##_hi << 32) | \
++                                        ((u64)name##_lo & 0xffffffffUL))
++#endif
+
+with the lo/hi words swapped. With that change:
+
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
