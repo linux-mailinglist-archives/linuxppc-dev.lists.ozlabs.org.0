@@ -2,71 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F56C4C2650
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 09:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71D9A4C2670
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 09:42:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K45hp5TBqz3089
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 19:31:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K45y15Rs4z3cBQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 19:42:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256 header.s=DKIM header.b=ndlmi1AQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YOGAN3Ou;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=iram.es
- (client-ip=130.206.19.148; helo=mx01.puc.rediris.es;
- envelope-from=paubert@iram.es; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256
- header.s=DKIM header.b=ndlmi1AQ; dkim-atps=neutral
-Received: from mx01.puc.rediris.es (outbound5mad.lav.puc.rediris.es
- [130.206.19.148])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=YOGAN3Ou; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K45xP3CT1z2xF0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 19:42:01 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K45gs4pQQz3bcv
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 19:30:13 +1100 (AEDT)
-Received: from mta-out01.sim.rediris.es (mta-out01.sim.rediris.es
- [130.206.24.43])
- by mx01.puc.rediris.es  with ESMTP id 21O8U0DJ022857-21O8U0DL022857
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
- Thu, 24 Feb 2022 09:30:00 +0100
-Received: from mta-out01.sim.rediris.es (localhost.localdomain [127.0.0.1])
- by mta-out01.sim.rediris.es (Postfix) with ESMTPS id 88B8B300B952;
- Thu, 24 Feb 2022 09:30:00 +0100 (CET)
-Received: from localhost (localhost.localdomain [127.0.0.1])
- by mta-out01.sim.rediris.es (Postfix) with ESMTP id 78135300C3A2;
- Thu, 24 Feb 2022 09:30:00 +0100 (CET)
-X-Amavis-Modified: Mail body modified (using disclaimer) -
- mta-out01.sim.rediris.es
-Received: from mta-out01.sim.rediris.es ([127.0.0.1])
- by localhost (mta-out01.sim.rediris.es [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id ga1OKfOOAvLI; Thu, 24 Feb 2022 09:30:00 +0100 (CET)
-Received: from lt-gp.iram.es (haproxy02.sim.rediris.es [130.206.24.70])
- by mta-out01.sim.rediris.es (Postfix) with ESMTPA id F1025300B952;
- Thu, 24 Feb 2022 09:29:59 +0100 (CET)
-Date: Thu, 24 Feb 2022 09:29:55 +0100
-From: Gabriel Paubert <paubert@iram.es>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH] powerpc/32: Clear volatile regs on syscall exit
-Message-ID: <YhdCAwQ+VfLTslnV@lt-gp.iram.es>
-References: <28b040bd2357a1879df0ca1b74094323f778a472.1645636285.git.christophe.leroy@csgroup.eu>
- <YhadiVbwao/p2N7o@lt-gp.iram.es>
- <20220223232739.GJ614@gate.crashing.org>
+ by dfw.source.kernel.org (Postfix) with ESMTPS id A5DBA61AA3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 08:41:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16377C340F1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 08:41:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1645692118;
+ bh=3OZhY8JjlWpvQtjxNVEtkpMscELhOM136ShyKCOjsEU=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=YOGAN3Ou80mEKNsykXj8ie52gpFsCVxajnKo+fVOUo8V4/sic/pOq4CdSoOd2GB1b
+ /DFzNMCkE1qxllFipGwJHWAaCS4IaDKcD97FfPBp+mJhw9HxvWOn28n1Y8BUybDNsA
+ +yPho3efgFc2VffevtUaiBij/DxDPREig5OOUTWqqUNtwBmL15ikcYWCmxYY8jlPFm
+ umtLZNTU9Nw3aZTWVMt07+OWMTTmQoULwtDM0wXQUt9PlDK10b2hb7qQJs6aukLGz3
+ 3pqjSUm6hB3j1A/C4xUtqTAF5WSNWolmioSDFQdTyrtWyij78cvyj2zH3B6JtjimOs
+ oRaJr1b38Q3sA==
+Received: by mail-ej1-f54.google.com with SMTP id d10so2723694eje.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 00:41:58 -0800 (PST)
+X-Gm-Message-State: AOAM532jt21ba6BRLocUK8YGEJ8cgS0amL8cNIyeyGOJsVBtnIl4GicY
+ Kc4xybs7zUCfPtTluDpjuNWbc+jG+/Hm81VYeHM=
+X-Google-Smtp-Source: ABdhPJzneL/9b5VqISjziF71opYqNdlSHnzAsafkxFgpoEqKa+f7LCyuasR/zxK7OReD5OXFM6yWvfz7KIyaMqF7hrc=
+X-Received: by 2002:a5d:59aa:0:b0:1ed:9f45:c2ff with SMTP id
+ p10-20020a5d59aa000000b001ed9f45c2ffmr1312686wrr.192.1645692105823; Thu, 24
+ Feb 2022 00:41:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220223232739.GJ614@gate.crashing.org>
-X-FE-Policy-ID: 23:8:0:SYSTEM
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=iram.es; s=DKIM;
- c=relaxed/relaxed; 
- h=date:from:to:cc:subject:message-id:references:mime-version:content-type;
- bh=qlaKR81TB9uC2qecK8Ka2Y5+wlvJqCdWDbHzUcfcJ7U=;
- b=ndlmi1AQs/O8De46rNXAR9JR8GwX4uyB1QBUMFmXWqdacLOh079Mhp/eegPEMKZg954bG9hOoScg
- VcOb27Mdh41JaedY6PFZMnh+E1lVA4+WkxH+Y7v03pjbdBzUSZdbqKzySXGqABGHYW4pHelBvRwp
- UlnhV7SXcomMZRou0yHIYHvFYpYhcWiE1aJaPVVegXfMoqKfbaoLTKTWM3Zu+8lDIkHXdmmoUe2i
- PcC88D9V6X0cikzfXu1DrmE7L5xzrQbi9ilyuINsxvUnFY/725tpUxQgxDFi5mcI5M3Mr1GAyaDn
- Jh9zAHux/U9FUMGQC8wtxpNNZ0Ab8qT0e82V0w==
+References: <20220216131332.1489939-1-arnd@kernel.org>
+ <20220216131332.1489939-14-arnd@kernel.org>
+ <YhdB7tNDvtsYLUzr@antec>
+In-Reply-To: <YhdB7tNDvtsYLUzr@antec>
+From: Arnd Bergmann <arnd@kernel.org>
+Date: Thu, 24 Feb 2022 09:41:29 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3Q6=yzX5hKX45=U80SoUXLU59sFqz-tN6U=Fr5t1m96Q@mail.gmail.com>
+Message-ID: <CAK8P3a3Q6=yzX5hKX45=U80SoUXLU59sFqz-tN6U=Fr5t1m96Q@mail.gmail.com>
+Subject: Re: [PATCH v2 13/18] uaccess: generalize access_ok()
+To: Stafford Horne <shorne@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,76 +72,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Rich Felker <dalias@libc.org>,
+ linux-ia64@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Guo Ren <guoren@kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>, Will Deacon <will@kernel.org>,
+ Christoph Hellwig <hch@lst.de>, linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Brian Cain <bcain@codeaurora.org>,
+ Helge Deller <deller@gmx.de>, the arch/x86 maintainers <x86@kernel.org>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>,
+ alpha <linux-alpha@vger.kernel.org>, linux-um <linux-um@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Openrisc <openrisc@lists.librecores.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Parisc List <linux-parisc@vger.kernel.org>, Nick Hu <nickhu@andestech.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Linux API <linux-api@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Dinh Nguyen <dinguyen@kernel.org>,
+ "Eric W . Biederman" <ebiederm@xmission.com>,
+ Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ David Miller <davem@davemloft.net>, Greentime Hu <green.hu@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 23, 2022 at 05:27:39PM -0600, Segher Boessenkool wrote:
-> On Wed, Feb 23, 2022 at 09:48:09PM +0100, Gabriel Paubert wrote:
-> > On Wed, Feb 23, 2022 at 06:11:36PM +0100, Christophe Leroy wrote:
-> > > +	/* Zero volatile regs that may contain sensitive kernel data */
-> > > +	li	r0,0
-> > > +	li	r4,0
-> > > +	li	r5,0
-> > > +	li	r6,0
-> > > +	li	r7,0
-> > > +	li	r8,0
-> > > +	li	r9,0
-> > > +	li	r10,0
-> > > +	li	r11,0
-> > > +	li	r12,0
-> > > +	mtctr	r0
-> > > +	mtxer	r0
-> > 
-> > Here, I'm almost sure that on some processors, it would be better to
-> > separate mtctr form mtxer. mtxer is typically very expensive (pipeline
-> > flush) but I don't know what's the best ordering for the average core.
-> 
-> mtxer is cheaper than mtctr on many cores :-)
+On Thu, Feb 24, 2022 at 9:29 AM Stafford Horne <shorne@gmail.com> wrote:
 
-We're speaking of 32 bit here I believe; on my (admittedly old) paper
-copy of PowerPC 604 user's manual, I read in a footnote:
+> > -
+> > -#define access_ok(addr, size)                                                \
+> > -({                                                                   \
+> > -     __chk_user_ptr(addr);                                           \
+> > -     __range_ok((unsigned long)(addr), (size));                      \
+> > -})
+> > +#include <asm-generic/access_ok.h>
+>
+> I was going to ask why we are missing __chk_user_ptr in the generic version.
+> But this is basically now a no-op so I think its OK.
 
-"The mtspr (XER) instruction causes instructions to be flushed when it
-executes." 
+Correct, the type checking is implied by making __access_ok() an inline
+function that takes a __user pointer.
 
-Also a paragraph about "PostDispatch Serialization Mode" which reads:
-"All instructions following the postdispatch serialization instruction
-are flushed, refetched, and reexecuted."
+> Acked-by: Stafford Horne <shorne@gmail.com> [openrisc, asm-generic]
 
-Then it goes on to list the affected instructions which starts with:
-mtsper(xer), mcrxr, isync, ...
+Thanks!
 
-I know there are probably very few 604 left in the field, but in this
-case mtspr(xer) looks very much like a superset of isync.
-
-I also just had a look at the documentation of a more widespread core:
-
-https://www.nxp.com/docs/en/reference-manual/MPC7450UM.pdf
-
-and mtspr(xer) is marked as execution and refetch serialized, actually
-it is the only instruction to have both.
-
-Maybe there is a subtle difference between "refetch serialization" and
-"pipeline flush", but in this case please educate me.
-
-Besides that the back to back mtctr/mtspr(xer) may limit instruction
-decoding and issuing bandwidth.  I'd rather move one of them up by a few
-lines since they can only go to one of the execution units on some
-(or even most?) cores. This was my main point initially.
-
-	Gabriel
-
-> 
-> On p9 mtxer is cracked into two latency 3 ops (which run in parallel).
-> While mtctr has latency 5.
-> 
-> On p8 mtxer was horrible indeed (but nothing near as bad as a pipeline
-> flush).
-> 
-> 
-> Segher
- 
-
+       Arnd
