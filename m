@@ -2,99 +2,126 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C691F4C2653
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 09:32:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1FB4C25BB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 09:17:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K45kg0tf5z3cZ8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 19:32:43 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=a/I6rm/G;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K45NW3tNrz3cb8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 19:16:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=a/I6rm/G; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::606;
+ helo=fra01-mr2-obe.outbound.protection.outlook.com;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com
+ (mail-mr2fra01on0606.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e19::606])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K45jv0GRSz2xBL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 19:32:02 +1100 (AEDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21O3hQk9005363
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 06:16:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=DC/CVsj2hHZV6bUw+zEU6xoaXgczzvF2LARNmYk35gs=;
- b=a/I6rm/GQb8UROmQY3t4SWn57iVsQXYOVf3jlaR4tMFMzapG+ekUNvzQb0ghkbUUQiGZ
- vojGKtmlzrTTxneZjQxYfbhxEWfUFT3QgxbBIdGXj3+cTU0JmYkSDl+FABwse2xsN6Lh
- K5yBZk0lzMTbnUMz4r81F/NxVoP/aF2rAmegCbnnXgZHT2xE1rCGv3zhZRnYqWSjtscF
- jj4H3WIXVYB7m3znQEuu8Hlh8JYs3oxOo0n9CyuNMfRQG4ZZYWQGIB/VIlLD03w5gA+D
- 330GakuBkMB/TzzUFM7ch9zFXiP7IkWjfNA4lM9tFRaGSL8VzxVcpxEExKHF/bKcnA8I rQ== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3edsjt58v5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 06:16:54 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21O6CvGx022554
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 06:16:53 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma02fra.de.ibm.com with ESMTP id 3ear69cys8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 06:16:52 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21O6GobP50200980
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 06:16:50 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 36512A4060
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 06:16:50 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A5A6CA4054
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 06:16:49 +0000 (GMT)
-Received: from [9.43.4.33] (unknown [9.43.4.33])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 06:16:49 +0000 (GMT)
-Message-ID: <e491dda0-1d5f-eaf4-1601-b17614ced2f7@linux.ibm.com>
-Date: Thu, 24 Feb 2022 11:46:48 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v6 0/4] Add perf interface to expose nvdimm
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K45MF1Pmmz3c9t
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 19:15:52 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AzsnYWS2NI5qa+OsHVLsCCQq8rywi0Xj0CGmwpKcWT8oXUYdrjRLvHEuTsy5XclP9erHv5MmhgIQ4dYe26Ekae3/iQFRH6kRe+HEs9f/2EgDLB3nB4xM4quwQ0NRFL0M8R+kWF1H2dktlUna5AuOUFta26QOUIgNpgb2AqpE57i9439mUCF/o6P1U1oTlqDypABM157bJSAm/5LO09aT8VoioB5RPeknMQIudlMhd9w2/h+p3v4zlp6Ur0/5L5eTInHhHlwinMOXYDh0JtB0AZvEU4AnEtxoTA0yq/E9ZTkdb6eCRlhFk0rWyLTOgsOICLxi1S7MDc5fvr1wj4SFFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=baso6Mx3+Wl1NdeOGk6QycQoUy8tc06241obQzRxOuw=;
+ b=lf3bjl2XBSN/i6KKTAuT9yvppZjXP86a/8qJIptZGlmKsmtmLhobIHshYqXDMIsrhgDTo5UrInjQsvAlp+sp642ZKMcpLcYFOBk3GQgQbjXinRx+x/cqmE3pfg3XV7wVb94mM+MFc5QHIKK1302ixMJ0dJsDOD4jpIpYVQXuJWKt0ze4M4wrPMTtwxZ6ERFjWTiZ0MLyRW/ohBHt//WUca5b16DY1Mn+WWxuBMPTP/gvJFRCRfNTLuL2xh0T8+p2cUkAWRX5MHzIT1YpLi/CkvRkrxVpmpGrNeJXciHAlG2ma7KsY5+VBxk4JN9DROVFkNoZF6KBTZIY4S4ZQgL8Nw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MR1P264MB2081.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:14::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.21; Thu, 24 Feb
+ 2022 06:41:39 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::8142:2e6f:219b:646d]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::8142:2e6f:219b:646d%5]) with mapi id 15.20.5017.021; Thu, 24 Feb 2022
+ 06:41:39 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Gabriel Paubert <paubert@iram.es>
+Subject: Re: [PATCH] powerpc/32: Clear volatile regs on syscall exit
+Thread-Topic: [PATCH] powerpc/32: Clear volatile regs on syscall exit
+Thread-Index: AQHYKNh0eyGIwSmwv0u/u8dEgkopEKyhm6OAgACl0QA=
+Date: Thu, 24 Feb 2022 06:41:39 +0000
+Message-ID: <5c223dac-8434-a6ae-7d92-d2bd213ef320@csgroup.eu>
+References: <28b040bd2357a1879df0ca1b74094323f778a472.1645636285.git.christophe.leroy@csgroup.eu>
+ <YhadiVbwao/p2N7o@lt-gp.iram.es>
+In-Reply-To: <YhadiVbwao/p2N7o@lt-gp.iram.es>
+Accept-Language: fr-FR, en-US
 Content-Language: en-US
-To: linuxppc-dev@lists.ozlabs.org
-References: <20220217163357.276036-1-kjain@linux.ibm.com>
- <CAPcyv4jwpMbz0woftSfm3EO05pr3ZG9rVMJCkYVsapKYSOn3xw@mail.gmail.com>
- <CAPcyv4hkLA_KJsKO_avTDZCVL2zGhcRNxVc+2P2uR6-5b2uwVA@mail.gmail.com>
- <CAPcyv4jCeweE3A90bP-xUkM9pNQw=XdsFxvFye4=bVRNKWwHKQ@mail.gmail.com>
-From: kajoljain <kjain@linux.ibm.com>
-In-Reply-To: <CAPcyv4jCeweE3A90bP-xUkM9pNQw=XdsFxvFye4=bVRNKWwHKQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: YAjPhrpMtl4e8nE4s_oB2vhjTnuGWiV9
-X-Proofpoint-GUID: YAjPhrpMtl4e8nE4s_oB2vhjTnuGWiV9
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: a910b178-3f99-4f87-af71-08d9f760b602
+x-ms-traffictypediagnostic: MR1P264MB2081:EE_
+x-microsoft-antispam-prvs: <MR1P264MB2081A79519AEF7F6839EBE68ED3D9@MR1P264MB2081.FRAP264.PROD.OUTLOOK.COM>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 8Wg/nZEW8nEmrp7ic8zsqj02LJ3EwuNnTfBmMQxRoo5xjtnUgsgTimtduGqV51w1FvbZC5f+CLo1eAxqBgJnjkg07SoV9buyPqM9m2BqifEyHsR89BLqsZUV+ifK6i80KLKPbrNrVTDcWTm2/N45bMHuaTJS8pEPdOnx0kpYykhXdm0AJXyhjitvMA8WNIR2YaGaRL3ZNytWP1gmNj13xA1dlxeiHfJgJqllCpR9j5Dvxm38DBbRKT+62Fm/66gQA7JHWg6alN6vCu6RzRwiVhh52eOuAfyXtYAK4Zq8yBia94rtaaoz8Pnb0XDaP01dTCYyhWk575bFI0Jn6uyW0sRAQlAfpv1Gqv6Ll7ZDo/E5pMwCalfdvfK7r68fZBFWqDqWmEoFB49iIWfW8rO7yYp/MnA6RU9n/eeP0rjuVRKp/WaL/8cNxSzp7HDcfJUxehtEFFFDGW+e5t+1zxGSnMJM0LNps4k2FWEGHMGe4aCr73KHVyzMId9QFscbCQR0cjqIvCJIFlv+MiyMtQqdBAWHazCXcpXI2S2YRRzkAHFMrbvR/HT8InRPPRcvnbZnOfHrZHru9qX3pne4LbdU2jUJdBseL826RqmsjqmZaT85NjdjuuroOLaSzVkMR1sCrbqGvuLTACDpvcvCF/dgodYYZuGnt/UPdnNF9Q4Pjo8CJbrVbjU44LJaicf0S3ElT/As18WIthPHAyiOA4B++swyjmFBPvJr0UQARnb0THgyljQ10gHH/argXK55rdcOFYb3R8BH8RbBYJQXrPoz0A==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(366004)(54906003)(31686004)(38070700005)(86362001)(508600001)(36756003)(6506007)(71200400001)(122000001)(6512007)(31696002)(38100700002)(66476007)(64756008)(91956017)(8676002)(6916009)(186003)(2906002)(5660300002)(66446008)(316002)(44832011)(8936002)(4326008)(2616005)(6486002)(83380400001)(66556008)(26005)(76116006)(66946007)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WjlnR2JUeUNxRUlhMDFIcTg0SlFuUFRMTkt2c0JmQzAxcmNPZElCVzNHMkJJ?=
+ =?utf-8?B?d2x6Y2I3TjB6VW9neDVTY2VtU1JmTFhXdmFJQTd1eTZRZEpOd1JyWUpQRGZK?=
+ =?utf-8?B?d1I3OXMrdVdGYTczU2gweElGQzF3MG1wVTl1bVNKeGF5NG9xSTdId2ZvK2Zu?=
+ =?utf-8?B?anJBMW5rSHFYeFBoTzJVVnIrdCtzRG53dzE1UU1ISEhjVkdGbUcraXF0SHk4?=
+ =?utf-8?B?QkdEVlJBaWt1QWU1VStGL3NUakltcTFSc0pqczVLZCtiK3lXdlZXKzhiM1Zj?=
+ =?utf-8?B?L1RkWko3S29ZWFBxYlVlZmVUN1RTVHJGWkhxRFI5WVFGRmkvKy8rNXhvMjl4?=
+ =?utf-8?B?bGZBRHlGQlBhSm9NVm9ZbHJQYkc4ZFdzNU15SmRJY2VTSVlKNTNneExPREdt?=
+ =?utf-8?B?L3NmYlgwNkpic1ljNUR3VDJoajE5OE5GVEllb3QrbkJudWVUZjhscEpBTktW?=
+ =?utf-8?B?eUNkTjY4QkdaSDRKVC9TYmRiK3hmQk1CWjV1cVArSk9CNm44dGZaWUk5dURR?=
+ =?utf-8?B?eXBtcDNyaEdma3JzVldtSGJrYTR4UE83WkZMbEVKZ0VhQ2NrZUNOSUdSc0tn?=
+ =?utf-8?B?b1RFdGZWQXNldjdaZFU5cjFxdlQ0cjdvUHpDSnBkSGFaNkt4cnRRSzlQVWRo?=
+ =?utf-8?B?ZXJzenZsSWFBOCtSeTM5ZlEyRnh4YmdwaW5XOFFOb1FVSDFBV3lGeFJYeHhG?=
+ =?utf-8?B?YjkrWkhEMU91eFJpWndzN0FralNEUXVIb3ZwYnZ0dFB2emxxMDRtSGVFbzV3?=
+ =?utf-8?B?UWNRS1A2a1RQemdJR0w2bnVlTDJwaW9yQnJSSnVuQWlzdTBTSXBjSlAzMmp5?=
+ =?utf-8?B?cVVYb00wcTFSakRwVkwyd0o2QWlrbW45UGxpcnJRdWYzWTRweExwSkF1M1Zp?=
+ =?utf-8?B?RVQ1bVRoaXovbGQrN2RnYzVucUNNU3MzWmUrUitOTVg1UktlaWs4U2JyaWlX?=
+ =?utf-8?B?ZmhnUTJNRkU3VWprTFd0Z2lid1hKcTk4VHhCNXlGWElPNTBabE8reXRHRC9E?=
+ =?utf-8?B?LzRrRDloaW9OdEdJc28wSEU1RzZGTWFxazhncG5BUzM2WXJHYTloSEdwUHNP?=
+ =?utf-8?B?dEVyWE9zTHM4MVRqV1ByNk82Sy9kV2FvdVR4VVVzSlRFZ2VCdXJJVzlVcEhG?=
+ =?utf-8?B?bGd0RUpDdE01MmJ2RXF3bk1sUWRHcFdvYy9PZXVmdU0zc2tpOWxsbE9rN1Nv?=
+ =?utf-8?B?SnFvWExYOWwwVmlOU0RvL0tWbG9FNysxZVhXNnNXeTlBTWRMbkxmOVFmWWVj?=
+ =?utf-8?B?RXVLWEJDRkx2UjFISnlWSkQ1bnZZVDA5UHZOMzFKbG5OMXExMUpHZW84NEZI?=
+ =?utf-8?B?MTdOb2NNQ2FSNVNUcDJvWEl0OUwrTkh1UHp3M1c3U2Y4YXFUVFFHUFpQV2xx?=
+ =?utf-8?B?ZlN5ME1zdTdGbCs2QXFnOCtTQksrVk5QRFFMQ1Q5amZrVEdQTUVEekgvdVJM?=
+ =?utf-8?B?OENQbURFaHFac2pjeDgxK3ZJa21FNk9hR3ZFV0ZuTy83SlJURHYzU2t4U2ll?=
+ =?utf-8?B?Y09DVmFkbjVPclIzaVJpdWVicjVmVG5OYTFwZUVaWFdhVTVjb2hxUDBiRHdU?=
+ =?utf-8?B?d3htRVJVK01LMnhKeWIyVVZpWkZaemlad0l2V0NmWjFDSHJ1SndCWi8wSWNt?=
+ =?utf-8?B?ZnBJZ2hLeVhBeUVOTENNWk43L0dpcUdXbFIzRnIva0pZa3NHL1JHYzhwcjhF?=
+ =?utf-8?B?bmVzSGFmRFlMTW04RnhQZThTSlBuMzRFRkdHN28zWnlnQWkxbE5YTit1QUgz?=
+ =?utf-8?B?eHE1V1dSSnhJRTNBUXFZY0pRQzRieGtJQklkYm9VeGp6MGxubkppT05lU2lh?=
+ =?utf-8?B?U1dDam5VM1hBTmdMaHVEUHYzQ2lDQXJ2WmhRWlUrOFBITFFBcGJKb2RweER6?=
+ =?utf-8?B?QXM1ZU1MdmhHZ2kwdDZWdWlZdTVkZjVHcEdXNGM0T1hQWVYzWk5IbTd4Rzd0?=
+ =?utf-8?B?a3lEUEJzUlpSU1l0bm5YODB4NlNkYXZ0ZWRJTHNKMkc4MjByM0hXOTJzRTR5?=
+ =?utf-8?B?YnhNZitrRHdLSm9kYjZxTDVaMTJ5a2s3NjB1eHFuYkV4RTM0QXZQMnVUZkY5?=
+ =?utf-8?B?VEtHeWFSbzNOWENlbStpWnJNUndSU3E1MXA3eGN4RGp3c2d6a3JidkVLVGNy?=
+ =?utf-8?B?VDM4YmtKRTFqNHhoNDVNeGRINkJBeTBHYXRCaWN3bjlQK0gzWTI5ZWl3Q1Ji?=
+ =?utf-8?B?RjB3SXk4NFZxZzBxZWVSQllSNVJ3b1EwR2hDMTJHNHJIRG9KVXFhd01WbjFy?=
+ =?utf-8?Q?ZknxlayLGXW9NmtVKy4LqBZr0TRcQGvx9wALoFbz/8=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D2FC8785D3A0F341B204CA6E2B84C072@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-02-23_09,2022-02-23_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 clxscore=1015 adultscore=0 phishscore=0
- bulkscore=0 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202240035
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: a910b178-3f99-4f87-af71-08d9f760b602
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2022 06:41:39.1717 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: efw5POgzGLmaM7oZZQVvzRUlX+x7AZbzqAnje39j0cjTZycc+Va1WtANNnU3PXrPjs/zqAvnFd2n8ACRob+EfKothgs9aypsyOkGIUGc9Z8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2081
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,126 +133,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Kees Cook <keescook@chromium.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 2/24/22 02:47, Dan Williams wrote:
-> On Wed, Feb 23, 2022 at 11:07 AM Dan Williams <dan.j.williams@intel.com> wrote:
->>
->> On Fri, Feb 18, 2022 at 10:06 AM Dan Williams <dan.j.williams@intel.com> wrote:
->>>
->>> On Thu, Feb 17, 2022 at 8:34 AM Kajol Jain <kjain@linux.ibm.com> wrote:
->>>>
->>>> Patchset adds performance stats reporting support for nvdimm.
->>>> Added interface includes support for pmu register/unregister
->>>> functions. A structure is added called nvdimm_pmu to be used for
->>>> adding arch/platform specific data such as cpumask, nvdimm device
->>>> pointer and pmu event functions like event_init/add/read/del.
->>>> User could use the standard perf tool to access perf events
->>>> exposed via pmu.
->>>>
->>>> Interface also defines supported event list, config fields for the
->>>> event attributes and their corresponding bit values which are exported
->>>> via sysfs. Patch 3 exposes IBM pseries platform nmem* device
->>>> performance stats using this interface.
->>>>
->>>> Result from power9 pseries lpar with 2 nvdimm device:
->>>>
->>>> Ex: List all event by perf list
->>>>
->>>> command:# perf list nmem
->>>>
->>>>   nmem0/cache_rh_cnt/                                [Kernel PMU event]
->>>>   nmem0/cache_wh_cnt/                                [Kernel PMU event]
->>>>   nmem0/cri_res_util/                                [Kernel PMU event]
->>>>   nmem0/ctl_res_cnt/                                 [Kernel PMU event]
->>>>   nmem0/ctl_res_tm/                                  [Kernel PMU event]
->>>>   nmem0/fast_w_cnt/                                  [Kernel PMU event]
->>>>   nmem0/host_l_cnt/                                  [Kernel PMU event]
->>>>   nmem0/host_l_dur/                                  [Kernel PMU event]
->>>>   nmem0/host_s_cnt/                                  [Kernel PMU event]
->>>>   nmem0/host_s_dur/                                  [Kernel PMU event]
->>>>   nmem0/med_r_cnt/                                   [Kernel PMU event]
->>>>   nmem0/med_r_dur/                                   [Kernel PMU event]
->>>>   nmem0/med_w_cnt/                                   [Kernel PMU event]
->>>>   nmem0/med_w_dur/                                   [Kernel PMU event]
->>>>   nmem0/mem_life/                                    [Kernel PMU event]
->>>>   nmem0/poweron_secs/                                [Kernel PMU event]
->>>>   ...
->>>>   nmem1/mem_life/                                    [Kernel PMU event]
->>>>   nmem1/poweron_secs/                                [Kernel PMU event]
->>>>
->>>> Patch1:
->>>>         Introduces the nvdimm_pmu structure
->>>> Patch2:
->>>>         Adds common interface to add arch/platform specific data
->>>>         includes nvdimm device pointer, pmu data along with
->>>>         pmu event functions. It also defines supported event list
->>>>         and adds attribute groups for format, events and cpumask.
->>>>         It also adds code for cpu hotplug support.
->>>> Patch3:
->>>>         Add code in arch/powerpc/platform/pseries/papr_scm.c to expose
->>>>         nmem* pmu. It fills in the nvdimm_pmu structure with pmu name,
->>>>         capabilities, cpumask and event functions and then registers
->>>>         the pmu by adding callbacks to register_nvdimm_pmu.
->>>> Patch4:
->>>>         Sysfs documentation patch
->>>>
->>>> Changelog
->>>> ---
->>>> Resend v5 -> v6
->>>> - No logic change, just a rebase to latest upstream and
->>>>   tested the patchset.
->>>>
->>>> - Link to the patchset Resend v5: https://lkml.org/lkml/2021/11/15/3979
->>>>
->>>> v5 -> Resend v5
->>>> - Resend the patchset
->>>>
->>>> - Link to the patchset v5: https://lkml.org/lkml/2021/9/28/643
->>>>
->>>> v4 -> v5:
->>>> - Remove multiple variables defined in nvdimm_pmu structure include
->>>>   name and pmu functions(event_int/add/del/read) as they are just
->>>>   used to copy them again in pmu variable. Now we are directly doing
->>>>   this step in arch specific code as suggested by Dan Williams.
->>>>
->>>> - Remove attribute group field from nvdimm pmu structure and
->>>>   defined these attribute groups in common interface which
->>>>   includes format, event list along with cpumask as suggested by
->>>>   Dan Williams.
->>>>   Since we added static defination for attrbute groups needed in
->>>>   common interface, removes corresponding code from papr.
->>>>
->>>> - Add nvdimm pmu event list with event codes in the common interface.
->>>>
->>>> - Remove Acked-by/Reviewed-by/Tested-by tags as code is refactored
->>>>   to handle review comments from Dan.
->>>
->>> I don't think review comments should invalidate the Acked-by tags in
->>> this case. Nothing fundamentally changed in the approach, and I would
->>> like to have the perf ack before taking this through the nvdimm tree.
->>>
->>> Otherwise this looks good to me.
->>>
->>> Peter, might you have a chance to re-Ack this series, or any concerns
->>> about me retrieving those Acks from the previous postings?
->>
->> Reached Peter offline and he refreshed his Acked-by.
-> 
-> There's still time for the tags from:
-> 
-> "Madhavan Srinivasan"
-> "Nageswara R Sastry"
-> 
-> ...to be reapplied, but I'll go ahead with pushing this to Linux-next
-> in the meantime.
-
-Hi Dan/Peter,
-    Thanks for reviewing and taking the patchset.
-
-Thanks,
-Kajol Jain
+DQoNCkxlIDIzLzAyLzIwMjIgw6AgMjE6NDgsIEdhYnJpZWwgUGF1YmVydCBhIMOpY3JpdMKgOg0K
+PiBPbiBXZWQsIEZlYiAyMywgMjAyMiBhdCAwNjoxMTozNlBNICswMTAwLCBDaHJpc3RvcGhlIExl
+cm95IHdyb3RlOg0KPj4gQ29tbWl0IGE4MmFkZmQ1YzdjYiAoImhhcmRlbmluZzogSW50cm9kdWNl
+IENPTkZJR19aRVJPX0NBTExfVVNFRF9SRUdTIikNCj4+IGFkZGVkIHplcm9pbmcgb2YgdXNlZCBy
+ZWdpc3RlcnMgYXQgZnVuY3Rpb24gZXhpdC4NCj4+DQo+PiBBdCB0aGUgdGltZSBiZWluZywgUFBD
+NjQgY2xlYXJzIHZvbGF0aWxlIHJlZ2lzdGVycyBvbiBzeXNjYWxsIGV4aXQgYnV0DQo+PiBQUEMz
+MiBkb2Vzbid0IGRvIGl0IGZvciBwZXJmb3JtYW5jZSByZWFzb24uDQo+Pg0KPj4gQWRkIHRoYXQg
+Y2xlYXJpbmcgaW4gUFBDMzIgc3lzY2FsbCBleGl0IGFzIHdlbGwsIGJ1dCBvbmx5IHdoZW4NCj4+
+IENPTkZJR19aRVJPX0NBTExfVVNFRF9SRUdTIGlzIHNlbGVjdGVkLg0KPj4NCj4+IE9uIGFuIDh4
+eCwgdGhlIG51bGxfc3lzY2FsbCBzZWxmdGVzdCBnaXZlczoNCj4+IC0gV2l0aG91dCBDT05GSUdf
+WkVST19DQUxMX1VTRURfUkVHUwkJOiAyODggY3ljbGVzDQo+PiAtIFdpdGggQ09ORklHX1pFUk9f
+Q0FMTF9VU0VEX1JFR1MJCTogMzA1IGN5Y2xlcw0KPj4gLSBXaXRoIENPTkZJR19aRVJPX0NBTExf
+VVNFRF9SRUdTICsgdGhpcyBwYXRjaAk6IDMxOSBjeWNsZXMNCj4+DQo+PiBOb3RlIHRoYXQgKGlu
+ZGVwZW5kZW50IG9mIHRoaXMgcGF0Y2gpLCB3aXRoIHBtYWMzMl9kZWZjb25maWcsDQo+PiB2bWxp
+bnV4IHNpemUgaXMgYXMgZm9sbG93cyB3aXRoL3dpdGhvdXQgQ09ORklHX1pFUk9fQ0FMTF9VU0VE
+X1JFR1M6DQo+Pg0KPj4gICAgIHRleHQJICAgCWRhdGEJICAgIGJzcwkgICAgZGVjCSAgICBoZXgJ
+CWZpbGVuYW1lDQo+PiA5NTc4ODY5CQkyNTI1MjEwCSAxOTQ0MDAJMTIyOTg0NzkJYmJhOGVmCXZt
+bGludXgud2l0aG91dA0KPj4gMTAzMTgwNDUJMjUyNTIxMCAgMTk0NDAwCTEzMDM3NjU1CWM2ZjA1
+Nwl2bWxpbnV4LndpdGgNCj4+DQo+PiBUaGF0IGlzIGEgNy43JSBpbmNyZWFzZSBvbiB0ZXh0IHNp
+emUsIDYuMCUgb24gb3ZlcmFsbCBzaXplLg0KPj4NCj4+IFNpZ25lZC1vZmYtYnk6IENocmlzdG9w
+aGUgTGVyb3kgPGNocmlzdG9waGUubGVyb3lAY3Nncm91cC5ldT4NCj4+IC0tLQ0KPj4gICBhcmNo
+L3Bvd2VycGMva2VybmVsL2VudHJ5XzMyLlMgfCAxNSArKysrKysrKysrKysrKysNCj4+ICAgMSBm
+aWxlIGNoYW5nZWQsIDE1IGluc2VydGlvbnMoKykNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9w
+b3dlcnBjL2tlcm5lbC9lbnRyeV8zMi5TIGIvYXJjaC9wb3dlcnBjL2tlcm5lbC9lbnRyeV8zMi5T
+DQo+PiBpbmRleCA3NzQ4YzI3OGQxM2MuLjE5OWYyMzA5MmMwMiAxMDA2NDQNCj4+IC0tLSBhL2Fy
+Y2gvcG93ZXJwYy9rZXJuZWwvZW50cnlfMzIuUw0KPj4gKysrIGIvYXJjaC9wb3dlcnBjL2tlcm5l
+bC9lbnRyeV8zMi5TDQo+PiBAQCAtMTUxLDYgKzE1MSwyMSBAQCBzeXNjYWxsX2V4aXRfZmluaXNo
+Og0KPj4gICAJYm5lCTNmDQo+PiAgIAltdGNyCXI1DQo+PiAgIA0KPj4gKyNpZmRlZiBDT05GSUdf
+WkVST19DQUxMX1VTRURfUkVHUw0KPj4gKwkvKiBaZXJvIHZvbGF0aWxlIHJlZ3MgdGhhdCBtYXkg
+Y29udGFpbiBzZW5zaXRpdmUga2VybmVsIGRhdGEgKi8NCj4+ICsJbGkJcjAsMA0KPj4gKwlsaQly
+NCwwDQo+PiArCWxpCXI1LDANCj4+ICsJbGkJcjYsMA0KPj4gKwlsaQlyNywwDQo+PiArCWxpCXI4
+LDANCj4+ICsJbGkJcjksMA0KPj4gKwlsaQlyMTAsMA0KPj4gKwlsaQlyMTEsMA0KPj4gKwlsaQly
+MTIsMA0KPj4gKwltdGN0cglyMA0KPj4gKwltdHhlcglyMA0KPiANCj4gSGVyZSwgSSdtIGFsbW9z
+dCBzdXJlIHRoYXQgb24gc29tZSBwcm9jZXNzb3JzLCBpdCB3b3VsZCBiZSBiZXR0ZXIgdG8NCj4g
+c2VwYXJhdGUgbXRjdHIgZm9ybSBtdHhlci4gbXR4ZXIgaXMgdHlwaWNhbGx5IHZlcnkgZXhwZW5z
+aXZlIChwaXBlbGluZQ0KPiBmbHVzaCkgYnV0IEkgZG9uJ3Qga25vdyB3aGF0J3MgdGhlIGJlc3Qg
+b3JkZXJpbmcgZm9yIHRoZSBhdmVyYWdlIGNvcmUuDQoNCkluIHRoZSA4eHgsIENUUiBhbmQgTFIg
+YXJlIGhhbmRsZWQgYnkgdGhlIEJQVSBhcyBhbnkgb3RoZXIgcmVnIChMYXRlbmN5IA0KMSBibG9j
+YWdlIDEpLg0KQUZBSVUsIFhFUiBpcyBzZXJpYWxpemUgKyAxDQoNCj4gDQo+IEFuZCB3aGF0IGFi
+b3V0IGxyPyBTaG91bGQgaXQgYWxzbyBiZSBjbGVhcmVkPw0KDQpMUiBpcyByZXN0b3JlZCBmcm9t
+IHN0YWNrLg0KDQpDaHJpc3RvcGhl
