@@ -2,71 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9604C1D8A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Feb 2022 22:18:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 195E04C2652
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 09:31:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K3pmC6k7Vz2xDD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 08:18:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K45jY215gz3cYr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 19:31:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel-com.20210112.gappssmtp.com header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=39luujE5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm1 header.b=evv/LeK1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=KPV2Akj6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::631;
- helo=mail-pl1-x631.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=russell.cc (client-ip=66.111.4.28;
+ helo=out4-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20210112.gappssmtp.com
- header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=39luujE5; dkim-atps=neutral
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com
- [IPv6:2607:f8b0:4864:20::631])
+ unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
+ header.s=fm1 header.b=evv/LeK1; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm2 header.b=KPV2Akj6; 
+ dkim-atps=neutral
+Received: from out4-smtp.messagingengine.com (unknown [66.111.4.28])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K3plV6NBtz2x9W
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 08:17:20 +1100 (AEDT)
-Received: by mail-pl1-x631.google.com with SMTP id q1so11314416plx.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Feb 2022 13:17:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20210112.gappssmtp.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=wcLO/DsAxaLfi5/b2/mtuFadfkpKXF/EUQvaL26ETM8=;
- b=39luujE51p1TOwhFigHUe3/smVkTSMc2mJarc9lCov4oRdLWGxXYiYCO/W39NXrf2Q
- rslTqbX3YHUXHamp556f3pG9oehBMOMt1WuFEdEhpQUavfZq+WzPB9HTf37HIqAU3+WL
- 7Em72YPtYehAU0cGOLbjKlqhek5YEr36sdXRluBAH7Q7HMpmATR5fSk576i7xQbBJBhG
- IGekvTrHdXQMZ2nSHCmYkS6I6ZFgZ38GH0JTLq6c7H5ah24PFteyKNYozk4mTPO+r76P
- 3tvcKnM8Ndbe0trEPddIUIQzeV+jUMQ1NRehFVh6S7Czlk9+Ch2ScVQbD7gDTvttErQt
- 9B8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=wcLO/DsAxaLfi5/b2/mtuFadfkpKXF/EUQvaL26ETM8=;
- b=s/Ue+yrgQuXgsx6ce6dUTxQGV03nBjESLkPp0f5qDwP9qJ/lQJyfs3NklY8qDHA6t/
- rIPeSi3JPUFO/+1NLcD0IuZp9sM4elcQVzQJ+IpenR1Si9Y5tGoM+jTTiEwgbZkEt/pW
- dqkn3tsUecsxbHJAOU86Bju3e/VLCYVPomRRRWZMguHqOk9ecFiLXpeK014/jgXQYVJo
- 9X0JEQL6Ymj/XpVaEay1jvwfcph4OcikjSJ83i5qp6SQYlhpD486lE/MeF0a+n7qj6mE
- HLQpnxDW15i7ivNAg8H5JHjpSt7/cTrUDAPAIAwFyXp/vpxB9K/yuDi0XDnFlKLQktZu
- +Uww==
-X-Gm-Message-State: AOAM530moUfKP3BpTM+C5ONFHkwWnatgcVLfgDfCv82TnmU2eq+dzFy+
- +S++MQdv0dqCSTUvGHXhyIjZRu+NbpA9LF8unaLRIg==
-X-Google-Smtp-Source: ABdhPJz71jjeyXpAaQfHMtXS5jdm1SjDPb2i/xbUDUNrdZNB2VBI8lrF8+Uf0rxZGYol9vDDIVQcg/XDf5QCmz3GI9U=
-X-Received: by 2002:a17:90a:990c:b0:1bc:3c9f:2abe with SMTP id
- b12-20020a17090a990c00b001bc3c9f2abemr1274790pjp.220.1645651038711; Wed, 23
- Feb 2022 13:17:18 -0800 (PST)
-MIME-Version: 1.0
-References: <20220217163357.276036-1-kjain@linux.ibm.com>
- <CAPcyv4jwpMbz0woftSfm3EO05pr3ZG9rVMJCkYVsapKYSOn3xw@mail.gmail.com>
- <CAPcyv4hkLA_KJsKO_avTDZCVL2zGhcRNxVc+2P2uR6-5b2uwVA@mail.gmail.com>
-In-Reply-To: <CAPcyv4hkLA_KJsKO_avTDZCVL2zGhcRNxVc+2P2uR6-5b2uwVA@mail.gmail.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 23 Feb 2022 13:17:07 -0800
-Message-ID: <CAPcyv4jCeweE3A90bP-xUkM9pNQw=XdsFxvFye4=bVRNKWwHKQ@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] Add perf interface to expose nvdimm
-To: Kajol Jain <kjain@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K45hc3TTDz3c9t
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 19:30:55 +1100 (AEDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+ by mailout.nyi.internal (Postfix) with ESMTP id 94B3E5C00B3;
+ Wed, 23 Feb 2022 19:32:29 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute3.internal (MEProxy); Wed, 23 Feb 2022 19:32:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
+ :cc:content-transfer-encoding:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm1; bh=nf5v9flhJ1/35f
+ JJsCo6upNHW6tvn2iWHZH/A+ZwQBg=; b=evv/LeK16QlL3GjRaqAJEve75MJGTm
+ 0s1X7DWU0oCwRCmdoWFtYVsnJ4AR1j4x9II/WxMSQSQTYfAxgeo+zjV7xZelFIy5
+ JS1NmECDqJz6NRx3I9t6spm2KQoxBRfRJF+Cut7TlNMCPYTQ3KWriSjB8pZsLpis
+ pbjtCZ118uKNZuR2+2KXx9yoxicIqoSPq1a7R8R5hqGsAUbzSshyPmCdRIy//Xfo
+ 1oDHzCLDswQPqampldY3rTDAKgMMAQtTyhRhq29HzjviPVV4bJSCZHwN+4lbxiy7
+ HbvtKpZalmmW5Oj+9UTO7ihnNdO410lzel7UBD4HkB5iuHzGAIlro/gA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:date:date:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm2; bh=nf5v9flhJ1/35fJJsCo6upNHW6tvn2iWHZH/A+ZwQ
+ Bg=; b=KPV2Akj6JeP9AMwf5j+RJmb5AdCsVUlDymKb+fjS4Esv11r4HoNEdicsL
+ 6PJFB9rEgWT+gRnpOOnkj2wGcYkvXBnBsFH8gffx475IpA+tFkc4yEVCp1afZFG3
+ e0HpaVOvLV1iaRHPmS54bKpxY5nds5AzMmOjxqWANYpHpYzFNy7cXZJa7czoYR28
+ MY7MDbwiSBf92aq0aPJoHqO3ipE7Qn1En9TFAQntkTawfMhyphzZPO/Jj4Pm3EDr
+ AloUMQriE2uRDu56kWK23R9jbzsu17t8ULIRxYZM5ZBiOWzNMF5B0NDxtCm4ob50
+ e8RgX+ijwxUzt9Ppmvv1jSFXIpJUg==
+X-ME-Sender: <xms:HNIWYnKmV0kvcuRBjKLJ7MxCBZOEuR5XAYjCSS2fKAWiKeLE7HcAjA>
+ <xme:HNIWYrJm6o5lmGIrXeynVNdqzLQ_UDr0eJ_vGbasKx_MzBhpzhXYHgY3AAUQG9Uw4
+ osyg-wjTigm58KXqA>
+X-ME-Received: <xmr:HNIWYvv9iXEkfcvgkMjPEJiO0Y4zurKUa9M4DoT8Dak-fhFuuDTessB1vlXAcCmwWGmh9KScolXJTLz3nY7RBJn5mYQ5oTsQzxWOMJp-kUaqpfoo6kIE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrledugddvfecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
+ hrlhcuvffnffculdduhedmnecujfgurhepkffuhffvjghftgffgggfgfesthejredttder
+ jeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
+ gvlhhlrdgttgeqnecuggftrfgrthhtvghrnhepfeffgefhlefgtedtleehfeekjeejteej
+ jedtvddvgfejveelieevfffgfedufeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+ hrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:HNIWYgYSOGQaa1nred7y96aqSvYWVkyUncVQDSGDeLlmFXmxXbT0ug>
+ <xmx:HNIWYubU3BnY-TGAeax4xLYdBy5KEyfp00d9DReRbqkMiWfG0-XCGg>
+ <xmx:HNIWYkDmO6OHUqDIBoN8-V-nR9wHw-uvUa20FikZr3Aqckilysri0A>
+ <xmx:HdIWYm4BY1kgY3F_Qz6y-at2XRgkoiLPh37djwu0Og5NwgrEguUuOg>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 23 Feb 2022 19:32:26 -0500 (EST)
+Message-ID: <b7adc31a454cf89cd04eabe36399bf2b3ce4fb23.camel@russell.cc>
+Subject: Re: [PATCH] powerpc/module_64: fix array_size.cocci warning
+From: Russell Currey <ruscur@russell.cc>
+To: Guo Zhengkui <guozhengkui@vivo.com>, Michael Ellerman
+ <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Wedson Almeida Filho <wedsonaf@google.com>, 
+ "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)"
+ <linuxppc-dev@lists.ozlabs.org>, open list <linux-kernel@vger.kernel.org>
+In-Reply-To: <20220223075426.20939-1-guozhengkui@vivo.com>
+References: <20220223075426.20939-1-guozhengkui@vivo.com>
 Content-Type: text/plain; charset="UTF-8"
+Date: Thu, 24 Feb 2022 10:32:23 +1000
+MIME-Version: 1.0
+User-Agent: Evolution 3.42.4 
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,125 +102,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux NVDIMM <nvdimm@lists.linux.dev>, Santosh Sivaraj <santosh@fossix.org>,
- maddy@linux.ibm.com, "Weiny, Ira" <ira.weiny@intel.com>,
- rnsastry@linux.ibm.com, Peter Zijlstra <peterz@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- atrajeev@linux.vnet.ibm.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Vishal L Verma <vishal.l.verma@intel.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: kernel@vivo.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Feb 23, 2022 at 11:07 AM Dan Williams <dan.j.williams@intel.com> wrote:
->
-> On Fri, Feb 18, 2022 at 10:06 AM Dan Williams <dan.j.williams@intel.com> wrote:
-> >
-> > On Thu, Feb 17, 2022 at 8:34 AM Kajol Jain <kjain@linux.ibm.com> wrote:
-> > >
-> > > Patchset adds performance stats reporting support for nvdimm.
-> > > Added interface includes support for pmu register/unregister
-> > > functions. A structure is added called nvdimm_pmu to be used for
-> > > adding arch/platform specific data such as cpumask, nvdimm device
-> > > pointer and pmu event functions like event_init/add/read/del.
-> > > User could use the standard perf tool to access perf events
-> > > exposed via pmu.
-> > >
-> > > Interface also defines supported event list, config fields for the
-> > > event attributes and their corresponding bit values which are exported
-> > > via sysfs. Patch 3 exposes IBM pseries platform nmem* device
-> > > performance stats using this interface.
-> > >
-> > > Result from power9 pseries lpar with 2 nvdimm device:
-> > >
-> > > Ex: List all event by perf list
-> > >
-> > > command:# perf list nmem
-> > >
-> > >   nmem0/cache_rh_cnt/                                [Kernel PMU event]
-> > >   nmem0/cache_wh_cnt/                                [Kernel PMU event]
-> > >   nmem0/cri_res_util/                                [Kernel PMU event]
-> > >   nmem0/ctl_res_cnt/                                 [Kernel PMU event]
-> > >   nmem0/ctl_res_tm/                                  [Kernel PMU event]
-> > >   nmem0/fast_w_cnt/                                  [Kernel PMU event]
-> > >   nmem0/host_l_cnt/                                  [Kernel PMU event]
-> > >   nmem0/host_l_dur/                                  [Kernel PMU event]
-> > >   nmem0/host_s_cnt/                                  [Kernel PMU event]
-> > >   nmem0/host_s_dur/                                  [Kernel PMU event]
-> > >   nmem0/med_r_cnt/                                   [Kernel PMU event]
-> > >   nmem0/med_r_dur/                                   [Kernel PMU event]
-> > >   nmem0/med_w_cnt/                                   [Kernel PMU event]
-> > >   nmem0/med_w_dur/                                   [Kernel PMU event]
-> > >   nmem0/mem_life/                                    [Kernel PMU event]
-> > >   nmem0/poweron_secs/                                [Kernel PMU event]
-> > >   ...
-> > >   nmem1/mem_life/                                    [Kernel PMU event]
-> > >   nmem1/poweron_secs/                                [Kernel PMU event]
-> > >
-> > > Patch1:
-> > >         Introduces the nvdimm_pmu structure
-> > > Patch2:
-> > >         Adds common interface to add arch/platform specific data
-> > >         includes nvdimm device pointer, pmu data along with
-> > >         pmu event functions. It also defines supported event list
-> > >         and adds attribute groups for format, events and cpumask.
-> > >         It also adds code for cpu hotplug support.
-> > > Patch3:
-> > >         Add code in arch/powerpc/platform/pseries/papr_scm.c to expose
-> > >         nmem* pmu. It fills in the nvdimm_pmu structure with pmu name,
-> > >         capabilities, cpumask and event functions and then registers
-> > >         the pmu by adding callbacks to register_nvdimm_pmu.
-> > > Patch4:
-> > >         Sysfs documentation patch
-> > >
-> > > Changelog
-> > > ---
-> > > Resend v5 -> v6
-> > > - No logic change, just a rebase to latest upstream and
-> > >   tested the patchset.
-> > >
-> > > - Link to the patchset Resend v5: https://lkml.org/lkml/2021/11/15/3979
-> > >
-> > > v5 -> Resend v5
-> > > - Resend the patchset
-> > >
-> > > - Link to the patchset v5: https://lkml.org/lkml/2021/9/28/643
-> > >
-> > > v4 -> v5:
-> > > - Remove multiple variables defined in nvdimm_pmu structure include
-> > >   name and pmu functions(event_int/add/del/read) as they are just
-> > >   used to copy them again in pmu variable. Now we are directly doing
-> > >   this step in arch specific code as suggested by Dan Williams.
-> > >
-> > > - Remove attribute group field from nvdimm pmu structure and
-> > >   defined these attribute groups in common interface which
-> > >   includes format, event list along with cpumask as suggested by
-> > >   Dan Williams.
-> > >   Since we added static defination for attrbute groups needed in
-> > >   common interface, removes corresponding code from papr.
-> > >
-> > > - Add nvdimm pmu event list with event codes in the common interface.
-> > >
-> > > - Remove Acked-by/Reviewed-by/Tested-by tags as code is refactored
-> > >   to handle review comments from Dan.
-> >
-> > I don't think review comments should invalidate the Acked-by tags in
-> > this case. Nothing fundamentally changed in the approach, and I would
-> > like to have the perf ack before taking this through the nvdimm tree.
-> >
-> > Otherwise this looks good to me.
-> >
-> > Peter, might you have a chance to re-Ack this series, or any concerns
-> > about me retrieving those Acks from the previous postings?
->
-> Reached Peter offline and he refreshed his Acked-by.
+On Wed, 2022-02-23 at 15:54 +0800, Guo Zhengkui wrote:
+> Fix following coccicheck warning:
+> ./arch/powerpc/kernel/module_64.c:432:40-41: WARNING: Use ARRAY_SIZE.
+> 
+> ARRAY_SIZE(arr) is a macro provided by the kernel. It makes sure that
+> arr
+> is an array, so it's safer than sizeof(arr) / sizeof(arr[0]) and more
+> standard.
+> 
+> Signed-off-by: Guo Zhengkui <guozhengkui@vivo.com>
 
-There's still time for the tags from:
-
-"Madhavan Srinivasan"
-"Nageswara R Sastry"
-
-...to be reapplied, but I'll go ahead with pushing this to Linux-next
-in the meantime.
+Reviewed-by: Russell Currey <ruscur@russell.cc>
