@@ -2,65 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FDD74C2766
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 10:04:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FA64C27A5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 10:10:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K46R66X8tz3cc3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 20:04:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K46Z565FWz3dgF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 20:10:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sbRe9FkU;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=plqHsoA9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=dinguyen@kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+ccf00434d002d37b347b+6759+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=sbRe9FkU; 
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=plqHsoA9; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K46GB3CsGz3cY9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 19:56:34 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id B865561A00;
- Wed, 23 Feb 2022 23:31:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A8BC340E7;
- Wed, 23 Feb 2022 23:30:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1645659061;
- bh=lqCEQ++vi7cgL8SGDqvu6VRtg8aruPJlQBSjPBXBFVM=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=sbRe9FkUPCxCGG5QhSpQFHALisL4a0h67bCxhSLbAt1nLiwP1yIOk1Uj7FSa6KCb5
- weBLktMX2iJ1azUVoI5qzyIPsB248hdzJqK4FY8iQs4ijX9ClxGFEG4dPQ2t94Tu+v
- xnm83JKO7FsjVlGtupBZVZ1sGqkMArGtNnLjnEwqgMRRugYsRTn+yfOLhixpTMveFC
- hFyJk7dTbBRw3IsZy86rcTOonVkHxoMQs0BGW96T4vsXyVidvkbPH0uwFh8RFITz5K
- oD3k8dsNBCQPOLOspB8IOHbjF16KCCmPClOP9aOj20bxN2gTg9NdvWcdAxevymW0xQ
- hD4A1zZdc89kw==
-Message-ID: <c6f461f1-1dd9-aec1-2c85-a3eda478a1be@kernel.org>
-Date: Wed, 23 Feb 2022 17:30:53 -0600
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K46LP4w8Lz3dqS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 20:00:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=0xdJtLbIyGaTkVrOoFrs1oCqE4SKHuV2ypN1+yGx8FU=; b=plqHsoA9r6qv2vcyoZWmADrMG/
+ 5OPFbItTU7dR/wJsGyZ44TU7xCGfQQi8sj15lLsmxdJKWXugYw9BJI825zqqtRxeT2vsvlVL1+L+4
+ Z4s86+FCMNrdAqVn80iGGZAgP1Tib8fDL9OlFVl6nNO623T8ympgHtoeQ8BY5GKQooyK/3WKhc0OJ
+ RZfyDYV0j3SviZJjYHW+23G9QvaHR2MEStY2hyxNGAakVOAap9o8FDNl4jQHwk6i6bgcOGcNyf81N
+ 7qkWtXciB2p6k8Q5Hv/7mbngKMtgV1QAQWdv1kadJpK9io105nqZXvfHdj7kmdHBz/G8wD2sYCdtb
+ 3ygJbvwQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red
+ Hat Linux)) id 1nN7Yy-00H1v4-7V; Thu, 24 Feb 2022 06:25:16 +0000
+Date: Wed, 23 Feb 2022 22:25:16 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH 00/16] Remove usage of the deprecated "pci-dma-compat.h"
+ API
+Message-ID: <YhckzJp5/x9zW4uQ@infradead.org>
+References: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
+ <YhXmQwvjMFPQFPUr@infradead.org>
+ <ddf6010e-417d-8da7-8e11-1b4a55f92fff@wanadoo.fr>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2 07/18] nios2: drop access_ok() check from __put_user()
-Content-Language: en-US
-To: Arnd Bergmann <arnd@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, linux-api@vger.kernel.org, arnd@arndb.de,
- linux-kernel@vger.kernel.org, viro@zeniv.linux.org.uk
-References: <20220216131332.1489939-1-arnd@kernel.org>
- <20220216131332.1489939-8-arnd@kernel.org>
-From: Dinh Nguyen <dinguyen@kernel.org>
-In-Reply-To: <20220216131332.1489939-8-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ddf6010e-417d-8da7-8e11-1b4a55f92fff@wanadoo.fr>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,111 +66,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, dalias@libc.org, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, peterz@infradead.org, jcmvbkbc@gmail.com,
- guoren@kernel.org, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-riscv@lists.infradead.org, will@kernel.org, ardb@kernel.org,
- linux-s390@vger.kernel.org, bcain@codeaurora.org, deller@gmx.de,
- x86@kernel.org, linux@armlinux.org.uk, linux-csky@vger.kernel.org,
- mingo@redhat.com, geert@linux-m68k.org, linux-snps-arc@lists.infradead.org,
- linux-xtensa@linux-xtensa.org, hca@linux.ibm.com, linux-alpha@vger.kernel.org,
- linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
- openrisc@lists.librecores.org, green.hu@gmail.com, shorne@gmail.com,
- monstr@monstr.eu, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org,
- nickhu@andestech.com, linux-mips@vger.kernel.org, ebiederm@xmission.com,
- richard@nod.at, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- davem@davemloft.net
+Cc: airlied@linux.ie, trix@redhat.com, linux-fpga@vger.kernel.org,
+ linux-pci@vger.kernel.org, paulus@samba.org, sparclinux@vger.kernel.org,
+ linux-scsi@vger.kernel.org, sathya.prakash@broadcom.com,
+ Christoph Hellwig <hch@infradead.org>, MPT-FusionLinux.pdl@broadcom.com,
+ hao.wu@intel.com, arnd@arndb.de, suganath-prabu.subramani@broadcom.com,
+ sreekanth.reddy@broadcom.com, ink@jurassic.park.msu.ru, bhelgaas@google.com,
+ mchehab@kernel.org, mattst88@gmail.com, awalls@md.metrocast.net,
+ davem@davemloft.net, alex.bou9@gmail.com, vkoul@kernel.org,
+ linux-alpha@vger.kernel.org, dmaengine@vger.kernel.org, mdf@kernel.org,
+ akpm@linux-foundation.org, linux-media@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, yilun.xu@intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Feb 23, 2022 at 09:26:56PM +0100, Christophe JAILLET wrote:
+> Patch 01, 04, 05, 06, 08, 09 have not reached -next yet.
+> They all still apply cleanly.
+> 
+> 04 has been picked it up for inclusion in the media subsystem for 5.18.
+> The other ones all have 1 or more Reviewed-by:/Acked-by: tags.
+> 
+> Patch 16 must be resubmitted to add "#include <linux/dma-mapping.h>" in
+> order not to break builds.
 
+So how about this:  I'll pick up 1, 5,6,8 and 9 for the dma-mapping
+tree.  After -rc1 when presumably all other patches have reached
+mainline your resubmit one with the added include and we finish this
+off?
 
-On 2/16/22 07:13, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Unlike other architectures, the nios2 version of __put_user() has an
-> extra check for access_ok(), preventing it from being used to implement
-> __put_kernel_nofault().
-> 
-> Split up put_user() along the same lines as __get_user()/get_user()
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->   arch/nios2/include/asm/uaccess.h | 56 +++++++++++++++++++-------------
->   1 file changed, 33 insertions(+), 23 deletions(-)
-> 
-> diff --git a/arch/nios2/include/asm/uaccess.h b/arch/nios2/include/asm/uaccess.h
-> index ca9285a915ef..a5cbe07cf0da 100644
-> --- a/arch/nios2/include/asm/uaccess.h
-> +++ b/arch/nios2/include/asm/uaccess.h
-> @@ -167,34 +167,44 @@ do {									\
->   	: "r" (val), "r" (ptr), "i" (-EFAULT));				\
->   }
->   
-> -#define put_user(x, ptr)						\
-> +#define __put_user_common(__pu_val, __pu_ptr)				\
->   ({									\
->   	long __pu_err = -EFAULT;					\
-> -	__typeof__(*(ptr)) __user *__pu_ptr = (ptr);			\
-> -	__typeof__(*(ptr)) __pu_val = (__typeof(*ptr))(x);		\
-> -	if (access_ok(__pu_ptr, sizeof(*__pu_ptr))) {	\
-> -		switch (sizeof(*__pu_ptr)) {				\
-> -		case 1:							\
-> -			__put_user_asm(__pu_val, "stb", __pu_ptr, __pu_err); \
-> -			break;						\
-> -		case 2:							\
-> -			__put_user_asm(__pu_val, "sth", __pu_ptr, __pu_err); \
-> -			break;						\
-> -		case 4:							\
-> -			__put_user_asm(__pu_val, "stw", __pu_ptr, __pu_err); \
-> -			break;						\
-> -		default:						\
-> -			/* XXX: This looks wrong... */			\
-> -			__pu_err = 0;					\
-> -			if (copy_to_user(__pu_ptr, &(__pu_val),		\
-> -				sizeof(*__pu_ptr)))			\
-> -				__pu_err = -EFAULT;			\
-> -			break;						\
-> -		}							\
-> +	switch (sizeof(*__pu_ptr)) {					\
-> +	case 1:								\
-> +		__put_user_asm(__pu_val, "stb", __pu_ptr, __pu_err);	\
-> +		break;							\
-> +	case 2:								\
-> +		__put_user_asm(__pu_val, "sth", __pu_ptr, __pu_err);	\
-> +		break;							\
-> +	case 4:								\
-> +		__put_user_asm(__pu_val, "stw", __pu_ptr, __pu_err);	\
-> +		break;							\
-> +	default:							\
-> +		/* XXX: This looks wrong... */				\
-> +		__pu_err = 0;						\
-> +		if (__copy_to_user(__pu_ptr, &(__pu_val),		\
-> +			sizeof(*__pu_ptr)))				\
-> +			__pu_err = -EFAULT;				\
-> +		break;							\
->   	}								\
->   	__pu_err;							\
->   })
->   
-> -#define __put_user(x, ptr) put_user(x, ptr)
-> +#define __put_user(x, ptr)						\
-> +({									\
-> +	__auto_type __pu_ptr = (ptr);					\
-> +	typeof(*__pu_ptr) __pu_val = (typeof(*__pu_ptr))(x);		\
-> +	__put_user_common(__pu_val, __pu_ptr);				\
-> +})
-> +
-> +#define put_user(x, ptr)						\
-> +({									\
-> +	__auto_type __pu_ptr = (ptr);					\
-> +	typeof(*__pu_ptr) __pu_val = (typeof(*__pu_ptr))(x);		\
-> +	access_ok(__pu_ptr, sizeof(*__pu_ptr)) ?			\
-> +		__put_user_common(__pu_val, __pu_ptr) :			\
-> +		-EFAULT;						\
-> +})
->   
->   #endif /* _ASM_NIOS2_UACCESS_H */
-
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Thanks a lot for all your work already!
