@@ -2,41 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9E74C2961
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 11:29:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 161984C2983
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 11:31:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K48KN5LvXz3cGM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 21:29:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K48MV2VcCz3cFX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 21:31:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uKMo67CX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4K48Jy47wTz2xY3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 21:29:05 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CDCB91509;
- Thu, 24 Feb 2022 02:29:04 -0800 (PST)
-Received: from [10.163.48.178] (unknown [10.163.48.178])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5F68A3F70D;
- Thu, 24 Feb 2022 02:28:58 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH 02/11] swiotlb: make swiotlb_exit a no-op if SWIOTLB_FORCE
- is set
-To: Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org
-References: <20220222153514.593231-1-hch@lst.de>
- <20220222153514.593231-3-hch@lst.de>
-Message-ID: <b769ddc8-5ba3-b7a9-b295-92507a73c0d6@arm.com>
-Date: Thu, 24 Feb 2022 15:59:00 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=uKMo67CX; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K48Lr5dl3z2xY3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 21:30:44 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 1DDF36164A
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 10:30:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAE7C34100
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 10:30:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1645698641;
+ bh=UVBFu/2kd+72msKvbsEhY06n98IaQ0VgsAo0y3uTQ2c=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=uKMo67CXZRSwdhBzi8/EEN9oztBr9soHLP8RvL0hIDZzDAQWECQ7f8/Z8eugIY42z
+ hdfwcBluy+paiOgWEjWvgQKMnK4adKDRPYUcdzCO1eHFfPr8N0p6F+ynpzpVaLf9iv
+ CZRG6rIeJEwNiFrzJtmKDTMeHAoxInP0LBcoot5lwoVNesSWsfBfyAK/NsNtQnkts0
+ AMlDmrllC81ZcK3cvVTbMA9khRkXj8pu1dHnRsqHjwpW8ZIpgngP/5/BCpTl75RUUI
+ vy/3K30H2fYs4D+RRMADFd4EhSy9aqCosQIJHK8SpqR9iXdhesbYPT0MaBTAKEOI9x
+ ItmMoXkR49BCQ==
+Received: by mail-vk1-f180.google.com with SMTP id j5so897919vkc.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 02:30:41 -0800 (PST)
+X-Gm-Message-State: AOAM530atU0saISue+30wD6ITVTMPgwkX1H3izrisEU+Qw1Gs/A71R/f
+ EkoQNBp5ttPKCXoKbkqjbLfO+mS19iETCAhfQRY=
+X-Google-Smtp-Source: ABdhPJzrvZFAbp4Whh2uDrOBDpqD226YSRYRm6BxUCxiOKTwC758aaNZI0rGrTfTm/5o1TQu5AW4BErik6sfPZlMfiQ=
+X-Received: by 2002:a1f:2355:0:b0:32a:e5bb:29a1 with SMTP id
+ j82-20020a1f2355000000b0032ae5bb29a1mr790584vkj.2.1645698640594; Thu, 24 Feb
+ 2022 02:30:40 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20220222153514.593231-3-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20220224085410.399351-1-guoren@kernel.org>
+ <20220224085410.399351-12-guoren@kernel.org>
+ <CAK8P3a3wg9S_zPad74FiJzYBn0M9bQyunuKzmH3z_QQrags5ng@mail.gmail.com>
+In-Reply-To: <CAK8P3a3wg9S_zPad74FiJzYBn0M9bQyunuKzmH3z_QQrags5ng@mail.gmail.com>
+From: Guo Ren <guoren@kernel.org>
+Date: Thu, 24 Feb 2022 18:30:29 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQratosmRtoiKx9xTm3-gBSrnEaWgVrYj1U2WZafR1RVg@mail.gmail.com>
+Message-ID: <CAJF2gTQratosmRtoiKx9xTm3-gBSrnEaWgVrYj1U2WZafR1RVg@mail.gmail.com>
+Subject: Re: [PATCH V6 11/20] riscv: compat: syscall: Add compat_sys_call_table
+ implementation
+To: Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,46 +73,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>, linux-s390@vger.kernel.org,
- linux-hyperv@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
- linux-ia64@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>,
- Joerg Roedel <joro@8bytes.org>, x86@kernel.org, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, tboot-devel@lists.sourceforge.net,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- David Woodhouse <dwmw2@infradead.org>, linux-riscv@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ gregkh <gregkh@linuxfoundation.org>, Drew Fustini <drew@beagleboard.org>,
+ Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, liush <liush@allwinnertech.com>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, Feb 24, 2022 at 5:38 PM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Thu, Feb 24, 2022 at 9:54 AM <guoren@kernel.org> wrote:
+> >
+> > From: Guo Ren <guoren@linux.alibaba.com>
+> >
+> > Implement compat sys_call_table and some system call functions:
+> > truncate64, ftruncate64, fallocate, pread64, pwrite64,
+> > sync_file_range, readahead, fadvise64_64 which need argument
+> > translation.
+> >
+> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> > Signed-off-by: Guo Ren <guoren@kernel.org>
+> > Cc: Arnd Bergmann <arnd@arndb.de>
+> > Cc: Palmer Dabbelt <palmer@dabbelt.com>
+>
+> Here, I was hoping you'd convert some of the other architectures to use
+> the same code, but the changes you did do look correct.
+>
+> Please at least add the missing bit for big-endian architectures here:
+>
+> +#if !defined(compat_arg_u64) && !defined(CONFIG_CPU_BIG_ENDIAN)
+> +#define compat_arg_u64(name)           u32  name##_lo, u32  name##_hi
+> +#define compat_arg_u64_dual(name)      u32, name##_lo, u32, name##_hi
+> +#define compat_arg_u64_glue(name)      (((u64)name##_hi << 32) | \
+> +                                        ((u64)name##_lo & 0xffffffffUL))
+> +#endif
+>
+> with the lo/hi words swapped. With that change:
+Got it, I would change it in next version of patch.
+
+>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
 
-On 2/22/22 9:05 PM, Christoph Hellwig wrote:
-> If force bouncing is enabled we can't release the bufffers.
 
-typo							^^^^
+-- 
+Best Regards
+ Guo Ren
 
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  kernel/dma/swiotlb.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> index f1e7ea160b433..36fbf1181d285 100644
-> --- a/kernel/dma/swiotlb.c
-> +++ b/kernel/dma/swiotlb.c
-> @@ -378,6 +378,9 @@ void __init swiotlb_exit(void)
->  	unsigned long tbl_vaddr;
->  	size_t tbl_size, slots_size;
->  
-> +	if (swiotlb_force == SWIOTLB_FORCE)
-> +		return;
-> +
->  	if (!mem->nslabs)
->  		return;
->  
-> 
-
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+ML: https://lore.kernel.org/linux-csky/
