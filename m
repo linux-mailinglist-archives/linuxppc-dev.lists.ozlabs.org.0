@@ -2,77 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334A14C25B7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 09:15:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F5C4C2691
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 09:47:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K45LD38Stz3cCG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 19:15:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K463934nPz3cQs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Feb 2022 19:47:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=f4abudYR;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=SjFjmxdT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032;
- helo=mail-pj1-x1032.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::f31;
+ helo=mail-qv1-xf31.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=f4abudYR; dkim-atps=neutral
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com
- [IPv6:2607:f8b0:4864:20::1032])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=SjFjmxdT; dkim-atps=neutral
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com
+ [IPv6:2607:f8b0:4864:20::f31])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K45KY59Wfz2x9D
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 19:14:24 +1100 (AEDT)
-Received: by mail-pj1-x1032.google.com with SMTP id
- v5-20020a17090ac90500b001bc40b548f9so5061266pjt.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 00:14:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=vBtZuAALJewLaq/BuuDCV2cJjk+dmoyjauh5TxA1GZA=;
- b=f4abudYR5pA2Q0a3XJMCI15iR5dGcVBYCFgl303eFaqKWpTV0qK0byZ9kwsppS7jKE
- luzTVEyU7Kw9LTjtOmyilGqGtDB+akg753wObRv5ozDqzlWH9/4eTO1wbpGZKaTki2zk
- N0pK/RhySisLNpl+DGTN/3SlJniEvdwm9LxERjytaHc0iA0tT+OpFcm6vuXjvRrqX7Ju
- OCW3b1bMg5O2dwh4IfZRzfDwy1XC59/VNCieT1jp9fStYQGXdkdnuLhXOr9i1Vl4ww1B
- Q7egHzodaQnnRYMTZouiYw80+izMeTu0Do7sDI/x/SvSOCyUIPCCajPtrhbP/jb/GsIE
- 4+3w==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K462S6Np1z2xs2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 19:46:23 +1100 (AEDT)
+Received: by mail-qv1-xf31.google.com with SMTP id fc19so2442280qvb.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 00:46:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AMgrL5D+KiWCdMkA04nMLIuWEJUWtCL6OB6a/lKLlsk=;
+ b=SjFjmxdTyjyqAf6RJdg2tHuijlejReBRn7QF/+aSua+sO0zKJmTVFZalZ5mNA7GH45
+ zAzL2UJVlM7mLSOdJY/JvKpVQQg08AJJb8ESyHKkdGohUbDmqeTDDkxWEvl5zvCQwaM8
+ JSWpnxydgv5Z7IU1+gUj8UOqHVzTt/CW9+jqM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=vBtZuAALJewLaq/BuuDCV2cJjk+dmoyjauh5TxA1GZA=;
- b=4F2UTksyrtGq41RH6eS9CM8g7DdgWcKRfseTzE4XOr3X51bj8a3MQmvx4OZ09npNCc
- C2KtgAlTgiomw7/oSJ/2Zi6bUnx/+4hQ1mrbNfRDlrcS3zQb8V5nVKnkFXFDRazOcmU0
- 2q1FDorZ2w2FJCgagxhwnltFnRiNjYZ9GEtk11Vawl/wObhcShxGTG1WoQsmlmAteXm/
- WuNKFKWudJLiP1aMxeET/S30CegXUH1oCvOxQCAZPL7ef1URrysFKCOQ6bIbAFLs+0Md
- QtUhmIGbn4YbE9PpPEfpOhIXRS3eZNj1toEsO2jrTLn7kwqKpg4Brb4yo9e682dDlOD0
- 1tOw==
-X-Gm-Message-State: AOAM532eI6lrqpRLmE5NeJ1tWOUaEu4zsdSULOzuqqe4rCUhni1AONN6
- gIwKGMlMpIV89HuB/+vBUpPV6M5MrZI=
-X-Google-Smtp-Source: ABdhPJyBN/C7+22VrKk36cqZqE7k05Vv39SYcBEW3Kep/d2b94LJARMfj2XGABlw4ty/tYQXypf6dg==
-X-Received: by 2002:a17:902:ce91:b0:150:3f7:5096 with SMTP id
- f17-20020a170902ce9100b0015003f75096mr1188262plg.128.1645679134652; 
- Wed, 23 Feb 2022 21:05:34 -0800 (PST)
-Received: from localhost (115-64-212-59.static.tpgi.com.au. [115.64.212.59])
- by smtp.gmail.com with ESMTPSA id
- e20-20020a17090ab39400b001bc4f9ad3cbsm4569708pjr.3.2022.02.23.21.05.33
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=AMgrL5D+KiWCdMkA04nMLIuWEJUWtCL6OB6a/lKLlsk=;
+ b=QPZ9yA9/3VsYka2r+f0uwmnGV/AP/pCogawRgpNVYSehAFdnvw/Q4LX9c6AoF2XCBo
+ k2Dm/XRwMoqTMgLcg+9K8an7OrCIJ48gQ8j7E5VfYPunF+Tsd/4oTffTLCPJUBvZLZxQ
+ sXfSDnFB346udgqhWzNjBFVUoW+uCNjjYQMdvFLfGu6uRYcqt8meNHIUPeQGTRPtbIr5
+ kE2y+sfMe2zeoef1WDxygI8w265xZjIuepA8tUalf4ARkuhYEnFyo0kjCVNcloMpsxNc
+ acP1oppLBD3vgE0ciHGPgS5ts2COfKEIpIh1CTVTaLj7OjIDdviMEHbflDzAM2LGzIh7
+ 3cXQ==
+X-Gm-Message-State: AOAM531nHP42g6gp2pdCvmNsnmFIfVkAfm3+mURKGdfvcb+h5WNTXDdQ
+ cDYU6+HyJhWqvCAQvV75hwAZwUGTLUwXNw==
+X-Google-Smtp-Source: ABdhPJx6Ld80nbuarBWp5o8KCI/l5Z53qcY+ZlRGc5SLMbxpdXxgGnAwn1akrhgVmyLqoIoTxwHGMQ==
+X-Received: by 2002:a17:902:7584:b0:14d:77f4:5598 with SMTP id
+ j4-20020a170902758400b0014d77f45598mr1246271pll.1.1645682626444; 
+ Wed, 23 Feb 2022 22:03:46 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id bd14sm1470026pfb.165.2022.02.23.22.03.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 23 Feb 2022 21:05:34 -0800 (PST)
-Date: Thu, 24 Feb 2022 15:05:28 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/3] powerpc: fix build errors
-To: Anders Roxell <anders.roxell@linaro.org>, mpe@ellerman.id.au
-References: <20220223135820.2252470-1-anders.roxell@linaro.org>
- <20220223135820.2252470-2-anders.roxell@linaro.org>
- <1645670923.t0z533n7uu.astroid@bobo.none>
-In-Reply-To: <1645670923.t0z533n7uu.astroid@bobo.none>
+ Wed, 23 Feb 2022 22:03:46 -0800 (PST)
+From: Kees Cook <keescook@chromium.org>
+To: Matthew Wilcox <willy@infradead.org>
+Subject: [PATCH v2] usercopy: Check valid lifetime via stack depth
+Date: Wed, 23 Feb 2022 22:03:42 -0800
+Message-Id: <20220224060342.1855457-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Message-Id: <1645678884.dsm10mudmp.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6569; h=from:subject;
+ bh=6A8mc/rhTTVnxVpbzT3BARo6XcOUZdfrInmbku4Dc4o=;
+ b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBiFx+9k7mkyBUeqAXKhGpQLGTRH+td6u68zTq4WYHQ
+ Ql54f0WJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYhcfvQAKCRCJcvTf3G3AJhN/D/
+ 9rptmz9DAb1CkNTCvTXLH+yoTu25eGKdcejSEGfbH5sbzbSrepTMvgMAUaEo4Jo/8UTRQFJq8ad1YJ
+ 29LV70+iJUbjlZwZRali/FQGcNsi5QC8Zfmpo1PH0op8PjQpclPbqzAeu0mrFA7OAYxDIooE6VQhil
+ ZYhpww9k4rhnFCjwLM8s18FkbClCrc8umT9LUrxaCfea7w0WgYWVblrECc3mmdMHQ+ku7+tWcMmdbP
+ kD6bShQmH7d6VurCRzR12joIN8MsNFw9HDiNJK91hJraUq7pBe51ddL2EQTxQ8wvcYBmn6V6w4VApv
+ Za49GBST9yohx35QqEQQLqXtEbGT+WCHCvYxVmLpzigEdVBayvJciN3jxRQg4qPH5NzrCvZvQbn5gk
+ wpbEWxzvCzaOGydlCDaF0K4hqXnStUt4SsEbRrmBRxTCH75dA4ejbXIS31hbNZAzSLOVo/ZbRtRwMK
+ iwuOvLFBROdqpN+7NmFczrgvSRHsOS1l7WoMoUFoMD5r36J62d70Qz/TO2UHlKVjf2oxihTqWDDv76
+ APOsRc8JzJkKRhEimqn1BgOBh5CYaw0znuEi0E5IGKjVMVnDdCLY3Z+JhJeTJMX31ISHuvaFyRy9Kb
+ 3VPTEzhwG/E3CcVAroWSz5SVRCR4XakTnGsk72PgX5rBKm8Tqny1HU15ZD1Q==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp;
+ fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,107 +90,197 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Cc: linux-s390@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+ linux-sh@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ Muhammad Usama Anjum <usama.anjum@collabora.com>, linux-mm@kvack.org,
+ linux-hardening@vger.kernel.org, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nicholas Piggin's message of February 24, 2022 12:54 pm:
-> Excerpts from Anders Roxell's message of February 23, 2022 11:58 pm:
->> Building tinyconfig with gcc (Debian 11.2.0-16) and assembler (Debian
->> 2.37.90.20220207) the following build error shows up:
->>=20
->>  {standard input}: Assembler messages:
->>  {standard input}:1190: Error: unrecognized opcode: `stbcix'
->>  {standard input}:1433: Error: unrecognized opcode: `lwzcix'
->>  {standard input}:1453: Error: unrecognized opcode: `stbcix'
->>  {standard input}:1460: Error: unrecognized opcode: `stwcix'
->>  {standard input}:1596: Error: unrecognized opcode: `stbcix'
->>  ...
->>=20
->> Rework to add assembler directives [1] around the instruction. Going
->> through the them one by one shows that the changes should be safe.  Like
->> __get_user_atomic_128_aligned() is only called in p9_hmi_special_emu(),
->> which according to the name is specific to power9.  And __raw_rm_read*()
->> are only called in things that are powernv or book3s_hv specific.
->>=20
->> [1] https://sourceware.org/binutils/docs/as/PowerPC_002dPseudo.html#Powe=
-rPC_002dPseudo
->=20
-> Thanks for doing this. There is a recent patch committed to binutils to w=
-ork
-> around this compiler bug.
->=20
-> https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3Dcebc89b93=
-28
->=20
-> Not sure on the outlook for GCC fix. Either way unfortunately we have=20
-> toolchains in the wild now that will explode, so we might have to take=20
-> your patches for the time being.
+Under CONFIG_HARDENED_USERCOPY=y, when exact stack frame boundary checking
+is not available (i.e. everything except x86 with FRAME_POINTER), check
+a stack object as being at least "current depth valid", in the sense
+that any object within the stack region but not between start-of-stack
+and current_stack_pointer should be considered unavailable (i.e. its
+lifetime is from a call no longer present on the stack).
 
-Perhaps not... Here's a hack that seems to work around the problem.
+Introduce ARCH_HAS_CURRENT_STACK_POINTER to track which architectures
+have actually implemented the common global register alias.
 
-The issue of removing -many from the kernel and replacing it with
-appropriate architecture versions is an orthogonal one (that we
-should do). Either way this hack should be able to allow us to do
-that as well, on these problem toolchains.
+Additionally report usercopy bounds checking failures with an offset
+from current_stack_pointer, which may assist with diagnosing failures.
 
-But for now it just uses -many as the trivial regression fix to get
-back to previous behaviour.
+The LKDTM USERCOPY_STACK_FRAME_TO and USERCOPY_STACK_FRAME_FROM tests
+(once slightly adjusted in a separate patch) will pass again with
+this fixed.
 
-Thanks,
-Nick
-
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/powerpc/include/asm/asm-compat.h | 28 +++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+v1: https://lore.kernel.org/all/20220216201449.2087956-1-keescook@chromium.org/
+v2: adjust for only some archs having current_stack_pointer
+---
+ arch/arm/Kconfig     |  1 +
+ arch/arm64/Kconfig   |  1 +
+ arch/powerpc/Kconfig |  1 +
+ arch/s390/Kconfig    |  1 +
+ arch/sh/Kconfig      |  1 +
+ arch/x86/Kconfig     |  1 +
+ mm/usercopy.c        | 41 ++++++++++++++++++++++++++++++++++++++---
+ 7 files changed, 44 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/asm-compat.h b/arch/powerpc/include/a=
-sm/asm-compat.h
-index 2b736d9fbb1b..f9ac4a36f026 100644
---- a/arch/powerpc/include/asm/asm-compat.h
-+++ b/arch/powerpc/include/asm/asm-compat.h
-@@ -5,6 +5,34 @@
- #include <asm/types.h>
- #include <asm/ppc-opcode.h>
-=20
-+#ifndef __ASSEMBLY__
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 4c97cb40eebb..a7a09eef1852 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -5,6 +5,7 @@ config ARM
+ 	select ARCH_32BIT_OFF_T
+ 	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE if HAVE_KRETPROBES && FRAME_POINTER && !ARM_UNWIND
+ 	select ARCH_HAS_BINFMT_FLAT
++	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL if MMU
+ 	select ARCH_HAS_DMA_WRITE_COMBINE if !ARM_DMA_MEM_BUFFERABLE
+ 	select ARCH_HAS_ELF_RANDOMIZE
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index f2b5a4abef21..b8ab790555c8 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -18,6 +18,7 @@ config ARM64
+ 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+ 	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
+ 	select ARCH_HAS_CACHE_LINE_SIZE
++	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+ 	select ARCH_HAS_DMA_PREP_COHERENT
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index b779603978e1..7e7387bd7d53 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -108,6 +108,7 @@ config PPC
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG
+ 	select ARCH_ENABLE_MEMORY_HOTREMOVE
+ 	select ARCH_HAS_COPY_MC			if PPC64
++	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+ 	select ARCH_HAS_DEBUG_WX		if STRICT_KERNEL_RWX
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index be9f39fd06df..4845ab549dd1 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -60,6 +60,7 @@ config S390
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM
+ 	select ARCH_ENABLE_MEMORY_HOTREMOVE
+ 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
++	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+ 	select ARCH_HAS_DEBUG_WX
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index 2474a04ceac4..1c2b53bf3093 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -7,6 +7,7 @@ config SUPERH
+ 	select ARCH_HAVE_CUSTOM_GPIO_H
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG if (GUSA_RB || CPU_SH4A)
+ 	select ARCH_HAS_BINFMT_FLAT if !MMU
++	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_GIGANTIC_PAGE
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
+ 	select ARCH_HAS_PTE_SPECIAL
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 9f5bd41bf660..90494fba3620 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -69,6 +69,7 @@ config X86
+ 	select ARCH_ENABLE_THP_MIGRATION if X86_64 && TRANSPARENT_HUGEPAGE
+ 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
+ 	select ARCH_HAS_CACHE_LINE_SIZE
++	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE	if !X86_PAE
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
+diff --git a/mm/usercopy.c b/mm/usercopy.c
+index d0d268135d96..5d28725af95f 100644
+--- a/mm/usercopy.c
++++ b/mm/usercopy.c
+@@ -22,6 +22,30 @@
+ #include <asm/sections.h>
+ #include "slab.h"
+ 
 +/*
-+ * gcc 10 started to emit a .machine directive at the beginning of generat=
-ed
-+ * .s files, which overrides assembler -Wa,-m<cpu> options passed down.
-+ * Unclear if this behaviour will be reverted.
-+ *
-+ * gas 2.38 commit b25f942e18d6 made .machine directive more strict, commi=
-t
-+ * cebc89b9328ea weakens it to take into account the gcc directive and all=
-ow
-+ * assembler -m<cpu> options to work.
-+ *
-+ * A combination of both results in an older machine -mcpu=3D code generat=
-ion
-+ * preventing newer mneumonics in inline asm being recognised because it
-+ * overrides our -Wa,-many option from being recognised.
-+ *
-+ * Emitting a .machine any directive by hand allows us to hack our way aro=
-und
-+ * this.
-+ *
-+ * XXX: verify versions and combinations.
++ * Only called if obj is within stack/stackend bounds. Determine if within
++ * current stack depth.
 + */
-+#ifdef CONFIG_CC_IS_GCC
-+#if (GCC_VERSION >=3D 100000)
-+#if (CONFIG_AS_VERSION =3D=3D 23800)
-+asm(".machine any");
++static inline int check_stack_object_depth(const void *obj,
++					   unsigned long len)
++{
++#ifdef CONFIG_ARCH_HAS_CURRENT_STACK_POINTER
++#ifndef CONFIG_STACK_GROWSUP
++	const void * const high = stackend;
++	const void * const low = (void *)current_stack_pointer;
++#else
++	const void * const high = (void *)current_stack_pointer;
++	const void * const low = stack;
 +#endif
-+#endif
-+#endif
-+#endif /* __ASSEMBLY__ */
 +
- #ifdef __powerpc64__
-=20
- /* operations for longs and pointers */
---=20
-2.23.0
++	/* Reject: object not within current stack depth. */
++	if (obj < low || high < obj + len)
++		return BAD_STACK;
++
++#endif
++	return GOOD_STACK;
++}
++
+ /*
+  * Checks if a given pointer and length is contained by the current
+  * stack frame (if possible).
+@@ -29,7 +53,7 @@
+  * Returns:
+  *	NOT_STACK: not at all on the stack
+  *	GOOD_FRAME: fully within a valid stack frame
+- *	GOOD_STACK: fully on the stack (when can't do frame-checking)
++ *	GOOD_STACK: within the current stack (when can't frame-check exactly)
+  *	BAD_STACK: error condition (invalid stack position or bad stack frame)
+  */
+ static noinline int check_stack_object(const void *obj, unsigned long len)
+@@ -55,7 +79,8 @@ static noinline int check_stack_object(const void *obj, unsigned long len)
+ 	if (ret)
+ 		return ret;
+ 
+-	return GOOD_STACK;
++	/* Finally, check stack depth if possible. */
++	return check_stack_object_depth(obj, len);
+ }
+ 
+ /*
+@@ -280,7 +305,17 @@ void __check_object_size(const void *ptr, unsigned long n, bool to_user)
+ 		 */
+ 		return;
+ 	default:
+-		usercopy_abort("process stack", NULL, to_user, 0, n);
++		usercopy_abort("process stack", NULL, to_user,
++#ifdef CONFIG_ARCH_HAS_CURRENT_STACK_POINTER
++# ifndef CONFIG_STACK_GROWSUP
++				(void *)current_stack_pointer - ptr,
++# else
++				ptr - (void *)current_stack_pointer,
++# endif
++#else
++				0,
++#endif
++				n);
+ 	}
+ 
+ 	/* Check for bad heap object. */
+-- 
+2.30.2
 
