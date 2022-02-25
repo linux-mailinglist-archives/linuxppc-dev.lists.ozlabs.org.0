@@ -2,53 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D65B4C4A88
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 17:21:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E214C4AF5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 17:37:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K4w5R3HStz3bb7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Feb 2022 03:21:47 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=OHdUVHs4;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K4wRB2X6Mz3cRC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Feb 2022 03:37:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+6b5af05920c596b7f535+6760+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K4w4g2lT8z2yLT
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Feb 2022 03:21:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=FZ+MIKFcY92n2eEbmV05gJlf+p4zCLQ/l4UmfykudCI=; b=OHdUVHs4ssN+cZff1Cz5+pI0bS
- ACNDnitCkCgOeMfk5gHAdYVGGQ6ME1qo4qkJR7TLTp2sJqfXgC26sejwftaWRuLSQ2QgdEaTHgKcS
- LumBh6cyD5rIHpzntIup3R4VIph/iP/IlDryFo7261s9jLf+pgqyQuTn/+hNcDMQY4jujjArIhda2
- TF4OI8Z1yT7KkgU/aiDktotaDlqJVWouebA4emJYnv0RIB8s5A0kdloko8BGbhBYl2zUpg8dVEWaQ
- +xZrdNzW+wzeWegSUfiXFYR5A0q3GL3p/8ExZszbBLmFxq2xIrxmNwTCzjjZtgaXkpm+Zzz73lf8O
- f+1824/A==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red
- Hat Linux)) id 1nNdK8-005sWo-3G; Fri, 25 Feb 2022 16:20:04 +0000
-Date: Fri, 25 Feb 2022 08:20:04 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH 00/16] Remove usage of the deprecated "pci-dma-compat.h"
- API
-Message-ID: <YhkBtBdBhvCAtNH9@infradead.org>
-References: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K4wQl5Qn7z2yLT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Feb 2022 03:36:44 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4K4wQb3fgmz9sSF;
+ Fri, 25 Feb 2022 17:36:39 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 8YgDx3wKJhxM; Fri, 25 Feb 2022 17:36:39 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4K4wQb2mZcz9sSC;
+ Fri, 25 Feb 2022 17:36:39 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4EC1C8B77E;
+ Fri, 25 Feb 2022 17:36:39 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id hAi__97nq34t; Fri, 25 Feb 2022 17:36:39 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.232.39])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1311B8B763;
+ Fri, 25 Feb 2022 17:36:39 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 21PGaSh5045790
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Fri, 25 Feb 2022 17:36:29 +0100
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 21PGaRF3045789;
+ Fri, 25 Feb 2022 17:36:27 +0100
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v1] powerpc/interrupt: Remove struct interrupt_state
+Date: Fri, 25 Feb 2022 17:36:22 +0100
+Message-Id: <1d862ce3eab3da6ca7ac47d4a78a18f154462511.1645806970.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1645806978; l=4263; s=20211009;
+ h=from:subject:message-id; bh=qTHND+P0LmWaBimVqQTVXUUhsVy8eL7e5n1A3obaQ8g=;
+ b=+PFLUnwGxM1othpVsDf6WET2NOnWDnpu+scL3pd2OViBYDmKLk/yUbqOfVPPxdn3MLYmZ6HjDZGW
+ y/hPK6GJAV9PKzvh//3H2wxdZb+GBLRT1tZzftSGwPdS+ov3wYx7
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,20 +74,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: airlied@linux.ie, trix@redhat.com, linux-fpga@vger.kernel.org,
- linux-pci@vger.kernel.org, paulus@samba.org, sparclinux@vger.kernel.org,
- kernel-janitors@vger.kernel.org, linux-scsi@vger.kernel.org,
- sathya.prakash@broadcom.com, hch@infradead.org,
- MPT-FusionLinux.pdl@broadcom.com, hao.wu@intel.com, arnd@arndb.de,
- suganath-prabu.subramani@broadcom.com, sreekanth.reddy@broadcom.com,
- ink@jurassic.park.msu.ru, bhelgaas@google.com, mchehab@kernel.org,
- mattst88@gmail.com, rth@twiddle.net, awalls@md.metrocast.net,
- linux-kernel@vger.kernel.org, davem@davemloft.net, alex.bou9@gmail.com,
- vkoul@kernel.org, linux-alpha@vger.kernel.org, dmaengine@vger.kernel.org,
- mdf@kernel.org, akpm@linux-foundation.org, linux-media@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, yilun.xu@intel.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I've applied patches 1,5,6,8 and 9 to the dma-mapping tree.
+Since commit ceff77efa4f8 ("powerpc/64e/interrupt: Use new interrupt
+context tracking scheme") struct interrupt_state has been empty and
+unused.
+
+Remove it.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/interrupt.h | 32 +++++++++++-----------------
+ 1 file changed, 12 insertions(+), 20 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index fc28f46d2f9d..984ffceb8f91 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -123,9 +123,6 @@ static inline void nap_adjust_return(struct pt_regs *regs)
+ #endif
+ }
+ 
+-struct interrupt_state {
+-};
+-
+ static inline void booke_restore_dbcr0(void)
+ {
+ #ifdef CONFIG_PPC_ADV_DEBUG_REGS
+@@ -138,7 +135,7 @@ static inline void booke_restore_dbcr0(void)
+ #endif
+ }
+ 
+-static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrupt_state *state)
++static inline void interrupt_enter_prepare(struct pt_regs *regs)
+ {
+ #ifdef CONFIG_PPC32
+ 	if (!arch_irq_disabled_regs(regs))
+@@ -228,17 +225,17 @@ static inline void interrupt_enter_prepare(struct pt_regs *regs, struct interrup
+  * However interrupt_nmi_exit_prepare does return directly to regs, because
+  * NMIs do not do "exit work" or replay soft-masked interrupts.
+  */
+-static inline void interrupt_exit_prepare(struct pt_regs *regs, struct interrupt_state *state)
++static inline void interrupt_exit_prepare(struct pt_regs *regs)
+ {
+ }
+ 
+-static inline void interrupt_async_enter_prepare(struct pt_regs *regs, struct interrupt_state *state)
++static inline void interrupt_async_enter_prepare(struct pt_regs *regs)
+ {
+ #ifdef CONFIG_PPC64
+ 	/* Ensure interrupt_enter_prepare does not enable MSR[EE] */
+ 	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
+ #endif
+-	interrupt_enter_prepare(regs, state);
++	interrupt_enter_prepare(regs);
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	/*
+ 	 * RI=1 is set by interrupt_enter_prepare, so this thread flags access
+@@ -251,7 +248,7 @@ static inline void interrupt_async_enter_prepare(struct pt_regs *regs, struct in
+ 	irq_enter();
+ }
+ 
+-static inline void interrupt_async_exit_prepare(struct pt_regs *regs, struct interrupt_state *state)
++static inline void interrupt_async_exit_prepare(struct pt_regs *regs)
+ {
+ 	/*
+ 	 * Adjust at exit so the main handler sees the true NIA. This must
+@@ -262,7 +259,7 @@ static inline void interrupt_async_exit_prepare(struct pt_regs *regs, struct int
+ 	nap_adjust_return(regs);
+ 
+ 	irq_exit();
+-	interrupt_exit_prepare(regs, state);
++	interrupt_exit_prepare(regs);
+ }
+ 
+ struct interrupt_nmi_state {
+@@ -447,13 +444,11 @@ static __always_inline void ____##func(struct pt_regs *regs);		\
+ 									\
+ interrupt_handler void func(struct pt_regs *regs)			\
+ {									\
+-	struct interrupt_state state;					\
+-									\
+-	interrupt_enter_prepare(regs, &state);				\
++	interrupt_enter_prepare(regs);					\
+ 									\
+ 	____##func (regs);						\
+ 									\
+-	interrupt_exit_prepare(regs, &state);				\
++	interrupt_exit_prepare(regs);					\
+ }									\
+ NOKPROBE_SYMBOL(func);							\
+ 									\
+@@ -482,14 +477,13 @@ static __always_inline long ____##func(struct pt_regs *regs);		\
+ 									\
+ interrupt_handler long func(struct pt_regs *regs)			\
+ {									\
+-	struct interrupt_state state;					\
+ 	long ret;							\
+ 									\
+-	interrupt_enter_prepare(regs, &state);				\
++	interrupt_enter_prepare(regs);					\
+ 									\
+ 	ret = ____##func (regs);					\
+ 									\
+-	interrupt_exit_prepare(regs, &state);				\
++	interrupt_exit_prepare(regs);					\
+ 									\
+ 	return ret;							\
+ }									\
+@@ -518,13 +512,11 @@ static __always_inline void ____##func(struct pt_regs *regs);		\
+ 									\
+ interrupt_handler void func(struct pt_regs *regs)			\
+ {									\
+-	struct interrupt_state state;					\
+-									\
+-	interrupt_async_enter_prepare(regs, &state);			\
++	interrupt_async_enter_prepare(regs);				\
+ 									\
+ 	____##func (regs);						\
+ 									\
+-	interrupt_async_exit_prepare(regs, &state);			\
++	interrupt_async_exit_prepare(regs);				\
+ }									\
+ NOKPROBE_SYMBOL(func);							\
+ 									\
+-- 
+2.34.1
+
