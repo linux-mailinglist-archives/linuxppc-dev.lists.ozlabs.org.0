@@ -1,81 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 922634C42CD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 11:52:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D7E4C4324
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 12:12:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K4mnp5HzXz3bbT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 21:52:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K4nDc58lRz3cN1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 22:12:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=V5B+L7kk;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nzh6qnmQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::529;
- helo=mail-pg1-x529.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=rnsastry@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=V5B+L7kk; dkim-atps=neutral
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
- [IPv6:2607:f8b0:4864:20::529])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=nzh6qnmQ; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K4mn672q0z2yJw
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 21:52:08 +1100 (AEDT)
-Received: by mail-pg1-x529.google.com with SMTP id 12so4368242pgd.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 02:52:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=lOPOPfTT4jvu98yCK4rpV6Lqqj8jf8x3i39DL5jIpco=;
- b=V5B+L7kkmOLNwj2gCGdaorIBzmt8oiMQhtgWPxwrvRkvEFR7f+5APv/FvxoYjgErTf
- ANTG3PR8iDx9n+Qah2R682GxFBWXV0HwfVyNAfa7oY08KBNLDcL28ZO98CmJAdeJ7A/T
- NRjzJ+xWm1qOW9WHfNoJnQE0tLzb75gxC82Qbcm/4BVbE3AIJE6I5eKzK5OOsblW0Ue+
- VY+VISqz+doRzyzG6VX8o5uXgIvb28TSs782rKyn3pzGkts23LVgUFLu+0EYAibXcffm
- xGQD8xv/J2F5Ccs6HJF3hwv+cksPeOrEvtg+VcssicUaGZUA/VGak4E82ATQ+heUcyUn
- CZEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=lOPOPfTT4jvu98yCK4rpV6Lqqj8jf8x3i39DL5jIpco=;
- b=MM7ZwFd53et2L1zPGhf566i9VbioTucQnjQWUFqH/FBpWu2sKYJADKc8voat+mUuw8
- 1UMp+XyFZ64xvPg/+fwcQHZOQpbG8iJQExh175+1PqrR9bE/QaJQ+k6yxPFQbf25lZSm
- 5SwqPU410f8AM3dF1P5+KioRhoXlz3wNNfkoJbHWh4UtEAY07G2w40m7D7cVAbmuAeGj
- mF+ovmf3op4OzgjmJuzxIDD3RuJEbp+JerjVWpqEjmYt7IHUD4wdCh+mFoziZrdnLCDV
- ifzC033zGmpSAdqcNa1lS5TbjrqytxV4fLOh+go8gSpQ6L8uzzTymX4Xi7xveE65Ohsr
- MbVQ==
-X-Gm-Message-State: AOAM532+b3QuVXwzgWQfTCmkEagX+07Otx2GpdEIZH7HpaZdvJNLLFJY
- wvYcWMXK3XPigT20jy49lNA=
-X-Google-Smtp-Source: ABdhPJw1p3JpylPzwdPP9TEVvKcOyG6aC0IjbCbljtAOdMk1Nof42N6/33RGILbpNFCQaprbTYZTYA==
-X-Received: by 2002:a63:e54d:0:b0:375:5987:af5d with SMTP id
- z13-20020a63e54d000000b003755987af5dmr5750991pgj.14.1645786325457; 
- Fri, 25 Feb 2022 02:52:05 -0800 (PST)
-Received: from localhost (118-208-203-92.tpgi.com.au. [118.208.203.92])
- by smtp.gmail.com with ESMTPSA id
- d14-20020a056a0024ce00b004f3c87df62bsm2729639pfv.81.2022.02.25.02.52.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Feb 2022 02:52:04 -0800 (PST)
-Date: Fri, 25 Feb 2022 20:51:59 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/3] powerpc: fix build errors
-To: Arnd Bergmann <arnd@arndb.de>
-References: <20220223135820.2252470-1-anders.roxell@linaro.org>
- <20220223135820.2252470-2-anders.roxell@linaro.org>
- <1645670923.t0z533n7uu.astroid@bobo.none>
- <1645678884.dsm10mudmp.astroid@bobo.none>
- <20220224171207.GM614@gate.crashing.org>
- <1645748601.idp48wexp9.astroid@bobo.none>
- <CAK8P3a0feJOsKMNP0zCdPho5XdD+NXFceUTTe1X6dA9OdWQntQ@mail.gmail.com>
-In-Reply-To: <CAK8P3a0feJOsKMNP0zCdPho5XdD+NXFceUTTe1X6dA9OdWQntQ@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K4nCr0nvHz30Dy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 22:11:51 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21PAIBJ9021201; 
+ Fri, 25 Feb 2022 11:11:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=hcvTpBy/x5shNurAmWWK6P9i6O4+gs2ZmkPe3rZKF5s=;
+ b=nzh6qnmQyaXIe3zacHIW7c3HrCeqyyK73/S+R7IkkA4B3u56uD7PtwsVM1EOilB8tcxI
+ s5ItiYgicrewNStZFhiHISSFZrmV8uv0NGuNvKjERVKOkCedBt/d8fMgz4mIOhy21jFc
+ sbkb9S8J4YWB9H3u/g799R4dZ5UkrO5COpUvqnKuDitWiCLiiRWuMBxuUM0T2TnejTFQ
+ SZKD1E2kMC+kL/HhkvWjwht2/6wnpmIw9+uaKzxPA0U29+MPlzhKTSko5frA34ZSBzb0
+ Bnm8E5gOKDjyMNwbpcpzRYu8NLrsKqZb4MxxDo/FJXhthansmj88Ozf/DmV5QWFlVLP9 Ug== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3eew86s6qd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Feb 2022 11:11:34 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21PB82fh024443;
+ Fri, 25 Feb 2022 11:11:32 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma01fra.de.ibm.com with ESMTP id 3eeg2s3rmy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Feb 2022 11:11:32 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 21PBBRrD37749246
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 25 Feb 2022 11:11:28 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CD0A7AE051;
+ Fri, 25 Feb 2022 11:11:27 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE673AE057;
+ Fri, 25 Feb 2022 11:11:24 +0000 (GMT)
+Received: from [9.43.44.169] (unknown [9.43.44.169])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 25 Feb 2022 11:11:24 +0000 (GMT)
+Message-ID: <d7945e63-4cd6-1947-ed9f-a81203226c47@linux.ibm.com>
+Date: Fri, 25 Feb 2022 16:41:22 +0530
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.6.1
+Subject: Re: [PATCH v6 0/4] Add perf interface to expose nvdimm
+To: kajoljain <kjain@linux.ibm.com>, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev,
+ linux-kernel@vger.kernel.org, peterz@infradead.org,
+ dan.j.williams@intel.com, ira.weiny@intel.com, vishal.l.verma@intel.com
+References: <20220217163357.276036-1-kjain@linux.ibm.com>
+ <ddf18609-84ad-e263-7dff-7b2cc68557ef@linux.ibm.com>
+ <ea6bc468-c7ae-c844-5111-8f0dc3207f89@linux.ibm.com>
+From: Nageswara Sastry <rnsastry@linux.ibm.com>
+In-Reply-To: <ea6bc468-c7ae-c844-5111-8f0dc3207f89@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AtPbqZXfbZsrpl84U7JlwtAKWyPtg-Ud
+X-Proofpoint-GUID: AtPbqZXfbZsrpl84U7JlwtAKWyPtg-Ud
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Message-Id: <1645786002.lvhr18b39u.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-02-25_07,2022-02-25_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ priorityscore=1501 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
+ phishscore=0 suspectscore=0 mlxscore=0 adultscore=0 impostorscore=0
+ spamscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202250060
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,49 +107,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anders Roxell <anders.roxell@linaro.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "# 3.4.x" <stable@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: santosh@fossix.org, maddy@linux.ibm.com, aneesh.kumar@linux.ibm.com,
+ atrajeev@linux.vnet.ibm.com, vaibhav@linux.ibm.com, tglx@linutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Arnd Bergmann's message of February 25, 2022 6:33 pm:
-> On Fri, Feb 25, 2022 at 1:32 AM Nicholas Piggin <npiggin@gmail.com> wrote=
-:
->> Excerpts from Segher Boessenkool's message of February 25, 2022 3:12 am:
->> >> +#ifdef CONFIG_CC_IS_GCC
->> >> +#if (GCC_VERSION >=3D 100000)
->> >> +#if (CONFIG_AS_VERSION =3D=3D 23800)
->> >> +asm(".machine any");
->> >> +#endif
->> >> +#endif
->> >> +#endif
->> >> +#endif /* __ASSEMBLY__ */
->> >
->> > Abusing toplevel asm like this is broken and you *will* end up with
->> > unhappiness all around.
+
+
+On 25/02/22 12:08 pm, kajoljain wrote:
+> 
+> 
+> On 2/25/22 11:25, Nageswara Sastry wrote:
 >>
->> It actually unbreaks things and reduces my unhappiness. It's only done
->> for broken compiler versions and only where as does not have the
->> workaround for the breakage.
->=20
-> It doesn't work with clang, which always passes explicit .machine
-> statements around each inline asm, and it's also fundamentally
-> incompatible with LTO builds. Generally speaking, you can't expect
-> a top-level asm statement to have any effect inside of another
-> function.
+>>
+>> On 17/02/22 10:03 pm, Kajol Jain wrote:
+>>> Patchset adds performance stats reporting support for nvdimm.
+>>> Added interface includes support for pmu register/unregister
+>>> functions. A structure is added called nvdimm_pmu to be used for
+>>> adding arch/platform specific data such as cpumask, nvdimm device
+>>> pointer and pmu event functions like event_init/add/read/del.
+>>> User could use the standard perf tool to access perf events
+>>> exposed via pmu.
+>>>
+>>> Interface also defines supported event list, config fields for the
+>>> event attributes and their corresponding bit values which are exported
+>>> via sysfs. Patch 3 exposes IBM pseries platform nmem* device
+>>> performance stats using this interface.
+>>>
+>>> Result from power9 pseries lpar with 2 nvdimm device:
+>>>
+>>> Ex: List all event by perf list
+>>>
+>>> command:# perf list nmem
+>>>
+>>>     nmem0/cache_rh_cnt/                                [Kernel PMU event]
+>>>     nmem0/cache_wh_cnt/                                [Kernel PMU event]
+>>>     nmem0/cri_res_util/                                [Kernel PMU event]
+>>>     nmem0/ctl_res_cnt/                                 [Kernel PMU event]
+>>>     nmem0/ctl_res_tm/                                  [Kernel PMU event]
+>>>     nmem0/fast_w_cnt/                                  [Kernel PMU event]
+>>>     nmem0/host_l_cnt/                                  [Kernel PMU event]
+>>>     nmem0/host_l_dur/                                  [Kernel PMU event]
+>>>     nmem0/host_s_cnt/                                  [Kernel PMU event]
+>>>     nmem0/host_s_dur/                                  [Kernel PMU event]
+>>>     nmem0/med_r_cnt/                                   [Kernel PMU event]
+>>>     nmem0/med_r_dur/                                   [Kernel PMU event]
+>>>     nmem0/med_w_cnt/                                   [Kernel PMU event]
+>>>     nmem0/med_w_dur/                                   [Kernel PMU event]
+>>>     nmem0/mem_life/                                    [Kernel PMU event]
+>>>     nmem0/poweron_secs/                                [Kernel PMU event]
+>>>     ...
+>>>     nmem1/mem_life/                                    [Kernel PMU event]
+>>>     nmem1/poweron_secs/                                [Kernel PMU event]
+>>>
+>>> Patch1:
+>>>           Introduces the nvdimm_pmu structure
+>>> Patch2:
+>>>           Adds common interface to add arch/platform specific data
+>>>           includes nvdimm device pointer, pmu data along with
+>>>           pmu event functions. It also defines supported event list
+>>>           and adds attribute groups for format, events and cpumask.
+>>>           It also adds code for cpu hotplug support.
+>>> Patch3:
+>>>           Add code in arch/powerpc/platform/pseries/papr_scm.c to expose
+>>>           nmem* pmu. It fills in the nvdimm_pmu structure with pmu name,
+>>>           capabilities, cpumask and event functions and then registers
+>>>           the pmu by adding callbacks to register_nvdimm_pmu.
+>>> Patch4:
+>>>           Sysfs documentation patch
+>>>
+>>> Changelog
+>>
+>> Tested these patches with the automated tests at
+>> avocado-misc-tests/perf/perf_nmem.py
+>> URL:
+>> https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/perf/perf_nmem.py
+>>
+>>
+>> 1. On the system where target id and online id were different then not
+>> seeing value in 'cpumask' and those tests failed.
+>>
+>> Example:
+>> Log from dmesg
+>> ...
+>> papr_scm ibm,persistent-memory:ibm,pmemory@44100003: Region registered
+>> with target node 1 and online node 0
+>> ...
+> 
+> Hi Nageswara Sastry,
+>         Thanks for testing the patch set. Yes you right, incase target
+> node id and online node id is different, it can happen when target
+> node is not online and hence can cause this issue, thanks for pointing
+> it.
+> 
+> Function dev_to_node will return node id for a given nvdimm device which
+> can be offline in some scenarios. We should use numa node id return by
+> numa_map_to_online_node function in that scenario. This function incase
+> given node is offline, it will lookup for next closest online node and
+> return that nodeid.
+> 
+> Can you try with below change and see, if you are still getting this
+> issue. Please let me know.
+> 
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c
+> b/arch/powerpc/platforms/pseries/papr_scm.c
+> index bdf2620db461..4dd513d7c029 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -536,7 +536,7 @@ static void papr_scm_pmu_register(struct
+> papr_scm_priv *p)
+>                                  PERF_PMU_CAP_NO_EXCLUDE;
+> 
+>          /*updating the cpumask variable */
+> -       nodeid = dev_to_node(&p->pdev->dev);
+> +       nodeid = numa_map_to_online_node(dev_to_node(&p->pdev->dev));
+>          nd_pmu->arch_cpumask = *cpumask_of_node(nodeid);
+> 
+> Thanks,
+> Kajol Jain
+> 
 
-You have misunderstood my patch. It is not supposed to "work" with
-clang and it explicitly is complied out of clang. It's not intended
-to have any implementation independent meaning. It's working around
-a very specific issue with specific versions of gcc, and that's what
-it does.
+With the above patch all the tests are passing on the system where 
+target id and online id were different. Here is the the result:
 
-It's also not intended to be the final solution, it's a workaround
-hack. We will move away from -many of course. I will post it as a
-series since which hopefully will make it less confusing to people.
+(1/9) perf_nmem.py:perfNMEM.test_pmu_register_dmesg: PASS (3.47 s)
+(2/9) perf_nmem.py:perfNMEM.test_sysfs: PASS (1.15 s)
+(3/9) perf_nmem.py:perfNMEM.test_pmu_count: PASS (1.08 s)
+(4/9) perf_nmem.py:perfNMEM.test_all_events: PASS (18.15 s)
+(5/9) perf_nmem.py:perfNMEM.test_all_group_events: PASS (2.22 s)
+(6/9) perf_nmem.py:perfNMEM.test_mixed_events: CANCEL: With single PMU 
+mixed events test is not possible. (1.18 s)
+(7/9) perf_nmem.py:perfNMEM.test_pmu_cpumask: PASS (1.12 s)
+(8/9) perf_nmem.py:perfNMEM.test_cpumask: PASS (1.17 s)
+(9/9) perf_nmem.py:perfNMEM.test_cpumask_cpu_off: PASS (1.81 s)
 
-Thanks,
-Nick
+Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
+
+-- 
+Thanks and Regards
+R.Nageswara Sastry
