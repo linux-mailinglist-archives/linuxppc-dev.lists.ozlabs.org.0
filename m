@@ -2,66 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D914C402F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 09:34:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CEEB4C4046
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 09:41:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K4jkQ3SWSz3bVx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 19:34:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K4jsl5Jkqz3cNQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 19:40:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RngiZfhX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.17.24; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K4jjw6XLmz3bP9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 19:34:10 +1100 (AEDT)
-Received: from mail-wm1-f52.google.com ([209.85.128.52]) by
- mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MUokB-1noIEJ0ZO5-00QmUr for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb
- 2022 09:34:06 +0100
-Received: by mail-wm1-f52.google.com with SMTP id i20so1196174wmc.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 00:34:05 -0800 (PST)
-X-Gm-Message-State: AOAM533RrMABHK4214rs0DthCLEg/VUjh7MnsQJFw4/s3CriRjnS6sgo
- 8B5TFktnF7+TPzbCi5S6jqYl4kHZry4TsqvMzMk=
-X-Google-Smtp-Source: ABdhPJxlT0ZeeZN0sp/wnlDP9vqKjX5249QxVFT0x3B4UnYiAZsJdwfn3z3PfGHyveoi2R5x9P4PLXraCF/IwsdQHuA=
-X-Received: by 2002:a05:600c:4ecb:b0:37c:9125:ac03 with SMTP id
- g11-20020a05600c4ecb00b0037c9125ac03mr1654188wmq.98.1645778045094; Fri, 25
- Feb 2022 00:34:05 -0800 (PST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=RngiZfhX; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K4jrz41s7z3bP9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 19:40:18 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21P5Oad6022991; 
+ Fri, 25 Feb 2022 08:39:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=z+VP8CX+cr2B+PpF69r1ywigrZMWVEGEGBq6lY5qvn4=;
+ b=RngiZfhXxAZlAzsL2J2DuLOE45wkvsOhS7y4JQIAgvEEGP+l/AGlHPxRPyNVfa+HWrlb
+ FAbMM6Toc6pAPlX0kmr2ep7FRJxXC0XNWvxi7OE5sjBbH9dZwdZ+gOpGlGGWtHU8mxbv
+ OGzejbU/nUoAdpwQRYTZD2c4HYJIk7Wi7LskhVBaNrSxUiJCmQx90Y23xUgfjGSHs2h9
+ 3WTT8HaxdTTM9LFkZXTB2rBI9RuUpMefy/3XiHRrT68tOTPWR/kW63YSl6FW8tn1nUz6
+ h8stfkSwMd1T8HkNr20f8nm9yevJCRVDi1zuXdIZsmzA8hfOYSg89L1Fg5BMX0rnrWAI zQ== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3edsju4bca-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Feb 2022 08:39:54 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21P8XOni014216;
+ Fri, 25 Feb 2022 08:39:52 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma02fra.de.ibm.com with ESMTP id 3ear69mybh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 25 Feb 2022 08:39:52 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 21P8dlDi43778320
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 25 Feb 2022 08:39:48 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CFCEDA405C;
+ Fri, 25 Feb 2022 08:39:47 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D51B4A4054;
+ Fri, 25 Feb 2022 08:39:42 +0000 (GMT)
+Received: from [9.43.81.146] (unknown [9.43.81.146])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 25 Feb 2022 08:39:42 +0000 (GMT)
+Message-ID: <a41bb801-7062-c625-3ec2-75345b927851@linux.ibm.com>
+Date: Fri, 25 Feb 2022 14:09:41 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v6 0/4] Add perf interface to expose nvdimm
+Content-Language: en-US
+To: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>,
+ Nageswara Sastry <rnsastry@linux.ibm.com>, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev,
+ linux-kernel@vger.kernel.org, peterz@infradead.org,
+ dan.j.williams@intel.com, ira.weiny@intel.com, vishal.l.verma@intel.com
+References: <20220217163357.276036-1-kjain@linux.ibm.com>
+ <ddf18609-84ad-e263-7dff-7b2cc68557ef@linux.ibm.com>
+ <ea6bc468-c7ae-c844-5111-8f0dc3207f89@linux.ibm.com>
+ <125761cdabbfeaf6615e67d087ec113408f8eb7e.camel@linux.ibm.com>
+From: kajoljain <kjain@linux.ibm.com>
+In-Reply-To: <125761cdabbfeaf6615e67d087ec113408f8eb7e.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Cc7EYTXHdvDoyfqMjiUCMMAIbjriStdM
+X-Proofpoint-GUID: Cc7EYTXHdvDoyfqMjiUCMMAIbjriStdM
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20220223135820.2252470-1-anders.roxell@linaro.org>
- <20220223135820.2252470-2-anders.roxell@linaro.org>
- <1645670923.t0z533n7uu.astroid@bobo.none>
- <1645678884.dsm10mudmp.astroid@bobo.none>
- <20220224171207.GM614@gate.crashing.org>
- <1645748601.idp48wexp9.astroid@bobo.none>
-In-Reply-To: <1645748601.idp48wexp9.astroid@bobo.none>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Fri, 25 Feb 2022 09:33:49 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a0feJOsKMNP0zCdPho5XdD+NXFceUTTe1X6dA9OdWQntQ@mail.gmail.com>
-Message-ID: <CAK8P3a0feJOsKMNP0zCdPho5XdD+NXFceUTTe1X6dA9OdWQntQ@mail.gmail.com>
-Subject: Re: [PATCH 2/3] powerpc: fix build errors
-To: Nicholas Piggin <npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:Ocy95cVhnodtpR+oyad7cb3K4alCIZcR3cqUKFdEROS0ggaVn0k
- Ec+KSmxmh5gGQhu9/0CoDW/K6FdcrEpmlA7yFOgMTxYmmqF7dRSvwn14P9kVtR58KbFwS2w
- KknyX3M318jF4TtqFCEA38oI4vHYTzgMvyBKOIZR5eni2sdoJDn5vR7JNOHBvMlGm2etM0D
- wZ4XiExxs6WrRJZxw/CaA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:FMxO9a3EPeo=:NrLRuobFCbTYaI5hV963yB
- g2hvQg8o3Z23eLiMUe3dZruo/QNSY5+vYkRrpc+JvMwoxuCEGPbMevS7BuyduWBEumn3nbHeW
- rnHs7wmFeR1gySU7iqp/xp+84PdtIvb+z7V9IZKuM5SOcIT3FT/dKg8/KrzRQlWlTnw4Ybe2t
- 83XQWSpjMhU1sCI0u0Fr43kxOTnyziCIzqRQMnFTDY3/lGguegSeaTj9eXktdzh3V+ovLIAs1
- KJhaYATB79Ys3XimoxoqzJ4GZb0Tiw0x6AK/ubFP2WOnDBuefJA+7ga/FIdDiMarhg4N2D1Cj
- D/oCh6RrSTX0f+9e/Hg25L/6eDYRIcfbTm5m8jtLVz7akeyOkzJXjtw8MG7UmA1T8KxRXPI3s
- n24RoZ2uusLKisw//3cINTO7V6SZ3/o5J7X5ZUGKd0iDprQ581UO+p8l6f6S9tYGVr+Ki4GlE
- yeTxSSfFciKi4+Iqy2dFQ9AaC/qp6lK6LJvFdHyOLyfhvoVfKjJhJQymvHMLuMxuzR/kz2sga
- g5IKgz1JUq8cR+mp66F7lOcBLXbaFdQ5UMInO8/ggKj6MK+vKYGgF236SUZQC7AmAQA8kbIxd
- XOYnUChx98h8AcsnK+NFCMrq1DhXD+i/TmuLU5X2Xvo9jUrCJrlPMp2WYBbYN0tBe4vm1icba
- MR+m3AA42jHMtnMgi0sRylujBdhjHi06cP0x2fmkbVqQfLsa9FoPQSVcUwWi4KO/tiQg=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-02-25_06,2022-02-24_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ malwarescore=0 suspectscore=0 clxscore=1015 adultscore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202250043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,36 +110,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "# 3.4.x" <stable@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: vaibhav@linux.ibm.com, santosh@fossix.org, maddy@linux.ibm.com,
+ tglx@linutronix.de, atrajeev@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 25, 2022 at 1:32 AM Nicholas Piggin <npiggin@gmail.com> wrote:
-> Excerpts from Segher Boessenkool's message of February 25, 2022 3:12 am:
-> >> +#ifdef CONFIG_CC_IS_GCC
-> >> +#if (GCC_VERSION >= 100000)
-> >> +#if (CONFIG_AS_VERSION == 23800)
-> >> +asm(".machine any");
-> >> +#endif
-> >> +#endif
-> >> +#endif
-> >> +#endif /* __ASSEMBLY__ */
-> >
-> > Abusing toplevel asm like this is broken and you *will* end up with
-> > unhappiness all around.
->
-> It actually unbreaks things and reduces my unhappiness. It's only done
-> for broken compiler versions and only where as does not have the
-> workaround for the breakage.
 
-It doesn't work with clang, which always passes explicit .machine
-statements around each inline asm, and it's also fundamentally
-incompatible with LTO builds. Generally speaking, you can't expect
-a top-level asm statement to have any effect inside of another
-function.
 
-        Arnd
+On 2/25/22 13:17, Aneesh Kumar K V wrote:
+> On Fri, 2022-02-25 at 12:08 +0530, kajoljain wrote:
+>>
+>>
+>> On 2/25/22 11:25, Nageswara Sastry wrote:
+>>>
+>>>
+>>> On 17/02/22 10:03 pm, Kajol Jain wrote:
+>>>>
+> ....
+>>>>
+>>>> Changelog
+>>>
+>>> Tested these patches with the automated tests at
+>>> avocado-misc-tests/perf/perf_nmem.py
+>>> URL:
+>>> https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/perf/perf_nmem.py
+>>>
+>>>
+>>> 1. On the system where target id and online id were different then
+>>> not
+>>> seeing value in 'cpumask' and those tests failed.
+>>>
+>>> Example:
+>>> Log from dmesg
+>>> ...
+>>> papr_scm ibm,persistent-memory:ibm,pmemory@44100003: Region
+>>> registered
+>>> with target node 1 and online node 0
+>>> ...
+>>
+>> Hi Nageswara Sastry,
+>>        Thanks for testing the patch set. Yes you right, incase target
+>> node id and online node id is different, it can happen when target
+>> node is not online and hence can cause this issue, thanks for
+>> pointing
+>> it.
+>>
+>> Function dev_to_node will return node id for a given nvdimm device
+>> which
+>> can be offline in some scenarios. We should use numa node id return
+>> by
+>> numa_map_to_online_node function in that scenario. This function
+>> incase
+>> given node is offline, it will lookup for next closest online node
+>> and
+>> return that nodeid.
+>>
+>> Can you try with below change and see, if you are still getting this
+>> issue. Please let me know.
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c
+>> b/arch/powerpc/platforms/pseries/papr_scm.c
+>> index bdf2620db461..4dd513d7c029 100644
+>> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+>> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+>> @@ -536,7 +536,7 @@ static void papr_scm_pmu_register(struct
+>> papr_scm_priv *p)
+>>                                 PERF_PMU_CAP_NO_EXCLUDE;
+>>
+>>         /*updating the cpumask variable */
+>> -       nodeid = dev_to_node(&p->pdev->dev);
+>> +       nodeid = numa_map_to_online_node(dev_to_node(&p->pdev->dev));
+>>         nd_pmu->arch_cpumask = *cpumask_of_node(nodeid);
+>>
+>>>
+> 
+> Can you use p->region->numa_node? 
+
+Hi Aneesh,
+      Thanks for reviewing the changes. Actually we can't use numa_node
+field of region structure directly inside papr_scm.c as we will get
+dereferencing issue
+
+Result of build with this change:
+
+arch/powerpc/platforms/pseries/papr_scm.c: In function
+'papr_scm_pmu_register':
+arch/powerpc/platforms/pseries/papr_scm.c:539:21: error: dereferencing
+pointer to incomplete type 'struct nd_region'
+  nodeid = &p->region->numa_node;
+                     ^~
+make[3]: *** [scripts/Makefile.build:288:
+arch/powerpc/platforms/pseries/papr_scm.o] Error 1
+make[2]: *** [scripts/Makefile.build:550:
+arch/powerpc/platforms/pseries] Erro
+
+This is because, this structure is defined inside drivers/nvdimm/nd.h
+code which is not included in this file.
+
+So, thats why I am using
+`numa_map_to_online_node(dev_to_node(&p->pdev->dev));` directly.
+
+Let me know if you are ok with initial change.
+
+Thanks,
+Kajol Jain
+
+> 
+> -aneesh
+> 
+> 
