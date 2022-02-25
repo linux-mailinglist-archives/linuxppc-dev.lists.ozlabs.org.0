@@ -2,70 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9430D4C4A16
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 17:07:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D65B4C4A88
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 17:21:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K4vnM5rxYz3cMd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Feb 2022 03:07:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K4w5R3HStz3bb7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Feb 2022 03:21:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WkbIlFcJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=OHdUVHs4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+6b5af05920c596b7f535+6760+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=WkbIlFcJ; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K4vmk6qnlz2yfm
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Feb 2022 03:07:18 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 7972E61B18
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 16:07:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42994C36AE2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 16:07:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1645805236;
- bh=KbJfW32hJ/F19yfN7A1bXil25wuVvtsMCViBmRGt63Q=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=WkbIlFcJhtK50zmM1SUqT+c2BPoPb/PAsS5g6c6LqFS7dLJTZxLAPvig1x6SXi8te
- l5Cx5rIlFRnbSFqV0Md2Gt99TvNmEAE85nc8zZkW2KAysaFXNYW8weU3KRSI1Joub1
- XfgGa954+3/CiMxkbGo51ZitZf59ze3/G/mztC6h6fIENRXkrcAjUFFN1d6J+PDcBw
- gx1uVRfyOgaOR4bZKjVcG7PIz/MCA3RNLoXSnngVfstymXQ0A55zH1r8rE0BbpfyBI
- 53H/HcqUiVVHaCBF70mR9z8l6owgUIz3VOsTGHF1gt/NgeAutWcTYSskkxOKLmnMHx
- 9rb/DOmJIf44g==
-Received: by mail-ua1-f42.google.com with SMTP id 102so2685131uag.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 08:07:16 -0800 (PST)
-X-Gm-Message-State: AOAM533RxnPOcqjidg8IaA07k/pPgYBWIlmjTBVCiBcv7Oy4buc81pY5
- cGjEzcDKlPF7EYoS5/pbvhbbhX/nQ1Wvdx3bZyQ=
-X-Google-Smtp-Source: ABdhPJzyFkCkLFwk2uiu55UbxfUmfSs3x9iDpfEO2XzZ1mh9E9zaiS00R4pCw1xb9Wsx0R973/NIBGmLnXTfXz/Q4Mk=
-X-Received: by 2002:ab0:1112:0:b0:33e:802f:e335 with SMTP id
- e18-20020ab01112000000b0033e802fe335mr3769822uab.57.1645805235064; Fri, 25
- Feb 2022 08:07:15 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K4w4g2lT8z2yLT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Feb 2022 03:21:04 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=FZ+MIKFcY92n2eEbmV05gJlf+p4zCLQ/l4UmfykudCI=; b=OHdUVHs4ssN+cZff1Cz5+pI0bS
+ ACNDnitCkCgOeMfk5gHAdYVGGQ6ME1qo4qkJR7TLTp2sJqfXgC26sejwftaWRuLSQ2QgdEaTHgKcS
+ LumBh6cyD5rIHpzntIup3R4VIph/iP/IlDryFo7261s9jLf+pgqyQuTn/+hNcDMQY4jujjArIhda2
+ TF4OI8Z1yT7KkgU/aiDktotaDlqJVWouebA4emJYnv0RIB8s5A0kdloko8BGbhBYl2zUpg8dVEWaQ
+ +xZrdNzW+wzeWegSUfiXFYR5A0q3GL3p/8ExZszbBLmFxq2xIrxmNwTCzjjZtgaXkpm+Zzz73lf8O
+ f+1824/A==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red
+ Hat Linux)) id 1nNdK8-005sWo-3G; Fri, 25 Feb 2022 16:20:04 +0000
+Date: Fri, 25 Feb 2022 08:20:04 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH 00/16] Remove usage of the deprecated "pci-dma-compat.h"
+ API
+Message-ID: <YhkBtBdBhvCAtNH9@infradead.org>
+References: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-References: <20220224085410.399351-1-guoren@kernel.org>
- <20220224085410.399351-17-guoren@kernel.org>
- <CAK8P3a13_VBpTidoF_pUdV5g0MFqpSe17rgw=XUv69CCFCN0_g@mail.gmail.com>
- <CAJF2gTTu5=XwDUwNq=PfnzVRj-jPHH+0cOGhhLr_dFED1H24_g@mail.gmail.com>
- <CAK8P3a0MtcB7YMWKZKvpcy4Txi4JTXT61KqFoKZOqhVP530oEA@mail.gmail.com>
-In-Reply-To: <CAK8P3a0MtcB7YMWKZKvpcy4Txi4JTXT61KqFoKZOqhVP530oEA@mail.gmail.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Sat, 26 Feb 2022 00:07:04 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTQtUonLQn+aRyf6f1Ei9o6wWCrjHXNkfa2rxKMEGuDw2g@mail.gmail.com>
-Message-ID: <CAJF2gTQtUonLQn+aRyf6f1Ei9o6wWCrjHXNkfa2rxKMEGuDw2g@mail.gmail.com>
-Subject: Re: [PATCH V6 16/20] riscv: compat: vdso: Add rv32 VDSO base code
- implementation
-To: Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1641500561.git.christophe.jaillet@wanadoo.fr>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,74 +60,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
- Parisc List <linux-parisc@vger.kernel.org>,
- gregkh <gregkh@linuxfoundation.org>, Drew Fustini <drew@beagleboard.org>,
- Anup Patel <anup@brainfault.org>, Wang Junqiang <wangjunqiang@iscas.ac.cn>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-csky@vger.kernel.org,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, liush <liush@allwinnertech.com>,
- sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
+Cc: airlied@linux.ie, trix@redhat.com, linux-fpga@vger.kernel.org,
+ linux-pci@vger.kernel.org, paulus@samba.org, sparclinux@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, linux-scsi@vger.kernel.org,
+ sathya.prakash@broadcom.com, hch@infradead.org,
+ MPT-FusionLinux.pdl@broadcom.com, hao.wu@intel.com, arnd@arndb.de,
+ suganath-prabu.subramani@broadcom.com, sreekanth.reddy@broadcom.com,
+ ink@jurassic.park.msu.ru, bhelgaas@google.com, mchehab@kernel.org,
+ mattst88@gmail.com, rth@twiddle.net, awalls@md.metrocast.net,
+ linux-kernel@vger.kernel.org, davem@davemloft.net, alex.bou9@gmail.com,
+ vkoul@kernel.org, linux-alpha@vger.kernel.org, dmaengine@vger.kernel.org,
+ mdf@kernel.org, akpm@linux-foundation.org, linux-media@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, yilun.xu@intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Feb 25, 2022 at 11:50 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Fri, Feb 25, 2022 at 4:42 PM Guo Ren <guoren@kernel.org> wrote:
-> >
-> > Hi Arnd & Palmer,
-> >
-> > Here is the new modified compat_vdso/Makefile, please have a look,
-> > first. Then I would update it to v7:
-> > ===========================================
-> > # SPDX-License-Identifier: GPL-2.0-only
-> > #
-> > # Makefile for compat_vdso
-> > #
-> >
-> > # Symbols present in the compat_vdso
-> > compat_vdso-syms  = rt_sigreturn
-> > compat_vdso-syms += getcpu
-> > compat_vdso-syms += flush_icache
-> >
-> > ifdef CROSS_COMPILE_COMPAT
-> >         COMPAT_CC := $(CROSS_COMPILE_COMPAT)gcc
-> >         COMPAT_LD := $(CROSS_COMPILE_COMPAT)ld
-> > else
-> >         COMPAT_CC := $(CC)
-> >         COMPAT_LD := $(LD)
-> > endif
-> >
-> > COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
-> > COMPAT_LD_FLAGS := -melf32lriscv
->
-> Have you come across a case in which a separate cross toolchain
-> is required? If not, I would leave this out and just set the flags for the
-> normal toolchain.
-Okay
-
->
-> I also think it would be a nicer split to build the two vdso variants
-> as vdso64/vdso32 rather than vdso/compat_vdso. That way,
-> the build procedure can be kept as close as possible to the
-> native 32-bit build.
-Yes, current native 32-bit vdso & 64-bit vdso use the same
-vdso/Makfile. So, I think it could be another patch for this cleanup.
-
->
->         Arnd
-
-
-
--- 
-Best Regards
- Guo Ren
-
-ML: https://lore.kernel.org/linux-csky/
+I've applied patches 1,5,6,8 and 9 to the dma-mapping tree.
