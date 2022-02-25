@@ -1,80 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513714C3A5C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 01:32:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B674C3ABB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 02:08:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K4W2Q3sZbz3cDS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 11:32:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K4Wqf1nmyz3cDS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 12:08:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aFvL07xt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XUcgz3qA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
- helo=mail-pj1-x1031.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::735;
+ helo=mail-qk1-x735.google.com; envelope-from=cgel.zte@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=aFvL07xt; dkim-atps=neutral
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
- [IPv6:2607:f8b0:4864:20::1031])
+ header.s=20210112 header.b=XUcgz3qA; dkim-atps=neutral
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com
+ [IPv6:2607:f8b0:4864:20::735])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K4W1m2zsjz2yPv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 11:32:10 +1100 (AEDT)
-Received: by mail-pj1-x1031.google.com with SMTP id
- m13-20020a17090aab0d00b001bbe267d4d1so6643234pjq.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 16:32:10 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K4Wpv49Xtz2yLT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 12:07:49 +1100 (AEDT)
+Received: by mail-qk1-x735.google.com with SMTP id v5so3350961qkj.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 17:07:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=tKC1TRHCBri+KzcoCYvPSpdvCg/HdwcBnsM6kDgfriM=;
- b=aFvL07xt/0stKeZefxUZbUC+5wQ0c2t8VfgbSdA4KnIJogwafaubJUI86KN4/FvFV5
- jbLhM+LrJv3ypnussHBfpu7uj5KI0PXVQ96Jdo+lCX3ypLIHQGZHtAkyVdAh4mtCu2qS
- ap4TAiaH3AgnoAQmDOleF4kCeej300au8cAl/UdmZr0lqIgLVI2qY4xeiFfraLkMfPy+
- 3rauidoZEYE8aGNlxrQXELwdFr9QiuiKZh5bLLIvF73t45sBCn4jewpG/0Te1MH9Hphe
- o/sRG6BxKY9eG6wcyZ3QNsOS/fLPbBIUJS5HWzi/+UPcL9L4idltFRILXZRMw5LpG4at
- ebhg==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=MmpWNXteUzVTbNYEU6Qa76g7YMtYPs+CYkqOGTVLu6E=;
+ b=XUcgz3qAQCNU5oUmiGDepPTHObKouehD7vOd+akhJdcRYvSwqLm9hxbNv7dLNzsvw1
+ xVLMRnZr8A9lEgvJYQUJR9+wWZEdgiAOujvh2XgZ+gIKdZU160jRIjCJJaNR16vV1iWw
+ XGHwBMKD//3FTia2P8krGxrQbKUmezZJgy6If23tk2xgZ9GI+yYcwDwqUidV2lbSof3g
+ PLDDKj8bK3a3jejWFfHT8Ai+yFh73SkRju72+ZaYkAEPLnou1LUDIWBIKI1aNhJhsSCo
+ Oud2e3Yl2v+TYUM6CgQvwPWNm1SkNYDLFfDZF2oJdJNZ1Sj89zM0Ns5vVEDTqKglv90Y
+ lwpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=tKC1TRHCBri+KzcoCYvPSpdvCg/HdwcBnsM6kDgfriM=;
- b=IzCuZ8oB3PqeQT7Skud+w1/mjWRPuYVptFLg2L7F2Au/0TWXZLfzjp6UXkvjFz334I
- 72v/JGTpnOkr6/W7ljBrRG56iTFfZ5fKG6XPss2GX4a8+tpgk9FZaNIi7ckqICQmi1C6
- 9ZidpCRD7vS90qnmhqeTk2wsPV2irC4KeZjvHOBI1N6JHnc1QcKKbmRhMGZebfuJBkXp
- PiNeQDY1JI5GCoNSQ98gllZhImnR872GDDQNCQbuiJk23o4VpMoo1bRVkQ3ibr4QGCbN
- n/dEhobRW23XIdvR2X8G6m9Zg4fe2TXbrCtdAQ7UUD9F6Kl8myy4m8XFChK4OkY/6jfc
- LzRg==
-X-Gm-Message-State: AOAM53293k1w5YqYeZKK3K26gLxmjKqj2tPIn5JiWKn0yML76/tBNbF3
- pYBWxykg6OT/QyxSFVqZG/8=
-X-Google-Smtp-Source: ABdhPJx6JkQFQ7K41lpXb/O0ach2L1AgRseaw/gapGt3TSCEZRFc8m8HvGMfvjmlWhxUObOSXiOjgw==
-X-Received: by 2002:a17:902:f701:b0:14d:7cea:82af with SMTP id
- h1-20020a170902f70100b0014d7cea82afmr4868065plo.71.1645749128161; 
- Thu, 24 Feb 2022 16:32:08 -0800 (PST)
-Received: from localhost (115-64-212-59.static.tpgi.com.au. [115.64.212.59])
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=MmpWNXteUzVTbNYEU6Qa76g7YMtYPs+CYkqOGTVLu6E=;
+ b=dhIJfVStVQV3eVYtCUSlLjx3G4wCy6r/5VvHirDRIXCpfeNlUP5WvJGRsJdTKNGheI
+ QlYzWtP/5AB5IRAP37TDbcU8VdUuZbt0+gL5CNuyZV5WEsU4Nodqq6gfgQW4Lm6P8vTl
+ GSYaEkZRi2wRfsGm/Oa4RKcMfUWQSnsZjSjj70yYDtVetU7gXy1eJNcPiuuHZThfuIX2
+ QSWJwYVQy133tnU6Fni/bZOOE+PeWusD89YIQBvE78wnAyR6FCT2O3+bgpu0k6W8QdYZ
+ 4mIzh3oEqI0XiLVUwXxw6U1m1bH7CTHSOYXBWMoYbaEsvGeIFfCJSqkbR2dQXV07j0oP
+ If1A==
+X-Gm-Message-State: AOAM532iFM0w/AcJfzuU6L0zyVfcW0u5fJgFyT9RMgChTgh829yPyEPz
+ +J076YoQXl2Otw4Vv9E9VCI=
+X-Google-Smtp-Source: ABdhPJxM7Nd9VDWfi96k/1ejXcy5rfq9AQ1PnzId1Bxbi2C3gSS2vGdhuwpSZ+3Z8YcmCbbPWKDVTw==
+X-Received: by 2002:a05:620a:787:b0:508:b18a:e109 with SMTP id
+ 7-20020a05620a078700b00508b18ae109mr3441749qka.471.1645751265610; 
+ Thu, 24 Feb 2022 17:07:45 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
  by smtp.gmail.com with ESMTPSA id
- g28-20020a63111c000000b00374646abc42sm602400pgl.36.2022.02.24.16.32.07
+ y18-20020a05622a165200b002dda08f1371sm697215qtj.0.2022.02.24.17.07.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Feb 2022 16:32:07 -0800 (PST)
-Date: Fri, 25 Feb 2022 10:32:02 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/3] powerpc: fix build errors
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <20220223135820.2252470-1-anders.roxell@linaro.org>
- <20220223135820.2252470-2-anders.roxell@linaro.org>
- <1645670923.t0z533n7uu.astroid@bobo.none>
- <1645678884.dsm10mudmp.astroid@bobo.none>
- <20220224171207.GM614@gate.crashing.org>
-In-Reply-To: <20220224171207.GM614@gate.crashing.org>
+ Thu, 24 Feb 2022 17:07:44 -0800 (PST)
+From: cgel.zte@gmail.com
+X-Google-Original-From: chi.minghao@zte.com.cn
+To: oss@buserror.net
+Subject: [PATCH V2] platforms/83xx: Use of_device_get_match_data()
+Date: Fri, 25 Feb 2022 01:07:37 +0000
+Message-Id: <20220225010737.2038781-1-chi.minghao@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Message-Id: <1645748601.idp48wexp9.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,45 +80,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Zeal Robot <zealci@zte.com.cn>, linux-kernel@vger.kernel.org,
+ Minghao Chi <chi.minghao@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Segher Boessenkool's message of February 25, 2022 3:12 am:
-> On Thu, Feb 24, 2022 at 03:05:28PM +1000, Nicholas Piggin wrote:
->> + * gcc 10 started to emit a .machine directive at the beginning of gene=
-rated
->> + * .s files, which overrides assembler -Wa,-m<cpu> options passed down.
->> + * Unclear if this behaviour will be reverted.
->=20
-> It will not be reverted.  If you need a certain .machine for some asm
-> code, you should write just that!
+From: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
 
-It should be reverted because it breaks old binutils which did not have
-the workaround patch for this broken gcc behaviour. And it is just
-unnecessary because -m option can already be used to do the same thing.
+Use of_device_get_match_data() to simplify the code.
+v1->v2:
+	Add a judgment on the return value of the A function as NULL
 
-Not that I expect gcc to revert it.
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
+---
+ arch/powerpc/platforms/83xx/suspend.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
->=20
->> +#ifdef CONFIG_CC_IS_GCC
->> +#if (GCC_VERSION >=3D 100000)
->> +#if (CONFIG_AS_VERSION =3D=3D 23800)
->> +asm(".machine any");
->> +#endif
->> +#endif
->> +#endif
->> +#endif /* __ASSEMBLY__ */
->=20
-> Abusing toplevel asm like this is broken and you *will* end up with
-> unhappiness all around.
+diff --git a/arch/powerpc/platforms/83xx/suspend.c b/arch/powerpc/platforms/83xx/suspend.c
+index bb147d34d4a6..6d47a5b81485 100644
+--- a/arch/powerpc/platforms/83xx/suspend.c
++++ b/arch/powerpc/platforms/83xx/suspend.c
+@@ -322,18 +322,15 @@ static const struct platform_suspend_ops mpc83xx_suspend_ops = {
+ static const struct of_device_id pmc_match[];
+ static int pmc_probe(struct platform_device *ofdev)
+ {
+-	const struct of_device_id *match;
+ 	struct device_node *np = ofdev->dev.of_node;
+ 	struct resource res;
+ 	const struct pmc_type *type;
+ 	int ret = 0;
+ 
+-	match = of_match_device(pmc_match, &ofdev->dev);
+-	if (!match)
++	type = of_device_get_match_data(&ofdev->dev);
++	if (!type)
+ 		return -EINVAL;
+ 
+-	type = match->data;
+-
+ 	if (!of_device_is_available(np))
+ 		return -ENODEV;
+ 
+-- 
+2.25.1
 
-It actually unbreaks things and reduces my unhappiness. It's only done=20
-for broken compiler versions and only where as does not have the=20
-workaround for the breakage.
-
-Thanks,
-Nick
