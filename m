@@ -1,74 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B674C3ABB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 02:08:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F5B4C3BEC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 03:50:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K4Wqf1nmyz3cDS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 12:08:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K4Z516qjHz3cNZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Feb 2022 13:50:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XUcgz3qA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YQRyLj7o;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::735;
- helo=mail-qk1-x735.google.com; envelope-from=cgel.zte@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=XUcgz3qA; dkim-atps=neutral
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com
- [IPv6:2607:f8b0:4864:20::735])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K4Wpv49Xtz2yLT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 12:07:49 +1100 (AEDT)
-Received: by mail-qk1-x735.google.com with SMTP id v5so3350961qkj.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Feb 2022 17:07:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=MmpWNXteUzVTbNYEU6Qa76g7YMtYPs+CYkqOGTVLu6E=;
- b=XUcgz3qAQCNU5oUmiGDepPTHObKouehD7vOd+akhJdcRYvSwqLm9hxbNv7dLNzsvw1
- xVLMRnZr8A9lEgvJYQUJR9+wWZEdgiAOujvh2XgZ+gIKdZU160jRIjCJJaNR16vV1iWw
- XGHwBMKD//3FTia2P8krGxrQbKUmezZJgy6If23tk2xgZ9GI+yYcwDwqUidV2lbSof3g
- PLDDKj8bK3a3jejWFfHT8Ai+yFh73SkRju72+ZaYkAEPLnou1LUDIWBIKI1aNhJhsSCo
- Oud2e3Yl2v+TYUM6CgQvwPWNm1SkNYDLFfDZF2oJdJNZ1Sj89zM0Ns5vVEDTqKglv90Y
- lwpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=MmpWNXteUzVTbNYEU6Qa76g7YMtYPs+CYkqOGTVLu6E=;
- b=dhIJfVStVQV3eVYtCUSlLjx3G4wCy6r/5VvHirDRIXCpfeNlUP5WvJGRsJdTKNGheI
- QlYzWtP/5AB5IRAP37TDbcU8VdUuZbt0+gL5CNuyZV5WEsU4Nodqq6gfgQW4Lm6P8vTl
- GSYaEkZRi2wRfsGm/Oa4RKcMfUWQSnsZjSjj70yYDtVetU7gXy1eJNcPiuuHZThfuIX2
- QSWJwYVQy133tnU6Fni/bZOOE+PeWusD89YIQBvE78wnAyR6FCT2O3+bgpu0k6W8QdYZ
- 4mIzh3oEqI0XiLVUwXxw6U1m1bH7CTHSOYXBWMoYbaEsvGeIFfCJSqkbR2dQXV07j0oP
- If1A==
-X-Gm-Message-State: AOAM532iFM0w/AcJfzuU6L0zyVfcW0u5fJgFyT9RMgChTgh829yPyEPz
- +J076YoQXl2Otw4Vv9E9VCI=
-X-Google-Smtp-Source: ABdhPJxM7Nd9VDWfi96k/1ejXcy5rfq9AQ1PnzId1Bxbi2C3gSS2vGdhuwpSZ+3Z8YcmCbbPWKDVTw==
-X-Received: by 2002:a05:620a:787:b0:508:b18a:e109 with SMTP id
- 7-20020a05620a078700b00508b18ae109mr3441749qka.471.1645751265610; 
- Thu, 24 Feb 2022 17:07:45 -0800 (PST)
-Received: from localhost.localdomain ([193.203.214.57])
- by smtp.gmail.com with ESMTPSA id
- y18-20020a05622a165200b002dda08f1371sm697215qtj.0.2022.02.24.17.07.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 24 Feb 2022 17:07:44 -0800 (PST)
-From: cgel.zte@gmail.com
-X-Google-Original-From: chi.minghao@zte.com.cn
-To: oss@buserror.net
-Subject: [PATCH V2] platforms/83xx: Use of_device_get_match_data()
-Date: Fri, 25 Feb 2022 01:07:37 +0000
-Message-Id: <20220225010737.2038781-1-chi.minghao@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K4Ywg6h6Dz3bPD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 13:42:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=YQRyLj7o; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4K4Ywd1cHDz4xZq;
+ Fri, 25 Feb 2022 13:42:56 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1645756978;
+ bh=uy/+QxmmrhMRi+F2ioRtaNXPlP5t3+IxpHUFAACQloo=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=YQRyLj7oyDLvap2U8mAluCdHr657d10dlyGR+HL1+sdgSRLj4sUDSEhuwzwyz+sC2
+ cffFVCyT8f7bewB6UnbBVkvCkoZIiUiXnE5mg/0PJiTz6BKj0ox29Kf4sjsrJefvB6
+ 9gM5KtQRlbVioiucM3xjQ+A6dwTcyMNRjIqkq3PfAawxtJMASuODmewXD2LWLJ7j2d
+ H1UwTXxq+81TB7lyOm8iLe8zre2oveH2Bki5dzNM1LPdtanXfO4VjjRuVdvOnDaOqO
+ fVEC2A7nrPXbRxwx0YQYThN/6WBrMn4s2JC8e67OqBQYAXv6hxuVyQOopjYL393ZlU
+ rx7zjexbhcynA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Steven Rostedt <rostedt@goodmis.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2 02/13] tracing: Fix selftest config check for
+ function graph start up test
+In-Reply-To: <20220224095316.67729e2b@gandalf.local.home>
+References: <cover.1640017960.git.christophe.leroy@csgroup.eu>
+ <bdc7e594e13b0891c1d61bc8d56c94b1890eaed7.1640017960.git.christophe.leroy@csgroup.eu>
+ <74775d33-2e54-96ab-4546-57eb2c9e50e0@csgroup.eu>
+ <20220224095316.67729e2b@gandalf.local.home>
+Date: Fri, 25 Feb 2022 13:42:54 +1100
+Message-ID: <87wnhjoedt.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,49 +64,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zeal Robot <zealci@zte.com.cn>, linux-kernel@vger.kernel.org,
- Minghao Chi <chi.minghao@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>,
+ Jiri Kosina <jikos@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ "live-patching@vger.kernel.org" <live-patching@vger.kernel.org>,
+ "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Miroslav Benes <mbenes@suse.cz>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
+Steven Rostedt <rostedt@goodmis.org> writes:
+> On Thu, 24 Feb 2022 13:43:02 +0000
+> Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+>
+>> Hi Michael,
+>>=20
+>> Le 20/12/2021 =C3=A0 17:38, Christophe Leroy a =C3=A9crit=C2=A0:
+>> > CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS is required to test
+>> > direct tramp.
+>> >=20
+>> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>=20=20
+>>=20
+>> You didn't apply this patch when you merged the series. Without it I get=
+=20
+>> the following :
+>
+> Maybe they wanted my acked-by.
 
-Use of_device_get_match_data() to simplify the code.
-v1->v2:
-	Add a judgment on the return value of the A function as NULL
+Yeah, I didn't want to take it via my tree without an ack. I meant to
+reply to the patch saying that but ...
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
----
- arch/powerpc/platforms/83xx/suspend.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+> But I'm working on a series to send to Linus. I can pick this patch up, as
+> it touches just my code.
 
-diff --git a/arch/powerpc/platforms/83xx/suspend.c b/arch/powerpc/platforms/83xx/suspend.c
-index bb147d34d4a6..6d47a5b81485 100644
---- a/arch/powerpc/platforms/83xx/suspend.c
-+++ b/arch/powerpc/platforms/83xx/suspend.c
-@@ -322,18 +322,15 @@ static const struct platform_suspend_ops mpc83xx_suspend_ops = {
- static const struct of_device_id pmc_match[];
- static int pmc_probe(struct platform_device *ofdev)
- {
--	const struct of_device_id *match;
- 	struct device_node *np = ofdev->dev.of_node;
- 	struct resource res;
- 	const struct pmc_type *type;
- 	int ret = 0;
- 
--	match = of_match_device(pmc_match, &ofdev->dev);
--	if (!match)
-+	type = of_device_get_match_data(&ofdev->dev);
-+	if (!type)
- 		return -EINVAL;
- 
--	type = match->data;
--
- 	if (!of_device_is_available(np))
- 		return -ENODEV;
- 
--- 
-2.25.1
+Thanks.
 
+cheers
