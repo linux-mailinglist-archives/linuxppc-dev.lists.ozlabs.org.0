@@ -2,54 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4214C5D76
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Feb 2022 17:37:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 257744C5D77
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Feb 2022 17:37:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K68LF01Stz3fC0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 03:37:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K68Lw1rk9z3bjG
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 03:37:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HzSS5yNN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hjbqRvCd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=guoren@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=HzSS5yNN; 
+ header.s=k20201202 header.b=hjbqRvCd; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K68B62h2Pz3bWV
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 03:30:06 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K68BD43VTz3btQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 03:30:12 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 6DF0960F90;
- Sun, 27 Feb 2022 16:30:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F777C36AE3;
- Sun, 27 Feb 2022 16:29:58 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id EE2ECB80B79;
+ Sun, 27 Feb 2022 16:30:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C803BC36AE9;
+ Sun, 27 Feb 2022 16:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1645979404;
- bh=L9eHWco+1osf0Hk9qGv/lbAStRr746EuKe75LqKl+IY=;
+ s=k20201202; t=1645979409;
+ bh=gBbgf5kf3c5mmUEjAYay2wu7mAYR3Ivcy9PEqe9Gg2c=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=HzSS5yNN0XOpxnnhuZkSon+/ZKj5Oxp4ndP2Af1mXk34r3fsYsj3j4kBrToh76Ard
- wG9x00MsW5WDmoYUb/l9DaytVFAviTE9Ry/1VqeN+knLFFrKmW+s4SNqYqLt8KFV4t
- b/0O8q6ifaZwYbuInzSJm1vOLEWdb4iuBFlYRJKlbvBRa1vSrY+5j3lLFDlyL9Qwcd
- hTKFTcIq0wLGuj9gbOymFPOCBbhDml5ZbZwei/dWxEQbTYMPgKrBFLSghTux4VN5ZY
- TnyMJKnOg/j5eSqgOg+5NKUryTUZd7/SnCX8LLbCCfkKymCtPts1fmGDYtHvNSfyHQ
- b4Lm9cqiG0+PA==
+ b=hjbqRvCdQb4QvoBVDG1JMDwjGno3L3iuSBwozvdqRf67T3QgSSGKJFQ/56ni8Fs6V
+ HOYkBe3k5SomMVdcmz2/+NYgLypNmc3LYGqKsTIrlYwkO3kyhc3kQjcEtKwIf0koRe
+ KkjBPdpMFZHua7JAt41BojHCojrRdqZl7UdjEiZdoc/5Q7od9fGAV73O0btlVvzK3N
+ 65N7IARvPqXG+SfQcPkFRlFJjMm7eXawilVMsZLoFQrE4LsRejOdLiWoLxfsfYa29I
+ CH0hi6oUfWG+jZ3ObojIPbqRLlUT1p3UPS2/i9B0UWUsDCp7tHYXvI+cnOsN0fZGzI
+ 2qAEb24o31ihA==
 From: guoren@kernel.org
 To: guoren@kernel.org, palmer@dabbelt.com, arnd@arndb.de, anup@brainfault.org,
  gregkh@linuxfoundation.org, liush@allwinnertech.com, wefu@redhat.com,
  drew@beagleboard.org, wangjunqiang@iscas.ac.cn, hch@lst.de
-Subject: [PATCH V7 12/20] riscv: compat: syscall: Add entry.S implementation
-Date: Mon, 28 Feb 2022 00:28:23 +0800
-Message-Id: <20220227162831.674483-13-guoren@kernel.org>
+Subject: [PATCH V7 13/20] riscv: compat: process: Add UXL_32 support in
+ start_thread
+Date: Mon, 28 Feb 2022 00:28:24 +0800
+Message-Id: <20220227162831.674483-14-guoren@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220227162831.674483-1-guoren@kernel.org>
 References: <20220227162831.674483-1-guoren@kernel.org>
@@ -69,84 +70,43 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
  Guo Ren <guoren@linux.alibaba.com>, linux-parisc@vger.kernel.org,
  x86@kernel.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
- linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+ linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Guo Ren <guoren@linux.alibaba.com>
 
-Implement the entry of compat_sys_call_table[] in asm. Ref to
-riscv-privileged spec 4.1.1 Supervisor Status Register (sstatus):
-
- BIT[32:33] = UXL[1:0]:
- - 1:32
- - 2:64
- - 3:128
+If the current task is in COMPAT mode, set SR_UXL_32 in status for
+returning userspace. We need CONFIG _COMPAT to prevent compiling
+errors with rv32 defconfig.
 
 Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
 Signed-off-by: Guo Ren <guoren@kernel.org>
-Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
 Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
 ---
- arch/riscv/include/asm/csr.h |  7 +++++++
- arch/riscv/kernel/entry.S    | 18 ++++++++++++++++--
- 2 files changed, 23 insertions(+), 2 deletions(-)
+ arch/riscv/kernel/process.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/riscv/include/asm/csr.h b/arch/riscv/include/asm/csr.h
-index ae711692eec9..7f05c65654c8 100644
---- a/arch/riscv/include/asm/csr.h
-+++ b/arch/riscv/include/asm/csr.h
-@@ -36,6 +36,13 @@
- #define SR_SD		_AC(0x8000000000000000, UL) /* FS/XS dirty */
- #endif
- 
-+#ifdef CONFIG_64BIT
-+#define SR_UXL		_AC(0x300000000, UL) /* XLEN mask for U-mode */
-+#define SR_UXL_32	_AC(0x100000000, UL) /* XLEN = 32 for U-mode */
-+#define SR_UXL_64	_AC(0x200000000, UL) /* XLEN = 64 for U-mode */
-+#define SR_UXL_SHIFT	32
-+#endif
+diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+index 03ac3aa611f5..54787ca9806a 100644
+--- a/arch/riscv/kernel/process.c
++++ b/arch/riscv/kernel/process.c
+@@ -97,6 +97,11 @@ void start_thread(struct pt_regs *regs, unsigned long pc,
+ 	}
+ 	regs->epc = pc;
+ 	regs->sp = sp;
 +
- /* SATP flags */
- #ifndef CONFIG_64BIT
- #define SATP_PPN	_AC(0x003FFFFF, UL)
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index ed29e9c8f660..1951743f09b3 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -207,13 +207,27 @@ check_syscall_nr:
- 	 * Syscall number held in a7.
- 	 * If syscall number is above allowed value, redirect to ni_syscall.
- 	 */
--	bgeu a7, t0, 1f
-+	bgeu a7, t0, 3f
-+#ifdef CONFIG_COMPAT
-+	REG_L s0, PT_STATUS(sp)
-+	srli s0, s0, SR_UXL_SHIFT
-+	andi s0, s0, (SR_UXL >> SR_UXL_SHIFT)
-+	li t0, (SR_UXL_32 >> SR_UXL_SHIFT)
-+	sub t0, s0, t0
-+	bnez t0, 1f
-+
-+	/* Call compat_syscall */
-+	la s0, compat_sys_call_table
-+	j 2f
-+1:
-+#endif
- 	/* Call syscall */
- 	la s0, sys_call_table
-+2:
- 	slli t0, a7, RISCV_LGPTR
- 	add s0, s0, t0
- 	REG_L s0, 0(s0)
--1:
-+3:
- 	jalr s0
++	if (is_compat_task())
++		regs->status = (regs->status & ~SR_UXL) | SR_UXL_32;
++	else
++		regs->status = (regs->status & ~SR_UXL) | SR_UXL_64;
+ }
  
- ret_from_syscall:
+ void flush_thread(void)
 -- 
 2.25.1
 
