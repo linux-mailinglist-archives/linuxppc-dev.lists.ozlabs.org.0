@@ -2,85 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0464C5267
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Feb 2022 01:08:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F414C5C40
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Feb 2022 15:32:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K56Rt3jdDz3cNk
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Feb 2022 11:08:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K65ZR4F4Qz30N6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 01:32:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=MmF7aDNZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=MYjz99ME;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d;
- helo=mail-pj1-x102d.google.com; envelope-from=npiggin@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+9eb748f383daf30c13ac+6762+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=MmF7aDNZ; dkim-atps=neutral
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
- [IPv6:2607:f8b0:4864:20::102d])
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=MYjz99ME; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K56R84PQMz30Dv
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Feb 2022 11:07:47 +1100 (AEDT)
-Received: by mail-pj1-x102d.google.com with SMTP id
- bx9-20020a17090af48900b001bc64ee7d3cso6242522pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Feb 2022 16:07:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=c5B6JRpH2tbmLBFBMPjCFNLPBgu4FT5DIbHXGYJdCK8=;
- b=MmF7aDNZ0tCRKCA08hEFDy64f+YnQ2/g6cOWR4EuXliwFwbU0Vu48vP/mdNsKXQeyZ
- EeSvXiWEUGzXToeTYPgpa6MFBK3iab+OaDsdhIKZxv4sdPiflwZZvHioYRhpL5iqKoQu
- PJp8yRfo4e95feVAS+zetRfXI2De+dfnuJ7+Td+RwqYVjrdmIBUtIzApG5HZoJuLjuOi
- OHquYyPAM9s74SnqQcjS+PKNRNsLV31TGtolp6h57rm2yCdYqog0aTTMiGntqVR4lfeI
- ieDUgO/0TSqeVgvAI6Ovh8YoMMkroBoJSaBlcrEqhy3uUmvWWHmx4EzzVDzjcWp0JfbX
- MV4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=c5B6JRpH2tbmLBFBMPjCFNLPBgu4FT5DIbHXGYJdCK8=;
- b=jY4MIqK1YcrXBgGqSiWdHyA7jl/K0MU18O19x2DB9Y479r2znriV+XVlQmfMzEUEmf
- JMipQWBoVBTDDMergK+toyBZyfcpgjnXjzd5xu7vvzW2nfZo/6KLGSmAtqopH3BR+99c
- /Pd6ApwdE2cx2+1BJxrbs0bztqN8J+uJQse99Py3i/zvWMGAIsjy/XVHl8yISE2yVPaz
- /6dKb/Y7wa9THjrBfCvkn29gRo77Qo1UlTM//UJrzusgrgTCNoYPawNgaor3nuOBkgO6
- 9yvLTrxWUVkn0qpuhzZQKr7OH2V7twrSd9MVSMdHhCmIyj6AanwiH4uRZF9SM4moQxqW
- P8Gg==
-X-Gm-Message-State: AOAM531zomL3nFEJBLJV2ssJpepVin7mlVSLd3qlYNEB9/8W2gc26nTA
- mRtWBKHz1meGyVx7EZP/VGE=
-X-Google-Smtp-Source: ABdhPJz8UcTnhJMjqVzj//IRynVGj6DHXJzLRxFY20AEWWT0+6hgtNUecNWrIpo0/D5GJEv1WjEHug==
-X-Received: by 2002:a17:902:8bcc:b0:14f:2294:232e with SMTP id
- r12-20020a1709028bcc00b0014f2294232emr9754162plo.105.1645834063924; 
- Fri, 25 Feb 2022 16:07:43 -0800 (PST)
-Received: from localhost (118-208-203-92.tpgi.com.au. [118.208.203.92])
- by smtp.gmail.com with ESMTPSA id
- g9-20020a056a0023c900b004e10365c47dsm4550030pfc.192.2022.02.25.16.07.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 25 Feb 2022 16:07:43 -0800 (PST)
-Date: Sat, 26 Feb 2022 10:07:38 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/3] powerpc: fix build errors
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <20220223135820.2252470-1-anders.roxell@linaro.org>
- <20220223135820.2252470-2-anders.roxell@linaro.org>
- <1645670923.t0z533n7uu.astroid@bobo.none>
- <1645678884.dsm10mudmp.astroid@bobo.none>
- <CAK8P3a28XEN7aH-WdR=doBQKGskiTAeNsjbfvaD5YqEZNM=v0g@mail.gmail.com>
- <1645694174.z03tip9set.astroid@bobo.none>
- <CAK8P3a1LgZkAV2wX03hAgx527MuiFt5ABWFp1bGdsTGc=8OmMg@mail.gmail.com>
- <1645700767.qxyu8a9wl9.astroid@bobo.none>
- <20220224172948.GN614@gate.crashing.org>
- <1645748553.sa2ewgy7dr.astroid@bobo.none>
- <20220225222841.GS614@gate.crashing.org>
-In-Reply-To: <20220225222841.GS614@gate.crashing.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K65YC0fD5z30H5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 01:31:22 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=A05LVfYU2PEONzsS8Gc05/y0YX3f/s4+nAdtFiYFaPA=; b=MYjz99MEZpXYXZ+u/hPXwH/5VL
+ VfsjwWWbuKCw7zshSoI+auf/yLifEcY/XE1DJRFtz3VxuS31UllEfuuBvuYyI0R62c4l0m9SjGj0a
+ WGByXvlVvb4GlpMZgQZ/bHMpyjRMYTs0vyxZOS1rHRz9lghF2LWQbtukyT+tPh4vCHeGeC/AcmY98
+ WuPu16zN8JjBDp4ZENXRc9jSpBUvW+n6Sq1vNfMv9rubVC7W2JwfnAylwXOQV0dZC32gjZLT10dhi
+ Ws7JHUh8ywEv+8gXM1ulZ+IZIGPfH8AiNbDzJ4upQZLKpO5YOSuave3h2BfqRd4XiSg8EOVVaK+3v
+ hog6QeMw==;
+Received: from [213.208.157.39] (helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1nOKZe-009NtN-G3; Sun, 27 Feb 2022 14:30:58 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: iommu@lists.linux-foundation.org
+Subject: cleanup swiotlb initialization v2
+Date: Sun, 27 Feb 2022 15:30:44 +0100
+Message-Id: <20220227143055.335596-1-hch@lst.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Message-Id: <1645833637.za1t01a9md.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,88 +62,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "# 3.4.x" <stable@vger.kernel.org>, Anders Roxell <anders.roxell@linaro.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Arnd Bergmann <arnd@arndb.de>
+Cc: Juergen Gross <jgross@suse.com>, linux-s390@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
+ linux-ia64@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
+ Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+ x86@kernel.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ tboot-devel@lists.sourceforge.net, linux-pci@vger.kernel.org,
+ xen-devel@lists.xenproject.org, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ David Woodhouse <dwmw2@infradead.org>, linux-riscv@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Segher Boessenkool's message of February 26, 2022 8:28 am:
-> On Fri, Feb 25, 2022 at 10:23:07AM +1000, Nicholas Piggin wrote:
->> Excerpts from Segher Boessenkool's message of February 25, 2022 3:29 am:
->> > On Thu, Feb 24, 2022 at 09:13:25PM +1000, Nicholas Piggin wrote:
->> >> Excerpts from Arnd Bergmann's message of February 24, 2022 8:20 pm:
->> >> > Again, there should be a minimum number of those .machine directive=
-s
->> >> > in inline asm as well, which tends to work out fine as long as the
->> >> > entire kernel is built with the correct -march=3D option for the mi=
-nimum
->> >> > supported CPU, and stays away from inline asm that requires a highe=
-r
->> >> > CPU level.
->> >>=20
->> >> There's really no advantage to them, and they're ugly and annoying
->> >> and if we applied the concept consistently for all asm they would gro=
-w=20
->> >> to a very large number.
->> >=20
->> > The advantage is that you get machine code that *works*.  There are
->> > quite a few mnemonics that translate to different instructions with
->> > different machine options!  We like to get the intended instructions
->> > instead of something that depends on what assembler options the user
->> > has passed behind our backs.
->> >=20
->> >> The idea they'll give you good static checking just doesn't really
->> >> pan out.
->> >=20
->> > That never was a goal of this at all.
->> >=20
->> > -many was very problematical for GCC itself.  We no longer use it.
->>=20
->> You have the wrong context. We're not talking about -many vs .machine
->> here.
->=20
-> Okay, so you have no idea what you are talking about?  Wow.
+Hi all,
 
-Wrong context. It's not about -many. We're past that everyone agrees=20
-it's wrong.
+this series tries to clean up the swiotlb initialization, including
+that of swiotlb-xen.  To get there is also removes the x86 iommu table
+infrastructure that massively obsfucates the initialization path.
 
-> The reason GCC uses .machine *itself* is because assembler -mmachine
-> options *cannot work*, for many reasons.  We hit problems often enough
-> that years ago we started moving away from it already.  The biggest
-> problems are that on one hand there are mnemonics that encode to
-> different instructions depending on target arch or cpu selected (like
-> mftb, lxvx, wait, etc.), and on the other hand GCC needs to switch that
-> target halfway through compilation (attribute((target(...)))).
->=20
-> Often these problems were hidden most of the time by us passing -many.
-> But not all of the time, and over time, problems became more frequent
-> and nasty.
->=20
-> Passing assembler -m options is nasty when you have to mix it with
-> .machine statements (and we need the latter no matter what), and it
+Git tree:
 
-No it's not nasty, read the gas manual. -m specifies the machine and
-so does .machine. It's simple.
+    git://git.infradead.org/users/hch/misc.git swiotlb-init-cleanup
 
-> becomes completely unpredictable if the user passes other -m options
-> manually.
-> Inline assembler is inserted textually in the generated assembler code.
-> This is a big part of the strength of inline assembler.  It does mean
-> that if you need a different target selected for your assembler code
-> then you need to arrange for that in your assembler code.
->=20
-> So yes, this very much is about -many, other -m options, and .machine .
-> I discourage the kernel (as well as any other project) from using -m
-> options, especially -many, but that is your own choice of course.  I
-> get sick and tired from you calling a deliberate design decision we
-> arrived at after years of work and weighing alternatives a "bug" though.
+Gitweb:
 
-Alan posted a good summary here
+    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/swiotlb-init-cleanup
 
-https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D102485#c10
+Changes since v1:
+ - skip IOMMU initialization on Xen PV kernels
+ - various small whitespace / typo fixes
 
-Thanks,
-Nick
+Diffstat:
+ arch/ia64/include/asm/iommu_table.h      |    7 -
+ arch/x86/include/asm/iommu_table.h       |  102 -------------------
+ arch/x86/include/asm/swiotlb.h           |   30 -----
+ arch/x86/kernel/pci-iommu_table.c        |   77 --------------
+ arch/x86/kernel/pci-swiotlb.c            |   77 --------------
+ arch/x86/xen/pci-swiotlb-xen.c           |   96 ------------------
+ b/arch/arm/mm/init.c                     |    6 -
+ b/arch/arm/xen/mm.c                      |   23 ++--
+ b/arch/arm64/mm/init.c                   |    6 -
+ b/arch/ia64/mm/init.c                    |    4 
+ b/arch/mips/cavium-octeon/dma-octeon.c   |   15 --
+ b/arch/mips/loongson64/dma.c             |    2 
+ b/arch/mips/pci/pci-octeon.c             |    2 
+ b/arch/mips/sibyte/common/dma.c          |    2 
+ b/arch/powerpc/include/asm/svm.h         |    4 
+ b/arch/powerpc/include/asm/swiotlb.h     |    1 
+ b/arch/powerpc/mm/mem.c                  |    6 -
+ b/arch/powerpc/platforms/pseries/setup.c |    3 
+ b/arch/powerpc/platforms/pseries/svm.c   |   26 ----
+ b/arch/riscv/mm/init.c                   |    8 -
+ b/arch/s390/mm/init.c                    |    3 
+ b/arch/x86/include/asm/dma-mapping.h     |   12 --
+ b/arch/x86/include/asm/gart.h            |    5 
+ b/arch/x86/include/asm/iommu.h           |    8 +
+ b/arch/x86/include/asm/xen/page.h        |    5 
+ b/arch/x86/include/asm/xen/swiotlb-xen.h |    2 
+ b/arch/x86/kernel/Makefile               |    2 
+ b/arch/x86/kernel/amd_gart_64.c          |    5 
+ b/arch/x86/kernel/aperture_64.c          |   14 --
+ b/arch/x86/kernel/cpu/mshyperv.c         |    8 -
+ b/arch/x86/kernel/pci-dma.c              |  109 ++++++++++++++++----
+ b/arch/x86/kernel/tboot.c                |    1 
+ b/arch/x86/kernel/vmlinux.lds.S          |   12 --
+ b/arch/x86/mm/mem_encrypt_amd.c          |    3 
+ b/arch/x86/pci/sta2x11-fixup.c           |    2 
+ b/arch/x86/xen/Makefile                  |    2 
+ b/drivers/iommu/amd/init.c               |    6 -
+ b/drivers/iommu/amd/iommu.c              |    5 
+ b/drivers/iommu/intel/dmar.c             |    6 -
+ b/drivers/xen/swiotlb-xen.c              |  132 -------------------------
+ b/include/linux/dmar.h                   |    6 -
+ b/include/linux/swiotlb.h                |   22 ++--
+ b/include/trace/events/swiotlb.h         |   29 +----
+ b/include/xen/arm/page.h                 |    1 
+ b/include/xen/swiotlb-xen.h              |    8 +
+ b/kernel/dma/direct.h                    |    2 
+ b/kernel/dma/swiotlb.c                   |  163 +++++++++++++++----------------
+ 47 files changed, 253 insertions(+), 817 deletions(-)
