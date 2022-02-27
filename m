@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F414C5C40
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Feb 2022 15:32:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D0D4C5C5F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Feb 2022 15:39:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K65ZR4F4Qz30N6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 01:32:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K65jv4Y8Fz3f4D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 01:38:59 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=MYjz99ME;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ihBj93Gb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,34 +19,36 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=MYjz99ME; 
+ header.s=bombadil.20210309 header.b=ihBj93Gb; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K65YC0fD5z30H5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 01:31:22 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K65bc6cRjz3brJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 01:33:32 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=A05LVfYU2PEONzsS8Gc05/y0YX3f/s4+nAdtFiYFaPA=; b=MYjz99MEZpXYXZ+u/hPXwH/5VL
- VfsjwWWbuKCw7zshSoI+auf/yLifEcY/XE1DJRFtz3VxuS31UllEfuuBvuYyI0R62c4l0m9SjGj0a
- WGByXvlVvb4GlpMZgQZ/bHMpyjRMYTs0vyxZOS1rHRz9lghF2LWQbtukyT+tPh4vCHeGeC/AcmY98
- WuPu16zN8JjBDp4ZENXRc9jSpBUvW+n6Sq1vNfMv9rubVC7W2JwfnAylwXOQV0dZC32gjZLT10dhi
- Ws7JHUh8ywEv+8gXM1ulZ+IZIGPfH8AiNbDzJ4upQZLKpO5YOSuave3h2BfqRd4XiSg8EOVVaK+3v
- hog6QeMw==;
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=fpYq2gch6ejmPkcFKPjSyDr7OAs4OQSLe0uyAoUEPa0=; b=ihBj93GbCChJ0QpAjRhTh6iHDw
+ 0V6UJQeF355QVgLts1D1r2YGkHDA1vgqG1MCi6sSzX0aU/yqPgXefij6ux0UlqgXGjeB9/GRGKdYg
+ oF8ivuYiEMCHvU+2SNZqnmJUHhwIQgxe00hyKYiad9mwYNBa3BW9GbsM5y7rI1HRXPxZCBGvuqRDR
+ fiF4970M/qxQiqg+AXq0JYfsIzNIGaD3UqdTAtUgcyN1xzoE26/iw1TRFGJjIQxipIz85o+MC6Sul
+ S52cjGS7vKJDa8qibbtunWtwfjPsgkLYNferGeEOzuQq41QVFs7XXLlP3G3aebutpxz/kUKPAwbwv
+ 5CtFglVw==;
 Received: from [213.208.157.39] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nOKZe-009NtN-G3; Sun, 27 Feb 2022 14:30:58 +0000
+ id 1nOKZh-009Ntc-P9; Sun, 27 Feb 2022 14:31:02 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: iommu@lists.linux-foundation.org
-Subject: cleanup swiotlb initialization v2
-Date: Sun, 27 Feb 2022 15:30:44 +0100
-Message-Id: <20220227143055.335596-1-hch@lst.de>
+Subject: [PATCH 01/11] dma-direct: use is_swiotlb_active in dma_direct_map_page
+Date: Sun, 27 Feb 2022 15:30:45 +0100
+Message-Id: <20220227143055.335596-2-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220227143055.335596-1-hch@lst.de>
+References: <20220227143055.335596-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
@@ -76,70 +78,28 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
+Use the more specific is_swiotlb_active check instead of checking the
+global swiotlb_force variable.
 
-this series tries to clean up the swiotlb initialization, including
-that of swiotlb-xen.  To get there is also removes the x86 iommu table
-infrastructure that massively obsfucates the initialization path.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+ kernel/dma/direct.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Git tree:
+diff --git a/kernel/dma/direct.h b/kernel/dma/direct.h
+index 4632b0f4f72eb..4dc16e08c7e1a 100644
+--- a/kernel/dma/direct.h
++++ b/kernel/dma/direct.h
+@@ -91,7 +91,7 @@ static inline dma_addr_t dma_direct_map_page(struct device *dev,
+ 		return swiotlb_map(dev, phys, size, dir, attrs);
+ 
+ 	if (unlikely(!dma_capable(dev, dma_addr, size, true))) {
+-		if (swiotlb_force != SWIOTLB_NO_FORCE)
++		if (is_swiotlb_active(dev))
+ 			return swiotlb_map(dev, phys, size, dir, attrs);
+ 
+ 		dev_WARN_ONCE(dev, 1,
+-- 
+2.30.2
 
-    git://git.infradead.org/users/hch/misc.git swiotlb-init-cleanup
-
-Gitweb:
-
-    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/swiotlb-init-cleanup
-
-Changes since v1:
- - skip IOMMU initialization on Xen PV kernels
- - various small whitespace / typo fixes
-
-Diffstat:
- arch/ia64/include/asm/iommu_table.h      |    7 -
- arch/x86/include/asm/iommu_table.h       |  102 -------------------
- arch/x86/include/asm/swiotlb.h           |   30 -----
- arch/x86/kernel/pci-iommu_table.c        |   77 --------------
- arch/x86/kernel/pci-swiotlb.c            |   77 --------------
- arch/x86/xen/pci-swiotlb-xen.c           |   96 ------------------
- b/arch/arm/mm/init.c                     |    6 -
- b/arch/arm/xen/mm.c                      |   23 ++--
- b/arch/arm64/mm/init.c                   |    6 -
- b/arch/ia64/mm/init.c                    |    4 
- b/arch/mips/cavium-octeon/dma-octeon.c   |   15 --
- b/arch/mips/loongson64/dma.c             |    2 
- b/arch/mips/pci/pci-octeon.c             |    2 
- b/arch/mips/sibyte/common/dma.c          |    2 
- b/arch/powerpc/include/asm/svm.h         |    4 
- b/arch/powerpc/include/asm/swiotlb.h     |    1 
- b/arch/powerpc/mm/mem.c                  |    6 -
- b/arch/powerpc/platforms/pseries/setup.c |    3 
- b/arch/powerpc/platforms/pseries/svm.c   |   26 ----
- b/arch/riscv/mm/init.c                   |    8 -
- b/arch/s390/mm/init.c                    |    3 
- b/arch/x86/include/asm/dma-mapping.h     |   12 --
- b/arch/x86/include/asm/gart.h            |    5 
- b/arch/x86/include/asm/iommu.h           |    8 +
- b/arch/x86/include/asm/xen/page.h        |    5 
- b/arch/x86/include/asm/xen/swiotlb-xen.h |    2 
- b/arch/x86/kernel/Makefile               |    2 
- b/arch/x86/kernel/amd_gart_64.c          |    5 
- b/arch/x86/kernel/aperture_64.c          |   14 --
- b/arch/x86/kernel/cpu/mshyperv.c         |    8 -
- b/arch/x86/kernel/pci-dma.c              |  109 ++++++++++++++++----
- b/arch/x86/kernel/tboot.c                |    1 
- b/arch/x86/kernel/vmlinux.lds.S          |   12 --
- b/arch/x86/mm/mem_encrypt_amd.c          |    3 
- b/arch/x86/pci/sta2x11-fixup.c           |    2 
- b/arch/x86/xen/Makefile                  |    2 
- b/drivers/iommu/amd/init.c               |    6 -
- b/drivers/iommu/amd/iommu.c              |    5 
- b/drivers/iommu/intel/dmar.c             |    6 -
- b/drivers/xen/swiotlb-xen.c              |  132 -------------------------
- b/include/linux/dmar.h                   |    6 -
- b/include/linux/swiotlb.h                |   22 ++--
- b/include/trace/events/swiotlb.h         |   29 +----
- b/include/xen/arm/page.h                 |    1 
- b/include/xen/swiotlb-xen.h              |    8 +
- b/kernel/dma/direct.h                    |    2 
- b/kernel/dma/swiotlb.c                   |  163 +++++++++++++++----------------
- 47 files changed, 253 insertions(+), 817 deletions(-)
