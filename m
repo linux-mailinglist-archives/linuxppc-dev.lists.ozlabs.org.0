@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C474C63E4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 08:42:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCAC4C63E6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 08:43:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K6XQX0tYGz3bP9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 18:42:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K6XRV74Nnz3bbs
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 18:43:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fZB2O0Eh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LBcIejic;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,68 +18,66 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=fZB2O0Eh; dkim-atps=neutral
+ header.s=pp1 header.b=LBcIejic; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K6XPp5GB0z2xvV
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 18:41:34 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K6XQm5YN9z3bXw
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 18:42:24 +1100 (AEDT)
 Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21S6hic9002958; 
- Mon, 28 Feb 2022 07:41:29 GMT
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21S6hVER002623; 
+ Mon, 28 Feb 2022 07:42:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : subject :
  from : to : cc : date : in-reply-to : references : content-type :
  mime-version : content-transfer-encoding; s=pp1;
- bh=yQfcjeiaceKsLYpz64u0kTOkTtpa5ykAu1EIHUSjraw=;
- b=fZB2O0EhEwSEx5b5UjmtA+F/mHktCOom6jQqFSAiMgVDrvZ+IWVy5BfNmDWrV3B1RWn/
- xtFZvXa3yBHYi+7LWbyN953Fb1v6Jvg03aOz2tR9AID+C+0eGdkZY548vogkptOqaV90
- zZNu09yqACxHswQmxYlJmwGV6d/IoWcxYQHfaKMkG8DyZBe8Ci5thoA+vvMy+QsawkrU
- tsnjU7abIGxMBgJ4qGozRxV/oN9wsl0setoHLBEbR5lLK6l7ljMFvB/OqHJAsy1qP2Fu
- nd7ozYCYFq0x7DyzX1e/r/AWUM8eqSqS0Y9TnSTJPuppT//idGkvOoDm/7H9h9OgJ5zk gw== 
+ bh=DsnIW5tRwmKSBUj4oN+s+m3zlrP96SW0nazUW63YZng=;
+ b=LBcIejicWePkSPaY/UoYna7R7YZ7q3DWV+mxZeFPkDZrSxqwSwLEDhbTpDwKEJ0YrbYd
+ YQysr7rFMaNdkfD1Qy2xjr79IcC0xJtTd9xphHHZLLaU9xufCUCJyswalXTb6jONBmR3
+ PAHml5ANBZoBXGcO7El2DNF63BIhhOZz9OP308svJR0PYxKBXttmdMntucZ3YBUaBR4R
+ Wdh+pCPjj28lhVJ+huVqdSl2+xgt+/to/WOkKoY0V35gSpts+1BUIn0v4E15OldZswCm
+ /OPo3Za5ipkz49KtmRBwLhIdNbLWYOt2zO1pvsIK9abyeLdFc7arJ+E04FsV3sCk0EYj oA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3egscm948p-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3egscm94rn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Feb 2022 07:41:29 +0000
+ Mon, 28 Feb 2022 07:42:20 +0000
 Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21S7Cqca011074;
- Mon, 28 Feb 2022 07:41:29 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3egscm948d-1
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21S7PNjV024292;
+ Mon, 28 Feb 2022 07:42:20 GMT
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3egscm94ra-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Feb 2022 07:41:28 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21S7bDcB003030;
- Mon, 28 Feb 2022 07:41:28 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma01dal.us.ibm.com with ESMTP id 3efbu9xcrw-1
+ Mon, 28 Feb 2022 07:42:20 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21S7bHBI016090;
+ Mon, 28 Feb 2022 07:42:19 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma05wdc.us.ibm.com with ESMTP id 3efbu9sxbd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Feb 2022 07:41:27 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21S7fOJt29950272
+ Mon, 28 Feb 2022 07:42:19 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
+ [9.57.199.109])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 21S7gHhO14811514
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 28 Feb 2022 07:41:24 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 75C5878066;
- Mon, 28 Feb 2022 07:41:24 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7534C78064;
- Mon, 28 Feb 2022 07:41:23 +0000 (GMT)
+ Mon, 28 Feb 2022 07:42:17 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BC66611206D;
+ Mon, 28 Feb 2022 07:42:17 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 02EB3112061;
+ Mon, 28 Feb 2022 07:42:17 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.160.161.44])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 28 Feb 2022 07:41:23 +0000 (GMT)
-Message-ID: <79f3a1deca0c567665facb01dd7dcf5287e3afe3.camel@linux.ibm.com>
-Subject: [PATCH v5 4/9] powerpc/vas: Return paste instruction failure if no
- active window
+ by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 28 Feb 2022 07:42:16 +0000 (GMT)
+Message-ID: <c7580b8e04cfed0a19847a4e071109df26cacbfd.camel@linux.ibm.com>
+Subject: [PATCH v5 5/9] powerpc/vas: Map paste address only if window is active
 From: Haren Myneni <haren@linux.ibm.com>
 To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
  nathanl@linux.ibm.com
-Date: Sun, 27 Feb 2022 23:41:21 -0800
+Date: Sun, 27 Feb 2022 23:42:15 -0800
 In-Reply-To: <ccd9c0f85005c56b4d011d5c2384444ae71bda69.camel@linux.ibm.com>
 References: <ccd9c0f85005c56b4d011d5c2384444ae71bda69.camel@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -87,8 +85,8 @@ User-Agent: Evolution 3.36.5 (3.36.5-2.fc32)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: BWhpZNT7TIqlMmklguSLXJXmrpaj1pby
-X-Proofpoint-ORIG-GUID: 3zEJmUGOrYk1vGJCDNB7nehBBJI-fgR5
+X-Proofpoint-GUID: oSN3x9lviQQm-Gx7BMuiwsgXDNPQlO3v
+X-Proofpoint-ORIG-GUID: KjP35Y8QYeZMUPlehwFgJfoFUMKNrzmQ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-02-28_02,2022-02-26_01,2022-02-23_01
@@ -114,110 +112,70 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-The VAS window may not be active if the system looses credits and
-the NX generates page fault when it receives request on unmap
-paste address.
+The paste address mapping is done with mmap() after the window is
+opened with ioctl. The partition has to close VAS windows in the
+hypervisor if it lost credits due to DLPAR core removal. But the
+kernel marks these windows inactive until the previously lost
+credits are available later. If the window is inactive due to
+DLPAR after this mmap(), the paste instruction returns failure
+until the the OS reopens this window again.
 
-The kernel handles the fault by remap new paste address if the
-window is active again, Otherwise return the paste instruction
-failure if the executed instruction that caused the fault was
-a paste.
+Before the user space issuing mmap(), there is a possibility of
+happening DLPAR core removal event which causes the corresponding
+window inactive. So if the window is not active, return mmap()
+failure with -EACCES and expects the user space reissue mmap()
+when the window is active or open a new window when the credit
+is available.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 ---
- arch/powerpc/include/asm/ppc-opcode.h   |  2 +
- arch/powerpc/platforms/book3s/vas-api.c | 55 ++++++++++++++++++++++++-
- 2 files changed, 56 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/book3s/vas-api.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-index 9675303b724e..82f1f0041c6f 100644
---- a/arch/powerpc/include/asm/ppc-opcode.h
-+++ b/arch/powerpc/include/asm/ppc-opcode.h
-@@ -262,6 +262,8 @@
- #define PPC_INST_MFSPR_PVR		0x7c1f42a6
- #define PPC_INST_MFSPR_PVR_MASK		0xfc1ffffe
- #define PPC_INST_MTMSRD			0x7c000164
-+#define PPC_INST_PASTE			0x7c20070d
-+#define PPC_INST_PASTE_MASK		0xfc2007ff
- #define PPC_INST_POPCNTB		0x7c0000f4
- #define PPC_INST_POPCNTB_MASK		0xfc0007fe
- #define PPC_INST_RFEBB			0x4c000124
 diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
-index f359e7b2bf90..f3e421511ea6 100644
+index f3e421511ea6..5372dbc2e37f 100644
 --- a/arch/powerpc/platforms/book3s/vas-api.c
 +++ b/arch/powerpc/platforms/book3s/vas-api.c
-@@ -351,6 +351,41 @@ static int coproc_release(struct inode *inode, struct file *fp)
- 	return 0;
- }
- 
-+/*
-+ * If the executed instruction that caused the fault was a paste, then
-+ * clear regs CR0[EQ], advance NIP, and return 0. Else return error code.
-+ */
-+static int do_fail_paste(void)
-+{
-+	struct pt_regs *regs = current->thread.regs;
-+	u32 instword;
-+
-+	if (WARN_ON_ONCE(!regs))
-+		return -EINVAL;
-+
-+	if (WARN_ON_ONCE(!user_mode(regs)))
-+		return -EINVAL;
-+
-+	/*
-+	 * If we couldn't translate the instruction, the driver should
-+	 * return success without handling the fault, it will be retried
-+	 * or the instruction fetch will fault.
-+	 */
-+	if (get_user(instword, (u32 __user *)(regs->nip)))
-+		return -EAGAIN;
-+
-+	/*
-+	 * Not a paste instruction, driver may fail the fault.
-+	 */
-+	if ((instword & PPC_INST_PASTE_MASK) != PPC_INST_PASTE)
-+		return -ENOENT;
-+
-+	regs->ccr &= ~0xe0000000;	/* Clear CR0[0-2] to fail paste */
-+	regs_add_return_ip(regs, 4);	/* Emulate the paste */
-+
-+	return 0;
-+}
-+
- /*
-  * This fault handler is invoked when the core generates page fault on
-  * the paste address. Happens if the kernel closes window in hypervisor
-@@ -408,9 +443,27 @@ static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
+@@ -496,10 +496,29 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
+ 		return -EACCES;
  	}
- 	mutex_unlock(&txwin->task_ref.mmap_mutex);
  
--	return VM_FAULT_SIGBUS;
 +	/*
-+	 * Received this fault due to closing the actual window.
-+	 * It can happen during migration or lost credits.
-+	 * Since no mapping, return the paste instruction failure
-+	 * to the user space.
++	 * The initial mmap is done after the window is opened
++	 * with ioctl. But before mmap(), this window can be closed in
++	 * the hypervisor due to lost credit (core removal on pseries).
++	 * So if the window is not active, return mmap() failure with
++	 * -EACCES and expects the user space reissue mmap() when it
++	 * is active again or open new window when the credit is available.
++	 * mmap_mutex protects the paste address mmap() with DLPAR
++	 * close/open event and allows mmap() only when the window is
++	 * active.
 +	 */
-+	ret = do_fail_paste();
-+	/*
-+	 * The user space can retry several times until success (needed
-+	 * for migration) or should fallback to SW compression or
-+	 * manage with the existing open windows if available.
-+	 * Looking at sysfs interface, it can determine whether these
-+	 * failures are coming during migration or core removal:
-+	 * nr_used_credits > nr_total_credits when lost credits
-+	 */
-+	if (!ret || (ret == -EAGAIN))
-+		return VM_FAULT_NOPAGE;
- 
-+	return VM_FAULT_SIGBUS;
- }
++	mutex_lock(&txwin->task_ref.mmap_mutex);
++	if (txwin->status != VAS_WIN_ACTIVE) {
++		pr_err("%s(): Window is not active\n", __func__);
++		rc = -EACCES;
++		goto out;
++	}
 +
- static const struct vm_operations_struct vas_vm_ops = {
- 	.fault = vas_mmap_fault,
- };
+ 	paste_addr = cp_inst->coproc->vops->paste_addr(txwin);
+ 	if (!paste_addr) {
+ 		pr_err("%s(): Window paste address failed\n", __func__);
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto out;
+ 	}
+ 
+ 	pfn = paste_addr >> PAGE_SHIFT;
+@@ -519,6 +538,8 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
+ 	txwin->task_ref.vma = vma;
+ 	vma->vm_ops = &vas_vm_ops;
+ 
++out:
++	mutex_unlock(&txwin->task_ref.mmap_mutex);
+ 	return rc;
+ }
+ 
 -- 
 2.27.0
 
