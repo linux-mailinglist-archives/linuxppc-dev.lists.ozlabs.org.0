@@ -2,83 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1524C79D7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 21:11:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1B54C7A38
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 21:24:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K6s363HK9z3bps
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 07:11:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K6sKd1CPhz3bmV
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 07:24:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=Jhdls+Dd;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=SFiiDask;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::62c;
- helo=mail-ej1-x62c.google.com; envelope-from=torvalds@linuxfoundation.org;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::230;
+ helo=mail-lj1-x230.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=Jhdls+Dd; 
+ header.a=rsa-sha256 header.s=google header.b=SFiiDask; 
  dkim-atps=neutral
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com
- [IPv6:2a00:1450:4864:20::62c])
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com
+ [IPv6:2a00:1450:4864:20::230])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K6s2T4Zkmz3bT4
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Mar 2022 07:10:57 +1100 (AEDT)
-Received: by mail-ej1-x62c.google.com with SMTP id p15so27150139ejc.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 12:10:58 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K6sJw6wmBz3bTK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Mar 2022 07:23:26 +1100 (AEDT)
+Received: by mail-lj1-x230.google.com with SMTP id p20so19100169ljo.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 12:23:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linux-foundation.org; s=google;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=LeZ8UzRXrDw4d1M4BG6ctt9COK0EF5j9qtOsLWtMfJg=;
- b=Jhdls+DdmLi+4DWS7o2GehQ/Yg8vWPth9HxY0ymuDsFhiEF5hlRLzgd1PV4wJ4dLVJ
- JdRWd6PhVxu3cPtesSY0XREEgjw/sVhI1zgx2ECNJUHRlykk7MmbqhfMtkifVM/LmgYS
- 6chNfwYqW0eu75y5MSRY9nnHOEZnFkvhMXNYc=
+ :cc; bh=Rhevy6fb5H45VxDHjLDNCxtPhjJ0u7uFLdfSx9pxlIs=;
+ b=SFiiDaskyFzzbW4jCoUqiJYglpNWscp1lwtLHE93w8dRI3h8eXZkrLgebAKqQfA9oZ
+ haXikdZXvfEB810zRURGwChdn/CvMC8Q7Pab3hpE0iVI/nf3FVJvcryQMcC1uZhcoZUU
+ P6IZH9h2w6s9V+B5fc5q6pR5l/tJkcQrm5JJ0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=LeZ8UzRXrDw4d1M4BG6ctt9COK0EF5j9qtOsLWtMfJg=;
- b=y09i8Qh/41jpV/xeKx16WngF305GTuHW4ArLbXCV3b3VaVZPDxvovWVvLGNY7T7pcE
- bgIxldwDB/3m6d8bQuqKgTp3/pyj5ZEQjBgZG+KIqtpMsi9+j05xUDvtBROCsZWG0quJ
- qF6C7yxf0Gvsx46Ny8BruoM9ZZgNhyFDfxZpw2DNBjGVcOEY+M+eOCCI+V0Uvnhnz+J5
- kZCnDPWQZvHQJPwhJ+iD13CEhwkMzEDEPo1lhZxXNwaKGl/RS94exikrpCwmEbte76/w
- o/swvDucmHc451t2bbE+a9mMYl20clyOA5ktFt8A3Pbsh7nQLJd1O9eJrlxFxXiCguoG
- z6hw==
-X-Gm-Message-State: AOAM533SmEZYeeNK3Bc8gYqorMNvTjnTeBXepL3OeNyhAqSK5cG3MDPG
- 6LIsBNbweAla0YQ0Nn73zbpW8Wsw8X9kLOn06yc=
-X-Google-Smtp-Source: ABdhPJy/FhBMdHFZ/fWYZok083K1cMRnt28mMdwU+gF7x8Q+IUp1PpT8OCGXgJp2Kx92R/+V7xu5NQ==
-X-Received: by 2002:a17:907:2bc4:b0:6ce:61f0:f640 with SMTP id
- gv4-20020a1709072bc400b006ce61f0f640mr16534424ejc.234.1646079054762; 
- Mon, 28 Feb 2022 12:10:54 -0800 (PST)
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com.
- [209.85.218.41]) by smtp.gmail.com with ESMTPSA id
- r13-20020a1709064d0d00b0069f263a8104sm4687225eju.177.2022.02.28.12.10.51
+ bh=Rhevy6fb5H45VxDHjLDNCxtPhjJ0u7uFLdfSx9pxlIs=;
+ b=0N3iPX1sjdkKcXPgagYpZ2D34i7rFfPu89BfoJTQIj2xKuQOpdv73lLSnjkhdimQz/
+ nvECM+NzLkZDUDXo2Ut+tzLaq3ScZmtTd1x62sJtA6uJsd0vOcQ/kqOpOGM/0NVDvhwO
+ josAYtFPsejKBX3LFjp3TfBxBwazb2VWk5jinDM1j+RypEDfF2AsOQcpQelpMX5ogmyG
+ uL+oS9rj+rSzLck1Isfmv4WWwOVK4RozkrctHNyOV841VcRR/j4RI7TQ+LGbqvRBYKLz
+ lygjtCy6t7H/5NvAoX/PsUqgU4kGnMlElp+LjdYcq4IVUfFcyGu9KK1uyIkLXa18pkbF
+ mHlQ==
+X-Gm-Message-State: AOAM533qlc+2HeUdJMo2ElEWus1HVcl/J8vBQLedCe5+xAI39/Whk63I
+ gXIDjYaLDCS7+M2ld5OhgLnXW8vXNQlk6HVA6lM=
+X-Google-Smtp-Source: ABdhPJxaVZCk1kGuDiTXwp/M2EuFsMm4xuws3C/b7zHXSFs9nPYyCJiPAodQi0ZzkLX/6z5VjvgAFA==
+X-Received: by 2002:a2e:a276:0:b0:244:d4a5:2def with SMTP id
+ k22-20020a2ea276000000b00244d4a52defmr14873713ljm.141.1646079803090; 
+ Mon, 28 Feb 2022 12:23:23 -0800 (PST)
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com.
+ [209.85.208.175]) by smtp.gmail.com with ESMTPSA id
+ bu20-20020a056512169400b0043eaf37af75sm1118948lfb.199.2022.02.28.12.23.22
  for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 28 Feb 2022 12:10:52 -0800 (PST)
-Received: by mail-ej1-f41.google.com with SMTP id qa43so575148ejc.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 12:10:51 -0800 (PST)
-X-Received: by 2002:ac2:4d91:0:b0:443:127b:558a with SMTP id
- g17-20020ac24d91000000b00443127b558amr14027806lfe.542.1646079041191; Mon, 28
- Feb 2022 12:10:41 -0800 (PST)
+ Mon, 28 Feb 2022 12:23:22 -0800 (PST)
+Received: by mail-lj1-f175.google.com with SMTP id v22so19052410ljh.7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 12:23:22 -0800 (PST)
+X-Received: by 2002:a2e:924d:0:b0:246:370c:5618 with SMTP id
+ v13-20020a2e924d000000b00246370c5618mr15110351ljg.358.1646079300900; Mon, 28
+ Feb 2022 12:15:00 -0800 (PST)
 MIME-Version: 1.0
 References: <20220228110822.491923-1-jakobkoschel@gmail.com>
  <20220228110822.491923-3-jakobkoschel@gmail.com>
  <2e4e95d6-f6c9-a188-e1cd-b1eae465562a@amd.com>
  <CAHk-=wgQps58DPEOe4y5cTh5oE9EdNTWRLXzgMiETc+mFX7jzw@mail.gmail.com>
  <CAHk-=wj8fkosQ7=bps5K+DDazBXk=ypfn49A0sEq+7-nZnyfXA@mail.gmail.com>
-In-Reply-To: <CAHk-=wj8fkosQ7=bps5K+DDazBXk=ypfn49A0sEq+7-nZnyfXA@mail.gmail.com>
+ <CAHk-=wiTCvLQkHcJ3y0hpqH7FEk9D28LDvZZogC6OVLk7naBww@mail.gmail.com>
+In-Reply-To: <CAHk-=wiTCvLQkHcJ3y0hpqH7FEk9D28LDvZZogC6OVLk7naBww@mail.gmail.com>
 From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 28 Feb 2022 12:10:24 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wiTCvLQkHcJ3y0hpqH7FEk9D28LDvZZogC6OVLk7naBww@mail.gmail.com>
-Message-ID: <CAHk-=wiTCvLQkHcJ3y0hpqH7FEk9D28LDvZZogC6OVLk7naBww@mail.gmail.com>
+Date: Mon, 28 Feb 2022 12:14:44 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wj27SZQ3kPTesBzkiGhe-mA3gOQqr_adt_bMFzmg1VNaA@mail.gmail.com>
+Message-ID: <CAHk-=wj27SZQ3kPTesBzkiGhe-mA3gOQqr_adt_bMFzmg1VNaA@mail.gmail.com>
 Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
  as a ptr
 To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Content-Type: multipart/mixed; boundary="0000000000008601b205d919a4ad"
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -129,76 +130,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---0000000000008601b205d919a4ad
-Content-Type: text/plain; charset="UTF-8"
-
-On Mon, Feb 28, 2022 at 12:03 PM Linus Torvalds
+On Mon, Feb 28, 2022 at 12:10 PM Linus Torvalds
 <torvalds@linux-foundation.org> wrote:
 >
-> Side note: we do need *some* way to do it.
+> We can do
+>
+>         typeof(pos) pos
+>
+> in the 'for ()' loop, and never use __iter at all.
+>
+> That means that inside the for-loop, we use a _different_ 'pos' than outside.
 
-Ooh.
-
-This patch is a work of art.
-
-And I mean that in the worst possible way.
-
-We can do
+The thing that makes me throw up in my mouth a bit is that in that
 
         typeof(pos) pos
 
-in the 'for ()' loop, and never use __iter at all.
+the first 'pos' (that we use for just the typeof) is that outer-level
+'pos', IOW it's a *different* 'pos' than the second 'pos' in that same
+declaration that declares the inner level shadowing new 'pos'
+variable.
 
-That means that inside the for-loop, we use a _different_ 'pos' than outside.
+If I was a compiler person, I would say "Linus, that thing is too ugly
+to live", and I would hate it. I'm just hoping that even compiler
+people say "that's *so* ugly it's almost beautiful".
 
-And then the compiler will not see some "might be uninitialized", but
-the outer 'pos' *will* be uninitialized.
+Because it does seem to work. It's not pretty, but hey, it's not like
+our headers are really ever be winning any beauty contests...
 
-Unless, of course, the outer 'pos' had that pointless explicit initializer.
-
-Here - can somebody poke holes in this "work of art" patch?
-
-                     Linus
-
---0000000000008601b205d919a4ad
-Content-Type: text/x-patch; charset="US-ASCII"; name="patch.diff"
-Content-Disposition: attachment; filename="patch.diff"
-Content-Transfer-Encoding: base64
-Content-ID: <f_l074y7ca0>
-X-Attachment-Id: f_l074y7ca0
-
-IE1ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgICB8IDIgKy0KIGFyY2gveDg2L2tlcm5lbC9j
-cHUvc2d4L2VuY2wuYyB8IDIgKy0KIGluY2x1ZGUvbGludXgvbGlzdC5oICAgICAgICAgICB8IDYg
-KysrLS0tCiAzIGZpbGVzIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkK
-CmRpZmYgLS1naXQgYS9NYWtlZmlsZSBiL01ha2VmaWxlCmluZGV4IGRhZWI1Yzg4YjUwYi4uY2M0
-YjBhMjY2YWYwIDEwMDY0NAotLS0gYS9NYWtlZmlsZQorKysgYi9NYWtlZmlsZQpAQCAtNTE1LDcg
-KzUxNSw3IEBAIEtCVUlMRF9DRkxBR1MgICA6PSAtV2FsbCAtV3VuZGVmIC1XZXJyb3I9c3RyaWN0
-LXByb3RvdHlwZXMgLVduby10cmlncmFwaHMgXAogCQkgICAtZm5vLXN0cmljdC1hbGlhc2luZyAt
-Zm5vLWNvbW1vbiAtZnNob3J0LXdjaGFyIC1mbm8tUElFIFwKIAkJICAgLVdlcnJvcj1pbXBsaWNp
-dC1mdW5jdGlvbi1kZWNsYXJhdGlvbiAtV2Vycm9yPWltcGxpY2l0LWludCBcCiAJCSAgIC1XZXJy
-b3I9cmV0dXJuLXR5cGUgLVduby1mb3JtYXQtc2VjdXJpdHkgXAotCQkgICAtc3RkPWdudTg5CisJ
-CSAgIC1zdGQ9Z251MTEKIEtCVUlMRF9DUFBGTEFHUyA6PSAtRF9fS0VSTkVMX18KIEtCVUlMRF9B
-RkxBR1NfS0VSTkVMIDo9CiBLQlVJTERfQ0ZMQUdTX0tFUk5FTCA6PQpkaWZmIC0tZ2l0IGEvYXJj
-aC94ODYva2VybmVsL2NwdS9zZ3gvZW5jbC5jIGIvYXJjaC94ODYva2VybmVsL2NwdS9zZ3gvZW5j
-bC5jCmluZGV4IDQ4YWZlOTZhZTBmMC4uODdkYjJmMzkzNmIwIDEwMDY0NAotLS0gYS9hcmNoL3g4
-Ni9rZXJuZWwvY3B1L3NneC9lbmNsLmMKKysrIGIvYXJjaC94ODYva2VybmVsL2NwdS9zZ3gvZW5j
-bC5jCkBAIC00NTAsNyArNDUwLDcgQEAgc3RhdGljIHZvaWQgc2d4X21tdV9ub3RpZmllcl9yZWxl
-YXNlKHN0cnVjdCBtbXVfbm90aWZpZXIgKm1uLAogCQkJCSAgICAgc3RydWN0IG1tX3N0cnVjdCAq
-bW0pCiB7CiAJc3RydWN0IHNneF9lbmNsX21tICplbmNsX21tID0gY29udGFpbmVyX29mKG1uLCBz
-dHJ1Y3Qgc2d4X2VuY2xfbW0sIG1tdV9ub3RpZmllcik7Ci0Jc3RydWN0IHNneF9lbmNsX21tICp0
-bXAgPSBOVUxMOworCXN0cnVjdCBzZ3hfZW5jbF9tbSAqdG1wOwogCiAJLyoKIAkgKiBUaGUgZW5j
-bGF2ZSBpdHNlbGYgY2FuIHJlbW92ZSBlbmNsX21tLiAgTm90ZSwgb2JqZWN0cyBjYW4ndCBiZSBt
-b3ZlZApkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9saXN0LmggYi9pbmNsdWRlL2xpbnV4L2xp
-c3QuaAppbmRleCBkZDZjMjA0MWQwOWMuLjcwODA3OGIyZjI0ZCAxMDA2NDQKLS0tIGEvaW5jbHVk
-ZS9saW51eC9saXN0LmgKKysrIGIvaW5jbHVkZS9saW51eC9saXN0LmgKQEAgLTYzNCw5ICs2MzQs
-OSBAQCBzdGF0aWMgaW5saW5lIHZvaWQgbGlzdF9zcGxpY2VfdGFpbF9pbml0KHN0cnVjdCBsaXN0
-X2hlYWQgKmxpc3QsCiAgKiBAaGVhZDoJdGhlIGhlYWQgZm9yIHlvdXIgbGlzdC4KICAqIEBtZW1i
-ZXI6CXRoZSBuYW1lIG9mIHRoZSBsaXN0X2hlYWQgd2l0aGluIHRoZSBzdHJ1Y3QuCiAgKi8KLSNk
-ZWZpbmUgbGlzdF9mb3JfZWFjaF9lbnRyeShwb3MsIGhlYWQsIG1lbWJlcikJCQkJXAotCWZvciAo
-cG9zID0gbGlzdF9maXJzdF9lbnRyeShoZWFkLCB0eXBlb2YoKnBvcyksIG1lbWJlcik7CVwKLQkg
-ICAgICFsaXN0X2VudHJ5X2lzX2hlYWQocG9zLCBoZWFkLCBtZW1iZXIpOwkJCVwKKyNkZWZpbmUg
-bGlzdF9mb3JfZWFjaF9lbnRyeShwb3MsIGhlYWQsIG1lbWJlcikJCQkJCVwKKwlmb3IgKHR5cGVv
-Zihwb3MpIHBvcyA9IGxpc3RfZmlyc3RfZW50cnkoaGVhZCwgdHlwZW9mKCpwb3MpLCBtZW1iZXIp
-OwlcCisJICAgICAhbGlzdF9lbnRyeV9pc19oZWFkKHBvcywgaGVhZCwgbWVtYmVyKTsJXAogCSAg
-ICAgcG9zID0gbGlzdF9uZXh0X2VudHJ5KHBvcywgbWVtYmVyKSkKIAogLyoqCg==
---0000000000008601b205d919a4ad--
+                Linus
