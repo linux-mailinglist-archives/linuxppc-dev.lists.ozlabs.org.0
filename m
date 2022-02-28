@@ -1,56 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777984C6A31
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 12:20:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 599824C6C74
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 13:28:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K6dGk45Z7z3cMw
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 22:20:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K6fmk43MXz3bth
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 23:28:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=C57riiYn;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=RT/IL34Z;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=E7ShsxTd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217;
- helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ smtp.mailfrom=codewreck.org (client-ip=2001:41d0:1:7a93::1;
+ helo=nautica.notk.org; envelope-from=asmadeus@codewreck.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=C57riiYn; 
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256
+ header.s=2 header.b=RT/IL34Z; 
+ dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org
+ header.a=rsa-sha256 header.s=2 header.b=E7ShsxTd; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K6dG42gtBz2yJw;
- Mon, 28 Feb 2022 22:20:11 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+X-Greylist: delayed 511 seconds by postgrey-1.36 at boromir;
+ Mon, 28 Feb 2022 22:31:16 AEDT
+Received: from nautica.notk.org (ipv6.notk.org [IPv6:2001:41d0:1:7a93::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id DE71F60F9E;
- Mon, 28 Feb 2022 11:20:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577DAC340E7;
- Mon, 28 Feb 2022 11:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1646047208;
- bh=TZYI8CoLqZwdjhCp4FIqkyAKtFSpIqtbXR7Aczi5lHQ=;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K6dVr65HVz3bXy;
+ Mon, 28 Feb 2022 22:31:16 +1100 (AEDT)
+Received: by nautica.notk.org (Postfix, from userid 108)
+ id 244AEC029; Mon, 28 Feb 2022 12:22:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+ t=1646047355; bh=nbIjFrzgDVTmB4SrJnZGd7fIFmdwChwe2lL83Uag4us=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=C57riiYnEjUdxOZhn04GGyA8PIVDUJ6DJKuCKjTYwuUmTfW6bVKDrs724kyxSBaKx
- RgI2btjN0kChcFl20e7HpTgxlexOr2YrBREdqqTBvDVt/Whdw/5z0V77N814zObmo3
- /EeMG4N6szzw6EaZ5Y2WBm3/aL7Ea4aeZYOpa8Fs=
-Date: Mon, 28 Feb 2022 12:20:03 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
+ b=RT/IL34ZMb4wE13ecGpP0cPYfvUALLBHI3h+Nwqjk6un5A9pkdgT4k1/FqMlC2j9j
+ 5rXnbfX9CeRpV2BF45XH/gyMBAIlLBsJthcQL9g53J0izMt9+z9BAyzbfmHq+6LfSX
+ iY61zvlTrG45WH2waKu+VWh33WBy571UkxI0mCXre32lMHSogGum3oUpiCiQjYBFm0
+ UrVmOxcDfy2+XRbr8yw+xW4xvsCb62na1mVOfycyKoB6ejlKrB2T4jQrMTugRWsRaP
+ 9QmdpahZrSpqJLY1nBe2woUd/0EuRh0B46d3WvFe6/e41bNLFb+98ZtIxTmDiQp/ER
+ KjOOwgzjanHhA==
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on nautica.notk.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.0 required=5.0 tests=UNPARSEABLE_RELAY
+ autolearn=unavailable version=3.3.2
+Received: from odin.codewreck.org (localhost [127.0.0.1])
+ by nautica.notk.org (Postfix) with ESMTPS id 6162EC009;
+ Mon, 28 Feb 2022 12:22:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+ t=1646047353; bh=nbIjFrzgDVTmB4SrJnZGd7fIFmdwChwe2lL83Uag4us=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=E7ShsxTdVoGEbpDYFF27HXnsiskOzo+90fWYK/YK/pcgewcio/aI2ukKBbk8Ggf8c
+ PSXNNRohBAnroHDgJmzD26WOCBS51v3CgaeWJoVRlz3gzi1Wk2c722FgVeG9ZC8Gq1
+ VxeMBZJsJJ2s49Z0zkRuzCFT0FdEMmJ4Jlg8so5xUNkI1Pmhr9T77hNpqbhc5MUSIm
+ Vf9CZqLUP+U5LMthWxqmxcIfa+qcI6C/HHTtBGWVbD6UPJLDQeI2MK30nqaJN3mP3G
+ MxeZ4iTWnejwYcukxHfaPz9ZlYf9Zxp1r7k3O+mRBYZR8EPZsNImCl3hToWu78+1r5
+ 3QpJ5t/64l3TQ==
+Received: from localhost (odin.codewreck.org [local])
+ by odin.codewreck.org (OpenSMTPD) with ESMTPA id 8186bc45;
+ Mon, 28 Feb 2022 11:22:16 +0000 (UTC)
+Date: Mon, 28 Feb 2022 20:22:01 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
 To: Jakob Koschel <jakobkoschel@gmail.com>
-Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-Message-ID: <Yhyv42ONIxTj04mg@kroah.com>
+Subject: Re: [PATCH 6/6] treewide: remove check of list iterator against head
+ past the loop body
+Message-ID: <YhywWTEIY7UnCYtL@codewreck.org>
 References: <20220228110822.491923-1-jakobkoschel@gmail.com>
- <20220228110822.491923-3-jakobkoschel@gmail.com>
+ <20220228110822.491923-7-jakobkoschel@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220228110822.491923-3-jakobkoschel@gmail.com>
+In-Reply-To: <20220228110822.491923-7-jakobkoschel@gmail.com>
+X-Mailman-Approved-At: Mon, 28 Feb 2022 23:23:25 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,35 +116,23 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Feb 28, 2022 at 12:08:18PM +0100, Jakob Koschel wrote:
-> If the list does not contain the expected element, the value of
-> list_for_each_entry() iterator will not point to a valid structure.
-> To avoid type confusion in such case, the list iterator
-> scope will be limited to list_for_each_entry() loop.
-> 
-> In preparation to limiting scope of a list iterator to the list traversal
-> loop, use a dedicated pointer to point to the found element.
-> Determining if an element was found is then simply checking if
-> the pointer is != NULL.
-> 
-> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
-> ---
->  arch/x86/kernel/cpu/sgx/encl.c       |  6 +++--
->  drivers/scsi/scsi_transport_sas.c    | 17 ++++++++-----
->  drivers/thermal/thermal_core.c       | 38 ++++++++++++++++++----------
->  drivers/usb/gadget/configfs.c        | 22 ++++++++++------
->  drivers/usb/gadget/udc/max3420_udc.c | 11 +++++---
->  drivers/usb/gadget/udc/tegra-xudc.c  | 11 +++++---
->  drivers/usb/mtu3/mtu3_gadget.c       | 11 +++++---
->  drivers/usb/musb/musb_gadget.c       | 11 +++++---
->  drivers/vfio/mdev/mdev_core.c        | 11 +++++---
->  9 files changed, 88 insertions(+), 50 deletions(-)
+This is a bit more work (and a lot more noise), but I'd prefer if
+this were split into as many patches as there are components.
 
-The drivers/usb/ portion of this patch should be in patch 1/X, right?
+I'm not going to review the parts of the patches that don't concern me,
+and if something turns out to be a problem later one (it shouldn't but
+one never knows) it'll be much easier to revert or put the blame on an
+individual smaller commit than on this...
 
-Also, you will have to split these up per-subsystem so that the
-different subsystem maintainers can take these in their trees.
+With that being said, ultimately I don't care that much and will leave
+that to people who do :)
 
-thanks,
+Jakob Koschel wrote on Mon, Feb 28, 2022 at 12:08:22PM +0100:
+>  net/9p/trans_xen.c                            | 11 +++--
 
-greg k-h
+This 9p change looks good to me.
+
+Reviewed-by: Dominique Martinet <asmadeus@codewreck.org> # 9p
+
+-- 
+Dominique
