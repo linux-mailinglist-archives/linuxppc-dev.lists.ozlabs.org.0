@@ -2,83 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31B04C641A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 08:53:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C73C4C641D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 08:53:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K6Xg963mXz3bq2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 18:53:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K6Xgy597sz3btl
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 18:53:50 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jv75Sau4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hAwzSkcd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=jv75Sau4; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=hAwzSkcd; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K6XfD1r8Xz3bZg
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 18:52:19 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21S7G2CA023222; 
- Mon, 28 Feb 2022 07:52:15 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K6Xfv6Zxbz3bk9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 18:52:55 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21S7hOec024655; 
+ Mon, 28 Feb 2022 07:52:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : subject :
  from : to : cc : date : in-reply-to : references : content-type :
  mime-version : content-transfer-encoding; s=pp1;
- bh=Kxc3PytQeFCcZQiZj9pEFNuAbKlYMOdux9aCWWcAsc0=;
- b=jv75Sau4d9nBhg/BpXaCrEJGEICzXpO/aIF26glIoWvMzqHyQcuOsfW9FH+qGry2Jtbe
- GexdikQEhQbU3W94OcPBCp049nKg0RYhLspvy8069pYBbPea38CAfYITGNd5Xm6GE8QF
- 27foArrwJu1HjVxWpdi6GFLBf5jpQLTB8P/UeTYfHwBm+YEAl3hmnC/Hy12Na0s4dxyB
- cr2Bva9AxtV7M7T85kvuip1ViO+k15WwXjrLBYQqRWDkjdScjzZxNhaGxYvh2Tr0rlVO
- 9svF6KoAcAJ6IWFm9gOzI+WYjyB1fOFmAKKaDtbb7QBpOL8Sfig1LvRNmia3RrZGn0j2 CQ== 
+ bh=dokKMTHNwvTpBKYNcK0AwP2WHYP3vWkiph8bDPYrb6w=;
+ b=hAwzSkcdsLCEOuIuGXZupPg0W06m4a7UA7HjLLelO9F23SshWO4QGWTdWwbptq9DA/za
+ zQfcZtlf6quAHpWK7y3XbTR3XBKvjsgZC9/Vhtz+GG4CZdTOkXG7ZG/M5k2ONcp6JEiw
+ QbDNUVzVm6fxiGCJXmQNAVBlUxsOiMjI8JZDC0OUDtkZ3/A7HAhST8Vy3infgukxhZ4S
+ a2lccfDPOFf04TqJkRSx6pmdvzTMPCIlEWSO4kMcbybtTN5/f4Xp822YQlnY8BclIuKs
+ quKNEpO6Hdmn5I2Ii1YgkpR7NTG6IV6Bg/xtGh5R19VHgjIq1Khrmt7T2ucHYX7kWOaS AQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3egq5ycn9m-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3egt8n8670-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Feb 2022 07:52:15 +0000
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21S7aENW028902;
- Mon, 28 Feb 2022 07:52:15 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3egq5ycn97-1
+ Mon, 28 Feb 2022 07:52:51 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21S7poCl010289;
+ Mon, 28 Feb 2022 07:52:51 GMT
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3egt8n866n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Feb 2022 07:52:15 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21S7lJg9019344;
- Mon, 28 Feb 2022 07:52:14 GMT
+ Mon, 28 Feb 2022 07:52:51 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21S7lKsV027614;
+ Mon, 28 Feb 2022 07:52:50 GMT
 Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma03dal.us.ibm.com with ESMTP id 3egfsrn7tv-1
+ [9.57.198.25]) by ppma05wdc.us.ibm.com with ESMTP id 3efbu9t0as-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Feb 2022 07:52:14 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
+ Mon, 28 Feb 2022 07:52:50 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
  by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21S7qCgo47120826
+ 21S7qk8j49545498
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 28 Feb 2022 07:52:12 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8DE4528058;
- Mon, 28 Feb 2022 07:52:11 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D993C28067;
- Mon, 28 Feb 2022 07:52:10 +0000 (GMT)
+ Mon, 28 Feb 2022 07:52:46 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C5937AC05B;
+ Mon, 28 Feb 2022 07:52:46 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE600AC05E;
+ Mon, 28 Feb 2022 07:52:45 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.160.161.44])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 28 Feb 2022 07:52:10 +0000 (GMT)
-Message-ID: <0aad580387cb58379496b4cbbd7c5596e9ea70be.camel@linux.ibm.com>
-Subject: [PATCH v4 2/3] powerpc/pseries/vas: Modify reconfig open/close
- functions for migration
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 28 Feb 2022 07:52:45 +0000 (GMT)
+Message-ID: <2dcfeecddcacbb8b1248364905c2e37695f2b996.camel@linux.ibm.com>
+Subject: [PATCH v4 3/3] powerpc/pseries/vas: Add VAS migration handler
 From: Haren Myneni <haren@linux.ibm.com>
 To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
  nathanl@linux.ibm.com
-Date: Sun, 27 Feb 2022 23:52:08 -0800
+Date: Sun, 27 Feb 2022 23:52:43 -0800
 In-Reply-To: <aab2eda3cb5b209e07cf50760649834f1d93fede.camel@linux.ibm.com>
 References: <aab2eda3cb5b209e07cf50760649834f1d93fede.camel@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -86,17 +85,17 @@ User-Agent: Evolution 3.36.5 (3.36.5-2.fc32)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: OmFX-MbzdvWulyiVDB-xAwyyjJ2g-dTD
-X-Proofpoint-GUID: 7y4fuPjb-QT_CN77GfURHiQ5TkbnNRx4
+X-Proofpoint-GUID: S6MS1AbS9gxXperHeb-8HPKW-vUEiJga
+X-Proofpoint-ORIG-GUID: FF8coj9JLofRwBcLFeS1xABMnoCKl6bs
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-02-28_02,2022-02-26_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 suspectscore=0 clxscore=1015 adultscore=0 mlxscore=0
- spamscore=0 malwarescore=0 mlxlogscore=999 lowpriorityscore=0
- impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2201110000 definitions=main-2202280043
+ malwarescore=0
+ mlxlogscore=999 bulkscore=0 priorityscore=1501 impostorscore=0 mlxscore=0
+ clxscore=1015 spamscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202280043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,234 +112,204 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-VAS is a hardware engine stays on the chip. So when the partition
-migrates, all VAS windows on the source system have to be closed
-and reopen them on the destination after migration.
+Since the VAS windows belong to the VAS hardware resource, the
+hypervisor expects the partition to close them on source partition
+and reopen them after the partition migrated on the destination
+machine.
 
-The kernel has to consider both DLPAR CPU and migration events to
-take action on VAS windows. So using VAS_WIN_NO_CRED_CLOSE and
-VAS_WIN_MIGRATE_CLOSE status bits and windows will be reopened
-after migration only after both status bits are cleared.
+This handler is called before pseries_suspend() to close these
+windows and again invoked after migration. All active windows
+for both default and QoS types will be closed and mark them
+inactive and reopened after migration with this handler.
+During the migration, the user space receives paste instruction
+failure if it issues copy/paste on these inactive windows.
 
-This patch make changes to the current reconfig_open/close_windows
-functions to support migration:
-- Set VAS_WIN_MIGRATE_CLOSE to the window status when closes and
-  reopen windows with the same status during resume.
-- Continue to close all windows even if deallocate HCALL failed
-  (should not happen) since no way to stop migration with the
-  current LPM implementation.
-- If the DLPAR CPU event happens while migration is in progress,
-  set VAS_WIN_NO_CRED_CLOSE to the window status. Close window
-  happens with the first event (migration or DLPAR) and Reopen
-  window happens only with the last event (migration or DLPAR).
+The current migration implementation does not freeze the user
+space and applications can continue to open VAS windows while
+migration is in progress. So when the migration_in_progress flag
+is set, VAS open window API returns -EBUSY.
 
 Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 ---
- arch/powerpc/include/asm/vas.h       |  2 +
- arch/powerpc/platforms/pseries/vas.c | 88 ++++++++++++++++++++++------
- 2 files changed, 73 insertions(+), 17 deletions(-)
+ arch/powerpc/platforms/pseries/mobility.c |  5 ++
+ arch/powerpc/platforms/pseries/vas.c      | 98 ++++++++++++++++++++++-
+ arch/powerpc/platforms/pseries/vas.h      |  6 ++
+ 3 files changed, 108 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
-index 6baf7b9ffed4..83afcb6c194b 100644
---- a/arch/powerpc/include/asm/vas.h
-+++ b/arch/powerpc/include/asm/vas.h
-@@ -36,6 +36,8 @@
- 					/* vas mmap() */
- /* Window is closed in the hypervisor due to lost credit */
- #define VAS_WIN_NO_CRED_CLOSE	0x00000001
-+/* Window is closed due to migration */
-+#define VAS_WIN_MIGRATE_CLOSE	0x00000002
+diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
+index 85033f392c78..70004243e25e 100644
+--- a/arch/powerpc/platforms/pseries/mobility.c
++++ b/arch/powerpc/platforms/pseries/mobility.c
+@@ -26,6 +26,7 @@
+ #include <asm/machdep.h>
+ #include <asm/rtas.h>
+ #include "pseries.h"
++#include "vas.h"	/* vas_migration_handler() */
+ #include "../../kernel/cacheinfo.h"
  
- /*
-  * Get/Set bit fields
+ static struct kobject *mobility_kobj;
+@@ -669,12 +670,16 @@ static int pseries_migrate_partition(u64 handle)
+ 	if (ret)
+ 		return ret;
+ 
++	vas_migration_handler(VAS_SUSPEND);
++
+ 	ret = pseries_suspend(handle);
+ 	if (ret == 0)
+ 		post_mobility_fixup();
+ 	else
+ 		pseries_cancel_migration(handle, ret);
+ 
++	vas_migration_handler(VAS_RESUME);
++
+ 	return ret;
+ }
+ 
 diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index 3bb219f54806..fbcf311da0ec 100644
+index fbcf311da0ec..1f59d78c77a1 100644
 --- a/arch/powerpc/platforms/pseries/vas.c
 +++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -457,11 +457,12 @@ static int vas_deallocate_window(struct vas_window *vwin)
+@@ -30,6 +30,7 @@ static struct hv_vas_cop_feat_caps hv_cop_caps;
+ 
+ static struct vas_caps vascaps[VAS_MAX_FEAT_TYPE];
+ static DEFINE_MUTEX(vas_pseries_mutex);
++static bool migration_in_progress;
+ 
+ static long hcall_return_busy_check(long rc)
+ {
+@@ -356,7 +357,10 @@ static struct vas_window *vas_allocate_window(int vas_id, u64 flags,
+ 	 * same fault IRQ is not freed by the OS before.
+ 	 */
  	mutex_lock(&vas_pseries_mutex);
- 	/*
- 	 * VAS window is already closed in the hypervisor when
--	 * lost the credit. So just remove the entry from
--	 * the list, remove task references and free vas_window
-+	 * lost the credit or with migration. So just remove the entry
-+	 * from the list, remove task references and free vas_window
- 	 * struct.
- 	 */
--	if (win->vas_win.status & VAS_WIN_NO_CRED_CLOSE) {
-+	if (!(win->vas_win.status & VAS_WIN_NO_CRED_CLOSE) &&
-+		!(win->vas_win.status & VAS_WIN_MIGRATE_CLOSE)) {
- 		rc = deallocate_free_window(win);
- 		if (rc) {
- 			mutex_unlock(&vas_pseries_mutex);
-@@ -578,12 +579,14 @@ static int __init get_vas_capabilities(u8 feat, enum vas_cop_feat_type type,
-  * by setting the remapping to new paste address if the window is
-  * active.
-  */
--static int reconfig_open_windows(struct vas_caps *vcaps, int creds)
-+static int reconfig_open_windows(struct vas_caps *vcaps, int creds,
-+				 bool migrate)
- {
- 	long domain[PLPAR_HCALL9_BUFSIZE] = {VAS_DEFAULT_DOMAIN_ID};
- 	struct vas_cop_feat_caps *caps = &vcaps->caps;
- 	struct pseries_vas_window *win = NULL, *tmp;
- 	int rc, mv_ents = 0;
-+	int flag;
+-	rc = allocate_setup_window(txwin, (u64 *)&domain[0],
++	if (migration_in_progress)
++		rc = -EBUSY;
++	else
++		rc = allocate_setup_window(txwin, (u64 *)&domain[0],
+ 				   cop_feat_caps->win_type);
+ 	mutex_unlock(&vas_pseries_mutex);
+ 	if (rc)
+@@ -869,6 +873,98 @@ static struct notifier_block pseries_vas_nb = {
+ 	.notifier_call = pseries_vas_notifier,
+ };
  
- 	/*
- 	 * Nothing to do if there are no closed windows.
-@@ -602,8 +605,10 @@ static int reconfig_open_windows(struct vas_caps *vcaps, int creds)
- 	 * (dedicated). If 1 core is added, this LPAR can have 20 more
- 	 * credits. It means the kernel can reopen 20 windows. So move
- 	 * 20 entries in the VAS windows lost and reopen next 20 windows.
-+	 * For partition migration, reopen all windows that are closed
-+	 * during resume.
- 	 */
--	if (vcaps->nr_close_wins > creds)
-+	if ((vcaps->nr_close_wins > creds) && !migrate)
- 		mv_ents = vcaps->nr_close_wins - creds;
- 
- 	list_for_each_entry_safe(win, tmp, &vcaps->list, win_list) {
-@@ -613,12 +618,35 @@ static int reconfig_open_windows(struct vas_caps *vcaps, int creds)
- 		mv_ents--;
- 	}
- 
++/*
++ * For LPM, all windows have to be closed on the source partition
++ * before migration and reopen them on the destination partition
++ * after migration. So closing windows during suspend and
++ * reopen them during resume.
++ */
++int vas_migration_handler(int action)
++{
++	struct vas_cop_feat_caps *caps;
++	int old_nr_creds, new_nr_creds = 0;
++	struct vas_caps *vcaps;
++	int i, rc = 0;
++
 +	/*
-+	 * Open windows if they are closed only with migration or
-+	 * DLPAR (lost credit) before.
++	 * NX-GZIP is not enabled. Nothing to do for migration.
 +	 */
-+	if (migrate)
-+		flag = VAS_WIN_MIGRATE_CLOSE;
-+	else
-+		flag = VAS_WIN_NO_CRED_CLOSE;
++	if (!copypaste_feat)
++		return rc;
 +
- 	list_for_each_entry_safe_from(win, tmp, &vcaps->list, win_list) {
-+		/*
-+		 * This window is closed with DLPAR and migration events.
-+		 * So reopen the window with the last event.
-+		 * The user space is not suspended with the current
-+		 * migration notifier. So the user space can issue DLPAR
-+		 * CPU hotplug while migration in progress. In this case
-+		 * this window will be opened with the last event.
-+		 */
-+		if ((win->vas_win.status & VAS_WIN_NO_CRED_CLOSE) &&
-+			(win->vas_win.status & VAS_WIN_MIGRATE_CLOSE)) {
-+			win->vas_win.status &= ~flag;
-+			continue;
++	mutex_lock(&vas_pseries_mutex);
++
++	if (action == VAS_SUSPEND)
++		migration_in_progress = true;
++	else
++		migration_in_progress = false;
++
++	for (i = 0; i < VAS_MAX_FEAT_TYPE; i++) {
++		vcaps = &vascaps[i];
++		caps = &vcaps->caps;
++		old_nr_creds = atomic_read(&caps->nr_total_credits);
++
++		rc = h_query_vas_capabilities(H_QUERY_VAS_CAPABILITIES,
++					      vcaps->feat,
++					      (u64)virt_to_phys(&hv_cop_caps));
++		if (!rc) {
++			new_nr_creds = be16_to_cpu(hv_cop_caps.target_lpar_creds);
++			/*
++			 * Should not happen. But incase print messages, close
++			 * all windows in the list during suspend and reopen
++			 * windows based on new lpar_creds on the destination
++			 * system.
++			 */
++			if (old_nr_creds != new_nr_creds) {
++				pr_err("Target credits mismatch with the hypervisor\n");
++				pr_err("state(%d): lpar creds: %d HV lpar creds: %d\n",
++					action, old_nr_creds, new_nr_creds);
++				pr_err("Used creds: %d, Active creds: %d\n",
++					atomic_read(&caps->nr_used_credits),
++					vcaps->nr_open_windows - vcaps->nr_close_wins);
++			}
++		} else {
++			pr_err("state(%d): Get VAS capabilities failed with %d\n",
++				action, rc);
++			/*
++			 * We can not stop migration with the current lpm
++			 * implementation. So continue closing all windows in
++			 * the list (during suspend) and return without
++			 * opening windows (during resume) if VAS capabilities
++			 * HCALL failed.
++			 */
++			if (action == VAS_RESUME)
++				goto out;
 +		}
 +
- 		/*
- 		 * Nothing to do on this window if it is not closed
--		 * with VAS_WIN_NO_CRED_CLOSE
-+		 * with this flag
- 		 */
--		if (!(win->vas_win.status & VAS_WIN_NO_CRED_CLOSE))
-+		if (!(win->vas_win.status & flag))
- 			continue;
- 
- 		rc = allocate_setup_window(win, (u64 *)&domain[0],
-@@ -634,7 +662,7 @@ static int reconfig_open_windows(struct vas_caps *vcaps, int creds)
- 		/*
- 		 * Set window status to active
- 		 */
--		win->vas_win.status &= ~VAS_WIN_NO_CRED_CLOSE;
-+		win->vas_win.status &= ~flag;
- 		mutex_unlock(&win->vas_win.task_ref.mmap_mutex);
- 		win->win_type = caps->win_type;
- 		if (!--vcaps->nr_close_wins)
-@@ -661,20 +689,32 @@ static int reconfig_open_windows(struct vas_caps *vcaps, int creds)
-  * the user space to fall back to SW compression and manage with the
-  * existing windows.
-  */
--static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds)
-+static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
-+									bool migrate)
++		switch (action) {
++		case VAS_SUSPEND:
++			rc = reconfig_close_windows(vcaps, vcaps->nr_open_windows,
++							true);
++			break;
++		case VAS_RESUME:
++			atomic_set(&caps->nr_total_credits, new_nr_creds);
++			rc = reconfig_open_windows(vcaps, new_nr_creds, true);
++			break;
++		default:
++			/* should not happen */
++			pr_err("Invalid migration action %d\n", action);
++			rc = -EINVAL;
++			goto out;
++		}
++
++		/*
++		 * Ignore errors during suspend and return for resume.
++		 */
++		if (rc && (action == VAS_RESUME))
++			goto out;
++	}
++
++out:
++	mutex_unlock(&vas_pseries_mutex);
++	return rc;
++}
++
+ static int __init pseries_vas_init(void)
  {
- 	struct pseries_vas_window *win, *tmp;
- 	struct vas_user_win_ref *task_ref;
- 	struct vm_area_struct *vma;
--	int rc = 0;
-+	int rc = 0, flag;
+ 	struct hv_vas_all_caps *hv_caps;
+diff --git a/arch/powerpc/platforms/pseries/vas.h b/arch/powerpc/platforms/pseries/vas.h
+index 4ddb1001a0aa..f7568d8c6ab0 100644
+--- a/arch/powerpc/platforms/pseries/vas.h
++++ b/arch/powerpc/platforms/pseries/vas.h
+@@ -33,6 +33,11 @@
+ #define VAS_GZIP_QOS_CAPABILITIES	0x56516F73477A6970
+ #define VAS_GZIP_DEFAULT_CAPABILITIES	0x56446566477A6970
+ 
++enum vas_migrate_action {
++	VAS_SUSPEND,
++	VAS_RESUME,
++};
 +
-+	if (migrate)
-+		flag = VAS_WIN_MIGRATE_CLOSE;
-+	else
-+		flag = VAS_WIN_NO_CRED_CLOSE;
- 
- 	list_for_each_entry_safe(win, tmp, &vcap->list, win_list) {
- 		/*
- 		 * This window is already closed due to lost credit
--		 * before. Go for next window.
-+		 * or for migration before. Go for next window.
-+		 * For migration, nothing to do since this window
-+		 * closed for DLPAR and will be reopened even on
-+		 * the destination system with other DLPAR operation.
- 		 */
--		if (win->vas_win.status & VAS_WIN_NO_CRED_CLOSE)
-+		if ((win->vas_win.status & VAS_WIN_MIGRATE_CLOSE) ||
-+			(win->vas_win.status & VAS_WIN_NO_CRED_CLOSE)) {
-+			win->vas_win.status |= flag;
- 			continue;
-+		}
- 
- 		task_ref = &win->vas_win.task_ref;
- 		mutex_lock(&task_ref->mmap_mutex);
-@@ -683,7 +723,7 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds)
- 		 * Number of available credits are reduced, So select
- 		 * and close windows.
- 		 */
--		win->vas_win.status |= VAS_WIN_NO_CRED_CLOSE;
-+		win->vas_win.status |= flag;
- 
- 		mmap_write_lock(task_ref->mm);
- 		/*
-@@ -706,12 +746,24 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds)
- 		 * later when the process issued with close(FD).
- 		 */
- 		rc = deallocate_free_window(win);
--		if (rc)
-+		/*
-+		 * This failure is from the hypervisor.
-+		 * No way to stop migration for these failures.
-+		 * So ignore error and continue closing other windows.
-+		 */
-+		if (rc && !migrate)
- 			return rc;
- 
- 		vcap->nr_close_wins++;
- 
--		if (!--excess_creds)
-+		/*
-+		 * For migration, do not depend on lpar_creds in case if
-+		 * mismatch with the hypervisor value (should not happen).
-+		 * So close all active windows in the list and will be
-+		 * reopened windows based on the new lpar_creds on the
-+		 * destination system during resume.
-+		 */
-+		if (!migrate && !--excess_creds)
- 			break;
- 	}
- 
-@@ -761,7 +813,8 @@ int vas_reconfig_capabilties(u8 type)
- 		 * target, reopen windows if they are closed due to
- 		 * the previous DLPAR (core removal).
- 		 */
--		rc = reconfig_open_windows(vcaps, new_nr_creds - old_nr_creds);
-+		rc = reconfig_open_windows(vcaps, new_nr_creds - old_nr_creds,
-+					   false);
- 	} else {
- 		/*
- 		 * # active windows is more than new LPAR available
-@@ -771,7 +824,8 @@ int vas_reconfig_capabilties(u8 type)
- 		nr_active_wins = vcaps->nr_open_windows - vcaps->nr_close_wins;
- 		if (nr_active_wins > new_nr_creds)
- 			rc = reconfig_close_windows(vcaps,
--					nr_active_wins - new_nr_creds);
-+					nr_active_wins - new_nr_creds,
-+					false);
- 	}
- 
- out:
+ /*
+  * Co-processor feature - GZIP QoS windows or GZIP default windows
+  */
+@@ -132,4 +137,5 @@ struct pseries_vas_window {
+ int sysfs_add_vas_caps(struct vas_cop_feat_caps *caps);
+ int vas_reconfig_capabilties(u8 type);
+ int __init sysfs_pseries_vas_init(struct vas_all_caps *vas_caps);
++int vas_migration_handler(int action);
+ #endif /* _VAS_H */
 -- 
 2.27.0
 
