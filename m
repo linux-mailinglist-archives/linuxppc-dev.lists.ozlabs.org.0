@@ -2,61 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 551974C6B85
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 13:03:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C45914C6C79
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 13:29:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K6fCm3vQNz3bdF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 23:03:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K6fnR6y9Jz3bq6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 23:28:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=puET9FaE;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.85.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62f;
+ helo=mail-ej1-x62f.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=puET9FaE; dkim-atps=neutral
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com
+ [IPv6:2a00:1450:4864:20::62f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K6fCF5NNpz30MH
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 23:02:47 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-166-d7SEXvIjOR2492KDyKN4ug-1; Mon, 28 Feb 2022 12:02:41 +0000
-X-MC-Unique: d7SEXvIjOR2492KDyKN4ug-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.28; Mon, 28 Feb 2022 12:02:38 +0000
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.028; Mon, 28 Feb 2022 12:02:38 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Guo Ren' <guoren@kernel.org>
-Subject: RE: [PATCH V7 03/20] compat: consolidate the compat_flock{,64}
- definition
-Thread-Topic: [PATCH V7 03/20] compat: consolidate the compat_flock{,64}
- definition
-Thread-Index: AQHYK/ctkLOBFN5NzkqkonsQCyvC26yogbZggABZggCAAAIWoA==
-Date: Mon, 28 Feb 2022 12:02:38 +0000
-Message-ID: <e5ee4f6799704bd59b0c580157a05d2d@AcuMS.aculab.com>
-References: <20220227162831.674483-1-guoren@kernel.org>
- <20220227162831.674483-4-guoren@kernel.org>
- <b8e765910e274c0fb574ff23f88b881c@AcuMS.aculab.com>
- <CAJF2gTRQ0XWSjoEeREtEGr5PPD-rHrBKFY_i6_9uW3eEN_6muQ@mail.gmail.com>
-In-Reply-To: <CAJF2gTRQ0XWSjoEeREtEGr5PPD-rHrBKFY_i6_9uW3eEN_6muQ@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
-MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K6fDJ2GrCz30MH;
+ Mon, 28 Feb 2022 23:03:43 +1100 (AEDT)
+Received: by mail-ej1-x62f.google.com with SMTP id d10so24250565eje.10;
+ Mon, 28 Feb 2022 04:03:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=m/mYa1XqvvHLfnL3BOoOqYDa1ViNV7MB47waZKIycw0=;
+ b=puET9FaE+iPLWSLHaH0Jc15P7LML3ILv/CtQc1xDRlDOvchBnePGr3CpZ8iNTFg26S
+ MvdmzyKLao5C/5rXrSzR7jzTPZ0Yuj+7M+cqDE4eOMJCgAt9uraXgTEJwynFkzni1Fvy
+ Vjo1HNa/jUOUFI/CmrkLVTegwpA5o7Cf0wR8qBn5y2xARegC4rz7JN5F70qSFE936vyK
+ a6/WQ787WIaZ7lFx0I/tSaiXwe3z6FIrVBWdIQkzq0oVXXDZs7cCv56cl8qPmZ4RxzRI
+ sP+DHiZk3rxPTft7o6PkfUdJMVZiSNaECaj+ljhYu978P5TkgTkfoRd54h/EuhklkuKS
+ esTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=m/mYa1XqvvHLfnL3BOoOqYDa1ViNV7MB47waZKIycw0=;
+ b=6AOR30azoeXogXn+ksKKQ3s4weOAlQayv+Ka/2tW77okP1Yqk7Cu70UMdvCrygwDx3
+ MS8LYUk/UJT4FpzxfAVT47ss0O0+XaYC2Ha66YKs8zzA+OU7JuLq7zkSXD/PmbQUqymj
+ jfoGf1Tqc3Grqyz0nr3HDr9lgnxRq3N1pTA8lnCRDQ26QZIRajoMmfg7AtmkntuPQAqm
+ 8uIQ/89nnN1qBYReB/e7OPtrrLKZdBQiJb7J1vEw+RuC4wwYoky+aD+4JS+RxAbpmCKf
+ GVfuLpeN0cl5KKxQXxFXqmGfEWFJokZMWbV/LfXq8V6C83Z4FzqsX4xV1gvGYIK7N5Y+
+ E5wg==
+X-Gm-Message-State: AOAM531f7PosTt2sWiV1I4qdxSgQbCf14ljuUa1n4ybUmSgkGaqAjJ3l
+ Y5hnsl8DxlKBG3SwyIKJq0M=
+X-Google-Smtp-Source: ABdhPJyPihjoYwx+e9NKg98XvxKCbWi7t13guT1EBLKeJ6QGdK72cKHCeJpX8hRszpc83uJxZ+jQ9w==
+X-Received: by 2002:a17:906:d14e:b0:6cd:8d7e:eec9 with SMTP id
+ br14-20020a170906d14e00b006cd8d7eeec9mr14944415ejb.28.1646049820086; 
+ Mon, 28 Feb 2022 04:03:40 -0800 (PST)
+Received: from smtpclient.apple ([2a02:8109:9d80:3f6c:957a:1d13:c949:d1f3])
+ by smtp.gmail.com with ESMTPSA id
+ l9-20020a1709060cc900b006ce04bb8668sm4257528ejh.184.2022.02.28.04.03.37
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 28 Feb 2022 04:03:39 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.60.0.1.1\))
+Subject: Re: [PATCH 1/6] drivers: usb: remove usage of list iterator past the
+ loop body
+From: Jakob Koschel <jakobkoschel@gmail.com>
+In-Reply-To: <20220228112413.GA2812@kadam>
+Date: Mon, 28 Feb 2022 13:03:36 +0100
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <E31E215E-C409-40B8-8452-57E70C91484C@gmail.com>
+References: <20220228110822.491923-1-jakobkoschel@gmail.com>
+ <20220228110822.491923-2-jakobkoschel@gmail.com>
+ <20220228112413.GA2812@kadam>
+To: Dan Carpenter <dan.carpenter@oracle.com>
+X-Mailer: Apple Mail (2.3693.60.0.1.1)
+X-Mailman-Approved-At: Mon, 28 Feb 2022 23:23:25 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,71 +87,163 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "arnd@arndb.de" <arnd@arndb.de>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "drew@beagleboard.org" <drew@beagleboard.org>,
- "anup@brainfault.org" <anup@brainfault.org>,
- "wangjunqiang@iscas.ac.cn" <wangjunqiang@iscas.ac.cn>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "palmer@dabbelt.com" <palmer@dabbelt.com>,
- "liush@allwinnertech.com" <liush@allwinnertech.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "hch@lst.de" <hch@lst.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "wefu@redhat.com" <wefu@redhat.com>
+Cc: alsa-devel@alsa-project.org, linux-aspeed@lists.ozlabs.org,
+ "Gustavo A. R. Silva" <gustavo@embeddedor.com>, linux-iio@vger.kernel.org,
+ nouveau@lists.freedesktop.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ dri-devel@lists.freedesktop.org, Cristiano Giuffrida <c.giuffrida@vu.nl>,
+ amd-gfx@lists.freedesktop.org, samba-technical@lists.samba.org,
+ linux1394-devel@lists.sourceforge.net, drbd-dev@lists.linbit.com,
+ linux-arch <linux-arch@vger.kernel.org>, linux-cifs@vger.kernel.org,
+ kvm@vger.kernel.org, linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-staging@lists.linux.dev, "Bos, H.J." <h.j.bos@vu.nl>,
+ Jason Gunthorpe <jgg@ziepe.ca>, intel-wired-lan@lists.osuosl.org,
+ kgdb-bugreport@lists.sourceforge.net, bcm-kernel-feedback-list@broadcom.com,
+ linux-media@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergman <arnd@arndb.de>, linux-pm@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org,
+ Brian Johannesmeyer <bjohannesmeyer@gmail.com>, linux-block@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ v9fs-developer@lists.sourceforge.net, linux-tegra@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, linux-sgx@vger.kernel.org,
+ Nathan Chancellor <nathan@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-f2fs-devel@lists.sourceforge.net, tipc-discussion@lists.sourceforge.net,
+ linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
+ dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogR3VvIFJlbg0KPiBTZW50OiAyOCBGZWJydWFyeSAyMDIyIDExOjUyDQo+IA0KPiBPbiBN
-b24sIEZlYiAyOCwgMjAyMiBhdCAyOjQwIFBNIERhdmlkIExhaWdodCA8RGF2aWQuTGFpZ2h0QGFj
-dWxhYi5jb20+IHdyb3RlOg0KPiA+DQo+ID4gRnJvbTogZ3VvcmVuQGtlcm5lbC5vcmcNCj4gPiA+
-IFNlbnQ6IDI3IEZlYnJ1YXJ5IDIwMjIgMTY6MjgNCj4gPiA+DQo+ID4gPiBGcm9tOiBDaHJpc3Rv
-cGggSGVsbHdpZyA8aGNoQGxzdC5kZT4NCj4gPiA+DQo+ID4gPiBQcm92aWRlIGEgc2luZ2xlIGNv
-bW1vbiBkZWZpbml0aW9uIGZvciB0aGUgY29tcGF0X2Zsb2NrIGFuZA0KPiA+ID4gY29tcGF0X2Zs
-b2NrNjQgc3RydWN0dXJlcyB1c2luZyB0aGUgc2FtZSB0cmlja3MgYXMgZm9yIHRoZSBuYXRpdmUN
-Cj4gPiA+IHZhcmlhbnRzLiAgQW5vdGhlciBleHRyYSBkZWZpbmUgaXMgYWRkZWQgZm9yIHRoZSBw
-YWNraW5nIHJlcXVpcmVkIG9uDQo+ID4gPiB4ODYuDQo+ID4gLi4uDQo+ID4gPiBkaWZmIC0tZ2l0
-IGEvYXJjaC94ODYvaW5jbHVkZS9hc20vY29tcGF0LmggYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9j
-b21wYXQuaA0KPiA+IC4uLg0KPiA+ID4gIC8qDQo+ID4gPiAtICogSUEzMiB1c2VzIDQgYnl0ZSBh
-bGlnbm1lbnQgZm9yIDY0IGJpdCBxdWFudGl0aWVzLA0KPiA+ID4gLSAqIHNvIHdlIG5lZWQgdG8g
-cGFjayB0aGlzIHN0cnVjdHVyZS4NCj4gPiA+ICsgKiBJQTMyIHVzZXMgNCBieXRlIGFsaWdubWVu
-dCBmb3IgNjQgYml0IHF1YW50aXRpZXMsIHNvIHdlIG5lZWQgdG8gcGFjayB0aGUNCj4gPiA+ICsg
-KiBjb21wYXQgZmxvY2s2NCBzdHJ1Y3R1cmUuDQo+ID4gPiAgICovDQo+ID4gLi4uDQo+ID4gPiAr
-I2RlZmluZSBfX0FSQ0hfTkVFRF9DT01QQVRfRkxPQ0s2NF9QQUNLRUQNCj4gPiA+DQo+ID4gPiAg
-c3RydWN0IGNvbXBhdF9zdGF0ZnMgew0KPiA+ID4gICAgICAgaW50ICAgICAgICAgICAgIGZfdHlw
-ZTsNCj4gPiA+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L2NvbXBhdC5oIGIvaW5jbHVkZS9s
-aW51eC9jb21wYXQuaA0KPiA+ID4gaW5kZXggMWM3NThiMGUwMzU5Li5hMDQ4MWZlNmM1ZDUgMTAw
-NjQ0DQo+ID4gPiAtLS0gYS9pbmNsdWRlL2xpbnV4L2NvbXBhdC5oDQo+ID4gPiArKysgYi9pbmNs
-dWRlL2xpbnV4L2NvbXBhdC5oDQo+ID4gPiBAQCAtMjU4LDYgKzI1OCwzNyBAQCBzdHJ1Y3QgY29t
-cGF0X3JsaW1pdCB7DQo+ID4gPiAgICAgICBjb21wYXRfdWxvbmdfdCAgcmxpbV9tYXg7DQo+ID4g
-PiAgfTsNCj4gPiA+DQo+ID4gPiArI2lmZGVmIF9fQVJDSF9ORUVEX0NPTVBBVF9GTE9DSzY0X1BB
-Q0tFRA0KPiA+ID4gKyNkZWZpbmUgX19BUkNIX0NPTVBBVF9GTE9DSzY0X1BBQ0sgICBfX2F0dHJp
-YnV0ZV9fKChwYWNrZWQpKQ0KPiA+ID4gKyNlbHNlDQo+ID4gPiArI2RlZmluZSBfX0FSQ0hfQ09N
-UEFUX0ZMT0NLNjRfUEFDSw0KPiA+ID4gKyNlbmRpZg0KPiA+IC4uLg0KPiA+ID4gK3N0cnVjdCBj
-b21wYXRfZmxvY2s2NCB7DQo+ID4gPiArICAgICBzaG9ydCAgICAgICAgICAgbF90eXBlOw0KPiA+
-ID4gKyAgICAgc2hvcnQgICAgICAgICAgIGxfd2hlbmNlOw0KPiA+ID4gKyAgICAgY29tcGF0X2xv
-ZmZfdCAgIGxfc3RhcnQ7DQo+ID4gPiArICAgICBjb21wYXRfbG9mZl90ICAgbF9sZW47DQo+ID4g
-PiArICAgICBjb21wYXRfcGlkX3QgICAgbF9waWQ7DQo+ID4gPiArI2lmZGVmIF9fQVJDSF9DT01Q
-QVRfRkxPQ0s2NF9QQUQNCj4gPiA+ICsgICAgIF9fQVJDSF9DT01QQVRfRkxPQ0s2NF9QQUQNCj4g
-PiA+ICsjZW5kaWYNCj4gPiA+ICt9IF9fQVJDSF9DT01QQVRfRkxPQ0s2NF9QQUNLOw0KPiA+ID4g
-Kw0KPiA+DQo+ID4gUHJvdmlkZWQgY29tcGF0X2xvZmZfdCBhcmUgY29ycmVjdGx5IGRlZmluZWQg
-d2l0aCBfX2FsaWduZWRfXyg0KQ0KPiBTZWUgaW5jbHVkZS9hc20tZ2VuZXJpYy9jb21wYXQuaA0K
-PiANCj4gdHlwZWRlZiBzNjQgY29tcGF0X2xvZmZfdDsNCj4gDQo+IE9ubHk6DQo+ICNpZmRlZiBD
-T05GSUdfQ09NUEFUX0ZPUl9VNjRfQUxJR05NRU5UDQo+IHR5cGVkZWYgczY0IF9fYXR0cmlidXRl
-X18oKGFsaWduZWQoNCkpKSBjb21wYXRfczY0Ow0KPiANCj4gU28gaG93IGRvIHlvdSB0aGluayBj
-b21wYXRfbG9mZl90IGNvdWxkIGJlIGRlZmluZWQgd2l0aCBfX2FsaWduZWRfXyg0KT8NCg0KY29t
-cGF0X2xvZmZfdCBzaG91bGQgYmUgY29tcGF0X3M2NCBub3QgczY0Lg0KDQpUaGUgc2FtZSBzaG91
-bGQgYmUgZG9uZSBmb3IgYWxsIDY0Yml0ICdjb21wYXQnIHR5cGVzLg0KDQoJRGF2aWQNCg0KLQ0K
-UmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1p
-bHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVz
-KQ0K
+
+
+> On 28. Feb 2022, at 12:24, Dan Carpenter <dan.carpenter@oracle.com> =
+wrote:
+>=20
+> On Mon, Feb 28, 2022 at 12:08:17PM +0100, Jakob Koschel wrote:
+>> diff --git a/drivers/usb/gadget/udc/at91_udc.c =
+b/drivers/usb/gadget/udc/at91_udc.c
+>> index 9040a0561466..0fd0307bc07b 100644
+>> --- a/drivers/usb/gadget/udc/at91_udc.c
+>> +++ b/drivers/usb/gadget/udc/at91_udc.c
+>> @@ -150,13 +150,14 @@ static void proc_ep_show(struct seq_file *s, =
+struct at91_ep *ep)
+>> 	if (list_empty (&ep->queue))
+>> 		seq_printf(s, "\t(queue empty)\n");
+>>=20
+>> -	else list_for_each_entry (req, &ep->queue, queue) {
+>> -		unsigned	length =3D req->req.actual;
+>> +	else
+>> +		list_for_each_entry(req, &ep->queue, queue) {
+>> +			unsigned int	length =3D req->req.actual;
+>>=20
+>> -		seq_printf(s, "\treq %p len %d/%d buf %p\n",
+>> -				&req->req, length,
+>> -				req->req.length, req->req.buf);
+>> -	}
+>> +			seq_printf(s, "\treq %p len %d/%d buf %p\n",
+>> +					&req->req, length,
+>> +					req->req.length, req->req.buf);
+>> +		}
+>=20
+> Don't make unrelated white space changes.  It just makes the patch
+> harder to review.  As you're writing the patch make note of any
+> additional changes and do them later in a separate patch.
+>=20
+> Also a multi-line indent gets curly braces for readability even though
+> it's not required by C.  And then both sides would get curly braces.
+>=20
+>> 	spin_unlock_irqrestore(&udc->lock, flags);
+>> }
+>>=20
+>> @@ -226,7 +227,7 @@ static int proc_udc_show(struct seq_file *s, void =
+*unused)
+>>=20
+>> 	if (udc->enabled && udc->vbus) {
+>> 		proc_ep_show(s, &udc->ep[0]);
+>> -		list_for_each_entry (ep, &udc->gadget.ep_list, =
+ep.ep_list) {
+>> +		list_for_each_entry(ep, &udc->gadget.ep_list, =
+ep.ep_list) {
+>=20
+> Another unrelated change.
+>=20
+>> 			if (ep->ep.desc)
+>> 				proc_ep_show(s, ep);
+>> 		}
+>=20
+>=20
+> [ snip ]
+
+Thanks for pointing out, I'll remove the changes here and note them down
+to send them separately.
+
+>=20
+>> diff --git a/drivers/usb/gadget/udc/net2272.c =
+b/drivers/usb/gadget/udc/net2272.c
+>> index 7c38057dcb4a..bb59200f1596 100644
+>> --- a/drivers/usb/gadget/udc/net2272.c
+>> +++ b/drivers/usb/gadget/udc/net2272.c
+>> @@ -926,7 +926,8 @@ static int
+>> net2272_dequeue(struct usb_ep *_ep, struct usb_request *_req)
+>> {
+>> 	struct net2272_ep *ep;
+>> -	struct net2272_request *req;
+>> +	struct net2272_request *req =3D NULL;
+>> +	struct net2272_request *tmp;
+>> 	unsigned long flags;
+>> 	int stopped;
+>>=20
+>> @@ -939,11 +940,13 @@ net2272_dequeue(struct usb_ep *_ep, struct =
+usb_request *_req)
+>> 	ep->stopped =3D 1;
+>>=20
+>> 	/* make sure it's still queued on this endpoint */
+>> -	list_for_each_entry(req, &ep->queue, queue) {
+>> -		if (&req->req =3D=3D _req)
+>> +	list_for_each_entry(tmp, &ep->queue, queue) {
+>> +		if (&tmp->req =3D=3D _req) {
+>> +			req =3D tmp;
+>> 			break;
+>> +		}
+>> 	}
+>> -	if (&req->req !=3D _req) {
+>> +	if (!req) {
+>> 		ep->stopped =3D stopped;
+>> 		spin_unlock_irqrestore(&ep->dev->lock, flags);
+>> 		return -EINVAL;
+>> @@ -954,7 +957,6 @@ net2272_dequeue(struct usb_ep *_ep, struct =
+usb_request *_req)
+>> 		dev_dbg(ep->dev->dev, "unlink (%s) pio\n", _ep->name);
+>> 		net2272_done(ep, req, -ECONNRESET);
+>> 	}
+>> -	req =3D NULL;
+>=20
+> Another unrelated change.  These are all good changes but send them as
+> separate patches.
+
+You are referring to the req =3D NULL, right?
+
+I've changed the use of 'req' in the same function and assumed that I =
+can
+just remove the unnecessary statement. But if it's better to do =
+separately
+I'll do that.
+
+>=20
+>> 	ep->stopped =3D stopped;
+>>=20
+>> 	spin_unlock_irqrestore(&ep->dev->lock, flags);
+>=20
+> regards,
+> dan carpenter
+
+thanks,
+Jakob Koschel
 
