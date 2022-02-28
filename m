@@ -2,69 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8186F4C6C63
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 13:25:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0FC24C6C6B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 13:26:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K6fjl5FDyz3cC5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 23:25:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K6fkS6WBvz3cfB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 23:26:24 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hjvTHeqA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XoHp2vZs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62e;
- helo=mail-ej1-x62e.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::630;
+ helo=mail-ej1-x630.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=hjvTHeqA; dkim-atps=neutral
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com
- [IPv6:2a00:1450:4864:20::62e])
+ header.s=20210112 header.b=XoHp2vZs; dkim-atps=neutral
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com
+ [IPv6:2a00:1450:4864:20::630])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K6d193zQRz2yPF;
- Mon, 28 Feb 2022 22:09:00 +1100 (AEDT)
-Received: by mail-ej1-x62e.google.com with SMTP id qk11so24048422ejb.2;
- Mon, 28 Feb 2022 03:09:01 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K6d1B0n8Sz30Dv;
+ Mon, 28 Feb 2022 22:09:02 +1100 (AEDT)
+Received: by mail-ej1-x630.google.com with SMTP id r13so24005308ejd.5;
+ Mon, 28 Feb 2022 03:09:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=HpiN/zwO1wBD5W8vJ5qwHzWs2Mz8GYwVSPoaDyTc8jQ=;
- b=hjvTHeqAC17Nm2rqJFqOWVUlo+eMrb6KCGjEjnmUhT0UbOoSD99k2xAziOpWZa+Icu
- SPp4Zg1lqK8FLNpUHi/iGpToynAZh7AAx7I6BqkiBOWQWPIrLjejJ7mt0E6lp79jr43P
- Z8Tz3UxSCHK1qzDcri6ZY14M8lx9G0bi6GCGQHl0DVbHpgXti6eqzCprjBZYIcyI1uce
- Dn/lOukn9J64/ASqyssuY+hk5ExgHfhAh8xyytTN1bW2SLq53AUCqmHXOqxQHzvGm8yg
- Hb8Tr+NdyPNcInoLFcy82stmYANyPP1+b2zh81uncpq/hmnHTquj2t004aepXQhNWxPC
- QShA==
+ bh=NwvvEiJPPM0SG7ZI4yc03tHRsjcGU4DYrm0+p7QW2+g=;
+ b=XoHp2vZs5sXnnQm8jTsL06JwdjgH4Z1Am+qeboNHSyU/csHp7G8mKHTnYwT7vMJf3q
+ 1zZobpdX4BxBQ2erAJx74EzSCDXfVaAB33jAX9ZekfWtpz9xLL4KIzz7DciQBlIBY9DK
+ vi6LJyw6u5UaEjT8CWPzRGPwv8GzX6oWgjgvygChKW8zu7PwVtsUQz/kuHu5rW/3vaBt
+ P3mcu2gbh7uG62xQrliOtXiVl+brL2WoHfh7VHyAXnwazE3NNCXTKdQujGPQMoLCoB+H
+ 4TwL3ENhlSsI5tK0hgbUY+rfbxgFEyt/dohDr5V+g2PZ9mAGfyjh/75qZVaBOXbUEFp6
+ QPtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=HpiN/zwO1wBD5W8vJ5qwHzWs2Mz8GYwVSPoaDyTc8jQ=;
- b=DgeQgSaW2qPx8hZMsNMuYu4neP4yCBFeUutZu/npL+nGFq4uwbXkZBsRezQyACB5h5
- c2Xtqvb1fa6GOtLQPmMvNgGW8/9QEFNL+K9C1HSH3e+/t76DgdM84WqN3kiIup8xVCs3
- 4mMUeOXVinZmwO/eQp5BCp0e8Vo+N8cPqLrYWH1JBQG2quu5lPHszDDs8PCzasXN0jIm
- NJAjGWKzBo3f0aStwvq20W3hG+lq9uan13wiihLytR8DyX20OmAqmb7SH3ZgaJt/Zqos
- JXkEJfy7N/565FhmsP5D221oP1GNoPhvyZjk+38+1kofahaPwewnFWJMSN21g2Grueo4
- Z1Og==
-X-Gm-Message-State: AOAM532oNg/F5XrIErwHuGEPF8IuTJ8PaUbpLry908bYwuWjhfK2r/+S
- 78kspTtx85hbGoqT/OKhdx8=
-X-Google-Smtp-Source: ABdhPJwIz1+OuMm91LqO5/9SwgL6U3RC8rZg6hPrO7zQUYJxh0T24GQzaSGRh+uNCyYPoPAvBQZaKw==
-X-Received: by 2002:a17:906:3803:b0:6cf:56b9:60a9 with SMTP id
- v3-20020a170906380300b006cf56b960a9mr14108161ejc.716.1646046537823; 
- Mon, 28 Feb 2022 03:08:57 -0800 (PST)
+ bh=NwvvEiJPPM0SG7ZI4yc03tHRsjcGU4DYrm0+p7QW2+g=;
+ b=INjQ09al8O2HArWjPwgjz7OEst8o/Y2hrFxesKhhvNh480X4i0Bp+ant2Al6NOMo04
+ R9BKorwD+LLBlq8YQJqa8CJOEuJXkblHFPZgFQftswDcrreMkL5sop+T3BoRxeuAa0x2
+ N98flMLob37mgqvNlquusTiGc+tgrS7PCZOv/eb48texwvH4/qfvuZbvidWF0ymKvq6w
+ VijxZYsPI70xkg2YlrkODIiM+F32afFwSU25YrbkTiAOH3vPlHjxmPQ7wo3QRACnOF9G
+ ZuWTy1YS3uuLRpYxBuGksdY+bBzk40k8hnsHyV78kwPQmJ9GSJo9r6H1mqvWqqEWlQ2X
+ 3PeQ==
+X-Gm-Message-State: AOAM532JxHrseybp87W2lxDNbdM8ucsJt1WiNuSC2bIiG30Lp7S6/NX7
+ 3BnHaICP8XEwLujPcEMQllw=
+X-Google-Smtp-Source: ABdhPJwx6JZK1Sd067eYUFaKDGIuHgaxlGXhzFGfLUQYCLtFq3NCzAqvSFrK3I6DGGTf6F+6FgXuew==
+X-Received: by 2002:a17:906:2608:b0:6c9:b248:4dcf with SMTP id
+ h8-20020a170906260800b006c9b2484dcfmr14572317ejc.320.1646046539415; 
+ Mon, 28 Feb 2022 03:08:59 -0800 (PST)
 Received: from localhost.localdomain (dhcp-077-250-038-153.chello.nl.
  [77.250.38.153]) by smtp.googlemail.com with ESMTPSA id
- z22-20020a17090655d600b006d229436793sm4209049ejp.223.2022.02.28.03.08.56
+ z22-20020a17090655d600b006d229436793sm4209049ejp.223.2022.02.28.03.08.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Feb 2022 03:08:57 -0800 (PST)
+ Mon, 28 Feb 2022 03:08:59 -0800 (PST)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 3/6] treewide: fix incorrect use to determine if list is empty
-Date: Mon, 28 Feb 2022 12:08:19 +0100
-Message-Id: <20220228110822.491923-4-jakobkoschel@gmail.com>
+Subject: [PATCH 4/6] drivers: remove unnecessary use of list iterator variable
+Date: Mon, 28 Feb 2022 12:08:20 +0100
+Message-Id: <20220228110822.491923-5-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220228110822.491923-1-jakobkoschel@gmail.com>
 References: <20220228110822.491923-1-jakobkoschel@gmail.com>
@@ -113,103 +113,69 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The list iterator value will *always* be set by list_for_each_entry().
-It is incorrect to assume that the iterator value will be NULL if the
-list is empty.
+When list_for_each_entry() completes the iteration over the whole list
+without breaking the loop, the iterator value will *always* be a bogus
+pointer computed based on the head element.
 
-Instead of checking the pointer it should be checked if
-the list is empty.
-In acpi_get_pmu_hw_inf() instead of setting the pointer to NULL
-on the break, it is set to the correct value and leaving it
-NULL if no element was found.
+To avoid type confusion use the actual list head directly instead of last
+iterator value.
 
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 ---
- arch/powerpc/sysdev/fsl_gtm.c            |  4 ++--
- drivers/media/pci/saa7134/saa7134-alsa.c |  4 ++--
- drivers/perf/xgene_pmu.c                 | 13 +++++++------
- 3 files changed, 11 insertions(+), 10 deletions(-)
+ drivers/dma/dw-edma/dw-edma-core.c             | 4 ++--
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c | 3 ++-
+ drivers/net/wireless/ath/ath6kl/htc_mbox.c     | 2 +-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/sysdev/fsl_gtm.c b/arch/powerpc/sysdev/fsl_gtm.c
-index 8963eaffb1b7..39186ad6b3c3 100644
---- a/arch/powerpc/sysdev/fsl_gtm.c
-+++ b/arch/powerpc/sysdev/fsl_gtm.c
-@@ -86,7 +86,7 @@ static LIST_HEAD(gtms);
-  */
- struct gtm_timer *gtm_get_timer16(void)
- {
--	struct gtm *gtm = NULL;
-+	struct gtm *gtm;
- 	int i;
-
- 	list_for_each_entry(gtm, &gtms, list_node) {
-@@ -103,7 +103,7 @@ struct gtm_timer *gtm_get_timer16(void)
- 		spin_unlock_irq(&gtm->lock);
+diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-edma-core.c
+index 468d1097a1ec..7883c4831857 100644
+--- a/drivers/dma/dw-edma/dw-edma-core.c
++++ b/drivers/dma/dw-edma/dw-edma-core.c
+@@ -136,7 +136,7 @@ static void dw_edma_free_burst(struct dw_edma_chunk *chunk)
  	}
 
--	if (gtm)
-+	if (!list_empty(&gtms))
- 		return ERR_PTR(-EBUSY);
- 	return ERR_PTR(-ENODEV);
+ 	/* Remove the list head */
+-	kfree(child);
++	kfree(chunk->burst);
+ 	chunk->burst = NULL;
  }
-diff --git a/drivers/media/pci/saa7134/saa7134-alsa.c b/drivers/media/pci/saa7134/saa7134-alsa.c
-index fb24d2ed3621..d3cde05a6eba 100644
---- a/drivers/media/pci/saa7134/saa7134-alsa.c
-+++ b/drivers/media/pci/saa7134/saa7134-alsa.c
-@@ -1214,7 +1214,7 @@ static int alsa_device_exit(struct saa7134_dev *dev)
 
- static int saa7134_alsa_init(void)
- {
--	struct saa7134_dev *dev = NULL;
-+	struct saa7134_dev *dev;
-
- 	saa7134_dmasound_init = alsa_device_init;
- 	saa7134_dmasound_exit = alsa_device_exit;
-@@ -1229,7 +1229,7 @@ static int saa7134_alsa_init(void)
- 			alsa_device_init(dev);
+@@ -156,7 +156,7 @@ static void dw_edma_free_chunk(struct dw_edma_desc *desc)
  	}
 
--	if (dev == NULL)
-+	if (list_empty(&saa7134_devlist))
- 		pr_info("saa7134 ALSA: no saa7134 cards found\n");
+ 	/* Remove the list head */
+-	kfree(child);
++	kfree(desc->chunk);
+ 	desc->chunk = NULL;
+ }
 
- 	return 0;
-diff --git a/drivers/perf/xgene_pmu.c b/drivers/perf/xgene_pmu.c
-index 2b6d476bd213..e255f9e665d1 100644
---- a/drivers/perf/xgene_pmu.c
-+++ b/drivers/perf/xgene_pmu.c
-@@ -1460,7 +1460,8 @@ xgene_pmu_dev_ctx *acpi_get_pmu_hw_inf(struct xgene_pmu *xgene_pmu,
- 	struct hw_pmu_info *inf;
- 	void __iomem *dev_csr;
- 	struct resource res;
--	struct resource_entry *rentry;
-+	struct resource_entry *rentry = NULL;
-+	struct resource_entry *tmp;
- 	int enable_bit;
- 	int rc;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+index 091f36adbbe1..c0ea9dbc4ff6 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+@@ -3963,7 +3963,8 @@ static void __i40e_reprogram_flex_pit(struct i40e_pf *pf,
+ 	 * correctly, the hardware will disable flexible field parsing.
+ 	 */
+ 	if (!list_empty(flex_pit_list))
+-		last_offset = list_prev_entry(entry, list)->src_offset + 1;
++		last_offset = list_entry(flex_pit_list->prev,
++					 struct i40e_flex_pit, list)->src_offset + 1;
 
-@@ -1475,16 +1476,16 @@ xgene_pmu_dev_ctx *acpi_get_pmu_hw_inf(struct xgene_pmu *xgene_pmu,
- 		return NULL;
- 	}
+ 	for (; i < 3; i++, last_offset++) {
+ 		i40e_write_rx_ctl(&pf->hw,
+diff --git a/drivers/net/wireless/ath/ath6kl/htc_mbox.c b/drivers/net/wireless/ath/ath6kl/htc_mbox.c
+index e3874421c4c0..cf5b05860799 100644
+--- a/drivers/net/wireless/ath/ath6kl/htc_mbox.c
++++ b/drivers/net/wireless/ath/ath6kl/htc_mbox.c
+@@ -104,7 +104,7 @@ static void ath6kl_credit_init(struct ath6kl_htc_credit_info *cred_info,
+ 	 * it use list_for_each_entry_reverse to walk around the whole ep list.
+ 	 * Therefore assign this lowestpri_ep_dist after walk around the ep_list
+ 	 */
+-	cred_info->lowestpri_ep_dist = cur_ep_dist->list;
++	cred_info->lowestpri_ep_dist = *ep_list;
 
--	list_for_each_entry(rentry, &resource_list, node) {
--		if (resource_type(rentry->res) == IORESOURCE_MEM) {
--			res = *rentry->res;
--			rentry = NULL;
-+	list_for_each_entry(tmp, &resource_list, node) {
-+		if (resource_type(tmp->res) == IORESOURCE_MEM) {
-+			res = *tmp->res;
-+			rentry = tmp;
- 			break;
- 		}
- 	}
- 	acpi_dev_free_resource_list(&resource_list);
+ 	WARN_ON(cred_info->cur_free_credits <= 0);
 
--	if (rentry) {
-+	if (!rentry) {
- 		dev_err(dev, "PMU type %d: No memory resource found\n", type);
- 		return NULL;
- 	}
 --
 2.25.1
 
