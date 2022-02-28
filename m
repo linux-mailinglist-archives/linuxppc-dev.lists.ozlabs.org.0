@@ -1,44 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD814C6CB6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 13:37:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD9E4C6D36
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 13:51:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K6fym3r89z3bTl
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 23:37:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K6gHp1px9z3bpP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 23:51:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.85.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K6fyH3Rkdz2xDv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 23:36:38 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-164--JsiAWFvP7mJeI5M5rTVpA-1; Mon, 28 Feb 2022 12:36:29 +0000
-X-MC-Unique: -JsiAWFvP7mJeI5M5rTVpA-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.28; Mon, 28 Feb 2022 12:36:26 +0000
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.028; Mon, 28 Feb 2022 12:36:26 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Guo Ren' <guoren@kernel.org>
-Subject: RE: [PATCH V7 03/20] compat: consolidate the compat_flock{,64}
- definition
-Thread-Topic: [PATCH V7 03/20] compat: consolidate the compat_flock{,64}
- definition
-Thread-Index: AQHYK/ctkLOBFN5NzkqkonsQCyvC26yogbZggABZggCAAAIWoIAAA+wAgAADRgA=
-Date: Mon, 28 Feb 2022 12:36:26 +0000
-Message-ID: <75af91aff07c43f4afd1f1a024e23bd4@AcuMS.aculab.com>
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.134; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K6gHL3C4Bz2xDv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 23:51:25 +1100 (AEDT)
+Received: from mail-wr1-f50.google.com ([209.85.221.50]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MRTAj-1naz9h3ieD-00NOoW for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb
+ 2022 13:51:20 +0100
+Received: by mail-wr1-f50.google.com with SMTP id s1so15248479wrg.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 04:51:20 -0800 (PST)
+X-Gm-Message-State: AOAM5337AK3yYwiKYMmCmqIyH6Zl/d/ZqzygLO8HzXPKTD2X8gmDbB1D
+ rGE/0SVQnnhiA1AEBK6PyW/ZflGSHJ5O+RzsRs0=
+X-Google-Smtp-Source: ABdhPJxqAXtjqyu3XGhO9l+qeiMZpUmH3VvfwpXSNlGORAG+H/kTZ6DoBe9bebMaudh7ucMT2NCbvco6L/QKSBCYl4U=
+X-Received: by 2002:a5d:63c2:0:b0:1ef:840e:e139 with SMTP id
+ c2-20020a5d63c2000000b001ef840ee139mr8301106wrw.192.1646052680182; Mon, 28
+ Feb 2022 04:51:20 -0800 (PST)
+MIME-Version: 1.0
 References: <20220227162831.674483-1-guoren@kernel.org>
  <20220227162831.674483-4-guoren@kernel.org>
  <b8e765910e274c0fb574ff23f88b881c@AcuMS.aculab.com>
@@ -46,19 +39,30 @@ References: <20220227162831.674483-1-guoren@kernel.org>
  <e5ee4f6799704bd59b0c580157a05d2d@AcuMS.aculab.com>
  <CAJF2gTQhFK55z4juC7uHpWmHsEXSOkbMyXeid6KsnhfPRo7wqg@mail.gmail.com>
 In-Reply-To: <CAJF2gTQhFK55z4juC7uHpWmHsEXSOkbMyXeid6KsnhfPRo7wqg@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
-MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Mon, 28 Feb 2022 13:51:03 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a0ZXuGWO+n2ghxhXmxntZAk_HPDmsk3cigdh2FBMQcKYA@mail.gmail.com>
+Message-ID: <CAK8P3a0ZXuGWO+n2ghxhXmxntZAk_HPDmsk3cigdh2FBMQcKYA@mail.gmail.com>
+Subject: Re: [PATCH V7 03/20] compat: consolidate the compat_flock{,
+ 64} definition
+To: Guo Ren <guoren@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:aZYHft9raqEjIrsG6mjSCzIzlN3zx5RlqpIiUxgcrIZIlHCnWYC
+ C4bxeCcQz9ihtUkgxzinZh/kTzkBdrltV65adBfi2MHaLUwnpDVHMagCyVza95BLyU7iz55
+ MT8IqVcCvZtbATlF6f6vrOUWDRVPHCjvVjs1EOwl++ARRU+BMY4sU6rX5WVoouLw8uosE3z
+ a9zjwBubAz+nMC7Leg8DQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:LDY8hiKiODI=:cdTO0xalmOfDHBb0U9n8Lm
+ kInwfgfNgfwXM0ptgk8hn3Nq6UUABrM7SndaFBSuNoYEMlfqwketmOVfpNizqAnetB9NvBGUj
+ 7izOUejVO2BPL33nYkebQLCoLaGaWKximgVLonAhD4OsVJAaPXU32hTbgWfXLgwh2Imvh6HY0
+ 1dYQLp7naIr69GWyqthmRWvkGOcoWetYRpKSxOWbGndoR9aj9aNmZVYFbiFnsZyX9pv9JE96A
+ vp/+RZVGk6gQ+tE6jbGyikQPOYb4xR0lgVdWyfiohTkCO10Et+Bh1Z4t3y9EE4K9Z6kzAfZtq
+ Dml6BBKoKjIUYV0+1UioZJUxBxmA1hWhyYuWf/yf8Edco4S2aRdEP4g+Qfws6HaAWgda6P26U
+ 22B+vZq2Dz3jGXqDo5OgRBOyRwqwkdHJVUa3js3UHSK1NpUYJexqPPLPeN24d+gU17oNn59oQ
+ 8pIsXS1GrDnICUA7iwdrC2xDyuTA7SqcmvMrPaUgcW+dnOHa9mjdB1ZEM/bcvDbcKZR4YzMBy
+ jG77KcKwF1ctpjsss5gCSUwGjBqCkequM/m1EeQXXeTCS6w6fcdKXV/QxdDmYpChiZaclzui6
+ xvJMophMmeRuXAQrayBkilS1KVZ7swWkeFsQ4bXxA/qCjQHFJvvxM6HGcURIJEBCv0MhogsHq
+ PQh9xL+tWyandp6vF05ExC2civxwf4A5BkNRwpqQqpXNIr/U2Inj6/7VurFaW2mEPdjc=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,6 +86,7 @@ Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
  "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
  "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ David Laight <David.Laight@aculab.com>,
  "palmer@dabbelt.com" <palmer@dabbelt.com>,
  "liush@allwinnertech.com" <liush@allwinnertech.com>,
  "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
@@ -94,77 +99,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RnJvbTogR3VvIFJlbg0KPiBTZW50OiAyOCBGZWJydWFyeSAyMDIyIDEyOjEzDQo+IA0KPiBPbiBN
-b24sIEZlYiAyOCwgMjAyMiBhdCA4OjAyIFBNIERhdmlkIExhaWdodCA8RGF2aWQuTGFpZ2h0QGFj
-dWxhYi5jb20+IHdyb3RlOg0KPiA+DQo+ID4gRnJvbTogR3VvIFJlbg0KPiA+ID4gU2VudDogMjgg
-RmVicnVhcnkgMjAyMiAxMTo1Mg0KPiA+ID4NCj4gPiA+IE9uIE1vbiwgRmViIDI4LCAyMDIyIGF0
-IDI6NDAgUE0gRGF2aWQgTGFpZ2h0IDxEYXZpZC5MYWlnaHRAYWN1bGFiLmNvbT4gd3JvdGU6DQo+
-ID4gPiA+DQo+ID4gPiA+IEZyb206IGd1b3JlbkBrZXJuZWwub3JnDQo+ID4gPiA+ID4gU2VudDog
-MjcgRmVicnVhcnkgMjAyMiAxNjoyOA0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gRnJvbTogQ2hyaXN0
-b3BoIEhlbGx3aWcgPGhjaEBsc3QuZGU+DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBQcm92aWRlIGEg
-c2luZ2xlIGNvbW1vbiBkZWZpbml0aW9uIGZvciB0aGUgY29tcGF0X2Zsb2NrIGFuZA0KPiA+ID4g
-PiA+IGNvbXBhdF9mbG9jazY0IHN0cnVjdHVyZXMgdXNpbmcgdGhlIHNhbWUgdHJpY2tzIGFzIGZv
-ciB0aGUgbmF0aXZlDQo+ID4gPiA+ID4gdmFyaWFudHMuICBBbm90aGVyIGV4dHJhIGRlZmluZSBp
-cyBhZGRlZCBmb3IgdGhlIHBhY2tpbmcgcmVxdWlyZWQgb24NCj4gPiA+ID4gPiB4ODYuDQo+ID4g
-PiA+IC4uLg0KPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9jb21w
-YXQuaCBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL2NvbXBhdC5oDQo+ID4gPiA+IC4uLg0KPiA+ID4g
-PiA+ICAvKg0KPiA+ID4gPiA+IC0gKiBJQTMyIHVzZXMgNCBieXRlIGFsaWdubWVudCBmb3IgNjQg
-Yml0IHF1YW50aXRpZXMsDQo+ID4gPiA+ID4gLSAqIHNvIHdlIG5lZWQgdG8gcGFjayB0aGlzIHN0
-cnVjdHVyZS4NCj4gPiA+ID4gPiArICogSUEzMiB1c2VzIDQgYnl0ZSBhbGlnbm1lbnQgZm9yIDY0
-IGJpdCBxdWFudGl0aWVzLCBzbyB3ZSBuZWVkIHRvIHBhY2sgdGhlDQo+ID4gPiA+ID4gKyAqIGNv
-bXBhdCBmbG9jazY0IHN0cnVjdHVyZS4NCj4gPiA+ID4gPiAgICovDQo+ID4gPiA+IC4uLg0KPiA+
-ID4gPiA+ICsjZGVmaW5lIF9fQVJDSF9ORUVEX0NPTVBBVF9GTE9DSzY0X1BBQ0tFRA0KPiA+ID4g
-PiA+DQo+ID4gPiA+ID4gIHN0cnVjdCBjb21wYXRfc3RhdGZzIHsNCj4gPiA+ID4gPiAgICAgICBp
-bnQgICAgICAgICAgICAgZl90eXBlOw0KPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2xp
-bnV4L2NvbXBhdC5oIGIvaW5jbHVkZS9saW51eC9jb21wYXQuaA0KPiA+ID4gPiA+IGluZGV4IDFj
-NzU4YjBlMDM1OS4uYTA0ODFmZTZjNWQ1IDEwMDY0NA0KPiA+ID4gPiA+IC0tLSBhL2luY2x1ZGUv
-bGludXgvY29tcGF0LmgNCj4gPiA+ID4gPiArKysgYi9pbmNsdWRlL2xpbnV4L2NvbXBhdC5oDQo+
-ID4gPiA+ID4gQEAgLTI1OCw2ICsyNTgsMzcgQEAgc3RydWN0IGNvbXBhdF9ybGltaXQgew0KPiA+
-ID4gPiA+ICAgICAgIGNvbXBhdF91bG9uZ190ICBybGltX21heDsNCj4gPiA+ID4gPiAgfTsNCj4g
-PiA+ID4gPg0KPiA+ID4gPiA+ICsjaWZkZWYgX19BUkNIX05FRURfQ09NUEFUX0ZMT0NLNjRfUEFD
-S0VEDQo+ID4gPiA+ID4gKyNkZWZpbmUgX19BUkNIX0NPTVBBVF9GTE9DSzY0X1BBQ0sgICBfX2F0
-dHJpYnV0ZV9fKChwYWNrZWQpKQ0KPiA+ID4gPiA+ICsjZWxzZQ0KPiA+ID4gPiA+ICsjZGVmaW5l
-IF9fQVJDSF9DT01QQVRfRkxPQ0s2NF9QQUNLDQo+ID4gPiA+ID4gKyNlbmRpZg0KPiA+ID4gPiAu
-Li4NCj4gPiA+ID4gPiArc3RydWN0IGNvbXBhdF9mbG9jazY0IHsNCj4gPiA+ID4gPiArICAgICBz
-aG9ydCAgICAgICAgICAgbF90eXBlOw0KPiA+ID4gPiA+ICsgICAgIHNob3J0ICAgICAgICAgICBs
-X3doZW5jZTsNCj4gPiA+ID4gPiArICAgICBjb21wYXRfbG9mZl90ICAgbF9zdGFydDsNCj4gPiA+
-ID4gPiArICAgICBjb21wYXRfbG9mZl90ICAgbF9sZW47DQo+ID4gPiA+ID4gKyAgICAgY29tcGF0
-X3BpZF90ICAgIGxfcGlkOw0KPiA+ID4gPiA+ICsjaWZkZWYgX19BUkNIX0NPTVBBVF9GTE9DSzY0
-X1BBRA0KPiA+ID4gPiA+ICsgICAgIF9fQVJDSF9DT01QQVRfRkxPQ0s2NF9QQUQNCj4gPiA+ID4g
-PiArI2VuZGlmDQo+ID4gPiA+ID4gK30gX19BUkNIX0NPTVBBVF9GTE9DSzY0X1BBQ0s7DQo+ID4g
-PiA+ID4gKw0KPiA+ID4gPg0KPiA+ID4gPiBQcm92aWRlZCBjb21wYXRfbG9mZl90IGFyZSBjb3Jy
-ZWN0bHkgZGVmaW5lZCB3aXRoIF9fYWxpZ25lZF9fKDQpDQo+ID4gPiBTZWUgaW5jbHVkZS9hc20t
-Z2VuZXJpYy9jb21wYXQuaA0KPiA+ID4NCj4gPiA+IHR5cGVkZWYgczY0IGNvbXBhdF9sb2ZmX3Q7
-DQo+ID4gPg0KPiA+ID4gT25seToNCj4gPiA+ICNpZmRlZiBDT05GSUdfQ09NUEFUX0ZPUl9VNjRf
-QUxJR05NRU5UDQo+ID4gPiB0eXBlZGVmIHM2NCBfX2F0dHJpYnV0ZV9fKChhbGlnbmVkKDQpKSkg
-Y29tcGF0X3M2NDsNCj4gPiA+DQo+ID4gPiBTbyBob3cgZG8geW91IHRoaW5rIGNvbXBhdF9sb2Zm
-X3QgY291bGQgYmUgZGVmaW5lZCB3aXRoIF9fYWxpZ25lZF9fKDQpPw0KPiA+DQo+ID4gY29tcGF0
-X2xvZmZfdCBzaG91bGQgYmUgY29tcGF0X3M2NCBub3QgczY0Lg0KPiA+DQo+ID4gVGhlIHNhbWUg
-c2hvdWxkIGJlIGRvbmUgZm9yIGFsbCA2NGJpdCAnY29tcGF0JyB0eXBlcy4NCj4gQ2hhbmdpbmcN
-Cj4gdHlwZWRlZiBzNjQgY29tcGF0X2xvZmZfdDsNCj4gdG8NCj4gdHlwZWRlZiBjb21wYXRfczY0
-IGNvbXBhdF9sb2ZmX3Q7DQo+IA0KPiBzaG91bGQgYmUgYW5vdGhlciBwYXRjaCBhbmQgaXQgYWZm
-ZWN0cyBhbGwgYXJjaGl0ZWN0dXJlcywgSSBkb24ndA0KPiB0aGluayB3ZSBzaG91bGQgaW52b2x2
-ZSBpdCBpbiB0aGlzIHNlcmllcy4NCg0KRXhjZXB0IHRoYXQgSSB0aGluayBvbmx5IHg4NiBzZXRz
-IENPTkZJR19DT01QQVRfRk9SX1U2NF9BTElHTk1FTlQuDQoNCj4gbG9vayBhdCBrZXJuZWwvcG93
-ZXIvdXNlci5jOg0KPiBzdHJ1Y3QgY29tcGF0X3Jlc3VtZV9zd2FwX2FyZWEgew0KPiAgICAgICAg
-IGNvbXBhdF9sb2ZmX3Qgb2Zmc2V0Ow0KPiAgICAgICAgIHUzMiBkZXY7DQo+IH0gX19wYWNrZWQ7
-DQoNClRoYXQgaXMgYSBidWchDQpUaGUgc2l6ZSBzaG91bGQgYmUgMTYgYnl0ZXMgb24gbW9zdCAz
-MmJpdCBhcmNoaXRlY3R1cmVzLg0KU28gdGhlIGNvbXBhdCBjb2RlIHdvbid0IGZhdWx0IGlmIHRo
-ZSBsYXN0IDQgYnl0ZXMgYXJlbid0IG1hcHBlZA0Kd2hlcmVhcyB0aGUgbmF0aXZlIDMyYml0IHZl
-cnNpb24gd2lsbCBmYXVsdC4NCg0KSG9wZWZ1bGx5IHRoZSBjb21waWxlciByZWFsaXNlcyB0aGUg
-b24tc3RhY2sgaXRlbSBpcyBhY3R1YWxseQ0KYWxpZ25lZCBhbmQgZG9lc24ndCB1c2UgYnl0ZSBs
-b2FkcyBhbmQgc2hpZnRzIG9uIChlZykgc3BhcmM2NC4NCg0KPiBJIHRobmsga2VlcCAidHlwZWRl
-ZiBzNjQgY29tcGF0X2xvZmZfdDsiIGlzIGEgc2Vuc2libGUgY2hvaWNlIGZvcg0KPiBDT01QQVQg
-c3VwcG9ydCBwYXRjaHNldCBzZXJpZXMuDQoNCkJ1dCBpdCBpcyB3cm9uZyA6LSkNCg0KY29tcGF0
-X1tzdV02NCBleGlzdCBzbyB0aGF0IGNvbXBhdCBzeXNjYWxscyB0aGF0IGNvbnRhaW4gNjRiaXQN
-CnZhbHVlcyBnZXQgdGhlIGNvcnJlY3QgYWxpZ25tZW50Lg0KV2hpY2ggaXMgZXhhY3RseSB3aGF0
-IHlvdSBoYXZlIGhlcmUuDQoNCkFGQUlDVCBtb3N0IG9mIHRoZSB1c2VzIG9mIF9fcGFja2VkIGlu
-IHRoZSBrZXJuZWwgYXJlIHdyb25nLg0KSXQgc2hvdWxkIG9ubHkgYmUgdXNlZCAob24gYSBzdHJ1
-Y3R1cmUpIGlmIHRoZSBzdHJ1Y3R1cmUgbWlnaHQNCmJlIG9uIGEgbWlzYWxpZ25lZCBhZGRyZXNz
-Lg0KVGhpcyBjYW4gaGFwcGVuIGluIGRhdGEgZm9yIHNvbWUgbmV0d29yayBwcm90b2NvbHMuDQpJ
-dCBzaG91bGQgbm90IGJlIHVzZWQgYmVjYXVzZSB0aGUgc3RydWN0dXJlIHNob3VsZCBoYXZlIG5v
-IGhvbGVzLg0KKEVzcGVjaWFsbHkgaW4gb25lcyB0aGF0IGRvbid0IGhhdmUgYW55IGhvbGVzLikN
-Cg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2Fk
-LCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5v
-OiAxMzk3Mzg2IChXYWxlcykNCg==
+On Mon, Feb 28, 2022 at 1:13 PM Guo Ren <guoren@kernel.org> wrote:
+> On Mon, Feb 28, 2022 at 8:02 PM David Laight <David.Laight@aculab.com> wrote:
+> > From: Guo Ren Sent: 28 February 2022 11:52
+> > > On Mon, Feb 28, 2022 at 2:40 PM David Laight <David.Laight@aculab.com> wrote:
+> > > > ...
+> > > > > +struct compat_flock64 {
+> > > > > +     short           l_type;
+> > > > > +     short           l_whence;
+> > > > > +     compat_loff_t   l_start;
+> > > > > +     compat_loff_t   l_len;
+> > > > > +     compat_pid_t    l_pid;
+> > > > > +#ifdef __ARCH_COMPAT_FLOCK64_PAD
+> > > > > +     __ARCH_COMPAT_FLOCK64_PAD
+> > > > > +#endif
+> > > > > +} __ARCH_COMPAT_FLOCK64_PACK;
+> > > > > +
+> > > >
+> > > > Provided compat_loff_t are correctly defined with __aligned__(4)
+> > > See include/asm-generic/compat.h
+> > >
+> > > typedef s64 compat_loff_t;
+> > >
+> > > Only:
+> > > #ifdef CONFIG_COMPAT_FOR_U64_ALIGNMENT
+> > > typedef s64 __attribute__((aligned(4))) compat_s64;
+> > >
+> > > So how do you think compat_loff_t could be defined with __aligned__(4)?
+> >
+> > compat_loff_t should be compat_s64 not s64.
+> >
+> > The same should be done for all 64bit 'compat' types.
+> Changing
+> typedef s64 compat_loff_t;
+> to
+> typedef compat_s64 compat_loff_t;
+>
+> should be another patch and it affects all architectures, I don't
+> think we should involve it in this series.
 
+Agreed, your patch (originally from Christoph) looks fine, it correctly
+transforms the seven copies of the structure into a shared version.
+
+There is always more that can be improved, but for this series,
+I think you have already done enough.
+
+> look at kernel/power/user.c:
+> struct compat_resume_swap_area {
+>         compat_loff_t offset;
+>         u32 dev;
+> } __packed;
+>
+> I thnk keep "typedef s64 compat_loff_t;" is a sensible choice for
+> COMPAT support patchset series.
+
+The only references to compat_loff_t that we have in the kernel
+could all be simplified by defining compat_loff_t as compat_s64
+instead of s64, but it has no impact on correctness here.
+
+Let's make sure you get your series into 5.18, and then David can
+follow-up with any further cleanups after that.
+
+         Arnd
