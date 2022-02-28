@@ -1,71 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6394C6C5E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 13:25:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8186F4C6C63
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 13:25:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K6fj24KYpz3c1J
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 23:25:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K6fjl5FDyz3cC5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 23:25:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=SG7X651h;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hjvTHeqA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::635;
- helo=mail-ej1-x635.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62e;
+ helo=mail-ej1-x62e.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=SG7X651h; dkim-atps=neutral
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com
- [IPv6:2a00:1450:4864:20::635])
+ header.s=20210112 header.b=hjvTHeqA; dkim-atps=neutral
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com
+ [IPv6:2a00:1450:4864:20::62e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K6d164BsTz2yPF;
- Mon, 28 Feb 2022 22:08:58 +1100 (AEDT)
-Received: by mail-ej1-x635.google.com with SMTP id gb39so24033228ejc.1;
- Mon, 28 Feb 2022 03:08:59 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K6d193zQRz2yPF;
+ Mon, 28 Feb 2022 22:09:00 +1100 (AEDT)
+Received: by mail-ej1-x62e.google.com with SMTP id qk11so24048422ejb.2;
+ Mon, 28 Feb 2022 03:09:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=sNYkGUT1b39g11ICdbmY5PrBerSJts/Bm2Fwecgn+7Q=;
- b=SG7X651hZKMvfAijAjNUODidn7ro9rS5bzCj/5cDImBaS5a1Qtotnd0xvbaBDCL4jA
- 4xEzq95SKk90hMirwVISFDpnE1c+M6BGkBGYK/iCPR3I3GgeuxGBVATFL/mbvlw4g/oj
- bO1MgjkGBLHU4lSziwM8CSSY6Rf7Go9XXWkOm7Wr/HOgKnPx8WpGK4RuoYvpaOrVauor
- 62cYY7x66WWO/1B7l5U8/t6d4bhYKpm9vGkEnowzG5LRT1I0tjFH2l5pQXcOBIFLcyDt
- HIkOp6gurQ5ZB50JFtpyyHWF/V8dvxeQ1dAOOjgYayX1+s/xpsPtqJBQ0NDidsMDIrIl
- 46qw==
+ bh=HpiN/zwO1wBD5W8vJ5qwHzWs2Mz8GYwVSPoaDyTc8jQ=;
+ b=hjvTHeqAC17Nm2rqJFqOWVUlo+eMrb6KCGjEjnmUhT0UbOoSD99k2xAziOpWZa+Icu
+ SPp4Zg1lqK8FLNpUHi/iGpToynAZh7AAx7I6BqkiBOWQWPIrLjejJ7mt0E6lp79jr43P
+ Z8Tz3UxSCHK1qzDcri6ZY14M8lx9G0bi6GCGQHl0DVbHpgXti6eqzCprjBZYIcyI1uce
+ Dn/lOukn9J64/ASqyssuY+hk5ExgHfhAh8xyytTN1bW2SLq53AUCqmHXOqxQHzvGm8yg
+ Hb8Tr+NdyPNcInoLFcy82stmYANyPP1+b2zh81uncpq/hmnHTquj2t004aepXQhNWxPC
+ QShA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=sNYkGUT1b39g11ICdbmY5PrBerSJts/Bm2Fwecgn+7Q=;
- b=c1pp5/uIqvXYKTLGLo5UPentnfiJ2vfccZiI4BWZqnXuMQv+JtM6OVB6whhNRofN66
- MlmAsAX8ruDuI9w4+kGFyC8rkcYdFg/ocjDN/zwu02xBN1qZej34tPJS/FO2dZ12XTh3
- 0fTrkOendR2w1P67EKM2Ia/+QX8olMU7BdhDhOYm5zdlGa1iR+Zdb/HUZZko5ArtNecM
- BN/fPnbbdnFqmfc9cLo1gwwSTffWWF2k9mxjX+0/bJ7Bw+RTtCiTq734OuoL9uPmTLBx
- lU48T7zxD+P6DyYLTqlqZO+APKJ2wPtMNq7yo1aQqb3VbJwr+aaKijuJvr+ml/FXW94M
- abOA==
-X-Gm-Message-State: AOAM530kMXuAQyYDFw0hZDPzP6qTqTATyNEnCoBS7oZlQnUpxzkA6Ioe
- 4cXs8/ldArausSrogqvpUz4=
-X-Google-Smtp-Source: ABdhPJzb2IicnaS2bEVPvOWjl8uhSqTZxOfebaMPruujktD/AHD7IBcvO2+N0N5JDSsC/IlMBvCxrA==
-X-Received: by 2002:a17:906:264d:b0:6b1:13e0:9981 with SMTP id
- i13-20020a170906264d00b006b113e09981mr14248136ejc.611.1646046536214; 
- Mon, 28 Feb 2022 03:08:56 -0800 (PST)
+ bh=HpiN/zwO1wBD5W8vJ5qwHzWs2Mz8GYwVSPoaDyTc8jQ=;
+ b=DgeQgSaW2qPx8hZMsNMuYu4neP4yCBFeUutZu/npL+nGFq4uwbXkZBsRezQyACB5h5
+ c2Xtqvb1fa6GOtLQPmMvNgGW8/9QEFNL+K9C1HSH3e+/t76DgdM84WqN3kiIup8xVCs3
+ 4mMUeOXVinZmwO/eQp5BCp0e8Vo+N8cPqLrYWH1JBQG2quu5lPHszDDs8PCzasXN0jIm
+ NJAjGWKzBo3f0aStwvq20W3hG+lq9uan13wiihLytR8DyX20OmAqmb7SH3ZgaJt/Zqos
+ JXkEJfy7N/565FhmsP5D221oP1GNoPhvyZjk+38+1kofahaPwewnFWJMSN21g2Grueo4
+ Z1Og==
+X-Gm-Message-State: AOAM532oNg/F5XrIErwHuGEPF8IuTJ8PaUbpLry908bYwuWjhfK2r/+S
+ 78kspTtx85hbGoqT/OKhdx8=
+X-Google-Smtp-Source: ABdhPJwIz1+OuMm91LqO5/9SwgL6U3RC8rZg6hPrO7zQUYJxh0T24GQzaSGRh+uNCyYPoPAvBQZaKw==
+X-Received: by 2002:a17:906:3803:b0:6cf:56b9:60a9 with SMTP id
+ v3-20020a170906380300b006cf56b960a9mr14108161ejc.716.1646046537823; 
+ Mon, 28 Feb 2022 03:08:57 -0800 (PST)
 Received: from localhost.localdomain (dhcp-077-250-038-153.chello.nl.
  [77.250.38.153]) by smtp.googlemail.com with ESMTPSA id
- z22-20020a17090655d600b006d229436793sm4209049ejp.223.2022.02.28.03.08.54
+ z22-20020a17090655d600b006d229436793sm4209049ejp.223.2022.02.28.03.08.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Feb 2022 03:08:55 -0800 (PST)
+ Mon, 28 Feb 2022 03:08:57 -0800 (PST)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 2/6] treewide: remove using list iterator after loop body as a
- ptr
-Date: Mon, 28 Feb 2022 12:08:18 +0100
-Message-Id: <20220228110822.491923-3-jakobkoschel@gmail.com>
+Subject: [PATCH 3/6] treewide: fix incorrect use to determine if list is empty
+Date: Mon, 28 Feb 2022 12:08:19 +0100
+Message-Id: <20220228110822.491923-4-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220228110822.491923-1-jakobkoschel@gmail.com>
 References: <20220228110822.491923-1-jakobkoschel@gmail.com>
@@ -114,394 +113,102 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If the list does not contain the expected element, the value of
-list_for_each_entry() iterator will not point to a valid structure.
-To avoid type confusion in such case, the list iterator
-scope will be limited to list_for_each_entry() loop.
+The list iterator value will *always* be set by list_for_each_entry().
+It is incorrect to assume that the iterator value will be NULL if the
+list is empty.
 
-In preparation to limiting scope of a list iterator to the list traversal
-loop, use a dedicated pointer to point to the found element.
-Determining if an element was found is then simply checking if
-the pointer is != NULL.
+Instead of checking the pointer it should be checked if
+the list is empty.
+In acpi_get_pmu_hw_inf() instead of setting the pointer to NULL
+on the break, it is set to the correct value and leaving it
+NULL if no element was found.
 
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 ---
- arch/x86/kernel/cpu/sgx/encl.c       |  6 +++--
- drivers/scsi/scsi_transport_sas.c    | 17 ++++++++-----
- drivers/thermal/thermal_core.c       | 38 ++++++++++++++++++----------
- drivers/usb/gadget/configfs.c        | 22 ++++++++++------
- drivers/usb/gadget/udc/max3420_udc.c | 11 +++++---
- drivers/usb/gadget/udc/tegra-xudc.c  | 11 +++++---
- drivers/usb/mtu3/mtu3_gadget.c       | 11 +++++---
- drivers/usb/musb/musb_gadget.c       | 11 +++++---
- drivers/vfio/mdev/mdev_core.c        | 11 +++++---
- 9 files changed, 88 insertions(+), 50 deletions(-)
+ arch/powerpc/sysdev/fsl_gtm.c            |  4 ++--
+ drivers/media/pci/saa7134/saa7134-alsa.c |  4 ++--
+ drivers/perf/xgene_pmu.c                 | 13 +++++++------
+ 3 files changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
-index 48afe96ae0f0..6c916416decc 100644
---- a/arch/x86/kernel/cpu/sgx/encl.c
-+++ b/arch/x86/kernel/cpu/sgx/encl.c
-@@ -450,7 +450,8 @@ static void sgx_mmu_notifier_release(struct mmu_notifier *mn,
- 				     struct mm_struct *mm)
- {
- 	struct sgx_encl_mm *encl_mm = container_of(mn, struct sgx_encl_mm, mmu_notifier);
--	struct sgx_encl_mm *tmp = NULL;
-+	struct sgx_encl_mm *found_encl_mm = NULL;
-+	struct sgx_encl_mm *tmp;
-
- 	/*
- 	 * The enclave itself can remove encl_mm.  Note, objects can't be moved
-@@ -460,12 +461,13 @@ static void sgx_mmu_notifier_release(struct mmu_notifier *mn,
- 	list_for_each_entry(tmp, &encl_mm->encl->mm_list, list) {
- 		if (tmp == encl_mm) {
- 			list_del_rcu(&encl_mm->list);
-+			found_encl_mm = tmp;
- 			break;
- 		}
- 	}
- 	spin_unlock(&encl_mm->encl->mm_lock);
-
--	if (tmp == encl_mm) {
-+	if (found_encl_mm) {
- 		synchronize_srcu(&encl_mm->encl->srcu);
- 		mmu_notifier_put(mn);
- 	}
-diff --git a/drivers/scsi/scsi_transport_sas.c b/drivers/scsi/scsi_transport_sas.c
-index 4ee578b181da..a8cbd90db9d2 100644
---- a/drivers/scsi/scsi_transport_sas.c
-+++ b/drivers/scsi/scsi_transport_sas.c
-@@ -1060,26 +1060,29 @@ EXPORT_SYMBOL(sas_port_get_phy);
-  * connected to a remote device is a port, so ports must be formed on
-  * all devices with phys if they're connected to anything.
+diff --git a/arch/powerpc/sysdev/fsl_gtm.c b/arch/powerpc/sysdev/fsl_gtm.c
+index 8963eaffb1b7..39186ad6b3c3 100644
+--- a/arch/powerpc/sysdev/fsl_gtm.c
++++ b/arch/powerpc/sysdev/fsl_gtm.c
+@@ -86,7 +86,7 @@ static LIST_HEAD(gtms);
   */
--void sas_port_add_phy(struct sas_port *port, struct sas_phy *phy)
-+void sas_port_add_phy(struct sas_port *port, struct sas_phy *_phy)
+ struct gtm_timer *gtm_get_timer16(void)
  {
- 	mutex_lock(&port->phy_list_mutex);
--	if (unlikely(!list_empty(&phy->port_siblings))) {
-+	if (unlikely(!list_empty(&_phy->port_siblings))) {
- 		/* make sure we're already on this port */
-+		struct sas_phy *phy = NULL;
- 		struct sas_phy *tmp;
+-	struct gtm *gtm = NULL;
++	struct gtm *gtm;
+ 	int i;
 
- 		list_for_each_entry(tmp, &port->phy_list, port_siblings)
--			if (tmp == phy)
-+			if (tmp == _phy) {
-+				phy = tmp;
- 				break;
-+			}
- 		/* If this trips, you added a phy that was already
- 		 * part of a different port */
--		if (unlikely(tmp != phy)) {
-+		if (unlikely(!phy)) {
- 			dev_printk(KERN_ERR, &port->dev, "trying to add phy %s fails: it's already part of another port\n",
--				   dev_name(&phy->dev));
-+				   dev_name(&_phy->dev));
- 			BUG();
- 		}
- 	} else {
--		sas_port_create_link(port, phy);
--		list_add_tail(&phy->port_siblings, &port->phy_list);
-+		sas_port_create_link(port, _phy);
-+		list_add_tail(&_phy->port_siblings, &port->phy_list);
- 		port->num_phys++;
+ 	list_for_each_entry(gtm, &gtms, list_node) {
+@@ -103,7 +103,7 @@ struct gtm_timer *gtm_get_timer16(void)
+ 		spin_unlock_irq(&gtm->lock);
  	}
- 	mutex_unlock(&port->phy_list_mutex);
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 82654dc8382b..97198543448b 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -625,24 +625,30 @@ int thermal_zone_bind_cooling_device(struct thermal_zone_device *tz,
+
+-	if (gtm)
++	if (!list_empty(&gtms))
+ 		return ERR_PTR(-EBUSY);
+ 	return ERR_PTR(-ENODEV);
+ }
+diff --git a/drivers/media/pci/saa7134/saa7134-alsa.c b/drivers/media/pci/saa7134/saa7134-alsa.c
+index fb24d2ed3621..d3cde05a6eba 100644
+--- a/drivers/media/pci/saa7134/saa7134-alsa.c
++++ b/drivers/media/pci/saa7134/saa7134-alsa.c
+@@ -1214,7 +1214,7 @@ static int alsa_device_exit(struct saa7134_dev *dev)
+
+ static int saa7134_alsa_init(void)
  {
- 	struct thermal_instance *dev;
- 	struct thermal_instance *pos;
--	struct thermal_zone_device *pos1;
--	struct thermal_cooling_device *pos2;
-+	struct thermal_zone_device *pos1 = NULL;
-+	struct thermal_zone_device *tmp1;
-+	struct thermal_cooling_device *pos2 = NULL;
-+	struct thermal_cooling_device *tmp2;
- 	unsigned long max_state;
- 	int result, ret;
+-	struct saa7134_dev *dev = NULL;
++	struct saa7134_dev *dev;
 
- 	if (trip >= tz->trips || trip < 0)
- 		return -EINVAL;
-
--	list_for_each_entry(pos1, &thermal_tz_list, node) {
--		if (pos1 == tz)
-+	list_for_each_entry(tmp1, &thermal_tz_list, node) {
-+		if (tmp1 == tz) {
-+			pos1 = tmp1;
- 			break;
-+		}
- 	}
--	list_for_each_entry(pos2, &thermal_cdev_list, node) {
--		if (pos2 == cdev)
-+	list_for_each_entry(tmp2, &thermal_cdev_list, node) {
-+		if (tmp2 == cdev) {
-+			pos2 = tmp2;
- 			break;
-+		}
+ 	saa7134_dmasound_init = alsa_device_init;
+ 	saa7134_dmasound_exit = alsa_device_exit;
+@@ -1229,7 +1229,7 @@ static int saa7134_alsa_init(void)
+ 			alsa_device_init(dev);
  	}
 
--	if (tz != pos1 || cdev != pos2)
-+	if (!pos1 || !pos2)
- 		return -EINVAL;
-
- 	ret = cdev->ops->get_max_state(cdev, &max_state);
-@@ -1074,15 +1080,18 @@ void thermal_cooling_device_unregister(struct thermal_cooling_device *cdev)
- 	const struct thermal_zone_params *tzp;
- 	struct thermal_zone_device *tz;
- 	struct thermal_cooling_device *pos = NULL;
-+	struct thermal_cooling_device *tmp;
-
- 	if (!cdev)
- 		return;
-
- 	mutex_lock(&thermal_list_lock);
--	list_for_each_entry(pos, &thermal_cdev_list, node)
--		if (pos == cdev)
-+	list_for_each_entry(tmp, &thermal_cdev_list, node)
-+		if (tmp == cdev) {
-+			pos = tmp;
- 			break;
--	if (pos != cdev) {
-+		}
-+	if (!pos) {
- 		/* thermal cooling device not found */
- 		mutex_unlock(&thermal_list_lock);
- 		return;
-@@ -1335,6 +1344,7 @@ void thermal_zone_device_unregister(struct thermal_zone_device *tz)
- 	const struct thermal_zone_params *tzp;
- 	struct thermal_cooling_device *cdev;
- 	struct thermal_zone_device *pos = NULL;
-+	struct thermal_zone_device *tmp;
-
- 	if (!tz)
- 		return;
-@@ -1343,10 +1353,12 @@ void thermal_zone_device_unregister(struct thermal_zone_device *tz)
- 	tz_id = tz->id;
-
- 	mutex_lock(&thermal_list_lock);
--	list_for_each_entry(pos, &thermal_tz_list, node)
--		if (pos == tz)
-+	list_for_each_entry(tmp, &thermal_tz_list, node)
-+		if (tmp == tz) {
-+			pos = tmp;
- 			break;
--	if (pos != tz) {
-+		}
-+	if (!pos) {
- 		/* thermal zone device not found */
- 		mutex_unlock(&thermal_list_lock);
- 		return;
-diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
-index d4a678c0806e..99f10cbd8878 100644
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -418,7 +418,8 @@ static int config_usb_cfg_link(
-
- 	struct usb_function_instance *fi =
- 			to_usb_function_instance(usb_func_ci);
--	struct usb_function_instance *a_fi;
-+	struct usb_function_instance *a_fi = NULL;
-+	struct usb_function_instance *tmp;
- 	struct usb_function *f;
- 	int ret;
-
-@@ -428,11 +429,13 @@ static int config_usb_cfg_link(
- 	 * from another gadget or a random directory.
- 	 * Also a function instance can only be linked once.
- 	 */
--	list_for_each_entry(a_fi, &gi->available_func, cfs_list) {
--		if (a_fi == fi)
-+	list_for_each_entry(tmp, &gi->available_func, cfs_list) {
-+		if (tmp == fi) {
-+			a_fi = tmp;
- 			break;
-+		}
- 	}
--	if (a_fi != fi) {
-+	if (!a_fi) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
-@@ -882,15 +885,18 @@ static int os_desc_link(struct config_item *os_desc_ci,
- 	struct gadget_info *gi = os_desc_item_to_gadget_info(os_desc_ci);
- 	struct usb_composite_dev *cdev = &gi->cdev;
- 	struct config_usb_cfg *c_target = to_config_usb_cfg(usb_cfg_ci);
--	struct usb_configuration *c;
-+	struct usb_configuration *c = NULL;
-+	struct usb_configuration *tmp;
- 	int ret;
-
- 	mutex_lock(&gi->lock);
--	list_for_each_entry(c, &cdev->configs, list) {
--		if (c == &c_target->c)
-+	list_for_each_entry(tmp, &cdev->configs, list) {
-+		if (tmp == &c_target->c) {
-+			c = tmp;
- 			break;
-+		}
- 	}
--	if (c != &c_target->c) {
-+	if (!c) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
-diff --git a/drivers/usb/gadget/udc/max3420_udc.c b/drivers/usb/gadget/udc/max3420_udc.c
-index d2a2b20cc1ad..d1b010b5f4a0 100644
---- a/drivers/usb/gadget/udc/max3420_udc.c
-+++ b/drivers/usb/gadget/udc/max3420_udc.c
-@@ -1044,22 +1044,25 @@ static int max3420_ep_queue(struct usb_ep *_ep, struct usb_request *_req,
-
- static int max3420_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
- {
--	struct max3420_req *t, *req = to_max3420_req(_req);
-+	struct max3420_req *t = NULL;
-+	struct max3420_req *req = to_max3420_req(_req);
-+	struct max3420_req *tmp;
- 	struct max3420_ep *ep = to_max3420_ep(_ep);
- 	unsigned long flags;
-
- 	spin_lock_irqsave(&ep->lock, flags);
-
- 	/* Pluck the descriptor from queue */
--	list_for_each_entry(t, &ep->queue, queue)
--		if (t == req) {
-+	list_for_each_entry(tmp, &ep->queue, queue)
-+		if (tmp == req) {
- 			list_del_init(&req->queue);
-+			t = tmp;
- 			break;
- 		}
-
- 	spin_unlock_irqrestore(&ep->lock, flags);
-
--	if (t == req)
-+	if (t)
- 		max3420_req_done(req, -ECONNRESET);
+-	if (dev == NULL)
++	if (list_empty(&saa7134_devlist))
+ 		pr_info("saa7134 ALSA: no saa7134 cards found\n");
 
  	return 0;
-diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
-index 43f1b0d461c1..c37e3148a208 100644
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -1413,18 +1413,21 @@ __tegra_xudc_ep_dequeue(struct tegra_xudc_ep *ep,
- 			struct tegra_xudc_request *req)
- {
- 	struct tegra_xudc *xudc = ep->xudc;
--	struct tegra_xudc_request *r;
-+	struct tegra_xudc_request *r = NULL;
-+	struct tegra_xudc_request *tmp;
- 	struct tegra_xudc_trb *deq_trb;
- 	bool busy, kick_queue = false;
- 	int ret = 0;
+diff --git a/drivers/perf/xgene_pmu.c b/drivers/perf/xgene_pmu.c
+index 2b6d476bd213..e255f9e665d1 100644
+--- a/drivers/perf/xgene_pmu.c
++++ b/drivers/perf/xgene_pmu.c
+@@ -1460,7 +1460,8 @@ xgene_pmu_dev_ctx *acpi_get_pmu_hw_inf(struct xgene_pmu *xgene_pmu,
+ 	struct hw_pmu_info *inf;
+ 	void __iomem *dev_csr;
+ 	struct resource res;
+-	struct resource_entry *rentry;
++	struct resource_entry *rentry = NULL;
++	struct resource_entry *tmp;
+ 	int enable_bit;
+ 	int rc;
 
- 	/* Make sure the request is actually queued to this endpoint. */
--	list_for_each_entry(r, &ep->queue, list) {
--		if (r == req)
-+	list_for_each_entry(tmp, &ep->queue, list) {
-+		if (tmp == req) {
-+			r = tmp;
- 			break;
-+		}
+@@ -1475,16 +1476,16 @@ xgene_pmu_dev_ctx *acpi_get_pmu_hw_inf(struct xgene_pmu *xgene_pmu,
+ 		return NULL;
  	}
 
--	if (r != req)
-+	if (!r)
- 		return -EINVAL;
-
- 	/* Request hasn't been queued in the transfer ring yet. */
-diff --git a/drivers/usb/mtu3/mtu3_gadget.c b/drivers/usb/mtu3/mtu3_gadget.c
-index 9977600616d7..2e4daaa081a0 100644
---- a/drivers/usb/mtu3/mtu3_gadget.c
-+++ b/drivers/usb/mtu3/mtu3_gadget.c
-@@ -323,7 +323,8 @@ static int mtu3_gadget_dequeue(struct usb_ep *ep, struct usb_request *req)
- {
- 	struct mtu3_ep *mep = to_mtu3_ep(ep);
- 	struct mtu3_request *mreq = to_mtu3_request(req);
--	struct mtu3_request *r;
-+	struct mtu3_request *r = NULL;
-+	struct mtu3_request *tmp;
- 	struct mtu3 *mtu = mep->mtu;
- 	unsigned long flags;
- 	int ret = 0;
-@@ -336,11 +337,13 @@ static int mtu3_gadget_dequeue(struct usb_ep *ep, struct usb_request *req)
-
- 	spin_lock_irqsave(&mtu->lock, flags);
-
--	list_for_each_entry(r, &mep->req_list, list) {
--		if (r == mreq)
-+	list_for_each_entry(tmp, &mep->req_list, list) {
-+		if (tmp == mreq) {
-+			r = tmp;
+-	list_for_each_entry(rentry, &resource_list, node) {
+-		if (resource_type(rentry->res) == IORESOURCE_MEM) {
+-			res = *rentry->res;
+-			rentry = NULL;
++	list_for_each_entry(tmp, &resource_list, node) {
++		if (resource_type(tmp->res) == IORESOURCE_MEM) {
++			res = *tmp->res;
++			rentry = tmp;
  			break;
-+		}
+ 		}
  	}
--	if (r != mreq) {
-+	if (!r) {
- 		dev_dbg(mtu->dev, "req=%p not queued to %s\n", req, ep->name);
- 		ret = -EINVAL;
- 		goto done;
-diff --git a/drivers/usb/musb/musb_gadget.c b/drivers/usb/musb/musb_gadget.c
-index 51274b87f46c..26b61ad7ab1b 100644
---- a/drivers/usb/musb/musb_gadget.c
-+++ b/drivers/usb/musb/musb_gadget.c
-@@ -1266,7 +1266,8 @@ static int musb_gadget_dequeue(struct usb_ep *ep, struct usb_request *request)
- {
- 	struct musb_ep		*musb_ep = to_musb_ep(ep);
- 	struct musb_request	*req = to_musb_request(request);
--	struct musb_request	*r;
-+	struct musb_request	*r = NULL;
-+	struct musb_request	*tmp;
- 	unsigned long		flags;
- 	int			status = 0;
- 	struct musb		*musb = musb_ep->musb;
-@@ -1278,11 +1279,13 @@ static int musb_gadget_dequeue(struct usb_ep *ep, struct usb_request *request)
+ 	acpi_dev_free_resource_list(&resource_list);
 
- 	spin_lock_irqsave(&musb->lock, flags);
-
--	list_for_each_entry(r, &musb_ep->req_list, list) {
--		if (r == req)
-+	list_for_each_entry(tmp, &musb_ep->req_list, list) {
-+		if (tmp == req) {
-+			r = tmp;
- 			break;
-+		}
- 	}
--	if (r != req) {
-+	if (!r) {
- 		dev_err(musb->controller, "request %p not queued to %s\n",
- 				request, ep->name);
- 		status = -EINVAL;
-diff --git a/drivers/vfio/mdev/mdev_core.c b/drivers/vfio/mdev/mdev_core.c
-index b314101237fe..52cfa44c24a7 100644
---- a/drivers/vfio/mdev/mdev_core.c
-+++ b/drivers/vfio/mdev/mdev_core.c
-@@ -337,16 +337,19 @@ int mdev_device_create(struct mdev_type *type, const guid_t *uuid)
-
- int mdev_device_remove(struct mdev_device *mdev)
- {
--	struct mdev_device *tmp;
-+	struct mdev_device *tmp = NULL;
-+	struct mdev_device *iter;
- 	struct mdev_parent *parent = mdev->type->parent;
-
- 	mutex_lock(&mdev_list_lock);
--	list_for_each_entry(tmp, &mdev_list, next) {
--		if (tmp == mdev)
-+	list_for_each_entry(iter, &mdev_list, next) {
-+		if (iter == mdev) {
-+			tmp = iter;
- 			break;
-+		}
- 	}
-
--	if (tmp != mdev) {
-+	if (!tmp) {
- 		mutex_unlock(&mdev_list_lock);
- 		return -ENODEV;
+-	if (rentry) {
++	if (!rentry) {
+ 		dev_err(dev, "PMU type %d: No memory resource found\n", type);
+ 		return NULL;
  	}
 --
 2.25.1
