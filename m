@@ -1,83 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B584C7C76
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 22:47:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A10604C7CB2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 23:01:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K6vBC5p4Dz3brL
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 08:47:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K6vVX5VPPz3brY
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 09:01:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DcAOXNn/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lb9MoeFh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52a;
- helo=mail-ed1-x52a.google.com; envelope-from=jakobkoschel@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=DcAOXNn/; dkim-atps=neutral
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com
- [IPv6:2a00:1450:4864:20::52a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=lb9MoeFh; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K6v9W3Gx3z30Km;
- Tue,  1 Mar 2022 08:47:09 +1100 (AEDT)
-Received: by mail-ed1-x52a.google.com with SMTP id bq11so19517531edb.2;
- Mon, 28 Feb 2022 13:47:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=U6qUODqKVLrC7qZqs553HfNOTdovwKFxE93drAu/Dlk=;
- b=DcAOXNn/ViLnmA/Pl4xJfWkhBybquVghVb27ULjvzphMd1cBlP8EnT2avc3nlq8Ncp
- XU0OlwqVPcxmpQGfXIX8cDSYeDqzQFDIjUJw6vYkNcJJHsbpQaotozEaUyIGD250VuoD
- 60I5wOFshLHgsaHS54p/JatmHLrrllGTo/egDJjxoeGmck3vK6ZaE0ldZN4szqLK845U
- BQNwjpOC8zhohOQR/VOEr6j/DtNOqZN6I6F48XJrq+10cNhH40s7WdjZ8f4gJpCeR9JY
- suF4D0bui+heOiMd0XjHUkKuJX/fj0a+j8l22tTUgDxT9LwW7gkDbHU26uOV2JCB+l1v
- aZYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=U6qUODqKVLrC7qZqs553HfNOTdovwKFxE93drAu/Dlk=;
- b=OI6YD42byaBLZc9EUhwgRkHzDfiUgCWaFIRzKmDNYo7hlCMeb3xU92FLavuLElotFT
- 7JMq0kkwZ1ZPDy9yLASU9Owo0Z+k7qmukKNLIunvNge2ZIyQcoIJfEaTyxRgBLVI/7ll
- wFnF3+vVWBFAyOzVP0z+aUspIAs4dwDorYB8UqTNlRFdPBxAlO59THZJGcsso22ZIxVg
- PVBk6Zh6OqfFJvZsVAPJxLs1Hf7r3hc+DMy8zoT49QOxSDeDsOG/8rFxLbKgnmYWy8zE
- PiA9ay82T4dqJavNRocOM27tvtGMT/f5+iXespLGxbulDD2mH65VFHeWN5yTQAiWljdp
- ljZg==
-X-Gm-Message-State: AOAM5302u9O2WqPtPwM3tHqy9kK92MupHXr8TOTW96/z5nSo5riNwgQF
- vfcCpDjj728h5vAD4hBZ29M=
-X-Google-Smtp-Source: ABdhPJxKG2ff16tCWsK6Ck3Y2a57p3q44AgnQUgUMRZ3ajKrFkwS/Wlp6PHXO9g9MP9OhOujc97TPw==
-X-Received: by 2002:a05:6402:40d0:b0:412:f86a:efd1 with SMTP id
- z16-20020a05640240d000b00412f86aefd1mr21791110edb.194.1646084823834; 
- Mon, 28 Feb 2022 13:47:03 -0800 (PST)
-Received: from smtpclient.apple ([2a02:8109:9d80:3f6c:957a:1d13:c949:d1f3])
- by smtp.gmail.com with ESMTPSA id
- ce7-20020a170906b24700b006cf095c2f5bsm4701847ejb.83.2022.02.28.13.47.01
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 28 Feb 2022 13:47:03 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.60.0.1.1\))
-Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-From: Jakob Koschel <jakobkoschel@gmail.com>
-In-Reply-To: <CAHk-=wiTCvLQkHcJ3y0hpqH7FEk9D28LDvZZogC6OVLk7naBww@mail.gmail.com>
-Date: Mon, 28 Feb 2022 22:47:00 +0100
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FC710A1A-524E-481B-A668-FC258F529A2E@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K6vTv282kz2xCp;
+ Tue,  1 Mar 2022 09:01:23 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 5CBD2B8169B;
+ Mon, 28 Feb 2022 22:01:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677EEC340F1;
+ Mon, 28 Feb 2022 22:01:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1646085677;
+ bh=bmzYeqH+wd1Y/i05gxZoeqc9TywPR9wpt0imv9Fx7Nw=;
+ h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+ b=lb9MoeFhEeGqaET4WoooJnliR/Aftbuf2qgeJWcsJRMUD7lxaPDCkpbBw1fltPmKc
+ jIEBu8SnVjgO3Aaf+8FYuXvVgG5MgAciJgva3R/8WVNn/ktDFk3hANDz2GKUoZWtxI
+ SvipV/Wo2m8Yu0T44/FsB9ncJWS6zqb8Cis19xBBpG1gsQAhwdKCM2xymmzy1B6vAh
+ NLgpj3CkfoCj7XXB9+t8bZHUSaMtCcXi/0/BYE3ppk5zRyoiwaHoQXmDsDHRdh2g9L
+ BKDOg0IEHzQ+qInzyklcGdLSrMWPhR+ZxEuCQewyXU3mL+4cdRVVpWMroWAhmtcL3w
+ /5xJdekiDQkIw==
+Date: Mon, 28 Feb 2022 23:59:07 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+ =?ISO-8859-1?Q?Christian_K=F6nig?= <christian.koenig@amd.com>,
+ Linus	Torvalds <torvalds@linux-foundation.org>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_2/6=5D_treewide=3A_remove_using?=
+ =?US-ASCII?Q?_list_iterator_after_loop_body_as_a_ptr?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <b2d20961dbb7533f380827a7fcc313ff849875c1.camel@HansenPartnership.com>
 References: <20220228110822.491923-1-jakobkoschel@gmail.com>
  <20220228110822.491923-3-jakobkoschel@gmail.com>
  <2e4e95d6-f6c9-a188-e1cd-b1eae465562a@amd.com>
  <CAHk-=wgQps58DPEOe4y5cTh5oE9EdNTWRLXzgMiETc+mFX7jzw@mail.gmail.com>
- <CAHk-=wj8fkosQ7=bps5K+DDazBXk=ypfn49A0sEq+7-nZnyfXA@mail.gmail.com>
- <CAHk-=wiTCvLQkHcJ3y0hpqH7FEk9D28LDvZZogC6OVLk7naBww@mail.gmail.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-X-Mailer: Apple Mail (2.3693.60.0.1.1)
+ <282f0f8d-f491-26fc-6ae0-604b367a5a1a@amd.com>
+ <b2d20961dbb7533f380827a7fcc313ff849875c1.camel@HansenPartnership.com>
+Message-ID: <7D0C2A5D-500E-4F38-AD0C-A76E132A390E@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,13 +77,12 @@ Cc: linux-wireless <linux-wireless@vger.kernel.org>,
  "Gustavo A. R. Silva" <gustavo@embeddedor.com>, linux-iio@vger.kernel.org,
  nouveau@lists.freedesktop.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
  dri-devel <dri-devel@lists.freedesktop.org>,
- Cristiano Giuffrida <c.giuffrida@vu.nl>,
- amd-gfx list <amd-gfx@lists.freedesktop.org>,
+ Cristiano Giuffrida <c.giuffrida@vu.nl>, "Bos, H.J." <h.j.bos@vu.nl>,
  linux1394-devel@lists.sourceforge.net, drbd-dev@lists.linbit.com,
  linux-arch <linux-arch@vger.kernel.org>, CIFS <linux-cifs@vger.kernel.org>,
  linux-aspeed@lists.ozlabs.org, linux-scsi <linux-scsi@vger.kernel.org>,
- linux-rdma <linux-rdma@vger.kernel.org>, linux-staging@lists.linux.dev, "Bos,
- H.J." <h.j.bos@vu.nl>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-rdma <linux-rdma@vger.kernel.org>, linux-staging@lists.linux.dev,
+ amd-gfx list <amd-gfx@lists.freedesktop.org>, Jason Gunthorpe <jgg@ziepe.ca>,
  intel-wired-lan@lists.osuosl.org, kgdb-bugreport@lists.sourceforge.net,
  bcm-kernel-feedback-list@broadcom.com,
  Dan Carpenter <dan.carpenter@oracle.com>,
@@ -111,7 +93,7 @@ Cc: linux-wireless <linux-wireless@vger.kernel.org>,
  Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
  Nathan Chancellor <nathan@kernel.org>, dma <dmaengine@vger.kernel.org>,
  Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- v9fs-developer@lists.sourceforge.net,
+ Jakob Koschel <jakobkoschel@gmail.com>, v9fs-developer@lists.sourceforge.net,
  linux-tegra <linux-tegra@vger.kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -124,71 +106,101 @@ Cc: linux-wireless <linux-wireless@vger.kernel.org>,
  Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
  linux-fsdevel <linux-fsdevel@vger.kernel.org>,
  linux-mediatek@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Mike Rapoport <rppt@kernel.org>
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-> On 28. Feb 2022, at 21:10, Linus Torvalds =
-<torvalds@linux-foundation.org> wrote:
->=20
-> On Mon, Feb 28, 2022 at 12:03 PM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
+On February 28, 2022 10:42:53 PM GMT+02:00, James Bottomley <James=2EBotto=
+mley@HansenPartnership=2Ecom> wrote:
+>On Mon, 2022-02-28 at 21:07 +0100, Christian K=C3=B6nig wrote:
+>> Am 28=2E02=2E22 um 20:56 schrieb Linus Torvalds:
+>> > On Mon, Feb 28, 2022 at 4:19 AM Christian K=C3=B6nig
+>> > <christian=2Ekoenig@amd=2Ecom> wrote:
+>> > > I don't think that using the extra variable makes the code in any
+>> > > way
+>> > > more reliable or easier to read=2E
+>> > So I think the next step is to do the attached patch (which
+>> > requires
+>> > that "-std=3Dgnu11" that was discussed in the original thread)=2E
+>> >=20
+>> > That will guarantee that the 'pos' parameter of
+>> > list_for_each_entry()
+>> > is only updated INSIDE the for_each_list_entry() loop, and can
+>> > never
+>> > point to the (wrongly typed) head entry=2E
+>> >=20
+>> > And I would actually hope that it should actually cause compiler
+>> > warnings about possibly uninitialized variables if people then use
+>> > the
+>> > 'pos' pointer outside the loop=2E Except
+>> >=20
+>> >   (a) that code in sgx/encl=2Ec currently initializes 'tmp' to NULL
+>> > for
+>> > inexplicable reasons - possibly because it already expected this
+>> > behavior
+>> >=20
+>> >   (b) when I remove that NULL initializer, I still don't get a
+>> > warning,
+>> > because we've disabled -Wno-maybe-uninitialized since it results in
+>> > so
+>> > many false positives=2E
+>> >=20
+>> > Oh well=2E
+>> >=20
+>> > Anyway, give this patch a look, and at least if it's expanded to do
+>> > "(pos) =3D NULL" in the entry statement for the for-loop, it will
+>> > avoid the HEAD type confusion that Jakob is working on=2E And I think
+>> > in a cleaner way than the horrid games he plays=2E
+>> >=20
+>> > (But it won't avoid possible CPU speculation of such type
+>> > confusion=2E That, in my opinion, is a completely different issue)
 >>=20
->> Side note: we do need *some* way to do it.
->=20
-> Ooh.
->=20
-> This patch is a work of art.
->=20
-> And I mean that in the worst possible way.
->=20
-> We can do
->=20
->        typeof(pos) pos
->=20
-> in the 'for ()' loop, and never use __iter at all.
->=20
-> That means that inside the for-loop, we use a _different_ 'pos' than =
-outside.
->=20
-> And then the compiler will not see some "might be uninitialized", but
-> the outer 'pos' *will* be uninitialized.
->=20
-> Unless, of course, the outer 'pos' had that pointless explicit =
-initializer.
+>> Yes, completely agree=2E
+>>=20
+>> > I do wish we could actually poison the 'pos' value after the loop
+>> > somehow - but clearly the "might be uninitialized" I was hoping for
+>> > isn't the way to do it=2E
+>> >=20
+>> > Anybody have any ideas?
+>>=20
+>> I think we should look at the use cases why code is touching (pos)
+>> after the loop=2E
+>>=20
+>> Just from skimming over the patches to change this and experience
+>> with the drivers/subsystems I help to maintain I think the primary
+>> pattern looks something like this:
+>>=20
+>> list_for_each_entry(entry, head, member) {
+>>      if (some_condition_checking(entry))
+>>          break;
+>> }
+>> do_something_with(entry);
+>
+>
+>Actually, we usually have a check to see if the loop found anything,
+>but in that case it should something like
+>
+>if (list_entry_is_head(entry, head, member)) {
+>    return with error;
+>}
+>do_somethin_with(entry);
+>
+>Suffice?  The list_entry_is_head() macro is designed to cope with the
+>bogus entry on head problem=2E
 
-The goal of this is to get compiler warnings right? This would indeed be =
-great.
+Won't suffice because the end goal of this work is to limit scope of entry=
+ only to loop=2E Hence the need for additional variable=2E
 
-Changing the list_for_each_entry() macro first will break all of those =
-cases
-(e.g. the ones using 'list_entry_is_head()).
-I assumed it is better to fix those cases first and then have a simple
-coccinelle script changing the macro + moving the iterator into the =
-scope
-of the macro.
+Besides, there are no guarantees that people won't do_something_with(entry=
+) without the check or won't compare entry to NULL to check if the loop fin=
+ished with break or not=2E
 
->=20
-> Here - can somebody poke holes in this "work of art" patch?
+>James
 
-With this you are no longer able to set the 'outer' pos within the list
-iterator loop body or am I missing something? Like this it stays
-uninitialized but you'll probably want to set it from within the loop.
 
-You would then yet again need a variable with another name to use
-after the loop.
-
-I fail to see how this will make most of the changes in this
-patch obsolete (if that was the intention).
-
->=20
->                     Linus
-> <patch.diff>
-
-- Jakob
-
+--=20
+Sincerely yours,
+Mike
