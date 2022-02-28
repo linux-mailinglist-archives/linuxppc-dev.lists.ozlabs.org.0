@@ -1,64 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40E64C73AD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 18:37:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4E14C7781
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 19:21:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K6ncs07cJz3bXw
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 04:37:01 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F9J2+EyP;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K6pc56nQZz3bdF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 05:21:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=F9J2+EyP; dkim-atps=neutral
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.helo=relay3.hostedemail.com (client-ip=64.99.140.34;
+ helo=relay3.hostedemail.com; envelope-from=joe@perches.com;
+ receiver=<UNKNOWN>)
+Received: from relay3.hostedemail.com (relay3.hostedemail.com [64.99.140.34])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K6nc92d4Tz30N6
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Mar 2022 04:36:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1646069786; x=1677605786;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=LV6WxyfV7WmrPPFnJO2M0zTOBvZNY76rsWwMTORr1+Q=;
- b=F9J2+EyPVZhjOEviIjTsfv0r8mOnEaH+Who5+B0NmT+WPODGCkmaSfkZ
- OvTn028D7u37Opbk2NcCVXtzLdWsrfer/iR28XAgC0eswI31ndzpZ22BJ
- Dvk3V/8esQ+d7Y0T8HXc3nVlpNfkiHpUl/L65E2kCbjQ9uFgschQ+Oub4
- PAAZdMbeanl4OxpKtUQ+7biRuibXWoJjHuFdfIpXyQbDneokn6RItPBQC
- iOSfy12R9vpt0+4BBSufgjzGw8SU/TombVg0Epj8SxntTgInjdZ8FDTOM
- QU5KYYtu6b0HL8AjSI0dX2hLzd24QSOZU45lTdr7H4X7gm55Mgc9ltexX Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10272"; a="339373858"
-X-IronPort-AV: E=Sophos;i="5.90,144,1643702400"; d="scan'208";a="339373858"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Feb 2022 09:35:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,144,1643702400"; d="scan'208";a="608524510"
-Received: from lkp-server01.sh.intel.com (HELO 788b1cd46f0d) ([10.239.97.150])
- by fmsmga004.fm.intel.com with ESMTP; 28 Feb 2022 09:35:14 -0800
-Received: from kbuild by 788b1cd46f0d with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1nOjvW-0007ZS-7D; Mon, 28 Feb 2022 17:35:14 +0000
-Date: Tue, 1 Mar 2022 01:35:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Haren Myneni <haren@linux.ibm.com>, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, nathanl@linux.ibm.com
-Subject: Re: [PATCH v5 3/9] powerpc/vas: Add paste address mmap fault handler
-Message-ID: <202202281913.4N2Af10e-lkp@intel.com>
-References: <0325487209c8ad936b3b3165375c6ba1c8d3370c.camel@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K6pbb4nmjz30gk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Mar 2022 05:20:57 +1100 (AEDT)
+Received: from omf09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+ by unirelay11.hostedemail.com (Postfix) with ESMTP id 8480C81766;
+ Mon, 28 Feb 2022 18:20:49 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by
+ omf09.hostedemail.com (Postfix) with ESMTPA id 5C4272002A; 
+ Mon, 28 Feb 2022 18:20:29 +0000 (UTC)
+Message-ID: <0be9de3920442df490f01b6fb1c42521c3de6190.camel@perches.com>
+Subject: Re: [PATCH 1/6] drivers: usb: remove usage of list iterator past
+ the loop body
+From: Joe Perches <joe@perches.com>
+To: Dan Carpenter <dan.carpenter@oracle.com>, Jakob Koschel
+ <jakobkoschel@gmail.com>
+Date: Mon, 28 Feb 2022 10:20:28 -0800
+In-Reply-To: <20220228112413.GA2812@kadam>
+References: <20220228110822.491923-1-jakobkoschel@gmail.com>
+ <20220228110822.491923-2-jakobkoschel@gmail.com>
+ <20220228112413.GA2812@kadam>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.40.4-1ubuntu2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0325487209c8ad936b3b3165375c6ba1c8d3370c.camel@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 1e1i8ombnsc3cdkptu3anccezjc89zox
+X-Rspamd-Server: rspamout07
+X-Rspamd-Queue-Id: 5C4272002A
+X-Spam-Status: No, score=0.10
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1+i6vY6IDwHpNq++UEo/5hqvP4PvgQNb4E=
+X-HE-Tag: 1646072429-12569
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,113 +58,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org
+Cc: alsa-devel@alsa-project.org, linux-aspeed@lists.ozlabs.org,
+ "Gustavo A. R. Silva" <gustavo@embeddedor.com>, linux-iio@vger.kernel.org,
+ nouveau@lists.freedesktop.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ dri-devel@lists.freedesktop.org, Cristiano Giuffrida <c.giuffrida@vu.nl>,
+ amd-gfx@lists.freedesktop.org, samba-technical@lists.samba.org,
+ linux1394-devel@lists.sourceforge.net, drbd-dev@lists.linbit.com,
+ linux-arch <linux-arch@vger.kernel.org>, linux-cifs@vger.kernel.org,
+ kvm@vger.kernel.org, linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-staging@lists.linux.dev, "Bos, H.J." <h.j.bos@vu.nl>,
+ Jason Gunthorpe <jgg@ziepe.ca>, intel-wired-lan@lists.osuosl.org,
+ kgdb-bugreport@lists.sourceforge.net, bcm-kernel-feedback-list@broadcom.com,
+ linux-media@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+ Arnd Bergman <arnd@arndb.de>, linux-pm@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org,
+ Brian Johannesmeyer <bjohannesmeyer@gmail.com>, linux-block@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ v9fs-developer@lists.sourceforge.net, linux-tegra@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, linux-sgx@vger.kernel.org,
+ Nathan Chancellor <nathan@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, tipc-discussion@lists.sourceforge.net,
+ linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
+ dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Haren,
+On Mon, 2022-02-28 at 14:24 +0300, Dan Carpenter wrote:
 
-I love your patch! Perhaps something to improve:
+> a multi-line indent gets curly braces for readability even though
+> it's not required by C.  And then both sides would get curly braces.
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on v5.17-rc6 next-20220225]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/0day-ci/linux/commits/Haren-Myneni/powerpc-pseries-vas-NXGZIP-support-with-DLPAR/20220228-154814
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-config: powerpc64-randconfig-s031-20220227 (https://download.01.org/0day-ci/archive/20220228/202202281913.4N2Af10e-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 11.2.0
-reproduce:
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # apt-get install sparse
-        # sparse version: v0.6.4-dirty
-        # https://github.com/0day-ci/linux/commit/336150efb288e945786ca6d54b0eb7d9c956aad8
-        git remote add linux-review https://github.com/0day-ci/linux
-        git fetch --no-tags linux-review Haren-Myneni/powerpc-pseries-vas-NXGZIP-support-with-DLPAR/20220228-154814
-        git checkout 336150efb288e945786ca6d54b0eb7d9c956aad8
-        # save the config file to linux build tree
-        mkdir build_dir
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.2.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/platforms/book3s/ arch/powerpc/platforms/pseries/
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
+That's more your personal preference than a coding style guideline.
 
 
-sparse warnings: (new ones prefixed by >>)
->> arch/powerpc/platforms/book3s/vas-api.c:403:29: sparse: sparse: incorrect type in assignment (different base types) @@     expected int ret @@     got restricted vm_fault_t @@
-   arch/powerpc/platforms/book3s/vas-api.c:403:29: sparse:     expected int ret
-   arch/powerpc/platforms/book3s/vas-api.c:403:29: sparse:     got restricted vm_fault_t
->> arch/powerpc/platforms/book3s/vas-api.c:406:32: sparse: sparse: incorrect type in return expression (different base types) @@     expected restricted vm_fault_t @@     got int ret @@
-   arch/powerpc/platforms/book3s/vas-api.c:406:32: sparse:     expected restricted vm_fault_t
-   arch/powerpc/platforms/book3s/vas-api.c:406:32: sparse:     got int ret
-
-vim +403 arch/powerpc/platforms/book3s/vas-api.c
-
-   353	
-   354	/*
-   355	 * This fault handler is invoked when the core generates page fault on
-   356	 * the paste address. Happens if the kernel closes window in hypervisor
-   357	 * (on pseries) due to lost credit or the paste address is not mapped.
-   358	 */
-   359	static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
-   360	{
-   361		struct vm_area_struct *vma = vmf->vma;
-   362		struct file *fp = vma->vm_file;
-   363		struct coproc_instance *cp_inst = fp->private_data;
-   364		struct vas_window *txwin;
-   365		u64 paste_addr;
-   366		int ret;
-   367	
-   368		/*
-   369		 * window is not opened. Shouldn't expect this error.
-   370		 */
-   371		if (!cp_inst || !cp_inst->txwin) {
-   372			pr_err("%s(): Unexpected fault on paste address with TX window closed\n",
-   373					__func__);
-   374			return VM_FAULT_SIGBUS;
-   375		}
-   376	
-   377		txwin = cp_inst->txwin;
-   378		/*
-   379		 * When the LPAR lost credits due to core removal or during
-   380		 * migration, invalidate the existing mapping for the current
-   381		 * paste addresses and set windows in-active (zap_page_range in
-   382		 * reconfig_close_windows()).
-   383		 * New mapping will be done later after migration or new credits
-   384		 * available. So continue to receive faults if the user space
-   385		 * issue NX request.
-   386		 */
-   387		if (txwin->task_ref.vma != vmf->vma) {
-   388			pr_err("%s(): No previous mapping with paste address\n",
-   389				__func__);
-   390			return VM_FAULT_SIGBUS;
-   391		}
-   392	
-   393		mutex_lock(&txwin->task_ref.mmap_mutex);
-   394		/*
-   395		 * The window may be inactive due to lost credit (Ex: core
-   396		 * removal with DLPAR). If the window is active again when
-   397		 * the credit is available, map the new paste address at the
-   398		 * the window virtual address.
-   399		 */
-   400		if (txwin->status == VAS_WIN_ACTIVE) {
-   401			paste_addr = cp_inst->coproc->vops->paste_addr(txwin);
-   402			if (paste_addr) {
- > 403				ret = vmf_insert_pfn(vma, vma->vm_start,
-   404						(paste_addr >> PAGE_SHIFT));
-   405				mutex_unlock(&txwin->task_ref.mmap_mutex);
- > 406				return ret;
-   407			}
-   408		}
-   409		mutex_unlock(&txwin->task_ref.mmap_mutex);
-   410	
-   411		return VM_FAULT_SIGBUS;
-   412	
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
