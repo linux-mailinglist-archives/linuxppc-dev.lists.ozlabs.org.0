@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0734C63F6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 08:48:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CC44C6419
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 08:52:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K6XYZ26Ylz3bhB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 18:48:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K6XfF4qybz30FR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 18:52:21 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bmiR9bmY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=em4LscTW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,84 +18,84 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=bmiR9bmY; dkim-atps=neutral
+ header.s=pp1 header.b=em4LscTW; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K6XXs0VSsz2yK2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 18:47:40 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21S6CCDp026307; 
- Mon, 28 Feb 2022 07:47:37 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K6XdT57K2z2xsb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 18:51:41 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 21S6hTEe004549; 
+ Mon, 28 Feb 2022 07:51:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : subject :
  from : to : cc : date : in-reply-to : references : content-type :
  mime-version : content-transfer-encoding; s=pp1;
- bh=uLXan/TyH5Mg4e5vbbSUZnpYF8rmOvSa3OJHKqoeQhE=;
- b=bmiR9bmYeEnjr2R+PZpOSoydqMP9cLbsEUC87HSAdxQn2zmlIjOOMju6HNjkLMtPI3pg
- 2M5N7uwUnMnGE3DisBYMRtv5zxB077Kvei74ppY/IJzVsSsWafWb4yjItBTinSvIwBpH
- G87iw2gB+vX0ZJyQYyQxkga+PFOVNDqtDxBoGD4998WooceI1w5DaeEnq8X3noYQd0O8
- 0r7Z4JH07t832bdI2QMQ9WrlyI6x4AfVq9F+MmU5QPD6RKYdo9AwLkJRX7flulAatkIQ
- HH3f5GPSRLuGZXI9MAjr14T+GmSLfeDi13CdiRqyhJcI6OnfkCuowGXC/zGGUJFSeNu6 6A== 
+ bh=6oUmdW9xGAjQtVXn/aHFGIGc10tC9X1/4AvBG2JOyxA=;
+ b=em4LscTW4/bdqtqG0m3fTWwK19nOwn9EJiEihcU+wjFdpVSuM6RsjwTX2XjZSyT4u2sF
+ jXjBjOpIRCuwdDcQFR3rck/I/PqMd4Rqd4HPaIwZXM0FGznyA+GFL7Kgn1wiDx49O49g
+ ZwNS32UYlv+sPuBbuoNFl1p/Y9SbNaZybvg9KlyXs/jCC5SWLwQEadpevo2ClEy5N7M9
+ SyLsK3wbBcKZyBu2tclvI0VcSN2sn2MTn4chhSyFar+O1Oa9ukAjl8xaYM2tGYgi99vl
+ Yu2AQ7rEwxUD4oLOuJm1HR33k6Z27VO9jgzhkAS6iqDS2Dfa3v1Qy71sZz2Q8q2Zw9VT tw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3egnuqe5h3-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3egscj1bts-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Feb 2022 07:47:36 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21S6w2jd019917;
- Mon, 28 Feb 2022 07:47:35 GMT
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3egnuqe5gn-1
+ Mon, 28 Feb 2022 07:51:37 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 21S7oMUr017571;
+ Mon, 28 Feb 2022 07:51:37 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3egscj1btd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Feb 2022 07:47:35 +0000
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21S7lYeZ015998;
- Mon, 28 Feb 2022 07:47:34 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma02wdc.us.ibm.com with ESMTP id 3efbu9j07m-1
+ Mon, 28 Feb 2022 07:51:37 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 21S7lHw0019121;
+ Mon, 28 Feb 2022 07:51:36 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma04dal.us.ibm.com with ESMTP id 3efbu9efq9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 28 Feb 2022 07:47:34 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 21S7lWel14091196
+ Mon, 28 Feb 2022 07:51:36 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 21S7pV9e7078298
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 28 Feb 2022 07:47:32 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 946E628067;
- Mon, 28 Feb 2022 07:47:32 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9230828060;
- Mon, 28 Feb 2022 07:47:31 +0000 (GMT)
+ Mon, 28 Feb 2022 07:51:31 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2D425124072;
+ Mon, 28 Feb 2022 07:51:31 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1F9CE12405E;
+ Mon, 28 Feb 2022 07:51:30 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.160.161.44])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 28 Feb 2022 07:47:31 +0000 (GMT)
-Message-ID: <e04598da854ec269c0513bc1a7e80b2f3860d25c.camel@linux.ibm.com>
-Subject: [PATCH v5 7/9] powerpc/pseries/vas: Reopen windows with DLPAR core add
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 28 Feb 2022 07:51:29 +0000 (GMT)
+Message-ID: <57da6a270fcb9308cd57be7c88037029343080f7.camel@linux.ibm.com>
+Subject: [PATCH v4 1/3] powerpc/pseries/vas: Define global hv_cop_caps struct
 From: Haren Myneni <haren@linux.ibm.com>
 To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
  nathanl@linux.ibm.com
-Date: Sun, 27 Feb 2022 23:47:29 -0800
-In-Reply-To: <ccd9c0f85005c56b4d011d5c2384444ae71bda69.camel@linux.ibm.com>
-References: <ccd9c0f85005c56b4d011d5c2384444ae71bda69.camel@linux.ibm.com>
+Date: Sun, 27 Feb 2022 23:51:28 -0800
+In-Reply-To: <aab2eda3cb5b209e07cf50760649834f1d93fede.camel@linux.ibm.com>
+References: <aab2eda3cb5b209e07cf50760649834f1d93fede.camel@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: WOOdyVS3RfZQGrVo3luxTgLaC_xcWrwE
-X-Proofpoint-ORIG-GUID: Wx0C2NPpYESK9W9V2XwMD9miZVosVjBp
+X-Proofpoint-GUID: PkvyhG1peqjd96KsdDwqCxOhn37p2P7b
+X-Proofpoint-ORIG-GUID: 5EizTmlza1l1sV8fK1Y6kvYSyl-3z7UC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-02-28_02,2022-02-26_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0
- mlxlogscore=999 phishscore=0 suspectscore=0 malwarescore=0 impostorscore=0
- bulkscore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2201110000
- definitions=main-2202280043
+ priorityscore=1501
+ impostorscore=0 bulkscore=0 adultscore=0 mlxlogscore=999 phishscore=0
+ clxscore=1015 mlxscore=0 spamscore=0 suspectscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2202280043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,131 +112,136 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-VAS windows can be closed in the hypervisor due to lost credits
-when the core is removed and the kernel gets fault for NX
-requests on these inactive windows. If the NX requests are
-issued on these inactive windows, OS gets page faults and the
-paste failure will be returned to the user space. If the lost
-credits are available later with core add, reopen these windows
-and set them active. Later when the OS sees page faults on these
-active windows, it creates mapping on the new paste address.
-Then the user space can continue to use these windows and send
-HW compression requests to NX successfully.
+The coprocessor capabilities struct is used to get default and
+QoS capabilities from the hypervisor during init, DLPAR event and
+migration. So instead of allocating this struct for each event,
+define global struct and reuse it which allows the migration code
+to avoid adding an error path.
+
+Also disable copy/paste feature flag if any capabilities HCALL
+is failed.
 
 Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+Acked-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/platforms/pseries/vas.c | 91 +++++++++++++++++++++++++++-
- 1 file changed, 90 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/vas.c | 47 ++++++++++++----------------
+ 1 file changed, 20 insertions(+), 27 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index a297720bcdae..96178dd58adf 100644
+index 591c7597db5a..3bb219f54806 100644
 --- a/arch/powerpc/platforms/pseries/vas.c
 +++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -565,6 +565,88 @@ static int __init get_vas_capabilities(u8 feat, enum vas_cop_feat_type type,
- 	return 0;
- }
+@@ -26,6 +26,7 @@
  
-+/*
-+ * VAS windows can be closed due to lost credits when the core is
-+ * removed. So reopen them if credits are available due to DLPAR
-+ * core add and set the window active status. When NX sees the page
-+ * fault on the unmapped paste address, the kernel handles the fault
-+ * by setting the remapping to new paste address if the window is
-+ * active.
-+ */
-+static int reconfig_open_windows(struct vas_caps *vcaps, int creds)
-+{
-+	long domain[PLPAR_HCALL9_BUFSIZE] = {VAS_DEFAULT_DOMAIN_ID};
-+	struct vas_cop_feat_caps *caps = &vcaps->caps;
-+	struct pseries_vas_window *win = NULL, *tmp;
-+	int rc, mv_ents = 0;
-+
-+	/*
-+	 * Nothing to do if there are no closed windows.
-+	 */
-+	if (!vcaps->nr_close_wins)
-+		return 0;
-+
-+	/*
-+	 * For the core removal, the hypervisor reduces the credits
-+	 * assigned to the LPAR and the kernel closes VAS windows
-+	 * in the hypervisor depends on reduced credits. The kernel
-+	 * uses LIFO (the last windows that are opened will be closed
-+	 * first) and expects to open in the same order when credits
-+	 * are available.
-+	 * For example, 40 windows are closed when the LPAR lost 2 cores
-+	 * (dedicated). If 1 core is added, this LPAR can have 20 more
-+	 * credits. It means the kernel can reopen 20 windows. So move
-+	 * 20 entries in the VAS windows lost and reopen next 20 windows.
-+	 */
-+	if (vcaps->nr_close_wins > creds)
-+		mv_ents = vcaps->nr_close_wins - creds;
-+
-+	list_for_each_entry_safe(win, tmp, &vcaps->list, win_list) {
-+		if (!mv_ents)
-+			break;
-+
-+		mv_ents--;
-+	}
-+
-+	list_for_each_entry_safe_from(win, tmp, &vcaps->list, win_list) {
-+		/*
-+		 * Nothing to do on this window if it is not closed
-+		 * with VAS_WIN_NO_CRED_CLOSE
-+		 */
-+		if (!(win->vas_win.status & VAS_WIN_NO_CRED_CLOSE))
-+			continue;
-+
-+		rc = allocate_setup_window(win, (u64 *)&domain[0],
-+					   caps->win_type);
-+		if (rc)
-+			return rc;
-+
-+		rc = h_modify_vas_window(win);
-+		if (rc)
-+			goto out;
-+
-+		mutex_lock(&win->vas_win.task_ref.mmap_mutex);
-+		/*
-+		 * Set window status to active
-+		 */
-+		win->vas_win.status &= ~VAS_WIN_NO_CRED_CLOSE;
-+		mutex_unlock(&win->vas_win.task_ref.mmap_mutex);
-+		win->win_type = caps->win_type;
-+		if (!--vcaps->nr_close_wins)
-+			break;
-+	}
-+
-+	return 0;
-+out:
-+	/*
-+	 * Window modify HCALL failed. So close the window to the
-+	 * hypervisor and return.
-+	 */
-+	free_irq_setup(win);
-+	h_deallocate_vas_window(win->vas_win.winid);
-+	return rc;
-+}
-+
+ static struct vas_all_caps caps_all;
+ static bool copypaste_feat;
++static struct hv_vas_cop_feat_caps hv_cop_caps;
+ 
+ static struct vas_caps vascaps[VAS_MAX_FEAT_TYPE];
+ static DEFINE_MUTEX(vas_pseries_mutex);
+@@ -724,7 +725,6 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds)
+  */
+ int vas_reconfig_capabilties(u8 type)
+ {
+-	struct hv_vas_cop_feat_caps *hv_caps;
+ 	struct vas_cop_feat_caps *caps;
+ 	int old_nr_creds, new_nr_creds;
+ 	struct vas_caps *vcaps;
+@@ -738,17 +738,13 @@ int vas_reconfig_capabilties(u8 type)
+ 	vcaps = &vascaps[type];
+ 	caps = &vcaps->caps;
+ 
+-	hv_caps = kmalloc(sizeof(*hv_caps), GFP_KERNEL);
+-	if (!hv_caps)
+-		return -ENOMEM;
+-
+ 	mutex_lock(&vas_pseries_mutex);
+ 	rc = h_query_vas_capabilities(H_QUERY_VAS_CAPABILITIES, vcaps->feat,
+-				      (u64)virt_to_phys(hv_caps));
++				      (u64)virt_to_phys(&hv_cop_caps));
+ 	if (rc)
+ 		goto out;
+ 
+-	new_nr_creds = be16_to_cpu(hv_caps->target_lpar_creds);
++	new_nr_creds = be16_to_cpu(hv_cop_caps.target_lpar_creds);
+ 
+ 	old_nr_creds = atomic_read(&caps->nr_total_credits);
+ 
+@@ -780,7 +776,6 @@ int vas_reconfig_capabilties(u8 type)
+ 
+ out:
+ 	mutex_unlock(&vas_pseries_mutex);
+-	kfree(hv_caps);
+ 	return rc;
+ }
  /*
-  * The hypervisor reduces the available credits if the LPAR lost core. It
-  * means the excessive windows should not be active and the user space
-@@ -673,7 +755,14 @@ static int vas_reconfig_capabilties(u8 type)
- 	 * closed / reopened. Hold the vas_pseries_mutex so that the
- 	 * the user space can not open new windows.
+@@ -822,9 +817,8 @@ static struct notifier_block pseries_vas_nb = {
+ 
+ static int __init pseries_vas_init(void)
+ {
+-	struct hv_vas_cop_feat_caps *hv_cop_caps;
+ 	struct hv_vas_all_caps *hv_caps;
+-	int rc;
++	int rc = 0;
+ 
+ 	/*
+ 	 * Linux supports user space COPY/PASTE only with Radix
+@@ -850,38 +844,37 @@ static int __init pseries_vas_init(void)
+ 
+ 	sysfs_pseries_vas_init(&caps_all);
+ 
+-	hv_cop_caps = kmalloc(sizeof(*hv_cop_caps), GFP_KERNEL);
+-	if (!hv_cop_caps) {
+-		rc = -ENOMEM;
+-		goto out;
+-	}
+ 	/*
+ 	 * QOS capabilities available
  	 */
--	if (old_nr_creds >  new_nr_creds) {
-+	if (old_nr_creds <  new_nr_creds) {
-+		/*
-+		 * If the existing target credits is less than the new
-+		 * target, reopen windows if they are closed due to
-+		 * the previous DLPAR (core removal).
-+		 */
-+		rc = reconfig_open_windows(vcaps, new_nr_creds - old_nr_creds);
+ 	if (caps_all.feat_type & VAS_GZIP_QOS_FEAT_BIT) {
+ 		rc = get_vas_capabilities(VAS_GZIP_QOS_FEAT,
+-					  VAS_GZIP_QOS_FEAT_TYPE, hv_cop_caps);
++					  VAS_GZIP_QOS_FEAT_TYPE, &hv_cop_caps);
+ 
+ 		if (rc)
+-			goto out_cop;
++			goto out;
+ 	}
+ 	/*
+ 	 * Default capabilities available
+ 	 */
+-	if (caps_all.feat_type & VAS_GZIP_DEF_FEAT_BIT) {
++	if (caps_all.feat_type & VAS_GZIP_DEF_FEAT_BIT)
+ 		rc = get_vas_capabilities(VAS_GZIP_DEF_FEAT,
+-					  VAS_GZIP_DEF_FEAT_TYPE, hv_cop_caps);
+-		if (rc)
+-			goto out_cop;
+-	}
++					  VAS_GZIP_DEF_FEAT_TYPE, &hv_cop_caps);
+ 
+-	if (copypaste_feat && firmware_has_feature(FW_FEATURE_LPAR))
+-		of_reconfig_notifier_register(&pseries_vas_nb);
++	if (!rc && copypaste_feat) {
++		if (firmware_has_feature(FW_FEATURE_LPAR))
++			of_reconfig_notifier_register(&pseries_vas_nb);
+ 
+-	pr_info("GZIP feature is available\n");
++		pr_info("GZIP feature is available\n");
 +	} else {
- 		/*
- 		 * # active windows is more than new LPAR available
- 		 * credits. So close the excessive windows.
++		/*
++		 * Should not happen, but only when get default
++		 * capabilities HCALL failed. So disable copy paste
++		 * feature.
++		 */
++		copypaste_feat = false;
++	}
+ 
+-out_cop:
+-	kfree(hv_cop_caps);
+ out:
+ 	kfree(hv_caps);
+ 	return rc;
 -- 
 2.27.0
 
