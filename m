@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0295A4C6933
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 11:59:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CC24C6937
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 11:59:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K6cnn0zs5z3gHC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 21:59:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K6cpC6rdjz3c4k
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Feb 2022 21:59:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -14,20 +14,20 @@ Authentication-Results: lists.ozlabs.org;
  (client-ip=217.140.110.172; helo=foss.arm.com;
  envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4K6cdt50qLz3f57
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 21:52:18 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4K6cf31nZfz3f6b
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Feb 2022 21:52:26 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 10EEE11FB;
- Mon, 28 Feb 2022 02:52:18 -0800 (PST)
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8AD69106F;
+ Mon, 28 Feb 2022 02:52:26 -0800 (PST)
 Received: from p8cg001049571a15.arm.com (unknown [10.163.47.185])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 863F03F73D;
- Mon, 28 Feb 2022 02:52:10 -0800 (PST)
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A4B533F73D;
+ Mon, 28 Feb 2022 02:52:18 -0800 (PST)
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-mm@kvack.org,
 	akpm@linux-foundation.org
-Subject: [PATCH V3 25/30] nios2/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-Date: Mon, 28 Feb 2022 16:17:48 +0530
-Message-Id: <1646045273-9343-26-git-send-email-anshuman.khandual@arm.com>
+Subject: [PATCH V3 26/30] hexagon/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+Date: Mon, 28 Feb 2022 16:17:49 +0530
+Message-Id: <1646045273-9343-27-git-send-email-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1646045273-9343-1-git-send-email-anshuman.khandual@arm.com>
 References: <1646045273-9343-1-git-send-email-anshuman.khandual@arm.com>
@@ -45,14 +45,14 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
  linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
  linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-csky@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- geert@linux-m68k.org, linux-snps-arc@lists.infradead.org,
- linux-xtensa@linux-xtensa.org, Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
- openrisc@lists.librecores.org, linux-arm-kernel@lists.infradead.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Dinh Nguyen <dinguyen@kernel.org>, linux-alpha@vger.kernel.org,
+ linux-s390@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
+ linux-hexagon@vger.kernel.org, linux-csky@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, geert@linux-m68k.org,
+ linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+ Anshuman Khandual <anshuman.khandual@arm.com>, linux-um@lists.infradead.org,
+ linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
@@ -62,113 +62,134 @@ This defines and exports a platform specific custom vm_get_page_prot() via
 subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
 macros can be dropped which are no longer needed.
 
-Cc: Dinh Nguyen <dinguyen@kernel.org>
+Cc: Brian Cain <bcain@codeaurora.org>
+Cc: linux-hexagon@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/nios2/Kconfig               |  1 +
- arch/nios2/include/asm/pgtable.h | 24 ----------------
- arch/nios2/mm/init.c             | 47 ++++++++++++++++++++++++++++++++
- 3 files changed, 48 insertions(+), 24 deletions(-)
+ arch/hexagon/Kconfig               |  1 +
+ arch/hexagon/include/asm/pgtable.h | 24 -----------
+ arch/hexagon/mm/init.c             | 67 ++++++++++++++++++++++++++++++
+ 3 files changed, 68 insertions(+), 24 deletions(-)
 
-diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
-index 33fd06f5fa41..85a58a357a3b 100644
---- a/arch/nios2/Kconfig
-+++ b/arch/nios2/Kconfig
-@@ -6,6 +6,7 @@ config NIOS2
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
+diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
+index 15dd8f38b698..cdc5df32a1e3 100644
+--- a/arch/hexagon/Kconfig
++++ b/arch/hexagon/Kconfig
+@@ -6,6 +6,7 @@ config HEXAGON
+ 	def_bool y
+ 	select ARCH_32BIT_OFF_T
  	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
- 	select ARCH_HAS_DMA_SET_UNCACHED
 +	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_NO_SWAP
- 	select COMMON_CLK
- 	select TIMER_OF
-diff --git a/arch/nios2/include/asm/pgtable.h b/arch/nios2/include/asm/pgtable.h
-index 4a995fa628ee..ba3f9822c0b3 100644
---- a/arch/nios2/include/asm/pgtable.h
-+++ b/arch/nios2/include/asm/pgtable.h
-@@ -34,30 +34,6 @@ struct mm_struct;
- 				((x) ? _PAGE_EXEC : 0) |		\
- 				((r) ? _PAGE_READ : 0) |		\
- 				((w) ? _PAGE_WRITE : 0))
--/*
-- * These are the macros that generic kernel code needs
-- * (to populate protection_map[])
-- */
--
--/* Remove W bit on private pages for COW support */
--#define __P000	MKP(0, 0, 0)
--#define __P001	MKP(0, 0, 1)
--#define __P010	MKP(0, 0, 0)	/* COW */
--#define __P011	MKP(0, 0, 1)	/* COW */
--#define __P100	MKP(1, 0, 0)
--#define __P101	MKP(1, 0, 1)
--#define __P110	MKP(1, 0, 0)	/* COW */
--#define __P111	MKP(1, 0, 1)	/* COW */
--
--/* Shared pages can have exact HW mapping */
--#define __S000	MKP(0, 0, 0)
--#define __S001	MKP(0, 0, 1)
--#define __S010	MKP(0, 1, 0)
--#define __S011	MKP(0, 1, 1)
--#define __S100	MKP(1, 0, 0)
--#define __S101	MKP(1, 0, 1)
--#define __S110	MKP(1, 1, 0)
--#define __S111	MKP(1, 1, 1)
+ 	select ARCH_NO_PREEMPT
+ 	select DMA_GLOBAL_POOL
+ 	# Other pending projects/to-do items.
+diff --git a/arch/hexagon/include/asm/pgtable.h b/arch/hexagon/include/asm/pgtable.h
+index 18cd6ea9ab23..5eceddfe013d 100644
+--- a/arch/hexagon/include/asm/pgtable.h
++++ b/arch/hexagon/include/asm/pgtable.h
+@@ -127,31 +127,7 @@ extern unsigned long _dflt_cache_att;
+ #define CACHEDEF	(CACHE_DEFAULT << 6)
  
- /* Used all over the kernel */
- #define PAGE_KERNEL __pgprot(_PAGE_PRESENT | _PAGE_CACHED | _PAGE_READ | \
-diff --git a/arch/nios2/mm/init.c b/arch/nios2/mm/init.c
-index 613fcaa5988a..e867f5d85580 100644
---- a/arch/nios2/mm/init.c
-+++ b/arch/nios2/mm/init.c
-@@ -124,3 +124,50 @@ const char *arch_vma_name(struct vm_area_struct *vma)
- {
- 	return (vma->vm_start == KUSER_BASE) ? "[kuser]" : NULL;
+ /* Private (copy-on-write) page protections. */
+-#define __P000 __pgprot(_PAGE_PRESENT | _PAGE_USER | CACHEDEF)
+-#define __P001 __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_READ | CACHEDEF)
+-#define __P010 __P000	/* Write-only copy-on-write */
+-#define __P011 __P001	/* Read/Write copy-on-write */
+-#define __P100 __pgprot(_PAGE_PRESENT | _PAGE_USER | \
+-			_PAGE_EXECUTE | CACHEDEF)
+-#define __P101 __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_EXECUTE | \
+-			_PAGE_READ | CACHEDEF)
+-#define __P110 __P100	/* Write/execute copy-on-write */
+-#define __P111 __P101	/* Read/Write/Execute, copy-on-write */
+-
+ /* Shared page protections. */
+-#define __S000 __P000
+-#define __S001 __P001
+-#define __S010 __pgprot(_PAGE_PRESENT | _PAGE_USER | \
+-			_PAGE_WRITE | CACHEDEF)
+-#define __S011 __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_READ | \
+-			_PAGE_WRITE | CACHEDEF)
+-#define __S100 __pgprot(_PAGE_PRESENT | _PAGE_USER | \
+-			_PAGE_EXECUTE | CACHEDEF)
+-#define __S101 __P101
+-#define __S110 __pgprot(_PAGE_PRESENT | _PAGE_USER | \
+-			_PAGE_EXECUTE | _PAGE_WRITE | CACHEDEF)
+-#define __S111 __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_READ | \
+-			_PAGE_EXECUTE | _PAGE_WRITE | CACHEDEF)
+ 
+ extern pgd_t swapper_pg_dir[PTRS_PER_PGD];  /* located in head.S */
+ 
+diff --git a/arch/hexagon/mm/init.c b/arch/hexagon/mm/init.c
+index f01e91e10d95..b53595fc4103 100644
+--- a/arch/hexagon/mm/init.c
++++ b/arch/hexagon/mm/init.c
+@@ -236,3 +236,70 @@ void __init setup_arch_memory(void)
+ 	 *  which is called by start_kernel() later on in the process
+ 	 */
  }
 +
 +pgprot_t vm_get_page_prot(unsigned long vm_flags)
 +{
 +	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
-+	/* Remove W bit on private pages for COW support */
 +	case VM_NONE:
-+		return MKP(0, 0, 0);
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				CACHEDEF);
 +	case VM_READ:
-+		return MKP(0, 0, 1);
-+	/* COW */
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_READ | CACHEDEF);
++	/* Write-only copy-on-write */
 +	case VM_WRITE:
-+		return MKP(0, 0, 0);
-+	/* COW */
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				CACHEDEF);
++	/* Read/Write copy-on-write */
 +	case VM_WRITE | VM_READ:
-+		return MKP(0, 0, 1);
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_READ | CACHEDEF);
 +	case VM_EXEC:
-+		return MKP(1, 0, 0);
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_EXECUTE | CACHEDEF);
 +	case VM_EXEC | VM_READ:
-+		return MKP(1, 0, 1);
-+	/* COW */
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_EXECUTE | _PAGE_READ |
++				CACHEDEF);
++	/* Write/execute copy-on-write */
 +	case VM_EXEC | VM_WRITE:
-+		return MKP(1, 0, 0);
-+	/* COW */
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_EXECUTE | CACHEDEF);
++	/* Read/Write/Execute, copy-on-write */
 +	case VM_EXEC | VM_WRITE | VM_READ:
-+		return MKP(1, 0, 1);
-+	/* Shared pages can have exact HW mapping */
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_EXECUTE | _PAGE_READ |
++				CACHEDEF);
 +	case VM_SHARED:
-+		return MKP(0, 0, 0);
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				CACHEDEF);
 +	case VM_SHARED | VM_READ:
-+		return MKP(0, 0, 1);
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_READ | CACHEDEF);
 +	case VM_SHARED | VM_WRITE:
-+		return MKP(0, 1, 0);
++		return  __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_WRITE | CACHEDEF);
 +	case VM_SHARED | VM_WRITE | VM_READ:
-+		return MKP(0, 1, 1);
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_READ | _PAGE_WRITE |
++				CACHEDEF);
 +	case VM_SHARED | VM_EXEC:
-+		return MKP(1, 0, 0);
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_EXECUTE | CACHEDEF);
 +	case VM_SHARED | VM_EXEC | VM_READ:
-+		return MKP(1, 0, 1);
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_EXECUTE | _PAGE_READ |
++				CACHEDEF);
 +	case VM_SHARED | VM_EXEC | VM_WRITE:
-+		return MKP(1, 1, 0);
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_EXECUTE | _PAGE_WRITE |
++				CACHEDEF);
 +	case VM_SHARED | VM_EXEC | VM_WRITE | VM_READ:
-+		return MKP(1, 1, 1);
++		return __pgprot(_PAGE_PRESENT | _PAGE_USER |
++				_PAGE_READ | _PAGE_EXECUTE |
++				_PAGE_WRITE | CACHEDEF);
 +	default:
 +		BUILD_BUG();
 +	}
