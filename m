@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A31D4C8A22
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 11:57:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E87394C8A28
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 11:57:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K7Dhs3SDfz3f0n
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 21:57:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K7Djh01PZz3f55
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 21:57:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=oQNBKGhM;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=d0GW7Tw1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,33 +19,33 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=oQNBKGhM; 
+ header.s=bombadil.20210309 header.b=d0GW7Tw1; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K7Dd55BtNz3btW
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Mar 2022 21:53:45 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K7DdB5grRz3btD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Mar 2022 21:53:50 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=fw5CJGRWfS2qx4RLqYxqctHTinwQ2YN+lYk2/GZzFw8=; b=oQNBKGhMS01GkNaiykQiJM1eLd
- vRESuDJanvP54R4ITyrRLSUuGPOceoi6GtUCJmeVTcVbKIb6HTNWTn8kqxugSvDOVcDgZUsHy96pd
- dby66LZxGUvs/10nECjNWAMAguYvHKX/psdAJm7rWIlvynPLP9IcrWBmaDFf8HN+9J23CvC37TQaD
- sgY0/HEmNw6l5ck0Svp0ox8NUlX7Wa8dRG069/BR78zpB4VwRhg6mko9moUsppjv1oXN0aPQQse2j
- pJlWW5h93gf9TjjeUODJPDnwEXoacsoZV+pfZoJ6c/3jXpMoyweSQk7ch/UNQaDSu053oytWfCM3Q
- vHimhqeg==;
+ bh=2LuLtS1efSBZ06JRKs3rwu/XDIHFFEkeBlwKrISdqYE=; b=d0GW7Tw12y7oHEGfOc2+6gvXWU
+ gth40xP+Gz9285nWvmrnNehOfvBSMx2xt0QdApjuW42I7eWQpyyKL1pXI0s4WzqImgyuzcAb3j9jf
+ +SISwsedK7cWJhFGHhjm5c7XuU8iQf1QTq0VDFeYk6ONhkhoWSgOm7iaWp5zedDcQjWUChB8dASDc
+ /d0vPlBfgeQKsF5aXF9OIW8TwXU1Ixv68xdkCCkTrkwjXeTn7qylYSEif1BWWjiKHxYdVnXPCzfPN
+ xdWlLnFGt6Y79j4yHp/oknbXTJhnyfXhZ8B9sm7KrK9dWl/oJA9n8pQJhROaLbLywWs6qg9KLS6Un
+ cnAd3l4Q==;
 Received: from [2.53.44.23] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nP08L-00GD2p-Cd; Tue, 01 Mar 2022 10:53:34 +0000
+ id 1nP08O-00GD52-Sv; Tue, 01 Mar 2022 10:53:37 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: iommu@lists.linux-foundation.org
-Subject: [PATCH 05/12] swiotlb: pass a gfp_mask argument to swiotlb_init_late
-Date: Tue,  1 Mar 2022 12:53:04 +0200
-Message-Id: <20220301105311.885699-6-hch@lst.de>
+Subject: [PATCH 06/12] MIPS/octeon: use swiotlb_init instead of open coding it
+Date: Tue,  1 Mar 2022 12:53:05 +0200
+Message-Id: <20220301105311.885699-7-hch@lst.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220301105311.885699-1-hch@lst.de>
 References: <20220301105311.885699-1-hch@lst.de>
@@ -79,65 +79,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Let the caller chose a zone to allocate from.  This will be used
-later on by the xen-swiotlb initialization on arm.
+Use the generic swiotlb initialization helper instead of open coding it.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- arch/x86/pci/sta2x11-fixup.c | 2 +-
- include/linux/swiotlb.h      | 2 +-
- kernel/dma/swiotlb.c         | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/cavium-octeon/dma-octeon.c | 15 ++-------------
+ arch/mips/pci/pci-octeon.c           |  2 +-
+ 2 files changed, 3 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/pci/sta2x11-fixup.c b/arch/x86/pci/sta2x11-fixup.c
-index e0c039a75b2db..c7e6faf59a861 100644
---- a/arch/x86/pci/sta2x11-fixup.c
-+++ b/arch/x86/pci/sta2x11-fixup.c
-@@ -57,7 +57,7 @@ static void sta2x11_new_instance(struct pci_dev *pdev)
- 		int size = STA2X11_SWIOTLB_SIZE;
- 		/* First instance: register your own swiotlb area */
- 		dev_info(&pdev->dev, "Using SWIOTLB (size %i)\n", size);
--		if (swiotlb_init_late(size))
-+		if (swiotlb_init_late(size, GFP_DMA))
- 			dev_emerg(&pdev->dev, "init swiotlb failed\n");
- 	}
- 	list_add(&instance->list, &sta2x11_instance_list);
-diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
-index b48b26bfa0edb..1befd6b2ccf5e 100644
---- a/include/linux/swiotlb.h
-+++ b/include/linux/swiotlb.h
-@@ -40,7 +40,7 @@ extern void swiotlb_init(int verbose);
- int swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose);
- unsigned long swiotlb_size_or_default(void);
- extern int swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs);
--int swiotlb_init_late(size_t size);
-+int swiotlb_init_late(size_t size, gfp_t gfp_mask);
- extern void __init swiotlb_update_mem_attributes(void);
+diff --git a/arch/mips/cavium-octeon/dma-octeon.c b/arch/mips/cavium-octeon/dma-octeon.c
+index df70308db0e69..fb7547e217263 100644
+--- a/arch/mips/cavium-octeon/dma-octeon.c
++++ b/arch/mips/cavium-octeon/dma-octeon.c
+@@ -186,15 +186,12 @@ phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr)
+ 	return daddr;
+ }
  
- phys_addr_t swiotlb_tbl_map_single(struct device *hwdev, phys_addr_t phys,
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 0b1992c355f36..9a38ea3a46e9f 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -290,7 +290,7 @@ swiotlb_init(int verbose)
-  * initialize the swiotlb later using the slab allocator if needed.
-  * This should be just like above, but with some error catching.
-  */
--int swiotlb_init_late(size_t size)
-+int swiotlb_init_late(size_t size, gfp_t gfp_mask)
+-char *octeon_swiotlb;
+-
+ void __init plat_swiotlb_setup(void)
  {
- 	unsigned long nslabs = ALIGN(size >> IO_TLB_SHIFT, IO_TLB_SEGSIZE);
- 	unsigned long bytes;
-@@ -309,7 +309,7 @@ int swiotlb_init_late(size_t size)
- 	bytes = nslabs << IO_TLB_SHIFT;
+ 	phys_addr_t start, end;
+ 	phys_addr_t max_addr;
+ 	phys_addr_t addr_size;
+ 	size_t swiotlbsize;
+-	unsigned long swiotlb_nslabs;
+ 	u64 i;
  
- 	while ((SLABS_PER_PAGE << order) > IO_TLB_MIN_SLABS) {
--		vstart = (void *)__get_free_pages(GFP_DMA | __GFP_NOWARN,
-+		vstart = (void *)__get_free_pages(gfp_mask | __GFP_NOWARN,
- 						  order);
- 		if (vstart)
- 			break;
+ 	max_addr = 0;
+@@ -236,15 +233,7 @@ void __init plat_swiotlb_setup(void)
+ 	if (OCTEON_IS_OCTEON2() && max_addr >= 0x100000000ul)
+ 		swiotlbsize = 64 * (1<<20);
+ #endif
+-	swiotlb_nslabs = swiotlbsize >> IO_TLB_SHIFT;
+-	swiotlb_nslabs = ALIGN(swiotlb_nslabs, IO_TLB_SEGSIZE);
+-	swiotlbsize = swiotlb_nslabs << IO_TLB_SHIFT;
+-
+-	octeon_swiotlb = memblock_alloc_low(swiotlbsize, PAGE_SIZE);
+-	if (!octeon_swiotlb)
+-		panic("%s: Failed to allocate %zu bytes align=%lx\n",
+-		      __func__, swiotlbsize, PAGE_SIZE);
+ 
+-	if (swiotlb_init_with_tbl(octeon_swiotlb, swiotlb_nslabs, 1) == -ENOMEM)
+-		panic("Cannot allocate SWIOTLB buffer");
++	swiotlb_adjust_size(swiotlbsize);
++	swiotlb_init(1);
+ }
+diff --git a/arch/mips/pci/pci-octeon.c b/arch/mips/pci/pci-octeon.c
+index fc29b85cfa926..e457a18cbdc59 100644
+--- a/arch/mips/pci/pci-octeon.c
++++ b/arch/mips/pci/pci-octeon.c
+@@ -664,7 +664,7 @@ static int __init octeon_pci_setup(void)
+ 
+ 		/* BAR1 movable regions contiguous to cover the swiotlb */
+ 		octeon_bar1_pci_phys =
+-			virt_to_phys(octeon_swiotlb) & ~((1ull << 22) - 1);
++			io_tlb_default_mem.start & ~((1ull << 22) - 1);
+ 
+ 		for (index = 0; index < 32; index++) {
+ 			union cvmx_pci_bar1_indexx bar1_index;
 -- 
 2.30.2
 
