@@ -1,72 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B707B4C93A4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 19:56:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7534C93D6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 20:02:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K7RKm5b8Vz3bqt
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 05:56:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K7RSf10q4z3bxm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 06:02:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=ZEWbFFu3;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=G2U9nPc+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::52b;
- helo=mail-ed1-x52b.google.com; envelope-from=torvalds@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=ZEWbFFu3; 
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=G2U9nPc+; 
  dkim-atps=neutral
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com
- [IPv6:2a00:1450:4864:20::52b])
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K7RK805Dhz30KZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Mar 2022 05:55:39 +1100 (AEDT)
-Received: by mail-ed1-x52b.google.com with SMTP id bq11so23285667edb.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Mar 2022 10:55:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=JZw99KMpsKBs3Ab/LBNeIPMebXALTITXobBfJpN/EsI=;
- b=ZEWbFFu3eWrZxUgaaScwD4ZJ//Z7mV4SGMyACB20WwCKEMFGKIBMMEXVkM4kZXdOyd
- EokMKBVyAcoYChV/SvtOh5q5h0Yafm3wlsC3jCGOeoM0h4pn550KTbE+/sUn3z3m8p0V
- ZL0gG9ZTrYCOlyUURTCDAGrluijISoqXbB1wA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=JZw99KMpsKBs3Ab/LBNeIPMebXALTITXobBfJpN/EsI=;
- b=hM03OSJYc0U21JRgWJJk+Dhr24lYLQMa0p+7JIQ/VocLZ4XniIsXuM1VYe6gZLyR3s
- ubNtaY+Lewhc+bZTnlTgulYdthxmczPVdUE/N6B/Nss78sG3moLxMyo3gqIIo94LmWhf
- HDv39JqIkH8Vj4lqZQpPkEFZyrt/sPxhv0JKDMRQEDfiO9222clQnZwhABagsoPdgW52
- UoWI/Y2SOBSWngl20LACV3vaK+Am9dC1rZmgvzc6pms2I876zrbjxDCyD9eIu6UjCeoQ
- k6PZ3yGdzTgTJTz2CEw7rLuoXBBny7pAS4zxLdWUlZVCfF1kN332si3EBYMt+HZQ94GI
- YNDg==
-X-Gm-Message-State: AOAM5310dtDr5ShVWjyq1JizPwn9q4reYRDMul0U0Tij4EQLi4D0qOtm
- 6wwx9pLw3JgydgsPy2jtMc62vAR66ate2HGCsH8=
-X-Google-Smtp-Source: ABdhPJzjO0fpFX3AuE4bxqckTlEA1iIYYl7+8rZ/TBMgCmJ/eHeO5Z6tXy4/ddqcRnDII6m+WZUqSg==
-X-Received: by 2002:a50:fb19:0:b0:404:eb52:62cb with SMTP id
- d25-20020a50fb19000000b00404eb5262cbmr25599491edq.363.1646160936336; 
- Tue, 01 Mar 2022 10:55:36 -0800 (PST)
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com.
- [209.85.218.44]) by smtp.gmail.com with ESMTPSA id
- by10-20020a0564021b0a00b00412ddfc6d12sm7639261edb.0.2022.03.01.10.55.36
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 01 Mar 2022 10:55:36 -0800 (PST)
-Received: by mail-ej1-f44.google.com with SMTP id qx21so33329139ejb.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Mar 2022 10:55:36 -0800 (PST)
-X-Received: by 2002:a05:6512:2033:b0:443:3d49:dac with SMTP id
- s19-20020a056512203300b004433d490dacmr16440784lfs.52.1646160451271; Tue, 01
- Mar 2022 10:47:31 -0800 (PST)
-MIME-Version: 1.0
-References: <20220228110822.491923-1-jakobkoschel@gmail.com>
- <20220228110822.491923-3-jakobkoschel@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K7RRw02VFz30hR;
+ Wed,  2 Mar 2022 06:01:28 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=/tBazeosVX7n1CPUUwf6PzIu6vjJVnHyHOkfjsv2zKo=; b=G2U9nPc+cKcx95Z9ga5OZXchNz
+ blxZ0iNm1M+uKQvG5JCjwfBWD2Vqk/JNrOrkTtzRMLvR552E7A4wIdnYTrEx28aAxcIhZIBDk2OhJ
+ 2mC2hcK77WGdKfwnLWC9xIRW2naQmlD6pg6blozExF50oYyrluLyuDKCR05dvj4lJCUJucJUHaufH
+ 36UHt4On3fRFJ0YJCkBdWklX7NM/KDi/YeSecU8YxtgD7/WN7ClqH8GnFhU3JjJVUQnhYo8rNzSqS
+ E0UBK85SGI9bRQfxw/IXmOle17eRFr0eUMCl1eNz3aBOX0q+MyaB3hvtdfAdZV9rP6eZ0vdNCYptA
+ LfRWRgDg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red
+ Hat Linux)) id 1nP7kD-009r7Z-Q4; Tue, 01 Mar 2022 19:01:09 +0000
+Date: Tue, 1 Mar 2022 19:01:09 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
+ as a ptr
+Message-ID: <Yh5tdcNNHw/z7VRZ@casper.infradead.org>
+References: <20220228110822.491923-3-jakobkoschel@gmail.com>
  <2e4e95d6-f6c9-a188-e1cd-b1eae465562a@amd.com>
  <CAHk-=wgQps58DPEOe4y5cTh5oE9EdNTWRLXzgMiETc+mFX7jzw@mail.gmail.com>
  <CAHk-=wj8fkosQ7=bps5K+DDazBXk=ypfn49A0sEq+7-nZnyfXA@mail.gmail.com>
@@ -76,15 +55,10 @@ References: <20220228110822.491923-1-jakobkoschel@gmail.com>
  <Yh1aMm3hFe/j9ZbI@casper.infradead.org>
  <CAHk-=wi0gSUMBr2SVF01Gy1xC1w1iGtJT5ztju9BPWYKjdh+NA@mail.gmail.com>
  <202203011008.AA0B5A2D@keescook>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <202203011008.AA0B5A2D@keescook>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 1 Mar 2022 10:47:14 -0800
-X-Gmail-Original-Message-ID: <CAHk-=whccSm8HKANQbomYrF8cqBa1wUi1dvUEUc3Nf=WoX3WHQ@mail.gmail.com>
-Message-ID: <CAHk-=whccSm8HKANQbomYrF8cqBa1wUi1dvUEUc3Nf=WoX3WHQ@mail.gmail.com>
-Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-To: Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,10 +75,9 @@ Cc: linux-wireless <linux-wireless@vger.kernel.org>,
  "Gustavo A. R. Silva" <gustavo@embeddedor.com>, linux-iio@vger.kernel.org,
  nouveau@lists.freedesktop.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
  dri-devel <dri-devel@lists.freedesktop.org>,
- Cristiano Giuffrida <c.giuffrida@vu.nl>, Matthew Wilcox <willy@infradead.org>,
+ Cristiano Giuffrida <c.giuffrida@vu.nl>, "Bos, H.J." <h.j.bos@vu.nl>,
  linux1394-devel@lists.sourceforge.net, drbd-dev@lists.linbit.com,
  linux-arch <linux-arch@vger.kernel.org>, CIFS <linux-cifs@vger.kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  linux-aspeed@lists.ozlabs.org, linux-scsi <linux-scsi@vger.kernel.org>,
  linux-rdma <linux-rdma@vger.kernel.org>, linux-staging@lists.linux.dev,
  amd-gfx list <amd-gfx@lists.freedesktop.org>, Jason Gunthorpe <jgg@ziepe.ca>,
@@ -113,13 +86,15 @@ Cc: linux-wireless <linux-wireless@vger.kernel.org>,
  Dan Carpenter <dan.carpenter@oracle.com>,
  Linux Media Mailing List <linux-media@vger.kernel.org>,
  Arnd Bergman <arnd@arndb.de>, Linux PM <linux-pm@vger.kernel.org>,
- intel-gfx <intel-gfx@lists.freedesktop.org>, "Bos, H.J." <h.j.bos@vu.nl>,
+ intel-gfx <intel-gfx@lists.freedesktop.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
  Nathan Chancellor <nathan@kernel.org>, dma <dmaengine@vger.kernel.org>,
  Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
  Jakob Koschel <jakobkoschel@gmail.com>, v9fs-developer@lists.sourceforge.net,
  linux-tegra <linux-tegra@vger.kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>,
- Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Linux ARM <linux-arm-kernel@lists.infradead.org>, linux-sgx@vger.kernel.org,
  linux-block <linux-block@vger.kernel.org>, Netdev <netdev@vger.kernel.org>,
  linux-usb@vger.kernel.org, samba-technical@lists.samba.org,
@@ -129,71 +104,269 @@ Cc: linux-wireless <linux-wireless@vger.kernel.org>,
  Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
  linux-fsdevel <linux-fsdevel@vger.kernel.org>,
  linux-mediatek@lists.infradead.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
  Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 1, 2022 at 10:14 AM Kees Cook <keescook@chromium.org> wrote:
->
+On Tue, Mar 01, 2022 at 10:14:07AM -0800, Kees Cook wrote:
+> On Mon, Feb 28, 2022 at 04:45:11PM -0800, Linus Torvalds wrote:
+> > Really. The "-Wshadow doesn't work on the kernel" is not some new
+> > issue, because you have to do completely insane things to the source
+> > code to enable it.
+> 
 > The first big glitch with -Wshadow was with shadowed global variables.
 > GCC 4.8 fixed that, but it still yells about shadowed functions. What
-> _almost_ works is -Wshadow=local.
+> _almost_ works is -Wshadow=local. At first glace, all the warnings
+> look solvable, but then one will eventually discover __wait_event()
+> and associated macros that mix when and how deeply it intentionally
+> shadows variables. :)
 
-Heh. Yeah, I just have long memories of "-Wshadow was a disaster". You
-looked into the details.
+Well, that's just disgusting.  Macros fundamentally shouldn't be
+referring to things that aren't in their arguments.  The first step to
+cleaning this up is ...
 
-> Another way to try to catch misused shadow variables is
-> -Wunused-but-set-varible, but it, too, has tons of false positives.
+I'll take a look at the rest of cleaning this up soon.
 
-That on the face of it should be an easy warning to get technically
-right for a compiler.
+From 28ffe35d56223d4242b915832299e5acc926737e Mon Sep 17 00:00:00 2001
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Date: Tue, 1 Mar 2022 13:47:07 -0500
+Subject: [PATCH] wait: Parameterize the return variable to ___wait_event()
 
-So I assume the "false positives" are simply because we end up having
-various variables that really don't end up being used - and
-"intentionally" so).
+Macros should not refer to variables which aren't in their arguments.
+Pass the name from its callers.
 
-Or rather, they might only be used under some config option - perhaps
-the use is even syntactically there and parsed, but the compiler
-notices that it's turned off under some
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ include/linux/swait.h    | 12 ++++++------
+ include/linux/wait.h     | 32 ++++++++++++++++----------------
+ include/linux/wait_bit.h |  4 ++--
+ 3 files changed, 24 insertions(+), 24 deletions(-)
 
-        if (IS_ENABLED(..))
+diff --git a/include/linux/swait.h b/include/linux/swait.h
+index 6a8c22b8c2a5..5e8e9b13be2d 100644
+--- a/include/linux/swait.h
++++ b/include/linux/swait.h
+@@ -191,14 +191,14 @@ do {									\
+ } while (0)
+ 
+ #define __swait_event_timeout(wq, condition, timeout)			\
+-	___swait_event(wq, ___wait_cond_timeout(condition),		\
++	___swait_event(wq, ___wait_cond_timeout(condition, __ret),	\
+ 		      TASK_UNINTERRUPTIBLE, timeout,			\
+ 		      __ret = schedule_timeout(__ret))
+ 
+ #define swait_event_timeout_exclusive(wq, condition, timeout)		\
+ ({									\
+ 	long __ret = timeout;						\
+-	if (!___wait_cond_timeout(condition))				\
++	if (!___wait_cond_timeout(condition, __ret))			\
+ 		__ret = __swait_event_timeout(wq, condition, timeout);	\
+ 	__ret;								\
+ })
+@@ -216,14 +216,14 @@ do {									\
+ })
+ 
+ #define __swait_event_interruptible_timeout(wq, condition, timeout)	\
+-	___swait_event(wq, ___wait_cond_timeout(condition),		\
++	___swait_event(wq, ___wait_cond_timeout(condition, __ret),	\
+ 		      TASK_INTERRUPTIBLE, timeout,			\
+ 		      __ret = schedule_timeout(__ret))
+ 
+ #define swait_event_interruptible_timeout_exclusive(wq, condition, timeout)\
+ ({									\
+ 	long __ret = timeout;						\
+-	if (!___wait_cond_timeout(condition))				\
++	if (!___wait_cond_timeout(condition, __ret))			\
+ 		__ret = __swait_event_interruptible_timeout(wq,		\
+ 						condition, timeout);	\
+ 	__ret;								\
+@@ -252,7 +252,7 @@ do {									\
+ } while (0)
+ 
+ #define __swait_event_idle_timeout(wq, condition, timeout)		\
+-	___swait_event(wq, ___wait_cond_timeout(condition),		\
++	___swait_event(wq, ___wait_cond_timeout(condition, __ret),	\
+ 		       TASK_IDLE, timeout,				\
+ 		       __ret = schedule_timeout(__ret))
+ 
+@@ -278,7 +278,7 @@ do {									\
+ #define swait_event_idle_timeout_exclusive(wq, condition, timeout)	\
+ ({									\
+ 	long __ret = timeout;						\
+-	if (!___wait_cond_timeout(condition))				\
++	if (!___wait_cond_timeout(condition, __ret))			\
+ 		__ret = __swait_event_idle_timeout(wq,			\
+ 						   condition, timeout);	\
+ 	__ret;								\
+diff --git a/include/linux/wait.h b/include/linux/wait.h
+index 851e07da2583..890cce3c0f2e 100644
+--- a/include/linux/wait.h
++++ b/include/linux/wait.h
+@@ -271,7 +271,7 @@ static inline void wake_up_pollfree(struct wait_queue_head *wq_head)
+ 		__wake_up_pollfree(wq_head);
+ }
+ 
+-#define ___wait_cond_timeout(condition)						\
++#define ___wait_cond_timeout(condition, __ret)					\
+ ({										\
+ 	bool __cond = (condition);						\
+ 	if (__cond && !__ret)							\
+@@ -386,7 +386,7 @@ do {										\
+ })
+ 
+ #define __wait_event_timeout(wq_head, condition, timeout)			\
+-	___wait_event(wq_head, ___wait_cond_timeout(condition),			\
++	___wait_event(wq_head, ___wait_cond_timeout(condition, __ret),		\
+ 		      TASK_UNINTERRUPTIBLE, 0, timeout,				\
+ 		      __ret = schedule_timeout(__ret))
+ 
+@@ -413,13 +413,13 @@ do {										\
+ ({										\
+ 	long __ret = timeout;							\
+ 	might_sleep();								\
+-	if (!___wait_cond_timeout(condition))					\
++	if (!___wait_cond_timeout(condition, __ret))				\
+ 		__ret = __wait_event_timeout(wq_head, condition, timeout);	\
+ 	__ret;									\
+ })
+ 
+ #define __wait_event_freezable_timeout(wq_head, condition, timeout)		\
+-	___wait_event(wq_head, ___wait_cond_timeout(condition),			\
++	___wait_event(wq_head, ___wait_cond_timeout(condition, __ret),		\
+ 		      TASK_INTERRUPTIBLE, 0, timeout,				\
+ 		      __ret = freezable_schedule_timeout(__ret))
+ 
+@@ -431,7 +431,7 @@ do {										\
+ ({										\
+ 	long __ret = timeout;							\
+ 	might_sleep();								\
+-	if (!___wait_cond_timeout(condition))					\
++	if (!___wait_cond_timeout(condition, __ret))				\
+ 		__ret = __wait_event_freezable_timeout(wq_head, condition, timeout); \
+ 	__ret;									\
+ })
+@@ -503,7 +503,7 @@ do {										\
+ })
+ 
+ #define __wait_event_interruptible_timeout(wq_head, condition, timeout)		\
+-	___wait_event(wq_head, ___wait_cond_timeout(condition),			\
++	___wait_event(wq_head, ___wait_cond_timeout(condition, __ret),		\
+ 		      TASK_INTERRUPTIBLE, 0, timeout,				\
+ 		      __ret = schedule_timeout(__ret))
+ 
+@@ -531,7 +531,7 @@ do {										\
+ ({										\
+ 	long __ret = timeout;							\
+ 	might_sleep();								\
+-	if (!___wait_cond_timeout(condition))					\
++	if (!___wait_cond_timeout(condition, __ret))				\
+ 		__ret = __wait_event_interruptible_timeout(wq_head,		\
+ 						condition, timeout);		\
+ 	__ret;									\
+@@ -698,7 +698,7 @@ do {										\
+ } while (0)
+ 
+ #define __wait_event_idle_timeout(wq_head, condition, timeout)			\
+-	___wait_event(wq_head, ___wait_cond_timeout(condition),			\
++	___wait_event(wq_head, ___wait_cond_timeout(condition, __ret),		\
+ 		      TASK_IDLE, 0, timeout,					\
+ 		      __ret = schedule_timeout(__ret))
+ 
+@@ -725,13 +725,13 @@ do {										\
+ ({										\
+ 	long __ret = timeout;							\
+ 	might_sleep();								\
+-	if (!___wait_cond_timeout(condition))					\
++	if (!___wait_cond_timeout(condition, __ret))				\
+ 		__ret = __wait_event_idle_timeout(wq_head, condition, timeout);	\
+ 	__ret;									\
+ })
+ 
+ #define __wait_event_idle_exclusive_timeout(wq_head, condition, timeout)	\
+-	___wait_event(wq_head, ___wait_cond_timeout(condition),			\
++	___wait_event(wq_head, ___wait_cond_timeout(condition, __ret),		\
+ 		      TASK_IDLE, 1, timeout,					\
+ 		      __ret = schedule_timeout(__ret))
+ 
+@@ -762,7 +762,7 @@ do {										\
+ ({										\
+ 	long __ret = timeout;							\
+ 	might_sleep();								\
+-	if (!___wait_cond_timeout(condition))					\
++	if (!___wait_cond_timeout(condition, __ret))				\
+ 		__ret = __wait_event_idle_exclusive_timeout(wq_head, condition, timeout);\
+ 	__ret;									\
+ })
+@@ -932,7 +932,7 @@ extern int do_wait_intr_irq(wait_queue_head_t *, wait_queue_entry_t *);
+ })
+ 
+ #define __wait_event_killable_timeout(wq_head, condition, timeout)		\
+-	___wait_event(wq_head, ___wait_cond_timeout(condition),			\
++	___wait_event(wq_head, ___wait_cond_timeout(condition, __ret),		\
+ 		      TASK_KILLABLE, 0, timeout,				\
+ 		      __ret = schedule_timeout(__ret))
+ 
+@@ -962,7 +962,7 @@ extern int do_wait_intr_irq(wait_queue_head_t *, wait_queue_entry_t *);
+ ({										\
+ 	long __ret = timeout;							\
+ 	might_sleep();								\
+-	if (!___wait_cond_timeout(condition))					\
++	if (!___wait_cond_timeout(condition, __ret))				\
+ 		__ret = __wait_event_killable_timeout(wq_head,			\
+ 						condition, timeout);		\
+ 	__ret;									\
+@@ -1107,7 +1107,7 @@ do {										\
+ })
+ 
+ #define __wait_event_lock_irq_timeout(wq_head, condition, lock, timeout, state)	\
+-	___wait_event(wq_head, ___wait_cond_timeout(condition),			\
++	___wait_event(wq_head, ___wait_cond_timeout(condition, __ret),		\
+ 		      state, 0, timeout,					\
+ 		      spin_unlock_irq(&lock);					\
+ 		      __ret = schedule_timeout(__ret);				\
+@@ -1141,7 +1141,7 @@ do {										\
+ 						  timeout)			\
+ ({										\
+ 	long __ret = timeout;							\
+-	if (!___wait_cond_timeout(condition))					\
++	if (!___wait_cond_timeout(condition, __ret))				\
+ 		__ret = __wait_event_lock_irq_timeout(				\
+ 					wq_head, condition, lock, timeout,	\
+ 					TASK_INTERRUPTIBLE);			\
+@@ -1151,7 +1151,7 @@ do {										\
+ #define wait_event_lock_irq_timeout(wq_head, condition, lock, timeout)		\
+ ({										\
+ 	long __ret = timeout;							\
+-	if (!___wait_cond_timeout(condition))					\
++	if (!___wait_cond_timeout(condition, __ret))				\
+ 		__ret = __wait_event_lock_irq_timeout(				\
+ 					wq_head, condition, lock, timeout,	\
+ 					TASK_UNINTERRUPTIBLE);			\
+diff --git a/include/linux/wait_bit.h b/include/linux/wait_bit.h
+index 7dec36aecbd9..227e6a20a978 100644
+--- a/include/linux/wait_bit.h
++++ b/include/linux/wait_bit.h
+@@ -292,7 +292,7 @@ do {									\
+ })
+ 
+ #define __wait_var_event_timeout(var, condition, timeout)		\
+-	___wait_var_event(var, ___wait_cond_timeout(condition),		\
++	___wait_var_event(var, ___wait_cond_timeout(condition, __ret),	\
+ 			  TASK_UNINTERRUPTIBLE, 0, timeout,		\
+ 			  __ret = schedule_timeout(__ret))
+ 
+@@ -300,7 +300,7 @@ do {									\
+ ({									\
+ 	long __ret = timeout;						\
+ 	might_sleep();							\
+-	if (!___wait_cond_timeout(condition))				\
++	if (!___wait_cond_timeout(condition, __ret))			\
+ 		__ret = __wait_var_event_timeout(var, condition, timeout); \
+ 	__ret;								\
+ })
+-- 
+2.34.1
 
-option? Because yeah, we have a lot of those.
-
-I think that's a common theme with a lot of compiler warnings: on the
-face of it they sound "obviously sane" and nobody should ever write
-code like that.
-
-A conditional that is always true? Sounds idiotic, and sounds like a
-reasonable thing for a compiler to warn about, since why would you
-have a conditional in the first place for that?
-
-But then you realize that maybe the conditional is a build config
-option, and "always true" suddenly makes sense. Or it's a test for
-something that is always true on _that_architecture_ but not in some
-general sense (ie testing "sizeof()"). Or it's a purely syntactic
-conditional, like "do { } while (0)".
-
-It's why I'm often so down on a lot of the odd warnings that are
-hiding under W=1 and friends. They all may make sense in the trivial
-case ("That is insane") but then in the end they happen for sane code.
-
-And yeah, -Wshadow has had tons of history with macro nesting, and
-just being badly done in the first place (eg "strlen" can be a
-perfectly fine local variable).
-
-That said, maybe people could ask the gcc and clan people for a way to
-_mark_ the places where we expect to validly see shadowing. For
-example, that "local variable in a macro expression statement" thing
-is absolutely horrendous to fix with preprocessor tricks to try to
-make for unique identifiers.
-
-But I think it would be much more syntactically reasonable to add (for
-example) a "shadow" attribute to such a variable exactly to tell the
-compiler "yeah, yeah, I know this identifier could shadow an outer
-one" and turn it off that way.
-
-               Linus
