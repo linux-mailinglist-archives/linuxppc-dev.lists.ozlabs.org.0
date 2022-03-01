@@ -1,40 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C348C4C8B11
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 12:44:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E2E4C8BC9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 13:38:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K7FlB6XnTz3c2P
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 22:44:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K7Gxg0zdvz3btB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 23:38:15 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=eNOjt+N1;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk
+ (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk;
+ envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk;
  receiver=<UNKNOWN>)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K7Fkk0705z2yph
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Mar 2022 22:43:41 +1100 (AEDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 5C51F68AFE; Tue,  1 Mar 2022 12:43:35 +0100 (CET)
-Date: Tue, 1 Mar 2022 12:43:35 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Andrew Cooper <Andrew.Cooper3@citrix.com>
-Subject: Re: [PATCH 08/12] x86: centralize setting SWIOTLB_FORCE when guest
- memory encryption is enabled
-Message-ID: <20220301114335.GA2881@lst.de>
-References: <20220301105311.885699-1-hch@lst.de>
- <20220301105311.885699-9-hch@lst.de>
- <8e623a11-d809-4fab-401c-2ce609a9fc14@citrix.com>
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256
+ header.s=pandora-2019 header.b=eNOjt+N1; 
+ dkim-atps=neutral
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk
+ [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K7Gwx6KMFz30F2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Mar 2022 23:37:34 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=OgWilR1GahRuy4nq1IiDO3LnXPsAbyIUMZ5wyCYKmFQ=; b=eNOjt+N1AIu4tQdxbvwkMNi+mF
+ 8SrJQbXMVHijCcnaCGGiUimdRum866ec8uACk05m4IdInEu3fNhuMnJe4s8jgBYxs37JRSHHBXytc
+ cJ4DNeEKMTZrP3YYE84dJiebjbXctJKQyfX8aPwyqlaGRLshpMN4sAJ3sJOPo8/EuhtSvl2l+vNP0
+ nOU2W0wZja3TuMM1HnzO+Xhpw1ZA2iLFQzg9CEN+t80/NH+Q8bKSSs6WYpFbPAdj0M1N6Me+Y+P1n
+ XjgKqdhfF2TFYZf6//FWRHdXoVHXgx39+9boXTrCLuaTg6r6SGOCycYvqwQTUm98/4c/lZOZDM0tO
+ FBkecvTg==;
+Received: from shell.armlinux.org.uk
+ ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57578)
+ by pandora.armlinux.org.uk with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <linux@armlinux.org.uk>)
+ id 1nP1kn-0001Ge-6v; Tue, 01 Mar 2022 12:37:21 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+ (envelope-from <linux@shell.armlinux.org.uk>)
+ id 1nP1kk-00078x-CT; Tue, 01 Mar 2022 12:37:18 +0000
+Date: Tue, 1 Mar 2022 12:37:18 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: David Laight <David.Laight@aculab.com>
+Subject: Re: [PATCH] net: Remove branch in csum_shift()
+Message-ID: <Yh4TfnHuTmCqWZDb@shell.armlinux.org.uk>
+References: <efeeb0b9979b0377cd313311ad29cf0ac060ae4b.1644569106.git.christophe.leroy@csgroup.eu>
+ <7f16910a8f63475dae012ef5135f41d1@AcuMS.aculab.com>
+ <20220213091619.GY614@gate.crashing.org>
+ <476aa649389345db92f86e9103a848be@AcuMS.aculab.com>
+ <de560db6-d29a-8565-857b-b42ae35f80f8@csgroup.eu>
+ <9cdb4a5243d342efb562bc61d0c1bfcb@AcuMS.aculab.com>
+ <c616f9a6-c9db-d3a7-1b23-f827732566bb@csgroup.eu>
+ <10309fa64833418a980a8d950d037357@AcuMS.aculab.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8e623a11-d809-4fab-401c-2ce609a9fc14@citrix.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <10309fa64833418a980a8d950d037357@AcuMS.aculab.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,37 +77,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- Christoph Hellwig <hch@lst.de>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Stefano Stabellini <sstabellini@kernel.org>, Joerg Roedel <joro@8bytes.org>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- "tboot-devel@lists.sourceforge.net" <tboot-devel@lists.sourceforge.net>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- David Woodhouse <dwmw2@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Juergen Gross <jgross@suse.com>,
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>,
  "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
- Robin Murphy <robin.murphy@arm.com>, Lu Baolu <baolu.lu@linux.intel.com>
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 01, 2022 at 11:39:29AM +0000, Andrew Cooper wrote:
-> This isn't really "must".  The guest is perfectly capable of sharing
-> memory with the hypervisor.
+On Tue, Mar 01, 2022 at 11:41:06AM +0000, David Laight wrote:
+> From: Christophe Leroy
+> > Sent: 01 March 2022 11:15
+> ...
+> > Looks like ARM also does better code with the generic implementation as
+> > it seems to have some looking like conditional instructions 'rorne' and
+> > 'strne'.
 > 
-> It's just that for now, bounce buffering is allegedly faster, and the
-> simple way of getting it working.
+> In arm32 (and I think arm64) every instruction is conditional.
 
-Yeah, I guess you щould just share/unshare on demand.  But given that
-this isn't implemented it is a must in the current kernel.  But if
-you want a different wording suggest one and I'll put it in.
+Almost every instruction in arm32. There are a number of unconditional
+instructions that were introduced.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
