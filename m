@@ -2,64 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2898B4C8D34
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 15:01:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 184554C90E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Mar 2022 17:50:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K7JnW29Pjz3bv8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 01:01:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K7NXs1SqCz3bcr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 03:50:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BXoUaM8A;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Yx2Cou9K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=muriloo@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=BXoUaM8A; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K7Jms462rz305B
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Mar 2022 01:00:45 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Yx2Cou9K; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 4A4696150B
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Mar 2022 14:00:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AABB6C340EE
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Mar 2022 14:00:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1646143242;
- bh=OCDdNe18bifA05pJN6Z3cL5GH76Vx+vSN/tAl+9N2NY=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=BXoUaM8AeIN8f71PC8fIcrdCRd3XA5bTRsNaI55YrB3n8AdYcHHNQ5PfFONmNJdx9
- 3/CPcWQI6xI4q3njZfKJ//7qUb0OLv2P2whtuS8vVnMjqGPoCVcBgHyuiPi2wNTcJ+
- KSByydI8JzRxlo4gWWoVzIU41cydpMN+5Nu46TbYtJPRxdtzH4yMR64LlBcFEmPqIp
- 3wzu1lY8fiIAXNFPydAfWfshcQxjaRgRJyXZ322mrYl9USFIgjN6ICC0+WR+CyrjeE
- Jxihmtaod4/dKtcpNMu61/NIh4k/DY+2ax2xbrEVmUuihjdGPL4LSD/jeHzVTjPcDD
- a2kZEW+hgrGpQ==
-Received: by mail-vk1-f179.google.com with SMTP id w128so6904769vkd.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 01 Mar 2022 06:00:42 -0800 (PST)
-X-Gm-Message-State: AOAM531rcGo6S5RisEqp+Il5fb0ZWNXNCdR9/m2hQfijhZENOKlBABaP
- y+KoiYg5M2GvCpNc9RZOtyrImL6zX+lr58nmoMQ=
-X-Google-Smtp-Source: ABdhPJwoZPlQG03sWsMv2LaiAVeC86gQ0+wyv+RzPw7RH1ttQNeeKqagstcZB00XUabb5ygCz6Zjo4KWbVCaIqQUo1I=
-X-Received: by 2002:a05:6122:887:b0:332:699e:7e67 with SMTP id
- 7-20020a056122088700b00332699e7e67mr10404475vkf.35.1646143241667; Tue, 01 Mar
- 2022 06:00:41 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K7NX705lwz30H3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Mar 2022 03:49:58 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 221GIHGi016548; 
+ Tue, 1 Mar 2022 16:49:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=Gh0GqLspMvTvwvXYAgolNSAveiOEEAf2SSkZXzSi8ME=;
+ b=Yx2Cou9K7z1Wp8dPzRyH8xfQk5W6HFswFvzmhy7mEosE9TkQQYGvcn0Ar3QBttPFI8Ts
+ yDaEtr6Tx5wIkOanTOk0fRyVtbgOrPByJooigTEzzVyKUtKgsYIerx0jMkgHOpV6Bxdq
+ W9iDfwG4szK2g2ewZeisgV/Xk2qmH2/44sGWhbIGVBRZatDNfuK3LIL7HdoMOUfydioN
+ bGPo5OUfzg4qD/ScXuVHHX1IGaTnHM+KbFE45BDOXyAXfoMvoKxHy4GX3GSswHfkuxSl
+ vMw80HeVJRsrokVPKqivk4IydFpC42ufE9EA43Y9KeWKAuFfyx2aoxZD6/3ismLck4aq UA== 
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ehpd4st0a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Mar 2022 16:49:54 +0000
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 221Gc1qW008913;
+ Tue, 1 Mar 2022 16:49:53 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma03dal.us.ibm.com with ESMTP id 3egfss48tk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 01 Mar 2022 16:49:53 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 221GndGu14418500
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 1 Mar 2022 16:49:39 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E6E48AE067;
+ Tue,  1 Mar 2022 16:49:38 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 422D1AE066;
+ Tue,  1 Mar 2022 16:49:38 +0000 (GMT)
+Received: from localhost (unknown [9.65.81.114])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Tue,  1 Mar 2022 16:49:38 +0000 (GMT)
+From: Murilo Opsfelder Araujo <muriloo@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/64s: Fix build failure when CONFIG_PPC_64S_HASH_MMU
+ is not set
+Date: Tue,  1 Mar 2022 13:48:43 -0300
+Message-Id: <20220301164843.29170-1-muriloo@linux.ibm.com>
+X-Mailer: git-send-email 2.35.1
+Content-Type: text/plain; charset="utf-8"
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ehXpSUCSWPVpdlCeQ3AGqPVG_BFouthc
+X-Proofpoint-GUID: ehXpSUCSWPVpdlCeQ3AGqPVG_BFouthc
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <1646045273-9343-1-git-send-email-anshuman.khandual@arm.com>
- <1646045273-9343-20-git-send-email-anshuman.khandual@arm.com>
-In-Reply-To: <1646045273-9343-20-git-send-email-anshuman.khandual@arm.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Tue, 1 Mar 2022 22:00:30 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTRSE-=-rDkMTD8D-bNw5inb4Yb_8S-AzXAuAthn9PCJmA@mail.gmail.com>
-Message-ID: <CAJF2gTRSE-=-rDkMTD8D-bNw5inb4Yb_8S-AzXAuAthn9PCJmA@mail.gmail.com>
-Subject: Re: [PATCH V3 19/30] csky/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-01_07,2022-02-26_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 spamscore=0
+ impostorscore=0 mlxscore=0 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
+ malwarescore=0 suspectscore=0 priorityscore=1501 adultscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2201110000 definitions=main-2203010087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,132 +98,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Linux-MM <linux-mm@kvack.org>, sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, linux-hexagon@vger.kernel.org,
- linux-csky@vger.kernel.org, Christoph Hellwig <hch@infradead.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-snps-arc@lists.infradead.org,
- linux-xtensa@linux-xtensa.org, linux-um@lists.infradead.org,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Parisc List <linux-parisc@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "Erhard F ." <erhard_f@mailbox.org>, Fabiano Rosas <farosas@linux.ibm.com>,
+ Nick Child <nick.child@ibm.com>,
+ Murilo Opsfelder Araujo <muriloo@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, mopsfelder@gmail.com,
+ Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Acked-by: Guo Ren <guoren@kernel.org>
+The following build failure occurs when CONFIG_PPC_64S_HASH_MMU is not set:
 
-On Mon, Feb 28, 2022 at 7:10 PM Anshuman Khandual
-<anshuman.khandual@arm.com> wrote:
->
-> This defines and exports a platform specific custom vm_get_page_prot() via
-> subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
-> macros can be dropped which are no longer needed.
->
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: linux-csky@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  arch/csky/Kconfig               |  1 +
->  arch/csky/include/asm/pgtable.h | 18 ------------------
->  arch/csky/mm/init.c             | 32 ++++++++++++++++++++++++++++++++
->  3 files changed, 33 insertions(+), 18 deletions(-)
->
-> diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
-> index 132f43f12dd8..209dac5686dd 100644
-> --- a/arch/csky/Kconfig
-> +++ b/arch/csky/Kconfig
-> @@ -6,6 +6,7 @@ config CSKY
->         select ARCH_HAS_GCOV_PROFILE_ALL
->         select ARCH_HAS_SYNC_DMA_FOR_CPU
->         select ARCH_HAS_SYNC_DMA_FOR_DEVICE
-> +       select ARCH_HAS_VM_GET_PAGE_PROT
->         select ARCH_USE_BUILTIN_BSWAP
->         select ARCH_USE_QUEUED_RWLOCKS
->         select ARCH_WANT_FRAME_POINTERS if !CPU_CK610 && $(cc-option,-mbacktrace)
-> diff --git a/arch/csky/include/asm/pgtable.h b/arch/csky/include/asm/pgtable.h
-> index 151607ed5158..2c6b1cfb1cce 100644
-> --- a/arch/csky/include/asm/pgtable.h
-> +++ b/arch/csky/include/asm/pgtable.h
-> @@ -76,24 +76,6 @@
->  #define MAX_SWAPFILES_CHECK() \
->                 BUILD_BUG_ON(MAX_SWAPFILES_SHIFT != 5)
->
-> -#define __P000 PAGE_NONE
-> -#define __P001 PAGE_READ
-> -#define __P010 PAGE_READ
-> -#define __P011 PAGE_READ
-> -#define __P100 PAGE_READ
-> -#define __P101 PAGE_READ
-> -#define __P110 PAGE_READ
-> -#define __P111 PAGE_READ
-> -
-> -#define __S000 PAGE_NONE
-> -#define __S001 PAGE_READ
-> -#define __S010 PAGE_WRITE
-> -#define __S011 PAGE_WRITE
-> -#define __S100 PAGE_READ
-> -#define __S101 PAGE_READ
-> -#define __S110 PAGE_WRITE
-> -#define __S111 PAGE_WRITE
-> -
->  extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
->  #define ZERO_PAGE(vaddr)       (virt_to_page(empty_zero_page))
->
-> diff --git a/arch/csky/mm/init.c b/arch/csky/mm/init.c
-> index bf2004aa811a..f9babbed17d4 100644
-> --- a/arch/csky/mm/init.c
-> +++ b/arch/csky/mm/init.c
-> @@ -197,3 +197,35 @@ void __init fixaddr_init(void)
->         vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
->         fixrange_init(vaddr, vaddr + PMD_SIZE, swapper_pg_dir);
->  }
-> +
-> +pgprot_t vm_get_page_prot(unsigned long vm_flags)
-> +{
-> +       switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
-> +       case VM_NONE:
-> +               return PAGE_NONE;
-> +       case VM_READ:
-> +       case VM_WRITE:
-> +       case VM_WRITE | VM_READ:
-> +       case VM_EXEC:
-> +       case VM_EXEC | VM_READ:
-> +       case VM_EXEC | VM_WRITE:
-> +       case VM_EXEC | VM_WRITE | VM_READ:
-> +               return PAGE_READ;
-> +       case VM_SHARED:
-> +               return PAGE_NONE;
-> +       case VM_SHARED | VM_READ:
-> +               return PAGE_READ;
-> +       case VM_SHARED | VM_WRITE:
-> +       case VM_SHARED | VM_WRITE | VM_READ:
-> +               return PAGE_WRITE;
-> +       case VM_SHARED | VM_EXEC:
-> +       case VM_SHARED | VM_EXEC | VM_READ:
-> +               return PAGE_READ;
-> +       case VM_SHARED | VM_EXEC | VM_WRITE:
-> +       case VM_SHARED | VM_EXEC | VM_WRITE | VM_READ:
-> +               return PAGE_WRITE;
-> +       default:
-> +               BUILD_BUG();
-> +       }
-> +}
-> +EXPORT_SYMBOL(vm_get_page_prot);
-> --
-> 2.25.1
->
+    arch/powerpc/kernel/setup_64.c: In function ‘setup_per_cpu_areas’:
+    arch/powerpc/kernel/setup_64.c:811:21: error: ‘mmu_linear_psize’ undeclared (first use in this function); did you mean ‘mmu_virtual_psize’?
+      811 |                 if (mmu_linear_psize == MMU_PAGE_4K)
+          |                     ^~~~~~~~~~~~~~~~
+          |                     mmu_virtual_psize
+    arch/powerpc/kernel/setup_64.c:811:21: note: each undeclared identifier is reported only once for each function it appears in
 
+Move the declaration of mmu_linear_psize outside of CONFIG_PPC_64S_HASH_MMU
+ifdef.
 
+Fixes: 387e220a2e5e (powerpc/64s: Move hash MMU support code under CONFIG_PPC_64S_HASH_MMU)
+Reported-by: Erhard F. <erhard_f@mailbox.org>
+Signed-off-by: Murilo Opsfelder Araujo <muriloo@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Fabiano Rosas <farosas@linux.ibm.com>
+Cc: Nick Child <nick.child@ibm.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=215567
+---
+ arch/powerpc/include/asm/book3s/64/mmu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
+index ba5b1becf518..006cbec70ffe 100644
+--- a/arch/powerpc/include/asm/book3s/64/mmu.h
++++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+@@ -202,7 +202,6 @@ static inline struct subpage_prot_table *mm_ctx_subpage_prot(mm_context_t *ctx)
+ /*
+  * The current system page and segment sizes
+  */
+-extern int mmu_linear_psize;
+ extern int mmu_virtual_psize;
+ extern int mmu_vmalloc_psize;
+ extern int mmu_io_psize;
+@@ -213,6 +212,7 @@ extern int mmu_io_psize;
+ #define mmu_virtual_psize MMU_PAGE_4K
+ #endif
+ #endif
++extern int mmu_linear_psize;
+ extern int mmu_vmemmap_psize;
+ 
+ /* MMU initialization */
 -- 
-Best Regards
- Guo Ren
+2.35.1
 
-ML: https://lore.kernel.org/linux-csky/
