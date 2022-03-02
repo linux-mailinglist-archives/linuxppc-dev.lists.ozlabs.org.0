@@ -1,62 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659D04CAA13
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 17:24:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF634CAAA6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 17:41:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K7zvn3flxz3brn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 03:24:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K80HG2QsBz3c2m
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 03:40:58 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cPS4h7Pn;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=cPS4h7Pn; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K7zvM4zWTz3bky
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Mar 2022 03:23:41 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4K7zvH3rXNz9sSR;
- Wed,  2 Mar 2022 17:23:39 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id g3_V2IdfLWdQ; Wed,  2 Mar 2022 17:23:39 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4K7zvH2zcrz9sSN;
- Wed,  2 Mar 2022 17:23:39 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5597B8B76D;
- Wed,  2 Mar 2022 17:23:39 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id jM4um5h1j013; Wed,  2 Mar 2022 17:23:39 +0100 (CET)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 241D08B763;
- Wed,  2 Mar 2022 17:23:39 +0100 (CET)
-Message-ID: <d67e43a5-a654-e622-bab8-d2f55a7013f3@csgroup.eu>
-Date: Wed, 2 Mar 2022 17:23:38 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K80GW30q1z3brF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Mar 2022 03:40:18 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 222FmdiS036378; 
+ Wed, 2 Mar 2022 16:40:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : subject :
+ to : cc : references : in-reply-to : message-id : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=WNt06/XR+OdT7Pz6h9Sni6bWV6A/DMwFVnFcYEFD7Rc=;
+ b=cPS4h7PnJVkAQAh/5jiA6FhcSOeDZ/bt+Q1BhV5sKCS32D51Nzh5EQg5HTkpU9nby/59
+ ZyjSonjrM/6V9LxwJz29HhKVIujS1sFN0ic8RjKqae82NrUgVWp7iIiN3Dmt2lx+bQiT
+ 4wSgSqGvpdTk28FCkU5mgbz05vsGOZBcE2bX97Sjp1HpE2yHI7tCXRFBpI71sykrQ0x3
+ y84rQOoQlcoOgAM6u8NKNHwuPYFRKM16we1kuVA50+couDpf3wgh8QoXYabpdJcQNyX2
+ 7OAq3WCo/SZDz95z+PymbWtHDnqIpW14R9B50tAAiwUde4gSTijN2+rUGurQg6R6B0FS XQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ejbj4s44t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Mar 2022 16:40:10 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 222GPOiS006579;
+ Wed, 2 Mar 2022 16:40:09 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ejbj4s445-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Mar 2022 16:40:09 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 222GdKOU008519;
+ Wed, 2 Mar 2022 16:40:08 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma01fra.de.ibm.com with ESMTP id 3efbu95upy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 02 Mar 2022 16:40:07 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 222GTAMd52232450
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 2 Mar 2022 16:29:10 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A06384C044;
+ Wed,  2 Mar 2022 16:40:05 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 304544C050;
+ Wed,  2 Mar 2022 16:40:05 +0000 (GMT)
+Received: from localhost (unknown [9.43.109.149])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  2 Mar 2022 16:40:05 +0000 (GMT)
+Date: Wed, 02 Mar 2022 22:10:03 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 3/3] powerpc/bpf: Reallocate BPF registers to volatile
+ registers when possible on PPC64
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Jordan Niethe
+ <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20210727065539.299598-1-jniethe5@gmail.com>
+ <20210727065539.299598-3-jniethe5@gmail.com>
+ <468b04e9-4fa6-883d-fb9a-96a1371c6d8d@csgroup.eu>
+In-Reply-To: <468b04e9-4fa6-883d-fb9a-96a1371c6d8d@csgroup.eu>
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1646238972.4ud3oenbsd.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: uzrZ6ro364WIpn3wy4ohc-n8sqs9NwqZ
+X-Proofpoint-GUID: HkRUq2vewPJoF0hQSTzjnBn51C2pCscy
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [Reoprt] Some compile warning on ppc dts
-Content-Language: fr-FR
-To: "chenjun (AM)" <chenjun102@huawei.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Rob Herring <robh+dt@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-References: <CE1E7D7EFA066443B6454A6A5063B50220CCBBE4@dggeml509-mbx.china.huawei.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <CE1E7D7EFA066443B6454A6A5063B50220CCBBE4@dggeml509-mbx.china.huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-02_12,2022-02-26_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 spamscore=0 phishscore=0
+ clxscore=1015 impostorscore=0 adultscore=0 mlxscore=0 malwarescore=0
+ bulkscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2201110000 definitions=main-2203020073
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,73 +112,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Xiangrui \(Euler\)" <rui.xiang@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Christophe Leroy wrote:
+>=20
+>=20
+> Le 27/07/2021 =C3=A0 08:55, Jordan Niethe a =C3=A9crit=C2=A0:
+>> Implement commit 40272035e1d0 ("powerpc/bpf: Reallocate BPF registers to
+>> volatile registers when possible on PPC32") for PPC64.
+>>=20
+>> When the BPF routine doesn't call any function, the non volatile
+>> registers can be reallocated to volatile registers in order to avoid
+>> having to save them/restore on the stack. To keep track of which
+>> registers can be reallocated to make sure registers are set seen when
+>> used.
+>>=20
+>> Before this patch, the test #359 ADD default X is:
+>>     0:   nop
+>>     4:   nop
+>>     8:   std     r27,-40(r1)
+>>     c:   std     r28,-32(r1)
+>>    10:   xor     r8,r8,r8
+>>    14:   rotlwi  r8,r8,0
+>>    18:   xor     r28,r28,r28
+>>    1c:   rotlwi  r28,r28,0
+>>    20:   mr      r27,r3
+>>    24:   li      r8,66
+>>    28:   add     r8,r8,r28
+>>    2c:   rotlwi  r8,r8,0
+>>    30:   ld      r27,-40(r1)
+>>    34:   ld      r28,-32(r1)
+>>    38:   mr      r3,r8
+>>    3c:   blr
+>>=20
+>> After this patch, the same test has become:
+>>     0:   nop
+>>     4:   nop
+>>     8:   xor     r8,r8,r8
+>>     c:   rotlwi  r8,r8,0
+>>    10:   xor     r5,r5,r5
+>>    14:   rotlwi  r5,r5,0
+>>    18:   mr      r4,r3
+>>    1c:   li      r8,66
+>>    20:   add     r8,r8,r5
+>>    24:   rotlwi  r8,r8,0
+>>    28:   mr      r3,r8
+>>    2c:   blr
+>>=20
+>> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+>=20
+> If this series is still applicable, it needs to be rebased of Naveen's=20
+> series https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D2=
+86000
+
+Thanks for bringing this up. My apologies - I missed copying you and=20
+Jordan on the new series.
+
+I have included the first patch and a variant of the second patch in=20
+this series, in the new series I posted. For patch 3/3, it might be=20
+simpler to not track temp register usage on ppc64.
 
 
-Le 01/03/2021 à 03:16, chenjun (AM) a écrit :
-> Hi
-> 
-> After run the following commands
-> make distclean
-> make allmodconfig ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-
-> make oldconfig ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-
-> make -j64 ARCH=powerpc CROSS_COMPILE=powerpc64-linux-gnu-
-> 
-> I get some warning:
-> arch/powerpc/boot/dts/mpc5200b.dtsi:267.20-280.4: Warning (pci_bridge):
-> /pci@f0000d00: missing ranges for PCI bridg
-> e (or not a bridge)
-> arch/powerpc/boot/dts/o2dnt2.dtb: Warning (pci_device_bus_num): Failed
-> prerequisite 'pci_bridge'
-> arch/powerpc/boot/dts/mpc5200b.dtsi:182.18-186.5: Warning
-> (spi_bus_bridge): /soc5200@f0000000/psc@2000: node name f
-> or SPI buses should be 'spi'
->     also defined at arch/powerpc/boot/dts/o2d.dtsi:32.12-43.5
-> arch/powerpc/boot/dts/o2dnt2.dtb: Warning (spi_bus_reg): Failed
-> prerequisite 'spi_bus_bridge'
-> ...
-> 
-> For the problem about "node name for SPI buses should be 'spi'":
-> Rename the psc@2000 to spi@2000 in arch/powerpc/boot/dts/o2d.dtsi can
-> fix it.
-> diff --git a/arch/powerpc/boot/dts/o2d.dtsi b/arch/powerpc/boot/dts/o2d.dtsi
-> index 6661955a2be4..cd3dc70cd72e 100644
-> --- a/arch/powerpc/boot/dts/o2d.dtsi
-> +++ b/arch/powerpc/boot/dts/o2d.dtsi
-> @@ -29,7 +29,7 @@ rtc@800 {
->    >------>------->-------status = "disabled";
->    >------>-------};
-> -
-> ->------>-------psc@2000 {>----->-------// PSC1
-> +>------>-------spi@2000 {>----->-------// PSC1
->    >------>------->-------compatible =
-> "fsl,mpc5200b-psc-spi","fsl,mpc5200-psc-spi";
->    >------>------->-------#address-cells = <1>;
->    >------>------->-------#size-cells = <0>;
-> ---
-> 
-> For the problem about "missing ranges for PCI bridge (or not a bridge)":
-> Ranges should be add in arch/powerpc/boot/dts/mpc5200b.dtsi.
->   >-------pci: pci@f0000d00 {
->   >------->-------#interrupt-cells = <1>;
->   >------->-------#size-cells = <2>;
->   >------->-------#address-cells = <3>;
->   >------->-------device_type = "pci";
->   >------->-------compatible = "fsl,mpc5200b-pci","fsl,mpc5200-pci";
->   >------->-------reg = <0xf0000d00 0x100>;
->   >------->-------// interrupt-map-mask = need to add
->   >------->-------// interrupt-map = need to add
->   >------->-------clock-frequency = <0>; // From boot loader
->   >------->-------interrupts = <2 8 0 2 9 0 2 10 0>;
->   >------->-------bus-range = <0 0>;
->   >------->-------// ranges = need to add
->   >-------};
-> I think the ranges should be add by someone who knows the mpc5200 better.
-> 
+Thanks,
+Naveen
 
-
-This patch has garbage instead of tabs, it doesn't apply
