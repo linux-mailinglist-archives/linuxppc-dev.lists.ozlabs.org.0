@@ -1,61 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DDF4CA71A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 15:04:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5A54CA8A6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 15:57:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K7wpy1VP3z3c42
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 01:04:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K7y0F4V1xz3byH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 01:57:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=aculab.com (client-ip=185.58.85.151;
- helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
- receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com
- (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K7wpT105wz30QK
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Mar 2022 01:04:14 +1100 (AEDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-196-4Li6Fux3PdyQ14Lo-DMf3A-1; Wed, 02 Mar 2022 14:04:10 +0000
-X-MC-Unique: 4Li6Fux3PdyQ14Lo-DMf3A-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.28; Wed, 2 Mar 2022 14:04:06 +0000
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.028; Wed, 2 Mar 2022 14:04:06 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Xiaomeng Tong' <xiam0nd.tong@gmail.com>, "torvalds@linux-foundation.org"
- <torvalds@linux-foundation.org>
-Subject: RE: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-Thread-Topic: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-Thread-Index: AQHYLhg9+DU/OogLf0+tiSFmjztyUKysHu+Q
-Date: Wed, 2 Mar 2022 14:04:06 +0000
-Message-ID: <1077f17e50d34dc2bbfdf4e52a1cb2fd@AcuMS.aculab.com>
-References: <CAHk-=whLK11HyvpUtEftOjc3Gup2V77KpAQ2fycj3uai=qceHw@mail.gmail.com>
- <20220302093106.8402-1-xiam0nd.tong@gmail.com>
-In-Reply-To: <20220302093106.8402-1-xiam0nd.tong@gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K7xzn06FDz3bNs
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Mar 2022 01:57:22 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4K7xzh52Gqz9sSR;
+ Wed,  2 Mar 2022 15:57:20 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id EeZi9sqhFvtu; Wed,  2 Mar 2022 15:57:20 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4K7xzh47VQz9sSN;
+ Wed,  2 Mar 2022 15:57:20 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7CE5B8B76D;
+ Wed,  2 Mar 2022 15:57:20 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Y9Nv-TJ4vYTB; Wed,  2 Mar 2022 15:57:20 +0100 (CET)
+Received: from [172.25.230.108] (unknown [172.25.230.108])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 17FEF8B763;
+ Wed,  2 Mar 2022 15:57:20 +0100 (CET)
+Message-ID: <cfdf8627-8ede-871b-138c-e256fa4b67ee@csgroup.eu>
+Date: Wed, 2 Mar 2022 15:57:19 +0100
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH -next] macintosh/therm_adt746x: Replaced simple_strtol()
+ with kstrtoint()
+Content-Language: fr-FR
+To: Liu Shixin <liushixin2@huawei.com>, Colin Leroy <colin@colino.net>
+References: <20210524120835.1580420-1-liushixin2@huawei.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20210524120835.1580420-1-liushixin2@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,99 +63,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "gustavo@embeddedor.com" <gustavo@embeddedor.com>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "kgdb-bugreport@lists.sourceforge.net" <kgdb-bugreport@lists.sourceforge.net>,
- "linux@rasmusvillemoes.dk" <linux@rasmusvillemoes.dk>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "c.giuffrida@vu.nl" <c.giuffrida@vu.nl>,
- "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
- "samba-technical@lists.samba.org" <samba-technical@lists.samba.org>,
- "linux1394-devel@lists.sourceforge.net"
- <linux1394-devel@lists.sourceforge.net>,
- "drbd-dev@lists.linbit.com" <drbd-dev@lists.linbit.com>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
- "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
- "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
- "h.j.bos@vu.nl" <h.j.bos@vu.nl>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
- "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
- "bcm-kernel-feedback-list@broadcom.com"
- <bcm-kernel-feedback-list@broadcom.com>,
- "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
- "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- "keescook@chromium.org" <keescook@chromium.org>,
- "arnd@arndb.de" <arnd@arndb.de>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
- "bjohannesmeyer@gmail.com" <bjohannesmeyer@gmail.com>,
- "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
- "jakobkoschel@gmail.com" <jakobkoschel@gmail.com>,
- "v9fs-developer@lists.sourceforge.net" <v9fs-developer@lists.sourceforge.net>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
- "nathan@kernel.org" <nathan@kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-f2fs-devel@lists.sourceforge.net"
- <linux-f2fs-devel@lists.sourceforge.net>,
- "tipc-discussion@lists.sourceforge.net"
- <tipc-discussion@lists.sourceforge.net>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
- "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "christian.koenig@amd.com" <christian.koenig@amd.com>,
- "rppt@kernel.org" <rppt@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Xiaomeng Tong
-> Sent: 02 March 2022 09:31
->=20
-> On Mon, 28 Feb 2022 16:41:04 -0800, Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > But basically to _me_, the important part is that the end result is
-> > maintainable longer-term.
->=20
-> I couldn't agree more. And because of that, I stick with the following
-> approach because it's maintainable longer-term than "type(pos) pos" one:
->  Implements a new macro for each list_for_each_entry* with _inside suffix=
-.
->   #define list_for_each_entry_inside(pos, type, head, member)
 
-I think that it would be better to make any alternate loop macro
-just set the variable to NULL on the loop exit.
-That is easier to code for and the compiler might be persuaded to
-not redo the test.
 
-It also doesn't need an extra variable defined in the for() statement
-so can be back-ported to older kernels without required declaration
-in the middle of blocks.
+Le 24/05/2021 à 14:08, Liu Shixin a écrit :
+> The simple_strtol() function is deprecated in some situation since
+> it does not check for the range overflow. Use kstrtoint() instead.
+> 
+> Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+> ---
+>   drivers/macintosh/therm_adt746x.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/macintosh/therm_adt746x.c b/drivers/macintosh/therm_adt746x.c
+> index 7e218437730c..0d7ef55126ce 100644
+> --- a/drivers/macintosh/therm_adt746x.c
+> +++ b/drivers/macintosh/therm_adt746x.c
+> @@ -352,7 +352,8 @@ static ssize_t store_##name(struct device *dev, struct device_attribute *attr, c
+>   	struct thermostat *th = dev_get_drvdata(dev);		\
+>   	int val;						\
+>   	int i;							\
+> -	val = simple_strtol(buf, NULL, 10);			\
+> +	if (unlikely(kstrtoint(buf, 10, &val))			\
+> +		return -EINVAL;					\
+>   	printk(KERN_INFO "Adjusting limits by %d degrees\n", val);	\
+>   	limit_adjust = val;					\
+>   	for (i=0; i < 3; i++)					\
+> @@ -364,7 +365,8 @@ static ssize_t store_##name(struct device *dev, struct device_attribute *attr, c
+>   static ssize_t store_##name(struct device *dev, struct device_attribute *attr, const char *buf, size_t n) \
+>   {								\
+>   	int val;						\
+> -	val = simple_strtol(buf, NULL, 10);			\
+> +	if (unlikely(kstrtoint(buf, 10, &val))			\
+> +		return -EINVAL;					\
+>   	if (val < 0 || val > 255)				\
+>   		return -EINVAL;					\
+>   	printk(KERN_INFO "Setting specified fan speed to %d\n", val);	\
 
-OTOH there may be alternative definitions that can be used to get
-the compiler (or other compiler-like tools) to detect broken code.
-Even if the definition can't possibly generate a working kerrnel.
+Obviously no build test has been performed:
 
-=09David
+   CC [M]  drivers/macintosh/therm_adt746x.o
+drivers/macintosh/therm_adt746x.c: In function 'store_specified_fan_speed':
+drivers/macintosh/therm_adt746x.c:369:17: error: expected ')' before 
+'return'
+   369 |                 return -EINVAL;                                 \
+       |                 ^~~~~~
+drivers/macintosh/therm_adt746x.c:385:1: note: in expansion of macro 
+'BUILD_STORE_FUNC_INT'
+   385 | BUILD_STORE_FUNC_INT(specified_fan_speed,fan_speed)
+       | ^~~~~~~~~~~~~~~~~~~~
+drivers/macintosh/therm_adt746x.c:368:12: note: to match this '('
+   368 |         if (unlikely(kstrtoint(buf, 10, &val))                  \
+       |            ^
+drivers/macintosh/therm_adt746x.c:385:1: note: in expansion of macro 
+'BUILD_STORE_FUNC_INT'
+   385 | BUILD_STORE_FUNC_INT(specified_fan_speed,fan_speed)
+       | ^~~~~~~~~~~~~~~~~~~~
+drivers/macintosh/therm_adt746x.c:375:1: error: expected expression 
+before '}' token
+   375 | }
+       | ^
+drivers/macintosh/therm_adt746x.c:385:1: note: in expansion of macro 
+'BUILD_STORE_FUNC_INT'
+   385 | BUILD_STORE_FUNC_INT(specified_fan_speed,fan_speed)
+       | ^~~~~~~~~~~~~~~~~~~~
+drivers/macintosh/therm_adt746x.c:375:1: error: no return statement in 
+function returning non-void [-Werror=return-type]
+   375 | }
+       | ^
+drivers/macintosh/therm_adt746x.c:385:1: note: in expansion of macro 
+'BUILD_STORE_FUNC_INT'
+   385 | BUILD_STORE_FUNC_INT(specified_fan_speed,fan_speed)
+       | ^~~~~~~~~~~~~~~~~~~~
+drivers/macintosh/therm_adt746x.c: In function 'store_limit_adjust':
+drivers/macintosh/therm_adt746x.c:356:17: error: expected ')' before 
+'return'
+   356 |                 return -EINVAL;                                 \
+       |                 ^~~~~~
+drivers/macintosh/therm_adt746x.c:391:1: note: in expansion of macro 
+'BUILD_STORE_FUNC_DEG'
+   391 | BUILD_STORE_FUNC_DEG(limit_adjust,       th)
+       | ^~~~~~~~~~~~~~~~~~~~
+drivers/macintosh/therm_adt746x.c:355:12: note: to match this '('
+   355 |         if (unlikely(kstrtoint(buf, 10, &val))                  \
+       |            ^
+drivers/macintosh/therm_adt746x.c:391:1: note: in expansion of macro 
+'BUILD_STORE_FUNC_DEG'
+   391 | BUILD_STORE_FUNC_DEG(limit_adjust,       th)
+       | ^~~~~~~~~~~~~~~~~~~~
+drivers/macintosh/therm_adt746x.c:362:1: error: expected expression 
+before '}' token
+   362 | }
+       | ^
+drivers/macintosh/therm_adt746x.c:391:1: note: in expansion of macro 
+'BUILD_STORE_FUNC_DEG'
+   391 | BUILD_STORE_FUNC_DEG(limit_adjust,       th)
+       | ^~~~~~~~~~~~~~~~~~~~
+drivers/macintosh/therm_adt746x.c:354:13: warning: unused variable 'i' 
+[-Wunused-variable]
+   354 |         int i;                                                  \
+       |             ^
+drivers/macintosh/therm_adt746x.c:391:1: note: in expansion of macro 
+'BUILD_STORE_FUNC_DEG'
+   391 | BUILD_STORE_FUNC_DEG(limit_adjust,       th)
+       | ^~~~~~~~~~~~~~~~~~~~
+drivers/macintosh/therm_adt746x.c:352:28: warning: unused variable 'th' 
+[-Wunused-variable]
+   352 |         struct thermostat *th = dev_get_drvdata(dev);           \
+       |                            ^~
+drivers/macintosh/therm_adt746x.c:391:1: note: in expansion of macro 
+'BUILD_STORE_FUNC_DEG'
+   391 | BUILD_STORE_FUNC_DEG(limit_adjust,       th)
+       | ^~~~~~~~~~~~~~~~~~~~
+drivers/macintosh/therm_adt746x.c:362:1: error: no return statement in 
+function returning non-void [-Werror=return-type]
+   362 | }
+       | ^
+drivers/macintosh/therm_adt746x.c:391:1: note: in expansion of macro 
+'BUILD_STORE_FUNC_DEG'
+   391 | BUILD_STORE_FUNC_DEG(limit_adjust,       th)
+       | ^~~~~~~~~~~~~~~~~~~~
+cc1: some warnings being treated as errors
+make[2]: *** [scripts/Makefile.build:288: 
+drivers/macintosh/therm_adt746x.o] Error 1
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
-
+Christophe
