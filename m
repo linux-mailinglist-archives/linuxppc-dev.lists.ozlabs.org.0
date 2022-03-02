@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8154C9CBF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 05:49:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCE54C9CC0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 05:49:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K7hTn4lbSz3flQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 15:49:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K7hVB6fqdz3dtB
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 15:49:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,17 +17,17 @@ Received: from relay11.mail.gandi.net (relay11.mail.gandi.net
  [IPv6:2001:4b98:dc4:8::231])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K7hPS11TVz3chn
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Mar 2022 15:45:15 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K7hPX73kTz3cjL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Mar 2022 15:45:20 +1100 (AEDT)
 Received: (Authenticated sender: ash@heyquark.com)
- by mail.gandi.net (Postfix) with ESMTPSA id 379B3100006;
- Wed,  2 Mar 2022 04:45:09 +0000 (UTC)
+ by mail.gandi.net (Postfix) with ESMTPSA id 2722E100009;
+ Wed,  2 Mar 2022 04:45:14 +0000 (UTC)
 From: Ash Logan <ash@heyquark.com>
 To: paulus@samba.org, mpe@ellerman.id.au, christophe.leroy@csgroup.eu,
  robh+dt@kernel.org, benh@kernel.crashing.org
-Subject: [PATCH 11/12] powerpc: wiiu: don't enforce flat memory
-Date: Wed,  2 Mar 2022 15:44:05 +1100
-Message-Id: <20220302044406.63401-12-ash@heyquark.com>
+Subject: [PATCH 12/12] powerpc: wiiu: Add minimal default config
+Date: Wed,  2 Mar 2022 15:44:06 +1100
+Message-Id: <20220302044406.63401-13-ash@heyquark.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220302044406.63401-1-ash@heyquark.com>
 References: <20220302044406.63401-1-ash@heyquark.com>
@@ -50,31 +50,28 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pgtable_32.c:mapin_ram loops over each valid memory range, which means
-non-contiguous memory just works.
+Add a bare-minimum config to get a kernel compiled. Will need some more
+interesting options once a storage device to boot from is added.
 
 Signed-off-by: Ash Logan <ash@heyquark.com>
 ---
- arch/powerpc/mm/init_32.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/configs/wiiu_defconfig | 7 +++++++
+ 1 file changed, 7 insertions(+)
+ create mode 100644 arch/powerpc/configs/wiiu_defconfig
 
-diff --git a/arch/powerpc/mm/init_32.c b/arch/powerpc/mm/init_32.c
-index 3d690be48e84..59a84629d9a0 100644
---- a/arch/powerpc/mm/init_32.c
-+++ b/arch/powerpc/mm/init_32.c
-@@ -125,10 +125,10 @@ void __init MMU_init(void)
- 	 * lowmem_end_addr is initialized below.
- 	 */
- 	if (memblock.memory.cnt > 1) {
--#ifndef CONFIG_WII
-+#if !defined(CONFIG_WII) && !defined(CONFIG_WIIU)
- 		memblock_enforce_memory_limit(memblock.memory.regions[0].size);
- 		pr_warn("Only using first contiguous memory region\n");
--#else
-+#elif defined(CONFIG_WII)
- 		wii_memory_fixups();
- #endif
- 	}
+diff --git a/arch/powerpc/configs/wiiu_defconfig b/arch/powerpc/configs/wiiu_defconfig
+new file mode 100644
+index 000000000000..a761ebcdd9f2
+--- /dev/null
++++ b/arch/powerpc/configs/wiiu_defconfig
+@@ -0,0 +1,7 @@
++# CONFIG_PPC_CHRP is not set
++# CONFIG_PPC_PMAC is not set
++CONFIG_WIIU=y
++# CONFIG_PPC_OF_BOOT_TRAMPOLINE is not set
++CONFIG_HIGHMEM=y
++CONFIG_STRICT_KERNEL_RWX=y
++CONFIG_PPC_EARLY_DEBUG=y
 -- 
 2.35.1
 
