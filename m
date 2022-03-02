@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F38D4CA536
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 13:50:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EED54CA533
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 13:49:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K7v8k19HTz3fDW
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 23:49:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K7v8J3M9Bz3f6P
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 23:49:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
@@ -14,21 +14,26 @@ Received: from gandalf.ozlabs.org (mail.ozlabs.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K7v535xHMz3brF
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K7v530j0pz3bZL
  for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Mar 2022 23:46:47 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4K7v536R9Jz4xvL; Wed,  2 Mar 2022 23:46:47 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4K7v543M2xz4xvM;
- Wed,  2 Mar 2022 23:46:48 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4K7v532223z4xZ5;
+ Wed,  2 Mar 2022 23:46:47 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, Kajol Jain <kjain@linux.ibm.com>
-In-Reply-To: <20220127072012.662451-1-kjain@linux.ibm.com>
-References: <20220127072012.662451-1-kjain@linux.ibm.com>
-Subject: Re: [PATCH 00/20] Add perf sampling tests as part of selftest
-Message-Id: <164622490619.2052779.14251446512792457399.b4-ty@ellerman.id.au>
-Date: Wed, 02 Mar 2022 23:41:46 +1100
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <20220201105305.155511-1-hbathini@linux.ibm.com>
+References: <20220201105305.155511-1-hbathini@linux.ibm.com>
+Subject: Re: [RESEND PATCH v2] powerpc/fadump: register for fadump as early as
+ possible
+Message-Id: <164622490722.2052779.3719204745248765355.b4-ty@ellerman.id.au>
+Date: Wed, 02 Mar 2022 23:41:47 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,61 +48,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- rnsastry@linux.ibm.com, maddy@linux.vnet.ibm.com
+Cc: Kairui Song <kasong@redhat.com>, Petr Tesarik <ptesarik@suse.cz>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev <linuxppc-dev@ozlabs.org>, Michal Suchánek <msuchanek@suse.de>, Dave Young <dyoung@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 27 Jan 2022 12:49:52 +0530, Kajol Jain wrote:
-> Patch series adds support for perf sampling tests that
-> enables capturing sampling data in perf mmap buffer and
-> further support for reading and processing the samples.
-> It also addds basic utility functions to process the
-> mmap buffer inorder to read total count of samples as
-> well as the contents of sample.
+On Tue, 1 Feb 2022 16:23:05 +0530, Hari Bathini wrote:
+> Crash recovery (fadump) is setup in the userspace by some service.
+> This service rebuilds initrd with dump capture capability, if it is
+> not already dump capture capable before proceeding to register for
+> firmware assisted dump (echo 1 > /sys/kernel/fadump/registered). But
+> arming the kernel with crash recovery support does not have to wait
+> for userspace configuration. So, register for fadump while setting
+> it up itself. This can at worst lead to a scenario, where /proc/vmcore
+> is ready afer crash but the initrd does not know how/where to offload
+> it, which is always better than not having a /proc/vmcore at all due
+> to incomplete configuration in the userspace at the time of crash.
 > 
 > [...]
 
-Patches 1-15 and 17-20 applied to powerpc/next.
+Applied to powerpc/next.
 
-[01/20] selftest/powerpc/pmu: Include mmap_buffer field as part of struct event
-        https://git.kernel.org/powerpc/c/f961e20f15ed35e9ca154a099897d600b78b0311
-[02/20] selftest/powerpc/pmu: Add support for perf sampling tests
-        https://git.kernel.org/powerpc/c/c315669e2fbd71bb9387066f60f0d91b0ceb28f3
-[03/20] selftest/powerpc/pmu: Add macros to parse event codes
-        https://git.kernel.org/powerpc/c/6523dce86222451e5ca2df8a46597a217084bfdf
-[04/20] selftest/powerpc/pmu: Add utility functions to post process the mmap buffer
-        https://git.kernel.org/powerpc/c/5f6c3061af7ca3b0f9f8a20ec7a445671f7e6b5a
-[05/20] selftest/powerpc/pmu: Add event_init_sampling function
-        https://git.kernel.org/powerpc/c/54d4ba7f22d1ed5bfbc915771cf2e3e147cf03b2
-[06/20] selftest/powerpc/pmu: Add macros to extract mmcr fields
-        https://git.kernel.org/powerpc/c/79c4e6aba8dfc9206acc68884498080f451121f7
-[07/20] selftest/powerpc/pmu: Add macro to extract mmcr0/mmcr1 fields
-        https://git.kernel.org/powerpc/c/2b49e641063e7569493371ef433b9c4ce8c8dd8b
-[08/20] selftest/powerpc/pmu: Add macro to extract mmcr3 and mmcra fields
-        https://git.kernel.org/powerpc/c/13307f9584ea9408d9959302074dc4e8308b6cab
-[09/20] selftest/powerpc/pmu/: Add interface test for mmcr0 exception bits
-        https://git.kernel.org/powerpc/c/eb7aa044df18c6f7a88bc17fc4c9f4524652a290
-[10/20] selftest/powerpc/pmu/: Add interface test for mmcr0_cc56run field
-        https://git.kernel.org/powerpc/c/a7c0ab2e61484c0844eae2f208a06cc940338d83
-[11/20] selftest/powerpc/pmu/: Add interface test for mmcr0_pmccext bit
-        https://git.kernel.org/powerpc/c/b24142b9d2401468bcd8df157013306d5b4f6626
-[12/20] selftest/powerpc/pmu/: Add interface test for mmcr0_pmcjce field
-        https://git.kernel.org/powerpc/c/9ac7c6d5e4b570f416d849b263a6f67a617b4fa5
-[13/20] selftest/powerpc/pmu/: Add interface test for mmcr0_fc56 field using pmc1
-        https://git.kernel.org/powerpc/c/d5172f2585cd0fc9788aa9b25d3dce6483321792
-[14/20] selftest/powerpc/pmu/: Add interface test for mmcr0_pmc56 using pmc5
-        https://git.kernel.org/powerpc/c/6e11374b08723b2c43ae83bd5d48000d695f13a0
-[15/20] selftest/powerpc/pmu/: Add interface test for mmcr1_comb field
-        https://git.kernel.org/powerpc/c/2becea3b6acf308642d6c0e9bd41caf7820753f5
-[17/20] selftest/powerpc/pmu/: Add interface test for mmcr2_l2l3 field
-        https://git.kernel.org/powerpc/c/ac575b2606bf99a0d01a054196e24e1ad82c194d
-[18/20] selftest/powerpc/pmu/: Add interface test for mmcr2_fcs_fch fields
-        https://git.kernel.org/powerpc/c/9ee241f1b1447c7e8ca90902ab1888aa9e7a3c00
-[19/20] selftest/powerpc/pmu/: Add interface test for mmcr3_src fields
-        https://git.kernel.org/powerpc/c/02f02feb6b50c67171fd56bc3fd0fd96118c5c12
-[20/20] selftest/powerpc/pmu: Add interface test for mmcra register fields
-        https://git.kernel.org/powerpc/c/29cf373c5766e6bd1b97056d2d678a41777669aa
+[1/1] powerpc/fadump: register for fadump as early as possible
+      https://git.kernel.org/powerpc/c/607451ce0aa9bdff590db4d087173edba6d7a29d
 
 cheers
