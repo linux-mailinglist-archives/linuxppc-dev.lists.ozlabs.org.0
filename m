@@ -1,35 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F024CA53E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 13:51:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF1C24CA52A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 13:47:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K7vBY1Fmfz3fVf
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 23:51:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K7v6B6qXRz3bmP
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 23:47:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K7v591vtDz3bry
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Mar 2022 23:46:53 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K7v4z2h0Kz3bcm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Mar 2022 23:46:43 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4K7v592ptmz4xvc;
- Wed,  2 Mar 2022 23:46:53 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4K7v4w64Ldz4xv3;
+ Wed,  2 Mar 2022 23:46:40 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev,
- Vaibhav Jain <vaibhav@linux.ibm.com>
-In-Reply-To: <20220124202204.1488346-1-vaibhav@linux.ibm.com>
-References: <20220124202204.1488346-1-vaibhav@linux.ibm.com>
-Subject: Re: [PATCH v4] powerpc/papr_scm: Implement initial support for
- injecting smart errors
-Message-Id: <164622488229.2052779.17094749231331915996.b4-ty@ellerman.id.au>
-Date: Wed, 02 Mar 2022 23:41:22 +1100
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+In-Reply-To: <d8b33342d7454f6ca4f368f5206896558dfa06f4.1645538722.git.christophe.leroy@csgroup.eu>
+References: <d8b33342d7454f6ca4f368f5206896558dfa06f4.1645538722.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc: Remove remaining stab codes
+Message-Id: <164622488336.2052779.8567395814244091287.b4-ty@ellerman.id.au>
+Date: Wed, 02 Mar 2022 23:41:23 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,30 +44,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dan Williams <dan.j.williams@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 25 Jan 2022 01:52:04 +0530, Vaibhav Jain wrote:
-> Presently PAPR doesn't support injecting smart errors on an
-> NVDIMM. This makes testing the NVDIMM health reporting functionality
-> difficult as simulating NVDIMM health related events need a hacked up
-> qemu version.
+On Tue, 22 Feb 2022 15:05:30 +0100, Christophe Leroy wrote:
+> Following commit 12318163737c ("powerpc/32: Remove remaining .stabs
+> annotations"), stabs code are not used anymore.
 > 
-> To solve this problem this patch proposes simulating certain set of
-> NVDIMM health related events in papr_scm. Specifically 'fatal' health
-> state and 'dirty' shutdown state. These error can be injected via the
-> user-space 'ndctl-inject-smart(1)' command. With the proposed patch and
-> corresponding ndctl patches following command flow is expected:
+> Remove them.
 > 
-> [...]
+> 
 
 Applied to powerpc/next.
 
-[1/1] powerpc/papr_scm: Implement initial support for injecting smart errors
-      https://git.kernel.org/powerpc/c/bbbca72352bb9484bc057c91a408332b35ee8f4c
+[1/1] powerpc: Remove remaining stab codes
+      https://git.kernel.org/powerpc/c/406a8c1d8fa59ae6a6462a6fb6ff892f6a4f7499
 
 cheers
