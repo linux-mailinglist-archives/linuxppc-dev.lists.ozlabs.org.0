@@ -2,73 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8A74CA1A0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 11:01:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DFC14CA15C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 10:52:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K7qQD0ydQz3btW
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 21:01:24 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=FSwFYVuD;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K7qCM3Jdyz3c2h
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 20:51:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=xiam0nd.tong@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=FSwFYVuD; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K7plm4Ls1z2xm2;
- Wed,  2 Mar 2022 20:31:31 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id y11so1406820pfa.6;
- Wed, 02 Mar 2022 01:31:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=yRnvPGVK9XQdKYPg/H0ecgdZJeSxpiKw/X1pv37GC+w=;
- b=FSwFYVuD0cAwR74FpWh/UVnJlZEuhHuzmEJF2CmWuTU5VQk08y1iQ6Cm+4Kk/IHZ7f
- ykn4dSn+LtVJ/QNPcAOF0Kr9OP0uyQbpGUjZhyE2BsGEuIYzlTgMZwHl/BYpjMpkMG0+
- P9mnuSE0YONb1xqLwPVeO/elgzKWhvv7I7OGEBThyQYghI00EIr5RS9MGp7GsCYrqLUi
- wR7dcG4fdae3Ke7WyU9tBlNyUPSMcC8RmnmBsmKYAmxRcsIUhLqhpYW4uCJTlnf3AogC
- YxEVbABh4/fwCz1Lhf2xi5Cnii6w5cwNjqEkAadiEwyP0C/cLXPnnAaLLll6ns+CdAHq
- Ceuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references;
- bh=yRnvPGVK9XQdKYPg/H0ecgdZJeSxpiKw/X1pv37GC+w=;
- b=24zoYc8V8Pm8nTaLOdPTyp6OQh5PzpLmOZJ9g+tKOHBxxYr1mAM0PXb7DhvzK/+3cm
- XG6dvTZo3Uaa7aKp9Hh+L+MhKoE33hjgOBqPAf9E4a6kzjTbACDMHP+i/vuX4UH2j/Oo
- puIu5GxD2PaAIKB9UwZSynuyJ2w+Ssm3HcrM+I3AqrCfDjFQW35pY1km/LBV6WS9BZ7a
- 7woCJahiPRogMAbDTrwvijz8p6onnutkKGWbk8jYcxTh9BOZ0ORRDvQYtCaLdXbBsbv9
- hfMrd9u3PJK4GMNu1O8oiQ7NB7Q9PsLDxeDATAoipY+ffjhlajVKH8+N+0+qLSeRGUMK
- AGlw==
-X-Gm-Message-State: AOAM533bqkkpexOnXK4vuC/grumLrZXSrkR9n9pNO5t1AeoVrzvJHIb0
- fv3qN+HUm6b0n8LdBdCurXo=
-X-Google-Smtp-Source: ABdhPJxxYDNcbSMxl56+YduSTiv9ULKN3/PKEO9PEtlxvCfSyuhc7esxotc8paaSBF6ReGk5V/MJxQ==
-X-Received: by 2002:a05:6a00:244b:b0:4c9:319e:ecb7 with SMTP id
- d11-20020a056a00244b00b004c9319eecb7mr31990006pfj.58.1646213490674; 
- Wed, 02 Mar 2022 01:31:30 -0800 (PST)
-Received: from ubuntu.huawei.com ([119.3.119.20])
- by smtp.googlemail.com with ESMTPSA id
- y74-20020a62644d000000b004f129e94f40sm19496506pfb.131.2022.03.02.01.31.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Mar 2022 01:31:30 -0800 (PST)
-From: Xiaomeng Tong <xiam0nd.tong@gmail.com>
-To: torvalds@linux-foundation.org
-Subject: Re: [PATCH 2/6] treewide: remove using list iterator after loop body
- as a ptr
-Date: Wed,  2 Mar 2022 17:31:06 +0800
-Message-Id: <20220302093106.8402-1-xiam0nd.tong@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <CAHk-=whLK11HyvpUtEftOjc3Gup2V77KpAQ2fycj3uai=qceHw@mail.gmail.com>
-References: <CAHk-=whLK11HyvpUtEftOjc3Gup2V77KpAQ2fycj3uai=qceHw@mail.gmail.com>
-X-Mailman-Approved-At: Wed, 02 Mar 2022 21:00:51 +1100
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4K7qBx21lLz30Km
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Mar 2022 20:51:34 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 146371042;
+ Wed,  2 Mar 2022 01:51:32 -0800 (PST)
+Received: from [10.163.49.202] (unknown [10.163.49.202])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AE96F3F66F;
+ Wed,  2 Mar 2022 01:51:24 -0800 (PST)
+Subject: Re: [PATCH V3 09/30] arm/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Russell King (Oracle)" <linux@armlinux.org.uk>
+References: <1646045273-9343-1-git-send-email-anshuman.khandual@arm.com>
+ <1646045273-9343-10-git-send-email-anshuman.khandual@arm.com>
+ <Yhyqjo/4bozJB6j5@shell.armlinux.org.uk>
+ <542fa048-131e-240b-cc3a-fd4fff7ce4ba@arm.com>
+ <Yh1pYAOiskEQes3p@shell.armlinux.org.uk>
+ <dc3c95a4-de06-9889-ce1e-f660fc9fbb95@csgroup.eu>
+ <c3b60de0-38cd-160a-aa15-831349e07e23@arm.com>
+ <52866c88-59f9-2d1c-6f5a-5afcaf23f2bb@csgroup.eu>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <9caa90f5-c10d-75dd-b403-1388b7a3d296@arm.com>
+Date: Wed, 2 Mar 2022 15:21:22 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <52866c88-59f9-2d1c-6f5a-5afcaf23f2bb@csgroup.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,121 +54,172 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, kvm@vger.kernel.org, gustavo@embeddedor.com,
- linux-iio@vger.kernel.org, kgdb-bugreport@lists.sourceforge.net,
- linux@rasmusvillemoes.dk, dri-devel@lists.freedesktop.org, c.giuffrida@vu.nl,
- amd-gfx@lists.freedesktop.org, samba-technical@lists.samba.org,
- linux1394-devel@lists.sourceforge.net, drbd-dev@lists.linbit.com,
- linux-arch@vger.kernel.org, linux-cifs@vger.kernel.org,
- linux-aspeed@lists.ozlabs.org, linux-scsi@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-staging@lists.linux.dev, h.j.bos@vu.nl,
- jgg@ziepe.ca, intel-wired-lan@lists.osuosl.org, nouveau@lists.freedesktop.org,
- bcm-kernel-feedback-list@broadcom.com, dan.carpenter@oracle.com,
- linux-media@vger.kernel.org, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- bjohannesmeyer@gmail.com, linux-block@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, christophe.jaillet@wanadoo.fr,
- jakobkoschel@gmail.com, v9fs-developer@lists.sourceforge.net,
- linux-tegra@vger.kernel.org, tglx@linutronix.de,
- andriy.shevchenko@linux.intel.com, linux-arm-kernel@lists.infradead.org,
- linux-sgx@vger.kernel.org, nathan@kernel.org, netdev@vger.kernel.org,
- linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
- tipc-discussion@lists.sourceforge.net, linux-crypto@vger.kernel.org,
- dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- christian.koenig@amd.com, rppt@kernel.org
+Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+ "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+ Christoph Hellwig <hch@infradead.org>,
+ "geert@linux-m68k.org" <geert@linux-m68k.org>,
+ "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
+ "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+ Arnd Bergmann <arnd@arndb.de>,
+ "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+ "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+ "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 28 Feb 2022 16:41:04 -0800, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> But basically to _me_, the important part is that the end result is
-> maintainable longer-term.
 
-I couldn't agree more. And because of that, I stick with the following
-approach because it's maintainable longer-term than "type(pos) pos" one:
- Implements a new macro for each list_for_each_entry* with _inside suffix.
-  #define list_for_each_entry_inside(pos, type, head, member)
 
-I have posted a patch series here to demonstrate this approach:
-https://lore.kernel.org/lkml/20220301075839.4156-3-xiam0nd.tong@gmail.com/
+On 3/2/22 12:35 PM, Christophe Leroy wrote:
+> 
+> 
+> Le 02/03/2022 à 04:22, Anshuman Khandual a écrit :
+>>
+>>
+>> On 3/1/22 1:46 PM, Christophe Leroy wrote:
+>>>
+>>>
+>>> Le 01/03/2022 à 01:31, Russell King (Oracle) a écrit :
+>>>> On Tue, Mar 01, 2022 at 05:30:41AM +0530, Anshuman Khandual wrote:
+>>>>> On 2/28/22 4:27 PM, Russell King (Oracle) wrote:
+>>>>>> On Mon, Feb 28, 2022 at 04:17:32PM +0530, Anshuman Khandual wrote:
+>>>>>>> This defines and exports a platform specific custom vm_get_page_prot() via
+>>>>>>> subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
+>>>>>>> macros can be dropped which are no longer needed.
+>>>>>>
+>>>>>> What I would really like to know is why having to run _code_ to work out
+>>>>>> what the page protections need to be is better than looking it up in a
+>>>>>> table.
+>>>>>>
+>>>>>> Not only is this more expensive in terms of CPU cycles, it also brings
+>>>>>> additional code size with it.
+>>>>>>
+>>>>>> I'm struggling to see what the benefit is.
+>>>>>
+>>>>> Currently vm_get_page_prot() is also being _run_ to fetch required page
+>>>>> protection values. Although that is being run in the core MM and from a
+>>>>> platform perspective __SXXX, __PXXX are just being exported for a table.
+>>>>> Looking it up in a table (and applying more constructs there after) is
+>>>>> not much different than a clean switch case statement in terms of CPU
+>>>>> usage. So this is not more expensive in terms of CPU cycles.
+>>>>
+>>>> I disagree.
+>>>
+>>> So do I.
+>>>
+>>>>
+>>>> However, let's base this disagreement on some evidence. Here is the
+>>>> present 32-bit ARM implementation:
+>>>>
+>>>> 00000048 <vm_get_page_prot>:
+>>>>         48:       e200000f        and     r0, r0, #15
+>>>>         4c:       e3003000        movw    r3, #0
+>>>>                           4c: R_ARM_MOVW_ABS_NC   .LANCHOR1
+>>>>         50:       e3403000        movt    r3, #0
+>>>>                           50: R_ARM_MOVT_ABS      .LANCHOR1
+>>>>         54:       e7930100        ldr     r0, [r3, r0, lsl #2]
+>>>>         58:       e12fff1e        bx      lr
+>>>>
+>>>> That is five instructions long.
+>>>
+>>> On ppc32 I get:
+>>>
+>>> 00000094 <vm_get_page_prot>:
+>>>         94:	3d 20 00 00 	lis     r9,0
+>>> 			96: R_PPC_ADDR16_HA	.data..ro_after_init
+>>>         98:	54 84 16 ba 	rlwinm  r4,r4,2,26,29
+>>>         9c:	39 29 00 00 	addi    r9,r9,0
+>>> 			9e: R_PPC_ADDR16_LO	.data..ro_after_init
+>>>         a0:	7d 29 20 2e 	lwzx    r9,r9,r4
+>>>         a4:	91 23 00 00 	stw     r9,0(r3)
+>>>         a8:	4e 80 00 20 	blr
+>>>
+>>>
+>>>>
+>>>> Please show that your new implementation is not more expensive on
+>>>> 32-bit ARM. Please do so by building a 32-bit kernel, and providing
+>>>> the disassembly.
+>>>
+>>> With your series I get:
+>>>
+>>> 00000000 <vm_get_page_prot>:
+>>>      0:	3d 20 00 00 	lis     r9,0
+>>> 			2: R_PPC_ADDR16_HA	.rodata
+>>>      4:	39 29 00 00 	addi    r9,r9,0
+>>> 			6: R_PPC_ADDR16_LO	.rodata
+>>>      8:	54 84 16 ba 	rlwinm  r4,r4,2,26,29
+>>>      c:	7d 49 20 2e 	lwzx    r10,r9,r4
+>>>     10:	7d 4a 4a 14 	add     r10,r10,r9
+>>>     14:	7d 49 03 a6 	mtctr   r10
+>>>     18:	4e 80 04 20 	bctr
+>>>     1c:	39 20 03 15 	li      r9,789
+>>>     20:	91 23 00 00 	stw     r9,0(r3)
+>>>     24:	4e 80 00 20 	blr
+>>>     28:	39 20 01 15 	li      r9,277
+>>>     2c:	91 23 00 00 	stw     r9,0(r3)
+>>>     30:	4e 80 00 20 	blr
+>>>     34:	39 20 07 15 	li      r9,1813
+>>>     38:	91 23 00 00 	stw     r9,0(r3)
+>>>     3c:	4e 80 00 20 	blr
+>>>     40:	39 20 05 15 	li      r9,1301
+>>>     44:	91 23 00 00 	stw     r9,0(r3)
+>>>     48:	4e 80 00 20 	blr
+>>>     4c:	39 20 01 11 	li      r9,273
+>>>     50:	4b ff ff d0 	b       20 <vm_get_page_prot+0x20>
+>>>
+>>>
+>>> That is definitely more expensive, it implements a table of branches.
+>>
+>> Okay, will split out the PPC32 implementation that retains existing
+>> table look up method. Also planning to keep that inside same file
+>> (arch/powerpc/mm/mmap.c), unless you have a difference preference.
+> 
+> My point was not to get something specific for PPC32, but to amplify on 
+> Russell's objection.
+> 
+> As this is bad for ARM and bad for PPC32, do we have any evidence that 
+> your change is good for any other architecture ?
+> 
+> I checked PPC64 and there is exactly the same drawback. With the current 
+> implementation it is a small function performing table read then a few 
+> adjustment. After your change it is a bigger function implementing a 
+> table of branches.
 
-Although we need replace all the use of list_for_each_entry* (15000+)
-with list_for_each_entry*_inside, the work can be done gradually rather
-than all at once. We can incrementally replace these callers until
-all these in the kernel are completely updated with *_inside* one. At
-that time, we can just remove the implements of origin macros and rename
-the *_inside* macro back to the origin name just in one single patch.
+I am wondering if this would not be the case for any other switch case
+statement on the platform ? Is there something specific/different just
+on vm_get_page_prot() implementation ? Are you suggesting that switch
+case statements should just be avoided instead ?
 
-And the "type(pos) pos" approach need teach developers to "not initialize
-the iterator variable, otherwise the use-after-loop will not be reported by
-compiler", which is unreasonable and impossible for all developers. 
+> 
+> So, as requested by Russell, could you look at the disassembly for other 
+> architectures and show us that ARM and POWERPC are the only ones for 
+> which your change is not optimal ?
 
-And it will mess up the following code logic and no warnning reported by
-compiler, even without initializing "ext" at the beginning:
-void foo(struct mem_extent *arg) {
-  struct mem_extent *ext;  // used both for iterator and normal ptr
-  ...
-  ext = arg;  // this assignment can alse be done in another bar() func
-  ...
-  list_for_each_entry(ext, head, member) {
-    if (found(ext))
-       break;
-  }
-  ...
-  // use ext after the loop
-  ret = ext;
-}
-If the loop hit the break, the last "ret" will be the found ext iterator.
-However, if the "type(pos) pos" approach applied, the last "ret" will be
-"arg" which is not the intention of the developers, because the "ext" is
-two different variables inside and outside the loop.
+But the primary purpose of this series is not to guarantee optimized
+code on platform by platform basis, while migrating from a table based
+look up method into a switch case statement.
 
-Thus, my idea is *better a finger off than always aching*, let's choose
-the "list_for_each_entry_inside(pos, type, head, member)" approach.
+But instead, the purposes is to remove current levels of unnecessary
+abstraction while converting a vm_flags access combination into page
+protection. The switch case statement for platform implementation of
+vm_get_page_prot() just seemed logical enough. Christoph's original
+suggestion patch for x86 had the same implementation as well.
 
-> It turns out that just syntactically, it's really nice to give the
-> type of the iterator from outside the way we do now. Yeah, it may be a
-> bit odd, and maybe it's partly because I'm so used to the
-> "list_for_each_list_entry()" syntax, but moving the type into the loop
-> construct really made it nasty - either one very complex line, or
-> having to split it over two lines which was even worse.
->
-> Maybe the place I looked at just happened to have a long typename, but
-> it's basically always going to be a struct, so it's never a _simple_
-> type. And it just looked very odd adn unnatural to have the type as
-> one of the "arguments" to that list_for_each_entry() macro.
+But if the table look up is still better/preferred method on certain
+platforms like arm or ppc32, will be happy to preserve that.
 
-we can pass a shorter type name to list_for_each_entry_inside, thus no
-need to split it over two lines. Actually it is not a big problem.
-+ #define t struct sram_bank_info
-- list_for_each_entry(pos, head, member) {
-+ list_for_each_entry_inside(pos, t, head, member) {
-
-I put the type at the second argument not the first to avoid messing up
-the pattern match in some coccinelle scripts.
-
->  (b) gives us a nice warning for any normal use-after-loop case
-> (unless you explicitly initialized it like that
-> sgx_mmu_notifier_release() function did for no good reason
-
-sometimes developers can be confused by the reported warnning:
-"used without having been initialized", and can not figure out immediately
-that "oh, now i am using another different variable but with the same name
-of the loop iterator variable", which has changed the programming habits
-of developers.
-
->  (c) also guarantees that even if you don't get a warning,
-> non-converted (or newly written) bad code won't actually _work_
->
-> so you end up getting the new rules without any ambiguity or mistaken
-
-It will lead to a wrong/NULL pointer dereference if the pointer is used
-anywhere else, depend on which value is used to initialized with.
-
-Best regard,
---
-Xiaomeng Tong
+- Anshuman
