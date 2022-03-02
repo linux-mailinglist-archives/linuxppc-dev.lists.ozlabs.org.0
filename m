@@ -1,34 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4DE4CA539
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 13:50:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B84A54CA52D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 13:48:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K7v9G5jTbz3fJ7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 23:50:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K7v7S5Th2z3f0M
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Mar 2022 23:48:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K7v543lKyz3bsq
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Mar 2022 23:46:48 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K7v5106sZz3bcm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Mar 2022 23:46:45 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4K7v551swwz4xvR;
- Wed,  2 Mar 2022 23:46:49 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4K7v4t5npwz4xZ5;
+ Wed,  2 Mar 2022 23:46:38 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20220215112858.304779-1-mpe@ellerman.id.au>
-References: <20220215112858.304779-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/Makefile: Don't pass -mcpu=powerpc64 when
- building 32-bit
-Message-Id: <164622491014.2052779.5949150542826181280.b4-ty@ellerman.id.au>
-Date: Wed, 02 Mar 2022 23:41:50 +1100
+To: Anders Roxell <anders.roxell@linaro.org>, mpe@ellerman.id.au
+In-Reply-To: <20220224162215.3406642-1-anders.roxell@linaro.org>
+References: <20220224162215.3406642-1-anders.roxell@linaro.org>
+Subject: Re: [PATCHv2 1/3] powerpc: lib: sstep: fix 'sthcx' instruction
+Message-Id: <164622491295.2052779.4708365470490989992.b4-ty@ellerman.id.au>
+Date: Wed, 02 Mar 2022 23:41:52 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,24 +43,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 15 Feb 2022 22:28:58 +1100, Michael Ellerman wrote:
-> When CONFIG_GENERIC_CPU=y (true for all our defconfigs) we pass
-> -mcpu=powerpc64 to the compiler, even when we're building a 32-bit
-> kernel.
+On Thu, 24 Feb 2022 17:22:13 +0100, Anders Roxell wrote:
+> Looks like there been a copy paste mistake when added the instruction
+> 'stbcx' twice and one was probably meant to be 'sthcx'.
+> Changing to 'sthcx' from 'stbcx'.
 > 
-> This happens because we have an ifdef CONFIG_PPC_BOOK3S_64/else block in
-> the Makefile that was written before 32-bit supported GENERIC_CPU. Prior
-> to that the else block only applied to 64-bit Book3E.
 > 
-> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/Makefile: Don't pass -mcpu=powerpc64 when building 32-bit
-      https://git.kernel.org/powerpc/c/2863dd2db23e0407f6c50b8ba5c0e55abef894f1
+[1/3] powerpc: lib: sstep: fix 'sthcx' instruction
+      https://git.kernel.org/powerpc/c/a633cb1edddaa643fadc70abc88f89a408fa834a
+[2/3] powerpc: fix build errors
+      https://git.kernel.org/powerpc/c/8667d0d64dd1f84fd41b5897fd87fa9113ae05e3
+[3/3] powerpc: lib: sstep: fix build errors
+      https://git.kernel.org/powerpc/c/8219d31effa7be5dbc7ff915d7970672e028c701
 
 cheers
