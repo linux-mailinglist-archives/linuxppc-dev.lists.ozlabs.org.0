@@ -1,63 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 679A54CB444
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 02:25:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 529AE4CB4CD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 03:28:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K8Cwx3lw2z3bxM
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 12:25:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K8FKH3b8Rz3c2k
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 13:28:35 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fyTcnY07;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qBGtve+I;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=sstabellini@kernel.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031;
+ helo=mail-pj1-x1031.google.com; envelope-from=xiam0nd.tong@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=fyTcnY07; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=qBGtve+I; dkim-atps=neutral
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com
+ [IPv6:2607:f8b0:4864:20::1031])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K8CwF4g8qz30Mt
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Mar 2022 12:25:17 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 7F309B82358;
- Thu,  3 Mar 2022 01:25:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2074AC340F2;
- Thu,  3 Mar 2022 01:25:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1646270712;
- bh=OIWkR7Zp9BS5KcWgPGvH+7lGxsauASKPDzT5dWHRzcg=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=fyTcnY079RGVSWj1/bqnWf9UBPrXZmiZ32cJHGCuHKFrvhhlGSoeO8XnjyAULGbxy
- xuEeYIRqhVQfty7l070VwdiiUBm+vhQMOyp1/UPCRCwJW1H8chwVFdTWSqF8JxQ7i6
- pmngu4i/qw99iSRs7nF8V/KUQPfZMnX0OhdBfoyB3K0uXmVGkSCue1VhFC37hRyoHl
- lqT9JrJPLf0sbQoGpagSmC+bBJdDfAOOQZXY1qQ2kFojarLkPJJigndyp3UGVx/CEp
- 1XnqlJ8dDyOAxVpGwUR+l8DwgqcaHVrJmCy/f+O96VijhpAG5o/2FbsTqBKQIZTLrT
- qEo+TADXZ7B8A==
-Date: Wed, 2 Mar 2022 17:25:10 -0800 (PST)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 11/12] swiotlb: merge swiotlb-xen initialization into
- swiotlb
-In-Reply-To: <20220302081500.GB23075@lst.de>
-Message-ID: <alpine.DEB.2.22.394.2203021709470.3261@ubuntu-linux-20-04-desktop>
-References: <20220301105311.885699-1-hch@lst.de>
- <20220301105311.885699-12-hch@lst.de>
- <alpine.DEB.2.22.394.2203011720150.3261@ubuntu-linux-20-04-desktop>
- <20220302081500.GB23075@lst.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K8FJX3Knnz30R0;
+ Thu,  3 Mar 2022 13:27:55 +1100 (AEDT)
+Received: by mail-pj1-x1031.google.com with SMTP id
+ m11-20020a17090a7f8b00b001beef6143a8so3550423pjl.4; 
+ Wed, 02 Mar 2022 18:27:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references;
+ bh=C6016/38QKZUQAyk5HMPjenTvm42Pe8sPBzTcqL5vmY=;
+ b=qBGtve+IuFrAkJa+gsN1WQjHRs2fvQkSK1D44BenBKAqsyswWIPF49CjeAw6Lc/Xiz
+ 7VY9uX10GWOeYOq3Roffx9lK59MGCnSnWmLkHD6Zz3XGADMqQbIXFAspvzlfyt7tl87F
+ C44YITS/y0gKUKqqxM42VKL4jH/Xx4KasojD++jZOWXtcwkx1m//DlSoFwhQEbp4i/NS
+ eGEaCL2abI9d2Qo/vgVE47lljuFHl9RIsYb9haWI9DYl1+oIMHXMK3O9uyeK26H4D1AX
+ Jy4saNgfSyFkb5FP8pbKE6ds3BSqIpGBCoZu+qijzq/vfSl1dGYXTnehjmH9/ySByi+z
+ BIOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references;
+ bh=C6016/38QKZUQAyk5HMPjenTvm42Pe8sPBzTcqL5vmY=;
+ b=7OGqnNSS0KtJmBF8pY/DfVVBLZE1YbQmYNGdOhQaIIxsqA6+D71mAkI17hq59/jPcK
+ VCxZn8ndDgb7A5uln3YeO/RuZT/bHBlbWcB2MgksuTvXlKBCgXgNLaBDPSRn8A58dz+Q
+ uu+/H/fGj5q4oW3c8dyVytIvjmOe4sG4E9uJ5Xo7d6D1rWvXlqgt7NYl8YEbUSEDplQM
+ ryT13kA4rbIHTT9Il+3K+K0FvTIOaIAvsEmGhD+igvRoremIP9zOc36hc1WJbYNTxesi
+ bABLI3eDWw2UKNFZBf8oFIO2wnSi+As11vmcgtgyu7KA4E9Tw8TNvwF7caNljK7eUOob
+ W/Vw==
+X-Gm-Message-State: AOAM5317jSbKy3aMrTfqvKURxsaVXeZxtDB0q+hyuNSWJCWnEfu5bQRa
+ LsQGpzurzWsEKE9KnFSWtLI=
+X-Google-Smtp-Source: ABdhPJwdGKGtPoJbq9KB0b78P8kOQOqlHazHAUCZQHvA6TzNHcldJErwW75BUHOqmaVxrll88UvLqQ==
+X-Received: by 2002:a17:902:ec90:b0:151:a632:7ebb with SMTP id
+ x16-20020a170902ec9000b00151a6327ebbmr1936164plg.154.1646274473191; 
+ Wed, 02 Mar 2022 18:27:53 -0800 (PST)
+Received: from ubuntu.huawei.com ([119.3.119.19])
+ by smtp.googlemail.com with ESMTPSA id
+ d15-20020a17090ab30f00b001b8e65326b3sm359822pjr.9.2022.03.02.18.27.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 02 Mar 2022 18:27:52 -0800 (PST)
+From: Xiaomeng Tong <xiam0nd.tong@gmail.com>
+To: david.laight@aculab.com
+Subject: RE: [PATCH 2/6] treewide: remove using list iterator after loop body
+ as a ptr
+Date: Thu,  3 Mar 2022 10:27:29 +0800
+Message-Id: <20220303022729.9321-1-xiam0nd.tong@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <1077f17e50d34dc2bbfdf4e52a1cb2fd@AcuMS.aculab.com>
+References: <1077f17e50d34dc2bbfdf4e52a1cb2fd@AcuMS.aculab.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,100 +80,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
- Joerg Roedel <joro@8bytes.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- tboot-devel@lists.sourceforge.net, xen-devel@lists.xenproject.org,
- David Woodhouse <dwmw2@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
- iommu@lists.linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: alsa-devel@alsa-project.org, kvm@vger.kernel.org, gustavo@embeddedor.com,
+ linux-iio@vger.kernel.org, kgdb-bugreport@lists.sourceforge.net,
+ linux@rasmusvillemoes.dk, dri-devel@lists.freedesktop.org, c.giuffrida@vu.nl,
+ amd-gfx@lists.freedesktop.org, torvalds@linux-foundation.org,
+ samba-technical@lists.samba.org, linux1394-devel@lists.sourceforge.net,
+ drbd-dev@lists.linbit.com, linux-arch@vger.kernel.org,
+ linux-cifs@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+ linux-scsi@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-staging@lists.linux.dev, h.j.bos@vu.nl, jgg@ziepe.ca,
+ intel-wired-lan@lists.osuosl.org, nouveau@lists.freedesktop.org,
+ bcm-kernel-feedback-list@broadcom.com, dan.carpenter@oracle.com,
+ linux-media@vger.kernel.org, keescook@chromium.org, arnd@arndb.de,
+ linux-pm@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ bjohannesmeyer@gmail.com, linux-block@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, christophe.jaillet@wanadoo.fr,
+ jakobkoschel@gmail.com, v9fs-developer@lists.sourceforge.net,
+ linux-tegra@vger.kernel.org, tglx@linutronix.de,
+ andriy.shevchenko@linux.intel.com, linux-arm-kernel@lists.infradead.org,
+ linux-sgx@vger.kernel.org, nathan@kernel.org, netdev@vger.kernel.org,
+ linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+ xiam0nd.tong@gmail.com, tipc-discussion@lists.sourceforge.net,
+ linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, christian.koenig@amd.com, rppt@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2 Mar 2022, Christoph Hellwig wrote:
-> On Tue, Mar 01, 2022 at 06:55:47PM -0800, Stefano Stabellini wrote:
-> > Unrelated to this specific patch series: now that I think about it, if
-> > io_tlb_default_mem.nslabs is already allocated by the time xen_mm_init
-> > is called, wouldn't we potentially have an issue with the GFP flags used
-> > for the earlier allocation (e.g. GFP_DMA32 not used)? Maybe something
-> > for another day.
-> 
-> swiotlb_init allocates low memory from meblock, which is roughly
-> equivalent to GFP_DMA allocations, so we'll be fine.
-> 
-> > > @@ -143,10 +141,15 @@ static int __init xen_mm_init(void)
-> > >  	if (!xen_swiotlb_detect())
-> > >  		return 0;
-> > >  
-> > > -	rc = xen_swiotlb_init();
-> > >  	/* we can work with the default swiotlb */
-> > > -	if (rc < 0 && rc != -EEXIST)
-> > > -		return rc;
-> > > +	if (!io_tlb_default_mem.nslabs) {
-> > > +		if (!xen_initial_domain())
-> > > +			return -EINVAL;
-> > 
-> > I don't think we need this xen_initial_domain() check. It is all
-> > already sorted out by the xen_swiotlb_detect() check above.
-> 
-> Is it?
-> 
-> static inline int xen_swiotlb_detect(void)
-> {
-> 	if (!xen_domain())
-> 		return 0;
-> 	if (xen_feature(XENFEAT_direct_mapped))
-> 		return 1;
-> 	/* legacy case */
-> 	if (!xen_feature(XENFEAT_not_direct_mapped) && xen_initial_domain())
-> 		return 1;
-> 	return 0;
-> }
+On Wed, 2 Mar 2022 14:04:06 +0000, David Laight
+<David.Laight@ACULAB.COM> wrote:
+> I think that it would be better to make any alternate loop macro
+> just set the variable to NULL on the loop exit.
+> That is easier to code for and the compiler might be persuaded to
+> not redo the test.
 
-It used to be that we had a
+No, that would lead to a NULL dereference.
 
-  if (!xen_initial_domain())
-      return -EINVAL;
+The problem is the mis-use of iterator outside the loop on exit, and
+the iterator will be the HEAD's container_of pointer which pointers
+to a type-confused struct. Sidenote: The *mis-use* here refers to
+mistakely access to other members of the struct, instead of the
+list_head member which acutally is the valid HEAD.
 
-check in the initialization of swiotlb-xen on ARM. Then we replaced it
-with the more sophisticated xen_swiotlb_detect().
+IOW, you would dereference a (NULL + offset_of_member) address here.
 
-The reason is that swiotlb-xen on ARM relies on Dom0 being 1:1 mapped
-(guest physical addresses == physical addresses). Recent changes in Xen
-allowed also DomUs to be 1:1 mapped. Changes still under discussion will
-allow Dom0 not to be 1:1 mapped.
+Please remind me if i missed something, thanks.
 
-So, before all the Xen-side changes, knowing what was going to happen, I
-introduced a clearer interface: XENFEAT_direct_mapped and
-XENFEAT_not_direct_mapped tell us whether the guest (Linux) is 1:1
-mapped or not. If it is 1:1 mapped then Linux can take advantage of
-swiotlb-xen. Now xen_swiotlb_detect() returns true if Linux is 1:1
-mapped.
+> OTOH there may be alternative definitions that can be used to get
+> the compiler (or other compiler-like tools) to detect broken code.
+> Even if the definition can't possibly generate a working kerrnel.
 
-Then of course there is the legacy case. That's taken care of by:
+The "list_for_each_entry_inside(pos, type, head, member)" way makes
+the iterator invisiable outside the loop, and would be catched by
+compiler if use-after-loop things happened.
 
- 	if (!xen_feature(XENFEAT_not_direct_mapped) && xen_initial_domain())
- 		return 1;
+Can you share your "alternative definitions" details? thanks!
 
-The intention is to say that if
-XENFEAT_direct_mapped/XENFEAT_not_direct_mapped are not present, then
-use xen_initial_domain() like we did before.
-
-So if xen_swiotlb_detect() returns true we know that Linux is either
-dom0 (xen_initial_domain() == true) or we have very good reasons to
-think we should initialize swiotlb-xen anyway
-(xen_feature(XENFEAT_direct_mapped) == true).
-
-
-> I think I'd keep it as-is for now, as my planned next step would be to
-> fold xen-swiotlb into swiotlb entirely.
-
-Thinking more about it we actually need to drop the xen_initial_domain()
-check otherwise some cases won't be functional (Dom0 not 1:1 mapped, or
-DomU 1:1 mapped).
+--
+Xiaomeng Tong
