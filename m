@@ -1,42 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C254CC140
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 16:29:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C68FC4CC1F6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 16:53:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K8ZfK24nCz3cfY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Mar 2022 02:29:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K8b9x5by7z3c94
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Mar 2022 02:53:25 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=hpCU71GD;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=cmarinas@kernel.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::12f;
+ helo=mail-lf1-x12f.google.com; envelope-from=linus.walleij@linaro.org;
  receiver=<UNKNOWN>)
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=hpCU71GD; dkim-atps=neutral
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com
+ [IPv6:2a00:1450:4864:20::12f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K8Zdr1rXQz3byX
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Mar 2022 02:29:04 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 298DAB8260A;
- Thu,  3 Mar 2022 15:29:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335A5C340F0;
- Thu,  3 Mar 2022 15:28:54 +0000 (UTC)
-Date: Thu, 3 Mar 2022 15:28:50 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V3 05/30] arm64/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-Message-ID: <YiDessYDSt060Euc@arm.com>
-References: <1646045273-9343-1-git-send-email-anshuman.khandual@arm.com>
- <1646045273-9343-6-git-send-email-anshuman.khandual@arm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K8b9D6nWBz3bYZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Mar 2022 02:52:47 +1100 (AEDT)
+Received: by mail-lf1-x12f.google.com with SMTP id j15so9210905lfe.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Mar 2022 07:52:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=yC1JsxwKRkTkat6RGqvj7iumhirf2LX4rUgPRch1A3U=;
+ b=hpCU71GDl+I4m+CMK1S581Y0RRpukP1UQNeqYjAhIgdBXkA36siD0K6Vt3yiIrZpz6
+ I6+5GCluNEZtgKuMoliPtpvVa7808qFadK/R68AAkrueHjax6zGkkB0Jh3QJb7aljfcp
+ eUDA02+nlvbo7AFpJPvLFYXpvPj46XZHVjD/Ib9BGzucB1B69cGfSynFAA9N6gks6I7v
+ gAO84I5PHVM+EocQnYuDW1IxVWfyMsFpDYSiPArIL1OQ+ImkoW+wrSFbWswcCvGB/r88
+ bfOo2niKOmvdxT9ZhwP2G87IkLtMcFr1TeQDh+r1q7eCY45y437FV5lPqlx71Kja/W5T
+ XW3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=yC1JsxwKRkTkat6RGqvj7iumhirf2LX4rUgPRch1A3U=;
+ b=s+QRkOVEwAJaEDrk7TAgYNWvFzg9/unFOztPEFLnLEGJ/TkDXhRRmF3pZ2asiJstjm
+ +6Qi8CUYjiL4ZfSEnEDW/Ga30925liKoep+ziZyVn69Zc3EIHu8vmkCBKVEtDRR8OkWO
+ NsJkDBuRg1MneVZosc4XQg04H7rfsEXQqAGapn65awRsgucJ9dGlhawVRa5uXVlqGqrf
+ 8pVxEkurXVhUuxO3WOeh7b4OILJJgsIQhBdePkxH48881oPRltC1NjoZVsC8WKQNw3da
+ lodE/xMfagk5ezqLQUKyvocCbb1+bNNvPVaCizgL0AhhP2tq8JoHg+L2blY3KvEcio9b
+ iUJA==
+X-Gm-Message-State: AOAM530X45q9OzJMWMg5gYGjhqIhVdIuzzKRyO8o9JMYXmFHldZisZ/7
+ QJF3W4aRZ6QtuG9CPn78oMXyUg==
+X-Google-Smtp-Source: ABdhPJwW2HoABV/uj/rFfX/E6UpnfYrqHjNKdUn4HMXvb9VPhOcB2J3ZAxUicBozLnGmoRYGOVx/WA==
+X-Received: by 2002:a05:6512:33ba:b0:445:7cdd:3a4d with SMTP id
+ i26-20020a05651233ba00b004457cdd3a4dmr19066255lfg.315.1646322761320; 
+ Thu, 03 Mar 2022 07:52:41 -0800 (PST)
+Received: from localhost.localdomain
+ (c-fdcc225c.014-348-6c756e10.bbcust.telenor.se. [92.34.204.253])
+ by smtp.gmail.com with ESMTPSA id
+ g23-20020ac25397000000b0044331de4945sm495801lfh.54.2022.03.03.07.52.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 03 Mar 2022 07:52:40 -0800 (PST)
+From: Linus Walleij <linus.walleij@linaro.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: [PATCH] RFC: powerpc: wii.dts: Fix up GPIO I2C bus
+Date: Thu,  3 Mar 2022 16:50:38 +0100
+Message-Id: <20220303155038.54709-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1646045273-9343-6-git-send-email-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,160 +83,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-hexagon@vger.kernel.org, linux-csky@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, geert@linux-m68k.org,
- linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
- linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
- openrisc@lists.librecores.org, linux-arm-kernel@lists.infradead.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>,
+ Albert Herranz <albert_herranz@yahoo.es>,
+ =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+ linuxppc-dev@lists.ozlabs.org, Linus Walleij <linus.walleij@linaro.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Anshuman,
+This portion of the device tree just looks weird to me.
+We have a standard way of doing I2C-over-GPIO and it is
+a separate device tree node outside of the SoC node, not
+inside the GPIO node.
 
-On Mon, Feb 28, 2022 at 04:17:28PM +0530, Anshuman Khandual wrote:
-> +static inline pgprot_t __vm_get_page_prot(unsigned long vm_flags)
-> +{
-> +	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
-> +	case VM_NONE:
-> +		return PAGE_NONE;
-> +	case VM_READ:
-> +	case VM_WRITE:
-> +	case VM_WRITE | VM_READ:
-> +		return PAGE_READONLY;
-> +	case VM_EXEC:
-> +		return PAGE_EXECONLY;
-> +	case VM_EXEC | VM_READ:
-> +	case VM_EXEC | VM_WRITE:
-> +	case VM_EXEC | VM_WRITE | VM_READ:
-> +		return PAGE_READONLY_EXEC;
-> +	case VM_SHARED:
-> +		return PAGE_NONE;
-> +	case VM_SHARED | VM_READ:
-> +		return PAGE_READONLY;
-> +	case VM_SHARED | VM_WRITE:
-> +	case VM_SHARED | VM_WRITE | VM_READ:
-> +		return PAGE_SHARED;
-> +	case VM_SHARED | VM_EXEC:
-> +		return PAGE_EXECONLY;
-> +	case VM_SHARED | VM_EXEC | VM_READ:
-> +		return PAGE_READONLY_EXEC;
-> +	case VM_SHARED | VM_EXEC | VM_WRITE:
-> +	case VM_SHARED | VM_EXEC | VM_WRITE | VM_READ:
-> +		return PAGE_SHARED_EXEC;
-> +	default:
-> +		BUILD_BUG();
-> +	}
-> +}
+Cc: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+Cc: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
+Cc: Albert Herranz <albert_herranz@yahoo.es>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ arch/powerpc/boot/dts/wii.dts | 43 ++++++++++++++---------------------
+ 1 file changed, 17 insertions(+), 26 deletions(-)
 
-I'd say ack for trying to get of the extra arch_vm_get_page_prot() and
-arch_filter_pgprot() but, TBH, I'm not so keen on the outcome. I haven't
-built the code to see what's generated but I suspect it's no significant
-improvement. As for the code readability, the arm64 parts don't look
-much better either. The only advantage with this patch is that all
-functions have been moved under arch/arm64.
-
-I'd keep most architectures that don't have own arch_vm_get_page_prot()
-or arch_filter_pgprot() unchanged and with a generic protection_map[]
-array. For architectures that need fancier stuff, add a
-CONFIG_ARCH_HAS_VM_GET_PAGE_PROT (as you do) and allow them to define
-vm_get_page_prot() while getting rid of arch_vm_get_page_prot() and
-arch_filter_pgprot(). I think you could also duplicate protection_map[]
-for architectures with own vm_get_page_prot() (make it static) and
-#ifdef it out in mm/mmap.c.
-
-If later you have more complex needs or a switch statement generates
-better code, go for it, but for this series I'd keep things simple, only
-focus on getting rid of arch_vm_get_page_prot() and
-arch_filter_pgprot().
-
-If I grep'ed correctly, there are only 4 architectures that have own
-arch_vm_get_page_prot() (arm64, powerpc, sparc, x86) and 2 that have own
-arch_filter_pgprot() (arm64, x86). Try to only change these for the time
-being, together with the other generic mm cleanups you have in this
-series. I think there are a couple more that touch protection_map[]
-(arm, m68k). You can leave the generic protection_map[] global if the
-arch does not select ARCH_HAS_VM_GET_PAGE_PROT.
-
-> +static pgprot_t arm64_arch_filter_pgprot(pgprot_t prot)
-> +{
-> +	if (cpus_have_const_cap(ARM64_HAS_EPAN))
-> +		return prot;
-> +
-> +	if (pgprot_val(prot) != pgprot_val(PAGE_EXECONLY))
-> +		return prot;
-> +
-> +	return PAGE_READONLY_EXEC;
-> +}
-> +
-> +static pgprot_t arm64_arch_vm_get_page_prot(unsigned long vm_flags)
-> +{
-> +	pteval_t prot = 0;
-> +
-> +	if (vm_flags & VM_ARM64_BTI)
-> +		prot |= PTE_GP;
-> +
-> +	/*
-> +	 * There are two conditions required for returning a Normal Tagged
-> +	 * memory type: (1) the user requested it via PROT_MTE passed to
-> +	 * mmap() or mprotect() and (2) the corresponding vma supports MTE. We
-> +	 * register (1) as VM_MTE in the vma->vm_flags and (2) as
-> +	 * VM_MTE_ALLOWED. Note that the latter can only be set during the
-> +	 * mmap() call since mprotect() does not accept MAP_* flags.
-> +	 * Checking for VM_MTE only is sufficient since arch_validate_flags()
-> +	 * does not permit (VM_MTE & !VM_MTE_ALLOWED).
-> +	 */
-> +	if (vm_flags & VM_MTE)
-> +		prot |= PTE_ATTRINDX(MT_NORMAL_TAGGED);
-> +
-> +	return __pgprot(prot);
-> +}
-> +
-> +pgprot_t vm_get_page_prot(unsigned long vm_flags)
-> +{
-> +	pgprot_t ret = __pgprot(pgprot_val(__vm_get_page_prot(vm_flags)) |
-> +			pgprot_val(arm64_arch_vm_get_page_prot(vm_flags)));
-> +
-> +	return arm64_arch_filter_pgprot(ret);
-> +}
-
-If we kept the array, we can have everything in a single function
-(untested and with my own comments for future changes):
-
-pgprot_t vm_get_page_prot(unsigned long vm_flags)
-{
-	pgprot_t prot = __pgprot(pgprot_val(protection_map[vm_flags &
-				(VM_READ|VM_WRITE|VM_EXEC|VM_SHARED)]));
-
-	/*
-	 * We could get rid of this test if we updated protection_map[]
-	 * to turn exec-only into read-exec during boot.
-	 */
-	if (!cpus_have_const_cap(ARM64_HAS_EPAN) &&
-	    pgprot_val(prot) == pgprot_val(PAGE_EXECONLY))
-		prot = PAGE_READONLY_EXEC;
-
-	if (vm_flags & VM_ARM64_BTI)
-		prot != PTE_GP;
-
-	/*
-	 * We can get rid of the requirement for PROT_NORMAL to be 0
-	 * since here we can mask out PTE_ATTRINDX_MASK.
-	 */
-	if (vm_flags & VM_MTE) {
-		prot &= ~PTE_ATTRINDX_MASK;
-		prot |= PTE_ATTRINDX(MT_NORMAL_TAGGED);
-	}
-
-	return prot;
-}
-
+diff --git a/arch/powerpc/boot/dts/wii.dts b/arch/powerpc/boot/dts/wii.dts
+index e46143c32308..2e51100d2dab 100644
+--- a/arch/powerpc/boot/dts/wii.dts
++++ b/arch/powerpc/boot/dts/wii.dts
+@@ -192,31 +192,6 @@ GPIO: gpio@d8000c0 {
+ 			#interrupt-cells = <2>;
+ 			interrupts = <10>;
+ 			interrupt-parent = <&PIC1>;
+-
+-			/*
+-			 * This is commented out while a standard binding
+-			 * for i2c over gpio is defined.
+-			 */
+-			/*
+-			i2c-video {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-			        compatible = "i2c-gpio";
+-
+-			        gpios = <&GPIO 15 0
+-			                 &GPIO 14 0>;
+-			        clock-frequency = <250000>;
+-				no-clock-stretching;
+-			        scl-is-open-drain;
+-			        sda-is-open-drain;
+-			        sda-enforce-dir;
+-
+-			        AVE: audio-video-encoder@70 {
+-			                compatible = "nintendo,wii-audio-video-encoder";
+-			                reg = <0x70>;
+-			        };
+-			};
+-			*/
+ 		};
+ 
+ 		control@d800100 {
+@@ -268,5 +243,21 @@ eject {
+ 			linux,code = <KEY_EJECTCD>;
+ 		};
+ 	};
+-};
+ 
++	i2c-video {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		compatible = "i2c-gpio";
++
++		sda-gpios = <&GPIO 15 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
++		scl-gpios = <&GPIO 14 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
++		clock-frequency = <250000>;
++		no-clock-stretching;
++		sda-enforce-dir;
++
++		AVE: audio-video-encoder@70 {
++			compatible = "nintendo,wii-audio-video-encoder";
++			reg = <0x70>;
++		};
++	};
++};
 -- 
-Catalin
+2.35.1
+
