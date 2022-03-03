@@ -2,70 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5D04CB67D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 06:37:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F8E4CB677
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 06:35:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K8KWW3jTnz3dwp
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 16:37:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K8KTH2BX2z3bw6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 16:35:47 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LgP9pNI3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=A5yHyoVq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630;
- helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
+ helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=LgP9pNI3; dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com
- [IPv6:2607:f8b0:4864:20::630])
+ header.s=20210112 header.b=A5yHyoVq; dkim-atps=neutral
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K8KQs6VBNz3bqp
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Mar 2022 16:33:41 +1100 (AEDT)
-Received: by mail-pl1-x630.google.com with SMTP id i1so3574013plr.2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Mar 2022 21:33:42 -0800 (PST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K8KQj3htkz3bww
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Mar 2022 16:33:33 +1100 (AEDT)
+Received: by mail-pj1-x1036.google.com with SMTP id
+ gj15-20020a17090b108f00b001bef86c67c1so3740397pjb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Mar 2022 21:33:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=3hEwUX2M4z9sTTzqMuyxap51XtRcQqvx+Ji9wYa5XEw=;
- b=LgP9pNI3LevRjPMZrnRJX7QYZ5Wq3eKyJTvcK1nrqghRKj2Kxf6eQcO+PkP+BEI+be
- nr+nJjjHBOkir0e1zbDuG9Izhhm/W/HAJtIWvOY6RG/exYj5G1AZoRUwhc0JST/O2oS7
- 5jf3c/SvVSlzCUzrElKgqFddnd/kqNTx05MkNdGSaSEZ6kT+EMe1jL9ASnW585AQghH4
- ob1tjYuY/vkQmmCTDVD1oA2Jg/fr8a7/Ndti/RatLVNngoGNcBUY2IeARNPXnhB060J8
- pdtUoleUJstwAqIlcm7XvoDqWl7AUoXlqSg02svCbqHand2cYSIJ9rylv0o9eOK/lt7U
- FXHw==
+ bh=HDVlKy+2bfZ2b/c4L614cIXqwP1CPgF+KjlhnCPRY44=;
+ b=A5yHyoVqeTRN5ZzKK4Rau5YEn65Fipti9u3dAovXMRviK+AAZZk/nDzslliPcFaTEm
+ UZOn+MPuD+uy7Kb2u/Z5jf5nwu9UurV6tBHfNA1tFtBs9tnFx+SuS/zsC9e6RQKZSAq0
+ t8tdqC74i1RgdNjtLJu8DQ+wmaJsadfZm66EUOOU7wnBPGuiRtKKy27nAqIGXCt0ImeI
+ wiQQEQ6wewqjgXs7PrFb/e3t/zva/goy9U3ygBPezGVuAcLGMsNTClHSGCtAgG1oQUGK
+ olgXIwFLeTv/EVfcInM1BqSIcn8j/f+NkdEcLVfKExhjk6aPvtH7wpvs1fsEZpjnm58X
+ FkxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=3hEwUX2M4z9sTTzqMuyxap51XtRcQqvx+Ji9wYa5XEw=;
- b=x3qBc5QtUoHrxSz93ea2ycfYN6bEazCrn5PsRhMiraQEZnz1SRA38WfOjuf+7ruwWe
- 3ixkvpUQ2/14K3b3iLXxBAdhwuTYjyvcAx/m0GmkcK22+Mn+1g4/Wled/ZGoaxoeQsGW
- 9bE95MS1fKdf0AWWpwEfX2ZQh74Sgt2ZHEtKjkWviMFCR/TvIpVjlVOspRr3Hml6OGqh
- woaSlF5OKHhyUu6rDJUds0nuEy8Kzv6EKGfw+2MY9a2MIvAa7oRIaG/LZERotAULNOGl
- XeU2D0CfXewGubNyltLObq8eggwjRIesERaL3wvHU1TqktaiYRfy5GXq/15aQcPMziK6
- MlXQ==
-X-Gm-Message-State: AOAM5326bGk0+AqW8/du1z/2h7IvUdBCo8qqExlzpf6XIgu1V8MVybNj
- r5eyO/2OiJfefQYqHiC/n2mZ0boyIogh8A==
-X-Google-Smtp-Source: ABdhPJx9FKLC3Eg3uDGbCW1KaBbRZxsxMiRhMXslt7Xu+QU6fcG3okJQDZgdiKlv2++UKq3Hg6gGLw==
-X-Received: by 2002:a17:903:244e:b0:150:9b8c:3a6f with SMTP id
- l14-20020a170903244e00b001509b8c3a6fmr30906053pls.120.1646285609607; 
- Wed, 02 Mar 2022 21:33:29 -0800 (PST)
+ bh=HDVlKy+2bfZ2b/c4L614cIXqwP1CPgF+KjlhnCPRY44=;
+ b=jTm3qat+HAMIfYrn/oC0tx52NCVj/wLagf/+mJeU+SNSkQQS2gl2ZH1BC6+pScwjVn
+ HE69Q/9jGd0miHZZuBv/aosxso2VY5YoRqUmtr91zy4abntrWAAjDNb3HKop9P16iOff
+ r1mpf5jFyTw1NhGCOQFbK8eRQedVBogUkhY7OFlgOGeCaFY6yKXLuMiym9zb1dJjxVAp
+ 3I0r9g2UHD3e/VfcNGOQyVrrqYfgMzthjJhprs/zPIRjn3kT2Frea4QGP47MiItTb+ym
+ E8Pwb6r0raaIh7qNhncbSrpF4yHmNJsOX3vsBfKVi5iT4V7qTb1JFVGln9qq1XfjhfeA
+ pPFA==
+X-Gm-Message-State: AOAM5329XPmwCOPnZ/tLz2fY2pMOjnc4an3UM+89Zu21e4gPUPqfTOin
+ t3GNvqfPloEAzT1oNlvAq8pZ+sdkKiP6/Q==
+X-Google-Smtp-Source: ABdhPJyKDEwXMIFCASHDmnsOlvqU4kGJEalOUy/Ptpl6jJr7UEJUHTxO0nqECQapDJWIxBMgKYhtwQ==
+X-Received: by 2002:a17:903:22d0:b0:151:97f5:db54 with SMTP id
+ y16-20020a17090322d000b0015197f5db54mr6278495plg.58.1646285612638; 
+ Wed, 02 Mar 2022 21:33:32 -0800 (PST)
 Received: from bobo.ozlabs.ibm.com (193-116-90-129.tpgi.com.au.
  [193.116.90.129]) by smtp.gmail.com with ESMTPSA id
- t7-20020a17090a024700b001bf12386db4sm170300pje.47.2022.03.02.21.33.27
+ t7-20020a17090a024700b001bf12386db4sm170300pje.47.2022.03.02.21.33.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 02 Mar 2022 21:33:29 -0800 (PST)
+ Wed, 02 Mar 2022 21:33:32 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/6] KVM: PPC: Book3S HV P9: Move cede logic out of XIVE
- escalation rearming
-Date: Thu,  3 Mar 2022 15:33:12 +1000
-Message-Id: <20220303053315.1056880-4-npiggin@gmail.com>
+Subject: [PATCH 4/6] KVM: PPC: Book3S HV P9: Split !nested case out from guest
+ entry
+Date: Thu,  3 Mar 2022 15:33:13 +1000
+Message-Id: <20220303053315.1056880-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20220303053315.1056880-1-npiggin@gmail.com>
 References: <20220303053315.1056880-1-npiggin@gmail.com>
@@ -88,99 +89,61 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Move the cede abort logic out of xive escalation rearming and into
-the caller to prepare for handling a similar case with nested guest
-entry.
+The differences between nested and !nested will become larger in
+later changes so split them out for readability.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/kvm_ppc.h |  4 ++--
- arch/powerpc/kvm/book3s_hv.c       | 10 ++++++++--
- arch/powerpc/kvm/book3s_xive.c     |  9 ++++++---
- 3 files changed, 16 insertions(+), 7 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-index a14dbcd1b8ce..94fa5f246657 100644
---- a/arch/powerpc/include/asm/kvm_ppc.h
-+++ b/arch/powerpc/include/asm/kvm_ppc.h
-@@ -671,7 +671,7 @@ extern int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 irq,
- 			       int level, bool line_status);
- extern void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu);
- extern void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu);
--extern void kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu);
-+extern bool kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu);
- 
- static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
- {
-@@ -709,7 +709,7 @@ static inline int kvmppc_xive_set_irq(struct kvm *kvm, int irq_source_id, u32 ir
- 				      int level, bool line_status) { return -ENODEV; }
- static inline void kvmppc_xive_push_vcpu(struct kvm_vcpu *vcpu) { }
- static inline void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu) { }
--static inline void kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu) { }
-+static inline bool kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu) { return true; }
- 
- static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
- 	{ return 0; }
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 5df359053147..a0b674d3a2da 100644
+index a0b674d3a2da..0289d076c0a8 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4073,10 +4073,16 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+@@ -4034,6 +4034,8 @@ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, uns
+ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 			 unsigned long lpcr, u64 *tb)
+ {
++	struct kvm *kvm = vcpu->kvm;
++	struct kvm_nested_guest *nested = vcpu->arch.nested;
+ 	u64 next_timer;
+ 	int trap;
+ 
+@@ -4053,23 +4055,30 @@ static int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		trap = kvmhv_vcpu_entry_p9_nested(vcpu, time_limit, lpcr, tb);
+ 
+ 		/* H_CEDE has to be handled now, not later */
+-		if (trap == BOOK3S_INTERRUPT_SYSCALL && !vcpu->arch.nested &&
++		if (trap == BOOK3S_INTERRUPT_SYSCALL && !nested &&
+ 		    kvmppc_get_gpr(vcpu, 3) == H_CEDE) {
+ 			kvmppc_cede(vcpu);
+ 			kvmppc_set_gpr(vcpu, 3, 0);
+ 			trap = 0;
+ 		}
+ 
+-	} else {
+-		struct kvm *kvm = vcpu->kvm;
++	} else if (nested) {
++		kvmppc_xive_push_vcpu(vcpu);
+ 
++		__this_cpu_write(cpu_in_guest, kvm);
++		trap = kvmhv_vcpu_entry_p9(vcpu, time_limit, lpcr, tb);
++		__this_cpu_write(cpu_in_guest, NULL);
++
++		kvmppc_xive_pull_vcpu(vcpu);
++
++	} else {
+ 		kvmppc_xive_push_vcpu(vcpu);
+ 
+ 		__this_cpu_write(cpu_in_guest, kvm);
+ 		trap = kvmhv_vcpu_entry_p9(vcpu, time_limit, lpcr, tb);
+ 		__this_cpu_write(cpu_in_guest, NULL);
+ 
+-		if (trap == BOOK3S_INTERRUPT_SYSCALL && !vcpu->arch.nested &&
++		if (trap == BOOK3S_INTERRUPT_SYSCALL &&
  		    !(vcpu->arch.shregs.msr & MSR_PR)) {
  			unsigned long req = kvmppc_get_gpr(vcpu, 3);
- 
--			/* H_CEDE has to be handled now, not later */
-+			/* H_CEDE has to be handled now */
- 			if (req == H_CEDE) {
- 				kvmppc_cede(vcpu);
--				kvmppc_xive_rearm_escalation(vcpu); /* may un-cede */
-+				if (!kvmppc_xive_rearm_escalation(vcpu)) {
-+					/*
-+					 * Pending escalation so abort
-+					 * the cede.
-+					 */
-+					vcpu->arch.ceded = 0;
-+				}
- 				kvmppc_set_gpr(vcpu, 3, 0);
- 				trap = 0;
- 
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-index e216c068075d..7b513e14cada 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -179,12 +179,13 @@ void kvmppc_xive_pull_vcpu(struct kvm_vcpu *vcpu)
- }
- EXPORT_SYMBOL_GPL(kvmppc_xive_pull_vcpu);
- 
--void kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu)
-+bool kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu)
- {
- 	void __iomem *esc_vaddr = (void __iomem *)vcpu->arch.xive_esc_vaddr;
-+	bool ret = true;
- 
- 	if (!esc_vaddr)
--		return;
-+		return ret;
- 
- 	/* we are using XIVE with single escalation */
- 
-@@ -197,7 +198,7 @@ void kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu)
- 		 * we also don't want to set xive_esc_on to 1 here in
- 		 * case we race with xive_esc_irq().
- 		 */
--		vcpu->arch.ceded = 0;
-+		ret = false;
- 		/*
- 		 * The escalation interrupts are special as we don't EOI them.
- 		 * There is no need to use the load-after-store ordering offset
-@@ -210,6 +211,8 @@ void kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu)
- 		__raw_readq(esc_vaddr + XIVE_ESB_SET_PQ_00);
- 	}
- 	mb();
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(kvmppc_xive_rearm_escalation);
  
 -- 
 2.23.0
