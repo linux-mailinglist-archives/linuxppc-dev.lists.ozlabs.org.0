@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217484CBBDF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 11:57:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 760B84CBC05
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 12:00:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K8Scj1T3Wz3cd8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 21:57:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K8SgL4C1Nz3cfy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 21:59:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -16,24 +16,25 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K8ScK2B2Hz3bxf
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Mar 2022 21:57:20 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K8Sfx2MBRz3bsc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Mar 2022 21:59:37 +1100 (AEDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id C476A68AFE; Thu,  3 Mar 2022 11:57:14 +0100 (CET)
-Date: Thu, 3 Mar 2022 11:57:14 +0100
+ id DB58D68AFE; Thu,  3 Mar 2022 11:59:31 +0100 (CET)
+Date: Thu, 3 Mar 2022 11:59:31 +0100
 From: Christoph Hellwig <hch@lst.de>
-To: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+To: Stefano Stabellini <sstabellini@kernel.org>
 Subject: Re: [PATCH 11/12] swiotlb: merge swiotlb-xen initialization into
  swiotlb
-Message-ID: <20220303105714.GB15103@lst.de>
+Message-ID: <20220303105931.GA15137@lst.de>
 References: <20220301105311.885699-1-hch@lst.de>
  <20220301105311.885699-12-hch@lst.de>
  <alpine.DEB.2.22.394.2203011720150.3261@ubuntu-linux-20-04-desktop>
- <ca748512-12bb-7d75-13f1-8d5ec9703e26@oracle.com>
+ <20220302081500.GB23075@lst.de>
+ <alpine.DEB.2.22.394.2203021709470.3261@ubuntu-linux-20-04-desktop>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ca748512-12bb-7d75-13f1-8d5ec9703e26@oracle.com>
+In-Reply-To: <alpine.DEB.2.22.394.2203021709470.3261@ubuntu-linux-20-04-desktop>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -49,28 +50,22 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org,
  linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org,
  Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org,
- Stefano Stabellini <sstabellini@kernel.org>, Joerg Roedel <joro@8bytes.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
+ Joerg Roedel <joro@8bytes.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
  tboot-devel@lists.sourceforge.net, xen-devel@lists.xenproject.org,
  David Woodhouse <dwmw2@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
  linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
- iommu@lists.linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
+ Robin Murphy <robin.murphy@arm.com>, linux-mips@vger.kernel.org,
+ iommu@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
  Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 02, 2022 at 08:15:03AM -0500, Boris Ostrovsky wrote:
-> Not for me, I fail to boot with
->
-> [   52.202000] bnxt_en 0000:31:00.0: swiotlb buffer is full (sz: 256 bytes), total 0 (slots), used 0 (slots)
->
-> (this is iscsi root so I need the NIC).
->
->
-> I bisected it to "x86: remove the IOMMU table infrastructure" but haven't actually looked at the code yet.
+On Wed, Mar 02, 2022 at 05:25:10PM -0800, Stefano Stabellini wrote:
+> Thinking more about it we actually need to drop the xen_initial_domain()
+> check otherwise some cases won't be functional (Dom0 not 1:1 mapped, or
+> DomU 1:1 mapped).
 
-Thanks. Looks like the sizing is going wrong.  Just to confirm, this is
-dom0 on x86 and no special command line options?
+Hmm, but that would be the case even before this series, right?
