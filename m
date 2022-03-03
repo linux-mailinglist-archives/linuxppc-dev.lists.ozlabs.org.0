@@ -1,40 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6CA4CC300
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 17:40:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B334CC358
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 18:00:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K8cCk5zTMz3cdb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Mar 2022 03:40:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K8cgj5LDwz3cXX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Mar 2022 04:00:49 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pGP5k/J1;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Missing IP4:
- 193.174.2.0/24) smtp.helo=elvis.franken.de (client-ip=193.175.24.41;
- helo=elvis.franken.de; envelope-from=tsbogend@alpha.franken.de;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
- by lists.ozlabs.org (Postfix) with ESMTP id 4K8cCK3PXSz3bcp
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Mar 2022 03:39:38 +1100 (AEDT)
-Received: from uucp (helo=alpha)
- by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
- id 1nPoU9-0008UX-00; Thu, 03 Mar 2022 17:39:25 +0100
-Received: by alpha.franken.de (Postfix, from userid 1000)
- id 23B82C28F1; Thu,  3 Mar 2022 17:39:00 +0100 (CET)
-Date: Thu, 3 Mar 2022 17:39:00 +0100
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 06/12] MIPS/octeon: use swiotlb_init instead of open
- coding it
-Message-ID: <20220303163900.GA11971@alpha.franken.de>
-References: <20220301105311.885699-1-hch@lst.de>
- <20220301105311.885699-7-hch@lst.de>
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=pGP5k/J1; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K8cfw36ZGz3bTK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Mar 2022 04:00:07 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 223GCaQj003886; 
+ Thu, 3 Mar 2022 16:59:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=itpcbzjK39nlPSZrLKm6sN0HYpOeAiBVkiNrQfCit3c=;
+ b=pGP5k/J1UZGGJjsgUxCNf7XQCef3umSSBP3Ec5ObDozSdxK2d8uDkKoi6IBFYU89XGUK
+ ZXy2XTBUq6mthn2/ZSNUkIW+56ialed69facRuE/GSS98YpOBFGPQZD+J+S8gdePhLI4
+ bfB8aEv3wzwadiNfm2tUkRuLLZ+wGSC6gNwcH7kyc2v2REkSZ0QnYWytT0oj6xGKdJTZ
+ 8Uuppg9KeNPAjGz63vxyBv4Np5b1CXuArkClCC98ysOe6Z5E5ZTlku3RIgX/fNItn+mE
+ hHbFKgp/qIy3oOHKrRHez+tidODqA9WUP/BRtw3U+NkdrQijsPJ0hjWXO/OKgfSEG6u2 Hg== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ejuc7sax5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 03 Mar 2022 16:59:56 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 223GdAvL022629;
+ Thu, 3 Mar 2022 16:59:54 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma01fra.de.ibm.com with ESMTP id 3efbu98qc6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 03 Mar 2022 16:59:54 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 223GxqZK39715264
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 3 Mar 2022 16:59:52 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E78904C050;
+ Thu,  3 Mar 2022 16:59:51 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7C4274C044;
+ Thu,  3 Mar 2022 16:59:51 +0000 (GMT)
+Received: from localhost (unknown [9.43.78.131])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  3 Mar 2022 16:59:51 +0000 (GMT)
+Date: Thu, 03 Mar 2022 22:29:50 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH v1 2/4] powerpc/ftrace: Refactor ftrace_{regs_}caller
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
+References: <ec286d2cc6989668a96f14543275437d2f3f0e3a.1645099283.git.christophe.leroy@csgroup.eu>
+ <9d7df9e4fc98a86051489f61d3c9bc67f92f7e27.1645099283.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <9d7df9e4fc98a86051489f61d3c9bc67f92f7e27.1645099283.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220301105311.885699-7-hch@lst.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1646326634.jzerx009p9.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ltx9TrRsD3dBRrXl7Q5swveYKQ7wMNg5
+X-Proofpoint-GUID: ltx9TrRsD3dBRrXl7Q5swveYKQ7wMNg5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-03_07,2022-02-26_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ priorityscore=1501 bulkscore=0 suspectscore=0 mlxlogscore=999
+ malwarescore=0 adultscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0
+ phishscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2201110000 definitions=main-2203030079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,33 +103,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
- Joerg Roedel <joro@8bytes.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- tboot-devel@lists.sourceforge.net, xen-devel@lists.xenproject.org,
- David Woodhouse <dwmw2@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
- iommu@lists.linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 01, 2022 at 12:53:05PM +0200, Christoph Hellwig wrote:
-> Use the generic swiotlb initialization helper instead of open coding it.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+Christophe Leroy wrote:
+> ftrace_caller() and frace_regs_caller() have now a lot in common.
+>=20
+> Refactor them using GAS macros.
+
+Thanks for doing this - this looks much better.
+
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
->  arch/mips/cavium-octeon/dma-octeon.c | 15 ++-------------
->  arch/mips/pci/pci-octeon.c           |  2 +-
->  2 files changed, 3 insertions(+), 14 deletions(-)
+>  arch/powerpc/kernel/trace/ftrace_mprofile.S | 147 ++++++--------------
+>  1 file changed, 45 insertions(+), 102 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kernel/trace/ftrace_mprofile.S b/arch/powerpc/k=
+ernel/trace/ftrace_mprofile.S
+> index 76dab07fd8fd..630b2de9957b 100644
+> --- a/arch/powerpc/kernel/trace/ftrace_mprofile.S
+> +++ b/arch/powerpc/kernel/trace/ftrace_mprofile.S
+> @@ -32,7 +32,7 @@
+>   * Our job is to save the register state into a struct pt_regs (on the s=
+tack)
+>   * and then arrange for the ftrace function to be called.
+>   */
+> -_GLOBAL(ftrace_regs_caller)
+> +.macro	ftrace_regs_entry allregs
+>  	/* Save the original return address in A's stack frame */
+>  #ifdef CONFIG_MPROFILE_KERNEL
+>  	PPC_STL	r0,LRSAVE(r1)
+> @@ -43,7 +43,7 @@ _GLOBAL(ftrace_regs_caller)
+>=20
+>  	/* Save all gprs to pt_regs */
+>  	SAVE_GPR(0, r1)
+> -	SAVE_GPRS(2, 11, r1)
+> +	SAVE_GPRS(3, 10, r1)
+>=20
+>  #ifdef CONFIG_PPC64
+>  	/* Ok to continue? */
+> @@ -52,17 +52,29 @@ _GLOBAL(ftrace_regs_caller)
+>  	beq	ftrace_no_trace
+>  #endif
 
-Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+The ability to disable ftrace in certain code paths through=20
+paca_struct->ftrace_enabled will also be relevant on ppc32 - it will be=20
+nice if it can be introduced there.
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+For this series though:
+Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+
+
+- Naveen
+
