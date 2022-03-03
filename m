@@ -2,41 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B4E4CB515
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 03:41:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04AC64CB61B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 05:59:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K8FcR2fGbz3c16
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 13:41:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K8Jfx0Bgcz3c8r
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Mar 2022 15:59:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=heyquark.com (client-ip=2001:4b98:dc4:8::229;
- helo=relay9-d.mail.gandi.net; envelope-from=ash@heyquark.com;
+ smtp.mailfrom=aculab.com (client-ip=185.58.86.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
- [IPv6:2001:4b98:dc4:8::229])
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K8Fc056Nnz30JM
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Mar 2022 13:41:18 +1100 (AEDT)
-Received: (Authenticated sender: ash@heyquark.com)
- by mail.gandi.net (Postfix) with ESMTPSA id 407E3FF804;
- Thu,  3 Mar 2022 02:41:04 +0000 (UTC)
-Message-ID: <01e8b44f-6fc3-280e-a88b-e7fa55d39837@heyquark.com>
-Date: Thu, 3 Mar 2022 13:41:02 +1100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K8JfK0SNFz3bcg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Mar 2022 15:58:30 +1100 (AEDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mtapsc-5-c9saVIHFMHux_Sno3vxg6w-1; Thu, 03 Mar 2022 04:58:25 +0000
+X-MC-Unique: c9saVIHFMHux_Sno3vxg6w-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.28; Thu, 3 Mar 2022 04:58:23 +0000
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.028; Thu, 3 Mar 2022 04:58:23 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Xiaomeng Tong' <xiam0nd.tong@gmail.com>
+Subject: RE: [PATCH 2/6] treewide: remove using list iterator after loop body
+ as a ptr
+Thread-Topic: [PATCH 2/6] treewide: remove using list iterator after loop body
+ as a ptr
+Thread-Index: AQHYLhg9+DU/OogLf0+tiSFmjztyUKysHu+QgADRVYCAACVtoA==
+Date: Thu, 3 Mar 2022 04:58:23 +0000
+Message-ID: <39404befad5b44b385698ff65465abe5@AcuMS.aculab.com>
+References: <1077f17e50d34dc2bbfdf4e52a1cb2fd@AcuMS.aculab.com>
+ <20220303022729.9321-1-xiam0nd.tong@gmail.com>
+In-Reply-To: <20220303022729.9321-1-xiam0nd.tong@gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH 02/12] powerpc: wiiu: device tree
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
 Content-Language: en-US
-To: Rob Herring <robh+dt@kernel.org>
-References: <20220302044406.63401-1-ash@heyquark.com>
- <20220302044406.63401-3-ash@heyquark.com>
- <CAL_Jsq+ej_vZHRfjNk61ogEstsqwJXx8bkRJa4vhnQss1bzYSA@mail.gmail.com>
-From: Ash Logan <ash@heyquark.com>
-In-Reply-To: <CAL_Jsq+ej_vZHRfjNk61ogEstsqwJXx8bkRJa4vhnQss1bzYSA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,406 +66,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>,
+Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "gustavo@embeddedor.com" <gustavo@embeddedor.com>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "kgdb-bugreport@lists.sourceforge.net" <kgdb-bugreport@lists.sourceforge.net>,
+ "linux@rasmusvillemoes.dk" <linux@rasmusvillemoes.dk>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "c.giuffrida@vu.nl" <c.giuffrida@vu.nl>,
+ "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+ "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
+ "samba-technical@lists.samba.org" <samba-technical@lists.samba.org>,
+ "linux1394-devel@lists.sourceforge.net"
+ <linux1394-devel@lists.sourceforge.net>,
+ "drbd-dev@lists.linbit.com" <drbd-dev@lists.linbit.com>,
+ "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+ "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
+ "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+ "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+ "h.j.bos@vu.nl" <h.j.bos@vu.nl>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
+ "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+ "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+ "bcm-kernel-feedback-list@broadcom.com"
+ <bcm-kernel-feedback-list@broadcom.com>,
+ "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
+ "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+ "keescook@chromium.org" <keescook@chromium.org>,
+ "arnd@arndb.de" <arnd@arndb.de>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+ "bjohannesmeyer@gmail.com" <bjohannesmeyer@gmail.com>,
+ "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+ "jakobkoschel@gmail.com" <jakobkoschel@gmail.com>,
+ "v9fs-developer@lists.sourceforge.net" <v9fs-developer@lists.sourceforge.net>,
+ "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
+ "nathan@kernel.org" <nathan@kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- Roberto Van Eeden <rw-r-r-0644@protonmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.ne@posteo.net>
+ "linux-f2fs-devel@lists.sourceforge.net"
+ <linux-f2fs-devel@lists.sourceforge.net>,
+ "tipc-discussion@lists.sourceforge.net"
+ <tipc-discussion@lists.sourceforge.net>,
+ "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+ "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+ "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "christian.koenig@amd.com" <christian.koenig@amd.com>,
+ "rppt@kernel.org" <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Rob,
-Thanks for the review.
+From: Xiaomeng Tong
+> Sent: 03 March 2022 02:27
+>=20
+> On Wed, 2 Mar 2022 14:04:06 +0000, David Laight
+> <David.Laight@ACULAB.COM> wrote:
+> > I think that it would be better to make any alternate loop macro
+> > just set the variable to NULL on the loop exit.
+> > That is easier to code for and the compiler might be persuaded to
+> > not redo the test.
+>=20
+> No, that would lead to a NULL dereference.
 
-On 3/3/22 00:36, Rob Herring wrote:
-> On Tue, Mar 1, 2022 at 10:44 PM Ash Logan <ash@heyquark.com> wrote:
->>
->> Add a device tree source file for the Nintendo Wii U video game console.
-> 
-> Test this with 'make W=1 dtbs_checks'.
+Why, it would make it b ethe same as the 'easy to use':
+=09for (item =3D head; item; item =3D item->next) {
+=09=09...
+=09=09if (...)
+=09=09=09break;
+=09=09...
+=09}
+=09if (!item)
+=09=09return;
+=20
+> The problem is the mis-use of iterator outside the loop on exit, and
+> the iterator will be the HEAD's container_of pointer which pointers
+> to a type-confused struct. Sidenote: The *mis-use* here refers to
+> mistakely access to other members of the struct, instead of the
+> list_head member which acutally is the valid HEAD.
 
-Does make W=1 ARCH=powerpc wiiu_defconfig dtbs_check seem reasonable? I 
-ran it, and saw LINT/CHKDT/UPD/SCHEMA/COPY steps, but if I put garbage 
-in the .dts it gives no warnings.
+The problem is that the HEAD's container_of pointer should never
+be calculated at all.
+This is what is fundamentally broken about the current definition.
 
->>
->> Signed-off-by: Ash Logan <ash@heyquark.com>
->> Co-developed-by: Roberto Van Eeden <rw-r-r-0644@protonmail.com>
->> Signed-off-by: Roberto Van Eeden <rw-r-r-0644@protonmail.com>
->> Co-developed-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
->> Signed-off-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
->> ---
->>   arch/powerpc/boot/dts/wiiu.dts | 327 +++++++++++++++++++++++++++++++++
->>   1 file changed, 327 insertions(+)
->>   create mode 100644 arch/powerpc/boot/dts/wiiu.dts
->>
->> diff --git a/arch/powerpc/boot/dts/wiiu.dts b/arch/powerpc/boot/dts/wiiu.dts
->> new file mode 100644
->> index 000000000000..aaf264963f61
->> --- /dev/null
->> +++ b/arch/powerpc/boot/dts/wiiu.dts
->> @@ -0,0 +1,327 @@
->> +// SPDX-License-Identifier: GPL-2.0
-> 
-> What about non-GPL environments?
+> IOW, you would dereference a (NULL + offset_of_member) address here.
 
-The other powerpc dts files are all GPL-2.0(-or-later), is there a 
-preferred license for devicetrees?
+Where?
 
->> +/*
->> + * Nintendo Wii U Device Tree Source
->> + *
->> + * Copyright (C) 2022 The linux-wiiu Team
->> + */
->> +
->> +/dts-v1/;
->> +#include <dt-bindings/gpio/gpio.h>
->> +#include <dt-bindings/input/input.h>
->> +
->> +/ {
->> +       model = "nintendo,wiiu";
->> +       compatible = "nintendo,wiiu";
->> +
->> +       #address-cells = <1>;
->> +       #size-cells = <1>;
->> +
->> +       chosen {
->> +               bootargs = "root=/dev/sda1 rootwait";
->> +       };
->> +
->> +       memory {
->> +               device_type = "memory";
->> +               reg = <0x00000000 0x02000000    /* MEM1 - 32MiB */
->> +                      0x08000000 0x00300000    /* MEM0 - 3MiB  */
->> +                      0x10000000 0x80000000>;  /* MEM2 - 2GiB  */
->> +       };
->> +
->> +       cpus {
->> +               #address-cells = <1>;
->> +               #size-cells = <0>;
->> +
->> +               /* TODO: Add SMP */
->> +               PowerPC,espresso@0 {
->> +                       device_type = "cpu";
->> +                       reg = <0>;
->> +                       clock-frequency = <1243125000>;         /* 1.243125GHz */
->> +                       bus-frequency = <248625000>;            /* 248.625MHz core-to-bus 5x */
->> +                       timebase-frequency = <62156250>;        /* 1/4 of the bus clock */
->> +                       i-cache-size = <32768>; /* 32K icache */
->> +                       i-cache-line-size = <32>;
->> +                       i-cache-block-size = <32>;
->> +                       i-cache-sets = <128>;
->> +                       d-cache-size = <32768>; /* 32K dcache */
->> +                       d-cache-line-size = <32>;
->> +                       d-cache-block-size = <32>;
->> +                       d-cache-sets = <128>;
->> +                       next-level-cache = <&L2_0>;
->> +                       L2_0:l2-cache {
->> +                               compatible = "cache";
->> +                               cache-level = <2>;
->> +                               cache-unified;
->> +                               cache-size = <0x80000>; /* 512KB L2 */
->> +                               cache-line-size = <64>;
->> +                               cache-block-size = <32>;
->> +                               cache-sets = <2048>;
->> +                       };
->> +               };
->> +       };
->> +
->> +       latte {
->> +               #address-cells = <1>;
->> +               #size-cells = <1>;
->> +               compatible = "nintendo,latte";
->> +               ranges = <0x0c000000 0x0c000000 0x00400000      /* Espresso-only registers */
->> +                         0x0d000000 0x0d000000 0x00200000      /* Latte AHB deivces */
->> +                         0x0d800000 0x0d800000 0x00800000>;    /* Latte SoC registers */
->> +
->> +               gpu7@c200000 {
-> 
-> gpu@...
-> 
->> +                       compatible = "nintendo,latte-gpu7";
->> +                       reg = <0x0c200000 0x80000>;
->> +                       interrupts = <2>;
->> +                       interrupt-parent = <&espresso_pic>;
->> +               };
->> +
->> +               espresso_pic: pic@c000078 {
->> +                       #interrupt-cells = <1>;
->> +                       interrupt-controller;
->> +
->> +                       compatible = "nintendo,espresso-pic";
->> +                       reg = <0x0c000078 0x18>;
->> +               };
->> +
->> +               latte_dsp: dsp@c005000 {
->> +                       compatible = "nintendo,latte-dsp";
->> +                       reg = <0x0c005000 0x200>;
->> +               };
->> +
->> +               ehci_0: usb@d040000 {
->> +                       compatible = "nintendo,latte-usb-ehci", "usb-ehci";
->> +                       reg = <0x0d040000 0x100>;
->> +                       interrupts = <4>;
->> +                       interrupt-parent = <&latte_pic>;
->> +                       big-endian-regs;
->> +               };
->> +
->> +               ohci_0_0: usb@d050000 {
->> +                       compatible = "nintendo,latte-usb-ohci";
->> +                       reg = <0x0d050000 0x100>;
->> +                       interrupts = <5>;
->> +                       interrupt-parent = <&latte_pic>;
->> +
->> +                       big-endian-regs;
->> +               };
->> +
->> +               ohci_0_1: usb@d060000 {
->> +                       compatible = "nintendo,latte-usb-ohci";
->> +                       reg = <0x0d060000 0x100>;
->> +                       interrupts = <6>;
->> +                       interrupt-parent = <&latte_pic>;
->> +
->> +                       big-endian-regs;
->> +               };
->> +
->> +               ehci_1: usb@d120000 {
->> +                       compatible = "nintendo,latte-usb-ehci", "usb-ehci";
->> +                       reg = <0x0d120000 0x100>;
->> +                       interrupts = <16>;
->> +                       interrupt-parent = <&latte_pic>;
->> +                       big-endian-regs;
->> +               };
->> +
->> +               ohci_1_0: usb@d130000 {
->> +                       compatible = "nintendo,latte-usb-ohci";
->> +                       reg = <0x0d130000 0x100>;
->> +                       interrupts = <35>;
->> +                       interrupt-parent = <&latte_pic>;
->> +
->> +                       big-endian-regs;
->> +               };
->> +
->> +               ehci_2: usb@d140000 {
->> +                       compatible = "nintendo,latte-usb-ehci", "usb-ehci";
->> +                       reg = <0x0d140000 0x100>;
->> +                       interrupts = <36>;
->> +                       interrupt-parent = <&latte_pic>;
->> +                       big-endian-regs;
->> +               };
->> +
->> +               ohci_2_0: usb@d150000 {
->> +                       compatible = "nintendo,latte-usb-ohci";
->> +                       reg = <0x0d150000 0x100>;
->> +                       interrupts = <37>;
->> +                       interrupt-parent = <&latte_pic>;
->> +
->> +                       big-endian-regs;
->> +               };
->> +
->> +               sdcard_0: sdhci@d070000 {
->> +                       compatible = "nintendo,latte-sdhci","sdhci";
->> +                       reg = <0x0d070000 0x200>;
->> +                       interrupts = <7>;
->> +                       interrupt-parent = <&latte_pic>;
->> +               };
->> +
->> +               wifi_0: sdhci@d080000 {
->> +                       compatible = "nintendo,latte-sdhci","sdhci";
->> +                       reg = <0x0d080000 0x200>;
->> +                       interrupts = <8>;
->> +                       interrupt-parent = <&latte_pic>;
->> +               };
->> +
->> +               legacy_ipc: ipc@d800000 {
->> +                       compatible = "nintendo,latte-ipc","nintendo,hollywood-ipc";
-> 
-> space between compatibles needed.
-> 
->> +                       reg = <0x0d800000 0x10>;
->> +                       interrupts = <30 31>;
->> +                       interrupt-parent = <&latte_pic>;
->> +               };
->> +
->> +               latte_otp: otp@d8001ec {
->> +                       compatible = "nintendo,latte-otp";
->> +                       reg = <0x0d8001ec 0x8>;
->> +               };
->> +
->> +               sata: ahci@d160400 {
->> +                       compatible = "nintendo,latte-ahci";
->> +                       reg = <0x0d160400 0x808>;
->> +
->> +                       interrupt-parent = <&latte_pic>;
->> +                       interrupts = <38 28>;
->> +               };
->> +
->> +               latte_pic: pic@d800440 {
->> +                       #interrupt-cells = <1>;
->> +                       interrupt-controller;
->> +
->> +                       compatible = "nintendo,latte-pic";
->> +                       reg = <0x0d800440 0x30>;
->> +                       interrupt-parent = <&espresso_pic>;
->> +                       interrupts = <24>;
->> +               };
->> +
->> +               gpio: gpio@d8000c0 {
->> +                       #gpio-cells = <2>;
->> +                       compatible = "nintendo,latte-gpio", "nintendo,hollywood-gpio";
->> +
->> +                       reg = <0x0d8000c0 0x40>;
->> +                       gpio-controller;
->> +                       /* TODO: There are actually 31 AHBALL GPIOs */
->> +                       ngpios = <24>;
->> +
->> +                       gpio-line-names =
->> +                               "POWER", "DWIFI", "FAN", "DC_DC",
->> +                               "", "Esp10WorkAround", "", "",
->> +                               "PADPD", "", "EEP_CS", "EEP_CLK",
->> +                               "EEP_MOSI", "EEP_MISO", "AVE_SCL", "AVE_SDA",
->> +                               "DEBUG0", "DEBUG1", "DEBUG2", "DEBUG3",
->> +                               "DEBUG4", "DEBUG5", "DEBUG6", "DEBUG7";
->> +
->> +                       interrupt-controller;
->> +                       #interrupt-cells = <2>;
->> +                       interrupts = <10>;
->> +                       interrupt-parent = <&latte_pic>;
->> +               };
->> +
->> +               spi_gpio: spi-gpio {
-> 
-> Move this to root level. It's not on the 'latte' bus.
-> 
->> +                       compatible = "spi-gpio";
->> +                       #address-cells = <1>;
->> +                       #size-cells = <0>;
->> +                       status = "okay";
-> 
-> Not needed, that's the default.
-> 
->> +
->> +                       cs-gpios = <&gpio 10 GPIO_ACTIVE_HIGH>;
->> +                       gpio-sck = <&gpio 11 GPIO_ACTIVE_HIGH>;
->> +                       gpio-mosi = <&gpio 12 GPIO_ACTIVE_HIGH>;
->> +                       gpio-miso = <&gpio 13 GPIO_ACTIVE_HIGH>;
->> +                       num-chipselects = <1>;
->> +
->> +                       seeprom@0 {
-> 
-> eeprom@0
-> 
->> +                               compatible = "atmel,at93c66";
->> +                               reg = <0>;
->> +                               spi-max-frequency = <1000000>;
->> +                               spi-cs-high;
->> +                               /* TODO: wiiubrew says this is 16-bit, but I only get the correct
->> +                                * values in 8-bit...
->> +                                */
->> +                               data-size = <8>;
->> +                               read-only;
->> +
->> +                               #address-cells = <1>;
->> +                               #size-cells = <1>;
->> +
->> +                               /* https://wiiubrew.org/wiki/Hardware/SEEPROM */
->> +                               rng_seed: rng@12 { reg = <0x012 8>; };
->> +                               ppc_pvr: pvr@20 { reg = <0x020 4>; };
->> +                               seeprom_ver_str: sver-str@24 { reg = <0x024 6>; };
->> +                               seeprom_ver: sver@2a { reg = <0x02A 2>; };
->> +                               otp_ver: over@2c { reg = <0x02C 2>; };
->> +                               otp_rev: orev@2e { reg = <0x02E 2>; };
->> +                               otp_ver_str: over-str@30 { reg = <0x030 8>; };
->> +
->> +                               bc_crc: bc-crc@38 { reg = <0x038 4>; };
->> +                               bc_sz: bc-sz@3c { reg = <0x03C 2>; };
->> +                               bc_ver: bc-ver@3e { reg = <0x03E 2>; };
->> +                               bc_boardtype: boardtype@42 { reg = <0x042 2>; };
->> +                               bc_boardrev: boardrev@44 { reg = <0x044 2>; };
->> +                               bc_bootsource: bootsource@46 { reg = <0x046 2>; };
->> +                               bc_ddr3size: ddr3size@48 { reg = <0x048 2>; };
->> +                               bc_ddr3speed: ddr3speed@4a { reg = <0x04A 2>; };
->> +                               bc_ppcclockmul: ppcclockmul@4c { reg = <0x04C 2>; };
->> +                               bc_iopclockmul: iopclockmul@46 { reg = <0x04E 2>; };
->> +                               bc_video1080p: video1080p@50 { reg = <0x050 2>; };
->> +                               bc_ddr3vendor: ddr3vendor@52 { reg = <0x052 2>; };
->> +                               bc_movpassivereset: movpassivereset@54 { reg = <0x054 2>; };
->> +                               bc_syspllspd: syspllspd@56 { reg = <0x056 2>; };
->> +                               bc_satadevice: satadevice@58 { reg = <0x058 2>; };
->> +                               bc_consoletype: consoletype@5a { reg = <0x05A 2>; };
->> +                               bc_deviceprescence: deviceprescence@5c { reg = <0x05C 2>; };
->> +
->> +                               drive_key: drvkey@80 { reg = <0x080 16>; };
->> +                               factory_key: fackey@90 { reg = <0x090 16>; };
->> +                               shdd_key: shddkey@a0 { reg = <0x0A0 16>; };
->> +                               usb_key_seed: usbkeyseed@b0 { reg = <0x0B0 16>; };
->> +                               drive_key_flag: drvkeyf@c0 { reg = <0x0C0 2>; };
->> +                               usb_key_flag: udbkeyf@c2 { reg = <0x0C2 2>; };
->> +                               shdd_key_flag: shddkeyf@c4 { reg = <0x0C4 2>; };
->> +
->> +                               sysprod_version: sp_ver@140 { reg = <0x140 4>; };
->> +                               sysprod_eeprom_version: sp_ee_ver@144 { reg = <0x144 4>; };
->> +                               sysprod_product_area: sp_parea@148 { reg = <0x148 4>; };
->> +                               sysprod_game_region: sp_region@14c { reg = <0x14C 4>; };
->> +                               sysprod_ntsc_pal: sp_ntscpal@150 { reg = <0x150 4>; };
->> +                               sysprod_5ghz_country: sp_5ghz_c@154 { reg = <0x154 2>; };
->> +                               sysprod_5ghz_country_rev: sp_5ghz_crev@156 { reg = <0x156 2>; };
->> +                               sysprod_code: sp_code@158 { reg = <0x158 8>; };
->> +                               sysprod_serial: sp_serial@160 { reg = <0x160 16>; };
->> +                               sysprod_model: sp_model@170 { reg = <0x170 16>; };
->> +
->> +                               prod_year: pyear@188 { reg = <0x188 2>; };
->> +                               prod_date: pdate@18a { reg = <0x18A 2>; };
->> +                               prod_time: ptime@18c { reg = <0x18C 2>; };
->> +
->> +                               boot_params: boot_params@1c0 { reg = <0x1C0 48>; };
->> +                       };
->> +               };
->> +
->> +               /* TODO make this gpio-keyed once hollywood-gpio supports interrupts */
->> +               gpio-keys-polled {
-> 
-> This too.
-> 
->> +                       poll-interval = <50>;
->> +                       compatible = "gpio-keys-polled";
->> +
->> +                       power {
->> +                               label = "Power Button";
->> +                               gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
->> +                               linux,code = <KEY_POWER>;
->> +                       };
->> +               };
->> +
->> +               gpio2: gpio2@d8000c0 {
-> 
-> gpio@d800520
-> 
->> +                       #gpio-cells = <2>;
->> +                       compatible = "nintendo,latte-gpio", "nintendo,hollywood-gpio";
->> +
->> +                       reg = <0x0d800520 0x40>;
->> +                       gpio-controller;
->> +                       ngpios = <7>;
->> +
->> +                       gpio-line-names =
->> +                               "FANSPEED", "SMC_SCL", "SMC_SDA", "DC_DC2",
->> +                               "AVE_INT", "", "AVE_RESET";
->> +
->> +                       interrupt-controller;
->> +                       #interrupt-cells = <2>;
->> +                       interrupts = <10>;
->> +                       interrupt-parent = <&latte_pic>;
->> +               };
->> +       };
->> +};
->> --
->> 2.35.1
->>
+> Please remind me if i missed something, thanks.
+>
+> Can you share your "alternative definitions" details? thanks!
 
-Will do in v2.
+The loop should probably use as extra variable that points
+to the 'list node' in the next structure.
+Something like:
+=09for (xxx *iter =3D head->next;
+=09=09iter =3D=3D &head ? ((item =3D NULL),0) : ((item =3D list_item(iter),=
+1));
+=09=09iter =3D item->member->next) {
+=09   ...
+With a bit of casting you can use 'item' to hold 'iter'.
 
-Thanks,
-Ash
+>=20
+> > OTOH there may be alternative definitions that can be used to get
+> > the compiler (or other compiler-like tools) to detect broken code.
+> > Even if the definition can't possibly generate a working kerrnel.
+>=20
+> The "list_for_each_entry_inside(pos, type, head, member)" way makes
+> the iterator invisiable outside the loop, and would be catched by
+> compiler if use-after-loop things happened.
+
+It is also a compete PITA for anything doing a search.
+
+=09David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
