@@ -1,76 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 640D54CCFA1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Mar 2022 09:08:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6624C4CD31B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Mar 2022 12:12:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K90qD2vHhz30Lq
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Mar 2022 19:08:40 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MrMHWJPR;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K94vb2wCWz30Q9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Mar 2022 22:12:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=MrMHWJPR; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K90pT4KnXz2yQG
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Mar 2022 19:08:01 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 9BC5DB827A1
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Mar 2022 08:07:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5BE0AC340E9
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Mar 2022 08:07:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1646381277;
- bh=tDxjfz0d/UmZhSPdI83e8uUpNdNqKTeW28G/dr+dz4c=;
- h=From:To:Subject:Date:From;
- b=MrMHWJPRHfZDKP83N3C4fO+4GVrX7maT1Fn6aYtV8cQz1jkSN47jmDc0xAfyFKBzz
- 3NwM5MBL/A71EyMiAKb4bDo1SqSIxHXugfl0vd7+y5dP1u+Asmu3322YRsoXj9yOKh
- i/enMxyfhcNIQBcsE3CF9bRqfTHt0CiHAo/IOJ6RZ1unl6SOSXlLO3JhqDKj4IW9PF
- z1GX3FAm7QJRgd2zkdKhvF+T8VLVht4U28A7uOVMARrbZ9meHIKunYOFC509tPcXD4
- 4we9jHJfHkQcXZcAyNgWPjagX8lh6Q5L573jgVcIYgcYP6OFIOAICH4emZjqtekZ7e
- vGzD/nTC6i3Tg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
- from userid 48) id 3BAB3C05F98; Fri,  4 Mar 2022 08:07:57 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 215658] New: arch/powerpc/mm/mmu_context.o Assembler messages:
- Error: unrecognized opcode: `dssall' (PowerMac G4)
-Date: Fri, 04 Mar 2022 08:07:56 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version
- cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
- priority component assigned_to reporter cf_regression attachments.created
-Message-ID: <bug-215658-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=a.fatoum@pengutronix.de;
+ receiver=<UNKNOWN>)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K94v66Tysz306m
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Mar 2022 22:12:17 +1100 (AEDT)
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[127.0.0.1])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+ (envelope-from <a.fatoum@pengutronix.de>)
+ id 1nQ5qW-0000S2-O5; Fri, 04 Mar 2022 12:11:40 +0100
+Message-ID: <f9e46b61-37e5-a280-edb0-27f8e81a8680@pengutronix.de>
+Date: Fri, 4 Mar 2022 12:11:32 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [BUG] mtd: cfi_cmdset_0002: write regression since v4.17-rc1
+Content-Language: en-US
+To: Tokunori Ikegami <ikegami.t@gmail.com>,
+ Thorsten Leemhuis <regressions@leemhuis.info>,
+ linux-mtd@lists.infradead.org, Joakim.Tjernlund@infinera.com,
+ miquel.raynal@bootlin.com, vigneshr@ti.com, richard@nod.at,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <b687c259-6413-26c9-d4c9-b3afa69ea124@pengutronix.de>
+ <dff2abcc-5813-2f2c-35ba-f03cd1f35ac3@leemhuis.info>
+ <e11b76dc-5539-fb7e-da1c-a5005713d6b0@gmail.com>
+ <3dbbcee5-81fc-cdf5-9f8b-b6ccb95beddc@pengutronix.de>
+ <0f2cfcac-83ca-51a9-f92c-ff6495dca1d7@gmail.com>
+ <b231b498-c8d2-28af-ce66-db8c168047f7@pengutronix.de>
+ <66ee55d9-4f20-6722-6097-e53c2108ea07@gmail.com>
+ <579eab10-594c-d6b2-0ddb-ea6ab8e02856@pengutronix.de>
+ <cedb1604-e024-2738-5b33-15703a653803@gmail.com>
+ <117facba-ba33-349d-1085-25315cc1ae92@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <117facba-ba33-349d-1085-25315cc1ae92@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,61 +67,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ marek.vasut@gmail.com, Chris Packham <chris.packham@alliedtelesis.co.nz>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, cyrille.pitchen@wedev4u.fr,
+ Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D215658
+Hello Tokunori-san,
 
-            Bug ID: 215658
-           Summary: arch/powerpc/mm/mmu_context.o Assembler messages:
-                    Error: unrecognized opcode: `dssall' (PowerMac G4)
-           Product: Platform Specific/Hardware
-           Version: 2.5
-    Kernel Version: 5.16.12
-          Hardware: PPC-32
-                OS: Linux
-              Tree: Mainline
-            Status: NEW
-          Severity: normal
-          Priority: P1
-         Component: PPC-32
-          Assignee: platform_ppc-32@kernel-bugs.osdl.org
-          Reporter: erhard_f@mailbox.org
-        Regression: Yes
+On 20.02.22 13:22, Tokunori Ikegami wrote:
+> Hi Ahmad-san,
+> 
+> Could you please try the version 2 patch attached for the error case?
+> This version is to check the DQ true data 0xFF by chip_good().
 
-Created attachment 300528
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D300528&action=3Dedit
-kernel .config (5.16.12, PowerMac G4 DP)
+I had a similar patch locally as well at first. I just tested yours
+and I can't reproduce the issue.
 
-5.16.12 kernel build for my G4 DP on my Talos II fails with:
+> But I am not sure if this works or not since the error is possible to be caused by Hi-Z 0xff on floating bus or etc.
 
-[...]
-  CC      arch/powerpc/mm/init_32.o
-  CC      arch/powerpc/mm/pgtable_32.o
-  CC      arch/powerpc/mm/pgtable-frag.o
-  CC      arch/powerpc/mm/ioremap.o
-  CC      arch/powerpc/mm/ioremap_32.o
-  CC      arch/powerpc/mm/init-common.o
-  CC      arch/powerpc/mm/mmu_context.o
-{standard input}: Assembler messages:
-{standard input}:30: Error: unrecognized opcode: `dssall'
-make[2]: *** [scripts/Makefile.build:287: arch/powerpc/mm/mmu_context.o] Fe=
-hler
-1
-make[1]: *** [scripts/Makefile.build:549: arch/powerpc/mm] Fehler 2
-make: *** [Makefile:1846: arch/powerpc] Error 2
+That it works for me could be because of Hi-Z 0xff, which is why
+decided against it.
+
+>>>>> What seems to work for me is checking if chip_good or chip_ready
+>>>>> and map_word is equal to 0xFF. I can't justify why this is ok though.
+>>>>> (Worst case bus is floating at this point of time and Hi-Z is read
+>>>>> as 0xff on CPU data lines...)
+>>>> Sorry I am not sure about this.
+>>>> I thought the chip_ready() itself is correct as implemented as the data sheet in the past.
+>>>> But it did not work correctly so changed to use chip_good() instead as it is also correct.
+>>> What exactly in the datasheet makes you believe chip_good is not appropriate?
+>> I just mentioned about the actual issue behaviors as not worked chip_good() on S29GL964N and not worked chip_ready() on MX29GL512FHT2I-11G before etc.
+>> Anyway let me recheck the data sheet details as just checked it again quickly but needed more investigation to understand.
+> 
+> As far as I checked still both chip_good() and chip_ready() seem correct but still the root cause is unknown.
+> If as you mentioned the issue was cased by the DQ true data 0xFF I am not sure why the read work without any error after the write operation.
+> Also if the error was caused by the Hi-Z 0xff on floating bus as mentioned I am not sure why the read work without any error after the write operation with chip_ready().
+> Sorry anyway the root cause is also unknown when the write operation was changed to use chip_good() instead of chip_ready().
+
+I've be ok with v1 then. Restores working behavior for me and shouldn't break others.
+
+Cheers and thanks again,
+Ahmad
+
+> 
+> Regards,
+> Ikegami
+> 
+>>
+>> Regards,
+>> Ikegami
+>>
+>>>
+>>> Cheers,
+>>> Ahmad
+>>>
+>>>
 
 
-This seems to have been introduced by commit
-d51f86cfd8e378d4907958db77da3074f6dce3ba "powerpc/mm: Switch obsolete dssal=
-l to
-.long"
-
-Reverting this commit fixes the build for my G4.
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
