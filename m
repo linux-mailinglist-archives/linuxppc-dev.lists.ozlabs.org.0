@@ -1,59 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138244CDF82
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Mar 2022 22:07:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0894CE0F0
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Mar 2022 00:23:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K9L5s6vxBz3bY6
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Mar 2022 08:07:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K9P6z0Q5tz30jZ
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Mar 2022 10:23:39 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bWrhhxDk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rQAjzobs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=sstabellini@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=bWrhhxDk; dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=rQAjzobs; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K9L5970ygz2xKJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Mar 2022 08:06:52 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1646428015; x=1677964015;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Y39UWfeG5t/f8koENMZSdik7oyaXSsbs1Bgp7FvTwlY=;
- b=bWrhhxDk1/xmsZbWhhxPRC/pCe8NOR3Upb/HYi3nHGd/mb1Dp8gw51Nq
- UBgOGAbg+KP33u3D/xdNRlvcWWIN7631uIS5InQYN3CrcmJwgMcSqbeFL
- PWycV0tUBgKMngWfHstA4Hvu/u9NpnSRCp3BPtYtSGsaXkdLqyd2YZXgy
- 5s1EToIDcJEh/e4sefNz3+axCgL/dgqbqw/2pt9O/b1oeTdmcGmDg9vj0
- Kjb9E1Jr+Ua4cjSzTddCUbiUJiid+Zemo2bOAUrb7Obl6usjht/a69EHD
- 1Sceh85D3/2Dn5vz8N5mSaDvbOlTIEdcG2/e9vbqmAzNfuPgjereLhgZu A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10276"; a="253997857"
-X-IronPort-AV: E=Sophos;i="5.90,156,1643702400"; d="scan'208";a="253997857"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2022 13:05:49 -0800
-X-IronPort-AV: E=Sophos;i="5.90,156,1643702400"; d="scan'208";a="810884761"
-Received: from fushengl-mobl1.amr.corp.intel.com (HELO localhost)
- ([10.212.64.239])
- by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2022 13:05:48 -0800
-From: ira.weiny@intel.com
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH] pkeys: Make pkey unsigned in arch_set_user_pkey_access()
-Date: Fri,  4 Mar 2022 13:05:43 -0800
-Message-Id: <20220304210543.3490880-1-ira.weiny@intel.com>
-X-Mailer: git-send-email 2.35.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K9P6F53Vgz30Dh
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Mar 2022 10:23:01 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 2E4BBB82B66;
+ Fri,  4 Mar 2022 23:22:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31A5C340E9;
+ Fri,  4 Mar 2022 23:22:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1646436175;
+ bh=JGCldX7FEWqVZ5Q+U58HuEVwslrSLhbhnML6kEBr9Ws=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=rQAjzobsYiAs9wsfWE2rkUFtA1eVSkOA2Iav4ks0CqW9RP+ItlZh454EggaFHA0t7
+ cMuMuy/be5qJ5PPtyG/1I9k0vG8LWuC0s+fh9P52rFCGl1J82aaAj6ulLeOz4jBEd+
+ Nd/6EoXUpXBY6u39E8iSHqihbbZHokm82wpl1YjLkM0+9H+801fikQc/d+uXwGJnhl
+ XBKYJYaojo34JXtttn23IyibunqEvz4QH2Jr0xJKJVWlwM1v3PugwJccgZI7srIP8x
+ 7QO2Nby/+u0TkfMtRQBDDfBlWCbEwfvoCjXrEBxdGWWN5TvTd9q9BnIh/lHE9wt82J
+ YB5glRBbksGuA==
+Date: Fri, 4 Mar 2022 15:22:54 -0800 (PST)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 11/12] swiotlb: merge swiotlb-xen initialization into
+ swiotlb
+In-Reply-To: <20220304163430.GA12317@lst.de>
+Message-ID: <alpine.DEB.2.22.394.2203041511090.3261@ubuntu-linux-20-04-desktop>
+References: <20220301105311.885699-1-hch@lst.de>
+ <20220301105311.885699-12-hch@lst.de>
+ <alpine.DEB.2.22.394.2203011720150.3261@ubuntu-linux-20-04-desktop>
+ <20220302081500.GB23075@lst.de>
+ <alpine.DEB.2.22.394.2203021709470.3261@ubuntu-linux-20-04-desktop>
+ <20220303105931.GA15137@lst.de>
+ <alpine.DEB.2.22.394.2203031447120.3261@ubuntu-linux-20-04-desktop>
+ <20220304163430.GA12317@lst.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,115 +73,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Ira Weiny <ira.weiny@intel.com>,
- linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Joerg Roedel <joro@8bytes.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ tboot-devel@lists.sourceforge.net, xen-devel@lists.xenproject.org,
+ David Woodhouse <dwmw2@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
+ Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Ira Weiny <ira.weiny@intel.com>
+On Fri, 4 Mar 2022, Christoph Hellwig wrote:
+> On Thu, Mar 03, 2022 at 02:49:29PM -0800, Stefano Stabellini wrote:
+> > On Thu, 3 Mar 2022, Christoph Hellwig wrote:
+> > > On Wed, Mar 02, 2022 at 05:25:10PM -0800, Stefano Stabellini wrote:
+> > > > Thinking more about it we actually need to drop the xen_initial_domain()
+> > > > check otherwise some cases won't be functional (Dom0 not 1:1 mapped, or
+> > > > DomU 1:1 mapped).
+> > > 
+> > > Hmm, but that would be the case even before this series, right?
+> > 
+> > Before this series we only have the xen_swiotlb_detect() check in
+> > xen_mm_init, we don't have a second xen_initial_domain() check.
+> > 
+> > The issue is that this series is adding one more xen_initial_domain()
+> > check in xen_mm_init.
+> 
+> In current mainline xen_mm_init calls xen_swiotlb_init unconditionally.
+> But xen_swiotlb_init then calls xen_swiotlb_fixup after allocating
+> the memory, which in turn calls xen_create_contiguous_region.
+> xen_create_contiguous_region fails with -EINVAL for the
+> !xen_initial_domain() and thus caues xen_swiotlb_fixup and
+> xen_swiotlb_init to unwind and return -EINVAL.
+> 
+> So as far as I can tell there is no change in behavior, but maybe I'm
+> missing something subtle?
 
-The WARN_ON check in arch_set_user_pkey_access() in the x86 architecture
-fails to check for an invalid negative value.
+You are right.
 
-A simple check for less than 0 would fix this issue however, in the call
-stack below arch_set_user_pkey_access() the pkey should never be
-negative on any architecture.  It is always best to use correct types
-when possible.  x86 only supports 16 keys while ppc supports 32, u8 is
-therefore large enough for all current architectures and likely those in
-the future.
+The xen_initial_domain() check in xen_create_contiguous_region() is
+wrong and we should get rid of it. It is a leftover from before the
+xen_swiotlb_detect rework.
 
-Change the type of the pkey passed to arch_set_user_pkey_access() to u8.
+We could either remove it or change it into another xen_swiotlb_detect()
+check.
 
-To: Dave Hansen <dave.hansen@linux.intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Feel free to add the patch to your series or fold it with another patch
+or rework it as you prefer. Thanks for spotting this!
+
 ---
- arch/powerpc/include/asm/pkeys.h | 4 ++--
- arch/powerpc/mm/book3s64/pkeys.c | 2 +-
- arch/x86/include/asm/pkeys.h     | 4 ++--
- arch/x86/kernel/fpu/xstate.c     | 2 +-
- include/linux/pkeys.h            | 2 +-
- 5 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/pkeys.h b/arch/powerpc/include/asm/pkeys.h
-index 59a2c7dbc78f..e70615a1da9b 100644
---- a/arch/powerpc/include/asm/pkeys.h
-+++ b/arch/powerpc/include/asm/pkeys.h
-@@ -143,9 +143,9 @@ static inline int arch_override_mprotect_pkey(struct vm_area_struct *vma,
- 	return __arch_override_mprotect_pkey(vma, prot, pkey);
- }
- 
--extern int __arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
-+extern int __arch_set_user_pkey_access(struct task_struct *tsk, u8 pkey,
- 				       unsigned long init_val);
--static inline int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
-+static inline int arch_set_user_pkey_access(struct task_struct *tsk, u8 pkey,
- 					    unsigned long init_val)
+arm/xen: don't check for xen_initial_domain() in xen_create_contiguous_region
+
+It used to be that Linux enabled swiotlb-xen when running a dom0 on ARM.
+Since f5079a9a2a31 "xen/arm: introduce XENFEAT_direct_mapped and
+XENFEAT_not_direct_mapped", Linux detects whether to enable or disable
+swiotlb-xen based on the new feature flags: XENFEAT_direct_mapped and
+XENFEAT_not_direct_mapped.
+
+However, there is still a leftover xen_initial_domain() check in
+xen_create_contiguous_region. Remove the check as
+xen_create_contiguous_region is only called by swiotlb-xen during
+initialization. If xen_create_contiguous_region is called, we know Linux
+is running 1:1 mapped so there is no need for additional checks.
+
+Also update the in-code comment.
+
+Signed-off-by: Stefano Stabellini <stefano.stabellini@xilinx.com>
+
+
+diff --git a/arch/arm/xen/mm.c b/arch/arm/xen/mm.c
+index a7e54a087b80..28c207060253 100644
+--- a/arch/arm/xen/mm.c
++++ b/arch/arm/xen/mm.c
+@@ -122,10 +122,7 @@ int xen_create_contiguous_region(phys_addr_t pstart, unsigned int order,
+ 				 unsigned int address_bits,
+ 				 dma_addr_t *dma_handle)
  {
- 	if (!mmu_has_feature(MMU_FTR_PKEY))
-diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
-index 753e62ba67af..c048467669df 100644
---- a/arch/powerpc/mm/book3s64/pkeys.c
-+++ b/arch/powerpc/mm/book3s64/pkeys.c
-@@ -333,7 +333,7 @@ static inline void init_iamr(int pkey, u8 init_bits)
-  * Set the access rights in AMR IAMR and UAMOR registers for @pkey to that
-  * specified in @init_val.
-  */
--int __arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
-+int __arch_set_user_pkey_access(struct task_struct *tsk, u8 pkey,
- 				unsigned long init_val)
- {
- 	u64 new_amr_bits = 0x0ul;
-diff --git a/arch/x86/include/asm/pkeys.h b/arch/x86/include/asm/pkeys.h
-index 5292e6dfe2a7..48efb81f6cc6 100644
---- a/arch/x86/include/asm/pkeys.h
-+++ b/arch/x86/include/asm/pkeys.h
-@@ -9,7 +9,7 @@
-  */
- #define arch_max_pkey() (cpu_feature_enabled(X86_FEATURE_OSPKE) ? 16 : 1)
- 
--extern int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
-+extern int arch_set_user_pkey_access(struct task_struct *tsk, u8 pkey,
- 		unsigned long init_val);
- 
- static inline bool arch_pkeys_enabled(void)
-@@ -115,7 +115,7 @@ int mm_pkey_free(struct mm_struct *mm, int pkey)
+-	if (!xen_initial_domain())
+-		return -EINVAL;
+-
+-	/* we assume that dom0 is mapped 1:1 for now */
++	/* the domain is 1:1 mapped to use swiotlb-xen */
+ 	*dma_handle = pstart;
  	return 0;
  }
- 
--extern int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
-+extern int arch_set_user_pkey_access(struct task_struct *tsk, u8 pkey,
- 		unsigned long init_val);
- 
- static inline int vma_pkey(struct vm_area_struct *vma)
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 7c7824ae7862..db511bec57e5 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -1068,7 +1068,7 @@ void *get_xsave_addr(struct xregs_state *xsave, int xfeature_nr)
-  * This will go out and modify PKRU register to set the access
-  * rights for @pkey to @init_val.
-  */
--int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
-+int arch_set_user_pkey_access(struct task_struct *tsk, u8 pkey,
- 			      unsigned long init_val)
- {
- 	u32 old_pkru, new_pkru_bits = 0;
-diff --git a/include/linux/pkeys.h b/include/linux/pkeys.h
-index 86be8bf27b41..aa40ed2fb0fc 100644
---- a/include/linux/pkeys.h
-+++ b/include/linux/pkeys.h
-@@ -35,7 +35,7 @@ static inline int mm_pkey_free(struct mm_struct *mm, int pkey)
- 	return -EINVAL;
- }
- 
--static inline int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
-+static inline int arch_set_user_pkey_access(struct task_struct *tsk, u8 pkey,
- 			unsigned long init_val)
- {
- 	return 0;
--- 
-2.35.1
-
