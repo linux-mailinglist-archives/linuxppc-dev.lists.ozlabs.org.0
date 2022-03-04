@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066C34CD9B1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Mar 2022 18:05:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7422C4CD9A9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Mar 2022 18:04:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4K9Dkl0Khmz3c2P
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Mar 2022 04:05:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4K9Djs3Gg3z3bdP
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Mar 2022 04:04:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,53 +14,53 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4K9DjZ36mBz30Kj
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Mar 2022 04:04:34 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4K9DjQ28hJz2yPF
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Mar 2022 04:04:22 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4K9DjJ0qGtz9sTB;
- Fri,  4 Mar 2022 18:04:20 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4K9DjG36j6z9sTG;
+ Fri,  4 Mar 2022 18:04:18 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id XPoTwYhh8rpQ; Fri,  4 Mar 2022 18:04:20 +0100 (CET)
+ with ESMTP id R3ggCHIdxGTF; Fri,  4 Mar 2022 18:04:18 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4K9DjG2bsMz9sT7;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4K9DjG2HS4z9sT5;
  Fri,  4 Mar 2022 18:04:18 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 343F48B779;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 297878B77C;
  Fri,  4 Mar 2022 18:04:18 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id PielNCpPyJwu; Fri,  4 Mar 2022 18:04:18 +0100 (CET)
+ with ESMTP id Bjy1tppm__g1; Fri,  4 Mar 2022 18:04:18 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.204.129])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BF9DD8B77B;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BA7098B779;
  Fri,  4 Mar 2022 18:04:17 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 224H48I11979760
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 224H48k01979764
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Fri, 4 Mar 2022 18:04:08 +0100
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 224H48Dp1979759;
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 224H48Af1979763;
  Fri, 4 Mar 2022 18:04:08 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v1 2/4] powerpc/smp: Declare current_set static
-Date: Fri,  4 Mar 2022 18:04:03 +0100
-Message-Id: <a55eb65c9d7319f0af3c31e3f6ba36522f10003d.1646413435.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v1 3/4] powerpc/kexec: Declare kexec_paca static
+Date: Fri,  4 Mar 2022 18:04:04 +0100
+Message-Id: <094983ee851644165b7700c73cac63cfe20596cd.1646413435.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <3ed660a585df2080ea8412ec20fbf652f5bf013a.1646413435.git.christophe.leroy@csgroup.eu>
 References: <3ed660a585df2080ea8412ec20fbf652f5bf013a.1646413435.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1646413443; l=1215; s=20211009;
- h=from:subject:message-id; bh=SfwvLWKmUrmxjgGOVMfmYnAtA1FqTUHzhzptA0F7XFQ=;
- b=q/JrDD+POs64+gksEn50T1orHEnwlbgex1TANvZqhnngNh6kHqyW9zwLKThJJeEYo0UUGtHKCMNa
- 5XgFr+XcA9jsAM4K5+9/ZsdTBs8hMyPhGWXX4i+nHQoGygRqe+jn
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1646413443; l=1405; s=20211009;
+ h=from:subject:message-id; bh=BelRQHIYqaH9NH0LDOIQxN0oX8SGogEJyDwWBBqo0EY=;
+ b=cbuS6Jj7KS0TXCaKNfmHRet/oTaOR9lGuVyHD0ge2Qz0ddIFYpOCFKj8DBJbc4JYmMcnz9MVN1Nl
+ NqvmzWxPB8lg1EBlepxuEOJ6qMC0QUshsit8b2GstDTZy4h13OYQ
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -80,41 +80,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-current_set extern not needed anymore since
-commit eafd825ed710 ("powerpc/64: Simplify __secondary_start
-paca->kstack handling")
+kexec_paca is exclusively used in kexec/core_64.c
+
+Declare is static.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/asm-prototypes.h | 1 -
- arch/powerpc/kernel/smp.c                 | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/include/asm/asm-prototypes.h | 2 --
+ arch/powerpc/kexec/core_64.c              | 2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
-index 4fd79207fd41..283bfeb8bf4c 100644
+index 283bfeb8bf4c..83ef106923e6 100644
 --- a/arch/powerpc/include/asm/asm-prototypes.h
 +++ b/arch/powerpc/include/asm/asm-prototypes.h
-@@ -20,7 +20,6 @@
- #include <uapi/asm/ucontext.h>
- 
- /* SMP */
--extern struct task_struct *current_set[NR_CPUS];
- extern struct task_struct *secondary_current;
+@@ -24,9 +24,7 @@ extern struct task_struct *secondary_current;
  void start_secondary(void *unused);
  
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index b7fd6a72aa76..7e30a6fe5adf 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -716,7 +716,7 @@ void smp_send_stop(void)
- }
- #endif /* CONFIG_NMI_IPI */
+ /* kexec */
+-struct paca_struct;
+ struct kimage;
+-extern struct paca_struct kexec_paca;
+ void kexec_copy_flush(struct kimage *image);
  
--struct task_struct *current_set[NR_CPUS];
-+static struct task_struct *current_set[NR_CPUS];
+ /* pseries hcall tracing */
+diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+index 635b5fc30b53..2d49dce129f2 100644
+--- a/arch/powerpc/kexec/core_64.c
++++ b/arch/powerpc/kexec/core_64.c
+@@ -291,7 +291,7 @@ static union thread_union kexec_stack __init_task_data =
+  * For similar reasons to the stack above, the kexecing CPU needs to be on a
+  * static PACA; we switch to kexec_paca.
+  */
+-struct paca_struct kexec_paca;
++static struct paca_struct kexec_paca;
  
- static void smp_store_cpu_info(int id)
- {
+ /* Our assembly helper, in misc_64.S */
+ extern void kexec_sequence(void *newstack, unsigned long start,
 -- 
 2.34.1
 
