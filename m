@@ -2,46 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 858844CED8C
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Mar 2022 20:50:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2A54CED94
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Mar 2022 21:01:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KBXJ63yTPz3bVP
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 06:50:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KBXXL6mhlz3bbG
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 07:01:06 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=OnbdavhN;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=h08.hostsharing.net (client-ip=2a01:4f8:150:2161:1:b009:f23e:0;
- helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::12d;
+ helo=mail-lf1-x12d.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 595 seconds by postgrey-1.36 at boromir;
- Mon, 07 Mar 2022 06:50:07 AEDT
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net
- [IPv6:2a01:4f8:150:2161:1:b009:f23e:0])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=OnbdavhN; 
+ dkim-atps=neutral
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com
+ [IPv6:2a00:1450:4864:20::12d])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KBXHg0BNLz305B
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 06:50:06 +1100 (AEDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client CN "*.hostsharing.net",
- Issuer "RapidSSL TLS DV RSA Mixed SHA256 2020 CA-1" (verified OK))
- by bmailout3.hostsharing.net (Postfix) with ESMTPS id B3C27100D9417;
- Sun,  6 Mar 2022 20:40:02 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
- id F33A644C28B; Sun,  6 Mar 2022 20:40:01 +0100 (CET)
-Date: Sun, 6 Mar 2022 20:40:01 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [RFC PATCH 6/7] serial: General support for multipoint addresses
-Message-ID: <20220306194001.GD19394@wunner.de>
-References: <20220302095606.14818-1-ilpo.jarvinen@linux.intel.com>
- <20220302095606.14818-7-ilpo.jarvinen@linux.intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KBXWh1t9Bz30LL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 07:00:31 +1100 (AEDT)
+Received: by mail-lf1-x12d.google.com with SMTP id b5so2989864lfs.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 06 Mar 2022 12:00:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=PFwJynFO3fJ8ixtoqLr++1NLbQ5v5m+5KLS3G5LcfTE=;
+ b=OnbdavhNVJSLJk4bAGHLIMP/HNzhzBn7tUeoGTV+Py3x2I3KBPlcn8Xo93IFJFqxuR
+ 48BuPrU094sNxSTqm5atY89FnSSQWWF/IATnuI9MI+oYTTQEGt7fKr73AOz347/NINk8
+ Q9tMxVvfU1l+z1sQXqyPKWaAlMZzVXnyMiNIM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=PFwJynFO3fJ8ixtoqLr++1NLbQ5v5m+5KLS3G5LcfTE=;
+ b=L1bay73kgfjci6FeS3W3dRROHXRcXjnt9qd/wmwuwpn5YS443ZqHnuXBfYVvC+yjlr
+ lr+FADzKzpfd4YThzzyIHdIs6nUWoo06UpIRXiEfkXdA8K5dOLlNf1BO6/YIdsG6N8JU
+ QRpAETxAobspxVv6SRDCc+z1jfZhjjIpV2V7pHihu6z2Kk3qI+iRp0G1MWuqL7gyFaDD
+ ODim7/eCTaJfm8HrtNyOXsGlR/ATvYvOLoAGT+KXe++X40Od2/OPvyA5FoxP+31n09m4
+ hdjoG5c/S0OTvy6orga0IfPokwS/BKMDMwxxfLINWuuw6w844dCAkvxQ+gr4/WIA1n02
+ muCA==
+X-Gm-Message-State: AOAM532UjKhN2QnumEggYWgNOAvqBGIhAueHV8OC4ZryLHwMe6iQXUlI
+ OD9TeSZUf+3tQ5qEqMqodn/ChHGVqu741fxdeg4=
+X-Google-Smtp-Source: ABdhPJxR2/rGh4hnliNAVZzk2VG/Vyx9VAjCd6W0wdQ+HAm+PxBk7FH5BjkbgM1618DXfQtsAOnSOQ==
+X-Received: by 2002:a05:6512:1050:b0:447:9cad:6a46 with SMTP id
+ c16-20020a056512105000b004479cad6a46mr5699730lfb.188.1646596826286; 
+ Sun, 06 Mar 2022 12:00:26 -0800 (PST)
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com.
+ [209.85.208.169]) by smtp.gmail.com with ESMTPSA id
+ l4-20020a2e8344000000b00247e3be2e3csm358794ljh.123.2022.03.06.12.00.24
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 06 Mar 2022 12:00:25 -0800 (PST)
+Received: by mail-lj1-f169.google.com with SMTP id s25so17712729lji.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 06 Mar 2022 12:00:24 -0800 (PST)
+X-Received: by 2002:a05:651c:1213:b0:247:e2d9:cdda with SMTP id
+ i19-20020a05651c121300b00247e2d9cddamr2262817lja.443.1646596824468; Sun, 06
+ Mar 2022 12:00:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220302095606.14818-7-ilpo.jarvinen@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <87bkyjo6wn.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87bkyjo6wn.fsf@mpe.ellerman.id.au>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 6 Mar 2022 12:00:08 -0800
+X-Gmail-Original-Message-ID: <CAHk-=whEQRDQ3fJT1KVVAeaWiJ+mYTM+MwYoXEOUQrnbERLa5w@mail.gmail.com>
+Message-ID: <CAHk-=whEQRDQ3fJT1KVVAeaWiJ+mYTM+MwYoXEOUQrnbERLa5w@mail.gmail.com>
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.17-5 tag
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,54 +85,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, linux-sh@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Rich Felker <dalias@libc.org>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- linux-api@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
- linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Helge Deller <deller@gmx.de>, linux-doc@vger.kernel.org,
- linux-serial@vger.kernel.org, Matt Turner <mattst88@gmail.com>,
- linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
- Johan Hovold <johan@kernel.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ muriloo@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 02, 2022 at 11:56:05AM +0200, Ilpo Järvinen wrote:
-> This patch adds generic support for serial multipoint
-> addressing. Two new ioctls are added. TIOCSADDR is used to
+On Sat, Mar 5, 2022 at 11:51 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> powerpc fixes for 5.17 #5
+>
+> Fix build failure when CONFIG_PPC_64S_HASH_MMU is not set.
 
-Nit:  "This patch adds..." is superfluous.  Just write "Add ..."
-in imperative mood.
+Hmm.
 
+I'm *still* not seeing the fix for the reported
+powerpc:skiroot_defconfig failure:
 
-> This change is necessary for supporting devices with RS485
-> multipoint addressing [*].
+    arch/powerpc/kernel/stacktrace.c: In function 'handle_backtrace_ipi':
+    arch/powerpc/kernel/stacktrace.c:171:9: error: implicit
+declaration of function 'nmi_cpu_backtrace'
 
-If this is only used with RS485, why can't we just store the
-addresses in struct serial_rs485 and use the existing TIOCSRS485
-and TIOCGRS485 ioctls?  There's 20 bytes of padding left in
-struct serial_rs485 which you could use.  No need to add more
-user-space ABI.
+which has been pending forever.
 
+The alleged fix (commit 5a72345e6a78: "powerpc: Fix STACKTRACE=n
+build") has been in linux-next for three weeks by now, but hasn't been
+sent to me. And you must be aware of it, since you're the author,
+signed off on it and committed it.
 
-> [*] Technically, RS485 is just an electronic spec and does not
-> itself specify the 9th bit addressing mode but 9th bit seems
-> at least "semi-standard" way to do addressing with RS485.
+What's up? This has been reported forever, and was already failing in
+rc2. I'm about to release rc7 and it's *still* there.
 
-Is 9th bit addressing actually used by an Intel customer or was
-it implemented just for feature completeness?  I think this mode
-isn't used often (I've never seen a use case myself), primarily
-because it requires disabling parity.
-
-Thanks,
-
-Lukas
+                         Linus
