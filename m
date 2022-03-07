@@ -2,79 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31ACC4CEFCD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 03:53:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9226A4CF156
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 06:45:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KBjgl0y3gz3bZ2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 13:53:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KBnVs3Nphz3bZB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 16:45:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ehd1auyN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o7bTCCDj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=hbh25y@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=ehd1auyN; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=o7bTCCDj; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KBjg55HDtz2xDY
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 13:52:31 +1100 (AEDT)
-Received: by mail-pg1-x541.google.com with SMTP id bc27so12418800pgb.4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 06 Mar 2022 18:52:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=Ke3d+rcxPqYaHipRSyN8yz8qMw+s7G4gf9p9GSWU0jA=;
- b=ehd1auyNauHQc0rQhmzW8q7qh6pZOJsbjKfg3IPqyyjqx8C9vZnGUmBhM/DQ2q+tcU
- DldtGmTqhNJ5fPdK2zz80IHgowfZxrPU8a6t3VK6dmZoGisoa7yegGLPb2PArx9DpIJS
- tL0BMaR8McbckQ2izeZ3q8a9S151TPGcAKZr6d8VxdwKhK7zd4oIriuug9Yzqo8vGz2L
- 80XfS0UxIpOdqEEI/Se1dPjUMAnGKViT56g/qGAyUFgl2m5Q9Sv4s1d7/6ByQskaKxN+
- Jguex9GpdWNls6Pu0W2EfrNERq4h5iTUNGzfUmyj3/CPsDHXJ8rBVc8ERe2BlAY6iJk9
- ANfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=Ke3d+rcxPqYaHipRSyN8yz8qMw+s7G4gf9p9GSWU0jA=;
- b=1ufpjzlZG788nlrImAzEszooWzpgyzRoD2Z9C8ulKcNFLlARYvORKibL6PNsTL/dUC
- bMYP28jCIMB/tKlYVbIiCK4Q2+9boAo4hbsKx13G1Gsh0z/rQ8ydg0bwQ1SwhXV+n9aW
- PrcbLMiu53YSDynTMmA9tHOKzH0fJayXNa9WaTnzUj/nuQY49lwDkEci3l825kvvTCPp
- 41alJL1VaHiRfaJmeJ3q6LcwnncWP1rN7EN+Msa/P3aTfltQMTDDpsk8EBgFbwr2x9c0
- 6Svc0LwBsgaoOynJM60sT5IOUxfYN9IP7D6pua+XyCav0A3zBDDBYjngpgefX8Qi90Mz
- yVUg==
-X-Gm-Message-State: AOAM530cliTjXOQpcLgkmOPP1Rfxtic1I2TNkQe+z7ELf/xhv343dmP8
- kjZNMm5vj9D0dDVc4yvjqWk=
-X-Google-Smtp-Source: ABdhPJw3sxr6LJUr9bSYxUY5oJICYTMxsi1JzMcM6eYWmFK1guMpEsTSDqHwJJ9OX7nMKYoyzwNpvg==
-X-Received: by 2002:a63:5124:0:b0:375:9f87:f881 with SMTP id
- f36-20020a635124000000b003759f87f881mr7871229pgb.578.1646621549707; 
- Sun, 06 Mar 2022 18:52:29 -0800 (PST)
-Received: from [10.11.37.162] ([103.84.139.53])
- by smtp.gmail.com with ESMTPSA id
- g15-20020a056a0023cf00b004e17e11cb17sm14109144pfc.111.2022.03.06.18.52.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 06 Mar 2022 18:52:29 -0800 (PST)
-Message-ID: <a044e19d-4996-ab16-785f-e8e87e6c05a8@gmail.com>
-Date: Mon, 7 Mar 2022 10:52:25 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KBnTN1S22z30BF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 16:44:23 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2272n17G020358; 
+ Mon, 7 Mar 2022 05:44:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=IirZ68LxSPilNverEaGdoctXYHMahMKHBGYBtGs/+fs=;
+ b=o7bTCCDjR1m8CoNhGB4AAA3vi988MfdJgLV9vK+xReYhov8IO9LwnQMeDcU7Jp2Q1aKk
+ lT0di6Cd/0v4ZkG/9+m1AhYhM53t30sqUALRgM0cYLLo7d8/c2TARHRi/gA8iPbwZafk
+ RcT5zZj4jZ9knUSYaA1FK93hHhSrk6g14wu1dKR8t0PpTh9jaQ3LhCO8T7jKBKnhGcRV
+ j+g3+2XfDvo1nBydjdULJQZuFYg63lyglqkef6hrHawVIp2Pkpcv+fUYVuGFsqXppPnq
+ JO49SNd0eY83yWITxMkMdoPxZWsmn0CwHr9k3UjXv3B1W9d+sOxn7Kt/cwYtcCtTDxSt Ug== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3emp5fqrbh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Mar 2022 05:44:11 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2275eA5Y020770;
+ Mon, 7 Mar 2022 05:44:10 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma05wdc.us.ibm.com with ESMTP id 3ekyg93h4x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 07 Mar 2022 05:44:10 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 2275iA2V46203168
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 7 Mar 2022 05:44:10 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0B3E112405E;
+ Mon,  7 Mar 2022 05:44:10 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 126CC124052;
+ Mon,  7 Mar 2022 05:44:07 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.43.89.15])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon,  7 Mar 2022 05:44:06 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linux-mm@kvack.org, akpm@linux-foundation.org
+Subject: [PATCH v4 1/2] selftest/vm: Add util.h and and move helper functions
+ there
+Date: Mon,  7 Mar 2022 11:13:54 +0530
+Message-Id: <20220307054355.149820-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2] powerpc: kernel: fix refcount leak in format_show()
-Content-Language: en-US
-To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
- tyreld@linux.ibm.com
-References: <20220302021959.10959-1-hbh25y@gmail.com>
-From: Hangyu Hua <hbh25y@gmail.com>
-In-Reply-To: <20220302021959.10959-1-hbh25y@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: XQFJ_-iJGVeU4lzcO47yMMDO4o6DK0tp
+X-Proofpoint-GUID: XQFJ_-iJGVeU4lzcO47yMMDO4o6DK0tp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-07_01,2022-03-04_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ mlxlogscore=999 adultscore=0 malwarescore=0 bulkscore=0 impostorscore=0
+ clxscore=1011 suspectscore=0 spamscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203070033
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,52 +96,217 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Shuah Khan <shuah@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kselftest@vger.kernel.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Any further suggestions for this patch? guys.
+Avoid code duplication by adding util.h. No functional change
+in this patch.
 
-Thanks.
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: linux-kselftest@vger.kernel.org
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+Changes from v3:
+* rebased to linux-next-20220302
 
-On 2022/3/2 10:19, Hangyu Hua wrote:
-> Refcount leak will happen when format_show returns failure in multiple
-> cases. Unified management of of_node_put can fix this problem.
-> 
-> Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-> ---
-> 
-> v2:
-> 1. change the title and description information.
-> 2. fix all possible refcount leak.
-> 
->   arch/powerpc/kernel/secvar-sysfs.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/secvar-sysfs.c b/arch/powerpc/kernel/secvar-sysfs.c
-> index a0a78aba2083..1ee4640a2641 100644
-> --- a/arch/powerpc/kernel/secvar-sysfs.c
-> +++ b/arch/powerpc/kernel/secvar-sysfs.c
-> @@ -26,15 +26,18 @@ static ssize_t format_show(struct kobject *kobj, struct kobj_attribute *attr,
->   	const char *format;
->   
->   	node = of_find_compatible_node(NULL, NULL, "ibm,secvar-backend");
-> -	if (!of_device_is_available(node))
-> -		return -ENODEV;
-> +	if (!of_device_is_available(node)) {
-> +		rc = -ENODEV;
-> +		goto out;
-> +	}
->   
->   	rc = of_property_read_string(node, "format", &format);
->   	if (rc)
-> -		return rc;
-> +		goto out;
->   
->   	rc = sprintf(buf, "%s\n", format);
->   
-> +out:
->   	of_node_put(node);
->   
->   	return rc;
+ tools/testing/selftests/vm/ksm_tests.c        | 38 +--------------
+ tools/testing/selftests/vm/transhuge-stress.c | 41 ++--------------
+ tools/testing/selftests/vm/util.h             | 48 +++++++++++++++++++
+ 3 files changed, 52 insertions(+), 75 deletions(-)
+ create mode 100644 tools/testing/selftests/vm/util.h
+
+diff --git a/tools/testing/selftests/vm/ksm_tests.c b/tools/testing/selftests/vm/ksm_tests.c
+index 1436e1a9a3d3..fd85f15869d1 100644
+--- a/tools/testing/selftests/vm/ksm_tests.c
++++ b/tools/testing/selftests/vm/ksm_tests.c
+@@ -12,6 +12,7 @@
+ 
+ #include "../kselftest.h"
+ #include "../../../../include/vdso/time64.h"
++#include "util.h"
+ 
+ #define KSM_SYSFS_PATH "/sys/kernel/mm/ksm/"
+ #define KSM_FP(s) (KSM_SYSFS_PATH s)
+@@ -22,15 +23,6 @@
+ #define KSM_MERGE_ACROSS_NODES_DEFAULT true
+ #define MB (1ul << 20)
+ 
+-#define PAGE_SHIFT 12
+-#define HPAGE_SHIFT 21
+-
+-#define PAGE_SIZE (1 << PAGE_SHIFT)
+-#define HPAGE_SIZE (1 << HPAGE_SHIFT)
+-
+-#define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
+-#define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
+-
+ struct ksm_sysfs {
+ 	unsigned long max_page_sharing;
+ 	unsigned long merge_across_nodes;
+@@ -456,34 +448,6 @@ static int check_ksm_numa_merge(int mapping, int prot, int timeout, bool merge_a
+ 	return KSFT_FAIL;
+ }
+ 
+-int64_t allocate_transhuge(void *ptr, int pagemap_fd)
+-{
+-	uint64_t ent[2];
+-
+-	/* drop pmd */
+-	if (mmap(ptr, HPAGE_SIZE, PROT_READ | PROT_WRITE,
+-				MAP_FIXED | MAP_ANONYMOUS |
+-				MAP_NORESERVE | MAP_PRIVATE, -1, 0) != ptr)
+-		errx(2, "mmap transhuge");
+-
+-	if (madvise(ptr, HPAGE_SIZE, MADV_HUGEPAGE))
+-		err(2, "MADV_HUGEPAGE");
+-
+-	/* allocate transparent huge page */
+-	*(volatile void **)ptr = ptr;
+-
+-	if (pread(pagemap_fd, ent, sizeof(ent),
+-			(uintptr_t)ptr >> (PAGE_SHIFT - 3)) != sizeof(ent))
+-		err(2, "read pagemap");
+-
+-	if (PAGEMAP_PRESENT(ent[0]) && PAGEMAP_PRESENT(ent[1]) &&
+-	    PAGEMAP_PFN(ent[0]) + 1 == PAGEMAP_PFN(ent[1]) &&
+-	    !(PAGEMAP_PFN(ent[0]) & ((1 << (HPAGE_SHIFT - PAGE_SHIFT)) - 1)))
+-		return PAGEMAP_PFN(ent[0]);
+-
+-	return -1;
+-}
+-
+ static int ksm_merge_hugepages_time(int mapping, int prot, int timeout, size_t map_size)
+ {
+ 	void *map_ptr, *map_ptr_orig;
+diff --git a/tools/testing/selftests/vm/transhuge-stress.c b/tools/testing/selftests/vm/transhuge-stress.c
+index a03cb3fce1f6..e3f00adb1b82 100644
+--- a/tools/testing/selftests/vm/transhuge-stress.c
++++ b/tools/testing/selftests/vm/transhuge-stress.c
+@@ -15,48 +15,12 @@
+ #include <fcntl.h>
+ #include <string.h>
+ #include <sys/mman.h>
++#include "util.h"
+ 
+-#define PAGE_SHIFT 12
+-#define HPAGE_SHIFT 21
+-
+-#define PAGE_SIZE (1 << PAGE_SHIFT)
+-#define HPAGE_SIZE (1 << HPAGE_SHIFT)
+-
+-#define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
+-#define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
+-
+-int pagemap_fd;
+ int backing_fd = -1;
+ int mmap_flags = MAP_ANONYMOUS | MAP_NORESERVE | MAP_PRIVATE;
+ #define PROT_RW (PROT_READ | PROT_WRITE)
+ 
+-int64_t allocate_transhuge(void *ptr)
+-{
+-	uint64_t ent[2];
+-
+-	/* drop pmd */
+-	if (mmap(ptr, HPAGE_SIZE, PROT_RW, MAP_FIXED | mmap_flags,
+-		 backing_fd, 0) != ptr)
+-		errx(2, "mmap transhuge");
+-
+-	if (madvise(ptr, HPAGE_SIZE, MADV_HUGEPAGE))
+-		err(2, "MADV_HUGEPAGE");
+-
+-	/* allocate transparent huge page */
+-	*(volatile void **)ptr = ptr;
+-
+-	if (pread(pagemap_fd, ent, sizeof(ent),
+-			(uintptr_t)ptr >> (PAGE_SHIFT - 3)) != sizeof(ent))
+-		err(2, "read pagemap");
+-
+-	if (PAGEMAP_PRESENT(ent[0]) && PAGEMAP_PRESENT(ent[1]) &&
+-	    PAGEMAP_PFN(ent[0]) + 1 == PAGEMAP_PFN(ent[1]) &&
+-	    !(PAGEMAP_PFN(ent[0]) & ((1 << (HPAGE_SHIFT - PAGE_SHIFT)) - 1)))
+-		return PAGEMAP_PFN(ent[0]);
+-
+-	return -1;
+-}
+-
+ int main(int argc, char **argv)
+ {
+ 	size_t ram, len;
+@@ -67,6 +31,7 @@ int main(int argc, char **argv)
+ 	double s;
+ 	uint8_t *map;
+ 	size_t map_len;
++	int pagemap_fd;
+ 
+ 	ram = sysconf(_SC_PHYS_PAGES);
+ 	if (ram > SIZE_MAX / sysconf(_SC_PAGESIZE) / 4)
+@@ -122,7 +87,7 @@ int main(int argc, char **argv)
+ 		for (p = ptr; p < ptr + len; p += HPAGE_SIZE) {
+ 			int64_t pfn;
+ 
+-			pfn = allocate_transhuge(p);
++			pfn = allocate_transhuge(p, pagemap_fd);
+ 
+ 			if (pfn < 0) {
+ 				nr_failed++;
+diff --git a/tools/testing/selftests/vm/util.h b/tools/testing/selftests/vm/util.h
+new file mode 100644
+index 000000000000..0f0a0f345d76
+--- /dev/null
++++ b/tools/testing/selftests/vm/util.h
+@@ -0,0 +1,48 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef __KSELFTEST_VM_UTIL_H
++#define __KSELFTEST_VM_UTIL_H
++
++#include <stdint.h>
++#include <sys/mman.h>
++#include <err.h>
++
++#define PAGE_SHIFT	12
++#define HPAGE_SHIFT	21
++
++#define PAGE_SIZE (1 << PAGE_SHIFT)
++#define HPAGE_SIZE (1 << HPAGE_SHIFT)
++
++#define PAGEMAP_PRESENT(ent)	(((ent) & (1ull << 63)) != 0)
++#define PAGEMAP_PFN(ent)	((ent) & ((1ull << 55) - 1))
++
++
++static inline int64_t allocate_transhuge(void *ptr, int pagemap_fd)
++{
++	uint64_t ent[2];
++
++	/* drop pmd */
++	if (mmap(ptr, HPAGE_SIZE, PROT_READ | PROT_WRITE,
++		 MAP_FIXED | MAP_ANONYMOUS |
++		 MAP_NORESERVE | MAP_PRIVATE, -1, 0) != ptr)
++		errx(2, "mmap transhuge");
++
++	if (madvise(ptr, HPAGE_SIZE, MADV_HUGEPAGE))
++		err(2, "MADV_HUGEPAGE");
++
++	/* allocate transparent huge page */
++	*(volatile void **)ptr = ptr;
++
++	if (pread(pagemap_fd, ent, sizeof(ent),
++		  (uintptr_t)ptr >> (PAGE_SHIFT - 3)) != sizeof(ent))
++		err(2, "read pagemap");
++
++	if (PAGEMAP_PRESENT(ent[0]) && PAGEMAP_PRESENT(ent[1]) &&
++	    PAGEMAP_PFN(ent[0]) + 1 == PAGEMAP_PFN(ent[1]) &&
++	    !(PAGEMAP_PFN(ent[0]) & ((1 << (HPAGE_SHIFT - PAGE_SHIFT)) - 1)))
++		return PAGEMAP_PFN(ent[0]);
++
++	return -1;
++}
++
++#endif
+-- 
+2.35.1
+
