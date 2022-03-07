@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC484CF89A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 10:57:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB95A4CFFAF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 14:11:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KBv5N6LMQz3bWm
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 20:57:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KBzPC4mLcz3bfh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Mar 2022 00:11:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.222.179;
- helo=mail-qk1-f179.google.com; envelope-from=geert.uytterhoeven@gmail.com;
- receiver=<UNKNOWN>)
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com
- [209.85.222.179])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.17.24; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KBv4w4BNHz2yws
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 20:57:03 +1100 (AEDT)
-Received: by mail-qk1-f179.google.com with SMTP id g24so11442388qkl.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Mar 2022 01:57:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Y5/GrbGP30m/mBAfAcX6vDwX2g44JqlyQq0dC+zaJsw=;
- b=aXmPB7Jr2/yVEP32SG3K7rOpR5Pa/wNB9I3OY8S5Yg0lOgFLA+mmN3v+a6AyFHlEcP
- nKwCJsul4SfAbiGbRRw/peQPDuC2Pu2dblDTexOnl83iI2qnDbug2I/r0jCRWZNi58+6
- WcdM/go83RaCm0/2B6uluUfbD/AKt/+Nj06DwQEFScuCHf6+IfCaoeKS/ZG0FCPjJ32A
- ieDiE5h050Th4aWk9wXzVQ2NT4DYthblovYEsypV+L3yy9JpGZ7xU4PWVCOVJdHLKj/2
- CtkLSmufAK4x1qM69VMB1QRO9MFTrCacMyeiEviB7lRY+TculA/JDJ8MtAeBUU8XLCnL
- jZPw==
-X-Gm-Message-State: AOAM530Rvrxh49EiacmtXgFAGeE8vDeNJ0gQ0SJ6C4cES1B73EztNOgs
- am5gT6M37ZZJ04940C3U0j8tNjMznS/wxA==
-X-Google-Smtp-Source: ABdhPJxFbWk4vZBGXKJGB6uz0wUwlilfEY74puJBImfDFdanjkwzS1bHeMn+cddqbvqgDjl4Fx0SXg==
-X-Received: by 2002:a05:620a:f13:b0:47a:e669:8806 with SMTP id
- v19-20020a05620a0f1300b0047ae6698806mr6269747qkl.323.1646647020506; 
- Mon, 07 Mar 2022 01:57:00 -0800 (PST)
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com.
- [209.85.128.173]) by smtp.gmail.com with ESMTPSA id
- x23-20020a05620a14b700b00648eb7f4ce5sm5742202qkj.35.2022.03.07.01.57.00
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 07 Mar 2022 01:57:00 -0800 (PST)
-Received: by mail-yw1-f173.google.com with SMTP id
- 00721157ae682-2dc28791ecbso143362217b3.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Mar 2022 01:57:00 -0800 (PST)
-X-Received: by 2002:a0d:f1c7:0:b0:2db:d2bc:be11 with SMTP id
- a190-20020a0df1c7000000b002dbd2bcbe11mr7687812ywf.62.1646647019946; Mon, 07
- Mar 2022 01:56:59 -0800 (PST)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KBzNj568Bz2xrj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Mar 2022 00:10:59 +1100 (AEDT)
+Received: from mail-wr1-f50.google.com ([209.85.221.50]) by
+ mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MWiYo-1ngjqx3lzE-00X0J3 for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Mar
+ 2022 14:10:55 +0100
+Received: by mail-wr1-f50.google.com with SMTP id j26so12827972wrb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Mar 2022 05:10:55 -0800 (PST)
+X-Gm-Message-State: AOAM532nhpQO4eUtO5RLr7gOEF0cUdBU6GqCDLmaD/9ExuXFWx/Mt8+A
+ jQmDVR7zk+y8aZzcupeRNcq7pztLs1F58vk4pQE=
+X-Google-Smtp-Source: ABdhPJwTx34jmJfLDWjOnHVKhEip3RUgR+Mvrr67EPb6dzbty95WKubHaZ11Yl2wZxrMue9sQ0pwft5xMjMOGBUclZU=
+X-Received: by 2002:adf:d081:0:b0:1ef:9378:b7cc with SMTP id
+ y1-20020adfd081000000b001ef9378b7ccmr8692015wrh.407.1646658654942; Mon, 07
+ Mar 2022 05:10:54 -0800 (PST)
 MIME-Version: 1.0
-References: <CAHk-=wjkkYX8OvTv60+XvQkAK4Pg0QC0Hn-4+n7Q0t1+QWw7Sw@mail.gmail.com>
- <20220307081540.2716107-1-geert@linux-m68k.org>
-In-Reply-To: <20220307081540.2716107-1-geert@linux-m68k.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 7 Mar 2022 10:56:48 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdW=S=BJouptLGw12CbAqeYbBYwnsdrn90C_04n6s4H7bg@mail.gmail.com>
-Message-ID: <CAMuHMdW=S=BJouptLGw12CbAqeYbBYwnsdrn90C_04n6s4H7bg@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v5.17-rc7
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20220305123116.26828-1-yuehaibing@huawei.com>
+ <860002a4-4e52-c399-fda6-054fa64df3ce@csgroup.eu>
+In-Reply-To: <860002a4-4e52-c399-fda6-054fa64df3ce@csgroup.eu>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Mon, 7 Mar 2022 14:10:39 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a2p+Yryg1y5h=kTLP72WGYc2d4qctFuW+opR6F=1uYJPw@mail.gmail.com>
+Message-ID: <CAK8P3a2p+Yryg1y5h=kTLP72WGYc2d4qctFuW+opR6F=1uYJPw@mail.gmail.com>
+Subject: Re: [PATCH -next] powerpc/spufs: Fix build warning when
+ CONFIG_PROC_FS=n
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:7ksqIlYmSmOGSbm8LTfG8m8NKAfdVq6Lmhqrrji282F+ibzQh74
+ 8je1UyKvdOP8CUZNORgItOB9+VCJV1gRyokYTgN1QZ329Xag3TJuXe4CNoCogOM8bpx6SI2
+ PkLDqgsKMg9aRTzYLWBahNxFce8OyuRDLTcCJZxHBAi0nX4NLh0tXCg2lYAbhSKkmfRDd2G
+ qNQCE/oamgnz8iXrlrEjQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Tx0snvrhp9Y=:iAKzaw9U4x+WxwAWfs6yw2
+ cH+7TKTxCHcVC7uz17U0c9GTdAgReZKljcg+mUhcKpOQkdzbTcOBy3ZMU+H8yQDFvYTr01yEy
+ FowXAdd9JRZZ42ndXFqz63e5pEGNhznq1XkB3peLJ6GoQdObsSorZj0xqueztC6M9Xazemn+E
+ WOuyw/2rNlN9mLkeQzMuLIiYi4xw/OyLtc8bxGfuu8U2dYgJxqVJY13xZE/U65W4FrK5FVwht
+ d28sDNtxHSZuvko8DL4ouruMOLLyRCoit052V5NZFFWVlIDplLpQzNGGzCBwBkACnuH0Jg4PV
+ Kbd2LOH7nf738eArPtQnMgyYUf3a7p3ANoUAWHrW6oJsJ5u3oTZ9xFTNgNvCy3jSmbNtMya21
+ 1izZMxNs2BPs52bkG0M3YbfAfRWkLnHbjYyOV1rTiImxV/ee9uUPWhjfyi+2IkYKZPGDRjhmT
+ XNJqRqWBdG7O/hRNWIeENGBl/caYO0d897qoo7PMlLGKkQzndAexv/xnBtsqGH7L7k2KiiPoR
+ 8CyMhTHUlw/sack004agmZP4sqrqzqELsfbOmSNgWxdFo3z16pimcnLFQuWeiupg4UXBhTaOI
+ 9WRLhDu4VoTWco+jbytIs7dBsmgdvw9T93KmHxO5llOuyqklxE1iBqqp3YGH35SpYL5uO/TDI
+ RynO9QIx5NV+WoOEICYodiIl4MSlZxyN5Z1x2g7Hxcbetn8s8oVQ18YRhQuCjjq3ljJJOk3hW
+ sFOchjC6iNRyptsMRRpBUO6UvAl1mAtIl4YFobgNOdmrYTayA4PnswClzmemmO7eYJczUQLjS
+ D24WMwvt6QXBniZdbVLcqpZ/+zdtiv1yWBmqMK13omoz0w9daY=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,51 +73,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sparclinux <sparclinux@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Crypto Mailing List <linux-crypto@vger.kernel.org>
+Cc: "arnd@arndb.de" <arnd@arndb.de>, YueHaibing <yuehaibing@huawei.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "paulus@samba.org" <paulus@samba.org>, "jk@ozlabs.org" <jk@ozlabs.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 7, 2022 at 10:21 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> JFYI, when comparing v5.17-rc7[1] to v5.17-rc6[3], the summaries are:
->   - build errors: +4/-1
+On Sun, Mar 6, 2022 at 9:04 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+> Le 05/03/2022 =C3=A0 13:31, YueHaibing a =C3=A9crit :
+> > arch/powerpc/platforms/cell/spufs/sched.c:1055:12: warning: =E2=80=98sh=
+ow_spu_loadavg=E2=80=99 defined but not used [-Wunused-function]
+> >   static int show_spu_loadavg(struct seq_file *s, void *private)
+> >              ^~~~~~~~~~~~~~~~
+> >
+> > Mark this as __maybe_unused to fix this.
+>
+> Marking it as __maybe_unused doesn't fix it. It just pushes the dust
+> under the carpet.
+>
+> proc_create_single macro should be fix to avoid that warning.
 
-  + /kisskb/src/arch/powerpc/kernel/stacktrace.c: error: implicit
-declaration of function 'nmi_cpu_backtrace'
-[-Werror=implicit-function-declaration]: 171:2 => 171:9, 171:2
-  + /kisskb/src/arch/powerpc/kernel/stacktrace.c: error: implicit
-declaration of function 'nmi_trigger_cpumask_backtrace'; did you mean
-'arch_trigger_cpumask_backtrace'?
-[-Werror=implicit-function-declaration]:  => 226:9
+We discussed that when proc_create_single() was introduced, but ended up
+not doing it that way because there were already a lot of files using an #i=
+fdef
+around the function definitions. To change it back, one would have to audit
+every user of proc_create_single() and remove the #ifdefs.
 
-powerpc-gcc11/skiroot_defconfig (this is a new config)
-Seen before with powerpc-gcc5/skiroot_defconfig.
-
-  + /kisskb/src/crypto/blake2b_generic.c: error: the frame size of
-2288 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  =>
-109:1
-
-sparc64-gcc11/sparc-allmodconfig
-
-  + error: arch/powerpc/kvm/book3s_64_entry.o: relocation truncated to
-fit: R_PPC64_REL14 (stub) against symbol `machine_check_common'
-defined in .text section in arch/powerpc/kernel/head_64.o:  =>
-(.text+0x3e4)
-
-powerpc-gcc5/powerpc-allyesconfig
-
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/ffb217a13a2eaf6d5bd974fc83036a53ca69f1e2/ (all 100 configs)
-> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/7e57714cd0ad2d5bb90e50b5096a0e671dec1ef3/ (99 out of 100 configs)
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+        Arnd
